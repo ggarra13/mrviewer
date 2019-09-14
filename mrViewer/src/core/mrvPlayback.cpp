@@ -270,6 +270,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         last = reel->global_to_local( last );
         first = reel->global_to_local( first );
 
+        if ( frame > last )
+            DBGM1( "frame " << frame << " > " << last );
     }
     else
     {
@@ -361,7 +363,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     CMedia* next = NULL;
 
     int64_t first, last;
-    check_loop( frame, img, false, reel, timeline, first, last );
+    end = check_loop( frame, img, false, reel, timeline, first, last );
 
 
     CMedia::Looping loop = view->looping();
@@ -394,7 +396,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( next != img && next != NULL )
             {
                 next->refresh();
-
                 if ( next->stopped() && !decode )
                 {
                     if ( img->fg_bg_barrier() )
@@ -648,13 +649,13 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        //DBG3( "wait audio " << frame );
+        //DBGM3( "wait audio " << frame );
         img->wait_audio();
 
 
 
         boost::int64_t f = frame;
-        // DBG3( "decode audio " << frame );
+        // DBGM3( "decode audio " << frame );
 
         // if (!fg)
         //img->debug_audio_packets( frame, "play", false );
@@ -699,7 +700,7 @@ void audio_thread( PlaybackData* data )
         {
 
 
-            DBG3( img->name() << " BARRIER IN AUDIO " << frame );
+            DBGM3( img->name() << " BARRIER IN AUDIO " << frame );
 
 
             CMedia::Barrier* barrier = img->loop_barrier();
@@ -707,7 +708,7 @@ void audio_thread( PlaybackData* data )
             {
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBG3( img->name() << " BARRIER PASSED IN AUDIO "
+                DBGM3( img->name() << " BARRIER PASSED IN AUDIO "
                      << frame );
             }
 
@@ -748,7 +749,7 @@ void audio_thread( PlaybackData* data )
                 if ( fg ) view->playback( p );
             }
 
-            DBG3( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
+            DBGM3( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
             continue;
         }
         case CMedia::kDecodeOK:
@@ -1020,9 +1021,19 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
+        if ( frame > 950 && frame < 980 )
+        {
+            DBGM1( "frame1 " << frame );
+            // img->debug_video_packets( frame, "play", true );
+        }
 
         CMedia::DecodeStatus status = img->decode_video( frame );
 
+        if ( frame > 950 && frame < 980 )
+        {
+            DBGM1( "frame2 " << frame << " status " << status );
+            //img->debug_video_stores( frame, "play", true );
+        }
 
         // img->debug_video_packets( frame, img->name().c_str(), true );
         // img->debug_video_stores( frame, img->name().c_str(), true );
@@ -1097,19 +1108,19 @@ void video_thread( PlaybackData* data )
             }
             // LOGT_INFO( img->name() << "@" << barrier << " waited" );
 
-            DBG3( img->name() << " BARRIER PASSED IN VIDEO stopped? "
+            DBGM3( img->name() << " BARRIER PASSED IN VIDEO stopped? "
                  << img->stopped() << " frame: " << frame );
 
             if ( img->stopped() ) continue;
 
-            DBG3( img->name() << " VIDEO LOOP frame: " << frame );
+            DBGM3( img->name() << " VIDEO LOOP frame: " << frame );
 
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
                                          status, false );
 
-            DBG3( img->name() << " end: " << end
+            DBGM3( img->name() << " end: " << end
                       << " Stopped? " << img->stopped() );
 
             // This has to come here not in handle_loop, to avoid
@@ -1343,14 +1354,14 @@ void decode_thread( PlaybackData* data )
                 //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                // DBG3( img->name() << " BARRIER DECODE LOCK PASS gen: "
+                // DBGM3( img->name() << " BARRIER DECODE LOCK PASS gen: "
                 //      << barrier->generation()
                 //      << " count: " << barrier->count()
                 //      << " threshold: " << barrier->threshold()
                 //      << " used: " << barrier->used() );
             }
 
-            img->clear_packets();
+            // img->clear_packets();
 
             // Do the looping, taking into account ui state
             //  and return new frame and step.
