@@ -521,13 +521,13 @@ bool WaveEngine::open( const unsigned channels,
         else
             device -= 1;
 
-        DBG3( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
+        DBGM3( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
         MMRESULT result =
             waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                         //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                         0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
-        DBG3( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
+        DBGM3( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )
@@ -556,13 +556,13 @@ bool WaveEngine::open( const unsigned channels,
         size_t bytes = _num_buffers * bytesPerBlock;
         _data = new aligned16_uint8_t[ bytes ];
         memset( _data, 0, bytes );
-        DBG3( "allocated data at " << _data << " bytes " << bytes
+        DBGM3( "allocated data at " << _data << " bytes " << bytes
              << " / num " << bytes / _num_buffers);
 
         delete [] _buffer;
         _buffer = new WAVEHDR[ _num_buffers ];
 
-        DBG3( "fill headers " << _num_buffers );
+        DBGM3( "fill headers " << _num_buffers );
 
         // Set header memory
         uint8_t* ptr = (uint8_t*)_data;
@@ -580,7 +580,7 @@ bool WaveEngine::open( const unsigned channels,
             ptr += bytesPerBlock;
         }
 
-        DBG3( "enabled ok" );
+        DBGM3( "enabled ok" );
         // All okay, enable device
         _enabled = true;
         return true;
