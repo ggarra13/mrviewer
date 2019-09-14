@@ -733,8 +733,6 @@ image_type_ptr DrawEngine::display( const image_type_ptr& src,
 void DrawEngine::minmax( float& pMin, float& pMax,
                          const CMedia* img )
 {
-    unsigned int xh = img->width();
-    unsigned int yh = img->height();
 
     MinMaxData data;
     data.image  = img;
