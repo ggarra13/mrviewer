@@ -305,7 +305,7 @@ int EDLGroup::handle( int event )
 
 
                 browser()->reel( track->reel() );
-                DBG3("Change  image " << j );
+                DBGM3("Change  image " << j );
                 // browser()->change_image( j );
 
                 view()->stop();
@@ -314,7 +314,7 @@ int EDLGroup::handle( int event )
                 view()->seek( pt );
 
 
-                DBG3("Changed image " << j );
+                DBGM3("Changed image " << j );
                 browser()->redraw();
                 return 1;
             }
@@ -487,7 +487,7 @@ int EDLGroup::handle( int event )
                     }
                 }
             }
-            
+
             if ( tmin == std::numeric_limits<int64_t>::max() ||
                  tmax == std::numeric_limits<int64_t>::min() )
             {
@@ -826,7 +826,7 @@ void EDLGroup::refresh()
     unsigned e = children();
     for ( unsigned i = 0; i < e; ++i )
     {
-        DBG3( "REFRESH MEDIA TRACK " << i );
+        DBGM3( "REFRESH MEDIA TRACK " << i );
         mrv::media_track* o = (mrv::media_track*) child(i);
         o->refresh();
         o->redraw();
