@@ -820,7 +820,7 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         _glformat       = glformat;
         _format         = pic->format();
         _internalFormat = internalFormat;
-        DBG3( "GLEngine::shader_type() " << GLEngine::shader_type() << " "
+        DBGM3( "GLEngine::shader_type() " << GLEngine::shader_type() << " "
              << GLEngine::shader_type_name() );
         if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
         else                           _shader = NULL;
@@ -1015,7 +1015,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
 
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, _texId[0] );
-        CHECK_GL; DBG3( "texID0= " << _texId[0] );
+        CHECK_GL; DBGM3( "texID0= " << _texId[0] );
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     }
 

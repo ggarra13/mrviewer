@@ -1850,7 +1850,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
         {
             st[0] = st[1] = -1;
 
-            for ( unsigned i = 0; i < _numparts; ++i )
+            for ( int i = 0; i < _numparts; ++i )
             {
                 const Header& header = inmaster.header(i);
                 if ( ! header.hasType() )
@@ -1859,9 +1859,9 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                     _type = header.type();
 
                 if ( _type != SCANLINEIMAGE &&
-                        _type != TILEDIMAGE &&
-                        _type != DEEPSCANLINE &&
-                        _type != DEEPTILE ) {
+                     _type != TILEDIMAGE &&
+                     _type != DEEPSCANLINE &&
+                     _type != DEEPTILE ) {
                     continue;
                 }
 
@@ -2159,7 +2159,6 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             if ( st[i] >= 0 && _right_eye == NULL )
                 _curpart = st[i];
 
-
             const Header& header = inmaster.header(_curpart);
 
             const Box2i& displayWindow = header.displayWindow();
@@ -2210,11 +2209,13 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             }
 
             // Quick exit if stereo is off or multiview
-            // if ( _stereo_output == kNoStereo ) break;
+            if ( _stereo_output == kNoStereo ) break;
 
             if ( st[0] != st[1] )
             {
-                _stereo[i] = canvas; //_hires;
+                if ( i == 0 ) update_cache_pic( _sequence, canvas );
+                else          update_cache_pic( _right, canvas );
+                _stereo[i] = canvas; // needed;
             }
         }
     }
@@ -3054,7 +3055,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         if ( layer ) root = layer;
         else layer = "";
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
 
         if ( root.find( "Z" ) != std::string::npos ) x = "Z";
         else
@@ -3121,7 +3122,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         int dx = daw.x();
         int dy = daw.y();
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic) return false;
 
         unsigned dw = pic->width();
@@ -3441,7 +3442,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 p->channel( c.c_str() );
 
-                pic = img->hires();
+                pic = img->left();
 
                 channels = pic->channels();
                 if ( channels != 1 )
