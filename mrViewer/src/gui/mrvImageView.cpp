@@ -1268,9 +1268,9 @@ static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
     CMedia* img = fg->image();
     if ( img == NULL ) return;
 
-    DBG3( "Attach audio file " << file << " first frame: " << img->first_frame() );
+    DBGM3( "Attach audio file " << file << " first frame: " << img->first_frame() );
     img->audio_file( file );
-    DBG3( "Attached audio file " << file << " first frame: " << img->first_frame() );
+    DBGM3( "Attached audio file " << file << " first frame: " << img->first_frame() );
     view->refresh_audio_tracks();
 
 }
@@ -1762,7 +1762,7 @@ bool ImageView::next_channel()
 void ImageView::init_draw_engine()
 {
     _engine = new mrv::GLEngine( this );
-    DBG3( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( !_engine )
     {
         mrvALERT( _("Could not initialize draw engine") );
@@ -3423,20 +3423,20 @@ void ImageView::vr( VRType t )
 void ImageView::draw()
 {
 
-    DBG3( "draw valid? " << (int)valid() );
+    DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
         if ( ! _engine )
         {
-            DBG3( __FUNCTION__ << " " << __LINE__ );
+            DBGM3( __FUNCTION__ << " " << __LINE__ );
             init_draw_engine();
         }
 
-        DBG3( "GLengine " << _engine );
+        DBGM3( "GLengine " << _engine );
         if ( !_engine ) return;
 
 
-        DBG3( __FUNCTION__ << " " << __LINE__ );
+        DBGM3( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
 
@@ -3465,13 +3465,13 @@ void ImageView::draw()
             r = g = b = a = 0.0f;
         }
 
-        DBG3( __FUNCTION__ << " " << __LINE__ );
+        DBGM3( __FUNCTION__ << " " << __LINE__ );
 
         _engine->clear_canvas( r, g, b, a );
 
         if ( !_update ) return;
 
-        DBG3( __FUNCTION__ << " " << __LINE__ );
+        DBGM3( __FUNCTION__ << " " << __LINE__ );
         switch( uiPrefs->uiPrefsBlendMode->value() )
         {
         case kBlendTraditional:
@@ -3521,7 +3521,7 @@ void ImageView::draw()
     }
 
 
-    DBG3( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
     TRACE("");
 
@@ -3532,7 +3532,7 @@ void ImageView::draw()
         Mutex& mtx = img->video_mutex();
         SCOPED_LOCK( mtx );
 
-        DBG3( __FUNCTION__ << " " << __LINE__ );
+        DBGM3( __FUNCTION__ << " " << __LINE__ );
         _engine->draw_images( images );
     }
 
@@ -7420,7 +7420,7 @@ void ImageView::preload_cache_start()
         mrv::media m = foreground();
         if ( m ) {
             img = m->image();
-            if ( !img->is_stereo() )
+            // if ( !img->is_stereo() )
             {
                 CMedia::preload_cache( true );
                 _idle_callback = true;
@@ -7813,7 +7813,7 @@ void ImageView::gamma( const float f )
     mrv::media fg = foreground();
     if ( fg )
     {
-        DBG3(  "gamma " << f );
+        DBGM3(  "gamma " << f );
         fg->image()->gamma( f );
 
         char buf[256];
@@ -8085,6 +8085,7 @@ double ImageView::pixel_ratio() const
 int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
+    if ( !fg ) return -1;
 
     CMedia* img = fg->image();
 

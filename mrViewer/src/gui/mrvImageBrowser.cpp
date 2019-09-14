@@ -707,15 +707,27 @@ void ImageBrowser::save_reel()
             fs::path parentPath = reelname; //fs::current_path();
             parentPath = parentPath.parent_path();
             fs::path childPath = img->fileroot();
+
+            // @WARNING: do not generic_string() here as it fails on windows
+            //           and leaves path empty.
             if ( img->internal() )
             {
-                path = childPath.generic_string();
+                path = childPath.string();
             }
             else
             {
                 fs::path relativePath = fs::relative( childPath, parentPath );
-                path = relativePath.generic_string();
+                path = relativePath.string();
             }
+
+            if ( path.empty() )
+            {
+                LOG_ERROR( "Error in processing relative path for "
+                           << img->fileroot() );
+                path = img->fileroot();
+            }
+
+            std::replace( path.begin(), path.end(), '\\', '/' );
         }
 
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64
@@ -724,17 +736,23 @@ void ImageBrowser::save_reel()
                  img->start_frame(), img->end_frame(), img->fps() );
         if ( img->has_audio() && img->audio_file() != "" )
         {
-            fs::path path = img->audio_file();
+            std::string path = img->audio_file();
+
+
+            // @WARNING:  Do not use generic_string() as it has problems
+            //            on Windows and returns an empty string.
             if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
             {
                 fs::path parentPath = reelname; //fs::current_path();
                 parentPath = parentPath.parent_path();
                 fs::path childPath = img->audio_file();
                 fs::path relativePath = fs::relative( childPath, parentPath );
-                path = relativePath.generic_string();
+                path = relativePath.string();
             }
 
-            fprintf( f, "audio: %s\n", path.generic_string().c_str() );
+            std::replace( path.begin(), path.end(), '\\', '/' );
+
+            fprintf( f, "audio: %s\n", path.c_str() );
             fprintf( f, "audio offset: %" PRId64 "\n",
                      img->audio_offset() );
         }
@@ -1201,7 +1219,7 @@ void ImageBrowser::clear_bg()
  */
 void ImageBrowser::change_reel()
 {
-    DBG3( "Change reel" );
+    DBGM3( "Change reel" );
 
     CMedia::Playback play = view()->playback();
     view()->stop();
@@ -1216,7 +1234,7 @@ void ImageBrowser::change_reel()
 
     if ( reel->images.empty() )
     {
-        DBG3( "NO images in reel" );
+        DBGM3( "NO images in reel" );
 
         change_image( -1 );
     }
@@ -1243,14 +1261,14 @@ void ImageBrowser::change_reel()
 
     if ( reel->edl )
     {
-        DBG3( "SET EDL" );
+        DBGM3( "SET EDL" );
 
         set_edl();
     }
     else
     {
 
-        DBG3( "CLEAR EDL" );
+        DBGM3( "CLEAR EDL" );
         clear_edl();
     }
 
@@ -1309,7 +1327,7 @@ void ImageBrowser::change_image()
 
         if ( m && v )
         {
-            DBG3( "FG REEL " << _reel << " m: " << m->image()->name() );
+            DBGM3( "FG REEL " << _reel << " m: " << m->image()->name() );
 
             v->fg_reel( _reel );
             v->foreground( m );
@@ -1370,7 +1388,7 @@ void ImageBrowser::change_image(int i)
 
     send_reel( reel );
 
-    DBG3( "CHANGE IMAGE TO INDEX " << i );
+    DBGM3( "CHANGE IMAGE TO INDEX " << i );
     value( i );
     send_image( i );
     change_image();
@@ -1613,7 +1631,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     Fl_Window* w = NULL;
     Fl_Progress* progress = NULL;
 
-    if ( files.size() > 1 && progressBar )
+    if ( files.size() > 10 && progressBar )
     {
         Fl_Group::current(0);
         w = new Fl_Window( main->x(), main->y() + main->h()/2,
@@ -2182,12 +2200,12 @@ void ImageBrowser::change_background()
 
     if ( view()->background() == reel->images[sel] )
     {
-        DBG3( "BG REEL ************* " << -1 );
+        DBGM3( "BG REEL ************* " << -1 );
         clear_bg();
     }
     else
     {
-        DBG3( "BG REEL ************* " << _reel << "  SEL " << sel
+        DBGM3( "BG REEL ************* " << _reel << "  SEL " << sel
              << " " << reel->images[sel]->image()->name() );
         view()->bg_reel( _reel );
         mrv::media bg = reel->images[sel];
@@ -2517,7 +2535,7 @@ void ImageBrowser::next_image()
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    DBG3( "reel name " << reel->name );
+    DBGM3( "reel name " << reel->name );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2557,13 +2575,13 @@ void ImageBrowser::next_image()
     if ( reel->edl )
     {
         int64_t pos = m->position();
-        DBG3( "seek to " << pos );
+        DBGM3( "seek to " << pos );
         seek( pos );
     }
     else
     {
         CMedia* img = m->image();
-        DBG3( "******* NOT REEL" );
+        DBGM3( "******* NOT REEL" );
         img->seek( orig->image()->frame() );
         img->do_seek();
     }
@@ -2584,7 +2602,7 @@ void ImageBrowser::previous_image()
 {
     mrv::Reel reel = current_reel();
 
-    DBG3( "reel name " << reel->name );
+    DBGM3( "reel name " << reel->name );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2625,13 +2643,13 @@ void ImageBrowser::previous_image()
     if ( reel->edl )
     {
         int64_t pos = m->position();
-        DBG3( "seek to " << pos );
+        DBGM3( "seek to " << pos );
         seek( pos );
     }
     else
     {
         CMedia* img = m->image();
-        DBG3( "******* NOT REEL" );
+        DBGM3( "******* NOT REEL" );
         img->seek( orig->image()->frame() );
         img->do_seek();
     }
@@ -2708,7 +2726,7 @@ int ImageBrowser::mousePush( int x, int y )
         }
 
 
-        DBG3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
+        DBGM3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
         mrv::Reel reel = current_reel();
         mrv::Element* e = (mrv::Element*) dragging->widget();
@@ -3031,7 +3049,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     {
         int64_t x = t->offset( img );
         f += x;
-        DBG3( "set frame to " << f );
+        DBGM3( "set frame to " << f );
         frame( f );
     }
 
@@ -3444,7 +3462,7 @@ void ImageBrowser::adjust_timeline()
                 for ( j = i, ++i; i != e; j = i, ++i )
                 {
                     int64_t frame = (*j)->position() + (*j)->duration();
-                    DBG3( (*i)->image()->name() << " moved to frame " << frame );
+                    DBGM3( (*i)->image()->name() << " moved to frame " << frame );
                     (*i)->position( frame );
                 }
             }
@@ -3489,7 +3507,7 @@ void ImageBrowser::adjust_timeline()
 
     // for ( int i = 0; i < reel->images.size(); ++i )
     // {
-    //    DBG3( "Image " << i << " " << reel->images[i]->position() );
+    //    DBGM3( "Image " << i << " " << reel->images[i]->position() );
     // }
 
     //LOG_INFO( "first " << first << " f=" << f << " last " << last );
