@@ -3240,31 +3240,31 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
  *
  * @return      name of codec.
  */
-std::string CMedia::codec_name( const AVCodecParameters* enc )
+std::string CMedia::codec_name( const AVCodecParameters* par )
 {
-    AVCodec* p = avcodec_find_decoder(enc->codec_id);
+    AVCodec* p = avcodec_find_decoder(par->codec_id);
     const char* codec_name;
     char buf[20];
 
     if (p) {
         codec_name = p->name;
-    } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
+    } else if (par->codec_id == AV_CODEC_ID_MPEG2TS) {
         /* fake mpeg2 transport stream codec (currently not
            registered) */
         codec_name = N_("mpeg2ts");
     } else {
         /* output avi tags */
-        if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
-                && isprint((enc->codec_tag>>16)&0xFF) &&
-                isprint((enc->codec_tag>>24)&0xFF)) {
+        if(   isprint(par->codec_tag&0xFF) && isprint((par->codec_tag>>8)&0xFF)
+                && isprint((par->codec_tag>>16)&0xFF) &&
+                isprint((par->codec_tag>>24)&0xFF)) {
             snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
-                     enc->codec_tag & 0xff,
-                     (enc->codec_tag >> 8) & 0xff,
-                     (enc->codec_tag >> 16) & 0xff,
-                     (enc->codec_tag >> 24) & 0xff,
-                     enc->codec_tag);
+                     par->codec_tag & 0xff,
+                     (par->codec_tag >> 8) & 0xff,
+                     (par->codec_tag >> 16) & 0xff,
+                     (par->codec_tag >> 24) & 0xff,
+                     par->codec_tag);
         } else {
-            snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
+            snprintf(buf, sizeof(buf), N_("0x%04x"), par->codec_tag);
         }
         codec_name = buf;
     }
@@ -3278,35 +3278,35 @@ std::string CMedia::codec_name( const AVCodecParameters* enc )
 /**
  * Given a codec context, return the name of the codec if possible.
  *
- * @param enc   codec context
+ * @param ctx   codec context
  *
  * @return      name of codec.
  */
-std::string CMedia::codec_name( const AVCodecContext* enc )
+std::string CMedia::codec_name( const AVCodecContext* ctx )
 {
-    AVCodec* p = avcodec_find_decoder(enc->codec_id);
+    AVCodec* p = avcodec_find_decoder(ctx->codec_id);
     const char* codec_name;
     char buf[20];
 
     if (p) {
         codec_name = p->name;
-    } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
+    } else if (ctx->codec_id == AV_CODEC_ID_MPEG2TS) {
         /* fake mpeg2 transport stream codec (currently not
            registered) */
         codec_name = N_("mpeg2ts");
     } else {
         /* output avi tags */
-        if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
-                && isprint((enc->codec_tag>>16)&0xFF) &&
-                isprint((enc->codec_tag>>24)&0xFF)) {
+        if(   isprint(ctx->codec_tag&0xFF) && isprint((ctx->codec_tag>>8)&0xFF)
+                && isprint((ctx->codec_tag>>16)&0xFF) &&
+                isprint((ctx->codec_tag>>24)&0xFF)) {
             snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
-                     enc->codec_tag & 0xff,
-                     (enc->codec_tag >> 8) & 0xff,
-                     (enc->codec_tag >> 16) & 0xff,
-                     (enc->codec_tag >> 24) & 0xff,
-                     enc->codec_tag);
+                     ctx->codec_tag & 0xff,
+                     (ctx->codec_tag >> 8) & 0xff,
+                     (ctx->codec_tag >> 16) & 0xff,
+                     (ctx->codec_tag >> 24) & 0xff,
+                     ctx->codec_tag);
         } else {
-            snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
+            snprintf(buf, sizeof(buf), N_("0x%04x"), ctx->codec_tag);
         }
         codec_name = buf;
     }
@@ -3365,27 +3365,27 @@ double CMedia::calculate_fps( AVFormatContext* ctx,
 void CMedia::populate_stream_info( StreamInfo& s,
                                    std::ostringstream& msg,
                                    const AVFormatContext* context,
-                                   const AVCodecParameters* ctx,
+                                   const AVCodecParameters* par,
                                    const int stream_index )
 {
 
     bool has_codec = true;
 
     // Mark streams that we don't have a decoder for
-    AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
+    AVCodec* codec = avcodec_find_decoder( par->codec_id );
     if ( ! codec )
     {
         has_codec = false;
-        const char* type = stream_type( ctx );
-        msg << _("\n\nNot a known codec ") << codec_name(ctx)
+        const char* type = stream_type( par );
+        msg << _("\n\nNot a known codec ") << codec_name(par)
             << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
     s.context      = context;
     s.stream_index = stream_index;
     s.has_codec    = has_codec;
-    s.codec_name   = codec_name( ctx );
-    s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
+    s.codec_name   = codec_name( par );
+    s.fourcc       = codec_tag2fourcc( par->codec_tag );
 
     AVStream* st = context->streams[stream_index];
     double time  = av_q2d( st->time_base );
@@ -3660,7 +3660,6 @@ void CMedia::loop_at_end( const int64_t frame )
                 ++i;
             }
         }
-
 
 
         _video_packets.loop_at_end( frame );
