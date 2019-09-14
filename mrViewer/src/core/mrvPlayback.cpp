@@ -270,8 +270,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         last = reel->global_to_local( last );
         first = reel->global_to_local( first );
 
-        if ( frame > last )
-            DBGM1( "frame " << frame << " > " << last );
     }
     else
     {
@@ -1021,19 +1019,9 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        if ( frame > 950 && frame < 980 )
-        {
-            DBGM1( "frame1 " << frame );
-            // img->debug_video_packets( frame, "play", true );
-        }
 
         CMedia::DecodeStatus status = img->decode_video( frame );
 
-        if ( frame > 950 && frame < 980 )
-        {
-            DBGM1( "frame2 " << frame << " status " << status );
-            //img->debug_video_stores( frame, "play", true );
-        }
 
         // img->debug_video_packets( frame, img->name().c_str(), true );
         // img->debug_video_stores( frame, img->name().c_str(), true );
@@ -1241,14 +1229,15 @@ void video_thread( PlaybackData* data )
             LOG_ERROR( _("Could not find image ") << frame );
         }
 
-        timer.setDesiredSecondsPerFrame( delay );
-        timer.waitUntilNextFrameIsDue();
 
         if ( reel->edl && fg && img->is_left_eye() )
         {
             int64_t f = frame + reel->location(img) - img->first_frame();
             view->frame( f );
         }
+
+        timer.setDesiredSecondsPerFrame( delay );
+        timer.waitUntilNextFrameIsDue();
 
 
         frame += step;
