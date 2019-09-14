@@ -514,7 +514,7 @@ namespace mrv {
 
     MagickImg* img = NewMagickImg();
 
-    mrv::image_type_ptr frame = hires();
+    mrv::image_type_ptr frame = left();
 
     const bool  has_alpha = frame->has_alpha();
 
