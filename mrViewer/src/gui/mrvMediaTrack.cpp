@@ -498,11 +498,11 @@ void media_track::refresh()
 {
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) {
-        DBG3( "EMPTY REEL AT INDEX " << _reel_idx );
+        DBGM3( "EMPTY REEL AT INDEX " << _reel_idx );
         return;
     }
 
-    DBG3( reel->name << " #images=" << reel->images.size() );
+    DBGM3( reel->name << " #images=" << reel->images.size() );
 
     //
     // Adjust timeline position
@@ -518,7 +518,7 @@ void media_track::refresh()
         for ( j = i, ++i; i != end; j = i, ++i )
         {
             int64_t frame = (*j)->position() + (*j)->duration();
-            DBG3( (*i)->image()->name() << " set to frame " << frame );
+            DBGM3( (*i)->image()->name() << " set to frame " << frame );
             (*i)->position( frame );
         }
     }
