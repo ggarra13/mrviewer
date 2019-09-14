@@ -13,6 +13,11 @@ if [[ $BASH_SOURCE == $0 ]]; then
     exit 1
 fi
 
+kernel=`uname`
+if [[ $kernel == MINGW* ]]; then
+    echo "This file will not work in a MinGW environment.  Use cmd.exe and a env.bat file."
+fi
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export PATH=$DIR/../../bin:$PATH
 export OTIO_PLUGIN_MANIFEST_PATH=$DIR/mrviewer.plugin_manifest.json
