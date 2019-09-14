@@ -750,12 +750,12 @@ void aviImage::open_video_codec()
     AVStream *stream = get_video_stream();
     if ( stream == NULL ) return;
 
-    AVCodecParameters* codecpar = stream->codecpar;
+    AVCodecParameters* par = stream->codecpar;
 
-    AVCodec* video_codec = avcodec_find_decoder( codecpar->codec_id );
+    AVCodec* video_codec = avcodec_find_decoder( par->codec_id );
 
     _video_ctx = avcodec_alloc_context3(video_codec);
-    int r = avcodec_parameters_to_context(_video_ctx, codecpar);
+    int r = avcodec_parameters_to_context(_video_ctx, par);
     if ( r < 0 )
     {
         LOG_ERROR( _("avcodec_context_from_parameters failed for video") );
@@ -1677,11 +1677,11 @@ void aviImage::open_subtitle_codec()
     AVStream* stream = get_subtitle_stream();
     if (!stream) return;
 
-    AVCodecParameters* codecpar = stream->codecpar;
-    AVCodec* subtitle_codec = avcodec_find_decoder( codecpar->codec_id );
+    AVCodecParameters* par = stream->codecpar;
+    AVCodec* subtitle_codec = avcodec_find_decoder( par->codec_id );
 
     _subtitle_ctx = avcodec_alloc_context3(subtitle_codec);
-    int r = avcodec_parameters_to_context(_subtitle_ctx, codecpar);
+    int r = avcodec_parameters_to_context(_subtitle_ctx, par);
     if ( r < 0 )
     {
         LOG_ERROR( _("avcodec_copy_context failed for subtitle") );
@@ -2243,15 +2243,30 @@ void aviImage::populate()
         const AVCodecParameters* par = stream->codecpar;
         if ( par == NULL ) continue;
 
-        AVCodecContext* ctx;
 
         AVCodec* codec = avcodec_find_decoder( par->codec_id );
-        ctx = avcodec_alloc_context3( codec );
+        if ( !codec )
+        {
+            LOG_ERROR( _("Could not find decoder for codec ")
+                       << codec_name(par) << _(", stream #") << i );
+            continue;
+        }
+
+
+        AVCodecContext* ctx = avcodec_alloc_context3( codec );
+        if (!ctx )
+        {
+            LOG_ERROR( _("Not enough memory for context" ) );
+            continue;
+        }
         int err = avcodec_parameters_to_context( ctx, par );
         if ( err < 0 )
         {
             LOG_ERROR( _("Could not copy parameters to context") );
+            continue;
         }
+
+        ctx->pkt_timebase = _context->streams[i]->time_base;
 
         // Determine the type and obtain the first index of each type
         switch( ctx->codec_type )
@@ -2270,7 +2285,7 @@ void aviImage::populate()
         case AVMEDIA_TYPE_VIDEO:
         {
             video_info_t s;
-            populate_stream_info( s, msg, _context, ctx, i );
+            populate_stream_info( s, msg, _context, par, i );
             s.has_b_frames = ( ctx->has_b_frames != 0 );
             s.fps          = calculate_fps( _context, (AVStream*)stream );
             if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
@@ -2308,9 +2323,8 @@ void aviImage::populate()
         }
         case AVMEDIA_TYPE_AUDIO:
         {
-
             audio_info_t s;
-            populate_stream_info( s, msg, _context, ctx, i );
+            populate_stream_info( s, msg, _context, par, i );
 
             s.channels   = ctx->channels;
             s.frequency  = ctx->sample_rate;
@@ -2804,6 +2818,12 @@ bool aviImage::initialize()
 
         }
 
+        _context = avformat_alloc_context();
+        if ( ! _context )
+        {
+            LOG_ERROR( _("Could not allocate format context") );
+            return false;
+        }
 
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
@@ -2813,23 +2833,25 @@ bool aviImage::initialize()
 
         if ( error >= 0 )
         {
+            av_format_inject_global_side_data(_context);
+
             // Change probesize and analyze duration to 30 secs
             // to detect subtitles.
-            if ( _context )
-            {
-                probe_size( 30 * AV_TIME_BASE );
-            }
+            // if ( _context )
+            // {
+            //     probe_size( 30 * AV_TIME_BASE );
+            // }
             error = avformat_find_stream_info( _context, NULL );
             if ( error < 0 )
             {
                 IMG_ERROR( _("Could not find stream info") );
             }
 
+
         }
 
         if ( error >= 0 )
         {
-
             // Allocate an av frame
             _av_frame = av_frame_alloc();
             populate();
@@ -3652,12 +3674,18 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 
 
             // Avoid storing too many frames in advance
-            // if ( playback() == kForwards &&
-            //      pktframe > _frame + max_video_frames() )
-            // {
-            //     got_video = kDecodeOK;
-            //     continue;
-            // }
+            if ( playback() == kForwards &&
+                 pktframe > _frame + max_video_frames() )
+            {
+                got_video = kDecodeOK;
+                continue;
+            }
+            else if ( playback() == kBackwards &&
+                      pktframe < _frame - max_video_frames() )
+            {
+                got_video = kDecodeOK;
+                continue;
+            }
 
             bool ok = in_video_store( pktframe );
             if ( ok )
@@ -3665,16 +3693,13 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 // if ( pktframe == frame )
                 {
                     got_video = decode_vpacket( pktframe, frame, pkt );
-                    DBGM1( "1 in video store? " << got_video );
                     _video_packets.pop_front();
                 }
                 continue;
             }
 
-            DBGM1( "Not in video store " << pktframe );
 
             got_video = decode_image( pktframe, pkt );
-            DBGM1( "2 in video store? " << got_video );
             _video_packets.pop_front();
             continue;
         }
