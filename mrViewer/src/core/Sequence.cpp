@@ -819,6 +819,10 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                         if ( !path.empty() ) path += '/';
                         audio = path + audio;
                     }
+                    if ( audio.rfind('\r') == audio.size() - 1 )
+                    {
+                        audio = audio.substr( 0, audio.size() - 1 );
+                    }
                     sequences.back().audio = audio;
                 }
                 continue;
@@ -838,6 +842,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
             {
                 if ( !sequences.empty() )
                 {
+                    std::string file = c+8;
+                    if ( file.rfind('\r') == file.size() - 1 )
+                    {
+                        file = file.substr( 0, file.size() - 1 );
+                    }
                     sequences.back().right_filename = c+8;
                 }
                 continue;
