@@ -585,7 +585,7 @@ _audio_engine( NULL )
         CMedia* img = const_cast< CMedia* >( other );
         CMedia::Mutex& m = img->video_mutex();
         SCOPED_LOCK(m);
-        _hires = img->hires();
+        _hires = img->left();
 
         if ( xScale != 1.0f || yScale != 1.0f )
         {
@@ -1142,6 +1142,9 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
 
 mrv::image_type_ptr CMedia::left() const
 {
+    Mutex& mtx = const_cast< Mutex& >( _mutex );
+    SCOPED_LOCK( mtx );
+
     int64_t f = _frame;
     int64_t idx = f - _frame_start;
 
@@ -1149,14 +1152,14 @@ mrv::image_type_ptr CMedia::left() const
     if ( idx > num ) idx = num;
     else if ( idx < 0 ) idx = 0;
 
-    Mutex& mtx = const_cast< Mutex& >( _mutex );
-    SCOPED_LOCK( mtx );
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
 
     if ( _is_sequence && _sequence && _sequence[idx] )  pic = _sequence[idx];
     else if ( _stereo[0] )  pic = _stereo[0];
-    if ( !pic ) return pic;
+    if ( !pic ) {
+        return pic;
+    }
 
     img->_w = pic->width();
     img->_h = pic->height();
@@ -2163,15 +2166,15 @@ void CMedia::timestamp(const boost::uint64_t idx,
     int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
     if ( result < 0 ) return;
 
-    DBG;
+    DBG3;
     _ctime = sbuf.st_ctime;
     _mtime = sbuf.st_mtime;
-    DBG;
+    DBG3;
     pic->ctime( sbuf.st_ctime );
     pic->mtime( sbuf.st_mtime );
-    DBG;
+    DBG3;
     _disk_space += sbuf.st_size;
-    DBG;
+    DBG3;
     image_damage( image_damage() | kDamageData );
 }
 
@@ -2184,14 +2187,15 @@ void CMedia::timestamp(const boost::uint64_t idx,
  */
 const std::string CMedia::creation_date() const
 {
-    if ( is_sequence() && hires() )
+    mrv::image_type_ptr pic = left();
+    if ( is_sequence() && pic )
     {
-        time_t t = hires()->ctime();
+        time_t t = pic->ctime();
         if ( t != 0 )
         {
             CMedia* img = const_cast< CMedia* >(this);
-            img->_ctime = hires()->ctime();
-            img->_mtime = hires()->mtime();
+            img->_ctime = pic->ctime();
+            img->_mtime = pic->mtime();
         }
     }
 
@@ -2988,20 +2992,21 @@ void CMedia::cache( mrv::image_type_ptr& pic )
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
-        DBG3( "stereo[0]" );
+        DBGM1( "stereo[0]" );
+        // update_cache_pic( _sequence, pic );
         update_cache_pic( _sequence, _stereo[0] );
         _stereo[0].reset();
     }
     else
     {
-        DBG3( "sequence" );
+        DBGM1( "sequence" );
         update_cache_pic( _sequence, pic );
         pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
     {
-        DBG3( "stereo[1]" );
+        DBGM1( "stereo[1]" );
         update_cache_pic( _right, _stereo[1] );
         _stereo[1].reset();
     }
@@ -3640,11 +3645,13 @@ void CMedia::loop_at_end( const int64_t frame )
 
         AVStream* stream = get_video_stream();
 
+        int64_t limit = frame + _frame_offset;
+
         mrv::PacketQueue::iterator i = _video_packets.begin();
         for ( ; i != _video_packets.end(); )
         {
             int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe > frame )
+            if ( pktframe > limit )
             {
                 i = _video_packets.erase( i );
             }
@@ -3653,6 +3660,8 @@ void CMedia::loop_at_end( const int64_t frame )
                 ++i;
             }
         }
+
+
 
         _video_packets.loop_at_end( frame );
     }
@@ -3665,9 +3674,10 @@ void CMedia::loop_at_end( const int64_t frame )
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
 
-        mrv::PacketQueue::iterator i = _audio_packets.begin();
         AVStream* stream = get_audio_stream();
-        int64_t limit = frame + _audio_offset - 1;
+
+        mrv::PacketQueue::iterator i = _audio_packets.begin();
+        int64_t limit = frame + _frame_offset + _audio_offset - 1;
         for ( ; i != _audio_packets.end(); )
         {
             int64_t pktframe = get_frame( stream, *i );
