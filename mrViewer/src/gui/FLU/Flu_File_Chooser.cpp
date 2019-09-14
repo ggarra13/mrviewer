@@ -334,7 +334,7 @@ static void loadRealIcon( RealIcon* e)
     size_t p;
 
     if ( e->chooser->quick_exit ) {
-        DBG3( "lri quick exit " << e->entry << " chooser " << e->chooser );
+        DBGM3( "lri quick exit " << e->entry << " chooser " << e->chooser );
         goto SALIDA;
     }
 
@@ -382,7 +382,7 @@ static void loadRealIcon( RealIcon* e)
     sprintf( buf, fmt, frameStart );
 
 
-    DBG3( "lri file exists? " << buf );
+    DBGM3( "lri file exists? " << buf );
 
 
     // if ( ! fs::exists( buf ) ) {
@@ -391,7 +391,7 @@ static void loadRealIcon( RealIcon* e)
     //     return;
     // }
 
-    DBG3( "lri process icon " << e->entry << " " << e->filename
+    DBGM3( "lri process icon " << e->entry << " " << e->filename
          << " chooser " << e->chooser );
 
     if ( e->serial == e->chooser->serial )
@@ -406,16 +406,16 @@ static void loadRealIcon( RealIcon* e)
         }
 
         if ( !img ) {
-            DBG3( "Img is NULL" );
+            DBGM3( "Img is NULL" );
             goto SALIDA;
         }
 
 
-        DBG3( "lri processed icon " << e->entry << " " << e->filename
+        DBGM3( "lri processed icon " << e->entry << " " << e->filename
              << " chooser " << e->chooser  );
         if ( e->serial == e->chooser->serial )
         {
-            DBG3( "e->entry->icon " << e->entry->icon << " img " << img );
+            DBGM3( "e->entry->icon " << e->entry->icon << " img " << img );
             e->entry->icon = img;
             e->entry->delete_icon = true;
             e->entry->updateSize();
