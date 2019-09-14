@@ -346,59 +346,59 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char  tmpS[2048];
     Imf::Chromaticities tmpC, c;
 
-    DBG;
+    DBG3;
     const char* r = getenv( "MRV_ROOT" );
     if ( r )
     {
-        DBG;
+        DBG3;
         root = r;
-        DBG;
+        DBG3;
         if ( root.empty() )
         {
-            DBG;
+            DBG3;
             EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
         }
     }
 
 
-    DBG;
+    DBG3;
     Fl_Preferences base( prefspath().c_str(), "filmaura",
                          "mrViewer" );
 
-    DBG;
+    DBG3;
     base.get( "version", version, 3 );
 
     //
     // Get ui preferences
     //
-    DBG;
+    DBG3;
     Fl_Preferences ui( base, "ui" );
 
     ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
-    DBG;
+    DBG3;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
     ui.get( "pixel_toolbar", tmp, 1 );
     uiPrefs->uiPrefsPixelToolbar->value( (bool) tmp );
 
-    DBG;
+    DBG3;
     ui.get( "timeline_toolbar", tmp, 1 );
     uiPrefs->uiPrefsTimeline->value( (bool) tmp );
 
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value( (bool) tmp );
 
-    DBG;
+    DBG3;
     ui.get( "edl_edit", tmp, 0 );
     uiPrefs->uiPrefsEDLEdit->value(tmp);
 
     ui.get( "stereo3d_options", tmp, 0 );
     uiPrefs->uiPrefsStereoOptions->value(tmp);
 
-    DBG;
+    DBG3;
     ui.get( "action_tools", tmp, 0 );
     uiPrefs->uiPrefsPaintTools->value(tmp);
 
@@ -408,14 +408,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "color_area", tmp, 0 );
     uiPrefs->uiPrefsColorArea->value(tmp);
 
-    DBG;
+    DBG3;
     ui.get( "histogram", tmp, 0 );
     uiPrefs->uiPrefsHistogram->value(tmp);
 
     ui.get( "vectorscope", tmp, 0 );
     uiPrefs->uiPrefsVectorscope->value(tmp);
 
-    DBG;
+    DBG3;
     ui.get( "waveform", tmp, 0 );
     uiPrefs->uiPrefsWaveform->value(tmp);
 
@@ -423,7 +423,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
 
 
-    DBG;
+    DBG3;
     //
     // ui/window preferences
     //
@@ -433,22 +433,22 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         win.get( "auto_fit_image", tmp, 1 );
         uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
-    DBG;
+    DBG3;
         win.get( "always_on_top", tmp, 0 );
         uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
 
-    DBG;
+    DBG3;
         win.get( "open_mode", tmp, 0 );
 
         {
             Fl_Round_Button* r;
             for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
             {
-    DBG;
+    DBG3;
                 r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child( i );
                 r->value(0);
             }
-    DBG;
+    DBG3;
             r = (Fl_Round_Button*)uiPrefs->uiPrefsOpenMode->child( tmp );
             r->value(1);
         }
@@ -460,7 +460,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // ui/view
     //
-    DBG;
+    DBG3;
     Fl_Preferences view( ui, "view" );
 
     view.get("gain", tmpF, 1.0f );
@@ -469,7 +469,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     view.get("gamma", tmpF, 1.0f );
     uiPrefs->uiPrefsViewGamma->value( tmpF );
 
-    DBG;
+    DBG3;
     view.get("compensate_pixel_ratio", tmp, 0 );
     uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
@@ -477,14 +477,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     uiPrefs->uiPrefsViewLut->value( (bool) tmp );
 
-    DBG;
+    DBG3;
     view.get("safe_areas", tmp, 0 );
     uiPrefs->uiPrefsSafeAreas->value( (bool) tmp );
 
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
 
-    DBG;
+    DBG3;
     view.get("display_window", tmp, 1 );
     uiPrefs->uiPrefsViewDisplayWindow->value( (bool)tmp );
 
@@ -494,59 +494,59 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // ui/colors
     //
-    DBG;
+    DBG3;
     Fl_Preferences colors( ui, "colors" );
-    DBG;
+    DBG3;
     colors.get( "scheme", tmpS, "plastic", 2048 );
-    DBG;
+    DBG3;
     const Fl_Menu_Item* item = uiPrefs->uiScheme->find_item( tmpS );
     if ( item )
     {
-    DBG;
+    DBG3;
         uiPrefs->uiScheme->picked( item );
     }
-    DBG;
+    DBG3;
     colors.get( "background_color", bgcolor, 0x43434300 );
-    DBG;
+    DBG3;
     colors.get( "text_color", textcolor, 0xababab00 );
-    DBG;
+    DBG3;
     colors.get( "selection_color", selectioncolor, 0x97a8a800 );
-    DBG;
+    DBG3;
     colors.get( "selection_text_color", selectiontextcolor, 0x00000000 );
 
     bool loaded = false;
-    DBG;
+    DBG3;
     std::string colorname = prefspath() + "mrViewer.colors";
     if ( ! (loaded = schemes.read_themes( colorname.c_str() )) )
     {
-    DBG;
+    DBG3;
         colorname = root + "/colors/mrViewer.colors";
         if ( ! (loaded = schemes.read_themes( colorname.c_str() )) )
         {
-    DBG;
+    DBG3;
             LOG_ERROR( _("Could not open \"") << colorname << "\"" );
         }
     }
 
     if ( loaded )
     {
-    DBG;
+    DBG3;
         LOG_INFO( _("Loaded color themes from ") << colorname << "." );
     }
 
-    DBG;
+    DBG3;
     for ( auto& s: schemes.themes )
     {
-    DBG;
+    DBG3;
         uiPrefs->uiColorTheme->add( s.name.c_str() );
     }
 
     colors.get( "theme", tmpS, "Shake", 2048 );
-    DBG;
+    DBG3;
     item = uiPrefs->uiColorTheme->find_item( tmpS );
     if ( item )
     {
-    DBG;
+    DBG3;
         uiPrefs->uiColorTheme->picked( item );
     }
 
@@ -554,7 +554,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // ui/view/colors
     //
     {
-    DBG;
+    DBG3;
         Fl_Preferences colors( view, "colors" );
 
         colors.get("background_color", tmp, 0x20202000 );
@@ -566,41 +566,41 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         colors.get("selection_color", tmp, 0x0000FF00 );
         uiPrefs->uiPrefsViewSelection->color( tmp );
 
-    DBG;
+    DBG3;
         colors.get("hud_color", tmp, 0xF0F08000 );
         uiPrefs->uiPrefsViewHud->color( tmp );
     }
 
-    DBG;
+    DBG3;
     Fl_Preferences ocio( view, "ocio" );
     if ( version < 3 )
     {
         ocio.get( "use_ocio", tmp, 0 );
         const char* var = getenv( "OCIO" );
 
-    DBG;
+    DBG3;
         if ( var && strlen(var) > 0 )
             tmp = true;
     }
     else
     {
-    DBG;
+    DBG3;
         ocio.get( "use_ocio", tmp, 1 );
     }
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
 
 
-    DBG;
+    DBG3;
     ocio.get( "save_config", tmp, 0 );
     uiPrefs->uiPrefsSaveOcio->value( tmp );
 
-    DBG;
+    DBG3;
     ocio.get( "config", tmpS, "", 2048 );
     uiPrefs->uiPrefsOCIOConfig->value( tmpS );
 
-    DBG;
+    DBG3;
     Fl_Preferences ics( ocio, "ICS" );
     {
 #define OCIO_ICS(x, d)							\
@@ -610,13 +610,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         uiPrefs->uiOCIO_##x##_ics->value( tmpS );
 
         OCIO_ICS( 8bits,  "" );
-    DBG;
+    DBG3;
         OCIO_ICS( 16bits, "" );
-    DBG;
+    DBG3;
         OCIO_ICS( 32bits, "" );
-    DBG;
+    DBG3;
         OCIO_ICS( float,  "" );
-    DBG;
+    DBG3;
 
     }
 
@@ -624,58 +624,58 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // ui/view/hud
     //
     Fl_Preferences hud( view, "hud" );
-    DBG;
+    DBG3;
     hud.get("filename", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsHudFilename->value( (bool) tmp );
     hud.get("directory", tmp, 0 );
     uiPrefs->uiPrefsHudDirectory->value( (bool) tmp );
     hud.get("fps", tmp, 0 );
     uiPrefs->uiPrefsHudFPS->value( (bool) tmp );
     hud.get("av_difference", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsHudAVDifference->value( (bool) tmp );
     hud.get("frame", tmp, 0 );
     uiPrefs->uiPrefsHudFrame->value( (bool) tmp );
     hud.get("timecode", tmp, 0 );
     uiPrefs->uiPrefsHudTimecode->value( (bool) tmp );
     hud.get("resolution", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsHudResolution->value( (bool) tmp );
     hud.get("frame_range", tmp, 0 );
     uiPrefs->uiPrefsHudFrameRange->value( (bool) tmp );
     hud.get("memory", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsHudMemory->value( (bool) tmp );
     hud.get("attributes", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsHudAttributes->value( (bool) tmp );
 
     Fl_Preferences win( view, "window" );
     win.get("fixed_position", tmp, 0 );
     uiPrefs->uiWindowFixedPosition->value( (bool) tmp );
     win.get("x_position", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiWindowXPosition->value( tmp );
     win.get("y_position", tmp, 0 );
     uiPrefs->uiWindowYPosition->value( tmp );
     win.get("fixed_size", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiWindowFixedSize->value( (bool) tmp );
     win.get("x_size", tmp, 640 );
     uiPrefs->uiWindowXSize->value( tmp );
     win.get("y_size", tmp, 530 );
-    DBG;
+    DBG3;
     uiPrefs->uiWindowYSize->value( tmp );
 
     Fl_Preferences flu( ui, "file_requester" );
     //
 
-    DBG;
+    DBG3;
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
-    DBG;
+    DBG3;
     flu.get("thumbnails", tmp, 1 );
     uiPrefs->uiPrefsFileReqThumbnails->value( (bool) tmp );
     Flu_File_Chooser::thumbnailsFileReq = (bool) tmp;
@@ -684,126 +684,126 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // playback
     //
     Fl_Preferences playback( base, "playback" );
-    DBG;
+    DBG3;
     playback.get( "auto_playback", tmp, 1 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
 
-    DBG;
+    DBG3;
     playback.get( "play_all_frames", tmp, 1 );
     uiPrefs->uiPrefsPlayAllFrames->value(tmp);
 
-    DBG;
+    DBG3;
     playback.get( "override_fps", tmp, 0 );
     uiPrefs->uiPrefsOverrideFPS->value(tmp);
 
-    DBG;
+    DBG3;
     playback.get( "fps", tmpF, 24.0 );
     uiPrefs->uiPrefsFPS->value(tmpF);
     CMedia::default_fps = tmpF;
 
-    DBG;
+    DBG3;
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
-    DBG;
+    DBG3;
     playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
 
-    DBG;
+    DBG3;
     playback.get( "selection_display_mode", tmp, 0 );
     uiPrefs->uiPrefsTimelineSelectionDisplay->value(tmp);
 
     Fl_Preferences pixel_toolbar( base, "pixel_toolbar" );
-    DBG;
+    DBG3;
     pixel_toolbar.get( "RGBA_pixel", tmp, 0 );
     uiPrefs->uiPrefsPixelRGBA->value( tmp );
 
-    DBG;
+    DBG3;
     pixel_toolbar.get( "pixel_values", tmp, 0 );
     uiPrefs->uiPrefsPixelValues->value( tmp );
 
-    DBG;
+    DBG3;
     pixel_toolbar.get( "HSV_pixel", tmp, 0 );
     uiPrefs->uiPrefsPixelHSV->value( tmp );
 
-    DBG;
+    DBG3;
     pixel_toolbar.get( "Lumma_pixel", tmp, 0 );
     uiPrefs->uiPrefsPixelLumma->value( tmp );
 
 
     Fl_Preferences action( base, "action" );
-    DBG;
+    DBG3;
     action.get( "scrubbing", tmp, 1 );
     uiPrefs->uiScrub->value( (bool) tmp );
     action.get( "move_picture", tmp, 0 );
     uiPrefs->uiMovePicture->value( (bool) tmp );
     action.get( "color_area", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiSelection->value( (bool) tmp );
     action.get( "pencil", tmp, 0 );
     uiPrefs->uiDraw->value( (bool) tmp );
     action.get( "text", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiText->value( (bool) tmp );
     action.get( "eraser", tmp, 0 );
     uiPrefs->uiErase->value( (bool) tmp );
-    DBG;
+    DBG3;
 
     Fl_Preferences caches( base, "caches" );
 
-    DBG;
+    DBG3;
     caches.get( "active", tmp, 1 );
     uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
     CMedia::cache_active( (bool) tmp );
 
-    DBG;
+    DBG3;
     caches.get( "preload", tmp, 1 );
     uiPrefs->uiPrefsPreloadCache->value( (bool) tmp );
     CMedia::preload_cache( (bool) tmp );
 
-    DBG;
+    DBG3;
     caches.get( "scale", tmp, 0 );
     uiPrefs->uiPrefsCacheScale->value( tmp );
     CMedia::cache_scale( tmp );
 
 
-    DBG;
+    DBG3;
     caches.get( "8bit_caches", tmp, 0 );
     uiPrefs->uiPrefs8BitCaches->value( (bool) tmp );
     CMedia::eight_bit_caches( (bool) tmp );
 
-    DBG;
+    DBG3;
 
     caches.get( "fps", tmp, 1 );
     uiPrefs->uiPrefsCacheFPS->value( (bool) tmp );
     if ( !tmp )
     {
-    DBG;
+    DBG3;
         caches.get( "size", tmp, 20 );
         uiPrefs->uiPrefsCacheSize->activate();
-    DBG;
+    DBG3;
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
         CMedia::audio_cache_size( tmp );
     }
     else
     {
-    DBG;
+    DBG3;
         uiPrefs->uiPrefsCacheSize->deactivate();
         CMedia::video_cache_size( 0 );
         CMedia::audio_cache_size( 0 );
     }
 
-    DBG;
+    DBG3;
     caches.get( "cache_memory", tmpF, 4.0 );
 #if defined( _WIN64 ) || defined( LINUX )
     if ( tmpF == 1.5f )
     {
-    DBG;
+    DBG3;
         tmpF = 4.0;
     }
 #endif
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsCacheMemory->value( tmpF );
 
     //
@@ -813,14 +813,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char device[256];
     audio.get( "device", device, "default", 255 );
 
-    DBG;
+    DBG3;
     AudioEngine* engine = AudioEngine::factory();
-    DBG;
+    DBG3;
     delete engine;
 
-    DBG;
+    DBG3;
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
-    DBG;
+    DBG3;
     if ( devices.empty() )
     {
         LOG_ERROR("No audio device.");
@@ -832,19 +832,19 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         unsigned idx = 0;
         for ( ; i != e; ++i, ++idx )
         {
-    DBG;
+    DBG3;
             if ( (*i).name == device )
             {
-    DBG;
+    DBG3;
                 uiPrefs->uiPrefsAudioDevice->value(idx);
                 break;
             }
         }
 
-    DBG;
+    DBG3;
         if ( idx >= devices.size() )
         {
-    DBG;
+    DBG3;
             LOG_ERROR("Could not match audio device \"" << device << "\".");
         }
     }
@@ -852,50 +852,50 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     audio.get( "override_audio", tmp, 0 );
     uiPrefs->uiPrefsOverrideAudio->value( tmp );
 
-    DBG;
+    DBG3;
     audio.get( "volume", tmpF, 1.0f );
     uiPrefs->uiPrefsAudioVolume->value( tmpF );
 
-    DBG;
+    DBG3;
     audio.get( "volume_mute", tmp, 0 );
     uiPrefs->uiPrefsAudioMute->value( tmp );
 
     // Images
-    DBG;
+    DBG3;
     Fl_Preferences images( base, "images" );
     images.get( "all_layers", tmp, 0 );
     uiPrefs->uiPrefsAllLayers->value( tmp );
 
-    DBG;
+    DBG3;
     images.get( "aces_metadata", tmp, 0 );
     uiPrefs->uiPrefsACESClipMetadata->value( tmp );
 
     // OpenEXR
-    DBG;
+    DBG3;
     Fl_Preferences openexr( base, "openexr" );
     openexr.get( "thread_count", tmp, 4 );
     uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
 
-    DBG;
+    DBG3;
     openexr.get( "gamma", tmpF, 2.2f );
     if ( !use_ocio ) {
-    DBG;
+    DBG3;
         exrImage::_default_gamma = tmpF;
         uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
     }
     else
     {
-    DBG;
+    DBG3;
         exrImage::_default_gamma = 1.0f;
         uiPrefs->uiPrefsOpenEXRGamma->value( 1.0f );
     }
 
-    DBG;
+    DBG3;
     openexr.get( "compression", tmp, 4 );   // PIZ default
     exrImage::_default_compression = (Imf::Compression) tmp;
     uiPrefs->uiPrefsOpenEXRCompression->value( tmp );
 
-    DBG;
+    DBG3;
     openexr.get( "dwa_compression", tmpF, 45.0f );
     exrImage::_default_dwa_compression = tmpF;
     uiPrefs->uiPrefsOpenEXRDWACompression->value( tmpF );
@@ -913,43 +913,43 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char sep = ':';
 #endif
 
-    DBG;
+    DBG3;
     ctlEnv += sep;
 
     if ( !env )
     {
-    DBG;
+    DBG3;
         ctlEnv += root;
         ctlEnv += N_("/ctl");
     }
     else
     {
-    DBG;
+    DBG3;
         ctlEnv += env;
     }
 
-    DBG;
+    DBG3;
     std::string var = "CTL_MODULE_PATH=" + ctlEnv;
     putenv( strdup( var.c_str() ) );
 
 
     size_t found = 0;
-    DBG;
+    DBG3;
     while( (found = ctlEnv.find(sep)) != std::string::npos )
     {
         std::string part2;
         if ( found+1 < ctlEnv.size() )
             part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
-    DBG;
+    DBG3;
         ctlEnv = ctlEnv.substr(0, found);
-    DBG;
+    DBG3;
         uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
         ctlEnv = part2;
     }
 
     for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
     {
-    DBG;
+    DBG3;
         char* name;
         dirent** e;
         const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
@@ -985,24 +985,24 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
 
 
-    DBG;
+    DBG3;
     Fl_Preferences lut( base, "lut" );
     lut.get("quality", tmpS, "128x128x128", 2047 );
     uiPrefs->uiLUT_quality->value(3);
-    DBG;
+    DBG3;
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
     {
         const char* label = uiPrefs->uiLUT_quality->child(i)->label();
         if ( strcmp( label, tmpS ) == 0 )
         {
-    DBG;
+    DBG3;
             uiPrefs->uiLUT_quality->value(i);
             break;
         }
     }
 
-    DBG;
+    DBG3;
     lut.get("number_stops", tmp, 10 );
     uiPrefs->uiPrefsNumStops->value( tmp );
 
@@ -1012,34 +1012,34 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
             odt.get( "algorithm", tmp, 0 );
             uiPrefs->ODT_algorithm->value(tmp);
 
-    DBG;
+    DBG3;
             Fl_Preferences ctl( odt, "CTL" );
             {
                 ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
                 ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
                                                         tmpS, ok );
 
-    DBG;
+    DBG3;
                 Fl_Preferences chroma( ctl, "Chromaticities" );
                 ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
                                          tmpC, chroma );
 
 
-    DBG;
+    DBG3;
                 ok = ctl.get( "white_luminance", tmpF, 120.0 );
                 ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
                                           tmpF, ok );
                 ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
                 ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
                                           tmpF, ok );
-    DBG;
+    DBG3;
             }
             Fl_Preferences icc( odt, "ICC" );
             {
                 ok = icc.get( "profile", tmpS, "", 2048 );
                 ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
                                                       tmpS, ok );
-    DBG;
+    DBG3;
                 if ( !ODT_ICC_profile.empty() )
                     mrv::colorProfile::add( ODT_ICC_profile.c_str() );
             }
@@ -1061,11 +1061,11 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
         Fl_Preferences rt( lut, "RT" );
         {
-    DBG;
+    DBG3;
             rt.get( "algorithm", tmp, 0 );
             uiPrefs->RT_algorithm->value(tmp);
 
-    DBG;
+    DBG3;
             Fl_Preferences ctl( rt, "CTL" );
             {
 #define RENDER_TRANSFORM(x, d)						\
@@ -1073,13 +1073,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
           CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
 
                 RENDER_TRANSFORM( 8bits,  "" );
-    DBG;
+    DBG3;
                 RENDER_TRANSFORM( 16bits, "" );
-    DBG;
+    DBG3;
                 RENDER_TRANSFORM( 32bits, "" );
-    DBG;
+    DBG3;
                 RENDER_TRANSFORM( float,  "RRT" );
-    DBG;
+    DBG3;
 #undef RENDER_TRANSFORM
             }
 
@@ -1094,13 +1094,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
           CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
           uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
           if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
-    DBG;
+    DBG3;
                 ICC_PROFILE( 8bits,  "" );
-    DBG;
+    DBG3;
                 ICC_PROFILE( 16bits, "" );
-    DBG;
+    DBG3;
                 ICC_PROFILE( 32bits, "" );
-    DBG;
+    DBG3;
                 ICC_PROFILE( float,  "" );
 #undef ICC_PROFILE
             }
@@ -1113,18 +1113,18 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     loading.get( "load_library", tmp, 1 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
 
-    DBG;
+    DBG3;
     loading.get( "missing_frames", tmp, 0 );
     uiPrefs->uiPrefsMissingFrames->value( tmp );
 
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
-    DBG;
+    DBG3;
 
     loading.get( "file_assoc_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequenceOnAssoc->value( (bool) tmp );
 
-    DBG;
+    DBG3;
     loading.get( "autoload_images", tmp, 0 );
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
 
@@ -1140,7 +1140,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     CMedia::thumbnail_percent = tmpF;
     uiPrefs->uiPrefsThumbnailPercent->value( tmpF );
 
-    DBG;
+    DBG3;
     loading.get( "uses_16bits", tmp, 0 );
     uiPrefs->uiPrefsUses16Bits->value( (bool) tmp );
     CMedia::uses_16bits( (bool) tmp );
@@ -1151,7 +1151,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     loading.get( "max_images_apart", tmp, 10 );
     uiPrefs->uiPrefsMaxImagesApart->value( tmp );
 
-    DBG;
+    DBG3;
     Fl_Preferences saving( base, "saving" );
     saving.get( "use_relative_paths", tmp, 1 );
     uiPrefs->uiPrefsRelativePaths->value( tmp );
@@ -1159,7 +1159,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     saving.get( "use_image_path", tmp, 1 );
     uiPrefs->uiPrefsImagePathReelPath->value( tmp );
 
-    DBG;
+    DBG3;
     Fl_Preferences video( base, "video" );
     video.get( "filtering", tmp, 0 );
     uiPrefs->uiPrefsFiltering->value( tmp );
@@ -1169,39 +1169,39 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
     video.get( "thread_count", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsVideoThreadCount->value( tmp );
 
     Fl_Preferences comp( base, "compositing" );
     comp.get( "blend_mode", tmp, 0 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsBlendMode->value(tmp);
     comp.get( "resize_bg", tmp, 1 );
-    DBG;
+    DBG3;
     uiPrefs->uiPrefsResizeBackground->value(tmp);
 
     Fl_Preferences subtitles( base, "subtitles" );
-    DBG;
+    DBG3;
     subtitles.get( "font", tmpS, "Arial", 2048 );
     uiPrefs->uiPrefsSubtitleFont->value(0);  // in case no font is found
     for (int i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
     {
-        DBG;
+        DBG3;
         const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
         if ( tmpS && label && strcmp( label, tmpS ) == 0 )
         {
-            DBG;
+            DBG3;
             uiPrefs->uiPrefsSubtitleFont->value(i);
             break;
         }
     }
-    DBG;
+    DBG3;
     subtitles.get( "encoding", tmpS, "ISO-8859-1", 2048 );
     uiPrefs->uiPrefsSubtitleEncoding->value( tmpS );
-    DBG;
+    DBG3;
 
     Fl_Preferences errors( base, "errors" );
-    DBG;
+    DBG3;
     errors.get( "raise_log_window_on_error", tmp, 0 );
     uiPrefs->uiPrefsRaiseLogWindowOnError->value(tmp);
 
@@ -1209,14 +1209,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // Hotkeys
     //
     Fl_Preferences keys( base, "hotkeys" );
-    DBG;
+    DBG3;
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
         // If version >= 1 of preferences, do not set scrub
         if ( version >= 1 && hotkeys[i].name == "Scrub" )
             continue;
 
-    DBG;
+    DBG3;
         keys.get( (hotkeys[i].name + " ctrl").c_str(),
                   tmp, (int)hotkeys[i].hotkey.ctrl );
         if ( tmp ) hotkeys[i].hotkey.ctrl = true;
@@ -1231,7 +1231,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         if ( tmp ) hotkeys[i].hotkey.meta = true;
         else       hotkeys[i].hotkey.meta = false;
 
-    DBG;
+    DBG3;
 
         keys.get( (hotkeys[i].name + " shift").c_str(),
                   tmp, (int)hotkeys[i].hotkey.shift );
@@ -1246,7 +1246,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
                   tmp, (int)hotkeys[i].hotkey.key2 );
         hotkeys[i].hotkey.key2 = unsigned(tmp);
 
-    DBG;
+    DBG3;
         keys.get( (hotkeys[i].name + " text").c_str(),
                   tmpS,
                   hotkeys[i].hotkey.text.c_str(), 16 );
@@ -1260,7 +1260,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // Set the CTL/ICC transforms in GUI
     if ( ! set_transforms() )
     {
-    DBG;
+    DBG3;
         LOG_ERROR( _("Could not set transforms in GUI") );
     }
 }
@@ -1280,7 +1280,7 @@ void Preferences::run( ViewerUI* main )
     uiMain = main;
     PreferencesUI* uiPrefs = main->uiPrefs;
 
-    DBG;
+    DBG3;
 
     main->uiMain->show();
 
@@ -1289,7 +1289,7 @@ void Preferences::run( ViewerUI* main )
     // w = new Fl_Widget( 0, 88, 639, 40, "Eye2" );
     // main->uiBottomBar->add( w );
 
-    DBG;
+    DBG3;
     Fl::check();
 
     //
@@ -1298,7 +1298,7 @@ void Preferences::run( ViewerUI* main )
 
 
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsEDLEdit->value() )
     {
         main->uiEDLWindow->uiMain->show();
@@ -1307,7 +1307,7 @@ void Preferences::run( ViewerUI* main )
         main->uiEDLWindow->uiMain->hide();
 
     PaintUI* uiPaint = main->uiPaint;
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsPaintTools->value() )
     {
         uiPaint->uiMain->show();
@@ -1316,7 +1316,7 @@ void Preferences::run( ViewerUI* main )
         uiPaint->uiMain->hide();
 
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsStereoOptions->value() )
     {
         main->uiStereo->uiMain->show();
@@ -1324,7 +1324,7 @@ void Preferences::run( ViewerUI* main )
     else
         main->uiStereo->uiMain->hide();
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsReelList->value() )
     {
         main->uiReelWindow->uiMain->show();
@@ -1332,28 +1332,28 @@ void Preferences::run( ViewerUI* main )
     else
         main->uiReelWindow->uiMain->hide();
 
-    DBG;
+    DBG3;
     mrv::ImageView* v = uiMain->uiView;
     if ( uiPrefs->uiPrefsImageInfo->value() )
         v->toggle_window( ImageView::kMediaInfo,
                           uiPrefs->uiPrefsImageInfo->value() );
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsColorArea->value() )
         v->toggle_window( ImageView::kColorInfo,
                           uiPrefs->uiPrefsColorArea->value() );
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsHistogram->value() )
         v->toggle_window( ImageView::kHistogram,
                           uiPrefs->uiPrefsHistogram->value() );
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsVectorscope->value() )
         v->toggle_window( ImageView::kVectorscope,
                           uiPrefs->uiPrefsVectorscope->value() );
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsWaveform->value() )
         v->toggle_window( ImageView::kWaveform,
                           uiPrefs->uiPrefsWaveform->value() );
@@ -1361,7 +1361,7 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
         main->uiTopBar->show();
@@ -1371,7 +1371,7 @@ void Preferences::run( ViewerUI* main )
         main->uiTopBar->hide();
     }
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
     {
         main->uiPixelBar->show();
@@ -1381,7 +1381,7 @@ void Preferences::run( ViewerUI* main )
         main->uiPixelBar->hide();
     }
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiPrefsTimeline->value() )
     {
         main->uiBottomBar->show();
@@ -1398,16 +1398,16 @@ void Preferences::run( ViewerUI* main )
     //
     mrv::ImageView* view = main->uiView;
 
-    DBG;
+    DBG3;
     main->uiLoopMode->value( uiPrefs->uiPrefsLoopMode->value() );
     main->uiLoopMode->do_callback();
 
-    DBG;
+    DBG3;
     main->uiGain->value( uiPrefs->uiPrefsViewGain->value() );
     main->uiGamma->value( uiPrefs->uiPrefsViewGamma->value() );
 
 
-    DBG;
+    DBG3;
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
         view->toggle_pixel_ratio();
@@ -1420,7 +1420,7 @@ void Preferences::run( ViewerUI* main )
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
-    DBG;
+    DBG3;
     if ( uiPrefs->uiScrub->value() )
         view->scrub_mode();
     else if ( uiPrefs->uiMovePicture->value() )
@@ -1434,56 +1434,56 @@ void Preferences::run( ViewerUI* main )
     else if ( uiPrefs->uiErase->value() )
         view->erase_mode();
 
-    DBG;
+    DBG3;
     if ( !view->use_lut() )
     {
         bool use = uiPrefs->uiPrefsViewLut->value();
         if ( ! GLEngine::floatTextures() ) use = false;
-        DBG;
+        DBG3;
         main->uiLUT->value( use );
         view->use_lut( use );
-        DBG;
+        DBG3;
     }
 
 
-        DBG;
+        DBG3;
     if ( uiPrefs->uiPrefsSafeAreas->value() )
         view->safe_areas(true);
 
-        DBG;
+        DBG3;
     missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
 
     //////////////////////////////////////////////////////
     // OCIO
     /////////////////////////////////////////////////////
 
-        DBG;
+        DBG3;
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->value(),
                                           true );
 
-        DBG;
+        DBG3;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
-        DBG;
+        DBG3;
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
         var = strdup( tmp.c_str() );
     }
-        DBG;
+        DBG3;
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
 
-        DBG;
+        DBG3;
         if ( old_ocio != var )
         {
-        DBG;
+        DBG3;
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
             old_ocio = var;
@@ -1492,22 +1492,22 @@ void Preferences::run( ViewerUI* main )
 
         char buf[2048];
 
-        DBG;
+        DBG3;
         std::string parsed = expandVariables( var, "%", '%' );
         parsed = expandVariables( parsed, "${", '}' );
         if ( old_ocio != parsed )
         {
-        DBG;
+        DBG3;
             mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", parsed << std::endl );
 
         }
 
-        DBG;
+        DBG3;
         sprintf( buf, "OCIO=%s", parsed.c_str() );
         putenv( strdup(buf) );
-        DBG;
+        DBG3;
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
 // #ifdef __linux__
@@ -1521,35 +1521,35 @@ void Preferences::run( ViewerUI* main )
 //         putenv( strdup(buf) );
 // #endif
 
-        DBG;
+        DBG3;
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
 
-        DBG;
+        DBG3;
 
         try
         {
-            DBG;
+            DBG3;
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
-            DBG;
+            DBG3;
             OCIO_Display = config->getDefaultDisplay();
 
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-            DBG;
+            DBG3;
             // First, remove all additional defaults if any from pulldown menu
             if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
             {
                 main->gammaDefaults->clear();
             }
-            DBG;
+            DBG3;
 
 
             int numDisplays = config->getNumDisplays();
-            DBG;
+            DBG3;
 
             stringArray active_displays;
             const char* displaylist = config->getActiveDisplays();
@@ -1595,10 +1595,10 @@ void Preferences::run( ViewerUI* main )
             for ( int j = 0; j < num_active_displays; ++j )
             {
                 std::string display = active_displays[j];
-                DBG;
+                DBG3;
 
                 int numViews = config->getNumViews(display.c_str());
-                DBG;
+                DBG3;
                 // Collect all views
 
                 if ( num_active_views )
@@ -1657,76 +1657,76 @@ void Preferences::run( ViewerUI* main )
             }
 
 
-            DBG;
+            DBG3;
 
             main->gammaDefaults->redraw();
         }
         catch( const OCIO::Exception& e )
         {
-        DBG;
+        DBG3;
             LOG_ERROR( e.what() );
             use_ocio = false;
         }
         catch( const std::exception& e )
         {
-        DBG;
+        DBG3;
             LOG_ERROR( e.what() );
             use_ocio = false;
         }
 
-        DBG;
+        DBG3;
         std::locale::global( std::locale("") );
         setlocale(LC_NUMERIC, "" );
-        DBG;
+        DBG3;
     }
     else
     {
-        DBG;
+        DBG3;
         if ( !var || strlen(var) == 0 )
             LOG_INFO( _("OCIO environment variable is not set.  "
                         "Defaulting to CTL. ") );
-        DBG;
+        DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
-        DBG;
+        DBG3;
         use_ocio = false;
     }
 
     if ( use_ocio )
     {
-        DBG3( "use_OCIO" );
-        DBG;
+        DBGM1( "use_OCIO" );
+        DBG3;
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
-        DBG;
+        DBG3;
         try
         {
-        DBG;
+        DBG3;
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
             std::vector< std::string > spaces;
             for(int i = 0; i < config->getNumColorSpaces(); ++i)
             {
-        DBG;
+        DBG3;
                 std::string csname = config->getColorSpaceNameByIndex(i);
                 spaces.push_back( csname );
             }
 
-        DBG;
+        DBG3;
             if ( std::find( spaces.begin(), spaces.end(),
                             OCIO::ROLE_SCENE_LINEAR ) == spaces.end() )
             {
                 spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
-        DBG;
+        DBG3;
             }
 
             CMedia* img = NULL;
             mrv::media fg = main->uiView->foreground();
             if ( fg )
             {
-        DBG;
+        DBG3;
                 img = fg->image();
             }
 
-        DBG;
+        DBG3;
             mrv::PopupMenu* w = main->uiICS;
             w->clear();
             std::sort( spaces.begin(), spaces.end() );
@@ -1735,31 +1735,31 @@ void Preferences::run( ViewerUI* main )
                 const char* space = spaces[i].c_str();
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
                 w->add( space );
-        DBG;
+        DBG3;
                 //w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
-        DBG;
+        DBG3;
                     w->copy_label( space );
                     w->value( i );
                 }
             }
             w->do_callback();
-        DBG;
+        DBG3;
             w->redraw();
         }
         catch( const std::exception& e )
         {
             LOG_ERROR( e.what() );
         }
-        DBG;
+        DBG3;
         main->uiICS->show();
     }
     else
     {
-        DBG;
+        DBG3;
         main->uiICS->hide();
-        DBG;
+        DBG3;
         main->uiFstopGroup->show();
         main->uiNormalize->show();
     }
@@ -1768,7 +1768,7 @@ void Preferences::run( ViewerUI* main )
     CMedia::load_library = (CMedia::LoadLib)
                            uiPrefs->uiPrefsLoadLibrary->value();
 
-        DBG;
+        DBG3;
     char buf[64];
     sprintf( buf, "%d", (int) uiPrefs->uiPrefsVideoThreadCount->value() );
     video_threads = buf;
@@ -1776,26 +1776,26 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle file requester
     //
-        DBG;
+        DBG3;
     Flu_File_Chooser::thumbnailsFileReq = (bool)
                                           uiPrefs->uiPrefsFileReqThumbnails->value();
 
-        DBG;
+        DBG3;
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
             uiPrefs->uiPrefsFileReqFolder->value();
 
-        DBG;
+        DBG3;
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
     // Handle caches
-        DBG;
+        DBG3;
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
     CMedia::preload_cache( (bool)uiPrefs->uiPrefsPreloadCache->value() );
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
 
-        DBG;
+        DBG3;
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate();
@@ -1812,7 +1812,7 @@ void Preferences::run( ViewerUI* main )
     Preferences::max_memory = ( uiPrefs->uiPrefsCacheMemory->value() *
                                 1000000000 );
 
-        DBG;
+        DBG3;
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
@@ -1826,32 +1826,32 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle pixel values
     //
-        DBG;
+        DBG3;
     main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
     main->uiAColorType->redraw();
-        DBG;
+        DBG3;
     main->uiAColorType->do_callback();
-        DBG;
+        DBG3;
     main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
     main->uiPixelValue->redraw();
-        DBG;
+        DBG3;
     main->uiPixelValue->do_callback();
-        DBG;
+        DBG3;
     main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
     main->uiBColorType->redraw();
-        DBG;
+        DBG3;
     main->uiBColorType->do_callback();
-        DBG;
+        DBG3;
     main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
     main->uiLType->redraw();
-        DBG;
+        DBG3;
     main->uiLType->do_callback();
-        DBG;
+        DBG3;
 
     //
     // Handle crop area (masking)
     //
-        DBG;
+        DBG3;
     int crop = uiPrefs->uiPrefsCropArea->value();
     if ( crop > 0 )
     {
@@ -1861,7 +1861,7 @@ void Preferences::run( ViewerUI* main )
         view->masking( mask );
     }
 
-        DBG;
+        DBG3;
     //
     // Handle HUD
     //
@@ -1893,13 +1893,13 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsHudAttributes->value() )
         hud |= mrv::ImageView::kHudAttributes;
 
-        DBG;
+        DBG3;
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
 
-        DBG;
+        DBG3;
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
-        DBG;
+        DBG3;
     change_timeline_display(main);
 
     double mn = 1, mx = 50,
@@ -1908,7 +1908,7 @@ void Preferences::run( ViewerUI* main )
 
     if ( !main->uiTimeline->edl() )
     {
-        DBG;
+        DBG3;
         mrv::media fg = main->uiView->foreground();
         if ( fg )
         {
@@ -1919,11 +1919,11 @@ void Preferences::run( ViewerUI* main )
     }
     else
     {
-        DBG;
+        DBG3;
        // edl
         mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
         if ( !reel || reel->images.size() == 0 ) return;
-        DBG;
+        DBG3;
 
         mrv::media fg = reel->images[0];
         mrv::media last = reel->images[ reel->images.size()-1 ];
@@ -1934,23 +1934,23 @@ void Preferences::run( ViewerUI* main )
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-        DBG;
+        DBG3;
        main->uiTimeline->minimum( dmn );
         main->uiTimeline->maximum( dmx );
     }
     else
     {
-        DBG;
+        DBG3;
         main->uiTimeline->minimum( mn );
         main->uiTimeline->display_minimum( dmn );
         main->uiTimeline->maximum( mx );
         main->uiTimeline->display_maximum( dmx );
     }
 
-        DBG;
+        DBG3;
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
-        DBG;
+        DBG3;
 
     if ( uiPrefs->uiPrefsOverrideAudio->value() )
     {
@@ -1959,7 +1959,7 @@ void Preferences::run( ViewerUI* main )
             x = 0.0;
         view->volume( float(x) );
     }
-    DBG;
+    DBG3;
 
     //
     // Handle fullscreen and presentation mode
@@ -1970,7 +1970,7 @@ void Preferences::run( ViewerUI* main )
         int y = int(uiPrefs->uiWindowYPosition->value());
         main->uiMain->position( x, y );
     }
-    DBG;
+    DBG3;
     if ( uiPrefs->uiWindowFixedSize->value() )
     {
         int w = int(uiPrefs->uiWindowXSize->value());
@@ -1985,74 +1985,74 @@ void Preferences::run( ViewerUI* main )
     //
     CMedia::default_fps = uiPrefs->uiPrefsFPS->value();
 
-    DBG;
+    DBG3;
 
 #if defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
                            main->uiMain->w(), main->uiMain->h()-20 );
 #endif
 
-    DBG;
+    DBG3;
     Fl_Round_Button* r;
     r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child(1);
 
     if ( r->value() == 1 )
     {
-        DBG;
+        DBG3;
         // Fullscreen mode
         view->toggle_fullscreen();
     }
 
-    DBG;
+    DBG3;
     r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child(2);
 
     if ( r->value() == 1 )
     {
         // Go to presentation mode - window must be shown first, thou.
-        DBG;
+        DBG3;
          view->toggle_presentation();
     }
 
-    DBG;
+    DBG3;
     GLLut3d::NUM_STOPS = (unsigned) uiPrefs->uiPrefsNumStops->value();
 
-    DBG;
+    DBG3;
     int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
     Imf::setGlobalThreadCount( num );
 
-    DBG;
+    DBG3;
     float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
     exrImage::_default_gamma = tmpF;
 
-    DBG;
+    DBG3;
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
 
-    DBG;
+    DBG3;
     tmpF = (float) main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
     exrImage::_default_dwa_compression = tmpF;
 
-    DBG;
+    DBG3;
     bool b = (bool)main->uiPrefs->uiPrefsAllLayers->value();
     CMedia::all_layers( b );
 
-    DBG;
+    DBG3;
 
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
-    DBG;
+    DBG3;
     idx = main->uiPrefs->uiPrefsSubtitleFont->value();
     num = main->uiPrefs->uiPrefsSubtitleFont->children();
     if ( (int)idx < num )
-    {    DBG;
+    {    DBG3;
 
         const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
         if ( font )
             CMedia::default_subtitle_font( font );
     }
     const char* enc = main->uiPrefs->uiPrefsSubtitleEncoding->value();
-    DBG;
+    DBG3;
     if ( enc )
         CMedia::default_subtitle_encoding( enc );
 
@@ -2060,10 +2060,10 @@ void Preferences::run( ViewerUI* main )
                         main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
     LogDisplay::shown = false;
 
-    DBG;
+    DBG3;
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
         main->uiMain->always_on_top();
-    DBG;
+    DBG3;
 }
 
 
