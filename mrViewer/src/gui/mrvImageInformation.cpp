@@ -782,11 +782,11 @@ img( NULL )
                                                r.w(), 400, _("Metadata")  );
 
     Fl_Widget* g = Fl_Group::current();
-    DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
+    DBGM3( "Fl_Group::current = " << g << " label "  << (g->label() ?
                                                          g->label() : "NULL" ));
     m_all->end();
     g = Fl_Group::current();
-    DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
+    DBGM3( "Fl_Group::current = " << g << " label "  << (g->label() ?
                                                          g->label() : "NULL" ));
 
     // resizable( this );  // this seems broken, that's why I redo layout
@@ -1748,14 +1748,14 @@ void ImageInformation::clear_callback_data()
 
 void ImageInformation::hide_tabs()
 {
-    DBG;
+    DBG2;
     tooltip( _("Load an image or movie file") );
     m_image->hide();
     m_video->hide();
     m_audio->hide();
     m_subtitle->hide();
     m_attributes->hide();
-    DBG;
+    DBG3;
 }
 
 void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterator& i )
@@ -2309,7 +2309,7 @@ void ImageInformation::fill_data()
     }
 
 
-    DBG;
+    DBG3;
 
     ++group;
 
@@ -2328,7 +2328,7 @@ void ImageInformation::fill_data()
         _("Relative"),
     };
 
-    DBG;
+    DBG3;
 
 
     add_text( _("Rendering Intent"), _("ICC Rendering Intent"),
@@ -2342,7 +2342,7 @@ void ImageInformation::fill_data()
                true, (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
-    DBG;
+    DBG3;
     if ( img->has_chromaticities() )
     {
         const Imf::Chromaticities& c = img->chromaticities();
@@ -2357,7 +2357,7 @@ void ImageInformation::fill_data()
     //std::cerr << "prefs:use_ocio " << Preferences::use_ocio << std::endl;
     if ( Preferences::use_ocio )
     {
-    DBG;
+    DBG3;
         add_ocio_ics( _("Input Color Space"),
                       _("OCIO Input Color Space"),
                       img->ocio_input_color_space().c_str() );
@@ -2393,14 +2393,14 @@ void ImageInformation::fill_data()
         add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
     }
 
-    DBG;
+    DBG3;
     ++group;
 
 
 
     add_text( _("Format"), _("Format"), img->format() );
 
-    DBG;
+    DBG3;
     if ( !img->has_video() )
     {
         add_text( _("Line Order"), _("Line order in file"),
@@ -2413,7 +2413,7 @@ void ImageInformation::fill_data()
     {
         ++group;
 
-    DBG;
+    DBG3;
 
         add_text( _("Compression"), _("Clip Compression"), img->compression() );
 
@@ -2424,7 +2424,7 @@ void ImageInformation::fill_data()
 
 
 
-    DBG;
+    DBG3;
     const char* space_type = NULL;
     double memory_space = double( to_memory( (long double)img->memory(),
                                   space_type ) );
@@ -2432,7 +2432,7 @@ void ImageInformation::fill_data()
     add_text( _("Memory"), _("Memory without Compression"), buf );
 
 
-    DBG;
+    DBG3;
     if ( img->disk_space() >= 0 )
     {
 
@@ -2443,7 +2443,7 @@ void ImageInformation::fill_data()
                                          (long double) img->memory() ) );
 
 
-    DBG;
+    DBG3;
         sprintf( buf, N_("%.3f %s  (%.2f %% of memory size)"),
                  disk_space, space_type, pct );
 
@@ -2462,20 +2462,20 @@ void ImageInformation::fill_data()
     }
 
 
-    DBG;
+    DBG3;
 
     ++group;
     add_text( _("Creation Date"), _("Creation Date"), img->creation_date() );
 
 
-    DBG;
+    DBG3;
 
 
-    DBG;
+    DBG3;
 
     m_image->show();
 
-    DBG;
+    DBG3;
 
     tooltip( NULL );
 
@@ -2742,24 +2742,24 @@ void ImageInformation::refresh()
     m_subtitle->clear();
     m_attributes->clear();
 
-    DBG;
+    DBG2;
 
     if ( img == NULL || !visible_r() ) return;
 
     if ( img->is_stereo() && (img->right_eye() || !img->is_left_eye()) )
     {
         m_button->show();
-        DBG;
+        DBG3;
     }
     else
     {
         m_button->hide();
-        DBG;
+        DBG3;
     }
 
     fill_data();
 
-    DBG;
+    DBG2;
     m_image->end();
     m_video->end();
     m_audio->end();
@@ -2767,15 +2767,15 @@ void ImageInformation::refresh()
     m_attributes->end();
 
     m_all->end();
-    DBG;
+    DBG2;
     m_all->show();
 
-    DBG;
+    DBG2;
     end();
 
     filled = true;
 
-    DBG;
+    DBG3;
     Fl_Group::current(0);
 
 }
