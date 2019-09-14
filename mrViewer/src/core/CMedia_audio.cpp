@@ -319,7 +319,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     {
                         if ( !got_audio && apts >= 0 )
                         {
-                            DBG3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                            DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                             _audio_packets.seek_end(apts);
                         }
                     }
@@ -338,7 +338,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
             if ( is_seek )
             {
                 if ( !got_audio && apts >= 0 ) {
-                    DBG3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
                 }
             }
@@ -376,7 +376,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                 }
                 if ( is_seek && got_audio && apts >= 0 )
                 {
-                    DBG3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
                 }
             }
@@ -1668,21 +1668,21 @@ void CMedia::fetch_audio( const int64_t frame )
 
     if ( frame != _expected_audio )
     {
-        DBG3( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio
+        DBGM3( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio
                   << ")" );
         bool ok = seek_to_position( frame );
-        DBG3( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio
+        DBGM3( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio
               << ")" );
         if (ok) return;
     }
 
-    DBG3( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected_audio );
+    DBGM3( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected_audio );
 
 
     bool got_video = true;
     bool got_subtitle = true;
 
-    DBG3( "queue packets " << frame << " is_seek " << false
+    DBGM3( "queue packets " << frame << " is_seek " << false
          << " got audio " << got_audio );
 
     int64_t dts = CMedia::queue_packets( frame, false, got_video, got_audio,
@@ -1691,7 +1691,7 @@ void CMedia::fetch_audio( const int64_t frame )
 
     _adts = dts;
 
-    DBG3( "DTS " << dts << " EXPECTED " << _expected_audio );
+    DBGM3( "DTS " << dts << " EXPECTED " << _expected_audio );
 
 }
 
@@ -1735,7 +1735,7 @@ bool CMedia::open_audio( const short channels,
 {
     close_audio();
 
-    DBG3("open audio - audio closed" );
+    DBGM3("open audio - audio closed" );
 
     AudioEngine::AudioFormat format = AudioEngine::kFloatLSB;
 
@@ -1751,7 +1751,7 @@ bool CMedia::open_audio( const short channels,
         // At this speed, we consume buffers really fast.  Use more buffers
         // This fixes a bug in Windows where sound would not play.
         // On Linux, this does nothing.
-        DBG3("16 audio buffers" );
+        DBGM3("16 audio buffers" );
         _audio_engine->buffers( 16 );
     }
 
