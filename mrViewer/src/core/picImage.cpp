@@ -737,7 +737,7 @@ bool picImage::save( const char* path, const CMedia* img,
     sprintf(str, "File written by mrViewer.");
     fwrite(str, 1, 80, file);
 
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
 
     unsigned dw = pic->width();
     unsigned dh = pic->height();
