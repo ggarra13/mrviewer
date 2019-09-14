@@ -700,7 +700,7 @@ bool ALSAEngine::play( const char* data, const size_t size )
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                DBG3( _("Buffer underrun: ") << snd_strerror( status ) );
+                DBGM3( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     LOG_ERROR( _("snd_pcm_prepare failed") );
