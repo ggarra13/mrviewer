@@ -318,6 +318,8 @@ protected:
 
     video_info_list_t     _video_info;
 
+    bool                  _eof;
+    int                   _counter;
     bool                  _last_cached;
     video_cache_t         _images;
     unsigned int          _max_images;
