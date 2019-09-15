@@ -619,9 +619,6 @@ void audio_thread( PlaybackData* data )
 
     int64_t frame = img->frame() + img->audio_offset();
 
-    int64_t failed_frame = std::numeric_limits< int64_t >::min();
-
-
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
     mrv::Reel   reel = browser->reel_at( idx );
@@ -954,7 +951,7 @@ void video_thread( PlaybackData* data )
 
 
         mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
-        int64_t d = reel->duration();
+        uint64_t d = reel->duration();
         if ( fgreel->duration() > d && d > 1 &&
              view->looping() != CMedia::kNoLoop )
         {
@@ -970,7 +967,7 @@ void video_thread( PlaybackData* data )
             {
                 CMedia* img  = fg->image();
                 CMedia* bimg = bg->image();
-                int64_t d = bimg->duration();
+                uint64_t d = bimg->duration();
                 if ( img->duration() > d && d > 1 &&
                      view->looping() != CMedia::kNoLoop )
                 {
@@ -991,7 +988,6 @@ void video_thread( PlaybackData* data )
         }
     }
 
-    int64_t failed_frame = std::numeric_limits< int64_t >::min();
     int64_t frame;
     {
         // We lock the video mutex to make sure frame was properly updated
@@ -1008,7 +1004,6 @@ void video_thread( PlaybackData* data )
 
 
     mrv::Timer timer;
-    int delay_counter = 0;
     double fps = img->play_fps();
     timer.setDesiredFrameRate( fps );
 
@@ -1136,9 +1131,7 @@ void video_thread( PlaybackData* data )
         double delay = 1.0 / fps;
 
         double diff = 0.0;
-        double bgdiff = 0.0;
-
-        double absdiff;
+        double absdiff = 0.0;
 
         // // Calculate video-audio difference
         if ( img->has_audio() && status == CMedia::kDecodeOK )
