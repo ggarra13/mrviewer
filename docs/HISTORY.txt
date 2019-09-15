@@ -8,6 +8,10 @@ v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	- Tightened EDL cuts to the first and last frames of the clip.
 	  Previously, sometimes the last frames would get skipped or the
 	  clip would go on an endless loop.
+	- Minor sped up with clips that have timecode tracks in them.
+	  ffmpeg ignores them and so do we.
+	- Updated to latest ffmpeg, which makes it compatible with truehd
+	  audio on mp4 containers.
 
 
 v5.2.4  - Tightened the last/first frames of sequence loops as they were
