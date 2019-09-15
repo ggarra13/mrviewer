@@ -193,6 +193,8 @@ aviImage::aviImage() :
     buffersrc_ctx( NULL ),
     filter_graph( NULL ),
     _convert_ctx( NULL ),
+    _counter( 0 ),
+    _eof( false ),
     _last_cached( false ),
     _max_images( kMaxCacheImages ),
     _inv_table( NULL )
@@ -2236,7 +2238,7 @@ void aviImage::populate()
     for( unsigned i = 0; i < _context->nb_streams; ++i )
     {
         // Get the codec context
-        const AVStream* stream = _context->streams[ i ];
+        AVStream* stream = _context->streams[ i ];
 
         if ( stream == NULL ) continue;
 
@@ -2244,16 +2246,16 @@ void aviImage::populate()
         if ( par == NULL ) continue;
 
 
-        AVCodec* codec = avcodec_find_decoder( par->codec_id );
-        if ( !codec )
-        {
-            LOG_ERROR( _("Could not find decoder for codec ")
-                       << codec_name(par) << _(", stream #") << i );
-            continue;
-        }
+        // AVCodec* codec = avcodec_find_decoder( par->codec_id );
+        // if ( !codec )
+        // {
+        //     LOG_ERROR( _("Could not find decoder for codec ")
+        //                << codec_name(par) << _(", stream #") << i );
+        //     continue;
+        // }
 
 
-        AVCodecContext* ctx = avcodec_alloc_context3( codec );
+        AVCodecContext* ctx = avcodec_alloc_context3( NULL );
         if (!ctx )
         {
             LOG_ERROR( _("Not enough memory for context" ) );
@@ -2266,7 +2268,8 @@ void aviImage::populate()
             continue;
         }
 
-        ctx->pkt_timebase = _context->streams[i]->time_base;
+        // This is now in ffplay.c
+        ctx->pkt_timebase = stream->time_base;
 
         // Determine the type and obtain the first index of each type
         switch( ctx->codec_type )
@@ -2274,12 +2277,14 @@ void aviImage::populate()
         // We ignore attachments for now.
         case AVMEDIA_TYPE_ATTACHMENT:
         {
+            stream->discard = AVDISCARD_ALL;
             continue;
         }
         // We ignore data tracks for now.  Data tracks are, for example,
         // the timecode track in quicktimes.
         case AVMEDIA_TYPE_DATA:
         {
+            stream->discard = AVDISCARD_ALL;
             continue;
         }
         case AVMEDIA_TYPE_VIDEO:
@@ -2627,7 +2632,7 @@ void aviImage::populate()
         pkt.data = NULL;
 
         int force_exit = 0;
-        bool eof = false;
+        _eof = false;
         short counter = 0;
         bool got_audio = ! has_audio();
         bool got_video = ! has_video();
@@ -2734,7 +2739,6 @@ void aviImage::populate()
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
-    //if ( _frame_offset > 3 ) _frame_offset = 0;
 
     if ( !has_video() )
     {
@@ -2927,14 +2931,15 @@ int64_t aviImage::queue_packets( const int64_t frame,
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
 
-    bool eof = false;
-
 
     // Loop until an error or we have what we need
     while( !got_video || (!got_audio && audio_context() == _context) )
     {
 
-        if (eof) {
+        if (_eof) {
+
+            _eof = false;
+
             if (!got_video && video_stream_index() >= 0) {
                 av_init_packet(&pkt);
                 pkt.size = 0;
@@ -2974,7 +2979,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 _subtitle_packets.seek_end(spts);
             }
 
-            eof = false;
             break;
         }
 
@@ -2984,7 +2988,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
         {
             if ( error == AVERROR_EOF )
             {
-                eof = true;
+                _eof = true;
                 continue;
             }
             int err = _context->pb ? _context->pb->error : 0;
@@ -3676,12 +3680,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             // Avoid storing too many frames in advance
             if ( playback() == kForwards &&
                  pktframe > _frame + max_video_frames() )
-            {
-                got_video = kDecodeOK;
-                continue;
-            }
-            else if ( playback() == kBackwards &&
-                      pktframe < _frame - max_video_frames() )
             {
                 got_video = kDecodeOK;
                 continue;
