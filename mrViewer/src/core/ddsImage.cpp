@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -150,8 +150,8 @@ struct Color565
 };
 
 #define MAKE_FOURCC(a,b,c,d) ((((unsigned int)d) << 24) +	\
-			      (((unsigned int)c) << 16) +	\
-			      (((unsigned int)b) << 8)  + a)
+                              (((unsigned int)c) << 16) +	\
+                              (((unsigned int)b) << 8)  + a)
 
 static const unsigned int DDS_DXT1 = MAKE_FOURCC('D', 'X', 'T', '1');
 static const unsigned int DDS_DXT2 = MAKE_FOURCC('D', 'X', 'T', '2');
@@ -234,7 +234,7 @@ void ddsImage::ReadColor(unsigned short Data, Color8888* Out)
 }
 
 void ddsImage::DecompressDXT1(mrv::image_type_ptr& canvas,
-			      unsigned char* src )
+                              unsigned char* src )
 {
     unsigned int x, y;
     int i, j, k, Select;
@@ -350,8 +350,8 @@ void ddsImage::DecompressDXT3( mrv::image_type_ptr& canvas, unsigned char* src )
     int i, j, k, Select;
     unsigned char* Temp = src;
 
-    Color8888	 colours[4], *col;
-    unsigned int	 bitmask;
+    Color8888    colours[4], *col;
+    unsigned int         bitmask;
     unsigned short word;
     unsigned char* alpha;
 
@@ -505,8 +505,8 @@ void ddsImage::DecompressDXT5( mrv::image_type_ptr& canvas, unsigned char* src )
                 alphas[3] = (3 * alphas[0] + 2 * alphas[1] + 2) / 5; /* bit code 011 */
                 alphas[4] = (2 * alphas[0] + 3 * alphas[1] + 2) / 5; /* bit code 100 */
                 alphas[5] = (1 * alphas[0] + 4 * alphas[1] + 2) / 5; /* bit code 101 */
-                alphas[6] = 0x00;	 /* bit code 110 */
-                alphas[7] = 0xFF;	 /* bit code 111 */
+                alphas[6] = 0x00;        /* bit code 110 */
+                alphas[7] = 0xFF;        /* bit code 111 */
             }
 
             /* Note: Have to separate the next two loops,
@@ -570,7 +570,7 @@ void ddsImage::GetBitsFromMask(unsigned int Mask,
 }
 
 void ddsImage::DecompressARGB( mrv::image_type_ptr& canvas,
-			       unsigned char* src, DDPFPIXELFORMAT* Head )
+                               unsigned char* src, DDPFPIXELFORMAT* Head )
 {
     unsigned int ReadI = 0, TempBpp, x, y;
     unsigned int RedL, RedR;
@@ -910,7 +910,7 @@ void ddsImage::UncompressedA16B16G16R16( mrv::image_type_ptr& canvas, unsigned c
 
 
 void ddsImage::DecompressFloat( mrv::image_type_ptr& canvas,
-				unsigned char* src, unsigned int CompFormat )
+                                unsigned char* src, unsigned int CompFormat )
 {
     unsigned int x, y;
     float* temp = (float*) src;
@@ -955,7 +955,7 @@ void ddsImage::DecompressFloat( mrv::image_type_ptr& canvas,
 }
 
 void ddsImage::Decompress( mrv::image_type_ptr& canvas,
-			   unsigned char* src, unsigned int CompFormat,
+                           unsigned char* src, unsigned int CompFormat,
                            DDSURFACEDESC2* ddsd )
 {
 #ifdef PATENTS
@@ -1246,11 +1246,10 @@ const char* const ddsImage::compression() const
 }
 
 bool ddsImage::fetch( mrv::image_type_ptr& canvas,
-		      const boost::int64_t frame )
+                      const boost::int64_t frame )
 {
     DDSURFACEDESC2 ddsd;
     unsigned char* data;
-    size_t size;
     unsigned int bytesPerBlock, sourceDataSize, compFormat;
 
     /*
@@ -1311,7 +1310,7 @@ bool ddsImage::fetch( mrv::image_type_ptr& canvas,
     data = (unsigned char*) malloc( sourceDataSize );
     memset( data, 0, sourceDataSize );
 
-    size = fread( data, 1, sourceDataSize, f );
+    size_t size = fread( data, 1, sourceDataSize, f );
 
     /*
       Decompress data
