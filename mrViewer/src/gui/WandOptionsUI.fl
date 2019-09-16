@@ -43,60 +43,60 @@ class WandOptionsUI {open : {public mrv::WandOpts}
       xywh {193 251 340 295} type Double resizable modal noborder visible
     } {
       Fl_Group {} {open
-        xywh {0 0 340 295} box UP_BOX
+	xywh {0 0 340 295} box UP_BOX
       } {
-        Fl_Group {} {
-          label {Image Options}
-          xywh {35 29 272 193} box UP_BOX
-        } {
-          Fl_Choice uiPixelType {
-            label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();}
-            xywh {176 171 90 25} down_box BORDER_BOX
-            class {mrv::Choice}
-          } {
-            MenuItem {} {
-              label Char
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label Short
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label Integer
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label Float
-              xywh {5 5 100 20}
-            }
-          }
-          Fl_Light_Button uiAllLayers {
-            label {All Layers}
-            xywh {86 116 155 35}
-            code0 {o->value( all_layers );}
-          }
-          Fl_Light_Button uiACESmetadata {
-            label {ACES metadata}
-            xywh {86 61 155 35}
-            code0 {o->value( aces );}
-          }
-        }
-        Fl_Button {} {
-          label OK
-          user_data this user_data_type {WandOptionsUI*}
-          callback {v->active(true);
+	Fl_Group {} {
+	  label {Image Options}
+	  xywh {35 29 272 193} box UP_BOX
+	} {
+	  Fl_Choice uiPixelType {
+	    label {Pixel Format}
+	    callback {pixel_type = o->child(o->value())->label();}
+	    xywh {176 171 90 25} down_box BORDER_BOX
+	    class {mrv::Choice}
+	  } {
+	    MenuItem {} {
+	      label Char
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label Short
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label Integer
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label Float
+	      xywh {5 5 100 20}
+	    }
+	  }
+	  Fl_Light_Button uiAllLayers {
+	    label {All Layers}
+	    xywh {86 116 155 35}
+	    code0 {o->value( all_layers );}
+	  }
+	  Fl_Light_Button uiACESmetadata {
+	    label {ACES metadata}
+	    xywh {86 61 155 35}
+	    code0 {o->value( aces );}
+	  }
+	}
+	Fl_Button {} {
+	  label OK
+	  user_data this user_data_type {WandOptionsUI*}
+	  callback {v->active(true);
 v->uiMain->hide();}
-          xywh {85 253 75 27}
-        }
-        Fl_Button {} {
-          label Cancel
-          user_data this user_data_type {WandOptionsUI*}
-          callback {v->active( false );
+	  xywh {85 253 75 27}
+	}
+	Fl_Button {} {
+	  label Cancel
+	  user_data this user_data_type {WandOptionsUI*}
+	  callback {v->active( false );
 v->uiMain->hide();} selected
-          xywh {165 253 80 27}
-        }
+	  xywh {165 253 80 27}
+	}
       }
     }
   }
@@ -112,13 +112,12 @@ _all_layers = uiAllLayers->value();} {}
   Function {WandOptionsUI(const ViewerUI* main, bool aces, bool all_layers) : mrv::WandOpts(aces, all_layers)} {} {
     code {Fl_Window* w = make_window(aces, all_layers);
       mrv::MainWindow* m = main->uiMain;
-      int x = m->x() + ( m->w() - w->w() ) / 2;
-      int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
       while ( w->visible() )
-        Fl::check();
-	if ( w->active() )
-      	   convert();} {}
+      {
+	Fl::check();
+      }
+      if ( w->active() ) convert();} {}
   }
 }
