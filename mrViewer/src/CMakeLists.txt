@@ -61,7 +61,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
-    # ADD_COMPILE_OPTIONS( -Wall -Werror )
+    ADD_COMPILE_OPTIONS( -Wall )
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )

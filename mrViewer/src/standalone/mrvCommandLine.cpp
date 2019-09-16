@@ -335,6 +335,12 @@ void parse_command_line( const int argc, char** argv,
     ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
                           false, 0, "int" );
 
+    SwitchArg aplay("P", "playback",
+                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
+
+    SwitchArg arun( "r", "run",
+                    _("Run mrViewer regardless of single instance setting") );
+
     //
     // The command-line arguments (parsed in order)
     //
@@ -368,6 +374,10 @@ void parse_command_line( const int argc, char** argv,
     afiles(_("files"),
            _("Images, sequences or movies to display."), false, "images");
 
+    ValueArg< std::string >
+        abg( N_("b"), N_("bg"),
+             _("Provide a sequence or movie for background."), false, "", "image");
+
     MultiArg< std::string >
     aaudio( N_("a"), N_("audio"),
             _("Set each movie/sequence default audio."), false, "audio files");
@@ -380,20 +390,36 @@ void parse_command_line( const int argc, char** argv,
     MultiArg< std::string >
     astereo( N_("s"), N_("stereo"),
             _("Provide two sequences or movies for stereo."), false, "images");
+
+
+    ValueArg< std::string >
+        astereo_input( N_(""), N_("stereo-input"),
+                       _("Select stereo input"), false, "",
+                       "string" );
+
+    ValueArg< std::string >
+        astereo_output( N_(""), N_("stereo-output"),
+                        _("Select stereo output"), false, "",
+                        "string" );
 #endif
 
+    cmd.add(adebug);
+    cmd.add(arun);
+    cmd.add(aplay);
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(ahostname);
     cmd.add(aport);
     cmd.add(aedl);
-    cmd.add(adebug);
     cmd.add(afps);
     cmd.add(aaudio);
     cmd.add(aoffset);
 #ifdef USE_STEREO
     cmd.add(astereo);
+    cmd.add(astereo_input);
+    cmd.add(astereo_output);
 #endif
+    cmd.add(abg);
     cmd.add(afiles);
 
     //
@@ -405,12 +431,17 @@ void parse_command_line( const int argc, char** argv,
     //
     // Extract the options
     //
+    opts.play  = aplay.getValue();
     opts.gamma = agamma.getValue();
     opts.gain  = again.getValue();
     opts.host = ahostname.getValue();
     opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
+    opts.bgfile = abg.getValue();
+    opts.run    = arun.getValue();
+    opts.stereo_output = astereo_output.getValue();
+    opts.stereo_input = astereo_input.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
