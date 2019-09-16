@@ -1,5 +1,3 @@
-
-
 #ifndef mrvGLSphere_h
 #define mrvGLSphere_h
 
@@ -11,7 +9,7 @@ class GLSphere : public GLQuad
 {
 public:
     GLSphere( const ImageView* view );
-    ~GLSphere();
+    virtual ~GLSphere();
 
     virtual void bind( const image_type_ptr pic );
 
