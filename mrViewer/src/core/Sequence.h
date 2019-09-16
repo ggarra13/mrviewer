@@ -45,9 +45,9 @@ inline std::string uncomment_slashes( std::string path )
     size_t found = 0;
     while( (found = path.find("\\/", found)) != std::string::npos )
     {
-        std::string part2 = path.substr( found + 2, path.size() );
-        path = path.substr(0, found) + part2;
-        found += 2;
+	std::string part2 = path.substr( found + 2, path.size() );
+	path = path.substr(0, found) + part2;
+	found += 2;
     }
 
     return path;
@@ -58,8 +58,8 @@ inline std::string comment_slashes( std::string path )
     size_t found = 0, next = 0;
     while( (found = path.find('/', next)) != std::string::npos )
     {
-        path.insert(found, "\\");
-        next = found+3;
+	path.insert(found, "\\");
+	next = found+3;
     }
 
     return path;
@@ -88,23 +88,23 @@ struct SequenceSort
     // true if a < b, else false
     bool operator()( const Sequence& a, const Sequence& b ) const
     {
-        if ( a.root < b.root )  return true;
-        else if ( a.root > b.root ) return false;
+	if ( a.root < b.root )  return true;
+	else if ( a.root > b.root ) return false;
 
-        if ( a.ext < b.ext ) return true;
-        else if ( a.ext > b.ext ) return false;
+	if ( a.ext < b.ext ) return true;
+	else if ( a.ext > b.ext ) return false;
 
-        if ( a.view < b.view ) return true;
-        else if ( a.view > b.view ) return false;
+	if ( a.view < b.view ) return true;
+	else if ( a.view > b.view ) return false;
 
-        // size_t as = a.number.size();
-        // size_t bs = b.number.size();
-        // if ( as < bs ) return true;
-        // else if ( as > bs ) return false;
+	// size_t as = a.number.size();
+	// size_t bs = b.number.size();
+	// if ( as < bs ) return true;
+	// else if ( as > bs ) return false;
 
-        if ( atoi( a.number.c_str() ) < atoi( b.number.c_str() ) )
-            return true;
-        return false;
+	if ( atoi( a.number.c_str() ) < atoi( b.number.c_str() ) )
+	    return true;
+	return false;
     }
 };
 
@@ -121,11 +121,11 @@ struct LoadInfo
 
     int64_t first;
     int64_t last;
+    int64_t start;
+    int64_t end;
 
     double fps;
 
-    int64_t start;
-    int64_t end;
     bool    reel;
     GLShapeList shapes;
     int64_t audio_offset;
@@ -133,93 +133,93 @@ struct LoadInfo
     std::string subtitle;
 
     LoadInfo( const std::string& fileroot,
-              const boost::int64_t sf, const boost::int64_t ef,
-              const boost::int64_t s = AV_NOPTS_VALUE,
-              const boost::int64_t e = AV_NOPTS_VALUE,
-              const double f = 24.0f,
-              const std::string& a = "",
-              const std::string& right = "",
-              const boost::int64_t aoffset = 0,
-              const std::string& sub = "" ) :
-        filename( fileroot ),
-        right_filename( right ),
-        audio( a ),
-        first( sf ),
-        last( ef ),
-        start( s ),
-        end( e ),
-        fps( f ),
-        reel( false ),
-        audio_offset( aoffset ),
-        subtitle( sub )
+	      const boost::int64_t sf, const boost::int64_t ef,
+	      const boost::int64_t s = AV_NOPTS_VALUE,
+	      const boost::int64_t e = AV_NOPTS_VALUE,
+	      const double f = 24.0f,
+	      const std::string& a = "",
+	      const std::string& right = "",
+	      const boost::int64_t aoffset = 0,
+	      const std::string& sub = "" ) :
+	filename( fileroot ),
+	right_filename( right ),
+	audio( a ),
+	first( sf ),
+	last( ef ),
+	start( s ),
+	end( e ),
+	fps( f ),
+	reel( false ),
+	audio_offset( aoffset ),
+	subtitle( sub )
     {
-        size_t len = filename.size();
-        if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
-        {
-            reel = true;
-        }
+	size_t len = filename.size();
+	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+	{
+	    reel = true;
+	}
     }
 
     LoadInfo( const std::string& fileroot,
-              const boost::int64_t sf, const boost::int64_t ef,
-              const GLShapeList& shl,
-              const boost::int64_t s = AV_NOPTS_VALUE,
-              const boost::int64_t e = AV_NOPTS_VALUE,
-              const double f = 24.0f,
-              const std::string& a = "",
-              const std::string& right = "",
-              const boost::int64_t aoffset = 0,
-              const std::string& sub = "" ) :
-        filename( fileroot ),
-        right_filename( right ),
-        audio( a ),
-        first( sf ),
-        last( ef ),
-        start( s ),
-        end( e ),
-        fps( f ),
-        reel( false ),
-        shapes( shl ),
-        audio_offset( aoffset ),
-        subtitle( sub )
+	      const boost::int64_t sf, const boost::int64_t ef,
+	      const GLShapeList& shl,
+	      const boost::int64_t s = AV_NOPTS_VALUE,
+	      const boost::int64_t e = AV_NOPTS_VALUE,
+	      const double f = 24.0f,
+	      const std::string& a = "",
+	      const std::string& right = "",
+	      const boost::int64_t aoffset = 0,
+	      const std::string& sub = "" ) :
+	filename( fileroot ),
+	right_filename( right ),
+	audio( a ),
+	first( sf ),
+	last( ef ),
+	start( s ),
+	end( e ),
+	fps( f ),
+	reel( false ),
+	shapes( shl ),
+	audio_offset( aoffset ),
+	subtitle( sub )
     {
-        size_t len = filename.size();
-        if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
-        {
-            reel = true;
-        }
+	size_t len = filename.size();
+	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+	{
+	    reel = true;
+	}
     }
 
     LoadInfo( const std::string& file ) :
-        filename( file ),
-        start( AV_NOPTS_VALUE ),
-        end( AV_NOPTS_VALUE ),
-        first( AV_NOPTS_VALUE ),
-        last( AV_NOPTS_VALUE ),
-        fps( 0.0 ),
-        reel( false ),
-        audio_offset( 0 )
+	filename( file ),
+	first( AV_NOPTS_VALUE ),
+	last( AV_NOPTS_VALUE ),
+	start( AV_NOPTS_VALUE ),
+	end( AV_NOPTS_VALUE ),
+	fps( 0.0 ),
+	reel( false ),
+	audio_offset( 0 )
     {
-        size_t len = filename.size();
-        if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
-        {
-            reel = true;
-        }
+	size_t len = filename.size();
+	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+	{
+	    reel = true;
+	}
     }
 
     LoadInfo( const LoadInfo& b ) :
-        filename( b.filename ),
-        right_filename( b.right_filename ),
-        audio( b.audio ),
-        start( b.start ),
-        end( b.end ),
-        first( b.first ),
-        last( b.last ),
-        fps( b.fps ),
-        reel( b.reel ),
-        shapes( b.shapes ),
-        audio_offset( b.audio_offset ),
-        subtitle( b.subtitle )
+	filename( b.filename ),
+	right_filename( b.right_filename ),
+	audio( b.audio ),
+	first( b.first ),
+	last( b.last ),
+	start( b.start ),
+	end( b.end ),
+	fps( b.fps ),
+	reel( b.reel ),
+	shapes( b.shapes ),
+	audio_offset( b.audio_offset ),
+	subtitle( b.subtitle )
     {
     }
 
@@ -244,7 +244,7 @@ std::string hex_to_char_filename( std::string& f );
  * @return true if potential sequence, false if not
  */
 bool fileroot( std::string& fileroot, const std::string& file,
-               const bool change_view = true );
+	       const bool change_view = true );
 
 /**
  * Given a filename of a possible sequence, split it into
@@ -277,7 +277,7 @@ bool split_sequence(
  * @param edlfile   filename of .reel file.
  */
 bool parse_reel( LoadList& sequences, bool& edl, short int& ghost_previous,
-                 short int& ghost_next, const char* reelfile );
+		 short int& ghost_next, const char* reelfile );
 
 /**
  * Obtain the frame range of a sequence by scanning the directory where it
@@ -291,9 +291,9 @@ bool parse_reel( LoadList& sequences, bool& edl, short int& ghost_previous,
  * @return true if sequence limits found, false if not.
  */
 bool get_sequence_limits( boost::int64_t& firstFrame,
-                          boost::int64_t& lastFrame,
-                          std::string& file,
-                          const bool error = true );
+			  boost::int64_t& lastFrame,
+			  std::string& file,
+			  const bool error = true );
 
 /**
  * Given a filename extension, return whether the extension is
