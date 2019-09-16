@@ -1350,11 +1350,11 @@ public:
     void add_shape( shape_type_ptr s );
 
     // Return the maximum number of audio frames cached for jog/shuttle
-    // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_audio_frames();
+    // or 0 for no cache or numeric_limits<unsigned>max() for full cache
+    unsigned max_audio_frames();
     // Return the maximum number of video frames cached for jog/shuttle
-    // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_video_frames();
+    // or 0 for no cache or numeric_limits<unsigned>max() for full cache
+    unsigned max_video_frames();
     // Return the maximum number of video frames cached for jog/shuttle
     // or 0 for no cache or numeric_limits<int>max() for full cache
     uint64_t max_image_frames();
