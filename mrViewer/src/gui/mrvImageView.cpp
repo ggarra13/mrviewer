@@ -7604,7 +7604,7 @@ void ImageView::channel( unsigned short c )
     if ( c >= idx )
     {
         c = 0;
-        const Fl_Menu_Item* w;
+        const Fl_Menu_Item* w = NULL;
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
@@ -7630,12 +7630,12 @@ void ImageView::channel( unsigned short c )
             }
         }
 
-        if ( c >= idx || ! w->label())
+        if ( c >= idx || (w && ! w->label() ))
         {
             LOG_ERROR( _("Invalid index ") << c
                        << _(" for channel.  Maximum: " )
                        << idx << _(". Widget label is ")
-                       << (w->label() ? w->label() : "empty" ) );
+                       << ((w && w->label()) ? w->label() : "empty" ) );
             return;
         }
     }
@@ -8923,8 +8923,8 @@ void ImageView::step_frame( int64_t n )
 
     stop_playback();
 
-    int64_t start = (int64_t) timeline()->minimum();
-    int64_t end   = (int64_t) timeline()->maximum();
+    int64_t start = (int64_t) timeline()->display_minimum();
+    int64_t end   = (int64_t) timeline()->display_maximum();
 
     int64_t f = frame();
 
@@ -8999,7 +8999,7 @@ void ImageView::first_frame()
         uiMain->uiFrame->frame( f );
     }
 
-    int64_t t = int64_t( timeline()->minimum() );
+    int64_t t = int64_t( timeline()->display_minimum() );
     if ( t > f ) f = t;
 
     seek( f );
@@ -9032,7 +9032,7 @@ void ImageView::last_frame()
 
     }
 
-    int64_t t = int64_t( timeline()->maximum() );
+    int64_t t = int64_t( timeline()->display_maximum() );
     if ( t < f ) f = t;
 
     seek( f );
