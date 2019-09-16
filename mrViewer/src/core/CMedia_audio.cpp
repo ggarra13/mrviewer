@@ -683,7 +683,7 @@ void CMedia::populate_audio()
         _frameStart = 1;
 
         double start = 0;
-        if ( c->start_time != MRV_NOPTS_VALUE )
+        if ( c->start_time != AV_NOPTS_VALUE )
         {
             start = ( ( double )c->start_time / ( double )AV_TIME_BASE );
         }
@@ -696,7 +696,7 @@ void CMedia::populate_audio()
         _frameStart = int64_t( _fps * start ) + 1;
 
         int64_t duration;
-        if ( c->duration != MRV_NOPTS_VALUE )
+        if ( c->duration != AV_NOPTS_VALUE )
         {
             duration = int64_t( (_fps * ( double )(c->duration) /
                                  ( double )AV_TIME_BASE ) );
@@ -893,7 +893,6 @@ void CMedia::audio_file( const char* file )
         return;
     }
 
-    AVDictionary* params = NULL;
     AVInputFormat*   format = NULL;
 
     int error = avformat_open_input( &_acontext, file,
@@ -922,7 +921,7 @@ void CMedia::audio_file( const char* file )
 
 void CMedia::timed_limit_audio_store(const int64_t frame)
 {
-    int max_frames = max_video_frames();
+    unsigned max_frames = max_video_frames();
 
     if ( max_audio_frames() > max_frames )
         max_frames = max_audio_frames();
@@ -998,7 +997,7 @@ void CMedia::limit_audio_store(const int64_t frame)
 
     SCOPED_LOCK( _audio_mutex );
 
-    int max_frames = max_video_frames();
+    unsigned max_frames = max_video_frames();
 
     if ( max_audio_frames() > max_frames )
         max_frames = max_audio_frames();
@@ -1074,8 +1073,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                           int* audio_size,
                           AVPacket *avpkt)
 {
-
-    int got_frame = 0;
     int ret = -1;
     bool eof = false;
 
@@ -1512,14 +1509,14 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
 // Return the number of frames cached for jog/shuttle
 // or 0 for no cache or numeric_limits<int>max() for full cache
-int CMedia::max_audio_frames()
+unsigned CMedia::max_audio_frames()
 {
     if ( _audio_cache_size > 0 )
         return _audio_cache_size;
     else if ( _audio_cache_size == 0 )
-        return int( fps()*2 );
+        return unsigned( fps()*2 );
     else
-        return std::numeric_limits<int>::max();
+        return std::numeric_limits<unsigned>::max();
 }
 
 
@@ -1859,7 +1856,7 @@ bool CMedia::find_audio( const int64_t frame )
 #endif
         if ( i == end )
         {
-            if ( _audio_offset == 0 )
+            if ( _audio_offset == 0 && frame <= _frameEnd)
             {
                 IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
             }
@@ -1946,8 +1943,6 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
     if ( _audio_packets.empty() || _audio_packets.is_flush() )
         LOG_ERROR( _("Wrong packets in handle_audio_packet_seek" ) );
-
-    bool skip = false;
 
     if ( is_seek && _audio_packets.is_seek() )
     {
@@ -2163,8 +2158,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             assert( !_audio_packets.empty() );
             AVPacket& pkt = _audio_packets.front();
 
-            int64_t pktframe = get_frame( stream, pkt );
 #if 0
+            int64_t pktframe = get_frame( stream, pkt );
             // This does not work as decode_audio_packet may decode more
             // than one frame of audio (see Essa.wmv)
             bool ok = in_audio_store( frame );
@@ -2377,8 +2372,6 @@ void CMedia::debug_audio_packets(const int64_t frame,
 
         int counter = 0;
 
-        int64_t last_frame = std::numeric_limits< int64_t >::min();
-
         for ( ; iter != last; ++iter )
         {
             if ( _audio_packets.is_flush( *iter ) )
@@ -2452,7 +2445,6 @@ void CMedia::debug_audio_packets(const int64_t frame,
                 if ( f == _adts )  std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
                 std::cerr << f << " ";
-                last_frame = f;
                 if ( in_preroll || in_seek ) counter++;
             }
         }
