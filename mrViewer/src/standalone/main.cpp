@@ -80,13 +80,15 @@ const char* const kModule = "main";
 
 void load_files( mrv::LoadList& files,
                  ViewerUI* ui,
-                 bool stereo = false )
+                 bool stereo = false,
+                 std::string bgimage = "",
+                 bool edl = false  )
 {
    //
    // Window must be shown after images have been loaded.
    //
    mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-   image_list->load( files, stereo );
+   image_list->load( files, stereo, bgimage, edl );
 }
 
 void load_new_files( void* s )
@@ -161,10 +163,12 @@ int main( int argc, char** argv )
     {
         if ( strcmp( argv[i], "-d" ) == 0 ||
              strcmp( argv[i], "--debug") == 0 )
+        {
             if ( i+1 < argc )
                 mrv::Preferences::debug = atoi( argv[i+1] );
             else
                 mrv::Preferences::debug = 1;
+        }
     }
 
     Fl::lock();  // Start locking mechanism
@@ -177,10 +181,7 @@ int main( int argc, char** argv )
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
-    char* loc = _("unknown");
-
     const char* tmp = setlocale(LC_ALL, N_(""));
-
 
     // Create and install global locale
     try {
@@ -256,22 +257,25 @@ DBG;
 
           lockfile = mrv::lockfile();
 
-          bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
-          if ( opts.port != 0 ) {
-              ui->uiPrefs->uiPrefsSingleInstance->value(0);
-              single_instance = false;
-              if ( fs::exists( lockfile ) )
-              {
-                  if ( ! fs::remove( lockfile ) )
-                      LOG_ERROR("Could not remove lock file");
-              }
-          }
+            bool single_instance = false;
 
-          if ( single_instance )
-          {
-              LOG_INFO( "lockfile " << lockfile << ". ");
-              LOG_INFO( "(Remove if mrViewer does not start)" );
-          }
+            if ( !opts.run )
+                single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
+            if ( opts.port != 0 ) {
+                ui->uiPrefs->uiPrefsSingleInstance->value(0);
+                single_instance = false;
+                if ( fs::exists( lockfile ) )
+                {
+                    if ( ! fs::remove( lockfile ) )
+                        LOG_ERROR("Could not remove lock file");
+                }
+            }
+
+            if ( single_instance )
+            {
+                LOG_INFO( "lockfile " << lockfile << ". ");
+                LOG_INFO( "(Remove if mrViewer does not start)" );
+            }
 
           if ( fs::exists( lockfile ) && single_instance )
           {
@@ -327,10 +331,83 @@ DBG;
 
           // mrv::open_license( argv[0] );
           // mrv::checkout_license();
+          load_files( opts.files, ui, false, opts.bgfile, opts.edl );
 
-          load_files( opts.files, ui );
-          if ( opts.stereo.size() > 1 )
-              load_files( opts.stereo, ui, true );
+          if ( !opts.stereo_input.empty() )
+          {
+              int idx = 0;
+              if ( opts.stereo_input == _("Separate layers") )
+                  idx = 0;
+              else if ( opts.stereo_input == _("Top/bottom") )
+                  idx = 1;
+              else if ( opts.stereo_input == _("Left/right") )
+                  idx = 2;
+              else
+              {
+                  LOG_ERROR( "Stereo Input is invalid.  Valid values are: " );
+                  LOG_ERROR( _("Separate layers") << ", " << _("Top/bottom")
+                             << ", " << _("Left/right") );
+                  exit(-1);
+              }
+              ui->uiStereo->uiStereoInput->value( idx );
+              ui->uiStereo->uiStereoInput->do_callback();
+          }
+
+          int idx = 0;
+          if ( !opts.stereo_output.empty() )
+          {
+              if ( opts.stereo_output == _("Left view") )
+                  idx = 1;
+              else if ( opts.stereo_output == _("Right view") )
+                  idx = 2;
+              else if ( opts.stereo_output == _("Stereo OpenGL") )
+                  idx = 3;
+              else if ( opts.stereo_output == _("Top/bottom") )
+                  idx = 4;
+              else if ( opts.stereo_output == _("Bottom/top") )
+                  idx = 5;
+              else if ( opts.stereo_output == _("Left/right") )
+                  idx = 6;
+              else if ( opts.stereo_output == _("Right/left") )
+                  idx = 7;
+              else if ( opts.stereo_output == _("Even/odd rows") )
+                  idx = 8;
+              else if ( opts.stereo_output == _("Even/odd columns") )
+                  idx = 9;
+              else if ( opts.stereo_output == _("Checkerboard pattern") )
+                  idx = 10;
+              else if ( opts.stereo_output == _("Red/cyan glasses") )
+                  idx = 11;
+              else if ( opts.stereo_output == _("Cyan/red glasses") )
+                  idx = 12;
+              else
+              {
+                  LOG_ERROR( _("Stereo Output is invalid.  Valid values are: " ) );
+                  LOG_ERROR( _("Left view") << ", " << _("Right view") << ", " );
+                  LOG_ERROR( _("Top/bottom") << ", " << _("Bottom/top") << ", " );
+                  LOG_ERROR( _("Left/right") << ", " << _("Right/left") << ", " );
+                  LOG_ERROR( _("Even/odd rows") << ", "
+                             << _("Even/odd columns") << ", " );
+                  LOG_ERROR( _( "Checkerboard pattern") << ", "
+                             << _("Red/cyan glasses") << ", " );
+                  LOG_ERROR( _("Cyan/red glasses") );
+                  exit( -1 );
+              }
+          }
+
+
+            if ( opts.stereo.size() > 1 )
+            {
+                load_files( opts.stereo, ui, true );
+            }
+
+            if ( idx )
+            {
+                ui->uiStereo->uiStereoOutput->value( idx );
+                ui->uiStereo->uiStereoOutput->do_callback();
+                ui->uiView->fit_image();
+            }
+
 
           if ( opts.edl )
           {
@@ -372,6 +449,13 @@ DBG;
               Fl::add_timeout( 1.0, load_new_files, ui );
 
           ui->uiMain->show();   // so run() does something
+
+          // Start playback if command line forced us to do so
+          if ( opts.play )
+          {
+              ui->uiView->play_forwards();
+          }
+
           ok = Fl::run();
       }
       catch( const mrv::reinit_exception& e )
