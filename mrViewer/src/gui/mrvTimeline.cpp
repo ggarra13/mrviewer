@@ -69,6 +69,8 @@ _tc( 0 ),
 _fps( 24 ),
 _display_min( 1 ),
 _display_max( 50 ),
+_undo_display_min( AV_NOPTS_VALUE ),
+_undo_display_max( AV_NOPTS_VALUE ),
 uiMain( NULL )
 {
     type( TICK_ABOVE );
@@ -95,16 +97,15 @@ mrv::ImageBrowser* Timeline::browser() const
 
 void Timeline::display_minimum( const double& x )
 {
-    if ( x >= minimum() ) _display_min = x;
-
-    if ( _edl )
-    {
-        CMedia* img = image_at( x );
-        if ( img ) img->first_frame( global_to_local( x ) );
-
-        ImageBrowser* b = browser();
-        if ( b ) b->adjust_timeline();
+    if ( x >= minimum() ) {
+        _undo_display_min = _display_min;
+        _display_min = x;
+        if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+        {
+            Fl_Slider::minimum( x );
+        }
     }
+
 
     if ( uiMain && uiMain->uiView )
     {
@@ -114,18 +115,39 @@ void Timeline::display_minimum( const double& x )
     }
 }
 
+void Timeline::undo_display_minimum()
+{
+    _display_min = _undo_display_min;
+    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    {
+        Fl_Slider::minimum( _display_min );
+    }
+    _undo_display_min = AV_NOPTS_VALUE;
+    redraw();
+}
+
+void Timeline::undo_display_maximum()
+{
+    _display_max = _undo_display_max;
+    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    {
+        Fl_Slider::maximum( _display_max );
+    }
+    _undo_display_max = AV_NOPTS_VALUE;
+    redraw();
+}
+
 void Timeline::display_maximum( const double& x )
 {
-    if ( x <= maximum() ) _display_max = x;
-
-    if ( _edl )
-    {
-        CMedia* img = image_at( x );
-        if ( img ) img->last_frame( global_to_local( x ) );
-
-        ImageBrowser* b = browser();
-        if ( b ) b->adjust_timeline();
+    if ( x <= maximum() ) {
+        _undo_display_max = _display_max;
+        _display_max = x;
+        if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+        {
+            Fl_Slider::maximum( x );
+        }
     }
+
 
     if ( uiMain && uiMain->uiView )
     {
@@ -164,6 +186,8 @@ void Timeline::maximum( double x )
 void Timeline::edl( bool x )
 {
     _edl = x;
+
+    return;
 
     if ( _edl && uiMain && browser() )
     {
@@ -703,8 +727,8 @@ size_t Timeline::index( const int64_t f ) const
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
-    double mn = minimum();
-    double mx = maximum();
+    double mn = display_minimum();
+    double mx = display_maximum();
     if ( mn > mx )
     {
         double t = mx;

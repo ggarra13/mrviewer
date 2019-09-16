@@ -279,19 +279,19 @@ GLQuad::GLQuad( const ImageView* view ) :
     _lut( NULL ),
     _image( NULL ),
     _lut_attempt( 0 ),
-    _gamma( 1.f ),
     _right( false ),
     _blend( true ),
+    _gamma( 1.f ),
     _blend_mode( GL_ALPHA ),
     _num_textures( 1 ),
     _glformat( 0 ),
     _internalFormat( 0 ),
     _pixel_type( GL_BYTE ),
     _format( image_type::kLumma ),
-    _width( 0 ),
-    _height( 0 ),
     _mask( 0 ),
     _mask_value( -10 ),
+    _width( 0 ),
+    _height( 0 ),
     _channels( 0 ),
     _normMin( 0.f ),
     _normMax( 1.f )
@@ -628,8 +628,8 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
         }
 
 
-        if ( _width      != dw ||
-             _height     != dh ||
+        if ( _width      != (int) dw ||
+             _height     != (int) dh ||
              _pixel_type != pixel_type ||
              _channels   != channels ||
              _glformat       != GL_LUMINANCE ||
@@ -806,8 +806,8 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
 
     // If texture size is different than old frame/image,
     // allocate new quad texture
-    if ( _width          != dw ||
-         _height         != dh ||
+    if ( _width          != (int)dw ||
+         _height         != (int)dh ||
          _channels       != channels ||
          _pixel_type     != pixel_type ||
          _glformat       != glformat   ||
@@ -900,11 +900,11 @@ void GLQuad::bind_texture_pixels( const mrv::image_type_ptr& pic )
     _pixels = pic->data();
     if ( !_pixels ) return;
 
-    if ( _width  != dw ||
-            _height != dh ||
-            _pixel_type != pixel_type ||
-            _channels != channels ||
-            _glformat != glformat )
+    if ( _width  != (int)dw ||
+         _height != (int)dh ||
+         _pixel_type != pixel_type ||
+         _channels != channels ||
+         _glformat != glformat )
     {
         static bool warn = false;
 
@@ -1493,7 +1493,6 @@ void GLQuad::draw_field( const unsigned int dw, const unsigned int dh ) const
 
     double p = _view->zoom();
 
-    double sw = ((double)_view->w() - (double) dw * p) / 2.0f;
     double sh = ((double)_view->h() + (double) dh * p) / 2.0f;
 
     double dx = (_view->offset_x() * p);
