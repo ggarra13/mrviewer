@@ -12,6 +12,11 @@ v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	  ffmpeg ignores them and so do we.
 	- Updated to latest ffmpeg, which makes it compatible with truehd
 	  audio on mp4 containers.
+	- Bug fixed IN/OUT points when in Timeline Shortened Display and
+	  when in Timeline Hilited Display.  You can use the S/E buttons
+	  to set the in/out points.
+	- Added missing flags from v4.x ( -b, -P, --stereo-input,
+	  --stereo-output, etc ).
 
 
 v5.2.4  - Tightened the last/first frames of sequence loops as they were
