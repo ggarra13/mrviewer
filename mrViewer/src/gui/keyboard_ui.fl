@@ -200,7 +200,7 @@ if (!k) {
       sprintf(buffer, "0x%04x", k);
       for (int i = 0; i < 45; ++i)
       {
-	 if (mrv::table[i].n == k) {
+	 if (mrv::table[i].n == (int)k) {
 		keyname = mrv::table[i].text;
 		break;
 	 }
@@ -225,7 +225,7 @@ if (!k) {
       sprintf(buffer, "0x%04x", k);
       for (int i = 0; i < 45; ++i)
       {
-	 if (mrv::table[i].n == k) {
+	 if (mrv::table[i].n == (int)k) {
 		keyname = mrv::table[i].text;
 		break;
 	 }
