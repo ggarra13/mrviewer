@@ -22,15 +22,15 @@ Function {edit_audio_window( Fl_Widget* o, mrv::ImageView* view )} {open
   code {mrv::CMedia* img = NULL;} {}
   Fl_Window uiMainAudio {open
     xywh {393 179 235 170} type Double resizable
-    code0 {mrv::CMedia* img = NULL;} modal visible
+    modal visible
   } {
     Fl_Group {} {open selected
       xywh {0 0 235 170} box UP_BOX
     } {
       Fl_Value_Input uiFrameOffset {
-        label {Frame Offset}
-        xywh {75 50 70 25} align 1 minimum -1000 maximum 1000 step 1
-        code0 {mrv::media fg = view->foreground();
+	label {Frame Offset}
+	xywh {75 50 70 25} align 1 minimum -1000 maximum 1000 step 1
+	code0 {mrv::media fg = view->foreground();
 
 if ( !fg ) return NULL;
 
@@ -40,16 +40,16 @@ if ( !img->has_audio() ) return NULL;
 o->value( img->audio_offset() );}
       }
       Fl_Button {} {
-        label OK
-        user_data img user_data_type {mrv::CMedia*}
-        callback {v->audio_offset( uiFrameOffset->value() );
+	label OK
+	user_data img user_data_type {mrv::CMedia*}
+	callback {v->audio_offset( uiFrameOffset->value() );
 uiMainAudio->hide();}
-        xywh {35 95 70 25}
+	xywh {35 95 70 25}
       }
       Fl_Button {} {
-        label Cancel
-        callback {uiMainAudio->hide();}
-        xywh {110 95 75 25}
+	label Cancel
+	callback {uiMainAudio->hide();}
+	xywh {110 95 75 25}
       }
     }
   }
