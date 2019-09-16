@@ -144,7 +144,7 @@ public:
     inline bool inited() const {
         return _inited;
     }
-    inline bool inited(bool x) {
+    inline void inited(bool x) {
         _inited = x;
     }
 
