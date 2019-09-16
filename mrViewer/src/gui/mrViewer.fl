@@ -850,7 +850,7 @@ if (!fg) return;
 mrv::CMedia* img = fg->image();
 
 int i = o->value();
-if ( i < 0 || i >= o->children() ) return;
+if ( i < 0 || i >= (int)o->children() ) return;
 
 std::string c = o->child( i )->label();
 o->copy_label( c.c_str() );
@@ -938,7 +938,6 @@ if ( !mrv::is_equal( g, 0.0f ) )
 }
 else
 {
-    int idx = o->value();
     const Fl_Menu_Item* w = gammaDefaults->mvalue();
     const char* lbl = w->label();
     const Fl_Menu_Item* p = o->child(0);
@@ -1612,10 +1611,9 @@ o->value(24);}
 		  xywh {455 509 180 24}
 		} {
 		  Fl_Input uiStartFrame {
-		    label S
 		    user_data this user_data_type {ViewerUI*}
 		    callback {int64_t f = o->value();
-v->uiTimeline->display_minimum( f );
+v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
 		    tooltip {Allows you to set starting frame for timeline.} xywh {475 513 70 20} color -1733777408 selection_color 0
@@ -1623,10 +1621,9 @@ v->uiTimeline->redraw();}
 		    class {mrv::Timecode}
 		  }
 		  Fl_Input uiEndFrame {
-		    label E
 		    user_data this user_data_type {ViewerUI*}
 		    callback {int64_t f = o->value();
-v->uiTimeline->display_maximum( double(f) );
+v->uiTimeline->maximum( double(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
 		    tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
@@ -1652,24 +1649,9 @@ if ( !o->value() )
 else
 {
   o->value(0);
-  if ( !v->uiTimeline->edl() )
-  {
-     mrv::media fg = v->uiView->foreground();
-     if ( fg )
-     {
-	mrv::CMedia* img = fg->image();
-	f = img->start_frame();
-     }
-   }
-   else
-   {
-     // edl
-     mrv::Reel reel = v->uiReelWindow->uiBrowser->current_reel();
-     if ( reel->images.size() == 0 ) return;
-
-     mrv::media fg = reel->images[0];
-     if ( fg ) f = fg->position();
-  }
+  v->uiTimeline->undo_display_minimum();
+  v->uiStartFrame->value( v->uiTimeline->display_minimum() );
+  return;
 }
 
 v->uiStartFrame->value( f );
@@ -1690,25 +1672,9 @@ if ( !o->value() )
 else
 {
   o->value(0);
-  if ( ! v->uiTimeline->edl() )
-  {
-     mrv::media fg = v->uiView->foreground();
-     if ( fg )
-     {
-	mrv::CMedia* img = fg->image();
-	f = img->end_frame();
-     }
-   }
-   else
-   {
-     // edl
-     mrv::Reel reel = v->uiReelWindow->uiBrowser->current_reel();
-     size_t size  = reel->images.size();
-     if ( !reel || size == 0 ) return;
-
-     mrv::media fg = reel->images[ size - 1 ];
-     if ( fg ) f = fg->position() + fg->duration() - 1;
-   }
+  v->uiTimeline->undo_display_maximum();
+  v->uiEndFrame->value( v->uiTimeline->display_maximum() );
+  return;
 }
 
 v->uiEndFrame->value( f );
@@ -1794,7 +1760,4 @@ if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
 Fl::check(); // needed to refresh windows} {}
   }
-}
-
-decl {ViewerUI* main_;} {private local
 }
