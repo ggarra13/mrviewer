@@ -115,14 +115,13 @@ _mipmap = uiMipMap->value();} {}
   Function {OIIOOptionsUI(const ViewerUI* main, const std::string& ext, bool all_layers) : OIIOOpts(all_layers)} {open
   } {
     code {Fl_Window* w = make_window(ext, all_layers);
-      mrv::MainWindow* m = main->uiMain;
-      int x = m->x() + ( m->w() - w->w() ) / 2;
-      int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
       while ( w->visible() )
+      {
 	Fl::check();
-	if ( active() )
-		convert();} {}
+      }
+
+      if ( active() ) convert();} {}
   }
 }
