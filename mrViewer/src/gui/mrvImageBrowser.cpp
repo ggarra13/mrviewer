@@ -3443,7 +3443,6 @@ void ImageBrowser::attach_ctl_script()
 
 void ImageBrowser::adjust_timeline()
 {
-
     int64_t first, last, f = view()->frame();
 
     mrv::Reel reel = current_reel();
@@ -3451,27 +3450,37 @@ void ImageBrowser::adjust_timeline()
 
     if ( reel->edl )
     {
+        mrv::Timeline* t = timeline();
+        bool update = true;
+        MediaList::iterator i = reel->images.begin();
+        MediaList::iterator e = reel->images.end();
+        if ( t->edl() )
         {
-            mrv::MediaList::iterator i = reel->images.begin();
-            MediaList::iterator j;
-            mrv::MediaList::iterator e = reel->images.end();
-            if ( i != e )
-            {
-                (*i)->position( 1 );
+            if ( t->undo_minimum() != AV_NOPTS_VALUE ||
+                 t->undo_maximum() != AV_NOPTS_VALUE )
+                update = false;
+        }
 
-                for ( j = i, ++i; i != e; j = i, ++i )
-                {
-                    int64_t frame = (*j)->position() + (*j)->duration();
-                    DBGM3( (*i)->image()->name() << " moved to frame " << frame );
-                    (*i)->position( frame );
-                }
+
+        if (! update ) return;
+
+        MediaList::iterator j;
+        if ( i != e )
+        {
+            (*i)->position( 1 );
+
+            for ( j = i, ++i; i != e; j = i, ++i )
+            {
+                int64_t frame = (*j)->position() + (*j)->duration();
+                DBGM3( (*i)->image()->name() << " moved to frame " << frame );
+                (*i)->position( frame );
             }
         }
 
-        mrv::EDLGroup* e = edl_group();
-        if ( e )
+        mrv::EDLGroup* eg = edl_group();
+        if ( eg )
         {
-            e->redraw();
+            eg->redraw();
         }
 
         first = 1;
@@ -3518,10 +3527,7 @@ void ImageBrowser::adjust_timeline()
         t->minimum( double(first) );
         t->maximum( double(last) );
     }
-
-    // uiMain->uiStartButton->value(0);
     uiMain->uiStartFrame->value( first );
-    // uiMain->uiEndButton->value(0);
     uiMain->uiEndFrame->value( last );
 
     frame( f );
