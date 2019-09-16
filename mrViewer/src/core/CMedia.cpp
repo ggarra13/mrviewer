@@ -212,10 +212,6 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     dynamic_cast< const Imf::V2fAttribute* >( attr );
     const Imf::V2iAttribute* v2i =
     dynamic_cast< const Imf::V2iAttribute* >( attr );
-    const Imf::Box2iAttribute* box2i =
-    dynamic_cast< const Imf::Box2iAttribute* >( attr );
-    const Imf::Box2fAttribute* box2f =
-    dynamic_cast< const Imf::Box2fAttribute* >( attr );
     const Imf::IntAttribute* intg =
     dynamic_cast< const Imf::IntAttribute* >( attr );
     const Imf::FloatAttribute* flt =
@@ -396,7 +392,6 @@ _seek_frame( 1 ),
 _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
-_actual_frame_rate( 0 ),
 _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
@@ -445,6 +440,7 @@ _frame_offset( 0 ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
+_actual_frame_rate( 0 ),
 _context(NULL),
 _video_ctx( NULL ),
 _acontext(NULL),
@@ -492,9 +488,9 @@ _h( 0 ),
 _is_stereo( false ),
 _stereo_input( kSeparateLayersInput ),
 _stereo_output( kNoStereo ),
-_looping( kUnknownLoop ),
 _is_thumbnail( false ),
 _is_sequence( false ),
+_looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
 _ctime( 0 ),
@@ -603,12 +599,12 @@ av_sync_type( other->av_sync_type ),
 _has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
+_is_thumbnail( other->_is_thumbnail ),
+_is_sequence( other->_is_sequence ),
 _is_stereo( other->_is_stereo ),
 _stereo_input( other->_stereo_input ),
 _stereo_output( other->_stereo_output ),
 _looping( other->looping() ),
-_is_thumbnail( other->_is_thumbnail ),
-_is_sequence( other->_is_sequence ),
 _fileroot( NULL ),
 _filename( NULL ),
 _ctime( other->_ctime ),
@@ -3559,16 +3555,16 @@ int64_t CMedia::pts2frame( const AVStream* stream,
 
 
 // Return the number of frames cached for jog/shuttle
-int CMedia::max_video_frames()
+unsigned CMedia::max_video_frames()
 {
     if ( _video_cache_size > 0 )
         return _video_cache_size;
     else if ( _video_cache_size == 0 )
     {
-        return int( fps()*2 );
+        return unsigned( fps()*2 );
     }
     else
-        return std::numeric_limits<int>::max() / 3;
+        return std::numeric_limits<unsigned>::max() / 3;
 }
 
 
