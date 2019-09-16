@@ -1332,8 +1332,6 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     Image_ptr img = fg->image();
 
-    mrv::Recti daw = img->data_window();
-
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -1661,8 +1659,6 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glEnable( GL_LINE_STIPPLE );
     mrv::media fg = _view->foreground();
     CMedia* img = fg->image();
-    double zdeg = 0.0;
-    if ( img ) zdeg = img->rot_z();
     draw_rectangle( r, _view->flip(), 0.0 );
     glDisable( GL_LINE_STIPPLE );
     if ( _view->display_window() && !_view->vr() )
@@ -1748,7 +1744,7 @@ void GLEngine::draw_images( ImageList& images )
         unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
 
         // Check if there was a change effecting lut.
-        if ( ! use_ocio &&
+        if (  (! use_ocio) &&
              (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
               ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
               ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
@@ -1894,7 +1890,6 @@ void GLEngine::draw_images( ImageList& images )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
                 texHeight = dpw.h();
-                const mrv::Recti& dp = fg->display_window();
                 daw.x( img->x() + daw.x() );
                 daw.y( daw.y() - img->y() );
                 dpw.x( daw.x() );
