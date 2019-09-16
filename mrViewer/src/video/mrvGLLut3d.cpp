@@ -235,12 +235,12 @@ GLLut3d::LutsMap GLLut3d::_luts;
 
 
 GLLut3d::GLLut3d( const ViewerUI* v, const unsigned N ) :
-    view( v ),
     lutMin( 0 ),
     lutMax( 0 ),
     lutM( 0 ),
     lutT( 0 ),
     lutF( 1 ),
+    view( v ),
     texId( 0 ),
     _channels( 4 ),
     _lutN( N ),
