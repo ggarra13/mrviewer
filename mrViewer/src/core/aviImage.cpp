@@ -155,7 +155,7 @@ const size_t aviImage::colorspace_index() const
     if ( !_av_frame ) return 2; // Unspecified
     aviImage* img = const_cast< aviImage* >( this );
     if ( _colorspace_index < 0 ||
-            _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
+         (size_t)_colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
     {
         if ( colorspace_override ) img->_colorspace_index = colorspace_override;
         else img->_colorspace_index = _av_frame->colorspace;
@@ -179,8 +179,8 @@ const char* const aviImage::color_range() const
 aviImage::aviImage() :
     CMedia(),
     _initialize( false ),
-    _force_playback( false ),
     _has_image_seq( false ),
+    _force_playback( false ),
     _video_index(-1),
     _stereo_index(-1),
     _av_dst_pix_fmt( AV_PIX_FMT_RGB24 ),
@@ -189,15 +189,15 @@ aviImage::aviImage() :
     _av_frame( NULL ),
     _filt_frame( NULL ),
     _subtitle_ctx( NULL ),
-    buffersink_ctx( NULL ),
-    buffersrc_ctx( NULL ),
-    filter_graph( NULL ),
     _convert_ctx( NULL ),
-    _counter( 0 ),
     _eof( false ),
+    _counter( 0 ),
     _last_cached( false ),
     _max_images( kMaxCacheImages ),
-    _inv_table( NULL )
+    _inv_table( NULL ),
+    buffersink_ctx( NULL ),
+    buffersrc_ctx( NULL ),
+    filter_graph( NULL )
 {
     _gamma = 1.0f;
     _compression = "";
@@ -695,7 +695,7 @@ void aviImage::subtitle_file( const char* f )
         _filter_description += "'";
 
         int ret;
-        if ( ret = init_filters( _filter_description.c_str() ) < 0 )
+        if ( ( ret = init_filters( _filter_description.c_str() ) ) < 0 )
         {
             LOG_ERROR( "Could not init filters: ret " << ret
                        << " " << get_error_text(ret) );
@@ -773,11 +773,12 @@ void aviImage::open_video_codec()
     static int error_concealment = 3;
 
     _video_ctx->codec_id        = video_codec->id;
+    _video_ctx->error_concealment = error_concealment;
     _video_ctx->workaround_bugs = workaround_bugs;
-    // _video_ctx->skip_frame= skip_frame;
-    // _video_ctx->skip_idct = skip_idct;
-    // _video_ctx->skip_loop_filter= skip_loop_filter;
-    // _video_ctx->idct_algo = idct;
+    _video_ctx->skip_frame= skip_frame;
+    _video_ctx->skip_idct = skip_idct;
+    _video_ctx->skip_loop_filter= skip_loop_filter;
+    _video_ctx->idct_algo = idct;
 
 
 
@@ -1105,11 +1106,6 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
 void aviImage::store_image( const int64_t frame,
                             const int64_t pts )
 {
-
-
-    AVStream* stream = get_video_stream();
-    assert( stream != NULL );
-
     mrv::image_type_ptr image;
     try {
         image = allocate_image( frame, pts );
@@ -1832,7 +1828,7 @@ bool aviImage::find_image( const int64_t frame )
 
                 if ( !filter_graph &&
                      _hires->frame() != f &&
-                     diff > 1 && diff < 10 && counter < 10 )
+                     diff > 1 && diff < 10 && counter < 10 && f <= _frameEnd )
                 {
                     ++counter;
                     IMG_WARNING( _("find_image: frame ") << frame
@@ -2559,7 +2555,7 @@ void aviImage::populate()
         {
             Imf::Attribute* attr = i->second;
             Imf::StringAttribute* str;
-            if ( str = dynamic_cast< Imf::StringAttribute* >( attr ) )
+            if ( ( str = dynamic_cast< Imf::StringAttribute* >( attr ) ) )
             {
                 std::string outcol = str->value();
                 if ( outcol == "Rec 709" || outcol == "ITU 709" ||
@@ -2633,7 +2629,6 @@ void aviImage::populate()
 
         int force_exit = 0;
         _eof = false;
-        short counter = 0;
         bool got_audio = ! has_audio();
         bool got_video = ! has_video();
         while( !got_video || !got_audio )
@@ -2894,7 +2889,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
     int64_t dts = frame;
 
-    int64_t vpts, apts, spts;
+    int64_t vpts = 0, apts = 0, spts = 0;
 
     if ( !got_video ) {
         vpts = frame2pts( get_video_stream(), frame );
@@ -2954,8 +2949,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 }
             }
 
-            AVStream* stream = get_audio_stream();
-            if (!got_audio )
+             if (!got_audio )
             {
                 if (audio_context() == _context && _audio_ctx &&
                     _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
@@ -3277,12 +3271,12 @@ bool aviImage::frame( const int64_t f )
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
 
-    if ( !stopped() && !saving() &&
-         ( (_video_packets.bytes() +  _audio_packets.bytes() +
+    if ( (!stopped()) && (!saving()) &&
+         (( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
-         ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
-           ( vpkts > kMIN_FRAMES || !has_video() )
-             ) )
+          ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
+            ( vpkts > kMIN_FRAMES || !has_video() )
+              ) ) )
     {
         // std::cerr << "false return: " << std::endl;
         // std::cerr << "vp: " << vpkts
