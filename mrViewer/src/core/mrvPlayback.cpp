@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramu?o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -373,10 +373,12 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
         if ( reel->edl )
         {
+            int64_t offset = reel->location(img);
 
             boost::int64_t f = frame;
             f -= img->first_frame();
-            f += reel->location(img);
+            f += offset;
+
 
             int64_t dts = f;
 
@@ -387,9 +389,19 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                dts = first = reel->location(next);
+                dts = first = f;
             }
-
+            else if ( next == img )
+            {
+                if ( loop == CMedia::kLoop )
+                {
+                    first = int64_t(timeline->display_minimum());
+                }
+                else if ( loop == CMedia::kPingPong )
+                {
+                    last = frame;
+                }
+            }
 
             if ( next != img && next != NULL )
             {
@@ -488,6 +500,17 @@ EndStatus handle_loop( boost::int64_t& frame,
                 f = boost::int64_t(timeline->display_maximum());
                 next = reel->image_at( f );
                 dts = last = f;
+            }
+            else if ( next == img )
+            {
+                if ( loop == CMedia::kLoop )
+                {
+                    last = int64_t(timeline->display_maximum());
+                }
+                else if ( loop == CMedia::kPingPong )
+                {
+                    first = frame;
+                }
             }
 
             if ( next != img && next != NULL )
@@ -663,8 +686,15 @@ void audio_thread( PlaybackData* data )
         assert( img != NULL );
         assert( reel != NULL );
         assert( timeline != NULL );
-        //int64_t first, last;
-        //check_loop( frame, img, reel, timeline, first, last );
+
+        if ( !img->has_video() )
+        {
+            frame -= img->audio_offset();
+            int64_t first, last;
+            status = check_loop( frame, img, false, reel, timeline,
+                                 first, last );
+            frame += img->audio_offset();
+        }
 
         switch( status )
         {
@@ -856,8 +886,8 @@ void subtitle_thread( PlaybackData* data )
 
         // if ( status == CMedia::kDecodeOK )
         // {
-        //     int64_t first, last;
-        //     check_loop( frame, img, reel, timeline, first, last );
+        int64_t first, last;
+        status = check_loop( frame, img, false, reel, timeline, first, last );
         // }
 
         switch( status )
@@ -870,6 +900,8 @@ void subtitle_thread( PlaybackData* data )
         case CMedia::kDecodeOK:
             img->find_subtitle( frame );
             break;
+        default:
+            continue;
         case CMedia::kDecodeLoopEnd:
         case CMedia::kDecodeLoopStart:
 
@@ -1017,6 +1049,8 @@ void video_thread( PlaybackData* data )
 
         CMedia::DecodeStatus status = img->decode_video( frame );
 
+        int64_t first, last;
+        status = check_loop( frame, img, false, reel, timeline, first, last );
 
         // img->debug_video_packets( frame, img->name().c_str(), true );
         // img->debug_video_stores( frame, img->name().c_str(), true );

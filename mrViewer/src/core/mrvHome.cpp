@@ -46,19 +46,19 @@ std::string homepath()
    std::string path;
 
    char* e = NULL;
-   if ( e = getenv("HOME") )
+   if ( (e = getenv("HOME")) )
    {
        path = e;
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( e = getenv("USERPROFILE") )
+   else if ( (e = getenv("USERPROFILE")) )
    {
        path = e;
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( e = getenv("HOMEDRIVE") )
+   else if ( (e = getenv("HOMEDRIVE")) )
    {
        path = e;
        path += sgetenv("HOMEPATH");
