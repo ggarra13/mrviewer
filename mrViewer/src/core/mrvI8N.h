@@ -19,10 +19,10 @@
  * @file   mrvI8N.h
  * @author gga
  * @date   Thu Jul 26 08:36:58 2007
- * 
+ *
  * @brief  Some macros used for gettext() internationalization
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvI8N_h
@@ -36,7 +36,7 @@
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
 
-static char *gettext2 (const char* msgid)
+inline char* gettext2 (const char* msgid)
 {
     const char* const empty = "";
     if ( strlen( msgid ) == 0 ) return (char*)empty;
