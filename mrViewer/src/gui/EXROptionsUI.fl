@@ -54,16 +54,16 @@ class EXROptionsUI {open : {public mrv::EXROpts}
       xywh {536 152 465 445} type Double resizable modal noborder visible
     } {
       Fl_Group {} {open
-        xywh {0 0 465 445} box UP_BOX
+	xywh {0 0 465 445} box UP_BOX
       } {
-        Fl_Group {} {
-          label {OpenEXR Options} open
-          xywh {50 36 372 315} box UP_BOX
-        } {
-          Fl_Choice uiCompression {
-            label Compression
-            user_data this user_data_type {EXROptionsUI*}
-            callback {compression = o->child(o->value())->label();
+	Fl_Group {} {
+	  label {OpenEXR Options} open
+	  xywh {50 36 372 315} box UP_BOX
+	} {
+	  Fl_Choice uiCompression {
+	    label Compression
+	    user_data this user_data_type {EXROptionsUI*}
+	    callback {compression = o->child(o->value())->label();
 if ( compression == "DWAA" ||
      compression == "DWAB" )
 {
@@ -73,109 +73,109 @@ else
 {
 v->uiDWACompression->deactivate();
 }}
-            tooltip {EXR compression algorithm.} xywh {174 72 91 26} down_box BORDER_BOX align 1
-            code0 {o->value(mrv::exrImage::_default_compression);}
-            class {mrv::Choice}
-          } {
-            MenuItem {} {
-              label None
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label RLE
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label {ZIP SCANLINE}
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label ZIP
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label PIZ
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label PXR24
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label B44
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label B44A
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label DWAA
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label DWAB
-              xywh {5 5 100 20}
-            }
-          }
-          Fl_Choice uiPixelFormat {
-            label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();}
-            tooltip {Pixel Format to save image.   Usually Half.} xywh {174 128 90 25} down_box BORDER_BOX align 1
-            class {mrv::Choice}
-          } {
-            MenuItem {} {
-              label Half
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label Float
-              xywh {5 5 100 20}
-            }
-            MenuItem {} {
-              label UInt
-              xywh {5 5 100 20}
-            }
-          }
-        }
-        Fl_Value_Slider uiDWACompression {
-          label {DWA Compression}
-          tooltip {DWA/DWB compression} xywh {219 169 138 34} type Horizontal align 4 minimum 1 maximum 250 step 10 value 45 deactivate
-          code0 {o->value( mrv::exrImage::_default_dwa_compression );}
-        }
-        Fl_Light_Button uiACESmetadata {
-          label {ACES metadata}
-          tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.} xywh {144 305 185 38}
-          code0 {o->value( aces );}
-        }
-        Fl_Light_Button uiAllLayers {
-          label {All Layers}
-          xywh {143 224 186 34}
-          code0 {o->value( all_layers );}
-        }
-        Fl_Light_Button uiDeepData {
-          label {Deep Data}
-          tooltip {With this option, you can save all the deep data of the image.  Note that this copies the original image onto a new image.  If you save over the same image, you will corrupt it.} xywh {143 264 186 34}
-          code0 {o->value( deep_data );
-if (!deep_data) 
+	    tooltip {EXR compression algorithm.} xywh {174 72 91 26} down_box BORDER_BOX align 1
+	    code0 {o->value(mrv::exrImage::_default_compression);}
+	    class {mrv::Choice}
+	  } {
+	    MenuItem {} {
+	      label None
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label RLE
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label {ZIP SCANLINE}
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label ZIP
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label PIZ
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label PXR24
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label B44
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label B44A
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label DWAA
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label DWAB
+	      xywh {5 5 100 20}
+	    }
+	  }
+	  Fl_Choice uiPixelFormat {
+	    label {Pixel Format}
+	    callback {pixel_type = o->child(o->value())->label();}
+	    tooltip {Pixel Format to save image.   Usually Half.} xywh {174 128 90 25} down_box BORDER_BOX align 1
+	    class {mrv::Choice}
+	  } {
+	    MenuItem {} {
+	      label Half
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label Float
+	      xywh {5 5 100 20}
+	    }
+	    MenuItem {} {
+	      label UInt
+	      xywh {5 5 100 20}
+	    }
+	  }
+	}
+	Fl_Value_Slider uiDWACompression {
+	  label {DWA Compression}
+	  tooltip {DWA/DWB compression} xywh {219 169 138 34} type Horizontal align 4 minimum 1 maximum 250 step 10 value 45 deactivate
+	  code0 {o->value( mrv::exrImage::_default_dwa_compression );}
+	}
+	Fl_Light_Button uiACESmetadata {
+	  label {ACES metadata}
+	  tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.} xywh {144 305 185 38}
+	  code0 {o->value( aces );}
+	}
+	Fl_Light_Button uiAllLayers {
+	  label {All Layers}
+	  xywh {143 224 186 34}
+	  code0 {o->value( all_layers );}
+	}
+	Fl_Light_Button uiDeepData {
+	  label {Deep Data}
+	  tooltip {With this option, you can save all the deep data of the image.  Note that this copies the original image onto a new image.  If you save over the same image, you will corrupt it.} xywh {143 264 186 34}
+	  code0 {o->value( deep_data );
+if (!deep_data)
 {
 o->deactivate();
 }}
-        }
-        Fl_Button {} {
-          label OK
-          user_data this user_data_type {EXROptionsUI*}
-          callback {v->active( true );
+	}
+	Fl_Button {} {
+	  label OK
+	  user_data this user_data_type {EXROptionsUI*}
+	  callback {v->active( true );
 v->uiMain->hide();} selected
-          xywh {119 374 91 41}
-        }
-        Fl_Button {} {
-          label Cancel
-          user_data this user_data_type {EXROptionsUI*}
-          callback {v->active( false );
+	  xywh {119 374 91 41}
+	}
+	Fl_Button {} {
+	  label Cancel
+	  user_data this user_data_type {EXROptionsUI*}
+	  callback {v->active( false );
 v->uiMain->hide();}
-          xywh {228 374 102 41}
-        }
+	  xywh {228 374 102 41}
+	}
       }
     }
   }
@@ -193,13 +193,12 @@ else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
   Function {EXROptionsUI(const ViewerUI* main, bool aces = false, bool all_layers = false, bool has_deep_data = false) : mrv::EXROpts(aces, all_layers)} {open
   } {
     code {Fl_Window* w = make_window(aces, all_layers, has_deep_data);
-      mrv::MainWindow* m = main->uiMain;
-      int x = m->x() + ( m->w() - w->w() ) / 2;
-      int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
       while ( w->visible() )
-         Fl::check();
-       convert();} {}
+      {
+	 Fl::check();
+      }
+      convert();} {}
   }
 }
