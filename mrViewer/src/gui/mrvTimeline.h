@@ -98,11 +98,15 @@ public:
         return _display_min;
     }
     void display_minimum( const double& x );
+    void undo_display_minimum();
+    int64_t undo_minimum() const { return _undo_display_min; }
 
     inline double display_maximum() const {
         return _display_max;
     }
     void display_maximum( const double& x );
+    void undo_display_maximum();
+    int64_t undo_maximum() const { return _undo_display_max; }
 
     void timecode( const int64_t& tc ) {
         _tc = tc;
@@ -158,6 +162,8 @@ protected:
     double _fps;
     double _display_min;
     double _display_max;
+    int64_t _undo_display_min;
+    int64_t _undo_display_max;
 
     ViewerUI* uiMain;
 };
