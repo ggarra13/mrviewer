@@ -46,7 +46,7 @@ protected:
 
 public:
     GLQuad( const ImageView* view );
-    ~GLQuad();
+    virtual ~GLQuad();
 
     virtual void rot_x( double x ) {};
     virtual void rot_y( double x ) {};
