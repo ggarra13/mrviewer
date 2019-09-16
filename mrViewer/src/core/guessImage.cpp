@@ -126,7 +126,7 @@ CMedia* test_image( const char* name,
 
 std::string parse_view( const std::string& root, bool left )
 {
-    int idx = root.find( "%V" );
+    size_t idx = root.find( "%V" );
     std::string tmp = root;
     if ( idx != std::string::npos )
     {
