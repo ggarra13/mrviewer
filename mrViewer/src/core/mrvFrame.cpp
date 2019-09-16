@@ -142,7 +142,7 @@ unsigned short VideoFrame::line_size() const
 {
     size_t size = 0;
 
-    unsigned W2, H2, WH2;
+    unsigned W2;
     unsigned W = _width;
 
     switch( _format )
