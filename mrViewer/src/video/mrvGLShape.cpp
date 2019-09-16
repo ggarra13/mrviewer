@@ -258,8 +258,6 @@ std::string GLTextShape::send() const
 {
     std::string buf = "GLTextShape ";
 
-    Fl_Font f = font();
-
     char tmp[512];
     sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64,
              Fl::get_font_name( font() ),
