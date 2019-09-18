@@ -926,6 +926,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
     if ( max_audio_frames() > max_frames )
         max_frames = max_audio_frames();
 
+    SCOPED_LOCK( _audio_mutex );
+
 #undef timercmp
 # define timercmp(a, b, CMP)					\
     (((a).tv_sec == (b).tv_sec) ?				\
