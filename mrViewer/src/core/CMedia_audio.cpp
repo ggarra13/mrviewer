@@ -871,14 +871,16 @@ void CMedia::audio_file( const char* file )
 
     if ( _acontext )
     {
-        size_t num = _audio_info.size();
-        for ( size_t i = 0; i < num; ++i )
+        audio_info_list_t::iterator i = _audio_info.begin();
+        for ( ; i != _audio_info.end(); )
         {
-            if ( _audio_info[i].context == _acontext )
+            if ( (*i).context == _acontext )
             {
-                _audio_info.erase( _audio_info.begin() + i,
-                                   _audio_info.begin() + i + 1);
-                break;
+                i = _audio_info.erase( i );
+            }
+            else
+            {
+                ++i;
             }
         }
 
