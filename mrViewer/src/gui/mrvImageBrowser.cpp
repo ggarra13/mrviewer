@@ -290,7 +290,6 @@ void pal_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
     {
         using mrv::smpteImage;
 
-        Fl_Window* uiMain = b->main()->uiMain;
         int X,Y,W,H;
         Fl::screen_xywh( X, Y, W, H );;
         smpteImage* img = new smpteImage( smpteImage::kGammaChart,
@@ -339,7 +338,6 @@ void linear_gradient( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
 {
     using mrv::smpteImage;
 
-    Fl_Window* uiMain = b->main()->uiMain;
     int X,Y,W,H;
     Fl::screen_xywh( X, Y, W, H );;
     smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
@@ -369,7 +367,6 @@ void luminance_gradient( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
 {
     using mrv::smpteImage;
 
-    Fl_Window* uiMain = b->main()->uiMain;
     int X,Y,W,H;
     Fl::screen_xywh( X, Y, W, H );;
     smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
@@ -449,8 +446,9 @@ namespace mrv {
 ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
 Fl_Tree( x, y, w, h ),
 _reel( 0 ),
+_value( -1 ),
 dragging( NULL ),
-_value( -1 )
+old_dragging( NULL )
 {
     showroot(0);// don't show root of tree
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
@@ -1313,10 +1311,6 @@ void ImageBrowser::change_image()
 
         mrv::media om = current_image();
 
-        int audio_idx = -1;
-        int sub_idx = -1;
-
-        mrv::Timeline* t = timeline();
 
         CMedia::Playback play = v->playback();
         v->stop();
@@ -1348,7 +1342,8 @@ void ImageBrowser::change_image()
                            << " was not found in tree." );
                 return;
             }
-            int ok = Fl_Tree::select( item, 0 );
+
+            Fl_Tree::select( item, 0 );
 
             send_image( sel );
 
@@ -1380,7 +1375,7 @@ void ImageBrowser::change_image(int i)
         return;
     }
 
-    if ( i >= reel->images.size() ) {
+    if ( size_t(i) >= reel->images.size() ) {
         LOG_ERROR( _("change_image index ") << i << N_(" >= ")
                    << reel->images.size() );
         return;
@@ -1568,8 +1563,6 @@ mrv::media ImageBrowser::load_image( const char* name,
     }
 
     send_reel( reel );
-
-    mrv::EDLGroup* e = edl_group();
 
     // size_t i = 0;
     // for ( i = 0; i < number_of_reels(); ++i )
@@ -1980,9 +1973,6 @@ void ImageBrowser::open_stereo()
     stringArray files = mrv::open_image_file(NULL,true, uiMain);
     if (files.empty()) return;
 
-    stringArray::const_iterator i = files.begin();
-    stringArray::const_iterator e = files.end();
-
     if (files.size() > 1 )
     {
         LOG_ERROR( _("You can load only a single stereo image to combine with current one.") );
@@ -2155,9 +2145,6 @@ void ImageBrowser::remove_current()
 
     mrv::media& m = reel->images[sel];
 
-    mrv::EDLGroup* e = edl_group();
-
-
 
     Fl_Tree_Item* item = media_to_item( m );
     if ( !item )
@@ -2235,7 +2222,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     mrv::Reel reel = current_reel();
     if (!reel) return;
 
-    if ( i < 0 || i >= reel->images.size() ) {
+    if ( i < 0 || size_t(i) >= reel->images.size() ) {
         LOG_ERROR( _("Replace image index is out of range") );
         return;
     }
@@ -2361,7 +2348,7 @@ void ImageBrowser::image_version( int sum )
     PreferencesUI* prefs = main()->uiPrefs;
     std::string newfile;
     std::string number;
-    int64_t     num;
+    int64_t     num = 1;
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
     if ( prefix.empty() )
     {
@@ -2378,7 +2365,6 @@ void ImageBrowser::image_version( int sum )
         file = dir + "/" + file;
 
         size_t pos = 0;
-        unsigned padding = 0;
         while ( ( pos = file.find( prefix, pos) ) != std::string::npos )
         {
             pos += prefix.size();
@@ -2545,7 +2531,7 @@ void ImageBrowser::next_image()
     mrv::media orig = reel->images[v];
 
     ++v;
-    if ( v >= reel->images.size() )
+    if ( size_t(v) >= reel->images.size() )
     {
         if ( play ) view()->play(play);
         return;
