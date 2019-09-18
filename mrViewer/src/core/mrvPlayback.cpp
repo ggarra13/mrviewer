@@ -111,6 +111,13 @@ void sleep_ms(int milliseconds) // cross-platform sleep function
 #endif
 }
 
+    enum ThreadType
+    {
+        kDecode,
+        kAudio,
+        kVideo,
+        kSubtitle,
+    };
 
 enum EndStatus {
     kEndIgnore          = 0,
@@ -153,12 +160,6 @@ static void set_clock(Clock *c, double pts, int serial)
 }
 
 
-
-static void set_clock_speed(Clock *c, double speed)
-{
-    set_clock(c, get_clock(c), c->serial);
-    c->speed = speed;
-}
 
 static void init_clock(Clock *c, int *queue_serial)
 {
@@ -330,10 +331,16 @@ EndStatus handle_loop( boost::int64_t& frame,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
                        mrv::CMedia::DecodeStatus end,
-                       bool decode = false )
+                       ThreadType decode = kVideo )
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
+
+    if ( img->has_audio() && img->has_picture() )
+    {
+        if ( decode == kAudio || decode == kSubtitle )
+            return kEndIgnore;
+    }
 
     mrv::ImageView* view = uiMain->uiView;
 
@@ -388,7 +395,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 f = boost::int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
                 dts = first = reel->location(next);
-                dts = first = f;
             }
             else if ( next == img )
             {
@@ -426,14 +432,14 @@ EndStatus handle_loop( boost::int64_t& frame,
                     img->flush_all();
 
 
-    
+
                     ImageView::Command c;
                     c.type = ImageView::kSeek;
                     c.frame = dts;
-                    view->commands.push_back( c );
+                        view->commands.push_back( c );
 
-                    c.type = ImageView::kPlayForwards;
-                    view->commands.push_back( c );
+                        c.type = ImageView::kPlayForwards;
+                        view->commands.push_back( c );
 
                 }
 
@@ -447,10 +453,10 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = first;
 
-            ImageView::Command c;
-            c.type = ImageView::kSeek;
-            c.frame = frame;
-            view->commands.push_back( c );
+                ImageView::Command c;
+                c.type = ImageView::kSeek;
+                c.frame = frame;
+                view->commands.push_back( c );
 
             status = kEndLoop;
             if ( init_time )
@@ -542,10 +548,10 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     c.type = ImageView::kSeek;
                     c.frame = dts;
-                    view->commands.push_back( c );
+                        view->commands.push_back( c );
 
-                    c.type = ImageView::kPlayBackwards;
-                    view->commands.push_back( c );
+                        c.type = ImageView::kPlayBackwards;
+                        view->commands.push_back( c );
 
                     img->playback( CMedia::kStopped );
                     img->flush_all();
@@ -562,10 +568,10 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = last;
 
 
-            ImageView::Command c;
-            c.type = ImageView::kSeek;
-            c.frame = frame;
-            view->commands.push_back( c );
+                ImageView::Command c;
+                c.type = ImageView::kSeek;
+                c.frame = frame;
+                view->commands.push_back( c );
 
             status = kEndLoop;
             if ( init_time )
@@ -686,8 +692,14 @@ void audio_thread( PlaybackData* data )
         assert( img != NULL );
         assert( reel != NULL );
         assert( timeline != NULL );
-        //int64_t first, last;
-        //check_loop( frame, img, reel, timeline, first, last );
+        if ( status == CMedia::kDecodeOK ||
+             status == CMedia::kDecodeLoopStart ||
+             status == CMedia::kDecodeLoopEnd )
+        {
+            int64_t first, last;
+            status = check_loop( frame, img, false, reel, timeline,
+                                 first, last );
+        }
 
         switch( status )
         {
@@ -755,7 +767,7 @@ void audio_thread( PlaybackData* data )
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
-                                         status );
+                                         status, kAudio );
 
             frame += img->audio_offset();
 
@@ -910,7 +922,8 @@ void subtitle_thread( PlaybackData* data )
             if ( img->stopped() ) continue;
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
-                                         uiMain, reel, timeline, status );
+                                         uiMain, reel, timeline, status,
+                                         kSubtitle );
             continue;
         }
 
@@ -1128,7 +1141,7 @@ void video_thread( PlaybackData* data )
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
-                                         status, false );
+                                         status, kVideo );
 
             DBGM3( img->name() << " end: " << end
                       << " Stopped? " << img->stopped() );
@@ -1376,10 +1389,9 @@ void decode_thread( PlaybackData* data )
             //  and return new frame and step.
             // This handle loop has to come after the barrier as decode thread
             // goes faster than video or audio threads
-            bool decode = true;
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline, status,
-                                         decode );
+                                         kDecode );
 
             if ( img->stopped() ) continue;
         }
