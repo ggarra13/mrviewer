@@ -349,14 +349,12 @@ EndStatus handle_loop( boost::int64_t& frame,
     CMedia::Mutex& spm1 = sp.mutex();
     SCOPED_LOCK( spm1 );
 
-#if 0
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );  // 1182
 
     CMedia::Mutex& ma = img->audio_mutex();
     SCOPED_LOCK( ma );
-#else
-#endif
+
 
     EndStatus status = kEndIgnore;
     mrv::media c;
@@ -375,12 +373,10 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
         if ( reel->edl )
         {
-            int64_t offset = reel->location(img);
 
             boost::int64_t f = frame;
             f -= img->first_frame();
-            f += offset;
-
+            f += reel->location(img);
 
             int64_t dts = f;
 
@@ -391,6 +387,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
+                dts = first = reel->location(next);
                 dts = first = f;
             }
             else if ( next == img )
@@ -433,15 +430,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                     ImageView::Command c;
                     c.type = ImageView::kSeek;
                     c.frame = dts;
-                    {
-                        CMedia::Mutex& cm = view->commands_mutex;
-                        SCOPED_LOCK( cm );
-                        view->commands.push_back( c );
-                        
-                        c.type = ImageView::kPlayForwards;
-                        view->commands.push_back( c );
-                    }
+                    view->commands.push_back( c );
 
+                    c.type = ImageView::kPlayForwards;
+                    view->commands.push_back( c );
 
                 }
 
@@ -455,16 +447,11 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = first;
 
-            
-                ImageView::Command c;
-                c.type = ImageView::kSeek;
-                c.frame = frame;
-            {
-                CMedia::Mutex& cm = view->commands_mutex;
-                SCOPED_LOCK( cm );
-                view->commands.push_back( c );
-            }
-            
+            ImageView::Command c;
+            c.type = ImageView::kSeek;
+            c.frame = frame;
+            view->commands.push_back( c );
+
             status = kEndLoop;
             if ( init_time )
             {
@@ -555,15 +542,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     c.type = ImageView::kSeek;
                     c.frame = dts;
-                    {
-                        CMedia::Mutex& cm = view->commands_mutex;
-                        SCOPED_LOCK( cm );
-                        view->commands.push_back( c );
+                    view->commands.push_back( c );
 
-                        c.type = ImageView::kPlayBackwards;
-                        view->commands.push_back( c );
-                    }
-                    
+                    c.type = ImageView::kPlayBackwards;
+                    view->commands.push_back( c );
+
                     img->playback( CMedia::kStopped );
                     img->flush_all();
                 }
@@ -578,15 +561,12 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = last;
 
-                ImageView::Command c;
-                c.type = ImageView::kSeek;
-                c.frame = frame;
-            {
-                CMedia::Mutex& cm = view->commands_mutex;
-                SCOPED_LOCK( cm );
-                view->commands.push_back( c );
-            }
-            
+
+            ImageView::Command c;
+            c.type = ImageView::kSeek;
+            c.frame = frame;
+            view->commands.push_back( c );
+
             status = kEndLoop;
             if ( init_time )
             {
@@ -706,15 +686,8 @@ void audio_thread( PlaybackData* data )
         assert( img != NULL );
         assert( reel != NULL );
         assert( timeline != NULL );
-
-        if ( !img->has_video() )
-        {
-            frame -= img->audio_offset();
-            int64_t first, last;
-            status = check_loop( frame, img, false, reel, timeline,
-                                 first, last );
-            frame += img->audio_offset();
-        }
+        //int64_t first, last;
+        //check_loop( frame, img, reel, timeline, first, last );
 
         switch( status )
         {
@@ -906,8 +879,8 @@ void subtitle_thread( PlaybackData* data )
 
         // if ( status == CMedia::kDecodeOK )
         // {
-        int64_t first, last;
-        status = check_loop( frame, img, false, reel, timeline, first, last );
+        //     int64_t first, last;
+        //     check_loop( frame, img, reel, timeline, first, last );
         // }
 
         switch( status )
