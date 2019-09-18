@@ -1524,6 +1524,8 @@ void aviImage::timed_limit_store( const int64_t& frame )
         max_frames = max_image_frames();
     }
 
+    SCOPED_LOCK( _mutex );
+
 #undef timercmp
 # define timercmp(a, b, CMP)					\
     (((a).tv_sec == (b).tv_sec) ?				\

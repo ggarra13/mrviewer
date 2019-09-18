@@ -3610,6 +3610,7 @@ void CMedia::loop_at_start( const int64_t frame )
 {
     if ( has_picture() )
     {
+
         // With loop at start we cannot discard previous frames as they are
         // part of one or multiple prerolls
         _video_packets.loop_at_start( frame );
@@ -3617,6 +3618,7 @@ void CMedia::loop_at_start( const int64_t frame )
 
     if ( number_of_audio_streams() > 0 )
     {
+
         _audio_packets.loop_at_start( frame );
     }
 

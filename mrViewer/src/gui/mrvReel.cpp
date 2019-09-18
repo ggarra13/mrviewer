@@ -100,7 +100,6 @@ size_t Reel_t::index( const int64_t f ) const
 
     if ( f < mn || f > mx ) return std::numeric_limits<size_t>::max();
 
-    int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
@@ -140,24 +139,19 @@ mrv::media Reel_t::media_at( const int64_t f ) const
         return mrv::media();
     }
 
-    int64_t  t = 1;
-    size_t r = 0;
-    for ( ; i != e; ++i, ++r )
+    for ( ; i != e; ++i )
     {
         const mrv::media& m = *i;
         if ( !m ) continue;
 
-        CMedia* img = m->image();
         int64_t start = m->position();
-        int64_t end = start + img->duration();
-        if ( f >= start && f < end ) break;
+        int64_t end = start + m->duration();
+        if ( f >= start && f < end ) {
+            return m;
+        }
     }
 
-    if ( r >= images.size() ) {
-        return mrv::media();
-    }
-
-    return images[r];
+    return mrv::media();
 }
 
 int64_t Reel_t::global_to_local( const int64_t f ) const
