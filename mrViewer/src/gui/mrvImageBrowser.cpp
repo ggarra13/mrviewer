@@ -157,9 +157,18 @@ namespace {
         black_gap( i, b );
     }
 
-    void checkered( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    mrv::media checkered( mrv::LoadInfo& i, mrv::ImageBrowser* b )
     {
         using mrv::smpteImage;
+
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 48;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
 
         smpteImage* img = new smpteImage( smpteImage::kCheckered, 640, 480 );
         img->start_frame( i.start );
@@ -173,7 +182,7 @@ namespace {
         img->cache( canvas );
         img->default_icc_profile();
         img->default_rendering_transform();
-        b->add( img );
+        return b->add( img );
     }
 
 
@@ -185,116 +194,18 @@ namespace {
         checkered( i, b );
     }
 
-void ntsc_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::ColorBarsImage;
-    ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_rendering_transform();
-    b->add( img );
-}
-
-    void ntsc_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    mrv::media ntsc_color_bars( mrv::LoadInfo& i, mrv::ImageBrowser* b )
     {
-        mrv::LoadInfo i( "SMPTE NTSC Color Bars" );
-        i.start = i.end = 1;
-        i.first = 1; i.last = 60; i.fps = 30.0;
-        ntsc_color_bars( i, b );
-    }
-
-void pal_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::ColorBarsImage;
-    ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_rendering_transform();
-    b->add( img );
-}
-
-    void pal_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
-    {
-        mrv::LoadInfo i( "PAL Color Bars" );
-        i.start = i.end = 1;
-        i.first = 1; i.last = 50; i.fps = 25.0;
-        pal_color_bars( i, b );
-    }
-
-void ntsc_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::ColorBarsImage;
-    ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC_HDTV );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_rendering_transform();
-    b->add( img );
-}
-
-    void ntsc_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
-    {
-        mrv::LoadInfo i( "NTSC HDTV Color Bars" );
-        i.start = i.end = 1;
-        i.first = 1; i.last = 60; i.fps = 30.0;
-        ntsc_hdtv_color_bars( i, b );
-    }
-
-void pal_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::ColorBarsImage;
-    ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL_HDTV );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_rendering_transform();
-    b->add( img );
-}
-
-    void pal_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
-    {
-        mrv::LoadInfo i( "PAL HDTV Color Bars" );
-        i.start = i.end = 1;
-        i.first = 1; i.last = 50; i.fps = 25.0;
-        pal_hdtv_color_bars( i, b );
-    }
-
-    static void gamma_chart( const mrv::LoadInfo& i, mrv::ImageBrowser* b,
-                             float g )
-    {
-        using mrv::smpteImage;
-
-        int X,Y,W,H;
-        Fl::screen_xywh( X, Y, W, H );;
-        smpteImage* img = new smpteImage( smpteImage::kGammaChart,
-                                          X + W/2, Y+H/2 );
-        img->gamma(g);
+        using mrv::ColorBarsImage;
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 48;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
         img->start_frame( i.start );
         img->first_frame( i.first );
         img->end_frame( i.end );
@@ -305,9 +216,148 @@ void pal_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
         img->fetch( canvas, 1 );
         img->cache( canvas );
         img->default_rendering_transform();
-        img->gamma(1.0f);
-        b->add( img );
+        return b->add( img );
     }
+
+    void ntsc_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    {
+        mrv::LoadInfo i( "SMPTE NTSC Color Bars" );
+        i.start = i.end = 1;
+        i.first = 1; i.last = 60; i.fps = 30.0;
+        ntsc_color_bars( i, b );
+    }
+
+    mrv::media pal_color_bars( mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    {
+        using mrv::ColorBarsImage;
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 50;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL );
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, 1 );
+        img->cache( canvas );
+        img->default_rendering_transform();
+        return b->add( img );
+    }
+
+    void pal_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    {
+        mrv::LoadInfo i( "PAL Color Bars" );
+        i.start = i.end = 1;
+        i.first = 1; i.last = 50; i.fps = 25.0;
+        pal_color_bars( i, b );
+    }
+
+    mrv::media ntsc_hdtv_color_bars( mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    {
+        using mrv::ColorBarsImage;
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 60;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        ColorBarsImage* img =
+            new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC_HDTV );
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, 1 );
+        img->cache( canvas );
+        img->default_rendering_transform();
+        return b->add( img );
+    }
+
+    void ntsc_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    {
+        mrv::LoadInfo i( "NTSC HDTV Color Bars" );
+        i.start = i.end = 1;
+        i.first = 1; i.last = 60; i.fps = 30.0;
+        ntsc_hdtv_color_bars( i, b );
+    }
+
+    mrv::media pal_hdtv_color_bars( mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    {
+        using mrv::ColorBarsImage;
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 50;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL_HDTV );
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, 1 );
+        img->cache( canvas );
+        img->default_rendering_transform();
+        return b->add( img );
+    }
+
+    void pal_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    {
+        mrv::LoadInfo i( "PAL HDTV Color Bars" );
+        i.start = i.end = 1;
+        i.first = 1; i.last = 50; i.fps = 25.0;
+        pal_hdtv_color_bars( i, b );
+    }
+
+static mrv::media gamma_chart( mrv::LoadInfo& i, mrv::ImageBrowser* b,
+                               float g )
+{
+    using mrv::smpteImage;
+
+    int X,Y,W,H;
+    Fl::screen_xywh( X, Y, W, H );;
+    smpteImage* img = new smpteImage( smpteImage::kGammaChart,
+                                      X + W/2, Y+H/2 );
+    if ( i.first == AV_NOPTS_VALUE )
+        i.first = 1;
+    if ( i.last == AV_NOPTS_VALUE )
+        i.last = 1;
+    if ( i.start == AV_NOPTS_VALUE )
+        i.start = 1;
+    if ( i.end == AV_NOPTS_VALUE )
+        i.end = i.start;
+    img->gamma(g);
+    img->start_frame( i.start );
+    img->first_frame( i.first );
+    img->end_frame( i.end );
+    img->last_frame( i.last );
+    img->fps( i.fps );
+    img->play_fps( i.fps );
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
+    img->default_rendering_transform();
+    img->gamma(1.0f);
+    return b->add( img );
+}
 
 void gamma_chart_14_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -334,27 +384,35 @@ void gamma_chart_24_cb( Fl_Widget* o, mrv::ImageBrowser* b )
     gamma_chart(i, b, 2.4f);
 }
 
-void linear_gradient( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::smpteImage;
+    mrv::media linear_gradient( mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    {
+        using mrv::smpteImage;
 
-    int X,Y,W,H;
-    Fl::screen_xywh( X, Y, W, H );;
-    smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
-                                      X + W/2, Y+H/2 );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_icc_profile();
-    img->default_rendering_transform();
-    b->add( img );
-}
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 1;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        int X,Y,W,H;
+        Fl::screen_xywh( X, Y, W, H );;
+        smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
+                                          X + W/2, Y+H/2 );
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, 1 );
+        img->cache( canvas );
+        img->default_icc_profile();
+        img->default_rendering_transform();
+        return b->add( img );
+    }
 
 void linear_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -363,27 +421,36 @@ void linear_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
     linear_gradient(i, b);
 }
 
-void luminance_gradient( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
-{
-    using mrv::smpteImage;
+    mrv::media luminance_gradient( mrv::LoadInfo& i,
+                                   mrv::ImageBrowser* b )
+    {
+        using mrv::smpteImage;
 
-    int X,Y,W,H;
-    Fl::screen_xywh( X, Y, W, H );;
-    smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
-                                      X + W/2, Y+H/2 );
-    img->start_frame( i.start );
-    img->first_frame( i.first );
-    img->end_frame( i.end );
-    img->last_frame( i.last );
-    img->fps( i.fps );
-    img->play_fps( i.fps );
-    mrv::image_type_ptr canvas;
-    img->fetch( canvas, 1 );
-    img->cache( canvas );
-    img->default_icc_profile();
-    img->default_rendering_transform();
-    b->add( img );
-}
+        if ( i.first == AV_NOPTS_VALUE )
+            i.first = 1;
+        if ( i.last == AV_NOPTS_VALUE )
+            i.last = 1;
+        if ( i.start == AV_NOPTS_VALUE )
+            i.start = 1;
+        if ( i.end == AV_NOPTS_VALUE )
+            i.end = i.start;
+        int X,Y,W,H;
+        Fl::screen_xywh( X, Y, W, H );;
+        smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
+                                          X + W/2, Y+H/2 );
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, 1 );
+        img->cache( canvas );
+        img->default_icc_profile();
+        img->default_rendering_transform();
+        return b->add( img );
+    }
 
 void luminance_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -1651,7 +1718,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     char buf[1024];
     for ( ; i != e; ++i, ++idx )
     {
-        const mrv::LoadInfo& load = *i;
+        mrv::LoadInfo& load = (mrv::LoadInfo&) *i;
 
 
         if ( w )
@@ -1670,7 +1737,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         {
             if ( load.filename == "SMPTE NTSC Color Bars" )
             {
-                ntsc_color_bars( load, this);
+                fg = ntsc_color_bars( load, this);
             }
             else if ( load.filename == "Black Gap" )
             {
@@ -1678,43 +1745,43 @@ void ImageBrowser::load( const mrv::LoadList& files,
             }
             else if ( load.filename == "PAL Color Bars" )
             {
-                pal_color_bars( load, this);
+                fg = pal_color_bars( load, this);
             }
             else if ( load.filename == "NTSC HDTV Color Bars" )
             {
-                ntsc_hdtv_color_bars( load, this);
+                fg = ntsc_hdtv_color_bars( load, this);
             }
             else if ( load.filename == "PAL HDTV Color Bars" )
             {
-                pal_hdtv_color_bars( load, this);
+                fg = pal_hdtv_color_bars( load, this);
             }
             else if ( load.filename == "Checkered" )
             {
-                checkered(load, this);
+                fg = checkered(load, this);
             }
             else if ( load.filename == "Linear Gradient" )
             {
-                linear_gradient( load, this);
+                fg = linear_gradient( load, this);
             }
             else if ( load.filename == "Luminance Gradient" )
             {
-                luminance_gradient( load, this);
+                fg = luminance_gradient( load, this);
             }
             else if ( load.filename == "Gamma 1.4 Chart" )
             {
-                gamma_chart( load, this, 1.4);
+                fg = gamma_chart( load, this, 1.4);
             }
             else if ( load.filename == "Gamma 1.8 Chart" )
             {
-                gamma_chart( load, this, 1.8);
+                fg = gamma_chart( load, this, 1.8);
             }
             else if ( load.filename == "Gamma 2.2 Chart" )
             {
-                gamma_chart( load, this, 2.2);
+                fg = gamma_chart( load, this, 2.2);
             }
             else if ( load.filename == "Gamma 2.4 Chart" )
             {
-                gamma_chart( load, this, 2.4);
+                fg = gamma_chart( load, this, 2.4);
             }
             // @todo: slate image cannot be created since it needs info
             //        from other image.
