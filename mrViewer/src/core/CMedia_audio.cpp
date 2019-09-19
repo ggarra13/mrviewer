@@ -260,11 +260,12 @@ int64_t CMedia::queue_packets( const int64_t frame,
 #endif
 
     int64_t dts = frame;
+    if ( playback() == kBackwards ) dts -= 1;
 
     AVStream* stream = get_audio_stream();
     assert( stream != NULL );
 
-    int64_t apts = frame2pts( stream, frame );
+    int64_t apts = frame2pts( stream, dts );
     if ( apts < 0 ) {
         apts = 0;
         //return frame;
@@ -315,12 +316,14 @@ int64_t CMedia::queue_packets( const int64_t frame,
                 counter++;
                 if ( counter >= _frame_offset )
                 {
-                    if ( is_seek || playback() == kBackwards )
+                    if ( is_seek )
                     {
                         if ( !got_audio && apts >= 0 )
                         {
-                            DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                            got_audio = true;
+                            DBGM1( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                             _audio_packets.seek_end(apts);
+                            debug_audio_packets( frame, "is_seek2", true );
                         }
                     }
                     break;
@@ -335,12 +338,14 @@ int64_t CMedia::queue_packets( const int64_t frame,
                           << strerror(err) );
             }
 
-            if ( is_seek )
+            if ( is_seek || playback() == kBackwards)
             {
                 if ( !got_audio && apts >= 0 ) {
-                    DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    got_audio = true;
+                    DBGM1( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
-                }
+                    debug_audio_packets( frame, "is_seek3", true );
+                 }
             }
 
             // av_packet_unref( &pkt );
@@ -366,7 +371,8 @@ int64_t CMedia::queue_packets( const int64_t frame,
 
             if ( !got_audio )
             {
-                if ( pktframe > frame ) got_audio = true;
+                if ( playback() != kBackwards && pktframe > frame )
+                    got_audio = true;
                 if ( playback() == kBackwards && pktframe < frame )
                     got_audio = true;
                 else if ( pktframe == frame )
@@ -374,9 +380,10 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     audio_bytes += pkt.size;
                     if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                 }
-                if ( is_seek && got_audio && apts >= 0 )
+                if ( (is_seek || playback() == kBackwards) &&
+                     got_audio && apts >= 0 )
                 {
-                    DBGM3( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    DBGM1( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
                 }
             }
@@ -414,8 +421,8 @@ bool CMedia::seek_to_position( const int64_t frame )
 
 
     int64_t start = frame - 1;
-    if ( playback() == kBackwards && start > 0 ) --start;
-    if ( start < _frame_start ) start = _frame_start;
+    //    if ( playback() == kBackwards && start > 0 ) --start;
+    if ( start < first_frame() ) start = first_frame();
 
     int64_t offset = int64_t( double(start) * AV_TIME_BASE
                               / fps() );
@@ -445,26 +452,27 @@ bool CMedia::seek_to_position( const int64_t frame )
         apts = frame2pts( get_audio_stream(), start );
     }
 
-    if ( !_seek_req && _playback == kBackwards )
+    if ( !got_audio && apts >= 0 )
     {
-        if ( !got_audio )    _audio_packets.preroll(apts);
-    }
-    else
-    {
-        if ( !got_audio && apts >= 0 )    _audio_packets.seek_begin(apts);
+        if ( !_seek_req && _playback == kBackwards )
+        {
+            _audio_packets.preroll(apts);
+        }
+        else
+        {
+            _audio_packets.seek_begin(apts);
+        }
     }
 
     bool got_video = true;
     bool got_subtitle = true;
 
-    assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
 
-    int64_t dts = queue_packets( frame, true, got_video,
+    int64_t dts = queue_packets( frame + _audio_offset, _seek_req, got_video,
                                  got_audio, got_subtitle );
 
 
     _adts = dts;
-    _expected_audio = dts+1;
     _seek_req = false;
 
 
@@ -472,7 +480,8 @@ bool CMedia::seek_to_position( const int64_t frame )
     LOG_INFO( "AFTER SEEK:  D: " << _adts << " E: " << _expected_audio );
     debug_audio_packets(frame);
 #endif
-    return true;
+    if ( got_audio ) return true;
+    else             return false;
 }
 
 /**
@@ -1311,7 +1320,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     // Get the audio codec context
     if ( !_audio_ctx ) return kDecodeNoStream;
 
-#if 1
+#if 0
     assert0( !_audio_packets.is_seek_end( pkt ) );
     assert0( !_audio_packets.is_seek( pkt ) );
     assert0( !_audio_packets.is_flush( pkt ) );
@@ -1684,11 +1693,13 @@ void CMedia::fetch_audio( const int64_t frame )
     DBGM3( "queue packets " << frame << " is_seek " << false
          << " got audio " << got_audio );
 
-    int64_t dts = CMedia::queue_packets( frame, false, got_video, got_audio,
+    int64_t dts = CMedia::queue_packets( frame + _audio_offset, false,
+                                         got_video, got_audio,
                                          got_subtitle );
 
 
     _adts = dts;
+    _expected_audio = dts + 1;
 
     DBGM3( "DTS " << dts << " EXPECTED " << _expected_audio );
 
@@ -1973,7 +1984,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     int64_t last = _audio_last_frame;
 
 
-    while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
+    while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() &&
+            !_audio_packets.is_loop_end() && !_audio_packets.is_loop_start() )
     {
         const AVPacket& pkt = _audio_packets.front();
         ++count;
@@ -2005,7 +2017,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
     if ( _audio_packets.empty() ) {
         IMG_ERROR( _("Audio packets empty at end of seek") );
-        return kDecodeError;
+        return kDecodeMissingFrame;
     }
 
 
@@ -2137,7 +2149,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
                 SCOPED_LOCK( _audio_mutex );
                 assert( !_audio_packets.empty() );
                 AVPacket& pkt = _audio_packets.front();
-                int64_t pktframe = get_frame( stream, pkt ) - _frame_offset;
+                int64_t pktframe = get_frame( stream, pkt );
                 if ( pktframe >= frame )
                 {
                     _audio_buf_used = 0;
@@ -2378,7 +2390,7 @@ void CMedia::debug_audio_packets(const int64_t frame,
         {
             if ( _audio_packets.is_flush( *iter ) )
             {
-                std::cerr << "* ";
+                std::cerr << " *";
                 continue;
             }
             else if ( _audio_packets.is_loop_end( *iter ) )
@@ -2424,7 +2436,7 @@ void CMedia::debug_audio_packets(const int64_t frame,
                 }
                 else
                 {
-                    std::cerr << "+ERROR:" << f << "+";
+                    std::cerr << "+BAD SEEK END:" << f << "+";
                 }
             }
             else if ( _audio_packets.is_seek( *iter ) )
