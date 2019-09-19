@@ -318,11 +318,12 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
     if ( status == CMedia::kDecodeLoopEnd )
     {
         img->loop_at_end( last+1 );
+        img->loop_at_end( last+1 );
     }
     else if ( status == CMedia::kDecodeLoopStart )
     {
         // We need two loops at start to force clips
-        if ( reel->edl ) img->loop_at_start( first-1 );
+        img->loop_at_start( first-1 );
         img->loop_at_start( first-1 );
     }
     return status;
