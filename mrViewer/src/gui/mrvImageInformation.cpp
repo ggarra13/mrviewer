@@ -1726,7 +1726,7 @@ double ImageInformation::to_memory( long double value,
 
 void ImageInformation::set_image( CMedia* i )
 {
-    DBG;
+    DBG3;
     filled = false;
     img = i;
     refresh();
