@@ -171,6 +171,7 @@ namespace {
             i.end = i.start;
 
         smpteImage* img = new smpteImage( smpteImage::kCheckered, 640, 480 );
+        img->filename( i.filename.c_str() );
         img->start_frame( i.start );
         img->first_frame( i.first );
         img->end_frame( i.end );
@@ -1755,7 +1756,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
             {
                 fg = pal_hdtv_color_bars( load, this);
             }
-            else if ( load.filename == "Checkered" )
+            else if ( load.filename.substr(0,9) == "Checkered" )
             {
                 fg = checkered(load, this);
             }
