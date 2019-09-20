@@ -8448,6 +8448,7 @@ void ImageView::refresh_audio_tracks() const
     }
     uiMain->uiAudioTracks->add( "<no audio>" );
     uiMain->uiAudioTracks->value( img->audio_stream() );
+    uiMain->uiAudioTracks->menu_end();
     uiMain->uiAudioTracks->redraw();
 }
 
