@@ -466,7 +466,7 @@ bool CMedia::seek_to_position( const int64_t frame )
     bool got_subtitle = true;
 
 
-    int64_t dts = queue_packets( frame + _audio_offset, _seek_req, got_video,
+    int64_t dts = queue_packets( frame, true, got_video,
                                  got_audio, got_subtitle );
 
 
@@ -1692,7 +1692,7 @@ void CMedia::fetch_audio( const int64_t frame )
     DBGM3( "queue packets " << frame << " is_seek " << false
          << " got audio " << got_audio );
 
-    int64_t dts = CMedia::queue_packets( frame + _audio_offset, false,
+    int64_t dts = CMedia::queue_packets( frame, false,
                                          got_video, got_audio,
                                          got_subtitle );
 
