@@ -506,8 +506,8 @@ bool split_sequence(
         ext   = f.substr( idx[0], file.size()-idx[0] );
 
         bool ok = is_valid_frame( frame );
-        if ( ok && !is_valid_movie( ext.c_str() ) ||
-             mrv::is_valid_audio( ext.c_str() ) )
+        if ( ok && ( !is_valid_movie( ext.c_str() ) ||
+                     mrv::is_valid_audio( ext.c_str() ) ) )
         {
             return true;
         }
