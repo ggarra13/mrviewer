@@ -18,6 +18,8 @@ v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	  while playing the clips can lead to hanging mrViewer.
 	- Added missing flags from v4.x ( -b, -P, --stereo-input,
 	  --stereo-output, etc ).
+	- otio->reel converter now keeps the name of the file in the
+	  Checkered images.  This allows distinction of files not found.
 
 
 v5.2.4  - Tightened the last/first frames of sequence loops as they were
