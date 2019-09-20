@@ -294,7 +294,7 @@ void Histogram::draw_pixels( const mrv::Recti& r )
     for ( int i = 0; i <= W; ++i )
     {
         int x = i + 4;
-        int y1, y2, y3;
+        int y1, y2 = 0, y3 = 0;
 
         idx = int( ((float) i / (float) W) * 255 );
         if ( _channel == kLumma )
