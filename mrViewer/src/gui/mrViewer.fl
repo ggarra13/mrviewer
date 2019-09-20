@@ -173,27 +173,27 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {s
       xywh {10 25 375 405}
     } {
       Fl_Browser uiBrowser {
-	label {Select a CTL script}
-	user_data {&ctl} user_data_type {std::string*}
-	callback {int elem = o->value();
+        label {Select a CTL script}
+        user_data {&ctl} user_data_type {std::string*}
+        callback {int elem = o->value();
 if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
 *v = o->text(elem);}
-	private xywh {10 25 375 345} type Hold box DOWN_BOX labelcolor 32
-	code0 {o->set_prefix(prefix);}
-	code1 {o->find( ctl.c_str() );}
-	class {mrv::CTLBrowser}
+        private xywh {10 25 375 345} type Hold box DOWN_BOX labelcolor 32
+        code0 {o->set_prefix(prefix);}
+        code1 {o->find( ctl.c_str() );}
+        class {mrv::CTLBrowser}
       }
       Fl_Button {} {
-	label Accept
-	user_data w user_data_type {mrvDoubleWindow*}
-	callback {v->make_exec_return(true);}
-	xywh {205 400 85 25}
+        label Accept
+        user_data w user_data_type {mrvDoubleWindow*}
+        callback {v->make_exec_return(true);}
+        xywh {205 400 85 25}
       }
       Fl_Button {} {
-	label Cancel
-	user_data w user_data_type {mrvDoubleWindow*}
-	callback {v->make_exec_return(false);}
-	xywh {300 400 80 25}
+        label Cancel
+        user_data w user_data_type {mrvDoubleWindow*}
+        callback {v->make_exec_return(false);}
+        xywh {300 400 80 25}
       }
     }
   }
@@ -215,148 +215,148 @@ class SaveOptionsUI {} {
       xywh {493 194 315 375} type Double hide resizable modal
     } {
       Fl_Group {} {open
-	xywh {8 14 302 356} box EMBOSSED_BOX
+        xywh {8 14 302 356} box EMBOSSED_BOX
       } {
-	Fl_Group {} {
-	  xywh {24 30 275 45} box ENGRAVED_BOX
-	} {
-	  Fl_Box {} {
-	    label Format
-	    xywh {34 40 75 25} box FLAT_BOX
-	  }
-	  Fl_Menu_Button uiSaveFormat {
-	    label {Name (.ext)}
-	    xywh {104 40 180 25}
-	  } {
-	    MenuItem {} {
-	      label {ILM OpenEXR (.exr)}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {JPEG (.jpg)}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Microsoft Bitmap (.bmp)}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {TIFF (.tif)}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Targa (.tga)}
-	      xywh {0 0 100 20}
-	    }
-	  }
-	}
-	Fl_Group {} {
-	  xywh {24 85 275 45} box ENGRAVED_BOX
-	} {
-	  Fl_Box {} {
-	    label Compression
-	    xywh {49 95 90 25} box FLAT_BOX
-	  }
-	  Fl_Menu_Button uiSaveCompression {
-	    label None
-	    xywh {139 95 95 25}
-	  } {}
-	}
-	Fl_Group {} {
-	  xywh {24 140 275 45} box ENGRAVED_BOX
-	} {
-	  Fl_Box {} {
-	    label {Render Intent}
-	    xywh {29 150 110 25} box FLAT_BOX
-	  }
-	  Fl_Menu_Button uiSaveRenderIntent {
-	    label Relative
-	    xywh {139 150 95 25}
-	  } {
-	    MenuItem {} {
-	      label Saturation
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Perceptual
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Absolute
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Relative
-	      xywh {0 0 100 20}
-	    }
-	  }
-	}
-	Fl_Group {} {
-	  xywh {24 195 275 45} box ENGRAVED_BOX
-	} {
-	  Fl_Box {} {
-	    label Channels
-	    xywh {39 205 100 25} box FLAT_BOX
-	  }
-	  Fl_Menu_Button uiSaveChannels {
-	    label {All Possible}
-	    xywh {139 205 95 25}
-	  } {
-	    MenuItem {} {
-	      label {All Possible}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label RGBA
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label RGB
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Alpha Only}
-	      xywh {0 0 100 20}
-	    }
-	  }
-	}
-	Fl_Group {} {
-	  xywh {24 250 275 45} box ENGRAVED_BOX
-	} {
-	  Fl_Box {} {
-	    label Frames
-	    xywh {39 260 100 25} box FLAT_BOX
-	  }
-	  Fl_Menu_Button uiSaveFrames {
-	    label Current
-	    xywh {139 260 95 25}
-	  } {
-	    MenuItem {} {
-	      label All
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Timeline
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Current
-	      xywh {0 0 100 20}
-	    }
-	  }
-	}
-	Fl_Group {} {
-	  xywh {144 335 150 25}
-	} {
-	  Fl_Return_Button {} {
-	    label Save
-	    xywh {224 335 70 25}
-	  }
-	  Fl_Button {} {
-	    label Cancel
-	    xywh {144 335 70 25}
-	  }
-	}
+        Fl_Group {} {
+          xywh {24 30 275 45} box ENGRAVED_BOX
+        } {
+          Fl_Box {} {
+            label Format
+            xywh {34 40 75 25} box FLAT_BOX
+          }
+          Fl_Menu_Button uiSaveFormat {
+            label {Name (.ext)}
+            xywh {104 40 180 25}
+          } {
+            MenuItem {} {
+              label {ILM OpenEXR (.exr)}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {JPEG (.jpg)}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Microsoft Bitmap (.bmp)}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {TIFF (.tif)}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Targa (.tga)}
+              xywh {0 0 100 20}
+            }
+          }
+        }
+        Fl_Group {} {
+          xywh {24 85 275 45} box ENGRAVED_BOX
+        } {
+          Fl_Box {} {
+            label Compression
+            xywh {49 95 90 25} box FLAT_BOX
+          }
+          Fl_Menu_Button uiSaveCompression {
+            label None
+            xywh {139 95 95 25}
+          } {}
+        }
+        Fl_Group {} {
+          xywh {24 140 275 45} box ENGRAVED_BOX
+        } {
+          Fl_Box {} {
+            label {Render Intent}
+            xywh {29 150 110 25} box FLAT_BOX
+          }
+          Fl_Menu_Button uiSaveRenderIntent {
+            label Relative
+            xywh {139 150 95 25}
+          } {
+            MenuItem {} {
+              label Saturation
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Perceptual
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Absolute
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Relative
+              xywh {0 0 100 20}
+            }
+          }
+        }
+        Fl_Group {} {
+          xywh {24 195 275 45} box ENGRAVED_BOX
+        } {
+          Fl_Box {} {
+            label Channels
+            xywh {39 205 100 25} box FLAT_BOX
+          }
+          Fl_Menu_Button uiSaveChannels {
+            label {All Possible}
+            xywh {139 205 95 25}
+          } {
+            MenuItem {} {
+              label {All Possible}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label RGBA
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label RGB
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Alpha Only}
+              xywh {0 0 100 20}
+            }
+          }
+        }
+        Fl_Group {} {
+          xywh {24 250 275 45} box ENGRAVED_BOX
+        } {
+          Fl_Box {} {
+            label Frames
+            xywh {39 260 100 25} box FLAT_BOX
+          }
+          Fl_Menu_Button uiSaveFrames {
+            label Current
+            xywh {139 260 95 25}
+          } {
+            MenuItem {} {
+              label All
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Timeline
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Current
+              xywh {0 0 100 20}
+            }
+          }
+        }
+        Fl_Group {} {
+          xywh {144 335 150 25}
+        } {
+          Fl_Return_Button {} {
+            label Save
+            xywh {224 335 70 25}
+          }
+          Fl_Button {} {
+            label Cancel
+            xywh {144 335 70 25}
+          }
+        }
       }
     }
   }
@@ -368,37 +368,38 @@ class SaveOptionsUI {} {
   }
 }
 
-class LogUI {} {
+class LogUI {open
+} {
   Function {make_window(ViewerUI* main)} {open
   } {
     Fl_Window uiMain {
       label {Log Messages} open
-      xywh {487 205 635 250} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );} non_modal
+      xywh {334 205 973 250} type Double resizable
+      code0 {//o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Group {} {
-	xywh {0 0 635 250} box UP_BOX resizable
+        xywh {0 0 975 250} box UP_BOX resizable
       } {
-	Fl_Text_Display uiLogText {
-	  xywh {5 5 625 200} resizable
-	  class {mrv::LogDisplay}
-	}
-	Fl_Group {} {open
-	  xywh {455 205 175 40}
-	} {
-	  Fl_Button {} {
-	    label Save
-	    user_data uiLogText user_data_type {mrv::LogDisplay*}
-	    callback {v->save();}
-	    xywh {545 210 75 30}
-	  }
-	  Fl_Button {} {
-	    label Clear
-	    user_data uiLogText user_data_type {mrv::LogDisplay*}
-	    callback {v->clear();}
-	    xywh {465 210 75 30}
-	  }
-	}
+        Fl_Text_Display uiLogText {selected
+          xywh {5 5 965 200} resizable
+          class {mrv::LogDisplay}
+        }
+        Fl_Group {} {open
+          xywh {455 205 505 40}
+        } {
+          Fl_Button {} {
+            label Save
+            user_data uiLogText user_data_type {mrv::LogDisplay*}
+            callback {v->save();}
+            xywh {885 210 75 30}
+          }
+          Fl_Button {} {
+            label Clear
+            user_data uiLogText user_data_type {mrv::LogDisplay*}
+            callback {v->clear();}
+            xywh {805 210 75 30}
+          }
+        }
       }
     }
   }
@@ -418,112 +419,112 @@ class PaintUI {} {
       xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
-	xywh {0 0 165 505} box PLASTIC_UP_BOX
+        xywh {0 0 165 505} box PLASTIC_UP_BOX
       } {
-	Fl_Group {} {open
-	  xywh {33 15 92 115}
-	} {
-	  Fl_Button uiScrub {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->scrub_mode();
+        Fl_Group {} {open
+          xywh {33 15 92 115}
+        } {
+          Fl_Button uiScrub {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->scrub_mode();
 o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiMovePic->value(0);}
-	    tooltip {Area Select Tool} xywh {35 15 43 35} value 1
-	    code0 {o->value(1);
+            tooltip {Area Select Tool} xywh {35 15 43 35} value 1
+            code0 {o->value(1);
 o->image( scrub );}
-	  }
-	  Fl_Button uiSelection {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->selection_mode();
+          }
+          Fl_Button uiSelection {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->selection_mode();
 o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);}
-	    tooltip {Area Select Tool} xywh {34 54 43 35} value 1
-	    code0 {o->value(1);
+            tooltip {Area Select Tool} xywh {34 54 43 35} value 1
+            code0 {o->value(1);
 o->image( select_pic );}
-	  }
-	  Fl_Button uiDraw {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->draw_mode();
+          }
+          Fl_Button uiDraw {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->draw_mode();
 o->value(1);
 uiSelection->value(0);
 uiErase->value(0);
 uiText->value(0);}
-	    tooltip {Freehand Drawing Tool} xywh {82 54 40 35}
-	    code0 {o->image( draw );}
-	  }
-	  Fl_Button uiErase {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->erase_mode();
+            tooltip {Freehand Drawing Tool} xywh {82 54 40 35}
+            code0 {o->image( draw );}
+          }
+          Fl_Button uiErase {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->erase_mode();
 o->value(1);
 uiSelection->value(0);
 uiDraw->value(0);
 uiText->value(0);}
-	    tooltip {Eraser Tool} xywh {82 95 40 35}
-	    code0 {o->image( erase );}
-	  }
-	  Fl_Button uiText {
-	    label T
-	    user_data m user_data_type {ViewerUI*}
-	    callback {o->value(1);
+            tooltip {Eraser Tool} xywh {82 95 40 35}
+            code0 {o->image( erase );}
+          }
+          Fl_Button uiText {
+            label T
+            user_data m user_data_type {ViewerUI*}
+            callback {o->value(1);
 v->uiView->text_mode();}
-	    tooltip {Text Tool} xywh {33 94 45 35} labelfont 8 labelsize 24 align 32
-	  }
-	  Fl_Button uiMovePic {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->move_pic_mode();
+            tooltip {Text Tool} xywh {33 94 45 35} labelfont 8 labelsize 24 align 32
+          }
+          Fl_Button uiMovePic {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->move_pic_mode();
 o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiScrub->value(0);}
-	    tooltip {Area Select Tool} xywh {82 15 40 35} value 1
-	    code0 {o->image( move_pic );}
-	  }
-	}
-	Fl_Value_Slider uiPenSize {
-	  label {Pen Size}
-	  tooltip {Selects the size of brush.} xywh {37 155 85 25} type Horizontal align 1 minimum 1 maximum 10 step 1 value 5
-	  code0 {o->labelcolor( FL_BLACK );}
-	}
-	Fl_Group {} {
-	  xywh {40 415 84 70}
-	} {
-	  Fl_Button uiUndoDraw {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->undo_draw();
+            tooltip {Area Select Tool} xywh {82 15 40 35} value 1
+            code0 {o->image( move_pic );}
+          }
+        }
+        Fl_Value_Slider uiPenSize {
+          label {Pen Size}
+          tooltip {Selects the size of brush.} xywh {37 155 85 25} type Horizontal align 1 minimum 1 maximum 10 step 1 value 5
+          code0 {o->labelcolor( FL_BLACK );}
+        }
+        Fl_Group {} {
+          xywh {40 415 84 70}
+        } {
+          Fl_Button uiUndoDraw {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->undo_draw();
 
 if ( !v->uiView->has_undo() )
  o->deactivate();}
-	    tooltip {Undo Last Shape Drawn} xywh {40 425 34 35}
-	    code0 {o->image( undo );
+            tooltip {Undo Last Shape Drawn} xywh {40 425 34 35}
+            code0 {o->image( undo );
 if ( !m->uiView->has_undo() )
  o->deactivate();
 else
  o->activate();}
-	  }
-	  Fl_Button uiRedoDraw {
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->redo_draw();
+          }
+          Fl_Button uiRedoDraw {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->redo_draw();
 if ( !v->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-	    tooltip {Redo Previous Shape Drawn} xywh {80 425 34 35}
-	    code0 {o->image( redo );
+            tooltip {Redo Previous Shape Drawn} xywh {80 425 34 35}
+            code0 {o->image( redo );
 if ( !m->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-	  }
-	}
-	Fl_Button uiPenColor {
-	  label {Pen Color}
-	  callback {uchar r, g, b; Fl_Color c = o->color();
+          }
+        }
+        Fl_Button uiPenColor {
+          label {Pen Color}
+          callback {uchar r, g, b; Fl_Color c = o->color();
 Fl::get_color(c,r,g,b);
 if (!fl_color_chooser("Pick Draw Color", r,g,b,3)) return;
 Fl::set_color(c,r,g,b);
@@ -532,49 +533,49 @@ if ( r == 0 && g == 0 && b == 0 )
 else
    o->color( c );
 o->redraw();}
-	  tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 111 labelsize 11 align 4
-	  code0 {o->labelcolor( FL_BLACK );}
-	}
-	Fl_Group {} {
-	  label Frames open
-	  xywh {20 245 120 55} box UP_BOX
-	  code0 {o->labelcolor( FL_BLACK );}
-	} {
-	  Fl_Round_Button uiCurrentFrame {
-	    label Current user_data_type {void*}
-	    xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 8
-	    code0 {o->value(1);}
-	    code1 {o->labelcolor( FL_BLACK );}
-	  }
-	  Fl_Round_Button uiAllFrames {
-	    label All user_data_type {void*}
-	    xywh {40 270 80 20} type Radio down_box ROUND_DOWN_BOX
-	    code0 {o->value(0);}
-	    code1 {o->labelcolor( FL_BLACK );}
-	  }
-	}
-	Fl_Group {} {
-	  label Ghosting open
-	  xywh {20 330 120 85} box UP_BOX
-	  code0 {o->labelcolor( FL_BLACK );}
-	} {
-	  Fl_Counter {} {
-	    label Previous
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->ghost_previous( o->value() );
+          tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 111 labelsize 11 align 4
+          code0 {o->labelcolor( FL_BLACK );}
+        }
+        Fl_Group {} {
+          label Frames open
+          xywh {20 245 120 55} box UP_BOX
+          code0 {o->labelcolor( FL_BLACK );}
+        } {
+          Fl_Round_Button uiCurrentFrame {
+            label Current user_data_type {void*}
+            xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 8
+            code0 {o->value(1);}
+            code1 {o->labelcolor( FL_BLACK );}
+          }
+          Fl_Round_Button uiAllFrames {
+            label All user_data_type {void*}
+            xywh {40 270 80 20} type Radio down_box ROUND_DOWN_BOX
+            code0 {o->value(0);}
+            code1 {o->labelcolor( FL_BLACK );}
+          }
+        }
+        Fl_Group {} {
+          label Ghosting open
+          xywh {20 330 120 85} box UP_BOX
+          code0 {o->labelcolor( FL_BLACK );}
+        } {
+          Fl_Counter {} {
+            label Previous
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
-	    xywh {35 349 95 22} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
-	    code0 {o->labelcolor( FL_BLACK );}
-	  }
-	  Fl_Counter {} {
-	    label Next
-	    user_data m user_data_type {ViewerUI*}
-	    callback {v->uiView->ghost_next( o->value() );
+            xywh {35 349 95 22} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
+            code0 {o->labelcolor( FL_BLACK );}
+          }
+          Fl_Counter {} {
+            label Next
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
-	    xywh {35 389 95 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
-	    code0 {o->labelcolor( FL_BLACK );}
-	  }
-	}
+            xywh {35 389 95 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
+            code0 {o->labelcolor( FL_BLACK );}
+          }
+        }
       }
     }
   }
@@ -598,57 +599,57 @@ class ConnectionUI {} {
 //o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group {} {open
-	xywh {0 0 450 400} box UP_BOX
+        xywh {0 0 450 400} box UP_BOX
       } {
-	Fl_Group uiServerGroup {
-	  label Server open
-	  xywh {15 25 400 75} box ROUNDED_BOX align 5
-	} {
-	  Fl_Value_Input uiServerPort {
-	    label Port
-	    xywh {130 50 70 25} step 1 value 4333
-	  }
-	  Fl_Button uiCreate {
-	    label Create
-	    user_data main user_data_type {ViewerUI*}
-	    callback {if ( strcmp( o->label(), _("Create") ) == 0 )
+        Fl_Group uiServerGroup {
+          label Server open
+          xywh {15 25 400 75} box ROUNDED_BOX align 5
+        } {
+          Fl_Value_Input uiServerPort {
+            label Port
+            xywh {130 50 70 25} step 1 value 4333
+          }
+          Fl_Button uiCreate {
+            label Create
+            user_data main user_data_type {ViewerUI*}
+            callback {if ( strcmp( o->label(), _("Create") ) == 0 )
     mrv::server::create(v);
 else
     mrv::server::remove(v);}
-	    xywh {210 50 100 25}
-	  }
-	}
-	Fl_Group uiClientGroup {
-	  label Client open
-	  xywh {15 125 400 70} box ROUNDED_BOX align 5
-	} {
-	  Fl_Input uiClientServer {
-	    label Server
-	    xywh {80 143 115 30}
-	    code0 {o->value("localhost");}
-	  }
-	  Fl_Value_Input uiClientPort {
-	    label Port
-	    xywh {250 145 70 25} step 1 value 4333
-	  }
-	  Fl_Button uiConnect {
-	    label Connect
-	    user_data main user_data_type {ViewerUI*}
-	    callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
+            xywh {210 50 100 25}
+          }
+        }
+        Fl_Group uiClientGroup {
+          label Client open
+          xywh {15 125 400 70} box ROUNDED_BOX align 5
+        } {
+          Fl_Input uiClientServer {
+            label Server
+            xywh {80 143 115 30}
+            code0 {o->value("localhost");}
+          }
+          Fl_Value_Input uiClientPort {
+            label Port
+            xywh {250 145 70 25} step 1 value 4333
+          }
+          Fl_Button uiConnect {
+            label Connect
+            user_data main user_data_type {ViewerUI*}
+            callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
    mrv::client::create(v);
 else
    mrv::client::remove(v);}
-	    xywh {325 145 85 25}
-	  }
-	}
-	Fl_Group {} {open
-	  xywh {15 205 400 185} box ROUNDED_BOX
-	} {
-	  Fl_Text_Display uiLog {
-	    xywh {30 205 375 180} box FLAT_BOX
-	    class {mrv::LogDisplay}
-	  }
-	}
+            xywh {325 145 85 25}
+          }
+        }
+        Fl_Group {} {open
+          xywh {15 205 400 185} box ROUNDED_BOX
+        } {
+          Fl_Text_Display uiLog {
+            xywh {30 205 375 180} box FLAT_BOX
+            class {mrv::LogDisplay}
+          }
+        }
       }
     }
   }
@@ -696,7 +697,7 @@ class ViewerUI {open
   }
   decl {StereoUI* uiStereo;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
@@ -709,142 +710,142 @@ o->main( this );}
       class {mrv::MainWindow} visible
     } {
       Fl_Pack uiRegion {open
-	xywh {0 0 640 535}
-	class MyPack
+        xywh {0 0 640 535}
+        class MyPack
       } {
-	Fl_Group uiTopBar {open
-	  xywh {0 0 640 28} box ENGRAVED_BOX
-	} {
-	  Fl_Menu_Button uiWindows {
-	    label W
-	    tooltip {Opens different windows} xywh {2 2 25 22}
-	    code0 {o->disable_glyph();}
-	    class {mrv::PopupMenu}
-	  } {
-	    MenuItem {} {
-	      label Reels user_data_type {void*}
-	      callback {uiReelWindow->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Media Info} user_data_type {void*}
-	      callback {uiImageInfo->uiMain->show();
+        Fl_Group uiTopBar {open
+          xywh {0 0 640 28} box ENGRAVED_BOX
+        } {
+          Fl_Menu_Button uiWindows {
+            label W
+            tooltip {Opens different windows} xywh {2 2 25 22}
+            code0 {o->disable_glyph();}
+            class {mrv::PopupMenu}
+          } {
+            MenuItem {} {
+              label Reels user_data_type {void*}
+              callback {uiReelWindow->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Media Info} user_data_type {void*}
+              callback {uiImageInfo->uiMain->show();
 uiView->update_image_info();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Color Info} user_data_type {void*}
-	      callback {uiColorArea->uiMain->show();
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Color Info} user_data_type {void*}
+              callback {uiColorArea->uiMain->show();
 uiView->update_color_info();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {EDL Edit} user_data_type {void*}
-	      callback {uiEDLWindow->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Action Tools} user_data_type {void*}
-	      callback {uiPaint->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label {Stereo 3D Options} user_data_type {void*}
-	      callback {uiStereo->uiMain->show();}
-	      xywh {10 10 100 20}
-	    }
-	    MenuItem {} {
-	      label 3dView user_data_type {void*}
-	      callback {uiGL3dView->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Histogram user_data_type {void*}
-	      callback {uiHistogram->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Vectorscope user_data_type {void*}
-	      callback {uiVectorscope->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Waveform user_data_type {void*}
-	      callback {uiWaveform->uiMain->show();}
-	      xywh {10 10 100 20}
-	    }
-	    MenuItem {} {
-	      label {ICC Profiles} user_data_type {void*}
-	      callback {uiICCProfiles->fill();
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {EDL Edit} user_data_type {void*}
+              callback {uiEDLWindow->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Action Tools} user_data_type {void*}
+              callback {uiPaint->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Stereo 3D Options} user_data_type {void*}
+              callback {uiStereo->uiMain->show();}
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label 3dView user_data_type {void*}
+              callback {uiGL3dView->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Histogram user_data_type {void*}
+              callback {uiHistogram->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Vectorscope user_data_type {void*}
+              callback {uiVectorscope->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Waveform user_data_type {void*}
+              callback {uiWaveform->uiMain->show();}
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label {ICC Profiles} user_data_type {void*}
+              callback {uiICCProfiles->fill();
 uiICCProfiles->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Connections user_data_type {void*}
-	      callback {uiConnection->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Preferences user_data_type {void*}
-	      callback {uiPrefs->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Hotkeys user_data_type {void*}
-	      callback {uiHotkey->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label Logs user_data_type {void*}
-	      callback {uiLog->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	    MenuItem {} {
-	      label About user_data_type {void*}
-	      callback {uiAbout->uiMain->show();}
-	      xywh {0 0 100 20}
-	    }
-	  }
-	  Fl_Group {} {
-	    xywh {30 2 90 23} color 1397969664
-	  } {
-	    Fl_Menu_Button uiColorChannel {
-	      label {(no image)}
-	      user_data this user_data_type {ViewerUI*}
-	      callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Connections user_data_type {void*}
+              callback {uiConnection->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Preferences user_data_type {void*}
+              callback {uiPrefs->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Hotkeys user_data_type {void*}
+              callback {uiHotkey->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Logs user_data_type {void*}
+              callback {uiLog->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label About user_data_type {void*}
+              callback {uiAbout->uiMain->show();}
+              xywh {0 0 100 20}
+            }
+          }
+          Fl_Group {} {
+            xywh {30 2 90 23} color 1397969664
+          } {
+            Fl_Menu_Button uiColorChannel {
+              label {(no image)}
+              user_data this user_data_type {ViewerUI*}
+              callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
-	      tooltip {Allows you to select different image channels or layers.} xywh {30 2 90 22}
-	      class {mrv::PopupMenu}
-	    } {}
-	  }
-	  Fl_Group {} {
-	    xywh {120 1 286 24} color 1397969664
-	  } {
-	    Fl_Box {} {
-	      label Gain
-	      xywh {120 2 33 22} labelsize 12 align 120
-	    }
-	    Fl_Value_Input uiGainInput {
-	      user_data this user_data_type {ViewerUI*}
-	      callback {v->uiView->gain( (float) o->value() );
+              tooltip {Allows you to select different image channels or layers.} xywh {30 2 90 22}
+              class {mrv::PopupMenu}
+            } {}
+          }
+          Fl_Group {} {
+            xywh {120 1 286 24} color 1397969664
+          } {
+            Fl_Box {} {
+              label Gain
+              xywh {120 2 33 22} labelsize 12 align 120
+            }
+            Fl_Value_Input uiGainInput {
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-	      tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.01 value 1
-	      code0 {o->textsize( 12 );}
-	      code1 {o->textcolor( FL_BLACK );}
-	    }
-	    Fl_Slider uiGain {
-	      user_data this user_data_type {ViewerUI*}
-	      callback {v->uiView->gain( (float) o->value() );
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.01 value 1
+              code0 {o->textsize( 12 );}
+              code1 {o->textcolor( FL_BLACK );}
+            }
+            Fl_Slider uiGain {
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
-	      tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.02 maximum 64 step 1 value 1
-	      code0 {o->slider_type( mrv::Slider::kLOG );}
-	      class {mrv::Slider}
-	    }
-	    Fl_Menu_Button uiICS {
-	      label {Input Color Space}
-	      user_data this user_data_type {ViewerUI*}
-	      callback {mrv::media fg = v->uiView->foreground();
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.02 maximum 64 step 1 value 1
+              code0 {o->slider_type( mrv::Slider::kLOG );}
+              class {mrv::Slider}
+            }
+            Fl_Menu_Button uiICS {
+              label {Input Color Space}
+              user_data this user_data_type {ViewerUI*}
+              callback {mrv::media fg = v->uiView->foreground();
 if (!fg) return;
 
 mrv::CMedia* img = fg->image();
@@ -862,25 +863,25 @@ v->uiView->use_lut(true);
 v->uiLUT->value(true);
 o->redraw();
 refresh();} open
-	      tooltip {OCIO input color space for the image} xywh {260 2 146 22} labelsize 12 align 96
-	      class {mrv::PopupMenu}
-	    } {}
-	    Fl_Group uiFstopGroup {open
-	      xywh {260 2 146 22}
-	    } {
-	      Fl_Group {} {open
-		xywh {265 2 95 22}
-	      } {
-		Fl_Button {} {
-		  label {@<}
-		  user_data this user_data_type {ViewerUI*}
-		  callback {v->uiView->exposure_change(-0.5f);}
-		  tooltip {Decrease exposure by 0.5.} xywh {265 5 16 19}
-		}
-		Fl_Button uiFstop {
-		  label {+0.0  f/8.0}
-		  user_data this user_data_type {ViewerUI*}
-		  callback {static float old_gain = 1.0f;
+              tooltip {OCIO input color space for the image} xywh {260 2 146 22} labelsize 12 align 96
+              class {mrv::PopupMenu}
+            } {}
+            Fl_Group uiFstopGroup {open
+              xywh {260 2 146 22}
+            } {
+              Fl_Group {} {open
+                xywh {265 2 95 22}
+              } {
+                Fl_Button {} {
+                  label {@<}
+                  user_data this user_data_type {ViewerUI*}
+                  callback {v->uiView->exposure_change(-0.5f);}
+                  tooltip {Decrease exposure by 0.5.} xywh {265 5 16 19}
+                }
+                Fl_Button uiFstop {
+                  label {+0.0  f/8.0}
+                  user_data this user_data_type {ViewerUI*}
+                  callback {static float old_gain = 1.0f;
 float gain = v->uiView->gain();
 if ( gain == 1.0f )
 {
@@ -895,38 +896,38 @@ v->uiView->gain( 1.0f );
 v->uiGain->value( 1.0f );
 v->uiGainInput->value( 1.0f );
 }}
-		  tooltip {Displays gain as film exposure and fstop.
+                  tooltip {Displays gain as film exposure and fstop.
 Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfont 1
-		  code0 {o->labelsize( 12 );}
-		}
-		Fl_Button {} {
-		  label {@>}
-		  user_data this user_data_type {ViewerUI*}
-		  callback {v->uiView->exposure_change(0.5f);}
-		  tooltip {Increase exposure by 0.5.} xywh {344 5 16 19}
-		}
-	      }
-	      Fl_Button uiNormalize {
-		label Norm
-		user_data this user_data_type {ViewerUI*}
-		callback {v->uiView->toggle_normalize();}
-		tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 2 40 22} align 64
-	      }
-	    }
-	  }
-	  Fl_Group {} {open
-	    xywh {405 2 155 23} color 1397969664
-	  } {
-	    Fl_Group {} {open
-	      xywh {405 2 155 23}
-	    } {
-	      Fl_Group {} {open
-		xywh {405 2 155 23}
-	      } {
-		Fl_Menu_Button gammaDefaults {
-		  label Gamma
-		  user_data this user_data_type {ViewerUI*}
-		  callback {float g = (float) atof( o->child( o->value() )->label() );
+                  code0 {o->labelsize( 12 );}
+                }
+                Fl_Button {} {
+                  label {@>}
+                  user_data this user_data_type {ViewerUI*}
+                  callback {v->uiView->exposure_change(0.5f);}
+                  tooltip {Increase exposure by 0.5.} xywh {344 5 16 19}
+                }
+              }
+              Fl_Button uiNormalize {
+                label Norm
+                user_data this user_data_type {ViewerUI*}
+                callback {v->uiView->toggle_normalize();}
+                tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 2 40 22} align 64
+              }
+            }
+          }
+          Fl_Group {} {open
+            xywh {405 2 155 23} color 1397969664
+          } {
+            Fl_Group {} {open
+              xywh {405 2 155 23}
+            } {
+              Fl_Group {} {open
+                xywh {405 2 155 23}
+              } {
+                Fl_Menu_Button gammaDefaults {
+                  label Gamma
+                  user_data this user_data_type {ViewerUI*}
+                  callback {float g = (float) atof( o->child( o->value() )->label() );
 if ( !mrv::is_equal( g, 0.0f ) )
 {
    v->uiGamma->value(g);
@@ -966,107 +967,107 @@ else
        }
     }
  }}
-		  tooltip {OCIO Display/View or some default gamma settings.} xywh {405 3 50 21} labelsize 12 align 80
-		  class {mrv::PopupMenu}
-		} {
-		  MenuItem {} {
-		    label {2.2}
-		    xywh {0 0 100 20}
-		  }
-		  MenuItem {} {
-		    label {1.8}
-		    xywh {0 0 100 20}
-		  }
-		  MenuItem {} {
-		    label {1.00}
-		    xywh {0 0 100 20}
-		  }
-		  MenuItem {} {
-		    label {0.55}
-		    xywh {0 0 100 20}
-		  }
-		  MenuItem {} {
-		    label {0.45}
-		    xywh {0 0 100 20}
-		  }
-		}
-		Fl_Value_Input uiGammaInput {
-		  user_data this user_data_type {ViewerUI*}
-		  callback {v->uiView->gamma( (float) o->value() );
+                  tooltip {OCIO Display/View or some default gamma settings.} xywh {405 3 50 21} labelsize 12 align 80
+                  class {mrv::PopupMenu}
+                } {
+                  MenuItem {} {
+                    label {2.2}
+                    xywh {0 0 100 20}
+                  }
+                  MenuItem {} {
+                    label {1.8}
+                    xywh {0 0 100 20}
+                  }
+                  MenuItem {} {
+                    label {1.00}
+                    xywh {0 0 100 20}
+                  }
+                  MenuItem {} {
+                    label {0.55}
+                    xywh {0 0 100 20}
+                  }
+                  MenuItem {} {
+                    label {0.45}
+                    xywh {0 0 100 20}
+                  }
+                }
+                Fl_Value_Input uiGammaInput {
+                  user_data this user_data_type {ViewerUI*}
+                  callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
-		  tooltip {Allows you to adjust gamma curve for display.
+                  tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 minimum 0.015625 maximum 64 step 0.01 value 1
-		  code0 {o->textsize(12);}
-		  code1 {o->textcolor( FL_BLACK );}
-		}
-		Fl_Slider uiGamma {
-		  user_data this user_data_type {ViewerUI*}
-		  callback {v->uiView->gamma( (float) o->value() );
+                  code0 {o->textsize(12);}
+                  code1 {o->textcolor( FL_BLACK );}
+                }
+                Fl_Slider uiGamma {
+                  user_data this user_data_type {ViewerUI*}
+                  callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
-		  tooltip {Allows you to adjust gamma curve for display.
+                  tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maximum 4 step 0.01 value 0.25
-		}
-	      }
-	    }
-	  }
-	  Fl_Group {} {
-	    xywh {550 3 80 22}
-	  } {
-	    Fl_Menu_Button uiField {
-	      label F
-	      user_data this user_data_type {ViewerUI*}
-	      callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );}
-	      tooltip {Changes frame/field display} xywh {550 3 25 22}
-	      code0 {o->disable_glyph();}
-	      class {mrv::PopupMenu}
-	    } {
-	      MenuItem {} {
-		label Frame
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {Top Field}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {Bottom Field}
-		xywh {0 0 100 20}
-	      }
-	    }
-	    Fl_Button uiPixelRatio {
-	      label {1:1}
-	      user_data this user_data_type {ViewerUI*}
-	      callback {v->uiView->toggle_pixel_ratio();}
-	      tooltip {Stretch image to compensate for image's pixel ratio.} xywh {570 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
-	    }
-	    Fl_Button uiLUT {
-	      label LUT
-	      user_data this user_data_type {ViewerUI*}
-	      callback {v->uiView->toggle_lut();}
-	      tooltip {Activate viewer's 3D Lut.} xywh {600 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
-	    }
-	  }
-	}
-	Fl_Group uiViewGroup {
-	  xywh {0 28 640 430} resizable
-	  class Fl_Group
-	} {
-	  Fl_Group uiView {
-	    xywh {0 28 640 430}
-	    code0 {o->main(this);}
-	    class {mrv::ImageView}
-	  } {}
-	}
-	Fl_Group uiPixelBar {
-	  xywh {0 458 640 28} box FLAT_BOX color 56 labelcolor 17
-	} {
-	  Fl_Group {} {open
-	    xywh {2 458 634 25}
-	  } {
-	    Fl_Menu_Button uiZoom {
-	      label x1
-	      user_data this user_data_type {ViewerUI*}
-	      callback {int t = o->value();
+                }
+              }
+            }
+          }
+          Fl_Group {} {
+            xywh {550 3 80 22}
+          } {
+            Fl_Menu_Button uiField {
+              label F
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );}
+              tooltip {Changes frame/field display} xywh {550 3 25 22}
+              code0 {o->disable_glyph();}
+              class {mrv::PopupMenu}
+            } {
+              MenuItem {} {
+                label Frame
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {Top Field}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {Bottom Field}
+                xywh {0 0 100 20}
+              }
+            }
+            Fl_Button uiPixelRatio {
+              label {1:1}
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->toggle_pixel_ratio();}
+              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {570 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
+            }
+            Fl_Button uiLUT {
+              label LUT
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->toggle_lut();}
+              tooltip {Activate viewer's 3D Lut.} xywh {600 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
+            }
+          }
+        }
+        Fl_Group uiViewGroup {
+          xywh {0 28 640 430} resizable
+          class Fl_Group
+        } {
+          Fl_Group uiView {
+            xywh {0 28 640 430}
+            code0 {o->main(this);}
+            class {mrv::ImageView}
+          } {}
+        }
+        Fl_Group uiPixelBar {
+          xywh {0 458 640 28} box FLAT_BOX color 56 labelcolor 17
+        } {
+          Fl_Group {} {open
+            xywh {2 458 634 25}
+          } {
+            Fl_Menu_Button uiZoom {
+              label x1
+              user_data this user_data_type {ViewerUI*}
+              callback {int t = o->value();
 float f;
 if ( t < 8 )
 {
@@ -1083,250 +1084,250 @@ f = float(t - 7);
 }
 v->uiView->zoom( f );
 o->value(8);}
-	      tooltip {Image zoom setting.} xywh {5 461 26 20} color 1397969664 labelsize 10 labelcolor 26 align 16 textsize 10
-	      code0 {o->value(10); o->disable_glyph();}
-	      class {mrv::PopupMenu}
-	    } {
-	      MenuItem {} {
-		label {1/9}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/8}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/7}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/6}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/5}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/4}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/3}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label {1/2}
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x1
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x2
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x3
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x4
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x5
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x6
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x7
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x8
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label x9
-		xywh {0 0 100 20}
-	      }
-	      MenuItem {} {
-		label FIT
-		xywh {0 0 100 20}
-	      }
-	    }
-	    Fl_Group {} {open
-	      xywh {31 458 605 25}
-	    } {
-	      Fl_Output uiCoord {
-		label XY
-		tooltip {Image coordinate of pixel under mouse.} xywh {50 461 66 20} box FLAT_BOX color 56 labelfont 4 labelsize 10 labelcolor 17 textsize 10 textcolor 7
-	      }
-	      Fl_Group {} {open
-		xywh {116 458 520 25}
-	      } {
-		Fl_Group {} {open
-		  xywh {116 458 520 25}
-		} {
-		  Fl_Group {} {open
-		    xywh {116 461 230 22}
-		  } {
-		    Fl_Menu_Button uiAColorType {
-		      label RGBA
-		      user_data uiView user_data_type {mrv::ImageView*}
-		      callback {int i = o->value();
+              tooltip {Image zoom setting.} xywh {5 461 26 20} color 1397969664 labelsize 10 labelcolor 26 align 16 textsize 10
+              code0 {o->value(10); o->disable_glyph();}
+              class {mrv::PopupMenu}
+            } {
+              MenuItem {} {
+                label {1/9}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/8}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/7}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/6}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/5}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/4}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/3}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label {1/2}
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x1
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x2
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x3
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x4
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x5
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x6
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x7
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x8
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label x9
+                xywh {0 0 100 20}
+              }
+              MenuItem {} {
+                label FIT
+                xywh {0 0 100 20}
+              }
+            }
+            Fl_Group {} {open
+              xywh {31 458 605 25}
+            } {
+              Fl_Output uiCoord {
+                label XY
+                tooltip {Image coordinate of pixel under mouse.} xywh {50 461 66 20} box FLAT_BOX color 56 labelfont 4 labelsize 10 labelcolor 17 textsize 10 textcolor 7
+              }
+              Fl_Group {} {open
+                xywh {116 458 520 25}
+              } {
+                Fl_Group {} {open
+                  xywh {116 458 520 25}
+                } {
+                  Fl_Group {} {open
+                    xywh {116 461 230 22}
+                  } {
+                    Fl_Menu_Button uiAColorType {
+                      label RGBA
+                      user_data uiView user_data_type {mrv::ImageView*}
+                      callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( o->text(i) );} open
-		      tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).} xywh {116 461 30 20} labelsize 9 align 48
-		      code0 {o->value(0);
+                      tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).} xywh {116 461 30 20} labelsize 9 align 48
+                      code0 {o->value(0);
 o->disable_glyph();}
-		      class {mrv::PopupMenu}
-		    } {
-		      MenuItem {} {
-			label RGBA
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label Hex
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 8bit
-			xywh {0 0 100 20}
-		      }
-		    }
-		    Fl_Output uiPixelR {
-		      tooltip {Red value of image pixel under mouse.} xywh {146 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 1
-		    }
-		    Fl_Output uiPixelG {
-		      tooltip {Green value of image pixel under mouse.} xywh {196 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 2
-		    }
-		    Fl_Output uiPixelB {
-		      tooltip {Blue value of image pixel under mouse.} xywh {246 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 4
-		    }
-		    Fl_Output uiPixelA {
-		      tooltip {Alpha value of image pixel under mouse.} xywh {296 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 7
-		    }
-		  }
-		  Fl_Output uiPixelView {
-		    tooltip {8-bit sample of image pixel under mouse.} xywh {369 460 20 20} box FLAT_BOX color 1397969664
-		  }
-		  Fl_Group {} {
-		    xywh {390 461 174 22}
-		  } {
-		    Fl_Menu_Button uiBColorType {
-		      label HSV
-		      user_data uiView user_data_type {mrv::ImageView*}
-		      callback {int i = o->value();
+                      class {mrv::PopupMenu}
+                    } {
+                      MenuItem {} {
+                        label RGBA
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label Hex
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 8bit
+                        xywh {0 0 100 20}
+                      }
+                    }
+                    Fl_Output uiPixelR {
+                      tooltip {Red value of image pixel under mouse.} xywh {146 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 1
+                    }
+                    Fl_Output uiPixelG {
+                      tooltip {Green value of image pixel under mouse.} xywh {196 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 2
+                    }
+                    Fl_Output uiPixelB {
+                      tooltip {Blue value of image pixel under mouse.} xywh {246 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 4
+                    }
+                    Fl_Output uiPixelA {
+                      tooltip {Alpha value of image pixel under mouse.} xywh {296 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 7
+                    }
+                  }
+                  Fl_Output uiPixelView {
+                    tooltip {8-bit sample of image pixel under mouse.} xywh {369 460 20 20} box FLAT_BOX color 1397969664
+                  }
+                  Fl_Group {} {
+                    xywh {390 461 174 22}
+                  } {
+                    Fl_Menu_Button uiBColorType {
+                      label HSV
+                      user_data uiView user_data_type {mrv::ImageView*}
+                      callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
 v->update_color_info();}
-		      tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {391 461 23 20} labelsize 9 align 48
-		      code0 {o->value(0);
+                      tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {391 461 23 20} labelsize 9 align 48
+                      code0 {o->value(0);
 o->disable_glyph();}
-		      class {mrv::PopupMenu}
-		    } {
-		      MenuItem {} {
-			label HSV
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label HSL
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {XYZ CIE XYZ}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {xyY CIE xyY}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {Lab CIELAB (L*a*b*)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {Luv CIELUV (L*u*v*)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {YUV (Analog PAL)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {YDbDr (Analog SECAM/PAL-N)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {YIQ (Analog NTSC)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {ITU-601 (Digital PAL/NTSC YCbCr)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {ITU-709 (Digital HDTV YCbCr)}
-			xywh {0 0 100 20}
-		      }
-		    }
-		    Fl_Output uiPixelH {
-		      tooltip {Hue value of image pixel under mouse.} xywh {414 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
-		    }
-		    Fl_Output uiPixelS {
-		      tooltip {Saturation value of image pixel under mouse.} xywh {464 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
-		    }
-		    Fl_Output uiPixelV {
-		      tooltip {Value (Intensity) of image pixel under mouse.} xywh {514 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
-		    }
-		  }
-		  Fl_Menu_Button uiPixelValue {
-		    label F
-		    user_data uiView user_data_type {mrv::ImageView*}
-		    callback {int i = o->value();
+                      class {mrv::PopupMenu}
+                    } {
+                      MenuItem {} {
+                        label HSV
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label HSL
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {XYZ CIE XYZ}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {xyY CIE xyY}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {Lab CIELAB (L*a*b*)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {Luv CIELUV (L*u*v*)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {YUV (Analog PAL)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {YDbDr (Analog SECAM/PAL-N)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {YIQ (Analog NTSC)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {ITU-601 (Digital PAL/NTSC YCbCr)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {ITU-709 (Digital HDTV YCbCr)}
+                        xywh {0 0 100 20}
+                      }
+                    }
+                    Fl_Output uiPixelH {
+                      tooltip {Hue value of image pixel under mouse.} xywh {414 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
+                    }
+                    Fl_Output uiPixelS {
+                      tooltip {Saturation value of image pixel under mouse.} xywh {464 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
+                    }
+                    Fl_Output uiPixelV {
+                      tooltip {Value (Intensity) of image pixel under mouse.} xywh {514 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 3
+                    }
+                  }
+                  Fl_Menu_Button uiPixelValue {
+                    label F
+                    user_data uiView user_data_type {mrv::ImageView*}
+                    callback {int i = o->value();
 if ( i < 0 ) return;
 char t[2];
 t[1] = 0;
 t[0] = o->text(i)[0];
 o->copy_label( t );
 v->update_color_info();}
-		    tooltip {Type of pixel values to show:
+                    tooltip {Type of pixel values to show:
 + Full:  pixel with gamma, gain and lut.
 + Gamma: pixel with gamma and gain but no lut.
 + Original: pixel without gamma, gain or lut.} xywh {350 461 18 20} align 48
-		    code0 {o->value(0);
+                    code0 {o->value(0);
 o->disable_glyph();}
-		    class {mrv::PopupMenu}
-		  } {
-		    MenuItem {} {
-		      label Full
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label Gamma
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label Original
-		      xywh {0 0 100 20}
-		    }
-		  }
-		  Fl_Group {} {open
-		    xywh {567 461 65 22}
-		  } {
-		    Fl_Menu_Button uiLType {
-		      label Y
-		      callback {int x = o->value();
+                    class {mrv::PopupMenu}
+                  } {
+                    MenuItem {} {
+                      label Full
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label Gamma
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label Original
+                      xywh {0 0 100 20}
+                    }
+                  }
+                  Fl_Group {} {open
+                    xywh {567 461 65 22}
+                  } {
+                    Fl_Menu_Button uiLType {
+                      label Y
+                      callback {int x = o->value();
 const char* lbl = o->text(x);
 const char name[3] = { lbl[0], lbl[1], 0 };
 o->copy_label( name );}
-		      tooltip {Switch brightness calculation.
+                      tooltip {Switch brightness calculation.
 
 Y (Luminance) is the pixel value according to Rec709:
       Y = 0.2126 R + 0.7152 G + 0.0722 B
@@ -1338,180 +1339,180 @@ L (Lightness) is the human perception of luminance of the image which is non lin
 According to CIE No.15.2:
       L = (116 * Y ^ 1/3 - 16) / 100
 A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).} xywh {567 461 16 20} align 48
-		      code0 {o->value(0);
+                      code0 {o->value(0);
 o->disable_glyph();}
-		      class {mrv::PopupMenu}
-		    } {
-		      MenuItem {} {
-			label {Y (Luminance)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {Y' (Lumma)}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {L (Lightness)}
-			tooltip {Lightness is the human perceptual response to luminance Y, according to CIE No.15.2:
+                      class {mrv::PopupMenu}
+                    } {
+                      MenuItem {} {
+                        label {Y (Luminance)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {Y' (Lumma)}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {L (Lightness)}
+                        tooltip {Lightness is the human perceptual response to luminance Y, according to CIE No.15.2:
 
       L = 116 * (Y/Yn)^1/3 - 16
 
 where Yn is the white reference (usually 1).} xywh {0 0 100 20}
-		      }
-		    }
-		    Fl_Output uiPixelL {
-		      tooltip {Luminance of image pixel under mouse.} xywh {582 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 7
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-	Fl_Group uiBottomBar {open
-	  xywh {0 486 640 49} box ENGRAVED_BOX
-	} {
-	  Fl_Group uiTimeToolbar {open
-	    xywh {0 486 640 49}
-	  } {
-	    Fl_Group {} {open
-	      xywh {0 486 640 49}
-	    } {
-	      Fl_Slider uiTimeline {
-		user_data this user_data_type {ViewerUI*}
-		callback {int64_t frame = (int64_t) o->value();
+                      }
+                    }
+                    Fl_Output uiPixelL {
+                      tooltip {Luminance of image pixel under mouse.} xywh {582 461 50 22} box FLAT_BOX color 56 align 36 textsize 10 textcolor 7
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        Fl_Group uiBottomBar {open
+          xywh {0 486 640 49} box ENGRAVED_BOX
+        } {
+          Fl_Group uiTimeToolbar {open
+            xywh {0 486 640 49}
+          } {
+            Fl_Group {} {open
+              xywh {0 486 640 49}
+            } {
+              Fl_Slider uiTimeline {
+                user_data this user_data_type {ViewerUI*}
+                callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
-		tooltip {Timeline.} xywh {5 489 610 21} type Horizontal minimum 1 maximum 50 step 1 value 1
-		code0 {o->main( this );}
-		class {mrv::Timeline}
-	      }
-	      Fl_Menu_Button uiLoopMode {
-		label L
-		user_data this user_data_type {ViewerUI*}
-		callback {int c = o->value();
+                tooltip {Timeline.} xywh {5 489 610 21} type Horizontal minimum 1 maximum 50 step 1 value 1
+                code0 {o->main( this );}
+                class {mrv::Timeline}
+              }
+              Fl_Menu_Button uiLoopMode {
+                label L
+                user_data this user_data_type {ViewerUI*}
+                callback {int c = o->value();
 o->label(o->text(c));
 v->uiView->looping( (mrv::CMedia::Looping)c );}
-		tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )} xywh {615 488 21 23} align 16
-		code0 {o->disable_glyph();}
-		class {mrv::PopupMenu}
-	      } {
-		MenuItem {} {
-		  label {@||}
-		  xywh {0 0 100 20}
-		}
-		MenuItem {} {
-		  label L
-		  xywh {0 0 100 20}
-		}
-		MenuItem {} {
-		  label {@<->}
-		  xywh {0 0 100 20}
-		}
-	      }
-	      Fl_Group {} {open
-		xywh {0 509 640 26} resizable
-	      } {
-		Fl_Group {} {
-		  xywh {4 513 94 20}
-		} {
-		  Fl_Menu_Button uiTimecodeSwitch {
-		    label {F:}
-		    user_data this user_data_type {ViewerUI*}
-		    callback {mrv::change_timeline_display(v);} open
-		    tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20}
-		    code0 {o->disable_glyph();}
-		    class {mrv::PopupMenu}
-		  } {
-		    MenuItem {} {
-		      label Frames
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label Seconds
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label Time
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label {Non-Drop Frame Timecode}
-		      xywh {0 0 100 20}
-		    }
-		    MenuItem {} {
-		      label {Drop Frame Timecode}
-		      xywh {0 0 100 20}
-		    }
-		  }
-		  Fl_Input uiFrame {
-		    user_data this user_data_type {ViewerUI*}
-		    callback {int64_t f = o->value();
+                tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )} xywh {615 488 21 23} align 16
+                code0 {o->disable_glyph();}
+                class {mrv::PopupMenu}
+              } {
+                MenuItem {} {
+                  label {@||}
+                  xywh {0 0 100 20}
+                }
+                MenuItem {} {
+                  label L
+                  xywh {0 0 100 20}
+                }
+                MenuItem {} {
+                  label {@<->}
+                  xywh {0 0 100 20}
+                }
+              }
+              Fl_Group {} {open
+                xywh {0 509 640 26} resizable
+              } {
+                Fl_Group {} {
+                  xywh {4 513 94 20}
+                } {
+                  Fl_Menu_Button uiTimecodeSwitch {
+                    label {F:}
+                    user_data this user_data_type {ViewerUI*}
+                    callback {mrv::change_timeline_display(v);} open
+                    tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20}
+                    code0 {o->disable_glyph();}
+                    class {mrv::PopupMenu}
+                  } {
+                    MenuItem {} {
+                      label Frames
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label Seconds
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label Time
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {Non-Drop Frame Timecode}
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {Drop Frame Timecode}
+                      xywh {0 0 100 20}
+                    }
+                  }
+                  Fl_Input uiFrame {
+                    user_data this user_data_type {ViewerUI*}
+                    callback {int64_t f = o->value();
 if ( f < v->uiTimeline->minimum() )
    f = int64_t( v->uiTimeline->minimum() );
 else if ( f > v->uiTimeline->maximum() )
    f = int64_t( v->uiTimeline->maximum() );
 v->uiView->seek( f );}
-		    tooltip {Current frame.} xywh {24 513 70 20} color -1733777408 selection_color 0
-		    code0 {o->value(1);}
-		    class {mrv::Timecode}
-		  }
-		}
-		Fl_Group {} {open
-		  xywh {95 511 360 23}
-		} {
-		  Fl_Group {} {open
-		    xywh {95 512 215 22}
-		  } {
-		    Fl_Button {} {
-		      label {@|<}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->first_frame();}
-		      tooltip {Go to the beginning of the sequence.} xywh {98 514 30 18} labelcolor 28
-		    }
-		    Fl_Button uiPlayBackwards {
-		      label {@<}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->play_backwards();}
-		      tooltip {Play sequence backwards.} xywh {128 514 30 18} labelcolor 28
-		    }
-		    Fl_Button {} {
-		      label {@<|}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->step_frame(-1);}
-		      tooltip {Go back one frame.} xywh {158 514 30 18} labelcolor 28
-		    }
-		    Fl_Button {} {
-		      label {@||}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->stop();}
-		      tooltip {Stop playback.} xywh {188 514 30 18} labelcolor 19
-		    }
-		    Fl_Button {} {
-		      label {@|>}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->step_frame(1);}
-		      tooltip {Advance one frame.} xywh {218 514 30 18} labelcolor 28
-		    }
-		    Fl_Button uiPlayForwards {
-		      label {@>}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->play_forwards();}
-		      tooltip {Play sequence forward.} xywh {248 514 30 18} labelcolor 28
-		    }
-		    Fl_Button {} {
-		      label {@>|}
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->last_frame();}
-		      tooltip {Go to the end of the sequence.} xywh {278 514 30 18} labelcolor 28
-		    }
-		  }
-		  Fl_Group {} {open
-		    xywh {315 511 65 21}
-		  } {
-		    Fl_Menu_Button fpsDefaults {
-		      label FPS
-		      user_data this user_data_type {ViewerUI*}
-		      callback {int c = o->value();
+                    tooltip {Current frame.} xywh {24 513 70 20} color -1733777408 selection_color 0
+                    code0 {o->value(1);}
+                    class {mrv::Timecode}
+                  }
+                }
+                Fl_Group {} {open
+                  xywh {95 511 360 23}
+                } {
+                  Fl_Group {} {open
+                    xywh {95 512 215 22}
+                  } {
+                    Fl_Button {} {
+                      label {@|<}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->first_frame();}
+                      tooltip {Go to the beginning of the sequence.} xywh {98 514 30 18} labelcolor 28
+                    }
+                    Fl_Button uiPlayBackwards {
+                      label {@<}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->play_backwards();}
+                      tooltip {Play sequence backwards.} xywh {128 514 30 18} labelcolor 28
+                    }
+                    Fl_Button {} {
+                      label {@<|}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->step_frame(-1);}
+                      tooltip {Go back one frame.} xywh {158 514 30 18} labelcolor 28
+                    }
+                    Fl_Button {} {
+                      label {@||}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->stop();}
+                      tooltip {Stop playback.} xywh {188 514 30 18} labelcolor 19
+                    }
+                    Fl_Button {} {
+                      label {@|>}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->step_frame(1);}
+                      tooltip {Advance one frame.} xywh {218 514 30 18} labelcolor 28
+                    }
+                    Fl_Button uiPlayForwards {
+                      label {@>}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->play_forwards();}
+                      tooltip {Play sequence forward.} xywh {248 514 30 18} labelcolor 28
+                    }
+                    Fl_Button {} {
+                      label {@>|}
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->last_frame();}
+                      tooltip {Go to the end of the sequence.} xywh {278 514 30 18} labelcolor 28
+                    }
+                  }
+                  Fl_Group {} {open
+                    xywh {315 511 65 21}
+                  } {
+                    Fl_Menu_Button fpsDefaults {
+                      label FPS
+                      user_data this user_data_type {ViewerUI*}
+                      callback {int c = o->value();
 
 double g;
 mrv::media fg = v->uiView->foreground();
@@ -1523,117 +1524,117 @@ else
 
 v->uiView->fps( g );
 v->uiFPS->value( g );} open
-		      tooltip {Some default frame rate settings.} xywh {315 513 30 19} labelsize 10 align 16
-		      code0 {o->disable_glyph();}
-		      class {mrv::PopupMenu}
-		    } {
-		      MenuItem {} {
-			label Default
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 60
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {59.94}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 50
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 30
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {29.97}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 25
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 24
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {23.97}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 15
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {14.985}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label {12.5}
-			xywh {0 0 100 20}
-		      }
-		      MenuItem {} {
-			label 12
-			xywh {0 0 100 20}
-		      }
-		    }
-		    Fl_Input uiFPS {
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->fps( o->value() );}
-		      tooltip {Allows you to adjust frame rate playback.} xywh {344 513 35 18} color -1733777408 selection_color 0
-		      code0 {o->textcolor( FL_BLACK );
+                      tooltip {Some default frame rate settings.} xywh {315 513 30 19} labelsize 10 align 16
+                      code0 {o->disable_glyph();}
+                      class {mrv::PopupMenu}
+                    } {
+                      MenuItem {} {
+                        label Default
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 60
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {59.94}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 50
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 30
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {29.97}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 25
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 24
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {23.97}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 15
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {14.985}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label {12.5}
+                        xywh {0 0 100 20}
+                      }
+                      MenuItem {} {
+                        label 12
+                        xywh {0 0 100 20}
+                      }
+                    }
+                    Fl_Input uiFPS {
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->fps( o->value() );}
+                      tooltip {Allows you to adjust frame rate playback.} xywh {344 513 35 18} color -1733777408 selection_color 0
+                      code0 {o->textcolor( FL_BLACK );
 o->value(24);}
-		      class Fl_Value_Input
-		    }
-		  }
-		  Fl_Group {} {open
-		    xywh {382 513 73 19}
-		  } {
-		    Fl_Menu_Button uiAudioTracks {
-		      label A
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->audio_stream( o->value() );}
-		      tooltip {Select Audio Track} xywh {382 513 18 19} labelsize 10
-		      code0 {o->disable_glyph();}
-		      class {mrv::PopupMenu}
-		    } {}
-		    Fl_Slider uiVolume {
-		      user_data this user_data_type {ViewerUI*}
-		      callback {v->uiView->volume((float) o->value() );}
-		      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1 slider_size 0.3
-		    }
-		  }
-		}
-		Fl_Group {} {open
-		  xywh {455 509 180 24}
-		} {
-		  Fl_Input uiStartFrame {
-		    user_data this user_data_type {ViewerUI*}
-		    callback {int64_t f = o->value();
+                      class Fl_Value_Input
+                    }
+                  }
+                  Fl_Group {} {open
+                    xywh {382 513 73 19}
+                  } {
+                    Fl_Menu_Button uiAudioTracks {
+                      label A
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->audio_stream( o->value() );}
+                      tooltip {Select Audio Track} xywh {382 513 18 19} labelsize 10
+                      code0 {o->disable_glyph();}
+                      class {mrv::PopupMenu}
+                    } {}
+                    Fl_Slider uiVolume {
+                      user_data this user_data_type {ViewerUI*}
+                      callback {v->uiView->volume((float) o->value() );}
+                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1 slider_size 0.3
+                    }
+                  }
+                }
+                Fl_Group {} {open
+                  xywh {455 509 180 24}
+                } {
+                  Fl_Input uiStartFrame {
+                    user_data this user_data_type {ViewerUI*}
+                    callback {int64_t f = o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
-		    tooltip {Allows you to set starting frame for timeline.} xywh {475 513 70 20} color -1733777408 selection_color 0
-		    code0 {o->value(1);}
-		    class {mrv::Timecode}
-		  }
-		  Fl_Input uiEndFrame {
-		    user_data this user_data_type {ViewerUI*}
-		    callback {int64_t f = o->value();
+                    tooltip {Allows you to set starting frame for timeline.} xywh {475 513 70 20} color -1733777408 selection_color 0
+                    code0 {o->value(1);}
+                    class {mrv::Timecode}
+                  }
+                  Fl_Input uiEndFrame {
+                    user_data this user_data_type {ViewerUI*}
+                    callback {int64_t f = o->value();
 v->uiTimeline->maximum( double(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
-		    tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
-		    code0 {o->value(50);}
-		    class {mrv::Timecode}
-		  }
-		  Fl_Button uiStartButton {
-		    label S
-		    user_data this user_data_type {ViewerUI*}
-		    callback {double f;
+                    tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
+                    code0 {o->value(50);}
+                    class {mrv::Timecode}
+                  }
+                  Fl_Button uiStartButton {
+                    label S
+                    user_data this user_data_type {ViewerUI*}
+                    callback {double f;
 mrv::CMedia* img = NULL;
 mrv::media fg = v->uiView->foreground();
 if ( fg )
@@ -1657,13 +1658,13 @@ else
 v->uiStartFrame->value( f );
 v->uiTimeline->display_minimum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();} selected
-		    xywh {456 513 20 20} down_box DOWN_BOX align 16
-		  }
-		  Fl_Button uiEndButton {
-		    label E
-		    user_data this user_data_type {ViewerUI*}
-		    callback {double f;
+v->uiTimeline->redraw();}
+                    xywh {456 513 20 20} down_box DOWN_BOX align 16
+                  }
+                  Fl_Button uiEndButton {
+                    label E
+                    user_data this user_data_type {ViewerUI*}
+                    callback {double f;
 if ( !o->value() )
 {
   o->value(1);
@@ -1681,13 +1682,13 @@ v->uiEndFrame->value( f );
 v->uiTimeline->display_maximum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
-		    xywh {546 513 20 20} down_box DOWN_BOX align 16
-		  }
-		}
-	      }
-	    }
-	  }
-	}
+                    xywh {546 513 20 20} down_box DOWN_BOX align 16
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
     code {uiRegion->init_sizes();
@@ -1717,8 +1718,7 @@ mrv::Preferences prefs( uiPrefs );} {}
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {open
-  } {
+  Function {~ViewerUI()} {} {
     code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -1737,8 +1737,7 @@ delete uiHotkey; uiHotkey = NULL;
 delete uiPrefs; uiPrefs = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
   }
-  Function {refresh()} {open
-  } {
+  Function {refresh()} {} {
     code {Fl::check();  // needed to refresh menu
     if ( uiMain ) uiMain->redraw();
 if ( uiPrefs ) uiPrefs->uiMain->redraw();
