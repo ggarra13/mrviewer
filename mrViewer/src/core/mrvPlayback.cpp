@@ -436,20 +436,20 @@ EndStatus handle_loop( boost::int64_t& frame,
                     }
 
 
-
                     img->clear_packets();
                     img->playback( CMedia::kStopped );
                     img->flush_all();
 
-
-                    ImageView::Command c;
-                    c.type = ImageView::kSeek;
-                    c.frame = dts;
-                    view->commands.push_back( c );
-
-                    c.type = ImageView::kPlayForwards;
-                    view->commands.push_back( c );
-
+                    if ( fg )
+                    {
+                        ImageView::Command c;
+                        c.type = ImageView::kSeek;
+                        c.frame = dts;
+                        view->commands.push_back( c );
+                        
+                        c.type = ImageView::kPlayForwards;
+                        view->commands.push_back( c );
+                    }
                 }
 
                 return kEndNextImage;
@@ -462,11 +462,14 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = first;
 
-            ImageView::Command c;
-            c.type = ImageView::kSeek;
-            c.frame = frame;
-            view->commands.push_back( c );
-
+            if ( fg )
+            {
+                ImageView::Command c;
+                c.type = ImageView::kSeek;
+                c.frame = frame;
+                view->commands.push_back( c );
+            }
+            
             status = kEndLoop;
             if ( init_time )
             {
@@ -555,15 +558,16 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     ImageView::Command c;
 
-                    c.type = ImageView::kSeek;
-                    c.frame = dts;
-                    view->commands.push_back( c );
+                    if ( fg )
+                    {
+                        c.type = ImageView::kSeek;
+                        c.frame = dts;
+                        view->commands.push_back( c );
 
-                    c.type = ImageView::kPlayBackwards;
-                    view->commands.push_back( c );
-
-                    img->playback( CMedia::kStopped );
-                    img->flush_all();
+                        c.type = ImageView::kPlayBackwards;
+                        view->commands.push_back( c );
+                    }
+                    
                 }
 
                 return kEndNextImage;
@@ -576,12 +580,14 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = last;
 
-
-            ImageView::Command c;
-            c.type = ImageView::kSeek;
-            c.frame = frame;
-            view->commands.push_back( c );
-
+            if ( fg )
+            {
+                ImageView::Command c;
+                c.type = ImageView::kSeek;
+                c.frame = frame;
+                view->commands.push_back( c );
+            }
+            
             status = kEndLoop;
             if ( init_time )
             {
