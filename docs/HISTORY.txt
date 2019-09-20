@@ -14,7 +14,8 @@ v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	  audio on mp4 containers.
 	- Bug fixed IN/OUT points when in Timeline Shortened Display and
 	  when in Timeline Hilited Display.  You can use the S/E buttons
-	  to set the in/out points.
+	  to set the in/out points.  Note, however, that setting them
+	  while playing the clips can lead to hanging mrViewer.
 	- Added missing flags from v4.x ( -b, -P, --stereo-input,
 	  --stereo-output, etc ).
 
