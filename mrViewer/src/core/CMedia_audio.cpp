@@ -323,7 +323,6 @@ int64_t CMedia::queue_packets( const int64_t frame,
                             got_audio = true;
                             DBGM1( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                             _audio_packets.seek_end(apts);
-                            debug_audio_packets( frame, "is_seek2", true );
                         }
                     }
                     break;
@@ -344,7 +343,6 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     got_audio = true;
                     DBGM1( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
-                    debug_audio_packets( frame, "is_seek3", true );
                  }
             }
 
@@ -1558,6 +1556,12 @@ void CMedia::audio_stream( int idx )
         forw_ctx = NULL;
         _audio_channels = 0;
         _audio_format = AudioEngine::kFloatLSB;
+
+        if ( _acontext )
+        {
+            avformat_close_input( &_acontext );
+            _acontext = NULL;
+        }
     }
 
     clear_stores();
