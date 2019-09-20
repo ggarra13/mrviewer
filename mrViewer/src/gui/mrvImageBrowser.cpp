@@ -1883,6 +1883,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     }
 
     view()->update(true);
+    view()->redraw();
+    Fl::check();
 
     view()->reset_caches(); // Redo preloaded sequence caches
 
@@ -1913,17 +1915,15 @@ void ImageBrowser::load( const mrv::LoadList& files,
         }
         else
         {
-            frame( 1 );
+            frame( img->first_frame() );
         }
     }
 
-    view()->fit_image();
     adjust_timeline();
+    view()->fit_image();
 
-    if ( ( img->has_picture() || !CMedia::preload_cache() ||
-            !CMedia::cache_active() ) &&
-            uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
-            img->first_frame() != img->last_frame() )
+    if ( ( reel->edl || img->first_frame() != img->last_frame() )
+         && uiMain->uiPrefs->uiPrefsAutoPlayback->value() )
     {
         bool b = view()->network_active();
         view()->network_active(true);
