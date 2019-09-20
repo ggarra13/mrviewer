@@ -453,7 +453,10 @@ DBG;
           // Start playback if command line forced us to do so
           if ( opts.play )
           {
+              bool b = ui->uiView->network_active();
+              ui->uiView->network_active(true);
               ui->uiView->play_forwards();
+              ui->uiView->network_active(b);
           }
 
           ok = Fl::run();
