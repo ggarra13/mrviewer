@@ -160,13 +160,6 @@ static void set_clock(Clock *c, double pts, int serial)
 }
 
 
-
-static void set_clock_speed(Clock *c, double speed)
-{
-    set_clock(c, get_clock(c), c->serial);
-    c->speed = speed;
-}
-
 static void init_clock(Clock *c, int *queue_serial)
 {
     c->speed = 1.0;
@@ -446,7 +439,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                         c.type = ImageView::kSeek;
                         c.frame = dts;
                         view->commands.push_back( c );
-                        
+
                         c.type = ImageView::kPlayForwards;
                         view->commands.push_back( c );
                     }
@@ -469,7 +462,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 c.frame = frame;
                 view->commands.push_back( c );
             }
-            
+
             status = kEndLoop;
             if ( init_time )
             {
@@ -567,7 +560,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                         c.type = ImageView::kPlayBackwards;
                         view->commands.push_back( c );
                     }
-                    
+
                 }
 
                 return kEndNextImage;
@@ -587,7 +580,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 c.frame = frame;
                 view->commands.push_back( c );
             }
-            
+
             status = kEndLoop;
             if ( init_time )
             {
