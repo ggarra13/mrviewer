@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -262,7 +261,7 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
     size_t read = fread(buf, 80, 1, file );
     if ( buf[0] != 0 )
     {
-	_attrs.insert( std::make_pair( frame, Attributes() ) );
+        _attrs.insert( std::make_pair( frame, Attributes() ) );
         Imf::StringAttribute attr( buf );
         _attrs[frame].insert( std::make_pair( "Creator", attr.copy() ) );
     }
@@ -508,7 +507,7 @@ bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_
 
 static bool ff_pic_writeScanline(FILE *file, uint32_t *line, uint32_t width)
 {
-    int		same, seqSame, count;
+    int		same, seqSame = 0, count;
     unsigned    k;
     int         i;
     uint8_t	pixel[128][3], col[3];
