@@ -1557,11 +1557,6 @@ void CMedia::audio_stream( int idx )
         _audio_channels = 0;
         _audio_format = AudioEngine::kFloatLSB;
 
-        if ( _acontext )
-        {
-            avformat_close_input( &_acontext );
-            _acontext = NULL;
-        }
     }
 
     clear_stores();
