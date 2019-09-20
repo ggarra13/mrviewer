@@ -366,7 +366,7 @@ Ghosting 5 5
                         filename = self._relative_filename( filename )
                     elif not _is_special(clip) and \
                       clip.media_reference.is_missing_reference:
-                        filename = 'Checkered'
+                        filename = "Checkered - " + clip.name
                     else:
                         filename = 'Black Gap'
                     f.write( "\"{}\" {} {} {} {} {}\n".format( \
