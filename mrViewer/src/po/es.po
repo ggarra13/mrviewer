@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-09-20 16:41-0300\n"
+"POT-Creation-Date: 2019-09-20 18:24-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -2866,7 +2866,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:1425
 msgid "  dts: "
 msgstr ""
 
@@ -2881,7 +2881,7 @@ msgid "  if (abs(diff) > frame_num * %d) {\n"
 msgstr ""
 
 #
-#: core/mrvPlayback.cpp:1301
+#: core/mrvPlayback.cpp:1294
 msgid "  img->frame: "
 msgstr " cuadro "
 
@@ -3033,7 +3033,7 @@ msgstr ""
 msgid " (I)"
 msgstr ""
 
-#: core/picImage.cpp:476
+#: core/picImage.cpp:475
 msgid " (NC="
 msgstr ""
 
@@ -3069,7 +3069,7 @@ msgstr ""
 msgid " +\tc #FFF2A7"
 msgstr ""
 
-#: core/picImage.cpp:475 core/picImage.cpp:491
+#: core/picImage.cpp:474 core/picImage.cpp:490
 msgid " + "
 msgstr ""
 
@@ -3101,11 +3101,11 @@ msgstr ""
 msgid " - "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1079
+#: core/mrvPlayback.cpp:1072
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:717
+#: core/mrvPlayback.cpp:710
 msgid " - decode Error audio frame "
 msgstr " - error de decodificacion del cuadro de audio "
 
@@ -3374,7 +3374,7 @@ msgstr ""
 msgid " = vec3( "
 msgstr ""
 
-#: core/iffImage.cpp:321 core/picImage.cpp:475 core/picImage.cpp:491
+#: core/iffImage.cpp:321 core/picImage.cpp:474 core/picImage.cpp:490
 msgid " > "
 msgstr ""
 
@@ -3410,27 +3410,27 @@ msgstr ""
 msgid " A:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1211
+#: core/mrvPlayback.cpp:1204
 msgid " AC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:791
+#: core/mrvPlayback.cpp:784
 msgid " AUDIO LOOP END/START HAS FRAME "
 msgstr ""
 
-#: core/mrvPlayback.cpp:672 core/mrvPlayback.cpp:845
+#: core/mrvPlayback.cpp:665 core/mrvPlayback.cpp:838
 msgid " AUDIO THREAD "
 msgstr ""
 
-#: core/mrvPlayback.cpp:742
+#: core/mrvPlayback.cpp:735
 msgid " BARRIER IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:750
+#: core/mrvPlayback.cpp:743
 msgid " BARRIER PASSED IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1143
+#: core/mrvPlayback.cpp:1136
 msgid " BARRIER PASSED IN VIDEO stopped? "
 msgstr ""
 
@@ -3454,7 +3454,7 @@ msgstr " No pude abrir el archivo. "
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1348 core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:1341 core/mrvPlayback.cpp:1425
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -3467,7 +3467,7 @@ msgstr ""
 msgid " E: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1212
+#: core/mrvPlayback.cpp:1205
 msgid " EC: "
 msgstr ""
 
@@ -3505,7 +3505,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " IS EXPECTED "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1210
+#: core/mrvPlayback.cpp:1203
 msgid " MC: "
 msgstr ""
 
@@ -3533,7 +3533,7 @@ msgstr ""
 msgid " Scrub"
 msgstr " Fregar"
 
-#: core/mrvPlayback.cpp:1156
+#: core/mrvPlayback.cpp:1149
 msgid " Stopped? "
 msgstr ""
 
@@ -3551,15 +3551,15 @@ msgstr " CNM: %<PRId64> "
 msgid " V:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1209
+#: core/mrvPlayback.cpp:1202
 msgid " VC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1148
+#: core/mrvPlayback.cpp:1141
 msgid " VIDEO LOOP frame: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1048 core/mrvPlayback.cpp:1299
+#: core/mrvPlayback.cpp:1041 core/mrvPlayback.cpp:1292
 msgid " VIDEO THREAD "
 msgstr ""
 
@@ -3601,12 +3601,12 @@ msgstr ""
 msgid " as default"
 msgstr " por defecto"
 
-#: core/mrvPlayback.cpp:1301
+#: core/mrvPlayback.cpp:1294
 msgid " at "
 msgstr " en el puerto "
 
 #
-#: core/mrvPlayback.cpp:1349
+#: core/mrvPlayback.cpp:1342
 msgid " at frame "
 msgstr " cuadro "
 
@@ -3686,7 +3686,7 @@ msgstr ""
 msgid " encoding"
 msgstr " codificando"
 
-#: core/mrvPlayback.cpp:1155
+#: core/mrvPlayback.cpp:1148
 msgid " end: "
 msgstr ""
 
@@ -3761,8 +3761,8 @@ msgid " frame"
 msgstr " cuadro"
 
 #
-#: core/mrvPlayback.cpp:672 core/mrvPlayback.cpp:845 core/mrvPlayback.cpp:1049
-#: core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:665 core/mrvPlayback.cpp:838 core/mrvPlayback.cpp:1042
+#: core/mrvPlayback.cpp:1425
 msgid " frame "
 msgstr " cuadro "
 
@@ -3771,7 +3771,7 @@ msgid " frame offset: "
 msgstr " dif. de cuadro: "
 
 #
-#: core/CMedia.cpp:4354 core/CMedia.cpp:4372 core/mrvPlayback.cpp:1144
+#: core/CMedia.cpp:4354 core/CMedia.cpp:4372 core/mrvPlayback.cpp:1137
 msgid " frame: "
 msgstr " cuadro "
 
@@ -3928,7 +3928,7 @@ msgstr ""
 msgid " red %f %f green %f %f blue %f %f white %f %f"
 msgstr ""
 
-#: core/exrImage.cpp:3452 core/mrvPlayback.cpp:1080
+#: core/exrImage.cpp:3452 core/mrvPlayback.cpp:1073
 msgid " returned "
 msgstr " retornó "
 
@@ -3969,14 +3969,14 @@ msgstr " comienzo "
 msgid " status: "
 msgstr " estatus: "
 
-#: core/mrvPlayback.cpp:1350
+#: core/mrvPlayback.cpp:1343
 msgid " step "
 msgstr " paso "
 
-#: core/CMedia.cpp:2806 core/CMedia.cpp:2818 core/mrvPlayback.cpp:672
-#: core/mrvPlayback.cpp:845 core/mrvPlayback.cpp:947 core/mrvPlayback.cpp:1048
-#: core/mrvPlayback.cpp:1300 core/mrvPlayback.cpp:1348
-#: core/mrvPlayback.cpp:1432
+#: core/CMedia.cpp:2806 core/CMedia.cpp:2818 core/mrvPlayback.cpp:665
+#: core/mrvPlayback.cpp:838 core/mrvPlayback.cpp:940 core/mrvPlayback.cpp:1041
+#: core/mrvPlayback.cpp:1293 core/mrvPlayback.cpp:1341
+#: core/mrvPlayback.cpp:1425
 msgid " stopped? "
 msgstr " detenido? "
 
@@ -4038,8 +4038,8 @@ msgid " video stores  #"
 msgstr "Pista de video inválido "
 
 #
-#: core/mrvPlayback.cpp:1048 core/mrvPlayback.cpp:1301
-#: core/mrvPlayback.cpp:1348 core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:1041 core/mrvPlayback.cpp:1294
+#: core/mrvPlayback.cpp:1341 core/mrvPlayback.cpp:1425
 msgid " view playback "
 msgstr "Detener Playback."
 
@@ -6605,7 +6605,7 @@ msgstr ""
 msgid "' for dpx/cin extension"
 msgstr ""
 
-#: core/picImage.cpp:729
+#: core/picImage.cpp:728
 msgid "' for writing. Reason: "
 msgstr "' para escritura. Razón: "
 
@@ -6681,7 +6681,7 @@ msgstr ""
 msgid "'.\tc #D0C0B2"
 msgstr ""
 
-#: core/picImage.cpp:768 core/picImage.cpp:799
+#: core/picImage.cpp:767 core/picImage.cpp:798
 msgid "'. Reason: "
 msgstr "'. Razón: "
 
@@ -6969,8 +6969,8 @@ msgstr "Tipo de pixel desconocido"
 #: core/CMedia_audio.cpp:1100 core/CMedia_audio.cpp:1679
 #: core/CMedia_audio.cpp:1682 core/CMedia_audio.cpp:2358
 #: core/CMedia_audio.cpp:2370 core/CMedia_audio.cpp:2397
-#: core/CMedia_audio.cpp:2402 core/oiioImage.cpp:156 core/picImage.cpp:476
-#: core/picImage.cpp:492 core/mrvCPU.cpp:337 core/mrvCPU.cpp:428
+#: core/CMedia_audio.cpp:2402 core/oiioImage.cpp:156 core/picImage.cpp:475
+#: core/picImage.cpp:491 core/mrvCPU.cpp:337 core/mrvCPU.cpp:428
 #: core/mrvCPU.cpp:430 core/mrvColorProfile.cpp:214 gui/mrvHotkey.cpp:128
 #: gui/mrvColorInfo.cpp:518 video/mrvGLEngine.cpp:167 video/mrvGLEngine.cpp:170
 msgid ")"
@@ -9141,7 +9141,7 @@ msgstr ""
 msgid ".perfsPerFrame"
 msgstr ""
 
-#: core/wandImage.cpp:1087 core/picImage.cpp:724 core/picImage.cpp:725
+#: core/wandImage.cpp:1087 core/picImage.cpp:723 core/picImage.cpp:724
 #: core/Sequence.cpp:240
 msgid ".pic"
 msgstr ""
@@ -13551,9 +13551,9 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:276
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:175
-#: core/mrvPlayback.cpp:672 core/mrvPlayback.cpp:845 core/mrvPlayback.cpp:1048
-#: core/mrvPlayback.cpp:1299 core/mrvPlayback.cpp:1348
-#: core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:665 core/mrvPlayback.cpp:838 core/mrvPlayback.cpp:1041
+#: core/mrvPlayback.cpp:1292 core/mrvPlayback.cpp:1341
+#: core/mrvPlayback.cpp:1425
 msgid "BG"
 msgstr "FD"
 
@@ -13633,7 +13633,7 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:1021
+#: core/mrvPlayback.cpp:1014
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
@@ -13641,7 +13641,7 @@ msgstr ""
 "funcionar correctamente."
 
 #
-#: core/mrvPlayback.cpp:1028
+#: core/mrvPlayback.cpp:1021
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -13650,13 +13650,13 @@ msgstr ""
 "Los cps de la imagen de fondo ( %lg ) no es igual a la del frente ( %lg ). "
 "Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:1005
+#: core/mrvPlayback.cpp:998
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
 "correctamente."
 
-#: core/mrvPlayback.cpp:995
+#: core/mrvPlayback.cpp:988
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -14828,7 +14828,7 @@ msgid "Could not find four integers for box "
 msgstr "No pude encontrar cuatro enteros para la caja "
 
 #
-#: core/mrvPlayback.cpp:1271
+#: core/mrvPlayback.cpp:1264
 msgid "Could not find image "
 msgstr "No pude encontrar imagen "
 
@@ -15192,7 +15192,7 @@ msgstr "No pude obtener el tamaño del período: %s"
 msgid "Couldn't get software config: %s"
 msgstr "No pude obtener configuración de software: %s"
 
-#: core/picImage.cpp:728
+#: core/picImage.cpp:727
 msgid "Couldn't open '"
 msgstr "No pude abrir '"
 
@@ -15249,7 +15249,7 @@ msgstr "No pude setear el límite del comienzo: %s"
 msgid "Couldn't set/get audio channels"
 msgstr "No pude setear/obtener los canales de audio"
 
-#: core/picImage.cpp:767 core/picImage.cpp:798
+#: core/picImage.cpp:766 core/picImage.cpp:797
 msgid "Couldn't write out to '"
 msgstr "No pude escribir en '"
 
@@ -15363,7 +15363,7 @@ msgstr "Fecha de Creación"
 msgid "Creation Date:    "
 msgstr "Fecha de Creación"
 
-#: core/picImage.cpp:267
+#: core/picImage.cpp:266
 msgid "Creator"
 msgstr "Crear"
 
@@ -16255,23 +16255,23 @@ msgstr ""
 msgid "END"
 msgstr "ROJO"
 
-#: core/mrvPlayback.cpp:672 core/mrvPlayback.cpp:1048 core/mrvPlayback.cpp:1348
+#: core/mrvPlayback.cpp:665 core/mrvPlayback.cpp:1041 core/mrvPlayback.cpp:1341
 msgid "ENTER "
 msgstr ""
 
-#: core/mrvPlayback.cpp:888
+#: core/mrvPlayback.cpp:881
 msgid "ENTER SUBTITLE THREAD "
 msgstr ""
 
-#: core/mrvPlayback.cpp:845
+#: core/mrvPlayback.cpp:838
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1299 core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:1292 core/mrvPlayback.cpp:1425
 msgid "EXIT  "
 msgstr ""
 
-#: core/mrvPlayback.cpp:946
+#: core/mrvPlayback.cpp:939
 msgid "EXIT  SUBTITLE THREAD "
 msgstr ""
 
@@ -16690,9 +16690,9 @@ msgstr ""
 msgid "FFMPEG"
 msgstr ""
 
-#: core/mrvPlayback.cpp:672 core/mrvPlayback.cpp:845 core/mrvPlayback.cpp:1048
-#: core/mrvPlayback.cpp:1299 core/mrvPlayback.cpp:1348
-#: core/mrvPlayback.cpp:1432
+#: core/mrvPlayback.cpp:665 core/mrvPlayback.cpp:838 core/mrvPlayback.cpp:1041
+#: core/mrvPlayback.cpp:1292 core/mrvPlayback.cpp:1341
+#: core/mrvPlayback.cpp:1425
 msgid "FG"
 msgstr "C"
 
@@ -16837,7 +16837,7 @@ msgstr "Buscador de Archivos"
 msgid "File Types"
 msgstr "Tipos"
 
-#: core/picImage.cpp:737
+#: core/picImage.cpp:736
 #, c-format
 msgid "File written by mrViewer."
 msgstr ""
@@ -19733,7 +19733,7 @@ msgstr "Cuadros Faltantes"
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Faltan transformaciones para aces:GradeRef en '"
 
-#: core/picImage.cpp:192
+#: core/picImage.cpp:191
 msgid "Mixed"
 msgstr ""
 
@@ -20185,7 +20185,7 @@ msgstr "Texturas Non-POT:\t"
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:177
 #: core/aviImage_save.cpp:1300 core/aviImage_save.cpp:1331
 #: core/ddsImage.cpp:1240 core/ddsImage.cpp:1241 core/ddsImage.cpp:1242
-#: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:190
+#: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:189
 #: gui/mrvImageInformation.cpp:2882 gui/mrvSave.cpp:270 gui/mrvSave.cpp:271
 #: gui/mrvSave.cpp:281 video/mrvDrawEngine.cpp:476
 msgid "None"
@@ -20814,11 +20814,11 @@ msgstr "Derogar la ganancia interna del visor."
 msgid "Override viewer's default gamma."
 msgstr "Derogar la gama interna del visor."
 
-#: core/picImage.cpp:490
+#: core/picImage.cpp:489
 msgid "Overrun scanline (Raw) ["
 msgstr "Sobre escritura línea (Crudo) ["
 
-#: core/picImage.cpp:474
+#: core/picImage.cpp:473
 msgid "Overrun scanline (Repeat) ["
 msgstr "Sobre escritura línea (Repetir) ["
 
@@ -21654,7 +21654,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:25
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:850
-#: core/exrImage.cpp:123 core/iffImage.cpp:62 core/picImage.cpp:191
+#: core/exrImage.cpp:123 core/iffImage.cpp:62 core/picImage.cpp:190
 msgid "RLE"
 msgstr "RLE"
 
@@ -26190,7 +26190,7 @@ msgstr ""
 msgid "]      c #FFB1FF"
 msgstr ""
 
-#: core/picImage.cpp:492
+#: core/picImage.cpp:491
 msgid "] (NC="
 msgstr ""
 
@@ -28703,7 +28703,7 @@ msgstr "media/completa coma flotante"
 msgid "handle_video_packet_seek error - no seek/preroll packet"
 msgstr ""
 
-#: core/picImage.cpp:253
+#: core/picImage.cpp:252
 msgid "has invalid magic number in the header."
 msgstr "tiene un número mágico inválido en el encabezado."
 
@@ -29017,7 +29017,7 @@ msgstr ""
 msgid "iptc"
 msgstr ""
 
-#: core/picImage.cpp:273
+#: core/picImage.cpp:272
 msgid "is a Softimage file, but not a PIC file."
 msgstr "is un archivo Softimage, pero no un archivo PIC."
 
@@ -30560,7 +30560,7 @@ msgstr ""
 msgid "perfsPerFrame"
 msgstr ""
 
-#: core/picImage.cpp:96 gui/FLU/Flu_File_Chooser.cpp:674
+#: core/picImage.cpp:95 gui/FLU/Flu_File_Chooser.cpp:674
 msgid "pic"
 msgstr ""
 
@@ -30976,7 +30976,7 @@ msgstr ""
 
 #: core/guessImage.cpp:241 core/hdrImage.cpp:413 core/iffImage.cpp:542
 #: core/mapImage.cpp:160 core/mrayImage.cpp:147 core/pxrzImage.cpp:127
-#: core/shmapImage.cpp:125 core/stubImage.cpp:740 core/picImage.cpp:249
+#: core/shmapImage.cpp:125 core/stubImage.cpp:740 core/picImage.cpp:248
 #: video/mrvGLShader.cpp:138
 msgid "rb"
 msgstr ""
@@ -32273,7 +32273,7 @@ msgstr ""
 msgid "waveform"
 msgstr "Forma de Onda"
 
-#: core/picImage.cpp:727
+#: core/picImage.cpp:726
 msgid "wb"
 msgstr ""
 
