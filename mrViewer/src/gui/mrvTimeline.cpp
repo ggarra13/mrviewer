@@ -227,7 +227,7 @@ void Timeline::edl( bool x )
 void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 {
     int x1, y1, x2, y2, dx, dy, w;
-    x1 = x2 = r.x()+(slider_size()-1)/2;
+    x1 = x2 = r.x() + int(slider_size()-1)/2;
     dx = 1;
     y1 = r.y();
     y2 = r.b()-1;
