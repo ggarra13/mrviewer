@@ -1324,7 +1324,7 @@ static bool modify_int( Fl_Int_Input* w, CMedia::Attributes::iterator& i)
 
 static bool modify_float( Fl_Float_Input* w, CMedia::Attributes::iterator& i)
 {
-    Imf::FloatAttribute attr( atof( w->value() ) );
+    Imf::FloatAttribute attr( (float) atof( w->value() ) );
     delete i->second;
     i->second = attr.copy();
     update_float_slider( w );
@@ -1602,7 +1602,7 @@ static void eye_separation_cb( Fl_Float_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->eye_separation( atof( w->value() ) );
+        img->eye_separation( (float) atof( w->value() ) );
         update_float_slider( w );
         info->main()->uiView->redraw();
     }
@@ -1613,7 +1613,7 @@ static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        float f = atof( w->value() );
+        float f = (float) atof( w->value() );
         img->fps( f );
         update_float_slider( w );
     }
@@ -1686,11 +1686,11 @@ static void change_pixel_ratio_cb( Fl_Float_Input* w,
 static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->gamma( atof( w->value() ) );
+    img->gamma( (float) atof( w->value() ) );
     update_float_slider( w );
 
     mrv::ImageView* view = info->main()->uiView;
-    view->gamma( atof( w->value() ) );
+    view->gamma( (float) atof( w->value() ) );
     view->redraw();
 }
 
@@ -2134,9 +2134,9 @@ void ImageInformation::fill_data()
 
 
 
-    int num_video_streams = img->number_of_video_streams();
-    int num_audio_streams = img->number_of_audio_streams();
-    int num_subtitle_streams = img->number_of_subtitle_streams();
+    int num_video_streams = (int) img->number_of_video_streams();
+    int num_audio_streams = (int) img->number_of_audio_streams();
+    int num_subtitle_streams = (int) img->number_of_subtitle_streams();
 
     if ( img->has_video() || img->has_audio() )
     {
@@ -2210,19 +2210,19 @@ void ImageInformation::fill_data()
                (Fl_Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
     add_float( _("X Position"), _("Image X Position in Canvas"),
-               img->x(), true, true,
+               (float)img->x(), true, true,
                (Fl_Callback*)change_x_cb, 0.0f, 720.0f );
 
     add_float( _("Y Position"), _("Image Y Position in Canvas"),
-               img->y(), true, true,
+               (float)img->y(), true, true,
                (Fl_Callback*)change_y_cb, 0.0f, 720.0f );
 
     add_float( _("X Scale"), _("Image X Scale in Canvas"),
-               img->scale_x(), true, true,
+               (float)img->scale_x(), true, true,
                (Fl_Callback*)change_scale_x_cb, 0.00001f, 1.0f );
 
     add_float( _("Y Scale"), _("Image Y Scale in Canvas"),
-               img->scale_y(), true, true,
+               (float)img->scale_y(), true, true,
                (Fl_Callback*)change_scale_y_cb, 0.00001f, 1.0f );
 
     ++group;
@@ -2553,7 +2553,7 @@ void ImageInformation::fill_data()
     if ( num_video_streams > 0 )
     {
         m_video->show();
-        for ( unsigned i = 0; i < num_video_streams; ++i )
+        for ( int i = 0; i < num_video_streams; ++i )
         {
 
             char buf[256];
@@ -2616,7 +2616,7 @@ void ImageInformation::fill_data()
     if ( num_audio_streams > 0 )
     {
         m_audio->show();
-        for ( unsigned i = 0; i < num_audio_streams; ++i )
+        for ( int i = 0; i < num_audio_streams; ++i )
         {
             char buf[256];
 
@@ -2683,7 +2683,7 @@ void ImageInformation::fill_data()
     if ( num_subtitle_streams > 0 )
     {
         m_subtitle->show();
-        for ( unsigned i = 0; i < num_subtitle_streams; ++i )
+        for ( int i = 0; i < num_subtitle_streams; ++i )
         {
             char buf[256];
 

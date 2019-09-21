@@ -998,7 +998,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
     if ( view() ) view()->send_network( buf );
 }
 
-void ImageBrowser::send_current_image( int idx, const mrv::media& m )
+void ImageBrowser::send_current_image( size_t idx, const mrv::media& m )
 {
     if (!m) return;
 
@@ -1058,7 +1058,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
-    int idx = 0;
+    size_t idx = 0;
     for ( ; i != e; ++i, ++idx )
     {
         send_current_image( idx, *i );
