@@ -52,7 +52,11 @@
 #undef stricmp
 
 #if !(defined strcasecmp)
-#  define strcasecmp(a,b) stricmp(a,b)
+#  ifdef _WIN32
+#    define strcasecmp(a,b) _stricmp(a,b)
+#  else
+#    define strcasecmp(a,b) stricmp(a,b)
+#  endif
 #endif
 
 #if !(defined strtok_r)
