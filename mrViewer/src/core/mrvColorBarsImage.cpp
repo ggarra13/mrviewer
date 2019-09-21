@@ -26,6 +26,9 @@
  *
  */
 
+#ifdef _WIN32
+#  pragma warning( disable: 4275 )
+#endif
 
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
