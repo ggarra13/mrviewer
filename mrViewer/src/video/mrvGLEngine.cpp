@@ -113,17 +113,19 @@ const char* kModule = N_("opengl");
 }
 
 
-// #define glPushMatrix() do {                     \
-//     glPushMatrix(); \
-// std::cerr << "push matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
-// } while(0)
+/*
+#define glPushMatrix() do {                     \
+   glPushMatrix(); \
+   std::cerr << "push matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
+} while(0)
+*/
 
-
-// #define glPopMatrix() do {                      \
-//     glPopMatrix(); \
-// std::cerr << "pop matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
-// } while(0)
-
+/*
+#define glPopMatrix() do {                      \
+    glPopMatrix(); \
+ std::cerr << "pop matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
+} while(0)
+*/
 
 
 
@@ -1550,9 +1552,6 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
 
-    double zdeg = 0.0;
-    if ( img ) zdeg = img->rot_z();
-
     draw_rectangle( r, _view->flip(), 0.0 );
 
     glMatrixMode(GL_MODELVIEW);
@@ -1657,8 +1656,6 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    mrv::media fg = _view->foreground();
-    CMedia* img = fg->image();
     draw_rectangle( r, _view->flip(), 0.0 );
     glDisable( GL_LINE_STIPPLE );
     if ( _view->display_window() && !_view->vr() )
@@ -1745,12 +1742,12 @@ void GLEngine::draw_images( ImageList& images )
 
         // Check if there was a change effecting lut.
         if (  (! use_ocio) &&
-             (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-              ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-              ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-              ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
-             ( LUT_quality != lut_quality ) ||
-             ( kNumStops != num_stops) )
+              ((( RT_lut_algorithm != RT_lut_old_algorithm ) ||
+                ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
+                ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+                ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
+               ( LUT_quality != lut_quality ) ||
+               ( kNumStops != num_stops) ))
         {
             if ( !use_ocio )
             {
