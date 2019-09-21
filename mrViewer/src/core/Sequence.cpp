@@ -1018,7 +1018,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
                 if ( root[0] != '/' && root[1] != ':' &&
                      root != "Black Gap" &&
-                     root != "Checkered" &&
+                     root.substr(0,9) != "Checkered" &&
                      root != "SMPTE NTSC Color Bars" &&
                      root != "PAL Color Bars" &&
                      root != "PAL HDTV Color Bars" &&
