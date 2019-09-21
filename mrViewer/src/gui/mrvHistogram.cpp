@@ -221,9 +221,9 @@ void Histogram::count_pixels()
 
             if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
             {
-                engine->evaluate( img,
-                                  (*(Imath::V3f*)&op),
-                                  (*(Imath::V3f*)&rp) );
+                Imath::V3f* iop = (Imath::V3f*)&op;
+                Imath::V3f* irp = (Imath::V3f*)&rp;
+                engine->evaluate( img, (*iop), (*irp) );
             }
             else
             {
@@ -294,7 +294,7 @@ void Histogram::draw_pixels( const mrv::Recti& r )
     for ( int i = 0; i <= W; ++i )
     {
         int x = i + 4;
-        int y1, y2 = 0, y3 = 0;
+        int y1 = 0, y2 = 0, y3 = 0;
 
         idx = int( ((float) i / (float) W) * 255 );
         if ( _channel == kLumma )
