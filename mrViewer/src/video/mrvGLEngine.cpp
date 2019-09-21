@@ -112,6 +112,9 @@ namespace
 const char* kModule = N_("opengl");
 }
 
+#ifdef _WIN32
+#define stricmp _stricmp
+#endif
 
 /*
 #define glPushMatrix() do {                     \
