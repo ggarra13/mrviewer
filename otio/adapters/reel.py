@@ -320,6 +320,8 @@ Ghosting 5 5
         playhead = start_time
 
         for t in range(0, len(audio_tracks) ):
+            if len( audio_tracks[t] ) == 0:
+                continue
             clip = audio_tracks[t][0]
             if not _is_special(clip):
                 start_time = clip.trimmed_range().start_time
