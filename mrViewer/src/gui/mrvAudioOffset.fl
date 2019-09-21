@@ -37,12 +37,12 @@ if ( !fg ) return NULL;
 img = fg->image();
 if ( !img->has_audio() ) return NULL;
 
-o->value( img->audio_offset() );}
+o->value( (double) img->audio_offset() );}
       }
       Fl_Button {} {
 	label OK
 	user_data img user_data_type {mrv::CMedia*}
-	callback {v->audio_offset( uiFrameOffset->value() );
+	callback {v->audio_offset( (int64_t)uiFrameOffset->value() );
 uiMainAudio->hide();}
 	xywh {35 95 70 25}
       }
