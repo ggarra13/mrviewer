@@ -49,6 +49,9 @@ namespace fs = boost::filesystem;
 #include <OpenEXR/ImfThreading.h>
 
 // OpenColorIO
+#ifdef _WIN32
+#pragma warning( disable: 4275 )
+#endif
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
@@ -1184,7 +1187,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     subtitles.get( "font", tmpS, "Arial", 2048 );
     uiPrefs->uiPrefsSubtitleFont->value(0);  // in case no font is found
-    for (int i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
+    for (unsigned i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
     {
         DBG3;
         const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
@@ -1589,10 +1592,10 @@ void Preferences::run( ViewerUI* main )
                 }
             }
 
-            unsigned num_active_displays = active_displays.size();
-            unsigned num_active_views = active_views.size();
+            size_t num_active_displays = active_displays.size();
+            size_t num_active_views = active_views.size();
 
-            for ( int j = 0; j < num_active_displays; ++j )
+            for ( size_t j = 0; j < num_active_displays; ++j )
             {
                 std::string display = active_displays[j];
                 DBG3;
@@ -1603,7 +1606,7 @@ void Preferences::run( ViewerUI* main )
 
                 if ( num_active_views )
                 {
-                    for ( int h = 0; h < num_active_views; ++h )
+                    for ( size_t h = 0; h < num_active_views; ++h )
                     {
                         std::string view;
                         bool add = false;
@@ -1741,7 +1744,7 @@ void Preferences::run( ViewerUI* main )
                 {
         DBG3;
                     w->copy_label( space );
-                    w->value( i );
+                    w->value( (int)i );
                 }
             }
             w->do_callback();
@@ -1799,8 +1802,8 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate();
-        CMedia::audio_cache_size(uiPrefs->uiPrefsCacheSize->value());
-        CMedia::video_cache_size(uiPrefs->uiPrefsCacheSize->value());
+        CMedia::audio_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
+        CMedia::video_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
     }
     else
     {
@@ -1809,7 +1812,7 @@ void Preferences::run( ViewerUI* main )
         CMedia::video_cache_size( 0 );
     }
 
-    Preferences::max_memory = ( uiPrefs->uiPrefsCacheMemory->value() *
+    Preferences::max_memory = ( (int64_t)uiPrefs->uiPrefsCacheMemory->value() *
                                 1000000000 );
 
         DBG3;
@@ -1913,8 +1916,8 @@ void Preferences::run( ViewerUI* main )
         if ( fg )
         {
             Image_ptr img = fg->image();
-            mn = img->first_frame();
-            mx = img->last_frame();
+            mn = (double)img->first_frame();
+            mx = (double)img->last_frame();
         }
     }
     else
@@ -1928,14 +1931,14 @@ void Preferences::run( ViewerUI* main )
         mrv::media fg = reel->images[0];
         mrv::media last = reel->images[ reel->images.size()-1 ];
         if ( fg ) {
-            mn = fg->position();
-            mx = last->position() + last->duration() - 1;
+            mn = (double)fg->position();
+            mx = (double)( last->position() + last->duration() - 1 );
         }
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
         DBG3;
-       main->uiTimeline->minimum( dmn );
+        main->uiTimeline->minimum( dmn );
         main->uiTimeline->maximum( dmx );
     }
     else
@@ -2324,7 +2327,7 @@ void Preferences::save()
 
     Fl_Preferences lut( base, "lut" );
     i = uiPrefs->uiLUT_quality->value();
-    if ( i >= 0 && i < uiPrefs->uiLUT_quality->children() )
+    if ( i >= 0 && i < (int)uiPrefs->uiLUT_quality->children() )
     {
         lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
     }
