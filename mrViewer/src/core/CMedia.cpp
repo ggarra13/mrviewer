@@ -74,6 +74,9 @@ namespace fs = boost::filesystem;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfVecAttribute.h>
 
+#ifdef _WIN32
+#  pragma warning( disable: 4275 )
+#endif
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
@@ -1367,14 +1370,14 @@ void CMedia::display_window( const int xmin, const int ymin,
 {
     // assert( xmax >= xmin );
     // assert( ymax >= ymin );
-    int64_t num = _frame_end - _frame_start + 1;
+    uint64_t num = _frame_end - _frame_start + 1;
     if ( !_displayWindow )
-        _displayWindow = new mrv::Recti[num];
+        _displayWindow = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
     int64_t idx = f - _frame_start;
 
-    if ( idx >= num || idx < 0 ) return;
+    if ( idx >= (int64_t)num || idx < 0 ) return;
 
     // assert( idx < num );
 
@@ -1390,14 +1393,14 @@ void CMedia::display_window2( const int xmin, const int ymin,
 {
     // assert( xmax >= xmin );
     // assert( ymax >= ymin );
-    int64_t num = _frame_end - _frame_start + 1;
+    uint64_t num = _frame_end - _frame_start + 1;
     if ( !_displayWindow2 )
-        _displayWindow2 = new mrv::Recti[num];
+        _displayWindow2 = new mrv::Recti[ (unsigned)num];
 
     int64_t f = frame;
     int64_t idx = f - _frame_start;
 
-    if ( idx >= num || idx < 0 ) return;
+    if ( idx >= (int64_t) num || idx < 0 ) return;
 
     // assert( idx < num );
 
@@ -1413,14 +1416,14 @@ void CMedia::data_window( const int xmin, const int ymin,
 {
     // assert( xmax >= xmin );
     // assert( ymax >= ymin );
-    int64_t num = _frame_end - _frame_start + 1;
+    uint64_t num = _frame_end - _frame_start + 1;
     if ( !_dataWindow )
-        _dataWindow = new mrv::Recti[num];
+        _dataWindow = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
     int64_t idx = f - _frame_start;
 
-    if ( idx >= num || idx < 0 ) return;
+    if ( idx >= (int64_t) num || idx < 0 ) return;
 
     SCOPED_LOCK( _data_mutex );
 
@@ -1438,15 +1441,15 @@ void CMedia::data_window2( const int xmin, const int ymin,
 {
     // assert( xmax >= xmin );
     // assert( ymax >= ymin );
-    int64_t num = _frame_end - _frame_start + 1;
+    uint64_t num = _frame_end - _frame_start + 1;
     assert( num > 0 );
     if ( !_dataWindow2 )
-        _dataWindow2 = new mrv::Recti[num];
+        _dataWindow2 = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
     int64_t idx = f - _frame_start;
 
-    if ( idx >= num || idx < 0 ) return;
+    if ( idx >= (int64_t)num || idx < 0 ) return;
 
     // assert( idx < num );
     SCOPED_LOCK( _data_mutex );
@@ -1550,8 +1553,8 @@ void CMedia::sequence( const char* fileroot,
 
     if ( dynamic_cast< aviImage* >( this ) == NULL )
     {
-        _sequence = new mrv::image_type_ptr[ num ];
-        _right    = new mrv::image_type_ptr[ num ];
+        _sequence = new mrv::image_type_ptr[ (unsigned) num ];
+        _right    = new mrv::image_type_ptr[ (unsigned) num ];
     }
 
     if ( ! initialize() )
@@ -3583,8 +3586,8 @@ uint64_t CMedia::max_image_frames()
     {
         if ( CMedia::memory_used < 0 )
             CMedia::memory_used = 0;
-        return ((Preferences::max_memory - CMedia::memory_used) * 100.0 /
-                (double) _hires->data_size());
+        return (uint64_t)((Preferences::max_memory - CMedia::memory_used) *
+                          100.0 / (double) _hires->data_size());
     }
     uint64_t i = 0;
     uint64_t num = _frame_end - _frame_start + 1;
@@ -3601,8 +3604,8 @@ uint64_t CMedia::max_image_frames()
 
     if ( CMedia::memory_used < 0 )
         CMedia::memory_used = 0;
-    return ((Preferences::max_memory - CMedia::memory_used) * 100.0 / (double)
-            _sequence[i]->data_size());
+    return (uint64_t) ((Preferences::max_memory - CMedia::memory_used) *
+                       100.0 / (double) _sequence[i]->data_size());
 #endif
 }
 
