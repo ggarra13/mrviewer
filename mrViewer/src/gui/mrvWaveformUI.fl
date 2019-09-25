@@ -52,7 +52,7 @@ class WaveformUI {open
 	  Fl_Value_Slider {} {
 	    label Intensity
 	    user_data this user_data_type {WaveformUI*}
-	    callback {v->uiWaveform->intensity( o->value() );
+	    callback {v->uiWaveform->intensity( (float)o->value() );
 v->uiWaveform->redraw();}
 	    xywh {20 22 280 23} type Horizontal align 1 value 0.04
 	  }
