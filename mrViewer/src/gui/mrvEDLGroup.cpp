@@ -100,7 +100,7 @@ bool  EDLGroup::shift_audio( unsigned reel_idx, std::string s,
     for ( int i = 0; i < 2; ++i )
     {
         mrv::media_track* t = (mrv::media_track*)child(i);
-        if ( t->reel() == reel_idx )
+        if ( t->reel() == (int)reel_idx )
         {
             int idx = t->index_for(s);
             if ( idx < 0 ) return false;
@@ -119,7 +119,7 @@ bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s,
     for ( int i = 0; i < 2; ++i )
     {
         mrv::media_track* t = (mrv::media_track*)child(i);
-        if ( t->reel() == reel_idx )
+        if ( t->reel() == (int)reel_idx )
         {
             int idx = t->index_for(s);
             if ( idx < 0 ) return false;
@@ -139,7 +139,7 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
     for ( int i = 0; i < 2; ++i )
     {
         mrv::media_track* t = (mrv::media_track*)child(i);
-        if ( t->reel() == reel_idx )
+        if ( t->reel() == (int)reel_idx )
         {
             int idx = t->index_for(s);
             if ( idx < 0 ) return false;
@@ -445,9 +445,8 @@ int EDLGroup::handle( int event )
 
             for ( ; i != e; ++i )
             {
-                if ( i != one && i != two ) continue;
+                if ( (int)i != one && (int)i != two ) continue;
 
-                mrv::media_track* o = (mrv::media_track*)child(i);
                 mrv::Reel r = browser()->reel_at( i );
                 if (!r) continue;
 
