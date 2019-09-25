@@ -508,7 +508,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         {
             char* attribute;
             const char* tag;
-            long dataset, record, sentinel;
+            long record, sentinel;
 
             size_t i;
             size_t length;
@@ -522,7 +522,6 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                 sentinel = tmp[i++];
                 if (sentinel != 0x1c)
                     continue;
-                dataset = tmp[i++];
                 record  = tmp[i++];
                 switch (record)
                 {
@@ -1120,7 +1119,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     bool has_composite = false;
 
     stringArray::const_iterator i = p->layers().begin();
-    stringArray::const_iterator s = i;
     stringArray::const_iterator e = p->layers().end();
     if ( !opts->all_layers() )
     {
