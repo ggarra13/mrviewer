@@ -102,7 +102,7 @@ b->remove_reel();}
             user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
             callback {if ( o->value() >= 0 && v->media_track(0) )
 {
-   v->media_track(0)->reel( o->value() );
+   v->media_track(0)->reel( (int) o->value() );
    v->redraw();
 }
 else
@@ -156,8 +156,7 @@ b->remove_reel();}
               user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
               callback {if ( o->value() >= 0 && v->media_track(1) )
 {
-   std::cerr << "media track 1" << std::endl;
-   v->media_track(1)->reel( o->value() );
+   v->media_track(1)->reel( (int) o->value() );
    v->redraw();
 }
 else
