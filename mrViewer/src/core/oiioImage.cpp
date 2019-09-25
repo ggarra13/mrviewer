@@ -461,7 +461,6 @@ bool oiioImage::save( const char* path, const CMedia* img,
         {
             config.attribute ( N_("maketx:incolorspace"),
                                img->ocio_input_color_space() );
-            const std::string& display = mrv::Preferences::OCIO_Display;
             const std::string& view = mrv::Preferences::OCIO_View;
             config.attribute ( N_("maketx:outcolorspace"), view.c_str() );
         }
@@ -497,7 +496,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
                 mrv::aligned16_uint8_t* p = pic->data().get();
                 unsigned mult = dw * pic->channels() * pixel_size;
-                unsigned yh = spec.y + dh;
+                int yh = spec.y + dh;
                 for ( int y = spec.y; y < yh; ++y )
                 {
                     mrv::aligned16_uint8_t* line = p;
@@ -511,7 +510,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
                 prepare_image( pic, img, format, pt );
 
                 mrv::aligned16_uint8_t* p = pic->data().get();
-                unsigned yh = spec.y + dh;
+                int yh = spec.y + dh;
                 unsigned mult = dw * pic->channels() * pixel_size;
                 for ( int y = spec.y; y < yh; ++y )
                 {
