@@ -1430,10 +1430,10 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     mrv::Recti dpw2;
     if ( bimg) {
         dpw2 = bimg->display_window();
-        dpw2.x( dpw2.x() + bimg->x() );
-        dpw2.y( dpw2.y() - bimg->y() );
-        dpw2.w( dpw2.w() * bimg->scale_x() );
-        dpw2.h( dpw2.h() * bimg->scale_y() );
+        dpw2.x( dpw2.x() + (int)bimg->x() );
+        dpw2.y( dpw2.y() - (int)bimg->y() );
+        dpw2.w( (int) (dpw2.w() * bimg->scale_x()) );
+        dpw2.h( (int) (dpw2.h() * bimg->scale_y()) );
     }
     mrv::Recti dpw = img->display_window();
 
@@ -1445,8 +1445,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     double x = dpw.x();
     double y = dpw.y();
-    int tw = dpw.w() / 2.0;
-    int th = dpw.h() / 2.0;
+    int tw = dpw.w() / 2;
+    int th = dpw.h() / 2;
 
     dpw.merge( dpw2 );
 
@@ -1458,8 +1458,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     translate(  x + tw, - y - th, 0 );
 
 
-    tw *= percentX;
-    th *= percentY;
+    tw = (int)( tw * percentX );
+    th = (int)( th * percentY );
 
     draw_safe_area_inner( tw, th, name );
 
@@ -1633,8 +1633,8 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     }
     else
     {
-        int xi = round(img->x());
-        int yi = round(img->y());
+        int xi = (int)round(img->x());
+        int yi = (int)round(img->y());
         sprintf( buf, "Pos: %d, %d", xi, yi );
     }
 
@@ -1890,8 +1890,8 @@ void GLEngine::draw_images( ImageList& images )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
                 texHeight = dpw.h();
-                daw.x( img->x() + daw.x() );
-                daw.y( daw.y() - img->y() );
+                daw.x( (int)img->x() + daw.x() );
+                daw.y( daw.y() - (int)img->y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
             }
@@ -1912,8 +1912,8 @@ void GLEngine::draw_images( ImageList& images )
         if ( texWidth == 0 ) texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
 
-        texWidth *= img->scale_x();
-        texHeight *= img->scale_y();
+        texWidth  = int( texWidth * img->scale_x() );
+        texHeight = int( texHeight * img->scale_y() );
 
         ImageView::FlipDirection flip = _view->flip();
 
@@ -1933,8 +1933,8 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( _view->display_window() )
             {
-                int x = img->x();
-                int y = img->y();
+                int x = (int)img->x();
+                int y = (int)img->y();
                 draw_square_stencil( dpw.x() - x, dpw.y() + y,
                                      dpw.w() + x, dpw.h() - y );
             }
@@ -2156,13 +2156,13 @@ void GLEngine::draw_images( ImageList& images )
                               !( stereo & CMedia::kStereoInterlaced ) &&
                               !( _view->vr() ) ) )
                     {
-                        int x = img->x();
-                        int y = img->y();
-            CHECK_GL;
+                        int x = (int) img->x();
+                        int y = (int) img->y();
+                        CHECK_GL;
                         draw_square_stencil( dpw.x() + x,
                                              dpw.y() - y, dpw.w() - x,
                                              dpw.h() + y );
-            CHECK_GL;
+                        CHECK_GL;
                     }
 
                     if ( _view->data_window() )
@@ -2177,9 +2177,9 @@ void GLEngine::draw_images( ImageList& images )
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() - y,
                                       daw2.w(), daw2.h() );
-            CHECK_GL;
+                        CHECK_GL;
                         draw_data_window( r );
-            CHECK_GL;
+                        CHECK_GL;
                     }
                 }
 
@@ -2207,9 +2207,9 @@ void GLEngine::draw_images( ImageList& images )
                     texHeight = pic->height();
                 }
 
-            CHECK_GL;
+                CHECK_GL;
                 prepare_image( img, daw2, texWidth, texHeight, _view );
-            CHECK_GL;
+                CHECK_GL;
             }
         }
         else if ( img->left() || img->has_subtitle() )
@@ -2220,9 +2220,9 @@ void GLEngine::draw_images( ImageList& images )
             if ( shader_type() == kNone && img->stopped() &&
                  pic->pixel_type() != image_type::kByte )
             {
-            CHECK_GL;
+                CHECK_GL;
                 pic = display( pic, img );
-            CHECK_GL;
+                CHECK_GL;
             }
 
         }
@@ -2317,25 +2317,23 @@ void GLEngine::draw_images( ImageList& images )
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
-            CHECK_GL;
-            glDisable( GL_DEPTH );
+            glDisable( GL_DEPTH_TEST );
             CHECK_GL;
             glDisable( GL_STENCIL_TEST );
-    CHECK_GL;
+            CHECK_GL;
             glDisable( GL_TEXTURE_2D );
             CHECK_GL;
             glDisable( GL_TEXTURE_3D );
             CHECK_GL;
             glEnable(GL_BLEND);
-    CHECK_GL;
+            CHECK_GL;
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             CHECK_GL;
             glLineWidth( 50.0 );
-    CHECK_GL;
+            CHECK_GL;
             glColor4f( 1.0f, 0.f, 0.f, 0.5f );
             CHECK_GL;
             glBegin(GL_LINES);
-    CHECK_GL;
             glVertex2d( -0.5, -0.5 );
             glVertex2d( 0.5, 0.5 );
             glVertex2d( 0.5, -0.5 );
@@ -2343,15 +2341,15 @@ void GLEngine::draw_images( ImageList& images )
             glEnd();
             CHECK_GL;
             glDisable( GL_BLEND );
-    CHECK_GL;
-            glEnable( GL_DEPTH );
             CHECK_GL;
             glEnable( GL_STENCIL_TEST );
-    CHECK_GL;
+            CHECK_GL;
             glEnable( GL_TEXTURE_2D );
             CHECK_GL;
             glEnable( GL_TEXTURE_3D );
-    CHECK_GL;
+            CHECK_GL;
+            glEnable( GL_DEPTH_TEST );
+            FLUSH_GL_ERRORS;
         }
 
 
@@ -3181,40 +3179,40 @@ enum tone_mapping {
 
 // Average light level for SDR signals. This is equal to a signal level of 0.5
 // under a typical presentation gamma of about 2.0.
-static const float sdr_avg = 0.25;  // <- was 0.25
+static const float sdr_avg = 0.25f;  // <- was 0.25
 
 // The threshold for which to consider an average luminance difference to be
 // a sign of a scene change.
-static const int scene_threshold = 0.2 * MP_REF_WHITE;
+static const int scene_threshold = int(0.2 * MP_REF_WHITE);
 
 
 // How many frames to average over for HDR peak detection
 #define PEAK_DETECT_FRAMES 100
 
 // Common constants for SMPTE ST.2084 (HDR)
-static const float PQ_M1 = 2610./4096 * 1./4,
-                   PQ_M2 = 2523./4096 * 128,
-                   PQ_C1 = 3424./4096,
-                   PQ_C2 = 2413./4096 * 32,
-                   PQ_C3 = 2392./4096 * 32;
+static const float PQ_M1 = 2610.f/4096.f * 1.f/4,
+                   PQ_M2 = 2523.f/4096.f * 128,
+                   PQ_C1 = 3424.f/4096.f,
+                   PQ_C2 = 2413.f/4096.f * 32,
+                   PQ_C3 = 2392.f/4096.f * 32;
 
 // Common constants for ARIB STD-B67 (HLG)
-static const float HLG_A = 0.17883277,
-                   HLG_B = 0.28466892,
-                   HLG_C = 0.55991073;
+static const float HLG_A = 0.17883277f,
+                   HLG_B = 0.28466892f,
+                   HLG_C = 0.55991073f;
 
 // Common constants for Panasonic V-Log
-static const float VLOG_B = 0.00873,
-                   VLOG_C = 0.241514,
-                   VLOG_D = 0.598206;
+static const float VLOG_B = 0.00873f,
+                   VLOG_C = 0.241514f,
+                   VLOG_D = 0.598206f;
 
 // Common constants for Sony S-Log
-static const float SLOG_A = 0.432699,
-                   SLOG_B = 0.037584,
-                   SLOG_C = 0.616596 + 0.03,
-                   SLOG_P = 3.538813,
-                   SLOG_Q = 0.030001,
-                   SLOG_K2 = 155.0 / 219.0;
+static const float SLOG_A = 0.432699f,
+                   SLOG_B = 0.037584f,
+                   SLOG_C = 0.616596f + 0.03f,
+                   SLOG_P = 3.538813f,
+                   SLOG_Q = 0.030001f,
+                   SLOG_K2 = 155.0f / 219.0f;
 
 
 static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
@@ -3244,7 +3242,7 @@ static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
         GLSL(
     })
 
-    const float refi = 1.0 / MP_REF_WHITE;
+    const double refi = 1.0 / MP_REF_WHITE;
 
     // Update the sig_peak/sig_avg from the old SSBO state
     GLSL(uint num_wg = gl_NumWorkGroups.x * gl_NumWorkGroups.y;)
@@ -3371,7 +3369,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     // Do this after peak detection in order to prevent over-desaturating
     // overly bright souces
     if (desat > 0) {
-        float base = 0.18 * dst_peak;
+        double base = 0.18 * dst_peak;
         GLSL(float luma = dot(dst_luma, c.rgb);)
         GLSLF("float coeff = max(sig - %f, 1e-6) / max(sig, 1e-6);\n", base);
         GLSLF("coeff = pow(coeff, %f);\n", 10.0 / desat);
@@ -3398,8 +3396,8 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
         break;
 
     case TONE_MAPPING_REINHARD: {
-        float contrast = isnan(param) ? 0.5 : param,
-              offset = (1.0 - contrast) / contrast;
+        double contrast = isnan(param) ? 0.5 : param,
+                 offset = (1.0 - contrast) / contrast;
         GLSLF("sig = sig / (sig + %f);\n", offset);
         GLSLF("float scale = (sig_peak + %f) / sig_peak;\n", offset);
         GLSL(sig *= scale;)
@@ -3407,7 +3405,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_HABLE: {
-        float A = 0.15, B = 0.50, C = 0.10, D = 0.20, E = 0.02, F = 0.30;
+        double A = 0.15, B = 0.50, C = 0.10, D = 0.20, E = 0.02, F = 0.30;
         GLSLHF("float hable(float x) {\n");
         GLSLHF("return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n",
                A, C*B, D*E, A, B, D*F, E/F);
@@ -3417,7 +3415,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_GAMMA: {
-        float gamma = isnan(param) ? 1.8 : param;
+        double gamma = isnan(param) ? 1.8 : param;
         GLSLF("const float cutoff = 0.05, gamma = %f;\n", 1.0/gamma);
         GLSL(float scale = pow(cutoff / sig_peak, gamma) / cutoff;)
         GLSL(sig = sig > cutoff ? pow(sig / sig_peak, gamma) : scale * sig;)
@@ -3425,7 +3423,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_LINEAR: {
-        float coeff = isnan(param) ? 1.0 : param;
+        double coeff = isnan(param) ? 1.0 : param;
         GLSLF("sig = %f / sig_peak * sig;\n", coeff);
         break;
     }
