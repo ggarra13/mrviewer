@@ -57,6 +57,9 @@ extern "C" {
 #include <MagickWand/MagickWand.h>
 
 
+#ifdef _WIN32
+#pragma warning( disable: 4800 4244 )
+#endif
 #include <OpenImageIO/argparse.h>
 #include <OpenImageIO/imageio.h>
 #include <OpenImageIO/imagebuf.h>
@@ -69,6 +72,9 @@ extern "C" {
 #include <OpenImageIO/timer.h>
 #include <OpenImageIO/oiioversion.h>
 
+#ifdef _WIN32
+#pragma warning( disable: 4275 )
+#endif
 #include <OpenColorIO/OpenColorIO.h>
 
 
