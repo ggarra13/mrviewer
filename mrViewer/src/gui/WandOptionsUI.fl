@@ -111,7 +111,6 @@ _all_layers = uiAllLayers->value();} {}
   }
   Function {WandOptionsUI(const ViewerUI* main, bool aces, bool all_layers) : mrv::WandOpts(aces, all_layers)} {} {
     code {Fl_Window* w = make_window(aces, all_layers);
-      mrv::MainWindow* m = main->uiMain;
       w->set_modal();
       w->show();
       while ( w->visible() )
