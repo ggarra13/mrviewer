@@ -108,7 +108,7 @@ static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
 
     p = codec->supported_samplerates;
     while (*p) {
-        if ( *p == sample_rate )
+        if ( *p == (int)sample_rate )
             return *p;
         best_samplerate = FFMAX(*p, best_samplerate);
         p++;
@@ -118,7 +118,7 @@ static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
 
 static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
 {
-    AVSampleFormat r;
+    AVSampleFormat r = AV_SAMPLE_FMT_S16P;
     if ( input == AV_SAMPLE_FMT_FLT )
         r = AV_SAMPLE_FMT_FLTP;
     else if ( input == AV_SAMPLE_FMT_S16 )
@@ -952,8 +952,6 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
 
 
 
-static AVFrame *frame;
-
 static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
                        const CMedia* img, const AviSaveUI* opts )
 {
@@ -1043,8 +1041,6 @@ static void close_video(AVFormatContext *oc, AVStream *st)
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
 
-    CMedia* m = (CMedia*) img;
-
     image_type_ptr hires = img->left();
 
     if ( !hires )
@@ -1057,8 +1053,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     unsigned w = c->width;
     unsigned h = c->height;
 
-    if ( hires->width() < w )  w = hires->width();
-    if ( hires->height() < h ) h = hires->height();
+    if ( hires->width() != w )  w = hires->width();
+    if ( hires->height() != h ) h = hires->height();
 
     float one_gamma = 1.0f / img->gamma();
 
