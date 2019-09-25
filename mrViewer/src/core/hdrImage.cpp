@@ -383,7 +383,7 @@ void hdrImage::colr2color( Pixel& col, COLR clr )
     col.a = 1.0;
 
     if (clr[EXP] == 0)
-        col.r = col.r = col.b = 0.0;
+        col.r = col.g = col.b = 0.0;
     else {
         f = ldexp(1.0, (int)clr[EXP]-(COLXS+8));
         col.r = float( (clr[RED] + 0.5)*f );
@@ -405,7 +405,7 @@ bool hdrImage::save( const boost::int64_t frame )
  * @return true if success, false if not
  */
 bool hdrImage::fetch( mrv::image_type_ptr& canvas,
-		      const boost::int64_t frame )
+                      const boost::int64_t frame )
 {
 
     try {
@@ -415,7 +415,7 @@ bool hdrImage::fetch( mrv::image_type_ptr& canvas,
 
         read_header(f);
         allocate_pixels(canvas, frame, 4, image_type::kRGBA,
-			image_type::kFloat );
+                        image_type::kFloat );
 
         unsigned w = width();
         COLR* scanline = (COLR*) malloc( sizeof(COLR) * w );
