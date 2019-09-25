@@ -2858,7 +2858,7 @@ again:
     {
         int64_t x = c.frame;
         NET( "TimelineMax " << x );
-        uiMain->uiTimeline->maximum( x );
+        uiMain->uiTimeline->maximum( double(x) );
         uiMain->uiTimeline->redraw();
         uiMain->uiEndFrame->value( x );
         uiMain->uiEndFrame->redraw();
@@ -4086,8 +4086,8 @@ int ImageView::leftMouseDown(int x, int y)
                         yp >= 0 && ( yp < pic->height()*img->scale_y() ) )
                 {
                     Imath::V2i pt( xp, yp );
-                    int W = pic->width() * img->scale_x();
-                    int H = pic->height() * img->scale_y();
+                    int W = int( pic->width() * img->scale_x() );
+                    int H = int( pic->height() * img->scale_y() );
                     const int kSize = 30;
                     Imath::V2i v1( W, H );
                     Imath::V2i v2( W-kSize, H );
@@ -4167,6 +4167,10 @@ int ImageView::leftMouseDown(int x, int y)
                     return 1;
                 }
 
+            }
+            else
+            {
+                return 1;
             }
 
 
@@ -6940,7 +6944,7 @@ void ImageView::toggle_presentation()
         uiMain->uiRegion->layout();
 #ifdef _WIN32
         float scale = Fl::screen_scale( window()->screen_num() );
-        resize( X, Y, W, H + 40 * scale );  // @BUG: We need +40 to cover bottom strip
+        resize( X, Y, W, H + int(40 * scale) );  // @BUG: We need +40 to cover bottom strip
 #endif
         uiMain->uiRegion->init_sizes();
     }
@@ -7113,11 +7117,11 @@ int ImageView::handle(int event)
              ( CMedia::preload_cache() ||
                uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
         {
-            unsigned _reel = b->number_of_reels();
-            unsigned i = b->reel_index();
+            size_t _reel = b->number_of_reels();
+            size_t i = b->reel_index();
             for ( ; i < b->number_of_reels(); ++i )
             {
-                mrv::Reel r = b->reel_at( i );
+                mrv::Reel r = b->reel_at( unsigned(i) );
                 if (!r) continue;
 
                 mrv::media fg = r->media_at( frame() );
@@ -7231,7 +7235,7 @@ int ImageView::handle(int event)
             return 1;
         }
 
-        mouseMove(X, Y);
+        mouseMove(int(X), int(Y));
 
         if ( _mode == kDraw || _mode == kErase )
             redraw();
@@ -7608,7 +7612,6 @@ void ImageView::channel( unsigned short c )
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
-            bool found = false;
             uiColorChannel->menu_end();
             num = uiColorChannel->children();
             for ( unsigned short i = 0; i < num; ++i, ++c )
@@ -8578,21 +8581,21 @@ void ImageView::resize_main_window()
     if ( uiMain->uiTopBar->visible() )
     {
         uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                                28 * scale );
+                                int(28 * scale) );
         h += uiMain->uiTopBar->h();
     }
 
     if ( uiMain->uiPixelBar->visible() )
     {
         uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                                  28 * scale );
+                                  int(28 * scale) );
         h += uiMain->uiPixelBar->h();
     }
 
     if ( uiMain->uiBottomBar->visible() )
     {
         uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-                                  49 * scale );
+                                   int(49 * scale) );
         h += uiMain->uiBottomBar->h();
     }
 
@@ -8669,13 +8672,13 @@ void ImageView::resize_main_window()
 #endif
 
    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                           28 * scale );
+                           int(28 * scale) );
 
    uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                             28 * scale );
+                             int(28 * scale) );
 
    uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-                              49 * scale );
+                              int(49 * scale) );
 
    uiMain->uiRegion->layout();
    uiMain->uiRegion->init_sizes();
