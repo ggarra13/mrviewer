@@ -946,7 +946,6 @@ CMedia::~CMedia()
         }
     }
 
-
     _context = _acontext = NULL;
 }
 
