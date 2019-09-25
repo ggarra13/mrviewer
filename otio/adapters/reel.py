@@ -28,6 +28,15 @@
 This adapter requires the use of the stand-alone ffprobe utility that comes
 with ffmpeg.  It should be in the user's PATH.
 
+The converter allows the optional:
+  relative_paths = False
+setting to return absolute paths instead of relative ones.
+
+You call them with otioconvert, like:
+
+otioconvert -a relative_paths = False -i input.reel -o output.otio
+otioconvert -i input.otio -o output.reel -A relative_paths = False
+
 """
 import os
 import sys
@@ -229,6 +238,13 @@ class Otio2Reel(object):
 #
 # Date: {}
 #
+# Format is:
+#   "clip filename" first last start end fps
+#
+# where first and last refer to the visible range,
+# while start and end refer to the whole clip (with handles)
+# Finally, fps refers to the frames per second to play the clip at.
+#
 
 Version 4.0
 Ghosting 5 5
@@ -250,8 +266,8 @@ Ghosting 5 5
     being saved.
     """
     def _relative_filename( self, filename ):
-        if filename == 'Checkered':
-            return filename
+        if filename.startswith( 'Checkered' ):
+            return filename[12:]
         if filename[0] != '/' and filename[1] != ':':
             filename = os.path.abspath( filename )
         if not self.relative_paths:
@@ -436,8 +452,8 @@ class Reel2Otio(object):
     done with strings.  Under python3.5, the method should work reliably.
     """
     def _relative_filename( self, filename ):
-        if filename == 'Checkered':
-            return filename
+        if filename.startswith( 'Checkered - ' ):
+            return filename[12:]
         if filename[0] != '/' and filename[1] != ':' \
           and not self.relative_paths:
             filename = os.path.abspath( filename )
@@ -550,7 +566,7 @@ class Reel2Otio(object):
         has_gap   = False
         has_pic   = True
 
-        r = re.compile( r"^\"(Black Gap|Checkered)\"\s+(\d+)\s+(\d+)\s+(\d+)?\s+(\d+)\s+([+-]?\d*\.?\d*)?$" )
+        r = re.compile( r"^\"(Black Gap|Checkered.*)\"\s+(\d+)\s+(\d+)\s+(\d+)?\s+(\d+)\s+([+-]?\d*\.?\d*)?$" )
         obj = re.match(r, line)
         if obj:
             self.media_path = obj.group(1)
@@ -562,7 +578,8 @@ class Reel2Otio(object):
             has_video = True
             if self.media_path == 'Black Gap':
                 has_gap = True
-            elif self.media_path == 'Checkered':
+            elif self.media_path.startswith( 'Checkered' ):
+                self.media_path = self.media_path[12:]
                 has_pic = False
         else:
             has_video, has_audio = self._find_video_audio_line( line )
@@ -773,11 +790,11 @@ class Reel2Otio(object):
     OpenTimeline: An OpenTimeline object
     """
 
-def read_from_file(filepath, relative_paths = False ):
+def read_from_file(filepath, relative_paths = True ):
     input_str = "".join( open( filepath, 'r' ).readlines() )
     return Reel2Otio(input_str, filepath, relative_paths).to_otio()
 
-def write_to_file(input_otio, filepath, relative_paths = False ):
+def write_to_file(input_otio, filepath, relative_paths = True ):
     """
     Necessary write method for otio adapter
 
