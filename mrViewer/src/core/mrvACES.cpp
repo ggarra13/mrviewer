@@ -30,6 +30,9 @@ std::string aces_xml_filename( const char* file )
     fs::path f = root;
     std::string filename = f.filename().string();
 
+    if ( !fs::exists( f ) )
+        return "";
+
     std::string xml;
     xml = fs::canonical( fs::absolute( f ).parent_path() ).string();
     if ( ! xml.empty() ) xml += "/";
