@@ -142,6 +142,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, i.first );
         img->cache( canvas );
@@ -178,6 +179,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
@@ -213,6 +215,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
@@ -246,6 +249,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
@@ -280,6 +284,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
@@ -313,6 +318,7 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
+        img->internal( true );
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
@@ -352,6 +358,7 @@ static mrv::media gamma_chart( mrv::LoadInfo& i, mrv::ImageBrowser* b,
     img->last_frame( i.last );
     img->fps( i.fps );
     img->play_fps( i.fps );
+    img->internal( true );
     mrv::image_type_ptr canvas;
     img->fetch( canvas, 1 );
     img->cache( canvas );
@@ -1181,7 +1188,9 @@ void ImageBrowser::remove( int idx )
         return;
     }
 
+    std::cerr << "prepre del " << CMedia::memory_used << std::endl;
     remove( reel->images[idx] );
+    std::cerr << "postpost del " << CMedia::memory_used << std::endl;
 }
 
 
@@ -1192,6 +1201,7 @@ void ImageBrowser::remove( int idx )
  */
 void ImageBrowser::remove( mrv::media m )
 {
+    std::cerr << "pre del " << CMedia::memory_used << std::endl;
     mrv::Reel reel = current_reel();
 
     mrv::MediaList::iterator begin = reel->images.begin();
@@ -1256,6 +1266,7 @@ void ImageBrowser::remove( mrv::media m )
     view()->redraw();
     redraw();
 
+    std::cerr << "after del " << CMedia::memory_used << std::endl;
 }
 
 
@@ -2220,6 +2231,7 @@ void ImageBrowser::remove_current()
         LOG_ERROR( _("Image item not found for ") << m->image()->name() );
         return;
     }
+    delete item->widget(); item->widget( NULL );
     Fl_Tree::remove( item );
 
     match_tree_order();
