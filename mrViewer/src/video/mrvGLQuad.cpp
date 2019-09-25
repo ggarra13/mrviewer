@@ -1176,7 +1176,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 CHECK_GL;
                 _shader->setUniform( "Kr", 1.f, 0.f, 1.402f );
                 CHECK_GL;
-                _shader->setUniform( "Kg", 1.f, -0.3441, -0.7141 );
+                _shader->setUniform( "Kg", 1.f, -0.3441f, -0.7141f );
                 CHECK_GL;
                 _shader->setUniform( "Kb", 1.f, 1.772f, 0.0f );
                 CHECK_GL;
@@ -1213,11 +1213,11 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 // _shader->setUniform( "Kb", 1.164384f, 2.112402f, 0.0f );
 
                 // // Full gamut
-                _shader->setUniform( "Kr", 1.164384f, 0.0f, 1.678674 );
+                _shader->setUniform( "Kr", 1.164384f, 0.0f, 1.678674f );
                 CHECK_GL;
-                _shader->setUniform( "Kg", 1.164384f, -0.187326, -0.650424f );
+                _shader->setUniform( "Kg", 1.164384f, -0.187326f, -0.650424f );
                 CHECK_GL;
-                _shader->setUniform( "Kb", 1.164384f, 2.141772, 0.0f );
+                _shader->setUniform( "Kb", 1.164384f, 2.141772f, 0.0f );
 
             }
             else if ( colorspace == "YCOCG" )
