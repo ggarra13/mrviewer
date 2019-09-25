@@ -147,36 +147,6 @@ void writeShort(FILE *file, uint32_t v)
     fputc(v & 0xFF, file);
 }
 
-char *readStr(FILE *file)
-{
-    char	*result;
-    int		size, med, c;
-
-    med = size = 0;
-    result = (char*)malloc(16);
-
-    c = fgetc(file);
-
-    if(c == EOF)
-        return NULL;
-
-    while(!(c == EOF || c == '\n' || c == '\0')) {
-        if(size == med) {
-            med += 64;
-            result = (char*)realloc(result, med);
-        }
-        result[size++] = (char)c;
-        c = fgetc(file);
-    }
-
-    // Trim allocated buffer to contain only the string and terminating '\0'
-    result = (char*)realloc(result, size + 1);
-
-    result[size] = '\0';
-
-    return result;
-}
-
 } // namespace
 
 
@@ -259,6 +229,10 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
     char buf[81];
     buf[80] = 0;
     size_t read = fread(buf, 80, 1, file );
+    if ( read != 80 )
+    {
+        IMG_ERROR( _("Could not read header") );
+    }
     if ( buf[0] != 0 )
     {
         _attrs.insert( std::make_pair( frame, Attributes() ) );
@@ -772,12 +746,11 @@ bool picImage::save( const char* path, const CMedia* img,
     bool must_convert = false;
 
 
-    bool  has_alpha = pic->has_alpha();
     image_type::Format format = pic->format();
 
     if ( ( format != image_type::kRGBA ) ||
-            pic->pixel_type() != image_type::kByte ||
-            img->gamma() != 1.0f )
+         pic->pixel_type() != image_type::kByte ||
+         img->gamma() != 1.0f )
         must_convert = true;
 
     if ( Preferences::use_ocio && Preferences::uiMain->uiView->use_lut() )

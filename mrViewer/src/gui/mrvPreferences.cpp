@@ -1191,7 +1191,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
         DBG3;
         const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
-        if ( tmpS && label && strcmp( label, tmpS ) == 0 )
+        if ( label && strcmp( label, tmpS ) == 0 )
         {
             DBG3;
             uiPrefs->uiPrefsSubtitleFont->value(i);
@@ -1253,7 +1253,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         keys.get( (hotkeys[i].name + " text").c_str(),
                   tmpS,
                   hotkeys[i].hotkey.text.c_str(), 16 );
-        if ( tmpS ) hotkeys[i].hotkey.text = tmpS;
+        if ( strlen(tmpS) > 0 ) hotkeys[i].hotkey.text = tmpS;
         else hotkeys[i].hotkey.text.clear();
     }
 
