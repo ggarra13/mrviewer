@@ -75,7 +75,8 @@ void Element::make_thumbnail()
         char info[2048];
         std::string name = img->name();
         int pos = -2;
-        while ( ( pos = name.find( '@', pos+2 ) ) != std::string::npos )
+        while ( (size_t) ( pos = (int) name.find( '@', pos+2 ) ) !=
+                std::string::npos )
         {
             name = name.substr( 0, pos + 1 ) + '@' +
                    name.substr( pos + 1, name.size() );
@@ -125,6 +126,7 @@ void Element::make_thumbnail()
 
     Element::~Element()
     {
+        _elem.reset();
         delete image; image = NULL;
         delete label; label = NULL;
     }
