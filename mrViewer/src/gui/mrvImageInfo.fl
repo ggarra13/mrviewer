@@ -29,12 +29,6 @@ decl {\#include "FL/Fl.H"} {private local
 decl {class ViewerUI;} {public global
 }
 
-declblock {\#ifdef _WIN32} {after {\#endif}
-} {
-  decl {\#define unsetenv} {public local
-  }
-}
-
 class ImageInfoUI {open
 } {
   decl {ViewerUI* main_;} {private local

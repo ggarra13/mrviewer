@@ -748,6 +748,23 @@ void ImageBrowser::save_reel()
         reelname += ".reel";
     }
 
+    // Declaring argument for time()
+    time_t tt;
+
+    // Declaring variable to store return value of
+    // localtime()
+    struct tm * ti;
+
+    // Applying time()
+    time (&tt);
+
+    // Using localtime()
+    ti = localtime(&tt);
+
+    char date[128];
+    // Monday February 12 2019 20:14:05
+    size_t num = strftime( date, 128, "%A %B %e %Y %H:%M:%S", ti );
+
     setlocale( LC_NUMERIC, "C" );
 
     FILE* f = fl_fopen( reelname.c_str(), "w" );
@@ -757,12 +774,16 @@ void ImageBrowser::save_reel()
         return;
     }
 
+
     fprintf( f, _("#\n"
                   "# mrViewer Reel \"%s\"\n"
                   "# \n"
                   "# Created with mrViewer\n"
+                  "#\n"
+                  "# on %s\n"
                   "#\n\nVersion 4.0\nGhosting %d %d\n"),
              reel->name.c_str(),
+             date,
              view()->ghost_previous(),
              view()->ghost_next()
         );
@@ -804,7 +825,7 @@ void ImageBrowser::save_reel()
         }
 
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64
-                 " %" PRId64 " %" PRId64 " %.3g\n", path.c_str(),
+                 " %" PRId64 " %" PRId64 " %3.6g\n", path.c_str(),
                  img->first_frame(), img->last_frame(),
                  img->start_frame(), img->end_frame(), img->fps() );
         if ( img->has_audio() && img->audio_file() != "" )
@@ -1013,7 +1034,7 @@ void ImageBrowser::send_current_image( size_t idx, const mrv::media& m )
     if (!v) return;
 
     char text[64];
-    sprintf( text, N_("CurrentImage %d \""), idx );
+    sprintf( text, N_("CurrentImage %" PRId64 " \""), idx );
     std::string buf = text;
     CMedia* img = m->image();
     std::string file = img->directory() + '/' + img->name();
@@ -1201,7 +1222,6 @@ void ImageBrowser::remove( int idx )
  */
 void ImageBrowser::remove( mrv::media m )
 {
-    std::cerr << "pre del " << CMedia::memory_used << std::endl;
     mrv::Reel reel = current_reel();
 
     mrv::MediaList::iterator begin = reel->images.begin();
@@ -1266,7 +1286,6 @@ void ImageBrowser::remove( mrv::media m )
     view()->redraw();
     redraw();
 
-    std::cerr << "after del " << CMedia::memory_used << std::endl;
 }
 
 
