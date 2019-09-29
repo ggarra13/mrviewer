@@ -49,7 +49,9 @@ from datetime import date, datetime
 try:
     from pathlib import Path
 except ImportError:
+    print("Could not import Path")
     pass
+
 try:
     from urllib import unquote
 except ImportError:
@@ -276,6 +278,8 @@ Ghosting 5 5
             filename = Path( filename ).relative_to( os.path.dirname(self.filepath) )
         except ValueError:
             pass
+        except NameError:
+            pass
         return filename
 
     def _timeline_to_reel( self, timeline ):
@@ -462,6 +466,8 @@ class Reel2Otio(object):
             filename = Path( filename ).relative_to( self.filepath )
         except ValueError:
             pass
+        except NameError:
+            pass
         return filename
 
 
@@ -532,7 +538,7 @@ class Reel2Otio(object):
 
     def _find_video_audio_line( self, line ):
 
-        r = re.compile( r'^\"(.+?)\"\s+(\d+)\s+(\d+)\s*(\d+)?\s*(\d+)?\s+([-+]?(\d*[.])?\d*([eE][-+]?\d+)?)?' )
+        r = re.compile( r'^\"(.+?)\"\s+(\d+)\s+(\d+)\s*(\d+)?\s*(\d+)?\s*([-+]?(\d*\.)?\d*([eE][-+]?\d+)?)?' )
         obj = re.match(r, line)
         if not obj:
             return False, False
@@ -542,6 +548,12 @@ class Reel2Otio(object):
         self.start_frame = obj.group(4)
         self.end_frame = obj.group(5)
         if obj.group(6):
+            print(obj.group(1))
+            print(obj.group(2))
+            print(obj.group(3))
+            print(obj.group(4))
+            print(obj.group(5))
+            print(obj.group(6))
             self.fps = float(obj.group(6))
         else:
             self.fps = None
