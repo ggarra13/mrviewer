@@ -38,7 +38,30 @@ $packageArgs = @{
   silentArgs   = ''
 }
 
+$target = Join-Path $programFiles "${packageName}-v*-Windows-${osBitness}"
+rm -r -fo $target | ForEach-Object {
+      	      rm -r -fo $_
+	      $PathToRemove = Join-Path $_ "bin"
+	      $Newpath = @{}
+	      foreach ($path in [Environment]::GetEnvironmentVariable("PATH","Machine").split(';'))
+	      {
+	         If ($Path)
+  		  {
+		    If (($path -ine "$PathToRemove") -AND ($path -ine "$PathToRemove\"))
+    		    { 
+      		    [string[]]$Newpath += "$path"
+    		    }
+  		  }
+	      }
+	      $AssembledNewPath = ($newpath -join(';')).trimend(';')
+
+	      [Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"Machine")
+
+	    }
+
+
 Install-ChocolateyZipPackage @packageArgs
+
 
 
 $target = Join-Path $programFiles "${packageName}-v${shortVersion}-Windows-${osBitness}/bin"
@@ -46,17 +69,31 @@ Install-ChocolateyPath -PathToInstall "${target}" -PathType 'Machine'
 
 
 $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
+$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
+$StartPath = Join-Path "$StartMenu" "Programs"
+
+$ver = ${shortVersion}.split('.')
+
+0..$ver[0] | %{ $first = [string]$_;
+0..9 | %{ $second = [string]$_;
+0..$ver[2] | %{ $third = [string]$_;
+	   $num = $first + "." + $second + "." + $third
+	   $desktop = "${DesktopPath}/${packageName}-${osBitness} v${num}.lnk";
+	   $start = "${StartPath}/${packageName}-${osBitness} v${num}.lnk";  
+	   if ( Test-Path -Path "${desktop}" ) {
+	      Write-Host "Removing desktop '${desktop}'";
+	      rm -r -fo "${desktop}";
+	       };
+	   if ( Test-Path -Path "${start}" )   { rm -r -fo "${start}"; };
+	   }
+    }
+}
 
 Install-ChocolateyShortcut -ShortcutFilePath "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk" -TargetPath "${target}/${packageName}.exe"
 
 
-$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
-$StartPath = Join-Path "$StartMenu" "Programs"
 
 
 Install-ChocolateyShortcut -shortcutFilePath "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk" -targetPath "${target}/${packageName}.exe"
 
 
-
-# Write-Output 'C:\ProgramData\Chocolatey\lib\mrviewer\*.txt'
-# Get-ChildItem -Path 'C:\ProgramData\Chocolatey\lib\mrviewer\*.txt' | Get-Content $_ | ForEach-Object { Write-Output $_;  }
