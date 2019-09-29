@@ -1,11 +1,23 @@
+v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
+	  only integers were saved.
+	- Made Preferences->Loading->Missing Frame be an automatic setting
+	  with no need to save it and reload mrViewer.
+	- Fixed FPS extraction from reels without FPS (old reels).  Now
+	  they default to 30.0 fps.
+
 v5.2.6  - Improvents to the otio<->reel converter.  Now the clip name is
 	  attempted to be kept in both directions.
 	- The otio<->reel converter now defaults to relative paths.  This
 	  can be overriden by using -a relative_paths = False or
 	  -A relative_paths = False depening on whether you are reading
 	  or writing a .reel file.
-	- Bug fixed a problem with XML files when loading checkered images.
-	- Bug fixed a memory leak in reel images.
+	- Bug fixed a problem with XML ACES files when loading checkered
+	  images.
+	- Bug fixed a huge memory leak in reel images which in time
+	  would slow everything down.
+	- Bug fixed scratched pictures missing on Linux.
+	- Bug fixed saving of images/movies as the native file requester
+	  would crash on both Windows and Linux.
 
 v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	  They would show as empty filenames.
