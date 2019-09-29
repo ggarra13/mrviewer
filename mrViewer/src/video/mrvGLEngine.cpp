@@ -2317,7 +2317,6 @@ void GLEngine::draw_images( ImageList& images )
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
-            glDisable( GL_DEPTH_TEST );
             CHECK_GL;
             glDisable( GL_STENCIL_TEST );
             CHECK_GL;
@@ -2348,10 +2347,8 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
             glEnable( GL_TEXTURE_3D );
             CHECK_GL;
-            glEnable( GL_DEPTH_TEST );
             FLUSH_GL_ERRORS;
         }
-
 
         if ( ( _view->action_mode() == ImageView::kMovePicture ||
                 _view->action_mode() == ImageView::kScalePicture ) &&
