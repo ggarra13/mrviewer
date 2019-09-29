@@ -3728,9 +3728,14 @@ void CMedia::limit_video_store( const int64_t f )
     TimedSeqMap tmp;
     for ( uint64_t i = 0; i < num; ++i )
     {
-        if ( !_sequence[i] || _sequence[i]->frame() == f ||
-             _sequence[i]->frame() == _frame ||
-             _sequence[i]->data_size() == 0 ) continue;
+        if ( !_sequence[i] ||
+             _sequence[i]->data_size() == 0 ||
+             ( _playback == kForwards &&
+               ( _sequence[i]->frame() >= _frame  ||
+                 _sequence[i]->frame() >= f ) ) ||
+             ( _playback == kBackwards &&
+               ( _sequence[i]->frame() <= _frame ||
+                 _sequence[i]->frame() <= f ) ) ) continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
@@ -3738,11 +3743,11 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( tmp.size() < max_frames ) return;
 
+    TimedSeqMap::iterator it = tmp.begin();
+
     // Erase enough frames to make sure memory used is less than max memory
     while ( Preferences::max_memory <= memory_used && !tmp.empty() )
     {
-
-        TimedSeqMap::iterator it = tmp.begin();
         if ( it == tmp.end() ) return;
 
         uint64_t idx = it->second;
@@ -3759,7 +3764,7 @@ void CMedia::limit_video_store( const int64_t f )
             _right[ idx ].reset();
         }
 
-        tmp.erase( it );
+        it = tmp.erase( it );
     }
 
 }
@@ -4027,7 +4032,7 @@ bool CMedia::find_image( const int64_t frame )
     // the cache.
     bool limit = false;
 
-    if ( _sequence && _sequence[idx] )
+    if ( _sequence && _sequence[idx] && _sequence[idx]->valid() )
     {
         SCOPED_LOCK( _mutex );
 
@@ -4055,7 +4060,7 @@ bool CMedia::find_image( const int64_t frame )
     std::string file = sequence_filename(f);
     std::string old  = sequence_filename(_frame);
 
-    if ( !internal() && file != old )
+    if ( !internal() && file != old  )
     {
         should_load = true;
         free( _filename );
