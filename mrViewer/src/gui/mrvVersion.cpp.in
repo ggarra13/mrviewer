@@ -249,7 +249,6 @@ void ffmpeg_formats( mrv::Browser& browser )
       bool encode = false;
       const char* name=NULL;
       const char* long_name=NULL;
-      int is_dev;
 
       void* opaque = NULL;
       while ((ofmt = av_muxer_iterate(&opaque))) {
@@ -375,7 +374,6 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       int decode=0;
       int encode=0;
       int cap=0;
-      const char *type_str;
 
       p2=NULL;
       void* opaque = NULL;
@@ -399,20 +397,6 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       if ( p2->type != type )
         continue;
 
-      switch(p2->type) {
-      case AVMEDIA_TYPE_VIDEO:
-        type_str = "V";
-        break;
-      case AVMEDIA_TYPE_AUDIO:
-        type_str = "A";
-        break;
-      case AVMEDIA_TYPE_SUBTITLE:
-        type_str = "S";
-        break;
-      default:
-        type_str = "?";
-        break;
-      }
 
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
