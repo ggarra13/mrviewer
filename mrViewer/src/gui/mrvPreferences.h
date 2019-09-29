@@ -50,7 +50,7 @@ public:
 
     enum MissingFrameType
     {
-        kBlackFrame,
+        kBlackFrame = 0,
         kRepeatFrame,
         kScratchedRepeatFrame
     };
