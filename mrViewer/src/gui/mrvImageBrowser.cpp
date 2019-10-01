@@ -738,8 +738,8 @@ void ImageBrowser::save_reel()
         }
     }
 
-    const char* file = mrv::save_reel( dir.c_str() );
-    if ( !file || strlen(file) == 0 ) return;
+    std::string file = mrv::save_reel( dir.c_str() );
+    if ( file.empty() ) return;
 
     std::string reelname( file );
     if ( reelname.size() < 5 ||
@@ -3536,9 +3536,9 @@ void ImageBrowser::adjust_timeline()
     if ( reel->edl )
     {
         mrv::Timeline* t = timeline();
-        bool update = true;
         MediaList::iterator i = reel->images.begin();
         MediaList::iterator e = reel->images.end();
+        bool update = true;
         if ( t->edl() )
         {
             if ( t->undo_minimum() != AV_NOPTS_VALUE ||
