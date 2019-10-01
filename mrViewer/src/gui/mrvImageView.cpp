@@ -834,7 +834,7 @@ namespace mrv {
         int idx = -1;
         const Fl_Menu_Item* o = m->child( m->value() );
         mrv::PopupMenu* g = uiMain->uiWindows;
-        for ( int i = 0; i < g->children(); ++i )
+        for ( unsigned i = 0; i < g->children(); ++i )
         {
             if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
                 idx = i;
@@ -1463,11 +1463,11 @@ _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _idle_callback( false ),
 _vr( kNoVR ),
+menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _timeout( NULL ),
 _old_fg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
-menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
@@ -2147,7 +2147,6 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
 
-
     const CMedia* img = fg->image();
 
     mrv::image_type_ptr pic = img->left();
@@ -2221,6 +2220,7 @@ void ImageView::fit_image()
         }
     }
 
+
     int W = dpw.w();
     if ( W == 0 ) W = pic->width();
     int H = dpw.h();
@@ -2238,8 +2238,10 @@ void ImageView::fit_image()
     // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
     //     W *= 2;
 
+    Fl::check();
     double w = (double) fltk_main()->w();
     double z = w / (double)W;
+
 
     double h = (double) fltk_main()->h();
     if ( uiMain->uiTopBar->visible() )
@@ -2584,7 +2586,7 @@ void ImageView::log() const
                     logwindow->show();
                 }
             }
-            static int lines = 0;
+            static unsigned  lines = 0;
             if ( log->visible() && log->lines() != lines )
             {
                 log->scroll( log->lines()-1, 0 );
@@ -2623,14 +2625,16 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
         {
             switch( looping() )
             {
-                case CMedia::kPingPong:
-                    f = last;
-                    // playback( CMedia::kBackwards );
-                    // img->playback( CMedia::kBackwards );
-                    break;
-                case CMedia::kLoop:
-                    f = first;
-                    break;
+            case CMedia::kPingPong:
+                f = last;
+                // playback( CMedia::kBackwards );
+                // img->playback( CMedia::kBackwards );
+                break;
+            case CMedia::kLoop:
+                f = first;
+                break;
+            default:
+                break;
             }
         }
         return true;
@@ -2642,14 +2646,16 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
         {
             switch( looping() )
             {
-                case CMedia::kPingPong:
-                    f = first;
-                    // playback( CMedia::kForwards );
-                    // img->playback( CMedia::kForwards );
-                    break;
-                case CMedia::kLoop:
-                    f = last;
-                    break;
+            case CMedia::kPingPong:
+                f = first;
+                // playback( CMedia::kForwards );
+                // img->playback( CMedia::kForwards );
+                break;
+            case CMedia::kLoop:
+                f = last;
+                break;
+            default:
+                break;
             }
         }
         return true;
@@ -2907,7 +2913,7 @@ again:
         else
         {
             NET( "change image to #" << idx << " < " << r->images.size() );
-            found = (idx < r->images.size() );
+            found = ((size_t)idx < r->images.size() );
         }
         if ( found ) {
             NET( "change image to #" << idx );
@@ -2931,7 +2937,7 @@ again:
         NET( "insert image #" << idx );
 
         mrv::Reel r = b->reel_at( bg_reel() );
-        if ( idx < r->images.size() )
+        if ( (size_t)idx < r->images.size() )
         {
             LoadInfo file = * (LoadInfo*) c.linfo;
 
@@ -3151,14 +3157,15 @@ again:
     default:
     {
         LOG_ERROR( "Unknown mrv event size " << commands.size() << " type "
-                   << c.type << " data " << c.data );
+                   << c.type << " data " << c.data << " c.frame " << c.frame );
         break;
     }
     }  // switch
 
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
-    commands.pop_front();
+    if ( !commands.empty() )  // without these check it would crash
+        commands.pop_front();
     _network_active = true;
     redraw();
 }
@@ -4131,8 +4138,6 @@ int ImageView::leftMouseDown(int x, int y)
 
             data_window_coordinates( img, xf, yf );
 
-            const mrv::Recti& dpw = img->display_window();
-
             yf = -yf;
 
             const mrv::Recti& daw = img->data_window();
@@ -4520,7 +4525,7 @@ int ImageView::leftMouseDown(int x, int y)
                                         (Fl_Callback*)change_video_cb, this,
                                         FL_MENU_RADIO );
                         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
-                        if ( image->video_stream() == i )
+                        if ( image->video_stream() == (int) i )
                             item->set();
                     }
                 }
@@ -4552,7 +4557,7 @@ int ImageView::leftMouseDown(int x, int y)
                         idx = menu->add( buf, 0,
                                         (Fl_Callback*)change_subtitle_cb, this, FL_MENU_RADIO );
                         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
-                        if ( image->subtitle_stream() == i )
+                        if ( image->subtitle_stream() == (int)i )
                             item->set();
                     }
                 }
@@ -6773,10 +6778,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSetInPoint.match( rawkey ) )
     {
         uiMain->uiStartButton->do_callback();
+        return 1;
     }
     else if ( kSetOutPoint.match( rawkey ) )
     {
         uiMain->uiEndButton->do_callback();
+        return 1;
     }
     else if ( rawkey == FL_Alt_L )
     {
@@ -6801,7 +6808,7 @@ int ImageView::keyDown(unsigned int rawkey)
         for ( unsigned short c = 0; c < num; ++c, ++idx )
         {
             const Fl_Menu_Item* w = uiColorChannel->child(c);
-            if ( rawkey == w->shortcut() )
+            if ( (int)rawkey == w->shortcut() )
             {
                 channel( idx );
                 return 1;
@@ -6939,7 +6946,6 @@ void ImageView::toggle_presentation()
         // Fl::check below
         int X = Fl::x(), Y = Fl::y(), W = Fl::w(), H = Fl::h();
         fltk_main()->resize( X, Y, W, H);
-
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
 #ifdef _WIN32
@@ -7352,7 +7358,7 @@ void ImageView::clear_reel_cache( size_t idx )
     else
     {
         mrv::media fg;
-        if ( idx == _fg_reel )
+        if ( idx == (size_t)_fg_reel )
             fg = foreground();
         else
             fg = background();
@@ -8382,7 +8388,7 @@ void ImageView::foreground( mrv::media fg )
                     CMedia* o = old->image();
                     if (o)
                     {
-                        if ( o->display_window() != img->display_window() )
+                       if ( o->display_window() != img->display_window() )
                             fit_image();
                     }
                 }
@@ -8668,8 +8674,11 @@ void ImageView::resize_main_window()
     int H = Fl::h();
 #if 1
    if ( h + kTitleBar <= H - kTitleBar )
+   {
        fltk_main()->resize( posX, posY, w, h + kTitleBar );
+   }
 #endif
+   Fl::check();
 
    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                            int(28 * scale) );
@@ -8683,12 +8692,12 @@ void ImageView::resize_main_window()
    uiMain->uiRegion->layout();
    uiMain->uiRegion->init_sizes();
    uiMain->uiRegion->redraw();
+
 #ifdef LINUX
-    fltk_main()->show();
+   fltk_main()->show();
 #endif
 
-
-    if ( fit ) fit_image();
+   if ( fit ) fit_image();
 
 }
 
