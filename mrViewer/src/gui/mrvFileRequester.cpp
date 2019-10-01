@@ -112,14 +112,14 @@ static const std::string kOCIOPattern = "ocio";
 namespace mrv
 {
 
-const char* file_save_single_requester(
-    const char* title,
-    const char* pattern,
-    const char* startfile,
-    const bool compact_images = true
-)
+    const std::string file_save_single_requester(
+        const char* title,
+        const char* pattern,
+        const char* startfile,
+        const bool compact_images = true
+        )
 {
-    const char* file = NULL;
+    std::string file;
     try
     {
         bool native = mrv::Preferences::native_file_chooser;
@@ -147,9 +147,10 @@ const char* file_save_single_requester(
         }
         else
         {
-            file = flu_save_chooser( title, pattern, startfile, compact_images );
+            const char* f = flu_save_chooser( title, pattern, startfile, compact_images );
+            if ( !f ) return "";
+            file = f;
         }
-        if ( !file ) return "";
     }
     catch ( const std::exception& e )
     {
@@ -699,12 +700,12 @@ void save_clip_xml_metadata( const CMedia* img,
 
     std::string title = _( "Save XML Clip Metadata" );
 
-    const char* file = file_save_single_requester( title.c_str(),
+    std::string file = file_save_single_requester( title.c_str(),
                        kXML_PATTERN.c_str(),
                        xml.c_str() );
-    if ( !file || strlen(file) == 0 ) return;
+    if ( file.empty() ) return;
 
-    save_aces_xml( img, file );
+    save_aces_xml( img, file.c_str() );
 }
 
 void monitor_ctl_script( ViewerUI* main,
@@ -764,10 +765,10 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 
     if (!startdir) startdir = "";
 
-    const char* file = file_save_single_requester( title.c_str(),
+    const std::string& file = file_save_single_requester( title.c_str(),
                                                    pattern.c_str(),
                                                    startdir, false );
-    if ( file == NULL || strlen(file) == 0 ) return;
+    if ( file.empty() ) return;
 
 
     std::string ext = file;
@@ -784,14 +785,14 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
         main->uiView->handle( FL_ENTER );
         Fl::check();
 
-        image->save( file, opts );
+        image->save( file.c_str(), opts );
 
         // Change icon back to ARROW/CROSSHAIR
         main->uiView->toggle_wait();
         main->uiView->handle( FL_ENTER );
         Fl::check();
 
-        save_xml( image, opts, file );
+        save_xml( image, opts, file.c_str() );
     }
 
     delete opts;
@@ -815,14 +816,14 @@ void save_sequence_file( ViewerUI* uiMain,
 
     std::string title = _("Save Sequence");
     stringArray filelist;
-    const char* file = NULL;
     if ( !startdir ) startdir = "";
 
-    file = file_save_single_requester( title.c_str(), kIMAGE_PATTERN.c_str(),
-                                       startdir, true );
-    if ( !file || strlen(file) == 0 ) return;
+    const std::string& file = file_save_single_requester( title.c_str(),
+                                                          kIMAGE_PATTERN.c_str(),
+                                                          startdir, true );
+    if ( file.empty() ) return;
 
-    save_movie_or_sequence( file, uiMain, opengl );
+    save_movie_or_sequence( file.c_str(), uiMain, opengl );
 
 }
 
@@ -853,7 +854,7 @@ void attach_audio( CMedia* image, const char* startfile,
  *
  * @return filename of reel to save or NULL
  */
-const char* save_reel( const char* startdir,
+std::string save_reel( const char* startdir,
                        ViewerUI* main )
 {
     std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
