@@ -68,9 +68,9 @@ stringArray open_image_file( const char* startfile = NULL,
  *
  * @return opened color profile or null
  */
-const char* open_icc_profile( const char* startfile = NULL,
-                              const char* title = "Load Image's ICC Profile",
-                                ViewerUI* main = NULL );
+    std::string open_icc_profile( const char* startfile = NULL,
+                                  const char* title = "Load Image's ICC Profile",
+                                  ViewerUI* main = NULL );
 
 const char* open_ctl_dir( const char* startfile = NULL,
                           const char* title = "Append CTL Directory",
@@ -164,8 +164,8 @@ void save_clip_xml_metadata( const CMedia* image,
  *
  * @return  opened subtitle file or null
  */
-const char* open_subtitle_file( const char* startfile = NULL,
-                                  ViewerUI* main = NULL  );
+    std::string open_subtitle_file( const char* startfile = NULL,
+                                    ViewerUI* main = NULL  );
 
 /**
  * Opens a file requester to load audio files
@@ -174,17 +174,9 @@ const char* open_subtitle_file( const char* startfile = NULL,
  *
  * @return  opened audio file or null
  */
-const char* open_audio_file( const char* startfile = NULL,
-                               ViewerUI* main = NULL  );
+    std::string open_audio_file( const char* startfile = NULL,
+                                 ViewerUI* main = NULL  );
 
-/**
- * Attach a new audio file to loaded sequence
- *
- * @param image      already loaded image
- * @param startfile  start filename (directory)
- */
-void attach_audio( CMedia* image, const char* startfile,
-                     ViewerUI* main = NULL );
 
 std::string open_ocio_config( const char* startfile );
 
