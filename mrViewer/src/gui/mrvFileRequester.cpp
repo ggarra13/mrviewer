@@ -217,13 +217,13 @@ stringArray file_multi_requester(
     return filelist;
 }
 
-const char* file_single_requester(
+std::string file_single_requester(
     const char* title,
     const char* pattern,
     const char* startfile
 )
 {
-    const char* file = NULL;
+    std::string file;
     try {
         if ( !startfile ) startfile = "";
         bool native = mrv::Preferences::native_file_chooser;
@@ -423,7 +423,7 @@ void attach_ocio_view( CMedia* img, ImageView* view )
  *
  * @return  opened audio file or null
  */
-const char* open_icc_profile( const char* startfile,
+std::string open_icc_profile( const char* startfile,
                               const char* title,
                               ViewerUI* main )
 {
@@ -447,11 +447,11 @@ const char* open_icc_profile( const char* startfile,
     std::string kICC_PATTERN   = _("Color Profiles\t*.{" ) +
                                  kProfilePattern + "}\n";
 
-    const char* profile = file_single_requester( title, kICC_PATTERN.c_str(),
-                          startfile );
+    std::string profile = file_single_requester( title, kICC_PATTERN.c_str(),
+                                                 startfile );
 
 
-    if ( profile ) mrv::colorProfile::add( profile );
+    if ( !profile.empty() ) mrv::colorProfile::add( profile.c_str() );
     return profile;
 }
 
@@ -495,7 +495,7 @@ const char* open_ctl_dir( const char* startfile,
    *
    * @return  opened subtitle file or null
    */
-const char* open_subtitle_file( const char* startfile,
+std::string open_subtitle_file( const char* startfile,
                                 ViewerUI* main )
 {
     std::string kSUBTITLE_PATTERN = _( "Subtitles\t*.{" ) +
@@ -515,7 +515,7 @@ const char* open_subtitle_file( const char* startfile,
    *
    * @return  opened audio file or null
    */
-const char* open_audio_file( const char* startfile,
+std::string open_audio_file( const char* startfile,
                              ViewerUI* main )
 {
     std::string kAUDIO_PATTERN = _( "Audios\t*.{" ) +
@@ -537,9 +537,12 @@ void attach_icc_profile( CMedia* image,
 {
     if ( !image ) return;
 
-    const char* profile = open_icc_profile( startfile, _("Attach ICC Profile"),
+    std::string profile = open_icc_profile( startfile, _("Attach ICC Profile"),
                                             main );
-    image->icc_profile( profile );
+    if ( !profile.empty() )
+        image->icc_profile( profile.c_str() );
+    else
+        image->icc_profile( NULL );
 }
 
 
@@ -658,10 +661,9 @@ std::string open_ocio_config( const char* startfile )
                                 kOCIOPattern + "}\n";
     std::string title = _("Load OCIO Config");
 
-    const char* file = file_single_requester( title.c_str(),
-                       kOCIO_PATTERN.c_str(),
-                       startfile );
-    if ( !file ) return "";
+    std::string file = file_single_requester( title.c_str(),
+                                              kOCIO_PATTERN.c_str(),
+                                              startfile );
     return file;
 }
 
@@ -679,12 +681,12 @@ void read_clip_xml_metadata( CMedia* img,
 
     stringArray filelist;
 
-    const char* file = file_single_requester( title.c_str(),
+    std::string file = file_single_requester( title.c_str(),
                        kXML_PATTERN.c_str(),
                        xml.c_str() );
-    if ( !file ) return;
+    if ( file.empty() ) return;
 
-    load_aces_xml( img, file );
+    load_aces_xml( img, file.c_str() );
 
 }
 
@@ -729,12 +731,12 @@ void monitor_ctl_script( ViewerUI* main,
 void monitor_icc_profile( ViewerUI* main,
                           const unsigned index )
 {
-    const char* profile = open_icc_profile( NULL,
+    std::string profile = open_icc_profile( NULL,
                                             "Load Monitor Profile" );
-    if ( !profile ) return;
+    if ( profile.empty() ) return;
 
     mrv::Preferences::ODT_ICC_profile = profile;
-    mrv::colorProfile::set_monitor_profile( profile, index );
+    mrv::colorProfile::set_monitor_profile( profile.c_str(), index );
 
     main->uiView->redraw();
 }
@@ -828,23 +830,7 @@ void save_sequence_file( ViewerUI* uiMain,
 }
 
 
-/**
- * Attach a new audio file to loaded sequence
- *
- * @param image      already loaded image
- * @param startfile  start filename (directory)
- */
-void attach_audio( CMedia* image, const char* startfile,
-                   ViewerUI* main )
-{
-    if ( !image ) return;
-    if ( !image->is_sequence() ) return;
 
-    const char* audio = open_audio_file( startfile );
-    if ( !audio ) return;
-
-    // image->audio( audio );
-}
 
 
 /**
