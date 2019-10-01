@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo GarramuNo
@@ -70,7 +69,7 @@ void copy_color_cb( void*, mrv::Browser* w )
         return;
 
     if ( w->text( w->value() ) == NULL ) return;
-    
+
     size_t last;
     std::string line( w->text( w->value() ) );
     size_t start = line.find( '\t', 0 );
@@ -147,21 +146,21 @@ public:
 
     bool valid_value()
     {
-	int line = value();
-	if (( line < 2 || line > 11 ) ||
-	    ( line > 5 && line < 8 ))
-	{
-	    value(-1);
-	    return false;
-	}
-	_value = line;
-	return true;
+        int line = value();
+        if (( line < 2 || line > 11 ) ||
+            ( line > 5 && line < 8 ))
+        {
+            value(-1);
+            return false;
+        }
+        _value = line;
+        return true;
     }
 
     void draw()
     {
-	value( _value );
-	mrv::Browser::draw();
+        value( _value );
+        mrv::Browser::draw();
     }
 
     int handle( int event )
@@ -170,13 +169,13 @@ public:
         switch( event )
         {
         case FL_PUSH:
-	    {
+            {
             if ( Fl::event_button() == 3 )
                 return mousePush( Fl::event_x(), Fl::event_y() );
             ok = Fl_Browser::handle( event );
-	    if ( valid_value() ) return 1;
-	    return ok;
-	    }
+            if ( valid_value() ) return 1;
+            return ok;
+            }
         case FL_ENTER:
             return 1;
         case FL_FOCUS:
@@ -187,7 +186,7 @@ public:
             return ok;
         default:
             ok = Fl_Browser::handle( event );
-	    if ( valid_value() ) return 1;
+            if ( valid_value() ) return 1;
             return ok;
         }
     }
@@ -202,7 +201,7 @@ public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
     Fl_Box( x, y, w, h, l )
     {
-	box( FL_FRAME_BOX );
+        box( FL_FRAME_BOX );
     }
 
     int mousePush( int x, int y )
@@ -408,7 +407,7 @@ void ColorInfo::update( const CMedia* img,
 {
     if ( !visible_r() ) return;
 
-    
+
     area->label( "" );
 
     std::ostringstream text;
@@ -578,8 +577,8 @@ void ColorInfo::update( const CMedia* img,
                 if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
                 {
                     engine->evaluate( img,
-                                      (*(Imath::V3f*)&op),
-                                      (*(Imath::V3f*)&rp) );
+                                      *((Imath::V3f*)&op),
+                                      *((Imath::V3f*)&rp) );
                     rp.a = op.a;
                 }
                 else
@@ -690,7 +689,7 @@ void ColorInfo::update( const CMedia* img,
         hmean.a /= c;
 
         static const char* kR = "@C4286611456@c";
-	static const char* kG = "@C1623228416@c";
+        static const char* kG = "@C1623228416@c";
         static const char* kB = "@C2155937536@c";
         static const char* kA = "@C2964369408@c";
 
@@ -704,12 +703,12 @@ void ColorInfo::update( const CMedia* img,
 
         Fl_Color col;
 
-	{
-	    float r = pmean.r;
-	    float g = pmean.g;
-	    float b = pmean.b;
+        {
+            float r = pmean.r;
+            float g = pmean.g;
+            float b = pmean.b;
 
-	    if ( r < 0.f ) r = 0.0f;
+            if ( r < 0.f ) r = 0.0f;
             else if ( r > 1.f ) r = 1.0f;
 
             if ( g < 0.f ) g = 0.0f;
@@ -723,10 +722,10 @@ void ColorInfo::update( const CMedia* img,
             else
             {
                 col = fl_rgb_color((uchar)(r*255),
-			       (uchar)(g*255),
-			       (uchar)(b*255));
-	    }
-	}
+                               (uchar)(g*255),
+                               (uchar)(b*255));
+            }
+        }
 
         dcol->color( col );
         dcol->redraw();
@@ -896,11 +895,10 @@ void ColorInfo::update( const CMedia* img,
     int idx = 0;
     for ( ; i != e; ++i, ++idx )
     {
-	browser->add( (*i).c_str() );
+        browser->add( (*i).c_str() );
         //child(idx)->align( FL_ALIGN_CENTER );
     }
     browser->redraw();
 }
 
 }  // namespace mrv
-
