@@ -1070,8 +1070,8 @@ static void attach_color_profile_cb( Fl_Widget* o, mrv::ImageView* view )
 
 void load_subtitle_cb( Fl_Widget* o, ViewerUI* uiMain )
 {
-    const char* file = open_subtitle_file( NULL, uiMain );
-    if ( !file ) return;
+    std::string file = open_subtitle_file( NULL, uiMain );
+    if ( file.empty() ) return;
 
     mrv::ImageView* view = uiMain->uiView;
 
@@ -1086,7 +1086,7 @@ void load_subtitle_cb( Fl_Widget* o, ViewerUI* uiMain )
         return;
     }
 
-    img->subtitle_file( file );
+    img->subtitle_file( file.c_str() );
 }
 
 static void flip_x_cb( Fl_Widget* o, mrv::ImageView* view )
@@ -1262,14 +1262,14 @@ static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
     mrv::media fg = view->foreground();
     if ( !fg ) return;
 
-    const char* file = open_audio_file();
-    if ( file == NULL ) return;
+    std::string file = open_audio_file();
+    if ( file.empty() ) return;
 
     CMedia* img = fg->image();
     if ( img == NULL ) return;
 
     DBGM3( "Attach audio file " << file << " first frame: " << img->first_frame() );
-    img->audio_file( file );
+    img->audio_file( file.c_str() );
     DBGM3( "Attached audio file " << file << " first frame: " << img->first_frame() );
     view->refresh_audio_tracks();
 
