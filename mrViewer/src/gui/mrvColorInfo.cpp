@@ -576,9 +576,9 @@ void ColorInfo::update( const CMedia* img,
 
                 if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
                 {
-                    engine->evaluate( img,
-                                      *((Imath::V3f*)&op),
-                                      *((Imath::V3f*)&rp) );
+                    Imath::V3f* iop = (Imath::V3f*)&op;
+                    Imath::V3f* irp = (Imath::V3f*)&rp;
+                    engine->evaluate( img, *iop, *irp );
                     rp.a = op.a;
                 }
                 else
