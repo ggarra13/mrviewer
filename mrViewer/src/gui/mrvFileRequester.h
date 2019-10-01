@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ const char* open_icc_profile( const char* startfile = NULL,
 
 const char* open_ctl_dir( const char* startfile = NULL,
                           const char* title = "Append CTL Directory",
-			  ViewerUI* main = NULL);
+                          ViewerUI* main = NULL);
 
 
 void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageView* view );
@@ -101,8 +101,8 @@ void attach_icc_profile( CMedia* image,
  */
 void monitor_ctl_script( ViewerUI* main,
                          const unsigned index = 0,
-			 const char* startfile = NULL
-			 );
+                         const char* startfile = NULL
+                         );
 
 /**
  * Attach an ICC/ICM color profile to a monitor display
@@ -110,7 +110,7 @@ void monitor_ctl_script( ViewerUI* main,
  * @param index monitor index
  */
 void monitor_icc_profile(  ViewerUI* main = NULL,
-			   const unsigned index = 0
+                           const unsigned index = 0
                            );
 
 
@@ -121,7 +121,7 @@ void monitor_icc_profile(  ViewerUI* main = NULL,
  * @param startfile  start filename (directory)
  */
 void attach_rt_script( CMedia* image, const std::string& startfile,
-		       ViewerUI* main );
+                       ViewerUI* main );
 void attach_ctl_script( CMedia* image, const char* ctlfile,
                           ViewerUI* main = NULL  );
 void attach_ctl_script( CMedia* image,
@@ -217,8 +217,8 @@ void save_image_file( CMedia* image,
  *
  * @return reel to save or NULL
  */
-const char* save_reel( const char* startdir = NULL,
-                       ViewerUI* main = NULL );
+    std::string save_reel( const char* startdir = NULL,
+                           ViewerUI* main = NULL );
 
 } // namespace mrv
 
