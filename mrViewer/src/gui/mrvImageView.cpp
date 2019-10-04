@@ -8421,6 +8421,7 @@ void ImageView::foreground( mrv::media fg )
         Fl_Round_Button* r = (Fl_Round_Button*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
         if ( r->value() == 1 )
         {
+            Fl::check();  // so fltk_main() window updates itself
             resize_main_window();
         }
     }
