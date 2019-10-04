@@ -6395,12 +6395,14 @@ int ImageView::keyDown(unsigned int rawkey)
 
 
         step_frame( int64_t(-fps) );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
     else if ( kFrameStepBack.match(rawkey) )
     {
         step_frame( -1 );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
@@ -6415,11 +6417,13 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) fps = img->play_fps();
 
         step_frame( int64_t(fps) );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kFrameStepFwd.match( rawkey ) )
     {
         step_frame( 1 );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
