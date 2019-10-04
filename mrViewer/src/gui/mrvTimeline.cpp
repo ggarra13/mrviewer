@@ -98,7 +98,8 @@ mrv::ImageBrowser* Timeline::browser() const
 void Timeline::display_minimum( const double& x )
 {
     if ( x >= minimum() ) {
-        if ( _edl ) _undo_display_min = _display_min;
+        //if ( _edl )
+            _undo_display_min = _display_min;
         _display_min = x;
         if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
         {
@@ -117,6 +118,7 @@ void Timeline::display_minimum( const double& x )
 
 void Timeline::undo_display_minimum()
 {
+    if ( _undo_display_min == AV_NOPTS_VALUE ) return;
     _display_min = _undo_display_min;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
@@ -128,6 +130,7 @@ void Timeline::undo_display_minimum()
 
 void Timeline::undo_display_maximum()
 {
+    if ( _undo_display_max == AV_NOPTS_VALUE ) return;
     _display_max = _undo_display_max;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
@@ -140,7 +143,8 @@ void Timeline::undo_display_maximum()
 void Timeline::display_maximum( const double& x )
 {
     if ( x <= maximum() ) {
-        if ( _edl ) _undo_display_max = _display_max;
+        //if ( _edl )
+            _undo_display_max = _display_max;
         _display_max = x;
         if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
         {
