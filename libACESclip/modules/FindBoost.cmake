@@ -77,7 +77,6 @@ ELSE(BOOST_DIR_SEARCH)
   SET( BOOST_DIR_SEARCH
     /usr/local/include
     /usr/include
-    /media/Linux/code/lib/
     )
 ENDIF(BOOST_DIR_SEARCH)
 
@@ -92,8 +91,13 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 # Add in some path suffixes. These will have to be updated whenever a new Boost version comes out.
 SET(SUFFIX_FOR_PATH
+ boost_1_69_0
+ boost_1_60_0
+ boost_1_59_0
+ boost_1_58_0
+ boost_1_57_0
  boost_1_56_0
- boost_1_51_0
+ boost_1_55_0
  boost_1_50_0
  boost_1_49_0
  boost_1_48_0
@@ -115,6 +119,8 @@ SET(SUFFIX_FOR_PATH
  boost_1_33_0
  boost-1_33_0
 )
+
+MESSAGE( ${BOOST_DIR_SEARCH} )
 
 #
 # Look for an installation.
@@ -157,16 +163,33 @@ IF(Boost_INCLUDE_DIR)
     GET_FILENAME_COMPONENT(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR} PATH)
   ENDIF("${Boost_LIBRARY_DIR}" MATCHES "/include$")
 
-
-    IF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
-      SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage/lib)
-    ELSE(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
+  IF (WIN64)
+    IF(EXISTS "${Boost_LIBRARY_DIR}/stage64/lib")
+      SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage64/lib)
+    ELSE(EXISTS "${Boost_LIBRARY_DIR}/stage64/lib")
       IF(EXISTS "${Boost_LIBRARY_DIR}/lib")
          SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/lib)
       ELSE(EXISTS "${Boost_LIBRARY_DIR}/lib")
          SET(Boost_LIBRARY_DIR "")
       ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib")
-    ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
+    ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage64/lib")
+  ELSE(WIN64)
+    IF(WIN32)
+        IF(EXISTS "${Boost_LIBRARY_DIR}/stage32/lib")
+    	  SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage32/lib)
+        ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage32/lib")
+    ELSE(WIN32)
+        IF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
+    	  SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage/lib)
+        ELSE(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
+          IF(EXISTS "${Boost_LIBRARY_DIR}/lib")
+            SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/lib)
+          ELSE(EXISTS "${Boost_LIBRARY_DIR}/lib")
+            SET(Boost_LIBRARY_DIR "")
+          ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib")
+	ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
+    ENDIF(WIN32)
+  ENDIF(WIN64)
 
   IF(EXISTS "${Boost_INCLUDE_DIR}")
     SET(Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIR})
@@ -180,6 +203,7 @@ IF(Boost_INCLUDE_DIR)
   ENDIF(Boost_LIBRARY_DIR AND EXISTS "${Boost_LIBRARY_DIR}")
 ENDIF(Boost_INCLUDE_DIR)
 
+MESSAGE( ">>> BOOST INCLUDE DIR: " ${Boost_INCLUDE_DIR} )
 MESSAGE( ">>> BOOST LIBRARY DIR: " ${Boost_LIBRARY_DIR} )
 
 IF(NOT Boost_FOUND)

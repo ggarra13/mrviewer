@@ -28,13 +28,10 @@
 
 #include <inttypes.h>
 
-#include <fltk/file_chooser.h>
-#include <fltk/ProgressBar.h>
-#include <fltk/Output.h>
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
-#include <fltk/ask.h>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Output.H>
+#include <FL/Enumerations.H>
+#include <FL/fl_ask.H>
 
 #include "core/mrvString.h"
 #include "core/CMedia.h"
@@ -61,6 +58,7 @@
 #include <GL/gl.h>
 
 #include "FLU/Flu_File_Chooser.h"
+#include <FL/Fl_Native_File_Chooser.H>
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -75,28 +73,28 @@ static const char* kModule = "file";
 #define kSeparator ":"
 #endif
 
-  // File extension patterns
-  static const std::string kReelPattern = "reel";
+// File extension patterns
+static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "3gp,asf,avc,avchd,avi,divx,dv,flv,m2ts,m2t,mkv,m4v,mp4,mpg,mpeg,mov,mxf,ogm,ogv,qt,ts,vob,vp9,webm,wmv,y4m,";
+static const std::string kMoviePattern = "3gp,asf,avc,avchd,avi,divx,dv,flv,m2ts,m2t,mkv,m4v,mp4,mpg,mpeg,mov,mxf,ogm,ogv,qt,ts,vob,vp9,webm,wmv,y4m";
 
-  static const std::string kImagePattern =
+static const std::string kImagePattern =
     "3fr,arw,bay,bmp,bmq,bit,cap,cin,cine,cr2,crw,cs1,ct,dc2,dcr,dng,dpx,dsc,drf,erf,exr,fff,gif,hdr,hdri,k25,kc2,kdc,ia,iff,iiq,jpg,jpeg,map,mef,nt,mdc,miff,mos,mrw,mt,nef,nrw,orf,pef,pic,png,ppm,pnm,pgm,pbm,psd,ptx,pxn,qtk,raf,ras,raw,rdc,rgb,rla,rpf,rw2,rwl,rwz,shmap,sgi,sr2,srf,srw,st,sti,sun,sxr,tga,tif,tiff,tx,x3f,zt";
 
-  static const std::string kProfilePattern = "icc,icm";
+static const std::string kProfilePattern = "icc,icm";
 
-  static const std::string kAudioPattern = "m4a,mp3,ogg,wav";
+static const std::string kAudioPattern = "m4a,mp3,ogg,wav";
 
-  static const std::string kSubtitlePattern = "srt,sub,ass";
+static const std::string kSubtitlePattern = "srt,sub,ass";
 
-  static const std::string kCTLPattern = "ctl";
+static const std::string kCTLPattern = "ctl";
 
-  static const std::string kXMLPattern = "xml";
+static const std::string kXMLPattern = "xml";
 
-  static const std::string kOCIOPattern = "ocio";
+static const std::string kOCIOPattern = "ocio";
 
 
-  // Actual FLTK file requester patterns
+// Actual FLTK file requester patterns
 
 
 
@@ -114,33 +112,45 @@ static const char* kModule = "file";
 namespace mrv
 {
 
-const char* file_save_single_requester(
-                                       const char* title,
-                                       const char* pattern,
-                                       const char* startfile,
-                                       const bool compact_images = true
-                                       )
+    const std::string file_save_single_requester(
+        const char* title,
+        const char* pattern,
+        const char* startfile,
+        const bool compact_images = true
+        )
 {
-    const char* file = NULL;
+    std::string file;
     try
     {
-#ifdef _WIN32
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            file = fltk::file_chooser( title, pattern, startfile,
-                                       compact_images );
-            if ( !file ) return "";
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+           {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default:                                                                        // PICKED FILE
+                  if ( native.filename() ) {
+                     file = native.filename();
+                  }
+           }
         }
         else
-#endif
         {
-            file = flu_save_chooser( title, pattern, startfile,
-                                     compact_images );
+            const char* f = flu_save_chooser( title, pattern, startfile, compact_images );
+            if ( !f ) return "";
+            file = f;
         }
-        if ( !file ) return "";
     }
     catch ( const std::exception& e )
     {
@@ -154,31 +164,44 @@ const char* file_save_single_requester(
 }
 
 stringArray file_multi_requester(
-                                 const char* title,
-                                 const char* pattern,
-                                 const char* startfile,
-                                 const bool compact_images = true
-                                 )
+    const char* title,
+    const char* pattern,
+    const char* startfile,
+    const bool compact_images
+)
 {
     stringArray filelist;
 
     try
     {
         if ( !startfile ) startfile = "";
-#ifdef _WIN32
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            const char* file = fltk::file_chooser( title,
-                                                   pattern,
-                                                   startfile );
-            if ( file )
-                split( filelist, file, '\n' );
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_MULTI_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+           {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default:                                                                        // PICKED FILE
+                  if ( native.count() > 0 ) {
+                      for ( int i = 0; i < native.count(); ++i )
+                      {
+                          filelist.push_back( native.filename(i) );
+                      }
+                  }
+             }
         }
         else
-#endif
         {
             flu_multi_file_chooser( title, pattern, startfile,
                                     filelist, compact_images );
@@ -194,28 +217,40 @@ stringArray file_multi_requester(
     return filelist;
 }
 
-const char* file_single_requester(
-                                  const char* title,
-                                  const char* pattern,
-                                  const char* startfile
-                                  )
+std::string file_single_requester(
+    const char* title,
+    const char* pattern,
+    const char* startfile
+)
 {
-    const char* file = NULL;
+    std::string file;
     try {
-#ifdef _WIN32
+        if ( !startfile ) startfile = "";
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            if ( !startfile ) startfile = "";
-            file = fltk::file_chooser( title, pattern, startfile );
-            // if ( file )
-            //     split( filelist, file, '\n' );
-            // file = filelist[0].c_str();
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+           {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default:                                                                        // PICKED FILE
+                  if ( native.count() > 0 )
+                  {
+                      file = native.filename();
+                  }
+           }
         }
         else
-#endif
         {
             file = flu_file_chooser( title, pattern, startfile );
         }
@@ -232,71 +267,95 @@ const char* file_single_requester(
     return file;
 }
 
-  /**
-   * Open one or more mrViewer's reels
-   *
-   * @param startfile optional start file or directory
-   *
-   * @return Each reel to be loaded
-   */
+/**
+ * Open one or more mrViewer's reels
+ *
+ * @param startfile optional start file or directory
+ *
+ * @return Each reel to be loaded
+ */
 stringArray open_reel( const char* startfile,
-                       const mrv::ViewerUI* main )
-  {
-      std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                  kReelPattern + "})\t";
-      std::string title = _("Load Reel(s)");
+                       ViewerUI* main )
+{
+    std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                kReelPattern + "}";
+    std::string title = _("Load Reel(s)");
 
-      stringArray files = file_multi_requester( title.c_str(),
-                                               kREEL_PATTERN.c_str(),
-                                               startfile );
-      if ( main && (!main->uiMain || !main->uiMain->visible())) {
-          return stringArray();
-      }
+    stringArray files = file_multi_requester( title.c_str(),
+                                              kREEL_PATTERN.c_str(),
+                                              startfile, true );
+    if ( main && (!main->uiMain || !main->uiMain->visible())) {
+        return stringArray();
+    }
 
-      return files;
-  }
+    return files;
+}
 
 
-  /**
-   * Opens a file requester to load image files
-   *
-   * @param startfile  start filename (directory)
-   *
-   * @return Each file to be opened
-   */
-std::string open_directory( const char* startfile, const mrv::ViewerUI* main )
+/**
+ * Opens a file requester to load a directory of image files
+ *
+ * @param startfile  start filename (directory)
+ *
+ * @return A directory to be opened or NULL
+ */
+std::string open_directory( const char* startfile, ViewerUI* main )
 {
     std::string dir;
     std::string title = _("Load Directory");
-    const char* d = flu_dir_chooser( title.c_str(), startfile );
-    if (d) dir = d;
-    return dir;
+    bool native = mrv::Preferences::native_file_chooser;
+    if ( native )
+    {
+        Fl_Native_File_Chooser native;
+        native.title( title.c_str() );
+        native.directory(startfile);
+        native.type(Fl_Native_File_Chooser::BROWSE_DIRECTORY);
+        // Show native chooser
+        switch ( native.show() ) {
+            case -1: LOG_ERROR(native.errmsg());
+                break;	// ERROR
+            case  1:
+                break;		// CANCEL
+            default:  // PICKED DIR
+                if ( native.filename() ) {
+                    dir = native.filename();
+                }
+                break;
+        }
+    }
+    else
+    {
+        const char* d = flu_dir_chooser( title.c_str(), startfile );
+        if (d) dir = d;
+    }
+    fs::path path = dir;
+    return path.generic_string();
 }
 
-  /**
-   * Opens a file requester to load image files
-   *
-   * @param startfile  start filename (directory)
-   *
-   * @return Each file to be opened
-   */
+/**
+ * Opens a file requester to load image files
+ *
+ * @param startfile  start filename (directory)
+ *
+ * @return Each file to be opened
+ */
 stringArray open_image_file( const char* startfile, const bool compact_images,
-                             const mrv::ViewerUI* main )
-  {
-    const std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                      kReelPattern + "})\t";
-    const std::string kIMAGE_PATTERN = _("Images (*.{") +
-                                       kImagePattern + "})";
-    const std::string kALL_PATTERN = _("All Recognized (*.{") +
+                             ViewerUI* main )
+{
+    const std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                      kReelPattern + ")\n";
+    const std::string kIMAGE_PATTERN = _("Images\t*.{") +
+                                       kImagePattern + "}\n";
+    const std::string kALL_PATTERN = _("All\t*.{") +
                                      kImagePattern + "," + kMoviePattern +
                                      "," + kReelPattern + "," +
-                                     kAudioPattern + "})\t" +
-                                     _("Images (*.{") + kImagePattern +
-                                     "})\t" +
-                                     _("Movies (*.{") + kMoviePattern +
-                                     "})\t" +
-                                     _("Audios (*.(") + kAudioPattern +
-                                     "})\t" + kREEL_PATTERN;
+                                     kAudioPattern + "}\n" +
+                                     _("Images\t*.{") + kImagePattern +
+                                     "}\n" +
+                                     ("Audios\t*.{") + kAudioPattern +
+                                     "}\n" +
+                                     _("Movies\t*.{") + kMoviePattern +
+                                     "}\n" + kREEL_PATTERN;
 
     std::string pattern = kIMAGE_PATTERN;
     std::string title = _("Load Image");
@@ -307,14 +366,13 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
 
     return file_multi_requester( title.c_str(), pattern.c_str(),
                                  startfile, compact_images );
-  }
-
+}
 
 
 
 void attach_ocio_input_color_space( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( img->ocio_input_color_space(),
+    std::string ret = make_ocio_chooser( img->ocio_input_color_space(),
                                          mrv::OCIOBrowser::kInputColorSpace );
     if ( ret.empty() ) return;
 
@@ -327,7 +385,7 @@ void attach_ocio_input_color_space( CMedia* img, ImageView* view )
 
 void attach_ocio_display( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_Display,
+    std::string ret = make_ocio_chooser( mrv::Preferences::OCIO_Display,
                                          mrv::OCIOBrowser::kDisplay );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_Display = ret;
@@ -337,43 +395,45 @@ void attach_ocio_display( CMedia* img, ImageView* view )
 
 void attach_ocio_view( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_View,
+    std::string ret = make_ocio_chooser( mrv::Preferences::OCIO_View,
                                          mrv::OCIOBrowser::kView );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_View = ret;
-    fltk::PopupMenu* m = view->main()->gammaDefaults;
-    for ( int i = 0; i < m->children(); ++i )
+    Fl_Menu_Button* m = view->main()->gammaDefaults;
+    for ( int i = 0; i < m->size(); ++i )
     {
-        if ( ret == m->child(i)->label() )
+        const char* lbl = m->menu()[i].label();
+        if ( !lbl ) continue;
+        if ( ret == lbl )
         {
             m->value(i);
             break;
         }
     }
-    m->label( strdup( _(ret.c_str()) ) );
+    m->copy_label( _(ret.c_str()) );
     m->redraw();
     img->image_damage( CMedia::kDamageAll );
     view->redraw();
 }
 
-  /**
-   * Opens a file requester to load an icc profile
-   *
-   * @param startfile  start filename (directory)
-   *
-   * @return  opened audio file or null
-   */
-  const char* open_icc_profile( const char* startfile,
-                                const char* title,
-                                const mrv::ViewerUI* main )
-  {
-      stringArray filelist;
+/**
+ * Opens a file requester to load an icc profile
+ *
+ * @param startfile  start filename (directory)
+ *
+ * @return  opened audio file or null
+ */
+std::string open_icc_profile( const char* startfile,
+                              const char* title,
+                              ViewerUI* main )
+{
+    stringArray filelist;
 
     if ( !startfile )
         startfile = getenv("ICC_PROFILES");
 
-    if ( !startfile || strlen( startfile ) <= 0 )
-      {
+    if ( !startfile || strlen( startfile ) == 0 )
+    {
 #if defined(WIN32) || defined(WIN64)
         char buf[256];
         sprintf( buf, "%s/SYSTEM32/spool/drivers/color",
@@ -382,24 +442,24 @@ void attach_ocio_view( CMedia* img, ImageView* view )
 #else
         startfile = "/usr/share/color/icc";
 #endif
-      }
+    }
 
-    std::string kICC_PATTERN   = _("Color Profiles (*." ) +
-                                   kProfilePattern + ")";
+    std::string kICC_PATTERN   = _("Color Profiles\t*.{" ) +
+                                 kProfilePattern + "}\n";
 
-    const char* profile = file_single_requester( title, kICC_PATTERN.c_str(),
+    std::string profile = file_single_requester( title, kICC_PATTERN.c_str(),
                                                  startfile );
 
 
-    if ( profile ) mrv::colorProfile::add( profile );
+    if ( !profile.empty() ) mrv::colorProfile::add( profile.c_str() );
     return profile;
-  }
+}
 
 
 
 const char* open_ctl_dir( const char* startfile,
                           const char* title,
-                          const mrv::ViewerUI* main )
+                          ViewerUI* main )
 {
     std::string path, modulepath, ext;
 
@@ -435,18 +495,18 @@ const char* open_ctl_dir( const char* startfile,
    *
    * @return  opened subtitle file or null
    */
-  const char* open_subtitle_file( const char* startfile,
-                                  const mrv::ViewerUI* main )
-  {
-      std::string kSUBTITLE_PATTERN = _( "Subtitles (*.{" ) +
-                                      kSubtitlePattern + "})\t";
+std::string open_subtitle_file( const char* startfile,
+                                ViewerUI* main )
+{
+    std::string kSUBTITLE_PATTERN = _( "Subtitles\t*.{" ) +
+                                    kSubtitlePattern + "}\n";
 
-      std::string title = _("Load Subtitle");
+    std::string title = _("Load Subtitle");
 
-      return file_single_requester( title.c_str(),
-                                    kSUBTITLE_PATTERN.c_str(),
-                                    startfile );
-  }
+    return file_single_requester( title.c_str(),
+                                  kSUBTITLE_PATTERN.c_str(),
+                                  startfile );
+}
 
 /**
    * Opens a file requester to load audio files
@@ -455,45 +515,48 @@ const char* open_ctl_dir( const char* startfile,
    *
    * @return  opened audio file or null
    */
-  const char* open_audio_file( const char* startfile,
-                               const mrv::ViewerUI* main )
-  {
-      std::string kAUDIO_PATTERN = _( "Audios (*.{" ) +
-                                   kAudioPattern + "})\t";
+std::string open_audio_file( const char* startfile,
+                             ViewerUI* main )
+{
+    std::string kAUDIO_PATTERN = _( "Audios\t*.{" ) +
+                                 kAudioPattern + "}\n";
 
-      std::string title = _("Load Audio");
+    std::string title = _("Load Audio");
 
-      return file_single_requester( title.c_str(),
-                                    kAUDIO_PATTERN.c_str(),
-                                    startfile );
-  }
-
-
+    return file_single_requester( title.c_str(),
+                                  kAUDIO_PATTERN.c_str(),
+                                  startfile );
+}
 
 
-  void attach_icc_profile( CMedia* image,
-                           const char* startfile,
-                           const mrv::ViewerUI* main )
-  {
+
+
+void attach_icc_profile( CMedia* image,
+                         const char* startfile,
+                         ViewerUI* main )
+{
     if ( !image ) return;
 
-    const char* profile = open_icc_profile( startfile, _("Attach ICC Profile"),
+    std::string profile = open_icc_profile( startfile, _("Attach ICC Profile"),
                                             main );
-    image->icc_profile( profile );
-  }
+    if ( !profile.empty() )
+        image->icc_profile( profile.c_str() );
+    else
+        image->icc_profile( NULL );
+}
 
 
 
-  void attach_icc_profile( CMedia* image,
-                           const mrv::ViewerUI* main )
-  {
+void attach_icc_profile( CMedia* image,
+                         ViewerUI* main )
+{
     if (!image) return;
     attach_icc_profile( image, image->icc_profile(), main );
-  }
+}
 
 
 void attach_rt_script( CMedia* image, const std::string& script,
-                       const mrv::ViewerUI* main )
+                       ViewerUI* main )
 {
     if ( ! script.empty() )
         main->uiView->send_network( "RT \"" + script + "\"" );
@@ -503,7 +566,7 @@ void attach_rt_script( CMedia* image, const std::string& script,
 }
 
 void attach_ctl_script( CMedia* image, const char* startfile,
-                        const mrv::ViewerUI* main )
+                        ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -514,10 +577,10 @@ void attach_ctl_script( CMedia* image, const char* startfile,
 
 void attach_look_mod_transform( CMedia* image, const std::string& script,
                                 const size_t idx,
-                                const mrv::ViewerUI* main )
+                                ViewerUI* main )
 {
     char buf[1024];
-    sprintf( buf, "LMT %d \"%s\"", idx, script.c_str() );
+    sprintf( buf, "LMT %ld \"%s\"", idx, script.c_str() );
     main->uiView->send_network( buf );
 
     if ( idx >= image->number_of_lmts() && script != "" )
@@ -528,8 +591,8 @@ void attach_look_mod_transform( CMedia* image, const std::string& script,
 
 void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                             const size_t idx,
-                            const mrv::ViewerUI* main )
-  {
+                            ViewerUI* main )
+{
     if ( !image || !main ) return;
 
     // @todo: pass index to look mod
@@ -537,28 +600,28 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
 
     attach_look_mod_transform( image, script, idx, main );
 
-  }
+}
 
 
 
 
-  void attach_ctl_script( CMedia* image,
-                          const mrv::ViewerUI* main )
-  {
-      if (!image || !main ) {
-          return;
-      }
+void attach_ctl_script( CMedia* image,
+                        ViewerUI* main )
+{
+    if (!image || !main ) {
+        return;
+    }
 
     const char* transform = image->rendering_transform();
     if ( !transform )
-      transform = mrv::CMedia::rendering_transform_float.c_str();
+        transform = mrv::CMedia::rendering_transform_float.c_str();
 
     attach_ctl_script( image, transform, main );
-  }
+}
 
-  void attach_ctl_idt_script( CMedia* image, const char* startfile,
-                              const mrv::ViewerUI* main )
-  {
+void attach_ctl_idt_script( CMedia* image, const char* startfile,
+                            ViewerUI* main )
+{
     if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "ACEScsc,IDT" );
@@ -568,20 +631,20 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
     main->uiView->send_network( buf );
 
     image->idt_transform( script.c_str() );
-  }
+}
 
-  void attach_ctl_idt_script( CMedia* image,
-                              const mrv::ViewerUI* main )
-  {
+void attach_ctl_idt_script( CMedia* image,
+                            ViewerUI* main )
+{
     if ( !image || !main ) return;
 
     const char* transform = image->idt_transform();
     if ( !transform )  transform = "";
     attach_ctl_idt_script( image, transform, main );
-  }
+}
 
 void attach_ctl_lmt_script( CMedia* image, const size_t idx,
-                            const mrv::ViewerUI* main )
+                            ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -594,68 +657,66 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
 
 std::string open_ocio_config( const char* startfile )
 {
-    std::string kOCIO_PATTERN = _("OCIO config (*.{") +
-                               kOCIOPattern + "})\t";
+    std::string kOCIO_PATTERN = _("OCIO config\t*.{") +
+                                kOCIOPattern + "}\n";
     std::string title = _("Load OCIO Config");
 
-    const char* file = file_single_requester( title.c_str(),
+    std::string file = file_single_requester( title.c_str(),
                                               kOCIO_PATTERN.c_str(),
                                               startfile );
-    if ( !file ) return "";
     return file;
 }
 
-  void read_clip_xml_metadata( CMedia* img,
-                               const mrv::ViewerUI* main )
-  {
-    if ( !img ) return;
-
-    std::string xml = aces_xml_filename( img->fileroot() );
-
-    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") +
-                               kXMLPattern + "})\t";
-
-    std::string title = _("Load XML Clip Metadata");
-
-    stringArray filelist;
-
-    const char* file = file_single_requester( title.c_str(),
-                                              kXML_PATTERN.c_str(),
-                                              xml.c_str() );
-    if ( !file ) return;
-
-    load_aces_xml( img, file );
-
-  }
-
-void save_clip_xml_metadata( const CMedia* img,
-                             const mrv::ViewerUI* main )
+void read_clip_xml_metadata( CMedia* img,
+                             ViewerUI* main )
 {
     if ( !img ) return;
 
     std::string xml = aces_xml_filename( img->fileroot() );
 
-    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") +
-                               kXMLPattern + "})\t";
+    std::string kXML_PATTERN = _("XML Clip Metadata\t*.{") +
+                               kXMLPattern + "}\n";
+
+    std::string title = _("Load XML Clip Metadata");
+
+    stringArray filelist;
+
+    std::string file = file_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    if ( file.empty() ) return;
+
+    load_aces_xml( img, file.c_str() );
+
+}
+
+void save_clip_xml_metadata( const CMedia* img,
+                             ViewerUI* main )
+{
+    if ( !img ) return;
+
+    std::string xml = aces_xml_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("XML Clip Metadata\t*.{") +
+                               kXMLPattern + "}\n";
 
     std::string title = _( "Save XML Clip Metadata" );
 
-    const char* file = file_save_single_requester( title.c_str(),
-                                                   kXML_PATTERN.c_str(),
-                                                   xml.c_str() );
-    if ( !file || strlen(file) == 0 ) return;
+    std::string file = file_save_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    if ( file.empty() ) return;
 
-    save_aces_xml( img, file );
+    save_aces_xml( img, file.c_str() );
 }
 
-void monitor_ctl_script( const mrv::ViewerUI* main,
+void monitor_ctl_script( ViewerUI* main,
                          const unsigned index, const char* startfile )
-  {
+{
     if ( !startfile )
-      startfile = mrv::Preferences::ODT_CTL_transform.c_str();
+        startfile = mrv::Preferences::ODT_CTL_transform.c_str();
 
     std::string script = make_ctl_browser( startfile, "ODT" );
-    if ( script.empty() ) return;
 
     mrv::Preferences::ODT_CTL_transform = script;
     main->uiView->send_network( "ODT \"" + script + "\"" );
@@ -665,51 +726,51 @@ void monitor_ctl_script( const mrv::ViewerUI* main,
     // @todo: prefs
     //     uiCTL_display_transform->static_text( script );
     //     uiCTL_display_transform->do_callback();
-  }
+}
 
-  void monitor_icc_profile( const mrv::ViewerUI* main,
-                            const unsigned index )
-  {
-    const char* profile = open_icc_profile( NULL,
+void monitor_icc_profile( ViewerUI* main,
+                          const unsigned index )
+{
+    std::string profile = open_icc_profile( NULL,
                                             "Load Monitor Profile" );
-    if ( !profile ) return;
+    if ( profile.empty() ) return;
 
     mrv::Preferences::ODT_ICC_profile = profile;
-    mrv::colorProfile::set_monitor_profile( profile, index );
+    mrv::colorProfile::set_monitor_profile( profile.c_str(), index );
 
     main->uiView->redraw();
-  }
+}
 
 
 
 void save_image_file( CMedia* image, const char* startdir, bool aces,
                       bool all_layers,
-                      const mrv::ViewerUI* main )
+                      ViewerUI* main )
 {
-   if (!image) return;
+    if (!image) return;
 
-   std::string title = "Save Image";
+    std::string title = "Save Image";
 
-   std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                               kReelPattern + "})\t";
-   std::string kIMAGE_PATTERN = _("All Recognized (*.{") +
+    std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                kReelPattern + "}\n";
+    std::string kIMAGE_PATTERN = _("All Recognized\t*.{") +
                                  kImagePattern + "," + kMoviePattern +
-                                "," + kReelPattern + "," +
-                                 kAudioPattern + "})\t" +
-                                _("Images (*.{") + kImagePattern +
-                                "})\t" +
-                                _("Movies (*.{") + kMoviePattern +
-                                "})\t" +
-                                _("Audios (*.(") + kAudioPattern +
-                                "})\t" + kREEL_PATTERN;
-   std::string pattern = kIMAGE_PATTERN;
+                                 "," + kReelPattern + "," +
+                                 kAudioPattern + "}\n" +
+                                 _("Images\t*.{") + kImagePattern +
+                                 "}\n" +
+                                 _("Movies\t*.{") + kMoviePattern +
+                                 "}\n" +
+                                 _("Audios\t*.{") + kAudioPattern +
+                                 "}\n" + kREEL_PATTERN;
+    std::string pattern = kIMAGE_PATTERN;
 
-   if (!startdir) startdir = "";
+    if (!startdir) startdir = "";
 
-   const char* file = file_save_single_requester( title.c_str(),
-                                                  pattern.c_str(),
-                                                  startdir, false );
-   if ( file == NULL || strlen(file) == 0 ) return;
+    const std::string& file = file_save_single_requester( title.c_str(),
+                                                   pattern.c_str(),
+                                                   startdir, false );
+    if ( file.empty() ) return;
 
 
     std::string ext = file;
@@ -723,83 +784,67 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
     {
         // Set icon back to WAIT
         main->uiView->toggle_wait();
-        main->uiView->handle( fltk::ENTER );
-        fltk::check();
+        main->uiView->handle( FL_ENTER );
+        Fl::check();
 
-        image->save( file, opts );
+        image->save( file.c_str(), opts );
 
-       // Change icon back to ARROW/CROSSHAIR
-       main->uiView->toggle_wait();
-       main->uiView->handle( fltk::ENTER );
-       fltk::check();
+        // Change icon back to ARROW/CROSSHAIR
+        main->uiView->toggle_wait();
+        main->uiView->handle( FL_ENTER );
+        Fl::check();
 
-       save_xml( image, opts, file );
-   }
+        save_xml( image, opts, file.c_str() );
+    }
 
-   delete opts;
+    delete opts;
 }
 
-void save_sequence_file( const mrv::ViewerUI* uiMain,
+void save_sequence_file( ViewerUI* uiMain,
                          const char* startdir, const bool opengl)
 {
-    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                kReelPattern + "})\t";
-   std::string kIMAGE_PATTERN = _("All Recognized (*.{") +
+    std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                kReelPattern + "}\n";
+    std::string kIMAGE_PATTERN = _("All Recognized\t*.{") +
                                  kImagePattern + "," + kMoviePattern +
-                                "," + kReelPattern + "," +
-                                 kAudioPattern + "})\t" +
-                                _("Images (*.{") + kImagePattern +
-                                "})\t" +
-                                _("Movies (*.{") + kMoviePattern +
-                                "})\t" +
-                                _("Audios (*.(") + kAudioPattern +
-                                "})\t" + kREEL_PATTERN;
+                                 "," + kReelPattern + "," +
+                                 kAudioPattern + "}\n" +
+                                 _("Images\t*.{") + kImagePattern +
+                                 "}\n" +
+                                 _("Movies\t*.{") + kMoviePattern +
+                                 "}\n" +
+                                 _("Audios\t*.{") + kAudioPattern +
+                                 "}\n" + kREEL_PATTERN;
 
-   std::string title = _("Save Sequence");
-   stringArray filelist;
-   const char* file = NULL;
-   if ( !startdir ) startdir = "";
+    std::string title = _("Save Sequence");
+    stringArray filelist;
+    if ( !startdir ) startdir = "";
 
-   file = file_save_single_requester( title.c_str(), kIMAGE_PATTERN.c_str(),
-                                      startdir, true );
-   if ( !file || strlen(file) == 0 ) return;
+    const std::string& file = file_save_single_requester( title.c_str(),
+                                                          kIMAGE_PATTERN.c_str(),
+                                                          startdir, true );
+    if ( file.empty() ) return;
 
-   save_movie_or_sequence( file, uiMain, opengl );
+    save_movie_or_sequence( file.c_str(), uiMain, opengl );
 
 }
 
 
-  /**
-   * Attach a new audio file to loaded sequence
-   *
-   * @param image      already loaded image
-   * @param startfile  start filename (directory)
-   */
-  void attach_audio( CMedia* image, const char* startfile,
-                     const mrv::ViewerUI* main )
-  {
-    if ( !image ) return;
-    if ( !image->is_sequence() ) return;
-
-    const char* audio = open_audio_file( startfile );
-    if ( !audio ) return;
-
-    // image->audio( audio );
-  }
 
 
-  /**
-   * Save a reel under a new filename
-   *
-   * @param startdir start directory to save to
-   *
-   * @return filename of reel to save or NULL
-   */
-const char* save_reel( const char* startdir,
-                       const mrv::ViewerUI* main )
+
+/**
+ * Save a reel under a new filename
+ *
+ * @param startdir start directory to save to
+ *
+ * @return filename of reel to save or NULL
+ */
+std::string save_reel( const char* startdir,
+                       ViewerUI* main )
 {
-    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                kReelPattern + "})\t";
+    std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                kReelPattern + "}\n";
 
     std::string title = _("Save Reel");
     if ( !startdir ) startdir = "";

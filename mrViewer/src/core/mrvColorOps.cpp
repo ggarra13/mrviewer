@@ -35,13 +35,83 @@ const char* kModule = "[ocio]";
 
 namespace mrv {
 
+AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
+                                   const mrv::image_type::PixelType& p )
+{
+    switch( f )
+    {
+    case mrv::image_type::kITU_601_YCbCr410A:
+    case mrv::image_type::kITU_709_YCbCr410A:
+    case mrv::image_type::kITU_601_YCbCr410:
+    case mrv::image_type::kITU_709_YCbCr410:
+        return AV_PIX_FMT_YUV410P;
+    case mrv::image_type::kITU_601_YCbCr420:
+    case mrv::image_type::kITU_709_YCbCr420:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUV420P16LE;
+        return AV_PIX_FMT_YUV420P;
+    case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUVA420P16LE;
+        return AV_PIX_FMT_YUVA420P;
+    case mrv::image_type::kITU_601_YCbCr422:
+    case mrv::image_type::kITU_709_YCbCr422:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUV422P16LE;
+        return AV_PIX_FMT_YUV422P;
+    case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUVA422P16LE;
+        return AV_PIX_FMT_YUVA422P;
+    case mrv::image_type::kITU_601_YCbCr444:
+    case mrv::image_type::kITU_709_YCbCr444:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUV444P16LE;
+        return AV_PIX_FMT_YUV444P;
+    case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_YUVA444P16LE;
+        return AV_PIX_FMT_YUVA444P;
+    case mrv::image_type::kLummaA:
+        return AV_PIX_FMT_GRAY8A;
+    case mrv::image_type::kLumma:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_GRAY16LE;
+        return AV_PIX_FMT_GRAY8;
+    case mrv::image_type::kRGB:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_RGB48LE;
+        return AV_PIX_FMT_RGB24;
+    case mrv::image_type::kRGBA:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_RGBA64LE;
+        return AV_PIX_FMT_RGBA;
+    case mrv::image_type::kBGR:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_BGR48LE;
+        return AV_PIX_FMT_BGR24;
+    case mrv::image_type::kBGRA:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_BGRA64LE;
+        return AV_PIX_FMT_BGRA;
+    default:
+        return AV_PIX_FMT_NONE;
+    }
+}
+
 void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 {
+    setlocale(LC_NUMERIC, "C" );
+    std::locale::global( std::locale("C") );
+
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
-   
+
     OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-    
+
     OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
 
     std::string ics = img->ocio_input_color_space();
@@ -62,90 +132,96 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     float* p = (float*)pic->data().get();
     ptrdiff_t chanstride = pic->pixel_size();
     ptrdiff_t xstride = pic->pixel_size() * pic->channels();
-    ptrdiff_t ystride = pic->pixel_size() * pic->channels() * pic->width();
+    ptrdiff_t ystride = xstride * pic->width();
     OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
                                 pic->channels(), chanstride, xstride,
-				ystride );
+                                ystride );
+#ifdef OCIO_v2_1
+    OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
+    cpu->apply( baker );
+#else
     processor->apply( baker );
-
+#endif
+    std::locale::global( std::locale(N_("")) );
+    setlocale(LC_NUMERIC, N_("") );
 }
 
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
-		    const image_type::Format format,
-		    const image_type::PixelType pt )
+                    const image_type::Format format,
+                    const image_type::PixelType pt )
 {
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     mrv::image_type_ptr sho = pic;
-    
+
     // Memory is kept until we save the image
     mrv::image_type_ptr ptr = pic;
-            
+
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
-   
+
     if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-	 Preferences::uiMain->uiView->use_lut() )
+         Preferences::uiMain->uiView->use_lut() )
     {
-	try {
-	    ptr = image_type_ptr( new image_type(
-						 img->frame(),
-						 dw, dh, 4,
-						 image_type::kRGBA,
-						 image_type::kFloat ) );
-	    copy_image( ptr, pic );
-	    bake_ocio( ptr, img );
-	}
-	catch( const std::exception& e )
-	{
-	    LOG_ERROR( e.what() );
-	    return false;
-	}
-                
+        try {
+            ptr = image_type_ptr( new image_type(
+                                      img->frame(),
+                                      dw, dh, 4,
+                                      image_type::kRGBA,
+                                      image_type::kFloat ) );
+            copy_image( ptr, pic );
+            bake_ocio( ptr, img );
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( e.what() );
+            return false;
+        }
+
     }
 
     if ( ! mrv::is_equal( img->gamma(), 1.0f ) )
     {
-	float one_gamma = 1.0f / img->gamma();
-            
-	for ( unsigned y = 0; y < dh; ++y )
-	{
-	    for ( unsigned x = 0; x < dw; ++x )
-	    {
-		ImagePixel p = ptr->pixel( x, y );
-			
-		if ( p.r > 0.f && isfinite(p.r) )
-		    p.r = expf( logf(p.r) * one_gamma );
-		if ( p.g > 0.f && isfinite(p.g) )
-		    p.g = expf( logf(p.g) * one_gamma );
-		if ( p.b > 0.f && isfinite(p.b) )
-		    p.b = expf( logf(p.b) * one_gamma );
+        float one_gamma = 1.0f / img->gamma();
 
-		sho->pixel( x, y, p );
-	    }
-	}
+        for ( unsigned y = 0; y < dh; ++y )
+        {
+            for ( unsigned x = 0; x < dw; ++x )
+            {
+                ImagePixel p = ptr->pixel( x, y );
+
+                if ( p.r > 0.f && isfinite(p.r) )
+                    p.r = expf( logf(p.r) * one_gamma );
+                if ( p.g > 0.f && isfinite(p.g) )
+                    p.g = expf( logf(p.g) * one_gamma );
+                if ( p.b > 0.f && isfinite(p.b) )
+                    p.b = expf( logf(p.b) * one_gamma );
+
+                sho->pixel( x, y, p );
+            }
+        }
     }
     else
     {
-	sho = ptr;
+        sho = ptr;
     }
 
     unsigned channels = 4;
     if ( format == image_type::kRGB ) channels = 3;
     else if ( format == image_type::kLumma ) channels = 1;
     pic = mrv::image_type_ptr( new image_type( img->frame(),
-					       dw, dh, channels,
-					       format, pt ) );
-                
-        
+                               dw, dh, channels,
+                               format, pt ) );
+
+
     for ( unsigned y = 0; y < dh; ++y )
     {
-	for ( unsigned x = 0; x < dw; ++x )
-	{
-	    ImagePixel p = sho->pixel( x, y );
-	    p.clamp();
-	    pic->pixel( x, y, p );
-	}
+        for ( unsigned x = 0; x < dw; ++x )
+        {
+            ImagePixel p = sho->pixel( x, y );
+            p.clamp();
+            pic->pixel( x, y, p );
+        }
     }
 
     return true;
