@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright (c) 2015, Gonzalo Garramuño
 All rights reserved.
 
@@ -6,7 +6,7 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer. 
+   list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
-of the authors and should not be interpreted as representing official policies, 
+of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
 
@@ -49,7 +49,7 @@ using namespace tinyxml2;
  * Return a date and time information in ACESclip format.
  *
  * @param t time_t to convert to string.
- * 
+ *
  * @return std::string with the formatted date and time.
  */
 std::string ACESclipWriter::date_time( const time_t& t ) const
@@ -63,9 +63,9 @@ std::string ACESclipWriter::date_time( const time_t& t ) const
 }
 
 
-/** 
+/**
  * Set status of a transform
- * 
+ *
  * @param s kPreview or kApplied
  */
 void ACESclipWriter::set_status( TransformStatus s )
@@ -83,9 +83,9 @@ void ACESclipWriter::set_status( TransformStatus s )
     element->SetAttribute( "status", p );
 }
 
-/** 
+/**
  * Constructor
- * 
+ *
  */
 ACESclipWriter::ACESclipWriter()
 {
@@ -93,7 +93,7 @@ ACESclipWriter::ACESclipWriter()
     doc.InsertFirstChild( decl );
 
     element = doc.NewElement( "aces:ACESmetadata" );
-    element->SetAttribute( "xmlns:aces", 
+    element->SetAttribute( "xmlns:aces",
                            "http://www.oscars.org/aces/ref/acesmetadata");
     doc.InsertAfterChild( decl, element );
     root = element;
@@ -117,10 +117,10 @@ ACESclipWriter::ACESclipWriter()
     root->InsertEndChild( element );
 }
 
-/** 
+/**
  * aces:Info portion.
- * 
- * @param application Application used to output the xml file. 
+ *
+ * @param application Application used to output the xml file.
  * @param version     Version of the application.
  * @param comment     Some additional comment (optional)
  */
@@ -144,9 +144,9 @@ void ACESclipWriter::info( const std::string application,
     }
 }
 
-/** 
+/**
  * aces:ClipID information
- * 
+ *
  * @param clip_name name of clip (name of image, version, etc)
  * @param media_id  identification of location of clip ( shot, for example )
  * @param clip_date time of clip ( as returned from stat )
@@ -174,9 +174,9 @@ void ACESclipWriter::clip_id( const std::string clip_name,
     root2->InsertEndChild( element );
 }
 
-/** 
+/**
  * aces:Config portion of file
- * 
+ *
  * @param xml_date time_t of date XML file was modified.
  */
 void ACESclipWriter::config( const time_t xml_date )
@@ -265,9 +265,9 @@ void ACESclipWriter::gradeRef_end( const std::string convert_from )
 }
 
 
-/** 
+/**
  * Input Transform List start.
- * 
+ *
  * @param idt Name of Input Device Transform ( IDT ) (optional)
  */
 void ACESclipWriter::ITL_start( TransformStatus status )
@@ -289,7 +289,7 @@ void ACESclipWriter::add_IDT( const std::string name, TransformStatus status )
     IDT.name = name;
     IDT.status = status;
 
-    if ( !IDT.name.empty() ) 
+    if ( !IDT.name.empty() )
     {
         const std::string& name = IDT.name;
 
@@ -310,9 +310,9 @@ void ACESclipWriter::add_IDT( const std::string name, TransformStatus status )
     }
 }
 
-/** 
+/**
  * Input Transform List end
- * 
+ *
  * @param it Link Input Transform (optional)
  */
 void ACESclipWriter::ITL_end( const std::string it )
@@ -329,9 +329,9 @@ void ACESclipWriter::ITL_end( const std::string it )
 
 
 
-/** 
+/**
  * Preview Transform List
- * 
+ *
  */
 void ACESclipWriter::PTL_start()
 {
@@ -342,9 +342,9 @@ void ACESclipWriter::PTL_start()
 
 }
 
-/** 
+/**
  * Add a Look Modification Transform to list
- * 
+ *
  * @param name    name of the LMT
  * @param status  kPreview or kApplied
  */
@@ -355,9 +355,9 @@ void ACESclipWriter::add_LMT( const std::string name, TransformStatus status,
 }
 
 
-/** 
+/**
  * Add a Reference Rendering Transform
- * 
+ *
  * @param name    name of the RRT
  * @param status  kPreview or kApplied
  */
@@ -367,7 +367,7 @@ void ACESclipWriter::add_RRT( const std::string name, TransformStatus status )
     RRT.status = status;
 }
 
-void ACESclipWriter::add_RRTODT( const std::string name, 
+void ACESclipWriter::add_RRTODT( const std::string name,
                                  TransformStatus status )
 {
     RRTODT.name = name;
@@ -471,21 +471,19 @@ void ACESclipWriter::PTL_end( const std::string t )
     }
 }
 
-/** 
+/**
  * Last Step.  Save the XML file
- * 
- * @param filename file to save the XML file under. 
- * 
+ *
+ * @param filename file to save the XML file under.
+ *
  * @return true on success, false on failure
  */
 bool ACESclipWriter::save( const char* filename )
 {
     XMLError err = doc.SaveFile( filename );
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != XML_SUCCESS ) return false;
     return true;
 }
 
 
 }  // namespace ACES
-
-

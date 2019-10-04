@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,20 +19,16 @@
 
 #ifndef mrvFontsWindowUI_h
 #define mrvFontsWindowUI_h
-#include <fltk/DoubleBufferWindow.h>
-extern fltk::DoubleBufferWindow* uiMain;
-#include <fltk/Group.h>
-#include <fltk/Input.h>
-#include <fltk/Choice.h>
-#include <fltk/ValueSlider.h>
-
-namespace fltk {
-struct Font;
-}
+#include <FL/Fl_Double_Window.H>
+extern Fl_Double_Window* uiMain;
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Value_Slider.H>
 
 namespace mrv  {
 
-extern fltk::Font* font_current;
+extern Fl_Font  font_current;
 extern unsigned    font_size;
 extern std::string font_text;
 

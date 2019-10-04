@@ -19,141 +19,143 @@
  * @file   mrvIO.cpp
  * @author gga
  * @date   Wed Jul 11 12:04:58 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
+#include "core/mrvFrame.h"
 #include <cstdlib> // for free/malloc
 #include <cstring> // for strcpy
 
 #include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
+#include "gui/mrvAsk.h"
 #include "mrViewer.h" // for uiLog
 #include "mrvIO.h"
 
 namespace mrv {
 
-  static char* _alert = NULL;
+static char* _alert = NULL;
 
-  void alert( const char* str )
-  {
+void alert( const char* str )
+{
     free( _alert );
     if ( str == NULL )
-      {
-	_alert = NULL;
-	return;
-      }
+    {
+        _alert = NULL;
+        return;
+    }
 
     _alert = (char*) malloc( strlen(str) + 1 );
     strcpy( _alert, str );
     _alert[strlen(str)] = 0;
 
-    fltk::alert( _alert );
-  }
+    mrv::fl_alert( "%s", _alert );
+}
 
-  const char* alert()
-  {
+const char* alert()
+{
     return _alert;
-  }
+}
 
 
-  namespace io
-  {
+namespace io
+{
 
-  boost::recursive_mutex logbuffer::_mutex;
-  std::fstream logbuffer::out;
-  bool logbuffer::_debug = false;
+boost::recursive_mutex logbuffer::_mutex;
+std::fstream logbuffer::out;
+bool logbuffer::_debug = true;
 
-    int logbuffer::sync()
+int logbuffer::sync()
+{
+    if ( ! pbase() ) return 0;
+
+    // lock mutex
+    boost::recursive_mutex::scoped_lock lk( _mutex );
+
+    // make sure to null terminate the string
+    sputc('\0');
+
+    // freeze and call the virtual print method
+    char* c = strdup( str().c_str() );
+    if (!c) return 1;
+
+    if ( _debug && out.is_open() ) out << c << std::flush;
+
+    print( c );
+
+    free(c);
+
+    // reset iterator to first position & unfreeze
+    seekoff( 0, std::ios::beg );
+    return 0;
+}
+
+void logbuffer::open_stream()
+{
+    if ( !out.is_open() )
     {
-      if ( ! pbase() ) return 0;
-      
-      // lock mutex
-      boost::recursive_mutex::scoped_lock lk( _mutex );
-
-      // make sure to null terminate the string
-      sputc('\0');
-
-      // freeze and call the virtual print method
-      char* c = strdup( str().c_str() );
-      if (!c) return 1;
-
-      if ( _debug && out.is_open() ) out << c << std::flush;
-      
-      print( c );
-
-      free(c);
-
-      // reset iterator to first position & unfreeze
-      seekoff( 0, std::ios::beg );
-      return 0;
+        std::string file = mrv::homepath();
+        file += "/.filmaura/errorlog.txt";
+        out.open( file.c_str(), ios_base::out );
     }
-
-  void logbuffer::open_stream()
-  {
-      if ( !out.is_open() )
-      {
-          std::string file = mrv::homepath();
-          file += "/.filmaura/errorlog.txt";
-          out.open( file.c_str(), ios_base::out );
-      }
-      if ( out.is_open() )
-      {
-          out << "DEBUG LOG" << std::endl
-              << "=========" << std::endl << std::endl;
-      }
-  }
-    
-    void errorbuffer::print( const char* c )
+    if ( out.is_open() )
     {
-      std::cerr << c;
-      
-      // Send string to Log Window
-      if ( ViewerUI::uiLog )
-      {
-          ViewerUI::uiLog->uiLogText->error( c );
-      }
+        out << "DEBUG LOG" << std::endl
+            << "=========" << std::endl << std::endl;
     }
+}
 
-    void warnbuffer::print( const char* c )
+void errorbuffer::print( const char* c )
+{
+    std::cerr << c << std::flush;
+
+    // Send string to Log Window
+    if ( ViewerUI::uiLog )
     {
-        std::cerr << c;
-        
-        // Send string to Log Window
-        if ( ViewerUI::uiLog )
-        {
-            ViewerUI::uiLog->uiLogText->warning( c );
-        }
+        ViewerUI::uiLog->uiLogText->error( c );
     }
+}
 
-    void infobuffer::print( const char* c )
+void warnbuffer::print( const char* c )
+{
+    std::cerr << c << std::flush;
+
+    // Send string to Log Window
+    if ( ViewerUI::uiLog )
     {
-      std::cout << c;
-      
-      // Send string to Log Window
-      if ( ViewerUI::uiLog )
-      {
-          ViewerUI::uiLog->uiLogText->info( c );
-      }
+        ViewerUI::uiLog->uiLogText->warning( c );
     }
+}
 
-    void connbuffer::print( const char* c )
+void infobuffer::print( const char* c )
+{
+    std::cout << c << std::flush;
+
+    // Send string to Log Window
+    if ( ViewerUI::uiLog )
     {
-       std::cout << c;
-       
-       // Send string to Log Window in Connection panel
-       if ( ViewerUI::uiConnection )
-       {
-           ViewerUI::uiConnection->uiLog->info( c );
-       }
+        ViewerUI::uiLog->uiLogText->info( c );
     }
+}
 
-    connstream  conn;
-    infostream  info;
-    warnstream  warn;
-    errorstream error;
-  }
+void connbuffer::print( const char* c )
+{
+    std::cout << c << std::flush;
+
+    // Send string to Log Window in Connection panel
+    if ( ViewerUI::uiConnection )
+    {
+        ViewerUI::uiConnection->uiLog->info( c );
+    }
+}
+
+connstream  conn;
+infostream  info;
+warnstream  warn;
+errorstream error;
+}
 
 }
