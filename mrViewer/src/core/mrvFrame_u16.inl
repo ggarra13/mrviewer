@@ -8,6 +8,7 @@
  *
  */
 
+
 namespace mrv {
 
 const float kConstant = 65535.0f;
@@ -44,6 +45,14 @@ const float kConstant = 65535.0f;
         p.g = col[1] / kConstant;
         p.b = col[2] / kConstant;
         break;
+      case kITU_709_YCbCr444A:
+      case kITU_601_YCbCr444A:
+      case kYByRy444A:
+      {
+          assert0( _channels > 3 );
+          unsigned int Ylen    = _width * _height;
+          p.a = d[ Ylen * 3 + offset ] / kConstant;
+        }
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
         {
@@ -53,18 +62,17 @@ const float kConstant = 65535.0f;
           cr = d[ len*2 + offset ];
           break;
         }
-      case kYUVA:
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
         {
+          assert0( _channels > 3 );
           unsigned int Ylen    = _width * _height;
           unsigned int w2      = (_width  + 1) / 2;
           unsigned int h2      = (_height + 1) / 2;
           unsigned int Cblen   = w2 * h2;
           p.a = d[ Ylen + Cblen * 2 + offset] / kConstant;
         }
-      case kYUV:
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
       case kYByRy420:
@@ -93,7 +101,7 @@ const float kConstant = 65535.0f;
           break;
         }
       default:
-          throw std::runtime_error( _("Unknown mrv::Frame format") );
+          LOG_ERROR( _("Unknown mrv::Frame format " ) << _format );
       }
 
     if ( _format >= kYByRy420 )
@@ -104,56 +112,36 @@ const float kConstant = 65535.0f;
       }
     else if ( _format >= kITU_709_YCbCr420 )
       {
-	  float Y, Pb, Pr;
-	  // ITU. 702 YCbCr conversion
-	  if ( pixel_type() == kByte )
-	  {
-	      Y = yp / 256.0f;
-	      Pb = cb / 256.0f - 0.5f;
-	      Pr = cr / 256.0f - 0.5f;
-	  }
-	  else
-	  {
-	      Y = yp / 65536.0f;
-	      Pb = cb / 65536.0f - 0.5f;
-	      Pr = cr / 65536.0f - 0.5f;
-	  }
-	  
-	  p.r = Y                  + Pr * 1.402f;
-	  p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
-	  p.b = Y + Pb * 1.772f;
+        // ITU. 702 YCbCr conversion
+        float  Y = yp / kConstant;
+        float Pb = cb / kConstant - 0.5f;
+        float Pr = cr / kConstant - 0.5f;
+
+        p.r = Y                  + Pr * 1.402f;
+        p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
+        p.b = Y + Pb * 1.772f;
       }
     else if ( _format >= kITU_601_YCbCr420 )
       {
-	  float Y, Cb, Cr;
-        // ITU. 702 YCbCr conversion
-	  if ( pixel_type() == kByte )
-	  {
-	      // ITU. 601 YCbCr conversion
-	      Y = float( short(yp) - 16  );
-	      Cb = float( short(cb) - 128 );
-	      Cr = float( short(cr) - 128 );
-	  }
-	  else
-	  {
-	      Y = float( short(yp) - 4096  );
-	      Cb = float( short(cb) - 32768 );
-	      Cr = float( short(cr) - 32768 );
-	  }
+        // ITU. 601 YCbCr conversion
+        float  Y = float( short(yp) - 16*256 );
+        float Cb = float( short(cb) - 32767 );
+        float Cr = float( short(cr) - 32767 );
 
-	  p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
-	  p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
-	  p.b = Y * 0.00456621f + Cb * 0.00791071f;
+        p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
+        p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
+        p.b = Y * 0.00456621f + Cb * 0.00791071f;
 
-	  // Sanity check. Needed, as ffmpeg can return invalid values
-	  if ( p.r < 0.0f )      p.r = 0.0f;
-	  else if ( p.r > 1.0f ) p.r = 1.0f;
+        // Sanity check. Needed, as ffmpeg can return invalid values
+        if ( p.r < 0.0f )      p.r = 0.0f;
+        else if ( p.r > 1.0f ) p.r = 1.0f;
 
-	  if ( p.g < 0.0f )      p.g = 0.0f;
-	  else if ( p.g > 1.0f ) p.g = 1.0f;
+        if ( p.g < 0.0f )      p.g = 0.0f;
+        else if ( p.g > 1.0f ) p.g = 1.0f;
 
-	  if ( p.b < 0.0f )      p.b = 0.0f;
-	  else if ( p.b > 1.0f ) p.b = 1.0f;
+        if ( p.b < 0.0f )      p.b = 0.0f;
+        else if ( p.b > 1.0f ) p.b = 1.0f;
+
       }
 
     return p;
@@ -190,6 +178,13 @@ const float kConstant = 65535.0f;
         col[1] = boost::uint16_t(p.g * kConstant);
         col[2] = boost::uint16_t(p.b * kConstant);
         break;
+      case kITU_709_YCbCr444A:
+      case kITU_601_YCbCr444A:
+      case kYByRy444A:
+        {
+          unsigned int Ylen    = _width * _height;
+          d[ Ylen * 3 + offset ] = boost::uint8_t(p.a * kConstant);
+        }
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
         {
@@ -199,7 +194,6 @@ const float kConstant = 65535.0f;
           cr = d + offset + len*2;
           break;
         }
-      case kYUVA:
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
@@ -210,7 +204,6 @@ const float kConstant = 65535.0f;
           unsigned int Cblen2  = w2 * h2 * 2;
           d[ Ylen + Cblen2 + offset] = boost::uint16_t(p.a * kConstant);
         }
-      case kYUV:
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
       case kYByRy420:
@@ -239,7 +232,8 @@ const float kConstant = 65535.0f;
           break;
         }
       default:
-          throw std::runtime_error( _("Unknown mrv::Frame format") );
+          LOG_ERROR( _("Unknown mrv::Frame format ") << _format );
+          return;
       }
 
     if ( _format >= kYByRy420 )

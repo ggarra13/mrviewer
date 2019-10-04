@@ -1,14 +1,14 @@
 // $Id: flu_pixmaps.cpp,v 1.10 2003/12/06 16:52:43 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
@@ -16,7 +16,7 @@
 #include "FLU/flu_pixmaps.h"
 
 /* XPM */
-const char * const plus_xpm[] = {
+const char * plus_xpm[] = {
 "15 15 4 1",
 "       c None",
 ".      c #444444",
@@ -39,7 +39,7 @@ const char * const plus_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const minus_xpm[] = {
+const char * minus_xpm[] = {
 "15 15 4 1",
 "       c None",
 ".      c #444444",
@@ -62,7 +62,7 @@ const char* const minus_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const folder_save_xpm[] = {
+const char * folder_save_xpm[] = {
 "20 20 180 2",
 "  	c None",
 ". 	c #000000",
@@ -266,7 +266,7 @@ const char* const folder_save_xpm[] = {
 "                                        "};
 
 /* XPM */
-const char* const folder_load_xpm[] = {
+const char * folder_load_xpm[] = {
 "20 20 42 1",
 " 	c None",
 ".	c #000000",
@@ -332,7 +332,7 @@ const char* const folder_load_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const reload_xpm[] = {
+const char * reload_xpm[] = {
 "20 20 41 1",
 " 	c None",
 ".	c #777777",
@@ -397,7 +397,7 @@ const char* const reload_xpm[] = {
 "    .++++++.        "};
 
 /* XPM */
-const char* const home_xpm[] = {
+const char * home_xpm[] = {
 "20 20 46 1",
 " 	c None",
 ".	c #000000",
@@ -467,7 +467,7 @@ const char* const home_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const trash_xpm[] = {
+const char * trash_xpm[] = {
 "20 20 8 1",
 " 	c None",
 ".	c #000000",
@@ -499,7 +499,7 @@ const char* const trash_xpm[] = {
 "      ........      "};
 
 /* XPM */
-const char* const arrow_closed_xpm[] = {
+const char * arrow_closed_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -521,7 +521,7 @@ const char* const arrow_closed_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const arrow_open_xpm[] = {
+const char * arrow_open_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -543,7 +543,7 @@ const char* const arrow_open_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const bluedot_xpm[] = {
+const char * bluedot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4D4FF",
@@ -569,7 +569,7 @@ const char* const bluedot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const book_xpm[] = {
+const char * book_xpm[] = {
 "18 18 15 1",
 " 	c None",
 ".	c #840084",
@@ -606,7 +606,7 @@ const char* const book_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const cd_drive_xpm[] = {
+const char * cd_drive_xpm[] = {
 "18 16 29 1",
 " 	c None",
 ".	c #737373",
@@ -655,7 +655,7 @@ const char* const cd_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const computer_xpm[] = {
+const char * computer_xpm[] = {
 "20 20 47 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -726,7 +726,7 @@ const char* const computer_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const ram_drive_xpm[] = {
+const char * ram_drive_xpm[] = {
 "18 16 14 1",
 " 	c None",
 ".	c #444444",
@@ -760,7 +760,7 @@ const char* const ram_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const network_drive_xpm[] = {
+const char * network_drive_xpm[] = {
 "18 16 15 1",
 " 	c None",
 ".	c #A80525",
@@ -795,7 +795,7 @@ const char* const network_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const floppy_drive_xpm[] = {
+const char * floppy_drive_xpm[] = {
 "18 16 12 1",
 " 	c None",
 ".	c #858585",
@@ -827,7 +827,7 @@ const char* const floppy_drive_xpm[] = {
 "  ############    "};
 
 /* XPM */
-const char* const removable_drive_xpm[] = {
+const char * removable_drive_xpm[] = {
 "20 12 12 1",
 " 	c None",
 ".	c #858585",
@@ -855,7 +855,7 @@ const char* const removable_drive_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const disk_drive_xpm[] = {
+const char * disk_drive_xpm[] = {
 "20 12 12 1",
 " 	c None",
 ".	c #737373",
@@ -883,7 +883,7 @@ const char* const disk_drive_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const filled_folder_xpm[] = {
+const char * filled_folder_xpm[] = {
 "18 18 18 1",
 " 	c None",
 ".	c #63639C",
@@ -923,7 +923,7 @@ const char* const filled_folder_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const folder_up_xpm[] = {
+const char * folder_up_xpm[] = {
 "20 18 8 1",
 " 	c None",
 ".	c #9C9C00",
@@ -953,7 +953,7 @@ const char* const folder_up_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const folder_closed_xpm[] = {
+const char * folder_closed_xpm[] = {
 "20 16 44 1",
 " 	c None",
 ".	c #A68A5E",
@@ -1064,7 +1064,7 @@ const char* const folder_closed_xpm[] = {
 "                    "};
 */
 
-const char* const folder_open_xpm[] = {
+const char * folder_open_xpm[] = {
 "20 16 34 1",
 " 	c None",
 ".	c #A68A5E",
@@ -1179,7 +1179,7 @@ const char* const folder_open_xpm[] = {
 */
 
 /* XPM */
-const char* const greendot_xpm[] = {
+const char * greendot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4FFD4",
@@ -1205,7 +1205,7 @@ const char* const greendot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const purpledot_xpm[] = {
+const char * purpledot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFD4FF",
@@ -1230,7 +1230,7 @@ const char* const purpledot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const question_book_xpm[] = {
+const char * question_book_xpm[] = {
 "18 18 19 1",
 " 	c None",
 ".	c #840084",
@@ -1270,7 +1270,7 @@ const char* const question_book_xpm[] = {
 "        $+        ",
 "                  "};
 /* XPM */
-const char* const reddot_xpm[] = {
+const char * reddot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFD4D4",
@@ -1295,7 +1295,7 @@ const char* const reddot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const tealdot_xpm[] = {
+const char * tealdot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4FFFF",
@@ -1320,7 +1320,7 @@ const char* const tealdot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const textdoc_xpm[] = {
+const char * textdoc_xpm[] = {
 "15 18 5 1",
 " 	c None",
 ".	c #848484",
@@ -1347,7 +1347,7 @@ const char* const textdoc_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const yellowdot_xpm[] = {
+const char * yellowdot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFFFD4",
@@ -1373,7 +1373,7 @@ const char* const yellowdot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const cdrom_xpm[] = {
+const char * cdrom_xpm[] = {
 "22 22 39 1",
 "       c None",
 ".      c #ADADAD",
@@ -1438,7 +1438,7 @@ const char* const cdrom_xpm[] = {
 "                      "};
 
 /* XPM */
-const char* const big_folder_new_xpm[] = {
+const char * big_folder_new_xpm[] = {
 "20 20 73 1",
 " 	c None",
 ".	c #000000",
@@ -1535,7 +1535,7 @@ const char* const big_folder_new_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const big_folder_up_xpm[] = {
+const char * big_folder_up_xpm[] = {
 "20 20 70 1",
 " 	c None",
 ".	c #474747",

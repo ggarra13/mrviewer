@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,83 +19,116 @@
  * @file   mrvTimeline.h
  * @author gga
  * @date   Fri Oct 13 12:58:46 2006
- * 
+ *
  * @brief  An fltk widget to represent a video timeline, displaying
  *         sequence edits, timecode and frame ticks.
- * 
+ *
  */
 #ifndef mrvTimeline_h
 #define mrvTimeline_h
 
 #include <vector>
 
-#include <fltk/Slider.h>
-
+#include "core/mrvRectangle.h"
+#include "gui/mrvSlider.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMedia.h"
 
 
-class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
-  class ImageBrowser;
+class CMedia;
+class ImageBrowser;
 
-  namespace gui {
-    class media;
-  }
+namespace gui {
+class media;
+}
 
 
-class Timeline : public fltk::Slider
+class Timeline : public mrv::Slider
 {
-  public:
+public:
     typedef CMedia::Mutex   Mutex;
 
-  public:
+public:
     enum DisplayMode
     {
-    kSingle,
-    kEDL_Single,
-    kEDL_All
+        kSingle,
+        kEDL_Single,
+        kEDL_All
     };
 
-  public:
+public:
     Timeline( int x, int y, int w, int h, char* l = 0 );
     Timeline( int w, int h, char* l = 0 );
     ~Timeline();
 
-    inline Timecode::Display display() const { return _display; }
-    inline void display(Timecode::Display x) { _display = x; redraw(); }
+    inline Timecode::Display display() const {
+        return _display;
+    }
+    inline void display(Timecode::Display x) {
+        _display = x;
+        redraw();
+    }
 
-    inline bool edl() const { return _edl; }
+    inline bool edl() const {
+        return _edl;
+    }
     void edl( bool x );
 
-    inline double fps() const { return _fps; }
-    inline void fps( double x ) { _fps = x; }
+    inline double fps() const {
+        return _fps;
+    }
+    inline void fps( double x ) {
+        _fps = x;
+    }
 
-    inline double maximum() const { return fltk::Slider::maximum(); }
+    inline double maximum() const {
+        return Fl_Slider::maximum();
+    }
     void maximum( double x );
-    inline double minimum() const { return fltk::Slider::minimum(); }
+    inline double minimum() const {
+        return Fl_Slider::minimum();
+    }
     void minimum( double x );
 
-    inline double display_minimum() const { return _display_min; }
+    inline double display_minimum() const {
+        return _display_min;
+    }
     void display_minimum( const double& x );
-    
-    inline double display_maximum() const { return _display_max; }
-    void display_maximum( const double& x );
+    void undo_display_minimum();
+    int64_t undo_minimum() const { return _undo_display_min; }
 
-    void timecode( const int64_t& tc ) { _tc = tc; redraw(); }
+    inline double display_maximum() const {
+        return _display_max;
+    }
+    void display_maximum( const double& x );
+    void undo_display_maximum();
+    int64_t undo_maximum() const { return _undo_display_max; }
+
+    void timecode( const int64_t& tc ) {
+        _tc = tc;
+        redraw();
+    }
 
     virtual int handle( int e );
     virtual void draw();
 
     uint64_t offset( const CMedia* img )   const;
-    uint64_t location( const CMedia* img ) const { return offset(img) + 1; }
+    uint64_t location( const CMedia* img ) const {
+        return offset(img) + 1;
+    }
 
-    void main( ViewerUI* m ) { uiMain = m; }
-    ViewerUI* main() const { return uiMain; }
+    void main( ViewerUI* m ) {
+        uiMain = m;
+    }
+    ViewerUI* main() const {
+        return uiMain;
+    }
 
+    int slider_position( double p, int w );
 
     size_t index( const int64_t frame ) const;
     mrv::media media_at( const int64_t frame ) const;
@@ -103,19 +136,24 @@ class Timeline : public fltk::Slider
 
     int64_t global_to_local( const int64_t frame ) const;
 
-    void draw_cache( const bool t ) { _draw_cache = t; }
-    bool draw_cache() const { return _draw_cache; }
-
-  protected:
-    bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
-    void draw_ticks(const fltk::Rectangle& r, int min_spacing);
-
-    void draw_selection( const fltk::Rectangle& r);
-    void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
-                         int64_t mn, int64_t mx, int64_t frame, 
-                         const fltk::Rectangle& r );
+    void draw_cache( const bool t ) {
+        _draw_cache = t;
+    }
+    bool draw_cache() const {
+        return _draw_cache;
+    }
 
     ImageBrowser* browser() const;
+
+protected:
+    bool draw(const mrv::Recti& sr, int flags, bool slot);
+    void draw_ticks(const mrv::Recti& r, int min_spacing);
+
+    void draw_selection( const mrv::Recti& r);
+    void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
+                         int64_t mn, int64_t mx, int64_t frame,
+                         const mrv::Recti& r );
+
 
     static mrv::Timecode::Display _display;
     bool   _edl;
@@ -124,12 +162,14 @@ class Timeline : public fltk::Slider
     double _fps;
     double _display_min;
     double _display_max;
+    int64_t _undo_display_min;
+    int64_t _undo_display_max;
 
     ViewerUI* uiMain;
 };
 
 
-  void change_timeline_display( ViewerUI* uiMain );
+void change_timeline_display( ViewerUI* uiMain );
 }
 
 

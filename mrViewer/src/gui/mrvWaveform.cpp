@@ -21,8 +21,7 @@
 */
 
 
-#include <fltk/draw.h>
-#include <fltk/Symbol.h>
+#include <FL/fl_draw.H>
 
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
@@ -51,28 +50,32 @@ static const char* kModule = "waveform";
 namespace mrv
 {
 
-  Waveform::Waveform( int x, int y, int w, int h, const char* l ) :
-  fltk::Widget( x, y, w, h, l ),
-  fli( NULL ),
-  _intensity( 0.04f )
-  {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
-    tooltip( _("Mark an area in the image with the left mouse button") );
-  }
+Waveform::Waveform( int x, int y, int w, int h, const char* l ) :
+Fl_Box( x, y, w, 256, l ),
+fli( NULL ),
+_intensity( 0.04f )
+{
+    color( FL_BLACK );
+    // buttoncolor( FL_BLACK );
+    tooltip( _("Mark an area in the image with SHIFT + the left mouse button") );
+}
 
+Waveform::~Waveform()
+{
+    delete fli; fli = NULL;
+}
 
-  void Waveform::draw_grid(const fltk::Rectangle& r)
-  {
+void Waveform::draw_grid(const mrv::Recti& r)
+{
 
-  }
+}
 
-  void Waveform::draw()
-  {
-      fltk::Rectangle r( w(), h() );
-      draw_box(r);
-      draw_pixels(r);
-  }
+void Waveform::draw()
+{
+    mrv::Recti r( x(), y(), w(), h() );
+    //draw_box();
+    draw_pixels(r);
+}
 
 
 static void update16(uint16_t *target, int max, int intensity, int limit)
@@ -92,7 +95,7 @@ static void update(uint8_t *target, int max, int intensity)
 }
 
 static av_always_inline void lowpass(mrv::image_type_ptr in,
-				     mrv::image_type_ptr out,
+                                     mrv::image_type_ptr out,
                                      int component, int intensity,
                                      int offset_y, int offset_x)
 {
@@ -131,6 +134,8 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // 	     src_linesize, dst_linesize );
     // fprintf( stderr, "dst_signed_linesize=%d\n", dst_signed_linesize );
     // fprintf( stderr, "src_w=%d src_h=%d\n", src_w, src_h );
+    // fprintf( stderr, "dst_w=%d dst_h=%d\n\n\n", out->width(), out->height() );
+    // fprintf( stderr, "offset_x=%d offset_y=%d\n\n\n", offset_x, offset_y );
     // fprintf( stderr, "jobnr=%d\n\n\n\n", jobnr );
     // fprintf( stderr, "nb_jobs=%d\n\n\n\n", nb_jobs );
     // fprintf( stderr, "sliceh_start=%d sliceh_end=%d\n",
@@ -139,10 +144,11 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // 	     slicew_start, slicew_end );
     // fprintf( stderr, "s->size=%d\n\n\n\n", ssize );
     // fprintf( stderr, "step=%d\n\n\n\n", step );
+    // fprintf( stderr, "data=%p", out->data().get() );
     
     if (!column && mirror)
         dst_data += ssize;
-    
+
     for (y = sliceh_start; y < sliceh_end; y++) {
         const uint8_t *src_data_end = src_data + slicew_end;
         uint8_t *dst = dst_line + slicew_start * step;
@@ -196,12 +202,12 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
 }
 
 static av_always_inline void lowpass16(mrv::image_type_ptr in,
-				       mrv::image_type_ptr out,
-				       int component, int intensity,
-				       int offset_y, int offset_x)
+                                       mrv::image_type_ptr out,
+                                       int component, int intensity,
+                                       int offset_y, int offset_x)
 {
     const int column = 1;
-    const int mirror = 1;
+    const int mirror = 0;
     const int ssize = out->height();
     const int smax = 256;
     const int jobnr = 0;
@@ -227,7 +233,7 @@ static av_always_inline void lowpass16(mrv::image_type_ptr in,
     uint8_t * const dst_line = (mirror ? dst_bottom_line : dst_data);
     const uint16_t *p;
     int y;
-    
+
     if (!column && mirror)
         dst_data += ssize;
 
@@ -267,46 +273,49 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
     const unsigned H = pic->height();
     if ( !in || in->width() != W || in->height() != H )
     {
-	try
-	{
-	    in.reset( new image_type( 1, W, H, 1, mrv::image_type::kLumma,
-				      mrv::image_type::kByte ) );
-	}
-	catch( const std::bad_alloc& e )
-	{
-	    throw;
-	}
-	catch( const std::runtime_error& e )
-	{
-	    throw;
-	}
+        try
+        {
+            in.reset( new image_type( 1, W, H, 1, mrv::image_type::kLumma,
+                                      mrv::image_type::kByte ) );
+        }
+        catch( const std::bad_alloc& e )
+        {
+            throw;
+        }
+        catch( const std::runtime_error& e )
+        {
+            throw;
+        }
     }
-    
+
     for (unsigned x = 0; x < W; ++x )
     {
-	for (unsigned y = 0; y < H; ++y )
-	{
-	    CMedia::Pixel p = pic->pixel( x, y );
-	    p = mrv::color::rgb::to_yuv(p);
-	    p.b = p.r;
-	    in->pixel( x, y, p );
-	}
+        for (unsigned y = 0; y < H; ++y )
+        {
+            CMedia::Pixel p = pic->pixel( x, y );
+            p = mrv::color::rgb::to_yuv(p);
+            p.b = p.r;
+            in->pixel( x, y, p );
+        }
     }
 
 }
 
-  void Waveform::draw_pixels( const fltk::Rectangle& r )
-  {
+void Waveform::draw_pixels( const mrv::Recti& r )
+{
+    if ( ! uiMain->uiView )
+	return;
+    
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
-        tooltip( _("Mark an area in the image with the SHIFT + LMB") );
+        tooltip( _("Mark an area in the image with SHIFT + LMB") );
         return;
     }
     CMedia* img = m->image();
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if ( !pic ) return;
 
-    
+
     tooltip( NULL );
 
     int xmin, ymin, xmax, ymax;
@@ -340,136 +349,128 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
     if ( xmax >= (int)pic->width() ) xmax = (int)pic->width()-1;
     if ( ymax >= (int)pic->height() ) ymax = (int)pic->height()-1;
 
-
-
-    unsigned stepX = (xmax - xmin + 1) / w();
-    unsigned stepY = (ymax - ymin + 1) / h();
-    if ( stepX < 1 ) stepX = 1;
-    if ( stepY < 1 ) stepY = 1;
-    stepX = stepY = 1;
-
     assert( xmax < pic->width() );
     assert( ymax < pic->height() );
 
-    
-    if ( fli == NULL )
-    {
-	fli = new fltk::Image( fltk::MONO, pic->width(),
-			       pic->height() );
-    }
-    
-    if ( !out || out->width() != w() || out->height() != h() )
-    {
-	typedef CMedia::Mutex Mutex;
-	Mutex& mtx = img->video_mutex();
-	SCOPED_LOCK( mtx );
 
-	try
-	{
-	    out.reset( new image_type( 1, pic->width(), 256, 1,
-				       mrv::image_type::kLumma,
-				       VideoFrame::kByte ) );
-	}
-	catch( const std::bad_alloc& e )
-	{
-	    LOG_ERROR( e.what() );
-	    return;
-	}
-	catch( const std::runtime_error& e )
-	{
-	    LOG_ERROR( e.what() );
-	    return;
-	}
+
+    if ( !out || out->width() != pic->width() || out->height() != 256 )
+    {
+        typedef CMedia::Mutex Mutex;
+        Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
+
+        try
+        {
+            out.reset( new image_type( pic->frame(), pic->width(),
+				       256, 1,
+                                       mrv::image_type::kLumma,
+                                       VideoFrame::kByte ) );
+	    
+        }
+        catch( const std::bad_alloc& e )
+        {
+            LOG_ERROR( e.what() );
+            return;
+        }
+        catch( const std::runtime_error& e )
+        {
+            LOG_ERROR( e.what() );
+            return;
+        }
     }
-    
+
     memset( out->data().get(), 0, out->data_size() );
     switch( pic->format() )
     {
-	case VideoFrame::kLumma:
-	case VideoFrame::kITU_709_YCbCr444:
-	case VideoFrame::kITU_601_YCbCr444:
-	case VideoFrame::kITU_709_YCbCr422:
-	case VideoFrame::kITU_601_YCbCr422:
-	case VideoFrame::kITU_709_YCbCr420:
-	case VideoFrame::kITU_601_YCbCr420:
-	case VideoFrame::kITU_709_YCbCr444A:
-	case VideoFrame::kITU_601_YCbCr444A:
-	case VideoFrame::kITU_709_YCbCr422A:
-	case VideoFrame::kITU_601_YCbCr422A:
-	case VideoFrame::kITU_709_YCbCr420A:
-	case VideoFrame::kITU_601_YCbCr420A:
-	    if ( pic->pixel_type() == VideoFrame::kByte )
-	    {
-		int value = _intensity * 256;
-		lowpass( pic, out, 0, value, 0, 0 );
-	    }
-	    else if ( pic->pixel_type() == VideoFrame::kShort )
-	    {
-		int value = _intensity * 256;
-		create_image( pic );
-		lowpass( in, out, 0, value, 0, 0);
-	    }
-	    else
-	    {
-		static bool warn_error = false;
-		if (! warn_error )
-		{
-		    warn_error = true;
-		    LOG_ERROR( _("Pixel type not well supported in waveform "
-				 "monitor") );
-		    lowpass( pic, out, 0, 10, 0, 0);
-		}
-	    }
-	    break;
-	case VideoFrame::kRGB:
-	case VideoFrame::kRGBA:
-	case VideoFrame::kBGR:
-	case VideoFrame::kBGRA:
-	default:
-	    {
-		if ( pic->pixel_type() == VideoFrame::kByte )
-		{
-		    int value = _intensity * 256;
-		    lowpass( pic, out, 0, value, 0, 0 );
-		}
-		// else if ( pic->pixel_type() == VideoFrame::kShort )
-		// {
-		//     std::cerr << "lowpass16 short" << std::endl;
-		//     lowpass16( pic, out, 0, 40, 0, 0); break;
-		// }
-		else if ( pic->pixel_type() == VideoFrame::kShort ||
-			  pic->pixel_type() == VideoFrame::kInt ||
-			  pic->pixel_type() == VideoFrame::kHalf ||
-			  pic->pixel_type() == VideoFrame::kFloat )
-		{
-		    try
-		    {
-			create_image( pic );
-			int value = _intensity * 256;
-			//lowpass16( in, out, 0, 40, 0, 0 ); 
-			lowpass( in, out, 0, value, 0, 0 ); 
-		    }
-		    catch( const std::bad_alloc& e )
-		    {
-			LOG_ERROR( e.what() );
-			return;
-		    }
-		    catch( const std::runtime_error& e )
-		    {
-			LOG_ERROR( e.what() );
-			return;
-		    }
-		}
-		break;
-	    }
+    case VideoFrame::kLumma:
+    case VideoFrame::kITU_709_YCbCr444:
+    case VideoFrame::kITU_601_YCbCr444:
+    case VideoFrame::kITU_709_YCbCr422:
+    case VideoFrame::kITU_601_YCbCr422:
+    case VideoFrame::kITU_709_YCbCr420:
+    case VideoFrame::kITU_601_YCbCr420:
+    case VideoFrame::kITU_709_YCbCr444A:
+    case VideoFrame::kITU_601_YCbCr444A:
+    case VideoFrame::kITU_709_YCbCr422A:
+    case VideoFrame::kITU_601_YCbCr422A:
+    case VideoFrame::kITU_709_YCbCr420A:
+    case VideoFrame::kITU_601_YCbCr420A:
+        if ( pic->pixel_type() == VideoFrame::kByte )
+        {
+            int value = _intensity * 255;
+            lowpass( pic, out, 0, value, 0, 0 );
+        }
+        else if ( pic->pixel_type() == VideoFrame::kShort )
+        {
+            int value = _intensity * 255;
+            create_image( pic );
+            lowpass( in, out, 0, value, 0, 0);
+        }
+        else
+        {
+            static bool warn_error = false;
+            if (! warn_error )
+            {
+                warn_error = true;
+                LOG_ERROR( _("Pixel type not well supported in waveform "
+                             "monitor") );
+                lowpass( pic, out, 0, 10, 0, 0);
+            }
+        }
+        break;
+    case VideoFrame::kRGB:
+    case VideoFrame::kRGBA:
+    case VideoFrame::kBGR:
+    case VideoFrame::kBGRA:
+    default:
+    {
+        if ( pic->pixel_type() == VideoFrame::kByte )
+        {
+            int value = _intensity * 255;
+            lowpass( pic, out, 0, value, 0, 0 );
+        }
+        // else if ( pic->pixel_type() == VideoFrame::kShort )
+        // {
+        //     std::cerr << "lowpass16 short" << std::endl;
+        //     lowpass16( pic, out, 0, 40, 0, 0); break;
+        // }
+        else if ( pic->pixel_type() == VideoFrame::kShort ||
+                  pic->pixel_type() == VideoFrame::kInt ||
+                  pic->pixel_type() == VideoFrame::kHalf ||
+                  pic->pixel_type() == VideoFrame::kFloat )
+        {
+            try
+            {
+                create_image( pic );
+                int value = _intensity * 256;
+                //lowpass16( in, out, 0, 40, 0, 0 );
+                lowpass( in, out, 0, value, 0, 0 );
+            }
+            catch( const std::bad_alloc& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+            catch( const std::runtime_error& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+        }
+        break;
     }
-    
-    fli->setimage( (uchar*) out->data().get(), fltk::MONO, out->width(),
-		   out->height() );
-    fltk::push_matrix();
-    fli->draw(r);
-    fltk::pop_matrix();
-    
-  }
+    }
+
+    if ( fli == NULL || w() != fli->w() || h() != fli->h() )
+    {
+	fli = new Fl_RGB_Image( (const uchar*)out->data().get(),
+				out->width(), out->height(), 1 );
+	fli->alloc_array = 0;
+    }
+    fli->draw(r.x(), r.y(), r.w(), r.h());
+    fli->uncache();
+
+}
 
 }
