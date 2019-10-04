@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,14 @@
  * @file   slateImage.cpp
  * @author gga
  * @date   Fri Sep 21 01:30:40 2007
- * 
+ *
  * @brief  Simple image slate generator
- * 
- * 
+ *
+ *
  */
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <iostream>
@@ -36,17 +38,17 @@ using namespace std;
 #include "mrvException.h"
 #include <MagickWand/MagickWand.h>
 
-namespace 
+namespace
 {
-  const char* kModule = "slate";
+const char* kModule = "slate";
 }
 
 namespace mrv {
 
 
-  slateImage::slateImage( const CMedia* src ) :
+slateImage::slateImage( const CMedia* src ) :
     CMedia()
-  {
+{
     _gamma = 1.0f;
     _internal = true;
 
@@ -68,24 +70,23 @@ namespace mrv {
     _frameEnd   = _frame_end = 60;
 
     image_size( _w, _h );
-    allocate_pixels( _fstart );
 
     default_layers();
-  }
+}
 
 
 bool slateImage::initialize()
-{ 
-   return true;
+{
+    return true;
 }
 
 bool slateImage::release()
 {
-   return true;
+    return true;
 }
 
-  void slateImage::draw_text( double x, double y, const char* text )
-  { 
+void slateImage::draw_text( double x, double y, const char* text )
+{
     // Draw shadow first
     PixelSetColor( pwand, "#000000" );
     DrawSetStrokeColor( dwand, pwand );
@@ -98,10 +99,10 @@ bool slateImage::release()
     PixelSetColor( pwand, "#f0f0f000" );
     DrawSetStrokeColor( dwand, pwand );
     DrawAnnotation( dwand, x, y, (boost::uint8_t*) text );
-  }
+}
 
-  void slateImage::draw_bars()
-  {  
+void slateImage::draw_bars()
+{
     unsigned int W = width();
     unsigned int H = height();
 
@@ -115,10 +116,10 @@ bool slateImage::release()
     PixelSetColor( pwand, N_("#d0d0d0") );
     DrawSetFillColor( dwand, pwand );
 
-  
+
     for ( x = 0; x < W+xh; x += xinc )
-      {
-	DrawRectangle( dwand, x, 0, x+xh, yh );
+    {
+        DrawRectangle( dwand, x, 0, x+xh, yh );
 
         ExceptionType type = DrawGetExceptionType( dwand );
         if ( type != UndefinedException )
@@ -127,11 +128,11 @@ bool slateImage::release()
             break;
         }
 
-      }
+    }
 
     for ( x = xh*4; x < W+xh*6; x += xinc )
-      {
-	DrawRectangle( dwand, x, H-yh+1, x+xh, H );
+    {
+        DrawRectangle( dwand, x, H-yh+1, x+xh, H );
 
         ExceptionType type = DrawGetExceptionType( dwand );
         if ( type != UndefinedException )
@@ -139,13 +140,13 @@ bool slateImage::release()
             IMG_ERROR( DrawGetException( dwand, &type ) );
             break;
         }
-      }
+    }
     DrawSkewX( dwand, 45 );
 
-  }
+}
 
-  void slateImage::draw_gradient()
-  {  
+void slateImage::draw_gradient()
+{
     unsigned int W = width();
     unsigned int H = height();
 
@@ -156,10 +157,10 @@ bool slateImage::release()
     double stop[3]  = { 0.555, 0.555, 0.555 };
     double colorize[3] = { 0.1294, 0.247, 0.55f };
     for ( int i = 0; i < 3; ++i )
-      {
-	start[i] *= colorize[i];
-	stop[i]  *= colorize[i];
-      }
+    {
+        start[i] *= colorize[i];
+        stop[i]  *= colorize[i];
+    }
 
     double red_step =   (stop[0] - start[0]) / steps;
     double green_step = (stop[1] - start[1]) / steps;
@@ -169,30 +170,31 @@ bool slateImage::release()
     PixelSetIteratorRow( iter, long(H*pct) );
 
     for ( unsigned y = 0; y < steps; ++y )
-      {
-	double red   = start[0] + red_step   * y;
-	double green = start[1] + green_step * y;
-	double blue  = start[2] + blue_step  * y;
+    {
+        double red   = start[0] + red_step   * y;
+        double green = start[1] + green_step * y;
+        double blue  = start[2] + blue_step  * y;
 
-	size_t num;
-	PixelWand** pixels = PixelGetNextIteratorRow(iter, &num );
+        size_t num;
+        PixelWand** pixels = PixelGetNextIteratorRow(iter, &num );
 
-	for (unsigned x=0; x < W; ++x)
-	  {
-	    PixelSetRed(   pixels[x], red );
-	    PixelSetGreen( pixels[x], green );
-	    PixelSetBlue(  pixels[x], blue );
-	    PixelSetAlpha( pixels[x], 1.0 );
-	  }
+        for (unsigned x=0; x < W; ++x)
+        {
+            PixelSetRed(   pixels[x], red );
+            PixelSetGreen( pixels[x], green );
+            PixelSetBlue(  pixels[x], blue );
+            PixelSetAlpha( pixels[x], 1.0 );
+        }
 
-	PixelSyncIterator(iter);
-      }
+        PixelSyncIterator(iter);
+    }
 
     DestroyPixelIterator(iter);
-  }
+}
 
-  bool slateImage::fetch( const boost::int64_t frame )
-  {
+bool slateImage::fetch( mrv::image_type_ptr& canvas,
+                        const boost::int64_t frame )
+{
     MagickBooleanType status;
 
     wand = NewMagickWand();
@@ -203,7 +205,7 @@ bool slateImage::release()
     unsigned int H = height();
 
     MagickSetSize(wand, W, H);
-    MagickReadImage(wand, N_("xc:black") ); 
+    MagickReadImage(wand, N_("xc:black") );
 
 
     pwand = NewPixelWand();
@@ -250,9 +252,9 @@ bool slateImage::release()
     split( tokens, file, '.' );
     size_t numTokens = tokens.size();
     if ( numTokens >= 4 && numTokens <= 5 )
-      {
-	take = atoi( tokens[1].c_str() );
-      }
+    {
+        take = atoi( tokens[1].c_str() );
+    }
 
     char* tmp = NULL;
 
@@ -261,15 +263,15 @@ bool slateImage::release()
     if ( tmp ) seq = tmp;
     else
     {
-       seq = tokens[0];
+        seq = tokens[0];
 
-       size_t pos = seq.find_first_of("0123456789");
-       if ( pos != string::npos )
-       {
-	  seq = seq.substr( 0, pos );
-       }
+        size_t pos = seq.find_first_of("0123456789");
+        if ( pos != string::npos )
+        {
+            seq = seq.substr( 0, pos );
+        }
     }
-       
+
     tmp = getenv( "SHOT" );
     if ( tmp ) shot = tmp;
     else shot = tokens[0];
@@ -277,25 +279,25 @@ bool slateImage::release()
 
 
     static const char* kTitles[] = {
-      "Show",
-      "Sequence",
-      "Shot",
-      "Take",
-      "Date",
-      "Artist",
-      "Frames",
+        "Show",
+        "Sequence",
+        "Shot",
+        "Take",
+        "Date",
+        "Artist",
+        "Frames",
     };
     static unsigned kFrames = 6;
 
     static unsigned num = sizeof(kTitles) / sizeof(char*);
     for ( unsigned i = 0; i < num; ++i )
-      {
-	if ( i == kFrames && _fstart == _fend ) continue;
+    {
+        if ( i == kFrames && _fstart == _fend ) continue;
 
-	sprintf( buf, "%s:", kTitles[i]);
-	draw_text( x, y, buf );
-	y += yinc;
-      }
+        sprintf( buf, "%s:", kTitles[i]);
+        draw_text( x, y, buf );
+        y += yinc;
+    }
 
     y  = ybeg;
     x += W * 0.3f;
@@ -305,16 +307,19 @@ bool slateImage::release()
     PixelSetColor( pwand, "#f0f000" );
     DrawSetFillColor( dwand, pwand );
 
-    draw_text(  x, y, show ); y += yinc;
-    draw_text(  x, y, seq.c_str() );  y += yinc;
-    draw_text(  x, y, shot.c_str() ); y += yinc;
+    draw_text(  x, y, show );
+    y += yinc;
+    draw_text(  x, y, seq.c_str() );
+    y += yinc;
+    draw_text(  x, y, shot.c_str() );
+    y += yinc;
 
 
     if ( take > 0 )
-      {
-	sprintf( buf, "%d", take);
-	draw_text(  x, y, buf );
-      }
+    {
+        sprintf( buf, "%d", take);
+        draw_text(  x, y, buf );
+    }
 
     y += yinc;
 
@@ -331,11 +336,11 @@ bool slateImage::release()
     y += yinc;
 
     if ( _fstart != _fend )
-      {
-	sprintf( buf, "%" PRId64 "-%" PRId64 , _fstart, _fend );
-	draw_text( x, y, buf );
-	y += yinc;
-      }
+    {
+        sprintf( buf, "%" PRId64 "-%" PRId64 , _fstart, _fend );
+        draw_text( x, y, buf );
+        y += yinc;
+    }
 
     DrawSetFontSize( dwand, H / 20 );
     yinc = DrawGetFontSize( dwand );
@@ -366,8 +371,9 @@ bool slateImage::release()
     }
 
 
-    MagickExportImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel, 
-			    _hires->data().get() );
+    allocate_pixels( canvas, _fstart );
+    MagickExportImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel,
+                            canvas->data().get() );
 
     DestroyPixelWand( pwand );
     DestroyDrawingWand( dwand );
@@ -379,7 +385,7 @@ bool slateImage::release()
 //     thumbnail_create();
 
     return true;
-  }
+}
 
 
 } // namespace mrv

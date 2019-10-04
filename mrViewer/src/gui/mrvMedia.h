@@ -19,77 +19,99 @@
  * @file   mrvMedia.h
  * @author gga
  * @date   Thu Nov 15 04:16:50 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 #ifndef mrv_gui_media_h
 #define mrv_gui_media_h
 
-#include <fltk/PixelType.h>
-#include <fltk/Image.h>
+
+#include <FL/Fl_Image.H>
 
 #include <boost/shared_ptr.hpp>
 
 #include "core/CMedia.h"
 
-namespace fltk {
-  class Image;
-}
-
 
 namespace mrv {
 
 
-  namespace gui {
+namespace gui {
 
-    class media
-    {
-      public:
-        typedef CMedia::Mutex Mutex;
+class media
+{
+public:
+    typedef CMedia::Mutex Mutex;
 
-        media( CMedia* const img );
-        ~media();
-
-
-        void position( int64_t x );
-        int64_t position() const;
-
-        inline int64_t duration() const { return _image->duration(); }
-
-        inline CMedia* image()             { return _image; }
-        inline const CMedia* image() const { return _image; }
-
-        inline std::string name() const { return _image->name(); }
-
-        inline fltk::Image* thumbnail()             { return _thumbnail; }
-        inline const fltk::Image* thumbnail() const { return _thumbnail; }
-
-        inline bool thumbnail_frozen() const    { return _thumbnail_frozen; }
-        inline void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
-
-        void create_thumbnail();
-
-      protected:
-        void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-                              uchar r, uchar g, uchar b );
-        
-        int64_t  _start;
-        int64_t  _pos;
-        CMedia*   _image;
-        fltk::Image* _thumbnail;
-        bool         _thumbnail_frozen;
-        
-      public:
-	 static       int _thumbnail_width;
-	 static       int _thumbnail_height;
-    };
-
-  }
+    media( CMedia* const img );
+    ~media();
 
 
-  typedef boost::shared_ptr< mrv::gui::media > media;
+    void position( int64_t x );
+    int64_t position() const;
+
+    inline int64_t duration() const {
+        return _image->duration();
+    }
+
+    inline void own_image( bool t )
+        {
+            _own_image = t;
+        }
+
+    inline bool own_image() const
+        {
+            return _own_image;
+        }
+
+    inline CMedia* image()             {
+        return _image;
+    }
+    inline const CMedia* image() const {
+        return _image;
+    }
+
+    inline std::string name() const {
+        return _image->name();
+    }
+
+    inline Fl_RGB_Image* thumbnail()             {
+        return _thumbnail;
+    }
+    inline const Fl_RGB_Image* thumbnail() const {
+        return _thumbnail;
+    }
+
+    inline bool thumbnail_frozen() const    {
+        return _thumbnail_frozen;
+    }
+    inline void thumbnail_freeze( bool t )  {
+        _thumbnail_frozen = t;
+    }
+
+    void create_thumbnail();
+
+protected:
+    void thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b );
+
+    int64_t  _start;
+    int64_t  _pos;
+    CMedia*   _image;
+    Fl_RGB_Image* _thumbnail;
+    bool         _thumbnail_frozen;
+    bool         _own_image;
+
+public:
+    static       int _thumbnail_width;
+    static       int _thumbnail_height;
+};
+
+}
+
+
+typedef boost::shared_ptr< mrv::gui::media > media;
 }
 
 

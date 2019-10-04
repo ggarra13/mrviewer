@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright (c) 2015, Gonzalo Garramuño
 All rights reserved.
 
@@ -6,7 +6,7 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
 1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer. 
+   list of conditions and the following disclaimer.
 2. Redistributions in binary form must reproduce the above copyright notice,
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The views and conclusions contained in the software and documentation are those
-of the authors and should not be interpreted as representing official policies, 
+of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
 
@@ -44,9 +44,9 @@ using namespace tinyxml2;
 
 
 
-/** 
+/**
  * Set status of a transform
- * 
+ *
  * @param s kPreview or kApplied
  */
 ACESclipReader::BitDepth ACESclipReader::get_bit_depth( const std::string& d )
@@ -59,9 +59,9 @@ ACESclipReader::BitDepth ACESclipReader::get_bit_depth( const std::string& d )
     return kLastBitDepth;
 }
 
-/** 
+/**
  * Set status of a transform
- * 
+ *
  * @param s kPreview or kApplied
  */
 std::string ACESclipReader::date_time( const char* i )
@@ -76,9 +76,9 @@ std::string ACESclipReader::date_time( const char* i )
     return r;
 }
 
-/** 
+/**
  * Set status of a transform
- * 
+ *
  * @param s kPreview or kApplied
  */
 TransformStatus ACESclipReader::get_status( const std::string& s )
@@ -88,9 +88,9 @@ TransformStatus ACESclipReader::get_status( const std::string& s )
 }
 
 
-/** 
+/**
  * Parse a vector of 3 float numbers
- * 
+ *
  * @param s    3 float numbers as a string separated by spaces
  * @param out  the 3 float numbers
  */
@@ -103,9 +103,9 @@ void ACESclipReader::parse_V3( const char* v3, float out[3]  )
     out[2] = (float) strtod_l( s, &e, loc );
 }
 
-/** 
+/**
  * Constructor
- * 
+ *
  */
 ACESclipReader::ACESclipReader() :
 graderef_status( kApplied )
@@ -131,10 +131,10 @@ ACESclipReader::~ACESclipReader()
 #endif
 }
 
-/** 
+/**
  * Standard header.
- * 
- * @return XML_NO_ERROR on success, XML_ERROR_FILE_READ_ERROR on failure
+ *
+ * @return XML_SUCCESS on success, XML_ERROR_FILE_READ_ERROR on failure
  */
 ACESclipReader::ACESError ACESclipReader::header()
 {
@@ -153,7 +153,7 @@ ACESclipReader::ACESError ACESclipReader::header()
 ACESclipReader::ACESError ACESclipReader::info()
 {
     root2 = root->FirstChildElement( "aces:Info" );
-    if (!root2) 
+    if (!root2)
         return kNoAcesInfo;
 
     element = root2->FirstChildElement( "Application" );
@@ -407,8 +407,8 @@ ACESclipReader::ACESError ACESclipReader::PTL()
         if ( element )
         {
 
-	  const char* tmp = element->Attribute( "TransformID" );
-	  if ( tmp ) name = tmp;
+          const char* tmp = element->Attribute( "TransformID" );
+          if ( tmp ) name = tmp;
           else
           {
               // For backwards compatibility
@@ -416,21 +416,21 @@ ACESclipReader::ACESError ACESclipReader::PTL()
               if ( tmp ) name = tmp;
           }
 
-	  tmp = element->Attribute( "status" );
-	  if ( tmp ) status = get_status( tmp );
+          tmp = element->Attribute( "status" );
+          if ( tmp ) status = get_status( tmp );
 
-	  root4 = element;
-	  XMLElement* elem = root4->FirstChildElement( "LinkTransform" );
-	  if ( elem )
-	    {
-	      const char* tmp = elem->GetText();
-	      if ( tmp ) link_transform = tmp;
-	    }
+          root4 = element;
+          XMLElement* elem = root4->FirstChildElement( "LinkTransform" );
+          if ( elem )
+            {
+              const char* tmp = elem->GetText();
+              if ( tmp ) link_transform = tmp;
+            }
 
-	  LMT.push_back( Transform( name, link_transform, status ) );
+          LMT.push_back( Transform( name, link_transform, status ) );
 
-	  element = element->NextSiblingElement( "aces:LMTref" );
-	}
+          element = element->NextSiblingElement( "aces:LMTref" );
+        }
     }
 
     std::string name;
@@ -551,17 +551,17 @@ const char* ACESclipReader::error_name( ACESclipReader::ACESError err ) const
 
 }
 
-/** 
+/**
  * First Step.  Load the XML file.
- * 
- * @param filename file to load the XML file from. 
- * 
+ *
+ * @param filename file to load the XML file from.
+ *
  * @return true on success, false on failure
  */
 ACESclipReader::ACESError ACESclipReader::load( const char* filename )
 {
     XMLError e = doc.LoadFile( filename );
-    if ( e != XML_NO_ERROR ) return kFileError;
+    if ( e != XML_SUCCESS ) return kFileError;
 
     ACESError err = header();
     if ( err != kAllOK ) return err;
@@ -586,5 +586,3 @@ ACESclipReader::ACESError ACESclipReader::load( const char* filename )
 
 
 }  // namespace ACES
-
-

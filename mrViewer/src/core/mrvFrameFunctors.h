@@ -19,10 +19,10 @@
  * @file   mrvFrameFunctors.h
  * @author gga
  * @date   Wed Jul 18 08:29:19 2007
- * 
+ *
  * @brief  Functors used to compare with video/audio stores
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvFrameFunctors_h
@@ -43,13 +43,15 @@ struct ClosestToFunctor
 
   ClosestToFunctor( const int64_t f ) : frame(f) {}
 
-  bool operator()( const audio_type_ptr& a, const audio_type_ptr& b ) const
+  inline bool operator()( const audio_type_ptr& a,
+                          const audio_type_ptr& b ) const
   {
     if ( !a || !b ) return false;
     return ( frame > a->frame() && frame < b->frame() );
   }
 
-  bool operator()( const image_type_ptr& a, const image_type_ptr& b ) const
+  inline bool operator()( const image_type_ptr& a,
+                          const image_type_ptr& b ) const
   {
     if ( !a || !b ) return false;
     return ( frame > a->frame() && frame < b->frame() );
@@ -57,18 +59,40 @@ struct ClosestToFunctor
 
 };
 
-struct EqualFunctor
+struct EqualRepeatFunctor
 {
   const int64_t _frame;
-  EqualFunctor( const int64_t frame ) : _frame( frame ) {}
+  EqualRepeatFunctor( const int64_t frame ) : _frame( frame ) {}
 
-  bool operator()( const audio_type_ptr& a ) const
+  inline bool operator()( const audio_type_ptr& a ) const
   {
     if ( !a ) return false;
     return a->frame() == _frame;
   }
 
-  bool operator()( const image_type_ptr& a ) const
+  inline bool operator()( const image_type_ptr& a ) const
+  {
+    if ( !a ) return false;
+    if ( a->repeat() > 0 )
+        return ( a->frame() <= _frame &&
+                 a->frame() + a->repeat() >= _frame );
+    else
+        return a->frame() == _frame;
+  }
+};
+
+struct EqualFunctor
+{
+  const int64_t _frame;
+  EqualFunctor( const int64_t frame ) : _frame( frame ) {}
+
+  inline bool operator()( const audio_type_ptr& a ) const
+  {
+    if ( !a ) return false;
+    return a->frame() == _frame;
+  }
+
+  inline bool operator()( const image_type_ptr& a ) const
   {
     if ( !a ) return false;
     return a->frame() == _frame;
@@ -77,23 +101,23 @@ struct EqualFunctor
 
 struct MoreThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const audio_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a > b->frame();
   }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
-    return a->frame() > b;
+    return *a > b;
   }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const image_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a > b->frame();
   }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const image_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return a->frame() > b;
@@ -102,74 +126,27 @@ struct MoreThanFunctor
 
 struct LessThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const audio_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a < b->frame();
   }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
-    return a->frame() < b;
+    return *a < b;
   }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const image_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a < b->frame();
   }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const image_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return a->frame() < b;
   }
-};
-
-
-struct LessPTSThanFunctor
-{
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a < b->pts();
-  }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->pts() < b;
-  }
-};
-
-struct TooOldFunctor
-{
-    timeval _max_time;
-
-#undef timercmp
-# define timercmp(a, b, CMP)					\
-    (((a).tv_sec == (b).tv_sec) ?				\
-     ((a).tv_usec CMP (b).tv_usec) :				\
-     ((a).tv_sec CMP (b).tv_sec))
-
-    struct customMore
-    {
-	inline bool operator()( const timeval& a,
-				const timeval& b ) const
-	{
-	    return timercmp( a, b, > );
-	}
-    };
-
-    
-    TooOldFunctor( timeval max_time ) :
-    _max_time( max_time )
-    {
-    }
-    
-    bool operator()( const image_type_ptr& b ) const
-    {
-	if ( !b ) return false;
-	return customMore()( b->ptime(), _max_time );
-    }
 };
 
 struct NotInRangeFunctor
@@ -183,19 +160,48 @@ struct NotInRangeFunctor
     assert( end >= start );
   }
 
-  bool operator()( const audio_type_ptr& b ) const
+  inline bool operator()( const audio_type_ptr& b ) const
   {
      return ( b->frame() < _start || b->frame() > _end );
   }
 
-  bool operator()( const image_type_ptr& b ) const
+  inline bool operator()( const image_type_ptr& b ) const
   {
-      if ( !b ) return false;
-     return ( b->frame() + b->repeat() < _start || 
+     return ( b->frame() + b->repeat() < _start ||
               b->frame() - b->repeat() > _end );
   }
-    
 };
+
+    template< typename T >
+    struct IteratorMatch
+    {
+        const T& iters;
+        IteratorMatch( const T& its ) : iters( its ) {}
+        inline bool operator()( const image_type_ptr& a ) const
+            {
+                typename T::const_iterator i = iters.begin();
+                typename T::const_iterator e = iters.end();
+                for ( ; i != e; ++i )
+                {
+                    if ( (*(*i)) == a )
+                        return true;
+                }
+                return false;
+            }
+        inline bool operator()( const audio_type_ptr& a ) const
+            {
+                typename T::const_iterator i = iters.begin();
+                typename T::const_iterator e = iters.end();
+                for ( ; i != e; ++i )
+                {
+                    if ( (*(*i)) == a )
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+    };
 
 } // namespace mrv
 
