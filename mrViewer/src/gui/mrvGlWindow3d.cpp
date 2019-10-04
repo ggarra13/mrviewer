@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@
 //
 // Copyright (c) 2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -33,8 +33,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -64,9 +64,8 @@
 
 #include <GL/gl.h>
 
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/draw.h>
+#include <FL/gl.h>
+#include <FL/fl_draw.H>
 
 
 #define _USE_MATH_DEFINES
@@ -88,14 +87,14 @@ using std::cerr;
 namespace mrv {
 
 
-GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l ) 
-: fltk::GlWindow (x,y,w,h,l)
+GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l )
+    : Fl_Gl_Window (x,y,w,h,l)
 {
     init();
 }
 
 GlWindow3d::GlWindow3d (int w,int h, const char *l ) :
-fltk::GlWindow( w, h, l )
+    Fl_Gl_Window( w, h, l )
 {
     init();
 }
@@ -368,103 +367,103 @@ GlWindow3d::draw()
 int
 GlWindow3d::handle (int event)
 {
-    if ( event == fltk::ENTER )
+    if ( event == FL_ENTER )
     {
         focus(this);
         return 1;
     }
 
-    if (event == fltk::FOCUS ) {
+    if (event == FL_FOCUS ) {
         return 1;
     }
 
-    if (fltk::event_button() == fltk::LeftButton )
+    if (Fl::event_button() == FL_LEFT_MOUSE )
     {
         switch (event)
         {
-            case fltk::PUSH:
-                _mouseStartX = fltk::event_x();
-                _mouseStartY = fltk::event_y();
+        case FL_PUSH:
+            _mouseStartX = Fl::event_x();
+            _mouseStartY = Fl::event_y();
 
-                if (fabs(_elevation) > 90.0)
-                {
-                    _inverted = 1;
-                }
-                else
-                {
-                    _inverted = 0;
-                }
-                return 1;
-                break;
-            case fltk::DRAG:
-            case fltk::RELEASE:
+            if (fabs(_elevation) > 90.0)
             {
-                int x = fltk::event_x();
-                int y = fltk::event_y();
-
-                if (_inverted)
-                {
-                    _azimuth -= (double)(x - _mouseStartX) * 0.2;
-                }
-                else
-                {
-                    _azimuth += (double)(x - _mouseStartX) * 0.2;
-                }
-                _elevation += (double)(y - _mouseStartY) * 0.2;
-
-                while (_elevation < -180.0)
-                    _elevation += 360.0;
-                while (_elevation > 180.0)
-                    _elevation -= 360.0;
-
-                _mouseStartX = x;
-                _mouseStartY = y;
-                redraw();
-                return 1;
-                break;
+                _inverted = 1;
             }
-            default:
-                break;
+            else
+            {
+                _inverted = 0;
+            }
+            return 1;
+            break;
+        case FL_DRAG:
+        case FL_RELEASE:
+        {
+            int x = Fl::event_x();
+            int y = Fl::event_y();
+
+            if (_inverted)
+            {
+                _azimuth -= (double)(x - _mouseStartX) * 0.2;
+            }
+            else
+            {
+                _azimuth += (double)(x - _mouseStartX) * 0.2;
+            }
+            _elevation += (double)(y - _mouseStartY) * 0.2;
+
+            while (_elevation < -180.0)
+                _elevation += 360.0;
+            while (_elevation > 180.0)
+                _elevation -= 360.0;
+
+            _mouseStartX = x;
+            _mouseStartY = y;
+            redraw();
+            return 1;
+            break;
+        }
+        default:
+            break;
         }
     }
 
-    if ( fltk::event_button() == fltk::MiddleButton )
+    if ( Fl::event_button() == FL_MIDDLE_MOUSE )
     {
         switch (event)
         {
-            case fltk::PUSH:
-                fltk::cursor (fltk::CURSOR_MOVE);
-                return 1;
-                break;
-            case fltk::RELEASE:
-                fltk::cursor (fltk::CURSOR_DEFAULT);
-                return 1;
-                break;
-            case fltk::DRAG:
-                int x = fltk::event_x();
-                int y = fltk::event_y();
-                _translateX += (x - _mouseX) * 0.01;
-                _translateY += (y - _mouseY) * 0.01;
-                redraw();
-                break;
+        case FL_PUSH:
+            fl_cursor (FL_CURSOR_MOVE);
+            return 1;
+            break;
+        case FL_RELEASE:
+            fl_cursor (FL_CURSOR_DEFAULT);
+            return 1;
+            break;
+        case FL_DRAG:
+            int x = Fl::event_x();
+            int y = Fl::event_y();
+            _translateX += (x - _mouseX) * 0.01;
+            _translateY += (y - _mouseY) * 0.01;
+            redraw();
+            break;
         }
     }
 
-    if ( event == fltk::MOUSEWHEEL )
+    if ( event == FL_MOUSEWHEEL )
     {
-        float delta = (float) fltk::event_dy();
+        float delta = (float) Fl::event_dy();
         _zoom += delta * 2.0f;
         redraw();
         return 1;
     }
 
-    if ( fltk::event_button() == fltk::RightButton )
+    if ( Fl::event_button() == FL_RIGHT_MOUSE )
     {
-        if ( event == fltk::PUSH ) return 1;
+        if ( event == FL_PUSH ) return 1;
 
-        if ( event == fltk::DRAG )
+        if ( event == FL_DRAG )
         {
-            int x = fltk::event_x();
+            int x = Fl::event_x();
             int dx = x - _mouseX;
             int delta = -dx;
             _zoom += delta * 0.2;
@@ -472,15 +471,15 @@ GlWindow3d::handle (int event)
         }
     }
 
-    _mouseX = fltk::event_x();
-    _mouseY = fltk::event_y();
+    _mouseX = Fl::event_x();
+    _mouseY = Fl::event_y();
 
 
 
-    if (event == fltk::KEY)
+    if (event == FL_KEYBOARD)
     {
-        unsigned rawkey = fltk::event_key();
-        
+        unsigned rawkey = Fl::event_key();
+
         if ( kZDepthUp.match( rawkey ) ) //scale up
         {
             _scaleZ *= 1.2;
@@ -517,7 +516,7 @@ GlWindow3d::handle (int event)
         }
     }
 
-    return fltk::GlWindow::handle( event );
+    return Fl_Gl_Window::handle( event );
 }
 
 } // namespace mrv

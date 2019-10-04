@@ -1,4 +1,4 @@
-#!/bin/bash --norc
+#!/bin/bash
 
 #
 # Determine CPU architecture
@@ -33,8 +33,6 @@ export CMAKE_BUILD_TYPE=Release
 export CMAKE_PROCS=8
 export OS_32_BITS=1
 export OS_64_BITS=
-export LDFLAGS=
-export CXXFLAGS=
 
 if [ $KERNEL == 'Windows' ]; then
     arch=`wmic OS get OSArchitecture`
@@ -93,8 +91,8 @@ Options:
   small    - build a small release build
 
   both|32|64
-             Builds both 32/64 bit versions, 32-bit only, 
-             64-bit only (default: $CMAKE_BUILD_ARCH)
+	     Builds both 32/64 bit versions, 32-bit only,
+	     64-bit only (default: $CMAKE_BUILD_ARCH)
 
   cache    - Cleans all CMakeCache.txt files
 
@@ -133,7 +131,7 @@ clean_cache()
 }
 
 
-clean_swig() 
+clean_swig()
 {
     if [ $CMAKE_BUILD_ARCH == 'Both' ]; then
 	CMAKE_BUILD_ARCH=32
@@ -173,8 +171,8 @@ fi
 
 opts=''
 RUN_MAKE=1
-while [ $# -gt 0 ]; do
-    case $1 in
+for i in $@; do
+    case $i in
 	64)
 	    shift
 	    CMAKE_BUILD_ARCH=64
@@ -200,6 +198,10 @@ while [ $# -gt 0 ]; do
 	    else
 		break
 	    fi
+	    ;;
+	-DCMAKE_INSTALL_PREFIX=*|--installdir=*)
+	    shift
+	    installdir="${i#*=}"
 	    ;;
 	cmake)
 	    shift
@@ -244,7 +246,7 @@ while [ $# -gt 0 ]; do
 	    ;;
 	-v)
 	    shift
-	    opts="VERBOSE=1"
+	    opts="-v"
 	    ;;
 	-G)
 	    shift
@@ -256,6 +258,7 @@ while [ $# -gt 0 ]; do
 	    break
 	    ;;
 	*)
+	    echo "NOT INTERPRETED: $1"
 	    break
 	    ;;
     esac
@@ -285,6 +288,8 @@ run_make()
     cmd=''
     if [[ $cmake_generator == NMake* ]]; then
 	cmd="nmake $@"
+    elif [[ $cmake_generator == Unix* ]]; then
+	cmd="make -j ${CMAKE_PROCS} $@"
     elif [[ $cmake_generator == Visual* ]]; then
 	return
     else
@@ -305,11 +310,14 @@ run_make()
 #
 run_cmake()
 {
+
     builddir=$PWD/BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
-    installdir=/usr/local
+    if [[ $installdir == "" ]]; then
+	installdir=/usr/local
+    fi
 
     if [[ $OS == Windows* ]]; then
-	installdir="D:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
+	installdir="D:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
 	if [[ $CMAKE_BUILD_TYPE == Debug ]]; then
 	   installdir="${installdir}_debug"
 	fi
@@ -330,7 +338,7 @@ run_cmake()
     run_cmd $cmd
 
     if [ -r Makefile ]; then
-	run_make $@
+	run_make $opts $@
 	return
     fi
 
@@ -353,7 +361,7 @@ run_cmake()
 	exit $status
     fi
 
-    run_make $@
+    run_make $opts $@
 }
 
 #
@@ -364,11 +372,11 @@ run_clean()
     if [ $CMAKE_BUILD_ARCH == "Both" ]; then
 	if [ "$OS_64_BITS" == "1" ]; then
 	    CMAKE_BUILD_ARCH=64
-	    run_clean 
+	    run_clean
 	fi
 	if [ "$OS_32_BITS" == "1" ]; then
 	    CMAKE_BUILD_ARCH=32
-	    run_clean 
+	    run_clean
 	fi
 	CMAKE_BUILD_ARCH=Both
 	return
@@ -415,23 +423,21 @@ else
 	if [ "$OS_32_BITS" == "1" ]; then
 	    export CMAKE_BUILD_ARCH=32
 	    if [ "$OS_64_BITS" == "1" ]; then
-		export LDFLAGS=-m32
-		export CXXFLAGS=-m32
-		export CFLAGS=-m32
+		export LDFLAGS=-m32 ${LDFLAGS}
+		export CXXFLAGS=-m32 ${CXXFLAGS}
+		export CFLAGS=-m32 ${CFLAGS}
 	    fi
 	    run_cmake $opts $@
 	fi
 
 	if [ "$OS_64_BITS" == "1" ]; then
 	    export CMAKE_BUILD_ARCH=64
-	    export LDFLAGS=
-	    export CXXFLAGS=
-	    export CFLAGS=
+	    export LDFLAGS=${LDFLAGS}
+	    export CXXFLAGS=${CXXFLAGS}
+	    export CFLAGS=${CFLAGS}
 	    run_cmake $opts $@
 	fi
     else
 	run_cmake $opts $@
     fi
 fi
-
-

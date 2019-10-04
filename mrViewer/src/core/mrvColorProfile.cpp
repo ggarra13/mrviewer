@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "core/mrvI8N.h"
 #include <sys/stat.h>
 #include <cstdio>
 #include <cassert>
@@ -34,7 +35,6 @@
 
 
 #include "core/mrvColorProfile.h"
-#include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 
 namespace {
