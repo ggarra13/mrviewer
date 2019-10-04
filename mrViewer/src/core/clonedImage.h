@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   clonedImage.h
  * @author gga
  * @date   Fri Sep 21 01:16:30 2007
- * 
+ *
  * @brief  Image class used to clone other images
- * 
- * 
+ *
+ *
  */
 
 #ifndef clonedImage_h
@@ -36,6 +36,7 @@ namespace mrv {
   {
   public:
     clonedImage( const CMedia* other );
+      virtual ~clonedImage() { };
 
     virtual const char* const format() const { return "Cloned Image"; }
 
@@ -44,12 +45,9 @@ namespace mrv {
     virtual bool has_changed() { return false; }
 
     ////////////////// Set the frame for the current image (sequence)
-    virtual bool            frame( const boost::int64_t f ) { return true; };
-    virtual boost::int64_t  frame() const { return _frame; }
-
+      virtual bool fetch( int64_t frame );
   };
 
 }
 
 #endif // clonedImage_h
-

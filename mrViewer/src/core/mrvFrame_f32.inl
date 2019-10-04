@@ -8,6 +8,7 @@
  *
  */
 
+
 namespace mrv {
 
   ImagePixel VideoFrame::pixel_f32( const unsigned int x,
@@ -42,6 +43,12 @@ namespace mrv {
         p.g = col[1];
         p.b = col[2];
         break;
+      case kITU_709_YCbCr444A:
+      case kITU_601_YCbCr444A:
+        {
+          unsigned int len = _width * _height;
+          p.a = (d[len*3 + offset ]);
+        }
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
         {
@@ -51,7 +58,30 @@ namespace mrv {
           cr = d[ len*2 + offset ];
           break;
         }
-      case kYUVA:
+      case kITU_709_YCbCr410A:
+      case kITU_601_YCbCr410A:
+      case kYByRy410A:
+        {
+          unsigned int Ylen    = _width * _height;
+          unsigned int w2      = _width;
+          unsigned int h2      = _height;
+          unsigned int Cblen   = w2 * h2;
+          p.a = d[ Ylen + Cblen + offset];
+        }
+      case kITU_709_YCbCr410:
+      case kITU_601_YCbCr410:
+      case kYByRy410:
+        {
+          unsigned int Ylen    = _width * _height;
+          unsigned int w2      = _width;
+          unsigned int h2      = _height;
+          unsigned int Cblen   = w2 * h2;
+
+          yp = d[ offset ];
+          cb = d[ Ylen + offset ];
+          cr = d[ Ylen + Cblen + offset ];
+          break;
+        }
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
@@ -62,7 +92,6 @@ namespace mrv {
           unsigned int Cblen   = w2 * h2;
           p.a = d[ Ylen + Cblen * 2 + offset];
         }
-      case kYUV:
       case kITU_709_YCbCr420:
       case kYByRy420:
       case kITU_601_YCbCr420:
@@ -91,7 +120,7 @@ namespace mrv {
           break;
         }
       default:
-          throw std::runtime_error( _("Unknown mrv::Frame format") );
+          LOG_ERROR( _("Unknown mrv::Frame format " ) << _format );
       }
 
     if ( _format >= kYByRy420 )
@@ -142,27 +171,6 @@ namespace mrv {
         if ( p.b < 0.0f )      p.b = 0.0f;
         else if ( p.b > 1.0f ) p.b = 1.0f;
       }
-    else if ( _format >= kYUV )
-    {
-        // YCbCr conversion
-        float  Y = yp - 0.0625f;
-        float Cb = cb - 0.5f;
-        float Cr = cr - 0.5f;
-
-        p.r = Y + 1.5958 * Cb;
-        p.g = Y - 0.39173 * Cr - 0.81290 * Cb;
-        p.b = Y + 2.017 * Cr;
-
-        // Sanity check. Needed, as ffmpeg can return invalid values
-        if ( p.r < 0.0f )      p.r = 0.0f;
-        else if ( p.r > 1.0f ) p.r = 1.0f;
-
-        if ( p.g < 0.0f )      p.g = 0.0f;
-        else if ( p.g > 1.0f ) p.g = 1.0f;
-
-        if ( p.b < 0.0f )      p.b = 0.0f;
-        else if ( p.b > 1.0f ) p.b = 1.0f;
-    }
 
     return p;
   }
@@ -207,7 +215,6 @@ namespace mrv {
           cr = d + len*2 + offset;
           break;
         }
-      case kYUVA:
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
@@ -218,7 +225,6 @@ namespace mrv {
           unsigned int Cblen   = w2 * h2;
           d[ Ylen + Cblen * 2 + offset] = p.a;
         }
-      case kYUV:
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
       case kYByRy420:
@@ -247,7 +253,7 @@ namespace mrv {
           break;
         }
       default:
-          throw std::runtime_error( _("Unknown mrv::Frame format") );
+          LOG_ERROR( _("Unknown mrv::Frame format " ) << _format );
       }
 
     if ( _format >= kYByRy420 )
@@ -282,12 +288,6 @@ namespace mrv {
         if      ( *cr < 1.0f   ) *cr = 1.0f;
         else if ( *cr > 254.0f ) *cr = 254.0f;
       }
-    else if ( _format >= kYUV )
-    {
-        *yp = 0.299011 * p.r + 0.586987 * p.g + 0.114001 * p.b;
-        *cb = -0.148246 * p.r - 0.29102 * p.g + 0.439266 * p.b;
-        *cr = 0.439271 * p.r - 0.367833 * p.g - 0.0714383 * p.b;
-    }
   }
 
 

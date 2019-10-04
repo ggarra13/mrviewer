@@ -50,12 +50,17 @@
 #endif
 
 #if defined(WIN32) || defined(WIN64)
-#  include <fltk/win32.h>   // for fltk::getDC()
+#  include <FL/platform.H>   // for Fl::getDC()
 #endif
+
+#include "mrvPreferencesUI.h"
 
 extern "C" {
 
+
 #include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 
 #if defined(WIN32) || defined(WIN64)
 #  include <GL/wglew.h>
@@ -64,8 +69,6 @@ extern "C" {
 #endif
 
 #include <libavutil/mastering_display_metadata.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
 
 }
 
@@ -102,82 +105,80 @@ extern "C" {
 #undef TRACE
 #define TRACE(x)
 
+#include <FL/platform.H>
 
 namespace
 {
-  const char* kModule = N_("opengl");
+const char* kModule = N_("opengl");
 }
 
-
-namespace fltk {
-
-#ifdef WIN32
-  extern HINSTANCE	xdisplay;
-#else
-  extern Display*	xdisplay;
+#ifdef _WIN32
+#define stricmp _stricmp
 #endif
 
-}
+/*
+#define glPushMatrix() do {                     \
+   glPushMatrix(); \
+   std::cerr << "push matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
+} while(0)
+*/
 
-// #define glPushMatrix() do {                     \
-//     glPushMatrix(); \
-// std::cerr << "push matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
-// } while(0)
-
-
-// #define glPopMatrix() do {                      \
-//     glPopMatrix(); \
-// std::cerr << "pop matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
-// } while(0)
-
+/*
+#define glPopMatrix() do {                      \
+    glPopMatrix(); \
+ std::cerr << "pop matrix " << __FUNCTION__ << " " << __LINE__ << std::endl; \
+} while(0)
+*/
 
 
 
 namespace mrv {
 
-  typedef CMedia::Mutex Mutex;
+typedef CMedia::Mutex Mutex;
 
-  GLShader* GLEngine::_rgba   = NULL;
-  GLShader* GLEngine::_YCbCr  = NULL;
-  GLShader* GLEngine::_YCbCrA = NULL;
-  GLShader* GLEngine::_YByRy  = NULL;
-  GLShader* GLEngine::_YByRyA = NULL;
+GLShader* GLEngine::_rgba   = NULL;
+GLShader* GLEngine::_YCbCr  = NULL;
+GLShader* GLEngine::_YCbCrA = NULL;
+GLShader* GLEngine::_YByRy  = NULL;
+GLShader* GLEngine::_YByRyA = NULL;
 
-  GLint  GLEngine::_maxTexUnits     = 1;
-  bool   GLEngine::_floatTextures   = false;
-  bool   GLEngine::_halfTextures    = false;
-  bool   GLEngine::_pow2Textures    = true;
-  bool   GLEngine::_pboTextures     = false;
-  bool   GLEngine::_sdiOutput       = false;
+GLint  GLEngine::_maxTexUnits     = 1;
+bool   GLEngine::_floatTextures   = false;
+bool   GLEngine::_floatPixels     = false;
+bool   GLEngine::_halfPixels      = false;
+bool   GLEngine::_pow2Textures    = true;
+bool   GLEngine::_pboTextures     = false;
+bool   GLEngine::_sdiOutput       = false;
 
-  GLuint GLEngine::sCharset = 0;   // display list for characters
-  unsigned int GLEngine::_maxTexWidth;
-  unsigned int GLEngine::_maxTexHeight;
+GLuint GLEngine::sCharset = 0;   // display list for characters
+unsigned int GLEngine::_maxTexWidth;
+unsigned int GLEngine::_maxTexHeight;
 
 
-  //
-  // Check for opengl errors and print function name where it happened.
-  //
-void GLEngine::handle_gl_errors(const char* where, const unsigned line,
-                                const bool print )
-  {
-      GLenum error = glGetError();
-      if ( error == GL_NO_ERROR ) return;
+//
+// Check for opengl errors and print function name where it happened.
+//
+  void GLEngine::handle_gl_errors(const char* module,
+                                  const char* where, const unsigned line,
+                                  const bool print )
+{
+    GLenum error = glGetError();
+    if ( error == GL_NO_ERROR ) return;
 
-      while (error != GL_NO_ERROR)
-      {
-          if ( print )
-          {
-              mrvALERT( where << " (" << line << ")"
-                        << _(": Error ") << error << " "
-                        << gluErrorString(error) );
-              LOG_ERROR( where << " (" << line << ")"
-                         << _(": Error ") << error << " "
-                         << gluErrorString(error) );
-          }
-          error = glGetError();
-      }
-  }
+    while (error != GL_NO_ERROR)
+    {
+        if ( print )
+        {
+          mrvALERT( module << " -> " << where << " (" << line << ")"
+                      << _(": Error ") << error << " "
+                      << gluErrorString(error) );
+          LOG_ERROR( module << " -> " << where << " (" << line << ")"
+                       << _(": Error ") << error << " "
+                       << gluErrorString(error) );
+        }
+        error = glGetError();
+    }
+}
 
 
 
@@ -187,7 +188,8 @@ void zrot2offsets( double& x, double& y,
                    const double zdeg )
 {
     return;
-    x = 0.0; y = 0.0;
+    x = 0.0;
+    y = 0.0;
     double rad = zdeg * M_PI / 180.0;
     double sn = sin( rad );
     double cs = cos( rad );
@@ -214,8 +216,8 @@ void zrot2offsets( double& x, double& y,
     }
 }
 
-  std::string GLEngine::options()
-  {
+std::string GLEngine::options()
+{
     using std::endl;
     std::ostringstream o;
 
@@ -229,14 +231,15 @@ void zrot2offsets( double& x, double& y,
     if ( !versionString ) versionString = (char*)_("Unknown");
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     o << _("Vendor:\t") << vendorString << endl
       << _("Renderer:\t") << rendererString << endl
       << _("Version:\t")  << versionString << endl
       << _("Hardware Shaders:\t") << shader_type_name() << endl
       << _("PBO Textures:\t") << (_pboTextures   ? _("Yes") : _("No")) << endl
+      << _("Float Pixels:\t") << (_floatPixels  ? _("Yes") : _("No")) << endl
+      << _("Half Pixels:\t") << (_halfPixels  ? _("Yes") : _("No")) << endl
       << _("Float Textures:\t") << (_floatTextures ? _("Yes") : _("No")) << endl
-      << _("Half Textures:\t") << (_halfTextures  ? _("Yes") : _("No")) << endl
       << _("Non-POT Textures:\t")
       << (_pow2Textures  ? _("No")  : _("Yes")) << endl
       << _("Max. Texture Size:\t")
@@ -245,20 +248,20 @@ void zrot2offsets( double& x, double& y,
       << _("YUV  Support:\t") << (supports_yuv() ? _("Yes") : _("No")) << endl
       << _("YUVA Support:\t") << (supports_yuva() ? _("Yes") : _("No")) << endl
       << _("SDI Output:\t") << (_sdiOutput ? _("Yes") : _("No")) << endl;
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     return o.str();
-  }
+}
 
 
 
 void GLEngine::init_charset()
 {
-  unsigned numChars = 255;
-  int fontsize = 16;
+    unsigned numChars = 255;
+    int fontsize = 16;
 
 #ifdef WIN32
-    DBG( __FUNCTION__ << " " << __LINE__ );
-    HDC   hDC = fltk::getDC();
+    // DBGM3( __FUNCTION__ << " " << __LINE__ );
+    HDC   hDC = fl_gc;
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
 
@@ -274,9 +277,9 @@ void GLEngine::init_charset()
     lstrcpy (lf.lfFaceName, N_("Helvetica") ) ;
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     HFONT    fid = CreateFontIndirect(&lf);
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     HFONT oldFid = (HFONT)SelectObject(hDC, fid);
 
     sCharset = glGenLists( numChars );
@@ -285,11 +288,11 @@ void GLEngine::init_charset()
     wglUseFontBitmaps(hDC, 0, numChars-1, sCharset);
 
     SelectObject(hDC, oldFid);
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
 #else
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     // Find Window's default font
-    Display* gdc = fltk::xdisplay;
+    Display* gdc = fl_display;
 
     // Load XFont to user's specs
     char font_name[256];
@@ -297,9 +300,12 @@ void GLEngine::init_charset()
              fontsize );
     XFontStruct* hfont = XLoadQueryFont( gdc, font_name );
     if (!hfont) {
-       LOG_ERROR( _("Could not open any font of size ") << fontsize);
-       hfont = XLoadQueryFont( gdc, "fixed" );
-       if ( !hfont ) return;
+        LOG_ERROR( _("Could not open any font of size ") << fontsize);
+        hfont = XLoadQueryFont( gdc, "fixed" );
+        if ( !hfont ) {
+            LOG_INFO( _("Opening any fixed font") );
+            return;
+        }
     }
 
     // Create GL lists out of XFont
@@ -308,10 +314,10 @@ void GLEngine::init_charset()
 
     // Free font and struct
     XFreeFont( gdc, hfont );
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
 #endif
 
-  CHECK_GL;
+    CHECK_GL;
 }
 
 
@@ -322,30 +328,30 @@ void GLEngine::init_charset()
  */
 void GLEngine::init_textures()
 {
-  // Get maximum texture resolution for gfx card
-  GLint glMaxTexDim;
-  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &glMaxTexDim);
-  CHECK_GL;
+    // Get maximum texture resolution for gfx card
+    GLint glMaxTexDim;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &glMaxTexDim);
+    CHECK_GL;
 
 #ifndef TEST_NO_PBO_TEXTURES // test not using pbo textures
-  _pboTextures = ( GLEW_ARB_pixel_buffer_object != GL_FALSE );
+    _pboTextures = ( GLEW_ARB_pixel_buffer_object != GL_FALSE );
 #endif
 
-  _has_yuv = false;
+    _has_yuv = false;
 
-  _maxTexUnits = 1;
-  if ( GLEW_ARB_multitexture )
+    _maxTexUnits = 1;
+    if ( GLEW_ARB_multitexture )
     {
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBGM3( __FUNCTION__ << " " << __LINE__ );
 #ifndef TEST_NO_YUV
-      glGetIntegerv(GL_MAX_TEXTURE_UNITS, &_maxTexUnits);
-      CHECK_GL;
+        glGetIntegerv(GL_MAX_TEXTURE_UNITS, &_maxTexUnits);
+        CHECK_GL;
 
-      if ( _maxTexUnits >= 3 )  _has_yuv = true;
+        if ( _maxTexUnits >= 3 )  _has_yuv = true;
 #endif
     }
 
-  _maxTexWidth = _maxTexHeight = glMaxTexDim;
+    _maxTexWidth = _maxTexHeight = glMaxTexDim;
 
 }
 
@@ -355,12 +361,12 @@ void GLEngine::init_textures()
  */
 void GLEngine::init_GLEW()
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     GLenum err = glewInit();
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     if (GLEW_OK != err)
     {
-        DBG( "glewInit failed" );
+        DBGM3( "glewInit failed" );
         /* Problem: glewInit failed, something is seriously wrong. */
         LOG_ERROR( _("GLEW Initialize Error: ") << glewGetErrorString(err) );
         return;
@@ -391,11 +397,16 @@ void GLEngine::init_GLEW()
 
 void GLEngine::refresh_shaders()
 {
-    delete _YCbCr; _YCbCr = NULL;
-    delete _YByRy; _YByRy = NULL;
-    delete _YCbCrA; _YCbCrA = NULL;
-    delete _YByRyA; _YByRyA = NULL;
-    delete _rgba; _rgba = NULL;
+    delete _YCbCr;
+    _YCbCr = NULL;
+    delete _YByRy;
+    _YByRy = NULL;
+    delete _YCbCrA;
+    _YCbCrA = NULL;
+    delete _YByRyA;
+    _YByRyA = NULL;
+    delete _rgba;
+    _rgba = NULL;
 
     std::string directory;
 
@@ -432,12 +443,12 @@ void GLEngine::refresh_shaders()
         const char* ext = NULL;
         switch( _hardwareShaders )
         {
-        case kNV30:
-            ext = N_("fp30"); break;
         case kGLSL:
-            ext = N_("glsl"); break;
+            ext = N_("glsl");
+            break;
         case kARBFP1:
-            ext = N_("arbfp1"); break;
+            ext = N_("arbfp1");
+            break;
         default:
             break;
         }
@@ -449,12 +460,12 @@ void GLEngine::refresh_shaders()
 
             sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
 
-            DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+            DBGM3( __FUNCTION__ << " " << __LINE__ << " shader file "
                  << shaderFile );
 
 
             _rgba = new GLShader( shaderFile );
- 
+
         }
         catch ( const std::exception& e )
         {
@@ -485,8 +496,10 @@ void GLEngine::refresh_shaders()
         catch ( const std::exception& e )
         {
             LOG_ERROR( shaderFile << ": " << e.what() );
-            delete _YByRy; _YByRy = NULL;
-            delete _YCbCr; _YCbCr = NULL;
+            delete _YByRy;
+            _YByRy = NULL;
+            delete _YCbCr;
+            _YCbCr = NULL;
             _has_yuv  = false;
             _has_yuva = false;
         }
@@ -506,8 +519,10 @@ void GLEngine::refresh_shaders()
         catch ( const std::exception& e )
         {
             LOG_ERROR( shaderFile << ": " << e.what() );
-            delete _YByRyA; _YByRyA = NULL;
-            delete _YCbCrA; _YCbCrA = NULL;
+            delete _YByRyA;
+            _YByRyA = NULL;
+            delete _YCbCrA;
+            _YCbCrA = NULL;
             _has_yuva = false;
         }
     }
@@ -537,22 +552,22 @@ void GLEngine::refresh_shaders()
  */
 void GLEngine::initialize()
 {
-  static bool glut_init = false;
+    static bool glut_init = false;
 
-  if ( !glut_init )
-  {
-      DBG( "call glutInit" );
-      int argc = 1;
-      static char* args[] = { (char*)"GlEngine", NULL };
-      glutInit( &argc, args );
-      glut_init = true;
-  }
+    if ( !glut_init )
+    {
+        DBGM3( "call glutInit" );
+        int argc = 1;
+        static char* args[] = { (char*)"GlEngine", NULL };
+        glutInit( &argc, args );
+        glut_init = true;
+    }
 
-  init_GLEW();
+    init_GLEW();
 
-  init_charset();
+    init_charset();
 
-  init_textures();
+    init_textures();
 
 
 // #if defined(WIN32) || defined(WIN64)
@@ -569,114 +584,106 @@ void GLEngine::initialize()
 
 
 #if defined(WIN32) || defined(WIN64)
-  if ( wglewIsSupported( N_("WGL_NV_video_out") ) )
+    if ( wglewIsSupported( N_("WGL_NV_video_out") ) )
     {
-      _sdiOutput = true;
+        _sdiOutput = true;
     }
 #else
-  if ( glxewIsSupported( N_("GLX_NV_video_out") ) ||
-       glxewIsSupported( N_("GLX_NV_video_output") ) )
+    if ( glxewIsSupported( N_("GLX_NV_video_out") ) ||
+            glxewIsSupported( N_("GLX_NV_video_output") ) )
     {
-      _sdiOutput = true;
+        _sdiOutput = true;
     }
 #endif
 
-  const char* shader_type = getenv("MRV_SHADER_TYPE");
-  if ( shader_type )
-  {
-      if ( stricmp( shader_type, "GL" ) == 0 ||
-           stricmp( shader_type, "GLSL" ) == 0 ||
-           stricmp( shader_type, "OPENGL" ) == 0 )
-      {
-          _hardwareShaders = kGLSL;
-          _has_hdr = USE_HDR;
-      }
-      else if ( stricmp( shader_type, "NV" ) == 0 ||
-                stricmp( shader_type, "NV30" ) == 0 ||
-                stricmp( shader_type, "NVIDIA" ) == 0 ||
-                stricmp( shader_type, "CG" ) == 0 ||
-                stricmp( shader_type, "CGGL" ) == 0 )
-          _hardwareShaders = kNV30;
-      else if ( stricmp( shader_type, "ARBFP1" ) == 0 ||
-                stricmp( shader_type, "ARBFP" ) == 0 )
-          _hardwareShaders = kARBFP1;
-      else
-          _hardwareShaders = kAuto;
-  }
-  else
-  {
-      _hardwareShaders = kAuto;
-  }
+    const char* shader_type = getenv("MRV_SHADER_TYPE");
+    if ( shader_type )
+    {
+        if ( stricmp( shader_type, "GL" ) == 0 ||
+             stricmp( shader_type, "GLSL" ) == 0 ||
+             stricmp( shader_type, "OPENGL" ) == 0 )
+        {
+            _hardwareShaders = kGLSL;
+            _has_hdr = USE_HDR;
+        }
+        else if ( stricmp( shader_type, "ARBFP1" ) == 0 ||
+                  stricmp( shader_type, "ARBFP" ) == 0 )
+            _hardwareShaders = kARBFP1;
+        else
+            _hardwareShaders = kAuto;
+    }
+    else
+    {
+        _hardwareShaders = kAuto;
+    }
 
 
-  if ( _hardwareShaders == kAuto )
-  {
-      _hardwareShaders = kNone;
+    if ( _hardwareShaders == kAuto )
+    {
+        _hardwareShaders = kNone;
 #ifndef TEST_NO_SHADERS
 
 #ifdef USE_ARBFP1_SHADERS
-    if ( GLEW_ARB_fragment_program )
-        _hardwareShaders = kARBFP1;
+        if ( GLEW_ARB_fragment_program )
+            _hardwareShaders = kARBFP1;
 #endif
 
 #ifdef USE_OPENGL2_SHADERS
-      if ( GLEW_VERSION_2_0 )
-      {
-        _hardwareShaders = kGLSL;
-      }
+        if ( GLEW_VERSION_2_0 )
+        {
+            _hardwareShaders = kGLSL;
+        }
 #endif
 
-#ifdef USE_NV_SHADERS
-      if ( GLEW_NV_fragment_program )
-        _hardwareShaders = kNV30;
-#endif
+        if ( _hardwareShaders == kGLSL )
+            _has_hdr = USE_HDR;
 
-      if ( _hardwareShaders == kGLSL )
-          _has_hdr = USE_HDR;
-
-      LOG_INFO( "Selecting shader type automatically: " << shader_type_name() );
+        LOG_INFO( _("Selecting shader type automatically: ")
+                  << shader_type_name() );
 
 #endif // ifndef TEST_NO_SHADERS
 
     }
 
-  if ( _hardwareShaders != kNone )
-  {
-      LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
+    if ( _hardwareShaders != kNone )
+    {
+        LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
 
-      refresh_shaders();
+        refresh_shaders();
 
-      if ( _has_yuv )
-      {
-          if ( _has_yuva )
-          {
-              LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
-          }
-          else
-          {
-              LOG_INFO( _("mrViewer supports YUV images through shaders.") );
-          }
-      }
-      else
-      {
-          LOG_INFO( _("mrViewer does not support YUV images.") );
-      }
-  }
+        if ( _has_yuv )
+        {
+            if ( _has_yuva )
+            {
+                LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
+            }
+            else
+            {
+                LOG_INFO( _("mrViewer supports YUV images through shaders.") );
+            }
+        }
+        else
+        {
+            LOG_INFO( _("mrViewer does not support YUV images.") );
+        }
+    }
 
-  _floatTextures     = ( GLEW_ARB_color_buffer_float != GL_FALSE );
-  _halfTextures      = ( GLEW_ARB_half_float_pixel != GL_FALSE );
-  _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
-  _fboRenderBuffer   = ( GLEW_ARB_framebuffer_object != GL_FALSE );
+    _floatPixels     = GLEW_ARB_color_buffer_float != GL_FALSE;
+    _floatTextures   = ( GLEW_ARB_texture_float != GL_FALSE ||
+                         GLEW_ATI_texture_float != GL_FALSE );
+    _halfPixels      = GLEW_ARB_half_float_pixel != GL_FALSE;
+    _pow2Textures    = !GLEW_ARB_texture_non_power_of_two;
+    _fboRenderBuffer = ( GLEW_ARB_framebuffer_object != GL_FALSE );
 
-  ImageView::VRType t = _view->vr();
-  if ( t == ImageView::kVRSphericalMap )
-      alloc_spheres( 4 );
-  else if ( t == ImageView::kVRCubeMap )
-      alloc_cubes( 4 );
-  else
-      alloc_quads( 4 );
+    ImageView::VRType t = _view->vr();
+    if ( t == ImageView::kVRSphericalMap )
+        alloc_spheres( 4 );
+    else if ( t == ImageView::kVRCubeMap )
+        alloc_cubes( 4 );
+    else
+        alloc_quads( 4 );
 
-  CHECK_GL;
+    CHECK_GL;
 }
 
 
@@ -687,7 +694,7 @@ void GLEngine::initialize()
 void GLEngine::reset_view_matrix()
 {
     glMatrixMode(GL_PROJECTION);
-
+    glLoadIdentity();
 
     if ( _view->vr() != vr )
     {
@@ -696,20 +703,19 @@ void GLEngine::reset_view_matrix()
     }
 
     ImageView* view = const_cast< ImageView* >( _view );
+    unsigned W = view->pixel_w();
+    unsigned H = view->pixel_h();
+    glViewport(0, 0, W, H);
     if ( view->vr() == ImageView::kNoVR )
     {
         CHECK_GL;
-        view->ortho();
+        glOrtho( 0, view->w(), 0, view->h(), -1, 1 );
         _rotX = _rotY = 0.0;
         CHECK_GL;
     }
     else
     {
-        unsigned w = _view->w();
-        unsigned h = _view->h();
-        glLoadIdentity();
-        glViewport(0, 0, w, h);
-        gluPerspective( vr_angle, (float)w / (float)h, 0.1, 3.0);
+        gluPerspective( vr_angle, (float)W / (float)H, 0.1, 3.0);
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
         CHECK_GL;
     }
@@ -720,31 +726,26 @@ void GLEngine::reset_view_matrix()
     glDisable(GL_LIGHTING);
     CHECK_GL;
 
-
-
 }
 
 void GLEngine::evaluate( const CMedia* img,
                          const Imath::V3f& rgb, Imath::V3f& out )
 {
-  QuadList::iterator q = _quads.begin();
-  QuadList::iterator e = _quads.end();
-  out = rgb;
-  for ( ; q != e; ++q )
-  {
-      if ( (*q)->image() == img )
-      {
-          const GLLut3d* lut = (*q)->lut();
-          if ( !lut ) {
-              out = rgb;
-              return;
-          }
+    QuadList::iterator q = _quads.begin();
+    QuadList::iterator e = _quads.end();
+    out = rgb;
+    for ( ; q != e; ++q )
+    {
+        if ( (*q)->image() == img )
+        {
+            const GLLut3d::GLLut3d_ptr lut = (*q)->lut();
+            if ( !lut ) return;
 
-          lut->evaluate( rgb, out );
-          return;
-      }
+            lut->evaluate( rgb, out );
+            return;
+        }
 
-  }
+    }
 
 
 }
@@ -756,11 +757,11 @@ void GLEngine::rotate( const double z )
 
 void GLEngine::refresh_luts()
 {
-  QuadList::iterator q = _quads.begin();
-  QuadList::iterator e = _quads.end();
-  for ( ; q != e; ++q )
+    QuadList::iterator q = _quads.begin();
+    QuadList::iterator e = _quads.end();
+    for ( ; q != e; ++q )
     {
-      (*q)->clear_lut();
+        (*q)->clear_lut();
     }
 }
 
@@ -783,8 +784,8 @@ static void pass_convert_yuv(ostringstream& code)
     if (cparams.color.space == MP_CSP_XYZ)
         GLSL(c.rgb = pow(c.rgb, vec3(2.6));) // linear light
 
-    // We always explicitly normalize the range in pass_read_video
-    cparams.input_bits = cparams.texture_bits = 0;
+        // We always explicitly normalize the range in pass_read_video
+        cparams.input_bits = cparams.texture_bits = 0;
 
     // Conversion to RGB. For RGB itself, this still applies e.g. brightness
     // and contrast controls, or expansion of e.g. LSB-packed 10 bit data.
@@ -808,24 +809,24 @@ static void pass_convert_yuv(ostringstream& code)
         // contributions from the three different channels.
         GLSLF("// constant luminance conversion\n");
         GLSL(c.br = c.br * mix(vec2(1.5816, 0.9936),
-                                       vec2(1.9404, 1.7184),
-                                       lessThanEqual(c.br, vec2(0)))
-                        + c.gg;)
+                               vec2(1.9404, 1.7184),
+                               lessThanEqual(c.br, vec2(0)))
+                    + c.gg;)
         // Expand channels to camera-linear light. This shader currently just
         // assumes everything uses the BT.2020 12-bit gamma function, since the
         // difference between 10 and 12-bit is negligible for anything other
         // than 12-bit content.
         GLSL(c.rgb = mix(c.rgb * vec3(1.0/4.5),
-                             pow((c.rgb + vec3(0.0993))*vec3(1.0/1.0993),
-                                 vec3(1.0/0.45)),
-                             lessThanEqual(vec3(0.08145), c.rgb));)
+                         pow((c.rgb + vec3(0.0993))*vec3(1.0/1.0993),
+                             vec3(1.0/0.45)),
+                         lessThanEqual(vec3(0.08145), c.rgb));)
         // Calculate the green channel from the expanded RYcB
         // The BT.2020 specification says Yc = 0.2627*R + 0.6780*G + 0.0593*B
         GLSL(c.g = (c.g - 0.2627*c.r - 0.0593*c.b)*1.0/0.6780;)
         // Recompress to receive the R'G'B' result, same as other systems
         GLSL(c.rgb = mix(c.rgb * vec3(4.5),
-                             vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
-                             lessThanEqual(vec3(0.0181), c.rgb));)
+                         vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
+                         lessThanEqual(vec3(0.0181), c.rgb));)
     }
 
     GLSL(c.a = 1.0;)
@@ -859,223 +860,225 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
 
 void GLEngine::set_blend_function( int source, int dest )
 {
-  // So compositing works properly
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glBlendFunc( (GLenum) source, (GLenum) dest );
-  CHECK_GL;
+    // So compositing works properly
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc( (GLenum) source, (GLenum) dest );
+    CHECK_GL;
 }
 
 void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
 {
-  glColor4ub( r, g, b, a );
+    glColor4ub( r, g, b, a );
 }
 
 void GLEngine::color( float r, float g, float b, float a = 1.0 )
 {
-  glColor4f( r, g, b, a );
+    glColor4f( r, g, b, a );
 }
 
 bool GLEngine::init_fbo( ImageList& images )
 {
 
-   if ( ! _fboRenderBuffer ) return false;
+    if ( ! _fboRenderBuffer ) return false;
 
 
-   glGenTextures(1, &textureId);
-   CHECK_GL;
-   glBindTexture(GL_TEXTURE_2D, textureId);
-   CHECK_GL;
-   glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-   CHECK_GL;
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   CHECK_GL;
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   CHECK_GL;
+    glGenTextures(1, &textureId);
+    CHECK_GL;
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    CHECK_GL;
+    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+    CHECK_GL;
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    CHECK_GL;
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    CHECK_GL;
 
-   GLenum internalFormat = GL_RGBA32F_ARB;
-   GLenum dataFormat = GL_RGBA;
-   GLenum pixelType = GL_FLOAT;
+    GLenum internalFormat = GL_RGBA32F_ARB;
+    GLenum dataFormat = GL_RGBA;
+    GLenum pixelType = GL_FLOAT;
 
-   Image_ptr img = images.back();
+    Image_ptr img = images.back();
 
-   mrv::image_type_ptr pic = img->hires();
-   if (!pic) return false;
+    mrv::image_type_ptr pic = img->left();
+    if (!pic) return false;
 
-   unsigned w = pic->width();
-   unsigned h = pic->height();
-
-   glTexImage2D(GL_TEXTURE_2D,
-                0, // level
-                internalFormat, // internal format
-                w, h,
-                0, // border
-                dataFormat,  // texture data format
-                pixelType, // texture pixel type
-                NULL);    // texture pixel data
-   CHECK_GL;
-
-   glGenFramebuffers(1, &id);
-   CHECK_GL;
-   glBindFramebuffer(GL_FRAMEBUFFER, id);
-   CHECK_GL;
-
-   glGenRenderbuffers(1, &rid);
-   CHECK_GL;
-   glBindRenderbuffer( GL_RENDERBUFFER, rid );
-   CHECK_GL;
+    unsigned w = pic->width();
+    unsigned h = pic->height();
 
 
+    glTexImage2D(GL_TEXTURE_2D,
+                 0, // level
+                 internalFormat, // internal format
+                 w, h,
+                 0, // border
+                 dataFormat,  // texture data format
+                 pixelType, // texture pixel type
+                 NULL);    // texture pixel data
+    CHECK_GL;
 
-   if ( w > GL_MAX_RENDERBUFFER_SIZE ) return false;
-   if ( h > GL_MAX_RENDERBUFFER_SIZE ) return false;
+    glGenFramebuffers(1, &id);
+    CHECK_GL;
+    glBindFramebuffer(GL_FRAMEBUFFER, id);
+    CHECK_GL;
 
-   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
-   //                       GL_FRAMEBUFFER_DEFAULT_WIDTH, w);
-   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
-   //                       GL_FRAMEBUFFER_DEFAULT_HEIGHT, h);
-   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
-   //                       GL_FRAMEBUFFER_DEFAULT_SAMPLES, 4 );
+    glGenRenderbuffers(1, &rid);
+    CHECK_GL;
+    glBindRenderbuffer( GL_RENDERBUFFER, rid );
+    CHECK_GL;
 
-   // glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL,
-   //                        w, h );
-   CHECK_GL;
-   glBindRenderbuffer( GL_RENDERBUFFER, 0 );
-   CHECK_GL;
 
-   // attach a texture to FBO color attachement point
-   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                          GL_TEXTURE_2D, textureId, 0);
-   CHECK_GL;
 
-   // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
-   //                           GL_RENDERBUFFER, rid);
-   // CHECK_GL;
+    if ( w > GL_MAX_RENDERBUFFER_SIZE ) return false;
+    if ( h > GL_MAX_RENDERBUFFER_SIZE ) return false;
 
-   glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, id, 0);
-   CHECK_GL;
+    // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+    //                       GL_FRAMEBUFFER_DEFAULT_WIDTH, w);
+    // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+    //                       GL_FRAMEBUFFER_DEFAULT_HEIGHT, h);
+    // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+    //                       GL_FRAMEBUFFER_DEFAULT_SAMPLES, 4 );
 
-   GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
-   if ( status != GL_FRAMEBUFFER_COMPLETE )
-   {
-      switch( status )
-      {
-         case GL_FRAMEBUFFER_UNSUPPORTED:
+    // glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+    //                        w, h );
+    CHECK_GL;
+    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+    CHECK_GL;
+
+    // attach a texture to FBO color attachement point
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_2D, textureId, 0);
+    CHECK_GL;
+
+    // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
+    //                           GL_RENDERBUFFER, rid);
+    // CHECK_GL;
+
+    glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, id, 0);
+    CHECK_GL;
+
+    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
+    if ( status != GL_FRAMEBUFFER_COMPLETE )
+    {
+        switch( status )
+        {
+        case GL_FRAMEBUFFER_UNSUPPORTED:
             LOG_ERROR( _("Unsupported internal format") );
             return false;
-         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
             LOG_ERROR( _("Framebuffer incomplete: Attachment is NOT complete.") );
             return false;
 
-         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
             LOG_ERROR( _("Framebuffer incomplete: No image is attached to FBO.") );
             return false;
-         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
             LOG_ERROR( _("Framebuffer incomplete: Draw buffer." ) );
             return false;
 
-         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
             LOG_ERROR( _("Framebuffer incomplete: Read buffer.") );
             return false;
-      }
-   }
-   return true;
+        }
+    }
+    return true;
 }
 
 void GLEngine::end_fbo( ImageList& images )
 {
-   if ( ! _fboRenderBuffer ) return;
+    if ( ! _fboRenderBuffer ) return;
 
-   
-   glBindTexture(GL_TEXTURE_2D, textureId);
-   CHECK_GL;
 
-   Image_ptr img = images.back();
-   mrv::image_type_ptr pic = img->hires();
-   if (!pic) return;
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    CHECK_GL;
 
-   unsigned w = pic->width();
-   unsigned h = pic->height();
-   glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
-   CHECK_GL;
-   glBindTexture(GL_TEXTURE_2D, 0);
-   CHECK_GL;
+    Image_ptr img = images.back();
+    mrv::image_type_ptr pic = img->left();
+    if (!pic) return;
 
-   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-   CHECK_GL;
-   glDeleteFramebuffers(1, &id);
-   CHECK_GL;
-   glDeleteRenderbuffers(1, &rid);
-   CHECK_GL;
+    unsigned w = pic->width();
+    unsigned h = pic->height();
+    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
+    CHECK_GL;
+    glBindTexture(GL_TEXTURE_2D, 0);
+    CHECK_GL;
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    CHECK_GL;
+    glDeleteFramebuffers(1, &id);
+    CHECK_GL;
+    glDeleteRenderbuffers(1, &rid);
+    CHECK_GL;
 
 }
 
 void GLEngine::draw_title( const float size,
                            const int y, const char* text )
 {
-  if ( !text ) return;
+    if ( !text ) return;
 
-  DBG( __FUNCTION__ << " " << __LINE__ );
-  void* font = GLUT_STROKE_MONO_ROMAN;
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    void* font = GLUT_STROKE_MONO_ROMAN;
 
-  glMatrixMode(GL_MODELVIEW);
-  CHECK_GL;
-  glPushMatrix();
-  CHECK_GL;
-  glLoadIdentity();
-  CHECK_GL;
+    glMatrixMode(GL_MODELVIEW);
+    CHECK_GL;
+    glPushMatrix();
+    CHECK_GL;
+    glLoadIdentity();
+    CHECK_GL;
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  CHECK_GL;
-  glEnable(GL_BLEND);
-  CHECK_GL;
-  glEnable(GL_LINE_SMOOTH);
-  CHECK_GL;
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CHECK_GL;
+    glEnable(GL_BLEND);
+    CHECK_GL;
+    glEnable(GL_LINE_SMOOTH);
+    CHECK_GL;
 
-  glLineWidth(4.0);
-  CHECK_GL;
+    glLineWidth(4.0);
+    CHECK_GL;
 
-  int sum = 0;
-  for (const char* p = text; *p; ++p)
-      sum += glutStrokeWidth( font, *p );
-  CHECK_GL;
+    int sum = 0;
+    for (const char* p = text; *p; ++p)
+        sum += glutStrokeWidth( font, *p );
+    CHECK_GL;
 
-  float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
+    ImageView* view = const_cast< ImageView* >( _view );
+    float x = ( float( view->w() ) - float(sum) * size ) / 2.0f;
 
-  float rgb[4];
-  glGetFloatv( GL_CURRENT_COLOR, rgb );
-  CHECK_GL;
+    float rgb[4];
+    glGetFloatv( GL_CURRENT_COLOR, rgb );
+    CHECK_GL;
 
-  glColor4f( 0.f, 0.f, 0.f, 1.0f );
-  glLoadIdentity();
-  glTranslatef( x, GLfloat( y ), 0 );
-  glScalef( size, size, 1.0 );
-  for (const char* p = text; *p; ++p)
-    glutStrokeCharacter( font, *p );
-  CHECK_GL;
+    glColor4f( 0.f, 0.f, 0.f, 1.0f );
+    glLoadIdentity();
+    glTranslatef( x, GLfloat( y ), 0 );
+    glScalef( size, size, 1.0 );
+    for (const char* p = text; *p; ++p)
+        glutStrokeCharacter( font, *p );
+    CHECK_GL;
 
-  glColor4f( rgb[0], rgb[1], rgb[2], rgb[3] );
-  CHECK_GL;
-  glLoadIdentity();
-  CHECK_GL;
-  glTranslatef( x-2, float(y+2), 0 );
-  CHECK_GL;
-  glScalef( size, size, 1.0 );
-  CHECK_GL;
-  for (const char* p = text; *p; ++p)
-    glutStrokeCharacter( font, *p );
-  CHECK_GL;
+    glColor4f( rgb[0], rgb[1], rgb[2], rgb[3] );
+    CHECK_GL;
+    glLoadIdentity();
+    CHECK_GL;
+    glTranslatef( x-2, float(y+2), 0 );
+    CHECK_GL;
+    glScalef( size, size, 1.0 );
+    CHECK_GL;
+    for (const char* p = text; *p; ++p)
+        glutStrokeCharacter( font, *p );
+    CHECK_GL;
 
-  glMatrixMode( GL_MODELVIEW );
-  CHECK_GL;
-  glPopMatrix();
+    glMatrixMode( GL_MODELVIEW );
+    CHECK_GL;
+    glPopMatrix();
 
-  CHECK_GL;
-  glDisable(GL_BLEND);
-  CHECK_GL;
-  glDisable(GL_LINE_SMOOTH);
-  CHECK_GL;
-  glLineWidth(1.0);
-  CHECK_GL;
+    CHECK_GL;
+    glDisable(GL_BLEND);
+    CHECK_GL;
+    glDisable(GL_LINE_SMOOTH);
+    CHECK_GL;
+    glLineWidth(1.0);
+    CHECK_GL;
 }
 
 /**
@@ -1089,7 +1092,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 {
     if (! sCharset ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     glLoadIdentity();
     glRasterPos2i( x, y );
 
@@ -1102,43 +1105,43 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
     glPopAttrib();
 }
 
-void GLEngine::draw_cursor( const double x, const double y )
+void GLEngine::draw_cursor( const double x, const double y,
+                            ImageView::Mode mode )
 {
-   glMatrixMode (GL_MODELVIEW);
-   glLoadIdentity();
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity();
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-   double pr = 1.0;
-   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    double pr = 1.0;
+    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
-   double zoomX = _view->zoom();
-   double zoomY = _view->zoom();
+    double zoomX = _view->zoom();
+    double zoomY = _view->zoom();
 
-   double tw = double(texWidth)  / 2.0;
-   double th = double(texHeight) / 2.0;
+    double tw = double(texWidth)  / 2.0;
+    double th = double(texHeight) / 2.0;
 
-   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
-   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+    ImageView* view = const_cast< ImageView* >( _view );
+    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)view->h() - texHeight * zoomY) / 2;
 
-   glTranslated(_view->offset_x() * zoomX + sw,
-                _view->offset_y() * zoomY + sh, 0);
-   glTranslated(tw * zoomX, th * zoomY, 0);
+    glTranslated(_view->offset_x() * zoomX + sw,
+                 _view->offset_y() * zoomY + sh, 0);
+    glTranslated(tw * zoomX, th * zoomY, 0);
 
-   glScaled(zoomX, zoomY * pr, 1.0);
+    glScaled(zoomX, zoomY * pr, 1.0);
 
-   glColor4f( 1, 0, 0, 1 );
+    glColor4f( 1, 0, 0, 1 );
 
-   glPointSize( float(_view->main()->uiPaint->uiPenSize->value()) );
-
-   glBegin( GL_POINTS );
-   glVertex2d( x, y );
-   glEnd();
+    double pct = 1.0;
+    if ( mode == ImageView::kDraw ) pct = 0.5;
+    glCircle( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y,
                                     const int W, const int H)
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     CHECK_GL;
@@ -1153,7 +1156,9 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     CHECK_GL;
 
     glMatrixMode(GL_MODELVIEW);
+    CHECK_GL;
     glPushMatrix();
+    CHECK_GL;
 
     if ( _view->main()->uiPixelRatio->value() )
     {
@@ -1170,14 +1175,20 @@ void GLEngine::draw_square_stencil( const int x, const int y,
         glVertex2d(x, -H);
     }
     glEnd();
+    CHECK_GL;
 
     glMatrixMode( GL_MODELVIEW );
+    CHECK_GL;
     glPopMatrix();
+    CHECK_GL;
 
     // just draw where inside of the mask
     glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
+    CHECK_GL;
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    CHECK_GL;
     glDisable(GL_BLEND);
+    CHECK_GL;
 }
 
 inline
@@ -1236,75 +1247,75 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
  */
 void GLEngine::draw_mask( const float pct )
 {
-  mrv::media fg = _view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = _view->foreground();
+    if ( !fg ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-
-
-  Image_ptr img = fg->image();
-
-  mrv::Recti dpw2 = img->display_window2();
-  mrv::Recti dpw = img->display_window();
-
-  if ( ( img->stereo_output() & CMedia::kStereoSideBySide ) ==
-       CMedia::kStereoSideBySide )
-  {
-      dpw.w( dpw.w() + dpw2.w() );
-  }
-  else if ( ( img->stereo_output() & CMedia::kStereoBottomTop ) ==
-            CMedia::kStereoBottomTop )
-  {
-      dpw.h( dpw.h() + dpw2.h() );
-  }
-
-  glColor3f( 0.0f, 0.0f, 0.0f );
-  glDisable( GL_STENCIL_TEST );
-
-  ImageView::FlipDirection flip = _view->flip();
-
-  set_matrix( flip );
-
-  double zdeg = img->rot_z();
-
-  double x=0.0, y = 0.0;
-  //zrot2offsets( x, y, img, flip, zdeg );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
 
 
-  glRotated( zdeg, 0, 0, 1 );
-  translate( img->x() + x + dpw.x(), img->y() + y - dpw.y(), 0 );
+    Image_ptr img = fg->image();
 
-  glScaled( dpw.w(), dpw.h(), 1.0 );
-  translate( 0.5, -0.5, 0.0 );
+    mrv::Recti dpw2 = img->display_window2();
+    mrv::Recti dpw = img->display_window();
+
+    if ( ( img->stereo_output() & CMedia::kStereoSideBySide ) ==
+            CMedia::kStereoSideBySide )
+    {
+        dpw.w( dpw.w() + dpw2.w() );
+    }
+    else if ( ( img->stereo_output() & CMedia::kStereoBottomTop ) ==
+              CMedia::kStereoBottomTop )
+    {
+        dpw.h( dpw.h() + dpw2.h() );
+    }
+
+    glColor3f( 0.0f, 0.0f, 0.0f );
+    glDisable( GL_STENCIL_TEST );
+
+    ImageView::FlipDirection flip = _view->flip();
+
+    set_matrix( flip );
+
+    double zdeg = img->rot_z();
+
+    double x=0.0, y = 0.0;
+    //zrot2offsets( x, y, img, flip, zdeg );
 
 
-  double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
-  double target_aspect = 1.0 / pct;
-  double amount = (0.5 - target_aspect * aspect / 2);
+    glRotated( zdeg, 0, 0, 1 );
+    translate( img->x() + x + dpw.x(), img->y() + y - dpw.y(), 0 );
 
-  //
-  // Bottom mask
-  //
-  glBegin( GL_POLYGON );
-  {
-    glVertex2d( -0.5,  -0.5 + amount );
-    glVertex2d(  0.5,  -0.5 + amount );
-    glVertex2d(  0.5,  -0.5 );
-    glVertex2d( -0.5,  -0.5 );
-  }
-  glEnd();
+    glScaled( dpw.w(), dpw.h(), 1.0 );
+    translate( 0.5, -0.5, 0.0 );
 
-  //
-  // Top mask
-  //
-  glBegin( GL_POLYGON );
-  {
-    glVertex2d( -0.5,  0.5 );
-    glVertex2d(  0.5,  0.5 );
-    glVertex2d(  0.5,  0.5 - amount );
-    glVertex2d( -0.5,  0.5 - amount );
-  }
-  glEnd();
+
+    double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
+    double target_aspect = 1.0 / pct;
+    double amount = (0.5 - target_aspect * aspect / 2);
+
+    //
+    // Bottom mask
+    //
+    glBegin( GL_POLYGON );
+    {
+        glVertex2d( -0.5,  -0.5 + amount );
+        glVertex2d(  0.5,  -0.5 + amount );
+        glVertex2d(  0.5,  -0.5 );
+        glVertex2d( -0.5,  -0.5 );
+    }
+    glEnd();
+
+    //
+    // Top mask
+    //
+    glBegin( GL_POLYGON );
+    {
+        glVertex2d( -0.5,  0.5 );
+        glVertex2d(  0.5,  0.5 );
+        glVertex2d(  0.5,  0.5 - amount );
+        glVertex2d( -0.5,  0.5 - amount );
+    }
+    glEnd();
 
 
 }
@@ -1323,10 +1334,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     mrv::media fg = _view->foreground();
     if (!fg) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     Image_ptr img = fg->image();
-
-    mrv::Recti daw = img->data_window();
 
 
     glMatrixMode(GL_MODELVIEW);
@@ -1369,28 +1378,28 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 void GLEngine::draw_safe_area_inner( const double tw, const double th,
                                      const char* name )
 {
-  glLineWidth( 1.0 );
+    glLineWidth( 1.0 );
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-  glBegin(GL_LINE_LOOP);
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    glBegin(GL_LINE_LOOP);
 
-  glVertex2d(-tw,-th);
-  glVertex2d(tw, -th);
-  glVertex2d(tw,  th);
-  glVertex2d(-tw, th);
+    glVertex2d(-tw,-th);
+    glVertex2d(tw, -th);
+    glVertex2d(tw,  th);
+    glVertex2d(-tw, th);
 
-  glEnd();
+    glEnd();
 
-  if ( name )
+    if ( name )
     {
-      glMatrixMode(GL_MODELVIEW);
-      glPushMatrix();
-      translate(tw+5, th, 0);
-      glScalef( 0.1f, 0.1f, 1.0f );
-      for (const char* p = name; *p; ++p)
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-      glMatrixMode(GL_MODELVIEW);
-      glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        translate(tw+5, th, 0);
+        glScalef( 0.1f, 0.1f, 1.0f );
+        for (const char* p = name; *p; ++p)
+            glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
     }
 
 }
@@ -1415,16 +1424,16 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
         bimg = bg->image();
     }
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     Image_ptr img = fg->image();
 
     mrv::Recti dpw2;
     if ( bimg) {
         dpw2 = bimg->display_window();
-        dpw2.x( dpw2.x() + bimg->x() );
-        dpw2.y( dpw2.y() - bimg->y() );
-        dpw2.w( dpw2.w() * bimg->scale_x() );
-        dpw2.h( dpw2.h() * bimg->scale_y() );
+        dpw2.x( dpw2.x() + (int)bimg->x() );
+        dpw2.y( dpw2.y() - (int)bimg->y() );
+        dpw2.w( (int) (dpw2.w() * bimg->scale_x()) );
+        dpw2.h( (int) (dpw2.h() * bimg->scale_y()) );
     }
     mrv::Recti dpw = img->display_window();
 
@@ -1436,8 +1445,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     double x = dpw.x();
     double y = dpw.y();
-    int tw = dpw.w() / 2.0;
-    int th = dpw.h() / 2.0;
+    int tw = dpw.w() / 2;
+    int th = dpw.h() / 2;
 
     dpw.merge( dpw2 );
 
@@ -1449,13 +1458,13 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     translate(  x + tw, - y - th, 0 );
 
 
-    tw *= percentX;
-    th *= percentY;
+    tw = (int)( tw * percentX );
+    th = (int)( th * percentY );
 
     draw_safe_area_inner( tw, th, name );
 
     if ( ( img->stereo_output() & CMedia::kStereoSideBySide ) ==
-         CMedia::kStereoSideBySide )
+            CMedia::kStereoSideBySide )
     {
         translate( dpw.w(), 0, 0 );
         draw_safe_area_inner( tw, th, name );
@@ -1496,34 +1505,34 @@ inline void GLEngine::rot_y( double t )
 
 void GLEngine::alloc_cubes( size_t num )
 {
-  size_t num_quads = _quads.size();
-  _quads.reserve( num );
-  for ( size_t q = num_quads; q < num; ++q )
+    size_t num_quads = _quads.size();
+    _quads.reserve( num );
+    for ( size_t q = num_quads; q < num; ++q )
     {
-      mrv::GLCube* s = new mrv::GLCube( _view );
-      _quads.push_back( s );
+        mrv::GLCube* s = new mrv::GLCube( _view );
+        _quads.push_back( s );
     }
 }
 
 void GLEngine::alloc_spheres( size_t num )
 {
-  size_t num_quads = _quads.size();
-  _quads.reserve( num );
-  for ( size_t q = num_quads; q < num; ++q )
+    size_t num_quads = _quads.size();
+    _quads.reserve( num );
+    for ( size_t q = num_quads; q < num; ++q )
     {
-      mrv::GLSphere* s = new mrv::GLSphere( _view );
-      _quads.push_back( s );
+        mrv::GLSphere* s = new mrv::GLSphere( _view );
+        _quads.push_back( s );
     }
 }
 
 void GLEngine::alloc_quads( size_t num )
 {
-  size_t num_quads = _quads.size();
-  _quads.reserve( num );
-  for ( size_t q = num_quads; q < num; ++q )
+    size_t num_quads = _quads.size();
+    _quads.reserve( num );
+    for ( size_t q = num_quads; q < num; ++q )
     {
-      mrv::GLQuad* quad = new mrv::GLQuad( _view );
-      _quads.push_back( quad );
+        mrv::GLQuad* quad = new mrv::GLQuad( _view );
+        _quads.push_back( quad );
     }
 }
 
@@ -1533,7 +1542,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     Image_ptr img = _view->selected_image();
     if ( img == NULL ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     ImageView::FlipDirection flip = _view->flip();
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
@@ -1545,9 +1554,6 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     {
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
-
-    double zdeg = 0.0;
-    if ( img ) zdeg = img->rot_z();
 
     draw_rectangle( r, _view->flip(), 0.0 );
 
@@ -1627,8 +1633,8 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     }
     else
     {
-        int xi = round(img->x());
-        int yi = round(img->y());
+        int xi = (int)round(img->x());
+        int yi = (int)round(img->y());
         sprintf( buf, "Pos: %d, %d", xi, yi );
     }
 
@@ -1648,15 +1654,11 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
 void GLEngine::draw_data_window( const mrv::Rectd& r )
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    mrv::media fg = _view->foreground();
-    CMedia* img = fg->image();
-    double zdeg = 0.0;
-    if ( img ) zdeg = img->rot_z();
     draw_rectangle( r, _view->flip(), 0.0 );
     glDisable( GL_LINE_STIPPLE );
     if ( _view->display_window() && !_view->vr() )
@@ -1665,7 +1667,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
 
 void GLEngine::translate( const double x, const double y, const double z )
 {
-   glTranslated( x, y, z );
+    glTranslated( x, y, z );
 }
 
 void prepare_subtitle( GLQuad* quad, mrv::image_type_ptr sub,
@@ -1674,21 +1676,29 @@ void prepare_subtitle( GLQuad* quad, mrv::image_type_ptr sub,
 {
     glEnable( GL_BLEND );
     glDisable( GL_SCISSOR_TEST );
+    CHECK_GL;
     quad->mask( 0 );
     quad->mask_value( -10 );
+    CHECK_GL;
     quad->bind( sub );
+    CHECK_GL;
     quad->gamma( 1.0 );
     // Handle rotation of cube/sphere
+    CHECK_GL;
     quad->rot_x( _rotX );
     quad->rot_y( _rotY );
+    CHECK_GL;
     quad->draw( texWidth, texHeight );
+    CHECK_GL;
 }
 
 void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
                     unsigned texHeight, const mrv::ImageView* view )
 {
     glRotated( img->rot_z(), 0, 0, 1 );
+    CHECK_GL;
     glTranslated( img->x(), img->y(), 0 );
+    CHECK_GL;
     glTranslated( double(daw.x() - img->eye_separation()),
                   double(-daw.y()), 0 );
     CHECK_GL;
@@ -1702,7 +1712,7 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
 
 void GLEngine::draw_images( ImageList& images )
 {
-    TRACE( "" );
+
 
     if ( _YCbCr == NULL )
     {
@@ -1712,53 +1722,53 @@ void GLEngine::draw_images( ImageList& images )
 
     CHECK_GL;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-  // Check if lut types changed since last time
-  static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
-  static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
-  static int LUT_quality           = 2;
-  static std::string ODT_ICC_old_profile;
-  static std::string ODT_CTL_old_transform;
-  static unsigned kNumStops = 10;
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    // Check if lut types changed since last time
+    static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
+    static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
+    static int LUT_quality           = 2;
+    static std::string ODT_ICC_old_profile;
+    static std::string ODT_CTL_old_transform;
+    static unsigned kNumStops = 10;
 
-  mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+    PreferencesUI* uiPrefs = _view->main()->uiPrefs;
 
-  bool use_ocio = uiPrefs->uiPrefsUseOcio->value();
-  
-  if ( _view->use_lut() )
+    bool use_ocio = uiPrefs->uiPrefsUseOcio->value();
+
+    if ( _view->use_lut() )
     {
-      int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
-      int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
-      const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
-      int lut_quality = uiPrefs->uiLUT_quality->value();
-      unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
+        int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
+        int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
+        const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->value();
+        int lut_quality = uiPrefs->uiLUT_quality->value();
+        unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
 
-      // Check if there was a change effecting lut.
-      if ( ! use_ocio && 
-	   (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-	    ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-	    ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-	    ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
-	   ( LUT_quality != lut_quality ) ||
-           ( kNumStops != num_stops) )
+        // Check if there was a change effecting lut.
+        if (  (! use_ocio) &&
+              ((( RT_lut_algorithm != RT_lut_old_algorithm ) ||
+                ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
+                ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+                ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
+               ( LUT_quality != lut_quality ) ||
+               ( kNumStops != num_stops) ))
         {
-	    if ( !use_ocio )
-	    {
-		RT_lut_old_algorithm = RT_lut_algorithm;
-		ODT_lut_old_algorithm = ODT_lut_algorithm;
-		if ( ODT_ICC_profile )
-		    ODT_ICC_old_profile = ODT_ICC_profile;
-		else
-		    ODT_ICC_old_profile.clear();
+            if ( !use_ocio )
+            {
+                RT_lut_old_algorithm = RT_lut_algorithm;
+                ODT_lut_old_algorithm = ODT_lut_algorithm;
+                if ( ODT_ICC_profile )
+                    ODT_ICC_old_profile = ODT_ICC_profile;
+                else
+                    ODT_ICC_old_profile.clear();
 
-		ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
-		
-	    }
+                ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
 
-	    refresh_luts();
+            }
 
-	    if ( LUT_quality != lut_quality ||
-		 kNumStops != num_stops )
+            refresh_luts();
+
+            if ( LUT_quality != lut_quality ||
+                 kNumStops != num_stops )
             {
                 LUT_quality = lut_quality;
                 kNumStops = num_stops;
@@ -1769,7 +1779,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    TRACE( "" );
+
     if ( _view->normalize() )
     {
         minmax(); // calculate min-max
@@ -1777,7 +1787,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    TRACE( "" );
+
     size_t num_quads = 0;
     ImageList::iterator i = images.begin();
     ImageList::iterator e = images.end();
@@ -1791,7 +1801,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( stereo )    ++num_quads;
     }
 
-    TRACE( "" );
+
 
     CHECK_GL;
 
@@ -1823,8 +1833,6 @@ void GLEngine::draw_images( ImageList& images )
 
 
 
-    TRACE( "" );
-
     double x = _view->spin_x();
     double y = _view->spin_y();
     if ( x >= 1000.0 )  // dummy value used to reset view
@@ -1855,10 +1863,11 @@ void GLEngine::draw_images( ImageList& images )
     for ( i = images.begin(); i != e; ++i, ++q )
     {
         const Image_ptr& img = *i;
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic)  continue;
 
-	DBG( "draw image " << img->name() );
+
+        DBGM3( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
@@ -1873,17 +1882,16 @@ void GLEngine::draw_images( ImageList& images )
             daw = img->data_window2(frame);
         }
 
-	// Handle background image size
+        // Handle background image size
         if ( fg != img && stereo == CMedia::kNoStereo )
         {
-            mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+            PreferencesUI* uiPrefs = _view->main()->uiPrefs;
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
                 texHeight = dpw.h();
-                const mrv::Recti& dp = fg->display_window();
-                daw.x( img->x() + daw.x() );
-                daw.y( daw.y() - img->y() );
+                daw.x( (int)img->x() + daw.x() );
+                daw.y( daw.y() - (int)img->y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
             }
@@ -1904,8 +1912,8 @@ void GLEngine::draw_images( ImageList& images )
         if ( texWidth == 0 ) texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
 
-        texWidth *= img->scale_x();
-        texHeight *= img->scale_y();
+        texWidth  = int( texWidth * img->scale_x() );
+        texHeight = int( texHeight * img->scale_y() );
 
         ImageView::FlipDirection flip = _view->flip();
 
@@ -1925,8 +1933,8 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( _view->display_window() )
             {
-                int x = img->x();
-                int y = img->y();
+                int x = (int)img->x();
+                int y = (int)img->y();
                 draw_square_stencil( dpw.x() - x, dpw.y() + y,
                                      dpw.w() + x, dpw.h() - y );
             }
@@ -1953,7 +1961,7 @@ void GLEngine::draw_images( ImageList& images )
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
             glTranslated( x, y, 0.0f );
         }
-	
+
         glMatrixMode(GL_MODELVIEW);
         CHECK_GL;
         glPushMatrix();
@@ -1965,19 +1973,27 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         GLQuad* quad = *q;
+            CHECK_GL;
         quad->minmax( _normMin, _normMax );
+            CHECK_GL;
         quad->image( img );
+            CHECK_GL;
         // Handle rotation of cube/sphere
+            CHECK_GL;
         quad->rot_x( _rotX );
+            CHECK_GL;
         quad->rot_y( _rotY );
 
+            CHECK_GL;
         if ( _view->use_lut() )
         {
             if ( img->image_damage() & CMedia::kDamageLut )
                 quad->clear_lut();
 
+            CHECK_GL;
             quad->lut( img );
 
+            CHECK_GL;
             if ( stereo != CMedia::kNoStereo )
             {
                 if ( img->image_damage() & CMedia::kDamageLut )
@@ -1988,7 +2004,9 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
         }
 
+            CHECK_GL;
         if ( i+1 == e ) wipe_area();
+            CHECK_GL;
 
         float g = img->gamma();
 
@@ -2022,7 +2040,6 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
             }
 #endif
-
             quad->mask( 0 );
             quad->mask_value( 10 );
             if ( stereo & CMedia::kStereoInterlaced )
@@ -2048,22 +2065,34 @@ void GLEngine::draw_images( ImageList& images )
                 {
                     quad->right( false );
                 }
-                CMedia::Mutex& mtx = img->video_mutex();
-                SCOPED_LOCK( mtx );
-                if ( pic->format() >= image_type::kYByRy420 )
+                if ( pic->format() >= image_type::kYByRy420A )
+                    quad->shader( GLEngine::YByRyAShader() );
+                else if ( pic->format() >= image_type::kYByRy420 )
                     quad->shader( GLEngine::YByRyShader() );
+                else if ( pic->format() == image_type::kITU_601_YCbCr410A ||
+                          pic->format() == image_type::kITU_709_YCbCr410A ||
+                          pic->format() == image_type::kITU_601_YCbCr420A ||
+                          pic->format() == image_type::kITU_709_YCbCr420A ||
+                          pic->format() == image_type::kITU_601_YCbCr422A ||
+                          pic->format() == image_type::kITU_709_YCbCr422A ||
+                          pic->format() == image_type::kITU_601_YCbCr444A ||
+                          pic->format() == image_type::kITU_709_YCbCr444A
+                    )
+                    quad->shader( GLEngine::YCbCrAShader() );
                 else
                     quad->shader( GLEngine::YCbCrShader() );
+                CHECK_GL;
                 quad->bind( pic );
             }
+                CHECK_GL;
             quad->gamma( g );
+                CHECK_GL;
             quad->draw( texWidth, texHeight );
+                CHECK_GL;
 
 
             if ( img->has_subtitle() )
             {
-                CMedia::Mutex& mtx = img->subtitle_mutex();
-                SCOPED_LOCK( mtx );
                 image_type_ptr sub = img->subtitle();
                 if ( sub )
                 {
@@ -2092,7 +2121,7 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
 
                 if ( ( stereo & CMedia::kStereoSideBySide ) ==
-                     CMedia::kStereoSideBySide )
+                        CMedia::kStereoSideBySide )
                 {
                     glTranslated( dpw.w(), 0, 0 );
                 }
@@ -2123,22 +2152,24 @@ void GLEngine::draw_images( ImageList& images )
                 if ( dpw2 != daw2 )
                 {
                     if ( _view->display_window() &&
-                         ( !( stereo & CMedia::kStereoAnaglyph ) &&
-                           !( stereo & CMedia::kStereoInterlaced ) &&
-                           !( _view->vr() ) ) )
+                            ( !( stereo & CMedia::kStereoAnaglyph ) &&
+                              !( stereo & CMedia::kStereoInterlaced ) &&
+                              !( _view->vr() ) ) )
                     {
-                        int x = img->x();
-                        int y = img->y();
+                        int x = (int) img->x();
+                        int y = (int) img->y();
+                        CHECK_GL;
                         draw_square_stencil( dpw.x() + x,
                                              dpw.y() - y, dpw.w() - x,
                                              dpw.h() + y );
+                        CHECK_GL;
                     }
 
                     if ( _view->data_window() )
                     {
                         double x = img->x(), y = img->y();
                         if ( (stereo & CMedia::kStereoSideBySide) ==
-                             CMedia::kStereoSideBySide )
+                                CMedia::kStereoSideBySide )
                             x += dpw2.w();
                         else if ( (stereo & CMedia::kStereoBottomTop) ==
                                   CMedia::kStereoBottomTop )
@@ -2146,7 +2177,9 @@ void GLEngine::draw_images( ImageList& images )
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() - y,
                                       daw2.w(), daw2.h() );
+                        CHECK_GL;
                         draw_data_window( r );
+                        CHECK_GL;
                     }
                 }
 
@@ -2174,123 +2207,160 @@ void GLEngine::draw_images( ImageList& images )
                     texHeight = pic->height();
                 }
 
+                CHECK_GL;
                 prepare_image( img, daw2, texWidth, texHeight, _view );
+                CHECK_GL;
             }
         }
-        else if ( img->hires() || img->has_subtitle() )
+        else if ( img->left() || img->has_subtitle() )
         {
             stereo = CMedia::kNoStereo;
-            pic = img->hires();
+            pic = img->left();
 
             if ( shader_type() == kNone && img->stopped() &&
                  pic->pixel_type() != image_type::kByte )
             {
+                CHECK_GL;
                 pic = display( pic, img );
+                CHECK_GL;
             }
 
-      }
+        }
 
-      if ( stereo & CMedia::kStereoAnaglyph )
-          glColorMask( GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE );
-      else
-          glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
+        if ( stereo & CMedia::kStereoAnaglyph )
+            glColorMask( GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE );
+        else
+            glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
 
 #ifdef USE_STEREO_GL
-      if ( stereo & CMedia::kStereoOpenGL )
-      {
-          glDrawBuffer( GL_BACK_RIGHT );
-          CHECK_GL;
-      }
+        if ( stereo & CMedia::kStereoOpenGL )
+        {
+            glDrawBuffer( GL_BACK_RIGHT );
+            CHECK_GL;
+        }
 #endif
 
-      quad->mask( 0 );
-      quad->mask_value( 10 );
-      if ( stereo & CMedia::kStereoInterlaced )
-      {
-          if ( stereo == CMedia::kStereoInterlaced )
-              mask = 1; // odd even rows
-          else if ( stereo == CMedia::kStereoInterlacedColumns )
-              mask = 2; // odd even columns
-          else if ( stereo == CMedia::kStereoCheckerboard )
-              mask = 3; // checkerboard
-          quad->mask( mask );
-          quad->mask_value( 0 );
-          glEnable( GL_BLEND );
-      }
+        quad->mask( 0 );
+            CHECK_GL;
+        quad->mask_value( 10 );
+            CHECK_GL;
+        if ( stereo & CMedia::kStereoInterlaced )
+        {
+            if ( stereo == CMedia::kStereoInterlaced )
+                mask = 1; // odd even rows
+            else if ( stereo == CMedia::kStereoInterlacedColumns )
+                mask = 2; // odd even columns
+            else if ( stereo == CMedia::kStereoCheckerboard )
+                mask = 3; // checkerboard
+            quad->mask( mask );
+            CHECK_GL;
+            quad->mask_value( 0 );
+            CHECK_GL;
+            glEnable( GL_BLEND );
+            CHECK_GL;
+        }
 
-      if ( fg == img && bg != fg &&
-           _view->show_background() )
-	  glEnable( GL_BLEND );
-      
-      if ( img->image_damage() & CMedia::kDamageContents )
-      {
-          if ( stereo )
-          {
-              bool rightView = false;
-              if ( stereo & CMedia::kStereoRight )
-              {
-                  rightView = false;
-              }
-              else
-              {
-                  rightView = true;
-              }
+        if ( fg == img && bg != fg &&  _view->show_background() )
+            glEnable( GL_BLEND );
 
-              if ( stereo == CMedia::kStereoRight )
-                  rightView = true;
-              else if ( stereo == CMedia::kStereoLeft )
-                  rightView = false;
-              quad->right( rightView );
-          }
-          CMedia::Mutex& mtx = img->video_mutex();
-          SCOPED_LOCK( mtx );
-          if ( pic->format() >= image_type::kYByRy420 )
-              quad->shader( GLEngine::YByRyShader() );
-          else
-              quad->shader( GLEngine::YCbCrShader() );
-          quad->bind( pic );
-          img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
-      }
+        CHECK_GL;
+        if ( img->image_damage() & CMedia::kDamageContents )
+        {
+            if ( stereo )
+            {
+                bool rightView = false;
+                if ( stereo & CMedia::kStereoRight )
+                {
+                    rightView = false;
+                }
+                else
+                {
+                    rightView = true;
+                }
 
-      quad->gamma( g );
-      quad->draw( texWidth, texHeight );
+                if ( stereo == CMedia::kStereoRight )
+                    rightView = true;
+                else if ( stereo == CMedia::kStereoLeft )
+                    rightView = false;
+                quad->right( rightView );
+            CHECK_GL;
+            }
+            if ( pic->format() >= image_type::kYByRy420A )
+                quad->shader( GLEngine::YByRyAShader() );
+            else if ( pic->format() >= image_type::kYByRy420 )
+                quad->shader( GLEngine::YByRyShader() );
+            else if ( pic->format() == image_type::kITU_601_YCbCr410A ||
+                      pic->format() == image_type::kITU_709_YCbCr410A ||
+                      pic->format() == image_type::kITU_601_YCbCr420A ||
+                      pic->format() == image_type::kITU_709_YCbCr420A ||
+                      pic->format() == image_type::kITU_601_YCbCr422A ||
+                      pic->format() == image_type::kITU_709_YCbCr422A ||
+                      pic->format() == image_type::kITU_601_YCbCr444A ||
+                      pic->format() == image_type::kITU_709_YCbCr444A
+                )
+                quad->shader( GLEngine::YCbCrAShader() );
+            else
+                quad->shader( GLEngine::YCbCrShader() );
+            CHECK_GL;
+            quad->bind( pic );
+            CHECK_GL;
+            img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
+        }
 
-      if ( ! pic->valid() && pic->channels() >= 2 &&
-           Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
-      {
-          glDisable( GL_DEPTH );
-          glDisable( GL_STENCIL_TEST );
-          glDisable( GL_TEXTURE_2D );
-          glDisable( GL_TEXTURE_3D );
-          glEnable(GL_BLEND);
-          glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-          glLineWidth( 50.0 );
-          glColor4f( 1.0f, 0.f, 0.f, 0.5f );
-          glBegin(GL_LINES);
-          glVertex2d( -0.5, -0.5 );
-          glVertex2d( 0.5, 0.5 );
-          glVertex2d( 0.5, -0.5 );
-          glVertex2d( -0.5, 0.5 );
-          glEnd();
-          glDisable( GL_BLEND );
-          glEnable( GL_DEPTH );
-          glEnable( GL_STENCIL_TEST );
-          glEnable( GL_TEXTURE_2D );
-          glEnable( GL_TEXTURE_3D );
-      }
+        quad->gamma( g );
+    CHECK_GL;
+        quad->draw( texWidth, texHeight );
+    CHECK_GL;
+
+        if ( ! pic->valid() && pic->channels() >= 2 &&
+             Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
+        {
+            CHECK_GL;
+            glDisable( GL_STENCIL_TEST );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_3D );
+            CHECK_GL;
+            glEnable(GL_BLEND);
+            CHECK_GL;
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            CHECK_GL;
+            glLineWidth( 50.0 );
+            CHECK_GL;
+            glColor4f( 1.0f, 0.f, 0.f, 0.5f );
+            CHECK_GL;
+            glBegin(GL_LINES);
+            glVertex2d( -0.5, -0.5 );
+            glVertex2d( 0.5, 0.5 );
+            glVertex2d( 0.5, -0.5 );
+            glVertex2d( -0.5, 0.5 );
+            glEnd();
+            CHECK_GL;
+            glDisable( GL_BLEND );
+            CHECK_GL;
+            glEnable( GL_STENCIL_TEST );
+            CHECK_GL;
+            glEnable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glEnable( GL_TEXTURE_3D );
+            CHECK_GL;
+            FLUSH_GL_ERRORS;
+        }
+
+        if ( ( _view->action_mode() == ImageView::kMovePicture ||
+                _view->action_mode() == ImageView::kScalePicture ) &&
+                _view->selected_image() == img )
+        {
+            mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
+                          dpw.w() * img->scale_x(), dpw.h() * img->scale_y() );
+            draw_selection_marquee( r );
+        }
 
 
-      if ( ( _view->action_mode() == ImageView::kMovePicture ||
-             _view->action_mode() == ImageView::kScalePicture ) &&
-           _view->selected_image() == img )
-      {
-          mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
-                        dpw.w() * img->scale_x(), dpw.h() * img->scale_y() );
-          draw_selection_marquee( r );
-      }
-
-
-      if ( img->has_subtitle() )
+        if ( img->has_subtitle() )
         {
             image_type_ptr sub = img->subtitle();
             if ( sub )
@@ -2301,716 +2371,738 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }
 
-      glMatrixMode(GL_MODELVIEW);
-      glPopMatrix();
+            CHECK_GL;
+        glMatrixMode(GL_MODELVIEW);
+            CHECK_GL;
+        glPopMatrix();
+            CHECK_GL;
     }
 
-  glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-  glDisable( GL_SCISSOR_TEST );
-  glDisable( GL_BLEND );
-  FLUSH_GL_ERRORS;
+            CHECK_GL;
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
+    glDisable( GL_SCISSOR_TEST );
+            CHECK_GL;
+    glDisable( GL_BLEND );
+    FLUSH_GL_ERRORS;
 }
 
 
 void GLEngine::draw_shape( GLShape* const shape )
 {
-   double zoomX = _view->zoom();
-    DBG( __FUNCTION__ << " " << __LINE__ );
-    if ( shape->previous )
+
+    double zoomX = _view->zoom();
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    if ( _view->ghost_previous() )
     {
-	short num = shape->previous;
-	for ( short i = num; i > 0; --i )
-	{
-	    if ( shape->frame - i == _view->frame() )
-	    {
-		float a = shape->a;
-		shape->a *= 1.0f - (float)i/num;
-		shape->draw(zoomX);
-		shape->a = a;
-		return;
-	    }
-	}
-      }
+        short num = _view->ghost_previous();
+        for ( short i = num; i > 0; --i )
+        {
+            if ( shape->frame - i == _view->frame() )
+            {
+                float a = shape->a;
+                shape->a *= 1.0f - (float)i/num;
+                shape->draw(zoomX);
+                shape->a = a;
+                return;
+            }
+        }
+    }
 
-      if ( shape->next )
-      {
-	short num = shape->next;
-	for ( short i = 1; i <= num; ++i )
-	{
-	    if ( shape->frame + i == _view->frame() )
-	    {
-		float a = shape->a;
-		shape->a *= 1.0f - (float)i/num;
-		shape->draw(zoomX);
-		shape->a = a;
-		return;
-	    }
-	}
-      }
+    if ( _view->ghost_next() )
+    {
+        short num = _view->ghost_next();
+        for ( short i = 1; i <= num; ++i )
+        {
+            if ( shape->frame + i == _view->frame() )
+            {
+                float a = shape->a;
+                shape->a *= 1.0f - (float)i/num;
+                shape->draw(zoomX);
+                shape->a = a;
+                return;
+            }
+        }
+    }
 
-      if ( shape->frame == MRV_NOPTS_VALUE ||
-           shape->frame == _view->frame() )
-      {
-         shape->draw(zoomX);
-      }
+    if ( shape->frame == MRV_NOPTS_VALUE ||
+         shape->frame == _view->frame() )
+    {
+        shape->draw(zoomX);
+    }
+
 }
 
 
 void GLEngine::draw_annotation( const GLShapeList& shapes )
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
-   glMatrixMode (GL_MODELVIEW);
-   glLoadIdentity();
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    glMatrixMode (GL_MODELVIEW);
+    glLoadIdentity();
+    CHECK_GL;
 
-   double pr = 1.0;
-   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+    double pr = 1.0;
+    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
-   double zoomX = _view->zoom();
-   double zoomY = _view->zoom();
+    double zoomX = _view->zoom();
+    double zoomY = _view->zoom();
 
-   double tw = double( texWidth  ) / 2.0;
-   double th = double( texHeight ) / 2.0;
+    double tw = double( texWidth  ) / 2.0;
+    double th = double( texHeight ) / 2.0;
 
-   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
-   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+    ImageView* view = const_cast< ImageView* >( _view );
+    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)view->h() - texHeight * zoomY) / 2;
 
-   glTranslated( (tw + _view->offset_x()) * zoomX + sw,
-                 (th + _view->offset_y()) * zoomY + sh, 0);
+    glTranslated( (tw + _view->offset_x()) * zoomX + sw,
+                  (th + _view->offset_y()) * zoomY + sh, 0);
+    CHECK_GL;
 
-   glScaled(zoomX, zoomY * pr, 1.0f);
+    glScaled(zoomX, zoomY * pr, 1.0f);
+
+    CHECK_GL;
+
+    glClear(GL_STENCIL_BUFFER_BIT);
+
+    CHECK_GL;
+    glEnable( GL_STENCIL_TEST );
+    CHECK_GL;
+
+    glEnable(GL_BLEND);
+    CHECK_GL;
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CHECK_GL;
+
+    glEnable( GL_LINE_SMOOTH );
+    CHECK_GL;
+    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
+    CHECK_GL;
+
+    {
+        GLShapeList::const_reverse_iterator i = shapes.rbegin();
+        GLShapeList::const_reverse_iterator e = shapes.rend();
 
 
-   glClear(GL_STENCIL_BUFFER_BIT);
+        for ( ; i != e; ++i )
+        {
+            GLShape* shape = (*i).get();
+            draw_shape( shape );
+        }
 
-   glEnable( GL_STENCIL_TEST );
+    }
 
-   glEnable(GL_BLEND);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-   glEnable( GL_LINE_SMOOTH );
-   glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-
-   {
-       GLShapeList::const_reverse_iterator i = shapes.rbegin();
-       GLShapeList::const_reverse_iterator e = shapes.rend();
-
-
-       for ( ; i != e; ++i )
-       {
-           GLShape* shape = (*i).get();
-           draw_shape( shape );
-       }
-
-   }
-
-   glDisable(GL_BLEND);
-   glDisable(GL_STENCIL_TEST);
+    glDisable(GL_BLEND);
+    CHECK_GL;
+    glDisable(GL_STENCIL_TEST);
+    CHECK_GL;
 }
 
 
 void GLEngine::wipe_area()
 {
-  int  w = _view->w();
-  int  h = _view->h();
+    ImageView* view = const_cast< ImageView* >( _view );
+    GLint w = view->pixel_w();
+    GLint h = view->pixel_h();
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-  if ( _view->wipe_direction() == ImageView::kNoWipe )
-     return;
-  else if ( _view->wipe_direction() & ImageView::kWipeVertical )
-  {
-      w = (int) ( (float) w * _view->wipe_amount() );
-  }
-  else if ( _view->wipe_direction() & ImageView::kWipeHorizontal )
-  {
-      h = (int) ( (float) h * _view->wipe_amount() );
-  }
-  else
-  {
-     LOG_ERROR( _("Unknown wipe direction") );
-  }
+    DBGM3( __FUNCTION__ << " " << __LINE__ << " w,h " << w << " " << h );
+    if ( _view->wipe_direction() == ImageView::kNoWipe )
+        return;
+    else if ( _view->wipe_direction() & ImageView::kWipeVertical )
+    {
+        w = (int) ( (float) w * _view->wipe_amount() );
+    }
+    else if ( _view->wipe_direction() & ImageView::kWipeHorizontal )
+    {
+        h = (int) ( (float) h * _view->wipe_amount() );
+    }
+    else
+    {
+        LOG_ERROR( _("Unknown wipe direction") );
+    }
 
-  glEnable( GL_SCISSOR_TEST );
-
-  int  x = 0;
-  int  y = 0;
-  glScissor( x, y, w, h );
+    glEnable( GL_SCISSOR_TEST );
+    CHECK_GL;
+    GLint  x = 0;
+    GLint  y = 0;
+    glScissor( x, y, w, h );
+    CHECK_GL;
 }
 
 
 namespace {
 const char* ARBFP1Shader =
-"!!ARBfp1.0\n"
-"# cgc version 3.1.0013, build date Apr 24 2012\n"
-"# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile arbfp1\n"
-"# source file: rgba.cg\n"
-"#vendor NVIDIA Corporation\n"
-"#version 3.1.0.13\n"
-"#profile arbfp1\n"
-"#program main\n"
-"#semantic main.fgImage : TEXUNIT0"
-"#semantic main.lut : TEXUNIT3\n"
-"#semantic main.mask\n"
-"#semantic main.mask_value\n"
-"#semantic main.height\n"
-"#semantic main.width\n"
-"#semantic main.gain\n"
-"#semantic main.gamma\n"
-"#semantic main.channel\n"
-"#semantic main.premult\n"
-"#semantic main.unpremult\n"
-"#semantic main.enableNormalization\n"
-"#semantic main.normMin\n"
-"#semantic main.normSpan\n"
-"#semantic main.enableLut\n"
-"#semantic main.lutF\n"
-"#semantic main.lutMin\n"
-"#semantic main.lutMax\n"
-"#semantic main.scale\n"
-"#semantic main.offset\n"
-"#semantic main.lutM\n"
-"#semantic main.lutT\n"
-"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
-"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
-"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
-"#var int mask :  : c[0] : 3 : 1\n"
-"#var int mask_value :  : c[1] : 4 : 1\n"
-"#var int height :  : c[2] : 5 : 1\n"
-"#var int width :  : c[3] : 6 : 1\n"
-"#var half gain :  : c[4] : 7 : 1\n"
-"#var half gamma :  : c[5] : 8 : 1\n"
-"#var int channel :  : c[6] : 9 : 1\n"
-"#var bool premult :  : c[7] : 10 : 1\n"
-"#var bool unpremult :  : c[8] : 11 : 1\n"
-"#var bool enableNormalization :  : c[9] : 12 : 1\n"
-"#var half normMin :  : c[10] : 13 : 1\n"
-"#var half normSpan :  : c[11] : 14 : 1\n"
-"#var bool enableLut :  : c[12] : 15 : 1\n"
-"#var bool lutF :  : c[13] : 16 : 1\n"
-"#var half lutMin :  : c[14] : 17 : 1\n"
-"#var half lutMax :  : c[15] : 18 : 1\n"
-"#var half scale :  : c[16] : 19 : 1\n"
-"#var half offset :  : c[17] : 20 : 1\n"
-"#var half lutM :  : c[18] : 21 : 1\n"
-"#var half lutT :  : c[19] : 22 : 1\n"
-"#var float4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
-"#const c[20] = 0.5 0.33333334 1 0\n"
-"#const c[21] = 2 3 1000 4\n"
-"#const c[22] = 5 6 0.00010001659 2.718282\n"
-"#const c[23] = 2.71875 0.69335938\n"
-"#default mask = 0\n"
-"#default mask_value = 0\n"
-"#default height = 256\n"
-"#default width = 256\n"
-"#default gain = 1\n"
-"#default gamma = 1.0\n"
-"#default channel = 0\n"
-"#default premult = 0\n"
-"#default unpremult = 0\n"
-"#default enableNormalization = 0\n"
-"#default normMin = 0\n"
-"#default normSpan = 1\n"
-"#default enableLut = 0\n"
-"#default lutF = 0\n"
-"#default scale = 1\n"
-"#default offset = 0\n"
-"PARAM c[24] = { program.local[0..19],\n"
-"		{ 0.5, 0.33333334, 1, 0 },\n"
-"		{ 2, 3, 1000, 4 },\n"
-"		{ 5, 6, 0.00010001659, 2.718282 },\n"
-"		{ 2.71875, 0.69335938 } };\n"
-"TEMP R0;\n"
-"TEMP R1;\n"
-"TEMP R2;\n"
-"TEMP R3;\n"
-"TEMP R4;\n"
-"TEMP R5;\n"
-"TEMP R6;\n"
-"TEMP R7;\n"
-"TEX R0, fragment.texcoord[0], texture[0], 2D;\n"
-"RCP R3.w, c[13].x;\n"
-"RCP R1.w, c[11].x;\n"
-"ADD R1.xyz, R0, -c[10].x;\n"
-"MUL R1.xyz, R1, R1.w;\n"
-"CMP R0.xyz, -c[9].x, R1, R0;\n"
-"MUL R3.xyz, R0, c[4].x;\n"
-"MIN R0.xyz, R3, c[15].x;\n"
-"MAX R0.xyz, R0, c[14].x;\n"
-"MOV R1.w, c[19].x;\n"
-"LG2 R0.x, R0.x;\n"
-"LG2 R0.y, R0.y;\n"
-"LG2 R0.z, R0.z;\n"
-"MUL R0.xyz, R0, c[18].x;\n"
-"MAD R0.xyz, R0, c[23].y, R1.w;\n"
-"MUL R1.xyz, R0, c[13].x;\n"
-"FLR R0.xyz, R1;\n"
-"ADD R4.xyz, -R0, R1;\n"
-"ADD R2.xyz, R0, c[20].z;\n"
-"MUL R7.xyz, R3.w, R2;\n"
-"MUL R2.xyz, R0, R3.w;\n"
-"TEX R1.xyz, R7, texture[3], 3D;\n"
-"ADD R2.w, -R4.x, c[20].z;\n"
-"ADD R3.w, -R4.y, c[20].z;\n"
-"MUL R1.xyz, R4.x, R1;\n"
-"MOV R0.x, R2;\n"
-"MOV R0.yz, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MAD R1.xyz, R2.w, R0, R1;\n"
-"MUL R5.xyz, R4.y, R1;\n"
-"TEX R1.xyz, R2, texture[3], 3D;\n"
-"MOV R0.y, R2;\n"
-"MOV R0.xz, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MUL R0.xyz, R4.x, R0;\n"
-"MAD R6.xyz, R2.w, R1, R0;\n"
-"MAD R5.xyz, R6, R3.w, R5;\n"
-"MOV R6.yz, R2;\n"
-"MOV R6.x, R7;\n"
-"MOV R0.z, R2;\n"
-"MOV R0.xy, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MOV R2.y, R7;\n"
-"MUL R0.xyz, R4.x, R0;\n"
-"TEX R2.xyz, R2, texture[3], 3D;\n"
-"MAD R0.xyz, R2, R2.w, R0;\n"
-"TEX R6.xyz, R6, texture[3], 3D;\n"
-"MUL R2.xyz, R4.x, R6;\n"
-"MAD R1.xyz, R2.w, R1, R2;\n"
-"MUL R0.xyz, R4.y, R0;\n"
-"MAD R0.xyz, R1, R3.w, R0;\n"
-"MUL R1.xyz, R4.z, R5;\n"
-"ADD R2.y, -R4.z, c[20].z;\n"
-"MAD R0.xyz, R0, R2.y, R1;\n"
-"MOV R2.x, c[13];\n"
-"MUL R1.x, R2, c[12];\n"
-"CMP R2.xyz, -R1.x, R0, R3;\n"
-"POW R0.x, c[23].x, R2.x;\n"
-"POW R0.z, c[23].x, R2.z;\n"
-"POW R0.y, c[23].x, R2.y;\n"
-"CMP R0.xyz, -R1.x, R0, R2;\n"
-"MIN R1.xyz, R0, c[15].x;\n"
-"MAX R1.xyz, R1, c[14].x;\n"
-"LG2 R1.x, R1.x;\n"
-"LG2 R1.z, R1.z;\n"
-"LG2 R1.y, R1.y;\n"
-"MUL R2.xyz, R1, c[18].x;\n"
-"ABS R1.x, c[13];\n"
-"MAD R2.xyz, R2, c[23].y, R1.w;\n"
-"CMP R1.x, -R1, c[20].w, c[20].z;\n"
-"MUL R1.w, R1.x, c[12].x;\n"
-"CMP R1.xyz, -R1.w, R2, R0;\n"
-"MOV R2.w, c[17].x;\n"
-"MAD R0.xyz, R1, c[16].x, R2.w;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"POW R0.x, c[22].w, R0.x;\n"
-"POW R0.z, c[22].w, R0.z;\n"
-"POW R0.y, c[22].w, R0.y;\n"
-"CMP R0.xyz, -R1.w, R0, R1;\n"
-"RCP R1.y, R0.w;\n"
-"SLT R1.x, c[22].z, R0.w;\n"
-"MUL R2.xyz, R0, R1.y;\n"
-"MUL R1.x, R1, c[8];\n"
-"CMP R0.xyz, -R1.x, R2, R0;\n"
-"MOV R2.xyz, c[21].xyww;\n"
-"ADD R1.y, -R2.x, c[6].x;\n"
-"MOV R1.z, c[20];\n"
-"ADD R1.x, -R1.z, c[6];\n"
-"ABS R1.y, R1;\n"
-"ADD R2.x, -R2, c[0];\n"
-"ADD R1.z, -R1, c[0].x;\n"
-"ABS R1.z, R1;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.y, -R1, c[20].w, c[20].z;\n"
-"ADD R2.z, -R2, c[6].x;\n"
-"ABS R2.x, R2;\n"
-"POW R0.y, R0.y, c[5].x;\n"
-"POW R0.z, R0.z, c[5].x;\n"
-"POW R0.x, R0.x, c[5].x;\n"
-"CMP R0.xyz, -R1.x, R0, R0.x;\n"
-"CMP R1.x, -R1, c[20].w, c[20].z;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.x, -R1, c[20].w, c[20].z;\n"
-"MUL R1.w, R1.x, R1.y;\n"
-"CMP R0.xyz, -R1.w, R0.y, R0;\n"
-"ADD R1.w, -R2.y, c[6].x;\n"
-"ADD R2.y, -R2, c[0].x;\n"
-"ABS R3.y, R2;\n"
-"CMP R2.y, -R2.x, c[20].w, c[20].z;\n"
-"CMP R3.w, -R3.y, c[20], c[20].z;\n"
-"MUL R3.y, fragment.texcoord[0], c[2].x;\n"
-"ABS R1.y, R1;\n"
-"CMP R1.y, -R1, c[20].w, c[20].z;\n"
-"ABS R1.w, R1;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R1.w, -R1, c[20], c[20].z;\n"
-"MUL R1.y, R1.x, R1.w;\n"
-"CMP R0.xyz, -R1.y, R0.z, R0;\n"
-"ABS R1.y, R1.w;\n"
-"ABS R1.w, R2.z;\n"
-"CMP R1.y, -R1, c[20].w, c[20].z;\n"
-"MUL R2.z, R1.x, R1.y;\n"
-"CMP R1.w, -R1, c[20], c[20].z;\n"
-"MUL R1.x, R2.z, R1.w;\n"
-"CMP R0.xyz, -R1.x, R0.w, R0;\n"
-"MOV R1.xy, c[22];\n"
-"ADD R2.w, -R1.x, c[6].x;\n"
-"ABS R1.x, R1.w;\n"
-"ABS R1.w, R2;\n"
-"CMP R1.x, -R1, c[20].w, c[20].z;\n"
-"CMP R2.x, -R1.z, c[20].w, c[20].z;\n"
-"FLR R4.y, R3;\n"
-"MUL R3.x, R0, c[20];\n"
-"CMP R1.w, -R1, c[20], c[20].z;\n"
-"MUL R1.x, R2.z, R1;\n"
-"MUL R2.z, R1.x, R1.w;\n"
-"CMP R0.x, -R2.z, R3, R0;\n"
-"MAD R2.w, R0, c[20].x, R0.x;\n"
-"CMP R0.x, -R2.z, R2.w, R0;\n"
-"ADD R2.z, R0.x, R0.y;\n"
-"ADD R2.z, R2, R0;\n"
-"ABS R3.x, R2.y;\n"
-"ABS R2.w, R2.x;\n"
-"CMP R2.w, -R2, c[20], c[20].z;\n"
-"CMP R3.x, -R3, c[20].w, c[20].z;\n"
-"MUL R3.z, R2.w, R3.x;\n"
-"MUL R3.x, fragment.texcoord[0], c[3];\n"
-"FLR R4.x, R3;\n"
-"ADD R4.z, R4.x, R4.y;\n"
-"MUL R3.z, R3, R3.w;\n"
-"SLT R3.w, R4.x, -R4.y;\n"
-"MUL R4.z, R4, c[20].x;\n"
-"ABS R4.x, R4.z;\n"
-"ABS R3.w, R3;\n"
-"FRC R4.x, R4;\n"
-"CMP R3.w, -R3, c[20], c[20].z;\n"
-"MUL R2.y, R2.w, R2;\n"
-"MUL R4.x, R4, c[21];\n"
-"MUL R3.w, R3.z, R3;\n"
-"CMP R3.w, -R3, R4.x, -R4.x;\n"
-"SLT R4.x, R3, c[20].w;\n"
-"ABS R2.w, R4.x;\n"
-"SLT R4.x, R3.y, c[20].w;\n"
-"CMP R2.w, -R2, c[20], c[20].z;\n"
-"ABS R4.x, R4;\n"
-"MUL R2.w, R2.y, R2;\n"
-"CMP R4.x, -R4, c[20].w, c[20].z;\n"
-"MUL R4.y, R3, c[20].x;\n"
-"MUL R3.y, R2.x, R4.x;\n"
-"MUL R2.x, R3, c[20];\n"
-"ABS R4.x, R4.y;\n"
-"FRC R3.x, R4;\n"
-"ABS R2.x, R2;\n"
-"MUL R3.x, R3, c[21];\n"
-"CMP R3.x, -R3.y, R3, -R3;\n"
-"ABS R3.y, R3.x;\n"
-"FRC R2.x, R2;\n"
-"MUL R2.x, R2, c[21];\n"
-"CMP R2.x, -R2.w, R2, -R2;\n"
-"SLT R2.w, R3.x, c[20];\n"
-"FLR R3.y, R3;\n"
-"CMP R3.x, -R2.w, -R3.y, R3.y;\n"
-"ABS R2.w, R2.x;\n"
-"CMP R3.x, -R1.z, c[21].z, R3;\n"
-"SLT R1.z, R2.x, c[20].w;\n"
-"FLR R2.w, R2;\n"
-"CMP R1.z, -R1, -R2.w, R2.w;\n"
-"CMP R2.x, -R2.y, R1.z, R3;\n"
-"SLT R1.z, R3.w, c[20];\n"
-"CMP R1.z, -R3, R1, R2.x;\n"
-"ADD R2.x, -R1.y, c[6];\n"
-"ABS R1.y, R1.w;\n"
-"CMP R1.y, -R1, c[20].w, c[20].z;\n"
-"ABS R1.w, R2.x;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R1.w, -R1, c[20], c[20].z;\n"
-"MUL R1.x, R1, R1.w;\n"
-"MUL R2.z, R2, c[20].y;\n"
-"CMP R0.xyz, -R1.x, R2.z, R0;\n"
-"ADD R1.x, R1.z, -c[1];\n"
-"ABS R1.x, R1;\n"
-"CMP R0, -R1.x, R0, c[20].w;\n"
-"MUL R1.xyz, R0, R0.w;\n"
-"CMP result.color.xyz, -c[7].x, R1, R0;\n"
-"MOV result.color.w, R0;\n"
-"END\n"
-"# 205 instructions, 8 R-regs\n";
+    "!!ARBfp1.0\n"
+    "# cgc version 3.1.0013, build date Apr 24 2012\n"
+    "# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile arbfp1\n"
+    "# source file: rgba.cg\n"
+    "#vendor NVIDIA Corporation\n"
+    "#version 3.1.0.13\n"
+    "#profile arbfp1\n"
+    "#program main\n"
+    "#semantic main.fgImage : TEXUNIT0"
+    "#semantic main.lut : TEXUNIT3\n"
+    "#semantic main.mask\n"
+    "#semantic main.mask_value\n"
+    "#semantic main.height\n"
+    "#semantic main.width\n"
+    "#semantic main.gain\n"
+    "#semantic main.gamma\n"
+    "#semantic main.channel\n"
+    "#semantic main.premult\n"
+    "#semantic main.unpremult\n"
+    "#semantic main.enableNormalization\n"
+    "#semantic main.normMin\n"
+    "#semantic main.normSpan\n"
+    "#semantic main.enableLut\n"
+    "#semantic main.lutF\n"
+    "#semantic main.lutMin\n"
+    "#semantic main.lutMax\n"
+    "#semantic main.scale\n"
+    "#semantic main.offset\n"
+    "#semantic main.lutM\n"
+    "#semantic main.lutT\n"
+    "#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
+    "#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
+    "#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
+    "#var int mask :  : c[0] : 3 : 1\n"
+    "#var int mask_value :  : c[1] : 4 : 1\n"
+    "#var int height :  : c[2] : 5 : 1\n"
+    "#var int width :  : c[3] : 6 : 1\n"
+    "#var half gain :  : c[4] : 7 : 1\n"
+    "#var half gamma :  : c[5] : 8 : 1\n"
+    "#var int channel :  : c[6] : 9 : 1\n"
+    "#var bool premult :  : c[7] : 10 : 1\n"
+    "#var bool unpremult :  : c[8] : 11 : 1\n"
+    "#var bool enableNormalization :  : c[9] : 12 : 1\n"
+    "#var half normMin :  : c[10] : 13 : 1\n"
+    "#var half normSpan :  : c[11] : 14 : 1\n"
+    "#var bool enableLut :  : c[12] : 15 : 1\n"
+    "#var bool lutF :  : c[13] : 16 : 1\n"
+    "#var half lutMin :  : c[14] : 17 : 1\n"
+    "#var half lutMax :  : c[15] : 18 : 1\n"
+    "#var half scale :  : c[16] : 19 : 1\n"
+    "#var half offset :  : c[17] : 20 : 1\n"
+    "#var half lutM :  : c[18] : 21 : 1\n"
+    "#var half lutT :  : c[19] : 22 : 1\n"
+    "#var float4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
+    "#const c[20] = 0.5 0.33333334 1 0\n"
+    "#const c[21] = 2 3 1000 4\n"
+    "#const c[22] = 5 6 0.00010001659 2.718282\n"
+    "#const c[23] = 2.71875 0.69335938\n"
+    "#default mask = 0\n"
+    "#default mask_value = 0\n"
+    "#default height = 256\n"
+    "#default width = 256\n"
+    "#default gain = 1\n"
+    "#default gamma = 1.0\n"
+    "#default channel = 0\n"
+    "#default premult = 0\n"
+    "#default unpremult = 0\n"
+    "#default enableNormalization = 0\n"
+    "#default normMin = 0\n"
+    "#default normSpan = 1\n"
+    "#default enableLut = 0\n"
+    "#default lutF = 0\n"
+    "#default scale = 1\n"
+    "#default offset = 0\n"
+    "PARAM c[24] = { program.local[0..19],\n"
+    "		{ 0.5, 0.33333334, 1, 0 },\n"
+    "		{ 2, 3, 1000, 4 },\n"
+    "		{ 5, 6, 0.00010001659, 2.718282 },\n"
+    "		{ 2.71875, 0.69335938 } };\n"
+    "TEMP R0;\n"
+    "TEMP R1;\n"
+    "TEMP R2;\n"
+    "TEMP R3;\n"
+    "TEMP R4;\n"
+    "TEMP R5;\n"
+    "TEMP R6;\n"
+    "TEMP R7;\n"
+    "TEX R0, fragment.texcoord[0], texture[0], 2D;\n"
+    "RCP R3.w, c[13].x;\n"
+    "RCP R1.w, c[11].x;\n"
+    "ADD R1.xyz, R0, -c[10].x;\n"
+    "MUL R1.xyz, R1, R1.w;\n"
+    "CMP R0.xyz, -c[9].x, R1, R0;\n"
+    "MUL R3.xyz, R0, c[4].x;\n"
+    "MIN R0.xyz, R3, c[15].x;\n"
+    "MAX R0.xyz, R0, c[14].x;\n"
+    "MOV R1.w, c[19].x;\n"
+    "LG2 R0.x, R0.x;\n"
+    "LG2 R0.y, R0.y;\n"
+    "LG2 R0.z, R0.z;\n"
+    "MUL R0.xyz, R0, c[18].x;\n"
+    "MAD R0.xyz, R0, c[23].y, R1.w;\n"
+    "MUL R1.xyz, R0, c[13].x;\n"
+    "FLR R0.xyz, R1;\n"
+    "ADD R4.xyz, -R0, R1;\n"
+    "ADD R2.xyz, R0, c[20].z;\n"
+    "MUL R7.xyz, R3.w, R2;\n"
+    "MUL R2.xyz, R0, R3.w;\n"
+    "TEX R1.xyz, R7, texture[3], 3D;\n"
+    "ADD R2.w, -R4.x, c[20].z;\n"
+    "ADD R3.w, -R4.y, c[20].z;\n"
+    "MUL R1.xyz, R4.x, R1;\n"
+    "MOV R0.x, R2;\n"
+    "MOV R0.yz, R7;\n"
+    "TEX R0.xyz, R0, texture[3], 3D;\n"
+    "MAD R1.xyz, R2.w, R0, R1;\n"
+    "MUL R5.xyz, R4.y, R1;\n"
+    "TEX R1.xyz, R2, texture[3], 3D;\n"
+    "MOV R0.y, R2;\n"
+    "MOV R0.xz, R7;\n"
+    "TEX R0.xyz, R0, texture[3], 3D;\n"
+    "MUL R0.xyz, R4.x, R0;\n"
+    "MAD R6.xyz, R2.w, R1, R0;\n"
+    "MAD R5.xyz, R6, R3.w, R5;\n"
+    "MOV R6.yz, R2;\n"
+    "MOV R6.x, R7;\n"
+    "MOV R0.z, R2;\n"
+    "MOV R0.xy, R7;\n"
+    "TEX R0.xyz, R0, texture[3], 3D;\n"
+    "MOV R2.y, R7;\n"
+    "MUL R0.xyz, R4.x, R0;\n"
+    "TEX R2.xyz, R2, texture[3], 3D;\n"
+    "MAD R0.xyz, R2, R2.w, R0;\n"
+    "TEX R6.xyz, R6, texture[3], 3D;\n"
+    "MUL R2.xyz, R4.x, R6;\n"
+    "MAD R1.xyz, R2.w, R1, R2;\n"
+    "MUL R0.xyz, R4.y, R0;\n"
+    "MAD R0.xyz, R1, R3.w, R0;\n"
+    "MUL R1.xyz, R4.z, R5;\n"
+    "ADD R2.y, -R4.z, c[20].z;\n"
+    "MAD R0.xyz, R0, R2.y, R1;\n"
+    "MOV R2.x, c[13];\n"
+    "MUL R1.x, R2, c[12];\n"
+    "CMP R2.xyz, -R1.x, R0, R3;\n"
+    "POW R0.x, c[23].x, R2.x;\n"
+    "POW R0.z, c[23].x, R2.z;\n"
+    "POW R0.y, c[23].x, R2.y;\n"
+    "CMP R0.xyz, -R1.x, R0, R2;\n"
+    "MIN R1.xyz, R0, c[15].x;\n"
+    "MAX R1.xyz, R1, c[14].x;\n"
+    "LG2 R1.x, R1.x;\n"
+    "LG2 R1.z, R1.z;\n"
+    "LG2 R1.y, R1.y;\n"
+    "MUL R2.xyz, R1, c[18].x;\n"
+    "ABS R1.x, c[13];\n"
+    "MAD R2.xyz, R2, c[23].y, R1.w;\n"
+    "CMP R1.x, -R1, c[20].w, c[20].z;\n"
+    "MUL R1.w, R1.x, c[12].x;\n"
+    "CMP R1.xyz, -R1.w, R2, R0;\n"
+    "MOV R2.w, c[17].x;\n"
+    "MAD R0.xyz, R1, c[16].x, R2.w;\n"
+    "TEX R0.xyz, R0, texture[3], 3D;\n"
+    "POW R0.x, c[22].w, R0.x;\n"
+    "POW R0.z, c[22].w, R0.z;\n"
+    "POW R0.y, c[22].w, R0.y;\n"
+    "CMP R0.xyz, -R1.w, R0, R1;\n"
+    "RCP R1.y, R0.w;\n"
+    "SLT R1.x, c[22].z, R0.w;\n"
+    "MUL R2.xyz, R0, R1.y;\n"
+    "MUL R1.x, R1, c[8];\n"
+    "CMP R0.xyz, -R1.x, R2, R0;\n"
+    "MOV R2.xyz, c[21].xyww;\n"
+    "ADD R1.y, -R2.x, c[6].x;\n"
+    "MOV R1.z, c[20];\n"
+    "ADD R1.x, -R1.z, c[6];\n"
+    "ABS R1.y, R1;\n"
+    "ADD R2.x, -R2, c[0];\n"
+    "ADD R1.z, -R1, c[0].x;\n"
+    "ABS R1.z, R1;\n"
+    "ABS R1.x, R1;\n"
+    "CMP R1.y, -R1, c[20].w, c[20].z;\n"
+    "ADD R2.z, -R2, c[6].x;\n"
+    "ABS R2.x, R2;\n"
+    "POW R0.y, R0.y, c[5].x;\n"
+    "POW R0.z, R0.z, c[5].x;\n"
+    "POW R0.x, R0.x, c[5].x;\n"
+    "CMP R0.xyz, -R1.x, R0, R0.x;\n"
+    "CMP R1.x, -R1, c[20].w, c[20].z;\n"
+    "ABS R1.x, R1;\n"
+    "CMP R1.x, -R1, c[20].w, c[20].z;\n"
+    "MUL R1.w, R1.x, R1.y;\n"
+    "CMP R0.xyz, -R1.w, R0.y, R0;\n"
+    "ADD R1.w, -R2.y, c[6].x;\n"
+    "ADD R2.y, -R2, c[0].x;\n"
+    "ABS R3.y, R2;\n"
+    "CMP R2.y, -R2.x, c[20].w, c[20].z;\n"
+    "CMP R3.w, -R3.y, c[20], c[20].z;\n"
+    "MUL R3.y, fragment.texcoord[0], c[2].x;\n"
+    "ABS R1.y, R1;\n"
+    "CMP R1.y, -R1, c[20].w, c[20].z;\n"
+    "ABS R1.w, R1;\n"
+    "MUL R1.x, R1, R1.y;\n"
+    "CMP R1.w, -R1, c[20], c[20].z;\n"
+    "MUL R1.y, R1.x, R1.w;\n"
+    "CMP R0.xyz, -R1.y, R0.z, R0;\n"
+    "ABS R1.y, R1.w;\n"
+    "ABS R1.w, R2.z;\n"
+    "CMP R1.y, -R1, c[20].w, c[20].z;\n"
+    "MUL R2.z, R1.x, R1.y;\n"
+    "CMP R1.w, -R1, c[20], c[20].z;\n"
+    "MUL R1.x, R2.z, R1.w;\n"
+    "CMP R0.xyz, -R1.x, R0.w, R0;\n"
+    "MOV R1.xy, c[22];\n"
+    "ADD R2.w, -R1.x, c[6].x;\n"
+    "ABS R1.x, R1.w;\n"
+    "ABS R1.w, R2;\n"
+    "CMP R1.x, -R1, c[20].w, c[20].z;\n"
+    "CMP R2.x, -R1.z, c[20].w, c[20].z;\n"
+    "FLR R4.y, R3;\n"
+    "MUL R3.x, R0, c[20];\n"
+    "CMP R1.w, -R1, c[20], c[20].z;\n"
+    "MUL R1.x, R2.z, R1;\n"
+    "MUL R2.z, R1.x, R1.w;\n"
+    "CMP R0.x, -R2.z, R3, R0;\n"
+    "MAD R2.w, R0, c[20].x, R0.x;\n"
+    "CMP R0.x, -R2.z, R2.w, R0;\n"
+    "ADD R2.z, R0.x, R0.y;\n"
+    "ADD R2.z, R2, R0;\n"
+    "ABS R3.x, R2.y;\n"
+    "ABS R2.w, R2.x;\n"
+    "CMP R2.w, -R2, c[20], c[20].z;\n"
+    "CMP R3.x, -R3, c[20].w, c[20].z;\n"
+    "MUL R3.z, R2.w, R3.x;\n"
+    "MUL R3.x, fragment.texcoord[0], c[3];\n"
+    "FLR R4.x, R3;\n"
+    "ADD R4.z, R4.x, R4.y;\n"
+    "MUL R3.z, R3, R3.w;\n"
+    "SLT R3.w, R4.x, -R4.y;\n"
+    "MUL R4.z, R4, c[20].x;\n"
+    "ABS R4.x, R4.z;\n"
+    "ABS R3.w, R3;\n"
+    "FRC R4.x, R4;\n"
+    "CMP R3.w, -R3, c[20], c[20].z;\n"
+    "MUL R2.y, R2.w, R2;\n"
+    "MUL R4.x, R4, c[21];\n"
+    "MUL R3.w, R3.z, R3;\n"
+    "CMP R3.w, -R3, R4.x, -R4.x;\n"
+    "SLT R4.x, R3, c[20].w;\n"
+    "ABS R2.w, R4.x;\n"
+    "SLT R4.x, R3.y, c[20].w;\n"
+    "CMP R2.w, -R2, c[20], c[20].z;\n"
+    "ABS R4.x, R4;\n"
+    "MUL R2.w, R2.y, R2;\n"
+    "CMP R4.x, -R4, c[20].w, c[20].z;\n"
+    "MUL R4.y, R3, c[20].x;\n"
+    "MUL R3.y, R2.x, R4.x;\n"
+    "MUL R2.x, R3, c[20];\n"
+    "ABS R4.x, R4.y;\n"
+    "FRC R3.x, R4;\n"
+    "ABS R2.x, R2;\n"
+    "MUL R3.x, R3, c[21];\n"
+    "CMP R3.x, -R3.y, R3, -R3;\n"
+    "ABS R3.y, R3.x;\n"
+    "FRC R2.x, R2;\n"
+    "MUL R2.x, R2, c[21];\n"
+    "CMP R2.x, -R2.w, R2, -R2;\n"
+    "SLT R2.w, R3.x, c[20];\n"
+    "FLR R3.y, R3;\n"
+    "CMP R3.x, -R2.w, -R3.y, R3.y;\n"
+    "ABS R2.w, R2.x;\n"
+    "CMP R3.x, -R1.z, c[21].z, R3;\n"
+    "SLT R1.z, R2.x, c[20].w;\n"
+    "FLR R2.w, R2;\n"
+    "CMP R1.z, -R1, -R2.w, R2.w;\n"
+    "CMP R2.x, -R2.y, R1.z, R3;\n"
+    "SLT R1.z, R3.w, c[20];\n"
+    "CMP R1.z, -R3, R1, R2.x;\n"
+    "ADD R2.x, -R1.y, c[6];\n"
+    "ABS R1.y, R1.w;\n"
+    "CMP R1.y, -R1, c[20].w, c[20].z;\n"
+    "ABS R1.w, R2.x;\n"
+    "MUL R1.x, R1, R1.y;\n"
+    "CMP R1.w, -R1, c[20], c[20].z;\n"
+    "MUL R1.x, R1, R1.w;\n"
+    "MUL R2.z, R2, c[20].y;\n"
+    "CMP R0.xyz, -R1.x, R2.z, R0;\n"
+    "ADD R1.x, R1.z, -c[1];\n"
+    "ABS R1.x, R1;\n"
+    "CMP R0, -R1.x, R0, c[20].w;\n"
+    "MUL R1.xyz, R0, R0.w;\n"
+    "CMP result.color.xyz, -c[7].x, R1, R0;\n"
+    "MOV result.color.w, R0;\n"
+    "END\n"
+    "# 205 instructions, 8 R-regs\n";
 
 const char* NVShader =
-"!!FP1.0\n"
-"# cgc version 3.1.0013, build date Apr 24 2012\n"
-"# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile fp30\n"
-"# source file: rgba.cg\n"
-"#vendor NVIDIA Corporation\n"
-"#version 3.1.0.13\n"
-"#profile fp30\n"
-"#program main\n"
-"#semantic main.fgImage : TEXUNIT0\n"
-"#semantic main.lut : TEXUNIT3\n"
-"#semantic main.mask\n"
-"#semantic main.mask_value\n"
-"#semantic main.height\n"
-"#semantic main.width\n"
-"#semantic main.gain\n"
-"#semantic main.gamma\n"
-"#semantic main.channel\n"
-"#semantic main.premult\n"
-"#semantic main.unpremult\n"
-"#semantic main.enableNormalization\n"
-"#semantic main.normMin\n"
-"#semantic main.normSpan\n"
-"#semantic main.enableLut\n"
-"#semantic main.lutF\n"
-"#semantic main.lutMin\n"
-"#semantic main.lutMax\n"
-"#semantic main.scale\n"
-"#semantic main.offset\n"
-"#semantic main.lutM\n"
-"#semantic main.lutT\n"
-"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
-"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
-"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
-"#var int mask :  : mask : 3 : 1\n"
-"#var int mask_value :  : mask_value : 4 : 1\n"
-"#var int height :  : height : 5 : 1\n"
-"#var int width :  : width : 6 : 1\n"
-"#var half gain :  : gain : 7 : 1\n"
-"#var half gamma :  : gamma : 8 : 1\n"
-"#var int channel :  : channel : 9 : 1\n"
-"#var bool premult :  : premult : 10 : 1\n"
-"#var bool unpremult :  : unpremult : 11 : 1\n"
-"#var bool enableNormalization :  : enableNormalization : 12 : 1\n"
-"#var half normMin :  : normMin : 13 : 1\n"
-"#var half normSpan :  : normSpan : 14 : 1\n"
-"#var bool enableLut :  : enableLut : 15 : 1\n"
-"#var bool lutF :  : lutF : 16 : 1\n"
-"#var half lutMin :  : lutMin : 17 : 1\n"
-"#var half lutMax :  : lutMax : 18 : 1\n"
-"#var half scale :  : scale : 19 : 1\n"
-"#var half offset :  : offset : 20 : 1\n"
-"#var half lutM :  : lutM : 21 : 1\n"
-"#var half lutT :  : lutT : 22 : 1\n"
-"#var half4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
-"#default mask = 0\n"
-"#default mask_value = 0\n"
-"#default height = 256\n"
-"#default width = 256\n"
-"#default gain = 1\n"
-"#default gamma = 1.0\n"
-"#default channel = 0\n"
-"#default premult = 0\n"
-"#default unpremult = 0\n"
-"#default enableNormalization = 0\n"
-"#default normMin = 0\n"
-"#default normSpan = 1\n"
-"#default enableLut = 0\n"
-"#default lutF = 0\n"
-"#default scale = 1\n"
-"#default offset = 0\n"
-"DECLARE enableNormalization = {0};\n"
-"DECLARE normMin = {0};\n"
-"DECLARE normSpan = {1};\n"
-"DECLARE gain = {1};\n"
-"DECLARE enableLut = {0};\n"
-"DECLARE lutF = {0};\n"
-"DECLARE lutMax;\n"
-"DECLARE lutMin;\n"
-"DECLARE lutT;\n"
-"DECLARE lutM;\n"
-"DECLARE scale = {1};\n"
-"DECLARE offset = {0};\n"
-"DECLARE unpremult = {0};\n"
-"DECLARE gamma = {1.0};\n"
-"DECLARE channel = {0};\n"
-"DECLARE mask = {0};\n"
-"DECLARE height = {256};\n"
-"DECLARE width = {256};\n"
-"DECLARE mask_value = {0};\n"
-"DECLARE premult = {0};\n"
-"TEX   H1, f[TEX0], TEX0, 2D;\n"
-"ADDH  H0.xyz, H1, -normMin.x;\n"
-"MULR  R1.x, f[TEX0], width;\n"
-"MULR  R1.y, f[TEX0], height.x;\n"
-"RCPH  H0.w, normSpan.x;\n"
-"MOVXC RC.x, enableNormalization;\n"
-"MULH  H1.xyz(NE.x), H0, H0.w;\n"
-"MULH  H1.xyz, H1, gain.x;\n"
-"MINH  H0.xyz, H1, lutMax.x;\n"
-"MAXH  H0.xyz, H0, lutMin.x;\n"
-"MOVH  H2.w, lutT.x;\n"
-"RCPH  H3.w, lutF.x;\n"
-"MOVR  R0.w, {3}.x;\n"
-"LG2H  H0.x, H0.x;\n"
-"LG2H  H0.z, H0.z;\n"
-"LG2H  H0.y, H0.y;\n"
-"MULH  H0.xyz, H0, lutM.x;\n"
-"MADH  H0.xyz, H0, {0.69335938}.x, H2.w;\n"
-"MULH  H0.xyz, H0, lutF.x;\n"
-"FLRH  H4.xyz, H0;\n"
-"ADDH  H2.xyz, -H4, H0;\n"
-"ADDH  H0.xyz, H4, {1}.x;\n"
-"MULH  H0.xyw, H3.w, H0.yzzx;\n"
-"MULH  H7.xyz, H4, H3.w;\n"
-"TEX   H5.xyz, H0.wxyw, TEX3, 3D;\n"
-"ADDH  H3.xyz, -H2, {1}.x;\n"
-"MULH  H5.xyz, H2.x, H5;\n"
-"MOVH  H4.yz, H0.xxyw;\n"
-"MOVH  H4.x, H7;\n"
-"TEX   H4.xyz, H4, TEX3, 3D;\n"
-"MADH  H4.xyz, H3.x, H4, H5;\n"
-"MULH  H6.xyz, H2.y, H4;\n"
-"MOVH  H4.xy, H0.wxzw;\n"
-"MOVH  H4.z, H7;\n"
-"TEX   H4.xyz, H4, TEX3, 3D;\n"
-"MULH  H5.xyz, H2.x, H4;\n"
-"MOVH  H4.y, H0.x;\n"
-"MOVH  H0.xz, H0.wyyw;\n"
-"MOVH  H4.xz, H7;\n"
-"TEX   H4.xyz, H4, TEX3, 3D;\n"
-"MADH  H4.xyz, H4, H3.x, H5;\n"
-"MOVH  H0.y, H7;\n"
-"TEX   H0.xyz, H0, TEX3, 3D;\n"
-"MULH  H5.xyz, H2.x, H0;\n"
-"TEX   H0.xyz, H7, TEX3, 3D;\n"
-"MADH  H5.xyz, H3.x, H0, H5;\n"
-"MADH  H5.xyz, H3.y, H5, H6;\n"
-"MOVH  H6.x, H0.w;\n"
-"MOVX  H0.w, lutF.x;\n"
-"MULXC HC.x, H0.w, enableLut;\n"
-"MOVH  H6.yz, H7;\n"
-"TEX   H6.xyz, H6, TEX3, 3D;\n"
-"MULH  H6.xyz, H2.x, H6;\n"
-"MULH  H4.xyz, H2.y, H4;\n"
-"MADH  H0.xyz, H3.x, H0, H6;\n"
-"MOVX  H0.w, {0}.x;\n"
-"MADH  H0.xyz, H0, H3.y, H4;\n"
-"MULH  H2.xyz, H2.z, H5;\n"
-"MADH  H1.xyz(NE.x), H0, H3.z, H2;\n"
-"MOVH  H2.xyz, H1;\n"
-"POWH  H0.x, {2.71875}.x, H1.x;\n"
-"POWH  H0.y, {2.71875}.x, H1.y;\n"
-"POWH  H0.z, {2.71875}.x, H1.z;\n"
-"MOVH  H2.xyz(NE.x), H0;\n"
-"MINH  H0.xyz, H2, lutMax.x;\n"
-"MAXH  H0.xyz, H0, lutMin.x;\n"
-"SEQX  H0.w, lutF.x, H0;\n"
-"MOVH  H1.xyz, H2;\n"
-"MULXC HC.x, H0.w, enableLut;\n"
-"LG2H  H0.x, H0.x;\n"
-"LG2H  H0.z, H0.z;\n"
-"LG2H  H0.y, H0.y;\n"
-"MULH  H0.xyz, H0, lutM.x;\n"
-"MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H2.w;\n"
-"MOVH  H0.x, offset;\n"
-"MADH  H0.xyz, H1, scale.x, H0.x;\n"
-"TEX   R0.xyz, H0, TEX3, 3D;\n"
-"POWR  H0.x, {2.718282}.x, R0.x;\n"
-"POWR  H0.y, {2.718282}.x, R0.y;\n"
-"POWR  H0.z, {2.718282}.x, R0.z;\n"
-"MOVH  H1.xyz(NE.x), H0;\n"
-"MOVR  R0.x, {1};\n"
-"MOVR  R0.y, {2}.x;\n"
-"SGTH  H0.x, H1.w, {0.00010001659};\n"
-"SEQR  H2.x, channel, R0.y;\n"
-"MULXC HC.x, H0, unpremult;\n"
-"RCPH  H0.y, H1.w;\n"
-"MULH  H1.xyz(NE.x), H1, H0.y;\n"
-"SEQR  H0.w, channel.x, R0.x;\n"
-"MOVXC RC.x, H0.w;\n"
-"POWH  H0.x, H1.x, gamma.x;\n"
-"POWH  H0.z, H1.z, gamma.x;\n"
-"POWH  H0.y, H1.y, gamma.x;\n"
-"MOVH  H1.xyz, H0;\n"
-"MOVH  H1.xyz(NE.x), H0.x;\n"
-"SEQX  H0.w, H0, {0}.x;\n"
-"MOVH  H0.xyz, H1;\n"
-"MULXC HC.x, H0.w, H2;\n"
-"MOVH  H0.xyz(NE.x), H1.y;\n"
-"MOVH  H1.xyz, H0;\n"
-"SEQX  H0.x, H2, {0};\n"
-"MULX  H0.x, H0.w, H0;\n"
-"SEQR  H0.y, channel.x, R0.w;\n"
-"MULXC HC.x, H0, H0.y;\n"
-"SEQX  H0.y, H0, {0}.x;\n"
-"MOVH  H1.xyz(NE.x), H0.z;\n"
-"MOVR  R0.z, {4}.x;\n"
-"SEQR  H0.z, channel.x, R0;\n"
-"MULX  H0.y, H0.x, H0;\n"
-"MULXC HC.x, H0.y, H0.z;\n"
-"MOVH  H1.xyz(NE.x), H1.w;\n"
-"MOVR  R0.z, {5}.x;\n"
-"SEQR  H2.x, channel, R0.z;\n"
-"SEQX  H0.z, H0, {0}.x;\n"
-"MULX  H0.w, H0.y, H0.z;\n"
-"MOVH  H0.x, H1;\n"
-"MULXC HC.x, H0.w, H2;\n"
-"MULH  H0.x(NE), H1, {0.5};\n"
-"MADH  H0.x(NE), H1.w, {0.5}, H0;\n"
-"ADDH  H0.y, H0.x, H1;\n"
-"ADDH  H1.x, H0.y, H1.z;\n"
-"MOVH  H0.yz, H1;\n"
-"SEQX  H1.y, H2.x, {0}.x;\n"
-"MULX  H0.w, H0, H1.y;\n"
-"MOVR  R0.z, {6}.x;\n"
-"SEQR  H1.z, channel.x, R0;\n"
-"MULXC HC.x, H0.w, H1.z;\n"
-"SLTR  H2.x, R1, {0};\n"
-"MULH  H0.xyz(NE.x), H1.x, {0.33333334}.x;\n"
-"SEQR  H0.w, mask.x, R0.x;\n"
-"MULR  R0.z, R1.x, {0.5}.x;\n"
-"SEQR  H1.y, mask.x, R0;\n"
-"SEQX  H1.x, H0.w, {0};\n"
-"MULX  H1.z, H1.x, H1.y;\n"
-"FRCR  R0.x, |R0.z|;\n"
-"MULR  R0.y, R0.x, {2}.x;\n"
-"SEQX  H2.x, H2, {0};\n"
-"MULXC HC.x, H1.z, H2;\n"
-"MOVR  R0.x, -R0.y;\n"
-"MOVR  R0.x(NE), R0.y;\n"
-"FLRR  R0.y, |R0.x|;\n"
-"MOVRC RC.x, R0;\n"
-"MOVR  R0.z, R0.y;\n"
-"MULR  R0.x, R1.y, {0.5};\n"
-"FRCR  R0.x, |R0|;\n"
-"SLTR  H2.x, R1.y, {0};\n"
-"SEQX  H1.y, H1, {0}.x;\n"
-"MOVR  R0.z(LT.x), -R0.y;\n"
-"MULR  R0.x, R0, {2};\n"
-"SEQX  H2.x, H2, {0};\n"
-"MOVR  R0.y, -R0.x;\n"
-"MULXC HC.x, H0.w, H2;\n"
-"MOVR  R0.y(NE.x), R0.x;\n"
-"FLRR  R1.z, |R0.y|;\n"
-"MOVRC RC.x, R0.y;\n"
-"MOVR  R0.x, R1.z;\n"
-"MOVR  R0.x(LT), -R1.z;\n"
-"MOVXC RC.x, H0.w;\n"
-"MOVR  R0.x(EQ), {1000};\n"
-"MOVXC RC.x, H1.z;\n"
-"MOVR  R0.x(NE), R0.z;\n"
-"FLRR  R0.y, R1;\n"
-"FLRR  R0.z, R1.x;\n"
-"ADDR  R1.x, R0.z, R0.y;\n"
-"SLTR  H0.w, R0.z, -R0.y;\n"
-"MULR  R1.x, R1, {0.5};\n"
-"FRCR  R1.x, |R1|;\n"
-"MULR  R1.x, R1, {2};\n"
-"MOVR  R0.y, -R1.x;\n"
-"SEQX  H0.w, H0, {0}.x;\n"
-"SEQR  H1.z, mask.x, R0.w;\n"
-"MULX  H1.x, H1, H1.y;\n"
-"MULX  H1.x, H1, H1.z;\n"
-"MULXC HC.x, H1, H0.w;\n"
-"MOVR  R0.y(NE.x), R1.x;\n"
-"MOVXC RC.x, H1;\n"
-"SLTR  R0.x(NE), R0.y, {1};\n"
-"MOVH  H0.w, H1;\n"
-"SEQRC HC.x, R0, mask_value;\n"
-"MOVH  H0(NE.x), {0}.x;\n"
-"MOVH  o[COLH].xyz, H0;\n"
-"MOVXC RC.x, premult;\n"
-"MULH  o[COLH].xyz(NE.x), H0, H0.w;\n"
-"MOVH  o[COLH].w, H0;\n"
-"END\n"
-"# 184 instructions, 2 R-regs, 8 H-regs\n";
+    "!!FP1.0\n"
+    "# cgc version 3.1.0013, build date Apr 24 2012\n"
+    "# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile fp30\n"
+    "# source file: rgba.cg\n"
+    "#vendor NVIDIA Corporation\n"
+    "#version 3.1.0.13\n"
+    "#profile fp30\n"
+    "#program main\n"
+    "#semantic main.fgImage : TEXUNIT0\n"
+    "#semantic main.lut : TEXUNIT3\n"
+    "#semantic main.mask\n"
+    "#semantic main.mask_value\n"
+    "#semantic main.height\n"
+    "#semantic main.width\n"
+    "#semantic main.gain\n"
+    "#semantic main.gamma\n"
+    "#semantic main.channel\n"
+    "#semantic main.premult\n"
+    "#semantic main.unpremult\n"
+    "#semantic main.enableNormalization\n"
+    "#semantic main.normMin\n"
+    "#semantic main.normSpan\n"
+    "#semantic main.enableLut\n"
+    "#semantic main.lutF\n"
+    "#semantic main.lutMin\n"
+    "#semantic main.lutMax\n"
+    "#semantic main.scale\n"
+    "#semantic main.offset\n"
+    "#semantic main.lutM\n"
+    "#semantic main.lutT\n"
+    "#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
+    "#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
+    "#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
+    "#var int mask :  : mask : 3 : 1\n"
+    "#var int mask_value :  : mask_value : 4 : 1\n"
+    "#var int height :  : height : 5 : 1\n"
+    "#var int width :  : width : 6 : 1\n"
+    "#var half gain :  : gain : 7 : 1\n"
+    "#var half gamma :  : gamma : 8 : 1\n"
+    "#var int channel :  : channel : 9 : 1\n"
+    "#var bool premult :  : premult : 10 : 1\n"
+    "#var bool unpremult :  : unpremult : 11 : 1\n"
+    "#var bool enableNormalization :  : enableNormalization : 12 : 1\n"
+    "#var half normMin :  : normMin : 13 : 1\n"
+    "#var half normSpan :  : normSpan : 14 : 1\n"
+    "#var bool enableLut :  : enableLut : 15 : 1\n"
+    "#var bool lutF :  : lutF : 16 : 1\n"
+    "#var half lutMin :  : lutMin : 17 : 1\n"
+    "#var half lutMax :  : lutMax : 18 : 1\n"
+    "#var half scale :  : scale : 19 : 1\n"
+    "#var half offset :  : offset : 20 : 1\n"
+    "#var half lutM :  : lutM : 21 : 1\n"
+    "#var half lutT :  : lutT : 22 : 1\n"
+    "#var half4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
+    "#default mask = 0\n"
+    "#default mask_value = 0\n"
+    "#default height = 256\n"
+    "#default width = 256\n"
+    "#default gain = 1\n"
+    "#default gamma = 1.0\n"
+    "#default channel = 0\n"
+    "#default premult = 0\n"
+    "#default unpremult = 0\n"
+    "#default enableNormalization = 0\n"
+    "#default normMin = 0\n"
+    "#default normSpan = 1\n"
+    "#default enableLut = 0\n"
+    "#default lutF = 0\n"
+    "#default scale = 1\n"
+    "#default offset = 0\n"
+    "DECLARE enableNormalization = {0};\n"
+    "DECLARE normMin = {0};\n"
+    "DECLARE normSpan = {1};\n"
+    "DECLARE gain = {1};\n"
+    "DECLARE enableLut = {0};\n"
+    "DECLARE lutF = {0};\n"
+    "DECLARE lutMax;\n"
+    "DECLARE lutMin;\n"
+    "DECLARE lutT;\n"
+    "DECLARE lutM;\n"
+    "DECLARE scale = {1};\n"
+    "DECLARE offset = {0};\n"
+    "DECLARE unpremult = {0};\n"
+    "DECLARE gamma = {1.0};\n"
+    "DECLARE channel = {0};\n"
+    "DECLARE mask = {0};\n"
+    "DECLARE height = {256};\n"
+    "DECLARE width = {256};\n"
+    "DECLARE mask_value = {0};\n"
+    "DECLARE premult = {0};\n"
+    "TEX   H1, f[TEX0], TEX0, 2D;\n"
+    "ADDH  H0.xyz, H1, -normMin.x;\n"
+    "MULR  R1.x, f[TEX0], width;\n"
+    "MULR  R1.y, f[TEX0], height.x;\n"
+    "RCPH  H0.w, normSpan.x;\n"
+    "MOVXC RC.x, enableNormalization;\n"
+    "MULH  H1.xyz(NE.x), H0, H0.w;\n"
+    "MULH  H1.xyz, H1, gain.x;\n"
+    "MINH  H0.xyz, H1, lutMax.x;\n"
+    "MAXH  H0.xyz, H0, lutMin.x;\n"
+    "MOVH  H2.w, lutT.x;\n"
+    "RCPH  H3.w, lutF.x;\n"
+    "MOVR  R0.w, {3}.x;\n"
+    "LG2H  H0.x, H0.x;\n"
+    "LG2H  H0.z, H0.z;\n"
+    "LG2H  H0.y, H0.y;\n"
+    "MULH  H0.xyz, H0, lutM.x;\n"
+    "MADH  H0.xyz, H0, {0.69335938}.x, H2.w;\n"
+    "MULH  H0.xyz, H0, lutF.x;\n"
+    "FLRH  H4.xyz, H0;\n"
+    "ADDH  H2.xyz, -H4, H0;\n"
+    "ADDH  H0.xyz, H4, {1}.x;\n"
+    "MULH  H0.xyw, H3.w, H0.yzzx;\n"
+    "MULH  H7.xyz, H4, H3.w;\n"
+    "TEX   H5.xyz, H0.wxyw, TEX3, 3D;\n"
+    "ADDH  H3.xyz, -H2, {1}.x;\n"
+    "MULH  H5.xyz, H2.x, H5;\n"
+    "MOVH  H4.yz, H0.xxyw;\n"
+    "MOVH  H4.x, H7;\n"
+    "TEX   H4.xyz, H4, TEX3, 3D;\n"
+    "MADH  H4.xyz, H3.x, H4, H5;\n"
+    "MULH  H6.xyz, H2.y, H4;\n"
+    "MOVH  H4.xy, H0.wxzw;\n"
+    "MOVH  H4.z, H7;\n"
+    "TEX   H4.xyz, H4, TEX3, 3D;\n"
+    "MULH  H5.xyz, H2.x, H4;\n"
+    "MOVH  H4.y, H0.x;\n"
+    "MOVH  H0.xz, H0.wyyw;\n"
+    "MOVH  H4.xz, H7;\n"
+    "TEX   H4.xyz, H4, TEX3, 3D;\n"
+    "MADH  H4.xyz, H4, H3.x, H5;\n"
+    "MOVH  H0.y, H7;\n"
+    "TEX   H0.xyz, H0, TEX3, 3D;\n"
+    "MULH  H5.xyz, H2.x, H0;\n"
+    "TEX   H0.xyz, H7, TEX3, 3D;\n"
+    "MADH  H5.xyz, H3.x, H0, H5;\n"
+    "MADH  H5.xyz, H3.y, H5, H6;\n"
+    "MOVH  H6.x, H0.w;\n"
+    "MOVX  H0.w, lutF.x;\n"
+    "MULXC HC.x, H0.w, enableLut;\n"
+    "MOVH  H6.yz, H7;\n"
+    "TEX   H6.xyz, H6, TEX3, 3D;\n"
+    "MULH  H6.xyz, H2.x, H6;\n"
+    "MULH  H4.xyz, H2.y, H4;\n"
+    "MADH  H0.xyz, H3.x, H0, H6;\n"
+    "MOVX  H0.w, {0}.x;\n"
+    "MADH  H0.xyz, H0, H3.y, H4;\n"
+    "MULH  H2.xyz, H2.z, H5;\n"
+    "MADH  H1.xyz(NE.x), H0, H3.z, H2;\n"
+    "MOVH  H2.xyz, H1;\n"
+    "POWH  H0.x, {2.71875}.x, H1.x;\n"
+    "POWH  H0.y, {2.71875}.x, H1.y;\n"
+    "POWH  H0.z, {2.71875}.x, H1.z;\n"
+    "MOVH  H2.xyz(NE.x), H0;\n"
+    "MINH  H0.xyz, H2, lutMax.x;\n"
+    "MAXH  H0.xyz, H0, lutMin.x;\n"
+    "SEQX  H0.w, lutF.x, H0;\n"
+    "MOVH  H1.xyz, H2;\n"
+    "MULXC HC.x, H0.w, enableLut;\n"
+    "LG2H  H0.x, H0.x;\n"
+    "LG2H  H0.z, H0.z;\n"
+    "LG2H  H0.y, H0.y;\n"
+    "MULH  H0.xyz, H0, lutM.x;\n"
+    "MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H2.w;\n"
+    "MOVH  H0.x, offset;\n"
+    "MADH  H0.xyz, H1, scale.x, H0.x;\n"
+    "TEX   R0.xyz, H0, TEX3, 3D;\n"
+    "POWR  H0.x, {2.718282}.x, R0.x;\n"
+    "POWR  H0.y, {2.718282}.x, R0.y;\n"
+    "POWR  H0.z, {2.718282}.x, R0.z;\n"
+    "MOVH  H1.xyz(NE.x), H0;\n"
+    "MOVR  R0.x, {1};\n"
+    "MOVR  R0.y, {2}.x;\n"
+    "SGTH  H0.x, H1.w, {0.00010001659};\n"
+    "SEQR  H2.x, channel, R0.y;\n"
+    "MULXC HC.x, H0, unpremult;\n"
+    "RCPH  H0.y, H1.w;\n"
+    "MULH  H1.xyz(NE.x), H1, H0.y;\n"
+    "SEQR  H0.w, channel.x, R0.x;\n"
+    "MOVXC RC.x, H0.w;\n"
+    "POWH  H0.x, H1.x, gamma.x;\n"
+    "POWH  H0.z, H1.z, gamma.x;\n"
+    "POWH  H0.y, H1.y, gamma.x;\n"
+    "MOVH  H1.xyz, H0;\n"
+    "MOVH  H1.xyz(NE.x), H0.x;\n"
+    "SEQX  H0.w, H0, {0}.x;\n"
+    "MOVH  H0.xyz, H1;\n"
+    "MULXC HC.x, H0.w, H2;\n"
+    "MOVH  H0.xyz(NE.x), H1.y;\n"
+    "MOVH  H1.xyz, H0;\n"
+    "SEQX  H0.x, H2, {0};\n"
+    "MULX  H0.x, H0.w, H0;\n"
+    "SEQR  H0.y, channel.x, R0.w;\n"
+    "MULXC HC.x, H0, H0.y;\n"
+    "SEQX  H0.y, H0, {0}.x;\n"
+    "MOVH  H1.xyz(NE.x), H0.z;\n"
+    "MOVR  R0.z, {4}.x;\n"
+    "SEQR  H0.z, channel.x, R0;\n"
+    "MULX  H0.y, H0.x, H0;\n"
+    "MULXC HC.x, H0.y, H0.z;\n"
+    "MOVH  H1.xyz(NE.x), H1.w;\n"
+    "MOVR  R0.z, {5}.x;\n"
+    "SEQR  H2.x, channel, R0.z;\n"
+    "SEQX  H0.z, H0, {0}.x;\n"
+    "MULX  H0.w, H0.y, H0.z;\n"
+    "MOVH  H0.x, H1;\n"
+    "MULXC HC.x, H0.w, H2;\n"
+    "MULH  H0.x(NE), H1, {0.5};\n"
+    "MADH  H0.x(NE), H1.w, {0.5}, H0;\n"
+    "ADDH  H0.y, H0.x, H1;\n"
+    "ADDH  H1.x, H0.y, H1.z;\n"
+    "MOVH  H0.yz, H1;\n"
+    "SEQX  H1.y, H2.x, {0}.x;\n"
+    "MULX  H0.w, H0, H1.y;\n"
+    "MOVR  R0.z, {6}.x;\n"
+    "SEQR  H1.z, channel.x, R0;\n"
+    "MULXC HC.x, H0.w, H1.z;\n"
+    "SLTR  H2.x, R1, {0};\n"
+    "MULH  H0.xyz(NE.x), H1.x, {0.33333334}.x;\n"
+    "SEQR  H0.w, mask.x, R0.x;\n"
+    "MULR  R0.z, R1.x, {0.5}.x;\n"
+    "SEQR  H1.y, mask.x, R0;\n"
+    "SEQX  H1.x, H0.w, {0};\n"
+    "MULX  H1.z, H1.x, H1.y;\n"
+    "FRCR  R0.x, |R0.z|;\n"
+    "MULR  R0.y, R0.x, {2}.x;\n"
+    "SEQX  H2.x, H2, {0};\n"
+    "MULXC HC.x, H1.z, H2;\n"
+    "MOVR  R0.x, -R0.y;\n"
+    "MOVR  R0.x(NE), R0.y;\n"
+    "FLRR  R0.y, |R0.x|;\n"
+    "MOVRC RC.x, R0;\n"
+    "MOVR  R0.z, R0.y;\n"
+    "MULR  R0.x, R1.y, {0.5};\n"
+    "FRCR  R0.x, |R0|;\n"
+    "SLTR  H2.x, R1.y, {0};\n"
+    "SEQX  H1.y, H1, {0}.x;\n"
+    "MOVR  R0.z(LT.x), -R0.y;\n"
+    "MULR  R0.x, R0, {2};\n"
+    "SEQX  H2.x, H2, {0};\n"
+    "MOVR  R0.y, -R0.x;\n"
+    "MULXC HC.x, H0.w, H2;\n"
+    "MOVR  R0.y(NE.x), R0.x;\n"
+    "FLRR  R1.z, |R0.y|;\n"
+    "MOVRC RC.x, R0.y;\n"
+    "MOVR  R0.x, R1.z;\n"
+    "MOVR  R0.x(LT), -R1.z;\n"
+    "MOVXC RC.x, H0.w;\n"
+    "MOVR  R0.x(EQ), {1000};\n"
+    "MOVXC RC.x, H1.z;\n"
+    "MOVR  R0.x(NE), R0.z;\n"
+    "FLRR  R0.y, R1;\n"
+    "FLRR  R0.z, R1.x;\n"
+    "ADDR  R1.x, R0.z, R0.y;\n"
+    "SLTR  H0.w, R0.z, -R0.y;\n"
+    "MULR  R1.x, R1, {0.5};\n"
+    "FRCR  R1.x, |R1|;\n"
+    "MULR  R1.x, R1, {2};\n"
+    "MOVR  R0.y, -R1.x;\n"
+    "SEQX  H0.w, H0, {0}.x;\n"
+    "SEQR  H1.z, mask.x, R0.w;\n"
+    "MULX  H1.x, H1, H1.y;\n"
+    "MULX  H1.x, H1, H1.z;\n"
+    "MULXC HC.x, H1, H0.w;\n"
+    "MOVR  R0.y(NE.x), R1.x;\n"
+    "MOVXC RC.x, H1;\n"
+    "SLTR  R0.x(NE), R0.y, {1};\n"
+    "MOVH  H0.w, H1;\n"
+    "SEQRC HC.x, R0, mask_value;\n"
+    "MOVH  H0(NE.x), {0}.x;\n"
+    "MOVH  o[COLH].xyz, H0;\n"
+    "MOVXC RC.x, premult;\n"
+    "MULH  o[COLH].xyz(NE.x), H0, H0.w;\n"
+    "MOVH  o[COLH].w, H0;\n"
+    "END\n"
+    "# 184 instructions, 2 R-regs, 8 H-regs\n";
 
 } // namespace
 
@@ -3084,40 +3176,40 @@ enum tone_mapping {
 
 // Average light level for SDR signals. This is equal to a signal level of 0.5
 // under a typical presentation gamma of about 2.0.
-static const float sdr_avg = 0.25;  // <- was 0.25
+static const float sdr_avg = 0.25f;  // <- was 0.25
 
 // The threshold for which to consider an average luminance difference to be
 // a sign of a scene change.
-static const int scene_threshold = 0.2 * MP_REF_WHITE;
+static const int scene_threshold = int(0.2 * MP_REF_WHITE);
 
 
 // How many frames to average over for HDR peak detection
 #define PEAK_DETECT_FRAMES 100
 
 // Common constants for SMPTE ST.2084 (HDR)
-static const float PQ_M1 = 2610./4096 * 1./4,
-                   PQ_M2 = 2523./4096 * 128,
-                   PQ_C1 = 3424./4096,
-                   PQ_C2 = 2413./4096 * 32,
-                   PQ_C3 = 2392./4096 * 32;
+static const float PQ_M1 = 2610.f/4096.f * 1.f/4,
+                   PQ_M2 = 2523.f/4096.f * 128,
+                   PQ_C1 = 3424.f/4096.f,
+                   PQ_C2 = 2413.f/4096.f * 32,
+                   PQ_C3 = 2392.f/4096.f * 32;
 
 // Common constants for ARIB STD-B67 (HLG)
-static const float HLG_A = 0.17883277,
-                   HLG_B = 0.28466892,
-                   HLG_C = 0.55991073;
+static const float HLG_A = 0.17883277f,
+                   HLG_B = 0.28466892f,
+                   HLG_C = 0.55991073f;
 
 // Common constants for Panasonic V-Log
-static const float VLOG_B = 0.00873,
-                   VLOG_C = 0.241514,
-                   VLOG_D = 0.598206;
+static const float VLOG_B = 0.00873f,
+                   VLOG_C = 0.241514f,
+                   VLOG_D = 0.598206f;
 
 // Common constants for Sony S-Log
-static const float SLOG_A = 0.432699,
-                   SLOG_B = 0.037584,
-                   SLOG_C = 0.616596 + 0.03,
-                   SLOG_P = 3.538813,
-                   SLOG_Q = 0.030001,
-                   SLOG_K2 = 155.0 / 219.0;
+static const float SLOG_A = 0.432699f,
+                   SLOG_B = 0.037584f,
+                   SLOG_C = 0.616596f + 0.03f,
+                   SLOG_P = 3.538813f,
+                   SLOG_Q = 0.030001f,
+                   SLOG_K2 = 155.0f / 219.0f;
 
 
 static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
@@ -3136,45 +3228,64 @@ static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
     // more stable and smooth out tiny super-highlights.
     GLSL(memoryBarrierShared();)
     GLSL(barrier();)
-    GLSL(if (gl_LocalInvocationIndex == 0) {)
-    GLSL(    uint wg_avg = wg_sum / (gl_WorkGroupSize.x * gl_WorkGroupSize.y);)
-    GLSL(    atomicMax(frame_max[frame_idx], wg_avg);)
-    GLSL(    atomicAdd(frame_avg[frame_idx], wg_avg);)
-    GLSL(})
+    GLSL(if (gl_LocalInvocationIndex == 0) {
+        )
+    GLSL(    uint wg_avg = wg_sum / (gl_WorkGroupSize.x * gl_WorkGroupSize.y);
+            )
+        GLSL(    atomicMax(frame_max[frame_idx], wg_avg);
+            )
+        GLSL(    atomicAdd(frame_avg[frame_idx], wg_avg);
+            )
+        GLSL(
+    })
 
-    const float refi = 1.0 / MP_REF_WHITE;
+    const double refi = 1.0 / MP_REF_WHITE;
 
     // Update the sig_peak/sig_avg from the old SSBO state
     GLSL(uint num_wg = gl_NumWorkGroups.x * gl_NumWorkGroups.y;)
-    GLSL(if (frame_num > 0) {)
+    GLSL(if (frame_num > 0) {
+        )
     GLSLF("    float peak = %f * float(total_max) / float(frame_num);\n", refi);
     GLSLF("    float avg = %f * float(total_avg) / float(frame_num);\n", refi);
     GLSLF("    sig_peak = max(1.0, peak);\n");
     GLSLF("    sig_avg  = max(%f, avg);\n", sdr_avg);
-    GLSL(});
+    GLSL(
+});
 
     // Finally, to update the global state, we increment a counter per dispatch
     GLSL(memoryBarrierBuffer();)
     GLSL(barrier();)
-    GLSL(if (gl_LocalInvocationIndex == 0 && atomicAdd(counter, 1) == num_wg - 1) {)
+    GLSL(if (gl_LocalInvocationIndex == 0 && atomicAdd(counter, 1) == num_wg - 1) {
+        )
 
     // Since we sum up all the workgroups, we also still need to divide the
     // average by the number of work groups
-    GLSL(    counter = 0;)
-    GLSL(    frame_avg[frame_idx] /= num_wg;)
-    GLSL(    uint cur_max = frame_max[frame_idx];)
-    GLSL(    uint cur_avg = frame_avg[frame_idx];)
+    GLSL(    counter = 0;
+        )
+    GLSL(    frame_avg[frame_idx] /= num_wg;
+            )
+        GLSL(    uint cur_max = frame_max[frame_idx];
+            )
+        GLSL(    uint cur_avg = frame_avg[frame_idx];
+            )
 
-    // Scene change detection
-    GLSL(    int diff = int(frame_num * cur_avg) - int(total_avg);)
-    GLSLF("  if (abs(diff) > frame_num * %d) {\n", scene_threshold);
-    GLSL(        frame_num = 0;)
-    GLSL(        total_max = total_avg = 0;)
-    GLSLF("      for (uint i = 0; i < %d; i++)\n", PEAK_DETECT_FRAMES+1);
-    GLSL(            frame_max[i] = frame_avg[i] = 0;)
-    GLSL(        frame_max[frame_idx] = cur_max;)
-    GLSL(        frame_avg[frame_idx] = cur_avg;)
-    GLSL(    })
+        // Scene change detection
+        GLSL(    int diff = int(frame_num * cur_avg) - int(total_avg);
+            )
+        GLSLF("  if (abs(diff) > frame_num * %d) {\n", scene_threshold);
+        GLSL(        frame_num = 0;
+            )
+        GLSL(        total_max = total_avg = 0;
+            )
+        GLSLF("      for (uint i = 0; i < %d; i++)\n", PEAK_DETECT_FRAMES+1);
+        GLSL(            frame_max[i] = frame_avg[i] = 0;
+            )
+        GLSL(        frame_max[frame_idx] = cur_max;
+            )
+        GLSL(        frame_avg[frame_idx] = cur_avg;
+            )
+        GLSL(
+    })
 
     // Add the current frame, then subtract and reset the next frame
     GLSLF("  uint next = (frame_idx + 1) %% %d;\n", PEAK_DETECT_FRAMES+1);
@@ -3186,7 +3297,8 @@ static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
     GLSL(    frame_idx = next;)
     GLSLF("  frame_num = min(frame_num + 1, %d);\n", PEAK_DETECT_FRAMES);
     GLSL(    memoryBarrierBuffer();)
-    GLSL(})
+    GLSL(
+    })
 }
 
 
@@ -3208,9 +3320,9 @@ void pass_inverse_ootf(ostringstream& code, enum mp_csp_light light, float peak)
     case MP_CSP_LIGHT_SCENE_709_1886:
         GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.4));)
         GLSL(c.rgb = mix(c.rgb * vec3(1.0/4.5),
-                             pow((c.rgb + vec3(0.0993)) * vec3(1.0/1.0993),
-                                 vec3(1/0.45)),
-                             lessThan(vec3(0.08145), c.rgb));)
+                         pow((c.rgb + vec3(0.0993)) * vec3(1.0/1.0993),
+                             vec3(1/0.45)),
+                         lessThan(vec3(0.08145), c.rgb));)
         break;
     case MP_CSP_LIGHT_SCENE_1_2:
         GLSL(c.rgb = pow(c.rgb, vec3(1.0/1.2));)
@@ -3254,7 +3366,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     // Do this after peak detection in order to prevent over-desaturating
     // overly bright souces
     if (desat > 0) {
-        float base = 0.18 * dst_peak;
+        double base = 0.18 * dst_peak;
         GLSL(float luma = dot(dst_luma, c.rgb);)
         GLSLF("float coeff = max(sig - %f, 1e-6) / max(sig, 1e-6);\n", base);
         GLSLF("coeff = pow(coeff, %f);\n", 10.0 / desat);
@@ -3281,8 +3393,8 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
         break;
 
     case TONE_MAPPING_REINHARD: {
-        float contrast = isnan(param) ? 0.5 : param,
-              offset = (1.0 - contrast) / contrast;
+        double contrast = isnan(param) ? 0.5 : param,
+                 offset = (1.0 - contrast) / contrast;
         GLSLF("sig = sig / (sig + %f);\n", offset);
         GLSLF("float scale = (sig_peak + %f) / sig_peak;\n", offset);
         GLSL(sig *= scale;)
@@ -3290,7 +3402,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_HABLE: {
-        float A = 0.15, B = 0.50, C = 0.10, D = 0.20, E = 0.02, F = 0.30;
+        double A = 0.15, B = 0.50, C = 0.10, D = 0.20, E = 0.02, F = 0.30;
         GLSLHF("float hable(float x) {\n");
         GLSLHF("return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n",
                A, C*B, D*E, A, B, D*F, E/F);
@@ -3300,7 +3412,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_GAMMA: {
-        float gamma = isnan(param) ? 1.8 : param;
+        double gamma = isnan(param) ? 1.8 : param;
         GLSLF("const float cutoff = 0.05, gamma = %f;\n", 1.0/gamma);
         GLSL(float scale = pow(cutoff / sig_peak, gamma) / cutoff;)
         GLSL(sig = sig > cutoff ? pow(sig / sig_peak, gamma) : scale * sig;)
@@ -3308,7 +3420,7 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     }
 
     case TONE_MAPPING_LINEAR: {
-        float coeff = isnan(param) ? 1.0 : param;
+        double coeff = isnan(param) ? 1.0 : param;
         GLSLF("sig = %f / sig_peak * sig;\n", coeff);
         break;
     }
@@ -3343,8 +3455,8 @@ void pass_linearize(ostringstream& code, enum mp_csp_trc trc)
     switch (trc) {
     case MP_CSP_TRC_SRGB:
         GLSL(c.rgb = mix(c.rgb * vec3(1.0/12.92),
-                             pow((c.rgb + vec3(0.055))/vec3(1.055), vec3(2.4)),
-                             lessThan(vec3(0.04045), c.rgb));)
+                         pow((c.rgb + vec3(0.055))/vec3(1.055), vec3(2.4)),
+                         lessThan(vec3(0.04045), c.rgb));)
         break;
     case MP_CSP_TRC_BT_1886:
         GLSL(c.rgb = pow(c.rgb, vec3(2.4));)
@@ -3360,8 +3472,8 @@ void pass_linearize(ostringstream& code, enum mp_csp_trc trc)
         break;
     case MP_CSP_TRC_PRO_PHOTO:
         GLSL(c.rgb = mix(c.rgb * vec3(1.0/16.0),
-                             pow(c.rgb, vec3(1.8)),
-                             lessThan(vec3(0.03125), c.rgb));)
+                         pow(c.rgb, vec3(1.8)),
+                         lessThan(vec3(0.03125), c.rgb));)
         break;
     case MP_CSP_TRC_PQ:
         GLSLF("c.rgb = pow(c.rgb, vec3(1.0/%f));\n", PQ_M2);
@@ -3421,9 +3533,9 @@ void pass_delinearize( ostringstream& code, enum mp_csp_trc trc)
     switch (trc) {
     case MP_CSP_TRC_SRGB:
         GLSL(c.rgb = mix(c.rgb * vec3(12.92),
-                             vec3(1.055) * pow(c.rgb, vec3(1.0/2.4))
-                                 - vec3(0.055),
-                             lessThanEqual(vec3(0.0031308), c.rgb));)
+                         vec3(1.055) * pow(c.rgb, vec3(1.0/2.4))
+                         - vec3(0.055),
+                         lessThanEqual(vec3(0.0031308), c.rgb));)
         break;
     case MP_CSP_TRC_BT_1886:
         GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.4));)
@@ -3439,8 +3551,8 @@ void pass_delinearize( ostringstream& code, enum mp_csp_trc trc)
         break;
     case MP_CSP_TRC_PRO_PHOTO:
         GLSL(c.rgb = mix(c.rgb * vec3(16.0),
-                             pow(c.rgb, vec3(1.0/1.8)),
-                             lessThanEqual(vec3(0.001953), c.rgb));)
+                         pow(c.rgb, vec3(1.0/1.8)),
+                         lessThanEqual(vec3(0.001953), c.rgb));)
         break;
     case MP_CSP_TRC_PQ:
         GLSLF("c.rgb *= vec3(1.0/%f);\n", 10000 / MP_REF_WHITE);
@@ -3494,7 +3606,7 @@ void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
     {
     case MP_CSP_LIGHT_SCENE_HLG:
         // HLG OOTF from BT.2100, assuming a reference display with a
-        // peak of 1000 cd/m² -> gamma = 1.2
+        // peak of 1000 cd2 -> gamma = 1.2
         GLSLF("c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n",
               (1000 / MP_REF_WHITE) / pow(12, 1.2));
         break;
@@ -3503,8 +3615,8 @@ void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
         // it as 1886; although this is called 709_1886 we actually use the
         // more precise (by one decimal) values from BT.2020 instead
         GLSL(c.rgb = mix(c.rgb * vec3(4.5),
-                             vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
-                             lessThan(vec3(0.0181), c.rgb));)
+                         vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
+                         lessThan(vec3(0.0181), c.rgb));)
         GLSL(c.rgb = pow(c.rgb, vec3(2.4));)
         break;
     case MP_CSP_LIGHT_SCENE_1_2:
@@ -3600,7 +3712,7 @@ void pass_color_map(ostringstream& code,
     if (gamut_warning) {
         GLSL(if (any(greaterThan(c.rgb, vec3(1.01)))))
             GLSL(c.rgb = vec3(1.0) - c.rgb;) // invert
-    }
+        }
 
     // if (is_linear)
     //     pass_delinearize(code, dst.gamma);
@@ -3609,15 +3721,15 @@ void pass_color_map(ostringstream& code,
 void add_normal_code( ostringstream& code )
 {
     code << "}\n"
-    "else {\n"
-    "yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
-    "yuv.g = pre.g - 0.5;\n"
-    "yuv.b = pre.b - 0.5;\n"
-    "\n"
-    "c.r = yuv.r + 1.5958 * yuv.b;\n"
-    "c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
-    "c.b = yuv.r + 2.017 * yuv.g;\n"
-    "\n";
+         "else {\n"
+         "yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
+         "yuv.g = pre.g - 0.5;\n"
+         "yuv.b = pre.b - 0.5;\n"
+         "\n"
+         "c.r = yuv.r + 1.5958 * yuv.b;\n"
+         "c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
+         "c.b = yuv.r + 2.017 * yuv.g;\n"
+         "\n";
 }
 
 void GLEngine::loadOpenGLShader()
@@ -3637,180 +3749,180 @@ void GLEngine::loadOpenGLShader()
     hdr.clear();
     hdr.str("");
     hdr << " \n"
-    " /** \n"
-    " * @file   YCbCr.glsl \n"
-    " * @author gga \n"
-    " * @date   Thu Jul  5 22:50:08 2007 \n"
-    " * \n"
-    " * @brief    simple YCbCr texture with 3D lut shader \n"
-    " * \n"
-    " */ \n"
-    " \n"
-    "#version 130\n\n"
-    "// Images \n"
-    "uniform sampler2D YImage; \n"
-    "uniform sampler2D UImage; \n"
-    "uniform sampler2D VImage; \n"
-    "uniform sampler3D lut; \n"
-    " \n"
-    "// Standard controls \n"
-    "uniform float gain; \n"
-    "uniform float gamma; \n"
-    "uniform int   channel; \n"
-    "\n"
-    "// Interlaced/Checkerboard controls (don't work) \n"
-    "uniform int mask; \n"
-    "uniform int mask_value; \n"
-    "uniform int height; \n"
-    "uniform int width; \n"
-    " \n"
-    "// Normalization variables \n"
-    "uniform bool  premult; \n"
-    "uniform bool  unpremult; \n"
-    "uniform bool  enableNormalization; \n"
-    "uniform float normMin; \n"
-    "uniform float normSpan; \n"
-    "\n"
-    "// YCbCr variables \n"
-    "uniform bool  coeffs;  // Use fed coefficients instead of builtin ones \n"
-    "uniform vec3  Koff; \n"
-    "uniform vec3  Kr; \n"
-    "uniform vec3  Kg; \n"
-    "uniform vec3  Kb; \n"
-    " \n"
-    "// Lut variables  \n"
-    "uniform bool  enableLut; \n"
-    "uniform bool  lutF; \n"
-    "uniform float lutMin; \n"
-    "uniform float lutMax; \n"
-    "uniform float lutM; \n"
-    "uniform float lutT; \n"
-    "uniform float scale; \n"
-    "uniform float offset; \n"
-    "\n"
-    "\n";
+        " /** \n"
+        " * @file   YCbCr.glsl \n"
+        " * @author gga \n"
+        " * @date   Thu Jul  5 22:50:08 2007 \n"
+        " * \n"
+        " * @brief    simple YCbCr texture with 3D lut shader \n"
+        " * \n"
+        " */ \n"
+        " \n"
+        "#version 130\n\n"
+        "// Images \n"
+        "uniform sampler2D YImage; \n"
+        "uniform sampler2D UImage; \n"
+        "uniform sampler2D VImage; \n"
+        "uniform sampler3D lut; \n"
+        " \n"
+        "// Standard controls \n"
+        "uniform float gain; \n"
+        "uniform float gamma; \n"
+        "uniform int   channel; \n"
+        "\n"
+        "// Interlaced/Checkerboard controls (don't work) \n"
+        "uniform int mask; \n"
+        "uniform int mask_value; \n"
+        "uniform int height; \n"
+        "uniform int width; \n"
+        " \n"
+        "// Normalization variables \n"
+        "uniform bool  premult; \n"
+        "uniform bool  unpremult; \n"
+        "uniform bool  enableNormalization; \n"
+        "uniform float normMin; \n"
+        "uniform float normSpan; \n"
+        "\n"
+        "// YCbCr variables \n"
+        "uniform bool  coeffs;  // Use fed coefficients instead of builtin ones \n"
+        "uniform vec3  Koff; \n"
+        "uniform vec3  Kr; \n"
+        "uniform vec3  Kg; \n"
+        "uniform vec3  Kb; \n"
+        " \n"
+        "// Lut variables  \n"
+        "uniform bool  enableLut; \n"
+        "uniform bool  lutF; \n"
+        "uniform float lutMin; \n"
+        "uniform float lutMax; \n"
+        "uniform float lutM; \n"
+        "uniform float lutT; \n"
+        "uniform float scale; \n"
+        "uniform float offset; \n"
+        "\n"
+        "\n";
 
     code.clear();
     code.str("");
     code <<
-    "void main() \n"
-    "{ \n"
-    "  // \n"
-    "  // Sample luminance and chroma, convert to RGB. \n"
-    "  // \n"
-    "  vec3 yuv; \n"
-    "  vec4 c; \n"
-    "  vec3 pre; \n"
-    "  vec2 tc = gl_TexCoord[0].st; \n"
-    "  pre.r = texture2D(YImage, tc.st).r;  // Y \n"
-    "  pre.g = texture2D(UImage, tc.st).r;  // U \n"
-    "  pre.b = texture2D(VImage, tc.st).r;  // V \n"
-    " \n"
-    "  if ( coeffs ) \n"
-    "  { \n"
-    "        pre += Koff; \n"
-    "	\n"
-    "\tc.r = dot(Kr, pre); \n"
-    "\tc.g = dot(Kg, pre); \n"
-    "\tc.b = dot(Kb, pre); \n" << std::endl;
+         "void main() \n"
+         "{ \n"
+         "  // \n"
+         "  // Sample luminance and chroma, convert to RGB. \n"
+         "  // \n"
+         "  vec3 yuv; \n"
+         "  vec4 c; \n"
+         "  vec3 pre; \n"
+         "  vec2 tc = gl_TexCoord[0].st; \n"
+         "  pre.r = texture2D(YImage, tc.st).r;  // Y \n"
+         "  pre.g = texture2D(UImage, tc.st).r;  // U \n"
+         "  pre.b = texture2D(VImage, tc.st).r;  // V \n"
+         " \n"
+         "  if ( coeffs ) \n"
+         "  { \n"
+         "        pre += Koff; \n"
+         "	\n"
+         "\tc.r = dot(Kr, pre); \n"
+         "\tc.g = dot(Kg, pre); \n"
+         "\tc.b = dot(Kb, pre); \n" << std::endl;
 
     foot.clear();
     foot.str("");
     foot << " }\n"
-    "       //\n"
-    "       // Apply channel selection\n"
-    "       //\n"
-    "  int x = 1000;\n"
-    "  \n"
-    "  if ( mask == 1 )  // even odd rows\n"
-    "  {\n"
-    "      float f = tc.y * height;\n"
-    "      x = int( mod( f, 2 ) );\n"
-    "  }\n"
-    "  else if ( mask == 2 ) // even odd columns\n"
-    "  {\n"
-    "      float f2 = tc.x * width;\n"
-    "      x = int( mod( f2, 2 ) );\n"
-    "  }\n"
-    "  else if ( mask == 3 ) // checkerboard\n"
-    "  {\n"
-    "      float f = tc.y * height;\n"
-    "      float f2 = tc.x * width;\n"
-    "      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
-    "  }\n"
-    "\n"
-    "  if ( x == mask_value )\n"
-    "  {\n"
-    "      c.r = c.g = c.b = c.a = 0.0;\n"
-    "  }\n"
-    "\n"
-    "  //\n"
-    "  // Apply normalization\n"
-    "  //\n"
-    "  if (enableNormalization)\n"
-    "    {\n"
-    "      c.rgb = (c.rgb - normMin) / normSpan;\n"
-    "    }\n"
-    "\n"
-    "  //\n"
-    "  // Apply gain \n"
-    "  //\n"
-    "  c.rgb *= gain;\n"
-    "\n"
-    "  //\n"
-    "  // Apply 3D color lookup table (in log space).\n"
-    "  //\n"
-    "  if (enableLut)\n"
-    "    {\n"
-    "      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );\n"
-    "      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); \n"
-    "    }\n"
-    "\n"
-    "  if ( unpremult && c.a > 0.00001 )\n"
-    "  {\n"
-    "    c.rgb /= c.a;\n"
-    "  }\n"
-    "  \n"
-    "  //\n"
-    "  // Apply video gamma correction.\n"
-    "  // \n"
-    "  c.r = pow( c.r, gamma );\n"
-    "  c.g = pow( c.g, gamma );\n"
-    "  c.b = pow( c.b, gamma );\n"
-    " \n"
-    "  if ( channel == 1 )\n"
-    "    {\n"
-    "      c.rgb = c.rrr;\n"
-    "    }\n"
-    "  else if ( channel == 2 )\n"
-    "    {\n"
-    "      c.rgb = c.ggg;\n"
-    "    }\n"
-    "  else if ( channel == 3 )\n"
-    "    {\n"
-    "      c.rgb = c.bbb;\n"
-    "    }\n"
-    "  else if ( channel == 4 )\n"
-    "    {\n"
-    "      c.rgb = c.aaa;\n"
-    "    }\n"
-    "  else if ( channel == 5 )\n"
-    "    {\n"
-    "      c.r *= 0.5;\n"
-    "      c.r += c.a * 0.5;\n"
-    "    }\n"
-    "  else if ( channel == 6 )\n"
-    "    {\n"
-    "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
-    "    }\n"
-    "\n"
-    "  if ( premult )\n"
-    "  {\n"
-    "      c.rgb *= c.a;\n"
-    "  }\n"
-    "\n"
-    "  gl_FragColor = c;\n"
-    "} ";
+         "       //\n"
+         "       // Apply channel selection\n"
+         "       //\n"
+         "  int x = 1000;\n"
+         "  \n"
+         "  if ( mask == 1 )  // even odd rows\n"
+         "  {\n"
+         "      float f = tc.y * height;\n"
+         "      x = int( mod( f, 2 ) );\n"
+         "  }\n"
+         "  else if ( mask == 2 ) // even odd columns\n"
+         "  {\n"
+         "      float f2 = tc.x * width;\n"
+         "      x = int( mod( f2, 2 ) );\n"
+         "  }\n"
+         "  else if ( mask == 3 ) // checkerboard\n"
+         "  {\n"
+         "      float f = tc.y * height;\n"
+         "      float f2 = tc.x * width;\n"
+         "      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
+         "  }\n"
+         "\n"
+         "  if ( x == mask_value )\n"
+         "  {\n"
+         "      c.r = c.g = c.b = c.a = 0.0;\n"
+         "  }\n"
+         "\n"
+         "  //\n"
+         "  // Apply normalization\n"
+         "  //\n"
+         "  if (enableNormalization)\n"
+         "    {\n"
+         "      c.rgb = (c.rgb - normMin) / normSpan;\n"
+         "    }\n"
+         "\n"
+         "  //\n"
+         "  // Apply gain \n"
+         "  //\n"
+         "  c.rgb *= gain;\n"
+         "\n"
+         "  //\n"
+         "  // Apply 3D color lookup table (in log space).\n"
+         "  //\n"
+         "  if (enableLut)\n"
+         "    {\n"
+         "      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );\n"
+         "      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); \n"
+         "    }\n"
+         "\n"
+         "  if ( unpremult && c.a > 0.00001 )\n"
+         "  {\n"
+         "    c.rgb /= c.a;\n"
+         "  }\n"
+         "  \n"
+         "  //\n"
+         "  // Apply video gamma correction.\n"
+         "  // \n"
+         "  c.r = pow( c.r, gamma );\n"
+         "  c.g = pow( c.g, gamma );\n"
+         "  c.b = pow( c.b, gamma );\n"
+         " \n"
+         "  if ( channel == 1 )\n"
+         "    {\n"
+         "      c.rgb = c.rrr;\n"
+         "    }\n"
+         "  else if ( channel == 2 )\n"
+         "    {\n"
+         "      c.rgb = c.ggg;\n"
+         "    }\n"
+         "  else if ( channel == 3 )\n"
+         "    {\n"
+         "      c.rgb = c.bbb;\n"
+         "    }\n"
+         "  else if ( channel == 4 )\n"
+         "    {\n"
+         "      c.rgb = c.aaa;\n"
+         "    }\n"
+         "  else if ( channel == 5 )\n"
+         "    {\n"
+         "      c.r *= 0.5;\n"
+         "      c.r += c.a * 0.5;\n"
+         "    }\n"
+         "  else if ( channel == 6 )\n"
+         "    {\n"
+         "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
+         "    }\n"
+         "\n"
+         "  if ( premult )\n"
+         "  {\n"
+         "      c.rgb *= c.a;\n"
+         "  }\n"
+         "\n"
+         "  gl_FragColor = c;\n"
+         "} ";
 
     _hardwareShaders = kGLSL;
 
@@ -3829,9 +3941,9 @@ void GLEngine::loadOpenGLShader()
 
     int size;
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
-    av_stream_get_side_data( st,
-                             AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
-                             &size );
+                                    av_stream_get_side_data( st,
+                                            AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+                                            &size );
 
     double max_cll = 100000;
     if (m)
@@ -3855,7 +3967,7 @@ void GLEngine::loadOpenGLShader()
                           << av_q2d( m->display_primaries[2][1] ) );
                 LOG_INFO( "white " << av_q2d( m->white_point[0] )
                           << ", " << av_q2d( m->white_point[1] )
-                          );
+                        );
             }
 
             if ( m->has_luminance )
@@ -3877,8 +3989,8 @@ void GLEngine::loadOpenGLShader()
         avcol_pri_to_mp_csp_prim( c->color_primaries ), // primaries
         avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
         MP_CSP_LIGHT_DISPLAY,  // light
-        max_cll / MP_REF_WHITE               // sig_peak
-        };
+        (float)max_cll / (float)MP_REF_WHITE               // sig_peak
+    };
 
     mp_colorspace dst
     {
@@ -3888,7 +4000,7 @@ void GLEngine::loadOpenGLShader()
         MP_CSP_TRC_GAMMA22,
         MP_CSP_LIGHT_DISPLAY,
         1.0f
-        };
+    };
 
     tone_mapping algo = TONE_MAPPING_HABLE;
     float tone_mapping_param = std::numeric_limits<float>::quiet_NaN();
@@ -3921,7 +4033,7 @@ void
 GLEngine::loadBuiltinFragShader()
 {
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     _rgba = new GLShader();
 
     try {
@@ -3929,23 +4041,23 @@ GLEngine::loadBuiltinFragShader()
         {
             LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
             _rgba->load( N_("builtin"), NVShader );
-            DBG( "NVShader builtin" );
+            DBGM3( "NVShader builtin" );
         }
         else
         {
             LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
-            DBG( "kARBFP1 builtin shader" );
+            DBGM3( "kARBFP1 builtin shader" );
             _hardwareShaders = kARBFP1;
             _rgba->load( N_("builtin"), ARBFP1Shader );
         }
     }
     catch( const Iex::BaseExc& e )
     {
-      LOG_ERROR( e.what() );
+        LOG_ERROR( e.what() );
     }
     catch( const std::exception& e )
     {
-      LOG_ERROR( e.what() );
+        LOG_ERROR( e.what() );
     }
     catch( ... )
     {
@@ -3959,8 +4071,7 @@ GLEngine::loadBuiltinFragShader()
 
 void GLEngine::clear_quads()
 {
-    TRACE("");
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBGM3( __FUNCTION__ << " " << __LINE__ );
     QuadList::iterator i = _quads.begin();
     QuadList::iterator e = _quads.end();
     for ( ; i != e; ++i )
@@ -3974,41 +4085,35 @@ void GLEngine::clear_quads()
 
 void GLEngine::release()
 {
-    TRACE("");
     clear_quads();
 
-    TRACE("");
     GLLut3d::clear();
 
-    TRACE("");
     if ( sCharset ) {
         glDeleteLists( sCharset, 255 );
         CHECK_GL;
     }
 
-    TRACE("");
-
     if (_rgba)  delete _rgba;
     _rgba = NULL;
-    
-    TRACE("");
+
 
     if (_YByRy) delete _YByRy;
     _YByRy = NULL;
-    
-    TRACE("");
-    
+
+
+
     if (_YCbCr) delete _YCbCr;
     _YCbCr = NULL;
 
     if (_YByRyA) delete _YByRyA;
     _YByRyA = NULL;
-    
-    TRACE("");
-    
+
+
+
     if (_YCbCrA) delete _YCbCrA;
     _YCbCrA = NULL;
-    
+
 }
 
 
@@ -4017,20 +4122,20 @@ void GLEngine::resize_background()
 }
 
 GLEngine::GLEngine(const mrv::ImageView* v) :
-DrawEngine( v ),
-texWidth( 0 ),
-texHeight( 0 ),
-vr( ImageView::kNoVR ),
-vr_angle( 45.0 ),
-_rotX( 0.0 ),
-_rotY( 0.0 )
+    DrawEngine( v ),
+    texWidth( 0 ),
+    texHeight( 0 ),
+    vr( ImageView::kNoVR ),
+    vr_angle( 45.0 ),
+    _rotX( 0.0 ),
+    _rotY( 0.0 )
 {
     initialize();
 }
 
 GLEngine::~GLEngine()
 {
-  release();
+    release();
 }
 
 

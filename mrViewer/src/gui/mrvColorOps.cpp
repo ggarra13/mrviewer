@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,34 +19,36 @@
  * @file   mrvColorOps.cpp
  * @author gga
  * @date   Fri Jan 18 09:54:42 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
-
+#include "FL/Fl.H"
+#include "FL/fl_draw.H"
 #include "gui/mrvColorOps.h"
 
 namespace mrv {
 
-  fltk::Color darker( fltk::Color c, uchar v )
-  {
+
+Fl_Color darker( Fl_Color c, uchar v )
+{
     uchar r,g,b;
-    fltk::split_color( c, r, g, b );
+    Fl::get_color( c, r, g, b );
     if (r > v ) r -= v;
     else r = 0;
     if (g > v ) g -= v;
     else g = 0;
     if (b > v ) b -= v;
     else b = 0;
-    return fltk::color( r, g, b );
-  }
+    return fl_rgb_color( r, g, b );
+}
 
-  fltk::Color lighter( fltk::Color c, uchar v )
-  {
+Fl_Color lighter( Fl_Color c, uchar v )
+{
     uchar r,g,b;
-    fltk::split_color( c, r, g, b );
+    Fl::get_color( c, r, g, b );
 
     if ( 0xff - r > v ) r += v;
     else r = 0xff;
@@ -55,7 +57,7 @@ namespace mrv {
     if ( 0xff - b > v ) b += v;
     else b = 0xff;
 
-    return fltk::color( r, g, b );
-  }
+    return fl_rgb_color( r, g, b );
+}
 
 }

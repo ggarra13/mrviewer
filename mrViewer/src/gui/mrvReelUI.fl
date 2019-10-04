@@ -1,0 +1,146 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+i18n_type 1
+i18n_include <libintl.h>
+i18n_function gettext
+header_name {.h}
+code_name {.cxx}
+decl {\#include <string>} {public local
+}
+
+decl {\#include "core/mrvFrame.h"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "gui/mrvImageBrowser.h"} {public local
+}
+
+decl {\#include "mrViewer.h"} {private local
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+decl {\#include "mrvAsk.h"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {private local
+}
+
+class ReelUI {open
+} {
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label {Reel List} open
+      xywh {570 273 405 350} type Double resizable
+      code0 {o->size_range(350,320);} non_modal size_range {405 350 0 0} visible
+    } {
+      Fl_Group {} {open
+	xywh {0 0 405 350} box UP_BOX resizable
+      } {
+	Fl_Tree uiBrowser {selected
+	  xywh {0 32 405 318} box UP_BOX
+	  code0 {o->main( main );o->end();o->resizable(0);}
+	  class {mrv::ImageBrowser}
+	}
+	Fl_Group uiControls {
+	  xywh {0 -2 405 32} box UP_BOX
+	} {
+	  Fl_Choice {} {
+	    user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	    callback {v->reel(o->value());} open
+	    xywh {5 2 120 24} box THIN_DOWN_BOX down_box BORDER_BOX align 36
+	    code0 {uiBrowser->reel_choice(o);}
+	    class {mrv::Choice}
+	  } {}
+	  Fl_Group uiReelOps {open
+	    xywh {125 -2 80 30}
+	  } {
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {const char* name = mrv::fl_input("Reel Name", "reel" );
+if ( name == NULL ) return;
+v->new_reel(name);}
+	      tooltip {Create a new reel} xywh {127 0 26 26} shortcut 0x4006e
+	      code0 {o->image( reel_new_24 );}
+	    }
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->save_reel();}
+	      tooltip {Save current reel} xywh {152 0 26 26}
+	      code0 {o->image( reel_save_24 );}
+	    }
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->remove_reel();}
+	      tooltip {Delete current reel} xywh {177 0 26 26}
+	      code0 {o->image( reel_delete_24 );}
+	    }
+	  }
+	  Fl_Group uiImageOps {open
+	    xywh {205 -2 110 30}
+	  } {
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->open();}
+	      tooltip {Open new image, sequence or movie} xywh {208 0 26 26} shortcut 0x4006f
+	      code0 {o->image(file_open_24);}
+	    }
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->save_sequence();}
+	      tooltip {Save sequence or movie.} xywh {234 0 26 26} shortcut 0x40073
+	      code0 {o->image(file_save_24);}
+	    }
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->clone_current();}
+	      tooltip {Clone image} xywh {260 0 26 26} shortcut 0x40063
+	      code0 {o->image(file_clone_24);}
+	    }
+	    Fl_Button {} {
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->remove_current();}
+	      tooltip {Remove current image from reel.} xywh {286 0 26 26} shortcut 0xffff
+	      code0 {o->image(file_delete_24);}
+	    }
+	  }
+	  Fl_Group uiViewerOps {open
+	    xywh {310 -2 93 29}
+	  } {
+	    Fl_Button {} {
+	      label CTL
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->attach_ctl_script();}
+	      tooltip {Set image CTL script} xywh {316 0 26 26} labelfont 1
+	    }
+	    Fl_Button uiBGButton {
+	      label BG
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->change_background();}
+	      tooltip {Set reel images as background (needs EDL).} xywh {342 0 26 26} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1
+	    }
+	    Fl_Button uiEDLButton {
+	      label EDL
+	      user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+	      callback {v->toggle_edl();}
+	      tooltip {Toggle Reel EDL in Timeline} xywh {368 0 26 26} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1 labelsize 11
+	    }
+	  }
+	}
+      }
+    }
+  }
+  Function {ReelUI(ViewerUI* m)} {open
+  } {
+    code {Fl_Group::current( 0 );
+make_window( m );} {}
+  }
+  Function {~ReelUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+}
