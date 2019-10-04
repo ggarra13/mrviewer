@@ -781,7 +781,6 @@ void aviImage::open_video_codec()
     _video_ctx->idct_algo = idct;
 
 
-
     double aspect_ratio;
     if ( _video_ctx->sample_aspect_ratio.num == 0 )
         aspect_ratio = 0;
