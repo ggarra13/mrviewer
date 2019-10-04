@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,57 +19,57 @@
  * @file   mainWindow.h
  * @author gga
  * @date   Fri Jul  6 14:31:50 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #ifndef mrvMainWindow_h
 #define mrvMainWindow_h
 
 
-#include <fltk/Window.h>
+#include <FL/Fl_Double_Window.H>
 
+class ViewerUI;
 
 namespace mrv {
 
-  class ViewerUI;
 
-  class MainWindow : public fltk::Window
-  {
-  public:
+class MainWindow : public Fl_Double_Window
+{
+public:
     MainWindow( int W, int H, const char* title );
     ~MainWindow();
-    
-    void main( ViewerUI* m ) { uiMain = m; };
 
-       virtual void layout();
-    
+    void main( ViewerUI* m ) {
+        uiMain = m;
+    };
+
     virtual int handle( int event );
-    
-    /** 
+
+    /**
      * Make window appear always on top of others
-     * 
+     *
      */
     void always_on_top();
 
-    /** 
+    /**
      * Change window's icon to mrViewer's icon
-     * 
+     *
      */
     void set_icon();
 
-    /** 
+    /**
      * Iconize all windows
-     * 
+     *
      */
     void iconize_all();
 
-  protected:
+protected:
 
     ViewerUI* uiMain;
-  };
+};
 
 
 } // namespace mrv

@@ -21,80 +21,71 @@
 
 #include <string>
 #include <iostream>
-#include <fltk/events.h>
+#include <gui/mrvBrowser.h>
 
-namespace mrv {
 class HotkeyUI;
-}
-
-namespace fltk {
-
-class Browser;
-
-}
-
 
 namespace mrv {
 
 struct Hotkey
 {
-     Hotkey() :
-     ctrl( false ),
-     meta( false ),
-     alt( false ),
-     shift( false ),
-     key(0),
-     text(""),
-     key2(0)
-     {
-     }
+    Hotkey() :
+        ctrl( false ),
+        meta( false ),
+        alt( false ),
+        shift( false ),
+        key(0),
+        text(""),
+        key2(0)
+    {
+    }
 
-     Hotkey( const bool c, const bool m,
-             const bool a, const bool s,
-             const unsigned k, std::string t = "", const unsigned k2=0 ) :
-     ctrl( c ),
-     meta( m ),
-     alt( a ),
-     shift( s ),
-     key( k ),
-     text( t ),
-     key2( k2 )
-     {
-     };
+    Hotkey( const bool c, const bool m,
+            const bool a, const bool s,
+            const unsigned k, std::string t = "", const unsigned k2=0 ) :
+        ctrl( c ),
+        meta( m ),
+        alt( a ),
+        shift( s ),
+        key( k ),
+        text( t ),
+        key2( k2 )
+    {
+    };
 
-     Hotkey( const Hotkey& h ) :
-     ctrl( h.ctrl ),
-     meta( h.meta ),
-     alt( h.alt ),
-     shift( h.shift ),
-     key( h.key ),
-     text( h.text ),
-     key2( h.key2 )
-     {
-     };
+    Hotkey( const Hotkey& h ) :
+        ctrl( h.ctrl ),
+        meta( h.meta ),
+        alt( h.alt ),
+        shift( h.shift ),
+        key( h.key ),
+        text( h.text ),
+        key2( h.key2 )
+    {
+    };
 
     bool match( unsigned rawkey );
 
 
-     unsigned hotkey()
-     {
+    unsigned hotkey()
+    {
         unsigned r = 0;
-        if ( ctrl ) r += fltk::CTRL;
-        if ( shift ) r += fltk::SHIFT;
-        if ( meta ) r += fltk::META;
-        if ( alt ) r += fltk::ALT;
+        if ( ctrl ) r += FL_CTRL;
+        if ( shift ) r += FL_SHIFT;
+        if ( meta ) r += FL_META;
+        if ( alt ) r += FL_ALT;
         r += key;
         return r;
-     }
+    }
 
-   public:
-     bool ctrl;
-     bool meta;
-     bool alt;
-     bool shift;
-     unsigned key;
-     std::string text;
-     unsigned key2;
+public:
+    bool ctrl;
+    bool meta;
+    bool alt;
+    bool shift;
+    unsigned key;
+    std::string text;
+    unsigned key2;
 };
 
 extern Hotkey kOpenDirectory;
@@ -122,6 +113,8 @@ extern Hotkey kZoomOut;
 extern Hotkey kFullScreen;
 extern Hotkey kCenterImage;
 extern Hotkey kFitScreen;
+extern Hotkey kFitAll;
+extern Hotkey kTextureFiltering;
 extern Hotkey kSafeAreas;
 extern Hotkey kDisplayWindow;
 extern Hotkey kDataWindow;
@@ -154,6 +147,7 @@ extern Hotkey kNextChannel;
 extern Hotkey kFirstFrame;
 extern Hotkey kLastFrame;
 extern Hotkey kToggleBG;
+extern Hotkey kToggleEDL;
 
 extern Hotkey kToggleTopBar;
 extern Hotkey kTogglePixelBar;
@@ -167,6 +161,17 @@ extern Hotkey kZDepthDown;
 extern Hotkey kDensityUp;
 extern Hotkey kDensityDown;
 
+extern Hotkey kDrawMode;
+extern Hotkey kEraseMode;
+extern Hotkey kScrubMode;
+extern Hotkey kTextMode;
+extern Hotkey kAreaMode;
+extern Hotkey kMoveSizeMode;
+
+extern Hotkey kPenSizeMore;
+extern Hotkey kPenSizeLess;
+
+extern Hotkey kResetChanges;
 extern Hotkey kExposureMore;
 extern Hotkey kExposureLess;
 extern Hotkey kGammaMore;
@@ -230,28 +235,28 @@ extern Hotkey kToggleICS;
 
 struct HotkeyEntry
 {
-     HotkeyEntry( const std::string n,
-                  Hotkey& h ) :
-     name(n),
-     hotkey(h)
-     {
-     };
+    HotkeyEntry( const std::string n,
+                 Hotkey& h ) :
+        name(n),
+        hotkey(h)
+    {
+    };
 
-     std::string name;
-     Hotkey hotkey;
+    std::string name;
+    Hotkey& hotkey;
 };
 
 struct TableText
 {
-     int n;
-     const char* text;
+    int n;
+    const char* text;
 };
 
-extern struct TableText table[];
+extern struct TableText table[45];
 extern HotkeyEntry hotkeys[];
 
-void fill_ui_hotkeys( fltk::Browser* o );
-void select_hotkey( mrv::HotkeyUI* m );
+void fill_ui_hotkeys( mrv::Browser* o );
+void select_hotkey( HotkeyUI* m );
 
 }
 
