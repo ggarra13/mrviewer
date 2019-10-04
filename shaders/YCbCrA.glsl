@@ -2,9 +2,9 @@
  * @file   YCbCr.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
- * 
+ *
  * @brief    simple YCbCrA texture with 3D lut shader
- * 
+ *
  */
 
 #version 130
@@ -53,27 +53,28 @@ uniform float offset;
 
 
 void main()
-{ 
+{
   //
-  // Sample luminance and chroma, convert to RGB. 
+  // Sample luminance and chroma, convert to RGB.
   //
-  vec3 yuv;	
-  vec4 c;	
+  vec3 yuv;
+  vec4 c;
   vec4 pre;
   vec2 tc = gl_TexCoord[0].st;
-  
+
   pre.r = texture2D(YImage, tc.st).r;  // Y
   pre.g = texture2D(UImage, tc.st).r;  // U
   pre.b = texture2D(VImage, tc.st).r;  // V
   pre.a = texture2D(AImage, tc.st).r;  // A
+  c.a = pre.a;
 
   if ( coeffs )
   {
 	pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
 
-  	c.r = dot(Kr, pre.xyz);
-  	c.g = dot(Kg, pre.xyz);
-  	c.b = dot(Kb, pre.xyz);
+	c.r = dot(Kr, pre.xyz);
+	c.g = dot(Kg, pre.xyz);
+	c.b = dot(Kb, pre.xyz);
   }
   else
   {
@@ -87,9 +88,9 @@ void main()
       c.b = yuv.r + 2.017 * yuv.g;
   }
 
-  c.rgb = clamp( c.rgb, 0.0, 1.0 );
+  c.rgba = clamp( c.rgba, 0.0, 1.0 );
   int x = 1000;
-  
+
   if ( mask == 1 )  // even odd rows
   {
       float f = tc.y * height;
@@ -119,9 +120,9 @@ void main()
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
-    
+
   //
-  // Apply gain 
+  // Apply gain
   //
   c.rgb *= gain;
 
@@ -131,25 +132,25 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
+      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb );
     }
 
   if ( unpremult && c.a > 0.00001 )
   {
     c.rgb /= c.a;
   }
-  
+
 
   //
   // Apply video gamma correction.
-  // 
+  //
   c.r = pow( c.r, gamma );
   c.g = pow( c.g, gamma );
   c.b = pow( c.b, gamma );
 
   //
   // Apply channel selection
-  // 
+  //
   if ( channel == 1 )
     {
       c.rgb = c.rrr;
@@ -182,4 +183,4 @@ void main()
   }
 
   gl_FragColor = c;
-} 
+}

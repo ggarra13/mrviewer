@@ -4,16 +4,16 @@
 
 
 
-  
-  
-  
+
+
+
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
 
 
-  
-  
-  
+
+
+
   <title>Color Management</title></head>
 
 <body>
@@ -37,7 +37,7 @@ from a CRT tube.
 color between representations required for various devices. Knowing
 your hardware characteristics is half-way to having a working solution.
 On the most basic level, for monitor it means knowing primaries and
-gamma. 
+gamma.
 
 </p>
 
@@ -65,14 +65,14 @@ OCIO is a mixture of configuration files, luts and matrix transforms that can be
 <br>
 As of January 2015, AMPAS ships ACES 1.0.3, which is a collection of
 CTL transforms and these are included in the mrViewer distribution.
-mrViewer does not ship with any OCIO configs, but they can be obtained at
+mrViewer ships with the nuke OCIO config, and others can be obtained at
 <br>
 <a target="main" href="http://opencolorio.org/configurations/">http://opencolorio.org/configurations/</a>
 
 <br>
 <br>
 
-Within mrViewer, two or more CTL files or an OCIO transform are processed and baked into a, at least, 
+Within mrViewer, two or more CTL files or an OCIO transform are processed and baked into a, at least,
 64x64x64 3D Lut which then operates on the image completely with 32-bit
 float information in real time. &nbsp; This will often give you a pretty
 accurate
