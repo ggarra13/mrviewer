@@ -763,7 +763,7 @@ void ImageBrowser::save_reel()
 
     char date[128];
     // Monday February 12 2019 20:14:05
-    size_t num = strftime( date, 128, "%A %B %e %Y %H:%M:%S", ti );
+    strftime( date, 128, "%A %B %e %Y %H:%M:%S", ti );
 
     setlocale( LC_NUMERIC, "C" );
 
@@ -1621,10 +1621,7 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     if ( img == NULL )
     {
-        std::string file = name;
-        if ( file.substr( file.size() - 4, file.size() ) != ".xml" )
-            LOG_ERROR( _("Could not guess image format for ") << name );
-        return mrv::media();
+       return mrv::media();
     }
 
     if ( first != AV_NOPTS_VALUE )
