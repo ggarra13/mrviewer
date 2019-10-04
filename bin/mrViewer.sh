@@ -38,11 +38,8 @@ export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 # Uncomment this to always use English in mrViewer, regardless of locale
 # export LANG=C
 
-# Uncomment this to use ImageMagick's PNG reader which works in a single
-# thread and is slower, but may be more compatible and also allows all
-# sort of gaps in the sequence.
-#
-# export DO_NOT_USE_FFMPEG_PNG=1
+# Comment this line if libfontconfig is configured properly
+# export FONTCONFIG_PATH=/etc/fonts
 
 # This is to avoid underruns in audio
 export PULSE_LATENCY_MSEC=60

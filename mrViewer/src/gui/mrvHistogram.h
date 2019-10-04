@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,60 +19,76 @@
  * @file   mrvHistogram.h
  * @author gga
  * @date   Thu Nov 09 14:43:34 2006
- * 
+ *
  * @brief  Displays a waveform for an image.
- * 
+ *
  */
 
 #ifndef mrvHistogram_h
 #define mrvHistogram_h
 
-#include <fltk/Widget.h>
+#include <core/mrvRectangle.h>
+#include <FL/Fl_Box.H>
 
-class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
 
-  class Histogram : public fltk::Widget
-  {
-  public:
+class CMedia;
+
+class Histogram : public Fl_Box
+{
+public:
     enum Type
-      {
-	kLinear,
-	kLog,
-	kSqrt,
-      };
+    {
+        kLinear,
+        kLog,
+        kSqrt,
+    };
 
     enum Channel
-      {
-	kRGB,
-	kRed,
-	kGreen,
-	kBlue,
-	kLumma,
-      };
+    {
+        kRGB,
+        kRed,
+        kGreen,
+        kBlue,
+        kLumma,
+    };
 
-  public:
+public:
     Histogram( int x, int y, int w, int h, const char* l = 0 );
 
-    void channel( Channel c ) { _channel = c; redraw(); }
-    Channel channel() const    { return _channel; }
+    void channel( Channel c ) {
+        _channel = c;
+        redraw();
+    }
+    Channel channel() const    {
+        return _channel;
+    }
 
-    void histogram_type( Type c ) { _histtype = c; redraw(); };
-    Type histogram_type() const { return _histtype; };
+    void histogram_type( Type c ) {
+        _histtype = c;
+        redraw();
+    };
+    Type histogram_type() const {
+        return _histtype;
+    };
 
     virtual void draw();
 //     virtual int handle( int event );
 
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; };
-    mrv::ViewerUI* main() { return uiMain; };
+    void main( ViewerUI* m ) {
+        uiMain = m;
+    };
+    ViewerUI* main() {
+        return uiMain;
+    };
 
-  protected:
-    void   draw_grid( const fltk::Rectangle& r );
-    void draw_pixels( const fltk::Rectangle& r );
+protected:
+    void   draw_grid( const mrv::Recti& r );
+    void draw_pixels( const mrv::Recti& r );
 
     void count_pixels();
 
@@ -96,9 +112,9 @@ namespace mrv
     CMedia* lastImg;
     int64_t    lastFrame;
 
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
 
-  };
+};
 
 }  // namespace mrv
 

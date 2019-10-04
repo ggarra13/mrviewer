@@ -29,8 +29,8 @@
 #ifndef mrvFrame_h
 #define mrvFrame_h
 
-#if defined(WIN32) || defined(WIN64)
-#include <winsock2.h>
+#if defined(_WIN32) || defined(_WIN64)
+#include <Winsock2.h>
 #include <windows.h>
 #undef min
 #undef max
@@ -49,12 +49,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 
+#include "core/mrvAssert.h"
 #include "core/mrvAlignedData.h"
 #include "core/mrvImagePixel.h"
 
+struct SwsContext;
 
 // Defined in mrvTimer.cpp
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 int gettimeofday(struct timeval * tp, void * tzp);
 #endif
 
@@ -65,65 +67,65 @@ namespace mrv
 
 class VideoFrame
 {
-  public:
+public:
     static const char* const fmts[];
     static const char* const ptype[];
 
     //! Channel formats
     enum Format {
-    kLumma,
-    kLummaA,
+        kLumma,
+        kLummaA,
 
-    kBGR,
-    kBGRA,
-    kRGB,
-    kRGBA,
+        kBGR,
+        kBGRA,
+        kRGB,
+        kRGBA,
 
-    kYUV,
-    kYUVA,
+        kYUV,
+        kYUVA,
 
-    kITU_601_YCbCr410,
-    kITU_601_YCbCr410A, // @todo: not done
-    kITU_601_YCbCr420,
-    kITU_601_YCbCr420A, // @todo: not done
-    kITU_601_YCbCr422,
-    kITU_601_YCbCr422A, // @todo: not done
-    kITU_601_YCbCr444,
-    kITU_601_YCbCr444A, // @todo: not done
+        kITU_601_YCbCr410,
+        kITU_601_YCbCr410A, // @todo: not done
+        kITU_601_YCbCr420,
+        kITU_601_YCbCr420A, // @todo: not done
+        kITU_601_YCbCr422,
+        kITU_601_YCbCr422A, // @todo: not done
+        kITU_601_YCbCr444,
+        kITU_601_YCbCr444A, // @todo: not done
 
-    kITU_709_YCbCr410,
-    kITU_709_YCbCr410A, // @todo: not done
-    kITU_709_YCbCr420,
-    kITU_709_YCbCr420A, // @todo: not done
-    kITU_709_YCbCr422,
-    kITU_709_YCbCr422A, // @todo: not done
-    kITU_709_YCbCr444,
-    kITU_709_YCbCr444A, // @todo: not done
+        kITU_709_YCbCr410,
+        kITU_709_YCbCr410A, // @todo: not done
+        kITU_709_YCbCr420,
+        kITU_709_YCbCr420A, // @todo: not done
+        kITU_709_YCbCr422,
+        kITU_709_YCbCr422A, // @todo: not done
+        kITU_709_YCbCr444,
+        kITU_709_YCbCr444A, // @todo: not done
 
-    kYByRy410,
-    kYByRy410A, // @todo: not done
-    kYByRy420,
-    kYByRy420A, // @todo: not done
-    kYByRy422,
-    kYByRy422A, // @todo: not done
-    kYByRy444,
-    kYByRy444A, // @todo: not done
+        kYByRy410,
+        kYByRy410A, // @todo: not done
+        kYByRy420,
+        kYByRy420A, // @todo: not done
+        kYByRy422,
+        kYByRy422A, // @todo: not done
+        kYByRy444,
+        kYByRy444A, // @todo: not done
     };
 
     //! Pixel Type
     enum PixelType {
-    kByte,
-    kShort,
-    kInt,
-    kHalf,
-    kFloat
+        kByte,
+        kShort,
+        kInt,
+        kHalf,
+        kFloat
     };
 
     typedef VideoFrame       self;
     typedef ImagePixel       Pixel;
     typedef boost::shared_array< mrv::aligned16_uint8_t > PixelData;
 
-  private:
+private:
     boost::int64_t              _frame;  //!< position in video stream
     boost::int64_t              _pts;  //!< video pts in ffmpeg
     boost::int64_t              _repeat;  //!< number of frames to repeat
@@ -138,43 +140,43 @@ class VideoFrame
     bool                       _valid;   //! invalid frame
     PixelData                   _data;   //!< video data
 
-  public:
+public:
 
 
     VideoFrame() :
-    _frame( 0 ),
-    _pts( 0 ),
-    _repeat( 0 ),
-    _width( 0 ),
-    _height( 0 ),
-    _channels( 0 ),
-    _ctime( 0 ),
-    _mtime( 0 ),
-    _format( kRGBA ),
-    _type( kByte ),
-    _valid( true )
+        _frame( 0 ),
+        _pts( 0 ),
+        _repeat( 0 ),
+        _width( 0 ),
+        _height( 0 ),
+        _channels( 0 ),
+        _ctime( 0 ),
+        _mtime( 0 ),
+        _format( kRGBA ),
+        _type( kByte ),
+        _valid( true )
     {
-	gettimeofday( &_ptime, NULL );
+        gettimeofday( &_ptime, NULL );
     }
 
     VideoFrame( const VideoFrame& b ) :
-    _frame( b._frame ),
-    _pts( b._pts ),
-    _repeat( b._repeat ),
-    _width( b._width ),
-    _height( b._height ),
-    _channels( b._channels ),
-    _ctime( b._ctime ),
-    _mtime( b._mtime ),
-    _format( b._format ),
-    _type( b._type ),
-    _valid( true )
+        _frame( b._frame ),
+        _pts( b._pts ),
+        _repeat( b._repeat ),
+        _width( b._width ),
+        _height( b._height ),
+        _channels( b._channels ),
+        _ctime( b._ctime ),
+        _mtime( b._mtime ),
+        _format( b._format ),
+        _type( b._type ),
+        _valid( true )
     {
-	gettimeofday( &_ptime, NULL );
-	allocate();
-	memcpy( _data.get(), b.data().get(), data_size() );
+        gettimeofday( &_ptime, NULL );
+        allocate();
+        memcpy( _data.get(), b.data().get(), data_size() );
     }
-    
+
     VideoFrame( const boost::int64_t& frame,
                 const unsigned int w, const unsigned int h,
                 const unsigned short c = 4,
@@ -182,21 +184,21 @@ class VideoFrame
                 const PixelType type = kByte,
                 const boost::int64_t repeat = 0,
                 const boost::int64_t pts = 0,
-		const bool valid = true ) :
-    _frame( frame ),
-    _pts( pts ),
-    _repeat( repeat ),
-    _width( w ),
-    _height( h ),
-    _channels( c ),
-    _ctime( 0 ),
-    _mtime( 0 ),
-    _format( format ),
-    _type( type ),
-    _valid( valid )
+                const bool valid = true ) :
+        _frame( frame ),
+        _pts( pts ),
+        _repeat( repeat ),
+        _width( w ),
+        _height( h ),
+        _channels( c ),
+        _ctime( 0 ),
+        _mtime( 0 ),
+        _format( format ),
+        _type( type ),
+        _valid( valid )
     {
-	gettimeofday( &_ptime, NULL );
-	allocate();
+        gettimeofday( &_ptime, NULL );
+        allocate();
     }
 
     ~VideoFrame()
@@ -207,54 +209,106 @@ class VideoFrame
 
     self& operator=( const self& b );
 
-    inline const timeval& ptime() const { return _ptime; }
-    
-    inline void width( const unsigned w ) { _width = w;  }
-    inline unsigned int width()  const    { return _width;  }
+    inline const timeval& ptime() const {
+        return _ptime;
+    }
 
-    inline void height( const unsigned h ) { _height = h;  }
-    inline unsigned int height() const     { return _height; }
+    inline void width( const unsigned w ) {
+        _width = w;
+    }
+    inline unsigned int width()  const    {
+        return _width;
+    }
 
-    inline void repeat( const int64_t& r )      { _repeat = r; }
-    inline boost::int64_t repeat() const          { return _repeat; }
+    inline void height( const unsigned h ) {
+        _height = h;
+    }
+    inline unsigned int height() const     {
+        return _height;
+    }
 
-    inline void channels( const short unsigned c ) { _channels = c;  }
-    inline short unsigned channels() const     { return _channels; }
+    inline void repeat( const int64_t& r )      {
+        _repeat = r;
+    }
+    inline boost::int64_t repeat() const          {
+        return _repeat;
+    }
+
+    inline void channels( const short unsigned c ) {
+        _channels = c;
+    }
+    inline short unsigned channels() const     {
+        return _channels;
+    }
 
     bool has_alpha() const;
 
-    
-    inline void      format( Format f ) { _format = f; }
-    inline Format    format()     const { return _format; }
 
-    inline const char* const pixel_format() const { return fmts[_format]; }
-    inline const char* const pixel_depth() const { return ptype[_type]; }
+    inline void      format( Format f ) {
+        _format = f;
+    }
+    inline Format    format()     const {
+        return _format;
+    }
 
-    inline void      pixel_type( PixelType t ) { _type = t; }
-    inline PixelType pixel_type() const        { return _type; }
+    inline const char* const pixel_format() const {
+        return fmts[_format];
+    }
+    inline const char* const pixel_depth() const {
+        return ptype[_type];
+    }
+
+    inline void      pixel_type( PixelType t ) {
+        _type = t;
+    }
+    inline PixelType pixel_type() const        {
+        return _type;
+    }
     unsigned short   line_size() const;
     unsigned short   pixel_size() const;
 
-    inline void frame( const boost::int64_t& f ) { _frame = f; }
-    inline boost::int64_t frame() const          { return _frame; }
+    inline void frame( const boost::int64_t& f ) {
+        _frame = f;
+    }
+    inline boost::int64_t frame() const          {
+        return _frame;
+    }
 
-    inline void    ctime(const time_t c) { _ctime = c; }
-    inline time_t  ctime() const         { return _ctime; }
+    inline void    ctime(const time_t c) {
+        _ctime = c;
+    }
+    inline time_t  ctime() const         {
+        return _ctime;
+    }
 
-    inline void    mtime(const time_t c) { _mtime = c; }
-    inline time_t  mtime() const         { return _mtime; }
+    inline void    mtime(const time_t c) {
+        _mtime = c;
+    }
+    inline time_t  mtime() const         {
+        return _mtime;
+    }
 
-    inline boost::int64_t pts() const { return _pts; }
-    inline void pts(const int64_t& p) { _pts = p; }
+    inline boost::int64_t pts() const {
+        return _pts;
+    }
+    inline void pts(const int64_t& p) {
+        _pts = p;
+    }
 
-    size_t data_size();
+    size_t data_size() const;
 
     // inline void data(const PixelData& d) { _data = d; }
 
-    inline void valid( bool b ) { _valid = b; }
-    inline bool valid() const { return _valid; }
-      
-    inline const PixelData data() const { return _data; }
+    inline void valid( bool b ) {
+        _valid = b;
+    }
+    inline bool valid() const {
+        return _valid;
+    }
+
+    inline const PixelData data() const {
+        return _data;
+    }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
     void pixel( const unsigned int x, const unsigned int y,
@@ -262,43 +316,43 @@ class VideoFrame
 
     inline bool operator==( const self& b ) const
     {
-	return _frame == b.frame();  // should never happen
+        return _frame == b.frame();  // should never happen
     }
 
     inline bool operator<( const self& b ) const
     {
-	return _frame < b.frame();
+        return _frame < b.frame();
     }
 
     inline bool operator>( const self& b ) const
     {
-	return _frame > b.frame();
+        return _frame > b.frame();
     }
 
 
     inline bool operator>( const boost::int64_t b ) const
     {
-	return _frame > b;
+        return _frame > b;
     }
 
     inline bool operator==( const boost::int64_t b ) const
     {
-	return _frame == b;
+        return _frame == b;
     }
 
     inline bool operator<=( const boost::int64_t b ) const
     {
-	return _frame <= b;
+        return _frame <= b;
     }
 
     inline bool operator>=( const boost::int64_t b ) const
     {
-	return _frame >= b;
+        return _frame >= b;
     }
 
     inline bool operator<( const boost::int64_t b ) const
     {
-	return _frame < b;
+        return _frame < b;
     }
 
     VideoFrame* quick_resize( unsigned int w, unsigned int h ) const;
@@ -307,7 +361,7 @@ class VideoFrame
     VideoFrame* scaleX(float t) const;
     VideoFrame* scaleY(float t) const;
 
-  private:
+private:
 
     ImagePixel pixel_u8( const unsigned int x, const unsigned int y ) const;
     void pixel_u8( const unsigned int x, const unsigned int y,
@@ -340,81 +394,95 @@ class AudioFrame
     unsigned int     _size;  //!< size of data (in bytes)
     mrv::aligned16_uint8_t*  _data;  //!< audio data of size _size
 
-  public:
+public:
     typedef AudioFrame       self;
 
 
-  public:
+public:
     AudioFrame( const boost::int64_t frame,
                 const int freq, const short channels,
                 const boost::uint8_t* data, const unsigned int size ) :
-    _frame( frame ),
-    _channels( channels ),
-    _freq( freq ),
-    _size( size ),
-    _data( new mrv::aligned16_uint8_t[size] )
+        _frame( frame ),
+        _channels( channels ),
+        _freq( freq ),
+        _size( size ),
+        _data( new mrv::aligned16_uint8_t[size] )
     {
-	gettimeofday( &_ptime, NULL );
-	memcpy( _data, data, size );
+        gettimeofday( &_ptime, NULL );
+        memcpy( _data, data, size );
     }
 
 
     ~AudioFrame()
     {
-	delete [] _data; _data = NULL;
+        delete [] _data;
+        _data = NULL;
     }
 
 
-    inline const timeval&   ptime() const { return _ptime; }
-    inline boost::int64_t   frame() const { return _frame; }
-    inline unsigned int frequency() const { return _freq; }
-    inline short         channels() const { return _channels; }
-    inline unsigned int      size() const { return _size; }
+    inline const timeval&   ptime() const {
+        return _ptime;
+    }
+    inline boost::int64_t   frame() const {
+        return _frame;
+    }
+
+    inline void frame( int64_t f ) { _frame = f; }
+
+    inline unsigned int frequency() const {
+        return _freq;
+    }
+    inline short         channels() const {
+        return _channels;
+    }
+    inline unsigned int      size() const {
+        return _size;
+    }
     inline const boost::uint8_t*  data() const {
-	return (boost::uint8_t*) _data;
+        return (boost::uint8_t*) _data;
     }
 
     inline bool operator==( const self& b ) const
     {
-	return _frame == b.frame();  // should never happen
+        return _frame == b.frame();  // should never happen
     }
 
     inline bool operator<( const self& b ) const
     {
-	return _frame < b.frame();
+        return _frame < b.frame();
     }
 
     inline bool operator>( const self& b ) const
     {
-	return _frame > b.frame();
+        return _frame > b.frame();
     }
 
     inline bool operator>( const boost::int64_t b ) const
     {
-	return _frame > b;
+        return _frame > b;
     }
 
     inline bool operator==( const boost::int64_t b ) const
     {
-	return _frame == b;
+        return _frame == b;
     }
 
     inline bool operator<( const boost::int64_t b ) const
     {
-	return _frame < b;
+        return _frame < b;
     }
 
     inline bool operator<=( const boost::int64_t b ) const
     {
-	return _frame <= b;
+        return _frame <= b;
     }
 
     inline bool operator>=( const boost::int64_t b ) const
     {
-	return _frame >= b;
+        return _frame >= b;
     }
 
-  private:
+private:
     AudioFrame( const AudioFrame& b ) { }
 };
 
@@ -426,11 +494,15 @@ typedef boost::shared_ptr< VideoFrame > image_type_ptr;
 typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
 
 // Copy an image picture (video frame) to another, taking into account
-// the pixel type.  The pictures have to have the same format and the same
-// width/height and only (optionally) the same pixel type.
-// If the same pixel type, memcpy is used.  If not
-// a loop is used and a float pixel is used as intermediary.
-void copy_image( image_type_ptr& dst, const image_type_ptr& src );
+// the pixel type.  The pictures have to have the same width/height and
+// only (optionally) the same pixel and format type.
+// If the same pixel and format type, memcpy is used for speed.
+// If not the same format, a temporary image is used and sws_scale is called
+// to convert to RGBA (byte pixel type).
+// If not the same pixel type a loop is used and a float pixel is used
+// as intermediary.
+    void copy_image( image_type_ptr& dst, const image_type_ptr& src,
+                     SwsContext* sws = NULL );
 
 } // namespace mrv
 

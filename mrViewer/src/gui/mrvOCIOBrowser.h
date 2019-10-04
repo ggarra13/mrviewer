@@ -19,49 +19,57 @@
  * @file   mrvOCIOGroup.h
  * @author gga
  * @date   Mon Jul  2 08:08:45 2007
- * 
+ *
  * @brief  Opens a browser with a list of all .ctl scripts available in
  *         your OCIO_MODULE_PATH.
- * 
- * 
+ *
+ *
  */
 #ifndef mrvOCIOBrowser_h
 #define mrvOCIOBrowser_h
 
 #include <string>
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 
 
 namespace mrv {
 
 class CMedia;
 
-class OCIOBrowser : public fltk::Browser
+class OCIOBrowser : public Fl_Browser
 {
-  public:
+public:
     enum Type {
-    kInputColorSpace,
-    kDisplay,
-    kView,
-    kNone,
+        kInputColorSpace,
+        kDisplay,
+        kView,
+        kNone,
     };
-  public:
+public:
     OCIOBrowser(int x, int y, int w, int h, const char* l = 0);
     ~OCIOBrowser();
 
-    void set_value( const std::string& n ) { _sel = n; }
-    void set_type( Type type ) { _type = type; fill(); }
-      
-    virtual int handle( int event );
+    const std::string& get_selection() {
+        return _sel;
+    }
+    void set_selection( const std::string& n ) {
+        _sel = n;
+    }
+    void set_type( Type type ) {
+        _type = type;
+        fill();
+    }
 
-  protected:
+    int handle( int event );
+
+protected:
     void fill();
     void fill_view();
     void fill_display();
     void fill_input_color_space();
-      
-  protected:
+
+protected:
     Type _type;
     std::string _sel;
 };

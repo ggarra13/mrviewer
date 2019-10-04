@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvString.h
  * @author gga
  * @date   Wed Oct 18 21:09:07 2006
- * 
+ *
  * @brief  Some std::string utilities
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvString_h
@@ -38,10 +38,10 @@ typedef std::set   < std::string > stringSet;
 
 namespace mrv
 {
-  bool matches_chars( const char* src, const char* charlist );
+bool matches_chars( const char* src, const char* charlist );
 
-  void split_string(stringArray& output,
-		    const std::string& str, const std::string& delim );
+void split_string(stringArray& output,
+                  const std::string& str, const std::string& delim );
 
 inline void split( stringArray& elems, const std::string &s, char delim ) {
     std::stringstream ss(s);
