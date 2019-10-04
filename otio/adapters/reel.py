@@ -24,6 +24,7 @@
 #
 
 """OpenTimelineIO mrViewer's Reel Adapter.
+Version 0.8beta
 
 This adapter requires the use of the stand-alone ffprobe utility that comes
 with ffmpeg.  It should be in the user's PATH.
