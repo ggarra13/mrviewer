@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-10-04 10:52-0300\n"
+"POT-Creation-Date: 2019-10-04 14:59-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3479,11 +3479,6 @@ msgstr ""
 msgid " EXPECTED: "
 msgstr ""
 
-#: gui/mrvElement.cpp:160
-#, fuzzy
-msgid " Element::draw"
-msgstr "Elementos de Interfaz de Usario (IU)"
-
 #
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1633
 msgid " Eraser"
@@ -3665,11 +3660,6 @@ msgstr " canales "
 msgid " chooser "
 msgstr "  elector "
 
-#: gui/mrvElement.cpp:129
-#, fuzzy
-msgid " cleared"
-msgstr "Borrar"
-
 #: gui/mrvPreferences.cpp:1223 gui/mrvPreferences.cpp:2435
 msgid " ctrl"
 msgstr ""
@@ -3685,16 +3675,6 @@ msgstr " datos: "
 #: core/CMedia_audio.cpp:110
 msgid " dbl_le"
 msgstr ""
-
-#: gui/mrvMedia.cpp:79
-#, fuzzy
-msgid " delete _image"
-msgstr "busca_imagen: cuadro "
-
-#: gui/mrvMedia.cpp:85
-#, fuzzy
-msgid " delete thumbnail "
-msgstr "No pude crear dibujo en miniatura para '"
 
 #: core/CMedia.cpp:4363 core/CMedia.cpp:4382
 msgid " dist: "
@@ -3845,16 +3825,6 @@ msgstr ""
 msgid " image stores "
 msgstr ""
 
-#: gui/mrvElement.cpp:162
-#, fuzzy
-msgid " image widget "
-msgstr "Archivo de imagen \""
-
-#: gui/mrvElement.cpp:164
-#, fuzzy
-msgid " image->image() "
-msgstr "imagen"
-
 #: gui/FLU/Flu_File_Chooser.cpp:418
 msgid " img "
 msgstr ""
@@ -3908,11 +3878,6 @@ msgstr ""
 msgid " max frames: "
 msgstr " cuadros max: "
 
-#: gui/mrvElement.cpp:161
-#, fuzzy
-msgid " media element "
-msgstr "Borré el cliente "
-
 #: gui/mrvPreferences.cpp:1232 gui/mrvPreferences.cpp:2439
 msgid " meta"
 msgstr ""
@@ -3954,11 +3919,6 @@ msgstr "Desplazamiento"
 #: gui/mrvVersion.cpp:563 gui/mrvVersion.cpp:567 gui/mrvVersion.cpp:571
 msgid " or later"
 msgstr " o más tarde"
-
-#: gui/mrvMedia.cpp:78
-#, fuzzy
-msgid " own image "
-msgstr "No pude dibujar imagen"
 
 #: core/CMedia.cpp:4360 core/CMedia.cpp:4378
 msgid " pos: "
@@ -6543,7 +6503,7 @@ msgstr ""
 
 #: core/aviImage.cpp:659 core/aviImage.cpp:695 core/aviImage_save.cpp:247
 #: core/aviImage_save.cpp:1378 core/mrvACES.cpp:119 core/mrvACES.cpp:164
-#: core/mrvACES.cpp:213 gui/mrvMedia.cpp:162 gui/mrvImageBrowser.cpp:773
+#: core/mrvACES.cpp:213 gui/mrvMedia.cpp:159 gui/mrvImageBrowser.cpp:773
 #: gui/mrvImageBrowser.cpp:1843 gui/mrvImageInformation.cpp:579
 #: gui/mrvImageInformation.cpp:2116 gui/mrvSave.cpp:299
 msgid "'"
@@ -14781,7 +14741,7 @@ msgstr "No pude dibujar imagen"
 msgid "Could not create pixel wand"
 msgstr "No pude crear barita de pixel"
 
-#: gui/mrvMedia.cpp:161
+#: gui/mrvMedia.cpp:158
 msgid "Could not create thumbnail picture for '"
 msgstr "No pude crear dibujo en miniatura para '"
 
@@ -16395,7 +16355,7 @@ msgstr ""
 msgid "Empty packets for video seek."
 msgstr "Paquetes vacíos para búsqueda de video."
 
-#: gui/mrvMedia.cpp:121
+#: gui/mrvMedia.cpp:118
 msgid "Empty pic file for media "
 msgstr "Dibujo vacío para media "
 
@@ -19685,7 +19645,7 @@ msgstr "Info del Medio"
 msgid "Media Information"
 msgstr "Informe del Medio"
 
-#: gui/mrvMedia.cpp:129
+#: gui/mrvMedia.cpp:126
 msgid "Media file has zero size in width or height"
 msgstr "Archivo de medio tiene cero tamaño en altura o ancho."
 
@@ -33362,6 +33322,33 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:757
 msgid "~/"
 msgstr ""
+
+#~ msgid " cleared"
+#~ msgstr "Borrar"
+
+#, fuzzy
+#~ msgid " delete _image"
+#~ msgstr "busca_imagen: cuadro "
+
+#, fuzzy
+#~ msgid " delete thumbnail "
+#~ msgstr "No pude crear dibujo en miniatura para '"
+
+#, fuzzy
+#~ msgid " image widget "
+#~ msgstr "Archivo de imagen \""
+
+#, fuzzy
+#~ msgid " image->image() "
+#~ msgstr "imagen"
+
+#, fuzzy
+#~ msgid " media element "
+#~ msgstr "Borré el cliente "
+
+#, fuzzy
+#~ msgid " own image "
+#~ msgstr "No pude dibujar imagen"
 
 #
 #
