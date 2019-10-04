@@ -29,7 +29,7 @@
 #define mrvAlignedData_h
 
 #include <malloc.h>
-
+#include "gui/mrvIO.h"
 #include <boost/cstdint.hpp>
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -38,6 +38,7 @@
 #else
 #  define memalign_free( a ) free( a )
 #endif
+
 
 
 namespace mrv {
@@ -52,6 +53,11 @@ namespace mrv {
 #ifdef LINUX
         void* tmp = NULL;
         int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+	if ( err != 0 )
+	{
+	    mrvLOG_ERROR( "mem", "Allocation returned error " << err
+			  << std::endl );
+	}
         return tmp;
 #else
       return memalign( 16, size*sizeof(aligned16_uint8_t) );
@@ -68,6 +74,11 @@ namespace mrv {
 #ifdef LINUX
         void* tmp = NULL;
         int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+	if ( err != 0 )
+	{
+	    mrvLOG_ERROR( "mem", "Allocation returned error " << err
+			  << std::endl );
+	}
         return tmp;
 #else
       return memalign( 16, size*sizeof(aligned16_uint8_t) );

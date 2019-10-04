@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@
 #endif
 
 #include <cstdio>     // for snprintf
-#include <cassert>    // for assert
 
 
 extern "C" {
@@ -53,7 +52,7 @@ extern "C" {
 #include <thread>
 #include <mutex>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #undef  __STDC_CONSTANT_MACROS
 
@@ -75,6 +74,9 @@ namespace fs = boost::filesystem;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfVecAttribute.h>
 
+#ifdef _WIN32
+#  pragma warning( disable: 4275 )
+#endif
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
@@ -97,13 +99,10 @@ namespace OCIO = OCIO_NAMESPACE;
 
 namespace {
 
-  const char* kModule = "img";
+const char* kModule = "img";
 
 }
 
-
-#undef DBG
-#define DBG(x)
 
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
@@ -112,7 +111,8 @@ namespace {
 // #define DEBUG_DECODE
 // #define DEBUG_AUDIO_SPLIT
 
-
+#define MEM()
+//#define MEM() std::cerr << memory_used << " " << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
 namespace mrv {
@@ -145,6 +145,9 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
+
+int64_t CMedia::memory_used = 0;
+double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
@@ -212,10 +215,6 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     dynamic_cast< const Imf::V2fAttribute* >( attr );
     const Imf::V2iAttribute* v2i =
     dynamic_cast< const Imf::V2iAttribute* >( attr );
-    const Imf::Box2iAttribute* box2i =
-    dynamic_cast< const Imf::Box2iAttribute* >( attr );
-    const Imf::Box2fAttribute* box2f =
-    dynamic_cast< const Imf::Box2fAttribute* >( attr );
     const Imf::IntAttribute* intg =
     dynamic_cast< const Imf::IntAttribute* >( attr );
     const Imf::FloatAttribute* flt =
@@ -282,7 +281,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     {
         const Imath::M44d& m = m44d->value();
         sprintf( buf, "%lg %lg %lg %lg %lg %lg %lg %lg "
-                      "%lg %lg %lg %lg %lg %lg %lg %lg",
+                 "%lg %lg %lg %lg %lg %lg %lg %lg",
                  m[0][0], m[0][1], m[0][2], m[0][3],
                  m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
                  m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
@@ -363,6 +362,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     return r;
 }
 
+
 /**
  * Constructor
  *
@@ -408,7 +408,7 @@ _dts( 1 ),
 _adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
-_frame( 1 ),
+_frame( AV_NOPTS_VALUE ),
 _tc_frame( 0 ),
 _expected( 1 ),
 _expected_audio( 1 ),
@@ -417,7 +417,6 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
-_loop_start( 1 ),
 _audio_pts( 0 ),
 _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
 _video_pts( 0 ),
@@ -425,7 +424,6 @@ _video_clock( double( av_gettime_relative() ) / 1000000.0 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
-_numWindows( 0 ),
 _x( 0 ),
 _y( 0 ),
 _scale_x( 1.0 ),
@@ -445,6 +443,7 @@ _frame_offset( 0 ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
+_actual_frame_rate( 0 ),
 _context(NULL),
 _video_ctx( NULL ),
 _acontext(NULL),
@@ -474,7 +473,6 @@ _audio_engine( NULL )
         mrv::PacketQueue::initialize();
         _initialize = true;
     }
-    // std::cerr << "CMedia " << this << std::endl;
 }
 
 
@@ -493,9 +491,9 @@ _h( 0 ),
 _is_stereo( false ),
 _stereo_input( kSeparateLayersInput ),
 _stereo_output( kNoStereo ),
-_looping( kUnknownLoop ),
 _is_thumbnail( false ),
 _is_sequence( false ),
+_looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
 _ctime( 0 ),
@@ -510,6 +508,7 @@ _seek_frame( 1 ),
 _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
+_actual_frame_rate( 0 ),
 _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
@@ -523,7 +522,7 @@ _dts( 1 ),
 _adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
-_frame( 1 ),
+_frame( AV_NOPTS_VALUE ),
 _tc_frame( 0 ),
 _expected( 1 ),
 _expected_audio( 1 ),
@@ -532,11 +531,9 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
-_loop_start( 1 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
-_numWindows( 0 ),
 _x( 0 ),
 _y( 0 ),
 _scale_x( 1.0 ),
@@ -576,28 +573,28 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
     _aframe = av_frame_alloc();
-  unsigned int W = other->width();
-  unsigned int H = other->height();
-  image_size( W, H );
+    unsigned int W = other->width();
+    unsigned int H = other->height();
+    image_size( W, H );
 
-  float xScale = (float)ws / (float)W;
-  float yScale = (float)wh / (float)H;
+    float xScale = (float)ws / (float)W;
+    float yScale = (float)wh / (float)H;
 
-  {
-    CMedia* img = const_cast< CMedia* >( other );
-    CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK(m);
-    _hires = img->hires();
-
-    if ( xScale != 1.0f || yScale != 1.0f )
     {
-       _hires.reset( _hires->scaleX( xScale ) );
-       _hires.reset( _hires->scaleY( yScale ) );
-       _w = _hires->width();
-       _h = _hires->height();
-       _damageRectangle = mrv::Recti(0, 0, _w, _h);
+        CMedia* img = const_cast< CMedia* >( other );
+        CMedia::Mutex& m = img->video_mutex();
+        SCOPED_LOCK(m);
+        _hires = img->left();
+
+        if ( xScale != 1.0f || yScale != 1.0f )
+        {
+            _hires.reset( _hires->scaleX( xScale ) );
+            _hires.reset( _hires->scaleY( yScale ) );
+            _w = _hires->width();
+            _h = _hires->height();
+            _damageRectangle = mrv::Recti(0, 0, _w, _h);
+        }
     }
-  }
 }
 
 CMedia::CMedia( const CMedia* other, int64_t f ) :
@@ -605,12 +602,12 @@ av_sync_type( other->av_sync_type ),
 _has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
+_is_thumbnail( other->_is_thumbnail ),
+_is_sequence( other->_is_sequence ),
 _is_stereo( other->_is_stereo ),
 _stereo_input( other->_stereo_input ),
 _stereo_output( other->_stereo_output ),
 _looping( other->looping() ),
-_is_thumbnail( other->_is_thumbnail ),
-_is_sequence( other->_is_sequence ),
 _fileroot( NULL ),
 _filename( NULL ),
 _ctime( other->_ctime ),
@@ -625,6 +622,7 @@ _seek_frame( 1 ),
 _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
+_actual_frame_rate( 0 ),
 _real_fps( 0 ),
 _play_fps( other->_play_fps.load() ),
 _fps( other->_fps.load() ),
@@ -651,7 +649,6 @@ _start_number( other->_start_number ),
 _interlaced( other->_interlaced ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
-_numWindows( 0 ),
 _x( 0 ),
 _y( 0 ),
 _scale_x( 1.0 ),
@@ -692,42 +689,47 @@ _audio_engine( NULL )
 {
 
     _aframe = av_frame_alloc();
-  _fileroot = strdup( other->fileroot() );
-  _filename = strdup( other->filename() );
+    _fileroot = strdup( other->fileroot() );
+    _filename = strdup( other->filename() );
 
-  // TRACE( "copy constructor" );
+    // TRACE( "copy constructor" );
 
-  audio_initialize();
-  if ( ! _initialize )
-  {
-      mrv::PacketQueue::initialize();
-      _initialize = true;
-  }
+    audio_initialize();
+    if ( ! _initialize )
+    {
+        mrv::PacketQueue::initialize();
+        _initialize = true;
+    }
 
-  if ( other->audio_file().empty() )
-    audio_file( NULL );
-  else
-    audio_file( other->audio_file().c_str() );
-  _audio_offset = other->audio_offset() + f - 1;
-  audio_stream( other->_audio_index );
+    if ( other->audio_file().empty() )
+        audio_file( NULL );
+    else
+        audio_file( other->audio_file().c_str() );
+    _audio_offset = other->audio_offset() + f - 1;
+    audio_stream( other->_audio_index );
 
-  fetch( f );
+    image_type_ptr canvas;
+    if ( fetch( canvas, f ) )
+    {
+        cache( canvas );
+        default_color_corrections();
+    }
 }
 
 int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
-   assert( stream != NULL );
-   int64_t frame = AV_NOPTS_VALUE;
-   if ( pkt.pts != AV_NOPTS_VALUE )
-   {
-      frame = pts2frame( stream, pkt.pts );
-   }
-   else
-   {
-       if ( pkt.dts != AV_NOPTS_VALUE )
-           frame = pts2frame( stream, pkt.dts );
-   }
-   return frame;
+    assert( stream != NULL );
+    int64_t frame = AV_NOPTS_VALUE;
+    if ( pkt.pts != AV_NOPTS_VALUE )
+    {
+        frame = pts2frame( stream, pkt.pts );
+    }
+    else
+    {
+        if ( pkt.dts != AV_NOPTS_VALUE )
+            frame = pts2frame( stream, pkt.dts );
+    }
+    return frame;
 }
 
 
@@ -737,45 +739,65 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
  */
 void CMedia::clear_cache()
 {
-  if ( !_sequence ) return;
+    if ( !_sequence ) return;
 
-  SCOPED_LOCK( _mutex);
+    SCOPED_LOCK( _mutex);
 
-  boost::uint64_t num = _frame_end - _frame_start + 1;
-  for ( boost::uint64_t i = 0; i < num; ++i )
+    boost::uint64_t num = _frame_end - _frame_start + 1;
+    for ( boost::uint64_t i = 0; i < num; ++i )
     {
-        if ( _sequence[i] )
+        if ( _sequence && _sequence[i] )
+        {
+            memory_used -= _sequence[i]->data_size();
             _sequence[i].reset();
+        }
         if ( _right && _right[i] )
+        {
+            memory_used -= _right[i]->data_size();
             _right[i].reset();
+        }
     }
 
-  _stereo[0].reset();
-  _stereo[1].reset();
+    if ( _stereo[0] )
+    {
+        memory_used -= _stereo[0]->data_size();
+        _stereo[0].reset();
+    }
 
-  image_damage( image_damage() | kDamageCache );
+    if ( _stereo[1] )
+    {
+        memory_used -= _stereo[1]->data_size();
+        _stereo[1].reset();
+    }
+
+    image_damage( image_damage() | kDamageCache | kDamageContents );
 
 }
 
 void CMedia::update_frame( const int64_t& f )
 {
-  if ( !_sequence ) return;
+    if ( !_sequence ) return;
 
-  if ( f < _frame_start || f > _frame_end ) return;
+    if ( f < _frame_start || f > _frame_end ) return;
 
-  SCOPED_LOCK( _mutex);
+    SCOPED_LOCK( _mutex);
 
-  boost::uint64_t i = f - _frame_start;
-  if ( _sequence[i] )        _sequence[i].reset();
-  if ( _right && _right[i] )    _right[i].reset();
+    boost::uint64_t i = f - _frame_start;
+    if ( _sequence[i] )        _sequence[i].reset();
+    if ( _right && _right[i] )    _right[i].reset();
 
-  _hires.reset();
-  _stereo[0].reset();
-  _stereo[1].reset();
+    _hires.reset();
+    _stereo[0].reset();
+    _stereo[1].reset();
 
-  fetch( f );
+    image_type_ptr canvas;
+    if ( fetch( canvas, f ) )
+    {
+        cache( canvas );
+        default_color_corrections();
+    }
 
-  image_damage( image_damage() | kDamageCache | kDamageContents );
+    image_damage( image_damage() | kDamageCache | kDamageContents );
 
 }
 
@@ -791,17 +813,15 @@ void CMedia::wait_for_load_threads()
  */
 void CMedia::wait_for_threads()
 {
-  // Wait for all threads to exit
-  thread_pool_t::iterator i = _threads.begin();
-  thread_pool_t::iterator e = _threads.end();
-  for ( ;i != e; ++i )
+    for ( const auto& i : _threads )
     {
-        (*i)->join();
-        delete *i;
+        i->join();
+        delete i;
     }
 
-  _threads.clear();
+    _threads.clear();
 }
+
 
 /**
  * Destructor
@@ -810,100 +830,123 @@ void CMedia::wait_for_threads()
 CMedia::~CMedia()
 {
 
-  SCOPED_LOCK( _mutex );
-  SCOPED_LOCK( _audio_mutex );
-  SCOPED_LOCK( _subtitle_mutex );
+    SCOPED_LOCK( _mutex );
+    SCOPED_LOCK( _audio_mutex );
+    SCOPED_LOCK( _subtitle_mutex );
 
 
-  if ( !stopped() )
-    stop();
-
-  delete _right_eye;
-  _right_eye = NULL;
-
-  image_damage( kNoDamage );
-
-  free( _channel );
-  free( _label );
-  free( _profile );
-  free( _rendering_transform );
-
-  clear_look_mod_transform();
-  free( _idt_transform );
-
-  delete [] _dataWindow;
-  _dataWindow = NULL;
-  delete [] _dataWindow2;
-  _dataWindow2 = NULL;
-  delete [] _displayWindow;
-  _displayWindow = NULL;
-  delete [] _displayWindow2;
-  _displayWindow2 = NULL;
-
-  _hires.reset();
-
-  clear_cache();
-  delete [] _sequence;
-  _sequence = NULL;
-  delete [] _right;
-  _right = NULL;
+    if ( !stopped() )
+        stop();
 
 
+    delete _right_eye;
+    _right_eye = NULL;
 
-  delete [] _audio_buf; _audio_buf = NULL;
+    image_damage( kNoDamage );
 
-  if ( has_audio() )
+
+    free( _channel );
+
+    free( _label );
+
+    free( _profile );
+
+    free( _rendering_transform );
+
+
+    clear_look_mod_transform();
+
+    free( _idt_transform );
+
+
+    delete [] _dataWindow;
+    _dataWindow = NULL;
+
+    delete [] _dataWindow2;
+    _dataWindow2 = NULL;
+
+    delete [] _displayWindow;
+    _displayWindow = NULL;
+
+    delete [] _displayWindow2;
+    _displayWindow2 = NULL;
+
+
+    free( _subtitle_encoding );
+    _subtitle_encoding = NULL;
+
+    free( _subtitle_font );
+    _subtitle_font = NULL;
+
+    _hires.reset();
+
+
+    clear_cache();
+
+    delete [] _sequence;
+    _sequence = NULL;
+
+    delete [] _right;
+    _right = NULL;
+
+
+
+
+    delete [] _audio_buf;
+    _audio_buf = NULL;
+
+    if ( has_audio() )
     {
-      close_audio();
 
-      close_audio_codec();
+        close_audio();
+
+        close_audio_codec();
 
     }
 
-  audio_shutdown();
+    audio_shutdown();
 
-  if ( forw_ctx )
-  {
-     swr_free( &forw_ctx );
-     forw_ctx = NULL;
-  }
+    if ( forw_ctx )
+    {
+        swr_free( &forw_ctx );
+        forw_ctx = NULL;
+    }
 
-  flush_audio();
+    flush_audio();
 
-  if ( _aframe )
-  {
-      av_frame_unref(_aframe);
-      av_frame_free(&_aframe);
-  }
 
-  free( _fileroot );
-  _fileroot = NULL;
-  free( _filename );
-  _filename = NULL;
 
-  if ( _context )
-  {
-    avformat_close_input( &_context );
-  }
+    free( _fileroot );
+    _fileroot = NULL;
 
-  if ( _acontext )
-  {
-    avformat_close_input( &_acontext );
-  }
+    free( _filename );
+    _filename = NULL;
 
-  free( _subtitle_font ); _subtitle_font = NULL;
-  free( _subtitle_encoding); _subtitle_encoding = NULL;
+    if ( _context )
+    {
 
-  {
-      Attributes::iterator i = _attrs.begin();
-      Attributes::iterator e = _attrs.end();
-      for ( ; i != e; ++i )
-      {
-          delete i->second;
-      }
-  }
+        avformat_close_input( &_context );
+    }
 
-  _context = _acontext = NULL;
+    if ( _acontext )
+    {
+
+        avformat_close_input( &_acontext );
+    }
+
+
+    {
+
+        for ( const auto& i : _attrs )
+        {
+            for ( const auto& d : i.second )
+            {
+                delete d.second;
+            }
+        }
+    }
+
+    _context = _acontext = NULL;
 }
 
 
@@ -916,22 +959,59 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     refresh();
 }
 
+CMedia::Attributes& CMedia::attributes()  {
+    static Attributes empty;
+    AttributesFrame::iterator i;
+    if ( dynamic_cast< aviImage* >( this ) != NULL  )
+        i = _attrs.find( start_frame() );
+    else
+        i = _attrs.find( _frame );
+    if ( i != _attrs.end() )
+        return i->second;
+    return empty;
+}
+
+const CMedia::Attributes& CMedia::attributes() const {
+    static Attributes empty;
+    AttributesFrame::const_iterator i;
+    if ( dynamic_cast< const aviImage* const >( this ) != NULL  )
+        i = _attrs.find( start_frame() );
+    else
+        i = _attrs.find( _frame );
+    if ( i != _attrs.end() )
+        return i->second;
+    return empty;
+}
+
+
 int CMedia::from_stereo_output( CMedia::StereoOutput x )
 {
     switch( x )
     {
-        case kStereoLeft:              return 1;
-        case kStereoRight:             return 2;
-        case kStereoOpenGL:            return 3;
-        case kStereoTopBottom:         return 4;
-        case kStereoBottomTop:         return 5;
-        case kStereoSideBySide:        return 6;
-        case kStereoCrossed:           return 7;
-        case kStereoInterlaced:        return 8;
-        case kStereoInterlacedColumns: return 9;
-        case kStereoCheckerboard:      return 10;
-        case kStereoAnaglyph:          return 11;
-        case kStereoRightAnaglyph:     return 12;
+        case kStereoLeft:
+            return 1;
+        case kStereoRight:
+            return 2;
+        case kStereoOpenGL:
+            return 3;
+        case kStereoTopBottom:
+            return 4;
+        case kStereoBottomTop:
+            return 5;
+        case kStereoSideBySide:
+            return 6;
+        case kStereoCrossed:
+            return 7;
+        case kStereoInterlaced:
+            return 8;
+        case kStereoInterlacedColumns:
+            return 9;
+        case kStereoCheckerboard:
+            return 10;
+        case kStereoAnaglyph:
+            return 11;
+        case kStereoRightAnaglyph:
+            return 12;
         default:
             return 0;
     }
@@ -941,18 +1021,30 @@ CMedia::StereoOutput CMedia::to_stereo_output( int x )
 {
     switch( x )
     {
-        case 1: return kStereoLeft;
-        case 2: return kStereoRight;
-        case 3: return kStereoOpenGL;
-        case 4: return kStereoTopBottom;
-        case 5: return kStereoBottomTop;
-        case 6: return kStereoSideBySide;
-        case 7: return kStereoCrossed;
-        case 8: return kStereoInterlaced;
-        case 9: return kStereoInterlacedColumns;
-        case 10: return kStereoCheckerboard;
-        case 11: return kStereoAnaglyph;
-        case 12: return kStereoRightAnaglyph;
+        case 1:
+            return kStereoLeft;
+        case 2:
+            return kStereoRight;
+        case 3:
+            return kStereoOpenGL;
+        case 4:
+            return kStereoTopBottom;
+        case 5:
+            return kStereoBottomTop;
+        case 6:
+            return kStereoSideBySide;
+        case 7:
+            return kStereoCrossed;
+        case 8:
+            return kStereoInterlaced;
+        case 9:
+            return kStereoInterlacedColumns;
+        case 10:
+            return kStereoCheckerboard;
+        case 11:
+            return kStereoAnaglyph;
+        case 12:
+            return kStereoRightAnaglyph;
         case 0:
         default:
             return kNoStereo;
@@ -963,9 +1055,12 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
 {
     switch( x )
     {
-        case kSeparateLayersInput: return 0;
-        case kTopBottomStereoInput: return 1;
-        case kLeftRightStereoInput: return 2;
+        case kSeparateLayersInput:
+            return 0;
+        case kTopBottomStereoInput:
+            return 1;
+        case kLeftRightStereoInput:
+            return 2;
         case kNoStereoInput:
         default:
             return 0;
@@ -976,9 +1071,12 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 {
     switch( x )
     {
-        case 0: return kSeparateLayersInput;
-        case 1: return kTopBottomStereoInput;
-        case 2: return kLeftRightStereoInput;
+        case 0:
+            return kSeparateLayersInput;
+        case 1:
+            return kTopBottomStereoInput;
+        case 2:
+            return kLeftRightStereoInput;
         default:
             return kNoStereoInput;
     }
@@ -987,68 +1085,79 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 /**
  * Allocate the float pixels for the image
  *
- * @param ws image width in pixels
- * @param hs image height in pixels
+ * @param canvas canvas where allocated picture will be stored.
+ * @param frame image frame this picture belongs to.
+ * @param channels number of channels in this image.
+ * @param format   format of image (RGBA, A, Luma, YUV, etc).
+ * @param pixel_type  pixel type of image (8 bits, 16 bits, half, float).
+ * @param w image width in pixels.
+ * @param h image height in pixels.
+ *
+ * @returns true for success, false for failure
  */
-bool CMedia::allocate_pixels( const int64_t& frame,
+bool CMedia::allocate_pixels( image_type_ptr& canvas,
+                              const int64_t& frame,
                               const unsigned short channels,
                               const image_type::Format format,
                               const image_type::PixelType pixel_type,
                               unsigned w, unsigned h)
 {
-  SCOPED_LOCK( _mutex );
+    if ( w == 0 )
+    {
+        w = width();
+        h = height();
+    }
+    assert( w != 0 && h != 0 );
+    // LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
+    //           << " channels: " << channels << " format: "
+    //           << format << " pixel type: " << pixel_type );
 
-  if ( w == 0 )
-  {
-      w = width(); h = height();
-  }
-  assert( w != 0 && h != 0 );
-  // LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
-  //           << " channels: " << channels << " format: "
-  //           << format << " pixel type: " << pixel_type );
+    image_damage( image_damage() & ~kDamageContents );
+    try {
+        canvas.reset( new image_type( frame, w, h,
+                                      channels, format, pixel_type ) );
+    }
+    catch( const std::bad_alloc& e )
+    {
+        LOG_ERROR( e.what() );
+        return false;
+    }
+    catch( const std::runtime_error& e )
+    {
+        LOG_ERROR( e.what() );
+        return false;
+    }
 
-  image_damage( image_damage() & ~kDamageContents );
-  try {
-      _hires.reset(  new image_type( frame, w, h,
-                                     channels, format, pixel_type ) );
-  }
-  catch( const std::bad_alloc& e )
-  {
-      LOG_ERROR( e.what() );
-      return false;
-  }
-  catch( const std::runtime_error& e )
-  {
-      LOG_ERROR( e.what() );
-      return false;
-  }
+    if (! canvas->data().get() )
+    {
+        IMG_ERROR( _("Out of memory") );
+        return false;
+    }
 
-  if (! _hires->data().get() )
-  {
-      IMG_ERROR( _("Out of memory") );
-      return false;
-  }
-
-  return true;
+    return true;
 }
 
 
 mrv::image_type_ptr CMedia::left() const
 {
-    int64_t f = handle_loops( _frame );
-    int64_t idx = f - _frame_start;
-
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
-    else if ( idx < 0 ) idx = 0;
-
     Mutex& mtx = const_cast< Mutex& >( _mutex );
     SCOPED_LOCK( mtx );
+
+    int64_t f = _frame;
+    int64_t idx = f - _frame_start;
+
+    int64_t num = _frame_end - _frame_start;
+    if ( idx > num ) idx = num;
+    else if ( idx < 0 ) idx = 0;
+
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
 
     if ( _is_sequence && _sequence && _sequence[idx] )  pic = _sequence[idx];
     else if ( _stereo[0] )  pic = _stereo[0];
-    if ( !pic ) return pic;
+    if ( !pic ) {
+        return pic;
+    }
 
     img->_w = pic->width();
     img->_h = pic->height();
@@ -1057,7 +1166,7 @@ mrv::image_type_ptr CMedia::left() const
 
 mrv::image_type_ptr CMedia::right() const
 {
-    int64_t f = handle_loops( _frame );
+    int64_t f = _frame;
     int64_t idx = f - _frame_start;
     if ( _right_eye ) {
         return _right_eye->left();
@@ -1070,7 +1179,9 @@ mrv::image_type_ptr CMedia::right() const
          stereo_input() == kLeftRightStereoInput )
         return _stereo[0] ? _stereo[0] : _hires;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+    int64_t num = _frame_end - _frame_start + 1;
+
+    if ( idx >= num )   idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     if ( _is_sequence && _right && _right[idx] )
@@ -1092,7 +1203,10 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
 {
     int dw = width();
     int dh = height();
-    if ( !_displayWindow || _numWindows == 0 )
+
+    int64_t num = _frame_end - _frame_start + 1;
+
+    if ( !_displayWindow || num == 0 )
     {
         if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -1101,10 +1215,10 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+
+    if ( idx >= num )   idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
@@ -1119,7 +1233,7 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
         r.w( r.w() / 2 );
         return r;
     }
-    assert( idx < _numWindows );
+    assert( idx < num );
     return _displayWindow[idx];
 }
 
@@ -1131,7 +1245,9 @@ const mrv::Recti CMedia::display_window2( int64_t f ) const
     int dw = width();
     int dh = height();
 
-    if ( !_displayWindow2 || _numWindows == 0 )
+    int64_t num = _frame_end - _frame_start + 1;
+
+    if ( !_displayWindow2 || num == 0 )
     {
         if ( stereo_input() & kTopBottomStereoInput ) {
             dh /= 2;
@@ -1144,10 +1260,10 @@ const mrv::Recti CMedia::display_window2( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+
+    if ( idx >= num )   idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
@@ -1162,7 +1278,7 @@ const mrv::Recti CMedia::display_window2( int64_t f ) const
         r.w( r.w() / 2 );
         return r;
     }
-    assert( idx < _numWindows );
+    assert( idx < num );
     return _displayWindow2[idx];
 }
 
@@ -1170,7 +1286,10 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
 {
     int dw = width();
     int dh = height();
-    if ( !_dataWindow || _numWindows == 0 )
+
+    int64_t num = _frame_end - _frame_start + 1;
+
+    if ( !_dataWindow || num == 0 )
     {
         if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -1179,10 +1298,10 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+
+    if ( idx >= num )   idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
@@ -1206,21 +1325,26 @@ const mrv::Recti CMedia::data_window2( int64_t f ) const
     if ( _right_eye )
         return _right_eye->data_window(f);
 
+    int64_t num = _frame_end - _frame_start + 1;
+
     int dw = width();
     int dh = height();
-    if ( !_dataWindow2 || _numWindows == 0 )
+    if ( !_dataWindow2 || num == 0 )
     {
-        if ( stereo_input() & kTopBottomStereoInput )      { dh /= 2; }
-        else if ( stereo_input() & kLeftRightStereoInput ) { dw /= 2; }
+        if ( stereo_input() & kTopBottomStereoInput )      {
+            dh /= 2;
+        }
+        else if ( stereo_input() & kLeftRightStereoInput ) {
+            dw /= 2;
+        }
         return mrv::Recti( 0, 0, dw, dh );
     }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+    if ( idx >= num )   idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
@@ -1243,70 +1367,70 @@ void CMedia::display_window( const int xmin, const int ymin,
                              const int xmax, const int ymax,
                              const int64_t& frame )
 {
-  // assert( xmax >= xmin );
-  // assert( ymax >= ymin );
-  _numWindows = _frame_end - _frame_start + 1;
-  if ( !_displayWindow )
-      _displayWindow = new mrv::Recti[_numWindows.load()];
+    // assert( xmax >= xmin );
+    // assert( ymax >= ymin );
+    uint64_t num = _frame_end - _frame_start + 1;
+    if ( !_displayWindow )
+        _displayWindow = new mrv::Recti[ (unsigned) num];
 
-  int64_t f = handle_loops( frame );
-  int64_t idx = f - _frame_start;
+    int64_t f = frame;
+    int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
+    if ( idx >= (int64_t)num || idx < 0 ) return;
 
-  // assert( idx < _numWindows );
+    // assert( idx < num );
 
-  SCOPED_LOCK( _data_mutex );
-  _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
-  image_damage( image_damage() | kDamageData );
-  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+    SCOPED_LOCK( _data_mutex );
+    _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+    image_damage( image_damage() | kDamageData );
+
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
                               const int xmax, const int ymax,
                               const int64_t& frame )
 {
-  // assert( xmax >= xmin );
-  // assert( ymax >= ymin );
-  _numWindows = _frame_end - _frame_start + 1;
-  if ( !_displayWindow2 )
-      _displayWindow2 = new mrv::Recti[_numWindows.load()];
+    // assert( xmax >= xmin );
+    // assert( ymax >= ymin );
+    uint64_t num = _frame_end - _frame_start + 1;
+    if ( !_displayWindow2 )
+        _displayWindow2 = new mrv::Recti[ (unsigned)num];
 
-  int64_t f = handle_loops( frame );
-  int64_t idx = f - _frame_start;
+    int64_t f = frame;
+    int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
+    if ( idx >= (int64_t) num || idx < 0 ) return;
 
-  // assert( idx < _numWindows );
+    // assert( idx < num );
 
-  SCOPED_LOCK( _data_mutex );
-  _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
-  image_damage( image_damage() | kDamageData );
-  DBG( "display window2 frame " << _frame << " is " << _displayWindow2[idx] );
+    SCOPED_LOCK( _data_mutex );
+    _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+    image_damage( image_damage() | kDamageData );
+
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
                           const int xmax, const int ymax,
                           const int64_t& frame )
 {
-  // assert( xmax >= xmin );
-  // assert( ymax >= ymin );
-  _numWindows = _frame_end - _frame_start + 1;
-  if ( !_dataWindow )
-      _dataWindow = new mrv::Recti[_numWindows.load()];
+    // assert( xmax >= xmin );
+    // assert( ymax >= ymin );
+    uint64_t num = _frame_end - _frame_start + 1;
+    if ( !_dataWindow )
+        _dataWindow = new mrv::Recti[ (unsigned) num];
 
-  int64_t f = handle_loops( frame );
-  int64_t idx = f - _frame_start;
+    int64_t f = frame;
+    int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
+    if ( idx >= (int64_t) num || idx < 0 ) return;
 
-  SCOPED_LOCK( _data_mutex );
+    SCOPED_LOCK( _data_mutex );
 
-  // assert( idx < _numWindows );
+    // assert( idx < num );
 
-  _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
-  image_damage( image_damage() | kDamageData );
-  // DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
+    _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+    image_damage( image_damage() | kDamageData );
+    //
 }
 
 
@@ -1314,23 +1438,23 @@ void CMedia::data_window2( const int xmin, const int ymin,
                            const int xmax, const int ymax,
                            const int64_t& frame )
 {
-  // assert( xmax >= xmin );
-  // assert( ymax >= ymin );
-  _numWindows = _frame_end - _frame_start + 1;
-  assert( _numWindows > 0 );
-  if ( !_dataWindow2 )
-      _dataWindow2 = new mrv::Recti[_numWindows.load()];
+    // assert( xmax >= xmin );
+    // assert( ymax >= ymin );
+    uint64_t num = _frame_end - _frame_start + 1;
+    assert( num > 0 );
+    if ( !_dataWindow2 )
+        _dataWindow2 = new mrv::Recti[ (unsigned) num];
 
-  int64_t f = handle_loops( frame );
-  int64_t idx = f - _frame_start;
+    int64_t f = frame;
+    int64_t idx = f - _frame_start;
 
-  if ( idx >= _numWindows || idx < 0 ) return;
+    if ( idx >= (int64_t)num || idx < 0 ) return;
 
-  // assert( idx < _numWindows );
-  SCOPED_LOCK( _data_mutex );
-  _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
-  image_damage( image_damage() | kDamageData );
-  DBG( "data window2 frame " << _frame << " is " << _dataWindow2[idx] );
+    // assert( idx < num );
+    SCOPED_LOCK( _data_mutex );
+    _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+    image_damage( image_damage() | kDamageData );
+
 }
 
 
@@ -1341,9 +1465,9 @@ void CMedia::data_window2( const int xmin, const int ymin,
  */
 void CMedia::refresh( const mrv::Recti& r )
 {
-  // Merge the bounding box of area to update
-  _damageRectangle.merge( r );
-  image_damage( image_damage() | kDamageContents );
+    // Merge the bounding box of area to update
+    _damageRectangle.merge( r );
+    image_damage( image_damage() | kDamageContents );
 }
 
 
@@ -1353,21 +1477,23 @@ void CMedia::refresh( const mrv::Recti& r )
  */
 void CMedia::refresh()
 {
-  refresh( mrv::Recti(0, 0, width(), height()) );
+    refresh( mrv::Recti(0, 0, width(), height()) );
 }
 
 
 
 void  CMedia::first_frame(int64_t x)
 {
-   if ( x < _frame_start ) x = _frame_start;
-   _frameStart = x;
-   if ( _frame < _frameStart ) _frame = _frameStart;
+//    if ( x < _frame_start ) x = _frame_start;
+    assert0( x != AV_NOPTS_VALUE );
+    _frameStart = x;
+    if ( _frame < _frameStart ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
-    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
+    assert0( x != AV_NOPTS_VALUE );
+//    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
     _frameEnd = x;
     if ( _frame > _frameEnd ) _frame = _frameEnd;
 }
@@ -1385,70 +1511,78 @@ void CMedia::sequence( const char* fileroot,
                        const bool use_thread )
 {
 
-  SCOPED_LOCK( _mutex );
+    SCOPED_LOCK( _mutex );
 
-  assert( fileroot != NULL );
-  assert( start <= end );
+    assert( fileroot != NULL );
+    assert( start <= end );
 
-  if ( strncmp( fileroot, "file:", 5 ) == 0 )
-      fileroot += 5;
+    if ( strncmp( fileroot, "file:", 5 ) == 0 )
+        fileroot += 5;
 
-  if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 &&
-       start == _frame_start && end == _frame_end )
-    return;
+    if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 &&
+         start == _frame_start && end == _frame_end )
+        return;
 
+    free( _fileroot );
+    _fileroot = strdup( fileroot );
 
-  _fileroot = strdup( fileroot );
-
-  std::string f = _fileroot;
-  size_t idx = f.find( N_("%V") );
-  if ( idx != std::string::npos )
-  {
-     _is_stereo = true;
-  }
-
-  free( _filename );
-  _filename = NULL;
-
-
-  _is_sequence = true;
-  _dts = _adts = _frame = start;
-  _frameStart = _frame_start = start;
-  _frameEnd = _frame_end = end;
-
-
-  delete [] _sequence;
-  _sequence = NULL;
-  delete [] _right;
-  _right = NULL;
-
-  boost::uint64_t num = _frame_end - _frame_start + 1;
-
-  if ( dynamic_cast< aviImage* >( this ) == NULL )
-  {
-      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
-      _right    = new mrv::image_type_ptr[ unsigned(num) ];
-  }
-
-  if ( ! initialize() )
-    return;
-
-
-  if ( fetch( start ) )
-  {
-      cache( _hires );
-  }
-
-  default_icc_profile();
-  default_rendering_transform();
-  default_ocio_input_color_space();
-
-  if ( has_audio() )
+    std::string f = _fileroot;
+    size_t idx = f.find( N_("%V") );
+    if ( idx != std::string::npos )
     {
-        int64_t f = _frame.load();
+        _is_stereo = true;
+    }
+
+    free( _filename );
+    _filename = NULL;
+
+
+    _is_sequence = true;
+    _dts = _adts = start;
+    _frameStart = _frame_start = start;
+    _frameEnd = _frame_end = end;
+
+
+    delete [] _sequence;
+    _sequence = NULL;
+    delete [] _right;
+    _right = NULL;
+
+    uint64_t num = _frame_end - _frame_start + 1;
+
+    if ( dynamic_cast< aviImage* >( this ) == NULL )
+    {
+        _sequence = new mrv::image_type_ptr[ (unsigned) num ];
+        _right    = new mrv::image_type_ptr[ (unsigned) num ];
+    }
+
+    if ( ! initialize() )
+        return;
+
+    image_type_ptr canvas;
+    if ( fetch( canvas, start ) )
+    {
+        cache( canvas );
+        refresh();
+        default_color_corrections();
+    }
+
+
+    if ( has_audio() )
+    {
+        int64_t f = start;
         decode_audio( f );
     }
 }
+
+//! Adds default OCIO, ICC, and CTL profiles
+void CMedia::default_color_corrections()
+{
+    default_icc_profile();
+    default_rendering_transform();
+    default_ocio_input_color_space();
+}
+
 
 /**
  * Set a new filename for a single image. If dealing with an image sequence,
@@ -1458,46 +1592,64 @@ void CMedia::sequence( const char* fileroot,
  */
 void CMedia::filename( const char* n )
 {
-  assert( n != NULL );
+    assert0( n != NULL );
 
-  if ( strncmp( n, "file:", 5 ) == 0 )
-      n += 5;
-
-  if ( _fileroot && strcmp( n, _fileroot ) == 0 )
-    return;
+    if ( strncmp( n, "file:", 5 ) == 0 )
+        n += 5;
 
 
-  std::string name = n;
-  if ( name.substr(0, 6) == "Slate " )
-      name = name.substr(6, name.size() );
+
+    if ( _fileroot && strcmp( n, _fileroot ) == 0 )
+        return;
 
 
-  fs::path file = fs::path( name );
-  file = fs::absolute( file );
 
-  if ( fs::exists( file ) )
-  {
-     std::string path = fs::canonical( file ).string();
-     _fileroot = strdup( path.c_str() );
-  }
-  else
-  {
-     _fileroot = strdup( file.string().c_str() );
-  }
-
-  free( _filename );
-  _filename = NULL;
-
-  _is_sequence = false;
-  _is_stereo = false;
-  _dts = _adts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+    std::string name = n;
+    if ( name.substr(0, 6) == "Slate " )
+        name = name.substr(6, name.size() );
 
 
-  timestamp();
 
-  if ( ! initialize() )
-    return;
+    fs::path file = fs::path( name );
+    file = fs::absolute( file );
 
+    free( _fileroot );
+
+    if ( fs::exists( file ) )
+    {
+        std::string path = fs::canonical( file ).string();
+        _fileroot = strdup( path.c_str() );
+    }
+    else
+    {
+        _fileroot = strdup( file.string().c_str() );
+    }
+
+
+    free( _filename );
+    _filename = NULL;
+
+
+    _is_sequence = false;
+    _is_stereo = false;
+
+
+    if ( fetch( _hires, 1 ) )
+    {
+        cache( _hires );
+    }
+
+    _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+
+
+    timestamp();
+
+    if ( ! initialize() )
+        return;
+
+    if ( _hires ) _depth = _hires->pixel_type();
+    else _depth = image_type::kByte;
+    default_color_corrections();
 }
 
 
@@ -1510,17 +1662,18 @@ void CMedia::filename( const char* n )
  */
 const char* const CMedia::filename() const
 {
-  if ( !is_sequence() ) return _fileroot;
-  if ( _filename ) return _filename;
+    if ( !is_sequence() ) return _fileroot;
+    if ( _filename ) return _filename;
 
-  Mutex& vpm = const_cast< Mutex& >( _mutex );
-  SCOPED_LOCK( vpm );
+    Mutex& vpm = const_cast< Mutex& >( _mutex );
+    SCOPED_LOCK( vpm );
 
-  CMedia* self = const_cast< CMedia* >(this);
-  std::string file = self->sequence_filename( _dts );
-  self->_filename = (char*) malloc( 1024 * sizeof(char) );
-  strncpy( self->_filename, file.c_str(), 1023 );
-  return _filename;
+    CMedia* self = const_cast< CMedia* >(this);
+    std::string file = self->sequence_filename( _dts );
+    free( self->_filename );
+    self->_filename = (char*) malloc( 1024 * sizeof(char) );
+    strncpy( self->_filename, file.c_str(), 1023 );
+    return _filename;
 }
 
 
@@ -1533,19 +1686,19 @@ const char* const CMedia::filename() const
  */
 std::string CMedia::sequence_filename( const int64_t frame ) const
 {
-  if ( !is_sequence() ) return _fileroot;
+    if ( !is_sequence() ) return _fileroot;
 
-  std::string tmp = parse_view( _fileroot, _is_left_eye );
+    std::string tmp = parse_view( _fileroot, _is_left_eye );
 
-  int64_t f = frame;
-  if ( f > _frame_end ) f = _frame_end;
-  else if ( f < _frame_start ) f = _frame_start;
+    int64_t f = frame;
+    if ( f > _frame_end ) f = _frame_end;
+    else if ( f < _frame_start ) f = _frame_start;
 
-  // For image sequences
-  char buf[1024];
-  sprintf( buf, tmp.c_str(), f );
+    // For image sequences
+    char buf[1024];
+    sprintf( buf, tmp.c_str(), f );
 
-  return std::string( buf );
+    return std::string( buf );
 }
 
 
@@ -1561,74 +1714,79 @@ std::string CMedia::sequence_filename( const int64_t frame ) const
  */
 bool CMedia::has_changed()
 {
-  struct stat sbuf;
+    struct stat sbuf;
 
-  SCOPED_LOCK( _mutex );
+    SCOPED_LOCK( _mutex );
 
-  if ( is_sequence() )
+    if ( is_sequence() )
     {
-      if ( !_sequence ) return false;
+        if ( !_sequence ) return false;
 
-      int64_t f = handle_loops( _frame );
-      std::string file = sequence_filename(f);
+        int64_t f = _frame;
+        std::string file = sequence_filename(f);
 
 
-      int result = stat( file.c_str(), &sbuf );
-      if ( (result == -1) || (f < _frame_start) ||
-                              ( f > _frame_end ) ) return false;
+        int result = stat( file.c_str(), &sbuf );
+        if ( (result == -1) || (f < _frame_start) ||
+             ( f > _frame_end ) ) return false;
 
-      int64_t idx = f - _frame_start;
-      if ( idx < 0 ) idx = 0;
-      if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+        int64_t idx = f - _frame_start;
 
-      if ( !_sequence[idx] ||
-           _sequence[idx]->mtime() != sbuf.st_mtime ||
-           _sequence[idx]->ctime() != sbuf.st_ctime )
+        int64_t num = _frame_end - _frame_start + 1;
+
+        if ( idx >= num )   idx = num - 1;
+        else if ( idx < 0 ) idx = 0;
+
+        if ( !_sequence[idx] ||
+             _sequence[idx]->mtime() != sbuf.st_mtime ||
+             _sequence[idx]->ctime() != sbuf.st_ctime )
         {
-           assert( f == _sequence[idx]->frame() );
-           // update frame...
-           _sequence[idx].reset();
+            assert( f == _sequence[idx]->frame() );
+            // update frame...
+            _sequence[idx].reset();
 
-           _is_thumbnail = true;  // to avoid printing errors
-           if ( fetch( f ) )
-           {
-               _is_thumbnail = false;
-               _mtime = sbuf.st_mtime;
-               _ctime = sbuf.st_ctime;
-               cache( _hires );
-               refresh();
-               return true;
-           }
-           _is_thumbnail = false;
-           return false;
+            _is_thumbnail = true;  // to avoid printing errors
+            image_type_ptr canvas;
+            if ( fetch( canvas, f ) )
+            {
+                _is_thumbnail = false;
+                _mtime = sbuf.st_mtime;
+                _ctime = sbuf.st_ctime;
+                cache( canvas );
+                refresh();
+                return true;
+            }
+            _is_thumbnail = false;
+            return false;
         }
     }
-  else
-  {
-      if ( !_fileroot ) return false;
+    else
+    {
+        if ( !_fileroot ) return false;
 
-      int result = stat( _fileroot, &sbuf );
-      if ( result == -1 ) return false;
+        int result = stat( _fileroot, &sbuf );
+        if ( result == -1 ) return false;
 
-      if ( ( _mtime != sbuf.st_mtime ) ||
-           ( _ctime != sbuf.st_ctime ) )
-      {
-          int64_t f = handle_loops( _frame );
-          _is_thumbnail = true; // to avoid printing errors
-          if ( fetch( f ) )
-          {
-              _mtime = sbuf.st_mtime;
-              _ctime = sbuf.st_ctime;
-              cache( _hires );
-              refresh();
-              _is_thumbnail = false;
-              return true;
-          }
-          _is_thumbnail = false;
-          return false;
-      }
+        if ( ( _mtime != sbuf.st_mtime ) ||
+             ( _ctime != sbuf.st_ctime ) )
+        {
+            int64_t f = _frame;
+            _is_thumbnail = true; // to avoid printing errors
+            image_type_ptr canvas;
+            if ( fetch( canvas, f ) )
+            {
+                _mtime = sbuf.st_mtime;
+                _ctime = sbuf.st_ctime;
+                cache( canvas );
+                refresh();
+                _is_thumbnail = false;
+                return true;
+            }
+            _is_thumbnail = false;
+            return false;
+        }
     }
-  return false;
+    return false;
 }
 
 
@@ -1643,86 +1801,86 @@ bool CMedia::has_changed()
 void CMedia::image_size( int w, int h )
 {
     SCOPED_LOCK( _mutex );
-  _pixel_ratio = 1.0f;
+    _pixel_ratio = 1.0f;
 
-  // Derive pixel ratio from common format resolutions
-  if ( w == 720 && h == 486 )
+    // Derive pixel ratio from common format resolutions
+    if ( w == 720 && h == 486 )
     {
-      _pixel_ratio = 0.9f;    // 4:3 NTSC
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 0.9f;    // 4:3 NTSC
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 640 && h == 480 )
+    else if ( w == 640 && h == 480 )
     {
-      _pixel_ratio = 1.0f;    // 4:3 NTSC
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.0f;    // 4:3 NTSC
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 720 && h == 480 )
+    else if ( w == 720 && h == 480 )
     {
-      _pixel_ratio = 0.88888f;    // 4:3 NTSC
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 0.88888f;    // 4:3 NTSC
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 512 && h == 486 )
+    else if ( w == 512 && h == 486 )
     {
-      _pixel_ratio = 1.265f;  // 4:3 Targa 486
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.265f;  // 4:3 Targa 486
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 512 && h == 482 )
+    else if ( w == 512 && h == 482 )
     {
-      _pixel_ratio = 1.255f;  // 4:3 Targa NTSC
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.255f;  // 4:3 Targa NTSC
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 512 && h == 576 )
+    else if ( w == 512 && h == 576 )
     {
-      _pixel_ratio = 1.5f;    // 4:3 Targa PAL
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
+        _pixel_ratio = 1.5f;    // 4:3 Targa PAL
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
-  else if ( w == 646 && h == 485 )
+    else if ( w == 646 && h == 485 )
     {
-      _pixel_ratio = 1.001f;  // 4:3 NTSC
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.001f;  // 4:3 NTSC
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 720 && h == 576 )
+    else if ( w == 720 && h == 576 )
     {
-      _pixel_ratio = 1.066f;  // 4:3 PAL
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
+        _pixel_ratio = 1.066f;  // 4:3 PAL
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
-  else if ( w == 780 && h == 576 )
+    else if ( w == 780 && h == 576 )
     {
-      _pixel_ratio = 0.984f;  // 4:3 PAL
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
+        _pixel_ratio = 0.984f;  // 4:3 PAL
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
-  else if ( w == 1280 && h == 1024 )
+    else if ( w == 1280 && h == 1024 )
     {
-      _pixel_ratio = 1.066f; // HDTV full
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.066f; // HDTV full
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
-  else if ( w == 1920 && h == 1080 )
+    else if ( w == 1920 && h == 1080 )
     {
-      _pixel_ratio = 1.0f; // HDTV full
+        _pixel_ratio = 1.0f; // HDTV full
     }
-  else if ( w == 2048 && h == 1556 )
-  {
-      _pixel_ratio = 1.0f; // 2K full
-  }
-  else if ( w == 3840 && h == 2160 )
+    else if ( w == 2048 && h == 1556 )
     {
-      _pixel_ratio = 1.0f; // 4K HD
+        _pixel_ratio = 1.0f; // 2K full
     }
-  else if ( w == 4096 && h == 2304 )
-  {
-      _pixel_ratio = 1.0f; // 4K full
-  }
-  else if ( w == 7680 && h == 4320 )
+    else if ( w == 3840 && h == 2160 )
     {
-      _pixel_ratio = 1.0f; // 8K full
+        _pixel_ratio = 1.0f; // 4K HD
     }
-  else if ( (float)w/(float)h == 1.56 )
+    else if ( w == 4096 && h == 2304 )
     {
-      _pixel_ratio = 0.9f;   // HTDV/SD compromise
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+        _pixel_ratio = 1.0f; // 4K full
+    }
+    else if ( w == 7680 && h == 4320 )
+    {
+        _pixel_ratio = 1.0f; // 8K full
+    }
+    else if ( (float)w/(float)h == 1.56 )
+    {
+        _pixel_ratio = 0.9f;   // HTDV/SD compromise
+        if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
 
-  if ( _fps == 0 )
+    if ( _fps == 0 )
     {
         if ( default_fps > 0 )
             _orig_fps =_fps = _play_fps = default_fps;
@@ -1730,8 +1888,8 @@ void CMedia::image_size( int w, int h )
             _orig_fps =_fps = _play_fps = 24.0f;
     }
 
-  _w = w;
-  _h = h;
+    _w = w;
+    _h = h;
 
 }
 
@@ -1739,20 +1897,21 @@ void CMedia::image_size( int w, int h )
 
 image_type::Format CMedia::pixel_format() const
 {
-    if ( _hires )      return _hires->format();
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->format();
     else return image_type::kLumma;
 }
 
 const char* const CMedia::pixel_format_name() const
 {
-    if ( _hires ) return _hires->pixel_format();
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->pixel_format();
     else return "Lumma";
 }
 
 image_type::PixelType CMedia::depth() const
 {
-    if ( _hires ) return _hires->pixel_type();
-    else return image_type::kByte;
+    return _depth;
 }
 
 
@@ -1834,12 +1993,12 @@ void CMedia::stereo_output( StereoOutput x )
     {
         _stereo_output = x;
         if ( is_sequence() ) clear_cache();
-        if ( playback() == kStopped )
+        if ( stopped() )
         {
-            SCOPED_LOCK( _mutex );
-            if ( fetch(_frame) )
+            image_type_ptr canvas;
+            if ( fetch(canvas, _frame) )
             {
-                cache( _hires );
+                cache( canvas );
             }
         }
         refresh();
@@ -1949,27 +2108,29 @@ void CMedia::channel( const char* c )
         }
     }
 
-  free( _channel );
-  _channel = NULL;
+    free( _channel );
+    _channel = NULL;
 
-  // Store channel without r,g,b extension
-  if ( !ch.empty() )
-  {
-      _channel = strdup( ch.c_str() );
-  }
+    // Store channel without r,g,b extension
+    if ( !ch.empty() )
+    {
+        _channel = strdup( ch.c_str() );
+    }
 
 
-  if (to_fetch)
-  {
-      SCOPED_LOCK( _mutex );
-      clear_cache();
-      int64_t f = handle_loops( _frame );
-      if ( fetch( f ) )
-      {
-          cache( _hires );
-      }
-      refresh();
-  }
+    if (to_fetch)
+    {
+        clear_cache();
+        int64_t f = _frame;
+        image_type_ptr canvas;
+        if ( fetch( canvas, f ) )
+        {
+            if ( !is_sequence() ) _hires = canvas;
+            cache( canvas );
+            default_color_corrections();
+        }
+        refresh();
+    }
 }
 
 
@@ -1979,12 +2140,12 @@ void CMedia::channel( const char* c )
  */
 void CMedia::timestamp()
 {
-  struct stat sbuf;
-  int result = stat( filename(), &sbuf );
-  if ( result == -1 ) return;
-  _ctime = sbuf.st_ctime;
-  _mtime = sbuf.st_mtime;
-  _disk_space = sbuf.st_size;
+    struct stat sbuf;
+    int result = stat( filename(), &sbuf );
+    if ( result == -1 ) return;
+    _ctime = sbuf.st_ctime;
+    _mtime = sbuf.st_mtime;
+    _disk_space = sbuf.st_size;
 }
 
 /**
@@ -1995,20 +2156,24 @@ void CMedia::timestamp()
 void CMedia::timestamp(const boost::uint64_t idx,
                        mrv::image_type_ptr*& seq )
 {
-  if ( !seq ) return;
+    if ( !seq ) return;
 
-  mrv::image_type_ptr pic = seq[idx];
+    mrv::image_type_ptr pic = seq[idx];
 
-  struct stat sbuf;
-  int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
-  if ( result < 0 ) return;
+    struct stat sbuf;
+    int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
+    if ( result < 0 ) return;
 
-  _ctime = sbuf.st_ctime;
-  _mtime = sbuf.st_mtime;
-  pic->ctime( sbuf.st_ctime );
-  pic->mtime( sbuf.st_mtime );
-  _disk_space += sbuf.st_size;
-  image_damage( image_damage() | kDamageData );
+    DBG3;
+    _ctime = sbuf.st_ctime;
+    _mtime = sbuf.st_mtime;
+    DBG3;
+    pic->ctime( sbuf.st_ctime );
+    pic->mtime( sbuf.st_mtime );
+    DBG3;
+    _disk_space += sbuf.st_size;
+    DBG3;
+    image_damage( image_damage() | kDamageData );
 }
 
 
@@ -2020,14 +2185,15 @@ void CMedia::timestamp(const boost::uint64_t idx,
  */
 const std::string CMedia::creation_date() const
 {
-    if ( is_sequence() && hires() )
+    mrv::image_type_ptr pic = left();
+    if ( is_sequence() && pic )
     {
-        time_t t = hires()->ctime();
+        time_t t = pic->ctime();
         if ( t != 0 )
         {
             CMedia* img = const_cast< CMedia* >(this);
-            img->_ctime = hires()->ctime();
-            img->_mtime = hires()->mtime();
+            img->_ctime = pic->ctime();
+            img->_mtime = pic->mtime();
         }
     }
 
@@ -2044,7 +2210,7 @@ const std::string CMedia::creation_date() const
  */
 const char* CMedia::rendering_transform()  const
 {
-  return _rendering_transform;
+    return _rendering_transform;
 }
 
 /**
@@ -2054,13 +2220,14 @@ const char* CMedia::rendering_transform()  const
  */
 void CMedia::rendering_transform( const char* cfile )
 {
-  free( _rendering_transform ); _rendering_transform = NULL;
-  if ( cfile && strlen(cfile) > 0 )
+    free( _rendering_transform );
+    _rendering_transform = NULL;
+    if ( cfile && strlen(cfile) > 0 )
     {
-      _rendering_transform = strdup( cfile );
+        _rendering_transform = strdup( cfile );
     }
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 /**
@@ -2070,7 +2237,7 @@ void CMedia::rendering_transform( const char* cfile )
  */
 const char* CMedia::idt_transform()  const
 {
-  return _idt_transform;
+    return _idt_transform;
 }
 
 
@@ -2081,10 +2248,11 @@ const char* CMedia::idt_transform()  const
  */
 void CMedia::idt_transform( const char* cfile )
 {
-  free( _idt_transform ); _idt_transform = NULL;
-  if ( cfile && strlen(cfile) > 0 ) _idt_transform = strdup( cfile );
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    free( _idt_transform );
+    _idt_transform = NULL;
+    if ( cfile && strlen(cfile) > 0 ) _idt_transform = strdup( cfile );
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 
@@ -2103,13 +2271,11 @@ const char* CMedia::look_mod_transform( const size_t idx )  const
 
 void CMedia::clear_look_mod_transform()
 {
-  LMT::iterator i = _look_mod_transform.begin();
-  LMT::iterator e = _look_mod_transform.end();
-  for ( ; i != e; ++i )
-  {
-      free( *i );
-  }
-  _look_mod_transform.clear();
+    for ( const auto& i : _look_mod_transform )
+    {
+        free( i );
+    }
+    _look_mod_transform.clear();
 
 }
 
@@ -2133,8 +2299,8 @@ void CMedia::append_look_mod_transform( const char* cfile )
         free( _look_mod_transform[idx] );
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 // Count how many LMTs are GradeRef's components (Nodes)
@@ -2180,8 +2346,8 @@ void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
     {
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 /**
@@ -2202,8 +2368,8 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
     {
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 /**
@@ -2214,7 +2380,7 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
  */
 const char* CMedia::icc_profile()  const
 {
-  return _profile;
+    return _profile;
 }
 
 
@@ -2225,84 +2391,80 @@ const char* CMedia::icc_profile()  const
  */
 void CMedia::icc_profile( const char* cfile )
 {
-  free( _profile ); _profile = NULL;
-  if ( cfile && strlen(cfile) > 0 )
+    free( _profile );
+    _profile = NULL;
+    if ( cfile && strlen(cfile) > 0 )
     {
-      mrv::colorProfile::add( cfile );
-      _profile = strdup( cfile );
+        mrv::colorProfile::add( cfile );
+        _profile = strdup( cfile );
     }
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 
-/**
- * Force exit and delete all threads
- *
- */
-void CMedia::thread_exit()
-{
 
-  thread_pool_t::iterator i = _threads.begin();
-  thread_pool_t::iterator e = _threads.end();
-  for ( ; i != e; ++i )
-    {
-      delete *i;
-    }
-
-  _threads.clear();
-}
-
-  // If sequence or has picture return true
+// If sequence or has picture return true
 bool CMedia::valid_video() const
 {
-  if ( is_sequence() || has_picture() )
+    if ( is_sequence() || has_picture() )
     {
-      return true;
+        return true;
     }
 
-  return false;
+    return false;
 }
 
 bool CMedia::valid_audio() const
 {
-  size_t num_streams = number_of_audio_streams();
+    size_t num_streams = number_of_audio_streams();
 
-  bool valid = false;
-  for ( size_t i = 0; i < num_streams; ++i )
+    bool valid = false;
+    for ( size_t i = 0; i < num_streams; ++i )
     {
-      if ( _audio_info[i].has_codec ) { valid = true; break; }
+        if ( _audio_info[i].has_codec ) {
+            valid = true;
+            break;
+        }
     }
 
-  return valid;
+    return valid;
 }
 
 bool CMedia::valid_subtitle() const
 {
-  size_t num_streams = number_of_subtitle_streams();
+    size_t num_streams = number_of_subtitle_streams();
 
-  bool valid = false;
-  for ( size_t i = 0; i < num_streams; ++i )
+    bool valid = false;
+    for ( size_t i = 0; i < num_streams; ++i )
     {
-      if ( _subtitle_info[i].has_codec ) { valid = true; break; }
+        if ( _subtitle_info[i].has_codec ) {
+            valid = true;
+            break;
+        }
     }
 
-  return valid;
+    return valid;
 }
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir,
-                  mrv::ViewerUI* const uiMain,
+                  ViewerUI* const uiMain,
                   bool fg )
 {
 
+    if ( saving() ) return;
+
+    assert0( dir != kStopped );
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
     if ( _right_eye ) _right_eye->play( dir, uiMain, fg );
 
+    TRACE("");
     stop();
 
+    TRACE("");
     _playback = dir;
 
     assert( uiMain != NULL );
@@ -2312,126 +2474,138 @@ void CMedia::play(const CMedia::Playback dir,
     if ( _frame > last_frame() )  _frame = last_frame();
 
     _audio_frame = _frame.load();
-  // _expected = std::numeric_limits< int64_t >::min();
+    // _expected = std::numeric_limits< int64_t >::min();
 
     _dts = _frame.load();
 
-  DBG( name() << " Play from frame " << _dts << " expected " << _expected );
-
-  _audio_clock = double( av_gettime_relative() ) / 1000000.0;
-  _video_clock = double( av_gettime_relative() ) / 1000000.0;
-
-  _video_pts = _audio_pts = _frame  / _orig_fps;
-  update_video_pts(this, _video_pts, 0, 0);
-  set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
-  sync_clock_to_slave( &audclk, &extclk );
-
-  _audio_buf_used = 0;
 
 
-  // clear all packets
-  clear_packets();
+    _audio_clock = double( av_gettime_relative() ) / 1000000.0;
+    _video_clock = double( av_gettime_relative() ) / 1000000.0;
 
-  // This seek is needed to sync audio playback and flush buffers
-  if ( dir == kForwards ) _seek_req = true;
+    _video_pts = _audio_pts = _frame  / _orig_fps;
+    update_video_pts(this, _video_pts, 0, 0);
+    set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
+    sync_clock_to_slave( &audclk, &extclk );
 
-  if ( ! seek_to_position( _frame ) )
-      IMG_ERROR( _("Could not seek to frame ") << _frame );
+    _audio_buf_used = 0;
 
 
-  // Start threads
-  PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
-  assert( data != NULL );
-  assert( data->uiMain != NULL );
-  assert( data->image != NULL );
+    TRACE("");
+    // clear all packets
+    clear_packets();
 
-  PlaybackData* video_data, *audio_data, *subtitle_data;
+    TRACE("");
+    // This seek is needed to sync audio playback and flush buffers
+    if ( dir == kForwards ) _seek_req = true;
 
-  try {
-      // If there's at least one valid video stream, create video thread
-      bool valid_v = valid_video();
-      // If there's at least one valid audio stream, create audio thread
-      bool valid_a = valid_audio();
-      // If there's at least one valid subtitle stream, create subtitle thread
-      bool valid_s = valid_subtitle();
+    TRACE("");
+    if ( ! seek_to_position( _frame ) )
+        IMG_ERROR( _("Could not seek to frame ") << _frame );
 
-      // When a single image with no audio is present jump to our single frame
-      if ( !valid_a && !has_video() && !is_sequence() )
+    TRACE("");
+
+    // Start threads
+    PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
+    assert( data != NULL );
+    assert( data->uiMain != NULL );
+    assert( data->image != NULL );
+
+    PlaybackData* video_data, *audio_data, *subtitle_data;
+
+    try {
+        // If there's at least one valid video stream, create video thread
+        bool valid_v = valid_video();
+        // If there's at least one valid audio stream, create audio thread
+        bool valid_a = valid_audio();
+        // If there's at least one valid subtitle stream, create subtitle thread
+        bool valid_s = valid_subtitle();
+
+        // When a single image with no audio is present jump to our single frame
+        if ( !valid_a && !has_video() && !is_sequence() )
         {
-          frame( _frame );
+            frame( _frame );
         }
 
-      // std::cerr << name()
-      //           << " is_stereo? " << _is_stereo << " left_eye? "
-      //           << _is_left_eye
-      //           << " output " << _stereo_output << std::endl;
-      // if ( _is_stereo && _is_left_eye == false &&
-      //      _stereo_output != kNoStereo )
-      if ( _is_stereo && _right_eye )
-      {
-          delete _right_eye->_stereo_barrier;
-          if ( number_of_video_streams() % 2 == 0 )
-              _right_eye->_stereo_barrier = new Barrier( 2 );
-          else
-              _right_eye->_stereo_barrier = new Barrier( 1 );
+        // std::cerr << name()
+        //           << " is_stereo? " << _is_stereo << " left_eye? "
+        //           << _is_left_eye
+        //           << " output " << _stereo_output << std::endl;
+        // if ( _is_stereo && _is_left_eye == false &&
+        //      _stereo_output != kNoStereo )
+        if ( _is_stereo && _right_eye )
+        {
+            delete _right_eye->_stereo_barrier;
+            if ( number_of_video_streams() % 2 == 0 )
+                _right_eye->_stereo_barrier = new Barrier( 2 );
+            else
+                _right_eye->_stereo_barrier = new Barrier( 1 );
 
-      }
+        }
 
-      if ( !fg && !_fg_bg_barrier )
-      {
-          _fg_bg_barrier = new Barrier( valid_v + valid_a );
-      }
-      else if ( _fg_bg_barrier )
-      {
-          _fg_bg_barrier->threshold( valid_v + valid_a );
-      }
+        if ( !fg && !_fg_bg_barrier )
+        {
+            _fg_bg_barrier = new Barrier( valid_v + valid_a );
+        }
+        else if ( !fg && _fg_bg_barrier )
+        {
+            _fg_bg_barrier->notify_all();
+            _fg_bg_barrier->threshold( valid_v + valid_a );
+        }
+        else
+        {
+            _fg_bg_barrier = NULL;
+        }
 
-      unsigned num = 1 + valid_a + valid_v + valid_s;
-      delete _loop_barrier;
-      _loop_barrier = new Barrier( num );
+        unsigned num = 1 + valid_a + valid_v + valid_s;
+        delete _loop_barrier;
+        _loop_barrier = new Barrier( num );
 
-      if ( valid_v || valid_a )
-      {
-          video_data = new PlaybackData( *data );
-          _threads.push_back( new boost::thread(
-                              boost::bind( mrv::video_thread,
-                                           video_data ) ) );
-      }
+        if ( valid_v || valid_a )
+        {
+            video_data = new PlaybackData( *data );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::video_thread,
+                             video_data ) );
+            _threads.push_back( t );
+        }
 
-      if ( valid_a )
-      {
-          // Audio playback thread
-          audio_data = new PlaybackData( *data );
-          _threads.push_back( new boost::thread(
-                              boost::bind( mrv::audio_thread,
-                                           audio_data ) ) );
-      }
+        if ( valid_a )
+        {
+            // Audio playback thread
+            audio_data = new PlaybackData( *data );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::audio_thread,
+                             audio_data ) );
+            _threads.push_back( t );
+        }
 
-      if ( valid_s )
-      {
-          // Subtitle playback thread
-          subtitle_data = new PlaybackData( *data );
-          _threads.push_back( new boost::thread(
-                              boost::bind( mrv::subtitle_thread,
-                                           subtitle_data ) ) );
-      }
-
-
-      // If something was valid, create decode thread
-      if ( valid_a || valid_v || valid_s )
-      {
-          _threads.push_back( new boost::thread(
-                              boost::bind( mrv::decode_thread,
-                                           data ) ) );
-      }
+        if ( valid_s )
+        {
+            // Subtitle playback thread
+            subtitle_data = new PlaybackData( *data );
+            _threads.push_back( new boost::thread(
+                                    boost::bind( mrv::subtitle_thread,
+                                                 subtitle_data ) ) );
+        }
 
 
-      assert( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
-  }
-  catch( boost::exception& e )
-  {
-      LOG_ERROR( boost::diagnostic_information(e) );
-  }
+        // If something was valid, create decode thread
+        if ( valid_a || valid_v || valid_s )
+        {
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::decode_thread,
+                             data ) );
+            _threads.push_back( t );
+        }
+
+
+        assert0( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
+    }
+    catch( boost::exception& e )
+    {
+        LOG_ERROR( boost::diagnostic_information(e) );
+    }
 
 
 }
@@ -2446,50 +2620,71 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye ) _right_eye->stop();
 
-  _playback = kStopped;
+    TRACE("");
 
-  //
-  //
-  //
+    _playback = kStopped;
 
-  //
-  // Notify loop barrier, to exit any wait on a loop
-  //
-  DBG( name() << " Notify all loop barriers" );
-  if ( _loop_barrier )  _loop_barrier->notify_all();
-  DBG( name() << " Notify stereo barrier" );
-  if ( _stereo_barrier ) _stereo_barrier->notify_all();
-  if ( bg && _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    //
+    //
+    //
 
-  // Notify packets, to make sure that audio thread exits any wait lock
-  // This needs to be done even if no audio is playing, as user might
-  // have turned off audio, but audio thread is still active.
-  DBG( name() << " Notify all A/V/S" );
-  _audio_packets.cond().notify_all();
-  _video_packets.cond().notify_all();
-  _subtitle_packets.cond().notify_all();
+    //
+    // Notify loop barrier, to exit any wait on a loop
+    //
+    TRACE("");
+
+    if ( _loop_barrier )  _loop_barrier->notify_all();
+
+    TRACE("");
+    if ( _stereo_barrier ) _stereo_barrier->notify_all();
+    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+
+    TRACE("");
+    // Notify packets, to make sure that audio thread exits any wait lock
+    // This needs to be done even if no audio is playing, as user might
+    // have turned off audio, but audio thread is still active.
+
+    TRACE("");
+    _audio_packets.cond().notify_all();
+    TRACE("");
+    _video_packets.cond().notify_all();
+    TRACE("");
+    _subtitle_packets.cond().notify_all();
+    TRACE("");
+
+    // Wait for all threads to exit
+
+    wait_for_threads();
 
 
-  // Wait for all threads to exit
-  DBG( name() << " Wait for threads" );
-  wait_for_threads();
-  DBG( name() << " Waited for threads" );
+    // Clear barrier
 
-  // Clear barrier
-  DBG( name() << " Clear barrier" );
-  delete _loop_barrier; _loop_barrier = NULL;
-  delete _stereo_barrier; _stereo_barrier = NULL;
-  if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
-  _fg_bg_barrier = NULL;
+    delete _loop_barrier;
+    TRACE("");
+    _loop_barrier = NULL;
+    TRACE("");
+    delete _stereo_barrier;
+    _stereo_barrier = NULL;
 
-  close_audio();
+#if 0
+    if ( bg ) {
+    TRACE("");
+        delete _fg_bg_barrier;
+        _fg_bg_barrier = NULL;
+    }
+#endif
 
-  DBG( name() << " Clear packets" );
-  // Clear any audio/video/subtitle packets
-  clear_packets();
+    TRACE("");
+    close_audio();
 
-  // Queue thumbnail for update
-  image_damage( image_damage() | kDamageThumbnail );
+
+    TRACE("");
+    // Clear any audio/video/subtitle packets
+    clear_packets();
+
+    TRACE("");
+    // Queue thumbnail for update
+    image_damage( image_damage() | kDamageThumbnail );
 
 }
 
@@ -2500,8 +2695,8 @@ void CMedia::stop(const bool bg)
  */
 std::string CMedia::name() const
 {
-   fs::path file = fs::path( fileroot() );
-   return file.leaf().string();
+    fs::path file = fs::path( fileroot() );
+    return file.leaf().string();
 }
 
 
@@ -2511,17 +2706,17 @@ std::string CMedia::name() const
  */
 std::string CMedia::directory() const
 {
-   std::string name = fileroot();
-   if ( name.substr(0, 6) == "Slate " )
-      name = name.substr(6, name.size() );
-  fs::path file = fs::path( name );
-  file = fs::absolute( file.branch_path() );
-  std::string path;
-  if ( fs::exists( file ) )
-      path = fs::canonical( file ).string();
-  else
-      path = file.string();
-  return path;
+    std::string name = fileroot();
+    if ( name.substr(0, 6) == "Slate " )
+        name = name.substr(6, name.size() );
+    fs::path file = fs::path( name );
+    file = fs::absolute( file.branch_path() );
+    std::string path;
+    if ( fs::exists( file ) )
+        path = fs::canonical( file ).string();
+    else
+        path = file.string();
+    return path;
 }
 
 
@@ -2530,49 +2725,74 @@ std::string CMedia::directory() const
  * Set a new frame for the image sequence
  *  * @param f new frame
  */
-bool CMedia::frame( int64_t f )
+bool CMedia::frame( const int64_t f )
 {
-  assert( _fileroot != NULL );
+    assert( _fileroot != NULL );
 
-  if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
-      _right_eye->frame(f);
+    if ( stopped() && _right_eye && _stereo_output )
+        _right_eye->frame(f);
+
+
+    if ( Preferences::max_memory <= CMedia::memory_used )
+    {
+        if ( stopped() ) return false;
+        limit_video_store( f );
+        if ( has_audio() ) limit_audio_store( f );
+    }
+
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
 #define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-  if (
-      _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
-      _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-      _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+    if (
+        _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
+        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
+        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+
     {
-      return false;
+        return false;
     }
 
 
-  if ( f < _frameStart )     _dts = _frameStart;
-  else if ( f > _frameEnd )  _dts = _frameEnd;
-  else                       _dts = f;
 
-  AVPacket pkt;
-  av_init_packet( &pkt );
-  pkt.dts = pkt.pts = _dts;
-  pkt.size = 0;
-  pkt.data = NULL;
+    if ( f < _frameStart )     _dts = _frameStart;
+    else if ( f > _frameEnd )  _dts = _frameEnd;
+    else                       _dts = f;
 
-  _video_packets.push_back( pkt );
+    AVPacket pkt;
+    av_init_packet( &pkt );
+    pkt.dts = pkt.pts = _dts;
+    pkt.size = 0;
+    pkt.data = NULL;
 
-  if ( has_audio() )
-  {
-      _adts = _dts + _audio_offset;
-      fetch_audio( _adts );
-  }
+    if ( ! is_cache_filled( _dts ) )
+    {
+        image_type_ptr canvas;
+        std::string file = sequence_filename( _dts );
 
-  _expected = _dts + 1;
-  _expected_audio = _expected + _audio_offset;
+        if ( fs::exists( file ) )
+        {
+            if ( fetch( canvas, _dts ) )
+            {
+                cache( canvas );
+                default_color_corrections();
+            }
+        }
+    }
+
+    _video_packets.push_back( pkt );
+
+    if ( has_audio() )
+    {
+        fetch_audio( f + _audio_offset );
+    }
+
+    _expected = _dts + 1;
+    _expected_audio = _expected + _audio_offset;
 
 
-  return true;
+    return true;
 }
 
 
@@ -2590,147 +2810,204 @@ void CMedia::seek( const int64_t f )
 #endif
 
 
-  _seek_frame = f;
-  _seek_req   = true;
+    _seek_frame = f;
+    _seek_req   = true;
 
 
-  if ( _right_eye )
-  {
-#ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
-              << stopped() << std::endl;
-#endif
-      _right_eye->_seek_frame = f;
-      _right_eye->_seek_req = true;
-  }
-
-  if ( stopped() || saving() )
+    if ( _right_eye )
     {
 #ifdef DEBUG_SEEK
-       std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+        std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
+                  << stopped() << std::endl;
 #endif
-       do_seek();
+        _right_eye->_seek_frame = f;
+        _right_eye->_seek_req = true;
+    }
+
+    if ( stopped() || saving() )
+    {
+#ifdef DEBUG_SEEK
+        std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+#endif
+        do_seek();
     }
 
 #ifdef DEBUG_SEEK
-  std::cerr << "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
-            << _frame << " _expected: " << _expected << std::endl;
+    std::cerr << "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
+              << _frame << " _expected: " << _expected << std::endl;
 #endif
 }
 
 
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
-                               const mrv::image_type_ptr pic )
+                               const mrv::image_type_ptr& pic )
 {
+    assert0( seq != NULL );
+    assert0( pic != NULL );
+    assert0( pic.use_count() >= 1 );
 
-  int64_t f = pic->frame();
 
-  int64_t idx = f - _frame_start;
 
-  if ( idx < 0 ) idx = 0;
-  else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+    int64_t f = pic->frame();
 
-  if ( !seq || seq[idx] ) return;
 
-  mrv::image_type_ptr np;
+    int64_t idx = f - _frame_start;
+    int64_t num = _frame_end - _frame_start;
+    if ( idx < 0 ) idx = 0;
+    else if ( idx > num ) idx = num;
 
-  unsigned w = pic->width();
-  unsigned h = pic->height();
+    if ( !seq ) return;
 
-  if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
-  {
-      np.reset( new image_type( pic->frame(), w, h, pic->channels(),
-                                pic->format(), image_type::kByte,
-                                pic->repeat(), pic->pts() ) );
 
-      for ( unsigned y = 0; y < h; ++y )
-      {
-          for ( unsigned x = 0; x < w; ++x )
-          {
-              ImagePixel p = pic->pixel( x, y );
+    if ( seq[idx] ) {
+        memory_used -= seq[idx]->data_size();
+        DBG;
+        if ( CMedia::memory_used < 0 )
+            CMedia::memory_used = 0;
+    }
+    MEM();
 
-              if ( p.r > 1.0f ) p.r = 1.0f;
-              else if ( p.r < 0.0f ) p.r = 0.f;
+    mrv::image_type_ptr np;
 
-              if ( p.g > 1.0f ) p.g = 1.0f;
-              else if ( p.g < 0.0f ) p.g = 0.f;
+    unsigned w = pic->width();
+    unsigned h = pic->height();
 
-              if ( p.b > 1.0f ) p.b = 1.0f;
-              else if ( p.b < 0.0f ) p.b = 0.f;
+    if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
+    {
+        np.reset( new image_type( pic->frame(), w, h, pic->channels(),
+                                  pic->format(), image_type::kByte,
+                                  pic->repeat(), pic->pts() ) );
 
-              if ( p.a > 1.0f ) p.a = 1.0f;
-              else if ( p.a < 0.0f ) p.a = 0.f;
+        for ( unsigned y = 0; y < h; ++y )
+        {
+            for ( unsigned x = 0; x < w; ++x )
+            {
+                ImagePixel p = pic->pixel( x, y );
 
-              if ( p.r > 0.f )
-                  p.r = powf( p.r, 1.0f / gamma() );
-              if ( p.g > 0.f )
-                  p.g = powf( p.g, 1.0f / gamma() );
-              if ( p.b > 0.f )
-                  p.b = powf( p.b, 1.0f / gamma() );
+                if ( p.r > 1.0f ) p.r = 1.0f;
+                else if ( p.r < 0.0f ) p.r = 0.f;
 
-              np->pixel( x, y, p );
-          }
-      }
+                if ( p.g > 1.0f ) p.g = 1.0f;
+                else if ( p.g < 0.0f ) p.g = 0.f;
 
-      if ( _cache_scale > 0 )
-      {
-          w /= (1 << _cache_scale);
-          h /= (1 << _cache_scale);
-          np.reset( np->resize( w, h ) );
-      }
+                if ( p.b > 1.0f ) p.b = 1.0f;
+                else if ( p.b < 0.0f ) p.b = 0.f;
 
-      seq[idx] = np;
-  }
-  else
-  {
-      if ( _cache_scale > 0 )
-      {
-          w /= (1 << _cache_scale);
-          h /= (1 << _cache_scale);
-          np.reset( pic->resize( w, h ) );
-          seq[idx] = np;
-      }
-      else
-      {
-          //DBG( "cache seq " << idx << " pic " << pic );
-          seq[idx] = pic;
-      }
-  }
+                if ( p.a > 1.0f ) p.a = 1.0f;
+                else if ( p.a < 0.0f ) p.a = 0.f;
 
-  _w = w; _h = h;
+                if ( p.r > 0.f )
+                    p.r = powf( p.r, 1.0f / gamma() );
+                if ( p.g > 0.f )
+                    p.g = powf( p.g, 1.0f / gamma() );
+                if ( p.b > 0.f )
+                    p.b = powf( p.b, 1.0f / gamma() );
 
-  timestamp(idx, seq);
+                np->pixel( x, y, p );
+            }
+        }
+
+        if ( _cache_scale > 0 )
+        {
+            w /= (1 << _cache_scale);
+            h /= (1 << _cache_scale);
+            np.reset( np->resize( w, h ) );
+        }
+
+        seq[idx] = np;
+    }
+    else
+    {
+        if ( _cache_scale > 0 )
+        {
+            w /= (1 << _cache_scale);
+            h /= (1 << _cache_scale);
+            np.reset( pic->resize( w, h ) );
+            seq[idx] = np;
+        }
+        else
+        {
+            DBG;
+            seq[idx] = pic;
+            DBG;
+            assert0( pic.use_count() >= 2 );
+        }
+    }
+
+    DBG;
+    memory_used += seq[idx]->data_size();
+    DBG;
+    MEM();
+
+    _w = w;
+    _h = h;
+    DBG;
+
+    timestamp(idx, seq);
+    DBG;
 }
 
 /**
  * Cache picture for sequence.
  *
+ * @param frame       frame to retrieve cache from
+ */
+mrv::image_type_ptr CMedia::cache( int64_t frame ) const
+{
+
+    mrv::image_type_ptr r;
+
+    if ( !is_sequence() || !_cache_active ||
+         dynamic_cast< const aviImage* >( this ) != NULL )
+        return r;
+
+    int64_t idx = frame - _frame_start;
+    int64_t num = _frame_end - _frame_start + 1;
+    {
+        //SCOPED_LOCK( _mutex );
+        if ( idx < 0 ) idx = 0;
+        else if ( idx >= num ) idx = num - 1;
+    }
+
+    return _sequence[idx];
+}
+/**
+ * Cache picture for sequence.
+ *
  * @param pic       picture to cache
  */
-void CMedia::cache( const mrv::image_type_ptr pic )
+void CMedia::cache( mrv::image_type_ptr& pic )
 {
-   assert( pic != NULL );
+    if ( dynamic_cast< const aviImage* >( this ) != NULL )
+        return;
 
-   if ( !is_sequence() || !_cache_active || !pic )
-      return;
 
-   SCOPED_LOCK( _mutex );
 
-   if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
-   {
-       update_cache_pic( _sequence, _stereo[0] );
-       _stereo[0].reset();
-   }
-   else
-   {
-       update_cache_pic( _sequence, pic );
-   }
+    if ( !is_sequence() || !_cache_active || !pic )
+        return;
 
-   if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
-   {
-       update_cache_pic( _right, _stereo[1] );
-       _stereo[1].reset();
-   }
+    _depth = pic->pixel_type();
+
+    if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
+    {
+        DBGM1( "stereo[0]" );
+        // update_cache_pic( _sequence, pic );
+        update_cache_pic( _sequence, _stereo[0] );
+        _stereo[0].reset();
+    }
+    else
+    {
+        DBGM1( "sequence" );
+        update_cache_pic( _sequence, pic );
+        pic.reset();
+    }
+
+    if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
+    {
+        DBGM1( "stereo[1]" );
+        update_cache_pic( _right, _stereo[1] );
+        _stereo[1].reset();
+    }
 
 }
 
@@ -2785,6 +3062,20 @@ bool CMedia::is_cache_full()
     return true;
 }
 
+int64_t CMedia::first_cache_empty_frame()
+{
+    if ( dynamic_cast< aviImage* >( this ) != NULL )
+        return first_frame();
+
+    for ( int64_t i = _frame_start; i <= _frame_end; ++i )
+    {
+        if ( is_cache_filled(i) == kNoCache ) {
+            return i;
+        }
+    }
+
+    return last_frame();
+}
 /**
  * Flushes all caches
  *
@@ -2803,27 +3094,33 @@ void CMedia::flush_all()
 /// bit depth.
 size_t CMedia::memory() const
 {
-  size_t r = 0;
-  if ( _sequence )
+    size_t r = 0;
+    if ( _sequence )
     {
-      boost::uint64_t frames = _frame_end - _frame_start + 1;
-      for ( boost::uint64_t i = 0; i < frames; ++i )
+        boost::uint64_t frames = _frame_end - _frame_start + 1;
+        for ( boost::uint64_t i = 0; i < frames; ++i )
         {
-          mrv::image_type_ptr s = _sequence[i];
-          if ( !s ) continue;
+            mrv::image_type_ptr s = _sequence[i];
+            if ( !s ) continue;
 
-          r += s->data_size();
+            r += s->data_size();
         }
     }
-  else
+    else
     {
-      if ( hires() )
+        if ( hires() )
         {
             r += _hires->data_size();
         }
+        else if ( _stereo[0] )
+        {
+            r += _stereo[0]->data_size();
+            if ( _stereo[1] )
+                r += _stereo[1]->data_size();
+        }
     }
 
-  return r;
+    return r;
 }
 
 
@@ -2842,26 +3139,26 @@ size_t CMedia::memory() const
  */
 const char* CMedia::stream_type( const AVCodecParameters* codecpar )
 {
-  const char* stream;
-  switch( codecpar->codec_type )
+    const char* stream;
+    switch( codecpar->codec_type )
     {
     case AVMEDIA_TYPE_VIDEO:
-       stream = _("video");
-      break;
+        stream = _("video");
+        break;
     case AVMEDIA_TYPE_AUDIO:
-       stream = _("audio");
-      break;
+        stream = _("audio");
+        break;
     case AVMEDIA_TYPE_DATA:
-       stream = _("data");
-      break;
+        stream = _("data");
+        break;
     case AVMEDIA_TYPE_SUBTITLE:
-       stream = _("subtitle");
-      break;
+        stream = _("subtitle");
+        break;
     default:
-       stream = _("unknown");
-      break;
+        stream = _("unknown");
+        break;
     }
-  return stream;
+    return stream;
 }
 
 /**
@@ -2873,26 +3170,26 @@ const char* CMedia::stream_type( const AVCodecParameters* codecpar )
  */
 const char* CMedia::stream_type( const AVCodecContext* codec_context )
 {
-  const char* stream;
-  switch( codec_context->codec_type )
+    const char* stream;
+    switch( codec_context->codec_type )
     {
     case AVMEDIA_TYPE_VIDEO:
-       stream = _("video");
-      break;
+        stream = _("video");
+        break;
     case AVMEDIA_TYPE_AUDIO:
-       stream = _("audio");
-      break;
+        stream = _("audio");
+        break;
     case AVMEDIA_TYPE_DATA:
-       stream = _("data");
-      break;
+        stream = _("data");
+        break;
     case AVMEDIA_TYPE_SUBTITLE:
-       stream = _("subtitle");
-      break;
+        stream = _("subtitle");
+        break;
     default:
-       stream = _("unknown");
-      break;
+        stream = _("unknown");
+        break;
     }
-  return stream;
+    return stream;
 }
 
 
@@ -2907,28 +3204,29 @@ const char* CMedia::stream_type( const AVCodecContext* codec_context )
  */
 std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
 {
-  char buf[80];
-  memset( buf, 0, 5 );
-  memcpy( buf, &codec_tag, 4 );
+    char buf[80];
+    memset( buf, 0, 5 );
+    memcpy( buf, &codec_tag, 4 );
 
-  bool ascii = true;
-  for ( int i = 0; i < 4; ++i )
+    bool ascii = true;
+    for ( int i = 0; i < 4; ++i )
     {
-      if ( !isprint( buf[i] ) )
+        if ( !isprint( buf[i] ) )
         {
-          ascii = false; break;
+            ascii = false;
+            break;
         }
     }
 
 
-  std::string fourcc;
-  if ( !ascii )
+    std::string fourcc;
+    if ( !ascii )
     {
-       sprintf( buf, N_("0x%08x"), codec_tag );
+        sprintf( buf, N_("0x%08x"), codec_tag );
     }
 
-  fourcc = buf;
-  return fourcc;
+    fourcc = buf;
+    return fourcc;
 }
 
 
@@ -2940,81 +3238,81 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
  *
  * @return      name of codec.
  */
-std::string CMedia::codec_name( const AVCodecParameters* enc )
+std::string CMedia::codec_name( const AVCodecParameters* par )
 {
-  AVCodec* p = avcodec_find_decoder(enc->codec_id);
-  const char* codec_name;
-  char buf[20];
+    AVCodec* p = avcodec_find_decoder(par->codec_id);
+    const char* codec_name;
+    char buf[20];
 
-  if (p) {
-    codec_name = p->name;
-  } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
-    /* fake mpeg2 transport stream codec (currently not
-       registered) */
-     codec_name = N_("mpeg2ts");
-  } else {
-    /* output avi tags */
-    if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
-          && isprint((enc->codec_tag>>16)&0xFF) &&
-          isprint((enc->codec_tag>>24)&0xFF)){
-       snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
-               enc->codec_tag & 0xff,
-               (enc->codec_tag >> 8) & 0xff,
-               (enc->codec_tag >> 16) & 0xff,
-               (enc->codec_tag >> 24) & 0xff,
-               enc->codec_tag);
+    if (p) {
+        codec_name = p->name;
+    } else if (par->codec_id == AV_CODEC_ID_MPEG2TS) {
+        /* fake mpeg2 transport stream codec (currently not
+           registered) */
+        codec_name = N_("mpeg2ts");
     } else {
-       snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
+        /* output avi tags */
+        if(   isprint(par->codec_tag&0xFF) && isprint((par->codec_tag>>8)&0xFF)
+                && isprint((par->codec_tag>>16)&0xFF) &&
+                isprint((par->codec_tag>>24)&0xFF)) {
+            snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
+                     par->codec_tag & 0xff,
+                     (par->codec_tag >> 8) & 0xff,
+                     (par->codec_tag >> 16) & 0xff,
+                     (par->codec_tag >> 24) & 0xff,
+                     par->codec_tag);
+        } else {
+            snprintf(buf, sizeof(buf), N_("0x%04x"), par->codec_tag);
+        }
+        codec_name = buf;
     }
-    codec_name = buf;
-  }
 
-  if ( codec_name )
-      return std::string( codec_name );
-  else
-      return "";
+    if ( codec_name )
+        return std::string( codec_name );
+    else
+        return "";
 }
 
 /**
  * Given a codec context, return the name of the codec if possible.
  *
- * @param enc   codec context
+ * @param ctx   codec context
  *
  * @return      name of codec.
  */
-std::string CMedia::codec_name( const AVCodecContext* enc )
+std::string CMedia::codec_name( const AVCodecContext* ctx )
 {
-  AVCodec* p = avcodec_find_decoder(enc->codec_id);
-  const char* codec_name;
-  char buf[20];
+    AVCodec* p = avcodec_find_decoder(ctx->codec_id);
+    const char* codec_name;
+    char buf[20];
 
-  if (p) {
-    codec_name = p->name;
-  } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
-    /* fake mpeg2 transport stream codec (currently not
-       registered) */
-     codec_name = N_("mpeg2ts");
-  } else {
-    /* output avi tags */
-    if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
-          && isprint((enc->codec_tag>>16)&0xFF) &&
-          isprint((enc->codec_tag>>24)&0xFF)){
-       snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
-               enc->codec_tag & 0xff,
-               (enc->codec_tag >> 8) & 0xff,
-               (enc->codec_tag >> 16) & 0xff,
-               (enc->codec_tag >> 24) & 0xff,
-               enc->codec_tag);
+    if (p) {
+        codec_name = p->name;
+    } else if (ctx->codec_id == AV_CODEC_ID_MPEG2TS) {
+        /* fake mpeg2 transport stream codec (currently not
+           registered) */
+        codec_name = N_("mpeg2ts");
     } else {
-       snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
+        /* output avi tags */
+        if(   isprint(ctx->codec_tag&0xFF) && isprint((ctx->codec_tag>>8)&0xFF)
+                && isprint((ctx->codec_tag>>16)&0xFF) &&
+                isprint((ctx->codec_tag>>24)&0xFF)) {
+            snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
+                     ctx->codec_tag & 0xff,
+                     (ctx->codec_tag >> 8) & 0xff,
+                     (ctx->codec_tag >> 16) & 0xff,
+                     (ctx->codec_tag >> 24) & 0xff,
+                     ctx->codec_tag);
+        } else {
+            snprintf(buf, sizeof(buf), N_("0x%04x"), ctx->codec_tag);
+        }
+        codec_name = buf;
     }
-    codec_name = buf;
-  }
 
-  if ( codec_name )
-      return std::string( codec_name );
-  else
-      return "";
+    if ( codec_name )
+        return std::string( codec_name );
+    else
+        return "";
 }
 
 
@@ -3025,40 +3323,31 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
  *
  * @return FPS (frames per second)
  */
-double CMedia::calculate_fps( const AVStream* stream )
+double CMedia::calculate_fps( AVFormatContext* ctx,
+                              AVStream* stream )
 {
-  double fps;
-
-  assert( stream != NULL );
-  const AVRational& rate = av_stream_get_r_frame_rate( stream );
-
-  if ( stream->avg_frame_rate.den && stream->avg_frame_rate.num )
-  {
-      fps = av_q2d( stream->avg_frame_rate );
-  }
-  else if ( rate.den && rate.num )
+    double fps;
+    assert( ctx != NULL );
+    assert( stream != NULL );
+    AVRational rate = av_guess_frame_rate( ctx, stream, NULL );
+    if ( rate.num && rate.den )
     {
-      fps = av_q2d( rate );
+        fps = av_q2d( rate );
     }
-  else
+    else
     {
-      fps = 1.0 / av_q2d( stream->time_base );
+        fps = 1.0 / av_q2d( stream->time_base );
     }
-
-  // Some codecs/movies seem to return fps as a time_base > 10000, like:
-  //           24895 / 2   for 24.895 fps.  Not sure why /2, thou.
-  if ( fps > 1000 &&
-       stream->time_base.den > 10000 && stream->time_base.num < 3 )
+    if ( fps > 1000 &&
+         stream->time_base.den > 10000 && stream->time_base.num < 3 )
     {
-      fps = stream->time_base.den / 1000.0;
+        fps = stream->time_base.den / 1000.0;
     }
 
-  if ( fps >= 1000 )
-    {
-      fps = 30.0f;  // workaround for some buggy streams
-    }
+    if ( fps >= 1000 ) fps = 30.0;  // workaround for some buggy streams
+    else if ( fps <= 0 ) fps = 30.0;
 
-  return fps;
+    return fps;
 }
 
 
@@ -3074,52 +3363,52 @@ double CMedia::calculate_fps( const AVStream* stream )
 void CMedia::populate_stream_info( StreamInfo& s,
                                    std::ostringstream& msg,
                                    const AVFormatContext* context,
-                                   const AVCodecParameters* ctx,
+                                   const AVCodecParameters* par,
                                    const int stream_index )
 {
 
-  bool has_codec = true;
+    bool has_codec = true;
 
-  // Mark streams that we don't have a decoder for
-  AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
-  if ( ! codec )
+    // Mark streams that we don't have a decoder for
+    AVCodec* codec = avcodec_find_decoder( par->codec_id );
+    if ( ! codec )
     {
-      has_codec = false;
-      const char* type = stream_type( ctx );
-      msg << _("\n\nNot a known codec ") << codec_name(ctx)
-          << _(" for stream #") << stream_index << _(", type ") << type;
+        has_codec = false;
+        const char* type = stream_type( par );
+        msg << _("\n\nNot a known codec ") << codec_name(par)
+            << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
-  s.context      = context;
-  s.stream_index = stream_index;
-  s.has_codec    = has_codec;
-  s.codec_name   = codec_name( ctx );
-  s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
+    s.context      = context;
+    s.stream_index = stream_index;
+    s.has_codec    = has_codec;
+    s.codec_name   = codec_name( par );
+    s.fourcc       = codec_tag2fourcc( par->codec_tag );
 
-  AVStream* st = context->streams[stream_index];
-  double time  = av_q2d( st->time_base );
+    AVStream* st = context->streams[stream_index];
+    double time  = av_q2d( st->time_base );
 
 
-  AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
-  if ( lang && lang->value )
-      s.language = lang->value;
-  else
-      s.language = _("und");
+    AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
+    if ( lang && lang->value )
+        s.language = lang->value;
+    else
+        s.language = _("und");
 
-  if ( st->start_time == AV_NOPTS_VALUE )
+    if ( st->start_time == AV_NOPTS_VALUE )
     {
         s.start = 1;
     }
-  else
+    else
     {
         s.start = ((double) st->start_time * time);
     }
 
-  if ( st->duration != AV_NOPTS_VALUE )
+    if ( st->duration != AV_NOPTS_VALUE )
     {
         s.duration = ((double) st->duration * time);
     }
-  else
+    else
     {
         s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
     }
@@ -3162,48 +3451,48 @@ void CMedia::populate_stream_info( StreamInfo& s,
                                    const int stream_index )
 {
 
-  bool has_codec = true;
+    bool has_codec = true;
 
-  // Mark streams that we don't have a decoder for
-  AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
-  if ( ! codec )
+    // Mark streams that we don't have a decoder for
+    AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
+    if ( ! codec )
     {
-      has_codec = false;
-      const char* type = stream_type( ctx );
-      msg << _("\n\nNot a known codec ") << codec_name(ctx)
-          << _(" for stream #") << stream_index << _(", type ") << type;
+        has_codec = false;
+        const char* type = stream_type( ctx );
+        msg << _("\n\nNot a known codec ") << codec_name(ctx)
+            << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
-  s.context      = context;
-  s.stream_index = stream_index;
-  s.has_codec    = has_codec;
-  s.codec_name   = codec_name( ctx );
-  s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
+    s.context      = context;
+    s.stream_index = stream_index;
+    s.has_codec    = has_codec;
+    s.codec_name   = codec_name( ctx );
+    s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
 
-  AVStream* st = context->streams[stream_index];
-  double time  = av_q2d( st->time_base );
+    AVStream* st = context->streams[stream_index];
+    double time  = av_q2d( st->time_base );
 
 
-  AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
-  if ( lang && lang->value )
-      s.language = lang->value;
-  else
-      s.language = _("und");
+    AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
+    if ( lang && lang->value )
+        s.language = lang->value;
+    else
+        s.language = _("und");
 
-  if ( st->start_time == AV_NOPTS_VALUE )
+    if ( st->start_time == AV_NOPTS_VALUE )
     {
         s.start = 1;
     }
-  else
+    else
     {
         s.start = ((double) st->start_time * time);
     }
 
-  if ( st->duration != AV_NOPTS_VALUE )
+    if ( st->duration != AV_NOPTS_VALUE )
     {
         s.duration = ((double) st->duration * time);
     }
-  else
+    else
     {
         s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
     }
@@ -3232,55 +3521,57 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
 // Convert an FFMPEG pts into a frame number
 int64_t CMedia::frame2pts( const AVStream* stream,
-                                  const int64_t frame ) const
+                           const int64_t frame ) const
 {
-   long double p = (long double)(frame - 1) / (long double) fps();
+    long double p = (long double)(frame - 1) / (long double) fps();
 
-   if ( stream )
-   {
-       // reverse num/den correct here
-       p /= stream->time_base.num;
-       p *= stream->time_base.den;
-   }
+    if ( stream )
+    {
+        // reverse num/den correct here
+        p /= stream->time_base.num;
+        p *= stream->time_base.den;
+    }
 
-   return int64_t(p);
+    return int64_t(p);
 }
 
 
 // Convert an FFMPEG pts into a frame number
 int64_t CMedia::pts2frame( const AVStream* stream,
-                                  const int64_t dts ) const
+                           const int64_t dts ) const
 {
 
 
     //assert( dts != AV_NOPTS_VALUE );
-  if (!stream || dts == AV_NOPTS_VALUE) return 0;
+    if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
-  long double p = (long double) dts;
-  p *= stream->time_base.num;
-  p /= stream->time_base.den;
-  p *= _orig_fps;
-  int64_t pts = int64_t( p + 0.5 ) + 1;
-  return pts;
+    long double p = (long double) dts;
+    p *= stream->time_base.num;
+    p /= stream->time_base.den;
+    p *= _orig_fps;
+    int64_t pts = int64_t( p + 0.5 ) + 1;
+    return pts;
 }
 
 
 
 
 // Return the number of frames cached for jog/shuttle
-int CMedia::max_video_frames()
+unsigned CMedia::max_video_frames()
 {
     if ( _video_cache_size > 0 )
         return _video_cache_size;
     else if ( _video_cache_size == 0 )
-        return int( fps()*2 );
+    {
+        return unsigned( fps()*2 );
+    }
     else
-        return std::numeric_limits<int>::max() / 3;
+        return std::numeric_limits<unsigned>::max() / 3;
 }
 
 
 // Return the number of frames cached for jog/shuttle
-int CMedia::max_image_frames()
+uint64_t CMedia::max_image_frames()
 {
 #if 0
     if ( _image_cache_size > 0 )
@@ -3290,29 +3581,51 @@ int CMedia::max_image_frames()
     else
         return std::numeric_limits<int>::max() / 3;
 #else
-    if ( !_hires ) return std::numeric_limits<int>::max() / 3;
-    return (Preferences::max_memory / _hires->data_size());
+    if ( _hires )
+    {
+        if ( CMedia::memory_used < 0 )
+            CMedia::memory_used = 0;
+        return (uint64_t)((Preferences::max_memory - CMedia::memory_used) *
+                          100.0 / (double) _hires->data_size());
+    }
+    uint64_t i = 0;
+    uint64_t num = _frame_end - _frame_start + 1;
+    for ( ; i < num; ++i )
+    {
+        if ( _sequence[i] ) break;
+    }
+
+    if ( i >= num ) return std::numeric_limits<int>::max() / 3;
+    MEM();
+
+    if ( Preferences::max_memory < CMedia::memory_used )
+        return 0;
+
+    if ( CMedia::memory_used < 0 )
+        CMedia::memory_used = 0;
+    return (uint64_t) ((Preferences::max_memory - CMedia::memory_used) *
+                       100.0 / (double) _sequence[i]->data_size());
 #endif
 }
 
 void CMedia::loop_at_start( const int64_t frame )
 {
-   if ( has_picture() )
-   {
-       // With loop at start we cannot discard previous frames as they are
-       // part of one or multiple prerolls
-      _video_packets.loop_at_start( frame );
-   }
+    if ( has_picture() )
+    {
+        // With loop at start we cannot discard previous frames as they are
+        // part of one or multiple prerolls
+        _video_packets.loop_at_start( frame );
+    }
 
-   if ( number_of_audio_streams() > 0 )
-   {
-      _audio_packets.loop_at_start( frame );
-   }
+    if ( number_of_audio_streams() > 0 )
+    {
+        _audio_packets.loop_at_start( frame );
+    }
 
-  if ( number_of_subtitle_streams() > 0 )
-  {
-     _subtitle_packets.loop_at_start( frame );
-  }
+    if ( number_of_subtitle_streams() > 0 )
+    {
+        _subtitle_packets.loop_at_start( frame );
+    }
 }
 
 
@@ -3320,54 +3633,66 @@ void CMedia::loop_at_end( const int64_t frame )
 {
 
 
-   if ( has_picture() )
-   {
-       // With loop at end, we can discard all video packets that go
-       // beyond the last frame
-       mrv::PacketQueue::Mutex& m = _video_packets.mutex();
-       SCOPED_LOCK( m );
-
-       mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
-       mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
-       AVStream* stream = get_video_stream();
-       for ( ; i != e; ++i )
-       {
-           if ( get_frame( stream, *i ) >= frame )
-           {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _video_packets.erase( it );
-           }
-       }
-
-      _video_packets.loop_at_end( frame );
-   }
-
-  if ( number_of_audio_streams() > 0 )
+    if ( has_picture() )
     {
-       // // With loop at end, we can discard all audio packets that go
-       // // beyond the last frame
-       mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
-       SCOPED_LOCK( m );
+        // With loop at end, we can discard all video packets that go
+        // beyond the last frame
 
-       mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
-       mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
-       AVStream* stream = get_audio_stream();
-       for ( ; i != e; ++i )
-       {
-           int64_t pktframe = get_frame( stream, *i );
-           if ( pktframe >= frame )
-           {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _audio_packets.erase( it );
-           }
-       }
+        mrv::PacketQueue::Mutex& m = _video_packets.mutex();
+        SCOPED_LOCK( m );
 
-       _audio_packets.loop_at_end( frame );
+        AVStream* stream = get_video_stream();
+
+        int64_t limit = frame + _frame_offset;
+
+        mrv::PacketQueue::iterator i = _video_packets.begin();
+        for ( ; i != _video_packets.end(); )
+        {
+            int64_t pktframe = get_frame( stream, *i );
+            if ( pktframe > limit )
+            {
+                i = _video_packets.erase( i );
+            }
+            else
+            {
+                ++i;
+            }
+        }
+
+
+        _video_packets.loop_at_end( frame );
     }
 
-  if ( number_of_subtitle_streams() > 0 )
+    if ( number_of_audio_streams() > 0 )
     {
-       _subtitle_packets.loop_at_end( frame );
+        // With loop at end, we can discard all audio packets that go
+        // beyond the last frame
+
+        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
+        SCOPED_LOCK( m );
+
+        AVStream* stream = get_audio_stream();
+
+        mrv::PacketQueue::iterator i = _audio_packets.begin();
+        int64_t limit = frame + _frame_offset + _audio_offset - 1;
+        for ( ; i != _audio_packets.end(); )
+        {
+            int64_t pktframe = get_frame( stream, *i );
+            if ( pktframe > limit )
+            {
+                i = _audio_packets.erase( i );
+            }
+            else
+                ++i;
+        }
+
+
+        _audio_packets.loop_at_end( frame );
+    }
+
+    if ( number_of_subtitle_streams() > 0 )
+    {
+        _subtitle_packets.loop_at_end( frame );
     }
 }
 
@@ -3378,8 +3703,7 @@ void CMedia::limit_video_store( const int64_t f )
 {
     SCOPED_LOCK( _mutex );
 
-
-  if ( !_sequence ) return;
+    if ( !_sequence ) return;
 
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
@@ -3387,466 +3711,490 @@ void CMedia::limit_video_store( const int64_t f )
    ((a).tv_usec CMP (b).tv_usec) :                                          \
    ((a).tv_sec CMP (b).tv_sec))
 
-  struct customMore {
-      inline bool operator()( const timeval& a,
-                              const timeval& b ) const
-      {
-          return timercmp( a, b, > );
-      }
-  };
-
-  boost::uint64_t num = _frame_end - _frame_start + 1;
-  
-  typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
-  TimedSeqMap tmp;
-  for ( uint64_t i = 0; i < num; ++i )
-  {
-      if ( !_sequence[i] ) continue;
-      tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
-  }
+    struct customMore {
+        inline bool operator()( const timeval& a,
+                                const timeval& b ) const
+        {
+            return timercmp( a, b, < );
+        }
+    };
 
 
-  uint64_t count = 0;
-  uint64_t max_frames = max_image_frames();
+    uint64_t num  = _frame_end - _frame_start + 1;
+    uint64_t max_frames = max_image_frames();
 
-  
-  TimedSeqMap::iterator it = tmp.begin();
-  for ( ; it != tmp.end(); )
-  {
-      ++count;
-      if ( count > max_frames )
-      {
-          uint64_t idx = it->second;
-          // std::cerr << "count " << count << " max frames " << max_frames
-          //           << " delete " << idx << std::endl;
-          _sequence[ idx ].reset();
-          if ( _right[idx] ) _right[ idx ].reset();
+    typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
 
-          it = tmp.erase(it);
-      }
-      else
-      {
-          ++it;
-      }
-  }
+    TimedSeqMap tmp;
+    for ( uint64_t i = 0; i < num; ++i )
+    {
+        if ( !_sequence[i] ||
+             _sequence[i]->data_size() == 0 ||
+             ( _playback == kForwards &&
+               ( _sequence[i]->frame() >= _frame  ||
+                 _sequence[i]->frame() >= f ) ) ||
+             ( _playback == kBackwards &&
+               ( _sequence[i]->frame() <= _frame ||
+                 _sequence[i]->frame() <= f ) ) ) continue;
 
+        tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
+    }
+
+
+    if ( tmp.size() < max_frames ) return;
+
+    TimedSeqMap::iterator it = tmp.begin();
+
+    // Erase enough frames to make sure memory used is less than max memory
+    while ( Preferences::max_memory <= memory_used && !tmp.empty() )
+    {
+        if ( it == tmp.end() ) return;
+
+        uint64_t idx = it->second;
+        if ( _sequence[idx] )
+        {
+            memory_used -= _sequence[idx]->data_size();
+            MEM();
+            _sequence[ idx ].reset();
+        }
+
+        if ( _right && _right[idx] ) {
+            memory_used -= _right[idx]->data_size();
+            MEM();
+            _right[ idx ].reset();
+        }
+
+        it = tmp.erase( it );
+    }
 
 }
 
 void CMedia::preroll( const int64_t f )
 {
-  // nothing to do for image sequences
-  find_image( f );
+    // nothing to do for image sequences
+    int64_t frame = f;
+    find_image( frame );
 }
 
 
 void CMedia::wait_image()
 {
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
 
-  for(;;)
+    for(;;)
     {
-      if ( stopped() ) break;
+        if ( stopped() ) break;
 
-      if ( ! _video_packets.empty() )
+        if ( ! _video_packets.empty() )
         {
             break;
         }
 
-      CONDITION_WAIT( _video_packets.cond(), vpm );
+        CONDITION_WAIT( _video_packets.cond(), vpm );
     }
 }
 
 
 CMedia::DecodeStatus CMedia::handle_video_seek( int64_t& frame,
-                                                const bool is_seek )
+        const bool is_seek )
 {
-  Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+    Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
 
-  if ( is_seek && _video_packets.is_seek() )
-  {
-      assert( !_video_packets.empty() );
-      _video_packets.pop_front();  // pop seek begin packet
-  }
-  else if ( !is_seek && _video_packets.is_preroll() )
-  {
-      assert( !_video_packets.empty() );
-     _video_packets.pop_front();
-  }
-  else
-     IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
-
-  DecodeStatus got_video = kDecodeMissingFrame;
-  unsigned count = 0;
-
-  while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
+    if ( is_seek && _video_packets.is_seek() )
     {
-      count += 1;
+        assert( !_video_packets.empty() );
+        _video_packets.pop_front();  // pop seek begin packet
+    }
+    else if ( !is_seek && _video_packets.is_preroll() )
+    {
+        assert( !_video_packets.empty() );
+        _video_packets.pop_front();
+    }
+    else
+        IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
-      if ( !is_seek && playback() == kBackwards )
+    DecodeStatus got_video = kDecodeMissingFrame;
+    unsigned count = 0;
+
+    while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
+    {
+        count += 1;
+
+        if ( !is_seek && playback() == kBackwards )
         {
-           got_video = kDecodeOK;
+            got_video = kDecodeOK;
         }
-      else
+        else
         {
-           got_video = kDecodeOK;
+            got_video = kDecodeOK;
         }
 
-      assert( !_video_packets.empty() );
-      _video_packets.pop_front();
+        assert( !_video_packets.empty() );
+        _video_packets.pop_front();
     }
 
-  if ( _video_packets.empty() ) return kDecodeError;
+    if ( _video_packets.empty() ) return kDecodeError;
 
-  if ( count != 0 && is_seek )
-  {
-    const AVPacket& pkt = _video_packets.front();
-    AVStream* stream = get_video_stream();
-    if ( stream )
-       frame = pts2frame( stream, pkt.dts );
-    else
-       frame = pkt.dts;
-  }
+    if ( count != 0 && is_seek )
+    {
+        const AVPacket& pkt = _video_packets.front();
+        AVStream* stream = get_video_stream();
+        if ( stream )
+            frame = pts2frame( stream, pkt.dts );
+        else
+            frame = pkt.dts;
+    }
 
-  if ( _video_packets.is_seek_end() )
-  {
-      assert( !_video_packets.empty() );
-     _video_packets.pop_front();  // pop seek end packet
-  }
+    if ( _video_packets.is_seek_end() )
+    {
+        assert( !_video_packets.empty() );
+        _video_packets.pop_front();  // pop seek end packet
+    }
 
 #ifdef DEBUG_VIDEO_PACKETS
-  debug_video_packets(frame, "AFTER HSEEK");
+    debug_video_packets(frame, "AFTER HSEEK");
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
-  debug_video_stores(frame, "AFTER HSEEK");
+    debug_video_stores(frame, "AFTER HSEEK");
 #endif
-  return got_video;
+    return got_video;
+}
+
+void CMedia::debug_video_stores(const int64_t frame,
+                                const char* routine,
+                                const bool detail )
+{
+    std::cerr << this << std::dec << " " << name()
+              << " S:" << _frame << " D:" << _dts
+              << " A:" << frame << " " << routine << " image stores "
+              << ": ";
+
+    if (detail && _sequence )
+    {
+        uint64_t i = 0;
+        uint64_t num = _frame_end - _frame_start + 1;
+        for ( ; i < num; ++i )
+        {
+            int64_t f = i + _frame_start - 1;
+            if ( f == frame )  std::cerr << "P";
+            if ( f == _dts )   std::cerr << "D";
+            if ( f == _frame ) std::cerr << "F";
+            if ( _sequence[i] )
+            {
+                std::cerr << i << " ";
+            }
+        }
+        std::cerr << std::endl;
+    }
 }
 
 CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
 {
-    if ( ( playback() == kStopped ) && _right_eye && _stereo_output ) {
+    if ( stopped() && _right_eye && _stereo_output ) {
         int64_t f = frame;
         _right_eye->decode_video(f);
     }
 
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
 
-  if ( _video_packets.empty() )
-    return kDecodeMissingFrame;
+    if ( _video_packets.empty() )
+        return kDecodeMissingFrame;
 
 
 
-  while ( !_video_packets.empty() )
+    while ( !_video_packets.empty() )
     {
-      if ( _video_packets.is_flush() )
+        if ( _video_packets.is_flush() )
         {
-           flush_video();
-          _video_packets.pop_front();
-          continue;
+            flush_video();
+            _video_packets.pop_front();
+            continue;
         }
-      else if ( _video_packets.is_seek() )
+        else if ( _video_packets.is_seek() )
         {
             handle_video_seek( frame, true );
             continue;
         }
-      else if ( _video_packets.is_preroll() )
+        else if ( _video_packets.is_preroll() )
         {
-           handle_video_seek( frame, false );
-           continue;
+            handle_video_seek( frame, false );
+            continue;
         }
-      else if ( _video_packets.is_loop_start() )
-      {
-          // We check packet integrity as the length of packets is
-          // not accurate.
-          const AVPacket& pkt = _video_packets.front();
-          if ( frame > pkt.pts ) return kDecodeOK;
+        else if ( _video_packets.is_loop_start() )
+        {
+            // We check packet integrity as the length of packets is
+            // not accurate.
+            const AVPacket& pkt = _video_packets.front();
 
-          _video_packets.pop_front();
-          return kDecodeLoopStart;
-      }
-      else if ( _video_packets.is_loop_end() )
-      {
-          // We check packet integrity as the length of packets is
-          // not accurate.
-          const AVPacket& pkt = _video_packets.front();
-          if ( frame < pkt.pts ) return kDecodeOK;
+            // This is needed to handle loops properly, as packets do not
+            // come for all frames, as counted in the playback loop.
+            if ( frame > pkt.dts ) {
+                return kDecodeOK;
+            }
 
-          _video_packets.pop_front();
-          return kDecodeLoopEnd;
-      }
-      else
-      {
-          assert( !_video_packets.empty() );
-          _video_packets.pop_front();
-          return kDecodeOK;
-      }
+            _video_packets.pop_front();
+            return kDecodeLoopStart;
+        }
+        else if ( _video_packets.is_loop_end() )
+        {
+            // We check packet integrity as the length of packets is
+            // not accurate.
+
+            const AVPacket& pkt = _video_packets.front();
+
+            // This is needed to handle loops properly, as packets do not
+            // come for all frames, as counted in the playback loop.
+            if ( frame < pkt.dts )
+                 return kDecodeOK;
+
+            _video_packets.pop_front();
+            return kDecodeLoopEnd;
+        }
+        else
+        {
+            assert( !_video_packets.empty() );
+            _video_packets.pop_front();
+            return kDecodeOK;
+        }
 
     }
 
 
-  return kDecodeMissingFrame;
+    return kDecodeMissingFrame;
 }
 
 CMedia::DecodeStatus CMedia::decode_subtitle( const int64_t frame )
 {
-  return kDecodeOK;
+    return kDecodeOK;
 }
 
 bool CMedia::find_subtitle( const int64_t f )
 {
-  return false;
+    return false;
 }
 
 int64_t CMedia::loops_offset( int64_t f,
                               const int64_t frame ) const
 {
-  if ( looping() == kLoop )
-  {
-      while ( frame < f )
-      {
-          int64_t len = duration();
-          f += len;
-      }
-      // std::cerr << frame << " len " << len << " f " << f << std::endl;
-  }
-  else if ( looping() == kPingPong )
-  {
-      int64_t len = duration();
-      while ( frame < f )
-      {
-          int64_t len = duration();
-          f += len;
-      }
-  }
-  return f;
+    if ( looping() == kLoop )
+    {
+        while ( frame < f )
+        {
+            int64_t len = duration();
+            f += len;
+        }
+        // std::cerr << frame << " len " << len << " f " << f << std::endl;
+    }
+    else if ( looping() == kPingPong )
+    {
+        int64_t len = duration();
+        while ( frame < f )
+        {
+            int64_t len = duration();
+            f += len;
+        }
+    }
+    return f;
 }
 
 
-int64_t CMedia::handle_loops( const int64_t frame ) const
-{
-  int64_t f = frame;
-
-  if ( looping() == kLoop )
-  {
-      int64_t len = duration();
-      if ( len > 0 )
-      {
-          f = modE(f-_frameStart, len) + _frameStart;
-      }
-  }
-  else if ( looping() == kPingPong )
-  {
-      int64_t len = duration();
-      if ( len > 0 )
-      {
-          f -= _frameStart;
-          int64_t v   = f / len;
-          f = modE( f, len ) + _frameStart;
-          if ( modE( v, 2 ) == 1 )
-          {
-              f = len - f + _frame_start;
-          }
-      }
-  }
-  else
-  {
-      if ( f > _frameEnd )       f = _frameEnd;
-      else if ( f < _frameStart) f = _frameStart;
-  }
-
-  return f;
-}
 
 bool CMedia::find_image( const int64_t frame )
 {
-  if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
-      _right_eye->find_image(frame);
+    if ( stopped() && _right_eye && _stereo_output )
+        _right_eye->find_image(frame);
 
-  int64_t f = handle_loops( frame );
 
-  _video_pts   = f / _orig_fps;
-  _video_clock = double(av_gettime_relative()) / 1000000.0;
-  update_video_pts(this, _video_pts, 0, 0);
+    int64_t f = frame;
 
-  // Check if we have a cached frame for this frame
+    _video_pts   = f / _orig_fps;
+    _video_clock = double(av_gettime_relative()) / 1000000.0;
+    update_video_pts(this, _video_pts, 0, 0);
 
-  int64_t idx = f - _frame_start;
-  {
-      //SCOPED_LOCK( _mutex );
-      if ( idx < 0 ) idx = 0;
-      else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
-  }
+    // Check if we have a cached frame for this frame
 
-  if ( _sequence && _sequence[idx] )
+    int64_t idx = f - _frame_start;
+    int64_t num = _frame_end - _frame_start + 1;
     {
-        {
-            SCOPED_LOCK( _mutex );
+        //SCOPED_LOCK( _mutex );
+        if ( idx < 0 ) idx = 0;
+        else if ( idx >= num ) idx = num - 1;
+    }
 
-            _hires = _sequence[idx];
-            if ( _right && _right[idx])
-                _stereo[1] = _right[idx];
+    // We want to run limit_video_store only once.
+    // However, both the video_thread and the preload idle thread
+    // might call us on the same frame, leading to shortening of
+    // too many frames.  Thus, we use this variable to limit or not
+    // the cache.
+    bool limit = false;
+
+    if ( _sequence && _sequence[idx] && _sequence[idx]->valid() )
+    {
+        SCOPED_LOCK( _mutex );
+
+        if ( _frame != frame )
+        {
+            _frame = frame;
+            limit = true;
         }
 
-        _frame = frame;
+        if ( _right && _right[idx])
+            _stereo[1] = _right[idx];
 
-        SCOPED_LOCK( _data_mutex );
         free(_filename);
         _filename = NULL;
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
-        limit_video_store(f);
+        if ( limit ) limit_video_store(f);
         return true;
     }
 
-  bool should_load = false;
 
-  std::string file = sequence_filename(f);
+    bool should_load = false;
 
-  if ( _filename )
+    std::string file = sequence_filename(f);
+    std::string old  = sequence_filename(_frame);
+
+    if ( !internal() && file != old  )
     {
-      if ( file != _filename )
-      {
-          SCOPED_LOCK( _mutex );
-          SCOPED_LOCK( _data_mutex );
-          should_load = true;
-          free( _filename );
-          _filename = strdup( file.c_str() );
-      }
-    }
-  else
-    {
-        SCOPED_LOCK( _data_mutex );
-        SCOPED_LOCK( _mutex );
-        _filename = strdup( file.c_str() );
         should_load = true;
+        free( _filename );
+        _filename = strdup( file.c_str() );
     }
 
-  _frame = frame;
+    if ( _frame != f )
+    {
+        _frame = f;
+        limit = true;
+    }
 
-  if ( should_load )
-  {
-     if ( fs::exists(file) )
-     {
-         SCOPED_LOCK( _mutex );
-         SCOPED_LOCK( _audio_mutex );
-         SCOPED_LOCK( _subtitle_mutex );
-         SCOPED_LOCK( _data_mutex );
-         if ( fetch( f ) )
-         {
-             cache( _hires );
-             default_icc_profile();
-             default_rendering_transform();
-             default_ocio_input_color_space();
-         }
-         else
-         {
-             if ( idx > 1 )
-             {
-                 // If we run out of memory, make sure we sweep the
-                 // frames we have in memory.
-                 size_t data_size = _sequence[idx-1]->data_size();
-                 int64_t maxmem = (idx-2) * data_size;
-                 Preferences::max_memory = maxmem;
-                 LOG_INFO( "[mem] Max memory is now " << maxmem );
-                 limit_video_store( frame );
-                 fetch( f );
-                 cache( _hires );
-                 default_icc_profile();
-                 default_rendering_transform();
-                 default_ocio_input_color_space();
-             }
-         }
-     }
-     else
-     {
-        if ( ! internal() )
+    if ( should_load )
+    {
+        image_type_ptr canvas;
+        if ( fs::exists(file) )
         {
-            if ( Preferences::missing_frame == Preferences::kBlackFrame )
+            SCOPED_LOCK( _mutex );
+            SCOPED_LOCK( _audio_mutex );
+            SCOPED_LOCK( _subtitle_mutex );
+            if ( fetch( canvas, f ) )
             {
-                _hires = mrv::image_type_ptr( new image_type( frame,
-                                                              width(),
-                                                              height(),
-                                                              1,
-                                                              image_type::kLumma,
-                                                              image_type::kByte ) );
-                memset( _hires->data().get(), 0x0, _hires->data_size() );
-                cache( _hires );
-                IMG_WARNING( file << _(" is missing.") );
+                cache( canvas );
+                default_color_corrections();
             }
             else
             {
-                // REPEATS LAST FRAME
-
-                int64_t idx = f - _frame_start - 1;
-                if ( idx >= 0 && idx < _frame_end )
+                if ( idx > 1 && _sequence[idx-1] )
                 {
-                    mrv::image_type_ptr old;
-
-                    for ( ; !_sequence[idx]; --idx )
+                    // If we run out of memory, make sure we sweep the
+                    // frames we have in memory.
+                    size_t data_size = _sequence[idx-1]->data_size();
+                    int64_t maxmem = (idx-2) * data_size;
+                    Preferences::max_memory = maxmem;
+                    LOG_INFO( "[mem] Max memory is now " << maxmem );
+                    limit_video_store( frame );
+                    if ( fetch( canvas, f ) )
                     {
-                    }
-
-                    if ( idx >= 0 )
-                    {
-                        old = _sequence[idx];
-                        _hires = mrv::image_type_ptr( new image_type( *old ) );
-                        _hires->frame( f );
-                        cache( _hires );
-                        IMG_WARNING( file << _(" is missing. Choosing ")
-                                     << old->frame() );
+                        cache( canvas );
+                        default_color_corrections();
                     }
                 }
-
-
             }
-            _hires->valid( false ); // mark this frame as invalid
-            refresh();
-            return false;
         }
-     }
-  }
+        else
+        {
+            if ( ! internal() )
+            {
+                if ( Preferences::missing_frame == Preferences::kBlackFrame )
+                {
+                    canvas =
+                    mrv::image_type_ptr(
+                                        new image_type( frame,
+                                                        width(),
+                                                        height(),
+                                                        1,
+                                                        image_type::kLumma,
+                                                        image_type::kByte ) );
+                    memset( canvas->data().get(), 0x0, canvas->data_size() );
+                    canvas->valid( false ); // mark this frame as invalid
+                    cache( canvas );
+                    default_color_corrections();
+                    IMG_WARNING( file << _(" is missing.") );
+                }
+                else
+                {
+                    // REPEATS LAST FRAME
+                    if ( idx >= 0 && idx < num )
+                    {
+                        for ( ; ( !_sequence[idx] ||
+                                  ( _sequence[idx] && !_sequence[idx]->valid() ));
+                        --idx )
+                        {
+                        }
 
-  limit_video_store( f );
-  refresh();
-  image_damage( image_damage() | kDamageData | kDamage3DData );
-  return true;
+
+                        if ( idx >= 0 )
+                        {
+                            const mrv::image_type_ptr old = _sequence[idx];
+                            canvas =
+                            mrv::image_type_ptr( new image_type( *old ) );
+                            canvas->frame( f );
+                            canvas->valid( false ); // mark this frame as invalid
+                            cache( canvas );
+                            default_color_corrections();
+                            IMG_WARNING( file << _(" is missing. Choosing ")
+                                         << old->frame() << "." );
+                        }
+                    }
+                }
+                refresh();
+                if ( limit ) limit_video_store( f );
+                image_damage( image_damage() | kDamageData | kDamage3DData );
+                return true;
+            }
+        }
+    }
+
+    if ( limit ) limit_video_store( f );
+
+    refresh();
+    image_damage( image_damage() | kDamageData | kDamage3DData );
+    return true;
 }
 
 
 void CMedia::default_icc_profile()
 {
-  if ( icc_profile() ) return;
+    if ( icc_profile() ) return;
 
-  if ( internal() ) return;
+    if ( internal() ) return;
 
-  switch( depth() )
+    switch( depth() )
     {
     case image_type::kByte:
-      if ( !icc_profile_8bits.empty() )
-        icc_profile( icc_profile_8bits.c_str() );
-      break;
+        if ( !icc_profile_8bits.empty() )
+            icc_profile( icc_profile_8bits.c_str() );
+        break;
     case image_type::kShort:
-      if ( !icc_profile_16bits.empty() )
-        icc_profile( icc_profile_16bits.c_str() );
-      break;
+        if ( !icc_profile_16bits.empty() )
+            icc_profile( icc_profile_16bits.c_str() );
+        break;
     case image_type::kInt:
-      if ( !icc_profile_32bits.empty() )
-        icc_profile( icc_profile_32bits.c_str() );
-      break;
+        if ( !icc_profile_32bits.empty() )
+            icc_profile( icc_profile_32bits.c_str() );
+        break;
     case image_type::kHalf:
     case image_type::kFloat:
-      if ( !icc_profile_float.empty() )
-        icc_profile( icc_profile_float.c_str() );
-      break;
+        if ( !icc_profile_float.empty() )
+            icc_profile( icc_profile_float.c_str() );
+        break;
     default:
-      IMG_ERROR("default_icc_profile - unknown bit depth");
-      break;
+        IMG_ERROR("default_icc_profile - unknown bit depth");
+        break;
     }
 }
 
@@ -3872,39 +4220,39 @@ void CMedia::default_ocio_input_color_space()
     const char* bit_depth = _("unknown");
     switch( depth() )
     {
-        case image_type::kByte:
-            if ( !ocio_8bits_ics.empty() )
-            {
-                bit_depth = _("8 bits");
-                ocio_input_color_space( ocio_8bits_ics.c_str() );
-            }
-            break;
-        case image_type::kShort:
-            if ( !ocio_16bits_ics.empty() )
-            {
-                bit_depth = _("16 bits");
-                ocio_input_color_space( ocio_16bits_ics.c_str() );
-            }
-            break;
-        case image_type::kInt:
-            if ( !ocio_32bits_ics.empty() )
-            {
-                bit_depth = _("32 bits");
-                ocio_input_color_space( ocio_32bits_ics.c_str() );
-            }
-            break;
-        case image_type::kHalf:
-        case image_type::kFloat:
-            if ( !ocio_float_ics.empty() )
-            {
-                bit_depth = _("half/float");
-                ocio_input_color_space( ocio_float_ics.c_str() );
-            }
-            break;
-        default:
-            IMG_ERROR( _("default_ocio_input_color_space - "
-                         "unknown bit depth") );
-            break;
+    case image_type::kByte:
+        if ( !ocio_8bits_ics.empty() )
+        {
+            bit_depth = _("8 bits");
+            ocio_input_color_space( ocio_8bits_ics.c_str() );
+        }
+        break;
+    case image_type::kShort:
+        if ( !ocio_16bits_ics.empty() )
+        {
+            bit_depth = _("16 bits");
+            ocio_input_color_space( ocio_16bits_ics.c_str() );
+        }
+        break;
+    case image_type::kInt:
+        if ( !ocio_32bits_ics.empty() )
+        {
+            bit_depth = _("32 bits");
+            ocio_input_color_space( ocio_32bits_ics.c_str() );
+        }
+        break;
+    case image_type::kHalf:
+    case image_type::kFloat:
+        if ( !ocio_float_ics.empty() )
+        {
+            bit_depth = _("half/float");
+            ocio_input_color_space( ocio_float_ics.c_str() );
+        }
+        break;
+    default:
+        IMG_ERROR( _("default_ocio_input_color_space - "
+                     "unknown bit depth") );
+        break;
     }
 
     if (! ocio_input_color_space().empty() )
@@ -3924,8 +4272,9 @@ void CMedia::default_ocio_input_color_space()
             defaultcs = config->getColorSpace("lg10");
         if ( defaultcs )
         {
-            IMG_INFO( "Got colorspace '" << defaultcs->getName()
-                      << "' for dpx/cin extension");
+            if ( !_is_thumbnail )
+                IMG_INFO( "Got colorspace '" << defaultcs->getName()
+                          << "' for dpx/cin extension");
             ocio_input_color_space( defaultcs->getName() );
         }
     }
@@ -3941,32 +4290,32 @@ void CMedia::ocio_input_color_space( const std::string& n )
 
 void CMedia::default_rendering_transform()
 {
-  if ( rendering_transform() ) return;
+    if ( rendering_transform() ) return;
 
-  if ( internal() ) return;
+    if ( internal() ) return;
 
-  switch( depth() )
+    switch( depth() )
     {
     case image_type::kByte:
-      if ( !rendering_transform_8bits.empty() )
-        rendering_transform( rendering_transform_8bits.c_str() );
-      break;
+        if ( !rendering_transform_8bits.empty() )
+            rendering_transform( rendering_transform_8bits.c_str() );
+        break;
     case image_type::kShort:
-      if ( !rendering_transform_16bits.empty() )
-        rendering_transform( rendering_transform_16bits.c_str() );
-      break;
+        if ( !rendering_transform_16bits.empty() )
+            rendering_transform( rendering_transform_16bits.c_str() );
+        break;
     case image_type::kInt:
-      if ( !rendering_transform_32bits.empty() )
-        rendering_transform( rendering_transform_32bits.c_str() );
-      break;
+        if ( !rendering_transform_32bits.empty() )
+            rendering_transform( rendering_transform_32bits.c_str() );
+        break;
     case image_type::kHalf:
     case image_type::kFloat:
-      if ( !rendering_transform_float.empty() )
-        rendering_transform( rendering_transform_float.c_str() );
-      break;
+        if ( !rendering_transform_float.empty() )
+            rendering_transform( rendering_transform_float.c_str() );
+        break;
     default:
-      IMG_ERROR("default_rendering_tranform - unknown bit depth");
-      break;
+        IMG_ERROR("default_rendering_tranform - unknown bit depth");
+        break;
     }
 }
 
@@ -3974,44 +4323,44 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
+    if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
-  int64_t  max_distance  = 0;
-  unsigned num_keyframes = 0;
+    int64_t  max_distance  = 0;
+    unsigned num_keyframes = 0;
 
-  int num = stream->nb_index_entries;
-  LOG_INFO( "# indices: " << num );
-  if ( num <= 0 ) return;
+    int num = stream->nb_index_entries;
+    LOG_INFO( "# indices: " << num );
+    if ( num <= 0 ) return;
 
-  int64_t last_frame = pts2frame( stream,
-                                  stream->index_entries[0].timestamp );
+    int64_t last_frame = pts2frame( stream,
+                                    stream->index_entries[0].timestamp );
 
-  for ( int i = 0; i < num; ++i )
+    for ( int i = 0; i < num; ++i )
     {
-      const AVIndexEntry& e = stream->index_entries[i];
-      if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
+        const AVIndexEntry& e = stream->index_entries[i];
+        if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
 
-      int64_t frame = pts2frame( stream, e.timestamp );
-      int64_t dist  = frame - last_frame;
-      if ( dist > max_distance ) max_distance = dist;
-      last_frame = frame;
+        int64_t frame = pts2frame( stream, e.timestamp );
+        int64_t dist  = frame - last_frame;
+        if ( dist > max_distance ) max_distance = dist;
+        last_frame = frame;
 
-      ++num_keyframes;
+        ++num_keyframes;
     }
 
-  LOG_INFO( "# keyframes: " << num_keyframes );
-  LOG_INFO( " max frames: " << max_distance );
+    LOG_INFO( "# keyframes: " << num_keyframes );
+    LOG_INFO( " max frames: " << max_distance );
 
-  for ( int i = 0; i < num; ++i )
+    for ( int i = 0; i < num; ++i )
     {
-      const AVIndexEntry& e = stream->index_entries[i];
-      if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
+        const AVIndexEntry& e = stream->index_entries[i];
+        if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
 
-      LOG_INFO( "\t#" << i
-                << " pos: " << e.pos << " pts: " << e.timestamp
-                << " frame: " << pts2frame( stream, e.timestamp ) );
-      LOG_INFO( "\t\tflags: "<< e.flags
-                << " size: " << e.size << " dist: " << e.min_distance );
+        LOG_INFO( "\t#" << i
+                  << " pos: " << e.pos << " pts: " << e.timestamp
+                  << " frame: " << pts2frame( stream, e.timestamp ) );
+        LOG_INFO( "\t\tflags: "<< e.flags
+                  << " size: " << e.size << " dist: " << e.min_distance );
     }
 
 }
@@ -4019,18 +4368,18 @@ void CMedia::debug_stream_keyframes( const AVStream* stream )
 // Outputs the indices of the stream
 void CMedia::debug_stream_index( const AVStream* stream )
 {
-  int num = stream->nb_index_entries;
-  LOG_INFO( "# indices: " << num );
-  for ( int i = 0; i < num; ++i )
+    int num = stream->nb_index_entries;
+    LOG_INFO( "# indices: " << num );
+    for ( int i = 0; i < num; ++i )
     {
-      const AVIndexEntry& e = stream->index_entries[i];
-      LOG_INFO( "\t#" << i
-                << ( e.flags & AVINDEX_KEYFRAME ? "K" : " " )
-                << " pos: " << e.pos << " pts: " << e.timestamp
-                << " frame: " << pts2frame( stream, e.timestamp ) );
-      LOG_INFO( "\t\tflags: "<< e.flags
-                << " size: " << e.size
-                << " dist: " << e.min_distance );
+        const AVIndexEntry& e = stream->index_entries[i];
+        LOG_INFO( "\t#" << i
+                  << ( e.flags & AVINDEX_KEYFRAME ? "K" : " " )
+                  << " pos: " << e.pos << " pts: " << e.timestamp
+                  << " frame: " << pts2frame( stream, e.timestamp ) );
+        LOG_INFO( "\t\tflags: "<< e.flags
+                  << " size: " << e.size
+                  << " dist: " << e.min_distance );
     }
 }
 
@@ -4041,129 +4390,133 @@ void CMedia::debug_video_packets(const int64_t frame,
                                  const bool detail)
 {
 
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
 
-  mrv::PacketQueue::const_iterator iter = _video_packets.begin();
-  mrv::PacketQueue::const_iterator last = _video_packets.end();
-  std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame
-            << " " << routine << " video packets #"
-            << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): ";
+    mrv::PacketQueue::const_iterator iter = _video_packets.begin();
+    mrv::PacketQueue::const_iterator last = _video_packets.end();
+    std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame
+              << " " << routine << " frame offset: " << _frame_offset
+              << " video packets #"
+              << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): ";
 
-  AVStream* stream = get_video_stream();
+    AVStream* stream = get_video_stream();
 
-  if ( iter == last )
-  {
-     std::cerr << std::endl << "***EMPTY***";
-  }
-  else
-  {
-     if ( _video_packets.is_loop_end( *iter ) ||
-          _video_packets.is_loop_start( *iter ) )
-     {
-        std::cerr << (*iter).dts;
-     }
-     else
-     {
-        if ( stream )
-           std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
-        else
-           std::cerr << (*iter).dts;
-     }
-
-     std::cerr << '-';
-
-     if ( _video_packets.is_loop_end( *(last-1) ) ||
-          _video_packets.is_loop_start( *(last-1) ) )
-     {
-         std::cerr << (*(last-1)).dts;
-     }
-     else
-     {
-        if ( stream )
-           std::cerr << pts2frame( stream, (*(last-1)).dts ) - _frame_offset;
-        else
-           std::cerr << (*(last-1)).dts;
-     }
-
-     std::cerr << std::endl;
-  }
-
-
-
-  if ( detail )
-  {
-     bool in_preroll = false;
-     bool in_seek = false;
-     for ( ; iter != last; ++iter )
-     {
-        if ( _video_packets.is_flush( *iter ) )
+    if ( iter == last )
+    {
+        std::cerr << std::endl << "***EMPTY***";
+    }
+    else
+    {
+        std::cerr << std::dec;
+        if ( _video_packets.is_loop_end( *iter ) ||
+             _video_packets.is_loop_start( *iter ) )
         {
-           std::cerr << "* "; continue;
-        }
-        else if ( _video_packets.is_loop_start( *iter ) ||
-                  _video_packets.is_loop_end( *iter ) )
-        {
-           std::cerr << "L" << (*iter).dts << " "; continue;
-        }
-
-        assert( (*iter).dts != MRV_NOPTS_VALUE );
-
-        int64_t f;
-        if ( (*iter).pts != MRV_NOPTS_VALUE )
-           f = (*iter).pts;
-        else
-        {
-           f = (*iter).dts;
-        }
-
-        if ( stream )   f = pts2frame( stream, f );
-
-        if ( _video_packets.is_seek_end( *iter ) )
-        {
-           if ( in_preroll )
-           {
-              std::cerr << "[PREROLL END: " << f << "]";
-              in_preroll = false;
-           }
-           else if ( in_seek )
-           {
-              std::cerr << "<SEEK END:" << f << ">";
-              in_seek = false;
-           }
-           else
-           {
-              std::cerr << "+ERROR:" << f << "+";
-           }
-        }
-        else if ( _video_packets.is_seek( *iter ) )
-        {
-           std::cerr << "<SEEK:" << f << ">";
-           in_seek = true;
-        }
-        else if ( _video_packets.is_preroll( *iter ) )
-        {
-           std::cerr << "[PREROLL:" << f << "]";
-           in_preroll = true;
+            std::cerr << (*iter).dts - _frame_offset;
         }
         else
         {
-           if ( f == frame )  std::cerr << "S";
-           if ( f == _dts )   std::cerr << "D";
-           if ( f == _frame ) std::cerr << "F";
-           std::cerr << f << " ";
+            if ( stream )
+                std::cerr << get_frame( stream, *iter ) - _frame_offset;
+            else
+                std::cerr << (*iter).dts - _frame_offset;
         }
-     }
-     std::cerr << std::endl << std::endl;
-  }
+
+        std::cerr << '-';
+
+        if ( _video_packets.is_loop_end( *(last-1) ) ||
+             _video_packets.is_loop_start( *(last-1) ) )
+        {
+            std::cerr << (*(last-1)).dts - _frame_offset;
+        }
+        else
+        {
+            if ( stream )
+                std::cerr << get_frame( stream, *(last-1) ) - _frame_offset;
+            else
+                std::cerr << (*(last-1)).dts - _frame_offset;
+        }
+
+        std::cerr << std::endl;
+    }
+
+
+
+    if ( detail )
+    {
+        bool in_preroll = false;
+        bool in_seek = false;
+        for ( ; iter != last; ++iter )
+        {
+            if ( _video_packets.is_flush( *iter ) )
+            {
+                std::cerr << "* ";
+                continue;
+            }
+            else if ( _video_packets.is_loop_start( *iter ) ||
+                      _video_packets.is_loop_end( *iter ) )
+            {
+                std::cerr << "L" << (*iter).dts << " ";
+                continue;
+            }
+
+            assert( (*iter).dts != MRV_NOPTS_VALUE );
+
+            int64_t f;
+            if ( (*iter).pts != MRV_NOPTS_VALUE )
+                f = (*iter).pts;
+            else
+            {
+                f = (*iter).dts;
+            }
+
+            if ( stream )   f = pts2frame( stream, f );
+
+            if ( _video_packets.is_seek_end( *iter ) )
+            {
+                if ( in_preroll )
+                {
+                    std::cerr << "[PREROLL END: " << f << "]";
+                    in_preroll = false;
+                }
+                else if ( in_seek )
+                {
+                    std::cerr << "<SEEK END:" << f << ">";
+                    in_seek = false;
+                }
+                else
+                {
+                    std::cerr << "+ERROR:" << f << "+";
+                }
+            }
+            else if ( _video_packets.is_seek( *iter ) )
+            {
+                std::cerr << "<SEEK:" << f << ">";
+                in_seek = true;
+            }
+            else if ( _video_packets.is_preroll( *iter ) )
+            {
+                std::cerr << "[PREROLL:" << f << "]";
+                in_preroll = true;
+            }
+            else
+            {
+                if ( f == frame )  std::cerr << "S";
+                if ( f == _dts )   std::cerr << "D";
+                if ( f == _frame ) std::cerr << "F";
+                std::cerr << f - _frame_offset << " ";
+            }
+        }
+        std::cerr << std::endl << std::endl;
+    }
 
 }
 
 
 void CMedia::add_shape( mrv::shape_type_ptr s )
 {
-   _shapes.push_back( s );
-   _undo_shapes.clear();
+    _shapes.push_back( s );
+    _undo_shapes.clear();
 }
 
 char *const get_error_text(const int error)
@@ -4175,33 +4528,33 @@ char *const get_error_text(const int error)
     {
         switch( error )
         {
-            case CMedia::kDecodeMissingFrame:
-                strcpy( error_buffer, _( "Decode Missing Frame" ) );
-                break;
-            case CMedia::kDecodeOK:
-                strcpy( error_buffer, _( "Decode OK" ) );
-                break;
-            case CMedia::kDecodeDone:
-                strcpy( error_buffer, _( "Decode Done" ) );
-                break;
-            case CMedia::kDecodeError:
-                strcpy( error_buffer, _( "Decode Error" ) );
-                break;
-            case CMedia::kDecodeMissingSamples:
-                strcpy( error_buffer, _( "Decode Missing Samples" ) );
-                break;
-            case CMedia::kDecodeNoStream:
-                strcpy( error_buffer, _( "Decode No Stream" ) );
-                break;
-            case CMedia::kDecodeLoopStart:
-                strcpy( error_buffer, _( "Decode Loop Start" ) );
-                break;
-            case CMedia::kDecodeLoopEnd:
-                strcpy( error_buffer, _( "Decode Loop End" ) );
-                break;
-            case CMedia::kDecodeBufferFull:
-                strcpy( error_buffer, _( "Decode Buffer Full" ) );
-                break;
+        case CMedia::kDecodeMissingFrame:
+            strcpy( error_buffer, _( "Decode Missing Frame" ) );
+            break;
+        case CMedia::kDecodeOK:
+            strcpy( error_buffer, _( "Decode OK" ) );
+            break;
+        case CMedia::kDecodeDone:
+            strcpy( error_buffer, _( "Decode Done" ) );
+            break;
+        case CMedia::kDecodeError:
+            strcpy( error_buffer, _( "Decode Error" ) );
+            break;
+        case CMedia::kDecodeMissingSamples:
+            strcpy( error_buffer, _( "Decode Missing Samples" ) );
+            break;
+        case CMedia::kDecodeNoStream:
+            strcpy( error_buffer, _( "Decode No Stream" ) );
+            break;
+        case CMedia::kDecodeLoopStart:
+            strcpy( error_buffer, _( "Decode Loop Start" ) );
+            break;
+        case CMedia::kDecodeLoopEnd:
+            strcpy( error_buffer, _( "Decode Loop End" ) );
+            break;
+        case CMedia::kDecodeBufferFull:
+            strcpy( error_buffer, _( "Decode Buffer Full" ) );
+            break;
         }
     }
     return error_buffer;

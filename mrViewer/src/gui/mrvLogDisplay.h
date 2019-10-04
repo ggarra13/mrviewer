@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvLogDisplay.h
  * @author gga
  * @date   Tue Oct  9 20:42:05 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #ifndef mrvLogDisplay_h
@@ -31,23 +31,23 @@
 #include <atomic>
 #include <boost/thread/recursive_mutex.hpp>
 
-#include <fltk/TextDisplay.h>
+#include <FL/Fl_Text_Display.H>
 
 namespace mrv {
 
-class LogDisplay : public fltk::TextDisplay
+class LogDisplay : public Fl_Text_Display
 {
-  public:
+public:
     enum ShowPreferences
     {
-    kNever,
-    kOnce,
-    kAlways,
+        kNever,
+        kOnce,
+        kAlways,
     };
 
     typedef boost::recursive_mutex Mutex;
-    
-  public:
+
+public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
 
@@ -58,12 +58,16 @@ class LogDisplay : public fltk::TextDisplay
     void warning( const char* x );
     void error( const char* x );
 
-    inline unsigned lines() const { return _lines; }
-    
-  protected:
+    inline unsigned lines() const {
+        return _lines;
+    }
+
+protected:
     std::atomic<unsigned int> _lines;
 
-  public:
+public:
+    Fl_Text_Buffer* buffer_;
+    Fl_Text_Buffer* stylebuffer_;
     static Mutex mtx;
     static ShowPreferences prefs;
     static std::atomic<bool> shown;

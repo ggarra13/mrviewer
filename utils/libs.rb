@@ -17,7 +17,12 @@ librt.*
 libdl.*
 libxcb.*
 libasound.*
+libglib.*
+libstdc\+\+\.so.*
+libgcc_s.*
 libfontconfig.*
+libfreetype.*
+libz.*
 )
 
 @options = { :verbose => false }
@@ -67,8 +72,10 @@ def parse( files )
     end
     orig = lib
     if File.symlink?( loc )
-      lib = File.readlink( loc )
-      puts "#{lib} ->->-> #{orig}" if @options[:verbose]
+      libpath = File.readlink( loc )
+      puts "#{loc} ==> #{libpath} ==> #{orig}" if @options[:verbose]
+      lib = libpath.gsub(/.*\//, '' )
+      puts "#{loc} ==> #{lib} ==> #{orig}" if @options[:verbose]
       FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
       `chrpath -d "#{@debug}/lib/#{lib}"`
       print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
@@ -84,6 +91,9 @@ end
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
+elsif not @debug == "Debug"
+  $stderr.puts "Invalid option: #$0 [Debug|Release]"
+  exit 1
 end
 
 release = `uname -r`.chop!
@@ -125,9 +135,14 @@ FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy docs"
 FileUtils.rm_f( "#{@debug}/docs" )
 FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
+FileUtils.rm_f( "#{@debug}/colors" )
+FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy ctl scripts"
 FileUtils.rm_f( "#{@debug}/ctl" )
 FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
+$stderr.puts "Copy ocio configs"
+FileUtils.rm_f( "#{@debug}/ocio" )
+FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
 
 $stderr.puts "remove .fuse files"
 `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`

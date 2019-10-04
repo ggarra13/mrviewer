@@ -1,4 +1,4 @@
- /*
+/*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
@@ -36,7 +36,7 @@
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE CO PYRIGHT
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 //  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 //  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
@@ -46,8 +46,7 @@
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#define __STDC_LIMIT_MACROS
-#include <inttypes.h>
+
 #include <ctime>
 
 #include <fstream>
@@ -59,7 +58,7 @@
 #undef fprintf
 
 #define gle (GetLastError())
-#define lenof(a) unsigned(sizeof(a) / sizeof((a)[0]))
+#define lenof(a) (sizeof(a) / sizeof((a)[0]))
 #define MAXNAMELEN 1024 // max name length for found symbols
 #define IMGSYMLEN ( sizeof IMAGEHLP_SYMBOL )
 #define TTBUFLEN 65536 // for a temp buffer
@@ -72,7 +71,6 @@
 
 namespace mr {
 
-ExceptionHandler gExceptionHandler;
 
 // SymCleanup()
 EH::tSC            ExceptionHandler::pSC = NULL;
@@ -377,10 +375,17 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
 	 break;
 #endif
       // display its contents
-      sprintf( tmp, "%3d %c%c %Ip %Ip %Ip %Ip ",
+#ifdef ARCH_X86_64
+      sprintf( tmp, "%3d %c%c %08llx %08llx %08llx %08llx ",
 	       frameNum, s.Far? 'F': '.', s.Virtual? 'V': '.',
 	       s.AddrPC.Offset, s.AddrReturn.Offset,
 	       s.AddrFrame.Offset, s.AddrStack.Offset );
+#else
+      sprintf( tmp, "%3d %c%c %08lx %08lx %08lx %08lx ",
+	       frameNum, s.Far? 'F': '.', s.Virtual? 'V': '.',
+	       s.AddrPC.Offset, s.AddrReturn.Offset,
+	       s.AddrFrame.Offset, s.AddrStack.Offset );
+#endif
 
       if ( s.AddrPC.Offset == 0 )
       {
@@ -444,7 +449,7 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
 		  break;
 	       case SymCv:
 		  strcpy( ty, "CV" );
- 		  break;
+		  break;
 	       case SymPdb:
 		  strcpy( ty, "PDB" );
 		  break;
@@ -464,8 +469,13 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
 		  break;
 	    }
 
-	    sprintf( tmp, "    Mod:  %s[%s], base: %Ip",
+#ifdef ARCH_X86_64
+	    sprintf( tmp, "    Mod:  %s[%s], base: %08llxh",
 		    Module.ModuleName, Module.ImageName, Module.BaseOfImage );
+#else
+	    sprintf( tmp, "    Mod:  %s[%s], base: %08lxh",
+		    Module.ModuleName, Module.ImageName, Module.BaseOfImage );
+#endif
 	    log << tmp << std::endl;
 	    sprintf( tmp, "    Sym:  type: %s, file: %s",
 		     ty, Module.LoadedImageName );
@@ -611,7 +621,7 @@ bool ExceptionHandler::fillModuleListTH32( EH::ModuleList& modules, DWORD pid )
    while ( keepGoing )
    {
       // here, we have a filled-in MODULEENTRY32
-      fprintf( stderr,  "%08lp %60x %-15.15s %s\n", me.modBaseAddr, me.modBaseSize,
+       fprintf( stderr,  "%p %6lu %-15.15s %s\n", me.modBaseAddr, me.modBaseSize,
 		me.szModule, me.szExePath );
       e.imageName = me.szExePath;
       e.moduleName = me.szModule;
@@ -700,7 +710,7 @@ bool ExceptionHandler::fillModuleListPSAPI( EH::ModuleList& modules,
 
    if ( cbNeeded > TTBUFLEN )
    {
-      fprintf( stderr,  "More than %d module handles. Huh?\n", lenof( hMods ) );
+      fprintf( stderr,  "More than %llu module handles. Huh?\n", lenof( hMods ) );
       goto cleanup;
    }
 
@@ -735,4 +745,3 @@ cleanup:
 }
 
 } // namespace mr
- 

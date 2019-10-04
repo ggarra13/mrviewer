@@ -39,6 +39,10 @@
 #include <vector>
 #include <algorithm>
 
+#include <zlib.h>
+
+#include <ImfStandardAttributes.h>
+
 extern "C" {
 
 #include <libavcodec/avcodec.h>
@@ -52,10 +56,10 @@ extern "C" {
 #include <GL/glew.h>
 #include <MagickWand/MagickWand.h>
 
-#include <OpenColorIO/OpenColorIO.h>
 
-namespace OCIO = OCIO_NAMESPACE;
-
+#ifdef _WIN32
+#pragma warning( disable: 4800 4244 )
+#endif
 #include <OpenImageIO/argparse.h>
 #include <OpenImageIO/imageio.h>
 #include <OpenImageIO/imagebuf.h>
@@ -68,14 +72,14 @@ namespace OCIO = OCIO_NAMESPACE;
 #include <OpenImageIO/timer.h>
 #include <OpenImageIO/oiioversion.h>
 
-using namespace OIIO;
-using namespace ImageBufAlgo;
+#ifdef _WIN32
+#pragma warning( disable: 4275 )
+#endif
+#include <OpenColorIO/OpenColorIO.h>
+
 
 #include <libraw/libraw.h>
 
-#include <fltk/visual.h>
-#include <fltk/Monitor.h>
-#include <fltk/Browser.h>
 
 #include <ImfVersion.h>
 
@@ -83,6 +87,7 @@ using namespace ImageBufAlgo;
 
 #include "core/mrvOS.h"
 #include "core/mrvCPU.h"
+#include "ImathInt64.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -95,13 +100,16 @@ using namespace ImageBufAlgo;
 #include <psapi.h>
 #endif
 
+namespace OCIO = OCIO_NAMESPACE;
+using namespace OIIO;
+using namespace ImageBufAlgo;
 
 namespace mrv
 {
 
 
 
-  static const char* kVersion = "@VERSION@";
+  static const char* kVersion = "@SHORTVERSION@";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 #if INTPTR_MAX == INT64_MAX
@@ -158,13 +166,13 @@ static const char* kArch = "32";
     return kVersion;
   }
 
-void ffmpeg_formats( fltk::Browser& browser )
+void ffmpeg_formats( mrv::Browser& browser )
   {
     using namespace std;
 
 
-    AVInputFormat* ifmt = NULL;
-    AVOutputFormat* ofmt = NULL;
+    const AVInputFormat* ifmt = NULL;
+    const AVOutputFormat* ofmt = NULL;
     const char* last_name = NULL;
 
 
@@ -242,7 +250,8 @@ void ffmpeg_formats( fltk::Browser& browser )
       const char* name=NULL;
       const char* long_name=NULL;
 
-      for(ofmt = av_oformat_next(NULL); ofmt; ofmt = av_oformat_next(ofmt)) {
+      void* opaque = NULL;
+      while ((ofmt = av_muxer_iterate(&opaque))) {
         if((name == NULL || strcmp(ofmt->name, name)<0) &&
            strcmp(ofmt->name, last_name)>0){
           name = ofmt->name;
@@ -250,16 +259,18 @@ void ffmpeg_formats( fltk::Browser& browser )
           encode = true;
         }
       }
-      for(ifmt = av_iformat_next(NULL); ifmt; ifmt = av_iformat_next(ifmt)) {
+      opaque = NULL;
+      while ((ifmt = av_demuxer_iterate(&opaque))) {
         if((name == NULL || strcmp(ifmt->name, name)<0) &&
            strcmp(ifmt->name, last_name)>0){
           name = ifmt->name;
           long_name = ifmt->long_name;
-          encode = false;
+          encode = true;
         }
         if(name && strcmp(ifmt->name, name)==0)
           decode = true;
       }
+
       if(name==NULL)
         break;
       last_name= name;
@@ -349,11 +360,12 @@ void ffmpeg_formats( fltk::Browser& browser )
 
   }
 
-static void ffmpeg_codecs(fltk::Browser& browser, int type)
+static void ffmpeg_codecs(mrv::Browser& browser, int type)
   {
     using namespace std;
 
-    AVCodec *p, *p2;
+    const AVCodec *p;
+    const AVCodec *p2;
     const char* last_name;
 
     std::ostringstream o;
@@ -362,11 +374,10 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       int decode=0;
       int encode=0;
       int cap=0;
-      const char *type_str;
 
       p2=NULL;
-
-      for(p = av_codec_next(NULL); p; p = av_codec_next(p) ) {
+      void* opaque = NULL;
+      while((p = av_codec_iterate(&opaque))) {
         if((p2==NULL || strcmp(p->name, p2->name)<0) &&
            strcmp(p->name, last_name)>0){
           p2= p;
@@ -386,20 +397,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       if ( p2->type != type )
         continue;
 
-      switch(p2->type) {
-      case AVMEDIA_TYPE_VIDEO:
-        type_str = "V";
-        break;
-      case AVMEDIA_TYPE_AUDIO:
-        type_str = "A";
-        break;
-      case AVMEDIA_TYPE_SUBTITLE:
-        type_str = "S";
-        break;
-      default:
-        type_str = "?";
-        break;
-      }
 
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
@@ -419,17 +416,17 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
   }
 
 
-  void ffmpeg_audio_codecs(fltk::Browser& browser )
+  void ffmpeg_audio_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
   }
 
-  void ffmpeg_video_codecs(fltk::Browser& browser )
+  void ffmpeg_video_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
   }
 
-  void ffmpeg_subtitle_codecs(fltk::Browser& browser )
+  void ffmpeg_subtitle_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
   }
@@ -456,7 +453,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     return o.str();
   }
 
-  std::string ffmpeg_motion_estimation_methods()
+    void ffmpeg_motion_estimation_methods( mrv::Browser* b )
   {
     static const char *motion_str[] = {
       "zero",
@@ -472,16 +469,11 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       NULL,
     };
 
-    using namespace std;
-    std::ostringstream o;
-
     const char** pp = motion_str;
     while (*pp) {
-      o << *pp << endl;
-      pp++;
+        b->add( *pp );
+        pp++;
     }
-
-    return o.str();
   }
 
 
@@ -521,9 +513,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     av_log_set_callback( mrv::av_log_redirect );
 
 
-    avcodec_register_all();
-
-    av_register_all();
     avformat_network_init();
 
 
@@ -550,7 +539,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << boost_minor << "." << boost_teeny << endl
       << "http://www.boost.org/" << endl
       << endl
-      << "FLTK 2.0" << endl
+      << "FLTK 1.4" << endl
       << "http://www.fltk.org/" << endl
       << "(C) 2000-2018 Bill Spitzak & others" << endl
       << endl
@@ -618,7 +607,13 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "LibRaw " << libraw_version() << endl
       << "(C) 2008-2018 LibRaw LLC (info@libraw.org)"
       << endl
-      << endl;
+      << endl
+      << "zlib v" << ZLIB_VERSION
+      << "(C) 2008-2017 Jean-loup Gailly and Mark Adler"
+      << endl
+      << endl
+      << "A big thank you goes to Greg Ercolano who helped with" << endl
+      << "the porting and with the color schemes.";
 
     return o.str();
   }
@@ -745,13 +740,12 @@ void  memory_information( uint64_t& totalVirtualMem,
 }  // memory_information
 #endif // LINUX
 
-  std::string gpu_information( mrv::ViewerUI* uiMain )
+  std::string gpu_information( ViewerUI* uiMain )
   {
     using std::endl;
     std::ostringstream o;
 
-    const fltk::Monitor* monitors;
-    int num_monitors = fltk::Monitor::list(&monitors);
+    int num_monitors = Fl::screen_count();;
     o << "Monitors:\t" << num_monitors << endl;
 
     mrv::DrawEngine* engine = uiMain->uiView->engine();
@@ -765,7 +759,7 @@ void  memory_information( uint64_t& totalVirtualMem,
       }
 
     o << "HW Stereo:\t"
-      << ( uiMain->uiView->can_do( fltk::STEREO ) ? "Yes" : "No" )
+      << ( uiMain->uiView->can_do( FL_STEREO ) ? "Yes" : "No" )
       << endl
       << "HW Overlay:\t"
       << ( uiMain->uiView->can_do_overlay() ? "Yes" : "No" )
