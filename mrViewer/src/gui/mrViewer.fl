@@ -1614,8 +1614,15 @@ o->value(24);}
                   Fl_Input uiStartFrame {
                     user_data this user_data_type {ViewerUI*}
                     callback {int64_t f = o->value();
+		    if ( f == v->uiTimeline->minimum() )
+		    {
+		    v->uiStartButton->value( 0 );
+		    }
+		    else
+		    {
+		    v->uiStartButton->value( 1 );
+		    }
 v->uiTimeline->minimum( f );
-v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     tooltip {Allows you to set starting frame for timeline.} xywh {475 513 70 20} color -1733777408 selection_color 0
                     code0 {o->value(1);}
@@ -1624,8 +1631,15 @@ v->uiTimeline->redraw();}
                   Fl_Input uiEndFrame {
                     user_data this user_data_type {ViewerUI*}
                     callback {int64_t f = o->value();
+		    if ( f == v->uiTimeline->maximum() )
+		    {
+		    v->uiEndButton->value( 0 );
+		    }
+		    else
+		    {
+		    v->uiEndButton->value( 1 );
+		    }
 v->uiTimeline->maximum( double(f) );
-v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
                     code0 {o->value(50);}
