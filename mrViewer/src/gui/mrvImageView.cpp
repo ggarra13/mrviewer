@@ -6773,10 +6773,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSetInPoint.match( rawkey ) )
     {
         uiMain->uiStartButton->do_callback();
+        return 1;
     }
     else if ( kSetOutPoint.match( rawkey ) )
     {
         uiMain->uiEndButton->do_callback();
+        return 1;
     }
     else if ( rawkey == FL_Alt_L )
     {
