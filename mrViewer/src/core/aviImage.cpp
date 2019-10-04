@@ -779,7 +779,8 @@ void aviImage::open_video_codec()
     _video_ctx->skip_idct = skip_idct;
     _video_ctx->skip_loop_filter= skip_loop_filter;
     _video_ctx->idct_algo = idct;
-
+    _video_ctx->thread_count = 4;
+    _video_ctx->thread_type  = FF_THREAD_FRAME | FF_THREAD_SLICE;
 
 
     double aspect_ratio;
