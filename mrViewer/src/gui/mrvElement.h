@@ -47,10 +47,10 @@ public:
     void DrawAt(int X, int Y);
 
     bool thumbnail() const;
-    
+
     void make_thumbnail();
-    
-    const mrv::media& media() const;
+
+    const mrv::media media() const;
 
     void draw();
 
