@@ -56,35 +56,26 @@
 //
 //----------------------------------------------------------------------------
 
+#include "core/mrvFrame.h"
 #include <mrvTimer.h>
 #include <time.h>
 
-#if defined(_WIN32) || defined(_WIN64)
+#ifdef _WIN32
 
-  int
-  gettimeofday (struct timeval *tv, void *tz)
-  {
-    // Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
-    // This magic number is the number of 100 nanosecond intervals since January 1, 1601 (UTC)
-    // until 00:00:00 January 1, 1970 
-    static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
+int gettimeofday (struct timeval *tv, void *tz)
+{
+    union
+    {
+      ULONGLONG ns100;  // time since 1 Jan 1601 in 100ns units
+      FILETIME ft;
+       } now;
 
-    SYSTEMTIME  system_time;
-    FILETIME    file_time;
-    uint64_t    time;
-
-    GetSystemTime( &system_time );
-    SystemTimeToFileTime( &system_time, &file_time );
-    time =  ((uint64_t)file_time.dwLowDateTime )      ;
-    time += ((uint64_t)file_time.dwHighDateTime) << 32;
-
-    tv->tv_sec  = (long) ((time - EPOCH) / 10000000L);
-    tv->tv_usec = (long) (system_time.wMilliseconds * 1000);
+    GetSystemTimeAsFileTime (&now.ft);
+    tv->tv_usec = long ((now.ns100 / 10LL) % 1000000LL);
+    tv->tv_sec = long ((now.ns100 - 116444736000000000LL) / 10000000LL);
     return 0;
-  } 
-
+  }
 #endif
-
 
 namespace mrv {
 
@@ -152,7 +143,7 @@ Timer::waitUntilNextFrameIsDue ()
     // or a little too late.  Keep track of the difference between
     // now and the exact time when we wanted to wake up; next time
     // we'll try sleep that much longer or shorter.  This should
-    // keep our average frame rate close to one fame every _spf seconds.
+    // keep our average frame rate close to one frame every _spf seconds.
     //
 
     gettimeofday (&now, 0);

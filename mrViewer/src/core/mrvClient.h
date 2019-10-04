@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,22 +28,23 @@
 #include <boost/bind.hpp>
 #include <iostream>
 
-#include <core/mrvServer.h>
+#include <mrvServer.h>
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
+class ViewerUI;
+
 namespace mrv {
 
-class ViewerUI;
 
 class client : public Parser,
                public boost::enable_shared_from_this< client >
 {
   public:
     client(boost::asio::io_service& io_service,
-           mrv::ViewerUI* v); 
-    virtual ~client() {};
+           ViewerUI* v); 
+    virtual ~client() { stop(); };
 
     void start(tcp::resolver::iterator endpoint_iter);
 
@@ -65,8 +66,8 @@ class client : public Parser,
 
     void check_deadline();
 
-    static void create( mrv::ViewerUI* main );
-    static void remove( mrv::ViewerUI* main );
+    static void create( ViewerUI* main );
+    static void remove( ViewerUI* main );
 
   private:
     bool stopped_;
@@ -77,6 +78,7 @@ class client : public Parser,
 };
 
 typedef boost::shared_ptr< client > client_ptr;
+typedef std::vector< client* >      ClientList;
 
 void client_thread( const ServerData* s );
 

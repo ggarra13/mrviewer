@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include <mrvIO.h>
 
 #if defined(WIN32) || defined(WIN64)
+#  include <winsock2.h>
 #  include <io.h>      // for _access
 #  include <windows.h> // for GetModuleFileName
 #else
@@ -187,10 +188,9 @@ namespace mrv {
 
   void set_root_path( const int argc, char** argv )
   {
-      std::string r;
-      char* root = getenv("MRV_ROOT");
+    char* root = getenv("MRV_ROOT");
 
-      if ( !root )
+    if ( !root )
       {
 	char binpath[ PATH_MAX ];  binpath[0] = 0;
 
@@ -205,12 +205,11 @@ namespace mrv {
 	rootdir = rootdir.remove_leaf();
 	rootdir = rootdir.branch_path();
 
-	std::string mrvroot = "MRV_ROOT=";
-	mrvroot += rootdir.generic_string();
+	std::string root = "MRV_ROOT=";
+	root += rootdir.string().c_str();
 
-	putenv( strdup( (char*)mrvroot.c_str() ) );
+
+	putenv( strdup( (char*)root.c_str() ) );
       }
-
   }
-
 }

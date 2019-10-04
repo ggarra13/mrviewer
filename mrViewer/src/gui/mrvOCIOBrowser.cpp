@@ -40,16 +40,18 @@ namespace OCIO = OCIO_NAMESPACE;
 
 namespace
 {
-  const char* kModule = "ocio";
+const char* kModule = "ocio";
 }
 
 
 namespace mrv {
 
 OCIOBrowser::OCIOBrowser(int x, int y, int w, int h, const char* l) :
-fltk::Browser( x, y, w, h, l ),
+Fl_Browser( x, y, w, h, l ),
 _type( kNone )
 {
+    type( FL_HOLD_BROWSER );
+    //   when( FL_WHEN_RELEASE );
 }
 
 OCIOBrowser::~OCIOBrowser()
@@ -68,13 +70,14 @@ void OCIOBrowser::fill_view()
         views.push_back( view );
     }
 
+    value(1);
     std::sort( views.begin(), views.end() );
     for ( size_t i = 0; i < views.size(); ++i )
     {
         add( views[i].c_str() );
         if ( views[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
@@ -89,13 +92,14 @@ void OCIOBrowser::fill_display()
         displays.push_back( display );
     }
 
+    value(1);
     std::sort( displays.begin(), displays.end() );
     for ( size_t i = 0; i < displays.size(); ++i )
     {
         add( displays[i].c_str() );
         if ( displays[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
@@ -111,54 +115,55 @@ void OCIOBrowser::fill_input_color_space()
     }
 
     if ( std::find( spaces.begin(), spaces.end(), OCIO::ROLE_SCENE_LINEAR ) ==
-         spaces.end() )
+	 spaces.end() )
     {
         spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
     }
-
+    
     std::sort( spaces.begin(), spaces.end() );
+    value(1);
     for ( size_t i = 0; i < spaces.size(); ++i )
     {
         const char* space = spaces[i].c_str();
         OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
-        fltk::Widget* w = add( space );
-        w->tooltip( strdup( cs->getDescription() ) );
+        add( space );  // was w = add( space ) @TODO: fltk1.4 impossible
+        //w->tooltip( strdup( cs->getDescription() ) );
         if ( spaces[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
 
 
-void OCIOBrowser::fill()
+int OCIOBrowser::handle( int event )
 {
-  this->clear();
-
-  std::locale::global( std::locale("C") );
-  setlocale( LC_NUMERIC, "C" );
-
-  switch( _type )
-  {
-      case kInputColorSpace:
-          fill_input_color_space();
-          break;
-      case kView:
-          fill_view();
-          break;
-      case kDisplay:
-          fill_display();
-          break;
-      default:
-          LOG_ERROR( _("Unknown type for mrvOCIOBrowser") );
-  }
-  std::locale::global( std::locale("") );
-  setlocale( LC_NUMERIC, "" );
+    return Fl_Browser::handle( event );
 }
 
-int OCIOBrowser::handle( int e )
+void OCIOBrowser::fill()
 {
-  return fltk::Browser::handle( e );
+    this->clear();
+
+    std::locale::global( std::locale("C") );
+    setlocale( LC_NUMERIC, "C" );
+
+    switch( _type )
+    {
+    case kInputColorSpace:
+        fill_input_color_space();
+        break;
+    case kView:
+        fill_view();
+        break;
+    case kDisplay:
+        fill_display();
+        break;
+    default:
+        LOG_ERROR( _("Unknown type for mrvOCIOBrowser") );
+    }
+    std::locale::global( std::locale("") );
+    setlocale( LC_NUMERIC, "" );
 }
 
 
