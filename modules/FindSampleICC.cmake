@@ -41,6 +41,9 @@ IF( WIN32 )
     IF( MSVC120 )
       SET( compiler "vc12" )
     ENDIF( MSVC120 )
+    IF( MSVC140 )
+      SET( compiler "vc14" )
+    ENDIF( MSVC140 )
   ENDIF( MSVC )
 
   SET( SEARCH_PATHS 
@@ -55,6 +58,7 @@ IF( WIN32 )
     )
 ENDIF( WIN32 )
 
+MESSAGE( ${SEARCH_INCLUDE_PATHS} )
 
 FIND_PATH( SampleICC_INCLUDE_DIR 
   NAMES IccProfile.h

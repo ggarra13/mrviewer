@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   hdrImage.h
  * @author gga
  * @date   Fri Sep 21 01:13:09 2007
- * 
+ *
  * @brief  Exr Image Loader
- * 
- * 
+ *
+ *
  */
 
 #ifndef hdrImage_h
@@ -33,25 +33,30 @@
 
 namespace mrv {
 
-  class hdrImage : public CMedia 
-  {
+class hdrImage : public CMedia
+{
     hdrImage();
     ~hdrImage();
 
-    static CMedia* create() { return new hdrImage(); }
-
-
-  public:
-    static bool test(const boost::uint8_t* datas, unsigned size=0);
-    static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
-      return CMedia::get(create, name, datas);
+    static CMedia* create() {
+        return new hdrImage();
     }
 
-    virtual const char* const format() const { return "Radiance HDR"; }
 
-      bool save( const boost::int64_t frame );
-    bool fetch( const boost::int64_t frame );
-  protected:
+public:
+    static bool test(const boost::uint8_t* datas, unsigned size=0);
+    static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
+        return CMedia::get(create, name, datas);
+    }
+
+    virtual const char* const format() const {
+        return "Radiance HDR";
+    }
+
+    bool save( const boost::int64_t frame );
+    bool fetch( mrv::image_type_ptr& canvas,
+		const boost::int64_t frame );
+protected:
 
     typedef unsigned char COLR[4];
 
@@ -61,7 +66,7 @@ namespace mrv {
 
     void colr2color( Pixel& col, COLR clr );
 
-  protected:
+protected:
 
 
     bool  cieXYZ;
@@ -71,12 +76,12 @@ namespace mrv {
     float exposure;
 
     struct CIE {
-      float x, y;
+        float x, y;
     };
 
     CIE cieXY[4];
     float corr[3];
-  };
+};
 
 }
 

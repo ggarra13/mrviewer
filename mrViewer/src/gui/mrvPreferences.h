@@ -19,74 +19,78 @@
  * @file   mrvPreferences.h
  * @author gga
  * @date   Sun Jul  1 19:24:28 2007
- * 
+ *
  * @brief  Read/Save preferences for mrViewer
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvPreferences_h
 #define mrvPreferences_h
 
+#include <string>
 #include <ImfChromaticities.h>
+#include "mrvColorSchemes.h"
+
+class ViewerUI;
+class PreferencesUI;
 
 namespace mrv {
 
-  class ViewerUI;
-  class PreferencesUI;
-
-  class Preferences 
-  {
-  public:
+class Preferences
+{
+public:
     enum CacheType
-      {
-	kCacheAsLoaded,
-	kCache8bits,
-	kCacheHalf,
-	kCacheFloat
-      };
+    {
+        kCacheAsLoaded,
+        kCache8bits,
+        kCacheHalf,
+        kCacheFloat
+    };
 
     enum MissingFrameType
-      {
-	kBlackFrame,
-	kRepeatFrame,
-	kScratchedRepeatFrame
-      };
-      
-    enum LutAlgorithm
-      {
-	kLutPreferCTL,
-	kLutOnlyCTL,
-	kLutPreferICC,
-	kLutOnlyICC
-      };
+    {
+        kBlackFrame = 0,
+        kRepeatFrame,
+        kScratchedRepeatFrame
+    };
 
-  public:
+    enum LutAlgorithm
+    {
+        kLutPreferCTL,
+        kLutOnlyCTL,
+        kLutPreferICC,
+        kLutOnlyICC
+    };
+
+public:
     Preferences( PreferencesUI* ui );
     ~Preferences();
 
-    static void run( mrv::ViewerUI* main );
+    static void run( ViewerUI* main );
     static void save();
 
-    static std::string temporaryDirectory() { return tempDir; }
+    static std::string temporaryDirectory() {
+        return tempDir;
+    }
 
-  protected:
-    static bool set_theme();
+protected:
+    static bool set_transforms();
 
-  public:
-      static ViewerUI* uiMain;
-      static bool use_ocio;
-      static bool native_file_chooser;
+public:
+    static ViewerUI* uiMain;
+    static bool use_ocio;
+    static bool native_file_chooser;
     static int bgcolor;
     static int textcolor;
     static int selectioncolor;
     static int selectiontextcolor;
 
-      static size_t max_memory;
+    static int64_t max_memory;
 
-      static std::string OCIO_Display;
-      static std::string OCIO_View;
-      
+    static std::string OCIO_Display;
+    static std::string OCIO_View;
+
     static std::string ODT_CTL_transform;
     static std::string ODT_ICC_profile;
 
@@ -96,9 +100,9 @@ namespace mrv {
     static float ODT_CTL_white_luminance;
     static float ODT_CTL_surround_luminance;
 
-      static MissingFrameType missing_frame;
-      static std::string video_threads;
-      
+    static MissingFrameType missing_frame;
+    static std::string video_threads;
+
     static std::string CTL_8bits_save_transform;
     static std::string CTL_16bits_save_transform;
     static std::string CTL_32bits_save_transform;
@@ -106,7 +110,9 @@ namespace mrv {
 
     static std::string root;
     static std::string tempDir;
-  };
+    static ColorSchemes schemes;
+    static int debug;
+};
 
 
 } // namespace mrv

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvReelList.h
  * @author gga
  * @date   Wed Oct 18 11:09:58 2006
- * 
+ *
  * @brief  A reel list is a sequence of reels
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvReelList_h
@@ -35,7 +35,7 @@
 namespace mrv
 {
 
-  typedef std::vector< Reel > ReelList;
+typedef std::vector< Reel > ReelList;
 
 } // namespace mrv
 

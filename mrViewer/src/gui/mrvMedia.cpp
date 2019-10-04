@@ -25,15 +25,23 @@
  *
  */
 
+
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <math.h>
 
-#include <fltk/SharedImage.h>
+#include <FL/Fl_Shared_Image.H>
 #include <ImathMath.h>   // for Imath::clamp
 // #include <ImathFun.h>   // for Imath::pow
 
 #include "core/mrvThread.h"
 #include "core/CMedia.h"
+#include "core/mrvColorOps.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvFLTKHandler.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvMedia.h"
 
 #ifdef _WIN32
@@ -45,179 +53,148 @@
 
 namespace
 {
-  const char* kModule = "gui";
+const char* kModule = "gui";
 }
 
 namespace mrv {
 
-  namespace gui {
+namespace gui {
 
-    int media::_thumbnail_width = 128;
-    int media::_thumbnail_height = 64;
+int media::_thumbnail_width = 128;
+int media::_thumbnail_height = 64;
 
-    media::media( CMedia* const img ) :
+media::media( CMedia* const img ) :
     _start( img->first_frame() ),
     _image( img ),
     _thumbnail( NULL ),
-    _thumbnail_frozen( false )
+    _thumbnail_frozen( false ),
+    _own_image( true )
+{
+}
+
+media::~media()
+{
+    if ( _own_image ) {
+        std::cerr << this << " own image " << std::endl;
+        std::cerr << this << " delete _image" << _image << std::endl;
+        delete _image;
+    }
+    _image = NULL;
+    if ( _thumbnail )
     {
+        std::cerr << this << " delete thumbnail " << _thumbnail << std::endl;
+        delete _thumbnail;
+        _thumbnail = NULL;
+    }
+}
+
+void media::position( int64_t x ) {
+    _image->position(x);
+}
+
+int64_t media::position() const {
+    return _image->position();
+}
+
+void media::thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b )
+{
+    *ptr++ = r;
+    *ptr++ = g;
+    *ptr++ = b;
+}
+
+
+void media::create_thumbnail()
+{
+    if ( (!_image->stopped()) || thumbnail_frozen() ) return;
+
+
+    // Make sure frame memory is not deleted
+    Mutex& mutex = _image->video_mutex();
+    SCOPED_LOCK( mutex );
+
+
+    // Audio only clip?  Return
+    mrv::image_type_ptr pic = _image->left();
+
+    if ( !pic ) {
+        LOG_ERROR( _("Empty pic file for media ") << _image->name() );
+        return;
     }
 
-    media::~media()
+
+    unsigned dw = pic->width();
+    unsigned dh = pic->height();
+    if ( dw == 0 || dh == 0 ) {
+        LOG_ERROR( _("Media file has zero size in width or height") );
+        return;
+    }
+
+    unsigned int h = _thumbnail_height;
+
+    float yScale = (float)(h+0.5) / (float)dh;
+    unsigned int w = (float)(dw+0.5) * (float)yScale;
+    if ( w > 150 ) w = 150;
+
+    // Resize image to thumbnail size
+    pic.reset( pic->quick_resize( w, h ) );
+
+    if ( mrv::Preferences::use_ocio )
     {
-        delete _image; _image = NULL;
-        if ( _thumbnail )
+        if ( pic->pixel_type() == mrv::image_type::kFloat )
         {
-            // thumbnail is not deleted, as fltk will do it for us.
-            ((fltk::SharedImage*)_thumbnail)->remove();
-            _thumbnail = NULL;
+             bake_ocio( pic, _image );
         }
     }
 
-  void media::position( int64_t x ) {
-      _image->position(x);
-  }
-  
-  int64_t media::position() const {
-      return _image->position();
-  }
-  
-    void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-                                 uchar r, uchar g, uchar b )
+    w = pic->width();
+    h = pic->height();
+
+    delete _thumbnail;
+
+    uchar* data = new uchar[ w * h * 3 ];
+    _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
+    _thumbnail->alloc_array = 1;
+
+    if ( !_thumbnail )
     {
-      switch( pixeltype )
-        {
-        case fltk::ARGB32:
-          {
-            *ptr++ = b; *ptr++ = g; *ptr++ = r;
-            *ptr++ = 0xff;
-            break;
-          }
-        case fltk::RGB:
-          {
-            *ptr++ = r; *ptr++ = g; *ptr++ = b;
-            break;
-          }
-        case fltk::RGB32:
-          {
-            *ptr++ = 0xff; *ptr++ = r; *ptr++ = g; *ptr++ = b;
-            break;
-          }
-        case fltk::RGBx:
-        case fltk::RGBA:
-          {
-            *ptr++ = r; *ptr++ = g; *ptr++ = b; *ptr++ = 0xff;
-            break;
-          }
-        default:
-          {
-            IMG_ERROR("unknown pixel type for thumbnail");
-          }
-        }
+        IMG_ERROR( _("Could not create thumbnail picture for '")
+                   << _image->fileroot() << "'" );
+        return;
     }
 
+    uchar* ptr = data;
 
-  class thumbImage : public fltk::SharedImage
-  {
-    public:
-      thumbImage() {};
-
-      static fltk::SharedImage* create() { return new thumbImage; }
-
-      virtual bool fetch() { return true; }
-  };
-
-
-
-
-    void media::create_thumbnail()
+    // Copy to thumbnail and gamma it
+    float gamma = 1.0f / _image->gamma();
+    for (unsigned int y = 0; y < h; ++y )
     {
-       if ( !_image->stopped() || thumbnail_frozen() ) return;
-
-      // Make sure frame memory is not deleted
-      Mutex& mutex = _image->video_mutex();
-      SCOPED_LOCK( mutex );
-
-      // Audio only clip?  Return
-      mrv::image_type_ptr pic = _image->hires();
-
-      if ( !pic ) return;
-
-      unsigned dw = pic->width();
-      unsigned dh = pic->height();
-      if ( dw == 0 || dh == 0 ) return;
-
-      unsigned int h = _thumbnail_height;
-
-      float yScale = (float)(h+0.5) / (float)dh;
-      unsigned int w = (float)(dw+0.5) * (float)yScale;
-      if ( w > 150 ) w = 150;
-
-      // Resize image to thumbnail size
-      pic.reset( pic->quick_resize( w, h ) );
-
-      w = pic->width();
-      h = pic->height();
-
-      // Create a unique name for this element, using fileroot and start frame
-      char buf[2048];
-      sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
-
-
-      _thumbnail = fltk::SharedImage::get( thumbImage::create, buf, 0);
-
-      if ( !_thumbnail )
-      {
-          IMG_ERROR( _("Could not create thumbnail picture for '")
-                       << _image->fileroot() << "'" );
-          return;
-      }
-
-      _thumbnail->setpixeltype( fltk::RGB );
-      _thumbnail->setsize( w, h );
-
-      uchar* ptr = (uchar*) _thumbnail->buffer();
-      if (!ptr )
+        for (unsigned int x = 0; x < w; ++x )
         {
-            IMG_ERROR( _("Could not allocate thumbnail buffer") );
-            return;
-        }
-
-      fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
-
-
-      // Copy to thumbnail and gamma it
-      float gamma = 1.0f / _image->gamma();
-      for (unsigned int y = 0; y < h; ++y )
-        {
-          for (unsigned int x = 0; x < w; ++x )
+            CMedia::Pixel fp = pic->pixel( x, y );
+            if ( gamma != 1.0f )
             {
-              CMedia::Pixel fp = pic->pixel( x, y );
-              if ( gamma != 1.0f )
-              {
-                  using namespace std;
-                  if ( isfinite( fp.r ) )
-                      fp.r = Imath::Math<float>::pow( fp.r, gamma );
-                  if ( isfinite( fp.g ) )
-                      fp.g = Imath::Math<float>::pow( fp.g, gamma );
-                  if ( isfinite( fp.b ) )
-                      fp.b = Imath::Math<float>::pow( fp.b, gamma );
-              }
-
-              uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
-              uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
-              uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-              thumbnail_pixel( ptr, pixeltype, r, g, b );
+                using namespace std;
+                if ( isfinite( fp.r ) )
+                    fp.r = Imath::Math<float>::pow( fp.r, gamma );
+                if ( isfinite( fp.g ) )
+                    fp.g = Imath::Math<float>::pow( fp.g, gamma );
+                if ( isfinite( fp.b ) )
+                    fp.b = Imath::Math<float>::pow( fp.b, gamma );
             }
+
+            uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
+            uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
+            uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
+            thumbnail_pixel( ptr, r, g, b );
         }
-
-      _thumbnail->buffer_changed();
-
-      _image->image_damage( _image->image_damage() &
-                            ~CMedia::kDamageThumbnail );
     }
 
+    _image->image_damage( _image->image_damage() &
+                          ~CMedia::kDamageThumbnail );
+}
 
-  } // namespace gui
+
+} // namespace gui
 
 } // namemspace mrv

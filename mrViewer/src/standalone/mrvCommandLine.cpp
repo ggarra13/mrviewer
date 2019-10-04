@@ -38,27 +38,13 @@
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
-#include "gui/mrvMainWindow.h"
 #include "gui/mrvVersion.h"
+#include "mrvPreferencesUI.h"
 #include "mrViewer.h"
 #include "standalone/mrvCommandLine.h"
 
 #ifdef _WIN32
 #include <windows.h>
-
-
-void alloc_console()
-{
-    AllocConsole();
-    freopen("conin$", "r", stdin);
-    freopen("conout$", "w", stdout);
-    freopen("conout$", "w", stderr);
-}
-
-#else
-
-void alloc_console() {}
-
 #endif
 
 namespace fs = boost::filesystem;
@@ -85,32 +71,30 @@ typedef std::vector<int> IntArray;
 
 #if defined(_WIN32) || defined(_WIN64)
       AllocConsole();
-      freopen("conin$", "r", stdin);
-      freopen("conout$", "w", stdout);
-      freopen("conout$", "w", stderr);
+      freopen("CONIN$", "r", stdin );
+      freopen("CONOUT$", "w", stdout);
+      freopen("CONOUT$", "w", stderr);
 #endif
-      std::string& cmd = c.getProgramName();
-      std::cerr << cmd << " v" << c.getVersion()
-                << std::endl << std::endl
-                << "Usage:" << std::endl << std::endl
-                << cmd;
+
+      std::string cmd = c.getProgramName();
+      fprintf( stderr, N_("\n%s %s\n\n"), cmd.c_str(), c.getVersion().c_str() );
 
       //
       // Output usage line
       //
+      fprintf( stderr, _("Usage:\n\n  %s "), cmd.c_str() );
 
       std::list<Arg*> args = c.getArgList();
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
         {
-            std::cerr << " " << (*it)->shortID();
+          fprintf(stderr, "%s ", (*it)->shortID().c_str() );
         }
 
       //
       // Output options in shorter format than TCLAP's default
       //
-      std::cerr << std::endl << std::endl
-                << _("Options:") << std::endl << std::endl;
- 
+      fprintf( stderr, "%s", _("\n\nOptions:\n\n"));
+
       //
       // Find longest argument for formatting
       //
@@ -126,22 +110,22 @@ typedef std::vector<int> IntArray;
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
         {
           const std::string& ID = (*it)->longID();
-          std::cerr << "  " << ID;
+          fprintf( stderr, "  %s", ID.c_str() );
 
           for ( size_t i = ID.size(); i < len; ++i )
             {
-                std::cerr << " ";
+              fprintf( stderr, " " );
             }
-          std::cerr << "   " << (*it)->getDescription().c_str() << std::endl;
+          fprintf( stderr, "   %s\n", (*it)->getDescription().c_str() );
         }
 
-      std::cerr << std::endl
-                << _("Names cannot contain spaces in their paths.")
-                << std::endl << std::endl
-                << _("Examples:") << std::endl << std::endl;
-      std::cerr << "  > " << cmd << " background.dpx texture.png" << std::endl
-                << "  > " << cmd << " beauty.001-020.iff background.%%04d.exr 1-20" << std::endl 
-                << "  > " << cmd << " beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi" << std::endl;
+      fprintf( stderr, "\n" );
+      fprintf( stderr, "%s",
+               _("Names cannot contain spaces in their paths.\n\n") );
+      fprintf( stderr, "%s", _("Examples:\n\n") );
+      fprintf( stderr, "  > %s background.dpx texture.png\n", cmd.c_str() );
+      fprintf( stderr, "  > %s beauty.001-020.iff background.%%04d.exr 1-20\n", cmd.c_str() );
+      fprintf( stderr, "  > %s beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi\n", cmd.c_str() );
 
 #if defined(_WIN32)||defined(_WIN64)
        Sleep(INFINITE);
@@ -158,8 +142,6 @@ void parse_directory( const std::string& fileroot,
 {
 
    std::string oldfile;
-   boost::int64_t frameStart = mrv::kMaxFrame;
-   boost::int64_t frameEnd = mrv::kMinFrame;
    stringArray files;
 
 
@@ -189,7 +171,8 @@ void parse_directory( const std::string& fileroot,
 
          mrv::fileroot( fileroot, *i );
          bool ok = mrv::split_sequence( root, frame, view,
-                                        ext, *i );
+                                        ext, fileroot );
+
 
          if ( mrv::is_valid_movie( ext.c_str() ) )
          {
@@ -277,7 +260,7 @@ void parse_directory( const std::string& fileroot,
                       seqname += "%0";
                       char buf[19]; buf[18] = 0;
 #ifdef WIN32
-                      seqname += itoa( int((*i).number.size()), buf, 10 );
+                      seqname += _itoa( int((*i).number.size()), buf, 10 );
 #else
                       sprintf( buf, "%ld", (*i).number.size() );
                       seqname += buf;
@@ -308,12 +291,12 @@ void parse_directory( const std::string& fileroot,
 
            for ( ; i != e; ++i )
            {
-               int64_t frameStart = kMaxFrame;
-               int64_t frameEnd   = kMinFrame;
-               std::string file = (*i).root;
-               get_sequence_limits( frameStart, frameEnd, file );
-               opts.files.push_back( mrv::LoadInfo( file, frameStart,
-                                                    frameEnd ) );
+              boost::int64_t frameStart = kMaxFrame;
+              boost::int64_t frameEnd   = kMinFrame;
+              std::string file = (*i).root;
+              get_sequence_limits( frameStart, frameEnd, file );
+              opts.files.push_back( mrv::LoadInfo( file, frameStart,
+                                                   frameEnd ) );
            }
 
         }
@@ -324,8 +307,8 @@ void parse_directory( const std::string& fileroot,
 //
 // Command-line parser
 //
-bool parse_command_line( const int argc, char** argv,
-                         mrv::ViewerUI* ui,
+void parse_command_line( const int argc, char** argv,
+                         ViewerUI* ui,
                          mrv::Options& opts )
 {
   // Some default values
@@ -348,6 +331,15 @@ bool parse_command_line( const int argc, char** argv,
     //
     mrv::CmdLineOutput my;
     cmd.setOutput(&my);
+
+    ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
+                          false, 0, "int" );
+
+    SwitchArg aplay("P", "playback",
+                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
+
+    SwitchArg arun( "r", "run",
+                    _("Run mrViewer regardless of single instance setting") );
 
     //
     // The command-line arguments (parsed in order)
@@ -378,10 +370,13 @@ bool parse_command_line( const int argc, char** argv,
              _("Set viewer's default server/client port."), false,
              opts.port, "string");
 
-
     UnlabeledMultiArg< std::string >
     afiles(_("files"),
            _("Images, sequences or movies to display."), false, "images");
+
+    ValueArg< std::string >
+        abg( N_("b"), N_("bg"),
+             _("Provide a sequence or movie for background."), false, "", "image");
 
     MultiArg< std::string >
     aaudio( N_("a"), N_("audio"),
@@ -391,42 +386,22 @@ bool parse_command_line( const int argc, char** argv,
     aoffset( N_("o"), N_("audio_offset"),
              _("Set added audio offset."), false, "offset");
 
-    ValueArg< std::string >
-    abg( N_("b"), N_("bg"),
-         _("Provide a sequence or movie for background."), false, "", "image");
-
 #ifdef USE_STEREO
     MultiArg< std::string >
     astereo( N_("s"), N_("stereo"),
             _("Provide two sequences or movies for stereo."), false, "images");
 
+
     ValueArg< std::string >
-    astereo_input( N_(""), N_("stereo-input"),
-		   _("Select stereo input"), false, "",
-		   "string" );
-    
+        astereo_input( N_(""), N_("stereo-input"),
+                       _("Select stereo input"), false, "",
+                       "string" );
+
     ValueArg< std::string >
-    astereo_output( N_(""), N_("stereo-output"),
-    		    _("Select stereo output"), false, "",
-		    "string" );
-    
+        astereo_output( N_(""), N_("stereo-output"),
+                        _("Select stereo output"), false, "",
+                        "string" );
 #endif
-
-    MultiArg< std::string >
-    asub( "u", N_("sub"),
-          _("Set subtitle for movie(s)."), false, "subtitles");
-
-    SwitchArg adebug("d", "debug",
-                    _("Set log to debug mode, flushing each time and saving an errorlog in .filmaura directory") );
-    
-    SwitchArg aplay("P", "playback",
-                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
-
-    SwitchArg arun( "r", "run",
-                    _("Run mrViewer regardless of single instance setting") );
-
-    ValueArg<int> athreads( "", "threads",
-			    _("Run mrViewer using this number of threads. 0 is as many threads as possible"), false, -1, "value" );
 
     cmd.add(adebug);
     cmd.add(arun);
@@ -444,8 +419,6 @@ bool parse_command_line( const int argc, char** argv,
     cmd.add(astereo_input);
     cmd.add(astereo_output);
 #endif
-    cmd.add(athreads);
-    cmd.add(asub);
     cmd.add(abg);
     cmd.add(afiles);
 
@@ -467,14 +440,11 @@ bool parse_command_line( const int argc, char** argv,
     opts.fps  = afps.getValue();
     opts.bgfile = abg.getValue();
     opts.run    = arun.getValue();
-    opts.debug  = adebug.getValue();
     opts.stereo_output = astereo_output.getValue();
     opts.stereo_input = astereo_input.getValue();
 
-    
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
-
 
 #ifdef USE_STEREO
     stringArray stereo = astereo.getValue();
@@ -498,9 +468,19 @@ bool parse_command_line( const int argc, char** argv,
 
 #endif
 
-    const stringArray& subs = asub.getValue();
-    if ( subs.size() > files.size() )
-      LOG_ERROR( "Too many subtitles for image file(s)." );
+    int debug = adebug.getValue();
+    Preferences::debug = debug;
+    if ( debug > 0 ) mrv::io::logbuffer::debug( true );
+// #ifdef _WIN32
+//     if ( debug )
+//     {
+//         AllocConsole();
+//         freopen("conin$", "r", stdin);
+//         freopen("conout$", "w", stdout);
+//         freopen("conout$", "w", stderr);
+        // fprintf( stderr, "DEBUG: %d\n", debug );
+//     }
+// #endif
 
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();
@@ -508,23 +488,15 @@ bool parse_command_line( const int argc, char** argv,
     if ( audios.size() < aoffsets.size() )
         LOG_ERROR( "Too many audio offsets for fewer audios" );
 
-
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
     stringArray::const_iterator ae = audios.end();
-    stringArray::const_iterator si = subs.begin();
-    stringArray::const_iterator se = subs.end();
     IntArray::const_iterator oi = aoffsets.begin();
     IntArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
       {
-        std::string arg = *i;
-
-        if ( arg.find( "file:" ) == 0 )
-        {
-            arg = arg.substr( 5, arg.size() );
-        }
+        const std::string& arg = *i;
 
         // Check if string is a range.  if so, change last sequence
         if ( !opts.files.empty() && (opts.files.back().reel == false) &&
@@ -560,95 +532,85 @@ bool parse_command_line( const int argc, char** argv,
             }
             else
             {
-                bool avoid_seq = !ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value();
-                if ( avoid_seq )
-                {
-                    fileroot = arg;
-                }
-                else
-                {
-                    mrv::fileroot( fileroot, arg );
-                    if ( mrv::is_valid_sequence( fileroot.c_str() ) )
-                    {
-                        // we use original file to get
-                        // start and end in case of ILM format
-                        if (! mrv::get_sequence_limits( start, end, fileroot ) )
-                        {
-                            fileroot = arg;
-                        }
-                    }
-                }
+               mrv::fileroot( fileroot, arg );
 
-                std::string sub;
-                if ( si != se )
-                  {
-                    sub = *si;
-                    ++si;
-                  }
-
-                std::string audio;
-                if ( ai != ae )
-                  {
-                    audio = *ai;
-                  }
-
-                int offset = 0;
-                if ( oi != oe ) {
-                  offset = *oi;
-                  ++oi;
-                }
-
+               if ( mrv::is_valid_sequence( fileroot.c_str() ) )
+               {
+                   mrv::get_sequence_limits( start, end, fileroot );
+               }
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
                   // Add audio file to last stereo fileroot
-                 opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
-                                                       end, start, end,
-                                                       audio, "", offset,
-                                                       sub ) );
+                  if ( ai != ae )
+                  {
+                      int offset = 0;
+                      if ( oi != oe ) {
+                          offset = *oi;
+                          ++oi;
+                      }
+
+                      opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
+                                                            end, start, end,
+                                                            24.0f,
+                                                            *ai, "", offset ) );
+                     ++ai;
+                  }
+                  else
+                  {
+                     opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
+                                                           end, start, end ) );
+                  }
                }
                else
                {
-                 // Add audio file to last fileroot
-                 opts.files.push_back( mrv::LoadInfo( fileroot, start,
-                                                      end, AV_NOPTS_VALUE,
-                                                      AV_NOPTS_VALUE,
-                                                      audio, "", offset,
-                                                      sub ) );
+                  // Add audio file to last fileroot
+                  if ( ai != ae )
+                  {
+                      int offset = 0;
+                      if ( oi != oe ) {
+                          offset = *oi;
+                          ++oi;
+                      }
+
+                      opts.files.push_back( mrv::LoadInfo( fileroot, start,
+                                                           end, AV_NOPTS_VALUE,
+                                                           AV_NOPTS_VALUE,
+                                                           24.0f,
+                                                           *ai, "", offset ) );
+                     ++ai;
+                  }
+                  else
+                  {
+                      if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() )
+                      {
+                          opts.files.push_back( mrv::LoadInfo( fileroot, start,
+                                                               end ) );
+                      }
+                      else
+                      {
+                          opts.files.push_back( mrv::LoadInfo( arg ) );
+                      }
+                  }
                }
             }
           }
       }
 
-    int threads = athreads.getValue();
-    if ( threads >= 0 )
-    {
-	ui->uiPrefs->uiPrefsVideoThreadCount->value( threads );
-    }
 
   }
   catch ( TCLAP::ArgException& e )
     {
       std::cerr << e.error() << " " << e.argId() << std::endl;
-      return false;
+      exit(1);
     }
 
-  if ( opts.debug )
-  {
-      alloc_console();
-      mrv::io::logbuffer* log =
-      static_cast<mrv::io::logbuffer*>( mrv::io::info.rdbuf() );
-      log->debug(true);
-  }
-
-  
   // Load default preferences
   mrv::Preferences::run(ui);
-  
-  
   //
   // UI command-line overrides
   //
+
 
 
   ui->uiView->gamma( opts.gamma );
@@ -659,7 +621,6 @@ bool parse_command_line( const int argc, char** argv,
   ui->uiGain->value( opts.gain );
   ui->uiView->gain( opts.gain );
 
-  return true;
 }
 
 

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,37 +19,37 @@
  * @file   mrvLMTBrowser.h
  * @author gga
  * @date   Mon Jul  2 08:08:45 2007
- * 
+ *
  * @brief  Opens a browser with a list of all .ctl scripts available in
  *         your LMT_MODULE_PATH.
- * 
- * 
+ *
+ *
  */
 #ifndef mrvLMTBrowser_h
 #define mrvLMTBrowser_h
 
 #include <string>
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 #include "mrvMedia.h"
 
 namespace mrv {
 
-  class LMTBrowser : public fltk::Browser
-  {
-  public:
+class LMTBrowser : public Fl_Browser
+{
+public:
     LMTBrowser(int x, int y, int w, int h, const char* l = 0);
     ~LMTBrowser();
 
-      
+
     void fill( const mrv::media& fg );
     virtual int handle( int event );
 
-  protected:
+protected:
 
-  protected:
-      mrv::media _fg;
-  };
+protected:
+    mrv::media _fg;
+};
 
 }
 

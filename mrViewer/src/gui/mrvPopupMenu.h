@@ -28,24 +28,38 @@
 //    http://www.fltk.org/str.php
 //
 
-#ifndef fltk_MyPopupMenu_h
-#define fltk_MyPopupMenu_h
+#ifndef mrvPopupMenu_h
+#define mrvPopupMenu_h
 
-#include "fltk/PopupMenu.h"
+#include "FL/Fl_Menu_Button.H"
+#include "FL/Fl_Menu_Item.H"
 
 namespace mrv {
 
-class FL_API PopupMenu : public fltk::PopupMenu {
+class PopupMenu : public Fl_Menu_Button
+{
 public:
     PopupMenu(int,int,int,int,const char* =0);
+    virtual ~PopupMenu() {};
+
+    unsigned children() { return size(); }
+    const Fl_Menu_Item* child(int i);
+
+    bool popped();
+
+    virtual const Fl_Menu_Item* popup();
 
     // Undo the overrides of stuff from Group:
-    void disable_glyph() { _enable_glyph = false; }
+    void disable_glyph() {
+        _enable_glyph = false;
+    }
+
+    virtual int handle(int e);
 
 protected:
-  void draw();
+    virtual void draw();
 
-  bool _enable_glyph;
+    bool _enable_glyph;
 };
 
 }

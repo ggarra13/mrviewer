@@ -4,13 +4,13 @@
 
 
 
-  
-  
+
+
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
 
-  
-  
+
+
   <title>mrViewer</title>
 </head>
 
@@ -22,10 +22,14 @@
 
 
 
-<img style="width: 720px; height: 24px;" alt="mainToolbar" src="images/topToolbar.gif"><br>
+<img style="width: 720px; height: 24px;" alt="mainToolbar" src="images/topBar.png"><br>
+<br>
+<br>
+<img style="width: 720px; height: 24px;" alt="mainToolbar2" src="images/topBar2.png"><br>
+<br>
+<br>
 
-
-<iframe title="Main Toolbar" class="youtube-player" type="text/html" 
+<iframe title="Main Toolbar" class="youtube-player" type="text/html"
 width="640" height="390" src="http://www.youtube.com/embed/zC7U6gdoDm4"
 frameborder="0" allowFullScreen></iframe>
 
@@ -72,14 +76,10 @@ Area Window</a></li>
 
   <li><a href="hotkeys.html">The Hotkeys Window</a></li>
 
-  <li><a href="3dview.html">The 3d View
-Window</a></li>
-
-  <li><a href="histogram.html">The Histogram
-Window</a></li>
-
-  <li><a href="vectorscope.html">The
-Vectorscope Window</a></li>
+  <li><a href="3dview.html">The 3d View Window</a></li>
+  <li><a href="histogram.html">The Histogram Window</a></li>
+  <li><a href="vectorscope.html">The Vectorscope Window</a></li>
+  <li><a href="waveform.html">The Waveform Window</a></li>
   <li><a href="preferences.html">The Preferences Window</a></li>
 
 
@@ -98,13 +98,13 @@ picture).<br>
 The usual channels can be one of R,G,B,A and Lumma or Alpha Overlayed on top of RGB.<br><br>
 However, for image formats that support it like OpenEXR or Photoshop's PSD, it can also list all layers that are in the image.<br><br>
 
-<iframe title="Channel View" class="youtube-player" type="text/html" 
+<iframe title="Channel View" class="youtube-player" type="text/html"
 width="640" height="390" src="http://www.youtube.com/embed/qy-jrR2DDBo"
 frameborder="0" allowFullScreen></iframe>
 
-<br> 
-<br> 
-<br> 
+<br>
+<br>
+<br>
 
 
 
@@ -116,12 +116,17 @@ You can use CTRL+LMB to change it interactively.
 <br>
 
 
+The <span style="font-weight: bold;">Input Color Space</span> control displays the OCIO input color space for the image.  It defaults to scene_linear, but the default can be set in the Preferences->OCIO (and the image depth).  This setting works in tandem with the Gamma and Lut buttons.<br><br>
+When CTL is on, this setting does not appear.  Instead, the F-Stop and the Normalization settings will show up.
+<br>
+<br>
+
 The <span style="font-weight: bold;">F-Stop</span>
 control is another
 way to control gain. It works in F-Stops, which is a common method used
 in photography and film to adjust a camera exposure.<br>
 <br>
-When OCIO is active, this requester is not seen.<br>
+When OCIO is active, this requester is not seen by default, but it can be displayed if you press SHIFT+i (default hotkey).<br>
 <br>
 
 
@@ -130,16 +135,15 @@ button allows
 you to normalize the image within the 0 and 1 range. &nbsp;Its most
 common use is for properly viewing Z-Depth channels or shadow maps.<br>
 <br>
-When OCIO is active, this requester is not seen.<br>
+When OCIO is active, this requester is not seen by default, but it can be displayed if you press SHIFT+i (default hotkey).<br>
 <br>
 
 The <span style="font-weight: bold;">Input Color Space</span>
 allows you to set the OCIO input color space for the image shown.<br>
-This works in tandem with the Gamma->Lut setting.<br><br>x
 
 The <span style="font-weight: bold;">Gamma</span>
-control allows you to modify the display gamma.<br>
-<br>In addition to that, when OCIO is active it allows you to select the Display-View of OCIO for the monitor.<br><br>
+control allows you to modify the display gamma.  The gamma pulldown allows you to select several common gamma settings.<br>
+<br>When OCIO is active, instead, the pulldown allows you to select the Display/View of OCIO for the monitor.<br><br>
 
 
 The <span style="font-weight: bold;">Field</span>
@@ -151,13 +155,14 @@ fields.<br>
 The <span style="font-weight: bold;">1:1 </span>button
 allows you to toggle on and off a compensation for an image's pixel
 ratio.<br>
+By default it is off, which means that the pixel ratio is not taken into account.<br>
 
 
 
 The <span style="font-weight: bold;">LUT</span>
 button allows you to toggle the 3D LUT color correction for emulation
 of other media on your monitor.<br>
-
+This buttons toggles OCIO on/off and CTL on/off.<br>
 
 
 <br>
