@@ -1,0 +1,170 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "core/mrvFrame.h"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "core/mrvMath.h"} {private local
+}
+
+decl {\#include "gui/mrvImageView.h"} {private local
+}
+
+decl {\#include "gui/mrvPopupMenu.h"} {public local
+}
+
+decl {\#include "gui/mrvColorOps.h"} {private local
+}
+
+decl {\#include "gui/mrvHistogram.h"} {private local
+}
+
+decl {\#include "gui/mrvValueInput.h"} {public local
+}
+
+decl {\#include "gui/mrvActionWindow.h"} {public local
+}
+
+decl {\#include "gui/mrvPreferences.h"} {private local
+}
+
+decl {\#include "gui/mrvLogDisplay.h"} {private local
+}
+
+decl {\#include "gui/mrvGlWindow3d.h"} {public local
+}
+
+decl {\#include "mrvHistogram.h"} {public local
+}
+
+decl {\#include "mrViewer.h"} {private global
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+decl {\#include "FL/fl_ask.H"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {private local
+}
+
+class HistogramUI {open
+} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label Histogram
+      user_data this user_data_type {HistogramUI*}
+      callback {v->main()->uiView->send_network( "HistogramWindow 0" );
+o->hide();} open
+      xywh {163 59 325 240} type Double resizable
+      code0 {// Make the window transient
+main_ = main;
+o->size_range(325, 80);} non_modal visible
+    } {
+      Fl_Group {} {open
+	xywh {-2 0 332 250} box PLASTIC_UP_BOX
+      } {
+	Fl_Box uiHistogram {selected
+	  xywh {3 5 319 190} box FLAT_BOX color 56 resizable
+	  code0 {o->main( main );}
+	  class {mrv::Histogram}
+	}
+	Fl_Group {} {
+	  xywh {-2 195 330 45}
+	} {
+	  Fl_Group {} {
+	    xywh {158 200 170 35}
+	  } {
+	    Fl_Box {} {
+	      label Channel
+	      xywh {164 201 65 30} selection_color 32 labelcolor 32 align 32
+	    }
+	    Fl_Menu_Button {} {
+	      label RGB
+	      callback {int c = o->value();
+uiHistogram->channel( (mrv::Histogram::Channel) c );
+o->label( o->child( c )->label() );}
+	      xywh {233 203 85 25} align 48
+	      code0 {o->value(0);}
+	      class {mrv::PopupMenu}
+	    } {
+	      MenuItem {} {
+		label RGB
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Red
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Green
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Blue
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Lumma
+		xywh {10 10 100 20}
+	      }
+	    }
+	  }
+	  Fl_Group {} {
+	    xywh {-2 205 170 35}
+	  } {
+	    Fl_Box {} {
+	      label Type
+	      xywh {-2 205 54 25} labelcolor 32 align 32
+	    }
+	    Fl_Menu_Button {} {
+	      label Linear
+	      callback {int c = o->value();
+uiHistogram->histogram_type( (mrv::Histogram::Type) c);
+o->label( o->child( c )->label() );} open
+	      xywh {53 205 105 25} align 48
+	      code0 {o->value( (int) uiHistogram->histogram_type() );
+o->label( o->child( o->value() )->label() );}
+	      class {mrv::PopupMenu}
+	    } {
+	      MenuItem {} {
+		label Linear
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Logarithmic
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label {Square Root}
+		xywh {10 10 100 20}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+  Function {HistogramUI(ViewerUI* m)} {} {
+    code {Fl_Group::current( 0 );
+      make_window( m );} {}
+  }
+  Function {~HistogramUI()} {} {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {open return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}

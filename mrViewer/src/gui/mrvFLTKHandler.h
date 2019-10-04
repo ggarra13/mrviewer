@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,22 +19,22 @@
  * @file   mrvFLTKHandler.cpp
  * @author gga
  * @date   Sat Jan 19 23:11:02 2008
- * 
+ *
  * @brief  fltk handler to read mrViewer images and return thumbnail for
  *         file requesters.
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvFLTKHandler_h
 #define mrvFLTKHandler_h
 
-#include "fltk/SharedImage.h"
+#include "FL/Fl_Image.H"
 
 namespace mrv {
 
-  fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
-				   int len );
+Fl_Image* fltk_handler( const char* filename, uchar* header,
+			    int len );
 
 }
 

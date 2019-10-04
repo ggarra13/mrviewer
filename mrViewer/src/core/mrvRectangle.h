@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -67,6 +67,15 @@ namespace mrv
     inline T r() const { return x_ + w_; }
     inline T b() const { return y_ + h_; }
 
+  /*! Add \a d to x() without changing r() (it reduces w() by \a d). */
+  void move_x(T d) {x_ += d; w_ -= d;}
+  /*! Add \a d to y() without changing b() (it reduces h() by \a d). */
+  void move_y(T d) {y_ += d; h_ -= d;}
+  /*! Add \a d to r() and w(). */
+  void move_r(T d) {w_ += d;}
+  /*! Add \a d to b() and h(). */
+  void move_b(T d) {h_ += d;}
+      
     /*! Change x() without changing r(), by changing the width. */
     void set_x(T v) {w_ -= v-x_; x_ = v;}
     /*! Change y() without changing b(), by changing the height. */
@@ -76,6 +85,13 @@ namespace mrv
     /*! Change b() without changing y(), by changine the height. */
     void set_b(T v) {h_ = v-y_;}
 
+  /*! Integer center position. Rounded to the left if w() is odd. */
+      inline T center_x() const {return x_+ w_ / 2;}
+      /*! Integer center position. Rounded to lower y if h() is odd. */
+      inline T center_y() const {return y_+ h_/ 2;}
+      
+      bool empty() const { return ( h_ == 0 && w_ == 0 ); }
+      
     inline void merge( const Rectangle< T >& R )
     {
         if (R.w() == 0) return;
@@ -86,6 +102,13 @@ namespace mrv
         if (R.y() < y()) set_y(R.y());
         if (R.b() > b()) set_b(R.b());
     }
+      
+      void intersect(const Rectangle< T >& R) {
+          if (R.x() > x()) set_x(R.x());
+          if (R.r() < r()) set_r(R.r());
+          if (R.y() > y()) set_y(R.y());
+          if (R.b() < b()) set_b(R.b());
+      }
 
       inline bool operator==( const Rectangle< T >& b ) const
       {

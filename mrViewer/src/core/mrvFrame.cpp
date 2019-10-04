@@ -31,12 +31,15 @@
 #include <half.h>
 
 
-#include "core/mrvFrame.h"
-
 extern "C" {
 #include <libavutil/avassert.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
 }
 
+
+#include "core/mrvFrame.h"
+#include "core/mrvColorOps.h"
 
 
 namespace
@@ -51,7 +54,7 @@ scaleInt(float f, unsigned int i)
 // @todo: do not hard-code luminance weights
 float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 
-}  // namespace 
+}  // namespace
 
 #include "core/mrvI8N.h"
 #include "core/mrvAlignedData.h"
@@ -65,48 +68,48 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 namespace mrv {
 
 const char* const VideoFrame::ptype[] = {
-"Byte",
-"Short",
-"Int",
-"Half",
-"Float",
-"Double",
+    "Byte",
+    "Short",
+    "Int",
+    "Half",
+    "Float",
+    "Double",
 };
 
 const char* const VideoFrame::fmts[] = {
-"Lumma",
-"LummaA",
-"BGR",
-"BGRA",
-"RGB",
-"RGBA",
+    "Lumma",
+    "LummaA",
+    "BGR",
+    "BGRA",
+    "RGB",
+    "RGBA",
 
-"ITU_601_YCbCr410",
-"ITU_601_YCbCr410A",
-"ITU_601_YCbCr420",
-"ITU_601_YCbCr420A",
-"ITU_601_YCbCr422",
-"ITU_601_YCbCr422A",
-"ITU_601_YCbCr444",
-"ITU_601_YCbCr444A",
+    "ITU_601_YCbCr410",
+    "ITU_601_YCbCr410A",
+    "ITU_601_YCbCr420",
+    "ITU_601_YCbCr420A",
+    "ITU_601_YCbCr422",
+    "ITU_601_YCbCr422A",
+    "ITU_601_YCbCr444",
+    "ITU_601_YCbCr444A",
 
-"ITU_709_YCbCr410",
-"ITU_709_YCbCr410A", // @todo: not done
-"ITU_709_YCbCr420",
-"ITU_709_YCbCr420A", // @todo: not done
-"ITU_709_YCbCr422",
-"ITU_709_YCbCr422A", // @todo: not done
-"ITU_709_YCbCr444",
-"ITU_709_YCbCr444A", // @todo: not done
+    "ITU_709_YCbCr410",
+    "ITU_709_YCbCr410A", // @todo: not done
+    "ITU_709_YCbCr420",
+    "ITU_709_YCbCr420A", // @todo: not done
+    "ITU_709_YCbCr422",
+    "ITU_709_YCbCr422A", // @todo: not done
+    "ITU_709_YCbCr444",
+    "ITU_709_YCbCr444A", // @todo: not done
 
-"YByRy410",
-"YByRy410A", // @todo: not done
-"YByRy420",
-"YByRy420A", // @todo: not done
-"YByRy422",
-"YByRy422A", // @todo: not done
-"YByRy444",
-"YByRy444A", // @todo: not done
+    "YByRy410",
+    "YByRy410A", // @todo: not done
+    "YByRy420",
+    "YByRy420A", // @todo: not done
+    "YByRy422",
+    "YByRy422A", // @todo: not done
+    "YByRy444",
+    "YByRy444A", // @todo: not done
 };
 
 /**
@@ -114,24 +117,24 @@ const char* const VideoFrame::fmts[] = {
  *
  * @return size of pixel in memory
  */
-  unsigned short VideoFrame::pixel_size() const
-  {
+unsigned short VideoFrame::pixel_size() const
+{
     switch( _type )
-      {
-      case kByte:
+    {
+    case kByte:
         return sizeof(char);
-      case kShort:
+    case kShort:
         return sizeof(short);
-      case kInt:
+    case kInt:
         return sizeof(int);
-      case kHalf:
+    case kHalf:
         return sizeof(half);
-      case kFloat:
+    case kFloat:
         return sizeof(float);
-      default:
-          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
-      }
-  }
+    default:
+        throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
+    }
+}
 
 
 
@@ -139,50 +142,59 @@ unsigned short VideoFrame::line_size() const
 {
     size_t size = 0;
 
-    unsigned W2, H2, WH2;
+    unsigned W2;
     unsigned W = _width;
 
     switch( _format )
     {
-        case kLumma:
-            size = W; break;
+    case kLumma:
+        size = W;
+        break;
 
-        case kYByRy410A:
-        case kITU_709_YCbCr410A:
-        case kITU_601_YCbCr410A:
-            size = W; // alpha
+    case kYByRy410A:
+    case kITU_709_YCbCr410A:
+    case kITU_601_YCbCr410A:
+        size = W; // alpha
 
-        case kYByRy410:
-        case kITU_709_YCbCr410:
-        case kITU_601_YCbCr410:
-            size += W;   // Y
-            size += W;   // Cb+Cr
-            break;
+    case kYByRy410:
+    case kITU_709_YCbCr410:
+    case kITU_601_YCbCr410:
+        size += W;   // Y
+        size += W;   // Cb+Cr
+        break;
 
-        case kITU_709_YCbCr420A:
-        case kITU_601_YCbCr420A:
-        case kYByRy420A:
-        case kYUVA:
-            size = W; // alpha
-        case kYUV:
-        case kYByRy420:
-        case kITU_709_YCbCr420:
-        case kITU_601_YCbCr420:
-            size += W;   // Y
-            W2 = (_width  + 1) / 2;
-            size += 2 * W2;  // U and V
-            break;
+    case kITU_709_YCbCr420A:
+    case kITU_601_YCbCr420A:
+    case kYByRy420A:
+    case kYUVA:
+        size = W; // alpha
+    case kYUV:
+    case kYByRy420:
+    case kITU_709_YCbCr420:
+    case kITU_601_YCbCr420:
+        size += W;   // Y
+        W2 = (_width  + 1) / 2;
+        size += 2 * W2;  // U and V
+        break;
 
-        case kITU_709_YCbCr422:
-        case kITU_601_YCbCr422:
-            size += W;   // Y
-            W2 = (_width  + 1) / 2;
-            size += 2 * W2;  // U and V
-            break;
+    case kITU_709_YCbCr422:
+    case kITU_601_YCbCr422:
+        size += W;   // Y
+        W2 = (_width  + 1) / 2;
+        size += 2 * W2;  // U and V
+        break;
 
-        default:
-            size = W * _channels;
-            break;
+    case kITU_709_YCbCr422A:
+    case kITU_601_YCbCr422A:
+        size += W;   // alpha
+        size += W;   // Y
+        W2 = (_width  + 1) / 2;
+        size += 2 * W2;  // U and V
+        break;
+
+    default:
+        size = W * _channels;
+        break;
     }
 
     // multiply size by that of pixel type.  We assume all
@@ -190,7 +202,7 @@ unsigned short VideoFrame::line_size() const
     return size * pixel_size();
 }
 
-size_t VideoFrame::data_size()
+size_t VideoFrame::data_size() const
 {
     size_t size = 0;
 
@@ -199,48 +211,49 @@ size_t VideoFrame::data_size()
 
     switch( _format )
     {
-        case kLumma:
-            size = WH * _channels; break;
+    case kLumma:
+        size = WH * _channels;
+        break;
 
-        case kYByRy410A:
-        case kITU_709_YCbCr410A:
-        case kITU_601_YCbCr410A:
-            size = WH; // alpha
+    case kYByRy410A:
+    case kITU_709_YCbCr410A:
+    case kITU_601_YCbCr410A:
+        size = WH; // alpha
 
-        case kYByRy410:
-        case kITU_709_YCbCr410:
-        case kITU_601_YCbCr410:
-            size += WH;   // Y
-            size += WH;   // Cb+Cr
-            break;
+    case kYByRy410:
+    case kITU_709_YCbCr410:
+    case kITU_601_YCbCr410:
+        size += WH;   // Y
+        size += WH;   // Cb+Cr
+        break;
 
-        case kITU_709_YCbCr420A:
-        case kITU_601_YCbCr420A:
-        case kYByRy420A:
-        case kYUVA:
-            size = WH; // alpha
-        case kYUV:
-        case kYByRy420:
-        case kITU_709_YCbCr420:
-        case kITU_601_YCbCr420:
-            size += WH;   // Y
-            W2 = (_width  + 1) / 2;
-            H2 = (_height + 1) / 2;
-            WH2 = W2 * H2;
-            size += 2 * WH2;  // U and V
-            break;
+    case kITU_709_YCbCr420A:
+    case kITU_601_YCbCr420A:
+    case kYByRy420A:
+    case kYUVA:
+        size = WH; // alpha
+    case kYUV:
+    case kYByRy420:
+    case kITU_709_YCbCr420:
+    case kITU_601_YCbCr420:
+        size += WH;   // Y
+        W2 = (_width  + 1) / 2;
+        H2 = (_height + 1) / 2;
+        WH2 = W2 * H2;
+        size += 2 * WH2;  // U and V
+        break;
 
-        case kITU_709_YCbCr422:
-        case kITU_601_YCbCr422:
-            size += WH;   // Y
-            W2 = (_width  + 1) / 2;
-            WH2 = W2 * _height;
-            size += 2 * WH2;  // U and V
-            break;
+    case kITU_709_YCbCr422:
+    case kITU_601_YCbCr422:
+        size += WH;   // Y
+        W2 = (_width  + 1) / 2;
+        WH2 = W2 * _height;
+        size += 2 * WH2;  // U and V
+        break;
 
-        default:
-            size = WH * _channels;
-            break;
+    default:
+        size = WH * _channels;
+        break;
     }
 
     // multiply size by that of pixel type.  We assume all
@@ -252,12 +265,12 @@ size_t VideoFrame::data_size()
  * Allocate a frame aligned to 16 bytes in memory.
  *
  */
-  void VideoFrame::allocate()
-  {
-      mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
-      av_assert0( ((unsigned long)ptr) % 16 == 0 );
-      _data.reset( ptr );
-  }
+void VideoFrame::allocate()
+{
+    mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
+    av_assert0( ((unsigned long)ptr) % 16 == 0 );
+    _data.reset( ptr );
+}
 
 /**
  * Return pixel value of a certain coordinate
@@ -267,36 +280,36 @@ size_t VideoFrame::data_size()
  *
  * @return Image pixel values
  */
-  ImagePixel VideoFrame::pixel( const unsigned int x,
-                                const unsigned int y ) const
-  {
-     if ( !_data ) {
-      return ImagePixel(std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN(),
-                        std::numeric_limits<float>::quiet_NaN());
-     }
+ImagePixel VideoFrame::pixel( const unsigned int x,
+                              const unsigned int y ) const
+{
+    if ( !_data ) {
+        return ImagePixel(std::numeric_limits<float>::quiet_NaN(),
+                          std::numeric_limits<float>::quiet_NaN(),
+                          std::numeric_limits<float>::quiet_NaN(),
+                          std::numeric_limits<float>::quiet_NaN());
+    }
 
-    assert( x < _width  );
-    assert( y < _height );
+    av_assert0( x < _width  );
+    av_assert0( y < _height );
 
 
     switch( _type )
-      {
-      case kByte:
+    {
+    case kByte:
         return pixel_u8( x, y );
-      case kShort:
+    case kShort:
         return pixel_u16( x, y );
-      case kInt:
+    case kInt:
         return pixel_u32( x, y );
-      case kHalf:
+    case kHalf:
         return pixel_h16( x, y );
-      case kFloat:
+    case kFloat:
         return pixel_f32( x, y );
-      default:
-          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
-      }
-  }
+    default:
+        throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
+    }
+}
 
 /**
  * Set the value of a pixel
@@ -305,31 +318,31 @@ size_t VideoFrame::data_size()
  * @param y valid y coordinate of video frame
  * @param p pixel values to set x,y with
  */
-  void VideoFrame::pixel( const unsigned int x, const unsigned int y,
-                          const ImagePixel& p )
-  {
+void VideoFrame::pixel( const unsigned int x, const unsigned int y,
+                        const ImagePixel& p )
+{
     if ( !_data )
         throw std::runtime_error( _("mrv::Frame No pixel data to change") );
 
-    assert( x < _width  );
-    assert( y < _height );
+    av_assert0( x < _width  );
+    av_assert0( y < _height );
 
     switch( _type )
-      {
-      case kByte:
+    {
+    case kByte:
         return pixel_u8( x, y, p );
-      case kShort:
+    case kShort:
         return pixel_u16( x, y, p );
-      case kInt:
+    case kInt:
         return pixel_u32( x, y, p );
-      case kHalf:
+    case kHalf:
         return pixel_h16( x, y, p );
-      case kFloat:
+    case kFloat:
         return pixel_f32( x, y, p );
-      default:
-          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
-      }
-  }
+    default:
+        throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
+    }
+}
 
 /**
  * Scale video frame in X
@@ -338,8 +351,8 @@ size_t VideoFrame::data_size()
  *
  * @return scaled video frame
  */
-  VideoFrame* VideoFrame::scaleX(float f) const
-  {
+VideoFrame* VideoFrame::scaleX(float f) const
+{
     unsigned int dw1 = scaleInt( f, _width );
     if ( dw1 < 1 ) dw1 = 1;
 
@@ -356,43 +369,43 @@ size_t VideoFrame::data_size()
 
 
     if ( dw1 > 1 )
-      f = float (_width - 1) / float (dw1 - 1);
+        f = float (_width - 1) / float (dw1 - 1);
     else
-      f = 1;
+        f = 1;
 
     for (unsigned int x = 0; x < dw1; ++x)
-      {
-          float x1 = float(x) * f;
-          unsigned int xs = static_cast< unsigned int>( x1 );
-          unsigned int xt = std::min( xs + 1, _width - 1 );
+    {
+        float x1 = float(x) * f;
+        unsigned int xs = static_cast< unsigned int>( x1 );
+        unsigned int xt = std::min( xs + 1, _width - 1 );
 
-          float t = x1 - float(xs);
-          assert( t >= 0.0f && t <= 1.0f );
+        float t = x1 - float(xs);
+        assert( t >= 0.0f && t <= 1.0f );
 
-          float s = 1.0f - t;
-          assert( s >= 0.0f && s <= 1.0f );
+        float s = 1.0f - t;
+        assert( s >= 0.0f && s <= 1.0f );
 
-          for (unsigned int y = 0; y < _height; ++y)
-          {
-              const ImagePixel& ps = pixel(xs, y);
-              const ImagePixel& pt = pixel(xt, y);
+        for (unsigned int y = 0; y < _height; ++y)
+        {
+            const ImagePixel& ps = pixel(xs, y);
+            const ImagePixel& pt = pixel(xt, y);
 
-             assert( ps.r >= 0.f && ps.r <= 1.0f );
-             assert( ps.g >= 0.f && ps.g <= 1.0f );
-             assert( ps.b >= 0.f && ps.b <= 1.0f );
-             assert( ps.a >= 0.f && ps.a <= 1.0f );
+            assert( ps.r >= 0.f && ps.r <= 1.0f );
+            assert( ps.g >= 0.f && ps.g <= 1.0f );
+            assert( ps.b >= 0.f && ps.b <= 1.0f );
+            assert( ps.a >= 0.f && ps.a <= 1.0f );
 
-             assert( pt.r >= 0.f && pt.r <= 1.0f );
-             assert( pt.g >= 0.f && pt.g <= 1.0f );
-             assert( pt.b >= 0.f && pt.b <= 1.0f );
-             assert( pt.a >= 0.f && pt.a <= 1.0f );
+            assert( pt.r >= 0.f && pt.r <= 1.0f );
+            assert( pt.g >= 0.f && pt.g <= 1.0f );
+            assert( pt.b >= 0.f && pt.b <= 1.0f );
+            assert( pt.a >= 0.f && pt.a <= 1.0f );
 
             ImagePixel p(
-                         ps.r * s + pt.r * t,
-                         ps.g * s + pt.g * t,
-                         ps.b * s + pt.b * t,
-                         ps.a * s + pt.a * t
-                         );
+                ps.r * s + pt.r * t,
+                ps.g * s + pt.g * t,
+                ps.b * s + pt.b * t,
+                ps.a * s + pt.a * t
+            );
 
             // assert( p.r >= 0.f && p.r <= 1.0f );
             // assert( p.g >= 0.f && p.g <= 1.0f );
@@ -401,11 +414,11 @@ size_t VideoFrame::data_size()
 
 
             scaled->pixel( x, y, p );
-          }
-      }
+        }
+    }
 
     return scaled;
-  }
+}
 
 /**
  * Scale video frame in Y using a box filter.
@@ -414,8 +427,8 @@ size_t VideoFrame::data_size()
  *
  * @return scaled video frame
  */
-  VideoFrame* VideoFrame::scaleY(float f) const
-  {
+VideoFrame* VideoFrame::scaleY(float f) const
+{
     unsigned int dh1 = scaleInt( f, _height );
     if ( dh1 < 1 ) dh1 = 1;
 
@@ -431,9 +444,9 @@ size_t VideoFrame::data_size()
                                          _repeat );
 
     if ( dh1 > 1 )
-      f = float(_height - 1) / float(dh1 - 1);
+        f = float(_height - 1) / float(dh1 - 1);
     else
-      f = 1;
+        f = 1;
 
     for (unsigned int y = 0; y < dh1; ++y)
     {
@@ -447,8 +460,8 @@ size_t VideoFrame::data_size()
 
         for (unsigned int x = 0; x < _width; ++x)
         {
-           const ImagePixel& ps = pixel(x, ys);
-           const ImagePixel& pt = pixel(x, yt);
+            const ImagePixel& ps = pixel(x, ys);
+            const ImagePixel& pt = pixel(x, yt);
 
             // assert( ps.r >= 0.f && ps.r <= 1.0f );
             // assert( ps.g >= 0.f && ps.g <= 1.0f );
@@ -461,11 +474,11 @@ size_t VideoFrame::data_size()
             // assert( pt.a >= 0.f && pt.a <= 1.0f );
 
             ImagePixel p(
-                         ps.r * s + pt.r * t,
-                         ps.g * s + pt.g * t,
-                         ps.b * s + pt.b * t,
-                         ps.a * s + pt.a * t
-                         );
+                ps.r * s + pt.r * t,
+                ps.g * s + pt.g * t,
+                ps.b * s + pt.b * t,
+                ps.a * s + pt.a * t
+            );
 
 
             // assert( p.r >= 0.f && p.r <= 1.0f );
@@ -478,7 +491,7 @@ size_t VideoFrame::data_size()
     }
 
     return scaled;
-  }
+}
 
 /**
  * Quickly resize video frame without any filtering or smoothing of any kind.
@@ -490,22 +503,22 @@ size_t VideoFrame::data_size()
  */
 VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
 {
-     double fx, fy;
-     if ( w == 0 || width() == 0 )
-     {
+    double fx, fy;
+    if ( w == 0 || width() == 0 )
+    {
         fx = 1.0;
-     }
-     else
-     {
+    }
+    else
+    {
         fx = (double)width() / (double) w;
-     }
+    }
 
     if ( h == 0 || height() == 0 )
     {
         fy = 1.0;
-     }
+    }
     else
-       fy = (double)height() / (double) h;
+        fy = (double)height() / (double) h;
 
     //
     VideoFrame* scaled = new VideoFrame( _frame, w, h, 3, kRGB, kByte );
@@ -514,13 +527,13 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
     {
         unsigned y2 = y * fy;
         assert( y2 < height() );
-       for ( unsigned x = 0; x < w; ++x )
-       {
-           assert( x*fx < width() );
-          Pixel p = this->pixel( unsigned( x*fx ), y2 );
-          p.clamp();
-          scaled->pixel( x, y, p );
-       }
+        for ( unsigned x = 0; x < w; ++x )
+        {
+            assert( x*fx < width() );
+            Pixel p = this->pixel( unsigned( x*fx ), y2 );
+            p.clamp();
+            scaled->pixel( x, y, p );
+        }
     }
     return scaled;
 }
@@ -533,58 +546,58 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
  *
  * @return resized video frame
  */
-  VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
-  {
+VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
+{
 
     double f;
-     if ( w == 0 || width() == 0 )
+    if ( w == 0 || width() == 0 )
         f = 1.0;
-     else
+    else
         f = (double) w / (double)width();
 
     VideoFrame* scaledX = scaleX( f );
 
-     if ( h == 0 || height() == 0 )
+    if ( h == 0 || height() == 0 )
         f = 1.0;
-     else
+    else
         f = (double) h / (double)height();
 
     VideoFrame* scaled  = scaledX->scaleY( f );
     delete scaledX;
 
     return scaled;
-  }
+}
 
 /**
  * Return whether picture has alpha or not.
  *
  * @return true if it has alpha, false if not
  */
-  bool VideoFrame::has_alpha() const
-  {
+bool VideoFrame::has_alpha() const
+{
     switch( _format )
-      {
-      case kLummaA:
-      case kBGRA:
-      case kRGBA:
-      case kYUVA:
-      case kITU_601_YCbCr410A:
-      case kITU_601_YCbCr420A:
-      case kITU_601_YCbCr422A:
-      case kITU_601_YCbCr444A:
-      case kITU_709_YCbCr410A:
-      case kITU_709_YCbCr420A:
-      case kITU_709_YCbCr422A:
-      case kITU_709_YCbCr444A:
-      case kYByRy410A:
-      case kYByRy420A:
-      case kYByRy422A:
-      case kYByRy444A:
+    {
+    case kLummaA:
+    case kBGRA:
+    case kRGBA:
+    case kYUVA:
+    case kITU_601_YCbCr410A:
+    case kITU_601_YCbCr420A:
+    case kITU_601_YCbCr422A:
+    case kITU_601_YCbCr444A:
+    case kITU_709_YCbCr410A:
+    case kITU_709_YCbCr420A:
+    case kITU_709_YCbCr422A:
+    case kITU_709_YCbCr444A:
+    case kYByRy410A:
+    case kYByRy420A:
+    case kYByRy422A:
+    case kYByRy444A:
         return true;
-      default:
+    default:
         return false;
-      }
-  }
+    }
+}
 
 /**
  * Equality operator.  Copy video frame into another video frame
@@ -595,23 +608,24 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
  */
 VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 {
-   _frame    = b.frame();
-   _pts      = b.pts();
-   _repeat   = b.repeat();
-   _width    = b.width();
-   _height   = b.height();
-   _channels = b.channels();
-   _format   = b.format();
-   _ctime    = time(NULL);
-   _mtime    = b.mtime();
-   _type     = b.pixel_type();
-   allocate();
-   memcpy( _data.get(), b.data().get(), data_size() );
-   return *this;
+    _frame    = b.frame();
+    _pts      = b.pts();
+    _repeat   = b.repeat();
+    _width    = b.width();
+    _height   = b.height();
+    _channels = b.channels();
+    _format   = b.format();
+    _ctime    = time(NULL);
+    _mtime    = b.mtime();
+    _type     = b.pixel_type();
+    allocate();
+    memcpy( _data.get(), b.data().get(), data_size() );
+    return *this;
 }
 
 
-void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
+void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
+                 SwsContext* sws_ctx )
 {
     unsigned dw = src->width();
     unsigned dh = src->height();
@@ -624,24 +638,77 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
     av_assert0( dst->width() > 0 );
     av_assert0( dst->height() > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
-	 src->channels() == dst->channels() &&
-	 dw == dst->width() &&
-	 dh == dst->height() )
+         src->channels() == dst->channels() &&
+         src->format() == dst->format() &&
+         dw == dst->width() && dh == dst->height() )
     {
-	memcpy( dst->data().get(), src->data().get(), src->data_size() );
+        memcpy( dst->data().get(), src->data().get(), src->data_size() );
     }
     else
     {
-	av_assert0( dw <= dst->width() );
-	av_assert0( dh <= dst->height() );
-	for ( unsigned y = 0; y < dh; ++y )
-	{
-	    for ( unsigned x = 0; x < dw; ++x )
-	    {
-		const ImagePixel& p = src->pixel( x, y );
-		dst->pixel( x, y, p );
-	    }
-	}
+        image_type_ptr tmp = src;
+        if ( src->format() > image_type::kRGBA &&
+             ( dst->format() == image_type::kRGB ||
+               dst->format() == image_type::kRGBA ) )
+        {
+            // YUV format, we need to convert to rgba
+            try
+            {
+                tmp.reset( new image_type( src->frame(),
+                                           dw, dh,
+                                           4,
+                                           image_type::kRGBA,
+                                           image_type::kByte ) );
+            }
+            catch( const std::bad_alloc& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+            catch( const std::runtime_error& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+
+            AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
+                                                     src->pixel_type() );
+            sws_ctx = sws_getCachedContext(sws_ctx,
+                                           dw, dh,
+                                           fmt, dw, dh,
+                                           AV_PIX_FMT_RGBA, 0,
+                                           NULL, NULL, NULL);
+            if ( !sws_ctx )
+            {
+                LOG_ERROR( _("Not enough memory for color transform") );
+                return;
+            }
+
+            uint8_t* buf = (uint8_t*)src->data().get();
+            uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
+            int src_linesize[4] = { 0, 0, 0, 0 };
+            av_image_fill_arrays( src_data, src_linesize, buf, fmt, dw, dh, 1 );
+
+            uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
+            uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
+            int tmp_linesize[4] = { 0, 0, 0, 0 };
+            av_image_fill_arrays( tmp_data, tmp_linesize, tmpbuf,
+                                  AV_PIX_FMT_RGBA, dw, dh, 1 );
+
+            sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
+                       tmp_data, tmp_linesize );
+        }
+
+        av_assert0( dw <= dst->width() );
+        av_assert0( dh <= dst->height() );
+        for ( unsigned y = 0; y < dh; ++y )
+        {
+            for ( unsigned x = 0; x < dw; ++x )
+            {
+                const ImagePixel& p = tmp->pixel( x, y );
+                dst->pixel( x, y, p );
+            }
+        }
     }
 }
 
