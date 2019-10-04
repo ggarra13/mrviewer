@@ -435,13 +435,20 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     if ( fg )
                     {
-                        ImageView::Command c;
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-
-                        c.type = ImageView::kPlayForwards;
-                        view->commands.push_back( c );
+                        CMedia::Mutex& cmtx = view->commands_mutex;
+                        SCOPED_LOCK( cmtx );
+                        {
+                            ImageView::Command c;
+                            c.type = ImageView::kSeek;
+                            c.frame = dts;
+                            view->commands.push_back( c );
+                        }
+                        {
+                            ImageView::Command c;
+                            c.type = ImageView::kPlayForwards;
+                            c.frame = dts;
+                            view->commands.push_back( c );
+                        }
                     }
                 }
 
@@ -457,6 +464,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             if ( fg )
             {
+                CMedia::Mutex& cmtx = view->commands_mutex;
+                SCOPED_LOCK( cmtx );
                 ImageView::Command c;
                 c.type = ImageView::kSeek;
                 c.frame = frame;
@@ -549,16 +558,23 @@ EndStatus handle_loop( boost::int64_t& frame,
                     img->playback( CMedia::kStopped );
                     img->flush_all();
 
-                    ImageView::Command c;
 
                     if ( fg )
                     {
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-
-                        c.type = ImageView::kPlayBackwards;
-                        view->commands.push_back( c );
+                        CMedia::Mutex& cmtx = view->commands_mutex;
+                        SCOPED_LOCK( cmtx );
+                        {
+                            ImageView::Command c;
+                            c.type = ImageView::kSeek;
+                            c.frame = dts;
+                            view->commands.push_back( c );
+                        }
+                        {
+                            ImageView::Command c;
+                            c.type = ImageView::kPlayBackwards;
+                            c.frame = dts;
+                            view->commands.push_back( c );
+                        }
                     }
 
                 }
@@ -575,6 +591,9 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             if ( fg )
             {
+
+                CMedia::Mutex& cmtx = view->commands_mutex;
+                SCOPED_LOCK( cmtx );
                 ImageView::Command c;
                 c.type = ImageView::kSeek;
                 c.frame = frame;
