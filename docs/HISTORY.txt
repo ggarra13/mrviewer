@@ -4,6 +4,13 @@ v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
 	  with no need to save it and reload mrViewer.
 	- Fixed FPS extraction from reels without FPS (old reels).  Now
 	  they default to 30.0 fps.
+	- Bug fixed native file chooser on Linux to save images or image
+	  sequences.  Note that the native file chooser on Linux is huge
+	  so it may not be the one you want by default.
+	- Bug fixed IN / OUT points setting which were being set up multiple
+	  times and so resetting themselves.
+	- Made opening of an image resize to full window as possible.
+	  Previously the behavior was intermittent.
 
 v5.2.6  - Improvents to the otio<->reel converter.  Now the clip name is
 	  attempted to be kept in both directions.
