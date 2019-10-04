@@ -772,7 +772,8 @@ public:
         Command() : frame(AV_NOPTS_VALUE), data(NULL), linfo(NULL) {};
         Command( const Command& b ) : type( b.type ),
                                       frame( b.frame ), data( b.data ),
-                                      linfo( b.linfo ) {};
+                                      linfo( b.linfo ) {
+        };
         CommandType     type;
         int64_t         frame;
         Imf::Attribute* data;
