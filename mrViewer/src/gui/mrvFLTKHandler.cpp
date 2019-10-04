@@ -19,11 +19,11 @@
  * @file   mrvFLTKHandler.cpp
  * @author gga
  * @date   Sat Jan 19 23:11:02 2008
- * 
+ *
  * @brief  fltk handler to read mrViewer images and return thumbnail for
  *         file requesters.
- * 
- * 
+ *
+ *
  */
 
 #include "core/CMedia.h"
@@ -38,39 +38,47 @@ const char* kModule = "icon";
 
 namespace mrv {
 
-  fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
-				   int len )
-  {
-      std::string ext = filename;
-      size_t start = ext.rfind( '.' );
-      if ( start != ext.size() )
-          ext = ext.substr( start + 1, ext.size() );
+Fl_Image* fltk_handler( const char* filename, uchar* header,
+                            int len )
+{
+    std::string ext = filename;
+    size_t start = ext.rfind( '.' );
+    if ( start != ext.size() )
+        ext = ext.substr( start + 1, ext.size() );
 
-      std::transform( ext.begin(), ext.end(), ext.begin(), 
-                      (int(*)(int))tolower);
+    std::transform( ext.begin(), ext.end(), ext.begin(),
+                    (int(*)(int))tolower);
 
-      if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" || 
-           ext == "srt" || ext == "sub" || ext == "txt" )
-          return NULL;
+    if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" ||
+         ext == "srt" || ext == "sub" || ext == "txt" )
+        return NULL;
 
-      CMedia* img = CMedia::guess_image( filename, header, len, true );
-      if ( img == NULL ) return NULL;
-
-
-      // Fetch frame in the 1/4 of duration
-      int64_t f = img->first_frame();
-      f += int64_t( img->duration() * 0.25f);
-      img->audio_stream( -1 );
-      img->seek( f );
-      img->fetch( f );
-      img->is_thumbnail( false );
-
-      if ( ! img->hires() ) return NULL;
-
-      mrv::gui::media m( img );
-      m.create_thumbnail();
+    CMedia* img = CMedia::guess_image( filename, header, len, true );
+    if ( img == NULL ) return NULL;
 
 
-      return (fltk::SharedImage*) m.thumbnail();
-  }
+    // Fetch frame in the 1/4 of duration
+    int64_t f = img->first_frame();
+    f += int64_t( img->duration() * CMedia::thumbnail_percent/100.0f );
+    img->audio_stream( -1 );
+    if ( f > 0.0f ) img->seek( f );
+    image_type_ptr canvas;
+
+    if ( img->fetch( canvas, f ) )
+    {
+        if ( canvas )
+        {
+            img->hires( canvas );
+            img->default_color_corrections();
+        }
+    }
+    img->is_thumbnail( false );
+
+    if ( ! img->left() ) return NULL;
+
+    mrv::gui::media m( img );
+    m.create_thumbnail();
+
+    return (Fl_Image*) m.thumbnail()->copy();
+}
 }

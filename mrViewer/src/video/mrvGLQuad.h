@@ -28,54 +28,79 @@
 #ifndef mrvGLQuad_h
 #define mrvGLQuad_h
 
-
+#include "mrvGLLut3d.h"
 
 namespace mrv {
 
-  class GLLut3d;
-  class GLShader;
-  class ImageView;
+class GLShader;
+class ImageView;
 
 
 class GLQuad
 {
-  protected:
+protected:
     struct uvCoords {
         float u;
         float v;
     };
 
-  public:
+public:
     GLQuad( const ImageView* view );
-    ~GLQuad();
+    virtual ~GLQuad();
 
     virtual void rot_x( double x ) {};
     virtual void rot_y( double x ) {};
-    virtual double rot_x() const { return 0.0; };
-    virtual double rot_y() const { return 0.0; };
+    virtual double rot_x() const {
+        return 0.0;
+    };
+    virtual double rot_y() const {
+        return 0.0;
+    };
 
-    inline void right( bool x ) { _right = x; }
-    inline bool right() const { return _right; }
+    inline void right( bool x ) {
+        _right = x;
+    }
+    inline bool right() const {
+        return _right;
+    }
 
-    inline void mask( int m ) { _mask = m; }
-    inline void mask_value( int m ) { _mask_value = m; }
+    inline void mask( int m ) {
+        _mask = m;
+    }
+    inline void mask_value( int m ) {
+        _mask_value = m;
+    }
 
-    inline float gamma() const { return _gamma; }
-    inline void gamma( const float f ) { _gamma = f; }
+    inline float gamma() const {
+        return _gamma;
+    }
+    inline void gamma( const float f ) {
+        _gamma = f;
+    }
 
 
     virtual void bind( const image_type_ptr pic );
 
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
-    inline GLShader* shader() const { return _shader; }
-    inline void shader( GLShader* x ) { _shader = x; }
+    inline GLShader* shader() const {
+        return _shader;
+    }
+    inline void shader( GLShader* x ) {
+        _shader = x;
+    }
 
-    inline const GLLut3d* lut() const { return _lut; }
+    inline const GLLut3d::GLLut3d_ptr lut() const {
+        return _lut;
+    }
     void lut( const CMedia* img );
 
-    inline void image( CMedia* const img ) { _image = img; }
-    inline const CMedia* image() const { return _image; }
+    inline void image( CMedia* const img ) {
+        _image = img;
+    }
+    inline const CMedia* image() const {
+        return _image;
+    }
 
     void clear_lut();
 
@@ -84,28 +109,28 @@ class GLQuad
         _normMax = fmax;
     }
 
-  protected:
+protected:
     void init_texture();
 
     /// Calculate char step from GL format and pixel type
     int calculate_gl_step( const GLenum format,
                            const GLenum pixel_type ) const;
 
-    void bind_texture_quad( const image_type_ptr pic,
+    void bind_texture_quad( const image_type_ptr& pic,
                             const unsigned poww, const unsigned int powh );
 
-    void bind_texture_yuv( const image_type_ptr pic,
+    void bind_texture_yuv( const image_type_ptr& pic,
                            const unsigned int poww,
                            const unsigned int powh );
 
-    void bind_texture_pixels( const image_type_ptr pic );
+    void bind_texture_pixels( const image_type_ptr& pic );
 
     void draw_pixels( const unsigned dw, const unsigned dh )        const;
     void draw_quad( const unsigned dw, const unsigned dh )          const;
     void draw_frame( const unsigned int dw, const unsigned int dh ) const;
     void draw_field( const unsigned int dw, const unsigned int dh ) const;
 
-  protected:
+protected:
     static GLenum       gl_pixel_type( const image_type::PixelType type );
     static GLenum       gl_format( const image_type::Format format );
     static unsigned int calculate_pow2( unsigned int w );
@@ -114,7 +139,7 @@ class GLQuad
     static const char* debug_format( const GLenum format );
     static const char* debug_pixel_type( const GLenum pixel_type );
 
-  protected:
+protected:
     void update_texsub( unsigned int idx,
                         unsigned int rx, unsigned int ry,
                         unsigned int rw, unsigned int rh,
@@ -124,10 +149,10 @@ class GLQuad
                         unsigned short  pixel_size,
                         boost::uint8_t* pixels );
 
-  protected:
+protected:
     const ImageView*   _view;
     GLShader*    _shader;
-    GLLut3d*     _lut;
+    GLLut3d::GLLut3d_ptr     _lut;
     const CMedia*   _image;
     unsigned short _lut_attempt;
 
@@ -162,7 +187,5 @@ class GLQuad
 
 } // namespace mrv
 
-#undef DBG
-#define DBG(x)
 
 #endif // mrvGLQuad_h

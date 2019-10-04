@@ -1,3 +1,495 @@
+v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
+	  only integers were saved.
+	- Made Preferences->Loading->Missing Frame be an automatic setting
+	  with no need to save it and reload mrViewer.
+	- Fixed FPS extraction from reels without FPS (old reels).  Now
+	  they default to 30.0 fps.
+	- Bug fixed native file chooser on Linux to save images or image
+	  sequences.  Note that the native file chooser on Linux is huge
+	  so it may not be the one you want by default.
+	- Bug fixed IN / OUT points setting which were being set up multiple
+	  times and so resetting themselves.
+	- Made opening of an image resize to full window as possible.
+	  Previously the behavior was intermittent.
+
+v5.2.6  - Improvents to the otio<->reel converter.  Now the clip name is
+	  attempted to be kept in both directions.
+	- The otio<->reel converter now defaults to relative paths.  This
+	  can be overriden by using -a relative_paths = False or
+	  -A relative_paths = False depening on whether you are reading
+	  or writing a .reel file.
+	- Bug fixed a problem with XML ACES files when loading checkered
+	  images.
+	- Bug fixed a huge memory leak in reel images which in time
+	  would slow everything down.
+	- Bug fixed scratched pictures missing on Linux.
+	- Bug fixed saving of images/movies as the native file requester
+	  would crash on both Windows and Linux.
+
+v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
+	  They would show as empty filenames.
+	- Bug fixed a Windows startup hangup when loading several
+	  short clips (usually in a reel file).
+	- Made stereo cache be brighter green.
+	- Made EDL playback work better on same clip divided with cuts in
+	  between.
+	- Tightened EDL cuts to the first and last frames of the clip.
+	  Previously, sometimes the last frames would get skipped or the
+	  clip would go on an endless loop.
+	- Minor sped up with clips that have timecode tracks in them.
+	  ffmpeg ignores them and so do we.
+	- Updated to latest ffmpeg, which makes it compatible with truehd
+	  audio on mp4 containers.
+	- Bug fixed IN/OUT points when in Timeline Shortened Display and
+	  when in Timeline Hilited Display.  You can use the S/E buttons
+	  to set the in/out points.  Note, however, that setting them
+	  while playing the clips can lead to hanging mrViewer.
+	- Added missing flags from v4.x ( -b, -P, --stereo-input,
+	  --stereo-output, etc ).
+	- otio->reel converter now keeps the name of the file in the
+	  Checkered images.  This allows distinction of files not found.
+	- Missing frames in sequences now do not stop playback with an
+	  opengl error.  They work as set in the Preferences (black,
+	  use last frame, or use last frame scratched).  This was a
+	  regression from an old version of mrViewer.
+
+
+v5.2.4  - Tightened the last/first frames of sequence loops as they were
+	  sometimes letting another frame pass.
+	- ***THIS IS EMBARASSING***
+	  Bug fixed playback of sequences when not in EDL.
+	  When stopping the sequence would reset to frame 1.
+	  This was supposedly fixed in v5.2.3 but a re-release caused it
+	  to revert to the previous wrong behavior.
+
+v5.2.3  - Bug fixed playback of sequences when not in EDL.  There were two
+	  problems: one when stopping the sequence would reset to frame 1
+	  and the other was that the sequence would not get played in full
+	  and it would loop earlier.
+	  This was a regression from v5.2.0 or so.
+	- Fixed a problem with international characters in filenames making
+	  mrViewer crash when a reel was changed on Windows.
+	- Bug fixed Cloned Image to be a playable (static) image.
+	- Made audio saving also be relative to the reel location if the
+	  relative preference is set.
+	- Bug fixed fit ('f') algorithm in the EDL timeline.
+
+v5.2.2  - Fixed EDL playback when changing clips and seeking manually.
+	  This would often not work and the clip would start at the
+	  beginning.
+	- Fixed EDL playback for good.  This was needed to have the otio
+	  adapter work well.
+	- Made all PAL/NTSC Color Bars, Checkered, and Luminance/Linear
+	  images be playable.
+	- Fixed a huge memory leak in the reel window's thumbnails creation.
+	  This also effected the EDL Window's thumbnails.
+	- Added Fit image to Reel window.  By default the key is 'f' and
+	  fits the selected image in the reel.
+	- Made the viewer turn off screen savers to avoid playback from
+	  stopping or the viewer from exiting.  Note that this does not
+	  effect Power Saving on Linux.
+	- First beta release of .otio <-> .reel adapter. This is an
+	  OpenTimelineIO adapter to work with that EDL format which is now
+	  part of the Academy.  Note that in order to work, it requires
+	  ffprobe to be on your PATH.
+	  Limitations of the current adapter are: no retiming, no dissolves
+	  or transitions, no stacked tracks (they are flattened to a single
+	  track), limited audio support.
+
+v5.2.1  - ***HOTFIX RELEASE***
+	  Removed the Autorefit image on window resize/playback, as it was
+	  creating more problems than benefits.
+
+v5.2.0  - Fixed video cache like audio cache.  This can remove some random
+	  crashes.
+	- Fixed End Frame widget.  Now you can type properly and the value
+	  will get reflected in the timeline.
+	- Fixed an error in audio decoding.  Now it will continue without
+	  printing out a bogus error about missing samples.
+	- Made tick mark in timeline be properly centered on current frame.
+	- Made FPS in Media Information window reflect the original fps value,
+	  not the playback fps (which can be changed from the main pulldown
+	  menu).
+	- Fixed audio offset for both sequences and movie files.  Now it is
+	  possible to add an audio and offset it in the EDL timeline.
+	- Audio offset is now saved in the reel file.
+	- FPS of sequences and videos are now saved in the reel file.
+	- Made Autorefit image refit the image on window resize too.
+	- Made lut creation not be recreated when a CTL .xml file is
+	  present and the CMM is OpenColorIO.
+
+v5.1.9  - Fixed some random crashes due to the audio cache being deleted
+	  incorrectly.
+
+v5.1.8  - Fixed loading of single/multiple images in file requester, drag
+	  and drop and file loading.
+
+v5.1.7  - Bug fixed saving of movies with audios.  There's no longer pops
+	  or noises in them.
+	- Fixed distribution having problems with libpng16.so / libz.so.
+	- Fixed fourcc for HEVC to be compatible with vlc and Apple.
+	- Addressed an assertion in playback in reverse.
+	- Allowed playback of single images and extending them to multiple
+	  frames.
+
+v5.1.6  - A quick fix for Windows' 64 bits libtiff crashing due to a
+	  new version.
+	- Bug fixed showing of mipmaps/ripmaps in EXRs and .tx files.
+
+v5.1.5  - Made mrvGLShape.h's virtual destructors.
+	- Fixed alpha channel on some uint16 YUVA files.
+	- Fixed bad use of min/max macros in Windows when used in limits.
+	- Fixed saving PNG/TIFF/IFF/etc. file sequences from movies as well
+	  as from other sequences.
+
+v5.1.4  - Bug fixed looping movies showing some random frame at the end
+	  of the loop.  Problem introduced in v5.1.2.
+	- Fixed the bug that resulted in playback problems once the
+	  loop end was removed (like hitting the E button twice - once
+	  to set it, once to remove it).
+	- Fixed the crash in the EDL window when using the LMB to drag
+	  a clip.
+
+v5.1.3  - Bug fixed the numerous crashes on Windows due to an incorrect
+	  fltk library.
+
+v5.1.2  - Fixed hotkey removal by deleting the text in the key1/key2
+	  widgets.
+	- A bug fix in fltk effects hotkeys' potential crashing.
+	- A bug fix in channel selection of red/green/blue channels with
+	  hotkeys.
+	- Fixed the bug that could crash the viewer when selecting channels
+	  and the video/image changed.  Now there's no longer a crash,
+	  but the menus can get out of sync with the current video if you
+	  open them before the change in image.
+	- Finally added a hotkey entry to toggle EDL.  By default it is
+	  Keypad Enter.
+	- Corrected EDL when the clip's duration is changed in the media
+	  information window.
+	- Improved display of Reel window's thumbnails.  Now they are
+	  separated by a line and don't have the extra garbage at the
+	  beginning of them.
+	- Some bug fixes to the EDL playback when clips are shortened.
+	- Bug fixed a crash when movies looped.
+
+v5.1.1  - Made preferences always select and show User Interface first.
+	- Fixed a crash when switching versions of movie files with the
+	  image info window open.
+	- Fixed auto playback to always start when loading any video or
+	  sequence, not only on the first video/sequence.  This would
+	  work intermittently previously.
+	- Made EXR images' metadata set lut damage only on the first
+	  frame of the sequence, not on all frames as before.  This avoids
+	  a whole list of information messages about lut already created.
+	- Upgraded mrViewer's reading of Camera RAW formats by using OIIO
+	  instead.
+	- Upgraded ffmpeg to the latest version.
+	- Made Images/Labels in reel window not have a background.  This
+	  allows easily seeing what image is selected by having the
+	  background yellow.
+
+v5.1.0  - Added Texture Filtering options to Preferences->Video.
+	  Options are: Presentation Only, Always Bilinear and
+	  Always Nearest Neighbor Filterings.
+	- Made exiting of mrViewer more solid.  Previously sometimes it
+	  could crash on exit with a memory error.
+	- Added Toggle Texturing Filtering menu entry to View menu.
+	- Added hotkey to toggle texture filtering (SHIFT+f by default).
+	- Note that the pixel bar currently has no notion of texture
+	  filtering and will display always the values of the pixel of the
+	  nearest neighbor.
+	- Removed some more dead code (unused FLU widgets and functions)
+	- Bug fixed some hotkeys which had broken in v5.0.7.
+	- Bug fixed hotkeys menu crashing after opening the special keys
+	  twice or opening them once and opening the main menu.
+	- Made hotkeys selection keep the scrollbar at the location of
+	  the last hotkey edited.
+	- Allowed hotkeys on keypad numbers.
+
+v5.0.9  - Removed a silly crash on exit usually during playback of EDLs.
+	- Fixed removal of clips from the reels when the reel is not the
+	  first one.  Previously, this would work sporadically.
+	- Added support for audio files named with numbers in them.
+	  Previously, they would get read as sequences.
+	- Allowed names with @ in them in movie files or sequences.
+	  Previously, the @ character would get swallowed and interpreted
+	  as a fltk control string.
+	- Added missing audio track to EDL editor.
+	- Removed a minor memory leak from Preferences' tree.
+	- Removed a minor memory leak from ALSA audio engine.
+	- Removed a memory leak from Preferences at run time.
+
+v5.0.8  - Removed dead code paths of NV shaders.
+	- Reverted to Ubuntu12.04 to compile mrViewer compatible with
+	  CentOS7.2+.
+	- Solidified OpenGL pipeline to deal with other vendors other
+	  than nvidia and amd.
+	- Made xclass of window be mrViewer, so it shows up on
+	  GNOME's toolbar properly.
+	- Made location input requester in custom file browser be
+	  editable.
+	- Fixed 16 bit movies with unsigned short pixel types.
+	- Fixed alpha channel of 16 bit movies.
+	- Removed F (C in Spanish) from frame display, leaving only the
+	  one of the popup menu.
+	- Made auto-playback be the default setting on new installs.
+	- Removed dead code of copy of boost threadpool in core directory.
+	- Fixed volume display on Linux.  Now the audio slider reflects
+	  the current volume at startup when the movie is loaded.
+
+v5.0.7  - Made videos with two video tracks support stereo viewing,
+	  without needing to be the same length or fps.
+	- Removed libstdc++.so from Linux distribution as it was
+	  causing problems with deepin AMD drivers.
+	- The FLTK but with CTRL+ALT hotkeys was traced to a bad
+	  Linux configuration which can be corrected with xmodmap.
+	- Bug fixed some memory trashing upon program exit.
+	- Removed .cg shaders as NVidia has discontinued them.
+	- Made shaders work with 4 channels on videos that have alpha in
+	  them and are not rgba (YCbCrA and YByBrA shaders).
+	- Made Linux shortcut belong to user 1000 of the machine instead
+	  of root.  This removes the message about the program not being
+	  trusted.
+	- Removed a1.0.0 versioning from CTL transforms.
+	- Made CTL transforms appear in media info list, as they were
+	  missing.
+	- Removed libfontconfig.so.1, libfreetype.6 and libz.so.1.2.8
+	  from distro as it was causing problems with Fedora 29/30
+	  (slowdowns and a linker error about FT_Done_MM_Var).
+
+v5.0.6  - Made custom file requester load icons faster and be more
+	  interactive.
+	- Improved the interaction of the TAB hotkey in the custom
+	  file requester.
+	- Made progress report colors be readable in the black scheme.
+	- Made ask/alert questions use mrv::fl_choice/fl_alert instead
+	  for color scheme and better layout.
+	- Removed white background from a number of windows.
+	- Bug fixed hotkeys which were acting out.  Note that there's
+	  an FLTK bug with CTRL+ALT+key hotkeys on Linux, at least on
+	  international keyboards.  This can be seen in the keyboard
+	  demo of fltk.
+	- Bug fixed OCIO second display transform.
+	- Made OCIO respect active_views and active_displays in ocio
+	  config file.
+	- When OCIO is on, the gamma defaults are now removed from the
+	  pull down menu.
+	- Bug fixed scaling up and down of the Reel window, getting
+	  corrupted or resizing incorrectly.
+
+v5.0.5  - Removed a minor memory leak in decode_image when packet could
+	  not be decoded.
+	- Worked around an FLTK menu bug which would change the text of
+	  the main menus and replace them with the color channel names.
+	- Bug fixed a missed frame when the videos were stopped in their
+	  last frames.
+
+v5.0.4  - Quick patch to fix EDL playback.
+
+v5.0.3  - Bug fixed installation of mrViewer on international characters
+	  like umlauts.
+	- Bug fixed pixel query position on Windows.
+	- Made CTRL+Drag gain use exposure instead.
+	- Bug fixed EDL playback.
+	- Added SHIFT+r to reset all gamma/gain changes to the image.
+	- Made SHIFT+hotkey shortcuts work properly.  Previously, you had
+	  to press twice on them to take effect.
+	- Bug fixed playback of Dolby's TrueHD clips.
+	  Regression from v4.2.5.
+
+v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
+	  as well as flat attributes.
+	- Improved the look of the color area window.
+	- Made RMB Menu show up when media info window is open.  Previously,
+	  only the main titles would show up and it would not allow anything
+	  to be selected.
+	- Bug fixed Start and End frames to show secs/time/timecode when
+	  those options are selected.
+	- Bug fixed Start and End buttons to select timeline display.
+	  (Regression from 4.4.7).
+	- Made movie files return the attributes of their first frame only.
+	  Previously, opening the media info window in some other frame than
+	  the first one would not show any metadata.
+	- Bug fixed all menus and widgets to support internationalization
+	  (Spanish currently).
+	- Prettyfied some windows (about, hotkeys, keyboard).
+	- Made open image open in the last directory opened (even if it was
+	  from DnD).
+	- Bug fixed fullscreen and presentation modes on network connections.
+	  Previously, they would crash the viewer.
+	- Made timeline, pixel bar and topbar hide properly from the
+	  preferences.  Restoring them also works, but the top bar shows up
+	  twice its height the first time if it is shown before the other
+	  bars.  If it is shown after, it may show the dreaded white area.
+	- Gave the Black color theme some love.  Now it looks much nicer.
+	- Made the CTRL+Drag gain adjustment be more sensitive.
+	- Added CTRL+SHIFT+Drag to adjust gamma.
+
+v5.0.1  - Bug fixed connection editor failing on LMTs.
+	- Bug fixed refresh windows when selecting a long ICS menu.
+	- Improved reporting of .xml files as recognized.
+	- Allowed metadata to be read and shown on a per frame basis.
+	  Previously, only the first frame would get shown.
+	- Bug fixed loading two or more images/movies command-line.
+	  Previously the gui would get corrupted.
+
+v5.0.1-RC5
+	- Improved the fix to the Presentation mode.  Now switching back
+	  and forth keeps and removes the top bar, pixel bar and bottom
+	  bar.
+	- Bug fixed a crash on start up due to missing fonts.
+	- Bug fixed a crash on OCIO due to missing ICS.
+	- Bug fixed a memory crash on OCIO picker.
+	- Bug fixed a similar memory leak on CTL picker.
+	- Fixed the combo listing in the custom file requester.
+	- Bug fixed patterns on native file requesters.
+	- Fixed the listing of CTL transforms in the media info window.
+
+
+v5.0.1-RC4
+	- Made ICC Profiles and ICC Profile Inspector actually work again.
+	- Bug fixed a small problem with single images not refreshing when
+	  a movie was played and the foreground was switched to the image.
+	- Bug fixed a memory trashing in the waveform monitor.
+	- Bug fixed some memory leaks in filename printfs.
+	- Bug fixed EDL playback turning off in some cases.
+	- Bug fixed crash in reel window due to internal structure getting
+	  out of sync.
+	- Improved sizing and positioning of window when starting mrViewer,
+	  so that the title bar is visible.
+	- Clicking on the title bar refreshes the size of the pixel bar and
+	  top bar and bottom playback bar.
+	- Made presentation mode work properly in full screen mode.
+	- Improved reliability of network connections.  Not perfect yet,
+	  but much better.
+	- Fixed switching among two video tracks of a movie file.
+	- Removed the need for OCIO_ACTIVE_VIEWS environment variable as it
+	  is working properly now without it (Linux only, Windows was always
+	  okay).
+
+
+v5.0.1-RC3
+	- Made color maps restore Default before applying a new one.  This
+	  avoids some errors that would happen with some color maps applied
+	  one after the other and not using all entries of the cmaps.
+	- Fixed radio buttons in Preferences->Action wizard.
+	- Corrected a memory leak in server/client connections.
+	- Bug fixed network connections not working in Spanish.
+	- Bug fixed Reel Window drawing incorrectly.
+	- Bug fixed crashes in reel window due to incorrect handling of images.
+	- Improved Shake color theme.
+	- Improved GUI's requesters showing the empty background.  Now they
+	  show a box.
+	- Made checkboxes have a yellow tick mark.
+	- Bug fixed a memory trashing bug in 3D Lut.
+	- Bug fixed a crash when selecting RTs or ODT.
+	- Bug fixed a color changing the gui when selecting a different pen
+	  color in drawing.
+
+
+v5.0.1-RC2
+	- Improved the look and feel of the UI.
+	- Added color themes and widget schemes to the Preferences.
+	- Made the Shake ( a Dark Grey version ) the default color scheme.
+
+
+v5.0.1-RC1
+	 - Bug fixed clone image and deleting it afterwards twice.
+	 - Bug fixed exiting with the Waveform window open.
+	 - Bug fixed cache loading when image is stopped.
+	 - Bug fixed playback starting too slow when cache was full.
+	 - Bug fixed crash on EDL group when selecting an empty media track.
+	 - Ported code to fltk1.4.  Now it should be possible to compile on
+	   a Mac (if I get my hands on one).  Also, code is better supported
+	   and there's temporary support for hiDPI screens.
+
+v4.4.8   - Bug fixed timeline min/max setting with S/E buttons.
+
+v4.4.7   - Bug fixed AVIs with yuvj422p color schemes as they were being
+	   read darker by swscale (deprecated format).
+	 - Bug fixed inverse fps change in image information window.
+	 - Bug fixed naming of aspect ratio in image informaion window.
+	 - Bug fixed pixel format always showing Lumma in image info window.
+
+v4.4.6   - Bug fixed histogram, color area, vectorscope and waveform to
+	   work with image sequences.
+
+v4.4.5
+	 - Bug fixed thumbnails in our own file requester which was crashing
+	   the viewer in beta-2.
+	 - Bug fixed saving of files creating empty entries in reels when in
+	   relative mode and files are into different drives on Windows.
+	 - Bug fixed crash in custom file requester when showing movies or
+	   music.
+	 - Bug fixed crash when loading music.
+	 - Bug fixed loading of exr channels of single images.
+
+v4.4.4-beta2
+	 - Fixed Color Bars, Gamma Charts, Gradients and Checkerboard images
+	   as they were not under the new algorithm.
+
+v4.4.4-beta1
+	 - Reworked loading of image sequences to take advantage of threads.
+	   Now one idle thread caches images while playing.  This seems to
+	   work very nicely with multipart OpenEXRs and with small (< 2K) 8
+	   bit PNGs, IFFs, etc.  This is a first beta with the new algorithm.
+	   Please report successes or failures.
+	 - Bug fixed crash when stereo-output/input command line option
+	   was unknown.
+	 - Bug fixed MMB+drag to drag canvas around.  ALT+Shift+LMB remains
+	   the same and does the same.
+
+v4.4.3   - Bug fixed loading of tiff files due to a library conflict on
+	   Linux.
+
+v4.4.2   - Bug fixed playback/cache of sequences when frames did not
+	   begin at 1.
+	 - Documented all commands in the connections section of the
+	   manual.
+	 - Updated color management docs to talk about OCIO.
+	 - Removed a bunch of SCOPED_LOCK( _mutex ) which were unneeded.
+	 - Made detection of sequences on disk more reliable.
+
+v4.4.1   - Bug fixed Connections to work on all (?) commands.
+	 - Bug fixed Connections to not use relative paths in image names.
+	   Full paths are passed instead.  This fixes the problem of
+	   two mrViewers started at different locations.
+	 - Several minor bug fixes to preload caching.  Now precache
+	   reel and gui reel are different variables.
+	 - Added draw, erase, text, move picture hotkeys.  They are
+	   SHIFT+first letter of the tool.  Area selection remains
+	   as SHIFT+Drag.
+	 - Several minor bug fixes to BG playback.
+
+v4.4.0   - Bug fixed BG playback of movies and sequences.  It is now
+	   possible to have a FG image and comp it on the background.
+	   This was a regression from some older version.
+	 - You currently cannot put an EDL in the background and have it
+	   play/loop correctly.  It will hang the viewer.
+	 - Added a shortcut to change pen size.  By default it is [,]
+	   when the action mode is draw or erase.
+
+
+v4.3.9   - Made ghosting be a global setting instead of a per shape
+	   setting.  This allows easily changing the previous/next
+	   ghosting value and see the result in real time.
+	 - Added "Ghosting <previous> <next>" to list of reel commands
+	   to control the ghosting of previous/next frames.  Note that
+	   even thou it is a reel setting, only one setting is valid
+	   per session (the last loaded).
+	 - Improved OpenGL compatibility by drawing lines and points with
+	   polygons and circles respectively.
+	 - Increased the size of the eraser.
+	 - Made swing looping work on a single image when loaded with no
+	   background.
+	 - Removed a crash in EDL when two sequences were played and
+	   transitioned one from the other.
+
+v4.3.8   - Bug fixed saving of shape in reel due to a typo (&d instead of
+	   %d).
+	 - Fixed playback of videos hanging up due to mutex lock in
+	   ping-pong (swing) playback.
+
 v4.3.7   - Made showing and hiding of windows be a command.  This makes
 	   them thread safe.
 	 - Bug fixed networking to work with multiple clients.
