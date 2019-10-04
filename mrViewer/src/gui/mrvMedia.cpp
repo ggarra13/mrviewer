@@ -74,7 +74,9 @@ media::media( CMedia* const img ) :
 
 media::~media()
 {
-    if ( _own_image ) delete _image;
+    if ( _own_image ) {
+        delete _image;
+    }
     _image = NULL;
     if ( _thumbnail )
     {
