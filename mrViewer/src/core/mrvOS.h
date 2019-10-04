@@ -31,6 +31,13 @@
 
 #if (defined(_WIN32) || defined(_WIN64))
 
+#include <winsock2.h>
+#include <windows.h>
+#include <stdio.h>
+
+#if !(defined vsnprintf)
+#  define vsnprintf       _vsnprintf
+#endif
 
 #if !(defined putenv)
 #  define putenv(x)       _putenv(x)
@@ -40,21 +47,32 @@
 #  define strdup(x)       _strdup(x)
 #endif
 
+#undef max
+#undef min
 #undef stricmp
 
 #if !(defined strcasecmp)
-#  define strcasecmp(a,b) stricmp(a,b)
+#  ifdef _WIN32
+#    define strcasecmp(a,b) _stricmp(a,b)
+#  else
+#    define strcasecmp(a,b) stricmp(a,b)
+#  endif
 #endif
 
 #if !(defined strtok_r)
 #  define strtok_r(a,b,c) strtok(a,b)
 #endif
 
+#if !(defined snprintf)
+#  define snprintf        _snprintf
+#endif
 
 #if !(defined access)
 #  define access          _access
 #endif
 
+#undef  _ITERATOR_DEBUG_LEVEL 
+#define _ITERATOR_DEBUG_LEVEL 0
 
 #endif // defined(WIN32) || defined(WIN64)
 

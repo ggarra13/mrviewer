@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvFrame.h"
 
 #include <iostream>
 #include <vector>
@@ -77,7 +78,7 @@ using namespace std;
 
 namespace
 {
-  const char* kModule = "exr";
+const char* kModule = "exr";
 }
 
 
@@ -117,7 +118,7 @@ void fill_ignore_attr()
 }
 
 
-  const char* exrImage::kCompression[] = {
+const char* exrImage::kCompression[] = {
     _("None"),
     _("RLE"),
     N_("Zips"),
@@ -129,28 +130,28 @@ void fill_ignore_attr()
     N_("DWAA"),
     N_("DWAB"),
     0
-  };
+};
 
-  const char* exrImage::kLineOrder[] = {
+const char* exrImage::kLineOrder[] = {
     _("Increasing Y"),
     _("Decreasing Y"),
     _("Random Y"),
     0
-  };
+};
 
 inline image_type::PixelType
 exrImage::pixel_type_conversion( Imf::PixelType pixel_type )
 {
     switch( pixel_type )
     {
-        case Imf::UINT:
-            return image_type::kInt;
-        case Imf::HALF:
-            return image_type::kHalf;
-        case Imf::FLOAT:
+    case Imf::UINT:
+        return image_type::kInt;
+    case Imf::HALF:
+        return image_type::kHalf;
+    case Imf::FLOAT:
         return image_type::kFloat;
-        default:
-            LOG_ERROR( _("Unknown Imf::PixelType") );
+    default:
+        LOG_ERROR( _("Unknown Imf::PixelType") );
         return image_type::kFloat;
     }
 }
@@ -160,74 +161,74 @@ exrImage::pixel_type_to_exr( image_type::PixelType pixel_type )
 {
     switch( pixel_type )
     {
-        case image_type::kByte:
-        case image_type::kShort:
-            return Imf::NUM_PIXELTYPES;
-        case image_type::kInt:
-            return Imf::UINT;
-        case image_type::kHalf:
-            return Imf::HALF;
-        case image_type::kFloat:
-            return Imf::FLOAT;
-        default:
-            LOG_ERROR("Unknown image_type::PixelType " << pixel_type);
-            return Imf::HALF;
+    case image_type::kByte:
+    case image_type::kShort:
+        return Imf::NUM_PIXELTYPES;
+    case image_type::kInt:
+        return Imf::UINT;
+    case image_type::kHalf:
+        return Imf::HALF;
+    case image_type::kFloat:
+        return Imf::FLOAT;
+    default:
+        LOG_ERROR("Unknown image_type::PixelType " << pixel_type);
+        return Imf::HALF;
     }
-  }
+}
 
 exrImage::exrImage() :
-  CMedia(),
-  _levelX( 0 ),
-  _levelY( 0 ),
-  _multiview( false ),
-  _has_alpha( false ),
-  _has_yca( false ),
-  _use_yca( false ),
-  _has_left_eye( NULL ),
-  _has_right_eye( NULL ),
-  _curpart( -1 ),
-  _clear_part( 0 ),
-  _numparts( -1 ),
-  _read_attr( false ),
-  _lineOrder( (Imf::LineOrder) 0 ),
-  _compression( (Imf::Compression) 0 ),
-  _aces( false )
-  {
-      st[0] = st[1] = -1;
+    CMedia(),
+    _levelX( 0 ),
+    _levelY( 0 ),
+    _multiview( false ),
+    _has_alpha( false ),
+    _has_yca( false ),
+    _use_yca( false ),
+    _has_left_eye( NULL ),
+    _has_right_eye( NULL ),
+    _curpart( -1 ),
+    _clear_part( 0 ),
+    _numparts( -1 ),
+    _lineOrder( (Imf::LineOrder) 0 ),
+    _compression( (Imf::Compression) 0 ),
+    _aces( false )
+{
+    st[0] = st[1] = -1;
 
-      if ( ignore.empty() ) fill_ignore_attr();
-  }
+    if ( ignore.empty() ) fill_ignore_attr();
+}
 
-  exrImage::~exrImage()
-  {
-      free( _has_right_eye );
-      free( _has_left_eye );
-  }
+exrImage::~exrImage()
+{
+    free( _has_right_eye );
+    free( _has_left_eye );
+}
 
-  stringArray exrImage::valid_compressions() const
-  {
+stringArray exrImage::valid_compressions() const
+{
     stringArray ret;
     const char** s = kCompression;
     for ( ; *s != 0; ++s )
-      {
+    {
         ret.push_back( *s );
-      }
+    }
     return ret;
-  }
+}
 
-  /*! Test a block of data read from the start of the file to see if it
-    looks like the start of an .exr file. This returns true if the
-    data contains EXR's magic number and a "channels" string in the 8th
-    position.
-  */
-  bool exrImage::test(const boost::uint8_t *data, unsigned)
-  {
-      if ( Imf::isImfMagic( (const char*)data ) ) return true;
-      return false;
-  }
+/*! Test a block of data read from the start of the file to see if it
+  looks like the start of an .exr file. This returns true if the
+  data contains EXR's magic number and a "channels" string in the 8th
+  position.
+*/
+bool exrImage::test(const boost::uint8_t *data, unsigned)
+{
+    if ( Imf::isImfMagic( (const char*)data ) ) return true;
+    return false;
+}
 
 
 bool exrImage::channels_order(
+                              mrv::image_type_ptr& canvas,
                               const boost::int64_t& frame,
                               Imf::ChannelList::ConstIterator& s,
                               Imf::ChannelList::ConstIterator& e,
@@ -236,297 +237,307 @@ bool exrImage::channels_order(
                               Imf::FrameBuffer& fb
                               )
 {
-   const Box2i& displayWindow = h.displayWindow();
-   const Box2i& dataWindow = h.dataWindow();
-   int dw = dataWindow.max.x - dataWindow.min.x + 1;
-   int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   int dx = dataWindow.min.x;
-   int dy = dataWindow.min.y;
+    SCOPED_LOCK( _mutex );
+    const Box2i& displayWindow = h.displayWindow();
+    const Box2i& dataWindow = h.dataWindow();
+    int dw = dataWindow.max.x - dataWindow.min.x + 1;
+    int dh = dataWindow.max.y - dataWindow.min.y + 1;
+    int dx = dataWindow.min.x;
+    int dy = dataWindow.min.y;
 
-   // First, count and store the channels
-   bool no_layer = false;
-   order[0] = order[1] = order[2] = order[3] = -1;
+    // First, count and store the channels
+    bool no_layer = false;
+    order[0] = order[1] = order[2] = order[3] = -1;
 
-   Imf::PixelType imfPixelType = Imf::UINT;
+    Imf::PixelType imfPixelType = Imf::UINT;
 
-   typedef std::vector< std::string > LayerList;
-   LayerList channelList;
-   channelList.reserve(5); // R,G,B,A,Z
+    typedef std::vector< std::string > LayerList;
+    LayerList channelList;
+    channelList.reserve(5); // R,G,B,A,Z
 
-   int idx = 0;
-   int xsampling[4], ysampling[4];
+    int idx = 0;
+    int xsampling[4], ysampling[4];
 
-   bool Zchannel = false;
-   std::string c;
-   if ( channel() ) c = channel();
-   std::string ext = c;
-   size_t pos = ext.rfind( '.' );
-   if ( pos != std::string::npos )
-   {
-       ext = ext.substr( pos+1, ext.size() );
-   }
-   if ( ext == "Z" ) Zchannel = true;
+    bool Zchannel = false;
+    std::string c;
+    if ( channel() ) c = channel();
+    std::string ext = c;
+    size_t pos = ext.rfind( '.' );
+    if ( pos != std::string::npos )
+    {
+        ext = ext.substr( pos+1, ext.size() );
+    }
+    if ( ext == "Z" ) Zchannel = true;
 
-   for (Imf::ChannelList::ConstIterator i = s; i != e; ++i, ++idx )
-   {
-       const std::string& layerName = i.name();
-       const Imf::Channel& ch = i.channel();
+    for (Imf::ChannelList::ConstIterator i = s; i != e; ++i, ++idx )
+    {
+        const std::string& layerName = i.name();
+        const Imf::Channel& ch = i.channel();
 
-       ext = layerName;
+        ext = layerName;
 
-       if ( no_layer == false )
-       {
-           pos = ext.rfind( '.' );
-           if ( pos != std::string::npos )
-           {
-               ext = ext.substr( pos+1, ext.size() );
-           }
-           else
-           {
-               no_layer = true;
-           }
-       }
+        if ( no_layer == false )
+        {
+            pos = ext.rfind( '.' );
+            if ( pos != std::string::npos )
+            {
+                ext = ext.substr( pos+1, ext.size() );
+            }
+            else
+            {
+                no_layer = true;
+            }
+        }
 
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper );
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper );
 
-       if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
-                               ext == N_("Y") || ext == N_("U") ||
-                               ext == N_("X") || ext == N_("Z")) )
-       {
-           int k = order[0] = (int)channelList.size(); imfPixelType = ch.type;
-           xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
-           channelList.push_back( layerName );
-       }
-       else if ( order[1] == -1 && ((ext == N_("G") && Zchannel == false) ||
-                                    ext == N_("RY") || ext == N_("V") ||
-                                    ext == N_("Y") ) )
-       {
-           int k = order[1] = (int)channelList.size(); imfPixelType = ch.type;
-           xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
-           channelList.push_back( layerName );
-       }
-       else if ( order[2] == -1 && ((ext == N_("B") && Zchannel == false) ||
-                                    ext == N_("BY") || ext == N_("W") ||
-                                    ext == N_("Z") ) )
-       {
-           int k = order[2] = (int)channelList.size(); imfPixelType = ch.type;
-           xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
-           channelList.push_back( layerName );
-       }
-       else if ( order[3] == -1 && (ext == N_("A") && Zchannel == false) )
-       {
-           int k = order[3] = (int)channelList.size(); imfPixelType = ch.type;
-           xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
-           channelList.push_back( layerName );
-           _has_alpha = true;
-       }
-       else if ( Zchannel == false &&
-                 order[0] == -1 && order[1] == -1 && order[2] == -1 &&
-                 order[3] == -1 && (no_layer || ext.size() > 1) )
-       {
-           int k = order[0] = (int) channelList.size(); imfPixelType = ch.type;
-           xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
-           channelList.push_back( layerName );
-       }
+        if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
+                                ext == N_("Y") || ext == N_("U") ||
+                                ext == N_("X") || ext == N_("Z")) )
+        {
+            int k = order[0] = (int)channelList.size();
+            imfPixelType = ch.type;
+            xsampling[k] = ch.xSampling;
+            ysampling[k] = ch.ySampling;
+            channelList.push_back( layerName );
+        }
+        else if ( order[1] == -1 && ((ext == N_("G") && Zchannel == false) ||
+                                     ext == N_("RY") || ext == N_("V") ||
+                                     ext == N_("Y") ) )
+        {
+            int k = order[1] = (int)channelList.size();
+            imfPixelType = ch.type;
+            xsampling[k] = ch.xSampling;
+            ysampling[k] = ch.ySampling;
+            channelList.push_back( layerName );
+        }
+        else if ( order[2] == -1 && ((ext == N_("B") && Zchannel == false) ||
+                                     ext == N_("BY") || ext == N_("W") ||
+                                     ext == N_("Z") ) )
+        {
+            int k = order[2] = (int)channelList.size();
+            imfPixelType = ch.type;
+            xsampling[k] = ch.xSampling;
+            ysampling[k] = ch.ySampling;
+            channelList.push_back( layerName );
+        }
+        else if ( order[3] == -1 && (ext == N_("A") && Zchannel == false) )
+        {
+            int k = order[3] = (int)channelList.size();
+            imfPixelType = ch.type;
+            xsampling[k] = ch.xSampling;
+            ysampling[k] = ch.ySampling;
+            channelList.push_back( layerName );
+            _has_alpha = true;
+        }
+        else if ( Zchannel == false &&
+                  order[0] == -1 && order[1] == -1 && order[2] == -1 &&
+                  order[3] == -1 && (no_layer || ext.size() > 1) )
+        {
+            int k = order[0] = (int) channelList.size();
+            imfPixelType = ch.type;
+            xsampling[k] = ch.xSampling;
+            ysampling[k] = ch.ySampling;
+            channelList.push_back( layerName );
+        }
 
-   }
-
-
-   size_t numChannels = channelList.size();
-
-   if ( numChannels == 0 )
-   {
-       if ( channel() )
-           IMG_ERROR( _("Image file \"") << filename() <<
-                      _("\" has no channels named with prefix \"")
-                      << channel() << "\"." );
-       else
-       {
-           IMG_ERROR( _("Image file \"") << filename() <<
-                      _("\" has no channels.") );
-       }
-       return false;
-   }
+    }
 
 
-   // Prepare format
-   image_type::Format format = VideoFrame::kLumma;
-   int offsets[4];
-   if (order[0] != -1 ) offsets[order[0]] = 0;
+    size_t numChannels = channelList.size();
 
-   unsigned sx = 1, sy = 1;
-
-   if ( _has_yca )
-   {
-      unsigned size  = dw * dh;
-      unsigned size2 = dw * dh / 4;
-
-      unsigned off = 0;
-      sx = 0;
-      unsigned short idx = 0;
-      for ( int i = 0; i < 4; ++i )
-      {
-          int k = order[i];
-          if ( k == -1 ) continue;
-
-          if ( idx == 0 ) off = 0;
-          else if ( idx == 1 ) off = size;
-          else if ( idx == 2 ) off = size + size2;
-          else if ( idx == 3 ) off = size + size2 * 2;
-          if ( sx == 0 ) {
-              sx = xsampling[k];
-              sy = ysampling[k];
-          }
-          offsets[k] = off;
-          ++idx;
-      }
-      if ( numChannels >= 3 && has_alpha() )
-      {
-         format = VideoFrame::kYByRy420A;
-         numChannels = 4;
-         offsets[order[3]]  = size + size2 * 2;
-      }
-      else if ( numChannels >= 2 )
-      {
-         numChannels = 3;
-         format = VideoFrame::kYByRy420;
-      }
-   }
-   else
-   {
-      if ( order[1] != -1 ) offsets[order[1]]  = 1;
-      if ( order[2] != -1 ) offsets[order[2]]  = 2;
-      if ( order[3] != -1 ) offsets[order[3]]  = 3;
-
-      if ( numChannels >= 3 && has_alpha() )
-      {
-         format = VideoFrame::kRGBA;
-         numChannels = 4;
-      }
-      else if ( numChannels >= 2 )
-      {
-         format = VideoFrame::kRGB;
-         numChannels = 3;
-      }
-   }
-
-   if ( ! allocate_pixels( frame, (unsigned short)numChannels, format,
-                           pixel_type_conversion( imfPixelType ),
-                           dw / sx, dh / sy ) )
-       return false;
-
-   size_t xs[4], ys[4];
-
-   if ( _has_yca )
-   {
-      size_t t = _hires->pixel_size();
-
-      for ( unsigned j = 0; j < 4; ++j )
-      {
-           xs[j] = t;
-      }
-
-      size_t dw2 = dw / 2;
-      if ( order[0] != -1 ) ys[order[0]] = t * dw;
-      if ( order[1] != -1 ) ys[order[1]] = t * dw2;
-      if ( order[2] != -1 ) ys[order[2]] = t * dw2;
-      if ( order[3] != -1 ) ys[order[3]] = t * dw;
-   }
-   else
-   {
-       unsigned pixels = (unsigned) (_hires->pixel_size() * numChannels);
-
-       for ( unsigned j = 0; j < 4; ++j )
-       {
-           int k = order[j];
-           if ( k == -1 ) continue;
-           xs[k] = pixels;
-           ys[k] = pixels * dw;
-       }
-   }
-
-   char* pixels = (char*)_hires->data().get();
-   if (!pixels) return false;
-   memset( pixels, 0, _hires->data_size() ); // Needed for lumma pics (Fog.exr)
-
-   // Then, prepare frame buffer for them
-   int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-                 _hires->channels() );
-
-   char* base = pixels + start;
-
-   for ( int idx = 0; idx < 4; ++idx )
-   {
-      int k = order[idx];
-      if ( k == -1 ) continue;
-
-      char* buf = base + offsets[k] * _hires->pixel_size();
-
-      // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
-      //           << " off:" << offsets[k] << " xs,ys "
-      //                << std::endl;
-      //           << xs[k] << "," << ys[k]
-      //           << " sampling " << xsampling[k]
-      //           << " " << ysampling[k]
-      //           << " buf " << (void*) buf
-      //           << std::endl;
+    if ( numChannels == 0 )
+    {
+        if ( channel() )
+            IMG_ERROR( _("Image file \"") << filename() <<
+                       _("\" has no channels named with prefix \"")
+                       << channel() << "\"." );
+        else
+        {
+            IMG_ERROR( _("Image file \"") << filename() <<
+                       _("\" has no channels.") );
+        }
+        return false;
+    }
 
 
-      fb.insert( channelList[k],
-                 Slice( imfPixelType, buf, xs[k], ys[k],
-                        xsampling[k], ysampling[k] ) );
-   }
+    // Prepare format
+    image_type::Format format = VideoFrame::kLumma;
+    int offsets[4];
+    if (order[0] != -1 ) offsets[order[0]] = 0;
 
-   return true;
+    unsigned sx = 1, sy = 1;
+
+    if ( _has_yca )
+    {
+        unsigned size  = dw * dh;
+        unsigned size2 = dw * dh / 4;
+
+        unsigned off = 0;
+        sx = 0;
+        unsigned short idx = 0;
+        for ( int i = 0; i < 4; ++i )
+        {
+            int k = order[i];
+            if ( k == -1 ) continue;
+
+            if ( idx == 0 ) off = 0;
+            else if ( idx == 1 ) off = size;
+            else if ( idx == 2 ) off = size + size2;
+            else if ( idx == 3 ) off = size + size2 * 2;
+            if ( sx == 0 ) {
+                sx = xsampling[k];
+                sy = ysampling[k];
+            }
+            offsets[k] = off;
+            ++idx;
+        }
+        if ( numChannels >= 3 && has_alpha() )
+        {
+            format = VideoFrame::kYByRy420A;
+            numChannels = 4;
+            offsets[order[3]]  = size + size2 * 2;
+        }
+        else if ( numChannels >= 2 )
+        {
+            numChannels = 3;
+            format = VideoFrame::kYByRy420;
+        }
+    }
+    else
+    {
+        if ( order[1] != -1 ) offsets[order[1]]  = 1;
+        if ( order[2] != -1 ) offsets[order[2]]  = 2;
+        if ( order[3] != -1 ) offsets[order[3]]  = 3;
+
+        if ( numChannels >= 3 && has_alpha() )
+        {
+            format = VideoFrame::kRGBA;
+            numChannels = 4;
+        }
+        else if ( numChannels >= 2 )
+        {
+            format = VideoFrame::kRGB;
+            numChannels = 3;
+        }
+    }
+
+    if ( ! allocate_pixels( canvas, frame, (unsigned short)numChannels, format,
+                            pixel_type_conversion( imfPixelType ),
+                            dw / sx, dh / sy ) )
+        return false;
+
+    size_t xs[4], ys[4];
+
+    if ( _has_yca )
+    {
+        size_t t = canvas->pixel_size();
+
+        for ( unsigned j = 0; j < 4; ++j )
+        {
+            xs[j] = t;
+        }
+
+        size_t dw2 = dw / 2;
+        if ( order[0] != -1 ) ys[order[0]] = t * dw;
+        if ( order[1] != -1 ) ys[order[1]] = t * dw2;
+        if ( order[2] != -1 ) ys[order[2]] = t * dw2;
+        if ( order[3] != -1 ) ys[order[3]] = t * dw;
+    }
+    else
+    {
+        unsigned pixels = (unsigned) (canvas->pixel_size() * numChannels);
+
+        for ( unsigned j = 0; j < 4; ++j )
+        {
+            int k = order[j];
+            if ( k == -1 ) continue;
+            xs[k] = pixels;
+            ys[k] = pixels * dw;
+        }
+    }
+
+    char* pixels = (char*)canvas->data().get();
+    if (!pixels) return false;
+    memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
+
+    // Then, prepare frame buffer for them
+    int start = ( (-dx - dy * dw) * canvas->pixel_size() *
+                  canvas->channels() );
+
+    char* base = pixels + start;
+
+    for ( int idx = 0; idx < 4; ++idx )
+    {
+        int k = order[idx];
+        if ( k == -1 ) continue;
+
+        char* buf = base + offsets[k] * canvas->pixel_size();
+
+        // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
+        //           << " off:" << offsets[k] << " xs,ys "
+        //           << xs[k] << "," << ys[k]
+        //           << " sampling " << xsampling[k]
+        //           << " " << ysampling[k]
+        //           << " buf " << (void*) buf
+        //           << std::endl;
+
+        fb.insert( channelList[k],
+                   Slice( imfPixelType, buf, xs[k], ys[k],
+                          xsampling[k], ysampling[k] ) );
+    }
+
+    return true;
 }
 
 
-void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
+void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
+                         image_type_ptr& canvas )
 {
-   SCOPED_LOCK( _mutex );
 
-   Imf::Chromaticities cr;
-   if ( Imf::hasChromaticities( hdr ) )
-      cr = Imf::chromaticities( hdr );
+    Imf::Chromaticities cr;
+    if ( Imf::hasChromaticities( hdr ) )
+        cr = Imf::chromaticities( hdr );
 
-   V3f yw = Imf::RgbaYca::computeYw(cr);
+    V3f yw = Imf::RgbaYca::computeYw(cr);
 
-   unsigned w = width();
-   unsigned h = height();
+    unsigned w = width();
+    unsigned h = height();
 
-   image_type::Format format = ( has_alpha() ?
-                                 image_type::kRGBA :
-                                 image_type::kRGB );
+    image_type::Format format = ( has_alpha() ?
+                                  image_type::kRGBA :
+                                  image_type::kRGB );
 
-   mrv::image_type_ptr rgba( new image_type( frame, w, h,
-                                             (unsigned short)
-                                             (3 + 1*has_alpha()),
-                                             format,
-                                             image_type::kFloat ) );
+    mrv::image_type_ptr rgba( new image_type( frame, w, h,
+                              (unsigned short)
+                              (3 + 1*has_alpha()),
+                              format,
+                              image_type::kFloat ) );
 
 
-   for ( unsigned y = 0; y < h; ++y )
-   {
-      for ( unsigned x = 0; x < w; ++x )
-      {
-         CMedia::Pixel p = _hires->pixel( x, y );
-         rgba->pixel( x, y, p );
-      }
-   }
+    for ( unsigned y = 0; y < h; ++y )
+    {
+        for ( unsigned x = 0; x < w; ++x )
+        {
+            CMedia::Pixel p = canvas->pixel( x, y );
+            rgba->pixel( x, y, p );
+        }
+    }
 
-   _hires = rgba;
+    canvas = rgba;
 }
 
-  /**
-   * Fetch the current EXR image
-   *
-   * @return true if success, false if not
-   */
-bool exrImage::fetch_mipmap( const boost::int64_t& frame )
-  {
+/**
+ * Fetch the current EXR image
+ *
+ * @return true if success, false if not
+ */
+bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
+                              const boost::int64_t& frame )
+{
 
-     try {
+    try {
 
 
         std::string fileName = sequence_filename(frame);
@@ -540,9 +551,9 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
         if (!in.isValidLevel (_levelX, _levelY))
         {
-           THROW (Iex::InputExc, "Level (" << _levelX << ", "
-                  << _levelY << ") does "
-                  "not exist in file " << fileName << ".");
+            THROW (Iex::InputExc, "Level (" << _levelX << ", "
+                   << _levelY << ") does "
+                   "not exist in file " << fileName << ".");
         }
 
         Imf::Header h = in.header();
@@ -558,14 +569,11 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
                         displayWindow.max.x, displayWindow.max.y, frame );
 
 
-        read_forced_header_attr( h, frame );
-
-        if ( ! _read_attr )
-           read_header_attr( h, frame );
+        read_header_attr( h, frame );
 
 
         FrameBuffer fb;
-        bool ok = find_channels( h, fb, frame );
+        bool ok = find_channels( canvas, h, fb, frame );
         if ( !ok ) return false;
 
         _pixel_ratio = h.pixelAspectRatio();
@@ -585,340 +593,346 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
         if ( _lineOrder == INCREASING_Y )
         {
-           for (int y = 0; y < ty; ++y)
-              for (int x = 0; x < tx; ++x)
-                 in.readTile (x, y, _levelX, _levelY);
+            for (int y = 0; y < ty; ++y)
+                for (int x = 0; x < tx; ++x)
+                    in.readTile (x, y, _levelX, _levelY);
         }
         else
         {
-           for (int y = ty - 1; y >= 0; --y)
-              for (int x = 0; x < tx; ++x)
-                 in.readTile (x, y, _levelX, _levelY);
+            for (int y = ty - 1; y >= 0; --y)
+                for (int x = 0; x < tx; ++x)
+                    in.readTile (x, y, _levelX, _levelY);
         }
 
         return true;
 
-     }
-     catch( const std::exception& e )
-     {
-         IMG_ERROR( e.what() );
-         _curpart = -1;
-         return false;
-     }
-  }
+    }
+    catch( const std::exception& e )
+    {
+        IMG_ERROR( e.what() );
+        _curpart = -1;
+        return false;
+    }
+}
 
 bool exrImage::find_layers( const Imf::Header& h )
 {
 
 
-   const Imf::ChannelList& channels = h.channels();
-   if ( layers.empty() || _stereo_output != kNoStereo && _multiview )
-   {
-       channels.layers( layers );
+    const Imf::ChannelList& channels = h.channels();
+    if ( layers.empty() || _stereo_output != kNoStereo && _multiview )
+    {
+        channels.layers( layers );
 
-       free( _has_left_eye ); _has_left_eye = NULL;
-       free( _has_right_eye ); _has_right_eye = NULL;
+        free( _has_left_eye );
+        _has_left_eye = NULL;
+        free( _has_right_eye );
+        _has_right_eye = NULL;
 
-       int rightView = -1;
-       std::string left = get_long_view( true );
-       std::string right = get_long_view( false );
-       std::string L = get_short_view( true );
-       std::string R = get_short_view( false );
+        int rightView = -1;
+        std::string left = get_long_view( true );
+        std::string right = get_long_view( false );
+        std::string L = get_short_view( true );
+        std::string R = get_short_view( false );
 
-       if ( channel() != NULL )
-       {
+        if ( channel() != NULL )
+        {
 
-           std::string prefix, suffix;
-           std::string c = channel();
-           std::string ch = c;
-           if ( c[0] == '#' )
-           {
-               size_t idx = c.find( ' ' );
-               if ( idx != std::string::npos )
-               {
-                   c = c.substr( idx+1, c.size() );
-               }
-           }
+            std::string prefix, suffix;
+            std::string c = channel();
+            std::string ch = c;
+            if ( c[0] == '#' )
+            {
+                size_t idx = c.find( ' ' );
+                if ( idx != std::string::npos )
+                {
+                    c = c.substr( idx+1, c.size() );
+                }
+            }
 
-           std::string match, discard;
-           size_t idx = c.find( left );
-           if ( idx != std::string::npos )
-           {
-               _has_left_eye = strdup( c.c_str() );
-               rightView = 1;
-               match = right;
-               discard = left;
-               prefix = c.substr( 0, idx );
-               suffix = c.substr( idx + left.size(), c.size() );
-           }
-           else
-           {
-               idx = c.find( L );
-               if ( idx != std::string::npos )
-               {
-                   _has_left_eye = strdup( c.c_str() );
-                   rightView = 1;
-                   discard = L;
-                   match = R;
-                   prefix = c.substr( 0, idx );
-                   suffix = c.substr( idx + L.size(), c.size() );
-               }
-               else
-               {
-                   idx = c.find( right );
-                   if ( idx != std::string::npos )
-                   {
-                       _has_right_eye = strdup( c.c_str() );
-                       rightView = 0;
-                       discard = right;
-                       match = left;
-                       prefix = c.substr( 0, idx );
-                       suffix = c.substr( idx + right.size(), c.size() );
-                   }
-                   else
-                   {
-                       idx = c.find( R );
-                       if ( idx != std::string::npos )
-                       {
-                           _has_right_eye = strdup( c.c_str() );
-                           rightView = 0;
-                           discard = R;
-                           match = L;
-                           prefix = c.substr( 0, idx );
-                           suffix = c.substr( idx + R.size(), c.size() );
-                       }
-                   }
-               }
-           }
+            std::string match, discard;
+            size_t idx = c.find( left );
+            if ( idx != std::string::npos )
+            {
+                _has_left_eye = strdup( c.c_str() );
+                rightView = 1;
+                match = right;
+                discard = left;
+                prefix = c.substr( 0, idx );
+                suffix = c.substr( idx + left.size(), c.size() );
+            }
+            else
+            {
+                idx = c.find( L );
+                if ( idx != std::string::npos )
+                {
+                    _has_left_eye = strdup( c.c_str() );
+                    rightView = 1;
+                    discard = L;
+                    match = R;
+                    prefix = c.substr( 0, idx );
+                    suffix = c.substr( idx + L.size(), c.size() );
+                }
+                else
+                {
+                    idx = c.find( right );
+                    if ( idx != std::string::npos )
+                    {
+                        _has_right_eye = strdup( c.c_str() );
+                        rightView = 0;
+                        discard = right;
+                        match = left;
+                        prefix = c.substr( 0, idx );
+                        suffix = c.substr( idx + right.size(), c.size() );
+                    }
+                    else
+                    {
+                        idx = c.find( R );
+                        if ( idx != std::string::npos )
+                        {
+                            _has_right_eye = strdup( c.c_str() );
+                            rightView = 0;
+                            discard = R;
+                            match = L;
+                            prefix = c.substr( 0, idx );
+                            suffix = c.substr( idx + R.size(), c.size() );
+                        }
+                    }
+                }
+            }
 
-           stringSet::const_iterator i = layers.begin();
-           stringSet::const_iterator e = layers.end();
+            stringSet::const_iterator i = layers.begin();
+            stringSet::const_iterator e = layers.end();
 
-           for ( ; i != e; ++i )
-           {
-               const std::string& layer = *i;
+            for ( ; i != e; ++i )
+            {
+                const std::string& layer = *i;
 
-               idx = layer.find( discard );
-               if ( idx != std::string::npos ) {
-                   continue;
-               }
+                idx = layer.find( discard );
+                if ( idx != std::string::npos ) {
+                    continue;
+                }
 
 
-               if ( !prefix.empty() )
-               {
-                   idx = layer.find( prefix );
-                   if ( idx == std::string::npos ) {
-                       continue;
-                   }
-               }
-               if ( !suffix.empty() )
-               {
-                   idx = layer.rfind( suffix );
-                   if ( idx == std::string::npos ) {
-                       continue;
-                   }
-               }
+                if ( !prefix.empty() )
+                {
+                    idx = layer.find( prefix );
+                    if ( idx == std::string::npos ) {
+                        continue;
+                    }
+                }
+                if ( !suffix.empty() )
+                {
+                    idx = layer.rfind( suffix );
+                    if ( idx == std::string::npos ) {
+                        continue;
+                    }
+                }
 
-               if ( prefix.empty() && suffix.empty() )
-                       continue;
+                if ( prefix.empty() && suffix.empty() )
+                    continue;
 
-               if ( rightView == 1 )
-               {
-                   _has_right_eye = strdup( layer.c_str() );
-               }
-               else if ( rightView == 0 )
-               {
-                   _has_left_eye = strdup( layer.c_str() );
-               }
-           }
-       }
+                if ( rightView == 1 )
+                {
+                    _has_right_eye = strdup( layer.c_str() );
+                }
+                else if ( rightView == 0 )
+                {
+                    _has_left_eye = strdup( layer.c_str() );
+                }
+            }
+        }
 
-       if ( rightView == -1 )
-       {
-           stringSet::const_iterator i = layers.begin();
-           stringSet::const_iterator e = layers.end();
+        if ( rightView == -1 )
+        {
+            stringSet::const_iterator i = layers.begin();
+            stringSet::const_iterator e = layers.end();
 
-           std::string c;
-           if ( channel() ) c = channel();
+            std::string c;
+            if ( channel() ) c = channel();
 
-           if ( c.empty() || c == "Z" )
-           {
-               for ( ; i != e; ++i )
-               {
-                   const std::string& layer = *i;
-                   if ( !_has_right_eye &&
-                        ( layer.find( right ) == 0 &&
-                          layer.size() == right.size() ) )
-                       _has_right_eye = strdup( layer.c_str() );
+            if ( c.empty() || c == "Z" )
+            {
+                for ( ; i != e; ++i )
+                {
+                    const std::string& layer = *i;
+                    if ( !_has_right_eye &&
+                            ( layer.find( right ) == 0 &&
+                              layer.size() == right.size() ) )
+                        _has_right_eye = strdup( layer.c_str() );
 
-                   if ( !_has_left_eye &&
-                        ( layer.find( left ) == 0 ) &&
-                        layer.size() == left.size() )
-                   {
-                       _has_left_eye = strdup( layer.c_str() );
-                   }
-               }
-           }
-           else
-           {
-               for ( ; i != e; ++i )
-               {
-                   const std::string& layer = *i;
-                   if ( !_has_right_eye &&
-                        ( layer.find( right ) != std::string::npos ||
-                          layer.find( R ) != std::string::npos ) )
-                       _has_right_eye = strdup( layer.c_str() );
+                    if ( !_has_left_eye &&
+                            ( layer.find( left ) == 0 ) &&
+                            layer.size() == left.size() )
+                    {
+                        _has_left_eye = strdup( layer.c_str() );
+                    }
+                }
+            }
+            else
+            {
+                for ( ; i != e; ++i )
+                {
+                    const std::string& layer = *i;
+                    if ( !_has_right_eye &&
+                            ( layer.find( right ) != std::string::npos ||
+                              layer.find( R ) != std::string::npos ) )
+                        _has_right_eye = strdup( layer.c_str() );
 
-                   if ( !_has_left_eye &&
-                        ( layer.find( left ) != std::string::npos ||
-                          layer.find( L ) != std::string::npos ) )
-                   {
-                       _has_left_eye = strdup( layer.c_str() );
-                   }
-               }
-           }
-       }
-       // std::cerr << "_has_left_eye "
-       //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
-       // std::cerr << "_has_right_eye "
-       //           << ( _has_right_eye ? _has_right_eye : "NULL" )
-       //           << std::endl;
+                    if ( !_has_left_eye &&
+                            ( layer.find( left ) != std::string::npos ||
+                              layer.find( L ) != std::string::npos ) )
+                    {
+                        _has_left_eye = strdup( layer.c_str() );
+                    }
+                }
+            }
+        }
+        // std::cerr << "_has_left_eye "
+        //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
+        // std::cerr << "_has_right_eye "
+        //           << ( _has_right_eye ? _has_right_eye : "NULL" )
+        //           << std::endl;
 
-       if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
-       {
-           _multiview = true;
-           _is_stereo = true;
-           _stereo_input = kSeparateLayersInput;
-       }
-   }
+        if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
+        {
+            _multiview = true;
+            _is_stereo = true;
+            _stereo_input = kSeparateLayersInput;
+        }
+    }
 
-   if ( _num_channels == 0 )
-   {
-      _gamma = _default_gamma;
+    if ( _num_channels == 0 )
+    {
+        _gamma = _default_gamma;
 
-      bool has_rgb = false;
-      _has_alpha = false;
-      if ( channels.findChannel( N_("R") ) ||
-           channels.findChannel( N_("G") ) ||
-           channels.findChannel( N_("B") ) )
-      {
-         has_rgb = true;
-         rgb_layers();
-         lumma_layers();
-      }
-
-      _has_yca = false;
-      _use_yca = false;
-      if ( !has_rgb )
-      {
-         if ( channels.findChannel( N_("Y") ) )
-         {
-            _layers.push_back( N_("Y") ); ++_num_channels;
-         }
-         if ( channels.findChannel( N_("RY") ) )
-         {
-            _layers.push_back( N_("RY") ); ++_num_channels;
-         }
-         if ( channels.findChannel( N_("BY") ) )
-         {
-            _layers.push_back( N_("BY") ); ++_num_channels;
-         }
-
-         if ( _num_channels != 0 )
-         {
-            _has_yca = true;
-            _use_yca = true;
+        bool has_rgb = false;
+        _has_alpha = false;
+        if ( channels.findChannel( N_("R") ) ||
+                channels.findChannel( N_("G") ) ||
+                channels.findChannel( N_("B") ) )
+        {
+            has_rgb = true;
             rgb_layers();
-            _num_channels = (unsigned short) ( _num_channels - 3 );
             lumma_layers();
-         }
-      }
+        }
 
-      if ( channels.findChannel( N_("A") ) )
-      {
-         _has_alpha = true;
-         alpha_layers();
-      }
-
-
-
-      Imf::ChannelList::ConstIterator i = channels.begin();
-      Imf::ChannelList::ConstIterator e = channels.end();
-
-      // Deal with single channels first, like Tag, Z Depth, etc.
-      for ( ; i != e; ++i )
-      {
-         const std::string& layerName = i.name();
-         std::string name( layerName );
-         // Make names all uppercase, to avoid confusion
-         std::transform(name.begin(), name.end(), name.begin(),
-                        (int(*)(int)) toupper);
-         if ( name == N_("R") || name == N_("G") || name == N_("B") ||
-              name == N_("A") || name == N_("Y") || name == N_("BY") ||
-              name == N_("RY") )
-            continue; // these channels are handled in shader directly
-
-         // Don't count layer.channel those are handled later
-         if ( name.find( N_(".") ) != string::npos ) continue;
-
-         _layers.push_back( layerName );
-         ++_num_channels;
-
-      }
-
-
-      // Deal with layers next like (Normals, Motion, etc)
-      {
-
-         stringSet::const_iterator i = layers.begin();
-         stringSet::const_iterator e = layers.end();
-         for ( ; i != e; ++i )
-         {
-            const std::string& name = *i;
-            _layers.push_back( name );
-            ++_num_channels;
-
-            Imf::ChannelList::ConstIterator x;
-            Imf::ChannelList::ConstIterator s;
-            Imf::ChannelList::ConstIterator e;
-            channels.channelsInLayer( name, s, e );
-            stringArray lg;
-            lg.reserve(5);
-            for ( x = s; x != e; ++x )
+        _has_yca = false;
+        _use_yca = false;
+        if ( !has_rgb )
+        {
+            if ( channels.findChannel( N_("Y") ) )
             {
-                const std::string& layerName = x.name();
-                lg.push_back( layerName );
-            }
-            stringArray::iterator ks = lg.begin();
-            stringArray::iterator ke = lg.end();
-            std::string lcase = *(ks + (lg.size() > 1));
-            if ( lcase.rfind( ".g" ) != std::string::npos ||
-                 lcase.rfind( ".G" ) != std::string::npos ||
-                 lcase.rfind( ".B" ) != std::string::npos ||
-                 lcase.rfind( ".b" ) != std::string::npos )
-            {
-                std::sort( ks, ke, std::greater<std::string>() );
-            }
-
-            for ( ; ks != ke; ++ks )
-            {
-                _layers.push_back( *ks );
+                _layers.push_back( N_("Y") );
                 ++_num_channels;
             }
-         }
-      }
-   }
+            if ( channels.findChannel( N_("RY") ) )
+            {
+                _layers.push_back( N_("RY") );
+                ++_num_channels;
+            }
+            if ( channels.findChannel( N_("BY") ) )
+            {
+                _layers.push_back( N_("BY") );
+                ++_num_channels;
+            }
 
-   const Box2i& dataWindow = h.dataWindow();
-   int dw  = dataWindow.max.x - dataWindow.min.x + 1;
-   int dh  = dataWindow.max.y - dataWindow.min.y + 1;
+            if ( _num_channels != 0 )
+            {
+                _has_yca = true;
+                _use_yca = true;
+                rgb_layers();
+                _num_channels = (unsigned short) ( _num_channels - 3 );
+                lumma_layers();
+            }
+        }
 
-   image_size( dw, dh );
+        if ( channels.findChannel( N_("A") ) )
+        {
+            _has_alpha = true;
+            alpha_layers();
+        }
 
-   return true;
+
+
+        Imf::ChannelList::ConstIterator i = channels.begin();
+        Imf::ChannelList::ConstIterator e = channels.end();
+
+        // Deal with single channels first, like Tag, Z Depth, etc.
+        for ( ; i != e; ++i )
+        {
+            const std::string& layerName = i.name();
+            std::string name( layerName );
+            // Make names all uppercase, to avoid confusion
+            std::transform(name.begin(), name.end(), name.begin(),
+                           (int(*)(int)) toupper);
+            if ( name == N_("R") || name == N_("G") || name == N_("B") ||
+                    name == N_("A") || name == N_("Y") || name == N_("BY") ||
+                    name == N_("RY") )
+                continue; // these channels are handled in shader directly
+
+            // Don't count layer.channel those are handled later
+            if ( name.find( N_(".") ) != string::npos ) continue;
+
+            _layers.push_back( layerName );
+            ++_num_channels;
+
+        }
+
+
+        // Deal with layers next like (Normals, Motion, etc)
+        {
+
+            stringSet::const_iterator i = layers.begin();
+            stringSet::const_iterator e = layers.end();
+            for ( ; i != e; ++i )
+            {
+                const std::string& name = *i;
+                _layers.push_back( name );
+                ++_num_channels;
+
+                Imf::ChannelList::ConstIterator x;
+                Imf::ChannelList::ConstIterator s;
+                Imf::ChannelList::ConstIterator e;
+                channels.channelsInLayer( name, s, e );
+                stringArray lg;
+                lg.reserve(5);
+                for ( x = s; x != e; ++x )
+                {
+                    const std::string& layerName = x.name();
+                    lg.push_back( layerName );
+                }
+                stringArray::iterator ks = lg.begin();
+                stringArray::iterator ke = lg.end();
+                std::string lcase = *(ks + (lg.size() > 1));
+                if ( lcase.rfind( ".g" ) != std::string::npos ||
+                        lcase.rfind( ".G" ) != std::string::npos ||
+                        lcase.rfind( ".B" ) != std::string::npos ||
+                        lcase.rfind( ".b" ) != std::string::npos )
+                {
+                    std::sort( ks, ke, std::greater<std::string>() );
+                }
+
+                for ( ; ks != ke; ++ks )
+                {
+                    _layers.push_back( *ks );
+                    ++_num_channels;
+                }
+            }
+        }
+    }
+
+    const Box2i& dataWindow = h.dataWindow();
+    int dw  = dataWindow.max.x - dataWindow.min.x + 1;
+    int dh  = dataWindow.max.y - dataWindow.min.y + 1;
+
+    image_size( dw, dh );
+
+    return true;
 }
 
-bool exrImage::handle_stereo( const boost::int64_t& frame,
+bool exrImage::handle_stereo( mrv::image_type_ptr& canvas,
+                              const boost::int64_t& frame,
                               const Imf::Header& h,
                               Imf::FrameBuffer& fb )
 {
@@ -945,7 +959,8 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
-    bool ok = channels_order( frame, s, e, channels, h, fb );
+
+    bool ok = channels_order( canvas, frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
     if ( !_multiview )
@@ -953,7 +968,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         return ok;
     }
 
-    _stereo[1] = _hires;
+    _stereo[1] = canvas; //_hires;
 
     //
     // Repeat for left eye
@@ -976,13 +991,14 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
-    ok = channels_order( frame, s, e, channels, h, fb );
-    _stereo[0] = _hires;
+    ok = channels_order( canvas, frame, s, e, channels, h, fb );
+    _stereo[0] = canvas; //_hires;
 
     return ok;
 }
 
-bool exrImage::find_channels( const Imf::Header& h,
+bool exrImage::find_channels( mrv::image_type_ptr& canvas,
+                              const Imf::Header& h,
                               Imf::FrameBuffer& fb,
                               const boost::int64_t& frame )
 {
@@ -1030,8 +1046,8 @@ bool exrImage::find_channels( const Imf::Header& h,
             // read all channels together so we remove the extension
             // from prefix.
             if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" ||
-                 ext == "X" || ext == "Y" || ext == "U" ||
-                 ext == "V" || ext == "W" )
+                    ext == "X" || ext == "Y" || ext == "U" ||
+                    ext == "V" || ext == "W" )
             {
                 ext = "";
                 if ( idx == std::string::npos || idx == 1 )
@@ -1052,7 +1068,7 @@ bool exrImage::find_channels( const Imf::Header& h,
     {
         free( channelPrefix );
         channelPrefix = NULL;
-        return handle_stereo(frame, h, fb);
+        return handle_stereo( canvas, frame, h, fb);
     }
     else if ( channelPrefix != NULL )
     {
@@ -1073,9 +1089,9 @@ bool exrImage::find_channels( const Imf::Header& h,
 
         // If extension is one of a group, load all channels
         if ( ext == "A" || ext == "R" || ext == "G" ||
-             ext == "B" || ext == "X" || ext == "Y" ||
-             ext == "U" || ext == "V" ||
-             ext == "W" ) prefix = prefix.substr(0, pos);
+                ext == "B" || ext == "X" || ext == "Y" ||
+                ext == "U" || ext == "V" ||
+                ext == "W" ) prefix = prefix.substr(0, pos);
 
         channels.channelsWithPrefix( prefix, s, e );
         if ( s == e )
@@ -1087,329 +1103,323 @@ bool exrImage::find_channels( const Imf::Header& h,
         free( channelPrefix );
         channelPrefix = NULL;
 
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
     else
     {
         Imf::ChannelList::ConstIterator s = channels.begin();
         Imf::ChannelList::ConstIterator e = channels.end();
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
-}
-
-void exrImage::read_forced_header_attr( const Imf::Header& h,
-                                        const boost::int64_t& frame )
-{
-
-    const Imf::StringAttribute *attr =
-    h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
-    if ( attr )
-    {
-        _cap_date[frame] = attr->value();
-    }
-
 }
 
 void exrImage::read_header_attr( const Imf::Header& h,
                                  const boost::int64_t& frame )
 {
-    _read_attr = true;
-
     stringSet attrs;
     attrs.insert( N_("type") );
-    attrs.insert( N_("capDate") );
 
-      {
+    if ( _attrs.find( frame ) == _attrs.end() )
+    {
+        _attrs.insert( std::make_pair( frame, Attributes() ) );
+    }
+
+    {
         const Imf::RationalAttribute* attr =
-          h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
+            h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
         if ( attr )
-          {
-              Imf::Rational r = attr->value();
-              _fps = (double) r.n / (double) r.d;
-          }
+        {
+            Imf::Rational r = attr->value();
+            _fps = (double) r.n / (double) r.d;
+        }
 
         if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps.load();
-      }
+    }
 
 
-      {
+    {
         const Imf::IntAttribute *attr =
-          h.findTypedAttribute<Imf::IntAttribute>( N_("acesImageContainerFlag") );
-        if ( attr )
-          {
-              _aces = (bool)attr->value();
-              attrs.insert( N_("acesImageContainerFlag") );
-          }
-      }
-
-      {
-          const Imf::StringAttribute* attr =
-              h.findTypedAttribute<Imf::StringAttribute>( N_("inputColorSpace") );
-          if ( attr && !is_thumbnail() )
-          {
-              ocio_input_color_space( attr->value() );
-              image_damage( image_damage() | kDamageLut );
-          }
-      }
-
-      {
-        const Imf::ChromaticitiesAttribute *attr =
-          h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
-        if ( attr )
-          {
-            chromaticities( attr->value() );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-          h.findTypedAttribute<Imf::StringAttribute>( N_("chromaticitiesName") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Chromaticities Name"),
-                                          attr->copy() ) );
-            attrs.insert( N_("chromaticitiesName") );
-          }
-      }
-
-      {
-        const Imf::V2fAttribute *attr =
-          h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Adopted Neutral"),
-                                            attr->copy() ) );
-              attrs.insert( N_("adoptedNeutral") );
-          }
-      }
-
-      {
-        const Imf::IntAttribute *attr =
-          h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Image State"),
-                                            attr->copy() ) );
-              attrs.insert( N_("imageState") );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-          h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Owner"), attr->copy() ) );
-              attrs.insert( N_("owner") );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-          h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Comments"),
-                                          attr->copy() ) );
-            attrs.insert( N_("comments") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
-              attrs.insert( N_("utcOffset") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Longitude"), attr->copy() ) );
-              attrs.insert( N_("longitude") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Latitude"), attr->copy() ) );
-            attrs.insert( N_("latitude") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Altitude"), attr->copy() ) );
-            attrs.insert( N_("altitude") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Focus"), attr->copy() ) );
-            attrs.insert( N_("focus") );
-          }
-      }
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
+            h.findTypedAttribute<Imf::IntAttribute>( N_("acesImageContainerFlag") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
+            _aces = (bool)attr->value();
+            attrs.insert( N_("acesImageContainerFlag") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute* attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("inputColorSpace") );
+        if ( attr && !is_thumbnail() )
+        {
+            ocio_input_color_space( attr->value() );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
+        }
+    }
+
+    {
+        const Imf::ChromaticitiesAttribute *attr =
+            h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
+        if ( attr )
+        {
+            chromaticities( attr->value() );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("chromaticitiesName") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Chromaticities Name"),
+                                                   attr->copy() ) );
+            attrs.insert( N_("chromaticitiesName") );
+        }
+    }
+
+    {
+        const Imf::V2fAttribute *attr =
+            h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Adopted Neutral"),
+                                                   attr->copy() ) );
+            attrs.insert( N_("adoptedNeutral") );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
+        }
+    }
+
+    {
+        const Imf::IntAttribute *attr =
+            h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Image State"),
+                                           attr->copy() ) );
+            attrs.insert( N_("imageState") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Owner"), attr->copy() ) );
+            attrs.insert( N_("owner") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Comments"),
+                                           attr->copy() ) );
+            attrs.insert( N_("comments") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
+            attrs.insert( N_("utcOffset") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Longitude"), attr->copy() ) );
+            attrs.insert( N_("longitude") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Latitude"), attr->copy() ) );
+            attrs.insert( N_("latitude") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Altitude"), attr->copy() ) );
+            attrs.insert( N_("altitude") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Focus"), attr->copy() ) );
+            attrs.insert( N_("focus") );
+        }
+    }
+
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
             attrs.insert( N_("expTime") );
         }
-      }
+    }
 
-      {
+    {
         const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
         if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("Aperture"), attr->copy() ) );
-            attrs.insert( N_("aperture") );
-          }
-      }
-
-
-      {
-        const Imf::FloatAttribute *attr =
-          h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
-        if ( attr )
-          {
-            _attrs.insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
-            attrs.insert( N_("isoSpeed") );
-          }
-      }
-
-
-      {
-        const Imf::KeyCodeAttribute* attr =
-          h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( N_("keyCode"), attr->copy() ) );
-              attrs.insert( N_("keyCode") );
-          }
-      }
-
-      {
-        const Imf::TimeCodeAttribute *attr =
-        h.findTypedAttribute<Imf::TimeCodeAttribute>( N_("timeCode") );
-        if ( attr )
-          {
-              process_timecode( attr->value() );
-              _attrs.insert( std::make_pair( N_("timecode"), attr->copy() ));
-              attrs.insert( N_("timeCode") );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-        h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Writer"), attr->copy() ));
-              attrs.insert( N_("writer") );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-        h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
-              attrs.insert( N_("iccProfile") );
-          }
-      }
-
-      {
-        const Imf::StringAttribute *attr =
-        h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
-        if ( attr )
-          {
-              _attrs.insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
-              attrs.insert( N_("wrapmodes") );
-          }
-      }
-
-      if ( h.hasTileDescription() )
         {
-          const Imf::TileDescription& desc = h.tileDescription();
-          char buf[128];
+            _attrs[frame].insert( std::make_pair( _("Aperture"), attr->copy() ) );
+            attrs.insert( N_("aperture") );
+        }
+    }
 
-          switch( desc.mode )
-            {
-            case Imf::ONE_LEVEL:
-              break;
-            case Imf::MIPMAP_LEVELS:
-               {
-                  TiledInputFile tin( sequence_filename(frame).c_str() );
-                  Imf::IntAttribute attr( tin.numLevels() );
-                  _attrs.insert( std::make_pair( _("Mipmap Levels"),
-                                                attr.copy() ) );
-                  break;
-               }
-             case Imf::RIPMAP_LEVELS:
-                {
-                   TiledInputFile tin( sequence_filename(frame).c_str() );
-                   Imf::IntAttribute xat( tin.numXLevels() );
-                   Imf::IntAttribute yat( tin.numYLevels() );
-                   _attrs.insert( std::make_pair( _("X Ripmap Levels"),
-                                                 xat.copy() ));
-                   _attrs.insert( std::make_pair( _("Y Ripmap Levels"),
-                                                 yat.copy() ));
-                   break;
-                }
-            default:
-              IMG_ERROR("Unknown mipmap mode");
-              break;
-            }
 
-          switch( desc.roundingMode )
-            {
-            case Imf::ROUND_DOWN:
-                _attrs.insert( std::make_pair( _("Rounding Mode"),
-                                              new Imf::StringAttribute( _("Down") ) ) );
-              break;
-            case Imf::ROUND_UP:
-              _attrs.insert( std::make_pair( _("Rounding Mode"),
-                                            new Imf::StringAttribute( _("Up") ) ) );
-              break;
-            default:
-              IMG_ERROR( _("Unknown rounding mode") );
-              break;
-            }
+    {
+        const Imf::FloatAttribute *attr =
+            h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
+            attrs.insert( N_("isoSpeed") );
+        }
+    }
+
+
+    {
+        const Imf::KeyCodeAttribute* attr =
+            h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( N_("keyCode"), attr->copy() ) );
+            attrs.insert( N_("keyCode") );
+        }
+    }
+
+    {
+        const Imf::TimeCodeAttribute *attr =
+            h.findTypedAttribute<Imf::TimeCodeAttribute>( N_("timeCode") );
+        if ( attr )
+        {
+            process_timecode( attr->value() );
+            _attrs[frame].insert( std::make_pair( N_("timecode"), attr->copy() ));
+            attrs.insert( N_("timeCode") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Writer"), attr->copy() ));
+            attrs.insert( N_("writer") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
+            attrs.insert( N_("iccProfile") );
+        }
+    }
+
+    {
+        const Imf::StringAttribute *attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
+        if ( attr )
+        {
+            _attrs[frame].insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
+            attrs.insert( N_("wrapmodes") );
+        }
+    }
+
+    if ( h.hasTileDescription() )
+    {
+        const Imf::TileDescription& desc = h.tileDescription();
+        char buf[128];
+
+        switch( desc.mode )
+        {
+        case Imf::ONE_LEVEL:
+            break;
+        case Imf::MIPMAP_LEVELS:
+        {
+            TiledInputFile tin( sequence_filename(frame).c_str() );
+            Imf::IntAttribute attr( tin.numLevels() );
+            _attrs[frame].insert( std::make_pair( _("Mipmap Levels"),
+                                           attr.copy() ) );
+            break;
+        }
+        case Imf::RIPMAP_LEVELS:
+        {
+            TiledInputFile tin( sequence_filename(frame).c_str() );
+            Imf::IntAttribute xat( tin.numXLevels() );
+            Imf::IntAttribute yat( tin.numYLevels() );
+            _attrs[frame].insert( std::make_pair( _("X Ripmap Levels"),
+                                           xat.copy() ));
+            _attrs[frame].insert( std::make_pair( _("Y Ripmap Levels"),
+                                           yat.copy() ));
+            break;
+        }
+        default:
+            IMG_ERROR( _("Unknown mipmap mode") );
+            break;
         }
 
-      Imf::Header::ConstIterator i = h.begin();
-      Imf::Header::ConstIterator e = h.end();
+        switch( desc.roundingMode )
+        {
+        case Imf::ROUND_DOWN:
+            _attrs[frame].insert( std::make_pair( _("Rounding Mode"),
+                                           new Imf::StringAttribute( _("Down") ) ) );
+            break;
+        case Imf::ROUND_UP:
+            _attrs[frame].insert( std::make_pair( _("Rounding Mode"),
+                                           new Imf::StringAttribute( _("Up") ) ) );
+            break;
+        default:
+            IMG_ERROR( _("Unknown rounding mode") );
+            break;
+        }
+    }
 
-      for ( ; i != e; ++i )
-      {
-          const std::string& name = i.name();
-          if ( attrs.find( name ) != attrs.end() ||
-               _attrs.find( name ) != _attrs.end() ||
-               ignore.find( name ) != ignore.end() ) continue;
+    Imf::Header::ConstIterator i = h.begin();
+    Imf::Header::ConstIterator e = h.end();
 
-          const Attribute& attr = i.attribute();
-          _attrs.insert( std::make_pair( name, attr.copy() ) );
-      }
+    for ( ; i != e; ++i )
+    {
+        const std::string& name = i.name();
+        if ( attrs.find( name ) != attrs.end() ||
+             _attrs[frame].find( name ) != _attrs[frame].end() ||
+             ignore.find( name ) != ignore.end() ) continue;
+
+        const Attribute& attr = i.attribute();
+        _attrs[frame].insert( std::make_pair( name, attr.copy() ) );
+    }
 }
 
 
@@ -1473,25 +1483,28 @@ void exrImage::loadDeepData( int& zsize,
         _type = SCANLINEIMAGE;
         if ( h.hasType() ) _type = h.type();
 
+        image_type_ptr canvas;
         if ( _type == DEEPSCANLINE )
             loadDeepScanlineImage( inmaster, zsize, zbuff, sampleCount, true );
         else if ( _type == DEEPTILE )
-            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff, sampleCount, true );
     }
     catch( const std::exception& e )
     {
-        IMG_ERROR( "loadDeepData error: " << e.what() );
+        IMG_ERROR( _("loadDeepData error: ") << e.what() );
     }
 
 }
 
 
 void
-exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
-                             int &zsize,
-                             Imf::Array<float*>&       zbuff,
-                             Imf::Array<unsigned int>& sampleCount,
-                             bool deepComp )
+exrImage::loadDeepTileImage(
+                            mrv::image_type_ptr& canvas,
+                            Imf::MultiPartInputFile& inmaster,
+                            int &zsize,
+                            Imf::Array<float*>&       zbuff,
+                            Imf::Array<unsigned int>& sampleCount,
+                            bool deepComp )
 {
     _has_deep_data = true;
 
@@ -1510,18 +1523,18 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     display_window( displayWindow.min.x, displayWindow.min.y,
                     displayWindow.max.x, displayWindow.max.y, _frame );
 
-    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    if ( !canvas || dw*dh*sizeof(Imf::Rgba) != canvas->data_size() )
     {
-        if (! allocate_pixels( _frame, 4, image_type::kRGBA,
+        if (! allocate_pixels( canvas, _frame, 4, image_type::kRGBA,
                                image_type::kHalf ) )
             return;
     }
 
     // display black right now
-    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    Imf::Rgba* pixels = (Imf::Rgba*)canvas->data().get();
     if (!pixels) return;
 
-    memset( pixels, 0, _hires->data_size() ); // Needed
+    memset( pixels, 0, canvas->data_size() ); // Needed
 
 
     Array< half* > dataR;
@@ -1562,8 +1575,8 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
         }
 
         if (header.channels().findChannel ("Z") &&
-            header.channels().findChannel ("A") &&
-            deepComp)
+                header.channels().findChannel ("A") &&
+                deepComp)
         {
             deepCompflag = 1;
         }
@@ -1573,7 +1586,7 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
 
     fb.insertSampleCountSlice (Slice (Imf::UINT,
                                       (char *) (&sampleCount[0]
-                                                - dx- dy * dw),
+                                              - dx- dy * dw),
                                       sizeof (unsigned int) * 1,
                                       sizeof (unsigned int) * dw));
 
@@ -1733,8 +1746,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
     int deepCompflag = 0;
 
     if (header.channels().findChannel ("Z") &&
-        header.channels().findChannel ("A") &&
-        deepComp)
+            header.channels().findChannel ("A") &&
+            deepComp)
     {
         deepCompflag = 1;
     }
@@ -1743,7 +1756,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 
     fb.insertSampleCountSlice (Slice (Imf::UINT,
                                       (char *) (&sampleCount[0]
-                                                - dx- dy * dw),
+                                              - dx- dy * dw),
                                       sizeof (unsigned int) * 1,
                                       sizeof (unsigned int) * dw));
 
@@ -1768,8 +1781,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 
 }
 
-
-bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
+bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
+                                 Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
 {
     if (  _numparts > 1 )
@@ -1837,7 +1850,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         {
             st[0] = st[1] = -1;
 
-            for ( unsigned i = 0; i < _numparts; ++i )
+            for ( int i = 0; i < _numparts; ++i )
             {
                 const Header& header = inmaster.header(i);
                 if ( ! header.hasType() )
@@ -1858,10 +1871,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     image_damage( image_damage() | kDamage3DData );
                 }
 
-                read_forced_header_attr( header, frame );
 
-                if ( ! _read_attr )
-                    read_header_attr( header, frame );
+                read_header_attr( header, frame );
 
 
                 _pixel_ratio = header.pixelAspectRatio();
@@ -1912,9 +1923,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     _use_yca = false;
 
                     if ( !has_rgb &&
-                         (( channels.findChannel( N_("R") ) ) ||
-                          ( channels.findChannel( N_("G") ) ) ||
-                          ( channels.findChannel( N_("B") ) )) )
+                            (( channels.findChannel( N_("R") ) ) ||
+                             ( channels.findChannel( N_("G") ) ) ||
+                             ( channels.findChannel( N_("B") ) )) )
                     {
                         has_rgb = true;
                         rgb_layers();
@@ -1924,20 +1935,23 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     {
                         if ( channels.findChannel( N_("Y") ) )
                         {
-                            _layers.push_back( N_("Y") ); ++_num_channels;
+                            _layers.push_back( N_("Y") );
+                            ++_num_channels;
                         }
                         if ( channels.findChannel( N_("RY") ) )
                         {
-                            _layers.push_back( N_("RY") ); ++_num_channels;
+                            _layers.push_back( N_("RY") );
+                            ++_num_channels;
                         }
                         if ( channels.findChannel( N_("BY") ) )
                         {
-                            _layers.push_back( N_("BY") ); ++_num_channels;
+                            _layers.push_back( N_("BY") );
+                            ++_num_channels;
                         }
 
                         if ( _num_channels != 0 )
                         {
-			    has_rgb = true;
+                            has_rgb = true;
                             _has_yca = true;
                             _use_yca = true;
                             rgb_layers();
@@ -1957,7 +1971,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     }
                     continue;
                 }
-
 
                 std::string ext = name;
                 if ( header.hasView() ) ext = header.view();
@@ -1982,6 +1995,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         layerName += s.name();
                         _layers.push_back( layerName );
                     }
+
                     stringArray::iterator it = std::find( _layers.begin(),
                                                           _layers.end(),
                                                           first );
@@ -1990,7 +2004,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         const std::string& layerName = *(it+1);
                         // Handle sorting RGB
                         if ( layerName.find( ".B" ) != std::string::npos &&
-                             (_layers.end() - it == 4 ) )
+                                (_layers.end() - it == 4 ) )
                             std::sort( it+1, _layers.end(),
                                        std::greater<std::string>() );
                         // Handle sorting XYZ
@@ -2015,8 +2029,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                             std::sort( it+1, _layers.end()-1,
                                        std::greater<std::string>() );
                         }
+
                     }
                 }
+
 
                 if ( st[1] == -1 &&
                      ( ext.find( right ) != std::string::npos ||
@@ -2068,6 +2084,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     {
         const Imf::Header& header = inmaster.header(0);
         if ( header.hasType() ) _type = header.type();
+        else _type = SCANLINEIMAGE;
 
         if ( _type == DEEPSCANLINE || _type == DEEPTILE )
         {
@@ -2075,10 +2092,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             image_damage( image_damage() | kDamage3DData );
         }
 
-        read_forced_header_attr( header, frame );
-
-        if ( ! _read_attr )
-            read_header_attr( header, frame );
+        read_header_attr( header, frame );
 
         if ( _multiview )
         {
@@ -2098,210 +2112,214 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     else if ( _is_stereo && stereo_output() != CMedia::kNoStereo &&
               ( st[0] == -1 || st[1] == -1 ) )
     {
-       if ( st[0] == -1 ) st[0] = 0;
-       else if ( st[1] == -1 ) st[1] = 0;
-       if ( st[0] == st[1] )
-       {
-           std::string root( _fileroot );
-           if ( root.find( "%V" ) != std::string::npos ||
-                root.find( "%v" ) != std::string::npos )
-               return true;
-           IMG_ERROR( _("Could not find both stereo images in file") );
-           return false;
-       }
-   }
+        if ( st[0] == -1 ) st[0] = 0;
+        else if ( st[1] == -1 ) st[1] = 0;
+        if ( st[0] == st[1] )
+        {
+            std::string root( _fileroot );
+            if ( root.find( "%V" ) != std::string::npos ||
+                 root.find( "%v" ) != std::string::npos )
+                return true;
+            IMG_WARNING( _("Could not find both stereo images in file") );
+            return false;
+        }
+    }
 
-   const char* channelPrefix = channel();
-   if ( channelPrefix != NULL )
-   {
-       if ( channelPrefix[0] == '#' )
-       {
-           std::string part = channelPrefix;
+    const char* channelPrefix = channel();
+    if ( channelPrefix != NULL )
+    {
+        if ( channelPrefix[0] == '#' )
+        {
+            std::string part = channelPrefix;
 
-           size_t pos = part.find( ' ' );
-           part = part.substr( 1, pos );
+            size_t pos = part.find( ' ' );
+            part = part.substr( 1, pos );
 
-           _curpart = (int) strtoul( part.c_str(), NULL, 10 );
-       }
-       else
-       {
-           _curpart = _clear_part;
-       }
-   }
-   else
-   {
-       _curpart = _clear_part;
-   }
+            if ( _numparts > 1 )
+                _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+            else
+                _curpart = 0;
+        }
+        else
+        {
+            _curpart = _clear_part;
+        }
+    }
+    else
+    {
+        _curpart = _clear_part;
+    }
 
-   if ( _is_stereo )
-   {
-       for ( int i = 0; i < 2; ++i )
-       {
-           if ( _stereo_output != kNoStereo && st[i] >= 0 &&
-                _right_eye == NULL )
-               _curpart = st[i];
+    if ( _is_stereo )
+    {
+        SCOPED_LOCK( _mutex );
 
+        for ( int i = 0; i < 2; ++i )
+        {
+            if ( st[i] >= 0 && _right_eye == NULL )
+                _curpart = st[i];
 
-           const Header& header = inmaster.header(_curpart);
+            const Header& header = inmaster.header(_curpart);
 
-           const Box2i& displayWindow = header.displayWindow();
-           const Box2i& dataWindow = header.dataWindow();
+            const Box2i& displayWindow = header.displayWindow();
+            const Box2i& dataWindow = header.dataWindow();
 
-           if ( i == 0 || _stereo_output == kNoStereo )
-           {
-               data_window( dataWindow.min.x, dataWindow.min.y,
-                            dataWindow.max.x, dataWindow.max.y, frame );
-
-               display_window( displayWindow.min.x, displayWindow.min.y,
-                               displayWindow.max.x, displayWindow.max.y,
-                               frame );
-           }
-           else
-           {
-               data_window2( dataWindow.min.x, dataWindow.min.y,
+            if ( i == 0 || _stereo_output == kNoStereo )
+            {
+                data_window( dataWindow.min.x, dataWindow.min.y,
                              dataWindow.max.x, dataWindow.max.y, frame );
 
-               display_window2( displayWindow.min.x, displayWindow.min.y,
+                display_window( displayWindow.min.x, displayWindow.min.y,
                                 displayWindow.max.x, displayWindow.max.y,
                                 frame );
-           }
+            }
+            else
+            {
+                data_window2( dataWindow.min.x, dataWindow.min.y,
+                              dataWindow.max.x, dataWindow.max.y, frame );
+
+                display_window2( displayWindow.min.x, displayWindow.min.y,
+                                 displayWindow.max.x, displayWindow.max.y,
+                                 frame );
+            }
 
 
-           FrameBuffer fb;
+            FrameBuffer fb;
+            bool ok = find_channels( canvas, header, fb, frame );
+            if (!ok) {
+                IMG_ERROR( _("Could not locate channels in header") );
+                return false;
+            }
 
-           bool ok = find_channels( header, fb, frame );
-           if (!ok) {
-               IMG_ERROR( _("Could not locate channels in header") );
-               return false;
-           }
+            _pixel_ratio = header.pixelAspectRatio();
+            _lineOrder   = header.lineOrder();
+            _compression = header.compression();
 
-           _pixel_ratio = header.pixelAspectRatio();
-           _lineOrder   = header.lineOrder();
-           _compression = header.compression();
+            try
+            {
+                InputPart in( inmaster, _curpart );
+                in.setFrameBuffer(fb);
+                in.readPixels( dataWindow.min.y, dataWindow.max.y );
+            }
+            catch( const std::exception& e )
+            {
+                IMG_ERROR( e.what() );
+                _curpart = 0;
+                return false;
+            }
 
-           try
-           {
-               InputPart in( inmaster, _curpart );
-               in.setFrameBuffer(fb);
-               in.readPixels( dataWindow.min.y, dataWindow.max.y );
-           }
-           catch( const std::exception& e )
-           {
-               IMG_ERROR( e.what() );
-               return false;
-           }
+            // Quick exit if stereo is off or multiview
+            if ( _stereo_output == kNoStereo ) break;
 
-           // Quick exit if stereo is off or multiview
-           if ( _stereo_output == kNoStereo ) break;
+            if ( st[0] != st[1] )
+            {
+                if ( i == 0 ) update_cache_pic( _sequence, canvas );
+                else          update_cache_pic( _right, canvas );
+                _stereo[i] = canvas; // needed;
+            }
+        }
+    }
+    else
+    {
 
-           if ( st[0] != st[1] )
-           {
-               _stereo[i] = _hires;
-           }
-       }
-   }
-   else
-   {
+        int oldpart = _curpart;
 
-       int oldpart = _curpart;
-
-       const Header& header = inmaster.header(_curpart);
-
-
-       if ( _type == DEEPTILE )
-       {
-           if ( ! find_layers( header ) )
-               return false;
-
-           read_forced_header_attr( header, frame );
-
-           if ( ! _read_attr )
-               read_header_attr( header, frame );
-
-           int zsize;
-           Imf::Array< float* > zbuff;
-           Imf::Array< unsigned > sampleCount;
-           loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
-           return true;
-       }
+        const Header& header = inmaster.header(_curpart);
 
 
-       InputPart in (inmaster, _curpart);
-       const Box2i& dataWindow = header.dataWindow();
-       const Box2i& displayWindow = header.displayWindow();
+        if ( _type == DEEPTILE )
+        {
+            if ( ! find_layers( header ) )
+                return false;
 
-       data_window( dataWindow.min.x, dataWindow.min.y,
-                    dataWindow.max.x, dataWindow.max.y, frame );
+            read_header_attr( header, frame );
 
-       display_window( displayWindow.min.x, displayWindow.min.y,
-                       displayWindow.max.x, displayWindow.max.y, frame );
-
-       FrameBuffer fb;
-       bool ok = find_channels( header, fb, frame );
-       if (!ok) {
-           IMG_ERROR( _("Could not locate channels in header") );
-           return false;
-       }
+            int zsize;
+            Imf::Array< float* > zbuff;
+            Imf::Array< unsigned > sampleCount;
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff,
+                               sampleCount, true );
+            return true;
+        }
 
 
-       _pixel_ratio = header.pixelAspectRatio();
-       _lineOrder   = header.lineOrder();
-       _compression = header.compression();
-
-       if ( _curpart != oldpart )
-       {
-           InputPart in (inmaster, _curpart);
-           const Header& header = in.header();
+        InputPart in (inmaster, _curpart);
+        const Box2i& dataWindow = header.dataWindow();
+        const Box2i& displayWindow = header.displayWindow();
 
 
-           const Box2i& dataWindow = header.dataWindow();
-           const Box2i& displayWindow = header.displayWindow();
+        data_window( dataWindow.min.x, dataWindow.min.y,
+                     dataWindow.max.x, dataWindow.max.y, frame );
 
-           data_window( dataWindow.min.x, dataWindow.min.y,
-                        dataWindow.max.x, dataWindow.max.y, frame );
+        display_window( displayWindow.min.x, displayWindow.min.y,
+                        displayWindow.max.x, displayWindow.max.y, frame );
 
-           display_window( displayWindow.min.x, displayWindow.min.y,
-                           displayWindow.max.x, displayWindow.max.y, frame );
+        FrameBuffer fb;
+        bool ok = find_channels( canvas, header, fb, frame );
+        if (!ok) {
+            IMG_ERROR( _("Could not locate channels in header") );
+            return false;
+        }
 
-           FrameBuffer fb;
-           bool ok = find_channels( header, fb, frame );
-           if (!ok) {
-               IMG_ERROR( _("Could not locate channels in header") );
-               return false;
-           }
 
-           _pixel_ratio = header.pixelAspectRatio();
-           _lineOrder   = header.lineOrder();
-           _compression = header.compression();
+        _pixel_ratio = header.pixelAspectRatio();
+        _lineOrder   = header.lineOrder();
+        _compression = header.compression();
 
-           try
-           {
-               in.setFrameBuffer(fb);
-               in.readPixels( dataWindow.min.y, dataWindow.max.y );
-           }
-           catch( const std::exception& e )
-           {
-               IMG_ERROR( e.what() );
-               return false;
-           }
-       }
-       else
-       {
-           try
-           {
-               in.setFrameBuffer(fb);
-               in.readPixels( dataWindow.min.y, dataWindow.max.y );
-           }
-           catch( const std::exception& e )
-           {
-               IMG_ERROR( e.what() );
-               return false;
-           }
-       }
+        if ( _curpart != oldpart )
+        {
+            InputPart in (inmaster, _curpart);
+            const Header& header = in.header();
 
-   }
 
-   return true;
+            const Box2i& dataWindow = header.dataWindow();
+            const Box2i& displayWindow = header.displayWindow();
+
+            data_window( dataWindow.min.x, dataWindow.min.y,
+                         dataWindow.max.x, dataWindow.max.y, frame );
+
+            display_window( displayWindow.min.x, displayWindow.min.y,
+                            displayWindow.max.x, displayWindow.max.y, frame );
+
+            FrameBuffer fb;
+            bool ok = find_channels( canvas, header, fb, frame );
+            if (!ok) {
+                IMG_ERROR( _("Could not locate channels in header") );
+                return false;
+            }
+
+            _pixel_ratio = header.pixelAspectRatio();
+            _lineOrder   = header.lineOrder();
+            _compression = header.compression();
+
+            try
+            {
+                in.setFrameBuffer(fb);
+                in.readPixels( dataWindow.min.y, dataWindow.max.y );
+            }
+            catch( const std::exception& e )
+            {
+                IMG_ERROR( e.what() );
+                return false;
+            }
+        }
+        else
+        {
+            try
+            {
+                in.setFrameBuffer(fb);
+                in.readPixels( dataWindow.min.y, dataWindow.max.y );
+            }
+            catch( const std::exception& e )
+            {
+                IMG_ERROR( e.what() );
+                return false;
+            }
+        }
+
+    }
+
+    return true;
 }
 
 /**
@@ -2310,45 +2328,44 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
  *
  * @return true if success, false if not
  */
-  bool exrImage::fetch( const boost::int64_t frame )
-  {
+bool exrImage::fetch(  mrv::image_type_ptr& canvas,
+                       const boost::int64_t frame )
+{
 
-     try
-     {
+    try
+    {
 
         if ( _levelX > 0 || _levelY > 0 )
         {
-           return fetch_mipmap( frame );
+            return fetch_mipmap( canvas, frame );
         }
 
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
         _numparts = inmaster.parts();
 
-
-
         if ( _numparts > 0 )
         {
 
-            if ( !  fetch_multipart( inmaster, frame ) )
+            if ( !  fetch_multipart( canvas, inmaster, frame ) )
                 return false;
 
             if ( _use_yca && !supports_yuv() )
             {
                 const Imf::Header& h = inmaster.header(0);
-                ycc2rgba( h, frame );
+                ycc2rgba( h, frame, canvas );
             }
         }
-     }
-     catch( const std::exception& e )
-     {
-         IMG_ERROR( e.what() );
-         _curpart = -1;
-         image_size( _w, _h );
-         return false;
-     }
+    }
+    catch( const std::exception& e )
+    {
+        IMG_ERROR( e.what() );
+        _curpart = 0;
+        image_size( _w, _h );
+        return false;
+    }
 
     return true;
-  }
+}
 
 static
 void save_attributes( const CMedia* img, Header& hdr,
@@ -2372,14 +2389,6 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( N_("Chromaticities") );
     }
 
-
-    const exrImage* exr = dynamic_cast< const exrImage* >( img );
-    if ( exr )
-    {
-        const std::string& date = exr->capture_date( img->frame() );
-        Imf::StringAttribute attr( date );
-        hdr.insert( N_("capDate"), attr );
-    }
 
     const CMedia::Attributes& attributes = img->attributes();
     CMedia::Attributes::const_iterator it = attributes.find( _( "UTC Offset" ) );
@@ -2459,7 +2468,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( _("Comments") );
     }
 
-    it = attributes.find( _( "Capture Date" ) );
+    it = attributes.find( _( "capDate" ) );
     if ( it != attributes.end() )
     {
         hdr.insert( N_("capDate"), *it->second );
@@ -2546,7 +2555,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
 
         Imf::TimeCodeAttribute* attr =
-        dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
+            dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
 
         if ( attr )
         {
@@ -2606,13 +2615,13 @@ void save_attributes( const CMedia* img, Header& hdr,
     CMedia::Attributes::const_iterator e = attributes.end();
     stringSet::const_iterator end = attrs.end();
     for ( ; i != e; ++i )
-        {
-            const std::string& name = i->first;
-            // Avoid adding attributes we already parsed
-            if ( attrs.find( name ) != end ) continue;
-            const Imf::Attribute& attr = *(i->second);
-            hdr.insert( name, attr );
-        }
+    {
+        const std::string& name = i->first;
+        // Avoid adding attributes we already parsed
+        if ( attrs.find( name ) != end ) continue;
+        const Imf::Attribute& attr = *(i->second);
+        hdr.insert( name, attr );
+    }
 }
 
 
@@ -2623,7 +2632,7 @@ typedef std::set< std::string > PartNames;
 typedef std::vector< std::string >   LayerList;
 
 
-void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
+void exrImage::copy_pixel_data( mrv::image_type_ptr& pic,
                                 Imf::PixelType save_type,
                                 uint8_t* base,
                                 size_t total_size,
@@ -2772,7 +2781,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     hdr.compression() = comp;
 
     if ( comp == Imf::DWAA_COMPRESSION ||
-         comp == Imf::DWAB_COMPRESSION )
+            comp == Imf::DWAB_COMPRESSION )
     {
         Imf::addDwaCompressionLevel( hdr,
                                      opts->compression_level() );
@@ -2989,15 +2998,15 @@ bool exrImage::save( const char* file, const CMedia* img,
                 x = name;
 
                 if ( x == _("Lumma") || x == _("Alpha Overlay") ||
-                     x == _("Red") || x == _("Green") ||
-                     x == _("Blue") || x == _("Alpha")  )
+                        x == _("Red") || x == _("Green") ||
+                        x == _("Blue") || x == _("Alpha")  )
                 {
                     x = _("Color");
                     continue;
                 }
 
                 if ( x == N_("RY") || x == N_("BY") || x == N_("Z") ||
-                     x == N_("ZBack") )
+                        x == N_("ZBack") )
                     continue;
 
                 if ( x == _("Color") && has_y ) continue;
@@ -3013,8 +3022,8 @@ bool exrImage::save( const char* file, const CMedia* img,
                 std::string root = x;
 
                 if ( root == _("Color") ||
-                     root == N_("YBYRY") ||
-                     root == N_("Y") ) root = "";
+                        root == N_("YBYRY") ||
+                        root == N_("Y") ) root = "";
 
                 // If R,G,B,A,Z,ZBack exists, mark it as ColorZBack
                 if ( x == _("Color") && has_zback ) x = N_("ColorZBack");
@@ -3046,7 +3055,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         if ( layer ) root = layer;
         else layer = "";
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
 
         if ( root.find( "Z" ) != std::string::npos ) x = "Z";
         else
@@ -3090,7 +3099,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         const char* ch = p->channel();
         if ( ( layer == _("Color") && ch != NULL ) ||
-             ( ch && layer != ch ) )
+                ( ch && layer != ch ) )
             LOG_ERROR( _("Failed setting layer to ") << layer );
 
         // std::cerr << "Changed to layer "
@@ -3113,7 +3122,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         int dx = daw.x();
         int dy = daw.y();
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic) return false;
 
         unsigned dw = pic->width();
@@ -3126,21 +3135,21 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
         unsigned offsets[6];
         offsets[0] = offsets[1] = offsets[2] = offsets[3] =
-        offsets[4] = offsets[5] = 0;
+                offsets[4] = offsets[5] = 0;
 
         size_t size;
         switch( save_type )
         {
-            case Imf::UINT:
-                size = sizeof(unsigned);
-                break;
-            case Imf::FLOAT:
-                size = sizeof(float);
-                break;
-            default:
-            case Imf::HALF:
-                size = sizeof(half);
-                break;
+        case Imf::UINT:
+            size = sizeof(unsigned);
+            break;
+        case Imf::FLOAT:
+            size = sizeof(float);
+            break;
+        default:
+        case Imf::HALF:
+            size = sizeof(half);
+            break;
         }
 
         image_type::Format pf = pic->format();
@@ -3150,135 +3159,137 @@ bool exrImage::save( const char* file, const CMedia* img,
         bool has_yca = false;
         switch( pf )
         {
-            case image_type::kLumma:
-                total_size = dw*dh*size;
-                offsets[3] = (unsigned)total_size;
-                offsets[1] = offsets[2] = 0;
-                break;
-            case image_type::kLummaA:
-                offsets[3] = dw*dh*(unsigned)size;
-                offsets[1] = offsets[2] = 0;
-                total_size = offsets[3]*2;
-                break;
-            // case image_type::kITU_601_YCbCr410:
-            // case image_type::kITU_709_YCbCr410:
-            // case image_type::kYByRy410:
-            //     {
-            //         //@todo:
-            //         has_yca = true;
-            //         total_size = dw*dh*size*4;
-            //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-            //         break;
-            //     }
-            // case image_type::kITU_601_YCbCr410A:
-            // case image_type::kITU_709_YCbCr410A:
-            // case image_type::kYByRy410A:
-            //     {
-            //         //@todo:
-            //         has_yca = true;
-            //         total_size = dw*dh*size*4;
-            //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-            //         break;
-            //     }
-            // case image_type::kITU_601_YCbCr420:
-            // case image_type::kITU_709_YCbCr420:
-            case image_type::kYByRy420:
-                {
-                    has_yca = true;
-                    unsigned int Ylen    = dw * dh;
-                    unsigned int w2      = (dw + 1) / 2;
-                    unsigned int h2      = (dh + 1) / 2;
-                    unsigned int Cblen   = w2 * h2;
-                    offsets[1] = Ylen;
-                    offsets[2] = Ylen + Cblen;
-                    xsampling[1] = ysampling[1] = 2;
-                    xsampling[2] = ysampling[2] = 2;
-                    total_size = size * (Ylen + Cblen*2);
-                    break;
-                }
-            // case image_type::kITU_601_YCbCr420A:
-            // case image_type::kITU_709_YCbCr420A:
-            case image_type::kYByRy420A:
-                {
-                    has_yca = true;
-                    unsigned int Ylen    = dw * dh;
-                    unsigned int w2      = (dw + 1) / 2;
-                    unsigned int h2      = (dh + 1) / 2;
-                    unsigned int Cblen   = w2 * h2;
-                    offsets[1] = Ylen;
-                    offsets[2] = Ylen + Cblen;
-                    offsets[3] = Ylen + Cblen*2;
-                    xsampling[1] = ysampling[1] = 2;
-                    xsampling[2] = ysampling[2] = 2;
-                    total_size = size * (Ylen*2 + Cblen*2);
-                    break;
-                }
-            // case image_type::kITU_709_YCbCr422:
-            // case image_type::kITU_601_YCbCr422:
-            case image_type::kYByRy422:
-                {
-                    has_yca = true;
-                    unsigned int  Ylen = dw * dh;
-                    unsigned int w2 = (dw + 1) / 2;
-                    unsigned int Cblen = w2 * dh;
-                    offsets[1] = Ylen;
-                    offsets[2] = Ylen + Cblen;
-                    total_size = size * (Ylen + Cblen*2);
-                    break;
-                }
-            // case image_type::kITU_709_YCbCr422A:
-            // case image_type::kITU_601_YCbCr422A:
-            case image_type::kYByRy422A:
-                {
-                    has_yca = true;
-                    unsigned int  Ylen = dw * dh;
-                    unsigned int w2 = (dw + 1) / 2;
-                    unsigned int Cblen = w2 * dh;
-                    offsets[1] = Ylen;
-                    offsets[2] = Ylen + Cblen;
-                    offsets[3] = Ylen + Cblen * 2;
-                    total_size = size * (Ylen*2 + Cblen*2);
-                    break;
-                }
-            // case image_type::kITU_709_YCbCr444:
-            // case image_type::kITU_601_YCbCr444:
-            // case image_type::kITU_709_YCbCr444A:
-            // case image_type::kITU_601_YCbCr444A:
-            case image_type::kYByRy444:
-            case image_type::kYByRy444A:
-                {
-                    has_yca = true;
-                    unsigned int  Ylen = dw * dh;
-                    offsets[1] = Ylen;
-                    offsets[2] = Ylen * 2;
-                    offsets[3] = Ylen * 3;
-                    total_size = size * Ylen * 4;
-                    break;
-                }
-            case image_type::kITU_601_YCbCr410:
-            case image_type::kITU_709_YCbCr410:
-            case image_type::kITU_601_YCbCr410A:
-            case image_type::kITU_709_YCbCr410A:
-            case image_type::kITU_601_YCbCr420:
-            case image_type::kITU_709_YCbCr420:
-            case image_type::kITU_601_YCbCr420A:
-            case image_type::kITU_709_YCbCr420A:
-            case image_type::kITU_709_YCbCr422:
-            case image_type::kITU_601_YCbCr422:
-            case image_type::kITU_709_YCbCr422A:
-            case image_type::kITU_601_YCbCr422A:
-            case image_type::kITU_709_YCbCr444:
-            case image_type::kITU_601_YCbCr444:
-            case image_type::kITU_709_YCbCr444A:
-            case image_type::kITU_601_YCbCr444A:
-            case image_type::kBGR:
-            case image_type::kBGRA:
-            case image_type::kRGB:
-            case image_type::kRGBA:
-            default:
-                offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-                total_size = dw*dh*size*channels;
-                break;
+        case image_type::kLumma:
+            total_size = dw*dh*size;
+            offsets[3] = (unsigned)total_size;
+            offsets[1] = offsets[2] = 0;
+            break;
+        case image_type::kLummaA:
+            offsets[3] = dw*dh*(unsigned)size;
+            offsets[1] = offsets[2] = 0;
+            total_size = offsets[3]*2;
+            break;
+        // case image_type::kITU_601_YCbCr410:
+        // case image_type::kITU_709_YCbCr410:
+        // case image_type::kYByRy410:
+        //     {
+        //         //@todo:
+        //         has_yca = true;
+        //         total_size = dw*dh*size*4;
+        //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+        //         break;
+        //     }
+        // case image_type::kITU_601_YCbCr410A:
+        // case image_type::kITU_709_YCbCr410A:
+        // case image_type::kYByRy410A:
+        //     {
+        //         //@todo:
+        //         has_yca = true;
+        //         total_size = dw*dh*size*4;
+        //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+        //         break;
+        //     }
+        // case image_type::kITU_601_YCbCr420:
+        // case image_type::kITU_709_YCbCr420:
+        case image_type::kYByRy420:
+        {
+            has_yca = true;
+            unsigned int Ylen    = dw * dh;
+            unsigned int w2      = (dw + 1) / 2;
+            unsigned int h2      = (dh + 1) / 2;
+            unsigned int Cblen   = w2 * h2;
+            offsets[1] = Ylen;
+            offsets[2] = Ylen + Cblen;
+            xsampling[1] = ysampling[1] = 2;
+            xsampling[2] = ysampling[2] = 2;
+            total_size = size * (Ylen + Cblen*2);
+            break;
+        }
+        // case image_type::kITU_601_YCbCr420A:
+        // case image_type::kITU_709_YCbCr420A:
+        case image_type::kYByRy420A:
+        {
+            has_yca = true;
+            unsigned int Ylen    = dw * dh;
+            unsigned int w2      = (dw + 1) / 2;
+            unsigned int h2      = (dh + 1) / 2;
+            unsigned int Cblen   = w2 * h2;
+            offsets[1] = Ylen;
+            offsets[2] = Ylen + Cblen;
+            offsets[3] = Ylen + Cblen*2;
+            xsampling[1] = ysampling[1] = 2;
+            xsampling[2] = ysampling[2] = 2;
+            total_size = size * (Ylen*2 + Cblen*2);
+            break;
+        }
+        // case image_type::kITU_709_YCbCr422:
+        // case image_type::kITU_601_YCbCr422:
+        case image_type::kYByRy422:
+        {
+            has_yca = true;
+            unsigned int  Ylen = dw * dh;
+            unsigned int w2 = (dw + 1) / 2;
+            unsigned int Cblen = w2 * dh;
+            offsets[1] = Ylen;
+            offsets[2] = Ylen + Cblen;
+            total_size = size * (Ylen + Cblen*2);
+            break;
+        }
+        // case image_type::kITU_709_YCbCr422A:
+        // case image_type::kITU_601_YCbCr422A:
+        case image_type::kYByRy422A:
+        {
+            has_yca = true;
+            unsigned int  Ylen = dw * dh;
+            unsigned int w2 = (dw + 1) / 2;
+            unsigned int Cblen = w2 * dh;
+            offsets[1] = Ylen;
+            offsets[2] = Ylen + Cblen;
+            offsets[3] = Ylen + Cblen * 2;
+            total_size = size * (Ylen*2 + Cblen*2);
+            break;
+        }
+        // case image_type::kITU_709_YCbCr444:
+        // case image_type::kITU_601_YCbCr444:
+        // case image_type::kITU_709_YCbCr444A:
+        // case image_type::kITU_601_YCbCr444A:
+        case image_type::kYByRy444:
+        case image_type::kYByRy444A:
+        {
+            has_yca = true;
+            unsigned int  Ylen = dw * dh;
+            offsets[1] = Ylen;
+            offsets[2] = Ylen * 2;
+            offsets[3] = Ylen * 3;
+            total_size = size * Ylen * 4;
+            break;
+        }
+        case image_type::kITU_601_YCbCr410:
+        case image_type::kITU_709_YCbCr410:
+        case image_type::kITU_601_YCbCr410A:
+        case image_type::kITU_709_YCbCr410A:
+        case image_type::kITU_601_YCbCr420:
+        case image_type::kITU_709_YCbCr420:
+        case image_type::kITU_601_YCbCr420A:
+        case image_type::kITU_709_YCbCr420A:
+        case image_type::kITU_709_YCbCr422:
+        case image_type::kITU_601_YCbCr422:
+        case image_type::kITU_709_YCbCr422A:
+        case image_type::kITU_601_YCbCr422A:
+        case image_type::kITU_709_YCbCr444:
+        case image_type::kITU_601_YCbCr444:
+        case image_type::kITU_709_YCbCr444A:
+        case image_type::kITU_601_YCbCr444A:
+        case image_type::kBGR:
+        case image_type::kBGRA:
+        case image_type::kRGB:
+        case image_type::kRGBA:
+        default:
+            offsets[1] = 1;
+            offsets[2] = 2;
+            offsets[3] = 3;
+            total_size = dw*dh*size*channels;
+            break;
         }
 
 
@@ -3431,7 +3442,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 p->channel( c.c_str() );
 
-                pic = img->hires();
+                pic = img->left();
 
                 channels = pic->channels();
                 if ( channels != 1 )
@@ -3459,6 +3470,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
             char* buf =  (char*) base + offsets[k] * size;
+
             fb.insert( name,
                        Slice( save_type, buf, xs[k], ys[k],
                               xsampling[k], ysampling[k] ) );

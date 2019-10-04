@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ struct mp_colorspace {
 
 // For many colorspace conversions, in particular those involving HDR, an
 // implicit reference white level is needed. Since this magic constant shows up
-// a lot, give it an explicit name. The value of 100 cd/m² comes from ITU-R
+// a lot, give it an explicit name. The value of 100 cd/mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ² comes from ITU-R
 // documents such as ITU-R BT.2100
 #define MP_REF_WHITE 100.0
 
@@ -220,7 +220,7 @@ void mp_csp_copy_equalizer_values(struct mp_csp_params *params,
 
 struct mpv_global;
 struct mp_csp_equalizer_state *mp_csp_equalizer_create(void *ta_parent,
-                                                    struct mpv_global *global);
+        struct mpv_global *global);
 bool mp_csp_equalizer_state_changed(struct mp_csp_equalizer_state *state);
 void mp_csp_equalizer_state_get(struct mp_csp_equalizer_state *state,
                                 struct mp_csp_params *params);
@@ -290,6 +290,6 @@ void mp_get_csp_matrix(struct mp_csp_params *params, struct mp_cmat *out);
 void mp_invert_matrix3x3(float m[3][3]);
 void mp_invert_cmat(struct mp_cmat *out, struct mp_cmat *in);
 void mp_map_fixp_color(struct mp_cmat *matrix, int ibits, int in[3],
-                                               int obits, int out[3]);
+                       int obits, int out[3]);
 
 #endif /* MPLAYER_CSPUTILS_H */

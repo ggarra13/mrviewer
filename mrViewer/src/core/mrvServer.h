@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,12 +37,13 @@
 
 #include "gui/mrvReel.h"
 
+class ViewerUI;
+
 namespace mrv {
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
-class ViewerUI;
 class Parser;
 class ImageView;
 class ImageBrowser;
@@ -55,7 +56,7 @@ class Parser
     typedef boost::recursive_mutex Mutex;
 
   public:
-    Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
+    Parser( boost::asio::io_service& io_service, ViewerUI* v );
     virtual ~Parser();
      
     bool parse( const std::string& m );
@@ -66,14 +67,16 @@ class Parser
     mrv::EDLGroup*     edl_group() const;
 
     virtual void deliver( const std::string& m ) = 0;
-    virtual void stop() {};
+    virtual void stop() = 0;
 
 
   public:
     bool connected;
     tcp::socket socket_;
     Mutex mtx;
-    mrv::ViewerUI* ui;
+    mrv::Reel r;
+    mrv::media m;
+    ViewerUI* ui;
 };
 
 
@@ -82,7 +85,7 @@ class tcp_session : public Parser,
 {
    public:
      tcp_session(boost::asio::io_service& io_service,
-		 mrv::ViewerUI* const v);
+		 ViewerUI* const v);
      virtual ~tcp_session();
 
      tcp::socket& socket();
@@ -115,7 +118,7 @@ class server
 public:
      server(boost::asio::io_service& io_service,
 	    const tcp::endpoint& listen_endpoint,
-	    mrv::ViewerUI* v);
+	    ViewerUI* v);
 
      ~server();
 
@@ -124,13 +127,13 @@ public:
      void handle_accept(tcp_session_ptr session,
 			const boost::system::error_code& ec);
 
-     static void create(mrv::ViewerUI* ui);
-     static void remove(mrv::ViewerUI* ui);
+     static void create(ViewerUI* ui);
+     static void remove(ViewerUI* ui);
 
 private:
     boost::asio::io_service& io_service_;
     tcp::acceptor acceptor_;
-    mrv::ViewerUI* ui_;
+    ViewerUI* ui_;
 };
 
 typedef std::vector< Parser* > ParserList;
@@ -141,7 +144,7 @@ struct ServerData
      std::string host;
      std::string group;
      unsigned short port;
-     mrv::ViewerUI* ui;
+     ViewerUI* ui;
 };
 
 void server_thread( const ServerData* s );

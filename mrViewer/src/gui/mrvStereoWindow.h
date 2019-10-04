@@ -3,28 +3,31 @@
 #ifndef mrvStereoWindow_h
 #define mrvStereoWindow_h
 
-#include <fltk/Window.h>
+#include <FL/Fl_Window.H>
+
+class ViewerUI;
 
 namespace mrv {
 
-class ViewerUI;
 class ImageView;
 
-class StereoWindow : public fltk::Window
+class StereoWindow : public Fl_Window
 {
-  public:
+public:
     StereoWindow( int w, int h, const char* const  lbl = 0 ) :
-    fltk::Window( w, h, lbl )
+    Fl_Window( w, h, lbl )
     {
     }
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+    void main( ViewerUI* m ) {
+        uiMain = m;
+    }
     ImageView* view() const;
-    
+
     virtual int handle( int event );
 
-  protected:
-    mrv::ViewerUI* uiMain;
+protected:
+    ViewerUI* uiMain;
 };
 
 
