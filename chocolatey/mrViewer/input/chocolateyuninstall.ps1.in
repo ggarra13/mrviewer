@@ -44,8 +44,18 @@ $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
 $StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
 $StartPath = Join-Path "${StartMenu}" "Programs"
 
-Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
-Remove-Item -Path "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+$target = "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+if ( Test-Path $target )
+{
+    Remove-Item -Force -Path $target
+}
+
+$target = "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+if ( Test-Path $target )
+{
+    Remove-Item -Force -Path $target
+}
+
 
 $target = Join-Path "$programFiles" "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
 
@@ -67,4 +77,7 @@ $AssembledNewPath = ($newpath -join(';')).trimend(';')
 
 $target = Join-Path "$programFiles" "${packageName}-v${softVersion}-Windows-${osBitness}"
 
-Remove-Item -Recurse -Force -Path "$target"
+if ( Test-Path $target )
+{
+    Remove-Item -Recurse -Force -Path $target
+}
