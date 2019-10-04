@@ -40,18 +40,13 @@ namespace mrv {
   clonedImage::clonedImage( const CMedia* other ) :
     CMedia()
   {
-      _frame_start = other->start_frame();
-      _frame_end   = other->end_frame();
-      _frameStart = other->first_frame();
-      _frameEnd   = other->last_frame();
-      
-      char* file = strdup( other->filename() );
-      char* orig = file;
-      for ( char* s = orig; *s != 0; ++s )
+
+    char* orig = strdup( other->filename() );
+    for ( char* s = orig; *s != 0; ++s )
       {
-          if ( *s == '\t' )
+        if ( *s == '\t' )
           {
-              orig = s + 1; break;
+            orig = s + 1; break;
           }
       }
 
@@ -63,7 +58,7 @@ namespace mrv {
     sprintf( name, "%s\t%s", now, orig );
     filename( name );
 
-    _filename = strdup( other->filename() );
+    _fileroot = strdup( other->fileroot() );
 
     unsigned int ws = other->width();
     unsigned int wh = other->height();
@@ -90,25 +85,20 @@ namespace mrv {
       CMedia* img = const_cast< CMedia* >( other );
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
-      _hires.reset( new mrv::image_type( other->frame(),
-					 other->width(),
-					 other->height(),
-					 other->hires()->channels(),
-					 other->hires()->format(),
-					 other->hires()->pixel_type() ) );
-      copy_image( _hires, img->hires() );
+      _hires.reset( new mrv::image_type() );
+      *_hires = *(img->left());
     }
 
 
-    //   setsize( -1, -1 );
-
     { // Copy attributes
-        const CMedia::Attributes& attrs = other->attributes();
-        CMedia::Attributes::const_iterator i = attrs.begin();
-        CMedia::Attributes::const_iterator e = attrs.end();
-        for ( ; i != e; ++i )
+        for ( const auto& i : other->attrs_frames() )
         {
-            _attrs.insert( std::make_pair( i->first, i->second->copy() ) );
+            int64_t frame = i.first;
+            _attrs.insert( std::make_pair( frame, Attributes() ) );
+            for ( const auto& j: i.second )
+            {
+                _attrs[frame][j.first] = j.second->copy();
+            }
         }
     }
 
@@ -130,15 +120,24 @@ namespace mrv {
     transform = other->rendering_transform();
     if ( transform )  rendering_transform( strdup(transform) );
 
+
+    std::string ocio = other->ocio_input_color_space();
+    ocio_input_color_space( ocio );
+
+    _label = NULL;
     const char* lbl = other->label();
     if ( lbl )  _label = strdup( lbl );
 
-    free( file );
+    free( orig );
     _disk_space = 0;
 
     // thumbnail_create();
     // _thumbnail_frozen = true;
   }
 
+    bool clonedImage::fetch( int64_t frame )
+    {
+        return true;
+    }
 
 } // namespace mrv

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Running uninstall script"
+
+echo "Remove /usr/bin/mrViewer"
+rm -f /usr/bin/mrViewer
+echo "Remove /usr/bin/3dl2ctl.rb"
+rm -f /usr/bin/3dl2ctl.rb
+echo "Remove /usr/bin/cube2ctl.rb"
+rm -f /usr/bin/cube2ctl.rb
+echo "Remove /usr/bin/3dl2ctl.py"
+rm -f /usr/bin/3dl2ctl.py
+echo "Remove /usr/bin/cube2ctl.py"
+rm -f /usr/bin/cube2ctl.py
+
+
+dir=$(xdg-user-dir DESKTOP)
+if [ -e "$dir/mrViewer-v@VERSION@.desktop" ]; then
+    rm -f "$dir/mrViewer-v@VERSION@.desktop"
+fi
+
+update-desktop-database
+update-mime-database /usr/share/mime
+
