@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvLogDisplay.cpp
  * @author gga
  * @date   Tue Oct  9 20:56:16 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <cstdio>
@@ -31,26 +31,27 @@
 
 #include <iostream>
 
-#include <fltk/Window.h>
-#include <fltk/TextBuffer.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 
 #include "core/mrvThread.h"
 #include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
 
 namespace mrv {
-  
-  // Style table
+
+// Style table
 static
-fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
+Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     // FONT COLOR      FONT FACE   SIZE   ATTR
     // --------------- ----------- ----- ------
-    {  fltk::BLACK,  fltk::HELVETICA, 14,   0 }, // A - Info
-    {  fltk::DARK_YELLOW, fltk::HELVETICA, 14,   0 }, // B - Warning
-    {  fltk::RED,    fltk::HELVETICA, 14,   0 }, // C - Error
-  };
+    {  FL_BLACK,  FL_HELVETICA, 14,   0 }, // A - Info
+    {  FL_DARK_YELLOW, FL_HELVETICA, 14,   0 }, // B - Warning
+    {  FL_RED,    FL_HELVETICA, 14,   0 }, // C - Error
+};
 
 LogDisplay::Mutex LogDisplay::mtx;
 LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
@@ -58,128 +59,153 @@ std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
 
-
-  LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-  fltk::TextDisplay( x, y, w, h, l ),
-  _lines( 0 )
-  {
-    color( fltk::GRAY75 );
+LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
+Fl_Text_Display( x, y, w, h, l ),
+_lines( 0 )
+{
+    color( FL_GRAY0 );
 
     SCOPED_LOCK( mtx );
-    if ( !stylebuffer_ )
-      {
-	stylebuffer_ = new fltk::TextBuffer();
-      }
 
-    highlight_data(stylebuffer_, kLogStyles, 3, 'A', 0, 0);
-  }
+    scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
 
-  LogDisplay::~LogDisplay()
-  {
-      SCOPED_LOCK( mtx );
-      delete stylebuffer_; stylebuffer_ = NULL;
-  }
+    wrap_mode( WRAP_AT_BOUNDS, 80 );
+    
+    delete mBuffer;
+    delete mStyleBuffer;
+    mBuffer = new Fl_Text_Buffer();
+    mStyleBuffer = new Fl_Text_Buffer();
+    highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
+;
+}
 
-  void LogDisplay::clear()
-  {
-      SCOPED_LOCK( mtx ); 
-      stylebuffer_->text("");
-      buffer_->text("");
-      _lines = 0;
-  }
+LogDisplay::~LogDisplay()
+{
+    delete mBuffer; mBuffer = NULL;
+    delete mStyleBuffer; mStyleBuffer = NULL;
+}
 
-  void LogDisplay::save( const char* file )
-  {
+void LogDisplay::clear()
+{
+    SCOPED_LOCK( mtx );
+    mStyleBuffer->text("");
+    mBuffer->text("");
+    _lines = 0;
+}
+
+void LogDisplay::save( const char* file )
+{
     char buf[2048];
     if ( !file )
-      {
-	 std::string home = mrv::homepath();
-         sprintf( buf, "%s/mrViewer.log", home.c_str() );
-         file = buf;
-      }
+    {
+        std::string home = mrv::homepath();
+        sprintf( buf, "%s/mrViewer.log", home.c_str() );
+        file = buf;
+    }
 
     FILE* f = NULL;
 
     try {
-      
-      SCOPED_LOCK( mtx );
-      
-       f = fltk::fltk_fopen( file, "w" );
 
-      if ( !f ) throw;
-      if ( fputs( buffer_->text(), f ) < 0 ) throw;
-      
-      
-      info( "Saved log as \"" );
-      info( file );
-      info( "\"." );
+        SCOPED_LOCK( mtx );
+
+        f = fl_fopen( file, "w" );
+
+        if ( !f ) throw;
+        if ( fputs( buffer_->text(), f ) < 0 ) throw;
+
+
+        info( "Saved log as \"" );
+        info( file );
+        info( "\"." );
     }
     catch( ... )
-      {
-	sprintf( buf, "Could not save log file \"%s\".", file );
-	error( buf );
-      }
+    {
+        sprintf( buf, "Could not save log file \"%s\".", file );
+        error( buf );
+    }
 
     if ( f ) fclose(f);
-  }
-  
-  void LogDisplay::info( const char* x )
-  {
-      SCOPED_LOCK( mtx );
-      
-      size_t t = strlen(x);
-      char* buf = new char[t+1];
-      buf[t] = 0;
-      while( t-- )
-      {
-	  if ( x[t] == '\n' ) ++_lines;
-	  buf[t] = 'A';
-      }
-      stylebuffer_->append( buf );
-      buffer_->append( x );
-      delete [] buf;
-  }
-
-  void LogDisplay::warning( const char* x )
-  {
-      SCOPED_LOCK( mtx );
-      
-      size_t t = strlen(x);
-      char* buf = new char[t+1];
-      buf[t] = 0;
-      while( t-- )
-      {
-	  if ( x[t] == '\n' ) ++_lines;
-	  buf[t] = 'B';
-      }
-      stylebuffer_->append( buf );
-      buffer_->append( x );
-      delete [] buf;
-
-  }
-
-  void LogDisplay::error( const char* x )
-  {
-      SCOPED_LOCK( mtx ); 
-
-      size_t t = strlen(x);
-      char* buf = new char[t+1];
-      buf[t] = 0;
-      while( t-- )
-      {
-	  if ( x[t] == '\n' ) ++_lines;
-	  buf[t] = 'C';
-      }
-      stylebuffer_->append( buf );
-      buffer_->append( x );
-      delete [] buf;
-
-      if ( prefs == kAlways || (prefs == kOnce && !shown) )
-      {
-	  shown = true;
-	  show = true;
-      }
-  }
-
 }
 
+void LogDisplay::info( const char* x )
+{
+    SCOPED_LOCK( mtx );
+
+    size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
+    while( t-- )
+    {
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'A';
+	}
+    }
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
+    delete [] buf;
+
+    update_v_scrollbar();
+}
+
+void LogDisplay::warning( const char* x )
+{
+    SCOPED_LOCK( mtx );
+
+    size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
+    while( t-- )
+    {
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'B';
+	}
+    }
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
+    delete [] buf;
+
+    update_v_scrollbar();
+}
+
+void LogDisplay::error( const char* x )
+{
+    SCOPED_LOCK( mtx );
+
+    size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
+    while( t-- )
+    {
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'C';
+	}
+    }
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
+    delete [] buf;
+
+    update_v_scrollbar();
+    if ( prefs == kAlways || (prefs == kOnce && !shown) )
+    {
+        shown = true;
+        show = true;
+    }
+}
+
+}
