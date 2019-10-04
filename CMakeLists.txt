@@ -1,11 +1,13 @@
 #
-# This cmake file must be run under cmake 2.5 or later
+# This cmake file must be run under cmake 3.1 or later
 #
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
 # CMAKE_POLICY( SET CMP0003 NEW )
 
-SET( TEST_BUNDLE 0 )
+IF(WIN32)
+	SET( TEST_BUNDLE 1 )
+ENDIF()
 
 #
 # Modify CMake's module path so our custom modules take precedence over
@@ -23,7 +25,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 # wherever your topmost CMakeLists.txt resides.
 #
 # You can also specify support for languages other than C++, using
-# additional arguments.  mrLiquid only needs C++, so we don't bother.
+# additional arguments.
 #
 
 IF( UNIX )
@@ -31,25 +33,26 @@ IF( UNIX )
   INCLUDE( Platform/UnixPaths )
 ENDIF( UNIX )
 
+
 # VP18 switches to c++14, so let's do that by default
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-SET( VersionMajor 4 )
-SET( VersionMinor 3 )
+SET( VersionMajor 5 )
+SET( VersionMinor 2 )
 SET( VersionPatch 7 )
-#STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
-#STRING( TIMESTAMP VersionDate ".%Y%m%d" )
-#SET( VersionDate "2018-09-07" )
+
+#STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
+#SET( VersionDate "" )
 
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}${VersionDate}" )
 
 set(mrViewerShortName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
-set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
+set(mrViewerPackageName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 
 # use, i.e. don't skip the full RPATH for the build tree
 SET(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -66,7 +69,10 @@ SET(CMAKE_INSTALL_RPATH "")
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
 
-
+#
+# Build dependencies
+#
+#ADD_SUBDIRECTORY( external )
 
 
 #
@@ -77,9 +83,3 @@ set( LIB_ACES_CLIP_ONLY 1 )
 ADD_SUBDIRECTORY( libACESclip )
 ADD_SUBDIRECTORY( mrViewer/src )
 #ADD_SUBDIRECTORY( tools )
-
-IF( UNIX )
-  ADD_SUBDIRECTORY( shaders )
-  EXECUTE_PROCESS( COMMAND ${CMAKE_SOURCE_DIR}/bin/release
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
-ENDIF( UNIX )

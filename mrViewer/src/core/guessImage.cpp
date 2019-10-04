@@ -27,7 +27,7 @@
 
 #include <iostream>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 
 // Image types
@@ -47,14 +47,16 @@
 #include "picImage.h"
 #include "rawImage.h"
 #include "smpteImage.h"
+#include "mrvBlackImage.h"
 
+#include "gui/mrvPreferences.h"
 #include "Sequence.h"
 #include "mrvIO.h"
 #include "mrvOS.h"
 
 
 namespace {
-  const char* kModule = "guess";
+const char* kModule = "guess";
 }
 
 
@@ -62,70 +64,69 @@ namespace mrv {
 
 
 
-  using namespace std;
+using namespace std;
 
-  /*! Description of an Image file format */
-  struct ImageTypes {
+/*! Description of an Image file format */
+struct ImageTypes {
     // Function to test the filetype
     bool (*test)(const boost::uint8_t* datas, unsigned size);
     // MagickWand-type Function to test the filetype, not the bytes
     bool (*test_filename)(const char* filename);
     // Function to get/create an image of this type
     CMedia* (*get)(const char* name, const boost::uint8_t* datas);
-  };
+};
 
 
-  ImageTypes image_filetypes[] =
-    {
-      { stubImage::test,  NULL,            stubImage::get },
-      { exrImage::test,   NULL,            exrImage::get },
-      { iffImage::test,   NULL,            iffImage::get },
-      { mapImage::test,   NULL,            mapImage::get },
-      //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
-      { picImage::test,   NULL,            picImage::get },
-      { aviImage::test,   NULL,            aviImage::get },
-      { NULL,             rawImage::test,  rawImage::get },
-      { NULL,             oiioImage::test, oiioImage::get },
-      { NULL,             wandImage::test, wandImage::get },
-      { ddsImage::test,   NULL,            ddsImage::get },
-      { shmapImage::test, NULL,            shmapImage::get },
-      { mrayImage::test,  NULL,            mrayImage::get },
-      { pxrzImage::test,  NULL,            pxrzImage::get },
-      { NULL, NULL, NULL },
-    };
+ImageTypes image_filetypes[] =
+{
+    { stubImage::test,  NULL,            stubImage::get },
+    { exrImage::test,   NULL,            exrImage::get },
+    { iffImage::test,   NULL,            iffImage::get },
+    { mapImage::test,   NULL,            mapImage::get },
+    //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
+    { picImage::test,   NULL,            picImage::get },
+    { aviImage::test,   NULL,            aviImage::get },
+    // { NULL,             rawImage::test,  rawImage::get },
+    { NULL,             oiioImage::test, oiioImage::get },
+    { NULL,             wandImage::test, wandImage::get },
+    { ddsImage::test,   NULL,            ddsImage::get },
+    { shmapImage::test, NULL,            shmapImage::get },
+    { mrayImage::test,  NULL,            mrayImage::get },
+    { pxrzImage::test,  NULL,            pxrzImage::get },
+    { NULL, NULL, NULL },
+};
 
 
-  CMedia* test_image( const char* name,
-                      boost::uint8_t* datas, int size,
-                      const bool is_seq )
-  {
+CMedia* test_image( const char* name,
+                    boost::uint8_t* datas, int size,
+                    const bool is_seq )
+{
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
-      {
-          // if ( is_seq && type->test == aviImage::test )
-          //     continue;
-          if ( type->test )
-          {
-              if ( type->test( datas, size ) )
-                  return type->get( name, datas );
-              else
-                  if ( type->test_filename && type->test_filename( name ) )
-                      return type->get( name, datas );
-          }
-          else
-          {
-              if ( type->test_filename( name ) )
-              {
-                  return type->get( name, datas );
-              }
-          }
-      }
+    {
+        // if ( is_seq && type->test == aviImage::test )
+        //     continue;
+        if ( type->test )
+        {
+            if ( type->test( datas, size ) )
+                return type->get( name, datas );
+            else if ( type->test_filename && type->test_filename( name ) )
+                return type->get( name, datas );
+        }
+        else
+        {
+            if ( type->test_filename( name ) )
+            {
+                return type->get( name, datas );
+            }
+        }
+    }
     return NULL;
-  }
+}
 
 std::string parse_view( const std::string& root, bool left )
 {
-    int idx = root.find( "%V" );
+    size_t idx = root.find( "%V" );
     std::string tmp = root;
     if ( idx != std::string::npos )
     {
@@ -182,7 +183,7 @@ void verify_stereo_resolution( const CMedia* const left,
     else
     {
         if ( right->last_frame() - right->first_frame() + 1 !=
-             left->last_frame() - left->first_frame() + 1 )
+                left->last_frame() - left->first_frame() + 1 )
         {
             LOG_WARNING( _("Images in stereo have different frame lengths.  "
                            "They will not loop properly." ) );
@@ -197,7 +198,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const bool is_thumbnail = false )
 {
     std::string tmp;
-    char buf[1024]; buf[0] = 0;
+    char buf[1024];
+    buf[0] = 0;
     char *name = buf;
     if ( is_stereo )
     {
@@ -216,14 +218,15 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     {
         if ( is_seq )
         {
-            sprintf( name, root.c_str(), frame );  // eliminate file:
+            sprintf( name, root.c_str(), frame );
         }
         else
         {
-            strncpy( name, root.c_str(), 1024 );  // eliminate file:
+            strncpy( name, root.c_str(), 1024 );
         }
     }
 
+    // eliminate file:
     if ( strncmp( name, "file:", 5 ) == 0 )
     {
         name += 5;
@@ -235,7 +238,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     const boost::uint8_t* test_data = datas;
     if (!datas) {
         size = 1024;
-        FILE* fp = fltk::fltk_fopen(name, "rb");
+        FILE* fp = fl_fopen(name, "rb");
         if (!fp)
         {
             if ( is_seq )
@@ -246,7 +249,11 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             else
             {
                 CMedia* img = NULL;
-                if ( strcmp( name, _("SMPTE NTSC Color Bars") ) == 0 )
+                if ( strcmp( name, _("Black Gap") ) == 0 )
+                {
+                    img = new BlackImage( BlackImage::kGap );
+                }
+                else if ( strcmp( name, _("SMPTE NTSC Color Bars") ) == 0 )
                 {
                     img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
                 }
@@ -306,9 +313,10 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 if ( img )
                 {
                     img->filename( name );
-                    img->fetch(1);
-                    img->default_icc_profile();
-                    img->default_rendering_transform();
+                    image_type_ptr canvas;
+                    img->fetch( canvas, 1);
+                    img->cache( canvas );
+                    img->default_color_corrections();
                     return img;
                 }
                 else
@@ -347,16 +355,14 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     return image;
 }
 
-  CMedia* CMedia::guess_image( const char* file,
-                               const boost::uint8_t* datas,
-                               const int len,
-                               const bool is_thumbnail,
-                               const int64_t start,
-                               const int64_t end,
-                               const bool avoid_seq )
-  {
-    int64_t lastFrame = end;
-    int64_t frame = start;
+CMedia* CMedia::guess_image( const char* file,
+                             const boost::uint8_t* datas,
+                             const int len,
+                             const bool is_thumbnail,
+                             int64_t start,
+                             int64_t end,
+                             const bool avoid_seq )
+{
 
     std::string tmp;
     std::string root = file;
@@ -371,15 +377,22 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         is_stereo = true;
     }
 
-    if ( start != AV_NOPTS_VALUE ||
-         end   != AV_NOPTS_VALUE )
+
+    if ( !avoid_seq )
     {
-        if ( mrv::fileroot( tmp, root ) )
+        mrv::get_sequence_limits( start, end, root, false );
+        if ( start != AV_NOPTS_VALUE || end != AV_NOPTS_VALUE )
         {
-            is_seq = true;
-            root = tmp;
+            if ( mrv::fileroot( tmp, root ) )
+            {
+                is_seq = true;
+                root = tmp;
+            }
         }
     }
+
+    int64_t frame = start;
+    int64_t lastFrame = end;
 
     if ( (root.size() > 4 &&
           ( root.substr( root.size() - 4, root.size()) == ".xml" ||
@@ -390,7 +403,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
     CMedia* right = NULL;
     CMedia* image = NULL;
-
 
     try {
         image = guess( is_stereo, is_seq, true, root, frame, datas, len,
@@ -422,10 +434,11 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         LOG_ERROR( e.what() );
     }
 
-    DBG("Loaded " << image->name() );
+    if ( image )
+        DBGM3("Loaded " << image->name() );
 
     return image;
-  }
+}
 
 
 
