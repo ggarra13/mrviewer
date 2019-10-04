@@ -12,7 +12,7 @@ static const int VMARGIN = 6;
 
 bool Element::thumbnail() const
 {
-    return _elem->thumbnail();
+    return ( _elem->thumbnail() != NULL );
 }
 
 void Element::make_thumbnail()
@@ -153,7 +153,7 @@ void Element::make_thumbnail()
         redraw();
     }
 
-    const mrv::media& Element::media() const { return _elem; }
+    const mrv::media Element::media() const { return _elem; }
 
     void Element::draw() {
         Fl_Group::draw();
