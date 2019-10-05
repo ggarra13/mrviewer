@@ -75,11 +75,20 @@ media::media( CMedia* const img ) :
 media::~media()
 {
     if ( _own_image ) {
+<<<<<<< HEAD
+=======
+        std::cerr << this << " own image " << std::endl;
+        std::cerr << this << " delete _image" << _image << std::endl;
+>>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
         delete _image;
     }
     _image = NULL;
     if ( _thumbnail )
     {
+<<<<<<< HEAD
+=======
+        std::cerr << this << " delete thumbnail " << _thumbnail << std::endl;
+>>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
         delete _thumbnail;
         _thumbnail = NULL;
     }
