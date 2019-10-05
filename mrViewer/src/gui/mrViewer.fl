@@ -1657,6 +1657,10 @@ else
 
 v->uiStartFrame->value( f );
 v->uiTimeline->display_minimum( f );
+<<<<<<< HEAD
+=======
+v->uiTimeToolbar->redraw();
+>>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
 v->uiTimeline->redraw();}
 		    xywh {456 513 20 20} down_box DOWN_BOX align 16
 		  }
