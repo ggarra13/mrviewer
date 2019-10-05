@@ -4,12 +4,15 @@ v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
 	  with no need to save it and reload mrViewer.
 	- Fixed FPS extraction from reels without FPS (old reels).  Now
 	  they default to 30.0 fps.
+<<<<<<< HEAD
 	- Bug fixed I/O buttons and end frame/start frame in timeline to
 	  set the loops regardless of how the view of the timeline is
 	  (timeline shown as overlay or timeline cut at the ends).
 	- Fixed hotkeys for set In and set Out in timeline.
 	- Merged repositories to both github and sourceforge.  They are now
 	  in sync and only one remains on each site.
+=======
+>>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
 	- Bug fixed native file chooser on Linux to save images or image
 	  sequences.  Note that the native file chooser on Linux is huge
 	  so it may not be the one you want by default.
