@@ -126,10 +126,6 @@ void Element::make_thumbnail()
 
     Element::~Element()
     {
-<<<<<<< HEAD
-=======
-        std::cerr << _elem->image()->name() << " cleared" << std::endl;
->>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
         _elem.reset();
         delete image; image = NULL;
         delete label; label = NULL;
@@ -160,15 +156,6 @@ void Element::make_thumbnail()
     const mrv::media Element::media() const { return _elem; }
 
     void Element::draw() {
-<<<<<<< HEAD
-=======
-        std::cerr << this << " Element::draw" << std::endl;
-        std::cerr << this << " media element " << _elem << std::endl;
-        std::cerr << this << " image widget " << image << std::endl;
-        if ( image )
-            std::cerr << this << " image->image() "
-                      << image->image() << std::endl;
->>>>>>> 00843f59804b8eb70a9d0f24334edb2b0952dc97
         Fl_Group::draw();
 
         Fl_Color c = fl_color();
