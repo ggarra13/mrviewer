@@ -96,37 +96,43 @@ elsif not @debug == "Debug"
   exit 1
 end
 
+kernel = `uname`
 release = `uname -r`.chop!
 
-build = "BUILD/Linux-#{release}-64/"
+build = "BUILD/#{kernel}-#{release}-64/"
 
 
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
 
-home=ENV['HOME']+"/bin/mrViewer"
-FileUtils.rm_f( home )
-FileUtils.ln_s( Dir.pwd + '/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
-FileUtils.rm_f( home + '-dbg' )
-FileUtils.ln_s( Dir.pwd + '/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
+if kernel !~ /MINGW.*/
+  home=ENV['HOME']+"/bin/mrViewer"
+  FileUtils.rm_f( home )
+  FileUtils.ln_s( Dir.pwd + '/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
+  FileUtils.rm_f( home + '-dbg' )
+  FileUtils.ln_s( Dir.pwd + '/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
-Dir.chdir( build  )
-libs = Dir.glob( "#{@debug}/lib/*" )
-FileUtils.rm_f( libs )
+  Dir.chdir( build  )
+  libs = Dir.glob( "#{@debug}/lib/*" )
+  FileUtils.rm_f( libs )
+  
+  exes = Dir.glob( "#{@debug}/bin/*" )
 
-exes = Dir.glob( "#{@debug}/bin/*" )
+  files = []
 
-files = []
+  for exe in exes
+    output=`ldd #{exe}`
+    output.gsub!( /\(0x.*\)/, '' )
+    files += output.split("\n")
+  end
+  
+  files.sort!
+  files.uniq!
 
-for exe in exes
-  output=`ldd #{exe}`
-  output.gsub!( /\(0x.*\)/, '' )
-  files += output.split("\n")
+  parse( files )
+else
+  build = "BUILD/Windows-6.3.9600-64/"
+  Dir.chdir( build  )
 end
-
-files.sort!
-files.uniq!
-
-parse( files )
 
 Dir.chdir( '../..'  )
 $stderr.puts "Copy shaders"
@@ -143,6 +149,9 @@ FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy ocio configs"
 FileUtils.rm_f( "#{@debug}/ocio" )
 FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
+$stderr.puts "Copy otio adapters"
+FileUtils.rm_f( "#{@debug}/otio" )
+FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
 
 $stderr.puts "remove .fuse files"
 `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`

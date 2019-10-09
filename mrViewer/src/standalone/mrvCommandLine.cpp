@@ -505,11 +505,11 @@ void parse_command_line( const int argc, char** argv,
             stringArray tokens;
             mrv::split_string( tokens, arg, "-" );
 
-
             // frame range
-            opts.files.back().start = atoi( tokens[0].c_str() );
+            mrv::LoadInfo& entry = opts.files.back();
+            entry.first = atoi( tokens[0].c_str() );
             if ( tokens.size() > 1 )
-               opts.files.back().end = atoi( tokens[1].c_str() );
+               entry.last = atoi( tokens[1].c_str() );
             continue;
           }
 
@@ -585,7 +585,8 @@ void parse_command_line( const int argc, char** argv,
                       if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() )
                       {
                           opts.files.push_back( mrv::LoadInfo( fileroot, start,
-                                                               end ) );
+                                                               end,
+                                                               start, end ) );
                       }
                       else
                       {

@@ -1209,9 +1209,7 @@ void ImageBrowser::remove( int idx )
         return;
     }
 
-    std::cerr << "prepre del " << CMedia::memory_used << std::endl;
     remove( reel->images[idx] );
-    std::cerr << "postpost del " << CMedia::memory_used << std::endl;
 }
 
 
@@ -1601,7 +1599,6 @@ mrv::media ImageBrowser::load_image( const char* name,
 {
 
     mrv::Reel reel = current_reel();
-
 
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
