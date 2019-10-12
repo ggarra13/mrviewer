@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
 # Copyright 2017 Pixar Animation Studios
 #
@@ -47,6 +47,7 @@ Saved conformed.otio with 100 clips.
 import argparse
 import glob
 import os
+import re
 
 import opentimelineio as otio
 
@@ -116,6 +117,7 @@ def _conform_timeline(timeline, folder):
     for clip in timeline.each_clip():
         # look for a media file that matches the clip's name
         print(clip.name, folder)
+        clip.name = re.sub(r'Checkered - ', '', clip.name, flags=re.I )
         new_path = _find_matching_media(clip.name, folder)
 
         # if no media is found, keep going

@@ -96,7 +96,7 @@ elsif not @debug == "Debug"
   exit 1
 end
 
-kernel = `uname`
+kernel = `uname`.chop!
 release = `uname -r`.chop!
 
 build = "BUILD/#{kernel}-#{release}-64/"
@@ -114,7 +114,7 @@ if kernel !~ /MINGW.*/
   Dir.chdir( build  )
   libs = Dir.glob( "#{@debug}/lib/*" )
   FileUtils.rm_f( libs )
-  
+
   exes = Dir.glob( "#{@debug}/bin/*" )
 
   files = []
@@ -124,7 +124,7 @@ if kernel !~ /MINGW.*/
     output.gsub!( /\(0x.*\)/, '' )
     files += output.split("\n")
   end
-  
+
   files.sort!
   files.uniq!
 

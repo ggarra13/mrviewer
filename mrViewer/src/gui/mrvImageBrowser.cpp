@@ -3535,9 +3535,11 @@ void ImageBrowser::adjust_timeline()
         bool update = true;
         if ( t->edl() )
         {
-            if ( t->undo_minimum() != AV_NOPTS_VALUE ||
+            if ( t->undo_minimum() != AV_NOPTS_VALUE &&
                  t->undo_maximum() != AV_NOPTS_VALUE )
+            {
                 update = false;
+            }
         }
 
 

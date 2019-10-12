@@ -364,6 +364,7 @@ bool is_valid_view( std::string view )
  * @param ext         extension of file sequence
  * @param file        original filename, potentially part of a sequence.
  * @param change_view change view to %v or %V if left/right or L/R is found.
+ * @param change_frame change frame into frame spec
  *
  * @return true if a sequence, false if not.
  */
@@ -373,7 +374,8 @@ bool split_sequence(
                     std::string& view,
                     std::string& ext,
                     const std::string& file,
-                    const bool change_view
+                    const bool change_view,
+                    const bool change_frame
                     )
 {
     std::string f = file;
@@ -422,7 +424,7 @@ bool split_sequence(
         else
         {
             if ( is_valid_frame( frame ) ||
-                    is_valid_frame_spec( frame ) )
+                 is_valid_frame_spec( frame ) )
                 return true;
             return false;
         }
@@ -441,12 +443,12 @@ bool split_sequence(
                 return true;
 
             if ( ! mrv::is_valid_frame( frame ) &&
-                    ! mrv::is_valid_frame_spec( frame ) &&
-                    mrv::is_valid_view( frame ) )
+                 ! mrv::is_valid_frame_spec( frame ) &&
+                 mrv::is_valid_view( frame ) )
             {
                 view = periods[1];
                 if ( change_view ) replace_view( view );
-                frame = "";
+                if ( change_frame ) frame = "";
             }
             root += view;
             root += frame;
@@ -454,6 +456,7 @@ bool split_sequence(
             frame = ext = view = "";
             return false;
         }
+        if ( !change_frame ) return true;
     }
 
 
@@ -577,8 +580,8 @@ bool split_sequence(
             size_t pos;
             std::string fspec;
             if ( ( pos = root.rfind('%') ) != std::string::npos ||
-                    ( pos = root.find('@') ) != std::string::npos ||
-                    ( pos = root.rfind('#') ) != std::string::npos )
+                 ( pos = root.find('@') ) != std::string::npos ||
+                 ( pos = root.rfind('#') ) != std::string::npos )
             {
                 fspec = root.substr( pos, root.size() - pos - 1 );
                 if ( is_valid_frame_spec( fspec ) )
@@ -610,7 +613,7 @@ bool split_sequence(
                 size_t pos2 = root.rfind('\\');
                 size_t pos3 = root.find( ':' );
                 if ( pos == std::string::npos ||
-                        ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
+                     ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
                 if ( pos == std::string::npos ||
                      ( pos3 != std::string::npos && pos3 > pos ) ) pos = pos3;
 
@@ -650,8 +653,10 @@ bool get_sequence_limits( boost::int64_t& frameStart,
                           std::string& fileroot,
                           const bool error )
 {
-    frameStart = AV_NOPTS_VALUE;
-    frameEnd = AV_NOPTS_VALUE;
+    if ( frameStart != AV_NOPTS_VALUE &&
+         frameEnd != AV_NOPTS_VALUE ) {
+        return true;
+    }
 
     // Global encoding type taken from environment
     fs::path::imbue( std::locale() );
@@ -1071,6 +1076,9 @@ bool is_directory( const char* dir )
 int  padded_digits( const std::string& frame )
 {
     if ( frame == "#" ) return 4;
+    size_t pos;
+    if ( ( pos = frame.find( '-' ) ) != std::string::npos )
+        return frame.substr(0,pos).size();
     std::string c = frame.substr(0, 1);
     if ( c == "@" || c == "0" ) return (int)frame.size();
     if ( c == "%" ) return atoi(frame.substr(1, frame.size()-2).c_str());
@@ -1079,11 +1087,12 @@ int  padded_digits( const std::string& frame )
 
 
 bool fileroot( std::string& fileroot, const std::string& file,
-               const bool change_view )
+               const bool change_view, const bool change_frame )
 {
     std::string root, frame, view, ext;
 
-    bool ok = split_sequence( root, frame, view, ext, file, change_view );
+    bool ok = split_sequence( root, frame, view, ext, file, change_view,
+                              change_frame );
     if ( !ok || frame == "" || is_valid_movie( ext.c_str() ) ||
          mrv::is_valid_audio( ext.c_str() ) )
     {
@@ -1091,6 +1100,14 @@ bool fileroot( std::string& fileroot, const std::string& file,
         return false;
     }
 
+    if ( ! change_frame )
+    {
+        root += view;
+        root += frame;
+        root += ext;
+        fileroot = root;
+        return true;
+    }
 
     const char* digits = PRId64;
     int pad = padded_digits(frame);

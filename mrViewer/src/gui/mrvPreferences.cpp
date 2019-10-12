@@ -1939,16 +1939,16 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
         DBG3;
-        main->uiTimeline->minimum( dmn );
-        main->uiTimeline->maximum( dmx );
+        main->uiTimeline->minimum( mn );
+        main->uiTimeline->maximum( mx );
     }
     else
     {
         DBG3;
         main->uiTimeline->minimum( mn );
-        main->uiTimeline->display_minimum( dmn );
+        //main->uiTimeline->display_minimum( dmn );
         main->uiTimeline->maximum( mx );
-        main->uiTimeline->display_maximum( dmx );
+        // main->uiTimeline->display_maximum( dmx );
     }
 
         DBG3;

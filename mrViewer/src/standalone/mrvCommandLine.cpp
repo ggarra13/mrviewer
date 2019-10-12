@@ -170,8 +170,10 @@ void parse_directory( const std::string& fileroot,
          std::string fileroot;
 
          mrv::fileroot( fileroot, *i );
+
          bool ok = mrv::split_sequence( root, frame, view,
                                         ext, fileroot );
+
 
 
          if ( mrv::is_valid_movie( ext.c_str() ) )
@@ -291,8 +293,8 @@ void parse_directory( const std::string& fileroot,
 
            for ( ; i != e; ++i )
            {
-              boost::int64_t frameStart = kMaxFrame;
-              boost::int64_t frameEnd   = kMinFrame;
+              boost::int64_t frameStart = AV_NOPTS_VALUE;
+              boost::int64_t frameEnd   = AV_NOPTS_VALUE;
               std::string file = (*i).root;
               get_sequence_limits( frameStart, frameEnd, file );
               opts.files.push_back( mrv::LoadInfo( file, frameStart,
@@ -502,14 +504,6 @@ void parse_command_line( const int argc, char** argv,
         if ( !opts.files.empty() && (opts.files.back().reel == false) &&
              mrv::matches_chars( arg.c_str(), "0123456789-") )
           {
-            stringArray tokens;
-            mrv::split_string( tokens, arg, "-" );
-
-            // frame range
-            mrv::LoadInfo& entry = opts.files.back();
-            entry.first = atoi( tokens[0].c_str() );
-            if ( tokens.size() > 1 )
-               entry.last = atoi( tokens[1].c_str() );
             continue;
           }
 
@@ -521,9 +515,8 @@ void parse_command_line( const int argc, char** argv,
           }
         else
         {
-            boost::int64_t start = mrv::kMaxFrame, end = mrv::kMinFrame;
+            int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
             std::string fileroot;
-
 
             if ( mrv::is_directory( arg.c_str() ) )
             {
@@ -532,12 +525,26 @@ void parse_command_line( const int argc, char** argv,
             }
             else
             {
-               mrv::fileroot( fileroot, arg );
+                if ( (i+1) != e )
+                {
+                    const std::string& f = *(i+1);
+                    if ( mrv::matches_chars( f.c_str(), "0123456789-") )
+                    {
+                        stringArray tokens;
+                        mrv::split_string( tokens, f, "-" );
 
-               if ( mrv::is_valid_sequence( fileroot.c_str() ) )
-               {
+                        // frame range
+                        start = atoi( tokens[0].c_str() );
+                        if ( tokens.size() > 1 )
+                            end = atoi( tokens[1].c_str() );
+                    }
+                }
+
+                mrv::fileroot( fileroot, arg, true, false );
+                if ( mrv::is_valid_sequence( fileroot.c_str() ) )
+                {
                    mrv::get_sequence_limits( start, end, fileroot );
-               }
+                }
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {

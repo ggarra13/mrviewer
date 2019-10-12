@@ -2844,7 +2844,7 @@ again:
     {
         int64_t x = c.frame;
         NET("TimelineMaxDisplay " << x );
-        uiMain->uiTimeline->display_minimum( x );
+        uiMain->uiTimeline->display_maximum( x );
         uiMain->uiTimeline->redraw();
         uiMain->uiEndFrame->value( x );
         uiMain->uiEndFrame->redraw();
