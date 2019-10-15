@@ -22,10 +22,9 @@
  *
  * @brief  Main entry point for mrViewer executable
  *
- *
  */
 
-//#define ALLOC_CONSOLE
+#define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2017 Pixar Animation Studios
 #
@@ -47,7 +47,6 @@ Saved conformed.otio with 100 clips.
 import argparse
 import glob
 import os
-import re
 
 import opentimelineio as otio
 
@@ -87,7 +86,7 @@ def _find_matching_media(name, folder):
     # shot = asset_database.find_shot(clip.metadata['mystudio']['shotID'])
     # new_media = shot.latest_render(format='mov')
 
-    matches = glob.glob("{0}/{1}".format(folder, name))
+    matches = glob.glob("{0}/{1}*".format(folder, name))
     matches = list(filter(lambda x: os.path.abspath(x), matches))
 
     if len(matches) == 0:
@@ -117,12 +116,13 @@ def _conform_timeline(timeline, folder):
     for clip in timeline.each_clip():
         # look for a media file that matches the clip's name
         print(clip.name, folder)
-        clip.name = re.sub(r'Checkered - ', '', clip.name, flags=re.I )
         new_path = _find_matching_media(clip.name, folder)
 
         # if no media is found, keep going
         if not new_path:
             continue
+
+        print("new_path=",new_path)
 
         # if we found one, then relink to the new path
         clip.media_reference = otio.schema.ExternalReference(

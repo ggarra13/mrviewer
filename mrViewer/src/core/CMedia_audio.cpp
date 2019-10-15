@@ -601,6 +601,8 @@ void CMedia::populate_audio()
         {
         case AVMEDIA_TYPE_SUBTITLE:
         case AVMEDIA_TYPE_VIDEO:
+        case AVMEDIA_TYPE_DATA:
+        case AVMEDIA_TYPE_ATTACHMENT:
             break;
         case AVMEDIA_TYPE_AUDIO:
         {

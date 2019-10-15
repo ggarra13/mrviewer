@@ -66,7 +66,6 @@ using namespace std;
 #include "gui/mrvTimecode.h"
 #include "gui/mrvPreferences.h"
 #include "mrViewer.h"
-#include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
 #undef DBG

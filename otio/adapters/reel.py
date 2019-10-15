@@ -54,9 +54,9 @@ except ImportError:
     pass
 
 try:
-    from urllib import unquote
+    from urllib import quote, unquote
 except ImportError:
-    from urllib.parse import unquote
+    from urllib.parse import quote, unquote
 
 import opentimelineio as otio
 
@@ -192,7 +192,7 @@ def _ffprobe_output(
     ]
 
     if message:
-        print("Scanning {0} for {1}...".format(name, message))
+        print("Scanning {0} for {1}...".format(full_path, message))
 
     cmd = ["ffprobe"] + arguments
 
@@ -206,11 +206,17 @@ def _ffprobe_output(
     stderr=subprocess.PIPE)
     out, err = proc.communicate()
     if proc.returncode != 0:
+        if name != full_path:
+            name = re.sub( r".*" + quote(os.sep), "", full_path )
+            print("Second try... {0}".format(name))
+            return _ffprobe_output( name, name, dryrun, arguments, message )
+
         raise FFProbeFailedError(
             "FFProbe Failed with error: {0}, output: {1}".format(
             err, out
             )
         )
+
 
     return out.decode(), err.decode()
 
@@ -387,6 +393,8 @@ Ghosting 5 5
                         filename = clip.media_reference.target_url
                         filename = re.sub("^file://", "", filename )
                         filename = self._relative_filename( filename )
+                        if not os.path.isfile( filename ):
+                            filename = "Checkered - " + filename
                     elif not _is_special(clip) and \
                       clip.media_reference.is_missing_reference:
                         filename = "Checkered - " + clip.name

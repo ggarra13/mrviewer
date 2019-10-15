@@ -107,6 +107,7 @@ bool is_valid_frame_spec( std::string& framespec )
 
     if ( framespec.size() > 9 ) return false;
 
+
     if ( *c == '%' )
     {
         bool d = false;
@@ -734,7 +735,11 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
 
     std::string croot, cview, cframe, cext;
-    unsigned pad = 1;
+    unsigned pad = 0;
+    if ( is_valid_frame_spec( frame ) )
+    {
+        pad = padded_digits( frame );
+    }
 
 
     fs::directory_iterator e; // default constructor yields path iter. end
@@ -756,7 +761,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
             continue;  // not this sequence
         }
 
-        if ( cframe[0] == '0' && cframe.size() > 1 )
+        if ( cframe[0] == '0' && cframe.size() > 1 && pad == 0 )
             pad = (unsigned) cframe.size();
 
 
@@ -1109,12 +1114,14 @@ bool fileroot( std::string& fileroot, const std::string& file,
         return true;
     }
 
+
     const char* digits = PRId64;
     int pad = padded_digits(frame);
     if ( pad < 10 )
     {
         digits = "d";
     }
+
 
     char full[1024];
     if ( pad == 0 )
