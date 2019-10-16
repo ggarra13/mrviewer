@@ -394,7 +394,7 @@ Ghosting 5 5
                         filename = re.sub("^file://", "", filename )
                         filename = self._relative_filename( filename )
                         if not os.path.isfile( filename ):
-                            filename = "Checkered - " + filename
+                            filename = "Checkered - " + str(filename)
                     elif not _is_special(clip) and \
                       clip.media_reference.is_missing_reference:
                         filename = "Checkered - " + clip.name

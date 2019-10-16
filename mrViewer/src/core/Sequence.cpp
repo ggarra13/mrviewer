@@ -82,7 +82,7 @@ const boost::int64_t kMaxFrame = AV_NOPTS_VALUE;
 
 bool is_valid_frame( const std::string& framespec )
 {
-    if ( framespec.size() > 9 ) return false;
+    if ( framespec.size() > 17 ) return false;
 
     const char* c = framespec.c_str();
     if ( *c == '.' ) ++c;
@@ -105,7 +105,7 @@ bool is_valid_frame_spec( std::string& framespec )
     else
         c = framespec.c_str();
 
-    if ( framespec.size() > 9 ) return false;
+    if ( framespec.size() > 17 ) return false;
 
 
     if ( *c == '%' )
