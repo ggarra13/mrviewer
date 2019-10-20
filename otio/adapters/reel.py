@@ -557,12 +557,6 @@ class Reel2Otio(object):
         self.start_frame = obj.group(4)
         self.end_frame = obj.group(5)
         if obj.group(6):
-            print(obj.group(1))
-            print(obj.group(2))
-            print(obj.group(3))
-            print(obj.group(4))
-            print(obj.group(5))
-            print(obj.group(6))
             self.fps = float(obj.group(6))
         else:
             self.fps = None
@@ -577,7 +571,7 @@ class Reel2Otio(object):
             self.fps = _ffprobe_fps( self.media_path, path, False )
 
         has_video, has_audio = _ffprobe_video_audio( self.media_path, path,
-                                False )
+                                    False )
         return has_video, has_audio
 
     def _find_video_line( self, line ):
@@ -770,9 +764,13 @@ class Reel2Otio(object):
                         else:
                             self.clip.source_range = trange
                     else:
-                        trange = self.clip.trimmed_range()
+                        atrange = self.clip.trimmed_range()
+                        trange = self.video_tracks[-1].trimmed_range()
+                        if trange.contains( atrange ):
+                            idx += 1
+                            continue
                         self.clip = otio.schema.Gap()
-                        self.clip.source_range = trange
+                        self.clip.source_range = atrange
                         if not self.audio_tracks:
                             track = otio.schema.Track()
                             track.name = "Audio 1"

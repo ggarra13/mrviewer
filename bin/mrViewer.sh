@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 symlink=`readlink ${0}`

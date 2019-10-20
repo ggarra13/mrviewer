@@ -1,3 +1,11 @@
+v5.2.8  - Made reel converter more solid and added features in mrViewer to
+	  support the conversion more seamlessly.
+	- Bug fixed commmand-line input of sequences to support 0010-0100
+	  formats, improved performance of command-line sequence when it
+	  has an imposed limit.  Extended support of command-line sequences
+	  to support up to 8 digits.  Bug fixed padding in sequences when
+	  a frame range is provided.
+
 v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
 	  only integers were saved.
 	- Made Preferences->Loading->Missing Frame be an automatic setting
