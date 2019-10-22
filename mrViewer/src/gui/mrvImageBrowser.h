@@ -245,8 +245,11 @@ public:
     //! Create a tree element from a media
     mrv::Element* new_item(mrv::media img);
 
-    //! Adjust timeline of media clips when in EDL mode
-    void adjust_timeline();
+    //! Adjust timeline of media clips when in EDL mode, returning first
+    //! and last frame in timeline
+    void adjust_timeline( int64_t& first, int64_t& last );
+
+    void set_timeline( const int64_t& first, const int64_t& last );
 
     //! Returns GUI view window
     mrv::ImageView* view() const;

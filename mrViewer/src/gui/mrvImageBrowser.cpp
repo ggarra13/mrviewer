@@ -1002,7 +1002,10 @@ void ImageBrowser::insert( int idx, mrv::media m )
     item->widget( nw );
 
     match_tree_order();
-    adjust_timeline();
+
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     send_reel( reel );
 
@@ -1135,7 +1138,9 @@ mrv::media ImageBrowser::add( const mrv::media m )
 
     send_current_image( reel->images.size() - 1, m );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -1266,7 +1271,8 @@ void ImageBrowser::remove( mrv::media m )
 
     match_tree_order();
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -1346,7 +1352,8 @@ void ImageBrowser::change_reel()
 
         match_tree_order();
 
-        adjust_timeline();
+        int64_t first, last;
+        adjust_timeline( first, last );
 
         change_image(0);
 
@@ -1443,7 +1450,8 @@ void ImageBrowser::change_image()
 
             send_image( sel );
 
-            adjust_timeline();
+            int64_t first, last;
+            adjust_timeline( first, last );
         }
 
         if ( play != CMedia::kStopped ) v->play( play );
@@ -1944,7 +1952,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
         }
     }
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
+
+
     view()->fit_image();
 
     if ( ( reel->edl || img->first_frame() != img->last_frame() )
@@ -2181,9 +2193,23 @@ void ImageBrowser::clone_current()
     sprintf(buf, N_("CloneImage \"%s\""), file.c_str() );
     view()->send_network( buf );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 }
 
+
+void ImageBrowser::set_timeline( const int64_t& first, const int64_t& last )
+{
+    mrv::Timeline* t = timeline();
+    if ( t )
+    {
+        t->minimum( first );
+        t->maximum( last );
+    }
+    uiMain->uiStartFrame->value( first );
+    uiMain->uiEndFrame->value( last );
+}
 
 /**
  * Clone current image buffer (with all its channels) being displayed,
@@ -2211,7 +2237,9 @@ void ImageBrowser::clone_all_current()
     sprintf(buf, N_("CloneImageAll \"%s\""), img->fileroot() );
     view()->send_network( buf );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 }
 
 
@@ -2258,7 +2286,9 @@ void ImageBrowser::remove_current()
 
     view()->fit_image();
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     redraw();
 }
@@ -2598,7 +2628,9 @@ void ImageBrowser::image_version( int sum )
 
     img->clear_cache();
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
 
     if ( play ) view()->play(play);
@@ -2665,7 +2697,8 @@ void ImageBrowser::next_image()
         img->do_seek();
     }
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
 
     send_image( v );
 
@@ -2735,7 +2768,8 @@ void ImageBrowser::previous_image()
 
     send_image( v );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
 
     if ( play ) view()->play(play);
 }
@@ -2816,7 +2850,8 @@ int ImageBrowser::mousePush( int x, int y )
 
         match_tree_order();
 
-        adjust_timeline();
+        int64_t first, last;
+        adjust_timeline( first, last );
 
         if ( play != CMedia::kStopped )
             view()->play( play );
@@ -2839,7 +2874,8 @@ int ImageBrowser::mousePush( int x, int y )
 
         match_tree_order();
 
-        adjust_timeline();
+        int64_t first, last;
+        adjust_timeline( first, last );
 
         int sel = value();
 
@@ -3112,7 +3148,9 @@ void ImageBrowser::exchange( int oldsel, int sel )
     //
     // Adjust timeline position
     //
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     //
     // Redraw EDL window
@@ -3231,7 +3269,9 @@ int ImageBrowser::mouseRelease( int x, int y )
     sprintf( buf, _("ExchangeImage %d %d"), sel, old );
     view()->send_network( buf );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     return ok;
 }
@@ -3452,7 +3492,9 @@ void ImageBrowser::clear_edl()
 
     frame( f );
 
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     char buf[64];
     sprintf( buf, "EDL 0" );
@@ -3474,7 +3516,9 @@ void ImageBrowser::set_edl()
     uiMain->uiReelWindow->uiEDLButton->value(1);
 
     match_tree_order();
-    adjust_timeline();
+    int64_t first, last;
+    adjust_timeline( first, last );
+    set_timeline( first, last );
 
     mrv::media m = current_image();
     if (!m) return;
@@ -3520,9 +3564,9 @@ void ImageBrowser::attach_ctl_script()
 
 
 
-void ImageBrowser::adjust_timeline()
+void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 {
-    int64_t first, last, f = view()->frame();
+    int64_t f = view()->frame();
 
     mrv::Reel reel = current_reel();
     if ( reel->images.empty() ) return;
@@ -3564,8 +3608,6 @@ void ImageBrowser::adjust_timeline()
             eg->redraw();
         }
 
-        first = 1;
-
         mrv::media m = current_image();
         if (! m ) return;
 
@@ -3573,10 +3615,10 @@ void ImageBrowser::adjust_timeline()
 
         f = m->position() + img->frame() - img->first_frame();
 
-        m = reel->images.back();
-        if (! m ) return;
+        first = 1;
 
-        last = m->position() + m->duration() - 1;
+        m = reel->images.back();
+        last  = m->position() + m->duration() - 1;
     }
     else
     {
@@ -3593,23 +3635,6 @@ void ImageBrowser::adjust_timeline()
     }
 
 
-
-
-    // for ( int i = 0; i < reel->images.size(); ++i )
-    // {
-    //    DBGM3( "Image " << i << " " << reel->images[i]->position() );
-    // }
-
-    //LOG_INFO( "first " << first << " f=" << f << " last " << last );
-
-    mrv::Timeline* t = timeline();
-    if ( t )
-    {
-        t->minimum( double(first) );
-        t->maximum( double(last) );
-    }
-    uiMain->uiStartFrame->value( first );
-    uiMain->uiEndFrame->value( last );
 
     frame( f );
 

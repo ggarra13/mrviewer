@@ -1592,7 +1592,9 @@ static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
         img->first_frame( v );
         update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
-        view->browser()->adjust_timeline();
+        int64_t first, last;
+        view->browser()->adjust_timeline( first, last );
+        view->browser()->set_timeline( first, last );
         view->redraw();
     }
 }
@@ -1636,7 +1638,9 @@ static void change_last_frame_cb( Fl_Int_Input* w,
 
         img->last_frame( v );
         mrv::ImageView* view = info->main()->uiView;
-        view->browser()->adjust_timeline();
+        int64_t first, last;
+        view->browser()->adjust_timeline( first, last );
+        view->browser()->set_timeline( first, last );
         view->redraw();
         update_int_slider( w );
     }

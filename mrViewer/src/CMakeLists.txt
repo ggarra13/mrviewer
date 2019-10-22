@@ -14,6 +14,7 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in
 #
 # These are the libraries we will depend on
 #
+set( OpenGL_GL_PREFERENCE GLVND )
 
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
