@@ -41,7 +41,7 @@ void Element::make_thumbnail()
         image = new Fl_Box(0,VMARGIN,b->w(), b->h());
         image->box( FL_NO_BOX );
     }
-    if ( b ) image->image( b );
+    if ( b && image ) image->image( b );
 
 }
 
@@ -156,6 +156,15 @@ void Element::make_thumbnail()
     const mrv::media Element::media() const { return _elem; }
 
     void Element::draw() {
+
+        Fl_Image* b = NULL;
+
+        if ( _elem->thumbnail() )
+        {
+            b = _elem->thumbnail();
+            image->image(b);
+        }
+
         Fl_Group::draw();
 
         Fl_Color c = fl_color();

@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-10-22 04:43-0300\n"
+"POT-Creation-Date: 2019-10-24 15:12-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3882,7 +3882,7 @@ msgstr " cuadros max: "
 msgid " meta"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3600
+#: gui/mrvImageBrowser.cpp:3599
 msgid " moved to frame "
 msgstr " para cuadro "
 
@@ -10934,7 +10934,7 @@ msgid "5.\tc #BEA26D"
 msgstr ""
 
 #: gui/mrvVersion.cpp:112
-msgid "5.2.9"
+msgid "5.3.0"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:151
@@ -33322,6 +33322,34 @@ msgstr ""
 msgid "~/"
 msgstr ""
 
+#, fuzzy
+#~ msgid " elem: "
+#~ msgstr "busca_imagen: cuadro "
+
+#, fuzzy
+#~ msgid " _thumbnail now "
+#~ msgstr "Estampas Activas"
+
+#, fuzzy
+#~ msgid " delete _thumbnail "
+#~ msgstr "No pude crear dibujo en miniatura para '"
+
+#, fuzzy
+#~ msgid " drew image::image() "
+#~ msgstr "imagen"
+
+#, fuzzy
+#~ msgid " image::image() "
+#~ msgstr "imagen"
+
+#, fuzzy
+#~ msgid " image::image(b) "
+#~ msgstr "imagen"
+
+#, fuzzy
+#~ msgid "delete elem "
+#~ msgstr "busca_imagen: cuadro "
+
 #
 #, fuzzy
 #~ msgid "change frame "
@@ -33388,18 +33416,6 @@ msgstr ""
 #, fuzzy
 #~ msgid " cleared"
 #~ msgstr "Borrar"
-
-#, fuzzy
-#~ msgid " delete _image"
-#~ msgstr "busca_imagen: cuadro "
-
-#, fuzzy
-#~ msgid " delete thumbnail "
-#~ msgstr "No pude crear dibujo en miniatura para '"
-
-#, fuzzy
-#~ msgid " image->image() "
-#~ msgstr "imagen"
 
 #, fuzzy
 #~ msgid " media element "
@@ -33662,10 +33678,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "tframe "
 #~ msgstr " cuadro "
-
-#, fuzzy
-#~ msgid "thumbnail "
-#~ msgstr "Estampas Activas"
 
 #, fuzzy
 #~ msgid " duration: "

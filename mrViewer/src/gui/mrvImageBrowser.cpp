@@ -96,7 +96,7 @@ const char* kModule = "reel";
 }
 
 
-//#define DEBUG_IMAGES_ORDER
+// #define DEBUG_IMAGES_ORDER
 
 using namespace std;
 
@@ -3573,21 +3573,20 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 
     if ( reel->edl )
     {
-        mrv::Timeline* t = timeline();
         MediaList::iterator i = reel->images.begin();
         MediaList::iterator e = reel->images.end();
-        bool update = true;
-        if ( t->edl() )
-        {
-            if ( t->undo_minimum() != AV_NOPTS_VALUE &&
-                 t->undo_maximum() != AV_NOPTS_VALUE )
-            {
-                update = false;
-            }
-        }
+        // bool update = true;
+        // if ( t->edl() )
+        // {
+        //     if ( t->undo_minimum() != AV_NOPTS_VALUE &&
+        //          t->undo_maximum() != AV_NOPTS_VALUE )
+        //     {
+        //         update = false;
+        //     }
+        // }
 
 
-        if (! update ) return;
+        // if (! update ) return;
 
         MediaList::iterator j;
         if ( i != e )
