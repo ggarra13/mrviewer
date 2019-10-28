@@ -1273,6 +1273,7 @@ void ImageBrowser::remove( mrv::media m )
 
     int64_t first, last;
     adjust_timeline( first, last );
+    set_timeline( first, last );
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -1354,6 +1355,7 @@ void ImageBrowser::change_reel()
 
         int64_t first, last;
         adjust_timeline( first, last );
+        set_timeline( first, last );
 
         change_image(0);
 
@@ -1452,6 +1454,12 @@ void ImageBrowser::change_image()
 
             int64_t first, last;
             adjust_timeline( first, last );
+
+            mrv::Timeline* t = timeline();
+            if ( t && !t->edl() )
+            {
+                set_timeline( first, last );
+            }
         }
 
         if ( play != CMedia::kStopped ) v->play( play );
@@ -2699,6 +2707,11 @@ void ImageBrowser::next_image()
 
     int64_t first, last;
     adjust_timeline( first, last );
+    mrv::Timeline* t = timeline();
+    if ( t && !t->edl() )
+    {
+        set_timeline( first, last );
+    }
 
     send_image( v );
 
@@ -2770,6 +2783,11 @@ void ImageBrowser::previous_image()
 
     int64_t first, last;
     adjust_timeline( first, last );
+    mrv::Timeline* t = timeline();
+    if ( t && !t->edl() )
+    {
+        set_timeline( first, last );
+    }
 
     if ( play ) view()->play(play);
 }
@@ -2852,6 +2870,11 @@ int ImageBrowser::mousePush( int x, int y )
 
         int64_t first, last;
         adjust_timeline( first, last );
+        mrv::Timeline* t = timeline();
+        if ( t && !t->edl() )
+        {
+            set_timeline( first, last );
+        }
 
         if ( play != CMedia::kStopped )
             view()->play( play );
