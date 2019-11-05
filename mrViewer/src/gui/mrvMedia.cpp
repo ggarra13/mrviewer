@@ -119,7 +119,6 @@ void media::create_thumbnail()
         return;
     }
 
-
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw == 0 || dh == 0 ) {
@@ -130,7 +129,7 @@ void media::create_thumbnail()
     unsigned int h = _thumbnail_height;
 
     float yScale = (float)(h+0.5) / (float)dh;
-    unsigned int w = (float)(dw+0.5) * (float)yScale;
+    unsigned int w = unsigned( (float)(dw+0.5) * (float)yScale );
     if ( w > 150 ) w = 150;
 
     // Resize image to thumbnail size
@@ -138,9 +137,25 @@ void media::create_thumbnail()
 
     if ( mrv::Preferences::use_ocio )
     {
+        mrv::image_type_ptr ptr;
         if ( pic->pixel_type() == mrv::image_type::kFloat )
         {
-             bake_ocio( pic, _image );
+            ptr = pic;
+        }
+        else if ( pic->pixel_type() == mrv::image_type::kHalf )
+        {
+            ptr = image_type_ptr( new image_type(
+                                  pic->frame(),
+                                  w, h, 3,
+                                  image_type::kRGB,
+                                  image_type::kFloat ) );
+            copy_image( ptr, pic );
+        }
+        if ( pic->pixel_type() == mrv::image_type::kFloat ||
+             pic->pixel_type() == mrv::image_type::kHalf )
+        {
+            bake_ocio( ptr, _image );
+            pic = ptr;
         }
     }
 

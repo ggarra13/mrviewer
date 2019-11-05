@@ -264,7 +264,7 @@ public:
     inline PixelType pixel_type() const        {
         return _type;
     }
-    unsigned short   line_size() const;
+    size_t           line_size() const;
     unsigned short   pixel_size() const;
 
     inline void frame( const boost::int64_t& f ) {

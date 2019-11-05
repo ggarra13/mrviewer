@@ -232,11 +232,17 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         name += 5;
     }
 
+    bool network = false;
+    if ( strncmp( name, "rtmp:", 5 ) == 0 )
+    {
+        network = true;
+    }
+
 
     boost::uint8_t* read_data = 0;
     size_t size = len;
     const boost::uint8_t* test_data = datas;
-    if (!datas) {
+    if (!datas && !network) {
         size = 1024;
         FILE* fp = fl_fopen(name, "rb");
         if (!fp)
@@ -333,8 +339,18 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
 
-    CMedia* image = test_image( name, (boost::uint8_t*)test_data,
-                                (unsigned int)size, is_seq );
+    CMedia* image = NULL;
+
+    if ( network )
+    {
+        image = aviImage::get( name );
+    }
+    else
+    {
+        image = test_image( name, (boost::uint8_t*)test_data,
+                            (unsigned int)size, is_seq );
+    }
+
     if ( image )
     {
         image->is_thumbnail( is_thumbnail );

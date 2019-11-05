@@ -1,5 +1,7 @@
 v5.3.1  - Made single clips change timeline start/end frames when not in
 	  edl and you switch among them.
+	- Made Float/Half clips' thumbnails respect the OpenColorIO setting
+	  for them.
 
 v5.3.0  - Bug fixed crashes related to thumbnails.
 	- Added a first command-line video tutorial for OpenTimelineIO

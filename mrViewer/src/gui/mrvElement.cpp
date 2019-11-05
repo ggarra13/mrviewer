@@ -157,13 +157,8 @@ void Element::make_thumbnail()
 
     void Element::draw() {
 
-        Fl_Image* b = NULL;
-
-        if ( _elem->thumbnail() )
-        {
-            b = _elem->thumbnail();
-            image->image(b);
-        }
+        Fl_Image* b = _elem->thumbnail();
+        image->image(b);
 
         Fl_Group::draw();
 

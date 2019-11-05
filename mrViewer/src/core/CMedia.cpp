@@ -1649,6 +1649,7 @@ void CMedia::filename( const char* n )
 
     if ( _hires ) _depth = _hires->pixel_type();
     else _depth = image_type::kByte;
+
     default_color_corrections();
 }
 

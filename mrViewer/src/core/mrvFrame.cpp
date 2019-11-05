@@ -138,7 +138,7 @@ unsigned short VideoFrame::pixel_size() const
 
 
 
-unsigned short VideoFrame::line_size() const
+size_t VideoFrame::line_size() const
 {
     size_t size = 0;
 
@@ -268,7 +268,6 @@ size_t VideoFrame::data_size() const
 void VideoFrame::allocate()
 {
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
-    av_assert0( ((unsigned long)ptr) % 16 == 0 );
     _data.reset( ptr );
 }
 
@@ -518,14 +517,19 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
         fy = 1.0;
     }
     else
+    {
         fy = (double)height() / (double) h;
+    }
 
     //
-    VideoFrame* scaled = new VideoFrame( _frame, w, h, 3, kRGB, kByte );
+    PixelType type = kByte;
+    if ( pixel_type() == kHalf || pixel_type() == kFloat ) type = kFloat;
+
+    VideoFrame* scaled = new VideoFrame( _frame, w, h, 3, kRGB, type );
 
     for ( unsigned y = 0; y < h; ++y )
     {
-        unsigned y2 = y * fy;
+        unsigned y2 = unsigned( y*fy );
         assert( y2 < height() );
         for ( unsigned x = 0; x < w; ++x )
         {
@@ -555,14 +559,14 @@ VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
     else
         f = (double) w / (double)width();
 
-    VideoFrame* scaledX = scaleX( f );
+    VideoFrame* scaledX = scaleX( float(f) );
 
     if ( h == 0 || height() == 0 )
         f = 1.0;
     else
         f = (double) h / (double)height();
 
-    VideoFrame* scaled  = scaledX->scaleY( f );
+    VideoFrame* scaled  = scaledX->scaleY( float(f) );
     delete scaledX;
 
     return scaled;

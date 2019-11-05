@@ -304,17 +304,18 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
          * of which frame timestamps are represented. For fixed-fps content,
          * timebase should be 1/framerate and timestamp increments should be
          * identical to 1. */
-        if ( opts->fps <= 0 )
-            c->time_base.den = st->time_base.den = int( 1000 * img->fps() );
-        else
-            c->time_base.den = st->time_base.den = int( 1000 * opts->fps );
+        double fps = img->fps();
+        if ( opts->fps > 0 ) fps = opts->fps;
+
+        c->time_base.den = st->time_base.den = int( 1000 * fps );
         c->time_base.num = st->time_base.num = 1000;
+
         c->framerate.num = c->time_base.den;
         c->framerate.den = c->time_base.num;
         //c->ticks_per_frame = 2;
 
 
-        c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
+        c->gop_size = int(5 * fps);
 
         // Use a profile if possible
         c->profile = opts->video_profile;
