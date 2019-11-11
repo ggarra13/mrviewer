@@ -192,7 +192,6 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
     av_packet_rescale_ts(pkt, *time_base, st->time_base);
     pkt->stream_index = st->index;
 
-
     /* Write the compressed frame to the media file. */
 #ifdef DEBUG_PACKET
     log_packet(fmt_ctx, pkt);
@@ -264,10 +263,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     }
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
 
-    /* Some container formats (like MP4) require global headers to be present.
-     * Mark the encoder so that it behaves accordingly. */
-    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     switch ((*codec)->type) {
     case AVMEDIA_TYPE_AUDIO:
@@ -475,6 +470,11 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         LOG_ERROR( _("Could not allocate audio frame") );
         return false;
     }
+
+    /* Some container formats (like MP4) require global headers to be present.
+     * Mark the encoder so that it behaves accordingly. */
+    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     c->audio_service_type = AV_AUDIO_SERVICE_TYPE_MAIN;
     //c->channel_layout = av_get_default_channel_layout(c->channels);
@@ -964,6 +964,9 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
 
     /* open the codec */
+    // Some containers like MP4 require a global header.  Set it here, not
+    // later as it is too late.
+    // c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
     if (avcodec_open2(c, codec, &info) < 0) {
         LOG_ERROR( _("Could not open video codec") );
         return false;

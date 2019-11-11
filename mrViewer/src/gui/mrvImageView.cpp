@@ -6900,11 +6900,11 @@ void ImageView::toggle_presentation()
     Fl_Window* uiStereo = uiMain->uiStereo->uiMain;
     Fl_Window* uiPaint = uiMain->uiPaint->uiMain;
     Fl_Window* uiSOP = uiMain->uiSOPNode ? uiMain->uiSOPNode->uiMain : NULL;
-
+    Fl_Window* uiLog = uiMain->uiLog->uiMain;
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
         has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-        has_stereo, has_paint, has_sop;
+        has_stereo, has_paint, has_sop, has_log;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -6924,6 +6924,7 @@ void ImageView::toggle_presentation()
         has_paint      = uiPaint ? uiPaint->visible() : false;
         has_stereo     = uiStereo ? uiStereo->visible() : false;
         has_sop        = uiSOP ? uiSOP->visible() : false;
+        has_log        = uiLog ? uiLog->visible() : false;
         filter         = texture_filtering();
 
         if (uiSOP) uiSOP->hide();
@@ -6935,6 +6936,7 @@ void ImageView::toggle_presentation()
         uiEDLWindow->hide();
         uiPrefs->hide();
         uiAbout->hide();
+        uiLog->hide();
         uiMain->uiBottomBar->hide();
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
@@ -6969,6 +6971,7 @@ void ImageView::toggle_presentation()
         if ( has_paint )      uiPaint->show();
         if ( has_stereo )     uiStereo->show();
         if ( has_sop )        uiSOP->show();
+        if ( has_log )        uiLog->show();
 
         if ( has_top_bar )    uiMain->uiTopBar->show();
         if ( has_bottom_bar)  uiMain->uiBottomBar->show();
