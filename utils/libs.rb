@@ -14,7 +14,7 @@ libpthread.*
 libresolv.*
 libm\.so
 libc\.so.*
-librt.*
+librt\..*
 libdl.*
 libxcb.*
 libasound.*
