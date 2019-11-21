@@ -4,6 +4,7 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
+libOpenGL.*
 libGL\.so
 libGLdispatch\.so
 libGLX\.so

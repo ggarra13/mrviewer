@@ -36,6 +36,7 @@
 
 #include <cstdio>     // for snprintf
 
+#define  __STDC_CONSTANT_MACROS
 
 extern "C" {
 #include <libavutil/time.h>

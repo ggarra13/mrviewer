@@ -33,6 +33,7 @@ using namespace std;
 #ifndef __STDC_FORMAT_MACROS
 #  define __STDC_FORMAT_MACROS
 #  define __STDC_LIMIT_MACROS
+#  define __STDC_CONSTANT_MACROS
 #endif
 #include <inttypes.h>
 #include <cmath>
@@ -43,6 +44,10 @@ using namespace std;
 #include <ImfIntAttribute.h>
 #include <ImfStringAttribute.h>
 #include <ImfMatrixAttribute.h>
+
+#  undef __STDC_FORMAT_MACROS
+#  undef __STDC_LIMIT_MACROS
+#  undef __STDC_CONSTANT_MACROS
 
 #include <OpenImageIO/imagebuf.h>
 #include <OpenImageIO/imagebufalgo.h>

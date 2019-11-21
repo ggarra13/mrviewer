@@ -28,6 +28,7 @@
 #ifndef __STDC_FORMAT_MACROS
 #  define __STDC_FORMAT_MACROS
 #  define __STDC_LIMIT_MACROS
+#  define __STDC_CONSTANT_MACROS
 #endif
 
 #include <inttypes.h>
