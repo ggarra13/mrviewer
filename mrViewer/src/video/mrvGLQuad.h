@@ -71,6 +71,20 @@ public:
         _mask_value = m;
     }
 
+    inline float fade() const {
+        return _fade;
+    }
+    inline void fade( const float f ) {
+        _fade = f;
+    }
+
+    inline float dissolve() const {
+        return _dissolve;
+    }
+    inline void dissolve( const float f ) {
+        _dissolve = f;
+    }
+
     inline float gamma() const {
         return _gamma;
     }
@@ -158,6 +172,8 @@ protected:
 
     bool         _right;
     bool         _blend;
+    float        _fade;
+    float        _dissolve;
     float        _gamma;
     GLenum       _blend_mode;
     unsigned     _num_textures;

@@ -2,9 +2,9 @@
  * @file   rgba.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
- * 
+ *
  * @brief    simple YByRy texture with 3D lut shader
- * 
+ *
  */
 #version 130
 
@@ -21,6 +21,8 @@ uniform int height;
 uniform int width;
 
 // Standard controls
+uniform float fade;
+uniform float dissolve;
 uniform float gain;
 uniform float gamma;
 uniform int   channel;
@@ -47,9 +49,9 @@ uniform float offset;
 
 
 void main()
-{ 
+{
   //
-  // Sample luminance and chroma, convert to RGB. 
+  // Sample luminance and chroma, convert to RGB.
   //
   vec3 pre;
   vec2 tc = gl_TexCoord[0].st;
@@ -73,7 +75,7 @@ void main()
     }
 
   //
-  // Apply gain 
+  // Apply gain
   //
   c.rgb *= gain;
 
@@ -83,7 +85,7 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
+      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb );
     }
 
   if ( unpremult && c.a > 0.00001 )
@@ -93,14 +95,14 @@ void main()
 
   //
   // Apply video gamma correction.
-  // 
+  //
   c.r = pow( c.r, gamma );
   c.g = pow( c.g, gamma );
   c.b = pow( c.b, gamma );
 
   //
   // Apply channel selection
-  // 
+  //
   if ( channel == 1 )
     {
       c.rgb = c.rrr;
@@ -129,7 +131,7 @@ void main()
 
 
   int x = 1000;
-  
+
   if ( mask == 1 )  // even odd rows
   {
       float f = float( tc.y * height );
@@ -158,6 +160,8 @@ void main()
       c.rgb *= c.a;
   }
 
+  c.rgb *= fade;
+  c.rgba *= dissolve;
 
   gl_FragColor = c;
-} 
+}

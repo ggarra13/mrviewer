@@ -2,9 +2,9 @@
  * @file   rgba.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
- * 
+ *
  * @brief    simple rgba texture with 3D lut shader
- * 
+ *
  */
 
 #version 130
@@ -20,6 +20,8 @@ uniform int height;
 uniform int width;
 
 // Standard controls
+uniform float fade;
+uniform float dissolve;
 uniform float gain;
 uniform float gamma;
 uniform int   channel;
@@ -42,9 +44,9 @@ uniform float scale;
 uniform float offset;
 
 void main()
-{ 
+{
   //
-  // Sample RGBA texture. 
+  // Sample RGBA texture.
   //
   vec2 tc = gl_TexCoord[0].st;
   vec4 c = texture2D(fgImage, tc );
@@ -57,9 +59,9 @@ void main()
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
-    
+
   //
-  // Apply gain 
+  // Apply gain
   //
   c.rgb *= gain;
 
@@ -69,7 +71,7 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D( lut, c.rgb * scale + offset ).rgb ); 
+      c.rgb = exp( texture3D( lut, c.rgb * scale + offset ).rgb );
     }
 
   if ( unpremult && c.a > 0.00001 )
@@ -80,14 +82,14 @@ void main()
 
   //
   // Apply video gamma correction.
-  // 
+  //
   c.r = pow( c.r, gamma );
   c.g = pow( c.g, gamma );
   c.b = pow( c.b, gamma );
 
   //
   // Apply channel selection
-  // 
+  //
   if ( channel == 1 )
     {
       c.rgb = c.rrr;
@@ -133,7 +135,7 @@ void main()
 
 
   if ( x == mask_value )
-  { 
+  {
       c.r = c.g = c.b = c.a = 0.0;
   }
 
@@ -142,6 +144,9 @@ void main()
       c.rgb *= c.a;
   }
 
+  c.rgb *= fade;
+  c.rgba *= dissolve;
+
   gl_FragColor = c;
 
-} 
+}

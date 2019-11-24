@@ -1,5 +1,5 @@
 /**
- * @file   rgba.glsl
+ * @file   YByRyA.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  *
@@ -22,6 +22,8 @@ uniform int height;
 uniform int width;
 
 // Standard controls
+uniform float fade;
+uniform float dissolve;
 uniform float gain;
 uniform float gamma;
 uniform int   channel;
@@ -175,6 +177,9 @@ void main()
   {
       c.rgb *= c.a;
   }
+
+  c.rgb *= fade;
+  c.rgba *= dissolve;
 
   gl_FragColor = c;
 }

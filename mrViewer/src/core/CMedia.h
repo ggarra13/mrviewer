@@ -362,8 +362,65 @@ public:
         kSubtitleStream
     };
 
+    enum FadeType
+    {
+        kFadeIn = 1,
+        kFadeOut = 2,
+        kCrossDissolve = 2+4,
+    };
+
+
+    struct Fade
+    {
+        FadeType type;
+        int64_t frames;
+
+        Fade() : type( kFadeIn ), frames(0) {};
+    };
+
+    Fade _fade[2];
 
 public:
+
+    inline void fade_in( int64_t f ) {
+        _fade[0].type = kFadeIn; _fade[0].frames = f;
+    }
+
+    inline void fade_out( int64_t f ) {
+        _fade[1].type = kFadeOut; _fade[1].frames = f;
+    }
+
+    inline void crossdissolve( int64_t f ) {
+        _fade[1].type = kCrossDissolve; _fade[1].frames = f;
+    }
+
+    inline float dissolve() const
+        {
+            float f = 1.0f;
+            if ( _fade[1].type == kCrossDissolve &&
+                 _frame > last_frame() - _fade[1].frames )
+            {
+                f = float( last_frame() - _frame ) / _fade[1].frames;
+            }
+            return f;
+        }
+
+    inline float fade() const
+        {
+            float f = 1.0f;
+            if ( _frame < first_frame() + _fade[0].frames )
+            {
+                f = float( _frame - first_frame() ) / (float) _fade[0].frames;
+            }
+            else if ( _fade[1].type == kFadeOut &&
+                      _frame > last_frame() - _fade[1].frames )
+            {
+                f = float( last_frame() - _frame ) / (float) _fade[1].frames;
+            }
+            return f;
+        }
+
+
     /// Fetch (load) the image for a frame
     virtual bool fetch(mrv::image_type_ptr& canvas, const int64_t frame) {
         return true;

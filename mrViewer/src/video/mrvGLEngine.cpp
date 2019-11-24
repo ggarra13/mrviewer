@@ -2086,6 +2086,8 @@ void GLEngine::draw_images( ImageList& images )
             }
                 CHECK_GL;
             quad->gamma( g );
+            quad->fade( img->fade() );
+            quad->dissolve( img->dissolve() );
                 CHECK_GL;
             quad->draw( texWidth, texHeight );
                 CHECK_GL;
@@ -2310,6 +2312,8 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         quad->gamma( g );
+        quad->fade( img->fade() );
+        quad->dissolve( img->dissolve() );
     CHECK_GL;
         quad->draw( texWidth, texHeight );
     CHECK_GL;
