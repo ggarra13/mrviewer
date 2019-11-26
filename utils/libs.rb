@@ -97,6 +97,29 @@ elsif not @debug == "Debug"
   exit 1
 end
 
+def copy_files( build )
+  Dir.chdir( '../..'  )
+  $stderr.puts "Copy shaders"
+  FileUtils.rm_f( "#{@debug}/shaders" )
+  FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
+  $stderr.puts "Copy docs"
+  FileUtils.rm_f( "#{@debug}/docs" )
+  FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
+  FileUtils.rm_f( "#{@debug}/colors" )
+  FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
+  $stderr.puts "Copy ctl scripts"
+  FileUtils.rm_f( "#{@debug}/ctl" )
+  FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
+  $stderr.puts "Copy ocio configs"
+  FileUtils.rm_f( "#{@debug}/ocio" )
+  FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
+  $stderr.puts "Copy otio adapters"
+  FileUtils.rm_f( "#{@debug}/otio" )
+  FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
+end
+
+
+
 kernel = `uname`.chop!
 release = `uname -r`.chop!
 
@@ -130,29 +153,17 @@ if kernel !~ /MINGW.*/
   files.uniq!
 
   parse( files )
+  copy_files( build )
+  
+  $stderr.puts "remove .fuse files"
+  `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
 else
   build = "BUILD/Windows-6.3.9600-64/"
   Dir.chdir( build  )
+  copy_files( build )
+  
+  build = "BUILD/Windows-6.3.9600-32/"
+  Dir.chdir( build  )
+  copy_files( build )
 end
 
-Dir.chdir( '../..'  )
-$stderr.puts "Copy shaders"
-FileUtils.rm_f( "#{@debug}/shaders" )
-FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
-$stderr.puts "Copy docs"
-FileUtils.rm_f( "#{@debug}/docs" )
-FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
-FileUtils.rm_f( "#{@debug}/colors" )
-FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
-$stderr.puts "Copy ctl scripts"
-FileUtils.rm_f( "#{@debug}/ctl" )
-FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
-$stderr.puts "Copy ocio configs"
-FileUtils.rm_f( "#{@debug}/ocio" )
-FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
-$stderr.puts "Copy otio adapters"
-FileUtils.rm_f( "#{@debug}/otio" )
-FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
-
-$stderr.puts "remove .fuse files"
-`find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`

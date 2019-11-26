@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuno
+    Copyright (C) 2007-2014 Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -192,25 +192,6 @@ void EDLGroup::remove_media_track( unsigned i )
 }
 
 
-void static_move( EDLGroup* e )
-{
-    int X = Fl::event_x();
-
-    if ( X < 8 ) X = 8;
-
-    int quarter = e->w() / 4;
-
-    if ( X >= e->x() + e->w() - quarter ) {
-        e->pan(-1);
-        Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
-    }
-    else if ( X <= e->x() + quarter )
-    {
-        e->pan(1);
-        Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
-    }
-
-}
 
 // Remove an audio track at index i
 void EDLGroup::remove_audio_track( unsigned i )
@@ -230,13 +211,14 @@ void EDLGroup::pan( int diff )
     double avg = tmax - tmin + 1;
     amt *= avg;
 
-    t->minimum( tmin - amt );
-    if ( t->minimum() < 0 ) t->minimum( 0 );
+    tmin -= amt;
+    t->minimum( tmin );
 
-    t->maximum( tmax - amt );
+    tmax -= amt;
+    t->maximum( tmax );
+
     t->redraw();
     redraw();
-
 }
 
 int EDLGroup::handle( int event )
@@ -257,7 +239,7 @@ int EDLGroup::handle( int event )
             _dragY = Fl::event_y();
 
             // LIMITS
-            if ( _dragX < x() + 8 ) _dragX = x() + 8;
+            // if ( _dragX < x() + 8 ) _dragX = x() + 8;
             if ( _dragY < y() + 33 ) _dragY = y() + 33;
 
             int idx = int( (_dragY - y() ) / kTrackHeight );
@@ -266,47 +248,12 @@ int EDLGroup::handle( int event )
             }
             _dragChild = idx;
 
+            mrv::media_track* track;
+            mrv::media m;
+            int64_t pt;
 
-
-            mrv::Timeline* t = timeline();
-            if ( !t ) return 0;
-
-            int ww = t->w();
-            double tmin = t->minimum();
-            double len = (t->maximum() - tmin + 1);
-            double p = double( _dragX - x() ) / double(ww);
-            p = tmin + p * len;
-            int64_t pt = int64_t( p );
-
-
-
-
-
-            mrv::media_track* track = (mrv::media_track*) child(idx);
-            if ( !track ) return 0;
-
-
-
-            mrv::media m = track->media_at( pt );
-
-
-            if ( m && _fade != mrv::CMedia::kNoFade )
-            {
-                if ( _fade == mrv::CMedia::kFadeIn )
-                {
-                    uiMain->uiEDLWindow->FadeIn->value(1);
-                    CMedia* img = m->image();
-                    img->fade_in( pt - t->offset(img) );
-                }
-                else if ( _fade == mrv::CMedia::kFadeOut )
-                {
-                    uiMain->uiEDLWindow->FadeOut->value(1);
-                    CMedia* img = m->image();
-                    img->fade_out( img->last_frame() - (pt - t->offset(img)) );
-                }
-                redraw();
-                return 1;
-            }
+            int r = process_fade( track, m, pt );
+            if ( r >= 0 ) return r;
 
             if ( m )
             {
@@ -547,8 +494,6 @@ int EDLGroup::handle( int event )
 
             _fade = mrv::CMedia::kNoFade;
 
-            Fl::remove_timeout( (Fl_Timeout_Handler) static_move, this );
-
             int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= children() ) {
                 if ( _drag ) _drag->media()->thumbnail_freeze( false );
@@ -584,7 +529,7 @@ int EDLGroup::handle( int event )
 
 
             int ww = t->w();
-            double len = (t->maximum() - t->minimum() + 1);
+            double len = (t->maximum() - t->minimum() + 0.5);
             double p = double( _dragX - x() ) / double(ww);
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
@@ -657,52 +602,21 @@ int EDLGroup::handle( int event )
             if ( _dragY < 33 ) _dragY = 33;
             if ( X < 8 ) X = 8;
 
-            mrv::Timeline* t = timeline();
-            if (!t) return 0;
-            int ww = t->w();
-            double tmin = t->minimum();
-            double len = (t->maximum() - tmin + 1);
-            double p = double( X - x() ) / double(ww);
-            p = tmin + p * len;
-            int64_t pt = int64_t( p );
+            mrv::media_track* track;
+            mrv::media m;
+            int64_t pt;
 
-
-            mrv::media_track* track = (mrv::media_track*) child(_dragChild);
-            if ( !track )
-            {
-                return 0;
-            }
-            mrv::media m = track->media_at( pt );
-
-            if ( m && _fade != mrv::CMedia::kNoFade )
-            {
-                if ( _fade == mrv::CMedia::kFadeIn )
-                {
-                    uiMain->uiEDLWindow->FadeIn->value(1);
-                    CMedia* img = m->image();
-                    img->fade_in( pt - t->offset(img) );
-                }
-                else if ( _fade == mrv::CMedia::kFadeOut )
-                {
-                    uiMain->uiEDLWindow->FadeOut->value(1);
-                    CMedia* img = m->image();
-                    img->fade_out( img->last_frame() - (pt - t->offset(img)) );
-                }
-                redraw();
-                return 1;
-            }
-
+            int r = process_fade( track, m, pt );
+            if ( r >= 0 ) return r;
 
             int quarter = w() / 4;
 
             if ( X >= x() + w() - quarter ) {
-                pan(diff * 2);
-                Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
+                pan(diff * -2);
             }
             else if ( X <= x() + quarter )
             {
                 pan(diff * -2);
-                Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
             }
 
 
@@ -891,6 +805,50 @@ void EDLGroup::refresh()
     }
 }
 
+int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
+                            int64_t& pt)
+{
+    int X = Fl::event_x();
+    int Y = Fl::event_y();
+
+    mrv::Timeline* t = timeline();
+    if (!t) return 0;
+    int ww = t->w();
+    double tmin = t->minimum();
+    double len = (t->maximum() - tmin + 0.5);
+    double p = double( X - x() ) / double(ww);
+    p = tmin + p * len;
+    pt = int64_t( p );
+
+
+    track = (mrv::media_track*) child(_dragChild);
+    if ( !track )
+    {
+        return 0;
+    }
+    m = track->media_at( pt );
+
+    if ( m && _fade != mrv::CMedia::kNoFade )
+    {
+        if ( _fade == mrv::CMedia::kFadeIn )
+        {
+            uiMain->uiEDLWindow->FadeIn->value(1);
+            CMedia* img = m->image();
+            img->fade_in( pt - t->offset(img) - img->first_frame() );
+        }
+        else if ( _fade == mrv::CMedia::kFadeOut )
+        {
+            uiMain->uiEDLWindow->FadeOut->value(1);
+            CMedia* img = m->image();
+            img->fade_out( img->last_frame() - (pt - t->offset(img)) );
+        }
+        redraw();
+        return 1;
+    }
+
+    return -1;
+}
+
 void EDLGroup::draw()
 {
 
@@ -912,14 +870,14 @@ void EDLGroup::draw()
     int p;
     if ( r->edl )
     {
-        p = t->x() + t->slider_position( frame, t->w() );
+        p = t->x() + t->draw_coordinate( frame, t->w() );
     }
     else
     {
         mrv::media fg = browser()->current_image();
         int offset = 0;
         if ( fg ) offset = t->offset( fg->image() );
-        p = t->x() + t->slider_position( frame + offset, t->w() );
+        p = t->x() + t->draw_coordinate( frame + offset, t->w() );
     }
     p += int( t->slider_size()/2.0 );
 

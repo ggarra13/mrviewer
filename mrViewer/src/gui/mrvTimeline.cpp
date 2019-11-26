@@ -686,7 +686,7 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = x() - Fl::box_dx(box()) + slider_position( value(), w() -
+    X = x() - Fl::box_dx(box()) + draw_coordinate( value(), w() -
                                                    Fl::box_dw(box()) );
 
     Y = y() + Fl::box_dy(box());
