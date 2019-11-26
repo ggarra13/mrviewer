@@ -364,6 +364,7 @@ public:
 
     enum FadeType
     {
+        kNoFade = 0,
         kFadeIn = 1,
         kFadeOut = 2,
         kCrossDissolve = 2+4,
@@ -403,6 +404,12 @@ public:
                 f = float( last_frame() - _frame ) / _fade[1].frames;
             }
             return f;
+        }
+
+    inline int64_t fade_frames( FadeType type )
+        {
+            if ( type == kFadeIn ) return _fade[0].frames;
+            else return _fade[1].frames;
         }
 
     inline float fade() const

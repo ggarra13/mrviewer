@@ -37,10 +37,10 @@ class EDLWindowUI {open
   Function {make_window( ViewerUI* main )} {open
   } {
     Fl_Window uiMain {
-      label {EDL Window} open selected
-      xywh {383 236 1015 265} type Double resizable non_modal size_range {1015 265 1015 265} visible
+      label {EDL Window} open
+      xywh {519 250 1015 265} type Double resizable non_modal size_range {1015 265 1015 265} visible
     } {
-      Fl_Group uiEDLRedraw {
+      Fl_Group uiEDLRedraw {open
         xywh {0 0 1015 265} box UP_BOX
       } {
         Fl_Slider uiTimeline {
@@ -169,7 +169,7 @@ else
           }
         }
         Fl_Group {} {open
-          xywh {125 2 104 33}
+          xywh {125 2 211 33}
         } {
           Fl_Button {} {
             user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
@@ -191,11 +191,23 @@ v->new_reel(name);}
             tooltip {Merge two clips near current location.  Clips must be of the same movie or sequence and the left clip must end where the right clip begins.} xywh {175 6 25 26}
             code0 {o->image( merge_tool );}
           }
+          Fl_Button {} {
+            label FI
+            user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
+            callback {v->fade_in();}
+            tooltip {Fade In a clip} xywh {200 6 26 26} labelfont 1
+          }
+          Fl_Button {} {
+            label FO
+            user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
+            callback {v->fade_out();} selected
+            tooltip {Fade Out a clip} xywh {226 6 26 26} labelfont 1
+          }
           Fl_Button uiBGButton {
             label BG
             user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
             callback {v->change_background();}
-            tooltip {Set selected reel images as background.} xywh {200 5 26 27} labelfont 1
+            tooltip {Set selected reel images as background.} xywh {251 6 26 26} labelfont 1
           }
         }
       }

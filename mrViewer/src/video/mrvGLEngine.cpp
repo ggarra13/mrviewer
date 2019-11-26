@@ -3770,6 +3770,8 @@ void GLEngine::loadOpenGLShader()
         "uniform sampler3D lut; \n"
         " \n"
         "// Standard controls \n"
+        "uniform float fade;\n"
+        "uniform float dissolve;\n"
         "uniform float gain; \n"
         "uniform float gamma; \n"
         "uniform int   channel; \n"
@@ -3924,6 +3926,9 @@ void GLEngine::loadOpenGLShader()
          "  {\n"
          "      c.rgb *= c.a;\n"
          "  }\n"
+         "\n"
+         "  c.rgb *= fade;\n"
+         "  c.rgba *= dissolve;\n"
          "\n"
          "  gl_FragColor = c;\n"
          "} ";

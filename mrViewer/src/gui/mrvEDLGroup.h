@@ -60,7 +60,7 @@ public:
     mrv::media_track* media_track( int i )
     {
         if ( i < 0 || i >= children() ) return NULL;
-	return (mrv::media_track*)this->child(i);
+        return (mrv::media_track*)this->child(i);
     }
 
     bool shift_audio( unsigned track_idx, std::string image,
@@ -92,6 +92,9 @@ public:
 
     void merge( boost::int64_t frame );
 
+    void fade_in() { _fade = mrv::CMedia::kFadeIn; }
+    void fade_out() { _fade = mrv::CMedia::kFadeOut; }
+
     void zoom( double x );
 
     void refresh();
@@ -112,6 +115,7 @@ public:
     void pan(int value);
 
 protected:
+    CMedia::FadeType _fade;
     double     _zoom;
     mrv::Element* _drag;
     int        _dragX;
@@ -125,4 +129,3 @@ protected:
 }
 
 #endif  // mrvEDLGroup_h
-

@@ -716,8 +716,8 @@ void media_track::draw()
         const CMedia* img = fg->image();
         assert( img != NULL );
 
-        int dx = t->slider_position( double( pos ), ww );
-        int dw = t->slider_position( double( pos + fg->duration() ), //-1 needed
+        int dx = t->draw_coordinate( double( pos - 0.5 ), ww );
+        int dw = t->draw_coordinate( double( pos + fg->duration() - 0.5 ),
                                      ww );
         dw -= dx;
 
@@ -764,8 +764,8 @@ void media_track::draw()
             //           << " vlen: " << vlen
             //           << " pos: " << pos << " offset " << offset << std::endl;
 
-            int dx = t->slider_position( double( first ), ww );
-            int dw = t->slider_position( double( pos+last-offset ), ww );
+            int dx = t->draw_coordinate( double( first ), ww );
+            int dw = t->draw_coordinate( double( pos+last-offset ), ww );
             dw -= dx;
 
             mrv::Recti ra(rx+dx, h()+y()-20, dw, 20 );

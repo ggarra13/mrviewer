@@ -466,7 +466,6 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    fade_in( 24 );
 
     _aframe = av_frame_alloc();
 

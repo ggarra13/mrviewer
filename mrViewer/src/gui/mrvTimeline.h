@@ -128,6 +128,7 @@ public:
         return uiMain;
     }
 
+    int draw_coordinate( double p, int w );
     int slider_position( double p, int w );
 
     size_t index( const int64_t frame ) const;
