@@ -294,11 +294,13 @@ int EDLGroup::handle( int event )
             {
                 if ( _fade == mrv::CMedia::kFadeIn )
                 {
+                    uiMain->uiEDLWindow->FadeIn->value(1);
                     CMedia* img = m->image();
                     img->fade_in( pt - t->offset(img) );
                 }
                 else if ( _fade == mrv::CMedia::kFadeOut )
                 {
+                    uiMain->uiEDLWindow->FadeOut->value(1);
                     CMedia* img = m->image();
                     img->fade_out( img->last_frame() - (pt - t->offset(img)) );
                 }
@@ -537,6 +539,9 @@ int EDLGroup::handle( int event )
             window()->cursor( FL_CURSOR_DEFAULT );
 
 
+            uiMain->uiEDLWindow->FadeIn->value(0);
+            uiMain->uiEDLWindow->FadeOut->value(0);
+
             _dragX = Fl::event_x();
             _dragY = Fl::event_y();
 
@@ -673,11 +678,13 @@ int EDLGroup::handle( int event )
             {
                 if ( _fade == mrv::CMedia::kFadeIn )
                 {
+                    uiMain->uiEDLWindow->FadeIn->value(1);
                     CMedia* img = m->image();
                     img->fade_in( pt - t->offset(img) );
                 }
                 else if ( _fade == mrv::CMedia::kFadeOut )
                 {
+                    uiMain->uiEDLWindow->FadeOut->value(1);
                     CMedia* img = m->image();
                     img->fade_out( img->last_frame() - (pt - t->offset(img)) );
                 }

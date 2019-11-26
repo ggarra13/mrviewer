@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-11-25 23:40-0300\n"
+"POT-Creation-Date: 2019-11-26 10:36-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -13568,7 +13568,7 @@ msgstr ""
 msgid "BEFORE SEEK:  D: "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:299
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:301
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:175
 #: core/mrvPlayback.cpp:684 core/mrvPlayback.cpp:857 core/mrvPlayback.cpp:1060
 #: core/mrvPlayback.cpp:1311 core/mrvPlayback.cpp:1360
@@ -14193,7 +14193,7 @@ msgstr "Categoría"
 msgid "Center Image"
 msgstr "Centrar la Imagen"
 
-#: gui/mrvEDLGroup.cpp:325
+#: gui/mrvEDLGroup.cpp:327
 msgid "Change  image "
 msgstr "Cambiar Imagen "
 
@@ -14219,7 +14219,7 @@ msgstr ""
 msgid "ChangeImage %d"
 msgstr ""
 
-#: gui/mrvEDLGroup.cpp:334
+#: gui/mrvEDLGroup.cpp:336
 msgid "Changed image "
 msgstr "Cambié la Imagen"
 
@@ -15296,7 +15296,7 @@ msgstr "Crear"
 msgid "Create a new reel"
 msgstr "Crear nuevo carrete"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:274
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:276
 msgid "Create a new reel or EDL track"
 msgstr "Crear nuevo carrete o pista de LDE"
 
@@ -15538,7 +15538,7 @@ msgstr "Campo Personalizado 8"
 msgid "Custom Field 9"
 msgstr "Campo Personalizado 9"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:279
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:281
 msgid "Cut Clip at current location"
 msgstr "Cortar Clip en el lugar actual"
 
@@ -15909,8 +15909,8 @@ msgstr "Defecto"
 msgid "Delete"
 msgstr "Borrar"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:217
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:249
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:219
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:251
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:136
 msgid "Delete current reel"
 msgstr "Borrar carrete actual."
@@ -16259,7 +16259,7 @@ msgstr "Editar LDE"
 msgid "EDL Edit"
 msgstr "Editar LDE"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:167
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:169
 msgid "EDL Window"
 msgstr "Ventana de LDE"
 
@@ -16726,10 +16726,6 @@ msgstr "Carretes"
 msgid "FGReel %d"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:289
-msgid "FI"
-msgstr ""
-
 #: core/CMedia_audio.cpp:1848 core/CMedia_audio.cpp:1852
 msgid "FIND"
 msgstr ""
@@ -16744,11 +16740,6 @@ msgstr ""
 
 #: core/aviImage.cpp:305
 msgid "FLV"
-msgstr ""
-
-#
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:294
-msgid "FO"
 msgstr ""
 
 #: core/hdrImage.cpp:138
@@ -16784,11 +16775,19 @@ msgstr "CPS: %.3f"
 msgid "FRAME("
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:290
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:291
+msgid "Fade In"
+msgstr ""
+
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:292
 msgid "Fade In a clip"
 msgstr "Fade In un clip"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:295
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:296
+msgid "Fade Out"
+msgstr ""
+
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:297
 msgid "Fade Out a clip"
 msgstr "Fade Out un clip"
 
@@ -19699,7 +19698,7 @@ msgstr "Memoria sin Compresión"
 msgid "Menu"
 msgstr "Menu"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:284
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:286
 msgid ""
 "Merge two clips near current location.  Clips must be of the same movie or "
 "sequence and the left clip must end where the right clip begins."
@@ -20685,8 +20684,8 @@ msgstr "Abrir Pelicula o Secuencia"
 msgid "Open Single Image"
 msgstr "Abrir Sólo una Imágen"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:207
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:239
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:209
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:241
 msgid "Open a new reel"
 msgstr "Crear nuevo carrete"
 
@@ -21623,7 +21622,7 @@ msgstr "ROJO"
 msgid "RED1"
 msgstr ""
 
-#: gui/mrvEDLGroup.cpp:880
+#: gui/mrvEDLGroup.cpp:887
 msgid "REFRESH MEDIA TRACK "
 msgstr ""
 
@@ -22353,8 +22352,8 @@ msgstr "Grabar Secuencia"
 msgid "Save XML Clip Metadata"
 msgstr "Grabar Clip XML de Metadatos"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:212
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:244
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:214
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:246
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:131
 msgid "Save current reel"
 msgstr "Grabar carrete actual."
@@ -22608,7 +22607,7 @@ msgstr "Setear la escritura CTL de la imagen"
 msgid "Set reel images as background (needs EDL)."
 msgstr "Setear la imagen como fondo (necesita LDE)"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:300
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:302
 msgid "Set selected reel images as background."
 msgstr "Setear la imagenes del carrete como fondo"
 
@@ -23993,8 +23992,8 @@ msgstr "Barra Superior"
 msgid "Track #%02ld"
 msgstr "Pista #0"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:223
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:255
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:225
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-5.0.0-31-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:257
 msgid "Track #0"
 msgstr "Pista #0"
 
