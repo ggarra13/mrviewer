@@ -2,6 +2,8 @@ v5.3.2  - Made Log Window disappear when in Presentation mode.
 	- Added Fade In and Fade Out to EDL Window.  You can select the button
 	  and drag in a clip to set the fading to black of the clip.  Note
 	  that there is no cross dissolve yet.  It is a fading to black.
+	- Improved panning with middle mouse button in EDL view.  Also,
+	  dragging a clip does not result in timeline stretching.
 
 v5.3.1  - Made single clips change timeline start/end frames when not in
 	  edl and you switch among them.

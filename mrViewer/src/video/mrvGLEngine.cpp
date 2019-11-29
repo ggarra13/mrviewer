@@ -2308,15 +2308,17 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
             quad->bind( pic );
             CHECK_GL;
+
+            quad->gamma( g );
+            quad->fade( img->fade() );
+            quad->dissolve( img->dissolve() );
+            CHECK_GL;
+            quad->draw( texWidth, texHeight );
+            CHECK_GL;
+
             img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
         }
 
-        quad->gamma( g );
-        quad->fade( img->fade() );
-        quad->dissolve( img->dissolve() );
-    CHECK_GL;
-        quad->draw( texWidth, texHeight );
-    CHECK_GL;
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
