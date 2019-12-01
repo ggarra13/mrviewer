@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-12-01 14:21-0300\n"
+"POT-Creation-Date: 2019-12-01 14:26-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -14344,9 +14344,8 @@ msgid "Clip is a sequence of frames"
 msgstr "El Clip es una secuencia de cuadros."
 
 #: core/R3dImage.cpp:143
-#, fuzzy
 msgid "Clip is undefined"
-msgstr "Indefinido"
+msgstr "Clip está indefinido"
 
 #: gui/mrvHotkey.cpp:356
 msgid "Clone Image"
@@ -15855,9 +15854,8 @@ msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
 #: core/R3dImage.cpp:200
-#, fuzzy
 msgid "Decode failed for frame "
-msgstr "decode_audio_packet falló para cuadro "
+msgstr "Decodificación falló para cuadro "
 
 #: core/aviImage.cpp:3920
 msgid "Decode video error seek frame "
@@ -16440,9 +16438,8 @@ msgid "Error in processing relative path for "
 msgstr ""
 
 #: core/R3dImage.cpp:92
-#, fuzzy
 msgid "Error loading file"
-msgstr "Error GLSL en archivo "
+msgstr "Error cargando archivo"
 
 #: core/aviImage_save.cpp:1395
 msgid "Error occurred when opening output file: "
@@ -16834,9 +16831,8 @@ msgid "Failed to init swresample library with "
 msgstr "Fallé en inicializar biblioteca swresample con "
 
 #: core/R3dImage.cpp:52 core/R3dImage.cpp:79
-#, fuzzy
-msgid "Failed to initialize SDK: "
-msgstr "Fallé al inicializar el contexto de resampleo"
+msgid "Failed to initialize R3D SDK: "
+msgstr "Fallé al inicializar el SDK de R3D: "
 
 #: core/aviImage_save.cpp:1137
 msgid "Failed to initialize swscale conversion context"
@@ -31013,9 +31009,8 @@ msgid "r.\tc #FFE79E"
 msgstr ""
 
 #: core/R3dImage.cpp:23
-#, fuzzy
 msgid "r3d"
-msgstr "Fuente"
+msgstr ""
 
 #: core/aviImage.cpp:3222 core/aviImage.cpp:3225
 msgid "rFetch"

@@ -49,7 +49,7 @@ namespace mrv {
                                                 OPTION_RED_NONE);
         if ( status != ISInitializeOK)
         {
-            LOG_ERROR("Failed to initialize SDK: " << status);
+            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
             return false;
         }
 
@@ -76,7 +76,7 @@ namespace mrv {
                                                     OPTION_RED_NONE);
             if ( status != ISInitializeOK)
             {
-                LOG_ERROR("Failed to initialize SDK: " << status);
+                LOG_ERROR( _( "Failed to initialize R3D SDK: ") << status);
                 return false;
             }
             _init = true;
@@ -89,7 +89,7 @@ namespace mrv {
             // let the user know if this failed
             if (clip->Status() != LSClipLoaded)
             {
-                IMG_ERROR("Error loading file");
+                IMG_ERROR( _("Error loading file") );
                 finalize();
                 return false;
             }
@@ -197,7 +197,7 @@ namespace mrv {
         // decode the first frame (0) of the clip
         if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
         {
-            IMG_ERROR("Decode failed for frame " << frame );
+            IMG_ERROR( _("Decode failed for frame ") << frame );
             return false;
         }
 
