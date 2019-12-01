@@ -45,6 +45,7 @@ extern const char* const kColorSpaces[];
 
 class aviImage : public CMedia
 {
+protected:
     aviImage();
 
     static CMedia* create() {

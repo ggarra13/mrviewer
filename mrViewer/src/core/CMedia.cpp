@@ -1552,6 +1552,7 @@ void CMedia::sequence( const char* fileroot,
 
     uint64_t num = _frame_end - _frame_start + 1;
 
+
     if ( dynamic_cast< aviImage* >( this ) == NULL )
     {
         _sequence = new mrv::image_type_ptr[ (unsigned) num ];
@@ -1635,19 +1636,19 @@ void CMedia::filename( const char* n )
     _is_sequence = false;
     _is_stereo = false;
 
+    _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+
+
+    if ( ! initialize() )
+        return;
 
     if ( fetch( _hires, 1 ) )
     {
         cache( _hires );
     }
 
-    _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
-
 
     timestamp();
-
-    if ( ! initialize() )
-        return;
 
     if ( _hires ) _depth = _hires->pixel_type();
     else _depth = image_type::kByte;

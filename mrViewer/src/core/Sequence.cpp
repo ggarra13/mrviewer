@@ -182,8 +182,8 @@ bool is_valid_movie( const char* ext )
             tmp == ".mpeg" || tmp == ".mpg"   ||
             tmp == ".mvb"  || tmp == ".mxf"   ||
             tmp == ".ogg"  || tmp == ".ogm"   ||
-            tmp == ".ogv"  ||
-            tmp == ".qt"   || tmp == ".rm"    ||
+            tmp == ".ogv"  || tmp == ".qt"    ||
+            tmp == ".r3d"  || tmp == ".rm"    ||
             tmp == ".ts"   || tmp == ".vob"   ||
             tmp == ".vp9"  || tmp == ".webm"  ||
             tmp == ".wmv"  )

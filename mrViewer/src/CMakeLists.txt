@@ -37,6 +37,7 @@ FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 #FIND_PACKAGE( RefIccMAX  REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
+FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS )
 
@@ -122,6 +123,7 @@ INCLUDE_DIRECTORIES(
   ./gui
   ./video
   ../../libACESclip/include
+  ${R3DSDK_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
@@ -202,6 +204,7 @@ SET( SOURCES
   core/oiioImage.cpp
   core/rawImage.cpp
   core/picImage.cpp
+  core/R3dImage.cpp
   # core/magickImage.cpp
 
   core/mrSocket.cpp
@@ -365,6 +368,7 @@ ENDIF(NOT WIN32)
 
 SET( LIBRARIES
   ${LIBRARIES}
+  ${R3DSDK_LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
