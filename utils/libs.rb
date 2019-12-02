@@ -116,6 +116,11 @@ def copy_files( build )
   $stderr.puts "Copy otio adapters"
   FileUtils.rm_f( "#{@debug}/otio" )
   FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
+  if build =~ /Linux/
+    # Copy the RED library
+    FileUtils.cp_r( "../R3DSDKv7_1_0/Redistributable/linux/REDR3D-x64.so",
+                    "#{build}/#{@debug}/lib" )
+  end
 end
 
 
@@ -154,16 +159,15 @@ if kernel !~ /MINGW.*/
 
   parse( files )
   copy_files( build )
-  
+
   $stderr.puts "remove .fuse files"
   `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
 else
   build = "BUILD/Windows-6.3.9600-64/"
   Dir.chdir( build  )
   copy_files( build )
-  
+
   build = "BUILD/Windows-6.3.9600-32/"
   Dir.chdir( build  )
   copy_files( build )
 end
-
