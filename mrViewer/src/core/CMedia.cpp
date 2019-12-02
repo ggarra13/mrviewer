@@ -86,6 +86,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/mrvMath.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+#include "core/R3dImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -976,7 +977,8 @@ CMedia::Attributes& CMedia::attributes()  {
 const CMedia::Attributes& CMedia::attributes() const {
     static Attributes empty;
     AttributesFrame::const_iterator i;
-    if ( dynamic_cast< const aviImage* const >( this ) != NULL  )
+    if ( dynamic_cast< const aviImage* const >( this ) != NULL ||
+         dynamic_cast< const R3dImage* const >( this ) != NULL )
         i = _attrs.find( start_frame() );
     else
         i = _attrs.find( _frame );
@@ -3114,7 +3116,14 @@ size_t CMedia::memory() const
     {
         if ( hires() )
         {
-            r += _hires->data_size();
+            if ( dynamic_cast< const R3dImage* >( this ) != NULL )
+            {
+                r += _hires->data_size() * duration();
+            }
+            else
+            {
+                r += _hires->data_size();
+            }
         }
         else if ( _stereo[0] )
         {

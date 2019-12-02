@@ -1,0 +1,54 @@
+#-*-cmake-*-
+#
+# Test for R3DSDK (Templated Command Line Argument Parser)
+#
+# Once loaded this will define
+#  R3DSDK_FOUND        - system has R3DSDK
+#  R3DSDK_INCLUDE_DIR  - include directory for R3DSDK
+#
+
+SET(R3DSDK_FOUND "NO")
+
+
+FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
+  "$ENV{R3DSDK_ROOT}/Include"
+  "$ENV{R3DSDK_ROOT}"
+  ../../../R3DSDKv7_1_0/Include
+  /usr/local/include
+  /usr/include
+  DOC   "R3DSDK includes"
+  )
+
+get_filename_component( R3DSDK_ROOT ${R3DSDK_INCLUDE_DIR} DIRECTORY )
+IF(UNIX)
+  if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 )
+    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC-cpp11.a )
+  else()
+    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDK.a )
+  endif()
+ELSEIF( WIN64 )
+      set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2015MD.lib )
+ELSEIF( WIN32 )
+      set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win32/R3DSDK-2015MD.lib )
+ENDIF()
+
+IF(NOT R3DSDK_FOUND)
+  IF (R3DSDK_INCLUDE_DIR)
+    SET(R3DSDK_FOUND "YES")
+  ENDIF(R3DSDK_INCLUDE_DIR)
+ENDIF(NOT R3DSDK_FOUND)
+
+IF(NOT R3DSDK_FOUND)
+  # make FIND_PACKAGE friendly
+  IF(NOT R3DSDK_FIND_QUIETLY)
+    IF(R3DSDK_FIND_REQUIRED)
+      MESSAGE( STATUS "R3DSDK_INCLUDE_DIR ${R3DSDK_INCLUDE_DIR}" )
+      MESSAGE(FATAL_ERROR
+	      "R3DSDK required, please specify its location with R3DSDK_ROOT.")
+    ELSE(R3DSDK_FIND_REQUIRED)
+      MESSAGE(STATUS "R3DSDK was not found.")
+    ENDIF(R3DSDK_FIND_REQUIRED)
+  ENDIF(NOT R3DSDK_FIND_QUIETLY)
+ENDIF(NOT R3DSDK_FOUND)
+
+#####

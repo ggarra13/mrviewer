@@ -61,6 +61,15 @@ public:
     virtual bool initialize();
     virtual bool finalize();
 
+    /// Returns true if image has an alpha channel
+    virtual bool  has_alpha() const {
+        return (_num_channels == 4);
+    };
+
+    virtual const char* const format() const { return "RED3D"; }
+
+    virtual const char* const compression() const { return "RED3D CORE"; }
+
     virtual void clear_cache();
 
     virtual Cache is_cache_filled( int64_t frame );
@@ -79,6 +88,7 @@ public:
 protected:
     R3DSDK::Clip* clip;
     video_cache_t _images;
+    int           _scale;
 protected:
     static bool _init;
 };

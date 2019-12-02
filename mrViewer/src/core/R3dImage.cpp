@@ -12,8 +12,11 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
+#include "ImfStringAttribute.h"
+
 #include "core/mrvFrameFunctors.h"
 #include "gui/mrvPreferences.h"
+#include "mrvPreferencesUI.h"
 #include "R3DSDK.h"
 
 
@@ -30,7 +33,8 @@ namespace mrv {
 
     R3dImage::R3dImage() :
         CMedia(),
-        clip( NULL )
+        clip( NULL ),
+        _scale( 0 )
     {
     }
 
@@ -42,45 +46,34 @@ namespace mrv {
     {
         if ( file == NULL ) return false;
 
-        //Initialize the R3DSDK prior to using any R3DSDK objects.
-        std::string root = Preferences::root + "/lib";
-
-        InitializeStatus status = InitializeSdk(root.c_str(),
-                                                OPTION_RED_NONE);
-        if ( status != ISInitializeOK)
-        {
-            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
-            return false;
-        }
-
-        Clip* clip = new Clip( file );
-
-        if ( !clip ) {
-            FinalizeSdk();
-            return false;
-        }
-        delete clip;
-
-        FinalizeSdk();
-        return true;
-    }
-
-    bool R3dImage::initialize()
-    {
         if ( !_init )
         {
             //Initialize the R3DSDK prior to using any R3DSDK objects.
             std::string root = Preferences::root + "/lib";
 
             InitializeStatus status = InitializeSdk(root.c_str(),
-                                                    OPTION_RED_NONE);
+                                                OPTION_RED_NONE);
             if ( status != ISInitializeOK)
             {
-                LOG_ERROR( _( "Failed to initialize R3D SDK: ") << status);
+                LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
                 return false;
             }
+
             _init = true;
         }
+
+        Clip* clip = new Clip( file );
+
+        if ( !clip ) {
+            return false;
+        }
+        delete clip;
+
+        return true;
+    }
+
+    bool R3dImage::initialize()
+    {
         // load the clip
         if ( !clip )
         {
@@ -97,6 +90,15 @@ namespace mrv {
             _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
             _frameStart = _frame = _frame_start = 0;
             _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
+
+            _attrs.insert( std::make_pair( 0, Attributes() ) );
+            for ( size_t i = 0; i < clip->MetadataCount(); ++i )
+            {
+                const std::string& name = clip->MetadataItemKey(i);
+                Imf::StringAttribute attr( clip->MetadataItemAsString(i) );
+                _attrs[0].insert( std::make_pair( name,
+                                                  attr.copy() ) );
+            }
         }
         return _init;
     }
@@ -104,13 +106,9 @@ namespace mrv {
     bool R3dImage::finalize()
     {
         delete clip; clip = NULL;
-        if ( _init )
-        {
-            //Finalize the R3DSDK.
-            FinalizeSdk();
-            _init = false;
-        }
-        return !_init;
+        // We should call FinalizeSdk() here but not sure what will
+        // happen if we do.
+        return true;
     }
 
 
@@ -144,23 +142,48 @@ namespace mrv {
             return false;
         }
 
-        if ( is_cache_filled( frame ) )
+
+        if ( cache_scale() != _scale )
         {
-            return true;
+            clear_cache();
+            _video_packets.clear();
         }
+
+        _scale = cache_scale();
 
         // calculate how much ouput memory we're going to need
         size_t dw = clip->Width();
         size_t dh = clip->Height(); // going to do a full resolution decode
 
+        if ( is_thumbnail() ) _scale = 3;
 
-        rgb_layers();
+        if ( _scale == 1 )
+        {
+            dw = clip->Width() / 2;
+            dh = clip->Height() / 2; // going to do a half resolution decode
+        }
+        else if ( _scale == 2 )
+        {
+            dw = clip->Width() / 4;
+            dh = clip->Height() / 4; // going to do a quarter resolution decode
+        }
+        else if ( _scale == 3 )
+        {
+            dw = clip->Width() / 8;
+            dh = clip->Height() / 8; // going to do a 1/8th resolution decode
+        }
+
+        if ( _layers.empty() )
+        {
+            _num_channels = 0;
+            rgb_layers();
+            lumma_layers();
+        }
+
         image_size( dw, dh );
         allocate_pixels( canvas, frame, 3, image_type::kRGB,
                          image_type::kHalf, dw, dh );
 
-        display_window( 0, 0, dw, dh, frame );
-        data_window( 0, 0, dw, dh, frame );
 
         // alloc this memory 16-byte aligned
         unsigned char * imgbuffer = (unsigned char*)canvas->data().get();
@@ -182,8 +205,26 @@ namespace mrv {
         // we're going with the clip's default image processing
         // see the next sample on how to change some settings
 
-        // decode at half resolution at very good but not premium quality
-        job.Mode = DECODE_FULL_RES_PREMIUM;
+        if ( _scale == 0 )
+        {
+            // decode at full resolution at premium quality
+            job.Mode = DECODE_FULL_RES_PREMIUM;
+        }
+        else if ( _scale == 1 )
+        {
+            // decode at half resolution at premium quality
+            job.Mode = DECODE_HALF_RES_PREMIUM;
+        }
+        else if ( _scale == 2 )
+        {
+            // decode at quarter resolution at good quality
+            job.Mode = DECODE_QUARTER_RES_GOOD;
+        }
+        else if ( _scale == 3 )
+        {
+            // decode at eight resolution at good quality
+            job.Mode = DECODE_EIGHT_RES_GOOD;
+        }
 
         // store the image here
         job.OutputBuffer = imgbuffer;
@@ -235,13 +276,30 @@ namespace mrv {
 
     bool R3dImage::frame( const int64_t f )
     {
+        if ( Preferences::max_memory <= CMedia::memory_used )
+        {
+            if ( stopped() ) return false;
+            limit_video_store( f );
+            if ( has_audio() ) limit_audio_store( f );
+        }
+
+
+//  in ffmpeg, sizes are in bytes...
+#define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
+#define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
+#define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+        if (
+        _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
+        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
+        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+
+        {
+            return false;
+        }
+
         if ( f < _frameStart )    _dts = _adts = _frameStart;
         else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
         else                      _dts = _adts = f;
-
-
-        image_type_ptr canvas;
-        bool ok = fetch(canvas, f);
 
         AVPacket pkt;
         av_init_packet( &pkt );
@@ -254,7 +312,6 @@ namespace mrv {
             image_type_ptr canvas;
             if ( fetch( canvas, _dts ) )
             {
-                cache( canvas );
                 default_color_corrections();
             }
         }
@@ -268,7 +325,7 @@ namespace mrv {
 
         _expected = _dts + 1;
         _expected_audio = _expected + _audio_offset;
-        return ok;
+        return true;
     }
 
     bool R3dImage::find_image( const int64_t frame )
@@ -278,6 +335,8 @@ namespace mrv {
             _right_eye->find_image( frame );
 
         assert0( frame != AV_NOPTS_VALUE );
+        assert0( frame >= _frameStart );
+        assert0( frame <= _frameEnd );
 
 #ifdef DEBUG_VIDEO_PACKETS
         debug_video_packets(frame, "find_image");
@@ -286,7 +345,6 @@ namespace mrv {
 #ifdef DEBUG_VIDEO_STORES
         debug_video_stores(frame, "find_image", true);
 #endif
-
 
 
         _frame = frame;

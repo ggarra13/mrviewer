@@ -268,6 +268,7 @@ size_t VideoFrame::data_size() const
 void VideoFrame::allocate()
 {
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
+    assert0( uint64_t(ptr) % 16 == 0 );
     _data.reset( ptr );
 }
 
