@@ -1323,7 +1323,7 @@ void ImageBrowser::change_reel()
     DBGM3( "Change reel" );
 
     CMedia::Playback play = view()->playback();
-    view()->stop();
+    if ( play ) view()->stop();
 
     mrv::Reel reel = current_reel();
 
@@ -1418,7 +1418,7 @@ void ImageBrowser::change_image()
 
 
         CMedia::Playback play = v->playback();
-        v->stop();
+        if ( play ) v->stop();
 
         mrv::media m;
         if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
@@ -3492,6 +3492,9 @@ void ImageBrowser::frame( const int64_t f )
 
 void ImageBrowser::clear_edl()
 {
+    CMedia::Playback play = view()->playback();
+    if ( play ) view()->stop();
+
     mrv::Reel reel = current_reel();
 
     reel->edl = false;
@@ -3522,10 +3525,15 @@ void ImageBrowser::clear_edl()
     char buf[64];
     sprintf( buf, "EDL 0" );
     view()->send_network( buf );
+
+    if ( play ) view()->play(play);
 }
 
 void ImageBrowser::set_edl()
 {
+    CMedia::Playback play = view()->playback();
+    if ( play ) view()->stop();
+
     mrv::Reel reel = current_reel();
 
     reel->edl = true;
@@ -3555,6 +3563,8 @@ void ImageBrowser::set_edl()
     char buf[64];
     sprintf( buf, "EDL 1" );
     view()->send_network( buf );
+
+    if ( play ) view()->play(play);
 
 }
 
