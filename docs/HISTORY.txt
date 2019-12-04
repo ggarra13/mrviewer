@@ -1,6 +1,10 @@
 v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	  The decompression is done on the CPU and it takes into account
 	  the Cache Scale setting in the Preferences.
+	- Made EDL switching more thread safe by temporarily stopping the
+	  playback.
+	- Made Auto Fit Image be faster to not allow showing frames not in
+	  position.
 
 
 v5.3.2  - Made Log Window disappear when in Presentation mode.

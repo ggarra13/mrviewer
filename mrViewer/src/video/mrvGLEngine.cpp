@@ -1196,6 +1196,16 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
 {
     if ( _view->vr() ) return;
 
+    static mrv::media old;
+    mrv::media fg = _view->foreground();
+    if ( old != fg )
+    {
+        if ( _view->main()->uiPrefs->uiPrefsAutoFitImage->value() )
+            const_cast<ImageView*>(_view)->fit_image();
+    }
+
+    old = fg;
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 

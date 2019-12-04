@@ -62,6 +62,9 @@ namespace mrv {
             _init = true;
         }
 
+        if ( strcasecmp( file+strlen(file)-4, ".rmd" ) == 0 )
+            return false;
+
         Clip* clip = new Clip( file );
 
         if ( !clip ) {
@@ -99,6 +102,7 @@ namespace mrv {
                 _attrs[0].insert( std::make_pair( name,
                                                   attr.copy() ) );
             }
+            image_damage( image_damage() | kDamageData );
         }
         return _init;
     }
@@ -235,14 +239,58 @@ namespace mrv {
         _pixel_ratio = 1.0;
         _gamma = 1.0f;
 
-        // decode the first frame (0) of the clip
-        if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+        if ((clip->VideoTrackCount() == 2U) ||
+            (clip->MetadataItemAsInt(RMD_HDR_MODE) == 2))
         {
-            IMG_ERROR( _("Decode failed for frame ") << frame );
-            return false;
+            if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) != DSDecodeOK )
+            {
+                IMG_ERROR( _("Decode failed for frame ") << frame );
+                return false;
+            }
+
+            image_type_ptr hdr;
+            allocate_pixels( hdr, frame, 3, image_type::kRGB,
+                             image_type::kHalf, dw, dh );
+
+            job.OutputBuffer = hdr->data().get();
+            if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) != DSDecodeOK )
+            {
+                IMG_ERROR( _("Decode failed for HDR frame ") << frame );
+                return false;
+            }
+
+            size_t track = 0;
+            HdrProcessingSettings settings;
+            HdrMode mode = clip->GetRmdHdrProcessingSettings( settings, track );
+
+            float t = (settings.Bias + 1.0f) / 2.0f;
+            float t2 = 1.0f - t;
+
+            for ( unsigned y = 0; y < dh; ++y )
+            {
+                for ( unsigned x = 0; x < dw; ++x )
+                {
+                    CMedia::Pixel p = canvas->pixel( x, y );
+                    CMedia::Pixel p2 = hdr->pixel( x, y );
+                    p.r *= t;
+                    p.g *= t;
+                    p.b *= t;
+                    p.r += p2.r * t2;
+                    p.g += p2.g * t2;
+                    p.b += p2.b * t2;
+                    canvas->pixel( x, y, p );
+                }
+            }
         }
-
-
+        else
+        {
+            // decode the first frame (0) of the clip
+            if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+            {
+                IMG_ERROR( _("Decode failed for frame ") << frame );
+                return false;
+            }
+        }
 
         SCOPED_LOCK( _mutex );
 
