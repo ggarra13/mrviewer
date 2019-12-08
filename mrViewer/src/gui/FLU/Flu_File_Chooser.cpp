@@ -596,15 +596,15 @@ Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser :: find_type( const char *exten
 
 Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int type, const char *title, const bool compact )
   : Fl_Double_Window( 600, 400, title ),
-    num_timeouts( 0 ),
-    serial( 0 ),
-    quick_exit( false ),
-    wingrp( new Fl_Group( 0, 0, 600, 400 ) ),
+    _compact( compact ),
     filename( 70, h()-60, w()-70-85-10, 25, "", this ),
     ok( w()-90, h()-60, 85, 25 ),
     cancel( w()-90, h()-30, 85, 25 ),
-    _compact( compact ),
-    entryPopup( 0, 0, 0, 0 )
+    wingrp( new Fl_Group( 0, 0, 600, 400 ) ),
+    entryPopup( 0, 0, 0, 0 ),
+    num_timeouts( 0 ),
+    serial( 0 ),
+    quick_exit( false )
 {
   int oldNormalSize = FL_NORMAL_SIZE;
   FL_NORMAL_SIZE = 12;
@@ -969,7 +969,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   g->resizable( hiddenFiles );
   g->end();
 
-  //dummy->resizable( location );
+  dummy->resizable( location );
   dummy->end();
 
   ////////////////////////////////////////////////////////////////
@@ -2145,23 +2145,34 @@ int Flu_File_Chooser :: FileList :: handle( int event )
         {
           switch( Fl::event_key() )
             {
-            case FL_Up: e = (Flu_File_Chooser::Entry*)previous( e );
-              if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(0); break;
-            case FL_Down: e = (Flu_File_Chooser::Entry*)next( e );
-              if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(children()-1); break;
+            case FL_Up:
+                e = (Flu_File_Chooser::Entry*)previous( e );
+                if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(0);
+                break;
+            case FL_Down:
+                e = (Flu_File_Chooser::Entry*)next( e );
+                if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(children()-1);
+                break;
             case FL_Left: e = (Flu_File_Chooser::Entry*)left( e ); break;
             case FL_Right: e = (Flu_File_Chooser::Entry*)right( e ); break;
-            case FL_Home: if( children() ) e = (Flu_File_Chooser::Entry*)child(0); break;
-            case FL_End: if( children() ) e = (Flu_File_Chooser::Entry*)child(children()-1); break;
+            case FL_Home:
+                if( children() ) e = (Flu_File_Chooser::Entry*)child(0);
+                break;
+            case FL_End:
+                if( children() )
+                    e = (Flu_File_Chooser::Entry*)child(children()-1);
+                break;
             case FL_Enter:
-              chooser->filenameEnterCallback = true;
-              //chooser->cd( e->filename.c_str() );
-              chooser->okCB();
-              return 1;
+                chooser->filenameEnterCallback = true;
+                //chooser->cd( e->filename.c_str() );
+                chooser->okCB();
+                return 1;
             case ' ':
               chooser->cd( e->filename.c_str() );
               return 1;
-            default: e = 0; break;
+            default:
+                e = 0;
+                break;
             }
           if( e )
             {
@@ -2273,12 +2284,22 @@ int Flu_File_Chooser :: FileDetails :: handle( int event )
         {
           switch( Fl::event_key() )
             {
-            case FL_Up: e = (Flu_File_Chooser::Entry*)previous( e );
-              if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(0); break;
-            case FL_Down: e = (Flu_File_Chooser::Entry*)next( e );
-              if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(children()-1); break;
-            case FL_Home: if( children() ) e = (Flu_File_Chooser::Entry*)child(0); break;
-            case FL_End: if( children() ) e = (Flu_File_Chooser::Entry*)child(children()-1); break;
+            case FL_Up:
+                e = (Flu_File_Chooser::Entry*)previous( e );
+                if( !e && children() ) e = (Flu_File_Chooser::Entry*)child(0);
+              break;
+            case FL_Down:
+                e = (Flu_File_Chooser::Entry*)next( e );
+                if( !e && children() )
+                    e = (Flu_File_Chooser::Entry*)child(children()-1);
+              break;
+            case FL_Home:
+                if( children() ) e = (Flu_File_Chooser::Entry*)child(0);
+                break;
+            case FL_End:
+                if( children() )
+                    e = (Flu_File_Chooser::Entry*)child(children()-1);
+                break;
             case FL_Enter:
               chooser->filenameEnterCallback = true;
               //chooser->cd( e->filename.c_str() );
@@ -3148,9 +3169,9 @@ void Flu_File_Chooser :: updateEntrySizes()
   // update the size of each entry because the user changed the size of each column
   filedetails->resize( filedetails->x(), filedetails->y(), filescroll->w(), filedetails->h() );
   int i;
-  for( i = 0; i < filedetails->children(); i++ )
+  for( i = 0; i < filedetails->children(); ++i )
     ((Entry*)filedetails->child(i))->updateSize();
-  for( i = 0; i < filelist->children(); i++ )
+  for( i = 0; i < filelist->children(); ++i )
     ((Entry*)filelist->child(i))->updateSize();
 }
 
@@ -3349,7 +3370,7 @@ void Flu_File_Chooser :: cleanupPath( std::string &s )
   std::string newS;
   newS.resize(s.size()+1);
 
-  int oldPos, newPos;
+  unsigned oldPos, newPos;
   for( oldPos = 0, newPos = 0; oldPos < s.size(); oldPos++ )
     {
       // remove "./"
