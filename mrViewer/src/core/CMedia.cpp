@@ -75,11 +75,6 @@ namespace fs = boost::filesystem;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfVecAttribute.h>
 
-#ifdef _WIN32
-#  pragma warning( disable: 4275 )
-#endif
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
 
 #include <MagickWand/MagickWand.h>
 
@@ -4221,7 +4216,7 @@ void CMedia::default_ocio_input_color_space()
     if ( ! Preferences::use_ocio ) return;
 
     std::string n = filename();
-    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+    OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
     std::string cs = config->parseColorSpaceFromString(n.c_str());
     if ( !cs.empty() )
     {
@@ -4277,7 +4272,6 @@ void CMedia::default_ocio_input_color_space()
     if ( n.rfind( ".dpx" ) != std::string::npos ||
          n.rfind( ".cin")  != std::string::npos )
     {
-        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("Cineon");
         if ( ! defaultcs )
             defaultcs = config->getColorSpace("lgf");

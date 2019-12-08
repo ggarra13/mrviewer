@@ -107,41 +107,53 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     setlocale(LC_NUMERIC, "C" );
     std::locale::global( std::locale("C") );
 
-    const std::string& display = mrv::Preferences::OCIO_Display;
-    const std::string& view = mrv::Preferences::OCIO_View;
-
-    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-
-    OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
-
-    std::string ics = img->ocio_input_color_space();
-    if  ( ics.empty() )
+    try
     {
-        OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
-        if(!defaultcs)
-            throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
-        ics = defaultcs->getName();
+        const std::string& display = mrv::Preferences::OCIO_Display;
+        const std::string& view = mrv::Preferences::OCIO_View;
+
+        OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
+
+        OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
+
+        std::string ics = img->ocio_input_color_space();
+        if ( ics.empty() )
+        {
+            OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
+            if(!defaultcs)
+                throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
+            ics = defaultcs->getName();
+        }
+
+        transform->setInputColorSpaceName( ics.c_str() );
+        transform->setDisplay( display.c_str() );
+        transform->setView( view.c_str() );
+
+        OCIO::ConstProcessorRcPtr processor = config->getProcessor( transform );
+
+        float* p = (float*)pic->data().get();
+        ptrdiff_t chanstride = pic->pixel_size();
+        ptrdiff_t xstride = pic->pixel_size() * pic->channels();
+        ptrdiff_t ystride = xstride * pic->width();
+        OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
+                                    pic->channels(), chanstride, xstride,
+                                    ystride );
+#ifdef OCIO_v2_1
+        OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
+        cpu->apply( baker );
+#else
+        processor->apply( baker );
+#endif
+    }
+    catch( OCIO::Exception& e )
+    {
+        LOG_ERROR( e.what() );
+    }
+    catch( std::exception& e )
+    {
+        LOG_ERROR( e.what() );
     }
 
-    transform->setInputColorSpaceName( ics.c_str() );
-    transform->setDisplay( display.c_str() );
-    transform->setView( view.c_str() );
-
-    OCIO::ConstProcessorRcPtr processor = config->getProcessor( transform );
-
-    float* p = (float*)pic->data().get();
-    ptrdiff_t chanstride = pic->pixel_size();
-    ptrdiff_t xstride = pic->pixel_size() * pic->channels();
-    ptrdiff_t ystride = xstride * pic->width();
-    OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
-                                pic->channels(), chanstride, xstride,
-                                ystride );
-#ifdef OCIO_v2_1
-    OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
-    cpu->apply( baker );
-#else
-    processor->apply( baker );
-#endif
     std::locale::global( std::locale(N_("")) );
     setlocale(LC_NUMERIC, N_("") );
 }

@@ -620,7 +620,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 
 
     const Imf::ChannelList& channels = h.channels();
-    if ( layers.empty() || _stereo_output != kNoStereo && _multiview )
+    if ( layers.empty() || (_stereo_output != kNoStereo && _multiview) )
     {
         channels.layers( layers );
 
@@ -2164,22 +2164,36 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             const Box2i& displayWindow = header.displayWindow();
             const Box2i& dataWindow = header.dataWindow();
 
+            double pct = 1.0;
+            if ( cache_scale() == 1 )
+                pct = 0.5;
+            else if ( cache_scale() == 2 )
+                pct = 0.25;
+            else if ( cache_scale() == 3 )
+                pct = 0.125;
+
             if ( i == 0 || _stereo_output == kNoStereo )
             {
-                data_window( dataWindow.min.x, dataWindow.min.y,
-                             dataWindow.max.x, dataWindow.max.y, frame );
+                data_window( dataWindow.min.x * pct, dataWindow.min.y * pct,
+                             dataWindow.max.x * pct, dataWindow.max.y * pct,
+                             frame );
 
-                display_window( displayWindow.min.x, displayWindow.min.y,
-                                displayWindow.max.x, displayWindow.max.y,
+                display_window( displayWindow.min.x * pct,
+                                displayWindow.min.y * pct,
+                                displayWindow.max.x * pct,
+                                displayWindow.max.y * pct,
                                 frame );
             }
             else
             {
-                data_window2( dataWindow.min.x, dataWindow.min.y,
-                              dataWindow.max.x, dataWindow.max.y, frame );
+                data_window2( dataWindow.min.x * pct, dataWindow.min.y * pct,
+                              dataWindow.max.x * pct, dataWindow.max.y * pct,
+                              frame );
 
-                display_window2( displayWindow.min.x, displayWindow.min.y,
-                                 displayWindow.max.x, displayWindow.max.y,
+                display_window2( displayWindow.min.x * pct,
+                                 displayWindow.min.y * pct,
+                                 displayWindow.max.x * pct,
+                                 displayWindow.max.y * pct,
                                  frame );
             }
 
@@ -2247,12 +2261,21 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
         const Box2i& dataWindow = header.dataWindow();
         const Box2i& displayWindow = header.displayWindow();
 
+        double pct = 1.0;
+        if ( cache_scale() == 1 )
+            pct = 0.5;
+        else if ( cache_scale() == 2 )
+            pct = 0.25;
+        else if ( cache_scale() == 3 )
+            pct = 0.125;
 
-        data_window( dataWindow.min.x, dataWindow.min.y,
-                     dataWindow.max.x, dataWindow.max.y, frame );
 
-        display_window( displayWindow.min.x, displayWindow.min.y,
-                        displayWindow.max.x, displayWindow.max.y, frame );
+        data_window( dataWindow.min.x * pct, dataWindow.min.y * pct,
+                     dataWindow.max.x * pct, dataWindow.max.y * pct, frame );
+
+        display_window( displayWindow.min.x * pct, displayWindow.min.y * pct,
+                        displayWindow.max.x * pct, displayWindow.max.y * pct,
+                        frame );
 
         FrameBuffer fb;
         bool ok = find_channels( canvas, header, fb, frame );
@@ -2275,11 +2298,14 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             const Box2i& dataWindow = header.dataWindow();
             const Box2i& displayWindow = header.displayWindow();
 
-            data_window( dataWindow.min.x, dataWindow.min.y,
-                         dataWindow.max.x, dataWindow.max.y, frame );
+            data_window( dataWindow.min.x * pct, dataWindow.min.y * pct,
+                         dataWindow.max.x * pct, dataWindow.max.y * pct,
+                         frame );
 
-            display_window( displayWindow.min.x, displayWindow.min.y,
-                            displayWindow.max.x, displayWindow.max.y, frame );
+            display_window( displayWindow.min.x * pct,
+                            displayWindow.min.y * pct,
+                            displayWindow.max.x * pct,
+                            displayWindow.max.y * pct, frame );
 
             FrameBuffer fb;
             bool ok = find_channels( canvas, header, fb, frame );

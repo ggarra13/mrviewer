@@ -25,6 +25,7 @@
  *
  */
 
+#include "R3DSDK.h"
 #include "core/mrvI8N.h"
 #include <iostream>
 
@@ -51,6 +52,7 @@
 #include "mrvReelUI.h"
 
 
+
 using namespace std;
 
 namespace mrv {
@@ -74,6 +76,8 @@ MainWindow::~MainWindow()
     uiMain->uiView->stop();
     delete uiMain->uiView;
     uiMain->uiView = NULL;
+    // Close the R3D SDK
+    R3DSDK::FinalizeSdk();
 }
 
 

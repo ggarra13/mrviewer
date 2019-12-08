@@ -31,6 +31,12 @@
 #include <string>
 #include <ImfChromaticities.h>
 #include "mrvColorSchemes.h"
+// OpenColorIO
+#ifdef _WIN32
+#pragma warning( disable: 4275 )
+#endif
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
 
 class ViewerUI;
 class PreferencesUI;
@@ -74,12 +80,18 @@ public:
         return tempDir;
     }
 
+    static OCIO::ConstConfigRcPtr OCIOConfig()
+        {
+            return config;
+        }
+
 protected:
     static bool set_transforms();
 
 public:
     static ViewerUI* uiMain;
     static bool use_ocio;
+    static OCIO::ConstConfigRcPtr config;
     static bool native_file_chooser;
     static int bgcolor;
     static int textcolor;

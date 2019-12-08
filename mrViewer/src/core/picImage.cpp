@@ -340,7 +340,7 @@ bool picImage::readScanlines(FILE *file, uint32_t *image,
 
 bool picImage::readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *chan,  int32_t bytes)
 {
-    bool status;
+    bool status = false;
     int32_t		noCol;
     int32_t		off[4];
 

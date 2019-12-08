@@ -26,14 +26,9 @@
  *
  */
 
-#ifdef _WIN32
-#  pragma warning( disable: 4275 )
-#endif
-
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
 
 #include "mrvColorBarsImage.h"
+#include "gui/mrvPreferences.h"
 
 namespace mrv {
 
@@ -76,7 +71,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         _fps = 25.0f;
         NTSC_HDTV_color_bars( _hires);
 
-        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("rec709");
         if ( !defaultcs )
             defaultcs = config->getColorSpace( "Rec.709" );
@@ -99,7 +94,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         _pixel_ratio = 1.0;
         _fps = 29.976f;
         NTSC_HDTV_color_bars( _hires );
-        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("rec709");
         if ( !defaultcs )
             defaultcs = config->getColorSpace( "Rec.709" );

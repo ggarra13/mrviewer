@@ -1395,27 +1395,22 @@ void ImageBrowser::change_image()
     int sel = value();
 
     mrv::ImageView* v = view();
+    if ( !v ) return;
 
     if ( sel < 0 )
     {
-        if ( v )
-        {
-            v->fg_reel( -1 );
-            // v->bg_reel( -1 );
-            // clear_bg();
-            // v->background( mrv::media() );
-            v->foreground( mrv::media() );
-            v->redraw();
-        }
+        v->fg_reel( -1 );
+        // v->bg_reel( -1 );
+        // clear_bg();
+        // v->background( mrv::media() );
+        v->foreground( mrv::media() );
+        v->redraw();
     }
     else
     {
         mrv::Reel reel = current_reel();
 
         assert( (unsigned)sel < reel->images.size() );
-
-        mrv::media om = current_image();
-
 
         CMedia::Playback play = v->playback();
         if ( play ) v->stop();
@@ -1424,7 +1419,7 @@ void ImageBrowser::change_image()
         if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
 
-        if ( m && v )
+        if ( m )
         {
             DBGM3( "FG REEL " << _reel << " m: " << m->image()->name() );
 
@@ -1443,8 +1438,8 @@ void ImageBrowser::change_image()
             Fl_Tree_Item* item = media_to_item( m );
             if ( item == NULL )
             {
-                LOG_ERROR( "Item " << m->image()->name()
-                           << " was not found in tree." );
+                LOG_ERROR( _("Item ") << m->image()->name()
+                           << _(" was not found in tree.") );
                 return;
             }
 

@@ -41,11 +41,6 @@
 
 #include <FL/Enumerations.H>
 
-#ifdef _WIN32
-#  pragma warning( disable: 4275 )
-#endif
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
 
 #include "IccProfile.h"
 #include "IccCmm.h"
@@ -546,7 +541,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     try
     {
         DBG;
-        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
         DBG;
         const std::string& display = mrv::Preferences::OCIO_Display;
         DBG;
@@ -1142,7 +1137,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                                        const CMedia* img )
 {
     const PreferencesUI* uiPrefs = view->uiPrefs;
-    std::string path;
+    std::string path, fullpath;
     GLLut3d::Transforms transforms;
 
     if ( !Preferences::use_ocio )
@@ -1248,19 +1243,24 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             c->ocio_input_color_space( ics );
         DBG;
         }
+        OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
+        fullpath = config->getCacheID();
+        fullpath += " -> ";
+
         path = ics;
         DBG;
         path += " -> " + Preferences::OCIO_Display;
         DBG;
         path += " -> " + Preferences::OCIO_View;
         DBG;
+        fullpath += path;
     }
     //
     // Check if this lut path was already calculated by some other
     // image.
     //
     {
-        LutsMap::const_iterator i = _luts.find( path );
+        LutsMap::const_iterator i = _luts.find( fullpath );
         if ( i != _luts.end() && i->second->inited() )
         {
             // this lut was already created, return it.
@@ -1418,8 +1418,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 
     lut->create_gl_texture();
 
-    if ( _luts.find( path ) != _luts.end() ) _luts.erase( path );
-    _luts.insert( std::make_pair( path, lut ) );
+    if ( _luts.find( fullpath ) != _luts.end() ) _luts.erase( path );
+    _luts.insert( std::make_pair( fullpath, lut ) );
     return lut;
 }
 

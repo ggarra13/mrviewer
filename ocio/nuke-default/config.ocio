@@ -17,12 +17,13 @@ roles:
 
 displays:
   default:
+    - !<View> {name: None, colorspace: raw}
     - !<View> {name: sRGB, colorspace: sRGB}
     - !<View> {name: rec709, colorspace: rec709}
-    - !<View> {name: None, colorspace: raw}
+    - !<View> {name: rec1886, colorspace: Gamma2.4}
 
 active_displays: [default]
-active_views: [sRGB]
+active_views: [sRGB, rec709, rec1886, None]
 
 colorspaces:
   - !<ColorSpace>
@@ -47,18 +48,6 @@ colorspaces:
     allocation: uniform
     allocationvars: [-0.125, 1.125]
     to_reference: !<FileTransform> {src: srgb.spi1d, interpolation: linear}
-
-  - !<ColorSpace>
-    name: sRGBf
-    family: ""
-    equalitygroup: ""
-    bitdepth: 32f
-    description: |
-      Standard RGB Display Space, but with additional range to preserve float highlights.
-    isdata: false
-    allocation: uniform
-    allocationvars: [-0.125, 4.875]
-    to_reference: !<FileTransform> {src: srgbf.spi1d, interpolation: linear}
 
   - !<ColorSpace>
     name: rec709
@@ -90,7 +79,7 @@ colorspaces:
     equalitygroup: ""
     bitdepth: 32f
     description: |
-      Emulates a idealized Gamma 1.8 display device.
+      Emulates an idealized Gamma 1.8 display device.
     isdata: false
     allocation: uniform
     allocationvars: [0, 1]
@@ -102,11 +91,35 @@ colorspaces:
     equalitygroup: ""
     bitdepth: 32f
     description: |
-      Emulates a idealized Gamma 2.2 display device.
+      Emulates an idealized Gamma 2.2 display device.
     isdata: false
     allocation: uniform
     allocationvars: [0, 1]
     to_reference: !<ExponentTransform> {value: [2.2, 2.2, 2.2, 1]}
+
+  - !<ColorSpace>
+    name: Gamma2.4
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Emulates an idealized Gamma 2.4 display device.
+    isdata: false
+    allocation: uniform
+    allocationvars: [0, 1]
+    to_reference: !<ExponentTransform> {value: [2.4, 2.4, 2.4, 1]}
+
+  - !<ColorSpace>
+    name: Gamma2.6
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Emulates an idealized Gamma 2.6 display device.
+    isdata: false
+    allocation: uniform
+    allocationvars: [0, 1]
+    to_reference: !<ExponentTransform> {value: [2.6, 2.6, 2.6, 1]}
 
   - !<ColorSpace>
     name: Panalog
@@ -179,6 +192,126 @@ colorspaces:
     allocation: uniform
     allocationvars: [-0.125, 1.125]
     to_reference: !<FileTransform> {src: slog.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: SLog1
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Sony SLog1
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: slog1.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: SLog2
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Sony SLog2
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: slog2.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: SLog3
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Sony SLog3
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: slog3.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: CLog
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Canon CLog
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.0684932, 1.08676]
+    to_reference: !<FileTransform> {src: clog.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: Log3G10
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Log3G10
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: log3g10.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: Log3G12
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Log3G12
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: log3g12.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: HybridLogGamma
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      HybdridLogGamma
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: hybdridloggamma.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: Protune
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      GoPro Protune
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: protune.spi1d, interpolation: linear}
+
+  - !<ColorSpace>
+    name: BT1886
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      Emulates an idealized Gamma 2.4 display device.
+    isdata: false
+    allocation: uniform
+    allocationvars: [0, 1]
+    to_reference: !<ExponentTransform> {value: [2.4, 2.4, 2.4, 1]}
+
+  - !<ColorSpace>
+    name: st2084
+    family: ""
+    equalitygroup: ""
+    bitdepth: 32f
+    description: |
+      st2084
+    isdata: false
+    allocation: uniform
+    allocationvars: [-0.125, 1.125]
+    to_reference: !<FileTransform> {src: st2084.spi1d, interpolation: linear}
 
   - !<ColorSpace>
     name: raw

@@ -252,7 +252,8 @@ std::string file_single_requester(
         }
         else
         {
-            file = flu_file_chooser( title, pattern, startfile );
+            const char* f = flu_file_chooser( title, pattern, startfile );
+            if ( f ) file = f;
         }
     }
     catch ( const std::exception& e )

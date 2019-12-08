@@ -14,7 +14,8 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in
 #
 # These are the libraries we will depend on
 #
-set( OpenGL_GL_PREFERENCE LEGACY )
+#set( OpenGL_GL_PREFERENCE LEGACY )
+set( OpenGL_GL_PREFERENCE GLVND )
 
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
@@ -63,7 +64,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
-    ADD_COMPILE_OPTIONS( -Wall )
+    ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch)
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )

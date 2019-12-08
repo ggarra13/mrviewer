@@ -28,8 +28,6 @@
 #include <vector>
 #include <string>
 
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
 
 #include "core/CMedia.h"
 #include "gui/mrvIO.h"
@@ -60,7 +58,7 @@ OCIOBrowser::~OCIOBrowser()
 
 void OCIOBrowser::fill_view()
 {
-    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+    OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
     const char* display = Preferences::OCIO_Display.c_str();
     std::vector< std::string > views;
     int numViews = config->getNumViews(display);
@@ -84,7 +82,7 @@ void OCIOBrowser::fill_view()
 
 void OCIOBrowser::fill_display()
 {
-    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+    OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
     std::vector< std::string > displays;
     for(int i = 0; i < config->getNumDisplays(); ++i)
     {
@@ -106,7 +104,7 @@ void OCIOBrowser::fill_display()
 
 void OCIOBrowser::fill_input_color_space()
 {
-    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+    OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
     std::vector< std::string > spaces;
     for(int i = 0; i < config->getNumColorSpaces(); ++i)
     {
@@ -115,11 +113,11 @@ void OCIOBrowser::fill_input_color_space()
     }
 
     if ( std::find( spaces.begin(), spaces.end(), OCIO::ROLE_SCENE_LINEAR ) ==
-	 spaces.end() )
+         spaces.end() )
     {
         spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
     }
-    
+
     std::sort( spaces.begin(), spaces.end() );
     value(1);
     for ( size_t i = 0; i < spaces.size(); ++i )

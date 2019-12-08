@@ -33,6 +33,7 @@
 namespace R3DSDK
 {
     class Clip;
+    struct ImageProcessingSettings;
 }
 
 namespace mrv {
@@ -87,6 +88,7 @@ public:
 
 protected:
     R3DSDK::Clip* clip;
+    R3DSDK::ImageProcessingSettings* iproc;
     video_cache_t _images;
     int           _scale;
 protected:

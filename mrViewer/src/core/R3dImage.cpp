@@ -34,6 +34,7 @@ namespace mrv {
     R3dImage::R3dImage() :
         CMedia(),
         clip( NULL ),
+        iproc( NULL ),
         _scale( 0 )
     {
     }
@@ -104,14 +105,14 @@ namespace mrv {
             }
             image_damage( image_damage() | kDamageData );
         }
-        return _init;
+        return true;
     }
 
     bool R3dImage::finalize()
     {
         delete clip; clip = NULL;
-        // We should call FinalizeSdk() here but not sure what will
-        // happen if we do.
+        delete iproc; iproc = NULL;
+        // We call finalizeSdk in mainWindow as it is not reentrant it seems.
         return true;
     }
 
@@ -184,9 +185,21 @@ namespace mrv {
             lumma_layers();
         }
 
+#if 1
+#define pixel_type kHalf
+#define channels kRGB
+#define decode_type PixelType_HalfFloat_RGB_Interleaved
+#endif
+
+#if 0
+#define pixel_type kShort
+#define channels kRGB
+#define decode_type PixelType_16Bit_RGB_Interleaved
+#endif
+
         image_size( dw, dh );
-        allocate_pixels( canvas, frame, 3, image_type::kRGB,
-                         image_type::kHalf, dw, dh );
+        allocate_pixels( canvas, frame, 3, image_type::channels,
+                         image_type::pixel_type );
 
 
         // alloc this memory 16-byte aligned
@@ -206,35 +219,36 @@ namespace mrv {
         // since AlignedMalloc below will overwrite the value in this
         job.OutputBufferSize = dw * dh * 3U * sizeof(half);
 
-        // we're going with the clip's default image processing
-        // see the next sample on how to change some settings
+        job.ImageProcessing = NULL;  // iproc (does not work!)
+        job.HdrProcessing = NULL;
 
-        if ( _scale == 0 )
+        switch( _scale )
         {
+        default:
+        case 0:
             // decode at full resolution at premium quality
             job.Mode = DECODE_FULL_RES_PREMIUM;
-        }
-        else if ( _scale == 1 )
-        {
+            break;
+        case 1:
             // decode at half resolution at premium quality
             job.Mode = DECODE_HALF_RES_PREMIUM;
-        }
-        else if ( _scale == 2 )
-        {
+            break;
+        case 2:
             // decode at quarter resolution at good quality
             job.Mode = DECODE_QUARTER_RES_GOOD;
-        }
-        else if ( _scale == 3 )
-        {
+            break;
+        case 3:
             // decode at eight resolution at good quality
             job.Mode = DECODE_EIGHT_RES_GOOD;
+            break;
         }
 
         // store the image here
         job.OutputBuffer = imgbuffer;
 
-        // store the image in a 16-bit interleaved RGB format
-        job.PixelType = PixelType_HalfFloat_RGB_Interleaved;
+        // store the image in a 16-bit interleaved RGB or
+        // in half interleaved RGB format
+        job.PixelType = decode_type;
 
         _pixel_ratio = 1.0;
         _gamma = 1.0f;
@@ -248,9 +262,10 @@ namespace mrv {
                 return false;
             }
 
+
             image_type_ptr hdr;
-            allocate_pixels( hdr, frame, 3, image_type::kRGB,
-                             image_type::kHalf, dw, dh );
+            allocate_pixels( hdr, frame, 3, image_type::channels,
+                             image_type::pixel_type );
 
             job.OutputBuffer = hdr->data().get();
             if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) != DSDecodeOK )

@@ -4,7 +4,19 @@ v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	- Made EDL switching more thread safe by temporarily stopping the
 	  playback.
 	- Made Auto Fit Image be faster to not allow showing frames not in
-	  position.
+	  their correct size and position.
+	- Made OCIO's config file be selectable without exiting mrViewer.
+	  The switch happens automatically.
+	- Made OCIO's LUTs take into account the config they are coming from
+	  thru OCIO's cacheID.
+	- Fixed color picker when loading EXRs at 1:2, 1:4 and 1:8 cache
+	  resolutions.
+	- Fixed file requester cancellation crashing the viewer when selecting
+	  a single item.
+	- Fixed OCIO transform exiting the application when the input color
+	  space read from an EXR file could not be found.
+	- Made OCIO input color space pull down menu have submenus for easier
+	  access.
 
 
 v5.3.2  - Made Log Window disappear when in Presentation mode.

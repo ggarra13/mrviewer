@@ -48,12 +48,6 @@ namespace fs = boost::filesystem;
 // OpenEXR threadcount
 #include <OpenEXR/ImfThreading.h>
 
-// OpenColorIO
-#ifdef _WIN32
-#pragma warning( disable: 4275 )
-#endif
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
 
 // CORE classes
 #include "core/exrImage.h"
@@ -278,6 +272,7 @@ ConnectionUI*     ViewerUI::uiConnection = NULL;
 
 namespace mrv {
 
+OCIO::ConstConfigRcPtr Preferences::config;
 ColorSchemes        Preferences::schemes;
 bool                Preferences::use_ocio = false;
 ViewerUI*           Preferences::uiMain = NULL;
@@ -1456,7 +1451,7 @@ void Preferences::run( ViewerUI* main )
         DBG3;
     missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
 
-    
+
     //////////////////////////////////////////////////////
     // OCIO
     /////////////////////////////////////////////////////
@@ -1479,7 +1474,8 @@ void Preferences::run( ViewerUI* main )
                      << std::endl );
         var = strdup( tmp.c_str() );
     }
-        DBG3;
+    DBG3;
+
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
@@ -1534,7 +1530,7 @@ void Preferences::run( ViewerUI* main )
         try
         {
             DBG3;
-            OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+            config = OCIO::Config::CreateFromEnv();
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
@@ -1562,7 +1558,7 @@ void Preferences::run( ViewerUI* main )
                 mrv::split( active_displays, displaylist, ',' );
 
                 // Eliminate forward spaces in names
-                for ( int i = 0; i < active_displays.size(); ++i )
+                for ( unsigned i = 0; i < active_displays.size(); ++i )
                 {
                     while ( active_displays[i][0] == ' ' )
                         active_displays[i] =
@@ -1585,7 +1581,7 @@ void Preferences::run( ViewerUI* main )
                 mrv::split( active_views, viewlist, ',' );
 
                 // Eliminate forward spaces in names
-                for ( int i = 0; i < active_views.size(); ++i )
+                for ( unsigned i = 0; i < active_views.size(); ++i )
                 {
                     while ( active_views[i][0] == ' ' )
                         active_views[i] =
@@ -1626,6 +1622,7 @@ void Preferences::run( ViewerUI* main )
                             std::string name = display;
                             name += "/";
                             name += view;
+
                             main->gammaDefaults->add( name.c_str() );
 
                             if ( view == OCIO_View && !OCIO_View.empty() )
@@ -1647,6 +1644,7 @@ void Preferences::run( ViewerUI* main )
                         std::string name = display;
                         name += "/";
                         name += view;
+
                         main->gammaDefaults->add( name.c_str() );
 
                         if ( view == OCIO_View && !OCIO_View.empty() )
@@ -1702,10 +1700,11 @@ void Preferences::run( ViewerUI* main )
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
         DBG3;
+        std::locale::global( std::locale("C") );
+        setlocale( LC_NUMERIC, "C" );
         try
         {
         DBG3;
-            OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
             std::vector< std::string > spaces;
             for(int i = 0; i < config->getNumColorSpaces(); ++i)
             {
@@ -1737,20 +1736,57 @@ void Preferences::run( ViewerUI* main )
             for ( size_t i = 0; i < spaces.size(); ++i )
             {
                 const char* space = spaces[i].c_str();
-                OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
-                w->add( space );
-        DBG3;
+              //OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
+                std::string menu = space;
+                size_t pos;
+                while ( ( pos = menu.find( " - " ) ) != std::string::npos )
+                {
+                    menu = menu.substr( 0, pos ) + '/' +
+                           menu.substr( pos+3, menu.size() );
+                }
+
+                pos = menu.rfind( '/' );
+                if ( pos != std::string::npos )
+                {
+                    menu = menu.substr( 0, pos+1 ) + space;
+                }
+                else
+                {
+                    bool all_lowercase = true;
+                    const char* c = menu.c_str();
+                    for ( ; *c; ++c )
+                    {
+                        if ( *c != '_' && ( *c < 'a' || *c > 'z' ) &&
+                             ( *c < '0' || *c > '9' ) )
+                        {
+                            all_lowercase = false;
+                            break;
+                        }
+                    }
+
+                    if ( all_lowercase )
+                    {
+                        menu = "Aliases/" + menu;
+                    }
+                }
+                w->add( menu.c_str() );
+                DBG3;
                 //w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
-        DBG3;
+                    DBG3;
                     w->copy_label( space );
                     w->value( (int)i );
                 }
             }
             w->do_callback();
-        DBG3;
+            DBG3;
             w->redraw();
+        }
+        catch( const OCIO::Exception& e )
+        {
+        DBG3;
+            LOG_ERROR( e.what() );
         }
         catch( const std::exception& e )
         {
@@ -1758,6 +1794,8 @@ void Preferences::run( ViewerUI* main )
         }
         DBG3;
         main->uiICS->show();
+        std::locale::global( std::locale("") );
+        setlocale(LC_NUMERIC, "" );
     }
     else
     {
