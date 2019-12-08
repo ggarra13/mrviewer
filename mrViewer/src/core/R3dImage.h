@@ -67,6 +67,8 @@ public:
         return (_num_channels == 4);
     };
 
+    virtual bool has_video() const { return true; }
+
     virtual const char* const format() const { return "RED3D"; }
 
     virtual const char* const compression() const { return "RED3D CORE"; }
@@ -82,6 +84,7 @@ public:
     inline int64_t frame() const { return _frame; }
 
     virtual bool find_image( const int64_t frame );
+    virtual void do_seek();
 
     void timed_limit_store( const int64_t frame );
     void limit_video_store( const int64_t frame );

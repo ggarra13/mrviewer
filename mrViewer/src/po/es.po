@@ -114,7 +114,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-12-08 06:24-0300\n"
+"POT-Creation-Date: 2019-12-08 07:21-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3752,7 +3752,7 @@ msgstr " para el canal.  Máximo: "
 msgid " for codec "
 msgstr " para codec "
 
-#: core/aviImage.cpp:3908
+#: core/aviImage.cpp:3908 core/R3dImage.cpp:660
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -15860,7 +15860,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/aviImage.cpp:3906
+#: core/aviImage.cpp:3906 core/R3dImage.cpp:658
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -15872,7 +15872,7 @@ msgstr "Decodificación falló para cuadro HDR "
 msgid "Decode failed for frame "
 msgstr "Decodificación falló para cuadro "
 
-#: core/aviImage.cpp:3920
+#: core/aviImage.cpp:3920 core/R3dImage.cpp:670
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -33402,6 +33402,10 @@ msgid "~/"
 msgstr ""
 
 #, fuzzy
+#~ msgid "do seek "
+#~ msgstr " a "
+
+#, fuzzy
 #~ msgid " Saturation "
 #~ msgstr "Saturación"
 
@@ -33862,10 +33866,6 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "remove seek to "
-#~ msgstr " a "
-
-#, fuzzy
-#~ msgid "todo seek "
 #~ msgstr " a "
 
 #

@@ -120,7 +120,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-12-08 06:24-0300\n"
+"POT-Creation-Date: 2019-12-08 07:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3727,7 +3727,7 @@ msgstr ""
 msgid " for codec "
 msgstr ""
 
-#: core/aviImage.cpp:3908
+#: core/aviImage.cpp:3908 core/R3dImage.cpp:660
 msgid " for frame "
 msgstr ""
 
@@ -15603,7 +15603,7 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:3906
+#: core/aviImage.cpp:3906 core/R3dImage.cpp:658
 msgid "Decode audio error: "
 msgstr ""
 
@@ -15615,7 +15615,7 @@ msgstr ""
 msgid "Decode failed for frame "
 msgstr ""
 
-#: core/aviImage.cpp:3920
+#: core/aviImage.cpp:3920 core/R3dImage.cpp:670
 msgid "Decode video error seek frame "
 msgstr ""
 

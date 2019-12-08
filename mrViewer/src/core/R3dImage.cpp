@@ -619,4 +619,61 @@ namespace mrv {
 
     }
 
+    void R3dImage::do_seek() {
+        // No need to set seek frame for right eye here
+        if ( _right_eye )  _right_eye->do_seek();
+
+        if ( saving() ) _seek_req = false;
+
+        bool got_video = !has_video();
+        bool got_audio = !has_audio();
+
+        if ( !got_audio || !got_video )
+        {
+            if ( !saving() && _seek_frame != _expected )
+                clear_packets();
+
+            if ( !saving() || _seek_frame == _expected )
+            {
+                image_type_ptr canvas;
+                fetch( canvas, _seek_frame );
+            }
+
+        }
+
+
+        // Seeking done, turn flag off
+        _seek_req = false;
+
+        if ( stopped() || saving() )
+        {
+
+            DecodeStatus status;
+            if ( has_audio() )
+            {
+                int64_t f = _seek_frame;
+                f += _audio_offset;
+                status = decode_audio( f );
+                if ( status > kDecodeOK )
+                    IMG_ERROR( _("Decode audio error: ")
+                               << decode_error( status )
+                               << _(" for frame ") << _seek_frame );
+
+                if ( !_audio_start )
+                    find_audio( _seek_frame + _audio_offset );
+                _audio_start = false;
+            }
+
+            if ( has_video() || has_audio() )
+            {
+                if ( !find_image( _seek_frame ) )
+                    IMG_ERROR( _("Decode video error seek frame " )
+                               << _seek_frame );
+            }
+
+            // Queue thumbnail for update
+            image_damage( image_damage() | kDamageThumbnail );
+        }
+
+    }
 }
