@@ -449,6 +449,8 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_flipX( false ),
+_flipY( false ),
 _last_audio_cached( false ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
@@ -558,6 +560,8 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_flipX( false ),
+_flipY( false ),
 _last_audio_cached( false ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
@@ -673,6 +677,8 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( other->_subtitle_encoding ) ),
 _subtitle_font( strdup( other->_subtitle_font ) ),
+_flipX( other->flipX() ),
+_flipY( other->flipY() ),
 _last_audio_cached( false ),
 _audio_index( other->_audio_index ),
 _samples_per_sec( 0 ),
@@ -960,7 +966,8 @@ void CMedia::hires( const mrv::image_type_ptr pic)
 CMedia::Attributes& CMedia::attributes()  {
     static Attributes empty;
     AttributesFrame::iterator i;
-    if ( dynamic_cast< aviImage* >( this ) != NULL  )
+    if ( dynamic_cast< aviImage* >( this ) != NULL ||
+         dynamic_cast< R3dImage* >( this ) != NULL )
         i = _attrs.find( start_frame() );
     else
         i = _attrs.find( _frame );
@@ -4291,6 +4298,9 @@ void CMedia::ocio_input_color_space( const std::string& n )
 {
     if ( _input_color_space == n || is_thumbnail() ) return;
 
+    if ( n.find( "Canon" ) != std::string::npos )
+        abort();
+
     _input_color_space = n;
     image_damage( image_damage() | kDamageData | kDamageLut );
 }
@@ -4565,6 +4575,13 @@ char *const get_error_text(const int error)
         }
     }
     return error_buffer;
+}
+
+void CMedia::refetch()
+{
+    image_type_ptr canvas;
+    fetch( canvas, _dts );
+    hires( canvas );
 }
 
 } // namespace mrv

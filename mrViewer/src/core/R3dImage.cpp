@@ -12,6 +12,8 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
+#include "ImfFloatAttribute.h"
+#include "ImfIntAttribute.h"
 #include "ImfStringAttribute.h"
 
 #include "core/mrvFrameFunctors.h"
@@ -29,13 +31,22 @@ namespace {
 
 namespace mrv {
 
-    bool R3dImage::_init = false;
+    bool R3dImage::init = false;
 
     R3dImage::R3dImage() :
         CMedia(),
         clip( NULL ),
         iproc( NULL ),
-        _scale( 0 )
+        _new_grade( false ),
+        _hdr( false ),
+        _scale( -1 ),
+        _ISO( 320 ),
+        _Kelvin( 5600.0f ),
+        _Tint( 0.f ),
+        _Exposure( 0.f ),
+        _Bias( 0.0f ),
+        _trackNo( 0 ),
+        _hdr_mode( HDR_DO_BLEND )
     {
     }
 
@@ -45,23 +56,7 @@ namespace mrv {
 
     bool R3dImage::test( const char* file )
     {
-        if ( file == NULL ) return false;
-
-        if ( !_init )
-        {
-            //Initialize the R3DSDK prior to using any R3DSDK objects.
-            std::string root = Preferences::root + "/lib";
-
-            InitializeStatus status = InitializeSdk(root.c_str(),
-                                                OPTION_RED_NONE);
-            if ( status != ISInitializeOK)
-            {
-                LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
-                return false;
-            }
-
-            _init = true;
-        }
+        if ( file == NULL || !init ) return false;
 
         if ( strcasecmp( file+strlen(file)-4, ".rmd" ) == 0 )
             return false;
@@ -81,6 +76,7 @@ namespace mrv {
         // load the clip
         if ( !clip )
         {
+
             clip = new Clip( filename() );
 
             // let the user know if this failed
@@ -91,17 +87,51 @@ namespace mrv {
                 return false;
             }
 
+
+            if ((clip->VideoTrackCount() == 2U) ||
+                (clip->MetadataItemAsInt(RMD_HDR_MODE) == 2))
+            {
+                _hdr = true;
+            }
+
+            iproc = new ImageProcessingSettings;
+            clip->GetClipImageProcessingSettings( *iproc );
+
+            _ISO = iproc->ISO;
+            _Kelvin = iproc->Kelvin;
+            _Tint = iproc->Tint;
+            _Exposure = iproc->ExposureAdjust;
+            iproc->GammaCurve = ImageGammaLog3G10;
+            iproc->ColorSpace = ImageColorREDWideGamutRGB;
+
+            _attrs.insert( std::make_pair( 0, Attributes() ) );
+
+
             _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
             _frameStart = _frame = _frame_start = 0;
             _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
 
-            _attrs.insert( std::make_pair( 0, Attributes() ) );
             for ( size_t i = 0; i < clip->MetadataCount(); ++i )
             {
                 const std::string& name = clip->MetadataItemKey(i);
-                Imf::StringAttribute attr( clip->MetadataItemAsString(i) );
-                _attrs[0].insert( std::make_pair( name,
-                                                  attr.copy() ) );
+                if ( clip->MetadataItemType(i) == MetadataTypeInt )
+                {
+                    Imf::IntAttribute attr( clip->MetadataItemAsInt(i) );
+                    _attrs[0].insert( std::make_pair( name,
+                                                      attr.copy() ) );
+                }
+                else if ( clip->MetadataItemType(i) == MetadataTypeFloat )
+                {
+                    Imf::FloatAttribute attr( clip->MetadataItemAsFloat(i) );
+                    _attrs[0].insert( std::make_pair( name,
+                                                      attr.copy() ) );
+                }
+                else // MetadataTypeString
+                {
+                    Imf::StringAttribute attr( clip->MetadataItemAsString(i) );
+                    _attrs[0].insert( std::make_pair( name,
+                                                      attr.copy() ) );
+                }
             }
             image_damage( image_damage() | kDamageData );
         }
@@ -112,7 +142,8 @@ namespace mrv {
     {
         delete clip; clip = NULL;
         delete iproc; iproc = NULL;
-        // We call finalizeSdk in mainWindow as it is not reentrant it seems.
+        // We call finalizeSdk in mainWindow as initializeSdk
+        // is not reentrant it seems.
         return true;
     }
 
@@ -138,23 +169,74 @@ namespace mrv {
         return (CMedia::Cache) ok;
     }
 
+    void R3dImage::iso_index( size_t i )
+    {
+        if ( i >= ImageProcessingLimits::ISOCount ) {
+            LOG_ERROR( _("ISO Index out of bounds") );
+            return;
+        }
+        size_t newiso = ImageProcessingLimits::ISOList[i];
+        if ( iproc->ISO != newiso )
+        {
+            clear_packets();
+            clear_cache();
+            iproc->ISO = _ISO = newiso;
+            refetch();
+        }
+    }
+
+    size_t R3dImage::iso_index() const
+    {
+        size_t iso320 = 0;
+        for ( size_t i = 0; i < ImageProcessingLimits::ISOCount; ++i )
+        {
+            if ( iproc->ISO == ImageProcessingLimits::ISOList[i] )
+                return i;
+            if ( 320 == ImageProcessingLimits::ISOList[i] )
+                iso320 = i;
+        }
+        return iso320;  // Default: 320
+    }
+
     bool R3dImage::fetch( mrv::image_type_ptr& canvas,
                           const boost::int64_t frame )
     {
-        if ( !clip )
+        if ( !clip || frame < _frame_start || frame > _frame_end )
         {
-            IMG_ERROR( _("Clip is undefined") );
+            if ( frame == -1 ) abort();
             return false;
         }
 
+        _new_grade = false;
 
-        if ( cache_scale() != _scale )
+        if ( iproc->ISO != _ISO )
         {
-            clear_cache();
-            _video_packets.clear();
+            iproc->ISO = _ISO;
+            _new_grade = true;
+        }
+        if ( iproc->ExposureAdjust != _Exposure )
+        {
+            iproc->ExposureAdjust = _Exposure;
+            _new_grade = true;
+        }
+        if ( iproc->Kelvin != _Kelvin )
+        {
+            iproc->Kelvin = _Kelvin;
+            _new_grade = true;
+        }
+        if ( iproc->Tint != _Tint )
+        {
+            iproc->Tint = _Tint;
+            _new_grade = true;
         }
 
-        _scale = cache_scale();
+        if ( cache_scale() != _scale || _new_grade )
+        {
+            _new_grade = false;
+            _scale = cache_scale();
+            clear_packets();
+            clear_cache();
+        }
 
         // calculate how much ouput memory we're going to need
         size_t dw = clip->Width();
@@ -185,16 +267,18 @@ namespace mrv {
             lumma_layers();
         }
 
-#if 1
+#if 0
+
 #define pixel_type kHalf
 #define channels kRGB
 #define decode_type PixelType_HalfFloat_RGB_Interleaved
-#endif
 
-#if 0
+#else
+
 #define pixel_type kShort
 #define channels kRGB
 #define decode_type PixelType_16Bit_RGB_Interleaved
+
 #endif
 
         image_size( dw, dh );
@@ -215,11 +299,10 @@ namespace mrv {
         // 16-bit image this is the width times 6
         job.BytesPerRow = dw * sizeof(half) * 3U;
 
-        // letting the decoder know how big the buffer is (we do that here
-        // since AlignedMalloc below will overwrite the value in this
+        // letting the decoder know how big the buffer is
         job.OutputBufferSize = dw * dh * 3U * sizeof(half);
 
-        job.ImageProcessing = NULL;  // iproc (does not work!)
+        job.ImageProcessing = iproc;
         job.HdrProcessing = NULL;
 
         switch( _scale )
@@ -253,12 +336,12 @@ namespace mrv {
         _pixel_ratio = 1.0;
         _gamma = 1.0f;
 
-        if ((clip->VideoTrackCount() == 2U) ||
-            (clip->MetadataItemAsInt(RMD_HDR_MODE) == 2))
+        if ( _hdr )
         {
             if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) != DSDecodeOK )
             {
-                IMG_ERROR( _("Decode failed for frame ") << frame );
+                IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
+                           << frame );
                 return false;
             }
 
@@ -270,15 +353,24 @@ namespace mrv {
             job.OutputBuffer = hdr->data().get();
             if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) != DSDecodeOK )
             {
-                IMG_ERROR( _("Decode failed for HDR frame ") << frame );
+                IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
+                           << frame );
                 return false;
             }
 
-            size_t track = 0;
-            HdrProcessingSettings settings;
-            HdrMode mode = clip->GetRmdHdrProcessingSettings( settings, track );
+            float bias = 0.0f;
+            switch( _hdr_mode )
+            {
+            case HDR_USE_TRACKNO:
+                if ( _trackNo == 0 ) bias = -1.0;
+                else bias = 1.0;
+                break;
+            case HDR_DO_BLEND:
+                bias = _Bias;
+                break;
+            }
 
-            float t = (settings.Bias + 1.0f) / 2.0f;
+            float t = (bias + 1.0f) / 2.0f;
             float t2 = 1.0f - t;
 
             for ( unsigned y = 0; y < dh; ++y )
@@ -302,7 +394,7 @@ namespace mrv {
             // decode the first frame (0) of the clip
             if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
             {
-                IMG_ERROR( _("Decode failed for frame ") << frame );
+                IMG_ERROR( _("Video decode failed for frame ") << frame );
                 return false;
             }
         }
@@ -370,13 +462,12 @@ namespace mrv {
         pkt.size = 0;
         pkt.data = NULL;
 
+
         if ( ! is_cache_filled( _dts ) )
         {
             image_type_ptr canvas;
-            if ( fetch( canvas, _dts ) )
-            {
-                default_color_corrections();
-            }
+            fetch( canvas, _dts );
+            default_color_corrections();
         }
 
         _video_packets.push_back( pkt );
@@ -398,8 +489,8 @@ namespace mrv {
             _right_eye->find_image( frame );
 
         assert0( frame != AV_NOPTS_VALUE );
-        assert0( frame >= _frameStart );
-        assert0( frame <= _frameEnd );
+        if ( frame < _frame_start || frame > _frame_end )
+            return false;
 
 #ifdef DEBUG_VIDEO_PACKETS
         debug_video_packets(frame, "find_image");
@@ -619,6 +710,13 @@ namespace mrv {
 
     }
 
+    bool R3dImage::has_changed()
+    {
+        _dts = _frame.load();
+        refetch();
+        return true;
+    }
+
     void R3dImage::do_seek() {
         // No need to set seek frame for right eye here
         if ( _right_eye )  _right_eye->do_seek();
@@ -635,8 +733,12 @@ namespace mrv {
 
             if ( !saving() || _seek_frame == _expected )
             {
-                image_type_ptr canvas;
-                fetch( canvas, _seek_frame );
+                if ( ! is_cache_filled( _seek_frame ) )
+                {
+                    image_type_ptr canvas;
+                    fetch( canvas, _seek_frame );
+                }
+                find_image( _seek_frame );
             }
 
         }
@@ -664,16 +766,140 @@ namespace mrv {
                 _audio_start = false;
             }
 
-            if ( has_video() || has_audio() )
-            {
-                if ( !find_image( _seek_frame ) )
-                    IMG_ERROR( _("Decode video error seek frame " )
-                               << _seek_frame );
-            }
+            // if ( has_video() || has_audio() )
+            // {
+            //     if ( !find_image( _seek_frame ) )
+            //         IMG_ERROR( _("Decode video error seek frame " )
+            //                    << _seek_frame );
+            // }
 
             // Queue thumbnail for update
             image_damage( image_damage() | kDamageThumbnail );
         }
 
+    }
+
+
+    int R3dImage::color_version() const
+    {
+        return (int) clip->DefaultColorVersion();
+    }
+
+    void R3dImage::load_camera_settings()
+    {
+        clip->GetClipImageProcessingSettings( *iproc );
+        if ( clip->DefaultColorVersion() > ColorVersion2 )
+        {
+            _ISO = iproc->ISO;
+            _Kelvin = iproc->Kelvin;
+            _Tint = iproc->Tint;
+            _Exposure = iproc->ExposureAdjust;
+        }
+        iproc->GammaCurve = ImageGammaLog3G10;
+        iproc->ColorSpace = ImageColorREDWideGamutRGB;
+        clear_packets();
+        clear_cache();
+        refetch();
+    }
+
+    void R3dImage::load_rmd_sidecar()
+    {
+        clip->GetDefaultImageProcessingSettings( *iproc );
+        _ISO = iproc->ISO;
+        _Kelvin = iproc->Kelvin;
+        _Tint = iproc->Tint;
+        _Exposure = iproc->ExposureAdjust;
+        iproc->GammaCurve = ImageGammaLog3G10;
+        iproc->ColorSpace = ImageColorREDWideGamutRGB;
+
+        if ( is_hdr() )
+        {
+            HdrProcessingSettings settings;
+            _hdr_mode = clip->GetRmdHdrProcessingSettings( settings, _trackNo );
+            _Bias = settings.Bias;
+            if ( _Bias != 0.0f ) _Bias = -_Bias;
+        }
+
+        clear_packets();
+        clear_cache();
+        refetch();
+    }
+
+    struct ColorSpace
+    {
+        ImageColorSpace num;
+        const char* const name;
+    };
+
+    ColorSpace kColorSpace[] = {
+        { ImageColorREDWideGamutRGB, "REDWideGamutRGB" },
+        { ImageColorRec2020, "Rec2020" },
+        { ImageColorRec709, "Rec709" },
+        { ImageColorSRGB, "sRGB" },
+        { ImageColorAdobe1998, "Adobe 1998" },
+        { ImageColorDCIP3, "DCIP3" },
+        { ImageColorProPhotoRGB, "ProPhotoRGB" },
+        { ImageColorDCIP3D65, "DCIP3 D65" },
+        { ImageColorDRAGONcolor2, "DRAGON color2" },
+        { ImageColorREDcolor4, "RED color4" },
+        { ImageColorCameraRGB, "Camera RGB" },
+        { ImageColorREDspace, "RED space" },
+        { ImageColorREDcolor, "RED color" },
+        { ImageColorREDcolor2, "RED color2" },
+        { ImageColorREDcolor3, "RED color3" },
+        { ImageColorDRAGONcolor, "DRAGON color" },
+    };
+
+    // This should be ImageProcessingLimits::ColorSpaceLabels, but it does
+    // not work.
+    std::string R3dImage::color_space() const
+    {
+        for ( size_t i = 0; i < sizeof(kColorSpace)/sizeof(ColorSpace); ++i )
+        {
+            if ( kColorSpace[i].num == iproc->ColorSpace )
+                return kColorSpace[i].name;
+        }
+        return "unknown";
+    }
+
+    struct GammaCurve
+    {
+        int num;
+        const char* const name;
+    };
+
+    GammaCurve kGammaCurve[] = {
+        { ImageGammaLinear, "Linear" },
+        { ImageGammaSRGB, "sRGB" },
+        { ImageGammaHDR2084, "HDR2084" },
+        { ImageGammaBT1886, "BT1886" },
+        { ImageGammaLog3G12, "Log3G12" },
+        { ImageGammaLog3G10, "Log3G10" },
+        { ImageGammaREDlogFilm, "REDlogFilm" },
+        { ImageGammaHybridLogGamma, "HybridLogGamma" },
+        { ImageGamma2_2, "Gamma2.2" },
+        { ImageGamma2_6, "Gamma2.6" },
+        { ImageGammaRec709, "Rec709" },
+        { ImageGammaREDgamma4, "REDgamma4" },
+        { ImageGammaPDlog685, "PDlog685" },
+        { ImageGammaPDlog985, "PDlog985" },
+        { ImageGammaCustomPDlog, "Custom PD log" },
+        { ImageGammaREDspace, "RED space"},
+        { ImageGammaREDlog, "RED log"},
+        { ImageGammaREDgamma, "RED gamma" },
+        { ImageGammaREDgamma2, "RED gamma2" },
+        { ImageGammaREDgamma3, "RED gamma3" },
+    };
+
+    // This should be ImageProcessingLimits::GammaCurveLabels, but it does
+    // not work.
+    std::string R3dImage::gamma_curve() const
+    {
+        for ( size_t i = 0; i < sizeof(kGammaCurve)/sizeof(GammaCurve); ++i )
+        {
+            if ( kGammaCurve[i].num == iproc->GammaCurve )
+                return kGammaCurve[i].name;
+        }
+        return "unknown";
     }
 }

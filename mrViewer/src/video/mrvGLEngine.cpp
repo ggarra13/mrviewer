@@ -183,36 +183,35 @@ unsigned int GLEngine::_maxTexHeight;
 
 
 void zrot2offsets( double& x, double& y,
-                   const CMedia* img,
-                   const mrv::ImageView::FlipDirection flip,
-                   const double zdeg )
+                   const CMedia* img )
 {
     return;
     x = 0.0;
     y = 0.0;
+    double zdeg = img->rot_z();
     double rad = zdeg * M_PI / 180.0;
     double sn = sin( rad );
     double cs = cos( rad );
     mrv::Recti dpw = img->display_window();
     if ( is_equal( sn, -1.0 ) )
     {
-        if ( flip & ImageView::kFlipVertical )    y = (double)-dpw.w();
-        if ( flip & ImageView::kFlipHorizontal )  x = (double)-dpw.h();
+        if ( img->flipY() )    y = (double)-dpw.w();
+        if ( img->flipX() )  x = (double)-dpw.h();
     }
     else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
     {
-        if ( flip & ImageView::kFlipVertical )    x = (double)dpw.w();
-        if ( flip & ImageView::kFlipHorizontal )  y = (double)-dpw.h();
+        if ( img->flipY() )    x = (double)dpw.w();
+        if ( img->flipX() )  y = (double)-dpw.h();
     }
     else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
     {
-        if ( flip & ImageView::kFlipVertical )    y = (double)dpw.w();
-        if ( flip & ImageView::kFlipHorizontal )  x = (double)dpw.h();
+        if ( img->flipY() )    y = (double)dpw.w();
+        if ( img->flipX() )  x = (double)dpw.h();
     }
     else
     {
-        if ( flip & ImageView::kFlipVertical )    x = (double)-dpw.w();
-        if ( flip & ImageView::kFlipHorizontal )  y = (double) dpw.h();
+        if ( img->flipY() )    x = (double)-dpw.w();
+        if ( img->flipX() )  y = (double) dpw.h();
     }
 }
 
@@ -1192,7 +1191,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 }
 
 inline
-void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
+void GLEngine::set_matrix( const CMedia* img )
 {
     if ( _view->vr() ) return;
 
@@ -1229,14 +1228,11 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
     //
     // Handle flip
     //
-    if ( flip != ImageView::kFlipNone )
-    {
-        float x = 1.0f, y = 1.0f;
-        if ( flip & ImageView::kFlipVertical )   x = -1.0f;
-        if ( flip & ImageView::kFlipHorizontal ) y = -1.0f;
+    float x = 1.0f, y = 1.0f;
+    if ( img->flipX() ) x = -1.0f;
+    if ( img->flipY() ) y = -1.0f;
 
-        glScalef( x, y, 1.0f );
-    }
+    glScalef( x, y, 1.0f );
 
     //
     // Handle pixel ratio
@@ -1282,9 +1278,7 @@ void GLEngine::draw_mask( const float pct )
     glColor3f( 0.0f, 0.0f, 0.0f );
     glDisable( GL_STENCIL_TEST );
 
-    ImageView::FlipDirection flip = _view->flip();
-
-    set_matrix( flip );
+    set_matrix( img );
 
     double zdeg = img->rot_z();
 
@@ -1337,15 +1331,8 @@ void GLEngine::draw_mask( const float pct )
  * @param r rectangle to draw
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r,
-                               const mrv::ImageView::FlipDirection flip,
-                               const double zdeg )
+                               const CMedia* img )
 {
-
-    mrv::media fg = _view->foreground();
-    if (!fg) return;
-
-    DBGM3( __FUNCTION__ << " " << __LINE__ );
-    Image_ptr img = fg->image();
 
 
     glMatrixMode(GL_MODELVIEW);
@@ -1353,12 +1340,12 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip );
+    set_matrix( img );
 
     double x = 0.0, y = 0.0;
-    zrot2offsets( x, y, img, flip, zdeg );
+    zrot2offsets( x, y, img );
 
-    glRotated( zdeg, 0, 0, 1 );
+    glRotated( img->rot_z(), 0, 0, 1 );
     translate( x + r.x(), y - r.y(), 0 );
 
     double rw = r.w();
@@ -1447,11 +1434,9 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     }
     mrv::Recti dpw = img->display_window();
 
-    ImageView::FlipDirection flip = _view->flip();
-
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip );
+    set_matrix( img );
 
     double x = dpw.x();
     double y = dpw.y();
@@ -1462,7 +1447,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     double zdeg = img->rot_z();
 
-    zrot2offsets( x, y, img, flip, zdeg );
+    zrot2offsets( x, y, img );
 
     glRotated( zdeg, 0, 0, 1 );
     translate(  x + tw, - y - th, 0 );
@@ -1553,7 +1538,6 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     if ( img == NULL ) return;
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
-    ImageView::FlipDirection flip = _view->flip();
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     if ( _view->action_mode() == ImageView::kMovePicture )
@@ -1565,20 +1549,20 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
 
-    draw_rectangle( r, _view->flip(), 0.0 );
+    draw_rectangle( r, img );
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip );
+    set_matrix( img );
 
 
     mrv::Recti dpw = img->display_window();
     double x = 0.0, y = 0.0;
-    if ( flip & ImageView::kFlipVertical )    x = (double)-dpw.w();
-    if ( flip & ImageView::kFlipHorizontal )  y = (double) dpw.h();
+    if ( img->flipY() )  x = (double)-dpw.w();
+    if ( img->flipX() )  y = (double) dpw.h();
 
     translate( x + r.x(), y - r.y(), 0 );
 
@@ -1669,7 +1653,12 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    draw_rectangle( r, _view->flip(), 0.0 );
+    const mrv::media& fg = _view->foreground();
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        draw_rectangle( r, img );
+    }
     glDisable( GL_LINE_STIPPLE );
     if ( _view->display_window() && !_view->vr() )
         glEnable( GL_STENCIL_TEST );
@@ -1925,16 +1914,15 @@ void GLEngine::draw_images( ImageList& images )
         texWidth  = int( texWidth * img->scale_x() );
         texHeight = int( texHeight * img->scale_y() );
 
-        ImageView::FlipDirection flip = _view->flip();
 
-        set_matrix( flip );
+        set_matrix( img );
 
-        if ( flip && !_view->vr() )
+        if ( !_view->vr() )
         {
             const mrv::Recti& dp = fg->display_window();
             double x = 0.0, y = 0.0;
-            if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
-            if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
+            if ( img->flipX() )   x = (double)-dp.w();
+            if ( img->flipY() ) y = (double)dp.h();
             glTranslated( x, y, 0.0f );
         }
 
@@ -1961,14 +1949,14 @@ void GLEngine::draw_images( ImageList& images )
         glDisable( GL_BLEND );
         CHECK_GL;
 
-        set_matrix( flip );
+        set_matrix( img );
 
-        if ( flip && !_view->vr() )
+        if ( !_view->vr() )
         {
             const mrv::Recti& dp = fg->display_window();
             double x = 0.0, y = 0.0;
-            if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
-            if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
+            if ( img->flipX() )   x = (double)-dp.w();
+            if ( img->flipY() ) y = (double)dp.h();
             glTranslated( x, y, 0.0f );
         }
 

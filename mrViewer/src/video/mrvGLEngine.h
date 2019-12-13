@@ -94,10 +94,7 @@ public:
     virtual void end_fbo( ImageList& images );
 
     /// Draw a rectangle
-    virtual void draw_rectangle( const mrv::Rectd& r,
-                                 const mrv::ImageView::FlipDirection flip =
-                                     mrv::ImageView::kFlipNone,
-                                 const double zdeg = 0.0 );
+    virtual void draw_rectangle( const mrv::Rectd& r, const CMedia* img );
 
     void draw_selection_marquee( const mrv::Rectd& r );
 
@@ -191,8 +188,7 @@ public:
                                  const bool print = false);
 
 protected:
-    void set_matrix( const ImageView::FlipDirection flip =
-                         ImageView::kFlipNone );
+    void set_matrix( const CMedia* img );
 
     void draw_shape( GLShape* const shape );
 

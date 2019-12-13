@@ -294,12 +294,13 @@ void GLSphere::draw_sphere( const unsigned dw, const unsigned dh ) const
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     {
-        ImageView::FlipDirection f = _view->flip();
-        if ( f )
+        const mrv::media& fg = _view->foreground();
+        if ( fg )
         {
+            CMedia* img = fg->image();
             float x = 1.0f, y = 1.0f;
-            if ( f & ImageView::kFlipVertical )   x = -1.0f;
-            if ( f & ImageView::kFlipHorizontal ) y = -1.0f;
+            if ( img->flipX() )   x = -1.0f;
+            if ( img->flipY() ) y = -1.0f;
             glScalef( x, y, 1.0f );
         }
     }

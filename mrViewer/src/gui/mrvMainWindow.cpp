@@ -33,6 +33,9 @@
 #include <X11/extensions/scrnsaver.h>
 #endif
 
+#include "core/mrvException.h"
+#include "core/R3dImage.h"
+
 // Must come before FL/Fl_x11.H
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
@@ -55,14 +58,46 @@
 
 using namespace std;
 
+namespace {
+    const char* kModule = "[main]";
+}
+
 namespace mrv {
 
+    using namespace R3DSDK;
 
 MainWindow::MainWindow( int W, int H, const char* title ) :
 Fl_Double_Window( W, H, title )
 {
     xclass("mrViewer");
     set_icon();
+    const char* r = getenv( "MRV_ROOT" );
+    if ( r )
+    {
+        Preferences::root = r;
+    }
+
+
+    if ( Preferences::root.empty() )
+    {
+        EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
+    }
+
+    if ( !R3dImage::init )
+    {
+        //Initialize the R3DSDK prior to using any R3DSDK objects.
+        std::string root = Preferences::root + "/lib";
+
+        InitializeStatus status = InitializeSdk(root.c_str(),
+                                                OPTION_RED_NONE);
+        if ( status != ISInitializeOK)
+        {
+            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
+            return;
+        }
+
+        R3dImage::init = true;
+    }
 }
 
 MainWindow::~MainWindow()

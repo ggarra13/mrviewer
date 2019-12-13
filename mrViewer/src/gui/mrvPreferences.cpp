@@ -344,19 +344,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char  tmpS[2048];
     Imf::Chromaticities tmpC, c;
 
-    DBG3;
-    const char* r = getenv( "MRV_ROOT" );
-    if ( r )
-    {
-        DBG3;
-        root = r;
-        DBG3;
-        if ( root.empty() )
-        {
-            DBG3;
-            EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
-        }
-    }
 
 
     DBG3;
@@ -1733,6 +1720,7 @@ void Preferences::run( ViewerUI* main )
             mrv::PopupMenu* w = main->uiICS;
             w->clear();
             std::sort( spaces.begin(), spaces.end() );
+            size_t idx = 0;
             for ( size_t i = 0; i < spaces.size(); ++i )
             {
                 const char* space = spaces[i].c_str();
@@ -1776,10 +1764,23 @@ void Preferences::run( ViewerUI* main )
                 {
                     DBG3;
                     w->copy_label( space );
-                    w->value( (int)i );
                 }
             }
-            w->do_callback();
+
+            for ( size_t i = 0; i < w->children(); ++i )
+            {
+                if ( !img ) continue;
+
+                const Fl_Menu_Item* o = w->child(i);
+                if ( !o || !o->label() ) continue;
+
+                if ( img->ocio_input_color_space() == o->label() )
+                {
+                    w->value(i);
+                    w->do_callback();
+                    break;
+                }
+            }
             DBG3;
             w->redraw();
         }

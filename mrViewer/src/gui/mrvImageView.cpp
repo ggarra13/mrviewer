@@ -1091,17 +1091,23 @@ void load_subtitle_cb( Fl_Widget* o, ViewerUI* uiMain )
 
 static void flip_x_cb( Fl_Widget* o, mrv::ImageView* view )
 {
-    mrv::ImageView::FlipDirection dir = view->flip();
-    view->flip( (mrv::ImageView::FlipDirection)
-                ( dir ^ mrv::ImageView::kFlipVertical ) );
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+    CMedia* img = fg->image();
+    img->flipX( !img->flipX() );
+    view->fit_image();
     view->redraw();
 }
 
 static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
 {
-    mrv::ImageView::FlipDirection dir = view->flip();
-    view->flip( (mrv::ImageView::FlipDirection)
-                ( dir ^ mrv::ImageView::kFlipHorizontal ) );
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+    CMedia* img = fg->image();
+    img->flipY( !img->flipY() );
+    view->fit_image();
     view->redraw();
 }
 
@@ -1456,7 +1462,6 @@ _showBG( true ),
 _showPixelRatio( false ),
 _useLUT( false ),
 _volume( 1.0f ),
-_flip( kFlipNone ),
 _reel( 0 ),
 _preframe( 1 ),
 _old_fg_frame( 0 ),
@@ -1901,8 +1906,7 @@ void ImageView::rot2vec( double& x, double& y, const double r )
 }
 
 void ImageView::data_window_coordinates( const CMedia* const img,
-        double& x, double& y,
-        const bool flipon ) const
+                                         double& x, double& y ) const
 {
     image_coordinates( img, x, y );
 
@@ -1914,16 +1918,13 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     x -= W/2.0;
     y -= H/2.0;
 
-    if ( flipon )
+    if ( img->flipX() )
     {
-        if ( _flip & kFlipVertical )
-        {
-            x = W - x;
-        }
-        if ( _flip & kFlipHorizontal )
-        {
-            y = H - y;
-        }
+        x = W - x;
+    }
+    if ( img->flipY() )
+    {
+        y = H - y;
     }
 
 
@@ -2127,7 +2128,7 @@ void ImageView::center_image()
         xoffset = -dpw.x() - W / 2.0;
     }
 
-    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
+    zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
 
     char buf[128];
@@ -2264,15 +2265,15 @@ void ImageView::fit_image()
     xoffset = -dpw.x() - W / 2.0;
 
 
-    if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
+    if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
         xoffset = 0.0;
 
     yoffset = ( dpw.y() + H / 2.0) / pr;
-    if ( (_flip & kFlipHorizontal) &&
-            stereo_out & CMedia::kStereoTopBottom  )
+    if ( img->flipX() &&
+         stereo_out & CMedia::kStereoTopBottom  )
         yoffset = 0.0;
 
-    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
+    zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
     char buf[128];
     sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -2288,22 +2289,22 @@ void ImageView::fit_image()
 
 void
 ImageView::zrotation_to_offsets( double& X, double& Y,
-                                 const double degrees,
-                                 const FlipDirection flip,
+                                 const CMedia* img,
                                  const int W,
                                  const int H )
 {
+    double degrees = img->rot_z();
     double r = degrees * (M_PI / 180);  // in radians, please
     double sn = sin(r);
     double cs = cos(r);
     if ( is_equal( sn, -1.0, 0.001 ) )
     {
         // This cascading if/then is correct
-        if ( flip & kFlipVertical )
+        if ( img->flipY() )
         {
             X -= W + H;
         }
-        if ( flip & kFlipHorizontal )
+        if ( img->flipX() )
         {
             X += W;
             Y -= H - W;
@@ -2315,11 +2316,11 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
     else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
     {
         // This cascading if/then is correct
-        if ( flip & kFlipVertical )
+        if ( img->flipY() )
         {
             X -= W * 2;
         }
-        if ( flip & kFlipHorizontal )
+        if ( img->flipX() )
         {
             Y += H;
             X += W;
@@ -2333,11 +2334,11 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
     else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
     {
         // This cascading if/then is correct
-        if ( flip & kFlipVertical )
+        if ( img->flipY() )
         {
             X -= H - W;
         }
-        if ( flip & kFlipHorizontal )
+        if ( img->flipX() )
             Y += W;
         else
             Y -= H;
@@ -3573,7 +3574,7 @@ void ImageView::draw()
         uchar r, g, b;
         Fl::get_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
         _engine->color( r, g, b, 255 );
-        _engine->draw_rectangle( _selection, flip(), img->rot_z() );
+        _engine->draw_rectangle( _selection, img );
     }
 
 
@@ -5799,7 +5800,7 @@ void ImageView::mouseDrag(int x,int y)
 
             double xf = double(lastX);
             double yf = double(lastY);
-            data_window_coordinates( img, xf, yf, true );
+            data_window_coordinates( img, xf, yf );
 
             mrv::Recti daw[2], dpw[2];
 
@@ -5810,7 +5811,7 @@ void ImageView::mouseDrag(int x,int y)
 
             double xn = double(x);
             double yn = double(y);
-            data_window_coordinates( img, xn, yn, true );
+            data_window_coordinates( img, xn, yn );
 
             short idx = 0;
 
@@ -6354,16 +6355,14 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kFlipX.match( rawkey ) )
     {
-        _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
-        fit_image();
+        flip_x_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
     else if ( kFlipY.match( rawkey ) )
     {
-        _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
-        fit_image();
+        flip_y_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;

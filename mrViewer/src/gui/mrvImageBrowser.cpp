@@ -3454,7 +3454,7 @@ void ImageBrowser::seek( const int64_t tframe )
         if ( bg )
         {
             img = bg->image();
-            f += img->first_frame() - 1;
+            f += img->first_frame();
             img->seek( f );
         }
     }

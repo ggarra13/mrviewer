@@ -63,6 +63,7 @@ using namespace std;
 #include "core/mrvString.h"
 #include "core/aviImage.h"
 #include "core/exrImage.h"
+#include "core/R3dImage.h"
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -1457,6 +1458,21 @@ static void change_keycode_cb( Fl_Int_Input* w, ImageInformation* info )
     }
 }
 
+static void change_iso_cb( mrv::PopupMenu* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast<R3dImage*>( info->get_image() );
+    if ( !img ) return;
+
+    int v = w->value();
+    char buf[256];
+    sprintf( buf, "%lu", R3DSDK::ImageProcessingLimits::ISOList[v] );
+    w->label( buf );
+    img->iso_index( v );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
 static void change_colorspace( mrv::PopupMenu* w, ImageInformation* info )
 {
     aviImage* img = dynamic_cast<aviImage*>( info->get_image() );
@@ -1685,6 +1701,86 @@ static void change_pixel_ratio_cb( Fl_Float_Input* w,
     img->pixel_ratio( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
+}
+
+static void r3d_camera_cb( Fl_Button* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->load_camera_settings();
+    img->image_damage( mrv::CMedia::kDamageAll );
+    info->refresh();
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_sidecar_cb( Fl_Button* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->load_rmd_sidecar();
+    img->image_damage( mrv::CMedia::kDamageAll );
+    info->refresh();
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_exposure_cb( Fl_Float_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->Exposure( (float) atof( w->value() ) );
+    update_float_slider( w );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_kelvin_cb( Fl_Float_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->Kelvin( (float) atof( w->value() ) );
+    update_float_slider( w );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_tint_cb( Fl_Float_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->Tint( (float) atof( w->value() ) );
+    update_float_slider( w );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_blend_cb( mrv::PopupMenu* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    unsigned idx = w->value();
+    img->hdr_mode( (R3DSDK::HdrMode) idx );
+    w->copy_label( w->child( idx )->label() );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_trackno_cb( Fl_Int_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->trackNo( atoi( w->value() ) );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_bias_cb( Fl_Float_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+    img->Bias( (float) atof( w->value() ) );
+    update_float_slider( w );
+
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
 }
 
 static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
@@ -2312,7 +2408,6 @@ void ImageInformation::fill_data()
                   _(avi->color_range()) );
     }
 
-
     DBG3;
 
     ++group;
@@ -2489,6 +2584,72 @@ void ImageInformation::fill_data()
     {
         m_attributes->show();
         m_curr = add_browser( m_attributes );
+
+        R3dImage* r3d = dynamic_cast< R3dImage* >( img );
+        if ( r3d )
+        {
+            char version[10];
+            sprintf( version, "%d", r3d->color_version() );
+            add_text( _("Color Version"), _("RED Color Version"),
+                      version );
+
+            add_button( _("Settings from RMD"),
+                        _("Load IPP2 settings from RMD sidecar or\nreset them to camera settings."),
+                        (Fl_Callback*)change_sidecar_cb,
+                        (Fl_Callback*)r3d_camera_cb );
+
+            add_text( _("Color Space"), _("RED Color space"),
+                      r3d->color_space() );
+
+            add_text( _("Gamma Curve"), _("RED gamma curve"),
+                      r3d->gamma_curve() );
+
+            std::string content;
+            stringArray options;
+            char buf[128];
+            for ( size_t i = 0;
+                  i < R3DSDK::ImageProcessingLimits::ISOCount; ++i )
+            {
+                sprintf( buf, "%lu",
+                         R3DSDK::ImageProcessingLimits::ISOList[i] );
+                options.push_back( buf );
+            }
+            sprintf( buf, "%lu",
+                     R3DSDK::ImageProcessingLimits::ISOList[r3d->iso_index()] );
+            content = buf;
+            add_enum( _("ISO"), _("ISO of film stock."),
+                      content, options, true, (Fl_Callback*)change_iso_cb );
+
+            add_float( _("Exposure Adjust"),
+                       _("Exposure compensation of clip."),
+                       r3d->Exposure(), true, true,
+                       (Fl_Callback*)change_exposure_cb, -8.0f, 8.f );
+
+            add_float( _("Kelvin"), _("Kelvin temperature."),
+                       r3d->Kelvin(), true, true,
+                       (Fl_Callback*)change_kelvin_cb, 1000.f, 10000.f );
+
+            add_float( _("Tint"), _("Tinting of clip."),
+                       r3d->Tint(), true, true,
+                       (Fl_Callback*)change_tint_cb, -100.0f, 100.f );
+
+            if ( r3d->is_hdr() )
+            {
+                stringArray options;
+                options.push_back( _("Use TrackNo") );
+                options.push_back( _("Do Blend") );
+                content = options[ r3d->hdr_mode() ];
+                add_enum( _("HDR blend"), _("HDR blend type"),
+                          content, options, true, (Fl_Callback*)change_blend_cb );
+
+                add_int( _("Track #"), _("HDR Track No"), r3d->trackNo(), true, true,
+                           (Fl_Callback*)change_trackno_cb, 0, 1 );
+
+                add_float( _("Bias"), _("HDR Blend bias of clip."),
+                           r3d->Bias(), true, true,
+                           (Fl_Callback*)change_bias_cb, -1.0f, 1.f );
+            }
+        }
 
         CMedia::Attributes::const_iterator i = attrs.begin();
         CMedia::Attributes::const_iterator e = attrs.end();
@@ -2936,6 +3097,50 @@ void ImageInformation::add_icc( const char* name,
 
     m_curr->layout();
 }
+
+void ImageInformation::add_button( const char* name,
+                                   const char* tooltip,
+                                   Fl_Callback* callback,
+                                   Fl_Callback* callback2 )
+{
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    int hh = line_height();
+    Y += hh;
+
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    {
+        Fl_Box* widget = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->end();
+    }
+    m_curr->add( g );
+
+    g = new Fl_Group( kMiddle, Y, w() - kMiddle, hh );
+    {
+        int w2 = w() - kMiddle;
+        w2 /= 2;
+        Fl_Button* widget = new Fl_Button( kMiddle, Y, w2, hh );
+        widget->tooltip( tooltip );
+        widget->copy_label( _("Load") );
+        if ( callback )
+            widget->callback( (Fl_Callback*)callback, (void*)this );
+        widget = new Fl_Button( kMiddle+w2, Y, w2, hh );
+        widget->tooltip( tooltip );
+        widget->copy_label( _("Reset") );
+        if ( callback )
+            widget->callback( (Fl_Callback*)callback2, (void*)this );
+        g->end();
+    }
+    m_curr->add( g );
+
+    m_curr->layout();
+}
+
 
 void ImageInformation::add_ctl( const char* name,
                                 const char* tooltip,

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -165,10 +165,9 @@ public:
     virtual void end_fbo( ImageList& images ) = 0;
 
     /// Draw a rectangle
-    virtual void draw_rectangle( const mrv::Rectd& r,
-                                 const mrv::ImageView::FlipDirection f =
-                                     mrv::ImageView::kFlipNone,
-                                 const double zdeg = 0.0 ) = 0;
+    // virtual void draw_rectangle( const mrv::Rectd& r, const CMedia* img,
+    //                              const double zdeg = 0.0 ) = 0;
+    virtual void draw_rectangle( const mrv::Rectd& r, const CMedia* img ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
@@ -215,7 +214,7 @@ public:
     virtual void draw_mask(const float pct) = 0;
 
     virtual void draw_cursor( const double x, const double y,
-			      ImageView::Mode mode ) = 0;
+                              ImageView::Mode mode ) = 0;
 
     virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 

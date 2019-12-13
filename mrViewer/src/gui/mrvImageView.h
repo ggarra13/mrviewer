@@ -159,11 +159,6 @@ public:
         kWipeFrozen = 4
     };
 
-    enum FlipDirection {
-        kFlipNone = 0,
-        kFlipHorizontal = 1,
-        kFlipVertical   = 2,
-    };
 
     enum HudDisplay {
         kHudNone          = 0,
@@ -603,13 +598,6 @@ public:
         return _engine;
     }
 
-    FlipDirection flip() const {
-        return _flip;
-    }
-    void flip( const FlipDirection f )  {
-        _flip = f;
-    }
-
     float masking() const {
         return _masking;
     }
@@ -762,8 +750,7 @@ public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
     // This function is used in fit_image and center_image.
     static
-    void zrotation_to_offsets( double& X, double& Y, const double degrees,
-                               const FlipDirection flip,
+    void zrotation_to_offsets( double& X, double& Y, const CMedia* img,
                                const int W, const int H );
 
 public:
@@ -842,8 +829,7 @@ protected:
     /// Given two window coordinates, return pixel coordinates
     /// in the data window (which may be offset)
     void data_window_coordinates( const CMedia* const img,
-                                  double& x, double& y,
-                                  const bool flipon = true ) const;
+                                  double& x, double& y ) const;
 
 
     /// Given two window coordinates, return pixel coordinates
@@ -925,7 +911,6 @@ protected:
     bool          _displayWindow, _dataWindow, _showBG;
     bool          _showPixelRatio, _useLUT;
     float         _volume;
-    FlipDirection _flip;
     unsigned      _reel;      // <- reel of preframe
     std::atomic< int64_t >      _preframe;
     int64_t       _old_fg_frame;  // <- old frame used to stat fileroot's fg

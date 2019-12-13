@@ -29,12 +29,7 @@
 #define R3dImage_h
 
 #include <CMedia.h>
-
-namespace R3DSDK
-{
-    class Clip;
-    struct ImageProcessingSettings;
-}
+#include <R3DSDK.h>
 
 namespace mrv {
 
@@ -65,9 +60,42 @@ public:
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const {
         return (_num_channels == 4);
-    };
+    }
+
+    void Kelvin( float f )   { _Kelvin = f; refetch(); }
+    void Tint( float f )     { _Tint = f; refetch(); }
+    void Exposure( float f ) { _Exposure = f; refetch(); }
+
+    float Kelvin() const { return _Kelvin; }
+    float Tint() const { return _Tint; }
+    float Exposure() const { return _Exposure; }
+
+    void iso_index( size_t i );
+    size_t iso_index() const;
+
+    void load_camera_settings();
+    void load_rmd_sidecar();
+
+    int color_version() const;
+
+    std::string color_space() const;
+    std::string gamma_curve() const;
+
+    bool is_hdr() const { return _hdr; }
+
+    R3DSDK::HdrMode hdr_mode() const { return _hdr_mode; }
+    void hdr_mode( R3DSDK::HdrMode t ) { _hdr_mode = t; refetch(); }
+
+    void trackNo( size_t f ) { _trackNo = f; refetch(); }
+    size_t trackNo() const { return _trackNo; }
+
+    float Bias()         { return _Bias; }
+    void Bias( float f ) { _Bias = f; refetch(); }
 
     virtual bool has_video() const { return true; }
+
+    ////////////////// Refresh frame as it has changed on disk
+    virtual bool has_changed();
 
     virtual const char* const format() const { return "RED3D"; }
 
@@ -93,9 +121,18 @@ protected:
     R3DSDK::Clip* clip;
     R3DSDK::ImageProcessingSettings* iproc;
     video_cache_t _images;
+    bool          _new_grade;
+    bool          _hdr;
     int           _scale;
-protected:
-    static bool _init;
+    size_t        _ISO;
+    float         _Kelvin;
+    float         _Tint;
+    float         _Exposure;
+    float         _Bias;
+    size_t        _trackNo;
+    R3DSDK::HdrMode  _hdr_mode;
+public:
+    static bool init;
 };
 
 } // namespace mrv

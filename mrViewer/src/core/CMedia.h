@@ -433,6 +433,8 @@ public:
         return true;
     }
 
+    void refetch();
+
     inline void actual_frame_rate( double fps ) { _actual_frame_rate = fps; }
     inline double actual_frame_rate() const { return _actual_frame_rate; }
 
@@ -1464,6 +1466,12 @@ public:
         return _rot_z;
     }
 
+    void flipX(bool t) { _flipX = t; }
+    void flipY(bool t) { _flipY = t; }
+
+    bool flipX() const { return _flipX; }
+    bool flipY() const { return _flipY; }
+
     inline void scale_x( double t ) {
         _scale_x = t;
     }
@@ -1771,7 +1779,6 @@ protected:
     void audio_initialize();
     void audio_shutdown();
 
-
     // Extract frame from pts or dts
     int64_t get_frame( const AVStream* s, const AVPacket& pkt );
 
@@ -2026,6 +2033,9 @@ protected:
     subtitle_info_list_t _subtitle_info;   //!< list of subtitle stream infos
     char*                _subtitle_encoding;
     char*                _subtitle_font;
+
+    bool              _flipX;
+    bool              _flipY;
 
     bool              _last_audio_cached;
     int               _audio_index;   //!< current audio active stream

@@ -89,7 +89,7 @@ public:
     }
 
     void resize( int x, int y, int w, int h );
-    
+
     ImageView*  view() const;
 
 protected:
@@ -115,10 +115,15 @@ protected:
 
     mrv::Table* add_browser( mrv::CollapsibleGroup* g );
 
+    void add_button( const char* name, const char* tooltip,
+                     Fl_Callback* callback = NULL,
+                     Fl_Callback* callback2 = NULL );
+
     void add_icc( const char* name, const char* tooltip,
                   const char* content,
                   const bool editable = true,
                   Fl_Callback* callback = NULL );
+
 
     void add_ctl( const char* name, const char* tooltip,
                   const char* content,
