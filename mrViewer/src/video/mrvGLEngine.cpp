@@ -1191,7 +1191,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 }
 
 inline
-void GLEngine::set_matrix( const CMedia* img )
+void GLEngine::set_matrix( const CMedia* img, const bool flip )
 {
     if ( _view->vr() ) return;
 
@@ -1228,11 +1228,14 @@ void GLEngine::set_matrix( const CMedia* img )
     //
     // Handle flip
     //
-    float x = 1.0f, y = 1.0f;
-    if ( img->flipX() ) x = -1.0f;
-    if ( img->flipY() ) y = -1.0f;
+    if ( flip )
+    {
+        float x = 1.0f, y = 1.0f;
+        if ( img->flipX() ) x = -1.0f;
+        if ( img->flipY() ) y = -1.0f;
+        glScalef( x, y, 1.0f );
+    }
 
-    glScalef( x, y, 1.0f );
 
     //
     // Handle pixel ratio
@@ -1340,7 +1343,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( img );
+    set_matrix( img, false );
 
     double x = 0.0, y = 0.0;
     zrot2offsets( x, y, img );

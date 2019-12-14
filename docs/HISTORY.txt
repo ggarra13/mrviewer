@@ -2,10 +2,11 @@ v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	  The decompression is done on the CPU and it takes into account
 	  the Cache Scale setting in the Preferences.
 	  The current color pipeline is IPP2 only.  The legacy pipeline
-	  is not currently supported.
+	  is not currently supported.  To turn a legacy pipeline into IPP2,
+	  Use the two buttons labeled Load RMD and Reset to Camera.
 	- Made EDL switching more thread safe by temporarily stopping the
 	  playback.
-	- Made Auto Fit Image be faster to not allow showing frames not in
+	- Made Auto Fit Image be faster to not allow flickering frames not in
 	  their correct size and position.
 	- Made OCIO's config file be selectable without exiting mrViewer.
 	  The switch happens automatically.
@@ -24,6 +25,7 @@ v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	- Made flipX and flipY be an image attribute instead of a global viewer
 	  option.
 	- Fixed a crash when looping BG images.
+	- Fixed flipX/Y color area selection.
 
 
 v5.3.2  - Made Log Window disappear when in Presentation mode.

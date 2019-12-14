@@ -12,6 +12,8 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
+#include <tinyxml2.h>
+
 #include "ImfFloatAttribute.h"
 #include "ImfIntAttribute.h"
 #include "ImfStringAttribute.h"
@@ -30,6 +32,7 @@ namespace {
 
 
 namespace mrv {
+    using namespace tinyxml2;
 
     bool R3dImage::init = false;
 
@@ -111,6 +114,65 @@ namespace mrv {
             _frameStart = _frame = _frame_start = 0;
             _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
 
+
+            if ( clip->MetadataExists( RMD_FLIP_HORIZONTAL ) )
+                _flipX = clip->MetadataItemAsInt( RMD_FLIP_HORIZONTAL );
+            if ( clip->MetadataExists( RMD_FLIP_VERTICAL ) )
+                _flipY = clip->MetadataItemAsInt( RMD_FLIP_VERTICAL );
+
+            _pixel_ratio = 1.0f;
+            if ( clip->MetadataExists( RMD_PIXEL_ASPECT_RATIO ) )
+                _pixel_ratio = clip->MetadataItemAsFloat( RMD_PIXEL_ASPECT_RATIO );
+
+            //
+            // We need to extract some XML info from the RMD sidecar since
+            // the SDK does not parse all of it.
+            //
+            const char* rmdfile = clip->GetRmdPath();
+            if ( rmdfile )
+            {
+                XMLDocument doc;
+                doc.LoadFile( rmdfile );
+                XMLNode* root = doc.FirstChildElement("sidecar");
+                if ( root ) root = root->FirstChildElement("edits");
+                if ( root ) root = root->FirstChildElement("editlist");
+                if ( root ) root = root->FirstChildElement("edit");
+                XMLElement* element = root->FirstChildElement( "in" );
+                if ( element )
+                {
+                    int f;
+                    element->QueryIntAttribute( "value", &f );
+                    _frameStart = f;
+                }
+                element = root->FirstChildElement( "out" );
+                if ( element )
+                {
+                    int f;
+                    element->QueryIntAttribute( "value", &f );
+                    _frameEnd = f;
+                }
+                root = root->FirstChildElement( "framing" );
+                if ( root )
+                {
+
+                    element = root->FirstChildElement("flipvertical");
+                    if (element)
+                        element->QueryBoolAttribute( "value", &_flipY );
+
+
+                    element = root->FirstChildElement("fliphorizontal");
+                    if (element)
+                        element->QueryBoolAttribute( "value", &_flipX );
+
+
+                    element = root->FirstChildElement("rotation");
+                    float z = 0.f;
+                    if (element)
+                        element->QueryFloatAttribute( "value", &z );
+                    _rot_z = z;
+                }
+            }
+
             for ( size_t i = 0; i < clip->MetadataCount(); ++i )
             {
                 const std::string& name = clip->MetadataItemKey(i);
@@ -178,9 +240,8 @@ namespace mrv {
         size_t newiso = ImageProcessingLimits::ISOList[i];
         if ( iproc->ISO != newiso )
         {
-            clear_packets();
-            clear_cache();
-            iproc->ISO = _ISO = newiso;
+            _ISO = newiso;
+            _dts = _frame.load();
             refetch();
         }
     }
@@ -234,7 +295,8 @@ namespace mrv {
         {
             _new_grade = false;
             _scale = cache_scale();
-            clear_packets();
+            Mutex& mtx = _video_packets.mutex();
+            SCOPED_LOCK( mtx );
             clear_cache();
         }
 
@@ -333,7 +395,6 @@ namespace mrv {
         // in half interleaved RGB format
         job.PixelType = decode_type;
 
-        _pixel_ratio = 1.0;
         _gamma = 1.0f;
 
         if ( _hdr )
@@ -462,12 +523,14 @@ namespace mrv {
         pkt.size = 0;
         pkt.data = NULL;
 
-
         if ( ! is_cache_filled( _dts ) )
         {
             image_type_ptr canvas;
-            fetch( canvas, _dts );
-            default_color_corrections();
+            if ( fetch( canvas, _dts ) )
+            {
+                cache( canvas );
+                default_color_corrections();
+            }
         }
 
         _video_packets.push_back( pkt );
@@ -797,8 +860,10 @@ namespace mrv {
         }
         iproc->GammaCurve = ImageGammaLog3G10;
         iproc->ColorSpace = ImageColorREDWideGamutRGB;
-        clear_packets();
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
         clear_cache();
+        _dts = _frame.load();
         refetch();
     }
 
@@ -820,8 +885,10 @@ namespace mrv {
             if ( _Bias != 0.0f ) _Bias = -_Bias;
         }
 
-        clear_packets();
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
         clear_cache();
+        _dts = _frame.load();
         refetch();
     }
 

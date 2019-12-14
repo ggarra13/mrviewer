@@ -388,8 +388,32 @@ void ColorInfo::selection_to_coord( const CMedia* img,
     if ( selection.w() > 0 ) W = (int)selection.w();
     if ( selection.h() > 0 ) H = (int)selection.h();
 
-    xmax = xmin + W - 1;
-    ymax = ymin + H - 1;
+    if ( img->flipX() ) xmin = wt - xmin;
+    if ( img->flipY() ) ymin = ht - ymin;
+
+    if ( img->flipX() )
+        xmax = xmin - W + 1;
+    else
+        xmax = xmin + W - 1;
+
+    if ( img->flipY() )
+        ymax = ymin - H + 1;
+    else
+        ymax = ymin + H - 1;
+
+    if ( xmax < xmin )
+    {
+        int tmp = xmax;
+        xmax = xmin;
+        xmin = tmp;
+    }
+
+    if ( ymax < ymin )
+    {
+        int tmp = ymax;
+        ymax = ymin;
+        ymin = tmp;
+    }
 
 
     if ( xmin < 0 ) xmin = 0;

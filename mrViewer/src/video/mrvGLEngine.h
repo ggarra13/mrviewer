@@ -188,7 +188,7 @@ public:
                                  const bool print = false);
 
 protected:
-    void set_matrix( const CMedia* img );
+    void set_matrix( const CMedia* img, const bool flip = true );
 
     void draw_shape( GLShape* const shape );
 

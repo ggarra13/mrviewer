@@ -1096,7 +1096,7 @@ static void flip_x_cb( Fl_Widget* o, mrv::ImageView* view )
 
     CMedia* img = fg->image();
     img->flipX( !img->flipX() );
-    view->fit_image();
+    view->update_color_info();
     view->redraw();
 }
 
@@ -1107,7 +1107,7 @@ static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
 
     CMedia* img = fg->image();
     img->flipY( !img->flipY() );
-    view->fit_image();
+    view->update_color_info();
     view->redraw();
 }
 
@@ -1918,15 +1918,6 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     x -= W/2.0;
     y -= H/2.0;
 
-    if ( img->flipX() )
-    {
-        x = W - x;
-    }
-    if ( img->flipY() )
-    {
-        y = H - y;
-    }
-
 
     {
         const mrv::Recti& daw = img->data_window();
@@ -1934,7 +1925,7 @@ void ImageView::data_window_coordinates( const CMedia* const img,
         y -= daw.y();
     }
 
-    rot2vec( x, y, img->rot_z() );
+    //    rot2vec( x, y, img->rot_z() );
 
     //
     // If image is smaller than display window, we are dealing
@@ -5892,6 +5883,7 @@ void ImageView::mouseDrag(int x,int y)
 
             xn = floor(xn+0.5f);
             yn = floor(yn+0.5f);
+
 
             if ( _mode == kSelection )
             {

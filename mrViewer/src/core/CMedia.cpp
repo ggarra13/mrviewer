@@ -1557,7 +1557,8 @@ void CMedia::sequence( const char* fileroot,
     uint64_t num = _frame_end - _frame_start + 1;
 
 
-    if ( dynamic_cast< aviImage* >( this ) == NULL )
+    if ( dynamic_cast< aviImage* >( this ) == NULL &&
+         dynamic_cast< R3dImage* >( this ) == NULL )
     {
         _sequence = new mrv::image_type_ptr[ (unsigned) num ];
         _right    = new mrv::image_type_ptr[ (unsigned) num ];
@@ -3947,7 +3948,10 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
 
             // This is needed to handle loops properly, as packets do not
             // come for all frames, as counted in the playback loop.
-            if ( frame > pkt.dts ) {
+            if ( frame > pkt.dts )
+            {
+                if ( ! is_cache_filled( frame ) )
+                    refetch(frame);
                 return kDecodeOK;
             }
 
@@ -3964,7 +3968,11 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // This is needed to handle loops properly, as packets do not
             // come for all frames, as counted in the playback loop.
             if ( frame < pkt.dts )
-                 return kDecodeOK;
+            {
+                if ( ! is_cache_filled( frame ) )
+                    refetch(frame);
+                return kDecodeOK;
+            }
 
             _video_packets.pop_front();
             return kDecodeLoopEnd;
@@ -3972,6 +3980,10 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
         else
         {
             assert( !_video_packets.empty() );
+            if ( ! is_cache_filled( frame ) )
+            {
+                refetch(frame);
+            }
             _video_packets.pop_front();
             return kDecodeOK;
         }
@@ -4577,11 +4589,19 @@ char *const get_error_text(const int error)
     return error_buffer;
 }
 
-void CMedia::refetch()
+void CMedia::refetch( int64_t f )
 {
     image_type_ptr canvas;
-    fetch( canvas, _dts );
-    hires( canvas );
+    if ( fetch( canvas, f ) )
+    {
+        cache( canvas );
+        default_color_corrections();
+    }
+}
+
+void CMedia::refetch()
+{
+    refetch( _dts );
 }
 
 } // namespace mrv
