@@ -802,8 +802,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
     setlocale( LC_NUMERIC, "C" );
 
     FILE* f = fl_fopen( reelfile, "r" );
-    if (!f ) return false;
-
+    if (!f ) {
+        setlocale( LC_NUMERIC, "" );
+        return false;
+    }
+    
     double version = 1.0;
     char buf[16000];
     while ( !feof(f) )

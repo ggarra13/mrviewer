@@ -3817,6 +3817,7 @@ void ImageView::draw()
         {
             sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
             hud << buf;
+            setlocale( LC_ALL, "es-AR" );
             sprintf( buf, _("FPS: %.3f" ), img->actual_frame_rate() );
             hud << buf;
         }

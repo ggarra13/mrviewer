@@ -1324,7 +1324,7 @@ bool Parser::parse( const std::string& s )
                 deliver( cmd );
 
                 boost::int64_t frame = img->frame();
-                sprintf( buf, N_("seek %") PRId64, frame );
+                sprintf( buf, N_("seek %" PRId64 ), frame );
                 deliver( buf );
             }
 

@@ -162,7 +162,8 @@ protected:
                     const bool editable = false,
                     const bool active = false,
                     Fl_Callback* callback = NULL,
-                    const float minV = 0.0f, const float maxV = 1.0f );
+                    const float minV = 0.0f, const float maxV = 1.0f,
+                    const int when = FL_WHEN_RELEASE  );
     void add_rect( const char* name, const char* tooltip,
                    const mrv::Recti& content,
                    const bool editable = false,

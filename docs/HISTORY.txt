@@ -1,3 +1,21 @@
+v5.3.4  - Made all R3D color changes be interactive.
+	- Added pull down menus to color space and gamma curve in the
+	  R3D section of the image information window.
+	- Made R3D color space selection modify the image's input color space
+	  so as to make it easier to see the images in the right color space.
+	  This works similar to Nuke, but better as it distinguishes between
+	  nuke-default's and aces' colorspaces.
+	- Added support for legacy color pipeline (color version 2)
+	  in R3D movies.  Most elements now work.
+	- Added brightness, contrast, saturation, gain, etc. to R3D's media
+	  info.
+	- Added 1:1, 1:2, 1:4 and 1:8 pulldown menu to media info to control
+	  the size of each R3D clip, instead of relying on the global cache
+	  pulldown.
+	- Made sorting of input color spaces use the Family name, according
+	  to the config.ocio file, instead of relying on a custom sorting as
+	  before.
+
 v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	  The decompression is done on the CPU and it takes into account
 	  the Cache Scale setting in the Preferences.

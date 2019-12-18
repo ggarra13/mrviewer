@@ -765,11 +765,12 @@ void ImageBrowser::save_reel()
     // Monday February 12 2019 20:14:05
     strftime( date, 128, "%A %B %e %Y %H:%M:%S", ti );
 
-    setlocale( LC_NUMERIC, "C" );
+    setlocale( LC_NUMERIC, N_("C") );
 
     FILE* f = fl_fopen( reelname.c_str(), "w" );
     if (!f)
     {
+        setlocale( LC_NUMERIC, N_("") );
         mrvALERT("Could not save '" << reelname << "'" );
         return;
     }
@@ -885,7 +886,7 @@ void ImageBrowser::save_reel()
     fclose(f);
 
 
-    setlocale( LC_NUMERIC, "" );
+    setlocale( LC_NUMERIC, N_("") );
 
 }
 

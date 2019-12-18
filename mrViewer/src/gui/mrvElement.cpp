@@ -1,4 +1,5 @@
 #include "mrvElement.h"
+#include "core/R3dImage.h"
 #include "gui/mrvPreferences.h"
 
 namespace {
@@ -96,6 +97,14 @@ void Element::make_thumbnail()
         }
         else
         {
+            size_t w = img->width();
+            size_t h = img->height();
+            R3dImage* r3d = dynamic_cast< R3dImage* >( img );
+            if ( r3d )
+            {
+                w = r3d->real_width();
+                h = r3d->real_height();
+            }
             sprintf( info,
                      _("Directory: %s\n"
                        "Name: %s\n"
@@ -103,8 +112,7 @@ void Element::make_thumbnail()
                        "Frames: %" PRId64 "-%" PRId64 " FPS %g"),
                      img->directory().c_str(),
                      name.c_str(),
-                     img->width(),
-                     img->height(),
+                     w, h,
                      img->start_frame(),
                      img->end_frame(),
                      img->fps()

@@ -1463,6 +1463,8 @@ void Preferences::run( ViewerUI* main )
     }
     DBG3;
 
+    bool nuke_default = false;
+
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
@@ -1490,6 +1492,9 @@ void Preferences::run( ViewerUI* main )
             mrvLOG_INFO( "ocio", parsed << std::endl );
 
         }
+
+        if ( parsed.rfind( "nuke-default" ) != std::string::npos )
+            nuke_default = true;
 
         DBG3;
         sprintf( buf, "OCIO=%s", parsed.c_str() );
@@ -1724,39 +1729,13 @@ void Preferences::run( ViewerUI* main )
             for ( size_t i = 0; i < spaces.size(); ++i )
             {
                 const char* space = spaces[i].c_str();
-              //OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
-                std::string menu = space;
-                size_t pos;
-                while ( ( pos = menu.find( " - " ) ) != std::string::npos )
-                {
-                    menu = menu.substr( 0, pos ) + '/' +
-                           menu.substr( pos+3, menu.size() );
+                OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
+                const char* family = cs->getFamily();
+                std::string menu;
+                if ( family && strlen(family) > 0 ) {
+                    menu = family; menu += "/";
                 }
-
-                pos = menu.rfind( '/' );
-                if ( pos != std::string::npos )
-                {
-                    menu = menu.substr( 0, pos+1 ) + space;
-                }
-                else
-                {
-                    bool all_lowercase = true;
-                    const char* c = menu.c_str();
-                    for ( ; *c; ++c )
-                    {
-                        if ( *c != '_' && ( *c < 'a' || *c > 'z' ) &&
-                             ( *c < '0' || *c > '9' ) )
-                        {
-                            all_lowercase = false;
-                            break;
-                        }
-                    }
-
-                    if ( all_lowercase )
-                    {
-                        menu = "Aliases/" + menu;
-                    }
-                }
+                menu += space;
                 w->add( menu.c_str() );
                 DBG3;
                 //w->child(i)->tooltip( strdup( cs->getDescription() ) );

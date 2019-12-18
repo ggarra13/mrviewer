@@ -40,14 +40,23 @@ namespace mrv {
         CMedia(),
         clip( NULL ),
         iproc( NULL ),
-        _new_grade( false ),
+        _pipeline( R3DSDK::Full_Graded ),
         _hdr( false ),
-        _scale( -1 ),
+        _old_scale( -1 ),
+        _scale( 3 ),
+        _Bias( 0.0f ),
+        _Brightness( 0 ),
+        _Contrast( 0 ),
+        _ExposureAdjust( 0.f ),
+        _ExposureCompensation( 0.f ),
+        _GainBlue( 1.0f ),
+        _GainGreen( 1.0f ),
+        _GainRed( 1.0f ),
         _ISO( 320 ),
         _Kelvin( 5600.0f ),
+        _Saturation( 1.0f ),
+        _Shadow( 0.0f ),
         _Tint( 0.f ),
-        _Exposure( 0.f ),
-        _Bias( 0.0f ),
         _trackNo( 0 ),
         _hdr_mode( HDR_DO_BLEND )
     {
@@ -97,23 +106,46 @@ namespace mrv {
                 _hdr = true;
             }
 
+
             iproc = new ImageProcessingSettings;
             clip->GetClipImageProcessingSettings( *iproc );
 
+            _Brightness = iproc->Brightness;
+            _Contrast = iproc->Contrast;
+            _ExposureAdjust = iproc->ExposureAdjust;
+            _ExposureCompensation = iproc->ExposureCompensation;
             _ISO = iproc->ISO;
+            _GainRed = iproc->GainRed;
+            _GainGreen = iproc->GainGreen;
+            _GainBlue = iproc->GainBlue;
             _Kelvin = iproc->Kelvin;
+            _Saturation = iproc->Saturation;
+            _Shadow   = iproc->Shadow;
             _Tint = iproc->Tint;
-            _Exposure = iproc->ExposureAdjust;
-            iproc->GammaCurve = ImageGammaLog3G10;
-            iproc->ColorSpace = ImageColorREDWideGamutRGB;
+
+            set_ics_based_on_color_space_and_gamma();
+
 
             _attrs.insert( std::make_pair( 0, Attributes() ) );
-
 
             _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
             _frameStart = _frame = _frame_start = 0;
             _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
 
+            video_info_t info;
+            info.has_codec = true;
+            info.codec_name = "RED 3D";
+            info.fourcc = "R3D ";
+            info.fps = _fps;
+            info.pixel_format = "RGB";
+            info.has_b_frames = true;
+            info.start = 0;
+            info.duration = (double)(_frame_end - _frame_start) /
+                            (double) _fps;
+            _video_info.push_back( info );
+
+            if ( _hdr )
+                _video_info.push_back( info );
 
             if ( clip->MetadataExists( RMD_FLIP_HORIZONTAL ) )
                 _flipX = clip->MetadataItemAsInt( RMD_FLIP_HORIZONTAL );
@@ -121,6 +153,7 @@ namespace mrv {
                 _flipY = clip->MetadataItemAsInt( RMD_FLIP_VERTICAL );
 
             _pixel_ratio = 1.0f;
+            _depth = image_type::kShort;
             if ( clip->MetadataExists( RMD_PIXEL_ASPECT_RATIO ) )
                 _pixel_ratio = clip->MetadataItemAsFloat( RMD_PIXEL_ASPECT_RATIO );
 
@@ -131,7 +164,7 @@ namespace mrv {
             const char* rmdfile = clip->GetRmdPath();
             if ( rmdfile )
             {
-                XMLDocument doc;
+                tinyxml2::XMLDocument doc;
                 doc.LoadFile( rmdfile );
                 XMLNode* root = doc.FirstChildElement("sidecar");
                 if ( root ) root = root->FirstChildElement("edits");
@@ -173,9 +206,43 @@ namespace mrv {
                 }
             }
 
+            static const char* kIgnoreMetadata[] = {
+                RMD_BRIGHTNESS,
+                RMD_CONTRAST,
+                RMD_DIGITAL_GAIN_RED,
+                RMD_DIGITAL_GAIN_GREEN,
+                RMD_DIGITAL_GAIN_BLUE,
+                RMD_EXPOSURE_ADJUST,
+                RMD_EXPOSURE_COMPENSATION,
+                RMD_FLIP_HORIZONTAL,
+                RMD_FLIP_VERTICAL,
+                RMD_FLUT_CONTROL,
+                RMD_HDR_MODE,
+                RMD_ISO,
+                RMD_PIXEL_ASPECT_RATIO,
+                RMD_SATURATION,
+                RMD_SHADOW,
+                RMD_WHITE_BALANCE_KELVIN,
+                RMD_WHITE_BALANCE_TINT
+            };
+
             for ( size_t i = 0; i < clip->MetadataCount(); ++i )
             {
                 const std::string& name = clip->MetadataItemKey(i);
+
+                bool ignore = false;
+                for ( size_t j = 0; j < sizeof(kIgnoreMetadata)/sizeof(char*);
+                      ++j )
+                {
+                    if ( strcasecmp( name.c_str(), kIgnoreMetadata[j] ) == 0 )
+                    {
+                        ignore = true;
+                        break;
+                    }
+                }
+
+                if ( ignore ) continue;
+
                 if ( clip->MetadataItemType(i) == MetadataTypeInt )
                 {
                     Imf::IntAttribute attr( clip->MetadataItemAsInt(i) );
@@ -231,6 +298,19 @@ namespace mrv {
         return (CMedia::Cache) ok;
     }
 
+    void R3dImage::scale( int i )
+    {
+        if ( i < 0 || i > 3 )
+        {
+            IMG_ERROR( _("Wrong index ") << i << _(" for scale" ) );
+            return;
+        }
+        _scale = i;
+        _dts = _frame.load();
+        refetch();
+        find_image( _dts );
+    }
+
     void R3dImage::iso_index( size_t i )
     {
         if ( i >= ImageProcessingLimits::ISOCount ) {
@@ -243,6 +323,7 @@ namespace mrv {
             _ISO = newiso;
             _dts = _frame.load();
             refetch();
+            find_image( _dts );
         }
     }
 
@@ -268,43 +349,82 @@ namespace mrv {
             return false;
         }
 
-        _new_grade = false;
+        bool new_grade = false;
 
         if ( iproc->ISO != _ISO )
         {
             iproc->ISO = _ISO;
-            _new_grade = true;
+            new_grade = true;
         }
-        if ( iproc->ExposureAdjust != _Exposure )
+        if ( iproc->Saturation != _Saturation )
         {
-            iproc->ExposureAdjust = _Exposure;
-            _new_grade = true;
+            iproc->Saturation = _Saturation;
+            new_grade = true;
+        }
+        if ( iproc->Shadow != _Shadow )
+        {
+            iproc->Shadow = _Shadow;
+            new_grade = true;
+        }
+        if ( iproc->ExposureAdjust != _ExposureAdjust )
+        {
+            iproc->ExposureAdjust = _ExposureAdjust;
+            new_grade = true;
+        }
+        if ( iproc->ExposureCompensation != _ExposureCompensation )
+        {
+            iproc->ExposureCompensation = _ExposureCompensation;
+            new_grade = true;
+        }
+        if ( iproc->Brightness != _Brightness )
+        {
+            iproc->Brightness = _Brightness;
+            new_grade = true;
+        }
+        if ( iproc->Contrast != _Contrast )
+        {
+            iproc->Contrast = _Contrast;
+            new_grade = true;
+        }
+        if ( iproc->GainRed != _GainRed   ||
+             iproc->GainGreen != _GainGreen ||
+             iproc->GainBlue != _GainBlue )
+        {
+            iproc->GainRed = _GainRed;
+            iproc->GainGreen = _GainGreen;
+            iproc->GainBlue = _GainBlue;
+            new_grade = true;
         }
         if ( iproc->Kelvin != _Kelvin )
         {
             iproc->Kelvin = _Kelvin;
-            _new_grade = true;
+            new_grade = true;
         }
         if ( iproc->Tint != _Tint )
         {
             iproc->Tint = _Tint;
-            _new_grade = true;
+            new_grade = true;
         }
 
-        if ( cache_scale() != _scale || _new_grade )
+        if ( _old_scale != _scale || new_grade )
         {
-            _new_grade = false;
-            _scale = cache_scale();
+            _old_scale = _scale;
             Mutex& mtx = _video_packets.mutex();
             SCOPED_LOCK( mtx );
             clear_cache();
+            _dts = frame;
+            refetch();
+            find_image( _dts );
+            return true;
         }
 
         // calculate how much ouput memory we're going to need
-        size_t dw = clip->Width();
-        size_t dh = clip->Height(); // going to do a full resolution decode
 
-        if ( is_thumbnail() ) _scale = 3;
+        // going to do a full resolution decode
+        size_t dw = _real_width = clip->Width();
+        size_t dh = _real_height = clip->Height();
+
+        if ( is_thumbnail() ) _scale = 3; // for thumbnails we do 1/8 decode
 
         if ( _scale == 1 )
         {
@@ -364,6 +484,7 @@ namespace mrv {
         // letting the decoder know how big the buffer is
         job.OutputBufferSize = dw * dh * 3U * sizeof(half);
 
+        iproc->ImagePipelineMode = _pipeline;
         job.ImageProcessing = iproc;
         job.HdrProcessing = NULL;
 
@@ -738,7 +859,7 @@ namespace mrv {
 
         SCOPED_LOCK( _mutex );
 
-        int max_frames = max_image_frames();
+        uint64_t max_frames = max_image_frames();
 
         int64_t first, last;
 
@@ -777,6 +898,7 @@ namespace mrv {
     {
         _dts = _frame.load();
         refetch();
+        find_image( _dts );
         return true;
     }
 
@@ -851,31 +973,47 @@ namespace mrv {
     void R3dImage::load_camera_settings()
     {
         clip->GetClipImageProcessingSettings( *iproc );
-        if ( clip->DefaultColorVersion() > ColorVersion2 )
+        if ( clip->DefaultColorVersion() >= 3 )
         {
+            _Brightness = iproc->Brightness;
+            _Contrast = iproc->Contrast;
+            _ExposureAdjust = iproc->ExposureAdjust;
+            _ExposureCompensation = iproc->ExposureCompensation;
+            _GainRed = iproc->GainRed;
+            _GainGreen = iproc->GainGreen;
+            _GainBlue = iproc->GainBlue;
             _ISO = iproc->ISO;
             _Kelvin = iproc->Kelvin;
+            _Saturation = iproc->Saturation;
+            _Shadow   = iproc->Shadow;
             _Tint = iproc->Tint;
-            _Exposure = iproc->ExposureAdjust;
         }
-        iproc->GammaCurve = ImageGammaLog3G10;
-        iproc->ColorSpace = ImageColorREDWideGamutRGB;
+        _Flut = iproc->FLUT;
+        set_ics_based_on_color_space_and_gamma();
         Mutex& mtx = _video_packets.mutex();
         SCOPED_LOCK( mtx );
         clear_cache();
         _dts = _frame.load();
         refetch();
+        find_image( _dts );
     }
 
     void R3dImage::load_rmd_sidecar()
     {
         clip->GetDefaultImageProcessingSettings( *iproc );
+        _Brightness = iproc->Brightness;
+        _Contrast = iproc->Contrast;
+        _ExposureAdjust = iproc->ExposureAdjust;
+        _ExposureCompensation = iproc->ExposureCompensation;
+        _Flut = iproc->FLUT;
+        _GainRed = iproc->GainRed;
+        _GainGreen = iproc->GainGreen;
+        _GainBlue = iproc->GainBlue;
         _ISO = iproc->ISO;
         _Kelvin = iproc->Kelvin;
+        _Saturation = iproc->Saturation;
+        _Shadow   = iproc->Shadow;
         _Tint = iproc->Tint;
-        _Exposure = iproc->ExposureAdjust;
-        iproc->GammaCurve = ImageGammaLog3G10;
-        iproc->ColorSpace = ImageColorREDWideGamutRGB;
 
         if ( is_hdr() )
         {
@@ -885,11 +1023,13 @@ namespace mrv {
             if ( _Bias != 0.0f ) _Bias = -_Bias;
         }
 
+        set_ics_based_on_color_space_and_gamma();
         Mutex& mtx = _video_packets.mutex();
         SCOPED_LOCK( mtx );
         clear_cache();
         _dts = _frame.load();
         refetch();
+        find_image( _dts );
     }
 
     struct ColorSpace
@@ -917,6 +1057,23 @@ namespace mrv {
         { ImageColorDRAGONcolor, "DRAGON color" },
     };
 
+    void R3dImage::color_space( unsigned idx )
+    {
+        if ( idx >= sizeof(kColorSpace)/sizeof(ColorSpace) )
+        {
+            IMG_ERROR( _("Invalid index ") << idx << _(" for color_space" ) );
+            return;
+        }
+        iproc->ColorSpace = kColorSpace[idx].num;
+        set_ics_based_on_color_space_and_gamma();
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        clear_cache();
+        _dts = _frame.load();
+        refetch();
+        find_image( _dts );
+    }
+
     // This should be ImageProcessingLimits::ColorSpaceLabels, but it does
     // not work.
     std::string R3dImage::color_space() const
@@ -929,9 +1086,19 @@ namespace mrv {
         return "unknown";
     }
 
+    void R3dImage::color_spaces( stringArray& options ) const
+    {
+        options.clear();
+        for ( size_t i = 0; i < sizeof(kColorSpace)/sizeof(ColorSpace); ++i )
+        {
+            options.push_back( kColorSpace[i].name );
+        }
+    }
+
+
     struct GammaCurve
     {
-        int num;
+        ImageGammaCurve num;
         const char* const name;
     };
 
@@ -958,6 +1125,23 @@ namespace mrv {
         { ImageGammaREDgamma3, "RED gamma3" },
     };
 
+    void R3dImage::gamma_curve( unsigned idx )
+    {
+        if ( idx >= sizeof(kGammaCurve)/sizeof(GammaCurve) )
+        {
+            IMG_ERROR( _("Invalid index ") << idx << _(" for gamma_curve" ) );
+            return;
+        }
+        iproc->GammaCurve = kGammaCurve[idx].num;
+        set_ics_based_on_color_space_and_gamma();
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        clear_cache();
+        _dts = _frame.load();
+        refetch();
+        find_image( _dts );
+    }
+
     // This should be ImageProcessingLimits::GammaCurveLabels, but it does
     // not work.
     std::string R3dImage::gamma_curve() const
@@ -968,5 +1152,70 @@ namespace mrv {
                 return kGammaCurve[i].name;
         }
         return "unknown";
+    }
+
+    void R3dImage::gamma_curves( stringArray& options ) const
+    {
+        options.clear();
+        for ( size_t i = 0; i < sizeof(kGammaCurve)/sizeof(GammaCurve); ++i )
+        {
+            options.push_back( kGammaCurve[i].name );
+        }
+    }
+
+    void R3dImage::set_ics_based_on_color_space_and_gamma()
+    {
+        PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
+        const char* var = uiPrefs->uiPrefsOCIOConfig->value();
+        if ( !var ) return;
+
+        std::string ocio = var;
+        if ( ocio.rfind( "nuke-default" ) != std::string::npos )
+        {
+            if ( iproc->GammaCurve == ImageGammaLog3G12 )
+                ocio_input_color_space( "Log3G12" );
+            else if ( iproc->GammaCurve == ImageGammaBT1886 )
+                ocio_input_color_space( "BT1886" );
+            else if ( iproc->GammaCurve == ImageGammaHDR2084 )
+                ocio_input_color_space( "st2084" );
+            else if ( iproc->GammaCurve == ImageGammaREDlogFilm )
+                ocio_input_color_space( "compositing_log" );
+            else if ( iproc->GammaCurve == ImageGammaLinear )
+                ocio_input_color_space( "scene_linear" );
+            else if ( iproc->GammaCurve == ImageGammaHybridLogGamma )
+                ocio_input_color_space( "HybridLogGamma" );
+            else if ( iproc->GammaCurve == ImageGamma2_2 )
+                ocio_input_color_space( "Gamma2.2" );
+            else if ( iproc->GammaCurve == ImageGamma2_6 )
+                ocio_input_color_space( "Gamma2.6" );
+            else if ( iproc->GammaCurve == ImageGammaREDlog )
+                ocio_input_color_space( "REDlog" );
+            else if ( iproc->GammaCurve == ImageGammaREDgamma  ||
+                      iproc->GammaCurve == ImageGammaREDgamma2 ||
+                      iproc->GammaCurve == ImageGammaREDgamma3 ||
+                      iproc->GammaCurve == ImageGammaREDgamma4 )
+                ocio_input_color_space( "rec709" );
+            else
+            {
+                if ( iproc->ColorSpace == ImageColorREDWideGamutRGB )
+                    ocio_input_color_space( "Log3G10" );
+                else
+                    ocio_input_color_space( "rec709" );
+            }
+        }
+        else
+        {
+            if ( iproc->ColorSpace == ImageColorREDWideGamutRGB )
+            {
+                ocio_input_color_space( "Input - RED - REDLog3G10 - REDWideGamutRGB" );
+                iproc->GammaCurve = ImageGammaLog3G10;
+            }
+            else
+            {
+                ocio_input_color_space( "Output - Rec.709" );
+            }
+        }
+        mrv::Preferences::uiMain->uiICS->copy_label( ocio_input_color_space().c_str() );
+
     }
 }

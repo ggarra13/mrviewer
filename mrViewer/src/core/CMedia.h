@@ -460,7 +460,7 @@ public:
     }
 
     /////////////////// Set the image size, allocating a 4-float buffer
-    void image_size( int w, int h );
+    void image_size( size_t w, size_t h );
 
     /////////////// Set to true if image is internal and no filename is used
     inline bool internal() const {

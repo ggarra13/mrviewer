@@ -1807,7 +1807,7 @@ bool CMedia::has_changed()
  * @param w width of image
  * @param h height of image
  */
-void CMedia::image_size( int w, int h )
+void CMedia::image_size( size_t w, size_t h )
 {
     SCOPED_LOCK( _mutex );
     _pixel_ratio = 1.0f;
@@ -1883,6 +1883,10 @@ void CMedia::image_size( int w, int h )
     {
         _pixel_ratio = 1.0f; // 8K full
     }
+    else if ( w == 8192 && h == 4320 )
+    {
+        _pixel_ratio = 1.0f; // 8K full
+    }
     else if ( (float)w/(float)h == 1.56 )
     {
         _pixel_ratio = 0.9f;   // HTDV/SD compromise
@@ -1892,9 +1896,9 @@ void CMedia::image_size( int w, int h )
     if ( _fps == 0 )
     {
         if ( default_fps > 0 )
-            _orig_fps =_fps = _play_fps = default_fps;
+            _orig_fps = _fps = _play_fps = default_fps;
         else
-            _orig_fps =_fps = _play_fps = 24.0f;
+            _orig_fps = _fps = _play_fps = 24.0f;
     }
 
     _w = w;
@@ -3373,7 +3377,8 @@ double CMedia::calculate_fps( AVFormatContext* ctx,
  *
  * @param s              stream info
  * @param msg            any error message
- * @param codec_context  codec context
+ * @param context        format context
+ * @param par            codec parameters
  * @param stream_index   ffmpeg stream index
  */
 void CMedia::populate_stream_info( StreamInfo& s,

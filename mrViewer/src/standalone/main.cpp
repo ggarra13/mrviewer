@@ -198,48 +198,48 @@ int main( int argc, char** argv )
         std::cerr << e.what() << std::endl;
     }
 
-DBG;
-  if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
+    DBG;
+    if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
-DBG;
-  char buf[1024];
-  sprintf( buf, "mrViewer%s", mrv::version() );
+    DBG;
+    char buf[1024];
+    sprintf( buf, "mrViewer%s", mrv::version() );
 
 #ifdef _WIN32
-  int numArgs = 0;
-  LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
-  if ( args == NULL )
-  {
-      LOG_ERROR( "CommandLineToArgvW failed" );
-      return -1;
-  }
-  fs::path file = fs::path( args[0] );
-  LocalFree( args );
+    int numArgs = 0;
+    LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
+    if ( args == NULL )
+    {
+        LOG_ERROR( "CommandLineToArgvW failed" );
+        return -1;
+    }
+    fs::path file = fs::path( args[0] );
+    LocalFree( args );
 #else
-  std::string program = argv[0];
-  fs::path file = fs::path( program );
+    std::string program = argv[0];
+    fs::path file = fs::path( program );
 #endif
 
-  int ok = -1;
-  DBG;
-  file = fs::absolute( file );
+    int ok = -1;
+    DBG;
+    file = fs::absolute( file );
 
-  fs::path dir = file.parent_path().branch_path();
-  std::string path = fs::canonical( dir ).generic_string();
-  path += "/share/locale";
+    fs::path dir = file.parent_path().branch_path();
+    std::string path = fs::canonical( dir ).generic_string();
+    path += "/share/locale";
 
-  bindtextdomain(buf, path.c_str() );
-  textdomain(buf);
+    bindtextdomain(buf, path.c_str() );
+    textdomain(buf);
 
 
-  DBG;
-  // Try to set MRV_ROOT if not set already
-  mrv::set_root_path( argc, argv );
+    DBG;
+    // Try to set MRV_ROOT if not set already
+    mrv::set_root_path( argc, argv );
 
-  DBG;
+    DBG;
 
-  // Adjust ui based on preferences
-  for (;;) {
+    // Adjust ui based on preferences
+    for (;;) {
 
       ViewerUI* ui = NULL;
       std::string lockfile;

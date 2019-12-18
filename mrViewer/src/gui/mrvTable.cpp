@@ -61,10 +61,10 @@ Table::~Table()
 void Table::DrawHeader(const char *s, int X, int Y, int W, int H) {
     fl_push_clip(X,Y,W,H);
     fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
-    fl_color(FL_BLACK);
+    fl_color(FL_WHITE);
     fl_draw(s, X,Y,W,H, FL_ALIGN_CENTER);
     fl_pop_clip();
-} 
+}
 
 
 void Table::add( Fl_Widget* w )
@@ -75,7 +75,7 @@ void Table::add( Fl_Widget* w )
         rows( rows() + 1 );
     }
     int r = rows() - 1;
-    
+
     int X, Y, W, H;
     find_cell( CONTEXT_TABLE, r, c, X, Y, W, H );
     w->resize( X, Y, W, H );
@@ -83,20 +83,20 @@ void Table::add( Fl_Widget* w )
     layout();
 }
 
-void Table::draw_cell(TableContext context, int ROW, int COL, 
+void Table::draw_cell(TableContext context, int ROW, int COL,
                       int X, int Y, int W, int H)
 {
     char s[40];
     switch ( context ) {
         case CONTEXT_STARTPAGE:         // before page is drawn..
             fl_font(FL_HELVETICA, 16);  // the font for our drawing operations
-            return; 
+            return;
         case CONTEXT_COL_HEADER:                  // Draw column headers
             if ( COL >= 2 ) return;
             sprintf(s,"%s",headers[COL]);                // "A", "B", "C", etc.
             DrawHeader(s,X,Y,W,H);
-            return; 
-        case CONTEXT_CELL: 
+            return;
+        case CONTEXT_CELL:
             return;
         case CONTEXT_RC_RESIZE:
             {
@@ -105,9 +105,9 @@ void Table::draw_cell(TableContext context, int ROW, int COL,
                 // width of table minus Attribute's current col_width(),
                 // which may have been changed interactively by user.
                 // Note: use of Fl_Table:tiw for table's "inner width"
-		
+
                 col_width(1, tiw - col_width(0));
-          
+
                 int X, Y, W, H;
                 int index = 0;
                 int R = rows();
@@ -126,7 +126,7 @@ void Table::draw_cell(TableContext context, int ROW, int COL,
             return;
     }
 }
-    
+
 
 // Force table's overall height to match height of all cells + header
 //
@@ -153,5 +153,3 @@ void Table::layout() {
 }
 
 } // namespace mrv
-
-

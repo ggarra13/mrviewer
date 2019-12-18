@@ -46,14 +46,15 @@
 #include "IccCmm.h"
 
 
-#include "ctlToLut.h"
-#include "mrvIO.h"
-#include "ACES_ASC_CDL.h"
+#include "core/ctlToLut.h"
 #include "core/CMedia.h"
 #include "core/mrvColorProfile.h"
+#include "gui/mrvIO.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvPreferences.h"
 
 #include "mrViewer.h"
+#include "ACES_ASC_CDL.h"
 #include "mrvPreferencesUI.h"
 
 #include "video/mrvGLLut3d.h"
@@ -64,8 +65,10 @@ namespace
 const char* kModule = N_("cmm");
 }
 
-#define OCIO_ERROR(x) LOG_ERROR( "[ocio] " << x );
-
+#define OCIO_ERROR(x) do { \
+    LOG_ERROR( "[ocio] " << x ); \
+    ViewerUI::uiLog->uiMain->show(); \
+    } while (0);
 
 namespace mrv {
 
@@ -464,6 +467,7 @@ void GLLut3d::init_pixel_values( Imf::Array< float >& pixelValues )
 
 
     static const float MIDDLE_GRAY = 0.18f;
+
 
     lutMin = MIDDLE_GRAY / (1 << NUM_STOPS);
     lutMax = MIDDLE_GRAY * (1 << NUM_STOPS);

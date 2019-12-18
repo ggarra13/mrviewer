@@ -280,11 +280,11 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
         }
         catch( const std::bad_alloc& e )
         {
-            throw;
+            throw e;
         }
         catch( const std::runtime_error& e )
         {
-            throw;
+            throw e;
         }
     }
 
