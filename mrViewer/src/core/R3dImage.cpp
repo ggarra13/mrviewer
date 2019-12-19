@@ -41,6 +41,8 @@ namespace mrv {
         clip( NULL ),
         iproc( NULL ),
         _pipeline( R3DSDK::Full_Graded ),
+        _color_space( ImageColorREDWideGamutRGB ),
+        _gamma_curve( ImageGammaLinear ),
         _hdr( false ),
         _old_scale( -1 ),
         _scale( 3 ),
@@ -110,6 +112,8 @@ namespace mrv {
             iproc = new ImageProcessingSettings;
             clip->GetClipImageProcessingSettings( *iproc );
 
+            _color_space = iproc->ColorSpace;
+            _gamma_curve = iproc->GammaCurve;
             _Brightness = iproc->Brightness;
             _Contrast = iproc->Contrast;
             _ExposureAdjust = iproc->ExposureAdjust;
@@ -306,9 +310,12 @@ namespace mrv {
             return;
         }
         _scale = i;
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( stopped() )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
     }
 
     void R3dImage::iso_index( size_t i )
@@ -321,9 +328,12 @@ namespace mrv {
         if ( iproc->ISO != newiso )
         {
             _ISO = newiso;
-            _dts = _frame.load();
-            refetch();
-            find_image( _dts );
+            if ( stopped() )
+            {
+                _dts = _frame.load();
+                refetch();
+                find_image( _dts );
+            }
         }
     }
 
@@ -345,7 +355,6 @@ namespace mrv {
     {
         if ( !clip || frame < _frame_start || frame > _frame_end )
         {
-            if ( frame == -1 ) abort();
             return false;
         }
 
@@ -353,69 +362,75 @@ namespace mrv {
 
         if ( iproc->ISO != _ISO )
         {
-            iproc->ISO = _ISO;
             new_grade = true;
         }
         if ( iproc->Saturation != _Saturation )
         {
-            iproc->Saturation = _Saturation;
             new_grade = true;
         }
         if ( iproc->Shadow != _Shadow )
         {
-            iproc->Shadow = _Shadow;
             new_grade = true;
         }
         if ( iproc->ExposureAdjust != _ExposureAdjust )
         {
-            iproc->ExposureAdjust = _ExposureAdjust;
             new_grade = true;
         }
         if ( iproc->ExposureCompensation != _ExposureCompensation )
         {
-            iproc->ExposureCompensation = _ExposureCompensation;
             new_grade = true;
         }
         if ( iproc->Brightness != _Brightness )
         {
-            iproc->Brightness = _Brightness;
             new_grade = true;
         }
         if ( iproc->Contrast != _Contrast )
         {
-            iproc->Contrast = _Contrast;
             new_grade = true;
         }
         if ( iproc->GainRed != _GainRed   ||
              iproc->GainGreen != _GainGreen ||
              iproc->GainBlue != _GainBlue )
         {
-            iproc->GainRed = _GainRed;
-            iproc->GainGreen = _GainGreen;
-            iproc->GainBlue = _GainBlue;
             new_grade = true;
         }
         if ( iproc->Kelvin != _Kelvin )
         {
-            iproc->Kelvin = _Kelvin;
             new_grade = true;
         }
         if ( iproc->Tint != _Tint )
         {
-            iproc->Tint = _Tint;
+            new_grade = true;
+        }
+        if ( iproc->ColorSpace != _color_space )
+        {
+            new_grade = true;
+        }
+        if ( iproc->GammaCurve != _gamma_curve )
+        {
             new_grade = true;
         }
 
         if ( _old_scale != _scale || new_grade )
         {
             _old_scale = _scale;
-            Mutex& mtx = _video_packets.mutex();
-            SCOPED_LOCK( mtx );
+            iproc->ISO = _ISO;
+            iproc->Saturation = _Saturation;
+            iproc->Shadow = _Shadow;
+            iproc->ExposureAdjust = _ExposureAdjust;
+            iproc->ExposureCompensation = _ExposureCompensation;
+            iproc->Brightness = _Brightness;
+            iproc->Contrast = _Contrast;
+            iproc->GainRed = _GainRed;
+            iproc->GainGreen = _GainGreen;
+            iproc->GainBlue = _GainBlue;
+            iproc->Kelvin = _Kelvin;
+            iproc->Tint = _Tint;
+            iproc->ColorSpace = _color_space;
+            iproc->GammaCurve = _gamma_curve;
             clear_cache();
-            _dts = frame;
-            refetch();
-            find_image( _dts );
-            return true;
+            SCOPED_LOCK( _mutex );
+            return fetch( canvas, frame );
         }
 
         // calculate how much ouput memory we're going to need
@@ -613,6 +628,7 @@ namespace mrv {
 
     bool R3dImage::frame( const int64_t f )
     {
+
         if ( Preferences::max_memory <= CMedia::memory_used )
         {
             if ( stopped() ) return false;
@@ -633,6 +649,7 @@ namespace mrv {
         {
             return false;
         }
+
 
         if ( f < _frameStart )    _dts = _adts = _frameStart;
         else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
@@ -896,9 +913,12 @@ namespace mrv {
 
     bool R3dImage::has_changed()
     {
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( is_cache_filled( _frame ) )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
         return true;
     }
 
@@ -972,6 +992,9 @@ namespace mrv {
 
     void R3dImage::load_camera_settings()
     {
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        SCOPED_LOCK( _mutex );
         clip->GetClipImageProcessingSettings( *iproc );
         if ( clip->DefaultColorVersion() >= 3 )
         {
@@ -988,19 +1011,27 @@ namespace mrv {
             _Shadow   = iproc->Shadow;
             _Tint = iproc->Tint;
         }
+        _color_space = iproc->ColorSpace;
+        _gamma_curve = iproc->GammaCurve;
         _Flut = iproc->FLUT;
         set_ics_based_on_color_space_and_gamma();
-        Mutex& mtx = _video_packets.mutex();
-        SCOPED_LOCK( mtx );
         clear_cache();
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( stopped() )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
     }
 
     void R3dImage::load_rmd_sidecar()
     {
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        SCOPED_LOCK( _mutex );
         clip->GetDefaultImageProcessingSettings( *iproc );
+        _color_space = iproc->ColorSpace;
+        _gamma_curve = iproc->GammaCurve;
         _Brightness = iproc->Brightness;
         _Contrast = iproc->Contrast;
         _ExposureAdjust = iproc->ExposureAdjust;
@@ -1024,12 +1055,13 @@ namespace mrv {
         }
 
         set_ics_based_on_color_space_and_gamma();
-        Mutex& mtx = _video_packets.mutex();
-        SCOPED_LOCK( mtx );
         clear_cache();
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( stopped() )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
     }
 
     struct ColorSpace
@@ -1059,19 +1091,23 @@ namespace mrv {
 
     void R3dImage::color_space( unsigned idx )
     {
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        SCOPED_LOCK( _mutex );
         if ( idx >= sizeof(kColorSpace)/sizeof(ColorSpace) )
         {
             IMG_ERROR( _("Invalid index ") << idx << _(" for color_space" ) );
             return;
         }
-        iproc->ColorSpace = kColorSpace[idx].num;
+        _color_space = kColorSpace[idx].num;
         set_ics_based_on_color_space_and_gamma();
-        Mutex& mtx = _video_packets.mutex();
-        SCOPED_LOCK( mtx );
         clear_cache();
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( stopped() )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
     }
 
     // This should be ImageProcessingLimits::ColorSpaceLabels, but it does
@@ -1080,7 +1116,7 @@ namespace mrv {
     {
         for ( size_t i = 0; i < sizeof(kColorSpace)/sizeof(ColorSpace); ++i )
         {
-            if ( kColorSpace[i].num == iproc->ColorSpace )
+            if ( kColorSpace[i].num == _color_space )
                 return kColorSpace[i].name;
         }
         return "unknown";
@@ -1127,19 +1163,23 @@ namespace mrv {
 
     void R3dImage::gamma_curve( unsigned idx )
     {
+        Mutex& mtx = _video_packets.mutex();
+        SCOPED_LOCK( mtx );
+        SCOPED_LOCK( _mutex );
         if ( idx >= sizeof(kGammaCurve)/sizeof(GammaCurve) )
         {
             IMG_ERROR( _("Invalid index ") << idx << _(" for gamma_curve" ) );
             return;
         }
-        iproc->GammaCurve = kGammaCurve[idx].num;
+        _gamma_curve = kGammaCurve[idx].num;
         set_ics_based_on_color_space_and_gamma();
-        Mutex& mtx = _video_packets.mutex();
-        SCOPED_LOCK( mtx );
         clear_cache();
-        _dts = _frame.load();
-        refetch();
-        find_image( _dts );
+        if ( stopped() )
+        {
+            _dts = _frame.load();
+            refetch();
+            find_image( _dts );
+        }
     }
 
     // This should be ImageProcessingLimits::GammaCurveLabels, but it does
@@ -1148,7 +1188,7 @@ namespace mrv {
     {
         for ( size_t i = 0; i < sizeof(kGammaCurve)/sizeof(GammaCurve); ++i )
         {
-            if ( kGammaCurve[i].num == iproc->GammaCurve )
+            if ( kGammaCurve[i].num == _gamma_curve )
                 return kGammaCurve[i].name;
         }
         return "unknown";
@@ -1172,32 +1212,32 @@ namespace mrv {
         std::string ocio = var;
         if ( ocio.rfind( "nuke-default" ) != std::string::npos )
         {
-            if ( iproc->GammaCurve == ImageGammaLog3G12 )
+            if ( _gamma_curve == ImageGammaLog3G12 )
                 ocio_input_color_space( "Log3G12" );
-            else if ( iproc->GammaCurve == ImageGammaBT1886 )
+            else if ( _gamma_curve == ImageGammaBT1886 )
                 ocio_input_color_space( "BT1886" );
-            else if ( iproc->GammaCurve == ImageGammaHDR2084 )
+            else if ( _gamma_curve == ImageGammaHDR2084 )
                 ocio_input_color_space( "st2084" );
-            else if ( iproc->GammaCurve == ImageGammaREDlogFilm )
+            else if ( _gamma_curve == ImageGammaREDlogFilm )
                 ocio_input_color_space( "compositing_log" );
-            else if ( iproc->GammaCurve == ImageGammaLinear )
+            else if ( _gamma_curve == ImageGammaLinear )
                 ocio_input_color_space( "scene_linear" );
-            else if ( iproc->GammaCurve == ImageGammaHybridLogGamma )
+            else if ( _gamma_curve == ImageGammaHybridLogGamma )
                 ocio_input_color_space( "HybridLogGamma" );
-            else if ( iproc->GammaCurve == ImageGamma2_2 )
+            else if ( _gamma_curve == ImageGamma2_2 )
                 ocio_input_color_space( "Gamma2.2" );
-            else if ( iproc->GammaCurve == ImageGamma2_6 )
+            else if ( _gamma_curve == ImageGamma2_6 )
                 ocio_input_color_space( "Gamma2.6" );
-            else if ( iproc->GammaCurve == ImageGammaREDlog )
+            else if ( _gamma_curve == ImageGammaREDlog )
                 ocio_input_color_space( "REDlog" );
-            else if ( iproc->GammaCurve == ImageGammaREDgamma  ||
-                      iproc->GammaCurve == ImageGammaREDgamma2 ||
-                      iproc->GammaCurve == ImageGammaREDgamma3 ||
-                      iproc->GammaCurve == ImageGammaREDgamma4 )
+            else if ( _gamma_curve == ImageGammaREDgamma  ||
+                      _gamma_curve == ImageGammaREDgamma2 ||
+                      _gamma_curve == ImageGammaREDgamma3 ||
+                      _gamma_curve == ImageGammaREDgamma4 )
                 ocio_input_color_space( "rec709" );
             else
             {
-                if ( iproc->ColorSpace == ImageColorREDWideGamutRGB )
+                if ( _color_space == ImageColorREDWideGamutRGB )
                     ocio_input_color_space( "Log3G10" );
                 else
                     ocio_input_color_space( "rec709" );
@@ -1205,10 +1245,10 @@ namespace mrv {
         }
         else
         {
-            if ( iproc->ColorSpace == ImageColorREDWideGamutRGB )
+            if ( _color_space == ImageColorREDWideGamutRGB )
             {
                 ocio_input_color_space( "Input - RED - REDLog3G10 - REDWideGamutRGB" );
-                iproc->GammaCurve = ImageGammaLog3G10;
+                _gamma_curve = ImageGammaLog3G10;
             }
             else
             {

@@ -2855,7 +2855,6 @@ void CMedia::seek( const int64_t f )
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
                                const mrv::image_type_ptr& pic )
 {
-    assert0( seq != NULL );
     assert0( pic != NULL );
     assert0( pic.use_count() >= 1 );
 
@@ -4082,7 +4081,7 @@ bool CMedia::find_image( const int64_t frame )
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
-        if ( limit ) limit_video_store(f);
+        if ( limit ) limit_video_store( f );
         return true;
     }
 
@@ -4594,19 +4593,22 @@ char *const get_error_text(const int error)
     return error_buffer;
 }
 
-void CMedia::refetch( int64_t f )
+bool CMedia::refetch( int64_t f )
 {
     image_type_ptr canvas;
-    if ( fetch( canvas, f ) )
+    bool ok = fetch( canvas, f );
+    if ( ok )
     {
         cache( canvas );
         default_color_corrections();
+        find_image( f );
     }
+    return ok;
 }
 
-void CMedia::refetch()
+bool CMedia::refetch()
 {
-    refetch( _dts );
+    return refetch( _dts );
 }
 
 } // namespace mrv

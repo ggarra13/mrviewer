@@ -2907,8 +2907,10 @@ void ImageInformation::fill_data()
                 add_enum( _("HDR blend"), _("HDR blend type"),
                           content, options, true, (Fl_Callback*)change_blend_cb );
 
-                add_int( _("Track #"), _("HDR Track No"), r3d->trackNo(), true, true,
-                           (Fl_Callback*)change_trackno_cb, 0, 1 );
+                add_int( _("Track #"), _("HDR Track No"),
+                         (unsigned)r3d->trackNo(), true, true,
+                         (Fl_Callback*)change_trackno_cb,
+                         (unsigned)0, (unsigned)1 );
 
                 add_float( _("Bias"), _("HDR Blend bias of clip."),
                            r3d->Bias(), true, true,

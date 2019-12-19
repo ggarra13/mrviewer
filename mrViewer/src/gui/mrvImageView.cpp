@@ -836,7 +836,7 @@ namespace mrv {
         mrv::PopupMenu* g = uiMain->uiWindows;
         for ( unsigned i = 0; i < g->children(); ++i )
         {
-            if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
+            if ( strcasecmp( o->label(),  g->child(i)->label() ) == 0 ) {
                 idx = i;
                 break;
             }

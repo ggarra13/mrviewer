@@ -15,6 +15,11 @@ v5.3.4  - Made all R3D color changes be interactive.
 	- Made sorting of input color spaces use the Family name, according
 	  to the config.ocio file, instead of relying on a custom sorting as
 	  before.
+	- Bug fixed a problem with float sliders in windows' media info
+	  window.
+	- Bug fixed cache leaving a frame behind when changing R3D's settings.
+	  Previously, you had to place yourself on that frame and hit 'u' for
+	  update.
 
 v5.3.3  - Added .r3d (RED core) format to list of available movie formats.
 	  The decompression is done on the CPU and it takes into account

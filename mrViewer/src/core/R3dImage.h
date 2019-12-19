@@ -169,6 +169,8 @@ protected:
     R3DSDK::Clip* clip;
     R3DSDK::ImageProcessingSettings* iproc;
     R3DSDK::ImagePipeline            _pipeline;
+    R3DSDK::ImageColorSpace          _color_space;
+    R3DSDK::ImageGammaCurve          _gamma_curve;
     video_cache_t _images;
     video_info_list_t     _video_info;
     bool          _hdr;

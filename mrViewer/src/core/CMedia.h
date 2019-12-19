@@ -433,8 +433,8 @@ public:
         return true;
     }
 
-    void refetch( const int64_t frame );
-    void refetch();
+    bool refetch( const int64_t frame );
+    bool refetch();
 
     inline void actual_frame_rate( double fps ) { _actual_frame_rate = fps; }
     inline double actual_frame_rate() const { return _actual_frame_rate; }

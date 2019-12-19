@@ -1030,7 +1030,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
     if ( view() ) view()->send_network( buf );
 }
 
-void ImageBrowser::send_current_image( size_t idx, const mrv::media& m )
+void ImageBrowser::send_current_image( int64_t idx, const mrv::media& m )
 {
     if (!m) return;
 
