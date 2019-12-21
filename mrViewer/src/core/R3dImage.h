@@ -20,7 +20,7 @@
  * @author gga
  * @date   Fri Nov 03 15:38:30 2006
  *
- * @brief  A simple wrapper class to read all of ImageMagick's image formats
+ * @brief  A simple wrapper class to read the R3D movie format
  *
  *
  */
@@ -32,6 +32,7 @@
 #include <R3DSDK.h>
 
 namespace mrv {
+
 
 class R3dImage : public CMedia
 {
@@ -62,9 +63,21 @@ public:
         return (_num_channels == 4);
     }
 
+    bool refetch( const int64_t f )
+        {
+            return CMedia::refetch( f );
+        }
+
+    bool refetch()
+        {
+            _dts = _frame.load();
+            return refetch( _dts );
+        }
+
     void Brightness( float f ) { _Brightness = f; refetch(); }
     void Contrast( float f ) { _Contrast = f; refetch(); }
-    void Kelvin( float f )   { _Kelvin = f; refetch(); }
+    void Denoise( R3DSDK::ImageDenoise f )  { _Denoise = f; refetch(); }
+    void Detail( R3DSDK::ImageDetail f )  { _Detail = f; refetch(); }
     void ExposureAdjust( float f ) { _ExposureAdjust = f; refetch(); }
     void ExposureCompensation( float f ) {
         _ExposureCompensation = f;
@@ -74,12 +87,17 @@ public:
     void GainBlue( float f ) { _GainRed = f; refetch(); }
     void GainGreen( float f ) { _GainRed = f; refetch(); }
     void GainRed( float f ) { _GainRed = f; refetch(); }
-    void Shadow( float f ) { _Shadow = f; refetch(); }
+    void Kelvin( float f )   { _Kelvin = f; refetch(); }
     void Saturation( float f ) { _Saturation = f; refetch(); }
+    void Shadow( float f ) { _Shadow = f; refetch(); }
+    void Sharpness( R3DSDK::ImageOLPFCompensation f )
+        { _Sharpness = f; refetch(); }
     void Tint( float f )     { _Tint = f; refetch(); }
 
     float Brightness() const   { return _Brightness; }
     float Contrast() const   { return _Contrast; }
+    R3DSDK::ImageDenoise Denoise() const   { return _Denoise; }
+    R3DSDK::ImageDetail Detail() const   { return _Detail; }
     float ExposureAdjust() const { return _ExposureAdjust; }
     float ExposureCompensation() const { return _ExposureCompensation; }
     float Flut() const { return _Flut; }
@@ -89,6 +107,7 @@ public:
     float Kelvin() const { return _Kelvin; }
     float Saturation() const   { return _Saturation; }
     float Shadow()   const { return _Shadow; }
+    R3DSDK::ImageOLPFCompensation Sharpness()   const { return _Sharpness; }
     float Tint() const { return _Tint; }
 
     void iso_index( size_t i );
@@ -121,7 +140,11 @@ public:
     bool is_hdr() const { return _hdr; }
 
     R3DSDK::HdrMode hdr_mode() const   { return _hdr_mode; }
-    void hdr_mode( R3DSDK::HdrMode t ) { _hdr_mode = t; refetch(); }
+    void hdr_mode( R3DSDK::HdrMode t ) {
+        _hdr_mode = t;
+        clear_cache();
+        refetch();
+    }
 
     void trackNo( size_t f ) { _trackNo = f; refetch(); }
     size_t trackNo() const   { return _trackNo; }
@@ -166,6 +189,10 @@ public:
     void limit_video_store( const int64_t frame );
 
 protected:
+    void copy_values();
+
+protected:
+    Mutex         _load_mutex;
     R3DSDK::Clip* clip;
     R3DSDK::ImageProcessingSettings* iproc;
     R3DSDK::ImagePipeline            _pipeline;
@@ -180,6 +207,8 @@ protected:
     float         _Bias;
     float         _Brightness;
     float         _Contrast;
+    R3DSDK::ImageDenoise  _Denoise;
+    R3DSDK::ImageDetail   _Detail;
     float         _ExposureAdjust;
     float         _ExposureCompensation;
     float         _Flut;
@@ -188,8 +217,12 @@ protected:
     float         _GainRed;
     size_t        _ISO;
     float         _Kelvin;
+    float         _old_Bias;
+    size_t        _old_trackNo;
+    R3DSDK::HdrMode _old_hdr_mode;
     float         _Saturation;
     float         _Shadow;
+    R3DSDK::ImageOLPFCompensation _Sharpness;
     float         _Tint;
     size_t        _trackNo;
     R3DSDK::HdrMode  _hdr_mode;

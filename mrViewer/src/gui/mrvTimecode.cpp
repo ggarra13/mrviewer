@@ -524,7 +524,7 @@ bool Timecode::replace(int b, int e, const char* text, int ilen) {
         } else
             // This is complex to allow "00:00:01" or "00;00;00;22" timecode
             // to be typed:
-            if (b+n==0 && (ascii == '+' || ascii == '-') ||
+            if ((b+n==0 && (ascii == '+' || ascii == '-')) ||
                 (ascii >= '0' && ascii <= '9') ||
                 (input_type()==FL_FLOAT_INPUT && ascii &&
                      strchr(".,eE+-", ascii)) ||

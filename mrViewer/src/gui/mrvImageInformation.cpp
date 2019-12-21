@@ -88,6 +88,7 @@ const char* kModule = "info";
 namespace mrv
 {
 
+    using namespace R3DSDK;
 
 struct CtlLMTData
 {
@@ -800,6 +801,8 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0 ) )
 
 int ImageInformation::handle( int event )
 {
+    if ( ! filled ) return 0;
+
     if ( event == FL_MOUSEWHEEL )
     {
         Fl::e_dy = Fl::event_dy() * 8;
@@ -1463,11 +1466,19 @@ static void change_scale_cb( mrv::PopupMenu* w, ImageInformation* info )
     R3dImage* img = dynamic_cast<R3dImage*>( info->get_image() );
     if ( !img ) return;
 
+    // Work-around to avoid crash when changing scale.
+    // This stops playback and then changes scale, resuming playback later.
+    mrv::ImageView* view = info->main()->uiView;
+    CMedia::Playback p = view->playback();
+    view->stop();
+
     int v = w->value();
     w->copy_label( w->child(v)->label() );
     img->scale( v );
     img->image_damage( mrv::CMedia::kDamageAll );
-    mrv::ImageView* view = info->main()->uiView;
+
+    if ( p ) view->play( p );
+
     view->fit_image();
     view->redraw();
 }
@@ -1479,8 +1490,9 @@ static void change_iso_cb( mrv::PopupMenu* w, ImageInformation* info )
 
     int v = w->value();
     char buf[256];
-    sprintf( buf, "%lu", R3DSDK::ImageProcessingLimits::ISOList[v] );
-    w->label( buf );
+    sprintf( buf, "%zu", R3DSDK::ImageProcessingLimits::ISOList[v] );
+    w->copy_label( buf );
+    w->redraw();
     img->iso_index( v );
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
@@ -1667,10 +1679,10 @@ static void eye_separation_cb( Fl_Float_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        
+
         img->eye_separation( (float) atof( w->value() ) );
         update_float_slider( w );
-        
+
         info->main()->uiView->redraw();
     }
 }
@@ -1714,40 +1726,40 @@ static void change_last_frame_cb( Fl_Int_Input* w,
 static void change_scale_x_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     img->scale_x( atof( w->value() ) );
     update_float_slider( w );
-    
+
     info->main()->uiView->redraw();
 }
 
 static void change_scale_y_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     img->scale_y( atof( w->value() ) );
     update_float_slider( w );
-    
+
     info->main()->uiView->redraw();
 }
 
 static void change_x_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     img->x( atof( w->value() ) );
     update_float_slider( w );
-    
+
     info->main()->uiView->redraw();
 }
 
 static void change_y_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     img->y( atof( w->value() ) );
     update_float_slider( w );
-    
+
     info->main()->uiView->redraw();
 }
 
@@ -1755,10 +1767,10 @@ static void change_pixel_ratio_cb( Fl_Float_Input* w,
                                    ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     img->pixel_ratio( atof( w->value() ) );
     update_float_slider( w );
-    
+
     info->main()->uiView->redraw();
 }
 
@@ -1786,10 +1798,10 @@ static void change_sidecar_cb( Fl_Button* w, ImageInformation* info )
 static void change_gain_blue_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->GainBlue( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1798,10 +1810,10 @@ static void change_gain_blue_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_gain_green_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->GainGreen( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1810,10 +1822,10 @@ static void change_gain_green_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_gain_red_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->GainRed( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1823,10 +1835,10 @@ static void change_exposure_compensation_cb( Fl_Float_Input* w,
                                              ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->ExposureCompensation( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1836,10 +1848,10 @@ static void change_exposure_adjust_cb( Fl_Float_Input* w,
                                        ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->ExposureAdjust( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1848,10 +1860,10 @@ static void change_exposure_adjust_cb( Fl_Float_Input* w,
 static void change_brightness_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Brightness( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1860,10 +1872,22 @@ static void change_brightness_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_contrast_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Contrast( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
+    img->image_damage( mrv::CMedia::kDamageAll );
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_flut_cb( Fl_Float_Input* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+
+    img->Flut( (float) atof( w->value() ) );
+    update_float_slider( w );
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1872,10 +1896,10 @@ static void change_contrast_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_kelvin_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Kelvin( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1884,10 +1908,10 @@ static void change_kelvin_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_tint_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Tint( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1896,10 +1920,10 @@ static void change_tint_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_saturation_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Saturation( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1908,10 +1932,10 @@ static void change_saturation_cb( Fl_Float_Input* w, ImageInformation* info )
 static void change_shadow_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Shadow( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
     img->image_damage( mrv::CMedia::kDamageAll );
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
@@ -1941,23 +1965,65 @@ static void change_trackno_cb( Fl_Int_Input* w, ImageInformation* info )
 static void change_bias_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
-    
+
     img->Bias( (float) atof( w->value() ) );
     update_float_slider( w );
-    
+
 
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
 }
 
+static void change_sharpness_cb( mrv::PopupMenu* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+
+
+    int v = w->value();
+    w->copy_label( w->child(v)->label() );
+    img->Sharpness( (R3DSDK::ImageOLPFCompensation) v );
+    img->refetch();
+
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_denoise_cb( mrv::PopupMenu* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+
+    int v = w->value();
+    w->copy_label( w->child(v)->label() );
+    img->Denoise( (R3DSDK::ImageDenoise) v );
+    img->refetch();
+
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+static void change_detail_cb( mrv::PopupMenu* w, ImageInformation* info )
+{
+    R3dImage* img = dynamic_cast< R3dImage*>( info->get_image() );
+
+    int v = w->value();
+    w->copy_label( w->child(v)->label() );
+    img->Detail( (R3DSDK::ImageDetail) v );
+    img->refetch();
+
+    mrv::ImageView* view = info->main()->uiView;
+    view->redraw();
+}
+
+
+
 static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    
+
     float g = (float) atof( w->value() );
     img->gamma( g );
     update_float_slider( w );
-    
+
 
     mrv::ImageView* view = info->main()->uiView;
     view->gamma( g );
@@ -2292,7 +2358,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[256];
             for ( ; it != et; ++it )
             {
-                sprintf( buf, "%s #%ld", i->first.c_str(), (it - ib)+1 );
+                sprintf( buf, "%s #%td", i->first.c_str(), (it - ib)+1 );
                 add_text( buf, NULL,
                           *it, false, false,
                           (Fl_Callback*) change_string_cb );
@@ -2389,7 +2455,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
 void ImageInformation::fill_data()
 {
 
-    
+
     char buf[1024];
     m_curr = add_browser(m_image);
 
@@ -2828,11 +2894,11 @@ void ImageInformation::fill_data()
             for ( size_t i = 0;
                   i < R3DSDK::ImageProcessingLimits::ISOCount; ++i )
             {
-                sprintf( buf, "%lu",
+                sprintf( buf, "%zu",
                          R3DSDK::ImageProcessingLimits::ISOList[i] );
                 options.push_back( buf );
             }
-            sprintf( buf, "%lu",
+            sprintf( buf, "%zu",
                      R3DSDK::ImageProcessingLimits::ISOList[r3d->iso_index()] );
             content = buf;
             add_enum( _("ISO"), _("ISO of film stock."),
@@ -2840,11 +2906,17 @@ void ImageInformation::fill_data()
 
             add_float( _("Kelvin"), _("Kelvin temperature."),
                        r3d->Kelvin(), true, true,
-                       (Fl_Callback*)change_kelvin_cb, 1000.f, 10000.f );
+                       (Fl_Callback*)change_kelvin_cb,
+                       ImageProcessingLimits::KelvinMin,
+                       ImageProcessingLimits::KelvinMax,
+                       FL_WHEN_RELEASE,
+                       mrv::Slider::kLOG );
 
             add_float( _("Tint"), _("Tinting of clip."),
                        r3d->Tint(), true, true,
-                       (Fl_Callback*)change_tint_cb, -100.0f, 100.f );
+                       (Fl_Callback*)change_tint_cb,
+                       ImageProcessingLimits::TintMin,
+                       ImageProcessingLimits::TintMax );
 
             if ( r3d->color_version() >= 2 )
             {
@@ -2852,16 +2924,29 @@ void ImageInformation::fill_data()
                            _("Exposure adjustment of clip."),
                            r3d->ExposureAdjust(), true, true,
                            (Fl_Callback*)change_exposure_adjust_cb,
-                           -8.0f, 8.f );
+                           ImageProcessingLimits::ExposureMin,
+                           ImageProcessingLimits::ExposureMax );
 
                 add_float( _("Saturation"), _("Saturation of clip."),
                            r3d->Saturation(), true, true,
-                           (Fl_Callback*)change_saturation_cb, 0.0f, 3.0f );
+                           (Fl_Callback*)change_saturation_cb,
+                           ImageProcessingLimits::SaturationMin,
+                           ImageProcessingLimits::SaturationMax );
 
                 add_float( _("Contrast"),
                            _("Overall contrast of clip."),
                            r3d->Contrast(), true, true,
-                           (Fl_Callback*)change_contrast_cb, -3.0f, 3.f );
+                           (Fl_Callback*)change_contrast_cb,
+                           ImageProcessingLimits::ContrastMin,
+                           ImageProcessingLimits::ContrastMax );
+
+                add_float( _("Flut"),
+                           _("Adjust ISO without clipping the highlights\n"
+                             "or crushing the shadows."),
+                           r3d->Flut(), true, true,
+                           (Fl_Callback*)change_flut_cb,
+                           ImageProcessingLimits::FLUTMin,
+                           ImageProcessingLimits::FLUTMax );
             }
             else
             {
@@ -2869,7 +2954,8 @@ void ImageInformation::fill_data()
                            _("Exposure compensation of clip."),
                            r3d->ExposureCompensation(), true, true,
                            (Fl_Callback*)change_exposure_compensation_cb,
-                           -8.0f, 8.f );
+                           ImageProcessingLimits::ExposureMin,
+                           ImageProcessingLimits::ExposureMax );
             }
 
 
@@ -2879,27 +2965,39 @@ void ImageInformation::fill_data()
                 add_float( _("Brightness"),
                            _("Overall brightness of clip."),
                            r3d->Brightness(), true, true,
-                           (Fl_Callback*)change_brightness_cb, -3.0f, 3.f );
+                           (Fl_Callback*)change_brightness_cb,
+                           ImageProcessingLimits::BrightnessMin,
+                           ImageProcessingLimits::BrightnessMax );
 
                add_float( _("Shadow"), _("Shadow levels of clip."),
                            r3d->Shadow(), true, true,
-                           (Fl_Callback*)change_shadow_cb, -3.0f, 3.0f );
+                           (Fl_Callback*)change_shadow_cb,
+                           ImageProcessingLimits::ShadowMin,
+                           ImageProcessingLimits::ShadowMax );
 
                group++;
 
                add_float( _("Red Gain"), _("Red Gain of clip."),
                            r3d->GainRed(), true, true,
-                           (Fl_Callback*)change_gain_red_cb, -3.0f, 3.0f );
+                           (Fl_Callback*)change_gain_red_cb,
+                          ImageProcessingLimits::GainsMin,
+                          ImageProcessingLimits::GainsMax );
                add_float( _("Green Gain"), _("Green Gain of clip."),
                            r3d->GainGreen(), true, true,
-                           (Fl_Callback*)change_gain_green_cb, -3.0f, 3.0f );
+                           (Fl_Callback*)change_gain_green_cb,
+                          ImageProcessingLimits::GainsMin,
+                          ImageProcessingLimits::GainsMax );
                add_float( _("Blue Gain"), _("Blue Gain of clip."),
                            r3d->GainBlue(), true, true,
-                           (Fl_Callback*)change_gain_blue_cb, -3.0f, 3.0f );
+                           (Fl_Callback*)change_gain_blue_cb,
+                          ImageProcessingLimits::GainsMin,
+                          ImageProcessingLimits::GainsMax );
            }
 
             if ( r3d->is_hdr() )
             {
+                ++group;
+
                 stringArray options;
                 options.push_back( _("Use TrackNo") );
                 options.push_back( _("Do Blend") );
@@ -2916,6 +3014,51 @@ void ImageInformation::fill_data()
                            r3d->Bias(), true, true,
                            (Fl_Callback*)change_bias_cb, -1.0f, 1.f );
             }
+
+            if ( r3d->scale() == 0 )
+            {
+                ++group;
+
+                options.clear();
+                options.push_back( "Off" );
+                options.push_back( "Low" );
+                options.push_back( "Medium" );
+                options.push_back( "High" );
+                content = options[ r3d->Sharpness() ];
+                add_enum( _("Sharpness"),
+                          _("Compensation for the OLPF (low-pass) filter.\n"
+                            "Only applicable when decoding 1:1"),
+                          content, options, true,
+                          (Fl_Callback*)change_sharpness_cb );
+
+                options.clear();
+                options.push_back( "Off" );
+                options.push_back( "Minimum" );
+                options.push_back( "Milder" );
+                options.push_back( "Mild" );
+                options.push_back( "Medium" );
+                options.push_back( "Strong" );
+                options.push_back( "Maximum" );
+                content = options[ r3d->Denoise() ];
+                add_enum( _("Denoise"),
+                          _("Amount of denoise filter to apply.\n"
+                            "Only applicable when decoding 1:1."),
+                          content, options, true,
+                          (Fl_Callback*)change_denoise_cb );
+
+                options.clear();
+                options.push_back( "Low" );
+                options.push_back( "Medium" );
+                options.push_back( "High" );
+                content = options[ r3d->Detail() ];
+                add_enum( _("Detail"),
+                          _("Amount of detail extraction.\n"
+                            "Only applicable when decoding 1:1."),
+                          content, options, true,
+                          (Fl_Callback*)change_detail_cb );
+            }
+
+            ++group;
         }
 
         CMedia::Attributes::const_iterator i = attrs.begin();
@@ -3159,12 +3302,13 @@ void ImageInformation::fill_data()
 
 void ImageInformation::refresh()
 {
-    // SCOPED_LOCK( _mutex );
     bool movie = ( dynamic_cast< aviImage* >( get_image() ) != NULL );
     if ( movie && filled && !img->right_eye() && !img->is_left_eye() )
     {
         return;
     }
+
+    filled = false;
 
     hide_tabs();
 
@@ -4206,7 +4350,8 @@ void ImageInformation::add_float( const char* name,
                                   const bool active,
                                   Fl_Callback* callback,
                                   const float minV, float maxV,
-                                  const int when )
+                                  const int when,
+                                  const mrv::Slider::SliderType type )
 {
     assert0( m_curr != NULL );
 
@@ -4281,6 +4426,7 @@ void ImageInformation::add_float( const char* name,
             // slider->slider_size(10);
             if ( tooltip ) slider->tooltip( tooltip );
             else slider->tooltip( lbl->label() );
+            slider->slider_type( type );
             slider->when( when );
             slider->callback( (Fl_Callback*)float_slider_cb, widget );
 

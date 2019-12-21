@@ -179,9 +179,27 @@ void media::create_thumbnail()
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
-    for (unsigned int y = 0; y < h; ++y )
+    int yinc = 1;
+    int ymin = 0;
+    int ymax = h;
+    if ( _image->flipY() )
     {
-        for (unsigned int x = 0; x < w; ++x )
+        yinc = -1;
+        ymin = h - 1;
+        ymax = -1;
+    }
+    int xinc = 1;
+    int xmin = 0;
+    int xmax = w;
+    if ( _image->flipX() )
+    {
+        xinc = -1;
+        xmin = w - 1;
+        xmax = -1;
+    }
+    for (int y = ymin; y != ymax; y += yinc )
+    {
+        for (int x = xmin; x != xmax; x += xinc )
         {
             CMedia::Pixel fp = pic->pixel( x, y );
             if ( gamma != 1.0f )

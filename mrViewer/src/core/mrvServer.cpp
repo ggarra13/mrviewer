@@ -1242,7 +1242,7 @@ bool Parser::parse( const std::string& s )
                 size_t num_luts = img->number_of_lmts();
                 for ( size_t i = 0; i < num_luts; ++i )
                 {
-                    sprintf( buf, N_("LMT %ld \"%s\""), i,
+                    sprintf( buf, N_("LMT %zd \"%s\""), i,
                              img->look_mod_transform(i) );
                     deliver( buf );
                 }

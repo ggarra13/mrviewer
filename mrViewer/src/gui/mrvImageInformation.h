@@ -44,6 +44,7 @@
 #include "core/mrvString.h"
 #include "gui/mrvPopupMenu.h"
 #include "gui/mrvBrowser.h"
+#include "gui/mrvSlider.h"
 #include "gui/mrvTable.h"
 #include "gui/mrvCollapsibleGroup.h"
 #include "gui/mrvScroll.h"
@@ -64,8 +65,6 @@ class ImageView;
 
 class ImageInformation : public ImageInfoParent
 {
-public:
-    typedef boost::recursive_mutex Mutex;
 
 public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
@@ -163,7 +162,8 @@ protected:
                     const bool active = false,
                     Fl_Callback* callback = NULL,
                     const float minV = 0.0f, const float maxV = 1.0f,
-                    const int when = FL_WHEN_RELEASE  );
+                    const int when = FL_WHEN_RELEASE,
+                    const mrv::Slider::SliderType type = mrv::Slider::kNORMAL );
     void add_rect( const char* name, const char* tooltip,
                    const mrv::Recti& content,
                    const bool editable = false,
@@ -224,7 +224,6 @@ protected:
     mrvPack*           m_all;
     mrv::Table*       m_curr;
     Fl_Color          m_color;
-    CMedia::Mutex     _mutex;
     unsigned int group;
     unsigned int row;
     unsigned int X, Y, W, H;

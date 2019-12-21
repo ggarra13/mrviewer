@@ -8451,7 +8451,7 @@ void ImageView::refresh_audio_tracks() const
     for ( size_t i = 0; i < numTracks; ++i )
     {
         char buf[80];
-        sprintf( buf, "Track #%02ld", i );
+        sprintf( buf, "Track #%02zd", i );
         uiMain->uiAudioTracks->add( buf );
     }
     uiMain->uiAudioTracks->add( "<no audio>" );

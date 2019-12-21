@@ -1106,7 +1106,7 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
                               const unsigned short channels,
                               const image_type::Format format,
                               const image_type::PixelType pixel_type,
-                              unsigned w, unsigned h)
+                              size_t w, size_t h)
 {
     if ( w == 0 )
     {
@@ -4313,9 +4313,6 @@ void CMedia::default_ocio_input_color_space()
 void CMedia::ocio_input_color_space( const std::string& n )
 {
     if ( _input_color_space == n || is_thumbnail() ) return;
-
-    if ( n.find( "Canon" ) != std::string::npos )
-        abort();
 
     _input_color_space = n;
     image_damage( image_damage() | kDamageData | kDamageLut );
