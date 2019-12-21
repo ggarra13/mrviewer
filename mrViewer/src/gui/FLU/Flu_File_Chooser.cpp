@@ -460,6 +460,7 @@ void Flu_File_Chooser::previewCB()
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
+            e->delete_icon = false;
             e->set_colors();
 
             if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
@@ -497,6 +498,7 @@ void Flu_File_Chooser::previewCB()
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
+            e->delete_icon = false;
             e->set_colors();
             e->updateIcon();
         }
