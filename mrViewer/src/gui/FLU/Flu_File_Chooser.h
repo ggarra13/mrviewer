@@ -477,6 +477,7 @@ description, shortDescription, toolTip, altname;
     };
 
   friend class CBTile;
+#if 1
   class CBTile : public Fl_Tile
     {
     public:
@@ -484,6 +485,15 @@ description, shortDescription, toolTip, altname;
       int handle( int event );
       Flu_File_Chooser *chooser;
     };
+#else
+  class CBTile : public Fl_Group
+    {
+    public:
+      CBTile( int x, int y, int w, int h, Flu_File_Chooser *c );
+      int handle( int event );
+      Flu_File_Chooser *chooser;
+    };
+#endif
 
   friend class FileColumns;
   class FileColumns : public Fl_Tile

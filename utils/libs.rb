@@ -118,7 +118,7 @@ def copy_files( build )
   FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
   if build =~ /Linux/
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_1_0/Redistributable/linux/REDR3D-x64.so",
+    FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
                     "#{build}/#{@debug}/lib" )
   end
 end
