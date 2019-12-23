@@ -2832,7 +2832,6 @@ void ImageInformation::fill_data()
     const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
     {
-        m_attributes->show();
         m_curr = add_browser( m_attributes );
 
         R3dImage* r3d = dynamic_cast< R3dImage* >( img );
@@ -3120,6 +3119,7 @@ void ImageInformation::fill_data()
 
         // m_curr->parent()->relayout();
 
+        m_attributes->show();
     }
 
 
@@ -3127,7 +3127,6 @@ void ImageInformation::fill_data()
 
     if ( num_video_streams > 0 )
     {
-        m_video->show();
         for ( int i = 0; i < num_video_streams; ++i )
         {
 
@@ -3185,12 +3184,12 @@ void ImageInformation::fill_data()
 
             // m_curr->parent()->relayout();
         }
+        m_video->show();
     }
 
 
     if ( num_audio_streams > 0 )
     {
-        m_audio->show();
         for ( int i = 0; i < num_audio_streams; ++i )
         {
             char buf[256];
@@ -3251,13 +3250,13 @@ void ImageInformation::fill_data()
         }
 
 
+        m_audio->show();
         m_audio->parent()->show();
 
     }
 
     if ( num_subtitle_streams > 0 )
     {
-        m_subtitle->show();
         for ( int i = 0; i < num_subtitle_streams; ++i )
         {
             char buf[256];
@@ -3292,6 +3291,7 @@ void ImageInformation::fill_data()
             //     m_curr->parent()->relayout();
         }
 
+        m_subtitle->show();
     }
 
 
