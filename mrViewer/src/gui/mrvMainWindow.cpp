@@ -64,6 +64,7 @@ namespace {
 
 namespace mrv {
 
+
     using namespace R3DSDK;
 
 MainWindow::MainWindow( int W, int H, const char* title ) :
@@ -98,6 +99,7 @@ Fl_Double_Window( W, H, title )
 
         R3dImage::init = true;
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -111,8 +113,10 @@ MainWindow::~MainWindow()
     uiMain->uiView->stop();
     delete uiMain->uiView;
     uiMain->uiView = NULL;
+
     // Close the R3D SDK
     R3DSDK::FinalizeSdk();
+    R3dImage::init = false;
 }
 
 

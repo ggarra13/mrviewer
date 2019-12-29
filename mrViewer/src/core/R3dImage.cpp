@@ -76,6 +76,7 @@ namespace mrv {
 
     R3dImage::~R3dImage()
     {
+        finalize();
     }
 
     bool R3dImage::test( const char* file )
@@ -288,8 +289,11 @@ namespace mrv {
 
     bool R3dImage::finalize()
     {
-        delete clip; clip = NULL;
-        delete iproc; iproc = NULL;
+        if (init)
+        {
+            delete iproc; iproc = NULL;
+            delete clip; clip = NULL;
+        }
         // We call initializeSdk/finalizeSdk in mainWindow as initializeSdk
         // is not reentrant it seems.
         return true;
@@ -510,36 +514,34 @@ namespace mrv {
 
 
 
-        try
+
+        if ( is_hdr() )
         {
-
-            if ( is_hdr() )
+            if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) !=
+                 DSDecodeOK )
             {
-                if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) !=
-                     DSDecodeOK )
-                {
-                    IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
-                               << frame );
-                    return initialize();
-                }
+                IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
+                           << frame );
+                return initialize();
+            }
 
 
-                image_type_ptr hdr;
-                allocate_pixels( hdr, frame, 3, image_type::kRGB,
-                                 image_type::kShort, dw, dh );
+            image_type_ptr hdr;
+            allocate_pixels( hdr, frame, 3, image_type::kRGB,
+                             image_type::kShort, dw, dh );
 
-                job.OutputBuffer = hdr->data().get();
-                if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) !=
-                     DSDecodeOK )
-                {
-                    IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
-                               << frame );
-                    return initialize();
-                }
+            job.OutputBuffer = hdr->data().get();
+            if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) !=
+                 DSDecodeOK )
+            {
+                IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
+                           << frame );
+                return initialize();
+            }
 
-                float bias = 0.0f;
-                switch( _hdr_mode )
-                {
+            float bias = 0.0f;
+            switch( _hdr_mode )
+            {
                 case HDR_USE_TRACKNO:
                     if ( _trackNo == 0 ) bias = -1.0;
                     else bias = 1.0;
@@ -547,41 +549,35 @@ namespace mrv {
                 case HDR_DO_BLEND:
                     bias = _Bias;
                     break;
-                }
-
-                float t = (bias + 1.0f) / 2.0f;
-                float t2 = 1.0f - t;
-
-                for ( unsigned y = 0; y < dh; ++y )
-                {
-                    for ( unsigned x = 0; x < dw; ++x )
-                    {
-                        CMedia::Pixel p = canvas->pixel( x, y );
-                        CMedia::Pixel p2 = hdr->pixel( x, y );
-                        p.r *= t;
-                        p.g *= t;
-                        p.b *= t;
-                        p.r += p2.r * t2;
-                        p.g += p2.g * t2;
-                        p.b += p2.b * t2;
-                        canvas->pixel( x, y, p );
-                    }
-                }
             }
-            else
+
+            float t = (bias + 1.0f) / 2.0f;
+            float t2 = 1.0f - t;
+
+            for ( unsigned y = 0; y < dh; ++y )
             {
-                // decode the frame 'frame' of the clip
-                if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+                for ( unsigned x = 0; x < dw; ++x )
                 {
-                    IMG_ERROR( _("Video decode failed for frame ") << frame );
-                    return initialize();
+                    CMedia::Pixel p = canvas->pixel( x, y );
+                    CMedia::Pixel p2 = hdr->pixel( x, y );
+                    p.r *= t;
+                    p.g *= t;
+                    p.b *= t;
+                    p.r += p2.r * t2;
+                    p.g += p2.g * t2;
+                    p.b += p2.b * t2;
+                    canvas->pixel( x, y, p );
                 }
             }
         }
-        catch( const std::exception& e )
+        else
         {
-            LOG_ERROR( e.what() );
-            return initialize();
+            // decode the frame 'frame' of the clip
+            if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+            {
+                IMG_ERROR( _("Video decode failed for frame ") << frame );
+                return initialize();
+            }
         }
 
         // Store in queue
@@ -1211,8 +1207,6 @@ namespace mrv {
 
     void R3dImage::set_ics_based_on_color_space_and_gamma()
     {
-        return;
-
         PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
         const char* var = uiPrefs->uiPrefsOCIOConfig->value();
         if ( !var ) return;

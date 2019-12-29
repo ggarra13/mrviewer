@@ -24,7 +24,7 @@
  *
  */
 
-#define ALLOC_CONSOLE
+//#define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -52,6 +52,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvClient.h"
 #include "core/mrvI8N.h"
 #include "core/mrvException.h"
+#include "core/R3dImage.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvCPU.h"
 

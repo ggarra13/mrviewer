@@ -51,6 +51,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Progress.H>
 #include <FL/Fl.H>
 
+#include "core/R3dImage.h"
 #include "core/aviImage.h"
 #include "core/stubImage.h"
 #include "core/smpteImage.h"
@@ -509,7 +510,6 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 namespace mrv {
 
 
-
 /**
  * Constructor
  *
@@ -531,6 +531,7 @@ old_dragging( NULL )
     connectorstyle( FL_TREE_CONNECTOR_NONE );
     connectorwidth( 0 );
     widgetmarginleft( 0 );
+
 }
 
 ImageBrowser::~ImageBrowser()
