@@ -154,8 +154,9 @@ extern errorstream error;
 
 }
 
-} // namespace mrv
+unsigned long get_thread_id();
 
+} // namespace mrv
 
 
 

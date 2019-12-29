@@ -581,7 +581,7 @@ void attach_look_mod_transform( CMedia* image, const std::string& script,
                                 ViewerUI* main )
 {
     char buf[1024];
-    sprintf( buf, "LMT %ld \"%s\"", idx, script.c_str() );
+    sprintf( buf, "LMT %zd \"%s\"", idx, script.c_str() );
     main->uiView->send_network( buf );
 
     if ( idx >= image->number_of_lmts() && script != "" )

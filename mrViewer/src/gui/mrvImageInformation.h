@@ -50,7 +50,6 @@
 #include "gui/mrvScroll.h"
 
 
-#define ImageInfoParent Fl_Scroll
 #define mrvPack MyPack
 
 class MyPack;
@@ -63,7 +62,7 @@ struct CtlLMTData;
 class ImageView;
 
 
-class ImageInformation : public ImageInfoParent
+class ImageInformation : public Fl_Scroll
 {
 
 public:
@@ -117,6 +116,9 @@ protected:
     void add_button( const char* name, const char* tooltip,
                      Fl_Callback* callback = NULL,
                      Fl_Callback* callback2 = NULL );
+
+    void add_scale( const char* name, const char* tooltip,
+                    int pressed, Fl_Callback* callback = NULL );
 
     void add_icc( const char* name, const char* tooltip,
                   const char* content,
@@ -219,7 +221,6 @@ protected:
     mrv::CollapsibleGroup*       m_audio;
     mrv::CollapsibleGroup*       m_subtitle;
 
-    mrv::CollapsibleGroup*       m_group;
 
     mrvPack*           m_all;
     mrv::Table*       m_curr;

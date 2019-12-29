@@ -48,11 +48,25 @@ Fl_Table( x, y, w, h, l )
     col_width_all(w/2);         // default width of columns
     col_resize(1);              // enable column resizing
     end();
+    // std::cerr << "Table::CONSTRUCTOR " << this << " "
+    //           << ( label() ? label() : "none" ) << std::endl;
 }
 
 
 Table::~Table()
 {
+    // std::cerr << "Table::DESTRUCTOR " << this << " "
+    //           << ( label() ? label() : "none" ) << std::endl;
+}
+
+int Table::handle( int event )
+{
+    // std::cerr << "Table::handle " << this << " "
+    //           << ( label() ? label() : "none" )
+    //           << " hscrollbar " << hscrollbar
+    //           << " vscrollbar " << vscrollbar
+    //           << std::endl;
+    return Fl_Table::handle( event );
 }
 
 // Draw the row/col headings

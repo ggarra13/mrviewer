@@ -48,6 +48,8 @@ class Table : public Fl_Table
     inline void column_separator(bool t = true) { _column_separator = t; }
     inline void auto_resize( bool t = true ) { _auto_resize = t; }
 
+    virtual int handle( int event );
+    
     void add( Fl_Widget* w );
     void layout();
     

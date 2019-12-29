@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -63,9 +63,9 @@ const char* iffImage::kCompression[] = {
 };
 
 #define MAKE_TAG(a,b,c,d) (unsigned int) ( (unsigned int)(a << 24)	\
-					   + (unsigned int)(b << 16)	\
-					   + (unsigned int)(c << 8)	\
-					   + (unsigned int)d)
+                                           + (unsigned int)(b << 16)	\
+                                           + (unsigned int)(c << 8)	\
+                                           + (unsigned int)d)
 
 static const unsigned int kFORM_TAG = MAKE_TAG('F','O','R','M');
 static const unsigned int kCAT_TAG  = MAKE_TAG('C','A','T',' ');
@@ -119,7 +119,7 @@ struct iffHeader
     unsigned int compress;
     int orgx, orgy;
 
-    int depth;
+    unsigned short depth;
 
     iffHeader() :
         orgx( 0 ),
@@ -231,8 +231,8 @@ void iffImage::read_chunk( FILE* f, iffChunk& chunk )
 }
 
 void iffImage::read_uncompressed_tile( FILE* file,
-				       mrv::image_type_ptr& canvas,
-				       boost::uint8_t* src,
+                                       mrv::image_type_ptr& canvas,
+                                       boost::uint8_t* src,
                                        const unsigned int compsize,
                                        const unsigned x1, const unsigned y1,
                                        const unsigned w,
@@ -356,10 +356,10 @@ static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* of
     uint8_t* result = (uint8_t*)malloc( size * depth );
     if (datasize >= size * depth) {
         size_t r = fread(result, 1, size * depth, file);
-	if ( r < datasize )
-	{
-	    LOG_ERROR( "Corrupt tile in iff file" );
-	}
+        if ( r < datasize )
+        {
+            LOG_ERROR( "Corrupt tile in iff file" );
+        }
     }
     else {
         // compressed tile
@@ -377,7 +377,7 @@ static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* of
 
 
 void iffImage::read_pixel_chunk( FILE* file,
-				 image_type_ptr& canvas,
+                                 image_type_ptr& canvas,
                                  const int depth, const int bytes,
                                  const iffChunk& chunk )
 {
@@ -534,7 +534,7 @@ void iffImage::read_pixel_chunk( FILE* file,
 }
 
 bool iffImage::fetch( mrv::image_type_ptr& canvas,
-		      const boost::int64_t frame )
+                      const boost::int64_t frame )
 {
     _gamma = 1.0f;
     _compression = kNoCompression;
@@ -579,7 +579,7 @@ bool iffImage::fetch( mrv::image_type_ptr& canvas,
             }
             if ( header.flags & kHas12Bit )
             {
-                // 		_depth = 12;
+                //              _depth = 12;
             }
             if ( header.flags & kHasZ )
             {
@@ -659,7 +659,7 @@ bool iffImage::fetch( mrv::image_type_ptr& canvas,
                 {
                     ++tile;
                     read_pixel_chunk( f, canvas, header.depth, header.bytes,
-				      chunk );
+                                      chunk );
                 }
                 else if ( chunk.tag == kZBUF_TAG && _channel &&
                           strcmp( _channel, N_("Z") ) == 0 )

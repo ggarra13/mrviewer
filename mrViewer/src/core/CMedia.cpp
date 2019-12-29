@@ -967,7 +967,8 @@ CMedia::Attributes& CMedia::attributes()  {
     static Attributes empty;
     AttributesFrame::iterator i;
     if ( dynamic_cast< aviImage* >( this ) != NULL ||
-         dynamic_cast< R3dImage* >( this ) != NULL )
+         dynamic_cast< R3dImage* >( this ) != NULL ||
+         start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
         i = _attrs.find( _frame );
@@ -980,7 +981,8 @@ const CMedia::Attributes& CMedia::attributes() const {
     static Attributes empty;
     AttributesFrame::const_iterator i;
     if ( dynamic_cast< const aviImage* const >( this ) != NULL ||
-         dynamic_cast< const R3dImage* const >( this ) != NULL )
+         dynamic_cast< const R3dImage* const >( this ) != NULL ||
+         start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
         i = _attrs.find( _frame );
@@ -1118,7 +1120,7 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
     //           << " channels: " << channels << " format: "
     //           << format << " pixel type: " << pixel_type );
 
-    image_damage( image_damage() & ~kDamageContents );
+    //image_damage( image_damage() & ~kDamageContents );
     try {
         canvas.reset( new image_type( frame, w, h,
                                       channels, format, pixel_type ) );
@@ -1810,6 +1812,9 @@ bool CMedia::has_changed()
 void CMedia::image_size( size_t w, size_t h )
 {
     SCOPED_LOCK( _mutex );
+    _w = w;
+    _h = h;
+
     _pixel_ratio = 1.0f;
 
     // Derive pixel ratio from common format resolutions
@@ -1900,9 +1905,6 @@ void CMedia::image_size( size_t w, size_t h )
         else
             _orig_fps = _fps = _play_fps = 24.0f;
     }
-
-    _w = w;
-    _h = h;
 
 }
 
@@ -2970,7 +2972,8 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
     mrv::image_type_ptr r;
 
     if ( !is_sequence() || !_cache_active ||
-         dynamic_cast< const aviImage* >( this ) != NULL )
+         dynamic_cast< const aviImage* >( this ) != NULL ||
+         dynamic_cast< const R3dImage* >( this ) != NULL )
         return r;
 
     int64_t idx = frame - _frame_start;
@@ -2990,7 +2993,8 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
  */
 void CMedia::cache( mrv::image_type_ptr& pic )
 {
-    if ( dynamic_cast< const aviImage* >( this ) != NULL )
+    if ( dynamic_cast< const aviImage* >( this ) != NULL ||
+         dynamic_cast< const R3dImage* >( this ) != NULL )
         return;
 
 
@@ -3064,7 +3068,8 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 
 bool CMedia::is_cache_full()
 {
-    if ( dynamic_cast< aviImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this ) != NULL ||
+         dynamic_cast< R3dImage* >( this ) != NULL )
         return true;
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
@@ -3076,7 +3081,8 @@ bool CMedia::is_cache_full()
 
 int64_t CMedia::first_cache_empty_frame()
 {
-    if ( dynamic_cast< aviImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this ) != NULL ||
+         dynamic_cast< R3dImage* >( this ) != NULL )
         return first_frame();
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )

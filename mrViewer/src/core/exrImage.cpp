@@ -1846,6 +1846,9 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             prefix = c.substr( 0, idx-1 );
         }
 
+        const Header& header = inmaster.header(0);
+        read_header_attr( header, frame );
+
         if ( _layers.empty() )
         {
             st[0] = st[1] = -1;
@@ -1871,8 +1874,6 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                     image_damage( image_damage() | kDamage3DData );
                 }
 
-
-                read_header_attr( header, frame );
 
 
                 _pixel_ratio = header.pixelAspectRatio();
@@ -2371,7 +2372,6 @@ bool exrImage::fetch(  mrv::image_type_ptr& canvas,
 
         if ( _numparts > 0 )
         {
-
             if ( !  fetch_multipart( canvas, inmaster, frame ) )
                 return false;
 

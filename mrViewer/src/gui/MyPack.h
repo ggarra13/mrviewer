@@ -22,7 +22,7 @@
   other.  Then the MyPack resizes itself to surround the child
   widgets.
   <P>This widget is needed for the Fl_Tabs.
-  In addition you may want to put the MyPack inside an 
+  In addition you may want to put the MyPack inside an
   Fl_Scroll.
 
   <P>The resizable for MyPack is set to NULL by default.</p>
@@ -30,7 +30,7 @@
 */
 class FL_EXPORT MyPack : public Fl_Group {
   int spacing_;
-  
+
 public:
   enum { // values for type(int)
     VERTICAL = 0,
@@ -38,10 +38,13 @@ public:
   };
 
 protected:
-  void draw();
+  virtual void draw();
 
 public:
   MyPack(int x,int y,int w ,int h,const char *l = 0);
+  virtual ~MyPack();
+
+  virtual int handle( int e );
 
   void end()
   {

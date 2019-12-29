@@ -10,6 +10,7 @@
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
+#include <iostream>
 #include "MyPack.h"
 
 /**
@@ -17,7 +18,7 @@
   and label string. The default boxtype is FL_NO_BOX.
   <P>The destructor <I>also deletes all the children</I>. This allows a
   whole tree to be deleted at once, without having to keep a pointer to
-  all the children in the user code. A kludge has been done so the 
+  all the children in the user code. A kludge has been done so the
   MyPack and all of it's children can be automatic (local)
   variables, but you must declare the MyPack<I>first</I>, so
   that it is destroyed last.
@@ -29,6 +30,11 @@ MyPack::MyPack(int X, int Y, int W, int H,const char *l)
   // type(VERTICAL); // already set like this
 }
 
+MyPack::~MyPack()
+{
+    // std::cerr << "MyPack::~MyPack DESTRUCTOR " << this
+    //           << ( label() ? label() : "none" ) << std::endl;
+}
 
 /**
   Recalculate the layout of the widget based on children.
@@ -53,7 +59,7 @@ void MyPack::layout() {
   if (horizontal()) {
     rw = -spacing_;
     rh = th;
-    
+
     for (int i = children(); i--;)
       if (child(i)->visible()) {
         if (child(i) != this->resizable()) rw += child(i)->w();
@@ -62,7 +68,7 @@ void MyPack::layout() {
   } else {
     rw = tw;
     rh = -spacing_;
-    
+
     for (int i = children(); i--;)
       if (child(i)->visible()) {
         if (child(i) != this->resizable()) rh += child(i)->h();
@@ -115,7 +121,7 @@ void MyPack::layout() {
       current_position += spacing_;
     }
   }
-  
+
   if (horizontal()) {
     //NODRAW if (maximum_position < tx+tw && box()) {
     //NODRAW   fl_color(color());
@@ -129,7 +135,7 @@ void MyPack::layout() {
     //NODRAW }
     th = maximum_position-ty;
   }
-  
+
   tw += Fl::box_dw(box()); if (tw <= 0) tw = 1;
   th += Fl::box_dh(box()); if (th <= 0) th = 1;
   if (tw != w() || th != h()) {
@@ -140,6 +146,19 @@ void MyPack::layout() {
   //NODRAW   draw_box();
   //NODRAW   draw_label();
   //NODRAW }
+}
+
+int MyPack::handle( int e )
+{
+    // std::cerr << "MyPack::handle " << this << " "
+    //           << ( label() ? label() : "none" ) << std::endl;
+    // for (int i = 0; i < children(); ++i )
+    // {
+    //     Fl_Widget* e = child(i);
+    //     std::cerr << "\t" << e << " label=" 
+    //               << (e->label() ? e->label() : "none" ) << std::endl;
+    // }
+    return Fl_Group::handle( e );
 }
 
 void MyPack::draw() {
@@ -155,7 +174,7 @@ void MyPack::draw() {
   if (horizontal()) {
     rw = -spacing_;
     rh = th;
-    
+
     for (int i = children(); i--;)
       if (child(i)->visible()) {
         if (child(i) != this->resizable()) rw += child(i)->w();
@@ -164,7 +183,7 @@ void MyPack::draw() {
   } else {
     rw = tw;
     rh = -spacing_;
-    
+
     for (int i = children(); i--;)
       if (child(i)->visible()) {
         if (child(i) != this->resizable()) rh += child(i)->h();
@@ -216,7 +235,7 @@ void MyPack::draw() {
       current_position += spacing_;
     }
   }
-  
+
   if (horizontal()) {
     if (maximum_position < tx+tw && box()) {
       fl_color(color());
@@ -230,7 +249,7 @@ void MyPack::draw() {
     }
     th = maximum_position-ty;
   }
-  
+
   tw += Fl::box_dw(box()); if (tw <= 0) tw = 1;
   th += Fl::box_dh(box()); if (th <= 0) th = 1;
   if (tw != w() || th != h()) {
@@ -242,4 +261,3 @@ void MyPack::draw() {
     draw_label();
   }
 }
-

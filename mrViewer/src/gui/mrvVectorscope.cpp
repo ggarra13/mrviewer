@@ -277,9 +277,9 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
 
             if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
             {
-                engine->evaluate( img,
-                                  (*(Imath::V3f*)&op),
-                                  (*(Imath::V3f*)&rp) );
+                Imath::V3f* ov = (Imath::V3f*) &op;
+                Imath::V3f* rv = (Imath::V3f*) &rp;
+                engine->evaluate( img, *ov, *rv );
             }
             else
             {

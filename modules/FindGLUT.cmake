@@ -21,7 +21,7 @@ IF (WIN32)
       /usr/include
     )
 
-    FIND_LIBRARY( GLUT_glut_LIBRARY glut32
+    FIND_LIBRARY( GLUT_glut_LIBRARY glut32 freeglut freeglutd
       ${OPENGL_LIBRARY_DIR}
       ${GLUT_ROOT_PATH}/lib
       ${GLUT_ROOT_PATH}/Release
@@ -32,6 +32,8 @@ IF (WIN32)
     )
 
   ELSE(CYGWIN)
+
+    FIND_PACKAGE( OPENGL )
 
     FIND_PATH( GLUT_INCLUDE_DIR GL/glut.h
       ${GLUT_ROOT_PATH}/include
@@ -44,7 +46,7 @@ IF (WIN32)
       ${OPENGL_LIBRARY_DIR} )
 
     FIND_LIBRARY( GLUT_glut_LIBRARY
-		  NAMES glut32 glut freeglut_static freeglut 
+		  NAMES glut32 glut freeglut freeglutd freeglut_static 
 		  PATHS ${SEARCH_PATHS}
 		)
 

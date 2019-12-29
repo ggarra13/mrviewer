@@ -55,6 +55,7 @@ namespace mrv {
       void spacing( int x );
       void resize(int X,int Y,int W,int H);
       MyPack* contents() { return _contents; }
+      void layout();
 
     protected:
       Fl_Button*  _button;
@@ -62,7 +63,6 @@ namespace mrv {
 
       static void toggle_tab_cb( Fl_Button* w, void* data );
       void        toggle_tab( Fl_Button* w);
-      void layout();
       void relabel_button();
       // virtual void draw();  // DEBUG
 

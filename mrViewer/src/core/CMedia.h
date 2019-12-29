@@ -308,7 +308,7 @@ public:
         kDamageTimecode  = 1 << 9,
         kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut |
                             kDamageThumbnail | kDamageData | kDamageSubtitle |
-                            kDamage3DData | kDamageCache | kDamageTimecode)
+                            kDamage3DData | kDamageCache | kDamageTimecode )
     };
 
     enum DecodeStatus {

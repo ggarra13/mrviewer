@@ -1257,8 +1257,9 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         DBG;
         path += " -> " + Preferences::OCIO_View;
         DBG;
-        fullpath += path;
     }
+    
+    fullpath += path;
     //
     // Check if this lut path was already calculated by some other
     // image.

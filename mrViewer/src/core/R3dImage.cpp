@@ -47,6 +47,7 @@ namespace mrv {
         _hdr( false ),
         _old_scale( -1 ),
         _scale( 3 ),
+        _color_version( 2 ),
         _Bias( 0.0f ),
         _Brightness( 0 ),
         _Contrast( 0 ),
@@ -70,6 +71,7 @@ namespace mrv {
         _trackNo( 0 ),
         _hdr_mode( HDR_DO_BLEND )
     {
+        _gamma = 1.0f;
     }
 
     R3dImage::~R3dImage()
@@ -80,203 +82,207 @@ namespace mrv {
     {
         if ( file == NULL || !init ) return false;
 
+        // Ignore .RMD sidedata files
         if ( strcasecmp( file+strlen(file)-4, ".rmd" ) == 0 )
             return false;
 
-        Clip* clip = new Clip( file );
+        Clip* c = new Clip( file );
 
-        if ( !clip ) {
+        if ( !c ) {
             return false;
         }
-        delete clip;
+        delete c;
 
         return true;
     }
 
     bool R3dImage::initialize()
     {
+        delete clip; clip = NULL;
+        delete iproc; iproc = NULL;
+
         // load the clip
-        if ( !clip )
+        clip = new Clip( filename() );
+
+        // let the user know if this failed
+        if (clip->Status() != LSClipLoaded)
         {
+            IMG_ERROR( _("Error loading file ") << filename() );
+            finalize();
+            return false;
+        }
 
-            clip = new Clip( filename() );
-
-            // let the user know if this failed
-            if (clip->Status() != LSClipLoaded)
-            {
-                IMG_ERROR( _("Error loading file") );
-                finalize();
-                return false;
-            }
-
-
-            if ((clip->VideoTrackCount() == 2U) ||
-                (clip->MetadataItemAsInt(RMD_HDR_MODE) == 2))
-            {
-                _hdr = true;
-            }
+        _hdr = false;
+        if ((clip->VideoTrackCount() == 2U) ||
+            (clip->MetadataItemAsInt(RMD_HDR_MODE) == 2))
+        {
+            _hdr = true;
+        }
 
 
-            iproc = new ImageProcessingSettings;
-            clip->GetClipImageProcessingSettings( *iproc );
+        iproc = new ImageProcessingSettings;
+        clip->GetClipImageProcessingSettings( *iproc );
 
-            _color_space = iproc->ColorSpace;
-            _gamma_curve = iproc->GammaCurve;
-            _Brightness = iproc->Brightness;
-            _Contrast = iproc->Contrast;
-            _Denoise = iproc->Denoise;
-            _ExposureAdjust = iproc->ExposureAdjust;
-            _ExposureCompensation = iproc->ExposureCompensation;
-            _ISO = iproc->ISO;
-            _GainRed = iproc->GainRed;
-            _GainGreen = iproc->GainGreen;
-            _GainBlue = iproc->GainBlue;
-            _Kelvin = iproc->Kelvin;
-            _Saturation = iproc->Saturation;
-            _Shadow   = iproc->Shadow;
-            _Tint = iproc->Tint;
+        _color_space = iproc->ColorSpace;
+        _gamma_curve = iproc->GammaCurve;
+        _Brightness = iproc->Brightness;
+        _Contrast = iproc->Contrast;
+        _Denoise = iproc->Denoise;
+        _ExposureAdjust = iproc->ExposureAdjust;
+        _ExposureCompensation = iproc->ExposureCompensation;
+        _ISO = iproc->ISO;
+        _GainRed = iproc->GainRed;
+        _GainGreen = iproc->GainGreen;
+        _GainBlue = iproc->GainBlue;
+        _Kelvin = iproc->Kelvin;
+        _Saturation = iproc->Saturation;
+        _Shadow   = iproc->Shadow;
+        _Tint = iproc->Tint;
 
-            set_ics_based_on_color_space_and_gamma();
+        _color_version = clip->DefaultColorVersion();
 
+        set_ics_based_on_color_space_and_gamma();
 
-            _attrs.insert( std::make_pair( 0, Attributes() ) );
+        _attrs.clear();
+        _attrs.insert( std::make_pair( 0, Attributes() ) );
 
-            _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
-            _frameStart = _frame = _frame_start = 0;
-            _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
+        _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
+        _frameStart = _frame = _frame_start = 0;
+        _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
 
-            video_info_t info;
-            info.has_codec = true;
-            info.codec_name = "RED 3D";
-            info.fourcc = "R3D ";
-            info.fps = _fps;
-            info.pixel_format = "RGB";
-            info.has_b_frames = true;
-            info.start = 0;
-            info.duration = (double)(_frame_end - _frame_start) /
-                            (double) _fps;
+        _video_info.clear();
+
+        video_info_t info;
+        info.has_codec = true;
+        info.codec_name = "RED 3D";
+        info.fourcc = "R3D ";
+        info.fps = _fps;
+        info.pixel_format = "RGB";
+        info.has_b_frames = true;
+        info.start = 0;
+        info.duration = (double)(_frame_end - _frame_start) /
+                        (double) _fps;
+        _video_info.push_back( info );
+
+        if ( _hdr )
             _video_info.push_back( info );
 
-            if ( _hdr )
-                _video_info.push_back( info );
+        if ( clip->MetadataExists( RMD_FLIP_HORIZONTAL ) )
+            _flipX = clip->MetadataItemAsInt( RMD_FLIP_HORIZONTAL );
+        if ( clip->MetadataExists( RMD_FLIP_VERTICAL ) )
+            _flipY = clip->MetadataItemAsInt( RMD_FLIP_VERTICAL );
 
-            if ( clip->MetadataExists( RMD_FLIP_HORIZONTAL ) )
-                _flipX = clip->MetadataItemAsInt( RMD_FLIP_HORIZONTAL );
-            if ( clip->MetadataExists( RMD_FLIP_VERTICAL ) )
-                _flipY = clip->MetadataItemAsInt( RMD_FLIP_VERTICAL );
+        _pixel_ratio = 1.0f;
+        _depth = image_type::kShort;
+        if ( clip->MetadataExists( RMD_PIXEL_ASPECT_RATIO ) )
+            _pixel_ratio = clip->MetadataItemAsFloat( RMD_PIXEL_ASPECT_RATIO );
 
-            _pixel_ratio = 1.0f;
-            _depth = image_type::kShort;
-            if ( clip->MetadataExists( RMD_PIXEL_ASPECT_RATIO ) )
-                _pixel_ratio = clip->MetadataItemAsFloat( RMD_PIXEL_ASPECT_RATIO );
-
-            //
-            // We need to extract some XML info from the RMD sidecar since
-            // the SDK does not parse all of it.
-            //
-            const char* rmdfile = clip->GetRmdPath();
-            if ( rmdfile )
+        //
+        // We need to extract some XML info from the RMD sidecar since
+        // the SDK does not parse all of it.
+        //
+        const char* rmdfile = clip->GetRmdPath();
+        if ( rmdfile )
+        {
+            tinyxml2::XMLDocument doc;
+            doc.LoadFile( rmdfile );
+            XMLNode* root = doc.FirstChildElement("sidecar");
+            if ( root ) root = root->FirstChildElement("edits");
+            if ( root ) root = root->FirstChildElement("editlist");
+            if ( root ) root = root->FirstChildElement("edit");
+            XMLElement* element = root->FirstChildElement( "in" );
+            if ( element )
             {
-                tinyxml2::XMLDocument doc;
-                doc.LoadFile( rmdfile );
-                XMLNode* root = doc.FirstChildElement("sidecar");
-                if ( root ) root = root->FirstChildElement("edits");
-                if ( root ) root = root->FirstChildElement("editlist");
-                if ( root ) root = root->FirstChildElement("edit");
-                XMLElement* element = root->FirstChildElement( "in" );
-                if ( element )
-                {
-                    int f;
-                    element->QueryIntAttribute( "value", &f );
-                    _frameStart = f;
-                }
-                element = root->FirstChildElement( "out" );
-                if ( element )
-                {
-                    int f;
-                    element->QueryIntAttribute( "value", &f );
-                    _frameEnd = f;
-                }
-                root = root->FirstChildElement( "framing" );
-                if ( root )
-                {
-
-                    element = root->FirstChildElement("flipvertical");
-                    if (element)
-                        element->QueryBoolAttribute( "value", &_flipY );
-
-
-                    element = root->FirstChildElement("fliphorizontal");
-                    if (element)
-                        element->QueryBoolAttribute( "value", &_flipX );
-
-
-                    element = root->FirstChildElement("rotation");
-                    float z = 0.f;
-                    if (element)
-                        element->QueryFloatAttribute( "value", &z );
-                    _rot_z = z;
-                }
+                int f;
+                element->QueryIntAttribute( "value", &f );
+                _frameStart = f;
             }
-
-            static const char* kIgnoreMetadata[] = {
-                RMD_BRIGHTNESS,
-                RMD_CONTRAST,
-                RMD_DIGITAL_GAIN_RED,
-                RMD_DIGITAL_GAIN_GREEN,
-                RMD_DIGITAL_GAIN_BLUE,
-                RMD_EXPOSURE_ADJUST,
-                RMD_EXPOSURE_COMPENSATION,
-                RMD_FLIP_HORIZONTAL,
-                RMD_FLIP_VERTICAL,
-                RMD_FLUT_CONTROL,
-                RMD_HDR_MODE,
-                RMD_ISO,
-                RMD_PIXEL_ASPECT_RATIO,
-                RMD_SATURATION,
-                RMD_SHADOW,
-                RMD_WHITE_BALANCE_KELVIN,
-                RMD_WHITE_BALANCE_TINT
-            };
-
-            for ( size_t i = 0; i < clip->MetadataCount(); ++i )
+            element = root->FirstChildElement( "out" );
+            if ( element )
             {
-                const std::string& name = clip->MetadataItemKey(i);
-
-                bool ignore = false;
-                for ( size_t j = 0; j < sizeof(kIgnoreMetadata)/sizeof(char*);
-                      ++j )
-                {
-                    if ( strcasecmp( name.c_str(), kIgnoreMetadata[j] ) == 0 )
-                    {
-                        ignore = true;
-                        break;
-                    }
-                }
-
-                if ( ignore ) continue;
-
-                if ( clip->MetadataItemType(i) == MetadataTypeInt )
-                {
-                    Imf::IntAttribute attr( clip->MetadataItemAsInt(i) );
-                    _attrs[0].insert( std::make_pair( name,
-                                                      attr.copy() ) );
-                }
-                else if ( clip->MetadataItemType(i) == MetadataTypeFloat )
-                {
-                    Imf::FloatAttribute attr( clip->MetadataItemAsFloat(i) );
-                    _attrs[0].insert( std::make_pair( name,
-                                                      attr.copy() ) );
-                }
-                else // MetadataTypeString
-                {
-                    Imf::StringAttribute attr( clip->MetadataItemAsString(i) );
-                    _attrs[0].insert( std::make_pair( name,
-                                                      attr.copy() ) );
-                }
+                int f;
+                element->QueryIntAttribute( "value", &f );
+                _frameEnd = f;
             }
-            image_damage( image_damage() | kDamageData );
+            root = root->FirstChildElement( "framing" );
+            if ( root )
+            {
+
+                element = root->FirstChildElement("flipvertical");
+                if (element)
+                    element->QueryBoolAttribute( "value", &_flipY );
+
+
+                element = root->FirstChildElement("fliphorizontal");
+                if (element)
+                    element->QueryBoolAttribute( "value", &_flipX );
+
+
+                element = root->FirstChildElement("rotation");
+                float z = 0.f;
+                if (element)
+                    element->QueryFloatAttribute( "value", &z );
+                _rot_z = z;
+            }
         }
+
+        static const char* kIgnoreMetadata[] = {
+            RMD_BRIGHTNESS,
+            RMD_CONTRAST,
+            RMD_DIGITAL_GAIN_RED,
+            RMD_DIGITAL_GAIN_GREEN,
+            RMD_DIGITAL_GAIN_BLUE,
+            RMD_EXPOSURE_ADJUST,
+            RMD_EXPOSURE_COMPENSATION,
+            RMD_FLIP_HORIZONTAL,
+            RMD_FLIP_VERTICAL,
+            RMD_FLUT_CONTROL,
+            RMD_HDR_MODE,
+            RMD_ISO,
+            RMD_PIXEL_ASPECT_RATIO,
+            RMD_SATURATION,
+            RMD_SHADOW,
+            RMD_WHITE_BALANCE_KELVIN,
+            RMD_WHITE_BALANCE_TINT
+        };
+
+        for ( size_t i = 0; i < clip->MetadataCount(); ++i )
+        {
+            const std::string& name = clip->MetadataItemKey(i);
+
+            bool ignore = false;
+            for ( size_t j = 0; j < sizeof(kIgnoreMetadata)/sizeof(char*);
+                  ++j )
+            {
+                if ( strcasecmp( name.c_str(), kIgnoreMetadata[j] ) == 0 )
+                {
+                    ignore = true;
+                    break;
+                }
+            }
+
+            if ( ignore ) continue;
+
+            if ( clip->MetadataItemType(i) == MetadataTypeInt )
+            {
+                Imf::IntAttribute attr( clip->MetadataItemAsInt(i) );
+                _attrs[0].insert( std::make_pair( name,
+                                                  attr.copy() ) );
+            }
+            else if ( clip->MetadataItemType(i) == MetadataTypeFloat )
+            {
+                Imf::FloatAttribute attr( clip->MetadataItemAsFloat(i) );
+                _attrs[0].insert( std::make_pair( name,
+                                                  attr.copy() ) );
+            }
+            else // MetadataTypeString
+            {
+                Imf::StringAttribute attr( clip->MetadataItemAsString(i) );
+                _attrs[0].insert( std::make_pair( name,
+                                                  attr.copy() ) );
+            }
+        }
+        image_damage( image_damage() | kDamageData );
         return true;
     }
 
@@ -294,6 +300,7 @@ namespace mrv {
     {
         SCOPED_LOCK( _mutex );
         _images.clear();
+        image_damage( image_damage() | kDamageCache | kDamageContents );
     }
 
     CMedia::Cache R3dImage::is_cache_filled( int64_t frame )
@@ -302,10 +309,10 @@ namespace mrv {
         bool ok = false;
 
         // Check if video is already in video store
-        video_cache_t::iterator end = _images.end();
-        video_cache_t::iterator i = std::find_if( _images.begin(), end,
+        video_cache_t::iterator i = std::find_if( _images.begin(),
+                                                  _images.end(),
                                                   EqualFunctor(frame) );
-        if ( i != end ) ok = true;
+        if ( i != _images.end() ) ok = true;
 
         if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
         return (CMedia::Cache) ok;
@@ -313,16 +320,11 @@ namespace mrv {
 
     void R3dImage::scale( int i )
     {
-        if ( i < 0 || i > 3 )
-        {
-            IMG_ERROR( _("Wrong index ") << i << _(" for scale" ) );
-            return;
-        }
-        _scale = i;
+        SCOPED_LOCK( _mutex );
+        _scale = short(i);
         clear_cache();
         if ( stopped() )
         {
-            copy_values();
             if ( refetch( _frame ) )
                 find_image( _frame );
         }
@@ -342,8 +344,8 @@ namespace mrv {
             if ( stopped() )
             {
                 copy_values();
-                refetch( _frame );
-                find_image( _frame );
+                if ( refetch( _frame ) )
+                    find_image( _frame );
             }
         }
     }
@@ -363,36 +365,44 @@ namespace mrv {
 
     void R3dImage::copy_values()
     {
+        SCOPED_LOCK( _mutex );
         _old_scale = _scale;
         iproc->ISO = _ISO;
+        _old_Bias = _Bias;
+        iproc->Brightness = _Brightness;
+        iproc->Contrast = _Contrast;
+        iproc->ColorSpace = _color_space;
         iproc->Denoise = _Denoise;
         iproc->Detail = _Detail;
         iproc->ExposureAdjust = _ExposureAdjust;
         iproc->ExposureCompensation = _ExposureCompensation;
-        iproc->Brightness = _Brightness;
-        iproc->Contrast = _Contrast;
         iproc->FLUT = _Flut;
         iproc->GainRed = _GainRed;
         iproc->GainGreen = _GainGreen;
         iproc->GainBlue = _GainBlue;
+        iproc->GammaCurve = _gamma_curve;
+        _old_hdr_mode = _hdr_mode;
         iproc->Kelvin = _Kelvin;
         iproc->Saturation = _Saturation;
         iproc->Shadow = _Shadow;
         iproc->OLPFCompensation = _Sharpness;
         iproc->Tint = _Tint;
-        iproc->ColorSpace = _color_space;
-        iproc->GammaCurve = _gamma_curve;
-        _old_Bias = _Bias;
         _old_trackNo = _trackNo;
-        _old_hdr_mode = _hdr_mode;
     }
+
 
     bool R3dImage::fetch( mrv::image_type_ptr& canvas,
                           const boost::int64_t frame )
     {
+        // create and fill out a decode job structure so the
+        // decoder knows what you want it to do
+        VideoDecodeJob job;
+        // going to do a full resolution decode
+        size_t dw, dh;
+
         SCOPED_LOCK( _load_mutex );
 
-        if ( !clip || frame < _frame_start || frame > _frame_end )
+        if ( !clip || !iproc || frame < _frame_start || frame > _frame_end )
         {
             return false;
         }
@@ -428,27 +438,16 @@ namespace mrv {
         // calculate how much ouput memory we're going to need
 
         // going to do a full resolution decode
-        size_t dw = _real_width = clip->Width();
-        size_t dh = _real_height = clip->Height();
+        dw = _real_width = clip->Width();
+        dh = _real_height = clip->Height();
 
         if ( is_thumbnail() ) _scale = 3; // for thumbnails we do 1/8 decode
 
-        if ( _scale == 1 )
+        if ( _scale > 0 )
         {
-            dw = clip->Width() / 2;
-            dh = clip->Height() / 2; // going to do a half resolution decode
+            dw /= unsigned( 1 << _scale );
+            dh /= unsigned( 1 << _scale );
         }
-        else if ( _scale == 2 )
-        {
-            dw = clip->Width() / 4;
-            dh = clip->Height() / 4; // going to do a quarter resolution decode
-        }
-        else if ( _scale == 3 )
-        {
-            dw = clip->Width() / 8;
-            dh = clip->Height() / 8; // going to do a 1/8th resolution decode
-        }
-
 
         if ( _layers.empty() )
         {
@@ -457,49 +456,33 @@ namespace mrv {
             lumma_layers();
         }
 
-#if 0
-
-// #define pixel_type kHalf
-// #define channels kRGB
-// #define decode_type PixelType_HalfFloat_RGB_Interleaved
-
-#else
-
-#define pixel_type kShort
-#define channels kRGB
-#define decode_type PixelType_16Bit_RGB_Interleaved
-
-#endif
 
         image_size( dw, dh );
-        allocate_pixels( canvas, frame, 3, image_type::channels,
-                         image_type::pixel_type, dw, dh );
-
+        allocate_pixels( canvas, frame, 3, image_type::kRGB,
+                         image_type::kShort, dw, dh );
 
         // alloc this memory 16-byte aligned
         unsigned char * imgbuffer = (unsigned char*)canvas->data().get();
 
 
 
-        // create and fill out a decode job structure so the
-        // decoder knows what you want it to do
-        VideoDecodeJob job;
 
         // calculate the bytes per row, for an interleaved
-        // 16-bit image this is the width times 6
-        job.BytesPerRow = dw * sizeof(half) * 3U;
+        // 16-bit image this is the width times 6 ( 2 * 3 )
+        job.BytesPerRow = dw * sizeof(short) * 3U;
 
         // letting the decoder know how big the buffer is
-        job.OutputBufferSize = dw * dh * 3U * sizeof(half);
+        job.OutputBufferSize = dw * dh * 3U * sizeof(short);
 
         iproc->ImagePipelineMode = _pipeline;
 
         job.ImageProcessing = iproc;
         job.HdrProcessing = NULL;
 
+        //  std::cerr << frame << " scale 1:" << ( 1 << _scale ) << std::endl;
+
         switch( _scale )
         {
-        default:
         case 0:
             // decode at full resolution at premium quality
             job.Mode = DECODE_FULL_RES_PREMIUM;
@@ -513,6 +496,7 @@ namespace mrv {
             job.Mode = DECODE_QUARTER_RES_GOOD;
             break;
         case 3:
+        default:
             // decode at eight resolution at good quality
             job.Mode = DECODE_EIGHT_RES_GOOD;
             break;
@@ -521,76 +505,86 @@ namespace mrv {
         // store the image here
         job.OutputBuffer = imgbuffer;
 
-        // store the image in a 16-bit interleaved RGB or
-        // in half interleaved RGB format
-        job.PixelType = decode_type;
+        // store the image in a 16-bit interleaved RGB
+        job.PixelType = PixelType_16Bit_RGB_Interleaved;
 
-        _gamma = 1.0f;
 
-        if ( _hdr )
+
+        try
         {
-            if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) != DSDecodeOK )
+
+            if ( is_hdr() )
             {
-                IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
-                           << frame );
-                return false;
-            }
-
-
-            image_type_ptr hdr;
-            allocate_pixels( hdr, frame, 3, image_type::channels,
-                             image_type::pixel_type, dw, dh );
-
-            job.OutputBuffer = hdr->data().get();
-            if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) != DSDecodeOK )
-            {
-                IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
-                           << frame );
-                return false;
-            }
-
-            float bias = 0.0f;
-            switch( _hdr_mode )
-            {
-            case HDR_USE_TRACKNO:
-                if ( _trackNo == 0 ) bias = -1.0;
-                else bias = 1.0;
-                break;
-            case HDR_DO_BLEND:
-                bias = _Bias;
-                break;
-            }
-
-            float t = (bias + 1.0f) / 2.0f;
-            float t2 = 1.0f - t;
-
-            for ( unsigned y = 0; y < dh; ++y )
-            {
-                for ( unsigned x = 0; x < dw; ++x )
+                if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) !=
+                     DSDecodeOK )
                 {
-                    CMedia::Pixel p = canvas->pixel( x, y );
-                    CMedia::Pixel p2 = hdr->pixel( x, y );
-                    p.r *= t;
-                    p.g *= t;
-                    p.b *= t;
-                    p.r += p2.r * t2;
-                    p.g += p2.g * t2;
-                    p.b += p2.b * t2;
-                    canvas->pixel( x, y, p );
+                    IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
+                               << frame );
+                    return initialize();
+                }
+
+
+                image_type_ptr hdr;
+                allocate_pixels( hdr, frame, 3, image_type::kRGB,
+                                 image_type::kShort, dw, dh );
+
+                job.OutputBuffer = hdr->data().get();
+                if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) !=
+                     DSDecodeOK )
+                {
+                    IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
+                               << frame );
+                    return initialize();
+                }
+
+                float bias = 0.0f;
+                switch( _hdr_mode )
+                {
+                case HDR_USE_TRACKNO:
+                    if ( _trackNo == 0 ) bias = -1.0;
+                    else bias = 1.0;
+                    break;
+                case HDR_DO_BLEND:
+                    bias = _Bias;
+                    break;
+                }
+
+                float t = (bias + 1.0f) / 2.0f;
+                float t2 = 1.0f - t;
+
+                for ( unsigned y = 0; y < dh; ++y )
+                {
+                    for ( unsigned x = 0; x < dw; ++x )
+                    {
+                        CMedia::Pixel p = canvas->pixel( x, y );
+                        CMedia::Pixel p2 = hdr->pixel( x, y );
+                        p.r *= t;
+                        p.g *= t;
+                        p.b *= t;
+                        p.r += p2.r * t2;
+                        p.g += p2.g * t2;
+                        p.b += p2.b * t2;
+                        canvas->pixel( x, y, p );
+                    }
+                }
+            }
+            else
+            {
+                // decode the frame 'frame' of the clip
+                if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+                {
+                    IMG_ERROR( _("Video decode failed for frame ") << frame );
+                    return initialize();
                 }
             }
         }
-        else
+        catch( const std::exception& e )
         {
-            // decode the first frame (0) of the clip
-            if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
-            {
-                IMG_ERROR( _("Video decode failed for frame ") << frame );
-                return false;
-            }
+            LOG_ERROR( e.what() );
+            return initialize();
         }
 
-
+        // Store in queue
         SCOPED_LOCK( _mutex );
         if ( _images.empty() || _images.back()->frame() < frame )
         {
@@ -615,14 +609,6 @@ namespace mrv {
 
             _images.insert( at, canvas );
         }
-
-        // LOG_INFO( "images " << frame << " size " << _images.size()
-        //           << " dts " << _dts
-        //           << " iproc->Kelvin " << ( iproc ? iproc->Kelvin : 0 )
-        //           << " new " << _Kelvin << " "
-        //           << canvas->frame() << " " << canvas->width() << "x"
-        //           << canvas->height() << " img " << _w << "x" << _h );
-
 
         return true;
     }
@@ -668,7 +654,6 @@ namespace mrv {
             image_type_ptr canvas;
             if ( fetch( canvas, _dts ) )
             {
-                cache( canvas );
                 default_color_corrections();
             }
         }
@@ -705,6 +690,7 @@ namespace mrv {
 
 
         _frame = frame;
+
 
 
         {
@@ -800,6 +786,8 @@ namespace mrv {
 
 
         refresh();
+
+
 
         return true;
     }
@@ -922,6 +910,7 @@ namespace mrv {
             if ( refetch( _frame ) )
                 find_image( _frame );
         }
+        image_damage( image_damage() | kDamageCache | kDamageContents );
         return true;
     }
 
@@ -946,7 +935,6 @@ namespace mrv {
                     image_type_ptr canvas;
                     if ( fetch( canvas, _seek_frame ) )
                     {
-                        cache( canvas );
                         default_color_corrections();
                         find_image( _seek_frame );
                     }
@@ -998,7 +986,8 @@ namespace mrv {
 
     int R3dImage::color_version() const
     {
-        return (int) clip->DefaultColorVersion();
+        if ( !clip ) return 0;
+        return _color_version;
     }
 
     void R3dImage::load_camera_settings()
@@ -1191,9 +1180,9 @@ namespace mrv {
         _gamma_curve = kGammaCurve[idx].num;
         set_ics_based_on_color_space_and_gamma();
         clear_cache();
-        copy_values();
         if ( stopped() )
         {
+            copy_values();
             if ( refetch( _frame ) )
                 find_image( _frame );
         }
@@ -1222,6 +1211,8 @@ namespace mrv {
 
     void R3dImage::set_ics_based_on_color_space_and_gamma()
     {
+        return;
+
         PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
         const char* var = uiPrefs->uiPrefsOCIOConfig->value();
         if ( !var ) return;

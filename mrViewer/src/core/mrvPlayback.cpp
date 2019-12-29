@@ -128,9 +128,11 @@ enum EndStatus {
 };
 
 unsigned long get_thread_id(){
+    std::locale::global( std::locale("C") );
     std::string threadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
     unsigned long threadNumber = 0;
     sscanf(threadId.c_str(), "%lx", &threadNumber);
+    std::locale::global( std::locale("") );
     return threadNumber;
 }
 

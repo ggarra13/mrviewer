@@ -2454,6 +2454,7 @@ bool ImageView::should_update( mrv::media fg )
             img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
         }
 
+
         if ( uiMain->uiGL3dView &&
              uiMain->uiGL3dView->uiMain->visible() &&
              uiMain->uiGL3dView->uiMain->shown() &&
@@ -9143,7 +9144,6 @@ void ImageView::update_image_info() const
     else
         img = fg->image();
     uiMain->uiImageInfo->uiInfoText->set_image( img );
-    img->image_damage( img->image_damage() & ~CMedia::kDamageData );
 }
 
 void ImageView::playback( const CMedia::Playback b )

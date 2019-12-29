@@ -123,7 +123,7 @@ public:
     R3DSDK::ImagePipeline pipeline() { return _pipeline; }
     void pipeline( R3DSDK::ImagePipeline t ) { _pipeline = t; refetch(); }
 
-    int scale() const { return _scale; }
+    short scale() const { return _scale; }
     void scale( int t );
 
     size_t real_width() const { return _real_width; }
@@ -201,8 +201,9 @@ protected:
     video_cache_t _images;
     video_info_list_t     _video_info;
     bool          _hdr;
-    int           _old_scale;
-    int           _scale;
+    short         _old_scale;
+    short         _scale;
+    int           _color_version;
     size_t        _real_width, _real_height;
     float         _Bias;
     float         _Brightness;
