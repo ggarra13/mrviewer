@@ -386,6 +386,7 @@ namespace mrv {
         iproc->GainBlue = _GainBlue;
         iproc->GammaCurve = _gamma_curve;
         _old_hdr_mode = _hdr_mode;
+        iproc->ImagePipelineMode = _pipeline;
         iproc->Kelvin = _Kelvin;
         iproc->Saturation = _Saturation;
         iproc->Shadow = _Shadow;
@@ -419,6 +420,7 @@ namespace mrv {
              (!is_equal( iproc->Kelvin, _Kelvin )) ||
              (iproc->Denoise != _Denoise ) ||
              (iproc->Detail  != _Detail  ) ||
+             (iproc->ImagePipelineMode  != _pipeline  ) ||
              (!is_equal( iproc->ExposureAdjust, _ExposureAdjust ) ) ||
              (!is_equal( iproc->ExposureCompensation,
                          _ExposureCompensation ) ) ||
@@ -477,8 +479,6 @@ namespace mrv {
 
         // letting the decoder know how big the buffer is
         job.OutputBufferSize = dw * dh * 3U * sizeof(short);
-
-        iproc->ImagePipelineMode = _pipeline;
 
         job.ImageProcessing = iproc;
         job.HdrProcessing = NULL;

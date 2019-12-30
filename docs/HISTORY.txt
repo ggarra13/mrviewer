@@ -1,3 +1,6 @@
+v5.3.6  - Bug fixed IPP2 image pipeline mode not refreshing the cache when
+	  it was changed.
+
 v5.3.5  - Bug fixed a crash when displaying and selecting clips without the
 	  preview button on in the custom file requester.
 	- Bug fixed the display of metainformation per frame in multipart
@@ -7,6 +10,8 @@ v5.3.5  - Bug fixed a crash when displaying and selecting clips without the
 	- Made R3D clips update frames correctly.  Previously, high resolutions
 	  would hang in a certain frame and only update once the timeline reset
 	  itself.
+	- Made Linux OpenGL use the legacy library to fix problems with
+	  libOpenGL.so.0 not being found on some linux distros.
 
 v5.3.4  - Made all R3D color changes be interactive.
 	- Added pull down menus to color space and gamma curve in the
