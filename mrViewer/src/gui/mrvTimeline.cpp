@@ -63,8 +63,8 @@ mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 mrv::Slider( x, y, w, h, l ),
-_draw_cache( true ),
 _edl( false ),
+_draw_cache( true ),
 _tc( 0 ),
 _fps( 24 ),
 _display_min( AV_NOPTS_VALUE ),
@@ -549,9 +549,6 @@ void Timeline::draw()
 
     draw_box();
 
-    // Box* box = this->box();
-    // if (!box->fills_rectangle()) draw_background();
-
 
     // Get number of frames
     double mn = minimum();
@@ -686,13 +683,9 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = x() - Fl::box_dx(box()) + draw_coordinate( value(), w() -
-                                                   Fl::box_dw(box()) );
-
-    Y = y() + Fl::box_dy(box());
-    W = 15  - Fl::box_dw(box());
-    H = h() - Fl::box_dh(box());
     fl_push_clip( X, Y, W, H );
+    X += draw_coordinate( value(), w() - Fl::box_dw(box()) );
+    W = 15  - Fl::box_dw(box());
     Fl_Color c = fl_rgb_color( 180, 180, 128 );
     draw_box( FL_PLASTIC_UP_BOX, X, Y, W, H, c );
     clear_damage();
