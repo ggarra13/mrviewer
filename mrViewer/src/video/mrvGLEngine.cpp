@@ -394,6 +394,8 @@ void GLEngine::init_GLEW()
 // #endif
 }
 
+
+
 void GLEngine::refresh_shaders()
 {
     delete _YCbCr;
@@ -1197,10 +1199,15 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
 
     static mrv::media old;
     mrv::media fg = _view->foreground();
-    if ( old != fg )
+    if ( old != fg && old && fg )
     {
         if ( _view->main()->uiPrefs->uiPrefsAutoFitImage->value() )
-            const_cast<ImageView*>(_view)->fit_image();
+        {
+            CMedia* img = fg->image();
+            CMedia* oimg = old->image();
+            if ( img->display_window() != oimg->display_window() )
+                const_cast<ImageView*>(_view)->fit_image();
+        }
     }
 
     old = fg;

@@ -837,8 +837,8 @@ v->uiGain->value( (float) o->value() );}
             Fl_Slider uiGain {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
-v->uiGainInput->value( (float) o->value() );}
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} maximum 64 step 1 value 1
+v->uiGainInput->value( (float) o->value() );} selected
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0,02 maximum 64 step 0,01 value 1
               code0 {o->slider_type( mrv::Slider::kLOG );}
               class {mrv::Slider}
             }

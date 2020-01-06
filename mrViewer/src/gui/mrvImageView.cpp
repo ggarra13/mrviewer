@@ -2138,7 +2138,6 @@ void ImageView::fit_image()
     const mrv::media fg = foreground();
     if ( !fg ) return;
 
-
     const CMedia* img = fg->image();
 
     mrv::image_type_ptr pic = img->left();
@@ -2954,7 +2953,7 @@ again:
         else
         {
             mrv::Reel r = b->reel_at( bg_reel() );
-            if ( idx < r->images.size() )
+            if ( (unsigned)idx < r->images.size() )
             {
                 background( r->images[idx] );
             }
@@ -8389,7 +8388,9 @@ void ImageView::foreground( mrv::media fg )
                     if (o)
                     {
                        if ( o->display_window() != img->display_window() )
-                            fit_image();
+                       {
+                           fit_image();
+                       }
                     }
                 }
             }

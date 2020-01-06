@@ -452,6 +452,9 @@ bool oiioImage::save( const char* path, const CMedia* img,
     spec.width = dw;
     spec.height = dh;
 
+    if ( opts->OCIO_color_space() && !img->ocio_input_color_space().empty() )
+        spec.attribute ( N_("Input Color Space"),
+                         img->ocio_input_color_space() );
 
     if ( opts->mipmap() )
     {

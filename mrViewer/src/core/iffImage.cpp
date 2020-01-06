@@ -237,7 +237,8 @@ void iffImage::read_uncompressed_tile( FILE* file,
                                        const unsigned x1, const unsigned y1,
                                        const unsigned w,
                                        const unsigned h,
-                                       const short depth, const short bytes,
+                                       const unsigned short depth,
+                                       const short bytes,
                                        const bool z )
 {
     size_t r = fread( src, compsize, 1, file );
@@ -351,7 +352,8 @@ static void decompress_rle(uint8_t* data, uint32_t delta, uint32_t numBytes,
 }
 
 
-static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* offsets)
+static uint8_t* read_tile(FILE* file, int size, unsigned short depth,
+                          int datasize, int* offsets)
 {
     uint8_t* result = (uint8_t*)malloc( size * depth );
     if (datasize >= size * depth) {
@@ -378,7 +380,7 @@ static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* of
 
 void iffImage::read_pixel_chunk( FILE* file,
                                  image_type_ptr& canvas,
-                                 const int depth, const int bytes,
+                                 const unsigned short depth, const int bytes,
                                  const iffChunk& chunk )
 {
     iffPixelBlock block;
@@ -404,7 +406,8 @@ void iffImage::read_pixel_chunk( FILE* file,
             if ( tileData ) {
 
                 uint32_t* t = (uint32_t*)tileData;
-                for ( int i = 0; i < tile_width*tile_height; ++i )
+                uint32_t last = tile_width*tile_height;
+                for ( unsigned i = 0; i < last; ++i )
                 {
                     t[i] = ntohl( t[i] );
                 }
@@ -414,10 +417,10 @@ void iffImage::read_pixel_chunk( FILE* file,
                 float* buffer = (float*)canvas->data().get();
 
                 unsigned base = y1 * w + x1;
-                for (int i = 0; i < tile_height; i++) {
+                for (unsigned i = 0; i < tile_height; i++) {
                     unsigned iw = i * w;
                     unsigned it = i * tile_width;
-                    for (int j = 0; j < tile_width; j++) {
+                    for (unsigned j = 0; j < tile_width; j++) {
                         buffer[base + iw + j] = -tileData[it + j];
                     } /* End DEPTH dump */
                 }
@@ -440,7 +443,8 @@ void iffImage::read_pixel_chunk( FILE* file,
                                             offsets[depth - 1]);
         if ( tileData ) {
             uint32_t* t = (uint32_t*)tileData;
-            for ( int i = 0; i < tile_width*tile_height*depth; ++i )
+            uint32_t last = tile_width*tile_height*depth;
+            for ( unsigned i = 0; i < last; ++i )
             {
                 t[i] = ntohl( t[i] );
             }
@@ -478,7 +482,8 @@ void iffImage::read_pixel_chunk( FILE* file,
 
         if ( tileData ) {
             uint16_t* t = tileData;
-            for ( int i = 0; i < tile_width*tile_height*depth; ++i )
+            uint32_t last = tile_width*tile_height*depth;
+            for ( unsigned i = 0; i < last; ++i )
             {
                 t[i] = ntohs( t[i] );
             }

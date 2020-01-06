@@ -3151,6 +3151,10 @@ void ImageInformation::fill_data()
                              (Fl_Callback*)change_y_ripmap_cb, 0, 20 );
                 }
             }
+            else if ( i->first == N_("Input Color Space") )
+            {
+                continue;
+            }
             else
             {
                 if ( i->first.find( _("Video") ) != std::string::npos )

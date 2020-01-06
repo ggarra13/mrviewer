@@ -89,6 +89,7 @@ public:
         _image = img;
     }
 
+
     // Init FBO Drawing
     virtual bool init_fbo( ImageList& images );
     virtual void end_fbo( ImageList& images );
@@ -258,7 +259,7 @@ protected:
     GLuint lutId;              //!< The lut texture index
     float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
-    GLuint id, rid;
+    GLuint id, rid, vbo;
     ImageView::VRType    vr;
     float   vr_angle;
     double  _rotX, _rotY; // Sphere start rotation
@@ -274,6 +275,7 @@ protected:
     // OpenGL needs to be inited
     static bool _initGL;          //!< if not set, opengl must be inited for view
     static bool _hdr;          //!< we support HDR10 movies
+
     static GLint _maxTexUnits;   //!< hardware texture units
     static bool _floatTextures;   //!< float textures supported
     static bool _floatPixels;      //!< half pixels supported

@@ -1131,7 +1131,9 @@ void Flu_File_Chooser :: cancelCB()
 void Flu_File_Chooser :: do_callback()
 {
   if( _callback )
+  {
     _callback( this, _userdata );
+  }
 }
 
 void Flu_File_Chooser :: pattern( const char *p )
@@ -4843,8 +4845,17 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 
   if( fc->value() )
     {
-        for( int i = 1; i <= fc->count(); i++ )
-            filelist.push_back( std::string(fc->value(i)) );
+        if ( fc->count() == 1 )
+        {
+            filelist.push_back( fc->value() );
+        }
+        else
+        {
+            for( int i = 1; i <= fc->count(); i++ )
+            {
+                filelist.push_back( std::string(fc->value(i)) );
+            }
+        }
       retname = fc->value();
       return retname.c_str();
     }

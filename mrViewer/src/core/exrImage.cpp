@@ -1149,12 +1149,11 @@ void exrImage::read_header_attr( const Imf::Header& h,
 
     {
         const Imf::StringAttribute* attr =
-            h.findTypedAttribute<Imf::StringAttribute>( N_("inputColorSpace") );
+            h.findTypedAttribute<Imf::StringAttribute>( N_("Input Color "
+                                                           "Space") );
         if ( attr && !is_thumbnail() )
         {
             ocio_input_color_space( attr->value() );
-            if ( _frame == _frameStart )
-                image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1164,8 +1163,6 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             chromaticities( attr->value() );
-            if ( _frame == _frameStart )
-                image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -2445,10 +2442,10 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( _("Altitude") );
     }
 
-    if ( ! img->ocio_input_color_space().empty() )
+    if ( opts->OCIO_color_space() && !img->ocio_input_color_space().empty() )
     {
         Imf::StringAttribute attr( img->ocio_input_color_space() );
-        hdr.insert( N_("inputColorSpace"), attr );
+        hdr.insert( N_("Input Color Space"), attr );
         attrs.insert( _("Input Color Space") );
     }
 
@@ -2462,7 +2459,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     it = attributes.find( _( "Comments" ) );
     if ( it != attributes.end() )
     {
-        hdr.insert( _("Comments"), *it->second );
+        hdr.insert( N_("comments"), *it->second );
         attrs.insert( _("Comments") );
     }
 
@@ -2644,7 +2641,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         const std::string& name = i->first;
         // Avoid adding attributes we already parsed
-        if ( attrs.find( name ) != end ) continue;
+        if ( attrs.find( _(name.c_str()) ) != end ) continue;
         const Imf::Attribute& attr = *(i->second);
         hdr.insert( name, attr );
     }
@@ -3069,8 +3066,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                 add_layer( headers, fbs, names, layers,
                            save_type, img, opts, root, name, x );
 
-                if ( headers.size() == 1 )
-                    save_attributes( img, headers[0], opts );
+                save_attributes( img, headers[0], opts );
             }
         }
     }
@@ -3097,6 +3093,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         add_layer( headers, fbs, names, layers,
                    save_type, img, opts, root, layer, x );
+
         save_attributes( img, headers[0], opts );
     }
 

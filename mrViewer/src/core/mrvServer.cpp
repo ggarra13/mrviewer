@@ -1682,8 +1682,8 @@ const char* const kModule = "server";
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
                          ViewerUI* const v) :
-    non_empty_output_queue_(io_service),
-    Parser(io_service, v)
+    Parser(io_service, v),
+    non_empty_output_queue_(io_service)
 {
 
     deliver( "sync_image" );

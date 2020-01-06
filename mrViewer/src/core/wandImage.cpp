@@ -1599,11 +1599,21 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             }
         }
 
-        char buf[32];
-        sprintf( buf, "%2.4f", _fps.load() );
+        if ( opts->OCIO_color_space() && !ocio_input_color_space().empty() )
+        {
+            Attributes attrs;
+            Imf::StringAttribute* attr =
+                new Imf::StringAttribute( ocio_input_color_space() );
+            attrs["inputColorSpace"] = attr;
+            save_attribute( this, wand, attrs.begin() );
+        }
+
 
         if ( filename.rfind( ".dpx" ) != std::string::npos )
         {
+            char buf[32];
+            sprintf( buf, "%2.4f", _fps.load() );
+
             MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
             MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
         }

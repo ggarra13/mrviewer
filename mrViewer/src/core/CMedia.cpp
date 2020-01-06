@@ -153,6 +153,7 @@ int CMedia::_image_cache_size = 0;
 std::string CMedia::_default_subtitle_font = "Arial";
 std::string CMedia::_default_subtitle_encoding = "iso-8859-1";
 bool CMedia::_aces_metadata = false;
+bool CMedia::_ocio_color_space = false;
 bool CMedia::_all_layers = false;
 bool CMedia::_cache_active = true;
 bool CMedia::_preload_cache = true;

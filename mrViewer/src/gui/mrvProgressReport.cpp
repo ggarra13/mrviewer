@@ -35,9 +35,9 @@ namespace mrv {
 
 ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
                                 boost::int64_t end ) :
-    _time( 0 ),
     _frame( start ),
-    _end( end )
+    _end( end ),
+    _time( 0 )
 {
     Fl_Group::current(main);
     w = new Fl_Window( main->x() + main->w() / 2 - 320,

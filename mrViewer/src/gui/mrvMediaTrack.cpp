@@ -178,8 +178,8 @@ mrv::media media_track::media_at( const boost::int64_t frame )
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) return mrv::media();
 
-    int idx = index_at( frame );
-    if ( idx >= 0 && idx < reel->images.size() )
+    unsigned idx = index_at( frame );
+    if ( idx < reel->images.size() )
     {
         return reel->images[idx];
     }

@@ -148,7 +148,9 @@ namespace mrv
         else
         {
             const char* f = flu_save_chooser( title, pattern, startfile, compact_images );
-            if ( !f ) return "";
+            if ( !f ) {
+                return "";
+            }
             file = f;
         }
     }

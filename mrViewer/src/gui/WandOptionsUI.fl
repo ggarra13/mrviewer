@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -36,67 +36,72 @@ class WandOptionsUI {open : {public mrv::WandOpts}
 } {
   decl {std::string pixel_type;} {public local
   }
-  Function {make_window(bool aces, bool all_layers)} {open
+  Function {make_window(bool ocio, bool aces, bool all_layers)} {open
   } {
     Fl_Window uiMain {
       label {ImageMagick Saving} open
-      xywh {193 251 340 295} type Double resizable modal noborder visible
+      xywh {193 251 340 330} type Double resizable modal noborder visible
     } {
       Fl_Group {} {open
-	xywh {0 0 340 295} box UP_BOX
+        xywh {0 0 340 330} box UP_BOX
       } {
-	Fl_Group {} {
-	  label {Image Options}
-	  xywh {35 29 272 193} box UP_BOX
-	} {
-	  Fl_Choice uiPixelType {
-	    label {Pixel Format}
-	    callback {pixel_type = o->child(o->value())->label();}
-	    xywh {176 171 90 25} down_box BORDER_BOX
-	    class {mrv::Choice}
-	  } {
-	    MenuItem {} {
-	      label Char
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Short
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Integer
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Float
-	      xywh {5 5 100 20}
-	    }
-	  }
-	  Fl_Light_Button uiAllLayers {
-	    label {All Layers}
-	    xywh {86 116 155 35}
-	    code0 {o->value( all_layers );}
-	  }
-	  Fl_Light_Button uiACESmetadata {
-	    label {ACES metadata}
-	    xywh {86 61 155 35}
-	    code0 {o->value( aces );}
-	  }
-	}
-	Fl_Button {} {
-	  label OK
-	  user_data this user_data_type {WandOptionsUI*}
-	  callback {v->active(true);
+        Fl_Group {} {
+          label {Image Options} open
+          xywh {35 29 272 249} box UP_BOX
+        } {
+          Fl_Choice uiPixelType {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();}
+            xywh {175 230 90 25} down_box BORDER_BOX
+            class {mrv::Choice}
+          } {
+            MenuItem {} {
+              label Char
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Short
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Integer
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Float
+              xywh {5 5 100 20}
+            }
+          }
+          Fl_Light_Button uiAllLayers {
+            label {All Layers}
+            xywh {86 116 155 35}
+            code0 {o->value( all_layers );}
+          }
+          Fl_Light_Button uiACESmetadata {
+            label {ACES metadata}
+            xywh {86 61 155 35}
+            code0 {o->value( aces );}
+          }
+          Fl_Light_Button uiOCIOColorSpace {
+            label {OCIO Color Space}
+            tooltip {Saves out OCIO's input color space in the metadata of the image.} xywh {85 170 155 35}
+            code0 {o->value( ocio );}
+          }
+        }
+        Fl_Button {} {
+          label OK
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active(true);
 v->uiMain->hide();}
-	  xywh {85 253 75 27}
-	}
-	Fl_Button {} {
-	  label Cancel
-	  user_data this user_data_type {WandOptionsUI*}
-	  callback {v->active( false );
-v->uiMain->hide();} selected
-	  xywh {165 253 80 27}
-	}
+          xywh {85 288 75 27}
+        }
+        Fl_Button {} {
+          label Cancel
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active( false );
+v->uiMain->hide();}
+          xywh {165 288 80 27}
+        }
       }
     }
   }
@@ -107,16 +112,19 @@ else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
 else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
 else if ( pixel_type == _("Integer") ) _pixel_type = LongPixel;
 _ACESmetadata = uiACESmetadata->value();
+_OCIOColorSpace = uiOCIOColorSpace->value();
 _all_layers = uiAllLayers->value();} {}
   }
-  Function {WandOptionsUI(const ViewerUI* main, bool aces, bool all_layers) : mrv::WandOpts(aces, all_layers)} {} {
-    code {Fl_Window* w = make_window(aces, all_layers);
+  Function {WandOptionsUI(const ViewerUI* main, bool ocio, bool aces, bool all_layers) : mrv::WandOpts(ocio, aces, all_layers)} {open
+  } {
+    code {Fl_Window* w = make_window(ocio, aces, all_layers);
       w->set_modal();
       w->show();
       while ( w->visible() )
       {
 	Fl::check();
       }
-      if ( w->active() ) convert();} {}
+      if ( w->active() ) convert();} {selected
+    }
   }
 }

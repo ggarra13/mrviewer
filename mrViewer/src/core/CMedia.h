@@ -1561,6 +1561,13 @@ public:
         _aces_metadata = x;
     }
 
+    static bool ocio_color_space()         {
+        return _ocio_color_space;
+    }
+    static void ocio_color_space( bool x ) {
+        _ocio_color_space = x;
+    }
+
     static bool all_layers()         {
         return _all_layers;
     }
@@ -2059,6 +2066,7 @@ protected:
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;
     static bool _aces_metadata;
+    static bool _ocio_color_space;
     static bool _all_layers;
     static bool _8bit_cache;
     static bool _cache_active;

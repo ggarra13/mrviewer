@@ -35,14 +35,18 @@ ImageOpts* ImageOpts::build( ViewerUI* main, std::string ext,
 
     if ( ext == ".exr" || ext == ".sxr" || ext == ".mxr" )
         return new EXROptionsUI( main,
+                                 CMedia::ocio_color_space(),
                                  CMedia::aces_metadata(),
                                  CMedia::all_layers(),
                                  has_deep_data );
 
     if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" || ext == ".png" )
-        return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
+        return new OIIOOptionsUI( main, ext,
+                                  CMedia::ocio_color_space(),
+                                  CMedia::all_layers() );
 
     return new WandOptionsUI( main,
+                              CMedia::ocio_color_space(),
                               CMedia::aces_metadata(),
                               CMedia::all_layers() );
 }

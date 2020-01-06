@@ -36,12 +36,14 @@ class ImageOpts
 protected:
     bool _active;
     bool _opengl;
+    bool _OCIOColorSpace;
     bool _ACESmetadata;
     bool _all_layers;
 public:
-    ImageOpts(bool aces, bool all_layers) :
+    ImageOpts(bool ocio, bool aces, bool all_layers) :
         _active( true ),
         _opengl( false ),
+        _OCIOColorSpace( ocio ),
         _ACESmetadata( aces ),
         _all_layers( all_layers )
     {
@@ -79,6 +81,13 @@ public:
         _ACESmetadata = p;
     }
 
+    bool OCIO_color_space() const {
+        return _OCIOColorSpace;
+    }
+    void OCIO_color_space( bool p ) {
+        _OCIOColorSpace = p;
+    }
+
     static ImageOpts* build( ViewerUI* main, std::string ext,
                              const bool has_deep_data );
 };
@@ -92,8 +101,8 @@ protected:
     float            _dwa_compression_level;
     bool             _save_deep_data;
 public:
-    EXROpts( bool aces, bool all_layers ) :
-        ImageOpts( aces, all_layers ),
+    EXROpts( bool ocio, bool aces, bool all_layers ) :
+        ImageOpts( ocio, aces, all_layers ),
         _compression( Imf::ZIPS_COMPRESSION ),
         _pixel_type( Imf::HALF ),
         _dwa_compression_level( 45.0f ),
@@ -137,8 +146,8 @@ protected:
     image_type::PixelType _pixel_type;
     bool         _mipmap;
 public:
-    OIIOOpts( bool all_layers ) :
-        ImageOpts( false, all_layers ),
+    OIIOOpts( bool ocio, bool all_layers ) :
+        ImageOpts( ocio, false, all_layers ),
         _pixel_type( image_type::kFloat ),
         _mipmap( false )
     {
@@ -164,8 +173,8 @@ class WandOpts : public ImageOpts
 protected:
     StorageType  _pixel_type;
 public:
-    WandOpts(bool aces, bool all_layers) :
-        ImageOpts(aces, all_layers),
+    WandOpts(bool ocio, bool aces, bool all_layers) :
+        ImageOpts(ocio, aces, all_layers),
         _pixel_type( CharPixel )
     {
     }

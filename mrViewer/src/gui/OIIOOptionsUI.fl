@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -30,75 +30,80 @@ class OIIOOptionsUI {open : {public mrv::OIIOOpts}
 } {
   decl {std::string pixel_type;} {public local
   }
-  Function {make_window(const std::string& ext, bool all_layers)} {open
+  Function {make_window(const std::string& ext, bool ocio, bool all_layers)} {open
   } {
     Fl_Window uiMain {
       label {OIIO Saving} open
-      xywh {605 234 340 290} type Double resizable modal noborder visible
+      xywh {605 234 340 330} type Double resizable modal noborder visible
     } {
-      Fl_Group {} {open selected
-	xywh {0 0 340 290} box UP_BOX
+      Fl_Group {} {open
+        xywh {0 0 340 330} box UP_BOX
       } {
-	Fl_Group {} {
-	  label {Image Options}
-	  xywh {35 29 272 189} box UP_BOX
-	} {
-	  Fl_Choice uiPixelType {
-	    label {Pixel Format}
-	    callback {pixel_type = o->child(o->value())->label();} open
-	    xywh {171 166 90 25} down_box BORDER_BOX
-	    code0 { pixel_type = "Byte"; }
-	    class {mrv::Choice}
-	  } {
-	    MenuItem {} {
-	      label Byte
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Short
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Integer
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Half
-	      xywh {5 5 100 20}
-	    }
-	    MenuItem {} {
-	      label Float
-	      xywh {5 5 100 20}
-	    }
-	  }
-	  Fl_Light_Button uiAllLayers {
-	    label {All Layers}
-	    xywh {81 111 155 35}
-	    code0 {o->value( all_layers );}
-	  }
-	  Fl_Light_Button uiMipMap {
-	    label MipMap
-	    xywh {81 56 155 35}
-	    code0 {bool on = (ext == ".tx");
+        Fl_Group {} {
+          label {Image Options} open
+          xywh {35 29 272 236} box UP_BOX
+        } {
+          Fl_Choice uiPixelType {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();} open
+            xywh {170 220 90 25} down_box BORDER_BOX
+            code0 {pixel_type = "Byte";}
+            class {mrv::Choice}
+          } {
+            MenuItem {} {
+              label Byte
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Short
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Integer
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Half
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Float
+              xywh {5 5 100 20}
+            }
+          }
+          Fl_Light_Button uiAllLayers {
+            label {All Layers}
+            xywh {81 111 155 35}
+            code0 {o->value( all_layers );}
+          }
+          Fl_Light_Button uiMipMap {
+            label MipMap
+            xywh {81 56 155 35}
+            code0 {bool on = (ext == ".tx");
 		       o->value( on );
 		       if (on) o->activate();
 		       else o->deactivate();}
-	  }
-	}
-	Fl_Button {} {
-	  label OK
-	  user_data this user_data_type {OIIOOptionsUI*}
-	  callback {v->active(true);
+          }
+          Fl_Light_Button uiOCIOColorSpace {
+            label {OCIO Color Space}
+            xywh {80 160 155 35}
+            code0 {o->value( ocio );}
+          }
+        }
+        Fl_Button {} {
+          label OK
+          user_data this user_data_type {OIIOOptionsUI*}
+          callback {v->active(true);
 	v->uiMain->hide();}
-	  xywh {86 249 79 26}
-	}
-	Fl_Button {} {
-	  label Cancel
-	  user_data this user_data_type {OIIOOptionsUI*}
-	  callback {v->active(false);
+          xywh {86 289 79 26}
+        }
+        Fl_Button {} {
+          label Cancel
+          user_data this user_data_type {OIIOOptionsUI*}
+          callback {v->active(false);
 	v->uiMain->hide();}
-	  xywh {170 249 85 26}
-	}
+          xywh {170 289 85 26}
+        }
       }
     }
   }
@@ -110,11 +115,12 @@ else if ( pixel_type == _("Short") ) _pixel_type = mrv::image_type::kShort;
 else if ( pixel_type == _("Half") ) _pixel_type = mrv::image_type::kHalf;
 else if ( pixel_type == _("Integer") ) _pixel_type = mrv::image_type::kInt;
 _all_layers = uiAllLayers->value();
+_OCIOColorSpace = uiOCIOColorSpace->value();
 _mipmap = uiMipMap->value();} {}
   }
-  Function {OIIOOptionsUI(const ViewerUI* main, const std::string& ext, bool all_layers) : OIIOOpts(all_layers)} {open
+  Function {OIIOOptionsUI(const ViewerUI* main, const std::string& ext, bool ocio, bool all_layers) : OIIOOpts(ocio, all_layers)} {open
   } {
-    code {Fl_Window* w = make_window(ext, all_layers);
+    code {Fl_Window* w = make_window(ext, ocio, all_layers);
       w->set_modal();
       w->show();
       while ( w->visible() )
@@ -122,6 +128,7 @@ _mipmap = uiMipMap->value();} {}
 	Fl::check();
       }
 
-      if ( active() ) convert();} {}
+      if ( active() ) convert();} {selected
+    }
   }
 }
