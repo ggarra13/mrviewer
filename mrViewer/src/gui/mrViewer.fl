@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -830,15 +830,15 @@ uiICCProfiles->uiMain->show();}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 maximum 64 value 1
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.01 value 1
               code0 {o->textsize( 12 );}
               code1 {o->textcolor( FL_BLACK );}
             }
             Fl_Slider uiGain {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
-v->uiGainInput->value( (float) o->value() );} selected
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0,02 maximum 64 step 0,01 value 1
+v->uiGainInput->value( (float) o->value() );}
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.02 maximum 64 step 1 value 1
               code0 {o->slider_type( mrv::Slider::kLOG );}
               class {mrv::Slider}
             }
@@ -996,7 +996,7 @@ else
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 maximum 64 value 1
+Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 minimum 0.015625 maximum 64 step 0.01 value 1
                   code0 {o->textsize(12);}
                   code1 {o->textcolor( FL_BLACK );}
                 }
@@ -1005,7 +1005,7 @@ Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} maximum 4
+Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maximum 4 step 0.01 value 0.25
                 }
               }
             }
@@ -1604,7 +1604,7 @@ o->value(24);}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->volume((float) o->value() );}
-                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 value 1
+                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1 slider_size 0.3
                     }
                   }
                 }

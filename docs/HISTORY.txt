@@ -6,6 +6,8 @@ v5.3.6  - Bug fixed IPP2 image pipeline mode not refreshing the cache when
 	- Fixed saving of attributes in OpenEXR files.  Now things like
 	  OCIO's Input Color Space are saved properly.
 	- Made OCIO's Input Color Space be optional to save in all writers.
+	- Bug fixed Gain slider to show up in log space again.  This got
+	  broken inadvertedly in v5.3.5.
 
 v5.3.5  - Bug fixed a crash when displaying and selecting clips without the
 	  preview button on in the custom file requester.
