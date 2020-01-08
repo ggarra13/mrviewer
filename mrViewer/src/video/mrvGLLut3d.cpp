@@ -1292,30 +1292,30 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
-        DBG;
-        std::string msg = _( "Image input color space is undefined for ") +
-        img->name() + ".";
+            DBG;
+            std::string msg = _( "Image input color space is undefined for ") +
+                              img->name() + ".";
             mrv::PopupMenu* uiICS = view->uiICS;
-        DBG;
+            DBG;
             const char* const lbl = "scene_linear";
             for ( unsigned i = 0; i < uiICS->children(); ++i )
             {
-        DBG;
+                DBG;
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
-        DBG;
+                    DBG;
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
 
-        DBG;
+                    DBG;
                     char buf[1024];
                     sprintf( buf, "ICS \"%s\"", name.c_str() );
                     view->uiView->send_network( buf );
 
-        DBG;
+                    DBG;
                     c->ocio_input_color_space( name );
-        DBG;
+                    DBG;
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
                     uiICS->redraw();
@@ -1326,13 +1326,13 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         }
         else
         {
-        DBG;
+            DBG;
             mrv::PopupMenu* uiICS = view->uiICS;
-        DBG;
+            DBG;
             const std::string& lbl = img->ocio_input_color_space();
-        DBG;
-        LOG_INFO( _("Input color space for ") << img->name() << _(" is ")
-                  << lbl );
+            DBG;
+            LOG_INFO( _("Input color space for ") << img->name() << _(" is ")
+                      << lbl );
             for ( unsigned i = 0; i < uiICS->children(); ++i )
             {
                 const char* name = uiICS->child(i)->label();
