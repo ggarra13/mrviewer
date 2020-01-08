@@ -1241,11 +1241,23 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         DBG;
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() ) {
-        DBG;
+            DBG;
             ics = OCIO::ROLE_SCENE_LINEAR;
+
+            const char* var = uiPrefs->uiPrefsOCIOConfig->value();
+            if ( var )
+            {
+                std::string ocio = var;
+                if ( img->depth() == image_type::kByte ) {
+                    if ( ocio.rfind( "nuke-default" ) != std::string::npos )
+                        ics = "sRGB";
+                    else
+                        ics = "Output - sRGB";
+                }
+            }
             CMedia* c = const_cast< CMedia* >( img );
             c->ocio_input_color_space( ics );
-        DBG;
+            DBG;
         }
         OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
         fullpath = config->getCacheID();
@@ -1258,7 +1270,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         path += " -> " + Preferences::OCIO_View;
         DBG;
     }
-    
+
     fullpath += path;
     //
     // Check if this lut path was already calculated by some other
