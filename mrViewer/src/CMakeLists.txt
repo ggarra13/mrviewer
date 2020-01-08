@@ -363,7 +363,7 @@ ELSE(NOT WIN32)
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
-  LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
+  LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} ${GLUT_ROOT_PATH}/lib )
 ENDIF(NOT WIN32)
 
 

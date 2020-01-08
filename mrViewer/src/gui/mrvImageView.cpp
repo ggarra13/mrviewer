@@ -5179,10 +5179,6 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
     {
         window()->cursor( FL_CURSOR_WAIT );
     }
-    else
-    {
-        window()->cursor(FL_CURSOR_CROSS);
-    }
 
 
     if ( input == CMedia::kNoStereoInput ||

@@ -1256,9 +1256,6 @@ static const char* kCLocale = "English";
 static const char* kCLocale = "C";
 #endif
 
-//#undef DBG
-//#define DBG(c) std::cerr << c << " " << __FUNCTION__ << " "	\
-//    << __LINE__ << std::endl;
 
 void Preferences::run( ViewerUI* main )
 {
@@ -1611,9 +1608,18 @@ void Preferences::run( ViewerUI* main )
 
                         if ( add )
                         {
-                            std::string name = display;
-                            name += "/";
-                            name += view;
+                            std::string name;
+                            if ( num_active_displays > 1 )
+                            {
+                                name = display;
+                                name += "/";
+                                name += view;
+                            }
+                            else
+                            {
+                                name = view;
+                                name += " (" + display + ")";
+                            }
 
                             main->gammaDefaults->add( name.c_str() );
 
@@ -1633,9 +1639,18 @@ void Preferences::run( ViewerUI* main )
                     {
                         std::string view = config->getView(display.c_str(), i);
 
-                        std::string name = display;
-                        name += "/";
-                        name += view;
+                        std::string name;
+                        if ( num_active_displays > 1 )
+                        {
+                            name = display;
+                            name += "/";
+                            name += view;
+                        }
+                        else
+                        {
+                            name = view;
+                            name += " (" + display + ")";
+                        }
 
                         main->gammaDefaults->add( name.c_str() );
 
@@ -2183,7 +2198,7 @@ void Preferences::save()
         }
         else
         {
-            ocio.set( "save_config", 1 );
+            ocio.set( "save_config", 0 );
             ocio.set( "config", "" );
         }
 

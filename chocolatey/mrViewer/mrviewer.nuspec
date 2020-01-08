@@ -26,8 +26,8 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <!-- version should MATCH as closely as possible with the underlying software -->
     <!-- Is the version a prerelease of a version? https://docs.nuget.org/create/versioning#creating-prerelease-packages -->
     <!-- Note that unstable versions like 0.0.1 can be considered a released version, but it's possible that one can release a 0.0.1-beta before you release a 0.0.1 version. If the version number is final, that is considered a released version and not a prerelease. -->
-    <version>5.3.5</version>
-    <packageSourceUrl>git://git.code.sf.net/p/mrviewer/code</packageSourceUrl>
+    <version>5.3.6</version>
+    <packageSourceUrl>https://github.com/ggarra13/mrviewer/archive/master.zip</packageSourceUrl>
     <!-- owners is a poor name for maintainers of the package. It sticks around by this name for compatibility reasons. It basically means you. -->
     <owners>Gonzalo Garramuño</owners>
     <!-- ============================== -->
@@ -42,14 +42,14 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <copyright>2017 Film Aura, LLC</copyright>
     <licenseUrl>https://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <projectSourceUrl>git://git.code.sf.net/p/mrviewer/code</projectSourceUrl>
+    <projectSourceUrl>https://github.com/ggarra13/mrviewer/archive/master.zip</projectSourceUrl>
     <docsUrl>http://mrviewer.sourceforge.net/docs/en/index.html</docsUrl>
     <mailingListUrl>https://sourceforge.net/p/mrviewer/mailman/mrviewer-news/</mailingListUrl>
     <bugTrackerUrl>https://sourceforge.net/p/mrviewer/tickets/</bugTrackerUrl>
     <tags>mrviewer admin flipbook viewer image video audio player</tags>
     <summary>Flipbook player and image viewer</summary>
     <description>Flipbook, interactive image viewer and video/audio player</description>
-    <releaseNotes>https://sourceforge.net/projects/mrviewer/files/v5.3.5</releaseNotes>
+    <releaseNotes>https://sourceforge.net/projects/mrviewer/files/v5.3.6</releaseNotes>
     <!-- =============================== -->      
 
     <!-- Specifying dependencies and version ranges? https://docs.nuget.org/create/versioning#specifying-version-ranges-in-.nuspec-files -->

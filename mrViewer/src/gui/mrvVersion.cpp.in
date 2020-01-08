@@ -494,7 +494,8 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
     else if ( level < AV_LOG_VERBOSE )
       mrvLOG_INFO( kModule, buf );
     else {
-      // log verbose
+      // do NOT log verbose
+        // mrvLOG_INFO( kModule, buf );
     }
   }
 

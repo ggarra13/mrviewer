@@ -29,19 +29,19 @@ include( BuildOCIO.cmake )
 set( LibRaw "" )
 if( UNIX )
   include( BuildLCMS2.cmake )
-  # include( BuildRefIccMAX.cmake )  # does not work use SampleICC
   include( BuildLibWebP.cmake )
   include( BuildLibOPUS.cmake )
+  # include( BuildRefIccMAX.cmake )  # does not work use SampleICC
   include( BuildSampleICC.cmake )
   include( BuildLibRaw.cmake )
   include( BuildLibVPX.cmake )
   include( BuildX264.cmake )
   include( BuildX265.cmake )
   include( BuildFFmpeg.cmake )
-#  include( BuildImageMagick.cmake )
+  include( BuildImageMagick.cmake )
 endif()
 
-#include( BuildOIIO.cmake )
+include( BuildOIIO.cmake )
 
 
 # We include OCIO twice to compile the stand-alone utilities that depend
