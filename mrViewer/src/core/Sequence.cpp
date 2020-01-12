@@ -225,7 +225,8 @@ bool is_valid_subtitle( const char* ext )
 
     if ( tmp == N_(".srt")  ||
          tmp == N_(".sub")  ||
-         tmp == N_(".ass") )
+         tmp == N_(".ass")  ||
+         tmp == N_(".vtt") )
         return true;
 
     return false;
@@ -654,9 +655,14 @@ bool get_sequence_limits( boost::int64_t& frameStart,
                           std::string& fileroot,
                           const bool error )
 {
-    if ( frameStart != AV_NOPTS_VALUE &&
-         frameEnd != AV_NOPTS_VALUE ) {
+    if ( (frameStart != AV_NOPTS_VALUE &&
+          frameEnd != AV_NOPTS_VALUE) ) {
         return true;
+    }
+
+    if ( fileroot.find( "http" ) != std::string::npos )
+    {
+        return false;
     }
 
     // Global encoding type taken from environment
@@ -806,7 +812,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
         setlocale( LC_NUMERIC, "" );
         return false;
     }
-    
+
     double version = 1.0;
     char buf[16000];
     while ( !feof(f) )

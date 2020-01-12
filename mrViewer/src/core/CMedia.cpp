@@ -1567,6 +1567,7 @@ void CMedia::sequence( const char* fileroot,
         _right    = new mrv::image_type_ptr[ (unsigned) num ];
     }
 
+
     if ( ! initialize() )
         return;
 
@@ -1620,9 +1621,10 @@ void CMedia::filename( const char* n )
         name = name.substr(6, name.size() );
 
 
-
     fs::path file = fs::path( name );
-    file = fs::absolute( file );
+
+    if ( name.find( "http" ) == std::string::npos )
+        file = fs::absolute( file );
 
     free( _fileroot );
 
@@ -1635,7 +1637,6 @@ void CMedia::filename( const char* n )
     {
         _fileroot = strdup( file.string().c_str() );
     }
-
 
     free( _filename );
     _filename = NULL;

@@ -50,7 +50,7 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
                     (int(*)(int))tolower);
 
     if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" ||
-         ext == "srt" || ext == "sub" || ext == "txt" )
+         ext == "srt" || ext == "sub" || ext == "txt" || ext == "vtt" )
         return NULL;
 
     CMedia* img = CMedia::guess_image( filename, header, len, true );

@@ -235,7 +235,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
     bool network = false;
-    if ( strncmp( name, "rtmp:", 5 ) == 0 )
+    if ( strncmp( name, "rtmp:", 5 ) == 0 ||
+         strncmp( name, "http", 4 ) == 0 ||
+         strncmp( name, "youtube", 7 ) == 0 )
     {
         network = true;
     }

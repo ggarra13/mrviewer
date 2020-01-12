@@ -1372,7 +1372,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     pkt_temp.data = pkt.data;
     pkt_temp.size = pkt.size;
 
-    assert0( pkt.size != 0 && pkt.data != NULL );
+    //    assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
 
     assert0( _audio_buf != NULL );
     assert0( pkt.size + _audio_buf_used < _audio_max );

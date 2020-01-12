@@ -185,6 +185,7 @@ SET( SOURCES
   core/mrvFrame.cpp
   core/mrvHome.cpp
   core/guessImage.cpp
+  core/YouTube.cpp
   core/aviImage.cpp
   core/aviImage_save.cpp
   core/clonedImage.cpp

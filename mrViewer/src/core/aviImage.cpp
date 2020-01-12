@@ -78,6 +78,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/mrvCPU.h"
 #include "core/mrvColorSpaces.h"
+#include "core/YouTube.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -402,11 +403,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
     {
         // Check for Quicktime
         if ( strncmp( (char*)data+4, "ftyp", 4 ) == 0 ||
-                strncmp( (char*)data+4, "moov", 4 ) == 0 ||
-                strncmp( (char*)data+4, "free", 4 ) == 0 ||
-                strncmp( (char*)data+4, "mdat", 4 ) == 0 ||
-                strncmp( (char*)data+4, "wide", 4 ) == 0 ||
-                strncmp( (char*)data+4, "pnot", 4 ) == 0 )
+             strncmp( (char*)data+4, "moov", 4 ) == 0 ||
+             strncmp( (char*)data+4, "free", 4 ) == 0 ||
+             strncmp( (char*)data+4, "mdat", 4 ) == 0 ||
+             strncmp( (char*)data+4, "wide", 4 ) == 0 ||
+             strncmp( (char*)data+4, "pnot", 4 ) == 0 )
             return true;
     }
 
@@ -2585,6 +2586,7 @@ void aviImage::populate()
         }
     }
 
+    DBGM2( "Dump metadata" );
     char buf[128];
 
     for (unsigned i = 0; i < _context->nb_chapters; ++i)
@@ -2630,6 +2632,7 @@ void aviImage::populate()
         int force_exit = 0;
         _eof = false;
         bool got_audio = ! has_audio();
+        if ( _acontext ) got_audio = true;
         bool got_video = ! has_video();
         while( !got_video || !got_audio )
         {
@@ -2791,6 +2794,7 @@ bool aviImage::initialize()
 {
     if ( !_initialize )
     {
+
         int error = 0;
 
         AVDictionary *opts = NULL;
@@ -2824,6 +2828,24 @@ bool aviImage::initialize()
             return false;
         }
 
+        std::string title = fileroot();
+        std::string url = fileroot();
+        if ( url.find( "http" ) == 0 ||
+             url.find( "youtube" ) == 0 )
+        {
+            std::string videourl, audiourl;
+            bool ok = YouTube( url, videourl, audiourl, title );
+            if ( ok )
+            {
+                free( _fileroot );
+                free( _filename );
+                _fileroot = strdup( videourl.c_str() );
+
+                if ( !audiourl.empty() )
+                    audio_file( audiourl.c_str() );
+            }
+        }
+
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
         error = avformat_open_input( &_context, fileroot(),
@@ -2832,6 +2854,9 @@ bool aviImage::initialize()
 
         if ( error >= 0 )
         {
+            free( _fileroot );
+            _fileroot = strdup( title.c_str() );
+
             av_format_inject_global_side_data(_context);
 
             // Change probesize and analyze duration to 30 secs
@@ -2845,7 +2870,6 @@ bool aviImage::initialize()
             {
                 IMG_ERROR( _("Could not find stream info") );
             }
-
 
         }
 

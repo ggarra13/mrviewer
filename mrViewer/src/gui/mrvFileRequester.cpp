@@ -85,7 +85,7 @@ static const std::string kProfilePattern = "icc,icm";
 
 static const std::string kAudioPattern = "m4a,mp3,ogg,wav";
 
-static const std::string kSubtitlePattern = "srt,sub,ass";
+static const std::string kSubtitlePattern = "srt,sub,ass,vtt";
 
 static const std::string kCTLPattern = "ctl";
 
