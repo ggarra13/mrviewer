@@ -1,11 +1,17 @@
 #include <iostream>
 
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 
 #include <boost/process.hpp>
 #ifdef _WIN32
 #  include <boost/process/windows.hpp>
 #endif
+
+namespace {
+    const char* kModule = "ytb-dl";
+}
+
 
 namespace mrv
 {
@@ -16,7 +22,7 @@ namespace mrv
                   std::string& audiourl, std::string& title )
     {
         std::string cmd = N_("youtube-dl");
-        cmd += N_(" --no-warnings -J --flat-playlist --no-playlist --no-check-certificate -f best -- ") + url + "";
+        cmd += N_(" --no-warnings -F --flat-playlist --no-playlist --no-check-certificate -- ") + url;
 
 
         ipstream pipe_stream;
@@ -27,73 +33,114 @@ namespace mrv
 #endif
 
         std::string line;
+        char format[16];
+        unsigned audio_id = 0, video_id = 0, id = 0;
         unsigned width = 0, height = 0, max_width = 0;
-        size_t pos = 0, p = 0;
         while ( pipe_stream && std::getline(pipe_stream, line) &&
                 !line.empty() )
         {
-            // Get audio first
-            while ( p != std::string::npos )
+            DBGM2( line );
+            size_t pos = line.find( "audio only" );
+            if ( pos != std::string::npos )
             {
-                p = line.find( N_(" audio only"), p );
-                if ( p != std::string::npos )
+                audio_id = atoi( line.substr( 0, 4 ).c_str() );
+            }
+            int num = sscanf( line.c_str(), "%d %s %dx%d", &id, format,
+                              &width, &height );
+            if ( num != 4 ) continue;
+            if ( width >= max_width )
+            {
+                max_width = width;
+                video_id  = id;
+                if ( line.find( "video only" ) == std::string::npos )
                 {
-                    p += 12;
-                    pos = p;
+                    audio_id = video_id;
+                    break;
                 }
             }
-            pos = line.find( N_("\"url\": "), pos );
-            if ( pos != std::string::npos )
-            {
-                pos += 8;
-                size_t pos2 = line.find( '"', pos );
-                audiourl = line.substr( pos, pos2 - pos );
-            }
-            p = pos = 0;
-#if 1
-            // This gets you a higher resolution video if available, but
-            // without audio sometimes
-            while ( p != std::string::npos )
-            {
-                p = line.find( N_("\"format\": \""), p );
-                if ( p != std::string::npos )
-                {
-                    p += 12;
-                    p = line.find( " - ", p );
-                    p += 3;
-                    size_t pos2 = line.find( '"', p );
-                    sscanf( line.substr( p, pos2 - p ).c_str(),
-                            "%dx%d", &width, &height );
-                    if ( width > max_width )
-                    {
-                        max_width = width;
-                        pos = pos2;
-                    }
-                }
-            }
-            pos = line.find( N_("\"url\": "), pos );
-#else
-            pos = line.rfind( N_("\"url\": ") );
-#endif
-            if ( pos != std::string::npos )
-            {
-                pos += 8;
-                size_t pos2 = line.find( '"', pos );
-                videourl = line.substr( pos, pos2 - pos );
-            }
-            pos = line.rfind( N_("\"title\": ") );
-            if ( pos != std::string::npos )
-            {
-                pos += 10;
-                size_t pos2 = line.find( '"', pos );
-                title = line.substr( pos, pos2 - pos );
-            }
-
         }
         c.wait();
 
         int exit_code = c.exit_code();
         if ( exit_code != 0 ) return false;
+
+
+        char buf[256];
+        sprintf( buf, N_("youtube-dl --no-warnings -J -f %d --flat-playlist --no-playlist --no-check-certificate -- "), audio_id );
+        cmd = buf + url;
+
+
+        {
+            ipstream pipe_stream;
+#ifdef _WIN32
+            child c( cmd, std_out > pipe_stream,
+                     boost::process::windows::hide );
+#else
+            child c( cmd, std_out > pipe_stream );
+#endif
+
+            while ( pipe_stream && std::getline(pipe_stream, line) &&
+                    !line.empty() )
+            {
+                size_t p = line.rfind( "\"title\": " );
+                if ( p != std::string::npos )
+                {
+                    p += 10;
+                    size_t p2 = line.find( ',', p );
+                    title = line.substr( p, p2 - p - 1);
+                }
+
+                sprintf( buf, "\"format_id\": \"%d\"", audio_id );
+                p = line.rfind(buf);
+                if ( p == std::string::npos ) continue;
+
+                p = line.find( "\"url\": ", p );
+                if ( p == std::string::npos ) continue;
+
+                p += 8;
+                size_t p2 = line.find( ',', p );
+                audiourl = line.substr( p, p2 - p - 1 );
+            }
+
+            c.wait();
+
+            exit_code = c.exit_code();
+            if ( exit_code != 0 ) return false;
+
+            if ( video_id == audio_id )
+            {
+                videourl = audiourl;
+                return true;
+            }
+        }
+
+        sprintf( buf, N_("youtube-dl --no-warnings -J -f %d --flat-playlist --no-playlist --no-check-certificate -- "), video_id );
+        cmd = buf + url;
+
+        {
+            ipstream pipe_stream;
+#ifdef _WIN32
+            child c( cmd, std_out > pipe_stream,
+                     boost::process::windows::hide );
+#else
+            child c( cmd, std_out > pipe_stream );
+#endif
+            while ( pipe_stream && std::getline(pipe_stream, line) &&
+                    !line.empty() )
+            {
+                size_t p = line.rfind( "\"url\": " );
+                if ( p == std::string::npos ) continue;
+
+                p += 8;
+                size_t p2 = line.find( ',', p );
+                videourl = line.substr( p, p2 - p - 1);
+            }
+
+            c.wait();
+
+            exit_code = c.exit_code();
+            if ( exit_code != 0 ) return false;
+        }
 
         return true;
     }

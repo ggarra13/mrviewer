@@ -210,7 +210,9 @@ void CMedia::open_audio_codec()
     int r = avcodec_parameters_to_context(_audio_ctx, cpar);
     if ( r < 0 )
     {
-        throw _("avcodec_copy_context failed for audio");
+        LOG_ERROR( _("avcodec_copy_context failed for audio") );
+        _audio_index = -1;
+        return;
     }
 
     _audio_ctx->pkt_timebase = get_audio_stream()->time_base;

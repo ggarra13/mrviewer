@@ -2178,6 +2178,8 @@ void aviImage::video_stream( int x )
 
 bool aviImage::readFrame(int64_t & pts)
 {
+    if ( !_context || ! _video_ctx || ! _av_frame ) return false;
+
     AVPacket packet;
 
     int got_video = 0;
@@ -2830,9 +2832,16 @@ bool aviImage::initialize()
 
         std::string title = fileroot();
         std::string url = fileroot();
+
         if ( url.find( "http" ) == 0 ||
-             url.find( "youtube" ) == 0 )
+             url.find( "youtube" ) == 0 ||
+             url.find( "www." ) == 0 )
         {
+            if ( url.find( "youtube" ) == 0 )
+                url = "https://www." + url;
+            else if ( url.find( "www.") == 0 )
+                url = "https://" + url;
+
             std::string videourl, audiourl;
             bool ok = YouTube( url, videourl, audiourl, title );
             if ( ok )

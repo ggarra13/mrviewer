@@ -660,7 +660,9 @@ bool get_sequence_limits( boost::int64_t& frameStart,
         return true;
     }
 
-    if ( fileroot.find( "http" ) != std::string::npos )
+    if ( fileroot.find( "http" ) == 0 ||
+         fileroot.find( "youtube" ) == 0 ||
+         fileroot.find( "www." ) == 0 )
     {
         return false;
     }
