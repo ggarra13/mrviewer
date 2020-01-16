@@ -4134,6 +4134,8 @@ void ImageInformation::add_enum( const char* name,
         widget->type( 0 );
         widget->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
         widget->color( colB );
+        widget->labelcolor( FL_BLACK );
+        widget->textcolor( FL_BLACK );
         for ( size_t i = 0; i < num; ++i )
         {
             widget->add( _( options[i] ) );

@@ -2852,6 +2852,13 @@ bool aviImage::initialize()
                 if ( !audiourl.empty() )
                     audio_file( audiourl.c_str() );
             }
+            else
+            {
+                avformat_free_context( _context );
+                _initialize = false;
+                _context = NULL;
+                return false;
+            }
         }
 
         // We must open fileroot for png/dpx/jpg sequences to work
@@ -2865,10 +2872,11 @@ bool aviImage::initialize()
 
         av_dict_free(&opts);
 
+        free( _fileroot );
+        _fileroot = strdup( title.c_str() );
+
         if ( error >= 0 )
         {
-            free( _fileroot );
-            _fileroot = strdup( title.c_str() );
 
             av_format_inject_global_side_data(_context);
 

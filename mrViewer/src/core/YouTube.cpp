@@ -43,7 +43,7 @@ namespace mrv
     bool YouTube1( const std::string& url, std::string& videourl,
                    std::string& audiourl, std::string& title )
     {
-        std::string cmd = N_("youtube-dl --geo-bypass --no-warnings -J --no-check-certificate -- ") + url;
+        std::string cmd = N_("youtube-dl --geo-bypass --no-warnings -J --flat-playlist --no-playlist --no-check-certificate -- ") + url;
 
         ipstream pipe_stream, err_stream;
 #ifdef _WIN32
@@ -63,6 +63,7 @@ namespace mrv
         while ( pipe_stream && std::getline(pipe_stream, line) &&
                 !line.empty() )
         {
+            std::cerr << line << std::endl;
 
             p = line.rfind( "\"title\": " );
             if ( p != std::string::npos )
@@ -204,11 +205,13 @@ namespace mrv
                 max_width = i->second.width;
                 max_height = i->second.height;
                 videourl = i->second.url;
+                std::cerr << "VIDEO URL: " << videourl << std::endl;
             }
             if ( i->second.samples > max_samples )
             {
                 max_samples = i->second.samples;
                 audiourl = i->second.url;
+                std::cerr << "AUDIO URL: " << audiourl << std::endl;
             }
         }
 
@@ -293,7 +296,6 @@ namespace mrv
             while ( pipe_stream && std::getline(pipe_stream, line) &&
                     !line.empty() )
             {
-                std::cerr << line << std::endl;
                 size_t p = line.rfind( "\"title\": " );
                 if ( p != std::string::npos )
                 {
