@@ -163,6 +163,7 @@ unsigned long get_thread_id();
 #define mrvALERT(x) do { \
     std::ostringstream mErr; \
     mErr << x << std::endl; \
+    std::cerr << x << std::endl; \
     mrv::alert( mErr.str().c_str() ); \
   } while (0);
 

@@ -661,6 +661,9 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     }
 
     if ( fileroot.find( "http" ) == 0 ||
+         fileroot.find( "rtmp" ) == 0 ||
+         fileroot.find( "rtp" ) == 0 ||
+         fileroot.find( "srtp" ) == 0 ||
          fileroot.find( "youtube" ) == 0 ||
          fileroot.find( "www." ) == 0 )
     {
@@ -913,8 +916,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 {
                     shape->pts.push_back( xy );
                 }
-                sequences.back().shapes.push_back(
-                    mrv::shape_type_ptr(shape) );
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
                 continue;
             }
             else if ( cmd == "GLErasePathShape" )
@@ -931,8 +937,35 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 {
                     shape->pts.push_back( xy );
                 }
-                sequences.back().shapes.push_back(
-                    mrv::shape_type_ptr(shape) );
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
+                continue;
+            }
+            else if ( cmd == "FadeIN" )
+            {
+                unsigned frames;
+                std::string f;
+                std::getline( is, f );
+                is.str( f );
+                is.clear();
+                is >> frames;
+                if ( !sequences.empty() )
+                    sequences.back().fade_in = frames;
+                continue;
+            }
+            else if ( cmd == "FadeOUT" )
+            {
+                unsigned frames;
+                std::string f;
+                std::getline( is, f );
+                is.str( f );
+                is.clear();
+                is >> frames;
+                if ( !sequences.empty() )
+                    sequences.back().fade_out = frames;
                 continue;
             }
             else if ( cmd == "GLTextShape" )
@@ -981,8 +1014,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 shape->size( font_size );
                 shape->pts.clear();
                 shape->pts.push_back( xy );
-                sequences.back().shapes.push_back(
-                    mrv::shape_type_ptr(shape) );
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
                 continue;
             }
 

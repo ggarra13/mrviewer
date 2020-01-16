@@ -406,7 +406,7 @@ public:
             return f;
         }
 
-    inline int64_t fade_frames( FadeType type )
+    inline int64_t fade_frames( FadeType type ) const
         {
             if ( type == kFadeIn ) return _fade[0].frames;
             else return _fade[1].frames;

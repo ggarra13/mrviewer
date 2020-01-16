@@ -783,7 +783,7 @@ void ImageBrowser::save_reel()
                   "# Created with mrViewer\n"
                   "#\n"
                   "# on %s\n"
-                  "#\n\nVersion 4.0\nGhosting %d %d\n"),
+                  "#\n\nVersion 5.0\nGhosting %d %d\n"),
              reel->name.c_str(),
              date,
              view()->ghost_previous(),
@@ -830,6 +830,19 @@ void ImageBrowser::save_reel()
                  " %" PRId64 " %" PRId64 " %3.6g\n", path.c_str(),
                  img->first_frame(), img->last_frame(),
                  img->start_frame(), img->end_frame(), img->fps() );
+
+        if ( img->fade_frames( CMedia::kFadeIn ) > 0 )
+        {
+            fprintf( f, "FadeIN %" PRId64 "\n",
+                     img->fade_frames( CMedia::kFadeIn ) );
+        }
+
+        if ( img->fade_frames( CMedia::kFadeOut ) > 0 )
+        {
+            fprintf( f, "FadeOUT %" PRId64 "\n",
+                     img->fade_frames( CMedia::kFadeOut ) );
+        }
+
         if ( img->has_audio() && img->audio_file() != "" )
         {
             std::string path = img->audio_file();
@@ -1868,6 +1881,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
             if ( fg )
             {
                 CMedia* img = fg->image();
+                img->fade_in( load.fade_in );
+                img->fade_out( load.fade_out );
 
                 if ( load.audio != "" )
                 {

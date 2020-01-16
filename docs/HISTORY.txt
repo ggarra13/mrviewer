@@ -4,6 +4,7 @@ v5.3.7  - Made the default transform for byte images be sRGB or Output - sRGB
 	- Added playback of http:// and https:// videos with the help of
 	  youtube-dl.  Note that .srt/sub/vtt subtitles are not yet
 	  automatically downloaded.
+	- Added saving and loading of fade information.
 
 v5.3.6  - Bug fixed IPP2 image pipeline mode not refreshing the cache when
 	  that setting was changed.

@@ -123,6 +123,8 @@ struct LoadInfo
     int64_t last;
     int64_t start;
     int64_t end;
+    int64_t fade_in;
+    int64_t fade_out;
 
     double fps;
 
@@ -148,6 +150,8 @@ struct LoadInfo
         last( ef ),
         start( s ),
         end( e ),
+        fade_in( 0 ),
+        fade_out( 0 ),
         fps( f ),
         reel( false ),
         audio_offset( aoffset ),
@@ -177,6 +181,8 @@ struct LoadInfo
         last( ef ),
         start( s ),
         end( e ),
+        fade_in( 0 ),
+        fade_out( 0 ),
         fps( f ),
         reel( false ),
         shapes( shl ),
@@ -196,6 +202,8 @@ struct LoadInfo
         last( AV_NOPTS_VALUE ),
         start( AV_NOPTS_VALUE ),
         end( AV_NOPTS_VALUE ),
+        fade_in( 0 ),
+        fade_out( 0 ),
         fps( 0.0 ),
         reel( false ),
         audio_offset( 0 )
@@ -215,6 +223,8 @@ struct LoadInfo
         last( b.last ),
         start( b.start ),
         end( b.end ),
+        fade_in( 0 ),
+        fade_out( 0 ),
         fps( b.fps ),
         reel( b.reel ),
         shapes( b.shapes ),

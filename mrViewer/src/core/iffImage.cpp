@@ -352,8 +352,8 @@ static void decompress_rle(uint8_t* data, uint32_t delta, uint32_t numBytes,
 }
 
 
-static uint8_t* read_tile(FILE* file, int size, unsigned short depth,
-                          int datasize, int* offsets)
+static uint8_t* read_tile(FILE* file, unsigned size, unsigned short depth,
+                          unsigned datasize, int* offsets)
 {
     uint8_t* result = (uint8_t*)malloc( size * depth );
     if (datasize >= size * depth) {

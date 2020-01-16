@@ -600,7 +600,7 @@ void aviImage::subtitle_file( const char* f )
 
         AVFormatContext* scontext = NULL; //!< current read file context
 
-        AVDictionary *opts = NULL;
+        AVDictionary* opts = NULL;
         AVInputFormat*     format = NULL;
         int error = avformat_open_input( &scontext, _subtitle_file.c_str(),
                                          format, &opts );
@@ -2800,7 +2800,6 @@ bool aviImage::initialize()
         int error = 0;
 
         AVDictionary *opts = NULL;
-        av_dict_set(&opts, "initial_pause", "1", 0);
 
         std::string ext = name();
 
@@ -2857,9 +2856,14 @@ bool aviImage::initialize()
 
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
+        av_dict_set( &opts, "initial_pause", "1", 0 );
+        av_dict_set( &opts, "reconnect", "1", 0 );
+        av_dict_set( &opts, "reconnect_streamed", "1", 0 );
+        DBGM1( "Open " << fileroot() );
         error = avformat_open_input( &_context, fileroot(),
                                      format, &opts );
 
+        av_dict_free(&opts);
 
         if ( error >= 0 )
         {
@@ -2874,6 +2878,7 @@ bool aviImage::initialize()
             // {
             //     probe_size( 30 * AV_TIME_BASE );
             // }
+            DBGM1( "avformat_find_stream_info " << fileroot() );
             error = avformat_find_stream_info( _context, NULL );
             if ( error < 0 )
             {
@@ -2886,7 +2891,9 @@ bool aviImage::initialize()
         {
             // Allocate an av frame
             _av_frame = av_frame_alloc();
+            DBGM1( "populate " << fileroot() );
             populate();
+            DBGM1( "populated " << fileroot() );
             _initialize = true;
         }
         else
@@ -3009,7 +3016,9 @@ int64_t aviImage::queue_packets( const int64_t frame,
             break;
         }
 
+        DBGM1( "av_read_frame" );
         int error = av_read_frame( _context, &pkt );
+        DBGM1( "av_read_frame done" );
 
         if ( error < 0 )
         {

@@ -649,12 +649,12 @@ void CMedia::populate_audio()
 
     if ( msg.str().size() > 0 )
     {
-        mrvALERT( filename() << msg.str() );
+        LOG_ERROR( filename() << msg.str() );
     }
 
     if ( _audio_index < 0 )
     {
-        mrvALERT( filename() << _("\n\nNo audio or video stream in file") );
+        LOG_ERROR( filename() << _("\nNo audio stream in file") );
         return;
     }
 
@@ -908,9 +908,13 @@ void CMedia::audio_file( const char* file )
     }
 
     AVInputFormat*   format = NULL;
+    AVDictionary* opts = NULL;
+    av_dict_set( &opts, "initial_pause", "1", 0 );
+    av_dict_set( &opts, "reconnect", "1", 0 );
+    av_dict_set( &opts, "reconnect_streamed", "1", 0 );
 
     int error = avformat_open_input( &_acontext, file,
-                                     format, NULL );
+                                     format, &opts );
     if ( error < 0 || _acontext == NULL )
     {
         LOG_ERROR( file << _(": Could not open filename.") );

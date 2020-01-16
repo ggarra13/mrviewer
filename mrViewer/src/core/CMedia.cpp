@@ -1624,6 +1624,8 @@ void CMedia::filename( const char* n )
     fs::path file = fs::path( name );
 
     if ( name.find( "http" )    != 0 &&
+         name.find( "rtp" )     != 0 &&
+         name.find( "rtmp" )    != 0 &&
          name.find( "youtube" ) != 0 &&
          name.find( "www." )    != 0 )
         file = fs::absolute( file );

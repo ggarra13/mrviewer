@@ -49,6 +49,7 @@ Fl_Browser( x, y, w, h, l ),
 _type( kNone )
 {
     type( FL_HOLD_BROWSER );
+    textcolor( FL_BLACK );
     //   when( FL_WHEN_RELEASE );
 }
 
