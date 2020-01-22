@@ -1,8 +1,11 @@
 #include <iostream>
+#include <vector>
 #include <map>
 
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
+
+#include "core/picojson.h"
 
 #include <boost/process.hpp>
 #ifdef _WIN32
@@ -39,11 +42,89 @@ namespace mrv
             };
     };
 
+    using namespace picojson;
+
+    std::string escape_url( const std::string& url )
+    {
+        char buf[64];
+        unsigned len = url.size();
+        sprintf( buf, "%%%d%%", len );
+        return buf + url;
+    }
+
+    void analyze_json(
+        const picojson::value& v,
+        std::string& videourl,
+        std::vector<std::string> videofragments,
+        std::string& audiourl,
+        std::vector<std::string> audiofragments
+        )
+    {
+        if (v.is<picojson::null>()) {
+        } else if (v.is<bool>()) {
+        } else if (v.is<double>()) {
+        } else if (v.is<std::string>()) {
+        } else if (v.is<array>()) {
+            const array &a = v.get<array>();
+            for (array::const_iterator i = a.begin(); i != a.end(); ++i) {
+                analyze_json( *i, videourl, videofragments,
+                              audiourl, audiofragments );
+            }
+        } else if (v.is<object>()) {
+            const object &o = v.get<object>();
+            for (object::const_iterator i = o.begin(); i != o.end(); ++i)
+            {
+                analyze_json( i->second, videourl,
+                              videofragments, audiourl,
+                              audiofragments );
+            }
+        }
+    }
+
+
+    bool YouTube3( const std::string& url, std::string& videourl,
+                   std::string& audiourl, std::string& title )
+    {
+        std::string cmd = N_("youtube-dl --no-warnings -J --flat-playlist --yes-playlist --no-check-certificate -- ") + url;
+
+        ipstream pipe_stream, err_stream;
+#ifdef _WIN32
+        child c( cmd, std_out > pipe_stream, std_err > err_stream, boost::process::windows::hide );
+#else
+        child c( cmd, std_out > pipe_stream, std_err > err_stream );
+#endif
+        std::string line;
+
+        std::vector< std::string > videofragments;
+        std::vector< std::string > audiofragments;
+
+        while ( pipe_stream && std::getline(pipe_stream, line) &&
+                !line.empty() )
+        {
+            value v;
+            std::string err = picojson::parse( v, line );
+            if ( ! err.empty() ) {
+                LOG_ERROR( err ); continue;
+            }
+            std::cout << line << std::endl;
+            std::cout << "---- analyzing input ----" << std::endl;
+            analyze_json( v, videourl, videofragments,
+                          audiourl, audiofragments );
+
+            if ( v.contains( "title" ) )
+            {
+                title = v.get("title").get<std::string>();
+            }
+            //std::cerr << v << std::endl;
+        }
+
+        return true;
+    }
 
     bool YouTube1( const std::string& url, std::string& videourl,
                    std::string& audiourl, std::string& title )
     {
-        std::string cmd = N_("youtube-dl --geo-bypass --no-warnings -J --flat-playlist --no-playlist --no-check-certificate -- ") + url;
+        std::string cmd = N_("youtube-dl --no-warnings -J --flat-playlist --no-playlist --no-check-certificate -- ") + url;
 
         ipstream pipe_stream, err_stream;
 #ifdef _WIN32
@@ -63,7 +144,7 @@ namespace mrv
         while ( pipe_stream && std::getline(pipe_stream, line) &&
                 !line.empty() )
         {
-            std::cerr << line << std::endl;
+            DBGM1( line );
 
             p = line.rfind( "\"title\": " );
             if ( p != std::string::npos )
@@ -90,6 +171,7 @@ namespace mrv
                 if ( format.find( "audio only" ) != std::string::npos )
                 {
                     audio_only = true;
+                    video_only = false;
                     p2 = format.rfind( '+' );
                     if ( p2 != std::string::npos )
                     {
@@ -124,13 +206,16 @@ namespace mrv
                     id = format.substr( 0, p2 );
                 }
 
-                p = line.find( "\"url\": \"", p );
-                if ( p == std::string::npos ) break;
+                std::string url;
 
-                p += 8;
-                p2 = line.find( '"', p );
+                {
+                    p = line.find( "\"url\": \"", p );
+                    if ( p == std::string::npos ) break;
+                    p += 8;
 
-                std::string url = line.substr( p, p2 - p );
+                    p2 = line.find( '"', p );
+                    url = line.substr( p, p2 - p );
+                }
 
                 p = line.find( "\"acodec\": \"", p );
                 if ( p != std::string::npos )
@@ -155,6 +240,7 @@ namespace mrv
                                 if ( asr != "null" )
                                 {
                                     samples = atoi( asr.c_str() );
+                                    audio_only = true;
                                 }
                             }
                         }
@@ -205,17 +291,17 @@ namespace mrv
                 max_width = i->second.width;
                 max_height = i->second.height;
                 videourl = i->second.url;
-                std::cerr << "VIDEO URL: " << videourl << std::endl;
             }
             if ( i->second.samples > max_samples )
             {
                 max_samples = i->second.samples;
                 audiourl = i->second.url;
-                std::cerr << "AUDIO URL: " << audiourl << std::endl;
             }
         }
 
+        DBGM1( "VIDEO URL: " << videourl );
         LOG_INFO( title << " V: " << max_width << "x" << max_height );
+        DBGM2( "AUDIO URL: " << audiourl );
         LOG_INFO( title << " A: " << max_samples << " hz." );
 
 
@@ -227,6 +313,7 @@ namespace mrv
         if ( videourl.empty() && audiourl.empty() )
         {
             videourl = url;
+            title = url;
         }
 
         return true;
@@ -280,10 +367,10 @@ namespace mrv
 
 
         char buf[256];
-        sprintf( buf, N_("youtube-dl --no-warnings -J -f %d --flat-playlist --no-playlist --no-check-certificate -- "), audio_id );
+        sprintf( buf, N_("youtube-dl --no-warnings -g -f %d --flat-playlist --no-playlist --no-check-certificate -- "), audio_id );
         cmd = buf + url;
 
-
+        std::cerr << cmd << std::endl;
         {
             ipstream pipe_stream;
 #ifdef _WIN32
@@ -296,24 +383,7 @@ namespace mrv
             while ( pipe_stream && std::getline(pipe_stream, line) &&
                     !line.empty() )
             {
-                size_t p = line.rfind( "\"title\": " );
-                if ( p != std::string::npos )
-                {
-                    p += 10;
-                    size_t p2 = line.find( ',', p );
-                    title = line.substr( p, p2 - p - 1);
-                }
-
-                sprintf( buf, "\"format_id\": \"%d\"", audio_id );
-                p = line.rfind(buf);
-                if ( p == std::string::npos ) continue;
-
-                p = line.find( "\"url\": ", p );
-                if ( p == std::string::npos ) continue;
-
-                p += 8;
-                size_t p2 = line.find( ',', p );
-                audiourl = line.substr( p, p2 - p - 1 );
+                audiourl = line;
             }
 
             c.wait();
@@ -329,7 +399,10 @@ namespace mrv
             }
         }
 
-        sprintf( buf, N_("youtube-dl --no-warnings -J -f %d --flat-playlist --no-playlist --no-check-certificate -- "), video_id );
+        std::cerr << "AUDIO_ID: " << audio_id << std::endl;
+        std::cerr << "VIDEO_ID: " << video_id << std::endl;
+
+        sprintf( buf, N_("youtube-dl --no-warnings -g -f %d --flat-playlist --no-playlist --no-check-certificate -- "), video_id );
         cmd = buf + url;
 
         {
@@ -343,13 +416,11 @@ namespace mrv
             while ( pipe_stream && std::getline(pipe_stream, line) &&
                     !line.empty() )
             {
-                size_t p = line.rfind( "\"url\": " );
-                if ( p == std::string::npos ) continue;
-
-                p += 8;
-                size_t p2 = line.find( ',', p );
-                videourl = line.substr( p, p2 - p - 1);
+                videourl = line;
             }
+
+            std::cerr << "AUDIO URL: " << audiourl << std::endl;
+            std::cerr << "VIDEO URL: " << videourl << std::endl;
 
             c.wait();
 

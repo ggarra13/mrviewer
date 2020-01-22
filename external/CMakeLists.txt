@@ -8,7 +8,7 @@ project( Dependencies )
 include( ExternalProject )
 
 include( BuildLibZ.cmake )
-#include( BuildZLIB.cmake )
+# #include( BuildZLIB.cmake )
 include( BuildLibPNG.cmake )
 
 set( NASM "" )
@@ -31,7 +31,7 @@ if( UNIX )
   include( BuildLCMS2.cmake )
   include( BuildLibWebP.cmake )
   include( BuildLibOPUS.cmake )
-  # include( BuildRefIccMAX.cmake )  # does not work use SampleICC
+#   # include( BuildRefIccMAX.cmake )  # does not work use SampleICC
   include( BuildSampleICC.cmake )
   include( BuildLibRaw.cmake )
   include( BuildLibVPX.cmake )

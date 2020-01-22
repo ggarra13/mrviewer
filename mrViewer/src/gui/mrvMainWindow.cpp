@@ -105,6 +105,7 @@ Fl_Double_Window( W, H, title )
 MainWindow::~MainWindow()
 {
     // Restore screensaver/black screen
+    DBGM1( _("Restore screensaver") );
 #ifdef LINUX
     XScreenSaverSuspend( fl_display, False );
 #elif defined(_WIN32) || defined(_WIN64)
@@ -125,6 +126,7 @@ void MainWindow::set_icon()
     fl_open_display();  // Needed for icons
 
     // Turn off screensaver and black screen
+    DBGM1( _("Turn off screensaver") );
 #ifdef LINUX
     XScreenSaverSuspend( fl_display, True );
 #elif defined(_WIN32) || defined(_WIN64)

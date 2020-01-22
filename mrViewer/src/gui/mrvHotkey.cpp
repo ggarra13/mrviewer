@@ -193,7 +193,7 @@ bool Hotkey::match( unsigned rawkey )
          ( ! Fl::event_state( FL_CTRL ) ) &&
          ( ! Fl::event_state( FL_ALT ) ) &&
          ( ! Fl::event_state( FL_META ) ) &&
-         ( (key && key == t[0]) || ( text.size() && text == t ) ) )
+         ( (key && (int)key == t[0]) || ( text.size() && text == t ) ) )
     {
         return true;
     }
@@ -469,7 +469,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
         unsigned k = h.hotkey.key;
 
         bool special = false;
-        for ( int j = 0; j < sizeof(table)/sizeof(TableText); ++j )
+        for ( unsigned j = 0; j < sizeof(table)/sizeof(TableText); ++j )
         {
             if ( k == table[j].n )
             {

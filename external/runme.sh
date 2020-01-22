@@ -23,11 +23,11 @@ fi
 export PATH=$installdir/bin:$PATH
 
 
-#../mk --installdir=$installdir -j 1 && echo "Install in /usr/local.  Needs root permissions" &&
+../mk --installdir=$installdir -j 1 && echo "Install in /usr/local.  Needs root permissions" &&
 
 $copy -r $installdir/bin/* $finaldir/bin
 $copy -r $installdir/lib/* $finaldir/lib
 $copy -r $installdir/include/* $finaldir/include
 $copy -r $installdir/share/* $finaldir/share
-$copy -r $installdir/etc/* $finaldir/etc
+#$copy -r $installdir/etc/* $finaldir/etc
 $copy -r $installdir/doc/* $finaldir/doc

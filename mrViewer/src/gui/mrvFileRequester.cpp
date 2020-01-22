@@ -377,7 +377,6 @@ void attach_ocio_input_color_space( CMedia* img, ImageView* view )
 {
     std::string ret = make_ocio_chooser( img->ocio_input_color_space(),
                                          mrv::OCIOBrowser::kInputColorSpace );
-    if ( ret.empty() ) return;
 
     img->ocio_input_color_space( ret );
     char buf[256];

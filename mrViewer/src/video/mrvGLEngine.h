@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   mrvGL.h
+ * @file   mrvGLEngine.h
  * @author ggas
  * @date   Sun Jul  1 11:49:49 2007
  *
- * @brief  Auxiliary class for opengl operations
+ * @brief  Main Opengl engine operations
  *
  *
  */

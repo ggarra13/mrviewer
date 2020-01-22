@@ -1248,7 +1248,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             if ( var )
             {
                 std::string ocio = var;
-                if ( img->depth() == image_type::kByte ) {
+                if ( img->depth() == image_type::kByte ||
+                     img->depth() == image_type::kShort ) {
                     if ( ocio.rfind( "nuke-default" ) != std::string::npos )
                         ics = "sRGB";
                     else

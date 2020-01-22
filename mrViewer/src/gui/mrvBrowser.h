@@ -31,6 +31,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Browser.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl.H>
 
 
 class ViewerUI;
@@ -39,7 +40,7 @@ namespace mrv
 {
 
 class Browser : public Fl_Browser {
-    Fl_Color  _colsepcolor;     // color of column separator lines 
+    Fl_Color  _colsepcolor;     // color of column separator lines
     int       _showcolsep;      // flag to enable drawing column separators
     Fl_Cursor _last_cursor;     // saved cursor state info
     int       _drag_col;        // col# user is dragging (-1 = not dragging)
@@ -145,33 +146,11 @@ protected:
         }
         return(Fl_Browser::handle(e) ? 1 : ret);
     }
-    void draw() {
-        // DRAW BROWSER
-        Fl_Browser::draw();
-        if ( _showcolsep ) {
-            // DRAW COLUMN SEPARATORS
-            int colx = this->x() - hposition();
-            int X,Y,W,H;
-            Fl_Browser::bbox(X,Y,W,H);
-            fl_color(_colsepcolor);
-            for ( int t=0; _widths[t]; t++ ) {
-                colx += _widths[t];
-                if ( colx > X && colx < (X+W) ) {
-                    fl_line(colx, Y, colx, Y+H-1);
-                }
-            }
-        }
-    }
 public:
     // CTOR
-    Browser(int X,int Y,int W,int H,const char*L=0) : Fl_Browser(X,Y,W,H,L) {
-        _colsepcolor = Fl_Color(FL_GRAY);
-        _last_cursor = FL_CURSOR_DEFAULT;
-        _showcolsep  = 0;
-        _drag_col    = -1;
-        _nowidths[0] = 0;
-        _widths      = _nowidths;
-    }
+    Browser(int X,int Y,int W,int H,const char*L=0);
+
+    virtual void draw();
 
 
     // GET/SET COLUMN SEPARATOR LINE COLOR
@@ -199,9 +178,9 @@ public:
 
     void column_labels( const char** labels )
     {
-	add( labels[0] );
+        add( labels[0] );
     }
-    
+
     void column_widths(const int *val) {
         _widths = (int*)val;
         Fl_Browser::column_widths(val);

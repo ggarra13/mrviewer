@@ -392,8 +392,9 @@ CMedia* CMedia::guess_image( const char* file,
     bool is_stereo = false;
     bool is_seq = false;
 
-    if ( root.find( "%V" ) != std::string::npos ||
-         root.find( "%v" ) != std::string::npos )
+    if ( root.find( "http" ) != 0 &&
+         ( root.find( "%V" ) != std::string::npos ||
+           root.find( "%v" ) != std::string::npos ) )
     {
         is_stereo = true;
     }
@@ -430,6 +431,7 @@ CMedia* CMedia::guess_image( const char* file,
                        lastFrame, is_thumbnail );
         if ( is_stereo && image )
         {
+            std::cerr << "IS STEREO? " << is_stereo << std::endl;
             right = guess( is_stereo, is_seq, false, root, frame,
                            NULL, 0, lastFrame, is_thumbnail );
             if ( right )

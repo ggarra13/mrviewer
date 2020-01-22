@@ -1,10 +1,19 @@
-v5.3.7  - Made the default transform for byte images be sRGB or Output - sRGB
-	  instead of scene_linear, depending on what ocio config you are
-	  using.
+v5.3.7  - Made the default transform for byte/short videos be sRGB or
+	  Output - sRGB instead of scene_linear, depending on what ocio
+	  config you are using (nuke-default or aces).  Note that you can
+	  still override this if you specify in the OCIO preferences
+	  section for each image depth what color space to use.
 	- Added playback of http:// and https:// videos with the help of
 	  youtube-dl.  Note that .srt/sub/vtt subtitles are not yet
-	  automatically downloaded.
-	- Added saving and loading of fade information.
+	  automatically downloaded.  This allows playing most youtube
+	  videos that do not have a playlist either thru the command-line
+	  or thru drag and drop (at least with firefox).
+	- Added saving and loading of fade information in reel file.
+	- Fixed text color scheme in gtk+ and Black color scheme for most
+	  widgets.
+	- Added playback of HDRI (4K Ultra HD) movie files.
+	- Bug fixed a conflict on Linux between ALSA and PulseAudio and
+	  libgpg-errors, which would lead to a crash and no audio playback.
 
 v5.3.6  - Bug fixed IPP2 image pipeline mode not refreshing the cache when
 	  that setting was changed.

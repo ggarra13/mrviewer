@@ -2171,6 +2171,8 @@ void aviImage::video_stream( int x )
             _dts = _frame - 100;
             _expected = _frame - 200;
         }
+        const video_info_t& info = _video_info[x];
+        image_size( info.width, info.height );
         int64_t f = _frame;
         seek( f );
     }
@@ -2233,6 +2235,9 @@ void aviImage::populate()
 
     if ( _context == NULL ) return;
 
+    unsigned max_width = 0;
+    unsigned max_index = 0;
+
     // Iterate through all the streams available
     for( unsigned i = 0; i < _context->nb_streams; ++i )
     {
@@ -2294,6 +2299,12 @@ void aviImage::populate()
             s.fps          = calculate_fps( _context, (AVStream*)stream );
             if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
                 s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
+            s.width = ctx->width;
+            s.height = ctx->height;
+            if ( s.width > max_width ) {
+                max_width = s.width;
+                max_index = _video_info.size();
+            }
             _video_info.push_back( s );
             if ( _video_index < 0 && s.has_codec )
             {
@@ -2310,7 +2321,9 @@ void aviImage::populate()
                 // if ( !_is_thumbnail && file != filename() &&
                 //      _w == ctx->width && _h == ctx->height &&
                 //      diff1 <= 0.0001 && diff2 <= 0.0001 )
-                if ( !_is_thumbnail && _right_filename.empty() )
+                if ( !_is_thumbnail && _right_filename.empty() &&
+                     (unsigned)ctx->width == width() &&
+                     (unsigned)ctx->height == height() )
                 {
                     _is_stereo = true;
                     _is_left_eye = true;
@@ -2377,6 +2390,15 @@ void aviImage::populate()
         return;
     }
 
+    if ( _video_info.size() > 1 && !_is_stereo )
+    {
+        // Set DASH stream to highest quality index
+        _video_index = max_index;
+        const video_info_t& info = _video_info[_video_index];
+        image_size( info.width, info.height );
+    }
+
+
     // Open these video and audio codecs
     if ( has_video() )
         open_video_codec();
@@ -2384,6 +2406,7 @@ void aviImage::populate()
         open_audio_codec();
     if ( has_subtitle() )
         open_subtitle_codec();
+
 
 
     // Configure video input properties
@@ -2615,7 +2638,6 @@ void aviImage::populate()
         //dump_metadata( pkt->side_data, "" );
     }
 
-
     int64_t dts = _frameStart;
 
     unsigned audio_bytes = 0;
@@ -2834,9 +2856,11 @@ bool aviImage::initialize()
 
         if ( url.find( "http" ) == 0 ||
              url.find( "youtube" ) == 0 ||
+             url.find( "youtu.be" ) == 0 ||
              url.find( "www." ) == 0 )
         {
-            if ( url.find( "youtube" ) == 0 )
+            if ( url.find( "youtube" ) == 0 ||
+                 url.find( "youtu.be" ) == 0 )
                 url = "https://www." + url;
             else if ( url.find( "www.") == 0 )
                 url = "https://" + url;
@@ -2846,7 +2870,7 @@ bool aviImage::initialize()
             if ( ok )
             {
                 free( _fileroot );
-                free( _filename );
+                free( _filename ); _filename = NULL;
                 _fileroot = strdup( videourl.c_str() );
 
                 if ( !audiourl.empty() )
@@ -3024,9 +3048,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             break;
         }
 
-        DBGM1( "av_read_frame" );
         int error = av_read_frame( _context, &pkt );
-        DBGM1( "av_read_frame done" );
 
         if ( error < 0 )
         {

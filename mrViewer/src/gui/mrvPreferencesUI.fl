@@ -1109,7 +1109,6 @@ v->refresh();}
 		label Pick
 		user_data this user_data_type {PreferencesUI*}
 		callback {std::string c = make_ocio_chooser(uiOCIO_8bits_ics->value(), mrv::OCIOBrowser::kInputColorSpace);
-if (c.empty()) return;
 uiOCIO_8bits_ics->value(c.c_str());
 uiOCIO_8bits_ics->do_callback();}
 		xywh {509 126 88 25}
@@ -1130,7 +1129,6 @@ v->refresh();}
 		label Pick
 		user_data this user_data_type {PreferencesUI*}
 		callback {std::string c = make_ocio_chooser(uiOCIO_16bits_ics->value(), mrv::OCIOBrowser::kInputColorSpace);
-if (c.empty()) return;
 uiOCIO_16bits_ics->value(c.c_str());
 uiOCIO_16bits_ics->do_callback();}
 		xywh {509 175 88 25}
@@ -1151,7 +1149,6 @@ v->refresh();}
 		label Pick
 		user_data this user_data_type {PreferencesUI*}
 		callback {std::string c = make_ocio_chooser(uiOCIO_32bits_ics->value(), mrv::OCIOBrowser::kInputColorSpace);
-if (c.empty()) return;
 uiOCIO_32bits_ics->value(c.c_str());
 uiOCIO_32bits_ics->do_callback();}
 		xywh {509 216 88 25}
@@ -1172,7 +1169,6 @@ v->refresh();}
 		label Pick
 		user_data this user_data_type {PreferencesUI*}
 		callback {std::string c = make_ocio_chooser(uiOCIO_float_ics->value(), mrv::OCIOBrowser::kInputColorSpace);
-if (c.empty()) return;
 uiOCIO_float_ics->value(c.c_str());
 uiOCIO_float_ics->do_callback();}
 		xywh {509 261 88 25}

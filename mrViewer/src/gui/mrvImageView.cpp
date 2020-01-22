@@ -7293,6 +7293,7 @@ int ImageView::handle(int event)
     case FL_DND_RELEASE:
         return 1;
     case FL_PASTE:
+        LOG_INFO( "DND: " << Fl::event_text() );
         browser()->handle_dnd();
         return 1;
     default:

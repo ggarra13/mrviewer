@@ -31,7 +31,7 @@
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
 
-#define USE_HDR 0
+#define USE_HDR 1
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
@@ -153,6 +153,12 @@ bool   GLEngine::_sdiOutput       = false;
 GLuint GLEngine::sCharset = 0;   // display list for characters
 unsigned int GLEngine::_maxTexWidth;
 unsigned int GLEngine::_maxTexHeight;
+
+char buf1[512];
+#define GLSL(x) do { code << #x << std::endl; } while( 0 );
+#define GLSLF(...) do { sprintf(buf1, __VA_ARGS__ ); code << buf1; } while(0);
+#define GLSLH(x)   do { hdr << #x << "\n"; } while(0);
+#define GLSLHF(...) do { sprintf(buf1, __VA_ARGS__ ); hdr << buf1; } while(0);
 
 
 //
@@ -770,7 +776,7 @@ void GLEngine::refresh_luts()
 static void pass_convert_yuv(ostringstream& code)
 {
 
-    struct mp_csp_params cparams = MP_CSP_PARAMS_DEFAULTS;
+    struct mp_csp_params cparams;
     cparams.gray = p->is_gray;
     mp_csp_set_image_params(&cparams, &p->image_params);
     mp_csp_equalizer_state_get(p->video_eq, &cparams);
@@ -3129,12 +3135,6 @@ void GLEngine::handle_cg_errors()
 //   exit(1);
 }
 
-char buf1[512];
-#define GLSL(x) do { code << #x << std::endl; } while( 0 );
-#define GLSLF(...) do { sprintf(buf1, __VA_ARGS__ ); code << buf1; } while(0);
-#define GLSLH(x)   do { hdr << #x << "\n"; } while(0);
-#define GLSLHF(...) do { sprintf(buf1, __VA_ARGS__ ); hdr << buf1; } while(0);
-
 // A := A * B
 static void mp_mul_matrix3x3(float a[3][3], float b[3][3])
 {
@@ -3729,8 +3729,8 @@ void pass_color_map(ostringstream& code,
             GLSL(c.rgb = vec3(1.0) - c.rgb;) // invert
         }
 
-    // if (is_linear)
-    //     pass_delinearize(code, dst.gamma);
+    if (is_linear)
+        pass_delinearize(code, dst.gamma);
 }
 
 void add_normal_code( ostringstream& code )

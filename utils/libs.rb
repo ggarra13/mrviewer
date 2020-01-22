@@ -19,6 +19,7 @@ libdl.*
 libxcb.*
 libasound.*
 libglib.*
+libgpg-error.*
 libstdc\+\+\.so.*
 libgcc_s.*
 libfontconfig.*

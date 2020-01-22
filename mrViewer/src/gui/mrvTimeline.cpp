@@ -455,10 +455,10 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     }
 
 
-    int dx;
 
 #define NO_FRAME_VALUE std::numeric_limits<int>::min()
 
+    int dx = NO_FRAME_VALUE;
 
 
     int64_t t2;
@@ -825,7 +825,7 @@ int Timeline::draw_coordinate( double value, int w )
     double fraction;
     if (!(slider_type() & kLOG)) {
         // linear slider
-    fraction = (value-A)/(B-A);
+    fraction = (value-A)/(B-A+1);
   } else if (A > 0) {
     // logatithmic slider
     if (value <= A) fraction = 0;
@@ -864,7 +864,7 @@ int Timeline::slider_position( double value, int w )
     double fraction;
     if (!(slider_type() & kLOG)) {
         // linear slider
-    fraction = (value-A)/(B-A);
+    fraction = (value-A)/(B-A+1);
   } else if (A > 0) {
     // logatithmic slider
     if (value <= A) fraction = 0;

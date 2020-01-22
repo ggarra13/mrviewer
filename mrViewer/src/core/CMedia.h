@@ -193,10 +193,14 @@ public:
         bool         has_b_frames;
         double       fps;
         std::string  pixel_format;
+        unsigned     width, height;
 
-        VideoStream() : StreamInfo(),
+        VideoStream() :
+            StreamInfo(),
             has_b_frames( false ),
-            fps(0)
+            fps(0),
+            width( 0 ),
+            height( 0 )
         {
         }
 
@@ -204,7 +208,9 @@ public:
             StreamInfo( b ),
             has_b_frames( b.has_b_frames ),
             fps( b.fps ),
-            pixel_format( b.pixel_format )
+            pixel_format( b.pixel_format ),
+            width( b.width ),
+            height( b.height )
         {
         }
 

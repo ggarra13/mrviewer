@@ -248,7 +248,7 @@ struct HotkeyEntry
 
 struct TableText
 {
-    int n;
+    unsigned n;
     const char* text;
 };
 

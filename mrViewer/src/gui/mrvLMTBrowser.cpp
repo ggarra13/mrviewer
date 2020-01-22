@@ -39,6 +39,7 @@ namespace mrv {
 LMTBrowser::LMTBrowser(int x, int y, int w, int h, const char* l) :
     Fl_Browser( x, y, w, h, l )
 {
+    textcolor( FL_BLACK );
 }
 
 LMTBrowser::~LMTBrowser()
