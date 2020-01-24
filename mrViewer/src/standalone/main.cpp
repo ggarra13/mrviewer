@@ -273,8 +273,8 @@ int main( int argc, char** argv )
 
             if ( single_instance )
             {
-                LOG_INFO( "lockfile " << lockfile << ". ");
-                LOG_INFO( "(Remove if mrViewer does not start)" );
+                LOG_INFO( _("Lockfile ") << lockfile << ". ");
+                LOG_INFO( _("(Remove if mrViewer does not start)") );
             }
 
           if ( fs::exists( lockfile ) && single_instance )
@@ -312,9 +312,10 @@ int main( int argc, char** argv )
 
               if ( idx == 0 )
               {
-                  mrvALERT( "Another instance of mrViewer is open.\n"
-                            "Remove " << lockfile << " if mrViewer crashed\n"
-                            "or modify Preferences->User Interface->Single Instance.");
+                  mrvALERT( _("Another instance of mrViewer is open.\n"
+                              "Remove ") << lockfile
+                            << _(" if mrViewer crashed\n"
+                                 "or modify Preferences->User Interface->Single Instance.") );
                   Fl::check();
               }
 

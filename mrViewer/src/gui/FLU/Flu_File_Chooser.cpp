@@ -779,7 +779,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   Fl_Group *quickIcons = new Fl_Group( 5, 5, 100, h()-10-60 );
   quickIcons->box( FL_DOWN_BOX );
-  quickIcons->color( FL_DARK3 );
+  quickIcons->color( FL_DARK2 );
 
   Flu_Button *desktopBtn = new Flu_Button( 30, 18, 50, 48 );
   desktopBtn->box( FL_FLAT_BOX );
@@ -1749,7 +1749,6 @@ void Flu_File_Chooser :: sortCB( Fl_Widget *w )
   }
 }
 
-#if 1
 Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
    : Fl_Tile( x, y, w, h )
 {
@@ -1767,25 +1766,6 @@ int Flu_File_Chooser :: CBTile :: handle( int event )
     }
   return Fl_Tile::handle(event);
 }
-#else
-Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
-   : Fl_Group( x, y, w, h )
-{
-  chooser = c;
-}
-
-int Flu_File_Chooser :: CBTile :: handle( int event )
-{
-  if( event == FL_DRAG )
-    {
-      // the user is probably dragging to resize the columns
-      // update the sizes for each entry
-      chooser->updateEntrySizes();
-      chooser->redraw();
-    }
-  return Fl_Group::handle(event);
-}
-#endif
 
 Flu_File_Chooser :: FileColumns :: FileColumns( int x, int y, int w, int h, Flu_File_Chooser *c )
   : Fl_Tile( x, y, w, h )
@@ -4255,9 +4235,8 @@ void Flu_File_Chooser :: cd( const char *path )
       {
           if ( !i->is_root() ) break;
       }
-      if ( i->label() != currentDir )
+      if ( i && i->label() != currentDir )
           location->tree.insert_above( i, currentDir.c_str() );
-
 #endif
     }
 
