@@ -1749,6 +1749,7 @@ void Flu_File_Chooser :: sortCB( Fl_Widget *w )
   }
 }
 
+#if 0
 Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
    : Fl_Tile( x, y, w, h )
 {
@@ -1766,6 +1767,26 @@ int Flu_File_Chooser :: CBTile :: handle( int event )
     }
   return Fl_Tile::handle(event);
 }
+#else
+
+Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
+   : Fl_Group( x, y, w, h )
+{
+  chooser = c;
+}
+
+int Flu_File_Chooser :: CBTile :: handle( int event )
+{
+  if( event == FL_DRAG )
+    {
+      // the user is probably dragging to resize the columns
+      // update the sizes for each entry
+      chooser->updateEntrySizes();
+      chooser->redraw();
+    }
+  return Fl_Group::handle(event);
+}
+#endif
 
 Flu_File_Chooser :: FileColumns :: FileColumns( int x, int y, int w, int h, Flu_File_Chooser *c )
   : Fl_Tile( x, y, w, h )
@@ -2401,8 +2422,23 @@ void Flu_File_Chooser :: Entry :: updateIcon()
   if( type==ENTRY_FAVORITE )
     icon = &little_favorites;
 
+
+  shortname = filename;
+  size_t pos = 0;
+
+  while ( (pos = shortname.find( '@', pos )) != std::string::npos )
+  {
+      shortname = shortname.substr( 0, pos+1 ) + '@' +
+                  shortname.substr( pos+1, shortname.size() );
+      pos += 2;
+  }
+
   toolTip = _(detailTxt[0].c_str());
-  toolTip += ": " + filename;
+  toolTip += ": " + shortname;
+
+  shortname = filename;
+
+
   if( type == ENTRY_FILE )
   {
       toolTip += "\n";
@@ -2532,6 +2568,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
         shortname = altname;
       else
         shortname = filename;
+
       int len = shortname.size();
       while( W > (nameW-iW) && len > 3 )
         {
@@ -3100,14 +3137,19 @@ void Flu_File_Chooser :: Entry :: draw()
         }
     }
   else
-    shortname = "";
+    shortname = filename;
 
-  if( shortname[0] != '\0' )
-    fl_draw( shortname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
-  else if( altname[0] != '\0' )
-    fl_draw( altname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
-  else
-    fl_draw( filename.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
+  size_t pos = 0;
+  while ( (pos = shortname.find( '@', pos )) != std::string::npos )
+  {
+      shortname = shortname.substr( 0, pos+1 ) + '@' +
+                  shortname.substr( pos+1, shortname.size() );
+      pos += 2;
+  }
+
+  fl_draw( shortname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
+
+  shortname = filename;
 
 
   X = x()+4 + nameW;

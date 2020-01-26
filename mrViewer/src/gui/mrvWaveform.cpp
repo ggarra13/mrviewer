@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2018 Gonzalo Garramuño
+    Copyright (C) 2007-2020  Gonzalo Garramuño
 
     This code is largely based on vf_waveform of the ffmpeg project, which is:
     Copyright (c) 2012-2016 Paul B Mahol
