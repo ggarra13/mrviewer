@@ -229,10 +229,11 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
 
     char buf[81];
     buf[80] = 0;
-    size_t read = fread(buf, 80, 1, file );
+    size_t read = fread(buf, 1, 80, file );
     if ( read != 80 )
     {
-        IMG_ERROR( _("Could not read header") );
+        IMG_ERROR( _("Could not read header. Read ") << read
+                   << _(" instead of 80") );
     }
     if ( buf[0] != 0 )
     {

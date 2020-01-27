@@ -286,19 +286,19 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
 
     // CIE standard illuminant series
     static const struct mp_csp_col_xy
-        d50 = {0.34577, 0.35850},
-    d65 = {0.31271, 0.32902},
-    c   = {0.31006, 0.31616},
-    dci = {0.31400, 0.35100},
-    e   = {1.0/3.0, 1.0/3.0};
+    d50 = {0.34577f, 0.35850f},
+    d65 = {0.31271f, 0.32902f},
+    c   = {0.31006f, 0.31616f},
+    dci = {0.31400f, 0.35100f},
+    e   = {1.0f/3.0f, 1.0f/3.0f};
 
     switch (spc) {
     case MP_CSP_PRIM_BT_470M:
     {
         struct mp_csp_primaries t = {
-            {0.670, 0.330},
-            {0.210, 0.710},
-            {0.140, 0.080},
+            {0.670f, 0.330f},
+            {0.210f, 0.710f},
+            {0.140f, 0.080f},
             c
         };
         return t;
@@ -306,9 +306,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_BT_601_525:
     {
         struct mp_csp_primaries t = {
-            {0.630, 0.340},
-            {0.310, 0.595},
-            {0.155, 0.070},
+            {0.630f, 0.340f},
+            {0.310f, 0.595f},
+            {0.155f, 0.070f},
             d65
         };
         return t;
@@ -316,9 +316,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_BT_601_625:
     {
         struct mp_csp_primaries t = {
-            {0.640, 0.330},
-            {0.290, 0.600},
-            {0.150, 0.060},
+            {0.640f, 0.330f},
+            {0.290f, 0.600f},
+            {0.150f, 0.060f},
             d65
         };
         return t;
@@ -329,9 +329,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_BT_709:
     {
         struct mp_csp_primaries t = {
-            {0.640, 0.330},
-            {0.300, 0.600},
-            {0.150, 0.060},
+            {0.640f, 0.330f},
+            {0.300f, 0.600f},
+            {0.150f, 0.060f},
             d65
         };
         return t;
@@ -339,9 +339,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_BT_2020:
     {
         struct mp_csp_primaries t = {
-            {0.708, 0.292},
-            {0.170, 0.797},
-            {0.131, 0.046},
+            {0.708f, 0.292f},
+            {0.170f, 0.797f},
+            {0.131f, 0.046f},
             d65
         };
         return t;
@@ -349,9 +349,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_APPLE:
     {
         struct mp_csp_primaries t = {
-            {0.625, 0.340},
-            {0.280, 0.595},
-            {0.115, 0.070},
+            {0.625f, 0.340f},
+            {0.280f, 0.595f},
+            {0.115f, 0.070f},
             d65
         };
         return t;
@@ -359,9 +359,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_ADOBE:
     {
         struct mp_csp_primaries t = {
-            {0.640, 0.330},
-            {0.210, 0.710},
-            {0.150, 0.060},
+            {0.640f, 0.330f},
+            {0.210f, 0.710f},
+            {0.150f, 0.060f},
             d65
         };
         return t;
@@ -369,9 +369,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_PRO_PHOTO:
     {
         struct mp_csp_primaries t = {
-            {0.7347, 0.2653},
-            {0.1596, 0.8404},
-            {0.0366, 0.0001},
+            {0.7347f, 0.2653f},
+            {0.1596f, 0.8404f},
+            {0.0366f, 0.0001f},
             d50
         };
         return t;
@@ -379,9 +379,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_CIE_1931:
     {
         struct mp_csp_primaries t = {
-            {0.7347, 0.2653},
-            {0.2738, 0.7174},
-            {0.1666, 0.0089},
+            {0.7347f, 0.2653f},
+            {0.2738f, 0.7174f},
+            {0.1666f, 0.0089f},
             e
         };
         return t;
@@ -391,9 +391,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_DISPLAY_P3:
     {
         struct mp_csp_primaries t = {
-            {0.680, 0.320},
-            {0.265, 0.690},
-            {0.150, 0.060},
+            {0.680f, 0.320f},
+            {0.265f, 0.690f},
+            {0.150f, 0.060f},
             spc == MP_CSP_PRIM_DCI_P3 ? dci : d65
         };
         return t;
@@ -402,9 +402,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_V_GAMUT:
     {
         struct mp_csp_primaries t = {
-            {0.730, 0.280},
-            {0.165, 0.840},
-            {0.100, -0.03},
+            {0.730f, 0.280f},
+            {0.165f, 0.840f},
+            {0.100f, -0.03f},
             d65
         };
         return t;
@@ -413,9 +413,9 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
     case MP_CSP_PRIM_S_GAMUT:
     {
         struct mp_csp_primaries t = {
-            {0.730, 0.280},
-            {0.140, 0.855},
-            {0.100, -0.05},
+            {0.730f, 0.280f},
+            {0.140f, 0.855f},
+            {0.100f, -0.05f},
             d65
         };
         return t;
@@ -433,18 +433,18 @@ float mp_trc_nom_peak(enum mp_csp_trc trc)
 {
     switch (trc) {
     case MP_CSP_TRC_PQ:
-        return 10000.0 / MP_REF_WHITE;
+        return 10000.0f / MP_REF_WHITE;
     case MP_CSP_TRC_HLG:
-        return 12.0;
+        return 12.0f;
     case MP_CSP_TRC_V_LOG:
-        return 46.0855;
+        return 46.0855f;
     case MP_CSP_TRC_S_LOG1:
-        return 6.52;
+        return 6.52f;
     case MP_CSP_TRC_S_LOG2:
-        return 9.212;
+        return 9.212f;
     }
 
-    return 1.0;
+    return 1.0f;
 }
 
 bool mp_trc_is_hdr(enum mp_csp_trc trc)
@@ -505,9 +505,9 @@ static void mp_apply_chromatic_adaptation(struct mp_csp_col_xy src,
     // Ma = Bradford matrix, arguably most popular method in use today.
     // This is derived experimentally and thus hard-coded.
     float bradford[3][3] = {
-        {  0.8951,  0.2664, -0.1614 },
-        { -0.7502,  1.7135,  0.0367 },
-        {  0.0389, -0.0685,  1.0296 },
+        {  0.8951f,  0.2664f, -0.1614f },
+        { -0.7502f,  1.7135f,  0.0367f },
+        {  0.0389f, -0.0685f,  1.0296f },
     };
 
     for (int i = 0; i < 3; i++) {
