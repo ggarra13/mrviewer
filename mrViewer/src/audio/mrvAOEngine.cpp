@@ -49,11 +49,11 @@ unsigned int     AOEngine::_instances = 0;
 
 AOEngine::AOEngine() :
     AudioEngine(),
-    _device( NULL ),
-    _format( NULL ),
-    _options( NULL ),
     _sample_size(0),
-    _audio_device(0)
+    _audio_device(0),
+    _format( NULL ),
+    _device( NULL ),
+    _options( NULL )
 {
     initialize();
 }
@@ -70,6 +70,7 @@ bool AOEngine::initialize()
     {
         // Create default device
         Device def( "default", "Default Audio Device" );
+        _devices.clear();
         _devices.push_back( def );
         _device_idx = 0;
 
@@ -91,17 +92,29 @@ bool AOEngine::shutdown()
 
     if ( _instances == 0 )
     {
-        // ao_shutdown();
+        ao_shutdown();
     }
 
     return true;
 }
 
 
+float AOEngine::volume() const
+{
+    if (!_device) return 0.0f;
+
+    return 1.0f;
+}
+
 void AOEngine::volume( float v )
 {
     if (!_device) return;
 
+}
+
+AOEngine::AudioFormat AOEngine::default_format()
+{
+    return kS16LSB;
 }
 
 bool AOEngine::open( const unsigned channels,
@@ -123,7 +136,7 @@ bool AOEngine::open( const unsigned channels,
         if ( _device == NULL )
         {
             _enabled = false;
-            LOG_ERROR("Error opening driver");
+            LOG_ERROR( _("Error opening ao driver") );
             return false;
         }
 
@@ -141,6 +154,19 @@ bool AOEngine::open( const unsigned channels,
     }
 }
 
+    const int kNUM_BUFFERS = 5;
+    unsigned sound_idx = 0;
+
+    struct SoundData
+    {
+        bool  prepared;
+        const char* data;
+        const size_t size;
+
+        SoundData() : prepared(false), data( NULL ), size( 0 ) { };
+    };
+
+    SoundData sound[kNUM_BUFFERS];
 
 bool AOEngine::play( const char* data, const size_t size )
 {
@@ -151,11 +177,10 @@ bool AOEngine::play( const char* data, const size_t size )
     int ok = ao_play( _device, (char*)data, size );
     if ( ok == 0 )
     {
-        LOG_ERROR("Error playing sample");
+        LOG_ERROR( _("Error playing sample") );
         close();
         return false;
     }
-
 
     return true;
 }
@@ -175,7 +200,7 @@ bool AOEngine::close()
         int ok = ao_close( _device );
         if ( ok == 0 )
         {
-            LOG_ERROR("Error closing ao device");
+            LOG_ERROR( _("Error closing ao device") );
         }
 
         _device = NULL;

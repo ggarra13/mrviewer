@@ -1368,8 +1368,8 @@ bool Parser::parse( const std::string& s )
             deliver( buf );
 
 
-            boost::int64_t frame = img->frame() - img->first_frame() + 1;
-            sprintf( buf, N_("seek %") PRId64, frame );
+            int64_t frame = img->frame() - img->first_frame() + 1;
+            sprintf( buf, N_("seek %" PRId64 ), frame );
             deliver( buf );
 
         }

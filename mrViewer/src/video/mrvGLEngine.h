@@ -125,6 +125,7 @@ public:
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
 
+    virtual void draw_grid( const CMedia* const img, unsigned size );
 
     virtual void draw_title(const float size,
                             const int y, const char* text );

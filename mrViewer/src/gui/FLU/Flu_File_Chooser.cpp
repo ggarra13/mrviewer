@@ -320,7 +320,7 @@ struct RealIcon
 static void loadRealIcon( RealIcon* e)
 {
     namespace fs = boost::filesystem;
-    typedef boost::recursive_mutex Mutex;
+    // typedef boost::recursive_mutex Mutex;
 
 
 #ifdef ICONS_SINGLE_THREAD
@@ -3023,14 +3023,14 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
     }
 
   // add the programmable context handlers
-  for( unsigned int i = 0; i < contextHandlers.size(); i++ )
+  for( size_t i = 0; i < contextHandlers.size(); i++ )
     {
-      if( !(contextHandlers[i].type & type) )
-        continue;
-      if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-        if( contextHandlers[i].ext.size() && contextHandlers[i].ext != ext )
-          continue;
-      entryPopup.add( _(contextHandlers[i].name.c_str()), 0, 0, (uintptr_t*)i );
+        if( !(contextHandlers[i].type & type) )
+            continue;
+        if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
+            if( contextHandlers[i].ext.size() && contextHandlers[i].ext != ext )
+                continue;
+        entryPopup.add( _(contextHandlers[i].name.c_str()), 0, 0, (void*)i );
     }
   if( ext )
     free( ext );

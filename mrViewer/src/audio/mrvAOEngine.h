@@ -44,8 +44,10 @@ public:
 
     // Name of audio engine
     virtual const char* name() {
-        return "Windows Multimedia";
+        return "AO driver";
     }
+
+    virtual AudioFormat default_format();
 
     // Open an audio stream for playback
     virtual bool open(
@@ -55,9 +57,15 @@ public:
         const unsigned int bits
     );
 
+    ao_device* device() const { return _device; }
+
+    bool enabled() const { return _enabled; }
+
     // Play some samples (this function does not return until
     // playback has finished)
     virtual bool play( const char* data, const size_t size );
+
+    virtual float volume() const;
 
     // Change volume of playback
     virtual void volume( float f );

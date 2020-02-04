@@ -118,8 +118,8 @@ client::client(boost::asio::io_service& io_service,
                ViewerUI* v) :
     Parser( io_service, v ),
     stopped_(false),
-    deadline_(io_service),
-    non_empty_output_queue_(io_service)
+    non_empty_output_queue_(io_service),
+    deadline_(io_service)
 {
    // The non_empty_output_queue_ deadline_timer is set to pos_infin
    // whenever the output queue is empty. This ensures that the output

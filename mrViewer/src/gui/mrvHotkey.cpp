@@ -154,6 +154,8 @@ Hotkey kClearSingleFrameCache( false, false, false, false, 'u' );
 Hotkey kSetInPoint( false, false, false, false, 'i' );
 Hotkey kSetOutPoint( false, false, false, false, 'o' );
 
+Hotkey kGridToggle( true, false, false, false, 'g' );
+Hotkey kGridSize( true, true, false, false, 'g' );
 Hotkey kHudToggle( true, false, false, false, 'h' );
 
 Hotkey kOCIOInputColorSpace( false, false, false, false, 0 );

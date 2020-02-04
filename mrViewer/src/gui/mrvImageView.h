@@ -715,6 +715,11 @@ public:
         _preframe = f;
     }
 
+    bool grid() const { return _grid; }
+    void grid(bool t) { _grid = t; redraw(); }
+
+    unsigned grid_size() const { return _grid_size; }
+    void grid_size(unsigned t) { _grid_size = t; redraw(); }
 
     /// Stop preload image caches
     void preload_cache_stop();
@@ -875,6 +880,8 @@ protected:
     bool         _wait;
     bool         _normalize;   //<- normalize pixel values
     bool         _safeAreas;   //<- safe view/title area is active
+    bool         _grid;        //<- grid is active
+    unsigned     _grid_size;   //<- size of grid in pixels
     HudDisplay   _hud;         //<- hud display
     float        _masking;     //<- film masking ratio (top/bottom bars)
     WipeDirection _wipe_dir;   //<- wipe direction

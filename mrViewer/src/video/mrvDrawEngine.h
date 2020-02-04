@@ -218,6 +218,8 @@ public:
 
     virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 
+    virtual void draw_grid( const CMedia* const img, unsigned size ) = 0;
+
     CMedia* const background();
 
     /// Convert a float image to uchar for display, taking into

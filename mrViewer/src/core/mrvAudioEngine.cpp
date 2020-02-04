@@ -35,8 +35,9 @@
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
 #    include "audio/mrvALSAEngine.h"
+#    include "audio/mrvAOEngine.h"
 #else
-#    error Unknown audio engine for OS
+#    include "audio/mrvAOEngine.h"
 #endif
 
 namespace mrv {
@@ -57,6 +58,11 @@ AudioEngine::~AudioEngine()
 {
 }
 
+
+AudioEngine::AudioFormat AudioEngine::default_format()
+{
+    return kFloatLSB;
+}
 
 AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
 {
@@ -143,7 +149,10 @@ AudioEngine* AudioEngine::factory()
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
 #elif defined(LINUX)
-    r = new mrv::ALSAEngine();
+    //r = new mrv::ALSAEngine();
+    r = new mrv::AOEngine();
+#else
+    r = new mrv::AOEngine();
 #endif
 
     return r;

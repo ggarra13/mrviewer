@@ -52,8 +52,8 @@ namespace mrv
 
 Waveform::Waveform( int x, int y, int w, int h, const char* l ) :
 Fl_Box( x, y, w, 256, l ),
-fli( NULL ),
-_intensity( 0.04f )
+_intensity( 0.04f ),
+fli( NULL )
 {
     color( FL_BLACK );
     // buttoncolor( FL_BLACK );
@@ -129,9 +129,9 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // fprintf( stderr, "mirror=%d\n", mirror );
     // fprintf( stderr, "intensity=%d\n", intensity );
     // fprintf( stderr, "plane=%d shift_w=%d shift_h=%d\n",
-    // 	     plane, shift_w, shift_h );
+    //       plane, shift_w, shift_h );
     // fprintf( stderr, "src_linesize=%d dst_linesize=%d\n",
-    // 	     src_linesize, dst_linesize );
+    //       src_linesize, dst_linesize );
     // fprintf( stderr, "dst_signed_linesize=%d\n", dst_signed_linesize );
     // fprintf( stderr, "src_w=%d src_h=%d\n", src_w, src_h );
     // fprintf( stderr, "dst_w=%d dst_h=%d\n\n\n", out->width(), out->height() );
@@ -139,13 +139,13 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // fprintf( stderr, "jobnr=%d\n\n\n\n", jobnr );
     // fprintf( stderr, "nb_jobs=%d\n\n\n\n", nb_jobs );
     // fprintf( stderr, "sliceh_start=%d sliceh_end=%d\n",
-    // 	     sliceh_start, sliceh_end );
+    //       sliceh_start, sliceh_end );
     // fprintf( stderr, "slicew_start=%d slicew_end=%d\n",
-    // 	     slicew_start, slicew_end );
+    //       slicew_start, slicew_end );
     // fprintf( stderr, "s->size=%d\n\n\n\n", ssize );
     // fprintf( stderr, "step=%d\n\n\n\n", step );
     // fprintf( stderr, "data=%p", out->data().get() );
-    
+
     if (!column && mirror)
         dst_data += ssize;
 
@@ -304,8 +304,8 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
 void Waveform::draw_pixels( const mrv::Recti& r )
 {
     if ( ! uiMain->uiView )
-	return;
-    
+        return;
+
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with SHIFT + LMB") );
@@ -363,10 +363,10 @@ void Waveform::draw_pixels( const mrv::Recti& r )
         try
         {
             out.reset( new image_type( pic->frame(), pic->width(),
-				       256, 1,
+                                       256, 1,
                                        mrv::image_type::kLumma,
                                        VideoFrame::kByte ) );
-	    
+
         }
         catch( const std::bad_alloc& e )
         {
@@ -464,9 +464,9 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
     if ( fli == NULL || w() != fli->w() || h() != fli->h() )
     {
-	fli = new Fl_RGB_Image( (const uchar*)out->data().get(),
-				out->width(), out->height(), 1 );
-	fli->alloc_array = 0;
+        fli = new Fl_RGB_Image( (const uchar*)out->data().get(),
+                                out->width(), out->height(), 1 );
+        fli->alloc_array = 0;
     }
     fli->draw(r.x(), r.y(), r.w(), r.h());
     fli->uncache();

@@ -64,7 +64,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
-    ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch)
+    ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
@@ -99,7 +99,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
     ADD_COMPILE_OPTIONS( -O3 -msse )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx
+      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao
       )
 
      IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -317,6 +317,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES gui/resource.rc ${SOURCES} )
 ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
   SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+  SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )

@@ -2844,12 +2844,6 @@ bool aviImage::initialize()
 
         }
 
-        _context = avformat_alloc_context();
-        if ( ! _context )
-        {
-            LOG_ERROR( _("Could not allocate format context") );
-            return false;
-        }
 
         std::string title = fileroot();
         std::string url = fileroot();

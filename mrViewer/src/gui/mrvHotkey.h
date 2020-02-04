@@ -200,6 +200,8 @@ extern Hotkey kClearSingleFrameCache;
 extern Hotkey kSetInPoint;
 extern Hotkey kSetOutPoint;
 
+extern Hotkey kGridToggle;
+extern Hotkey kGridSize;
 extern Hotkey kHudToggle;
 
 // OCIO Hotkets

@@ -170,6 +170,8 @@ public:
         return _audio_format;
     }
 
+    virtual AudioFormat default_format();
+
     static AVSampleFormat ffmpeg_format( const AudioFormat f );
 
     // Create an appropriate audio engine for this OS.

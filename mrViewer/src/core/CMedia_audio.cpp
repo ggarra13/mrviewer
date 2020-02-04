@@ -586,7 +586,7 @@ void CMedia::populate_audio()
     std::ostringstream msg;
 
     AVFormatContext* c = _context;
-    if ( separate ) c = _acontext;
+    if ( separate || c == NULL ) c = _acontext;
 
     // Iterate through all the streams available
     for( unsigned i = 0; i < c->nb_streams; ++i )
@@ -879,7 +879,7 @@ void CMedia::audio_file( const char* file )
     audio_stream( -1 );
     audio_offset( 0 );
     _audio_channels = 0;
-    _audio_format = AudioEngine::kFloatLSB;
+    _audio_format = _audio_engine->default_format(); // AudioEngine::kFloatLSB;
 
     if ( _acontext )
     {
@@ -1564,7 +1564,7 @@ void CMedia::audio_stream( int idx )
         swr_free( &forw_ctx );
         forw_ctx = NULL;
         _audio_channels = 0;
-        _audio_format = AudioEngine::kFloatLSB;
+        _audio_format = _audio_engine->default_format(); // AudioEngine::kFloatLSB;
 
     }
 
@@ -1723,6 +1723,7 @@ void CMedia::audio_initialize()
 
     _audio_engine = mrv::AudioEngine::factory();
     _audio_channels = (unsigned short) _audio_engine->channels();
+    _audio_format = _audio_engine->default_format();
 }
 
 
@@ -1755,7 +1756,8 @@ bool CMedia::open_audio( const short channels,
 
     DBGM3("open audio - audio closed" );
 
-    AudioEngine::AudioFormat format = AudioEngine::kFloatLSB;
+    AudioEngine::AudioFormat format = _audio_engine->default_format();
+                                     // AudioEngine::kFloatLSB;
 
     // Avoid conversion to float if unneeded
     if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||

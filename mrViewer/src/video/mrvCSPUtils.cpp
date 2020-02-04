@@ -23,6 +23,10 @@
  * @brief  Color space utils as in mpv
  *         This file is mainly a copy of mpv's csputils.c file.
  *
+ * Copyleft (C) 2009 Reimar Döffinger <Reimar.Doeffinger@gmx.de>
+ *
+ * mp_invert_cmat based on DarkPlaces engine (relicensed from GPL to LGPL)
+ *
  */
 
 

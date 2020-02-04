@@ -86,6 +86,7 @@
 #include <FL/Fl_Menu.H>
 #include "mrvPopupMenu.h"
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Spinner.H>
 #include <FL/Fl_Preferences.H>
 
 #ifdef LINUX
@@ -727,6 +728,41 @@ void change_subtitle_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
     img->subtitle_stream(i);
     if ( play != mrv::CMedia::kStopped )
         img->play( play, view->main(), true );
+}
+
+static Fl_Window* gridWindow = NULL;
+
+void change_grid_size_cb( Fl_Spinner* o, mrv::ImageView* view )
+{
+    view->grid_size( o->value() );
+}
+
+void grid_size_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    if ( ! view->grid() ) return;
+    if ( ! gridWindow || !gridWindow->visible() )
+    {
+        if ( gridWindow ) delete gridWindow;
+
+        Fl_Group::current( view );
+        gridWindow = new Fl_Window(220, 60, _("Grid Size") );
+        Fl_Spinner* o = new Fl_Spinner( 50, 20, 100, 20,
+                                        _("Grid Size") );
+        o->align( FL_ALIGN_TOP );
+        o->textcolor( FL_BLACK );
+        o->value( view->grid_size() );
+        o->step( 1.0 );
+        o->minimum( 2.0 );
+        o->maximum( 1920.0 );
+        o->callback( (Fl_Callback*)change_grid_size_cb, view );
+        gridWindow->end();
+        gridWindow->show();
+    }
+}
+
+void grid_toggle_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    view->grid( !view->grid() );
 }
 
 void hud_toggle_cb( Fl_Widget* o, ViewerUI* uiMain )
@@ -1437,6 +1473,8 @@ _update( true ),
 _wait( false ),
 _normalize( false ),
 _safeAreas( false ),
+_grid( false ),
+_grid_size( 100 ),
 _masking( 0.0f ),
 _wipe_dir( kNoWipe ),
 _wipe( 1.0 ),
@@ -1509,6 +1547,8 @@ void ImageView::stop_playback()
 
 ImageView::~ImageView()
 {
+    delete gridWindow; gridWindow = NULL;
+
     delete_timeout();
     if ( CMedia::preload_cache() )
         preload_cache_stop();
@@ -3651,6 +3691,11 @@ void ImageView::draw()
 
     _engine->draw_annotation( img->shapes() );
 
+    if ( _grid )
+    {
+        _engine->draw_grid( img, _grid_size );
+    }
+
     if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
     {
         double xf = X;
@@ -4323,6 +4368,14 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
                 TRACE("");
+
+                sprintf( buf, "%s", _("View/Grid/Toggle Selected") );
+                menu->add( buf, kGridToggle.hotkey(),
+                           (Fl_Callback*)grid_toggle_cb, this );
+
+                sprintf( buf, "%s", _("View/Grid/Size") );
+                menu->add( buf, kGridSize.hotkey(),
+                           (Fl_Callback*)grid_size_cb, this );
 
                 sprintf( buf, "%s", _("View/Hud/Toggle Selected") );
                 menu->add( buf, kHudToggle.hotkey(),
@@ -6305,6 +6358,18 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         hud_toggle_cb( NULL, uiMain );
         mouseMove( Fl::event_x(), Fl::event_y() );
+        redraw();
+        return 1;
+    }
+    else if ( kGridToggle.match( rawkey ) )
+    {
+        grid_toggle_cb( NULL, this );
+        redraw();
+        return 1;
+    }
+    else if ( kGridSize.match( rawkey ) )
+    {
+        grid_size_cb( NULL, this );
         redraw();
         return 1;
     }

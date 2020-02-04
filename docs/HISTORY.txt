@@ -5,6 +5,17 @@ v5.3.8  - Added some more translations to Spanish locale.
 	- Allowed filenames with @ in their name in file requester and in
 	  the tooltip.
 	- Fixed text color scheme in gtk+ and Black for some more widgets.
+	- Added a grid overlay to the view.  You can toggle it on with
+	  View->Grid->Toggle and set its size with View->Grid->Size, which
+	  will open a small window in which you can set the size to your
+	  liking.
+	- Improved icon resolution on Linux. On old linux versions, the icon
+	  will also appear bigger on the Desktop.
+	- Fixed a minor memory leak in ffmpeg decoding start up.
+	- Added (C) and license information to mrvCSPUtils files.
+	- Fixed (C) information to 2020 in all files.
+	- Fixed a potential crash or wrong value when checking audio
+	  duration.
 
 v5.3.7  - Made the default transform for byte/short videos be sRGB or
 	  Output - sRGB instead of scene_linear, depending on what ocio

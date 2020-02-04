@@ -21,7 +21,8 @@
  * @date   Fri Feb  8 10:14:11 2008
  *
  * @brief  Color space utils as in mpv
- *         This file is mainly a copy of mpv's csputils.h file.
+ *         This file is mainly a copy of mpv's csputils.h file, which is
+ *         licensed as GNU Lesser General Public License.
  *
  */
 

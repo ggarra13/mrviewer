@@ -71,7 +71,17 @@
 #  define access          _access
 #endif
 
-#undef  _ITERATOR_DEBUG_LEVEL 
+
+#undef itoa
+#define itoa(x,a,b) _itoa(x,a,b)
+
+#undef getcwd
+#define getcwd _getcwd
+
+#undef strdup
+#define strdup(x) _strdup(x)
+
+#undef  _ITERATOR_DEBUG_LEVEL
 #define _ITERATOR_DEBUG_LEVEL 0
 
 #endif // defined(WIN32) || defined(WIN64)

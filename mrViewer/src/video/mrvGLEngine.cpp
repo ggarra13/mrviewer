@@ -1305,6 +1305,7 @@ void GLEngine::draw_mask( const float pct )
     glRotated( zdeg, 0, 0, 1 );
     translate( img->x() + x + dpw.x(), img->y() + y - dpw.y(), 0 );
 
+
     glScaled( dpw.w(), dpw.h(), 1.0 );
     translate( 0.5, -0.5, 0.0 );
 
@@ -1874,11 +1875,12 @@ void GLEngine::draw_images( ImageList& images )
     glDisable( GL_BLEND );
     CHECK_GL;
 
-
+    CMedia* img = NULL;
+    mrv::image_type_ptr pic;
     for ( i = images.begin(); i != e; ++i, ++q )
     {
-        const Image_ptr& img = *i;
-        mrv::image_type_ptr pic = img->left();
+        img = *i;
+        pic = img->left();
         if (!pic)  continue;
 
 
@@ -2392,22 +2394,73 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }
 
-            CHECK_GL;
+        CHECK_GL;
         glMatrixMode(GL_MODELVIEW);
-            CHECK_GL;
+        CHECK_GL;
         glPopMatrix();
-            CHECK_GL;
+        CHECK_GL;
     }
 
-            CHECK_GL;
+    CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-            CHECK_GL;
+    CHECK_GL;
     glDisable( GL_SCISSOR_TEST );
-            CHECK_GL;
+    CHECK_GL;
     glDisable( GL_BLEND );
+
+
     FLUSH_GL_ERRORS;
 }
 
+void GLEngine::draw_grid( const CMedia* const img, unsigned size = 100 )
+{
+    set_matrix( img, true );
+
+    glColor4f( 0.f, 0.f, 0.f, 0.5f);
+    glLineWidth( 1.0f );
+    glDisable( GL_LINE_SMOOTH );
+
+    char buf[128];
+    mrv::Recti dpw = img->display_window();
+
+    for ( int y = dpw.y(); y < dpw.h(); y += size )
+    {
+        glBegin( GL_LINES );
+        glVertex2i( dpw.x(), -y );
+        glVertex2i( dpw.w(), -y );
+        glEnd();
+
+
+        for ( int x = dpw.x(); x < dpw.w(); x += size )
+        {
+            glBegin( GL_LINES );
+            glVertex2i( x, -dpw.y() );
+            glVertex2i( x, -dpw.h() );
+            glEnd();
+
+        }
+    }
+
+    // NOT GOOD CENTERING OF TEXT (overlayed)
+    // glColor4f( 1.f, 0.5f, 0.2f, 1.0f );
+
+    // size *= _view->zoom();
+
+    // for ( int y = dpw.y(); y < dpw.h(); y += size )
+    // {
+    //     int y2 = y / size;
+    //     sprintf( buf, "%d", y2 );
+    //     draw_text( dpw.x(), y, buf );
+
+    //     for ( int x = dpw.x(); x < dpw.w(); x += size )
+    //     {
+    //         int x2 = x / size;
+    //         sprintf( buf, "%d", x2 );;
+
+    //         draw_text( x, dpw.y(), buf );
+    //     }
+    // }
+}
 
 void GLEngine::draw_shape( GLShape* const shape )
 {
@@ -3364,8 +3417,8 @@ static void pass_tone_map( ostringstream& code, ostringstream& hdr,
     GLSLF("float sig_peak = %f;\n", src_peak);
     GLSLF("float sig_avg = %f;\n", sdr_avg * 2.0f);
 
-    if (detect_peak)
-        hdr_update_peak(code, hdr);
+    // if (detect_peak)
+    //     hdr_update_peak(code, hdr);
 
     if (dst_peak > 1.0) {
         GLSLF("sig *= %f;\n", 1.0 / dst_peak);
@@ -3723,11 +3776,11 @@ void pass_color_map(ostringstream& code,
 
     GLSLF("c.rgb *= vec3(%f);\n", 1.0 / dst_range);
 
-    // Warn for remaining out-of-gamut colors is enabled
-    if (gamut_warning) {
-        GLSL(if (any(greaterThan(c.rgb, vec3(1.01)))))
-            GLSL(c.rgb = vec3(1.0) - c.rgb;) // invert
-        }
+    // // Warn for remaining out-of-gamut colors is enabled
+    // if (gamut_warning) {
+    //     GLSL(if (any(greaterThan(c.rgb, vec3(1.01)))))
+    //         GLSL(c.rgb = vec3(1.0) - c.rgb;) // invert
+    //     }
 
     if (is_linear)
         pass_delinearize(code, dst.gamma);

@@ -3442,7 +3442,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
     else
     {
-        s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
+        s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
     }
 
     if (st->disposition & AV_DISPOSITION_DEFAULT)
@@ -3526,7 +3526,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
     else
     {
-        s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
+        s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
     }
 
     if (st->disposition & AV_DISPOSITION_DEFAULT)
