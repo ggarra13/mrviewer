@@ -16,6 +16,11 @@ v5.3.8  - Added some more translations to Spanish locale.
 	- Fixed (C) information to 2020 in all files.
 	- Fixed a potential crash or wrong value when checking audio
 	  duration.
+	***RE-RELEASE PATCH on Tuesday February 4th, 14:45 ***
+	- Bug fixed audio stuttering on Linux (bug introduced in v5.3.8).
+	***RE-RELEASE PATCH on Tuesday February 4th, 20:30 ***
+	- Bug fixed the need to have the libao library installed on Linux.
+	  (bug introduced in v5.3.8).
 
 v5.3.7  - Made the default transform for byte/short videos be sRGB or
 	  Output - sRGB instead of scene_linear, depending on what ocio

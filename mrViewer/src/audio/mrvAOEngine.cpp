@@ -127,12 +127,19 @@ bool AOEngine::open( const unsigned channels,
         flush();
 
         ao_sample_format fmt;
+        memset( &fmt, 0, sizeof(ao_sample_format) );
         fmt.bits = 16;
         fmt.rate = freq;
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;
 
-        _device = ao_open_live( _audio_device, &fmt, NULL );
+        ao_option* options = NULL;
+        int err = ao_append_option( &options, "buffer_time", "0" );
+
+
+        _device = ao_open_live( _audio_device, &fmt, options );
+        ao_free_options( options );
+
         if ( _device == NULL )
         {
             _enabled = false;
@@ -140,6 +147,12 @@ bool AOEngine::open( const unsigned channels,
             return false;
         }
 
+
+
+        // Store these for future round
+        _audio_format = format;
+        _channels = channels;
+        _old_device_idx = _device_idx;
 
         // All okay, enable device
         _enabled = true;
@@ -154,19 +167,6 @@ bool AOEngine::open( const unsigned channels,
     }
 }
 
-    const int kNUM_BUFFERS = 5;
-    unsigned sound_idx = 0;
-
-    struct SoundData
-    {
-        bool  prepared;
-        const char* data;
-        const size_t size;
-
-        SoundData() : prepared(false), data( NULL ), size( 0 ) { };
-    };
-
-    SoundData sound[kNUM_BUFFERS];
 
 bool AOEngine::play( const char* data, const size_t size )
 {
@@ -174,13 +174,16 @@ bool AOEngine::play( const char* data, const size_t size )
     if ( !_device) return false;
     if ( !_enabled ) return true;
 
+
     int ok = ao_play( _device, (char*)data, size );
+
     if ( ok == 0 )
     {
         LOG_ERROR( _("Error playing sample") );
         close();
         return false;
     }
+
 
     return true;
 }

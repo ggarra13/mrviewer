@@ -430,6 +430,8 @@ bool ALSAEngine::open( const unsigned channels,
     {
         close();
 
+        std::cerr << "ALSAEngine::open" << std::endl;
+
         int                  status;
         unsigned int         test_format = (unsigned int) format;
         char buf[256];

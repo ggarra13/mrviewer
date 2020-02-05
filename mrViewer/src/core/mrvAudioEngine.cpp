@@ -34,8 +34,13 @@
 #if defined(WIN32) || defined(WIN64)
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
+
 #    include "audio/mrvALSAEngine.h"
-#    include "audio/mrvAOEngine.h"
+
+#ifdef AOENGINE
+#        include "audio/mrvAOEngine.h"
+#endif
+
 #else
 #    include "audio/mrvAOEngine.h"
 #endif
@@ -149,8 +154,12 @@ AudioEngine* AudioEngine::factory()
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
 #elif defined(LINUX)
-    //r = new mrv::ALSAEngine();
+#ifdef AOENGINE
     r = new mrv::AOEngine();
+#else
+    r = new mrv::ALSAEngine();
+#endif
+
 #else
     r = new mrv::AOEngine();
 #endif

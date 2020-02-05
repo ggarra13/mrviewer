@@ -60,6 +60,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   IF(APPLE)
     # Media libraries for Apple
     ADD_DEFINITIONS( -DOSX )
+    set( AOENGINE 1 )
     SET(OS_LIBRARIES
       )
   ELSE(APPLE)
@@ -95,12 +96,20 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib/x86_64-linux-gnu/
       /usr/lib
       )
-    #
+
+    # SET THIS TO 1 to use AO ENGINE (libao) ON LINUX
+    set( AOENGINE 0 )
+
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
     ADD_COMPILE_OPTIONS( -O3 -msse )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao
+      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx
       )
+
+    IF( AOENGINE )
+      ADD_DEFINITIONS( -DAOENGINE )
+      set( OS_LIBRARIES ${OS_LIBRARIES} ao )
+    ENDIF()
 
      IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
        #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
@@ -317,7 +326,9 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES gui/resource.rc ${SOURCES} )
 ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
   SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
-  SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
+  if( AOENGINE )
+    SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
+  endif()
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
@@ -396,7 +407,7 @@ SET( LIBRARIES
 #
 if(WIN32)
 	# if(COMMAND cmake_policy)
-	#	   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
+	#          cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
 	# endif(COMMAND cmake_policy)
 else(WIN32)
 	if(COMMAND cmake_policy)

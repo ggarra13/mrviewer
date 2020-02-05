@@ -101,21 +101,21 @@ end
 def copy_files( build )
   Dir.chdir( '../..'  )
   $stderr.puts "Copy shaders"
-  FileUtils.rm_f( "#{@debug}/shaders" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/shaders" )
   FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
   $stderr.puts "Copy docs"
-  FileUtils.rm_f( "#{@debug}/docs" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/docs" )
   FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
-  FileUtils.rm_f( "#{@debug}/colors" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/colors" )
   FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
   $stderr.puts "Copy ctl scripts"
-  FileUtils.rm_f( "#{@debug}/ctl" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/ctl" )
   FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
   $stderr.puts "Copy ocio configs"
-  FileUtils.rm_f( "#{@debug}/ocio" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/ocio" )
   FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
   $stderr.puts "Copy otio adapters"
-  FileUtils.rm_f( "#{@debug}/otio" )
+  FileUtils.rm_rf( "#{build}/#{@debug}/otio" )
   FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
   if build =~ /Linux/
     # Copy the RED library

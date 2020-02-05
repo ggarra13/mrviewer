@@ -392,7 +392,7 @@ char *GetCpuFriendlyName(std::ostringstream& out,
 #include "cputable.h" /* get cpuname and cpuvendors */
   char vendor[13];
   char *ret;
-  int i;
+  unsigned int i;
 
   if (NULL==(ret=(char*)malloc(256))) {
     std::cerr << "Not enough memory" << std::endl;
