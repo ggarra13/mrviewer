@@ -1908,6 +1908,7 @@ void aviImage::video_stream( int x )
     std::vector<AVPixelFormat> fmt;
     fmt.reserve( 32 );
 
+    fmt.push_back( AV_PIX_FMT_GRAY8 );
     fmt.push_back( AV_PIX_FMT_YA8 );
 
 
@@ -1937,6 +1938,7 @@ void aviImage::video_stream( int x )
     if ( supports_yuva() )
     {
         fmt.clear();
+        fmt.push_back( AV_PIX_FMT_GRAY8 );
         fmt.push_back( AV_PIX_FMT_YA8 );
 
         if ( uses_16bits() )
@@ -1970,6 +1972,7 @@ void aviImage::video_stream( int x )
     {
 
         fmt.clear();
+        fmt.push_back( AV_PIX_FMT_GRAY8 );
         fmt.push_back( AV_PIX_FMT_YA8 );
         if ( uses_16bits() )
         {
