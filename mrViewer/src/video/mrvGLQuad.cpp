@@ -111,6 +111,8 @@ const char* GLQuad::debug_format( const GLenum format )
     {
     case GL_LUMINANCE:
         return "GL_LUMINANCE";
+    case GL_LUMINANCE_ALPHA:
+        return "GL_LUMINANCE_ALPHA";
     case GL_BGR:
         return "GL_BGR";
     case GL_BGRA:
@@ -212,6 +214,8 @@ GLenum GLQuad::gl_format( const image_type::Format format )
         return GL_BGRA;
     case image_type::kBGR:
         return GL_BGR;
+    case image_type::kLummaA:
+        return GL_LUMINANCE_ALPHA;
     case image_type::kLumma:
     case image_type::kYUV:
     case image_type::kITU_709_YCbCr444A:
@@ -1341,6 +1345,9 @@ int GLQuad::calculate_gl_step( const GLenum format,
     case GL_RGB:
     case GL_BGR:
         step = 3;
+        break;
+    case GL_LUMINANCE_ALPHA:
+        step = 2;
         break;
     case GL_LUMINANCE:
         step = 1;

@@ -22,6 +22,18 @@
 
 #include "mrvIO.h"
 #include "core/mrvI8N.h"
+
+#include <sys/types.h>
+
+#ifdef LINUX
+#include <sys/socket.h>
+#include <netdb.h>
+#else
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <stdio.h>
+#endif
+
 #include "mrSocket.h"
 
 #define QLEN            6               /* size of request queue        */
@@ -79,51 +91,67 @@ void mr_cleanup_socket_library()
 }
 
 
-MR_SOCKET mr_new_socket_client( const char* host, const int port,
+MR_SOCKET mr_new_socket_client( const char* hostname, const int port,
 				const char* protocol )
 {
-   struct  hostent  *ptrh;  /* pointer to a host table entry       */
-   struct  protoent *ptrp;  /* pointer to a protocol table entry   */
-   struct  sockaddr_in sad; /* structure to hold server's address  */
-   MR_SOCKET sd;            /* socket descriptor                   */
 
-   memset((char *)&sad,0,sizeof(sad)); /* clear sockaddr structure */
-   sad.sin_family = AF_INET;         /* set family to Internet     */
+    int err;
+    MR_SOCKET sd;            /* socket descriptor                   */
+    struct addrinfo hints = {}, *addrs;
+    char port_str[16] = {};
+
+    hints.ai_family = AF_INET; // Since your original code was using sockaddr_in and
+                               // PF_INET, I'm using AF_INET here to match.  Use
+                               // AF_UNSPEC instead if you want to allow getaddrinfo()
+                               // to find both IPv4 and IPv6 addresses for the hostname.
+                               // Just make sure the rest of your code is equally family-
+                               // agnostic when dealing with the IP addresses associated
+                               // with this connection. For instance, make sure any uses
+                               // of sockaddr_in are changed to sockaddr_storage,
+                               // and pay attention to its ss_family field, etc...
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    sprintf(port_str, "%d", port);
+
+    err = getaddrinfo(hostname, port_str, &hints, &addrs);
+    if (err != 0)
+    {
+        fprintf(stderr, "%s: %s\n", hostname, gai_strerror(err));
+        abort();
+    }
+
+    for(struct addrinfo *addr = addrs; addr != NULL; addr = addr->ai_next)
+    {
+        sd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
+        if (sd == -1)
+        {
+            // if using AF_UNSPEC above instead of AF_INET/6 specifically,
+            // replace this 'break' with 'continue' instead, as the 'ai_family'
+            // may be different on the next iteration...
+            err = errno;
+            break;
+        }
+
+        if (connect(sd, addr->ai_addr, (int)addr->ai_addrlen) == 0)
+            break;
+
+        err = errno;
+
+        mr_closesocket(sd);
+        sd = -1;
+    }
+
+    freeaddrinfo(addrs);
 
 
-   if (port > 0)                   /* test for illegal value       */
-      sad.sin_port = htons((u_short)port);
-   else {                          /* print error message and exit */
-       LOG_ERROR( _("Bad port number ") << port);
-      return -1;
-   }
+ 
+    if (sd == -1)
+    {
+        LOG_ERROR( hostname << ": " <<  strerror(err));
+    }
 
-   /* Convert host name to equivalent IP address and copy to sad. */
-   ptrh = gethostbyname(host);
-   if ( ((char *)ptrh) == NULL ) {
-       LOG_ERROR( _("Invalid host: ") << host);
-      return -1;
-   }
-   memcpy(&sad.sin_addr, ptrh->h_addr, ptrh->h_length);
-
-   /* Map TCP transport protocol name to protocol number */
-   if ( (ptrp = getprotobyname( protocol )) == 0) {
-       LOG_ERROR( _("Cannot map \"") << protocol << _("\" to protocol number"));
-      return -1;
-   }
-
-   /* Create a socket */
-   sd = socket(PF_INET, SOCK_STREAM, ptrp->p_proto);
-   if (sd < 0) {
-       LOG_ERROR( _("Socket creation failed\n") );
-      return -1;
-   }
-
-   /* Connect the socket to the specified server. */
-   if (connect(sd, (struct sockaddr *)&sad, sizeof(sad)) < 0) {
-      return -1;
-   }
-
+    
    return sd;
 }
 

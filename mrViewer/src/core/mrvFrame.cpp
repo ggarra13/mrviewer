@@ -151,6 +151,10 @@ size_t VideoFrame::line_size() const
         size = W;
         break;
 
+    case kLummaA:
+        size = W * 2;
+        break;
+
     case kYByRy410A:
     case kITU_709_YCbCr410A:
     case kITU_601_YCbCr410A:
@@ -211,6 +215,7 @@ size_t VideoFrame::data_size() const
 
     switch( _format )
     {
+    case kLummaA:
     case kLumma:
         size = WH * _channels;
         break;

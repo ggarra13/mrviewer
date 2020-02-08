@@ -1922,6 +1922,7 @@ void aviImage::video_stream( int x )
         // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
     }
 
+    fmt.push_back( AV_PIX_FMT_YA8 );
     fmt.push_back( AV_PIX_FMT_BGR32 );
     fmt.push_back( AV_PIX_FMT_BGR24 );
     fmt.push_back( AV_PIX_FMT_RGB32 );
@@ -2002,7 +2003,7 @@ void aviImage::video_stream( int x )
                       ( ctx->format == AV_PIX_FMT_ARGB    ) |
                       ( ctx->format == AV_PIX_FMT_RGB32   ) |
                       ( ctx->format == AV_PIX_FMT_RGB32_1 ) |
-                      ( ctx->format == AV_PIX_FMT_PAL8    ) |
+                      ( ctx->format == AV_PIX_FMT_YA8     ) |
                       ( ctx->format == AV_PIX_FMT_BGR32   ) |
                       ( ctx->format == AV_PIX_FMT_BGR32_1 ) |
                       ( ctx->format == AV_PIX_FMT_YUVA420P ) |
@@ -2028,26 +2029,55 @@ void aviImage::video_stream( int x )
                       ( ctx->format == AV_PIX_FMT_YUVA444P16BE )  );
 
 
-    _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts,
-                      (AVPixelFormat)
-                      ctx->format,
-                      has_alpha, NULL );
+    // We have to check for PIX_FMT_YA8 directly as it would get swallowed
+    // by the avcodec_find_best_pix_fmt_of_list function to a rgba format.
+    if ( ctx->format == AV_PIX_FMT_YA8 ||
+         ctx->format == AV_PIX_FMT_GRAY8 ||
+         ctx->format == AV_PIX_FMT_GRAY16LE ||
+         ctx->format == AV_PIX_FMT_GRAY16BE )
+    {
+        _av_dst_pix_fmt = (AVPixelFormat)ctx->format;
+    }
+    else
+    {
+        _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts,
+                                                             (AVPixelFormat)
+                                                             ctx->format,
+                                                             has_alpha, NULL );
+    }
 
+    if ( _av_dst_pix_fmt == AV_PIX_FMT_NONE )
+    {
+        IMG_ERROR( _("No pixel format could be chosen") );
+        return;
+    }
 
     _num_channels = 0;
     _layers.clear();
 
-    rgb_layers();
+    if ( _av_dst_pix_fmt == AV_PIX_FMT_YA8 ||
+         _av_dst_pix_fmt == AV_PIX_FMT_GRAY8 ||
+         _av_dst_pix_fmt == AV_PIX_FMT_GRAY16LE ||
+         _av_dst_pix_fmt == AV_PIX_FMT_GRAY16BE )
+    {
+        ++_num_channels;
+    }
+    else
+    {
+        rgb_layers();
+    }
+
     lumma_layers();
 
     if ( _av_dst_pix_fmt == AV_PIX_FMT_RGBA ||
-            _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
+         _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YA8  ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P16LE ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
+         _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
 
 
     _ptype = VideoFrame::kByte;
@@ -2087,6 +2117,16 @@ void aviImage::video_stream( int x )
         break;
     case AV_PIX_FMT_RGBA:
         _pix_fmt = VideoFrame::kRGBA;
+        break;
+    case AV_PIX_FMT_GRAY8:
+        _pix_fmt = VideoFrame::kLumma;
+        break;
+    case AV_PIX_FMT_YA8:
+        _pix_fmt = VideoFrame::kLummaA;
+        break;
+    case AV_PIX_FMT_GRAY16LE:
+        _ptype = VideoFrame::kShort;
+        _pix_fmt = VideoFrame::kLumma;
         break;
     case AV_PIX_FMT_YUV444P16LE:
         _ptype = VideoFrame::kShort;

@@ -249,13 +249,21 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         }
     }
 
+
     if ( _num_channels == 0 )
     {
         if ( channels == 1 )
         {
             lumma_layers();
+            ++_num_channels;
         }
-        else if ( channels >= 2 )
+        else if ( channels == 2 )
+        {
+            lumma_layers();
+            alpha_layers();
+            _num_channels = channels;
+        }
+        else if ( channels >= 3 )
         {
             rgb_layers();
             lumma_layers();
@@ -312,6 +320,8 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         type = image_type::kLumma;
         break;
     case 2:
+        type = image_type::kLummaA;
+        break;
     case 3:
         type = image_type::kRGB;
         break;

@@ -209,6 +209,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
             lumma_layers();
             break;
         default:
+            _num_channels = 1;
             lumma_layers();
             break;
         }
