@@ -1914,11 +1914,12 @@ void aviImage::video_stream( int x )
 
     if ( uses_16bits() )
     {
+        fmt.push_back( AV_PIX_FMT_GRAY16LE );
+        fmt.push_back( AV_PIX_FMT_GBRAP16LE );
         fmt.push_back( AV_PIX_FMT_RGBA64LE );
         fmt.push_back( AV_PIX_FMT_BGRA64LE );
         fmt.push_back( AV_PIX_FMT_RGB48 );
         fmt.push_back( AV_PIX_FMT_BGR48 );
-        fmt.push_back( AV_PIX_FMT_GRAY16LE );
         fmt.push_back( AV_PIX_FMT_YUV420P16LE );
         fmt.push_back( AV_PIX_FMT_YUV422P16LE );
         fmt.push_back( AV_PIX_FMT_YUV444P16LE );
@@ -1943,11 +1944,12 @@ void aviImage::video_stream( int x )
 
         if ( uses_16bits() )
         {
+            fmt.push_back( AV_PIX_FMT_GRAY16LE );
+            fmt.push_back( AV_PIX_FMT_GBRAP16LE );
             fmt.push_back( AV_PIX_FMT_RGBA64LE );
             fmt.push_back( AV_PIX_FMT_BGRA64LE );
             fmt.push_back( AV_PIX_FMT_RGB48 );
             fmt.push_back( AV_PIX_FMT_BGR48 );
-            fmt.push_back( AV_PIX_FMT_GRAY16LE );
             fmt.push_back( AV_PIX_FMT_YUV420P16LE );
             fmt.push_back( AV_PIX_FMT_YUV422P16LE );
             fmt.push_back( AV_PIX_FMT_YUV444P16LE );
@@ -1976,9 +1978,10 @@ void aviImage::video_stream( int x )
         fmt.push_back( AV_PIX_FMT_YA8 );
         if ( uses_16bits() )
         {
+            fmt.push_back( AV_PIX_FMT_GRAY16LE );
+            fmt.push_back( AV_PIX_FMT_GBRAP16LE );
             fmt.push_back( AV_PIX_FMT_RGB48 );
             fmt.push_back( AV_PIX_FMT_BGR48 );
-            fmt.push_back( AV_PIX_FMT_GRAY16LE );
             fmt.push_back( AV_PIX_FMT_YUV420P16LE );
             fmt.push_back( AV_PIX_FMT_YUV422P16LE );
             fmt.push_back( AV_PIX_FMT_YUV444P16LE );

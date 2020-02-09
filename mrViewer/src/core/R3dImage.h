@@ -185,10 +185,13 @@ public:
     virtual bool find_image( const int64_t frame );
     virtual void do_seek();
 
+    virtual DecodeStatus decode_audio( const int64_t frame );
+
     void timed_limit_store( const int64_t frame );
     void limit_video_store( const int64_t frame );
 
 protected:
+    unsigned int audio_bytes_per_frame();
     void copy_values();
 
 protected:
@@ -227,6 +230,8 @@ protected:
     float         _Tint;
     size_t        _trackNo;
     R3DSDK::HdrMode  _hdr_mode;
+    size_t           maxAudioBlockSize;
+    unsigned         frequency;
 public:
     static bool init;
 };

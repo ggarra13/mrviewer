@@ -3705,17 +3705,20 @@ void CMedia::loop_at_end( const int64_t frame )
 
         AVStream* stream = get_audio_stream();
 
-        mrv::PacketQueue::iterator i = _audio_packets.begin();
-        int64_t limit = frame + _frame_offset + _audio_offset - 1;
-        for ( ; i != _audio_packets.end(); )
+        if ( stream )
         {
-            int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe > limit )
+            mrv::PacketQueue::iterator i = _audio_packets.begin();
+            int64_t limit = frame + _frame_offset + _audio_offset - 1;
+            for ( ; i != _audio_packets.end(); )
             {
-                i = _audio_packets.erase( i );
+                int64_t pktframe = get_frame( stream, *i );
+                if ( pktframe > limit )
+                {
+                    i = _audio_packets.erase( i );
+                }
+                else
+                    ++i;
             }
-            else
-                ++i;
         }
 
 

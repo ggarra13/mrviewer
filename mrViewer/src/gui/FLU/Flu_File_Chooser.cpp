@@ -622,8 +622,8 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   Fl_Group *g;
 
-  filename.labelcolor( FL_BLACK );
-  filename.textcolor( FL_WHITE );
+  filename.labelcolor( FL_WHITE );
+  filename.textcolor( FL_BLACK );
   filename.label( _( filenameTxt.c_str() ) );
   ok.label( _( okTxt.c_str() ) );
   ok.labelsize( FL_NORMAL_SIZE );
@@ -1017,7 +1017,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
 
   filePattern = new Flu_Combo_List( 70, h()-30, w()-70-85-10, 25, _(fileTypesTxt.c_str()) );
-  filePattern->labelcolor( FL_BLACK );
+  filePattern->labelcolor( FL_WHITE );
   filePattern->editable( false );
   filePattern->callback( reloadCB, this );
   filePattern->pop_height( 200 );

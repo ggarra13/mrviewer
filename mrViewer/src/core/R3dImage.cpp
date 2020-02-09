@@ -33,6 +33,31 @@ namespace {
 
 
 namespace mrv {
+
+// The R3D SDK requires that the audio output buffer is 512-byte aligned
+    unsigned char * AlignedMalloc(size_t & sizeNeeded)
+    {
+        // alloc 511 bytes more to make sure we can align the buffer in case it isn't
+        unsigned char * buffer = (unsigned char *)malloc(sizeNeeded + 511U);
+
+        if (!buffer)
+            return NULL;
+
+        sizeNeeded = 0U;
+
+        // cast to a 32-bit or 64-bit (depending on platform) integer so we can do the math
+        uintptr_t ptr = (uintptr_t)buffer;
+
+        // check if it's already aligned, if it is we're done
+        if ((ptr % 512U) == 0U)
+            return buffer;
+
+        // calculate how many bytes we need
+        sizeNeeded = 512U - (ptr % 512U);
+
+        return buffer + sizeNeeded;
+    }
+
     using namespace tinyxml2;
 
     bool R3dImage::init = false;
@@ -284,6 +309,43 @@ namespace mrv {
             }
         }
         image_damage( image_damage() | kDamageData );
+
+        // Parse audio
+        maxAudioBlockSize = 0U;
+        size_t blocks = clip->AudioBlockCountAndSize(&maxAudioBlockSize);
+
+        if (blocks != 0U)
+        {
+
+            frequency = clip->MetadataItemAsInt(RMD_SAMPLERATE);
+            unsigned int samplesize = clip->MetadataItemAsInt(RMD_SAMPLE_SIZE);
+            unsigned int channelmask = clip->MetadataItemAsInt(RMD_CHANNEL_MASK);
+            // transform the channel mask into channel count
+            // (SDK release 1.6 added clip->AudioChannelCount() function to
+            //  do this)
+            // size_t channels = 0U;
+
+            // for (size_t t = 0U; t < 4U; t++)
+            // {
+            //     if (channelmask & (1U << t))
+            //         channels++;
+            // }
+
+            size_t channels = clip->AudioChannelCount();
+
+            audio_info_t s;
+            s.has_codec = true;
+            s.codec_name = "R3D Audio";
+            s.fourcc = "R3DA";
+            s.channels = channels;
+            s.frequency = frequency;
+            s.bitrate = frequency * channels * samplesize;
+            s.format = "R3D Audio";
+            s.language = _("und");
+
+            _audio_info.push_back( s );
+            _audio_index = _audio_info.size() - 1;
+        }
         return true;
     }
 
@@ -606,7 +668,50 @@ namespace mrv {
             _images.insert( at, canvas );
         }
 
+        // // make a copy for AlignedMalloc (it will change it)
+        // size_t adjusted = maxAudioBlockSize;
+
+        // // alloc this memory 512-byte aligned
+        // unsigned char * audiobuffer = AlignedMalloc(adjusted);
+        // if (audiobuffer == NULL)
+        // {
+        //     IMG_ERROR( _("Out of memory for audio buffer") );
+        //     return false;
+        // }
+
+        // CMedia::DecodeStatus got_audio = kDecodeMissingFrame;
+
+        // unsigned int index = 0;
+
+        // int64_t last = audio_frame;
+
+        // unsigned int bytes_per_frame = audio_bytes_per_frame();
+
+        // free(audiobuffer - adjusted);
+
         return true;
+    }
+
+    unsigned int R3dImage::audio_bytes_per_frame()
+    {
+        unsigned int ret = 0;
+        if ( !has_audio() ) return ret;
+
+        int channels = _audio_channels;
+        if (_audio_engine->channels() > 0 && _audio_channels > 0 ) {
+            channels = FFMIN(_audio_engine->channels(),
+                             (unsigned)_audio_channels);
+        }
+        if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
+            return ret;
+
+        SCOPED_LOCK( _audio_mutex );
+        AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+        unsigned bps = av_get_bytes_per_sample( fmt );
+
+        if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
+        ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
+        return ret;
     }
 
     bool R3dImage::frame( const int64_t f )
@@ -655,11 +760,6 @@ namespace mrv {
         }
 
         _video_packets.push_back( pkt );
-
-        if ( has_audio() )
-        {
-            fetch_audio( f + _audio_offset );
-        }
 
         _expected = _dts + 1;
         _expected_audio = _expected + _audio_offset;
@@ -979,6 +1079,10 @@ namespace mrv {
 
     }
 
+    CMedia::DecodeStatus R3dImage::decode_audio( const int64_t f )
+    {
+        return kDecodeOK;
+    }
 
     int R3dImage::color_version() const
     {
