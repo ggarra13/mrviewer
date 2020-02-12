@@ -24,7 +24,7 @@
 #
 
 """OpenTimelineIO mrViewer's Reel Adapter.
-Version 0.8beta
+Version 0.9beta
 
 This adapter requires the use of the stand-alone ffprobe utility that comes
 with ffmpeg.  It should be in the user's PATH.
@@ -689,6 +689,19 @@ class Reel2Otio(object):
         return has_video, has_audio, has_gap, has_pic
 
 
+    def _find_fade_in( self, line ):
+        r = re.compile( r"^FadeIN\s+(\d+)$" )
+        obj = re.match(r, line)
+        if obj:
+            return int(obj.group(1))
+        return 0
+
+    def _find_fade_out( self, line ):
+        r = re.compile( r"^FadeOUT\s+(\d+)$" )
+        obj = re.match(r, line)
+        if obj:
+            return int(obj.group(1))
+        return 0
 
     def __init__(self, reel_text, filename, rel_path = False):
         self.timeline = otio.schema.Timeline()
@@ -726,20 +739,81 @@ class Reel2Otio(object):
         idx = 0
         while idx < len(lines):
             self.aoffset  = 0
-            has_video = has_audio = has_audio2 = 0
+            has_video = has_audio = has_audio2 = has_fade_in = has_fade_out = 0
             if not has_video and not has_audio:
                 has_video, has_audio, has_gap, has_pic = \
                   self._find_video_line( lines[idx] )
-
-            if has_video or has_pic:
-                for track in self.video_tracks:
-                    track.append(copy.deepcopy(self.clip))
 
             if idx+1 < len(lines):
                 has_audio2 = self._find_audio_line( lines[idx+1] )
                 if has_audio2:
                     idx += 1
 
+            if idx+1 < len(lines):
+                has_fade_in = self._find_fade_in( lines[idx+1] )
+                if has_fade_in:
+                    idx += 1
+
+            if idx+1 < len(lines):
+                has_fade_out = self._find_fade_out( lines[idx+1] )
+                if has_fade_out:
+                    idx += 1
+
+            if has_fade_in:
+                self.generator = otio.schema.GeneratorReference()
+                start_time = (float(self.start_frame) - 1.0) / self.fps
+                start_time = otio.opentime.RationalTime(
+                    float(start_time),
+                1.0
+                ).rescaled_to(self.fps)
+                end_time_in_seconds = float(has_fade_in +
+                                            int(self.start_frame)) / self.fps
+
+                end_time_exclusive = otio.opentime.RationalTime(
+                float(end_time_in_seconds),
+                1.0
+                ).rescaled_to(self.fps)
+
+                self.generator.available_range = \
+                  otio.opentime.range_from_start_end_time( \
+                                                            start_time, \
+                                                            end_time_exclusive \
+                                                           )
+                self.generator.generator_kind = 'Black'
+
+                #for track in self.video_tracks:
+                #    track.append(copy.deepcopy(self.generator))
+
+
+
+            if has_video or has_pic:
+                for track in self.video_tracks:
+                    track.append(copy.deepcopy(self.clip))
+
+            if has_fade_out:
+                self.generator = otio.schema.GeneratorReference()
+                start_time = (float(self.start_frame) - 1.0) / self.fps
+                start_time = otio.opentime.RationalTime(
+                    float(start_time),
+                1.0
+                ).rescaled_to(self.fps)
+                end_time_in_seconds = float( int(self.end_frame) - \
+                                             has_fade_out ) / self.fps
+
+                end_time_exclusive = otio.opentime.RationalTime(
+                float(end_time_in_seconds),
+                1.0
+                ).rescaled_to(self.fps)
+
+                self.generator.available_range = \
+                  otio.opentime.range_from_start_end_time( \
+                                                            start_time, \
+                                                            end_time_exclusive \
+                                                           )
+                self.generator.generator_kind = 'Black'
+
+                #for track in self.video_tracks:
+                #    track.append(copy.deepcopy(self.generator))
 
             if has_video or has_pic:
                 if has_audio or ( has_audio2 and idx+1 < len(lines) ):
