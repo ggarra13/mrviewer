@@ -1,5 +1,12 @@
 v5.3.9  - Bug fixed loading of pngs and similar with just lumma and with or
 	  without alpha channel.
+	- Bug fixed otio conversion of reels with fades in them.  Note that
+	  currently the fades are not converted to otio.
+	- Bug fixed Drag and Drop to be immediate.  This prevents a lock
+	  lag in dragging clips from youtube.
+	- Modified probe size and max analyze duration so that some broken
+	  .ts files can be played.
+	- Set CMake Policy 0074 to avoid warnings.
 
 v5.3.8  - Added some more translations to Spanish locale.
 	- Improved look and legibility in custom File Requester of
