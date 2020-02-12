@@ -62,12 +62,12 @@ namespace mrv {
 // http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
 Point slerp2d( const Point& v0, const Point& v1, float t )
 {
-    float dot = v0.dot(v1);
-    if( dot < -1.0f ) dot = -1.0f;
-    if( dot > 1.0f ) dot = 1.0f;
+    double dot = v0.dot(v1);
+    if( dot < -1.0 ) dot = -1.0;
+    if( dot > 1.0 ) dot = 1.0;
 
-    float theta_0 = acos( dot );
-    float theta = theta_0 * t;
+    double theta_0 = acos( dot );
+    double theta = theta_0 * t;
 
     Point v2( -v0.y, v0.x );
 
@@ -125,7 +125,7 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
         Point a = (prv - cur).normalized();
         Point a_perp( a.y, -a.x );
 
-        float det = a.x*b.y - b.x*a.y;
+        double det = a.x*b.y - b.x*a.y;
         if( det > 0 )
         {
             a_perp.x = -a_perp.x;
@@ -293,25 +293,25 @@ void GLTextShape::draw( double z )
     glColor4f( r, g, b, a );
 
 
-    gl_font(font(), size()*float(z) );
+    gl_font(font(), int(size()*z) );
 
 
     std::string txt = text();
 
     std::size_t pos = txt.find('\n');
-    float y = pts[0].y;
+    float y = float( pts[0].y );
     for ( ; pos != std::string::npos; y -= size(), pos = txt.find('\n') )
     {
         std::string t;
         if (pos > 0 )
             t = txt.substr( 0, pos );
-        gl_draw(t.c_str(), pts[0].x, y);
+        gl_draw(t.c_str(), float( pts[0].x ), y);
         if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
     if ( txt.size() )
     {
-        gl_draw( txt.c_str(), pts[0].x, y );
+        gl_draw( txt.c_str(), float( pts[0].x ), y );
     }
 
 }

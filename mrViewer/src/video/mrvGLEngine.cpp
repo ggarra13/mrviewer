@@ -2420,7 +2420,6 @@ void GLEngine::draw_grid( const CMedia* const img, unsigned size = 100 )
     glLineWidth( 1.0f );
     glDisable( GL_LINE_SMOOTH );
 
-    char buf[128];
     mrv::Recti dpw = img->display_window();
 
     for ( int y = dpw.y(); y < dpw.h(); y += size )
@@ -2443,6 +2442,7 @@ void GLEngine::draw_grid( const CMedia* const img, unsigned size = 100 )
 
     // NOT GOOD CENTERING OF TEXT (overlayed)
     // glColor4f( 1.f, 0.5f, 0.2f, 1.0f );
+    // char buf[16];
 
     // size *= _view->zoom();
 
