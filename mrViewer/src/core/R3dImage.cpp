@@ -43,33 +43,6 @@ namespace mrv {
 
     const size_t kALIGNMENT = 512U;
 
-        inline int32_t interpret24bitAsInt32(const uint8_t* byteArray)
-        {
-            int32_t result = (
-                ((0xFF & byteArray[0]) << 16) |
-                ((0xFF & byteArray[1]) << 8) |
-                (0xFF & byteArray[2])
-                );
-            if ((result & 0x00800000) > 0)
-            {
-                result = (int32_t)((uint32_t)result|(uint32_t)0xFF000000);
-            }
-            else
-            {
-                result = (int32_t)((uint32_t)result & (uint32_t)0x00FFFFFF);
-            }
-            return result;
-        }
-    // inline int32_t interpret24bitAsInt32(const uint8_t* byteArray)
-    // {
-    //     return
-    //         static_cast<int32_t>(
-    //             (uint32_t(byteArray[0]) << 24) |
-    //             (uint32_t(byteArray[1]) << 16) |
-    //             (uint32_t(byteArray[2]) <<  8)
-    //             ) >> 8;
-    // }
-
     //! Byte swap int
     inline int32_t swap_int32( int32_t val )
     {
