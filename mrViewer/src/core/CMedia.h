@@ -1244,7 +1244,7 @@ public:
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( int64_t& frame );
+    virtual DecodeStatus decode_audio( int64_t& frame );
     DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
@@ -1836,7 +1836,7 @@ protected:
      * @return number of bytes stored
      */
     unsigned int store_audio( const int64_t audio_frame,
-                              const boost::uint8_t* buf, const unsigned int size );
+                              const uint8_t* buf, const unsigned int size );
 
 
     virtual bool seek_to_position( const int64_t frame );
@@ -2056,6 +2056,7 @@ protected:
     audio_info_list_t _audio_info;   //!< list of audio stream infos
     unsigned         _samples_per_sec;   //!< last samples per sec
     audio_cache_t    _audio;
+    unsigned         frequency;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
     std::atomic<unsigned short>   _audio_channels;

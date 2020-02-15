@@ -12,6 +12,9 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
 #include <tinyxml2.h>
 
 #include "ImfFloatAttribute.h"
@@ -34,11 +37,52 @@ namespace {
 
 namespace mrv {
 
+#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
+#  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
+#endif
+
+    const size_t kALIGNMENT = 512U;
+
+        inline int32_t interpret24bitAsInt32(const uint8_t* byteArray)
+        {
+            int32_t result = (
+                ((0xFF & byteArray[0]) << 16) |
+                ((0xFF & byteArray[1]) << 8) |
+                (0xFF & byteArray[2])
+                );
+            if ((result & 0x00800000) > 0)
+            {
+                result = (int32_t)((uint32_t)result|(uint32_t)0xFF000000);
+            }
+            else
+            {
+                result = (int32_t)((uint32_t)result & (uint32_t)0x00FFFFFF);
+            }
+            return result;
+        }
+    // inline int32_t interpret24bitAsInt32(const uint8_t* byteArray)
+    // {
+    //     return
+    //         static_cast<int32_t>(
+    //             (uint32_t(byteArray[0]) << 24) |
+    //             (uint32_t(byteArray[1]) << 16) |
+    //             (uint32_t(byteArray[2]) <<  8)
+    //             ) >> 8;
+    // }
+
+    //! Byte swap int
+    inline int32_t swap_int32( int32_t val )
+    {
+       val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF );
+       return (val << 16) | ((val >> 16) & 0xFFFF);
+    }
+
 // The R3D SDK requires that the audio output buffer is 512-byte aligned
     unsigned char * AlignedMalloc(size_t & sizeNeeded)
     {
         // alloc 511 bytes more to make sure we can align the buffer in case it isn't
-        unsigned char * buffer = (unsigned char *)malloc(sizeNeeded + 511U);
+        unsigned char * buffer = (unsigned char *)malloc(sizeNeeded +
+                                                         kALIGNMENT - 1);
 
         if (!buffer)
             return NULL;
@@ -49,11 +93,11 @@ namespace mrv {
         uintptr_t ptr = (uintptr_t)buffer;
 
         // check if it's already aligned, if it is we're done
-        if ((ptr % 512U) == 0U)
+        if ((ptr % kALIGNMENT) == 0U)
             return buffer;
 
         // calculate how many bytes we need
-        sizeNeeded = 512U - (ptr % 512U);
+        sizeNeeded = kALIGNMENT - (ptr % kALIGNMENT);
 
         return buffer + sizeNeeded;
     }
@@ -61,6 +105,8 @@ namespace mrv {
     using namespace tinyxml2;
 
     bool R3dImage::init = false;
+
+    const unsigned bufferSize = 1 * 1024 * 1024;
 
     R3dImage::R3dImage() :
         CMedia(),
@@ -94,9 +140,12 @@ namespace mrv {
         _Sharpness( R3DSDK::ImageOLPFCompOff ),
         _Tint( 0.f ),
         _trackNo( 0 ),
-        _hdr_mode( HDR_DO_BLEND )
+        _hdr_mode( HDR_DO_BLEND ),
+        adjusted( 0 ),
+        audiobuffer( NULL )
     {
         _gamma = 1.0f;
+        _audio_last_frame = 0;
     }
 
     R3dImage::~R3dImage()
@@ -208,7 +257,7 @@ namespace mrv {
         // the SDK does not parse all of it.
         //
         const char* rmdfile = clip->GetRmdPath();
-        if ( rmdfile )
+        if ( rmdfile && fs::exists(rmdfile) )
         {
             tinyxml2::XMLDocument doc;
             doc.LoadFile( rmdfile );
@@ -331,20 +380,42 @@ namespace mrv {
             //         channels++;
             // }
 
-            size_t channels = clip->AudioChannelCount();
+            _audio_channels = (unsigned short)clip->AudioChannelCount();
+            _total_samples = clip->AudioSampleCount();
 
             audio_info_t s;
             s.has_codec = true;
             s.codec_name = "R3D Audio";
             s.fourcc = "R3DA";
-            s.channels = channels;
+            s.channels = _audio_channels;
             s.frequency = frequency;
-            s.bitrate = frequency * channels * samplesize;
-            s.format = "R3D Audio";
+            s.bitrate = frequency * _audio_channels * samplesize;
+            s.format = "s32be";
             s.language = _("und");
 
             _audio_info.push_back( s );
             _audio_index = _audio_info.size() - 1;
+            audio_initialize();
+            _audio_format = AudioEngine::kS32LSB;
+
+            if ( !_audio_buf )
+            {
+                _audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 4;
+                _audio_buf = new aligned16_uint8_t[ _audio_max ];
+                assert( (((unsigned long)_audio_buf) % 16) == 0 );
+                memset( _audio_buf, 0, _audio_max );
+            }
+
+            adjusted = bufferSize;
+
+            // alloc this memory 512-byte aligned
+            audiobuffer = AlignedMalloc(adjusted);
+            if (audiobuffer == NULL)
+            {
+                IMG_ERROR( _("Out of memory for audio buffer") );
+                return false;
+            }
+
         }
         return true;
     }
@@ -356,6 +427,9 @@ namespace mrv {
             delete iproc; iproc = NULL;
             delete clip; clip = NULL;
         }
+
+        free(audiobuffer - adjusted);
+
         // We call initializeSdk/finalizeSdk in mainWindow as initializeSdk
         // is not reentrant it seems.
         return true;
@@ -579,7 +653,7 @@ namespace mrv {
 
         if ( is_hdr() )
         {
-            if ( clip->VideoTrackDecodeFrame( 0U, frame, job ) !=
+            if ( clip->VideoTrackDecodeFrame( 0U, (size_t)frame, job ) !=
                  DSDecodeOK )
             {
                 IMG_ERROR( _("Video decode failed for HDR track 0, frame ")
@@ -593,7 +667,7 @@ namespace mrv {
                              image_type::kShort, dw, dh );
 
             job.OutputBuffer = hdr->data().get();
-            if ( clip->VideoTrackDecodeFrame( 1U, frame, job ) !=
+            if ( clip->VideoTrackDecodeFrame( 1U, (size_t)frame, job ) !=
                  DSDecodeOK )
             {
                 IMG_ERROR( _("Video decode failed for HDR track 1, frame ")
@@ -635,7 +709,7 @@ namespace mrv {
         else
         {
             // decode the frame 'frame' of the clip
-            if (clip->DecodeVideoFrame(frame, job) != DSDecodeOK)
+            if (clip->DecodeVideoFrame((size_t)frame, job) != DSDecodeOK)
             {
                 IMG_ERROR( _("Video decode failed for frame ") << frame );
                 return initialize();
@@ -668,26 +742,6 @@ namespace mrv {
             _images.insert( at, canvas );
         }
 
-        // // make a copy for AlignedMalloc (it will change it)
-        // size_t adjusted = maxAudioBlockSize;
-
-        // // alloc this memory 512-byte aligned
-        // unsigned char * audiobuffer = AlignedMalloc(adjusted);
-        // if (audiobuffer == NULL)
-        // {
-        //     IMG_ERROR( _("Out of memory for audio buffer") );
-        //     return false;
-        // }
-
-        // CMedia::DecodeStatus got_audio = kDecodeMissingFrame;
-
-        // unsigned int index = 0;
-
-        // int64_t last = audio_frame;
-
-        // unsigned int bytes_per_frame = audio_bytes_per_frame();
-
-        // free(audiobuffer - adjusted);
 
         return true;
     }
@@ -706,8 +760,9 @@ namespace mrv {
             return ret;
 
         SCOPED_LOCK( _audio_mutex );
-        AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-        unsigned bps = av_get_bytes_per_sample( fmt );
+
+        AVSampleFormat ft = AudioEngine::ffmpeg_format( _audio_format );
+        unsigned bps = av_get_bytes_per_sample( ft );
 
         if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
         ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
@@ -760,6 +815,12 @@ namespace mrv {
         }
 
         _video_packets.push_back( pkt );
+
+        if ( has_audio() )
+        {
+            _audio_packets.push_back( pkt );
+        }
+
 
         _expected = _dts + 1;
         _expected_audio = _expected + _audio_offset;
@@ -1079,9 +1140,109 @@ namespace mrv {
 
     }
 
-    CMedia::DecodeStatus R3dImage::decode_audio( const int64_t f )
+    CMedia::DecodeStatus R3dImage::decode_audio( int64_t& f )
     {
-        return kDecodeOK;
+        audio_callback_time = av_gettime_relative();
+
+        if ( _audio_packets.is_loop_end() )
+        {
+            _audio_packets.pop_front();
+            return kDecodeLoopEnd;
+        }
+        else if ( _audio_packets.is_loop_start() )
+        {
+            _audio_packets.pop_front();
+            return kDecodeLoopStart;
+        }
+
+        _audio_packets.pop_front();
+
+        int64_t frame = f;
+
+        bool ok = in_audio_store( frame );
+        if ( ok ) return kDecodeOK;
+
+
+        // make a copy for AlignedMalloc (it will change it)
+        unsigned int bytes_per_frame = audio_bytes_per_frame();
+        uint64_t encsamples = _total_samples / (_frame_end - _frame_start + 1);
+
+        size_t samplesInBuffer = bufferSize / ( _audio_channels * 4U );
+
+        unsigned long long startSample = frame * encsamples;
+
+        clip->DecodeAudio( startSample, &samplesInBuffer, audiobuffer,
+                           bufferSize );
+
+        if ( samplesInBuffer == 0 ) return kDecodeMissingSamples;
+
+        unsigned j = 0;
+        int32_t* tmp = (int32_t*) _audio_buf;
+
+        samplesInBuffer *= _audio_channels;
+
+        for ( size_t i = 0; i < samplesInBuffer; i += 4, ++j )
+        {
+            tmp[j] = swap_int32( *((int32_t*)audiobuffer + i) );
+        }
+
+        _audio_buf_used += samplesInBuffer;
+
+
+
+        CMedia::DecodeStatus got_audio = kDecodeMissingFrame;
+        int64_t last = frame;
+        unsigned int index = 0;
+
+        if ( last == first_frame() || (stopped() /* || saving() */ ) )
+        {
+            if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
+            {
+                bytes_per_frame = _audio_buf_used;
+            }
+        }
+
+
+        // Split audio read into frame chunks
+        for (;;)
+        {
+
+            if ( bytes_per_frame > _audio_buf_used ) break;
+
+#ifdef DEBUG
+            if ( index + bytes_per_frame >= _audio_max )
+            {
+                std::cerr << "frame: " << frame << std::endl
+                          << "audio frame: " << audio_frame << std::endl
+                          << "index: " << index << std::endl
+                          << "  bpf: " << bytes_per_frame << std::endl
+                          << " used: " << _audio_buf_used << std::endl
+                          << "  max: " << _audio_max << std::endl;
+            }
+#endif
+
+            index += store_audio( last,
+                                  (uint8_t*)_audio_buf + index,
+                                  bytes_per_frame );
+
+
+            if ( last >= frame ) got_audio = kDecodeOK;
+
+            assert( bytes_per_frame <= _audio_buf_used );
+            _audio_buf_used -= bytes_per_frame;
+            ++last;
+
+        }
+
+
+        if ( _audio_buf_used > 0 )
+        {
+            //
+            // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
+            memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
+        }
+
+        return got_audio;
     }
 
     int R3dImage::color_version() const

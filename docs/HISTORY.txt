@@ -6,7 +6,17 @@ v5.3.9  - Bug fixed loading of pngs and similar with just lumma and with or
 	  lag in dragging clips from youtube.
 	- Modified probe size and max analyze duration so that some broken
 	  .ts files can be played.
-	- Set CMake Policy 0074 to avoid warnings.
+	- Set CMake Policy 0074 to avoid warnings when compiling.
+	- Avoided double gain multiplication in vectorscope calculations.
+	- Sped up vectorscope calculations a tad when gamma == 1.0.
+	- Bug fixed R3D movie loading when no side data RMD file is present.
+	  Previously, it would crash the viewer.
+	- Added support for .au audio files.
+	- Added support for audio in R3D files.
+	  This is theoretically, as it has not been fully tested.
+	  If you have a R3D file with audio, we would love to have it to
+	  test and improve this feature.
+
 
 v5.3.8  - Added some more translations to Spanish locale.
 	- Improved look and legibility in custom File Requester of

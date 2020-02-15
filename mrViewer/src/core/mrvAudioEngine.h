@@ -73,6 +73,8 @@ public:
         kU8 = 1,
         kS16LSB,
         kS16MSB,
+        kS24LSB,
+        kS24MSB,
         kS32LSB,
         kS32MSB,
         kFloatLSB,
@@ -171,6 +173,8 @@ public:
     }
 
     virtual AudioFormat default_format();
+
+    static unsigned short bits_for_format( const AudioFormat f );
 
     static AVSampleFormat ffmpeg_format( const AudioFormat f );
 

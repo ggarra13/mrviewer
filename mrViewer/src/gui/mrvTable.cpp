@@ -47,6 +47,7 @@ Fl_Table( x, y, w, h, l )
     col_header(1);              // enable column headers (along top)
     col_width_all(w/2);         // default width of columns
     col_resize(1);              // enable column resizing
+    col_header_height( 28 );
     end();
     // std::cerr << "Table::CONSTRUCTOR " << this << " "
     //           << ( label() ? label() : "none" ) << std::endl;
@@ -76,7 +77,7 @@ void Table::DrawHeader(const char *s, int X, int Y, int W, int H) {
     fl_push_clip(X,Y,W,H);
     fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
     fl_color(FL_WHITE);
-    fl_draw(s, X,Y,W,H, FL_ALIGN_CENTER);
+    fl_draw(s, X,Y,W,H, FL_ALIGN_INSIDE | FL_ALIGN_CENTER);
     fl_pop_clip();
 }
 

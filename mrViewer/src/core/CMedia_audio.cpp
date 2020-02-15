@@ -565,7 +565,7 @@ unsigned int CMedia::audio_bytes_per_frame()
         return ret;
 
     SCOPED_LOCK( _audio_mutex );
-    int frequency = _audio_ctx->sample_rate;
+    frequency = _audio_ctx->sample_rate;
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     unsigned bps = av_get_bytes_per_sample( fmt );
 
@@ -1488,7 +1488,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
         if ( bytes_per_frame > _audio_buf_used ) break;
 
 #ifdef DEBUG
-        if ( index + bytes_per_frame >= _audio_max )
+        //if ( index + bytes_per_frame >= _audio_max )
         {
             std::cerr << "frame: " << frame << std::endl
                       << "audio frame: " << audio_frame << std::endl
@@ -1500,7 +1500,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 #endif
 
         index += store_audio( last,
-                              (boost::uint8_t*)_audio_buf + index,
+                              (uint8_t*)_audio_buf + index,
                               bytes_per_frame );
 
 
@@ -1596,19 +1596,16 @@ void CMedia::audio_stream( int idx )
  */
 unsigned int
 CMedia::store_audio( const int64_t audio_frame,
-                     const boost::uint8_t* buf, const unsigned int size )
+                     const uint8_t* buf, const unsigned int size )
 {
 
     assert( buf != NULL );
     if ( buf == NULL || size == 0 )
     {
-        IMG_ERROR( _("store_audio: Invalid data") );
+        IMG_ERROR( _("store_audio: Invalid data.  buf is ")
+                   << (void*)buf << _(" size is ") << size );
         return 0;
     }
-
-    // Ge2t the audio codec context
-    AVStream* stream = get_audio_stream();
-    if ( !stream || !_audio_ctx ) return 0;
 
 
     SCOPED_LOCK( _audio_mutex );
@@ -1619,10 +1616,7 @@ CMedia::store_audio( const int64_t audio_frame,
     _audio_last_frame = f;
 
     // Get the audio info from the codec context
-    _audio_channels = (unsigned short)_audio_ctx->channels;
     unsigned short channels = _audio_channels;
-
-    int frequency = _audio_ctx->sample_rate;
 
     audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
                                          frequency,
@@ -1755,14 +1749,13 @@ bool CMedia::open_audio( const short channels,
 {
     close_audio();
 
-    DBGM3("open audio - audio closed" );
+    DBGM1("open audio - audio closed" );
 
-    AudioEngine::AudioFormat format = _audio_engine->default_format();
-                                     // AudioEngine::kFloatLSB;
+    AudioEngine::AudioFormat format = _audio_format;
 
     // Avoid conversion to float if unneeded
-    if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+    if ( _audio_ctx && ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+                         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 ) )
     {
         format = AudioEngine::kS16LSB;
     }
@@ -2066,6 +2059,7 @@ bool CMedia::in_audio_store( const int64_t frame )
     audio_cache_t::iterator i = std::find_if( _audio.begin(), end,
                                 EqualFunctor(frame) );
     if ( i != end ) return true;
+
     return false;
 }
 

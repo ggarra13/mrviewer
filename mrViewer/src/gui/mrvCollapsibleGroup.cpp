@@ -126,7 +126,7 @@ namespace mrv {
     _contents = new MyPack(_button->x(),                     // lines up with button on x
                            y+_button->y()+_button->h(),      // just below button
                            w-(GROUP_MARGIN*2),               // width same as group within margin
-                           10, l );                              // changes when child add()ed
+                           10 );                              // changes when child add()ed
 
     // end() _contents; we dont' want it to begin() sucking up child widgets on return
     _contents->end();

@@ -716,7 +716,7 @@ void audio_thread( PlaybackData* data )
         // std::cerr << "decode audio " << frame << std::endl;
 
         CMedia::DecodeStatus status = img->decode_audio( f );
-        // LOG_INFO( img->name() << " decoded audio " << f << " status " << status );
+        // std::cerr << img->name() << " decoded audio " << f << " status " << status << std::endl;
 
         assert( img != NULL );
         assert( reel != NULL );
@@ -835,7 +835,6 @@ void audio_thread( PlaybackData* data )
 
         if ( !img->stopped() )
         {
-            // std::cerr << "find audio " << frame << std::endl;
             img->find_audio(frame);
         }
 

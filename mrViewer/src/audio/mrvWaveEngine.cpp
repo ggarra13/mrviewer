@@ -480,15 +480,22 @@ bool WaveEngine::open( const unsigned channels,
         switch( format )
         {
         case kFloatLSB:
+        case kFloatMSB:
             wavefmt.Format.wBitsPerSample = sizeof(float) * 8;
             wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
             wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
             break;
         case kS16LSB:
+        case kS16MSB:
             wavefmt.Format.wBitsPerSample = sizeof(short) * 8;
             wavefmt.Format.wFormatTag = WAVE_FORMAT_PCM;
             wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
             break;
+        case kS32LSB:
+        case kS32MSB:
+            wavefmt.Format.wBitsPerSample = sizeof(int32_t) * 8;
+            wavefmt.Format.wFormatTag = WAVE_FORMAT_PCM;
+            wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
         }
 
         wavefmt.Samples.wValidBitsPerSample = wavefmt.Format.wBitsPerSample;

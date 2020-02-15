@@ -324,6 +324,13 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
         // Ogg / Vorbis
         return true;
     }
+    else if ( strncmp( (char*)data, ".snd", 4 ) == 0 )
+    {
+        if ( data[7] < 24 ) return false;
+        if ( data[15] > 0 && data[15] < 28 )
+            return true;
+        return false;
+    }
     else if ( strncmp( (char*)data, "RIFF", 4 ) == 0 )
     {
         // AVI or WAV
@@ -2812,6 +2819,7 @@ void aviImage::populate()
             allocate_pixels( _hires, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
+            lumma_layers();
         }
         _hires->frame( _frameStart );
         uint8_t* ptr = (uint8_t*) _hires->data().get();
@@ -3573,16 +3581,13 @@ bool aviImage::in_video_store( const int64_t frame )
 CMedia::DecodeStatus
 aviImage::audio_video_display( const int64_t& frame )
 {
-
     if (! _video_packets.empty() )
     {
-        assert( !_video_packets.empty() );
         _video_packets.pop_front();
     }
 
     if ( frame > _frameEnd ) return kDecodeLoopEnd;
     else if ( frame < _frameStart ) return kDecodeLoopStart;
-
 
     SCOPED_LOCK( _audio_mutex );
     audio_type_ptr result;
@@ -3599,6 +3604,7 @@ aviImage::audio_video_display( const int64_t& frame )
 
 
     SCOPED_LOCK( _mutex );
+
     _hires->frame( frame );
     uint8_t* ptr = (uint8_t*) _hires->data().get();
     memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
@@ -3612,6 +3618,7 @@ aviImage::audio_video_display( const int64_t& frame )
     int y1, y, ys, i;
     int i_start = 0;
 
+
     if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
          _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
     {
@@ -3624,7 +3631,36 @@ aviImage::audio_video_display( const int64_t& frame )
             for (unsigned x = 0; x < _w; ++x )
             {
                 if ( i >= (int)size ) break;
-                y = (int(data[i] * 24000 * h2)) >> 15;
+                float d = data[i];
+                if ( d < 0.0f ) d = 0.f;
+                if ( d > 1.0f ) d = 1.f;
+                y = (int(d * 24000 * h2)) >> 15;
+                if (y < 0) {
+                    y = -y;
+                    ys = y1 - y;
+                } else {
+                    ys = y1;
+                }
+                // These two checks should not be needed
+                // but are here to avoid crashes on some samples
+                if ( ys < 0 ) ys = y1;
+                if ( y >= h/2 ) y = 0;
+                fill_rectangle(ptr, x, ys, 1, y);
+                i += channels;
+            }
+        }
+    }
+    else if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
+              _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S32  )
+    {
+        int32_t* data = (int32_t*)result->data();
+        for (int ch = 0; ch < channels; ch++)
+        {
+            i = i_start + ch;
+            y1 = ch * h + ( h / 2 );
+            for (unsigned x = 0; x < _w; ++x )
+            {
+                y = (data[i] * h2) >> 15;
                 if (y < 0) {
                     y = -y;
                     ys = y1 - y;

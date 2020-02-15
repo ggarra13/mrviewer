@@ -107,12 +107,12 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     const int shift_h = 0;
     const int jobnr = 0;
     const int nb_jobs = 1;
-    const int src_linesize = in->width();
-    const int dst_linesize = out->line_size();
-    const int dst_signed_linesize = dst_linesize * ( mirror == 1 ? -1 : 1 );
+    const unsigned src_linesize = in->width();
+    const size_t dst_linesize = out->line_size();
+    const int dst_signed_linesize = (int)dst_linesize * ( mirror == 1 ? -1 : 1 );
     const int max = 255 - intensity;
-    const int src_h = AV_CEIL_RSHIFT(in->height(), shift_h);
-    const int src_w = AV_CEIL_RSHIFT(in->width(), shift_w);
+    const int src_h = in->height();
+    const int src_w = in->width();
     const int sliceh_start = !column ? (src_h * jobnr) / nb_jobs : 0;
     const int sliceh_end = !column ? (src_h * (jobnr+1)) / nb_jobs : src_h;
     const int slicew_start = column ? (src_w * jobnr) / nb_jobs : 0;
@@ -215,13 +215,13 @@ static av_always_inline void lowpass16(mrv::image_type_ptr in,
     const int plane = 0;
     const int shift_w = 0;
     const int shift_h = 0;
-    const int src_linesize = in->width(); // / 2;
-    const int dst_linesize = out->line_size();
-    const int dst_signed_linesize = dst_linesize * (mirror == 1 ? -1 : 1);
+    const unsigned src_linesize = in->width(); // / 2;
+    const size_t dst_linesize = out->line_size();
+    const int dst_signed_linesize = (int)dst_linesize * (mirror == 1 ? -1 : 1);
     const int limit = smax - 1;
     const int max = limit - intensity;
-    const int src_h = AV_CEIL_RSHIFT(in->height(), shift_h);
-    const int src_w = AV_CEIL_RSHIFT(in->width(), shift_w);
+    const int src_h = in->height();
+    const int src_w = in->width();
     const int sliceh_start = !column ? (src_h * jobnr) / nb_jobs : 0;
     const int sliceh_end = !column ? (src_h * (jobnr+1)) / nb_jobs : src_h;
     const int slicew_start = column ? (src_w * jobnr) / nb_jobs : 0;
@@ -398,12 +398,12 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     case VideoFrame::kITU_601_YCbCr420A:
         if ( pic->pixel_type() == VideoFrame::kByte )
         {
-            int value = _intensity * 255;
+            int value = int(_intensity * 255);
             lowpass( pic, out, 0, value, 0, 0 );
         }
         else if ( pic->pixel_type() == VideoFrame::kShort )
         {
-            int value = _intensity * 255;
+            int value = int(_intensity * 255);
             create_image( pic );
             lowpass( in, out, 0, value, 0, 0);
         }
@@ -427,7 +427,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     {
         if ( pic->pixel_type() == VideoFrame::kByte )
         {
-            int value = _intensity * 255;
+            int value = int(_intensity * 255);
             lowpass( pic, out, 0, value, 0, 0 );
         }
         // else if ( pic->pixel_type() == VideoFrame::kShort )
@@ -443,7 +443,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
             try
             {
                 create_image( pic );
-                int value = _intensity * 256;
+                int value = int(_intensity * 256);
                 //lowpass16( in, out, 0, 40, 0, 0 );
                 lowpass( in, out, 0, value, 0, 0 );
             }

@@ -21,6 +21,7 @@
 
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
+#include "core/mrvMath.h"
 
 #include "gui/mrvIO.h"
 #include "gui/mrvVectorscope.h"
@@ -259,6 +260,9 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
     float gamma = uiMain->uiView->gamma();
     float one_gamma = 1.0f / gamma;
 
+    bool do_gamma = true;
+    if ( mrv::is_equal( one_gamma, 1.0f ) ) do_gamma = false;
+
     CMedia::Pixel rp;
     for ( unsigned y = ymin; y <= (unsigned)ymax; y += stepY )
     {
@@ -286,14 +290,14 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
                 rp = op;
             }
 
-            if ( v != ImageView::kRGBA_Original )
+            if ( do_gamma && v != ImageView::kRGBA_Original )
             {
                 if ( rp.r > 0.0f && isfinite(rp.r) )
-                    rp.r = powf(rp.r * gain, one_gamma);
+                    rp.r = powf(rp.r, one_gamma);
                 if ( rp.g > 0.0f && isfinite(rp.g) )
-                    rp.g = powf(rp.g * gain, one_gamma);
+                    rp.g = powf(rp.g, one_gamma);
                 if ( rp.b > 0.0f && isfinite(rp.b) )
-                    rp.b = powf(rp.b * gain, one_gamma);
+                    rp.b = powf(rp.b, one_gamma);
             }
 
             CMedia::Pixel hsv = color::rgb::to_hsv( rp );

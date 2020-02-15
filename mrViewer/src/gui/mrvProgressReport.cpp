@@ -50,7 +50,7 @@ ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
     g->box( FL_UP_BOX );
     progress = new Fl_Progress( 0, 20, g->w(), 40 );
     progress->minimum( 0 );
-    progress->maximum( double( end - start + 1) );
+    progress->maximum( float( end - start + 1) );
     progress->align( FL_ALIGN_TOP );
     char title[1024];
     sprintf( title, _( "Saving Sequence(s) %" PRId64 " - %" PRId64 ),

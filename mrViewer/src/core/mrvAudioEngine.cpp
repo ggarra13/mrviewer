@@ -69,6 +69,32 @@ AudioEngine::AudioFormat AudioEngine::default_format()
     return kFloatLSB;
 }
 
+unsigned short AudioEngine::bits_for_format( const AudioFormat f )
+{
+    switch( f )
+    {
+    case kU8:
+        return 1;
+    case kS16LSB:
+    case kS16MSB:
+        return 2;
+    case kS24LSB:
+    case kS24MSB:
+        return 3;
+    case kS32LSB:
+    case kS32MSB:
+        return 4;
+    case kFloatLSB:
+    case kFloatMSB:
+        return 4;
+    case kDoubleLSB:
+    case kDoubleMSB:
+        return 8;
+    default:
+        return 0;
+    }
+}
+
 AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
 {
     AVSampleFormat ffmpegformat;
@@ -81,6 +107,8 @@ AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
     case kS16MSB:
         ffmpegformat = AV_SAMPLE_FMT_S16;
         break;
+    case kS24LSB:
+    case kS24MSB:
     case kS32LSB:
     case kS32MSB:
         ffmpegformat = AV_SAMPLE_FMT_S32;
