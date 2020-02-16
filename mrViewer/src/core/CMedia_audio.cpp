@@ -240,6 +240,7 @@ void CMedia::open_audio_codec()
 
     if ( ! _aframe )
     {
+
         if ( ! (_aframe = av_frame_alloc()) )
         {
             IMG_ERROR( _("No memory for audio frame") );
@@ -1102,8 +1103,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     av_assert2( _aframe->nb_samples > 0 );
     av_assert2( ctx->channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
-                    _aframe->nb_samples,
-                    ctx->sample_fmt, 0);
+                                               _aframe->nb_samples,
+                                               ctx->sample_fmt, 0);
     if (*audio_size < data_size) {
         IMG_ERROR( _("Output buffer size is too small for "
                      "the current frame (")
@@ -1293,6 +1294,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         if ( _audio_channels > 0 )
         {
+            assert0( _aframe->extended_data != NULL );
+            assert0( _aframe->extended_data[0] != NULL );
             memcpy(samples, _aframe->extended_data[0], data_size);
         }
     }
@@ -1398,8 +1401,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
     {
         // Decode the audio into the buffer
-        assert( _audio_buf_used % 16 == 0 );
-
         int ret = decode_audio3( _audio_ctx,
                                  ( int16_t * )( (int8_t*)_audio_buf +
                                                 _audio_buf_used ),
@@ -1747,10 +1748,6 @@ void CMedia::wait_audio()
 bool CMedia::open_audio( const short channels,
                          const unsigned nSamplesPerSec )
 {
-    close_audio();
-
-    DBGM1("open audio - audio closed" );
-
     AudioEngine::AudioFormat format = _audio_format;
 
     // Avoid conversion to float if unneeded
@@ -1789,7 +1786,7 @@ bool CMedia::open_audio( const short channels,
 }
 
 
-bool CMedia::play_audio( const mrv::audio_type_ptr& result )
+bool CMedia::play_audio( const mrv::audio_type_ptr result )
 {
     double speedup = _play_fps / _fps;
     unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
@@ -1895,7 +1892,7 @@ bool CMedia::find_audio( const int64_t frame )
     }
 
 
-    limit_audio_store( frame );
+    //limit_audio_store( frame );
 
     _audio_pts = (result->frame() - _audio_offset - _start_number) / _orig_fps;
 

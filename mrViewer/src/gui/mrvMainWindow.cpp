@@ -111,10 +111,15 @@ MainWindow::~MainWindow()
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState(ES_CONTINUOUS);
 #endif
+    DBGM1( _("Restored screensaver") );
+    Fl::check();
+    DBGM1( _("Stop uiview") );
     uiMain->uiView->stop();
+    DBGM1( _("delete uiview") );
     delete uiMain->uiView;
     uiMain->uiView = NULL;
 
+    DBGM1( _("finalize r3dsdk") );
     // Close the R3D SDK
     R3DSDK::FinalizeSdk();
     R3dImage::init = false;

@@ -702,13 +702,11 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        //DBGM3( "wait audio " << frame );
         img->wait_audio();
 
 
 
         boost::int64_t f = frame;
-        // DBGM3( "decode audio " << frame );
 
         // if (!fg)
         //img->debug_audio_packets( frame, "play", false );
@@ -753,7 +751,7 @@ void audio_thread( PlaybackData* data )
         {
 
 
-            DBGM3( img->name() << " BARRIER IN AUDIO " << frame );
+            DBGM1( img->name() << " BARRIER IN AUDIO " << frame );
 
 
             CMedia::Barrier* barrier = img->loop_barrier();
@@ -761,8 +759,8 @@ void audio_thread( PlaybackData* data )
             {
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBGM3( img->name() << " BARRIER PASSED IN AUDIO "
-                     << frame );
+                DBGM1( img->name() << " BARRIER PASSED IN AUDIO "
+                       << frame );
             }
 
 
@@ -802,7 +800,7 @@ void audio_thread( PlaybackData* data )
                 if ( fg ) view->playback( p );
             }
 
-            DBGM3( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
+            DBGM1( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
             continue;
         }
         case CMedia::kDecodeOK:

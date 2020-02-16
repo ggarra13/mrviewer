@@ -1535,13 +1535,11 @@ _lastFrame( 0 )
 
 void ImageView::stop_playback()
 {
-
     mrv::media fg = foreground();
     if ( fg ) fg->image()->stop();
 
     mrv::media bg = background();
     if ( bg ) bg->image()->stop(true);
-
 }
 
 
@@ -9398,7 +9396,10 @@ void ImageView::stop()
             _preframe = fg->image()->first_cache_empty_frame();
         }
         if ( _idle_callback )
+        {
+            preload_cache_stop();
             preload_cache_start();
+        }
     }
 
     mouseMove( Fl::event_x(), Fl::event_y() );

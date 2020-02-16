@@ -280,7 +280,8 @@ void iffImage::read_uncompressed_tile( FILE* file,
                 }
                 case 4:
                 {
-                    v = *((float*)t);
+                    float* tmp = (float*)t;
+                    v = *tmp;
                     break;
                 }
                 }

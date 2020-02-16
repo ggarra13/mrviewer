@@ -466,8 +466,6 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
-    _aframe = av_frame_alloc();
-
     audio_initialize();
     if ( ! _initialize )
     {
@@ -489,11 +487,11 @@ av_sync_type( other->av_sync_type ),
 _has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
+_is_thumbnail( false ),
+_is_sequence( false ),
 _is_stereo( false ),
 _stereo_input( kSeparateLayersInput ),
 _stereo_output( kNoStereo ),
-_is_thumbnail( false ),
-_is_sequence( false ),
 _looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
@@ -509,7 +507,6 @@ _seek_frame( 1 ),
 _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
-_actual_frame_rate( 0 ),
 _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
@@ -553,6 +550,7 @@ _idt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
+_actual_frame_rate( 0 ),
 _context(NULL),
 _video_ctx( NULL ),
 _acontext(NULL),
@@ -575,7 +573,6 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    _aframe = av_frame_alloc();
     unsigned int W = other->width();
     unsigned int H = other->height();
     image_size( W, H );
@@ -625,7 +622,6 @@ _seek_frame( 1 ),
 _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
-_actual_frame_rate( 0 ),
 _real_fps( 0 ),
 _play_fps( other->_play_fps.load() ),
 _fps( other->_fps.load() ),
@@ -670,6 +666,7 @@ _idt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
+_actual_frame_rate( 0 ),
 _context(NULL),
 _video_ctx( NULL ),
 _acontext(NULL),
@@ -693,7 +690,6 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
-    _aframe = av_frame_alloc();
     _fileroot = strdup( other->fileroot() );
     _filename = strdup( other->filename() );
 
@@ -2621,7 +2617,8 @@ void CMedia::play(const CMedia::Playback dir,
         }
 
 
-        assert0( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
+        assert0( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
+                                           1 * valid_s ) );
     }
     catch( boost::exception& e )
     {
@@ -2674,7 +2671,6 @@ void CMedia::stop(const bool bg)
     TRACE("");
 
     // Wait for all threads to exit
-
     wait_for_threads();
 
 

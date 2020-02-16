@@ -1803,7 +1803,7 @@ protected:
     void open_audio_codec();
     void close_audio_codec();
     bool open_audio( const short channels, const unsigned samples );
-    bool play_audio( const mrv::audio_type_ptr& result );
+    bool play_audio( const mrv::audio_type_ptr result );
 
     int audio_stream_index() const;
     AVStream* get_audio_stream() const;

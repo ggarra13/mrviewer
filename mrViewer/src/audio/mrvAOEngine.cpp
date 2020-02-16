@@ -207,6 +207,7 @@ bool AOEngine::close()
         }
 
         _device = NULL;
+        _enabled = false;
         return true;
     }
     return false;
