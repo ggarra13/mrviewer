@@ -365,6 +365,8 @@ namespace mrv {
             s.bitrate = frequency * _audio_channels * samplesize;
             s.format = "s32be";
             s.language = _("und");
+            s.start = 0;
+            s.duration = ( _frame_end - _frame_start + 1 ) / _orig_fps;
 
             _audio_info.push_back( s );
             _audio_index = _audio_info.size() - 1;
