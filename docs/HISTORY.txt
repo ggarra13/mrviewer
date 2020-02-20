@@ -1,3 +1,8 @@
+v5.4.0  - Added .au and other audio formats to file requester list.
+	- Removed errors popping up when file requester is used.  They will
+	  get printed to stderr and to the log window, but the log window
+	  will not get raised.
+
 v5.3.9  - Bug fixed loading of pngs and similar with just lumma and with or
 	  without alpha channel.
 	- Bug fixed otio conversion of reels with fades in them.  Note that

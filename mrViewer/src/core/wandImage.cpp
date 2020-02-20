@@ -67,6 +67,7 @@ using namespace std;
 #include "gui/mrvPreferences.h"
 #include "mrViewer.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvLogDisplay.h"
 
 #undef DBG
 #define DBG(x) std::cerr << x << std::endl;
@@ -76,7 +77,7 @@ using namespace std;
     ExceptionType severity; \
    \
     char* description=MagickGetException(wand,&severity); \
-    IMG_ERROR( description ); \
+    if ( !_is_thumbnail ) IMG_ERROR( description ); \
     description=(char *) MagickRelinquishMemory(description); \
     return false; \
   }
@@ -134,17 +135,13 @@ bool wandImage::test(const char* file)
 
     MagickWand* wand = NewMagickWand();
 
-    try
+    status = MagickPingImage( wand, file );
+    if (status == MagickFalse )
     {
-        status = MagickPingImage( wand, file );
-        if (status == MagickFalse )
-        {
-            ThrowWandExceptionPing( wand );
-        }
-    }
-    catch( const std::exception& e )
-    {
-        LOG_ERROR( e.what() );
+        bool shown = LogDisplay::shown;
+        LogDisplay::shown = true;
+        ThrowWandExceptionPing( wand );
+        LogDisplay::shown = shown;
     }
 
     DestroyMagickWand(wand);

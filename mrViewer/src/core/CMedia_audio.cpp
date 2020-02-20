@@ -598,11 +598,10 @@ void CMedia::populate_audio()
         assert( stream != NULL );
 
         //const AVCodecContext* ctx = stream->codec;
-        const AVCodecParameters* ctx = stream->codecpar;
-        assert( ctx != NULL );
+        const AVCodecParameters* par = stream->codecpar;
 
         // Determine the type and obtain the first index of each type
-        switch( ctx->codec_type )
+        switch( par->codec_type )
         {
         case AVMEDIA_TYPE_SUBTITLE:
         case AVMEDIA_TYPE_VIDEO:
@@ -612,10 +611,10 @@ void CMedia::populate_audio()
         case AVMEDIA_TYPE_AUDIO:
         {
             audio_info_t s;
-            populate_stream_info( s, msg, c, ctx, i );
-            s.channels   = ctx->channels;
-            s.frequency  = ctx->sample_rate;
-            s.bitrate    = calculate_bitrate( stream, ctx );
+            populate_stream_info( s, msg, c, par, i );
+            s.channels   = par->channels;
+            s.frequency  = par->sample_rate;
+            s.bitrate    = calculate_bitrate( stream, par );
 
             if ( stream->metadata )
             {
@@ -630,8 +629,9 @@ void CMedia::populate_audio()
             }
 
             const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)
-                              ctx->format );
+                                                      par->format );
             if ( fmt ) s.format = fmt;
+            else fmt = "Unknown";
 
             _audio_info.push_back( s );
 
@@ -641,7 +641,7 @@ void CMedia::populate_audio()
         }
         default:
         {
-            const char* stream = stream_type( ctx );
+            const char* stream = stream_type( par );
             msg << _("\n\nNot a known stream type for stream #")
                 << i << (", type ") << stream;
             break;

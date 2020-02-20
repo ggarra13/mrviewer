@@ -2345,8 +2345,11 @@ void aviImage::populate()
             populate_stream_info( s, msg, _context, par, i );
             s.has_b_frames = ( ctx->has_b_frames != 0 );
             s.fps          = calculate_fps( _context, (AVStream*)stream );
-            if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
-                s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
+            const char* fmt = av_get_pix_fmt_name( ctx->pix_fmt );
+            if ( fmt )
+                s.pixel_format = fmt;
+            else
+                s.pixel_format = "Unknown";
             s.width = ctx->width;
             s.height = ctx->height;
             if ( s.width > max_width ) {
@@ -2407,7 +2410,7 @@ void aviImage::populate()
         case AVMEDIA_TYPE_SUBTITLE:
         {
             subtitle_info_t s;
-            populate_stream_info( s, msg, _context, ctx, i );
+            populate_stream_info( s, msg, _context, par, i );
             s.bitrate    = calculate_bitrate( stream, par );
             _subtitle_info.push_back( s );
             if ( _subtitle_index < 0 )

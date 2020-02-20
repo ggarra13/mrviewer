@@ -1813,12 +1813,6 @@ protected:
     void populate_stream_info( StreamInfo& s,
                                std::ostringstream& msg,
                                const AVFormatContext* context,
-                               const AVCodecContext* ctx,
-                               const int stream_index );
-
-    void populate_stream_info( StreamInfo& s,
-                               std::ostringstream& msg,
-                               const AVFormatContext* context,
                                const AVCodecParameters* codecpar,
                                const int stream_index );
 
