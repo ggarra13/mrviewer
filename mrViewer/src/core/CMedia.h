@@ -1223,6 +1223,10 @@ public:
 
     const Attributes& attributes() const;
 
+    const Attributes& clip_attributes() const {
+        return _clip_attrs;
+    }
+
     const AttributesFrame attrs_frames() const {
         return _attrs;
     }
@@ -2019,6 +2023,7 @@ protected:
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
 
+    Attributes      _clip_attrs;
     AttributesFrame _attrs;                    //!< All attributes
 
     // Audio/Video

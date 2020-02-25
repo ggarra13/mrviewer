@@ -138,10 +138,7 @@ bool wandImage::test(const char* file)
     status = MagickPingImage( wand, file );
     if (status == MagickFalse )
     {
-        bool shown = LogDisplay::shown;
-        LogDisplay::shown = true;
         ThrowWandExceptionPing( wand );
-        LogDisplay::shown = shown;
     }
 
     DestroyMagickWand(wand);

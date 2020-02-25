@@ -73,6 +73,8 @@ public:
         kU8 = 1,
         kS16LSB,
         kS16MSB,
+        kS24LSB,
+        kS24MSB,
         kS32LSB,
         kS32MSB,
         kFloatLSB,

@@ -27,6 +27,7 @@
 
 
 #define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #define __STDC_CONSTANT_MACROS
 #include <inttypes.h>
 
@@ -237,6 +238,8 @@ void CMedia::open_audio_codec()
             memset( _audio_buf, 0, _audio_max );
         }
     }
+
+    frequency = _audio_ctx->sample_rate;
 
     if ( ! _aframe )
     {
@@ -558,7 +561,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     unsigned int ret = 0;
     if ( !has_audio() ) return ret;
 
-    int channels = _audio_ctx->channels;
+    int channels = _audio_channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
         channels = FFMIN(_audio_engine->channels(), (unsigned)channels);
     }
@@ -566,9 +569,9 @@ unsigned int CMedia::audio_bytes_per_frame()
         return ret;
 
     SCOPED_LOCK( _audio_mutex );
-    frequency = _audio_ctx->sample_rate;
-    AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-    unsigned bps = av_get_bytes_per_sample( fmt );
+    // AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+    // unsigned bps = av_get_bytes_per_sample( fmt );
+    unsigned bps = AudioEngine::bits_for_format( _audio_format );
 
     if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
     ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
@@ -613,7 +616,7 @@ void CMedia::populate_audio()
             audio_info_t s;
             populate_stream_info( s, msg, c, par, i );
             s.channels   = par->channels;
-            s.frequency  = par->sample_rate;
+            s.frequency  = frequency = par->sample_rate;
             s.bitrate    = calculate_bitrate( stream, par );
 
             if ( stream->metadata )
@@ -1119,9 +1122,11 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         _audio_format = AudioEngine::kS16LSB;
     }
 
+
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     if ( _audio_channels == 0 )
         _audio_channels = (unsigned short) ctx->channels;
+
 
     if ( ctx->sample_fmt != fmt  ||
          unsigned(ctx->channels) != _audio_channels )
@@ -1751,10 +1756,13 @@ bool CMedia::open_audio( const short channels,
     AudioEngine::AudioFormat format = _audio_format;
 
     // Avoid conversion to float if unneeded
-    if ( _audio_ctx && ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-                         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 ) )
+    if ( _audio_ctx )
     {
-        format = AudioEngine::kS16LSB;
+        if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+             _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+        {
+            format = AudioEngine::kS16LSB;
+        }
     }
 
     if ( _fps > 100.0 )

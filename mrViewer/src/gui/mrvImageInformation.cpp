@@ -65,6 +65,7 @@ using namespace std;
 #include "core/aviImage.h"
 #include "core/exrImage.h"
 #include "core/R3dImage.h"
+#include "core/brawImage.h"
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -1366,7 +1367,6 @@ static void change_string_cb( Fl_Input* w, ImageInformation* info )
     mrv::Table* t = dynamic_cast< mrv::Table* >( w->parent()->parent() );
     if ( t == NULL )
     {
-        std::cerr << "not a table" << std::endl;
         return;
     }
 
@@ -1378,7 +1378,6 @@ static void change_string_cb( Fl_Input* w, ImageInformation* info )
         if ( i >= t->children() ) break;
         Fl_Group* sg = dynamic_cast< Fl_Group* >( t->child(i) );
         if ( !sg ) {
-            std::cerr << "not group child in table " << i << std::endl;
             break;
         }
         box = (Fl_Widget*)sg->child(0);
@@ -1466,6 +1465,32 @@ static void change_scale_cb( Fl_Button* w, ImageInformation* info )
     w->value(1);
 
     R3dImage* img = dynamic_cast<R3dImage*>( info->get_image() );
+    if ( !img ) return;
+
+    int v = 3;
+
+    std::string l = w->label();
+    if ( l == "1:1" ) v = 0;
+    else if ( l == "1:2" ) v = 1;
+    else if ( l == "1:4" ) v = 2;
+
+    img->scale( v );
+    img->refetch( img->frame() );
+    img->image_damage( mrv::CMedia::kDamageAll );
+    info->refresh();
+
+    ImageView* view = info->main()->uiView;
+
+    view->fit_image();
+
+    view->redraw();
+}
+
+static void change_scale_braw_cb( Fl_Button* w, ImageInformation* info )
+{
+    w->value(1);
+
+    brawImage* img = dynamic_cast<brawImage*>( info->get_image() );
     if ( !img ) return;
 
     int v = 3;
@@ -2488,7 +2513,6 @@ void ImageInformation::fill_data()
 {
 
 
-#if 1
     char buf[1024];
     m_curr = add_browser(m_image);
 
@@ -2736,7 +2760,6 @@ void ImageInformation::fill_data()
         add_text( _("CIExy White Point"), _("CIExy White Point"), buf );
     }
 
-    //std::cerr << "prefs:use_ocio " << Preferences::use_ocio << std::endl;
     if ( Preferences::use_ocio )
     {
     DBG3;
@@ -2861,13 +2884,20 @@ void ImageInformation::fill_data()
 
     tooltip( NULL );
 
-#endif
 
-#if 1
+
+    const CMedia::Attributes& cattrs = img->clip_attributes();
     const CMedia::Attributes& attrs = img->attributes();
-    if ( ! attrs.empty() )
+    if ( ! attrs.empty() || !cattrs.empty() )
     {
         m_curr = add_browser( m_attributes );
+
+        brawImage* braw = dynamic_cast< brawImage* >( img );
+        if ( braw )
+        {
+            add_scale( _("Image Scale"), _("Proxy image scale"), braw->scale(),
+                       (Fl_Callback*)change_scale_braw_cb );
+        }
 
         R3dImage* r3d = dynamic_cast< R3dImage* >( img );
 
@@ -2884,7 +2914,6 @@ void ImageInformation::fill_data()
             add_text( _("Color Version"), _("RED Color Version"),
                       version );
 
-#if 1
             add_button( _("Settings from RMD"),
                         _("Load settings from RMD sidecar or\n"
                           "reset them to camera settings."),
@@ -2936,9 +2965,6 @@ void ImageInformation::fill_data()
             add_enum( _("ISO"), _("ISO of film stock."),
                       content, options, true, (Fl_Callback*)change_iso_cb );
 
-#endif
-
-#if 1
             add_float( _("Kelvin"), _("Kelvin temperature."),
                        r3d->Kelvin(), true, true,
                        (Fl_Callback*)change_kelvin_cb,
@@ -2992,9 +3018,7 @@ void ImageInformation::fill_data()
                            ImageProcessingLimits::ExposureMin,
                            ImageProcessingLimits::ExposureMax );
             }
-#endif
 
-#if 1
             if ( r3d->color_space() != "REDWideGamutRGB" )
             {
                 group++;
@@ -3029,7 +3053,6 @@ void ImageInformation::fill_data()
                           ImageProcessingLimits::GainsMin,
                           ImageProcessingLimits::GainsMax );
            }
-#endif
 
             if ( r3d->is_hdr() )
             {
@@ -3103,13 +3126,26 @@ void ImageInformation::fill_data()
             }
 
             ++group;
-#endif
 
         }
 
-#if 1
-        CMedia::Attributes::const_iterator i = attrs.begin();
-        CMedia::Attributes::const_iterator e = attrs.end();
+        // First, parse clip attributes
+        CMedia::Attributes::const_iterator i = cattrs.begin();
+        CMedia::Attributes::const_iterator e = cattrs.end();
+        for ( ; i != e; ++i )
+        {
+            if ( i->first.find( _("Video") ) != std::string::npos )
+                group = 1;
+            else if ( i->first.find( _("Audio") ) != std::string::npos )
+                group = 2;
+            else
+                group = 3;
+            process_attributes( i );
+        }
+
+        // Then, parse frame attributes
+        i = attrs.begin();
+        e = attrs.end();
         for ( ; i != e; ++i )
         {
             if ( i->first == _("Mipmap Levels") )
@@ -3168,13 +3204,10 @@ void ImageInformation::fill_data()
 
 
         }
-#endif
 
         m_attributes->show();
     }
 
-
-#if 1
 
     if ( num_video_streams > 0 )
     {
@@ -3343,7 +3376,6 @@ void ImageInformation::fill_data()
 
         m_subtitle->show();
     }
-#endif
 
     m_all->layout();
 
@@ -3422,7 +3454,6 @@ void ImageInformation::refresh()
     filled = true;
 
     Fl_Group::current(0);
-
     DBG3;
 }
 

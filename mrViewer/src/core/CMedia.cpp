@@ -82,6 +82,7 @@ namespace fs = boost::filesystem;
 #include "core/CMedia.h"
 #include "core/aviImage.h"
 #include "core/R3dImage.h"
+#include "core/brawImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -963,8 +964,8 @@ void CMedia::hires( const mrv::image_type_ptr pic)
 CMedia::Attributes& CMedia::attributes()  {
     static Attributes empty;
     AttributesFrame::iterator i;
-    if ( dynamic_cast< aviImage* >( this ) != NULL ||
-         dynamic_cast< R3dImage* >( this ) != NULL ||
+    if ( dynamic_cast< aviImage* >( this )  != NULL ||
+         dynamic_cast< R3dImage* >( this )  != NULL ||
          start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
@@ -977,8 +978,8 @@ CMedia::Attributes& CMedia::attributes()  {
 const CMedia::Attributes& CMedia::attributes() const {
     static Attributes empty;
     AttributesFrame::const_iterator i;
-    if ( dynamic_cast< const aviImage* const >( this ) != NULL ||
-         dynamic_cast< const R3dImage* const >( this ) != NULL ||
+    if ( dynamic_cast< const aviImage* const >( this )  != NULL ||
+         dynamic_cast< const R3dImage* const >( this )  != NULL ||
          start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
@@ -1556,8 +1557,9 @@ void CMedia::sequence( const char* fileroot,
     uint64_t num = _frame_end - _frame_start + 1;
 
 
-    if ( dynamic_cast< aviImage* >( this ) == NULL &&
-         dynamic_cast< R3dImage* >( this ) == NULL )
+    if ( dynamic_cast< aviImage* >( this )  == NULL &&
+         dynamic_cast< R3dImage* >( this )  == NULL &&
+         dynamic_cast< brawImage* >( this ) == NULL )
     {
         _sequence = new mrv::image_type_ptr[ (unsigned) num ];
         _right    = new mrv::image_type_ptr[ (unsigned) num ];
@@ -2701,7 +2703,7 @@ void CMedia::stop(const bool bg)
 
     TRACE("");
     // Queue thumbnail for update
-    image_damage( image_damage() | kDamageThumbnail );
+    image_damage( image_damage() | kDamageThumbnail | kDamageData );
 
 }
 
@@ -2847,6 +2849,8 @@ void CMedia::seek( const int64_t f )
         std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
 #endif
         do_seek();
+
+        image_damage( image_damage() | kDamageData );
     }
 
 #ifdef DEBUG_SEEK
@@ -2974,8 +2978,9 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
     mrv::image_type_ptr r;
 
     if ( !is_sequence() || !_cache_active ||
-         dynamic_cast< const aviImage* >( this ) != NULL ||
-         dynamic_cast< const R3dImage* >( this ) != NULL )
+         dynamic_cast< const aviImage* >( this )  != NULL ||
+         dynamic_cast< const R3dImage* >( this )  != NULL ||
+         dynamic_cast< const brawImage* >( this ) != NULL )
         return r;
 
     int64_t idx = frame - _frame_start;
@@ -2995,8 +3000,9 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
  */
 void CMedia::cache( mrv::image_type_ptr& pic )
 {
-    if ( dynamic_cast< const aviImage* >( this ) != NULL ||
-         dynamic_cast< const R3dImage* >( this ) != NULL )
+    if ( dynamic_cast< const aviImage* >( this )  != NULL ||
+         dynamic_cast< const R3dImage* >( this )  != NULL ||
+         dynamic_cast< const brawImage* >( this ) != NULL )
         return;
 
 
@@ -3070,8 +3076,9 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 
 bool CMedia::is_cache_full()
 {
-    if ( dynamic_cast< aviImage* >( this ) != NULL ||
-         dynamic_cast< R3dImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this )  != NULL ||
+         dynamic_cast< R3dImage* >( this )  != NULL ||
+         dynamic_cast< brawImage* >( this ) != NULL )
         return true;
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
@@ -3083,8 +3090,9 @@ bool CMedia::is_cache_full()
 
 int64_t CMedia::first_cache_empty_frame()
 {
-    if ( dynamic_cast< aviImage* >( this ) != NULL ||
-         dynamic_cast< R3dImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this )  != NULL ||
+         dynamic_cast< R3dImage* >( this )  != NULL ||
+         dynamic_cast< brawImage* >( this ) != NULL )
         return first_frame();
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
@@ -3130,7 +3138,8 @@ size_t CMedia::memory() const
     {
         if ( hires() )
         {
-            if ( dynamic_cast< const R3dImage* >( this ) != NULL )
+            if ( dynamic_cast< const R3dImage* >( this )  != NULL ||
+                 dynamic_cast< const brawImage* >( this ) != NULL )
             {
                 r += _hires->data_size() * duration();
             }
@@ -4168,12 +4177,15 @@ void CMedia::default_ocio_input_color_space()
 
     std::string n = filename();
     OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
-    std::string cs = config->parseColorSpaceFromString(n.c_str());
-    if ( !cs.empty() )
+    if ( n.rfind( ".braw" ) == std::string::npos )
     {
-        IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
-        ocio_input_color_space( cs );
-        return;
+        std::string cs = config->parseColorSpaceFromString(n.c_str());
+        if ( !cs.empty() )
+        {
+            IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
+            ocio_input_color_space( cs );
+            return;
+        }
     }
 
     const char* bit_depth = _("unknown");

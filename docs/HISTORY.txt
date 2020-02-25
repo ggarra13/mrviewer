@@ -1,7 +1,13 @@
 v5.4.0  - Added .au and other audio formats to file requester list.
-	- Removed errors popping up when file requester is used.  They will
-	  get printed to stderr and to the log window, but the log window
-	  will not get raised.
+	- Removed errors popping up when file requester is used.
+	  They will get printed to stderr and to the log window, but the log
+	  window will not get raised.
+	- Added support for Blackmagic's RAW video format and audio on Linux
+	  and Windows 64 bits.  Windows 32 bits does not support it as there's
+	  a lack of a library for reading it on that platform.
+	  Also note that BRAW's Metadata is partially supported as array data
+	  is not read.
+	- Bug fixed timeline's timecode being incremented logarithmically.
 
 v5.3.9  - Bug fixed loading of pngs and similar with just lumma and with or
 	  without alpha channel.

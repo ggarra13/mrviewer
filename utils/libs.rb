@@ -121,6 +121,12 @@ def copy_files( build )
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
                     "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
+                    "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
+                    "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
+                    "#{build}/#{@debug}/lib" )
   end
 end
 

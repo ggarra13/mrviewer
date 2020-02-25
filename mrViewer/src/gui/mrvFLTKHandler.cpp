@@ -30,6 +30,7 @@
 
 #include "gui/mrvIO.h"
 #include "gui/mrvFLTKHandler.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvMedia.h"
 
 namespace {
@@ -53,8 +54,15 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
          ext == "srt" || ext == "sub" || ext == "txt" || ext == "vtt" )
         return NULL;
 
+    bool shown = LogDisplay::shown;
+    LogDisplay::shown = true;
+
     CMedia* img = CMedia::guess_image( filename, header, len, true );
-    if ( img == NULL ) return NULL;
+    if ( img == NULL ) {
+        LogDisplay::shown = shown;
+        return NULL;
+    }
+    LogDisplay::shown = shown;
 
 
     // Fetch frame in the 1/4 of duration

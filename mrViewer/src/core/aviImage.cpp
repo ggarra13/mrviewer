@@ -401,12 +401,26 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
         // DPX
         return true;
     }
-    else if ( magic == 0xE3C54D55 )
+    else if ( CMedia::load_library == CMedia::kFFMPEGLibrary )
     {
-        // .snd file
-        return true;
+        const int16_t MAGIC_BM = 0x4D42;
+        const int16_t MAGIC_BA = 0x4142;
+        const int16_t MAGIC_CI = 0x4943;
+        const int16_t MAGIC_CP = 0x5043;
+        const int16_t MAGIC_PT = 0x5450;
+
+        // BMP
+        int16_t magic = *((int16_t*)data);
+        switch ( magic )
+        {
+        case MAGIC_BM:
+        case MAGIC_BA:
+        case MAGIC_CI:
+        case MAGIC_CP:
+        case MAGIC_PT:
+            return true;
+        }
     }
-    else
     {
         // Check for Quicktime
         if ( strncmp( (char*)data+4, "ftyp", 4 ) == 0 ||
@@ -2432,6 +2446,7 @@ void aviImage::populate()
 
     if ( msg.str().size() > 0 )
     {
+        if ( !_is_thumbnail )
         LOG_ERROR( filename() << msg.str() );
     }
 
@@ -2880,10 +2895,11 @@ bool aviImage::initialize()
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) tolower);
 
-        if ( ext.rfind( ".png" )  != std::string::npos ||
+        if ( ext.rfind( ".bmp" )  != std::string::npos ||
              ext.rfind( ".dpx" )  != std::string::npos ||
              ext.rfind( ".jpg" )  != std::string::npos ||
-             ext.rfind( ".jpeg" ) != std::string::npos )
+             ext.rfind( ".jpeg" ) != std::string::npos ||
+             ext.rfind( ".png" )  != std::string::npos )
         {
             char buf[64];
             sprintf( buf, "%" PRId64, _frameStart );

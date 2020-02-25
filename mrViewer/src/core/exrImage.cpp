@@ -1319,7 +1319,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::TimeCodeAttribute>( N_("timeCode") );
         if ( attr )
         {
-            process_timecode( attr->value() );
+            if ( frame == start_frame() ) process_timecode( attr->value() );
             _attrs[frame].insert( std::make_pair( N_("timecode"), attr->copy() ));
             attrs.insert( N_("timeCode") );
         }

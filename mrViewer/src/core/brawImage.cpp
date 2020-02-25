@@ -1,0 +1,1307 @@
+#include "brawImage.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#if !defined(WIN32) && !defined(WIN64)
+#  include <arpa/inet.h>
+#else
+#  include <winsock2.h>    // for htonl
+#  include <comutil.h>
+#endif
+#ifdef DEBUG
+#include <cassert>
+#define VERIFY(condition) assert(SUCCEEDED(condition))
+#else
+#define VERIFY(condition) condition
+#endif
+
+extern "C" {
+#include <libavutil/time.h>
+#ifdef WIN32
+#  pragma warning(push)
+#  pragma warning (disable: 4244 )
+#endif
+#include <libavutil/intreadwrite.h>
+#ifdef WIN32
+#  pragma warning(pop)
+#endif
+}
+
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+
+
+#include "ImfFloatAttribute.h"
+#include "ImfIntAttribute.h"
+#include "ImfStringAttribute.h"
+#include "ImfTimeCodeAttribute.h"
+
+#include "core/mrvMath.h"
+#include "core/mrvFrameFunctors.h"
+#include "gui/mrvPreferences.h"
+#include "mrvPreferencesUI.h"
+
+
+
+namespace {
+    const char* kModule = "braw";
+}
+
+
+namespace mrv {
+
+
+#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
+#  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
+#endif
+
+    static const BlackmagicRawResourceFormat s_resourceFormat = blackmagicRawResourceFormatRGBAU8;
+
+    class CameraCodecCallback : public IBlackmagicRawCallback
+    {
+        brawImage* img;
+        mrv::image_type_ptr& canvas;
+        int64_t frame;
+        BlackmagicRawResolutionScale scale;
+        IBlackmagicRawFrame* m_frame = nullptr;
+    public:
+        explicit CameraCodecCallback( brawImage* b,
+                                      mrv::image_type_ptr& c,
+                                      int64_t f,
+                                      BlackmagicRawResolutionScale s =
+                                      blackmagicRawResolutionScaleEighth) :
+            IBlackmagicRawCallback(),
+            img( b ),
+            canvas( c ),
+            frame( f ),
+            scale( s )
+            {
+            };
+        virtual ~CameraCodecCallback()
+            {
+                if (m_frame != nullptr)
+                    m_frame->Release();
+            }
+
+        IBlackmagicRawFrame*	GetFrame() {
+            return m_frame;
+        }
+
+        virtual
+        void STDMETHODCALLTYPE
+        ReadComplete(IBlackmagicRawJob* readJob, HRESULT result,
+                     IBlackmagicRawFrame* frame)
+            {
+                if (result == S_OK)
+                {
+                    m_frame = frame;
+                    m_frame->AddRef();
+                }
+                IBlackmagicRawJob* decodeAndProcessJob = nullptr;
+
+                if (result == S_OK)
+                    VERIFY(frame->SetResourceFormat(s_resourceFormat));
+
+                if (result == S_OK)
+                    VERIFY(frame->SetResolutionScale( scale ));
+
+                if (result == S_OK)
+                    result = frame->CreateJobDecodeAndProcessFrame(nullptr,
+                                                                   nullptr,
+                                                                   &decodeAndProcessJob);
+
+                if (result == S_OK)
+                    result = decodeAndProcessJob->Submit();
+
+                if (result != S_OK)
+                {
+                    if (decodeAndProcessJob)
+                        decodeAndProcessJob->Release();
+                }
+
+                readJob->Release();
+            }
+
+        virtual
+        void STDMETHODCALLTYPE
+        ProcessComplete(IBlackmagicRawJob* job, HRESULT result,
+                        IBlackmagicRawProcessedImage* processedImage)
+            {
+                unsigned int width = 0;
+                unsigned int height = 0;
+                void* imageData = nullptr;
+
+                if (result == S_OK)
+                    result = processedImage->GetWidth(&width);
+
+                if (result == S_OK)
+                    result = processedImage->GetHeight(&height);
+
+                if (result == S_OK)
+                    result = processedImage->GetResource(&imageData);
+
+                if ( result == S_OK )
+                    img->store_image( canvas, frame, width, height, imageData );
+
+                job->Release();
+            }
+
+        virtual void STDMETHODCALLTYPE DecodeComplete(IBlackmagicRawJob*, HRESULT) {}
+        virtual void STDMETHODCALLTYPE TrimProgress(IBlackmagicRawJob*, float) {}
+        virtual void STDMETHODCALLTYPE TrimComplete(IBlackmagicRawJob*, HRESULT) {}
+
+#ifdef WIN32
+        virtual void STDMETHODCALLTYPE SidecarMetadataParseWarning(IBlackmagicRawClip*, BSTR, uint32_t, BSTR) {}
+        virtual void STDMETHODCALLTYPE SidecarMetadataParseError(IBlackmagicRawClip*, BSTR, uint32_t, BSTR) {}
+#elif LINUX
+        virtual void SidecarMetadataParseWarning(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
+        virtual void SidecarMetadataParseError(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
+#endif
+        virtual void STDMETHODCALLTYPE PreparePipelineComplete(void*, HRESULT) {}
+
+        virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID, LPVOID*)
+            {
+                return E_NOTIMPL;
+            }
+
+        virtual ULONG STDMETHODCALLTYPE AddRef(void)
+            {
+                return 0;
+            }
+
+        virtual ULONG STDMETHODCALLTYPE Release(void)
+            {
+                return 0;
+            }
+    };
+
+    bool brawImage::init = true;
+    IBlackmagicRawFactory* brawImage::factory = nullptr;
+
+    brawImage::brawImage() :
+        CMedia(),
+        _scale( 3 ),
+        _old_scale( 3 ),
+        bitDepth( 0 ),
+        audiobuffer( NULL ),
+        codec( NULL ),
+        clip( NULL ),
+        readJob( NULL ),
+        audio( NULL )
+    {
+        initialize();
+        _gamma = 1.0f;
+        _audio_last_frame = 0;
+    }
+
+    brawImage::~brawImage()
+    {
+        finalize();
+    }
+
+    bool brawImage::store_image( mrv::image_type_ptr& canvas,
+                                 int64_t frame, unsigned dw, unsigned dh,
+                                 void* imageData )
+    {
+        image_size( dw, dh );
+        const image_type::PixelType pixel_type = image_type::kByte;
+        allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
+                         dw, dh );
+        memcpy( canvas->data().get(), imageData, dw*dh*4 );
+
+        // Store in queue
+        SCOPED_LOCK( _mutex );
+        if ( _images.empty() || _images.back()->frame() < frame )
+        {
+            _images.push_back( canvas );
+        }
+        else
+        {
+            video_cache_t::iterator at = std::lower_bound( _images.begin(),
+                                                           _images.end(),
+                                                           frame,
+                                                           LessThanFunctor() );
+
+
+            // Avoid storing duplicate frames, replace old frame with this one
+            if ( at != _images.end() )
+            {
+                if ( (*at)->frame() == frame )
+                {
+                    at = _images.erase(at);
+                }
+            }
+
+            _images.insert( at, canvas );
+        }
+
+        return true;
+    }
+
+    bool brawImage::test( const char* file )
+    {
+        if ( file == NULL ) return false;
+
+        HRESULT result;
+
+        std::string libpath = mrv::Preferences::root;
+        libpath += "/lib";
+
+#ifdef WIN32
+        _bstr_t clib( libpath.c_str() );
+#elif LINUX
+        const char* clib = libpath.c_str();
+#endif
+
+        if ( factory == nullptr )
+        {
+            factory = CreateBlackmagicRawFactoryInstanceFromPath( clib );
+            if (factory == nullptr)
+            {
+#if defined(LINUX) || defined(_WIN64)
+                LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
+#endif
+                return false;
+            }
+        }
+
+        IBlackmagicRaw* codec;
+        result = factory->CreateCodec(&codec);
+        if (result != S_OK)
+        {
+            LOG_ERROR( _("Failed to create IBlackmagicRaw!") );
+            return false;
+        }
+
+#ifdef WIN32
+        _bstr_t filename( file );
+#elif LINUX
+        const char* filename = file;
+#endif
+
+        IBlackmagicRawClip* localclip = nullptr;
+        result = codec->OpenClip(filename, &localclip);
+        if (result != S_OK)
+        {
+            return false;
+        }
+
+
+        localclip->Release();
+        codec->Release();
+
+        return true;
+    }
+
+    void brawImage::parse_metadata(int64_t frame,
+                                   IBlackmagicRawMetadataIterator*
+                                   metadataIterator)
+    {
+#ifdef WIN32
+        BSTR keyStr;
+        VARIANT value;
+#elif LINUX
+        const char* keyStr = nullptr;
+        Variant value;
+#else
+#endif
+
+        if ( _attrs.find( frame ) == _attrs.end() )
+        {
+            _attrs.insert( std::make_pair( frame, Attributes() ) );
+        }
+
+        HRESULT result;
+        while (SUCCEEDED(metadataIterator->GetKey(&keyStr)))
+        {
+            VariantInit(&value);
+            result = metadataIterator->GetData(&value);
+            if (result != S_OK)
+            {
+                LOG_ERROR( _("Failed to get data from "
+                             "IBlackmagicRawMetadataIterator!") );
+                break;
+            }
+
+
+#ifdef LINUX
+            const char* key = (const char*) keyStr;
+            BlackmagicRawVariantType variantType = value.vt;
+#elif WIN32
+            // or use true to get original BSTR released through wrapper
+            _bstr_t interim(keyStr, false);
+            const char* key((const char*) interim);
+            VARTYPE variantType = value.vt;
+#else
+#endif
+            switch (variantType)
+            {
+            case blackmagicRawVariantTypeS16:
+            {
+                short s16 = value.iVal;
+                Imf::IntAttribute attr( s16 );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            case blackmagicRawVariantTypeU16:
+            {
+                unsigned short u16 = value.uiVal;
+                Imf::IntAttribute attr( u16 );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            case blackmagicRawVariantTypeS32:
+            {
+                int i32 = value.intVal;
+                Imf::IntAttribute attr( i32 );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            case blackmagicRawVariantTypeU32:
+            {
+                unsigned int u32 = value.uintVal;
+                Imf::IntAttribute attr( u32 );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            case blackmagicRawVariantTypeFloat32:
+            {
+                float f32 = value.fltVal;
+                Imf::FloatAttribute attr( f32 );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            case blackmagicRawVariantTypeString:
+            {
+#ifdef LINUX
+                const char* str = value.bstrVal;
+                if ( strlen(str) == 0 ) str = "";
+#elif WIN32
+                BSTR tmp = value.bstrVal;
+                // or use true to get original BSTR released through wrapper
+                _bstr_t interim(tmp, false);
+                const char* str((const char*) interim);
+#else
+#endif
+                Imf::StringAttribute attr( str );
+                if ( frame < 0 )
+                {
+                    _clip_attrs.insert( std::make_pair( key, attr.copy() ) );
+                }
+                else
+                {
+                    _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
+                }
+                break;
+            }
+            }
+
+            VariantClear(&value);
+
+            metadataIterator->Next();
+        }
+
+        image_damage( image_damage() | kDamageData );
+    }
+
+    bool brawImage::initialize()
+    {
+        init = true;
+        HRESULT result;
+
+        result = factory->CreateCodec(&codec);
+        if (result != S_OK)
+        {
+            LOG_ERROR( _("Failed to create IBlackmagicRaw!") );
+            return false;
+        }
+
+#ifdef WIN32
+        _bstr_t file = filename();
+#elif LINUX
+        const char* file = filename();
+#endif
+
+        result = codec->OpenClip( file, &clip );
+        if (result != S_OK)
+        {
+            return false;
+        }
+
+        rgb_layers();
+        lumma_layers();
+        alpha_layers();
+
+        _frameStart = _frame_start = 0;
+        uint64_t duration;
+        result = clip->GetFrameCount( &duration );
+        if (result != S_OK)
+        {
+            return false;
+        }
+        _frameEnd = _frame_end = (int64_t)duration - 1;
+        float f;
+        result = clip->GetFrameRate( &f );
+        if ( result != S_OK )
+        {
+            return false;
+        }
+        _fps = _orig_fps = _play_fps = f;
+
+        video_info_t info;
+        info.has_codec = true;
+        info.codec_name = "BRAW";
+        info.fourcc = "BRAW";
+        info.fps = _fps;
+        info.pixel_format = "RGBA";
+        info.has_b_frames = true;
+        info.start = 0;
+        info.duration = (double)(_frame_end - _frame_start) /
+                        (double) _fps;
+        _video_info.push_back( info );
+
+
+        IBlackmagicRawMetadataIterator* clipMetadataIterator = nullptr;
+
+        result = clip->GetMetadataIterator(&clipMetadataIterator);
+        if (result != S_OK)
+        {
+            LOG_ERROR(_("Failed to get clip IBlackmagicRawMetadataIterator!"));
+        }
+
+        parse_metadata( -1, clipMetadataIterator );
+
+        result = clip->QueryInterface(IID_IBlackmagicRawClipAudio,
+                                      (void**)&audio);
+        if ( result == S_OK )
+        {
+            uint32_t channelCount;
+            uint32_t sampleRate;
+
+            BlackmagicRawAudioFormat format;
+            result = audio->GetAudioFormat(&format);
+            if (result != S_OK)
+            {
+                IMG_ERROR( _("Failed to get Audio Format!") );
+                return false;
+            }
+
+            result = audio->GetAudioSampleCount(&audioSamples);
+            if (result != S_OK)
+            {
+                IMG_ERROR( _("Failed to get total audio sample count!") );
+                return false;
+            }
+
+            result = audio->GetAudioBitDepth(&bitDepth);
+            if (result != S_OK)
+            {
+                IMG_ERROR( _("Failed to get Audio Bit Depth!") );
+                return false;
+            }
+
+            result = audio->GetAudioChannelCount(&channelCount);
+            if (result != S_OK)
+            {
+                IMG_ERROR( _("Failed to get Audio Channel Count!") );
+                return false;
+            }
+
+            result = audio->GetAudioSampleRate(&sampleRate);
+            if (result != S_OK)
+            {
+                IMG_ERROR( _("Failed to get Audio Sample Rate!") );
+                return false;
+            }
+
+            audio_info_t a;
+            a.has_codec = bitDepth == 0 ? false : true;
+            a.codec_name = "BRAW Audio";
+            a.fourcc = "BRAW";
+            if ( format == blackmagicRawAudioFormatPCMLittleEndian )
+            {
+                switch( bitDepth )
+                {
+                case 8:
+                    _audio_format = AudioEngine::kU8;
+                    a.format = "u8";
+                    break;
+                case 16:
+                    _audio_format = AudioEngine::kS16LSB;
+                    a.format = "s16le";
+                    break;
+                case 24:
+                    _audio_format = AudioEngine::kS32LSB;
+                    a.format = "s24le";
+                    break;
+                case 32:
+                    _audio_format = AudioEngine::kS32LSB;
+                    a.format = "s32le";
+                    break;
+                default:
+                    LOG_ERROR( _("Unknown audio bit depth ") << bitDepth );
+                    _audio_format = AudioEngine::kS16MSB;
+                    a.format = "s16be";
+                    break;
+                }
+            }
+            else
+            {
+                switch( bitDepth )
+                {
+                case 8:
+                    _audio_format = AudioEngine::kU8;
+                    a.format = "u8";
+                    break;
+                case 16:
+                    _audio_format = AudioEngine::kS16MSB;
+                    a.format = "s16be";
+                    break;
+                case 24:
+                    _audio_format = AudioEngine::kS32MSB;
+                    a.format = "s24be";
+                    break;
+                case 32:
+                    _audio_format = AudioEngine::kS32MSB;
+                    a.format = "s32be";
+                    break;
+                default:
+                    LOG_ERROR( _("Unknown audio bit depth ") << bitDepth );
+                    _audio_format = AudioEngine::kS16MSB;
+                    a.format = "s16be";
+                    break;
+                }
+            }
+
+
+            a.channels = _audio_channels = channelCount;
+            a.frequency = frequency = sampleRate;
+            a.bitrate = sampleRate * channelCount * bitDepth;
+            a.language = _("und");
+            a.start = 0;
+            a.duration = audioSamples / (double) frequency;
+
+            _audio_info.push_back( a );
+
+            if ( a.has_codec )
+            {
+                _audio_index = (int) _audio_info.size() - 1;
+                audio_initialize();
+
+                if ( !_audio_buf )
+                {
+                    _audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 2;
+                    // Final buffer for 32 bit audio
+                    _audio_buf = new aligned16_uint8_t[ _audio_max ];
+                    memset( _audio_buf, 0, _audio_max );
+
+                    static constexpr uint32_t maxSampleCount = 48000;
+                    uint32_t bufferSize = (maxSampleCount*_audio_channels*
+                                           bitDepth)/8;
+
+                    // temporary buffer for 24 bit audio
+                    audiobuffer = new int8_t[ bufferSize ];
+                }
+            }
+        }
+
+        image_damage( image_damage() | kDamageData );
+        return true;
+    }
+
+    bool brawImage::finalize()
+    {
+        if ( audio )
+            audio->Release();
+        if ( clip )
+            clip->Release();
+        if ( codec )
+            codec->Release();
+
+        if ( factory )
+            factory->Release();
+        factory = nullptr;
+
+        delete [] audiobuffer;
+        audiobuffer = NULL;
+
+        init = false;
+
+        return true;
+    }
+
+
+    void brawImage::clear_cache()
+    {
+        SCOPED_LOCK( _mutex );
+        _images.clear();
+        image_damage( image_damage() | kDamageCache | kDamageContents );
+    }
+
+    CMedia::Cache brawImage::is_cache_filled( int64_t frame )
+    {
+        SCOPED_LOCK( _mutex );
+        bool ok = false;
+
+        // Check if video is already in video store
+        video_cache_t::iterator i = std::find_if( _images.begin(),
+                                                  _images.end(),
+                                                  EqualFunctor(frame) );
+        if ( i != _images.end() ) ok = true;
+
+        if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
+        return (CMedia::Cache) ok;
+    }
+
+
+    bool brawImage::frame( const int64_t f )
+    {
+
+        if ( Preferences::max_memory <= CMedia::memory_used )
+        {
+            if ( stopped() ) return false;
+            limit_video_store( f );
+            if ( has_audio() ) limit_audio_store( f );
+        }
+
+
+//  in ffmpeg, sizes are in bytes...
+#define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
+#define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
+#define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+        if (
+        _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
+        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
+        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+
+        {
+            return false;
+        }
+
+
+        if ( f < _frameStart )    _dts = _adts = _frameStart;
+        else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
+        else                      _dts = _adts = f;
+
+        AVPacket pkt;
+        av_init_packet( &pkt );
+        pkt.dts = pkt.pts = _dts;
+        pkt.size = 0;
+        pkt.data = NULL;
+
+        if ( ! is_cache_filled( _dts ) )
+        {
+            image_type_ptr canvas;
+            if ( fetch( canvas, _dts ) )
+            {
+                default_color_corrections();
+            }
+        }
+
+        _video_packets.push_back( pkt );
+
+        if ( has_audio() )
+        {
+            _audio_packets.push_back( pkt );
+        }
+
+
+        _expected = _dts + 1;
+        _expected_audio = _expected + _audio_offset;
+        return true;
+    }
+
+    void brawImage::copy_values()
+    {
+        _old_scale = _scale;
+    }
+
+    bool brawImage::fetch( mrv::image_type_ptr& canvas,
+                           const int64_t frame )
+    {
+        if ( frame < _frame_start || frame > _frame_end )
+            return false;
+
+        if ( _scale != _old_scale )
+        {
+            clear_cache();
+            copy_values();
+        }
+
+        BlackmagicRawResolutionScale s = blackmagicRawResolutionScaleEighth;
+        switch ( _scale )
+        {
+        case 0:
+            s = blackmagicRawResolutionScaleFull;
+            break;
+        case 1:
+            s = blackmagicRawResolutionScaleHalf;
+            break;
+        case 2:
+            s = blackmagicRawResolutionScaleQuarter;
+            break;
+        case 3:
+        default:
+            break;
+        }
+
+        HRESULT result;
+
+        CameraCodecCallback callback( this, canvas, frame, s );
+
+        result = codec->SetCallback(&callback);
+        if (result != S_OK)
+        {
+            LOG_ERROR( "Failed to set IBlackmagicRawCallback!" );
+            return false;
+        }
+
+        result = clip->CreateJobReadFrame(frame, &readJob);
+        if (result != S_OK)
+        {
+            LOG_ERROR( "Failed to create IBlackmagicRawJob!" );
+            return false;
+        }
+
+        result = readJob->Submit();
+        if (result != S_OK)
+        {
+            // submit has failed, the ReadComplete callback won't be called,
+            // release the job here instead
+            readJob->Release();
+            LOG_ERROR( "Failed to submit IBlackmagicRawJob!" );
+            return false;
+        }
+
+        codec->FlushJobs();
+
+
+        IBlackmagicRawFrame* f = callback.GetFrame();
+
+        if (f == nullptr)
+        {
+            LOG_ERROR( _("Failed to get IBlackmagicRawFrame!") );
+            return true;
+        }
+
+        IBlackmagicRawMetadataIterator* frameMetadataIterator = nullptr;
+        result = f->GetMetadataIterator(&frameMetadataIterator);
+        if (result != S_OK)
+        {
+            LOG_ERROR( _("Failed to get frame "
+                         "IBlackmagicRawMetadataIterator!") );
+            return true;
+        }
+
+        parse_metadata(frame, frameMetadataIterator);
+
+
+        return true;
+    }
+
+    bool brawImage::find_image( const int64_t frame )
+    {
+
+        if ( _right_eye && (stopped() || saving() ) )
+            _right_eye->find_image( frame );
+
+        assert0( frame != AV_NOPTS_VALUE );
+        if ( frame < _frame_start || frame > _frame_end )
+            return false;
+
+#ifdef DEBUG_VIDEO_PACKETS
+        debug_video_packets(frame, "find_image");
+#endif
+
+#ifdef DEBUG_VIDEO_STORES
+        debug_video_stores(frame, "find_image", true);
+#endif
+
+
+        _frame = frame;
+
+
+
+        {
+            SCOPED_LOCK( _mutex );
+
+            int64_t f = frame - _start_number;
+
+            video_cache_t::iterator end = _images.end();
+            video_cache_t::iterator i;
+
+            if ( playback() == kBackwards )
+            {
+                i = std::upper_bound( _images.begin(), end,
+                                      f, LessThanFunctor() );
+            }
+            else
+            {
+                i = std::lower_bound( _images.begin(), end,
+                                      f, LessThanFunctor() );
+            }
+
+            if ( i != end && *i )
+            {
+                _hires = *i;
+
+                int64_t distance = f - _hires->frame();
+
+
+                if ( distance > _hires->repeat() )
+                {
+                    int64_t first = (*_images.begin())->frame();
+                    video_cache_t::iterator end = std::max_element( _images.begin(),
+                                                                    _images.end() );
+                    int64_t last  = (*end)->frame();
+                    boost::uint64_t diff = last - first + 1;
+                    IMG_ERROR( _("Video Sync master frame ") << f
+                               << " != " << _hires->frame()
+                               << _(" video frame, cache ") << first << "-" << last
+                               << " (" << diff << _(") cache size: ") << _images.size()
+                               << " dts: " << _dts );
+                    //  debug_video_stores(frame);
+                    //  debug_video_packets(frame);
+                }
+            }
+            else
+            {
+                // Hmm... no close image was found.  If we have some images in
+                // cache, we choose the last one in it.  This avoids problems if
+                // the last frame is the one with problem.
+                // If not, we fail.
+
+                if ( ! _images.empty() )
+                {
+                    _hires = _images.back();
+
+                    uint64_t diff = abs(f - _hires->frame() );
+
+                    static short counter = 0;
+
+                    if ( _hires->frame() != f &&
+                         diff > 1 && diff < 10 && counter < 10 &&
+                         f <= _frameEnd )
+                    {
+                        ++counter;
+                        IMG_WARNING( _("find_image: frame ") << frame
+                                     << _(" not found, choosing ")
+                                     << _hires->frame()
+                                     << _(" instead") );
+                    }
+                    else
+                    {
+                        if ( diff == 0 ) counter = 0;
+                    }
+                }
+                else
+                {
+                    IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
+                    return false;
+                }
+            }
+
+
+
+            // Limit (clean) the video store as we play it
+            limit_video_store( f );
+
+            _video_pts   = f  / _fps; //av_q2d( get_video_stream()->avg_frame_rate );
+            _video_clock = double(av_gettime_relative()) / 1000000.0;
+
+            update_video_pts(this, _video_pts, 0, 0);
+
+
+#ifdef WIN32
+            BSTR timeCode;
+#elif LINUX
+            const char* timeCode = nullptr;
+#else
+#endif
+            HRESULT result = clip->GetTimecodeForFrame( frame, &timeCode );
+            if ( result != S_OK )
+            {
+                LOG_ERROR( _("Could not get timecode for frame ") << frame );
+            }
+
+#ifdef WIN32
+            _bstr_t tmp( timeCode, false );
+            const char* timecode( (const char*)tmp );
+#elif LINUX
+            const char* timecode = timeCode;
+#else
+#endif
+
+            Imf::TimeCode t = str2timecode( timecode );
+            if ( frame == start_frame() )
+            {
+                process_timecode( t );
+            }
+            Imf::TimeCodeAttribute attr( t );
+            _attrs[frame].insert( std::make_pair( "timecode", attr.copy() ) );
+
+            refresh();
+            image_damage( image_damage() | CMedia::kDamageTimecode );
+
+        }  // release lock
+
+
+        return true;
+    }
+
+    void brawImage::timed_limit_store( const int64_t frame )
+    {
+        uint64_t max_frames = max_image_frames();
+
+#undef timercmp
+# define timercmp(a, b, CMP)                    \
+        (((a).tv_sec == (b).tv_sec) ?           \
+         ((a).tv_usec CMP (b).tv_usec) :        \
+         ((a).tv_sec CMP (b).tv_sec))
+
+        struct customMore {
+            inline bool operator()( const timeval& a,
+                                    const timeval& b ) const
+                {
+                    return timercmp( a, b, > );
+                }
+        };
+
+        typedef std::multimap< timeval, video_cache_t::iterator,
+                               customMore > TimedSeqMap;
+        TimedSeqMap tmp;
+        {
+            video_cache_t::iterator  it = _images.begin();
+            video_cache_t::iterator end = _images.end();
+            for ( ; it != end; ++it )
+            {
+                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+            }
+        }
+
+        // For backwards playback, we consider _dts to not remove so
+        // many frames.
+        if ( playback() == kBackwards )
+        {
+            max_frames = frame + max_frames;
+            if ( _dts > frame ) max_frames = _dts + max_frames;
+        }
+
+
+        unsigned count = 0;
+        TimedSeqMap::iterator it = tmp.begin();
+        typedef std::vector< video_cache_t::iterator > IteratorList;
+        IteratorList iters;
+        for ( ; it != tmp.end(); ++it )
+        {
+            ++count;
+            if ( count > max_frames )
+            {
+                // Store this iterator to remove it later
+                iters.push_back( it->second );
+            }
+        }
+
+        if ( iters.empty() ) return;
+
+        // LOG_INFO( "iters #" << iters.size() );
+
+        _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                       IteratorMatch<IteratorList>( iters ) ),
+                       _images.end() );
+
+    }
+
+//
+// Limit the video store to approx. max frames images on each side.
+// We have to check both where frame is as well as where _dts is.
+//
+    void brawImage::limit_video_store(const int64_t frame)
+    {
+
+        if ( playback() == kForwards )
+            return timed_limit_store( frame );
+
+        SCOPED_LOCK( _mutex );
+
+        uint64_t max_frames = max_image_frames();
+
+        int64_t first, last;
+
+        switch( playback() )
+        {
+        case kBackwards:
+            first = frame - max_frames;
+            last  = frame + max_frames;
+            if ( _dts > last )   last  = _dts;
+            if ( _dts < first )  first = _dts;
+            break;
+        case kForwards:
+            first = frame - max_frames;
+            last  = frame + max_frames;
+            if ( _dts > last )   last  = _dts;
+            if ( _dts < first )  first = _dts;
+            break;
+        default:
+            first = frame - max_frames;
+            last  = frame + max_frames;
+            if ( _dts > last )   last = _dts;
+            if ( _dts < first ) first = _dts;
+            break;
+        }
+
+        if ( _images.empty() ) return;
+
+        _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                       NotInRangeFunctor( first, last ) ),
+                       _images.end() );
+
+
+    }
+
+    CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
+    {
+        audio_callback_time = av_gettime_relative();
+
+        if ( _audio_packets.is_loop_end() )
+        {
+            _audio_packets.pop_front();
+            return kDecodeLoopEnd;
+        }
+        else if ( _audio_packets.is_loop_start() )
+        {
+            _audio_packets.pop_front();
+            return kDecodeLoopStart;
+        }
+
+        if ( !_audio_packets.empty() )
+            _audio_packets.pop_front();
+
+        int64_t frame = f;
+
+        bool ok = in_audio_store( frame );
+        if ( ok ) return kDecodeOK;
+
+        HRESULT result;
+
+
+        unsigned int bytes_per_frame = audio_bytes_per_frame();
+
+        static constexpr uint32_t maxSampleCount = 48000;
+        uint32_t bufferSize = (maxSampleCount*_audio_channels*
+                               bitDepth)/8;
+
+        uint32_t startSample = (uint32_t) ( frame *
+                                            ( (double) frequency / _orig_fps ));
+
+
+        uint32_t samplesRead;
+        uint32_t bytesRead;
+
+        result = audio->GetAudioSamples(startSample,
+                                        audiobuffer,
+                                        bufferSize,
+                                        maxSampleCount,
+                                        &samplesRead,
+                                        &bytesRead);
+
+        if (result != S_OK)
+        {
+            IMG_ERROR( _("Could not get audio samples") );
+            return kDecodeMissingSamples;
+        }
+
+
+        int32_t* tmp = (int32_t*) ((int8_t*)_audio_buf + _audio_buf_used);
+
+        size_t j = 0, i = 0;
+        if ( bitDepth == 24 )
+        {
+            for ( size_t i = 0; i < bytesRead; i += 3, ++tmp )
+            {
+                uint32_t base = *((uint32_t*) ((uint8_t*)audiobuffer + i) );
+                AV_WN32A( tmp, (uint32_t)(base << 8) );
+            }
+        }
+        else
+        {
+            IMG_ERROR( _("Bitdepth to process is unknown") );
+            return kDecodeError;
+        }
+
+        _audio_buf_used += (bytesRead / 3) * 4;
+
+        CMedia::DecodeStatus got_audio = kDecodeMissingFrame;
+
+        if (samplesRead == 0 && _audio_buf_used == 0 ) return got_audio;
+
+        int64_t last = frame;
+        unsigned int index = 0;
+
+        if ( last == first_frame() || (stopped() /* || saving() */ ) )
+        {
+            if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
+            {
+                bytes_per_frame = _audio_buf_used;
+            }
+        }
+
+
+        // Split audio read into frame chunks
+        for (;;)
+        {
+
+            if ( bytes_per_frame > _audio_buf_used ) break;
+
+#ifdef DEBUG
+            if ( index + bytes_per_frame >= _audio_max )
+            {
+                std::cerr << "frame: " << frame << std::endl
+                          << "index: " << index << std::endl
+                          << "  bpf: " << bytes_per_frame << std::endl
+                          << " used: " << _audio_buf_used << std::endl
+                          << "  max: " << _audio_max << std::endl;
+                abort();
+            }
+#endif
+
+            index += store_audio( last,
+                                  (uint8_t*)_audio_buf + index,
+                                  bytes_per_frame );
+
+
+            if ( last >= frame ) got_audio = kDecodeOK;
+
+            assert( bytes_per_frame <= _audio_buf_used );
+            _audio_buf_used -= bytes_per_frame;
+            ++last;
+
+        }
+
+        if (_audio_buf_used > 0  )
+        {
+            //
+            // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
+            memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
+        }
+
+        return got_audio;
+    }
+
+    bool brawImage::has_changed()
+    {
+        if ( is_cache_filled( _frame ) )
+        {
+            if ( refetch( _frame ) )
+                find_image( _frame );
+        }
+        image_damage( image_damage() | kDamageCache | kDamageContents );
+        return true;
+    }
+
+    void brawImage::do_seek() {
+        // No need to set seek frame for right eye here
+        if ( _right_eye )  _right_eye->do_seek();
+
+        if ( saving() ) _seek_req = false;
+
+        bool got_video = !has_video();
+        bool got_audio = !has_audio();
+
+        if ( !got_audio || !got_video )
+        {
+            if ( !saving() && _seek_frame != _expected )
+                clear_packets();
+
+            if ( !saving() || _seek_frame == _expected )
+            {
+                if ( ! is_cache_filled( _seek_frame ) )
+                {
+                    image_type_ptr canvas;
+                    if ( fetch( canvas, _seek_frame ) )
+                    {
+                        default_color_corrections();
+                        find_image( _seek_frame );
+                    }
+                }
+                else
+                {
+                    find_image( _seek_frame );
+                }
+            }
+
+        }
+
+
+        // Seeking done, turn flag off
+        _seek_req = false;
+
+        if ( stopped() || saving() )
+        {
+
+            DecodeStatus status;
+            if ( has_audio() )
+            {
+                int64_t f = _seek_frame;
+                f += _audio_offset;
+                status = decode_audio( f );
+                if ( status > kDecodeOK )
+                    IMG_ERROR( _("Decode audio error: ")
+                               << decode_error( status )
+                               << _(" for frame ") << _seek_frame );
+
+                if ( !_audio_start )
+                    find_audio( _seek_frame + _audio_offset );
+                _audio_start = false;
+            }
+
+            // if ( has_video() || has_audio() )
+            // {
+            //     if ( !find_image( _seek_frame ) )
+            //         IMG_ERROR( _("Decode video error seek frame " )
+            //                    << _seek_frame );
+            // }
+
+            // Queue thumbnail for update
+            image_damage( image_damage() | kDamageThumbnail );
+        }
+
+    }
+
+
+}

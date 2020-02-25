@@ -491,6 +491,12 @@ bool ALSAEngine::open( const unsigned channels,
             case kS16MSB:
                 _pcm_format = SND_PCM_FORMAT_S16_BE;
                 break;
+            case kS24LSB:
+                _pcm_format = SND_PCM_FORMAT_S24_LE;
+                break;
+            case kS24MSB:
+                _pcm_format = SND_PCM_FORMAT_S24_BE;
+                break;
             case kS32LSB:
                 _pcm_format = SND_PCM_FORMAT_S32_LE;
                 break;

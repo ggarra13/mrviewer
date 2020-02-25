@@ -342,16 +342,6 @@ namespace mrv {
             frequency = clip->MetadataItemAsInt(RMD_SAMPLERATE);
             unsigned int samplesize = clip->MetadataItemAsInt(RMD_SAMPLE_SIZE);
             unsigned int channelmask = clip->MetadataItemAsInt(RMD_CHANNEL_MASK);
-            // transform the channel mask into channel count
-            // (SDK release 1.6 added clip->AudioChannelCount() function to
-            //  do this)
-            // size_t channels = 0U;
-
-            // for (size_t t = 0U; t < 4U; t++)
-            // {
-            //     if (channelmask & (1U << t))
-            //         channels++;
-            // }
 
             _audio_channels = (unsigned short)clip->AudioChannelCount();
             _total_samples = clip->AudioSampleCount();
@@ -366,7 +356,7 @@ namespace mrv {
             s.format = "s32be";
             s.language = _("und");
             s.start = 0;
-            s.duration = ( _frame_end - _frame_start + 1 ) / _orig_fps;
+            s.duration = _total_samples / (double) frequency;
 
             _audio_info.push_back( s );
             _audio_index = _audio_info.size() - 1;
@@ -1130,7 +1120,8 @@ namespace mrv {
             return kDecodeLoopStart;
         }
 
-        _audio_packets.pop_front();
+        if ( !_audio_packets.empty() )
+            _audio_packets.pop_front();
 
         int64_t frame = f;
 
@@ -1140,11 +1131,10 @@ namespace mrv {
 
         // make a copy for AlignedMalloc (it will change it)
         unsigned int bytes_per_frame = audio_bytes_per_frame();
-        uint64_t encsamples = _total_samples / (_frame_end - _frame_start + 1);
 
         size_t samplesInBuffer = bufferSize / ( _audio_channels * 4U );
 
-        unsigned long long startSample = frame * encsamples;
+        unsigned long long startSample = frame * ( (double) frequency / _orig_fps );
 
         clip->DecodeAudio( startSample, &samplesInBuffer, audiobuffer,
                            bufferSize );
@@ -1152,7 +1142,7 @@ namespace mrv {
         if ( samplesInBuffer == 0 ) return kDecodeMissingSamples;
 
         unsigned j = 0;
-        int32_t* tmp = (int32_t*) _audio_buf;
+        int32_t* tmp = (int32_t*) _audio_buf + _audio_buf_used;
 
         samplesInBuffer *= _audio_channels;
 

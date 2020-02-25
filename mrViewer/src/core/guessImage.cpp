@@ -37,6 +37,7 @@
 #include "shmapImage.h"
 #include "pxrzImage.h"
 #include "R3dImage.h"
+#include "brawImage.h"
 #include "wandImage.h"
 #include "aviImage.h"
 #include "mrvColorBarsImage.h"
@@ -86,6 +87,7 @@ ImageTypes image_filetypes[] =
     { mapImage::test,   NULL,            mapImage::get },
     //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
     { picImage::test,   NULL,            picImage::get },
+    { NULL,             brawImage::test,           brawImage::get },
     { aviImage::test,   NULL,            aviImage::get },
     // { NULL,             rawImage::test,  rawImage::get },
     { NULL,             oiioImage::test, oiioImage::get },
