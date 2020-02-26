@@ -1200,9 +1200,12 @@ namespace mrv {
             }
 #endif
 
-            index += store_audio( last,
-                                  (uint8_t*)_audio_buf + index,
-                                  bytes_per_frame );
+            uint32_t skip = store_audio( last,
+                                         (uint8_t*)_audio_buf + index,
+                                         bytes_per_frame );
+            if ( skip == 0 ) break;
+
+            index += skip;
 
 
             if ( last >= frame ) got_audio = kDecodeOK;
