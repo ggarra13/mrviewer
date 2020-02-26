@@ -48,8 +48,10 @@ SendMessage $hListCtl ${LVM_INSERTCOLUMN} 0x7fffffff $9
 System::Call '*$9(i,i,i,t "Description",i,i 1)' 
 SendMessage $hListCtl ${LVM_INSERTCOLUMN} 0x7fffffff $9 
 System::Free $9 
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".bmp" "Windows/OS2 Bitmap" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".au" "Solaris Audio file" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".bit" "mental ray Bitmap" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".bmp" "Windows/OS2 Bitmap" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".braw" "Blackmagic RAW Movie" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".cin" "Kodak Cineon" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ct" "mental ray contour" 1 
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dds" "DirectDraw Surface" 1
@@ -111,10 +113,9 @@ System::Free $9
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".webm" "WebM Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".wmv" "Windows Media Video" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".y4m" "YUV4MPEG2 Format" 1
-
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mp3" "MPEG1/2 Audio Layer III" 0
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ogg" "Ogg Audio Format" 0
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".vorbis" "Ogg Vorbis Audio Format" 0
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mp3" "MPEG1/2 Audio Layer III" 0
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".wav" "Waveform Audio Format" 0
 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 0 -1 
