@@ -47,11 +47,11 @@
 #: gui/mrvHotkey.cpp:80 gui/mrvHotkey.cpp:82 gui/mrvHotkey.cpp:83
 #: gui/mrvHotkey.cpp:84 gui/mrvHotkey.cpp:87 gui/mrvHotkey.cpp:89
 #: gui/mrvHotkey.cpp:90 gui/mrvHotkey.cpp:494 gui/mrvColorInfo.cpp:435
-#: gui/mrvColorInfo.cpp:759 gui/mrvFileRequester.cpp:152
-#: gui/mrvFileRequester.cpp:179 gui/mrvFileRequester.cpp:230
-#: gui/mrvFileRequester.cpp:588 gui/mrvFileRequester.cpp:644
-#: gui/mrvFileRequester.cpp:654 gui/mrvFileRequester.cpp:770
-#: gui/mrvFileRequester.cpp:823 gui/mrvFileRequester.cpp:852
+#: gui/mrvColorInfo.cpp:759 gui/mrvFileRequester.cpp:178
+#: gui/mrvFileRequester.cpp:205 gui/mrvFileRequester.cpp:257
+#: gui/mrvFileRequester.cpp:616 gui/mrvFileRequester.cpp:672
+#: gui/mrvFileRequester.cpp:682 gui/mrvFileRequester.cpp:788
+#: gui/mrvFileRequester.cpp:831 gui/mrvFileRequester.cpp:860
 #: gui/mrvImageView.cpp:1156 gui/mrvImageView.cpp:1184
 #: gui/mrvImageView.cpp:1447 gui/mrvImageView.cpp:2910
 #: gui/mrvImageView.cpp:3222 gui/mrvImageView.cpp:3268
@@ -115,7 +115,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-02-26 00:10-0300\n"
+"POT-Creation-Date: 2020-02-26 18:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -4941,7 +4941,7 @@ msgstr ""
 
 #: core/guessImage.cpp:162 core/guessImage.cpp:164 core/hdrImage.cpp:160
 #: core/hdrImage.cpp:281 core/mrvServer.cpp:1194 core/mrvServer.cpp:1295
-#: gui/mrvFileRequester.cpp:564 gui/mrvFileRequester.cpp:724
+#: gui/mrvFileRequester.cpp:592 gui/mrvFileRequester.cpp:752
 #: gui/mrvImageView.cpp:884 gui/mrvImageInformation.cpp:1393
 #: gui/mrvPreferences.cpp:512 video/mrvGLLut3d.cpp:831
 #: video/mrvGLLut3d.cpp:1046 video/mrvGLLut3d.cpp:1076
@@ -6346,7 +6346,7 @@ msgstr ""
 msgid "%s/%s.%s"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:441
+#: gui/mrvFileRequester.cpp:469
 #, c-format
 msgid "%s/SYSTEM32/spool/drivers/color"
 msgstr ""
@@ -7144,10 +7144,6 @@ msgstr ""
 msgid ")\tc #FFE67D"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:349
-msgid ")\n"
-msgstr ""
-
 #: core/aviImage.cpp:3945
 msgid ") "
 msgstr ""
@@ -7815,10 +7811,8 @@ msgid "+yzAfBiiiiiiiCDDvvv+"
 msgstr ""
 
 #: core/iffImage.cpp:536 core/iffImage.cpp:537 core/mapImage.cpp:224
-#: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:353
-#: gui/mrvFileRequester.cpp:354 gui/mrvFileRequester.cpp:759
-#: gui/mrvFileRequester.cpp:760 gui/mrvFileRequester.cpp:811
-#: gui/mrvFileRequester.cpp:812 video/mrvGLEngine.cpp:3217
+#: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:383
+#: gui/mrvFileRequester.cpp:384 video/mrvGLEngine.cpp:3217
 #: video/mrvGLEngine.cpp:3225
 msgid ","
 msgstr ""
@@ -9675,7 +9669,7 @@ msgstr ""
 msgid "/tmp/"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:445
+#: gui/mrvFileRequester.cpp:473
 msgid "/usr/share/color/icc"
 msgstr ""
 
@@ -13002,7 +12996,7 @@ msgstr ""
 msgid "ACESclip."
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:629
+#: gui/mrvFileRequester.cpp:657
 msgid "ACEScsc,IDT"
 msgstr ""
 
@@ -13196,10 +13190,9 @@ msgstr "Algoritmo cuando no usa OCIO"
 msgid "All"
 msgstr "Todo"
 
-#
-#: gui/mrvFileRequester.cpp:352
-msgid "All\t*.{"
-msgstr "Todo\t*.{"
+#: gui/mrvFileRequester.cpp:382
+msgid "All (*.{"
+msgstr "Todos (*.{"
 
 #: gui/FLU/Flu_File_Chooser.cpp:109
 msgid "All Files (*)"
@@ -13216,10 +13209,6 @@ msgstr "Todas las Capas"
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:203
 msgid "All Possible"
 msgstr ""
-
-#: gui/mrvFileRequester.cpp:758 gui/mrvFileRequester.cpp:810
-msgid "All Recognized\t*.{"
-msgstr "Todos los Reconocidos\t*.{"
 
 #: gui/mrvVersion.cpp:576
 msgid "All rights reserved."
@@ -13464,7 +13453,7 @@ msgstr "Proporción de Aspecto del clip"
 msgid "Attach Audio File"
 msgstr "Asociar Archivo de Audio"
 
-#: gui/mrvFileRequester.cpp:542
+#: gui/mrvFileRequester.cpp:570
 msgid "Attach ICC Profile"
 msgstr "Agregar Perfil ICC"
 
@@ -13564,14 +13553,13 @@ msgstr "Audio: %<PRId64> "
 msgid "AudioVolume"
 msgstr "Volumen de Audio"
 
-#: gui/mrvFileRequester.cpp:358 gui/mrvFileRequester.cpp:523
-#: gui/mrvFileRequester.cpp:766 gui/mrvFileRequester.cpp:818
-msgid "Audios\t*.{"
-msgstr "Audios\t*.{"
-
 #: core/CMedia_audio.cpp:1638 core/aviImage.cpp:1150
 msgid "Audios #"
 msgstr "Audios #"
+
+#: gui/mrvFileRequester.cpp:378 gui/mrvFileRequester.cpp:551
+msgid "Audios (*.{"
+msgstr "Audios (*.{"
 
 #: gui/FLU/Flu_File_Chooser.cpp:3390
 msgid "Aug"
@@ -14267,12 +14255,12 @@ msgid "CTL scripts"
 msgstr "Escritos de CTL"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1976
-#: gui/mrvCTLBrowser.cpp:80 gui/mrvFileRequester.cpp:469
+#: gui/mrvCTLBrowser.cpp:80 gui/mrvFileRequester.cpp:497
 #: gui/mrvPreferences.cpp:893
 msgid "CTL_MODULE_PATH"
 msgstr "CTL_MODULE_PATH"
 
-#: gui/mrvFileRequester.cpp:473 gui/mrvPreferences.cpp:917
+#: gui/mrvFileRequester.cpp:501 gui/mrvPreferences.cpp:917
 msgid "CTL_MODULE_PATH="
 msgstr "CTL_MODULE_PATH"
 
@@ -14671,9 +14659,9 @@ msgstr "Información de Area de Color"
 #
 #
 #
-#: gui/mrvFileRequester.cpp:449
-msgid "Color Profiles\t*.{"
-msgstr "Perfiles ICC\t*.{"
+#: gui/mrvFileRequester.cpp:477
+msgid "Color Profiles (*.{"
+msgstr "Perfiles ICC (*.{"
 
 #: gui/mrvImageInformation.cpp:2714
 msgid "Color Range"
@@ -18413,7 +18401,7 @@ msgstr "Intención de Render de ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/mrvFileRequester.cpp:435
+#: gui/mrvFileRequester.cpp:463
 msgid "ICC_PROFILES"
 msgstr ""
 
@@ -18427,7 +18415,7 @@ msgid "ICS "
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:846
-#: core/mrvServer.cpp:1231 gui/mrvFileRequester.cpp:383
+#: core/mrvServer.cpp:1231 gui/mrvFileRequester.cpp:411
 #: video/mrvGLLut3d.cpp:1314
 #, c-format
 msgid "ICS \"%s\""
@@ -18441,7 +18429,7 @@ msgstr ""
 msgid "IDT"
 msgstr "Encajar"
 
-#: core/mrvServer.cpp:1238 gui/mrvFileRequester.cpp:632
+#: core/mrvServer.cpp:1238 gui/mrvFileRequester.cpp:660
 #, c-format
 msgid "IDT \"%s\""
 msgstr ""
@@ -18858,10 +18846,10 @@ msgstr "Grabando ImageMagick"
 msgid "Images"
 msgstr "Imágenes"
 
-#: gui/mrvFileRequester.cpp:350 gui/mrvFileRequester.cpp:356
-#: gui/mrvFileRequester.cpp:762 gui/mrvFileRequester.cpp:814
-msgid "Images\t*.{"
-msgstr "Imagenes\t*.{"
+#: gui/mrvFileRequester.cpp:380 gui/mrvFileRequester.cpp:784
+#: gui/mrvFileRequester.cpp:826
+msgid "Images (*.{"
+msgstr "Imágenes (*.{"
 
 #: core/guessImage.cpp:192
 msgid ""
@@ -19403,12 +19391,12 @@ msgstr ""
 msgid "LMT"
 msgstr "LUT"
 
-#: core/mrvServer.cpp:1245 gui/mrvFileRequester.cpp:585
+#: core/mrvServer.cpp:1245 gui/mrvFileRequester.cpp:613
 #, c-format
 msgid "LMT %zd \"%s\""
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:601
+#: gui/mrvFileRequester.cpp:629
 msgid "LMT,ACEScsc"
 msgstr ""
 
@@ -19598,15 +19586,15 @@ msgstr "Modo de Listado"
 msgid "Load"
 msgstr "Cargar"
 
-#: gui/mrvFileRequester.cpp:526
+#: gui/mrvFileRequester.cpp:554
 msgid "Load Audio"
 msgstr "Cargar Audio"
 
-#: gui/mrvFileRequester.cpp:308
+#: gui/mrvFileRequester.cpp:336
 msgid "Load Directory"
 msgstr "Cargar Carpeta"
 
-#: gui/mrvFileRequester.cpp:364
+#: gui/mrvFileRequester.cpp:392
 msgid "Load Image"
 msgstr "Abrir Imagen"
 
@@ -19619,20 +19607,20 @@ msgstr "Abrir Imagen"
 msgid "Load Image and try again idx #"
 msgstr "Abrir Imagen"
 
-#: gui/mrvFileRequester.cpp:737
+#: gui/mrvFileRequester.cpp:765
 msgid "Load Monitor Profile"
 msgstr "Perfil Icc del Monitor"
 
-#: gui/mrvFileRequester.cpp:366
+#: gui/mrvFileRequester.cpp:394
 msgid "Load Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
 #
-#: gui/mrvFileRequester.cpp:664
+#: gui/mrvFileRequester.cpp:692
 msgid "Load OCIO Config"
 msgstr "Cargar Configuracion de OCIO"
 
-#: gui/mrvFileRequester.cpp:285
+#: gui/mrvFileRequester.cpp:313
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
@@ -19645,11 +19633,11 @@ msgstr "Cargar secuencia en Drag&&Drop"
 msgid "Load Sequence on File Association & CommandLine"
 msgstr "Cargar Secuencia en Asociación de Archivo"
 
-#: gui/mrvFileRequester.cpp:506
+#: gui/mrvFileRequester.cpp:534
 msgid "Load Subtitle"
 msgstr "Cargar Subtítulo"
 
-#: gui/mrvFileRequester.cpp:682
+#: gui/mrvFileRequester.cpp:710
 msgid "Load XML Clip Metadata"
 msgstr "Cargar Clip XML de Metadatos"
 
@@ -20381,10 +20369,9 @@ msgstr ""
 "Este seteo por ello ayuda a cachear menos imágenes en memoria pero con una "
 "calidad superior."
 
-#: gui/mrvFileRequester.cpp:360 gui/mrvFileRequester.cpp:764
-#: gui/mrvFileRequester.cpp:816
-msgid "Movies\t*.{"
-msgstr "Peliculas\t*.{"
+#: gui/mrvFileRequester.cpp:388
+msgid "Movies (*.{"
+msgstr "Películas (*.{"
 
 #: gui/mrvHotkey.cpp:436
 msgid "Multiply"
@@ -21013,9 +21000,9 @@ msgstr "Espacio de Color de Entrada de OCIO"
 msgid "OCIO View"
 msgstr "Vista OCIO"
 
-#: gui/mrvFileRequester.cpp:662
-msgid "OCIO config\t*.{"
-msgstr "Configuracion de OCIO\t*.{"
+#: gui/mrvFileRequester.cpp:690
+msgid "OCIO config (*.{"
+msgstr "Configuracion de OCIO (*.{"
 
 #
 #: gui/mrvPreferences.cpp:1695
@@ -21073,12 +21060,12 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:425
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1737
-#: core/mrvServer.cpp:602 gui/mrvFileRequester.cpp:721
+#: core/mrvServer.cpp:602 gui/mrvFileRequester.cpp:749
 #: gui/mrvPreferences.cpp:995 gui/mrvPreferences.cpp:2372
 msgid "ODT"
 msgstr "ODT"
 
-#: gui/mrvFileRequester.cpp:724
+#: gui/mrvFileRequester.cpp:752
 msgid "ODT \""
 msgstr ""
 
@@ -22346,7 +22333,7 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RRT"
 msgstr "RT"
 
-#: gui/mrvFileRequester.cpp:575
+#: gui/mrvFileRequester.cpp:603
 msgid "RRT,RT"
 msgstr ""
 
@@ -22360,7 +22347,7 @@ msgstr "RT"
 msgid "RT "
 msgstr "RT"
 
-#: gui/mrvFileRequester.cpp:564
+#: gui/mrvFileRequester.cpp:592
 msgid "RT \""
 msgstr ""
 
@@ -22531,11 +22518,10 @@ msgstr "Nombre del Codec"
 msgid "Reels"
 msgstr "Carretes"
 
-#: gui/mrvFileRequester.cpp:283 gui/mrvFileRequester.cpp:348
-#: gui/mrvFileRequester.cpp:756 gui/mrvFileRequester.cpp:808
-#: gui/mrvFileRequester.cpp:848
-msgid "Reels\t*.{"
-msgstr "Carretes\t*.{"
+#: gui/mrvFileRequester.cpp:311 gui/mrvFileRequester.cpp:376
+#: gui/mrvFileRequester.cpp:856
+msgid "Reels (*.{"
+msgstr "Carretes (*.{"
 
 #: core/wandImage.cpp:556
 msgid "Reference Date"
@@ -23041,7 +23027,7 @@ msgstr "Grabar Clip XML de Metadatos"
 msgid "Save GL Snapshot"
 msgstr "Grabar Instantánea de Opengl"
 
-#: gui/mrvHotkey.cpp:287 gui/mrvFileRequester.cpp:754
+#: gui/mrvHotkey.cpp:287 gui/mrvFileRequester.cpp:782
 msgid "Save Image"
 msgstr "Grabar Imagen"
 
@@ -23068,15 +23054,15 @@ msgstr "Grabar Configuracion de OCIO"
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvHotkey.cpp:286 gui/mrvFileRequester.cpp:851
+#: gui/mrvHotkey.cpp:286 gui/mrvFileRequester.cpp:859
 msgid "Save Reel"
 msgstr "Grabar Carrete"
 
-#: gui/mrvHotkey.cpp:289 gui/mrvFileRequester.cpp:821
+#: gui/mrvHotkey.cpp:289 gui/mrvFileRequester.cpp:829
 msgid "Save Sequence"
 msgstr "Grabar Secuencia"
 
-#: gui/mrvFileRequester.cpp:705
+#: gui/mrvFileRequester.cpp:733
 msgid "Save XML Clip Metadata"
 msgstr "Grabar Clip XML de Metadatos"
 
@@ -23752,9 +23738,9 @@ msgstr "Subtítulo/Pista #%d - %s"
 msgid "Subtitles"
 msgstr "Subtítulos"
 
-#: gui/mrvFileRequester.cpp:503
-msgid "Subtitles\t*.{"
-msgstr "Subtitulos\t*.{"
+#: gui/mrvFileRequester.cpp:531
+msgid "Subtitles (*.{"
+msgstr "Subtitulos (*.{"
 
 #: gui/mrvImageView.cpp:1121
 msgid "Subtitles are only valid on video files"
@@ -25734,7 +25720,7 @@ msgstr ""
 msgid "WGL_NV_video_out"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:442
+#: gui/mrvFileRequester.cpp:470
 msgid "WINDIR"
 msgstr ""
 
@@ -26343,9 +26329,9 @@ msgstr ""
 msgid "X:"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:679 gui/mrvFileRequester.cpp:702
-msgid "XML Clip Metadata\t*.{"
-msgstr "Clip XML de Metadatos\t*.{"
+#: gui/mrvFileRequester.cpp:707 gui/mrvFileRequester.cpp:730
+msgid "XML Clip Metadata (*.{"
+msgstr "Clip XML de Metadatos (*.{"
 
 #: core/aviImage.cpp:398
 msgid "XPDS"
@@ -34070,7 +34056,7 @@ msgstr ""
 msgid "|;"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:114 gui/mrvFileRequester.cpp:284
+#: gui/mrvHotkey.cpp:114
 msgid "}"
 msgstr ""
 
@@ -34120,17 +34106,6 @@ msgstr ""
 msgid "}\tc #FFD48E"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:351 gui/mrvFileRequester.cpp:355
-#: gui/mrvFileRequester.cpp:357 gui/mrvFileRequester.cpp:359
-#: gui/mrvFileRequester.cpp:361 gui/mrvFileRequester.cpp:450
-#: gui/mrvFileRequester.cpp:504 gui/mrvFileRequester.cpp:524
-#: gui/mrvFileRequester.cpp:663 gui/mrvFileRequester.cpp:680
-#: gui/mrvFileRequester.cpp:703 gui/mrvFileRequester.cpp:757
-#: gui/mrvFileRequester.cpp:761 gui/mrvFileRequester.cpp:763
-#: gui/mrvFileRequester.cpp:765 gui/mrvFileRequester.cpp:767
-#: gui/mrvFileRequester.cpp:809 gui/mrvFileRequester.cpp:813
-#: gui/mrvFileRequester.cpp:815 gui/mrvFileRequester.cpp:817
-#: gui/mrvFileRequester.cpp:819 gui/mrvFileRequester.cpp:849
 #: video/mrvGLEngine.cpp:3460 video/mrvGLEngine.cpp:3477
 msgid "}\n"
 msgstr ""
@@ -34187,6 +34162,23 @@ msgstr ""
 
 #: gui/FLU/flu_pixmaps.cpp:1405
 msgid "}      c #94C67B"
+msgstr ""
+
+#: gui/mrvFileRequester.cpp:312 gui/mrvFileRequester.cpp:478
+#: gui/mrvFileRequester.cpp:552 gui/mrvFileRequester.cpp:691
+#: gui/mrvFileRequester.cpp:708 gui/mrvFileRequester.cpp:731
+msgid "})"
+msgstr ""
+
+#: gui/mrvFileRequester.cpp:377 gui/mrvFileRequester.cpp:379
+#: gui/mrvFileRequester.cpp:381 gui/mrvFileRequester.cpp:385
+#: gui/mrvFileRequester.cpp:389 gui/mrvFileRequester.cpp:785
+#: gui/mrvFileRequester.cpp:827
+msgid "})\t"
+msgstr ""
+
+#: gui/mrvFileRequester.cpp:532 gui/mrvFileRequester.cpp:857
+msgid "})\n"
 msgstr ""
 
 #: gui/FLU/flu_file_chooser_pixmaps.cpp:228
@@ -34384,6 +34376,25 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:759
 msgid "~/"
 msgstr ""
+
+#~ msgid "Audios\t*.{"
+#~ msgstr "Audios\t*.{"
+
+#~ msgid "All Recognized\t*.{"
+#~ msgstr "Todos los Reconocidos\t*.{"
+
+#~ msgid "Images\t*.{"
+#~ msgstr "Imagenes\t*.{"
+
+#~ msgid "Movies\t*.{"
+#~ msgstr "Peliculas\t*.{"
+
+#~ msgid "Reels\t*.{"
+#~ msgstr "Carretes\t*.{"
+
+#
+#~ msgid "All\t*.{"
+#~ msgstr "Todo\t*.{"
 
 #
 #, fuzzy
