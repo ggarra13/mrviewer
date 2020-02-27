@@ -233,6 +233,7 @@ protected:
     size_t           maxAudioBlockSize;
     size_t           adjusted;
     uint8_t*         audiobuffer;
+    bool             audioinit;
     unsigned long long _total_samples;
 public:
     static bool init;

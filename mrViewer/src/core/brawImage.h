@@ -138,6 +138,7 @@ protected:
     uint32_t bitDepth;
 
     int8_t* audiobuffer;
+    bool    audioinit;
 
     static IBlackmagicRawFactory* factory;
     IBlackmagicRaw* codec;
