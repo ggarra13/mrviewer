@@ -117,6 +117,8 @@ public:
     virtual bool find_image( const int64_t frame );
     virtual void do_seek();
 
+    virtual void audio_stream( int idx );
+
     virtual DecodeStatus decode_audio( int64_t& frame );
 
     void timed_limit_store( const int64_t frame );

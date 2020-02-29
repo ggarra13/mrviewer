@@ -298,6 +298,8 @@ int                 Preferences::debug = 0;
 std::string         Preferences::tempDir = "/usr/tmp/";
 
 
+int Preferences::R3dScale  = 4;
+int Preferences::BRAWScale = 3;
 
 int   Preferences::bgcolor;
 int   Preferences::textcolor;
@@ -886,6 +888,15 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsOpenEXRDWACompression->value( tmpF );
 
 
+    Fl_Preferences red3d( base, "red3d" );
+    red3d.get( "proxy_scale", tmp, 4 );   // 1:16 default
+    R3dScale = tmp;
+    uiPrefs->uiPrefsR3DScale->value( tmp );
+
+    Fl_Preferences braw( base, "braw" );
+    braw.get( "proxy_scale", tmp, 3 );   // 1:8 default
+    BRAWScale = tmp;
+    uiPrefs->uiPrefsBRAWScale->value( tmp );
 
     //
     // Get environment preferences (LUTS)
@@ -2069,6 +2080,10 @@ void Preferences::run( ViewerUI* main )
     tmpF = (float) main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
     exrImage::_default_dwa_compression = tmpF;
 
+    R3dScale = main->uiPrefs->uiPrefsR3DScale->value();
+    BRAWScale = main->uiPrefs->uiPrefsBRAWScale->value();
+
+
     DBG3;
     bool b = (bool)main->uiPrefs->uiPrefsAllLayers->value();
     CMedia::all_layers( b );
@@ -2458,6 +2473,12 @@ void Preferences::save()
                  (int) uiPrefs->uiPrefsOpenEXRCompression->value() );
     openexr.set( "dwa_compression",
                  uiPrefs->uiPrefsOpenEXRDWACompression->value() );
+
+    Fl_Preferences red3d( base, "red3d" );
+    red3d.set( "proxy_scale", (int) uiPrefs->uiPrefsR3DScale->value() );
+
+    Fl_Preferences braw( base, "braw" );
+    braw.set( "proxy_scale", (int) uiPrefs->uiPrefsBRAWScale->value() );
 
     //
     // Hotkeys

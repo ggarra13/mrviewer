@@ -1467,12 +1467,14 @@ static void change_scale_cb( Fl_Button* w, ImageInformation* info )
     R3dImage* img = dynamic_cast<R3dImage*>( info->get_image() );
     if ( !img ) return;
 
-    int v = 3;
+    int v = 4;
 
     std::string l = w->label();
     if ( l == "1:1" ) v = 0;
     else if ( l == "1:2" ) v = 1;
     else if ( l == "1:4" ) v = 2;
+    else if ( l == "1:8" ) v = 3;
+    else if ( l == "1:16" ) v = 4;
 
     img->scale( v );
     img->refetch( img->frame() );
@@ -1499,6 +1501,7 @@ static void change_scale_braw_cb( Fl_Button* w, ImageInformation* info )
     if ( l == "1:1" ) v = 0;
     else if ( l == "1:2" ) v = 1;
     else if ( l == "1:4" ) v = 2;
+    else if ( l == "1:8" ) v = 3;
 
     img->scale( v );
     img->refetch( img->frame() );
@@ -2896,7 +2899,7 @@ void ImageInformation::fill_data()
         if ( braw )
         {
             add_scale( _("Image Scale"), _("Proxy image scale"), braw->scale(),
-                       (Fl_Callback*)change_scale_braw_cb );
+                       4, (Fl_Callback*)change_scale_braw_cb );
         }
 
         R3dImage* r3d = dynamic_cast< R3dImage* >( img );
@@ -2904,7 +2907,7 @@ void ImageInformation::fill_data()
         if ( r3d )
         {
             add_scale( _("Image Scale"), _("Proxy image scale"), r3d->scale(),
-                       (Fl_Callback*)change_scale_cb );
+                       5, (Fl_Callback*)change_scale_cb );
 
             stringArray options;
             std::string content;
@@ -3658,6 +3661,7 @@ void ImageInformation::add_button( const char* name,
 void ImageInformation::add_scale( const char* name,
                                   const char* tooltip,
                                   int pressed,
+                                  int num_scales,
                                   Fl_Callback* callback )
 {
     Fl_Color colA = get_title_color();
@@ -3679,36 +3683,46 @@ void ImageInformation::add_scale( const char* name,
 
     g = new Fl_Group( kMiddle, Y, w() - kMiddle, hh );
     {
-        int w4 = w() - kMiddle;
-        w4 /= 4;
-        Fl_Button* widget = new Fl_Button( kMiddle, Y, w4, hh );
+        int w5 = w() - kMiddle;
+        w5 /= num_scales;
+        Fl_Button* widget = new Fl_Button( kMiddle, Y, w5, hh );
         widget->tooltip( tooltip );
         widget->copy_label( _("1:1") );
         if ( pressed == 0 ) widget->value(1);
         else widget->value(0);
         if ( callback )
             widget->callback( (Fl_Callback*)callback, (void*)this );
-        widget = new Fl_Button( kMiddle+w4, Y, w4, hh );
+        widget = new Fl_Button( kMiddle+w5, Y, w5, hh );
         widget->tooltip( tooltip );
         widget->copy_label( _("1:2") );
         if ( pressed == 1 ) widget->value(1);
         else widget->value(0);
         if ( callback )
             widget->callback( (Fl_Callback*)callback, (void*)this );
-        widget = new Fl_Button( kMiddle+w4*2, Y, w4, hh );
+        widget = new Fl_Button( kMiddle+w5*2, Y, w5, hh );
         widget->tooltip( tooltip );
         widget->copy_label( _("1:4") );
         if ( pressed == 2 ) widget->value(1);
         else widget->value(0);
         if ( callback )
             widget->callback( (Fl_Callback*)callback, (void*)this );
-        widget = new Fl_Button( kMiddle+w4*3, Y, w4, hh );
+        widget = new Fl_Button( kMiddle+w5*3, Y, w5, hh );
         widget->tooltip( tooltip );
         widget->copy_label( _("1:8") );
         if ( pressed == 3 ) widget->value(1);
         else widget->value(0);
         if ( callback )
             widget->callback( (Fl_Callback*)callback, (void*)this );
+        if ( num_scales > 4 )
+        {
+            widget = new Fl_Button( kMiddle+w5*4, Y, w5, hh );
+            widget->tooltip( tooltip );
+            widget->copy_label( _("1:16") );
+            if ( pressed == 4 ) widget->value(1);
+            else widget->value(0);
+            if ( callback )
+                widget->callback( (Fl_Callback*)callback, (void*)this );
+        }
         g->end();
     }
     m_curr->add( g );

@@ -118,7 +118,8 @@ protected:
                      Fl_Callback* callback2 = NULL );
 
     void add_scale( const char* name, const char* tooltip,
-                    int pressed, Fl_Callback* callback = NULL );
+                    int pressed, int num_scales,
+                    Fl_Callback* callback = NULL );
 
     void add_icc( const char* name, const char* tooltip,
                   const char* content,

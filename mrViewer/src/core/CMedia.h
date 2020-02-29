@@ -1178,7 +1178,7 @@ public:
         return _subtitle_index;
     }
 
-    void audio_stream( int idx );
+    virtual void audio_stream( int idx );
 
     inline int audio_stream() const
     {

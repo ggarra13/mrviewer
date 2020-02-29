@@ -97,6 +97,8 @@ public:
     static int textcolor;
     static int selectioncolor;
     static int selectiontextcolor;
+    static int R3dScale;
+    static int BRAWScale;
 
     static int64_t max_memory;
 
