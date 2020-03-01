@@ -1541,6 +1541,7 @@ namespace mrv {
         CMedia::audio_stream( idx );
         if ( idx < 0 ) return;
 
+        _audio_channels = (unsigned short) clip->AudioChannelCount();
         _audio_format = AudioEngine::kS32LSB;
     }
 }

@@ -1331,6 +1331,14 @@ namespace mrv {
         CMedia::audio_stream( idx );
         if ( idx < 0 ) return;
 
+        uint32_t channelCount;
+        HRESULT result = audio->GetAudioChannelCount(&channelCount);
+        if (result != S_OK)
+        {
+            IMG_ERROR( _("Failed to get Audio Channel Count!") );
+            return;
+        }
+        _audio_channels = channelCount;
         _audio_format = AudioEngine::kS32LSB;
     }
 

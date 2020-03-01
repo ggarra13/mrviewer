@@ -1119,12 +1119,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-    _audio_channels = (unsigned short) ctx->channels;
 
 
     if ( ctx->sample_fmt != fmt  ||
          unsigned(ctx->channels) != _audio_channels )
     {
+        _audio_channels = (unsigned short) ctx->channels;
         if (!forw_ctx)
         {
             char buf[256];
@@ -1568,6 +1568,7 @@ void CMedia::audio_stream( int idx )
         _audio_packets.clear();
         if ( forw_ctx ) swr_free( &forw_ctx );
         forw_ctx = NULL;
+        _audio_channels = 0;
         _audio_format = _audio_engine->default_format();
     }
 
