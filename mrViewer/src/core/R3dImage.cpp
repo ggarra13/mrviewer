@@ -213,8 +213,6 @@ namespace mrv {
         info.start = 0;
         info.duration = (double)(_frame_end - _frame_start) /
                         (double) _fps;
-        info.language = _("und");
-        info.disposition = _("default");
         _video_info.push_back( info );
 
         if ( _hdr )
@@ -360,7 +358,6 @@ namespace mrv {
         s.bitrate = frequency * _audio_channels * samplesize;
         s.format = "s32be";
         s.language = _("und");
-        s.disposition = _("default");
         s.start = 0;
         s.duration = _total_samples / (double) frequency;
 
@@ -949,6 +946,7 @@ namespace mrv {
 
     void R3dImage::timed_limit_store( const int64_t frame )
     {
+        uint64_t max_frames = max_image_frames();
 
 #undef timercmp
 # define timercmp(a, b, CMP)                    \
@@ -960,35 +958,52 @@ namespace mrv {
             inline bool operator()( const timeval& a,
                                     const timeval& b ) const
                 {
-                    return timercmp( a, b, < );
+                    return timercmp( a, b, > );
                 }
         };
 
-        typedef std::map< timeval, int64_t, customMore > TimedSeqMap;
+        typedef std::multimap< timeval, video_cache_t::iterator,
+                               customMore > TimedSeqMap;
         TimedSeqMap tmp;
         {
-            SCOPED_LOCK( _mutex );
-
+            video_cache_t::iterator  it = _images.begin();
+            video_cache_t::iterator end = _images.end();
+            for ( ; it != end; ++it )
             {
-                video_cache_t::iterator  it = _images.begin();
-                video_cache_t::iterator end = _images.end();
-                for ( ; it != end; ++it )
-                {
-                    tmp.insert( std::make_pair( (*it)->ptime(),
-                                                (*it)->frame() ) );
-                }
-            }
-
-            TimedSeqMap::iterator it = tmp.begin();
-            for ( ; it != tmp.end() &&
-                      memory_used >= Preferences::max_memory; ++it )
-            {
-                if ( _images.empty() ) break;
-                auto start = std::remove_if( _images.begin(), _images.end(),
-                                             EqualFunctor( it->second ) );
-                _images.erase( start, _images.end() );
+                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
             }
         }
+
+        // For backwards playback, we consider _dts to not remove so
+        // many frames.
+        if ( playback() == kBackwards )
+        {
+            max_frames = frame + max_frames;
+            if ( _dts > frame ) max_frames = _dts + max_frames;
+        }
+
+
+        unsigned count = 0;
+        TimedSeqMap::iterator it = tmp.begin();
+        typedef std::vector< video_cache_t::iterator > IteratorList;
+        IteratorList iters;
+        for ( ; it != tmp.end(); ++it )
+        {
+            ++count;
+            if ( count > max_frames )
+            {
+                // Store this iterator to remove it later
+                iters.push_back( it->second );
+            }
+        }
+
+        if ( iters.empty() ) return;
+
+        // LOG_INFO( "iters #" << iters.size() );
+
+        _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                       IteratorMatch<IteratorList>( iters ) ),
+                       _images.end() );
 
     }
 

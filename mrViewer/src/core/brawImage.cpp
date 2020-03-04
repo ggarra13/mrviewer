@@ -1042,7 +1042,8 @@ namespace mrv {
                                              EqualFunctor( it->second ) );
                 _images.erase( start, _images.end() );
             }
-        }
+
+        } // End of SCOPED_LOCK( _mutex )
 
     }
 
@@ -1052,9 +1053,8 @@ namespace mrv {
 //
     void brawImage::limit_video_store(const int64_t frame)
     {
-
-        // if ( playback() == kForwards )
-        return timed_limit_store( frame );
+        if ( playback() == kForwards )
+            return timed_limit_store( frame );
 
         SCOPED_LOCK( _mutex );
 

@@ -977,7 +977,7 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 
         TimedSeqMap::iterator it = tmp.begin();
         for ( ; it != tmp.end() &&
-                  memory_used >= Preferences::max_memory; ++it )
+                  _audio.size() > max_frames; ++it )
         {
             if ( _audio.empty() ) break;
             auto start = std::remove_if( _audio.begin(), _audio.end(),
@@ -994,7 +994,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 //
 void CMedia::limit_audio_store(const int64_t frame)
 {
-    return timed_limit_audio_store( frame );
+    if ( playback() == kForwards )
+        return timed_limit_audio_store( frame );
 
 
     unsigned max_frames = max_video_frames();

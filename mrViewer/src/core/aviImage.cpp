@@ -1540,11 +1540,6 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 
 void aviImage::timed_limit_store( const int64_t& frame )
 {
-    uint64_t max_frames = max_video_frames();
-    if ( _has_image_seq )
-    {
-        max_frames = max_image_frames();
-    }
 
 #undef timercmp
 # define timercmp(a, b, CMP)                    \
@@ -1584,7 +1579,8 @@ void aviImage::timed_limit_store( const int64_t& frame )
                                              EqualFunctor( it->second ) );
                 _images.erase( start, _images.end() );
             }
-        }
+
+        }  // End of SCOPE_LOCK( _mutex )
 
 }
 
