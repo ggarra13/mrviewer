@@ -39,6 +39,7 @@ extern "C" {
 
 
 #include "core/mrvFrame.h"
+#include "core/CMedia.h"
 #include "core/mrvColorOps.h"
 
 
@@ -266,6 +267,13 @@ size_t VideoFrame::data_size() const
     return size * pixel_size();
 }
 
+
+VideoFrame::~VideoFrame()
+{
+    CMedia::memory_used -= data_size();
+    if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
+}
+
 /**
  * Allocate a frame aligned to 16 bytes in memory.
  *
@@ -275,6 +283,7 @@ void VideoFrame::allocate()
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size()+15 ];
     assert0( uint64_t(ptr) % 16 == 0 );
     _data.reset( ptr );
+    CMedia::memory_used += data_size() + 15;
 }
 
 /**
@@ -616,8 +625,9 @@ bool VideoFrame::has_alpha() const
  *
  * @return The new video frame.
  */
-VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
+VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b ) noexcept
 {
+    std::cerr << "ASSIGNMENT " << b.frame() << std::endl;
     _frame    = b.frame();
     _pts      = b.pts();
     _repeat   = b.repeat();
@@ -720,6 +730,19 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             }
         }
     }
+}
+
+void AudioFrame::sum_memory() noexcept
+{
+    CMedia::memory_used += _size;
+}
+
+AudioFrame::~AudioFrame()
+{
+    delete [] _data;
+    _data = NULL;
+    CMedia::memory_used -= _size;
+    if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 
 } // namespace mrv

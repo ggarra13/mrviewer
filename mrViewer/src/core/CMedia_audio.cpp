@@ -232,6 +232,7 @@ void CMedia::open_audio_codec()
             _audio_buf = new aligned16_uint8_t[ _audio_max ];
             assert( (((unsigned long)_audio_buf) % 16) == 0 );
             memset( _audio_buf, 0, _audio_max );
+            memory_used += _audio_max;
         }
     }
 
@@ -939,6 +940,7 @@ void CMedia::audio_file( const char* file )
 
 void CMedia::timed_limit_audio_store(const int64_t frame)
 {
+
     unsigned max_frames = max_video_frames();
 
     if ( max_audio_frames() > max_frames )
@@ -954,52 +956,35 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         inline bool operator()( const timeval& a,
                                 const timeval& b ) const
         {
-            return timercmp( a, b, > );
+            return timercmp( a, b, < );
         }
     };
 
-    typedef std::multimap< timeval, audio_cache_t::iterator,
-                           customMore > TimedSeqMap;
+
+    typedef std::map< timeval, int64_t, customMore > TimedSeqMap;
     TimedSeqMap tmp;
     {
-        audio_cache_t::iterator  it = _audio.begin();
-        audio_cache_t::iterator end = _audio.end();
-        for ( ; it != end; ++it )
+        SCOPED_LOCK( _audio_mutex );
         {
-            if ( (*it)->frame() + max_frames < frame )
+            audio_cache_t::iterator  it = _audio.begin();
+            audio_cache_t::iterator end = _audio.end();
+            for ( ; it != end; ++it )
             {
-                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+                tmp.insert( std::make_pair( (*it)->ptime(), (*it)->frame() ) );
             }
         }
-    }
-
-    // For backwards playback, we consider _dts to not remove so
-    // many frames.
-    // if ( playback() == kBackwards )
-    // {
-    //     max_frames = frame + max_frames;
-    //     if ( _dts > frame ) max_frames = _dts + max_frames;
-    // }
 
 
-    unsigned count = 0;
-    TimedSeqMap::iterator it = tmp.begin();
-    typedef std::vector< audio_cache_t::iterator > IteratorList;
-    IteratorList iters;
-    for ( ; it != tmp.end(); ++it )
-    {
-        ++count;
-        if ( count > max_frames )
+        TimedSeqMap::iterator it = tmp.begin();
+        for ( ; it != tmp.end() &&
+                  memory_used >= Preferences::max_memory; ++it )
         {
-            // Store this iterator to remove it later
-            iters.push_back( it->second );
+            if ( _audio.empty() ) break;
+            auto start = std::remove_if( _audio.begin(), _audio.end(),
+                                         EqualFunctor( it->second ) );
+            _audio.erase( start, _audio.end() );
         }
     }
-
-
-    _audio.erase( std::remove_if( _audio.begin(), _audio.end(),
-                                  IteratorMatch<IteratorList>( iters ) ),
-                  _audio.end() );
 
 }
 
@@ -1009,11 +994,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 //
 void CMedia::limit_audio_store(const int64_t frame)
 {
+    return timed_limit_audio_store( frame );
 
-    if ( playback() == kForwards )
-        return timed_limit_audio_store( frame );
-
-    SCOPED_LOCK( _audio_mutex );
 
     unsigned max_frames = max_video_frames();
 
@@ -1396,6 +1378,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         memcpy( _audio_buf, old, _audio_max );
         delete [] old;
         _audio_max += audio_size;
+        memory_used += audio_size;
     }
 
     {
@@ -1863,16 +1846,11 @@ bool CMedia::find_audio( const int64_t frame )
         if ( frame < first_frame() )
             return true;
 
-#if 1 // needed
         audio_cache_t::iterator end = _audio.end();
         audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
                                                       frame,
                                                       LessThanFunctor() );
-#else
-        audio_cache_t::iterator end = _audio.end();
-        audio_cache_t::iterator i = std::find_if( _audio.begin(), end,
-                                                  EqualFunctor(frame) );
-#endif
+
         if ( i == end )
         {
             if ( _audio_offset == 0 && frame <= _frameEnd)

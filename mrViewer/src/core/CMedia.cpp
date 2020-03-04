@@ -896,6 +896,7 @@ CMedia::~CMedia()
 
     delete [] _audio_buf;
     _audio_buf = NULL;
+    memory_used -= _audio_max;
 
     if ( has_audio() )
     {
@@ -2879,14 +2880,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     if ( !seq ) return;
 
 
-    if ( seq[idx] ) {
-        memory_used -= seq[idx]->data_size();
-        DBG;
-        if ( CMedia::memory_used < 0 )
-            CMedia::memory_used = 0;
-    }
-    MEM();
-
     mrv::image_type_ptr np;
 
     unsigned w = pic->width();
@@ -2955,9 +2948,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     }
 
     DBG;
-    memory_used += seq[idx]->data_size();
-    DBG;
-    MEM();
 
     _w = w;
     _h = h;
@@ -3537,10 +3527,8 @@ uint64_t CMedia::max_image_frames()
 #else
     if ( _hires )
     {
-        if ( CMedia::memory_used < 0 )
-            CMedia::memory_used = 0;
-        return (uint64_t)((Preferences::max_memory - CMedia::memory_used) *
-                          100.0 / (double) _hires->data_size());
+        return (uint64_t)((Preferences::max_memory - CMedia::memory_used) /
+                          (double) _hires->data_size());
     }
     uint64_t i = 0;
     uint64_t num = _frame_end - _frame_start + 1;
@@ -3555,10 +3543,8 @@ uint64_t CMedia::max_image_frames()
     if ( Preferences::max_memory < CMedia::memory_used )
         return 0;
 
-    if ( CMedia::memory_used < 0 )
-        CMedia::memory_used = 0;
-    return (uint64_t) ((Preferences::max_memory - CMedia::memory_used) *
-                       100.0 / (double) _sequence[i]->data_size());
+    return (uint64_t) ((Preferences::max_memory - CMedia::memory_used) /
+                       (double) _sequence[i]->data_size());
 #endif
 }
 
@@ -3612,7 +3598,6 @@ void CMedia::loop_at_end( const int64_t frame )
                 ++i;
             }
         }
-
 
         _video_packets.loop_at_end( frame );
     }
@@ -3678,7 +3663,6 @@ void CMedia::limit_video_store( const int64_t f )
 
 
     uint64_t num  = _frame_end - _frame_start + 1;
-    uint64_t max_frames = max_image_frames();
 
     typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
 
@@ -3686,38 +3670,24 @@ void CMedia::limit_video_store( const int64_t f )
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] ||
-             _sequence[i]->data_size() == 0 ||
-             ( _playback == kForwards &&
-               ( _sequence[i]->frame() >= _frame  ||
-                 _sequence[i]->frame() >= f ) ) ||
-             ( _playback == kBackwards &&
-               ( _sequence[i]->frame() <= _frame ||
-                 _sequence[i]->frame() <= f ) ) ) continue;
+             _sequence[i]->data_size() == 0 ) continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
 
 
-    if ( tmp.size() < max_frames ) return;
-
     TimedSeqMap::iterator it = tmp.begin();
 
     // Erase enough frames to make sure memory used is less than max memory
-    while ( Preferences::max_memory <= memory_used && !tmp.empty() )
+    while ( Preferences::max_memory <= memory_used && it != tmp.end() )
     {
-        if ( it == tmp.end() ) return;
-
         uint64_t idx = it->second;
         if ( _sequence[idx] )
         {
-            memory_used -= _sequence[idx]->data_size();
-            MEM();
             _sequence[ idx ].reset();
         }
 
         if ( _right && _right[idx] ) {
-            memory_used -= _right[idx]->data_size();
-            MEM();
             _right[ idx ].reset();
         }
 

@@ -128,6 +128,9 @@ protected:
     void copy_values();
     void parse_metadata(int64_t frame, IBlackmagicRawMetadataIterator* iter);
 
+    void debug_video_stores( int64_t frame, const char* title,
+                             bool detail = false );
+
 protected:
     Mutex         _load_mutex;
     video_cache_t _images;

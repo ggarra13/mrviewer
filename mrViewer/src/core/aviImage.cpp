@@ -1547,60 +1547,45 @@ void aviImage::timed_limit_store( const int64_t& frame )
     }
 
 #undef timercmp
-# define timercmp(a, b, CMP)					\
-    (((a).tv_sec == (b).tv_sec) ?				\
-     ((a).tv_usec CMP (b).tv_usec) :				\
-     ((a).tv_sec CMP (b).tv_sec))
+# define timercmp(a, b, CMP)                    \
+        (((a).tv_sec == (b).tv_sec) ?           \
+         ((a).tv_usec CMP (b).tv_usec) :        \
+         ((a).tv_sec CMP (b).tv_sec))
 
-    struct customMore {
-        inline bool operator()( const timeval& a,
-                                const timeval& b ) const
+        struct customMore {
+            inline bool operator()( const timeval& a,
+                                    const timeval& b ) const
+                {
+                    return timercmp( a, b, < );
+                }
+        };
+
+        typedef std::multimap< timeval, int64_t, customMore > TimedSeqMap;
+        TimedSeqMap tmp;
         {
-            return timercmp( a, b, > );
+            SCOPED_LOCK( _mutex );
+
+            {
+                video_cache_t::iterator  it = _images.begin();
+                video_cache_t::iterator end = _images.end();
+                for ( ; it != end; ++it )
+                {
+                    tmp.insert( std::make_pair( (*it)->ptime(),
+                                                (*it)->frame() ) );
+                }
+            }
+
+            TimedSeqMap::iterator it = tmp.begin();
+            for ( ; it != tmp.end() &&
+                      memory_used >= Preferences::max_memory; ++it )
+            {
+                if ( _images.empty() ) break;
+                auto start = std::remove_if( _images.begin(), _images.end(),
+                                             EqualFunctor( it->second ) );
+                _images.erase( start, _images.end() );
+            }
         }
-    };
 
-    typedef std::multimap< timeval, video_cache_t::iterator,
-            customMore > TimedSeqMap;
-    TimedSeqMap tmp;
-    {
-        video_cache_t::iterator  it = _images.begin();
-        video_cache_t::iterator end = _images.end();
-        for ( ; it != end; ++it )
-        {
-            tmp.insert( std::make_pair( (*it)->ptime(), it ) );
-        }
-    }
-
-    // For backwards playback, we consider _dts to not remove so
-    // many frames.
-    if ( playback() == kBackwards )
-    {
-        max_frames = frame + max_frames;
-        if ( _dts > frame ) max_frames = _dts + max_frames;
-    }
-
-
-    unsigned count = 0;
-    TimedSeqMap::iterator it = tmp.begin();
-    typedef std::vector< video_cache_t::iterator > IteratorList;
-    IteratorList iters;
-    for ( ; it != tmp.end(); ++it )
-    {
-        ++count;
-        if ( count > max_frames )
-        {
-            // Store this iterator to remove it later
-            iters.push_back( it->second );
-        }
-    }
-
-    if ( iters.empty() ) return;
-
-
-    _images.erase( std::remove_if( _images.begin(), _images.end(),
-                                   IteratorMatch<IteratorList>( iters ) ),
-                   _images.end() );
 }
 
 

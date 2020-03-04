@@ -201,13 +201,11 @@ public:
         allocate();
     }
 
-    ~VideoFrame()
-    {
-    }
+    ~VideoFrame();
 
     void allocate();
 
-    self& operator=( const self& b );
+    self& operator=( const self& b ) noexcept;
 
     inline const timeval& ptime() const {
         return _ptime;
@@ -410,14 +408,13 @@ public:
     {
         gettimeofday( &_ptime, NULL );
         memcpy( _data, data, size );
+        sum_memory();
     }
 
+    void sum_memory() noexcept;
 
-    ~AudioFrame()
-    {
-        delete [] _data;
-        _data = NULL;
-    }
+
+    ~AudioFrame();
 
 
     inline const timeval&   ptime() const {
