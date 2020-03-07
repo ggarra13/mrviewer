@@ -766,12 +766,11 @@ namespace mrv {
 
     bool R3dImage::frame( const int64_t f )
     {
-
-        if ( Preferences::max_memory <= CMedia::memory_used )
+        if ( memory_used >= Preferences::max_memory  )
         {
-            if ( stopped() ) return false;
-            limit_video_store( f );
-            if ( has_audio() ) limit_audio_store( f );
+            limit_video_store( _frame );
+            if ( has_audio() ) limit_audio_store( _frame );
+            return false;
         }
 
 
@@ -958,53 +957,36 @@ namespace mrv {
             inline bool operator()( const timeval& a,
                                     const timeval& b ) const
                 {
-                    return timercmp( a, b, > );
+                    return timercmp( a, b, < );
                 }
         };
 
-        typedef std::multimap< timeval, video_cache_t::iterator,
-                               customMore > TimedSeqMap;
+        typedef std::map< timeval, int64_t, customMore > TimedSeqMap;
         TimedSeqMap tmp;
         {
-            video_cache_t::iterator  it = _images.begin();
-            video_cache_t::iterator end = _images.end();
-            for ( ; it != end; ++it )
+            SCOPED_LOCK( _mutex );
+
             {
-                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+                video_cache_t::iterator  it = _images.begin();
+                video_cache_t::iterator end = _images.end();
+                for ( ; it != end; ++it )
+                {
+                    tmp.insert( std::make_pair( (*it)->ptime(),
+                                                (*it)->frame() ) );
+                }
             }
-        }
 
-        // For backwards playback, we consider _dts to not remove so
-        // many frames.
-        if ( playback() == kBackwards )
-        {
-            max_frames = frame + max_frames;
-            if ( _dts > frame ) max_frames = _dts + max_frames;
-        }
-
-
-        unsigned count = 0;
-        TimedSeqMap::iterator it = tmp.begin();
-        typedef std::vector< video_cache_t::iterator > IteratorList;
-        IteratorList iters;
-        for ( ; it != tmp.end(); ++it )
-        {
-            ++count;
-            if ( count > max_frames )
+            TimedSeqMap::iterator it = tmp.begin();
+            for ( ; it != tmp.end() &&
+                      memory_used >= Preferences::max_memory; ++it )
             {
-                // Store this iterator to remove it later
-                iters.push_back( it->second );
+                if ( _images.size() < max_frames ) break;
+                auto start = std::remove_if( _images.begin(), _images.end(),
+                                             EqualFunctor( it->second ) );
+                _images.erase( start, _images.end() );
             }
-        }
 
-        if ( iters.empty() ) return;
-
-        // LOG_INFO( "iters #" << iters.size() );
-
-        _images.erase( std::remove_if( _images.begin(), _images.end(),
-                                       IteratorMatch<IteratorList>( iters ) ),
-                       _images.end() );
-
+        } // End of SCOPED_LOCK( _mutex )
     }
 
 //
@@ -1137,7 +1119,6 @@ namespace mrv {
 
     CMedia::DecodeStatus R3dImage::decode_audio( int64_t& f )
     {
-        audio_callback_time = av_gettime_relative();
 
         if ( ! _audio_packets.empty() )
         {

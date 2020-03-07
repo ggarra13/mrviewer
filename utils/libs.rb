@@ -105,6 +105,7 @@ def copy_files( build )
   FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
   $stderr.puts "Copy docs"
   FileUtils.rm_rf( "#{build}/#{@debug}/docs" )
+  FileUtils.rm_rf( "docs/*~" )
   FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
   FileUtils.rm_rf( "#{build}/#{@debug}/colors" )
   FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )

@@ -2060,7 +2060,6 @@ protected:
     int64_t          _audio_last_frame;  //!< last audio frame decoded
     std::atomic<unsigned short>   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
-    int64_t          audio_callback_time;
 
     std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)

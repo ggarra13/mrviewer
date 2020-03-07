@@ -123,13 +123,15 @@ public:
 
     void timed_limit_store( const int64_t frame );
     void limit_video_store( const int64_t frame );
+    
+    virtual void debug_video_stores( const int64_t frame,
+                                     const char* title = "",
+                                     const bool detail = false );
 
 protected:
     void copy_values();
     void parse_metadata(int64_t frame, IBlackmagicRawMetadataIterator* iter);
-
-    void debug_video_stores( int64_t frame, const char* title,
-                             bool detail = false );
+    
 
 protected:
     Mutex         _load_mutex;

@@ -166,7 +166,7 @@ int CMedia::audio_stream_index() const
 {
     if ( _audio_index < 0 ) return -1;
     assert( _audio_index >= 0 );
-    assert( unsigned(_audio_index) < _audio_info.size() );
+    assert( unsigned(_audio_index) < _audio_info.size());
     return _audio_info[ _audio_index ].stream_index;
 }
 
@@ -955,12 +955,11 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         inline bool operator()( const timeval& a,
                                 const timeval& b ) const
         {
-            return timercmp( a, b, > );
+            return timercmp( a, b, < );
         }
     };
 
-    typedef std::multimap< timeval, audio_cache_t::iterator,
-                           customMore > TimedSeqMap;
+    typedef std::multimap< timeval, int64_t, customMore > TimedSeqMap;
     TimedSeqMap tmp;
     {
         SCOPED_LOCK( _audio_mutex );
@@ -971,25 +970,23 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
             {
                 if ( (*it)->frame() + max_frames < frame )
                 {
-                    tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+                    tmp.insert( std::make_pair( (*it)->ptime(),
+                                                (*it)->frame() ) );
                 }
             }
         }
 
         TimedSeqMap::iterator it = tmp.begin();
-        typedef std::vector< audio_cache_t::iterator > IteratorList;
-        IteratorList iters;
         for ( ; it != tmp.end() &&
-                  _audio.size() > max_frames; ++it )
+                  ( memory_used > Preferences::max_memory ||
+                    _audio.size() > max_frames ); ++it )
         {
-            // Store this iterator to remove it later
-            iters.push_back( it->second );
+            // Remove and erase this audio frame
+            _audio.erase( std::remove_if( _audio.begin(), _audio.end(),
+                                          EqualFunctor( it->second ) ),
+                          _audio.end() );
         }
 
-
-        _audio.erase( std::remove_if( _audio.begin(), _audio.end(),
-                                      IteratorMatch<IteratorList>( iters ) ),
-                      _audio.end() );
     }
 
 }
@@ -1891,7 +1888,6 @@ bool CMedia::find_audio( const int64_t frame )
     _audio_clock = double(av_gettime_relative()) / 1000000.0;
     set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
 
-    //set_clock_at(&audclk, _audio_pts, 0, audio_callback_time / 1000000.0 );
     sync_clock_to_slave( &extclk, &audclk );
 
     return ok;
@@ -2054,8 +2050,6 @@ bool CMedia::in_audio_store( const int64_t frame )
 
 CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 {
-
-    audio_callback_time = av_gettime_relative();
 
     int64_t frame = f;
 

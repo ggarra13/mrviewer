@@ -1857,9 +1857,9 @@ void Preferences::run( ViewerUI* main )
         CMedia::video_cache_size( 0 );
     }
 
-    Preferences::max_memory = ( (int64_t)uiPrefs->uiPrefsCacheMemory->value() *
-                                1000000000 );
-
+    Preferences::max_memory = (int64_t)( uiPrefs->uiPrefsCacheMemory->value() *
+                                         1000000000.0 );
+    if ( max_memory <= 0 ) max_memory = 1000000000;
         DBG3;
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );

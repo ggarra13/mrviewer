@@ -203,6 +203,23 @@ struct NotInRangeFunctor
             }
     };
 
+    template< typename T >
+    struct ElementMatch
+    {
+        const T& elems;
+        ElementMatch( const T& e ) : elems( e ) {}
+        inline bool operator()( const image_type_ptr& a ) const
+            {
+                return true;
+                // return ( elems.find( a ) != elems.end() );
+            }
+        inline bool operator()( const audio_type_ptr& a ) const
+            {
+                return true;
+                // return ( elems.find( a ) != elems.end() );
+            }
+    };
+
 } // namespace mrv
 
 

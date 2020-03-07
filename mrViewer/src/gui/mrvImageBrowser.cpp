@@ -1607,6 +1607,21 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     }
 }
 
+    void ImageBrowser::value( int idx )
+    {
+        int sel = value();
+        mrv::Reel reel = current_reel();
+        _value = idx;
+        if ( sel < 0 ) return;
+
+        mrv::media orig = reel->images[sel];
+        if ( orig )
+        {
+            CMedia* img = orig->image();
+            img->clear_cache();
+        }
+    }
+
 /**
  * Load an image
  *
@@ -2852,22 +2867,29 @@ int ImageBrowser::mousePush( int x, int y )
             return 1;
         }
 
-    DBG;
         old_dragging = dragging;
 
-    DBG;
         int ok = Fl_Tree::deselect_all( NULL, 0 );
         if ( ok < 0 )
         {
             LOG_ERROR( "Could not deselect all" );
         }
-        DBG;
+
         ok = Fl_Tree::select( dragging, 0 );
         if ( ok < 0 )
         {
             LOG_ERROR( "Could not select " << dragging->label() );
         }
 
+        mrv::media fg = view()->foreground();
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            if ( img )
+            {
+                img->clear_cache();
+            }
+        }
 
         DBGM3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
@@ -3299,6 +3321,7 @@ int ImageBrowser::mouseRelease( int x, int y )
     if ( sel == old ) {
         return ok;
     }
+
 
     char buf[1024];
     sprintf( buf, _("ExchangeImage %d %d"), sel, old );

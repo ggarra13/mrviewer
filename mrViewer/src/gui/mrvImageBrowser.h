@@ -223,7 +223,7 @@ public:
     void handle_dnd();
 
     //! Sets and returns the current index of the selected image
-    void value( int idx ) { _value = idx; }
+    void value( int idx );
     int value() const { return _value; }
 
     virtual void draw();

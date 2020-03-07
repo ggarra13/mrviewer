@@ -460,7 +460,6 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
 _aframe( NULL ),
-audio_callback_time( 0 ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
@@ -750,25 +749,21 @@ void CMedia::clear_cache()
     {
         if ( _sequence && _sequence[i] )
         {
-            memory_used -= _sequence[i]->data_size();
             _sequence[i].reset();
         }
         if ( _right && _right[i] )
         {
-            memory_used -= _right[i]->data_size();
             _right[i].reset();
         }
     }
 
     if ( _stereo[0] )
     {
-        memory_used -= _stereo[0]->data_size();
         _stereo[0].reset();
     }
 
     if ( _stereo[1] )
     {
-        memory_used -= _stereo[1]->data_size();
         _stereo[1].reset();
     }
 
@@ -2758,6 +2753,7 @@ bool CMedia::frame( const int64_t f )
         if ( stopped() ) return false;
         limit_video_store( f );
         if ( has_audio() ) limit_audio_store( f );
+        return false;
     }
 
 
@@ -3527,7 +3523,7 @@ uint64_t CMedia::max_image_frames()
 #else
     if ( _hires )
     {
-        return (uint64_t)((Preferences::max_memory - CMedia::memory_used) /
+        return (uint64_t)(Preferences::max_memory /
                           (double) _hires->data_size());
     }
     uint64_t i = 0;
@@ -3540,10 +3536,7 @@ uint64_t CMedia::max_image_frames()
     if ( i >= num ) return std::numeric_limits<int>::max() / 3;
     MEM();
 
-    if ( Preferences::max_memory < CMedia::memory_used )
-        return 0;
-
-    return (uint64_t) ((Preferences::max_memory - CMedia::memory_used) /
+    return (uint64_t) (Preferences::max_memory /
                        (double) _sequence[i]->data_size());
 #endif
 }
@@ -3647,6 +3640,8 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( !_sequence ) return;
 
+    uint64_t max_frames = max_image_frames();
+
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
   (((a).tv_sec == (b).tv_sec) ?					\
@@ -3670,7 +3665,9 @@ void CMedia::limit_video_store( const int64_t f )
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] ||
-             _sequence[i]->data_size() == 0 ) continue;
+             _sequence[i]->data_size() == 0 ||
+             ((int64_t)(_sequence[i]->frame() + max_frames) >= _frame))
+            continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
@@ -3682,12 +3679,23 @@ void CMedia::limit_video_store( const int64_t f )
     while ( Preferences::max_memory <= memory_used && it != tmp.end() )
     {
         uint64_t idx = it->second;
+
         if ( _sequence[idx] )
         {
+            std::string file = sequence_filename( _sequence[idx]->frame() );
+            struct stat sbuf;
+            int result = stat( file.c_str(), &sbuf );
+            if ( result < 0 ) return;
+            _disk_space -= sbuf.st_size;
             _sequence[ idx ].reset();
         }
 
         if ( _right && _right[idx] ) {
+            std::string file = sequence_filename( _right[idx]->frame() );
+            struct stat sbuf;
+            int result = stat( file.c_str(), &sbuf );
+            if ( result < 0 ) return;
+            _disk_space -= sbuf.st_size;
             _right[ idx ].reset();
         }
 

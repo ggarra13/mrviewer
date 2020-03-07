@@ -50,7 +50,6 @@ namespace mrv {
 #ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
 #  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
 #endif
-    static constexpr uint32_t maxSampleCount = 48000;
 
     static const BlackmagicRawResourceFormat s_resourceFormat = blackmagicRawResourceFormatRGBAU8;
 
@@ -97,10 +96,10 @@ namespace mrv {
                 IBlackmagicRawJob* decodeAndProcessJob = nullptr;
 
                 if (result == S_OK)
-                    result = frame->SetResourceFormat(s_resourceFormat);
+                    VERIFY(frame->SetResourceFormat(s_resourceFormat));
 
                 if (result == S_OK)
-                    result = frame->SetResolutionScale( scale );
+                    VERIFY(frame->SetResolutionScale( scale ));
 
                 if (result == S_OK)
                     result = frame->CreateJobDecodeAndProcessFrame(nullptr,
@@ -201,8 +200,6 @@ namespace mrv {
                                  int64_t frame, unsigned dw, unsigned dh,
                                  void* imageData )
     {
-        SCOPED_LOCK( _mutex );
-
         image_size( dw, dh );
         const image_type::PixelType pixel_type = image_type::kByte;
         allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
@@ -210,6 +207,7 @@ namespace mrv {
         memcpy( canvas->data().get(), imageData, dw*dh*4 );
 
         // Store in queue
+        SCOPED_LOCK( _mutex );
         if ( _images.empty() || _images.back()->frame() < frame )
         {
             _images.push_back( canvas );
@@ -490,8 +488,6 @@ namespace mrv {
         info.pixel_format = "RGBA";
         info.has_b_frames = true;
         info.start = 0;
-        info.language = _("und");
-        info.disposition = _("default");
         info.duration = (double)(_frame_end - _frame_start) /
                         (double) _fps;
         _video_info.push_back( info );
@@ -618,8 +614,6 @@ namespace mrv {
         a.language = _("und");
         a.start = 0;
         a.duration = audioSamples / (double) frequency;
-        a.language = _("und");
-        a.disposition = _("default");
 
         _audio_info.push_back( a );
 
@@ -634,14 +628,13 @@ namespace mrv {
                 // Final buffer for 32 bit audio
                 _audio_buf = new aligned16_uint8_t[ _audio_max ];
                 memset( _audio_buf, 0, _audio_max );
-                memory_used += _audio_max;
 
+                static constexpr uint32_t maxSampleCount = 48000;
                 uint32_t bufferSize = (maxSampleCount*_audio_channels*
                                        bitDepth)/8;
 
                 // temporary buffer for 24 bit audio
                 audiobuffer = new int8_t[ bufferSize ];
-                memory_used += bufferSize;
 
                 char buf[256];
                 uint64_t  in_ch_layout =
@@ -685,10 +678,6 @@ namespace mrv {
         delete [] audiobuffer;
         audiobuffer = NULL;
 
-        uint32_t bufferSize = (maxSampleCount*_audio_channels*
-                               bitDepth)/8;
-        memory_used -= bufferSize;
-
         init = false;
 
         return true;
@@ -707,10 +696,10 @@ namespace mrv {
         SCOPED_LOCK( _mutex );
         bool ok = false;
 
-        // Check if frame is already in video store
-        video_cache_t::const_iterator i = std::find_if( _images.begin(),
-                                                        _images.end(),
-                                                        EqualFunctor(frame) );
+        // Check if video is already in video store
+        video_cache_t::iterator i = std::find_if( _images.begin(),
+                                                  _images.end(),
+                                                  EqualFunctor(frame) );
         if ( i != _images.end() ) ok = true;
 
         if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
@@ -720,14 +709,27 @@ namespace mrv {
 
     bool brawImage::frame( const int64_t f )
     {
-        if ( memory_used >= Preferences::max_memory )
+
+        if ( Preferences::max_memory <= CMedia::memory_used )
         {
-            limit_video_store( _frame );
-            if ( has_audio() ) limit_audio_store( _frame );
-            assert0( memory_used <= Preferences::max_memory );
-            return false;
+            if ( stopped() ) return false;
+            limit_video_store( f );
+            if ( has_audio() ) limit_audio_store( f );
         }
 
+
+//  in ffmpeg, sizes are in bytes...
+#define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
+#define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
+#define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+        if (
+        _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
+        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
+        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+
+        {
+            return false;
+        }
 
 
         if ( f < _frameStart )    _dts = _adts = _frameStart;
@@ -1003,6 +1005,7 @@ namespace mrv {
 
     void brawImage::timed_limit_store( const int64_t frame )
     {
+        uint64_t max_frames = max_image_frames();
 
 #undef timercmp
 # define timercmp(a, b, CMP)                    \
@@ -1014,36 +1017,52 @@ namespace mrv {
             inline bool operator()( const timeval& a,
                                     const timeval& b ) const
                 {
-                    return timercmp( a, b, < );
+                    return timercmp( a, b, > );
                 }
         };
 
-        typedef std::map< timeval, int64_t, customMore > TimedSeqMap;
+        typedef std::multimap< timeval, video_cache_t::iterator,
+                               customMore > TimedSeqMap;
         TimedSeqMap tmp;
         {
-            SCOPED_LOCK( _mutex );
-
+            video_cache_t::iterator  it = _images.begin();
+            video_cache_t::iterator end = _images.end();
+            for ( ; it != end; ++it )
             {
-                video_cache_t::iterator  it = _images.begin();
-                video_cache_t::iterator end = _images.end();
-                for ( ; it != end; ++it )
-                {
-                    tmp.insert( std::make_pair( (*it)->ptime(),
-                                                (*it)->frame() ) );
-                }
+                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
             }
+        }
 
-            TimedSeqMap::iterator it = tmp.begin();
-            for ( ; it != tmp.end() &&
-                      memory_used >= Preferences::max_memory; ++it )
+        // For backwards playback, we consider _dts to not remove so
+        // many frames.
+        if ( playback() == kBackwards )
+        {
+            max_frames = frame + max_frames;
+            if ( _dts > frame ) max_frames = _dts + max_frames;
+        }
+
+
+        unsigned count = 0;
+        TimedSeqMap::iterator it = tmp.begin();
+        typedef std::vector< video_cache_t::iterator > IteratorList;
+        IteratorList iters;
+        for ( ; it != tmp.end(); ++it )
+        {
+            ++count;
+            if ( count > max_frames )
             {
-                if ( _images.empty() ) break;
-                auto start = std::remove_if( _images.begin(), _images.end(),
-                                             EqualFunctor( it->second ) );
-                _images.erase( start, _images.end() );
+                // Store this iterator to remove it later
+                iters.push_back( it->second );
             }
+        }
 
-        } // End of SCOPED_LOCK( _mutex )
+        if ( iters.empty() ) return;
+
+        // LOG_INFO( "iters #" << iters.size() );
+
+        _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                       IteratorMatch<IteratorList>( iters ) ),
+                       _images.end() );
 
     }
 
@@ -1053,6 +1072,7 @@ namespace mrv {
 //
     void brawImage::limit_video_store(const int64_t frame)
     {
+
         if ( playback() == kForwards )
             return timed_limit_store( frame );
 
@@ -1095,7 +1115,6 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
-        audio_callback_time = av_gettime_relative();
 
         if ( _audio_packets.is_loop_end() )
         {
@@ -1121,6 +1140,7 @@ namespace mrv {
 
         unsigned int bytes_per_frame = audio_bytes_per_frame();
 
+        static constexpr uint32_t maxSampleCount = 48000;
         uint32_t bufferSize = (maxSampleCount*_audio_channels*
                                bitDepth)/8;
 
