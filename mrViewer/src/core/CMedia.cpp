@@ -2750,10 +2750,11 @@ bool CMedia::frame( const int64_t f )
 
     if ( Preferences::max_memory <= CMedia::memory_used )
     {
-        if ( stopped() ) return false;
+        int64_t max_frames = (int64_t) max_image_frames();
+        if ( std::abs( f - _frame ) > max_frames )
+            return false;
         limit_video_store( f );
         if ( has_audio() ) limit_audio_store( f );
-        return false;
     }
 
 
@@ -3659,14 +3660,12 @@ void CMedia::limit_video_store( const int64_t f )
 
     uint64_t num  = _frame_end - _frame_start + 1;
 
-    typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
+    typedef std::map< timeval, uint64_t, customMore > TimedSeqMap;
 
     TimedSeqMap tmp;
     for ( uint64_t i = 0; i < num; ++i )
     {
-        if ( !_sequence[i] ||
-             _sequence[i]->data_size() == 0 ||
-             ((int64_t)(_sequence[i]->frame() + max_frames) >= _frame))
+        if ( !_sequence[i] || _sequence[i]->data_size() == 0 )
             continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
@@ -3676,7 +3675,7 @@ void CMedia::limit_video_store( const int64_t f )
     TimedSeqMap::iterator it = tmp.begin();
 
     // Erase enough frames to make sure memory used is less than max memory
-    while ( Preferences::max_memory <= memory_used && it != tmp.end() )
+    for ( ; it != tmp.end() && memory_used >= Preferences::max_memory; ++it )
     {
         uint64_t idx = it->second;
 
@@ -3685,8 +3684,9 @@ void CMedia::limit_video_store( const int64_t f )
             std::string file = sequence_filename( _sequence[idx]->frame() );
             struct stat sbuf;
             int result = stat( file.c_str(), &sbuf );
-            if ( result < 0 ) return;
-            _disk_space -= sbuf.st_size;
+            if ( result == 0 ) {
+                _disk_space -= sbuf.st_size;
+            }
             _sequence[ idx ].reset();
         }
 
@@ -3694,12 +3694,11 @@ void CMedia::limit_video_store( const int64_t f )
             std::string file = sequence_filename( _right[idx]->frame() );
             struct stat sbuf;
             int result = stat( file.c_str(), &sbuf );
-            if ( result < 0 ) return;
-            _disk_space -= sbuf.st_size;
+            if ( result == 0 ) {
+                _disk_space -= sbuf.st_size;
+            }
             _right[ idx ].reset();
         }
-
-        it = tmp.erase( it );
     }
 
 }

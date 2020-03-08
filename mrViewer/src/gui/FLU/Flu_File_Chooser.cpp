@@ -700,11 +700,9 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   history = currentHist = NULL;
   walkingHistory = false;
   fileEditing = false;
+  caseSort = false;
 #ifdef WIN32
   refreshDrives = true;
-  caseSort = false;
-#else
-  caseSort = true;
 #endif
 
   // determine the system paths for the user's home area, desktop, documents, app data, etc

@@ -1614,12 +1614,12 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         _value = idx;
         if ( sel < 0 ) return;
 
-        mrv::media orig = reel->images[sel];
-        if ( orig )
-        {
-            CMedia* img = orig->image();
-            img->clear_cache();
-        }
+        // mrv::media orig = reel->images[sel];
+        // if ( orig )
+        // {
+        //     CMedia* img = orig->image();
+        //     if (img->has_video()) img->clear_cache();
+        // }
     }
 
 /**
@@ -2881,15 +2881,6 @@ int ImageBrowser::mousePush( int x, int y )
             LOG_ERROR( "Could not select " << dragging->label() );
         }
 
-        mrv::media fg = view()->foreground();
-        if ( fg )
-        {
-            CMedia* img = fg->image();
-            if ( img )
-            {
-                img->clear_cache();
-            }
-        }
 
         DBGM3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 

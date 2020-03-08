@@ -768,9 +768,11 @@ namespace mrv {
     {
         if ( memory_used >= Preferences::max_memory  )
         {
+            int64_t max_frames = (int64_t) max_image_frames();
+            if ( std::abs( f - _frame ) > max_frames )
+                return false;
             limit_video_store( _frame );
             if ( has_audio() ) limit_audio_store( _frame );
-            return false;
         }
 
 
@@ -976,6 +978,9 @@ namespace mrv {
                 }
             }
 
+            //
+            // Limit the video store to fewer than max frames images.
+            //
             TimedSeqMap::iterator it = tmp.begin();
             for ( ; it != tmp.end() &&
                       memory_used >= Preferences::max_memory; ++it )
@@ -989,50 +994,10 @@ namespace mrv {
         } // End of SCOPED_LOCK( _mutex )
     }
 
-//
-// Limit the video store to approx. max frames images on each side.
-// We have to check both where frame is as well as where _dts is.
-//
     void R3dImage::limit_video_store(const int64_t frame)
     {
 
-        if ( playback() == kForwards )
-            return timed_limit_store( frame );
-
-        SCOPED_LOCK( _mutex );
-
-        uint64_t max_frames = max_image_frames();
-
-        int64_t first, last;
-
-        switch( playback() )
-        {
-        case kBackwards:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _dts > last )   last  = _dts;
-            if ( _dts < first )  first = _dts;
-            break;
-        case kForwards:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _dts > last )   last  = _dts;
-            if ( _dts < first )  first = _dts;
-            break;
-        default:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _dts > last )   last = _dts;
-            if ( _dts < first ) first = _dts;
-            break;
-        }
-
-        if ( _images.empty() ) return;
-
-        _images.erase( std::remove_if( _images.begin(), _images.end(),
-                                       NotInRangeFunctor( first, last ) ),
-                       _images.end() );
-
+        return timed_limit_store( frame );
 
     }
 

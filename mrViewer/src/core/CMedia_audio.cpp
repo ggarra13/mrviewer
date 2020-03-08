@@ -978,7 +978,7 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 
         TimedSeqMap::iterator it = tmp.begin();
         for ( ; it != tmp.end() &&
-                  ( memory_used > Preferences::max_memory ||
+                  ( memory_used >= Preferences::max_memory ||
                     _audio.size() > max_frames ); ++it )
         {
             // Remove and erase this audio frame
