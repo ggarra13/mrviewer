@@ -713,24 +713,10 @@ namespace mrv {
         if ( Preferences::max_memory <= CMedia::memory_used )
         {
             int64_t max_frames = (int64_t) max_image_frames();
-            if ( std::abs( f - _frame ) > max_frames )
+            if ( std::abs( f - _frame ) >= max_frames )
                 return false;
             limit_video_store( f );
             if ( has_audio() ) limit_audio_store( f );
-        }
-
-
-//  in ffmpeg, sizes are in bytes...
-#define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
-#define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
-#define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-        if (
-        _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
-        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
-
-        {
-            return false;
         }
 
 
@@ -972,7 +958,7 @@ namespace mrv {
             BSTR timeCode;
 #elif LINUX
             const char* timeCode = nullptr;
-#else
+#else // APPLE
 #endif
             HRESULT result = clip->GetTimecodeForFrame( frame, &timeCode );
             if ( result != S_OK )
@@ -985,7 +971,7 @@ namespace mrv {
             const char* timecode( (const char*)tmp );
 #elif LINUX
             const char* timecode = timeCode;
-#else
+#else  // APPLE
 #endif
 
             Imf::TimeCode t = str2timecode( timecode );
@@ -1047,8 +1033,6 @@ namespace mrv {
             }
 
         }
-        // LOG_INFO( "iters #" << iters.size() );
-
 
     }
 
