@@ -2751,7 +2751,7 @@ bool CMedia::frame( const int64_t f )
     if ( Preferences::max_memory <= CMedia::memory_used )
     {
         int64_t max_frames = (int64_t) max_image_frames();
-        if ( std::abs( f - _frame ) > max_frames )
+        if ( std::abs( f - _frame ) >= max_frames )
             return false;
         limit_video_store( f );
         if ( has_audio() ) limit_audio_store( f );
@@ -3663,11 +3663,13 @@ void CMedia::limit_video_store( const int64_t f )
     typedef std::map< timeval, uint64_t, customMore > TimedSeqMap;
 
     TimedSeqMap tmp;
+    uint64_t image_count = 0;
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->data_size() == 0 )
             continue;
 
+        ++image_count;
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
 
@@ -3678,6 +3680,7 @@ void CMedia::limit_video_store( const int64_t f )
     for ( ; it != tmp.end() && memory_used >= Preferences::max_memory; ++it )
     {
         uint64_t idx = it->second;
+        if ( image_count <= max_frames ) break;
 
         if ( _sequence[idx] )
         {
@@ -3688,6 +3691,7 @@ void CMedia::limit_video_store( const int64_t f )
                 _disk_space -= sbuf.st_size;
             }
             _sequence[ idx ].reset();
+            --image_count;
         }
 
         if ( _right && _right[idx] ) {
