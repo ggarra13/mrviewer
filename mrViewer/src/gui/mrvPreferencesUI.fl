@@ -822,8 +822,8 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Caches
-          xywh {230 40 423 345} box EMBOSSED_BOX align 5 hide
+          label Caches open
+          xywh {230 40 423 345} box EMBOSSED_BOX align 5
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
@@ -881,9 +881,10 @@ This setting thus allows caching more pictures in memory for float and half pict
             label {Image Cache Size} open
             xywh {295 274 321 86} box ROUNDED_BOX
           } {
-            Fl_Value_Input uiPrefsCacheMemory {
-              label Memory
-              tooltip {Size of the IMAGE cache in Gigabytes} xywh {380 300 75 25} maximum 100 value 3 textcolor 56
+            Fl_Spinner uiPrefsCacheMemory {
+              label Memory selected
+              xywh {415 300 50 25} type Float step 0.5 value 3
+              code0 {o->textcolor( FL_BLACK );}
             }
             Fl_Box {} {
               label Gb
@@ -2029,11 +2030,11 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           }
         }
         Fl_Group {} {
-          label {RED3D - BRAW} open
-          tooltip {Options controlling the R3D / BRAW readers} xywh {230 44 423 351} box EMBOSSED_BOX align 5
+          label {RED3D - BRAW}
+          tooltip {Options controlling the R3D / BRAW readers} xywh {230 44 423 351} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label {R3D Loading} open
+            label {R3D Loading}
             xywh {265 89 325 78} box ROUNDED_BOX labelsize 15
           } {
             Fl_Choice uiPrefsR3DScale {
@@ -2063,7 +2064,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
           Fl_Group {} {
-            label {BRAW Loading} open
+            label {BRAW Loading}
             xywh {265 197 325 78} box ROUNDED_BOX labelsize 15
           } {
             Fl_Choice uiPrefsBRAWScale {
@@ -2182,7 +2183,6 @@ o->add( _("Errors") );
 o->add( _("Images") );
 o->add( _("OpenEXR") );
 o->add( _("RED3D - BRAW") );
-o->select( item );} {selected
-    }
+o->select( item );} {}
   }
 }
