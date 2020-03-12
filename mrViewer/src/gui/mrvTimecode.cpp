@@ -173,6 +173,16 @@ int64_t Timecode::value() const
     }
     case kTimecodeDropFrame:
     {
+        int ifps = int(_fps);
+        if ( ifps < 30 || ifps % 30 != 0 )
+        {
+            Timecode* t = const_cast< Timecode* >( this );
+            t->_display = kTimecodeNonDrop;
+            int64_t v = value();
+            t->_display = kTimecodeDropFrame;
+            return v;
+        }
+
         int hours = 0, mins = 0, secs = 0, frames = 0;
         int num = sscanf( Fl_Input::value(), "%02d;%02d;%02d;%02d",
                           &hours, &mins, &secs, &frames );
@@ -184,7 +194,6 @@ int64_t Timecode::value() const
         assert( mins < 60 );
 
         // Convert current frame value to timecode based on fps
-        int ifps = int(_fps);
         int mult = int(30/ifps);
         int frames_per_hour = int(3600 * _fps);
         int64_t r = hours * frames_per_hour;
