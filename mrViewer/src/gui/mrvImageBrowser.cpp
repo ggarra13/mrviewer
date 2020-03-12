@@ -2661,8 +2661,6 @@ void ImageBrowser::image_version( int sum )
     // view()->redraw();
 
 
-    img->clear_cache();
-
     int64_t first, last;
     adjust_timeline( first, last );
     set_timeline( first, last );
