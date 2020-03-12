@@ -1,5 +1,11 @@
-v5.4.2  - Bug fixed memory cache setting in Preferences window.  Now floating
+v5.4.2  - Bug fixed Preferences->Cache->Image Cache Size setting.  Now floating
 	  point values are accepted.
+	- BRAW and R3D formats now read Preferences->Cache->Image Cache Size
+	  and will try to limit the clips reading of frames to that memory
+	  limit and will recycle frames if they won't fit.
+	  However, it will also perform like a soft limit that will be overrun
+	  if you have several clips that you want to play.
+	- BRAW now supports timecode.
 
 v5.4.1  - Bug fixed file type pulldown in custom file requester.
 	- Bug fixed R3D Audio decoding, which was not correct.
