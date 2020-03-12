@@ -769,7 +769,7 @@ namespace mrv {
         if ( memory_used >= Preferences::max_memory  )
         {
             int64_t max_frames = (int64_t) max_image_frames();
-            if ( std::abs( f - _frame ) > max_frames )
+            if ( std::abs( f - _frame ) >= max_frames )
                 return false;
             limit_video_store( _frame );
             if ( has_audio() ) limit_audio_store( _frame );
