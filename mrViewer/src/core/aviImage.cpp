@@ -1560,7 +1560,7 @@ void aviImage::timed_limit_store( const int64_t& frame )
                 }
         };
 
-        typedef std::multimap< timeval, int64_t, customMore > TimedSeqMap;
+        typedef std::map< timeval, int64_t, customMore > TimedSeqMap;
         TimedSeqMap tmp;
         {
             SCOPED_LOCK( _mutex );
@@ -1577,7 +1577,7 @@ void aviImage::timed_limit_store( const int64_t& frame )
 
             TimedSeqMap::iterator it = tmp.begin();
             for ( ; it != tmp.end() &&
-                      ( _images.size() > max_frames ||
+                      ( _images.size() >= max_frames ||
                         memory_used >= Preferences::max_memory ); ++it )
             {
                 if ( _images.empty() ) break;
@@ -4557,7 +4557,7 @@ bool aviImage::in_subtitle_store( const int64_t frame )
     // frames.  Searching for equal frame is bound not to work in most cases.
     subtitle_cache_t::iterator end = _subtitles.end();
     subtitle_cache_t::iterator i = std::find_if( _subtitles.begin(), end,
-                                   EqualFunctor(frame) );
+                                                 EqualFunctor(frame) );
     if ( i != end ) return true;
     return false;
 }
