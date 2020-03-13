@@ -96,10 +96,10 @@ namespace mrv {
                 IBlackmagicRawJob* decodeAndProcessJob = nullptr;
 
                 if (result == S_OK)
-                    VERIFY(frame->SetResourceFormat(s_resourceFormat));
+                    result = frame->SetResourceFormat(s_resourceFormat);
 
                 if (result == S_OK)
-                    VERIFY(frame->SetResolutionScale( scale ));
+                    result = frame->SetResolutionScale( scale );
 
                 if (result == S_OK)
                     result = frame->CreateJobDecodeAndProcessFrame(nullptr,
