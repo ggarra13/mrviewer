@@ -19,7 +19,6 @@ SET(CMAKE_INSTALL_RPATH "")
 include( ExternalProject )
 
 include( BuildLibZ.cmake )
-# #include( BuildZLIB.cmake )
 include( BuildLibPNG.cmake )
 
 set( NASM "" )

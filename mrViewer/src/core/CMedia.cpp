@@ -2797,7 +2797,6 @@ bool CMedia::frame( const int64_t f )
         }
     }
 
-    std::cerr << "push back " << _dts << std::endl;
     _video_packets.push_back( pkt );
 
     if ( has_audio() )
