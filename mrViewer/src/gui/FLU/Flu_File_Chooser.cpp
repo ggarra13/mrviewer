@@ -624,6 +624,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   filename.labelcolor( FL_WHITE );
   filename.textcolor( FL_BLACK );
+  filename.cursor_color( FL_BLACK );
   filename.label( _( filenameTxt.c_str() ) );
   ok.label( _( okTxt.c_str() ) );
   ok.labelsize( FL_NORMAL_SIZE );

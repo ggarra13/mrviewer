@@ -898,8 +898,8 @@ static void timecode_cb( Fl_Input* w, ImageInformation* info )
     for ( ; i != e; ++i )
     {
         if ( i->first == N_("timecode") ||
-                i->first == N_("Video timecode") ||
-                i->first == N_("Timecode") )
+             i->first == N_("Video timecode") ||
+             i->first == N_("Timecode") )
         {
             const Imf::TimeCode& t = CMedia::str2timecode( w->value() );
             img->process_timecode( t );
@@ -2162,8 +2162,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if (attr)
         {
             ++group;
-            mrv::Timecode::Display d =
-                mrv::Timecode::kTimecodeNonDrop;
+            mrv::Timecode::Display d = mrv::Timecode::kTimecodeNonDrop;
             if ( attr->value().dropFrame() )
                 d = mrv::Timecode::kTimecodeDropFrame;
             char buf[64];

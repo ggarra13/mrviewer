@@ -2766,7 +2766,6 @@ bool CMedia::frame( const int64_t f )
         _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
         _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
         _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
-
     {
         return false;
     }
@@ -2798,6 +2797,7 @@ bool CMedia::frame( const int64_t f )
         }
     }
 
+    std::cerr << "push back " << _dts << std::endl;
     _video_packets.push_back( pkt );
 
     if ( has_audio() )

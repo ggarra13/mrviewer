@@ -1375,6 +1375,7 @@ void decode_thread( PlaybackData* data )
         step = (int) img->playback();
         if ( step == 0 ) break;
 
+
         frame += step;
         CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
                                                          timeline );

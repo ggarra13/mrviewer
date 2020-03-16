@@ -880,16 +880,17 @@ CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
     SCOPED_LOCK( _mutex );
 
+    int64_t f = frame - _start_number;
 #if 0
     // Check if video is already in video store
-    bool ok = in_video_store( frame - _start_number );
+    bool ok = in_video_store( f );
 #else
     bool ok = false;
 
     // Check if video is already in video store
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i = std::find_if( _images.begin(), end,
-                                              EqualFunctor(frame) );
+                                              EqualFunctor(f) );
     if ( i != end ) ok = true;
 
 #endif
@@ -925,7 +926,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_subtitle = !has_subtitle();
 
     if ( (stopped() || saving()) &&
-         (got_video || in_video_store( frame )) &&
+         (got_video || in_video_store( frame - _start_number )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
     {
@@ -2855,7 +2856,6 @@ void aviImage::populate()
     {
         AVStream* stream = get_video_stream();
         if ( stream->metadata ) dump_metadata( stream->metadata, N_("Video ") );
-
     }
 
     default_ocio_input_color_space();
@@ -3301,9 +3301,9 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
     if ( !saving() )
     {
         if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
-             ( got_video || in_video_store( f ) ) )
+             ( got_video || in_video_store( f - _start_number ) ) )
         {
-            int64_t pts = frame2pts( get_video_stream(), f );
+            int64_t pts = frame2pts( get_video_stream(), f - _start_number );
             if ( !got_video ) _video_packets.jump( pts );
             pts = frame2pts( get_audio_stream(), f );
             if ( !got_audio ) _audio_packets.jump( pts );
@@ -3380,7 +3380,6 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
     debug_audio_stores(frame, _right_eye ? "RFETCH DONE" : "FETCH DONE");
 #endif
 
-
     return true;
 }
 
@@ -3388,42 +3387,33 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 bool aviImage::frame( const int64_t f )
 {
 
-
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
+
 
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
-            ( vpkts > kMIN_FRAMES || !has_video() )
-              ) ) )
+            ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
-        // std::cerr << "false return: " << std::endl;
-        // std::cerr << "vp: " << vpkts
-        //           << " vs: " << _images.size()
-        //           << " ap: " << apkts
-        //           << " as: " << _audio.size()
-        //           << std::endl;
-        // std::cerr << "sum: " <<
-        // ( _video_packets.bytes() +  _audio_packets.bytes() +
-        //       _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
-        //               << std::endl;
         return false;
     }
 
 
     if ( f < _frameStart )    _dts = _adts = _frameStart;
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
-    // else                      _dts = _adts = f;
+
+
 
     image_type_ptr canvas;
     bool ok = fetch(canvas, f);
 
+
 #ifdef DEBUG_DECODE
     IMG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: "
               << _frame << " _expected: "  << _expected );
-    debug_video_packets( _dts, "fetch", false );
+    debug_video_packets( _dts, "after fetch", true );
 #endif
 
     return ok;
@@ -3718,7 +3708,7 @@ aviImage::audio_video_display( const int64_t& frame )
 
 CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
-    int64_t frame = f;
+    int64_t frame = f - _start_number;
 
     if ( !has_video() )
     {

@@ -9434,12 +9434,16 @@ void ImageView::fps( double x )
     mrv::media bg = background();
     if ( bg ) bg->image()->play_fps( x );
 
-
+    int64_t start = uiMain->uiStartFrame->frame();  // needed not sure why
+    int64_t end   = uiMain->uiEndFrame->frame();  // needed not sure why
     timeline()->fps( x );
     uiMain->uiFrame->fps( x );
     uiMain->uiStartFrame->fps( x );
     uiMain->uiEndFrame->fps( x );
     uiMain->uiFPS->value( x );
+
+    uiMain->uiStartFrame->frame( start );  // needed not sure why
+    uiMain->uiEndFrame->frame( end );  // needed not sure why
 
     char buf[128];
     sprintf( buf, N_("FPS %g"), x );

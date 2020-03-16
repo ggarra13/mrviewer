@@ -769,6 +769,7 @@ void CMedia::process_timecode( const Imf::TimeCode& tc )
         int ss = seconds*ifps;
         _tc_frame = hh + mm + ss + frames;
     }
+
 }
 
 Imf::TimeCode CMedia::str2timecode( const std::string text )
@@ -848,9 +849,13 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
              name == N_("Timecode") || name == N_("timeCode") )
         {
             Imf::TimeCode t = str2timecode( tag->value );
-            process_timecode( t );
+            if ( _frame == first_frame() )
+            {
+                process_timecode( t );
+            }
             Imf::TimeCodeAttribute attr( t );
             _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
+            image_damage( image_damage() | kDamageTimecode );
         }
         else
         {

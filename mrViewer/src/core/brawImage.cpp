@@ -978,12 +978,13 @@ namespace mrv {
             if ( frame == start_frame() )
             {
                 process_timecode( t );
+                _tc_frame++;
             }
             Imf::TimeCodeAttribute attr( t );
             _attrs[frame].insert( std::make_pair( "timecode", attr.copy() ) );
 
             refresh();
-            image_damage( image_damage() | CMedia::kDamageTimecode );
+            image_damage( image_damage() | kDamageTimecode );
 
         }  // release lock
 

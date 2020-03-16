@@ -1,11 +1,23 @@
 v5.4.2  - Bug fixed Preferences->Cache->Image Cache Size setting.  Now floating
-	  point values are accepted.
+	  point values are accepted.  Also added arrows to allow setting the
+	  cache value in increments of 0.5 Gb.
 	- BRAW and R3D formats now read Preferences->Cache->Image Cache Size
 	  and will try to limit the clips reading of frames to that memory
 	  limit and will recycle frames if they won't fit.
 	  However, it will also perform like a soft limit that will be overrun
 	  if you have several clips that you want to play.
-	- BRAW now supports timecode.
+	  The biggest benefit comes from playing a single clip at a big
+	  resolution (1/2 or 1/4 for example) and recycling the frames.
+	- BRAW now supports timecode and it matches BlackmagicRAWPlayer.
+	- Fixed timecode when it was drop frame and it was less than 30 or not
+	  a multiple of 30.  Now those cases behave as non-drop frame.
+	- Fixed timecode when switching FPS value.
+	- Bug fixed looping of sequences that start at another frame than 1
+	  when using the FFMPEG library for one of its known image formats.
+	  Previously, the looping would work only once.
+	- Bug fixed cursor color in filename entry in custom file requester.
+	  Previously, the cursor would not be shown even if it could modify the
+	  text.
 
 v5.4.1  - Bug fixed file type pulldown in custom file requester.
 	- Bug fixed R3D Audio decoding, which was not correct.
