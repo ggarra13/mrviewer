@@ -220,8 +220,9 @@ stringArray exrImage::valid_compressions() const
   data contains EXR's magic number and a "channels" string in the 8th
   position.
 */
-bool exrImage::test(const boost::uint8_t *data, unsigned)
+bool exrImage::test(const boost::uint8_t *data, unsigned size )
 {
+    if ( !data || size == 0 ) return false;
     if ( Imf::isImfMagic( (const char*)data ) ) return true;
     return false;
 }

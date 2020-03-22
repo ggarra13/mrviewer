@@ -1027,22 +1027,16 @@ namespace mrv {
             if ( !saving() && _seek_frame != _expected )
                 clear_packets();
 
-            if ( !saving() || _seek_frame == _expected )
+            if ( ! is_cache_filled( _seek_frame ) )
             {
-                if ( ! is_cache_filled( _seek_frame ) )
+                image_type_ptr canvas;
+                if ( fetch( canvas, _seek_frame ) )
                 {
-                    image_type_ptr canvas;
-                    if ( fetch( canvas, _seek_frame ) )
-                    {
-                        default_color_corrections();
-                        find_image( _seek_frame );
-                    }
-                }
-                else
-                {
-                    find_image( _seek_frame );
+                    default_color_corrections();
                 }
             }
+            
+            find_image( _seek_frame );
 
         }
 
@@ -1069,12 +1063,6 @@ namespace mrv {
                 _audio_start = false;
             }
 
-            // if ( has_video() || has_audio() )
-            // {
-            //     if ( !find_image( _seek_frame ) )
-            //         IMG_ERROR( _("Decode video error seek frame " )
-            //                    << _seek_frame );
-            // }
 
             // Queue thumbnail for update
             image_damage( image_damage() | kDamageThumbnail );

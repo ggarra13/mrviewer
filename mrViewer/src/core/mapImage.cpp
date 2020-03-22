@@ -61,9 +61,9 @@ static const char* kLineOrders[] =
 };
 
 #define MAKE_TAG(a,b,c,d) (unsigned int) ( (unsigned int)(a << 24)	\
-					   + (unsigned int)(b << 16)	\
-					   + (unsigned int)(c << 8)	\
-					   + (unsigned int)d)
+                                           + (unsigned int)(b << 16)	\
+                                           + (unsigned int)(c << 8)	\
+                                           + (unsigned int)d)
 
 static const unsigned kMAP_MAGIC = MAKE_TAG('M', 'I', 't', 'x');
 
@@ -138,6 +138,8 @@ mapImage::~mapImage()
 */
 bool mapImage::test(const boost::uint8_t *data, unsigned len)
 {
+    if ( !data || len == 0 ) return false;
+
     mapHeader* header = (mapHeader*) data;
     if ( header->magic != kMAP_MAGIC &&
             ntohl( header->magic ) != kMAP_MAGIC )
@@ -151,7 +153,7 @@ bool mapImage::test(const boost::uint8_t *data, unsigned len)
 
 
 bool mapImage::fetch( mrv::image_type_ptr& canvas,
-		      const boost::int64_t frame )
+                      const boost::int64_t frame )
 {
     int dw, dh;
 

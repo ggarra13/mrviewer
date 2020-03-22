@@ -1190,11 +1190,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             }
         }
 
-        av_assert2( ret >= 0 );
-        av_assert2( samples != NULL );
-        av_assert2( _aframe->nb_samples > 0 );
-        av_assert2( _aframe->extended_data != NULL );
-        av_assert2( _aframe->extended_data[0] != NULL );
+        assert0( forw_ctx != NULL );
+        assert0( ret >= 0 );
+        assert0( samples != NULL );
+        assert0( _aframe->nb_samples > 0 );
+        assert0( _aframe->extended_data != NULL );
+        assert0( _aframe->extended_data[0] != NULL );
 
         int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
                                _aframe->nb_samples,
@@ -1286,8 +1287,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         if ( _audio_channels > 0 )
         {
-            assert0( _aframe->extended_data != NULL );
-            assert0( _aframe->extended_data[0] != NULL );
+            av_assert0( _aframe->extended_data != NULL );
+            av_assert0( _aframe->extended_data[0] != NULL );
             memcpy(samples, _aframe->extended_data[0], data_size);
         }
     }
@@ -2017,7 +2018,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
     if ( count > 0 && is_seek )
     {
-        assert( !_audio_packets.empty() );
+        assert0( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
         frame = get_frame( get_audio_stream(), pkt ) /*+ _audio_offset*/ ;
     }
@@ -2088,10 +2089,11 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 
 
     AVStream* stream = get_audio_stream();
+    assert0( stream != NULL );
 
     while ( got_audio != kDecodeOK && !_audio_packets.empty() )
     {
-        assert( !_audio_packets.is_seek_end() );
+        assert0( !_audio_packets.is_seek_end() );
         if ( _audio_packets.is_flush() )
         {
             flush_audio();
@@ -2162,7 +2164,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
         }
         else
         {
-            assert( !_audio_packets.empty() );
+            assert0( !_audio_packets.empty() );
             AVPacket& pkt = _audio_packets.front();
 
 #if 0

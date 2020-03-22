@@ -1766,7 +1766,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         w->begin();
         progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
         progress->minimum( 0 );
-        progress->maximum( files.size() );
+        progress->maximum( float(files.size()) );
         progress->align( FL_ALIGN_TOP );
         // progress->showtext(true);
         w->end();
@@ -1835,19 +1835,19 @@ void ImageBrowser::load( const mrv::LoadList& files,
             }
             else if ( load.filename == "Gamma 1.4 Chart" )
             {
-                fg = gamma_chart( load, this, 1.4);
+                fg = gamma_chart( load, this, 1.4f);
             }
             else if ( load.filename == "Gamma 1.8 Chart" )
             {
-                fg = gamma_chart( load, this, 1.8);
+                fg = gamma_chart( load, this, 1.8f);
             }
             else if ( load.filename == "Gamma 2.2 Chart" )
             {
-                fg = gamma_chart( load, this, 2.2);
+                fg = gamma_chart( load, this, 2.2f);
             }
             else if ( load.filename == "Gamma 2.4 Chart" )
             {
-                fg = gamma_chart( load, this, 2.4);
+                fg = gamma_chart( load, this, 2.4f);
             }
             // @todo: slate image cannot be created since it needs info
             //        from other image.
@@ -2239,8 +2239,8 @@ void ImageBrowser::set_timeline( const int64_t& first, const int64_t& last )
     mrv::Timeline* t = timeline();
     if ( t )
     {
-        t->minimum( first );
-        t->maximum( last );
+        t->minimum( double(first) );
+        t->maximum( double(last) );
     }
     uiMain->uiStartFrame->value( first );
     uiMain->uiEndFrame->value( last );
@@ -2514,7 +2514,7 @@ void ImageBrowser::image_version( int sum )
         return;
     }
     CMedia* img = fg->image();
-    unsigned max_tries = prefs->uiPrefsMaxImagesApart->value();
+    unsigned max_tries = (unsigned) prefs->uiPrefsMaxImagesApart->value();
     while ( start == AV_NOPTS_VALUE && tries <= max_tries )
     {
         std::string file = img->fileroot();
@@ -2587,7 +2587,7 @@ void ImageBrowser::image_version( int sum )
 
     if ( start == AV_NOPTS_VALUE )
     {
-        int num2 = num;
+        int64_t num2 = num;
         if ( add > 0 ) {
             num++;
             num2 += sum;

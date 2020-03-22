@@ -825,13 +825,19 @@ void save_sequence_file( ViewerUI* uiMain,
 {
     const std::string kIMAGE_PATTERN = _("Images (*.{") +
                                        kImagePattern + "})\t";
+    const std::string kALL_PATTERN = _("All (*.{") +
+                                     kImagePattern + "," + kMoviePattern
+                                     + "})\t" +
+                                     kIMAGE_PATTERN +
+                                     _("Movies (*.{") + kMoviePattern +
+                                     "})\t";
 
     std::string title = _("Save Sequence");
     stringArray filelist;
     if ( !startdir ) startdir = "";
 
     const std::string& file = file_save_single_requester( title.c_str(),
-                                                          kIMAGE_PATTERN.c_str(),
+                                                          kALL_PATTERN.c_str(),
                                                           startdir, true );
     if ( file.empty() ) return;
 

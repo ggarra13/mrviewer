@@ -2797,7 +2797,6 @@ bool CMedia::frame( const int64_t f )
         }
     }
 
-    std::cerr << "push back " << _dts << std::endl;
     _video_packets.push_back( pkt );
 
     if ( has_audio() )
@@ -3408,6 +3407,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     s.has_codec    = has_codec;
     s.codec_name   = codec_name( par );
     s.fourcc       = codec_tag2fourcc( par->codec_tag );
+    s.duration     = 100;
 
     AVStream* st = context->streams[stream_index];
     double time  = av_q2d( st->time_base );
@@ -3421,7 +3421,10 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
     if ( st->start_time == AV_NOPTS_VALUE )
     {
-        s.start = 1;
+        if ( context->start_time != AV_NOPTS_VALUE )
+            s.start = ((double) context->start_time / ( double )AV_TIME_BASE );
+        else
+            s.start = 1;
     }
     else
     {
@@ -3434,7 +3437,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
     else
     {
-        s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
+        if ( context->duration != AV_NOPTS_VALUE )
+            s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
     }
 
     if (st->disposition & AV_DISPOSITION_DEFAULT)

@@ -995,7 +995,7 @@ bool aviImage::seek_to_position( const int64_t frame )
         if (ret < 0)
         {
             IMG_ERROR( _("Could not seek to frame ") << frame
-                       << N_("(offset: ") << offset << N_(") : ")
+                       << N_(" offset: ") << offset << N_(": ")
                        << get_error_text(ret) );
             return false;
         }
@@ -1303,8 +1303,8 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
         {
             char buf[128];
             av_strerror(ret, buf, 128);
-            IMG_ERROR( "send_packet error: " << buf
-                       << " for codec "
+            IMG_ERROR( _("send_packet error: ") << buf
+                       << _(" for codec ")
                        << avcodec_get_name( avctx->codec_id )  );
             return ret;
         }
@@ -2368,12 +2368,6 @@ void aviImage::populate()
             }
             else if ( _video_info.size() == 2 )
             {
-                // double diff1 = fabs( _video_info[0].fps - s.fps );
-                // double diff2 = fabs( _video_info[0].duration -
-                //                      s.duration );
-                // if ( !_is_thumbnail && file != filename() &&
-                //      _w == ctx->width && _h == ctx->height &&
-                //      diff1 <= 0.0001 && diff2 <= 0.0001 )
                 if ( !_is_thumbnail && _right_filename.empty() &&
                      (unsigned)ctx->width == width() &&
                      (unsigned)ctx->height == height() )
@@ -2954,11 +2948,12 @@ bool aviImage::initialize()
             av_format_inject_global_side_data(_context);
 
             // Change probesize and analyze duration to 30 secs
-            // to detect subtitles.
-            // if ( _context )
-            // {
-            //     probe_size( 30 * AV_TIME_BASE );
-            // }
+            // to detect subtitles and other streams.
+            if ( _context )
+            {
+                probe_size( 30 * AV_TIME_BASE );
+            }
+
             DBGM1( "avformat_find_stream_info " << fileroot() );
             error = avformat_find_stream_info( _context, NULL );
             if ( error < 0 )
@@ -3319,11 +3314,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
         if ( f != _expected && (!got_video || !got_audio || !got_subtitle) )
         {
-            bool ok = seek_to_position( f );
-            if ( !ok )
-                IMG_ERROR( ("seek_to_position: Could not seek to frame ")
-                           << frame );
-            return ok;
+            return seek_to_position( f );
         }
     }
 
@@ -3525,7 +3516,8 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
     }
 
     if ( count == 0 ) {
-        LOG_ERROR( _("Empty seek or preroll") );
+        // This can happen when playing backwards, so we commented the error.
+        //   LOG_ERROR( _("Empty seek or preroll") );
         return kDecodeError;
     }
 

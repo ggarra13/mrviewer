@@ -865,7 +865,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             xywh {280 180 352 188} box ROUNDED_BOX
           } {
             Fl_Value_Slider uiPrefsCacheSize {
-              label {Video / Audio}
+              label {Video / Audio Frames} selected
               tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {295 208 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
               code0 {o->deactivate();}
             }
@@ -882,7 +882,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             xywh {295 274 321 86} box ROUNDED_BOX
           } {
             Fl_Spinner uiPrefsCacheMemory {
-              label Memory selected
+              label Memory
               xywh {415 300 50 25} type Float step 0.5 value 3
               code0 {o->textcolor( FL_BLACK );}
             }

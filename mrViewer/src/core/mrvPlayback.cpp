@@ -714,7 +714,7 @@ void audio_thread( PlaybackData* data )
         // std::cerr << "decode audio " << frame << std::endl;
 
         CMedia::DecodeStatus status = img->decode_audio( f );
-        // std::cerr << img->name() << " decoded audio " << f << " status " << status << std::endl;
+        std::cerr << img->name() << " decoded audio " << f << " status " << status << std::endl;
 
         assert( img != NULL );
         assert( reel != NULL );
@@ -729,6 +729,7 @@ void audio_thread( PlaybackData* data )
                        << _(" - decode Error audio frame ") << frame );
             frame += step;
             continue;
+        case CMedia::kDecodeMissingSamples:
         case CMedia::kDecodeMissingFrame:
             timer.setDesiredFrameRate( img->play_fps() );
             timer.waitUntilNextFrameIsDue();
