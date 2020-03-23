@@ -1213,7 +1213,7 @@ namespace mrv {
                     default_color_corrections();
                 }
             }
-            
+
             find_image( _seek_frame );
         }
 
@@ -1232,7 +1232,7 @@ namespace mrv {
                 status = decode_audio( f );
                 if ( status > kDecodeOK )
                     IMG_ERROR( _("Decode audio error: ")
-                               << decode_error( status )
+                               << get_error_text( status )
                                << _(" for frame ") << _seek_frame );
 
                 if ( !_audio_start )
