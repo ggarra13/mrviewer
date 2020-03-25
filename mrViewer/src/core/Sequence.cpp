@@ -662,6 +662,9 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     }
 
     if ( fileroot.find( "http" ) == 0 ||
+         fileroot.find( "bluray" ) == 0 ||
+         fileroot.find( "dvd" ) == 0 ||
+         fileroot.find( "/dev/sr0" ) == 0 ||
          fileroot.find( "rtmp" ) == 0 ||
          fileroot.find( "rtp" ) == 0 ||
          fileroot.find( "srtp" ) == 0 ||

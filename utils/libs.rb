@@ -27,12 +27,16 @@ libfreetype.*
 libz.*
 )
 
-@options = { :verbose => false }
+@options = { :verbose => false, :libs_only => false }
 OptionParser.new do |opts|
   opts.banner = "Usage: utils/libs.rb [@options]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
+  end
+
+  opts.on("-l", "--libs_only", "Run verbosely") do |v|
+    @options[:libs_only] = v
   end
 
   opts.on_tail("-h", "--help", "Show this message") do
@@ -166,6 +170,11 @@ if kernel !~ /MINGW.*/
   files.uniq!
 
   parse( files )
+
+  if @options[:libs_only]
+    exit(0)
+  end
+
   copy_files( build )
 
   $stderr.puts "remove .fuse files"

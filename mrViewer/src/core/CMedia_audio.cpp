@@ -1091,8 +1091,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = decode( ctx, _aframe, &got_audio, avpkt, eof );
     if ( !got_audio ) return ret;
 
-    av_assert2( _aframe->nb_samples > 0 );
-    av_assert2( ctx->channels > 0 );
+    av_assert0( _aframe->nb_samples > 0 );
+    av_assert0( ctx->channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                _aframe->nb_samples,
                                                ctx->sample_fmt, 0);
@@ -1100,6 +1100,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         IMG_ERROR( _("Output buffer size is too small for "
                      "the current frame (")
                    << *audio_size << " < " << data_size << ")" );
+        return AVERROR(EINVAL);
+    }
+    if ( data_size <= 0 )
+    {
+        IMG_ERROR( _("Output data size is too small for "
+                     "the current frame ( ") << data_size << N_(")") );
         return AVERROR(EINVAL);
     }
 
@@ -1194,8 +1200,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         assert0( ret >= 0 );
         assert0( samples != NULL );
         assert0( _aframe->nb_samples > 0 );
+        assert0( _aframe->nb_samples != AV_NOPTS_VALUE );
+        assert0( _aframe->data != NULL );
+        assert0( _aframe->data[0] != NULL );
         assert0( _aframe->extended_data != NULL );
         assert0( _aframe->extended_data[0] != NULL );
+        assert0( _aframe->buf != NULL );
+        assert0( _aframe->buf[0] != NULL );
 
         int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
                                _aframe->nb_samples,
@@ -1287,8 +1298,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         if ( _audio_channels > 0 )
         {
-            av_assert0( _aframe->extended_data != NULL );
-            av_assert0( _aframe->extended_data[0] != NULL );
+            assert0( _aframe->extended_data != NULL );
+            assert0( _aframe->extended_data[0] != NULL );
             memcpy(samples, _aframe->extended_data[0], data_size);
         }
     }

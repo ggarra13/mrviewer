@@ -951,16 +951,17 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
     if ( !skip ) --start;
 
-    if ( start < 0 ) start = 0;
+    if ( start < _frameStart ) start = _frameStart;
 
     // std::cerr << name() << std::endl << "-------------" << std::endl;
     // std::cerr << "_start_number " << _start_number << std::endl;
     // std::cerr << "start " << start << " AV_TIME_BASE " << AV_TIME_BASE
     //        << " fps " << fps() << std::endl;
-    // std::cerr << "mult " << double(start * AV_TIME_BASE / fps() ) << std::endl;
+    // std::cerr << "mult " << double( start * AV_TIME_BASE / fps() ) << std::endl;
     // std::cerr << "int64 "
-    //        << int64_t( double(start * AV_TIME_BASE / fps() ) ) << std::endl;
-    offset = int64_t( double(start * AV_TIME_BASE  / fps() ) );
+    //           << int64_t( double( start * AV_TIME_BASE / fps() ) )
+    //           << std::endl;
+    offset = int64_t( double( start * AV_TIME_BASE / fps() ) );
 
     if ( offset < 0 ) offset = 0;
 
@@ -1005,7 +1006,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-        int64_t f = frame-1;
+        int64_t f = start;
         if ( f > _frame_end ) f = _frame_end;
         int64_t dts = queue_packets( f, false, got_video,
                                      got_audio, got_subtitle );
@@ -3185,7 +3186,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
         {
 
             if ( has_audio() && audio_context() == _context &&
-                    pkt.stream_index == audio_stream_index() )
+                 pkt.stream_index == audio_stream_index() )
             {
                 int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )                                      - _frame_offset; // needed
                 _adts = pktframe;
@@ -4035,7 +4036,7 @@ void aviImage::do_seek()
             status = decode_audio( f );
             if ( status > kDecodeOK )
                 IMG_ERROR( _("Decode audio error: ")
-                           << decode_error( status )
+                           << get_error_text( status )
                            << _(" for frame ") << _seek_frame );
 
             if ( !_audio_start )
@@ -4050,7 +4051,7 @@ void aviImage::do_seek()
             if ( !find_image( _seek_frame ) && status != kDecodeOK )
                 IMG_ERROR( _("Decode video error seek frame " )
                            << _seek_frame
-                           << _(" status: ") << decode_error( status ) );
+                           << _(" status: ") << get_error_text( status ) );
         }
 
         if ( has_subtitle() && !saving() )

@@ -1,8 +1,10 @@
 v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
-	  std::cerr / std::cout messages.
-	- Bug fixed saving of BRAW and R3D as movie files.
+	  std::cerr / std::cout messages correctly.
+	- Bug fixed saving of BRAW and R3D as movie (.mov/.avi/etc) files.
 	- Bug fixed custom file requester saving of movie files not displaying
 	  saved movie files.
+	- Updated Italian installation file to latest from NSIS.  This updates
+	  some minor messages in Italian.
 
 v5.4.2  - Bug fixed Preferences->Cache->Image Cache Size setting.  Now floating
 	  point values are accepted.  Also added arrows to allow setting the

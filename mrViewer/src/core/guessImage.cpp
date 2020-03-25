@@ -241,6 +241,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     bool network = false;
 
     if ( strncmp( name, "rtmp", 4 ) == 0 ||
+         strncmp( name, "bluray", 6 ) == 0 ||
          strncmp( name, "http", 4 ) == 0 ||
          strncmp( name, "youtube", 7 ) == 0 ||
          strncmp( name, "www.", 4 ) == 0 )
@@ -438,7 +439,6 @@ CMedia* CMedia::guess_image( const char* file,
                        lastFrame, is_thumbnail );
         if ( is_stereo && image )
         {
-            std::cerr << "IS STEREO? " << is_stereo << std::endl;
             right = guess( is_stereo, is_seq, false, root, frame,
                            NULL, 0, lastFrame, is_thumbnail );
             if ( right )
