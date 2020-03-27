@@ -3,8 +3,17 @@ v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	- Bug fixed saving of BRAW and R3D as movie (.mov/.avi/etc) files.
 	- Bug fixed custom file requester saving of movie files not displaying
 	  saved movie files.
+	- Bug fixed Auto Refit Image so it works while playing the
+	  movies/sequences, and not just on loading the images.
 	- Updated Italian installation file to latest from NSIS.  This updates
 	  some minor messages in Italian.
+	- Made data window be added to the display window if the data window
+	  is bigger than the display window and it is active in the view.  This
+	  can also change how fitting the image in the window behaves.
+	- Fixed single image files to remain visible even if another movie is
+	  in another frame and you switch to the single image.
+	- Removed a bunch of silly lut messages when playing back a single
+	  image.
 
 v5.4.2  - Bug fixed Preferences->Cache->Image Cache Size setting.  Now floating
 	  point values are accepted.  Also added arrows to allow setting the

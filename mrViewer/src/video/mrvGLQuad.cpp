@@ -1327,7 +1327,7 @@ void GLQuad::lut( const CMedia* img )
     _lut   = mrv::GLLut3d::factory( _view->main(), img );
     _image = img;
 
-    _view->window()->cursor( FL_CURSOR_DEFAULT );
+    _view->window()->cursor( FL_CURSOR_CROSS );
 }
 
 

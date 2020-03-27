@@ -1494,7 +1494,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
         if ( bytes_per_frame > _audio_buf_used ) break;
 
 #ifdef DEBUG
-        //if ( index + bytes_per_frame >= _audio_max )
+        if ( index + bytes_per_frame >= _audio_max )
         {
             std::cerr << "frame: " << frame << std::endl
                       << "audio frame: " << audio_frame << std::endl
@@ -2243,6 +2243,9 @@ void CMedia::do_seek()
                 _audio_start = false;
         }
     }
+
+    if ( _frameStart == _frameEnd && _seek_frame != _frameStart )
+        _seek_frame = _frameStart;
 
     find_image( _seek_frame );
 

@@ -136,7 +136,6 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            //LOG_CONN( s << " sent to " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
@@ -1030,6 +1029,8 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kInsertImage;
         c.data = new Imf::IntAttribute( idx );
         c.linfo = new LoadInfo( imgname );
+        std::cerr << ">>>>>>>>>>>>>>> 1 c.linfo NEW **** " << c.linfo
+                  << std::endl;;
         v->commands.push_back( c );
         ok = true;
     }
@@ -1041,6 +1042,8 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
+        std::cerr << ">>>>>>>>>>>>>>> 3 c.linfo ZERO **** " << c.linfo
+                  << std::endl;;
         c.linfo = NULL;
 
         v->commands.push_back( c );
@@ -1078,6 +1081,8 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
         c.linfo = new LoadInfo(imgname, first, last);
+        std::cerr << ">>>>>>>>>>>>>>> 2 c.linfo NEW **** " << c.linfo
+                  << std::endl;;
 
         v->commands.push_back( c );
 

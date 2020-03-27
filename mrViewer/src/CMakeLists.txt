@@ -429,7 +429,7 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
+ADD_EXECUTABLE( mrViewer MACOSX_BUNDLE WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
 
 #

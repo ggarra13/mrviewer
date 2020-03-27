@@ -41,6 +41,7 @@
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
+#include "core/Sequence.h"
 
 #include "core/mrvChannelType.h"
 #include "gui/mrvMedia.h"
@@ -54,7 +55,6 @@ namespace mrv {
 
 void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
-struct LoadInfo;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
@@ -761,11 +761,25 @@ public:
 public:
     typedef CMedia::Mutex Mutex;
     struct Command {
-        Command() : frame(AV_NOPTS_VALUE), data(NULL), linfo(NULL) {};
+        Command() : type( kNoCommand ),
+                    frame(AV_NOPTS_VALUE),
+                    data(NULL),
+                    linfo(NULL)
+            {
+            };
         Command( const Command& b ) : type( b.type ),
                                       frame( b.frame ), data( b.data ),
-                                      linfo( b.linfo ) {
-        };
+                                      linfo( b.linfo ) { };
+        ~Command() {}
+
+        inline Command& operator=( const Command& b )
+            {
+                type = b.type;
+                frame = b.frame;
+                data = b.data;
+                linfo = b.linfo;
+                return *this;
+            }
         CommandType     type;
         int64_t         frame;
         Imf::Attribute* data;

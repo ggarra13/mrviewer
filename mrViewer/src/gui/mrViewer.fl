@@ -411,13 +411,11 @@ class LogUI {} {
   }
 }
 
-class PaintUI {open
-} {
-  Function {make_window( ViewerUI* m )} {open
-  } {
+class PaintUI {} {
+  Function {make_window( ViewerUI* m )} {} {
     Fl_Window uiMain {
-      label Action open
-      xywh {733 95 165 505} type Double resizable non_modal visible
+      label Action
+      xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {0 0 165 505} box PLASTIC_UP_BOX
@@ -573,7 +571,7 @@ v->uiView->redraw();}
             label Next
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_next( o->value() );
-v->uiView->redraw();} selected
+v->uiView->redraw();}
             xywh {35 389 95 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
             code0 {o->labelcolor( FL_BLACK );}
             code1 {o->textcolor( FL_BLACK );}
@@ -582,8 +580,7 @@ v->uiView->redraw();} selected
       }
     }
   }
-  Function {PaintUI(ViewerUI* m)} {open
-  } {
+  Function {PaintUI(ViewerUI* m)} {} {
     code {make_window( m );} {}
   }
   Function {~PaintUI()} {open
@@ -592,7 +589,8 @@ v->uiView->redraw();} selected
   }
 }
 
-class ConnectionUI {} {
+class ConnectionUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -611,6 +609,7 @@ class ConnectionUI {} {
           Fl_Value_Input uiServerPort {
             label Port
             xywh {130 50 70 25} step 1 value 4333
+            code0 {o->textcolor( FL_BLACK );}
           }
           Fl_Button uiCreate {
             label Create
@@ -630,10 +629,12 @@ else
             label Server
             xywh {80 143 115 30}
             code0 {o->value("localhost");}
+            code1 {o->textcolor( FL_BLACK );}
           }
           Fl_Value_Input uiClientPort {
-            label Port
+            label Port selected
             xywh {250 145 70 25} step 1 value 4333
+            code0 {o->textcolor( FL_BLACK );}
           }
           Fl_Button uiConnect {
             label Connect

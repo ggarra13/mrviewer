@@ -528,7 +528,7 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
         }
         Fl_Group Playback {
-          label Playback
+          label Playback open
           xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -542,69 +542,74 @@ uiWindowYSize->value( v->uiMain->h() );}
             Fl_Group {} {open
               xywh {280 120 300 154} box ROUNDED_BOX
             } {
-              Fl_Check_Button uiPrefsOverrideFPS {
-                label {Override FPS}
-                tooltip {Override playback fps when loading sequences.} xywh {442 124 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
-              }
-              Fl_Group {} {open
-                xywh {320 147 225 37}
+              Fl_Group {} {
+                label Sequences
+                xywh {320 138 225 64} box ROUNDED_FRAME color 35
               } {
-                Fl_Value_Input uiPrefsFPS {
-                  label Speed
-                  xywh {380 157 80 27} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
+                Fl_Check_Button uiPrefsOverrideFPS {
+                  label {Override FPS}
+                  tooltip {Override playback fps when loading sequences.} xywh {442 140 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
                 }
-                Fl_Menu_Button {} {
-                  label FPS
-                  callback {float g = (float) atof( o->child( o->value() )->label() );
-uiPrefsFPS->value( g );} open
-                  xywh {462 157 75 27}
-                  class {mrv::PopupMenu}
+                Fl_Group {} {
+                  xywh {320 163 225 37}
                 } {
-                  MenuItem {} {
-                    label 60
-                    xywh {0 0 100 20}
+                  Fl_Value_Input uiPrefsFPS {
+                    label Speed
+                    xywh {380 173 80 27} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
                   }
-                  MenuItem {} {
-                    label {59.94}
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label 50
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label 30
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label {29.97}
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label 25
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label 24
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label {14.985}
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label {12.5}
-                    xywh {0 0 100 20}
-                  }
-                  MenuItem {} {
-                    label 12
-                    xywh {0 0 100 20}
+                  Fl_Menu_Button {} {
+                    label FPS
+                    callback {float g = (float) atof( o->child( o->value() )->label() );
+uiPrefsFPS->value( g );} open
+                    xywh {462 173 75 27}
+                    class {mrv::PopupMenu}
+                  } {
+                    MenuItem {} {
+                      label 60
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {59.94}
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label 50
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label 30
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {29.97}
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label 25
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label 24
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {14.985}
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label {12.5}
+                      xywh {0 0 100 20}
+                    }
+                    MenuItem {} {
+                      label 12
+                      xywh {0 0 100 20}
+                    }
                   }
                 }
               }
               Fl_Choice uiPrefsLoopMode {
                 label {Looping Mode}
-                tooltip {Select default looping mode in timeline.} xywh {400 199 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
+                tooltip {Select default looping mode in timeline.} xywh {400 210 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
                 class {mrv::Choice}
               } {
                 MenuItem {} {
@@ -623,11 +628,11 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Value_Input uiPrefsScrubbingSensitivity {
               label {Scrub Sensitivity}
-              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {480 239 60 25} minimum 2 maximum 50 step 1 value 5 textcolor 56
+              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {480 240 60 25} minimum 2 maximum 50 step 1 value 5 textcolor 56
             }
             Fl_Check_Button uiPrefsPlayAllFrames {
               label {Play All Frames}
-              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {550 73 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {550 74 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
           }
           Fl_Group {} {
@@ -823,7 +828,7 @@ uiPrefsFPS->value( g );} open
         }
         Fl_Group {} {
           label Caches open
-          xywh {230 40 423 345} box EMBOSSED_BOX align 5
+          xywh {230 40 423 345} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
@@ -865,7 +870,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             xywh {280 180 352 188} box ROUNDED_BOX
           } {
             Fl_Value_Slider uiPrefsCacheSize {
-              label {Video / Audio Frames} selected
+              label {Video / Audio Frames}
               tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {295 208 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
               code0 {o->deactivate();}
             }
@@ -1532,8 +1537,8 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading
-          xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
+          label Loading open
+          xywh {225 42 423 352} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {open
             xywh {235 62 405 209} box ROUNDED_BOX
@@ -1579,8 +1584,8 @@ uiICC_float_profile->do_callback();}
               tooltip {When dragging and dropping a frame from a sequence, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 137 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsLoadSequenceOnAssoc {
-              label {Load Sequence on File Association & CommandLine}
-              tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 170 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+              label {Load Sequence on File Association && CommandLine}
+              tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 170 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
             }
             Fl_Check_Button uiPrefsAutoLoadImages {
               label {Auto load images as they change on disk}
@@ -2108,7 +2113,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
 	     uiWizard->value( w );
 	     break;
 	 }
-}}
+}} selected
           xywh {0 25 195 423}
           code0 {fill_tree(o);}
           code1 {o->showroot(false);}

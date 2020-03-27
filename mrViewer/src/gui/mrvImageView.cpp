@@ -30,7 +30,7 @@
 #include <inttypes.h>  // for PRId64
 
 
-//#define NETWORK_COMMANDS
+#define NETWORK_COMMANDS
 #ifdef NETWORK_COMMANDS
 #  define NET(x) std::cerr << "COMMAND: " << N_(x) << " for " << name << std::endl;
 #else
@@ -2205,6 +2205,11 @@ void ImageView::fit_image()
             const mrv::Recti& dpw2 = img->display_window2();
             dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
         }
+        else
+        {
+            if ( data_window() )
+                dpw.merge( img->data_window() );
+        }
     }
     else
     {
@@ -2267,7 +2272,7 @@ void ImageView::fit_image()
     // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
     //     W *= 2;
 
-    Fl::check();
+    // Fl::check();
     double w = (double) fltk_main()->w();
     double z = w / (double)W;
 
@@ -2307,9 +2312,12 @@ void ImageView::fit_image()
     sprintf( buf, "Offset %g %g", xoffset, yoffset );
     send_network( buf );
 
-    zoom( float(z) );
+    if ( _zoom != float(z) )
+    {
+        zoom( float(z) );
 
-    mouseMove( Fl::event_x(), Fl::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
+    }
 
     redraw();
 }
@@ -2444,6 +2452,14 @@ bool ImageView::should_update( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
+
+        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+        {
+            if ( _zoom <= 1.0f )
+            {
+                fit_image();
+            }
+        }
 
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
@@ -2842,7 +2858,10 @@ void ImageView::handle_commands()
     }
 #endif
     _network_active = false;
-    Command c = commands.front();
+
+    assert0( !commands.empty() );
+
+    Command& c = commands.front();
 
 again:
 
@@ -2851,6 +2870,11 @@ again:
     case kCreateReel:
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Create Reel failed" );
+            break;
+        }
         const std::string& s = attr->value();
         mrv::Reel r = b->reel( s.c_str() );
         if ( !r )
@@ -2902,11 +2926,12 @@ again:
     }
     case kLoadImage:
     {
-        LoadInfo file = * (LoadInfo*) c.linfo;
+        assert0( c.linfo != NULL );
+        const LoadInfo* file = c.linfo;
+        NET( "Load Image " << file->filename << " start " << file->first << " "
+             << file->last );
         LoadList files;
-        files.push_back( file );
-        NET( "Load Image " << file.filename << " start " << file.first << " "
-             << file.last );
+        files.push_back( *file );
         b->load( files, false, "", false, false );
         break;
     }
@@ -2917,6 +2942,11 @@ again:
     case kChangeImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Change Image failed" );
+            break;
+        }
         int idx = attr->value();
         mrv::Reel r = b->current_reel();
         bool found = false;
@@ -2956,12 +2986,18 @@ again:
                 c.type = kLoadImage;
                 goto again;
             }
+            LOG_ERROR( "Change image failed" );
         }
         break;
     }
     case kInsertImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Insert Image failed" );
+            break;
+        }
         int idx = attr->value();
 
         NET( "insert image #" << idx );
@@ -2969,9 +3005,10 @@ again:
         mrv::Reel r = b->reel_at( bg_reel() );
         if ( (size_t)idx < r->images.size() )
         {
-            LoadInfo file = * (LoadInfo*) c.linfo;
+            assert0( c.linfo != NULL );
+            const LoadInfo* file = c.linfo;
 
-            CMedia* img = CMedia::guess_image( file.filename.c_str(), NULL, 0,
+            CMedia* img = CMedia::guess_image( file->filename.c_str(), NULL, 0,
                                                false );
             if (!img) return;
 
@@ -2983,6 +3020,11 @@ again:
     case kBGImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "BGImage failed" );
+            break;
+        }
         int idx = attr->value();
 
         NET( "change bg image #" << idx );
@@ -3005,6 +3047,11 @@ again:
     case kFGReel:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "FGReel failed" );
+            break;
+        }
         int idx = attr->value();
         NET( "change fg reel #" << idx );
         fg_reel( idx );
@@ -3013,6 +3060,11 @@ again:
     case kBGReel:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "BGReel failed" );
+            break;
+        }
         int idx = attr->value();
         NET( "change bg reel #" << idx );
         bg_reel( idx );
@@ -3046,6 +3098,11 @@ again:
     case kRemoveImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Remove Image failed" );
+            break;
+        }
         int idx = attr->value();
         NET("remove image " << idx );
         b->remove(idx);
@@ -3054,6 +3111,11 @@ again:
     case kExchangeImage:
     {
         Imf::V2iAttribute* attr = dynamic_cast< Imf::V2iAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Exchange Image failed" );
+            break;
+        }
         const Imath::V2i& list = attr->value();
         int oldsel = list[0];
         int sel = list[1];
@@ -3064,6 +3126,11 @@ again:
     case kICS:
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "ICS for image failed" );
+            break;
+        }
         const std::string& s = attr->value();
         NET("ICS " << s );
         mrv::media fg = foreground();
@@ -3078,6 +3145,11 @@ again:
     case kRT:
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "RT for image failed" );
+            break;
+        }
         const std::string& s = attr->value();
         NET( "RT " << s );
         mrv::media fg = foreground();
@@ -3093,6 +3165,11 @@ again:
     case kChangeChannel:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( "Change chanel for image failed" );
+            break;
+        }
         unsigned idx = attr->value();
         NET( "Change Channel " << idx );
         if ( foreground() )
@@ -3172,6 +3249,11 @@ again:
         {
             Imf::FloatAttribute* f =
             dynamic_cast< Imf::FloatAttribute* >( c.data );
+            if ( !f )
+            {
+                LOG_ERROR( "Gain for image failed" );
+                break;
+            }
             NET("gain " << f->value() );
             gain( f->value() );
             break;
@@ -3180,6 +3262,11 @@ again:
         {
             Imf::FloatAttribute* f =
             dynamic_cast< Imf::FloatAttribute* >( c.data );
+            if ( !f )
+            {
+                LOG_ERROR( "Gamma for image failed" );
+                break;
+            }
             NET("gamma " << f->value() );
             gamma( f->value() );
             break;
@@ -3188,14 +3275,32 @@ again:
     {
         LOG_ERROR( "Unknown mrv event size " << commands.size() << " type "
                    << c.type << " data " << c.data << " c.frame " << c.frame );
+        goto final;
         break;
     }
     }  // switch
 
+    std::cerr << "CLEAR c.linfo " << c.linfo << std::endl;
+    if ( c.linfo )
+    {
+        const LoadInfo* file = c.linfo;
+        LOG_INFO( "CLEAR DATA " << file->filename << " start " << file->start
+                  << " end " << file->end << " data "
+                  << c.data << " type " << c.type
+                  << " frame " << c.frame );
+    }
+    else
+    {
+        LOG_INFO( "CLEAR DATA " << c.data << " type " << c.type
+                  << " frame " << c.frame );
+    }
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
-    if ( !commands.empty() )  // without these check it would crash
-        commands.pop_front();
+
+    final:
+    assert0( !commands.empty() );
+    commands.pop_front();
+
     _network_active = true;
     redraw();
 }
@@ -5761,12 +5866,17 @@ void ImageView::mouseDrag(int x,int y)
             }
             else
             {
+                int ox = xoffset;
+                int oy = yoffset;
                 xoffset += double(dx) / _zoom;
                 yoffset -= double(dy) / _zoom;
 
-                char buf[128];
-                sprintf( buf, "Offset %g %g", xoffset, yoffset );
-                send_network( buf );
+                if ( ox != xoffset || oy != yoffset )
+                {
+                    char buf[128];
+                    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+                    send_network( buf );
+                }
             }
 
             lastX = x;
@@ -7257,8 +7367,9 @@ int ImageView::handle(int event)
 
         return 1;
     case FL_UNFOCUS:
-    case FL_LEAVE:
+        return Fl_Gl_Window::handle( event );
 
+    case FL_LEAVE:
         window()->cursor(FL_CURSOR_DEFAULT);
 
         Fl_Gl_Window::handle( event );
@@ -8438,7 +8549,7 @@ void ImageView::foreground( mrv::media fg )
 
             if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
             {
-                if ( _zoom < 1.0f )
+                if ( _zoom <= 1.0f )
                 {
                     fit_image();
                 }
