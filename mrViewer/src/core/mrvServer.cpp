@@ -152,16 +152,19 @@ void Parser::write( const std::string& s, const std::string& id )
 
 mrv::ImageView* Parser::view() const
 {
+    if ( !ui ) return NULL;
     return ui->uiView;
 }
 
 mrv::ImageBrowser* Parser::browser() const
 {
+    if ( !ui || !ui->uiReelWindow ) return NULL;
     return ui->uiReelWindow->uiBrowser;
 }
 
 mrv::EDLGroup* Parser::edl_group() const
 {
+    if ( !ui || !ui->uiEDLWindow ) return NULL;
     return ui->uiEDLWindow->uiEDLGroup;
 }
 
@@ -179,8 +182,11 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale(env) );
     is.imbue(std::locale());
 
+    mrv::ImageView* v = view();
+
     typedef CMedia::Mutex Mutex;
-    Mutex& mtx = view()->commands_mutex;
+
+    Mutex& mtx = v->commands_mutex;
     SCOPED_LOCK( mtx );
 
 
@@ -192,13 +198,12 @@ bool Parser::parse( const std::string& s )
 
     bool ok = false;
 
-    mrv::ImageView* v = view();
+    if (! v ) return false;
 
     Mutex& cmtx = v->_clients_mtx;
     SCOPED_LOCK( cmtx );
 
-    ParserList c = v->_clients;
-    v->_clients.clear();
+    v->network_active( false );
 
 
 
@@ -280,7 +285,7 @@ bool Parser::parse( const std::string& s )
             shape = dynamic_cast< GLTextShape* >( view->shapes().back().get() );
             if ( shape == NULL ) {
                 LOG_ERROR( "Not a GLTextShape as last shape" );
-                v->_clients = c;
+                v->network_active( true );
                 return false;
             }
         }
@@ -414,7 +419,7 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
         CMedia* img = fg->image();
@@ -428,7 +433,7 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
         CMedia* img = fg->image();
@@ -937,7 +942,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, name, '"' ); // skip first quote
         is.clear();
-        std::getline( is, name, '"' );
+        std::getline( is, name, '"' ); // read up to second quote
         is.clear();
 
         ImageView::Command c;
@@ -963,7 +968,7 @@ bool Parser::parse( const std::string& s )
         files.push_back( imgname );
         browser()->load( files );
 
-        mrv::media m = view()->foreground();
+        mrv::media m = v->foreground();
         browser()->replace( idx, m );
         v->redraw();
         ok = true;
@@ -1029,8 +1034,6 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kInsertImage;
         c.data = new Imf::IntAttribute( idx );
         c.linfo = new LoadInfo( imgname );
-        std::cerr << ">>>>>>>>>>>>>>> 1 c.linfo NEW **** " << c.linfo
-                  << std::endl;;
         v->commands.push_back( c );
         ok = true;
     }
@@ -1042,8 +1045,6 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
-        std::cerr << ">>>>>>>>>>>>>>> 3 c.linfo ZERO **** " << c.linfo
-                  << std::endl;;
         c.linfo = NULL;
 
         v->commands.push_back( c );
@@ -1081,8 +1082,6 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
         c.linfo = new LoadInfo(imgname, first, last);
-        std::cerr << ">>>>>>>>>>>>>>> 2 c.linfo NEW **** " << c.linfo
-                  << std::endl;;
 
         v->commands.push_back( c );
 
@@ -1223,7 +1222,7 @@ bool Parser::parse( const std::string& s )
 
                 deliver( cmd );
 
-                boost::int64_t frame = view()->frame();
+                boost::int64_t frame = v->frame();
                 sprintf( buf, N_("seek %" PRId64 ), frame );
                 deliver( buf );
 
@@ -1287,7 +1286,7 @@ bool Parser::parse( const std::string& s )
         }
 
         if ( num == 0 ) {
-            v->_clients = c;
+            v->network_active( true );
             return true;
         }
 
@@ -1333,9 +1332,9 @@ bool Parser::parse( const std::string& s )
                 deliver( buf );
             }
 
-            mrv::media fg = view()->foreground();
+            mrv::media fg = v->foreground();
             if ( !fg ) {
-                v->_clients = c;
+                v->network_active( true );
                 return false;
             }
 
@@ -1455,7 +1454,7 @@ bool Parser::parse( const std::string& s )
 
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
 
@@ -1672,7 +1671,7 @@ bool Parser::parse( const std::string& s )
     }
 
     if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
-    v->_clients = c;
+    v->network_active( true );
     return ok;
 }
 
@@ -1714,6 +1713,7 @@ void tcp_session::start()
     connected = true;
 
     mrv::ImageView* v = view();
+    if (!v) return;
 
     {
         Mutex& m = v->_clients_mtx;

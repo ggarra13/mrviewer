@@ -1725,7 +1725,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                          const bool edl,
                          const bool progressBar )
 {
-
+    bool net = view()->network_active();
     view()->update( false );
 
     if ( bgimage != "" )
@@ -1772,7 +1772,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         w->end();
 
         w->show();
-        Fl::check();
+        if ( net ) Fl::check();
     }
 
     mrv::LoadList::const_iterator s = files.begin();
@@ -1792,7 +1792,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
             snprintf( buf, 1024, _("Loading \"%s\""), load.filename.c_str() );
             progress->label(buf);
             w->redraw();
-            Fl::check();
+            if ( net ) Fl::check();
         }
 
         if ( load.reel )
@@ -1933,7 +1933,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         if ( w )
         {
             progress->value( progress->value() + 1 );
-            Fl::check();
+            if ( net ) Fl::check();
         }
 
         if ( edl )
@@ -1947,12 +1947,12 @@ void ImageBrowser::load( const mrv::LoadList& files,
     {
         w->hide();
         delete w;
-        Fl::check();
+        if ( net ) Fl::check();
     }
 
     view()->update(true);
     view()->redraw();
-    Fl::check();
+    if ( net ) Fl::check();
 
     view()->reset_caches(); // Redo preloaded sequence caches
 

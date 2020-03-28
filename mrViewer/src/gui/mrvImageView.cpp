@@ -30,7 +30,7 @@
 #include <inttypes.h>  // for PRId64
 
 
-#define NETWORK_COMMANDS
+// #define NETWORK_COMMANDS
 #ifdef NETWORK_COMMANDS
 #  define NET(x) std::cerr << "COMMAND: " << N_(x) << " for " << name << std::endl;
 #else
@@ -1540,6 +1540,7 @@ void ImageView::stop_playback()
 
     mrv::media bg = background();
     if ( bg ) bg->image()->stop(true);
+
 }
 
 
@@ -2864,7 +2865,6 @@ void ImageView::handle_commands()
     Command& c = commands.front();
 
 again:
-
     switch( c.type )
     {
     case kCreateReel:
@@ -2876,12 +2876,12 @@ again:
             break;
         }
         const std::string& s = attr->value();
+        NET( "change to reel " << s );
         mrv::Reel r = b->reel( s.c_str() );
         if ( !r )
         {
             b->new_reel( s.c_str() );
         }
-        NET( "change to reel " << s );
         break;
     }
     case kTimelineMinDisplay:
@@ -2936,15 +2936,15 @@ again:
         break;
     }
     case kCacheClear:
-        clear_caches();
         NET( "clear caches ");
+        clear_caches();
         break;
     case kChangeImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         if ( !attr )
         {
-            LOG_ERROR( "Change Image failed" );
+            LOG_ERROR( _("Change Image failed") );
             break;
         }
         int idx = attr->value();
@@ -2955,7 +2955,7 @@ again:
         int i = 0;
         if ( c.linfo )
         {
-            const std::string imgname = c.linfo->filename;
+            const std::string& imgname = c.linfo->filename;
             NET( "change image #" << idx << " " << imgname );
             for ( ; j != e; ++j, ++i )
             {
@@ -2986,7 +2986,6 @@ again:
                 c.type = kLoadImage;
                 goto again;
             }
-            LOG_ERROR( "Change image failed" );
         }
         break;
     }
@@ -3113,7 +3112,7 @@ again:
         Imf::V2iAttribute* attr = dynamic_cast< Imf::V2iAttribute* >( c.data );
         if ( !attr )
         {
-            LOG_ERROR( "Exchange Image failed" );
+            LOG_ERROR( _("Exchange Image failed") );
             break;
         }
         const Imath::V2i& list = attr->value();
@@ -3280,29 +3279,16 @@ again:
     }
     }  // switch
 
-    std::cerr << "CLEAR c.linfo " << c.linfo << std::endl;
-    if ( c.linfo )
-    {
-        const LoadInfo* file = c.linfo;
-        LOG_INFO( "CLEAR DATA " << file->filename << " start " << file->start
-                  << " end " << file->end << " data "
-                  << c.data << " type " << c.type
-                  << " frame " << c.frame );
-    }
-    else
-    {
-        LOG_INFO( "CLEAR DATA " << c.data << " type " << c.type
-                  << " frame " << c.frame );
-    }
+
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
 
     final:
-    assert0( !commands.empty() );
-    commands.pop_front();
+        assert0( !commands.empty() );
+        commands.pop_front();
 
-    _network_active = true;
-    redraw();
+        _network_active = true;
+        redraw();
 }
 
 
@@ -9056,6 +9042,13 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
+
+    if ( playback() == CMedia::kStopped ) {
+        char buf[256];
+        sprintf( buf, N_("seek %" PRId64), frame() );
+        send_network( buf );
+    }
+
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
 }
@@ -9472,10 +9465,10 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 {
+
     if ( playback() == CMedia::kStopped ) {
         return;
     }
-
 
     _playback = CMedia::kStopped;
 
@@ -9484,9 +9477,6 @@ void ImageView::stop()
 
     stop_playback();
 
-    char buf[256];
-    sprintf( buf, N_("stop %" PRId64), frame() );
-    send_network( buf );
 
     if ( uiMain->uiPlayForwards )
         uiMain->uiPlayForwards->value(0);
@@ -9512,6 +9502,11 @@ void ImageView::stop()
             preload_cache_start();
         }
     }
+
+    char buf[256];
+    sprintf( buf, N_("stop %" PRId64), frame() );
+    send_network( buf );
+
 
     mouseMove( Fl::event_x(), Fl::event_y() );
     redraw();

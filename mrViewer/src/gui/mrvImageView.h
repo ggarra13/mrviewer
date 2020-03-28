@@ -786,7 +786,7 @@ public:
         LoadInfo*       linfo;
     };
 
-    mutable Mutex         commands_mutex;
+    Mutex                 commands_mutex;
     std::deque<Command>   commands;
     bool           _broadcast;
     CMedia::Mutex  _clients_mtx;
