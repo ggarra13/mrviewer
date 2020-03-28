@@ -3296,16 +3296,15 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( !saving() )
     {
-        if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+        if ( ( got_audio ||
+               in_audio_store( f + _audio_offset - _start_number) ) &&
              ( got_video || in_video_store( f - _start_number ) ) )
         {
-            int64_t pts = frame2pts( get_video_stream(), f - _start_number );
+            f -= _start_number;
+            int64_t pts = frame2pts( get_video_stream(), f );
             if ( !got_video ) _video_packets.jump( pts );
-            pts = frame2pts( get_audio_stream(), f );
-            if ( !got_audio ) _audio_packets.jump( pts );
-            _dts = _adts = f;
+            _dts = f;
             _expected = _dts + 1;
-            _expected_audio = _dts + 1;
             // _expected = -99999;   // NOT CORRECT
             // _expected_audio = -99999;
 

@@ -148,12 +148,18 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 // response to graceful termination or an unrecoverable error.
 void client::stop()
 {
-   connected = false;
-   stopped_ = true;
-   boost::system::error_code ignored_ec;
-   socket_.close(ignored_ec);
-   deadline_.cancel();
-   non_empty_output_queue_.cancel();
+    if ( ui && ui->uiView )
+    {
+        ParserList& p = ui->uiView->_clients;
+        p.erase( std::remove( p.begin(), p.end(), this ), p.end() );
+    }
+    connected = false;
+    stopped_ = true;
+    ui = NULL;
+    boost::system::error_code ignored_ec;
+    socket_.close(ignored_ec);
+    deadline_.cancel();
+    non_empty_output_queue_.cancel();
 }
 
 
@@ -302,7 +308,7 @@ void client::handle_read(const boost::system::error_code& ec)
     }
     else
     {
-        LOG_CONN( ">>>>>>>>>>>> Error on receive: " << ec.message() );
+        LOG_CONN( ">>>>>>>>>>>> Error on receive end: " << ec.message() );
 
         stop();
     }

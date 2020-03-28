@@ -43,7 +43,7 @@ class client : public Parser,
 {
   public:
     client(boost::asio::io_service& io_service,
-           ViewerUI* v); 
+           ViewerUI* v);
     virtual ~client() { stop(); };
 
     void start(tcp::resolver::iterator endpoint_iter);
@@ -78,7 +78,7 @@ class client : public Parser,
 };
 
 typedef boost::shared_ptr< client > client_ptr;
-typedef std::vector< client* >      ClientList;
+typedef std::vector< client* >   ClientList;
 
 void client_thread( const ServerData* s );
 

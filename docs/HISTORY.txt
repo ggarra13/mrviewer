@@ -12,11 +12,15 @@ v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	  can also change how fitting the image in the window behaves.
 	- Fixed single image files to remain visible even if another movie is
 	  in another frame and you switch to the single image.
+	  Now the timeline sets itself to the first frame of the single image
+	  (usually frame 1).
 	- Removed a bunch of silly lut messages when playing back a single
 	  image.
 	- Bug fixed cross hairs when inside the view window and action is
 	  scrubbing or drawing.
-	- Bug fixed connections between remote server and client.
+	- Bug fixed connections between remote server and client.  Most crashes
+	  have been removed.
+	- Minimized audio warnings of missing frames when decoding.
 
 v5.4.2  - Bug fixed Preferences->Cache->Image Cache Size setting.  Now floating
 	  point values are accepted.  Also added arrows to allow setting the

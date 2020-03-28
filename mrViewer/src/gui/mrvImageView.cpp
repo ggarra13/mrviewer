@@ -3071,7 +3071,7 @@ again:
     }
     case kStopVideo:
     {
-        LOG_INFO( "stop at " << c.frame );
+        NET( "stop at " << c.frame );
         stop();
         seek( c.frame );
         break;
@@ -3397,7 +3397,7 @@ void ImageView::timeout()
             CMedia* img = fg->image();
             int64_t frame = img->frame();
 
-            if ( this->frame() != frame )
+            if ( this->frame() != frame && playback() != CMedia::kStopped )
             {
                 TRACE("");
                 this->frame( frame );
@@ -9042,12 +9042,6 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
-
-    if ( playback() == CMedia::kStopped ) {
-        char buf[256];
-        sprintf( buf, N_("seek %" PRId64), frame() );
-        send_network( buf );
-    }
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();

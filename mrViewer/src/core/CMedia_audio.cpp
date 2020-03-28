@@ -991,7 +991,6 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
                                           EqualFunctor( it->second ) ),
                           _audio.end() );
         }
-
     }
 
 }
@@ -1020,8 +1019,9 @@ void CMedia::limit_audio_store(const int64_t frame)
     {
         case kBackwards:
             first = frame - max_frames;
-            last  = frame;
+            last  = frame + max_frames;
             if ( _adts < first ) first = _adts;
+            if ( _adts > last )   last = _adts;
             break;
         case kForwards:
             first = frame - max_frames;
@@ -1376,10 +1376,10 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 #endif
 
-    if ( _audio_packets.is_jump( pkt ) )
-    {
-        return kDecodeOK;
-    }
+    // if ( _audio_packets.is_jump( pkt ) )
+    // {
+    //     return kDecodeOK;
+    // }
 
     AVPacket pkt_temp;
     av_init_packet(&pkt_temp);
@@ -2168,11 +2168,11 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             got_audio = handle_audio_packet_seek( frame, false );
             continue;
         }
-        else if ( _audio_packets.is_jump() )
-        {
-            _audio_packets.pop_front();
-            return kDecodeOK;
-        }
+        // else if ( _audio_packets.is_jump() )
+        // {
+        //     _audio_packets.pop_front();
+        //     return kDecodeOK;
+        // }
         else
         {
             assert0( !_audio_packets.empty() );
