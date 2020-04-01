@@ -232,7 +232,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                     }
                 }
 
-                char label[1024];
+                char label[5120];
                 if ( movie )
                 {
                     sprintf( label, "Saving movie(s) '%s'", buf );

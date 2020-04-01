@@ -23,7 +23,7 @@ fi
 export PATH=$installdir/bin:$PATH
 
 
-../mk --installdir=$installdir -j 1 && echo "Install in /usr/local.  Needs root permissions" &&
+../mk --installdir=$installdir -j 4 && echo "Install in /usr/local.  Needs root permissions" &&
 
 $copy -r $installdir/bin/* $finaldir/bin
 $copy -r $installdir/lib/* $finaldir/lib

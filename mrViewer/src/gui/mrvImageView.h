@@ -69,47 +69,48 @@ public:
     {
         kNoCommand = 0,
         kCreateReel = 1,
-        kLoadImage,
-        kInsertImage,
-        kChangeImage,
-        kBGImage,
-        kFGReel,
-        kBGReel,
-        kStopVideo,
-        kSeek,
-        kPlayForwards,
-        kPlayBackwards,
-        kRemoveImage,
-        kExchangeImage,
-        kCacheClear,
-        kICS,
-        kRT,
-        kGAIN,
-        kGAMMA,
-        kChangeChannel,
-        kTimelineMin,
-        kTimelineMax,
-        kTimelineMinDisplay,
-        kTimelineMaxDisplay,
-        kFULLSCREEN,
-        kPRESENTATION,
-        kMEDIA_INFO_WINDOW_SHOW,
-        kMEDIA_INFO_WINDOW_HIDE,
-        kCOLOR_AREA_WINDOW_SHOW,
-        kCOLOR_AREA_WINDOW_HIDE,
-        k3D_VIEW_WINDOW_SHOW,
-        k3D_VIEW_WINDOW_HIDE,
-        kHISTOGRAM_WINDOW_SHOW,
-        kHISTOGRAM_WINDOW_HIDE,
-        kVECTORSCOPE_WINDOW_SHOW,
-        kVECTORSCOPE_WINDOW_HIDE,
-        kWAVEFORM_WINDOW_SHOW,
-        kWAVEFORM_WINDOW_HIDE,
-        kSTEREO_OPTIONS_WINDOW_SHOW,
-        kSTEREO_OPTIONS_WINDOW_HIDE,
-        kPAINT_TOOLS_WINDOW_SHOW,
-        kPAINT_TOOLS_WINDOW_HIDE,
-        kLUT_CHANGE,
+        kLoadImage  = 2,
+        kInsertImage = 3,
+        kChangeImage = 4,
+        kBGImage     = 5,
+        kFGReel      = 6,
+        kBGReel      = 7,
+        kStopVideo   = 8,
+        kSeek        = 9,
+        kPlayForwards = 10,
+        kPlayBackwards = 11,
+        kRemoveImage   = 12,
+        kExchangeImage = 13,
+        kCacheClear    = 14,
+        kICS           = 15,
+        kRT            = 16,
+        kGAIN          = 17,
+        kGAMMA         = 18,
+        kChangeChannel = 19,
+        kTimelineMin   = 20,
+        kTimelineMax   = 21,
+        kTimelineMinDisplay = 22,
+        kTimelineMaxDisplay = 23,
+        kFULLSCREEN    = 24,
+        kPRESENTATION  = 25,
+        kMEDIA_INFO_WINDOW_SHOW = 26,
+        kMEDIA_INFO_WINDOW_HIDE = 27,
+        kCOLOR_AREA_WINDOW_SHOW = 28,
+        kCOLOR_AREA_WINDOW_HIDE = 29,
+        k3D_VIEW_WINDOW_SHOW = 30,
+        k3D_VIEW_WINDOW_HIDE = 31,
+        kHISTOGRAM_WINDOW_SHOW = 32,
+        kHISTOGRAM_WINDOW_HIDE = 33,
+        kVECTORSCOPE_WINDOW_SHOW = 34,
+        kVECTORSCOPE_WINDOW_HIDE = 35,
+        kWAVEFORM_WINDOW_SHOW = 36,
+        kWAVEFORM_WINDOW_HIDE = 37,
+        kSTEREO_OPTIONS_WINDOW_SHOW = 38,
+        kSTEREO_OPTIONS_WINDOW_HIDE = 39,
+        kPAINT_TOOLS_WINDOW_SHOW = 40,
+        kPAINT_TOOLS_WINDOW_HIDE = 41,
+        kLUT_CHANGE = 42,
+        kZoomChange = 43,
         kLastCommand
     };
 
@@ -381,6 +382,9 @@ public:
     float zoom() const {
         return _zoom;
     };
+
+    void resize( int X, int Y, int W, int H );
+    inline void resize( int W, int H ) { resize( x(), y(), W, H ); }
 
     /// Resize main window to current displayed image
     void resize_main_window();
@@ -978,6 +982,7 @@ protected:
     std::atomic<CMedia::Playback>   _playback;         //!< status of view
 
     bool _network_active;  //<- whether to send commands across the network
+    bool _interactive;     //<- whether fltk should update (Fl::check)
 
     ///////////////////
     // FPS calculation

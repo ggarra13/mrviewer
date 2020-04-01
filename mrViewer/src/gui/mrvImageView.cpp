@@ -30,9 +30,9 @@
 #include <inttypes.h>  // for PRId64
 
 
-// #define NETWORK_COMMANDS
+#define NETWORK_COMMANDS
 #ifdef NETWORK_COMMANDS
-#  define NET(x) std::cerr << "COMMAND: " << N_(x) << " for " << name << std::endl;
+#  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << " for " << name << std::endl;
 #else
 #  define NET(x)
 #endif
@@ -1516,6 +1516,7 @@ _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _network_active( true ),
+_interactive( true ),
 _frame( 1 ),
 _lastFrame( 0 )
 {
@@ -2296,6 +2297,10 @@ void ImageView::fit_image()
         z = h;
     }
 
+
+    double ox = xoffset;
+    double oy = yoffset;
+
     xoffset = -dpw.x() - W / 2.0;
 
 
@@ -2309,9 +2314,13 @@ void ImageView::fit_image()
 
     zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
-    char buf[128];
-    sprintf( buf, "Offset %g %g", xoffset, yoffset );
-    send_network( buf );
+    if ( ! mrv::is_equal( ox, xoffset ) ||
+         ! mrv::is_equal( oy, yoffset ) )
+    {
+        char buf[128];
+        sprintf( buf, "Offset %g %g", xoffset, yoffset );
+        send_network( buf );
+    }
 
     if ( _zoom != float(z) )
     {
@@ -2454,13 +2463,6 @@ bool ImageView::should_update( mrv::media fg )
     {
         img = fg->image();
 
-        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-        {
-            if ( _zoom <= 1.0f )
-            {
-                fit_image();
-            }
-        }
 
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
@@ -2860,11 +2862,15 @@ void ImageView::handle_commands()
 #endif
     _network_active = false;
 
+    bool old_interactive = _interactive;
+    _interactive = false;
+
     assert0( !commands.empty() );
 
     Command& c = commands.front();
 
 again:
+
     switch( c.type )
     {
     case kCreateReel:
@@ -3009,7 +3015,7 @@ again:
 
             CMedia* img = CMedia::guess_image( file->filename.c_str(), NULL, 0,
                                                false );
-            if (!img) return;
+            if (!img) goto final;
 
             mrv::media m( new mrv::gui::media( img ) );
             b->insert( idx, m );
@@ -3178,8 +3184,10 @@ again:
         break;
     }
     case kFULLSCREEN:
+    {
         toggle_fullscreen();
         break;
+    }
     case kPRESENTATION:
         toggle_presentation();
         break;
@@ -3231,6 +3239,18 @@ again:
     case kPAINT_TOOLS_WINDOW_HIDE:
         toggle_paint_tools(false);
         break;
+    case kZoomChange:
+    {
+        Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
+        if ( !f )
+        {
+            LOG_ERROR( _("Zoom for image failed") );
+            break;
+        }
+        NET("zoom " << f->value() );
+        zoom( f->value() );
+        break;
+    }
     case kLUT_CHANGE:
     {
         NET( "LUT change");
@@ -3245,31 +3265,29 @@ again:
         break;
     }
     case kGAIN:
+    {
+        Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
+        if ( !f )
         {
-            Imf::FloatAttribute* f =
-            dynamic_cast< Imf::FloatAttribute* >( c.data );
-            if ( !f )
-            {
-                LOG_ERROR( "Gain for image failed" );
-                break;
-            }
-            NET("gain " << f->value() );
-            gain( f->value() );
+            LOG_ERROR( _("Gain for image failed") );
             break;
         }
+        NET("gain " << f->value() );
+        gain( f->value() );
+        break;
+    }
     case kGAMMA:
+    {
+        Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
+        if ( !f )
         {
-            Imf::FloatAttribute* f =
-            dynamic_cast< Imf::FloatAttribute* >( c.data );
-            if ( !f )
-            {
-                LOG_ERROR( "Gamma for image failed" );
-                break;
-            }
-            NET("gamma " << f->value() );
-            gamma( f->value() );
+            LOG_ERROR( _("Gamma for image failed") );
             break;
         }
+        NET("gamma " << f->value() );
+        gamma( f->value() );
+        break;
+    }
     default:
     {
         LOG_ERROR( "Unknown mrv event size " << commands.size() << " type "
@@ -3285,8 +3303,10 @@ again:
 
     final:
         assert0( !commands.empty() );
-        commands.pop_front();
+        if( !commands.empty() )
+            commands.pop_front();
 
+        _interactive = old_interactive;
         _network_active = true;
         redraw();
 }
@@ -3951,7 +3971,6 @@ void ImageView::draw()
         {
             sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
             hud << buf;
-            setlocale( LC_ALL, "es-AR" );
             sprintf( buf, _("FPS: %.3f" ), img->actual_frame_rate() );
             hud << buf;
         }
@@ -4167,6 +4186,9 @@ int ImageView::leftMouseDown(int x, int y)
         if ( _mode == kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
+            char buf[64];
+            sprintf( buf, "Selection 0 0 0 0" );
+            send_network( buf );
             return 1;
         }
         else if ( _mode == kMovePicture || _mode == kScalePicture )
@@ -4338,7 +4360,8 @@ int ImageView::leftMouseDown(int x, int y)
         {
             _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
             window()->cursor(FL_CURSOR_CROSS);
-            Fl::check();
+            if ( _interactive )
+                Fl::check();
         }
 
 
@@ -5852,12 +5875,13 @@ void ImageView::mouseDrag(int x,int y)
             }
             else
             {
-                int ox = xoffset;
-                int oy = yoffset;
+                double ox = xoffset;
+                double oy = yoffset;
                 xoffset += double(dx) / _zoom;
                 yoffset -= double(dy) / _zoom;
 
-                if ( ox != xoffset || oy != yoffset )
+                if ( !mrv::is_equal( ox, xoffset ) ||
+                     !mrv::is_equal( oy, yoffset ) )
                 {
                     char buf[128];
                     sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -7030,7 +7054,6 @@ void ImageView::toggle_fullscreen()
     take_focus();
 
 
-
     char buf[128];
     sprintf( buf, "FullScreen %d", FullScreen );
     send_network( buf );
@@ -8005,7 +8028,7 @@ void ImageView::zoom( float z )
 
     if ( z > kMaxZoom || z < kMinZoom ) return;
 
-    static char tmp[128];
+    char tmp[128];
     if ( z >= 1.0f )
     {
         sprintf( tmp, N_("x%.2g"), z );
@@ -8014,7 +8037,7 @@ void ImageView::zoom( float z )
     {
         sprintf( tmp, N_("1/%.3g"), 1/z );
     }
-    uiMain->uiZoom->label( tmp );
+    uiMain->uiZoom->copy_label( tmp );
     uiMain->uiZoom->redraw();
 
     char buf[128];
@@ -8661,6 +8684,10 @@ void ImageView::audio_stream( unsigned int idx )
     }
 
     if ( p != CMedia::kStopped ) play( p );
+
+    char buf[64];
+    sprintf( buf, N_("AudioStream %d"), idx );
+    send_network( buf );
 }
 
 
@@ -8717,6 +8744,18 @@ void ImageView::background( mrv::media bg )
     redraw();
 }
 
+void ImageView::resize( int X, int Y, int W, int H )
+{
+    Fl_Gl_Window::resize( X, Y, W, H );
+
+    if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+    {
+        if ( _zoom <= 1.0f )
+        {
+            fit_image();
+        }
+    }
+}
 
 /**
  * Resize the containing window to try to fit the image view.
@@ -8828,6 +8867,7 @@ void ImageView::resize_main_window()
     if ( h < 535 )  h = 535;
 
     fltk_main()->fullscreen_off( posX, posY, w, h );
+
     // @BUG: we need to add kTitlebar to avoid bad redraw on windows
     int H = Fl::h();
 #if 1
@@ -8836,7 +8876,11 @@ void ImageView::resize_main_window()
        fltk_main()->resize( posX, posY, w, h + kTitleBar );
    }
 #endif
-   Fl::check();
+
+   if ( _interactive )
+   {
+       Fl::check();
+   }
 
    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                            int(28 * scale) );

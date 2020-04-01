@@ -117,30 +117,34 @@ namespace mrv {
 client::client(boost::asio::io_service& io_service,
                ViewerUI* v) :
     Parser( io_service, v ),
-    stopped_(false),
-    non_empty_output_queue_(io_service),
-    deadline_(io_service)
+    stopped_(false)
 {
    // The non_empty_output_queue_ deadline_timer is set to pos_infin
    // whenever the output queue is empty. This ensures that the output
    // actor stays asleep until a message is put into the queue.
    non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
 
+
+}
+
+client::~client()
+{
+    stop();
 }
 
 // Called by the user of the client class to initiate the connection process.
 // The endpoint iterator will have been obtained using a tcp::resolver.
 void client::start(tcp::resolver::iterator endpoint_iter)
 {
+
    // Start the connect actor.
    start_connect(endpoint_iter);
-
-   //connected = true;
 
    // Start the deadline actor. You will note that we're not setting any
    // particular deadline here. Instead, the connect and input actors will
    // update the deadline prior to each asynchronous operation.
    deadline_.async_wait(boost::bind(&client::check_deadline, this));
+
 }
 
 // This function terminates all the actors to shut down the connection. It
@@ -148,18 +152,38 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 // response to graceful termination or an unrecoverable error.
 void client::stop()
 {
-    if ( ui && ui->uiView )
-    {
-        ParserList& p = ui->uiView->_clients;
-        p.erase( std::remove( p.begin(), p.end(), this ), p.end() );
-    }
+
     connected = false;
     stopped_ = true;
-    ui = NULL;
-    boost::system::error_code ignored_ec;
-    socket_.close(ignored_ec);
+
     deadline_.cancel();
     non_empty_output_queue_.cancel();
+    socket_.close();
+
+#if 0
+    if ( ui && ui->uiView )
+    {
+
+        ParserList& p = ui->uiView->_clients;
+        ParserList::iterator i = p.begin();
+        for ( ; i != p.end(); )
+        {
+            if ( *i == this )
+            {
+                LOG_CONN( "Removed client " << *i );
+                i = p.erase( i );
+            }
+            else
+            {
+                ++i;
+            }
+        }
+        LOG_CONN( "Number of clients now: " << p.size() );
+        ui = NULL;
+
+    }
+#endif
+
 }
 
 
@@ -167,18 +191,22 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 {
    if (endpoint_iter != tcp::resolver::iterator())
    {
+
       LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
 
+
       // Start the asynchronous connect operation.
       socket_.async_connect(endpoint_iter->endpoint(),
                             boost::bind(&client::handle_connect,
                                         shared_from_this(), _1, endpoint_iter));
+
    }
    else
    {
+
       // There are no more endpoints to try. Shut down the client.
       stop();
    }
@@ -187,8 +215,10 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 void client::handle_connect(const boost::system::error_code& ec,
                             tcp::resolver::iterator endpoint_iter)
 {
+
    if (stopped_)
       return;
+
 
    // The async_connect() function automatically opens the socket at the start
    // of the asynchronous operation. If the socket is closed at this time then
@@ -202,7 +232,6 @@ void client::handle_connect(const boost::system::error_code& ec,
       // Try the next available endpoint.
       start_connect(++endpoint_iter);
    }
-
    // Check if the connect operation failed before the deadline expired.
    else if (ec)
    {
@@ -224,9 +253,12 @@ void client::handle_connect(const boost::system::error_code& ec,
 
       connected = true;
 
+
       ui->uiView->_clients.push_back( this );
+
       ui->uiConnection->uiServerGroup->deactivate();
-      ui->uiConnection->uiConnect->label( _("Disconnect") );
+      ui->uiConnection->uiConnect->copy_label( _("Disconnect") );
+
 
       await_output();
 
@@ -234,13 +266,14 @@ void client::handle_connect(const boost::system::error_code& ec,
 
       // Start the input actor.
       start_read();
-
    }
 }
 
 
+
 void client::deliver( const std::string& msg )
 {
+
     SCOPED_LOCK( mtx );
 
    output_queue_.push_back(msg + "\n");
@@ -250,6 +283,7 @@ void client::deliver( const std::string& msg )
 
 void client::start_read()
 {
+
    // DON'T Set a deadline for the read operation.
    // deadline_.expires_from_now(boost::posix_time::seconds(30));
    deadline_.expires_at(boost::posix_time::pos_infin);
@@ -259,12 +293,16 @@ void client::start_read()
                                  boost::bind(&client::handle_read,
                                              shared_from_this(),
                                              boost::asio::placeholders::error));
+
+
 }
 
 void client::handle_read(const boost::system::error_code& ec)
 {
+
     if (stopped_)
         return;
+
 
     if (!ec)
     {
@@ -274,10 +312,12 @@ void client::handle_read(const boost::system::error_code& ec)
         //                std::ifstream::eofbit );
 
 
+
         std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
         try {
             std::string msg;
             is.clear();
+
             if ( std::getline(is, msg) )
             {
                 if ( msg == N_("OK") || msg.empty() )
@@ -288,6 +328,7 @@ void client::handle_read(const boost::system::error_code& ec)
                 }
                 else if ( parse( msg ) )
                 {
+
                 }
                 else
                 {
@@ -303,12 +344,11 @@ void client::handle_read(const boost::system::error_code& ec)
             LOG_ERROR( "Parse std failure " << e.what() );
         }
 
-
         start_read();
     }
     else
     {
-        LOG_CONN( ">>>>>>>>>>>> Error on receive end: " << ec.message() );
+        LOG_CONN( _("Error on receive: ") << ec.message() );
 
         stop();
     }
@@ -316,11 +356,8 @@ void client::handle_read(const boost::system::error_code& ec)
 
 void client::await_output()
 {
-
    if (stopped_)
-   {
-      return;
-   }
+       return;
 
    if (output_queue_.empty())
    {
@@ -328,12 +365,12 @@ void client::await_output()
       // sleep by waiting on the non_empty_output_queue_ timer. When a new
       // message is added, the timer will be modified and the actor will
       // wake.
-
       non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
+
       non_empty_output_queue_.async_wait(
-                                         boost::bind(&mrv::client::await_output,
-                                                     shared_from_this() )
-                                         );
+          boost::bind( &mrv::client::await_output,
+                       shared_from_this() ) );
+
    }
    else
    {
@@ -343,15 +380,16 @@ void client::await_output()
 
 void client::start_write()
 {
-
     SCOPED_LOCK( mtx );
 
-   // Start an asynchronous operation to send a message.
-   boost::asio::async_write(socket_,
-                            boost::asio::buffer(output_queue_.front()),
-                            boost::bind(&client::handle_write,
-                                        shared_from_this(),
-                                        boost::asio::placeholders::error));
+    // Start an asynchronous operation to send a message.
+    boost::asio::async_write(socket_,
+                             boost::asio::buffer(output_queue_.front(),
+                                                 output_queue_.front().size()),
+                             boost::bind(&client::handle_write,
+                                         shared_from_this(),
+                                         boost::asio::placeholders::error));
+
 }
 
 
@@ -362,7 +400,10 @@ void client::handle_write(const boost::system::error_code& ec)
 
    if (!ec)
    {
+       assert0( !output_queue_.empty() );
+
        output_queue_.pop_front();
+
        await_output();
    }
    else
@@ -375,17 +416,14 @@ void client::handle_write(const boost::system::error_code& ec)
 
 void client::check_deadline()
 {
-
    if (stopped_)
       return;
-
 
     // Check whether the deadline has passed. We compare the deadline against
     // the current time since a new asynchronous operation may have moved the
     // deadline before this actor had a chance to run.
    if (deadline_.expires_at() <= deadline_timer::traits_type::now())
    {
-
       // The deadline has passed. The socket is closed so that any outstanding
       // asynchronous operations are cancelled.
       socket_.close();
@@ -394,7 +432,6 @@ void client::check_deadline()
       // infinity so that the actor takes no action until a new deadline is set.
       deadline_.expires_at(boost::posix_time::pos_infin);
    }
-
 
    // Put the actor back to sleep.
    deadline_.async_wait(boost::bind(&client::check_deadline, this));
@@ -412,24 +449,21 @@ void client::create(ViewerUI* ui)
    data->group = buf;
    data->ui = ui;
 
-   boost::thread t( boost::bind( mrv::client_thread,
-                                 data ) );
+   boost::thread t( boost::bind( mrv::client_thread, data ) );
+   t.detach();
 }
 
 void client::remove( ViewerUI* ui )
 {
-   ParserList::iterator i = ui->uiView->_clients.begin();
-   ParserList::iterator e = ui->uiView->_clients.end();
+    assert0( ui != NULL );
+    assert0( ui->uiConnection != NULL );
+    if ( ui->uiConnection )
+    {
+        ui->uiConnection->uiServerGroup->activate();
+        ui->uiConnection->uiConnect->copy_label( _("Connect") );
+    }
 
-   for ( ; i != e; ++i )
-   {
-      (*i)->stop();
-   }
-
-   ui->uiConnection->uiServerGroup->activate();
-   ui->uiConnection->uiConnect->label( _("Connect") );
-
-   ui->uiView->_clients.clear();
+    ui->uiView->_clients.clear();
 }
 
 
@@ -437,23 +471,28 @@ void client_thread( const ServerData* s )
 {
    try
    {
-    boost::asio::io_service io_service;
-    tcp::resolver r(io_service);
-
-    client_ptr c( boost::make_shared<client>( boost::ref(io_service),
-                                              boost::ref(s->ui) ) );
-
-    c->start(r.resolve(tcp::resolver::query(s->host, s->group)));
+       boost::asio::io_service io_service;
+       tcp::resolver r(io_service);
+       tcp::resolver::query query( s->host, s->group );
 
 
-    size_t runs = io_service.run();
+       client_ptr c( boost::make_shared<client>( boost::ref(io_service),
+                                                 boost::ref(s->ui) ) );
 
-    delete s;
+       c->start(r.resolve(query));
+
+       size_t runs = io_service.run();
+
+       delete s;
 
    }
    catch (const std::exception& e)
    {
-      LOG_ERROR( "Client Exception: " << e.what() );
+       LOG_ERROR( _("Client Exception: ") << e.what() );
+   }
+   catch( ... )
+   {
+       LOG_ERROR( _("Unhandled Exception") );
    }
 }
 

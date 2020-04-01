@@ -2388,6 +2388,9 @@ void aviImage::populate()
         }
         case AVMEDIA_TYPE_AUDIO:
         {
+            // If we have a thumbnail we don't read audio at all
+            if ( _is_thumbnail ) continue;
+
             audio_info_t s;
             populate_stream_info( s, msg, _context, par, i );
 
@@ -2430,7 +2433,7 @@ void aviImage::populate()
     if ( msg.str().size() > 0 )
     {
         if ( !_is_thumbnail )
-        LOG_ERROR( filename() << msg.str() );
+            LOG_ERROR( filename() << msg.str() );
     }
 
     if ( _video_index < 0 && _audio_index < 0 )

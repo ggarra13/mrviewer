@@ -184,7 +184,10 @@ if kernel !~ /MINGW.*/
   files.uniq!
 
   parse( files )
+
+  dir = Dir.pwd
   copy_third_party( build )
+  Dir.chdir( dir )
 
   if @options[:libs_only]
     exit(0)

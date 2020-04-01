@@ -103,7 +103,7 @@ void mray_read( stubData* d )
     // Get frame buffer list
     int nRet = send(theSocket,			// Connected socket
                     N_("fb_list\n"),			// Data buffer
-                    8,		                // Length of data
+                    8,                          // Length of data
                     0);				// Flags
     if (nRet == SOCKET_ERROR)
     {
@@ -821,7 +821,7 @@ bool stubImage::has_changed()
             unsigned int portB = _portB;
             char* host = NULL;
             if ( _host ) host = strdup( _host );
-	    mrv::image_type_ptr canvas;
+            mrv::image_type_ptr canvas;
             parse_stub( canvas );
             bool ret = false;
             if ( _host && host && strcmp( host, _host ) != 0 ) ret = true;
@@ -1059,9 +1059,9 @@ bool stubImage::frame( const int64_t f )
     if ( _filename == NULL )
     {
         timestamp();
-	mrv::image_type_ptr canvas;
+        mrv::image_type_ptr canvas;
         fetch( canvas, f);
-	cache( canvas );
+        cache( canvas );
     }
 
     return true;
@@ -1100,7 +1100,7 @@ void stubImage::end_timer()
     renderSecs -= (mins * 60);
     secs = renderSecs;
 
-    char render_time[256];
+    char render_time[128];
     sprintf( render_time, N_("%02d:%02d:%02d"), hours, mins, secs );
 
     free(_label);
@@ -1113,9 +1113,9 @@ void stubImage::end_timer()
 
     if ( _attrs.find( _frame ) == _attrs.end() )
     {
-	_attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
+        _attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
     }
-    
+
     Imf::StringAttribute attr( render_time );
     _attrs[_frame].insert( std::make_pair( N_("Render Time"), attr.copy() ) );
 }

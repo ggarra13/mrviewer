@@ -2686,7 +2686,7 @@ void CMedia::stop(const bool bg)
 #endif
 
     TRACE("");
-    close_audio();
+    // close_audio();
 
 
     TRACE("");

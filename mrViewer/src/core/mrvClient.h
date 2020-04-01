@@ -44,7 +44,7 @@ class client : public Parser,
   public:
     client(boost::asio::io_service& io_service,
            ViewerUI* v);
-    virtual ~client() { stop(); };
+    virtual ~client();
 
     void start(tcp::resolver::iterator endpoint_iter);
 
@@ -71,10 +71,6 @@ class client : public Parser,
 
   private:
     bool stopped_;
-    deadline_timer non_empty_output_queue_;
-    std::deque< std::string > output_queue_;
-    boost::asio::streambuf input_buffer_;
-    deadline_timer deadline_;
 };
 
 typedef boost::shared_ptr< client > client_ptr;

@@ -461,7 +461,8 @@ bool exrImage::channels_order(
 
     char* pixels = (char*)canvas->data().get();
     if (!pixels) return false;
-    memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
+    // Needed for lumma pics (Fog.exr)
+    memset( (void*)pixels, 0, canvas->data_size() );
 
     // Then, prepare frame buffer for them
     int start = ( (-dx - dy * dw) * canvas->pixel_size() *
@@ -1532,7 +1533,7 @@ exrImage::loadDeepTileImage(
     Imf::Rgba* pixels = (Imf::Rgba*)canvas->data().get();
     if (!pixels) return;
 
-    memset( pixels, 0, canvas->data_size() ); // Needed
+    memset( (void*)pixels, 0, canvas->data_size() ); // Needed
 
 
     Array< half* > dataR;

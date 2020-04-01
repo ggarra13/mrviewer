@@ -674,11 +674,19 @@ class Reel2Otio(object):
                                                            end_time_exclusive \
                                                            )
 
-            self.clip.metadata[ os.environ.get('STUDIO') ] = { \
+            studio = os.environ.get( 'STUDIO' )
+            if not studio:
+                studio = 'Our Studio'
+            user = os.environ.get('USER')
+            if not user:
+                user = os.environ.get('USERNAME')
+            if not user:
+                user = 'unknown user'
+            self.clip.metadata[ studio ] = { \
                 'seqID': os.environ.get('SEQ'), \
                 'shotID': os.environ.get('SHOT'), \
                 'takeID': os.environ.get('TAKE'), \
-                'artist': os.environ.get('USER') or os.environ.get('USERNAME') \
+                'artist': user \
             }
 
         self.clip.name = "shot {0}".format(self.shot_index)
@@ -712,7 +720,10 @@ class Reel2Otio(object):
         lines = [i.strip() for i in lines]
 
         self.timeline.name = filename
-        self.timeline.metadata[ os.environ.get('STUDIO') ] = {
+        studio = os.environ.get('STUDIO')
+        if not studio:
+            studio = "Our Studio"
+        self.timeline.metadata[ studio ] = {
             'showID': os.environ.get('SHOW')
             }
         self.old_fps = None

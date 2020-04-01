@@ -20,7 +20,7 @@
 SET(MAGICK_FOUND   "NO" )
 SET(MAGICK++_FOUND "NO" )
 
-FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h 
+FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h
   PATHS
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
@@ -42,8 +42,8 @@ IF( MAGICK_INCLUDE_DIR )
 ENDIF( MAGICK_INCLUDE_DIR )
 
 
-FIND_PATH( MAGICK++_INCLUDE_DIR 
-  NAMES MagickWand/MagickWand.h wand/magick-wand.h 
+FIND_PATH( MAGICK++_INCLUDE_DIR
+  NAMES MagickWand/MagickWand.h wand/magick-wand.h
   PATHS
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
@@ -54,11 +54,11 @@ FIND_PATH( MAGICK++_INCLUDE_DIR
   /usr/include/ImageMagick
   )
 
-FIND_LIBRARY( Magick 
-  NAMES  MagickCore-7.Q32HDRI MagickCore-7.Q16HDRI  
-         MagickCore-6.Q32HDRI MagickCore-6.Q16HDRI  MagickCore
+FIND_LIBRARY( Magick
+  NAMES  MagickCore-7.Q32HDRI MagickCore-7.Q16HDRI
+	 MagickCore-6.Q32HDRI MagickCore-6.Q16HDRI  MagickCore
 	 CORE_RL_MagickCore_ CORE_RL_magick_
-  PATHS 
+  PATHS
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
@@ -73,10 +73,10 @@ FIND_LIBRARY( Magick
 )
 
 
-FIND_LIBRARY( Magick++ 
+FIND_LIBRARY( Magick++
   NAMES Magick++-7.Q32HDRI Magick++-7.Q16HDRI
-        Magick++-6.Q32HDRI Magick++-6.Q16HDRI Magick++ CORE_RL_Magick++_
-  PATHS 
+	Magick++-6.Q32HDRI Magick++-6.Q16HDRI Magick++ CORE_RL_Magick++_
+  PATHS
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
@@ -91,11 +91,11 @@ FIND_LIBRARY( Magick++
 MESSAGE( STATUS "MAGICK: "  "$ENV{MAGICK_HOME}/VisualMagick/lib"  )
 
 
-FIND_LIBRARY( Wand 
-  NAMES MagickWand-7.Q32HDRI MagickWand-7.Q16HDRI 
-        MagickWand-6.Q32HDRI MagickWand-6.Q16HDRI MagickWand
+FIND_LIBRARY( Wand
+  NAMES MagickWand-7.Q32HDRI MagickWand-7.Q16HDRI
+	MagickWand-6.Q32HDRI MagickWand-6.Q16HDRI MagickWand
 	CORE_RL_MagickWand_ CORE_RL_wand_
-  PATHS 
+  PATHS
   "$ENV{MAGICK_HOME}/wand/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
@@ -109,21 +109,21 @@ FIND_LIBRARY( Wand
 
 
 SET(MAGICK_LIBRARIES ${Wand} ${Magick} )
-SET(MAGICK++_LIBRARIES ${Magick++} ${MAGICK_LIBRARIES} )
+SET(MAGICK++_LIBRARIES ${MAGICK_LIBRARIES} )
 GET_FILENAME_COMPONENT(MAGICK_LIBRARY_DIR ${Magick}   PATH)
 
 
 IF(WIN32)
-  FILE( GLOB MAGICK_CODECS 
+  FILE( GLOB MAGICK_CODECS
     "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}/IM_MOD_*.dll"
     "$ENV{MAGICK_HOME}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.dll"
     )
 ELSE(WIN32)
-  FILE( GLOB MAGICK_CODECS 
+  FILE( GLOB MAGICK_CODECS
     "$ENV{MAGICK_HOME}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.so"
     "${MAGICK_LIBRARY_DIR}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.so"
     "/usr/local/lib/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.so"
-    "/usr/lib/${MAGICK_LIBRARY_DIR}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.so" 
+    "/usr/lib/${MAGICK_LIBRARY_DIR}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.so"
    )
 ENDIF(WIN32)
 
@@ -150,15 +150,14 @@ IF(NOT MAGICK_FOUND)
   IF(NOT Magick_FIND_QUIETLY)
     IF(Magick_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
-              "ImageMagick required, please specify it's location with MAGICK_HOME")
+	      "ImageMagick required, please specify it's location with MAGICK_HOME")
     ELSE(Magick_FIND_REQUIRED)
       MESSAGE(STATUS "ImageMagick was not found.")
       MESSAGE(STATUS "Magick include:" ${MAGICK_INCLUDE_DIR})
-      MESSAGE(STATUS "Magick libs:" ${MAGICK++_LIBRARIES})
+      MESSAGE(STATUS "Magick libs:" ${Magick++} ${MAGICK++_LIBRARIES})
     ENDIF(Magick_FIND_REQUIRED)
   ENDIF(NOT Magick_FIND_QUIETLY)
 ENDIF(NOT MAGICK_FOUND)
 
 
 #####
-

@@ -103,7 +103,9 @@ typedef CMedia::Mutex Mutex;
 Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
     connected( false ),
     socket_( io_service ),
-    ui( v )
+    ui( v ),
+    deadline_(io_service),
+    non_empty_output_queue_(io_service)
 {
 }
 
@@ -170,7 +172,15 @@ mrv::EDLGroup* Parser::edl_group() const
 
 bool Parser::parse( const std::string& s )
 {
-    if ( !connected || !ui || !view() ) return false;
+    if ( !connected || !ui || !ui->uiView ) return false;
+
+    mrv::ImageView* v = view();
+    if ( !v ) return false;
+
+    typedef CMedia::Mutex Mutex;
+
+    Mutex& mtx = v->commands_mutex;
+    SCOPED_LOCK( mtx );
 
     std::istringstream is( s );
 
@@ -182,12 +192,6 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale(env) );
     is.imbue(std::locale());
 
-    mrv::ImageView* v = view();
-
-    typedef CMedia::Mutex Mutex;
-
-    Mutex& mtx = v->commands_mutex;
-    SCOPED_LOCK( mtx );
 
 
     mrv::Reel r;
@@ -382,8 +386,12 @@ bool Parser::parse( const std::string& s )
     {
         float z;
         is >> z;
-        v->zoom( z );
-        v->redraw();
+
+        ImageView::Command c;
+        c.type = ImageView::kZoomChange;
+        c.data = new Imf::FloatAttribute( z );
+        v->commands.push_back( c );
+
         ok = true;
     }
     else if ( cmd == N_("Rotation") )
@@ -983,6 +991,15 @@ bool Parser::parse( const std::string& s )
         c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
+
+        ok = true;
+    }
+    else if ( cmd == N_("AudioStream") )
+    {
+        unsigned idx;
+        is >> idx;
+
+        v->audio_stream( idx );
 
         ok = true;
     }
@@ -1686,11 +1703,9 @@ const char* const kModule = "server";
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
                          ViewerUI* const v) :
-    Parser(io_service, v),
-    non_empty_output_queue_(io_service)
+    Parser(io_service, v)
 {
 
-    deliver( "sync_image" );
     // The non_empty_output_queue_ deadline_timer is set to pos_infin
     // whenever the output queue is empty. This ensures that the output
     // actor stays asleep until a message is put into the queue.
@@ -1750,7 +1765,9 @@ void tcp_session::deliver( const std::string& msg )
     SCOPED_LOCK( mtx );
 
 #ifdef DEBUG_COMMANDS
-    LOG_INFO( msg );
+    if ( view()->show_pixel_ratio() )
+        if ( msg.find( "Offset" ) == std::string::npos )
+            LOG_INFO( "SEND CMD: " << msg );
 #endif
 
     output_queue_.push_back(msg + "\n");
@@ -1776,16 +1793,20 @@ void tcp_session::stop()
         Mutex& m = v->_clients_mtx;
         SCOPED_LOCK( m );
 
-        ParserList::iterator i = v->_clients.begin();
-        ParserList::iterator e = v->_clients.end();
+        ParserList& p = v->_clients;
+        ParserList::iterator i = p.begin();
 
-        for ( ; i != e; ++i )
+        for ( ; i != p.end(); )
         {
             if ( *i == this )
             {
                 LOG_CONN( _("Removed client ") << this );
-                v->_clients.erase( i );
+                i = p.erase( i );
                 break;
+            }
+            else
+            {
+                ++i;
             }
         }
     }
@@ -2122,8 +2143,8 @@ void server_thread( const ServerData* s )
 
 
         s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
-                                 listen_endpoint,
-                                 s->ui);
+                                                               listen_endpoint,
+                                                               s->ui);
 
 
         LOG_CONN( _("Created server at port ") << s->port );
