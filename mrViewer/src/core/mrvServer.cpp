@@ -103,7 +103,9 @@ typedef CMedia::Mutex Mutex;
 Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
     connected( false ),
     socket_( io_service ),
-    ui( v )
+    ui( v ),
+    deadline_(io_service),
+    non_empty_output_queue_(io_service)
 {
 }
 
@@ -136,7 +138,6 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            //LOG_CONN( s << " sent to " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
@@ -153,22 +154,33 @@ void Parser::write( const std::string& s, const std::string& id )
 
 mrv::ImageView* Parser::view() const
 {
+    if ( !ui ) return NULL;
     return ui->uiView;
 }
 
 mrv::ImageBrowser* Parser::browser() const
 {
+    if ( !ui || !ui->uiReelWindow ) return NULL;
     return ui->uiReelWindow->uiBrowser;
 }
 
 mrv::EDLGroup* Parser::edl_group() const
 {
+    if ( !ui || !ui->uiEDLWindow ) return NULL;
     return ui->uiEDLWindow->uiEDLGroup;
 }
 
 bool Parser::parse( const std::string& s )
 {
-    if ( !connected || !ui || !view() ) return false;
+    if ( !connected || !ui || !ui->uiView ) return false;
+
+    mrv::ImageView* v = view();
+    if ( !v ) return false;
+
+    typedef CMedia::Mutex Mutex;
+
+    Mutex& mtx = v->commands_mutex;
+    SCOPED_LOCK( mtx );
 
     std::istringstream is( s );
 
@@ -180,9 +192,6 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale(env) );
     is.imbue(std::locale());
 
-    typedef CMedia::Mutex Mutex;
-    Mutex& mtx = view()->commands_mutex;
-    SCOPED_LOCK( mtx );
 
 
     mrv::Reel r;
@@ -193,13 +202,12 @@ bool Parser::parse( const std::string& s )
 
     bool ok = false;
 
-    mrv::ImageView* v = view();
+    if (! v ) return false;
 
     Mutex& cmtx = v->_clients_mtx;
     SCOPED_LOCK( cmtx );
 
-    ParserList c = v->_clients;
-    v->_clients.clear();
+    v->network_active( false );
 
 
 
@@ -281,7 +289,7 @@ bool Parser::parse( const std::string& s )
             shape = dynamic_cast< GLTextShape* >( view->shapes().back().get() );
             if ( shape == NULL ) {
                 LOG_ERROR( "Not a GLTextShape as last shape" );
-                v->_clients = c;
+                v->network_active( true );
                 return false;
             }
         }
@@ -378,8 +386,12 @@ bool Parser::parse( const std::string& s )
     {
         float z;
         is >> z;
-        v->zoom( z );
-        v->redraw();
+
+        ImageView::Command c;
+        c.type = ImageView::kZoomChange;
+        c.data = new Imf::FloatAttribute( z );
+        v->commands.push_back( c );
+
         ok = true;
     }
     else if ( cmd == N_("Rotation") )
@@ -415,7 +427,7 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
         CMedia* img = fg->image();
@@ -429,7 +441,7 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
         CMedia* img = fg->image();
@@ -938,7 +950,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, name, '"' ); // skip first quote
         is.clear();
-        std::getline( is, name, '"' );
+        std::getline( is, name, '"' ); // read up to second quote
         is.clear();
 
         ImageView::Command c;
@@ -964,7 +976,7 @@ bool Parser::parse( const std::string& s )
         files.push_back( imgname );
         browser()->load( files );
 
-        mrv::media m = view()->foreground();
+        mrv::media m = v->foreground();
         browser()->replace( idx, m );
         v->redraw();
         ok = true;
@@ -979,6 +991,15 @@ bool Parser::parse( const std::string& s )
         c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
+
+        ok = true;
+    }
+    else if ( cmd == N_("AudioStream") )
+    {
+        unsigned idx;
+        is >> idx;
+
+        v->audio_stream( idx );
 
         ok = true;
     }
@@ -1218,7 +1239,7 @@ bool Parser::parse( const std::string& s )
 
                 deliver( cmd );
 
-                boost::int64_t frame = view()->frame();
+                boost::int64_t frame = v->frame();
                 sprintf( buf, N_("seek %" PRId64 ), frame );
                 deliver( buf );
 
@@ -1282,7 +1303,7 @@ bool Parser::parse( const std::string& s )
         }
 
         if ( num == 0 ) {
-            v->_clients = c;
+            v->network_active( true );
             return true;
         }
 
@@ -1328,9 +1349,9 @@ bool Parser::parse( const std::string& s )
                 deliver( buf );
             }
 
-            mrv::media fg = view()->foreground();
+            mrv::media fg = v->foreground();
             if ( !fg ) {
-                v->_clients = c;
+                v->network_active( true );
                 return false;
             }
 
@@ -1450,7 +1471,7 @@ bool Parser::parse( const std::string& s )
 
         mrv::media fg = v->foreground();
         if ( !fg ) {
-            v->_clients = c;
+            v->network_active( true );
             return false;
         }
 
@@ -1667,7 +1688,7 @@ bool Parser::parse( const std::string& s )
     }
 
     if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
-    v->_clients = c;
+    v->network_active( true );
     return ok;
 }
 
@@ -1682,11 +1703,9 @@ const char* const kModule = "server";
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
                          ViewerUI* const v) :
-    Parser(io_service, v),
-    non_empty_output_queue_(io_service)
+    Parser(io_service, v)
 {
 
-    deliver( "sync_image" );
     // The non_empty_output_queue_ deadline_timer is set to pos_infin
     // whenever the output queue is empty. This ensures that the output
     // actor stays asleep until a message is put into the queue.
@@ -1709,6 +1728,7 @@ void tcp_session::start()
     connected = true;
 
     mrv::ImageView* v = view();
+    if (!v) return;
 
     {
         Mutex& m = v->_clients_mtx;
@@ -1745,7 +1765,9 @@ void tcp_session::deliver( const std::string& msg )
     SCOPED_LOCK( mtx );
 
 #ifdef DEBUG_COMMANDS
-    LOG_INFO( msg );
+    if ( view()->show_pixel_ratio() )
+        if ( msg.find( "Offset" ) == std::string::npos )
+            LOG_INFO( "SEND CMD: " << msg );
 #endif
 
     output_queue_.push_back(msg + "\n");
@@ -1771,16 +1793,20 @@ void tcp_session::stop()
         Mutex& m = v->_clients_mtx;
         SCOPED_LOCK( m );
 
-        ParserList::iterator i = v->_clients.begin();
-        ParserList::iterator e = v->_clients.end();
+        ParserList& p = v->_clients;
+        ParserList::iterator i = p.begin();
 
-        for ( ; i != e; ++i )
+        for ( ; i != p.end(); )
         {
             if ( *i == this )
             {
                 LOG_CONN( _("Removed client ") << this );
-                v->_clients.erase( i );
+                i = p.erase( i );
                 break;
+            }
+            else
+            {
+                ++i;
             }
         }
     }
@@ -2117,8 +2143,8 @@ void server_thread( const ServerData* s )
 
 
         s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
-                                 listen_endpoint,
-                                 s->ui);
+                                                               listen_endpoint,
+                                                               s->ui);
 
 
         LOG_CONN( _("Created server at port ") << s->port );

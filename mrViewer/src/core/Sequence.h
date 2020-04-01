@@ -233,6 +233,25 @@ struct LoadInfo
     {
     }
 
+    inline LoadInfo& operator=( const LoadInfo& b )
+        {
+            filename = b.filename;
+            right_filename = b.right_filename;
+            audio = b.audio;
+            first = b.first;
+            last = b.last;
+            start = b.start;
+            end = b.end;
+            fade_in = 0;
+            fade_out = 0;
+            fps = b.fps;
+            reel = b.reel;
+            shapes = b.shapes;
+            audio_offset = b.audio_offset;
+            subtitle = b.subtitle;
+            return *this;
+        }
+
 };
 
 typedef std::vector< LoadInfo > LoadList;

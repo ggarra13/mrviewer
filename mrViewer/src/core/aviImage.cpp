@@ -951,16 +951,17 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
     if ( !skip ) --start;
 
-    if ( start < 0 ) start = 0;
+    if ( start < _frameStart ) start = _frameStart;
 
     // std::cerr << name() << std::endl << "-------------" << std::endl;
     // std::cerr << "_start_number " << _start_number << std::endl;
     // std::cerr << "start " << start << " AV_TIME_BASE " << AV_TIME_BASE
     //        << " fps " << fps() << std::endl;
-    // std::cerr << "mult " << double(start * AV_TIME_BASE / fps() ) << std::endl;
+    // std::cerr << "mult " << double( start * AV_TIME_BASE / fps() ) << std::endl;
     // std::cerr << "int64 "
-    //        << int64_t( double(start * AV_TIME_BASE / fps() ) ) << std::endl;
-    offset = int64_t( double(start * AV_TIME_BASE  / fps() ) );
+    //           << int64_t( double( start * AV_TIME_BASE / fps() ) )
+    //           << std::endl;
+    offset = int64_t( double( start * AV_TIME_BASE / fps() ) );
 
     if ( offset < 0 ) offset = 0;
 
@@ -995,7 +996,7 @@ bool aviImage::seek_to_position( const int64_t frame )
         if (ret < 0)
         {
             IMG_ERROR( _("Could not seek to frame ") << frame
-                       << N_("(offset: ") << offset << N_(") : ")
+                       << N_(" offset: ") << offset << N_(": ")
                        << get_error_text(ret) );
             return false;
         }
@@ -1005,7 +1006,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-        int64_t f = frame-1;
+        int64_t f = start;
         if ( f > _frame_end ) f = _frame_end;
         int64_t dts = queue_packets( f, false, got_video,
                                      got_audio, got_subtitle );
@@ -1303,8 +1304,8 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
         {
             char buf[128];
             av_strerror(ret, buf, 128);
-            IMG_ERROR( "send_packet error: " << buf
-                       << " for codec "
+            IMG_ERROR( _("send_packet error: ") << buf
+                       << _(" for codec ")
                        << avcodec_get_name( avctx->codec_id )  );
             return ret;
         }
@@ -2368,12 +2369,6 @@ void aviImage::populate()
             }
             else if ( _video_info.size() == 2 )
             {
-                // double diff1 = fabs( _video_info[0].fps - s.fps );
-                // double diff2 = fabs( _video_info[0].duration -
-                //                      s.duration );
-                // if ( !_is_thumbnail && file != filename() &&
-                //      _w == ctx->width && _h == ctx->height &&
-                //      diff1 <= 0.0001 && diff2 <= 0.0001 )
                 if ( !_is_thumbnail && _right_filename.empty() &&
                      (unsigned)ctx->width == width() &&
                      (unsigned)ctx->height == height() )
@@ -2393,6 +2388,9 @@ void aviImage::populate()
         }
         case AVMEDIA_TYPE_AUDIO:
         {
+            // If we have a thumbnail we don't read audio at all
+            if ( _is_thumbnail ) continue;
+
             audio_info_t s;
             populate_stream_info( s, msg, _context, par, i );
 
@@ -2435,7 +2433,7 @@ void aviImage::populate()
     if ( msg.str().size() > 0 )
     {
         if ( !_is_thumbnail )
-        LOG_ERROR( filename() << msg.str() );
+            LOG_ERROR( filename() << msg.str() );
     }
 
     if ( _video_index < 0 && _audio_index < 0 )
@@ -2954,11 +2952,12 @@ bool aviImage::initialize()
             av_format_inject_global_side_data(_context);
 
             // Change probesize and analyze duration to 30 secs
-            // to detect subtitles.
-            // if ( _context )
-            // {
-            //     probe_size( 30 * AV_TIME_BASE );
-            // }
+            // to detect subtitles and other streams.
+            if ( _context )
+            {
+                probe_size( 30 * AV_TIME_BASE );
+            }
+
             DBGM1( "avformat_find_stream_info " << fileroot() );
             error = avformat_find_stream_info( _context, NULL );
             if ( error < 0 )
@@ -3190,7 +3189,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
         {
 
             if ( has_audio() && audio_context() == _context &&
-                    pkt.stream_index == audio_stream_index() )
+                 pkt.stream_index == audio_stream_index() )
             {
                 int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )                                      - _frame_offset; // needed
                 _adts = pktframe;
@@ -3300,16 +3299,15 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( !saving() )
     {
-        if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+        if ( ( got_audio ||
+               in_audio_store( f + _audio_offset - _start_number) ) &&
              ( got_video || in_video_store( f - _start_number ) ) )
         {
-            int64_t pts = frame2pts( get_video_stream(), f - _start_number );
+            f -= _start_number;
+            int64_t pts = frame2pts( get_video_stream(), f );
             if ( !got_video ) _video_packets.jump( pts );
-            pts = frame2pts( get_audio_stream(), f );
-            if ( !got_audio ) _audio_packets.jump( pts );
-            _dts = _adts = f;
+            _dts = f;
             _expected = _dts + 1;
-            _expected_audio = _dts + 1;
             // _expected = -99999;   // NOT CORRECT
             // _expected_audio = -99999;
 
@@ -3319,11 +3317,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
         if ( f != _expected && (!got_video || !got_audio || !got_subtitle) )
         {
-            bool ok = seek_to_position( f );
-            if ( !ok )
-                IMG_ERROR( ("seek_to_position: Could not seek to frame ")
-                           << frame );
-            return ok;
+            return seek_to_position( f );
         }
     }
 
@@ -3525,7 +3519,8 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
     }
 
     if ( count == 0 ) {
-        LOG_ERROR( _("Empty seek or preroll") );
+        // This can happen when playing backwards, so we commented the error.
+        //   LOG_ERROR( _("Empty seek or preroll") );
         return kDecodeError;
     }
 
@@ -4043,7 +4038,7 @@ void aviImage::do_seek()
             status = decode_audio( f );
             if ( status > kDecodeOK )
                 IMG_ERROR( _("Decode audio error: ")
-                           << decode_error( status )
+                           << get_error_text( status )
                            << _(" for frame ") << _seek_frame );
 
             if ( !_audio_start )
@@ -4058,7 +4053,7 @@ void aviImage::do_seek()
             if ( !find_image( _seek_frame ) && status != kDecodeOK )
                 IMG_ERROR( _("Decode video error seek frame " )
                            << _seek_frame
-                           << _(" status: ") << decode_error( status ) );
+                           << _(" status: ") << get_error_text( status ) );
         }
 
         if ( has_subtitle() && !saving() )

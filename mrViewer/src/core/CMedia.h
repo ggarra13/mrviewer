@@ -725,9 +725,6 @@ public:
     virtual void loop_at_start( const int64_t frame );
     virtual void loop_at_end( const int64_t frame );
 
-    // Return a decode error as text
-    static const char* const decode_error( DecodeStatus err );
-
     ////////////////// Static functions
     // Main entry function for guessing an image/movie type.
     // Defined in guessImage.cpp
@@ -2084,7 +2081,7 @@ protected:
 void verify_stereo_resolution( const CMedia* const image,
                                const CMedia* const right );
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
-char *const get_error_text(const int error);
+const char* const get_error_text(const int error);
 
 //   typedef boost::shared_ptr< CMedia > Image_ptr;
 typedef CMedia*                     Image_ptr;

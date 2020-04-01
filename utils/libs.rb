@@ -27,12 +27,16 @@ libfreetype.*
 libz.*
 )
 
-@options = { :verbose => false }
+@options = { :verbose => false, :libs_only => false }
 OptionParser.new do |opts|
   opts.banner = "Usage: utils/libs.rb [@options]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
+  end
+
+  opts.on("-l", "--libs_only", "Run verbosely") do |v|
+    @options[:libs_only] = v
   end
 
   opts.on_tail("-h", "--help", "Show this message") do
@@ -131,6 +135,20 @@ def copy_files( build )
   end
 end
 
+def copy_third_party( build )
+  Dir.chdir( '../..' )
+  if build =~ /Linux/
+    # Copy the RED library
+    FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
+                    "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
+                    "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
+                    "#{build}/#{@debug}/lib" )
+    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
+                    "#{build}/#{@debug}/lib" )
+  end
+end
 
 
 kernel = `uname`.chop!
@@ -166,6 +184,15 @@ if kernel !~ /MINGW.*/
   files.uniq!
 
   parse( files )
+
+  dir = Dir.pwd
+  copy_third_party( build )
+  Dir.chdir( dir )
+
+  if @options[:libs_only]
+    exit(0)
+  end
+
   copy_files( build )
 
   $stderr.puts "remove .fuse files"

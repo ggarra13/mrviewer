@@ -437,6 +437,7 @@ bool ALSAEngine::open( const unsigned channels,
         /* Open the audio device */
         /* Name of device should depend on # channels in spec */
         _pcm_handle = NULL;
+        DBGM1( "device=" << device() );
         status = snd_pcm_open(&_pcm_handle, device().c_str(),
                               SND_PCM_STREAM_PLAYBACK, 0);
 

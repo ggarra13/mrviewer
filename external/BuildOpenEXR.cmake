@@ -1,6 +1,6 @@
 ExternalProject_Add(
   OpenEXR
-  GIT_REPOSITORY "https://github.com/openexr/openexr.git"
+  GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/openexr.git"
   # GIT_TAG develop
   GIT_PROGRESS 1
   DEPENDS ZLIB

@@ -461,13 +461,7 @@ int main( int argc, char** argv )
           }
 
           ok = Fl::run();
-      }
-      catch( const mrv::reinit_exception& e )
-      {
-          LOG_INFO( _(e.what()) );
 
-          delete ui;
-          continue;
       }
       catch( const std::exception& e )
       {
@@ -506,6 +500,7 @@ int main( int argc, char** argv )
       }
       break;
   }
+
   MagickWandTerminus();
 
 

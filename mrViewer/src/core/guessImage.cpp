@@ -44,6 +44,7 @@
 #include "iffImage.h"
 #include "mrayImage.h"
 #include "ddsImage.h"
+//#include "dvdImage.h"
 #include "hdrImage.h"
 #include "oiioImage.h"
 #include "picImage.h"
@@ -81,18 +82,19 @@ struct ImageTypes {
 
 ImageTypes image_filetypes[] =
 {
+    //{ NULL,             dvdImage::test,  dvdImage::get },
     { stubImage::test,  NULL,            stubImage::get },
     { exrImage::test,   NULL,            exrImage::get },
     { iffImage::test,   NULL,            iffImage::get },
     { mapImage::test,   NULL,            mapImage::get },
     //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
     { picImage::test,   NULL,            picImage::get },
-    { NULL,             brawImage::test,           brawImage::get },
+    { NULL,             brawImage::test, brawImage::get },
     { aviImage::test,   NULL,            aviImage::get },
     // { NULL,             rawImage::test,  rawImage::get },
     { NULL,             oiioImage::test, oiioImage::get },
     { NULL,             wandImage::test, wandImage::get },
-    { NULL,             R3dImage::test,            R3dImage::get },
+    { NULL,             R3dImage::test,  R3dImage::get },
     { ddsImage::test,   NULL,            ddsImage::get },
     { shmapImage::test, NULL,            shmapImage::get },
     { mrayImage::test,  NULL,            mrayImage::get },
@@ -237,7 +239,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
     bool network = false;
+
     if ( strncmp( name, "rtmp", 4 ) == 0 ||
+         strncmp( name, "bluray", 6 ) == 0 ||
          strncmp( name, "http", 4 ) == 0 ||
          strncmp( name, "youtube", 7 ) == 0 ||
          strncmp( name, "www.", 4 ) == 0 )
@@ -249,7 +253,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     boost::uint8_t* read_data = 0;
     size_t size = len;
     const boost::uint8_t* test_data = datas;
-    if (!datas && !network) {
+
+
+    if (!datas && !network ) {
         size = 1024;
         FILE* fp = fl_fopen(name, "rb");
         if (!fp)
@@ -433,7 +439,6 @@ CMedia* CMedia::guess_image( const char* file,
                        lastFrame, is_thumbnail );
         if ( is_stereo && image )
         {
-            std::cerr << "IS STEREO? " << is_stereo << std::endl;
             right = guess( is_stereo, is_seq, false, root, frame,
                            NULL, 0, lastFrame, is_thumbnail );
             if ( right )

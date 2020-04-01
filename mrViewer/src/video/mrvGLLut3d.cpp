@@ -1144,6 +1144,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     std::string path, fullpath;
     GLLut3d::Transforms transforms;
 
+    static const CMedia* lastImg = NULL;
     if ( !Preferences::use_ocio )
     {
 
@@ -1170,7 +1171,6 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 
         if ( transforms.empty() )
         {
-            static const CMedia* lastImg = NULL;
 
             if ( img != lastImg )
             {
@@ -1239,6 +1239,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     else
     {
         DBG;
+
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() ) {
             DBG;
@@ -1282,9 +1283,13 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         if ( i != _luts.end() && i->second->inited() )
         {
             // this lut was already created, return it.
-            LOG_INFO( _("3D Lut for ") << img->name()
-                      << _(" already created: " ) );
-            LOG_INFO( path );
+            if ( lastImg != img )
+            {
+                lastImg = img;
+                LOG_INFO( _("3D Lut for ") << img->name()
+                          << _(" already created: " ) );
+                LOG_INFO( path );
+            }
             return i->second;
         }
     }

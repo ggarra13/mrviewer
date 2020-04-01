@@ -62,7 +62,7 @@ void BlackImage::create( image_type_ptr& canvas )
         return;
     }
     Pixel* pixels = (Pixel*)canvas->data().get();
-    memset( pixels, 0, canvas->data_size() );
+    memset( (void*)pixels, 0, canvas->data_size() );
 }
 
 

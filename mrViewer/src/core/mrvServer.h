@@ -51,14 +51,14 @@ class EDLGroup;
 
 
 class Parser
-{ 
+{
   public:
     typedef boost::recursive_mutex Mutex;
 
   public:
     Parser( boost::asio::io_service& io_service, ViewerUI* v );
     virtual ~Parser();
-     
+
     bool parse( const std::string& m );
     void write( const std::string& s, const std::string& id );
 
@@ -77,6 +77,10 @@ class Parser
     mrv::Reel r;
     mrv::media m;
     ViewerUI* ui;
+    boost::asio::streambuf input_buffer_;
+    deadline_timer deadline_;
+    deadline_timer non_empty_output_queue_;
+    std::deque< std::string > output_queue_;
 };
 
 
@@ -85,14 +89,14 @@ class tcp_session : public Parser,
 {
    public:
      tcp_session(boost::asio::io_service& io_service,
-		 ViewerUI* const v);
+                 ViewerUI* const v);
      virtual ~tcp_session();
 
      tcp::socket& socket();
      void start();
 
      bool stopped();
-     
+
      void start_read();
      void handle_read(const boost::system::error_code& ec);
      void await_output();
@@ -105,10 +109,6 @@ class tcp_session : public Parser,
      void handle_write(const boost::system::error_code& ec);
      void check_deadline(deadline_timer* deadline);
 
-   protected:
-     boost::asio::streambuf input_buffer_;
-     deadline_timer non_empty_output_queue_;
-     std::deque< std::string > output_queue_;
 };
 
 typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
@@ -117,15 +117,15 @@ class server
 {
 public:
      server(boost::asio::io_service& io_service,
-	    const tcp::endpoint& listen_endpoint,
-	    ViewerUI* v);
+            const tcp::endpoint& listen_endpoint,
+            ViewerUI* v);
 
      ~server();
 
      void start_accept();
 
      void handle_accept(tcp_session_ptr session,
-			const boost::system::error_code& ec);
+                        const boost::system::error_code& ec);
 
      static void create(ViewerUI* ui);
      static void remove(ViewerUI* ui);
@@ -153,4 +153,3 @@ void server_thread( const ServerData* s );
 }  // namespace mrv
 
 #endif
-

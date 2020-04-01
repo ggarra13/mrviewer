@@ -220,8 +220,9 @@ stringArray exrImage::valid_compressions() const
   data contains EXR's magic number and a "channels" string in the 8th
   position.
 */
-bool exrImage::test(const boost::uint8_t *data, unsigned)
+bool exrImage::test(const boost::uint8_t *data, unsigned size )
 {
+    if ( !data || size == 0 ) return false;
     if ( Imf::isImfMagic( (const char*)data ) ) return true;
     return false;
 }
@@ -460,7 +461,8 @@ bool exrImage::channels_order(
 
     char* pixels = (char*)canvas->data().get();
     if (!pixels) return false;
-    memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
+    // Needed for lumma pics (Fog.exr)
+    memset( (void*)pixels, 0, canvas->data_size() );
 
     // Then, prepare frame buffer for them
     int start = ( (-dx - dy * dw) * canvas->pixel_size() *
@@ -1531,7 +1533,7 @@ exrImage::loadDeepTileImage(
     Imf::Rgba* pixels = (Imf::Rgba*)canvas->data().get();
     if (!pixels) return;
 
-    memset( pixels, 0, canvas->data_size() ); // Needed
+    memset( (void*)pixels, 0, canvas->data_size() ); // Needed
 
 
     Array< half* > dataR;

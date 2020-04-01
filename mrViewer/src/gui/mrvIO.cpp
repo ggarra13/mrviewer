@@ -113,7 +113,7 @@ void errorbuffer::print( const char* c )
     std::cerr << c << std::flush;
 
     // Send string to Log Window
-    if ( ViewerUI::uiLog )
+    if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
         ViewerUI::uiLog->uiLogText->error( c );
     }
@@ -124,7 +124,7 @@ void warnbuffer::print( const char* c )
     std::cerr << c << std::flush;
 
     // Send string to Log Window
-    if ( ViewerUI::uiLog )
+    if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
         ViewerUI::uiLog->uiLogText->warning( c );
     }
@@ -135,7 +135,7 @@ void infobuffer::print( const char* c )
     std::cout << c << std::flush;
 
     // Send string to Log Window
-    if ( ViewerUI::uiLog )
+    if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
         ViewerUI::uiLog->uiLogText->info( c );
     }
@@ -146,7 +146,7 @@ void connbuffer::print( const char* c )
     std::cout << c << std::flush;
 
     // Send string to Log Window in Connection panel
-    if ( ViewerUI::uiConnection )
+    if ( ViewerUI::uiConnection && ViewerUI::uiConnection->uiLog )
     {
         ViewerUI::uiConnection->uiLog->info( c );
     }

@@ -174,11 +174,6 @@ _("Decode Buffer Full"),
 };
 
 
-const char* const CMedia::decode_error( DecodeStatus err )
-{
-    return _( kDecodeStatus[err] );
-}
-
 std::string CMedia::attr2str( const Imf::Attribute* attr )
 {
     std::string r;
@@ -1621,6 +1616,8 @@ void CMedia::filename( const char* n )
          name.find( "rtp" )     != 0 &&
          name.find( "rtmp" )    != 0 &&
          name.find( "youtube" ) != 0 &&
+         name.find( "bluray:" ) != 0 &&
+         name.find( "dvd:" )    != 0 &&
          name.find( "www." )    != 0 )
         file = fs::absolute( file );
 
@@ -2515,8 +2512,7 @@ void CMedia::play(const CMedia::Playback dir,
     if ( dir == kForwards ) _seek_req = true;
 
     TRACE("");
-    if ( ! seek_to_position( _frame ) )
-        IMG_ERROR( _("Could not seek to frame ") << _frame );
+    seek_to_position( _frame );
 
     TRACE("");
 
@@ -2690,7 +2686,7 @@ void CMedia::stop(const bool bg)
 #endif
 
     TRACE("");
-    close_audio();
+    // close_audio();
 
 
     TRACE("");
@@ -3407,6 +3403,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     s.has_codec    = has_codec;
     s.codec_name   = codec_name( par );
     s.fourcc       = codec_tag2fourcc( par->codec_tag );
+    s.duration     = 100;
 
     AVStream* st = context->streams[stream_index];
     double time  = av_q2d( st->time_base );
@@ -3420,7 +3417,10 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
     if ( st->start_time == AV_NOPTS_VALUE )
     {
-        s.start = 1;
+        if ( context->start_time != AV_NOPTS_VALUE )
+            s.start = ((double) context->start_time / ( double )AV_TIME_BASE );
+        else
+            s.start = 1;
     }
     else
     {
@@ -3433,7 +3433,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
     else
     {
-        s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
+        if ( context->duration != AV_NOPTS_VALUE )
+            s.duration = ((double) context->duration / ( double )AV_TIME_BASE );
     }
 
     if (st->disposition & AV_DISPOSITION_DEFAULT)
@@ -4471,45 +4472,18 @@ void CMedia::add_shape( mrv::shape_type_ptr s )
     _undo_shapes.clear();
 }
 
-char *const get_error_text(const int error)
+const char* const get_error_text(const int error)
 {
     static char error_buffer[255];
     if ( error < 0 )
+    {
         av_strerror(error, error_buffer, sizeof(error_buffer));
+        return error_buffer;
+    }
     else
     {
-        switch( error )
-        {
-        case CMedia::kDecodeMissingFrame:
-            strcpy( error_buffer, _( "Decode Missing Frame" ) );
-            break;
-        case CMedia::kDecodeOK:
-            strcpy( error_buffer, _( "Decode OK" ) );
-            break;
-        case CMedia::kDecodeDone:
-            strcpy( error_buffer, _( "Decode Done" ) );
-            break;
-        case CMedia::kDecodeError:
-            strcpy( error_buffer, _( "Decode Error" ) );
-            break;
-        case CMedia::kDecodeMissingSamples:
-            strcpy( error_buffer, _( "Decode Missing Samples" ) );
-            break;
-        case CMedia::kDecodeNoStream:
-            strcpy( error_buffer, _( "Decode No Stream" ) );
-            break;
-        case CMedia::kDecodeLoopStart:
-            strcpy( error_buffer, _( "Decode Loop Start" ) );
-            break;
-        case CMedia::kDecodeLoopEnd:
-            strcpy( error_buffer, _( "Decode Loop End" ) );
-            break;
-        case CMedia::kDecodeBufferFull:
-            strcpy( error_buffer, _( "Decode Buffer Full" ) );
-            break;
-        }
+        return _( kDecodeStatus[error] );
     }
-    return error_buffer;
 }
 
 bool CMedia::refetch( int64_t f )

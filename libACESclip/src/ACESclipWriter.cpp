@@ -54,7 +54,7 @@ using namespace tinyxml2;
  */
 std::string ACESclipWriter::date_time( const time_t& t ) const
 {
-    char buf[24];
+    char buf[64];
     struct tm* now = localtime( &t );
     sprintf( buf, "%d-%02d-%02dT%02d:%02d:%02d",
              now->tm_year+1900, now->tm_mon+1, now->tm_mday,

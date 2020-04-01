@@ -471,18 +471,22 @@ void parse_command_line( const int argc, char** argv,
 #endif
 
     int debug = adebug.getValue();
+#ifdef _WIN32
+    if ( debug )
+    {
+        AllocConsole();
+        FILE *fDummy;
+        freopen_s(&fDummy, "CONIN$", "r", stdin);
+        freopen_s(&fDummy, "CONOUT$", "w", stderr);
+        freopen_s(&fDummy, "CONOUT$", "w", stdout);
+        std::cout.clear();
+        std::cerr.clear();
+        std::cin.clear();
+    }
+#endif
+    
     Preferences::debug = debug;
     if ( debug > 0 ) mrv::io::logbuffer::debug( true );
-// #ifdef _WIN32
-//     if ( debug )
-//     {
-//         AllocConsole();
-//         freopen("conin$", "r", stdin);
-//         freopen("conout$", "w", stdout);
-//         freopen("conout$", "w", stderr);
-        // fprintf( stderr, "DEBUG: %d\n", debug );
-//     }
-// #endif
 
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();

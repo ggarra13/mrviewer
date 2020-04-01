@@ -991,7 +991,6 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
                                           EqualFunctor( it->second ) ),
                           _audio.end() );
         }
-
     }
 
 }
@@ -1020,8 +1019,9 @@ void CMedia::limit_audio_store(const int64_t frame)
     {
         case kBackwards:
             first = frame - max_frames;
-            last  = frame;
+            last  = frame + max_frames;
             if ( _adts < first ) first = _adts;
+            if ( _adts > last )   last = _adts;
             break;
         case kForwards:
             first = frame - max_frames;
@@ -1091,8 +1091,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = decode( ctx, _aframe, &got_audio, avpkt, eof );
     if ( !got_audio ) return ret;
 
-    av_assert2( _aframe->nb_samples > 0 );
-    av_assert2( ctx->channels > 0 );
+    av_assert0( _aframe->nb_samples > 0 );
+    av_assert0( ctx->channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                _aframe->nb_samples,
                                                ctx->sample_fmt, 0);
@@ -1100,6 +1100,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         IMG_ERROR( _("Output buffer size is too small for "
                      "the current frame (")
                    << *audio_size << " < " << data_size << ")" );
+        return AVERROR(EINVAL);
+    }
+    if ( data_size <= 0 )
+    {
+        IMG_ERROR( _("Output data size is too small for "
+                     "the current frame ( ") << data_size << N_(")") );
         return AVERROR(EINVAL);
     }
 
@@ -1190,11 +1196,17 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             }
         }
 
-        av_assert2( ret >= 0 );
-        av_assert2( samples != NULL );
-        av_assert2( _aframe->nb_samples > 0 );
-        av_assert2( _aframe->extended_data != NULL );
-        av_assert2( _aframe->extended_data[0] != NULL );
+        assert0( forw_ctx != NULL );
+        assert0( ret >= 0 );
+        assert0( samples != NULL );
+        assert0( _aframe->nb_samples > 0 );
+        assert0( _aframe->nb_samples != AV_NOPTS_VALUE );
+        assert0( _aframe->data != NULL );
+        assert0( _aframe->data[0] != NULL );
+        assert0( _aframe->extended_data != NULL );
+        assert0( _aframe->extended_data[0] != NULL );
+        assert0( _aframe->buf != NULL );
+        assert0( _aframe->buf[0] != NULL );
 
         int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
                                _aframe->nb_samples,
@@ -1364,10 +1376,10 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 #endif
 
-    if ( _audio_packets.is_jump( pkt ) )
-    {
-        return kDecodeOK;
-    }
+    // if ( _audio_packets.is_jump( pkt ) )
+    // {
+    //     return kDecodeOK;
+    // }
 
     AVPacket pkt_temp;
     av_init_packet(&pkt_temp);
@@ -1482,7 +1494,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
         if ( bytes_per_frame > _audio_buf_used ) break;
 
 #ifdef DEBUG
-        //if ( index + bytes_per_frame >= _audio_max )
+        if ( index + bytes_per_frame >= _audio_max )
         {
             std::cerr << "frame: " << frame << std::endl
                       << "audio frame: " << audio_frame << std::endl
@@ -1556,6 +1568,7 @@ void CMedia::audio_stream( int idx )
 
     if ( has_audio() )
     {
+        std::cerr << "AUDIO INDEX was set to " << idx << std::endl;
         flush_audio();
         close_audio();
         close_audio_codec();
@@ -2017,7 +2030,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
     if ( count > 0 && is_seek )
     {
-        assert( !_audio_packets.empty() );
+        assert0( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
         frame = get_frame( get_audio_stream(), pkt ) /*+ _audio_offset*/ ;
     }
@@ -2088,10 +2101,11 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 
 
     AVStream* stream = get_audio_stream();
+    assert0( stream != NULL );
 
     while ( got_audio != kDecodeOK && !_audio_packets.empty() )
     {
-        assert( !_audio_packets.is_seek_end() );
+        assert0( !_audio_packets.is_seek_end() );
         if ( _audio_packets.is_flush() )
         {
             flush_audio();
@@ -2155,14 +2169,14 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             got_audio = handle_audio_packet_seek( frame, false );
             continue;
         }
-        else if ( _audio_packets.is_jump() )
-        {
-            _audio_packets.pop_front();
-            return kDecodeOK;
-        }
+        // else if ( _audio_packets.is_jump() )
+        // {
+        //     _audio_packets.pop_front();
+        //     return kDecodeOK;
+        // }
         else
         {
-            assert( !_audio_packets.empty() );
+            assert0( !_audio_packets.empty() );
             AVPacket& pkt = _audio_packets.front();
 
 #if 0
@@ -2230,6 +2244,9 @@ void CMedia::do_seek()
                 _audio_start = false;
         }
     }
+
+    if ( _frameStart == _frameEnd && _seek_frame != _frameStart )
+        _seek_frame = _frameStart;
 
     find_image( _seek_frame );
 

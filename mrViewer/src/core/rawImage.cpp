@@ -219,7 +219,7 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
             {
                 Pixel* pixels = (Pixel*)canvas->data().get();
-                memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
+                memcpy( (void*)pixels, iprc->thumbnail.thumb, dw*dh*4 );
             }
         }
         else if ( tformat == LIBRAW_THUMBNAIL_JPEG )
@@ -336,7 +336,7 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
         {
             Pixel* pixels = (Pixel*)canvas->data().get();
-            memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
+            memcpy( (void*)pixels, iprc->image, dw*dh*4*sizeof(short) );
         }
     }
 

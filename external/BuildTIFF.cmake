@@ -1,6 +1,7 @@
 ExternalProject_Add(
   LibTIFF
   GIT_REPOSITORY "https://gitlab.com/libtiff/libtiff.git"
+  GIT_TAG v4.1.0
   DEPENDS ZLIB
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}

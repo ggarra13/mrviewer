@@ -2585,8 +2585,13 @@ void ImageInformation::fill_data()
     }
 
     double aspect_ratio = 0;
+    const mrv::Recti& daw = img->display_window();
     const mrv::Recti& dpw = img->display_window();
-    if ( dpw.h() )
+    if ( daw.h() >= dpw.h() )
+    {
+        aspect_ratio = ( (double) daw.w() / (double) daw.h() );
+    }
+    else if ( dpw.h() )
     {
         aspect_ratio = ( (double) dpw.w() / (double) dpw.h() );
     }
