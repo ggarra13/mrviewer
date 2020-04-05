@@ -249,6 +249,10 @@ int main( int argc, char** argv )
           DBG;
           ui = new ViewerUI();
           DBG;
+
+          // Make the main view window start with focus
+          ui->uiView->take_focus();
+
           mrv::Options opts;
           if ( argc > 0 )
               mrv::parse_command_line( argc, argv, ui, opts );

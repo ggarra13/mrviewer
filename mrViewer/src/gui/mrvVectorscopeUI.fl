@@ -91,18 +91,18 @@ class VectorscopeUI {open
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
 o->hide();} open
-      xywh {107 386 240 240} type Double resizable
+      xywh {155 264 240 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;} non_modal visible
     } {
-      Fl_Group {} {open
-	xywh {0 0 240 240} box FLAT_BOX color 32
+      Fl_Group {} {open selected
+        xywh {0 0 240 240} box FLAT_BOX color 32
       } {
-	Fl_Box uiVectorscope {selected
-	  xywh {9 9 319 231}
-	  code0 {o->main( main );}
-	  class {mrv::Vectorscope}
-	}
+        Fl_Box uiVectorscope {
+          xywh {9 9 319 231} color 47
+          code0 {o->main( main );}
+          class {mrv::Vectorscope}
+        }
       }
     }
   }

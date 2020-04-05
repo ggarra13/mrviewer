@@ -71,6 +71,7 @@ class client : public Parser,
 
   private:
     bool stopped_;
+    boost::asio::io_service& io_service_;
 };
 
 typedef boost::shared_ptr< client > client_ptr;

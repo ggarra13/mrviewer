@@ -116,8 +116,9 @@ namespace mrv {
 //
 client::client(boost::asio::io_service& io_service,
                ViewerUI* v) :
-    Parser( io_service, v ),
-    stopped_(false)
+    Parser( boost::ref(io_service), boost::ref(v) ),
+    stopped_(false),
+    io_service_( io_service )
 {
    // The non_empty_output_queue_ deadline_timer is set to pos_infin
    // whenever the output queue is empty. This ensures that the output
@@ -160,7 +161,6 @@ void client::stop()
     non_empty_output_queue_.cancel();
     socket_.close();
 
-#if 0
     if ( ui && ui->uiView )
     {
 
@@ -182,7 +182,6 @@ void client::stop()
         ui = NULL;
 
     }
-#endif
 
 }
 
@@ -322,16 +321,19 @@ void client::handle_read(const boost::system::error_code& ec)
             {
                 if ( msg == N_("OK") || msg.empty() )
                 {
+                    LOG_INFO( _("OK") );
                 }
                 else if ( msg == N_("Not OK") )
                 {
+                    LOG_INFO( _("Not OK") );
                 }
                 else if ( parse( msg ) )
                 {
-
+                    LOG_INFO( _("Parsed message ") << msg );
                 }
                 else
                 {
+                    LOG_ERROR( _("Unknown message") );
                 }
             }
         }
@@ -434,28 +436,32 @@ void client::check_deadline()
    }
 
    // Put the actor back to sleep.
-   deadline_.async_wait(boost::bind(&client::check_deadline, this));
+   deadline_.async_wait(boost::bind(&client::check_deadline,
+                                    shared_from_this()));
 }
 
 
 void client::create(ViewerUI* ui)
 {
-   unsigned short port = (unsigned short) ui->uiConnection->uiClientPort->value();
-   ServerData* data = new ServerData;
-   data->port = port;
-   char buf[128];
-   sprintf( buf, "%d", port );
-   data->host = ui->uiConnection->uiClientServer->value();
-   data->group = buf;
-   data->ui = ui;
+    assert0( ui != NULL );
+    assert0( ui->uiConnection != NULL );
+    unsigned short port = (unsigned short) ui->uiConnection->uiClientPort->value();
+    ServerData* data = new ServerData;
+    data->port = port;
+    char buf[128];
+    sprintf( buf, "%d", port );
+    data->host = ui->uiConnection->uiClientServer->value();
+    data->group = buf;
+    data->ui = ui;
 
-   boost::thread t( boost::bind( mrv::client_thread, data ) );
-   t.detach();
+    boost::thread t( boost::bind( mrv::client_thread, data ) );
+    t.detach();
 }
 
 void client::remove( ViewerUI* ui )
 {
     assert0( ui != NULL );
+    assert0( ui->uiView != NULL );
     assert0( ui->uiConnection != NULL );
     if ( ui->uiConnection )
     {
@@ -476,8 +482,7 @@ void client_thread( const ServerData* s )
        tcp::resolver::query query( s->host, s->group );
 
 
-       client_ptr c( boost::make_shared<client>( boost::ref(io_service),
-                                                 boost::ref(s->ui) ) );
+       client_ptr c( boost::make_shared<client>( io_service, s->ui ) );
 
        c->start(r.resolve(query));
 
