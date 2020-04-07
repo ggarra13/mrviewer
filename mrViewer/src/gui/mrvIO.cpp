@@ -68,6 +68,11 @@ boost::recursive_mutex logbuffer::_mutex;
 std::fstream logbuffer::out;
 bool logbuffer::_debug = true;
 
+logbuffer::~logbuffer() {
+    SCOPED_LOCK( _mutex );
+    if (out.is_open()) out.close();
+};
+
 int logbuffer::sync()
 {
     if ( ! pbase() ) return 0;

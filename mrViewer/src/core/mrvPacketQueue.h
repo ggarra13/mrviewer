@@ -569,13 +569,15 @@ public:
 
     static void release()
     {
-        free( _loop_end.data );
-        free( _loop_start.data );
-        free( _seek_end.data );
-        free( _preroll.data );
-        free( _jump.data );
-        free( _seek.data );
-        free( _flush.data );
+        free( _loop_end.data );   _loop_end.data = NULL;
+        free( _loop_start.data ); _loop_start.data = NULL;
+        free( _seek_end.data );   _seek_end.data = NULL;
+        free( _preroll.data );    _preroll.data = NULL;
+        free( _jump.data );       _jump.data = NULL;
+        free( _seek.data );       _seek.data = NULL;
+        free( _flush.data );      _flush.data = NULL;
+
+        inited = false;
     }
 
 

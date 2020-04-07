@@ -170,7 +170,7 @@ void client::stop()
         {
             if ( *i == this )
             {
-                LOG_CONN( "Removed client " << *i );
+                LOG_CONN( _("Removed client ") << *i );
                 i = p.erase( i );
             }
             else
@@ -178,7 +178,7 @@ void client::stop()
                 ++i;
             }
         }
-        LOG_CONN( "Number of clients now: " << p.size() );
+        LOG_CONN( _("Number of connections now: ") << p.size() );
         ui = NULL;
 
     }
@@ -191,7 +191,7 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
    if (endpoint_iter != tcp::resolver::iterator())
    {
 
-      LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
+       LOG_CONN( _("Trying ") << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
@@ -224,7 +224,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // the timeout handler must have run first.
    if (!socket_.is_open())
    {
-      LOG_CONN( "Connect timed out." );
+       LOG_CONN( _("Connect timed out.") );
 
       connected = false;
 
@@ -234,7 +234,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Check if the connect operation failed before the deadline expired.
    else if (ec)
    {
-      LOG_CONN( "Connect error: " << ec.message() );
+       LOG_CONN( _("Connect error: ") << ec.message() );
 
       connected = false;
 
@@ -329,7 +329,6 @@ void client::handle_read(const boost::system::error_code& ec)
                 }
                 else if ( parse( msg ) )
                 {
-                    LOG_INFO( _("Parsed message ") << msg );
                 }
                 else
                 {
@@ -340,6 +339,11 @@ void client::handle_read(const boost::system::error_code& ec)
         catch ( const std::ios_base::failure& e )
         {
             LOG_ERROR( "Parse failure " << e.what() );
+        }
+        catch( const boost::exception& e )
+        {
+            LOG_ERROR( _("Boost exception: ")
+                       << boost::diagnostic_information(e) );
         }
         catch ( const std::exception& e )
         {
@@ -482,14 +486,21 @@ void client_thread( const ServerData* s )
        tcp::resolver::query query( s->host, s->group );
 
 
-       client_ptr c( boost::make_shared<client>( io_service, s->ui ) );
+       client_ptr c( boost::make_shared<client>( ref(io_service),
+                                                 ref(s->ui) ) );
 
        c->start(r.resolve(query));
 
        size_t runs = io_service.run();
 
        delete s;
+       LOG_CONN( _("Number of client runs: ") << runs );
 
+   }
+   catch( const boost::exception& e )
+   {
+       LOG_ERROR( _("Boost exception: ")
+                  << boost::diagnostic_information(e) );
    }
    catch (const std::exception& e)
    {

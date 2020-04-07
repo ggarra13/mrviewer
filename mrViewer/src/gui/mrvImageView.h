@@ -111,6 +111,7 @@ public:
         kPAINT_TOOLS_WINDOW_HIDE = 41,
         kLUT_CHANGE = 42,
         kZoomChange = 43,
+        kOCIOViewChange = 44,
         kLastCommand
     };
 

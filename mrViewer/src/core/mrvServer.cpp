@@ -138,7 +138,7 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            //LOG_INFO( "resending " << s << " to " << p );
+            // LOG_INFO( "Resending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
@@ -195,7 +195,6 @@ bool Parser::parse( const std::string& s )
 
 
     mrv::Reel r;
-    mrv::media m;
 
     std::string cmd;
     is >> cmd;
@@ -670,31 +669,15 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, s, '"' );
 
-        ViewerUI* m = v->main();
-        m->uiGammaInput->value( 1.0f );
-        v->gamma(1.0f);
-        if ( ! d.empty() ) mrv::Preferences::OCIO_Display = d;
-        if ( ! s.empty() )
-        {
-            mrv::Preferences::OCIO_View = s;
-            m->gammaDefaults->copy_label( s.c_str() );
-            m->gammaDefaults->redraw();
-        }
-        v->use_lut(true);
-        m->uiLUT->value(true);
-#if 0
-        mrv::media fg = v->foreground();
-        if (!fg) ok = false;
-        else
-        {
-            CMedia* img = fg->image();
-            img->image_damage( img->image_damage() & CMedia::kDamageLut );
-            v->redraw();
-            ok = true;
-        }
-#else
+        ImageView::Command c;
+        c.type = ImageView::kOCIOViewChange;
+        Imf::StringVector vec;
+        vec.push_back( d );
+        vec.push_back( s );
+        c.data = new Imf::StringVectorAttribute( vec );
+        v->commands.push_back( c );
+
         ok = true;
-#endif
     }
     else if ( cmd == N_("ICS") )
     {
@@ -976,8 +959,8 @@ bool Parser::parse( const std::string& s )
         files.push_back( imgname );
         browser()->load( files );
 
-        mrv::media m = v->foreground();
-        browser()->replace( idx, m );
+        mrv::media fg = v->foreground();
+        browser()->replace( idx, fg );
         v->redraw();
         ok = true;
     }
@@ -1781,8 +1764,9 @@ void tcp_session::deliver( const std::string& msg )
 void tcp_session::stop()
 {
     connected = false;
-    boost::system::error_code ignored_ec;
-    socket_.close(ignored_ec);
+
+    deadline_.cancel();
+    socket_.close();
     non_empty_output_queue_.cancel();
 
     if ( !ui ) return;
@@ -1809,6 +1793,9 @@ void tcp_session::stop()
                 ++i;
             }
         }
+
+        LOG_CONN( _("Number of connections now: ") << p.size() );
+        ui = NULL;
     }
 }
 
@@ -1821,10 +1808,10 @@ void tcp_session::start_read()
     // input_deadline_.expires_at(boost::posix_time::pos_infin);
 
     // Start an asynchronous operation to read a newline-delimited message.
-    boost::asio::async_read_until(socket(), input_buffer_, '\n',
-                                  boost::bind(&tcp_session::handle_read,
-                                          shared_from_this(),
-                                          boost::asio::placeholders::error));
+    boost::asio::async_read_until(
+        socket(), input_buffer_, '\n',
+        boost::bind( &tcp_session::handle_read, shared_from_this(),
+                     boost::asio::placeholders::error ) );
 }
 
 void tcp_session::handle_read(const boost::system::error_code& ec)

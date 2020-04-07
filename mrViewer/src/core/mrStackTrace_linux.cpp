@@ -1,4 +1,3 @@
-
 //  Copyright (c) 2004, Gonzalo Garramuno
 //
 //  All rights reserved.
@@ -14,7 +13,7 @@
 //  distribution.
 //  *       Neither the name of Gonzalo Garramuno nor the names of
 //  its other contributors may be used to endorse or promote products derived
-//  from this software without specific prior written permission. 
+//  from this software without specific prior written permission.
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -45,7 +44,7 @@ namespace fs = boost::filesystem;
 #include <execinfo.h>
 
 
-/* get REG_EIP from ucontext.h */ 
+/* get REG_EIP from ucontext.h */
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE /* Necessary for REG_EIP. Why, I don't know. */
@@ -64,12 +63,12 @@ namespace mr
 
 ExceptionHandler::ExceptionHandler()
 {
-   install_signal_handler();
+      install_signal_handler();
 }
 
 ExceptionHandler::~ExceptionHandler()
 {
-   restore_signal_handler();
+      restore_signal_handler();
 }
 
 void ExceptionHandler::ShowStack() {
@@ -96,13 +95,13 @@ void ExceptionHandler::demangle( const char* name )
       free(demangle);
    } else if(status == -2)
       fprintf( stderr, "Error: %s  is not a valid name under the C++ ABI mangling "
-	       "rules\n", name);
+               "rules\n", name);
    else if(status == -1)
       fprintf( stderr, "Error: could not allocate memory.\n");
 }
 
 void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
-				     void *secret)
+                                     void *secret)
 {
 
    std::string lockfile = mrv::homepath();
@@ -110,7 +109,7 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
    if(fs::exists(lockfile))
    {
       if ( ! fs::remove( lockfile ) )
-	 std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+         std::cerr << "Could not remove lockfile " << lockfile << std::endl;
    }
 
    if ( sig == SIGINT ) exit(0);
@@ -125,13 +124,13 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   /* 32-bit OS */
   if (sig == SIGSEGV)
      fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr, 
-	      uc->uc_mcontext.gregs[REG_EIP]);
+              "from %p\n", sig, info->si_addr,
+              uc->uc_mcontext.gregs[REG_EIP]);
   else if ( sig == SIGFPE )
      fprintf( stderr, "Got Floating Point Exception.\n");
   else
      fprintf( stderr, "Got signal %d\n", sig);
-	
+
   trace_size = backtrace(trace, 16);
   /* overwrite sigaction with caller's address */
   trace[1] = (void *) uc->uc_mcontext.gregs[REG_EIP];
@@ -140,13 +139,13 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   /* 64-bit OS */
   if (sig == SIGSEGV)
      fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr, 
-	      (void*)uc->uc_mcontext.gregs[REG_RIP]);
+              "from %p\n", sig, info->si_addr,
+              (void*)uc->uc_mcontext.gregs[REG_RIP]);
   else if ( sig == SIGFPE )
      fprintf( stderr, "Got Floating Point Exception.\n");
   else
      fprintf( stderr, "Got signal %d\n", sig);
-	
+
   trace_size = backtrace(trace, 16);
 
   /* overwrite sigaction with caller's address */

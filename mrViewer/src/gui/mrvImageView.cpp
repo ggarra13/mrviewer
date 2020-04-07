@@ -3288,6 +3288,29 @@ again:
         gamma( f->value() );
         break;
     }
+    case kOCIOViewChange:
+    {
+        Imf::StringVectorAttribute* attr =
+            dynamic_cast< Imf::StringVectorAttribute* >( c.data );
+        if ( !attr )
+        {
+            LOG_ERROR( _("OCIO View change failed") );
+            break;
+        }
+        const Imf::StringVector& s = attr->value();
+        if ( ! s[0].empty() ) mrv::Preferences::OCIO_Display = s[0];
+        if ( ! s[1].empty() )
+        {
+            mrv::Preferences::OCIO_View = s[1];
+            uiMain->gammaDefaults->copy_label( s[1].c_str() );
+            uiMain->gammaDefaults->redraw();
+        }
+        gamma( 1.0f );
+        use_lut(true);
+        uiMain->uiGammaInput->value( 1.0f );
+        uiMain->uiLUT->value(true);
+        break;
+    }
     default:
     {
         LOG_ERROR( "Unknown mrv event size " << commands.size() << " type "

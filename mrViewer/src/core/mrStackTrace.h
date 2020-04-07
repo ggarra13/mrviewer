@@ -22,8 +22,10 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 #include "mrStackTrace_win32.h"
-#else
+#elif LINUX
 #include "mrStackTrace_linux.h"
+#else
+#error Unknown OS for stack trace
 #endif
 
 #endif // mrStackTrace_h

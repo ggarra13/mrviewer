@@ -37,6 +37,7 @@
 #include <FL/fl_ask.H>
 #include <boost/thread/recursive_mutex.hpp>
 
+#include "core/mrvThread.h"
 #include "core/mrvI8N.h"
 #include "core/mrvHome.h"
 #include "gui/mrvPreferences.h"
@@ -59,12 +60,12 @@ struct logbuffer : public string_stream
     static bool _debug;
     static std::fstream out;
 
+    typedef boost::recursive_mutex Mutex;
+
     logbuffer() : string_stream() {
         str().reserve(1024);
     };
-    virtual ~logbuffer() {
-        if (out.is_open()) out.close();
-    };
+    virtual ~logbuffer();
 
     static void debug( bool t ) {
         _debug = t;
@@ -78,7 +79,7 @@ struct logbuffer : public string_stream
     virtual void print( const char* c ) = 0;
 
 public:
-    static boost::recursive_mutex _mutex;
+    static Mutex _mutex;
 };
 
 struct errorbuffer : public logbuffer
