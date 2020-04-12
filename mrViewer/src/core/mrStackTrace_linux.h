@@ -32,7 +32,7 @@
 //  distribution.
 //  *       Neither the name of Gonzalo Garramuno nor the names of
 //  its other contributors may be used to endorse or promote products derived
-//  from this software without specific prior written permission. 
+//  from this software without specific prior written permission.
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -63,12 +63,12 @@ class ExceptionHandler
    public:
      ExceptionHandler();
      ~ExceptionHandler();
-     
+
      static void ShowStack();
    private:
      static void demangle( const char* name );
      static void bt_sighandler(int sig, siginfo_t *info,
-			       void *secret);
+                               void *secret);
      void install_signal_handler();
      void restore_signal_handler();
 
@@ -81,7 +81,6 @@ class ExceptionHandler
      struct sigaction oldSIGINT;
      struct sigaction oldSIGCHLD;
      struct sigaction oldSIGTRAP;
-     struct sigaction oldSIGSTOP;
 };
 
 }

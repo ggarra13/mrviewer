@@ -241,6 +241,14 @@ inline std::string extract_root( std::string r )
     return r;
 }
 
+
+
+void handle_dnd( mrv::ImageBrowser* b )
+{
+    b->handle_dnd();
+    Fl::remove_idle( (Fl_Idle_Handler)handle_dnd, b );
+}
+
 /**
  * Get a shortcut for a channel by looking at the channel mappings
  *
@@ -1634,6 +1642,21 @@ void ImageView::switch_channels()
     channel( c );
 }
 
+
+void ImageView::ghost_previous( short x ) {
+    _ghost_previous = x;
+    char buf[64];
+    sprintf( buf, N_("GhostPrevious %d"), x );
+    send_network( buf );
+    redraw();
+}
+void ImageView::ghost_next( short x ) {
+    _ghost_next = x;
+    char buf[64];
+    sprintf( buf, N_("GhostNext %d"), x );
+    send_network( buf );
+    redraw();
+}
 
 bool ImageView::previous_channel()
 {
@@ -7500,7 +7523,7 @@ int ImageView::handle(int event)
         return 1;
     case FL_PASTE:
         LOG_INFO( "DND: " << Fl::event_text() );
-        browser()->handle_dnd();
+        Fl::add_idle( (Fl_Idle_Handler)handle_dnd, browser() );
         return 1;
     default:
         return Fl_Gl_Window::handle( event );

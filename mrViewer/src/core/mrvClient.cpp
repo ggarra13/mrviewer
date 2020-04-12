@@ -170,7 +170,6 @@ void client::stop()
         {
             if ( *i == this )
             {
-                LOG_CONN( _("Removed client ") << *i );
                 i = p.erase( i );
             }
             else
@@ -178,7 +177,6 @@ void client::stop()
                 ++i;
             }
         }
-        LOG_CONN( _("Number of connections now: ") << p.size() );
         ui = NULL;
 
     }

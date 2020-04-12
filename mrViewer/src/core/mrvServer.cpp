@@ -336,6 +336,20 @@ bool Parser::parse( const std::string& s )
         v->redraw();
         ok = true;
     }
+    else if ( cmd == N_("GhostPrevious") )
+    {
+        short x;
+        is >> x;
+        v->ghost_previous( x );
+        ok = true;
+    }
+    else if ( cmd == N_("GhostNext") )
+    {
+        short x;
+        is >> x;
+        v->ghost_next( x );
+        ok = true;
+    }
     else if ( cmd == N_("FPS") )
     {
         double fps;
@@ -649,7 +663,7 @@ bool Parser::parse( const std::string& s )
 
         char buf[1024];
         sprintf( buf, "OCIO=%s", s.c_str() );
-        putenv( buf );
+        putenv( strdup(buf) );
 
         ImageView::Command c;
         c.type = ImageView::kLUT_CHANGE;
@@ -1037,7 +1051,8 @@ bool Parser::parse( const std::string& s )
         v->commands.push_back( c );
         ok = true;
     }
-    else if ( cmd == N_("ChangeImage") )
+    else
+        if ( cmd == N_("ChangeImage") )
     {
         int idx;
         is >> idx;
@@ -1503,7 +1518,10 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("playback") )
     {
-        v->play_backwards();
+        ImageView::Command c;
+        c.type = ImageView::kPlayBackwards;
+
+        v->commands.push_back( c );
         ok = true;
     }
     else if ( cmd == N_("seek") )
@@ -1671,6 +1689,7 @@ bool Parser::parse( const std::string& s )
     }
 
     if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
+
     v->network_active( true );
     return ok;
 }

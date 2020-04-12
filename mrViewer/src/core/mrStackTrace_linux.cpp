@@ -184,7 +184,6 @@ void ExceptionHandler::install_signal_handler() {
   sigaction(SIGINT, &sa, &oldSIGINT);
   // sigaction(SIGCHLD, &sa, &oldSIGCHLD);
   sigaction(SIGTRAP, &sa, &oldSIGTRAP);
-  sigaction(SIGSTOP, &sa, &oldSIGSTOP);
   /* ... add any other signal here */
 }
 
@@ -207,7 +206,6 @@ void ExceptionHandler::restore_signal_handler() {
   sigaction(SIGINT,  &oldSIGINT, NULL);
   // sigaction(SIGCHLD, &oldSIGCHLD, NULL);
   sigaction(SIGTRAP, &oldSIGTRAP, NULL);
-  sigaction(SIGSTOP, &oldSIGSTOP, NULL);
   /* ... add any other signal here */
 }
 

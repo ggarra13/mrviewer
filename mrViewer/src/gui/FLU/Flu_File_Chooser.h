@@ -41,7 +41,7 @@
 typedef std::vector< std::string > FluStringVector;
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files = true );
-FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files = true );
+FLU_EXPORT size_t flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files = true );
 FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files = true );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
@@ -418,8 +418,9 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 description, shortDescription, toolTip, altname;
       std::string permissions;
       unsigned char pU, pG, pO; // 3-bit unix style permissions
-      unsigned int type, idate;
-      unsigned long isize;
+      unsigned int type;
+      time_t idate;
+      int64_t isize;
       bool selected;
       int editMode;
       Flu_File_Chooser *chooser;

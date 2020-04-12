@@ -1,3 +1,13 @@
+v5.4.4  - Bug fixed Drag and Drop to be immediate.  This prevents a lock
+	  lag in dragging clips from youtube.  This was a regression from
+	  v5.3.9.
+	- Made Linux bash script add to LD_LIBRARY_PATH
+	  /usr/lib/x86_64-linux-gnu.  This was preventing the icon from
+	  starting up the viewer if the user's profile was not set
+	  appropiately.
+	- Removed the crash that was happening on Linux on client exit after
+	  server would close.
+
 v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	  std::cerr / std::cout messages correctly.
 	- Bug fixed saving of BRAW and R3D as movie (.mov/.avi/etc) files.
@@ -18,7 +28,7 @@ v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	  image.
 	- Bug fixed cross hairs when inside the view window and action is
 	  scrubbing or drawing.
-	- Bug fixed connections between remote server and client.  Most 
+	- Bug fixed connections between remote server and client.  Most
 	  crashes have been removed, except fot a segmentation fault on Linux
 	  client on exit of the program after server has also exited.
 	- Minimized audio warnings of missing frames when decoding.

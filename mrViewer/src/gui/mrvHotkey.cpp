@@ -384,7 +384,7 @@ HotkeyEntry hotkeys[] = {
 };
 
 
-struct TableText table[45] = {
+struct TableText table[] = {
     {FL_Escape, _("Escape")},
     {FL_BackSpace, _("BackSpace")},
     {FL_Tab, _("Tab")},

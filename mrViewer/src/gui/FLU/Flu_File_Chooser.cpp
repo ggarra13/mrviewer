@@ -714,12 +714,12 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   // get home area by stripping off to the last '/' from docs
   userHome = userDocs;
   {
-    for( int i = userHome.size()-1; i > 0; i-- )
+      for( size_t i = userHome.size()-1; i > 0; i-- )
       {
-        if( userHome[i] == '/' )
+          if( userHome[i] == '/' )
           {
-            userHome[i] = '\0';
-            break;
+              userHome[i] = '\0';
+              break;
           }
       }
   }
@@ -739,12 +739,12 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   // get the actual name of the "My Documents" folder by pulling off the last name in the field
   // we do this because the actual name may vary from country to country
   {
-    int slash = userDesktop.rfind( '/' );
-    if( slash != std::string::npos )
-      desktopTxt = userDesktop.c_str() + slash + 1;
-    slash = userDocs.rfind( '/' );
-    if( slash != std::string::npos )
-      myDocumentsTxt = userDocs.c_str() + slash + 1;
+      size_t slash = userDesktop.rfind( '/' );
+      if( slash != std::string::npos )
+          desktopTxt = userDesktop.c_str() + slash + 1;
+      slash = userDocs.rfind( '/' );
+      if( slash != std::string::npos )
+          myDocumentsTxt = userDocs.c_str() + slash + 1;
   }
 
   // make sure they end in '/'
@@ -1215,13 +1215,13 @@ void Flu_File_Chooser :: pattern( const char *p )
         pattern = start;
 
       // remove the last '}'
-      int brace = pattern.find( '}' );
-      if( brace != -1 )
+      size_t brace = pattern.find( '}' );
+      if( brace != std::string::npos )
         pattern[brace] = '\0';
 
       // remove the last ')'
-      int paren = pattern.find( ')' );
-      if( paren != -1 )
+      size_t paren = pattern.find( ')' );
+      if( paren != std::string::npos )
         pattern[paren] = '\0';
 
       if( pattern.size() )
@@ -1337,7 +1337,7 @@ void Flu_File_Chooser :: newFolderCB()
 
   // try to create the folder
 #if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
-  if( mkdir( path.c_str() ) != 0 )
+  if( _mkdir( path.c_str() ) != 0 )
 #else
   if( mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 )
 #endif
@@ -1541,13 +1541,13 @@ void Flu_File_Chooser :: trashCB( bool recycle )
 #ifdef WIN32
                // this moves files to the recycle bin, depending on the value of 'recycle'
                {
-                 int len = name.size();
-                 char *buf = (char*)malloc( len+2 );
-                 strcpy( buf, name.c_str() );
-                 buf[len+1] = '\0'; // have to have 2 '\0' at the end
-                 fileop.pFrom = buf;
-                 result = SHFileOperation( &fileop );
-                 free( buf );
+                   size_t len = name.size();
+                   char *buf = (char*)malloc( len+2 );
+                   strcpy( buf, name.c_str() );
+                   buf[len+1] = '\0'; // have to have 2 '\0' at the end
+                   fileop.pFrom = buf;
+                   result = SHFileOperation( &fileop );
+                   free( buf );
                }
 #else
                result = ::remove( name.c_str() );
@@ -2568,7 +2568,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
       else
         shortname = filename;
 
-      int len = shortname.size();
+      size_t len = shortname.size();
       while( W > (nameW-iW) && len > 3 )
         {
           shortname[len-3] = '.';
@@ -2594,7 +2594,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
           // progressively strip characters off the end of the description until
           // it fits with "..." at the end
           shortDescription = description;
-          int len = shortDescription.size();
+          size_t len = shortDescription.size();
           while( W > typeW-4 && len > 3 )
             {
               shortDescription[len-3] = '.';
@@ -2963,9 +2963,9 @@ void Flu_File_Chooser :: Entry :: editCB()
   // select the text up to but not including the extension
   const char *dot = strrchr( filename.c_str(), '.' );
   if( dot )
-    position( 0, dot-filename.c_str() );
+      position( 0, (int)(dot-filename.c_str()) );
   else
-    position( 0, filename.size() );
+      position( 0, (int)filename.size() );
   chooser->trashBtn->deactivate();
   redraw();
 }
@@ -3039,9 +3039,9 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
   if( selection )
     {
 
-      int handler = (intptr_t)(selection->user_data());
-      //int * temp = (int *)(selection->user_data());
-      //int handler = *temp ;
+        // int handler = (intptr_t)(selection->user_data());
+      int * temp = (int *)(selection->user_data());
+      int handler = *temp ;
 
       switch( handler )
         {
@@ -3123,7 +3123,7 @@ void Flu_File_Chooser :: Entry :: draw()
         shortname = altname;
       else
         shortname = filename;
-      int len = shortname.size();
+      size_t len = shortname.size();
       while( W > (nameW-iW) && len > 3 )
         {
           shortname[len-3] = '.';
@@ -3401,8 +3401,8 @@ std::string Flu_File_Chooser :: formatDate( const char *d )
 
 void Flu_File_Chooser :: win2unix( std::string &s )
 {
-  int len = s.size();
-  for( int i = 0; i < len; i++ )
+  size_t len = s.size();
+  for( size_t i = 0; i < len; i++ )
     if( s[i] == '\\' )
       s[i] = '/';
 }
@@ -3415,7 +3415,7 @@ void Flu_File_Chooser :: cleanupPath( std::string &s )
   std::string newS;
   newS.resize(s.size()+1);
 
-  unsigned oldPos, newPos;
+  size_t oldPos, newPos;
   for( oldPos = 0, newPos = 0; oldPos < s.size(); oldPos++ )
     {
       // remove "./"
@@ -3830,7 +3830,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
     wchar_t buf[1024];
     struct _stati64 s;
     s.st_size = 0;
-    fl_utf8towc( file, strlen(file), buf, 1024 );
+    fl_utf8towc( file, (unsigned)strlen(file), buf, 1024 );
     ::_wstati64( buf, &s );
 #else
     struct stat s;
@@ -4060,9 +4060,9 @@ void Flu_File_Chooser :: cd( const char *path )
 #endif
           {
             // strip everything off the end to the next "/"
-            int end = currentDir.size()-1;
-            currentDir = currentDir.substr( 0, end );
-            while( currentDir[end] != '/' )
+              size_t end = currentDir.size()-1;
+              currentDir = currentDir.substr( 0, end );
+              while( currentDir[end] != '/' )
               {
                   currentDir = currentDir.substr( 0, end );
                   end--;
@@ -4302,22 +4302,22 @@ void Flu_File_Chooser :: cd( const char *path )
     std::string pat = patterns[filePattern->list.value()-1];
     while( pat.size() )
       {
-        int p = pat.find( ',' );
-        if( p == -1 )
+          size_t p = pat.find( ',' );
+          if( p == std::string::npos )
           {
-            if( pat != "*" )
-              pat = "*." + pat;
-            currentPatterns.push_back( pat );
-            break;
+              if( pat != "*" )
+                  pat = "*." + pat;
+              currentPatterns.push_back( pat );
+              break;
           }
-        else
+          else
           {
-            std::string s = pat.c_str() + p + 1;
-            pat = pat.substr( 0, p );
-            if( pat != "*" )
-              pat = "*." + pat;
-            currentPatterns.push_back( pat );
-            pat = s;
+              std::string s = pat.c_str() + p + 1;
+              pat = pat.substr( 0, p );
+              if( pat != "*" )
+                  pat = "*." + pat;
+              currentPatterns.push_back( pat );
+              pat = s;
           }
       }
   }
@@ -4811,7 +4811,8 @@ std::string Flu_File_Chooser :: commonStr()
   std::string common;
   int index = 0;
   const char* name;
-  int len, i;
+  size_t len;
+  int i;
   Fl_Group *g = getEntryGroup();
   for(;;)
     {
@@ -4883,7 +4884,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
     return 0;
 }
 
-int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files )
+size_t flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files )
 {
   _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::MULTI,
                      filelist, compact_files );

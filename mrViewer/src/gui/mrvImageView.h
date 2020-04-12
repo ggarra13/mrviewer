@@ -689,12 +689,9 @@ public:
 
     void add_shape( shape_type_ptr shape );
 
-    void ghost_previous( short x ) {
-        _ghost_previous = x; redraw();
-    }
-    void ghost_next( short x ) {
-        _ghost_next = x; redraw();
-    }
+    void ghost_previous( short x );
+
+    void ghost_next( short x );
 
     short ghost_previous() const {
         return _ghost_previous;

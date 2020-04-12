@@ -1255,7 +1255,7 @@ void ImageBrowser::remove( mrv::media m )
     CMedia::Playback play = view()->playback();
     if ( play ) view()->stop();
 
-    int idx = i-begin;
+    int idx = int(i-begin);
 
     // Remove icon from browser
     Fl_Tree_Item* item = root()->child(idx);
@@ -2314,7 +2314,7 @@ void ImageBrowser::remove_current()
 
     if ( sel >= (int)reel->images.size() )
     {
-        sel = reel->images.size() - 1;
+        sel = int( reel->images.size() - 1 );
     }
 
     change_image(sel);
@@ -2536,7 +2536,7 @@ void ImageBrowser::image_version( int sum )
                 number += *c;
                 ++c;
             }
-            int padding = number.size();
+            int padding = int( number.size() );
             if ( !number.empty() )
             {
                 num = atoi( number.c_str() );
@@ -2640,7 +2640,7 @@ void ImageBrowser::image_version( int sum )
 
     // Sanely remove icon item from browser and replace it with another
     // this->replace( int(i), m );
-    remove( i );
+    remove( int(i) );
 
     change_image( int(i) );
 
@@ -3037,6 +3037,7 @@ int ImageBrowser::mousePush( int x, int y )
  */
 void ImageBrowser::handle_dnd()
 {
+    DBGM1( "handle_dnd" );
     std::string filenames = Fl::event_text();
 
     stringArray files;
@@ -3055,6 +3056,7 @@ void ImageBrowser::handle_dnd()
     stringArray::iterator e = files.end();
     std::string oldroot, oldview, oldext;
 
+    DBGM1( "Parse string " << filenames );
 
     for ( ; i != e; ++i )
     {
@@ -3081,6 +3083,7 @@ void ImageBrowser::handle_dnd()
             std::string root, frame, view, ext;
             bool ok = mrv::split_sequence( root, frame, view, ext, file );
 
+            DBGM1( "Parse file " << file );
             bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
 
             if ( load_seq && ok &&
@@ -3121,6 +3124,7 @@ void ImageBrowser::handle_dnd()
         }
     }
 
+    DBGM1( "Load opts.files" );
     load( opts.files );
 
     if ( opts.files.size() > 1 )
@@ -3130,8 +3134,8 @@ void ImageBrowser::handle_dnd()
 
     last_image();
 
-    main()->uiMain->take_focus();
-    view()->take_focus();
+    uiMain->uiMain->take_focus();
+    uiMain->uiView->take_focus();
 }
 
 /**
@@ -3267,7 +3271,7 @@ void ImageBrowser::match_tree_order()
         mrv::media m = elem->media();
         r->images.push_back( m );
         if ( m == fg && m ) {
-            idx = r->images.size() - 1;
+            idx = int( r->images.size() - 1 );
             Fl_Tree::deselect_all(NULL, 0);
             Fl_Tree::select( i, 0 );
         }
