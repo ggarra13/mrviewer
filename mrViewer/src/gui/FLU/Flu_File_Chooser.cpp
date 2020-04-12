@@ -4809,7 +4809,7 @@ void Flu_File_Chooser :: cd( const char *path )
 std::string Flu_File_Chooser :: commonStr()
 {
   std::string common;
-  int index = 0;
+  size_t index = 0;
   const char* name;
   size_t len;
   int i;
