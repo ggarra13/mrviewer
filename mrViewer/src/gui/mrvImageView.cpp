@@ -2834,7 +2834,8 @@ bool ImageView::preload()
     {
         // Needed as video thread will probably not refresh on time.
         // This assures image is loaded and ready.
-        img->find_image( img->frame() );
+        int64_t f = img->frame();
+        img->find_image( f );
         //img->find_image( _preframe );
     }
 

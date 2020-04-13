@@ -1999,7 +1999,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     {
         bool b = view()->network_active();
         view()->network_active(true);
-        view()->play( CMedia::kForwards );
+        view()->play_forwards();
         view()->network_active(b);
     }
 

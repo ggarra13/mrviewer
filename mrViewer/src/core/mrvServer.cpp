@@ -898,7 +898,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, imgname, '"' );
 
-        boost::int64_t offset;
+        int64_t offset;
         is >> offset;
 
         edl_group()->shift_audio( reel, imgname, offset );
@@ -916,7 +916,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, imgname, '"' );
 
-        boost::int64_t diff;
+        int64_t diff;
         is >> diff;
 
         edl_group()->shift_media_start( reel, imgname, diff );
@@ -934,7 +934,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, imgname, '"' );
 
-        boost::int64_t diff;
+        int64_t diff;
         is >> diff;
 
         edl_group()->shift_media_end( reel, imgname, diff );
@@ -1088,7 +1088,7 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-        boost::int64_t first, last;
+        int64_t first, last;
         is >> first;
         is >> last;
 
@@ -1158,7 +1158,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
 
 
-        boost::int64_t first, last;
+        int64_t first, last;
         is >> first;
         is >> last;
 
@@ -1228,18 +1228,14 @@ bool Parser::parse( const std::string& s )
                 cmd += "\" ";
 
                 char buf[1024];
-                boost::int64_t start = img->first_frame();
-                boost::int64_t end   = img->last_frame();
+                int64_t start = img->first_frame();
+                int64_t end   = img->last_frame();
 
                 sprintf( buf, N_("%" PRId64 " %" PRId64 ),
                          start, end );
                 cmd += buf;
 
                 deliver( cmd );
-
-                boost::int64_t frame = v->frame();
-                sprintf( buf, N_("seek %" PRId64 ), frame );
-                deliver( buf );
 
                 //
                 // Handle color management (OCIO/CTL)
@@ -1300,6 +1296,11 @@ bool Parser::parse( const std::string& s )
             }
         }
 
+        char buf[1024];
+        int64_t frame = v->frame();
+        sprintf( buf, N_("seek %" PRId64 ), frame );
+        deliver( buf );
+
         if ( num == 0 ) {
             v->network_active( true );
             return true;
@@ -1321,7 +1322,6 @@ bool Parser::parse( const std::string& s )
             }
         }
 
-        char buf[256];
         if ( browser()->value() >= 0 )
         {
             sprintf( buf, N_("ChangeImage %d"), browser()->value() );
@@ -1342,9 +1342,6 @@ bool Parser::parse( const std::string& s )
                 cmd += buf;
                 deliver( cmd );
 
-                boost::int64_t frame = img->frame();
-                sprintf( buf, N_("seek %" PRId64 ), frame );
-                deliver( buf );
             }
 
             mrv::media fg = v->foreground();
@@ -1386,12 +1383,15 @@ bool Parser::parse( const std::string& s )
             sprintf( buf, "StereoInput %d", in );
             deliver( buf );
 
-
-            int64_t frame = img->frame() - img->first_frame() + 1;
-            sprintf( buf, N_("seek %" PRId64 ), frame );
-            deliver( buf );
-
         }
+
+        int idx = v->ghost_previous();
+        sprintf( buf, "GhostPrevious %d", idx );
+        deliver( buf );
+
+        idx = v->ghost_next();
+        sprintf( buf, "GhostNext %d", idx );
+        deliver( buf );
 
 
 
@@ -1467,26 +1467,6 @@ bool Parser::parse( const std::string& s )
             deliver( buf );
         }
 
-        mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            return false;
-        }
-
-        CMedia* img = fg->image();
-
-        if ( ( img->has_picture() || !CMedia::preload_cache() ||
-                !CMedia::cache_active() ) &&
-                ui->uiPrefs->uiPrefsAutoPlayback->value() &&
-                img->first_frame() != img->last_frame() )
-        {
-            deliver( "playfwd" );
-            ImageView::Command c;
-            c.type = ImageView::kPlayForwards;
-
-            v->commands.push_back( c );
-        }
-
         browser()->redraw();
         v->redraw();
 
@@ -1494,7 +1474,7 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("stop") )
     {
-        boost::int64_t f;
+        int64_t f;
         is >> f;
 
         {
@@ -1526,7 +1506,7 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("seek") )
     {
-        boost::int64_t f;
+        int64_t f;
         is >> f;
 
         ImageView::Command c;

@@ -1750,7 +1750,7 @@ bool aviImage::find_subtitle( const int64_t frame )
     return false;
 }
 
-bool aviImage::find_image( const int64_t frame )
+bool aviImage::find_image( int64_t& frame )
 {
 
 
@@ -1841,11 +1841,14 @@ bool aviImage::find_image( const int64_t frame )
                      _hires->frame() != f &&
                      diff > 1 && diff < 10 && counter < 10 && f <= _frameEnd )
                 {
-                    ++counter;
-                    IMG_WARNING( _("find_image: frame ") << frame
-                                 << _(" not found, choosing ")
-                                 << _hires->frame()
-                                 << _(" instead") );
+                    frame = _frame = _hires->frame();
+                    /*
+                      ++counter;
+                      IMG_WARNING( _("find_image: frame ") << frame
+                                   << _(" not found, choosing ")
+                                   << _hires->frame()
+                                   << _(" instead") );
+                    */
                 }
                 else
                 {
@@ -3287,7 +3290,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
             LOG_ERROR( "Decoding right frame " << frame << " failed." );
             return false;
         }
-        _right_eye->find_image( frame );
+        _right_eye->find_image( f );
         _stereo[1] = _right_eye->left();
     }
 

@@ -841,7 +841,7 @@ namespace mrv {
         return true;
     }
 
-    bool brawImage::find_image( const int64_t frame )
+    bool brawImage::find_image( int64_t& frame )
     {
 
         if ( _right_eye && (stopped() || saving() ) )
@@ -925,11 +925,12 @@ namespace mrv {
                          diff > 1 && diff < 10 && counter < 10 &&
                          f <= _frameEnd )
                     {
-                        ++counter;
-                        IMG_WARNING( _("find_image: frame ") << frame
-                                     << _(" not found, choosing ")
-                                     << _hires->frame()
-                                     << _(" instead") );
+                        frame = _frame = _hires->frame();
+                        // ++counter;
+                        // IMG_WARNING( _("find_image: frame ") << frame
+                        //              << _(" not found, choosing ")
+                        //              << _hires->frame()
+                        //              << _(" instead") );
                     }
                     else
                     {
@@ -1185,7 +1186,10 @@ namespace mrv {
         if ( is_cache_filled( _frame ) )
         {
             if ( refetch( _frame ) )
-                find_image( _frame );
+            {
+                int64_t f = _frame;
+                find_image( f );
+            }
         }
         image_damage( image_damage() | kDamageCache | kDamageContents );
         return true;

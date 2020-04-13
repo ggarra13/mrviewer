@@ -182,7 +182,7 @@ public:
     virtual bool           frame( const int64_t f );
     inline int64_t frame() const { return _frame; }
 
-    virtual bool find_image( const int64_t frame );
+    virtual bool find_image( int64_t& frame );
     virtual void do_seek();
 
     virtual void audio_stream( int idx );

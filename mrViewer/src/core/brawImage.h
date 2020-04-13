@@ -114,7 +114,7 @@ public:
     bool store_image( mrv::image_type_ptr& canvas,
                       int64_t frame, unsigned w, unsigned h, void* data );
 
-    virtual bool find_image( const int64_t frame );
+    virtual bool find_image( int64_t& frame );
     virtual void do_seek();
 
     virtual void audio_stream( int idx );
@@ -123,7 +123,7 @@ public:
 
     void timed_limit_store( const int64_t frame );
     void limit_video_store( const int64_t frame );
-    
+
     virtual void debug_video_stores( const int64_t frame,
                                      const char* title = "",
                                      const bool detail = false );
@@ -131,7 +131,7 @@ public:
 protected:
     void copy_values();
     void parse_metadata(int64_t frame, IBlackmagicRawMetadataIterator* iter);
-    
+
 
 protected:
     Mutex         _load_mutex;

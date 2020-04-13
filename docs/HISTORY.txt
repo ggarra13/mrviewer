@@ -7,6 +7,10 @@ v5.4.4  - Bug fixed Drag and Drop to be immediate.  This prevents a lock
 	  appropiately.
 	- Removed the crash that was happening on Linux on client exit after
 	  server would close.
+	- Added Action Tools' Ghost Previous and Ghost Next to the network
+	  connection.
+	- Made missing find_image frames less verbose when a frame is not
+	  found.
 
 v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	  std::cerr / std::cout messages correctly.
