@@ -2716,6 +2716,7 @@ void ImageBrowser::next_image()
 
     view()->foreground( m );
 
+
     int64_t first, last;
     adjust_timeline( first, last );
     mrv::Timeline* t = timeline();
@@ -2726,7 +2727,16 @@ void ImageBrowser::next_image()
 
     send_image( v );
 
-    seek( view()->frame() );
+    if ( reel->edl )
+    {
+        int64_t pos = m->position();
+        DBGM3( "seek to " << pos );
+        seek( pos );
+    }
+    else
+    {
+        seek( view()->frame() );
+    }
 
     if ( play ) view()->play(play);
 }
@@ -2778,9 +2788,8 @@ void ImageBrowser::previous_image()
     mrv::media m = reel->images[v];
     view()->foreground( m );
 
-    send_image( v );
 
-    seek( view()->frame() );
+    send_image( v );
 
     int64_t first, last;
     adjust_timeline( first, last );
@@ -2788,6 +2797,17 @@ void ImageBrowser::previous_image()
     if ( t && !t->edl() )
     {
         set_timeline( first, last );
+    }
+
+    if ( reel->edl )
+    {
+        int64_t pos = m->position();
+        DBGM3( "seek to " << pos );
+        seek( pos );
+    }
+    else
+    {
+        seek( view()->frame() );
     }
 
     if ( play ) view()->play(play);
