@@ -11,6 +11,7 @@ v5.4.4  - Bug fixed Drag and Drop to be immediate.  This prevents a lock
 	  connection.
 	- Made missing find_image frames less verbose when a frame is not
 	  found.
+	- Added Texture Filtering to the network connection.
 
 v5.4.3  - Bug fixed -debug switch on windows.  Now the console opens and logs
 	  std::cerr / std::cout messages correctly.

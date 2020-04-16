@@ -234,12 +234,8 @@ public:
     /// Draw the widget and its contents
     virtual void draw();
 
-    // Set the display to frame or specific field
-    inline void texture_filtering( const TextureFiltering p )
-        {
-            _texture_filtering = p;
-            redraw();
-        }
+    // Set the texturing filtering
+    void texture_filtering( const TextureFiltering p );
 
     inline TextureFiltering texture_filtering() const
         {

@@ -2716,20 +2716,6 @@ void ImageBrowser::next_image()
 
     view()->foreground( m );
 
-    if ( reel->edl )
-    {
-        int64_t pos = m->position();
-        DBGM3( "seek to " << pos );
-        seek( pos );
-    }
-    else
-    {
-        CMedia* img = m->image();
-        DBGM3( "******* NOT REEL" );
-        img->seek( orig->image()->frame() );
-        img->do_seek();
-    }
-
     int64_t first, last;
     adjust_timeline( first, last );
     mrv::Timeline* t = timeline();
@@ -2739,6 +2725,8 @@ void ImageBrowser::next_image()
     }
 
     send_image( v );
+
+    seek( view()->frame() );
 
     if ( play ) view()->play(play);
 }
@@ -2790,21 +2778,9 @@ void ImageBrowser::previous_image()
     mrv::media m = reel->images[v];
     view()->foreground( m );
 
-    if ( reel->edl )
-    {
-        int64_t pos = m->position();
-        DBGM3( "seek to " << pos );
-        seek( pos );
-    }
-    else
-    {
-        CMedia* img = m->image();
-        DBGM3( "******* NOT REEL" );
-        img->seek( orig->image()->frame() );
-        img->do_seek();
-    }
-
     send_image( v );
+
+    seek( view()->frame() );
 
     int64_t first, last;
     adjust_timeline( first, last );

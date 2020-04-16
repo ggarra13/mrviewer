@@ -1199,6 +1199,13 @@ bool Parser::parse( const std::string& s )
         }
         v->redraw();
     }
+    else if ( cmd == N_("TextureFiltering") )
+    {
+        int f;
+        is >> f;
+        v->texture_filtering( (ImageView::TextureFiltering) f );
+        ok = true;
+    }
     else if ( cmd == N_("sync_image") )
     {
         std::string cmd;
@@ -1325,6 +1332,10 @@ bool Parser::parse( const std::string& s )
         if ( browser()->value() >= 0 )
         {
             sprintf( buf, N_("ChangeImage %d"), browser()->value() );
+            deliver( buf );
+
+            int64_t frame = v->frame();
+            sprintf( buf, N_("seek %" PRId64 ), frame );
             deliver( buf );
         }
 

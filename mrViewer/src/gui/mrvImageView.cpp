@@ -6232,6 +6232,17 @@ void ImageView::mouseDrag(int x,int y)
 
 }
 
+void ImageView::texture_filtering( const TextureFiltering p )
+{
+    _texture_filtering = p;
+
+    char buf[64];
+    sprintf( buf, N_("TextureFiltering %d"), (int)p );
+    send_network( buf );
+
+    redraw();
+}
+
 
 /**
  * Handle a keypress

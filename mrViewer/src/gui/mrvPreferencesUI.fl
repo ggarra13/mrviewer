@@ -529,7 +529,7 @@ uiWindowYSize->value( v->uiMain->h() );}
         }
         Fl_Group Playback {
           label Playback open
-          xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
+          xywh {225 38 423 357} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Defaults open
@@ -543,25 +543,25 @@ uiWindowYSize->value( v->uiMain->h() );}
               xywh {280 120 300 154} box ROUNDED_BOX
             } {
               Fl_Group {} {
-                label Sequences
-                xywh {320 138 225 64} box ROUNDED_FRAME color 35
+                label Sequences open selected
+                xywh {290 138 280 68} box ROUNDED_FRAME color 35
               } {
                 Fl_Check_Button uiPrefsOverrideFPS {
                   label {Override FPS}
                   tooltip {Override playback fps when loading sequences.} xywh {442 140 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
                 }
                 Fl_Group {} {
-                  xywh {320 163 225 37}
+                  xywh {300 163 270 37}
                 } {
                   Fl_Value_Input uiPrefsFPS {
                     label Speed
-                    xywh {380 173 80 27} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
+                    xywh {390 170 80 25} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
                   }
                   Fl_Menu_Button {} {
                     label FPS
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 uiPrefsFPS->value( g );} open
-                    xywh {462 173 75 27}
+                    xywh {472 170 75 25}
                     class {mrv::PopupMenu}
                   } {
                     MenuItem {} {
@@ -1538,7 +1538,7 @@ uiICC_float_profile->do_callback();}
         }
         Fl_Group {} {
           label Loading open
-          xywh {225 42 423 352} box EMBOSSED_BOX align 5
+          xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open
             xywh {235 62 405 209} box ROUNDED_BOX
@@ -2113,7 +2113,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
 	     uiWizard->value( w );
 	     break;
 	 }
-}} selected
+}}
           xywh {0 25 195 423}
           code0 {fill_tree(o);}
           code1 {o->showroot(false);}
