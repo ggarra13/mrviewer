@@ -951,7 +951,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
     if ( !skip ) --start;
 
-    if ( start < _frameStart ) start = _frameStart;
+    if ( start < 0 ) start = 0;
 
     // std::cerr << name() << std::endl << "-------------" << std::endl;
     // std::cerr << "_start_number " << _start_number << std::endl;

@@ -1,3 +1,6 @@
+v5.4.5  - Reverted a bug in seeking to first frame (on loops).  Regression
+	  in v5.4.3.
+
 v5.4.4  - Bug fixed Drag and Drop to be immediate.  This prevents a lock
 	  lag in dragging clips from youtube.  This was a regression from
 	  v5.3.9.
