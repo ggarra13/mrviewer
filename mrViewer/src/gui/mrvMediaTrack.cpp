@@ -170,7 +170,7 @@ int media_track::index_at( const boost::int64_t frame )
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) return -1;
 
-    return reel->index( frame );
+    return (int)reel->index( frame );
 }
 
 mrv::media media_track::media_at( const boost::int64_t frame )
@@ -705,7 +705,7 @@ void media_track::draw()
 
 
     int ww = t->w();
-    int rx = t->x() + (t->slider_size()-1)/2;
+    int rx = (int)( t->x() + (t->slider_size()-1)/2 );
 
     for ( size_t i = 0; i < e; ++i )
     {
@@ -795,14 +795,14 @@ void media_track::draw()
             if ( !ra.empty() )
             {
                 // Draw shadow first
-                fl_draw( buf, float( off.x()+2 ), float( off.y()+2 ) );
+                fl_draw( buf, off.x()+2, off.y()+2 );
 
                 if ( _selected && _selected->media() == fg )
                     fl_color( FL_WHITE );
                 else
                     fl_color( FL_BLACK );
 
-                fl_draw( buf, float( off.x() ), float( off.y() ) );
+                fl_draw( buf, off.x(), off.y() );
             }
         }
 
@@ -876,18 +876,14 @@ void media_track::draw()
         if ( r.empty() ) continue;
 
         // Draw shadow first
-        fl_draw( txt,
-                 float( text.x() + 2 ),
-                 float( text.y() + 2 ) );
+        fl_draw( txt, text.x() + 2, text.y() + 2 );
 
         if ( _selected && _selected->media() == fg )
             fl_color( FL_WHITE );
         else
             fl_color( FL_BLACK );
 
-        fl_draw( txt,
-                 float( text.x() ),
-                 float( text.y() ) );
+        fl_draw( txt, text.x(), text.y() );
     }
 
     fl_pop_clip();

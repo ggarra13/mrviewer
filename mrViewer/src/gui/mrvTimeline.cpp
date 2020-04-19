@@ -325,8 +325,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
                 fl_color(textcolor);
                 int wt = 0, ht = 0;
                 fl_measure( p, wt, ht );
-                fl_draw(p, float(x1+dx*t-wt/2),
-                        float(y1+dy*t+fl_height()-fl_descent()));
+                fl_draw(p, x1+dx*t-wt/2, y1+dy*t+fl_height()-fl_descent());
                 fl_color(linecolor);
             }
         }
@@ -341,8 +340,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
                 fl_color(textcolor);
                 // int wt = 0, ht = 0;
                 // measure( p, wt, ht );
-                fl_draw(p, float(x1+dx*t),
-                         float(y1+dy*t+fl_height()-fl_descent()));
+                fl_draw(p, x1+dx*t, y1+dy*t+fl_height()-fl_descent());
                 fl_color(linecolor);
             }
         }
@@ -381,7 +379,7 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
         //     break;
         // }
         fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
-        draw_ticks(tr, (slider_size()+1)/2);
+        draw_ticks(tr, int(slider_size()+1)/2);
     }
 
     // if (slot) {
@@ -435,7 +433,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     // If too many frames, playback suffers, so we exit here
     if ( max - j > kMAX_FRAMES ) return;
 
-    int rx = r.x() + (slider_size()-1)/2;
+    int rx = r.x() + int(slider_size()-1)/2;
     int ry = r.y() + r.h()/2;
     int ww = r.w();
     int hh = r.h() - 8;
@@ -508,7 +506,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
 void Timeline::draw_selection( const mrv::Recti& r )
 {
-    int rx = r.x() + (slider_size()-1)/2;
+    int rx = r.x() + int(slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
 
@@ -582,7 +580,7 @@ void Timeline::draw()
         // If minimum less than 0, start boxes later
         uint64_t size = 0;
         uint64_t frame = 1;
-        int rx = r.x() + (slider_size()-1)/2;
+        int rx = r.x() + int(slider_size()-1)/2;
 
         for ( ; i != e; frame += size, ++i )
         {
