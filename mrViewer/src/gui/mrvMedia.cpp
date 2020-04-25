@@ -64,7 +64,6 @@ int media::_thumbnail_width = 128;
 int media::_thumbnail_height = 64;
 
 media::media( CMedia* const img ) :
-    _start( img->first_frame() ),
     _image( img ),
     _thumbnail( NULL ),
     _thumbnail_frozen( false ),

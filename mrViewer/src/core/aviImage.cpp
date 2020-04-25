@@ -2414,6 +2414,8 @@ void aviImage::populate()
         {
             subtitle_info_t s;
             populate_stream_info( s, msg, _context, par, i );
+            s.closed_captions = !!( ctx->properties &
+                                    FF_CODEC_PROPERTY_CLOSED_CAPTIONS);
             s.bitrate    = calculate_bitrate( stream, par );
             _subtitle_info.push_back( s );
             if ( _subtitle_index < 0 )

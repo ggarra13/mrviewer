@@ -3,6 +3,7 @@
 #include <map>
 
 #include "core/mrvI8N.h"
+#undef snprintf
 #include "gui/mrvIO.h"
 
 #include "core/picojson.h"

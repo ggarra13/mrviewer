@@ -1609,7 +1609,6 @@ void CMedia::filename( const char* n )
     if ( name.substr(0, 6) == "Slate " )
         name = name.substr(6, name.size() );
 
-
     fs::path file = fs::path( name );
 
     if ( name.find( "http" )    != 0 &&
@@ -1625,13 +1624,16 @@ void CMedia::filename( const char* n )
 
     if ( fs::exists( file ) )
     {
-        std::string path = fs::canonical( file ).string();
+        // canonical fails on windows' mountpoints
+        //std::string path = fs::canonical( file ).string();
+        std::string path = fs::absolute( file ).string();
         _fileroot = strdup( path.c_str() );
     }
     else
     {
         _fileroot = strdup( file.string().c_str() );
     }
+
 
     free( _filename );
     _filename = NULL;
@@ -2724,7 +2726,8 @@ std::string CMedia::directory() const
     file = fs::absolute( file.branch_path() );
     std::string path;
     if ( fs::exists( file ) )
-        path = fs::canonical( file ).string();
+        path = fs::absolute( file ).string();
+        // path = fs::canonical( file ).string(); // fails on windows mountpoints
     else
         path = file.string();
     return path;

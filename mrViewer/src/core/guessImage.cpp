@@ -249,7 +249,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         network = true;
     }
 
-
     boost::uint8_t* read_data = 0;
     size_t size = len;
     const boost::uint8_t* test_data = datas;

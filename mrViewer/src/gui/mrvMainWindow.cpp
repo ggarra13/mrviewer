@@ -27,6 +27,7 @@
 
 #include "R3DSDK.h"
 #include "core/mrvI8N.h"
+#undef snprintf
 #include <iostream>
 
 #ifdef LINUX

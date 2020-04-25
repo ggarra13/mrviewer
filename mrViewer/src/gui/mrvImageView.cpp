@@ -243,11 +243,6 @@ inline std::string extract_root( std::string r )
 
 
 
-void handle_dnd( mrv::ImageBrowser* b )
-{
-    b->handle_dnd();
-    Fl::remove_idle( (Fl_Idle_Handler)handle_dnd, b );
-}
 
 /**
  * Get a shortcut for a channel by looking at the channel mappings
@@ -872,6 +867,8 @@ static const float kMaxZoom = 64.f;   // Zoom 64x
 
 
 namespace mrv {
+
+    void static_handle_dnd( mrv::ImageBrowser* b );
 
     void window_cb( mrv::PopupMenu* m, const ViewerUI* uiMain )
     {
@@ -7535,7 +7532,7 @@ int ImageView::handle(int event)
         return 1;
     case FL_PASTE:
         LOG_INFO( "DND: " << Fl::event_text() );
-        Fl::add_idle( (Fl_Idle_Handler)handle_dnd, browser() );
+        Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, browser() );
         return 1;
     default:
         return Fl_Gl_Window::handle( event );

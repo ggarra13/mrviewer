@@ -61,6 +61,7 @@
 #include <ctlToLut.h>
 
 #include "core/mrvOS.h"
+#undef snprintf
 
 #include <CtlSimdInterpreter.h>
 #include <ImfStandardAttributes.h>

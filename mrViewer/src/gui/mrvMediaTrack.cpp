@@ -26,6 +26,7 @@
 
 #include <core/mrvRectangle.h>
 #include "core/mrvI8N.h"
+#undef snprintf
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"

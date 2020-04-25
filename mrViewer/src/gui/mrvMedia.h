@@ -96,8 +96,6 @@ public:
 protected:
     void thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b );
 
-    int64_t  _start;
-    int64_t  _pos;
     CMedia*   _image;
     Fl_RGB_Image* _thumbnail;
     bool         _thumbnail_frozen;

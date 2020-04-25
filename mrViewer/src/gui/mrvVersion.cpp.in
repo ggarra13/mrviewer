@@ -87,14 +87,15 @@ extern "C" {
 #include <boost/version.hpp>
 
 #include "core/mrvOS.h"
+#undef snprintf
 #include "core/mrvCPU.h"
 #include "ImathInt64.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
-#include "core/mrvOS.h"
 #include "video/mrvDrawEngine.h"
 #include "mrViewer.h"
+#undef snprintf
 
 #ifdef _WIN32
 #include <windows.h>

@@ -3361,6 +3361,8 @@ void ImageInformation::fill_data()
                       s.has_codec );
             add_text( _("Codec"), _("Codec name"), s.codec_name );
             add_text( _("FourCC"), _("Four letter ID"), s.fourcc );
+            add_bool( _("Closed Captions"), _("Video has Closed Captions"),
+                      s.closed_captions );
             ++group;
 
             sprintf( buf, _("%d kb/s"), s.bitrate/1000 );

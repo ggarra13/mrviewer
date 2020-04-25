@@ -3026,6 +3026,12 @@ int ImageBrowser::mousePush( int x, int y )
     return ok;
 }
 
+void static_handle_dnd( mrv::ImageBrowser* b )
+{
+    b->handle_dnd();
+    Fl::remove_idle( (Fl_Idle_Handler)static_handle_dnd, b );
+}
+
 
 /**
  * Handle a Drag and Drop operation on this widget (or image view)
@@ -3359,7 +3365,8 @@ int ImageBrowser::handle( int event )
     case FL_DND_RELEASE:
         return 1;
     case FL_PASTE:
-        handle_dnd();
+        LOG_INFO( "DND: " << Fl::event_text() );
+        Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, this );
         return 1;
     case FL_PUSH:
         return mousePush( Fl::event_x(), Fl::event_y() );

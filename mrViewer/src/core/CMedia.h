@@ -147,6 +147,7 @@ public:
         int          stream_index;
         bool         play;
         bool         has_codec;
+        bool         closed_captions;
         std::string  codec_name;
         std::string  fourcc;
         std::string  language;
@@ -155,11 +156,12 @@ public:
         double       duration;
 
         StreamInfo() : context( NULL ),
-            stream_index(-1),
-            play( true ),
-            has_codec(false),
-            start(0),
-            duration(0)
+                       stream_index(-1),
+                       play( true ),
+                       has_codec(false),
+                       closed_captions( false ),
+                       start(0),
+                       duration(0)
         {
         }
 
@@ -168,6 +170,7 @@ public:
             stream_index( b.stream_index ),
             play( b.play ),
             has_codec( b.has_codec ),
+            closed_captions( b.closed_captions ),
             codec_name( b.codec_name ),
             fourcc( b.fourcc ),
             language( b.language ),

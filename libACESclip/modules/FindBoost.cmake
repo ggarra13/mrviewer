@@ -91,6 +91,9 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 # Add in some path suffixes. These will have to be updated whenever a new Boost version comes out.
 SET(SUFFIX_FOR_PATH
+ boost_1_72_0
+ boost_1_71_0
+ boost_1_70_0
  boost_1_69_0
  boost_1_60_0
  boost_1_59_0
@@ -119,8 +122,6 @@ SET(SUFFIX_FOR_PATH
  boost_1_33_0
  boost-1_33_0
 )
-
-MESSAGE( ${BOOST_DIR_SEARCH} )
 
 #
 # Look for an installation.
@@ -204,7 +205,7 @@ IF(Boost_INCLUDE_DIR)
 ENDIF(Boost_INCLUDE_DIR)
 
 MESSAGE( ">>> BOOST INCLUDE DIR: " ${Boost_INCLUDE_DIR} )
-MESSAGE( ">>> BOOST LIBRARY DIR: " ${Boost_LIBRARY_DIR} )
+MESSAGE( ">>> BOOST LIBRARY DIRS: " ${Boost_LIBRARY_DIRS} )
 
 IF(NOT Boost_FOUND)
   IF(NOT Boost_FIND_QUIETLY)
