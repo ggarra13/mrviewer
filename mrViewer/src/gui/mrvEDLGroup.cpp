@@ -609,13 +609,6 @@ int EDLGroup::handle( int event )
             int r = process_fade( track, m, pt );
             if ( r >= 0 ) return r;
 
-            if ( m )
-            {
-                m = track->media_at( pt );
-                CMedia* img = m->image();
-                img->crossdissolve( img->last_frame() - pt );
-                return 0;
-            }
 
             int quarter = w() / 4;
 
