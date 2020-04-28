@@ -95,7 +95,7 @@ void LogDisplay::clear()
 
 void LogDisplay::save( const char* file )
 {
-    char buf[2048];
+    char buf[4096];
     if ( !file )
     {
         std::string home = mrv::homepath();

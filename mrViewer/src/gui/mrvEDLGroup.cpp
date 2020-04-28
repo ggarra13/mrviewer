@@ -609,6 +609,14 @@ int EDLGroup::handle( int event )
             int r = process_fade( track, m, pt );
             if ( r >= 0 ) return r;
 
+            if ( m )
+            {
+                m = track->media_at( pt );
+                CMedia* img = m->image();
+                img->crossdissolve( img->last_frame() - pt );
+                return 0;
+            }
+
             int quarter = w() / 4;
 
             if ( X >= x() + w() - quarter ) {
@@ -842,11 +850,9 @@ int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
             CMedia* img = m->image();
             img->fade_out( img->last_frame() - (pt - t->offset(img)) );
         }
-        else if ( _fade == mrv::CMedia::kCrossDissolve )
+        // else if ( _fade == mrv::CMedia::kCrossDissolve )
         {
             //uiMain->uiEDLWindow->CrossDissolve->value(1);
-            CMedia* img = m->image();
-            img->crossdissolve( pt - t->offset(img) - img->first_frame() );
         }
         redraw();
         return 1;

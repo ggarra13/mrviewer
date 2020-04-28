@@ -2,6 +2,8 @@ v5.4.5  - Reverted a bug in seeking to first frame (on loops).  Regression
 	  in v5.4.3.
 	- On Windows, allowed loading files on network NTFS drives mounted on
 	  directories.
+	- Bug fixed icon creation on Linux for Focal Fossa and other new
+	  distros.
 
 v5.4.4  - Bug fixed Drag and Drop to be immediate.  This prevents a lock
 	  lag in dragging clips from youtube.  This was a regression from

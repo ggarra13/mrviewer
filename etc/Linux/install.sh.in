@@ -19,8 +19,24 @@ ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.py /usr/bin/cube2ctl.py
 #
 # Install Desktop icon
 #
-dir=$(xdg-user-dir DESKTOP)
+fulldir=$(xdg-user-dir DESKTOP)
+
+dir=${fulldir#/root/}
+
+name=`logname`
+
+if [ $fulldir != $dir ]; then
+    dir=/home/${name}${dir}
+fi
+
+
+echo "DIR: " ${dir}
+if [ ! -d $dir ]; then
+    mkdir $dir
+fi
+
 cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop "${dir}"
+chown ${name} "${dir}/mrViewer-v@VERSION@.desktop"
 
 xdg-mime default mrViewer-v@VERSION@.desktop video/mp4 video/mpeg video/quicktime video/x-javafx video/x-flv video/x-matroska video/x-ms-wmv video/x-msvideo image/x-avi image/x-mov image/x-mp4
 

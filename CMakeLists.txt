@@ -1,9 +1,10 @@
 #
 # This cmake file must be run under cmake 3.1 or later
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15 FATAL_ERROR)
 
 # CMAKE_POLICY( SET CMP0003 NEW )
+cmake_policy( SET CMP0092 NEW )
 
 IF(WIN32)
 	SET( TEST_BUNDLE 0 )
@@ -42,7 +43,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 5 )
 SET( VersionMinor 4 )
-SET( VersionPatch 4 )
+SET( VersionPatch 5 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )

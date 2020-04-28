@@ -217,7 +217,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         }
         else
         {
-            strncpy( name, tmp.c_str(), 1024 );
+            strncpy( name, tmp.c_str(), 1023 );
         }
     }
     else

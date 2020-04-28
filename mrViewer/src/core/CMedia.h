@@ -388,7 +388,7 @@ public:
         Fade() : type( kFadeIn ), frames(0) {};
     };
 
-    Fade _fade[2];
+    Fade _fade[3];
 
 public:
 
@@ -401,16 +401,17 @@ public:
     }
 
     inline void crossdissolve( int64_t f ) {
-        _fade[1].type = kCrossDissolve; _fade[1].frames = f;
+        _fade[2].type = kCrossDissolve;
+        _fade[2].frames = f;
     }
 
     inline float dissolve() const
         {
             float f = 1.0f;
-            if ( _fade[1].type == kCrossDissolve &&
-                 _frame > last_frame() - _fade[1].frames )
+            if ( _fade[2].type == kCrossDissolve &&
+                 _frame > last_frame() - _fade[2].frames )
             {
-                f = float( last_frame() - _frame ) / _fade[1].frames;
+                f = float( last_frame() - _frame ) / _fade[2].frames;
             }
             return f;
         }
@@ -418,7 +419,9 @@ public:
     inline int64_t fade_frames( FadeType type ) const
         {
             if ( type == kFadeIn ) return _fade[0].frames;
-            else return _fade[1].frames;
+            else if ( type == kFadeOut ) return _fade[1].frames;
+            else if ( type == kCrossDissolve ) return _fade[2].frames;
+            else return 0;
         }
 
     inline float fade() const
