@@ -129,8 +129,8 @@ private:
     boost::int64_t              _frame;  //!< position in video stream
     boost::int64_t              _pts;  //!< video pts in ffmpeg
     boost::int64_t              _repeat;  //!< number of frames to repeat
-    unsigned int                _width;
-    unsigned int                _height;
+    size_t                      _width;
+    size_t                      _height;
     short unsigned int          _channels; //!< number of channels of image
     time_t                      _ctime;  //!< creation time of frame
     time_t                      _mtime;  //!< modification time of frame
@@ -178,7 +178,7 @@ public:
     }
 
     VideoFrame( const boost::int64_t& frame,
-                const unsigned int w, const unsigned int h,
+                const size_t w, const size_t h,
                 const unsigned short c = 4,
                 const Format format  = kRGBA,
                 const PixelType type = kByte,
@@ -211,17 +211,17 @@ public:
         return _ptime;
     }
 
-    inline void width( const unsigned w ) {
+    inline void width( const size_t w ) {
         _width = w;
     }
-    inline unsigned int width()  const    {
+    inline size_t width()  const    {
         return _width;
     }
 
-    inline void height( const unsigned h ) {
+    inline void height( const size_t h ) {
         _height = h;
     }
-    inline unsigned int height() const     {
+    inline size_t height() const     {
         return _height;
     }
 

@@ -226,7 +226,11 @@ int main( int argc, char** argv )
     file = fs::absolute( file );
 
     fs::path dir = file.parent_path().branch_path();
+#ifdef _WIN32
+    std::string path = fs::absolute( dir ).generic_string();
+#else
     std::string path = fs::canonical( dir ).generic_string();
+#endif
     path += "/share/locale";
 
     bindtextdomain(buf, path.c_str() );

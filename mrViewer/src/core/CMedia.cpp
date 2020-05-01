@@ -1625,8 +1625,11 @@ void CMedia::filename( const char* n )
     if ( fs::exists( file ) )
     {
         // canonical fails on windows' mountpoints
-        //std::string path = fs::canonical( file ).string();
+#ifdef _WIN32
         std::string path = fs::absolute( file ).string();
+#else
+        std::string path = fs::canonical( file ).string(); // fails on win32 mountpoints
+#endif
         _fileroot = strdup( path.c_str() );
     }
     else
@@ -2726,8 +2729,11 @@ std::string CMedia::directory() const
     file = fs::absolute( file.branch_path() );
     std::string path;
     if ( fs::exists( file ) )
+#ifdef _WIN32
         path = fs::absolute( file ).string();
-        // path = fs::canonical( file ).string(); // fails on windows mountpoints
+#else
+        path = fs::canonical( file ).string(); // fails on windows mountpoints
+#endif
     else
         path = file.string();
     return path;

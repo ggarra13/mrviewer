@@ -196,7 +196,7 @@ public:
         bool         has_b_frames;
         double       fps;
         std::string  pixel_format;
-        unsigned     width, height;
+        size_t       width, height;
 
         VideoStream() :
             StreamInfo(),
@@ -746,20 +746,20 @@ public:
     // Image information
     ////////////////////////
 
-    inline void width( unsigned int x )  {
+    inline void width( size_t x )  {
         _w = x;
     }
-    inline void height( unsigned int y ) {
+    inline void height( size_t y ) {
         _h = y;
     }
 
     /// Return the image width
-    inline unsigned int  width() const  {
+    inline size_t  width() const  {
         return _w;
     }
 
     /// Return the image height
-    inline unsigned int  height() const {
+    inline size_t  height() const {
         return _h;
     }
 
@@ -1890,7 +1890,7 @@ protected:
     thread_pool_t  _threads;         //!< any threads associated with process
 
 
-    std::atomic<unsigned int>  _w, _h;     //!< width and height of image
+    std::atomic<size_t>  _w, _h;     //!< width and height of image
     bool   _internal;      //!< image is internal with no filename
     bool   _is_thumbnail;     //!< image is a thumbnail (no printing of errors)
     bool   _is_sequence;      //!< true if a sequence

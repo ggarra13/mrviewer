@@ -34,7 +34,12 @@ std::string aces_xml_filename( const char* file )
         return "";
 
     std::string xml;
-    xml = fs::canonical( fs::absolute( f ).parent_path() ).string();
+    fs::path p = fs::absolute( f ).parent_path();
+#ifdef _WIN32
+    xml = p.string();
+#else
+    xml = fs::canonical( p ).string();
+#endif
     if ( ! xml.empty() ) xml += "/";
     xml += "ACESclip.";
     xml += filename;

@@ -105,7 +105,7 @@ single image or movie.</td>
 
       <td style="font-weight: bold; font-family: monospace;">Width</td>
 
-      <td style="font-family: monospace;">the actual width
+      <td style="font-family: monospace;">The current width
 of the image, sequence or movie.</td>
 
     </tr>
@@ -114,8 +114,25 @@ of the image, sequence or movie.</td>
 
       <td style="font-family: monospace;"><span style="font-weight: bold;">Height</span></td>
 
-      <td style="font-family: monospace;">the actual
+      <td style="font-family: monospace;">The current
 height of the image, sequence of movie.</td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Real Width</td>
+
+      <td style="font-family: monospace;">The real width
+of the image, sequence or movie in case the width is a proxy.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Real Height</span></td>
+
+      <td style="font-family: monospace;">The real
+height of the image, sequence of movie in case the height is a proxy.</td>
 
     </tr>
     <tr>
@@ -123,7 +140,7 @@ height of the image, sequence of movie.</td>
       <td style="font-weight: bold; font-family: monospace;">Aspect
 Ratio</td>
 
-      <td style="font-family: monospace;">the actual
+      <td style="font-family: monospace;">The actual
 aspect ratio of the image (ie. resolution width / resolution height ).</td>
 
     </tr>
@@ -133,7 +150,7 @@ aspect ratio of the image (ie. resolution width / resolution height ).</td>
       <td style="font-weight: bold; font-family: monospace;">Pixel
 Ratio</td>
 
-      <td style="font-family: monospace;">the shape of the
+      <td style="font-family: monospace;">The shape of the
 pixels in the image. &nbsp;A pixel ratio of 1 refers to
 square pixels (like those of a printer or monitor). &nbsp;A
 different value
@@ -160,8 +177,8 @@ refers to pixels for other media (usually, NTSC or PAL video).</td>
 
       <td style="font-family: monospace; font-weight: bold;">Depth</td>
 
-      <td style="font-family: monospace;">the color depth
-of each channel (8-bit, 16-bit, or 32-bit for float images).</td>
+      <td style="font-family: monospace;">The color depth
+of each channel (8-bits, 16-bits, or 32-bits for float images).</td>
 
     </tr>
 
@@ -188,8 +205,8 @@ rendering intent for this image.</td>
 
       <td style="font-weight: bold; font-family: monospace;">Gamma</td>
 
-      <td style="font-family: monospace;">the built-in
-gamma of the image.</td>
+      <td style="font-family: monospace;">The built-in
+gamma of the image (if any).</td>
 
     </tr>
 
@@ -247,7 +264,7 @@ Transform<br>
       <td style="font-weight: bold; font-family: monospace;">Format
       </td>
 
-      <td style="font-family: monospace;">the format of
+      <td style="font-family: monospace;">The format of
 the image.</td>
 
     </tr>
@@ -306,7 +323,7 @@ memory and the space it uses on disk)</td>
       <td style="font-weight: bold; font-family: monospace;">Creation
 Date</td>
 
-      <td style="font-family: monospace;"> the date the
+      <td style="font-family: monospace;">The date the
 image was created or last modified.</td>
 
     </tr>
@@ -415,7 +432,7 @@ When removing an attribute, you need to select the keyword name for it.
     <tr>
       
       <td style="font-family: monospace;">Language</td>
-      <td style="font-family: monospace;">Language of audio track if known</td>
+      <td style="font-family: monospace;">Language of current audio track if known</td>
     </tr>
     <tr>
       <td style="font-family: monospace;">Start</td>
@@ -439,6 +456,10 @@ When removing an attribute, you need to select the keyword name for it.
     <tr>
       <td style="font-family: monospace;">FourCC</td>
       <td style="font-family: monospace;">FourCC name of codec if any</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Closed Caption</td>
+      <td style="font-family: monospace;">True if Subtitle is a Closed Caption</td>
     </tr>
     <tr>
       <td style="font-family: monospace;">Avg. Bitrate</td>

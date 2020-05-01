@@ -2572,8 +2572,8 @@ void ImageInformation::fill_data()
 
     ++group;
 
-    add_int( _("Width"), _("Width of clip"), img->width(), false );
-    add_int( _("Height"), _("Height of clip"), img->height(), false );
+    add_int( _("Width"), _("Width of clip"), (unsigned)img->width(), false );
+    add_int( _("Height"), _("Height of clip"), (unsigned)img->height(), false );
 
     R3dImage* r3d = dynamic_cast< R3dImage* >( img );
     if ( r3d )

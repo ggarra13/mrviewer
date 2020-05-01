@@ -390,8 +390,8 @@ VideoFrame* VideoFrame::scaleX(float f) const
     for (unsigned int x = 0; x < dw1; ++x)
     {
         float x1 = float(x) * f;
-        unsigned int xs = static_cast< unsigned int>( x1 );
-        unsigned int xt = std::min( xs + 1, _width - 1 );
+        size_t xs = static_cast< unsigned int>( x1 );
+        size_t xt = std::min( xs + 1, _width - 1 );
 
         float t = x1 - float(xs);
         assert( t >= 0.0f && t <= 1.0f );
@@ -465,8 +465,8 @@ VideoFrame* VideoFrame::scaleY(float f) const
     for (unsigned int y = 0; y < dh1; ++y)
     {
         float y1 = float(y) * f;
-        unsigned int ys = static_cast< unsigned int>( y1 );
-        unsigned int yt = std::min( ys + 1, _height - 1 );
+        size_t ys = static_cast< size_t>( y1 );
+        size_t yt = std::min( ys + 1, _height - 1 );
         float t = y1 - float(ys);
         assert( t >= 0.0f && t <= 1.0f );
         float s = 1.0f - t;
