@@ -457,8 +457,13 @@ IF(WIN64) # defined in FindBuilDir
 	SET(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
 ENDIF(WIN64)
 
-IF(UNIX)
+IF(APPLE)
+	SET(EXE_DIR /System/Applications )
+ELSE()
 	SET(EXE_DIR /usr/local/bin )
+ENDIF()
+
+IF(UNIX)
 	IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
 	  FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer-dbg.sh
@@ -589,6 +594,26 @@ IF(WIN32)
 
   INCLUDE( CMakeRegistry.cmake )
 
+ELSEIF ( APPLE )
+    set(CPACK_GENERATOR Bundle )
+
+    set( INSTALL_NAME ${PROJECT_NAME} )
+
+    configure_file(
+	${PROJECT_SOURCE_DIR}/etc/OSX/startup.sh.in
+	${PROJECT_BINARY_DIR}/startup.sh)
+
+    configure_file(
+	${PROJECT_SOURCE_DIR}/etc/OSX/Info.plist.in
+	${PROJECT_BINARY_DIR}/Info.plist)
+
+    set(CPACK_BUNDLE_NAME mrViewer-v${SHORTVERSION} )
+    set(CPACK_BUNDLE_PLIST ${PROJECT_SOURCE_DIR}/icons/Info.plist )
+    set(CPACK_PACKAGE_ICON ${PROJECT_SOURCE_DIR}/icons/osx.icns )
+    set(CPACK_BUNDLE_ICON  ${PROJECT_SOURCE_DIR}/icons/osx.icns )
+    set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
+
+    set( CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK OFF )
 
 ELSEIF (UNIX)
 

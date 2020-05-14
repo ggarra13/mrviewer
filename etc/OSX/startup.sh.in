@@ -1,0 +1,12 @@
+#!/bin/sh
+
+mrv_bundle="`echo "$0" | sed -e 's|/Contents/MacOS/@INSTALL_NAME@||'`"
+mrv_resources="$mrv_bundle/Contents/Resources"
+
+#echo "running $0"
+#echo "mrv_bundle = $mrv_bundle"
+#echo "mrv_resources = $mrv_resources"
+
+export DYLD_FALLBACK_LIBRARY_PATH="$mrv_resources/lib"
+
+exec "$mrv_resources/bin/mrViewer" "$@"

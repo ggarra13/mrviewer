@@ -94,7 +94,6 @@ public:
 
     void fade_in() { _fade = mrv::CMedia::kFadeIn; }
     void fade_out() { _fade = mrv::CMedia::kFadeOut; }
-    void crossdissolve() { _fade = mrv::CMedia::kCrossDissolve; }
 
     void zoom( double x );
 

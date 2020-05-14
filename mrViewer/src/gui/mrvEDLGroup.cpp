@@ -843,10 +843,6 @@ int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
             CMedia* img = m->image();
             img->fade_out( img->last_frame() - (pt - t->offset(img)) );
         }
-        // else if ( _fade == mrv::CMedia::kCrossDissolve )
-        {
-            //uiMain->uiEDLWindow->CrossDissolve->value(1);
-        }
         redraw();
         return 1;
     }

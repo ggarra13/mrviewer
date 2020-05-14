@@ -299,6 +299,32 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         return CMedia::kDecodeLoopStart;
     }
 
+    if ( reel->edl && !decode )
+    {
+        // int64_t dissolve = img->fade_frames( CMedia::kCrossDissolveAtEnd );
+        // if ( frame + dissolve >= last )
+        // {
+        //     int64_t f = last + 1;
+        //     mrv::media m = reel->media_at( f );
+        //     CMedia* next = m->image();
+        //     if ( next && next->stopped() )
+        //     {
+        //         std::cerr << "START " << next->name() << std::endl;
+        //         next->seek( next->first_frame() );
+        //         ViewerUI* ui = timeline->main();
+        //         next->play( CMedia::kForwards, ui, true );
+        //         ui->uiView->background( m );
+        //         return CMedia::kDecodeDissolveAtEnd;
+        //     }
+        // }
+
+        // dissolve = img->fade_frames( CMedia::kCrossDissolveAtStart );
+        // if ( frame - dissolve <= first )
+        // {
+        //     return CMedia::kDecodeDissolveAtStart;
+        // }
+    }
+
     return CMedia::kDecodeOK;
 }
 
@@ -374,7 +400,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     int64_t first, last;
     end = check_loop( frame, img, false, reel, timeline, first, last );
-
 
     CMedia::Looping loop = view->looping();
 
@@ -631,6 +656,14 @@ EndStatus handle_loop( boost::int64_t& frame,
             if (fg) view->playback( CMedia::kStopped );
         }
         break;
+    }
+    case CMedia::kDecodeDissolveAtEnd:
+    {
+        return kEndIgnore;
+    }
+    case CMedia::kDecodeDissolveAtStart:
+    {
+        return kEndIgnore;
     }
     default:
     {
@@ -1383,7 +1416,9 @@ void decode_thread( PlaybackData* data )
                                                          timeline );
 
 
-        if ( status != CMedia::kDecodeOK )
+        if ( status != CMedia::kDecodeOK &&
+             status != CMedia::kDecodeDissolveAtEnd &&
+             status != CMedia::kDecodeDissolveAtStart )
         {
             if ( img->stopped() ) continue;
 

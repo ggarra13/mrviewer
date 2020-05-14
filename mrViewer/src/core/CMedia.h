@@ -329,7 +329,9 @@ public:
         kDecodeNoStream = 5,
         kDecodeLoopStart = 6,
         kDecodeLoopEnd = 7,
-        kDecodeBufferFull = 8
+        kDecodeBufferFull = 8,
+        kDecodeDissolveAtStart = 9,
+        kDecodeDissolveAtEnd = 10,
     };
 
     enum StereoInput {
@@ -376,7 +378,8 @@ public:
         kNoFade = 0,
         kFadeIn = 1,
         kFadeOut = 2,
-        kCrossDissolve = 2+4,
+        kCrossDissolveAtStart = 1+4,
+        kCrossDissolveAtEnd = 2+4,
     };
 
 
@@ -401,14 +404,14 @@ public:
     }
 
     inline void crossdissolve( int64_t f ) {
-        _fade[2].type = kCrossDissolve;
+        _fade[2].type = kCrossDissolveAtEnd;
         _fade[2].frames = f;
     }
 
     inline float dissolve() const
         {
             float f = 1.0f;
-            if ( _fade[2].type == kCrossDissolve &&
+            if ( _fade[2].type == kCrossDissolveAtEnd &&
                  _frame > last_frame() - _fade[2].frames )
             {
                 f = float( last_frame() - _frame ) / _fade[2].frames;
@@ -420,7 +423,7 @@ public:
         {
             if ( type == kFadeIn ) return _fade[0].frames;
             else if ( type == kFadeOut ) return _fade[1].frames;
-            else if ( type == kCrossDissolve ) return _fade[2].frames;
+            else if ( type == kCrossDissolveAtEnd ) return _fade[2].frames;
             else return 0;
         }
 

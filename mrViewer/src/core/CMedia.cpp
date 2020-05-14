@@ -467,6 +467,8 @@ _audio_engine( NULL )
         mrv::PacketQueue::initialize();
         _initialize = true;
     }
+
+    crossdissolve( 5 );
 }
 
 
