@@ -19,17 +19,32 @@ ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.py /usr/bin/cube2ctl.py
 #
 # Install Desktop icon
 #
-fulldir=$(xdg-user-dir DESKTOP)
-
-dir=${fulldir#/root/}
 
 name=`logname`
 
-if [ $fulldir != $dir ]; then
-    dir=/home/${name}${dir}
+# First, check if user-dirs.dirs exists in user's config directory
+config=.config
+dir=/home/${name}/.config/
+file=${dir}/user-dirs.dirs
+
+# if it does, copy it to root .config directory
+if [ -e $file ]; then
+    if [ ! -d /root/.config ]; then
+       mkdir /root/.config
+    fi
+    cp $file /root/.config
 fi
 
+# Now, as root, get DESKTOP directory
+fulldir=$(xdg-user-dir DESKTOP)
+dir=${fulldir#/root/}
 
+# If fulldir had /root/ in it, then rearrange to copy to /home/user directory
+if [ $fulldir != $dir ]; then
+    dir=/home/${name}/${dir}
+fi
+
+# Just in case.  If /home/user/DESKTOP directory is missing, create it.
 echo "DIR: " ${dir}
 if [ ! -d $dir ]; then
     mkdir $dir
