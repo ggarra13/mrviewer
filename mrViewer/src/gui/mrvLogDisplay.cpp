@@ -70,7 +70,7 @@ _lines( 0 )
     scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
 
     wrap_mode( WRAP_AT_BOUNDS, 80 );
-    
+
     delete mBuffer;
     delete mStyleBuffer;
     mBuffer = new Fl_Text_Buffer();
@@ -121,8 +121,9 @@ void LogDisplay::save( const char* file )
     }
     catch( ... )
     {
-        sprintf( buf, "Could not save log file \"%s\".", file );
-        error( buf );
+        char err[4200];
+        sprintf( err, "Could not save log file \"%s\".", file );
+        error( err );
     }
 
     if ( f ) fclose(f);
@@ -138,13 +139,13 @@ void LogDisplay::info( const char* x )
     while( t-- )
     {
         if ( x[t] == '\n' ) {
-	    ++_lines;
-	    buf[t] = '\n';
-	}
-	else
-	{
-	    buf[t] = 'A';
-	}
+            ++_lines;
+            buf[t] = '\n';
+        }
+        else
+        {
+            buf[t] = 'A';
+        }
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
@@ -163,13 +164,13 @@ void LogDisplay::warning( const char* x )
     while( t-- )
     {
         if ( x[t] == '\n' ) {
-	    ++_lines;
-	    buf[t] = '\n';
-	}
-	else
-	{
-	    buf[t] = 'B';
-	}
+            ++_lines;
+            buf[t] = '\n';
+        }
+        else
+        {
+            buf[t] = 'B';
+        }
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
@@ -188,13 +189,13 @@ void LogDisplay::error( const char* x )
     while( t-- )
     {
         if ( x[t] == '\n' ) {
-	    ++_lines;
-	    buf[t] = '\n';
-	}
-	else
-	{
-	    buf[t] = 'C';
-	}
+            ++_lines;
+            buf[t] = '\n';
+        }
+        else
+        {
+            buf[t] = 'C';
+        }
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );

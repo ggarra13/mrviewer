@@ -1,4 +1,11 @@
+v5.4.7  - Updated documentation to reflect recent change in Linux audio.
+
 v5.4.6  - Bug fixed icon creation on internationalized desktops on Linux.
+	- Made Linux's mrViewer audio be independent from system's audio.
+	  This makes audio playback a tad slower when not at max, but hopefully
+	  it will go unnoticed.
+	- Removed libdrm2.so from Linux distro as it was causing problems with
+	  new distros.
 
 v5.4.5  - Reverted a bug in seeking to first frame (on loops).  Regression
 	  in v5.4.3.

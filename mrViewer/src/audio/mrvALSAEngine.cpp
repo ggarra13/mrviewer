@@ -199,7 +199,7 @@ bool ALSAEngine::shutdown()
 
 float ALSAEngine::volume() const
 {
-#if 0
+#if 1
     return _volume;
 #else
 
@@ -311,8 +311,9 @@ float ALSAEngine::volume() const
 
 void ALSAEngine::volume( float v )
 {
-#if 1
     _volume = v;
+
+#if 0
 
     //
     // This code is a modified version of similar code in amixer.
@@ -358,12 +359,14 @@ void ALSAEngine::volume( float v )
 
         snd_mixer_selem_id_t *sid;
         snd_mixer_selem_id_alloca(&sid);
+        snd_mixer_selem_id_set_index( sid, 0 );
         snd_mixer_selem_id_set_name( sid, "PCM" );
 
         snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
         if ( !elem )
         {
             // Try with master
+            snd_mixer_selem_id_set_index( sid, 0 );
             snd_mixer_selem_id_set_name(sid, "Master");
             elem = snd_mixer_find_selem( _mixer, sid );
         }
@@ -411,7 +414,9 @@ void ALSAEngine::volume( float v )
         LOG_ERROR( e.what() );
     }
 
-#else
+#endif
+
+#if 0
     int smixer_level = int(v * 255);
     char cmd[256];
     sprintf( cmd, N_("amixer -q set PCM %d"), smixer_level );
@@ -677,19 +682,73 @@ bool ALSAEngine::open( const unsigned channels,
 }
 
 
-bool ALSAEngine::play( const char* data, const size_t size )
+bool ALSAEngine::play( const char* orig, const size_t size )
 {
     if ( !_enabled )   return true;
 
-    if ( !_pcm_handle || size == 0 || data == NULL )
+    if ( !_pcm_handle || size == 0 || orig == NULL )
         return false;
 
     long int           status = 0;
 
-
+    uint8_t* data = (uint8_t*)orig;
 
     unsigned sample_len = (unsigned)size / _sample_size;
-    const char* sample_buf = data;
+
+    if ( _volume < 0.99f )
+    {
+        data = new uint8_t[size];
+        memcpy( data, orig, size );
+
+        int i = sample_len * _channels;
+        switch( _pcm_format )
+        {
+        case SND_PCM_FORMAT_U8:
+        {
+            uint8_t* d = (uint8_t*)data;
+            while ( i-- )
+            {
+                d[i] *= _volume;
+            }
+            break;
+        }
+        case SND_PCM_FORMAT_S16_LE:
+        case SND_PCM_FORMAT_S16_BE:
+        {
+            int16_t* d = (int16_t*)data;
+            while ( i-- )
+            {
+                d[i] *= _volume;
+            }
+            break;
+        }
+        case SND_PCM_FORMAT_S24_LE:
+        case SND_PCM_FORMAT_S24_BE:
+        case SND_PCM_FORMAT_S32_LE:
+        case SND_PCM_FORMAT_S32_BE:
+        {
+            int32_t* d = (int32_t*)data;
+            while ( i-- )
+            {
+                d[i] *= _volume;
+            }
+            break;
+        }
+        case SND_PCM_FORMAT_FLOAT_LE:
+        case SND_PCM_FORMAT_FLOAT_BE:
+        {
+            float* d = (float*)data;
+            while ( i-- )
+            {
+                d[i] *= _volume;
+            }
+            break;
+        }
+        }
+    }
+
+
+    const uint8_t* sample_buf = data;
 
     while ( sample_len > 0 ) {
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
@@ -728,6 +787,11 @@ bool ALSAEngine::play( const char* data, const size_t size )
         }
         sample_buf += status * _sample_size;
         sample_len -= (unsigned)status;
+    }
+
+    if ( (uint8_t*)orig != data )
+    {
+        delete [] data;
     }
 
     return true;

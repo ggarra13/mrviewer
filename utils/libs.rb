@@ -10,6 +10,7 @@ libGLdispatch\.so
 libGLX\.so
 libX.*
 .*nvidia.*
+libdrm2.*
 libpthread.*
 libresolv.*
 libm\.so
