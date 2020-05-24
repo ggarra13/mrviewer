@@ -14,7 +14,7 @@ SET(TINYXML2_FOUND "NO")
 IF( TINYXML2_LIBRARY_DIR )
   SET( SEARCH_DIRS "${TINYXML2_LIBRARY_DIR}" )
 ELSE( TINYXML2_LIBRARY_DIR )
-  SET( SEARCH_DIRS 
+  SET( SEARCH_DIRS
     $ENV{TINYXML2_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
     $ENV{TINYXML2_ROOT}/lib/Win32/Release
     $ENV{TINYXML2_ROOT}/lib
@@ -26,7 +26,9 @@ ELSE( TINYXML2_LIBRARY_DIR )
     $ENV{TINYXML2_ROOT}/bin/Debug
     /usr/local/lib/x86_${CMAKE_BUILD_ARCH}-linux-gnu
     /usr/local/lib${CMAKE_BUILD_ARCH}
+    /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
+    /usr/lib
     )
 ENDIF( TINYXML2_LIBRARY_DIR )
 
@@ -35,11 +37,13 @@ FIND_PATH( TINYXML2_INCLUDE_DIR tinyxml2.h
   "$ENV{TINYXML2_ROOT}/include/tinyxml2"
   "$ENV{TINYXML2_ROOT}/include"
   /usr/local/include/tinyxml2
+  /usr/local/include
   /usr/include/tinyxml2
+  /usr/include
   DOC   "Tinyxml2 includes"
   )
 
-FIND_LIBRARY( tinyxml2 
+FIND_LIBRARY( tinyxml2
   NAMES tinyxml2
   PATHS ${SEARCH_DIRS}
   DOC   "Tinyxml2 library"
@@ -65,7 +69,7 @@ IF(NOT TINYXML2_FOUND)
   IF(NOT TINYXML2_FIND_QUIETLY)
     IF(TINYXML2_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
-              "Tinyxml2 required, please specify its location with TINYXML2_ROOT.")
+	      "Tinyxml2 required, please specify its location with TINYXML2_ROOT.")
     ELSE(TINYXML2_FIND_REQUIRED)
       MESSAGE( STATUS "Tinyxml2 was not found!!! " ${TINYXML2_INCLUDE_DIR})
       MESSAGE( STATUS ${TINYXML2_LIBRARIES} )
@@ -75,4 +79,3 @@ ENDIF(NOT TINYXML2_FOUND)
 
 
 #####
-

@@ -3,7 +3,11 @@
 #  include <windows.h>
 #endif
 
+#ifdef OSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "core/aviImage.h"
 #include "core/Sequence.h"

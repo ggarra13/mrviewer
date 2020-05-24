@@ -28,16 +28,19 @@
 #ifndef mrvAlignedData_h
 #define mrvAlignedData_h
 
-#include <malloc.h>
+extern "C" {
+#include <libavutil/mem.h>
+}
+
 #include "gui/mrvIO.h"
 #include <boost/cstdint.hpp>
 
-#if defined(_WIN32) || defined(_WIN64)
-#  define memalign( b, a )   _aligned_malloc( a, b )
-#  define memalign_free( a ) _aligned_free( a )
-#else
-#  define memalign_free( a ) free( a )
-#endif
+// #if defined(_WIN32) || defined(_WIN64)
+// #  define memalign( b, a )   _aligned_malloc( a, b )
+// #  define memalign_free( a ) _aligned_free( a )
+// #else
+// #  define memalign_free( a ) free( a )
+// #endif
 
 
 
@@ -50,44 +53,22 @@ namespace mrv {
 
     inline void* operator new(size_t size)
     {
-#ifdef LINUX
-        void* tmp = NULL;
-        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
-        if ( err != 0 )
-        {
-            mrvLOG_ERROR( "mem", "Allocation returned error " << err
-                          << std::endl );
-        }
-        return tmp;
-#else
-      return memalign( 16, size*sizeof(aligned16_uint8_t) );
-#endif
+        return av_malloc( size );
     }
 
     inline void operator delete( void* ptr )
     {
-        memalign_free( ptr );
+        av_free( ptr );
     }
 
     inline void* operator new[](size_t size)
     {
-#ifdef LINUX
-        void* tmp = NULL;
-        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
-        if ( err != 0 )
-        {
-            mrvLOG_ERROR( "mem", "Allocation returned error " << err
-                          << std::endl );
-        }
-        return tmp;
-#else
-      return memalign( 16, size*sizeof(aligned16_uint8_t) );
-#endif
+        return av_malloc( size * sizeof(aligned16_uint8_t) );
     }
 
     inline void operator delete[]( void* ptr )
     {
-      memalign_free( ptr );
+        av_free( ptr );
     }
   };
 

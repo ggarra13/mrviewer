@@ -152,6 +152,9 @@ namespace mrv {
 #elif LINUX
         virtual void SidecarMetadataParseWarning(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
         virtual void SidecarMetadataParseError(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
+#elif OSX
+        virtual void SidecarMetadataParseWarning(IBlackmagicRawClip*, CFStringRef, uint32_t, CFStringRef) {}
+        virtual void SidecarMetadataParseError(IBlackmagicRawClip*, CFStringRef, uint32_t, CFStringRef) {}
 #endif
         virtual void STDMETHODCALLTYPE PreparePipelineComplete(void*, HRESULT) {}
 
@@ -248,6 +251,10 @@ namespace mrv {
         _bstr_t clib( libpath.c_str() );
 #elif LINUX
         const char* clib = libpath.c_str();
+#elif OSX
+        CFStringRef clib = CFStringCreateWithCString( kCFAllocatorDefault,
+                                                      libpath.c_str(),
+                                                      kCFStringEncodingUTF8 );
 #endif
 
         if ( factory == nullptr )
@@ -274,6 +281,10 @@ namespace mrv {
         _bstr_t filename( file );
 #elif LINUX
         const char* filename = file;
+#elif OSX
+        CFStringRef filename = CFStringCreateWithCString( kCFAllocatorDefault,
+                                                          file,
+                                                          kCFStringEncodingUTF8 );
 #endif
 
         IBlackmagicRawClip* localclip = nullptr;
@@ -301,6 +312,8 @@ namespace mrv {
         const char* keyStr = nullptr;
         Variant value;
 #else
+        CFStringRef keyStr;
+        Variant value;
 #endif
 
         if ( _attrs.find( frame ) == _attrs.end() )
@@ -330,6 +343,9 @@ namespace mrv {
             const char* key((const char*) interim);
             VARTYPE variantType = value.vt;
 #else
+            const char* key = CFStringGetCStringPtr( keyStr,
+                                                     kCFStringEncodingUTF8 );
+            BlackmagicRawVariantType variantType = value.vt;
 #endif
             switch (variantType)
             {
@@ -414,6 +430,8 @@ namespace mrv {
                 _bstr_t interim(tmp, false);
                 const char* str((const char*) interim);
 #else
+                const char* str = CFStringGetCStringPtr( value.bstrVal,
+                                                         kCFStringEncodingUTF8 );
 #endif
                 Imf::StringAttribute attr( str );
                 if ( frame < 0 )
@@ -452,6 +470,10 @@ namespace mrv {
         _bstr_t file = filename();
 #elif LINUX
         const char* file = filename();
+#elif OSX
+        CFStringRef file = CFStringCreateWithCString( kCFAllocatorDefault,
+                                                      filename(),
+                                                      kCFStringEncodingUTF8 );
 #endif
 
         result = codec->OpenClip( file, &clip );
@@ -959,7 +981,8 @@ namespace mrv {
             BSTR timeCode;
 #elif LINUX
             const char* timeCode = nullptr;
-#else // APPLE
+#elif OSX // APPLE
+            CFStringRef timeCode;
 #endif
             HRESULT result = clip->GetTimecodeForFrame( frame, &timeCode );
             if ( result != S_OK )
@@ -972,7 +995,9 @@ namespace mrv {
             const char* timecode( (const char*)tmp );
 #elif LINUX
             const char* timecode = timeCode;
-#else  // APPLE
+#elif OSX  // APPLE
+            const char* timecode = CFStringGetCStringPtr( timeCode,
+                                                          kCFStringEncodingUTF8 );
 #endif
 
             Imf::TimeCode t = str2timecode( timecode );

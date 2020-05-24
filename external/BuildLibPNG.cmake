@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 if (WIN32)
   set( generator "NMake Makefiles" )
 else()

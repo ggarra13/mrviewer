@@ -25,7 +25,7 @@
 
 #include <sys/types.h>
 
-#ifdef LINUX
+#if defined(LINUX) || defined(OSX)
 #include <sys/socket.h>
 #include <netdb.h>
 #else
@@ -57,22 +57,22 @@ bool mr_init_socket_library()
    {
       switch( nRet )
       {
-	 case WSASYSNOTREADY:
+         case WSASYSNOTREADY:
              fprintf(stderr, _("WSA not ready\n") ); break;
-	 case WSAVERNOTSUPPORTED:
+         case WSAVERNOTSUPPORTED:
              fprintf(stderr, _("The version of Windows Sockets support requested is not provided by this particular Windows Sockets implementation.\n") ); break;
-	 case WSAEINPROGRESS:
+         case WSAEINPROGRESS:
              fprintf( stderr, _("A blocking Windows Sockets 1.1 operation is in progress.\n") );
-	    break;
-	 case WSAEPROCLIM:
+            break;
+         case WSAEPROCLIM:
              fprintf(stderr, _("Limit on the number of tasks supported by the Windows Sockets implementation has been reached.\n") );
-	    break;
+            break;
       }
       fflush(stderr);
    }
 
    if (wsaData.wVersion != wVersionRequested)
-   {	
+   {
       WSACleanup();
       LOG_ERROR("Wrong winsock version\n");
       return false;
@@ -92,7 +92,7 @@ void mr_cleanup_socket_library()
 
 
 MR_SOCKET mr_new_socket_client( const char* hostname, const int port,
-				const char* protocol )
+                                const char* protocol )
 {
 
     int err;
@@ -145,13 +145,13 @@ MR_SOCKET mr_new_socket_client( const char* hostname, const int port,
     freeaddrinfo(addrs);
 
 
- 
+
     if (sd == -1)
     {
         LOG_ERROR( hostname << ": " <<  strerror(err));
     }
 
-    
+
    return sd;
 }
 
@@ -162,7 +162,7 @@ void mr_closesocket( MR_SOCKET sd )
 }
 
 MR_SOCKET mr_new_socket_server( const char* host, const int port,
-				const char* protocol )
+                                const char* protocol )
 {
    struct  protoent *ptrp;  /* pointer to a protocol table entry   */
    struct  sockaddr_in sad; /* structure to hold server's address  */
@@ -200,7 +200,7 @@ MR_SOCKET mr_new_socket_server( const char* host, const int port,
    }
 
    /* Specify size of request queue */
-   if (listen(sd, QLEN) < 0) 
+   if (listen(sd, QLEN) < 0)
    {
        LOG_ERROR( _("listen to socket failed\n") );
       closesocket(sd);

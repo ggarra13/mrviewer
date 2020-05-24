@@ -23,7 +23,25 @@ FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
+
+if (APPLE)
+   set(FLTK_DIR /Users/gga/code/lib/fltk/build)
+   find_package(FLTK REQUIRED NO_MODULE)
+   include_directories(${FLTK_INCLUDE_DIRS})
+   set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
+   include_directories(${OPENGL_INCLUDE_DIRS})
+
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL -framework Cocoa -framework CoreAudio")
+   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -framework OpenGL -framework Cocoa -framework CoreAudio")
+
+    # stop OpenGL deprecation warnings on MacOSX > 10.14
+    add_definitions(-DGL_SILENCE_DEPRECATION=1)
+
+else()
+
 FIND_PACKAGE( FLTK        REQUIRED )    # for window management
+
+endif()
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
 FIND_PACKAGE( OCIO        REQUIRED )    # for OCIO color correction
@@ -42,13 +60,13 @@ FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
 
-ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS )
+ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -D_CRT_SECURE_NO_WARNINGS )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
   #  ADD_COMPILE_OPTIONS( -W1 )
-     ADD_DEFINITIONS( -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
+     ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
   SET(OS_LIBRARIES
     Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
     )
@@ -61,14 +79,24 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   IF(APPLE)
     # Media libraries for Apple
-    ADD_DEFINITIONS( -DOSX )
+    ADD_DEFINITIONS( -DOSX -DMR_SSE )
+    ADD_COMPILE_OPTIONS( -msse -msse2 -I/usr/local/include/ImageMagick-7/MagickCore )
     set( AOENGINE 1 )
     SET(OS_LIBRARIES
-	AVFoundation
-	Cocoa
+	# AVFoundation
+	# Cocoa
       )
-  ELSE(APPLE)
 
+
+    IF( AOENGINE )
+      ADD_DEFINITIONS( -DAOENGINE )
+      LINK_DIRECTORIES( /usr/local/lib )
+      set( OS_LIBRARIES ${OS_LIBRARIES}
+      ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao )
+    ENDIF()
+
+  ELSE(APPLE)
+    ADD_DEFINTIONS( -DMR_SSE )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
     # Media libraries for Linux
@@ -242,7 +270,7 @@ SET( SOURCES
   core/mrvACES.cpp
   # core/generic/mrEvent.cpp
 
-  core/mrvPC1.cpp
+  #  core/mrvPC1.cpp
   core/Sequence.cpp
   core/mrStackTrace.cpp
   core/mrvCPU.cpp
@@ -335,12 +363,13 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
   SET( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
   SET( SOURCES gui/resource.rc ${SOURCES} )
-ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
-  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+ELSEIF( APPLE )
   if( AOENGINE )
     SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
   endif()
-ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+ELSE()
+  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+ENDIF()
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
@@ -355,23 +384,23 @@ IF(NOT WIN32)
     )
 
   FIND_LIBRARY( Boost_locale_LIBRARY
-    NAMES boost_locale
+    NAMES boost_locale boost_locale-mt
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_system_LIBRARY
-    NAMES boost_system
+    NAMES boost_system boost_system-mt
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY
-    NAMES boost_filesystem
+    NAMES boost_filesystem boost_filesystem-mt
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY
-    NAMES boost_thread
+    NAMES boost_thread boost_thread-mt
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
@@ -602,17 +631,19 @@ ELSEIF ( APPLE )
     set( INSTALL_NAME ${PROJECT_NAME} )
 
     configure_file(
-	${PROJECT_SOURCE_DIR}/etc/OSX/startup.sh.in
+	../../etc/OSX/startup.sh.in
 	${PROJECT_BINARY_DIR}/startup.sh)
 
     configure_file(
-	${PROJECT_SOURCE_DIR}/etc/OSX/Info.plist.in
-	${PROJECT_BINARY_DIR}/Info.plist)
+	../../etc/OSX/Info.plist.in
+	${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Info.plist)
 
     set(CPACK_BUNDLE_NAME mrViewer-v${SHORTVERSION} )
-    set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/Info.plist )
-    set(CPACK_PACKAGE_ICON ${PROJECT_SOURCE_DIR}/etc/OSX/mrViewer.icns )
-    set(CPACK_BUNDLE_ICON  ${PROJECT_SOURCE_DIR}/etc/OSX/mrViewer.icns )
+    set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Info.plist )
+    FILE( COPY ../../etc/OSX/mrViewer.icns
+	  DESTINATION ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources )
+    set(CPACK_PACKAGE_ICON ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources/mrViewer.icns )
+    set(CPACK_BUNDLE_ICON  ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources/mrViewer.icns )
     set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
 
     set( CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK OFF )

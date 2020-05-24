@@ -96,7 +96,7 @@ typedef int x86_reg;
 
 CpuCaps gCpuCaps;
 
-#include <malloc.h>
+//#include <malloc.h>
 #include <stdlib.h>
 
 #include <iostream>

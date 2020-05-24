@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 ## Under the g++-7 compiler, CTL crashes in Release mode.
 ## So we set it to debug.  Note that the main directory will still report
 ## as Release as it is created by the mk bash script file.
@@ -15,6 +17,9 @@ else()
   set( DO_SHARED TRUE )
 endif()
 
+if (APPLE)
+   set( cxx_flags ${cxx_flags} -std=c++11 )
+endif()
 
 ExternalProject_Add(
     CTL

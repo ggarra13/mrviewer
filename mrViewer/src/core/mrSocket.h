@@ -19,10 +19,10 @@
  * @file   mrSocket.h
  * @author gga
  * @date   Sat Aug 25 00:59:25 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 #ifndef mrSocket_h
 #define mrSocket_h
@@ -47,18 +47,18 @@
 #define MR_SOCKET int
 #endif
 
-/** 
+/**
  * Init socket library (Windows)
- * 
- * 
+ *
+ *
  * @return true if inited properly, false if not
  */
 bool mr_init_socket_library();
 
-MR_SOCKET  mr_new_socket_server( const char* host, const int port = 6500, 
-				 const char* protocol = "tcp" );
-MR_SOCKET  mr_new_socket_client( const char* host, const int port = 6500, 
-				 const char* protocol = "tcp" );
+MR_SOCKET  mr_new_socket_server( const char* host, const int port = 6500,
+                                 const char* protocol = "tcp" );
+MR_SOCKET  mr_new_socket_client( const char* host, const int port = 6500,
+                                 const char* protocol = "tcp" );
 void mr_closesocket( MR_SOCKET sd );
 
 void mr_cleanup_socket_library();

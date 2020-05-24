@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 ExternalProject_Add(
   ZLIB
 #  URL "https://zlib.net/zlib-1.2.11.tar.gz"  # not compatible with Linux-3.3

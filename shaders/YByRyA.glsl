@@ -6,7 +6,7 @@
  * @brief    simple YByRyA texture with 3D lut shader
  *
  */
-#version 130
+#version 120
 
 // Images
 uniform sampler2D YImage;

@@ -14,7 +14,7 @@ SET(LIBINTL_FOUND "NO")
 IF( LIBINTL_LIBRARY_DIR )
   SET( SEARCH_DIRS "${LIBINTL_LIBRARY_DIR}" )
 ELSE( LIBINTL_LIBRARY_DIR )
-  SET( SEARCH_DIRS 
+  SET( SEARCH_DIRS
     "$ENV{LIBINTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{LIBINTL_ROOT}/lib/Release"
     "$ENV{LIBINTL_ROOT}/lib"
@@ -28,7 +28,9 @@ ELSE( LIBINTL_LIBRARY_DIR )
     "$ENV{LIBINTL_ROOT}/bin/Debug"
     "$ENV{LIBINTL_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
+    /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
+    /usr/lib
     )
 ENDIF( LIBINTL_LIBRARY_DIR )
 
@@ -37,12 +39,12 @@ FIND_PATH( LIBINTL_INCLUDE_DIR libintl.h
   "$ENV{LIBINTL_ROOT}/include"
   /usr/local/include/
   /usr/include/
-  DOC   "libintl includes" 
+  DOC   "libintl includes"
  )
 
-IF( WIN32 )
+IF( WIN32 OR APPLE )
   FIND_LIBRARY( libintl_library
-    NAMES libintl 
+    NAMES libintl intl
     NO_DEFAULT_PATH
     PATHS ${SEARCH_DIRS}
     DOC   "LIBINTL library"
@@ -50,9 +52,9 @@ IF( WIN32 )
 
 
   SET(LIBINTL_LIBRARIES ${libintl_library} )
-ELSE( WIN32 )
+ELSE( WIN32 OR APPLE )
   SET( LIBINTL_LIBRARIES "" )  # on linux, it resides on libc
-ENDIF( WIN32 )
+ENDIF( WIN32 OR APPLE )
 
 
 
@@ -71,7 +73,7 @@ IF(NOT LIBINTL_FOUND)
       MESSAGE( STATUS "LIBINTL_INCLUDE_DIR ${LIBINTL_INCLUDE_DIR}" )
       MESSAGE( STATUS "LIBINTL_LIBRARIES   ${LIBINTL_LIBRARIES}" )
       MESSAGE(FATAL_ERROR
-              "LIBINTL required, please specify its location with LIBINTL_ROOT.")
+	      "LIBINTL required, please specify its location with LIBINTL_ROOT.")
     ELSE(LIBINTL_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR "LIBINTL was not found. ${LIBINTL_INCLUDE_DIR}")
     ENDIF(LIBINTL_FIND_REQUIRED)
@@ -79,4 +81,3 @@ IF(NOT LIBINTL_FOUND)
 ENDIF(NOT LIBINTL_FOUND)
 
 #####
-

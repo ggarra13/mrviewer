@@ -186,11 +186,11 @@ std::string open_ocio_config( const char* startfile );
  * @param image      image to save (directory)
  * @param startdir   start directory to save to
  */
-void save_image_file( CMedia* image,
+void save_image_file( CMedia* const image,
                       const char* startdir = NULL,
                       const bool aces = false,
                       const bool all_layers = false,
-                        ViewerUI* main = NULL  );
+                      ViewerUI* main = NULL  );
 /**
  * Save an image under a new filename
  *
@@ -199,8 +199,8 @@ void save_image_file( CMedia* image,
  * @param opengl     use opengl snapshots
  */
   void save_sequence_file( ViewerUI* uiMain,
-                         const char* startdir = NULL,
-                         bool opengl = false  );
+                           const char* startdir = NULL,
+                           bool opengl = false  );
 
 /**
  * Save a reel under a new filename

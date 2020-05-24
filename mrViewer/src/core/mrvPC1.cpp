@@ -19,16 +19,16 @@
  * @file   mrvPC1.h
  * @author gga
  * @date   Fri Oct 12 00:38:52 2007
- * 
+ *
  * @brief  PC-1 text encoding with 128-key
- * 
- * 
+ *
+ *
  */
 
 #include <iostream>
 #include <cstring>
 #include <cstdio>
-#include <malloc.h>
+//#include <malloc.h>
 #include "mrvPC1.h"
 
 namespace mrv {
@@ -43,11 +43,11 @@ namespace mrv {
       int j;
 
       for (j=0;j<=16;j++) {
-	cle[j]=0;
+        cle[j]=0;
       }
 
       for (j=0;j<=8;j++) {
-	x1a0[j]=0;
+        x1a0[j]=0;
       }
 
       pkax=0;
@@ -72,11 +72,11 @@ namespace mrv {
       int j;
 
       for (j=0;j<=16;j++) {
-	cle[j]=0;
+        cle[j]=0;
       }
 
       for (j=0;j<=8;j++) {
-	x1a0[j]=0;
+        x1a0[j]=0;
       }
 
       pkax=0;
@@ -113,7 +113,7 @@ namespace mrv {
       pkdx=pktmp;
 
       if (pkax!=0)	{
-	pkax=pkax*pkbx;
+        pkax=pkax*pkbx;
       }
 
       pktmp=pkax;
@@ -121,8 +121,8 @@ namespace mrv {
       pkcx=pktmp;
 
       if (pkax!=0)	{
-	pkax=pkax*pksi;
-	pkcx=pkax+pkcx;
+        pkax=pkax*pksi;
+        pkcx=pkax+pkcx;
       }
 
       pktmp=pkax;
@@ -186,28 +186,28 @@ namespace mrv {
       pkfin();
 
       for (count=0;count<16;count++) {
-	cle[count]=key[count];
+        cle[count]=key[count];
       }
       cle[count]='\0';
 
       ascCipherText = (char*)malloc(2*plainlen*sizeof(char)+1);
       for (count=0;count<=plainlen-1;count++) {
-	pkc=in[count];
+        pkc=in[count];
 
-	pkassemble();
-	cfc=inter>>8;
-	cfd=inter&255;
+        pkassemble();
+        cfc=inter>>8;
+        cfd=inter&255;
 
-	for (compte=0;compte<=15;compte++) {
-	  cle[compte]=cle[compte]^pkc;
-	}
-	pkc = pkc ^ (cfc^cfd);
+        for (compte=0;compte<=15;compte++) {
+          cle[compte]=cle[compte]^pkc;
+        }
+        pkc = pkc ^ (cfc^cfd);
 
-	pkd =(pkc >> 4);
-	pke =(pkc & 15);
+        pkd =(pkc >> 4);
+        pke =(pkc & 15);
 
-	ascCipherText[k] = 0x61+pkd; k++;
-	ascCipherText[k] = 0x61+pke; k++;
+        ascCipherText[k] = 0x61+pkd; k++;
+        ascCipherText[k] = 0x61+pke; k++;
       }
       ascCipherText[k] = '\0';
 
@@ -221,33 +221,33 @@ namespace mrv {
       pkfin();
 
       for (count=0;count<16;count++) {
-	cle[count]=key[count];
+        cle[count]=key[count];
       }
       cle[count]='\0';
 
       plainText = (char*)malloc(ascipherlen/2*sizeof(char)+1);
 
       for (count=0;count<ascipherlen/2;count++) {
-	pkd =in[k]; k++;
-	pke =in[k]; k++;
+        pkd =in[k]; k++;
+        pke =in[k]; k++;
 
-	pkd=pkd-0x61;
-	pkd=pkd<<4;
+        pkd=pkd-0x61;
+        pkd=pkd<<4;
 
-	pke=pke-0x61;
-	pkc=pkd+pke;
+        pke=pke-0x61;
+        pkc=pkd+pke;
 
-	pkassemble();
-	cfc=inter>>8;
-	cfd=inter&255;
+        pkassemble();
+        cfc=inter>>8;
+        cfd=inter&255;
 
-	pkc = pkc ^ (cfc^cfd);
+        pkc = pkc ^ (cfc^cfd);
 
-	for (compte=0;compte<=15;compte++)
-	  {
-	    cle[compte]=cle[compte]^pkc;
-	  }
-	plainText[count] = (char)pkc;
+        for (compte=0;compte<=15;compte++)
+          {
+            cle[compte]=cle[compte]^pkc;
+          }
+        plainText[count] = (char)pkc;
 
       }
       plainText[count] = '\0';
@@ -257,4 +257,3 @@ namespace mrv {
   }
 
 }
-

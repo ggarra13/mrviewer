@@ -133,21 +133,29 @@ def copy_files( build )
                     "#{build}/#{@debug}/lib" )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
                     "#{build}/#{@debug}/lib" )
+  elsif build =~ /Darwin/
+    # Copy the RED library
+    FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
+                    "#{build}/#{@debug}/lib" )
   end
 end
 
-def copy_third_party( build )
+def copy_third_party( dest )
   Dir.chdir( '../..' )
-  if build =~ /Linux/
+  if dest =~ /Linux/
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
-                    "#{build}/#{@debug}/lib" )
+                    "#{dest}/lib" )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
-                    "#{build}/#{@debug}/lib" )
+                    "#{dest}/lib" )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
-                    "#{build}/#{@debug}/lib" )
+                    "#{dest}/lib" )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
-                    "#{build}/#{@debug}/lib" )
+                    "#{dest}/lib" )
+  elsif dest =~ /Darwin/
+    # Copy the RED library
+    FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
+                    "#{dest}/lib" )
   end
 end
 
@@ -161,11 +169,21 @@ build = "BUILD/#{kernel}-#{release}-64/"
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
 
 if kernel !~ /MINGW.*/
+
+  if build =~ /Linux/
+    dest = "#{build}/#@debug"
+  elsif build =~ /Darwin/
+    dest = "#{build}/#@debug/bin/mrViewer.app/Contents"
+    FileUtils.mkdir_p dest
+  end
+
   home=ENV['HOME']+"/bin/mrViewer"
-  FileUtils.rm_f( home )
-  FileUtils.ln_s( Dir.pwd + '/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
-  FileUtils.rm_f( home + '-dbg' )
-  FileUtils.ln_s( Dir.pwd + '/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
+  if build =~ /Linux/
+    FileUtils.rm_f( home )
+    FileUtils.ln_s( dest + "/Release/bin/mrViewer.sh", home )
+    FileUtils.rm_f( home + '-dbg' )
+    FileUtils.ln_s( dest + "/Debug/bin/mrViewer.sh", home + "-dbg" )
+  end
 
   Dir.chdir( build  )
   libs = Dir.glob( "#{@debug}/lib/*" )
@@ -187,17 +205,22 @@ if kernel !~ /MINGW.*/
   parse( files )
 
   dir = Dir.pwd
-  copy_third_party( build )
+
+  copy_third_party( dest )
   Dir.chdir( dir )
 
   if @options[:libs_only]
     exit(0)
   end
 
-  copy_files( build )
+  copy_files( dest )
 
   $stderr.puts "remove .fuse files"
   `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
+elsif kernel =~ /Darwin/
+  build = "BUILD/Windows-6.3.9600-64/"
+  Dir.chdir( build  )
+  copy_files( build )
 else
   build = "BUILD/Windows-6.3.9600-64/"
   Dir.chdir( build  )

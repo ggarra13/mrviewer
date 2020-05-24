@@ -120,7 +120,7 @@ bool pxrzImage::test(const boost::uint8_t *data, unsigned len)
  * @return true on success, false if not
  */
 bool pxrzImage::fetch( mrv::image_type_ptr& canvas,
-		       const boost::int64_t frame )
+                       const boost::int64_t frame )
 {
     int dw, dh;
 
@@ -179,11 +179,11 @@ bool pxrzImage::fetch( mrv::image_type_ptr& canvas,
         {
             float t = buf[offset + x];
             MAKE_BIGENDIAN( t );
-            if ( isinff(t) || isnanf(t) ||
-                    t > 10000000000000000000000000.0f )
+            if ( isinf(t) || isnan(t) ||
+                 t > 10000000000000000000000000.0f )
             {
                 pixels[i].r = pixels[i].g = pixels[i].b =
-                                                pixels[i].a = std::numeric_limits<float>::quiet_NaN();
+                pixels[i].a = std::numeric_limits<float>::quiet_NaN();
             }
             else
             {

@@ -58,7 +58,7 @@ namespace fs = boost::filesystem;
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
 #include "core/mrvBlackImage.h"
-#include "core/slateImage.h"
+//#include "core/slateImage.h"
 #include "core/Sequence.h"
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
@@ -472,6 +472,7 @@ void luminance_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 
 void slate_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
+    /*
     using mrv::slateImage;
 
     mrv::media cur = b->current_image();
@@ -484,6 +485,7 @@ void slate_cb( Fl_Widget* o, mrv::ImageBrowser* b )
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
+    */
 }
 
 /**
@@ -2944,7 +2946,7 @@ int ImageBrowser::mousePush( int x, int y )
                       kSaveClipXMLMetadata.hotkey(),
                       (Fl_Callback*)save_clip_xml_metadata_cb, view() );
 
-            valid = ( dynamic_cast< slateImage* >( img ) == NULL &&
+            valid = ( /* dynamic_cast< slateImage* >( img ) == NULL && */
                       dynamic_cast< smpteImage* >( img ) == NULL &&
                       dynamic_cast< clonedImage* >( img ) == NULL );
 

@@ -3655,14 +3655,13 @@ void Flu_File_Chooser :: buildLocationCombo()
 
 #elif defined __APPLE__
 
-
+  int i;
   // get all volume mount points and add to the location combobox
   dirent **e;
   char *name;
   int num = fl_filename_list( "/Volumes/", &e );
   if( num > 0 )
     {
-      int i;
       for( i = 0; i < num; i++ )
         {
           name = e[i]->d_name;

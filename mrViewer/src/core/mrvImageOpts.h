@@ -168,6 +168,7 @@ public:
     }
 };
 
+
 class WandOpts : public ImageOpts
 {
 protected:
@@ -186,6 +187,7 @@ public:
         _pixel_type = t;
     }
 };
+
 
 }  // namespace mrv
 

@@ -1881,7 +1881,7 @@ protected:
                                  AVStream* stream );
 
 protected:
-    static unsigned  _audio_max;        //!< max size of audio buf
+    static size_t  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
     static bool _supports_yuva;         //!< display supports yuva
     static bool _uses_16bits;         //!< display supports 16 bits movies

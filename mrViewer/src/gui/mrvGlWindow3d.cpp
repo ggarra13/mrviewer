@@ -62,7 +62,12 @@
 #include <windows.h>
 #endif
 
+#ifdef OSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 
 #include <FL/gl.h>
 #include <FL/fl_draw.H>

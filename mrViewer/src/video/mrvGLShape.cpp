@@ -36,7 +36,11 @@
 #  include <GL/glxew.h>
 #endif
 
+#ifdef OSX
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 // #include <GL/gl.h>
 
 #include <FL/Fl.H>

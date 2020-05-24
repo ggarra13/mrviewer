@@ -673,7 +673,7 @@ int64_t media_track::maximum() const
     size_t e = reel->images.size();
     if ( e == 0 ) return MRV_NOPTS_VALUE;
 
-    e =- 1;
+    e -= 1;
     return reel->images[e]->position() + reel->images[e]->duration();
 }
 

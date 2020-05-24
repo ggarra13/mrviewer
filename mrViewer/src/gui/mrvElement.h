@@ -17,7 +17,7 @@
 */
 
 #ifndef mrvElement_h
-#define mrvELement_h
+#define mrvElement_h
 
 #define __STDC_LIMIT_MACROS
 #define __STDC_FORMAT_MACROS

@@ -19,10 +19,10 @@
  * @file   mrvRoot.cpp
  * @author gga
  * @date   Fri Jan 11 02:07:36 2008
- * 
+ *
  * @brief  Sets MRV_ROOT variable if not defined from path of
  *         executable.
- * 
+ *
  */
 
 #include <cstdio>
@@ -43,7 +43,7 @@
 #  include <sys/param.h>
 
 /* _NSGetExecutablePath : must add -framework CoreFoundation to link line */
-#  include <mach-o/dyld.h> 
+#  include <mach-o/dyld.h>
 
 
 # ifndef PATH_MAX
@@ -83,62 +83,62 @@ namespace {
     result = readlink("/proc/self/exe", pname, pathsize);
     if (result > 0)
       {
-	pname[result] = 0; /* add the #@!%ing NULL */
+        pname[result] = 0; /* add the #@!%ing NULL */
 
-	if ((access(pname, 0) == 0))
-	  return 0; /* file exists, return OK */
-	/*else name doesn't seem to exist, return FAIL (falls
-	  through) */
+        if ((access(pname, 0) == 0))
+          return 0; /* file exists, return OK */
+        /*else name doesn't seem to exist, return FAIL (falls
+          through) */
       }
 #elif defined(WIN32) || defined(WIN64)
     result = GetModuleFileName(NULL, pname, DWORD(pathsize));
     if (result > 0)
       {
-	/* fix up the dir slashes... */
-	size_t len = strlen(pname);
-	size_t idx;
-	for (idx = 0; idx < len; idx++)
-	  {
-	    if (pname[idx] == '\\') pname[idx] = '/';
-	  }
-	if ((access(pname, 0) == 0))
-	  return 0; /* file exists, return OK */
-	/*else name doesn't seem to exist, return FAIL (falls
-	  through) */
+        /* fix up the dir slashes... */
+        size_t len = strlen(pname);
+        size_t idx;
+        for (idx = 0; idx < len; idx++)
+          {
+            if (pname[idx] == '\\') pname[idx] = '/';
+          }
+        if ((access(pname, 0) == 0))
+          return 0; /* file exists, return OK */
+        /*else name doesn't seem to exist, return FAIL (falls
+          through) */
       }
 #elif defined(SOLARIS)
     char *p = getexecname();
     if (p)
       {
-	/* According to the Sun manpages, getexecname will
-	   "normally" return an */
+        /* According to the Sun manpages, getexecname will
+           "normally" return an */
         /* absolute path - BUT might not... AND that IF it is not,
-	   pre-pending */
-	/* getcwd() will "usually" be the correct thing... Urgh!
-	 */
+           pre-pending */
+        /* getcwd() will "usually" be the correct thing... Urgh!
+         */
 
-	/* check pathname is absolute (begins with a / ???) */
-	if (p[0] == '/') /* assume this means we have an
-				absolute path */
-	  {
-	    strncpy(pname, p, pathsize);
-	    if ((access(pname, 0) == 0))
-	      return 0; /* file exists, return OK */
-	  }
-	else /* if not, prepend getcwd() then check if file
-		exists */
-	  {
-	    getcwd(pname, pathsize);
-	    result = strlen(pname);
-	    strncat(pname, "/", (pathsize - result));
-	    result ++;
-	    strncat(pname, p, (pathsize - result));
+        /* check pathname is absolute (begins with a / ???) */
+        if (p[0] == '/') /* assume this means we have an
+                                absolute path */
+          {
+            strncpy(pname, p, pathsize);
+            if ((access(pname, 0) == 0))
+              return 0; /* file exists, return OK */
+          }
+        else /* if not, prepend getcwd() then check if file
+                exists */
+          {
+            getcwd(pname, pathsize);
+            result = strlen(pname);
+            strncat(pname, "/", (pathsize - result));
+            result ++;
+            strncat(pname, p, (pathsize - result));
 
-	    if ((access(pname, 0) == 0))
-	      return 0; /* file exists, return OK */
+            if ((access(pname, 0) == 0))
+              return 0; /* file exists, return OK */
                         /*else name doesn't seem to exist, return FAIL
-			  (falls through) */
-	  }
+                          (falls through) */
+          }
       }
 #elif defined(__APPLE__) /* assume this is OSX */
     /*
@@ -158,19 +158,19 @@ namespace {
       bufsize needed could be more than MAXPATHLEN.
     */
     int status = -1;
-    char *given_path = malloc(MAXPATHLEN * 2);
+    char *given_path = (char*)malloc(MAXPATHLEN * 2);
     if (!given_path) return status;
 
-    pathsize = MAXPATHLEN * 2;
-    result = _NSGetExecutablePath(given_path, &pathsize);
+    uint32_t pathSize = MAXPATHLEN * 2;
+    result = _NSGetExecutablePath(given_path, &pathSize);
     if (result == 0)
       { /* OK, we got something - now try and resolve the real path...
-	 */
-	if (realpath(given_path, pname) != NULL)
-	  {
-	    if ((access(pname, 0) == 0))
-	      status = 0; /* file exists, return OK */
-	  }
+         */
+        if (realpath(given_path, pname) != NULL)
+          {
+            if ((access(pname, 0) == 0))
+              status = 0; /* file exists, return OK */
+          }
       }
     free (given_path);
     return status;
@@ -192,24 +192,24 @@ namespace mrv {
 
     if ( !root )
       {
-	char binpath[ PATH_MAX ];  binpath[0] = 0;
+        char binpath[ PATH_MAX ];  binpath[0] = 0;
 
-	int ok = get_app_path( binpath, PATH_MAX );
-	if ( ok != 0 )
-	  {
-	    if ( argc >= 1 )
-	      strcpy( binpath, argv[0] );
-	  }
+        int ok = get_app_path( binpath, PATH_MAX );
+        if ( ok != 0 )
+          {
+            if ( argc >= 1 )
+              strcpy( binpath, argv[0] );
+          }
 
-	fs::path rootdir( binpath );
-	rootdir = rootdir.remove_leaf();
-	rootdir = rootdir.branch_path();
+        fs::path rootdir( binpath );
+        rootdir = rootdir.remove_leaf();
+        rootdir = rootdir.branch_path();
 
-	std::string root = "MRV_ROOT=";
-	root += rootdir.string().c_str();
+        std::string root = "MRV_ROOT=";
+        root += rootdir.string().c_str();
 
 
-	putenv( strdup( (char*)root.c_str() ) );
+        putenv( strdup( (char*)root.c_str() ) );
       }
   }
 }

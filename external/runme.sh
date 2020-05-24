@@ -2,9 +2,12 @@
 
 KERNEL=`uname`
 RELEASE=`uname -r`
-installdir=$PWD/../install-$KERNEL-$RELEASE
+installdir=/usr/local/ #$PWD/../install-$KERNEL-$RELEASE
 echo "INSTALLDIR = " $installdir
 if [[ $KERNEL == Linux ]]; then
+    copy='sudo cp'
+    finaldir=/usr/local
+elif [[ $KERNEL == Darwin ]]; then
     copy='sudo cp'
     finaldir=/usr/local
 else
@@ -23,11 +26,11 @@ fi
 export PATH=$installdir/bin:$PATH
 
 
-../mk --installdir=$installdir -j 4 && echo "Install in /usr/local.  Needs root permissions" &&
+sudo ../mk --installdir=$installdir -j 1 && echo "Install in /usr/local.  Needs root permissions" #&&
 
-$copy -r $installdir/bin/* $finaldir/bin
-$copy -r $installdir/lib/* $finaldir/lib
-$copy -r $installdir/include/* $finaldir/include
-$copy -r $installdir/share/* $finaldir/share
+# $copy -r $installdir/bin/* $finaldir/bin
+# $copy -r $installdir/lib/* $finaldir/lib
+# $copy -r $installdir/include/* $finaldir/include
+# $copy -r $installdir/share/* $finaldir/share
 #$copy -r $installdir/etc/* $finaldir/etc
-$copy -r $installdir/doc/* $finaldir/doc
+#$copy -r $installdir/doc/* $finaldir/doc

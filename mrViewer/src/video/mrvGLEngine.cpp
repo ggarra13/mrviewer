@@ -59,8 +59,14 @@ extern "C" {
 
 
 #include <GL/glew.h>
+
+#ifdef OSX
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/glu.h>
 #include <GL/glut.h>
+#endif
 
 #if defined(WIN32) || defined(WIN64)
 #  include <GL/wglew.h>
@@ -294,7 +300,7 @@ void GLEngine::init_charset()
 
     SelectObject(hDC, oldFid);
     DBGM3( __FUNCTION__ << " " << __LINE__ );
-#else
+#elif LINUX
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     // Find Window's default font
     Display* gdc = fl_display;
@@ -566,7 +572,7 @@ void GLEngine::initialize()
         DBGM3( "call glutInit" );
         int argc = 1;
         static char* args[] = { (char*)"GlEngine", NULL };
-        glutInit( &argc, args );
+        //glutInit( &argc, args );
         glut_init = true;
     }
 
@@ -595,9 +601,15 @@ void GLEngine::initialize()
     {
         _sdiOutput = true;
     }
-#else
+#elif LINUX
     if ( glxewIsSupported( N_("GLX_NV_video_out") ) ||
             glxewIsSupported( N_("GLX_NV_video_output") ) )
+    {
+        _sdiOutput = true;
+    }
+#elif OSX
+    if ( glewIsSupported( N_("GLX_NV_video_out") ) ||
+         glewIsSupported( N_("GLX_NV_video_output") ) )
     {
         _sdiOutput = true;
     }
@@ -3826,7 +3838,7 @@ void GLEngine::loadOpenGLShader()
         " * \n"
         " */ \n"
         " \n"
-        "#version 130\n\n"
+        "#version 120\n\n"
         "// Images \n"
         "uniform sampler2D YImage; \n"
         "uniform sampler2D UImage; \n"

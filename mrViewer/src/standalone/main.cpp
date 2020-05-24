@@ -38,7 +38,7 @@
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Native_File_Chooser.H>
 
-#include <MagickWand/MagickWand.h>
+// #include <MagickWand/MagickWand.h>
 
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
@@ -336,7 +336,7 @@ int main( int argc, char** argv )
               lock.set( "pid", 1 );
           }
 
-          MagickWandGenesis();
+          // MagickWandGenesis();
 
           // mrv::open_license( argv[0] );
           // mrv::checkout_license();
@@ -509,7 +509,7 @@ int main( int argc, char** argv )
       break;
   }
 
-  MagickWandTerminus();
+    // MagickWandTerminus();
 
   return ok;
 }

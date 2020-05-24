@@ -8,6 +8,10 @@ else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
 endif()
 
+if (APPLE)
+  set( boost_on "TRUE" )
+endif()
+
 ExternalProject_Add(
   ${OCIO_NAME}
   # GIT_REPOSITORY "https://github.com/imageworks/OpenColorIO.git"

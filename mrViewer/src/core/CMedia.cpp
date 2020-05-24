@@ -76,7 +76,7 @@ namespace fs = boost::filesystem;
 #include <ImfVecAttribute.h>
 
 
-#include <MagickWand/MagickWand.h>
+//#include <MagickWand/MagickWand.h>
 
 #include "core/mrvMath.h"
 #include "core/CMedia.h"
@@ -119,7 +119,7 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 bool       CMedia::_initialize = false;
 
-unsigned    CMedia::_audio_max = 0;
+size_t      CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
 bool        CMedia::_uses_16bits = false;

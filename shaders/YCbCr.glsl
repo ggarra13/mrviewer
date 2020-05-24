@@ -6,7 +6,7 @@
  * @brief    simple YCbCr texture with 3D lut shader
  *
  */
-#version 130
+#version 120
 
 // Images
 uniform sampler2D YImage;
@@ -69,9 +69,9 @@ void main()
   {
 	pre += Koff;
 
-  	c.r = dot(Kr, pre);
-  	c.g = dot(Kg, pre);
-  	c.b = dot(Kb, pre);
+	c.r = dot(Kr, pre);
+	c.g = dot(Kg, pre);
+	c.b = dot(Kb, pre);
   }
   else
   {

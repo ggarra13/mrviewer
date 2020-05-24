@@ -51,8 +51,8 @@
 #include <ImathFun.h>  // for clamp
 #include <half.h>
 
-#include <MagickWand/MagickWand.h>
-#include <MagickCore/magick.h>
+//#include <MagickWand/MagickWand.h>
+//#include <MagickCore/magick.h>
 
 #include "CMedia.h"
 #include "mrvImageView.h"

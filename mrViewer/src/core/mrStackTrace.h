@@ -24,6 +24,7 @@
 #include "mrStackTrace_win32.h"
 #elif LINUX
 #include "mrStackTrace_linux.h"
+#elif OSX
 #else
 #error Unknown OS for stack trace
 #endif

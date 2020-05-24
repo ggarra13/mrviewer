@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 ExternalProject_Add(
   LCMS2
   GIT_REPOSITORY "https://github.com/mm2/Little-CMS.git"

@@ -1,3 +1,11 @@
+if (APPLE)
+  set(CMAKE_CXX_FLAGS -std=c++11 ${CMAKE_CXX_FLAGS} )
+else()
+  if( WIN32 )
+    set(CMAKE_CXX_FLAGS -EHsc ${CMAKE_CXX_FLAGS} )
+  endif()
+endif()
+
 ExternalProject_Add(
   OpenEXR
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/openexr.git"
@@ -9,7 +17,7 @@ ExternalProject_Add(
   -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-  -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -EHsc
+  -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
   -DILMBASE_BUILD_BOTH_STATIC_SHARED=FALSE
   -DBUILD_SHARED_LIBS=TRUE
   -DPYILMBASE_ENABLE=FALSE

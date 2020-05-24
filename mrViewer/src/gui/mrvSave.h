@@ -1,6 +1,8 @@
-
 #ifndef mrvSave_h
 #define mrvSave_h
+
+#include "CMedia.h"
+#include "mrvImageOpts.h"
 
 class ViewerUI;
 

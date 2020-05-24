@@ -54,7 +54,7 @@ public:
         return false;
     }
     virtual bool fetch( mrv::image_type_ptr& canvas,
-			const boost::int64_t frame );
+                        const boost::int64_t frame );
 
     virtual bool initialize();
     virtual bool release();

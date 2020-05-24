@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 ExternalProject_Add(
   x265
   URL "https://bitbucket.org/multicoreware/x265/downloads/x265_3.0.tar.gz"

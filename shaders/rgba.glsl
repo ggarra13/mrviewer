@@ -7,7 +7,7 @@
  *
  */
 
-#version 130
+#version 120
 
 // Images
 uniform sampler2D fgImage;
@@ -145,7 +145,6 @@ void main()
   }
 
   c.rgb *= fade;
-  c.rgba *= dissolve;
 
   gl_FragColor = c;
 

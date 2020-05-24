@@ -1,3 +1,5 @@
+include( ExternalProject )
+
 ExternalProject_Add(
   x264
   URL "https://code.videolan.org/videolan/x264/-/archive/master/x264-master.tar.bz2"

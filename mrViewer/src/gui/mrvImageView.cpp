@@ -69,7 +69,11 @@
 #include "core/CMedia.h"
 #include "core/aviImage.h"
 
+#ifdef OSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>

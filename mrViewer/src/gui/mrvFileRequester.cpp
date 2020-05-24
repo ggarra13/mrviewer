@@ -55,7 +55,11 @@
 #include "mrViewer.h"
 #include "aviSave.h"
 
+#ifdef OSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "FLU/Flu_File_Chooser.h"
 #include <FL/Fl_Native_File_Chooser.H>
@@ -773,7 +777,7 @@ void monitor_icc_profile( ViewerUI* main,
 
 
 
-void save_image_file( CMedia* image, const char* startdir, bool aces,
+void save_image_file( CMedia* const image, const char* startdir, bool aces,
                       bool all_layers,
                       ViewerUI* main )
 {

@@ -20,7 +20,7 @@
  * @author gga
  * @date   Tue Jul 10 03:26:02 2007
  *
- * @brief  An Audio Engine using Windows' Multimedia (WMM) engine
+ * @brief  An Audio Engine using a basic interface and hiding the details.
  *
  *
  */
@@ -101,7 +101,6 @@ bool AOEngine::shutdown()
 
 float AOEngine::volume() const
 {
-    if (!_device) return 0.0f;
 
     return 1.0f;
 }

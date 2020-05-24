@@ -7,7 +7,7 @@
  *
  */
 
-#version 130
+#version 120
 
 // Images
 uniform sampler2D YImage;

@@ -28,10 +28,6 @@
 
 #if defined(WIN32) || defined(WIN64)
 #  include "mrStackTrace_win32.cpp"
-#else
-#  ifdef LINUX
+#elsif LINUX
 #    include "mrStackTrace_linux.cpp"
-#  else
-#    error Unknown OS for stack trace
-#  endif
 #endif

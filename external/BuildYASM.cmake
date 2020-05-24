@@ -1,3 +1,6 @@
+include( ExternalProject )
+
+
 ExternalProject_Add(
   YASM
   URL "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"

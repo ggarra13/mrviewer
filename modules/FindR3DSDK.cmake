@@ -13,6 +13,7 @@ SET(R3DSDK_FOUND "NO")
 FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   "$ENV{R3DSDK_ROOT}/Include"
   "$ENV{R3DSDK_ROOT}"
+  ../../../R3DSDKv7_3_1/Include
   ../../../R3DSDKv7_2_0/Include
   ../../../R3DSDKv7_1_0/Include
   /usr/local/include
@@ -21,7 +22,10 @@ FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   )
 
 get_filename_component( R3DSDK_ROOT ${R3DSDK_INCLUDE_DIR} DIRECTORY )
-IF(UNIX)
+IF(APPLE)
+#    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac32_64/libR3DSDK-libstdcpp.a )
+    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac32_64/libR3DSDK-libcpp.a )
+ELSEIF(UNIX)
   if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 )
     set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC-cpp11.a )
   else()
@@ -29,9 +33,9 @@ IF(UNIX)
   endif()
 ELSEIF( WIN64 )
       if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-        set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2015MDd.lib )
+	set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2015MDd.lib )
       else()
-        set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2015MD.lib )
+	set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2015MD.lib )
       endif()
 ELSEIF( WIN32 )
       set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win32/R3DSDK-2015MD.lib )

@@ -32,11 +32,11 @@
 #include <iostream>
 using namespace std;
 
+#include <MagickWand/MagickWand.h>
 #include "slateImage.h"
 #include "mrvIO.h"
 #include "mrvString.h"
 #include "mrvException.h"
-#include <MagickWand/MagickWand.h>
 
 namespace
 {
