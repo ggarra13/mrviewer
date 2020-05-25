@@ -357,8 +357,7 @@ SET( SOURCES
   standalone/main.cpp
 
   ${BlackMagicRAW_SOURCES}
-   )
-
+  )
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )

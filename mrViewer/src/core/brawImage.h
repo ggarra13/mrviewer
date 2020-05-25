@@ -36,7 +36,6 @@
 
 namespace mrv {
 
-    class CameraCodecCallback;
 
 class brawImage : public CMedia
 {
@@ -152,7 +151,6 @@ protected:
     IBlackmagicRawClip* clip;
     IBlackmagicRawJob* readJob;
     IBlackmagicRawClipAudio* audio;
-    CameraCodecCallback* callback;
 public:
     static bool init;
 };

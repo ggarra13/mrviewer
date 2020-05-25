@@ -1568,7 +1568,6 @@ void CMedia::audio_stream( int idx )
 
     if ( has_audio() )
     {
-        std::cerr << "AUDIO INDEX was set to " << idx << std::endl;
         flush_audio();
         close_audio();
         close_audio_codec();

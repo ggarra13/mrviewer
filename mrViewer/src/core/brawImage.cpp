@@ -70,8 +70,8 @@ namespace mrv {
     public:
         explicit CameraCodecCallback( brawImage* b,
                                       mrv::image_type_ptr& c,
-                                      int64_t f,
-                                      BlackmagicRawResolutionScale s =
+                                      const int64_t f,
+                                      const BlackmagicRawResolutionScale s =
                                       blackmagicRawResolutionScaleEighth) :
             IBlackmagicRawCallback(),
             img( b ),
@@ -100,10 +100,7 @@ namespace mrv {
                     m_frame = Frame;
                     m_frame->AddRef();
                 }
-                else
-                {
-                    LOG_ERROR( _("ReadComplete failed!") );
-                }
+
                 IBlackmagicRawJob* decodeAndProcessJob = nullptr;
 
                 if (result == S_OK)
@@ -122,7 +119,6 @@ namespace mrv {
 
                 if (result != S_OK)
                 {
-                    LOG_ERROR( _("ReadComplete failed!") );
                     if (decodeAndProcessJob)
                         decodeAndProcessJob->Release();
                 }
@@ -219,6 +215,7 @@ namespace mrv {
         const image_type::PixelType pixel_type = image_type::kByte;
         allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
                          dw, dh );
+
         memcpy( canvas->data().get(), imageData, dw*dh*4 );
 
         // Store in queue
@@ -274,12 +271,17 @@ namespace mrv {
             factory = CreateBlackmagicRawFactoryInstanceFromPath( clib );
             if (factory == nullptr)
             {
-#if defined(LINUX) || defined(_WIN64)
+#if defined(LINUX) || defined(_WIN64) || defined(OSX)
                 LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
 #endif
                 return false;
             }
         }
+
+#ifdef OSX
+        CFRelease( clib );
+#endif
+
 
         IBlackmagicRaw* codec;
         result = factory->CreateCodec(&codec);
@@ -306,9 +308,15 @@ namespace mrv {
             return false;
         }
 
+#ifdef OSX
+        CFRelease( filename );
+#endif
 
         localclip->Release();
+        localclip = nullptr;
+
         codec->Release();
+        codec = nullptr;
 
         return true;
     }
@@ -323,7 +331,7 @@ namespace mrv {
 #elif LINUX
         const char* keyStr = nullptr;
         Variant value;
-#else
+#elif OSX
         CFStringRef keyStr;
         Variant value;
 #endif
@@ -354,7 +362,7 @@ namespace mrv {
             _bstr_t interim(keyStr, false);
             const char* key((const char*) interim);
             VARTYPE variantType = value.vt;
-#else
+#elif OSX
             const char* key = CFStringGetCStringPtr( keyStr,
                                                      kCFStringEncodingUTF8 );
             BlackmagicRawVariantType variantType = value.vt;
@@ -447,7 +455,7 @@ namespace mrv {
                 // or use true to get original BSTR released through wrapper
                 _bstr_t interim(tmp, false);
                 const char* str((const char*) interim);
-#else
+#elif OSX
                 const char* str = CFStringGetCStringPtr( value.bstrVal,
                                                          kCFStringEncodingUTF8 );
 #endif
@@ -482,7 +490,7 @@ namespace mrv {
         result = factory->CreateCodec(&codec);
         if (result != S_OK)
         {
-            LOG_ERROR( _("Failed to create IBlackmagicRaw!") );
+            LOG_ERROR( _("Failed to create IBlackmagicRaw Codec!") );
             return false;
         }
 
@@ -501,8 +509,16 @@ namespace mrv {
         result = codec->OpenClip( file, &clip );
         if (result != S_OK)
         {
+            IMG_ERROR( _("Could not open clip" ) );
             return false;
         }
+
+#ifdef OSX
+        CFRelease( file );
+#endif
+
+
+
 
         rgb_layers();
         lumma_layers();
@@ -513,6 +529,7 @@ namespace mrv {
         result = clip->GetFrameCount( &duration );
         if (result != S_OK)
         {
+            IMG_ERROR( _("Could not obtain frame count" ) );
             return false;
         }
         _frameEnd = _frame_end = (int64_t)duration - 1;
@@ -520,6 +537,7 @@ namespace mrv {
         result = clip->GetFrameRate( &f );
         if ( result != S_OK )
         {
+            IMG_ERROR( _("Could not obtain frame rate" ) );
             return false;
         }
         _fps = _orig_fps = _play_fps = f;
@@ -710,11 +728,13 @@ namespace mrv {
     {
         if ( audio )
             audio->Release();
+        audio = nullptr;
         if ( clip )
             clip->Release();
+        clip = nullptr;
         if ( codec )
             codec->Release();
-
+        codec = nullptr;
         if ( factory )
             factory->Release();
         factory = nullptr;
@@ -831,10 +851,9 @@ namespace mrv {
             break;
         }
 
-        HRESULT result;
+        HRESULT result = S_OK;
 
         CameraCodecCallback callback( this, canvas, frame, s );
-
         result = codec->SetCallback(&callback);
         if (result != S_OK)
         {
@@ -1020,6 +1039,7 @@ namespace mrv {
 #elif OSX  // APPLE
             const char* timecode = CFStringGetCStringPtr( timeCode,
                                                           kCFStringEncodingUTF8 );
+            if ( timecode == NULL ) return false;
 #endif
 
             Imf::TimeCode t = str2timecode( timecode );
@@ -1030,6 +1050,10 @@ namespace mrv {
             }
             Imf::TimeCodeAttribute attr( t );
             _attrs[frame].insert( std::make_pair( "timecode", attr.copy() ) );
+
+#ifdef OSX
+            CFRelease( timeCode );
+#endif
 
             refresh();
             image_damage( image_damage() | kDamageTimecode );
@@ -1099,6 +1123,7 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
+        return kDecodeOK;
 
         if ( _audio_packets.is_loop_end() )
         {
