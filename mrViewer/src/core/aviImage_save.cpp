@@ -1045,7 +1045,8 @@ static void close_video(AVFormatContext *oc, AVStream *st)
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
 
-    image_type_ptr hires = img->left();
+    image_type_ptr hires = img->hires();
+    if ( !hires )  hires = img->left();
 
     if ( !hires )
     {
@@ -1080,7 +1081,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                    format,
                                    mrv::image_type::kFloat ) );
         copy_image( ptr, hires );
-        bake_ocio( ptr, img );
+        if ( hires == img->left() ) bake_ocio( ptr, img );
     }
 
     sho = mrv::image_type_ptr( new image_type( hires->frame(),

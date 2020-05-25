@@ -1,4 +1,6 @@
 v5.4.7  - Updated documentation to reflect recent change in Linux audio.
+	- Bug fixed a regression creating a 5 frame fadeout effect of the
+	  image at the end.  Regression introduced in v5.4.6.
 
 v5.4.6  - Bug fixed icon creation on internationalized desktops on Linux.
 	- Made Linux's mrViewer audio be independent from system's audio.
