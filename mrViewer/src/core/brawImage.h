@@ -152,6 +152,7 @@ protected:
     IBlackmagicRawClip* clip;
     IBlackmagicRawJob* readJob;
     IBlackmagicRawClipAudio* audio;
+    CameraCodecCallback* callback;
 public:
     static bool init;
 };

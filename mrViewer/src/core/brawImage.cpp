@@ -8,6 +8,13 @@
 #  include <winsock2.h>    // for htonl
 #  include <comutil.h>
 #endif
+
+#ifdef OSX
+#include <CoreServices/CoreServices.h>
+#define STDMETHODCALLTYPE
+#endif
+
+
 #ifdef DEBUG
 #include <cassert>
 #define VERIFY(condition) assert(SUCCEEDED(condition))
@@ -86,23 +93,27 @@ namespace mrv {
         virtual
         void STDMETHODCALLTYPE
         ReadComplete(IBlackmagicRawJob* readJob, HRESULT result,
-                     IBlackmagicRawFrame* frame)
+                     IBlackmagicRawFrame* Frame)
             {
                 if (result == S_OK)
                 {
-                    m_frame = frame;
+                    m_frame = Frame;
                     m_frame->AddRef();
+                }
+                else
+                {
+                    LOG_ERROR( _("ReadComplete failed!") );
                 }
                 IBlackmagicRawJob* decodeAndProcessJob = nullptr;
 
                 if (result == S_OK)
-                    result = frame->SetResourceFormat(s_resourceFormat);
+                    result = Frame->SetResourceFormat(s_resourceFormat);
 
                 if (result == S_OK)
-                    result = frame->SetResolutionScale( scale );
+                    result = Frame->SetResolutionScale( scale );
 
                 if (result == S_OK)
-                    result = frame->CreateJobDecodeAndProcessFrame(nullptr,
+                    result = Frame->CreateJobDecodeAndProcessFrame(nullptr,
                                                                    nullptr,
                                                                    &decodeAndProcessJob);
 
@@ -111,6 +122,7 @@ namespace mrv {
 
                 if (result != S_OK)
                 {
+                    LOG_ERROR( _("ReadComplete failed!") );
                     if (decodeAndProcessJob)
                         decodeAndProcessJob->Release();
                 }
@@ -252,7 +264,7 @@ namespace mrv {
 #elif LINUX
         const char* clib = libpath.c_str();
 #elif OSX
-        CFStringRef clib = CFStringCreateWithCString( kCFAllocatorDefault,
+        CFStringRef clib = CFStringCreateWithCString( NULL,
                                                       libpath.c_str(),
                                                       kCFStringEncodingUTF8 );
 #endif
@@ -282,7 +294,7 @@ namespace mrv {
 #elif LINUX
         const char* filename = file;
 #elif OSX
-        CFStringRef filename = CFStringCreateWithCString( kCFAllocatorDefault,
+        CFStringRef filename = CFStringCreateWithCString( NULL,
                                                           file,
                                                           kCFStringEncodingUTF8 );
 #endif
@@ -347,6 +359,13 @@ namespace mrv {
                                                      kCFStringEncodingUTF8 );
             BlackmagicRawVariantType variantType = value.vt;
 #endif
+
+            if ( key == NULL || strlen(key) == 0 ) {
+                VariantClear(&value);
+                metadataIterator->Next();
+                continue;
+            }
+
             switch (variantType)
             {
             case blackmagicRawVariantTypeS16:
@@ -423,7 +442,6 @@ namespace mrv {
             {
 #ifdef LINUX
                 const char* str = value.bstrVal;
-                if ( strlen(str) == 0 ) str = "";
 #elif WIN32
                 BSTR tmp = value.bstrVal;
                 // or use true to get original BSTR released through wrapper
@@ -433,6 +451,8 @@ namespace mrv {
                 const char* str = CFStringGetCStringPtr( value.bstrVal,
                                                          kCFStringEncodingUTF8 );
 #endif
+                if ( str == NULL ) str = "";
+
                 Imf::StringAttribute attr( str );
                 if ( frame < 0 )
                 {
@@ -471,8 +491,10 @@ namespace mrv {
 #elif LINUX
         const char* file = filename();
 #elif OSX
-        CFStringRef file = CFStringCreateWithCString( kCFAllocatorDefault,
-                                                      filename(),
+        const char* fname = filename();
+        if ( fname == NULL || strlen(fname) == 0 ) return false;
+        CFStringRef file = CFStringCreateWithCString( NULL,
+                                                      fname,
                                                       kCFStringEncodingUTF8 );
 #endif
 
