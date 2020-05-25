@@ -72,7 +72,6 @@ namespace mrv {
             frame( f ),
             scale( s )
             {
-                std::cerr << __FUNCTION__ << " " <<  __LINE__ << std::endl;
             };
         virtual ~CameraCodecCallback()
             {
