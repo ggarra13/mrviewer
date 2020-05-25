@@ -8922,9 +8922,8 @@ msgid ".GIF"
 msgstr ""
 
 #: core/wandImage.cpp:280
-#, fuzzy
 msgid ".K"
-msgstr "OK"
+msgstr ""
 
 #: core/wandImage.cpp:278
 msgid ".M"
@@ -15263,16 +15262,14 @@ msgid "Could not match audio device \""
 msgstr "No pude abrir el codec de audio"
 
 #: core/brawImage.cpp:532
-#, fuzzy
 msgid "Could not obtain frame count"
-msgstr "¡Fallé en obtener timecode para el cuadro "
+msgstr "Fallé en obtener conteo de cuadros"
 
 #
 #
 #: core/brawImage.cpp:540
-#, fuzzy
 msgid "Could not obtain frame rate"
-msgstr "No pude adivinar el formato de imagen para "
+msgstr "No pude obtener los cuadros por segundo"
 
 #
 #: gui/mrvPreferences.cpp:514
@@ -15314,9 +15311,8 @@ msgstr "No pude abrir el driver de audio"
 
 #
 #: core/brawImage.cpp:512
-#, fuzzy
 msgid "Could not open clip"
-msgstr "No pude abrir \""
+msgstr "No pude abrir clip"
 
 #: core/aviImage_save.cpp:1289
 msgid "Could not open mpeg movie"
@@ -15526,9 +15522,9 @@ msgstr "Crear/Planilla"
 
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:88
-#, fuzzy
+#
 msgid "CreateBlackmagicRawFactoryInstance"
-msgstr "¡Fallé en crear IBlackmagicRawFactory!"
+msgstr ""
 
 #: core/wandImage.cpp:562
 msgid "Created Date"
@@ -17066,9 +17062,8 @@ msgid "Failed to alloc swresample library"
 msgstr "No pude asignar la biblioteca swresample"
 
 #: core/brawImage.cpp:493
-#, fuzzy
 msgid "Failed to create IBlackmagicRaw Codec!"
-msgstr "¡Fallé en crear IBlackmagicRaw!"
+msgstr "¡Fallé en crear IBlackmagicRaw Codec!"
 
 #: core/brawImage.cpp:290
 msgid "Failed to create IBlackmagicRaw!"
@@ -22884,9 +22879,8 @@ msgid "SEND CMD: "
 msgstr ""
 
 #: core/slateImage.cpp:262
-#, fuzzy
 msgid "SEQ"
-msgstr "S"
+msgstr ""
 
 #: gui/mrvImageBrowser.cpp:1384
 msgid "SET EDL"
@@ -22983,16 +22977,15 @@ msgstr "Áreas Seguras"
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:95
-#, fuzzy
+#
 msgid "SafeArrayAccessData"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:91
-#, fuzzy
 msgid "SafeArrayCreate"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
@@ -23003,30 +22996,26 @@ msgstr "Áreas Seguras"
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:93
-#, fuzzy
 msgid "SafeArrayGetLBound"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:94
-#, fuzzy
 msgid "SafeArrayGetUBound"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:92
-#, fuzzy
 msgid "SafeArrayGetVartype"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #
 #: /Applications/Blackmagic RAW/Blackmagic RAW
 #: SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:96
-#, fuzzy
 msgid "SafeArrayUnaccessData"
-msgstr "Áreas Seguras"
+msgstr ""
 
 #: core/mrvACES.cpp:182 gui/mrvImageInformation.cpp:3937
 #: video/mrvGLLut3d.cpp:104
@@ -29905,9 +29894,8 @@ msgid "iccProfile"
 msgstr "Perfil"
 
 #: core/wandImage.cpp:221
-#, fuzzy
 msgid "icm"
-msgstr "comentarios"
+msgstr ""
 
 #: gui/mrvFLTKHandler.cpp:37
 msgid "icon"
@@ -32116,9 +32104,8 @@ msgid "rm"
 msgstr ""
 
 #: core/wandImage.cpp:129
-#, fuzzy
 msgid "rmd"
-msgstr "Fuente"
+msgstr ""
 
 #: standalone/mrvRoot.cpp:70
 msgid "root"
@@ -33550,9 +33537,9 @@ msgstr ""
 #
 #
 #: core/slateImage.cpp:208
-#, fuzzy
+#
 msgid "xc:black"
-msgstr "negro"
+msgstr ""
 
 #: core/mrvACES.cpp:46 gui/mrvFileRequester.cpp:96 gui/mrvFLTKHandler.cpp:53
 msgid "xml"
