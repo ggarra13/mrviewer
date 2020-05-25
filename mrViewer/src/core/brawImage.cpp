@@ -1123,7 +1123,6 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
-        return kDecodeOK;
 
         if ( _audio_packets.is_loop_end() )
         {
