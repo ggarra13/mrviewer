@@ -1063,7 +1063,6 @@ public:
     }
     inline void playback( const Playback p ) {
         _playback = p;
-        assert( p != CMedia::kStopped );
     }
 
     inline bool stopped() const {

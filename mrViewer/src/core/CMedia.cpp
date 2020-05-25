@@ -716,7 +716,7 @@ _audio_engine( NULL )
 
 int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
-    assert( stream != NULL );
+//    assert( stream != NULL );
     int64_t frame = AV_NOPTS_VALUE;
     if ( pkt.pts != AV_NOPTS_VALUE )
     {
