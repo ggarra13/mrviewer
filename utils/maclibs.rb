@@ -59,15 +59,33 @@ FileUtils.mkdir_p libdir
 appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
 
-output = `otool -l #{app}`
+@count = 0
 
-lines = output.split("\n")
-for line in lines
-  if line =~ /name\s+(.*\.dylib)/
-    lib = $1
-    if lib =~ /^\/usr\/lib\//
-      next
+def parse( app )
+  output = `otool -l #{app}`
+
+  lines = output.split("\n")
+  for line in lines
+    if line =~ /name\s+(.*\.dylib)/
+      lib = $1
+      if lib =~ /^\/usr\/lib\//
+        next
+      end
+      rpath = lib.sub(/@rpath/, "/usr/local/lib")
+      if rpath != lib and @count == 0
+        @count += 1
+        puts rpath
+        parse rpath
+        next
+      end
+      if @count == 1
+        @count = 0
+        next
+      end
+      puts lib
     end
-    puts lib
   end
 end
+
+
+parse app
