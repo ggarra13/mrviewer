@@ -7424,16 +7424,13 @@ int ImageView::handle(int event)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
-        Fl_Gl_Window::handle( event );
-        return 1;
+        return Fl_Gl_Window::handle( event );
     }
     case FL_ENTER:
         focus(this);
         window()->cursor(FL_CURSOR_CROSS);
 
-        Fl_Gl_Window::handle( event );
-
-        return 1;
+        return Fl_Gl_Window::handle( event );
     case FL_UNFOCUS:
         return Fl_Gl_Window::handle( event );
 
@@ -7533,11 +7530,18 @@ int ImageView::handle(int event)
     case FL_DND_LEAVE:
     case FL_DND_DRAG:
     case FL_DND_RELEASE:
+        Fl_Gl_Window::handle( event );
         return 1;
     case FL_PASTE:
-        LOG_INFO( "DND: " << Fl::event_text() );
-        Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, browser() );
-        return 1;
+        {
+            std::string text;
+            if ( Fl::event_text() ) text = Fl::event_text();
+            browser()->dnd_text( text );
+            LOG_INFO( "DND: " << text );
+            Fl_Gl_Window::handle( event );
+            Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, browser() );
+            return 1;
+        }
     default:
         return Fl_Gl_Window::handle( event );
     }

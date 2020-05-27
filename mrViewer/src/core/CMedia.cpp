@@ -468,7 +468,7 @@ _audio_engine( NULL )
         _initialize = true;
     }
 
-    crossdissolve( 5 );
+    //crossdissolve( 5 );
 }
 
 
