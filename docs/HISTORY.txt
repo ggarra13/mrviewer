@@ -1,3 +1,9 @@
+v5.4.8  - Bug fixed saving of opengl snapshots to avoid stretching of the
+	  images.
+	- Bug fixed saving of opengl snapshots to avoid baking ocio twice.
+	- Bug fixed loading of images/movies thru drag and drop failing
+	  sometimes.
+
 v5.4.7  - Updated documentation to reflect recent change in Linux audio.
 	- Bug fixed a regression creating a 5 frame fadeout effect of the
 	  image at the end.  Regression introduced in v5.4.6.

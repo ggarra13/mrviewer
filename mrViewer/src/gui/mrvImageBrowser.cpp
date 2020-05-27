@@ -3040,7 +3040,7 @@ void static_handle_dnd( mrv::ImageBrowser* b )
 void ImageBrowser::handle_dnd()
 {
     DBGM1( "handle_dnd" );
-    std::string filenames = Fl::event_text();
+    std::string filenames = _dnd_text;
 
     stringArray files;
 #if defined(_WIN32) || defined(_WIN64)
@@ -3365,9 +3365,14 @@ int ImageBrowser::handle( int event )
     case FL_DND_RELEASE:
         return 1;
     case FL_PASTE:
-        LOG_INFO( "DND: " << Fl::event_text() );
-        Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, this );
-        return 1;
+        {
+            std::string text;
+            if ( Fl::event_text() ) text = Fl::event_text();
+            dnd_text( text );
+            LOG_INFO( "DND: " << text );
+            Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, this );
+            return 1;
+        }
     case FL_PUSH:
         return mousePush( Fl::event_x(), Fl::event_y() );
     case FL_DRAG:
