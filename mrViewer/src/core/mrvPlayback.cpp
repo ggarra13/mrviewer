@@ -1007,6 +1007,7 @@ void subtitle_thread( PlaybackData* data )
 //
 void video_thread( PlaybackData* data )
 {
+
     assert( data != NULL );
 
     ViewerUI*     uiMain   = data->uiMain;

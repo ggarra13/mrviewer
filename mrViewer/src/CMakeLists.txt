@@ -496,7 +496,7 @@ ENDIF()
 
 IF(UNIX)
 	IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
+	  EXECUTE_PROCESS( COMMAND "dos2unix" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
 	  FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
 	    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	ELSE()

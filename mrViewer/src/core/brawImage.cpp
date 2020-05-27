@@ -182,7 +182,7 @@ namespace mrv {
             }
     };
 
-    bool brawImage::init = true;
+    bool brawImage::init = false;
     IBlackmagicRawFactory* brawImage::factory = nullptr;
 
     brawImage::brawImage() :
@@ -853,23 +853,83 @@ namespace mrv {
 
         HRESULT result = S_OK;
 
+        IBlackmagicRawFactory* factory = nullptr;
+        IBlackmagicRaw* codec = nullptr;
+        IBlackmagicRawClip* clip = nullptr;
+        IBlackmagicRawJob* readJob = nullptr;
+
+
+        std::string libpath = mrv::Preferences::root;
+        libpath += "/lib";
+
+#ifdef WIN32
+        _bstr_t clib( libpath.c_str() );
+#elif LINUX
+        const char* clib = libpath.c_str();
+#elif OSX
+        CFStringRef clib = CFStringCreateWithCString( NULL,
+                                                      libpath.c_str(),
+                                                      kCFStringEncodingUTF8 );
+#endif
+
+        factory = CreateBlackmagicRawFactoryInstanceFromPath( clib );
+        if (factory == nullptr)
+        {
+#if defined(LINUX) || defined(_WIN64) || defined(OSX)
+            LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
+#endif
+            return false;
+        }
+
+
+
+
+        result = factory->CreateCodec(&codec);
+        if (result != S_OK)
+        {
+            LOG_ERROR( _("Failed to create IBlackmagicRaw Codec for frame ")
+                       << frame << "!" );
+            return false;
+        }
+
+#ifdef WIN32
+        _bstr_t filename( file );
+#elif LINUX
+        const char* filename = file;
+#elif OSX
+        const char* file = filename();
+        if ( file == NULL ) return false;
+        CFStringRef filename = CFStringCreateWithCString( NULL,
+                                                          file,
+                                                          kCFStringEncodingUTF8 );
+#endif
+
+        result = codec->OpenClip(filename, &clip);
+        if (result != S_OK)
+        {
+            LOG_ERROR( "Faied to open clip!" );
+            return false;
+        }
+
+
+
         CameraCodecCallback callback( this, canvas, frame, s );
         result = codec->SetCallback(&callback);
-        if (result != S_OK)
+        if ( result != S_OK )
         {
             LOG_ERROR( "Failed to set IBlackmagicRawCallback!" );
             return false;
         }
 
         result = clip->CreateJobReadFrame(frame, &readJob);
-        if (result != S_OK)
+        if ( result != S_OK )
         {
             LOG_ERROR( "Failed to create IBlackmagicRawJob!" );
             return false;
         }
 
         result = readJob->Submit();
-        if (result != S_OK)
+        if ( result != S_OK )
         {
             // submit has failed, the ReadComplete callback won't be called,
             // release the job here instead
@@ -879,6 +939,11 @@ namespace mrv {
         }
 
         codec->FlushJobs();
+
+
+        result = clip->QueryInterface(IID_IBlackmagicRawClipAudio,
+                                      (void**)&audio);
+        if ( result != S_OK ) return false;
 
 
         IBlackmagicRawFrame* f = callback.GetFrame();
@@ -899,6 +964,17 @@ namespace mrv {
         }
 
         parse_metadata(frame, frameMetadataIterator);
+
+
+        clip->Release();
+        codec->Release();
+        factory->Release();
+
+
+#ifdef OSX
+        CFRelease( filename );
+        CFRelease( clib );
+#endif
 
 
         return true;
