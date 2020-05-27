@@ -242,6 +242,8 @@ public:
     void exchange( int oldsel, int sel );
 
 public:
+    void dnd_text( const std::string text ) { _dnd_text = text; }
+    
     //! Create a tree element from a media
     mrv::Element* new_item(mrv::media img);
 
@@ -303,6 +305,7 @@ protected:
     mrv::ReelList  _reels;
     mrv::Choice*  _reel_choice;
     int           _value;
+    std::string   _dnd_text;
 
     CMedia::Mutex   _mtx;
     Fl_Tree_Item*    dragging;

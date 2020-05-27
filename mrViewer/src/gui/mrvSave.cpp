@@ -369,7 +369,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
                 glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
 
-                // Flip image vertically
+                /* Flip image vertically */
+
                 unsigned w4 = w*4;
                 size_t line = w4*sizeof(float);
                 unsigned lastline = h*w4;
