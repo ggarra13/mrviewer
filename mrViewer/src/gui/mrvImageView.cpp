@@ -7424,13 +7424,14 @@ int ImageView::handle(int event)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
-        return Fl_Gl_Window::handle( event );
+        Fl_Gl_Window::handle( event );
+        return 1;
     }
     case FL_ENTER:
         focus(this);
         window()->cursor(FL_CURSOR_CROSS);
-
-        return Fl_Gl_Window::handle( event );
+        Fl_Gl_Window::handle( event );
+        return 1;
     case FL_UNFOCUS:
         return Fl_Gl_Window::handle( event );
 

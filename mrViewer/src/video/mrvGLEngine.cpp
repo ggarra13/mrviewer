@@ -1109,7 +1109,7 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
-#if 1
+#ifdef OSX
     gl_font( FL_HELVETICA, 12 );
     glLoadIdentity();
     glRasterPos2i( x, y );
