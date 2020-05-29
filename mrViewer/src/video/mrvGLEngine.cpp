@@ -1109,6 +1109,9 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
+#if 1
+    gl_draw( s, x, y );
+#else
     if (! sCharset ) return;
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
@@ -1122,6 +1125,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
     glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
 
     glPopAttrib();
+#endif
 }
 
 void GLEngine::draw_cursor( const double x, const double y,

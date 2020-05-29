@@ -50,18 +50,20 @@ if kernel !~ /Darwin/
 end
 
 dest = "#{build}/#@debug/bin/mrViewer.app/Contents"
-FileUtils.mkdir_p dest
+FileUtils.mkdir_p dest, :mode => 0755
 rsrcs = dest + "/Resources"
-FileUtils.mkdir_p rsrcs
-libdir = rsrcs + "/lib"
-FileUtils.mkdir_p libdir
+FileUtils.mkdir_p rsrcs, :mode => 0755
+@libdir = rsrcs + "/lib"
+FileUtils.mkdir_p @libdir, :mode => 0755
 
 appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
 
+@path = ''
 @count = 0
 
 def parse( app )
+  @path += ":" + app
   output = `otool -l #{app}`
 
   lines = output.split("\n")
@@ -72,6 +74,9 @@ def parse( app )
         next
       end
       rpath = lib.sub(/@rpath/, "/usr/local/lib")
+      if rpath !~ /\//
+        rpath = "/usr/local/lib/" + rpath
+      end
       if rpath != lib and @count == 0
         @count += 1
         puts rpath
@@ -82,7 +87,13 @@ def parse( app )
         @count = 0
         next
       end
-      puts lib
+      puts "cp_r #{lib} #@libdir"
+      FileUtils.cp_r lib, @libdir
+      lib =~ /\/([\w\d\-_\.]+\.dylib)/
+      libname = $1
+      newlib = "#@libdir/#{libname}"
+      FileUtils.chmod 0755, newlib
+      `install_name_tool -change "#{lib}" "@rpath/#{libname}" "#{newlib}"`
     end
   end
 end
