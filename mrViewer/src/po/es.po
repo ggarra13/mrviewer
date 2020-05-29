@@ -98,9 +98,9 @@
 #: gui/mrvPreferences.cpp:1803 gui/mrvPreferences.cpp:1804
 #: gui/mrvPreferences.cpp:2217 gui/mrvSave.cpp:276 gui/mrvTimecode.cpp:373
 #: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:332 gui/mrvVersion.cpp:343
-#: video/mrvGLEngine.cpp:3834 video/mrvGLEngine.cpp:3892
-#: video/mrvGLEngine.cpp:3916 video/mrvGLEngine.cpp:4156
-#: video/mrvGLEngine.cpp:4157 video/mrvGLShader.cpp:64
+#: video/mrvGLEngine.cpp:3843 video/mrvGLEngine.cpp:3901
+#: video/mrvGLEngine.cpp:3925 video/mrvGLEngine.cpp:4165
+#: video/mrvGLEngine.cpp:4166 video/mrvGLShader.cpp:64
 #: video/mrvGLLut3d.cpp:1178 video/mrvGLLut3d.cpp:1223
 #: video/mrvGLLut3d.cpp:1402 video/mrvGLLut3d.cpp:1403 video/mrvGLShape.cpp:102
 #: video/mrvGLShape.cpp:106 video/mrvGLShape.cpp:134 video/mrvGLShape.cpp:152
@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-05-29 14:36-0300\n"
+"POT-Creation-Date: 2020-05-29 14:45-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -134,8 +134,8 @@ msgstr ""
 msgid "\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3234 video/mrvGLEngine.cpp:3235
-#: video/mrvGLEngine.cpp:3242 video/mrvGLEngine.cpp:3243
+#: video/mrvGLEngine.cpp:3243 video/mrvGLEngine.cpp:3244
+#: video/mrvGLEngine.cpp:3251 video/mrvGLEngine.cpp:3252
 msgid "\t\t"
 msgstr ""
 
@@ -313,14 +313,14 @@ msgstr ""
 #: video/mrvGLEngine.cpp:304 video/mrvGLEngine.cpp:328
 #: video/mrvGLEngine.cpp:356 video/mrvGLEngine.cpp:375
 #: video/mrvGLEngine.cpp:377 video/mrvGLEngine.cpp:476
-#: video/mrvGLEngine.cpp:1038 video/mrvGLEngine.cpp:1117
-#: video/mrvGLEngine.cpp:1137 video/mrvGLEngine.cpp:1167
-#: video/mrvGLEngine.cpp:1291 video/mrvGLEngine.cpp:1413
-#: video/mrvGLEngine.cpp:1457 video/mrvGLEngine.cpp:1573
-#: video/mrvGLEngine.cpp:1684 video/mrvGLEngine.cpp:1757
-#: video/mrvGLEngine.cpp:2485 video/mrvGLEngine.cpp:2529
-#: video/mrvGLEngine.cpp:2597 video/mrvGLEngine.cpp:4125
-#: video/mrvGLEngine.cpp:4163 video/mrvGLQuad.cpp:827 video/mrvGLLut3d.cpp:1012
+#: video/mrvGLEngine.cpp:1038 video/mrvGLEngine.cpp:1126
+#: video/mrvGLEngine.cpp:1146 video/mrvGLEngine.cpp:1176
+#: video/mrvGLEngine.cpp:1300 video/mrvGLEngine.cpp:1422
+#: video/mrvGLEngine.cpp:1466 video/mrvGLEngine.cpp:1582
+#: video/mrvGLEngine.cpp:1693 video/mrvGLEngine.cpp:1766
+#: video/mrvGLEngine.cpp:2494 video/mrvGLEngine.cpp:2538
+#: video/mrvGLEngine.cpp:2606 video/mrvGLEngine.cpp:4134
+#: video/mrvGLEngine.cpp:4172 video/mrvGLQuad.cpp:827 video/mrvGLLut3d.cpp:1012
 #: video/mrvGLLut3d.cpp:1019 standalone/mrvCommandLine.cpp:117
 #: standalone/mrvCommandLine.cpp:616
 #, c-format
@@ -356,7 +356,7 @@ msgstr ""
 msgid " \tc None"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3835
+#: video/mrvGLEngine.cpp:3844
 msgid ""
 " \n"
 " /** \n"
@@ -1792,7 +1792,7 @@ msgstr ""
 msgid "      ^.Q O P /.(._.:.<.[.}.H y |.1.2.I         "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3364
+#: video/mrvGLEngine.cpp:3373
 #, c-format
 msgid "      for (uint i = 0; i < %d; i++)\n"
 msgstr ""
@@ -2117,22 +2117,22 @@ msgstr ""
 msgid "    chhhhhhhhhhhhh  "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3333
+#: video/mrvGLEngine.cpp:3342
 #, c-format
 msgid "    float avg = %f * float(total_avg) / float(frame_num);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3332
+#: video/mrvGLEngine.cpp:3341
 #, c-format
 msgid "    float peak = %f * float(total_max) / float(frame_num);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3335
+#: video/mrvGLEngine.cpp:3344
 #, c-format
 msgid "    sig_avg  = max(%f, avg);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3334
+#: video/mrvGLEngine.cpp:3343
 msgid "    sig_peak = max(1.0, peak);\n"
 msgstr ""
 
@@ -2871,12 +2871,12 @@ msgstr ""
 msgid "  dts: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3382
+#: video/mrvGLEngine.cpp:3391
 #, c-format
 msgid "  frame_num = min(frame_num + 1, %d);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3359
+#: video/mrvGLEngine.cpp:3368
 #, c-format
 msgid "  if (abs(diff) > frame_num * %d) {\n"
 msgstr ""
@@ -2894,7 +2894,7 @@ msgstr ""
 msgid "  r+s+t+u+v+w+x+y+z+A+B+C+D+E+F+G+H+I+  "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3375
+#: video/mrvGLEngine.cpp:3384
 #, c-format
 msgid "  uint next = (frame_idx + 1) %% %d;\n"
 msgstr ""
@@ -3048,7 +3048,7 @@ msgstr ""
 msgid " (ext: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3236 video/mrvGLEngine.cpp:3244
+#: video/mrvGLEngine.cpp:3245 video/mrvGLEngine.cpp:3253
 msgid " ); "
 msgstr ""
 
@@ -3375,11 +3375,11 @@ msgstr ""
 msgid " <----"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3232 video/mrvGLEngine.cpp:3240
+#: video/mrvGLEngine.cpp:3241 video/mrvGLEngine.cpp:3249
 msgid " = mat3( "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3223
+#: video/mrvGLEngine.cpp:3232
 msgid " = vec3( "
 msgstr ""
 
@@ -4079,7 +4079,7 @@ msgstr "Detener Playback."
 msgid " vs. "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2597
+#: video/mrvGLEngine.cpp:2606
 msgid " w,h "
 msgstr ""
 
@@ -4097,7 +4097,7 @@ msgstr " falló con "
 msgid " x "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3917
+#: video/mrvGLEngine.cpp:3926
 msgid ""
 " }\n"
 "       //\n"
@@ -4301,7 +4301,7 @@ msgstr ""
 msgid "!!ARBfp1.0"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2624
+#: video/mrvGLEngine.cpp:2633
 msgid ""
 "!!ARBfp1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
@@ -4599,7 +4599,7 @@ msgid ""
 "# 205 instructions, 8 R-regs\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2920
+#: video/mrvGLEngine.cpp:2929
 msgid ""
 "!!FP1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
@@ -7248,7 +7248,7 @@ msgstr ""
 msgid "): "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3224
+#: video/mrvGLEngine.cpp:3233
 msgid ");"
 msgstr ""
 
@@ -7770,7 +7770,7 @@ msgstr ""
 #: core/iffImage.cpp:538 core/iffImage.cpp:539 core/mapImage.cpp:226
 #: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:387
 #: gui/mrvFileRequester.cpp:388 gui/mrvFileRequester.cpp:833
-#: video/mrvGLEngine.cpp:3233 video/mrvGLEngine.cpp:3241
+#: video/mrvGLEngine.cpp:3242 video/mrvGLEngine.cpp:3250
 msgid ","
 msgstr ""
 
@@ -7842,14 +7842,14 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:1147 core/exrImage.cpp:556 core/stubImage.cpp:991
 #: core/rawImage.cpp:328 gui/mrvColorInfo.cpp:539 gui/mrvColorInfo.cpp:541
-#: gui/mrvVersion.cpp:598 video/mrvGLEngine.cpp:3223 video/mrvGLEngine.cpp:3224
-#: video/mrvGLEngine.cpp:3232 video/mrvGLEngine.cpp:3233
-#: video/mrvGLEngine.cpp:3234 video/mrvGLEngine.cpp:3235
-#: video/mrvGLEngine.cpp:3236 video/mrvGLEngine.cpp:3240
+#: gui/mrvVersion.cpp:598 video/mrvGLEngine.cpp:3232 video/mrvGLEngine.cpp:3233
 #: video/mrvGLEngine.cpp:3241 video/mrvGLEngine.cpp:3242
 #: video/mrvGLEngine.cpp:3243 video/mrvGLEngine.cpp:3244
-#: video/mrvGLEngine.cpp:4047 video/mrvGLEngine.cpp:4051
-#: video/mrvGLEngine.cpp:4055 video/mrvGLEngine.cpp:4058
+#: video/mrvGLEngine.cpp:3245 video/mrvGLEngine.cpp:3249
+#: video/mrvGLEngine.cpp:3250 video/mrvGLEngine.cpp:3251
+#: video/mrvGLEngine.cpp:3252 video/mrvGLEngine.cpp:3253
+#: video/mrvGLEngine.cpp:4056 video/mrvGLEngine.cpp:4060
+#: video/mrvGLEngine.cpp:4064 video/mrvGLEngine.cpp:4067
 #: standalone/main.cpp:357 standalone/main.cpp:358 standalone/main.cpp:395
 #: standalone/main.cpp:396 standalone/main.cpp:397 standalone/main.cpp:398
 #: standalone/main.cpp:399 standalone/main.cpp:400 standalone/main.cpp:401
@@ -9539,19 +9539,19 @@ msgstr ""
 msgid "/.filmaura/mrViewer.lock.prefs"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3426
+#: video/mrvGLEngine.cpp:3435
 msgid "// HDR tone mapping\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3395
+#: video/mrvGLEngine.cpp:3404
 msgid "// apply inverse ootf\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3686
+#: video/mrvGLEngine.cpp:3695
 msgid "// apply ootf\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3731
+#: video/mrvGLEngine.cpp:3740
 msgid "// color mapping //\n"
 msgstr ""
 
@@ -9559,15 +9559,15 @@ msgstr ""
 msgid "// constant luminance conversion\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3613
+#: video/mrvGLEngine.cpp:3622
 msgid "// delinearize\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3530
+#: video/mrvGLEngine.cpp:3539
 msgid "// linearize\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3730 video/mrvGLEngine.cpp:3732
+#: video/mrvGLEngine.cpp:3739 video/mrvGLEngine.cpp:3741
 msgid "///////////////////\n"
 msgstr ""
 
@@ -14017,7 +14017,7 @@ msgstr "Byte"
 #: gui/mrvPreferences.cpp:1526 gui/mrvPreferences.cpp:1721
 #: gui/mrvPreferences.cpp:1722 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:51 video/mrvGLEngine.cpp:58
-#: video/mrvGLEngine.cpp:3827 video/mrvGLEngine.cpp:3828
+#: video/mrvGLEngine.cpp:3836 video/mrvGLEngine.cpp:3837
 #: video/mrvCSPUtils.cpp:38 video/mrvGLLut3d.cpp:1398 video/mrvGLLut3d.cpp:1399
 msgid "C"
 msgstr ""
@@ -19672,11 +19672,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:4131
+#: video/mrvGLEngine.cpp:4140
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4137
+#: video/mrvGLEngine.cpp:4146
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -19764,7 +19764,7 @@ msgstr "Graduación de Luminosidad"
 msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
-#: video/mrvGLEngine.cpp:4065
+#: video/mrvGLEngine.cpp:4074
 msgid "Luminance: "
 msgstr "Luminosidad"
 
@@ -20460,7 +20460,7 @@ msgstr "Barras de Color NTSC HDTV"
 msgid "NTSC Video"
 msgstr "Vídeo NTSC"
 
-#: video/mrvGLEngine.cpp:4133
+#: video/mrvGLEngine.cpp:4142
 msgid "NVShader builtin"
 msgstr ""
 
@@ -20612,7 +20612,7 @@ msgstr "Sin imagen de frente para cambiar"
 msgid "No image to add shape to"
 msgstr "Ninguna imagen de fondo para cambiar"
 
-#: video/mrvGLEngine.cpp:3823
+#: video/mrvGLEngine.cpp:3832
 msgid "No image to proceed"
 msgstr "Ninguna imagen fue decodificada"
 
@@ -21763,7 +21763,7 @@ msgstr "Reproducción de cuadro de audio "
 msgid "Port"
 msgstr "Puerto"
 
-#: video/mrvGLEngine.cpp:1665
+#: video/mrvGLEngine.cpp:1674
 #, c-format
 msgid "Pos: %d, %d"
 msgstr ""
@@ -21867,7 +21867,7 @@ msgstr "Imagen Previa"
 msgid "Previous Image Version"
 msgstr "Versión Previa de la Imagen"
 
-#: video/mrvGLEngine.cpp:4044
+#: video/mrvGLEngine.cpp:4053
 msgid "Primaries:"
 msgstr ""
 
@@ -23165,7 +23165,7 @@ msgstr ""
 "Escala de las imágenes grabadas.  Una escala menor permite grabar más "
 "imagenes a la expensa de pixelado de la imagen."
 
-#: video/mrvGLEngine.cpp:1659
+#: video/mrvGLEngine.cpp:1668
 #, c-format
 msgid "Scale: %g, %g"
 msgstr ""
@@ -25082,7 +25082,7 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLEngine.cpp:4153
+#: video/mrvGLEngine.cpp:4162
 msgid "Unknown error in loadBuiltinFragShader"
 msgstr ""
 
@@ -25147,7 +25147,7 @@ msgstr "Formato de render de pixel desconocido"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Tipo de dato desconocido para mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2610
+#: video/mrvGLEngine.cpp:2619
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -27682,7 +27682,7 @@ msgstr ""
 msgid "ass"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3308
+#: video/mrvGLEngine.cpp:3317
 #, c-format
 msgid "atomicAdd(wg_sum, uint(sig * %f));\n"
 msgstr ""
@@ -27960,7 +27960,7 @@ msgstr "negro"
 msgid "blend_mode"
 msgstr "Modo de Mezcla"
 
-#: video/mrvGLEngine.cpp:4053
+#: video/mrvGLEngine.cpp:4062
 msgid "blue "
 msgstr ""
 
@@ -28004,8 +28004,8 @@ msgstr ""
 msgid "buffersink"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4026 video/mrvGLEngine.cpp:4118
-#: video/mrvGLEngine.cpp:4132 video/mrvGLEngine.cpp:4140
+#: video/mrvGLEngine.cpp:4035 video/mrvGLEngine.cpp:4127
+#: video/mrvGLEngine.cpp:4141 video/mrvGLEngine.cpp:4149
 msgid "builtin"
 msgstr ""
 
@@ -28130,40 +28130,40 @@ msgstr ""
 msgid "c.\tc #FEF2A6"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3694
+#: video/mrvGLEngine.cpp:3703
 #, c-format
 msgid "c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3396 video/mrvGLEngine.cpp:3570
-#: video/mrvGLEngine.cpp:3615 video/mrvGLEngine.cpp:3687
-#: video/mrvGLEngine.cpp:3761 video/mrvGLEngine.cpp:3793
+#: video/mrvGLEngine.cpp:3405 video/mrvGLEngine.cpp:3579
+#: video/mrvGLEngine.cpp:3624 video/mrvGLEngine.cpp:3696
+#: video/mrvGLEngine.cpp:3770 video/mrvGLEngine.cpp:3802
 #, c-format
 msgid "c.rgb *= vec3(%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3401 video/mrvGLEngine.cpp:3418
-#: video/mrvGLEngine.cpp:3602 video/mrvGLEngine.cpp:3642
-#: video/mrvGLEngine.cpp:3713
+#: video/mrvGLEngine.cpp:3410 video/mrvGLEngine.cpp:3427
+#: video/mrvGLEngine.cpp:3611 video/mrvGLEngine.cpp:3651
+#: video/mrvGLEngine.cpp:3722
 #, c-format
 msgid "c.rgb *= vec3(1.0/%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3644
+#: video/mrvGLEngine.cpp:3653
 #, c-format
 msgid ""
 "c.rgb = (vec3(%f) + vec3(%f) * c.rgb) \n"
 "             / (vec3(1.0) + vec3(%f) * c.rgb);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3564
+#: video/mrvGLEngine.cpp:3573
 #, c-format
 msgid ""
 "c.rgb = max(c.rgb - vec3(%f), vec3(0.0)) \n"
 "             / (vec3(%f) - vec3(%f) * c.rgb);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3591
+#: video/mrvGLEngine.cpp:3600
 #, c-format
 msgid ""
 "c.rgb = mix((c.rgb - vec3(%f)) * vec3(1.0/%f),      \n"
@@ -28172,7 +28172,7 @@ msgid ""
 "    lessThanEqual(vec3(%f), c.rgb));                    \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3579
+#: video/mrvGLEngine.cpp:3588
 #, c-format
 msgid ""
 "c.rgb = mix((c.rgb - vec3(0.125)) * vec3(1.0/5.6), \n"
@@ -28181,7 +28181,7 @@ msgid ""
 "    lessThanEqual(vec3(0.181), c.rgb));                \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3667
+#: video/mrvGLEngine.cpp:3676
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(%f) * c.rgb + vec3(%f),                \n"
@@ -28190,7 +28190,7 @@ msgid ""
 "                lessThanEqual(vec3(0.0), c.rgb));           \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3650
+#: video/mrvGLEngine.cpp:3659
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(0.5) * sqrt(c.rgb),\n"
@@ -28198,7 +28198,7 @@ msgid ""
 "                lessThan(vec3(1.0), c.rgb));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3573
+#: video/mrvGLEngine.cpp:3582
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(4.0) * c.rgb * c.rgb,\n"
@@ -28206,7 +28206,7 @@ msgid ""
 "                lessThan(vec3(0.5), c.rgb));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3656
+#: video/mrvGLEngine.cpp:3665
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(5.6) * c.rgb + vec3(0.125),   \n"
@@ -28215,24 +28215,24 @@ msgid ""
 "                lessThanEqual(vec3(0.01), c.rgb)); \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3643 video/mrvGLEngine.cpp:3647
+#: video/mrvGLEngine.cpp:3652 video/mrvGLEngine.cpp:3656
 #, c-format
 msgid "c.rgb = pow(c.rgb, vec3(%f));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3563 video/mrvGLEngine.cpp:3567
+#: video/mrvGLEngine.cpp:3572 video/mrvGLEngine.cpp:3576
 #, c-format
 msgid "c.rgb = pow(c.rgb, vec3(1.0/%f));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3586
+#: video/mrvGLEngine.cpp:3595
 #, c-format
 msgid ""
 "c.rgb = pow(vec3(10.0), (c.rgb - vec3(%f)) * vec3(1.0/%f))\n"
 "            - vec3(%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3663
+#: video/mrvGLEngine.cpp:3672
 #, c-format
 msgid "c.rgb = vec3(%f) * log(c.rgb + vec3(%f)) + vec3(%f);\n"
 msgstr ""
@@ -28342,11 +28342,11 @@ msgstr "Cliente"
 msgid "cmm"
 msgstr "comentarios"
 
-#: video/mrvGLEngine.cpp:3772
+#: video/mrvGLEngine.cpp:3781
 msgid "cms_matrix"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3456
+#: video/mrvGLEngine.cpp:3465
 #, c-format
 msgid "coeff = pow(coeff, %f);\n"
 msgstr ""
@@ -28432,12 +28432,12 @@ msgstr ""
 msgid "conout$"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3500
+#: video/mrvGLEngine.cpp:3509
 #, c-format
 msgid "const float cutoff = 0.05, gamma = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3468
+#: video/mrvGLEngine.cpp:3477
 #, c-format
 msgid "const float j = %f;\n"
 msgstr ""
@@ -28727,7 +28727,7 @@ msgstr ""
 msgid "draw"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1903
+#: video/mrvGLEngine.cpp:1912
 msgid "draw image "
 msgstr "No pude dibujar imagen"
 
@@ -28747,7 +28747,7 @@ msgstr ""
 msgid "dsc"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3741
+#: video/mrvGLEngine.cpp:3750
 msgid "dst_luma"
 msgstr ""
 
@@ -29265,44 +29265,44 @@ msgstr "coma flotante"
 msgid "float (32-bits per channel)"
 msgstr "coma flotante (32-bits por canal)"
 
-#: video/mrvGLEngine.cpp:3471
+#: video/mrvGLEngine.cpp:3480
 msgid "float a = -j*j * (sig_peak - 1.0) / (j*j - 2.0*j + sig_peak);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3472
+#: video/mrvGLEngine.cpp:3481
 msgid ""
 "float b = (j*j - 2.0*j*sig_peak + sig_peak) / max(1e-6, sig_peak - 1.0);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3455
+#: video/mrvGLEngine.cpp:3464
 #, c-format
 msgid "float coeff = max(sig - %f, 1e-6) / max(sig, 1e-6);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3490
+#: video/mrvGLEngine.cpp:3499
 msgid "float hable(float x) {\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3474
+#: video/mrvGLEngine.cpp:3483
 msgid "float scale = (b*b + 2.0*b*j + j*j) / (b-a);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3483
+#: video/mrvGLEngine.cpp:3492
 #, c-format
 msgid "float scale = (sig_peak + %f) / sig_peak;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3434
+#: video/mrvGLEngine.cpp:3443
 #, c-format
 msgid "float sig_avg = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3433
+#: video/mrvGLEngine.cpp:3442
 #, c-format
 msgid "float sig_peak = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3445
+#: video/mrvGLEngine.cpp:3454
 #, c-format
 msgid "float slope = min(1.0, %f / sig_avg);\n"
 msgstr ""
@@ -29537,7 +29537,7 @@ msgstr ""
 msgid "glsphr"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4049
+#: video/mrvGLEngine.cpp:4058
 msgid "green "
 msgstr "Verde"
 
@@ -29895,7 +29895,7 @@ msgstr ""
 msgid "icon"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3467
+#: video/mrvGLEngine.cpp:3476
 msgid "if (sig_peak > (1.0 + 1e-6)) {\n"
 msgstr ""
 
@@ -30198,7 +30198,7 @@ msgstr ""
 msgid "k25"
 msgstr "25"
 
-#: video/mrvGLEngine.cpp:4138
+#: video/mrvGLEngine.cpp:4147
 msgid "kARBFP1 builtin shader"
 msgstr ""
 
@@ -30597,11 +30597,11 @@ msgstr ""
 msgid "mask_value"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4068
+#: video/mrvGLEngine.cpp:4077
 msgid "max/MP_REF_WHITE: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4067
+#: video/mrvGLEngine.cpp:4076
 msgid "max: "
 msgstr ""
 
@@ -30728,7 +30728,7 @@ msgstr "Imagen de Sombras de mental ray"
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de Profundidad en Z de mental ray"
 
-#: video/mrvGLEngine.cpp:4066
+#: video/mrvGLEngine.cpp:4075
 msgid "min: "
 msgstr ""
 
@@ -32023,7 +32023,7 @@ msgstr ""
 msgid "recv() failed"
 msgstr "recv() falló"
 
-#: video/mrvGLEngine.cpp:4045
+#: video/mrvGLEngine.cpp:4054
 msgid "red "
 msgstr ""
 
@@ -32080,7 +32080,7 @@ msgstr "Resolución"
 msgid "resolution not found"
 msgstr " no encontrado"
 
-#: video/mrvGLEngine.cpp:3491
+#: video/mrvGLEngine.cpp:3500
 #, c-format
 msgid "return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n"
 msgstr ""
@@ -32416,27 +32416,27 @@ msgstr ""
 msgid "sidecar"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3440
+#: video/mrvGLEngine.cpp:3449
 #, c-format
 msgid "sig *= %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3463
+#: video/mrvGLEngine.cpp:3472
 #, c-format
 msgid "sig = %f * sig;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3508
+#: video/mrvGLEngine.cpp:3517
 #, c-format
 msgid "sig = %f / sig_peak * sig;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3482
+#: video/mrvGLEngine.cpp:3491
 #, c-format
 msgid "sig = sig / (sig + %f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3441
+#: video/mrvGLEngine.cpp:3450
 #, c-format
 msgid "sig_peak *= %f;\n"
 msgstr ""
@@ -32479,7 +32479,7 @@ msgstr ""
 msgid "sr2"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3739
+#: video/mrvGLEngine.cpp:3748
 msgid "src_luma"
 msgstr ""
 
@@ -32966,11 +32966,11 @@ msgstr ""
 msgid "und"
 msgstr "ind"
 
-#: video/mrvGLEngine.cpp:3232 video/mrvGLEngine.cpp:3240
+#: video/mrvGLEngine.cpp:3241 video/mrvGLEngine.cpp:3249
 msgid "uniform mat3 "
 msgstr "formato "
 
-#: video/mrvGLEngine.cpp:3223
+#: video/mrvGLEngine.cpp:3232
 msgid "uniform vec3 "
 msgstr ""
 
@@ -33172,7 +33172,7 @@ msgstr "discapacitado visual"
 msgid "vob"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3894
+#: video/mrvGLEngine.cpp:3903
 msgid ""
 "void main() \n"
 "{ \n"
@@ -33338,7 +33338,7 @@ msgstr ""
 msgid "webm"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4057
+#: video/mrvGLEngine.cpp:4066
 msgid "white "
 msgstr "Blanco"
 
@@ -34149,11 +34149,11 @@ msgstr ""
 msgid "}\tc #FFD48E"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3476 video/mrvGLEngine.cpp:3493
+#: video/mrvGLEngine.cpp:3485 video/mrvGLEngine.cpp:3502
 msgid "}\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3807
+#: video/mrvGLEngine.cpp:3816
 msgid ""
 "}\n"
 "else {\n"

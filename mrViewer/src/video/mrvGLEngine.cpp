@@ -1110,7 +1110,16 @@ void GLEngine::draw_title( const float size,
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
 #if 1
-    gl_draw( s, x, y );
+    gl_font( FL_HELVETICA, 12 );
+    glLoadIdentity();
+    glRasterPos2i( x, y );
+
+    glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
+    glDisable( GL_DEPTH_TEST );
+
+    gl_draw( s );
+
+    glPopAttrib();
 #else
     if (! sCharset ) return;
 
