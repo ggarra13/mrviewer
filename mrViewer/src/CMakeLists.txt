@@ -636,17 +636,14 @@ ELSEIF ( APPLE )
 
     configure_file(
 	../../etc/OSX/Info.plist.in
-	${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Info.plist)
+	${PROJECT_BINARY_DIR}/Info.plist)
 
-    set(CPACK_BUNDLE_NAME mrViewer-v${SHORTVERSION} )
-    set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Info.plist )
-    FILE( COPY ../../etc/OSX/mrViewer.icns
-	  DESTINATION ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources )
-    set(CPACK_PACKAGE_ICON ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources/mrViewer.icns )
-    set(CPACK_BUNDLE_ICON  ${PROJECT_BINARY_DIR}/bin/${PROJECT_NAME}.app/Contents/Resources/mrViewer.icns )
+    set(CPACK_PACKAGE_ICON ../../etc/OSX/mrViewer.icns )
+    set(CPACK_BUNDLE_NAME ${INSTALL_NAME} )
+    set(CPACK_BUNDLE_ICON ../../etc/OSX/mrViewer.icns )
+    set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/Info.plist )
     set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
 
-    set( CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK OFF )
 
 ELSEIF (UNIX)
 
