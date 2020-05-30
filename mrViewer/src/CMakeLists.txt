@@ -97,7 +97,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ENDIF()
 
   ELSE(APPLE)
-    ADD_DEFINTIONS( -DMR_SSE )
+    ADD_DEFINITIONS( -DMR_SSE )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
     # Media libraries for Linux
@@ -496,7 +496,7 @@ ENDIF()
 
 IF(UNIX)
 	IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
+	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
 	  FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
 	    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	ELSE()

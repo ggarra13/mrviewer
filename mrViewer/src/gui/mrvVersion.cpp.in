@@ -33,6 +33,11 @@
 #include <string.h>
 #endif
 
+#ifdef OSX
+#include <sys/sysctl.h>
+#endif
+
+
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -758,6 +763,17 @@ void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& physMemUsed,
                           uint64_t& physMemUsedByMe)
 {
+    static const char* kModule = "mem";
+
+    int mib[2] = { CTL_HW, HW_MEMSIZE };
+    u_int namelen = sizeof(mib) / sizeof(mib[0]);
+    size_t len = sizeof(totalPhysMem);
+
+    if (sysctl(mib, namelen, &totalPhysMem, &len, NULL, 0) < 0)
+    {
+        LOG_ERROR( _("sysctl failed!") );
+    }
+
     totalVirtualMem = 8192;
     virtualMemUsed = 0;
     virtualMemUsedByMe = 0;

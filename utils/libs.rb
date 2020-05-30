@@ -186,23 +186,26 @@ if kernel !~ /MINGW.*/
   end
 
   Dir.chdir( build  )
-  libs = Dir.glob( "#{@debug}/lib/*" )
+  libs = Dir.glob( "#{dest}/lib/*" )
   FileUtils.rm_f( libs )
 
-  exes = Dir.glob( "#{@debug}/bin/*" )
+  exes = Dir.glob( "#{dest}/bin/*" )
 
   files = []
 
-  for exe in exes
-    output=`ldd #{exe}`
-    output.gsub!( /\(0x.*\)/, '' )
-    files += output.split("\n")
+  if kernel =~ /Linux/
+    for exe in exes
+      output=`ldd #{exe}`
+      output.gsub!( /\(0x.*\)/, '' )
+      files += output.split("\n")
+    end
+
+    files.sort!
+    files.uniq!
+
+    parse( files )
+
   end
-
-  files.sort!
-  files.uniq!
-
-  parse( files )
 
   dir = Dir.pwd
 
@@ -215,12 +218,14 @@ if kernel !~ /MINGW.*/
 
   copy_files( dest )
 
-  $stderr.puts "remove .fuse files"
-  `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
+  if kernel =~ /Linux/
+    $stderr.puts "remove .fuse files"
+    `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
+  end
+
 elsif kernel =~ /Darwin/
-  build = "BUILD/Windows-6.3.9600-64/"
-  Dir.chdir( build  )
-  copy_files( build )
+  Dir.chdir( dest  )
+  copy_files( dest )
 else
   build = "BUILD/Windows-6.3.9600-64/"
   Dir.chdir( build  )

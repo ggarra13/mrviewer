@@ -37,7 +37,7 @@
 
 #ifdef LINUX
 #  include "ext/fvec.h" // also contains xmmintrin.h
-#elsif defined(WIN32)
+#elif defined(WIN32)
 #  include <fvec.h>   // also contains xmmintrin.h
 #elif OSX
 

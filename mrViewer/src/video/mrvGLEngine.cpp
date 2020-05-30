@@ -1109,6 +1109,18 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
+#ifdef OSX
+    gl_font( FL_HELVETICA, 12 );
+    glLoadIdentity();
+    glRasterPos2i( x, y );
+
+    glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
+    glDisable( GL_DEPTH_TEST );
+
+    gl_draw( s );
+
+    glPopAttrib();
+#else
     if (! sCharset ) return;
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
@@ -1122,6 +1134,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
     glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
 
     glPopAttrib();
+#endif
 }
 
 void GLEngine::draw_cursor( const double x, const double y,
