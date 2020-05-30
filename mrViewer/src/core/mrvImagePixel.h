@@ -87,9 +87,7 @@ namespace mrv {
 
        union {
 
-           struct {
-               F32vec4 v;
-           };
+           F32vec4 v;
 
             struct {
                  __m128 _L;

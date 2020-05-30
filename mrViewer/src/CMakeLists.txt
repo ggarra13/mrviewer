@@ -97,7 +97,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ENDIF()
 
   ELSE(APPLE)
-    ADD_DEFINTIONS( -DMR_SSE )
+    ADD_DEFINITIONS( -DMR_SSE )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
     # Media libraries for Linux
