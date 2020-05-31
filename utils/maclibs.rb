@@ -4,6 +4,8 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
+libicu.*
+libz.*
 )
 
 @options = { :verbose => false, :libs_only => false }
@@ -40,7 +42,7 @@ end
 kernel = `uname`.chop!
 release = `uname -r`.chop!
 
-build = "BUILD/#{kernel}-#{release}-64/"
+build = "BUILD/#{kernel}-#{release}-64"
 
 
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
@@ -54,6 +56,7 @@ FileUtils.mkdir_p dest, :mode => 0755
 rsrcs = dest + "/Resources"
 FileUtils.mkdir_p rsrcs, :mode => 0755
 @libdir = rsrcs + "/lib"
+FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
 
 appdir = dest + "/MacOS"
@@ -62,7 +65,25 @@ app = appdir + "/mrViewer"
 @path = ''
 @count = 0
 
+def copy( file, dest )
+  begin
+    puts "cp #{file}, #{dest}"
+    file =~ /\/([\w\d\-_\.]+\.dylib)/
+    libname = $1
+    newlib = "#{dest}/#{libname}"
+    FileUtils.rm_f newlib
+    FileUtils.cp_r file, dest
+    FileUtils.chmod 0755, newlib
+    `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
+  rescue => e
+    $stderr.puts "Could not copy #{file}: #{e}"
+  end
+end
+
 def parse( app )
+  if app =~ EXCLUDE_REGEX
+    return
+  end
   @path += ":" + app
   output = `otool -l #{app}`
 
@@ -73,27 +94,22 @@ def parse( app )
       if lib =~ /^\/usr\/lib\//
         next
       end
-      rpath = lib.sub(/@rpath/, "/usr/local/lib")
+      rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
       if rpath !~ /\//
         rpath = "/usr/local/lib/" + rpath
-      end
-      if rpath != lib and @count == 0
-        @count += 1
-        puts rpath
-        parse rpath
-        next
       end
       if @count == 1
         @count = 0
         next
       end
-      puts "cp_r #{lib} #@libdir"
-      FileUtils.cp_r lib, @libdir
-      lib =~ /\/([\w\d\-_\.]+\.dylib)/
-      libname = $1
-      newlib = "#@libdir/#{libname}"
-      FileUtils.chmod 0755, newlib
-      `install_name_tool -change "#{lib}" "@rpath/#{libname}" "#{newlib}"`
+      @count += 1
+      if rpath != lib
+        copy rpath, @libdir
+        parse rpath
+        next
+      end
+      copy lib, @libdir
+      parse lib
     end
   end
 end
