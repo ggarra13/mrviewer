@@ -59,7 +59,7 @@ FileUtils.mkdir_p rsrcs, :mode => 0755
 FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
 
-appdir = dest + "/MacOS"
+appdir = dest + "/../.."
 app = appdir + "/mrViewer"
 
 @path = ''

@@ -95,6 +95,7 @@ Fl_Double_Window( W, H, title )
         if ( status != ISInitializeOK)
         {
             LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
+            LOG_ERROR( _("Looked for it in: ") << root );
             return;
         }
 

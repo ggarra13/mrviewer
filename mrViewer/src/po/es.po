@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-05-31 08:39-0300\n"
+"POT-Creation-Date: 2020-05-31 10:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -9571,6 +9571,10 @@ msgstr ""
 msgid "///////////////////\n"
 msgstr ""
 
+#: standalone/mrvRoot.cpp:212
+msgid "/Resources"
+msgstr ""
+
 #: gui/FLU/Flu_File_Chooser.cpp:3662 gui/FLU/Flu_File_Chooser.cpp:3679
 msgid "/Volumes/"
 msgstr ""
@@ -17260,11 +17264,11 @@ msgstr "Código de Manufacturador del Film"
 msgid "Filtering"
 msgstr "Filtrado"
 
-#: gui/mrvMainWindow.cpp:126
+#: gui/mrvMainWindow.cpp:127
 msgid "Finalize R3DSDK"
 msgstr "Finalizar el SDK de R3D"
 
-#: gui/mrvMainWindow.cpp:129
+#: gui/mrvMainWindow.cpp:130
 msgid "Finalized R3DSDK"
 msgstr "Finalicé el SDK de R3D"
 
@@ -19720,6 +19724,10 @@ msgstr "Mensajes"
 #: core/exrImage.cpp:2510 core/exrImage.cpp:2514
 msgid "Longitude"
 msgstr "Longitud"
+
+#: gui/mrvMainWindow.cpp:98
+msgid "Looked for it in: "
+msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:166
 msgid "Loop"
@@ -22709,11 +22717,11 @@ msgstr "Escale el Fondo al tamaño del Frente"
 msgid "Resolution"
 msgstr "Resolución"
 
-#: gui/mrvMainWindow.cpp:109
+#: gui/mrvMainWindow.cpp:110
 msgid "Restore screensaver"
 msgstr ""
 
-#: gui/mrvMainWindow.cpp:115
+#: gui/mrvMainWindow.cpp:116
 msgid "Restored screensaver"
 msgstr ""
 
@@ -23694,7 +23702,7 @@ msgstr "Parar"
 msgid "Stop playback."
 msgstr "Detener Playback."
 
-#: gui/mrvMainWindow.cpp:117
+#: gui/mrvMainWindow.cpp:118
 msgid "Stop uiview"
 msgstr ""
 
@@ -24799,7 +24807,7 @@ msgstr "Transformación"
 msgid "Trying "
 msgstr "Intentando "
 
-#: gui/mrvMainWindow.cpp:139
+#: gui/mrvMainWindow.cpp:140
 msgid "Turn off screensaver"
 msgstr ""
 
@@ -27399,11 +27407,11 @@ msgstr ""
 msgid "_ICS"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1841 gui/mrvMainWindow.cpp:170
+#: gui/mrvImageView.cpp:1841 gui/mrvMainWindow.cpp:171
 msgid "_NET_WM_STATE"
 msgstr ""
 
-#: gui/mrvMainWindow.cpp:171
+#: gui/mrvMainWindow.cpp:172
 msgid "_NET_WM_STATE_ABOVE"
 msgstr ""
 
@@ -28645,7 +28653,7 @@ msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 msgid "default_rendering_tranform - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
-#: gui/mrvMainWindow.cpp:119
+#: gui/mrvMainWindow.cpp:120
 msgid "delete uiview"
 msgstr ""
 

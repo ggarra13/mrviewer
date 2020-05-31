@@ -103,41 +103,26 @@ elsif not @debug == "Debug"
   exit 1
 end
 
-def copy_files( build )
+def copy_files( dest )
   Dir.chdir( '../..'  )
   $stderr.puts "Copy shaders"
-  FileUtils.rm_rf( "#{build}/#{@debug}/shaders" )
-  FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/shaders" )
+  FileUtils.cp_r( "shaders/", "#{dest}/" )
   $stderr.puts "Copy docs"
-  FileUtils.rm_rf( "#{build}/#{@debug}/docs" )
+  FileUtils.rm_rf( "#{dest}/docs" )
   FileUtils.rm_rf( "docs/*~" )
-  FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
-  FileUtils.rm_rf( "#{build}/#{@debug}/colors" )
-  FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
+  FileUtils.cp_r( "docs/", "#{dest}/" )
+  FileUtils.rm_rf( "#{dest}/colors" )
+  FileUtils.cp_r( "colors/", "#{dest}/" )
   $stderr.puts "Copy ctl scripts"
-  FileUtils.rm_rf( "#{build}/#{@debug}/ctl" )
-  FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/ctl" )
+  FileUtils.cp_r( "ctl/", "#{dest}/" )
   $stderr.puts "Copy ocio configs"
-  FileUtils.rm_rf( "#{build}/#{@debug}/ocio" )
-  FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/ocio" )
+  FileUtils.cp_r( "ocio/", "#{dest}/" )
   $stderr.puts "Copy otio adapters"
-  FileUtils.rm_rf( "#{build}/#{@debug}/otio" )
-  FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
-  if build =~ /Linux/
-    # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
-                    "#{build}/#{@debug}/lib" )
-  elsif build =~ /Darwin/
-    # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
-                    "#{build}/#{@debug}/lib" )
-  end
+  FileUtils.rm_rf( "#{dest}/otio" )
+  FileUtils.cp_r( "otio/", "#{dest}/" )
 end
 
 def copy_third_party( dest )
@@ -155,7 +140,9 @@ def copy_third_party( dest )
   elsif dest =~ /Darwin/
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
-                    "#{dest}/lib" )
+                    "#{dest}/lib/" )
+    FileUtils.ln_s( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib" )
+
   end
 end
 
@@ -173,7 +160,7 @@ if kernel !~ /MINGW.*/
   if build =~ /Linux/
     dest = "#{build}/#@debug"
   elsif build =~ /Darwin/
-    dest = "#{build}/#@debug/bin/mrViewer.app/Contents"
+    dest = "#{build}/#@debug/bin/mrViewer.app/Contents/Resources"
     FileUtils.mkdir_p dest
   end
 

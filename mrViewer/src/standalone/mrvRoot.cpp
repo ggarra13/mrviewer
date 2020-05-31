@@ -208,6 +208,9 @@ namespace mrv {
         std::string root = "MRV_ROOT=";
         root += rootdir.string().c_str();
 
+#ifdef OSX
+        root += "/Resources";
+#endif
 
         putenv( strdup( (char*)root.c_str() ) );
       }
