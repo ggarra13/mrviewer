@@ -133,7 +133,7 @@ bool AOEngine::open( const unsigned channels,
         fmt.byte_format = AO_FMT_LITTLE;
 
         ao_option* options = NULL;
-        int err = ao_append_option( &options, "buffer_time", "0" );
+        int err = ao_append_option( &options, "buffer_time", "200" );
 
 
         _device = ao_open_live( _audio_device, &fmt, options );
