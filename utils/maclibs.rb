@@ -4,7 +4,6 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
-libicu.*
 libz.*
 )
 
@@ -59,11 +58,15 @@ FileUtils.mkdir_p rsrcs, :mode => 0755
 FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
 
-appdir = dest + "/../.."
+appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
 
-@path = ''
-@count = 0
+
+def find_lib( lib )
+  lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
+  puts lib
+  return lib
+end
 
 def copy( file, dest )
   begin
@@ -80,39 +83,48 @@ def copy( file, dest )
   end
 end
 
+@files = []
+
 def parse( app )
   if app =~ EXCLUDE_REGEX
     return
   end
-  @path += ":" + app
-  output = `otool -l #{app}`
+
+  begin
+    output = `otool -L #{app}`
+  rescue => e
+    $stderr.puts e
+  end
 
   lines = output.split("\n")
+  lines = lines[1..lines.size]
+
   for line in lines
-    if line =~ /name\s+(.*\.dylib)/
-      lib = $1
-      if lib =~ /^\/usr\/lib\//
-        next
-      end
-      rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
-      if rpath !~ /\//
-        rpath = "/usr/local/lib/" + rpath
-      end
-      if @count == 1
-        @count = 0
-        next
-      end
-      @count += 1
-      if rpath != lib
-        copy rpath, @libdir
-        parse rpath
-        next
-      end
-      copy lib, @libdir
-      parse lib
+    lib = line.sub(/^\s+/, '')
+    lib = lib.sub(/\(.*\)$/, '')
+    lib.strip!
+    if lib =~ /^\/usr\/lib\// or lib =~ /\/System/
+      next
+    end
+    if lib =~ /@loader_path/
+      lib.sub!(/@loader_path\//, "")
+      lib = find_lib lib
+    end
+    rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
+    if rpath !~ /\//
+      rpath = "/usr/local/lib/" + rpath
+    end
+    if not @files.one? rpath
+      @files.push rpath
+      parse rpath
     end
   end
 end
 
 
+
 parse app
+
+for file in @files
+  copy( file, @libdir )
+end
