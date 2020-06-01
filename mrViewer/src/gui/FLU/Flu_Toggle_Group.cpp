@@ -1,20 +1,24 @@
 // $Id: Flu_Toggle_Group.cpp,v 1.10 2004/09/16 01:32:25 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
-
 
 
 #include "FLU/Flu_Toggle_Group.h"
 #include <stdlib.h>
+
+extern "C" {
+#include <libavutil/mem.h>
+}
+
 
 Flu_Toggle_Group :: Flu_Toggle_Group( int x, int y, int w, int h, const char *l )
   : Fl_Group( x, y, w, h, l )
@@ -61,12 +65,12 @@ void Flu_Toggle_Group :: draw()
   unsigned char *active = 0;
   if( !chkBtn->value() )
     {
-      active = (unsigned char*)malloc( children() );
+      active = (unsigned char*)av_malloc( children() );
       for( i = 1; i < children(); i++ )
-	{
-	  active[i-1] = child(i)->active();
-	  child(i)->deactivate();
-	}
+        {
+          active[i-1] = child(i)->active();
+          child(i)->deactivate();
+        }
     }
 
   // clip and draw the children
@@ -86,12 +90,12 @@ void Flu_Toggle_Group :: draw()
   if( !chkBtn->value() )
     {
       for( i = 1; i < children(); i++ )
-	{
-	  if( active[i-1] )
-	    child(i)->activate();
-	  else
-	    child(i)->deactivate();
-	}
-      free( active );
+        {
+          if( active[i-1] )
+            child(i)->activate();
+          else
+            child(i)->deactivate();
+        }
+      av_free( active );
     }
 }

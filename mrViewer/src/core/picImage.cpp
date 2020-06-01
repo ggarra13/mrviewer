@@ -265,9 +265,9 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
         Channel	*c;
 
         if(chan == NULL)
-            chan = c = (Channel*) malloc(sizeof(Channel));
+            chan = c = (Channel*) av_malloc(sizeof(Channel));
         else {
-            c->next = (Channel*) malloc(sizeof(Channel));
+            c->next = (Channel*) av_malloc(sizeof(Channel));
             c = c->next;
         }
         c->next = NULL;
@@ -316,7 +316,7 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
         Channel		*prev;
         prev = chan;
         chan = chan->next;
-        free(prev);
+        av_free(prev);
     }
 
     fclose(file);

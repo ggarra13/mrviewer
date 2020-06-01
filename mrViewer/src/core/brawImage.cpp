@@ -273,6 +273,7 @@ namespace mrv {
             {
 #if defined(LINUX) || defined(_WIN64) || defined(OSX)
                 LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
+                LOG_ERROR( _("Searched for braw lib in: ") << libpath );
 #endif
                 return false;
             }

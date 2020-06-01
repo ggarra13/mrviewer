@@ -71,6 +71,10 @@
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferences.h"
 
+extern "C" {
+#include <libavutil/mem.h>
+}
+
 #include <boost/filesystem.hpp>
 
 
@@ -1542,12 +1546,12 @@ void Flu_File_Chooser :: trashCB( bool recycle )
                // this moves files to the recycle bin, depending on the value of 'recycle'
                {
                    size_t len = name.size();
-                   char *buf = (char*)malloc( len+2 );
+                   char *buf = (char*)av_malloc( len+2 );
                    strcpy( buf, name.c_str() );
                    buf[len+1] = '\0'; // have to have 2 '\0' at the end
                    fileop.pFrom = buf;
                    result = SHFileOperation( &fileop );
-                   free( buf );
+                   av_free( buf );
                }
 #else
                result = ::remove( name.c_str() );

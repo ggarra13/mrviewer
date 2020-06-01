@@ -26,7 +26,7 @@
  */
 
 #include "core/mrvFrame.h"
-#include <cstdlib> // for free/malloc
+
 #include <cstring> // for strcpy
 
 #include "core/mrvHome.h"
@@ -48,7 +48,7 @@ void alert( const char* str )
         return;
     }
 
-    _alert = (char*) malloc( strlen(str) + 1 );
+    _alert = (char*) av_malloc( strlen(str) + 1 );
     strcpy( _alert, str );
     _alert[strlen(str)] = 0;
 
