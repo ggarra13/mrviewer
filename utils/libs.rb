@@ -48,15 +48,15 @@ end.parse!
 
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
-def parse( files )
+def parse( files, dest )
 
   for line in files
     lib, loc = line.split(" => ")
 
     next if not loc or not lib
 
-    loc.sub!(/\s*$/, '')
-    lib.sub!(/^\s*/, '')
+    loc.strip!
+    lib.strip!
 
     if loc.empty?
       next
@@ -83,14 +83,14 @@ def parse( files )
       puts "#{loc} ==> #{libpath} ==> #{orig}" if @options[:verbose]
       lib = libpath.gsub(/.*\//, '' )
       puts "#{loc} ==> #{lib} ==> #{orig}" if @options[:verbose]
-      FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
-      `chrpath -d "#{@debug}/lib/#{lib}"`
-      print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
-      FileUtils.ln_s( "#{lib}", "#{@debug}/lib/#{orig}" )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
+      `chrpath -d "#{dest}/lib/#{lib}"`
+      print `readelf -d #{dest}/lib/#{lib} | grep PATH`
+      FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}" )
     else
-      FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
-      `chrpath -d "#{@debug}/lib/#{lib}"`
-      $stderr.print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
+      `chrpath -d "#{dest}/lib/#{lib}"`
+      $stderr.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
   end
 end
@@ -103,45 +103,29 @@ elsif not @debug == "Debug"
   exit 1
 end
 
-def copy_files( build )
-  Dir.chdir( '../..'  )
+def copy_files( dest )
   $stderr.puts "Copy shaders"
-  FileUtils.rm_rf( "#{build}/#{@debug}/shaders" )
-  FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/shaders" )
+  FileUtils.cp_r( "shaders/", "#{dest}/" )
   $stderr.puts "Copy docs"
-  FileUtils.rm_rf( "#{build}/#{@debug}/docs" )
+  FileUtils.rm_rf( "#{dest}/docs" )
   FileUtils.rm_rf( "docs/*~" )
-  FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
-  FileUtils.rm_rf( "#{build}/#{@debug}/colors" )
-  FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
+  FileUtils.cp_r( "docs/", "#{dest}/" )
+  FileUtils.rm_rf( "#{dest}/colors" )
+  FileUtils.cp_r( "colors/", "#{dest}/" )
   $stderr.puts "Copy ctl scripts"
-  FileUtils.rm_rf( "#{build}/#{@debug}/ctl" )
-  FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/ctl" )
+  FileUtils.cp_r( "ctl/", "#{dest}/" )
   $stderr.puts "Copy ocio configs"
-  FileUtils.rm_rf( "#{build}/#{@debug}/ocio" )
-  FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
+  FileUtils.rm_rf( "#{dest}/ocio" )
+  FileUtils.cp_r( "ocio/", "#{dest}/" )
   $stderr.puts "Copy otio adapters"
-  FileUtils.rm_rf( "#{build}/#{@debug}/otio" )
-  FileUtils.cp_r( "otio/", "#{build}/#{@debug}/" )
-  if build =~ /Linux/
-    # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
-                    "#{build}/#{@debug}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
-                    "#{build}/#{@debug}/lib" )
-  elsif build =~ /Darwin/
-    # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
-                    "#{build}/#{@debug}/lib" )
-  end
+  FileUtils.rm_rf( "#{dest}/otio" )
+  FileUtils.cp_r( "otio/", "#{dest}/" )
 end
 
-def copy_third_party( dest )
-  Dir.chdir( '../..' )
+def copy_third_party( root, dest )
+  Dir.chdir( root )
   if dest =~ /Linux/
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_2_0/Redistributable/linux/REDR3D-x64.so",
@@ -165,8 +149,10 @@ release = `uname -r`.chop!
 
 build = "BUILD/#{kernel}-#{release}-64/"
 
+puts "kernel: #{kernel}"
 
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
+root = Dir.pwd
 
 if kernel !~ /MINGW.*/
 
@@ -185,17 +171,16 @@ if kernel !~ /MINGW.*/
     FileUtils.ln_s( dest + "/Debug/bin/mrViewer.sh", home + "-dbg" )
   end
 
-  Dir.chdir( build  )
+  Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
   FileUtils.rm_f( libs )
-
   exes = Dir.glob( "#{dest}/bin/*" )
 
   files = []
 
   if kernel =~ /Linux/
     for exe in exes
-      output=`ldd #{exe}`
+      output=`ldd "#{exe}"`
       output.gsub!( /\(0x.*\)/, '' )
       files += output.split("\n")
     end
@@ -203,14 +188,11 @@ if kernel !~ /MINGW.*/
     files.sort!
     files.uniq!
 
-    parse( files )
+    parse( files, dest )
 
   end
 
-  dir = Dir.pwd
-
-  copy_third_party( dest )
-  Dir.chdir( dir )
+  copy_third_party( root, dest )
 
   if @options[:libs_only]
     exit(0)
