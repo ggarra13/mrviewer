@@ -125,6 +125,7 @@ end
 
 parse app
 
+@files.uniq!
 for file in @files
   copy( file, @libdir )
 end

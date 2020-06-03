@@ -140,7 +140,7 @@ def copy_third_party( dest )
   elsif dest =~ /Darwin/
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
-                    "#{dest}/lib/" )
+                    "#{dest}/lib/", :verbose => true )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.ln_s( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib" )
 
