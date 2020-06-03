@@ -96,6 +96,16 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao )
     ENDIF()
 
+
+     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+       #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
+       # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+       #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+
+       ADD_COMPILE_OPTIONS( -fsanitize=address )
+       SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
   ELSE(APPLE)
     ADD_DEFINITIONS( -DMR_SSE )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)

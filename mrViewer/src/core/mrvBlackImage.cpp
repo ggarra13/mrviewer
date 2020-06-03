@@ -38,7 +38,7 @@ namespace mrv {
 BlackImage::BlackImage( const BlackImage::Type c ) :
     CMedia()
 {
-    _fileroot = strdup("Black Gap");
+    _fileroot = av_strdup("Black Gap");
     _gamma = 1.0f;
     _internal = true;
 

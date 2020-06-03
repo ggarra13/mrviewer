@@ -39,14 +39,11 @@
 
 extern "C" {
 #include <libavformat/avformat.h>
+#include <libavutil/mem.h>
 #define MRV_NOPTS_VALUE (int64_t) AV_NOPTS_VALUE
 }
 
 #include "core/mrvAssert.h"
-
-#if defined(_WIN32) || defined(_WIN64)
-#  define strdup(x) _strdup(x)
-#endif
 
 //#define DEBUG_PACKET_QUEUE
 
@@ -543,25 +540,25 @@ public:
     static void initialize()
     {
         av_init_packet( &_flush );
-        _flush.data = (uint8_t*)strdup("FLUSH");
+        _flush.data = (uint8_t*)av_strdup("FLUSH");
         _flush.size = 0;
         av_init_packet( &_seek );
-        _seek.data  = (uint8_t*)strdup("SEEK");
+        _seek.data  = (uint8_t*)av_strdup("SEEK");
         _seek.size  = 0;
         av_init_packet( &_jump );
-        _jump.data = (uint8_t*)strdup("JUMP");
+        _jump.data = (uint8_t*)av_strdup("JUMP");
         _jump.size = 0;
         av_init_packet( &_preroll );
-        _preroll.data = (uint8_t*)strdup("PREROLL");
+        _preroll.data = (uint8_t*)av_strdup("PREROLL");
         _preroll.size = 0;
         av_init_packet( &_seek_end );
-        _seek_end.data = (uint8_t*)strdup("SEEK END");
+        _seek_end.data = (uint8_t*)av_strdup("SEEK END");
         _seek_end.size = 0;
         av_init_packet( &_loop_start );
-        _loop_start.data = (uint8_t*)strdup("LOOP START");
+        _loop_start.data = (uint8_t*)av_strdup("LOOP START");
         _loop_start.size = 0;
         av_init_packet( &_loop_end );
-        _loop_end.data = (uint8_t*)strdup("LOOP END");
+        _loop_end.data = (uint8_t*)av_strdup("LOOP END");
         _loop_end.size = 0;
 
         inited = true;

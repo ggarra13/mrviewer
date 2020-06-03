@@ -98,7 +98,7 @@ rawImage::rawImage() :
 
 rawImage::~rawImage()
 {
-    free( _format );
+    av_free( _format );
     if ( iprc ) libraw_close( iprc );
     iprc = NULL;
 }
@@ -192,7 +192,7 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
     char buf[256];
     sprintf( buf, "%s/%s",iprc->idata.make, iprc->idata.model );
-    _format = strdup( buf );
+    _format = av_strdup( buf );
 
     unsigned dw = 0, dh = 0;
 

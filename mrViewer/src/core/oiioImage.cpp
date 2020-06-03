@@ -92,7 +92,7 @@ oiioImage::oiioImage() :
 
 oiioImage::~oiioImage()
 {
-    free( _format ); _format = NULL;
+    av_free( _format ); _format = NULL;
 }
 
 
@@ -159,8 +159,8 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         SCOPED_LOCK( _mutex );
         std::string fmt = in->format_name();
         fmt = "OIIO (" + fmt + ")";
-        free( _format );
-        _format = strdup( fmt.c_str() );
+        av_free( _format );
+        _format = av_strdup( fmt.c_str() );
     }
 
     _attrs.insert( std::make_pair( frame, Attributes() ) );

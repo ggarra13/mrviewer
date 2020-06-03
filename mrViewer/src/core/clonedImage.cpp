@@ -41,7 +41,7 @@ namespace mrv {
     CMedia()
   {
 
-    char* orig = strdup( other->filename() );
+    char* orig = av_strdup( other->filename() );
     for ( char* s = orig; *s != 0; ++s )
       {
         if ( *s == '\t' )
@@ -58,7 +58,7 @@ namespace mrv {
     sprintf( name, "%s\t%s", now, orig );
     filename( name );
 
-    _fileroot = strdup( other->fileroot() );
+    _fileroot = av_strdup( other->fileroot() );
 
     unsigned int ws = other->width();
     unsigned int wh = other->height();
@@ -73,7 +73,7 @@ namespace mrv {
       {
         _layers.push_back( channel );
         ++_num_channels;
-        _channel = strdup( channel );
+        _channel = av_strdup( channel );
       }
     else
       {
@@ -110,15 +110,15 @@ namespace mrv {
     size_t i = 0;
     for ( ; i < num; ++i )
     {
-        _look_mod_transform.push_back( strdup(
+        _look_mod_transform.push_back( av_strdup(
                                        other->look_mod_transform( i ) ) );
     }
 
     const char* transform = other->idt_transform();
-    if ( transform )  idt_transform( strdup(transform) );
+    if ( transform )  idt_transform( av_strdup(transform) );
 
     transform = other->rendering_transform();
-    if ( transform )  rendering_transform( strdup(transform) );
+    if ( transform )  rendering_transform( av_strdup(transform) );
 
 
     std::string ocio = other->ocio_input_color_space();
@@ -126,9 +126,9 @@ namespace mrv {
 
     _label = NULL;
     const char* lbl = other->label();
-    if ( lbl )  _label = strdup( lbl );
+    if ( lbl )  _label = av_strdup( lbl );
 
-    free( orig );
+    av_free( orig );
     _disk_space = 0;
 
     // thumbnail_create();

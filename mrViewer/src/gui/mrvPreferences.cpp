@@ -926,7 +926,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     DBG3;
     std::string var = "CTL_MODULE_PATH=" + ctlEnv;
-    putenv( strdup( var.c_str() ) );
+    putenv( av_strdup( var.c_str() ) );
 
 
     size_t found = 0;
@@ -1467,7 +1467,7 @@ void Preferences::run( ViewerUI* main )
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
-        var = strdup( tmp.c_str() );
+        var = av_strdup( tmp.c_str() );
     }
     DBG3;
 
@@ -1506,7 +1506,7 @@ void Preferences::run( ViewerUI* main )
 
         DBG3;
         sprintf( buf, "OCIO=%s", parsed.c_str() );
-        putenv( strdup(buf) );
+        putenv( av_strdup(buf) );
         DBG3;
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
@@ -1518,7 +1518,7 @@ void Preferences::run( ViewerUI* main )
 //                      << std::endl );
 //         sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
 //         mrvLOG_INFO( "ocio", buf << std::endl );
-//         putenv( strdup(buf) );
+//         putenv( av_strdup(buf) );
 // #endif
 
         DBG3;
@@ -1764,7 +1764,7 @@ void Preferences::run( ViewerUI* main )
                 menu += space;
                 w->add( menu.c_str() );
                 DBG3;
-                //w->child(i)->tooltip( strdup( cs->getDescription() ) );
+                //w->child(i)->tooltip( av_strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
                     DBG3;

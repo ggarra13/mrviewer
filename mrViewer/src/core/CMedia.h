@@ -682,7 +682,7 @@ public:
         return _label;
     }
     inline void label( const char* x ) {
-        _label = strdup(x);
+        _label = av_strdup(x);
     }
 
     ////////////////// Set the frame for the current image (sequence)

@@ -516,8 +516,8 @@ const char* open_ctl_dir( const char* startfile,
         path = profile;
         modulepath += kSeparator;
         modulepath += path;
-        putenv( strdup( modulepath.c_str() ) );
-        profile = strdup( ext.c_str() );
+        putenv( av_strdup( modulepath.c_str() ) );
+        profile = av_strdup( ext.c_str() );
     }
     return profile;
 }

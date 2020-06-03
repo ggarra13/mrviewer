@@ -141,6 +141,7 @@ def copy_third_party( dest )
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/" )
+    FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.ln_s( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib" )
 
   end
@@ -162,6 +163,7 @@ if kernel !~ /MINGW.*/
   elsif build =~ /Darwin/
     dest = "#{build}/#@debug/bin/mrViewer.app/Contents/Resources"
     FileUtils.mkdir_p dest
+    FileUtils.mkdir_p ( dest + "/lib/" )
   end
 
   home=ENV['HOME']+"/bin/mrViewer"

@@ -19,10 +19,10 @@
  * @file   mrvOS.h
  * @author gga
  * @date   Sun Jan 13 09:15:12 2008
- * 
+ *
  * @brief  Auxiliary file hiding platform differences (mainly, non POSIX)
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvOS_h
@@ -41,10 +41,6 @@
 
 #if !(defined putenv)
 #  define putenv(x)       _putenv(x)
-#endif
-
-#if !(defined strdup)
-#  define strdup(x)       _strdup(x)
 #endif
 
 #undef max
@@ -77,9 +73,6 @@
 
 #undef getcwd
 #define getcwd _getcwd
-
-#undef strdup
-#define strdup(x) _strdup(x)
 
 #undef  _ITERATOR_DEBUG_LEVEL
 #define _ITERATOR_DEBUG_LEVEL 0

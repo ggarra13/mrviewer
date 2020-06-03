@@ -1581,7 +1581,7 @@ void Flu_File_Chooser :: updateLocationQJ()
   fl_font( location->input.textfont(), location->input.textsize() );
   const char *next = path;
   const char *slash = strchr( next, '/' );
-  char *blank = strdup( path );
+  char *blank = av_strdup( path );
   int offset = 0;
   while( slash )
     {
@@ -1594,7 +1594,7 @@ void Flu_File_Chooser :: updateLocationQJ()
         w += Fl::box_dx( location->box() );
       memset( blank, 0, strlen(path) );
       memcpy( blank, path, slash-path );
-      Fl_Button *b = new Fl_Button( locationQuickJump->x()+offset, locationQuickJump->y(), w, locationQuickJump->h(), strdup(blank) );
+      Fl_Button *b = new Fl_Button( locationQuickJump->x()+offset, locationQuickJump->y(), w, locationQuickJump->h(), av_strdup(blank) );
       b->labeltype( FL_NO_LABEL );
       b->callback( _locationQJCB, this );
       offset += w;
@@ -1602,7 +1602,7 @@ void Flu_File_Chooser :: updateLocationQJ()
       next = slash;
       slash = strchr( next, '/' );
     }
-  Fl_Button *b = new Fl_Button( locationQuickJump->x()+offset, locationQuickJump->y(), 1, locationQuickJump->h(), strdup("") );
+  Fl_Button *b = new Fl_Button( locationQuickJump->x()+offset, locationQuickJump->y(), 1, locationQuickJump->h(), av_strdup("") );
   b->box( FL_NO_BOX );
   b->labeltype( FL_NO_LABEL );
   locationQuickJump->add( b );
@@ -2984,7 +2984,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
     ext = const_cast<char *>(strrchr( filename, '.' ));
   if( ext )
     {
-      ext = strdup( ext+1 ); // skip the '.'
+      ext = av_strdup( ext+1 ); // skip the '.'
       for( unsigned int i = 0; i < strlen(ext); i++ )
         ext[i] = tolower( ext[i] );
     }

@@ -65,17 +65,17 @@ app = appdir + "/mrViewer"
 def find_lib( lib )
   lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
   puts lib
-  return lib
+  return lib.strip
 end
 
 def copy( file, dest )
   begin
-    puts "cp #{file}, #{dest}"
     file =~ /\/([\w\d\-_\.]+\.dylib)/
     libname = $1
     newlib = "#{dest}/#{libname}"
-    FileUtils.rm_f newlib
-    FileUtils.cp_r file, dest
+    FileUtils.rm_rf newlib
+    puts "cp \"#{file}\" \"#{dest}\""
+    FileUtils.cp_r  file, dest
     FileUtils.chmod 0755, newlib
     `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
   rescue => e
@@ -111,7 +111,7 @@ def parse( app )
       lib = find_lib lib
     end
     rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
-    if rpath !~ /\//
+    if rpath !~ /^\//
       rpath = "/usr/local/lib/" + rpath
     end
     if not @files.one? rpath

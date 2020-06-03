@@ -64,6 +64,7 @@ namespace mrv {
     {
         brawImage* img;
         mrv::image_type_ptr& canvas;
+        std::atomic< ULONG > m_refCount;
         int64_t frame;
         BlackmagicRawResolutionScale scale;
         IBlackmagicRawFrame* m_frame = nullptr;
@@ -77,7 +78,8 @@ namespace mrv {
             img( b ),
             canvas( c ),
             frame( f ),
-            scale( s )
+            scale( s ),
+            m_refCount( 1 )
             {
             };
         virtual ~CameraCodecCallback()
@@ -173,12 +175,15 @@ namespace mrv {
 
         virtual ULONG STDMETHODCALLTYPE AddRef(void)
             {
-                return 0;
+                return ++m_refCount;
             }
 
         virtual ULONG STDMETHODCALLTYPE Release(void)
             {
-                return 0;
+                ULONG newRefCount = --m_refCount;
+                if ( newRefCount == 0 )
+                    delete this;
+                return newRefCount;
             }
     };
 
@@ -250,6 +255,8 @@ namespace mrv {
     bool brawImage::test( const char* file )
     {
         if ( file == NULL ) return false;
+
+        return false;
 
         HRESULT result;
 
@@ -853,6 +860,9 @@ namespace mrv {
         }
 
         HRESULT result = S_OK;
+
+        assert( codec != NULL );
+        std::cerr << codec << std::endl;
 
         CameraCodecCallback callback( this, canvas, frame, s );
         result = codec->SetCallback(&callback);

@@ -84,14 +84,14 @@ int logbuffer::sync()
     sputc('\0');
 
     // freeze and call the virtual print method
-    char* c = strdup( str().c_str() );
+    char* c = av_strdup( str().c_str() );
     if (!c) return 1;
 
     if ( _debug && out.is_open() ) out << c << std::flush;
 
     print( c );
 
-    free(c);
+    av_free(c);
 
     // reset iterator to first position & unfreeze
     seekoff( 0, std::ios::beg );

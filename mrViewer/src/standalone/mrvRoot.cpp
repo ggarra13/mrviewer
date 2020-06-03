@@ -215,7 +215,7 @@ namespace mrv {
         root += "/Resources";
 #endif
 
-        putenv( strdup( (char*)root.c_str() ) );
+        putenv( av_strdup( (char*)root.c_str() ) );
       }
   }
 }
