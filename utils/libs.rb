@@ -104,10 +104,6 @@ elsif not @debug == "Debug"
 end
 
 def copy_files( dest )
-<<<<<<< HEAD
-=======
-  Dir.chdir( '../..'  )
->>>>>>> mac
   $stderr.puts "Copy shaders"
   FileUtils.rm_rf( "#{dest}/shaders" )
   FileUtils.cp_r( "shaders/", "#{dest}/" )
@@ -115,15 +111,10 @@ def copy_files( dest )
   FileUtils.rm_rf( "#{dest}/docs" )
   FileUtils.rm_rf( "docs/*~" )
   FileUtils.cp_r( "docs/", "#{dest}/" )
-<<<<<<< HEAD
-  FileUtils.rm_rf( "#{dest}/colors" )
-  FileUtils.cp_r( "colors/", "#{dest}/" )
-=======
   FileUtils.rm_rf( "#{dest}/share" )
   FileUtils.cp_r( "share/", "#{dest}/", :verbose => true )
   FileUtils.rm_rf( "#{dest}/colors" )
   FileUtils.cp_r( "colors/", "#{dest}/", :verbose => true )
->>>>>>> mac
   $stderr.puts "Copy ctl scripts"
   FileUtils.rm_rf( "#{dest}/ctl" )
   FileUtils.cp_r( "ctl/", "#{dest}/" )
@@ -148,11 +139,12 @@ def copy_third_party( root, dest )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
                     "#{dest}/lib" )
   elsif dest =~ /Darwin/
+    `#{root}/utils/maclibs.rb`
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
-    FileUtils.ln_s( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib" )
+    FileUtils.ln_s( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
 
   end
 end
@@ -220,9 +212,6 @@ if kernel !~ /MINGW.*/
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
   end
 
-elsif kernel =~ /Darwin/
-  Dir.chdir( dest  )
-  copy_files( dest )
 else
   build = "BUILD/Windows-6.3.9600-64/"
   Dir.chdir( build  )
