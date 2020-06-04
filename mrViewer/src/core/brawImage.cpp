@@ -42,7 +42,6 @@ extern "C" {
 
 #include "core/mrvMath.h"
 #include "core/mrvFrameFunctors.h"
-#include "core/mrvSwizzleAudio.h"
 #include "gui/mrvPreferences.h"
 #include "mrvPreferencesUI.h"
 
@@ -1200,6 +1199,7 @@ namespace mrv {
                 AV_WN32A( tmp, (uint32_t)(base << 8) );
             }
 
+
             if (!forw_ctx)
             {
                 char buf[256];
@@ -1227,6 +1227,13 @@ namespace mrv {
 
                 uint64_t out_ch_layout = in_ch_layout;
                 unsigned out_channels = _audio_channels;
+#ifdef OSX
+                if ( _audio_channels > 2 )
+                {
+                    out_channels = 2;
+                    out_ch_layout = AV_CH_LAYOUT_STEREO;
+                }
+#endif
 
 
                 av_get_channel_layout_string( buf, 256, out_channels,
@@ -1284,77 +1291,6 @@ namespace mrv {
         // Just to be safe, we recalc data_size
         unsigned data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
-#ifdef OSX
-        if ( _audio_channels == 5 )
-        {
-            if ( fmt == AV_SAMPLE_FMT_FLT )
-            {
-                Swizzle50<float> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S32 )
-            {
-                Swizzle50<int32_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S16 )
-            {
-                Swizzle50<int16_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_U8 )
-            {
-                Swizzle50<uint8_t> t( samples, len2 );
-                t.do_it();
-            }
-        }
-        else if ( _audio_channels == 6 )
-        {
-            if ( fmt == AV_SAMPLE_FMT_FLT )
-            {
-                Swizzle51<float> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S32 )
-            {
-                Swizzle51<int32_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S16 )
-            {
-                Swizzle51<int16_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_U8 )
-            {
-                Swizzle51<uint8_t> t( samples, len2 );
-                t.do_it();
-            }
-        }
-        else if ( _audio_channels == 8 )
-        {
-            if ( fmt == AV_SAMPLE_FMT_FLT )
-            {
-                Swizzle71<float> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S32 )
-            {
-                Swizzle71<int32_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_S16 )
-            {
-                Swizzle71<int16_t> t( samples, len2 );
-                t.do_it();
-            }
-            else if ( fmt == AV_SAMPLE_FMT_U8 )
-            {
-                Swizzle71<uint8_t> t( samples, len2 );
-                t.do_it();
-            }
-        }
-#endif
 
         }
         else
