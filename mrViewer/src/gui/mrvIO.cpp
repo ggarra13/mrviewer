@@ -26,7 +26,7 @@
  */
 
 #include "core/mrvFrame.h"
-#include <cstdlib> // for free/malloc
+
 #include <cstring> // for strcpy
 
 #include "core/mrvHome.h"
@@ -48,7 +48,7 @@ void alert( const char* str )
         return;
     }
 
-    _alert = (char*) malloc( strlen(str) + 1 );
+    _alert = (char*) av_malloc( strlen(str) + 1 );
     strcpy( _alert, str );
     _alert[strlen(str)] = 0;
 
@@ -84,14 +84,14 @@ int logbuffer::sync()
     sputc('\0');
 
     // freeze and call the virtual print method
-    char* c = strdup( str().c_str() );
+    char* c = av_strdup( str().c_str() );
     if (!c) return 1;
 
     if ( _debug && out.is_open() ) out << c << std::flush;
 
     print( c );
 
-    free(c);
+    av_free(c);
 
     // reset iterator to first position & unfreeze
     seekoff( 0, std::ios::beg );

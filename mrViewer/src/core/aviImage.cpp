@@ -2923,7 +2923,7 @@ bool aviImage::initialize()
             {
                 free( _fileroot );
                 free( _filename ); _filename = NULL;
-                _fileroot = strdup( videourl.c_str() );
+                _fileroot = av_strdup( videourl.c_str() );
 
                 if ( !audiourl.empty() )
                     audio_file( audiourl.c_str() );
@@ -2949,7 +2949,7 @@ bool aviImage::initialize()
         av_dict_free(&opts);
 
         free( _fileroot );
-        _fileroot = strdup( title.c_str() );
+        _fileroot = av_strdup( title.c_str() );
 
         if ( error >= 0 )
         {

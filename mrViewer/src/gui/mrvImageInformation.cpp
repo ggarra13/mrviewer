@@ -756,7 +756,7 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
                   w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
-    m_all = new mrvPack( r.x(), r.y(), r.w()-sw, sw, "All" );
+    m_all = new mrvPack( r.x(), r.y(), r.w()-sw, 1200, "All" );
     m_all->begin();
 
     m_button = new Fl_Button( r.x(), r.y(), r.w(), 40, _("Left View") );
@@ -3386,7 +3386,7 @@ void ImageInformation::fill_data()
         m_subtitle->show();
     }
 
-    m_all->layout();
+    // m_all->layout();
 
 
 }
@@ -3481,7 +3481,7 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     X = 0;
     Y = g->y() + line_height();
 
-    g->begin();
+//    g->begin();
 
     mrv::Table* table = new mrv::Table( 0, Y, w(), 20 /*, g->label() */ );
     table->column_separator(true);
@@ -3495,8 +3495,9 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     table->align(FL_ALIGN_CENTER);
     table->end();
 
-    g->end();
+    //  g->end();
 
+    g->add( table );
 
     group = row = 0; // controls line colors
 

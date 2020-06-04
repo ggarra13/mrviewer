@@ -110,7 +110,7 @@ wandImage::wandImage() :
 
 wandImage::~wandImage()
 {
-    free( _format );
+    av_free( _format );
 }
 
 
@@ -180,7 +180,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
     if (status == MagickFalse)
         ThrowWandException( wand );
 
-    _format = strdup( MagickGetImageFormat( wand ) );
+    _format = av_strdup( MagickGetImageFormat( wand ) );
 
     if ( _num_channels == 0 )
     {
@@ -221,7 +221,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
         if ( profileSize > 0 )
         {
-            _profile = strdup( fileroot() );
+            _profile = av_strdup( fileroot() );
             mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
         }
 

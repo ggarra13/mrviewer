@@ -4,6 +4,7 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
+libz.*
 )
 
 @options = { :verbose => false, :libs_only => false }
@@ -40,7 +41,7 @@ end
 kernel = `uname`.chop!
 release = `uname -r`.chop!
 
-build = "BUILD/#{kernel}-#{release}-64/"
+build = "BUILD/#{kernel}-#{release}-64"
 
 
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
@@ -54,49 +55,77 @@ FileUtils.mkdir_p dest, :mode => 0755
 rsrcs = dest + "/Resources"
 FileUtils.mkdir_p rsrcs, :mode => 0755
 @libdir = rsrcs + "/lib"
+FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
 
 appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
 
-@path = ''
-@count = 0
+
+def find_lib( lib )
+  lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
+  puts lib
+  return lib.strip
+end
+
+def copy( file, dest )
+  begin
+    file =~ /\/([\w\d\-_\.]+\.dylib)/
+    libname = $1
+    newlib = "#{dest}/#{libname}"
+    FileUtils.rm_rf newlib
+    puts "cp \"#{file}\" \"#{dest}\""
+    FileUtils.cp_r  file, dest
+    FileUtils.chmod 0755, newlib
+    `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
+  rescue => e
+    $stderr.puts "Could not copy #{file}: #{e}"
+  end
+end
+
+@files = []
 
 def parse( app )
-  @path += ":" + app
-  output = `otool -l #{app}`
+  if app =~ EXCLUDE_REGEX
+    return
+  end
+
+  begin
+    output = `otool -L #{app}`
+  rescue => e
+    $stderr.puts e
+  end
 
   lines = output.split("\n")
+  lines = lines[1..lines.size]
+
   for line in lines
-    if line =~ /name\s+(.*\.dylib)/
-      lib = $1
-      if lib =~ /^\/usr\/lib\//
-        next
-      end
-      rpath = lib.sub(/@rpath/, "/usr/local/lib")
-      if rpath !~ /\//
-        rpath = "/usr/local/lib/" + rpath
-      end
-      if rpath != lib and @count == 0
-        @count += 1
-        puts rpath
-        parse rpath
-        next
-      end
-      if @count == 1
-        @count = 0
-        next
-      end
-      puts "cp_r #{lib} #@libdir"
-      FileUtils.cp_r lib, @libdir
-      lib =~ /\/([\w\d\-_\.]+\.dylib)/
-      libname = $1
-      newlib = "#@libdir/#{libname}"
-      FileUtils.chmod 0755, newlib
-      `install_name_tool -change "#{lib}" "@rpath/#{libname}" "#{newlib}"`
+    lib = line.sub(/^\s+/, '')
+    lib = lib.sub(/\(.*\)$/, '')
+    lib.strip!
+    if lib =~ /^\/usr\/lib\// or lib =~ /\/System/
+      next
+    end
+    if lib =~ /@loader_path/
+      lib.sub!(/@loader_path\//, "")
+      lib = find_lib lib
+    end
+    rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
+    if rpath !~ /^\//
+      rpath = "/usr/local/lib/" + rpath
+    end
+    if not @files.one? rpath
+      @files.push rpath
+      parse rpath
     end
   end
 end
 
 
+
 parse app
+
+@files.uniq!
+for file in @files
+  copy( file, @libdir )
+end

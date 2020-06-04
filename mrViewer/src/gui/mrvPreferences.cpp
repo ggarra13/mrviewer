@@ -48,9 +48,11 @@ namespace fs = boost::filesystem;
 // OpenEXR threadcount
 #include <OpenEXR/ImfThreading.h>
 
+#include <R3DSDK.h>
 
 // CORE classes
 #include "core/exrImage.h"
+#include "core/R3dImage.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
@@ -501,6 +503,28 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     colors.get( "selection_text_color", selectiontextcolor, 0x00000000 );
 
+    if ( !R3dImage::init )
+    {
+        using namespace R3DSDK;
+
+        //Initialize the R3DSDK prior to using any R3DSDK objects.
+        std::string root = Preferences::root + "/lib";
+
+        InitializeStatus status = InitializeSdk(root.c_str(),
+                                                OPTION_RED_NONE);
+        if ( status != ISInitializeOK)
+        {
+            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
+            LOG_ERROR( _("Looked for it in: ") << root );
+        }
+        else
+        {
+            LOG_INFO( _("Inited R3D SDK from: ") << root );
+            R3dImage::init = true;
+        }
+
+    }
+
     bool loaded = false;
     DBG3;
     std::string colorname = prefspath() + "mrViewer.colors";
@@ -926,7 +950,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     DBG3;
     std::string var = "CTL_MODULE_PATH=" + ctlEnv;
-    putenv( strdup( var.c_str() ) );
+    putenv( av_strdup( var.c_str() ) );
 
 
     size_t found = 0;
@@ -1467,7 +1491,7 @@ void Preferences::run( ViewerUI* main )
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
-        var = strdup( tmp.c_str() );
+        var = av_strdup( tmp.c_str() );
     }
     DBG3;
 
@@ -1506,7 +1530,7 @@ void Preferences::run( ViewerUI* main )
 
         DBG3;
         sprintf( buf, "OCIO=%s", parsed.c_str() );
-        putenv( strdup(buf) );
+        putenv( av_strdup(buf) );
         DBG3;
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
@@ -1518,7 +1542,7 @@ void Preferences::run( ViewerUI* main )
 //                      << std::endl );
 //         sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
 //         mrvLOG_INFO( "ocio", buf << std::endl );
-//         putenv( strdup(buf) );
+//         putenv( av_strdup(buf) );
 // #endif
 
         DBG3;
@@ -1764,7 +1788,7 @@ void Preferences::run( ViewerUI* main )
                 menu += space;
                 w->add( menu.c_str() );
                 DBG3;
-                //w->child(i)->tooltip( strdup( cs->getDescription() ) );
+                //w->child(i)->tooltip( av_strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
                     DBG3;

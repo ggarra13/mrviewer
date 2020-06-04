@@ -60,7 +60,7 @@
 using namespace std;
 
 namespace {
-    const char* kModule = "[main]";
+    const char* kModule = "main";
 }
 
 namespace mrv {
@@ -85,21 +85,6 @@ Fl_Double_Window( W, H, title )
         EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
     }
 
-    if ( !R3dImage::init )
-    {
-        //Initialize the R3DSDK prior to using any R3DSDK objects.
-        std::string root = Preferences::root + "/lib";
-
-        InitializeStatus status = InitializeSdk(root.c_str(),
-                                                OPTION_RED_NONE);
-        if ( status != ISInitializeOK)
-        {
-            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
-            return;
-        }
-
-        R3dImage::init = true;
-    }
 
 }
 

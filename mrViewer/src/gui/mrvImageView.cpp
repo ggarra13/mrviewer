@@ -7786,7 +7786,7 @@ char* ImageView::get_layer_label( unsigned short c )
             if ( w != o && o && o->label() ) layername = o->label();
             if ( !layername.empty() ) layername += '.';
             if ( w->label() ) layername += w->label();
-            lbl = strdup( layername.c_str() );
+            lbl = av_strdup( layername.c_str() );
             break;
         }
     }

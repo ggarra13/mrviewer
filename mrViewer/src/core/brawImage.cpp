@@ -29,6 +29,7 @@ extern "C" {
 #  pragma warning (disable: 4244 )
 #endif
 #include <libavutil/intreadwrite.h>
+#include <libswresample/swresample.h>
 #ifdef WIN32
 #  pragma warning(pop)
 #endif
@@ -64,6 +65,7 @@ namespace mrv {
     {
         brawImage* img;
         mrv::image_type_ptr& canvas;
+        std::atomic< ULONG > m_refCount;
         int64_t frame;
         BlackmagicRawResolutionScale scale;
         IBlackmagicRawFrame* m_frame = nullptr;
@@ -77,7 +79,8 @@ namespace mrv {
             img( b ),
             canvas( c ),
             frame( f ),
-            scale( s )
+            scale( s ),
+            m_refCount( 1 )
             {
             };
         virtual ~CameraCodecCallback()
@@ -173,12 +176,15 @@ namespace mrv {
 
         virtual ULONG STDMETHODCALLTYPE AddRef(void)
             {
-                return 0;
+                return ++m_refCount;
             }
 
         virtual ULONG STDMETHODCALLTYPE Release(void)
             {
-                return 0;
+                ULONG newRefCount = --m_refCount;
+                if ( newRefCount == 0 )
+                    delete this;
+                return newRefCount;
             }
     };
 
@@ -251,6 +257,8 @@ namespace mrv {
     {
         if ( file == NULL ) return false;
 
+        return false;
+
         HRESULT result;
 
         std::string libpath = mrv::Preferences::root;
@@ -273,6 +281,7 @@ namespace mrv {
             {
 #if defined(LINUX) || defined(_WIN64) || defined(OSX)
                 LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
+                LOG_ERROR( _("Searched for braw lib in: ") << libpath );
 #endif
                 return false;
             }
@@ -853,6 +862,9 @@ namespace mrv {
 
         HRESULT result = S_OK;
 
+        assert( codec != NULL );
+        std::cerr << codec << std::endl;
+
         CameraCodecCallback callback( this, canvas, frame, s );
         result = codec->SetCallback(&callback);
         if (result != S_OK)
@@ -1178,11 +1190,171 @@ namespace mrv {
         size_t j = 0, i = 0;
         if ( bitDepth == 24 )
         {
+
+            AVSampleFormat fmt = AV_SAMPLE_FMT_S16;
+
             for ( size_t i = 0; i < bytesRead; i += 3, ++tmp )
             {
                 uint32_t base = *((uint32_t*) ((uint8_t*)audiobuffer + i) );
                 AV_WN32A( tmp, (uint32_t)(base << 8) );
             }
+
+            if (!forw_ctx)
+            {
+                char buf[256];
+
+                uint64_t in_ch_layout = get_valid_channel_layout(0,
+                                                                 _audio_channels);
+
+                if ( in_ch_layout == 0 )
+                    in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
+                                                             _audio_channels);
+
+                if ( in_ch_layout == 0 )
+                    in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
+                                                             _audio_channels);
+
+                av_get_channel_layout_string( buf, 256, _audio_channels,
+                                              in_ch_layout );
+
+                IMG_INFO( _("Create audio conversion from ") << buf
+                          << _(", channels ") << _audio_channels
+                          << N_(", ") );
+                IMG_INFO( _("format s24be" )
+                          << _(", frequency ") << frequency
+                          << _(" to") );
+
+                uint64_t out_ch_layout = in_ch_layout;
+                unsigned out_channels = _audio_channels;
+
+
+                av_get_channel_layout_string( buf, 256, out_channels,
+                                              out_ch_layout );
+
+                AVSampleFormat  in_sample_fmt = AV_SAMPLE_FMT_S32;
+                AVSampleFormat  out_sample_fmt = fmt;
+                int in_sample_rate = frequency;
+                int out_sample_rate = in_sample_rate;
+
+                IMG_INFO( buf << _(", channels ") << out_channels
+                          << _(", format " )
+                          << av_get_sample_fmt_name( out_sample_fmt )
+                          << _(", frequency ")
+                          << out_sample_rate);
+
+
+                forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
+                                               out_sample_fmt,  out_sample_rate,
+                                               in_ch_layout,  in_sample_fmt,
+                                           in_sample_rate,
+                                           0, NULL);
+            if(!forw_ctx) {
+                LOG_ERROR( _("Failed to alloc swresample library") );
+                return kDecodeMissingSamples;
+            }
+
+            if(swr_init(forw_ctx) < 0)
+            {
+                char buf[256];
+                av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
+                LOG_ERROR( _("Failed to init swresample library with ")
+                           << buf << " "
+                           << av_get_sample_fmt_name(in_sample_fmt)
+                           << _(" frequency: ") << in_sample_rate );
+                return kDecodeMissingSamples;
+            }
+        }
+
+            int16_t* samples = (int16_t*)( _audio_buf + _audio_buf_used );
+
+        assert0( forw_ctx != NULL );
+        assert0( samples != NULL );
+
+        int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
+                               samplesRead,
+                               (const uint8_t **)_audio_buf + _audio_buf_used,
+                               samplesRead );
+        if ( len2 <= 0 )
+        {
+            IMG_ERROR( _("Resampling audio failed") );
+            return kDecodeMissingSamples;
+        }
+
+        // Just to be safe, we recalc data_size
+        unsigned data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
+
+#ifdef LINUX
+        if ( _audio_channels == 5 )
+        {
+            if ( fmt == AV_SAMPLE_FMT_FLT )
+            {
+                Swizzle50<float> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S32 )
+            {
+                Swizzle50<int32_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S16 )
+            {
+                Swizzle50<int16_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_U8 )
+            {
+                Swizzle50<uint8_t> t( samples, len2 );
+                t.do_it();
+            }
+        }
+        else if ( _audio_channels == 6 )
+        {
+            if ( fmt == AV_SAMPLE_FMT_FLT )
+            {
+                Swizzle51<float> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S32 )
+            {
+                Swizzle51<int32_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S16 )
+            {
+                Swizzle51<int16_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_U8 )
+            {
+                Swizzle51<uint8_t> t( samples, len2 );
+                t.do_it();
+            }
+        }
+        else if ( _audio_channels == 8 )
+        {
+            if ( fmt == AV_SAMPLE_FMT_FLT )
+            {
+                Swizzle71<float> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S32 )
+            {
+                Swizzle71<int32_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_S16 )
+            {
+                Swizzle71<int16_t> t( samples, len2 );
+                t.do_it();
+            }
+            else if ( fmt == AV_SAMPLE_FMT_U8 )
+            {
+                Swizzle71<uint8_t> t( samples, len2 );
+                t.do_it();
+            }
+        }
+#endif
+
         }
         else
         {
@@ -1222,7 +1394,6 @@ namespace mrv {
                           << "  bpf: " << bytes_per_frame << std::endl
                           << " used: " << _audio_buf_used << std::endl
                           << "  max: " << _audio_max << std::endl;
-                abort();
             }
 #endif
 

@@ -45,7 +45,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     switch( c )
     {
     case kSMPTE_NTSC:
-        _fileroot = strdup( "SMPTE NTSC Color Bars" );
+        _fileroot = av_strdup( "SMPTE NTSC Color Bars" );
         image_size( 720, 480 );
         allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 0.9f;
@@ -54,7 +54,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         ocio_input_color_space( "sRGB" );
         break;
     case kPAL:
-        _fileroot = strdup( "PAL Color Bars" );
+        _fileroot = av_strdup( "PAL Color Bars" );
         image_size( 720, 576 );
         allocate_pixels( _hires, _frameStart);
         _fps = 25.0f;
@@ -64,7 +64,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         break;
     case kPAL_HDTV:
     {
-        _fileroot = strdup( "PAL HDTV Color Bars" );
+        _fileroot = av_strdup( "PAL HDTV Color Bars" );
         image_size( 1920, 1080 );
         allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 1.0;
@@ -88,7 +88,7 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     default:
     case kSMPTE_NTSC_HDTV:
     {
-        _fileroot = strdup( "NTSC HDTV Color Bars" );
+        _fileroot = av_strdup( "NTSC HDTV Color Bars" );
         image_size( 1920, 1080 );
         allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 1.0;

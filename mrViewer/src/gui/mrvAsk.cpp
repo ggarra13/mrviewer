@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -10,6 +9,10 @@
 
 #include <FL/platform.H>
 #include <FL/fl_draw.H>
+
+extern "C" {
+#include <libavutil/mem.h>
+}
 
 namespace mrv
 {
@@ -102,7 +105,7 @@ static void resizeform() {
   int	text_height;
   int	button_w[3], button_h[3];
   int	x, w, h, max_w, max_h;
-	const int icon_size = 50;
+        const int icon_size = 50;
 
   message_form->size(410,103);
 
@@ -321,7 +324,7 @@ int fl_choice(const char*fmt,const char *b0,const char *b1,const char *b2,...){
 }
 
 static const char* input_innards(const char* fmt, va_list ap,
-				 const char* defstr, uchar type) {
+                                 const char* defstr, uchar type) {
   makeform();
   message_form->size(410,103);
   message->position(60,10);
@@ -379,7 +382,7 @@ void fl_alert(const char *fmt, ...) {
     hotspot and appears at the mouse position.
     \note \#include <FL/fl_ask.H>
     \param[in]	enable	non-zero enables hotspot behavior,
-			0 disables hotspot
+                        0 disables hotspot
  */
 void fl_message_hotspot(int enable) {
   enableHotspot = enable ? 1 : 0;
@@ -411,7 +414,7 @@ void fl_message_title(const char *title) {
     common dialogs like fl_message(), fl_alert(), fl_ask(), fl_choice(),
     fl_input(), fl_password(), unless a specific title has been set
     with fl_message_title(const char *title).
-    
+
     The default is no title. You can override the default title for a
     single dialog with fl_message_title(const char *title).
 
@@ -423,11 +426,11 @@ void fl_message_title(const char *title) {
 */
 void fl_message_title_default(const char *title) {
   if (message_title_default) {
-    free ((void *)message_title_default);
-    message_title_default = 0;
+      av_free ((void *)message_title_default);
+      message_title_default = 0;
   }
   if (title)
-    message_title_default = strdup(title);
+    message_title_default = av_strdup(title);
 }
 
 } // namespace mrv
