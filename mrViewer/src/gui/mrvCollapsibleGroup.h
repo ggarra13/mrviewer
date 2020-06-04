@@ -63,7 +63,7 @@ namespace mrv {
       static void toggle_tab_cb( Fl_Button* w, void* data );
       void        toggle_tab( Fl_Button* w);
       void relabel_button();
-      virtual void draw();  // DEBUG
+      // virtual void draw();  // DEBUG
 
     public:     // added these -erco
       // Open/close the widget
