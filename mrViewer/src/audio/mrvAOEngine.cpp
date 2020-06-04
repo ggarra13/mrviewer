@@ -132,8 +132,25 @@ bool AOEngine::open( const unsigned channels,
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;
 
+        if ( channels == 3 )
+        {
+            fmt.matrix = av_strdup("L,C,R");
+        }
+        else if ( channels == 5 )
+        {
+            fmt.matrix = av_strdup("L,BL,C,R,BR");
+        }
+        else if ( channels == 6 )
+        {
+            fmt.matrix = av_strdup("L,BL,C,BC,R,BR");
+        }
+        else if ( channels == 7 )
+        {
+            fmt.matrix = av_strdup("L,BL,C,BC,R,BR,LFE");
+        }
+
         ao_option* options = NULL;
-        int err = ao_append_option( &options, "buffer_time", "200" );
+        int err = ao_append_option( &options, "buffer_time", "250" );
 
 
         _device = ao_open_live( _audio_device, &fmt, options );

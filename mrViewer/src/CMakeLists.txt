@@ -571,7 +571,11 @@ FOREACH( lang ${LANGUAGES} )
 
   SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
+if( APPLE )
+  SET( _moFile "${_moDir}/mrViewer.mo" )
+else()
   SET( _moFile "${_moDir}/mrViewer${SHORTVERSION}.mo" )
+endif()
 
   SET( output_files ${output_files} ${_moFile} )
 

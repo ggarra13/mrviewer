@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
@@ -20,11 +19,11 @@
  * @file   mrvCollapsibleGroup.h
  * @author gga
  * @date   Tue Aug  7 04:48:52 2007
- * 
+ *
  * @brief  A group widget that has a button allowing it to collapse
  *         the contents.
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvCollapsibleGroup_h
@@ -38,7 +37,7 @@ namespace mrv {
 
   class CollapsibleGroup : public Fl_Group {
     public:
-      CollapsibleGroup( const int x, const int y, const int w, 
+      CollapsibleGroup( const int x, const int y, const int w,
                         const int h, const char* l = 0 );
       ~CollapsibleGroup();
       void begin() {
@@ -64,7 +63,7 @@ namespace mrv {
       static void toggle_tab_cb( Fl_Button* w, void* data );
       void        toggle_tab( Fl_Button* w);
       void relabel_button();
-      // virtual void draw();  // DEBUG
+      virtual void draw();  // DEBUG
 
     public:     // added these -erco
       // Open/close the widget

@@ -516,14 +516,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         {
             LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
             LOG_ERROR( _("Looked for it in: ") << root );
-            return;
         }
         else
         {
             LOG_INFO( _("Inited R3D SDK from: ") << root );
+            R3dImage::init = true;
         }
 
-        R3dImage::init = true;
     }
 
     bool loaded = false;

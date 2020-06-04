@@ -152,18 +152,18 @@ namespace mrv {
   }
 
 // // DEBUG
-// // We don't really need this other than for debugging..
-//   void CollapsibleGroup::draw() {
-//      fl_push_clip(x(), y(), w(), h());  // enforce clipping
-//      Fl_Group::draw();                  // let group draw itself and children
-//      fl_pop_clip();                     // enforce clipping
+// // // // We don't really need this other than for debugging..
+  void CollapsibleGroup::draw() {
+     fl_push_clip(x(), y(), w(), h());  // enforce clipping
+     Fl_Group::draw();                  // let group draw itself and children
+     fl_pop_clip();                     // enforce clipping
 
-//      fl_color(FL_RED);   fl_rect(x(), y(), w(), h());   // red line around group's xywh
-//      fl_color(FL_GREEN); fl_rect(_contents->x(),        // grn line around pack's xywh
-//                                  _contents->y(),
-//                                  _contents->w(),
-//                                  _contents->h());
-//   }
+     fl_color(FL_RED);   fl_rect(x(), y(), w(), h());   // red line around group's xywh
+     fl_color(FL_GREEN); fl_rect(_contents->x(),        // grn line around pack's xywh
+                                 _contents->y(),
+                                 _contents->w(),
+                                 _contents->h());
+  }
 
   void CollapsibleGroup::add( Fl_Widget* w ) {
     _contents->add( w );
