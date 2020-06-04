@@ -2110,7 +2110,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 
 
     AVStream* stream = get_audio_stream();
-    assert0( stream != NULL );
+    if ( stream == NULL ) return kDecodeMissingSamples;
 
     while ( got_audio != kDecodeOK && !_audio_packets.empty() )
     {

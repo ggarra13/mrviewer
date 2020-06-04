@@ -116,6 +116,24 @@ AOEngine::AudioFormat AOEngine::default_format()
     return kS16LSB;
 }
 
+    std::string ao_error_text( int err )
+    {
+        switch( err )
+        {
+        case AO_ENODRIVER:
+            return _("No driver for device id");
+        case AO_ENOTLIVE:
+            return _("Driver is not a live output device");
+        case AO_EBADOPTION:
+            return _("Valid option key has invalid value");
+        case AO_EOPENDEVICE:
+            return _("Cannot open device");
+        case AO_EFAIL:
+        default:
+            return _("Unknown failure");
+        }
+    }
+
 bool AOEngine::open( const unsigned channels,
                      const unsigned freq,
                      const AudioFormat format,
@@ -125,6 +143,7 @@ bool AOEngine::open( const unsigned channels,
     {
         flush();
 
+        _enabled = false;
         ao_sample_format fmt;
         memset( &fmt, 0, sizeof(ao_sample_format) );
         fmt.bits = 16;
@@ -132,26 +151,14 @@ bool AOEngine::open( const unsigned channels,
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;
 
-        if ( channels == 3 )
-        {
-            fmt.matrix = av_strdup("L,C,R");
-        }
-        else if ( channels == 5 )
-        {
-            fmt.matrix = av_strdup("L,BL,C,R,BR");
-        }
-        else if ( channels == 6 )
-        {
-            fmt.matrix = av_strdup("L,BL,C,BC,R,BR");
-        }
-        else if ( channels == 7 )
-        {
-            fmt.matrix = av_strdup("L,BL,C,BC,R,BR,LFE");
-        }
 
         ao_option* options = NULL;
         int err = ao_append_option( &options, "buffer_time", "250" );
-
+        if ( err == 0 )
+        {
+            LOG_ERROR( _("Memory failure allocating option") );
+            return false;
+        }
 
         _device = ao_open_live( _audio_device, &fmt, options );
         ao_free_options( options );
@@ -159,11 +166,12 @@ bool AOEngine::open( const unsigned channels,
         if ( _device == NULL )
         {
             _enabled = false;
-            LOG_ERROR( _("Error opening ao driver") );
+            LOG_ERROR( _("Error opening ao driver: ") << ao_error_text(errno) );
             return false;
         }
 
 
+        // ao_plugin_device_init( _device );
 
         // Store these for future round
         _audio_format = format;
