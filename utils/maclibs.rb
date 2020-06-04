@@ -64,7 +64,7 @@ app = appdir + "/mrViewer"
 
 def find_lib( lib )
   lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
-  puts lib
+  $stderr.puts lib
   return lib.strip
 end
 
@@ -74,7 +74,7 @@ def copy( file, dest )
     libname = $1
     newlib = "#{dest}/#{libname}"
     FileUtils.rm_rf newlib
-    puts "cp \"#{file}\" \"#{dest}\""
+    $stderr.puts "cp \"#{file}\" \"#{dest}\""
     FileUtils.cp_r  file, dest
     FileUtils.chmod 0755, newlib
     `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
