@@ -42,6 +42,7 @@ extern "C" {
 
 #include "core/mrvMath.h"
 #include "core/mrvFrameFunctors.h"
+#include "core/mrvSwizzleAudio.h"
 #include "gui/mrvPreferences.h"
 #include "mrvPreferencesUI.h"
 
@@ -78,9 +79,9 @@ namespace mrv {
             IBlackmagicRawCallback(),
             img( b ),
             canvas( c ),
+            m_refCount( 1 ),
             frame( f ),
-            scale( s ),
-            m_refCount( 1 )
+            scale( s )
             {
             };
         virtual ~CameraCodecCallback()
@@ -1283,7 +1284,7 @@ namespace mrv {
         // Just to be safe, we recalc data_size
         unsigned data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
-#ifdef LINUX
+#ifdef OSX
         if ( _audio_channels == 5 )
         {
             if ( fmt == AV_SAMPLE_FMT_FLT )
