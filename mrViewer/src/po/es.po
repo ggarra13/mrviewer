@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-04 11:39-0300\n"
+"POT-Creation-Date: 2020-06-04 17:50-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -10470,10 +10470,9 @@ msgstr ""
 msgid "25"
 msgstr "25"
 
-#: audio/mrvAOEngine.cpp:153
-#, fuzzy
+#: audio/mrvAOEngine.cpp:156
 msgid "250"
-msgstr "25"
+msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:306
 msgid "256x256x256"
@@ -14344,6 +14343,10 @@ msgstr "No pude crear manejo de libraw"
 msgid "Cannot map \""
 msgstr "No puedo mapear \""
 
+#: audio/mrvAOEngine.cpp:130
+msgid "Cannot open device"
+msgstr "No pude abrir el dispositivo de audio"
+
 #: gui/mrvPreferences.cpp:128 gui/mrvPreferences.cpp:170
 #: gui/mrvPreferences.cpp:231
 msgid "Cannot parse environment variable \""
@@ -16319,6 +16322,10 @@ msgstr "Modo de Dibujo"
 msgid "Driver"
 msgstr "Driver"
 
+#: audio/mrvAOEngine.cpp:126
+msgid "Driver is not a live output device"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:177
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1178
 msgid "Drop Frame Timecode"
@@ -16613,7 +16620,7 @@ msgstr "Modo de Borrado"
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#: audio/mrvAOEngine.cpp:222
+#: audio/mrvAOEngine.cpp:230
 msgid "Error closing ao device"
 msgstr "Error cerrando dispositivo ao "
 
@@ -16641,15 +16648,15 @@ msgstr "Error en recibir: "
 msgid "Error on send: "
 msgstr "Error en mandar: "
 
-#: audio/mrvAOEngine.cpp:162
-msgid "Error opening ao driver"
-msgstr "Error abriendo dispositivo ao"
+#: audio/mrvAOEngine.cpp:169
+msgid "Error opening ao driver: "
+msgstr "Error abriendo dispositivo ao: "
 
 #: core/aviImage.cpp:561
 msgid "Error parsing filter description"
 msgstr "Error interpretando la descripción del filtro"
 
-#: audio/mrvAOEngine.cpp:198
+#: audio/mrvAOEngine.cpp:206
 msgid "Error playing sample"
 msgstr "Error ejecutando sample"
 
@@ -19356,22 +19363,6 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:145
-msgid "L,BL,C,BC,R,BR"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:149
-msgid "L,BL,C,BC,R,BR,LFE"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:141
-msgid "L,BL,C,R,BR"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:137
-msgid "L,C,R"
-msgstr ""
-
 #: gui/FLU/flu_file_chooser_pixmaps.cpp:2203
 msgid "L.\tc #233730"
 msgstr ""
@@ -20199,6 +20190,10 @@ msgstr "Medio"
 msgid "Memory"
 msgstr "Memoria"
 
+#: audio/mrvAOEngine.cpp:159
+msgid "Memory failure allocating option"
+msgstr ""
+
 #: gui/mrvImageInformation.cpp:2844
 msgid "Memory without Compression"
 msgstr "Memoria sin Compresión"
@@ -20635,6 +20630,11 @@ msgstr "No se necesita conversión.  Gama: "
 #: core/CMedia_audio.cpp:201
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
+
+#
+#: audio/mrvAOEngine.cpp:124
+msgid "No driver for device id"
+msgstr "No driver para id de dispositivo"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -25130,6 +25130,10 @@ msgstr "Error desconocido retornado del procesador de OCIo"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
+#: audio/mrvAOEngine.cpp:133
+msgid "Unknown failure"
+msgstr "Fallo desconocido"
+
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Formato de imagen desconocido"
@@ -25434,6 +25438,10 @@ msgstr "VR angulo"
 #: core/mrvServer.cpp:1380 gui/mrvImageView.cpp:5853
 #, c-format
 msgid "VRangle %g"
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:128
+msgid "Valid option key has invalid value"
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:241 gui/mrvImageInformation.cpp:3493
@@ -28028,7 +28036,7 @@ msgstr ""
 msgid "buffer"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:153
+#: audio/mrvAOEngine.cpp:156
 msgid "buffer_time"
 msgstr ""
 
@@ -34893,10 +34901,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Could not initialize "
 #~ msgstr "No pude inicializar el motor de dibujo"
-
-#, fuzzy
-#~ msgid "Couldn't open DVD device: "
-#~ msgstr "No pude abrir el dispositivo de audio %s: %s"
 
 #
 #, fuzzy

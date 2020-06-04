@@ -123,7 +123,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-04 12:26-0300\n"
+"POT-Creation-Date: 2020-06-04 17:50-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10387,7 +10387,7 @@ msgstr ""
 msgid "25"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:153
+#: audio/mrvAOEngine.cpp:156
 msgid "250"
 msgstr ""
 
@@ -14206,6 +14206,10 @@ msgstr ""
 msgid "Cannot map \""
 msgstr ""
 
+#: audio/mrvAOEngine.cpp:130
+msgid "Cannot open device"
+msgstr ""
+
 #: gui/mrvPreferences.cpp:128 gui/mrvPreferences.cpp:170
 #: gui/mrvPreferences.cpp:231
 msgid "Cannot parse environment variable \""
@@ -16029,6 +16033,10 @@ msgstr ""
 msgid "Driver"
 msgstr ""
 
+#: audio/mrvAOEngine.cpp:126
+msgid "Driver is not a live output device"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:177
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1178
 msgid "Drop Frame Timecode"
@@ -16318,7 +16326,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:222
+#: audio/mrvAOEngine.cpp:230
 msgid "Error closing ao device"
 msgstr ""
 
@@ -16346,15 +16354,15 @@ msgstr ""
 msgid "Error on send: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:162
-msgid "Error opening ao driver"
+#: audio/mrvAOEngine.cpp:169
+msgid "Error opening ao driver: "
 msgstr ""
 
 #: core/aviImage.cpp:561
 msgid "Error parsing filter description"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:198
+#: audio/mrvAOEngine.cpp:206
 msgid "Error playing sample"
 msgstr ""
 
@@ -19008,22 +19016,6 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:145
-msgid "L,BL,C,BC,R,BR"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:149
-msgid "L,BL,C,BC,R,BR,LFE"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:141
-msgid "L,BL,C,R,BR"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:137
-msgid "L,C,R"
-msgstr ""
-
 #: gui/FLU/flu_file_chooser_pixmaps.cpp:2203
 msgid "L.\tc #233730"
 msgstr ""
@@ -19826,6 +19818,10 @@ msgstr ""
 msgid "Memory"
 msgstr ""
 
+#: audio/mrvAOEngine.cpp:159
+msgid "Memory failure allocating option"
+msgstr ""
+
 #: gui/mrvImageInformation.cpp:2844
 msgid "Memory without Compression"
 msgstr ""
@@ -20233,6 +20229,10 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:201
 msgid "No decoder found for audio stream. ID: "
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:124
+msgid "No driver for device id"
 msgstr ""
 
 #: gui/mrvImageView.cpp:514
@@ -24314,6 +24314,10 @@ msgstr ""
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
+#: audio/mrvAOEngine.cpp:133
+msgid "Unknown failure"
+msgstr ""
+
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr ""
@@ -24613,6 +24617,10 @@ msgstr ""
 #: core/mrvServer.cpp:1380 gui/mrvImageView.cpp:5853
 #, c-format
 msgid "VRangle %g"
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:128
+msgid "Valid option key has invalid value"
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:241 gui/mrvImageInformation.cpp:3493
@@ -27047,7 +27055,7 @@ msgstr ""
 msgid "buffer"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:153
+#: audio/mrvAOEngine.cpp:156
 msgid "buffer_time"
 msgstr ""
 
