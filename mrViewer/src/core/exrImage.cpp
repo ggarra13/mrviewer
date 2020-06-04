@@ -200,8 +200,8 @@ exrImage::exrImage() :
 
 exrImage::~exrImage()
 {
-    free( _has_right_eye );
-    free( _has_left_eye );
+    av_free( _has_right_eye );
+    av_free( _has_left_eye );
 }
 
 stringArray exrImage::valid_compressions() const
@@ -626,9 +626,9 @@ bool exrImage::find_layers( const Imf::Header& h )
     {
         channels.layers( layers );
 
-        free( _has_left_eye );
+        av_free( _has_left_eye );
         _has_left_eye = NULL;
-        free( _has_right_eye );
+        av_free( _has_right_eye );
         _has_right_eye = NULL;
 
         int rightView = -1;
@@ -656,7 +656,7 @@ bool exrImage::find_layers( const Imf::Header& h )
             size_t idx = c.find( left );
             if ( idx != std::string::npos )
             {
-                _has_left_eye = strdup( c.c_str() );
+                _has_left_eye = av_strdup( c.c_str() );
                 rightView = 1;
                 match = right;
                 discard = left;
@@ -668,7 +668,7 @@ bool exrImage::find_layers( const Imf::Header& h )
                 idx = c.find( L );
                 if ( idx != std::string::npos )
                 {
-                    _has_left_eye = strdup( c.c_str() );
+                    _has_left_eye = av_strdup( c.c_str() );
                     rightView = 1;
                     discard = L;
                     match = R;
@@ -680,7 +680,7 @@ bool exrImage::find_layers( const Imf::Header& h )
                     idx = c.find( right );
                     if ( idx != std::string::npos )
                     {
-                        _has_right_eye = strdup( c.c_str() );
+                        _has_right_eye = av_strdup( c.c_str() );
                         rightView = 0;
                         discard = right;
                         match = left;
@@ -692,7 +692,7 @@ bool exrImage::find_layers( const Imf::Header& h )
                         idx = c.find( R );
                         if ( idx != std::string::npos )
                         {
-                            _has_right_eye = strdup( c.c_str() );
+                            _has_right_eye = av_strdup( c.c_str() );
                             rightView = 0;
                             discard = R;
                             match = L;
@@ -736,11 +736,11 @@ bool exrImage::find_layers( const Imf::Header& h )
 
                 if ( rightView == 1 )
                 {
-                    _has_right_eye = strdup( layer.c_str() );
+                    _has_right_eye = av_strdup( layer.c_str() );
                 }
                 else if ( rightView == 0 )
                 {
-                    _has_left_eye = strdup( layer.c_str() );
+                    _has_left_eye = av_strdup( layer.c_str() );
                 }
             }
         }
@@ -761,13 +761,13 @@ bool exrImage::find_layers( const Imf::Header& h )
                     if ( !_has_right_eye &&
                             ( layer.find( right ) == 0 &&
                               layer.size() == right.size() ) )
-                        _has_right_eye = strdup( layer.c_str() );
+                        _has_right_eye = av_strdup( layer.c_str() );
 
                     if ( !_has_left_eye &&
                             ( layer.find( left ) == 0 ) &&
                             layer.size() == left.size() )
                     {
-                        _has_left_eye = strdup( layer.c_str() );
+                        _has_left_eye = av_strdup( layer.c_str() );
                     }
                 }
             }
@@ -779,13 +779,13 @@ bool exrImage::find_layers( const Imf::Header& h )
                     if ( !_has_right_eye &&
                             ( layer.find( right ) != std::string::npos ||
                               layer.find( R ) != std::string::npos ) )
-                        _has_right_eye = strdup( layer.c_str() );
+                        _has_right_eye = av_strdup( layer.c_str() );
 
                     if ( !_has_left_eye &&
                             ( layer.find( left ) != std::string::npos ||
                               layer.find( L ) != std::string::npos ) )
                     {
-                        _has_left_eye = strdup( layer.c_str() );
+                        _has_left_eye = av_strdup( layer.c_str() );
                     }
                 }
             }
@@ -1010,7 +1010,7 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
     const Imf::ChannelList& channels = h.channels();
 
     char* channelPrefix = NULL;
-    if ( _channel ) channelPrefix = strdup( _channel );
+    if ( _channel ) channelPrefix = av_strdup( _channel );
 
 
     // If channel starts with #, we are dealing with a multipart exr
@@ -1024,7 +1024,7 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
 
         if ( idx == std::string::npos )
         {
-            free( channelPrefix );
+            av_free( channelPrefix );
             channelPrefix = NULL;
         }
         else
@@ -1060,15 +1060,15 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
 
             if ( !root.empty() )
             {
-                free( channelPrefix );
-                channelPrefix = strdup( root.c_str() );
+                av_free( channelPrefix );
+                channelPrefix = av_strdup( root.c_str() );
             }
         }
     }
 
     if ( _stereo_output != kNoStereo )
     {
-        free( channelPrefix );
+        av_free( channelPrefix );
         channelPrefix = NULL;
         return handle_stereo( canvas, frame, h, fb);
     }
@@ -1102,7 +1102,7 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
             e = channels.end();
         }
 
-        free( channelPrefix );
+        av_free( channelPrefix );
         channelPrefix = NULL;
 
         return channels_order( canvas, frame, s, e, channels, h, fb );
@@ -2051,7 +2051,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                             continue;
                     }
                     st[1] = i;
-                    _has_right_eye = strdup( name.c_str() );
+                    _has_right_eye = av_strdup( name.c_str() );
                     _is_stereo = true;
                     continue;
                 }
@@ -2071,7 +2071,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                              name.rfind( suffix ) == std::string::npos )
                             continue;
                     }
-                    _has_left_eye = strdup( name.c_str() );
+                    _has_left_eye = av_strdup( name.c_str() );
                     st[0] = i;
                     _is_stereo = true;
                     continue;

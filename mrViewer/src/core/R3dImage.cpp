@@ -55,8 +55,8 @@ namespace mrv {
     unsigned char * AlignedMalloc(size_t & sizeNeeded)
     {
         // alloc 511 bytes more to make sure we can align the buffer in case it isn't
-        unsigned char * buffer = (unsigned char *)malloc(sizeNeeded +
-                                                         kALIGNMENT - 1);
+        unsigned char * buffer = (unsigned char *)av_malloc(sizeNeeded +
+                                                            kALIGNMENT - 1);
 
         if (!buffer)
             return NULL;
@@ -417,7 +417,7 @@ namespace mrv {
             delete clip; clip = NULL;
         }
 
-        free(((uint8_t*)audiobuffer - adjusted));
+        av_free(((uint8_t*)audiobuffer - adjusted));
         audiobuffer = NULL;
         adjusted = 0;
 

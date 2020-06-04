@@ -294,7 +294,7 @@ int
 hdrImage::oldreadcolrs(COLR* scanline, int len, FILE* fp)
 {
     int  rshift;
-    register int  i;
+    int  i;
 
     rshift = 0;
 
@@ -327,7 +327,7 @@ hdrImage::oldreadcolrs(COLR* scanline, int len, FILE* fp)
 int
 hdrImage::read_colors(COLR* scanline, int len, FILE* fp)
 {
-    register int  i, j;
+    int  i, j;
     int  code, val;
     /* determine scanline type */
     if ((len < MINELEN) | (len > MAXELEN))
@@ -418,7 +418,7 @@ bool hdrImage::fetch( mrv::image_type_ptr& canvas,
                         image_type::kFloat );
 
         unsigned w = width();
-        COLR* scanline = (COLR*) malloc( sizeof(COLR) * w );
+        COLR* scanline = (COLR*) av_malloc( sizeof(COLR) * w );
         if ( !scanline ) EXCEPTION("could not allocate scanline");
 
         unsigned h = height();
@@ -457,7 +457,7 @@ bool hdrImage::fetch( mrv::image_type_ptr& canvas,
 
         }
 
-        free( scanline );
+        av_free( scanline );
 
         fclose(f);
 

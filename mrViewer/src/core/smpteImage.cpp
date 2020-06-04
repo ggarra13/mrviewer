@@ -43,7 +43,7 @@ smpteImage::smpteImage( const smpteImage::Type c, const unsigned int dw,
     CMedia(),
     type_(c)
 {
-    _fileroot = strdup("internal");
+    _fileroot = av_strdup("internal");
     _internal = true;
     _gamma = 1.0f;
     default_layers();
@@ -189,7 +189,7 @@ void smpteImage::gamma_chart( mrv::image_type_ptr& canvas )
 {
     char buf[1024];
     sprintf( buf, "Gamma %0.1f Chart", _gamma );
-    _fileroot = strdup(buf);
+    _fileroot = av_strdup(buf);
 
     unsigned int y = 0;
     unsigned int H = height() / 3;
@@ -262,7 +262,7 @@ void smpteImage::gamma_chart( mrv::image_type_ptr& canvas )
 
 void smpteImage::linear_gradient( mrv::image_type_ptr& canvas )
 {
-    _fileroot = strdup( "Linear Gradient" );
+    _fileroot = av_strdup( "Linear Gradient" );
 
     unsigned int W = width();
     unsigned int H = height();
@@ -282,7 +282,7 @@ void smpteImage::linear_gradient( mrv::image_type_ptr& canvas )
 
 void smpteImage::luminance_gradient( mrv::image_type_ptr& canvas )
 {
-    _fileroot = strdup( "Luminance Gradient" );
+    _fileroot = av_strdup( "Luminance Gradient" );
 
     unsigned int W = width();
     unsigned int H = height();
@@ -303,7 +303,7 @@ void smpteImage::luminance_gradient( mrv::image_type_ptr& canvas )
 
 void smpteImage::checkered( mrv::image_type_ptr& canvas )
 {
-    _fileroot = strdup( "Checkered" );
+    _fileroot = av_strdup( "Checkered" );
 
     unsigned int W = width();
     unsigned int H = height();

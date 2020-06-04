@@ -663,7 +663,7 @@ bool Parser::parse( const std::string& s )
 
         char buf[1024];
         sprintf( buf, "OCIO=%s", s.c_str() );
-        putenv( strdup(buf) );
+        putenv( av_strdup(buf) );
 
         ImageView::Command c;
         c.type = ImageView::kLUT_CHANGE;

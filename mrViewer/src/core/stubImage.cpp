@@ -589,7 +589,7 @@ stubImage::stubImage( const CMedia* other ) :
     id( -1 )
 {
 
-    char* orig = strdup( other->filename() );
+    char* orig = av_strdup( other->filename() );
     for ( char* s = orig; *s != 0; ++s )
     {
         if ( *s == '\t' )
@@ -606,7 +606,7 @@ stubImage::stubImage( const CMedia* other ) :
     char name[256];
     sprintf( name, N_("%s\t%s"), now, orig );
     filename( name );
-    _filename = strdup( other->filename() );
+    _filename = av_strdup( other->filename() );
 
     int ws = other->width();
     int wh = other->height();
@@ -633,7 +633,7 @@ stubImage::stubImage( const CMedia* other ) :
 
     _layerBuffers = oStub->_layerBuffers;
     if ( oStub->channel() )
-        _channel = strdup( oStub->channel() );
+        _channel = av_strdup( oStub->channel() );
 
     const char* profile = other->icc_profile();
     if ( profile )  icc_profile( profile );
@@ -643,7 +643,7 @@ stubImage::stubImage( const CMedia* other ) :
     size_t j = 0;
     for ( ; j < num; ++j )
     {
-        _look_mod_transform.push_back( strdup(
+        _look_mod_transform.push_back( av_strdup(
                                            other->look_mod_transform( j ) ) );
     }
 
@@ -651,9 +651,9 @@ stubImage::stubImage( const CMedia* other ) :
     if ( transform )  rendering_transform( transform );
 
     const char* lbl = other->label();
-    if ( lbl )  _label = strdup( lbl );
+    if ( lbl )  _label = av_strdup( lbl );
 
-    free( orig );
+    av_free( orig );
 }
 
 
@@ -661,7 +661,7 @@ stubImage::stubImage( const CMedia* other ) :
 stubImage::~stubImage()
 {
     _aborted = true;
-    free( _host );
+    av_free( _host );
     _host = NULL;
 
     if ( id != -1 ) mr_closesocket( id );
@@ -765,7 +765,7 @@ void stubImage::parse_stub( mrv::image_type_ptr& canvas )
         clear_to_NANs();
         _pixelBuffers.insert( std::make_pair( 0, canvas ) );
     }
-    _host  = strdup( (char*) tokens[3].c_str() );
+    _host  = av_strdup( (char*) tokens[3].c_str() );
     _portA = atoi( tokens[6].c_str() );
     _portB = atoi( tokens[7].c_str() );
 }
@@ -820,7 +820,7 @@ bool stubImage::has_changed()
             unsigned int portA = _portA;
             unsigned int portB = _portB;
             char* host = NULL;
-            if ( _host ) host = strdup( _host );
+            if ( _host ) host = av_strdup( _host );
             mrv::image_type_ptr canvas;
             parse_stub( canvas );
             bool ret = false;
@@ -1017,11 +1017,11 @@ void stubImage::channel( const char* chinput )
 
     if ( c == _channel ) return;
 
-    free( _channel );
+    av_free( _channel );
 
     if ( c )
     {
-        _channel = strdup( c );
+        _channel = av_strdup( c );
     }
     else
     {
@@ -1103,12 +1103,12 @@ void stubImage::end_timer()
     char render_time[128];
     sprintf( render_time, N_("%02d:%02d:%02d"), hours, mins, secs );
 
-    free(_label);
+    av_free(_label);
 
     char buf[256];
     sprintf( buf, N_("Render Time: %s"), render_time );
 
-    _label = (char*) malloc( strlen(buf) + 1 );
+    _label = (char*) av_malloc( strlen(buf) + 1 );
     strcpy( _label, buf );
 
     if ( _attrs.find( _frame ) == _attrs.end() )

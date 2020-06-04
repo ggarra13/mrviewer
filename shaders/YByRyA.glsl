@@ -179,7 +179,6 @@ void main()
   }
 
   c.rgb *= fade;
-  c.rgba *= dissolve;
 
   gl_FragColor = c;
 }

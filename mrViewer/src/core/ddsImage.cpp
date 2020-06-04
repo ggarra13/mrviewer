@@ -1130,7 +1130,7 @@ void ddsImage::MSBOrderShort( unsigned char* p, int len )
 {
     int c;
 
-    register unsigned char *q;
+    unsigned char *q;
 
     assert(p != (unsigned char *) NULL);
     q=p+len;
@@ -1148,9 +1148,7 @@ void ddsImage::MSBOrderLong( unsigned char* buffer, int len )
     int
     c;
 
-    register unsigned char
-    *p,
-    *q;
+    unsigned char *p, *q;
 
     assert(buffer != (unsigned char *) NULL);
     q=buffer+len;
@@ -1307,7 +1305,7 @@ bool ddsImage::fetch( mrv::image_type_ptr& canvas,
       Decode scanlines
     */
     GetBytesPerBlock( &sourceDataSize, &bytesPerBlock, &compFormat, f, &ddsd );
-    data = (unsigned char*) malloc( sourceDataSize );
+    data = (unsigned char*) av_malloc( sourceDataSize );
     memset( data, 0, sourceDataSize );
 
     size_t size = fread( data, 1, sourceDataSize, f );
@@ -1318,7 +1316,7 @@ bool ddsImage::fetch( mrv::image_type_ptr& canvas,
     _compression = compFormat;
     Decompress( canvas, data, compFormat, &ddsd );
 
-    free(data);
+    av_free(data);
 
     fclose(f);
     return true;

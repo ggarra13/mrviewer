@@ -1123,7 +1123,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     if ( ctx->sample_fmt != fmt  ||
          unsigned(ctx->channels) != _audio_channels )
     {
+#ifdef OSX
+        if ( ctx->channels > 2 ) _audio_channels = 2;
+        else _audio_channels = ctx->channels;
+#else
         _audio_channels = (unsigned short) ctx->channels;
+#endif
         if (!forw_ctx)
         {
             char buf[256];
@@ -1150,14 +1155,19 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                       << _(", frequency ") << ctx->sample_rate
                       << _(" to") );
 
+
             uint64_t out_ch_layout = in_ch_layout;
             unsigned out_channels = ctx->channels;
+
+#ifdef OSX
+            if ( _audio_channels == 2 )
+                out_ch_layout = AV_CH_LAYOUT_STEREO;
+#endif
 
             if ( out_channels > _audio_channels && _audio_channels > 0 )
                 out_channels = _audio_channels;
             else
                 _audio_channels = (unsigned short) ctx->channels;
-
 
             av_get_channel_layout_string( buf, 256, out_channels,
                                           out_ch_layout );

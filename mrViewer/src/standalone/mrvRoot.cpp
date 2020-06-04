@@ -24,12 +24,15 @@
  *         executable.
  *
  */
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <mrvIO.h>
+
+extern "C" {
+#include <libavutil/mem.h>
+}
 
 #if defined(WIN32) || defined(WIN64)
 #  include <winsock2.h>
@@ -158,7 +161,7 @@ namespace {
       bufsize needed could be more than MAXPATHLEN.
     */
     int status = -1;
-    char *given_path = (char*)malloc(MAXPATHLEN * 2);
+    char *given_path = (char*)av_malloc(MAXPATHLEN * 2);
     if (!given_path) return status;
 
     uint32_t pathSize = MAXPATHLEN * 2;
@@ -172,7 +175,7 @@ namespace {
               status = 0; /* file exists, return OK */
           }
       }
-    free (given_path);
+    av_free (given_path);
     return status;
 #else  /* APPLE */
 # error Unknown OS
@@ -208,8 +211,11 @@ namespace mrv {
         std::string root = "MRV_ROOT=";
         root += rootdir.string().c_str();
 
+#ifdef OSX
+        root += "/Resources";
+#endif
 
-        putenv( strdup( (char*)root.c_str() ) );
+        putenv( av_strdup( (char*)root.c_str() ) );
       }
   }
 }

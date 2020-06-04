@@ -96,6 +96,16 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao )
     ENDIF()
 
+
+     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+       #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
+       # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+       #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+
+       ADD_COMPILE_OPTIONS( -fsanitize=address )
+       SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
   ELSE(APPLE)
     ADD_DEFINITIONS( -DMR_SSE )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
@@ -545,6 +555,7 @@ INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ocio/ DESTINATION ocio )
 INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/en DESTINATION docs/en )
 INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/es DESTINATION docs/es )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+INSTALL( TARGETS mrViewer DESTINATION bin PERMISSIONS )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 INSTALL( FILES
@@ -560,7 +571,11 @@ FOREACH( lang ${LANGUAGES} )
 
   SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
+if( APPLE )
+  SET( _moFile "${_moDir}/mrViewer.mo" )
+else()
   SET( _moFile "${_moDir}/mrViewer${SHORTVERSION}.mo" )
+endif()
 
   SET( output_files ${output_files} ${_moFile} )
 
@@ -636,11 +651,12 @@ ELSEIF ( APPLE )
 
     configure_file(
 	../../etc/OSX/Info.plist.in
-	${PROJECT_BINARY_DIR}/Info.plist)
+	${PROJECT_BINARY_DIR}/Info.plist )
 
-    set(CPACK_PACKAGE_ICON ../../etc/OSX/mrViewer.icns )
+    file( COPY ${PROJECT_BINARY_DIR}/Info.plist DESTINATION ${PROJECT_BINARY_DIR}/bin/mrViewer.app/Contents/ )
+    set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/OSX/mrViewer.icns )
     set(CPACK_BUNDLE_NAME ${INSTALL_NAME} )
-    set(CPACK_BUNDLE_ICON ../../etc/OSX/mrViewer.icns )
+    set(CPACK_BUNDLE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/OSX/mrViewer.icns )
     set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/Info.plist )
     set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
 

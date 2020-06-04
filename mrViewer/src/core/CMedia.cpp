@@ -444,8 +444,8 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
-_subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
-_subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_subtitle_encoding( av_strdup( _default_subtitle_encoding.c_str() ) ),
+_subtitle_font( av_strdup( _default_subtitle_font.c_str() ) ),
 _flipX( false ),
 _flipY( false ),
 _last_audio_cached( false ),
@@ -554,8 +554,8 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
-_subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
-_subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_subtitle_encoding( av_strdup( _default_subtitle_encoding.c_str() ) ),
+_subtitle_font( av_strdup( _default_subtitle_font.c_str() ) ),
 _flipX( false ),
 _flipY( false ),
 _last_audio_cached( false ),
@@ -670,8 +670,8 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
-_subtitle_encoding( strdup( other->_subtitle_encoding ) ),
-_subtitle_font( strdup( other->_subtitle_font ) ),
+_subtitle_encoding( av_strdup( other->_subtitle_encoding ) ),
+_subtitle_font( av_strdup( other->_subtitle_font ) ),
 _flipX( other->flipX() ),
 _flipY( other->flipY() ),
 _last_audio_cached( false ),
@@ -687,8 +687,8 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
-    _fileroot = strdup( other->fileroot() );
-    _filename = strdup( other->filename() );
+    _fileroot = av_strdup( other->fileroot() );
+    _filename = av_strdup( other->filename() );
 
     // TRACE( "copy constructor" );
 
@@ -838,18 +838,18 @@ CMedia::~CMedia()
     image_damage( kNoDamage );
 
 
-    free( _channel );
+    av_free( _channel );
 
-    free( _label );
+    av_free( _label );
 
-    free( _profile );
+    av_free( _profile );
 
-    free( _rendering_transform );
+    av_free( _rendering_transform );
 
 
     clear_look_mod_transform();
 
-    free( _idt_transform );
+    av_free( _idt_transform );
 
 
     delete [] _dataWindow;
@@ -865,10 +865,10 @@ CMedia::~CMedia()
     _displayWindow2 = NULL;
 
 
-    free( _subtitle_encoding );
+    av_free( _subtitle_encoding );
     _subtitle_encoding = NULL;
 
-    free( _subtitle_font );
+    av_free( _subtitle_font );
     _subtitle_font = NULL;
 
     _hires.reset();
@@ -910,10 +910,10 @@ CMedia::~CMedia()
 
 
 
-    free( _fileroot );
+    av_free( _fileroot );
     _fileroot = NULL;
 
-    free( _filename );
+    av_free( _filename );
     _filename = NULL;
 
     if ( _context )
@@ -1521,8 +1521,8 @@ void CMedia::sequence( const char* fileroot,
          start == _frame_start && end == _frame_end )
         return;
 
-    free( _fileroot );
-    _fileroot = strdup( fileroot );
+    av_free( _fileroot );
+    _fileroot = av_strdup( fileroot );
 
     std::string f = _fileroot;
     size_t idx = f.find( N_("%V") );
@@ -1531,7 +1531,7 @@ void CMedia::sequence( const char* fileroot,
         _is_stereo = true;
     }
 
-    free( _filename );
+    av_free( _filename );
     _filename = NULL;
 
 
@@ -1621,7 +1621,7 @@ void CMedia::filename( const char* n )
          name.find( "www." )    != 0 )
         file = fs::absolute( file );
 
-    free( _fileroot );
+    av_free( _fileroot );
 
     if ( fs::exists( file ) )
     {
@@ -1631,15 +1631,15 @@ void CMedia::filename( const char* n )
 #else
         std::string path = fs::canonical( file ).string(); // fails on win32 mountpoints
 #endif
-        _fileroot = strdup( path.c_str() );
+        _fileroot = av_strdup( path.c_str() );
     }
     else
     {
-        _fileroot = strdup( file.string().c_str() );
+        _fileroot = av_strdup( file.string().c_str() );
     }
 
 
-    free( _filename );
+    av_free( _filename );
     _filename = NULL;
 
 
@@ -1684,8 +1684,8 @@ const char* const CMedia::filename() const
 
     CMedia* self = const_cast< CMedia* >(this);
     std::string file = self->sequence_filename( _dts );
-    free( self->_filename );
-    self->_filename = (char*) malloc( 1024 * sizeof(char) );
+    av_free( self->_filename );
+    self->_filename = (char*) av_malloc( 1024 * sizeof(char) );
     strncpy( self->_filename, file.c_str(), 1023 );
     return _filename;
 }
@@ -2126,13 +2126,13 @@ void CMedia::channel( const char* c )
         }
     }
 
-    free( _channel );
+    av_free( _channel );
     _channel = NULL;
 
     // Store channel without r,g,b extension
     if ( !ch.empty() )
     {
-        _channel = strdup( ch.c_str() );
+        _channel = av_strdup( ch.c_str() );
     }
 
 
@@ -2238,11 +2238,11 @@ const char* CMedia::rendering_transform()  const
  */
 void CMedia::rendering_transform( const char* cfile )
 {
-    free( _rendering_transform );
+    av_free( _rendering_transform );
     _rendering_transform = NULL;
     if ( cfile && strlen(cfile) > 0 )
     {
-        _rendering_transform = strdup( cfile );
+        _rendering_transform = av_strdup( cfile );
     }
     image_damage( image_damage() | kDamageData | kDamageLut );
     refresh();
@@ -2266,9 +2266,9 @@ const char* CMedia::idt_transform()  const
  */
 void CMedia::idt_transform( const char* cfile )
 {
-    free( _idt_transform );
+    av_free( _idt_transform );
     _idt_transform = NULL;
-    if ( cfile && strlen(cfile) > 0 ) _idt_transform = strdup( cfile );
+    if ( cfile && strlen(cfile) > 0 ) _idt_transform = av_strdup( cfile );
     image_damage( image_damage() | kDamageData | kDamageLut );
     refresh();
 }
@@ -2291,7 +2291,7 @@ void CMedia::clear_look_mod_transform()
 {
     for ( const auto& i : _look_mod_transform )
     {
-        free( i );
+        av_free( i );
     }
     _look_mod_transform.clear();
 
@@ -2307,14 +2307,14 @@ void CMedia::append_look_mod_transform( const char* cfile )
 
 
     if ( cfile && strlen(cfile) > 0 )
-        _look_mod_transform.push_back( strdup( cfile ) );
+        _look_mod_transform.push_back( av_strdup( cfile ) );
     else
     {
 
         size_t idx = _look_mod_transform.size();
         if ( idx == 0 ) return;
         idx -= 1;
-        free( _look_mod_transform[idx] );
+        av_free( _look_mod_transform[idx] );
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
     image_damage( image_damage() | kDamageData | kDamageLut );
@@ -2358,7 +2358,7 @@ void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
     if ( cfile && strlen(cfile) > 0 )
     {
         _look_mod_transform.insert( _look_mod_transform.begin() + idx,
-                                    strdup( cfile ) );
+                                    av_strdup( cfile ) );
     }
     else
     {
@@ -2377,10 +2377,10 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
 {
     if ( idx >= _look_mod_transform.size() ) return;
 
-    free( _look_mod_transform[idx] );
+    av_free( _look_mod_transform[idx] );
     if ( cfile && strlen(cfile) > 0 )
     {
-        _look_mod_transform[idx] = strdup( cfile );
+        _look_mod_transform[idx] = av_strdup( cfile );
     }
     else
     {
@@ -2409,12 +2409,12 @@ const char* CMedia::icc_profile()  const
  */
 void CMedia::icc_profile( const char* cfile )
 {
-    free( _profile );
+    av_free( _profile );
     _profile = NULL;
     if ( cfile && strlen(cfile) > 0 )
     {
         mrv::colorProfile::add( cfile );
-        _profile = strdup( cfile );
+        _profile = av_strdup( cfile );
     }
     image_damage( image_damage() | kDamageData | kDamageLut );
     refresh();
@@ -4004,7 +4004,7 @@ bool CMedia::find_image( int64_t& frame )
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
 
-        free(_filename);
+        av_free(_filename);
         _filename = NULL;
 
         refresh();
@@ -4022,8 +4022,8 @@ bool CMedia::find_image( int64_t& frame )
     if ( !internal() && file != old  )
     {
         should_load = true;
-        free( _filename );
-        _filename = strdup( file.c_str() );
+        av_free( _filename );
+        _filename = av_strdup( file.c_str() );
     }
 
     if ( _frame != f )

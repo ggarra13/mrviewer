@@ -56,7 +56,7 @@ slateImage::slateImage( const CMedia* src ) :
     std::string name = "Slate ";
     name += src->fileroot();
 
-    _fileroot = strdup( name.c_str() );
+    _fileroot = av_strdup( name.c_str() );
 
     _w = src->width();
     _h = src->height();
