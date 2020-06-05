@@ -369,16 +369,18 @@ SET( SOURCES
   ${BlackMagicRAW_SOURCES}
   )
 
+if( AOENGINE )
+  SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
+endif()
+
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
   SET( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
   SET( SOURCES gui/resource.rc ${SOURCES} )
-ELSEIF( APPLE )
-  if( AOENGINE )
-    SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
-  endif()
 ELSE()
-  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+  if( NOT AOENGINE )
+    SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+  endif()
 ENDIF()
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )

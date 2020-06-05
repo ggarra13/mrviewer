@@ -51,6 +51,7 @@ AOEngine::AOEngine() :
     AudioEngine(),
     _sample_size(0),
     _audio_device(0),
+    _volume( 1.0f ),
     _format( NULL ),
     _device( NULL ),
     _options( NULL )
@@ -102,13 +103,13 @@ bool AOEngine::shutdown()
 float AOEngine::volume() const
 {
 
-    return 1.0f;
+    return _volume;
 }
 
 void AOEngine::volume( float v )
 {
     if (!_device) return;
-
+    _volume = v;
 }
 
 AOEngine::AudioFormat AOEngine::default_format()
@@ -192,12 +193,23 @@ bool AOEngine::open( const unsigned channels,
 }
 
 
-bool AOEngine::play( const char* data, const size_t size )
+bool AOEngine::play( const char* d, const size_t size )
 {
 
     if ( !_device) return false;
     if ( !_enabled ) return true;
 
+    int16_t* data = (int16_t*)d;
+    if ( _volume < 0.99f )
+    {
+        size_t samples = size / 2;
+        data = new int16_t[samples];
+        memcpy( data, d, size );
+        for ( size_t i = 0; i < samples; ++i )
+        {
+            data[i] *= _volume;
+        }
+    }
 
     int ok = ao_play( _device, (char*)data, size );
 

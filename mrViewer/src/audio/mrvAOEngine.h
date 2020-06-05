@@ -88,6 +88,7 @@ protected:
 protected:
     unsigned int _sample_size;
     unsigned int _audio_device;
+    float        _volume;
 
     ao_sample_format* _format;
     ao_device*        _device;
