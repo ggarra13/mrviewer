@@ -151,6 +151,7 @@ bool AOEngine::open( const unsigned channels,
         fmt.rate = freq;
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;
+        fmt.matrix = strdup( "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE" );
 
 
         ao_option* options = NULL;
