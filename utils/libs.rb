@@ -106,24 +106,24 @@ end
 def copy_files( dest )
   $stderr.puts "Copy shaders"
   FileUtils.rm_rf( "#{dest}/shaders" )
-  FileUtils.cp_r( "shaders/", "#{dest}/" )
+  FileUtils.cp_r( "shaders/", "#{dest}/", :verbose => true )
   $stderr.puts "Copy docs"
   FileUtils.rm_rf( "#{dest}/docs" )
   FileUtils.rm_rf( "docs/*~" )
-  FileUtils.cp_r( "docs/", "#{dest}/" )
-  FileUtils.rm_rf( "#{dest}/share" )
-  FileUtils.cp_r( "share/", "#{dest}/", :verbose => true )
+  FileUtils.cp_r( "docs/", "#{dest}/", :verbose => true )
+  # FileUtils.rm_rf( "#{dest}/share" )
+  # FileUtils.cp_r( "share/", "#{dest}/", :verbose => true )
   FileUtils.rm_rf( "#{dest}/colors" )
   FileUtils.cp_r( "colors/", "#{dest}/", :verbose => true )
   $stderr.puts "Copy ctl scripts"
   FileUtils.rm_rf( "#{dest}/ctl" )
-  FileUtils.cp_r( "ctl/", "#{dest}/" )
+  FileUtils.cp_r( "ctl/", "#{dest}/", :verbose => true )
   $stderr.puts "Copy ocio configs"
   FileUtils.rm_rf( "#{dest}/ocio" )
-  FileUtils.cp_r( "ocio/", "#{dest}/" )
+  FileUtils.cp_r( "ocio/", "#{dest}/", :verbose => true )
   $stderr.puts "Copy otio adapters"
   FileUtils.rm_rf( "#{dest}/otio" )
-  FileUtils.cp_r( "otio/", "#{dest}/" )
+  FileUtils.cp_r( "otio/", "#{dest}/", :verbose => true )
 end
 
 def copy_third_party( root, dest )
