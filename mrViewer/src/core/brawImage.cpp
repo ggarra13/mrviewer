@@ -318,6 +318,8 @@ namespace mrv {
         result = codec->OpenClip(filename, &localclip);
         if (result != S_OK)
         {
+            codec->Release();
+            codec = nullptr;
             LOG_ERROR( _("Failed to create clip \"") << file << "\"" );
             return false;
         }
@@ -332,7 +334,6 @@ namespace mrv {
         codec->Release();
         codec = nullptr;
 
-        LOG_INFO( "is braw" );
         return true;
     }
 

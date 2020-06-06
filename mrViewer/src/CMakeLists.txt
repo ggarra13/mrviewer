@@ -31,7 +31,7 @@ if (APPLE)
    set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
    include_directories(${OPENGL_INCLUDE_DIRS})
 
-   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL -framework Cocoa -framework CoreAudio")
+   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework OpenGL -framework Cocoa -framework CoreAudio" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -framework OpenGL -framework Cocoa -framework CoreAudio")
 
     # stop OpenGL deprecation warnings on MacOSX > 10.14
