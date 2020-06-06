@@ -188,7 +188,7 @@ namespace mrv {
             }
     };
 
-    bool brawImage::init = true;
+    bool brawImage::init = false;
     IBlackmagicRawFactory* brawImage::factory = nullptr;
 
     brawImage::brawImage() :
@@ -257,9 +257,6 @@ namespace mrv {
     {
         if ( file == nullptr ) return false;
 
-        std::string path = file;
-        std::string ext = path.substr(path.size()-5, path.size() );
-        if ( ext != ".braw" && ext != ".BRAW" ) return false;
         // return false;
 
         HRESULT result;
@@ -500,7 +497,11 @@ namespace mrv {
 
     bool brawImage::initialize()
     {
-        init = true;
+        const char* fname = filename();
+        if ( fname == nullptr || strlen(fname) == 0 ) {
+            return false;
+        }
+
         HRESULT result;
 
         result = factory->CreateCodec(&codec);
@@ -515,16 +516,6 @@ namespace mrv {
 #elif LINUX
         const char* file = filename();
 #elif OSX
-        const char* fname = filename();
-
-        if ( fname == nullptr || strlen(fname) == 0 ) {
-            fname = fileroot();
-        }
-
-        if ( fname == nullptr || strlen(fname) == 0 ) {
-            LOG_ERROR( "Empty filename" );
-            return false;
-        }
         CFStringRef file = CFStringCreateWithCString( NULL,
                                                       fname,
                                                       kCFStringEncodingUTF8 );
@@ -745,6 +736,8 @@ namespace mrv {
             }
         }
 
+        init = true;
+
         return true;
     }
 
@@ -877,8 +870,7 @@ namespace mrv {
 
         HRESULT result = S_OK;
 
-        assert( codec != NULL );
-        std::cerr << codec << std::endl;
+        assert0( codec != NULL );
 
         CameraCodecCallback callback( this, canvas, frame, s );
         result = codec->SetCallback(&callback);
@@ -1150,8 +1142,6 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
-        return kDecodeOK;
-
         if ( _audio_packets.is_loop_end() )
         {
             _audio_packets.pop_front();
@@ -1215,7 +1205,7 @@ namespace mrv {
                 AV_WN32A( tmp, (uint32_t)(base << 8) );
             }
 
-
+#if 0
             if (!forw_ctx)
             {
                 char buf[256];
@@ -1306,7 +1296,7 @@ namespace mrv {
 
         // Just to be safe, we recalc data_size
         unsigned data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
-
+#endif
 
         }
         else
