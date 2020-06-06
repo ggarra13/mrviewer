@@ -233,6 +233,7 @@ int main( int argc, char** argv )
 #endif
     path += "/share/locale";
 
+    LOG_INFO( _("Looking for translations in ") << path );
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
 
