@@ -257,7 +257,10 @@ namespace mrv {
     {
         if ( file == NULL ) return false;
 
-        return false;
+        std::string path = file;
+        std::string ext = path.substr(path.size()-5, path.size() );
+        if ( ext != ".braw" && ext != ".BRAW" ) return false;
+        // return false;
 
         HRESULT result;
 
@@ -285,6 +288,7 @@ namespace mrv {
 #endif
                 return false;
             }
+            LOG_INFO( _("Loaded braw lib from: ") << libpath );
         }
 
 #ifdef OSX
@@ -292,11 +296,11 @@ namespace mrv {
 #endif
 
 
-        IBlackmagicRaw* codec;
+        IBlackmagicRaw* codec = nullptr;
         result = factory->CreateCodec(&codec);
         if (result != S_OK)
         {
-            LOG_ERROR( _("Failed to create IBlackmagicRaw!") );
+            LOG_ERROR( _("Failed to create IBlackmagicRaw Codec!") );
             return false;
         }
 
@@ -314,6 +318,7 @@ namespace mrv {
         result = codec->OpenClip(filename, &localclip);
         if (result != S_OK)
         {
+            LOG_ERROR( _("Failed to create clip \"") << file << "\"" );
             return false;
         }
 
@@ -327,6 +332,7 @@ namespace mrv {
         codec->Release();
         codec = nullptr;
 
+        LOG_INFO( "is braw" );
         return true;
     }
 

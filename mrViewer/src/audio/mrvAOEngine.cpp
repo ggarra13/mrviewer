@@ -147,7 +147,7 @@ bool AOEngine::open( const unsigned channels,
         _enabled = false;
         ao_sample_format fmt;
         memset( &fmt, 0, sizeof(ao_sample_format) );
-        fmt.bits = 16;
+        fmt.bits = format == kU8? 8 : 16;
         fmt.rate = freq;
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;

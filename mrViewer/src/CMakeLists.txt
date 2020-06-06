@@ -263,7 +263,6 @@ SET( SOURCES
   core/picImage.cpp
   core/R3dImage.cpp
   core/brawImage.cpp
-  # core/magickImage.cpp
 
   core/mrSocket.cpp
   core/mrvClient.cpp
