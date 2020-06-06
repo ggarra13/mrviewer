@@ -228,6 +228,9 @@ int main( int argc, char** argv )
     fs::path dir = file.parent_path().branch_path();
 #ifdef _WIN32
     std::string path = fs::absolute( dir ).generic_string();
+#elif OSX
+    std::string path = fs::canonical( dir ).generic_string();
+    path += "/Resources";
 #else
     std::string path = fs::canonical( dir ).generic_string();
 #endif

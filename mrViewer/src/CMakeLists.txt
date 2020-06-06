@@ -559,15 +559,15 @@ if (NOT APPLE )
   INSTALL( DIRECTORY ${SOURCE_DIR}/docs/en DESTINATION docs/en )
   INSTALL( DIRECTORY ${SOURCE_DIR}/docs/es DESTINATION docs/es )
   INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+  INSTALL( DIRECTORY ${SOURCE_DIR}/share/ DESTINATION share )
+  INSTALL( FILES
+		 ${SOURCE_DIR}/docs/HISTORY.txt
+		 ${SOURCE_DIR}/docs/LICENSE.txt
+		 DESTINATION ./ )
 endif()
 
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
-INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
-INSTALL( FILES
-	 ${SOURCE_DIR}/docs/HISTORY.txt
-	 ${SOURCE_DIR}/docs/LICENSE.txt
-	  DESTINATION ./ )
 
 SET( LANGUAGES "es" )
 
@@ -575,13 +575,8 @@ SET( output_files "${_absPotFile}" )
 
 FOREACH( lang ${LANGUAGES} )
 
-  SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
-
-if( APPLE )
-  SET( _moFile "${_moDir}/mrViewer.mo" )
-else()
+  SET( _moDir "${SOURCE_DIR}/share/locale/${lang}/LC_MESSAGES/" )
   SET( _moFile "${_moDir}/mrViewer${SHORTVERSION}.mo" )
-endif()
 
   SET( output_files ${output_files} ${_moFile} )
 
@@ -603,9 +598,6 @@ ADD_CUSTOM_TARGET(
   "translations" ALL
   DEPENDS ${output_files} ${PROJECT_NAME}
   )
-
-# Install for language files
-INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 
 IF(WIN32)
 
