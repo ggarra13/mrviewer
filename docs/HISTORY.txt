@@ -3,6 +3,8 @@ v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Added BRAW format to MacOSX port.
 	- Added support for BRAW audio in MacOSX port.
 	- Bug fixed localization support for MacOSX.
+	- Removed several files and directories which were included twice
+	  in the MacOSX distribution.
 
 v5.4.9  - Bug fixes the focus in view window that was effecting shortcuts.
 	  Bug introduced in the now defunct v5.4.8.
