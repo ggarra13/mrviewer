@@ -374,6 +374,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         }
         else
         {
+            std::cerr << "filename is " << name << std::endl;
             image->filename( name );
         }
     }

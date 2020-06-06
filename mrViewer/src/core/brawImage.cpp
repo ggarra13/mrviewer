@@ -196,12 +196,12 @@ namespace mrv {
         _scale( Preferences::BRAWScale ),
         _old_scale( Preferences::BRAWScale ),
         bitDepth( 0 ),
-        audiobuffer( NULL ),
+        audiobuffer( nullptr ),
         audioinit( false ),
-        codec( NULL ),
-        clip( NULL ),
-        readJob( NULL ),
-        audio( NULL )
+        codec( nullptr ),
+        clip( nullptr ),
+        readJob( nullptr ),
+        audio( nullptr )
     {
         initialize();
         _gamma = 1.0f;
@@ -255,7 +255,7 @@ namespace mrv {
 
     bool brawImage::test( const char* file )
     {
-        if ( file == NULL ) return false;
+        if ( file == nullptr ) return false;
 
         std::string path = file;
         std::string ext = path.substr(path.size()-5, path.size() );
@@ -516,7 +516,15 @@ namespace mrv {
         const char* file = filename();
 #elif OSX
         const char* fname = filename();
-        if ( fname == NULL || strlen(fname) == 0 ) return false;
+
+        if ( fname == nullptr || strlen(fname) == 0 ) {
+            fname = fileroot();
+        }
+
+        if ( fname == nullptr || strlen(fname) == 0 ) {
+            LOG_ERROR( "Empty filename" );
+            return false;
+        }
         CFStringRef file = CFStringCreateWithCString( NULL,
                                                       fname,
                                                       kCFStringEncodingUTF8 );
@@ -1142,6 +1150,7 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
+        return kDecodeOK;
 
         if ( _audio_packets.is_loop_end() )
         {
