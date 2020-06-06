@@ -21,15 +21,6 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
     <key>CFBundleDocumentTypes</key>
-    <array>
-	<dict>
-	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
-	    <key>CFBundleTypeExtensions</key>
-	    <array>
-		<string>braw</string>
-	    </array>
-	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
 	  <string>Viewer</string>
@@ -115,6 +106,7 @@
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>avi</string>
+		<string>braw</string>
 		<string>dv</string>
 		<string>gif</string>
 		<string>flv</string>
@@ -126,6 +118,7 @@
 		<string>mp4</string>
 		<string>m4v</string>
 		<string>mxf</string>
+		<string>r3d</string>
 		<string>ts</string>
 		<string>vob</string>
 		<string>wmv</string>
