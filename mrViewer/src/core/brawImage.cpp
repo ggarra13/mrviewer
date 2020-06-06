@@ -512,9 +512,9 @@ namespace mrv {
         }
 
 #ifdef WIN32
-        _bstr_t file = filename();
+        _bstr_t file = fname;
 #elif LINUX
-        const char* file = filename();
+        const char* file = fname;
 #elif OSX
         CFStringRef file = CFStringCreateWithCString( NULL,
                                                       fname,
