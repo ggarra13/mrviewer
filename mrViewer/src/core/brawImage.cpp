@@ -870,6 +870,41 @@ namespace mrv {
 
         HRESULT result = S_OK;
 
+#if 1
+        IBlackmagicRaw* codec = nullptr;
+        IBlackmagicRawClip* clip = nullptr;
+
+        result = factory->CreateCodec(&codec);
+        if (result != S_OK)
+        {
+            LOG_ERROR( _("Failed to create IBlackmagicRaw Codec!") );
+            return false;
+        }
+
+        const char* fname = filename();
+        if ( ! fname ) return false;
+
+#ifdef WIN32
+        _bstr_t file = fname;
+#elif LINUX
+        const char* file = fname;
+#elif OSX
+        CFStringRef file = CFStringCreateWithCString( NULL,
+                                                      fname,
+                                                      kCFStringEncodingUTF8 );
+#endif
+
+        result = codec->OpenClip( file, &clip );
+        if (result != S_OK)
+        {
+            IMG_ERROR( _("Could not open clip" ) );
+            return false;
+        }
+
+#ifdef OSX
+        CFRelease( file );
+#endif
+#endif
         assert0( codec != NULL );
 
         CameraCodecCallback callback( this, canvas, frame, s );
@@ -900,6 +935,17 @@ namespace mrv {
         codec->FlushJobs();
 
 
+        if ( clip )
+        {
+            clip->Release();
+            clip = nullptr;
+        }
+        if ( codec )
+        {
+            codec->Release();
+            codec = nullptr;
+        }
+
         IBlackmagicRawFrame* f = callback.GetFrame();
 
         if (f == nullptr)
@@ -918,7 +964,6 @@ namespace mrv {
         }
 
         parse_metadata(frame, frameMetadataIterator);
-
 
         return true;
     }
@@ -1142,6 +1187,7 @@ namespace mrv {
 
     CMedia::DecodeStatus brawImage::decode_audio( int64_t& f )
     {
+
         if ( _audio_packets.is_loop_end() )
         {
             _audio_packets.pop_front();
@@ -1161,10 +1207,20 @@ namespace mrv {
         bool ok = in_audio_store( frame );
         if ( ok ) return kDecodeOK;
 
+
+        AVSampleFormat fmt = AV_SAMPLE_FMT_S16;
+
         HRESULT result;
 
+        AudioEngine::AudioFormat oldfmt = _audio_format;
+
+#ifdef AOENGINE
+        _audio_format = AudioEngine::kS16LSB;
+#endif
 
         unsigned int bytes_per_frame = audio_bytes_per_frame();
+
+        _audio_format = oldfmt;
 
         static constexpr uint32_t maxSampleCount = 48000;
         uint32_t bufferSize = (maxSampleCount*_audio_channels*
@@ -1196,16 +1252,13 @@ namespace mrv {
         size_t j = 0, i = 0;
         if ( bitDepth == 24 )
         {
-
-            AVSampleFormat fmt = AV_SAMPLE_FMT_S16;
-
             for ( size_t i = 0; i < bytesRead; i += 3, ++tmp )
             {
                 uint32_t base = *((uint32_t*) ((uint8_t*)audiobuffer + i) );
                 AV_WN32A( tmp, (uint32_t)(base << 8) );
             }
 
-#if 0
+#ifdef AOENGINE
             if (!forw_ctx)
             {
                 char buf[256];
@@ -1227,20 +1280,12 @@ namespace mrv {
                 IMG_INFO( _("Create audio conversion from ") << buf
                           << _(", channels ") << _audio_channels
                           << N_(", ") );
-                IMG_INFO( _("format s24be" )
+                IMG_INFO( _("format s24le" )
                           << _(", frequency ") << frequency
                           << _(" to") );
 
                 uint64_t out_ch_layout = in_ch_layout;
                 unsigned out_channels = _audio_channels;
-#ifdef OSX
-                if ( _audio_channels > 2 )
-                {
-                    out_channels = 2;
-                    out_ch_layout = AV_CH_LAYOUT_STEREO;
-                }
-#endif
-
 
                 av_get_channel_layout_string( buf, 256, out_channels,
                                               out_ch_layout );
@@ -1260,8 +1305,8 @@ namespace mrv {
                 forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
                                                out_sample_fmt,  out_sample_rate,
                                                in_ch_layout,  in_sample_fmt,
-                                           in_sample_rate,
-                                           0, NULL);
+                                               in_sample_rate,
+                                               0, NULL);
             if(!forw_ctx) {
                 LOG_ERROR( _("Failed to alloc swresample library") );
                 return kDecodeMissingSamples;
@@ -1279,25 +1324,37 @@ namespace mrv {
             }
         }
 
-            int16_t* samples = (int16_t*)( _audio_buf + _audio_buf_used );
+            if ( samplesRead > 0 )
+            {
+                uint8_t* output;
+                av_samples_alloc(&output, NULL, _audio_channels, samplesRead,
+                                 fmt, 0);
 
-        assert0( forw_ctx != NULL );
-        assert0( samples != NULL );
+                assert0( forw_ctx != NULL );
+                assert0( output != NULL );
 
-        int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
-                               samplesRead,
-                               (const uint8_t **)_audio_buf + _audio_buf_used,
-                               samplesRead );
-        if ( len2 <= 0 )
-        {
-            IMG_ERROR( _("Resampling audio failed") );
-            return kDecodeMissingSamples;
-        }
 
-        // Just to be safe, we recalc data_size
-        unsigned data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
+                aligned16_uint8_t* ptr = _audio_buf + _audio_buf_used;
+                int len2 = swr_convert(forw_ctx, (uint8_t**)&output,
+                                       samplesRead,
+                                       (const uint8_t **) &ptr,
+                                       samplesRead );
+                if ( len2 <= 0 )
+                {
+                    IMG_ERROR( _("Resampling audio failed.  Len: ") << len2 );
+                    return kDecodeMissingSamples;
+                }
+
+                unsigned data_size = len2 * _audio_channels *
+                                     av_get_bytes_per_sample( fmt );
+                memcpy( _audio_buf + _audio_buf_used, output, data_size );
+                av_freep( &output );
+            }
+            else
+            {
+                return kDecodeMissingFrame;
+            }
 #endif
-
         }
         else
         {
@@ -1305,7 +1362,11 @@ namespace mrv {
             return kDecodeError;
         }
 
+#if AOENGINE
+        _audio_buf_used += (bytesRead / 3) * 2;
+#else
         _audio_buf_used += (bytesRead / 3) * 4;
+#endif
 
         CMedia::DecodeStatus got_audio = kDecodeMissingFrame;
 
