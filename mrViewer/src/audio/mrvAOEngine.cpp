@@ -151,11 +151,11 @@ bool AOEngine::open( const unsigned channels,
         fmt.rate = freq;
         fmt.channels = channels;
         fmt.byte_format = AO_FMT_LITTLE;
-        fmt.matrix = strdup( "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE" );
+        fmt.matrix = strdup( N_("L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE") );
 
 
         ao_option* options = NULL;
-        int err = ao_append_option( &options, "buffer_time", "250" );
+        int err = ao_append_option( &options, N_("buffer_time"), N_("250") );
         if ( err == 0 )
         {
             LOG_ERROR( _("Memory failure allocating option") );
@@ -203,12 +203,28 @@ bool AOEngine::play( const char* d, const size_t size )
     int16_t* data = (int16_t*)d;
     if ( _volume < 0.99f )
     {
-        size_t samples = size / 2;
-        data = new int16_t[samples];
-        memcpy( data, d, size );
-        for ( size_t i = 0; i < samples; ++i )
+        switch ( _audio_format )
         {
-            data[i] *= _volume;
+        case kU8:
+        {
+            data = (int16_t*)new uint8_t[size];
+            memcpy( data, d, size );
+            for ( size_t i = 0; i < size; ++i )
+            {
+                data[i] *= _volume;
+            }
+        }
+        default:
+        case kS16LSB:
+        {
+            size_t samples = size / 2;
+            data = new int16_t[samples];
+            memcpy( data, d, size );
+            for ( size_t i = 0; i < samples; ++i )
+            {
+                data[i] *= _volume;
+            }
+        }
         }
     }
 
