@@ -257,6 +257,12 @@ namespace mrv {
     {
         if ( file == nullptr ) return false;
 
+        std::string ext = file;
+        ext = ext.substr( ext.size() - 5, ext.size() );
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) tolower);
+        if ( ext != ".braw" ) return false;
+
         // return false;
 
         HRESULT result;
