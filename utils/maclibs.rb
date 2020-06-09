@@ -57,6 +57,7 @@ FileUtils.mkdir_p rsrcs, :mode => 0755
 @libdir = rsrcs + "/lib"
 FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
+FileUtils.mkdir_p @libdir + "/ao", :mode => 0755
 
 appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
@@ -72,12 +73,16 @@ def copy( file, dest )
   begin
     file =~ /\/([\w\d\-_\.]+\.dylib)/
     libname = $1
+    if file =~ /ao/
+      libname = "ao"
+    end
     newlib = "#{dest}/#{libname}"
     FileUtils.rm_rf newlib
-    $stderr.puts "cp \"#{file}\" \"#{dest}\""
-    FileUtils.cp_r  file, dest
+    FileUtils.cp_r  file, dest, :verbose => true
     FileUtils.chmod 0755, newlib
-    `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
+    if file !~ /ao/
+      `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
+    end
   rescue => e
     $stderr.puts "Could not copy #{file}: #{e}"
   end
@@ -126,6 +131,7 @@ end
 parse app
 
 @files.uniq!
+@files.push "/usr/local/lib/ao"
 for file in @files
   copy( file, @libdir )
 end

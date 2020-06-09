@@ -1210,7 +1210,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         assert0( ret >= 0 );
         assert0( samples != NULL );
         assert0( _aframe->nb_samples > 0 );
-        assert0( _aframe->nb_samples != AV_NOPTS_VALUE );
         assert0( _aframe->data != NULL );
         assert0( _aframe->data[0] != NULL );
         assert0( _aframe->extended_data != NULL );

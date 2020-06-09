@@ -15,6 +15,16 @@ IF( NOT CMAKE_MODULE_PATH )
 ENDIF( NOT CMAKE_MODULE_PATH )
 
 #
+# Target Apple MacOS earlier than Catalina
+#
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.14 CACHE STRING "Version of MacOS")
+
+#
+# Choose XCode SDK
+#
+#set(CMAKE_OSX_SYSROOT "/Developer/ CACHE STRING "XCode SDK")
+
+#
 # All CMake projects need a name.  The name is global to all
 # CMakeLists.txt in subdirectories.  Once you define a project
 # named "myproject", the variable "myproject_SOURCE_DIR" exists.
@@ -39,7 +49,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 5 )
 SET( VersionMinor 5 )
-SET( VersionPatch 0 )
+SET( VersionPatch 0-beta3 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )

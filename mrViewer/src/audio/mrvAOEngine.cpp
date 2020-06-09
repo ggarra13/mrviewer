@@ -75,6 +75,18 @@ bool AOEngine::initialize()
         _devices.push_back( def );
         _device_idx = 0;
 
+        const char* env = getenv( "MRV_ROOT" );
+        if ( env )
+        {
+            std::string path = env;
+            path += "/lib/ao/plugins-4";
+
+            char buf[1024];
+            sprintf( buf, "AO_PLUGIN_PATH=%s", path.c_str() );
+            LOG_INFO( buf );
+            putenv( strdup( buf ) );
+        }
+
         ao_initialize();
     }
 
