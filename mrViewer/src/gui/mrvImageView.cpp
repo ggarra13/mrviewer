@@ -7191,7 +7191,7 @@ void ImageView::toggle_presentation()
         float scale = Fl::screen_scale( window()->screen_num() );
         resize( X, 0, W, H + int(84 * scale) );  // @BUG: We need +84 to cover bottom strip
 #endif
-        // uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -7229,7 +7229,7 @@ void ImageView::toggle_presentation()
         FullScreen = false;
 
         uiMain->uiRegion->layout();
-        // uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
 
