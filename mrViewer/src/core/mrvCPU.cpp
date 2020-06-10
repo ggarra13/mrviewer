@@ -25,10 +25,6 @@
  *
  */
 
-extern "C" {
-#include <libavutil/mem.h>
-}
-
 #include "mrvOS.h"
 #include "mrvCPU.h"
 
@@ -40,6 +36,10 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+
+extern "C" {
+#include <libavutil/mem.h>
+}
 
 #if defined(__i386__) || defined(_M_IX86)
 #  define ARCH_X86
