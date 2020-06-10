@@ -7088,6 +7088,7 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
+
     // full screen...
     if ( !FullScreen && !presentation )
     {
@@ -7183,11 +7184,14 @@ void ImageView::toggle_presentation()
         fltk_main()->resize( X, Y, W, H);
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
-#ifdef _WIN32
+#if defined( _WIN32 )
         float scale = Fl::screen_scale( window()->screen_num() );
         resize( X, Y, W, H + int(40 * scale) );  // @BUG: We need +40 to cover bottom strip
+#elif defined(OSX)
+        float scale = Fl::screen_scale( window()->screen_num() );
+        resize( X, 0, W, H + int(84 * scale) );  // @BUG: We need +84 to cover bottom strip
 #endif
-        uiMain->uiRegion->init_sizes();
+        // uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -7202,15 +7206,30 @@ void ImageView::toggle_presentation()
         if ( has_sop )        uiSOP->show();
         if ( has_log )        uiLog->show();
 
-        if ( has_top_bar )    uiMain->uiTopBar->show();
-        if ( has_bottom_bar)  uiMain->uiBottomBar->show();
-        if ( has_pixel_bar )  uiMain->uiPixelBar->show();
+        int X = uiMain->uiRegion->x();
+        int Y = uiMain->uiRegion->y();
+        int W = uiMain->uiRegion->w();
+        int H = uiMain->uiRegion->h();
+
+
+        float scale = Fl::screen_scale(window()->screen_num());
+
+        if ( has_top_bar )    {
+            uiMain->uiTopBar->show();
+        }
+        if ( has_bottom_bar)  {
+            uiMain->uiBottomBar->show();
+        }
+        if ( has_pixel_bar )  {
+            uiMain->uiPixelBar->show();
+        }
 
         texture_filtering( filter );
         presentation = false;
         FullScreen = false;
+
         uiMain->uiRegion->layout();
-        uiMain->uiRegion->init_sizes();
+        // uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
 
@@ -8879,14 +8898,12 @@ void ImageView::resize_main_window()
         h = (int) uiPrefs->uiWindowYSize->value();
     }
 
-#ifdef _WIN32
-    const unsigned kBorders = 8;
-    const unsigned kMenus = 30;
+#if defined( _WIN32 )
     const unsigned kTitleBar = 24;
-#else
-    const unsigned kBorders = 0;
-    const unsigned kMenus = 30;
+#elif defined(LINUX)
     const unsigned kTitleBar = 0;
+#else
+    const unsigned kTitleBar = 40;
 #endif
 
     int minx, miny, maxw, maxh;
@@ -8930,11 +8947,11 @@ void ImageView::resize_main_window()
     if ( w < 640 )  w = 640;
     if ( h < 535 )  h = 535;
 
-    fltk_main()->fullscreen_off( posX, posY, w, h );
+    fltk_main()->fullscreen_off();
 
     // @BUG: we need to add kTitlebar to avoid bad redraw on windows
     int H = Fl::h();
-#if 1
+#if defined(_WIN32)
    if ( h + kTitleBar <= H - kTitleBar )
    {
        fltk_main()->resize( posX, posY, w, h + kTitleBar );
@@ -8956,10 +8973,10 @@ void ImageView::resize_main_window()
                               int(49 * scale) );
 
    uiMain->uiRegion->layout();
-   uiMain->uiRegion->init_sizes();
+
    uiMain->uiRegion->redraw();
 
-#ifdef LINUX
+#if defined( LINUX )
    fltk_main()->show();
 #endif
 
