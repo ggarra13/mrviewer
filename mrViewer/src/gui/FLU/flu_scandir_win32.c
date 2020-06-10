@@ -49,6 +49,10 @@
 #include <windows.h>
 #include <stdlib.h>
 
+extern "C" {
+#include <libavutil/mem.h>
+}
+
 int flu_scandir(const char *dirname, struct dirent ***namelist,
 	       int (*select)(struct dirent *),
 	       int (*compar)(struct dirent **, struct dirent **)) {
@@ -61,7 +65,7 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
   unsigned long ret;
 
   len    = strlen(dirname);
-  findIn = (char *)malloc((size_t)(len+5));
+  findIn = (char *)av_malloc((size_t)(len+5));
 
   if (!findIn) return -1;
 
@@ -78,7 +82,7 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
       strcpy(d, "\\*");
   }
   if ((h=FindFirstFile(findIn, &find))==INVALID_HANDLE_VALUE) {
-    free(findIn);
+    av_free(findIn);
     ret = GetLastError();
     if (ret != ERROR_NO_MORE_FILES) {
       nDir = -1;
@@ -87,7 +91,7 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
     return nDir;
   }
   do {
-    selectDir=(struct dirent*)malloc(sizeof(struct dirent)+strlen(find.cFileName)+2);
+    selectDir=(struct dirent*)av_malloc(sizeof(struct dirent)+strlen(find.cFileName)+2);
     strcpy(selectDir->d_name, find.cFileName);
     if (find.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
       /* Append a trailing slash to directory names... */
@@ -95,9 +99,9 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
     }
     if (!select || (*select)(selectDir)) {
       if (nDir==NDir) {
-	struct dirent **tempDir = (struct dirent **)calloc(sizeof(struct dirent*), (size_t)(NDir+33));
+	struct dirent **tempDir = (struct dirent **)av_calloc(sizeof(struct dirent*), (size_t)(NDir+33));
 	if (NDir) memcpy(tempDir, dir, sizeof(struct dirent*)*NDir);
-	if (dir) free(dir);
+	if (dir) av_free(dir);
 	dir = tempDir;
 	NDir += 32;
       }
@@ -105,7 +109,7 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
       nDir++;
       dir[nDir] = 0;
     } else {
-      free(selectDir);
+      av_free(selectDir);
     }
   } while (FindNextFile(h, &find));
   ret = GetLastError();
@@ -115,7 +119,7 @@ int flu_scandir(const char *dirname, struct dirent ***namelist,
   }
   FindClose(h);
 
-  free (findIn);
+  av_free (findIn);
 
   if (compar) qsort(dir, (size_t)nDir, sizeof(*dir),
 		    (int(*)(const void*, const void*))compar);

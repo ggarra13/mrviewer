@@ -29,6 +29,9 @@
 #include <sstream>
 #include <iomanip>
 
+extern "C" {
+#include <libavutil/mem.h>
+}
 
 #include "IccTag.h"
 #include "IccUtil.h"

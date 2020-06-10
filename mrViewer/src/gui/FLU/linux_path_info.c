@@ -64,7 +64,7 @@ xdg_user_dir_lookup_with_fallback (const char *type, const char *fallback)
   config_home = getenv ("XDG_CONFIG_HOME");
   if (config_home == NULL || config_home[0] == 0)
     {
-      config_file = (char*) malloc (strlen (home_dir) + strlen ("/.config/user-dirs.dirs") + 1);
+      config_file = (char*) av_malloc (strlen (home_dir) + strlen ("/.config/user-dirs.dirs") + 1);
       if (config_file == NULL)
         goto error;
 
@@ -73,7 +73,7 @@ xdg_user_dir_lookup_with_fallback (const char *type, const char *fallback)
     }
   else
     {
-      config_file = (char*) malloc (strlen (config_home) + strlen ("/user-dirs.dirs") + 1);
+      config_file = (char*) av_malloc (strlen (config_home) + strlen ("/user-dirs.dirs") + 1);
       if (config_file == NULL)
         goto error;
 
@@ -82,7 +82,7 @@ xdg_user_dir_lookup_with_fallback (const char *type, const char *fallback)
     }
 
   file = fopen (config_file, "r");
-  free (config_file);
+  av_free(config_file);
   if (file == NULL)
     goto error;
 

@@ -28,6 +28,6 @@
 
 #if defined(WIN32) || defined(WIN64)
 #  include "mrStackTrace_win32.cpp"
-#elsif LINUX
+#elif LINUX
 #    include "mrStackTrace_linux.cpp"
 #endif

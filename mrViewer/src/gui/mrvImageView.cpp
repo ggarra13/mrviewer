@@ -8019,7 +8019,7 @@ void ImageView::channel( unsigned short c )
     update_shortcuts( fg, channelName.c_str() );
 
     oldChannel = channelName;
-    free( lbl );
+    av_free( lbl );
 
     // When changing channels, the cache may get thrown away.  Reflect that
     // in the timeline.

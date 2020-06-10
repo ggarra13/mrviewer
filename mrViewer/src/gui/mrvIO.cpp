@@ -41,7 +41,7 @@ static char* _alert = NULL;
 
 void alert( const char* str )
 {
-    free( _alert );
+    av_free( _alert );
     if ( str == NULL )
     {
         _alert = NULL;

@@ -1075,7 +1075,7 @@ void ImageBrowser::send_current_image( int64_t idx, const mrv::media& m )
 
     char* lbl = v->get_layer_label( v->channel() );
     sprintf(txt, N_("Channel %d %s"), v->channel(), lbl );
-    free( lbl );
+    av_free( lbl );
     v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );

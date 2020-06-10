@@ -2921,8 +2921,8 @@ bool aviImage::initialize()
             bool ok = YouTube( url, videourl, audiourl, title );
             if ( ok )
             {
-                free( _fileroot );
-                free( _filename ); _filename = NULL;
+                av_free( _fileroot );
+                av_free( _filename ); _filename = NULL;
                 _fileroot = av_strdup( videourl.c_str() );
 
                 if ( !audiourl.empty() )
@@ -2948,7 +2948,7 @@ bool aviImage::initialize()
 
         av_dict_free(&opts);
 
-        free( _fileroot );
+        av_free( _fileroot );
         _fileroot = av_strdup( title.c_str() );
 
         if ( error >= 0 )

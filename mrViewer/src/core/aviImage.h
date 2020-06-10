@@ -161,13 +161,13 @@ public:
 
     inline void subtitle_encoding( const char* f )
     {
-        free( _subtitle_encoding );
+        av_free( _subtitle_encoding );
         _subtitle_encoding = av_strdup( f );
         subtitle_file( _subtitle_file.c_str() );
     }
 
     inline void subtitle_font( const char* f ) {
-        free( _subtitle_font );
+        av_free( _subtitle_font );
         _subtitle_font = av_strdup(f);
         subtitle_file( _subtitle_file.c_str() );
     }

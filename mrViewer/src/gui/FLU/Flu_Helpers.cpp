@@ -81,14 +81,14 @@ static int fl_Full_Find_In_Menu( const Fl_Menu_* menu, const Fl_Menu_Item* items
               // if the item disagrees, then we have a problem
               //if( items[which].submenu() )
               //{
-              //  free(name);
+              //  av_free(name);
               //  return -1;
               //}
               // otherwise the path and the item are in agreement that this is the actual item
               // being searched for, so return it
               //else
                 {
-                  free(name);
+                  av_free(name);
                   return which;
                 }
             }
@@ -147,12 +147,12 @@ int fl_Full_Find_In_Menu( const Fl_Menu_* menu, const char* fullname )
       int val = fl_Full_Find_In_Menu( menu, items, which, correctedName );
       if( val != -1 )
         {
-          free( correctedName );
+          av_free( correctedName );
           return val;
         }
     }
 
-  free( correctedName );
+  av_free( correctedName );
   return -1;
 }
 

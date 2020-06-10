@@ -25,6 +25,9 @@
  *
  */
 
+extern "C" {
+#include <libavutil/mem.h>
+}
 
 #include "mrvOS.h"
 #include "mrvCPU.h"
@@ -330,7 +333,7 @@ std::string GetCpuCaps( CpuCaps *caps)
       while(*ptmpstr == ' ')        // strip leading spaces
         ptmpstr++;
       LOG_INFO(ptmpstr);
-      free(tmpstr);
+      av_free(tmpstr);
 
       LOG_INFO("(Family: " << caps->cpuType
                << ", Model: " << caps->cpuModel
@@ -394,7 +397,7 @@ char *GetCpuFriendlyName(std::ostringstream& out,
   char *ret;
   unsigned int i;
 
-  if (NULL==(ret=(char*)malloc(256))) {
+  if (NULL==(ret=(char*)av_malloc(256))) {
     std::cerr << "Not enough memory" << std::endl;
     exit(1);
   }

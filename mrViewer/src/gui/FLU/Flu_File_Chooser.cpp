@@ -1088,6 +1088,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   }
 
 
+
   pattern( pat );
   default_file_icon( &default_file );
   cd( NULL ); // prime with the current directory
@@ -1107,7 +1108,7 @@ Flu_File_Chooser :: ~Flu_File_Chooser()
   Fl::remove_timeout( Flu_File_Chooser::selectCB );
 
   for( int i = 0; i < locationQuickJump->children(); i++ )
-    free( (void*)locationQuickJump->child(i)->label() );
+    av_free( (void*)locationQuickJump->child(i)->label() );
 
   filelist->clear();
   filedetails->clear();
@@ -1580,7 +1581,7 @@ void Flu_File_Chooser :: updateLocationQJ()
 {
   const char *path = location->value();
   for( int i = 0; i < locationQuickJump->children(); i++ )
-    free( (void*)locationQuickJump->child(i)->label() );
+    av_free( (void*)locationQuickJump->child(i)->label() );
   locationQuickJump->clear();
   fl_font( location->input.textfont(), location->input.textsize() );
   const char *next = path;
@@ -1611,7 +1612,7 @@ void Flu_File_Chooser :: updateLocationQJ()
   b->labeltype( FL_NO_LABEL );
   locationQuickJump->add( b );
   locationQuickJump->resizable( b );
-  free( blank );
+  av_free( blank );
 }
 
 void Flu_File_Chooser :: favoritesCB()
@@ -3040,7 +3041,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
         entryPopup.add( _(contextHandlers[i].name.c_str()), 0, 0, (void*)i );
     }
   if( ext )
-    free( ext );
+    av_free( ext );
 
   entryPopup.position( Fl::event_x(), Fl::event_y() );
   const Fl_Menu_Item *selection = entryPopup.popup();
@@ -4295,9 +4296,11 @@ void Flu_File_Chooser :: cd( const char *path )
 
 
 #ifdef WIN32
+
   if( root )
     return;
 #endif
+
 
   std::string pathbase, fullpath;
   bool isDir, isCurrentFile = false;

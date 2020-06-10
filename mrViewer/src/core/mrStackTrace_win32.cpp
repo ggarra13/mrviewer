@@ -53,6 +53,10 @@
 #include <string>
 #include <algorithm>
 
+extern "C" {
+#include <libavutil/mem.h>
+}
+
 #include "mrStackTrace_win32.h"
 
 #undef fprintf
@@ -234,7 +238,8 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
    int frameNum; // counts walked frames
    DWORD offsetFromSymbol; // tells us how far from the symbol we were
    DWORD symOptions; // symbol handler settings
-   IMAGEHLP_SYMBOL *pSym = (IMAGEHLP_SYMBOL *)malloc( IMGSYMLEN + MAXNAMELEN );
+   IMAGEHLP_SYMBOL *pSym = (IMAGEHLP_SYMBOL *)av_malloc( IMGSYMLEN +
+                                                         MAXNAMELEN );
    char undName[MAXNAMELEN]; // undecorated name
    char undFullName[MAXNAMELEN]; // undecorated name with all shenanigans
    IMAGEHLP_MODULE Module;
@@ -502,7 +507,7 @@ cleanup:
    ResumeThread( hThread );
    // de-init symbol handler etc. (SymCleanup())
    pSC( hProcess );
-   free( pSym );
+   av_free( pSym );
    delete [] tt;
 }
 

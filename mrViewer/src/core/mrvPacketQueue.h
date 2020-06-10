@@ -566,13 +566,13 @@ public:
 
     static void release()
     {
-        free( _loop_end.data );   _loop_end.data = NULL;
-        free( _loop_start.data ); _loop_start.data = NULL;
-        free( _seek_end.data );   _seek_end.data = NULL;
-        free( _preroll.data );    _preroll.data = NULL;
-        free( _jump.data );       _jump.data = NULL;
-        free( _seek.data );       _seek.data = NULL;
-        free( _flush.data );      _flush.data = NULL;
+        av_free( _loop_end.data );   _loop_end.data = NULL;
+        av_free( _loop_start.data ); _loop_start.data = NULL;
+        av_free( _seek_end.data );   _seek_end.data = NULL;
+        av_free( _preroll.data );    _preroll.data = NULL;
+        av_free( _jump.data );       _jump.data = NULL;
+        av_free( _seek.data );       _seek.data = NULL;
+        av_free( _flush.data );      _flush.data = NULL;
 
         inited = false;
     }

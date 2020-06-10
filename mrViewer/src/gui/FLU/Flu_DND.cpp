@@ -33,8 +33,8 @@ void Flu_DND_Event :: clear()
   objUnderMouse = false;
   dragging = false;
   exit = false;
-  if(_text) free(_text); _text = 0;
-  if(_dataType) free(_dataType); _dataType = 0;
+  if(_text) av_free(_text); _text = 0;
+  if(_dataType) av_free(_dataType); _dataType = 0;
   _data = 0;
   _grab_x = _grab_y = _drop_x = _drop_y = 0;
 }
@@ -55,9 +55,9 @@ Flu_DND :: ~Flu_DND()
 {
   // free all the stored types
   if( _thisType )
-    free( _thisType );
+    av_free( _thisType );
   for( int i = 0; i < nTypes; i++ )
-    free( allowedTypes[i] );
+    av_free( allowedTypes[i] );
 }
 
 void Flu_DND :: dnd_allow_type( const char *t )
