@@ -171,12 +171,7 @@ bool AOEngine::open( const unsigned channels,
 
 
         ao_option* options = NULL;
-        int err = ao_append_option( &options, N_("buffer_time"), N_("250") );
-        if ( err == 0 )
-        {
-            LOG_ERROR( _("Memory failure allocating option") );
-            return false;
-        }
+
 
         _device = ao_open_live( _audio_device, &fmt, options );
         ao_free_options( options );

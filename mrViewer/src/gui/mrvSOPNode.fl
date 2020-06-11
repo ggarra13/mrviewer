@@ -14,6 +14,9 @@ decl {\#include "gui/mrvMedia.h"} {public local
 decl {\#include "gui/mrvImageView.h"} {public local
 }
 
+decl {\#include "gui/mrvMainWindow.h"} {public local
+}
+
 class SopNode {open
 } {
   decl {mrv::media m;} {private local
@@ -24,13 +27,13 @@ class SopNode {open
       xywh {969 614 560 325} type Double resizable non_modal visible
     } {
       Fl_Group {} {
-        label Slope open
-        xywh {56 21 210 134} box ROUNDED_BOX
+	label Slope open
+	xywh {56 21 210 134} box ROUNDED_BOX
       } {
-        Fl_Value_Slider SlopeRUI {
-          label R
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	Fl_Value_Slider SlopeRUI {
+	  label R
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -40,12 +43,12 @@ a.slope( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {88 38 160 25} type Horizontal align 4 maximum 10 value 1
-        }
-        Fl_Value_Slider SlopeGUI {
-          label G
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {88 38 160 25} type Horizontal align 4 maximum 10 value 1
+	}
+	Fl_Value_Slider SlopeGUI {
+	  label G
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -55,12 +58,12 @@ a.slope( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {88 72 160 25} type Horizontal align 4 maximum 10 value 1
-        }
-        Fl_Value_Slider SlopeBUI {
-          label B
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {88 72 160 25} type Horizontal align 4 maximum 10 value 1
+	}
+	Fl_Value_Slider SlopeBUI {
+	  label B
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -70,17 +73,17 @@ a.slope( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {88 105 160 25} type Horizontal align 4 maximum 10 value 1
-        }
+	  xywh {88 105 160 25} type Horizontal align 4 maximum 10 value 1
+	}
       }
       Fl_Group {} {
-        label Power open
-        xywh {56 181 210 134} box ROUNDED_BOX
+	label Power open
+	xywh {56 181 210 134} box ROUNDED_BOX
       } {
-        Fl_Value_Slider PowerRUI {
-          label R
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	Fl_Value_Slider PowerRUI {
+	  label R
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -90,12 +93,12 @@ a.power( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {81 199 160 25} type Horizontal align 4 maximum 10 value 1
-        }
-        Fl_Value_Slider PowerGUI {
-          label G
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {81 199 160 25} type Horizontal align 4 maximum 10 value 1
+	}
+	Fl_Value_Slider PowerGUI {
+	  label G
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -105,12 +108,12 @@ a.power( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {80 233 160 25} type Horizontal align 4 maximum 10 value 1
-        }
-        Fl_Value_Slider PowerBUI {
-          label B
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {80 233 160 25} type Horizontal align 4 maximum 10 value 1
+	}
+	Fl_Value_Slider PowerBUI {
+	  label B
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -120,17 +123,17 @@ a.power( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {80 266 160 25} type Horizontal align 4 maximum 10 value 1
-        }
+	  xywh {80 266 160 25} type Horizontal align 4 maximum 10 value 1
+	}
       }
       Fl_Group {} {
-        label Offset open
-        xywh {290 21 210 134} box ROUNDED_BOX
+	label Offset open
+	xywh {290 21 210 134} box ROUNDED_BOX
       } {
-        Fl_Value_Slider OffsetRUI {
-          label R
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	Fl_Value_Slider OffsetRUI {
+	  label R
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -140,12 +143,12 @@ a.offset( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {316 40 169 25} type Horizontal align 4 maximum 10
-        }
-        Fl_Value_Slider OffsetGUI {
-          label G
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {316 40 169 25} type Horizontal align 4 maximum 10
+	}
+	Fl_Value_Slider OffsetGUI {
+	  label G
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -155,12 +158,12 @@ a.offset( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {315 74 170 25} type Horizontal align 4 maximum 10
-        }
-        Fl_Value_Slider OffsetBUI {
-          label B
-          user_data view user_data_type {mrv::ImageView*}
-          callback {mrv::media m = v->foreground();
+	  xywh {315 74 170 25} type Horizontal align 4 maximum 10
+	}
+	Fl_Value_Slider OffsetBUI {
+	  label B
+	  user_data view user_data_type {mrv::ImageView*}
+	  callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -170,13 +173,13 @@ a.offset( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {315 107 170 25} type Horizontal align 4 maximum 10
-        }
+	  xywh {315 107 170 25} type Horizontal align 4 maximum 10
+	}
       }
       Fl_Value_Slider SaturationUI {
-        label Saturation
-        user_data view user_data_type {mrv::ImageView*}
-        callback {mrv::media m = v->foreground();
+	label Saturation
+	user_data view user_data_type {mrv::ImageView*}
+	callback {mrv::media m = v->foreground();
 if (! m ) return;
 
 mrv::CMedia* img = m->image();
@@ -186,7 +189,7 @@ a.saturation( o->value() );
 send_sat( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();} selected
-        xywh {365 215 135 25} type Horizontal align 4 value 1
+	xywh {365 215 135 25} type Horizontal align 4 value 1
       }
     }
     code {refresh();} {}

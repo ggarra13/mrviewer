@@ -189,7 +189,7 @@ namespace {
 namespace mrv {
 
 
-  void set_root_path( const int argc, char** argv )
+  void set_root_path( const int argc, const char** argv )
   {
     char* root = getenv("MRV_ROOT");
 
@@ -215,7 +215,7 @@ namespace mrv {
         root += "/Resources";
 #endif
 
-        putenv( av_strdup( (char*)root.c_str() ) );
+        putenv( strdup( (char*)root.c_str() ) );
       }
   }
 }

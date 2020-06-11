@@ -24,7 +24,7 @@
     <array>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>cin</string>
@@ -32,7 +32,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>dpx</string>
@@ -40,7 +40,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>iff</string>
@@ -49,15 +49,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
-	    <key>CFBundleTypeExtensions</key>
-	    <array>
-		<string>ifl</string>
-	    </array>
-	</dict>
-	<dict>
-	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>jpeg</string>
@@ -67,7 +59,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>exr</string>
@@ -76,7 +68,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>pic</string>
@@ -84,7 +76,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>png</string>
@@ -92,7 +84,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>ppm</string>
@@ -104,6 +96,15 @@
 	<dict>
 	  <key>CFBundleTypeRole</key>
 	  <string>Viewer</string>
+	    <key>CFBundleTypeExtensions</key>
+	    <array>
+		<string>braw</string>
+		<string>r3d</string>
+	    </array>
+	</dict>
+	<dict>
+	  <key>CFBundleTypeRole</key>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>avi</string>
@@ -127,7 +128,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>rla</string>
@@ -136,7 +137,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>sgi</string>
@@ -147,7 +148,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>tga</string>
@@ -155,7 +156,7 @@
 	</dict>
 	<dict>
 	  <key>CFBundleTypeRole</key>
-	  <string>Viewer</string>
+	  <string>Editor</string>
 	    <key>CFBundleTypeExtensions</key>
 	    <array>
 		<string>tiff</string>

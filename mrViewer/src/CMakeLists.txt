@@ -81,11 +81,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   IF(APPLE)
     # Media libraries for Apple
     ADD_DEFINITIONS( -DOSX -DMR_SSE )
-    ADD_COMPILE_OPTIONS( -msse -msse2 -I/usr/local/include/ImageMagick-7/MagickCore )
+    ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
     set( AOENGINE 1 )
     SET(OS_LIBRARIES
-	# AVFoundation
-	# Cocoa
       )
 
 

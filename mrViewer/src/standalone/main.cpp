@@ -34,6 +34,7 @@
 #include <inttypes.h>
 
 #include <FL/fl_ask.H>
+#include <FL/platform.H>  // for fl_open_callback (OSX)
 #include <FL/Fl.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Native_File_Chooser.H>
@@ -157,8 +158,25 @@ void load_new_files( void* s )
    Fl::repeat_timeout( 1.0, load_new_files, ui );
 }
 
-int main( int argc, char** argv )
+
+ViewerUI* global_ui = NULL;
+
+void osx_open_cb(const char *fname)
 {
+    FILE* f = fopen( "/tmp/osx.log", "w" );
+    fprintf( f, "%s\n", fname );
+    fclose(f);
+
+   mrv::LoadList files;
+   files.push_back( mrv::LoadInfo( fname ) );
+   load_files( files, global_ui );
+
+}
+
+int main( int argc, const char** argv )
+{
+
+
     for ( int i = 0; i < argc; ++i )
     {
         if ( strcmp( argv[i], "-d" ) == 0 ||
@@ -255,8 +273,10 @@ int main( int argc, char** argv )
 
       try {
           DBG;
-          ui = new ViewerUI();
+          ui = global_ui = new ViewerUI();
           DBG;
+
+          fl_open_callback(osx_open_cb);
 
           // Make the main view window start with focus
           ui->uiView->take_focus();
@@ -265,6 +285,7 @@ int main( int argc, char** argv )
           if ( argc > 0 )
               mrv::parse_command_line( argc, argv, ui, opts );
           argc = 0;
+
 
 
           lockfile = mrv::lockfile();

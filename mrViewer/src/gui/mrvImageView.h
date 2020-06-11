@@ -55,6 +55,7 @@ namespace mrv {
 
 void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
+class MainWindow;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
@@ -520,10 +521,10 @@ public:
     }
 
     /// Auxiliary function to return viewer's main fltk window
-    Fl_Window* fltk_main();
+    MainWindow* fltk_main();
 
     /// Auxiliary function to return viewer's main fltk window
-    const Fl_Window* fltk_main() const;
+    const MainWindow* fltk_main() const;
 
     void toggle_window( const WindowList idx, const bool force = false );
 

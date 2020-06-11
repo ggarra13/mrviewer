@@ -4355,7 +4355,7 @@ void Flu_File_Chooser :: cd( const char *path )
   int num = fl_filename_list( pathbase.c_str(), &e );
   if ( num < 0 )
   {
-      LOG_ERROR( _("Listing of directory \"") << pathbase << _("\" failed!" ) );
+      LOG_ERROR( _("Listing of directory \"") << pathbase << _("\" failed with error: ") << strerror(errno) << "!" );
   }
 
   if( num > 0 )

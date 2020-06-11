@@ -309,10 +309,11 @@ void parse_directory( const std::string& fileroot,
 //
 // Command-line parser
 //
-void parse_command_line( const int argc, char** argv,
+void parse_command_line( const int argc, const char** argv,
                          ViewerUI* ui,
                          mrv::Options& opts )
 {
+
   // Some default values
   opts.gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
   opts.gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
@@ -429,7 +430,6 @@ void parse_command_line( const int argc, char** argv,
     //
     cmd.parse( argc, argv );
 
-
     //
     // Extract the options
     //
@@ -445,7 +445,21 @@ void parse_command_line( const int argc, char** argv,
     opts.stereo_output = astereo_output.getValue();
     opts.stereo_input = astereo_input.getValue();
 
+#if defined(OSX)
+    stringArray infiles = afiles.getValue();
+    stringArray files;
+    stringArray::const_iterator f = infiles.begin();
+    stringArray::const_iterator fe = infiles.end();
+    for ( ; f != fe; ++f )
+    {
+        if ( f->substr( 0, 5 ) == "-psn_" )
+            continue;
+        files.push_back( *f );
+    }
+#else
     stringArray files = afiles.getValue();
+#endif
+
     size_t normalFiles = files.size();
 
 #ifdef USE_STEREO
@@ -484,7 +498,7 @@ void parse_command_line( const int argc, char** argv,
         std::cin.clear();
     }
 #endif
-    
+
     Preferences::debug = debug;
     if ( debug > 0 ) mrv::io::logbuffer::debug( true );
 

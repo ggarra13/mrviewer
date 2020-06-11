@@ -1583,7 +1583,7 @@ ImageView::~ImageView()
     uiMain = NULL;
 }
 
-Fl_Window* ImageView::fltk_main()
+mrv::MainWindow* ImageView::fltk_main()
 {
     assert( uiMain );
     assert( uiMain->uiMain );
@@ -1591,7 +1591,7 @@ Fl_Window* ImageView::fltk_main()
     return uiMain->uiMain;
 }
 
-const Fl_Window* ImageView::fltk_main() const
+const mrv::MainWindow* ImageView::fltk_main() const
 {
     if ( !uiMain ) return NULL;
     assert( uiMain->uiMain );
@@ -4199,6 +4199,12 @@ int ImageView::leftMouseDown(int x, int y)
     //flags	= 0;
 
     int button = Fl::event_button();
+#ifdef __APPLE__
+    int ev_state = Fl::event_state();
+    // On apple, ctrl+left click as right click
+    if (ev_state == (FL_CTRL | FL_BUTTON1) )
+        button = FL_RIGHT_MOUSE;
+#endif
     if ( button == FL_LEFT_MOUSE )
     {
         flags	= kMouseDown;
@@ -8948,6 +8954,9 @@ void ImageView::resize_main_window()
     if ( h < 535 )  h = 535;
 
     fltk_main()->fullscreen_off();
+#if defined(OSX)
+    fltk_main()->set_icon();
+#endif
 
     // @BUG: we need to add kTitlebar to avoid bad redraw on windows
     int H = Fl::h();

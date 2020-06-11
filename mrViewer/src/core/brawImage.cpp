@@ -730,6 +730,7 @@ namespace mrv {
                     in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
                                                              _audio_channels);
 
+#if !defined(OSX)
                 if ( ! _is_thumbnail )
                 {
                     av_get_channel_layout_string( buf, 256, _audio_channels,
@@ -739,6 +740,7 @@ namespace mrv {
                     IMG_INFO( _("format ") << a.format
                               << _(", frequency ") << frequency );
                 }
+#endif
             }
         }
 

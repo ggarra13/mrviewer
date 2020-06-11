@@ -774,10 +774,24 @@ void  memory_information( uint64_t& totalVirtualMem,
         LOG_ERROR( _("sysctl failed!") );
     }
 
-    totalVirtualMem = 8192;
+    totalPhysMem /= (1024 * 1024);
+
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    vm_statistics_data_t vmstat;
+    if(KERN_SUCCESS != host_statistics(mach_host_self(), HOST_VM_INFO,
+                                       (host_info_t)&vmstat, &count))
+    {
+        LOG_ERROR( _("host_statistics failed!") );
+    }
+    // An error occurred
+    totalVirtualMem = vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count;
+    double wired = vmstat.wire_count;
+    double inactive = vmstat.inactive_count;
+    double free = vmstat.free_count;
+
+    totalVirtualMem /= 1024;
     virtualMemUsed = 0;
-    virtualMemUsedByMe = 0;
-    totalPhysMem = 8192;
+    virtualMemUsedByMe = vmstat.active_count / 1024;
     physMemUsed = 0;
     physMemUsedByMe = 0;
 }  // memory_information

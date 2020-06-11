@@ -5,6 +5,13 @@ v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Bug fixed localization support for MacOSX.
 	- Removed several files and directories which were included twice
 	  in the MacOSX distribution.
+	- Made fullscreen off code much simpler and more solid.
+	- Made fullscreen and presentation modes work on MacOSX.
+	- Simplified buffer_time in AO Engine to its default.
+	- Added virtual memory and physical memory to HUD stats on MacOSX.
+	- Fixed icon changing when returning from fullscreen.
+	- Added support for CTRL+LMB as right click on Macs to support single
+	  button mice.
 
 v5.4.9  - Bug fixes the focus in view window that was effecting shortcuts.
 	  Bug introduced in the now defunct v5.4.8.

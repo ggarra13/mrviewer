@@ -62,8 +62,13 @@ FileUtils.mkdir_p @libdir + "/ao", :mode => 0755
 appdir = dest + "/MacOS"
 app = appdir + "/mrViewer"
 
+@searched_libs = []
 
 def find_lib( lib )
+  if @searched_libs.one? lib
+    return ''
+  end
+  @searched_libs.push lib
   lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
   $stderr.puts lib
   return lib.strip
@@ -114,6 +119,9 @@ def parse( app )
     if lib =~ /@loader_path/
       lib.sub!(/@loader_path\//, "")
       lib = find_lib lib
+      if lib.empty?
+        next
+      end
     end
     rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
     if rpath !~ /^\//
