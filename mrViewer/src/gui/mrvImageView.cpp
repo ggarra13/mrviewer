@@ -7195,7 +7195,8 @@ void ImageView::toggle_presentation()
         resize( X, Y, W, H + int(40 * scale) );  // @BUG: We need +40 to cover bottom strip
 #elif defined(OSX)
         float scale = Fl::screen_scale( window()->screen_num() );
-        resize( X, 0, W, H + int(84 * scale) );  // @BUG: We need +84 to cover bottom strip
+        H = window()->h();
+        resize( X, 0, W, H );
 #endif
         uiMain->uiRegion->init_sizes();
     }
@@ -7211,11 +7212,6 @@ void ImageView::toggle_presentation()
         if ( has_stereo )     uiStereo->show();
         if ( has_sop )        uiSOP->show();
         if ( has_log )        uiLog->show();
-
-        int X = uiMain->uiRegion->x();
-        int Y = uiMain->uiRegion->y();
-        int W = uiMain->uiRegion->w();
-        int H = uiMain->uiRegion->h();
 
 
         float scale = Fl::screen_scale(window()->screen_num());
@@ -8962,6 +8958,8 @@ void ImageView::resize_main_window()
    {
        fltk_main()->resize( posX, posY, w, h + kTitleBar );
    }
+#else
+   fltk_main()->resize( posX, posY, w, h );
 #endif
 
    if ( _interactive )
@@ -8979,6 +8977,7 @@ void ImageView::resize_main_window()
                               int(49 * scale) );
 
    uiMain->uiRegion->layout();
+   uiMain->uiRegion->init_sizes();
 
    uiMain->uiRegion->redraw();
 
