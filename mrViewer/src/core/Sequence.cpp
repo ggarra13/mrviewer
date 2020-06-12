@@ -24,6 +24,9 @@
  *
  *
  */
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64 macro
 
 #include "core/mrvFrame.h"
 
@@ -39,9 +42,6 @@
 #endif
 
 
-#define __STDC_LIMIT_MACROS
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>  // for PRId64 macro
 
 #include <cstdio>
 #include <cstdlib>
