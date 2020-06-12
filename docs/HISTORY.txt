@@ -15,6 +15,8 @@ v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Added support for Drag and Drop on the mrViewer icons of movie files
 	  on Mac OSX.
 	- Added support for file associations on Mac OSX.
+	- Added ffmpeg/exr/ocio/oiio utilities to Mac OSX.  They need to
+	  set the environment variable DYLD_FALLBACK_LIBRARY_PATH to work.
 
 v5.4.9  - Bug fixes the focus in view window that was effecting shortcuts.
 	  Bug introduced in the now defunct v5.4.8.

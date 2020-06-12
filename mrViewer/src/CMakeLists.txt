@@ -521,7 +521,12 @@ ENDIF(UNIX AND NOT APPLE)
 
 
 
-set( FFMPEG_DIR $ENV{FFMPEG_ROOT}/bin )
+if( UNIX )
+  set( FFMPEG_ROOT ${EXE_DIR} )
+else()
+  set( FFMPEG_ROOT $ENV{FFMPEG_ROOT}/bin )
+endif()
+
 FILE(GLOB ffmpegfiles ${FFMPEG_ROOT}/ff* ${FFMPEG_ROOT}/av* ${FFMPEG_ROOT}/sw* ${FFMPEG_ROOT}/pos*)
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
@@ -568,6 +573,9 @@ if (NOT APPLE )
 		 DESTINATION ./ )
 endif()
 
+INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${exrfiles}
+		  ${oiiofiles} ${ociofiles}
+	 DESTINATION bin )
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
