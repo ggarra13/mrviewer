@@ -527,6 +527,8 @@ else()
   set( FFMPEG_ROOT $ENV{FFMPEG_ROOT}/bin )
 endif()
 
+
+FILE(GLOB scriptfiles ${SOURCE_DIR}/bin/*.rb ${SOURCE_DIR}/bin/*.py )
 FILE(GLOB ffmpegfiles ${FFMPEG_ROOT}/ff* ${FFMPEG_ROOT}/av* ${FFMPEG_ROOT}/sw* ${FFMPEG_ROOT}/pos*)
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
@@ -573,7 +575,7 @@ if (NOT APPLE )
 		 DESTINATION ./ )
 endif()
 
-INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${exrfiles}
+INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${scriptfiles} ${exrfiles}
 		  ${oiiofiles} ${ociofiles}
 	 DESTINATION bin )
 INSTALL( TARGETS mrViewer DESTINATION bin )
