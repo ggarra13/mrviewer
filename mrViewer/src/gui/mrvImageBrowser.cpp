@@ -24,15 +24,15 @@
  *
  *
  */
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 
 #include "core/mrvFrame.h"
 
 #include <iostream>
 #include <algorithm>
 
-#define __STDC_LIMIT_MACROS
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>
 
 #include <boost/exception/diagnostic_information.hpp>
 #include <boost/exception_ptr.hpp>

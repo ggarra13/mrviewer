@@ -33,11 +33,15 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
+#ifdef _WIN32
+#include <winsock2.h>
+#endif
+
 #include <FL/fl_ask.H>
-#include <FL/platform.H>  // for fl_open_callback (OSX)
 #include <FL/Fl.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Native_File_Chooser.H>
+#include <FL/platform.H>  // for fl_open_callback (OSX)
 
 // #include <MagickWand/MagickWand.h>
 
@@ -53,7 +57,6 @@ namespace fs = boost::filesystem;
 #include "core/mrvClient.h"
 #include "core/mrvI8N.h"
 #include "core/mrvException.h"
-#include "core/R3dImage.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvCPU.h"
 
@@ -549,7 +552,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     freopen("conout$", "w", stderr);
 #endif
 
-    int rc = main( __argc, __argv );
+    int rc = main( __argc, (const char**) __argv );
 
 #ifdef ALLOC_CONSOLE
     fclose(stdin);
