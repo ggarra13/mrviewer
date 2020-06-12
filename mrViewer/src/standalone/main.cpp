@@ -78,9 +78,9 @@ namespace {
 const char* const kModule = "main";
 }
 
+ViewerUI* ui = NULL;
 
 void load_files( mrv::LoadList& files,
-                 ViewerUI* ui,
                  bool stereo = false,
                  std::string bgimage = "",
                  bool edl = false  )
@@ -94,7 +94,6 @@ void load_files( mrv::LoadList& files,
 
 void load_new_files( void* s )
 {
-    ViewerUI* ui = (ViewerUI*) s;
 
    mrv::LoadList files;
 
@@ -140,7 +139,7 @@ void load_new_files( void* s )
 
    if ( !files.empty() )
    {
-       load_files( files, ui );
+       load_files( files );
 
        std::string lockfile = mrv::lockfile();
 
@@ -155,22 +154,15 @@ void load_new_files( void* s )
        base.set( "pid", 1 );
    }
 
-   Fl::repeat_timeout( 1.0, load_new_files, ui );
+   Fl::repeat_timeout( 1.0, load_new_files );
 }
 
 
-ViewerUI* global_ui = NULL;
 
+mrv::LoadList OSXfiles;
 void osx_open_cb(const char *fname)
 {
-    FILE* f = fopen( "/tmp/osx.log", "w" );
-    fprintf( f, "%s\n", fname );
-    fclose(f);
-
-   mrv::LoadList files;
-   files.push_back( mrv::LoadInfo( fname ) );
-   load_files( files, global_ui );
-
+    OSXfiles.push_back( mrv::LoadInfo( fname ) );
 }
 
 int main( int argc, const char** argv )
@@ -189,8 +181,6 @@ int main( int argc, const char** argv )
         }
     }
 
-    Fl::lock();  // Start locking mechanism
-    Fl::scheme("plastic");
 
 
 #ifdef LINUX
@@ -246,9 +236,6 @@ int main( int argc, const char** argv )
     fs::path dir = file.parent_path().branch_path();
 #ifdef _WIN32
     std::string path = fs::absolute( dir ).generic_string();
-#elif OSX
-    std::string path = fs::canonical( dir ).generic_string();
-    path += "/Resources";
 #else
     std::string path = fs::canonical( dir ).generic_string();
 #endif
@@ -257,6 +244,8 @@ int main( int argc, const char** argv )
     LOG_INFO( _("Looking for translations in ") << path );
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
+
+
 
 
     DBG;
@@ -268,25 +257,29 @@ int main( int argc, const char** argv )
     // Adjust ui based on preferences
     for (;;) {
 
-      ViewerUI* ui = NULL;
       std::string lockfile;
+
+
+      Fl::lock();  // Start locking mechanism
+      Fl::scheme("plastic");
+
+      fl_open_callback( osx_open_cb );
 
       try {
           DBG;
-          ui = global_ui = new ViewerUI();
+              ui = new ViewerUI();
           DBG;
-
-          fl_open_callback(osx_open_cb);
 
           // Make the main view window start with focus
           ui->uiView->take_focus();
 
           mrv::Options opts;
           if ( argc > 0 )
-              mrv::parse_command_line( argc, argv, ui, opts );
+              mrv::parse_command_line( argc, argv, opts );
           argc = 0;
 
-
+          if ( !OSXfiles.empty() )
+              load_files( OSXfiles );
 
           lockfile = mrv::lockfile();
 
@@ -365,7 +358,7 @@ int main( int argc, const char** argv )
 
           // mrv::open_license( argv[0] );
           // mrv::checkout_license();
-          load_files( opts.files, ui, false, opts.bgfile, opts.edl );
+          load_files( opts.files, false, opts.bgfile, opts.edl );
 
           if ( !opts.stereo_input.empty() )
           {
@@ -432,7 +425,7 @@ int main( int argc, const char** argv )
 
             if ( opts.stereo.size() > 1 )
             {
-                load_files( opts.stereo, ui, true );
+                load_files( opts.stereo, true );
             }
 
             if ( idx )
@@ -455,7 +448,7 @@ int main( int argc, const char** argv )
           }
 
           if ( single_instance )
-              Fl::add_timeout( 1.0, load_new_files, ui );
+              Fl::add_timeout( 1.0, load_new_files );
 
           if (opts.host.empty() && opts.port != 0)
           {
@@ -480,7 +473,7 @@ int main( int argc, const char** argv )
           }
 
           if ( single_instance )
-              Fl::add_timeout( 1.0, load_new_files, ui );
+              Fl::add_timeout( 1.0, load_new_files );
 
           ui->uiMain->show();   // so run() does something
 

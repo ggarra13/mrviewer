@@ -1,16 +1,14 @@
 #!/bin/sh
 
-mrv_bundle="`echo "$0" | sed -e 's|/MacOS/mrViewer||'`"
-mrv_resources="$mrv_bundle/Resources"
-mrv_path="$mrv_resources/bin/mrViewer.app/Contents"
-mrv_dynlib="$mrv_path/Resources/lib"
 
-# echo "running $0"
-# echo "mrv_bundle = $mrv_bundle"
-# echo "mrv_resources = $mrv_resources"
-# echo "mrv_path=$mrv_path"
-# echo "dynpath=$mrv_dynlib"
+dir="`echo \"$0\" | sed -e 's|/MacOS/mrViewer||'`"
+rsrc="$dir/Resources/"
+dynlib="$rsrc/lib"
 
-export DYLD_FALLBACK_LIBRARY_PATH=$mrv_dynlib
+# echo "$0"
+# echo "dir=$dir"
+# echo "rsrc=$rsrc"
+# echo "dynlib=$dynlib"
 
-exec "$mrv_path/MacOS/mrViewer" "$@"
+export DYLD_FALLBACK_LIBRARY_PATH=$dynlib
+exec "$rsrc/bin/mrViewer"

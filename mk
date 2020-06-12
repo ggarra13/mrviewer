@@ -316,6 +316,10 @@ run_cmake()
 	installdir=/usr/local
     fi
 
+    if [[ $OS == Darwin* ]]; then
+	installdir=~/mrv
+    fi
+
     if [[ $OS == Windows* ]]; then
 	installdir="D:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
 	if [[ $CMAKE_BUILD_TYPE == Debug ]]; then

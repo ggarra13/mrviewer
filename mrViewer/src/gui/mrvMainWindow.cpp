@@ -66,6 +66,7 @@ namespace {
 namespace mrv {
 
 
+
     using namespace R3DSDK;
 
 MainWindow::MainWindow( int W, int H, const char* title ) :
@@ -73,6 +74,7 @@ Fl_Double_Window( W, H, title )
 {
     xclass("mrViewer");
     set_icon();
+
     const char* r = getenv( "MRV_ROOT" );
     if ( r )
     {

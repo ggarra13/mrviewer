@@ -98,8 +98,8 @@ end
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
-elsif not @debug == "Debug"
-  $stderr.puts "Invalid option: #$0 [Debug|Release]"
+elsif not @debug == "Debug" and not @debug == "Release"
+  $stderr.puts "Invalid option: #@debug [Debug|Release]"
   exit 1
 end
 
@@ -139,7 +139,7 @@ def copy_third_party( root, dest )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
                     "#{dest}/lib" )
   elsif dest =~ /Darwin/
-    `#{root}/utils/maclibs.rb`
+    `#{root}/utils/maclibs.rb #@debug`
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
@@ -165,7 +165,7 @@ if kernel !~ /MINGW.*/
   if build =~ /Linux/
     dest = "#{build}/#@debug"
   elsif build =~ /Darwin/
-    dest = "#{build}/#@debug/bin/mrViewer.app/Contents/Resources"
+    dest = "#{build}/#@debug"
     FileUtils.mkdir_p dest
     FileUtils.mkdir_p ( dest + "/lib/" )
   end

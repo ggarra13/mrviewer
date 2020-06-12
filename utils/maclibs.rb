@@ -5,6 +5,7 @@ require 'optparse'
 
 EXCLUDE = %w(
 libz.*
+libclang_rt.asan_osx_dynamic.*
 )
 
 @options = { :verbose => false, :libs_only => false }
@@ -31,8 +32,8 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
-elsif not @debug == "Debug"
-  $stderr.puts "Invalid option: #$0 [Debug|Release]"
+elsif not @debug == "Debug" and not @debug == "Release"
+  $stderr.puts "Invalid option: #@debug [Debug|Release]"
   exit 1
 end
 
@@ -50,16 +51,14 @@ if kernel !~ /Darwin/
   exit 1
 end
 
-dest = "#{build}/#@debug/bin/mrViewer.app/Contents"
+dest = "#{build}/#@debug/"
 FileUtils.mkdir_p dest, :mode => 0755
-rsrcs = dest + "/Resources"
-FileUtils.mkdir_p rsrcs, :mode => 0755
-@libdir = rsrcs + "/lib"
+@libdir = dest + "/lib"
 FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
 FileUtils.mkdir_p @libdir + "/ao", :mode => 0755
 
-appdir = dest + "/MacOS"
+appdir = dest + "/bin"
 app = appdir + "/mrViewer"
 
 @searched_libs = []
@@ -78,7 +77,7 @@ def copy( file, dest )
   begin
     file =~ /\/([\w\d\-_\.]+\.dylib)/
     libname = $1
-    if file =~ /ao/
+    if file =~ /ao$/
       libname = "ao"
     end
     newlib = "#{dest}/#{libname}"

@@ -341,6 +341,7 @@ static std::string expandVariables( const std::string &s,
 
 Preferences::Preferences( PreferencesUI* uiPrefs )
 {
+
     bool ok;
     int version;
     int tmp;

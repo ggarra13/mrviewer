@@ -8954,9 +8954,6 @@ void ImageView::resize_main_window()
     if ( h < 535 )  h = 535;
 
     fltk_main()->fullscreen_off();
-#if defined(OSX)
-    fltk_main()->set_icon();
-#endif
 
     // @BUG: we need to add kTitlebar to avoid bad redraw on windows
     int H = Fl::h();

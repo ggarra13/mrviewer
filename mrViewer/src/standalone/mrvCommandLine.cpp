@@ -55,6 +55,8 @@ const char* kModule = "parser";
 
 #define USE_STEREO
 
+extern ViewerUI* ui;
+
 namespace mrv {
 
 typedef std::vector<unsigned> UnsignedArray;
@@ -310,7 +312,6 @@ void parse_directory( const std::string& fileroot,
 // Command-line parser
 //
 void parse_command_line( const int argc, const char** argv,
-                         ViewerUI* ui,
                          mrv::Options& opts )
 {
 

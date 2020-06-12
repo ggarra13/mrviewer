@@ -35,7 +35,6 @@ class ViewerUI;
 
 namespace mrv {
 
-
 class MainWindow : public Fl_Double_Window
 {
 public:
@@ -76,7 +75,3 @@ protected:
 
 
 #endif  // mrvMainWindow_h
-
-
-
-

@@ -470,7 +470,7 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-ADD_EXECUTABLE( mrViewer MACOSX_BUNDLE WIN32 ${SOURCES} )
+ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
 
 #
@@ -498,22 +498,28 @@ IF(WIN64) # defined in FindBuilDir
 ENDIF(WIN64)
 
 IF(APPLE)
-	SET(EXE_DIR /System/Applications )
+	SET(EXE_DIR /usr/local/bin )
 ELSE()
 	SET(EXE_DIR /usr/local/bin )
 ENDIF()
 
-IF(UNIX)
+SET( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
+
+IF(UNIX AND NOT APPLE)
 	IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
-	  FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
-	    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+	  FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+		DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	ELSE()
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
-	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
-	      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+	  FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+		DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	ENDIF()
-ENDIF(UNIX)
+ENDIF(UNIX AND NOT APPLE)
+
+
+
+
 
 set( FFMPEG_DIR $ENV{FFMPEG_ROOT}/bin )
 FILE(GLOB ffmpegfiles ${FFMPEG_ROOT}/ff* ${FFMPEG_ROOT}/av* ${FFMPEG_ROOT}/sw* ${FFMPEG_ROOT}/pos*)
@@ -527,9 +533,9 @@ FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/../otio ${CMAKE_BINARY_DIR}/../otio/adapters )
-FILE(GLOB otiofiles "${CMAKE_CURRENT_SOURCE_DIR}/../../otio/adapters/*" )
+FILE(GLOB otiofiles "${SOURCE_DIR}/otio/adapters/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/adapters )
-FILE(GLOB otiofiles "${CMAKE_CURRENT_SOURCE_DIR}/../../otio/*" )
+FILE(GLOB otiofiles "${SOURCE_DIR}/otio/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/ )
 IF (WIN32 OR WIN64)
   FILE(GLOB dllfiles ${EXE_DIR}/*.dll ${CMAKE_BINARY_DIR}/../lib/ )
@@ -543,21 +549,19 @@ ELSE(WIN32 OR WIN64)
 ENDIF(WIN32 OR WIN64)
 
 
-SET( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
-
 FILE( COPY ${SOURCE_DIR}/colors/
       DESTINATION ${CMAKE_BINARY_DIR}/../colors )
 
-if (NOT APPLE )
   INSTALL( DIRECTORY ${SOURCE_DIR}/colors/ DESTINATION colors )
   INSTALL( DIRECTORY ${SOURCE_DIR}/ctl/ DESTINATION ctl )
   INSTALL( DIRECTORY ${SOURCE_DIR}/shaders/ DESTINATION shaders )
   INSTALL( DIRECTORY ${SOURCE_DIR}/otio/ DESTINATION otio )
   INSTALL( DIRECTORY ${SOURCE_DIR}/ocio/ DESTINATION ocio )
-  INSTALL( DIRECTORY ${SOURCE_DIR}/docs/en DESTINATION docs/en )
-  INSTALL( DIRECTORY ${SOURCE_DIR}/docs/es DESTINATION docs/es )
-  INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+  INSTALL( DIRECTORY ${SOURCE_DIR}/docs/en DESTINATION docs )
+  INSTALL( DIRECTORY ${SOURCE_DIR}/docs/es DESTINATION docs )
+  # INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
   INSTALL( DIRECTORY ${SOURCE_DIR}/share/ DESTINATION share )
+if (NOT APPLE )
   INSTALL( FILES
 		 ${SOURCE_DIR}/docs/HISTORY.txt
 		 ${SOURCE_DIR}/docs/LICENSE.txt
