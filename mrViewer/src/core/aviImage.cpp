@@ -3306,6 +3306,8 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( !saving() )
     {
+
+#if 0
         if ( ( got_audio ||
                in_audio_store( f + _audio_offset - _start_number) ) &&
              ( got_video || in_video_store( f - _start_number ) ) )
@@ -3320,6 +3322,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
             return true;
         }
+#endif
 
 
         if ( f != _expected && (!got_video || !got_audio || !got_subtitle) )
