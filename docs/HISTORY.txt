@@ -1,6 +1,9 @@
 v5.5.1  - Bug fixed memory querying routines on Mac OSX.
 	- Bug fixed audio scrubbing by not jumping video frames.
 	- Bug fixed HDRI movie playback when colorspace is unspecified.
+	- Made default YUV Conversion to use YUV Hint in file.  This should
+	  take effect in all preference files saved previously to this
+	  release.
 
 v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Bug fixed audio playback on MacOSX to play always in stereo.

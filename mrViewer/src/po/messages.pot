@@ -20,7 +20,7 @@
 #: core/CMedia.cpp:2669 core/CMedia.cpp:2678 core/CMedia.cpp:2680
 #: core/CMedia.cpp:2686 core/CMedia.cpp:2692 core/CMedia.cpp:2696
 #: core/CMedia.cpp:2700 core/CMedia.cpp:3299 core/CMedia.cpp:3341
-#: core/CMedia_audio.cpp:845 core/aviImage.cpp:205 core/exrImage.cpp:1054
+#: core/CMedia_audio.cpp:845 core/aviImage.cpp:208 core/exrImage.cpp:1054
 #: core/exrImage.cpp:1056 core/exrImage.cpp:3051 core/exrImage.cpp:3080
 #: core/slateImage.cpp:242 core/wandImage.cpp:496 core/wandImage.cpp:1183
 #: core/wandImage.cpp:1461 core/wandImage.cpp:1616 core/brawImage.cpp:481
@@ -99,13 +99,13 @@
 #: gui/mrvPreferences.cpp:1098 gui/mrvPreferences.cpp:1100
 #: gui/mrvPreferences.cpp:1119 gui/mrvPreferences.cpp:1121
 #: gui/mrvPreferences.cpp:1123 gui/mrvPreferences.cpp:1125
-#: gui/mrvPreferences.cpp:1723 gui/mrvPreferences.cpp:1724
-#: gui/mrvPreferences.cpp:1828 gui/mrvPreferences.cpp:1829
-#: gui/mrvPreferences.cpp:2242 gui/mrvSave.cpp:276 gui/mrvTimecode.cpp:373
-#: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:332 gui/mrvVersion.cpp:343
+#: gui/mrvPreferences.cpp:1724 gui/mrvPreferences.cpp:1725
+#: gui/mrvPreferences.cpp:1829 gui/mrvPreferences.cpp:1830
+#: gui/mrvPreferences.cpp:2243 gui/mrvSave.cpp:276 gui/mrvTimecode.cpp:373
+#: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:336 gui/mrvVersion.cpp:347
 #: video/mrvGLEngine.cpp:3843 video/mrvGLEngine.cpp:3901
-#: video/mrvGLEngine.cpp:3925 video/mrvGLEngine.cpp:4165
-#: video/mrvGLEngine.cpp:4166 video/mrvGLShader.cpp:64
+#: video/mrvGLEngine.cpp:3925 video/mrvGLEngine.cpp:4167
+#: video/mrvGLEngine.cpp:4168 video/mrvGLShader.cpp:64
 #: video/mrvGLLut3d.cpp:1178 video/mrvGLLut3d.cpp:1223
 #: video/mrvGLLut3d.cpp:1402 video/mrvGLLut3d.cpp:1403 video/mrvGLShape.cpp:102
 #: video/mrvGLShape.cpp:106 video/mrvGLShape.cpp:134 video/mrvGLShape.cpp:152
@@ -115,15 +115,15 @@
 #: standalone/mrvCommandLine.cpp:383 standalone/mrvCommandLine.cpp:400
 #: standalone/mrvCommandLine.cpp:401 standalone/mrvCommandLine.cpp:405
 #: standalone/mrvCommandLine.cpp:406 standalone/mrvCommandLine.cpp:582
-#: standalone/mrvCommandLine.cpp:606 standalone/main.cpp:85
-#: standalone/main.cpp:122 standalone/main.cpp:123 standalone/main.cpp:192
-#: standalone/main.cpp:199
+#: standalone/mrvCommandLine.cpp:606 standalone/main.cpp:88
+#: standalone/main.cpp:125 standalone/main.cpp:126 standalone/main.cpp:195
+#: standalone/main.cpp:202
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-12 18:39-0300\n"
+"POT-Creation-Date: 2020-06-14 20:03-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -134,8 +134,8 @@ msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:536 gui/FLU/Flu_File_Chooser.cpp:582
 #: gui/mrvHotkey.cpp:500 gui/mrvColorInfo.cpp:762 gui/mrvColorInfo.cpp:764
-#: gui/mrvColorInfo.cpp:766 gui/mrvColorInfo.cpp:864 gui/mrvVersion.cpp:361
-#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:412
+#: gui/mrvColorInfo.cpp:766 gui/mrvColorInfo.cpp:864 gui/mrvVersion.cpp:365
+#: gui/mrvVersion.cpp:366 gui/mrvVersion.cpp:416
 msgid "\t"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgstr ""
 msgid "\t@c"
 msgstr ""
 
-#: core/aviImage.cpp:3244
+#: core/aviImage.cpp:3246
 #, c-format
 msgid ""
 "\t[avi] FETCH A f: %05<PRId64> audio pts: %07<PRId64> dts: %07<PRId64>   as "
@@ -193,14 +193,14 @@ msgid ""
 "frame: %05<PRId64>\n"
 msgstr ""
 
-#: core/aviImage.cpp:3165
+#: core/aviImage.cpp:3167
 #, c-format
 msgid ""
 "\t[avi] FETCH V f: %05<PRId64> video pts: %07<PRId64> dts: %07<PRId64> %c as "
 "frame: %05<PRId64>\n"
 msgstr ""
 
-#: core/aviImage.cpp:2799
+#: core/aviImage.cpp:2801
 #, c-format
 msgid ""
 "\t[avi]POP. A f: %05<PRId64> audio pts: %07<PRId64> dts: %07<PRId64> as "
@@ -246,7 +246,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2428
+#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2430
 msgid ""
 "\n"
 "\n"
@@ -280,9 +280,9 @@ msgstr ""
 #: core/CMedia.cpp:4360 core/CMedia.cpp:4420 core/CMedia.cpp:4468
 #: core/CMedia_audio.cpp:1202 core/CMedia_audio.cpp:2279
 #: core/CMedia_audio.cpp:2281 core/CMedia_audio.cpp:2299
-#: core/CMedia_audio.cpp:2362 core/CMedia_audio.cpp:2479 core/aviImage.cpp:724
-#: core/aviImage.cpp:2193 core/aviImage.cpp:3863 core/aviImage.cpp:3875
-#: core/aviImage.cpp:3892 core/aviImage.cpp:3941 core/aviImage.cpp:3998
+#: core/CMedia_audio.cpp:2362 core/CMedia_audio.cpp:2479 core/aviImage.cpp:727
+#: core/aviImage.cpp:2195 core/aviImage.cpp:3868 core/aviImage.cpp:3880
+#: core/aviImage.cpp:3897 core/aviImage.cpp:3946 core/aviImage.cpp:4003
 #: core/aviImage_save.cpp:592 core/aviImage_save.cpp:598
 #: core/aviImage_save.cpp:1328 core/hdrImage.cpp:254 core/hdrImage.cpp:262
 #: core/hdrImage.cpp:265 core/hdrImage.cpp:272 core/slateImage.cpp:369
@@ -298,8 +298,8 @@ msgstr ""
 #: gui/mrvImageView.cpp:3731 gui/mrvImageView.cpp:3929
 #: gui/mrvImageView.cpp:3974 gui/mrvImageView.cpp:3981
 #: gui/mrvImageBrowser.cpp:1252 gui/mrvImageBrowser.cpp:2356
-#: gui/mrvImageBrowser.cpp:2417 gui/mrvVersion.cpp:120 gui/mrvVersion.cpp:452
-#: gui/mrvVersion.cpp:458 gui/mrvVersion.cpp:536 gui/mrvVersion.cpp:541
+#: gui/mrvImageBrowser.cpp:2417 gui/mrvVersion.cpp:124 gui/mrvVersion.cpp:456
+#: gui/mrvVersion.cpp:462 gui/mrvVersion.cpp:540 gui/mrvVersion.cpp:545
 #: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:188
 #: video/mrvGLEngine.cpp:245 video/mrvGLEngine.cpp:262
 #: video/mrvGLEngine.cpp:291 video/mrvGLEngine.cpp:293
@@ -313,16 +313,16 @@ msgstr ""
 #: video/mrvGLEngine.cpp:1582 video/mrvGLEngine.cpp:1693
 #: video/mrvGLEngine.cpp:1766 video/mrvGLEngine.cpp:2494
 #: video/mrvGLEngine.cpp:2538 video/mrvGLEngine.cpp:2606
-#: video/mrvGLEngine.cpp:4134 video/mrvGLEngine.cpp:4172
+#: video/mrvGLEngine.cpp:4136 video/mrvGLEngine.cpp:4174
 #: video/mrvGLQuad.cpp:827 video/mrvGLLut3d.cpp:1012 video/mrvGLLut3d.cpp:1019
 #: standalone/mrvCommandLine.cpp:119 standalone/mrvCommandLine.cpp:631
 #, c-format
 msgid " "
 msgstr ""
 
-#: gui/mrvVersion.cpp:358 gui/mrvVersion.cpp:359 gui/mrvVersion.cpp:360
-#: gui/mrvVersion.cpp:410 gui/mrvVersion.cpp:411 gui/mrvVersion.cpp:413
-#: gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:415
+#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:363 gui/mrvVersion.cpp:364
+#: gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:415 gui/mrvVersion.cpp:417
+#: gui/mrvVersion.cpp:418 gui/mrvVersion.cpp:419
 msgid " \t"
 msgstr ""
 
@@ -2425,7 +2425,7 @@ msgstr ""
 msgid "   NAN  "
 msgstr ""
 
-#: core/aviImage.cpp:3361
+#: core/aviImage.cpp:3366
 msgid "   expected: "
 msgstr ""
 
@@ -2891,7 +2891,7 @@ msgstr ""
 msgid "  uint next = (frame_idx + 1) %% %d;\n"
 msgstr ""
 
-#: core/aviImage.cpp:1818 core/R3dImage.cpp:889 core/brawImage.cpp:1036
+#: core/aviImage.cpp:1821 core/R3dImage.cpp:889 core/brawImage.cpp:1036
 msgid " != "
 msgstr ""
 
@@ -3006,10 +3006,10 @@ msgstr ""
 msgid " %g %g"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2363 core/aviImage.cpp:1820 core/aviImage.cpp:3922
+#: core/CMedia_audio.cpp:2363 core/aviImage.cpp:1823 core/aviImage.cpp:3927
 #: core/R3dImage.cpp:891 core/brawImage.cpp:1038 core/brawImage.cpp:1567
 #: core/mrvColorProfile.cpp:250 gui/FLU/Flu_File_Chooser.cpp:3648
-#: gui/mrvPreferences.cpp:1657 gui/mrvPreferences.cpp:1688
+#: gui/mrvPreferences.cpp:1658 gui/mrvPreferences.cpp:1689
 #: video/mrvGLEngine.cpp:184 video/mrvGLEngine.cpp:187
 msgid " ("
 msgstr ""
@@ -3032,7 +3032,7 @@ msgstr ""
 msgid " (NC="
 msgstr ""
 
-#: core/CMedia.cpp:4362 core/aviImage.cpp:3942
+#: core/CMedia.cpp:4362 core/aviImage.cpp:3947
 msgid " (bytes:"
 msgstr ""
 
@@ -3092,7 +3092,7 @@ msgstr ""
 msgid " ,"
 msgstr ""
 
-#: core/YouTube.cpp:206 core/aviImage.cpp:632 gui/mrvMedia.cpp:52
+#: core/YouTube.cpp:206 core/aviImage.cpp:635 gui/mrvMedia.cpp:52
 #: gui/mrvImageView.cpp:3930
 msgid " - "
 msgstr ""
@@ -3447,13 +3447,13 @@ msgstr ""
 msgid " Color Area Selection"
 msgstr ""
 
-#: core/aviImage.cpp:2988
+#: core/aviImage.cpp:2990
 msgid " Could not open file. "
 msgstr ""
 
 #: core/CMedia.cpp:3817 core/CMedia.cpp:4359 core/CMedia_audio.cpp:2280
-#: core/CMedia_audio.cpp:2361 core/aviImage.cpp:3862 core/aviImage.cpp:3891
-#: core/aviImage.cpp:3940 core/brawImage.cpp:1535
+#: core/CMedia_audio.cpp:2361 core/aviImage.cpp:3867 core/aviImage.cpp:3896
+#: core/aviImage.cpp:3945 core/brawImage.cpp:1535
 msgid " D:"
 msgstr ""
 
@@ -3461,12 +3461,12 @@ msgstr ""
 msgid " DECODE THREAD "
 msgstr ""
 
-#: core/aviImage.cpp:3279
+#: core/aviImage.cpp:3281
 msgid " DTS: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:263 core/CMedia_audio.cpp:483 core/aviImage.cpp:907
-#: core/aviImage.cpp:1085
+#: core/CMedia_audio.cpp:263 core/CMedia_audio.cpp:483 core/aviImage.cpp:910
+#: core/aviImage.cpp:1088
 msgid " E: "
 msgstr ""
 
@@ -3478,7 +3478,7 @@ msgstr ""
 msgid " EXPECTED "
 msgstr ""
 
-#: core/aviImage.cpp:3278
+#: core/aviImage.cpp:3280
 msgid " EXPECTED: "
 msgstr ""
 
@@ -3506,7 +3506,7 @@ msgstr ""
 msgid " Move Picture"
 msgstr ""
 
-#: core/aviImage.cpp:2446
+#: core/aviImage.cpp:2448
 msgid " No audio or video stream in file"
 msgstr ""
 
@@ -3515,7 +3515,7 @@ msgid " Pencil"
 msgstr ""
 
 #: core/CMedia.cpp:3817 core/CMedia.cpp:4359 core/CMedia_audio.cpp:2280
-#: core/aviImage.cpp:3862 core/aviImage.cpp:3891 core/aviImage.cpp:3940
+#: core/aviImage.cpp:3867 core/aviImage.cpp:3896 core/aviImage.cpp:3945
 #: core/brawImage.cpp:1535
 msgid " S:"
 msgstr ""
@@ -3537,8 +3537,8 @@ msgstr ""
 msgid " UF: %<PRId64> "
 msgstr ""
 
-#: core/CMedia.cpp:4359 core/aviImage.cpp:3862 core/aviImage.cpp:3891
-#: core/aviImage.cpp:3940 core/brawImage.cpp:1535
+#: core/CMedia.cpp:4359 core/aviImage.cpp:3867 core/aviImage.cpp:3896
+#: core/aviImage.cpp:3945 core/brawImage.cpp:1535
 msgid " V:"
 msgstr ""
 
@@ -3570,15 +3570,15 @@ msgstr ""
 msgid " _dts: "
 msgstr ""
 
-#: core/CMedia.cpp:2859 core/aviImage.cpp:3414
+#: core/CMedia.cpp:2859 core/aviImage.cpp:3419
 msgid " _expected: "
 msgstr ""
 
-#: core/CMedia.cpp:2858 core/aviImage.cpp:3413
+#: core/CMedia.cpp:2858 core/aviImage.cpp:3418
 msgid " _frame: "
 msgstr ""
 
-#: core/aviImage.cpp:1086
+#: core/aviImage.cpp:1089
 msgid " _frame_offset "
 msgstr ""
 
@@ -3586,7 +3586,7 @@ msgstr ""
 msgid " already created: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1245 gui/mrvPreferences.cpp:2516
+#: gui/mrvPreferences.cpp:1246 gui/mrvPreferences.cpp:2517
 msgid " alt"
 msgstr ""
 
@@ -3623,7 +3623,7 @@ msgstr ""
 msgid " audio stores #"
 msgstr ""
 
-#: gui/mrvVersion.cpp:536
+#: gui/mrvVersion.cpp:540
 msgid " bits - v"
 msgstr ""
 
@@ -3648,7 +3648,7 @@ msgstr ""
 msgid " chooser "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1241 gui/mrvPreferences.cpp:2514
+#: gui/mrvPreferences.cpp:1242 gui/mrvPreferences.cpp:2515
 msgid " ctrl"
 msgstr ""
 
@@ -3656,7 +3656,7 @@ msgstr ""
 msgid " data "
 msgstr ""
 
-#: core/aviImage.cpp:1528 core/aviImage.cpp:4318
+#: core/aviImage.cpp:1531 core/aviImage.cpp:4323
 msgid " data: "
 msgstr ""
 
@@ -3672,7 +3672,7 @@ msgstr ""
 msgid " does not exist or no directory"
 msgstr ""
 
-#: core/aviImage.cpp:1527 core/aviImage.cpp:1821 core/aviImage.cpp:4317
+#: core/aviImage.cpp:1530 core/aviImage.cpp:1824 core/aviImage.cpp:4322
 #: core/R3dImage.cpp:892 core/brawImage.cpp:1039
 msgid " dts: "
 msgstr ""
@@ -3685,7 +3685,7 @@ msgstr ""
 msgid " end: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:341 core/aviImage.cpp:3118
+#: core/CMedia_audio.cpp:341 core/aviImage.cpp:3120
 msgid " error: "
 msgstr ""
 
@@ -3701,7 +3701,7 @@ msgstr ""
 msgid " failed with "
 msgstr ""
 
-#: core/aviImage.cpp:3292
+#: core/aviImage.cpp:3294
 msgid " failed."
 msgstr ""
 
@@ -3729,7 +3729,7 @@ msgstr ""
 msgid " for channel.  Maximum: "
 msgstr ""
 
-#: core/aviImage.cpp:1308 core/aviImage.cpp:1324
+#: core/aviImage.cpp:1311 core/aviImage.cpp:1327
 msgid " for codec "
 msgstr ""
 
@@ -3737,7 +3737,7 @@ msgstr ""
 msgid " for color_space"
 msgstr ""
 
-#: core/aviImage.cpp:4047 core/R3dImage.cpp:1069 core/brawImage.cpp:1494
+#: core/aviImage.cpp:4052 core/R3dImage.cpp:1069 core/brawImage.cpp:1494
 msgid " for frame "
 msgstr ""
 
@@ -3786,19 +3786,19 @@ msgstr ""
 msgid " got audio "
 msgstr ""
 
-#: core/aviImage.cpp:3331
+#: core/aviImage.cpp:3336
 msgid " gotA:"
 msgstr ""
 
-#: core/aviImage.cpp:3362
+#: core/aviImage.cpp:3367
 msgid " gotA: "
 msgstr ""
 
-#: core/aviImage.cpp:3331
+#: core/aviImage.cpp:3336
 msgid " gotV:"
 msgstr ""
 
-#: core/aviImage.cpp:3362
+#: core/aviImage.cpp:3367
 msgid " gotV: "
 msgstr ""
 
@@ -3810,7 +3810,7 @@ msgstr ""
 msgid " hz."
 msgstr ""
 
-#: standalone/main.cpp:343
+#: standalone/main.cpp:346
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -3848,11 +3848,11 @@ msgstr ""
 msgid " is_seek "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1262 gui/mrvPreferences.cpp:2522
+#: gui/mrvPreferences.cpp:1263 gui/mrvPreferences.cpp:2523
 msgid " key"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1266 gui/mrvPreferences.cpp:2524
+#: gui/mrvPreferences.cpp:1267 gui/mrvPreferences.cpp:2525
 msgid " key2"
 msgstr ""
 
@@ -3864,7 +3864,7 @@ msgstr ""
 msgid " max frames: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1250 gui/mrvPreferences.cpp:2518
+#: gui/mrvPreferences.cpp:1251 gui/mrvPreferences.cpp:2519
 msgid " meta"
 msgstr ""
 
@@ -3872,7 +3872,7 @@ msgstr ""
 msgid " moved to frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1890 core/aviImage.cpp:1860 core/R3dImage.cpp:930
+#: core/CMedia_audio.cpp:1890 core/aviImage.cpp:1863 core/R3dImage.cpp:930
 #: core/brawImage.cpp:1077
 msgid " not found"
 msgstr ""
@@ -3889,19 +3889,19 @@ msgstr ""
 msgid " not found on disk for "
 msgstr ""
 
-#: core/aviImage.cpp:4198
+#: core/aviImage.cpp:4203
 msgid " not yet supported"
 msgstr ""
 
-#: core/aviImage.cpp:982
+#: core/aviImage.cpp:985
 msgid " offset "
 msgstr ""
 
-#: core/aviImage.cpp:999
+#: core/aviImage.cpp:1002
 msgid " offset: "
 msgstr ""
 
-#: gui/mrvVersion.cpp:576 gui/mrvVersion.cpp:580 gui/mrvVersion.cpp:584
+#: gui/mrvVersion.cpp:580 gui/mrvVersion.cpp:584 gui/mrvVersion.cpp:588
 msgid " or later"
 msgstr ""
 
@@ -3909,8 +3909,8 @@ msgstr ""
 msgid " pos: "
 msgstr ""
 
-#: core/CMedia.cpp:4321 core/CMedia.cpp:4339 core/aviImage.cpp:1525
-#: core/aviImage.cpp:4316
+#: core/CMedia.cpp:4321 core/CMedia.cpp:4339 core/aviImage.cpp:1528
+#: core/aviImage.cpp:4321
 msgid " pts: "
 msgstr ""
 
@@ -3943,7 +3943,7 @@ msgstr ""
 msgid " shader file "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1257 gui/mrvPreferences.cpp:2520
+#: gui/mrvPreferences.cpp:1258 gui/mrvPreferences.cpp:2521
 msgid " shift"
 msgstr ""
 
@@ -3959,7 +3959,7 @@ msgstr ""
 msgid " start "
 msgstr ""
 
-#: core/aviImage.cpp:4061
+#: core/aviImage.cpp:4066
 msgid " status: "
 msgstr ""
 
@@ -3974,11 +3974,11 @@ msgstr ""
 msgid " stopped? "
 msgstr ""
 
-#: core/aviImage.cpp:3941
+#: core/aviImage.cpp:3946
 msgid " subtitle packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3863
+#: core/aviImage.cpp:3868
 msgid " subtitle stores  #"
 msgstr ""
 
@@ -3986,7 +3986,7 @@ msgstr ""
 msgid " tag ("
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1271 gui/mrvPreferences.cpp:2526
+#: gui/mrvPreferences.cpp:1272 gui/mrvPreferences.cpp:2527
 msgid " text"
 msgstr ""
 
@@ -4003,7 +4003,7 @@ msgstr ""
 msgid " too big for images in reel "
 msgstr ""
 
-#: core/aviImage.cpp:1525 gui/mrvImageView.cpp:3341
+#: core/aviImage.cpp:1528 gui/mrvImageView.cpp:3341
 msgid " type "
 msgstr ""
 
@@ -4019,7 +4019,7 @@ msgstr ""
 msgid " used: "
 msgstr ""
 
-#: core/aviImage.cpp:1819 core/R3dImage.cpp:890 core/brawImage.cpp:1037
+#: core/aviImage.cpp:1822 core/R3dImage.cpp:890 core/brawImage.cpp:1037
 msgid " video frame, cache "
 msgstr ""
 
@@ -4027,7 +4027,7 @@ msgstr ""
 msgid " video packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3892 core/brawImage.cpp:1537
+#: core/aviImage.cpp:3897 core/brawImage.cpp:1537
 msgid " video stores  #"
 msgstr ""
 
@@ -5514,11 +5514,11 @@ msgstr ""
 msgid "$@\tc #585858"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1519
+#: gui/mrvPreferences.cpp:1520
 msgid "${"
 msgstr ""
 
-#: core/Sequence.cpp:1140 gui/mrvPreferences.cpp:1518
+#: core/Sequence.cpp:1140 gui/mrvPreferences.cpp:1519
 msgid "%"
 msgstr ""
 
@@ -5852,11 +5852,11 @@ msgstr ""
 msgid "%5d, %5d"
 msgstr ""
 
-#: core/aviImage.cpp:2895 gui/mrvImageInformation.cpp:1696
+#: core/aviImage.cpp:2897 gui/mrvImageInformation.cpp:1696
 #: gui/mrvImageInformation.cpp:1745 gui/mrvImageInformation.cpp:4390
 #: gui/mrvMediaTrack.cpp:843 gui/mrvMediaTrack.cpp:856 gui/mrvTimecode.cpp:296
-#: standalone/main.cpp:322 standalone/main.cpp:325 standalone/main.cpp:328
-#: standalone/main.cpp:331
+#: standalone/main.cpp:325 standalone/main.cpp:328 standalone/main.cpp:331
+#: standalone/main.cpp:334
 #, c-format
 msgid "%<PRId64>"
 msgstr ""
@@ -5924,8 +5924,8 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:4302 gui/mrvImageInformation.cpp:4425
 #: gui/mrvImageInformation.cpp:4445 gui/mrvImageInformation.cpp:4465
 #: gui/mrvImageInformation.cpp:4485 gui/mrvImageInformation.cpp:4506
-#: gui/mrvImageInformation.cpp:4519 gui/mrvPreferences.cpp:1846
-#: standalone/mrvCommandLine.cpp:261 standalone/main.cpp:468
+#: gui/mrvImageInformation.cpp:4519 gui/mrvPreferences.cpp:1847
+#: standalone/mrvCommandLine.cpp:261 standalone/main.cpp:471
 #, c-format
 msgid "%d"
 msgstr ""
@@ -5999,7 +5999,7 @@ msgstr ""
 msgid "%d:%d:%d %d:%d:%d"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1933
+#: gui/mrvPreferences.cpp:1934
 #, c-format
 msgid "%f"
 msgstr ""
@@ -6522,7 +6522,7 @@ msgstr ""
 msgid "&@\tc #525252"
 msgstr ""
 
-#: core/aviImage.cpp:682 core/aviImage.cpp:718 core/aviImage_save.cpp:246
+#: core/aviImage.cpp:685 core/aviImage.cpp:721 core/aviImage_save.cpp:246
 #: core/aviImage_save.cpp:1383 core/mrvACES.cpp:124 core/mrvACES.cpp:169
 #: core/mrvACES.cpp:218 gui/mrvMedia.cpp:173 gui/mrvImageBrowser.cpp:777
 #: gui/mrvImageBrowser.cpp:1883 gui/mrvImageInformation.cpp:583
@@ -6852,51 +6852,51 @@ msgstr ""
 msgid "(60hz HDTV)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:555
+#: gui/mrvVersion.cpp:559
 msgid "(C) 2000-2019 Bill Spitzak & others"
 msgstr ""
 
-#: gui/mrvVersion.cpp:574
+#: gui/mrvVersion.cpp:578
 msgid "(C) 2000-2019 Fabrice Bellard, et al."
 msgstr ""
 
-#: gui/mrvVersion.cpp:618
+#: gui/mrvVersion.cpp:622
 msgid "(C) 2003-2019 - The International Color Consortium"
 msgstr ""
 
-#: gui/mrvVersion.cpp:586
+#: gui/mrvVersion.cpp:590
 msgid "(C) 2003-2019 Larry Gritz, et al. "
 msgstr ""
 
-#: gui/mrvVersion.cpp:578
+#: gui/mrvVersion.cpp:582
 msgid "(C) 2005-2019 Industrial Light & Magic"
 msgstr ""
 
-#: gui/mrvVersion.cpp:582
+#: gui/mrvVersion.cpp:586
 msgid "(C) 2005-2019 Sony Pictures Imageworks"
 msgstr ""
 
-#: gui/mrvVersion.cpp:545
+#: gui/mrvVersion.cpp:549
 msgid "(C) 2007-2019 Film Aura, LLC."
 msgstr ""
 
-#: gui/mrvVersion.cpp:625
+#: gui/mrvVersion.cpp:629
 msgid "(C) 2008-2019 Jean-loup Gailly and Mark Adler"
 msgstr ""
 
-#: gui/mrvVersion.cpp:621
+#: gui/mrvVersion.cpp:625
 msgid "(C) 2008-2019 LibRaw LLC (info@libraw.org)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:609
+#: gui/mrvVersion.cpp:613
 msgid "(C) 2014-2019 AMPAS"
 msgstr ""
 
-#: gui/mrvVersion.cpp:605
+#: gui/mrvVersion.cpp:609
 msgid "(C) 2019 AMPAS"
 msgstr ""
 
-#: gui/mrvVersion.cpp:559
+#: gui/mrvVersion.cpp:563
 msgid "(C) SGI, Lev Povalahev, Milan Ikits"
 msgstr ""
 
@@ -6942,7 +6942,7 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr ""
 
-#: standalone/main.cpp:303
+#: standalone/main.cpp:306
 msgid "(Remove if mrViewer does not start)"
 msgstr ""
 
@@ -6984,8 +6984,8 @@ msgstr ""
 #: core/CMedia_audio.cpp:2416 core/CMedia_audio.cpp:2421 core/oiioImage.cpp:161
 #: core/picImage.cpp:451 core/picImage.cpp:467 core/mrvCPU.cpp:340
 #: core/mrvCPU.cpp:431 core/mrvCPU.cpp:433 core/mrvColorProfile.cpp:217
-#: gui/mrvHotkey.cpp:128 gui/mrvColorInfo.cpp:541 gui/mrvPreferences.cpp:1657
-#: gui/mrvPreferences.cpp:1688 video/mrvGLEngine.cpp:184
+#: gui/mrvHotkey.cpp:128 gui/mrvColorInfo.cpp:541 gui/mrvPreferences.cpp:1658
+#: gui/mrvPreferences.cpp:1689 video/mrvGLEngine.cpp:184
 #: video/mrvGLEngine.cpp:187
 msgid ")"
 msgstr ""
@@ -7044,7 +7044,7 @@ msgstr ""
 msgid ")\tc #FFE67D"
 msgstr ""
 
-#: core/aviImage.cpp:3922 core/brawImage.cpp:1568
+#: core/aviImage.cpp:3927 core/brawImage.cpp:1568
 msgid ") "
 msgstr ""
 
@@ -7104,7 +7104,7 @@ msgstr ""
 msgid ") bytes"
 msgstr ""
 
-#: core/aviImage.cpp:1820 core/R3dImage.cpp:891 core/brawImage.cpp:1038
+#: core/aviImage.cpp:1823 core/R3dImage.cpp:891 core/brawImage.cpp:1038
 msgid ") cache size: "
 msgstr ""
 
@@ -7176,7 +7176,7 @@ msgstr ""
 msgid ")/"
 msgstr ""
 
-#: core/CMedia.cpp:4362 core/CMedia_audio.cpp:2363 core/aviImage.cpp:3943
+#: core/CMedia.cpp:4362 core/CMedia_audio.cpp:2363 core/aviImage.cpp:3948
 msgid "): "
 msgstr ""
 
@@ -7274,7 +7274,7 @@ msgstr ""
 msgid "*\tc #FFFFFF"
 msgstr ""
 
-#: core/CMedia.cpp:4414 core/aviImage.cpp:3954
+#: core/CMedia.cpp:4414 core/aviImage.cpp:3959
 msgid "* "
 msgstr ""
 
@@ -7386,7 +7386,7 @@ msgstr ""
 msgid "*;|[]?"
 msgstr ""
 
-#: core/CMedia.cpp:4450 core/CMedia_audio.cpp:2457 core/aviImage.cpp:3980
+#: core/CMedia.cpp:4450 core/CMedia_audio.cpp:2457 core/aviImage.cpp:3985
 #: core/iffImage.cpp:325
 msgid "+"
 msgstr ""
@@ -7651,7 +7651,7 @@ msgstr ""
 msgid "+BAD SEEK END:"
 msgstr ""
 
-#: core/CMedia.cpp:4450 core/aviImage.cpp:3980
+#: core/CMedia.cpp:4450 core/aviImage.cpp:3985
 msgid "+ERROR:"
 msgstr ""
 
@@ -7774,18 +7774,18 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:1152 core/exrImage.cpp:556 core/stubImage.cpp:991
 #: core/rawImage.cpp:328 core/brawImage.cpp:1290 gui/mrvColorInfo.cpp:539
-#: gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:598 video/mrvGLEngine.cpp:3232
+#: gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:602 video/mrvGLEngine.cpp:3232
 #: video/mrvGLEngine.cpp:3233 video/mrvGLEngine.cpp:3241
 #: video/mrvGLEngine.cpp:3242 video/mrvGLEngine.cpp:3243
 #: video/mrvGLEngine.cpp:3244 video/mrvGLEngine.cpp:3245
 #: video/mrvGLEngine.cpp:3249 video/mrvGLEngine.cpp:3250
 #: video/mrvGLEngine.cpp:3251 video/mrvGLEngine.cpp:3252
-#: video/mrvGLEngine.cpp:3253 video/mrvGLEngine.cpp:4056
-#: video/mrvGLEngine.cpp:4060 video/mrvGLEngine.cpp:4064
-#: video/mrvGLEngine.cpp:4067 standalone/main.cpp:375 standalone/main.cpp:376
-#: standalone/main.cpp:413 standalone/main.cpp:414 standalone/main.cpp:415
+#: video/mrvGLEngine.cpp:3253 video/mrvGLEngine.cpp:4057
+#: video/mrvGLEngine.cpp:4061 video/mrvGLEngine.cpp:4065
+#: video/mrvGLEngine.cpp:4068 standalone/main.cpp:378 standalone/main.cpp:379
 #: standalone/main.cpp:416 standalone/main.cpp:417 standalone/main.cpp:418
-#: standalone/main.cpp:419
+#: standalone/main.cpp:419 standalone/main.cpp:420 standalone/main.cpp:421
+#: standalone/main.cpp:422
 msgid ", "
 msgstr ""
 
@@ -7876,7 +7876,7 @@ msgstr ""
 msgid ", only got "
 msgstr ""
 
-#: core/CMedia.cpp:3406 core/CMedia_audio.cpp:646 core/aviImage.cpp:2429
+#: core/CMedia.cpp:3406 core/CMedia_audio.cpp:646 core/aviImage.cpp:2431
 msgid ", type "
 msgstr ""
 
@@ -7928,7 +7928,7 @@ msgstr ""
 msgid ",.'.@.).A !.,.%.~.{.].H N ).+. .>."
 msgstr ""
 
-#: core/CMedia_audio.cpp:2286 core/aviImage.cpp:1819 core/aviImage.cpp:3903
+#: core/CMedia_audio.cpp:2286 core/aviImage.cpp:1822 core/aviImage.cpp:3908
 #: core/R3dImage.cpp:890 core/brawImage.cpp:1037 core/brawImage.cpp:1548
 #: gui/mrvTimecode.cpp:375 gui/mrvTimecode.cpp:483
 #: standalone/mrvCommandLine.cpp:553
@@ -8053,7 +8053,7 @@ msgstr ""
 msgid "-      c #6BB58C"
 msgstr ""
 
-#: gui/mrvVersion.cpp:120
+#: gui/mrvVersion.cpp:124
 msgid "- Built "
 msgstr ""
 
@@ -8103,7 +8103,7 @@ msgstr ""
 msgid "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK"
 msgstr ""
 
-#: core/aviImage.cpp:3413
+#: core/aviImage.cpp:3418
 msgid "------- FRAME DONE _dts: "
 msgstr ""
 
@@ -8123,11 +8123,11 @@ msgstr ""
 msgid "------------"
 msgstr ""
 
-#: core/aviImage.cpp:3330 core/aviImage.cpp:3360 core/aviImage.cpp:3363
+#: core/aviImage.cpp:3335 core/aviImage.cpp:3365 core/aviImage.cpp:3368
 msgid "------------------------------------------------------"
 msgstr ""
 
-#: standalone/main.cpp:175
+#: standalone/main.cpp:178
 msgid "--debug"
 msgstr ""
 
@@ -8171,7 +8171,7 @@ msgstr ""
 msgid "-.Q.1 H C.H.R.6.R.S.w.-.N.T.T.s U."
 msgstr ""
 
-#: standalone/main.cpp:174
+#: standalone/main.cpp:177
 msgid "-d"
 msgstr ""
 
@@ -8195,7 +8195,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1395 gui/FLU/Flu_File_Chooser.cpp:3683
 #: gui/FLU/Flu_File_Chooser.cpp:4036 gui/FLU/Flu_File_Chooser.cpp:4371
 #: gui/mrvImageView.cpp:8425 gui/mrvPreferences.cpp:546
-#: gui/mrvPreferences.cpp:987 gui/mrvVersion.cpp:549 gui/mrvVersion.cpp:550
+#: gui/mrvPreferences.cpp:987 gui/mrvVersion.cpp:553 gui/mrvVersion.cpp:554
 #: video/mrvGLEngine.cpp:549 video/mrvGLLut3d.cpp:1188
 #: video/mrvGLLut3d.cpp:1232 video/mrvGLLut3d.cpp:1303
 #: video/mrvGLLut3d.cpp:1314
@@ -8288,7 +8288,7 @@ msgstr ""
 msgid ".\tc #FFFFFF"
 msgstr ""
 
-#: standalone/main.cpp:302
+#: standalone/main.cpp:305
 msgid ". "
 msgstr ""
 
@@ -8871,7 +8871,7 @@ msgstr ""
 msgid ".R"
 msgstr ""
 
-#: core/aviImage.cpp:317
+#: core/aviImage.cpp:320
 msgid ".RMF"
 msgstr ""
 
@@ -8951,7 +8951,7 @@ msgstr ""
 msgid ".bit"
 msgstr ""
 
-#: core/aviImage.cpp:2888 core/Sequence.cpp:246
+#: core/aviImage.cpp:2890 core/Sequence.cpp:246
 msgid ".bmp"
 msgstr ""
 
@@ -8980,7 +8980,7 @@ msgstr ""
 msgid ".divx"
 msgstr ""
 
-#: core/CMedia.cpp:4224 core/aviImage.cpp:2889 core/wandImage.cpp:1607
+#: core/CMedia.cpp:4224 core/aviImage.cpp:2891 core/wandImage.cpp:1607
 #: core/oiioImage.cpp:111 core/Sequence.cpp:246
 msgid ".dpx"
 msgstr ""
@@ -9046,11 +9046,11 @@ msgstr ""
 msgid ".iff"
 msgstr ""
 
-#: core/aviImage.cpp:2891 core/Sequence.cpp:245 gui/mrvSave.cpp:79
+#: core/aviImage.cpp:2893 core/Sequence.cpp:245 gui/mrvSave.cpp:79
 msgid ".jpeg"
 msgstr ""
 
-#: core/aviImage.cpp:2890 core/Sequence.cpp:244 gui/mrvSave.cpp:79
+#: core/aviImage.cpp:2892 core/Sequence.cpp:244 gui/mrvSave.cpp:79
 msgid ".jpg"
 msgstr ""
 
@@ -9159,7 +9159,7 @@ msgstr ""
 msgid ".pic"
 msgstr ""
 
-#: core/aviImage.cpp:2892 core/oiioImage.cpp:394 core/Sequence.cpp:244
+#: core/aviImage.cpp:2894 core/oiioImage.cpp:394 core/Sequence.cpp:244
 #: gui/mrvSave.cpp:79
 msgid ".png"
 msgstr ""
@@ -9214,7 +9214,7 @@ msgstr ""
 msgid ".shmap"
 msgstr ""
 
-#: core/aviImage.cpp:327 core/Sequence.cpp:211
+#: core/aviImage.cpp:330 core/Sequence.cpp:211
 msgid ".snd"
 msgstr ""
 
@@ -9328,9 +9328,9 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:4276 gui/FLU/Flu_File_Chooser.cpp:4279
 #: gui/FLU/Flu_File_Chooser.cpp:4747 gui/mrvImageView.cpp:4569
 #: gui/mrvImageBrowser.cpp:2525 gui/mrvImageInformation.cpp:714
-#: gui/mrvPreferences.cpp:991 gui/mrvPreferences.cpp:1651
-#: gui/mrvPreferences.cpp:1682 gui/mrvPreferences.cpp:1787
-#: standalone/mrvRoot.cpp:136
+#: gui/mrvPreferences.cpp:991 gui/mrvPreferences.cpp:1652
+#: gui/mrvPreferences.cpp:1683 gui/mrvPreferences.cpp:1788
+#: gui/mrvVersion.cpp:777 standalone/mrvRoot.cpp:136
 #: /Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:208
 msgid "/"
 msgstr ""
@@ -9545,7 +9545,7 @@ msgstr ""
 msgid "/lib/ao/plugins-4"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1487
+#: gui/mrvPreferences.cpp:1488
 msgid "/ocio/nuke-default/config.ocio"
 msgstr ""
 
@@ -9557,7 +9557,7 @@ msgstr ""
 msgid "/proc/self/exe"
 msgstr ""
 
-#: gui/mrvVersion.cpp:684 gui/mrvVersion.cpp:700
+#: gui/mrvVersion.cpp:688 gui/mrvVersion.cpp:704
 msgid "/proc/self/status"
 msgstr ""
 
@@ -9565,7 +9565,7 @@ msgstr ""
 msgid "/shaders"
 msgstr ""
 
-#: standalone/main.cpp:242
+#: standalone/main.cpp:245
 msgid "/share/locale"
 msgstr ""
 
@@ -9729,7 +9729,7 @@ msgstr ""
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr ""
 
-#: gui/mrvVersion.cpp:253 gui/mrvVersion.cpp:380
+#: gui/mrvVersion.cpp:257 gui/mrvVersion.cpp:384
 msgid "000"
 msgstr ""
 
@@ -9764,9 +9764,9 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:219 core/CMedia_audio.cpp:220
 #: core/CMedia_audio.cpp:918 core/CMedia_audio.cpp:919
-#: core/CMedia_audio.cpp:920 core/aviImage.cpp:834 core/aviImage.cpp:2942
-#: core/aviImage.cpp:2943 core/aviImage.cpp:2944 gui/mrvColorInfo.cpp:814
-#: standalone/main.cpp:124 standalone/main.cpp:126
+#: core/CMedia_audio.cpp:920 core/aviImage.cpp:837 core/aviImage.cpp:2944
+#: core/aviImage.cpp:2945 core/aviImage.cpp:2946 gui/mrvColorInfo.cpp:814
+#: standalone/main.cpp:127 standalone/main.cpp:129
 msgid "1"
 msgstr ""
 
@@ -10046,8 +10046,8 @@ msgstr ""
 msgid "16-bits"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2248 gui/mrvPreferences.cpp:2455
-#: gui/mrvPreferences.cpp:2463
+#: gui/mrvPreferences.cpp:2249 gui/mrvPreferences.cpp:2456
+#: gui/mrvPreferences.cpp:2464
 msgid "16bits"
 msgstr ""
 
@@ -10544,7 +10544,7 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-#: gui/mrvVersion.cpp:125
+#: gui/mrvVersion.cpp:129
 msgid "32"
 msgstr ""
 
@@ -10566,8 +10566,8 @@ msgstr ""
 msgid "32-bits"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2249 gui/mrvPreferences.cpp:2456
-#: gui/mrvPreferences.cpp:2464
+#: gui/mrvPreferences.cpp:2250 gui/mrvPreferences.cpp:2457
+#: gui/mrvPreferences.cpp:2465
 msgid "32bits"
 msgstr ""
 
@@ -10968,13 +10968,13 @@ msgstr ""
 msgid "5.\tc #BEA26D"
 msgstr ""
 
-#: gui/mrvVersion.cpp:119
-msgid "5.5.0"
+#: gui/mrvVersion.cpp:123
+msgid "5.5.1"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:152
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1266
-#: standalone/main.cpp:125 standalone/main.cpp:127
+#: standalone/main.cpp:128 standalone/main.cpp:130
 msgid "50"
 msgstr ""
 
@@ -11118,7 +11118,7 @@ msgstr ""
 msgid "601"
 msgstr ""
 
-#: gui/mrvVersion.cpp:123
+#: gui/mrvVersion.cpp:127
 msgid "64"
 msgstr ""
 
@@ -11408,12 +11408,12 @@ msgstr ""
 msgid "8bit"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:783 gui/mrvPreferences.cpp:2336
+#: gui/mrvPreferences.cpp:783 gui/mrvPreferences.cpp:2337
 msgid "8bit_caches"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2247 gui/mrvPreferences.cpp:2454
-#: gui/mrvPreferences.cpp:2462
+#: gui/mrvPreferences.cpp:2248 gui/mrvPreferences.cpp:2455
+#: gui/mrvPreferences.cpp:2463
 msgid "8bits"
 msgstr ""
 
@@ -11543,8 +11543,8 @@ msgid "96x96x96"
 msgstr ""
 
 #: core/mrvColorProfile.cpp:260 core/mrvColorProfile.cpp:261
-#: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:452
-#: gui/mrvVersion.cpp:458 video/mrvGLLut3d.cpp:1389
+#: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:456
+#: gui/mrvVersion.cpp:462 video/mrvGLLut3d.cpp:1389
 msgid ":"
 msgstr ""
 
@@ -11600,9 +11600,9 @@ msgstr ""
 msgid ":\tc #FFFFFF"
 msgstr ""
 
-#: core/CMedia.cpp:3819 core/CMedia_audio.cpp:2282 core/aviImage.cpp:632
-#: core/aviImage.cpp:983 core/aviImage.cpp:999 core/aviImage.cpp:3864
-#: core/aviImage.cpp:3893 core/wandImage.cpp:90 core/rawImage.cpp:64
+#: core/CMedia.cpp:3819 core/CMedia_audio.cpp:2282 core/aviImage.cpp:635
+#: core/aviImage.cpp:986 core/aviImage.cpp:1002 core/aviImage.cpp:3869
+#: core/aviImage.cpp:3898 core/wandImage.cpp:90 core/rawImage.cpp:64
 #: core/rawImage.cpp:147 core/brawImage.cpp:1538 core/mrSocket.cpp:151
 #: gui/FLU/Flu_File_Chooser.cpp:2445 gui/FLU/Flu_File_Chooser.cpp:2454
 #: gui/FLU/Flu_File_Chooser.cpp:2460 gui/FLU/Flu_File_Chooser.cpp:2464
@@ -11733,20 +11733,20 @@ msgstr ""
 msgid ":/"
 msgstr ""
 
-#: core/aviImage.cpp:714
+#: core/aviImage.cpp:717
 msgid ":charenc="
 msgstr ""
 
-#: core/aviImage.cpp:716
+#: core/aviImage.cpp:719
 msgid ":force_style='FontName="
 msgstr ""
 
-#: core/aviImage.cpp:504
+#: core/aviImage.cpp:507
 #, c-format
 msgid ":frame_rate=%d/%d"
 msgstr ""
 
-#: gui/mrvCTLBrowser.cpp:89 gui/mrvFileRequester.cpp:75 gui/mrvVersion.cpp:592
+#: gui/mrvCTLBrowser.cpp:89 gui/mrvFileRequester.cpp:75 gui/mrvVersion.cpp:596
 msgid ";"
 msgstr ""
 
@@ -12066,7 +12066,7 @@ msgstr ""
 msgid "<PRId64>"
 msgstr ""
 
-#: core/CMedia.cpp:4445 core/aviImage.cpp:3975
+#: core/CMedia.cpp:4445 core/aviImage.cpp:3980
 msgid "<SEEK END:"
 msgstr ""
 
@@ -12074,7 +12074,7 @@ msgstr ""
 msgid "<SEEK END: "
 msgstr ""
 
-#: core/CMedia.cpp:4455 core/CMedia_audio.cpp:2462 core/aviImage.cpp:3985
+#: core/CMedia.cpp:4455 core/CMedia_audio.cpp:2462 core/aviImage.cpp:3990
 msgid "<SEEK:"
 msgstr ""
 
@@ -12275,8 +12275,8 @@ msgid "=d"
 msgstr ""
 
 #: core/CMedia.cpp:4445 core/CMedia.cpp:4455 core/CMedia_audio.cpp:2446
-#: core/CMedia_audio.cpp:2450 core/CMedia_audio.cpp:2462 core/aviImage.cpp:3975
-#: core/aviImage.cpp:3985
+#: core/CMedia_audio.cpp:2450 core/CMedia_audio.cpp:2462 core/aviImage.cpp:3980
+#: core/aviImage.cpp:3990
 msgid ">"
 msgstr ""
 
@@ -12816,7 +12816,7 @@ msgstr ""
 msgid "A \tc #FFE7EC"
 msgstr ""
 
-#: gui/mrvVersion.cpp:631
+#: gui/mrvVersion.cpp:635
 msgid "A big thank you goes to Greg Ercolano who helped with"
 msgstr ""
 
@@ -12912,21 +12912,21 @@ msgstr ""
 msgid "ACEScsc.ACEScg_to_ACES"
 msgstr ""
 
-#: core/CMedia.cpp:3803 core/CMedia.cpp:3807 core/aviImage.cpp:3533
-#: core/aviImage.cpp:3537
+#: core/CMedia.cpp:3803 core/CMedia.cpp:3807 core/aviImage.cpp:3538
+#: core/aviImage.cpp:3542
 msgid "AFTER HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4411 core/aviImage.cpp:4415
+#: core/aviImage.cpp:4416 core/aviImage.cpp:4420
 msgid "AFTER PREROLL"
 msgstr ""
 
-#: core/aviImage.cpp:1090 core/aviImage.cpp:1094 core/aviImage.cpp:1098
-#: core/aviImage.cpp:1102
+#: core/aviImage.cpp:1093 core/aviImage.cpp:1097 core/aviImage.cpp:1101
+#: core/aviImage.cpp:1105
 msgid "AFTER SEEK"
 msgstr ""
 
-#: core/CMedia_audio.cpp:483 core/aviImage.cpp:1085
+#: core/CMedia_audio.cpp:483 core/aviImage.cpp:1088
 msgid "AFTER SEEK:  D: "
 msgstr ""
 
@@ -12942,11 +12942,11 @@ msgstr ""
 msgid "AM"
 msgstr ""
 
-#: gui/mrvVersion.cpp:603
+#: gui/mrvVersion.cpp:607
 msgid "AMPAS ACES v1.0 or later"
 msgstr ""
 
-#: gui/mrvVersion.cpp:607
+#: gui/mrvVersion.cpp:611
 msgid "AMPAS CTL v1.5 or later"
 msgstr ""
 
@@ -12997,7 +12997,7 @@ msgstr ""
 msgid "AVCHD Video"
 msgstr ""
 
-#: core/aviImage.cpp:338
+#: core/aviImage.cpp:341
 msgid "AVI "
 msgstr ""
 
@@ -13121,7 +13121,7 @@ msgstr ""
 msgid "All Possible"
 msgstr ""
 
-#: gui/mrvVersion.cpp:587
+#: gui/mrvVersion.cpp:591
 msgid "All rights reserved."
 msgstr ""
 
@@ -13262,7 +13262,7 @@ msgstr ""
 msgid "Analog SECAM/PAL-N"
 msgstr ""
 
-#: standalone/main.cpp:341
+#: standalone/main.cpp:344
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -13311,11 +13311,11 @@ msgid "Area Select Tool"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2645
-#: core/CMedia.cpp:154 gui/mrvPreferences.cpp:1206
+#: core/CMedia.cpp:154 gui/mrvPreferences.cpp:1207
 msgid "Arial"
 msgstr ""
 
-#: gui/mrvVersion.cpp:194
+#: gui/mrvVersion.cpp:198
 msgid "Arnold's TX"
 msgstr ""
 
@@ -13375,7 +13375,7 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: core/CMedia_audio.cpp:740 core/aviImage.cpp:2855 core/aviImage_save.cpp:509
+#: core/CMedia_audio.cpp:740 core/aviImage.cpp:2857 core/aviImage_save.cpp:509
 #: core/aviImage_save.cpp:997 core/R3dImage.cpp:399 core/brawImage.cpp:738
 msgid "Audio "
 msgstr ""
@@ -13447,7 +13447,7 @@ msgstr ""
 msgid "AudioVolume"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1651 core/aviImage.cpp:1152
+#: core/CMedia_audio.cpp:1651 core/aviImage.cpp:1155
 msgid "Audios #"
 msgstr ""
 
@@ -13475,7 +13475,7 @@ msgstr ""
 msgid "Auto load images as they change on disk"
 msgstr ""
 
-#: gui/mrvVersion.cpp:198
+#: gui/mrvVersion.cpp:202
 msgid "Autodesk Maya IFF"
 msgstr ""
 
@@ -13495,7 +13495,7 @@ msgstr ""
 msgid "B"
 msgstr ""
 
-#: gui/mrvVersion.cpp:360
+#: gui/mrvVersion.cpp:364
 msgid "B\t"
 msgstr ""
 
@@ -13599,11 +13599,11 @@ msgstr ""
 msgid "B44A"
 msgstr ""
 
-#: core/aviImage.cpp:3448 core/aviImage.cpp:3452
+#: core/aviImage.cpp:3453 core/aviImage.cpp:3457
 msgid "BEFORE HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4333 core/aviImage.cpp:4337
+#: core/aviImage.cpp:4338 core/aviImage.cpp:4342
 msgid "BEFORE PREROLL"
 msgstr ""
 
@@ -13611,11 +13611,11 @@ msgstr ""
 msgid "BEFORE QUEUE:  D: "
 msgstr ""
 
-#: core/aviImage.cpp:1053 core/aviImage.cpp:1057
+#: core/aviImage.cpp:1056 core/aviImage.cpp:1060
 msgid "BEFORE SEEK"
 msgstr ""
 
-#: core/aviImage.cpp:907
+#: core/aviImage.cpp:910
 msgid "BEFORE SEEK:  D: "
 msgstr ""
 
@@ -13672,7 +13672,7 @@ msgstr ""
 msgid "BRAW Loading"
 msgstr ""
 
-#: gui/mrvVersion.cpp:233
+#: gui/mrvVersion.cpp:237
 msgid "BT"
 msgstr ""
 
@@ -13680,7 +13680,7 @@ msgstr ""
 msgid "BT1886"
 msgstr ""
 
-#: core/aviImage.cpp:2655
+#: core/aviImage.cpp:2657
 msgid "BT2020"
 msgstr ""
 
@@ -13700,12 +13700,12 @@ msgstr ""
 msgid "BT470BG"
 msgstr ""
 
-#: core/aviImage.cpp:2650
+#: core/aviImage.cpp:2652
 msgid "BT601"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:121
-#: core/aviImage.cpp:142 core/aviImage.cpp:2645 video/mrvGLQuad.cpp:1162
+#: core/aviImage.cpp:142 core/aviImage.cpp:2647 video/mrvGLQuad.cpp:1162
 #: video/mrvGLCube.cpp:256 video/mrvGLSphere.cpp:258
 msgid "BT709"
 msgstr ""
@@ -13842,11 +13842,11 @@ msgstr ""
 msgid "Blue value of image pixel under mouse."
 msgstr ""
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:500 standalone/main.cpp:520
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:500 standalone/main.cpp:523
 msgid "Boost exception: "
 msgstr ""
 
-#: gui/mrvVersion.cpp:549
+#: gui/mrvVersion.cpp:553
 msgid "Boost v"
 msgstr ""
 
@@ -13859,7 +13859,7 @@ msgid "Bottom Field"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:394 standalone/main.cpp:414
+#: standalone/main.cpp:397 standalone/main.cpp:417
 msgid "Bottom/top"
 msgstr ""
 
@@ -13904,10 +13904,10 @@ msgstr ""
 #: core/mrvCPU.cpp:40 core/mrvColorProfile.cpp:32 core/mrvColorOps.cpp:107
 #: core/mrvColorOps.cpp:108 gui/FLU/Flu_File_Chooser.cpp:74 gui/mrvAsk.cpp:13
 #: gui/mrvOCIOBrowser.cpp:147 gui/mrvOCIOBrowser.cpp:148
-#: gui/mrvImageBrowser.cpp:771 gui/mrvPreferences.cpp:1292
-#: gui/mrvPreferences.cpp:1550 gui/mrvPreferences.cpp:1551
-#: gui/mrvPreferences.cpp:1746 gui/mrvPreferences.cpp:1747
-#: gui/mrvTimecode.cpp:45 gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:51
+#: gui/mrvImageBrowser.cpp:771 gui/mrvPreferences.cpp:1293
+#: gui/mrvPreferences.cpp:1551 gui/mrvPreferences.cpp:1552
+#: gui/mrvPreferences.cpp:1747 gui/mrvPreferences.cpp:1748
+#: gui/mrvTimecode.cpp:45 gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:55
 #: video/mrvGLEngine.cpp:58 video/mrvGLEngine.cpp:3836
 #: video/mrvGLEngine.cpp:3837 video/mrvCSPUtils.cpp:38
 #: video/mrvGLLut3d.cpp:1398 video/mrvGLLut3d.cpp:1399
@@ -14003,7 +14003,7 @@ msgstr ""
 msgid "CAPDATE"
 msgstr ""
 
-#: core/aviImage.cpp:340
+#: core/aviImage.cpp:343
 msgid "CDXA"
 msgstr ""
 
@@ -14116,13 +14116,13 @@ msgstr ""
 msgid "CPUID not supported - (old 486?)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:225
+#: gui/mrvVersion.cpp:229
 msgid "CT"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:170
 #: gui/mrvPreferences.cpp:1037 gui/mrvPreferences.cpp:1090
-#: gui/mrvPreferences.cpp:2415 gui/mrvPreferences.cpp:2452
+#: gui/mrvPreferences.cpp:2416 gui/mrvPreferences.cpp:2453
 msgid "CTL"
 msgstr ""
 
@@ -14208,11 +14208,11 @@ msgstr ""
 msgid "Cannot allocate dst samples"
 msgstr ""
 
-#: core/aviImage.cpp:520
+#: core/aviImage.cpp:523
 msgid "Cannot create buffer sink"
 msgstr ""
 
-#: core/aviImage.cpp:512
+#: core/aviImage.cpp:515
 msgid "Cannot create buffer source"
 msgstr ""
 
@@ -14233,7 +14233,7 @@ msgstr ""
 msgid "Cannot parse environment variable \""
 msgstr ""
 
-#: core/aviImage.cpp:527
+#: core/aviImage.cpp:530
 msgid "Cannot set output pixel format"
 msgstr ""
 
@@ -14338,7 +14338,7 @@ msgstr ""
 msgid "Channels"
 msgstr ""
 
-#: core/aviImage.cpp:2677
+#: core/aviImage.cpp:2679
 #, c-format
 msgid "Chapter %d "
 msgstr ""
@@ -14349,7 +14349,7 @@ msgid "Char"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:404 standalone/main.cpp:418
+#: standalone/main.cpp:407 standalone/main.cpp:421
 msgid "Checkerboard pattern"
 msgstr ""
 
@@ -14365,7 +14365,7 @@ msgstr ""
 #: core/exrImage.cpp:2413 core/exrImage.cpp:2414
 #: gui/mrvImageInformation.cpp:193 gui/mrvImageInformation.cpp:232
 #: gui/mrvImageInformation.cpp:483 gui/mrvPreferences.cpp:1044
-#: gui/mrvPreferences.cpp:2419
+#: gui/mrvPreferences.cpp:2420
 msgid "Chromaticities"
 msgstr ""
 
@@ -14589,15 +14589,15 @@ msgstr ""
 msgid "Colors"
 msgstr ""
 
-#: core/aviImage.cpp:1221
+#: core/aviImage.cpp:1224
 msgid "Colorspace details not gotten "
 msgstr ""
 
-#: core/aviImage.cpp:1250
+#: core/aviImage.cpp:1253
 msgid "Colorspace details not set "
 msgstr ""
 
-#: standalone/main.cpp:222
+#: standalone/main.cpp:225
 msgid "CommandLineToArgvW failed"
 msgstr ""
 
@@ -14648,7 +14648,7 @@ msgstr ""
 msgid "Compression to use when saving an exr."
 msgstr ""
 
-#: gui/mrvVersion.cpp:575
+#: gui/mrvVersion.cpp:579
 msgid "Configuration: "
 msgstr ""
 
@@ -14748,7 +14748,7 @@ msgstr ""
 msgid "Could not allocate fifo buffer"
 msgstr ""
 
-#: core/aviImage.cpp:738
+#: core/aviImage.cpp:741
 msgid "Could not allocate filter frame.  Not enough memory."
 msgstr ""
 
@@ -14780,7 +14780,7 @@ msgstr ""
 msgid "Could not calculate OCIO Lut"
 msgstr ""
 
-#: core/aviImage.cpp:1456
+#: core/aviImage.cpp:1459
 msgid "Could not clone subtitle frame"
 msgstr ""
 
@@ -14788,7 +14788,7 @@ msgstr ""
 msgid "Could not copy context to parameters"
 msgstr ""
 
-#: core/aviImage.cpp:653 core/aviImage.cpp:2325
+#: core/aviImage.cpp:656 core/aviImage.cpp:2327
 msgid "Could not copy parameters to context"
 msgstr ""
 
@@ -14819,11 +14819,11 @@ msgstr ""
 msgid "Could not create wand"
 msgstr ""
 
-#: core/aviImage.cpp:4315
+#: core/aviImage.cpp:4320
 msgid "Could not decode subtitle frame "
 msgstr ""
 
-#: core/aviImage.cpp:1524
+#: core/aviImage.cpp:1527
 msgid "Could not decode video frame "
 msgstr ""
 
@@ -14835,7 +14835,7 @@ msgstr ""
 msgid "Could not deselect all"
 msgstr ""
 
-#: core/aviImage.cpp:4285
+#: core/aviImage.cpp:4290
 msgid "Could not determine pts for subtitle frame, using "
 msgstr ""
 
@@ -14923,11 +14923,11 @@ msgstr ""
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 
-#: core/aviImage.cpp:2970
+#: core/aviImage.cpp:2972
 msgid "Could not find stream info"
 msgstr ""
 
-#: core/aviImage.cpp:681
+#: core/aviImage.cpp:684
 msgid "Could not find subtitle in '"
 msgstr ""
 
@@ -14987,7 +14987,7 @@ msgstr ""
 msgid "Could not get audio samples"
 msgstr ""
 
-#: core/aviImage.cpp:1201
+#: core/aviImage.cpp:1204
 msgid "Could not get image conversion context."
 msgstr ""
 
@@ -15003,7 +15003,7 @@ msgstr ""
 msgid "Could not init cmm: "
 msgstr ""
 
-#: core/aviImage.cpp:723
+#: core/aviImage.cpp:726
 msgid "Could not init filters: ret "
 msgstr ""
 
@@ -15128,11 +15128,11 @@ msgstr ""
 msgid "Could not realloc fifo buffer. Error: "
 msgstr ""
 
-#: standalone/main.cpp:149 standalone/main.cpp:296
+#: standalone/main.cpp:152 standalone/main.cpp:299
 msgid "Could not remove lock file"
 msgstr ""
 
-#: standalone/main.cpp:512
+#: standalone/main.cpp:515
 msgid "Could not remove lock file!"
 msgstr ""
 
@@ -15151,7 +15151,7 @@ msgid ""
 "Could not save sequence or movie, only single frame specified.  Use %d syntax"
 msgstr ""
 
-#: core/CMedia_audio.cpp:441 core/aviImage.cpp:981 core/aviImage.cpp:998
+#: core/CMedia_audio.cpp:441 core/aviImage.cpp:984 core/aviImage.cpp:1001
 msgid "Could not seek to frame "
 msgstr ""
 
@@ -15168,7 +15168,7 @@ msgstr ""
 msgid "Could not set "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1285
+#: gui/mrvPreferences.cpp:1286
 msgid "Could not set transforms in GUI"
 msgstr ""
 
@@ -15477,17 +15477,17 @@ msgid "Cut Clip at current location"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:408 standalone/main.cpp:420
+#: standalone/main.cpp:411 standalone/main.cpp:423
 msgid "Cyan/red glasses"
 msgstr ""
 
 #: core/CMedia.cpp:3829 core/CMedia.cpp:4466 core/CMedia_audio.cpp:2297
-#: core/CMedia_audio.cpp:2477 core/aviImage.cpp:3873 core/aviImage.cpp:3920
-#: core/aviImage.cpp:3996 core/brawImage.cpp:1565
+#: core/CMedia_audio.cpp:2477 core/aviImage.cpp:3878 core/aviImage.cpp:3925
+#: core/aviImage.cpp:4001 core/brawImage.cpp:1565
 msgid "D"
 msgstr ""
 
-#: gui/mrvVersion.cpp:358 gui/mrvVersion.cpp:410 gui/mrvVersion.cpp:414
+#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:418
 msgid "D\t"
 msgstr ""
 
@@ -15592,7 +15592,7 @@ msgstr ""
 msgid "DCIP3 D65"
 msgstr ""
 
-#: gui/mrvVersion.cpp:201
+#: gui/mrvVersion.cpp:205
 msgid "DDS"
 msgstr ""
 
@@ -15612,7 +15612,7 @@ msgstr ""
 msgid "DECODE END"
 msgstr ""
 
-#: core/aviImage.cpp:386
+#: core/aviImage.cpp:389
 msgid "DHAV"
 msgstr ""
 
@@ -15781,15 +15781,15 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:4045 core/R3dImage.cpp:1067 core/brawImage.cpp:1492
+#: core/aviImage.cpp:4050 core/R3dImage.cpp:1067 core/brawImage.cpp:1492
 msgid "Decode audio error: "
 msgstr ""
 
-#: core/aviImage.cpp:4059
+#: core/aviImage.cpp:4064
 msgid "Decode video error seek frame "
 msgstr ""
 
-#: core/aviImage.cpp:1378
+#: core/aviImage.cpp:1381
 msgid "Decode video error: "
 msgstr ""
 
@@ -15797,7 +15797,7 @@ msgstr ""
 msgid "Decode_audio failed with error: "
 msgstr ""
 
-#: core/aviImage.cpp:3292
+#: core/aviImage.cpp:3294
 msgid "Decoding right frame "
 msgstr ""
 
@@ -15873,7 +15873,7 @@ msgstr ""
 msgid "Denoise"
 msgstr ""
 
-#: gui/mrvVersion.cpp:597
+#: gui/mrvVersion.cpp:601
 msgid ""
 "Dependent libraries:\n"
 "    "
@@ -16060,7 +16060,7 @@ msgstr ""
 msgid "Drop Frame Timecode"
 msgstr ""
 
-#: core/aviImage.cpp:2671
+#: core/aviImage.cpp:2673
 msgid "Dump metadata"
 msgstr ""
 
@@ -16085,7 +16085,7 @@ msgstr ""
 msgid "E"
 msgstr ""
 
-#: gui/mrvVersion.cpp:359 gui/mrvVersion.cpp:411
+#: gui/mrvVersion.cpp:363 gui/mrvVersion.cpp:415
 msgid "E\t"
 msgstr ""
 
@@ -16206,8 +16206,8 @@ msgstr ""
 msgid "EMPTY REEL AT INDEX "
 msgstr ""
 
-#: gui/mrvHotkey.cpp:383 gui/mrvHotkey.cpp:462 gui/mrvPreferences.cpp:1234
-#: gui/mrvPreferences.cpp:2512
+#: gui/mrvHotkey.cpp:383 gui/mrvHotkey.cpp:462 gui/mrvPreferences.cpp:1235
+#: gui/mrvPreferences.cpp:2513
 msgid "END"
 msgstr ""
 
@@ -16235,7 +16235,7 @@ msgstr ""
 msgid "EXPOSURE"
 msgstr ""
 
-#: gui/mrvVersion.cpp:189
+#: gui/mrvVersion.cpp:193
 msgid "EXR"
 msgstr ""
 
@@ -16295,7 +16295,7 @@ msgstr ""
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
-#: core/aviImage.cpp:3511
+#: core/aviImage.cpp:3516
 msgid "Empty packets for video seek."
 msgstr ""
 
@@ -16303,7 +16303,7 @@ msgstr ""
 msgid "Empty pic file for media "
 msgstr ""
 
-#: core/aviImage.cpp:4407
+#: core/aviImage.cpp:4412
 msgid "Empty seek or preroll"
 msgstr ""
 
@@ -16315,7 +16315,7 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1290
+#: gui/mrvPreferences.cpp:1291
 msgid "English"
 msgstr ""
 
@@ -16348,7 +16348,7 @@ msgstr ""
 msgid "Error closing ao device"
 msgstr ""
 
-#: core/aviImage.cpp:567
+#: core/aviImage.cpp:570
 msgid "Error configuring filter graph"
 msgstr ""
 
@@ -16376,7 +16376,7 @@ msgstr ""
 msgid "Error opening ao driver: "
 msgstr ""
 
-#: core/aviImage.cpp:561
+#: core/aviImage.cpp:564
 msgid "Error parsing filter description"
 msgstr ""
 
@@ -16392,7 +16392,7 @@ msgstr ""
 msgid "Error while encoding video frame: "
 msgstr ""
 
-#: core/aviImage.cpp:1436
+#: core/aviImage.cpp:1439
 msgid "Error while feeding the filtergraph"
 msgstr ""
 
@@ -16418,12 +16418,12 @@ msgid "Escape"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:402 standalone/main.cpp:417
+#: standalone/main.cpp:405 standalone/main.cpp:420
 msgid "Even/odd columns"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:400 standalone/main.cpp:416
+#: standalone/main.cpp:403 standalone/main.cpp:419
 msgid "Even/odd rows"
 msgstr ""
 
@@ -16478,7 +16478,7 @@ msgstr ""
 msgid "Exif:ShutterSpeedValue"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1523
+#: gui/mrvPreferences.cpp:1524
 msgid "Expanded OCIO environment variable to:"
 msgstr ""
 
@@ -16537,8 +16537,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1567
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1788
 #: core/CMedia.cpp:3830 core/CMedia.cpp:4467 core/CMedia_audio.cpp:2298
-#: core/CMedia_audio.cpp:2478 core/aviImage.cpp:3874 core/aviImage.cpp:3921
-#: core/aviImage.cpp:3997 core/brawImage.cpp:1566
+#: core/CMedia_audio.cpp:2478 core/aviImage.cpp:3879 core/aviImage.cpp:3926
+#: core/aviImage.cpp:4002 core/brawImage.cpp:1566
 msgid "F"
 msgstr ""
 
@@ -16646,29 +16646,29 @@ msgid "F: "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:124
-#: core/aviImage.cpp:145 core/aviImage.cpp:2663
+#: core/aviImage.cpp:145 core/aviImage.cpp:2665
 msgid "FCC"
 msgstr ""
 
-#: core/aviImage.cpp:3278
+#: core/aviImage.cpp:3280
 msgid "FETCH BEGIN: "
 msgstr ""
 
-#: core/aviImage.cpp:3367 core/aviImage.cpp:3371 core/aviImage.cpp:3375
-#: core/aviImage.cpp:3379
+#: core/aviImage.cpp:3372 core/aviImage.cpp:3376 core/aviImage.cpp:3380
+#: core/aviImage.cpp:3384
 msgid "FETCH DONE"
 msgstr ""
 
-#: core/aviImage.cpp:3361
+#: core/aviImage.cpp:3366
 msgid "FETCH DONE: "
 msgstr ""
 
-#: core/aviImage.cpp:3331
+#: core/aviImage.cpp:3336
 msgid "FETCH START: "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:669
-#: gui/mrvVersion.cpp:285
+#: gui/mrvVersion.cpp:289
 msgid "FFMPEG"
 msgstr ""
 
@@ -16703,11 +16703,11 @@ msgstr ""
 msgid "FIT"
 msgstr ""
 
-#: gui/mrvVersion.cpp:553
+#: gui/mrvVersion.cpp:557
 msgid "FLTK 1.4"
 msgstr ""
 
-#: core/aviImage.cpp:306
+#: core/aviImage.cpp:309
 msgid "FLV"
 msgstr ""
 
@@ -16882,8 +16882,8 @@ msgstr ""
 msgid "Feb"
 msgstr ""
 
-#: core/aviImage.cpp:3335 core/aviImage.cpp:3338 core/aviImage.cpp:3342
-#: core/aviImage.cpp:3345
+#: core/aviImage.cpp:3340 core/aviImage.cpp:3343 core/aviImage.cpp:3347
+#: core/aviImage.cpp:3350
 msgid "Fetch"
 msgstr ""
 
@@ -16976,7 +16976,7 @@ msgstr ""
 msgid "Filename of the clip"
 msgstr ""
 
-#: standalone/main.cpp:516
+#: standalone/main.cpp:519
 msgid "Filesystem error: "
 msgstr ""
 
@@ -17332,11 +17332,11 @@ msgstr ""
 msgid "GIF Picture"
 msgstr ""
 
-#: core/aviImage.cpp:312
+#: core/aviImage.cpp:315
 msgid "GIF87a"
 msgstr ""
 
-#: core/aviImage.cpp:311
+#: core/aviImage.cpp:314
 msgid "GIF89a"
 msgstr ""
 
@@ -17357,7 +17357,7 @@ msgstr ""
 msgid "GL3dView 1"
 msgstr ""
 
-#: gui/mrvVersion.cpp:557
+#: gui/mrvVersion.cpp:561
 msgid "GLEW "
 msgstr ""
 
@@ -17551,7 +17551,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1117
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1518
 #: core/mrvServer.cpp:721 gui/mrvImageInformation.cpp:2754
-#: gui/mrvPreferences.cpp:1734
+#: gui/mrvPreferences.cpp:1735
 msgid "Gamma"
 msgstr ""
 
@@ -17803,7 +17803,7 @@ msgstr ""
 msgid "HANDLESEEK"
 msgstr ""
 
-#: gui/mrvVersion.cpp:249
+#: gui/mrvVersion.cpp:253
 msgid "HDR"
 msgstr ""
 
@@ -17864,7 +17864,7 @@ msgstr ""
 msgid "HSV"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:738 gui/mrvPreferences.cpp:2319
+#: gui/mrvPreferences.cpp:738 gui/mrvPreferences.cpp:2320
 msgid "HSV_pixel"
 msgstr ""
 
@@ -17877,11 +17877,11 @@ msgstr ""
 msgid "HW"
 msgstr ""
 
-#: gui/mrvVersion.cpp:822
+#: gui/mrvVersion.cpp:862
 msgid "HW Overlay:\t"
 msgstr ""
 
-#: gui/mrvVersion.cpp:819
+#: gui/mrvVersion.cpp:859
 msgid "HW Stereo:\t"
 msgstr ""
 
@@ -17908,6 +17908,10 @@ msgstr ""
 
 #: video/mrvGLEngine.cpp:554
 msgid "Hardware shaders not available."
+msgstr ""
+
+#: video/mrvGLEngine.cpp:4049
+msgid "Has AVMasteringDisplayMetadata"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:88
@@ -18087,7 +18091,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1863
 #: gui/mrvPreferences.cpp:1058 gui/mrvPreferences.cpp:1111
-#: gui/mrvPreferences.cpp:2442 gui/mrvPreferences.cpp:2460
+#: gui/mrvPreferences.cpp:2443 gui/mrvPreferences.cpp:2461
 #: video/mrvDrawEngine.cpp:268 video/mrvDrawEngine.cpp:275
 msgid "ICC"
 msgstr ""
@@ -18120,7 +18124,7 @@ msgid "ICC_PROFILES"
 msgstr ""
 
 #: core/mrvServer.cpp:696 gui/mrvPreferences.cpp:616
-#: gui/mrvPreferences.cpp:2245
+#: gui/mrvPreferences.cpp:2246
 msgid "ICS"
 msgstr ""
 
@@ -18139,7 +18143,7 @@ msgstr ""
 msgid "ICS for image failed"
 msgstr ""
 
-#: core/aviImage.cpp:345
+#: core/aviImage.cpp:348
 msgid "ID3"
 msgstr ""
 
@@ -18152,7 +18156,7 @@ msgstr ""
 msgid "IDT \"%s\""
 msgstr ""
 
-#: gui/mrvVersion.cpp:197 gui/mrvVersion.cpp:221
+#: gui/mrvVersion.cpp:201 gui/mrvVersion.cpp:225
 msgid "IFF"
 msgstr ""
 
@@ -18160,7 +18164,7 @@ msgstr ""
 msgid "IFF Picture"
 msgstr ""
 
-#: gui/mrvVersion.cpp:190
+#: gui/mrvVersion.cpp:194
 msgid "ILM OpenEXR"
 msgstr ""
 
@@ -18168,7 +18172,7 @@ msgstr ""
 msgid "ILM OpenEXR (.exr)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:576
+#: gui/mrvVersion.cpp:580
 msgid "ILM OpenEXR v"
 msgstr ""
 
@@ -18193,7 +18197,7 @@ msgid "ISO of film stock."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:798
-#: gui/mrvPreferences.cpp:1220
+#: gui/mrvPreferences.cpp:1221
 msgid "ISO-8859-1"
 msgstr ""
 
@@ -18201,15 +18205,15 @@ msgstr ""
 msgid "ISO-8859-2"
 msgstr ""
 
-#: core/aviImage.cpp:2654
+#: core/aviImage.cpp:2656
 msgid "ITU 2020"
 msgstr ""
 
-#: core/aviImage.cpp:2649
+#: core/aviImage.cpp:2651
 msgid "ITU 601"
 msgstr ""
 
-#: core/aviImage.cpp:2644
+#: core/aviImage.cpp:2646
 msgid "ITU 709"
 msgstr ""
 
@@ -18287,7 +18291,7 @@ msgstr ""
 msgid "ITU_709_YCbCr444A"
 msgstr ""
 
-#: gui/mrvVersion.cpp:617
+#: gui/mrvVersion.cpp:621
 msgid "IccProfLib (ICC v4.2)"
 msgstr ""
 
@@ -18650,7 +18654,7 @@ msgstr ""
 msgid "Invalid destination profile/image format"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2386
+#: gui/mrvPreferences.cpp:2387
 msgid "Invalid device selected"
 msgstr ""
 
@@ -18686,7 +18690,7 @@ msgstr ""
 msgid "Invalid timecode "
 msgstr ""
 
-#: core/aviImage.cpp:1899
+#: core/aviImage.cpp:1902
 msgid "Invalid video stream "
 msgstr ""
 
@@ -18774,7 +18778,7 @@ msgstr ""
 msgid "J.\tc #FFD992"
 msgstr ""
 
-#: core/aviImage.cpp:394
+#: core/aviImage.cpp:397
 msgid "JFIF"
 msgstr ""
 
@@ -18969,7 +18973,7 @@ msgstr ""
 msgid "L\tc #FF9060"
 msgstr ""
 
-#: core/aviImage.cpp:3960
+#: core/aviImage.cpp:3965
 msgid "L "
 msgstr ""
 
@@ -19066,7 +19070,7 @@ msgstr ""
 msgid "L:R"
 msgstr ""
 
-#: standalone/main.cpp:197
+#: standalone/main.cpp:200
 msgid "LC_ALL"
 msgstr ""
 
@@ -19188,14 +19192,14 @@ msgid "Left View"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
-#: standalone/main.cpp:386 standalone/main.cpp:413
+#: standalone/main.cpp:389 standalone/main.cpp:416
 msgid "Left view"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:370 standalone/main.cpp:376 standalone/main.cpp:396
-#: standalone/main.cpp:415
+#: standalone/main.cpp:373 standalone/main.cpp:379 standalone/main.cpp:399
+#: standalone/main.cpp:418
 msgid "Left/right"
 msgstr ""
 
@@ -19219,11 +19223,11 @@ msgstr ""
 msgid "Level ("
 msgstr ""
 
-#: gui/mrvVersion.cpp:620
+#: gui/mrvVersion.cpp:624
 msgid "LibRaw "
 msgstr ""
 
-#: gui/mrvVersion.cpp:573
+#: gui/mrvVersion.cpp:577
 msgid "License: "
 msgstr ""
 
@@ -19372,11 +19376,11 @@ msgstr ""
 msgid "Loading \"%s\""
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4140
+#: video/mrvGLEngine.cpp:4142
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4146
+#: video/mrvGLEngine.cpp:4148
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
@@ -19392,7 +19396,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: standalone/main.cpp:302
+#: standalone/main.cpp:305
 msgid "Lockfile "
 msgstr ""
 
@@ -19425,7 +19429,7 @@ msgstr ""
 msgid "Looked for it in: "
 msgstr ""
 
-#: standalone/main.cpp:244
+#: standalone/main.cpp:247
 msgid "Looking for translations in "
 msgstr ""
 
@@ -19472,7 +19476,7 @@ msgstr ""
 msgid "Luminance of image pixel under mouse."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4074
+#: video/mrvGLEngine.cpp:4075
 msgid "Luminance: "
 msgstr ""
 
@@ -19488,7 +19492,7 @@ msgstr ""
 msgid "LummaA"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:742 gui/mrvPreferences.cpp:2320
+#: gui/mrvPreferences.cpp:742 gui/mrvPreferences.cpp:2321
 msgid "Lumma_pixel"
 msgstr ""
 
@@ -19617,7 +19621,7 @@ msgstr ""
 msgid "M44 Float"
 msgstr ""
 
-#: gui/mrvVersion.cpp:213
+#: gui/mrvVersion.cpp:217
 msgid "MAP"
 msgstr ""
 
@@ -19722,7 +19726,7 @@ msgstr ""
 msgid "MRV_STEREO_NAME_PAIRS does not have two names separated by colon"
 msgstr ""
 
-#: gui/mrvVersion.cpp:237
+#: gui/mrvVersion.cpp:241
 msgid "MT"
 msgstr ""
 
@@ -19807,7 +19811,7 @@ msgstr ""
 msgid "May"
 msgstr ""
 
-#: gui/mrvVersion.cpp:222
+#: gui/mrvVersion.cpp:226
 msgid "Maya IFF files"
 msgstr ""
 
@@ -19886,7 +19890,7 @@ msgstr ""
 msgid "Microsoft Bitmap (.bmp)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:202
+#: gui/mrvVersion.cpp:206
 msgid "Microsoft Direct Draw Surface"
 msgstr ""
 
@@ -19968,7 +19972,7 @@ msgstr ""
 msgid "Monitor/Attach ICC Color Profile"
 msgstr ""
 
-#: gui/mrvVersion.cpp:807
+#: gui/mrvVersion.cpp:847
 msgid "Monitors:\t"
 msgstr ""
 
@@ -20113,7 +20117,7 @@ msgstr ""
 msgid "NO images in reel"
 msgstr ""
 
-#: gui/mrvVersion.cpp:229
+#: gui/mrvVersion.cpp:233
 msgid "NT"
 msgstr ""
 
@@ -20127,7 +20131,7 @@ msgstr ""
 msgid "NTSC Video"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4142
+#: video/mrvGLEngine.cpp:4144
 msgid "NVShader builtin"
 msgstr ""
 
@@ -20196,8 +20200,8 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:245 gui/mrvImageBrowser.cpp:936 gui/mrvImageBrowser.cpp:2297
-#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:820
-#: gui/mrvVersion.cpp:823 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
+#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:860
+#: gui/mrvVersion.cpp:863 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:252 video/mrvGLEngine.cpp:253
 #: video/mrvGLEngine.cpp:255 video/mrvGLEngine.cpp:259
 #: video/mrvGLEngine.cpp:260 video/mrvGLEngine.cpp:261
@@ -20212,7 +20216,7 @@ msgstr ""
 msgid "No CTL script or ICC profile"
 msgstr ""
 
-#: gui/mrvVersion.cpp:816
+#: gui/mrvVersion.cpp:856
 msgid "No GPU."
 msgstr ""
 
@@ -20293,15 +20297,15 @@ msgstr ""
 msgid "No memory for audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:1151
+#: core/aviImage.cpp:1154
 msgid "No memory for video frame"
 msgstr ""
 
-#: core/aviImage.cpp:490
+#: core/aviImage.cpp:493
 msgid "No memory to allocate filter graph"
 msgstr ""
 
-#: core/aviImage.cpp:2064
+#: core/aviImage.cpp:2067
 msgid "No pixel format could be chosen"
 msgstr ""
 
@@ -20451,11 +20455,11 @@ msgstr ""
 msgid "Not enough memory for color transform"
 msgstr ""
 
-#: core/aviImage.cpp:2319
+#: core/aviImage.cpp:2321
 msgid "Not enough memory for context"
 msgstr ""
 
-#: core/aviImage.cpp:1139 core/oiioImage.cpp:352
+#: core/aviImage.cpp:1142 core/oiioImage.cpp:352
 msgid "Not enough memory for image"
 msgstr ""
 
@@ -20588,7 +20592,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:340
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1925
 #: core/mrvServer.cpp:639 core/mrvServer.cpp:647 gui/mrvPreferences.cpp:591
-#: gui/mrvPreferences.cpp:1482
+#: gui/mrvPreferences.cpp:1483
 msgid "OCIO"
 msgstr ""
 
@@ -20635,7 +20639,7 @@ msgstr ""
 msgid "OCIO config (*.{"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1731
+#: gui/mrvPreferences.cpp:1732
 msgid "OCIO environment variable is not set.  Defaulting to CTL. "
 msgstr ""
 
@@ -20659,7 +20663,7 @@ msgstr ""
 msgid "OCIO="
 msgstr ""
 
-#: core/mrvServer.cpp:665 gui/mrvPreferences.cpp:1533
+#: core/mrvServer.cpp:665 gui/mrvPreferences.cpp:1534
 #, c-format
 msgid "OCIO=%s"
 msgstr ""
@@ -20685,7 +20689,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:425
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1760
 #: core/mrvServer.cpp:627 gui/mrvFileRequester.cpp:753
-#: gui/mrvPreferences.cpp:1031 gui/mrvPreferences.cpp:2412
+#: gui/mrvPreferences.cpp:1031 gui/mrvPreferences.cpp:2413
 msgid "ODT"
 msgstr ""
 
@@ -20710,7 +20714,7 @@ msgid "OGG Vorbis music"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:670
-#: gui/mrvVersion.cpp:332 gui/mrvVersion.cpp:343
+#: gui/mrvVersion.cpp:336 gui/mrvVersion.cpp:347
 msgid "OIIO"
 msgstr ""
 
@@ -20773,7 +20777,7 @@ msgstr ""
 msgid "Ogg Video"
 msgstr ""
 
-#: core/aviImage.cpp:322
+#: core/aviImage.cpp:325
 msgid "OggS"
 msgstr ""
 
@@ -20793,7 +20797,7 @@ msgstr ""
 msgid "Once"
 msgstr ""
 
-#: core/aviImage.cpp:2945
+#: core/aviImage.cpp:2947
 msgid "Open "
 msgstr ""
 
@@ -20830,13 +20834,13 @@ msgstr ""
 msgid "Open new image, sequence or movie"
 msgstr ""
 
-#: gui/mrvVersion.cpp:580
+#: gui/mrvVersion.cpp:584
 msgid "OpenColorIO v"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2725
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2907
-#: gui/mrvVersion.cpp:189
+#: gui/mrvVersion.cpp:193
 msgid "OpenEXR"
 msgstr ""
 
@@ -20866,11 +20870,11 @@ msgid ""
 "where SC is source color, SA is source alpha, and DC is destination color."
 msgstr ""
 
-#: gui/mrvVersion.cpp:193
+#: gui/mrvVersion.cpp:197
 msgid "OpenImageIO"
 msgstr ""
 
-#: gui/mrvVersion.cpp:584
+#: gui/mrvVersion.cpp:588
 msgid "OpenImageIO v"
 msgstr ""
 
@@ -21098,7 +21102,7 @@ msgstr ""
 msgid "PDlog985"
 msgstr ""
 
-#: gui/mrvVersion.cpp:205
+#: gui/mrvVersion.cpp:209
 msgid "PIC"
 msgstr ""
 
@@ -21262,7 +21266,7 @@ msgstr ""
 msgid "Ping Pong"
 msgstr ""
 
-#: gui/mrvVersion.cpp:218
+#: gui/mrvVersion.cpp:222
 msgid "Pixar depth maps"
 msgstr ""
 
@@ -21465,7 +21469,7 @@ msgstr ""
 msgid "Previous Image Version"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4053
+#: video/mrvGLEngine.cpp:4054
 msgid "Primaries:"
 msgstr ""
 
@@ -21481,7 +21485,7 @@ msgstr ""
 msgid "ProPhotoRGB"
 msgstr ""
 
-#: core/aviImage.cpp:1144
+#: core/aviImage.cpp:1147
 msgid "Problem allocating image "
 msgstr ""
 
@@ -21513,12 +21517,12 @@ msgstr ""
 msgid "Profile name "
 msgstr ""
 
-#: core/aviImage.cpp:2692
+#: core/aviImage.cpp:2694
 #, c-format
 msgid "Program %d "
 msgstr ""
 
-#: core/aviImage.cpp:2688
+#: core/aviImage.cpp:2690
 #, c-format
 msgid "Program %d: %s"
 msgstr ""
@@ -21745,7 +21749,7 @@ msgstr ""
 msgid "R: %g %g    G: %g %g    B: %g %g"
 msgstr ""
 
-#: core/aviImage.cpp:1094 core/aviImage.cpp:1102
+#: core/aviImage.cpp:1097 core/aviImage.cpp:1105
 msgid "RAFTER SEEK"
 msgstr ""
 
@@ -21753,7 +21757,7 @@ msgstr ""
 msgid "RAM Disk"
 msgstr ""
 
-#: core/aviImage.cpp:1053 core/aviImage.cpp:1057
+#: core/aviImage.cpp:1056 core/aviImage.cpp:1060
 msgid "RBEFORE SEEK"
 msgstr ""
 
@@ -21829,7 +21833,7 @@ msgstr ""
 msgid "RED space"
 msgstr ""
 
-#: core/aviImage.cpp:358
+#: core/aviImage.cpp:361
 msgid "RED1"
 msgstr ""
 
@@ -21864,7 +21868,7 @@ msgstr ""
 msgid "RExt"
 msgstr ""
 
-#: core/aviImage.cpp:3375 core/aviImage.cpp:3379
+#: core/aviImage.cpp:3380 core/aviImage.cpp:3384
 msgid "RFETCH DONE"
 msgstr ""
 
@@ -21901,7 +21905,7 @@ msgstr ""
 msgid "RGBA Display"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:730 gui/mrvPreferences.cpp:2317
+#: gui/mrvPreferences.cpp:730 gui/mrvPreferences.cpp:2318
 msgid "RGBA_pixel"
 msgstr ""
 
@@ -21909,7 +21913,7 @@ msgstr ""
 msgid "RHANDLESEEK"
 msgstr ""
 
-#: core/aviImage.cpp:334
+#: core/aviImage.cpp:337
 msgid "RIFF"
 msgstr ""
 
@@ -21941,7 +21945,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1788
 #: core/mrvServer.cpp:610 gui/mrvPreferences.cpp:1083
-#: gui/mrvPreferences.cpp:2448
+#: gui/mrvPreferences.cpp:2449
 msgid "RT"
 msgstr ""
 
@@ -21982,7 +21986,7 @@ msgstr ""
 msgid "RY"
 msgstr ""
 
-#: gui/mrvVersion.cpp:250
+#: gui/mrvVersion.cpp:254
 msgid "Radiance HDR images"
 msgstr ""
 
@@ -22047,15 +22051,15 @@ msgstr ""
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr ""
 
-#: core/aviImage.cpp:2654
+#: core/aviImage.cpp:2656
 msgid "Rec 2020"
 msgstr ""
 
-#: core/aviImage.cpp:2649
+#: core/aviImage.cpp:2651
 msgid "Rec 601"
 msgstr ""
 
-#: core/aviImage.cpp:2644
+#: core/aviImage.cpp:2646
 msgid "Rec 709"
 msgstr ""
 
@@ -22092,7 +22096,7 @@ msgid "Red value of image pixel under mouse."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:406 standalone/main.cpp:419
+#: standalone/main.cpp:409 standalone/main.cpp:422
 msgid "Red/cyan glasses"
 msgstr ""
 
@@ -22327,12 +22331,12 @@ msgid "Right View"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:388 standalone/main.cpp:413
+#: standalone/main.cpp:391 standalone/main.cpp:416
 msgid "Right view"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:398 standalone/main.cpp:415
+#: standalone/main.cpp:401 standalone/main.cpp:418
 msgid "Right/left"
 msgstr ""
 
@@ -22378,13 +22382,13 @@ msgid "Run mrViewer regardless of single instance setting"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2083
-#: core/CMedia.cpp:4465 core/CMedia_audio.cpp:2476 core/aviImage.cpp:3872
-#: core/aviImage.cpp:3919 core/aviImage.cpp:3995 core/brawImage.cpp:1564
+#: core/CMedia.cpp:4465 core/CMedia_audio.cpp:2476 core/aviImage.cpp:3877
+#: core/aviImage.cpp:3924 core/aviImage.cpp:4000 core/brawImage.cpp:1564
 #: gui/mrvColorInfo.cpp:853 gui/mrvColorInfo.cpp:859 gui/mrvImageView.cpp:7987
 msgid "S"
 msgstr ""
 
-#: gui/mrvVersion.cpp:413
+#: gui/mrvVersion.cpp:417
 msgid "S\t"
 msgstr ""
 
@@ -22456,7 +22460,7 @@ msgstr ""
 msgid "SDI Output:\t"
 msgstr ""
 
-#: core/aviImage.cpp:399
+#: core/aviImage.cpp:402
 msgid "SDPX"
 msgstr ""
 
@@ -22476,7 +22480,7 @@ msgstr ""
 msgid "SGI Picture"
 msgstr ""
 
-#: gui/mrvVersion.cpp:209
+#: gui/mrvVersion.cpp:213
 msgid "SHMAP"
 msgstr ""
 
@@ -22496,7 +22500,7 @@ msgstr ""
 msgid "SIGILL, "
 msgstr ""
 
-#: core/aviImage.cpp:2659
+#: core/aviImage.cpp:2661
 msgid "SMPTE 240M"
 msgstr ""
 
@@ -22512,7 +22516,7 @@ msgid "SMPTE170M"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:127
-#: core/aviImage.cpp:148 core/aviImage.cpp:2659
+#: core/aviImage.cpp:148 core/aviImage.cpp:2661
 msgid "SMPTE240M"
 msgstr ""
 
@@ -22541,7 +22545,7 @@ msgstr ""
 msgid "SSE2 "
 msgstr ""
 
-#: gui/mrvVersion.cpp:241
+#: gui/mrvVersion.cpp:245
 msgid "ST"
 msgstr ""
 
@@ -22754,7 +22758,7 @@ msgstr ""
 msgid "ScrollLock"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1237
+#: gui/mrvPreferences.cpp:1238
 msgid "Scrub"
 msgstr ""
 
@@ -22875,7 +22879,7 @@ msgid "Sep"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:25
-#: standalone/main.cpp:366 standalone/main.cpp:375
+#: standalone/main.cpp:369 standalone/main.cpp:378
 msgid "Separate layers"
 msgstr ""
 
@@ -22936,11 +22940,11 @@ msgstr ""
 msgid "Sets the default gamma when mrViewer starts."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1493
+#: gui/mrvPreferences.cpp:1494
 msgid "Setting OCIO environment variable to nuke-default."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1509
+#: gui/mrvPreferences.cpp:1510
 msgid "Setting OCIO environment variable to:"
 msgstr ""
 
@@ -23098,7 +23102,7 @@ msgstr ""
 msgid "Softimage Picture"
 msgstr ""
 
-#: gui/mrvVersion.cpp:206
+#: gui/mrvVersion.cpp:210
 msgid "Softimage pic"
 msgstr ""
 
@@ -23186,16 +23190,16 @@ msgstr ""
 msgid "Stereo EXR Picture"
 msgstr ""
 
-#: standalone/main.cpp:374
+#: standalone/main.cpp:377
 msgid "Stereo Input is invalid.  Valid values are: "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:390
+#: standalone/main.cpp:393
 msgid "Stereo OpenGL"
 msgstr ""
 
-#: standalone/main.cpp:412
+#: standalone/main.cpp:415
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr ""
 
@@ -23277,19 +23281,19 @@ msgstr ""
 msgid "Subtitle Streams"
 msgstr ""
 
-#: core/aviImage.cpp:711
+#: core/aviImage.cpp:714
 msgid "Subtitle encoding "
 msgstr ""
 
-#: core/aviImage.cpp:709
+#: core/aviImage.cpp:712
 msgid "Subtitle file "
 msgstr ""
 
-#: core/aviImage.cpp:710
+#: core/aviImage.cpp:713
 msgid "Subtitle font "
 msgstr ""
 
-#: core/aviImage.cpp:4197
+#: core/aviImage.cpp:4202
 msgid "Subtitle type "
 msgstr ""
 
@@ -23378,7 +23382,7 @@ msgstr ""
 msgid "T"
 msgstr ""
 
-#: gui/mrvVersion.cpp:415
+#: gui/mrvVersion.cpp:419
 msgid "T\t"
 msgstr ""
 
@@ -23459,7 +23463,7 @@ msgstr ""
 msgid "TIFF Picture"
 msgstr ""
 
-#: gui/mrvVersion.cpp:193
+#: gui/mrvVersion.cpp:197
 msgid "TX"
 msgstr ""
 
@@ -24036,8 +24040,8 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:26
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:368 standalone/main.cpp:375 standalone/main.cpp:392
-#: standalone/main.cpp:414
+#: standalone/main.cpp:371 standalone/main.cpp:378 standalone/main.cpp:395
+#: standalone/main.cpp:417
 msgid "Top/bottom"
 msgstr ""
 
@@ -24249,11 +24253,11 @@ msgstr ""
 msgid "Unhandled Exception"
 msgstr ""
 
-#: standalone/main.cpp:504
+#: standalone/main.cpp:507
 msgid "Unhandled exception"
 msgstr ""
 
-#: core/CMedia_audio.cpp:634 core/aviImage.cpp:2358 core/aviImage.cpp:2844
+#: core/CMedia_audio.cpp:634 core/aviImage.cpp:2360 core/aviImage.cpp:2846
 #: core/ddsImage.cpp:1241 gui/mrvImageInformation.cpp:2602
 #: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:239
 #: video/mrvGLEngine.cpp:242
@@ -24332,15 +24336,15 @@ msgstr ""
 msgid "Unknown data type to convert to string"
 msgstr ""
 
-#: core/aviImage.cpp:2192
+#: core/aviImage.cpp:2194
 msgid "Unknown destination video frame format: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:524
+#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:527
 msgid "Unknown error"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4162
+#: video/mrvGLEngine.cpp:4164
 msgid "Unknown error in loadBuiltinFragShader"
 msgstr ""
 
@@ -24766,7 +24770,7 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: core/aviImage.cpp:2861 core/aviImage_save.cpp:996
+#: core/aviImage.cpp:2863 core/aviImage_save.cpp:996
 #: core/aviImage_save.cpp:1012
 msgid "Video "
 msgstr ""
@@ -24792,7 +24796,7 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:1817 core/R3dImage.cpp:888 core/brawImage.cpp:1035
+#: core/aviImage.cpp:1820 core/R3dImage.cpp:888 core/brawImage.cpp:1035
 msgid "Video Sync master frame "
 msgstr ""
 
@@ -24834,7 +24838,7 @@ msgstr ""
 msgid "Video/Track #%d - %s"
 msgstr ""
 
-#: core/aviImage.cpp:1153
+#: core/aviImage.cpp:1156
 msgid "Videos #"
 msgstr ""
 
@@ -24884,11 +24888,11 @@ msgstr ""
 msgid "View/Texture Filtering  "
 msgstr ""
 
-#: gui/mrvVersion.cpp:706
+#: gui/mrvVersion.cpp:710
 msgid "VmRSS:"
 msgstr ""
 
-#: gui/mrvVersion.cpp:690
+#: gui/mrvVersion.cpp:694
 msgid "VmSize:"
 msgstr ""
 
@@ -24981,7 +24985,7 @@ msgstr ""
 msgid "W: %g %g"
 msgstr ""
 
-#: core/aviImage.cpp:339
+#: core/aviImage.cpp:342
 msgid "WAVE"
 msgstr ""
 
@@ -25306,11 +25310,11 @@ msgstr ""
 msgid "WipeVertical %g"
 msgstr ""
 
-#: gui/mrvVersion.cpp:541
+#: gui/mrvVersion.cpp:545
 msgid "With clang "
 msgstr ""
 
-#: gui/mrvVersion.cpp:539
+#: gui/mrvVersion.cpp:543
 msgid "With gcc "
 msgstr ""
 
@@ -25332,7 +25336,7 @@ msgid ""
 "It is recommended this setting is left at 64x64x64 or 128x128x128."
 msgstr ""
 
-#: gui/mrvVersion.cpp:543
+#: gui/mrvVersion.cpp:547
 msgid "With msvc "
 msgstr ""
 
@@ -25371,7 +25375,7 @@ msgstr ""
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr ""
 
-#: core/aviImage.cpp:3457
+#: core/aviImage.cpp:3462
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr ""
 
@@ -25482,7 +25486,7 @@ msgstr ""
 msgid "XML Clip Metadata (*.{"
 msgstr ""
 
-#: core/aviImage.cpp:398
+#: core/aviImage.cpp:401
 msgid "XPDS"
 msgstr ""
 
@@ -25682,7 +25686,7 @@ msgstr ""
 msgid "YCbCrA"
 msgstr ""
 
-#: core/aviImage.cpp:2637
+#: core/aviImage.cpp:2639
 msgid "YCbCrMatrix"
 msgstr ""
 
@@ -25759,7 +25763,7 @@ msgstr ""
 msgid "YUV444"
 msgstr ""
 
-#: core/aviImage.cpp:382
+#: core/aviImage.cpp:385
 msgid "YUV4MPEG2"
 msgstr ""
 
@@ -25770,8 +25774,8 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:246 gui/mrvImageBrowser.cpp:936 gui/mrvImageBrowser.cpp:2297
-#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:820
-#: gui/mrvVersion.cpp:823 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
+#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:860
+#: gui/mrvVersion.cpp:863 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:252 video/mrvGLEngine.cpp:253
 #: video/mrvGLEngine.cpp:255 video/mrvGLEngine.cpp:259
 #: video/mrvGLEngine.cpp:260 video/mrvGLEngine.cpp:261
@@ -25803,7 +25807,7 @@ msgstr ""
 #: core/oiioImage.cpp:279 gui/mrvColorInfo.cpp:849 gui/mrvImageView.cpp:212
 #: gui/mrvImageView.cpp:306 gui/mrvImageView.cpp:310 gui/mrvImageView.cpp:326
 #: gui/mrvImageView.cpp:1693 gui/mrvImageView.cpp:1718
-#: gui/mrvImageView.cpp:7996 gui/mrvImageView.cpp:8488 gui/mrvVersion.cpp:217
+#: gui/mrvImageView.cpp:7996 gui/mrvImageView.cpp:8488 gui/mrvVersion.cpp:221
 msgid "Z"
 msgstr ""
 
@@ -25891,7 +25895,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr ""
 
-#: gui/mrvVersion.cpp:245
+#: gui/mrvVersion.cpp:249
 msgid "ZT"
 msgstr ""
 
@@ -26062,11 +26066,11 @@ msgstr ""
 msgid "[.\tc #C7A48B"
 msgstr ""
 
-#: core/CMedia.cpp:4440 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3970
+#: core/CMedia.cpp:4440 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3975
 msgid "[PREROLL END: "
 msgstr ""
 
-#: core/CMedia.cpp:4460 core/CMedia_audio.cpp:2467 core/aviImage.cpp:3990
+#: core/CMedia.cpp:4460 core/CMedia_audio.cpp:2467 core/aviImage.cpp:3995
 msgid "[PREROLL:"
 msgstr ""
 
@@ -26082,13 +26086,13 @@ msgstr ""
 msgid "[ocio] "
 msgstr ""
 
-#: core/aviImage.cpp:697
+#: core/aviImage.cpp:700
 msgid "\\\\"
 msgstr ""
 
 #: core/CMedia.cpp:4440 core/CMedia.cpp:4460 core/CMedia_audio.cpp:2433
-#: core/CMedia_audio.cpp:2437 core/CMedia_audio.cpp:2467 core/aviImage.cpp:3970
-#: core/aviImage.cpp:3990 core/iffImage.cpp:539 gui/mrvHotkey.cpp:123
+#: core/CMedia_audio.cpp:2437 core/CMedia_audio.cpp:2467 core/aviImage.cpp:3975
+#: core/aviImage.cpp:3995 core/iffImage.cpp:539 gui/mrvHotkey.cpp:123
 #: gui/mrvHotkey.cpp:126
 msgid "]"
 msgstr ""
@@ -26715,19 +26719,19 @@ msgstr ""
 msgid "acesImageContainerFlag"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:882 gui/mrvPreferences.cpp:2490
+#: gui/mrvPreferences.cpp:882 gui/mrvPreferences.cpp:2491
 msgid "aces_metadata"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:746 gui/mrvPreferences.cpp:2323
+#: gui/mrvPreferences.cpp:746 gui/mrvPreferences.cpp:2324
 msgid "action"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:392 gui/mrvPreferences.cpp:2188
+#: gui/mrvPreferences.cpp:392 gui/mrvPreferences.cpp:2189
 msgid "action_tools"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:767 gui/mrvPreferences.cpp:2333
+#: gui/mrvPreferences.cpp:767 gui/mrvPreferences.cpp:2334
 msgid "active"
 msgstr ""
 
@@ -26735,16 +26739,16 @@ msgstr ""
 msgid "adoptedNeutral"
 msgstr ""
 
-#: core/aviImage.cpp:3415
+#: core/aviImage.cpp:3420
 msgid "after fetch"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:1033 gui/mrvPreferences.cpp:1086
-#: gui/mrvPreferences.cpp:2414 gui/mrvPreferences.cpp:2450
+#: gui/mrvPreferences.cpp:2415 gui/mrvPreferences.cpp:2451
 msgid "algorithm"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:878 gui/mrvPreferences.cpp:2489
+#: gui/mrvPreferences.cpp:878 gui/mrvPreferences.cpp:2490
 msgid "all_layers"
 msgstr ""
 
@@ -26753,7 +26757,7 @@ msgstr ""
 msgid "altitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:427 gui/mrvPreferences.cpp:2166
+#: gui/mrvPreferences.cpp:427 gui/mrvPreferences.cpp:2167
 msgid "always_on_top"
 msgstr ""
 
@@ -26769,7 +26773,7 @@ msgstr ""
 msgid "arbfp1"
 msgstr ""
 
-#: core/aviImage.cpp:507
+#: core/aviImage.cpp:510
 msgid "args "
 msgstr ""
 
@@ -26790,7 +26794,7 @@ msgstr ""
 msgid "atomicAdd(wg_sum, uint(sig * %f));\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:662 gui/mrvPreferences.cpp:2268
+#: gui/mrvPreferences.cpp:662 gui/mrvPreferences.cpp:2269
 msgid "attributes"
 msgstr ""
 
@@ -26804,8 +26808,8 @@ msgstr ""
 
 #: core/CMedia.cpp:3175 core/CMedia.cpp:3206 core/CMedia_audio.cpp:83
 #: core/aviImage_save.cpp:1515 gui/mrvPreferences.cpp:824
-#: gui/mrvPreferences.cpp:2379 standalone/mrvCommandLine.cpp:386
-#: standalone/main.cpp:123 standalone/main.cpp:320
+#: gui/mrvPreferences.cpp:2380 standalone/mrvCommandLine.cpp:386
+#: standalone/main.cpp:126 standalone/main.cpp:323
 msgid "audio"
 msgstr ""
 
@@ -26847,23 +26851,23 @@ msgstr ""
 msgid "audio_offset"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:423 gui/mrvPreferences.cpp:2165
+#: gui/mrvPreferences.cpp:423 gui/mrvPreferences.cpp:2166
 msgid "auto_fit_image"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:700 gui/mrvPreferences.cpp:2305
+#: gui/mrvPreferences.cpp:700 gui/mrvPreferences.cpp:2306
 msgid "auto_playback"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1149 gui/mrvPreferences.cpp:2348
+#: gui/mrvPreferences.cpp:1149 gui/mrvPreferences.cpp:2349
 msgid "autoload_images"
 msgstr ""
 
-#: core/aviImage.cpp:1446
+#: core/aviImage.cpp:1449
 msgid "av_buffersink_get frame failed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:647 gui/mrvPreferences.cpp:2262
+#: gui/mrvPreferences.cpp:647 gui/mrvPreferences.cpp:2263
 msgid "av_difference"
 msgstr ""
 
@@ -26875,7 +26879,7 @@ msgstr ""
 msgid "avchd"
 msgstr ""
 
-#: core/aviImage.cpp:786
+#: core/aviImage.cpp:789
 msgid "avcodec_context_from_parameters failed for video"
 msgstr ""
 
@@ -26883,11 +26887,11 @@ msgstr ""
 msgid "avcodec_copy_context failed for audio"
 msgstr ""
 
-#: core/aviImage.cpp:1696
+#: core/aviImage.cpp:1699
 msgid "avcodec_copy_context failed for subtitle"
 msgstr ""
 
-#: core/aviImage.cpp:2966
+#: core/aviImage.cpp:2968
 msgid "avformat_find_stream_info "
 msgstr ""
 
@@ -27021,7 +27025,7 @@ msgid "bOut"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:499 gui/mrvPreferences.cpp:572
-#: gui/mrvPreferences.cpp:2219 gui/mrvPreferences.cpp:2285
+#: gui/mrvPreferences.cpp:2220 gui/mrvPreferences.cpp:2286
 msgid "background_color"
 msgstr ""
 
@@ -27053,19 +27057,19 @@ msgstr ""
 msgid "black"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1197 gui/mrvPreferences.cpp:2373
+#: gui/mrvPreferences.cpp:1198 gui/mrvPreferences.cpp:2374
 msgid "blend_mode"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4062
+#: video/mrvGLEngine.cpp:4063
 msgid "blue "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:259 gui/mrvPreferences.cpp:2428
+#: gui/mrvPreferences.cpp:259 gui/mrvPreferences.cpp:2429
 msgid "blue_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:260 gui/mrvPreferences.cpp:2430
+#: gui/mrvPreferences.cpp:260 gui/mrvPreferences.cpp:2431
 msgid "blue_y"
 msgstr ""
 
@@ -27085,20 +27089,20 @@ msgstr ""
 msgid "bmq"
 msgstr ""
 
-#: core/brawImage.cpp:51 gui/mrvPreferences.cpp:921 gui/mrvPreferences.cpp:2505
+#: core/brawImage.cpp:51 gui/mrvPreferences.cpp:921 gui/mrvPreferences.cpp:2506
 msgid "braw"
 msgstr ""
 
-#: core/aviImage.cpp:480
+#: core/aviImage.cpp:483
 msgid "buffer"
 msgstr ""
 
-#: core/aviImage.cpp:481
+#: core/aviImage.cpp:484
 msgid "buffersink"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4035 video/mrvGLEngine.cpp:4127
-#: video/mrvGLEngine.cpp:4141 video/mrvGLEngine.cpp:4149
+#: video/mrvGLEngine.cpp:4035 video/mrvGLEngine.cpp:4129
+#: video/mrvGLEngine.cpp:4143 video/mrvGLEngine.cpp:4151
 msgid "builtin"
 msgstr ""
 
@@ -27330,11 +27334,11 @@ msgstr ""
 msgid "c.rgb = vec3(%f) * log(c.rgb + vec3(%f)) + vec3(%f);\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:810 gui/mrvPreferences.cpp:2340
+#: gui/mrvPreferences.cpp:810 gui/mrvPreferences.cpp:2341
 msgid "cache_memory"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:764 gui/mrvPreferences.cpp:2332
+#: gui/mrvPreferences.cpp:764 gui/mrvPreferences.cpp:2333
 msgid "caches"
 msgstr ""
 
@@ -27453,7 +27457,7 @@ msgid "color conversion"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:398 gui/mrvPreferences.cpp:752
-#: gui/mrvPreferences.cpp:2190 gui/mrvPreferences.cpp:2327
+#: gui/mrvPreferences.cpp:2191 gui/mrvPreferences.cpp:2328
 msgid "color_area"
 msgstr ""
 
@@ -27466,7 +27470,7 @@ msgid "colormatrix_c"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:488 gui/mrvPreferences.cpp:570
-#: gui/mrvPreferences.cpp:2217 gui/mrvPreferences.cpp:2283
+#: gui/mrvPreferences.cpp:2218 gui/mrvPreferences.cpp:2284
 msgid "colors"
 msgstr ""
 
@@ -27483,11 +27487,11 @@ msgstr ""
 msgid "comp: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:463 gui/mrvPreferences.cpp:2205
+#: gui/mrvPreferences.cpp:463 gui/mrvPreferences.cpp:2206
 msgid "compensate_pixel_ratio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1196 gui/mrvPreferences.cpp:2372
+#: gui/mrvPreferences.cpp:1197 gui/mrvPreferences.cpp:2373
 msgid "compositing"
 msgstr ""
 
@@ -27501,20 +27505,20 @@ msgstr ""
 
 #: core/exrImage.cpp:102 core/exrImage.cpp:2401 core/oiioImage.cpp:196
 #: core/oiioImage.cpp:201 gui/mrvPreferences.cpp:906
-#: gui/mrvPreferences.cpp:2497
+#: gui/mrvPreferences.cpp:2498
 msgid "compression"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:612 gui/mrvPreferences.cpp:2237
-#: gui/mrvPreferences.cpp:2242
+#: gui/mrvPreferences.cpp:612 gui/mrvPreferences.cpp:2238
+#: gui/mrvPreferences.cpp:2243
 msgid "config"
 msgstr ""
 
-#: standalone/main.cpp:547
+#: standalone/main.cpp:550
 msgid "conin$"
 msgstr ""
 
-#: standalone/main.cpp:548 standalone/main.cpp:549
+#: standalone/main.cpp:551 standalone/main.cpp:552
 msgid "conout$"
 msgstr ""
 
@@ -27548,7 +27552,7 @@ msgstr ""
 msgid "cr2"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:474 gui/mrvPreferences.cpp:2211
+#: gui/mrvPreferences.cpp:474 gui/mrvPreferences.cpp:2212
 msgid "crop_area"
 msgstr ""
 
@@ -27682,7 +27686,7 @@ msgstr ""
 msgid "dataWindow"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:481 gui/mrvPreferences.cpp:2207
+#: gui/mrvPreferences.cpp:481 gui/mrvPreferences.cpp:2208
 msgid "data_window"
 msgstr ""
 
@@ -27706,16 +27710,16 @@ msgstr ""
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
-#: core/aviImage.cpp:4535
+#: core/aviImage.cpp:4540
 msgid "decode_subtitle"
 msgstr ""
 
-#: core/aviImage.cpp:3719 core/aviImage.cpp:3843
+#: core/aviImage.cpp:3724 core/aviImage.cpp:3848
 msgid "decode_video"
 msgstr ""
 
 #: audio/mrvAOEngine.cpp:73 core/CMedia.cpp:3449 gui/mrvPreferences.cpp:826
-#: gui/mrvPreferences.cpp:2387
+#: gui/mrvPreferences.cpp:2388
 msgid "default"
 msgstr ""
 
@@ -27739,12 +27743,12 @@ msgstr ""
 msgid "depth"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:826 gui/mrvPreferences.cpp:2387
-#: gui/mrvPreferences.cpp:2391
+#: gui/mrvPreferences.cpp:826 gui/mrvPreferences.cpp:2388
+#: gui/mrvPreferences.cpp:2392
 msgid "device"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:643 gui/mrvPreferences.cpp:2260
+#: gui/mrvPreferences.cpp:643 gui/mrvPreferences.cpp:2261
 msgid "directory"
 msgstr ""
 
@@ -27764,7 +27768,7 @@ msgstr ""
 msgid "displayWindow"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:478 gui/mrvPreferences.cpp:2206
+#: gui/mrvPreferences.cpp:478 gui/mrvPreferences.cpp:2207
 msgid "display_window"
 msgstr ""
 
@@ -27780,7 +27784,7 @@ msgstr ""
 msgid "dng"
 msgstr ""
 
-#: core/aviImage.cpp:4071
+#: core/aviImage.cpp:4076
 msgid "doseek"
 msgstr ""
 
@@ -27804,7 +27808,7 @@ msgstr ""
 msgid "dpx:television.time.code"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1141 gui/mrvPreferences.cpp:2345
+#: gui/mrvPreferences.cpp:1141 gui/mrvPreferences.cpp:2346
 msgid "drag_load_seq"
 msgstr ""
 
@@ -27824,7 +27828,7 @@ msgstr ""
 msgid "drf"
 msgstr ""
 
-#: gui/mrvVersion.cpp:473
+#: gui/mrvVersion.cpp:477
 msgid "ds"
 msgstr ""
 
@@ -27870,7 +27874,7 @@ msgstr ""
 msgid "dwaCompressionLevel"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:911 gui/mrvPreferences.cpp:2499
+#: gui/mrvPreferences.cpp:911 gui/mrvPreferences.cpp:2500
 msgid "dwa_compression"
 msgstr ""
 
@@ -28014,7 +28018,7 @@ msgstr ""
 msgid "edl"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:385 gui/mrvPreferences.cpp:2186
+#: gui/mrvPreferences.cpp:385 gui/mrvPreferences.cpp:2187
 msgid "edl_edit"
 msgstr ""
 
@@ -28040,19 +28044,19 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1220 gui/mrvPreferences.cpp:2479
+#: gui/mrvPreferences.cpp:1221 gui/mrvPreferences.cpp:2480
 msgid "encoding"
 msgstr ""
 
-#: standalone/main.cpp:127 standalone/main.cpp:332
+#: standalone/main.cpp:130 standalone/main.cpp:335
 msgid "end"
 msgstr ""
 
-#: gui/mrvVersion.cpp:475
+#: gui/mrvVersion.cpp:479
 msgid "epzs"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:760 gui/mrvPreferences.cpp:2330
+#: gui/mrvPreferences.cpp:760 gui/mrvPreferences.cpp:2331
 msgid "eraser"
 msgstr ""
 
@@ -28060,11 +28064,11 @@ msgstr ""
 msgid "erf"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1224 gui/mrvPreferences.cpp:2483
+#: gui/mrvPreferences.cpp:1225 gui/mrvPreferences.cpp:2484
 msgid "errors"
 msgstr ""
 
-#: gui/mrvVersion.cpp:468
+#: gui/mrvVersion.cpp:472
 msgid "esa"
 msgstr ""
 
@@ -28212,7 +28216,7 @@ msgstr ""
 msgid "fb_list:"
 msgstr ""
 
-#: core/CMedia_audio.cpp:341 core/aviImage.cpp:3118
+#: core/CMedia_audio.cpp:341 core/aviImage.cpp:3120
 msgid "fetch: Could not read frame "
 msgstr ""
 
@@ -28220,7 +28224,7 @@ msgstr ""
 msgid "fff"
 msgstr ""
 
-#: gui/mrvVersion.cpp:493
+#: gui/mrvVersion.cpp:497
 msgid "ffmpeg"
 msgstr ""
 
@@ -28237,7 +28241,7 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-#: standalone/main.cpp:316
+#: standalone/main.cpp:319
 #, c-format
 msgid "file%d"
 msgstr ""
@@ -28253,16 +28257,16 @@ msgstr ""
 msgid "file://"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1145 gui/mrvPreferences.cpp:2346
+#: gui/mrvPreferences.cpp:1145 gui/mrvPreferences.cpp:2347
 msgid "file_assoc_load_seq"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:683 gui/mrvPreferences.cpp:2291
+#: gui/mrvPreferences.cpp:683 gui/mrvPreferences.cpp:2292
 msgid "file_requester"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:640 gui/mrvPreferences.cpp:2259
-#: standalone/main.cpp:122 standalone/main.cpp:319
+#: gui/mrvPreferences.cpp:640 gui/mrvPreferences.cpp:2260
+#: standalone/main.cpp:125 standalone/main.cpp:322
 msgid "filename"
 msgstr ""
 
@@ -28282,26 +28286,26 @@ msgstr ""
 msgid "filmType"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:355 gui/mrvPreferences.cpp:2153
-#: standalone/main.cpp:101 standalone/main.cpp:152 standalone/main.cpp:309
-#: standalone/main.cpp:352
+#: gui/mrvPreferences.cpp:355 gui/mrvPreferences.cpp:2154
+#: standalone/main.cpp:104 standalone/main.cpp:155 standalone/main.cpp:312
+#: standalone/main.cpp:355
 msgid "filmaura"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1185 gui/mrvPreferences.cpp:2367
+#: gui/mrvPreferences.cpp:1185 gui/mrvPreferences.cpp:2368
 msgid "filtering"
 msgstr ""
 
-#: core/aviImage.cpp:1764 core/aviImage.cpp:1768 core/R3dImage.cpp:843
+#: core/aviImage.cpp:1767 core/aviImage.cpp:1771 core/R3dImage.cpp:843
 #: core/R3dImage.cpp:847 core/brawImage.cpp:990 core/brawImage.cpp:994
 msgid "find_image"
 msgstr ""
 
-#: core/aviImage.cpp:1860 core/R3dImage.cpp:930 core/brawImage.cpp:1077
+#: core/aviImage.cpp:1863 core/R3dImage.cpp:930 core/brawImage.cpp:1077
 msgid "find_image: frame "
 msgstr ""
 
-#: standalone/main.cpp:124 standalone/main.cpp:323
+#: standalone/main.cpp:127 standalone/main.cpp:326
 msgid "first"
 msgstr ""
 
@@ -28309,11 +28313,11 @@ msgstr ""
 msgid "fixed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:667 gui/mrvPreferences.cpp:2272
+#: gui/mrvPreferences.cpp:667 gui/mrvPreferences.cpp:2273
 msgid "fixed_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:674 gui/mrvPreferences.cpp:2275
+#: gui/mrvPreferences.cpp:674 gui/mrvPreferences.cpp:2276
 msgid "fixed_size"
 msgstr ""
 
@@ -28332,8 +28336,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1977
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2201
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2265
-#: gui/mrvPreferences.cpp:2250 gui/mrvPreferences.cpp:2457
-#: gui/mrvPreferences.cpp:2465 standalone/mrvCommandLine.cpp:357
+#: gui/mrvPreferences.cpp:2251 gui/mrvPreferences.cpp:2458
+#: gui/mrvPreferences.cpp:2466 standalone/mrvCommandLine.cpp:357
 #: standalone/mrvCommandLine.cpp:361 standalone/mrvCommandLine.cpp:365
 msgid "float"
 msgstr ""
@@ -28392,7 +28396,7 @@ msgstr ""
 msgid "focus"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1206 gui/mrvPreferences.cpp:2476
+#: gui/mrvPreferences.cpp:1207 gui/mrvPreferences.cpp:2477
 msgid "font"
 msgstr ""
 
@@ -28417,13 +28421,13 @@ msgid "found"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:645 gui/mrvPreferences.cpp:712
-#: gui/mrvPreferences.cpp:789 gui/mrvPreferences.cpp:2261
-#: gui/mrvPreferences.cpp:2309 gui/mrvPreferences.cpp:2337
-#: standalone/mrvCommandLine.cpp:356 standalone/main.cpp:128
+#: gui/mrvPreferences.cpp:789 gui/mrvPreferences.cpp:2262
+#: gui/mrvPreferences.cpp:2310 gui/mrvPreferences.cpp:2338
+#: standalone/mrvCommandLine.cpp:356 standalone/main.cpp:131
 msgid "fps"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:650 gui/mrvPreferences.cpp:2264
+#: gui/mrvPreferences.cpp:650 gui/mrvPreferences.cpp:2265
 msgid "frame"
 msgstr ""
 
@@ -28439,7 +28443,7 @@ msgstr ""
 msgid "frame_end:"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:657 gui/mrvPreferences.cpp:2266
+#: gui/mrvPreferences.cpp:657 gui/mrvPreferences.cpp:2267
 msgid "frame_range"
 msgstr ""
 
@@ -28456,15 +28460,15 @@ msgstr ""
 msgid "framing"
 msgstr ""
 
-#: core/aviImage.cpp:428
+#: core/aviImage.cpp:431
 msgid "free"
 msgstr ""
 
-#: gui/mrvVersion.cpp:472
+#: gui/mrvVersion.cpp:476
 msgid "fss"
 msgstr ""
 
-#: core/aviImage.cpp:426
+#: core/aviImage.cpp:429
 msgid "ftyp"
 msgstr ""
 
@@ -28572,7 +28576,7 @@ msgstr ""
 msgid "gOut"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:456 gui/mrvPreferences.cpp:2203
+#: gui/mrvPreferences.cpp:456 gui/mrvPreferences.cpp:2204
 #: video/mrvGLQuad.cpp:1074 video/mrvGLCube.cpp:192 video/mrvGLSphere.cpp:194
 #: standalone/mrvCommandLine.cpp:364
 msgid "gain"
@@ -28583,7 +28587,7 @@ msgid "gain "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:459 gui/mrvPreferences.cpp:892
-#: gui/mrvPreferences.cpp:2204 gui/mrvPreferences.cpp:2496
+#: gui/mrvPreferences.cpp:2205 gui/mrvPreferences.cpp:2497
 #: video/mrvGLQuad.cpp:1076 video/mrvGLCube.cpp:193 video/mrvGLSphere.cpp:195
 #: standalone/mrvCommandLine.cpp:360
 msgid "gamma"
@@ -28617,15 +28621,15 @@ msgstr ""
 msgid "glsphr"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4058
+#: video/mrvGLEngine.cpp:4059
 msgid "green "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:257 gui/mrvPreferences.cpp:2424
+#: gui/mrvPreferences.cpp:257 gui/mrvPreferences.cpp:2425
 msgid "green_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:258 gui/mrvPreferences.cpp:2426
+#: gui/mrvPreferences.cpp:258 gui/mrvPreferences.cpp:2427
 msgid "green_y"
 msgstr ""
 
@@ -28748,7 +28752,7 @@ msgstr ""
 msgid "handle_dnd"
 msgstr ""
 
-#: core/CMedia.cpp:3762 core/aviImage.cpp:3470
+#: core/CMedia.cpp:3762 core/aviImage.cpp:3475
 msgid "handle_video_packet_seek error - no seek/preroll packet"
 msgstr ""
 
@@ -28782,11 +28786,11 @@ msgstr ""
 msgid "hevc"
 msgstr ""
 
-#: gui/mrvVersion.cpp:474
+#: gui/mrvVersion.cpp:478
 msgid "hexds"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:402 gui/mrvPreferences.cpp:2191
+#: gui/mrvPreferences.cpp:402 gui/mrvPreferences.cpp:2192
 msgid "histogram"
 msgstr ""
 
@@ -28794,68 +28798,68 @@ msgstr ""
 msgid "host"
 msgstr ""
 
-#: gui/mrvVersion.cpp:784
-msgid "host_statistics failed!"
+#: gui/mrvVersion.cpp:811
+msgid "host_statistics64 failed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1232 gui/mrvPreferences.cpp:2511
+#: gui/mrvPreferences.cpp:1233 gui/mrvPreferences.cpp:2512
 msgid "hotkeys"
 msgstr ""
 
 #: core/CMedia.cpp:1615 core/guessImage.cpp:245 core/guessImage.cpp:402
-#: core/aviImage.cpp:2909 core/Sequence.cpp:664
+#: core/aviImage.cpp:2911 core/Sequence.cpp:664
 msgid "http"
 msgstr ""
 
-#: gui/mrvVersion.cpp:572
+#: gui/mrvVersion.cpp:576
 msgid "http://ffmpeg.mplayerhq.hu/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:558
+#: gui/mrvVersion.cpp:562
 msgid "http://glew.sourceforge.net/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:551
+#: gui/mrvVersion.cpp:555
 msgid "http://www.boost.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:554
+#: gui/mrvVersion.cpp:558
 msgid "http://www.fltk.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:581
+#: gui/mrvVersion.cpp:585
 msgid "http://www.opencolorio.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:577
+#: gui/mrvVersion.cpp:581
 msgid "http://www.openexr.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:585
+#: gui/mrvVersion.cpp:589
 msgid "http://www.openimageio.org/"
 msgstr ""
 
-#: core/aviImage.cpp:2918
+#: core/aviImage.cpp:2920
 msgid "https://"
 msgstr ""
 
-#: gui/mrvVersion.cpp:608
+#: gui/mrvVersion.cpp:612
 msgid "https://github.com/ampas/CTL"
 msgstr ""
 
-#: gui/mrvVersion.cpp:604
+#: gui/mrvVersion.cpp:608
 msgid "https://github.com/ampas/aces-dev"
 msgstr ""
 
-#: core/aviImage.cpp:2916
+#: core/aviImage.cpp:2918
 msgid "https://www."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:638 gui/mrvPreferences.cpp:2258
+#: gui/mrvPreferences.cpp:638 gui/mrvPreferences.cpp:2259
 msgid "hud"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:582 gui/mrvPreferences.cpp:2225
+#: gui/mrvPreferences.cpp:582 gui/mrvPreferences.cpp:2226
 msgid "hud_color"
 msgstr ""
 
@@ -28999,15 +29003,15 @@ msgstr ""
 msgid "imageState"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:395 gui/mrvPreferences.cpp:2189
+#: gui/mrvPreferences.cpp:395 gui/mrvPreferences.cpp:2190
 msgid "image_info"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1169 gui/mrvPreferences.cpp:2355
+#: gui/mrvPreferences.cpp:1169 gui/mrvPreferences.cpp:2356
 msgid "image_version_prefix"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:877 gui/mrvPreferences.cpp:2488
+#: gui/mrvPreferences.cpp:877 gui/mrvPreferences.cpp:2489
 #: standalone/mrvCommandLine.cpp:379 standalone/mrvCommandLine.cpp:396
 msgid "images"
 msgstr ""
@@ -29016,7 +29020,7 @@ msgstr ""
 msgid "img"
 msgstr ""
 
-#: core/aviImage.cpp:509 core/aviImage.cpp:542 core/R3dImage.cpp:244
+#: core/aviImage.cpp:512 core/aviImage.cpp:545 core/R3dImage.cpp:244
 msgid "in"
 msgstr ""
 
@@ -29044,7 +29048,7 @@ msgstr ""
 msgid "info"
 msgstr ""
 
-#: core/CMedia_audio.cpp:918 core/aviImage.cpp:2942
+#: core/CMedia_audio.cpp:918 core/aviImage.cpp:2944
 msgid "initial_pause"
 msgstr ""
 
@@ -29052,7 +29056,7 @@ msgstr ""
 msgid "inputColorSpace"
 msgstr ""
 
-#: gui/mrvVersion.cpp:312
+#: gui/mrvVersion.cpp:316
 msgid "input_format_list"
 msgstr ""
 
@@ -29064,11 +29068,11 @@ msgstr ""
 msgid "int"
 msgstr ""
 
-#: core/smpteImage.cpp:46 gui/mrvVersion.cpp:197 gui/mrvVersion.cpp:201
-#: gui/mrvVersion.cpp:205 gui/mrvVersion.cpp:209 gui/mrvVersion.cpp:213
-#: gui/mrvVersion.cpp:217 gui/mrvVersion.cpp:221 gui/mrvVersion.cpp:225
-#: gui/mrvVersion.cpp:229 gui/mrvVersion.cpp:233 gui/mrvVersion.cpp:237
-#: gui/mrvVersion.cpp:241 gui/mrvVersion.cpp:245 gui/mrvVersion.cpp:249
+#: core/smpteImage.cpp:46 gui/mrvVersion.cpp:201 gui/mrvVersion.cpp:205
+#: gui/mrvVersion.cpp:209 gui/mrvVersion.cpp:213 gui/mrvVersion.cpp:217
+#: gui/mrvVersion.cpp:221 gui/mrvVersion.cpp:225 gui/mrvVersion.cpp:229
+#: gui/mrvVersion.cpp:233 gui/mrvVersion.cpp:237 gui/mrvVersion.cpp:241
+#: gui/mrvVersion.cpp:245 gui/mrvVersion.cpp:249 gui/mrvVersion.cpp:253
 msgid "internal"
 msgstr ""
 
@@ -29280,7 +29284,7 @@ msgstr ""
 msgid "k25"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4147
+#: video/mrvGLEngine.cpp:4149
 msgid "kARBFP1 builtin shader"
 msgstr ""
 
@@ -29406,7 +29410,7 @@ msgstr ""
 msgid "language"
 msgstr ""
 
-#: standalone/main.cpp:125 standalone/main.cpp:326
+#: standalone/main.cpp:128 standalone/main.cpp:329
 msgid "last"
 msgstr ""
 
@@ -29431,43 +29435,43 @@ msgstr ""
 msgid "lgf"
 msgstr ""
 
-#: gui/mrvVersion.cpp:567
+#: gui/mrvVersion.cpp:571
 msgid "libavcodec      v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:569
+#: gui/mrvVersion.cpp:573
 msgid "libavfilter        v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:568
+#: gui/mrvVersion.cpp:572
 msgid "libavformat     v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:566
+#: gui/mrvVersion.cpp:570
 msgid "libavutil          v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:614
+#: gui/mrvVersion.cpp:618
 msgid "libdvdcss"
 msgstr ""
 
-#: gui/mrvVersion.cpp:613
+#: gui/mrvVersion.cpp:617
 msgid "libdvdnav"
 msgstr ""
 
-#: gui/mrvVersion.cpp:612
+#: gui/mrvVersion.cpp:616
 msgid "libdvdread"
 msgstr ""
 
-#: gui/mrvVersion.cpp:589
+#: gui/mrvVersion.cpp:593
 msgid "library_list"
 msgstr ""
 
-#: gui/mrvVersion.cpp:570
+#: gui/mrvVersion.cpp:574
 msgid "libswresample v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:571
+#: gui/mrvVersion.cpp:575
 msgid "libswscale       v"
 msgstr ""
 
@@ -29483,11 +29487,11 @@ msgstr ""
 msgid "loadDeepData error: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1134 gui/mrvPreferences.cpp:2343
+#: gui/mrvPreferences.cpp:1134 gui/mrvPreferences.cpp:2344
 msgid "load_library"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1132 gui/mrvPreferences.cpp:2342
+#: gui/mrvPreferences.cpp:1132 gui/mrvPreferences.cpp:2343
 msgid "loading"
 msgstr ""
 
@@ -29500,7 +29504,7 @@ msgstr ""
 msgid "longitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:717 gui/mrvPreferences.cpp:2310
+#: gui/mrvPreferences.cpp:717 gui/mrvPreferences.cpp:2311
 msgid "loop_mode"
 msgstr ""
 
@@ -29521,7 +29525,7 @@ msgid "lri quick exit "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:466 gui/mrvPreferences.cpp:1010
-#: gui/mrvPreferences.cpp:2209 gui/mrvPreferences.cpp:2402
+#: gui/mrvPreferences.cpp:2210 gui/mrvPreferences.cpp:2403
 #: video/mrvGLQuad.cpp:1058 video/mrvGLCube.cpp:185 video/mrvGLSphere.cpp:187
 msgid "lut"
 msgstr ""
@@ -29642,7 +29646,7 @@ msgstr ""
 msgid "m2ts"
 msgstr ""
 
-#: gui/mrvMainWindow.cpp:63 standalone/main.cpp:78
+#: gui/mrvMainWindow.cpp:63 standalone/main.cpp:81
 msgid "main"
 msgstr ""
 
@@ -29678,19 +29682,19 @@ msgstr ""
 msgid "mask_value"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4077
+#: video/mrvGLEngine.cpp:4078
 msgid "max/MP_REF_WHITE: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4076
+#: video/mrvGLEngine.cpp:4077
 msgid "max: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1172 gui/mrvPreferences.cpp:2357
+#: gui/mrvPreferences.cpp:1172 gui/mrvPreferences.cpp:2358
 msgid "max_images_apart"
 msgstr ""
 
-#: core/aviImage.cpp:429
+#: core/aviImage.cpp:432
 msgid "mdat"
 msgstr ""
 
@@ -29702,43 +29706,43 @@ msgstr ""
 msgid "mef"
 msgstr ""
 
-#: gui/mrvVersion.cpp:766
+#: gui/mrvVersion.cpp:770
 msgid "mem"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:659 gui/mrvPreferences.cpp:2267
+#: gui/mrvPreferences.cpp:659 gui/mrvPreferences.cpp:2268
 msgid "memory"
 msgstr ""
 
-#: gui/mrvVersion.cpp:234
+#: gui/mrvVersion.cpp:238
 msgid "mental images bit files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:226
+#: gui/mrvVersion.cpp:230
 msgid "mental images color files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:246
+#: gui/mrvVersion.cpp:250
 msgid "mental images depth files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:238
+#: gui/mrvVersion.cpp:242
 msgid "mental images motion files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:230
+#: gui/mrvVersion.cpp:234
 msgid "mental images normal files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:214
+#: gui/mrvVersion.cpp:218
 msgid "mental images ripmap (non-tiled)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:242
+#: gui/mrvVersion.cpp:246
 msgid "mental images scalar files"
 msgstr ""
 
-#: gui/mrvVersion.cpp:210
+#: gui/mrvVersion.cpp:214
 msgid "mental images shadow maps"
 msgstr ""
 
@@ -29802,11 +29806,11 @@ msgstr ""
 msgid "mental ray Z Depth Picture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4075
+#: video/mrvGLEngine.cpp:4076
 msgid "min: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1138 gui/mrvPreferences.cpp:2344
+#: gui/mrvPreferences.cpp:1138 gui/mrvPreferences.cpp:2345
 msgid "missing_frames"
 msgstr ""
 
@@ -29814,7 +29818,7 @@ msgstr ""
 msgid "mkv"
 msgstr ""
 
-#: core/aviImage.cpp:427
+#: core/aviImage.cpp:430
 msgid "moov"
 msgstr ""
 
@@ -29831,7 +29835,7 @@ msgstr ""
 msgid "mov %%"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:750 gui/mrvPreferences.cpp:2326
+#: gui/mrvPreferences.cpp:750 gui/mrvPreferences.cpp:2327
 msgid "move_picture"
 msgstr ""
 
@@ -29862,7 +29866,7 @@ msgstr ""
 msgid "mpeg4"
 msgstr ""
 
-#: core/aviImage.cpp:451
+#: core/aviImage.cpp:454
 msgid "mpegts"
 msgstr ""
 
@@ -29877,11 +29881,11 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1375
 #: core/mrvACES.cpp:134 gui/mrvImageView.cpp:504 gui/mrvMainWindow.cpp:75
-#: gui/mrvPreferences.cpp:356 gui/mrvPreferences.cpp:2154
+#: gui/mrvPreferences.cpp:356 gui/mrvPreferences.cpp:2155
 msgid "mrViewer"
 msgstr ""
 
-#: gui/mrvVersion.cpp:536
+#: gui/mrvVersion.cpp:540
 msgid "mrViewer "
 msgstr ""
 
@@ -29895,7 +29899,7 @@ msgstr ""
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:547
+#: gui/mrvVersion.cpp:551
 msgid "mrViewer depends on:"
 msgstr ""
 
@@ -29956,7 +29960,7 @@ msgid ""
 "the same algorithm (CTL or ICC)."
 msgstr ""
 
-#: standalone/main.cpp:215
+#: standalone/main.cpp:218
 #, c-format
 msgid "mrViewer%s"
 msgstr ""
@@ -29965,8 +29969,8 @@ msgstr ""
 msgid "mrViewer.colors"
 msgstr ""
 
-#: standalone/main.cpp:102 standalone/main.cpp:153 standalone/main.cpp:310
-#: standalone/main.cpp:353
+#: standalone/main.cpp:105 standalone/main.cpp:156 standalone/main.cpp:313
+#: standalone/main.cpp:356
 msgid "mrViewer.lock"
 msgstr ""
 
@@ -30088,12 +30092,12 @@ msgstr ""
 msgid "nEF"
 msgstr ""
 
-#: core/aviImage.cpp:2685 core/exrImage.cpp:112
+#: core/aviImage.cpp:2687 core/exrImage.cpp:112
 msgid "name"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:1153 gui/mrvPreferences.cpp:1155
-#: gui/mrvPreferences.cpp:2350
+#: gui/mrvPreferences.cpp:2351
 msgid "native_file_chooser"
 msgstr ""
 
@@ -30110,7 +30114,7 @@ msgstr ""
 msgid "no!\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2263
+#: gui/mrvPreferences.cpp:2264
 msgid "non_drop_timecode"
 msgstr ""
 
@@ -30138,11 +30142,11 @@ msgstr ""
 msgid "nt"
 msgstr ""
 
-#: gui/mrvVersion.cpp:471
+#: gui/mrvVersion.cpp:475
 msgid "ntss"
 msgstr ""
 
-#: core/R3dImage.cpp:1439 gui/mrvPreferences.cpp:1529 video/mrvGLLut3d.cpp:1254
+#: core/R3dImage.cpp:1439 gui/mrvPreferences.cpp:1530 video/mrvGLLut3d.cpp:1254
 msgid "nuke-default"
 msgstr ""
 
@@ -30150,7 +30154,7 @@ msgstr ""
 msgid "null"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1027 gui/mrvPreferences.cpp:2409
+#: gui/mrvPreferences.cpp:1027 gui/mrvPreferences.cpp:2410
 msgid "number_stops"
 msgstr ""
 
@@ -30247,10 +30251,10 @@ msgid "o.\tc #C8AE76"
 msgstr ""
 
 #: gui/mrvOCIOBrowser.cpp:41 gui/mrvFileRequester.cpp:98
-#: gui/mrvPreferences.cpp:587 gui/mrvPreferences.cpp:1492
-#: gui/mrvPreferences.cpp:1509 gui/mrvPreferences.cpp:1512
-#: gui/mrvPreferences.cpp:1523 gui/mrvPreferences.cpp:1525
-#: gui/mrvPreferences.cpp:2229
+#: gui/mrvPreferences.cpp:587 gui/mrvPreferences.cpp:1493
+#: gui/mrvPreferences.cpp:1510 gui/mrvPreferences.cpp:1513
+#: gui/mrvPreferences.cpp:1524 gui/mrvPreferences.cpp:1526
+#: gui/mrvPreferences.cpp:2230
 msgid "ocio"
 msgstr ""
 
@@ -30295,11 +30299,11 @@ msgstr ""
 msgid "opaque"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:431 gui/mrvPreferences.cpp:2175
+#: gui/mrvPreferences.cpp:431 gui/mrvPreferences.cpp:2176
 msgid "open_mode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:887 gui/mrvPreferences.cpp:2494
+#: gui/mrvPreferences.cpp:887 gui/mrvPreferences.cpp:2495
 msgid "openexr"
 msgstr ""
 
@@ -30323,7 +30327,7 @@ msgstr ""
 msgid "original"
 msgstr ""
 
-#: core/aviImage.cpp:517 core/aviImage.cpp:553 core/R3dImage.cpp:251
+#: core/aviImage.cpp:520 core/aviImage.cpp:556 core/R3dImage.cpp:251
 msgid "out"
 msgstr ""
 
@@ -30351,15 +30355,15 @@ msgstr ""
 msgid "out_srgb"
 msgstr ""
 
-#: gui/mrvVersion.cpp:319
+#: gui/mrvVersion.cpp:323
 msgid "output_format_list"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:864 gui/mrvPreferences.cpp:2395
+#: gui/mrvPreferences.cpp:864 gui/mrvPreferences.cpp:2396
 msgid "override_audio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:708 gui/mrvPreferences.cpp:2308
+#: gui/mrvPreferences.cpp:708 gui/mrvPreferences.cpp:2309
 msgid "override_fps"
 msgstr ""
 
@@ -30523,7 +30527,7 @@ msgstr ""
 msgid "pef"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:755 gui/mrvPreferences.cpp:2328
+#: gui/mrvPreferences.cpp:755 gui/mrvPreferences.cpp:2329
 msgid "pencil"
 msgstr ""
 
@@ -30543,11 +30547,11 @@ msgstr ""
 msgid "pic"
 msgstr ""
 
-#: standalone/main.cpp:104 standalone/main.cpp:154 standalone/main.cpp:354
+#: standalone/main.cpp:107 standalone/main.cpp:157 standalone/main.cpp:357
 msgid "pid"
 msgstr ""
 
-#: core/aviImage.cpp:524
+#: core/aviImage.cpp:527
 msgid "pix_fmts"
 msgstr ""
 
@@ -30560,11 +30564,11 @@ msgid "pixelAspectRatio"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:374 gui/mrvPreferences.cpp:728
-#: gui/mrvPreferences.cpp:2183 gui/mrvPreferences.cpp:2316
+#: gui/mrvPreferences.cpp:2184 gui/mrvPreferences.cpp:2317
 msgid "pixel_toolbar"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:734 gui/mrvPreferences.cpp:2318
+#: gui/mrvPreferences.cpp:734 gui/mrvPreferences.cpp:2319
 msgid "pixel_values"
 msgstr ""
 
@@ -30577,7 +30581,7 @@ msgid "pktqueue"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:53
-#: gui/mrvPreferences.cpp:490 standalone/main.cpp:264
+#: gui/mrvPreferences.cpp:490 standalone/main.cpp:267
 msgid "plastic"
 msgstr ""
 
@@ -30585,12 +30589,12 @@ msgstr ""
 msgid "play"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:704 gui/mrvPreferences.cpp:2306
+#: gui/mrvPreferences.cpp:704 gui/mrvPreferences.cpp:2307
 msgid "play_all_frames"
 msgstr ""
 
 #: core/mrvServer.cpp:1510 gui/mrvImageView.cpp:9492 gui/mrvPreferences.cpp:698
-#: gui/mrvPreferences.cpp:2304 standalone/mrvCommandLine.cpp:342
+#: gui/mrvPreferences.cpp:2305 standalone/mrvCommandLine.cpp:342
 msgid "playback"
 msgstr ""
 
@@ -30606,19 +30610,19 @@ msgstr ""
 msgid "png"
 msgstr ""
 
-#: core/aviImage.cpp:431
+#: core/aviImage.cpp:434
 msgid "pnot"
 msgstr ""
 
-#: core/aviImage.cpp:2979
+#: core/aviImage.cpp:2981
 msgid "populate "
 msgstr ""
 
-#: core/aviImage.cpp:2732
+#: core/aviImage.cpp:2734
 msgid "populate: Could not read frame 1 error: "
 msgstr ""
 
-#: core/aviImage.cpp:2981
+#: core/aviImage.cpp:2983
 msgid "populated "
 msgstr ""
 
@@ -30642,7 +30646,7 @@ msgstr ""
 msgid "prefs"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:772 gui/mrvPreferences.cpp:2334
+#: gui/mrvPreferences.cpp:772 gui/mrvPreferences.cpp:2335
 msgid "preload"
 msgstr ""
 
@@ -30654,7 +30658,7 @@ msgstr ""
 msgid "prnum: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1060 gui/mrvPreferences.cpp:2444
+#: gui/mrvPreferences.cpp:1060 gui/mrvPreferences.cpp:2445
 msgid "profile"
 msgstr ""
 
@@ -30665,7 +30669,7 @@ msgid "prores_ks"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:917 gui/mrvPreferences.cpp:922
-#: gui/mrvPreferences.cpp:2503 gui/mrvPreferences.cpp:2506
+#: gui/mrvPreferences.cpp:2504 gui/mrvPreferences.cpp:2507
 msgid "proxy_scale"
 msgstr ""
 
@@ -30803,7 +30807,7 @@ msgstr ""
 msgid "qtk"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1011 gui/mrvPreferences.cpp:2406
+#: gui/mrvPreferences.cpp:1011 gui/mrvPreferences.cpp:2407
 msgid "quality"
 msgstr ""
 
@@ -30815,15 +30819,15 @@ msgstr ""
 msgid "queue packets "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:687 gui/mrvPreferences.cpp:2292
+#: gui/mrvPreferences.cpp:687 gui/mrvPreferences.cpp:2293
 msgid "quick_folder_travel"
 msgstr ""
 
 #: core/ddsImage.cpp:1256 core/Sequence.cpp:819 core/mrvCPU.cpp:742
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
-#: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:684 gui/mrvVersion.cpp:700
+#: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:688 gui/mrvVersion.cpp:704
 #: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:345
-#: standalone/mrvCommandLine.cpp:494 standalone/main.cpp:547
+#: standalone/mrvCommandLine.cpp:494 standalone/main.cpp:550
 msgid "r"
 msgstr ""
 
@@ -30927,7 +30931,7 @@ msgstr ""
 msgid "r3d"
 msgstr ""
 
-#: core/aviImage.cpp:3342 core/aviImage.cpp:3345
+#: core/aviImage.cpp:3347 core/aviImage.cpp:3350
 msgid "rFetch"
 msgstr ""
 
@@ -30943,7 +30947,7 @@ msgstr ""
 msgid "raf"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1226 gui/mrvPreferences.cpp:2484
+#: gui/mrvPreferences.cpp:1227 gui/mrvPreferences.cpp:2485
 msgid "raise_log_window_on_error"
 msgstr ""
 
@@ -30995,7 +30999,7 @@ msgstr ""
 msgid "rec709"
 msgstr ""
 
-#: core/aviImage.cpp:1323
+#: core/aviImage.cpp:1326
 msgid "receive_frame error: "
 msgstr ""
 
@@ -31003,11 +31007,11 @@ msgstr ""
 msgid "received: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:919 core/aviImage.cpp:2943
+#: core/CMedia_audio.cpp:919 core/aviImage.cpp:2945
 msgid "reconnect"
 msgstr ""
 
-#: core/CMedia_audio.cpp:920 core/aviImage.cpp:2944
+#: core/CMedia_audio.cpp:920 core/aviImage.cpp:2946
 msgid "reconnect_streamed"
 msgstr ""
 
@@ -31027,19 +31031,19 @@ msgstr ""
 msgid "recv() failed"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4054
+#: video/mrvGLEngine.cpp:4055
 msgid "red "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:916 gui/mrvPreferences.cpp:2502
+#: gui/mrvPreferences.cpp:916 gui/mrvPreferences.cpp:2503
 msgid "red3d"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:255 gui/mrvPreferences.cpp:2420
+#: gui/mrvPreferences.cpp:255 gui/mrvPreferences.cpp:2421
 msgid "red_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:256 gui/mrvPreferences.cpp:2422
+#: gui/mrvPreferences.cpp:256 gui/mrvPreferences.cpp:2423
 msgid "red_y"
 msgstr ""
 
@@ -31054,7 +31058,7 @@ msgstr ""
 msgid "reel name "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:381 gui/mrvPreferences.cpp:2185
+#: gui/mrvPreferences.cpp:381 gui/mrvPreferences.cpp:2186
 msgid "reel_list"
 msgstr ""
 
@@ -31062,7 +31066,7 @@ msgstr ""
 msgid "reel_t"
 msgstr ""
 
-#: core/CMedia_audio.cpp:220 core/aviImage.cpp:834
+#: core/CMedia_audio.cpp:220 core/aviImage.cpp:837
 msgid "refcounted_frames"
 msgstr ""
 
@@ -31070,11 +31074,11 @@ msgstr ""
 msgid "remove image "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1200 gui/mrvPreferences.cpp:2374
+#: gui/mrvPreferences.cpp:1201 gui/mrvPreferences.cpp:2375
 msgid "resize_bg"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:654 gui/mrvPreferences.cpp:2265
+#: gui/mrvPreferences.cpp:654 gui/mrvPreferences.cpp:2266
 msgid "resolution"
 msgstr ""
 
@@ -31281,7 +31285,7 @@ msgstr ""
 msgid "sRGB"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:471 gui/mrvPreferences.cpp:2210
+#: gui/mrvPreferences.cpp:471 gui/mrvPreferences.cpp:2211
 msgid "safe_areas"
 msgstr ""
 
@@ -31293,16 +31297,16 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:608 gui/mrvPreferences.cpp:2236
-#: gui/mrvPreferences.cpp:2241
+#: gui/mrvPreferences.cpp:608 gui/mrvPreferences.cpp:2237
+#: gui/mrvPreferences.cpp:2242
 msgid "save_config"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1176 gui/mrvPreferences.cpp:2359
+#: gui/mrvPreferences.cpp:1176 gui/mrvPreferences.cpp:2360
 msgid "saving"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:777 gui/mrvPreferences.cpp:2335
+#: gui/mrvPreferences.cpp:777 gui/mrvPreferences.cpp:2336
 #: video/mrvGLQuad.cpp:1101
 msgid "scale"
 msgstr ""
@@ -31311,7 +31315,7 @@ msgstr ""
 msgid "scene_linear"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:490 gui/mrvPreferences.cpp:2284
+#: gui/mrvPreferences.cpp:490 gui/mrvPreferences.cpp:2285
 msgid "scheme"
 msgstr ""
 
@@ -31323,11 +31327,11 @@ msgstr ""
 msgid "screenWindowWidth"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:748 gui/mrvPreferences.cpp:2325
+#: gui/mrvPreferences.cpp:748 gui/mrvPreferences.cpp:2326
 msgid "scrubbing"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:721 gui/mrvPreferences.cpp:2311
+#: gui/mrvPreferences.cpp:721 gui/mrvPreferences.cpp:2312
 msgid "scrubbing_sensitivity"
 msgstr ""
 
@@ -31349,15 +31353,15 @@ msgid "seek to "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:503 gui/mrvPreferences.cpp:578
-#: gui/mrvPreferences.cpp:2223 gui/mrvPreferences.cpp:2287
+#: gui/mrvPreferences.cpp:2224 gui/mrvPreferences.cpp:2288
 msgid "selection_color"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:725 gui/mrvPreferences.cpp:2313
+#: gui/mrvPreferences.cpp:725 gui/mrvPreferences.cpp:2314
 msgid "selection_display_mode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:505 gui/mrvPreferences.cpp:2288
+#: gui/mrvPreferences.cpp:505 gui/mrvPreferences.cpp:2289
 msgid "selection_text_color"
 msgstr ""
 
@@ -31365,7 +31369,7 @@ msgstr ""
 msgid "send() failed"
 msgstr ""
 
-#: core/aviImage.cpp:1307
+#: core/aviImage.cpp:1310
 msgid "send_packet error: "
 msgstr ""
 
@@ -31434,11 +31438,11 @@ msgstr ""
 msgid "sig_peak *= %f;\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:367 gui/mrvPreferences.cpp:2182
+#: gui/mrvPreferences.cpp:367 gui/mrvPreferences.cpp:2183
 msgid "single_instance"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:794 gui/mrvPreferences.cpp:2338
+#: gui/mrvPreferences.cpp:794 gui/mrvPreferences.cpp:2339
 msgid "size"
 msgstr ""
 
@@ -31512,11 +31516,11 @@ msgstr ""
 msgid "st2084"
 msgstr ""
 
-#: standalone/main.cpp:126 standalone/main.cpp:329
+#: standalone/main.cpp:129 standalone/main.cpp:332
 msgid "start"
 msgstr ""
 
-#: core/aviImage.cpp:2899
+#: core/aviImage.cpp:2901
 msgid "start_number"
 msgstr ""
 
@@ -31532,7 +31536,7 @@ msgstr ""
 msgid "stereo-output"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:388 gui/mrvPreferences.cpp:2187
+#: gui/mrvPreferences.cpp:388 gui/mrvPreferences.cpp:2188
 msgid "stereo3d_options"
 msgstr ""
 
@@ -31591,15 +31595,15 @@ msgstr ""
 msgid "subtitle"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1204 gui/mrvPreferences.cpp:2472
+#: gui/mrvPreferences.cpp:1205 gui/mrvPreferences.cpp:2473
 msgid "subtitles"
 msgstr ""
 
-#: core/aviImage.cpp:712
+#: core/aviImage.cpp:715
 msgid "subtitles="
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1053 gui/mrvPreferences.cpp:2439
+#: gui/mrvPreferences.cpp:1053 gui/mrvPreferences.cpp:2440
 msgid "surround_luminance"
 msgstr ""
 
@@ -31615,7 +31619,7 @@ msgstr ""
 msgid "sync_image"
 msgstr ""
 
-#: gui/mrvVersion.cpp:774
+#: gui/mrvVersion.cpp:792
 msgid "sysctl failed!"
 msgstr ""
 
@@ -31711,7 +31715,11 @@ msgstr ""
 msgid "t.\tc #FFE59C"
 msgstr ""
 
-#: gui/mrvVersion.cpp:470
+#: gui/mrvVersion.cpp:827
+msgid "task info failed"
+msgstr ""
+
+#: gui/mrvVersion.cpp:474
 msgid "tdls"
 msgstr ""
 
@@ -31719,15 +31727,15 @@ msgstr ""
 msgid "texID0= "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:757 gui/mrvPreferences.cpp:2329
+#: gui/mrvPreferences.cpp:757 gui/mrvPreferences.cpp:2330
 msgid "text"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:501 gui/mrvPreferences.cpp:2286
+#: gui/mrvPreferences.cpp:501 gui/mrvPreferences.cpp:2287
 msgid "text_color"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:575 gui/mrvPreferences.cpp:2221
+#: gui/mrvPreferences.cpp:575 gui/mrvPreferences.cpp:2222
 msgid "text_overlay_color"
 msgstr ""
 
@@ -31735,12 +31743,12 @@ msgstr ""
 msgid "tga"
 msgstr ""
 
-#: gui/mrvVersion.cpp:632
+#: gui/mrvVersion.cpp:636
 msgid "the porting and with the color schemes."
 msgstr ""
 
 #: gui/mrvColorSchemes.cpp:39 gui/mrvPreferences.cpp:556
-#: gui/mrvPreferences.cpp:2289
+#: gui/mrvPreferences.cpp:2290
 msgid "theme"
 msgstr ""
 
@@ -31748,20 +31756,20 @@ msgstr ""
 msgid "themes"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:888 gui/mrvPreferences.cpp:1192
-#: gui/mrvPreferences.cpp:2370 gui/mrvPreferences.cpp:2495
+#: gui/mrvPreferences.cpp:888 gui/mrvPreferences.cpp:1193
+#: gui/mrvPreferences.cpp:2371 gui/mrvPreferences.cpp:2496
 msgid "thread_count"
 msgstr ""
 
-#: core/CMedia_audio.cpp:219 core/aviImage.cpp:829 core/aviImage.cpp:830
+#: core/CMedia_audio.cpp:219 core/aviImage.cpp:832 core/aviImage.cpp:833
 msgid "threads"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1160 gui/mrvPreferences.cpp:2351
+#: gui/mrvPreferences.cpp:1160 gui/mrvPreferences.cpp:2352
 msgid "thumbnail_percent"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:691 gui/mrvPreferences.cpp:2293
+#: gui/mrvPreferences.cpp:691 gui/mrvPreferences.cpp:2294
 msgid "thumbnails"
 msgstr ""
 
@@ -31792,11 +31800,11 @@ msgstr ""
 msgid "timecode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:412 gui/mrvPreferences.cpp:2196
+#: gui/mrvPreferences.cpp:412 gui/mrvPreferences.cpp:2197
 msgid "timeline_display"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:378 gui/mrvPreferences.cpp:2184
+#: gui/mrvPreferences.cpp:378 gui/mrvPreferences.cpp:2185
 msgid "timeline_toolbar"
 msgstr ""
 
@@ -31804,7 +31812,7 @@ msgstr ""
 msgid "title"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:371 gui/mrvPreferences.cpp:2181
+#: gui/mrvPreferences.cpp:371 gui/mrvPreferences.cpp:2182
 msgid "topbar"
 msgstr ""
 
@@ -31812,7 +31820,7 @@ msgstr ""
 msgid "track"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1039 gui/mrvPreferences.cpp:2417
+#: gui/mrvPreferences.cpp:1039 gui/mrvPreferences.cpp:2418
 msgid "transform"
 msgstr ""
 
@@ -31820,7 +31828,7 @@ msgstr ""
 msgid "ts"
 msgstr ""
 
-#: gui/mrvVersion.cpp:469
+#: gui/mrvVersion.cpp:473
 msgid "tss"
 msgstr ""
 
@@ -31940,11 +31948,11 @@ msgstr ""
 msgid "u8"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:365 gui/mrvPreferences.cpp:2158
+#: gui/mrvPreferences.cpp:365 gui/mrvPreferences.cpp:2159
 msgid "ui"
 msgstr ""
 
-#: gui/mrvVersion.cpp:476
+#: gui/mrvVersion.cpp:480
 msgid "umh"
 msgstr ""
 
@@ -31992,24 +32000,24 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1741
+#: gui/mrvPreferences.cpp:1742
 msgid "use_OCIO"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1180 gui/mrvPreferences.cpp:2363
+#: gui/mrvPreferences.cpp:1180 gui/mrvPreferences.cpp:2364
 msgid "use_image_path"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:590 gui/mrvPreferences.cpp:600
-#: gui/mrvPreferences.cpp:2231
+#: gui/mrvPreferences.cpp:2232
 msgid "use_ocio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1177 gui/mrvPreferences.cpp:2360
+#: gui/mrvPreferences.cpp:1177 gui/mrvPreferences.cpp:2361
 msgid "use_relative_paths"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1165 gui/mrvPreferences.cpp:2354
+#: gui/mrvPreferences.cpp:1165 gui/mrvPreferences.cpp:2355
 msgid "uses_16bits"
 msgstr ""
 
@@ -32115,16 +32123,16 @@ msgstr ""
 msgid "value"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:405 gui/mrvPreferences.cpp:2192
+#: gui/mrvPreferences.cpp:405 gui/mrvPreferences.cpp:2193
 msgid "vectorscope"
 msgstr ""
 
-#: core/exrImage.cpp:114 gui/mrvPreferences.cpp:359 gui/mrvPreferences.cpp:2155
+#: core/exrImage.cpp:114 gui/mrvPreferences.cpp:359 gui/mrvPreferences.cpp:2156
 msgid "version"
 msgstr ""
 
 #: core/CMedia.cpp:3172 core/CMedia.cpp:3203 core/aviImage_save.cpp:1518
-#: gui/mrvPreferences.cpp:1184 gui/mrvPreferences.cpp:2366
+#: gui/mrvPreferences.cpp:1184 gui/mrvPreferences.cpp:2367
 msgid "video"
 msgstr ""
 
@@ -32132,20 +32140,20 @@ msgstr ""
 msgid "video only"
 msgstr ""
 
-#: core/aviImage.cpp:446
+#: core/aviImage.cpp:449
 msgid "video/MP2T"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1187 gui/mrvPreferences.cpp:2368
+#: gui/mrvPreferences.cpp:1187 gui/mrvPreferences.cpp:2369
 msgid "video_codec"
 msgstr ""
 
-#: core/aviImage.cpp:498
+#: core/aviImage.cpp:501
 #, c-format
 msgid "video_size=%dx%d:pix_fmt=%d:time_base=%d/%d:pixel_aspect=%d/%d"
 msgstr ""
 
-#: core/exrImage.cpp:115 gui/mrvPreferences.cpp:454 gui/mrvPreferences.cpp:2202
+#: core/exrImage.cpp:115 gui/mrvPreferences.cpp:454 gui/mrvPreferences.cpp:2203
 msgid "view"
 msgstr ""
 
@@ -32181,11 +32189,11 @@ msgid ""
 "\tc.b = dot(Kb, pre); \n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:868 gui/mrvPreferences.cpp:2396
+#: gui/mrvPreferences.cpp:868 gui/mrvPreferences.cpp:2397
 msgid "volume"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:872 gui/mrvPreferences.cpp:2398
+#: gui/mrvPreferences.cpp:872 gui/mrvPreferences.cpp:2399
 msgid "volume_mute"
 msgstr ""
 
@@ -32201,7 +32209,7 @@ msgstr ""
 #: gui/mrvImageBrowser.cpp:773 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:78
 #: standalone/mrvCommandLine.cpp:495 standalone/mrvCommandLine.cpp:496
-#: standalone/main.cpp:548 standalone/main.cpp:549
+#: standalone/main.cpp:551 standalone/main.cpp:552
 msgid "w"
 msgstr ""
 
@@ -32309,7 +32317,7 @@ msgstr ""
 msgid "wav"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:409 gui/mrvPreferences.cpp:2193
+#: gui/mrvPreferences.cpp:409 gui/mrvPreferences.cpp:2194
 #: gui/mrvWaveform.cpp:45
 msgid "waveform"
 msgstr ""
@@ -32322,23 +32330,23 @@ msgstr ""
 msgid "webm"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:4066
+#: video/mrvGLEngine.cpp:4067
 msgid "white "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1050 gui/mrvPreferences.cpp:2437
+#: gui/mrvPreferences.cpp:1050 gui/mrvPreferences.cpp:2438
 msgid "white_luminance"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:261 gui/mrvPreferences.cpp:2432
+#: gui/mrvPreferences.cpp:261 gui/mrvPreferences.cpp:2433
 msgid "white_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:262 gui/mrvPreferences.cpp:2434
+#: gui/mrvPreferences.cpp:262 gui/mrvPreferences.cpp:2435
 msgid "white_y"
 msgstr ""
 
-#: core/aviImage.cpp:430
+#: core/aviImage.cpp:433
 msgid "wide"
 msgstr ""
 
@@ -32351,7 +32359,7 @@ msgid "width: "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:421 gui/mrvPreferences.cpp:666
-#: gui/mrvPreferences.cpp:2164 gui/mrvPreferences.cpp:2271
+#: gui/mrvPreferences.cpp:2165 gui/mrvPreferences.cpp:2272
 msgid "window"
 msgstr ""
 
@@ -32367,8 +32375,8 @@ msgstr ""
 msgid "writer"
 msgstr ""
 
-#: core/CMedia.cpp:1621 core/guessImage.cpp:247 core/aviImage.cpp:2912
-#: core/aviImage.cpp:2917 core/Sequence.cpp:672
+#: core/CMedia.cpp:1621 core/guessImage.cpp:247 core/aviImage.cpp:2914
+#: core/aviImage.cpp:2919 core/Sequence.cpp:672
 msgid "www."
 msgstr ""
 
@@ -32514,11 +32522,11 @@ msgstr ""
 msgid "x9"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:669 gui/mrvPreferences.cpp:2273
+#: gui/mrvPreferences.cpp:669 gui/mrvPreferences.cpp:2274
 msgid "x_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:677 gui/mrvPreferences.cpp:2276
+#: gui/mrvPreferences.cpp:677 gui/mrvPreferences.cpp:2277
 msgid "x_size"
 msgstr ""
 
@@ -32635,11 +32643,11 @@ msgstr ""
 msgid "y.\tc #EADA96"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:672 gui/mrvPreferences.cpp:2274
+#: gui/mrvPreferences.cpp:672 gui/mrvPreferences.cpp:2275
 msgid "y_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:679 gui/mrvPreferences.cpp:2277
+#: gui/mrvPreferences.cpp:679 gui/mrvPreferences.cpp:2278
 msgid "y_size"
 msgstr ""
 
@@ -32659,12 +32667,12 @@ msgstr ""
 msgid "yes.\n"
 msgstr ""
 
-#: core/aviImage.cpp:2911 core/aviImage.cpp:2915
+#: core/aviImage.cpp:2913 core/aviImage.cpp:2917
 msgid "youtu.be"
 msgstr ""
 
-#: core/CMedia.cpp:1618 core/guessImage.cpp:246 core/aviImage.cpp:2910
-#: core/aviImage.cpp:2914 core/Sequence.cpp:671
+#: core/CMedia.cpp:1618 core/guessImage.cpp:246 core/aviImage.cpp:2912
+#: core/aviImage.cpp:2916 core/Sequence.cpp:671
 msgid "youtube"
 msgstr ""
 
@@ -32695,7 +32703,7 @@ msgstr ""
 msgid "ytb-dl"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1189 gui/mrvPreferences.cpp:2369
+#: gui/mrvPreferences.cpp:1189 gui/mrvPreferences.cpp:2370
 msgid "yuv_hint"
 msgstr ""
 
@@ -32791,11 +32799,11 @@ msgstr ""
 msgid "z.\tc #CBAB73"
 msgstr ""
 
-#: gui/mrvVersion.cpp:467
+#: gui/mrvVersion.cpp:471
 msgid "zero"
 msgstr ""
 
-#: gui/mrvVersion.cpp:624
+#: gui/mrvVersion.cpp:628
 msgid "zlib v"
 msgstr ""
 
