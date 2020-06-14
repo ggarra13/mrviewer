@@ -4040,12 +4040,13 @@ void GLEngine::loadOpenGLShader()
     int size;
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
                                     av_stream_get_side_data( st,
-                                            AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
-                                            &size );
+                                                             AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+                                                             &size );
 
     double max_cll = 100000;
     if (m)
     {
+        LOG_INFO( "Has AVMasteringDisplayMetadata" );
         if ( size == sizeof( AVMasteringDisplayMetadata ) )
         {
             if ( m->has_primaries )
@@ -4113,6 +4114,7 @@ void GLEngine::loadOpenGLShader()
                        algo, tone_mapping_param,
                        tone_mapping_desat, detect_peak,
                        gamut_warning, is_linear);
+        add_normal_code( code );
     }
     else
     {
