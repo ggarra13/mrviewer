@@ -356,7 +356,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
                          "mrViewer" );
 
     DBG3;
-    base.get( "version", version, 3 );
+    base.get( "version", version, 4 );
 
     //
     // Get ui preferences
@@ -1186,7 +1186,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsFiltering->value( tmp );
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
-    video.get( "yuv_hint", tmp, 2 );
+    video.get( "yuv_hint", tmp, 0 );
+    if ( version < 4 ) tmp = 0;
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
     video.get( "thread_count", tmp, 0 );

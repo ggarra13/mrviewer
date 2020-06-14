@@ -154,13 +154,16 @@ const char* const kColorSpaces[] = {
 
 const size_t aviImage::colorspace_index() const
 {
-    if ( !_av_frame ) return 2; // Unspecified
     aviImage* img = const_cast< aviImage* >( this );
     if ( _colorspace_index < 0 ||
          (size_t)_colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
     {
         if ( colorspace_override ) img->_colorspace_index = colorspace_override;
-        else img->_colorspace_index = _av_frame->colorspace;
+        else
+        {
+            if ( !_av_frame ) return 2;  // Unspecified
+            img->_colorspace_index = _av_frame->colorspace;
+        }
     }
     return _colorspace_index;
 }
@@ -2014,49 +2017,49 @@ void aviImage::video_stream( int x )
     }
 
     AVStream* stream = get_video_stream();
-    AVCodecParameters* ctx = stream->codecpar;
+    AVCodecParameters* par = stream->codecpar;
 
-    int has_alpha = ( ( ctx->format == AV_PIX_FMT_RGBA    ) |
-                      ( ctx->format == AV_PIX_FMT_ABGR    ) |
-                      ( ctx->format == AV_PIX_FMT_GBRAP   ) |
-                      ( ctx->format == AV_PIX_FMT_GBRAP16BE ) |
-                      ( ctx->format == AV_PIX_FMT_GBRAP16LE ) |
-                      ( ctx->format == AV_PIX_FMT_RGBA64BE ) |
-                      ( ctx->format == AV_PIX_FMT_BGRA64BE ) |
-                      ( ctx->format == AV_PIX_FMT_RGBA64LE ) |
-                      ( ctx->format == AV_PIX_FMT_BGRA64LE ) |
-                      ( ctx->format == AV_PIX_FMT_ARGB    ) |
-                      ( ctx->format == AV_PIX_FMT_RGB32   ) |
-                      ( ctx->format == AV_PIX_FMT_RGB32_1 ) |
-                      ( ctx->format == AV_PIX_FMT_YA8     ) |
-                      ( ctx->format == AV_PIX_FMT_BGR32   ) |
-                      ( ctx->format == AV_PIX_FMT_BGR32_1 ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P9BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P9BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P9BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P9LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P9LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P9LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P10LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P10LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P10LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P10BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P10BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P10BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P16LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P16LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P16LE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA420P16BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA422P16BE ) |
-                      ( ctx->format == AV_PIX_FMT_YUVA444P16BE )  );
+    int has_alpha = ( ( par->format == AV_PIX_FMT_RGBA    ) |
+                      ( par->format == AV_PIX_FMT_ABGR    ) |
+                      ( par->format == AV_PIX_FMT_GBRAP   ) |
+                      ( par->format == AV_PIX_FMT_GBRAP16BE ) |
+                      ( par->format == AV_PIX_FMT_GBRAP16LE ) |
+                      ( par->format == AV_PIX_FMT_RGBA64BE ) |
+                      ( par->format == AV_PIX_FMT_BGRA64BE ) |
+                      ( par->format == AV_PIX_FMT_RGBA64LE ) |
+                      ( par->format == AV_PIX_FMT_BGRA64LE ) |
+                      ( par->format == AV_PIX_FMT_ARGB    ) |
+                      ( par->format == AV_PIX_FMT_RGB32   ) |
+                      ( par->format == AV_PIX_FMT_RGB32_1 ) |
+                      ( par->format == AV_PIX_FMT_YA8     ) |
+                      ( par->format == AV_PIX_FMT_BGR32   ) |
+                      ( par->format == AV_PIX_FMT_BGR32_1 ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P9BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P9BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P9BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P9LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P9LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P9LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P10LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P10LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P10LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P10BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P10BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P10BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P16LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P16LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P16LE ) |
+                      ( par->format == AV_PIX_FMT_YUVA420P16BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA422P16BE ) |
+                      ( par->format == AV_PIX_FMT_YUVA444P16BE )  );
 
 
     _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts,
                                                          (AVPixelFormat)
-                                                         ctx->format,
+                                                         par->format,
                                                          has_alpha, NULL );
 
     if ( _av_dst_pix_fmt == AV_PIX_FMT_NONE )
@@ -2097,8 +2100,7 @@ void aviImage::video_stream( int x )
     _ptype = VideoFrame::kByte;
 
     if ( colorspace_override ) _colorspace_index = colorspace_override;
-    else _colorspace_index = ctx->color_space;
-
+    else _colorspace_index = par->color_space;
 
     switch( _av_dst_pix_fmt )
     {
@@ -2148,7 +2150,7 @@ void aviImage::video_stream( int x )
         if ( has_alpha )
         {
             if ( _colorspace_index == AVCOL_SPC_BT709 ||
-                 ( ctx->height >= 630 && ctx->width >= 1120 ) )
+                 ( par->height >= 630 && par->width >= 1120 ) )
                 _pix_fmt = VideoFrame::kITU_709_YCbCr444A;
             else
                 _pix_fmt = VideoFrame::kITU_601_YCbCr444A;
@@ -2157,7 +2159,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV444P:
     case AV_PIX_FMT_YUVJ444P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-             ( ctx->height >= 630 && ctx->width >= 1120 ) )
+             ( par->height >= 630 && par->width >= 1120 ) )
             _pix_fmt = VideoFrame::kITU_709_YCbCr444;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr444;
@@ -2167,7 +2169,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV422P:
     case AV_PIX_FMT_YUVJ422P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-             ( ctx->height >= 630 && ctx->width >= 1120 )  )
+             ( par->height >= 630 && par->width >= 1120 )  )
             _pix_fmt = VideoFrame::kITU_709_YCbCr422;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr422;
@@ -2177,13 +2179,13 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV420P:
     case AV_PIX_FMT_YUVJ420P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-             ( ctx->height >= 630 && ctx->width >= 1120 ) )
+             ( par->height >= 630 && par->width >= 1120 ) )
             _pix_fmt = VideoFrame::kITU_709_YCbCr420;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr420;
         break;
     case AV_PIX_FMT_YUVA420P:
-        if ( _colorspace_index == AVCOL_SPC_BT709 || ctx->height > 525  )
+        if ( _colorspace_index == AVCOL_SPC_BT709 || par->height > 525  )
             _pix_fmt = VideoFrame::kITU_709_YCbCr420A;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr420A;
