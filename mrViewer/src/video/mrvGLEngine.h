@@ -89,6 +89,8 @@ public:
         _image = img;
     }
 
+    bool is_hdr_image( const CMedia* img );
+
 
     // Init FBO Drawing
     virtual bool init_fbo( ImageList& images );
