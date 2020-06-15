@@ -7512,6 +7512,7 @@ int ImageView::handle(int event)
 	X = Fl::event_x();
 	Y = Fl::event_y();
 	mouseDrag( int(X), int(Y) );
+	mouseMove( int(X), int(Y) );
 	return 1;
 	break;
     case FL_SHORTCUT:
