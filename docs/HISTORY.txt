@@ -7,6 +7,8 @@ v5.5.1  - Bug fixed memory querying routines on Mac OSX.
 	- Removed lag in displaying images when mouse was moved inside the
 	  window on MacOSX.  This improves display speed also on other
 	  platforms.
+	- Bug fixed Windows distribution which got broken in v5.5.0 with
+	  missing DLLs.
 
 v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Bug fixed audio playback on MacOSX to play always in stereo.
