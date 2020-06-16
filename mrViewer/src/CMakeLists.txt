@@ -566,7 +566,9 @@ FILE( COPY ${SOURCE_DIR}/colors/
   INSTALL( DIRECTORY ${SOURCE_DIR}/ocio/ DESTINATION ocio )
   INSTALL( DIRECTORY ${SOURCE_DIR}/docs/en DESTINATION docs )
   INSTALL( DIRECTORY ${SOURCE_DIR}/docs/es DESTINATION docs )
-  # INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+IF( WIN32 OR WIN64 )
+  INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+ENDIF()
   INSTALL( DIRECTORY ${SOURCE_DIR}/share/ DESTINATION share )
 if (NOT APPLE )
   INSTALL( FILES
@@ -576,7 +578,7 @@ if (NOT APPLE )
 endif()
 
 INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${scriptfiles} ${exrfiles}
-		  ${oiiofiles} ${ociofiles}
+		  ${oiiofiles} ${ociofiles} ${dllfiles}
 	 DESTINATION bin )
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
