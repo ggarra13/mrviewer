@@ -572,7 +572,7 @@ void GLEngine::initialize()
         DBGM3( "call glutInit" );
         int argc = 1;
         static char* args[] = { (char*)"GlEngine", NULL };
-        //glutInit( &argc, args );
+        glutInit( &argc, args );
         glut_init = true;
     }
 
