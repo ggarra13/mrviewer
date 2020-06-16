@@ -246,7 +246,7 @@ float ALSAEngine::volume() const
 
             snd_mixer_selem_id_t *sid;
             snd_mixer_selem_id_alloca(&sid);
-            snd_mixer_selem_id_set_name( sid, "PCM" );
+            snd_mixer_selem_id_set_name( sid, N_("PCM") );
 
             snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
             if ( !elem )
@@ -360,7 +360,7 @@ void ALSAEngine::volume( float v )
         snd_mixer_selem_id_t *sid;
         snd_mixer_selem_id_alloca(&sid);
         snd_mixer_selem_id_set_index( sid, 0 );
-        snd_mixer_selem_id_set_name( sid, "PCM" );
+        snd_mixer_selem_id_set_name( sid, N_("PCM") );
 
         snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
         if ( !elem )
