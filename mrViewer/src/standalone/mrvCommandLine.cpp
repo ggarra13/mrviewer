@@ -487,7 +487,7 @@ void parse_command_line( const int argc, const char** argv,
 
     int debug = adebug.getValue();
 #ifdef _WIN32
-    if ( debug )
+    if ( debug >= 0 )
     {
         AllocConsole();
         FILE *fDummy;

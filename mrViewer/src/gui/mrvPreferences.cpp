@@ -296,7 +296,7 @@ std::string         Preferences::CTL_16bits_save_transform;
 std::string         Preferences::CTL_32bits_save_transform;
 std::string         Preferences::CTL_float_save_transform;
 std::string         Preferences::root;
-int                 Preferences::debug = 0;
+int                 Preferences::debug = -1;
 std::string         Preferences::tempDir = "/usr/tmp/";
 
 
