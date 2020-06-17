@@ -337,7 +337,7 @@ void parse_command_line( const int argc, const char** argv,
     cmd.setOutput(&my);
 
     ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
-                          false, 0, "int" );
+                          false, -1, "int" );
 
     SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );

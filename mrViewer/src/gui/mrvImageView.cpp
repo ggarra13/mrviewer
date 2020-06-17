@@ -3907,7 +3907,14 @@ void ImageView::draw()
     _engine->color( r, g, b );
 
 
-    int y = h() - 25 - 25 * ((bool)fltk_main()->fullscreen_active());
+    std::cerr << "fullscreen " << ((bool)fltk_main()->fullscreen_active())
+              << " !visible " << ! uiMain->uiTopBar->visible() << std::endl;
+#ifdef LINUX
+    int y = h() - 25;
+#else
+    int y = h() - 25 - 25 * (((bool)fltk_main()->fullscreen_active()) &&
+                             ! uiMain->uiTopBar->visible() );
+#endif
     int yi = 25;
     static char buf[1024];
 

@@ -215,10 +215,12 @@ if kernel !~ /MINGW.*/
 
 else
   build = "BUILD/Windows-6.3.9600-64/"
-  Dir.chdir( build  )
-  copy_files( build )
+  dest  = "#{build}/#@debug"
+  Dir.chdir( root  )
+  copy_files( dest )
 
   build = "BUILD/Windows-6.3.9600-32/"
-  Dir.chdir( build  )
-  copy_files( build )
+  dest  = "#{build}/#@debug"
+  Dir.chdir( root  )
+  copy_files( dest )
 end
