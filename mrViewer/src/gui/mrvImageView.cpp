@@ -7184,20 +7184,18 @@ void ImageView::toggle_presentation()
 	    texture_filtering( kBilinearFiltering );
 	}
 
-	// Resize needed as fullscreen does not happpen in the single
-	// Fl::check below
-	int X = Fl::x(), Y = Fl::y(), W = Fl::w(), H = Fl::h();
-	fltk_main()->resize( X, Y, W, H);
+	fltk_main()->fullscreen_off();
 	fltk_main()->fullscreen();
-	uiMain->uiRegion->layout();
-#if defined( _WIN32 )
 	float scale = Fl::screen_scale( window()->screen_num() );
-	resize( X, Y, W, H + int(40 * scale) );  // @BUG: We need +40 to cover bottom strip
-#elif defined(OSX)
-	float scale = Fl::screen_scale( window()->screen_num() );
-	H = window()->h();
-	resize( X, 0, W, H );
+	int X = window()->x();
+	int Y = window()->y();
+	int W = window()->w();
+	int H = window()->h();
+#if defined(_WIN32) || defined(OSX)
+	H += 40 * scale;
 #endif
+	resize( X, Y, W, H );
+	uiMain->uiRegion->layout();
 	uiMain->uiRegion->init_sizes();
     }
     else
