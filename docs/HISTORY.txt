@@ -3,8 +3,11 @@ v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
 	- Improved HUD display across platforms to position the text
 	  consistently whether the channel bar is shown or not.
 	- Improved the windows' title bar on Windows.
-	- Bug fixed glutInit on Linux which was not called and was
-	  crashing the viewer when safe areas were shown.
+	- Bug fixed glutInit on Macs which was displaying a message of
+	  glutInit called twice.
+	- Reverted switching movies to remain at the current frame if
+	  possible.
+	- Added alphabetically sorting of files to directory loading.
 
 v5.5.1  - Bug fixed memory querying routines on Mac OSX.
 	- Bug fixed audio scrubbing by not jumping video frames.
@@ -17,6 +20,8 @@ v5.5.1  - Bug fixed memory querying routines on Mac OSX.
 	  platforms.
 	- Bug fixed Windows distribution which got broken in v5.5.0 with
 	  missing DLLs.
+	- Added missing glutInit which would crash the viewer when safe
+	  areas were shown on Linux.
 
 v5.5.0  - Bug fixed the Media Info Window on Mac OSX.
 	- Bug fixed audio playback on MacOSX to play always in stereo.

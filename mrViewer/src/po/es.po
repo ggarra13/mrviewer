@@ -105,19 +105,19 @@
 #: video/mrvGLLut3d.cpp:1223 video/mrvGLLut3d.cpp:1402
 #: video/mrvGLLut3d.cpp:1403 video/mrvGLShape.cpp:102 video/mrvGLShape.cpp:106
 #: video/mrvGLShape.cpp:134 video/mrvGLShape.cpp:152 video/mrvGLShape.cpp:163
-#: video/mrvGLShape.cpp:179 standalone/mrvCommandLine.cpp:238
-#: standalone/mrvCommandLine.cpp:285 standalone/mrvCommandLine.cpp:322
-#: standalone/mrvCommandLine.cpp:364 standalone/mrvCommandLine.cpp:383
-#: standalone/mrvCommandLine.cpp:400 standalone/mrvCommandLine.cpp:401
-#: standalone/mrvCommandLine.cpp:405 standalone/mrvCommandLine.cpp:406
-#: standalone/mrvCommandLine.cpp:582 standalone/mrvCommandLine.cpp:606
+#: video/mrvGLShape.cpp:179 standalone/mrvCommandLine.cpp:240
+#: standalone/mrvCommandLine.cpp:287 standalone/mrvCommandLine.cpp:324
+#: standalone/mrvCommandLine.cpp:366 standalone/mrvCommandLine.cpp:385
+#: standalone/mrvCommandLine.cpp:402 standalone/mrvCommandLine.cpp:403
+#: standalone/mrvCommandLine.cpp:407 standalone/mrvCommandLine.cpp:408
+#: standalone/mrvCommandLine.cpp:584 standalone/mrvCommandLine.cpp:608
 #: standalone/main.cpp:88 standalone/main.cpp:125 standalone/main.cpp:126
 #: standalone/main.cpp:195 standalone/main.cpp:202
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-17 21:44-0300\n"
+"POT-Creation-Date: 2020-06-17 23:08-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -322,7 +322,7 @@ msgstr ""
 #: video/mrvGLEngine.cpp:2568 video/mrvGLEngine.cpp:2636
 #: video/mrvGLEngine.cpp:4165 video/mrvGLEngine.cpp:4203
 #: video/mrvGLQuad.cpp:827 video/mrvGLLut3d.cpp:1012 video/mrvGLLut3d.cpp:1019
-#: standalone/mrvCommandLine.cpp:119 standalone/mrvCommandLine.cpp:631
+#: standalone/mrvCommandLine.cpp:119 standalone/mrvCommandLine.cpp:633
 #, c-format
 msgid " "
 msgstr ""
@@ -5873,7 +5873,7 @@ msgstr ""
 msgid "%.8lg"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4597 standalone/mrvCommandLine.cpp:264
+#: gui/FLU/Flu_File_Chooser.cpp:4597 standalone/mrvCommandLine.cpp:266
 msgid "%0"
 msgstr ""
 
@@ -5995,7 +5995,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:4445 gui/mrvImageInformation.cpp:4465
 #: gui/mrvImageInformation.cpp:4485 gui/mrvImageInformation.cpp:4506
 #: gui/mrvImageInformation.cpp:4519 gui/mrvPreferences.cpp:1847
-#: standalone/mrvCommandLine.cpp:261 standalone/main.cpp:471
+#: standalone/mrvCommandLine.cpp:263 standalone/main.cpp:471
 #, c-format
 msgid "%d"
 msgstr ""
@@ -6177,7 +6177,7 @@ msgstr ""
 msgid "%g (%s)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4602 standalone/mrvCommandLine.cpp:269
+#: gui/FLU/Flu_File_Chooser.cpp:4602 standalone/mrvCommandLine.cpp:271
 #, c-format
 msgid "%ld"
 msgstr ""
@@ -8039,7 +8039,7 @@ msgstr ""
 #: core/CMedia_audio.cpp:2286 core/aviImage.cpp:1822 core/aviImage.cpp:3908
 #: core/R3dImage.cpp:890 core/brawImage.cpp:1037 core/brawImage.cpp:1548
 #: gui/mrvTimecode.cpp:375 gui/mrvTimecode.cpp:483
-#: standalone/mrvCommandLine.cpp:553
+#: standalone/mrvCommandLine.cpp:555
 msgid "-"
 msgstr ""
 
@@ -8239,7 +8239,7 @@ msgstr ""
 msgid "--debug"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:471
+#: standalone/mrvCommandLine.cpp:473
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
@@ -8283,7 +8283,7 @@ msgstr ""
 msgid "-d"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:456
+#: standalone/mrvCommandLine.cpp:458
 msgid "-psn_"
 msgstr ""
 
@@ -9290,7 +9290,7 @@ msgstr ""
 
 #: gui/mrvImageBrowser.cpp:749 gui/mrvImageBrowser.cpp:751
 #: gui/mrvImageBrowser.cpp:1206 gui/mrvImageBrowser.cpp:2077
-#: gui/mrvImageBrowser.cpp:2133 standalone/mrvCommandLine.cpp:531
+#: gui/mrvImageBrowser.cpp:2133 standalone/mrvCommandLine.cpp:533
 msgid ".reel"
 msgstr ""
 
@@ -9850,8 +9850,8 @@ msgstr ""
 msgid "0123456789"
 msgstr ""
 
-#: core/Sequence.cpp:707 standalone/mrvCommandLine.cpp:524
-#: standalone/mrvCommandLine.cpp:550
+#: core/Sequence.cpp:707 standalone/mrvCommandLine.cpp:526
+#: standalone/mrvCommandLine.cpp:552
 msgid "0123456789-"
 msgstr ""
 
@@ -12938,7 +12938,7 @@ msgstr ""
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr "Una operacion bloqueante de Windows Sockets 1.1 está en progreso.\n"
 
-#: standalone/mrvCommandLine.cpp:329
+#: standalone/mrvCommandLine.cpp:331
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
@@ -14208,12 +14208,12 @@ msgstr ""
 msgid "COLORCORR"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:494
+#: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:496
 msgid "CONIN$"
 msgstr ""
 
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:78
-#: standalone/mrvCommandLine.cpp:495 standalone/mrvCommandLine.cpp:496
+#: standalone/mrvCommandLine.cpp:497 standalone/mrvCommandLine.cpp:498
 msgid "CONOUT$"
 msgstr ""
 
@@ -19001,7 +19001,7 @@ msgid "Images in stereo have different velocities (fps)."
 msgstr ""
 "Las imágenes en estéreo tienen distintas velocidades (cuadros por segundo)."
 
-#: standalone/mrvCommandLine.cpp:379
+#: standalone/mrvCommandLine.cpp:381
 msgid "Images, sequences or movies to display."
 msgstr "Imágenes, secuencias o peliculas para mostrar."
 
@@ -21547,19 +21547,19 @@ msgstr "Derogar CPS"
 msgid "Override playback fps when loading sequences."
 msgstr "Derogar playback de cuadros por segundo cuando se carga una secuencia."
 
-#: standalone/mrvCommandLine.cpp:357
+#: standalone/mrvCommandLine.cpp:359
 msgid "Override sequence default fps."
 msgstr "Derogar los cuadros por segundo de la secuencia."
 
-#: standalone/mrvCommandLine.cpp:369
+#: standalone/mrvCommandLine.cpp:371
 msgid "Override viewer's default client hostname."
 msgstr "Derogar el cliente hostname por defecto del visor."
 
-#: standalone/mrvCommandLine.cpp:365
+#: standalone/mrvCommandLine.cpp:367
 msgid "Override viewer's default gain."
 msgstr "Derogar la ganancia interna del visor."
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:363
 msgid "Override viewer's default gamma."
 msgstr "Derogar la gama interna del visor."
 
@@ -21577,7 +21577,7 @@ msgid "Owner"
 msgstr "Propietario"
 
 #: core/CMedia.cpp:3828 core/CMedia_audio.cpp:2296
-#: standalone/mrvCommandLine.cpp:342
+#: standalone/mrvCommandLine.cpp:344
 msgid "P"
 msgstr ""
 
@@ -21672,7 +21672,6 @@ msgid "PBO Textures:\t"
 msgstr "Texturas PBO:\t"
 
 #: audio/mrvALSAEngine.cpp:251 audio/mrvALSAEngine.cpp:365
-#, fuzzy
 msgid "PCM"
 msgstr ""
 
@@ -21946,7 +21945,7 @@ msgstr "Reproducir secuencia para atrás."
 msgid "Play sequence forward."
 msgstr "Reproducir secuencia hacia delante."
 
-#: standalone/mrvCommandLine.cpp:343
+#: standalone/mrvCommandLine.cpp:345
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)"
@@ -22142,11 +22141,11 @@ msgstr "Programa no linqueó.  Error: "
 msgid "Protocols"
 msgstr "Protocolos"
 
-#: standalone/mrvCommandLine.cpp:383
+#: standalone/mrvCommandLine.cpp:385
 msgid "Provide a sequence or movie for background."
 msgstr "Proveer dos secuencias o peliculas para estereo."
 
-#: standalone/mrvCommandLine.cpp:396
+#: standalone/mrvCommandLine.cpp:398
 msgid "Provide two sequences or movies for stereo."
 msgstr "Proveer dos secuencias o peliculas para estereo."
 
@@ -22995,7 +22994,7 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
-#: standalone/mrvCommandLine.cpp:346
+#: standalone/mrvCommandLine.cpp:348
 msgid "Run mrViewer regardless of single instance setting"
 msgstr ""
 
@@ -23472,11 +23471,11 @@ msgstr ""
 "izquierda/derecha (y viceversa), entrelazado de renglones o columnas, "
 "cuadriculado, anteojos rojo/cian (y viceversa)."
 
-#: standalone/mrvCommandLine.cpp:401
+#: standalone/mrvCommandLine.cpp:403
 msgid "Select stereo input"
 msgstr "Selecciona Entrada Estéreo"
 
-#: standalone/mrvCommandLine.cpp:406
+#: standalone/mrvCommandLine.cpp:408
 msgid "Select stereo output"
 msgstr "Selecciona Salida Estéreo"
 
@@ -23560,11 +23559,11 @@ msgstr "Setear Punto Entrada"
 msgid "Set Out Point"
 msgstr "Setear Punto Salida"
 
-#: standalone/mrvCommandLine.cpp:391
+#: standalone/mrvCommandLine.cpp:393
 msgid "Set added audio offset."
 msgstr "Agregué desplazamiento de audio."
 
-#: standalone/mrvCommandLine.cpp:387
+#: standalone/mrvCommandLine.cpp:389
 msgid "Set each movie/sequence default audio."
 msgstr "Setear el audio por defecto de cada película/secuencia"
 
@@ -23580,7 +23579,7 @@ msgstr "Setear la imagen como fondo (necesita LDE)"
 msgid "Set selected reel images as background."
 msgstr "Setear la imagenes del carrete como fondo"
 
-#: standalone/mrvCommandLine.cpp:374
+#: standalone/mrvCommandLine.cpp:376
 msgid "Set viewer's default server/client port."
 msgstr "Setear el puerto servidor/cliente por defecto del visor."
 
@@ -24950,7 +24949,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Toggle Waveform Window"
 msgstr "Permutar Ventana de Forma de Onda"
 
-#: standalone/mrvCommandLine.cpp:510
+#: standalone/mrvCommandLine.cpp:512
 msgid "Too many audio offsets for fewer audios"
 msgstr "Demasiados offsets de audio para pocos audios."
 
@@ -25019,11 +25018,11 @@ msgstr "Intentando "
 msgid "Turn off screensaver"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:352
+#: standalone/mrvCommandLine.cpp:354
 msgid "Turn on EDL when loading multiple images"
 msgstr "Active LDE cuando se cargan multiple imágenes"
 
-#: standalone/mrvCommandLine.cpp:339
+#: standalone/mrvCommandLine.cpp:341
 msgid "Turn on debugging console"
 msgstr ""
 
@@ -27693,7 +27692,7 @@ msgstr ""
 msgid "`.\tc #FFF3A8"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:838 standalone/mrvCommandLine.cpp:386
+#: gui/mrvColorInfo.cpp:838 standalone/mrvCommandLine.cpp:388
 msgid "a"
 msgstr ""
 
@@ -27928,12 +27927,12 @@ msgstr ""
 
 #: core/CMedia.cpp:3175 core/CMedia.cpp:3206 core/CMedia_audio.cpp:83
 #: core/aviImage_save.cpp:1515 gui/mrvPreferences.cpp:824
-#: gui/mrvPreferences.cpp:2380 standalone/mrvCommandLine.cpp:386
+#: gui/mrvPreferences.cpp:2380 standalone/mrvCommandLine.cpp:388
 #: standalone/main.cpp:126 standalone/main.cpp:323
 msgid "audio"
 msgstr "audio"
 
-#: standalone/mrvCommandLine.cpp:387
+#: standalone/mrvCommandLine.cpp:389
 msgid "audio files"
 msgstr "Asociar Archivo de Audio"
 
@@ -27967,7 +27966,7 @@ msgstr "audio"
 msgid "audio: %s\n"
 msgstr "audio: %s\n"
 
-#: standalone/mrvCommandLine.cpp:390
+#: standalone/mrvCommandLine.cpp:392
 msgid "audio_offset"
 msgstr "Agregué desplazamiento de audio."
 
@@ -28026,7 +28025,7 @@ msgstr "Grabando"
 msgid "await_output exception.  "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvColorInfo.cpp:839 standalone/mrvCommandLine.cpp:382
+#: gui/mrvColorInfo.cpp:839 standalone/mrvCommandLine.cpp:384
 msgid "b"
 msgstr ""
 
@@ -28159,7 +28158,7 @@ msgstr ""
 msgid "bay"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:382
+#: standalone/mrvCommandLine.cpp:384
 msgid "bg"
 msgstr ""
 
@@ -28710,8 +28709,8 @@ msgid "ctlToLut: "
 msgstr ""
 
 #: core/Sequence.cpp:729 core/Sequence.cpp:790 core/Sequence.cpp:1173
-#: gui/FLU/Flu_File_Chooser.cpp:4605 standalone/mrvCommandLine.cpp:272
-#: standalone/mrvCommandLine.cpp:339
+#: gui/FLU/Flu_File_Chooser.cpp:4605 standalone/mrvCommandLine.cpp:274
+#: standalone/mrvCommandLine.cpp:341
 msgid "d"
 msgstr ""
 
@@ -28831,7 +28830,7 @@ msgstr ""
 msgid "dcr"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:339
+#: standalone/mrvCommandLine.cpp:341
 msgid "debug"
 msgstr ""
 
@@ -29017,7 +29016,7 @@ msgstr "Compresión"
 msgid "dwa_compression"
 msgstr "Compresión"
 
-#: standalone/mrvCommandLine.cpp:351
+#: standalone/mrvCommandLine.cpp:353
 msgid "e"
 msgstr ""
 
@@ -29154,7 +29153,7 @@ msgstr ""
 msgid "edits"
 msgstr ""
 
-#: gui/mrvEDLGroup.cpp:42 standalone/mrvCommandLine.cpp:351
+#: gui/mrvEDLGroup.cpp:42 standalone/mrvCommandLine.cpp:353
 msgid "edl"
 msgstr ""
 
@@ -29251,7 +29250,7 @@ msgstr ""
 msgid "extended cpuid-level: "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:356
+#: standalone/mrvCommandLine.cpp:358
 msgid "f"
 msgstr ""
 
@@ -29419,7 +29418,7 @@ msgstr "Nombre"
 msgid "filereq"
 msgstr "b.arch"
 
-#: standalone/mrvCommandLine.cpp:378
+#: standalone/mrvCommandLine.cpp:380
 msgid "files"
 msgstr "archivos"
 
@@ -29483,8 +29482,8 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2201
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2265
 #: gui/mrvPreferences.cpp:2251 gui/mrvPreferences.cpp:2458
-#: gui/mrvPreferences.cpp:2466 standalone/mrvCommandLine.cpp:357
-#: standalone/mrvCommandLine.cpp:361 standalone/mrvCommandLine.cpp:365
+#: gui/mrvPreferences.cpp:2466 standalone/mrvCommandLine.cpp:359
+#: standalone/mrvCommandLine.cpp:363 standalone/mrvCommandLine.cpp:367
 msgid "float"
 msgstr "coma flotante"
 
@@ -29569,7 +29568,7 @@ msgstr " no encontrado"
 #: gui/mrvPreferences.cpp:645 gui/mrvPreferences.cpp:712
 #: gui/mrvPreferences.cpp:789 gui/mrvPreferences.cpp:2262
 #: gui/mrvPreferences.cpp:2310 gui/mrvPreferences.cpp:2338
-#: standalone/mrvCommandLine.cpp:356 standalone/main.cpp:131
+#: standalone/mrvCommandLine.cpp:358 standalone/main.cpp:131
 msgid "fps"
 msgstr ""
 
@@ -29619,7 +29618,7 @@ msgstr ""
 msgid "ftyp"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:360
+#: standalone/mrvCommandLine.cpp:362
 msgid "g"
 msgstr ""
 
@@ -29725,7 +29724,7 @@ msgstr ""
 
 #: gui/mrvPreferences.cpp:456 gui/mrvPreferences.cpp:2204
 #: video/mrvGLQuad.cpp:1074 video/mrvGLCube.cpp:192 video/mrvGLSphere.cpp:194
-#: standalone/mrvCommandLine.cpp:364
+#: standalone/mrvCommandLine.cpp:366
 msgid "gain"
 msgstr ""
 
@@ -29736,7 +29735,7 @@ msgstr ""
 #: gui/mrvPreferences.cpp:459 gui/mrvPreferences.cpp:892
 #: gui/mrvPreferences.cpp:2205 gui/mrvPreferences.cpp:2497
 #: video/mrvGLQuad.cpp:1076 video/mrvGLCube.cpp:193 video/mrvGLSphere.cpp:195
-#: standalone/mrvCommandLine.cpp:360
+#: standalone/mrvCommandLine.cpp:362
 msgid "gamma"
 msgstr "Gama"
 
@@ -29941,7 +29940,7 @@ msgstr ""
 msgid "histogram"
 msgstr "Histograma"
 
-#: standalone/mrvCommandLine.cpp:368
+#: standalone/mrvCommandLine.cpp:370
 msgid "host"
 msgstr "Fantasma"
 
@@ -30147,7 +30146,7 @@ msgstr ""
 msgid "iiq"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:383
+#: standalone/mrvCommandLine.cpp:385
 msgid "image"
 msgstr "imagen"
 
@@ -30164,7 +30163,7 @@ msgid "image_version_prefix"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:877 gui/mrvPreferences.cpp:2489
-#: standalone/mrvCommandLine.cpp:379 standalone/mrvCommandLine.cpp:396
+#: standalone/mrvCommandLine.cpp:381 standalone/mrvCommandLine.cpp:398
 msgid "images"
 msgstr "Imágenes"
 
@@ -30218,7 +30217,7 @@ msgid "insert image #"
 msgstr ""
 
 #
-#: standalone/mrvCommandLine.cpp:340
+#: standalone/mrvCommandLine.cpp:342
 msgid "int"
 msgstr "entero"
 
@@ -31373,7 +31372,7 @@ msgstr ""
 msgid "number_stops"
 msgstr "Número de FStops"
 
-#: standalone/mrvCommandLine.cpp:390
+#: standalone/mrvCommandLine.cpp:392
 msgid "o"
 msgstr "No"
 
@@ -31474,7 +31473,7 @@ msgid "ocio"
 msgstr ""
 
 #: video/mrvGLQuad.cpp:1102 video/mrvGLLut3d.cpp:97
-#: standalone/mrvCommandLine.cpp:391
+#: standalone/mrvCommandLine.cpp:393
 msgid "offset"
 msgstr "Desplazamiento"
 
@@ -31586,7 +31585,7 @@ msgstr ""
 msgid "owner"
 msgstr "Propietario"
 
-#: standalone/mrvCommandLine.cpp:373
+#: standalone/mrvCommandLine.cpp:375
 msgid "p"
 msgstr "Arriba"
 
@@ -31822,7 +31821,7 @@ msgstr "Todos los Cuadros"
 
 #: core/mrvServer.cpp:1510 gui/mrvImageView.cpp:9484
 #: gui/mrvPreferences.cpp:698 gui/mrvPreferences.cpp:2305
-#: standalone/mrvCommandLine.cpp:342
+#: standalone/mrvCommandLine.cpp:344
 msgid "playback"
 msgstr "Reproducir"
 
@@ -31862,7 +31861,7 @@ msgstr "No pude enviar paquete. Error "
 msgid "populated "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:373
+#: standalone/mrvCommandLine.cpp:375
 msgid "port"
 msgstr " en el puerto "
 
@@ -32063,8 +32062,8 @@ msgstr ""
 #: core/ddsImage.cpp:1256 core/Sequence.cpp:819 core/mrvCPU.cpp:742
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:688 gui/mrvVersion.cpp:704
-#: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:345
-#: standalone/mrvCommandLine.cpp:494 standalone/main.cpp:550
+#: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:347
+#: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:550
 msgid "r"
 msgstr ""
 
@@ -32381,7 +32380,7 @@ msgstr ""
 msgid "rtp"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:345
+#: standalone/mrvCommandLine.cpp:347
 msgid "run"
 msgstr "corre"
 
@@ -32406,7 +32405,7 @@ msgstr ""
 msgid "rwz"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:397
 msgid "s"
 msgstr ""
 
@@ -32789,16 +32788,16 @@ msgstr "Comienzo"
 msgid "start_number"
 msgstr "Mal número de puerto"
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:397
 msgid "stereo"
 msgstr ""
 
 #
-#: standalone/mrvCommandLine.cpp:400
+#: standalone/mrvCommandLine.cpp:402
 msgid "stereo-input"
 msgstr "entrada-estéreo"
 
-#: standalone/mrvCommandLine.cpp:405
+#: standalone/mrvCommandLine.cpp:407
 msgid "stereo-output"
 msgstr "salida-estéreo"
 
@@ -32848,8 +32847,8 @@ msgstr "almacenar_audio: datos inválidos. Buffer es "
 msgid "stream_begin"
 msgstr "Pista"
 
-#: standalone/mrvCommandLine.cpp:370 standalone/mrvCommandLine.cpp:375
-#: standalone/mrvCommandLine.cpp:402 standalone/mrvCommandLine.cpp:407
+#: standalone/mrvCommandLine.cpp:372 standalone/mrvCommandLine.cpp:377
+#: standalone/mrvCommandLine.cpp:404 standalone/mrvCommandLine.cpp:409
 msgid "string"
 msgstr "Texto"
 
@@ -32890,7 +32889,7 @@ msgstr "(sin imagen)"
 msgid "sysctl failed!"
 msgstr "sysctl falló."
 
-#: standalone/mrvCommandLine.cpp:368
+#: standalone/mrvCommandLine.cpp:370
 msgid "t"
 msgstr ""
 
@@ -33482,7 +33481,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1485 gui/FLU/Flu_File_Chooser.cpp:3360
 #: gui/mrvImageBrowser.cpp:773 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:78
-#: standalone/mrvCommandLine.cpp:495 standalone/mrvCommandLine.cpp:496
+#: standalone/mrvCommandLine.cpp:497 standalone/mrvCommandLine.cpp:498
 #: standalone/main.cpp:551 standalone/main.cpp:552
 msgid "w"
 msgstr ""

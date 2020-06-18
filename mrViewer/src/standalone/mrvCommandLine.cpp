@@ -160,6 +160,8 @@ void parse_directory( const std::string& fileroot,
       }
    }
 
+   std::sort( files.begin(), files.end() );
+
    {
       stringArray::iterator i = files.begin();
       stringArray::iterator e = files.end();
