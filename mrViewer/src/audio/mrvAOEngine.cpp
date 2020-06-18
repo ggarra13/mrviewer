@@ -25,6 +25,8 @@
  *
  */
 
+#ifdef AOENGINE
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -279,3 +281,5 @@ bool AOEngine::close()
 
 
 } // namespace mrv
+
+#endif // AOENGINE
