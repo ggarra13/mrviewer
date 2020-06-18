@@ -1,3 +1,11 @@
+v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
+	  window or the timeline/pixel bars.
+	- Improved HUD display across platforms to position the text
+	  consistently whether the channel bar is shown or not.
+	- Improved the windows' title bar on Windows.
+	- Bug fixed glutInit on Linux which was not called and was
+	  crashing the viewer when safe areas were shown.
+
 v5.5.1  - Bug fixed memory querying routines on Mac OSX.
 	- Bug fixed audio scrubbing by not jumping video frames.
 	- Bug fixed HDRI movie playback when colorspace is unspecified.
