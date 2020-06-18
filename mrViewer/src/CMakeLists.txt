@@ -379,7 +379,7 @@ ENDIF()
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 
-IF(NOT WIN32)
+IF( NOT WIN32 AND NOT APPLE )
 
   ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
     COMMAND xgettext
