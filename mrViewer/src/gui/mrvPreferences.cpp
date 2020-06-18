@@ -303,6 +303,8 @@ std::string         Preferences::tempDir = "/usr/tmp/";
 int Preferences::R3dScale  = 4;
 int Preferences::BRAWScale = 3;
 
+int Preferences::switching_images = 0;
+
 int   Preferences::bgcolor;
 int   Preferences::textcolor;
 int   Preferences::selectioncolor;
@@ -1193,6 +1195,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     video.get( "thread_count", tmp, 0 );
     DBG3;
     uiPrefs->uiPrefsVideoThreadCount->value( tmp );
+    video.get( "switching_images", tmp, 0 );
+    uiPrefs->uiPrefsSwitchingImages->value( tmp );
 
     Fl_Preferences comp( base, "compositing" );
     comp.get( "blend_mode", tmp, 0 );
@@ -2369,6 +2373,8 @@ void Preferences::save()
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
     video.set( "thread_count", (int) uiPrefs->uiPrefsVideoThreadCount->value());
+    video.set( "switching_images",
+               (int) uiPrefs->uiPrefsSwitchingImages->value() );
 
     Fl_Preferences comp( base, "compositing" );
     comp.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );

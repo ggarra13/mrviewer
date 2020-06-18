@@ -99,6 +99,7 @@ public:
     static int selectiontextcolor;
     static int R3dScale;
     static int BRAWScale;
+    static int switching_images;
 
     static int64_t max_memory;
 

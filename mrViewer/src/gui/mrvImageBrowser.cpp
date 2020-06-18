@@ -3697,7 +3697,7 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
         CMedia* img = m->image();
 
         first = img->first_frame();
-        // f = img->frame();
+        if ( Preferences::switching_images ) f = img->frame();
         last  = img->last_frame();
 
         if (f > last ) f = last;

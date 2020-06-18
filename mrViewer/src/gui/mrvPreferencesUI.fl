@@ -529,7 +529,7 @@ uiWindowYSize->value( v->uiMain->h() );}
         }
         Fl_Group Playback {
           label Playback open
-          xywh {225 38 423 357} box EMBOSSED_BOX align 5
+          xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label Defaults open
@@ -543,7 +543,7 @@ uiWindowYSize->value( v->uiMain->h() );}
               xywh {280 120 300 154} box ROUNDED_BOX
             } {
               Fl_Group {} {
-                label Sequences open selected
+                label Sequences open
                 xywh {290 138 280 68} box ROUNDED_FRAME color 35
               } {
                 Fl_Check_Button uiPrefsOverrideFPS {
@@ -1537,10 +1537,10 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading open
+          label Loading
           xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {235 62 405 209} box ROUNDED_BOX
           } {
             Fl_Choice uiPrefsLoadLibrary {
@@ -1632,8 +1632,8 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
         }
         Fl_Group {} {
-          label Video
-          xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
+          label Video open
+          xywh {225 44 423 352} box EMBOSSED_BOX align 5
         } {
           Fl_Choice VideoDriver {
             label Driver
@@ -1646,7 +1646,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           Fl_Choice uiPrefsFiltering {
-            label Filtering open
+            label Filtering
             xywh {300 100 290 25} box THIN_DOWN_BOX down_box BORDER_BOX
             class {mrv::Choice}
           } {
@@ -1664,8 +1664,8 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           Fl_Group {} {
-            label Loading
-            xywh {240 158 368 123} box ROUNDED_BOX
+            label Loading open selected
+            xywh {240 158 368 135} box ROUNDED_BOX
           } {
             Fl_Value_Input uiPrefsVideoThreadCount {
               label {Video Thread Count}
@@ -1693,7 +1693,7 @@ mrv::CMedia::colorspace_override = idx;}
 Use File YUV Hint will take the value from the movie being loaded if the data is present.
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
-BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 167 31} box THIN_DOWN_BOX down_box BORDER_BOX
+BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 213 31} box THIN_DOWN_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1711,6 +1711,23 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 167 31}
               MenuItem {} {
                 label {Always use BT470BG / SMPTE170M}
                 xywh {0 0 100 20}
+              }
+            }
+            Fl_Choice uiPrefsSwitchingImages {
+              label {Switching Images}
+              user_data uiMain user_data_type {ViewerUI*}
+              callback {int idx = o->value();
+mrv::Preferences::switching_images = idx;} open
+              tooltip {Select the behavior of timeline when switching images.} xywh {375 249 210 31} box THIN_DOWN_BOX down_box BORDER_BOX
+              class {mrv::Choice}
+            } {
+              MenuItem {} {
+                label {Keep Frame Number}
+                xywh {10 10 100 20}
+              }
+              MenuItem {} {
+                label {Use Image's Frame Number}
+                xywh {10 10 100 20}
               }
             }
           }
