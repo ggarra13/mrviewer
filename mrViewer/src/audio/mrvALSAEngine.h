@@ -26,6 +26,8 @@
  *
  */
 
+#ifdef LINUX
+
 #ifndef mrvALSAEngine_h
 #define mrvALSAEngine_h
 
@@ -98,3 +100,5 @@ protected:
 
 
 #endif // mrvALSAEngine_h
+
+#endif // LINUX

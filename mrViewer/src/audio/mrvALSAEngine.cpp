@@ -25,6 +25,8 @@
  *
  */
 
+#ifdef LINUX
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -832,3 +834,6 @@ bool ALSAEngine::close()
 }
 
 } // namespace mrv
+
+
+#endif // LINUX

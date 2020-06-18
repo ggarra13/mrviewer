@@ -375,9 +375,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
   SET( SOURCES gui/resource.rc ${SOURCES} )
 ELSE()
-  if( NOT AOENGINE )
-    SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
-  endif()
+  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
 ENDIF()
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
@@ -456,13 +454,13 @@ SET( LIBRARIES
 # RELEASE VERSION
 #
 if(WIN32)
-	# if(COMMAND cmake_policy)
-	#          cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
-	# endif(COMMAND cmake_policy)
+        # if(COMMAND cmake_policy)
+        #          cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
+        # endif(COMMAND cmake_policy)
 else(WIN32)
-	if(COMMAND cmake_policy)
-		   cmake_policy(SET CMP0003 NEW)
-	endif(COMMAND cmake_policy)
+        if(COMMAND cmake_policy)
+                   cmake_policy(SET CMP0003 NEW)
+        endif(COMMAND cmake_policy)
 endif(WIN32)
 
 #  VP18 switches to c++14, so let's do that by default
@@ -490,31 +488,31 @@ SET_TARGET_PROPERTIES( mrViewer
 ######################################################
 
 IF(WIN32)
-	SET(EXE_DIR D:/code/lib/vc14_Windows_32/bin/ )
+        SET(EXE_DIR D:/code/lib/vc14_Windows_32/bin/ )
 ENDIF(WIN32)
 
 IF(WIN64) # defined in FindBuilDir
-	SET(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
+        SET(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
 ENDIF(WIN64)
 
 IF(APPLE)
-	SET(EXE_DIR /usr/local/bin )
+        SET(EXE_DIR /usr/local/bin )
 ELSE()
-	SET(EXE_DIR /usr/local/bin )
+        SET(EXE_DIR /usr/local/bin )
 ENDIF()
 
 SET( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 IF(UNIX AND NOT APPLE)
-	IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
-	  FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
-		DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-	ELSE()
-	  EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
-	  FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
-		DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-	ENDIF()
+        IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+          EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+          FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+                DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+        ELSE()
+          EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+          FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+                DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+        ENDIF()
 ENDIF(UNIX AND NOT APPLE)
 
 
@@ -568,20 +566,20 @@ FILE( COPY ${SOURCE_DIR}/colors/
   INSTALL( DIRECTORY ${SOURCE_DIR}/docs/es DESTINATION docs )
 IF( WIN32 OR WIN64 )
   FILE( COPY ${SOURCE_DIR}/share/
-  	DESTINATION ${CMAKE_BINARY_DIR}/../share )
+        DESTINATION ${CMAKE_BINARY_DIR}/../share )
   INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 ENDIF()
   INSTALL( DIRECTORY ${SOURCE_DIR}/share/ DESTINATION share )
 if (NOT APPLE )
   INSTALL( FILES
-		 ${SOURCE_DIR}/docs/HISTORY.txt
-		 ${SOURCE_DIR}/docs/LICENSE.txt
-		 DESTINATION ./ )
+                 ${SOURCE_DIR}/docs/HISTORY.txt
+                 ${SOURCE_DIR}/docs/LICENSE.txt
+                 DESTINATION ./ )
 endif()
 
 INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${scriptfiles} ${exrfiles}
-		  ${oiiofiles} ${ociofiles} ${dllfiles}
-	 DESTINATION bin )
+                  ${oiiofiles} ${ociofiles} ${dllfiles}
+         DESTINATION bin )
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
@@ -660,12 +658,12 @@ ELSEIF ( APPLE )
     set( INSTALL_NAME ${PROJECT_NAME} )
 
     configure_file(
-	../../etc/OSX/startup.sh.in
-	${PROJECT_BINARY_DIR}/startup.sh)
+        ../../etc/OSX/startup.sh.in
+        ${PROJECT_BINARY_DIR}/startup.sh)
 
     configure_file(
-	../../etc/OSX/Info.plist.in
-	${PROJECT_BINARY_DIR}/Info.plist )
+        ../../etc/OSX/Info.plist.in
+        ${PROJECT_BINARY_DIR}/Info.plist )
 
     file( COPY ${PROJECT_BINARY_DIR}/Info.plist DESTINATION ${PROJECT_BINARY_DIR}/bin/mrViewer.app/Contents/ )
     set(CPACK_PACKAGE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
@@ -686,13 +684,13 @@ ELSEIF (UNIX)
 
 
     CONFIGURE_FILE( ${SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
-		    "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop" )
+                    "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop" )
 
 
     INSTALL(FILES "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop"
-	    DESTINATION ${MRV_DESKTOP_DIR})
+            DESTINATION ${MRV_DESKTOP_DIR})
     INSTALL(FILES ${SOURCE_DIR}/etc/mrViewer.png
-	    DESTINATION ${MRV_PIXMAPS_DIR})
+            DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
 
@@ -706,21 +704,21 @@ ELSEIF (UNIX)
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
-	${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
-	${PROJECT_BINARY_DIR}/etc/Linux/install.sh
-	@ONLY)
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh
+        @ONLY)
     CONFIGURE_FILE(
-	${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
-	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
-	@ONLY)
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
+        @ONLY)
     CONFIGURE_FILE(
-	${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
-	${PROJECT_BINARY_DIR}/etc/Linux/postinst
-	@ONLY)
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
+        @ONLY)
     CONFIGURE_FILE(
-	${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
-	${PROJECT_BINARY_DIR}/etc/Linux/postrm
-	@ONLY)
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
+        @ONLY)
 
       # SET RPM options.
 
@@ -736,15 +734,15 @@ ELSEIF (UNIX)
     set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_NAME})
 
     SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
-	${PROJECT_BINARY_DIR}/etc/Linux/postinst
-	${PROJECT_BINARY_DIR}/etc/Linux/postrm)
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm)
 
     SET(
-	CPACK_RPM_POST_INSTALL_SCRIPT_FILE
-	${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
+        CPACK_RPM_POST_INSTALL_SCRIPT_FILE
+        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
     SET(
-	CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
-	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
+        CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
+        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
 
 
 ENDIF(WIN32)
@@ -758,7 +756,7 @@ ENDIF(WIN32)
   SET(CPACK_PACKAGE_CONTACT "ggarra13@gmail.com")
 # SET(CPACK_PACKAGE_DESCRIPTION_FILE ${PROJECT_SOURCE_DIR}/README.txt)
   SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-	  "mrViewer provides professional flipbook, audio and video playback.")
+          "mrViewer provides professional flipbook, audio and video playback.")
 
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
@@ -870,23 +868,23 @@ IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
   MESSAGE( STATUS "NO CPACK RUN" )
   ADD_CUSTOM_TARGET( bundle ALL
-			   COMMAND echo here we would run cpack
-			   DEPENDS translations
-		  )
+                           COMMAND echo here we would run cpack
+                           DEPENDS translations
+                  )
 ELSE()
   ADD_CUSTOM_TARGET( bundle
-			   COMMAND "${CMAKE_CPACK_COMMAND}"
-			   "-C" "$<CONFIGURATION>"
-			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
-			   COMMENT "Running CPack. Please wait..."
-			   USES_TERMINAL
-			   DEPENDS translations )
+                           COMMAND "${CMAKE_CPACK_COMMAND}"
+                           "-C" "$<CONFIGURATION>"
+                           "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
+                           COMMENT "Running CPack. Please wait..."
+                           USES_TERMINAL
+                           DEPENDS translations )
 ENDIF()
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
-		      POST_BUILD
-		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
-		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-		      )
+                      POST_BUILD
+                      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
+                      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                      )
 ENDIF( WIN32 )
