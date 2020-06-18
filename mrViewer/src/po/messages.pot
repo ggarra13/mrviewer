@@ -123,7 +123,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-17 23:45-0300\n"
+"POT-Creation-Date: 2020-06-18 16:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9558,7 +9558,7 @@ msgstr ""
 msgid "/lib"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:85
+#: audio/mrvAOEngine.cpp:87
 msgid "/lib/ao/plugins-4"
 msgstr ""
 
@@ -12967,11 +12967,11 @@ msgstr ""
 msgid "AMPAS CTL v1.5 or later"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:78
+#: audio/mrvAOEngine.cpp:80
 msgid "AO_PLUGIN_PATH"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:88
+#: audio/mrvAOEngine.cpp:90
 #, c-format
 msgid "AO_PLUGIN_PATH=%s"
 msgstr ""
@@ -14249,7 +14249,7 @@ msgstr ""
 msgid "Cannot map \""
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:147
+#: audio/mrvAOEngine.cpp:149
 msgid "Cannot open device"
 msgstr ""
 
@@ -15937,7 +15937,7 @@ msgstr ""
 msgid "Default Action"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:73
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75
 msgid "Default Audio Device"
 msgstr ""
 
@@ -16162,7 +16162,7 @@ msgstr ""
 msgid "Driver"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:143
+#: audio/mrvAOEngine.cpp:145
 msgid "Driver is not a live output device"
 msgstr ""
 
@@ -16463,7 +16463,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:270
+#: audio/mrvAOEngine.cpp:272
 msgid "Error closing ao device"
 msgstr ""
 
@@ -16491,7 +16491,7 @@ msgstr ""
 msgid "Error on send: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:182
+#: audio/mrvAOEngine.cpp:184
 msgid "Error opening ao driver: "
 msgstr ""
 
@@ -16499,7 +16499,7 @@ msgstr ""
 msgid "Error parsing filter description"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:246
+#: audio/mrvAOEngine.cpp:248
 msgid "Error playing sample"
 msgstr ""
 
@@ -19161,7 +19161,7 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:170
+#: audio/mrvAOEngine.cpp:172
 msgid "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE"
 msgstr ""
 
@@ -19816,7 +19816,7 @@ msgstr ""
 msgid "MRV_ODT_ICC_PROFILE"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:81 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
+#: audio/mrvAOEngine.cpp:83 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
 #: standalone/mrvRoot.cpp:194
 msgid "MRV_ROOT"
 msgstr ""
@@ -20420,7 +20420,7 @@ msgstr ""
 msgid "No decoder found for audio stream. ID: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:141
+#: audio/mrvAOEngine.cpp:143
 msgid "No driver for device id"
 msgstr ""
 
@@ -24534,7 +24534,7 @@ msgstr ""
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:150
+#: audio/mrvAOEngine.cpp:152
 msgid "Unknown failure"
 msgstr ""
 
@@ -24843,7 +24843,7 @@ msgstr ""
 msgid "VRangle %g"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:145
+#: audio/mrvAOEngine.cpp:147
 msgid "Valid option key has invalid value"
 msgstr ""
 
@@ -26952,7 +26952,7 @@ msgstr ""
 msgid "amixer -q set PCM %d"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:39
+#: audio/mrvAOEngine.cpp:41
 msgid "ao"
 msgstr ""
 
@@ -27909,7 +27909,7 @@ msgstr ""
 msgid "decode_video"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:73 core/CMedia.cpp:3449
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75 core/CMedia.cpp:3449
 #: gui/mrvPreferences.cpp:828 gui/mrvPreferences.cpp:2394
 msgid "default"
 msgstr ""

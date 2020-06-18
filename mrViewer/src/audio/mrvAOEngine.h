@@ -24,6 +24,7 @@
  *
  *
  */
+#ifdef AOENGINE
 #ifndef mrvAOEngine_h
 #define mrvAOEngine_h
 
@@ -103,3 +104,5 @@ protected:
 
 
 #endif // mrvAOEngine_h
+
+#endif // AOENGINE

@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-17 23:45-0300\n"
+"POT-Creation-Date: 2020-06-18 16:27-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -9634,7 +9634,7 @@ msgstr ""
 msgid "/lib"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:85
+#: audio/mrvAOEngine.cpp:87
 msgid "/lib/ao/plugins-4"
 msgstr ""
 
@@ -13054,11 +13054,11 @@ msgstr ""
 msgid "AMPAS CTL v1.5 or later"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:78
+#: audio/mrvAOEngine.cpp:80
 msgid "AO_PLUGIN_PATH"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:88
+#: audio/mrvAOEngine.cpp:90
 #, c-format
 msgid "AO_PLUGIN_PATH=%s"
 msgstr ""
@@ -14386,7 +14386,7 @@ msgstr "No pude crear manejo de libraw"
 msgid "Cannot map \""
 msgstr "No puedo mapear \""
 
-#: audio/mrvAOEngine.cpp:147
+#: audio/mrvAOEngine.cpp:149
 msgid "Cannot open device"
 msgstr "No pude abrir el dispositivo de audio"
 
@@ -16212,7 +16212,7 @@ msgstr "Defecto"
 msgid "Default Action"
 msgstr "Acción por Defecto"
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:73
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75
 msgid "Default Audio Device"
 msgstr "Dispositivo de Audio por Defecto"
 
@@ -16456,7 +16456,7 @@ msgstr "Modo de Dibujo"
 msgid "Driver"
 msgstr "Driver"
 
-#: audio/mrvAOEngine.cpp:143
+#: audio/mrvAOEngine.cpp:145
 msgid "Driver is not a live output device"
 msgstr ""
 
@@ -16762,7 +16762,7 @@ msgstr "Modo de Borrado"
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#: audio/mrvAOEngine.cpp:270
+#: audio/mrvAOEngine.cpp:272
 msgid "Error closing ao device"
 msgstr "Error cerrando dispositivo ao "
 
@@ -16790,7 +16790,7 @@ msgstr "Error en recibir: "
 msgid "Error on send: "
 msgstr "Error en mandar: "
 
-#: audio/mrvAOEngine.cpp:182
+#: audio/mrvAOEngine.cpp:184
 msgid "Error opening ao driver: "
 msgstr "Error abriendo dispositivo ao: "
 
@@ -16798,7 +16798,7 @@ msgstr "Error abriendo dispositivo ao: "
 msgid "Error parsing filter description"
 msgstr "Error interpretando la descripción del filtro"
 
-#: audio/mrvAOEngine.cpp:246
+#: audio/mrvAOEngine.cpp:248
 msgid "Error playing sample"
 msgstr "Error ejecutando sample"
 
@@ -19374,9 +19374,8 @@ msgid "Kb"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:737
-#, fuzzy
 msgid "Keep Frame Number"
-msgstr "Número de Referencia"
+msgstr "Mantener Número de Cuadro"
 
 #: gui/mrvImageInformation.cpp:2975
 msgid "Kelvin"
@@ -19514,7 +19513,7 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:170
+#: audio/mrvAOEngine.cpp:172
 msgid "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE"
 msgstr ""
 
@@ -20187,7 +20186,7 @@ msgstr ""
 msgid "MRV_ODT_ICC_PROFILE"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:81 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
+#: audio/mrvAOEngine.cpp:83 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
 #: standalone/mrvRoot.cpp:194
 msgid "MRV_ROOT"
 msgstr ""
@@ -20827,7 +20826,7 @@ msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 
 #
-#: audio/mrvAOEngine.cpp:141
+#: audio/mrvAOEngine.cpp:143
 msgid "No driver for device id"
 msgstr "No driver para id de dispositivo"
 
@@ -23509,9 +23508,9 @@ msgid "Select stereo output"
 msgstr "Selecciona Salida Estéreo"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2523
-#, fuzzy
 msgid "Select the behavior of timeline when switching images."
-msgstr "Selecciona el color del texto sobreimpreso sobre la imagen actual."
+msgstr ""
+"Selecciona el comportamiento de la línea de tiempo al cambiar de imagen."
 
 #: video/mrvGLEngine.cpp:662
 msgid "Selecting shader type automatically: "
@@ -24096,9 +24095,8 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2522
-#, fuzzy
 msgid "Switching Images"
-msgstr "Intercambiar Imágenes de Frente y Fondo"
+msgstr "Cambiar Imágenes"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:461
 #: gui/mrvImageView.cpp:7997
@@ -25358,7 +25356,7 @@ msgstr "Error desconocido retornado del procesador de OCIo"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: audio/mrvAOEngine.cpp:150
+#: audio/mrvAOEngine.cpp:152
 msgid "Unknown failure"
 msgstr "Fallo desconocido"
 
@@ -25672,7 +25670,7 @@ msgstr "VR angulo"
 msgid "VRangle %g"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:145
+#: audio/mrvAOEngine.cpp:147
 msgid "Valid option key has invalid value"
 msgstr ""
 
@@ -27935,7 +27933,7 @@ msgstr "Siempre Arriba de Otras"
 msgid "amixer -q set PCM %d"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:39
+#: audio/mrvAOEngine.cpp:41
 msgid "ao"
 msgstr "ao"
 
@@ -28905,7 +28903,7 @@ msgstr "subtítulo"
 msgid "decode_video"
 msgstr "Error de decodificación de audio:"
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:73 core/CMedia.cpp:3449
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75 core/CMedia.cpp:3449
 #: gui/mrvPreferences.cpp:828 gui/mrvPreferences.cpp:2394
 msgid "default"
 msgstr "defecto"
@@ -32928,9 +32926,8 @@ msgid "swap: "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:1198 gui/mrvPreferences.cpp:2376
-#, fuzzy
 msgid "switching_images"
-msgstr "busca_imagen: cuadro "
+msgstr ""
 
 #
 #: gui/FLU/Flu_File_Chooser.cpp:689

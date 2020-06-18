@@ -5,8 +5,10 @@ v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
 	- Improved the windows' title bar on Windows.
 	- Bug fixed glutInit on Macs which was displaying a message of
 	  glutInit called twice.
-	- Reverted switching movies to remain at the current frame if
-	  possible.
+	- Added a preferences switch called Video->Switching Images.
+	  This allows when switching movies or sequences to have the timeline
+	  frame to remain at the same position (keeping them in sync) or to use
+	  the frame belonging to the actual movie/sequence.
 	- Added alphabetically sorting of files to directory loading.
 
 v5.5.1  - Bug fixed memory querying routines on Mac OSX.
