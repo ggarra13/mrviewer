@@ -38,6 +38,7 @@ extern "C" {
 #  include <winsock2.h>
 #  include <io.h>      // for _access
 #  include <windows.h> // for GetModuleFileName
+#  define strdup _strdup
 #else
 #  include <unistd.h>  // for access
 #endif /* WIN32 */
