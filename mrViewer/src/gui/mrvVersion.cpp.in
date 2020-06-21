@@ -143,7 +143,7 @@ static const char* kArch = "32";
 
 
     FormatInfo(bool dec, bool enc, bool blo,
-	       const char* n, const char* mod, const char* desc ) :
+               const char* n, const char* mod, const char* desc ) :
       encode( enc ),
       decode( dec ),
       blob( blo ),
@@ -191,67 +191,67 @@ void ffmpeg_formats( mrv::Browser& browser )
     FormatInfo* f = NULL;
 
     f = new FormatInfo( true, true, false, "EXR", "OpenEXR",
-			"ILM OpenEXR" );
+                        "ILM OpenEXR" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "TX", "OpenImageIO",
-			"Arnold's TX" );
+                        "Arnold's TX" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "IFF", "internal",
-			"Autodesk Maya IFF" );
+                        "Autodesk Maya IFF" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "DDS", "internal",
-			"Microsoft Direct Draw Surface" );
+                        "Microsoft Direct Draw Surface" );
     formats.push_back(f);
 
     f = new FormatInfo( true, true, false, "PIC", "internal",
-			"Softimage pic" );
+                        "Softimage pic" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "SHMAP", "internal",
-			"mental images shadow maps" );
+                        "mental images shadow maps" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "MAP", "internal",
-			"mental images ripmap (non-tiled)" );
+                        "mental images ripmap (non-tiled)" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "Z", "internal",
-			"Pixar depth maps" );
+                        "Pixar depth maps" );
     formats.push_back(f);
 
     f = new FormatInfo( true, true, false, "IFF", "internal",
-			"Maya IFF files" );
+                        "Maya IFF files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "CT", "internal",
-			"mental images color files" );
+                        "mental images color files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "NT", "internal",
-			"mental images normal files" );
+                        "mental images normal files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "BT", "internal",
-			"mental images bit files" );
+                        "mental images bit files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "MT", "internal",
-			"mental images motion files" );
+                        "mental images motion files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "ST", "internal",
-			"mental images scalar files" );
+                        "mental images scalar files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "ZT", "internal",
-			"mental images depth files" );
+                        "mental images depth files" );
     formats.push_back(f);
 
     f = new FormatInfo( true, false, false, "HDR", "internal",
-			"Radiance HDR images" );
+                        "Radiance HDR images" );
     formats.push_back(f);
 
     last_name= "000";
@@ -263,27 +263,27 @@ void ffmpeg_formats( mrv::Browser& browser )
 
       void* opaque = NULL;
       while ((ofmt = av_muxer_iterate(&opaque))) {
-	if((name == NULL || strcmp(ofmt->name, name)<0) &&
-	   strcmp(ofmt->name, last_name)>0){
-	  name = ofmt->name;
-	  long_name = ofmt->long_name;
-	  encode = true;
-	}
+        if((name == NULL || strcmp(ofmt->name, name)<0) &&
+           strcmp(ofmt->name, last_name)>0){
+          name = ofmt->name;
+          long_name = ofmt->long_name;
+          encode = true;
+        }
       }
       opaque = NULL;
       while ((ifmt = av_demuxer_iterate(&opaque))) {
-	if((name == NULL || strcmp(ifmt->name, name)<0) &&
-	   strcmp(ifmt->name, last_name)>0){
-	  name = ifmt->name;
-	  long_name = ifmt->long_name;
-	  encode = true;
-	}
-	if(name && strcmp(ifmt->name, name)==0)
-	  decode = true;
+        if((name == NULL || strcmp(ifmt->name, name)<0) &&
+           strcmp(ifmt->name, last_name)>0){
+          name = ifmt->name;
+          long_name = ifmt->long_name;
+          encode = true;
+        }
+        if(name && strcmp(ifmt->name, name)==0)
+          decode = true;
       }
 
       if(name==NULL)
-	break;
+        break;
       last_name= name;
 
       f = new FormatInfo( decode, encode, false, name, "FFMPEG", long_name );
@@ -299,12 +299,12 @@ void ffmpeg_formats( mrv::Browser& browser )
 
     for ( unsigned i = 0; i < num; ++i )
       {
-	const MagickInfo* m = magick_info[i];
+        const MagickInfo* m = magick_info[i];
 
-	f = new FormatInfo( m->decoder, m->encoder,
-			    false,
-			    m->name, "ImageMagick", m->description );
-	formats.push_back( f );
+        f = new FormatInfo( m->decoder, m->encoder,
+                            false,
+                            m->name, "ImageMagick", m->description );
+        formats.push_back( f );
       }
     magick_info = (const MagickInfo **)
       RelinquishMagickMemory((void *) magick_info);
@@ -312,41 +312,41 @@ void ffmpeg_formats( mrv::Browser& browser )
 
     // Finally, add OIIO formats
     {
-	std::string format_list;
-	OIIO::getattribute ("input_format_list", format_list);
-	typedef std::vector< std::string > InVec;
-	InVec invec;
-	mrv::split( invec, format_list, ',' );
-	typedef std::list< std::string > InList;
-	InList inlist;
-	std::copy( invec.begin(), invec.end(), std::back_inserter( inlist ) );
-	OIIO::getattribute ("output_format_list", format_list);
-	InVec outvec;
-	mrv::split( outvec, format_list, ',' );
-	InVec::iterator i = outvec.begin();
-	InVec::iterator e = outvec.end();
+        std::string format_list;
+        OIIO::getattribute ("input_format_list", format_list);
+        typedef std::vector< std::string > InVec;
+        InVec invec;
+        mrv::split( invec, format_list, ',' );
+        typedef std::list< std::string > InList;
+        InList inlist;
+        std::copy( invec.begin(), invec.end(), std::back_inserter( inlist ) );
+        OIIO::getattribute ("output_format_list", format_list);
+        InVec outvec;
+        mrv::split( outvec, format_list, ',' );
+        InVec::iterator i = outvec.begin();
+        InVec::iterator e = outvec.end();
 
-	// Add input & output formats first
-	for ( ; i != e; ++i )
-	{
-	    InList::iterator it = find( inlist.begin(), inlist.end(), *i );
-	    if ( it != inlist.end() )
-	    {
-		f = new FormatInfo( true, true, false,
-				    (*i).c_str(), "OIIO", "" );
-		formats.push_back( f );
-		inlist.erase( it );
-	    }
-	}
+        // Add input & output formats first
+        for ( ; i != e; ++i )
+        {
+            InList::iterator it = find( inlist.begin(), inlist.end(), *i );
+            if ( it != inlist.end() )
+            {
+                f = new FormatInfo( true, true, false,
+                                    (*i).c_str(), "OIIO", "" );
+                formats.push_back( f );
+                inlist.erase( it );
+            }
+        }
 
-	// Add input formats only
-	InList::iterator j = inlist.begin();
-	InList::iterator t = inlist.end();
-	for ( ; j != t; ++j )
-	{
-	    f = new FormatInfo( true, false, false, (*j).c_str(), "OIIO", "" );
-	    formats.push_back( f );
-	}
+        // Add input formats only
+        InList::iterator j = inlist.begin();
+        InList::iterator t = inlist.end();
+        for ( ; j != t; ++j )
+        {
+            f = new FormatInfo( true, false, false, (*j).c_str(), "OIIO", "" );
+            formats.push_back( f );
+        }
     }
     // Sort formats alphabetically
     std::sort( formats.begin(), formats.end(), SortFormatsFunctor() );
@@ -356,18 +356,18 @@ void ffmpeg_formats( mrv::Browser& browser )
       FormatList::const_iterator i = formats.begin();
       FormatList::const_iterator e = formats.end();
       for ( ; i != e; ++i )
-	{
-	  f = *i;
-	  std::ostringstream o;
-	  o << ( f->decode ? "D\t" : " \t" )
-	    << ( f->encode ? "E\t" : " \t" )
-	    << ( f->blob   ? "B\t" : " \t" )
-	    << f->name << "\t"
-	    << f->module << "\t"
-	    << f->description;
-	  browser.add( o.str().c_str() );
-	  delete f;
-	}
+        {
+          f = *i;
+          std::ostringstream o;
+          o << ( f->decode ? "D\t" : " \t" )
+            << ( f->encode ? "E\t" : " \t" )
+            << ( f->blob   ? "B\t" : " \t" )
+            << f->name << "\t"
+            << f->module << "\t"
+            << f->description;
+          browser.add( o.str().c_str() );
+          delete f;
+        }
     }
 
   }
@@ -390,39 +390,39 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       p2=NULL;
       void* opaque = NULL;
       while((p = av_codec_iterate(&opaque))) {
-	if((p2==NULL || strcmp(p->name, p2->name)<0) &&
-	   strcmp(p->name, last_name)>0){
-	  p2= p;
-	  decode= encode= cap=0;
-	}
-	if(p2 && strcmp(p->name, p2->name)==0){
-	  if(p->decode) decode=1;
-	  if(p->encode2) encode=1;
-	  cap |= p->capabilities;
-	}
+        if((p2==NULL || strcmp(p->name, p2->name)<0) &&
+           strcmp(p->name, last_name)>0){
+          p2= p;
+          decode= encode= cap=0;
+        }
+        if(p2 && strcmp(p->name, p2->name)==0){
+          if(p->decode) decode=1;
+          if(p->encode2) encode=1;
+          cap |= p->capabilities;
+        }
       }
 
       if(p2==NULL)
-	break;
+        break;
       last_name= p2->name;
 
       if ( p2->type != type )
-	continue;
+        continue;
 
 
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
-	<< ( encode ? "E\t" : " \t" )
-	<< "\t"
-	<< ( cap & AV_CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
-	<< ( cap & AV_CODEC_CAP_DR1 ? "D\t":" \t" )
-	<< ( cap & AV_CODEC_CAP_TRUNCATED ? "T\t":" \t" )
-	<< p2->name;
+        << ( encode ? "E\t" : " \t" )
+        << "\t"
+        << ( cap & AV_CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
+        << ( cap & AV_CODEC_CAP_DR1 ? "D\t":" \t" )
+        << ( cap & AV_CODEC_CAP_TRUNCATED ? "T\t":" \t" )
+        << p2->name;
 
       browser.add( o.str().c_str() );
 
       /* if(p2->decoder && decode==0)
-	 printf(" use %s for decoding", p2->decoder->name);*/
+         printf(" use %s for decoding", p2->decoder->name);*/
     }
 
   }
@@ -451,15 +451,15 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
     void* opaque = NULL;
     const char* up;
     for( up = avio_enum_protocols( &opaque, 0 ); up;
-	 up = avio_enum_protocols( &opaque, 0 ) )
+         up = avio_enum_protocols( &opaque, 0 ) )
       {
-	o << " " << up << ":";
+        o << " " << up << ":";
       }
 #else
     URLProtocol* up;
     for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
      {
-	o << " " << up->name << ":";
+        o << " " << up->name << ":";
      }
 #endif
     return o.str();
@@ -483,8 +483,8 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 
     const char** pp = motion_str;
     while (*pp) {
-	b->add( *pp );
-	pp++;
+        b->add( *pp );
+        pp++;
     }
   }
 
@@ -506,7 +506,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       mrvLOG_INFO( kModule, buf );
     else {
       // do NOT log verbose
-	// mrvLOG_INFO( kModule, buf );
+        // mrvLOG_INFO( kModule, buf );
     }
   }
 
@@ -546,7 +546,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 #else
       << "With msvc " << _MSC_VER << endl
 #endif
-      << "(C) 2007-2019 Film Aura, LLC." << endl
+      << "(C) 2007-2020 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
       << endl
@@ -556,16 +556,16 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << endl
       << "FLTK 1.4" << endl
       << "http://www.fltk.org/" << endl
-      << "(C) 2000-2019 Bill Spitzak & others" << endl
+      << "(C) 2000-2020 Bill Spitzak & others" << endl
       << endl
       << "GLEW " << glewGetString( GLEW_VERSION ) << endl
       << "http://glew.sourceforge.net/" << endl
       << "(C) SGI, Lev Povalahev, Milan Ikits" << endl
       << endl
-	/*
+        /*
       << MagickGetVersion(&magic) << endl
       << MagickGetCopyright() << endl
-	*/
+        */
       << endl
       << "libavutil          v" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
       << "libavcodec      v" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
@@ -575,42 +575,42 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << "libswscale       v" << AV_STRINGIFY( LIBSWSCALE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "License: " << avcodec_license() << endl
-      << "(C) 2000-2019 Fabrice Bellard, et al." << endl
+      << "(C) 2000-2020 Fabrice Bellard, et al." << endl
       << "Configuration: " << avcodec_configuration() << endl << endl
       << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2005-2019 Industrial Light & Magic" << endl
+      << "(C) 2005-2020 Industrial Light & Magic" << endl
       << endl
       << "OpenColorIO v" << OCIO::GetVersion() <<  " or later" << endl
       << "http://www.opencolorio.org/" << endl
-      << "(C) 2005-2019 Sony Pictures Imageworks" << endl
+      << "(C) 2005-2020 Sony Pictures Imageworks" << endl
       << endl
       << "OpenImageIO v" << OIIO_VERSION_STRING <<  " or later" << endl
       << "http://www.openimageio.org/" << endl
-      << "(C) 2003-2019 Larry Gritz, et al. " << endl
+      << "(C) 2003-2020 Larry Gritz, et al. " << endl
       << "All rights reserved." << endl;
     int columns = 80;
     std::string libs = OIIO::get_string_attribute("library_list");
     if (libs.size()) {
-	std::vector<OIIO::string_view> libvec;
-	Strutil::split (libs, libvec, ";");
-	for (auto& lib : libvec) {
-	    size_t pos = lib.find(':');
-	    lib.remove_prefix (pos+1);
-	}
-	o << "Dependent libraries:\n    "
-	  << Strutil::wordwrap(Strutil::join (libvec, ", "), columns, 4)
-	  << std::endl;
+        std::vector<OIIO::string_view> libvec;
+        Strutil::split (libs, libvec, ";");
+        for (auto& lib : libvec) {
+            size_t pos = lib.find(':');
+            lib.remove_prefix (pos+1);
+        }
+        o << "Dependent libraries:\n    "
+          << Strutil::wordwrap(Strutil::join (libvec, ", "), columns, 4)
+          << std::endl;
     }
 
     o << endl
       << "AMPAS ACES v1.0 or later" << endl
       << "https://github.com/ampas/aces-dev" << endl
-      << "(C) 2019 AMPAS" << endl
+      << "(C) 2019-2020 AMPAS" << endl
       << endl
       << "AMPAS CTL v1.5 or later" << endl
       << "https://github.com/ampas/CTL" << endl
-      << "(C) 2014-2019 AMPAS" << endl
+      << "(C) 2014-2020 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl
@@ -619,14 +619,14 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << endl
 #endif
       << "IccProfLib (ICC v4.2)" << endl
-      << "(C) 2003-2019 - The International Color Consortium" << endl
+      << "(C) 2003-2020 - The International Color Consortium" << endl
       << endl
       << "LibRaw " << libraw_version() << endl
-      << "(C) 2008-2019 LibRaw LLC (info@libraw.org)"
+      << "(C) 2008-2020 LibRaw LLC (info@libraw.org)"
       << endl
       << endl
       << "zlib v" << ZLIB_VERSION
-      << "(C) 2008-2019 Jean-loup Gailly and Mark Adler"
+      << "(C) 2008-2020 Jean-loup Gailly and Mark Adler"
       << endl
       << endl
       << R3DSDK::GetSdkVersion()
@@ -645,11 +645,11 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 
 #ifdef _WIN32
 void  memory_information( uint64_t& totalVirtualMem,
-			  uint64_t& virtualMemUsed,
-			  uint64_t& virtualMemUsedByMe,
-			  uint64_t& totalPhysMem,
-			  uint64_t& physMemUsed,
-			  uint64_t& physMemUsedByMe)
+                          uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
+                          uint64_t& totalPhysMem,
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe)
 {
     MEMORYSTATUSEX memInfo;
     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
@@ -665,7 +665,7 @@ void  memory_information( uint64_t& totalVirtualMem,
 
     PROCESS_MEMORY_COUNTERS_EX pmc;
     GetProcessMemoryInfo(GetCurrentProcess(),
-			 (PPROCESS_MEMORY_COUNTERS) &pmc, sizeof(pmc));
+                         (PPROCESS_MEMORY_COUNTERS) &pmc, sizeof(pmc));
     virtualMemUsedByMe = pmc.PrivateUsage;
     virtualMemUsedByMe /= (1024*1024);
     physMemUsedByMe = pmc.WorkingSetSize;
@@ -691,10 +691,10 @@ static int getValue(){ //Note: this value is in KB!
 
 
     while (fgets(line, 128, file) != NULL){
-	if (strncmp(line, "VmSize:", 7) == 0){
-	    result = parseLine(line);
-	    break;
-	}
+        if (strncmp(line, "VmSize:", 7) == 0){
+            result = parseLine(line);
+            break;
+        }
     }
     fclose(file);
     return result;
@@ -707,21 +707,21 @@ int getValue2(){ //Note: this value is in KB!
 
 
     while (fgets(line, 128, file) != NULL){
-	if (strncmp(line, "VmRSS:", 6) == 0){
-	    result = parseLine(line);
-	    break;
-	}
+        if (strncmp(line, "VmRSS:", 6) == 0){
+            result = parseLine(line);
+            break;
+        }
     }
     fclose(file);
     return result;
 }
 
 void  memory_information( uint64_t& totalVirtualMem,
-			  uint64_t& virtualMemUsed,
-			  uint64_t& virtualMemUsedByMe,
-			  uint64_t& totalPhysMem,
-			  uint64_t& physMemUsed,
-			  uint64_t& physMemUsedByMe)
+                          uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
+                          uint64_t& totalPhysMem,
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe)
 {
 
     struct sysinfo memInfo;
@@ -761,11 +761,11 @@ void  memory_information( uint64_t& totalVirtualMem,
 #elif OSX
 
 void  memory_information( uint64_t& totalVirtualMem,
-			  uint64_t& virtualMemUsed,
-			  uint64_t& virtualMemUsedByMe,
-			  uint64_t& totalPhysMem,
-			  uint64_t& physMemUsed,
-			  uint64_t& physMemUsedByMe)
+                          uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
+                          uint64_t& totalPhysMem,
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe)
 {
     static const char* kModule = "mem";
 
@@ -776,8 +776,8 @@ void  memory_information( uint64_t& totalVirtualMem,
     totalVirtualMem = 0;
     if (0 == statfs("/", &stats))
     {
-	    totalVirtualMem = (uint64_t)stats.f_bsize * stats.f_bfree;
-	    totalVirtualMem /= (1024 * 1024);
+            totalVirtualMem = (uint64_t)stats.f_bsize * stats.f_bfree;
+            totalVirtualMem /= (1024 * 1024);
     }
 
     //
@@ -789,7 +789,7 @@ void  memory_information( uint64_t& totalVirtualMem,
 
     if (sysctl(mib, namelen, &totalPhysMem, &len, NULL, 0) < 0)
     {
-	LOG_ERROR( _("sysctl failed!") );
+        LOG_ERROR( _("sysctl failed!") );
     }
 
     totalPhysMem /= (1024 * 1024);
@@ -805,10 +805,10 @@ void  memory_information( uint64_t& totalVirtualMem,
     mach_port = mach_host_self();
     count = sizeof(vm_stats) / sizeof(natural_t);
     if (KERN_SUCCESS != host_page_size(mach_port, &page_size) ||
-	KERN_SUCCESS != host_statistics64(mach_port, HOST_VM_INFO,
-					(host_info64_t)&vm_stats, &count))
+        KERN_SUCCESS != host_statistics64(mach_port, HOST_VM_INFO,
+                                        (host_info64_t)&vm_stats, &count))
     {
-	    LOG_ERROR( _("host_statistics64 failed") );
+            LOG_ERROR( _("host_statistics64 failed") );
     }
 
     int64_t active = (int64_t) vm_stats.active_count;
@@ -821,10 +821,10 @@ void  memory_information( uint64_t& totalVirtualMem,
     mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
 
     if (KERN_SUCCESS != task_info(mach_task_self(),
-				  TASK_BASIC_INFO, (task_info_t)&t_info,
-				  &t_info_count))
+                                  TASK_BASIC_INFO, (task_info_t)&t_info,
+                                  &t_info_count))
     {
-	    LOG_ERROR( _("task info failed") );
+            LOG_ERROR( _("task info failed") );
     }
 
     physMemUsedByMe = t_info.resident_size;
@@ -849,11 +849,11 @@ void  memory_information( uint64_t& totalVirtualMem,
     mrv::DrawEngine* engine = uiMain->uiView->engine();
     if ( engine )
       {
-	o << uiMain->uiView->engine()->options();
+        o << uiMain->uiView->engine()->options();
       }
     else
       {
-	o << "No GPU." << endl;
+        o << "No GPU." << endl;
       }
 
     o << "HW Stereo:\t"
