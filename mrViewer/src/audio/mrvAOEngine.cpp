@@ -71,29 +71,29 @@ bool AOEngine::initialize()
 {
     if ( _instances == 0 )
     {
-        // Create default device
-        Device def( "default", "Default Audio Device" );
-        _devices.clear();
-        _devices.push_back( def );
-        _device_idx = 0;
+	// Create default device
+	Device def( "default", "Default Audio Device" );
+	_devices.clear();
+	_devices.push_back( def );
+	_device_idx = 0;
 
-        const char* env = getenv( "AO_PLUGIN_PATH" );
-        if (! env || strlen(env) == 0 )
-        {
-            env = getenv( "MRV_ROOT" );
-            if ( env )
-            {
-                std::string path = env;
-                path += "/lib/ao/plugins-4";
+	const char* env = getenv( "AO_PLUGIN_PATH" );
+	if (! env || strlen(env) == 0 )
+	{
+	    env = getenv( "MRV_ROOT" );
+	    if ( env )
+	    {
+		std::string path = env;
+		path += "/lib/ao/plugins-4";
 
-                char buf[1024];
-                sprintf( buf, "AO_PLUGIN_PATH=%s", path.c_str() );
-                LOG_INFO( buf );
-                putenv( strdup( buf ) );
-            }
-        }
+		char buf[1024];
+		sprintf( buf, "AO_PLUGIN_PATH=%s", path.c_str() );
+		LOG_INFO( buf );
+		putenv( strdup( buf ) );
+	    }
+	}
 
-        ao_initialize();
+	ao_initialize();
     }
 
     _audio_device = ao_default_driver_id();
@@ -111,7 +111,7 @@ bool AOEngine::shutdown()
 
     if ( _instances == 0 )
     {
-        ao_shutdown();
+	ao_shutdown();
     }
 
     return true;
@@ -132,77 +132,88 @@ void AOEngine::volume( float v )
 
 AOEngine::AudioFormat AOEngine::default_format()
 {
-    return kS16LSB;
+    return kS32LSB;
 }
 
     std::string ao_error_text( int err )
     {
-        switch( err )
-        {
-        case AO_ENODRIVER:
-            return _("No driver for device id");
-        case AO_ENOTLIVE:
-            return _("Driver is not a live output device");
-        case AO_EBADOPTION:
-            return _("Valid option key has invalid value");
-        case AO_EOPENDEVICE:
-            return _("Cannot open device");
-        case AO_EFAIL:
-        default:
-            return _("Unknown failure");
-        }
+	switch( err )
+	{
+	case AO_ENODRIVER:
+	    return _("No driver for device id");
+	case AO_ENOTLIVE:
+	    return _("Driver is not a live output device");
+	case AO_EBADOPTION:
+	    return _("Valid option key has invalid value");
+	case AO_EOPENDEVICE:
+	    return _("Cannot open device");
+	case AO_EFAIL:
+	default:
+	    return _("Unknown failure");
+	}
     }
 
 bool AOEngine::open( const unsigned channels,
-                     const unsigned freq,
-                     const AudioFormat format,
-                     const unsigned bits )
+		     const unsigned freq,
+		     const AudioFormat format,
+		     const unsigned bits )
 {
     try
     {
-        flush();
+	flush();
 
-        _enabled = false;
-        ao_sample_format fmt;
-        memset( &fmt, 0, sizeof(ao_sample_format) );
-        fmt.bits = format == kU8? 8 : 16;
-        fmt.rate = freq;
-        fmt.channels = channels;
-        fmt.byte_format = AO_FMT_LITTLE;
-        fmt.matrix = strdup( N_("L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE") );
-
-
-        ao_option* options = NULL;
-
-
-        _device = ao_open_live( _audio_device, &fmt, options );
-        ao_free_options( options );
-
-        if ( _device == NULL )
-        {
-            _enabled = false;
-            LOG_ERROR( _("Error opening ao driver: ") << ao_error_text(errno) );
-            return false;
-        }
+	_enabled = false;
+	ao_sample_format fmt;
+	memset( &fmt, 0, sizeof(ao_sample_format) );
+	switch( format )
+	{
+	case kU8:
+		fmt.bits = 8; break;
+	case kS16LSB:
+		fmt.bits = 16; break;
+	case kS32LSB:
+		fmt.bits = 32; break;
+	default:
+		LOG_ERROR( "Unknown audio format.  Setting 32 bits" );
+		fmt.bits = 32; break;
+	}
+	fmt.rate = freq;
+	fmt.channels = channels;
+	fmt.byte_format = AO_FMT_LITTLE;
+	fmt.matrix = strdup( N_("L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE") );
 
 
-        // ao_plugin_device_init( _device );
+	ao_option* options = NULL;
 
-        // Store these for future round
-        _audio_format = format;
-        _channels = channels;
-        _old_device_idx = _device_idx;
 
-        // All okay, enable device
-        _enabled = true;
+	_device = ao_open_live( _audio_device, &fmt, options );
+	ao_free_options( options );
 
-        return true;
+	if ( _device == NULL )
+	{
+	    _enabled = false;
+	    LOG_ERROR( _("Error opening ao driver: ") << ao_error_text(errno) );
+	    return false;
+	}
+
+
+	// ao_plugin_device_init( _device );
+
+	// Store these for future round
+	_audio_format = format;
+	_channels = channels;
+	_old_device_idx = _device_idx;
+
+	// All okay, enable device
+	_enabled = true;
+
+	return true;
     }
     catch( const AudioEngine::exception& e )
     {
-        close();
-        _enabled = false;
-        throw(e);
+	close();
+	_enabled = false;
+	throw(e);
     }
 }
 
@@ -216,38 +227,52 @@ bool AOEngine::play( const char* d, const size_t size )
     int16_t* data = (int16_t*)d;
     if ( _volume < 0.99f )
     {
-        switch ( _audio_format )
-        {
-        case kU8:
-        {
-            data = (int16_t*)new uint8_t[size];
-            memcpy( data, d, size );
-            for ( size_t i = 0; i < size; ++i )
-            {
-                data[i] *= _volume;
-            }
-        }
-        default:
-        case kS16LSB:
-        {
-            size_t samples = size / 2;
-            data = new int16_t[samples];
-            memcpy( data, d, size );
-            for ( size_t i = 0; i < samples; ++i )
-            {
-                data[i] *= _volume;
-            }
-        }
-        }
+	switch ( _audio_format )
+	{
+	case kU8:
+	{
+	    data = (int16_t*)new uint8_t[size];
+	    memcpy( data, d, size );
+	    for ( size_t i = 0; i < size; ++i )
+	    {
+		data[i] *= _volume;
+	    }
+	    break;
+	}
+	case kS32LSB:
+	{
+	    size_t samples = size / 4;
+	    int32_t* s32data = new int32_t[samples];
+	    memcpy( s32data, d, size );
+	    for ( size_t i = 0; i < samples; ++i )
+	    {
+		s32data[i] *= _volume;
+	    }
+	    data = (int16_t*) s32data;
+	    break;
+	}
+	default:
+	case kS16LSB:
+	{
+	    size_t samples = size / 2;
+	    data = new int16_t[samples];
+	    memcpy( data, d, size );
+	    for ( size_t i = 0; i < samples; ++i )
+	    {
+		data[i] *= _volume;
+	    }
+	    break;
+	}
+	}
     }
 
     int ok = ao_play( _device, (char*)data, size );
 
     if ( ok == 0 )
     {
-        LOG_ERROR( _("Error playing sample") );
-        close();
-        return false;
+	LOG_ERROR( _("Error playing sample") );
+	close();
+	return false;
     }
 
 
@@ -266,15 +291,15 @@ bool AOEngine::close()
 {
     if ( _device )
     {
-        int ok = ao_close( _device );
-        if ( ok == 0 )
-        {
-            LOG_ERROR( _("Error closing ao device") );
-        }
+	int ok = ao_close( _device );
+	if ( ok == 0 )
+	{
+	    LOG_ERROR( _("Error closing ao device") );
+	}
 
-        _device = NULL;
-        _enabled = false;
-        return true;
+	_device = NULL;
+	_enabled = false;
+	return true;
     }
     return false;
 }
