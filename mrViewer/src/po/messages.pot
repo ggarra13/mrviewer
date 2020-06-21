@@ -123,7 +123,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-21 03:11-0300\n"
+"POT-Creation-Date: 2020-06-21 13:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16478,7 +16478,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:272
+#: audio/mrvAOEngine.cpp:297
 msgid "Error closing ao device"
 msgstr ""
 
@@ -16506,7 +16506,7 @@ msgstr ""
 msgid "Error on send: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:184
+#: audio/mrvAOEngine.cpp:195
 msgid "Error opening ao driver: "
 msgstr ""
 
@@ -16514,7 +16514,7 @@ msgstr ""
 msgid "Error parsing filter description"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:248
+#: audio/mrvAOEngine.cpp:273
 msgid "Error playing sample"
 msgstr ""
 
@@ -19176,7 +19176,7 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:172
+#: audio/mrvAOEngine.cpp:183
 msgid "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE"
 msgstr ""
 
@@ -24506,6 +24506,10 @@ msgstr ""
 
 #: core/brawImage.cpp:659 core/brawImage.cpp:686
 msgid "Unknown audio bit depth "
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:177
+msgid "Unknown audio format.  Setting 32 bits"
 msgstr ""
 
 #: core/stubImage.cpp:522 gui/mrvImageInformation.cpp:2699
