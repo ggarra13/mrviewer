@@ -86,7 +86,9 @@ def parse( files, dest )
       FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
       `chrpath -d "#{dest}/lib/#{lib}"`
       print `readelf -d #{dest}/lib/#{lib} | grep PATH`
-      FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}" )
+      if not File.exists?( "#{dest}/lib/#{orig}" )
+        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}" )
+      end
     else
       FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
       `chrpath -d "#{dest}/lib/#{lib}"`
@@ -167,7 +169,7 @@ if kernel !~ /MINGW.*/
   elsif build =~ /Darwin/
     dest = "#{build}/#@debug"
     FileUtils.mkdir_p dest
-    FileUtils.mkdir_p ( dest + "/lib/" )
+    FileUtils.mkdir_p dest + "/lib/"
   end
 
   home=ENV['HOME']+"/bin/mrViewer"
