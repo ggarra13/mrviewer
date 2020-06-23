@@ -35,6 +35,8 @@
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
 #    include "audio/mrvALSAEngine.h"
+#elif defined(OSX)
+#    include "audio/mrvRtAudioEngine.h"
 #endif
 
 #ifdef AOENGINE
@@ -187,6 +189,8 @@ AudioEngine* AudioEngine::factory()
 #elif defined(OSX)
 #  ifdef AOENGINE
     r = new mrv::AOEngine();
+#else
+    r = new mrv::RtAudioEngine();
 #  endif
 #endif
 

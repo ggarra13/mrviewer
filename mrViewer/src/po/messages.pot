@@ -3,6 +3,8 @@
 # This file is distributed under the same license as the mrViewer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: audio/RtAudio.cpp:173 audio/RtAudio.cpp:8404 audio/RtAudio.cpp:8492
+#: audio/RtAudio.cpp:9915 audio/RtAudio.cpp:9942
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:165
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:166
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:170
@@ -123,7 +125,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-23 08:51-0300\n"
+"POT-Creation-Date: 2020-06-23 11:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,7 +235,8 @@ msgid ""
 "\txchg %%"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3288 gui/mrvImageBrowser.cpp:3295
+#: audio/RtAudio.cpp:9965 gui/mrvImageBrowser.cpp:3288
+#: gui/mrvImageBrowser.cpp:3295
 msgid ""
 "\n"
 "\n"
@@ -273,6 +276,74 @@ msgstr ""
 msgid ""
 "\n"
 "No audio stream in file"
+msgstr ""
+
+#: audio/RtAudio.cpp:7810
+#, c-format
+msgid ""
+"\n"
+"RtApiAlsa: dump hardware params after installation:\n"
+"\n"
+msgstr ""
+
+#: audio/RtAudio.cpp:7601
+#, c-format
+msgid ""
+"\n"
+"RtApiAlsa: dump hardware params just after device open:\n"
+"\n"
+msgstr ""
+
+#: audio/RtAudio.cpp:7841
+#, c-format
+msgid ""
+"\n"
+"RtApiAlsa: dump software params after installation:\n"
+"\n"
+msgstr ""
+
+#: audio/RtAudio.cpp:3698
+msgid ""
+"\n"
+"RtApiAsio: driver latency may have changed!!!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3651
+msgid ""
+"\n"
+"RtApiAsio: driver reports sample rate changed to "
+msgstr ""
+
+#: audio/RtAudio.cpp:3678
+msgid ""
+"\n"
+"RtApiAsio: driver reset requested!!!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3647
+msgid ""
+"\n"
+"RtApiAsio: sampleRateChanged() error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2192
+msgid ""
+"\n"
+"RtApiJack: the Jack server is shutting down this client ... stream stopped "
+"and closed!!\n"
+msgstr ""
+
+#: audio/RtAudio.cpp:266
+msgid ""
+"\n"
+"RtAudio: no compiled API support found ... critical error!!\n"
+"\n"
+msgstr ""
+
+#: audio/RtAudio.cpp:248
+msgid ""
+"\n"
+"RtAudio: no compiled support for specified API argument!\n"
 msgstr ""
 
 #: audio/mrvALSAEngine.cpp:130 core/CMedia.cpp:2828 core/CMedia.cpp:2840
@@ -3270,6 +3341,10 @@ msgstr ""
 msgid " ..+ ..+  ..+ ..+ "
 msgstr ""
 
+#: audio/RtAudio.cpp:3651
+msgid " ... stream stopped!!!\n"
+msgstr ""
+
 #: gui/FLU/flu_pixmaps.cpp:598
 msgid " ...######%+&*=.+ "
 msgstr ""
@@ -3666,6 +3741,10 @@ msgstr ""
 
 #: gui/mrvImageView.cpp:3342
 msgid " data "
+msgstr ""
+
+#: audio/RtAudio.cpp:7695
+msgid " data format not supported by RtAudio."
 msgstr ""
 
 #: core/aviImage.cpp:1531 core/aviImage.cpp:4323
@@ -5927,8 +6006,9 @@ msgstr ""
 msgid "%c%d"
 msgstr ""
 
-#: core/CMedia.cpp:339 core/slateImage.cpp:320 core/wandImage.cpp:788
-#: core/wandImage.cpp:933 core/mrSocket.cpp:115 core/mrvClient.cpp:454
+#: audio/mrvAOEngine.cpp:114 audio/mrvRtAudioEngine.cpp:117 core/CMedia.cpp:339
+#: core/slateImage.cpp:320 core/wandImage.cpp:788 core/wandImage.cpp:933
+#: core/mrSocket.cpp:115 core/mrvClient.cpp:454
 #: gui/FLU/Flu_File_Chooser.cpp:1335 gui/FLU/Flu_File_Chooser.cpp:4594
 #: gui/mrvImageBrowser.cpp:649 gui/mrvImageInformation.cpp:2920
 #: gui/mrvImageInformation.cpp:3310 gui/mrvImageInformation.cpp:4099
@@ -6168,11 +6248,11 @@ msgstr ""
 msgid "%lx"
 msgstr ""
 
-#: core/slateImage.cpp:349 core/slateImage.cpp:353 gui/mrvAsk.cpp:189
-#: gui/mrvImageView.cpp:504 gui/mrvImageView.cpp:4543 gui/mrvImageView.cpp:4547
-#: gui/mrvImageView.cpp:4551 gui/mrvIO.cpp:55 gui/mrvTable.cpp:111
-#: standalone/mrvCommandLine.cpp:98 standalone/mrvCommandLine.cpp:125
-#: standalone/mrvCommandLine.cpp:127
+#: audio/RtAudio.cpp:7510 core/slateImage.cpp:349 core/slateImage.cpp:353
+#: gui/mrvAsk.cpp:189 gui/mrvImageView.cpp:504 gui/mrvImageView.cpp:4543
+#: gui/mrvImageView.cpp:4547 gui/mrvImageView.cpp:4551 gui/mrvIO.cpp:55
+#: gui/mrvTable.cpp:111 standalone/mrvCommandLine.cpp:98
+#: standalone/mrvCommandLine.cpp:125 standalone/mrvCommandLine.cpp:127
 #, c-format
 msgid "%s"
 msgstr ""
@@ -7109,12 +7189,24 @@ msgstr ""
 msgid ") != EXPECTED ("
 msgstr ""
 
+#: audio/RtAudio.cpp:2273 audio/RtAudio.cpp:3018
+msgid ") + offset ("
+msgstr ""
+
 #: gui/mrvColorInfo.cpp:540
 msgid ") - ("
 msgstr ""
 
 #: core/CMedia_audio.cpp:1702
 msgid ") NEW EXPECTED ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7629
+msgid ") access, "
+msgstr ""
+
+#: audio/RtAudio.cpp:5963
+msgid ") accessing primary buffer ("
 msgstr ""
 
 #: core/mrvColorProfile.cpp:250
@@ -7125,20 +7217,409 @@ msgstr ""
 msgid ") cache size: "
 msgstr ""
 
+#: audio/RtAudio.cpp:3244
+msgid ") creating buffers."
+msgstr ""
+
+#: audio/RtAudio.cpp:6123
+msgid ") creating input buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5998
+msgid ") creating secondary buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3091 audio/RtAudio.cpp:7460 audio/RtAudio.cpp:9089
+#: audio/RtAudio.cpp:9357
+msgid ") data format not supported by RtAudio."
+msgstr ""
+
+#: audio/RtAudio.cpp:7703
+msgid ") data format, "
+msgstr ""
+
+#: audio/RtAudio.cpp:9270
+msgid ") data formats."
+msgstr ""
+
 #: core/exrImage.cpp:557
 msgid ") does not exist in file "
+msgstr ""
+
+#: audio/RtAudio.cpp:9202
+msgid ") does not support duplex mode."
+msgstr ""
+
+#: audio/RtAudio.cpp:5845
+msgid ") does not support input!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9187
+msgid ") does not support input."
+msgstr ""
+
+#: audio/RtAudio.cpp:5838
+msgid ") does not support output!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9185
+msgid ") does not support output."
+msgstr ""
+
+#: audio/RtAudio.cpp:3018
+msgid ") does not support requested channel count ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9249
+msgid ") does not support requested channel parameters."
+msgstr ""
+
+#: audio/RtAudio.cpp:3029
+msgid ") does not support requested sample rate ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9412
+msgid ") does not support sample rate ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5911
+msgid ") does not support stereo playback."
+msgstr ""
+
+#: audio/RtAudio.cpp:1030
+msgid ") does not support the requested channel count."
+msgstr ""
+
+#: audio/RtAudio.cpp:7716
+msgid ") endian-ness, "
+msgstr ""
+
+#: audio/RtAudio.cpp:5620
+msgid ") enumerating input devices!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5611
+msgid ") enumerating output devices!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3060 audio/RtAudio.cpp:3102 audio/RtAudio.cpp:3244
+#: audio/RtAudio.cpp:3292
+msgid ") error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3038
+msgid ") error getting sample rate."
+msgstr ""
+
+#: audio/RtAudio.cpp:3047
+msgid ") error setting sample rate ("
 msgstr ""
 
 #: core/aviImage_save.cpp:437
 msgid ") for movie file"
 msgstr ""
 
+#: audio/RtAudio.cpp:1123
+msgid ") getting 'hog' state!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6011 audio/RtAudio.cpp:6135
+msgid ") getting buffer settings ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1082
+msgid ") getting buffer size range for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3102
+msgid ") getting buffer size."
+msgstr ""
+
+#: audio/RtAudio.cpp:5904
+msgid ") getting capabilities ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5672
+msgid ") getting capabilities!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2882 audio/RtAudio.cpp:3011
+msgid ") getting channel count ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6655 audio/RtAudio.cpp:6672 audio/RtAudio.cpp:6839
+#: audio/RtAudio.cpp:6901
+msgid ") getting current read position!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1145
+msgid ") getting current sample rate."
+msgstr ""
+
+#: audio/RtAudio.cpp:6647 audio/RtAudio.cpp:6664 audio/RtAudio.cpp:6694
+#: audio/RtAudio.cpp:6746
+msgid ") getting current write position!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3060
+msgid ") getting data format."
+msgstr ""
+
+#: audio/RtAudio.cpp:1298
+msgid ") getting device latency for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:692
+msgid ") getting device manufacturer."
+msgstr ""
+
+#: audio/RtAudio.cpp:714
+msgid ") getting device name."
+msgstr ""
+
+#: audio/RtAudio.cpp:2913
+msgid ") getting driver channel info ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6062
+msgid ") getting input capabilities ("
+msgstr ""
+
+#: audio/RtAudio.cpp:790
+msgid ") getting input stream configuration for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:773
+msgid ") getting input stream configuration info for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3292
+msgid ") getting latency."
+msgstr ""
+
+#: audio/RtAudio.cpp:5724
+msgid ") getting object capabilities ("
+msgstr ""
+
+#: audio/RtAudio.cpp:757
+msgid ") getting output stream configuration for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:740
+msgid ") getting output stream configuration info for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:815
+msgid ") getting sample rate info."
+msgstr ""
+
+#: audio/RtAudio.cpp:825
+msgid ") getting sample rates."
+msgstr ""
+
+#: audio/RtAudio.cpp:1004
+msgid ") getting stream configuration for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:989
+msgid ") getting stream configuration info for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1197
+msgid ") getting stream format for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1229
+msgid ") getting stream physical format for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9058 audio/RtAudio.cpp:9176
+msgid ") info."
+msgstr ""
+
+#: audio/RtAudio.cpp:2871 audio/RtAudio.cpp:2995
+msgid ") initializing driver ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7367
+msgid ") input channels, "
+msgstr ""
+
+#: audio/RtAudio.cpp:9226
+msgid ") is busy."
+msgstr ""
+
+#: audio/RtAudio.cpp:2283
+msgid ") is different than the JACK server rate ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6025
+msgid ") locking buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6788
+msgid ") locking buffer during playback!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6916
+msgid ") locking capture buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6154
+msgid ") locking input buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6506
+msgid ") locking input buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6465
+msgid ") locking output buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2273
+msgid ") not found for specified device ("
+msgstr ""
+
 #: core/mrvColorProfile.cpp:227
 msgid ") not found in profile"
 msgstr ""
 
+#: audio/RtAudio.cpp:9404
+msgid ") on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5713 audio/RtAudio.cpp:6052
+msgid ") opening input device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5662 audio/RtAudio.cpp:5894
+msgid ") opening output device ("
+msgstr ""
+
 #: gui/mrvImageBrowser.cpp:1230
 msgid ") out of bounds"
+msgstr ""
+
+#: audio/RtAudio.cpp:7319
+msgid ") output channels, "
+msgstr ""
+
+#: audio/RtAudio.cpp:7595
+msgid ") parameters, "
+msgstr ""
+
+#: audio/RtAudio.cpp:1132
+msgid ") setting 'hog' state!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5944
+msgid ") setting cooperative level ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1284
+msgid ") setting physical data format for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5972
+msgid ") setting primary buffer format ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1167
+msgid ") setting sample rate for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1219
+msgid ") setting sample rate or data format for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1158
+msgid ") setting sample rate property listener for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1099
+msgid ") setting the buffer size for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1555
+msgid ") starting callback procedure on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3400
+msgid ") starting device."
+msgstr ""
+
+#: audio/RtAudio.cpp:6414
+msgid ") starting input buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6403
+msgid ") starting output buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1601
+msgid ") stopping callback procedure on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3439
+msgid ") stopping device."
+msgstr ""
+
+#: audio/RtAudio.cpp:6497
+msgid ") stopping input buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1611
+msgid ") stopping input callback procedure on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6456
+msgid ") stopping output buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6038
+msgid ") unlocking buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6802
+msgid ") unlocking buffer during playback!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6938
+msgid ") unlocking capture buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6167
+msgid ") unlocking input buffer ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6517
+msgid ") unlocking input buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6476
+msgid ") unlocking output buffer!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7584
+msgid ") won't open for input."
+msgstr ""
+
+#: audio/RtAudio.cpp:7582
+msgid ") won't open for output."
+msgstr ""
+
+#: audio/RtAudio.cpp:5662 audio/RtAudio.cpp:5713 audio/RtAudio.cpp:5724
+#: audio/RtAudio.cpp:5894 audio/RtAudio.cpp:5904 audio/RtAudio.cpp:5944
+#: audio/RtAudio.cpp:5963 audio/RtAudio.cpp:5972 audio/RtAudio.cpp:5998
+#: audio/RtAudio.cpp:6011 audio/RtAudio.cpp:6025 audio/RtAudio.cpp:6038
+#: audio/RtAudio.cpp:6052 audio/RtAudio.cpp:6062 audio/RtAudio.cpp:6123
+#: audio/RtAudio.cpp:6135 audio/RtAudio.cpp:6154 audio/RtAudio.cpp:6167
+msgid ")!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3647
+msgid ")!\n"
 msgstr ""
 
 #: gui/FLU/flu_file_chooser_pixmaps.cpp:1501
@@ -7157,7 +7638,32 @@ msgstr ""
 msgid ")+\tc #FFF2A6"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:120 gui/mrvPreferences.cpp:162
+#: audio/RtAudio.cpp:7298 audio/RtAudio.cpp:7308 audio/RtAudio.cpp:7346
+#: audio/RtAudio.cpp:7357 audio/RtAudio.cpp:7401 audio/RtAudio.cpp:7411
+#: audio/RtAudio.cpp:7726 audio/RtAudio.cpp:7739 audio/RtAudio.cpp:7747
+#: audio/RtAudio.cpp:7759 audio/RtAudio.cpp:7770 audio/RtAudio.cpp:7784
+#: audio/RtAudio.cpp:7804 audio/RtAudio.cpp:7835
+msgid "), "
+msgstr ""
+
+#: audio/RtAudio.cpp:740 audio/RtAudio.cpp:757 audio/RtAudio.cpp:773
+#: audio/RtAudio.cpp:790 audio/RtAudio.cpp:872 audio/RtAudio.cpp:989
+#: audio/RtAudio.cpp:1004 audio/RtAudio.cpp:1082 audio/RtAudio.cpp:1099
+#: audio/RtAudio.cpp:1108 audio/RtAudio.cpp:1158 audio/RtAudio.cpp:1167
+#: audio/RtAudio.cpp:1184 audio/RtAudio.cpp:1197 audio/RtAudio.cpp:1219
+#: audio/RtAudio.cpp:1229 audio/RtAudio.cpp:1284 audio/RtAudio.cpp:1298
+#: audio/RtAudio.cpp:1420 audio/RtAudio.cpp:1555 audio/RtAudio.cpp:1566
+#: audio/RtAudio.cpp:1601 audio/RtAudio.cpp:1611 audio/RtAudio.cpp:2273
+#: audio/RtAudio.cpp:2283 audio/RtAudio.cpp:2854 audio/RtAudio.cpp:2863
+#: audio/RtAudio.cpp:2871 audio/RtAudio.cpp:2882 audio/RtAudio.cpp:2913
+#: audio/RtAudio.cpp:2974 audio/RtAudio.cpp:2988 audio/RtAudio.cpp:2995
+#: audio/RtAudio.cpp:3011 audio/RtAudio.cpp:3018 audio/RtAudio.cpp:3029
+#: audio/RtAudio.cpp:3047 audio/RtAudio.cpp:3201 audio/RtAudio.cpp:7429
+#: audio/RtAudio.cpp:7793 audio/RtAudio.cpp:9124 audio/RtAudio.cpp:9208
+#: audio/RtAudio.cpp:9228 audio/RtAudio.cpp:9259 audio/RtAudio.cpp:9367
+#: audio/RtAudio.cpp:9389 audio/RtAudio.cpp:9404 audio/RtAudio.cpp:9412
+#: audio/RtAudio.cpp:9704 audio/RtAudio.cpp:9714 audio/RtAudio.cpp:9750
+#: audio/RtAudio.cpp:9760 gui/mrvPreferences.cpp:120 gui/mrvPreferences.cpp:162
 msgid ")."
 msgstr ""
 
@@ -7790,20 +8296,22 @@ msgstr ""
 msgid ",\tc #FFE67D"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1152 core/exrImage.cpp:556 core/stubImage.cpp:991
-#: core/rawImage.cpp:328 core/brawImage.cpp:1290 gui/mrvColorInfo.cpp:539
-#: gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:599 video/mrvGLEngine.cpp:3262
-#: video/mrvGLEngine.cpp:3263 video/mrvGLEngine.cpp:3271
-#: video/mrvGLEngine.cpp:3272 video/mrvGLEngine.cpp:3273
-#: video/mrvGLEngine.cpp:3274 video/mrvGLEngine.cpp:3275
-#: video/mrvGLEngine.cpp:3279 video/mrvGLEngine.cpp:3280
-#: video/mrvGLEngine.cpp:3281 video/mrvGLEngine.cpp:3282
-#: video/mrvGLEngine.cpp:3283 video/mrvGLEngine.cpp:4086
-#: video/mrvGLEngine.cpp:4090 video/mrvGLEngine.cpp:4094
-#: video/mrvGLEngine.cpp:4097 standalone/main.cpp:378 standalone/main.cpp:379
-#: standalone/main.cpp:416 standalone/main.cpp:417 standalone/main.cpp:418
-#: standalone/main.cpp:419 standalone/main.cpp:420 standalone/main.cpp:421
-#: standalone/main.cpp:422
+#: audio/RtAudio.cpp:7159 audio/RtAudio.cpp:7168 audio/RtAudio.cpp:7211
+#: audio/RtAudio.cpp:7220 audio/RtAudio.cpp:7519 audio/RtAudio.cpp:8299
+#: audio/RtAudio.cpp:8371 core/CMedia_audio.cpp:1152 core/exrImage.cpp:556
+#: core/stubImage.cpp:991 core/rawImage.cpp:328 core/brawImage.cpp:1290
+#: gui/mrvColorInfo.cpp:539 gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:599
+#: video/mrvGLEngine.cpp:3262 video/mrvGLEngine.cpp:3263
+#: video/mrvGLEngine.cpp:3271 video/mrvGLEngine.cpp:3272
+#: video/mrvGLEngine.cpp:3273 video/mrvGLEngine.cpp:3274
+#: video/mrvGLEngine.cpp:3275 video/mrvGLEngine.cpp:3279
+#: video/mrvGLEngine.cpp:3280 video/mrvGLEngine.cpp:3281
+#: video/mrvGLEngine.cpp:3282 video/mrvGLEngine.cpp:3283
+#: video/mrvGLEngine.cpp:4086 video/mrvGLEngine.cpp:4090
+#: video/mrvGLEngine.cpp:4094 video/mrvGLEngine.cpp:4097
+#: standalone/main.cpp:378 standalone/main.cpp:379 standalone/main.cpp:416
+#: standalone/main.cpp:417 standalone/main.cpp:418 standalone/main.cpp:419
+#: standalone/main.cpp:420 standalone/main.cpp:421 standalone/main.cpp:422
 msgid ", "
 msgstr ""
 
@@ -8205,16 +8713,29 @@ msgstr ""
 msgid "-wx"
 msgstr ""
 
-#: core/CMedia.cpp:4107 core/aviImage_save.cpp:599 core/exrImage.cpp:558
-#: core/exrImage.cpp:877 core/stubImage.cpp:884 core/wandImage.cpp:932
-#: core/wandImage.cpp:1256 core/brawImage.cpp:1568 core/Sequence.cpp:103
-#: core/Sequence.cpp:333 core/Sequence.cpp:403 core/Sequence.cpp:415
-#: core/Sequence.cpp:437 core/Sequence.cpp:724
-#: gui/FLU/Flu_File_Chooser.cpp:1395 gui/FLU/Flu_File_Chooser.cpp:3683
-#: gui/FLU/Flu_File_Chooser.cpp:4036 gui/FLU/Flu_File_Chooser.cpp:4371
-#: gui/mrvImageView.cpp:8430 gui/mrvPreferences.cpp:548
-#: gui/mrvPreferences.cpp:989 gui/mrvVersion.cpp:552 gui/mrvVersion.cpp:553
-#: video/mrvGLEngine.cpp:549 video/mrvGLLut3d.cpp:1188
+#: audio/RtAudio.cpp:7159 audio/RtAudio.cpp:7168 audio/RtAudio.cpp:7211
+#: audio/RtAudio.cpp:7220 audio/RtAudio.cpp:7298 audio/RtAudio.cpp:7308
+#: audio/RtAudio.cpp:7319 audio/RtAudio.cpp:7346 audio/RtAudio.cpp:7357
+#: audio/RtAudio.cpp:7367 audio/RtAudio.cpp:7401 audio/RtAudio.cpp:7411
+#: audio/RtAudio.cpp:7519 audio/RtAudio.cpp:7595 audio/RtAudio.cpp:7629
+#: audio/RtAudio.cpp:7703 audio/RtAudio.cpp:7716 audio/RtAudio.cpp:7726
+#: audio/RtAudio.cpp:7739 audio/RtAudio.cpp:7747 audio/RtAudio.cpp:7759
+#: audio/RtAudio.cpp:7770 audio/RtAudio.cpp:7784 audio/RtAudio.cpp:7804
+#: audio/RtAudio.cpp:7835 audio/RtAudio.cpp:8091 audio/RtAudio.cpp:8104
+#: audio/RtAudio.cpp:8143 audio/RtAudio.cpp:8152 audio/RtAudio.cpp:8184
+#: audio/RtAudio.cpp:8193 audio/RtAudio.cpp:8294 audio/RtAudio.cpp:8299
+#: audio/RtAudio.cpp:8304 audio/RtAudio.cpp:8364 audio/RtAudio.cpp:8371
+#: audio/RtAudio.cpp:8376 audio/RtAudio.cpp:8601 audio/RtAudio.cpp:8617
+#: audio/RtAudio.cpp:8686 audio/RtAudio.cpp:8720 core/CMedia.cpp:4107
+#: core/aviImage_save.cpp:599 core/exrImage.cpp:558 core/exrImage.cpp:877
+#: core/stubImage.cpp:884 core/wandImage.cpp:932 core/wandImage.cpp:1256
+#: core/brawImage.cpp:1568 core/Sequence.cpp:103 core/Sequence.cpp:333
+#: core/Sequence.cpp:403 core/Sequence.cpp:415 core/Sequence.cpp:437
+#: core/Sequence.cpp:724 gui/FLU/Flu_File_Chooser.cpp:1395
+#: gui/FLU/Flu_File_Chooser.cpp:3683 gui/FLU/Flu_File_Chooser.cpp:4036
+#: gui/FLU/Flu_File_Chooser.cpp:4371 gui/mrvImageView.cpp:8430
+#: gui/mrvPreferences.cpp:548 gui/mrvPreferences.cpp:989 gui/mrvVersion.cpp:552
+#: gui/mrvVersion.cpp:553 video/mrvGLEngine.cpp:549 video/mrvGLLut3d.cpp:1188
 #: video/mrvGLLut3d.cpp:1232 video/mrvGLLut3d.cpp:1303
 #: video/mrvGLLut3d.cpp:1314
 msgid "."
@@ -9547,6 +10068,10 @@ msgstr ""
 msgid "/cygdrive/"
 msgstr ""
 
+#: audio/RtAudio.cpp:8998 audio/RtAudio.cpp:9022 audio/RtAudio.cpp:9142
+msgid "/dev/mixer"
+msgstr ""
+
 #: core/Sequence.cpp:667
 msgid "/dev/sr0"
 msgstr ""
@@ -9559,7 +10084,7 @@ msgstr ""
 msgid "/lib"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:87
+#: audio/mrvAOEngine.cpp:86
 msgid "/lib/ao/plugins-4"
 msgstr ""
 
@@ -11560,9 +12085,11 @@ msgstr ""
 msgid "96x96x96"
 msgstr ""
 
-#: core/mrvColorProfile.cpp:260 core/mrvColorProfile.cpp:261
-#: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:455
-#: gui/mrvVersion.cpp:461 video/mrvGLLut3d.cpp:1389
+#: audio/RtAudio.cpp:2046 audio/RtAudio.cpp:2085 audio/RtAudio.cpp:2241
+#: audio/RtAudio.cpp:2273 core/mrvColorProfile.cpp:260
+#: core/mrvColorProfile.cpp:261 gui/mrvCTLBrowser.cpp:91
+#: gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:455 gui/mrvVersion.cpp:461
+#: video/mrvGLLut3d.cpp:1389
 msgid ":"
 msgstr ""
 
@@ -11618,16 +12145,16 @@ msgstr ""
 msgid ":\tc #FFFFFF"
 msgstr ""
 
-#: core/CMedia.cpp:3819 core/CMedia_audio.cpp:2282 core/aviImage.cpp:635
-#: core/aviImage.cpp:986 core/aviImage.cpp:1002 core/aviImage.cpp:3869
-#: core/aviImage.cpp:3898 core/wandImage.cpp:90 core/rawImage.cpp:64
-#: core/rawImage.cpp:147 core/brawImage.cpp:1538 core/mrSocket.cpp:151
-#: gui/FLU/Flu_File_Chooser.cpp:2445 gui/FLU/Flu_File_Chooser.cpp:2454
-#: gui/FLU/Flu_File_Chooser.cpp:2460 gui/FLU/Flu_File_Chooser.cpp:2464
-#: gui/FLU/Flu_File_Chooser.cpp:2467 gui/FLU/Flu_File_Chooser.cpp:2470
-#: gui/mrvImageView.cpp:4085 video/mrvGLEngine.cpp:485
-#: video/mrvGLEngine.cpp:511 video/mrvGLEngine.cpp:534
-#: video/mrvGLShader.cpp:230
+#: audio/RtAudio.cpp:707 core/CMedia.cpp:3819 core/CMedia_audio.cpp:2282
+#: core/aviImage.cpp:635 core/aviImage.cpp:986 core/aviImage.cpp:1002
+#: core/aviImage.cpp:3869 core/aviImage.cpp:3898 core/wandImage.cpp:90
+#: core/rawImage.cpp:64 core/rawImage.cpp:147 core/brawImage.cpp:1538
+#: core/mrSocket.cpp:151 gui/FLU/Flu_File_Chooser.cpp:2445
+#: gui/FLU/Flu_File_Chooser.cpp:2454 gui/FLU/Flu_File_Chooser.cpp:2460
+#: gui/FLU/Flu_File_Chooser.cpp:2464 gui/FLU/Flu_File_Chooser.cpp:2467
+#: gui/FLU/Flu_File_Chooser.cpp:2470 gui/mrvImageView.cpp:4085
+#: video/mrvGLEngine.cpp:485 video/mrvGLEngine.cpp:511
+#: video/mrvGLEngine.cpp:534 video/mrvGLShader.cpp:230
 msgid ": "
 msgstr ""
 
@@ -12956,6 +13483,10 @@ msgstr ""
 msgid "ALPHA"
 msgstr ""
 
+#: audio/RtAudio.cpp:107
+msgid "ALSA"
+msgstr ""
+
 #: gui/FLU/Flu_File_Chooser.cpp:3404
 msgid "AM"
 msgstr ""
@@ -12968,11 +13499,11 @@ msgstr ""
 msgid "AMPAS CTL v1.5 or later"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:80
+#: audio/mrvAOEngine.cpp:79
 msgid "AO_PLUGIN_PATH"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:90
+#: audio/mrvAOEngine.cpp:89
 #, c-format
 msgid "AO_PLUGIN_PATH=%s"
 msgstr ""
@@ -12991,6 +13522,10 @@ msgstr ""
 
 #: core/ddsImage.cpp:1222
 msgid "ARGB"
+msgstr ""
+
+#: audio/RtAudio.cpp:113
+msgid "ASIO"
 msgstr ""
 
 #: core/mrvFrame.cpp:630
@@ -13021,6 +13556,10 @@ msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:643
 msgid "AVI Movie"
+msgstr ""
+
+#: audio/RtAudio.cpp:4963
+msgid "AVRT.dll"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
@@ -13200,6 +13739,14 @@ msgstr ""
 msgid "Alpha value of image pixel under mouse."
 msgstr ""
 
+#: audio/RtAudio.cpp:7062
+msgid "Already allocated"
+msgstr ""
+
+#: audio/RtAudio.cpp:7092
+msgid "Already initialized"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:119
 msgid "Alt"
 msgstr ""
@@ -13278,6 +13825,10 @@ msgstr ""
 
 #: core/mrvColorSpaces.cpp:55
 msgid "Analog SECAM/PAL-N"
+msgstr ""
+
+#: audio/RtAudio.cpp:7101
+msgid "Another application already has priority"
 msgstr ""
 
 #: standalone/main.cpp:344
@@ -13495,6 +14046,10 @@ msgstr ""
 
 #: gui/mrvVersion.cpp:202
 msgid "Autodesk Maya IFF"
+msgstr ""
+
+#: audio/RtAudio.cpp:4967
+msgid "AvSetMmThreadCharacteristicsW"
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:3369
@@ -13895,6 +14450,10 @@ msgstr ""
 msgid "Brightness"
 msgstr ""
 
+#: audio/RtAudio.cpp:7098
+msgid "Buffer lost"
+msgstr ""
+
 #: audio/mrvALSAEngine.cpp:771
 msgid "Buffer underrun: "
 msgstr ""
@@ -13918,6 +14477,7 @@ msgstr ""
 msgid "Byte"
 msgstr ""
 
+#: audio/RtAudio.cpp:104 audio/RtAudio.cpp:122 audio/RtAudio.cpp:152
 #: core/CMedia.cpp:41 core/CMedia_audio.cpp:49 core/mrvFrame.cpp:34
 #: core/aviImage.cpp:54 core/aviImage_save.cpp:37 core/iffImage.cpp:39
 #: core/wandImage.cpp:414 core/wandImage.cpp:1585 core/R3dImage.cpp:11
@@ -14250,7 +14810,7 @@ msgstr ""
 msgid "Cannot map \""
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:149
+#: audio/mrvAOEngine.cpp:181
 msgid "Cannot open device"
 msgstr ""
 
@@ -14713,6 +15273,10 @@ msgstr ""
 msgid "Contrast"
 msgstr ""
 
+#: audio/RtAudio.cpp:7065
+msgid "Control unavailable"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2497
 msgid ""
 "Controls the YUV Conversion of the movie in the shader to emulate different "
@@ -14747,6 +15311,14 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/aviSave.cxx:68
 msgid "Core"
+msgstr ""
+
+#: audio/RtAudio.cpp:111
+msgid "CoreAudio"
+msgstr ""
+
+#: audio/RtAudio.cpp:1954
+msgid "CoreAudio unknown error"
 msgstr ""
 
 #: core/iffImage.cpp:366
@@ -15938,8 +16510,13 @@ msgstr ""
 msgid "Default Action"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:123
+#: audio/mrvRtAudioEngine.cpp:103
 msgid "Default Audio Device"
+msgstr ""
+
+#: audio/RtAudio.cpp:7023
+msgid "Default Device"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2023
@@ -16046,6 +16623,14 @@ msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:645
 msgid "Digital Video"
+msgstr ""
+
+#: audio/RtAudio.cpp:114
+msgid "DirectSound"
+msgstr ""
+
+#: audio/RtAudio.cpp:7107
+msgid "DirectSound unknown error"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
@@ -16163,13 +16748,17 @@ msgstr ""
 msgid "Driver"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:145
+#: audio/mrvAOEngine.cpp:177
 msgid "Driver is not a live output device"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:177
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1178
 msgid "Drop Frame Timecode"
+msgstr ""
+
+#: audio/RtAudio.cpp:115
+msgid "Dummy"
 msgstr ""
 
 #: core/aviImage.cpp:2673
@@ -16464,7 +17053,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:297
+#: audio/mrvAOEngine.cpp:329
 msgid "Error closing ao device"
 msgstr ""
 
@@ -16492,7 +17081,7 @@ msgstr ""
 msgid "Error on send: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:195
+#: audio/mrvAOEngine.cpp:227
 msgid "Error opening ao driver: "
 msgstr ""
 
@@ -16500,7 +17089,7 @@ msgstr ""
 msgid "Error parsing filter description"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:273
+#: audio/mrvAOEngine.cpp:305
 msgid "Error playing sample"
 msgstr ""
 
@@ -17743,6 +18332,10 @@ msgstr ""
 msgid "Gb"
 msgstr ""
 
+#: audio/RtAudio.cpp:7074
+msgid "Generic error"
+msgstr ""
+
 #: core/mrvServer.cpp:346
 msgid "GhostNext"
 msgstr ""
@@ -18028,6 +18621,14 @@ msgstr ""
 
 #: video/mrvGLEngine.cpp:249
 msgid "Hardware Shaders:\t"
+msgstr ""
+
+#: audio/RtAudio.cpp:3734
+msgid "Hardware input or output is not present or available."
+msgstr ""
+
+#: audio/RtAudio.cpp:3735
+msgid "Hardware is malfunctioning."
 msgstr ""
 
 #: video/mrvGLEngine.cpp:554
@@ -18775,6 +19376,10 @@ msgstr ""
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
+#: audio/RtAudio.cpp:7071
+msgid "Invalid call"
+msgstr ""
+
 #: video/mrvGLLut3d.cpp:901
 msgid "Invalid destination profile/image format"
 msgstr ""
@@ -18791,12 +19396,24 @@ msgstr ""
 msgid "Invalid index "
 msgstr ""
 
+#: audio/RtAudio.cpp:3736
+msgid "Invalid input parameter."
+msgstr ""
+
 #: core/oiioImage.cpp:186
 msgid "Invalid mipmap level"
 msgstr ""
 
+#: audio/RtAudio.cpp:3737
+msgid "Invalid mode."
+msgstr ""
+
 #: video/mrvGLQuad.cpp:238
 msgid "Invalid mrv::Frame format: "
+msgstr ""
+
+#: audio/RtAudio.cpp:7068
+msgid "Invalid parameter"
 msgstr ""
 
 #: core/stubImage.cpp:991
@@ -18925,6 +19542,10 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2305
 msgid "JPG/PNG/DPX Load Library"
+msgstr ""
+
+#: audio/RtAudio.cpp:110
+msgid "Jack"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:3391
@@ -19167,7 +19788,7 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:183
+#: audio/mrvAOEngine.cpp:215
 msgid "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE"
 msgstr ""
 
@@ -19822,7 +20443,7 @@ msgstr ""
 msgid "MRV_ODT_ICC_PROFILE"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:83 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
+#: audio/mrvAOEngine.cpp:82 gui/mrvMainWindow.cpp:78 video/mrvGLEngine.cpp:440
 #: standalone/mrvRoot.cpp:195
 msgid "MRV_ROOT"
 msgstr ""
@@ -20393,12 +21014,16 @@ msgstr ""
 msgid "No Stereo Output"
 msgstr ""
 
+#: audio/RtAudio.cpp:7095
+msgid "No aggregation"
+msgstr ""
+
 #: gui/mrvImageInformation.cpp:725
 #, c-format
 msgid "No attribute named '%s'"
 msgstr ""
 
-#: core/mrvAudioEngine.cpp:130 core/mrvAudioEngine.cpp:144
+#: core/mrvAudioEngine.cpp:132 core/mrvAudioEngine.cpp:146
 msgid "No audio device found"
 msgstr ""
 
@@ -20426,7 +21051,11 @@ msgstr ""
 msgid "No decoder found for audio stream. ID: "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:143
+#: audio/RtAudio.cpp:7089
+msgid "No driver"
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:175
 msgid "No driver for device id"
 msgstr ""
 
@@ -20620,8 +21249,16 @@ msgstr ""
 msgid "Not enough memory for image"
 msgstr ""
 
+#: audio/RtAudio.cpp:3740
+msgid "Not enough memory to complete the request."
+msgstr ""
+
 #: gui/mrvImageInformation.cpp:625
 msgid "Not group child in table row "
+msgstr ""
+
+#: audio/RtAudio.cpp:7086
+msgid "Not supported"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:1523
@@ -21035,6 +21672,10 @@ msgstr ""
 msgid "OpenImageIO v"
 msgstr ""
 
+#: audio/RtAudio.cpp:109
+msgid "OpenSoundSystem"
+msgstr ""
+
 #: video/mrvGLEngine.cpp:317
 msgid "Opening any fixed font"
 msgstr ""
@@ -21076,7 +21717,7 @@ msgstr ""
 msgid "Originating Program"
 msgstr ""
 
-#: core/CMedia.cpp:1131
+#: audio/RtAudio.cpp:7080 core/CMedia.cpp:1131
 msgid "Out of memory"
 msgstr ""
 
@@ -21523,6 +22164,7 @@ msgid ""
 "(Autoplayback)"
 msgstr ""
 
+#: audio/RtAudio.cpp:8866
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1437
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2927
 msgid "Playback"
@@ -21643,6 +22285,14 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
+#: audio/RtAudio.cpp:7077
+msgid "Priority level needed"
+msgstr ""
+
+#: audio/RtAudio.cpp:4968
+msgid "Pro Audio"
+msgstr ""
+
 #: core/R3dImage.cpp:1300
 msgid "ProPhotoRGB"
 msgstr ""
@@ -21724,6 +22374,14 @@ msgstr ""
 
 #: gui/mrvImageInformation.cpp:2905 gui/mrvImageInformation.cpp:2913
 msgid "Proxy image scale"
+msgstr ""
+
+#: audio/RtAudio.cpp:108
+msgid "Pulse"
+msgstr ""
+
+#: audio/RtAudio.cpp:8467
+msgid "PulseAudio"
 msgstr ""
 
 #: core/exrImage.cpp:127
@@ -22237,6 +22895,10 @@ msgstr ""
 msgid "Rec709"
 msgstr ""
 
+#: audio/RtAudio.cpp:8859
+msgid "Record"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2053
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:35
 #: core/CMedia.cpp:1975 core/CMedia.cpp:2042 core/exrImage.cpp:3026
@@ -22539,6 +23201,1293 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr ""
 
+#: audio/RtAudio.cpp:9973
+msgid "RtApi:: a stream is not open!"
+msgstr ""
+
+#: audio/RtAudio.cpp:10028
+msgid "RtApi::formatBytes: undefined format."
+msgstr ""
+
+#: audio/RtAudio.cpp:349
+msgid "RtApi::openStream: 'format' parameter value is undefined."
+msgstr ""
+
+#: audio/RtAudio.cpp:337
+msgid ""
+"RtApi::openStream: a non-NULL input StreamParameters structure cannot have "
+"an nChannels value less than one."
+msgstr ""
+
+#: audio/RtAudio.cpp:331
+msgid ""
+"RtApi::openStream: a non-NULL output StreamParameters structure cannot have "
+"an nChannels value less than one."
+msgstr ""
+
+#: audio/RtAudio.cpp:322
+msgid "RtApi::openStream: a stream is already open!"
+msgstr ""
+
+#: audio/RtAudio.cpp:343
+msgid ""
+"RtApi::openStream: input and output StreamParameters structures are both "
+"NULL!"
+msgstr ""
+
+#: audio/RtAudio.cpp:369
+msgid "RtApi::openStream: input device parameter value is invalid."
+msgstr ""
+
+#: audio/RtAudio.cpp:359
+msgid "RtApi::openStream: output device parameter value is invalid."
+msgstr ""
+
+#: audio/RtAudio.cpp:8170
+msgid "RtApiAlsa::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8193
+msgid "RtApiAlsa::abortStream: error aborting input pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8184
+msgid "RtApiAlsa::abortStream: error aborting output pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8223
+msgid ""
+"RtApiAlsa::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8304
+msgid "RtApiAlsa::callbackEvent: audio read error, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8376
+msgid "RtApiAlsa::callbackEvent: audio write error, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8368
+msgid "RtApiAlsa::callbackEvent: audio write error, underrun."
+msgstr ""
+
+#: audio/RtAudio.cpp:8294
+msgid "RtApiAlsa::callbackEvent: error preparing device after overrun, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8364
+msgid "RtApiAlsa::callbackEvent: error preparing device after underrun, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8299 audio/RtAudio.cpp:8371
+msgid "RtApiAlsa::callbackEvent: error, current state is "
+msgstr ""
+
+#: audio/RtAudio.cpp:8018
+msgid "RtApiAlsa::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7980
+msgid "RtApiAlsa::error creating callback thread!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7168
+msgid "RtApiAlsa::getDeviceCount: control next device, card = "
+msgstr ""
+
+#: audio/RtAudio.cpp:7159
+msgid "RtApiAlsa::getDeviceCount: control open, card = "
+msgstr ""
+
+#: audio/RtAudio.cpp:7220
+msgid "RtApiAlsa::getDeviceInfo: control next device, card = "
+msgstr ""
+
+#: audio/RtAudio.cpp:7211
+msgid "RtApiAlsa::getDeviceInfo: control open, card = "
+msgstr ""
+
+#: audio/RtAudio.cpp:7254
+msgid "RtApiAlsa::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7267
+msgid ""
+"RtApiAlsa::getDeviceInfo: device ID was not present before stream was opened."
+msgstr ""
+
+#: audio/RtAudio.cpp:7319 audio/RtAudio.cpp:7367
+msgid "RtApiAlsa::getDeviceInfo: error getting device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7248
+msgid "RtApiAlsa::getDeviceInfo: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7429
+msgid "RtApiAlsa::getDeviceInfo: no supported sample rates found for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7460
+msgid "RtApiAlsa::getDeviceInfo: pcm device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7308 audio/RtAudio.cpp:7357 audio/RtAudio.cpp:7411
+msgid "RtApiAlsa::getDeviceInfo: snd_pcm_hw_params error for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7298 audio/RtAudio.cpp:7346 audio/RtAudio.cpp:7401
+msgid "RtApiAlsa::getDeviceInfo: snd_pcm_open error for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7519
+msgid "RtApiAlsa::probeDeviceOpen: control open, card = "
+msgstr ""
+
+#: audio/RtAudio.cpp:7558
+msgid "RtApiAlsa::probeDeviceOpen: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7862
+msgid "RtApiAlsa::probeDeviceOpen: error allocating AlsaHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:7906
+msgid "RtApiAlsa::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:7886
+msgid "RtApiAlsa::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:7747
+msgid "RtApiAlsa::probeDeviceOpen: error getting minimum channels for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7595 audio/RtAudio.cpp:7716
+msgid "RtApiAlsa::probeDeviceOpen: error getting pcm device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7867
+msgid ""
+"RtApiAlsa::probeDeviceOpen: error initializing pthread condition variable."
+msgstr ""
+
+#: audio/RtAudio.cpp:7804
+msgid ""
+"RtApiAlsa::probeDeviceOpen: error installing hardware configuration on "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7835
+msgid ""
+"RtApiAlsa::probeDeviceOpen: error installing software configuration on "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7759
+msgid "RtApiAlsa::probeDeviceOpen: error setting channels for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7629 audio/RtAudio.cpp:7703
+msgid "RtApiAlsa::probeDeviceOpen: error setting pcm device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7770
+msgid "RtApiAlsa::probeDeviceOpen: error setting period size for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7784
+msgid "RtApiAlsa::probeDeviceOpen: error setting periods for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7726
+msgid "RtApiAlsa::probeDeviceOpen: error setting sample rate on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7552
+msgid "RtApiAlsa::probeDeviceOpen: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:7695
+msgid "RtApiAlsa::probeDeviceOpen: pcm device "
+msgstr ""
+
+#: audio/RtAudio.cpp:7582 audio/RtAudio.cpp:7584
+msgid "RtApiAlsa::probeDeviceOpen: pcm device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7739
+msgid ""
+"RtApiAlsa::probeDeviceOpen: requested channel parameters not supported by "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7793
+msgid ""
+"RtApiAlsa::probeDeviceOpen: system error setting buffer size for duplex "
+"stream on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:7929
+msgid ""
+"RtApiAlsa::probeDeviceOpen: unable to synchronize input and output devices."
+msgstr ""
+
+#: audio/RtAudio.cpp:8071
+msgid "RtApiAlsa::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8104
+msgid "RtApiAlsa::startStream: error preparing input pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8091
+msgid "RtApiAlsa::startStream: error preparing output pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8126
+msgid "RtApiAlsa::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8143
+msgid "RtApiAlsa::stopStream: error draining output pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8152
+msgid "RtApiAlsa::stopStream: error stopping input pcm device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:2799
+msgid ""
+"RtApiAsio::ASIO requires a single-threaded appartment. Call CoInitializeEx(0,"
+"COINIT_APARTMENTTHREADED)"
+msgstr ""
+
+#: audio/RtAudio.cpp:3451
+msgid "RtApiAsio::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3484
+msgid ""
+"RtApiAsio::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3345
+msgid "RtApiAsio::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2836
+msgid "RtApiAsio::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2844
+msgid ""
+"RtApiAsio::getDeviceInfo: device ID was not present before stream was opened."
+msgstr ""
+
+#: audio/RtAudio.cpp:2871 audio/RtAudio.cpp:2882 audio/RtAudio.cpp:2913
+msgid "RtApiAsio::getDeviceInfo: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2830
+msgid "RtApiAsio::getDeviceInfo: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2854
+msgid "RtApiAsio::getDeviceInfo: unable to get driver name ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2863
+msgid "RtApiAsio::getDeviceInfo: unable to load driver ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2967
+msgid ""
+"RtApiAsio::probeDeviceOpen: an ASIO duplex stream must use the same device "
+"for input and output!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3018 audio/RtAudio.cpp:3029 audio/RtAudio.cpp:3038
+#: audio/RtAudio.cpp:3047 audio/RtAudio.cpp:3060 audio/RtAudio.cpp:3091
+#: audio/RtAudio.cpp:3102 audio/RtAudio.cpp:3244 audio/RtAudio.cpp:3292
+msgid "RtApiAsio::probeDeviceOpen: driver ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2995 audio/RtAudio.cpp:3011
+msgid "RtApiAsio::probeDeviceOpen: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3175
+msgid "RtApiAsio::probeDeviceOpen: error allocating AsioHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:3201
+msgid ""
+"RtApiAsio::probeDeviceOpen: error allocating bufferInfo memory for driver ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3282
+msgid "RtApiAsio::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:3264
+msgid "RtApiAsio::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:2974
+msgid "RtApiAsio::probeDeviceOpen: unable to get driver name ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2988
+msgid "RtApiAsio::probeDeviceOpen: unable to load driver ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3388
+msgid "RtApiAsio::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3400
+msgid "RtApiAsio::startStream: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:3422
+msgid "RtApiAsio::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:3439
+msgid "RtApiAsio::stopStream: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:556
+msgid "RtApiCore::RtApiCore: error setting run loop property!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1628
+msgid "RtApiCore::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2639
+msgid ""
+"RtApiCore::callbackEvent(): the JACK buffer size has changed ... cannot "
+"process!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1659 audio/RtAudio.cpp:2634
+msgid ""
+"RtApiCore::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1478 audio/RtAudio.cpp:1501
+msgid "RtApiCore::closeStream(): error removing property listener!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1463
+msgid "RtApiCore::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:613
+msgid "RtApiCore::getDefaultInputDevice: No default device found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:605
+msgid "RtApiCore::getDefaultInputDevice: OS-X system error getting device IDs."
+msgstr ""
+
+#: audio/RtAudio.cpp:595
+msgid "RtApiCore::getDefaultInputDevice: OS-X system error getting device."
+msgstr ""
+
+#: audio/RtAudio.cpp:646
+msgid "RtApiCore::getDefaultOutputDevice: No default device found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:638
+msgid ""
+"RtApiCore::getDefaultOutputDevice: OS-X system error getting device IDs."
+msgstr ""
+
+#: audio/RtAudio.cpp:628
+msgid "RtApiCore::getDefaultOutputDevice: OS-X system error getting device."
+msgstr ""
+
+#: audio/RtAudio.cpp:577
+msgid "RtApiCore::getDeviceCount: OS-X error getting device info!"
+msgstr ""
+
+#: audio/RtAudio.cpp:678
+msgid "RtApiCore::getDeviceInfo: OS-X system error getting device IDs."
+msgstr ""
+
+#: audio/RtAudio.cpp:665
+msgid "RtApiCore::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:782
+msgid ""
+"RtApiCore::getDeviceInfo: memory error allocating input AudioBufferList."
+msgstr ""
+
+#: audio/RtAudio.cpp:749
+msgid ""
+"RtApiCore::getDeviceInfo: memory error allocating output AudioBufferList."
+msgstr ""
+
+#: audio/RtAudio.cpp:659
+msgid "RtApiCore::getDeviceInfo: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:740 audio/RtAudio.cpp:757 audio/RtAudio.cpp:773
+#: audio/RtAudio.cpp:790 audio/RtAudio.cpp:815 audio/RtAudio.cpp:825
+msgid "RtApiCore::getDeviceInfo: system error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:872
+msgid ""
+"RtApiCore::probeDeviceInfo: No supported sample rates found for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:692 audio/RtAudio.cpp:714
+msgid "RtApiCore::probeDeviceInfo: system error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:968
+msgid "RtApiCore::probeDeviceOpen: OS-X system error getting device IDs."
+msgstr ""
+
+#: audio/RtAudio.cpp:956
+msgid "RtApiCore::probeDeviceOpen: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1346
+msgid "RtApiCore::probeDeviceOpen: error allocating CoreHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:1392
+msgid "RtApiCore::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:1369
+msgid "RtApiCore::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:1351
+msgid ""
+"RtApiCore::probeDeviceOpen: error initializing pthread condition variable."
+msgstr ""
+
+#: audio/RtAudio.cpp:997
+msgid "RtApiCore::probeDeviceOpen: memory error allocating AudioBufferList."
+msgstr ""
+
+#: audio/RtAudio.cpp:950
+msgid "RtApiCore::probeDeviceOpen: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:989 audio/RtAudio.cpp:1004 audio/RtAudio.cpp:1082
+#: audio/RtAudio.cpp:1099 audio/RtAudio.cpp:1123 audio/RtAudio.cpp:1132
+#: audio/RtAudio.cpp:1145 audio/RtAudio.cpp:1158 audio/RtAudio.cpp:1167
+#: audio/RtAudio.cpp:1197 audio/RtAudio.cpp:1219 audio/RtAudio.cpp:1229
+#: audio/RtAudio.cpp:1284 audio/RtAudio.cpp:1298
+msgid "RtApiCore::probeDeviceOpen: system error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1108
+msgid ""
+"RtApiCore::probeDeviceOpen: system error setting buffer size for duplex "
+"stream on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1420
+msgid "RtApiCore::probeDeviceOpen: system error setting callback for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1030
+msgid "RtApiCore::probeDeviceOpen: the device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1184
+msgid ""
+"RtApiCore::probeDeviceOpen: timeout waiting for sample rate update for "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1540
+msgid "RtApiCore::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1555
+msgid "RtApiCore::startStream: system error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1566
+msgid ""
+"RtApiCore::startStream: system error starting input callback procedure on "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:1585
+msgid "RtApiCore::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:1601 audio/RtAudio.cpp:1611
+msgid "RtApiCore::stopStream: system error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6537
+msgid "RtApiDs::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6556
+msgid ""
+"RtApiDs::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6647 audio/RtAudio.cpp:6655 audio/RtAudio.cpp:6664
+#: audio/RtAudio.cpp:6672 audio/RtAudio.cpp:6694 audio/RtAudio.cpp:6746
+#: audio/RtAudio.cpp:6788 audio/RtAudio.cpp:6802 audio/RtAudio.cpp:6839
+#: audio/RtAudio.cpp:6901 audio/RtAudio.cpp:6916 audio/RtAudio.cpp:6938
+msgid "RtApiDs::callbackEvent: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6318
+msgid "RtApiDs::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5611 audio/RtAudio.cpp:5620
+msgid "RtApiDs::getDeviceCount: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5650
+msgid "RtApiDs::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5662 audio/RtAudio.cpp:5672 audio/RtAudio.cpp:5713
+#: audio/RtAudio.cpp:5724
+msgid "RtApiDs::getDeviceInfo: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5643
+msgid "RtApiDs::getDeviceInfo: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6069
+msgid ""
+"RtApiDs::getDeviceInfo: the input device does not support requested input "
+"channels."
+msgstr ""
+
+#: audio/RtAudio.cpp:5911
+msgid "RtApiDs::getDeviceInfo: the output device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5819
+msgid ""
+"RtApiDs::probeDeviceOpen: DirectSound does not support more than 2 channels "
+"per device."
+msgstr ""
+
+#: audio/RtAudio.cpp:5838 audio/RtAudio.cpp:5845
+msgid "RtApiDs::probeDeviceOpen: device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:5832
+msgid "RtApiDs::probeDeviceOpen: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5894 audio/RtAudio.cpp:5904 audio/RtAudio.cpp:5944
+#: audio/RtAudio.cpp:5963 audio/RtAudio.cpp:5972 audio/RtAudio.cpp:5998
+#: audio/RtAudio.cpp:6011 audio/RtAudio.cpp:6025 audio/RtAudio.cpp:6038
+#: audio/RtAudio.cpp:6052 audio/RtAudio.cpp:6062 audio/RtAudio.cpp:6123
+#: audio/RtAudio.cpp:6135 audio/RtAudio.cpp:6154 audio/RtAudio.cpp:6167
+msgid "RtApiDs::probeDeviceOpen: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6232
+msgid "RtApiDs::probeDeviceOpen: error allocating AsioHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:6220
+msgid "RtApiDs::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:6200
+msgid "RtApiDs::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:6271
+msgid "RtApiDs::probeDeviceOpen: error creating callback thread!"
+msgstr ""
+
+#: audio/RtAudio.cpp:5826
+msgid "RtApiDs::probeDeviceOpen: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6373
+msgid "RtApiDs::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6403 audio/RtAudio.cpp:6414
+msgid "RtApiDs::startStream: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:6433
+msgid "RtApiDs::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:6456 audio/RtAudio.cpp:6465 audio/RtAudio.cpp:6476
+#: audio/RtAudio.cpp:6497 audio/RtAudio.cpp:6506 audio/RtAudio.cpp:6517
+msgid "RtApiDs::stopStream: error ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2220
+msgid "RtApiJack"
+msgstr ""
+
+#: audio/RtAudio.cpp:2605
+msgid "RtApiJack::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2463
+msgid "RtApiJack::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2071
+msgid "RtApiJack::getDeviceInfo: Jack server not found or connection error!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2100
+msgid "RtApiJack::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2132
+msgid "RtApiJack::getDeviceInfo: error determining Jack input/output channels!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2222
+msgid "RtApiJack::probeDeviceOpen: Jack server not found or connection error!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2255
+msgid "RtApiJack::probeDeviceOpen: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2339
+msgid "RtApiJack::probeDeviceOpen: error allocating JackHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:2379
+msgid "RtApiJack::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:2388
+msgid "RtApiJack::probeDeviceOpen: error allocating port memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:2357
+msgid "RtApiJack::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:2344
+msgid ""
+"RtApiJack::probeDeviceOpen: error initializing pthread condition variable."
+msgstr ""
+
+#: audio/RtAudio.cpp:2273
+msgid "RtApiJack::probeDeviceOpen: requested number of channels ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2283
+msgid "RtApiJack::probeDeviceOpen: the requested sample rate ("
+msgstr ""
+
+#: audio/RtAudio.cpp:2563
+msgid "RtApiJack::startStream(): error connecting input ports!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2541
+msgid "RtApiJack::startStream(): error connecting output ports!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2528
+msgid "RtApiJack::startStream(): error determining available JACK input ports!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2552
+msgid ""
+"RtApiJack::startStream(): error determining available JACK output ports!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2505
+msgid "RtApiJack::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2517
+msgid "RtApiJack::startStream(): unable to activate JACK client!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2583
+msgid "RtApiJack::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:2034
+msgid "RtApiJackCount"
+msgstr ""
+
+#: audio/RtAudio.cpp:2069
+msgid "RtApiJackInfo"
+msgstr ""
+
+#: audio/RtAudio.cpp:9732
+msgid "RtApiOss::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9750
+msgid ""
+"RtApiOss::abortStream: system error stopping callback procedure on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9760
+msgid ""
+"RtApiOss::abortStream: system error stopping input callback procedure on "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9788
+msgid ""
+"RtApiOss::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9885
+msgid "RtApiOss::callbackEvent: audio read error."
+msgstr ""
+
+#: audio/RtAudio.cpp:9858
+msgid "RtApiOss::callbackEvent: audio write error."
+msgstr ""
+
+#: audio/RtAudio.cpp:9585
+msgid "RtApiOss::closeStream(): no open stream to close!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9549
+msgid "RtApiOss::error creating callback thread!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9008
+msgid ""
+"RtApiOss::getDeviceCount: error getting sysinfo, OSS version >= 4.0 is "
+"required."
+msgstr ""
+
+#: audio/RtAudio.cpp:9000
+msgid "RtApiOss::getDeviceCount: error opening '/dev/mixer'."
+msgstr ""
+
+#: audio/RtAudio.cpp:9089
+msgid "RtApiOss::getDeviceInfo: device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9048
+msgid "RtApiOss::getDeviceInfo: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9058 audio/RtAudio.cpp:9176
+msgid "RtApiOss::getDeviceInfo: error getting device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9033
+msgid ""
+"RtApiOss::getDeviceInfo: error getting sysinfo, OSS version >= 4.0 is "
+"required."
+msgstr ""
+
+#: audio/RtAudio.cpp:9024
+msgid "RtApiOss::getDeviceInfo: error opening '/dev/mixer'."
+msgstr ""
+
+#: audio/RtAudio.cpp:9041
+msgid "RtApiOss::getDeviceInfo: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9124
+msgid "RtApiOss::getDeviceInfo: no supported sample rates found for device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9185 audio/RtAudio.cpp:9187 audio/RtAudio.cpp:9202
+#: audio/RtAudio.cpp:9226 audio/RtAudio.cpp:9357 audio/RtAudio.cpp:9412
+msgid "RtApiOss::probeDeviceOpen: device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9167
+msgid "RtApiOss::probeDeviceOpen: device ID is invalid!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9446
+msgid "RtApiOss::probeDeviceOpen: error allocating OssHandle memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:9487
+msgid "RtApiOss::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:9467
+msgid "RtApiOss::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:9270
+msgid "RtApiOss::probeDeviceOpen: error getting device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9152
+msgid ""
+"RtApiOss::probeDeviceOpen: error getting sysinfo, OSS version >= 4.0 is "
+"required."
+msgstr ""
+
+#: audio/RtAudio.cpp:9451
+msgid ""
+"RtApiOss::probeDeviceOpen: error initializing pthread condition variable."
+msgstr ""
+
+#: audio/RtAudio.cpp:9144
+msgid "RtApiOss::probeDeviceOpen: error opening '/dev/mixer'."
+msgstr ""
+
+#: audio/RtAudio.cpp:9228
+msgid "RtApiOss::probeDeviceOpen: error opening device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9389
+msgid "RtApiOss::probeDeviceOpen: error setting buffer size on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9259
+msgid "RtApiOss::probeDeviceOpen: error setting channel parameters on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9367
+msgid "RtApiOss::probeDeviceOpen: error setting data format on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9404
+msgid "RtApiOss::probeDeviceOpen: error setting sample rate ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9208
+msgid ""
+"RtApiOss::probeDeviceOpen: input/output channels must be equal for OSS "
+"duplex device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9160
+msgid "RtApiOss::probeDeviceOpen: no devices found!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9249
+msgid "RtApiOss::probeDeviceOpen: the device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9634
+msgid "RtApiOss::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9660
+msgid "RtApiOss::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:9697
+msgid "RtApiOss::stopStream: audio write error."
+msgstr ""
+
+#: audio/RtAudio.cpp:9704
+msgid ""
+"RtApiOss::stopStream: system error stopping callback procedure on device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:9714
+msgid ""
+"RtApiOss::stopStream: system error stopping input callback procedure on "
+"device ("
+msgstr ""
+
+#: audio/RtAudio.cpp:8708
+msgid "RtApiPulse::abortStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8703
+msgid "RtApiPulse::abortStream(): the stream is not open!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8719
+msgid "RtApiPulse::abortStream: error flushing output device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8561
+msgid ""
+"RtApiPulse::callbackEvent(): the stream is closed ... this shouldn't happen!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8616
+msgid "RtApiPulse::callbackEvent: audio read error, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8600
+msgid "RtApiPulse::callbackEvent: audio write error, "
+msgstr ""
+
+#: audio/RtAudio.cpp:8825
+msgid "RtApiPulse::probeDeviceOpen: error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:8839
+msgid "RtApiPulse::probeDeviceOpen: error allocating memory for handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:8804
+msgid "RtApiPulse::probeDeviceOpen: error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:8861
+msgid ""
+"RtApiPulse::probeDeviceOpen: error connecting input to PulseAudio server."
+msgstr ""
+
+#: audio/RtAudio.cpp:8868
+msgid ""
+"RtApiPulse::probeDeviceOpen: error connecting output to PulseAudio server."
+msgstr ""
+
+#: audio/RtAudio.cpp:8845
+msgid "RtApiPulse::probeDeviceOpen: error creating condition variable."
+msgstr ""
+
+#: audio/RtAudio.cpp:8928
+msgid "RtApiPulse::probeDeviceOpen: error creating thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:8744
+msgid "RtApiPulse::probeDeviceOpen: unsupported number of channels."
+msgstr ""
+
+#: audio/RtAudio.cpp:8761
+msgid "RtApiPulse::probeDeviceOpen: unsupported sample rate."
+msgstr ""
+
+#: audio/RtAudio.cpp:8646
+msgid "RtApiPulse::startStream(): the stream is already running!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8641
+msgid "RtApiPulse::startStream(): the stream is not open!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8674
+msgid "RtApiPulse::stopStream(): the stream is already stopped!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8669
+msgid "RtApiPulse::stopStream(): the stream is not open!"
+msgstr ""
+
+#: audio/RtAudio.cpp:8685
+msgid "RtApiPulse::stopStream: error draining output device, "
+msgstr ""
+
+#: audio/RtAudio.cpp:4632
+msgid "RtApiWasapi::abortStream: The stream is already stopped."
+msgstr ""
+
+#: audio/RtAudio.cpp:4647
+msgid "RtApiWasapi::abortStream: Unable to close callback thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:4520
+msgid "RtApiWasapi::closeStream: No open stream to close."
+msgstr ""
+
+#: audio/RtAudio.cpp:4227
+msgid ""
+"RtApiWasapi::getDeviceCount: Unable to retrieve capture device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4233
+msgid "RtApiWasapi::getDeviceCount: Unable to retrieve capture device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4240
+msgid ""
+"RtApiWasapi::getDeviceCount: Unable to retrieve render device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4246
+msgid "RtApiWasapi::getDeviceCount: Unable to retrieve render device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4319
+msgid "RtApiWasapi::getDeviceInfo: Invalid device index."
+msgstr ""
+
+#: audio/RtAudio.cpp:4360
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to open default device property store."
+msgstr ""
+
+#: audio/RtAudio.cpp:4376
+msgid "RtApiWasapi::getDeviceInfo: Unable to open device property store."
+msgstr ""
+
+#: audio/RtAudio.cpp:4294
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve capture device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4300
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve capture device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4328
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve capture device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4346
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve default capture device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4367
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve default device property: "
+"PKEY_Device_FriendlyName."
+msgstr ""
+
+#: audio/RtAudio.cpp:4353
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve default render device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4403
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve device audio client."
+msgstr ""
+
+#: audio/RtAudio.cpp:4409
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve device mix format."
+msgstr ""
+
+#: audio/RtAudio.cpp:4384
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve device property: "
+"PKEY_Device_FriendlyName."
+msgstr ""
+
+#: audio/RtAudio.cpp:4307
+msgid ""
+"RtApiWasapi::getDeviceInfo: Unable to retrieve render device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4313
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve render device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4336
+msgid "RtApiWasapi::getDeviceInfo: Unable to retrieve render device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4716
+msgid "RtApiWasapi::probeDeviceOpen: Capture device selected as output device."
+msgstr ""
+
+#: audio/RtAudio.cpp:4860
+msgid "RtApiWasapi::probeDeviceOpen: Error allocating user buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:4708
+msgid "RtApiWasapi::probeDeviceOpen: Invalid device index."
+msgstr ""
+
+#: audio/RtAudio.cpp:4732
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve capture device audio client."
+msgstr ""
+
+#: audio/RtAudio.cpp:4682
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve capture device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4688
+msgid "RtApiWasapi::probeDeviceOpen: Unable to retrieve capture device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4725
+msgid "RtApiWasapi::probeDeviceOpen: Unable to retrieve capture device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4738
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve capture device mix format."
+msgstr ""
+
+#: audio/RtAudio.cpp:4768 audio/RtAudio.cpp:4802
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve render device audio client."
+msgstr ""
+
+#: audio/RtAudio.cpp:4695
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve render device collection."
+msgstr ""
+
+#: audio/RtAudio.cpp:4701
+msgid "RtApiWasapi::probeDeviceOpen: Unable to retrieve render device count."
+msgstr ""
+
+#: audio/RtAudio.cpp:4761 audio/RtAudio.cpp:4795
+msgid "RtApiWasapi::probeDeviceOpen: Unable to retrieve render device handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4774 audio/RtAudio.cpp:4808
+msgid ""
+"RtApiWasapi::probeDeviceOpen: Unable to retrieve render device mix format."
+msgstr ""
+
+#: audio/RtAudio.cpp:4567
+msgid "RtApiWasapi::startStream: The stream is already running."
+msgstr ""
+
+#: audio/RtAudio.cpp:4583
+msgid "RtApiWasapi::startStream: Unable to instantiate callback thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:4599
+msgid "RtApiWasapi::stopStream: The stream is already stopped."
+msgstr ""
+
+#: audio/RtAudio.cpp:4617
+msgid "RtApiWasapi::stopStream: Unable to close callback thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:5164
+msgid "RtApiWasapi::wasapiThread: Error allocating device buffer memory."
+msgstr ""
+
+#: audio/RtAudio.cpp:5278
+msgid "RtApiWasapi::wasapiThread: Unable to close stream abort thread handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:5262
+msgid "RtApiWasapi::wasapiThread: Unable to close stream stop thread handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:5013
+msgid "RtApiWasapi::wasapiThread: Unable to create capture event."
+msgstr ""
+
+#: audio/RtAudio.cpp:5096
+msgid "RtApiWasapi::wasapiThread: Unable to create render event."
+msgstr ""
+
+#: audio/RtAudio.cpp:5046
+msgid "RtApiWasapi::wasapiThread: Unable to get capture buffer size."
+msgstr ""
+
+#: audio/RtAudio.cpp:5127
+msgid "RtApiWasapi::wasapiThread: Unable to get render buffer size."
+msgstr ""
+
+#: audio/RtAudio.cpp:4995
+msgid "RtApiWasapi::wasapiThread: Unable to initialize capture audio client."
+msgstr ""
+
+#: audio/RtAudio.cpp:5081
+msgid "RtApiWasapi::wasapiThread: Unable to initialize render audio client."
+msgstr ""
+
+#: audio/RtAudio.cpp:5273
+msgid "RtApiWasapi::wasapiThread: Unable to instantiate stream abort thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:5257
+msgid "RtApiWasapi::wasapiThread: Unable to instantiate stream stop thread."
+msgstr ""
+
+#: audio/RtAudio.cpp:5360 audio/RtAudio.cpp:5369 audio/RtAudio.cpp:5379
+msgid "RtApiWasapi::wasapiThread: Unable to release capture buffer."
+msgstr ""
+
+#: audio/RtAudio.cpp:5429 audio/RtAudio.cpp:5438 audio/RtAudio.cpp:5448
+msgid "RtApiWasapi::wasapiThread: Unable to release render buffer."
+msgstr ""
+
+#: audio/RtAudio.cpp:5031
+msgid "RtApiWasapi::wasapiThread: Unable to reset capture stream."
+msgstr ""
+
+#: audio/RtAudio.cpp:5112
+msgid "RtApiWasapi::wasapiThread: Unable to reset render stream."
+msgstr ""
+
+#: audio/RtAudio.cpp:5347
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve capture buffer."
+msgstr ""
+
+#: audio/RtAudio.cpp:5002
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve capture client handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:4976 audio/RtAudio.cpp:5062
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve device mix format."
+msgstr ""
+
+#: audio/RtAudio.cpp:5407
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve render buffer padding."
+msgstr ""
+
+#: audio/RtAudio.cpp:5401
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve render buffer size."
+msgstr ""
+
+#: audio/RtAudio.cpp:5416
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve render buffer."
+msgstr ""
+
+#: audio/RtAudio.cpp:5088
+msgid "RtApiWasapi::wasapiThread: Unable to retrieve render client handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:5019
+msgid "RtApiWasapi::wasapiThread: Unable to set capture event handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:5102
+msgid "RtApiWasapi::wasapiThread: Unable to set render event handle."
+msgstr ""
+
+#: audio/RtAudio.cpp:5038
+msgid "RtApiWasapi::wasapiThread: Unable to start capture stream."
+msgstr ""
+
+#: audio/RtAudio.cpp:5119
+msgid "RtApiWasapi::wasapiThread: Unable to start render stream."
+msgstr ""
+
+#: audio/RtAudio.cpp:8791
+msgid "RtAudio"
+msgstr ""
+
+#: audio/RtAudio.cpp:8403
+msgid "RtAudio alsa: "
+msgstr ""
+
+#: audio/RtAudio.cpp:9914
+msgid "RtAudio oss: "
+msgstr ""
+
+#: audio/RtAudio.cpp:8491
+msgid "RtAudio pulse: "
+msgstr ""
+
 #: standalone/mrvCommandLine.cpp:348
 msgid "Run mrViewer regardless of single instance setting"
 msgstr ""
@@ -22752,6 +24701,14 @@ msgstr ""
 
 #: /Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:96
 msgid "SafeArrayUnaccessData"
+msgstr ""
+
+#: audio/RtAudio.cpp:3739
+msgid "Sample clock or rate cannot be determined or is not present."
+msgstr ""
+
+#: audio/RtAudio.cpp:3738
+msgid "Sample position not advancing."
 msgstr ""
 
 #: core/mrvACES.cpp:182 gui/mrvImageInformation.cpp:3938
@@ -23421,6 +25378,10 @@ msgstr ""
 msgid "Stopped encoding cached "
 msgstr ""
 
+#: audio/mrvRtAudioEngine.cpp:68
+msgid "Stream underflow detected!"
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1590
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr ""
@@ -23884,6 +25845,10 @@ msgstr ""
 
 #: audio/mrvALSAEngine.cpp:566
 msgid "The rate "
+msgstr ""
+
+#: audio/RtAudio.cpp:7083
+msgid "The sample rate or the channel format is not supported"
 msgstr ""
 
 #: core/mrSocket.cpp:63
@@ -24441,10 +26406,15 @@ msgstr ""
 msgid "Unhandled exception"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:134 core/CMedia_audio.cpp:634 core/aviImage.cpp:2360
-#: core/aviImage.cpp:2846 core/ddsImage.cpp:1241
-#: gui/mrvImageInformation.cpp:2602 video/mrvGLEngine.cpp:236
-#: video/mrvGLEngine.cpp:239 video/mrvGLEngine.cpp:242
+#: audio/RtAudio.cpp:7104
+msgid "Uninitialized"
+msgstr ""
+
+#: audio/mrvALSAEngine.cpp:134 audio/RtAudio.cpp:106 audio/RtAudio.cpp:180
+#: core/CMedia_audio.cpp:634 core/aviImage.cpp:2360 core/aviImage.cpp:2846
+#: core/ddsImage.cpp:1241 gui/mrvImageInformation.cpp:2602
+#: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:239
+#: video/mrvGLEngine.cpp:242
 msgid "Unknown"
 msgstr ""
 
@@ -24496,7 +26466,7 @@ msgstr ""
 msgid "Unknown audio bit depth "
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:177
+#: audio/mrvAOEngine.cpp:209
 msgid "Unknown audio format.  Setting 32 bits"
 msgstr ""
 
@@ -24544,7 +26514,11 @@ msgstr ""
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:152
+#: audio/RtAudio.cpp:3746
+msgid "Unknown error."
+msgstr ""
+
+#: audio/mrvAOEngine.cpp:184
 msgid "Unknown failure"
 msgstr ""
 
@@ -24853,7 +26827,7 @@ msgstr ""
 msgid "VRangle %g"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:147
+#: audio/mrvAOEngine.cpp:179
 msgid "Valid option key has invalid value"
 msgstr ""
 
@@ -25175,6 +27149,10 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:2766
 #, c-format
 msgid "W: %g %g"
+msgstr ""
+
+#: audio/RtAudio.cpp:112
+msgid "WASAPI"
 msgstr ""
 
 #: core/aviImage.cpp:342
@@ -26711,6 +28689,10 @@ msgstr ""
 msgid "_NET_WM_STATE_FULLSCREEN"
 msgstr ""
 
+#: audio/RtAudio.cpp:8404 audio/RtAudio.cpp:8492 audio/RtAudio.cpp:9915
+msgid "_NOT_ "
+msgstr ""
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2398
 #: gui/mrvPreferences.cpp:1171
 msgid "_v"
@@ -26944,7 +28926,7 @@ msgstr ""
 msgid "all_layers"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:47
+#: audio/mrvALSAEngine.cpp:47 audio/RtAudio.cpp:107
 msgid "alsa"
 msgstr ""
 
@@ -26962,7 +28944,7 @@ msgstr ""
 msgid "amixer -q set PCM %d"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:41
+#: audio/mrvAOEngine.cpp:42
 msgid "ao"
 msgstr ""
 
@@ -26984,6 +28966,10 @@ msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:640
 msgid "asf"
+msgstr ""
+
+#: audio/RtAudio.cpp:113
+msgid "asio"
 msgstr ""
 
 #: gui/mrvFLTKHandler.cpp:53
@@ -27733,6 +29719,10 @@ msgstr ""
 msgid "const float j = %f;\n"
 msgstr ""
 
+#: audio/RtAudio.cpp:111
+msgid "core"
+msgstr ""
+
 #: core/hdrImage.cpp:422
 msgid "could not allocate scanline"
 msgstr ""
@@ -27919,8 +29909,11 @@ msgstr ""
 msgid "decode_video"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:75 core/CMedia.cpp:3449
-#: gui/mrvPreferences.cpp:828 gui/mrvPreferences.cpp:2394
+#: audio/mrvALSAEngine.cpp:107 audio/mrvAOEngine.cpp:108
+#: audio/mrvAOEngine.cpp:123 audio/mrvRtAudioEngine.cpp:103
+#: audio/RtAudio.cpp:7183 audio/RtAudio.cpp:7238 audio/RtAudio.cpp:7241
+#: audio/RtAudio.cpp:7510 audio/RtAudio.cpp:7539 audio/RtAudio.cpp:7542
+#: core/CMedia.cpp:3449 gui/mrvPreferences.cpp:828 gui/mrvPreferences.cpp:2394
 msgid "default"
 msgstr ""
 
@@ -28033,7 +30026,7 @@ msgstr ""
 msgid "drf"
 msgstr ""
 
-#: gui/mrvVersion.cpp:476
+#: audio/RtAudio.cpp:114 gui/mrvVersion.cpp:476
 msgid "ds"
 msgstr ""
 
@@ -28052,6 +30045,10 @@ msgstr ""
 
 #: core/CMedia.cpp:3451
 msgid "dub"
+msgstr ""
+
+#: audio/RtAudio.cpp:115
+msgid "dummy"
 msgstr ""
 
 #: core/aviImage_save.cpp:183
@@ -29076,9 +31073,24 @@ msgstr ""
 msgid "hw.optional.sse"
 msgstr ""
 
+#: audio/RtAudio.cpp:7155 audio/RtAudio.cpp:7207 audio/RtAudio.cpp:7516
+#, c-format
+msgid "hw:%d"
+msgstr ""
+
+#: audio/RtAudio.cpp:7227 audio/RtAudio.cpp:7529
+#, c-format
+msgid "hw:%d,%d"
+msgstr ""
+
 #: audio/mrvALSAEngine.cpp:124
 #, c-format
 msgid "hw:%i"
+msgstr ""
+
+#: audio/RtAudio.cpp:7470
+#, c-format
+msgid "hw:%s,%d"
 msgstr ""
 
 #: gui/FLU/flu_pixmaps.cpp:1680
@@ -29262,6 +31274,11 @@ msgstr ""
 msgid "initial_pause"
 msgstr ""
 
+#: audio/RtAudio.cpp:2418
+#, c-format
+msgid "inport %d"
+msgstr ""
+
 #: core/wandImage.cpp:1602
 msgid "inputColorSpace"
 msgstr ""
@@ -29394,6 +31411,10 @@ msgstr ""
 msgid "j.\tc #FFDB94"
 msgstr ""
 
+#: audio/RtAudio.cpp:110
+msgid "jack"
+msgstr ""
+
 #: gui/FLU/Flu_File_Chooser.cpp:676
 msgid "jpeg"
 msgstr ""
@@ -29496,6 +31517,50 @@ msgstr ""
 
 #: video/mrvGLEngine.cpp:4178
 msgid "kARBFP1 builtin shader"
+msgstr ""
+
+#: audio/RtAudio.cpp:1951
+msgid "kAudioDevicePermissionsError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1948
+msgid "kAudioDeviceUnsupportedFormatError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1939
+msgid "kAudioHardwareBadDeviceError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1936
+msgid "kAudioHardwareBadObjectError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1930
+msgid "kAudioHardwareBadPropertySizeError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1942
+msgid "kAudioHardwareBadStreamError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1933
+msgid "kAudioHardwareIllegalOperationError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1921
+msgid "kAudioHardwareNotRunningError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1927
+msgid "kAudioHardwareUnknownPropertyError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1924
+msgid "kAudioHardwareUnspecifiedError"
+msgstr ""
+
+#: audio/RtAudio.cpp:1945
+msgid "kAudioHardwareUnsupportedOperationError"
 msgstr ""
 
 #: core/CMedia.cpp:3459
@@ -30537,6 +32602,10 @@ msgstr ""
 msgid "original"
 msgstr ""
 
+#: audio/RtAudio.cpp:109
+msgid "oss"
+msgstr ""
+
 #: core/aviImage.cpp:520 core/aviImage.cpp:556 core/R3dImage.cpp:251
 msgid "out"
 msgstr ""
@@ -30563,6 +32632,11 @@ msgstr ""
 
 #: core/mrvColorBarsImage.cpp:83 core/mrvColorBarsImage.cpp:106
 msgid "out_srgb"
+msgstr ""
+
+#: audio/RtAudio.cpp:2411
+#, c-format
+msgid "outport %d"
 msgstr ""
 
 #: gui/mrvVersion.cpp:322
@@ -30899,6 +32973,10 @@ msgstr ""
 
 #: core/rawImage.cpp:83
 msgid "ptx"
+msgstr ""
+
+#: audio/RtAudio.cpp:108
+msgid "pulse"
 msgstr ""
 
 #: core/mrvCPU.cpp:188
@@ -31346,6 +33424,10 @@ msgstr ""
 msgid "rsp"
 msgstr ""
 
+#: audio/mrvRtAudioEngine.cpp:46
+msgid "rtaudio"
+msgstr ""
+
 #: core/CMedia.cpp:1617 core/guessImage.cpp:243 core/Sequence.cpp:668
 msgid "rtmp"
 msgstr ""
@@ -31356,6 +33438,10 @@ msgstr ""
 
 #: standalone/mrvCommandLine.cpp:347
 msgid "run"
+msgstr ""
+
+#: audio/RtAudio.cpp:8405 audio/RtAudio.cpp:8493 audio/RtAudio.cpp:9916
+msgid "running realtime scheduling"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:3911
@@ -32231,6 +34317,10 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
+#: audio/RtAudio.cpp:106
+msgid "unspecified"
+msgstr ""
+
 #: gui/mrvPreferences.cpp:1746
 msgid "use_OCIO"
 msgstr ""
@@ -32542,6 +34632,10 @@ msgstr ""
 
 #: core/wandImage.cpp:97
 msgid "wand"
+msgstr ""
+
+#: audio/RtAudio.cpp:112
+msgid "wasapi"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:697

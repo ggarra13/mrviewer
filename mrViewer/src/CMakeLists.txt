@@ -90,6 +90,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     LINK_DIRECTORIES( /usr/local/lib )
     set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
+    ADD_DEFINITIONS( -D__MACOSX_CORE__ )
+
     IF( AOENGINE )
       ADD_DEFINITIONS( -DAOENGINE )
       set( OS_LIBRARIES ${OS_LIBRARIES} ao )
@@ -367,7 +369,7 @@ SET( SOURCES
   ${BlackMagicRAW_SOURCES}
   )
 
-SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp ${SOURCES} )
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
