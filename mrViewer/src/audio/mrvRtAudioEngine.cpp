@@ -32,14 +32,14 @@
 #include <iostream>
 using namespace std;
 
-#include "audio/mrvRtAudioEngine.h"
-#include "gui/mrvPreferences.h"
 #include "core/mrvI8N.h"
-#include "gui/mrvIO.h"
 
 #ifdef _WIN32
-#undef fprintf
+#undef snprintf
 #endif
+#include "gui/mrvPreferences.h"
+#include "gui/mrvIO.h"
+#include "audio/mrvRtAudioEngine.h"
 
 namespace mrv {
 
@@ -193,7 +193,6 @@ bool RtAudioEngine::open( const unsigned channels,
 
         audio.showWarnings( true );
 
-        int                  status;
         try {
             audio.openStream( &parameters, NULL, fmt,
                               sampleRate, &bufferFrames, &myCallback,
@@ -223,10 +222,6 @@ bool RtAudioEngine::open( const unsigned channels,
     {
         LOG_ERROR( e.what() );
         close();
-        struct timespec req = {
-            7, 0
-        };
-        nanosleep( &req, NULL );
         _enabled = false;
     }
     return _enabled;
