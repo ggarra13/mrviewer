@@ -34,14 +34,10 @@
 #if defined(WIN32) || defined(WIN64)
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
-
 #    include "audio/mrvALSAEngine.h"
-
-#ifdef AOENGINE
-#        include "audio/mrvAOEngine.h"
 #endif
 
-#else
+#ifdef AOENGINE
 #    include "audio/mrvAOEngine.h"
 #endif
 
@@ -176,20 +172,22 @@ bool AudioEngine::device( const std::string& d )
 
 AudioEngine* AudioEngine::factory()
 {
-    AudioEngine* r;
+    AudioEngine* r = NULL;
 
 #if defined(_WIN32) || defined(_WIN64)
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
 #elif defined(LINUX)
-#ifdef AOENGINE
+#  ifdef AOENGINE
     r = new mrv::AOEngine();
-#else
+#  else
     r = new mrv::ALSAEngine();
-#endif
+#  endif
 
-#else
+#elif defined(OSX)
+#  ifdef AOENGINE
     r = new mrv::AOEngine();
+#  endif
 #endif
 
     return r;

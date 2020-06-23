@@ -97,7 +97,7 @@
 #: gui/mrvPreferences.cpp:1728 gui/mrvPreferences.cpp:1729
 #: gui/mrvPreferences.cpp:1833 gui/mrvPreferences.cpp:1834
 #: gui/mrvPreferences.cpp:2247 gui/mrvSave.cpp:276 gui/mrvTimecode.cpp:373
-#: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:336 gui/mrvVersion.cpp:347
+#: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:335 gui/mrvVersion.cpp:346
 #: video/mrvGLEngine.cpp:3873 video/mrvGLEngine.cpp:3931
 #: video/mrvGLEngine.cpp:3955 video/mrvGLEngine.cpp:4196
 #: video/mrvGLEngine.cpp:4197 video/mrvGLShader.cpp:64
@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-22 00:04-0300\n"
+"POT-Creation-Date: 2020-06-23 08:50-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -129,8 +129,8 @@ msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:536 gui/FLU/Flu_File_Chooser.cpp:582
 #: gui/mrvHotkey.cpp:500 gui/mrvColorInfo.cpp:762 gui/mrvColorInfo.cpp:764
-#: gui/mrvColorInfo.cpp:766 gui/mrvColorInfo.cpp:864 gui/mrvVersion.cpp:365
-#: gui/mrvVersion.cpp:366 gui/mrvVersion.cpp:416
+#: gui/mrvColorInfo.cpp:766 gui/mrvColorInfo.cpp:864 gui/mrvVersion.cpp:364
+#: gui/mrvVersion.cpp:365 gui/mrvVersion.cpp:415
 msgid "\t"
 msgstr ""
 
@@ -305,8 +305,8 @@ msgstr ""
 #: gui/mrvImageView.cpp:3731 gui/mrvImageView.cpp:3934
 #: gui/mrvImageView.cpp:3979 gui/mrvImageView.cpp:3986
 #: gui/mrvImageBrowser.cpp:1252 gui/mrvImageBrowser.cpp:2356
-#: gui/mrvImageBrowser.cpp:2417 gui/mrvVersion.cpp:124 gui/mrvVersion.cpp:456
-#: gui/mrvVersion.cpp:462 gui/mrvVersion.cpp:540 gui/mrvVersion.cpp:545
+#: gui/mrvImageBrowser.cpp:2417 gui/mrvVersion.cpp:124 gui/mrvVersion.cpp:455
+#: gui/mrvVersion.cpp:461 gui/mrvVersion.cpp:539 gui/mrvVersion.cpp:544
 #: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:188
 #: video/mrvGLEngine.cpp:245 video/mrvGLEngine.cpp:262
 #: video/mrvGLEngine.cpp:291 video/mrvGLEngine.cpp:293
@@ -327,9 +327,9 @@ msgstr ""
 msgid " "
 msgstr ""
 
-#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:363 gui/mrvVersion.cpp:364
-#: gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:415 gui/mrvVersion.cpp:417
-#: gui/mrvVersion.cpp:418 gui/mrvVersion.cpp:419
+#: gui/mrvVersion.cpp:361 gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:363
+#: gui/mrvVersion.cpp:413 gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:416
+#: gui/mrvVersion.cpp:417 gui/mrvVersion.cpp:418
 msgid " \t"
 msgstr ""
 
@@ -3654,7 +3654,7 @@ msgstr "decode_audio_packet "
 msgid " audio stores #"
 msgstr "Pista de Audio #%d"
 
-#: gui/mrvVersion.cpp:540
+#: gui/mrvVersion.cpp:539
 msgid " bits - v"
 msgstr ""
 
@@ -3950,7 +3950,7 @@ msgstr "Desplazamiento"
 msgid " offset: "
 msgstr ""
 
-#: gui/mrvVersion.cpp:580 gui/mrvVersion.cpp:584 gui/mrvVersion.cpp:588
+#: gui/mrvVersion.cpp:577 gui/mrvVersion.cpp:581 gui/mrvVersion.cpp:585
 msgid " or later"
 msgstr " o más tarde"
 
@@ -6928,51 +6928,51 @@ msgstr ""
 msgid "(60hz HDTV)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:559
+#: gui/mrvVersion.cpp:558
 msgid "(C) 2000-2020 Bill Spitzak & others"
 msgstr ""
 
-#: gui/mrvVersion.cpp:578
+#: gui/mrvVersion.cpp:575
 msgid "(C) 2000-2020 Fabrice Bellard, et al."
 msgstr ""
 
-#: gui/mrvVersion.cpp:622
+#: gui/mrvVersion.cpp:619
 msgid "(C) 2003-2020 - The International Color Consortium"
 msgstr ""
 
-#: gui/mrvVersion.cpp:590
+#: gui/mrvVersion.cpp:587
 msgid "(C) 2003-2020 Larry Gritz, et al. "
 msgstr ""
 
-#: gui/mrvVersion.cpp:582
+#: gui/mrvVersion.cpp:579
 msgid "(C) 2005-2020 Industrial Light & Magic"
 msgstr ""
 
-#: gui/mrvVersion.cpp:586
+#: gui/mrvVersion.cpp:583
 msgid "(C) 2005-2020 Sony Pictures Imageworks"
 msgstr ""
 
-#: gui/mrvVersion.cpp:549
+#: gui/mrvVersion.cpp:548
 msgid "(C) 2007-2020 Film Aura, LLC."
 msgstr ""
 
-#: gui/mrvVersion.cpp:629
+#: gui/mrvVersion.cpp:626
 msgid "(C) 2008-2020 Jean-loup Gailly and Mark Adler"
 msgstr ""
 
-#: gui/mrvVersion.cpp:625
+#: gui/mrvVersion.cpp:622
 msgid "(C) 2008-2020 LibRaw LLC (info@libraw.org)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:613
+#: gui/mrvVersion.cpp:610
 msgid "(C) 2014-2020 AMPAS"
 msgstr ""
 
-#: gui/mrvVersion.cpp:609
+#: gui/mrvVersion.cpp:606
 msgid "(C) 2019-2020 AMPAS"
 msgstr ""
 
-#: gui/mrvVersion.cpp:563
+#: gui/mrvVersion.cpp:562
 msgid "(C) SGI, Lev Povalahev, Milan Ikits"
 msgstr ""
 
@@ -7284,6 +7284,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:4342 gui/FLU/Flu_File_Chooser.cpp:4733
 #: gui/FLU/Flu_File_Chooser.cpp:4784 gui/FLU/Flu_File_Chooser.cpp:4927
 #: gui/FLU/Flu_File_Chooser.cpp:4934 gui/FLU/Flu_File_Chooser.cpp:4943
+#: gui/mrvVersion.cpp:297
 msgid "*"
 msgstr ""
 
@@ -7867,7 +7868,7 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:1152 core/exrImage.cpp:556 core/stubImage.cpp:991
 #: core/rawImage.cpp:328 core/brawImage.cpp:1290 gui/mrvColorInfo.cpp:539
-#: gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:602 video/mrvGLEngine.cpp:3262
+#: gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:599 video/mrvGLEngine.cpp:3262
 #: video/mrvGLEngine.cpp:3263 video/mrvGLEngine.cpp:3271
 #: video/mrvGLEngine.cpp:3272 video/mrvGLEngine.cpp:3273
 #: video/mrvGLEngine.cpp:3274 video/mrvGLEngine.cpp:3275
@@ -8288,7 +8289,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1395 gui/FLU/Flu_File_Chooser.cpp:3683
 #: gui/FLU/Flu_File_Chooser.cpp:4036 gui/FLU/Flu_File_Chooser.cpp:4371
 #: gui/mrvImageView.cpp:8430 gui/mrvPreferences.cpp:548
-#: gui/mrvPreferences.cpp:989 gui/mrvVersion.cpp:553 gui/mrvVersion.cpp:554
+#: gui/mrvPreferences.cpp:989 gui/mrvVersion.cpp:552 gui/mrvVersion.cpp:553
 #: video/mrvGLEngine.cpp:549 video/mrvGLLut3d.cpp:1188
 #: video/mrvGLLut3d.cpp:1232 video/mrvGLLut3d.cpp:1303
 #: video/mrvGLLut3d.cpp:1314
@@ -9423,7 +9424,7 @@ msgstr ""
 #: gui/mrvImageBrowser.cpp:2525 gui/mrvImageInformation.cpp:714
 #: gui/mrvPreferences.cpp:993 gui/mrvPreferences.cpp:1656
 #: gui/mrvPreferences.cpp:1687 gui/mrvPreferences.cpp:1792
-#: gui/mrvVersion.cpp:777 standalone/mrvRoot.cpp:137 /Applications/Blackmagic
+#: gui/mrvVersion.cpp:774 standalone/mrvRoot.cpp:137 /Applications/Blackmagic
 #: RAW/Blackmagic RAW SDK/Mac/Include/BlackmagicRawAPIDispatch.cpp:208
 msgid "/"
 msgstr ""
@@ -9650,7 +9651,7 @@ msgstr ""
 msgid "/proc/self/exe"
 msgstr ""
 
-#: gui/mrvVersion.cpp:688 gui/mrvVersion.cpp:704
+#: gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 msgid "/proc/self/status"
 msgstr ""
 
@@ -9823,7 +9824,7 @@ msgstr "0,55"
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr "0,64 0,33  0,3 0,6  0,15 0,06  0,3127 0,3290"
 
-#: gui/mrvVersion.cpp:257 gui/mrvVersion.cpp:384
+#: gui/mrvVersion.cpp:257 gui/mrvVersion.cpp:383
 msgid "000"
 msgstr ""
 
@@ -11644,8 +11645,8 @@ msgid "96x96x96"
 msgstr ""
 
 #: core/mrvColorProfile.cpp:260 core/mrvColorProfile.cpp:261
-#: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:456
-#: gui/mrvVersion.cpp:462 video/mrvGLLut3d.cpp:1389
+#: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:77 gui/mrvVersion.cpp:455
+#: gui/mrvVersion.cpp:461 video/mrvGLLut3d.cpp:1389
 msgid ":"
 msgstr ""
 
@@ -11848,7 +11849,7 @@ msgstr ""
 msgid ":frame_rate=%d/%d"
 msgstr ""
 
-#: gui/mrvCTLBrowser.cpp:89 gui/mrvFileRequester.cpp:75 gui/mrvVersion.cpp:596
+#: gui/mrvCTLBrowser.cpp:89 gui/mrvFileRequester.cpp:75 gui/mrvVersion.cpp:593
 msgid ";"
 msgstr ""
 
@@ -12918,7 +12919,7 @@ msgstr ""
 msgid "A \tc #FFE7EC"
 msgstr ""
 
-#: gui/mrvVersion.cpp:635
+#: gui/mrvVersion.cpp:632
 msgid "A big thank you goes to Greg Ercolano who helped with"
 msgstr ""
 
@@ -13046,11 +13047,11 @@ msgstr "ALFA"
 msgid "AM"
 msgstr ""
 
-#: gui/mrvVersion.cpp:607
+#: gui/mrvVersion.cpp:604
 msgid "AMPAS ACES v1.0 or later"
 msgstr ""
 
-#: gui/mrvVersion.cpp:611
+#: gui/mrvVersion.cpp:608
 msgid "AMPAS CTL v1.5 or later"
 msgstr ""
 
@@ -13231,7 +13232,7 @@ msgstr "Todas las Capas"
 msgid "All Possible"
 msgstr ""
 
-#: gui/mrvVersion.cpp:591
+#: gui/mrvVersion.cpp:588
 msgid "All rights reserved."
 msgstr ""
 
@@ -13631,7 +13632,7 @@ msgstr "Bitrate Promedio"
 msgid "B"
 msgstr "A"
 
-#: gui/mrvVersion.cpp:364
+#: gui/mrvVersion.cpp:363
 msgid "B\t"
 msgstr "A"
 
@@ -13998,7 +13999,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvVersion.cpp:553
+#: gui/mrvVersion.cpp:552
 msgid "Boost v"
 msgstr ""
 
@@ -14840,7 +14841,7 @@ msgstr "Método de compresión no disponible.  Usando PIZ."
 msgid "Compression to use when saving an exr."
 msgstr "Compresión a usar cuando se graba un exr."
 
-#: gui/mrvVersion.cpp:579
+#: gui/mrvVersion.cpp:576
 msgid "Configuration: "
 msgstr "Información de Area de Color"
 
@@ -15866,7 +15867,7 @@ msgstr "Lentes Cian/rojo"
 msgid "D"
 msgstr ""
 
-#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:414 gui/mrvVersion.cpp:418
+#: gui/mrvVersion.cpp:361 gui/mrvVersion.cpp:413 gui/mrvVersion.cpp:417
 msgid "D\t"
 msgstr ""
 
@@ -16259,7 +16260,7 @@ msgstr "Borrar archivo(s)"
 msgid "Denoise"
 msgstr ""
 
-#: gui/mrvVersion.cpp:601
+#: gui/mrvVersion.cpp:598
 msgid ""
 "Dependent libraries:\n"
 "    "
@@ -16490,7 +16491,7 @@ msgstr "Duración del Vídeo"
 msgid "E"
 msgstr "E"
 
-#: gui/mrvVersion.cpp:363 gui/mrvVersion.cpp:415
+#: gui/mrvVersion.cpp:362 gui/mrvVersion.cpp:414
 msgid "E\t"
 msgstr "E"
 
@@ -17135,7 +17136,7 @@ msgstr ""
 msgid "FIT"
 msgstr "Encajar"
 
-#: gui/mrvVersion.cpp:557
+#: gui/mrvVersion.cpp:556
 msgid "FLTK 1.4"
 msgstr ""
 
@@ -17793,7 +17794,7 @@ msgstr "Vista3d 0"
 msgid "GL3dView 1"
 msgstr "Vista3d 1"
 
-#: gui/mrvVersion.cpp:561
+#: gui/mrvVersion.cpp:560
 msgid "GLEW "
 msgstr ""
 
@@ -18318,11 +18319,11 @@ msgstr ""
 msgid "HW"
 msgstr "HW"
 
-#: gui/mrvVersion.cpp:862
+#: gui/mrvVersion.cpp:859
 msgid "HW Overlay:\t"
 msgstr "Sobreimpreso de Texto"
 
-#: gui/mrvVersion.cpp:859
+#: gui/mrvVersion.cpp:856
 msgid "HW Stereo:\t"
 msgstr ""
 
@@ -18610,7 +18611,7 @@ msgstr "OpenEXR"
 msgid "ILM OpenEXR (.exr)"
 msgstr ""
 
-#: gui/mrvVersion.cpp:580
+#: gui/mrvVersion.cpp:577
 msgid "ILM OpenEXR v"
 msgstr "OpenEXR"
 
@@ -18734,7 +18735,7 @@ msgstr ""
 msgid "ITU_709_YCbCr444A"
 msgstr ""
 
-#: gui/mrvVersion.cpp:621
+#: gui/mrvVersion.cpp:618
 msgid "IccProfLib (ICC v4.2)"
 msgstr ""
 
@@ -18989,6 +18990,7 @@ msgid "ImageDescription"
 msgstr "CTL Escritura de Imagen"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:671
+#: gui/mrvVersion.cpp:306
 msgid "ImageMagick"
 msgstr ""
 
@@ -19704,11 +19706,11 @@ msgstr "Shift Izquierdo"
 msgid "Level ("
 msgstr ""
 
-#: gui/mrvVersion.cpp:624
+#: gui/mrvVersion.cpp:621
 msgid "LibRaw "
 msgstr ""
 
-#: gui/mrvVersion.cpp:577
+#: gui/mrvVersion.cpp:574
 msgid "License: "
 msgstr ""
 
@@ -20506,7 +20508,7 @@ msgstr "Monitor/Agregar Transformacion de Display de Salida (ODT) de CTL"
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Monitor/Agregar Perfil de Color ICC"
 
-#: gui/mrvVersion.cpp:847
+#: gui/mrvVersion.cpp:844
 msgid "Monitors:\t"
 msgstr ""
 
@@ -20758,8 +20760,8 @@ msgstr "Próxima Versión de la Imagen"
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:245 gui/mrvImageBrowser.cpp:936 gui/mrvImageBrowser.cpp:2297
-#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:860
-#: gui/mrvVersion.cpp:863 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
+#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
+#: gui/mrvVersion.cpp:860 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:252 video/mrvGLEngine.cpp:253
 #: video/mrvGLEngine.cpp:255 video/mrvGLEngine.cpp:259
 #: video/mrvGLEngine.cpp:260 video/mrvGLEngine.cpp:261
@@ -20774,7 +20776,7 @@ msgstr "No existe escritura CTL"
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: gui/mrvVersion.cpp:856
+#: gui/mrvVersion.cpp:853
 msgid "No GPU."
 msgstr ""
 
@@ -20801,7 +20803,7 @@ msgid "No attribute named '%s'"
 msgstr "Ningun atributo llamado '%s'"
 
 #
-#: core/mrvAudioEngine.cpp:134 core/mrvAudioEngine.cpp:148
+#: core/mrvAudioEngine.cpp:130 core/mrvAudioEngine.cpp:144
 msgid "No audio device found"
 msgstr "No pude abrir el dispositivo de audio %s: %s"
 
@@ -21301,7 +21303,7 @@ msgid "OGG Vorbis music"
 msgstr "Música OGG Vorbis"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:670
-#: gui/mrvVersion.cpp:336 gui/mrvVersion.cpp:347
+#: gui/mrvVersion.cpp:335 gui/mrvVersion.cpp:346
 msgid "OIIO"
 msgstr ""
 
@@ -21424,7 +21426,7 @@ msgstr "Abrir película '"
 msgid "Open new image, sequence or movie"
 msgstr "Abrir nueva imagen, secuencia o película"
 
-#: gui/mrvVersion.cpp:584
+#: gui/mrvVersion.cpp:581
 msgid "OpenColorIO v"
 msgstr ""
 "Color \n"
@@ -21486,7 +21488,7 @@ msgstr ""
 msgid "OpenImageIO"
 msgstr "Abrir Sólo una Imágen"
 
-#: gui/mrvVersion.cpp:588
+#: gui/mrvVersion.cpp:585
 msgid "OpenImageIO v"
 msgstr "Abrir Sólo una Imágen"
 
@@ -23039,7 +23041,7 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#: gui/mrvVersion.cpp:417
+#: gui/mrvVersion.cpp:416
 msgid "S\t"
 msgstr ""
 
@@ -24108,7 +24110,7 @@ msgstr "Cambiar Imágenes"
 msgid "T"
 msgstr "T"
 
-#: gui/mrvVersion.cpp:419
+#: gui/mrvVersion.cpp:418
 msgid "T\t"
 msgstr "T"
 
@@ -25927,11 +25929,11 @@ msgstr "Vista/Áreas Seguras"
 msgid "View/Texture Filtering  "
 msgstr "Vista/Filtrado de Texturas  "
 
-#: gui/mrvVersion.cpp:710
+#: gui/mrvVersion.cpp:707
 msgid "VmRSS:"
 msgstr ""
 
-#: gui/mrvVersion.cpp:694
+#: gui/mrvVersion.cpp:691
 msgid "VmSize:"
 msgstr "Tamaño"
 
@@ -26441,11 +26443,11 @@ msgstr ""
 msgid "WipeVertical %g"
 msgstr ""
 
-#: gui/mrvVersion.cpp:545
+#: gui/mrvVersion.cpp:544
 msgid "With clang "
 msgstr ""
 
-#: gui/mrvVersion.cpp:543
+#: gui/mrvVersion.cpp:542
 msgid "With gcc "
 msgstr ""
 
@@ -26492,7 +26494,7 @@ msgstr ""
 "\n"
 "Es recomendado dejar el seteo en 64x64x64 o 128x128x128."
 
-#: gui/mrvVersion.cpp:547
+#: gui/mrvVersion.cpp:546
 msgid "With msvc "
 msgstr ""
 
@@ -26944,8 +26946,8 @@ msgstr "Soporte YUVA:\t"
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:246 gui/mrvImageBrowser.cpp:936 gui/mrvImageBrowser.cpp:2297
-#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:860
-#: gui/mrvVersion.cpp:863 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
+#: gui/mrvImageInformation.cpp:4658 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
+#: gui/mrvVersion.cpp:860 video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:252 video/mrvGLEngine.cpp:253
 #: video/mrvGLEngine.cpp:255 video/mrvGLEngine.cpp:259
 #: video/mrvGLEngine.cpp:260 video/mrvGLEngine.cpp:261
@@ -29028,7 +29030,7 @@ msgstr ""
 msgid "drf"
 msgstr ""
 
-#: gui/mrvVersion.cpp:477
+#: gui/mrvVersion.cpp:476
 msgid "ds"
 msgstr ""
 
@@ -29256,7 +29258,7 @@ msgstr " codificando"
 msgid "end"
 msgstr "Fin"
 
-#: gui/mrvVersion.cpp:479
+#: gui/mrvVersion.cpp:478
 msgid "epzs"
 msgstr ""
 
@@ -29272,7 +29274,7 @@ msgstr ""
 msgid "errors"
 msgstr "Errores"
 
-#: gui/mrvVersion.cpp:472
+#: gui/mrvVersion.cpp:471
 msgid "esa"
 msgstr "Sí"
 
@@ -29429,7 +29431,7 @@ msgstr "No pude buscar al cuadro "
 msgid "fff"
 msgstr ""
 
-#: gui/mrvVersion.cpp:497
+#: gui/mrvVersion.cpp:496
 msgid "ffmpeg"
 msgstr ""
 
@@ -29673,7 +29675,7 @@ msgstr ""
 msgid "free"
 msgstr ""
 
-#: gui/mrvVersion.cpp:476
+#: gui/mrvVersion.cpp:475
 msgid "fss"
 msgstr ""
 
@@ -29995,7 +29997,7 @@ msgstr "Altura"
 msgid "hevc"
 msgstr ""
 
-#: gui/mrvVersion.cpp:478
+#: gui/mrvVersion.cpp:477
 msgid "hexds"
 msgstr ""
 
@@ -30007,7 +30009,7 @@ msgstr "Histograma"
 msgid "host"
 msgstr "Fantasma"
 
-#: gui/mrvVersion.cpp:811
+#: gui/mrvVersion.cpp:808
 msgid "host_statistics64 failed"
 msgstr ""
 
@@ -30020,31 +30022,31 @@ msgstr "Teclas de Manejo"
 msgid "http"
 msgstr ""
 
-#: gui/mrvVersion.cpp:576
+#: gui/mrvVersion.cpp:573
 msgid "http://ffmpeg.mplayerhq.hu/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:562
+#: gui/mrvVersion.cpp:561
 msgid "http://glew.sourceforge.net/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:555
+#: gui/mrvVersion.cpp:554
 msgid "http://www.boost.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:558
+#: gui/mrvVersion.cpp:557
 msgid "http://www.fltk.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:585
+#: gui/mrvVersion.cpp:582
 msgid "http://www.opencolorio.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:581
+#: gui/mrvVersion.cpp:578
 msgid "http://www.openexr.org/"
 msgstr ""
 
-#: gui/mrvVersion.cpp:589
+#: gui/mrvVersion.cpp:586
 msgid "http://www.openimageio.org/"
 msgstr ""
 
@@ -30052,11 +30054,11 @@ msgstr ""
 msgid "https://"
 msgstr ""
 
-#: gui/mrvVersion.cpp:612
+#: gui/mrvVersion.cpp:609
 msgid "https://github.com/ampas/CTL"
 msgstr ""
 
-#: gui/mrvVersion.cpp:608
+#: gui/mrvVersion.cpp:605
 msgid "https://github.com/ampas/aces-dev"
 msgstr ""
 
@@ -30270,7 +30272,7 @@ msgstr ""
 msgid "inputColorSpace"
 msgstr "Espacio de Color de Entrada"
 
-#: gui/mrvVersion.cpp:316
+#: gui/mrvVersion.cpp:315
 msgid "input_format_list"
 msgstr ""
 
@@ -30651,43 +30653,43 @@ msgstr ""
 msgid "lgf"
 msgstr ""
 
-#: gui/mrvVersion.cpp:571
+#: gui/mrvVersion.cpp:568
 msgid "libavcodec      v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:573
+#: gui/mrvVersion.cpp:570
 msgid "libavfilter        v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:572
+#: gui/mrvVersion.cpp:569
 msgid "libavformat     v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:570
+#: gui/mrvVersion.cpp:567
 msgid "libavutil          v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:618
+#: gui/mrvVersion.cpp:615
 msgid "libdvdcss"
 msgstr ""
 
-#: gui/mrvVersion.cpp:617
+#: gui/mrvVersion.cpp:614
 msgid "libdvdnav"
 msgstr ""
 
-#: gui/mrvVersion.cpp:616
+#: gui/mrvVersion.cpp:613
 msgid "libdvdread"
 msgstr ""
 
-#: gui/mrvVersion.cpp:593
+#: gui/mrvVersion.cpp:590
 msgid "library_list"
 msgstr ""
 
-#: gui/mrvVersion.cpp:574
+#: gui/mrvVersion.cpp:571
 msgid "libswresample v"
 msgstr ""
 
-#: gui/mrvVersion.cpp:575
+#: gui/mrvVersion.cpp:572
 msgid "libswscale       v"
 msgstr ""
 
@@ -30923,7 +30925,7 @@ msgstr ""
 msgid "mef"
 msgstr ""
 
-#: gui/mrvVersion.cpp:770
+#: gui/mrvVersion.cpp:767
 msgid "mem"
 msgstr ""
 
@@ -31112,7 +31114,7 @@ msgstr ""
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvVersion.cpp:540
+#: gui/mrvVersion.cpp:539
 msgid "mrViewer "
 msgstr "mrViewer"
 
@@ -31126,7 +31128,7 @@ msgstr "mrViewer    FRENTE: %s"
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr "mrVIewer     FRENTE: %s [%d]    FONDO: %s [%d] (%s)"
 
-#: gui/mrvVersion.cpp:551
+#: gui/mrvVersion.cpp:550
 msgid "mrViewer depends on:"
 msgstr ""
 
@@ -31412,7 +31414,7 @@ msgstr ""
 msgid "nt"
 msgstr ""
 
-#: gui/mrvVersion.cpp:475
+#: gui/mrvVersion.cpp:474
 msgid "ntss"
 msgstr ""
 
@@ -31630,7 +31632,7 @@ msgstr ", velocidad de sampleo "
 msgid "out_srgb"
 msgstr ""
 
-#: gui/mrvVersion.cpp:323
+#: gui/mrvVersion.cpp:322
 msgid "output_format_list"
 msgstr ""
 
@@ -32121,7 +32123,7 @@ msgstr ""
 
 #: core/ddsImage.cpp:1256 core/Sequence.cpp:819 core/mrvCPU.cpp:742
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
-#: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:688 gui/mrvVersion.cpp:704
+#: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 #: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:347
 #: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:550
 msgid "r"
@@ -32948,7 +32950,7 @@ msgstr ""
 msgid "sync_image"
 msgstr "(sin imagen)"
 
-#: gui/mrvVersion.cpp:792
+#: gui/mrvVersion.cpp:789
 msgid "sysctl failed!"
 msgstr "sysctl falló."
 
@@ -33045,11 +33047,11 @@ msgid "t.\tc #FFE59C"
 msgstr ""
 
 #
-#: gui/mrvVersion.cpp:827
+#: gui/mrvVersion.cpp:824
 msgid "task info failed"
 msgstr "task info falló"
 
-#: gui/mrvVersion.cpp:474
+#: gui/mrvVersion.cpp:473
 msgid "tdls"
 msgstr ""
 
@@ -33073,7 +33075,7 @@ msgstr "Sobreimpreso de Texto"
 msgid "tga"
 msgstr ""
 
-#: gui/mrvVersion.cpp:636
+#: gui/mrvVersion.cpp:633
 msgid "the porting and with the color schemes."
 msgstr ""
 
@@ -33160,7 +33162,7 @@ msgstr "Transformación"
 msgid "ts"
 msgstr ""
 
-#: gui/mrvVersion.cpp:473
+#: gui/mrvVersion.cpp:472
 msgid "tss"
 msgstr ""
 
@@ -33284,7 +33286,7 @@ msgstr ""
 msgid "ui"
 msgstr ""
 
-#: gui/mrvVersion.cpp:480
+#: gui/mrvVersion.cpp:479
 msgid "umh"
 msgstr ""
 
@@ -34140,11 +34142,11 @@ msgstr ""
 msgid "z.\tc #CBAB73"
 msgstr ""
 
-#: gui/mrvVersion.cpp:471
+#: gui/mrvVersion.cpp:470
 msgid "zero"
 msgstr ""
 
-#: gui/mrvVersion.cpp:628
+#: gui/mrvVersion.cpp:625
 msgid "zlib v"
 msgstr ""
 
@@ -34753,6 +34755,197 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:762
 msgid "~/"
 msgstr ""
+
+#, fuzzy
+#~ msgid " data format not supported by RtAudio."
+#~ msgstr " Hz no es soportado por su hardware."
+
+#
+#, fuzzy
+#~ msgid ") + offset ("
+#~ msgstr "Desplazamiento"
+
+#, fuzzy
+#~ msgid ") creating buffers."
+#~ msgstr "No pude crear buffer sink"
+
+#, fuzzy
+#~ msgid ") data format, "
+#~ msgstr ", formato "
+
+#, fuzzy
+#~ msgid ") does not support duplex mode."
+#~ msgstr "mrViewer no soporta imágenes de YUV."
+
+#, fuzzy
+#~ msgid ") does not support input!"
+#~ msgstr " no existe o no es una carpeta"
+
+#, fuzzy
+#~ msgid ") does not support input."
+#~ msgstr "mrViewer no soporta imágenes de YUV."
+
+#, fuzzy
+#~ msgid ") does not support output."
+#~ msgstr "mrViewer no soporta imágenes de YUV."
+
+#, fuzzy
+#~ msgid ") does not support sample rate ("
+#~ msgstr "mrViewer no soporta imágenes de YUV."
+
+#, fuzzy
+#~ msgid ") error ("
+#~ msgstr ": Error "
+
+#, fuzzy
+#~ msgid ") error getting sample rate."
+#~ msgstr "Error ejecutando sample"
+
+#, fuzzy
+#~ msgid ") error setting sample rate ("
+#~ msgstr "Error ejecutando sample"
+
+#, fuzzy
+#~ msgid ") getting sample rates."
+#~ msgstr ", velocidad de sampleo "
+
+#, fuzzy
+#~ msgid ") input channels, "
+#~ msgstr " canales "
+
+#, fuzzy
+#~ msgid ") not found for specified device ("
+#~ msgstr " no encontrada en el carrete"
+
+#, fuzzy
+#~ msgid ") on device ("
+#~ msgstr "No pude abrir el dispositivo de audio"
+
+#, fuzzy
+#~ msgid ") opening output device ("
+#~ msgstr "Error abriendo dispositivo ao: "
+
+#, fuzzy
+#~ msgid ") output channels, "
+#~ msgstr " canales "
+
+#
+#, fuzzy
+#~ msgid ") starting device."
+#~ msgstr "No pude abrir el dispositivo de audio %s: %s"
+
+#, fuzzy
+#~ msgid ") stopping device."
+#~ msgstr "No pude abrir el dispositivo de audio"
+
+#, fuzzy
+#~ msgid "Already allocated"
+#~ msgstr " ya creada: "
+
+#, fuzzy
+#~ msgid "CoreAudio"
+#~ msgstr "Audio"
+
+#, fuzzy
+#~ msgid "CoreAudio unknown error"
+#~ msgstr "Error Desconocido"
+
+#, fuzzy
+#~ msgid "Default Device"
+#~ msgstr "Dispositivo de Audio por Defecto"
+
+#, fuzzy
+#~ msgid "DirectSound"
+#~ msgstr "Carpeta"
+
+#, fuzzy
+#~ msgid "DirectSound unknown error"
+#~ msgstr "Error Desconocido"
+
+#, fuzzy
+#~ msgid "Generic error"
+#~ msgstr "Conectado a "
+
+#, fuzzy
+#~ msgid "Hardware input or output is not present or available."
+#~ msgstr "Hardware Shaders no disponibles."
+
+#, fuzzy
+#~ msgid "Invalid call"
+#~ msgstr "Servidor inválido: "
+
+#
+#, fuzzy
+#~ msgid "Invalid mode."
+#~ msgstr "Código de Tiempo inválido "
+
+#, fuzzy
+#~ msgid "Invalid parameter"
+#~ msgstr "Nivel de Mipmap inválido"
+
+#, fuzzy
+#~ msgid "No aggregation"
+#~ msgstr "Permutar Presentación"
+
+#, fuzzy
+#~ msgid "No driver"
+#~ msgstr "Driver"
+
+#, fuzzy
+#~ msgid "Not enough memory to complete the request."
+#~ msgstr "Sin memoria para el contexto"
+
+#, fuzzy
+#~ msgid "Not supported"
+#~ msgstr " no soportado aún"
+
+#, fuzzy
+#~ msgid "Pro Audio"
+#~ msgstr "Cargar Audio"
+
+#, fuzzy
+#~ msgid "PulseAudio"
+#~ msgstr "Audio"
+
+#, fuzzy
+#~ msgid "RtAudio"
+#~ msgstr "Audio"
+
+#, fuzzy
+#~ msgid "RtAudio alsa: "
+#~ msgstr "Audios #"
+
+#, fuzzy
+#~ msgid "RtAudio oss: "
+#~ msgstr "Audios #"
+
+#, fuzzy
+#~ msgid "RtAudio pulse: "
+#~ msgstr "Audios #"
+
+#, fuzzy
+#~ msgid "Unknown error."
+#~ msgstr "Error Desconocido"
+
+#, fuzzy, c-format
+#~ msgid "inport %d"
+#~ msgstr " en el puerto "
+
+#, fuzzy, c-format
+#~ msgid "outport %d"
+#~ msgstr " en el puerto "
+
+#, fuzzy
+#~ msgid "rtaudio"
+#~ msgstr "audio"
+
+#, fuzzy
+#~ msgid "unspecified"
+#~ msgstr "Sin Especificar"
+
+#, fuzzy, c-format
+#~ msgid "Device %d"
+#~ msgstr "Dispositivos"
 
 #, fuzzy
 #~ msgid "fullscreen "

@@ -84,16 +84,15 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # Media libraries for Apple
     ADD_DEFINITIONS( -DOSX -DMR_SSE )
     ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
-    set( AOENGINE 1 )
-    SET(OS_LIBRARIES
-      )
 
+    set( AOENGINE 1 )
+
+    LINK_DIRECTORIES( /usr/local/lib )
+    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
     IF( AOENGINE )
       ADD_DEFINITIONS( -DAOENGINE )
-      LINK_DIRECTORIES( /usr/local/lib )
-      set( OS_LIBRARIES ${OS_LIBRARIES}
-      ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx ao )
+      set( OS_LIBRARIES ${OS_LIBRARIES} ao )
     ENDIF()
 
 
