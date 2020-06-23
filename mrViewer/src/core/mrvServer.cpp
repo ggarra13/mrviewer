@@ -45,7 +45,6 @@
 #include <set>
 
 #include <boost/locale.hpp>
-#include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>

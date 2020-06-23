@@ -20,6 +20,8 @@
 
 #include <deque>
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>

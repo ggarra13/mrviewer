@@ -18,6 +18,7 @@
 #ifndef mrvClient_h
 #define mrvClient_h
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/asio/io_service.hpp>

@@ -28,6 +28,7 @@
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
 
+
 #include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/asio/io_service.hpp>
@@ -36,7 +37,6 @@
 #include <boost/asio/read_until.hpp>
 #include <boost/asio/streambuf.hpp>
 #include <boost/asio/write.hpp>
-#include <boost/bind.hpp>
 #include <iostream>
 #include <fstream>
 #include "mrvServer.h"
