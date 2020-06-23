@@ -1,4 +1,7 @@
 v5.5.3  - Cleanup some repeated DLLs with different versions.
+	- Updated to latest version of boost and OpenEXR libraries.
+	- Readded ImageMagick listing of formats to About window.  This had
+	  been taken out temporarily due to incompatabilities with Mac OSX.
 
 v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
 	  window or the timeline/pixel bars.
