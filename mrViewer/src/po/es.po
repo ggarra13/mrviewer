@@ -7345,13 +7345,13 @@ msgstr ""
 msgid ") does not support requested channel count ("
 msgstr ""
 
-#: audio/RtAudio.cpp:9249
 #
+#: audio/RtAudio.cpp:9249
 msgid ") does not support requested channel parameters."
 msgstr ""
 
-#: audio/RtAudio.cpp:3029
 #
+#: audio/RtAudio.cpp:3029
 msgid ") does not support requested sample rate ("
 msgstr ""
 
@@ -7453,8 +7453,8 @@ msgid ") getting device manufacturer."
 msgstr ""
 
 #
-#: audio/RtAudio.cpp:714
 #
+#: audio/RtAudio.cpp:714
 msgid ") getting device name."
 msgstr ""
 
@@ -7689,7 +7689,6 @@ msgid ") won't open for input."
 msgstr ""
 
 #: audio/RtAudio.cpp:7582
-#, fuzzy
 msgid ") won't open for output."
 msgstr ""
 
@@ -24983,8 +24982,8 @@ msgstr ""
 msgid "RtAudio oss: "
 msgstr ""
 
-#: audio/RtAudio.cpp:8491
 #
+#: audio/RtAudio.cpp:8491
 msgid "RtAudio pulse: "
 msgstr ""
 
@@ -27296,8 +27295,8 @@ msgstr "Atributo desconocido para '"
 msgid "Unknown audio bit depth "
 msgstr "Profundidad de bits de audio desconocida "
 
-#: audio/mrvAOEngine.cpp:209
 #
+#: audio/mrvAOEngine.cpp:209
 msgid "Unknown audio format.  Setting 32 bits"
 msgstr "Profundidad de bits de audio desconocida "
 
@@ -27347,8 +27346,8 @@ msgstr "Error desconocido retornado del procesador de OCIo"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: audio/RtAudio.cpp:3746
 #
+#: audio/RtAudio.cpp:3746
 msgid "Unknown error."
 msgstr ""
 
@@ -32291,6 +32290,7 @@ msgid "initial_pause"
 msgstr ""
 
 #: audio/RtAudio.cpp:2418
+#, c-format
 msgid "inport %d"
 msgstr ""
 
@@ -35429,8 +35429,8 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: audio/RtAudio.cpp:106
 #
+#: audio/RtAudio.cpp:106
 msgid "unspecified"
 msgstr "Sin Especificar"
 

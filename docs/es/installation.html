@@ -3,11 +3,11 @@
 <head>
 
 
-  
+
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
   <link rel="stylesheet" href="stylesheet.css" type="text/css">
-  
+
   <title>Instalación</title>
 </head>
 
@@ -20,7 +20,7 @@
 
 La instalación de mrViewer puede ser hecha simplemente descomprimiendo el archivo zip (Windows) o el archivo gzip tar (Linux).  Esto puede ser hecho con las utilidades unzip o winzip (Windows) o tar en Linux. <br>
 <br><div class="console">
- $ unzip mrViewer-v${VERSION}-Windows-32.zip 
+ $ unzip mrViewer-v${VERSION}-Windows-32.zip
 <br></div>
 <br>
 <br><div class="console">
@@ -28,20 +28,37 @@ La instalación de mrViewer puede ser hecha simplemente descomprimiendo el archi
 <br></div>
 <br>
 <br>
-Desde la version v2.6.7, mrViewer es distribuído con instaladores para cada platforma. 
-<br> 
+Desde la version v2.6.7, mrViewer es distribuído con instaladores para cada platforma.
+<br>
 <br>Algunos antivirus se quejan que el instalador de Windows puede ser nocivo.  No hay que prestarle atención.  Si duda del instalador, remítase al archivo zip.  El instalador de Windows correrá y puede crear un item de menu en el menu de Comienzo o, opcionalmente, crear un ícono en el Escritorio, así como modificar la variable PATH de entorno.  Notese que si usted modifica la variable PATH, puede que no pueda correr la version de 32bits de mrViewer junto a la version de 64bits.  También puede que cree problemas con otros programas que usan algunas de las bibliotecas de mrViewer.
 <br>
 <br>
-Los instaladores Linux necesitan permiso de administrador.  Ellos registrarán una entrada en las bases de datos DEB or RPM respectivamente y se instalarán en:
-<br><div class="console">
- /usr/local/mrViewer-v${VERSION}-${PLATFORM} 
-<br></div>
+Los instaladores Linux necesitan permiso de administrador, como:
+
+<br><br><div class="console">
+ sudo dpkg -i mrViewer-v${VERSION}-${PLATFORM}.deb
+ <br></div>
+<br>
+
+
+Ellos registrarán una entrada en las bases de datos DEB or RPM respectivamente y se instalarán en:
+<br><br><div class="console">
+ /usr/local/mrViewer-v${VERSION}-${PLATFORM}
+<br></div><br>
  Las utilidades dpkg (DEB) or rpm (RPM) adicionalmente crearán uniones simbólicas (symlinks) en /usr/bin/ e instalaran el ícono en /usr/share/applications que hará que aparezca en los menúes (Graphics).  El ícono también será copiado al Escritorio del usuario.
 <br>
 <br>
 
 El directorio <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> entre todas las cosas contiene el archivo mrViewer.exe (Windows) o mrViewer.sh (Linux).  Ejecutar ese archivo o cualquiera de los íconos iniciará el visor.<br>
+<br>
+<br>
+En las Macs, mrViewer es distribuído como un archivo .dmg.  Podes descomprimirlo si cliqueas en él dos veces o ejecutas la utilidad de comando hdiutil desde la terminal, como:
+
+<br><br><div class="console">
+hdiutil attach mrViewer-${VERSION}-Darwin-64.dmg
+    <br></div><br>
+Se te presentará la licencia de mrViewer que deberás aceptar y luego el instalador creará un volúmen para mrViewer.  Abriendo ese icono revelará la aplicación mrViewer y un enlace simbólico a la carpeta de Aplicaciones.  Puedes correr mrViewer directamente desde la ventana del Finder o instalarlo deslizando el ícono a la carpeta de Aplicaciones (el método sugerido).<br>
+Note que la primera vez que ejecute mrViewer, deberá correrlo con <div class="menu">CTRL+BDM+Abrir</div> para darle permisos ya que el ejecutable de mrViewer no está notariado por Apple.  Si eso no funciona, otra opcion es correr el reproductor dos veces en sucesióm lo cual debería preguntarte con una solicitud para Abrir el archivo.
 
 </body>
 </html>
