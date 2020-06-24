@@ -44,12 +44,28 @@ They will register an entry in the DEB or RPM databases and install in:
 The <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> directory among all things contains the file mrViewer.exe (Windows) or mrViewer.sh (Linux).  Running this file or any of the icons will start the viewer.<br>
 <br>
 <br>
+Finally, Windows users have the possibility of using chocolatey to install/upgrade mrViewer.  Chocolatey is a remote downloading installer similar to apt-get or yum on Linux.  To use it, first you need to download and install chocolatey from chocolatey.org (follow the instructions on their web site).  Then, a command call 'choco' will be available.  You can then run:
+<br>
+<br>
+<div class="console">choco install mrviewer</div>
+<br>
+<br>
+to install mrViewer for the first time and:
+<br>
+<br>
+<div class="console">choco upgrade mrviewer</div>
+<br>
+<br>
+to upgrade mrViewer to the latest version. Note that the chocolatey installer will create a shortcut icon, but it will not associate any file extension with mrViewer.
+<br>
+<br>
+<br>
 On Macs, mrViewer is distributed as a .dmg file.  You can decompress it if you click on it twice or run the standalone utility hdiutil from the terminal, like:
 <br><br><div class="console">
 hdiutil attach mrViewer-${VERSION}-Darwin-64.dmg
     <br></div><br>
 You will be prompted to accept the mrViewer license and then the installation will create a volume for mrViewer.  Opening that icon will reveal a mrViewer application and a symbolic link to the Applications directory.  You can run mrViewer directly from the Finder window or install it by dragging the icon to the Applications folder (the recommended approach).<br>
-Note that the first time you run mrViewer, you should run it with <div class="menu">CTRL+RMB+Open</div> to grant permissions as the mrViewer executable is not notarized by Apple.  If that does not work, another option is running the viewer twice in sucession which should prompt you with an Open requester.
+Note that the first time you run mrViewer, you should run it with <div class="menu">CTRL+LMB+Open</div> to grant permissions as the mrViewer executable is not notarized by Apple.  If that does not work, another option is running the viewer twice in sucession which should prompt you with an Open requester.
 
 </body>
 </html>
