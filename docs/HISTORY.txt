@@ -5,6 +5,8 @@ v5.5.3  - Cleanup some repeated DLLs with different versions.
 	- Bug fixed audio playback of BRAW files on Mac, which were playing
 	  too fast.
 	- Made audio on Mac play as signed integer 32 bits for better quality.
+	- Made audio's 7.1 on Linux, not do a full swizzle, but just a 5.1
+	  swizzle which seems to work better.
 
 v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
 	  window or the timeline/pixel bars.
