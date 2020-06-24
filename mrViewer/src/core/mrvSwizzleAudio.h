@@ -91,12 +91,13 @@ struct Swizzle71
         for (unsigned i = 0; i < last; i++, ptr += 8) {
             tmp = ptr[2];
             ptr[2] = ptr[4];
-            ptr[4] = ptr[6];
-            ptr[6] = tmp;
+            ptr[4] = tmp;
             tmp = ptr[3];
             ptr[3] = ptr[5];
-            ptr[5] = ptr[7];
-            ptr[7] = tmp;
+            ptr[5] = tmp;
+            // tmp = ptr[6];
+            // ptr[6] = ptr[7];
+            // ptr[7] = tmp;
         }
     }
 };
@@ -126,4 +127,3 @@ struct SwizzlePlanar
 }
 
 #endif
-

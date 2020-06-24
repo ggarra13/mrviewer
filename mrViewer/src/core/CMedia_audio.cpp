@@ -85,7 +85,7 @@ const char* kModule = "audio";
 }
 
 
-#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
+#ifndef AVCODEC_MAX_AUDIO_FRAMEE
 #  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
 #endif
 
