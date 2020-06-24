@@ -1220,15 +1220,12 @@ namespace mrv {
 
         HRESULT result;
 
-        AudioEngine::AudioFormat oldfmt = _audio_format;
-
 #ifdef AOENGINE
         _audio_format = AudioEngine::kS32LSB;
 #endif
 
         unsigned int bytes_per_frame = audio_bytes_per_frame();
 
-        _audio_format = oldfmt;
 
         static constexpr uint32_t maxSampleCount = 48000;
         uint32_t bufferSize = (maxSampleCount*_audio_channels*

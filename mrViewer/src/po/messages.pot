@@ -125,7 +125,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-24 10:29-0300\n"
+"POT-Creation-Date: 2020-06-24 10:45-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -357,7 +357,7 @@ msgstr ""
 #: core/aviImage_save.cpp:592 core/aviImage_save.cpp:598
 #: core/aviImage_save.cpp:1328 core/hdrImage.cpp:254 core/hdrImage.cpp:262
 #: core/hdrImage.cpp:265 core/hdrImage.cpp:272 core/slateImage.cpp:369
-#: core/wandImage.cpp:90 core/brawImage.cpp:1328 core/brawImage.cpp:1537
+#: core/wandImage.cpp:90 core/brawImage.cpp:1325 core/brawImage.cpp:1534
 #: core/mrvServer.cpp:1094 core/mrvServer.cpp:1681 core/mrvPlayback.cpp:86
 #: core/mrvPlayback.cpp:87 core/mrvPlayback.cpp:88
 #: gui/FLU/Flu_File_Chooser.cpp:398 gui/FLU/Flu_File_Chooser.cpp:418
@@ -2931,7 +2931,7 @@ msgstr ""
 msgid "  audio->size()= "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1511 core/R3dImage.cpp:1162 core/brawImage.cpp:1406
+#: core/CMedia_audio.cpp:1511 core/R3dImage.cpp:1162 core/brawImage.cpp:1403
 msgid "  bpf: "
 msgstr ""
 
@@ -2953,7 +2953,7 @@ msgstr ""
 msgid "  img->frame: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1513 core/R3dImage.cpp:1164 core/brawImage.cpp:1408
+#: core/CMedia_audio.cpp:1513 core/R3dImage.cpp:1164 core/brawImage.cpp:1405
 msgid "  max: "
 msgstr ""
 
@@ -3082,7 +3082,7 @@ msgid " %g %g"
 msgstr ""
 
 #: core/CMedia_audio.cpp:2363 core/aviImage.cpp:1823 core/aviImage.cpp:3927
-#: core/R3dImage.cpp:891 core/brawImage.cpp:1038 core/brawImage.cpp:1567
+#: core/R3dImage.cpp:891 core/brawImage.cpp:1038 core/brawImage.cpp:1564
 #: core/mrvColorProfile.cpp:250 gui/FLU/Flu_File_Chooser.cpp:3648
 #: gui/mrvPreferences.cpp:1662 gui/mrvPreferences.cpp:1693
 #: video/mrvGLEngine.cpp:184 video/mrvGLEngine.cpp:187
@@ -3532,7 +3532,7 @@ msgstr ""
 
 #: core/CMedia.cpp:3817 core/CMedia.cpp:4359 core/CMedia_audio.cpp:2280
 #: core/CMedia_audio.cpp:2361 core/aviImage.cpp:3867 core/aviImage.cpp:3896
-#: core/aviImage.cpp:3945 core/brawImage.cpp:1535
+#: core/aviImage.cpp:3945 core/brawImage.cpp:1532
 msgid " D:"
 msgstr ""
 
@@ -3603,7 +3603,7 @@ msgstr ""
 
 #: core/CMedia.cpp:3817 core/CMedia.cpp:4359 core/CMedia_audio.cpp:2280
 #: core/aviImage.cpp:3867 core/aviImage.cpp:3896 core/aviImage.cpp:3945
-#: core/brawImage.cpp:1535
+#: core/brawImage.cpp:1532
 msgid " S:"
 msgstr ""
 
@@ -3625,7 +3625,7 @@ msgid " UF: %<PRId64> "
 msgstr ""
 
 #: core/CMedia.cpp:4359 core/aviImage.cpp:3867 core/aviImage.cpp:3896
-#: core/aviImage.cpp:3945 core/brawImage.cpp:1535
+#: core/aviImage.cpp:3945 core/brawImage.cpp:1532
 msgid " V:"
 msgstr ""
 
@@ -3828,7 +3828,7 @@ msgstr ""
 msgid " for color_space"
 msgstr ""
 
-#: core/aviImage.cpp:4052 core/R3dImage.cpp:1069 core/brawImage.cpp:1494
+#: core/aviImage.cpp:4052 core/R3dImage.cpp:1069 core/brawImage.cpp:1491
 msgid " for frame "
 msgstr ""
 
@@ -3869,7 +3869,7 @@ msgstr ""
 msgid " frames"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1204 core/brawImage.cpp:1330
+#: core/CMedia_audio.cpp:1204 core/brawImage.cpp:1327
 msgid " frequency: "
 msgstr ""
 
@@ -4081,7 +4081,7 @@ msgstr ""
 msgid " text"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1156 core/brawImage.cpp:1293
+#: core/CMedia_audio.cpp:1156 core/brawImage.cpp:1290
 msgid " to"
 msgstr ""
 
@@ -4106,7 +4106,7 @@ msgstr ""
 msgid " unknown"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1512 core/R3dImage.cpp:1163 core/brawImage.cpp:1407
+#: core/CMedia_audio.cpp:1512 core/R3dImage.cpp:1163 core/brawImage.cpp:1404
 msgid " used: "
 msgstr ""
 
@@ -4118,7 +4118,7 @@ msgstr ""
 msgid " video packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3897 core/brawImage.cpp:1537
+#: core/aviImage.cpp:3897 core/brawImage.cpp:1534
 msgid " video stores  #"
 msgstr ""
 
@@ -7141,7 +7141,7 @@ msgstr ""
 msgid ")\tc #FFE67D"
 msgstr ""
 
-#: core/aviImage.cpp:3927 core/brawImage.cpp:1568
+#: core/aviImage.cpp:3927 core/brawImage.cpp:1565
 msgid ") "
 msgstr ""
 
@@ -8299,7 +8299,7 @@ msgstr ""
 #: audio/RtAudio.cpp:7159 audio/RtAudio.cpp:7168 audio/RtAudio.cpp:7211
 #: audio/RtAudio.cpp:7220 audio/RtAudio.cpp:7519 audio/RtAudio.cpp:8299
 #: audio/RtAudio.cpp:8371 core/CMedia_audio.cpp:1152 core/exrImage.cpp:556
-#: core/stubImage.cpp:991 core/rawImage.cpp:328 core/brawImage.cpp:1290
+#: core/stubImage.cpp:991 core/rawImage.cpp:328 core/brawImage.cpp:1287
 #: gui/mrvColorInfo.cpp:539 gui/mrvColorInfo.cpp:541 gui/mrvVersion.cpp:599
 #: video/mrvGLEngine.cpp:3262 video/mrvGLEngine.cpp:3263
 #: video/mrvGLEngine.cpp:3271 video/mrvGLEngine.cpp:3272
@@ -8381,11 +8381,11 @@ msgid ", Z="
 msgstr ""
 
 #: core/CMedia_audio.cpp:1151 core/CMedia_audio.cpp:1180 core/R3dImage.cpp:399
-#: core/brawImage.cpp:738 core/brawImage.cpp:1289 core/brawImage.cpp:1306
+#: core/brawImage.cpp:738 core/brawImage.cpp:1286 core/brawImage.cpp:1303
 msgid ", channels "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1181 core/brawImage.cpp:1307
+#: core/CMedia_audio.cpp:1181 core/brawImage.cpp:1304
 msgid ", format "
 msgstr ""
 
@@ -8394,7 +8394,7 @@ msgid ", freq "
 msgstr ""
 
 #: core/CMedia_audio.cpp:1155 core/CMedia_audio.cpp:1183 core/brawImage.cpp:741
-#: core/brawImage.cpp:1292 core/brawImage.cpp:1309
+#: core/brawImage.cpp:1289 core/brawImage.cpp:1306
 msgid ", frequency "
 msgstr ""
 
@@ -8455,7 +8455,7 @@ msgid ",.'.@.).A !.,.%.~.{.].H N ).+. .>."
 msgstr ""
 
 #: core/CMedia_audio.cpp:2286 core/aviImage.cpp:1822 core/aviImage.cpp:3908
-#: core/R3dImage.cpp:890 core/brawImage.cpp:1037 core/brawImage.cpp:1548
+#: core/R3dImage.cpp:890 core/brawImage.cpp:1037 core/brawImage.cpp:1545
 #: gui/mrvTimecode.cpp:375 gui/mrvTimecode.cpp:483
 #: standalone/mrvCommandLine.cpp:555
 msgid "-"
@@ -8729,7 +8729,7 @@ msgstr ""
 #: audio/RtAudio.cpp:8686 audio/RtAudio.cpp:8720 core/CMedia.cpp:4107
 #: core/aviImage_save.cpp:599 core/exrImage.cpp:558 core/exrImage.cpp:877
 #: core/stubImage.cpp:884 core/wandImage.cpp:932 core/wandImage.cpp:1256
-#: core/brawImage.cpp:1568 core/Sequence.cpp:103 core/Sequence.cpp:333
+#: core/brawImage.cpp:1565 core/Sequence.cpp:103 core/Sequence.cpp:333
 #: core/Sequence.cpp:403 core/Sequence.cpp:415 core/Sequence.cpp:437
 #: core/Sequence.cpp:724 gui/FLU/Flu_File_Chooser.cpp:1395
 #: gui/FLU/Flu_File_Chooser.cpp:3683 gui/FLU/Flu_File_Chooser.cpp:4036
@@ -12148,7 +12148,7 @@ msgstr ""
 #: audio/RtAudio.cpp:707 core/CMedia.cpp:3819 core/CMedia_audio.cpp:2282
 #: core/aviImage.cpp:635 core/aviImage.cpp:986 core/aviImage.cpp:1002
 #: core/aviImage.cpp:3869 core/aviImage.cpp:3898 core/wandImage.cpp:90
-#: core/rawImage.cpp:64 core/rawImage.cpp:147 core/brawImage.cpp:1538
+#: core/rawImage.cpp:64 core/rawImage.cpp:147 core/brawImage.cpp:1535
 #: core/mrSocket.cpp:151 gui/FLU/Flu_File_Chooser.cpp:2445
 #: gui/FLU/Flu_File_Chooser.cpp:2454 gui/FLU/Flu_File_Chooser.cpp:2460
 #: gui/FLU/Flu_File_Chooser.cpp:2464 gui/FLU/Flu_File_Chooser.cpp:2467
@@ -14357,7 +14357,7 @@ msgstr ""
 msgid "Bit depth of clip"
 msgstr ""
 
-#: core/brawImage.cpp:1369
+#: core/brawImage.cpp:1366
 msgid "Bitdepth to process is unknown"
 msgstr ""
 
@@ -15581,7 +15581,7 @@ msgstr ""
 msgid "Could not find two integers for vector "
 msgstr ""
 
-#: core/brawImage.cpp:1253
+#: core/brawImage.cpp:1250
 msgid "Could not get audio samples"
 msgstr ""
 
@@ -15906,7 +15906,7 @@ msgstr ""
 msgid "Create a new reel or EDL track"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1150 core/brawImage.cpp:1288
+#: core/CMedia_audio.cpp:1150 core/brawImage.cpp:1285
 msgid "Create audio conversion from "
 msgstr ""
 
@@ -16163,7 +16163,7 @@ msgstr ""
 
 #: core/CMedia.cpp:3829 core/CMedia.cpp:4466 core/CMedia_audio.cpp:2297
 #: core/CMedia_audio.cpp:2477 core/aviImage.cpp:3878 core/aviImage.cpp:3925
-#: core/aviImage.cpp:4001 core/brawImage.cpp:1565
+#: core/aviImage.cpp:4001 core/brawImage.cpp:1562
 msgid "D"
 msgstr ""
 
@@ -16465,7 +16465,7 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:4050 core/R3dImage.cpp:1067 core/brawImage.cpp:1492
+#: core/aviImage.cpp:4050 core/R3dImage.cpp:1067 core/brawImage.cpp:1489
 msgid "Decode audio error: "
 msgstr ""
 
@@ -17251,7 +17251,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1788
 #: core/CMedia.cpp:3830 core/CMedia.cpp:4467 core/CMedia_audio.cpp:2298
 #: core/CMedia_audio.cpp:2478 core/aviImage.cpp:3879 core/aviImage.cpp:3926
-#: core/aviImage.cpp:4002 core/brawImage.cpp:1566
+#: core/aviImage.cpp:4002 core/brawImage.cpp:1563
 msgid "F"
 msgstr ""
 
@@ -17499,7 +17499,7 @@ msgstr ""
 msgid "Failed setting layer to "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1193 core/brawImage.cpp:1319
+#: core/CMedia_audio.cpp:1193 core/brawImage.cpp:1316
 msgid "Failed to alloc swresample library"
 msgstr ""
 
@@ -17523,7 +17523,7 @@ msgstr ""
 msgid "Failed to get Audio Bit Depth!"
 msgstr ""
 
-#: core/brawImage.cpp:623 core/brawImage.cpp:1518
+#: core/brawImage.cpp:623 core/brawImage.cpp:1515
 msgid "Failed to get Audio Channel Count!"
 msgstr ""
 
@@ -17555,7 +17555,7 @@ msgstr ""
 msgid "Failed to get total audio sample count!"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1201 core/brawImage.cpp:1327
+#: core/CMedia_audio.cpp:1201 core/brawImage.cpp:1324
 msgid "Failed to init swresample library with "
 msgstr ""
 
@@ -23096,7 +23096,7 @@ msgstr ""
 msgid "Resampling audio failed"
 msgstr ""
 
-#: core/brawImage.cpp:1352
+#: core/brawImage.cpp:1349
 msgid "Resampling audio failed.  Len: "
 msgstr ""
 
@@ -24494,7 +24494,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2083
 #: core/CMedia.cpp:4465 core/CMedia_audio.cpp:2476 core/aviImage.cpp:3877
-#: core/aviImage.cpp:3924 core/aviImage.cpp:4000 core/brawImage.cpp:1564
+#: core/aviImage.cpp:3924 core/aviImage.cpp:4000 core/brawImage.cpp:1561
 #: gui/mrvColorInfo.cpp:853 gui/mrvColorInfo.cpp:859 gui/mrvImageView.cpp:7992
 msgid "S"
 msgstr ""
@@ -30610,7 +30610,7 @@ msgstr ""
 msgid "format "
 msgstr ""
 
-#: core/brawImage.cpp:1291
+#: core/brawImage.cpp:1288
 msgid "format s24le"
 msgstr ""
 
@@ -30633,7 +30633,7 @@ msgstr ""
 msgid "frame"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1508 core/R3dImage.cpp:1160 core/brawImage.cpp:1404
+#: core/CMedia_audio.cpp:1508 core/R3dImage.cpp:1160 core/brawImage.cpp:1401
 msgid "frame: "
 msgstr ""
 
@@ -31262,7 +31262,7 @@ msgstr ""
 msgid "in_sample_rate"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1510 core/R3dImage.cpp:1161 core/brawImage.cpp:1405
+#: core/CMedia_audio.cpp:1510 core/R3dImage.cpp:1161 core/brawImage.cpp:1402
 msgid "index: "
 msgstr ""
 
