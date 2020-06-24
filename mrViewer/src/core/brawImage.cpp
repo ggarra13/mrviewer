@@ -1216,14 +1216,14 @@ namespace mrv {
         if ( ok ) return kDecodeOK;
 
 
-        AVSampleFormat fmt = AV_SAMPLE_FMT_S16;
+        AVSampleFormat fmt = AV_SAMPLE_FMT_S32;
 
         HRESULT result;
 
         AudioEngine::AudioFormat oldfmt = _audio_format;
 
 #ifdef AOENGINE
-        _audio_format = AudioEngine::kS16LSB;
+        _audio_format = AudioEngine::kS32LSB;
 #endif
 
         unsigned int bytes_per_frame = audio_bytes_per_frame();
