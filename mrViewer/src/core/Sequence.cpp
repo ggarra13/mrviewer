@@ -1131,12 +1131,12 @@ bool is_directory( const char* dir )
 
 int  padded_digits( const std::string& frame )
 {
-    if ( frame == "#" ) return 4;
+    if ( frame == "#" && frame.size() == 1 ) return 4;
     size_t pos;
     if ( ( pos = frame.find( '-' ) ) != std::string::npos )
         return frame.substr(0,pos).size();
     std::string c = frame.substr(0, 1);
-    if ( c == "@" || c == "0" ) return (int)frame.size();
+    if ( c == "@" || c == "#" || c == "0" ) return (int)frame.size();
     if ( c == "%" ) return atoi(frame.substr(1, frame.size()-2).c_str());
     return 1;
 }
