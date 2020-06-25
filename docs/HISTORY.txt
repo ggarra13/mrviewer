@@ -9,8 +9,8 @@ v5.5.3  - Cleanup some repeated DLLs with different versions.
 	  swizzle which seems to work better.
 	- Made sequence identifier allow for #, like: test.####.pic for maya
 	  integration.  In maya, go to Settings->Applications Preferences
-	  and set the image sequence setting to mrViewer.sh and the optional
-	  parameters to: %f -f %r %s-%e.
+	  and set the image sequence setting to mrViewer.sh (or mrViewer.exe)
+	  and the optional parameters to: --fps %r %f %s-%e.
 
 v5.5.2  - Bug fixed F11 / F12 toggle on Mac OSX.  It no longer corrupts the
 	  window or the timeline/pixel bars.
