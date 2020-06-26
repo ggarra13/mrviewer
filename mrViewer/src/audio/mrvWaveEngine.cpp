@@ -25,6 +25,7 @@
  *
  */
 
+#ifdef _WIN32
 
 #include <cstdio>
 #include <cstdlib>
@@ -721,3 +722,6 @@ bool WaveEngine::close()
 
 
 } // namespace mrv
+
+
+#endif // _WIN32

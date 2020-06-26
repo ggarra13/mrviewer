@@ -24,12 +24,10 @@
  *
  *
  */
+
+#ifdef _WIN32
 #ifndef mrvWaveEngine_h
 #define mrvWaveEngine_h
-
-#if !defined(_WIN32) && !defined(_WIN64)
-#  error WaveEngine is for mswindows only
-#endif
 
 
 #include <windows.h>
@@ -116,3 +114,6 @@ protected:
 
 
 #endif // mrvWaveEngine_h
+
+
+#endif // _WIN32
