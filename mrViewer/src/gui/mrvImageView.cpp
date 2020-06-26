@@ -4200,8 +4200,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-    flags	= kMouseDown;
-    //flags	= 0;
+    flags	|= kMouseDown;
 
     int button = Fl::event_button();
 #ifdef __APPLE__
@@ -4442,6 +4441,7 @@ int ImageView::leftMouseDown(int x, int y)
         if ( (flags & kLeftAlt) == 0 )
         {
 
+            std::cerr << "flags: " << (flags & kLeftAlt) << std::endl;
             TRACE("");
 
             menu->clear();
