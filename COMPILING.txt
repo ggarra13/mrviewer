@@ -22,6 +22,7 @@ Under Linux, the external directory has a CMakeLists.txt file for downloading an
 The files vc14_win32_vars and vc14_win64_vars contain definitions for compiling
 on the windows platform. They point to the dependencies directory.  You will need to modify the directories to point to your own file system.
 For ffmpeg, you can rely on the prebuilt files from https://ffmpeg.zeranoe.com/builds.  You will need the shared and developer downloads which you will need to place in a common directory.
+You also need libiconv and libintl (gettext) for translations.  You can get them from: https://mlocati.github.io/articles/gettext-iconv-windows.html
 
 To compile under windows, you need the Visual Studio 2015 Community Edition or later.
 Both the win32 and x64 version of mrViewer have been compiled with msvc14.0 (Visual Studio 2015).

@@ -1539,7 +1539,7 @@ _lastFrame( 0 )
 
     menu->type( Fl_Menu_Button::POPUP3 );
 
-    create_timeout( 0.02f );
+    create_timeout( 0.25f / 60.0f );
 }
 
 
@@ -3995,15 +3995,15 @@ void ImageView::draw()
     if ( _hud & kHudFPS )
     {
         static int64_t unshown_frames = 0;
+        static CMedia* oldimg = NULL;
         int64_t frame = img->frame();
 
         CMedia::Playback p = playback();
 
-        if ( img->start_frame() != img->end_frame() )
+        if ( img == oldimg && img->start_frame() != img->end_frame() )
         {
-            if (((p == CMedia::kForwards || p == CMedia::kStopped) &&
-                 _lastFrame < frame) ||
-                (p == CMedia::kBackwards && _lastFrame > frame ) )
+            if ((p == CMedia::kForwards  && _lastFrame < frame ) ||
+                (p == CMedia::kBackwards && _lastFrame > frame ))
             {
                 int64_t frame_diff = frame - _lastFrame;
 
@@ -4019,6 +4019,7 @@ void ImageView::draw()
                 _lastFrame = frame;
             }
         }
+        oldimg = img;
 
 
         {
@@ -4200,7 +4201,8 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-    flags	|= kMouseDown;
+    flags	= kMouseDown;
+    //flags	= 0;
 
     int button = Fl::event_button();
 #ifdef __APPLE__
@@ -4441,7 +4443,6 @@ int ImageView::leftMouseDown(int x, int y)
         if ( (flags & kLeftAlt) == 0 )
         {
 
-            std::cerr << "flags: " << (flags & kLeftAlt) << std::endl;
             TRACE("");
 
             menu->clear();
@@ -8977,6 +8978,7 @@ void ImageView::resize_main_window()
 
     uiMain->uiRegion->redraw();
 
+
     if ( fit ) fit_image();
 
 }
@@ -9432,7 +9434,8 @@ void ImageView::playback( const CMedia::Playback b )
 
     _playback = b;
 
-    _lastFrame = frame();
+    _lastFrame = this->frame();
+
     _last_fps = 0.0;
 
     if ( b == CMedia::kForwards )
@@ -9515,7 +9518,7 @@ void ImageView::play( const CMedia::Playback dir )
 
     double fps = uiMain->uiFPS->value();
 
-    create_timeout( 0.5/fps );
+    create_timeout( 0.25/fps );
 
     // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
     //      !CMedia::cache_active() ||
