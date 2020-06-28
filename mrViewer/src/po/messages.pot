@@ -34,7 +34,7 @@
 #: core/Sequence.cpp:532 core/Sequence.cpp:535 core/Sequence.cpp:552
 #: core/Sequence.cpp:638 core/Sequence.cpp:648 core/Sequence.cpp:684
 #: core/Sequence.cpp:821 core/Sequence.cpp:1113 core/Sequence.cpp:1152
-#: core/mrvCPU.cpp:750 core/mrvColorOps.cpp:157 core/mrvColorOps.cpp:158
+#: core/mrvCPU.cpp:760 core/mrvColorOps.cpp:157 core/mrvColorOps.cpp:158
 #: gui/FLU/Flu_Button.cpp:170 gui/FLU/Flu_File_Chooser.cpp:198
 #: gui/FLU/Flu_File_Chooser.cpp:208 gui/FLU/Flu_File_Chooser.cpp:211
 #: gui/FLU/Flu_File_Chooser.cpp:228 gui/FLU/Flu_File_Chooser.cpp:518
@@ -125,7 +125,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-06-27 20:09-0300\n"
+"POT-Creation-Date: 2020-06-28 10:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3111,7 +3111,7 @@ msgstr ""
 msgid " (bytes:"
 msgstr ""
 
-#: core/mrvCPU.cpp:431 core/mrvCPU.cpp:432
+#: core/mrvCPU.cpp:441 core/mrvCPU.cpp:442
 msgid " (ext: "
 msgstr ""
 
@@ -3522,7 +3522,7 @@ msgstr ""
 msgid " BARRIER PASSED IN VIDEO stopped? "
 msgstr ""
 
-#: core/mrvCPU.cpp:427
+#: core/mrvCPU.cpp:437
 msgid " CPU:"
 msgstr ""
 
@@ -3718,7 +3718,7 @@ msgstr ""
 msgid " bits - v"
 msgstr ""
 
-#: core/mrvCPU.cpp:359
+#: core/mrvCPU.cpp:364
 msgid " bytes"
 msgstr ""
 
@@ -5887,7 +5887,7 @@ msgstr ""
 msgid "%.3g"
 msgstr ""
 
-#: core/mrvCPU.cpp:405
+#: core/mrvCPU.cpp:415
 #, c-format
 msgid "%.4s%.4s%.4s"
 msgstr ""
@@ -6307,7 +6307,7 @@ msgstr ""
 msgid "%s %d %d %d %d"
 msgstr ""
 
-#: core/mrvCPU.cpp:423 gui/FLU/Flu_File_Chooser.cpp:3718
+#: core/mrvCPU.cpp:433 gui/FLU/Flu_File_Chooser.cpp:3718
 #, c-format
 msgid "%s %s"
 msgstr ""
@@ -7022,7 +7022,7 @@ msgid ""
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
 
-#: core/mrvCPU.cpp:338
+#: core/mrvCPU.cpp:343
 msgid "(Family: "
 msgstr ""
 
@@ -7098,8 +7098,8 @@ msgstr ""
 #: core/CMedia_audio.cpp:1700 core/CMedia_audio.cpp:1703
 #: core/CMedia_audio.cpp:2377 core/CMedia_audio.cpp:2389
 #: core/CMedia_audio.cpp:2416 core/CMedia_audio.cpp:2421 core/oiioImage.cpp:161
-#: core/picImage.cpp:451 core/picImage.cpp:467 core/mrvCPU.cpp:340
-#: core/mrvCPU.cpp:431 core/mrvCPU.cpp:433 core/mrvColorProfile.cpp:217
+#: core/picImage.cpp:451 core/picImage.cpp:467 core/mrvCPU.cpp:345
+#: core/mrvCPU.cpp:441 core/mrvCPU.cpp:443 core/mrvColorProfile.cpp:217
 #: gui/mrvHotkey.cpp:128 gui/mrvColorInfo.cpp:541 gui/mrvPreferences.cpp:1662
 #: gui/mrvPreferences.cpp:1693 video/mrvGLEngine.cpp:184
 #: video/mrvGLEngine.cpp:187
@@ -8383,11 +8383,11 @@ msgstr ""
 msgid ", ' - ) - ' ! ~ { ] ^ ^ / ^ ( _ : "
 msgstr ""
 
-#: core/mrvCPU.cpp:339
+#: core/mrvCPU.cpp:344
 msgid ", Model: "
 msgstr ""
 
-#: core/mrvCPU.cpp:340
+#: core/mrvCPU.cpp:345
 msgid ", Stepping: "
 msgstr ""
 
@@ -11194,11 +11194,11 @@ msgstr ""
 msgid "3DC"
 msgstr ""
 
-#: core/mrvCPU.cpp:375
+#: core/mrvCPU.cpp:380
 msgid "3DNow "
 msgstr ""
 
-#: core/mrvCPU.cpp:376
+#: core/mrvCPU.cpp:381
 msgid "3DNow2 "
 msgstr ""
 
@@ -11531,7 +11531,7 @@ msgid "5.\tc #BEA26D"
 msgstr ""
 
 #: gui/mrvVersion.cpp:123
-msgid "5.5.3"
+msgid "5.5.4"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:152
@@ -13476,6 +13476,10 @@ msgstr ""
 msgid "ACEScsc.ACEScg_to_ACES"
 msgstr ""
 
+#: core/mrvCPU.cpp:388
+msgid "AESNI "
+msgstr ""
+
 #: core/CMedia.cpp:3803 core/CMedia.cpp:3807 core/aviImage.cpp:3538
 #: core/aviImage.cpp:3542
 msgid "AFTER HSEEK"
@@ -13790,7 +13794,7 @@ msgstr ""
 msgid "Alt+"
 msgstr ""
 
-#: core/mrvCPU.cpp:750
+#: core/mrvCPU.cpp:760
 msgid "AltiVec "
 msgstr ""
 
@@ -13799,7 +13803,7 @@ msgstr ""
 msgid "Altitude"
 msgstr ""
 
-#: core/mrvCPU.cpp:379
+#: core/mrvCPU.cpp:389
 msgid "Altivec "
 msgstr ""
 
@@ -14713,43 +14717,43 @@ msgstr ""
 msgid "CPU vendor name: %x %x %x %x"
 msgstr ""
 
-#: core/mrvCPU.cpp:762
+#: core/mrvCPU.cpp:772
 msgid "CPU: ARM"
 msgstr ""
 
-#: core/mrvCPU.cpp:770
+#: core/mrvCPU.cpp:780
 msgid "CPU: Digital Alpha"
 msgstr ""
 
-#: core/mrvCPU.cpp:790
+#: core/mrvCPU.cpp:800
 msgid "CPU: Digital VAX"
 msgstr ""
 
-#: core/mrvCPU.cpp:778
+#: core/mrvCPU.cpp:788
 msgid "CPU: Hewlett-Packard PA-RISC"
 msgstr ""
 
-#: core/mrvCPU.cpp:782
+#: core/mrvCPU.cpp:792
 msgid "CPU: IBM S/390"
 msgstr ""
 
-#: core/mrvCPU.cpp:786
+#: core/mrvCPU.cpp:796
 msgid "CPU: IBM S/390X"
 msgstr ""
 
-#: core/mrvCPU.cpp:754
+#: core/mrvCPU.cpp:764
 msgid "CPU: Intel Itanium"
 msgstr ""
 
-#: core/mrvCPU.cpp:766
+#: core/mrvCPU.cpp:776
 msgid "CPU: PowerPC"
 msgstr ""
 
-#: core/mrvCPU.cpp:774
+#: core/mrvCPU.cpp:784
 msgid "CPU: SGI MIPS"
 msgstr ""
 
-#: core/mrvCPU.cpp:758
+#: core/mrvCPU.cpp:768
 msgid "CPU: Sun Sparc"
 msgstr ""
 
@@ -14886,11 +14890,11 @@ msgstr ""
 msgid "Cannot switch images.  Foreground and background image are the same."
 msgstr ""
 
-#: core/mrvCPU.cpp:654
+#: core/mrvCPU.cpp:664
 msgid "Cannot test OS support for SSE, disabling to be safe.\n"
 msgstr ""
 
-#: core/mrvCPU.cpp:660
+#: core/mrvCPU.cpp:670
 msgid "Cannot test OS support for SSE, leaving disabled.\n"
 msgstr ""
 
@@ -16688,7 +16692,7 @@ msgstr ""
 msgid "Detail mode"
 msgstr ""
 
-#: core/mrvCPU.cpp:359
+#: core/mrvCPU.cpp:364
 msgid "Detected cache-line size is "
 msgstr ""
 
@@ -17702,7 +17706,7 @@ msgstr ""
 msgid "Failure in getline "
 msgstr ""
 
-#: core/mrvCPU.cpp:430
+#: core/mrvCPU.cpp:440
 msgid "Family:   "
 msgstr ""
 
@@ -20546,11 +20550,11 @@ msgstr ""
 msgid "MGM Camera 65"
 msgstr ""
 
-#: core/mrvCPU.cpp:373
+#: core/mrvCPU.cpp:378
 msgid "MMX "
 msgstr ""
 
-#: core/mrvCPU.cpp:374
+#: core/mrvCPU.cpp:379
 msgid "MMX2 "
 msgstr ""
 
@@ -20914,7 +20918,7 @@ msgstr ""
 msgid "Mode for IPP2 Processing"
 msgstr ""
 
-#: core/mrvCPU.cpp:432
+#: core/mrvCPU.cpp:442
 msgid "Model:    "
 msgstr ""
 
@@ -21218,7 +21222,7 @@ msgstr ""
 msgid "No Lut"
 msgstr ""
 
-#: core/mrvCPU.cpp:562
+#: core/mrvCPU.cpp:572
 msgid "No OS support for SSE, disabling to be safe.\n"
 msgstr ""
 
@@ -21441,7 +21445,7 @@ msgstr ""
 msgid "Not enough compressed data"
 msgstr ""
 
-#: core/mrvCPU.cpp:401
+#: core/mrvCPU.cpp:411
 msgid "Not enough memory"
 msgstr ""
 
@@ -24836,11 +24840,11 @@ msgstr ""
 msgid "SHOW"
 msgstr ""
 
-#: core/mrvCPU.cpp:473
+#: core/mrvCPU.cpp:483
 msgid "SIGFPE, "
 msgstr ""
 
-#: core/mrvCPU.cpp:454 core/mrvCPU.cpp:494
+#: core/mrvCPU.cpp:464 core/mrvCPU.cpp:504
 msgid "SIGILL, "
 msgstr ""
 
@@ -24877,16 +24881,32 @@ msgstr ""
 msgid "SQ"
 msgstr ""
 
-#: core/mrvCPU.cpp:377
+#: core/mrvCPU.cpp:382
 msgid "SSE "
 msgstr ""
 
-#: core/mrvCPU.cpp:485
+#: core/mrvCPU.cpp:495
 msgid "SSE enabling test failed badly!"
 msgstr ""
 
-#: core/mrvCPU.cpp:378
+#: core/mrvCPU.cpp:383
 msgid "SSE2 "
+msgstr ""
+
+#: core/mrvCPU.cpp:384
+msgid "SSE3 "
+msgstr ""
+
+#: core/mrvCPU.cpp:386
+msgid "SSE4 "
+msgstr ""
+
+#: core/mrvCPU.cpp:387
+msgid "SSE42 "
+msgstr ""
+
+#: core/mrvCPU.cpp:385
+msgid "SSSE3 "
 msgstr ""
 
 #: gui/mrvVersion.cpp:245
@@ -25545,7 +25565,7 @@ msgstr ""
 msgid "Start of Video"
 msgstr ""
 
-#: core/mrvCPU.cpp:434
+#: core/mrvCPU.cpp:444
 msgid "Stepping: "
 msgstr ""
 
@@ -25896,23 +25916,23 @@ msgstr ""
 msgid "Temporary"
 msgstr ""
 
-#: core/mrvCPU.cpp:626
+#: core/mrvCPU.cpp:636
 msgid "Testing OS support for SSE unmasked exceptions... "
 msgstr ""
 
-#: core/mrvCPU.cpp:538 core/mrvCPU.cpp:567 core/mrvCPU.cpp:600
+#: core/mrvCPU.cpp:548 core/mrvCPU.cpp:577 core/mrvCPU.cpp:610
 msgid "Testing OS support for SSE... "
 msgstr ""
 
-#: core/mrvCPU.cpp:551
+#: core/mrvCPU.cpp:561
 msgid "Testing OS support for SSE2... "
 msgstr ""
 
-#: core/mrvCPU.cpp:648
+#: core/mrvCPU.cpp:658
 msgid "Tests of OS support for SSE failed!\n"
 msgstr ""
 
-#: core/mrvCPU.cpp:646
+#: core/mrvCPU.cpp:656
 msgid "Tests of OS support for SSE passed.\n"
 msgstr ""
 
@@ -26517,7 +26537,7 @@ msgstr ""
 msgid "Type:   "
 msgstr ""
 
-#: core/mrvCPU.cpp:429
+#: core/mrvCPU.cpp:439
 msgid "Type:     "
 msgstr ""
 
@@ -27170,7 +27190,7 @@ msgstr ""
 msgid "Vendor:\t"
 msgstr ""
 
-#: core/mrvCPU.cpp:428
+#: core/mrvCPU.cpp:438
 msgid "Vendor:   "
 msgstr ""
 
@@ -30617,11 +30637,11 @@ msgstr ""
 msgid "exr"
 msgstr ""
 
-#: core/mrvCPU.cpp:355
+#: core/mrvCPU.cpp:360
 msgid "extended cache-info: "
 msgstr ""
 
-#: core/mrvCPU.cpp:345
+#: core/mrvCPU.cpp:350
 msgid "extended cpuid-level: "
 msgstr ""
 
@@ -30937,7 +30957,7 @@ msgstr ""
 msgid "format s32be, frequency "
 msgstr ""
 
-#: core/mrvCPU.cpp:750
+#: core/mrvCPU.cpp:760
 msgid "found"
 msgstr ""
 
@@ -31384,11 +31404,11 @@ msgstr ""
 msgid "hud_color"
 msgstr ""
 
-#: core/mrvCPU.cpp:511
+#: core/mrvCPU.cpp:521
 msgid "hw.instruction_sse"
 msgstr ""
 
-#: core/mrvCPU.cpp:513
+#: core/mrvCPU.cpp:523
 msgid "hw.optional.sse"
 msgstr ""
 
@@ -32584,7 +32604,7 @@ msgstr ""
 msgid "mt"
 msgstr ""
 
-#: core/mrvCPU.cpp:739
+#: core/mrvCPU.cpp:749
 msgid ""
 "mtspr 256, %0\n"
 "\tvand %%v0, %%v0, %%v0"
@@ -32703,12 +32723,12 @@ msgstr ""
 msgid "nef"
 msgstr ""
 
-#: core/mrvCPU.cpp:542 core/mrvCPU.cpp:555 core/mrvCPU.cpp:578
-#: core/mrvCPU.cpp:608
+#: core/mrvCPU.cpp:552 core/mrvCPU.cpp:565 core/mrvCPU.cpp:588
+#: core/mrvCPU.cpp:618
 msgid "no!"
 msgstr ""
 
-#: core/mrvCPU.cpp:633
+#: core/mrvCPU.cpp:643
 msgid "no!\n"
 msgstr ""
 
@@ -32728,7 +32748,7 @@ msgstr ""
 msgid "normSpan"
 msgstr ""
 
-#: core/mrvCPU.cpp:750
+#: core/mrvCPU.cpp:760
 msgid "not "
 msgstr ""
 
@@ -33439,7 +33459,7 @@ msgstr ""
 msgid "quick_folder_travel"
 msgstr ""
 
-#: core/ddsImage.cpp:1256 core/Sequence.cpp:819 core/mrvCPU.cpp:742
+#: core/ddsImage.cpp:1256 core/Sequence.cpp:819 core/mrvCPU.cpp:752
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 #: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:347
@@ -34615,11 +34635,11 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: core/mrvCPU.cpp:427
+#: core/mrvCPU.cpp:437
 msgid "unknown "
 msgstr ""
 
-#: core/mrvCPU.cpp:425
+#: core/mrvCPU.cpp:435
 #, c-format
 msgid "unknown %s %d. Generation CPU"
 msgstr ""
@@ -35242,7 +35262,7 @@ msgstr ""
 msgid "xml"
 msgstr ""
 
-#: core/mrvCPU.cpp:574 core/mrvCPU.cpp:603
+#: core/mrvCPU.cpp:584 core/mrvCPU.cpp:613
 #, c-format
 msgid "xorps %xmm0, %xmm0"
 msgstr ""
@@ -35355,19 +35375,19 @@ msgstr ""
 msgid "y_size"
 msgstr ""
 
-#: core/mrvCPU.cpp:606
+#: core/mrvCPU.cpp:616
 msgid "yes"
 msgstr ""
 
-#: core/mrvCPU.cpp:545 core/mrvCPU.cpp:558
+#: core/mrvCPU.cpp:555 core/mrvCPU.cpp:568
 msgid "yes!"
 msgstr ""
 
-#: core/mrvCPU.cpp:577
+#: core/mrvCPU.cpp:587
 msgid "yes."
 msgstr ""
 
-#: core/mrvCPU.cpp:631
+#: core/mrvCPU.cpp:641
 msgid "yes.\n"
 msgstr ""
 

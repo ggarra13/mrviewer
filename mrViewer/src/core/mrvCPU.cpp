@@ -325,6 +325,11 @@ std::string GetCpuCaps( CpuCaps *caps)
       caps->hasMMX  = (regs2[3] & (1 << 23 )) >> 23; // 0x0800000
       caps->hasSSE  = (regs2[3] & (1 << 25 )) >> 25; // 0x2000000
       caps->hasSSE2 = (regs2[3] & (1 << 26 )) >> 26; // 0x4000000
+      caps->hasSSE3 = (regs2[2] & 1);
+      caps->hasSSSE3 = (regs2[2] & 0x00000200 );
+      caps->hasSSE4 = (regs2[2] & 0x00080000 );
+      caps->hasSSE42 = (regs2[2] & 0x00100000 );
+      caps->hasAESNI = (regs2[2] & 0x02000000 );
       caps->hasMMX2 = caps->hasSSE; // SSE cpus supports mmxext too
       cl_size = ((regs2[1] >> 8) & 0xFF)*8;
       if(cl_size) caps->cl_size = cl_size;
@@ -376,6 +381,11 @@ std::string GetCpuCaps( CpuCaps *caps)
   if ( gCpuCaps.has3DNowExt ) out << "3DNow2 ";
   if ( gCpuCaps.hasSSE )      out << "SSE ";
   if ( gCpuCaps.hasSSE2 )     out << "SSE2 ";
+  if ( gCpuCaps.hasSSE3 )     out << "SSE3 ";
+  if ( gCpuCaps.hasSSSE3 )    out << "SSSE3 ";
+  if ( gCpuCaps.hasSSE4 )     out << "SSE4 ";
+  if ( gCpuCaps.hasSSE42 )    out << "SSE42 ";
+  if ( gCpuCaps.hasAESNI )    out << "AESNI ";
   if ( gCpuCaps.hasAltiVec )  out << "Altivec ";
   out << std::endl;
 
