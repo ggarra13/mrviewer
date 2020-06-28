@@ -4857,7 +4857,7 @@ void ImageView::leftMouseUp( int x, int y )
 #ifdef __APPLE__
     int ev_state = Fl::event_state();
     // On apple, ctrl+left click as right click
-    if (ev_state & (FL_CTRL | FL_BUTTON1) )
+    if ( (ev_state & (FL_CTRL | FL_BUTTON1)) == (FL_CTRL | FL_BUTTON1) )
         button = FL_RIGHT_MOUSE;
 #endif
     if ( button == FL_LEFT_MOUSE )
@@ -7085,11 +7085,13 @@ int ImageView::keyUp(unsigned int key)
         flags &= ~kZoom;
         return 1;
     }
+#ifdef __APPLE__
     if ( key == FL_Control_L )
     {
         flags &= ~kZoom;
         return 1;
     }
+#endif
     return 0;
 }
 
