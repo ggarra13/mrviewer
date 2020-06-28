@@ -4208,7 +4208,7 @@ int ImageView::leftMouseDown(int x, int y)
 #ifdef __APPLE__
     int ev_state = Fl::event_state();
     // On apple, ctrl+left click as right click
-    if (ev_state == (FL_CTRL | FL_BUTTON1) )
+    if ( (ev_state & (FL_CTRL | FL_BUTTON1)) == (FL_CTRL | FL_BUTTON1) )
         button = FL_RIGHT_MOUSE;
 #endif
     if ( button == FL_LEFT_MOUSE )
@@ -4429,7 +4429,6 @@ int ImageView::leftMouseDown(int x, int y)
         redraw();
         return 1;
     }
-
     else if ( button == FL_MIDDLE_MOUSE )
     {
         // handle MMB moves
@@ -4855,6 +4854,12 @@ void ImageView::leftMouseUp( int x, int y )
     flags &= ~kZoom;
 
     int button = Fl::event_button();
+#ifdef __APPLE__
+    int ev_state = Fl::event_state();
+    // On apple, ctrl+left click as right click
+    if (ev_state & (FL_CTRL | FL_BUTTON1) )
+        button = FL_RIGHT_MOUSE;
+#endif
     if ( button == FL_LEFT_MOUSE )
         flags &= ~kMouseLeft;
     else if ( button == FL_MIDDLE_MOUSE )
@@ -7077,6 +7082,11 @@ int ImageView::keyUp(unsigned int key)
     if ( key == FL_Alt_L )
     {
         flags &= ~kLeftAlt;
+        flags &= ~kZoom;
+        return 1;
+    }
+    if ( key == FL_Control_L )
+    {
         flags &= ~kZoom;
         return 1;
     }
