@@ -4201,7 +4201,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-    flags	= kMouseDown;
+    flags	|= kMouseDown;
     //flags	= 0;
 
     int button = Fl::event_button();
