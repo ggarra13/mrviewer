@@ -1381,7 +1381,7 @@ void Flu_File_Chooser :: recursiveScan( const char *dir, FluStringVector *files 
   int num = fl_filename_list( dir, &e );
   if ( num < 0 )
   {
-      LOG_ERROR( _("Listing of directory \"") << dir << _("\" failed!" ) );
+      LOG_ERROR( _("Listing of directory \"") << dir << _("\" failed!  Check permissions and use the native requester." ) );
   }
   for( int i = 0; i < num; i++ )
     {
