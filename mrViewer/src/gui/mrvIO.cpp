@@ -154,6 +154,7 @@ void connbuffer::print( const char* c )
     if ( ViewerUI::uiConnection && ViewerUI::uiConnection->uiLog )
     {
         ViewerUI::uiConnection->uiLog->info( c );
+        ViewerUI::uiConnection->uiLog->redraw();
     }
 }
 
