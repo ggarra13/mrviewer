@@ -617,6 +617,8 @@ public:
     // Handle network commands encoded in stream
     void handle_commands();
 
+    void handle_timeout();
+
     void timeout();
 
     /// Refresh the view images

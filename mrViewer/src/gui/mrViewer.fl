@@ -413,11 +413,17 @@ class LogUI {} {
 
 class PaintUI {open
 } {
+  decl {ViewerUI* main_;} {private local
+  }
   Function {make_window( ViewerUI* m )} {open
   } {
+    code {main_ = m;} {}
     Fl_Window uiMain {
-      label Action open
-      xywh {733 95 165 505} type Double hide resizable non_modal
+      label Action
+      user_data this user_data_type {PaintUI*}
+      callback {v->main()->uiView->send_network( "PaintTools 0" );
+o->hide();} open selected
+      xywh {733 95 165 505} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 165 505} box PLASTIC_UP_BOX
@@ -488,7 +494,7 @@ uiScrub->value(0);}
           }
         }
         Fl_Value_Slider uiPenSize {
-          label {Pen Size} selected
+          label {Pen Size}
           tooltip {Selects the size of brush.} xywh {37 155 85 25} type Horizontal align 1 minimum 1 maximum 50 step 1 value 5
           code0 {o->labelcolor( FL_BLACK );}
         }
@@ -585,9 +591,12 @@ v->uiView->redraw();}
   Function {PaintUI(ViewerUI* m)} {} {
     code {make_window( m );} {}
   }
-  Function {~PaintUI()} {open
-  } {
+  Function {~PaintUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
   }
 }
 

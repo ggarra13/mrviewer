@@ -1460,7 +1460,7 @@ void ImageView::send_network( std::string m ) const
 
 static void static_timeout( mrv::ImageView* v )
 {
-    v->handle( TIMEOUT );
+    v->handle_timeout();
 }
 
 void ImageView::create_timeout( double t )
@@ -7375,6 +7375,69 @@ void ImageView::toggle_media_info( bool show )
     }
 }
 
+
+void ImageView::handle_timeout()
+{
+
+    mrv::ImageBrowser* b = browser();
+    if ( b && !_idle_callback && CMedia::cache_active()  &&
+         ( CMedia::preload_cache() ||
+           uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+    {
+        size_t _reel = b->number_of_reels();
+        size_t i = b->reel_index();
+        for ( ; i < b->number_of_reels(); ++i )
+        {
+            mrv::Reel r = b->reel_at( unsigned(i) );
+            if (!r) continue;
+
+            mrv::media fg = r->media_at( frame() );
+            if (!fg) continue;
+
+            CMedia* img = fg->image();
+            if ( !img->is_cache_full() && !img->has_video() &&
+                 img->stopped() )
+            {
+                _reel = i;
+                break;
+            }
+        }
+
+        if ( _reel < b->number_of_reels() )
+        {
+            preload_cache_start();
+        }
+    }
+    else
+    {
+        if ( _idle_callback )
+        {
+            if ( b->reel_index() >= b->number_of_reels() )
+            {
+                preload_cache_stop();
+            }
+            else
+            {
+                mrv::Reel r = b->current_reel();
+                if ( r && !r->edl )
+                {
+                    mrv::media fg = foreground();
+                    if ( fg )
+                    {
+                        CMedia* img = fg->image();
+                        if ( img->is_cache_full() )
+                        {
+                            preload_cache_stop();
+                        }
+                    }
+                }
+            }
+        }
+    }
+    timeout();
+
+}
+
 /**
  * Main fltk event handler
  *
@@ -7388,68 +7451,6 @@ int ImageView::handle(int event)
 
     switch( event )
     {
-    case mrv::TIMEOUT:
-    {
-
-        mrv::ImageBrowser* b = browser();
-        if ( b && !_idle_callback && CMedia::cache_active()  &&
-             ( CMedia::preload_cache() ||
-               uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
-        {
-            size_t _reel = b->number_of_reels();
-            size_t i = b->reel_index();
-            for ( ; i < b->number_of_reels(); ++i )
-            {
-                mrv::Reel r = b->reel_at( unsigned(i) );
-                if (!r) continue;
-
-                mrv::media fg = r->media_at( frame() );
-                if (!fg) continue;
-
-                CMedia* img = fg->image();
-                if ( !img->is_cache_full() && !img->has_video() &&
-                     img->stopped() )
-                {
-                    _reel = i;
-                    break;
-                }
-            }
-
-            if ( _reel < b->number_of_reels() )
-            {
-                preload_cache_start();
-            }
-        }
-        else
-        {
-            if ( _idle_callback )
-            {
-                if ( b->reel_index() >= b->number_of_reels() )
-                {
-                    preload_cache_stop();
-                }
-                else
-                {
-                    mrv::Reel r = b->current_reel();
-                    if ( r && !r->edl )
-                    {
-                        mrv::media fg = foreground();
-                        if ( fg )
-                        {
-                            CMedia* img = fg->image();
-                            if ( img->is_cache_full() )
-                            {
-                                preload_cache_stop();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        timeout();
-
-        return 1;
-    }
     case FL_FOCUS:
     {
         if ( _wait )
