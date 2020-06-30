@@ -7364,6 +7364,7 @@ void ImageView::toggle_3d_view( bool show )
     if ( !show )
     {
         uiMain->uiGL3dView->uiMain->hide();
+        valid(0);
     }
     else
     {
