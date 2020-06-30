@@ -5,6 +5,8 @@ v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	- Made Mac's use their Native File Requester by default as the
 	  custom file requester had problems listing iCloud and other
 	  sensitive directories.
+	- Added a lot of fixes to network connections on Mac OSX.  Now
+	  windows show up and hide properly.
 
 v5.5.3  - Cleanup some repeated DLLs with different versions.
 	- Updated to latest version of boost and OpenEXR libraries.
