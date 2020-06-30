@@ -908,7 +908,7 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
     CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     CHECK_GL;
-    glClearColor(r, g, b, a );
+    glClearColor( r, g, b, a );
     glClearStencil( 0 );
     CHECK_GL;
     check_framebuffer();

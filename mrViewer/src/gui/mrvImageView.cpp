@@ -3232,6 +3232,7 @@ again:
         break;
     case k3D_VIEW_WINDOW_SHOW:
         toggle_3d_view(true);
+        if ( old_interactive ) Fl::check();
         break;
     case k3D_VIEW_WINDOW_HIDE:
         toggle_3d_view(false);
@@ -7364,7 +7365,6 @@ void ImageView::toggle_3d_view( bool show )
     if ( !show )
     {
         uiMain->uiGL3dView->uiMain->hide();
-        valid(0);
     }
     else
     {
