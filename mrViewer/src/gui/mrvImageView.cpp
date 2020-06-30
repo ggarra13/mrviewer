@@ -3221,48 +3221,56 @@ again:
         break;
     case kMEDIA_INFO_WINDOW_HIDE:
         toggle_media_info(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kCOLOR_AREA_WINDOW_SHOW:
         toggle_color_area(true);
         break;
     case kCOLOR_AREA_WINDOW_HIDE:
         toggle_color_area(false);
+        if ( old_interactive ) Fl::check();
         break;
     case k3D_VIEW_WINDOW_SHOW:
         toggle_3d_view(true);
         break;
     case k3D_VIEW_WINDOW_HIDE:
         toggle_3d_view(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kHISTOGRAM_WINDOW_SHOW:
         toggle_histogram(true);
         break;
     case kHISTOGRAM_WINDOW_HIDE:
         toggle_histogram(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kVECTORSCOPE_WINDOW_SHOW:
         toggle_vectorscope(true);
         break;
     case kVECTORSCOPE_WINDOW_HIDE:
         toggle_vectorscope(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kWAVEFORM_WINDOW_SHOW:
         toggle_waveform(true);
         break;
     case kWAVEFORM_WINDOW_HIDE:
         toggle_waveform(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kSTEREO_OPTIONS_WINDOW_SHOW:
         toggle_stereo_options(true);
         break;
     case kSTEREO_OPTIONS_WINDOW_HIDE:
         toggle_stereo_options(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kPAINT_TOOLS_WINDOW_SHOW:
         toggle_paint_tools(true);
         break;
     case kPAINT_TOOLS_WINDOW_HIDE:
         toggle_paint_tools(false);
+        if ( old_interactive ) Fl::check();
         break;
     case kZoomChange:
     {
@@ -3357,6 +3365,7 @@ again:
         _interactive = old_interactive;
         _network_active = true;
         redraw();
+
 }
 
 
@@ -3436,7 +3445,7 @@ void ImageView::timeout()
     }
 
 
-    double delay = 0.005;
+    double delay = 0.5;
     if ( fg )
     {
         TRACE("");
