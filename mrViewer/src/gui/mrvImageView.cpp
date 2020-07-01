@@ -2890,9 +2890,10 @@ void ImageView::handle_commands()
     bool old_interactive = _interactive;
     _interactive = false;
 
-    assert0( !commands.empty() );
-
     Command& c = commands.front();
+
+    if ( commands.empty() ) goto final;
+
 
 again:
 
@@ -3221,57 +3222,75 @@ again:
         break;
     case kMEDIA_INFO_WINDOW_HIDE:
         toggle_media_info(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kCOLOR_AREA_WINDOW_SHOW:
         toggle_color_area(true);
         break;
     case kCOLOR_AREA_WINDOW_HIDE:
         toggle_color_area(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case k3D_VIEW_WINDOW_SHOW:
         toggle_3d_view(true);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case k3D_VIEW_WINDOW_HIDE:
         toggle_3d_view(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kHISTOGRAM_WINDOW_SHOW:
         toggle_histogram(true);
         break;
     case kHISTOGRAM_WINDOW_HIDE:
         toggle_histogram(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kVECTORSCOPE_WINDOW_SHOW:
         toggle_vectorscope(true);
         break;
     case kVECTORSCOPE_WINDOW_HIDE:
         toggle_vectorscope(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kWAVEFORM_WINDOW_SHOW:
         toggle_waveform(true);
         break;
     case kWAVEFORM_WINDOW_HIDE:
         toggle_waveform(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kSTEREO_OPTIONS_WINDOW_SHOW:
         toggle_stereo_options(true);
         break;
     case kSTEREO_OPTIONS_WINDOW_HIDE:
         toggle_stereo_options(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kPAINT_TOOLS_WINDOW_SHOW:
         toggle_paint_tools(true);
         break;
     case kPAINT_TOOLS_WINDOW_HIDE:
         toggle_paint_tools(false);
+#ifdef OSX
         if ( old_interactive ) Fl::check();
+#endif
         break;
     case kZoomChange:
     {
@@ -3359,8 +3378,7 @@ again:
     delete c.linfo; c.linfo = NULL;
 
     final:
-        assert0( !commands.empty() );
-        if( !commands.empty() )
+        if( !commands.empty() )  // needed
             commands.pop_front();
 
         _interactive = old_interactive;
