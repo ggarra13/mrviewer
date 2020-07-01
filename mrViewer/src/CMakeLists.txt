@@ -668,7 +668,8 @@ ELSEIF ( APPLE )
 	../../etc/OSX/Info.plist.in
 	${PROJECT_BINARY_DIR}/Info.plist )
 
-    file( COPY ${PROJECT_BINARY_DIR}/Info.plist DESTINATION ${PROJECT_BINARY_DIR}/bin/mrViewer.app/Contents/ )
+    file( COPY ${PROJECT_BINARY_DIR}/Info.plist
+	  DESTINATION ${PROJECT_BINARY_DIR}/bin/mrViewer.app/Contents/ )
     set(CPACK_PACKAGE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
     set(CPACK_BUNDLE_NAME ${INSTALL_NAME} )
     set(CPACK_BUNDLE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
