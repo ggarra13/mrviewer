@@ -1163,8 +1163,7 @@ void aviImage::store_image( const int64_t frame,
     unsigned int w = width();
     unsigned int h = height();
 
-    // Fill the fields of AVPicture output based on _av_dst_pix_fmt
-    // avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
+    // Fill the fields of AVFrame output based on _av_dst_pix_fmt
     av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
                           w, h, 1);
 

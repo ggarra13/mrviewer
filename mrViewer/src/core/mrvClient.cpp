@@ -481,7 +481,8 @@ void client_thread( const ServerData* s )
    {
        boost::asio::io_service io_service;
        tcp::resolver r(io_service);
-       tcp::resolver::query query( s->host, s->group );
+       tcp::resolver::query query( s->host, s->group,
+                                   tcp::resolver::query::numeric_service );
 
 
        client_ptr c( boost::make_shared<client>( ref(io_service),
