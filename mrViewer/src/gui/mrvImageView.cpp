@@ -93,11 +93,6 @@
 #include <FL/Fl_Spinner.H>
 #include <FL/Fl_Preferences.H>
 
-#ifdef LINUX
-#include <FL/platform.H>
-static Atom fl_NET_WM_STATE;
-static Atom fl_NET_WM_STATE_FULLSCREEN;
-#endif
 
 #include <ImathMath.h> // for Math:: functions
 #include <ImfRationalAttribute.h>
@@ -329,35 +324,6 @@ short get_shortcut( const char* channel )
     return 0;
 }
 
-#ifdef LINUX
-void send_wm_event(Window wnd, Atom message,
-                   unsigned long d0, unsigned long d1=0,
-                   unsigned long d2=0, unsigned long d3=0,
-                   unsigned long d4=0) {
-    XEvent e;
-    e.xany.type = ClientMessage;
-    e.xany.window = wnd;
-    e.xclient.message_type = message;
-    e.xclient.format = 32;
-    e.xclient.data.l[0] = d0;
-    e.xclient.data.l[1] = d1;
-    e.xclient.data.l[2] = d2;
-    e.xclient.data.l[3] = d3;
-    e.xclient.data.l[4] = d4;
-    XSendEvent(fl_display, RootWindow(fl_display, fl_screen),
-               0, SubstructureNotifyMask | SubstructureRedirectMask,
-               &e);
-}
-
-#define _NET_WM_STATE_REMOVE        0  /* remove/unset property */
-#define _NET_WM_STATE_ADD           1  /* add/set property */
-#define _NET_WM_STATE_TOGGLE        2  /* toggle property  */
-
-void send_wm_state_event(Window wnd, int add, Atom prop) {
-    send_wm_event(wnd, fl_NET_WM_STATE,
-                  add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE, prop);
-}
-#endif
 
 }
 
@@ -1837,10 +1803,6 @@ void ImageView::init_draw_engine()
         mrvALERT( _("Could not initialize draw engine") );
         return;
     }
-#ifdef LINUX
-    fl_NET_WM_STATE       = XInternAtom(fl_display, "_NET_WM_STATE",       0);
-    fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fl_display, "_NET_WM_STATE_FULLSCREEN", 0);
-#endif
 
     CMedia::supports_yuv( _engine->supports_yuv() );
     CMedia::supports_yuva( _engine->supports_yuva() );

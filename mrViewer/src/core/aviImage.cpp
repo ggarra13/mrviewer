@@ -88,7 +88,7 @@ namespace fs = boost::filesystem;
 
 namespace
 {
-const char* kModule = "avi";
+    const char* kModule = "avi";
 }
 
 
