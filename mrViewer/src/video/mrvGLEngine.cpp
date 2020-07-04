@@ -1872,18 +1872,16 @@ void GLEngine::draw_images( ImageList& images )
         if ( img->has_picture()  ) ++num_quads;
         if ( stereo )    ++num_quads;
 
-        if ( img->number_of_video_streams() > 0 )
-        {
-            const CMedia::video_info_t& vinfo = img->video_info(0);
-            const std::string& pix_fmt = vinfo.pixel_format;
-            if ( img != previous_img && pix_fmt.substr(0, 3) == "yuv" )
-            {
-                previous_img = img;
-                delete _YCbCr;
-                loadOpenGLShader();
-                if ( ! _YCbCr ) return;
-            }
+        if ( img->number_of_video_streams() <= 0 ) continue;
 
+        const CMedia::video_info_t& vinfo = img->video_info(0);
+        const std::string& pix_fmt = vinfo.pixel_format;
+        if ( img != previous_img && pix_fmt.substr(0, 3) == "yuv" )
+        {
+            previous_img = img;
+            delete _YCbCr;
+            loadOpenGLShader();
+            if ( ! _YCbCr ) return;
         }
 
     }
