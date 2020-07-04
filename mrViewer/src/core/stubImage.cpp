@@ -38,6 +38,7 @@
 #include <FL/Fl.H>
 #include <FL/fl_utf8.h>
 
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/bind.hpp>
 
 #include <ImfStringAttribute.h>

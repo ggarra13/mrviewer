@@ -48,28 +48,9 @@ smpteImage::smpteImage( const smpteImage::Type c, const unsigned int dw,
     _gamma = 1.0f;
     default_layers();
     image_size( dw, dh );
-    _frameStart = _frame_start = 1;
-    _frameEnd = _frame_end = int64_t( _fps * 3 + 0.5 );
     allocate_pixels(_hires, 1);
+    _depth = _hires->pixel_type();
 
-    switch( type_ )
-    {
-    case kGammaChart:
-        gamma_chart( _hires );
-        break;
-    case kLinearGradient:
-        linear_gradient( _hires );
-        break;
-    case kLuminanceGradient:
-        luminance_gradient( _hires );
-        break;
-    case kCheckered:
-        checkered( _hires );
-        break;
-    default:
-        LOG_ERROR("Internal Image: Unknown image type");
-        break;
-    }
 }
 
 
@@ -352,6 +333,24 @@ bool smpteImage::fetch( mrv::image_type_ptr& canvas,
                         const boost::int64_t frame )
 {
 
+    switch( type_ )
+    {
+    case kGammaChart:
+        gamma_chart( _hires );
+        break;
+    case kLinearGradient:
+        linear_gradient( _hires );
+        break;
+    case kLuminanceGradient:
+        luminance_gradient( _hires );
+        break;
+    case kCheckered:
+        checkered( _hires );
+        break;
+    default:
+        LOG_ERROR("Internal Image: Unknown image type");
+        break;
+    }
 
     return true;
 }

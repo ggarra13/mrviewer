@@ -38,10 +38,10 @@ if (APPLE)
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
 				  ${OSX_FRAMEWORKS}")
 
-    # stop OpenGL deprecation warnings on MacOSX > 10.14
-    add_definitions(-DGL_SILENCE_DEPRECATION=1)
+	# stop OpenGL deprecation warnings on MacOSX > 10.14
+	add_definitions(-DGL_SILENCE_DEPRECATION=1)
 
-    set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
+	set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
 
 FIND_PACKAGE( FLTK        REQUIRED )    # for window management
@@ -71,10 +71,10 @@ ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
   #  ADD_COMPILE_OPTIONS( -W1 )
-     ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
+	 ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
   SET(OS_LIBRARIES
-    Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
-    )
+	Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
+	)
 
    #SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCPMTD -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBCMT -NODEFAULTLIB:LIBCMTD" )
 
@@ -83,88 +83,88 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   IF(APPLE)
-    # Media libraries for Apple
-    ADD_DEFINITIONS( -DOSX -DMR_SSE )
-    ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
+	# Media libraries for Apple
+	ADD_DEFINITIONS( -DOSX -DMR_SSE )
+	ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
-    set( AOENGINE 1 )
+	set( AOENGINE 1 )
 
-    LINK_DIRECTORIES( /usr/local/lib )
-    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
+	LINK_DIRECTORIES( /usr/local/lib )
+	set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
-    ADD_DEFINITIONS( -D__MACOSX_CORE__ )
+	ADD_DEFINITIONS( -D__MACOSX_CORE__ )
 
-    IF( AOENGINE )
-      ADD_DEFINITIONS( -DAOENGINE )
-      set( OS_LIBRARIES ${OS_LIBRARIES} ao )
-    ENDIF()
+	IF( AOENGINE )
+	  ADD_DEFINITIONS( -DAOENGINE )
+	  set( OS_LIBRARIES ${OS_LIBRARIES} ao )
+	ENDIF()
 
 
-     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-       #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
-       # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-       #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+	 IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	   #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
+	   # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+	   #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-       ADD_COMPILE_OPTIONS( -fsanitize=address )
-       SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
-     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	   ADD_COMPILE_OPTIONS( -fsanitize=address )
+	   SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+	 ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ELSE(APPLE)
-    ADD_DEFINITIONS( -DMR_SSE )
-    ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
+	ADD_DEFINITIONS( -DMR_SSE )
+	ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
-    # Media libraries for Linux
-    # FIND_PACKAGE( ALSA        REQUIRED )
-    FIND_LIBRARY( Xpm Xpm
-      PATHS
-      /usr/local/lib
-      /usr/lib/x86_64-linux-gnu/
-      /usr/lib
-      )
+	# Media libraries for Linux
+	# FIND_PACKAGE( ALSA        REQUIRED )
+	FIND_LIBRARY( Xpm Xpm
+	  PATHS
+	  /usr/local/lib
+	  /usr/lib/x86_64-linux-gnu/
+	  /usr/lib
+	  )
 
-    FIND_LIBRARY( png png
-      PATHS
-      /usr/local/lib
-      /usr/lib/x86_64-linux-gnu/
-      /usr/lib
-      )
+	FIND_LIBRARY( png png
+	  PATHS
+	  /usr/local/lib
+	  /usr/lib/x86_64-linux-gnu/
+	  /usr/lib
+	  )
 
-    FIND_LIBRARY( Zlib z
-      PATHS
-      /usr/local/lib
-      /usr/lib/x86_64-linux-gnu/
-      /usr/lib
-      )
+	FIND_LIBRARY( Zlib z
+	  PATHS
+	  /usr/local/lib
+	  /usr/lib/x86_64-linux-gnu/
+	  /usr/lib
+	  )
 
-    FIND_LIBRARY( jpeg jpeg
-      PATHS
-      /usr/local/lib
-      /usr/lib/x86_64-linux-gnu/
-      /usr/lib
-      )
+	FIND_LIBRARY( jpeg jpeg
+	  PATHS
+	  /usr/local/lib
+	  /usr/lib/x86_64-linux-gnu/
+	  /usr/lib
+	  )
 
-    # SET THIS TO 1 to use AO ENGINE (libao) ON LINUX
-    set( AOENGINE 0 )
+	# SET THIS TO 1 to use AO ENGINE (libao) ON LINUX
+	set( AOENGINE 0 )
 
-    ADD_DEFINITIONS( -DLINUX -DNDEBUG )
-    ADD_COMPILE_OPTIONS( -O3 -msse )
-    SET(OS_LIBRARIES
-      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx #dvdnav dvdread
-      )
+	ADD_DEFINITIONS( -DLINUX -DNDEBUG )
+	ADD_COMPILE_OPTIONS( -O3 -msse )
+	SET(OS_LIBRARIES
+	  asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx #dvdnav dvdread
+	  )
 
-    IF( AOENGINE )
-      ADD_DEFINITIONS( -DAOENGINE )
-      set( OS_LIBRARIES ${OS_LIBRARIES} ao )
-    ENDIF()
+	IF( AOENGINE )
+	  ADD_DEFINITIONS( -DAOENGINE )
+	  set( OS_LIBRARIES ${OS_LIBRARIES} ao )
+	ENDIF()
 
-     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-       #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
-       # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-       #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+	 IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	   #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
+	   # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+	   #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-       ADD_COMPILE_OPTIONS( -fsanitize=address )
-       SET(LIBRARIES asan ${LIBRARIES} )
-     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	   ADD_COMPILE_OPTIONS( -fsanitize=address )
+	   SET(LIBRARIES asan ${LIBRARIES} )
+	 ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ENDIF(APPLE)
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -394,32 +394,32 @@ WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 IF( NOT WIN32 )
 
   FIND_LIBRARY( Boost_locale_LIBRARY
-    NAMES boost_locale boost_locale-mt
-    PATHS ${Boost_LIBRARY_DIRS}
-    )
+	NAMES boost_locale boost_locale-mt
+	PATHS ${Boost_LIBRARY_DIRS}
+	)
 
   FIND_LIBRARY( Boost_system_LIBRARY
-    NAMES boost_system boost_system-mt
-    PATHS ${Boost_LIBRARY_DIRS}
-    )
+	NAMES boost_system boost_system-mt
+	PATHS ${Boost_LIBRARY_DIRS}
+	)
 
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY
-    NAMES boost_filesystem boost_filesystem-mt
-    PATHS ${Boost_LIBRARY_DIRS}
-    )
+	NAMES boost_filesystem boost_filesystem-mt
+	PATHS ${Boost_LIBRARY_DIRS}
+	)
 
   FIND_LIBRARY( Boost_thread_LIBRARY
-    NAMES boost_thread boost_thread-mt
-    PATHS ${Boost_LIBRARY_DIRS}
-    )
+	NAMES boost_thread boost_thread-mt
+	PATHS ${Boost_LIBRARY_DIRS}
+	)
 
   SET( BOOST_LIBRARIES
-    ${Boost_locale_LIBRARY}
-    ${Boost_system_LIBRARY}
-    ${Boost_filesystem_LIBRARY}
-    ${Boost_thread_LIBRARY}
-    )
+	${Boost_locale_LIBRARY}
+	${Boost_system_LIBRARY}
+	${Boost_filesystem_LIBRARY}
+	${Boost_thread_LIBRARY}
+	)
 
 ELSE(NOT WIN32)
   #
@@ -558,7 +558,7 @@ ENDIF(WIN32 OR WIN64)
 
 
 FILE( COPY ${SOURCE_DIR}/colors/
-      DESTINATION ${CMAKE_BINARY_DIR}/../colors )
+	  DESTINATION ${CMAKE_BINARY_DIR}/../colors )
 
   INSTALL( DIRECTORY ${SOURCE_DIR}/colors/ DESTINATION colors )
   INSTALL( DIRECTORY ${SOURCE_DIR}/ctl/ DESTINATION ctl )
@@ -603,11 +603,11 @@ FOREACH( lang ${LANGUAGES} )
  SET( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
 
   ADD_CUSTOM_COMMAND( OUTPUT "${_moFile}"
-    COMMAND msgmerge --quiet --update --backup=none
-    "${_absFile}" "${_absPotFile}"
-    COMMAND msgfmt -v "${_absFile}" -o "${_moFile}"
-    DEPENDS ${_absFile} ${_absPotFile}
-    )
+	COMMAND msgmerge --quiet --update --backup=none
+	"${_absFile}" "${_absPotFile}"
+	COMMAND msgfmt -v "${_absFile}" -o "${_moFile}"
+	DEPENDS ${_absFile} ${_absPotFile}
+	)
 
 ENDFOREACH( lang )
 
@@ -636,11 +636,11 @@ IF(WIN32)
 
   if (CMAKE_BUILD_ARCH EQUAL 32)
 
-    SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES" )
+	SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES" )
 
   elseif (CMAKE_BUILD_ARCH EQUAL 64)
 
-    SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64" )
+	SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64" )
 
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
@@ -656,95 +656,95 @@ IF(WIN32)
   INCLUDE( CMakeRegistry.cmake )
 
 ELSEIF ( APPLE )
-    set(CPACK_GENERATOR Bundle )
+	set(CPACK_GENERATOR Bundle )
 
-    set( INSTALL_NAME ${PROJECT_NAME} )
+	set( INSTALL_NAME ${PROJECT_NAME} )
 
-    configure_file(
+	configure_file(
 	../../etc/OSX/startup.sh.in
 	${PROJECT_BINARY_DIR}/startup.sh)
 
-    configure_file(
+	configure_file(
 	../../etc/OSX/Info.plist.in
 	${PROJECT_BINARY_DIR}/Info.plist )
 
-    file( COPY ${PROJECT_BINARY_DIR}/Info.plist
+	file( COPY ${PROJECT_BINARY_DIR}/Info.plist
 	  DESTINATION ${PROJECT_BINARY_DIR}/bin/mrViewer.app/Contents/ )
-    set(CPACK_PACKAGE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
-    set(CPACK_BUNDLE_NAME ${INSTALL_NAME} )
-    set(CPACK_BUNDLE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
-    set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/Info.plist )
-    set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
+	set(CPACK_PACKAGE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
+	set(CPACK_BUNDLE_NAME ${INSTALL_NAME} )
+	set(CPACK_BUNDLE_ICON ${SOURCE_DIR}/etc/OSX/mrViewer.icns )
+	set(CPACK_BUNDLE_PLIST ${PROJECT_BINARY_DIR}/Info.plist )
+	set(CPACK_BUNDLE_STARTUP_COMMAND ${PROJECT_BINARY_DIR}/startup.sh)
 
 
 ELSEIF (UNIX)
 
-    # SET the type of package to build.
-    INSTALL( DIRECTORY ${SOURCE_DIR}/bin/ DESTINATION bin )
+	# SET the type of package to build.
+	INSTALL( DIRECTORY ${SOURCE_DIR}/bin/ DESTINATION bin )
 
-    SET(MRV_DESKTOP_DIR     /usr/share/applications/)
-    SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
-
-
-
-    CONFIGURE_FILE( ${SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
-		    "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop" )
+	SET(MRV_DESKTOP_DIR     /usr/share/applications/)
+	SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
 
-    INSTALL(FILES "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop"
-	    DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL(FILES ${SOURCE_DIR}/etc/mrViewer.png
-	    DESTINATION ${MRV_PIXMAPS_DIR})
 
-    # try to set up the menu system
+	CONFIGURE_FILE( ${SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
+			"${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop" )
 
-    SET(CPACK_GENERATOR DEB RPM TGZ )
 
-    # SET the installation directory.
+	INSTALL(FILES "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop"
+		DESTINATION ${MRV_DESKTOP_DIR})
+	INSTALL(FILES ${SOURCE_DIR}/etc/mrViewer.png
+		DESTINATION ${MRV_PIXMAPS_DIR})
 
-    SET(CPACK_SET_DESTDIR true) # Needed
-    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
+	# try to set up the menu system
 
-    # Configure install/uninstall scripts
+	SET(CPACK_GENERATOR DEB RPM TGZ )
 
-    CONFIGURE_FILE(
+	# SET the installation directory.
+
+	SET(CPACK_SET_DESTDIR true) # Needed
+	SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
+
+	# Configure install/uninstall scripts
+
+	CONFIGURE_FILE(
 	${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
 	${PROJECT_BINARY_DIR}/etc/Linux/install.sh
 	@ONLY)
-    CONFIGURE_FILE(
+	CONFIGURE_FILE(
 	${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
 	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
 	@ONLY)
-    CONFIGURE_FILE(
+	CONFIGURE_FILE(
 	${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
 	${PROJECT_BINARY_DIR}/etc/Linux/postinst
 	@ONLY)
-    CONFIGURE_FILE(
+	CONFIGURE_FILE(
 	${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
 	${PROJECT_BINARY_DIR}/etc/Linux/postrm
 	@ONLY)
 
-      # SET RPM options.
+	  # SET RPM options.
 
-    SET(CPACK_RPM_PACKAGE_NAME ${PROJECT_NAME})
-    SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
-    set(CPACK_RPM_PACKAGE_AUTOREQ false)
-    set(CPACK_RPM_PACKAGE_AUTOPROV true)
-    SET(CPACK_RPM_COMPRESSION_TYPE gzip )
+	SET(CPACK_RPM_PACKAGE_NAME ${PROJECT_NAME})
+	SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
+	set(CPACK_RPM_PACKAGE_AUTOREQ false)
+	set(CPACK_RPM_PACKAGE_AUTOPROV true)
+	SET(CPACK_RPM_COMPRESSION_TYPE gzip )
 
 
-    # SET Debian options.
+	# SET Debian options.
 
-    set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_NAME})
+	set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_NAME})
 
-    SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+	SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 	${PROJECT_BINARY_DIR}/etc/Linux/postinst
 	${PROJECT_BINARY_DIR}/etc/Linux/postrm)
 
-    SET(
+	SET(
 	CPACK_RPM_POST_INSTALL_SCRIPT_FILE
 	${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
-    SET(
+	SET(
 	CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
 	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
 
@@ -887,8 +887,8 @@ ENDIF()
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
-		      POST_BUILD
-		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
-		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-		      )
+			  POST_BUILD
+			  COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
+			  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+			  )
 ENDIF( WIN32 )

@@ -58,6 +58,7 @@ extern "C" {
 #undef  __STDC_CONSTANT_MACROS
 
 #include <boost/cstdint.hpp>
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/exception/diagnostic_information.hpp>
@@ -3001,6 +3002,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
         return;
 
     _depth = pic->pixel_type();
+
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
