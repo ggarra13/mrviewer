@@ -25,9 +25,9 @@ The Loading Preferences tab allows you to configure how the image, video and aud
 
       <td><img style="width: 640px; height: 487px;" alt="" src="images/Preferences_Loading.png"></td>
       <td>
-	<div class="menu">Use OIIO for JPG/PNG loading</div>
+	<div class="menu">Library Used for DPX/PNG/JPG</div>
 	<br>
-	When this option is off, JPG/PNG images are loaded in a multithread way by the FFMPEG library.  When this option if on, OIIO will be responsible for loading the frames.  This used to determine how caching of frames worked, but now there's no difference.  You should probably leave the setting in the off position.
+This option allows you to select which library is used for loading of those formats.  The FFMPEG library is the fastest one but cannot deal with missing frames.  OIIO is the following one and is the recommended setting.  Finally, ImageMagick is the slowest of them all, but loads more of the image metadata.
 	<br>
 	<br>
 	<div class="menu">Load Sequences on Drag&amp;Drop</div>
