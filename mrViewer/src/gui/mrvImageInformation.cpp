@@ -262,6 +262,9 @@ static Fl_Window* make_remove_window( CMedia::Attributes& attrs ) {
         w = o;
         o->label( _( "Remove Attribute" ) );
         o->begin();
+        {
+            Fl_Group* g = new Fl_Group(0, 0, 405, 120);
+            g->box( FL_FLAT_BOX );
         {   mrv::Choice* o =
                 uiKeyRemove = new mrv::Choice(10, 35, 390, 25, _("Keyword"));
             o->align(FL_ALIGN_TOP);
@@ -277,6 +280,8 @@ static Fl_Window* make_remove_window( CMedia::Attributes& attrs ) {
         }
         {   Fl_Button* o = new Fl_Button(224, 70, 93, 41, _("Cancel"));
             o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
+        }
+        g->end();
         }
         o->end();
         o->set_modal();

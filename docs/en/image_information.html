@@ -31,16 +31,16 @@ You can bring up the Media Information window by doing any of:<br>
 
       <ul>
 
-        <li>Opening up the window from the main toolbar's 
-          <div class="menu">W</div>
+	<li>Opening up the window from the main toolbar's
+	  <div class="menu">W</div>
  button.</li>
 
-        <li>By using
-          <div class="menu">
+	<li>By using
+	  <div class="menu">
 RMB-&gt;Window-&gt;Media Info.</div>
-        </li>
+	</li>
 
-        <li>By double clicking on an image in the Reel List
+	<li>By double clicking on an image in the Reel List
 window.</li>
 
       </ul>
@@ -102,6 +102,41 @@ single image or movie.</td>
     </tr>
 
     <tr>
+      <td style="font-weight: bold; font-family: monospace;">Video Streams</td>
+      <td style="font-family: monospace;">Number of video streams in movie file</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Audio Streams</td>
+      <td style="font-family: monospace;">Number of audio streams in movie file</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Subtitle Streams</td>
+      <td style="font-family: monospace;">Number of subtitle streams in movie file</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">First Frame</td>
+      <td style="font-family: monospace;">First Frame to Display in Movie or Sequence files</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Last Frame</td>
+      <td style="font-family: monospace;">Last Frame to Display in Movie or Sequence files</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Frame Start</td>
+      <td style="font-family: monospace;">First Frame with Data in Movie or Sequence files</td>
+    </tr>
+
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Frame End</td>
+      <td style="font-family: monospace;">Last Frame with Data in Movie or Sequence files</td>
+    </tr>
+
+    <tr>
 
       <td style="font-weight: bold; font-family: monospace;">Width</td>
 
@@ -158,6 +193,42 @@ refers to pixels for other media (usually, NTSC or PAL video).</td>
 
     </tr>
 
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Position
+X</td>
+
+      <td style="font-family: monospace;">The X translation of the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Position
+Y</td>
+
+      <td style="font-family: monospace;">The Y translation of the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Scale
+X</td>
+
+      <td style="font-family: monospace;">The X scaling of the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Scale
+Y</td>
+
+      <td style="font-family: monospace;">The Y scaling of the image.</td>
+
+    </tr>
+
    <tr>
 
       <td style="font-family: monospace;"><span style="font-weight: bold;">Display Window</span></td>
@@ -192,6 +263,32 @@ channels in the image.</td>
 
     </tr>
 
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Color
+Space</td>
+
+      <td style="font-family: monospace;">Color Space of the movie file.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Color
+Range</td>
+
+      <td style="font-family: monospace;">Color Range of the movie file.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Render Pixel Format
+      </td>
+
+      <td style="font-family: monospace;">Render Pixel Format for movie file.</td>
+
+    </tr>
     <tr>
 
       <td style="font-family: monospace;"><span style="font-weight: bold;">Rendering Intent</span></td>
@@ -265,7 +362,7 @@ Transform<br>
       </td>
 
       <td style="font-family: monospace;">The format of
-the image.</td>
+the image or movie file.</td>
 
     </tr>
 
@@ -380,23 +477,32 @@ When removing an attribute, you need to select the keyword name for it.
       <th>Explanation</th>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Codec</td>
+      <td style="font-weight: bold; font-family: monospace;">Known Codec</td>
+      <td style="font-family: monospace;">Whether the codec is known and can be decoded</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Codec</td>
       <td style="font-family: monospace;">Video codec used in the movie</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Streams</td>
-      <td style="font-family: monospace;">Number of video streams in movie file</td>
+      <td style="font-weight: bold; font-family: monospace;">FourCC</td>
+      <td style="font-family: monospace;">The FourCC ID of the codec</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">FPS</td>
+      <td style="font-weight: bold; font-family: monospace;">B Frames</td>
+      <td style="font-family: monospace;">Whether the movie has B frames (frames that are based on both previous and following frames)</td>
+    </tr>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">FPS</td>
       <td style="font-family: monospace;">Playback speed ( in Frames per Second )</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Start</td>
+      <td style="font-weight: bold; font-family: monospace;">Start</td>
       <td style="font-family: monospace;">Time of start of video</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Duration</td>
+      <td style="font-weight: bold; font-family: monospace;">Duration</td>
       <td style="font-family: monospace;">Duration of video</td>
     </tr>
   </tbody>
@@ -411,35 +517,48 @@ When removing an attribute, you need to select the keyword name for it.
       <th>Expalanation</th>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Codec</td>
+      <td style="font-weight: bold; font-family: monospace;">Known Codec</td>
+      <td style="font-family: monospace;">Whether the codec is known and can be decoded</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Codec</td>
       <td style="font-family: monospace;">Audio coded used in movie or audio file</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Streams</td>
-      <td style="font-family: monospace;">Number of audio streams in movie or audio file</td>
+      <td style="font-weight: bold; font-family: monospace;">FourCC</td>
+      <td style="font-family: monospace;">The FourCC ID of the codec</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Channels</td>
+      <td style="font-weight: bold; font-family: monospace;">Format</td>
+      <td style="font-family: monospace;">The format of the audio (float, s16, etc)</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Channels</td>
       <td style="font-family: monospace;">Number of audio channels in movie or audio file</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Frequency</td><td style="font-family: monospace;">Audio frequency of movie or audio file (in bytes per second)</td>
+      <td style="font-weight: bold; font-family: monospace;">Frequency</td><td style="font-family: monospace;">Audio frequency of movie or audio file (in bytes per second)</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Avg. Bitrate</td>
-      <td style="font-family: monospace;">Average bitrate of audio</td>    
+      <td style="font-weight: bold; font-family: monospace;">Avg. Bitrate</td>
+      <td style="font-family: monospace;">Average bitrate of audio</td>
     </tr>
     <tr>
-      
-      <td style="font-family: monospace;">Language</td>
+
+      <td style="font-weight: bold; font-family: monospace;">Language</td>
       <td style="font-family: monospace;">Language of current audio track if known</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Start</td>
+
+      <td style="font-weight: bold; font-family: monospace;">Disposition</td>
+      <td style="font-family: monospace;">Disposition of current audio track if known</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Start</td>
       <td style="font-family: monospace;">Time of start of audio</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Duration</td>
+      <td style="font-weight: bold; font-family: monospace;">Duration</td>
       <td style="font-family: monospace;">Duration of audio</td>
     </tr>
   </tbody>
@@ -450,27 +569,31 @@ When removing an attribute, you need to select the keyword name for it.
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
   <tbody>
     <tr>
-      <td style="font-family: monospace;">Codec</td>
+      <td style="font-weight: bold; font-family: monospace;">Known Codec</td>
+      <td style="font-family: monospace;">Whether the codec is known and can be decoded</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold; font-family: monospace;">Codec</td>
       <td style="font-family: monospace;">Subtitle codec used in the movie</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">FourCC</td>
+      <td style="font-weight: bold; font-family: monospace;">FourCC</td>
       <td style="font-family: monospace;">FourCC name of codec if any</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Closed Caption</td>
+      <td style="font-weight: bold; font-family: monospace;">Closed Caption</td>
       <td style="font-family: monospace;">True if Subtitle is a Closed Caption</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Avg. Bitrate</td>
+      <td style="font-weight: bold; font-family: monospace;">Avg. Bitrate</td>
       <td style="font-family: monospace;">Average bitrate of titles if possible to compute</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Start</td>
+      <td style="font-weight: bold; font-family: monospace;">Start</td>
       <td style="font-family: monospace;">Time of start of subtitles</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Duration</td>
+      <td style="font-weight: bold; font-family: monospace;">Duration</td>
       <td style="font-family: monospace;">Duration of subtitles</td>
     </tr>
   </tbody>

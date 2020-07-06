@@ -10,6 +10,8 @@ v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	- Bug fixed creation of SMPTE/PAL color bars, gamma charts and
 	  gradients as they were not showing or were showing up incorrectly
 	  after creation (you had to advance a frame to fix it).
+	- Made BRAW factory creation output only one message upon first
+	  creation.
 
 v5.5.3  - Cleanup some repeated DLLs with different versions.
 	- Updated to latest version of boost and OpenEXR libraries.

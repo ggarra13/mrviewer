@@ -130,7 +130,7 @@ public:
 protected:
     void copy_values();
     void parse_metadata(int64_t frame, IBlackmagicRawMetadataIterator* iter);
-
+    static HRESULT create_factory();
 
 protected:
     Mutex         _load_mutex;

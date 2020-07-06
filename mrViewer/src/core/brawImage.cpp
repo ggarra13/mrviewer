@@ -191,6 +191,44 @@ namespace mrv {
     bool brawImage::init = false;
     IBlackmagicRawFactory* brawImage::factory = nullptr;
 
+    HRESULT brawImage::create_factory()
+    {
+        if ( factory != nullptr ) return S_OK;
+
+        std::string libpath = mrv::Preferences::root;
+        libpath += "/lib";
+
+#ifdef WIN32
+        _bstr_t clib( libpath.c_str() );
+#elif LINUX
+        const char* clib = libpath.c_str();
+#elif OSX
+        CFStringRef clib = CFStringCreateWithCString( NULL,
+                                                      libpath.c_str(),
+                                                      kCFStringEncodingUTF8 );
+#endif
+
+        factory = CreateBlackmagicRawFactoryInstanceFromPath( clib );
+        if (factory == nullptr)
+        {
+#if defined(LINUX) || defined(_WIN64) || defined(OSX)
+            LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
+            LOG_ERROR( _("Searched for braw lib in: ") << libpath );
+#endif
+            return E_FAIL;
+        }
+
+        if ( !init )
+            LOG_INFO( _("Loaded braw lib from: ") << libpath );
+
+#ifdef OSX
+        CFRelease( clib );
+#endif
+        init = true;
+
+        return S_OK;
+    }
+
     brawImage::brawImage() :
         CMedia(),
         _scale( Preferences::BRAWScale ),
@@ -265,39 +303,7 @@ namespace mrv {
 
         // return false;
 
-        HRESULT result;
-
-        std::string libpath = mrv::Preferences::root;
-        libpath += "/lib";
-
-#ifdef WIN32
-        _bstr_t clib( libpath.c_str() );
-#elif LINUX
-        const char* clib = libpath.c_str();
-#elif OSX
-        CFStringRef clib = CFStringCreateWithCString( NULL,
-                                                      libpath.c_str(),
-                                                      kCFStringEncodingUTF8 );
-#endif
-
-        if ( factory == nullptr )
-        {
-            factory = CreateBlackmagicRawFactoryInstanceFromPath( clib );
-            if (factory == nullptr)
-            {
-#if defined(LINUX) || defined(_WIN64) || defined(OSX)
-                LOG_ERROR( _("Failed to create IBlackmagicRawFactory!") );
-                LOG_ERROR( _("Searched for braw lib in: ") << libpath );
-#endif
-                return false;
-            }
-            LOG_INFO( _("Loaded braw lib from: ") << libpath );
-        }
-
-#ifdef OSX
-        CFRelease( clib );
-#endif
-
+        HRESULT result = create_factory();
 
         IBlackmagicRaw* codec = nullptr;
         result = factory->CreateCodec(&codec);
@@ -508,7 +514,7 @@ namespace mrv {
             return false;
         }
 
-        HRESULT result;
+        HRESULT result = create_factory();
 
         result = factory->CreateCodec(&codec);
         if (result != S_OK)
@@ -744,8 +750,6 @@ namespace mrv {
             }
         }
 
-        init = true;
-
         return true;
     }
 
@@ -766,8 +770,6 @@ namespace mrv {
 
         delete [] audiobuffer;
         audiobuffer = NULL;
-
-        init = false;
 
         return true;
     }
