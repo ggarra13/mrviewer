@@ -125,7 +125,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-06 10:31-0300\n"
+"POT-Creation-Date: 2020-07-06 16:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9594,7 +9594,7 @@ msgstr ""
 msgid ".gif"
 msgstr ""
 
-#: core/oiioImage.cpp:448
+#: core/oiioImage.cpp:448 core/mrvImageOpts.cpp:43
 msgid ".hdr"
 msgstr ""
 
@@ -9610,7 +9610,7 @@ msgstr ""
 msgid ".icm"
 msgstr ""
 
-#: core/oiioImage.cpp:394 core/Sequence.cpp:243
+#: core/oiioImage.cpp:394 core/Sequence.cpp:243 core/mrvImageOpts.cpp:43
 msgid ".iff"
 msgstr ""
 
@@ -9728,7 +9728,7 @@ msgid ".pic"
 msgstr ""
 
 #: core/aviImage.cpp:2893 core/oiioImage.cpp:394 core/Sequence.cpp:244
-#: gui/mrvSave.cpp:79
+#: core/mrvImageOpts.cpp:43 gui/mrvSave.cpp:79
 msgid ".png"
 msgstr ""
 
@@ -9819,6 +9819,7 @@ msgid ".ts"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:73
+#: core/mrvImageOpts.cpp:43
 msgid ".tx"
 msgstr ""
 
@@ -27714,6 +27715,12 @@ msgid ""
 "and H."
 msgstr ""
 
+#: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2421
+msgid ""
+"When this option is on, the file requester to save the reel will default to "
+"the path of the first image loaded in the current reel."
+msgstr ""
+
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1357
 msgid ""
 "When this option is set, mrViewer will open in the position you set here "
@@ -27850,12 +27857,6 @@ msgstr ""
 
 #: gui/mrvVersion.cpp:546
 msgid "With msvc "
-msgstr ""
-
-#: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2421
-msgid ""
-"With this option on, saving of a reel will default to the path of the first "
-"image loaded."
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2430
