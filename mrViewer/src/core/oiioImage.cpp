@@ -436,7 +436,9 @@ bool oiioImage::save( const char* path, const CMedia* img,
     if ( channels >= 2 ) format = image_type::kRGB;
     if ( channels >= 4 ) format = image_type::kRGBA;
 
-    if ( pic->pixel_type() != pt || img->gamma() != 1.0f )
+    if ( pic->format() != format ||
+         pic->pixel_type() != pt ||
+         img->gamma() != 1.0f )
     {
         pixel_size = 1;
         if ( pt == image_type::kShort || pt == image_type::kHalf )
@@ -451,6 +453,8 @@ bool oiioImage::save( const char* path, const CMedia* img,
         channels = 3;
         format = image_type::kRGB;
     }
+
+
 
     ImageSpec spec( dw, dh, channels, type );
     spec.full_x = 0;
@@ -468,20 +472,17 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
     if ( opts->mipmap() )
     {
+        if ( must_convert )
+        {
+            prepare_image( pic, img, format, pt );
+        }
+
         ImageBuf ir( img->name(), spec, (void*)pic->data().get() );
         ImageBufAlgo::MakeTextureMode mode = ImageBufAlgo::MakeTxTexture;
         ImageSpec config;
         config.attribute ( N_("maketx:highlightcomp"), 1);
         config.attribute ( N_("maketx:filtername"), N_("lanczos3") );
         config.attribute ( N_("maketx:opaquedetect"), 1);
-        if ( must_convert && Preferences::use_ocio &&
-                Preferences::uiMain->uiView->use_lut() )
-        {
-            config.attribute ( N_("maketx:incolorspace"),
-                               img->ocio_input_color_space() );
-            const std::string& view = mrv::Preferences::OCIO_View;
-            config.attribute ( N_("maketx:outcolorspace"), view.c_str() );
-        }
 
         bool ok = ImageBufAlgo::make_texture( mode, ir, path, config, NULL );
         if ( !ok )

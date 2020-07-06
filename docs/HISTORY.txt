@@ -12,7 +12,8 @@ v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	  after creation (you had to advance a frame to fix it).
 	- Made BRAW factory creation output only one message upon first
 	  creation.
-	- Improved English documentation for mrViewer v5.5.*, Mac, etc.
+	- Improved English documentation for mrViewer v5.5.4, Mac, etc.
+	- Fixed MipMap creation of OIIO saving for YUV movies.
 
 v5.5.3  - Cleanup some repeated DLLs with different versions.
 	- Updated to latest version of boost and OpenEXR libraries.
@@ -966,9 +967,9 @@ v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
 	   The two syntaxes work on both platforms.  This allows the OCIO
 	   variable to be defined, like this example:
 	   under Linux syntax:
-	     $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
+		 $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
 	   or in Windows syntax:
-	     $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
+		 $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
 	   and then set SHOW and SHOT in the environment that calls mrViewer.
 	 - Made HDR shader show when _has_hdr is set.  This variable is only
 	   set when the shader type is GL.
@@ -1796,9 +1797,9 @@ v3.6.8   - Made timecode start editable in the Media Info Window.
 
 v3.6.7   - Made timecode be a separate variable, instead of modifying
 	   frame directly.  This means:
-	      * Frames, Seconds and Time do not take the timecode
+		  * Frames, Seconds and Time do not take the timecode
 		start into account.
-	      * Timecode Drop Frame and Timecode Non-Drop Frame take
+		  * Timecode Drop Frame and Timecode Non-Drop Frame take
 		timecode start into account.
 	 - Bug fixed OpenEXR timecode ( "timeCode" attribute ) to work
 	   as said in v3.6.6.
@@ -2032,7 +2033,7 @@ v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
 	 - Made GUI SOP and Saturation add 4 look mod transforms if
 	   not present:
 	   ACEScsc.ACES_to_ACEScg -> LMT.SOPNode ->
-		      LMT.SatNode -> ACEScsc.ACEScg_to_ACES
+			  LMT.SatNode -> ACEScsc.ACEScg_to_ACES
 	 - Made GUI SOP and Saturation turn on LUT automatically.
 	 - Made OpenGL use any fixed text if no font of 16 pixels is
 	   found.
@@ -2372,7 +2373,7 @@ v3.2.9   - It is now possible to switch audio device in the
 	   By default, the system default audio device is used.
 	 - In Windows, UNC network paths are now accepted.
 	   For example:
-	       //gga-desktop1/D/movies/test.mov
+		   //gga-desktop1/D/movies/test.mov
 	   They can be used from Drag and Drop.  Currently,
 	   it is not possible to type or pick them in yourself.
 
@@ -3244,11 +3245,11 @@ v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
 
 v2.6.6.1 - Reworked the Cache Preferences to allow:
 	   * Not using any cache for streaming images directly from disk.
-	     The performance of this is extremely dependant on the images being
-	     loaded.
+		 The performance of this is extremely dependant on the images being
+		 loaded.
 	   * 8 bit caches to save RAM at the expense of baking the gamma in.
 	   * Scale to proxy images (one half, one quarter or one eighth of the
-	     original size) also to save RAM.
+		 original size) also to save RAM.
 
 v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
 	   Progress goes from one sequence to the next.

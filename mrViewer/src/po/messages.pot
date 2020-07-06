@@ -125,7 +125,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-06 16:57-0300\n"
+"POT-Creation-Date: 2020-07-06 17:42-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9594,11 +9594,11 @@ msgstr ""
 msgid ".gif"
 msgstr ""
 
-#: core/oiioImage.cpp:448 core/mrvImageOpts.cpp:43
+#: core/oiioImage.cpp:450 core/mrvImageOpts.cpp:43
 msgid ".hdr"
 msgstr ""
 
-#: core/oiioImage.cpp:448
+#: core/oiioImage.cpp:450
 msgid ".hdri"
 msgstr ""
 
@@ -9758,7 +9758,7 @@ msgstr ""
 msgid ".rgb"
 msgstr ""
 
-#: core/oiioImage.cpp:448
+#: core/oiioImage.cpp:450
 msgid ".rgbe"
 msgstr ""
 
@@ -19392,7 +19392,7 @@ msgstr ""
 msgid "ImageBrowser::remove idx value ("
 msgstr ""
 
-#: core/oiioImage.cpp:489
+#: core/oiioImage.cpp:490
 msgid "ImageBufAlgo::make_texture failed."
 msgstr ""
 
@@ -19475,7 +19475,7 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1945
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1486
 #: core/exrImage.cpp:1154 core/exrImage.cpp:2450 core/exrImage.cpp:2451
-#: core/oiioImage.cpp:466 gui/mrvImageInformation.cpp:2778
+#: core/oiioImage.cpp:470 gui/mrvImageInformation.cpp:2778
 #: gui/mrvImageInformation.cpp:3202
 msgid "Input Color Space"
 msgstr ""
@@ -26451,7 +26451,7 @@ msgstr ""
 msgid "Too many audio offsets for fewer audios"
 msgstr ""
 
-#: core/oiioImage.cpp:450
+#: core/oiioImage.cpp:452
 msgid "Too many channels in image.  Saving RGB only"
 msgstr ""
 
@@ -32037,7 +32037,7 @@ msgstr ""
 msgid "label"
 msgstr ""
 
-#: core/oiioImage.cpp:475
+#: core/oiioImage.cpp:484
 msgid "lanczos3"
 msgstr ""
 
@@ -32289,24 +32289,16 @@ msgstr ""
 msgid "main"
 msgstr ""
 
-#: core/oiioImage.cpp:475
+#: core/oiioImage.cpp:484
 msgid "maketx:filtername"
 msgstr ""
 
-#: core/oiioImage.cpp:474
+#: core/oiioImage.cpp:483
 msgid "maketx:highlightcomp"
 msgstr ""
 
-#: core/oiioImage.cpp:480
-msgid "maketx:incolorspace"
-msgstr ""
-
-#: core/oiioImage.cpp:476
+#: core/oiioImage.cpp:485
 msgid "maketx:opaquedetect"
-msgstr ""
-
-#: core/oiioImage.cpp:483
-msgid "maketx:outcolorspace"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:677

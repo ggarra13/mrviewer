@@ -119,7 +119,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-06 16:57-0300\n"
+"POT-Creation-Date: 2020-07-06 17:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -9678,11 +9678,11 @@ msgstr ""
 msgid ".gif"
 msgstr ""
 
-#: core/oiioImage.cpp:448 core/mrvImageOpts.cpp:43
+#: core/oiioImage.cpp:450 core/mrvImageOpts.cpp:43
 msgid ".hdr"
 msgstr ""
 
-#: core/oiioImage.cpp:448
+#: core/oiioImage.cpp:450
 msgid ".hdri"
 msgstr ""
 
@@ -9842,7 +9842,7 @@ msgstr ""
 msgid ".rgb"
 msgstr ""
 
-#: core/oiioImage.cpp:448
+#: core/oiioImage.cpp:450
 msgid ".rgbe"
 msgstr ""
 
@@ -19745,7 +19745,7 @@ msgstr "Imagen/Actualiza un Cuadro del Cache"
 msgid "ImageBrowser::remove idx value ("
 msgstr "ImageBrowser::remove valor de índice ("
 
-#: core/oiioImage.cpp:489
+#: core/oiioImage.cpp:490
 msgid "ImageBufAlgo::make_texture failed."
 msgstr "ImageBufAlgo::make_texture falló."
 
@@ -19833,7 +19833,7 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1945
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1486
 #: core/exrImage.cpp:1154 core/exrImage.cpp:2450 core/exrImage.cpp:2451
-#: core/oiioImage.cpp:466 gui/mrvImageInformation.cpp:2778
+#: core/oiioImage.cpp:470 gui/mrvImageInformation.cpp:2778
 #: gui/mrvImageInformation.cpp:3202
 msgid "Input Color Space"
 msgstr "Espacio de Color de Entrada"
@@ -27269,7 +27269,7 @@ msgstr "Permutar Ventana de Forma de Onda"
 msgid "Too many audio offsets for fewer audios"
 msgstr "Demasiados offsets de audio para pocos audios."
 
-#: core/oiioImage.cpp:450
+#: core/oiioImage.cpp:452
 msgid "Too many channels in image.  Saving RGB only"
 msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 
@@ -28657,13 +28657,11 @@ msgstr ""
 "setées en W and H."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2421
-#, fuzzy
 msgid ""
 "When this option is on, the file requester to save the reel will default to "
 "the path of the first image loaded in the current reel."
 msgstr ""
-"Con esta opción activa, la grabación de un carrete se posicionará al camino "
-"de la primer imagen cargada."
+"Con esta opción activa, el buscador de archivos al grabar el carrete se colocara en la carpeta de la primer imagen cargada."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1357
 msgid ""
@@ -33060,7 +33058,7 @@ msgstr ""
 msgid "label"
 msgstr ""
 
-#: core/oiioImage.cpp:475
+#: core/oiioImage.cpp:484
 msgid "lanczos3"
 msgstr ""
 
@@ -33313,25 +33311,17 @@ msgstr ""
 msgid "main"
 msgstr "Faltante"
 
-#: core/oiioImage.cpp:475
+#: core/oiioImage.cpp:484
 msgid "maketx:filtername"
 msgstr ""
 
-#: core/oiioImage.cpp:474
+#: core/oiioImage.cpp:483
 msgid "maketx:highlightcomp"
 msgstr ""
 
-#: core/oiioImage.cpp:480
-msgid "maketx:incolorspace"
-msgstr "Obtuve el espacio de color '"
-
-#: core/oiioImage.cpp:476
+#: core/oiioImage.cpp:485
 msgid "maketx:opaquedetect"
 msgstr ""
-
-#: core/oiioImage.cpp:483
-msgid "maketx:outcolorspace"
-msgstr "Obtuve el espacio de color '"
 
 #
 #: gui/FLU/Flu_File_Chooser.cpp:677
@@ -37290,6 +37280,24 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:762
 msgid "~/"
 msgstr ""
+
+#, fuzzy
+#~ msgid "channels= "
+#~ msgstr " canales "
+
+#, fuzzy
+#~ msgid "format=   "
+#~ msgstr "formato "
+
+#~ msgid "maketx:incolorspace"
+#~ msgstr "Obtuve el espacio de color '"
+
+#~ msgid "maketx:outcolorspace"
+#~ msgstr "Obtuve el espacio de color '"
+
+#, fuzzy
+#~ msgid "type=     "
+#~ msgstr " tipo "
 
 #~ msgid "A single codec instance"
 #~ msgstr "Una sola instancia del codec"
