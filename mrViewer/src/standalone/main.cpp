@@ -249,6 +249,15 @@ int main( int argc, const char** argv )
     textdomain(buf);
 
 
+#ifdef OSX
+    Fl_Mac_App_Menu::about = _("About mrViewer");
+    Fl_Mac_App_Menu::hide = _("Hide mrViewer");
+    Fl_Mac_App_Menu::hide_others = _("Hide Others");
+    Fl_Mac_App_Menu::print = "";
+    Fl_Mac_App_Menu::quit = _("Quit mrViewer");
+    Fl_Mac_App_Menu::services = _("Services");
+    Fl_Mac_App_Menu::show = _("Show All");
+#endif
 
 
     DBG;
@@ -266,7 +275,11 @@ int main( int argc, const char** argv )
       Fl::lock();  // Start locking mechanism
       Fl::scheme("plastic");
 
+
+#ifdef OSX
       fl_open_callback( osx_open_cb );
+#endif
+
 
       try {
           DBG;

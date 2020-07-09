@@ -87,16 +87,6 @@ Fl_Double_Window( W, H, title )
         EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
     }
 
-#ifdef OSX
-    Fl_Mac_App_Menu::about = _("About ");
-    Fl_Mac_App_Menu::hide = _("Hide ");
-    Fl_Mac_App_Menu::hide_others = _("Hide Others");
-    Fl_Mac_App_Menu::print = "";
-    Fl_Mac_App_Menu::hide = _("Quit ");
-    Fl_Mac_App_Menu::services = _("Services");
-    Fl_Mac_App_Menu::show = _("Show All");
-
-#endif
 
 }
 

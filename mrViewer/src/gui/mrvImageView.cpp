@@ -91,6 +91,7 @@
 #include "mrvPopupMenu.h"
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Spinner.H>
+#include <FL/Fl_Sys_Menu_Bar.H>
 #include <FL/Fl_Preferences.H>
 
 
