@@ -1403,7 +1403,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     set_matrix( img, false );
 
     double x = 0.0, y = 0.0;
-    zrot2offsets( x, y, img );
+    //zrot2offsets( x, y, img );
 
     glRotated( img->rot_z(), 0, 0, 1 );
     translate( x + r.x(), y - r.y(), 0 );
@@ -1507,7 +1507,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     double zdeg = img->rot_z();
 
-    zrot2offsets( x, y, img );
+    //zrot2offsets( x, y, img );
 
     glRotated( zdeg, 0, 0, 1 );
     translate(  x + tw, - y - th, 0 );

@@ -92,12 +92,16 @@ struct Swizzle71
             tmp = ptr[2];
             ptr[2] = ptr[4];
             ptr[4] = tmp;
+
             tmp = ptr[3];
             ptr[3] = ptr[5];
             ptr[5] = tmp;
-            // tmp = ptr[6];
-            // ptr[6] = ptr[7];
-            // ptr[7] = tmp;
+
+#if 0
+            tmp = ptr[6];
+            ptr[6] = ptr[7];
+            ptr[7] = tmp;
+#endif
         }
     }
 };

@@ -36,8 +36,7 @@
 #include <inttypes.h>  // for PRId64
 
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Pack.H>
-#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Group.H>
 
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
@@ -52,6 +51,9 @@
 
 #define mrvPack MyPack
 
+class Fl_Box;
+class Fl_Input;
+
 class MyPack;
 class ViewerUI;
 
@@ -62,7 +64,7 @@ struct CtlLMTData;
 class ImageView;
 
 
-class ImageInformation : public Fl_Scroll
+class ImageInformation : public Fl_Group
 {
 
 public:
@@ -86,6 +88,7 @@ public:
         return uiMain;
     }
 
+    int line_height();
     void resize( int x, int y, int w, int h );
 
     ImageView*  view() const;
@@ -209,7 +212,6 @@ protected:
                    const bool editable = false,
                    Fl_Callback* callback = NULL );
 
-    int line_height();
     void fill_data();
     void process_attributes( mrv::CMedia::Attributes::const_iterator& i );
 
@@ -217,11 +219,16 @@ protected:
     CMedia*   img;
 
     Fl_Button*                   m_button;
+public:
     mrv::CollapsibleGroup*       m_image;
     mrv::CollapsibleGroup*       m_video;
     mrv::CollapsibleGroup*       m_audio;
     mrv::CollapsibleGroup*       m_subtitle;
+    Fl_Input* m_entry;
+    Fl_Scroll* m_scroll;
 
+protected:
+    Fl_Box* m_search;
 
     mrvPack*           m_all;
     mrv::Table*       m_curr;
