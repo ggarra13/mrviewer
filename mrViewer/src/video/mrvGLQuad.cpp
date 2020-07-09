@@ -1026,7 +1026,14 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
 
     CHECK_GL;
 
-    bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
+    // Mac OSX does not expose GLEW_EXT_texture3D.  We then compare against
+    // GLEW_VERSION_1_2.
+#ifdef OSX
+    bool ext_tex3d = GLEW_VERSION_1_2;
+#else
+    bool ext_tex3d = GLEW_EXT_texture3D;
+#endif
+    bool use_lut = _view->use_lut() && _lut && ext_tex3d;
 
 
     if ( _shader )
