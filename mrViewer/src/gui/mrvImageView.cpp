@@ -91,6 +91,7 @@
 #include "mrvPopupMenu.h"
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Spinner.H>
+#include <FL/Fl_Sys_Menu_Bar.H>
 #include <FL/Fl_Preferences.H>
 
 
@@ -1423,10 +1424,14 @@ void ImageView::send_network( std::string m ) const
     }
 }
 
+static void about_cb( Fl_Widget* o, mrv::ImageView* v )
+{
+  v->toggle_window( mrv::ImageView::kAbout );
+}
 
 static void static_timeout( mrv::ImageView* v )
 {
-    v->handle_timeout();
+  v->handle_timeout();
 }
 
 void ImageView::create_timeout( double t )
@@ -1504,6 +1509,10 @@ _lastFrame( 0 )
           FL_STENCIL | stereo );
 
     menu->type( Fl_Menu_Button::POPUP3 );
+
+#ifdef OSX
+    Fl_Sys_Menu_Bar::about( (Fl_Callback*)about_cb, this );
+#endif
 
     create_timeout( 0.25f / 60.0f );
 }

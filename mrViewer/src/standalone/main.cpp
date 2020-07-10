@@ -196,12 +196,7 @@ int main( int argc, const char** argv )
 
     // Create and install global locale
     try {
-        //std::locale::global(boost::locale::generator().generate(""));
-        const char* env = getenv("LC_ALL");
-        if ( !env )
-            std::locale::global( std::locale("") );
-        else
-            std::locale::global( std::locale(env) );
+        std::locale::global( std::locale("") );
         // Make boost.filesystem use it
         fs::path::imbue(std::locale());
     }
@@ -213,16 +208,17 @@ int main( int argc, const char** argv )
     DBG;
     if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
+
     DBG;
     char buf[1024];
-    sprintf( buf, "mrViewer%s", mrv::version() );
+    sprintf( buf, N_("mrViewer%s"), mrv::version() );
 
 #ifdef _WIN32
     int numArgs = 0;
     LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
     if ( args == NULL )
     {
-        LOG_ERROR( "CommandLineToArgvW failed" );
+        LOG_ERROR( N_("CommandLineToArgvW failed") );
         return -1;
     }
     fs::path file = fs::path( args[0] );
@@ -242,13 +238,22 @@ int main( int argc, const char** argv )
 #else
     std::string path = fs::canonical( dir ).generic_string();
 #endif
-    path += "/share/locale";
+    path += N_("/share/locale");
 
-    LOG_INFO( _("Looking for translations in ") << path );
+    LOG_INFO( N_("Looking for translations in ") << path );
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
 
 
+#ifdef OSX
+    Fl_Mac_App_Menu::about = _("About mrViewer");
+    Fl_Mac_App_Menu::hide = _("Hide mrViewer");
+    Fl_Mac_App_Menu::hide_others = _("Hide Others");
+    Fl_Mac_App_Menu::print = "";
+    Fl_Mac_App_Menu::quit = _("Quit mrViewer");
+    Fl_Mac_App_Menu::services = _("Services");
+    Fl_Mac_App_Menu::show = _("Show All");
+#endif
 
 
     DBG;
@@ -263,10 +268,13 @@ int main( int argc, const char** argv )
       std::string lockfile;
 
 
-      Fl::lock();  // Start locking mechanism
       Fl::scheme("plastic");
 
+
+#ifdef OSX
       fl_open_callback( osx_open_cb );
+#endif
+
 
       try {
           DBG;

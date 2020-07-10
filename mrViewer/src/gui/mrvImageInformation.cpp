@@ -35,6 +35,7 @@ using namespace std;
 
 #include <algorithm>
 
+#include <boost/regex.hpp>
 
 #include <ImfBoxAttribute.h>
 #include <ImfChromaticitiesAttribute.h>
@@ -747,10 +748,164 @@ ImageView* ImageInformation::view() const
     return uiMain->uiView;
 }
 
+int idx = -1;
+std::string old_match;
+int num_matches = 0;
+int match_goal = 1;
+
+static bool regex_match( float i, const std::string& regex, std::string text )
+{
+  boost::regex expr{ regex };
+  if ( boost::regex_search( text, expr ) ) {
+    ++num_matches;
+    if ( match_goal == num_matches )
+      {
+        idx = int(i - 0.5f);
+        return true;
+      }
+  }
+  return false;
+}
+
+
+int search_table( mrv::Table* t, float& row, const std::string& match )
+{
+  int rows = t->children();
+  for ( int i = 0; i < rows; ++i )
+    {
+      if ( ! t->parent()->visible() ) continue;
+
+      row += 0.5;
+      Fl_Widget* w = t->child(i);
+    tryagain:
+      if ( dynamic_cast< Fl_Input* >( w ) != NULL )
+        {
+          Fl_Input* input = (Fl_Input*) w;
+          if ( regex_match( row, match, input->value() ) )
+            break;
+        }
+      else if ( dynamic_cast< Fl_Output* >( w ) != NULL )
+        {
+          Fl_Output* output = (Fl_Output*) w;
+          if ( regex_match( row, match, output->value() ) )
+            break;
+        }
+      else if ( dynamic_cast< Fl_Group* >( w ) != NULL )
+        {
+          Fl_Group* g = (Fl_Group*) w;
+          w = (Fl_Widget*) g->child(0);
+          goto tryagain;
+        }
+      else
+        {
+          if ( !w->label() ) continue;
+          if ( regex_match( row, match, w->label() ) )
+            break;
+        }
+    }
+
+  return idx;
+}
+
+static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
+{
+  std::string match = info->m_entry->value();
+  num_matches = 0;
+
+  if ( match == old_match )
+    {
+      ++match_goal;
+    }
+  else
+    {
+      match_goal = 1;
+    }
+
+  old_match = match;
+  idx = -1;
+
+  int H = info->line_height() + 1;
+  int H2 = 56 - info->line_height();
+  int H3 = 12 + info->line_height();
+
+  MyPack* p = (MyPack*) info->m_image->child(1);
+  mrv::Table* t = (mrv::Table*) p->child(0);
+
+  float row = 0;
+  int pos = info->line_height();
+  if ( p->visible() ) pos += 32;
+
+  int idx = search_table( t, row, match );
+  if ( idx >= 0 ) {
+    info->m_scroll->scroll_to( 0, pos + idx*H );
+    return;
+  }
+
+  p = (MyPack*) info->m_video->child(1);
+  for ( int i = 0; i < p->children(); ++i )
+    {
+      t = (mrv::Table*) p->child(i);
+
+      if ( i == 0 ) pos += H3;
+      idx = search_table( t, row, match );
+      if ( p->visible() ) pos += H2;
+      if ( idx >= 0 ) {
+        info->m_scroll->scroll_to( 0, pos + idx*H );
+        return;
+      }
+    }
+
+  p = (MyPack*) info->m_audio->child(1);
+  for ( int i = 0; i < p->children(); ++i )
+    {
+      t = (mrv::Table*) p->child(i);
+
+      if ( i == 0 ) pos += H3;
+      idx = search_table( t, row, match );
+      if ( p->visible() ) pos += H2;
+      if ( idx >= 0 ) {
+        info->m_scroll->scroll_to( 0, pos + idx*H );
+        return;
+      }
+    }
+
+
+  p = (MyPack*) info->m_subtitle->child(1);
+  for ( int i = 0; i < p->children(); ++i )
+    {
+      t = (mrv::Table*) p->child(i);
+
+      if ( i == 0 ) pos += H3;
+      idx = search_table( t, row, match );
+      if ( p->visible() ) pos += H2;
+      if ( idx >= 0 ) {
+        info->m_scroll->scroll_to( 0, pos + idx*H );
+        return;
+      }
+    }
+
+  p = (MyPack*) info->m_attributes->child(1);
+  for ( int i = 0; i < p->children(); ++i )
+    {
+      t = (mrv::Table*) p->child(i);
+
+      if ( i == 0 ) pos += H3;
+      idx = search_table( t, row, match );
+      if ( p->visible() ) pos += H2;
+      if ( idx >= 0 ) {
+        info->m_scroll->scroll_to( 0, pos + idx*H );
+        return;
+      }
+    }
+
+  match_goal = 0;
+
+}
+
 
 ImageInformation::ImageInformation( int x, int y, int w, int h,
                                     const char* l ) :
-Fl_Scroll( x, y, w, h, l ),
+Fl_Group( x, y, w, h, l ),
 img( NULL ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 {
@@ -761,35 +916,58 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
                   w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
-    m_all = new mrvPack( r.x(), r.y(), r.w()-sw, 1200, "All" );
+    begin();
+
+    Fl_Group* g = new Fl_Group( r.x(), r.y(), r.w(), 30 );
+    {
+      m_search = new Fl_Box( r.x(), r.y(), 80, 30, "Search" );
+      m_search->box( FL_FLAT_BOX );
+
+      m_entry  = new Fl_Input( r.x()+80, r.y(), r.w()-80, 30 );
+      m_entry->textcolor( FL_BLACK );
+      m_entry->callback( (Fl_Callback*) search_cb, this );
+      // m_entry->when( FL_WHEN_ENTER_KEY | FL_WHEN_NOT_CHANGED );
+      m_entry->when( FL_WHEN_CHANGED | FL_WHEN_ENTER_KEY |
+                     FL_WHEN_NOT_CHANGED );
+    }
+    g->end();
+
+    m_scroll = new Fl_Scroll( r.x(), r.y()+30, r.w(), 800 );
+    m_scroll->begin();
+
+    m_all = new mrvPack( r.x(), r.y()+30, r.w()-sw, 800 );
     m_all->begin();
 
-    m_button = new Fl_Button( r.x(), r.y(), r.w(), 40, _("Left View") );
+    m_button = new Fl_Button( r.x(), r.y()+30, r.w(), 40, _("Left View") );
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
-
     // CollapsibleGrop recalcs, we don't care its xyh sizes
-    m_image = new mrv::CollapsibleGroup( 0, r.y()+40, r.w(),
-                                         840, _("Main")  );
+    m_image = new mrv::CollapsibleGroup( 0, r.y()+70, r.w(),
+                                         800, _("Main")  );
 
-    m_video = new mrv::CollapsibleGroup( r.x(), r.y()+840,
+    m_video = new mrv::CollapsibleGroup( r.x(), r.y()+870,
                                          r.w(), 400, _("Video") );
 
-    m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1240,
+    m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1270,
                                          r.w(), 400, _("Audio") );
 
 
-    m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1640,
+    m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1670,
                                             r.w(), 400, _("Subtitle") );
 
-    m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2040,
+    m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2070,
                                                r.w(), 400, _("Metadata")  );
 
     m_all->end();
 
-    // resizable( this );  // this seems broken, that's why I redo layout
+    m_scroll->end();
+
+
+    resizable( 0 );
     end();
+
+    m_entry->take_focus();
 
     hide_tabs();
 
@@ -855,7 +1033,7 @@ int ImageInformation::handle( int event )
     //               << ( e->label() ? e->label() : "none" ) << std::endl;
     // }
 
-    return Fl_Scroll::handle( event );
+    return Fl_Group::handle( event );
 }
 
 
@@ -3474,9 +3652,9 @@ void ImageInformation::refresh()
 void
 ImageInformation::resize( int x, int y, int w, int h )
 {
-    scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
+    m_scroll->scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
     m_all->resize( x, y, w, h );
-    Fl_Scroll::resize( x, y, w, h );
+    Fl_Group::resize( x, y, w, h );
 }
 
 mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
@@ -3486,21 +3664,16 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     X = 0;
     Y = g->y() + line_height();
 
-//    g->begin();
-
     mrv::Table* table = new mrv::Table( 0, Y, w(), 20 /*, g->label() */ );
     table->column_separator(true);
     table->auto_resize( true );
     table->labeltype(FL_NO_LABEL);
     table->col_width(0, kMiddle );
 
-
     static const char* headers[] = { _("Attribute"), _("Value"), 0 };
     table->column_labels( headers );
     table->align(FL_ALIGN_CENTER);
     table->end();
-
-    //  g->end();
 
     g->add( table );
 
