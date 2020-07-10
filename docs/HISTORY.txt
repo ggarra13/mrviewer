@@ -14,6 +14,13 @@ v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	  creation.
 	- Improved English documentation for mrViewer v5.5.4, Mac, etc.
 	- Fixed MipMap creation of OIIO saving for YUV movies.
+	- Made Mac System menu be translated in Spanish locale.
+	- Added about_cb callback to show the mrViewer about window.
+
+	*** IMPORTANT bug fix after first release ***
+
+	- Bug fixed LUT in Mac OSX due to a problem not detecting the
+	  texture3D extension in that OS.
 
 v5.5.3  - Cleanup some repeated DLLs with different versions.
 	- Updated to latest version of boost and OpenEXR libraries.
