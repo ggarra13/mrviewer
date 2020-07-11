@@ -2769,7 +2769,7 @@ void ImageInformation::fill_data()
 
     double aspect_ratio = 0;
     const mrv::Recti& daw = img->display_window();
-    const mrv::Recti& dpw = img->display_window();
+    mrv::Recti dpw = img->display_window();
     if ( daw.h() >= dpw.h() )
     {
         aspect_ratio = ( (double) daw.w() / (double) daw.h() );
@@ -2828,6 +2828,16 @@ void ImageInformation::fill_data()
     if ( dpw != window && dpw.w() != 0 )
     {
         add_rect( _("Data Window"), _("Data Window of Clip"), window );
+
+        if ( window.y() == 0 )
+        {
+          dpw.y( (int)img->height() - dpw.b() );
+        }
+        else
+        {
+          int top = window.y() - ( dpw.h() - window.h() - window.y() );
+          dpw.y( top );
+        }
     }
 
 
@@ -2836,18 +2846,30 @@ void ImageInformation::fill_data()
 
     if ( img->is_stereo() )
     {
+        mrv::Recti dpw2 = img->display_window2();
+
         const mrv::Recti& window2 = img->data_window2();
         if ( window != window2 )
         {
             add_rect( _("Data Window 2"), _("Second Data Window of Clip"),
                       window2 );
+
+            if ( window2.y() == 0 )
+            {
+              dpw2.y( (int)img->height() - dpw2.b() );
+            }
+            else
+            {
+              int top = window2.y() -
+                        ( dpw2.h() - window2.h() - window2.y() );
+              dpw2.y( top );
+            }
         }
 
-        const mrv::Recti& dwindow2 = img->display_window2();
-        if ( dpw != dwindow2 )
+        if ( dpw != dpw2 )
         {
             add_rect( _("Display Window 2"), _("Second Display Window of Clip"),
-                      dwindow2 );
+                      dpw2 );
         }
 
 

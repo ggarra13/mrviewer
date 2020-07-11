@@ -1,12 +1,17 @@
 v5.5.5  - Bug fixed accented characters in MacOS Spanish locale due to UTF-8
-	  not being set in GUI application.
-	- Bug fixed Display Window in OpenEXRs.
+	  not being set in a GUI application.
+	- Bug fixed Display Window in OpenEXRs.  Now they are displayed
+	  properly, as it had gotten broken many moons ago.
 	- Added pixel ratio in multiple frames.  Now it is possible to
 	  have a sequence with different pixel ratios in each frame.
 	- Bug fixed pixel coordinates when data window and display window
 	  did not match.
 	- Bug fixed Delete file in custom file requester.  Previously, it could
 	  crash.
+	- Added a "Search" input field to image information window.  It accepts
+	  regular expressions and it will search in both the attribute as well
+	  as its values for matches interactively (as long as playback is
+	  not on).
 
 v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	  of mrViewer.
