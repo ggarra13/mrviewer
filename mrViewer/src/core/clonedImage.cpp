@@ -65,7 +65,7 @@ namespace mrv {
     _gamma = other->gamma();
 
     image_size( ws, wh );
-    _pixel_ratio = other->pixel_ratio();
+    pixel_ratio( 0, other->pixel_ratio() );
 
     _num_channels = 1;
     const char* channel = other->channel();

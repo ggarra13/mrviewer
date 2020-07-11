@@ -318,12 +318,13 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
     tooltip( NULL );
 
+    int off[2];
     int xmin, ymin, xmax, ymax;
     bool right, bottom;
     mrv::Rectd selection = uiMain->uiView->selection();
 
     ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
-                                   right, bottom );
+                                   off, right, bottom );
 
     if ( right )
     {

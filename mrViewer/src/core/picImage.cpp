@@ -303,7 +303,6 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
             alpha_layers();
     }
 
-    _pixel_ratio = 1.0;
     _gamma = 1.0f;
 
     // Read pixel values

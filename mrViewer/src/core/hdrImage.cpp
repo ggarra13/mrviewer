@@ -223,9 +223,10 @@ void hdrImage::read_header( FILE* f )
         else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
         {
             const char* val = strtok_r( NULL, "=", &state );
-            _pixel_ratio = (float) atof( val );
+            double t = (double) atof( val );
+            if ( t <= 0.0f ) t = 1.0f;
+            pixel_ratio( t );
 
-            if ( _pixel_ratio <= 0.0f ) _pixel_ratio = 1.0f;
             continue;
         }
 

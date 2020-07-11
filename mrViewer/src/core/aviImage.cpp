@@ -822,8 +822,8 @@ void aviImage::open_video_codec()
         double image_ratio = (double) width() / (double)height();
         if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-        if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
-        else _pixel_ratio = aspect_ratio / image_ratio;
+        if ( image_ratio == aspect_ratio ) pixel_ratio( 0, 1.0 );
+        else pixel_ratio( 0, aspect_ratio / image_ratio );
     }
 
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );

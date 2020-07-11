@@ -1,5 +1,12 @@
 v5.5.5  - Bug fixed accented characters in MacOS Spanish locale due to UTF-8
 	  not being set in GUI application.
+	- Bug fixed Display Window in OpenEXRs.
+	- Added pixel ratio in multiple frames.  Now it is possible to
+	  have a sequence with different pixel ratios in each frame.
+	- Bug fixed pixel coordinates when data window and display window
+	  did not match.
+	- Bug fixed Delete file in custom file requester.  Previously, it could
+	  crash.
 
 v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	  of mrViewer.

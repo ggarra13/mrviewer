@@ -3048,9 +3048,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
   if( selection )
     {
 
-        // int handler = (intptr_t)(selection->user_data());
-      int * temp = (int *)(selection->user_data());
-      int handler = *temp ;
+      int handler = (intptr_t)(selection->user_data());
 
       switch( handler )
         {

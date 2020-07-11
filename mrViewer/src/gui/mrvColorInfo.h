@@ -59,7 +59,8 @@ public:
     static void selection_to_coord( const CMedia* img,
                                     const mrv::Rectd& selection,
                                     int& xmin, int& ymin, int& xmax,
-                                    int& ymax, bool& right, bool& bottom );
+                                    int& ymax, int off[2],
+                                    bool& right, bool& bottom );
 
 protected:
     ColorWidget*    dcol;
@@ -72,4 +73,3 @@ protected:
 } // namespace mrv
 
 #endif // mrvColorInfo_h
-

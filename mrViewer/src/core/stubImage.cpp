@@ -614,7 +614,6 @@ stubImage::stubImage( const CMedia* other ) :
     _gamma = other->gamma();
 
     image_size( ws, wh );
-    _pixel_ratio = other->pixel_ratio();
 
     stubImage* oStub = static_cast< stubImage* >( const_cast< CMedia*>(other) );
     _layers = oStub->layers();

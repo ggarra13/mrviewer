@@ -48,7 +48,6 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         _fileroot = av_strdup( "SMPTE NTSC Color Bars" );
         image_size( 720, 480 );
         allocate_pixels( _hires, _frameStart);
-        _pixel_ratio = 0.9f;
         _fps = 29.976f;
         NTSC_color_bars( _hires );
         ocio_input_color_space( "sRGB" );
@@ -58,7 +57,6 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         image_size( 720, 576 );
         allocate_pixels( _hires, _frameStart);
         _fps = 25.0f;
-        _pixel_ratio = 1.25f;
         NTSC_color_bars( _hires );
         ocio_input_color_space( "sRGB" );
         break;
@@ -67,7 +65,6 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         _fileroot = av_strdup( "PAL HDTV Color Bars" );
         image_size( 1920, 1080 );
         allocate_pixels( _hires, _frameStart);
-        _pixel_ratio = 1.0;
         _fps = 25.0f;
         NTSC_HDTV_color_bars( _hires);
 
@@ -91,7 +88,6 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
         _fileroot = av_strdup( "NTSC HDTV Color Bars" );
         image_size( 1920, 1080 );
         allocate_pixels( _hires, _frameStart);
-        _pixel_ratio = 1.0;
         _fps = 29.976f;
         NTSC_HDTV_color_bars( _hires );
         OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();

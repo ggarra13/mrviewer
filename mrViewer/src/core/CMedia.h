@@ -468,11 +468,13 @@ public:
     /// Save the image under a new filename, with options opts
     bool save( const char* filename, const ImageOpts* const opts ) const;
 
-    /// Set the image pixel ratio
-    inline void  pixel_ratio( double f ) {
-        _pixel_ratio = f;
-        refresh();
-    }
+  void pixel_ratio( int64_t f, double p );
+
+
+  /// Set the image pixel ratio
+  inline void  pixel_ratio( double f ) {
+    pixel_ratio( _frame, f );
+  }
 
     /////////////////// Set the image size, allocating a 4-float buffer
     void image_size( size_t w, size_t h );
@@ -768,10 +770,8 @@ public:
 
 
 
-    /// Return the image pixel ratio
-    inline double pixel_ratio() const    {
-        return _pixel_ratio;
-    }
+  /// Return the image pixel ratio
+  double pixel_ratio() const;
 
     /// Returns the file format of the image
     virtual const char* const format() const {
@@ -1931,7 +1931,7 @@ protected:
     std::atomic<double>  _fps;       //!< movie's original play speed (set by user)
     std::atomic<double> _orig_fps;   //!< movie's original play speed
 
-    double          _pixel_ratio;  //!< pixel ratio of image
+    double*         _pixel_ratio;  //!< pixel ratio of image
     unsigned        _num_channels; //!< number of channels
 
     // mostly unused --- keep?

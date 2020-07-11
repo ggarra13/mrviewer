@@ -4640,7 +4640,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     }
     {
         Fl_Int_Input* widget = new Fl_Int_Input( kMiddle+dw*2, Y, dw, hh );
-        sprintf( buf, "%d", content.r() );
+        sprintf( buf, "%d", content.r()-1 );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
@@ -4660,7 +4660,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     }
     {
         Fl_Int_Input* widget = new Fl_Int_Input( kMiddle+dw*3, Y, dw, hh );
-        sprintf( buf, "%d", content.b() );
+        sprintf( buf, "%d", content.b()-1 );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );

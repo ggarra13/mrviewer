@@ -911,7 +911,6 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
     glClearColor( r, g, b, a );
     glClearStencil( 0 );
     CHECK_GL;
-    check_framebuffer();
     glClear( GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT );
     CHECK_GL;
     glShadeModel( GL_FLAT );
@@ -1215,7 +1214,6 @@ void GLEngine::draw_square_stencil( const int x, const int y,
         double pr = 1.0 / _view->pixel_ratio();
         glScaled( 1.0, pr, 1.0 );
     }
-
 
     glBegin( GL_QUADS );
     {
@@ -2021,7 +2019,7 @@ void GLEngine::draw_images( ImageList& images )
                 int x = (int)img->x();
                 int y = (int)img->y();
                 draw_square_stencil( dpw.x() - x, dpw.y() + y,
-                                     dpw.w() + x, dpw.h() - y );
+                                     dpw.r() + x, dpw.b() - y );
             }
 
             if ( _view->data_window()  )

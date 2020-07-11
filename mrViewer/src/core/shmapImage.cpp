@@ -118,7 +118,7 @@ bool shmapImage::test(const boost::uint8_t *data, unsigned len)
  * @return true on success, false if not
  */
 bool shmapImage::fetch( mrv::image_type_ptr& canvas,
-			const boost::int64_t frame )
+      const boost::int64_t frame )
 {
     int dw, dh;
 
@@ -144,7 +144,6 @@ bool shmapImage::fetch( mrv::image_type_ptr& canvas,
         _num_channels = 1;
     }
 
-    _pixel_ratio = 1.0;
     _gamma = 1.0f;
 
     const char* ch = channel();

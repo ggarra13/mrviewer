@@ -151,7 +151,6 @@ bool pxrzImage::fetch( mrv::image_type_ptr& canvas,
         _num_channels = 1;
     }
 
-    _pixel_ratio = 1.0;
     _gamma = 1.0f;
 
     const char* ch = channel();

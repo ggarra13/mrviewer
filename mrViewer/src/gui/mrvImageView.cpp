@@ -30,7 +30,10 @@
 #include <inttypes.h>  // for PRId64
 
 
+#ifdef DEBUG
 #define NETWORK_COMMANDS
+#endif
+
 #ifdef NETWORK_COMMANDS
 #  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << " for " << name << std::endl;
 #else
@@ -1861,8 +1864,9 @@ void ImageView::copy_pixel() const
 
     mrv::image_type_ptr pic;
     bool outside = false;
+    int off[2];
     int xp, yp, w, h;
-    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
 
     if ( outside || !pic ) return;
 
@@ -4291,8 +4295,10 @@ int ImageView::leftMouseDown(int x, int y)
 
                 mrv::image_type_ptr pic;
                 bool outside = false;
+                int off[2];
                 int xp, yp, w, h;
-                picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+                picture_coordinates( img, x, y, outside, pic, xp, yp, w, h,
+                                     off );
 
                 // std::cerr << "x,y " << x << ", " << y << " outside " << outside
                 //           << std::endl;
@@ -5347,7 +5353,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
                                      const int y, bool& outside,
                                      mrv::image_type_ptr& pic,
                                      int& xp, int& yp,
-                                     int& w, int& h ) const
+                                     int& w, int& h, int off[2] ) const
 {
     assert( img != NULL );
     outside = false;
@@ -5424,9 +5430,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
         left_right( img, pic, xp, yp, idx, outside, w, h );
     }
 
-    xp -= daw[idx].x();
-    yp -= daw[idx].y();
-
+    xp -= off[0] = daw[idx].x();
+    yp -= off[1] = daw[idx].y();
 
     if ( output == CMedia::kStereoInterlaced )
     {
@@ -5508,7 +5513,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
 
     if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
-            yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
+         yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
     {
         outside = true;
     }
@@ -5557,16 +5562,19 @@ void ImageView::mouseMove(int x, int y)
 
     mrv::image_type_ptr pic;
     bool outside = false;
+    int off[2];
     int xp = x, yp = y, w, h;
-    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
     if ( !pic ) return;
 
     double xpct = 1.0 / img->scale_x();
     double ypct = 1.0 / img->scale_y();
 
     int ypr = pic->height() - yp - 1;
+    off[0] += xp;
+    off[1] += ypr;
     char buf[40];
-    sprintf( buf, "%5d, %5d", xp, ypr );
+    sprintf( buf, "%5d, %5d", off[0], off[1] );
     uiMain->uiCoord->value(buf);
 
     CMedia::Pixel rgba;

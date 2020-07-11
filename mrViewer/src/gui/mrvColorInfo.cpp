@@ -292,7 +292,8 @@ void ColorInfo::update()
 void ColorInfo::selection_to_coord( const CMedia* img,
                                     const mrv::Rectd& selection,
                                     int& xmin, int& ymin, int& xmax,
-                                    int& ymax, bool& right, bool& bottom )
+                                    int& ymax, int off[2],
+                                    bool& right, bool& bottom )
 {
     const mrv::Recti& dpw = img->display_window();
     const mrv::Recti& daw = img->data_window();
@@ -316,8 +317,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
     {
         W = dpw2.w();
         H = dpw2.h();
-        xmin -= daw2.x();
-        ymin -= daw2.y();
+        xmin -= off[0] = daw2.x();
+        ymin -= off[1] = daw2.y();
         right = true;
     }
     else if ( selection.x() >= W &&
@@ -327,15 +328,15 @@ void ColorInfo::selection_to_coord( const CMedia* img,
         H = dpw2.h();
         if ( output & CMedia::kStereoRight )
         {
-            xmin -= daw.x();
-            ymin -= daw.y();
+            xmin -= off[0] = daw.x();
+            ymin -= off[1] = daw.y();
             if ( input & CMedia::kTopBottomStereoInput )
                 ymin -= ht;
         }
         else
         {
-            xmin -= daw2.x();
-            ymin -= daw2.y();
+            xmin -= off[0] = daw2.x();
+            ymin -= off[1] = daw2.y();
         }
         xmin -= wt;
         right = true;
@@ -347,15 +348,15 @@ void ColorInfo::selection_to_coord( const CMedia* img,
         H = dpw2.h();
         if ( output & CMedia::kStereoRight )
         {
-            xmin -= daw.x();
-            ymin -= daw.y();
+            xmin -= off[0] = daw.x();
+            ymin -= off[1] = daw.y();
             if ( input & CMedia::kLeftRightStereoInput )
                 xmin -= wt;
         }
         else
         {
-            xmin -= daw2.x();
-            ymin -= daw2.y();
+            xmin -= off[0] = daw2.x();
+            ymin -= off[1] = daw2.y();
         }
         ymin -= ht;
         bottom = true;
@@ -364,13 +365,13 @@ void ColorInfo::selection_to_coord( const CMedia* img,
     {
         if ( output & CMedia::kStereoRight )
         {
-            xmin -= daw2.x();
-            ymin -= daw2.y();
+            xmin -= off[0] = daw2.x();
+            ymin -= off[1] = daw2.y();
         }
         else
         {
-            xmin -= daw.x();
-            ymin -= daw.y();
+            xmin -= off[0] = daw.x();
+            ymin -= off[1] = daw.y();
         }
     }
 
@@ -464,10 +465,11 @@ void ColorInfo::update( const CMedia* img,
 
         unsigned count = 0;
 
+        int off[2];
         int xmin, ymin, xmax, ymax;
         bool right = false;
         bool bottom = false;
-        selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
+        selection_to_coord( img, selection, xmin, ymin, xmax, ymax, off,
                             right, bottom );
 
         CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
@@ -535,10 +537,13 @@ void ColorInfo::update( const CMedia* img,
         unsigned spanY = ymax-ymin+1;
         unsigned numPixels = spanX * spanY;
 
+
+
         text << std::endl
-             << _("Area") << ": (" << xmin << ", " << ( H - ymax - 1 )
-             << ") - (" << xmax
-             << ", " << ( H - ymin - 1 ) << ")" << std::endl
+             << _("Area") << ": (" << ( xmin + off[0]  )
+             << ", " << ( H - ymax - 1 + off[1] )
+             << ") - (" << ( xmax + off[0] )
+             << ", " << ( H - ymin - 1 + off[1] ) << ")" << std::endl
              << _("Size") << ": [ " << spanX << "x" << spanY << " ] = "
              << numPixels << " "
              << ( numPixels == 1 ? _("pixel") : _("pixels") )

@@ -84,6 +84,8 @@ namespace fs = boost::filesystem;
 #include "core/aviImage.h"
 #include "core/R3dImage.h"
 #include "core/brawImage.h"
+#include "core/clonedImage.h"
+#include "core/mrvColorBarsImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -394,7 +396,7 @@ _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
 _orig_fps( 0 ),
-_pixel_ratio( 1.0f ),
+_pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
@@ -509,7 +511,7 @@ _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
 _orig_fps( 0 ),
-_pixel_ratio( 1.0f ),
+_pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
@@ -624,7 +626,7 @@ _real_fps( 0 ),
 _play_fps( other->_play_fps.load() ),
 _fps( other->_fps.load() ),
 _orig_fps( other->_orig_fps.load() ),
-_pixel_ratio( other->_pixel_ratio ),
+_pixel_ratio( NULL ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
@@ -864,6 +866,9 @@ CMedia::~CMedia()
 
     delete [] _displayWindow2;
     _displayWindow2 = NULL;
+
+    delete [] _pixel_ratio;
+    _pixel_ratio = NULL;
 
 
     av_free( _subtitle_encoding );
@@ -1136,6 +1141,42 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
     return true;
 }
 
+/// Set the image pixel ratio
+void CMedia::pixel_ratio( int64_t f, double p ) {
+  if ( !_pixel_ratio )
+    {
+      int64_t num;
+      if ( dynamic_cast< aviImage* >( this ) != NULL ||
+           dynamic_cast< brawImage* >( this ) != NULL ||
+           dynamic_cast< R3dImage* >( this ) != NULL ||
+           dynamic_cast< clonedImage* >( this ) != NULL||
+           dynamic_cast< ColorBarsImage* >( this ) != NULL )
+        num = 1;
+      else
+        num = _frame_end - _frame_start + 1;
+      _pixel_ratio = new double[ num ];
+    }
+  int64_t idx = f - _frame_start;
+  if ( dynamic_cast< aviImage* >(this) != NULL ||
+       dynamic_cast< brawImage* >( this ) != NULL ||
+       dynamic_cast< R3dImage* >( this ) != NULL ||
+       dynamic_cast< clonedImage* >( this ) != NULL ||
+       dynamic_cast< ColorBarsImage* >( this ) != NULL )
+    idx = 0;
+  _pixel_ratio[idx] = p;
+  refresh();
+}
+
+double CMedia::pixel_ratio() const    {
+  int64_t idx = _frame - _frame_start;
+  if ( dynamic_cast< const aviImage* >(this) != NULL ||
+       dynamic_cast< const brawImage* >( this ) != NULL ||
+       dynamic_cast< const R3dImage* >( this ) != NULL ||
+       dynamic_cast< const clonedImage* >( this ) != NULL ||
+       dynamic_cast< const ColorBarsImage* >( this ) != NULL )
+    idx = 0;
+  return _pixel_ratio[idx];
+}
 
 mrv::image_type_ptr CMedia::left() const
 {
@@ -1817,88 +1858,89 @@ void CMedia::image_size( size_t w, size_t h )
     _w = w;
     _h = h;
 
-    _pixel_ratio = 1.0f;
+
+    pixel_ratio( _frame_start, 1.0f );
 
     // Derive pixel ratio from common format resolutions
     if ( w == 720 && h == 486 )
-    {
-        _pixel_ratio = 0.9f;    // 4:3 NTSC
+      {
+        pixel_ratio( _frame_start, 0.9f );    // 4:3 NTSC
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 640 && h == 480 )
-    {
-        _pixel_ratio = 1.0f;    // 4:3 NTSC
+      {
+        pixel_ratio( _frame_start, 1.0f );    // 4:3 NTSC
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 720 && h == 480 )
-    {
-        _pixel_ratio = 0.88888f;    // 4:3 NTSC
+      {
+        pixel_ratio( _frame_start, 0.88888f );    // 4:3 NTSC
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 512 && h == 486 )
-    {
-        _pixel_ratio = 1.265f;  // 4:3 Targa 486
+      {
+        pixel_ratio( _frame_start, 1.265f );  // 4:3 Targa 486
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 512 && h == 482 )
-    {
-        _pixel_ratio = 1.255f;  // 4:3 Targa NTSC
+      {
+        pixel_ratio( _frame_start, 1.255f );  // 4:3 Targa NTSC
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 512 && h == 576 )
-    {
-        _pixel_ratio = 1.5f;    // 4:3 Targa PAL
+      {
+        pixel_ratio( _frame_start, 1.5f );    // 4:3 Targa PAL
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
-    }
+      }
     else if ( w == 646 && h == 485 )
-    {
-        _pixel_ratio = 1.001f;  // 4:3 NTSC
+      {
+        pixel_ratio( _frame_start, 1.001f );  // 4:3 NTSC
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 720 && h == 576 )
-    {
-        _pixel_ratio = 1.066f;  // 4:3 PAL
+      {
+        pixel_ratio( _frame_start, 1.066f );  // 4:3 PAL
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
-    }
+      }
     else if ( w == 780 && h == 576 )
-    {
-        _pixel_ratio = 0.984f;  // 4:3 PAL
+      {
+        pixel_ratio( _frame_start, 0.984f );  // 4:3 PAL
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
-    }
+      }
     else if ( w == 1280 && h == 1024 )
-    {
-        _pixel_ratio = 1.066f; // HDTV full
+      {
+        pixel_ratio( _frame_start, 1.066f ); // HDTV full
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
     else if ( w == 1920 && h == 1080 )
-    {
-        _pixel_ratio = 1.0f; // HDTV full
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // HDTV full
+      }
     else if ( w == 2048 && h == 1556 )
-    {
-        _pixel_ratio = 1.0f; // 2K full
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // 2K full
+      }
     else if ( w == 3840 && h == 2160 )
-    {
-        _pixel_ratio = 1.0f; // 4K HD
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // 4K HD
+      }
     else if ( w == 4096 && h == 2304 )
-    {
-        _pixel_ratio = 1.0f; // 4K full
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // 4K full
+      }
     else if ( w == 7680 && h == 4320 )
-    {
-        _pixel_ratio = 1.0f; // 8K full
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // 8K full
+      }
     else if ( w == 8192 && h == 4320 )
-    {
-        _pixel_ratio = 1.0f; // 8K full
-    }
+      {
+        pixel_ratio( _frame_start, 1.0f ); // 8K full
+      }
     else if ( (float)w/(float)h == 1.56 )
-    {
-        _pixel_ratio = 0.9f;   // HTDV/SD compromise
+      {
+        pixel_ratio( _frame_start, 0.9f );   // HTDV/SD compromise
         if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
-    }
+      }
 
     if ( _fps == 0 )
     {

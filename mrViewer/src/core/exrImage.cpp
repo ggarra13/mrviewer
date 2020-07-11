@@ -578,7 +578,7 @@ bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
         bool ok = find_channels( canvas, h, fb, frame );
         if ( !ok ) return false;
 
-        _pixel_ratio = h.pixelAspectRatio();
+        pixel_ratio( frame, h.pixelAspectRatio() );
         _lineOrder   = h.lineOrder();
         _compression = h.compression();
 
@@ -1875,7 +1875,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
 
 
 
-                _pixel_ratio = header.pixelAspectRatio();
+                pixel_ratio( frame, h.pixelAspectRatio() );
                 _lineOrder   = header.lineOrder();
                 _compression = header.compression();
 
@@ -2205,7 +2205,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                 return false;
             }
 
-            _pixel_ratio = header.pixelAspectRatio();
+            pixel_ratio( frame, header.pixelAspectRatio() );
             _lineOrder   = header.lineOrder();
             _compression = header.compression();
 
@@ -2285,7 +2285,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
         }
 
 
-        _pixel_ratio = header.pixelAspectRatio();
+        pixel_ratio( frame, header.pixelAspectRatio() );
         _lineOrder   = header.lineOrder();
         _compression = header.compression();
 
@@ -2314,7 +2314,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                 return false;
             }
 
-            _pixel_ratio = header.pixelAspectRatio();
+            pixel_ratio( frame, header.pixelAspectRatio() );
             _lineOrder   = header.lineOrder();
             _compression = header.compression();
 
