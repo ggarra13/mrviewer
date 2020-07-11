@@ -114,12 +114,12 @@
 #: standalone/mrvCommandLine.cpp:408 standalone/mrvCommandLine.cpp:584
 #: standalone/mrvCommandLine.cpp:608 standalone/main.cpp:88
 #: standalone/main.cpp:125 standalone/main.cpp:126 standalone/main.cpp:195
-#: standalone/main.cpp:199 standalone/main.cpp:252
+#: standalone/main.cpp:202 standalone/main.cpp:255
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-10 00:14-0300\n"
+"POT-Creation-Date: 2020-07-11 07:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3936,7 +3936,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " hz."
 msgstr ""
 
-#: standalone/main.cpp:354
+#: standalone/main.cpp:357
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -6009,8 +6009,8 @@ msgstr ""
 #: core/aviImage.cpp:2896 gui/mrvImageInformation.cpp:1879
 #: gui/mrvImageInformation.cpp:1928 gui/mrvImageInformation.cpp:4568
 #: gui/mrvMediaTrack.cpp:843 gui/mrvMediaTrack.cpp:856 gui/mrvTimecode.cpp:296
-#: standalone/main.cpp:333 standalone/main.cpp:336 standalone/main.cpp:339
-#: standalone/main.cpp:342
+#: standalone/main.cpp:336 standalone/main.cpp:339 standalone/main.cpp:342
+#: standalone/main.cpp:345
 #, c-format
 msgid "%<PRId64>"
 msgstr "s"
@@ -6081,7 +6081,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:4643 gui/mrvImageInformation.cpp:4663
 #: gui/mrvImageInformation.cpp:4684 gui/mrvImageInformation.cpp:4697
 #: gui/mrvPreferences.cpp:1854 standalone/mrvCommandLine.cpp:263
-#: standalone/main.cpp:479
+#: standalone/main.cpp:482
 #, c-format
 msgid "%d"
 msgstr ""
@@ -7133,7 +7133,7 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
-#: standalone/main.cpp:314
+#: standalone/main.cpp:317
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Remuévala si mrViewer no arranca)"
 
@@ -8411,9 +8411,9 @@ msgstr ""
 #: video/mrvGLEngine.cpp:3296 video/mrvGLEngine.cpp:3297
 #: video/mrvGLEngine.cpp:4100 video/mrvGLEngine.cpp:4104
 #: video/mrvGLEngine.cpp:4108 video/mrvGLEngine.cpp:4111
-#: standalone/main.cpp:386 standalone/main.cpp:387 standalone/main.cpp:424
-#: standalone/main.cpp:425 standalone/main.cpp:426 standalone/main.cpp:427
+#: standalone/main.cpp:389 standalone/main.cpp:390 standalone/main.cpp:427
 #: standalone/main.cpp:428 standalone/main.cpp:429 standalone/main.cpp:430
+#: standalone/main.cpp:431 standalone/main.cpp:432 standalone/main.cpp:433
 msgid ", "
 msgstr ""
 
@@ -8929,7 +8929,7 @@ msgstr ""
 msgid ".\tc #FFFFFF"
 msgstr ""
 
-#: standalone/main.cpp:313
+#: standalone/main.cpp:316
 msgid ". "
 msgstr ""
 
@@ -10211,7 +10211,7 @@ msgstr ""
 msgid "/shaders"
 msgstr ""
 
-#: standalone/main.cpp:241
+#: standalone/main.cpp:244
 msgid "/share/locale"
 msgstr ""
 
@@ -13698,7 +13698,7 @@ msgid "About"
 msgstr "Acerca de mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
-#: standalone/main.cpp:249
+#: standalone/main.cpp:252
 msgid "About mrViewer"
 msgstr "Acerca de mrViewer"
 
@@ -13990,7 +13990,7 @@ msgstr "YDbDr (SECAM/PAL-N Analógico)"
 msgid "Another application already has priority"
 msgstr ""
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:355
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -14623,7 +14623,7 @@ msgstr "Ganancia de los Azules del clip"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:531
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:534
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -14640,7 +14640,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferior"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:405 standalone/main.cpp:425
+#: standalone/main.cpp:408 standalone/main.cpp:428
 msgid "Bottom/top"
 msgstr "Inferior/Superior"
 
@@ -15151,7 +15151,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:415 standalone/main.cpp:429
+#: standalone/main.cpp:418 standalone/main.cpp:432
 msgid "Checkerboard pattern"
 msgstr "Cuadriculado"
 
@@ -15423,7 +15423,7 @@ msgstr ""
 msgid "Colorspace details not set "
 msgstr "No pude setear detalles de espacio de color "
 
-#: standalone/main.cpp:221
+#: standalone/main.cpp:224
 msgid "CommandLineToArgvW failed"
 msgstr ""
 
@@ -16079,11 +16079,11 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "No pude relocalizar el buffer fifo. Error: "
 
-#: standalone/main.cpp:152 standalone/main.cpp:307
+#: standalone/main.cpp:152 standalone/main.cpp:310
 msgid "Could not remove lock file"
 msgstr " No pude abrir el archivo"
 
-#: standalone/main.cpp:523
+#: standalone/main.cpp:526
 msgid "Could not remove lock file!"
 msgstr " No pude abrir el archivo"
 
@@ -16523,7 +16523,7 @@ msgstr "Cortar Clip en el lugar actual"
 
 #
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:419 standalone/main.cpp:431
+#: standalone/main.cpp:422 standalone/main.cpp:434
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
@@ -17552,12 +17552,12 @@ msgid "Escape"
 msgstr "Escape"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:413 standalone/main.cpp:428
+#: standalone/main.cpp:416 standalone/main.cpp:431
 msgid "Even/odd columns"
 msgstr "Impar/par columnas"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:411 standalone/main.cpp:427
+#: standalone/main.cpp:414 standalone/main.cpp:430
 msgid "Even/odd rows"
 msgstr "Impar/par renglones"
 
@@ -18129,7 +18129,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:527
+#: standalone/main.cpp:530
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -19123,11 +19123,11 @@ msgstr "Hex"
 msgid "Hex Values"
 msgstr "Valores Hexadecimales"
 
-#: standalone/main.cpp:251
+#: standalone/main.cpp:254
 msgid "Hide Others"
 msgstr "Ocultar las Demás"
 
-#: standalone/main.cpp:250
+#: standalone/main.cpp:253
 msgid "Hide mrViewer"
 msgstr "Ocultar mrViewer"
 
@@ -20359,6 +20359,10 @@ msgstr ""
 msgid "L:R"
 msgstr ""
 
+#: standalone/main.cpp:200
+msgid "LC_CTYPE"
+msgstr ""
+
 #: gui/mrvImageView.cpp:318
 msgid "LEFT"
 msgstr ""
@@ -20478,14 +20482,14 @@ msgid "Left View"
 msgstr "Vista Izquierda"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
-#: standalone/main.cpp:397 standalone/main.cpp:424
+#: standalone/main.cpp:400 standalone/main.cpp:427
 msgid "Left view"
 msgstr "Vista Izquierda"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:381 standalone/main.cpp:387 standalone/main.cpp:407
-#: standalone/main.cpp:426
+#: standalone/main.cpp:384 standalone/main.cpp:390 standalone/main.cpp:410
+#: standalone/main.cpp:429
 msgid "Left/right"
 msgstr "Izquierda/derecha"
 
@@ -20687,7 +20691,7 @@ msgstr "Disco Local"
 msgid "Location"
 msgstr "Localidad"
 
-#: standalone/main.cpp:313
+#: standalone/main.cpp:316
 msgid "Lockfile "
 msgstr "Archivo cerrojo "
 
@@ -20724,7 +20728,7 @@ msgstr "Longitud"
 msgid "Looked for it in: "
 msgstr ""
 
-#: standalone/main.cpp:243
+#: standalone/main.cpp:246
 msgid "Looking for translations in "
 msgstr ""
 
@@ -23194,7 +23198,7 @@ msgstr "Calidad"
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
-#: standalone/main.cpp:253
+#: standalone/main.cpp:256
 msgid "Quit mrViewer"
 msgstr "Salir de mrViewer"
 
@@ -23657,7 +23661,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valor Rojo del pixel de imagen bajo el mouse."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:417 standalone/main.cpp:430
+#: standalone/main.cpp:420 standalone/main.cpp:433
 msgid "Red/cyan glasses"
 msgstr "Lentes Rojo/cian"
 
@@ -23900,12 +23904,12 @@ msgid "Right View"
 msgstr "Vista Derecha"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:399 standalone/main.cpp:424
+#: standalone/main.cpp:402 standalone/main.cpp:427
 msgid "Right view"
 msgstr "Vista Derecha"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:409 standalone/main.cpp:426
+#: standalone/main.cpp:412 standalone/main.cpp:429
 msgid "Right/left"
 msgstr "Derecha/izquierda"
 
@@ -25809,7 +25813,7 @@ msgid "Sep"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:25
-#: standalone/main.cpp:377 standalone/main.cpp:386
+#: standalone/main.cpp:380 standalone/main.cpp:389
 msgid "Separate layers"
 msgstr "Capas separadas"
 
@@ -25826,7 +25830,7 @@ msgstr "Secuencias"
 msgid "Server"
 msgstr "Servidor"
 
-#: standalone/main.cpp:254
+#: standalone/main.cpp:257
 msgid "Services"
 msgstr "Servicios"
 
@@ -25969,7 +25973,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: standalone/main.cpp:255
+#: standalone/main.cpp:258
 msgid "Show All"
 msgstr "Mostrar Todas"
 
@@ -26151,16 +26155,16 @@ msgstr "Opciones de Estéreo 3D"
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
-#: standalone/main.cpp:385
+#: standalone/main.cpp:388
 msgid "Stereo Input is invalid.  Valid values are: "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:401
+#: standalone/main.cpp:404
 msgid "Stereo OpenGL"
 msgstr "Estéreo OpenGL"
 
-#: standalone/main.cpp:423
+#: standalone/main.cpp:426
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr ""
 
@@ -27299,8 +27303,8 @@ msgstr "Campo Superior"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:26
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:379 standalone/main.cpp:386 standalone/main.cpp:403
-#: standalone/main.cpp:425
+#: standalone/main.cpp:382 standalone/main.cpp:389 standalone/main.cpp:406
+#: standalone/main.cpp:428
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -27509,6 +27513,7 @@ msgid "UTF-16"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:815
+#: standalone/main.cpp:200
 msgid "UTF-8"
 msgstr ""
 
@@ -27547,7 +27552,7 @@ msgstr ""
 msgid "Unhandled Exception"
 msgstr "Excepción sin manejo"
 
-#: standalone/main.cpp:515
+#: standalone/main.cpp:518
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -27653,7 +27658,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:535
+#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:538
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -30353,7 +30358,7 @@ msgstr ""
 #: core/CMedia.cpp:3177 core/CMedia.cpp:3208 core/CMedia_audio.cpp:83
 #: core/aviImage_save.cpp:1515 gui/mrvPreferences.cpp:826
 #: gui/mrvPreferences.cpp:2389 standalone/mrvCommandLine.cpp:388
-#: standalone/main.cpp:126 standalone/main.cpp:331
+#: standalone/main.cpp:126 standalone/main.cpp:334
 msgid "audio"
 msgstr "audio"
 
@@ -31070,11 +31075,11 @@ msgstr "Compresión"
 msgid "config"
 msgstr ""
 
-#: standalone/main.cpp:558
+#: standalone/main.cpp:561
 msgid "conin$"
 msgstr ""
 
-#: standalone/main.cpp:559 standalone/main.cpp:560
+#: standalone/main.cpp:562 standalone/main.cpp:563
 msgid "conout$"
 msgstr ""
 
@@ -31629,7 +31634,7 @@ msgstr ""
 msgid "encoding"
 msgstr " codificando"
 
-#: standalone/main.cpp:130 standalone/main.cpp:343
+#: standalone/main.cpp:130 standalone/main.cpp:346
 msgid "end"
 msgstr "Fin"
 
@@ -31823,7 +31828,7 @@ msgstr "Imagen"
 msgid "file"
 msgstr "archivos"
 
-#: standalone/main.cpp:327
+#: standalone/main.cpp:330
 #, c-format
 msgid "file%d"
 msgstr "archivos"
@@ -31849,7 +31854,7 @@ msgid "file_requester"
 msgstr "Buscador de Archivos"
 
 #: gui/mrvPreferences.cpp:642 gui/mrvPreferences.cpp:2267
-#: standalone/main.cpp:125 standalone/main.cpp:330
+#: standalone/main.cpp:125 standalone/main.cpp:333
 msgid "filename"
 msgstr "Nombre"
 
@@ -31875,8 +31880,8 @@ msgid "filmType"
 msgstr "Tipo"
 
 #: gui/mrvPreferences.cpp:357 gui/mrvPreferences.cpp:2161
-#: standalone/main.cpp:104 standalone/main.cpp:155 standalone/main.cpp:320
-#: standalone/main.cpp:363
+#: standalone/main.cpp:104 standalone/main.cpp:155 standalone/main.cpp:323
+#: standalone/main.cpp:366
 msgid "filmaura"
 msgstr ""
 
@@ -31893,7 +31898,7 @@ msgstr "busca_imagen: cuadro "
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
-#: standalone/main.cpp:127 standalone/main.cpp:334
+#: standalone/main.cpp:127 standalone/main.cpp:337
 msgid "first"
 msgstr ""
 
@@ -33075,7 +33080,7 @@ msgstr ""
 msgid "language"
 msgstr "Lenguaje"
 
-#: standalone/main.cpp:128 standalone/main.cpp:337
+#: standalone/main.cpp:128 standalone/main.cpp:340
 msgid "last"
 msgstr ""
 
@@ -33674,7 +33679,7 @@ msgstr ""
 "Si no esta seguro que significa todo esto, mantega su display y seteo de "
 "imágenes usando siempre el mismo algorithm (CTL or ICC)."
 
-#: standalone/main.cpp:214
+#: standalone/main.cpp:217
 #, c-format
 msgid "mrViewer%s"
 msgstr "mrViewer"
@@ -33683,8 +33688,8 @@ msgstr "mrViewer"
 msgid "mrViewer.colors"
 msgstr ""
 
-#: standalone/main.cpp:105 standalone/main.cpp:156 standalone/main.cpp:321
-#: standalone/main.cpp:364
+#: standalone/main.cpp:105 standalone/main.cpp:156 standalone/main.cpp:324
+#: standalone/main.cpp:367
 msgid "mrViewer.lock"
 msgstr "mrViewer"
 
@@ -34288,7 +34293,7 @@ msgstr ""
 msgid "pic"
 msgstr ""
 
-#: standalone/main.cpp:107 standalone/main.cpp:157 standalone/main.cpp:365
+#: standalone/main.cpp:107 standalone/main.cpp:157 standalone/main.cpp:368
 msgid "pid"
 msgstr ""
 
@@ -34322,7 +34327,7 @@ msgid "pktqueue"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.5.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:53
-#: gui/mrvPreferences.cpp:492 standalone/main.cpp:271
+#: gui/mrvPreferences.cpp:492 standalone/main.cpp:274
 msgid "plastic"
 msgstr ""
 
@@ -34581,7 +34586,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 #: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:347
-#: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:558
+#: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:561
 msgid "r"
 msgstr ""
 
@@ -35305,7 +35310,7 @@ msgstr ""
 msgid "st2084"
 msgstr ""
 
-#: standalone/main.cpp:129 standalone/main.cpp:340
+#: standalone/main.cpp:129 standalone/main.cpp:343
 msgid "start"
 msgstr "Comienzo"
 
@@ -36014,7 +36019,7 @@ msgstr ""
 #: gui/mrvImageBrowser.cpp:776 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:78
 #: standalone/mrvCommandLine.cpp:497 standalone/mrvCommandLine.cpp:498
-#: standalone/main.cpp:559 standalone/main.cpp:560
+#: standalone/main.cpp:562 standalone/main.cpp:563
 msgid "w"
 msgstr ""
 

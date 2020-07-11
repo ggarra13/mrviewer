@@ -196,6 +196,9 @@ int main( int argc, const char** argv )
 
     // Create and install global locale
     try {
+#if defined __APPLE__ && defined __MACH__
+        setenv( "LC_CTYPE",  "UTF-8", 1 );
+#endif
         std::locale::global( std::locale("") );
         // Make boost.filesystem use it
         fs::path::imbue(std::locale());
