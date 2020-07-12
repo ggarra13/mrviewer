@@ -218,8 +218,8 @@ protected:
     ViewerUI*    uiMain;
     CMedia*   img;
 
-    Fl_Button*                   m_button;
 public:
+    Fl_Button*                   m_button;
     mrv::CollapsibleGroup*       m_image;
     mrv::CollapsibleGroup*       m_video;
     mrv::CollapsibleGroup*       m_audio;

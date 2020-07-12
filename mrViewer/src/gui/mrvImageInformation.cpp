@@ -822,6 +822,13 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
     }
 
   old_match = match;
+
+  if ( match.empty() )
+  {
+    info->m_scroll->scroll_to( 0, 0 );
+    return;
+  }
+
   idx = -1;
 
   int H = info->line_height() + 1;
@@ -833,6 +840,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 
   float row = 0;
   int pos = info->line_height();
+  if ( info->m_button->visible() ) pos += info->m_button->h();
   if ( p->visible() ) pos += 32;
 
   int idx = search_table( t, row, match );

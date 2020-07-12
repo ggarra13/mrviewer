@@ -12,6 +12,8 @@ v5.5.5  - Bug fixed accented characters in MacOS Spanish locale due to UTF-8
 	  regular expressions and it will search in both the attribute as well
 	  as its values for matches interactively (as long as playback is
 	  not on).
+	- Updated Image Information to show Display Windows with the
+	  reversed Y coordinates, as per the rest of the GUI.
 
 v5.5.4  - Bug fixed ALT + RMB zooom as it was disabled in a recent version
 	  of mrViewer.
