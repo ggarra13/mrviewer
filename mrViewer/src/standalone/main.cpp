@@ -194,6 +194,7 @@ int main( int argc, const char** argv )
 
     const char* tmp = setlocale(LC_ALL, N_(""));
 
+
     // Create and install global locale
     try {
 #if defined __APPLE__ && defined __MACH__

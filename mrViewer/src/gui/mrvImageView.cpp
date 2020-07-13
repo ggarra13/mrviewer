@@ -2273,7 +2273,7 @@ void ImageView::fit_image()
     // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
     //     W *= 2;
 
-    // Fl::check();
+    // Fl::flush();
     double w = (double) fltk_main()->w();
     double z = w / (double)W;
 
@@ -3198,7 +3198,7 @@ again:
     case kMEDIA_INFO_WINDOW_HIDE:
         toggle_media_info(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kCOLOR_AREA_WINDOW_SHOW:
@@ -3207,19 +3207,19 @@ again:
     case kCOLOR_AREA_WINDOW_HIDE:
         toggle_color_area(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case k3D_VIEW_WINDOW_SHOW:
         toggle_3d_view(true);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case k3D_VIEW_WINDOW_HIDE:
         toggle_3d_view(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kHISTOGRAM_WINDOW_SHOW:
@@ -3228,7 +3228,7 @@ again:
     case kHISTOGRAM_WINDOW_HIDE:
         toggle_histogram(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kVECTORSCOPE_WINDOW_SHOW:
@@ -3237,7 +3237,7 @@ again:
     case kVECTORSCOPE_WINDOW_HIDE:
         toggle_vectorscope(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kWAVEFORM_WINDOW_SHOW:
@@ -3246,7 +3246,7 @@ again:
     case kWAVEFORM_WINDOW_HIDE:
         toggle_waveform(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kSTEREO_OPTIONS_WINDOW_SHOW:
@@ -3255,7 +3255,7 @@ again:
     case kSTEREO_OPTIONS_WINDOW_HIDE:
         toggle_stereo_options(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kPAINT_TOOLS_WINDOW_SHOW:
@@ -3264,7 +3264,7 @@ again:
     case kPAINT_TOOLS_WINDOW_HIDE:
         toggle_paint_tools(false);
 #ifdef OSX
-        if ( old_interactive ) Fl::check();
+        if ( old_interactive ) Fl::flush();
 #endif
         break;
     case kZoomChange:
@@ -4426,7 +4426,7 @@ int ImageView::leftMouseDown(int x, int y)
             _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
             window()->cursor(FL_CURSOR_CROSS);
             if ( _interactive )
-                Fl::check();
+                Fl::flush();
         }
 
 
@@ -7473,10 +7473,10 @@ int ImageView::handle(int event)
         return 1;
     }
     case FL_ENTER:
-            // focus(this);
-        window()->cursor(FL_CURSOR_CROSS);
-        Fl_Gl_Window::handle( event );
-        return 1;
+      focus(this);
+      window()->cursor(FL_CURSOR_CROSS);
+      Fl_Gl_Window::handle( event );
+      return 1;
     case FL_UNFOCUS:
         return Fl_Gl_Window::handle( event );
 
@@ -8981,7 +8981,7 @@ void ImageView::resize_main_window()
 
     if ( _interactive )
     {
-        Fl::check();
+        Fl::flush();
     }
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),

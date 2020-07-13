@@ -154,7 +154,6 @@ std::string pattern_to_native( std::string pattern )
         bool native = mrv::Preferences::native_file_chooser;
         if ( native )
         {
-            Fl::check(); // Create native chooser
             Fl_Native_File_Chooser native;
             native.title(title);
             native.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
@@ -210,7 +209,6 @@ stringArray file_multi_requester(
         bool native = mrv::Preferences::native_file_chooser;
         if ( native )
         {
-            Fl::check(); // Create native chooser
             Fl_Native_File_Chooser native;
             native.title(title);
             native.type(Fl_Native_File_Chooser::BROWSE_MULTI_FILE);
@@ -262,7 +260,6 @@ std::string file_single_requester(
         bool native = mrv::Preferences::native_file_chooser;
         if ( native )
         {
-            Fl::check(); // Create native chooser
             Fl_Native_File_Chooser native;
             native.title(title);
             native.type(Fl_Native_File_Chooser::BROWSE_FILE);

@@ -1,6 +1,7 @@
 v5.5.6  - Improved search function to position scrollbar properly when view
 	  button is shown.  Also, when no item is searched, scrollbar goes
 	  to 0.
+	- Made main display window receive focus upon Entering it.
 
 v5.5.5  - Bug fixed accented characters in MacOS Spanish locale due to UTF-8
 	  not being set in a GUI application.

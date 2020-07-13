@@ -1316,7 +1316,7 @@ void Preferences::run( ViewerUI* main )
     // main->uiBottomBar->add( w );
 
     DBG3;
-    Fl::check();
+    Fl::flush();
 
     //
     // Windows

@@ -49,11 +49,11 @@
 #: gui/mrvHotkey.cpp:80 gui/mrvHotkey.cpp:82 gui/mrvHotkey.cpp:83
 #: gui/mrvHotkey.cpp:84 gui/mrvHotkey.cpp:87 gui/mrvHotkey.cpp:89
 #: gui/mrvHotkey.cpp:90 gui/mrvHotkey.cpp:494 gui/mrvColorInfo.cpp:436
-#: gui/mrvColorInfo.cpp:764 gui/mrvFileRequester.cpp:182
-#: gui/mrvFileRequester.cpp:209 gui/mrvFileRequester.cpp:261
-#: gui/mrvFileRequester.cpp:620 gui/mrvFileRequester.cpp:676
-#: gui/mrvFileRequester.cpp:686 gui/mrvFileRequester.cpp:792
-#: gui/mrvFileRequester.cpp:841 gui/mrvFileRequester.cpp:870
+#: gui/mrvColorInfo.cpp:764 gui/mrvFileRequester.cpp:181
+#: gui/mrvFileRequester.cpp:208 gui/mrvFileRequester.cpp:259
+#: gui/mrvFileRequester.cpp:617 gui/mrvFileRequester.cpp:673
+#: gui/mrvFileRequester.cpp:683 gui/mrvFileRequester.cpp:789
+#: gui/mrvFileRequester.cpp:838 gui/mrvFileRequester.cpp:867
 #: gui/mrvImageView.cpp:1135 gui/mrvImageView.cpp:1163
 #: gui/mrvImageView.cpp:1426 gui/mrvImageView.cpp:2942
 #: gui/mrvImageView.cpp:3384 gui/mrvImageView.cpp:3430
@@ -114,12 +114,12 @@
 #: standalone/mrvCommandLine.cpp:408 standalone/mrvCommandLine.cpp:584
 #: standalone/mrvCommandLine.cpp:608 standalone/main.cpp:88
 #: standalone/main.cpp:125 standalone/main.cpp:126 standalone/main.cpp:195
-#: standalone/main.cpp:202 standalone/main.cpp:206
+#: standalone/main.cpp:203
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-12 17:03-0300\n"
+"POT-Creation-Date: 2020-07-13 14:49-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3936,7 +3936,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " hz."
 msgstr ""
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:343
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -5029,8 +5029,8 @@ msgstr ""
 
 #: core/guessImage.cpp:164 core/guessImage.cpp:166 core/hdrImage.cpp:160
 #: core/hdrImage.cpp:282 core/brawImage.cpp:332 core/mrvServer.cpp:1219
-#: core/mrvServer.cpp:1321 gui/mrvFileRequester.cpp:596
-#: gui/mrvFileRequester.cpp:756 gui/mrvImageView.cpp:863
+#: core/mrvServer.cpp:1321 gui/mrvFileRequester.cpp:593
+#: gui/mrvFileRequester.cpp:753 gui/mrvImageView.cpp:863
 #: gui/mrvImageInformation.cpp:1584 gui/mrvPreferences.cpp:541
 #: video/mrvGLLut3d.cpp:831 video/mrvGLLut3d.cpp:1046 video/mrvGLLut3d.cpp:1076
 msgid "\""
@@ -6009,8 +6009,8 @@ msgstr ""
 #: core/aviImage.cpp:2896 gui/mrvImageInformation.cpp:1887
 #: gui/mrvImageInformation.cpp:1936 gui/mrvImageInformation.cpp:4598
 #: gui/mrvMediaTrack.cpp:843 gui/mrvMediaTrack.cpp:856 gui/mrvTimecode.cpp:296
-#: standalone/main.cpp:324 standalone/main.cpp:327 standalone/main.cpp:330
-#: standalone/main.cpp:333
+#: standalone/main.cpp:322 standalone/main.cpp:325 standalone/main.cpp:328
+#: standalone/main.cpp:331
 #, c-format
 msgid "%<PRId64>"
 msgstr "s"
@@ -6081,7 +6081,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:4673 gui/mrvImageInformation.cpp:4693
 #: gui/mrvImageInformation.cpp:4714 gui/mrvImageInformation.cpp:4727
 #: gui/mrvPreferences.cpp:1854 standalone/mrvCommandLine.cpp:263
-#: standalone/main.cpp:470
+#: standalone/main.cpp:468
 #, c-format
 msgid "%d"
 msgstr ""
@@ -6454,7 +6454,7 @@ msgstr ""
 msgid "%s/%s.%s"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:473
+#: gui/mrvFileRequester.cpp:470
 #, c-format
 msgid "%s/SYSTEM32/spool/drivers/color"
 msgstr ""
@@ -7144,7 +7144,7 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
-#: standalone/main.cpp:305
+#: standalone/main.cpp:303
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Remuévala si mrViewer no arranca)"
 
@@ -8337,8 +8337,8 @@ msgid "+yzAfBiiiiiiiCDDvvv+"
 msgstr ""
 
 #: core/iffImage.cpp:538 core/iffImage.cpp:539 core/mapImage.cpp:226
-#: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:387
-#: gui/mrvFileRequester.cpp:388 gui/mrvFileRequester.cpp:833
+#: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:384
+#: gui/mrvFileRequester.cpp:385 gui/mrvFileRequester.cpp:830
 #: video/mrvGLEngine.cpp:3284 video/mrvGLEngine.cpp:3292
 msgid ","
 msgstr ""
@@ -8422,9 +8422,9 @@ msgstr ""
 #: video/mrvGLEngine.cpp:3294 video/mrvGLEngine.cpp:3295
 #: video/mrvGLEngine.cpp:4098 video/mrvGLEngine.cpp:4102
 #: video/mrvGLEngine.cpp:4106 video/mrvGLEngine.cpp:4109
-#: standalone/main.cpp:377 standalone/main.cpp:378 standalone/main.cpp:415
-#: standalone/main.cpp:416 standalone/main.cpp:417 standalone/main.cpp:418
-#: standalone/main.cpp:419 standalone/main.cpp:420 standalone/main.cpp:421
+#: standalone/main.cpp:375 standalone/main.cpp:376 standalone/main.cpp:413
+#: standalone/main.cpp:414 standalone/main.cpp:415 standalone/main.cpp:416
+#: standalone/main.cpp:417 standalone/main.cpp:418 standalone/main.cpp:419
 msgid ", "
 msgstr ""
 
@@ -8940,7 +8940,7 @@ msgstr ""
 msgid ".\tc #FFFFFF"
 msgstr ""
 
-#: standalone/main.cpp:304
+#: standalone/main.cpp:302
 msgid ". "
 msgstr ""
 
@@ -10222,7 +10222,7 @@ msgstr ""
 msgid "/shaders"
 msgstr ""
 
-#: standalone/main.cpp:244
+#: standalone/main.cpp:242
 msgid "/share/locale"
 msgstr ""
 
@@ -10230,7 +10230,7 @@ msgstr ""
 msgid "/tmp/"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:477
+#: gui/mrvFileRequester.cpp:474
 msgid "/usr/share/color/icc"
 msgstr ""
 
@@ -13570,7 +13570,7 @@ msgstr ""
 msgid "ACESclip."
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:661
+#: gui/mrvFileRequester.cpp:658
 msgid "ACEScsc,IDT"
 msgstr ""
 
@@ -13809,7 +13809,7 @@ msgstr "Algoritmo cuando no usa OCIO"
 msgid "All"
 msgstr "Todo"
 
-#: gui/mrvFileRequester.cpp:386 gui/mrvFileRequester.cpp:832
+#: gui/mrvFileRequester.cpp:383 gui/mrvFileRequester.cpp:829
 msgid "All (*.{"
 msgstr "Todos (*.{"
 
@@ -14000,7 +14000,7 @@ msgstr "YDbDr (SECAM/PAL-N Analógico)"
 msgid "Another application already has priority"
 msgstr ""
 
-#: standalone/main.cpp:343
+#: standalone/main.cpp:341
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -14092,7 +14092,7 @@ msgstr "Proporción de Aspecto del clip"
 msgid "Attach Audio File"
 msgstr "Asociar Archivo de Audio"
 
-#: gui/mrvFileRequester.cpp:574
+#: gui/mrvFileRequester.cpp:571
 msgid "Attach ICC Profile"
 msgstr "Agregar Perfil ICC"
 
@@ -14214,7 +14214,7 @@ msgstr "Volumen de Audio"
 msgid "Audios #"
 msgstr "Audios #"
 
-#: gui/mrvFileRequester.cpp:382 gui/mrvFileRequester.cpp:555
+#: gui/mrvFileRequester.cpp:379 gui/mrvFileRequester.cpp:552
 msgid "Audios (*.{"
 msgstr "Audios (*.{"
 
@@ -14634,7 +14634,7 @@ msgstr "Ganancia de los Azules del clip"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:522
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:520
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -14651,7 +14651,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferior"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:396 standalone/main.cpp:416
+#: standalone/main.cpp:394 standalone/main.cpp:414
 msgid "Bottom/top"
 msgstr "Inferior/Superior"
 
@@ -14941,12 +14941,12 @@ msgid "CTL scripts"
 msgstr "Escritos de CTL"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2015
-#: gui/mrvCTLBrowser.cpp:80 gui/mrvFileRequester.cpp:501
+#: gui/mrvCTLBrowser.cpp:80 gui/mrvFileRequester.cpp:498
 #: gui/mrvPreferences.cpp:931
 msgid "CTL_MODULE_PATH"
 msgstr "CTL_MODULE_PATH"
 
-#: gui/mrvFileRequester.cpp:505 gui/mrvPreferences.cpp:955
+#: gui/mrvFileRequester.cpp:502 gui/mrvPreferences.cpp:955
 msgid "CTL_MODULE_PATH="
 msgstr "CTL_MODULE_PATH"
 
@@ -15162,7 +15162,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:406 standalone/main.cpp:420
+#: standalone/main.cpp:404 standalone/main.cpp:418
 msgid "Checkerboard pattern"
 msgstr "Cuadriculado"
 
@@ -15365,7 +15365,7 @@ msgstr "Información de Area de Color"
 #
 #
 #
-#: gui/mrvFileRequester.cpp:481
+#: gui/mrvFileRequester.cpp:478
 msgid "Color Profiles (*.{"
 msgstr "Perfiles ICC (*.{"
 
@@ -15434,7 +15434,7 @@ msgstr ""
 msgid "Colorspace details not set "
 msgstr "No pude setear detalles de espacio de color "
 
-#: standalone/main.cpp:224
+#: standalone/main.cpp:222
 msgid "CommandLineToArgvW failed"
 msgstr ""
 
@@ -16090,11 +16090,11 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "No pude relocalizar el buffer fifo. Error: "
 
-#: standalone/main.cpp:152 standalone/main.cpp:298
+#: standalone/main.cpp:152 standalone/main.cpp:296
 msgid "Could not remove lock file"
 msgstr " No pude abrir el archivo"
 
-#: standalone/main.cpp:514
+#: standalone/main.cpp:512
 msgid "Could not remove lock file!"
 msgstr " No pude abrir el archivo"
 
@@ -16534,7 +16534,7 @@ msgstr "Cortar Clip en el lugar actual"
 
 #
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:410 standalone/main.cpp:422
+#: standalone/main.cpp:408 standalone/main.cpp:420
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
@@ -17563,12 +17563,12 @@ msgid "Escape"
 msgstr "Escape"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:404 standalone/main.cpp:419
+#: standalone/main.cpp:402 standalone/main.cpp:417
 msgid "Even/odd columns"
 msgstr "Impar/par columnas"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:402 standalone/main.cpp:418
+#: standalone/main.cpp:400 standalone/main.cpp:416
 msgid "Even/odd rows"
 msgstr "Impar/par renglones"
 
@@ -18140,7 +18140,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:518
+#: standalone/main.cpp:516
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -19318,7 +19318,7 @@ msgstr "Intención de Render de ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/mrvFileRequester.cpp:467
+#: gui/mrvFileRequester.cpp:464
 msgid "ICC_PROFILES"
 msgstr ""
 
@@ -19336,7 +19336,7 @@ msgid "ICS "
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:862
-#: core/mrvServer.cpp:1252 gui/mrvFileRequester.cpp:415
+#: core/mrvServer.cpp:1252 gui/mrvFileRequester.cpp:412
 #: video/mrvGLLut3d.cpp:1319
 #, c-format
 msgid "ICS \"%s\""
@@ -19355,7 +19355,7 @@ msgstr ""
 msgid "IDT"
 msgstr "Encajar"
 
-#: core/mrvServer.cpp:1259 gui/mrvFileRequester.cpp:664
+#: core/mrvServer.cpp:1259 gui/mrvFileRequester.cpp:661
 #, c-format
 msgid "IDT \"%s\""
 msgstr ""
@@ -19768,8 +19768,8 @@ msgstr "Grabando ImageMagick"
 msgid "Images"
 msgstr "Imágenes"
 
-#: gui/mrvFileRequester.cpp:384 gui/mrvFileRequester.cpp:788
-#: gui/mrvFileRequester.cpp:830
+#: gui/mrvFileRequester.cpp:381 gui/mrvFileRequester.cpp:785
+#: gui/mrvFileRequester.cpp:827
 msgid "Images (*.{"
 msgstr "Imágenes (*.{"
 
@@ -20362,7 +20362,7 @@ msgstr ""
 msgid "L:R"
 msgstr ""
 
-#: standalone/main.cpp:200
+#: standalone/main.cpp:201
 msgid "LC_CTYPE"
 msgstr ""
 
@@ -20374,12 +20374,12 @@ msgstr ""
 msgid "LMT"
 msgstr "LUT"
 
-#: core/mrvServer.cpp:1266 gui/mrvFileRequester.cpp:617
+#: core/mrvServer.cpp:1266 gui/mrvFileRequester.cpp:614
 #, c-format
 msgid "LMT %zd \"%s\""
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:633
+#: gui/mrvFileRequester.cpp:630
 msgid "LMT,ACEScsc"
 msgstr ""
 
@@ -20485,14 +20485,14 @@ msgid "Left View"
 msgstr "Vista Izquierda"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
-#: standalone/main.cpp:388 standalone/main.cpp:415
+#: standalone/main.cpp:386 standalone/main.cpp:413
 msgid "Left view"
 msgstr "Vista Izquierda"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:372 standalone/main.cpp:378 standalone/main.cpp:398
-#: standalone/main.cpp:417
+#: standalone/main.cpp:370 standalone/main.cpp:376 standalone/main.cpp:396
+#: standalone/main.cpp:415
 msgid "Left/right"
 msgstr "Izquierda/derecha"
 
@@ -20577,15 +20577,15 @@ msgstr ""
 msgid "Load"
 msgstr "Cargar"
 
-#: gui/mrvFileRequester.cpp:558
+#: gui/mrvFileRequester.cpp:555
 msgid "Load Audio"
 msgstr "Cargar Audio"
 
-#: gui/mrvFileRequester.cpp:340
+#: gui/mrvFileRequester.cpp:337
 msgid "Load Directory"
 msgstr "Cargar Carpeta"
 
-#: gui/mrvFileRequester.cpp:396
+#: gui/mrvFileRequester.cpp:393
 msgid "Load Image"
 msgstr "Abrir Imagen"
 
@@ -20598,20 +20598,20 @@ msgstr "Abrir Imagen"
 msgid "Load Image and try again idx #"
 msgstr "Abrir Imagen"
 
-#: gui/mrvFileRequester.cpp:769
+#: gui/mrvFileRequester.cpp:766
 msgid "Load Monitor Profile"
 msgstr "Perfil Icc del Monitor"
 
-#: gui/mrvFileRequester.cpp:398
+#: gui/mrvFileRequester.cpp:395
 msgid "Load Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
 #
-#: gui/mrvFileRequester.cpp:696
+#: gui/mrvFileRequester.cpp:693
 msgid "Load OCIO Config"
 msgstr "Cargar Configuracion de OCIO"
 
-#: gui/mrvFileRequester.cpp:317
+#: gui/mrvFileRequester.cpp:314
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
@@ -20624,11 +20624,11 @@ msgstr "Cargar secuencia en Drag&&Drop"
 msgid "Load Sequence on File Association && CommandLine"
 msgstr "Cargar Secuencia en Asociación de Archivo"
 
-#: gui/mrvFileRequester.cpp:538
+#: gui/mrvFileRequester.cpp:535
 msgid "Load Subtitle"
 msgstr "Cargar Subtítulo"
 
-#: gui/mrvFileRequester.cpp:714
+#: gui/mrvFileRequester.cpp:711
 msgid "Load XML Clip Metadata"
 msgstr "Cargar Clip XML de Metadatos"
 
@@ -20694,7 +20694,7 @@ msgstr "Disco Local"
 msgid "Location"
 msgstr "Localidad"
 
-#: standalone/main.cpp:304
+#: standalone/main.cpp:302
 msgid "Lockfile "
 msgstr "Archivo cerrojo "
 
@@ -20731,7 +20731,7 @@ msgstr "Longitud"
 msgid "Looked for it in: "
 msgstr ""
 
-#: standalone/main.cpp:246
+#: standalone/main.cpp:244
 msgid "Looking for translations in "
 msgstr ""
 
@@ -21413,7 +21413,7 @@ msgstr ""
 "Este seteo por ello ayuda a cachear menos imágenes en memoria pero con una "
 "calidad superior."
 
-#: gui/mrvFileRequester.cpp:392 gui/mrvFileRequester.cpp:836
+#: gui/mrvFileRequester.cpp:389 gui/mrvFileRequester.cpp:833
 msgid "Movies (*.{"
 msgstr "Películas (*.{"
 
@@ -22093,7 +22093,7 @@ msgstr "Vista OCIO"
 msgid "OCIO View change failed"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:694
+#: gui/mrvFileRequester.cpp:691
 msgid "OCIO config (*.{"
 msgstr "Configuracion de OCIO (*.{"
 
@@ -22153,12 +22153,12 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:425
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1776
-#: core/mrvServer.cpp:626 gui/mrvFileRequester.cpp:753
+#: core/mrvServer.cpp:626 gui/mrvFileRequester.cpp:750
 #: gui/mrvPreferences.cpp:1033 gui/mrvPreferences.cpp:2422
 msgid "ODT"
 msgstr "ODT"
 
-#: gui/mrvFileRequester.cpp:756
+#: gui/mrvFileRequester.cpp:753
 msgid "ODT \""
 msgstr ""
 
@@ -23493,7 +23493,7 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RRT"
 msgstr "RT"
 
-#: gui/mrvFileRequester.cpp:607
+#: gui/mrvFileRequester.cpp:604
 msgid "RRT,RT"
 msgstr ""
 
@@ -23507,7 +23507,7 @@ msgstr "RT"
 msgid "RT "
 msgstr "RT"
 
-#: gui/mrvFileRequester.cpp:596
+#: gui/mrvFileRequester.cpp:593
 msgid "RT \""
 msgstr ""
 
@@ -23660,7 +23660,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valor Rojo del pixel de imagen bajo el mouse."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:408 standalone/main.cpp:421
+#: standalone/main.cpp:406 standalone/main.cpp:419
 msgid "Red/cyan glasses"
 msgstr "Lentes Rojo/cian"
 
@@ -23687,8 +23687,8 @@ msgstr "Nombre del Codec"
 msgid "Reels"
 msgstr "Carretes"
 
-#: gui/mrvFileRequester.cpp:315 gui/mrvFileRequester.cpp:380
-#: gui/mrvFileRequester.cpp:866
+#: gui/mrvFileRequester.cpp:312 gui/mrvFileRequester.cpp:377
+#: gui/mrvFileRequester.cpp:863
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -23903,12 +23903,12 @@ msgid "Right View"
 msgstr "Vista Derecha"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:390 standalone/main.cpp:415
+#: standalone/main.cpp:388 standalone/main.cpp:413
 msgid "Right view"
 msgstr "Vista Derecha"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:400 standalone/main.cpp:417
+#: standalone/main.cpp:398 standalone/main.cpp:415
 msgid "Right/left"
 msgstr "Derecha/izquierda"
 
@@ -25528,7 +25528,7 @@ msgstr "Grabar Clip XML de Metadatos"
 msgid "Save GL Snapshot"
 msgstr "Grabar Instantánea de Opengl"
 
-#: gui/mrvHotkey.cpp:287 gui/mrvFileRequester.cpp:786
+#: gui/mrvHotkey.cpp:287 gui/mrvFileRequester.cpp:783
 msgid "Save Image"
 msgstr "Grabar Imagen"
 
@@ -25555,15 +25555,15 @@ msgstr "Grabar Configuracion de OCIO"
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvHotkey.cpp:286 gui/mrvFileRequester.cpp:869
+#: gui/mrvHotkey.cpp:286 gui/mrvFileRequester.cpp:866
 msgid "Save Reel"
 msgstr "Grabar Carrete"
 
-#: gui/mrvHotkey.cpp:289 gui/mrvFileRequester.cpp:839
+#: gui/mrvHotkey.cpp:289 gui/mrvFileRequester.cpp:836
 msgid "Save Sequence"
 msgstr "Grabar Secuencia"
 
-#: gui/mrvFileRequester.cpp:737
+#: gui/mrvFileRequester.cpp:734
 msgid "Save XML Clip Metadata"
 msgstr "Grabar Clip XML de Metadatos"
 
@@ -25814,7 +25814,7 @@ msgid "Sep"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:25
-#: standalone/main.cpp:368 standalone/main.cpp:377
+#: standalone/main.cpp:366 standalone/main.cpp:375
 msgid "Separate layers"
 msgstr "Capas separadas"
 
@@ -26148,16 +26148,16 @@ msgstr "Opciones de Estéreo 3D"
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
-#: standalone/main.cpp:376
+#: standalone/main.cpp:374
 msgid "Stereo Input is invalid.  Valid values are: "
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:392
+#: standalone/main.cpp:390
 msgid "Stereo OpenGL"
 msgstr "Estéreo OpenGL"
 
-#: standalone/main.cpp:414
+#: standalone/main.cpp:412
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr ""
 
@@ -26279,7 +26279,7 @@ msgstr "Subtítulo/Pista #%d - %s"
 msgid "Subtitles"
 msgstr "Subtítulos"
 
-#: gui/mrvFileRequester.cpp:535
+#: gui/mrvFileRequester.cpp:532
 msgid "Subtitles (*.{"
 msgstr "Subtitulos (*.{"
 
@@ -27296,8 +27296,8 @@ msgstr "Campo Superior"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:26
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:370 standalone/main.cpp:377 standalone/main.cpp:394
-#: standalone/main.cpp:416
+#: standalone/main.cpp:368 standalone/main.cpp:375 standalone/main.cpp:392
+#: standalone/main.cpp:414
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -27506,7 +27506,7 @@ msgid "UTF-16"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:815
-#: standalone/main.cpp:200
+#: standalone/main.cpp:201
 msgid "UTF-8"
 msgstr ""
 
@@ -27545,7 +27545,7 @@ msgstr ""
 msgid "Unhandled Exception"
 msgstr "Excepción sin manejo"
 
-#: standalone/main.cpp:506
+#: standalone/main.cpp:504
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -27651,7 +27651,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:526
+#: video/mrvGLLut3d.cpp:761 standalone/main.cpp:524
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -28363,7 +28363,7 @@ msgstr ""
 msgid "WGL_NV_video_out"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:474
+#: gui/mrvFileRequester.cpp:471
 msgid "WINDIR"
 msgstr ""
 
@@ -28989,7 +28989,7 @@ msgstr ""
 msgid "X:"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:711 gui/mrvFileRequester.cpp:734
+#: gui/mrvFileRequester.cpp:708 gui/mrvFileRequester.cpp:731
 msgid "XML Clip Metadata (*.{"
 msgstr "Clip XML de Metadatos (*.{"
 
@@ -30351,7 +30351,7 @@ msgstr ""
 #: core/CMedia.cpp:3219 core/CMedia.cpp:3250 core/CMedia_audio.cpp:83
 #: core/aviImage_save.cpp:1515 gui/mrvPreferences.cpp:826
 #: gui/mrvPreferences.cpp:2389 standalone/mrvCommandLine.cpp:388
-#: standalone/main.cpp:126 standalone/main.cpp:322
+#: standalone/main.cpp:126 standalone/main.cpp:320
 msgid "audio"
 msgstr "audio"
 
@@ -31068,11 +31068,11 @@ msgstr "Compresión"
 msgid "config"
 msgstr ""
 
-#: standalone/main.cpp:549
+#: standalone/main.cpp:547
 msgid "conin$"
 msgstr ""
 
-#: standalone/main.cpp:550 standalone/main.cpp:551
+#: standalone/main.cpp:548 standalone/main.cpp:549
 msgid "conout$"
 msgstr ""
 
@@ -31627,7 +31627,7 @@ msgstr ""
 msgid "encoding"
 msgstr " codificando"
 
-#: standalone/main.cpp:130 standalone/main.cpp:334
+#: standalone/main.cpp:130 standalone/main.cpp:332
 msgid "end"
 msgstr "Fin"
 
@@ -31821,7 +31821,7 @@ msgstr "Imagen"
 msgid "file"
 msgstr "archivos"
 
-#: standalone/main.cpp:318
+#: standalone/main.cpp:316
 #, c-format
 msgid "file%d"
 msgstr "archivos"
@@ -31847,7 +31847,7 @@ msgid "file_requester"
 msgstr "Buscador de Archivos"
 
 #: gui/mrvPreferences.cpp:642 gui/mrvPreferences.cpp:2267
-#: standalone/main.cpp:125 standalone/main.cpp:321
+#: standalone/main.cpp:125 standalone/main.cpp:319
 msgid "filename"
 msgstr "Nombre"
 
@@ -31873,8 +31873,8 @@ msgid "filmType"
 msgstr "Tipo"
 
 #: gui/mrvPreferences.cpp:357 gui/mrvPreferences.cpp:2161
-#: standalone/main.cpp:104 standalone/main.cpp:155 standalone/main.cpp:311
-#: standalone/main.cpp:354
+#: standalone/main.cpp:104 standalone/main.cpp:155 standalone/main.cpp:309
+#: standalone/main.cpp:352
 msgid "filmaura"
 msgstr ""
 
@@ -31891,7 +31891,7 @@ msgstr "busca_imagen: cuadro "
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
-#: standalone/main.cpp:127 standalone/main.cpp:325
+#: standalone/main.cpp:127 standalone/main.cpp:323
 msgid "first"
 msgstr ""
 
@@ -33073,7 +33073,7 @@ msgstr ""
 msgid "language"
 msgstr "Lenguaje"
 
-#: standalone/main.cpp:128 standalone/main.cpp:328
+#: standalone/main.cpp:128 standalone/main.cpp:326
 msgid "last"
 msgstr ""
 
@@ -33678,7 +33678,7 @@ msgstr ""
 "Si no esta seguro que significa todo esto, mantega su display y seteo de "
 "imágenes usando siempre el mismo algorithm (CTL or ICC)."
 
-#: standalone/main.cpp:217
+#: standalone/main.cpp:215
 #, c-format
 msgid "mrViewer%s"
 msgstr "mrViewer"
@@ -33687,8 +33687,8 @@ msgstr "mrViewer"
 msgid "mrViewer.colors"
 msgstr ""
 
-#: standalone/main.cpp:105 standalone/main.cpp:156 standalone/main.cpp:312
-#: standalone/main.cpp:355
+#: standalone/main.cpp:105 standalone/main.cpp:156 standalone/main.cpp:310
+#: standalone/main.cpp:353
 msgid "mrViewer.lock"
 msgstr "mrViewer"
 
@@ -34292,7 +34292,7 @@ msgstr ""
 msgid "pic"
 msgstr ""
 
-#: standalone/main.cpp:107 standalone/main.cpp:157 standalone/main.cpp:356
+#: standalone/main.cpp:107 standalone/main.cpp:157 standalone/main.cpp:354
 msgid "pid"
 msgstr ""
 
@@ -34326,7 +34326,7 @@ msgid "pktqueue"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-40-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:53
-#: gui/mrvPreferences.cpp:492 standalone/main.cpp:266
+#: gui/mrvPreferences.cpp:492 standalone/main.cpp:264
 msgid "plastic"
 msgstr ""
 
@@ -34585,7 +34585,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3707
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 #: standalone/mrvCommandLine.cpp:76 standalone/mrvCommandLine.cpp:347
-#: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:549
+#: standalone/mrvCommandLine.cpp:496 standalone/main.cpp:547
 msgid "r"
 msgstr ""
 
@@ -35309,7 +35309,7 @@ msgstr ""
 msgid "st2084"
 msgstr ""
 
-#: standalone/main.cpp:129 standalone/main.cpp:331
+#: standalone/main.cpp:129 standalone/main.cpp:329
 msgid "start"
 msgstr "Comienzo"
 
@@ -36018,7 +36018,7 @@ msgstr ""
 #: gui/mrvImageBrowser.cpp:776 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:78
 #: standalone/mrvCommandLine.cpp:497 standalone/mrvCommandLine.cpp:498
-#: standalone/main.cpp:550 standalone/main.cpp:551
+#: standalone/main.cpp:548 standalone/main.cpp:549
 msgid "w"
 msgstr ""
 
@@ -37075,21 +37075,21 @@ msgstr ""
 msgid "}      c #94C67B"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:316 gui/mrvFileRequester.cpp:482
-#: gui/mrvFileRequester.cpp:556 gui/mrvFileRequester.cpp:695
-#: gui/mrvFileRequester.cpp:712 gui/mrvFileRequester.cpp:735
+#: gui/mrvFileRequester.cpp:313 gui/mrvFileRequester.cpp:479
+#: gui/mrvFileRequester.cpp:553 gui/mrvFileRequester.cpp:692
+#: gui/mrvFileRequester.cpp:709 gui/mrvFileRequester.cpp:732
 msgid "})"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:381 gui/mrvFileRequester.cpp:383
-#: gui/mrvFileRequester.cpp:385 gui/mrvFileRequester.cpp:389
-#: gui/mrvFileRequester.cpp:393 gui/mrvFileRequester.cpp:789
-#: gui/mrvFileRequester.cpp:831 gui/mrvFileRequester.cpp:834
-#: gui/mrvFileRequester.cpp:837
+#: gui/mrvFileRequester.cpp:378 gui/mrvFileRequester.cpp:380
+#: gui/mrvFileRequester.cpp:382 gui/mrvFileRequester.cpp:386
+#: gui/mrvFileRequester.cpp:390 gui/mrvFileRequester.cpp:786
+#: gui/mrvFileRequester.cpp:828 gui/mrvFileRequester.cpp:831
+#: gui/mrvFileRequester.cpp:834
 msgid "})\t"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:536 gui/mrvFileRequester.cpp:867
+#: gui/mrvFileRequester.cpp:533 gui/mrvFileRequester.cpp:864
 msgid "})\n"
 msgstr ""
 
