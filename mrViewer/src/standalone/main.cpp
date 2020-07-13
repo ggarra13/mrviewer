@@ -246,6 +246,12 @@ int main( int argc, const char** argv )
     textdomain(buf);
 
 
+    Fl_Mac_App_Menu::about = _("About mrViewer");
+    Fl_Mac_App_Menu::print = "";
+    Fl_Mac_App_Menu::hide = _("Hide mrViewer");
+    Fl_Mac_App_Menu::hide_others = _("Hide Others");
+    Fl_Mac_App_Menu::services = _("Services");
+    Fl_Mac_App_Menu::quit = _("Quit mrViewer");
 
 
     DBG;
