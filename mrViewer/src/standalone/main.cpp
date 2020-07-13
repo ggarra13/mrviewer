@@ -245,14 +245,14 @@ int main( int argc, const char** argv )
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
 
-
+#ifdef OSX
     Fl_Mac_App_Menu::about = _("About mrViewer");
     Fl_Mac_App_Menu::print = "";
     Fl_Mac_App_Menu::hide = _("Hide mrViewer");
     Fl_Mac_App_Menu::hide_others = _("Hide Others");
     Fl_Mac_App_Menu::services = _("Services");
     Fl_Mac_App_Menu::quit = _("Quit mrViewer");
-
+#endif
 
     DBG;
     // Try to set MRV_ROOT if not set already
