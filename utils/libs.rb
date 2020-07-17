@@ -157,7 +157,7 @@ release = `uname -r`.chop!
 
 build = "BUILD/#{kernel}-#{release}-64/"
 
-puts "kernel: #{kernel}"
+$stderr.puts "kernel: #{kernel}"
 
 $stderr.puts "DIRECTORY: #{Dir.pwd}"
 root = Dir.pwd

@@ -891,6 +891,12 @@ ELSE()
          DEPENDS translations )
 ENDIF()
 
+ADD_CUSTOM_COMMAND( TARGET bundle
+		    PRE_BUILD
+        	    COMMAND "utils/libs.rb"
+		    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+        	    )
+	
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
         POST_BUILD
