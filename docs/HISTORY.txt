@@ -4,6 +4,8 @@ v5.5.6  - Improved search function to position scrollbar properly when view
 	- Made main display window receive focus upon Entering it.
 	- Made Mac release work again on Mojave, as it had inadvertedly
 	  reverted to only work on Catalina, due to a new FLTK release.
+	- Fixed 32 bits Windows release due to a missing library in new
+	  v5.5.5 release.
 
 v5.5.5  - Bug fixed accented characters in MacOS Spanish locale due to UTF-8
 	  not being set in a GUI application.
