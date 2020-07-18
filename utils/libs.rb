@@ -141,7 +141,9 @@ def copy_third_party( root, dest )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
                     "#{dest}/lib" )
   elsif dest =~ /Darwin/
-    `#{root}/utils/maclibs.rb #@debug`
+    if not system( "#{root}/utils/maclibs.rb #@debug" )
+      exit 1
+    end
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
@@ -159,8 +161,14 @@ build = "BUILD/#{kernel}-#{release}-64/"
 
 $stdout.puts "kernel: #{kernel}"
 
-$stdout.puts "DIRECTORY: #{Dir.pwd}"
-root = $0.sub(/\/utils\/libs.rb/, "")
+root = $0.sub(/utils\/libs.rb/, "")
+if root.size <= 1
+  root = '.'
+end
+$stdout.puts "DIRECTORY: #{root}"
+
+
+
 #root = Dir.pwd
 
 if kernel !~ /MINGW.*/
@@ -214,8 +222,11 @@ if kernel !~ /MINGW.*/
   if kernel =~ /Linux/
     $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
-    FileUtils.ln_s ( "#{dest}/lib/libACESclip.so.0.2.6",
-                     "#{dest}/lib/libACESclip.so" )
+    FileUtils.ln_s "#{dest}/lib/libACESclip.so.0.2.6",
+                   "#{dest}/lib/libACESclip.so"
+  elsif kernel =~ /Darwin/
+    FileUtils.ln_s "#{dest}/lib/libACESclip.dylib.0.2.6",
+                   "#{dest}/lib/libACESclip.dylib"
   end
 
 else

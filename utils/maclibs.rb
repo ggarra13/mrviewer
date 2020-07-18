@@ -10,7 +10,7 @@ libclang_rt.asan_osx_dynamic.*
 
 @options = { :verbose => false, :libs_only => false }
 OptionParser.new do |opts|
-  opts.banner = "Usage: utils/libs.rb [@options]"
+  opts.banner = "Usage: utils/maclibs.rb [@options]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
@@ -60,6 +60,13 @@ FileUtils.mkdir_p @libdir + "/ao", :mode => 0755
 
 appdir = dest + "/bin"
 app = appdir + "/mrViewer"
+
+objc_opt_self = `nm "#{app}"`.chop!
+
+if objc_opt_self =~ /objc_opt_self/
+  $stderr.puts "MAC APPLICATION NOT COMPATIBLE WITH MOJAVE"
+  exit 1
+end
 
 @searched_libs = []
 
