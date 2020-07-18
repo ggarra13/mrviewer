@@ -36,7 +36,7 @@ if (APPLE)
    set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
-          ${OSX_FRAMEWORKS}")
+	  ${OSX_FRAMEWORKS}")
 
   # stop OpenGL deprecation warnings on MacOSX > 10.14
   add_definitions(-DGL_SILENCE_DEPRECATION=1)
@@ -878,29 +878,29 @@ IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
   MESSAGE( STATUS "NO CPACK RUN" )
   ADD_CUSTOM_TARGET( bundle ALL
-         COMMAND echo here we would run cpack
-         DEPENDS translations
+	 COMMAND echo here we would run cpack
+	 DEPENDS translations
       )
 ELSE()
-  ADD_CUSTOM_TARGET( bundle
-         COMMAND "${CMAKE_CPACK_COMMAND}"
-         "-C" "$<CONFIGURATION>"
-         "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
-         COMMENT "Running CPack. Please wait..."
-         USES_TERMINAL
-         DEPENDS translations )
+  ADD_CUSTOM_TARGET( bundle "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/libs.rb"
+	 COMMAND "${CMAKE_CPACK_COMMAND}"
+	 "-C" "$<CONFIGURATION>"
+	 "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
+	 COMMENT "Running CPack. Please wait..."
+	 USES_TERMINAL
+	 DEPENDS translations )
 ENDIF()
 
 ADD_CUSTOM_COMMAND( TARGET bundle
 		    PRE_BUILD
-        	    COMMAND "utils/libs.rb"
+		    COMMAND "utils/libs.rb"
 		    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../.."
-        	    )
-	
+		    )
+
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
-        POST_BUILD
-        COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        )
+	POST_BUILD
+	COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
+	WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+	)
 ENDIF( WIN32 )

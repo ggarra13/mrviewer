@@ -63,7 +63,7 @@ def parse( files, dest )
     end
 
     if lib =~ EXCLUDE_REGEX
-      $stderr.puts "Exclude #{lib}" if @options[:verbose]
+      $stdout.puts "Exclude #{lib}" if @options[:verbose]
       next
     end
 
@@ -73,9 +73,9 @@ def parse( files, dest )
     rescue
     end
     if @options[:verbose]
-      $stderr.puts "loc: #{loc} -> lib: #{lib}"
+      $stdout.puts "loc: #{loc} -> lib: #{lib}"
     else
-      $stderr.print "."
+      $stdout.print "."
     end
     orig = lib
     if File.symlink?( loc )
@@ -92,7 +92,7 @@ def parse( files, dest )
     else
       FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
       `chrpath -d "#{dest}/lib/#{lib}"`
-      $stderr.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
+      $stdout.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
   end
 end
@@ -101,15 +101,15 @@ end
 if not @debug
   @debug = "Release"
 elsif not @debug == "Debug" and not @debug == "Release"
-  $stderr.puts "Invalid option: #@debug [Debug|Release]"
+  $stdout.puts "Invalid option: #@debug [Debug|Release]"
   exit 1
 end
 
 def copy_files( dest )
-  $stderr.puts "Copy shaders"
+  $stdout.puts "Copy shaders"
   FileUtils.rm_rf( "#{dest}/shaders" )
   FileUtils.cp_r( "shaders/", "#{dest}/", :verbose => true )
-  $stderr.puts "Copy docs"
+  $stdout.puts "Copy docs"
   FileUtils.rm_rf( "#{dest}/docs" )
   FileUtils.rm_rf( "docs/*~" )
   FileUtils.cp_r( "docs/", "#{dest}/", :verbose => true )
@@ -117,13 +117,13 @@ def copy_files( dest )
   FileUtils.cp_r( "share/", "#{dest}/", :verbose => true )
   FileUtils.rm_rf( "#{dest}/colors" )
   FileUtils.cp_r( "colors/", "#{dest}/", :verbose => true )
-  $stderr.puts "Copy ctl scripts"
+  $stdout.puts "Copy ctl scripts"
   FileUtils.rm_rf( "#{dest}/ctl" )
   FileUtils.cp_r( "ctl/", "#{dest}/", :verbose => true )
-  $stderr.puts "Copy ocio configs"
+  $stdout.puts "Copy ocio configs"
   FileUtils.rm_rf( "#{dest}/ocio" )
   FileUtils.cp_r( "ocio/", "#{dest}/", :verbose => true )
-  $stderr.puts "Copy otio adapters"
+  $stdout.puts "Copy otio adapters"
   FileUtils.rm_rf( "#{dest}/otio" )
   FileUtils.cp_r( "otio/", "#{dest}/", :verbose => true )
 end
@@ -157,10 +157,11 @@ release = `uname -r`.chop!
 
 build = "BUILD/#{kernel}-#{release}-64/"
 
-$stderr.puts "kernel: #{kernel}"
+$stdout.puts "kernel: #{kernel}"
 
-$stderr.puts "DIRECTORY: #{Dir.pwd}"
-root = Dir.pwd
+$stdout.puts "DIRECTORY: #{Dir.pwd}"
+root = $0.sub(/\/utils\/libs.rb/, "")
+#root = Dir.pwd
 
 if kernel !~ /MINGW.*/
 
@@ -211,8 +212,10 @@ if kernel !~ /MINGW.*/
   copy_files( dest )
 
   if kernel =~ /Linux/
-    $stderr.puts "remove .fuse files"
+    $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
+    FileUtils.ln_s ( "#{dest}/lib/libACESclip.so.0.2.6",
+                     "#{dest}/lib/libACESclip.so" )
   end
 
 else
@@ -226,3 +229,5 @@ else
   Dir.chdir( root  )
   copy_files( dest )
 end
+
+exit(0)
