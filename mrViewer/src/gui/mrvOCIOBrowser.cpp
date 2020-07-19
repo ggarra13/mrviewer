@@ -144,7 +144,7 @@ void OCIOBrowser::fill()
 {
     this->clear();
 
-    std::locale::global( std::locale("C") );
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
 
     switch( _type )
@@ -161,8 +161,9 @@ void OCIOBrowser::fill()
     default:
         LOG_ERROR( _("Unknown type for mrvOCIOBrowser") );
     }
-    std::locale::global( std::locale("") );
-    setlocale( LC_NUMERIC, "" );
+
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
 }
 
 

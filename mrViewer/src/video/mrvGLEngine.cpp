@@ -3875,11 +3875,8 @@ void GLEngine::loadOpenGLShader()
         return;
     }
 
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
-    std::locale::global( std::locale("C") );
-    code.imbue(std::locale());
-    hdr.imbue(std::locale());
-    foot.imbue(std::locale());
 
     hdr.clear();
     hdr.str("");
@@ -4168,6 +4165,9 @@ void GLEngine::loadOpenGLShader()
 
     _YCbCr = new GLShader();
     _YCbCr->load( N_("builtin"), all.c_str() );
+
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
 }
 
 void
@@ -4175,6 +4175,9 @@ GLEngine::loadBuiltinFragShader()
 {
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     _rgba = new GLShader();
 
     try {
@@ -4205,8 +4208,8 @@ GLEngine::loadBuiltinFragShader()
         LOG_ERROR( "Unknown error in loadBuiltinFragShader" );
     }
 
-    setlocale( LC_NUMERIC, "" );
-    std::locale::global( std::locale("") );
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
 }
 
 

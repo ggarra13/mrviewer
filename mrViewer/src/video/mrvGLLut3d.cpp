@@ -1395,12 +1395,12 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 
     if ( Preferences::use_ocio )
     {
+        char* oldloc = av_strdup( setlocale(LC_NUMERIC, NULL ) );
         setlocale(LC_NUMERIC, "C" );
-        std::locale::global( std::locale("C") );
         if ( ! lut->calculate_ocio( img ) )
             LOG_ERROR( _("Could not calculate OCIO Lut") );
-        std::locale::global( std::locale(N_("")) );
-        setlocale(LC_NUMERIC, N_("") );
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
     }
     else
     {

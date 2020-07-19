@@ -104,8 +104,8 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
 
 void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 {
+    char* oldloc = av_strdup( setlocale(LC_NUMERIC, NULL ) );
     setlocale(LC_NUMERIC, "C" );
-    std::locale::global( std::locale("C") );
 
     try
     {
@@ -154,8 +154,8 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
         LOG_ERROR( e.what() );
     }
 
-    std::locale::global( std::locale(N_("")) );
-    setlocale(LC_NUMERIC, N_("") );
+    setlocale(LC_NUMERIC, oldloc );
+    av_free( oldloc );
 }
 
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,

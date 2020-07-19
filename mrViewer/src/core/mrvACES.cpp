@@ -127,6 +127,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
 bool save_aces_xml( const CMedia* img, const char* filename )
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" ); // Make floating point values be like 1.2
 
     ACES::ACESclipWriter c;
@@ -218,7 +219,8 @@ bool save_aces_xml( const CMedia* img, const char* filename )
         LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
 
 
-    setlocale( LC_NUMERIC, "" );  // Return floating point form to our locale
+    setlocale( LC_NUMERIC, oldloc );  // Return floating point form to our locale
+    av_free( oldloc );
 
     return true;
 }

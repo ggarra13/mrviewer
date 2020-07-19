@@ -411,6 +411,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         GetImageProperty( img, "exif:*", exception );
         ResetImagePropertyIterator( img );
         const char* property = GetNextImageProperty(img);
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
         setlocale( LC_NUMERIC, "C" );
         while ( property )
         {
@@ -493,7 +494,8 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
             property = GetNextImageProperty(img);
         }
 
-        setlocale( LC_NUMERIC, "" );
+        setlocale( LC_NUMERIC, oldloc );
+        av_free( oldloc );
 
         size_t profileSize;
         unsigned char* tmp = MagickGetImageProfile( wand, "iptc",
@@ -1582,7 +1584,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     // Store EXIF and IPTC data (if any)
     //
     {
-        setlocale( LC_NUMERIC, "C" );  // Set locale to C
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+        setlocale( LC_NUMERIC, "C" );
         AttributesFrame::const_iterator j = _attrs.find( _frame );
         if ( j != _attrs.end() )
         {
@@ -1613,7 +1616,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
         }
 
-        setlocale( LC_NUMERIC, "" );  // Return to our locale
+        setlocale( LC_NUMERIC, oldloc );  // Return to our locale
+        av_free( oldloc );
 
         //sprintf( buf, "%2.4f", _gamma );
         //MagickSetImageProperty( wand, "dpx:television.gamma", buf );

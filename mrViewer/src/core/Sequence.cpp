@@ -814,11 +814,14 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
     edl = false;
     ghost_previous = ghost_next = 5;
 
+
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
 
     FILE* f = fl_fopen( reelfile, "r" );
     if (!f ) {
-        setlocale( LC_NUMERIC, "" );
+        setlocale( LC_NUMERIC, oldloc );
+        av_free( oldloc );
         return false;
     }
 
@@ -1110,7 +1113,8 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
     fclose(f);
 
-    setlocale( LC_NUMERIC, "" );
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
 
     return true;
 }

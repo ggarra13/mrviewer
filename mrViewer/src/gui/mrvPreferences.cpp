@@ -1555,7 +1555,7 @@ void Preferences::run( ViewerUI* main )
 // #endif
 
         DBG3;
-        std::locale::global( std::locale("C") );
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
         setlocale( LC_NUMERIC, "C" );
 
         DBG3;
@@ -1728,8 +1728,9 @@ void Preferences::run( ViewerUI* main )
         }
 
         DBG3;
-        std::locale::global( std::locale("") );
-        setlocale(LC_NUMERIC, "" );
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
+
         DBG3;
     }
     else
@@ -1751,7 +1752,7 @@ void Preferences::run( ViewerUI* main )
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
         DBG3;
-        std::locale::global( std::locale("C") );
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
         setlocale( LC_NUMERIC, "C" );
         try
         {
@@ -1833,8 +1834,9 @@ void Preferences::run( ViewerUI* main )
         }
         DBG3;
         main->uiICS->show();
-        std::locale::global( std::locale("") );
-        setlocale(LC_NUMERIC, "" );
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
+
     }
     else
     {

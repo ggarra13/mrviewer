@@ -27,7 +27,6 @@
 //#define ALLOC_CONSOLE
 
 #include <string.h>
-#include <locale.h>
 #include <iostream>
 
 #define __STDC_FORMAT_MACROS
@@ -192,15 +191,21 @@ int main( int argc, const char** argv )
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
-    const char* tmp = setlocale(LC_ALL, N_(""));
+#if defined __APPLE__ && defined __MACH__
+    setenv( "LC_CTYPE",  "UTF-8", 1 );
+#endif
+
+    const char* tmp = setlocale(LC_ALL, "");
+
+#if defined __APPLE__ && defined __MACH__
+    tmp = setlocale( LC_MESSAGES, NULL );
+    setlocale( LC_NUMERIC, tmp );
+#endif
 
 
     // Create and install global locale
     try {
-#if defined __APPLE__ && defined __MACH__
-        setenv( "LC_CTYPE",  "UTF-8", 1 );
-#endif
-        std::locale::global( std::locale("") );
+        // std::locale::global( std::locale("") );
         // Make boost.filesystem use it
         fs::path::imbue(std::locale());
     }
@@ -208,7 +213,6 @@ int main( int argc, const char** argv )
     {
         std::cerr << e.what() << std::endl;
     }
-
 
     DBG;
     char buf[1024];
