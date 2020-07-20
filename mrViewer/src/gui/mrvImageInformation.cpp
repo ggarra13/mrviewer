@@ -825,7 +825,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 
   if ( match.empty() )
   {
-    info->m_scroll->scroll_to( 0, 0 );
+    info->scroll_to( 0, 0 );
     return;
   }
 
@@ -845,7 +845,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 
   int idx = search_table( t, row, match );
   if ( idx >= 0 ) {
-    info->m_scroll->scroll_to( 0, pos + idx*H );
+    info->scroll_to( 0, pos + idx*H );
     return;
   }
 
@@ -858,7 +858,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       idx = search_table( t, row, match );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
-        info->m_scroll->scroll_to( 0, pos + idx*H );
+        info->scroll_to( 0, pos + idx*H );
         return;
       }
     }
@@ -872,7 +872,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       idx = search_table( t, row, match );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
-        info->m_scroll->scroll_to( 0, pos + idx*H );
+        info->scroll_to( 0, pos + idx*H );
         return;
       }
     }
@@ -887,7 +887,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       idx = search_table( t, row, match );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
-        info->m_scroll->scroll_to( 0, pos + idx*H );
+        info->scroll_to( 0, pos + idx*H );
         return;
       }
     }
@@ -901,7 +901,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       idx = search_table( t, row, match );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
-        info->m_scroll->scroll_to( 0, pos + idx*H );
+        info->scroll_to( 0, pos + idx*H );
         return;
       }
     }
@@ -913,7 +913,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 
 ImageInformation::ImageInformation( int x, int y, int w, int h,
                                     const char* l ) :
-Fl_Group( x, y, w, h, l ),
+Fl_Scroll( x, y, w, h, l ),
 img( NULL ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 {
@@ -926,7 +926,8 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 
     begin();
 
-    Fl_Group* g = new Fl_Group( r.x(), r.y(), r.w(), 30 );
+    m_eg = new Fl_Group( r.x(), r.y(), r.w(), 30 );
+    m_eg->begin();
     {
       m_search = new Fl_Box( r.x(), r.y(), 80, 30, "Search" );
       m_search->box( FL_FLAT_BOX );
@@ -938,38 +939,34 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
       m_entry->when( FL_WHEN_CHANGED | FL_WHEN_ENTER_KEY |
                      FL_WHEN_NOT_CHANGED );
     }
-    g->end();
+    m_eg->end();
 
-    m_scroll = new Fl_Scroll( r.x(), r.y()+30, r.w(), 800 );
-    m_scroll->begin();
 
     m_all = new mrvPack( r.x(), r.y()+30, r.w()-sw, 800 );
     m_all->begin();
 
-    m_button = new Fl_Button( r.x(), r.y()+30, r.w(), 40, _("Left View") );
+    m_button = new Fl_Button( r.x(), r.y()+30, r.w()-sw, 40, _("Left View") );
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
     // CollapsibleGrop recalcs, we don't care its xyh sizes
-    m_image = new mrv::CollapsibleGroup( 0, r.y()+70, r.w(),
+    m_image = new mrv::CollapsibleGroup( 0, r.y()+70, r.w()-sw,
                                          800, _("Main")  );
 
     m_video = new mrv::CollapsibleGroup( r.x(), r.y()+870,
-                                         r.w(), 400, _("Video") );
+                                         r.w()-sw, 400, _("Video") );
 
     m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1270,
-                                         r.w(), 400, _("Audio") );
+                                         r.w()-sw, 400, _("Audio") );
 
 
     m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1670,
-                                            r.w(), 400, _("Subtitle") );
+                                            r.w()-sw, 400, _("Subtitle") );
 
     m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2070,
-                                               r.w(), 400, _("Metadata")  );
+                                               r.w()-sw, 400, _("Metadata")  );
 
     m_all->end();
-
-    m_scroll->end();
 
 
     resizable( 0 );
@@ -1041,7 +1038,7 @@ int ImageInformation::handle( int event )
     //               << ( e->label() ? e->label() : "none" ) << std::endl;
     // }
 
-    return Fl_Group::handle( event );
+    return Fl_Scroll::handle( event );
 }
 
 
@@ -3682,8 +3679,10 @@ void ImageInformation::refresh()
 void
 ImageInformation::resize( int x, int y, int w, int h )
 {
-    m_scroll->scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
-    m_all->resize( x, y, w, h );
+    scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
+    int sw = Fl::scrollbar_size();                // scrollbar width
+    m_entry->resize( x+80, y, w-sw, 30 );
+    m_all->resize( x, y+30, w-sw, h );
     Fl_Group::resize( x, y, w, h );
 }
 
