@@ -1127,13 +1127,18 @@ void GLEngine::draw_title( const float size,
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
 #ifdef OSX
-    gl_font( FL_HELVETICA, 12 );
+
     glLoadIdentity();
     glRasterPos2i( x, y );
 
-    glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
+    glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST | GL_SCISSOR_TEST |
+                  GL_ALPHA_TEST );
     glDisable( GL_DEPTH_TEST );
+    glDisable( GL_SCISSOR_TEST );
+    glActiveTexture(GL_TEXTURE0);
+    CHECK_GL;
 
+    gl_font( FL_HELVETICA, 12 );
     gl_draw( s );
 
     glPopAttrib();
