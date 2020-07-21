@@ -3666,8 +3666,8 @@ ImageInformation::resize( int x, int y, int w, int h )
 {
     scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
     int sw = Fl::scrollbar_size();                // scrollbar width
-    m_entry->resize( x+80, y, w-sw, 30 );
-    m_all->resize( x, y+30, w-sw, h );
+    m_entry->resize( x+80, 0, w-sw, 30 );
+    m_all->resize( x, y, w-sw, h );
     Fl_Group::resize( x, y, w, h );
 }
 
