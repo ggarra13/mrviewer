@@ -748,6 +748,8 @@ ImageView* ImageInformation::view() const
     return uiMain->uiView;
 }
 
+}  // namespace mrv
+
 int idx = -1;
 std::string old_match;
 int num_matches = 0;
@@ -768,7 +770,7 @@ static bool regex_match( float i, const std::string& regex, std::string text )
 }
 
 
-int search_table( mrv::Table* t, float& row, const std::string& match )
+static int search_table( mrv::Table* t, float& row, const std::string& match )
 {
   int rows = t->children();
   for ( int i = 0; i < rows; ++i )
@@ -807,7 +809,7 @@ int search_table( mrv::Table* t, float& row, const std::string& match )
   return idx;
 }
 
-static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
+void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 {
   std::string match = info->m_entry->value();
   num_matches = 0;
@@ -910,6 +912,7 @@ static void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 
 }
 
+namespace mrv {
 
 ImageInformation::ImageInformation( int x, int y, int w, int h,
                                     const char* l ) :
@@ -926,23 +929,7 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 
     begin();
 
-    m_eg = new Fl_Group( r.x(), r.y(), r.w(), 30 );
-    m_eg->begin();
-    {
-      m_search = new Fl_Box( r.x(), r.y(), 80, 30, "Search" );
-      m_search->box( FL_FLAT_BOX );
-
-      m_entry  = new Fl_Input( r.x()+80, r.y(), r.w()-80, 30 );
-      m_entry->textcolor( FL_BLACK );
-      m_entry->callback( (Fl_Callback*) search_cb, this );
-      // m_entry->when( FL_WHEN_ENTER_KEY | FL_WHEN_NOT_CHANGED );
-      m_entry->when( FL_WHEN_CHANGED | FL_WHEN_ENTER_KEY |
-                     FL_WHEN_NOT_CHANGED );
-    }
-    m_eg->end();
-
-
-    m_all = new mrvPack( r.x(), r.y()+30, r.w()-sw, 800 );
+    m_all = new mrvPack( r.x(), 0, r.w()-sw, 800 );
     m_all->begin();
 
     m_button = new Fl_Button( r.x(), r.y()+30, r.w()-sw, 40, _("Left View") );
@@ -971,8 +958,6 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 
     resizable( 0 );
     end();
-
-    m_entry->take_focus();
 
     hide_tabs();
 

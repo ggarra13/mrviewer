@@ -228,8 +228,6 @@ public:
     Fl_Input* m_entry;
 
 protected:
-    Fl_Group* m_eg;
-    Fl_Box* m_search;
 
     mrvPack*           m_all;
     mrv::Table*       m_curr;

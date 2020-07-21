@@ -29,6 +29,9 @@ decl {\#include "FL/Fl.H"} {private local
 decl {class ViewerUI;} {public global
 }
 
+decl {extern void search_cb( Fl_Widget* w, mrv::ImageInformation* v );} {private local
+}
+
 class ImageInfoUI {open
 } {
   decl {ViewerUI* main_;} {private local
@@ -39,16 +42,32 @@ class ImageInfoUI {open
       label {Media Information}
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
-o->hide();} open selected
-      xywh {500 197 605 800} type Double resizable
+o->hide();} open
+      xywh {500 45 605 740} type Double resizable
       code0 {main_ = main;} non_modal visible
     } {
       Fl_Scroll uiInfoText {
         user_data uiInfoText user_data_type {mrv::ImageInformation*} open
-        xywh {0 0 600 800} resizable
+        xywh {0 30 605 770} resizable
         code0 {o->main( main );}
         class {mrv::ImageInformation}
       } {}
+      Fl_Group {} {open
+        xywh {0 0 605 30}
+      } {
+        Fl_Box {} {
+          label Search
+          xywh {0 0 80 30} box FLAT_BOX
+        }
+        Fl_Input uiSearch {
+          user_data uiInfoText user_data_type {mrv::ImageInformation*}
+          callback {search_cb( o, v );} selected
+          xywh {80 0 525 30} labeltype NO_LABEL textcolor 32
+          code0 {uiInfoText->m_entry = uiSearch;}
+          code1 {o->take_focus();}
+          code2 {o->when( FL_WHEN_CHANGED | FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );}
+        }
+      }
     }
   }
   Function {ImageInfoUI(ViewerUI* m)} {open
