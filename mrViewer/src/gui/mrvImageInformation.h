@@ -37,6 +37,7 @@
 
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Scroll.H>
 
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
@@ -64,7 +65,7 @@ struct CtlLMTData;
 class ImageView;
 
 
-class ImageInformation : public Fl_Group
+class ImageInformation : public Fl_Scroll
 {
 
 public:
@@ -225,10 +226,8 @@ public:
     mrv::CollapsibleGroup*       m_audio;
     mrv::CollapsibleGroup*       m_subtitle;
     Fl_Input* m_entry;
-    Fl_Scroll* m_scroll;
 
 protected:
-    Fl_Box* m_search;
 
     mrvPack*           m_all;
     mrv::Table*       m_curr;
