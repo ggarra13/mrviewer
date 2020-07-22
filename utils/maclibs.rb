@@ -16,6 +16,10 @@ OptionParser.new do |opts|
     @options[:verbose] = v
   end
 
+  opts.on("-f", "--force", "Force library copy") do |v|
+    @options[:force] = v
+  end
+
   opts.on("-l", "--libs_only", "Run verbosely") do |v|
     @options[:libs_only] = v
   end
@@ -63,7 +67,7 @@ app = appdir + "/mrViewer"
 
 objc_opt_self = `nm "#{app}"`.chop!
 
-if objc_opt_self =~ /objc_opt_self/
+if objc_opt_self =~ /objc_opt_self/ and not @options[:force]
   $stderr.puts "MAC APPLICATION NOT COMPATIBLE WITH MOJAVE"
   exit 1
 end

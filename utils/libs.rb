@@ -28,12 +28,16 @@ libfreetype.*
 libz.*
 )
 
-@options = { :verbose => false, :libs_only => false }
+@options = { :verbose => false, :libs_only => false, :force => false }
 OptionParser.new do |opts|
   opts.banner = "Usage: utils/libs.rb [@options]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
+  end
+
+  opts.on("-f", "--force", "Force lib copy") do |v|
+    @options[:force] = v
   end
 
   opts.on("-l", "--libs_only", "Run verbosely") do |v|
@@ -141,7 +145,11 @@ def copy_third_party( root, dest )
     FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
                     "#{dest}/lib" )
   elsif dest =~ /Darwin/
-    if not system( "#{root}/utils/maclibs.rb #@debug" )
+    force = ''
+    if @options[:force]
+      force = '-f'
+    end
+    if not system( "#{root}/utils/maclibs.rb #{force} #@debug" )
       exit 1
     end
     # Copy the RED library
