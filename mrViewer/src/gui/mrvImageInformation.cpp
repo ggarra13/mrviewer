@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2020  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -959,8 +959,9 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
     resizable( 0 );
     end();
 
-    hide_tabs();
+    scroll_to( 0, -y );  // needed to reset scroll bar
 
+    hide_tabs();
 }
 
 
@@ -3655,6 +3656,8 @@ void ImageInformation::refresh()
 
     m_all->show();
 
+
+
     filled = true;
 
     Fl_Group::current(0);
@@ -3666,8 +3669,8 @@ ImageInformation::resize( int x, int y, int w, int h )
 {
     scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
     int sw = Fl::scrollbar_size();                // scrollbar width
-    m_entry->resize( x+80, 0, w-sw, 30 );
-    m_all->resize( x, y, w-sw, h );
+    m_entry->resize( x+80, y, w-sw, 30 );
+    m_all->resize( x, y+30, w-sw, h );
     Fl_Group::resize( x, y, w, h );
 }
 
