@@ -7209,7 +7209,7 @@ void ImageView::toggle_presentation()
             texture_filtering( kBilinearFiltering );
         }
 
-        fltk_main()->fullscreen_off();
+        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         fltk_main()->fullscreen();
         float scale = Fl::screen_scale( window()->screen_num() );
         int X = window()->x();
@@ -8976,13 +8976,15 @@ void ImageView::resize_main_window()
     if ( w < 640 )  w = 640;
     if ( h < 535 )  h = 535;
 
-    fltk_main()->fullscreen_off();
-    fltk_main()->resize( posX, posY, w, h );
+    if ( fltk_main()->fullscreen_active() )
+        fltk_main()->fullscreen_off( posX, posY, w, h );
+    else
+        fltk_main()->resize( posX, posY, w, h );
 
-    if ( _interactive )
-    {
-        Fl::check();
-    }
+    // if ( _interactive )
+    // {
+    //     Fl::check();
+    // }
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                             int(28 * scale) );
