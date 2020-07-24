@@ -156,7 +156,6 @@ bool   GLEngine::_pow2Textures    = true;
 bool   GLEngine::_pboTextures     = false;
 bool   GLEngine::_sdiOutput       = false;
 
-GLuint GLEngine::sCharset = 0;   // display list for characters
 unsigned int GLEngine::_maxTexWidth;
 unsigned int GLEngine::_maxTexHeight;
 
@@ -261,12 +260,6 @@ std::string GLEngine::options()
 }
 
 
-
-void GLEngine::init_charset()
-{
-
-    CHECK_GL;
-}
 
 
 
@@ -516,8 +509,6 @@ void GLEngine::initialize()
     }
 
     init_GLEW();
-
-    // init_charset();
 
     init_textures();
 

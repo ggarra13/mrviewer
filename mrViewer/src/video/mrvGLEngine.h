@@ -224,9 +224,6 @@ protected:
     /// Auxiliary function used to initialize texture info
     void init_textures();
 
-    /// Auxiliary function used to initialize character set
-    static void init_charset();
-
     /// Auxiliary function used to initialize GLEW library
     static void init_GLEW();
 
@@ -287,7 +284,6 @@ protected:
     static bool _pboTextures;     //!< Pixel Buffer Objects?
     static bool _sdiOutput;       //!< SDI output
 
-    static GLuint     sCharset;   //!< display list for characters
 
 };
 
