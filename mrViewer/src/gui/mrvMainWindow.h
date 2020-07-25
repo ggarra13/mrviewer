@@ -31,6 +31,10 @@
 
 #include <FL/Fl_Double_Window.H>
 
+#ifdef OSX
+#  include <IOKit/pwr_mgt/IOPMLib.h>
+#endif
+
 class ViewerUI;
 
 namespace mrv {
@@ -66,6 +70,11 @@ public:
     void iconize_all();
 
 protected:
+
+#ifdef OSX
+    IOPMAssertionID assertionID;
+    IOReturn success;
+#endif
 
     ViewerUI* uiMain;
 };

@@ -98,6 +98,11 @@ MainWindow::~MainWindow()
     XScreenSaverSuspend( fl_display, False );
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState(ES_CONTINUOUS);
+#else
+    if ( success )
+    {
+        success = IOPMAssertionRelease( assertionID );
+    }
 #endif
     DBGM1( _("Restored screensaver") );
     // Fl::check();
@@ -129,6 +134,11 @@ void MainWindow::set_icon()
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
                              ES_DISPLAY_REQUIRED );
+#else
+    CFStringRef reason = CFSTR( "mrViewer playback" );
+    success = IOPMAssertionCreateWithName( kIOPMAssertionTypeNoDisplaySleep,
+                                           kIOPMAssertionLevelOn,
+                                           reason, &assertionID );
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
