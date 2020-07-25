@@ -25,7 +25,11 @@
 #include "mrvHome.h"
 
 #if defined(_WIN32) && !defined(_WIN64_)
+#  include <Shlobj.h>
 #  include <windows.h>
+#else
+#  include <sys/types.h>
+#  include <pwd.h>
 #endif
 
 namespace fs = boost::filesystem;
@@ -45,6 +49,15 @@ std::string homepath()
 {
    std::string path;
 
+#ifdef _WIN32
+  char dir[MAX_PATH + 1];
+  if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, dir)))
+    {
+        path = std::string(dir) + "/";
+        return path;
+    }
+  else
+  {
    char* e = NULL;
    if ( (e = getenv("HOME")) )
    {
@@ -62,9 +75,29 @@ std::string homepath()
    {
        path = e;
        path += sgetenv("HOMEPATH");
+       path += "/" + sgetenv("USERNAME");
        if ( fs::is_directory( path ) )
            return path;
    }
+  }
+#else
+   char* e = NULL;
+   if ( (e = getenv("HOME")) )
+   {
+       path = e;
+       if ( fs::is_directory( path ) )
+           return path;
+   }
+   else
+   {
+     e = getpwuid( getuid() )->pw_dir;
+     if ( e ) {
+       path = e;
+       return path;
+     }
+   }
+#endif
+
    path = "/usr/tmp";
    return path;
 }
