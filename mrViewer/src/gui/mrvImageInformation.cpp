@@ -2867,7 +2867,8 @@ void ImageInformation::fill_data()
         if ( img->right() )
             add_float( _("Eye Separation"), _("Stereo eye separation"),
                        img->eye_separation(), true, true,
-                       (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
+                       (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f,
+                       FL_WHEN_CHANGED );
     }
 
 
@@ -2948,7 +2949,8 @@ void ImageInformation::fill_data()
 
 
     add_float( _("Gamma"), _("Display Gamma of Image"), img->gamma(), true,
-               true, (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
+               true, (Fl_Callback*)change_gamma_cb, 0.01f, 4.0f,
+               FL_WHEN_CHANGED );
 
 
     DBG3;
@@ -3665,11 +3667,12 @@ void ImageInformation::refresh()
 void
 ImageInformation::resize( int x, int y, int w, int h )
 {
-    scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
-    int sw = Fl::scrollbar_size();                // scrollbar width
-    m_entry->size( w-sw, 30 );
-    m_all->size( w-sw, h );
-    Fl_Group::resize( x, y, w, h );
+  scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
+  int sw = Fl::scrollbar_size();                // scrollbar width
+  m_entry->size( w-sw, 30 );
+  m_all->size( w-sw, h );
+  Fl_Group::resize( x, y, w, h );
+
 }
 
 mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )

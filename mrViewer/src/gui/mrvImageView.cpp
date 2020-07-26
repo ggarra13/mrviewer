@@ -6300,6 +6300,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         gamma( 1.0 );
         gain( 1.0 );
+        update_image_info();
         redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
