@@ -393,9 +393,9 @@ _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( 0 ),
-_fps( 0 ),
-_orig_fps( 0 ),
+_play_fps( 24.0f ),
+_fps( 24.0f ),
+_orig_fps( 24.0f ),
 _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
@@ -508,9 +508,9 @@ _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( 0 ),
-_fps( 0 ),
-_orig_fps( 0 ),
+_play_fps( 24.0f ),
+_fps( 24.0f ),
+_orig_fps( 24.0f ),
 _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
@@ -1175,6 +1175,7 @@ double CMedia::pixel_ratio() const    {
        dynamic_cast< const clonedImage* >( this ) != NULL ||
        dynamic_cast< const ColorBarsImage* >( this ) != NULL )
     idx = 0;
+  if ( !_pixel_ratio ) return 1.0f;
   return _pixel_ratio[idx];
 }
 

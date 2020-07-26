@@ -5,6 +5,8 @@ v5.5.8  - Prevented system sleep on Macs while mrViewer is open.
 	  image or sequence by double clicking on it.
 	- Fixed a too tall media info window which would crop out the bottom
 	  rows.
+	- Bug fixed a crash due to unknown pixel ratio for images that were
+	  not loaded (or weren't images to begin with).
 
 v5.5.7  - Fixed HUD display on Macs, which had disappeared.
 	- Made HUD display match the font on all platforms.
