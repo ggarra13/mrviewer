@@ -2163,7 +2163,7 @@ void Preferences::save()
 
     Fl_Preferences base( prefspath().c_str(), "filmaura",
                             "mrViewer" );
-    base.set( "version", 3 );
+    base.set( "version", 5 );
 
     // Save ui preferences
     Fl_Preferences ui( base, "ui" );

@@ -1,4 +1,6 @@
 v5.5.8  - Prevented system sleep on Macs while mrViewer is open.
+	- Fixed preferences' versioning reverting to 3.  This would not allow
+	  you to save and use the non-native file browser on Mac, for example.
 
 v5.5.7  - Fixed HUD display on Macs, which had disappeared.
 	- Made HUD display match the font on all platforms.
