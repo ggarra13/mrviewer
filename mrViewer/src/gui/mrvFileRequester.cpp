@@ -32,6 +32,7 @@
 #include <FL/Fl_Output.H>
 #include <FL/Enumerations.H>
 #include <FL/fl_ask.H>
+#include <FL/fl_utf8.h>
 
 #include "core/mrvString.h"
 #include "core/CMedia.h"
@@ -461,14 +462,14 @@ std::string open_icc_profile( const char* startfile,
     stringArray filelist;
 
     if ( !startfile )
-        startfile = getenv("ICC_PROFILES");
+        startfile = fl_getenv("ICC_PROFILES");
 
     if ( !startfile || strlen( startfile ) == 0 )
     {
 #if defined(WIN32) || defined(WIN64)
         char buf[256];
         sprintf( buf, "%s/SYSTEM32/spool/drivers/color",
-                 getenv("WINDIR") );
+                 fl_getenv("WINDIR") );
         startfile = buf;
 #else
         startfile = "/usr/share/color/icc";
@@ -495,7 +496,7 @@ const char* open_ctl_dir( const char* startfile,
     std::string path, modulepath, ext;
 
     if ( !startfile )
-        startfile = getenv("CTL_MODULE_PATH");
+        startfile = fl_getenv("CTL_MODULE_PATH");
 
     if ( startfile )
     {

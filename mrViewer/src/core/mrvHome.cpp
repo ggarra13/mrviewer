@@ -19,6 +19,7 @@
 #include <stdlib.h>
 
 #include <FL/filename.H>
+#include <FL/fl_utf8.h>
 
 #include <boost/filesystem.hpp>
 
@@ -39,8 +40,8 @@ namespace mrv
 
 std::string sgetenv( const char* const n )
 {
-   if ( getenv( n ) )
-      return getenv( n );
+   if ( fl_getenv( n ) )
+      return fl_getenv( n );
    else
       return std::string();
 }
@@ -59,19 +60,19 @@ std::string homepath()
   else
   {
    char* e = NULL;
-   if ( (e = getenv("HOME")) )
+   if ( (e = fl_getenv("HOME")) )
    {
        path = e;
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( (e = getenv("USERPROFILE")) )
+   else if ( (e = fl_getenv("USERPROFILE")) )
    {
        path = e;
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( (e = getenv("HOMEDRIVE")) )
+   else if ( (e = fl_getenv("HOMEDRIVE")) )
    {
        path = e;
        path += sgetenv("HOMEPATH");
@@ -82,7 +83,7 @@ std::string homepath()
   }
 #else
    char* e = NULL;
-   if ( (e = getenv("HOME")) )
+   if ( (e = fl_getenv("HOME")) )
    {
        path = e;
        if ( fs::is_directory( path ) )

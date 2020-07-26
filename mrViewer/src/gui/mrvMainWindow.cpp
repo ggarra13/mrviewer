@@ -47,6 +47,7 @@
 #include <FL/Fl.H>
 #include <FL/Fl_XPM_Image.H>
 #include <FL/platform.H>
+#include <FL/fl_utf8.h>
 
 
 #include "icons/viewer16.xpm"
@@ -75,7 +76,7 @@ Fl_Double_Window( W, H, title )
     xclass("mrViewer");
     set_icon();
 
-    const char* r = getenv( "MRV_ROOT" );
+    const char* r = fl_getenv( "MRV_ROOT" );
     if ( r )
     {
         Preferences::root = r;

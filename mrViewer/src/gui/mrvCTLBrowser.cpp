@@ -36,6 +36,8 @@
 // #include <boost/filesystem/convenience.hpp>
 // #include <boost/filesystem/operations.hpp>
 
+#include <FL/fl_utf8.h>
+
 #include <mrvCTLBrowser.h>
 
 namespace fs = boost::filesystem;
@@ -77,7 +79,7 @@ void CTLBrowser::fill()
 {
     this->clear();
 
-    const char* pathEnv = getenv("CTL_MODULE_PATH");
+    const char* pathEnv = fl_getenv("CTL_MODULE_PATH");
     if (!pathEnv) {
         LOG_ERROR("Environment variable CTL_MODULE_PATH is undefined");
         return;
@@ -176,11 +178,11 @@ bool CTLBrowser::find( const char* s )
 {
     for ( int i = 1; i <= size(); ++i )
     {
-	if ( strcmp( s, text(i) ) == 0 )
-	{
-	    value(i);
-	    return true;
-	}
+        if ( strcmp( s, text(i) ) == 0 )
+        {
+            value(i);
+            return true;
+        }
     }
     return false;
 }

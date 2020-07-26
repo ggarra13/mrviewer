@@ -43,6 +43,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
+#include <FL/fl_utf8.h>   // for fl_getenv
 #include <FL/Fl.H>
 
 // OpenEXR threadcount
@@ -110,7 +111,7 @@ int environmentSetting( const char* variable,
                         const bool  inPrefs )
 {
     int r = defaultValue;
-    const char* env = getenv( variable );
+    const char* env = fl_getenv( variable );
     if ( !env )
     {
         if ( !inPrefs )
@@ -152,7 +153,7 @@ float environmentSetting( const char* variable,
                           const bool inPrefs )
 {
     float r = defaultValue;
-    const char* env = getenv( variable );
+    const char* env = fl_getenv( variable );
     if ( !env )
     {
         if ( !inPrefs )
@@ -193,7 +194,7 @@ const char* environmentSetting( const char* variable,
                                 const bool inPrefs )
 {
 
-    const char* env = getenv( variable );
+    const char* env = fl_getenv( variable );
     if ( !env || strlen(env) == 0 )
     {
         env = defaultValue;
@@ -215,7 +216,7 @@ environmentSetting( const char* variable,
 {
     Imf::Chromaticities tmp = defaultValue;
 
-    if (const char *val = getenv(variable))
+    if (const char *val = fl_getenv(variable))
     {
         int n = sscanf( val,
                         " red %f %f green %f %f blue %f %f white %f %f",
@@ -334,7 +335,7 @@ static std::string expandVariables( const std::string &s,
 
     post = post.substr( e + 1 );
 
-    const char *v = getenv( variable.c_str() );
+    const char *v = fl_getenv( variable.c_str() );
     if( v != NULL ) value = std::string( v );
 
     return expandVariables( pre + value + post, START_VARIABLE,
@@ -590,7 +591,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( version < 3 )
     {
         ocio.get( "use_ocio", tmp, 0 );
-        const char* var = getenv( "OCIO" );
+        const char* var = fl_getenv( "OCIO" );
 
     DBG3;
         if ( var && strlen(var) > 0 )
@@ -928,7 +929,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // Get environment preferences (LUTS)
     //
-    const char* env = getenv( "CTL_MODULE_PATH");
+    const char* env = fl_getenv( "CTL_MODULE_PATH");
     std::string ctlEnv = temporaryDirectory();
 #if defined(WIN32) || defined(WIN64)
     char sep = ';';

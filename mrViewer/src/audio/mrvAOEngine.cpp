@@ -33,6 +33,8 @@
 #include "RtAudio.h"
 #include "ao/ao.h"
 
+#include <FL/fl_utf8.h>
+
 #include "gui/mrvIO.h"
 #include "audio/mrvAOEngine.h"
 
@@ -76,10 +78,10 @@ bool AOEngine::initialize()
         _devices.clear();
         _device_idx = 0;
 
-        const char* env = getenv( "AO_PLUGIN_PATH" );
+        const char* env = fl_getenv( "AO_PLUGIN_PATH" );
         if (! env || strlen(env) == 0 )
         {
-            env = getenv( "MRV_ROOT" );
+            env = fl_getenv( "MRV_ROOT" );
             if ( env )
             {
                 std::string path = env;

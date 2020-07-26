@@ -32,6 +32,8 @@
 #include <iostream>
 using namespace std;
 
+#include <FL/fl_utf8.h>
+
 #include <MagickWand/MagickWand.h>
 #include "slateImage.h"
 #include "mrvIO.h"
@@ -237,8 +239,8 @@ bool slateImage::fetch( mrv::image_type_ptr& canvas,
 
     char buf[1024];
 
-    const char* show = getenv( "SHOW" );
-    if ( show == NULL ) show = getenv( "JOB" );
+    const char* show = fl_getenv( "SHOW" );
+    if ( show == NULL ) show = fl_getenv( "JOB" );
     if ( show == NULL ) show = "";
 
 
@@ -259,7 +261,7 @@ bool slateImage::fetch( mrv::image_type_ptr& canvas,
     char* tmp = NULL;
 
     std::string seq, shot;
-    tmp = getenv( "SEQ" );
+    tmp = fl_getenv( "SEQ" );
     if ( tmp ) seq = tmp;
     else
     {
@@ -272,7 +274,7 @@ bool slateImage::fetch( mrv::image_type_ptr& canvas,
         }
     }
 
-    tmp = getenv( "SHOT" );
+    tmp = fl_getenv( "SHOT" );
     if ( tmp ) shot = tmp;
     else shot = tokens[0];
 
@@ -329,8 +331,8 @@ bool slateImage::fetch( mrv::image_type_ptr& canvas,
     y += yinc;
 
 
-    char* user = getenv("USER");
-    if ( user == NULL ) user = getenv("USERNAME");
+    char* user = fl_getenv("USER");
+    if ( user == NULL ) user = fl_getenv("USERNAME");
     if ( user != NULL )
         draw_text( x, y, user );
     y += yinc;

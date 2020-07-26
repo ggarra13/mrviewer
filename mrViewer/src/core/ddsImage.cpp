@@ -963,7 +963,7 @@ void ddsImage::Decompress( mrv::image_type_ptr& canvas,
             CompFormat == PF_DXT3 || CompFormat == PF_DXT4 ||
             CompFormat == PF_DXT5 )
     {
-        const char* dpx = getenv( "MRV_DXT" );
+        const char* dpx = fl_getenv( "MRV_DXT" );
         if ( dpx == NULL || strlen( dpx ) == 0 )
         {
             mrvALERT( "%s: Patented DXT codec, setenv MRV_DXT",

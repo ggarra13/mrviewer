@@ -3,6 +3,7 @@
 #include <boost/filesystem.hpp>
 
 #include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 
 #include "ACESclipWriter.h"
 #include "ACESclipReader.h"
@@ -135,12 +136,12 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     c.info( "mrViewer", mrv::version() );
 
     char buf[128];
-    const char* show = getenv( N_("SHOW") );
-    if ( !show ) show = getenv( _("SHOW") );
+    const char* show = fl_getenv( N_("SHOW") );
+    if ( !show ) show = fl_getenv( _("SHOW") );
     if ( !show ) show = _("Unknown Show");
 
-    const char* shot = getenv( N_("SHOT") );
-    if ( !shot ) shot = getenv( _("SHOT") );
+    const char* shot = fl_getenv( N_("SHOT") );
+    if ( !shot ) shot = fl_getenv( _("SHOT") );
     if ( !shot ) shot = _("Unknown Shot");
 
     sprintf( buf, "%s-%s", show, shot );

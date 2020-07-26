@@ -30,6 +30,8 @@
 #include <iostream>
 #include <mrvIO.h>
 
+#include <FL/fl_utf8.h>
+
 extern "C" {
 #include <libavutil/mem.h>
 }
@@ -192,7 +194,7 @@ namespace mrv {
 
   void set_root_path( const int argc, const char** argv )
   {
-    char* root = getenv("MRV_ROOT");
+    char* root = fl_getenv("MRV_ROOT");
 
     if ( !root )
       {

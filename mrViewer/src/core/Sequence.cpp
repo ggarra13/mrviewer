@@ -51,6 +51,7 @@
 #include <limits>
 
 #include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 #include <FL/fl_draw.H>
 
 using namespace std;
@@ -284,7 +285,7 @@ std::string hex_to_char_filename( std::string& f )
 
 std::string get_short_view( bool left )
 {
-    const char* pairs = getenv("MRV_STEREO_CHAR_PAIRS");
+    const char* pairs = fl_getenv("MRV_STEREO_CHAR_PAIRS");
     if ( ! pairs ) pairs = "L:R";
 
     std::string view = pairs;
@@ -306,7 +307,7 @@ std::string get_short_view( bool left )
 
 std::string get_long_view( bool left )
 {
-    const char* pairs = getenv("MRV_STEREO_NAME_PAIRS");
+    const char* pairs = fl_getenv("MRV_STEREO_NAME_PAIRS");
     if ( ! pairs ) pairs = "left:right";
 
     std::string view = pairs;

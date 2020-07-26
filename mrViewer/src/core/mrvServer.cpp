@@ -59,6 +59,8 @@
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
 
+#include <FL/fl_utf8.h>
+
 #include <ImfStandardAttributes.h>
 #include <ImfVecAttribute.h>
 #include <ImfIntAttribute.h>
@@ -643,7 +645,7 @@ bool Parser::parse( const std::string& s )
         mrv::Preferences::use_ocio = t;
         v->main()->uiPrefs->uiPrefsUseOcio->value( t );
 
-        const char* env = getenv( "OCIO" );
+        const char* env = fl_getenv( "OCIO" );
         if ( env )
         {
             ImageView::Command c;

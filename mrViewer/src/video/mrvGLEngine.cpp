@@ -53,6 +53,8 @@
 #  include <FL/platform.H>   // for Fl::getDC()
 #endif
 
+#include <FL/fl_utf8.h>   // for fl_getenv
+
 #include "mrvPreferencesUI.h"
 
 extern "C" {
@@ -364,10 +366,10 @@ void GLEngine::refresh_shaders()
     }
 
 
-    const char* env = getenv( N_("MRV_SHADER_PATH") );
+    const char* env = fl_getenv( N_("MRV_SHADER_PATH") );
     if ( !env )
     {
-        env = getenv( N_("MRV_ROOT") );
+        env = fl_getenv( N_("MRV_ROOT") );
         if ( env )
         {
             directory = env;
@@ -545,7 +547,7 @@ void GLEngine::initialize()
     }
 #endif
 
-    const char* shader_type = getenv("MRV_SHADER_TYPE");
+    const char* shader_type = fl_getenv("MRV_SHADER_TYPE");
     if ( shader_type )
     {
         if ( stricmp( shader_type, "GL" ) == 0 ||
