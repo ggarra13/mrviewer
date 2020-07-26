@@ -26,7 +26,6 @@
 #include "mrvHome.h"
 
 #if defined(_WIN32) && !defined(_WIN64_)
-#  include <Shlobj.h>
 #  include <windows.h>
 #else
 #  include <sys/types.h>
@@ -51,14 +50,6 @@ std::string homepath()
    std::string path;
 
 #ifdef _WIN32
-  char dir[MAX_PATH + 1];
-  if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, dir)))
-    {
-        path = std::string(dir) + "/";
-        return path;
-    }
-  else
-  {
    char* e = NULL;
    if ( (e = fl_getenv("HOME")) )
    {
