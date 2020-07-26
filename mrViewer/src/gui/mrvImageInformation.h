@@ -37,6 +37,7 @@
 
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Choice.H>
 #include <FL/Fl_Scroll.H>
 
 #include "core/CMedia.h"
@@ -226,6 +227,7 @@ public:
     mrv::CollapsibleGroup*       m_audio;
     mrv::CollapsibleGroup*       m_subtitle;
     Fl_Input* m_entry;
+  Fl_Choice*  m_type;
 
 protected:
 

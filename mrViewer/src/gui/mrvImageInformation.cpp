@@ -755,6 +755,13 @@ std::string old_match;
 int num_matches = 0;
 int match_goal = 1;
 
+enum MatchType
+{
+    kMatchAll,
+    kMatchAttribute,
+    kMatchValue
+};
+
 static bool regex_match( float i, const std::string& regex, std::string text )
 {
   boost::regex expr{ regex };
@@ -770,7 +777,8 @@ static bool regex_match( float i, const std::string& regex, std::string text )
 }
 
 
-static int search_table( mrv::Table* t, float& row, const std::string& match )
+static int search_table( mrv::Table* t, float& row, const std::string& match,
+                         MatchType type )
 {
   int rows = t->children();
   for ( int i = 0; i < rows; ++i )
@@ -780,13 +788,15 @@ static int search_table( mrv::Table* t, float& row, const std::string& match )
       row += 0.5;
       Fl_Widget* w = t->child(i);
     tryagain:
-      if ( dynamic_cast< Fl_Input* >( w ) != NULL )
+      if ( ( type == kMatchValue || type == kMatchAll ) &&
+           dynamic_cast< Fl_Input* >( w ) != NULL )
         {
           Fl_Input* input = (Fl_Input*) w;
           if ( regex_match( row, match, input->value() ) )
             break;
         }
-      else if ( dynamic_cast< Fl_Output* >( w ) != NULL )
+      else if ( ( type == kMatchValue || type == kMatchAll ) &&
+                dynamic_cast< Fl_Output* >( w ) != NULL )
         {
           Fl_Output* output = (Fl_Output*) w;
           if ( regex_match( row, match, output->value() ) )
@@ -800,6 +810,7 @@ static int search_table( mrv::Table* t, float& row, const std::string& match )
         }
       else
         {
+          if ( type != kMatchAttribute && type != kMatchAll ) continue;
           if ( !w->label() ) continue;
           if ( regex_match( row, match, w->label() ) )
             break;
@@ -812,6 +823,7 @@ static int search_table( mrv::Table* t, float& row, const std::string& match )
 void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
 {
   std::string match = info->m_entry->value();
+  MatchType type = (MatchType) info->m_type->value();
   num_matches = 0;
 
   if ( match == old_match )
@@ -845,7 +857,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
   if ( info->m_button->visible() ) pos += info->m_button->h();
   if ( p->visible() ) pos += 32;
 
-  int idx = search_table( t, row, match );
+  int idx = search_table( t, row, match, type );
   if ( idx >= 0 ) {
     info->scroll_to( 0, pos + idx*H );
     return;
@@ -857,7 +869,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       t = (mrv::Table*) p->child(i);
 
       if ( i == 0 ) pos += H3;
-      idx = search_table( t, row, match );
+      idx = search_table( t, row, match, type );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
         info->scroll_to( 0, pos + idx*H );
@@ -871,7 +883,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       t = (mrv::Table*) p->child(i);
 
       if ( i == 0 ) pos += H3;
-      idx = search_table( t, row, match );
+      idx = search_table( t, row, match, type );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
         info->scroll_to( 0, pos + idx*H );
@@ -886,7 +898,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       t = (mrv::Table*) p->child(i);
 
       if ( i == 0 ) pos += H3;
-      idx = search_table( t, row, match );
+      idx = search_table( t, row, match, type );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
         info->scroll_to( 0, pos + idx*H );
@@ -900,7 +912,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
       t = (mrv::Table*) p->child(i);
 
       if ( i == 0 ) pos += H3;
-      idx = search_table( t, row, match );
+      idx = search_table( t, row, match, type );
       if ( p->visible() ) pos += H2;
       if ( idx >= 0 ) {
         info->scroll_to( 0, pos + idx*H );
@@ -3669,7 +3681,7 @@ ImageInformation::resize( int x, int y, int w, int h )
 {
   scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
   int sw = Fl::scrollbar_size();                // scrollbar width
-  m_entry->size( w-sw, 30 );
+  m_entry->size( w-sw-m_type->w(), 30 );
   m_all->size( w-sw, h );
   Fl_Group::resize( x, y, w, h );
 
