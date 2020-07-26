@@ -3405,7 +3405,6 @@ void ImageInformation::fill_data()
                 process_attributes( i );
             }
 
-
         }
 
         m_attributes->show();
@@ -3636,7 +3635,6 @@ void ImageInformation::refresh()
     m_subtitle->layout();
     m_attributes->layout();
 
-    m_all->layout();
 #else
     m_image->end();
     m_video->end();
@@ -3645,6 +3643,7 @@ void ImageInformation::refresh()
     m_attributes->end();
 
     m_all->end();
+    m_all->show();
 #endif
 
     DBG2;
@@ -3654,7 +3653,6 @@ void ImageInformation::refresh()
     end();
 #endif
 
-    m_all->show();
 
 
 

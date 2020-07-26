@@ -2783,7 +2783,7 @@ int Flu_File_Chooser :: Entry :: handle( int event )
                 else if( !(chooser->selectionType & DIRECTORY) || (chooser->selectionType & STDFILE) )
                 {
                     Fl::event_clicks(0);
-                    Fl::add_timeout( 0.1f, Flu_File_Chooser::selectCB, chooser );
+                    selectCB( chooser );
                 }
 
                 if( selected )

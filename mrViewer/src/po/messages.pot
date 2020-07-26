@@ -88,7 +88,7 @@
 #: gui/mrvImageBrowser.cpp:1137 gui/mrvImageBrowser.cpp:1739
 #: gui/mrvImageBrowser.cpp:1910 gui/mrvImageBrowser.cpp:1917
 #: gui/mrvImageBrowser.cpp:2042 gui/mrvImageBrowser.cpp:3100
-#: gui/mrvImageInformation.cpp:3444 gui/mrvLogDisplay.cpp:91
+#: gui/mrvImageInformation.cpp:3443 gui/mrvLogDisplay.cpp:91
 #: gui/mrvLogDisplay.cpp:92 gui/mrvPreferences.cpp:334
 #: gui/mrvPreferences.cpp:615 gui/mrvPreferences.cpp:627
 #: gui/mrvPreferences.cpp:629 gui/mrvPreferences.cpp:631
@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-26 10:26-0300\n"
+"POT-Creation-Date: 2020-07-26 11:14-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3078,7 +3078,7 @@ msgstr ""
 msgid " ("
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:4571
+#: gui/mrvImageInformation.cpp:4569
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
@@ -5941,7 +5941,7 @@ msgid "%5d, %5d"
 msgstr ""
 
 #: core/aviImage.cpp:2896 gui/mrvImageInformation.cpp:1870
-#: gui/mrvImageInformation.cpp:1919 gui/mrvImageInformation.cpp:4585
+#: gui/mrvImageInformation.cpp:1919 gui/mrvImageInformation.cpp:4583
 #: gui/mrvMediaTrack.cpp:843 gui/mrvMediaTrack.cpp:856 gui/mrvTimecode.cpp:296
 #: standalone/main.cpp:332 standalone/main.cpp:335 standalone/main.cpp:338
 #: standalone/main.cpp:341
@@ -5954,7 +5954,7 @@ msgstr ""
 msgid "%<PRId64> %<PRId64>"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:4559
+#: gui/mrvImageInformation.cpp:4557
 #, c-format
 msgid "%<PRId64> seconds %d ms."
 msgstr ""
@@ -6008,12 +6008,12 @@ msgstr ""
 #: core/wandImage.cpp:790 core/wandImage.cpp:935 core/mrSocket.cpp:115
 #: core/mrvClient.cpp:454 gui/FLU/Flu_File_Chooser.cpp:1335
 #: gui/FLU/Flu_File_Chooser.cpp:4592 gui/mrvImageBrowser.cpp:652
-#: gui/mrvImageInformation.cpp:3116 gui/mrvImageInformation.cpp:3506
-#: gui/mrvImageInformation.cpp:4294 gui/mrvImageInformation.cpp:4307
-#: gui/mrvImageInformation.cpp:4484 gui/mrvImageInformation.cpp:4497
-#: gui/mrvImageInformation.cpp:4620 gui/mrvImageInformation.cpp:4640
-#: gui/mrvImageInformation.cpp:4660 gui/mrvImageInformation.cpp:4680
-#: gui/mrvImageInformation.cpp:4701 gui/mrvImageInformation.cpp:4714
+#: gui/mrvImageInformation.cpp:3116 gui/mrvImageInformation.cpp:3505
+#: gui/mrvImageInformation.cpp:4292 gui/mrvImageInformation.cpp:4305
+#: gui/mrvImageInformation.cpp:4482 gui/mrvImageInformation.cpp:4495
+#: gui/mrvImageInformation.cpp:4618 gui/mrvImageInformation.cpp:4638
+#: gui/mrvImageInformation.cpp:4658 gui/mrvImageInformation.cpp:4678
+#: gui/mrvImageInformation.cpp:4699 gui/mrvImageInformation.cpp:4712
 #: gui/mrvPreferences.cpp:1857 standalone/mrvCommandLine.cpp:263
 #: standalone/main.cpp:478
 #, c-format
@@ -6064,7 +6064,7 @@ msgstr ""
 msgid "%d Channels"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3513
+#: gui/mrvImageInformation.cpp:3512
 #, c-format
 msgid "%d Hz."
 msgstr ""
@@ -6074,7 +6074,7 @@ msgstr ""
 msgid "%d bytes"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3516 gui/mrvImageInformation.cpp:3564
+#: gui/mrvImageInformation.cpp:3515 gui/mrvImageInformation.cpp:3563
 #, c-format
 msgid "%d kb/s"
 msgstr ""
@@ -6115,8 +6115,8 @@ msgid "%f %f %f %f %f %f %f %f"
 msgstr ""
 
 #: core/wandImage.cpp:802 gui/mrvImageInformation.cpp:1110
-#: gui/mrvImageInformation.cpp:1119 gui/mrvImageInformation.cpp:4767
-#: gui/mrvImageInformation.cpp:4780 gui/mrvSlider.cpp:15
+#: gui/mrvImageInformation.cpp:1119 gui/mrvImageInformation.cpp:4765
+#: gui/mrvImageInformation.cpp:4778 gui/mrvSlider.cpp:15
 #: video/mrvGLLut3d.cpp:1018
 #, c-format
 msgid "%g"
@@ -6192,7 +6192,7 @@ msgstr ""
 msgid "%g %g %g - %g %g %g - %g %g %g"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3454
+#: gui/mrvImageInformation.cpp:3453
 #, c-format
 msgid "%g %s"
 msgstr ""
@@ -6953,7 +6953,7 @@ msgstr ""
 msgid "(.\tc #F2DFBF"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3447
+#: gui/mrvImageInformation.cpp:3446
 msgid "(60hz HDTV)"
 msgstr ""
 
@@ -7015,7 +7015,7 @@ msgstr ""
 msgid "(Family: "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3449
+#: gui/mrvImageInformation.cpp:3448
 msgid "(Film)"
 msgstr ""
 
@@ -7027,19 +7027,19 @@ msgstr ""
 msgid "(LMT) Look Mod Transform"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3451
+#: gui/mrvImageInformation.cpp:3450
 msgid "(NTSC Fields)"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3446
+#: gui/mrvImageInformation.cpp:3445
 msgid "(NTSC)"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3450
+#: gui/mrvImageInformation.cpp:3449
 msgid "(PAL Fields)"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3448
+#: gui/mrvImageInformation.cpp:3447
 msgid "(PAL)"
 msgstr ""
 
@@ -10639,12 +10639,12 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:886
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1602
 #: gui/mrvImageInformation.cpp:1647 gui/mrvImageInformation.cpp:1675
-#: gui/mrvImageInformation.cpp:3892
+#: gui/mrvImageInformation.cpp:3890
 msgid "1:1"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:880
-#: gui/mrvImageInformation.cpp:1651 gui/mrvImageInformation.cpp:3922
+#: gui/mrvImageInformation.cpp:1651 gui/mrvImageInformation.cpp:3920
 msgid "1:16"
 msgstr ""
 
@@ -10652,7 +10652,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:877
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:887
 #: gui/mrvImageInformation.cpp:1648 gui/mrvImageInformation.cpp:1676
-#: gui/mrvImageInformation.cpp:3899
+#: gui/mrvImageInformation.cpp:3897
 msgid "1:2"
 msgstr ""
 
@@ -10660,7 +10660,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:878
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:888
 #: gui/mrvImageInformation.cpp:1649 gui/mrvImageInformation.cpp:1677
-#: gui/mrvImageInformation.cpp:3906
+#: gui/mrvImageInformation.cpp:3904
 msgid "1:4"
 msgstr ""
 
@@ -10668,7 +10668,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:879
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:889
 #: gui/mrvImageInformation.cpp:1650 gui/mrvImageInformation.cpp:1678
-#: gui/mrvImageInformation.cpp:3913
+#: gui/mrvImageInformation.cpp:3911
 msgid "1:8"
 msgstr ""
 
@@ -11530,7 +11530,7 @@ msgstr ""
 msgid "59.94"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:147 gui/mrvImageInformation.cpp:3503
+#: audio/mrvWaveEngine.cpp:147 gui/mrvImageInformation.cpp:3502
 msgid "5:1"
 msgstr ""
 
@@ -11803,7 +11803,7 @@ msgstr ""
 msgid "70mm"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:150 gui/mrvImageInformation.cpp:3504
+#: audio/mrvWaveEngine.cpp:150 gui/mrvImageInformation.cpp:3503
 msgid "7:1"
 msgstr ""
 
@@ -13953,7 +13953,7 @@ msgstr ""
 msgid "Attached audio file "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3690
+#: gui/mrvImageInformation.cpp:3688
 msgid "Attribute"
 msgstr ""
 
@@ -13990,7 +13990,7 @@ msgstr ""
 msgid "Audio Processing Technology"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3485
+#: gui/mrvImageInformation.cpp:3484
 #, c-format
 msgid "Audio Stream #%d"
 msgstr ""
@@ -14097,7 +14097,7 @@ msgstr ""
 msgid "AvSetMmThreadCharacteristicsW"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3565
+#: gui/mrvImageInformation.cpp:3564
 msgid "Avg. Bitrate"
 msgstr ""
 
@@ -14173,7 +14173,7 @@ msgstr ""
 msgid "B \tc #FFEFF2"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3435
+#: gui/mrvImageInformation.cpp:3434
 msgid "B Frames"
 msgstr ""
 
@@ -14970,7 +14970,7 @@ msgid "Channel %d %s"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:200
-#: gui/mrvImageInformation.cpp:3512
+#: gui/mrvImageInformation.cpp:3511
 msgid "Channels"
 msgstr ""
 
@@ -15093,7 +15093,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3560
+#: gui/mrvImageInformation.cpp:3559
 msgid "Closed Captions"
 msgstr ""
 
@@ -15111,8 +15111,8 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/aviSave.cxx:233
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/aviSave.cxx:312
-#: gui/mrvImageInformation.cpp:3433 gui/mrvImageInformation.cpp:3495
-#: gui/mrvImageInformation.cpp:3558
+#: gui/mrvImageInformation.cpp:3432 gui/mrvImageInformation.cpp:3494
+#: gui/mrvImageInformation.cpp:3557
 msgid "Codec"
 msgstr ""
 
@@ -15128,7 +15128,7 @@ msgid ""
 "preservation as it is a lossless codec."
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3433 gui/mrvImageInformation.cpp:3495
+#: gui/mrvImageInformation.cpp:3432 gui/mrvImageInformation.cpp:3494
 msgid "Codec Name"
 msgstr ""
 
@@ -15136,7 +15136,7 @@ msgstr ""
 msgid "Codec has variable frame size.  Setting it to "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3558
+#: gui/mrvImageInformation.cpp:3557
 msgid "Codec name"
 msgstr ""
 
@@ -16778,13 +16778,13 @@ msgid ""
 "Click to toggle between current and normal exposure."
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3460 gui/mrvImageInformation.cpp:3525
-#: gui/mrvImageInformation.cpp:3570
+#: gui/mrvImageInformation.cpp:3459 gui/mrvImageInformation.cpp:3524
+#: gui/mrvImageInformation.cpp:3569
 msgid "Disposition"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3460 gui/mrvImageInformation.cpp:3525
-#: gui/mrvImageInformation.cpp:3570
+#: gui/mrvImageInformation.cpp:3459 gui/mrvImageInformation.cpp:3524
+#: gui/mrvImageInformation.cpp:3569
 msgid "Disposition of Track"
 msgstr ""
 
@@ -16843,20 +16843,20 @@ msgstr ""
 msgid "Dump metadata"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3466 gui/mrvImageInformation.cpp:3531
-#: gui/mrvImageInformation.cpp:3575
+#: gui/mrvImageInformation.cpp:3465 gui/mrvImageInformation.cpp:3530
+#: gui/mrvImageInformation.cpp:3574
 msgid "Duration"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3531
+#: gui/mrvImageInformation.cpp:3530
 msgid "Duration of Audio"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3575
+#: gui/mrvImageInformation.cpp:3574
 msgid "Duration of Subtitle"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3466
+#: gui/mrvImageInformation.cpp:3465
 msgid "Duration of Video"
 msgstr ""
 
@@ -17532,7 +17532,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1747
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2000
 #: core/mrvServer.cpp:354 gui/mrvImageInformation.cpp:2742
-#: gui/mrvImageInformation.cpp:3456 gui/mrvProgressReport.cpp:70
+#: gui/mrvImageInformation.cpp:3455 gui/mrvProgressReport.cpp:70
 msgid "FPS"
 msgstr ""
 
@@ -17901,7 +17901,7 @@ msgid "Font Size"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
-#: gui/mrvImageInformation.cpp:3009 gui/mrvImageInformation.cpp:3511
+#: gui/mrvImageInformation.cpp:3009 gui/mrvImageInformation.cpp:3510
 msgid "Format"
 msgstr ""
 
@@ -17913,13 +17913,13 @@ msgstr ""
 msgid "Formats"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3434 gui/mrvImageInformation.cpp:3496
-#: gui/mrvImageInformation.cpp:3559
+#: gui/mrvImageInformation.cpp:3433 gui/mrvImageInformation.cpp:3495
+#: gui/mrvImageInformation.cpp:3558
 msgid "Four letter ID"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3434 gui/mrvImageInformation.cpp:3496
-#: gui/mrvImageInformation.cpp:3559
+#: gui/mrvImageInformation.cpp:3433 gui/mrvImageInformation.cpp:3495
+#: gui/mrvImageInformation.cpp:3558
 msgid "FourCC"
 msgstr ""
 
@@ -17929,7 +17929,7 @@ msgstr ""
 msgid "Frame"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:4556
+#: gui/mrvImageInformation.cpp:4554
 #, c-format
 msgid "Frame %<PRId64> "
 msgstr ""
@@ -18010,7 +18010,7 @@ msgstr ""
 msgid "Frames Per Second"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3456
+#: gui/mrvImageInformation.cpp:3455
 msgid "Frames per Second"
 msgstr ""
 
@@ -18018,11 +18018,11 @@ msgstr ""
 msgid "Freehand Drawing Tool"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3515
+#: gui/mrvImageInformation.cpp:3514
 msgid "Frequency"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3515
+#: gui/mrvImageInformation.cpp:3514
 msgid "Frequency of audio"
 msgstr ""
 
@@ -18622,7 +18622,7 @@ msgid "H.\tc #FFE29A"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1389
-#: gui/mrvImageInformation.cpp:4713
+#: gui/mrvImageInformation.cpp:4711
 msgid "H:"
 msgstr ""
 
@@ -19835,8 +19835,8 @@ msgstr ""
 msgid "Kg"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3431 gui/mrvImageInformation.cpp:3493
-#: gui/mrvImageInformation.cpp:3556
+#: gui/mrvImageInformation.cpp:3430 gui/mrvImageInformation.cpp:3492
+#: gui/mrvImageInformation.cpp:3555
 msgid "Known Codec"
 msgstr ""
 
@@ -20055,13 +20055,13 @@ msgstr ""
 msgid "Label is null"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3459 gui/mrvImageInformation.cpp:3522
-#: gui/mrvImageInformation.cpp:3568
+#: gui/mrvImageInformation.cpp:3458 gui/mrvImageInformation.cpp:3521
+#: gui/mrvImageInformation.cpp:3567
 msgid "Language"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3459 gui/mrvImageInformation.cpp:3522
-#: gui/mrvImageInformation.cpp:3568
+#: gui/mrvImageInformation.cpp:3458 gui/mrvImageInformation.cpp:3521
+#: gui/mrvImageInformation.cpp:3567
 msgid "Language if known"
 msgstr ""
 
@@ -20182,7 +20182,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2260
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2275
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2290
-#: gui/mrvImageInformation.cpp:3807 gui/mrvImageInformation.cpp:3847
+#: gui/mrvImageInformation.cpp:3805 gui/mrvImageInformation.cpp:3845
 msgid "Load"
 msgstr ""
 
@@ -20712,7 +20712,7 @@ msgstr ""
 msgid "Matsushita Electric Corporation of America"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3518
+#: gui/mrvImageInformation.cpp:3517
 msgid "Max. Bitrate"
 msgstr ""
 
@@ -20937,7 +20937,7 @@ msgstr ""
 msgid "Monitors:\t"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:142 gui/mrvImageInformation.cpp:3501
+#: audio/mrvWaveEngine.cpp:142 gui/mrvImageInformation.cpp:3500
 msgid "Mono"
 msgstr ""
 
@@ -21185,7 +21185,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:245 gui/mrvImageBrowser.cpp:942 gui/mrvImageBrowser.cpp:2303
-#: gui/mrvImageInformation.cpp:4853 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
+#: gui/mrvImageInformation.cpp:4851 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
 #: gui/mrvVersion.cpp:860 video/mrvGLEngine.cpp:248 video/mrvGLEngine.cpp:249
 #: video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:253 video/mrvGLEngine.cpp:257
@@ -21344,7 +21344,7 @@ msgstr ""
 #: core/aviImage_save.cpp:1301 core/aviImage_save.cpp:1332
 #: core/ddsImage.cpp:1238 core/ddsImage.cpp:1239 core/ddsImage.cpp:1240
 #: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:160
-#: gui/mrvImageInformation.cpp:3765 gui/mrvSave.cpp:274 gui/mrvSave.cpp:275
+#: gui/mrvImageInformation.cpp:3763 gui/mrvSave.cpp:274 gui/mrvSave.cpp:275
 #: gui/mrvSave.cpp:285 video/mrvDrawEngine.cpp:477
 msgid "None"
 msgstr ""
@@ -21494,7 +21494,7 @@ msgstr ""
 msgid "Number of Parts"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3512
+#: gui/mrvImageInformation.cpp:3511
 msgid "Number of audio channels"
 msgstr ""
 
@@ -22248,8 +22248,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2196
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2211
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2226
-#: gui/mrvImageInformation.cpp:3979 gui/mrvImageInformation.cpp:4033
-#: gui/mrvImageInformation.cpp:4088 gui/mrvImageInformation.cpp:4173
+#: gui/mrvImageInformation.cpp:3977 gui/mrvImageInformation.cpp:4031
+#: gui/mrvImageInformation.cpp:4086 gui/mrvImageInformation.cpp:4171
 msgid "Pick"
 msgstr ""
 
@@ -22288,7 +22288,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:90
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:47
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:46
-#: gui/mrvImageInformation.cpp:3439
+#: gui/mrvImageInformation.cpp:3438
 msgid "Pixel Format"
 msgstr ""
 
@@ -23326,7 +23326,7 @@ msgstr ""
 msgid "Reserved"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3852
+#: gui/mrvImageInformation.cpp:3850
 msgid "Reset"
 msgstr ""
 
@@ -24864,7 +24864,7 @@ msgstr ""
 msgid "SOFTWARE"
 msgstr ""
 
-#: core/mrvACES.cpp:180 gui/mrvImageInformation.cpp:4133
+#: core/mrvACES.cpp:180 gui/mrvImageInformation.cpp:4131
 #: video/mrvGLLut3d.cpp:89
 msgid "SOPNode"
 msgstr ""
@@ -24956,7 +24956,7 @@ msgstr ""
 msgid "Sample position not advancing."
 msgstr ""
 
-#: core/mrvACES.cpp:184 gui/mrvImageInformation.cpp:4133
+#: core/mrvACES.cpp:184 gui/mrvImageInformation.cpp:4131
 #: video/mrvGLLut3d.cpp:104
 msgid "SatNode"
 msgstr ""
@@ -25544,8 +25544,8 @@ msgstr ""
 msgid "Src"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3465 gui/mrvImageInformation.cpp:3530
-#: gui/mrvImageInformation.cpp:3574
+#: gui/mrvImageInformation.cpp:3464 gui/mrvImageInformation.cpp:3529
+#: gui/mrvImageInformation.cpp:3573
 msgid "Start"
 msgstr ""
 
@@ -25553,15 +25553,15 @@ msgstr ""
 msgid "Start Playback when opening files."
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3530
+#: gui/mrvImageInformation.cpp:3529
 msgid "Start of Audio"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3574
+#: gui/mrvImageInformation.cpp:3573
 msgid "Start of Subtitle"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3465
+#: gui/mrvImageInformation.cpp:3464
 msgid "Start of Video"
 msgstr ""
 
@@ -25569,8 +25569,8 @@ msgstr ""
 msgid "Stepping: "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:144 gui/mrvImageInformation.cpp:3500
-#: gui/mrvImageInformation.cpp:3502
+#: audio/mrvWaveEngine.cpp:144 gui/mrvImageInformation.cpp:3499
+#: gui/mrvImageInformation.cpp:3501
 msgid "Stereo"
 msgstr ""
 
@@ -25669,7 +25669,7 @@ msgstr ""
 msgid "Subtitle"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3551
+#: gui/mrvImageInformation.cpp:3550
 #, c-format
 msgid "Subtitle Stream #%d"
 msgstr ""
@@ -27126,7 +27126,7 @@ msgstr ""
 msgid "Valid option key has invalid value"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:242 gui/mrvImageInformation.cpp:3690
+#: gui/mrvImageInformation.cpp:242 gui/mrvImageInformation.cpp:3688
 msgid "Value"
 msgstr ""
 
@@ -27134,7 +27134,7 @@ msgstr ""
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:4165
+#: gui/mrvImageInformation.cpp:4163
 msgid "Values"
 msgstr ""
 
@@ -27252,7 +27252,7 @@ msgstr ""
 msgid "Video Options"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3421
+#: gui/mrvImageInformation.cpp:3420
 #, c-format
 msgid "Video Stream #%d"
 msgstr ""
@@ -27281,11 +27281,11 @@ msgstr ""
 msgid "Video decode failed for frame "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3435
+#: gui/mrvImageInformation.cpp:3434
 msgid "Video has B frames"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3560
+#: gui/mrvImageInformation.cpp:3559
 msgid "Video has Closed Captions"
 msgstr ""
 
@@ -27457,7 +27457,7 @@ msgid "W.\tc #FFD891"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1382
-#: gui/mrvImageInformation.cpp:4700
+#: gui/mrvImageInformation.cpp:4698
 msgid "W:"
 msgstr ""
 
@@ -28280,7 +28280,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1447 gui/FLU/Flu_File_Chooser.cpp:1452
 #: gui/FLU/Flu_File_Chooser.cpp:1460 gui/FLU/Flu_File_Chooser.cpp:1465
 #: gui/mrvAsk.cpp:246 gui/mrvImageBrowser.cpp:942 gui/mrvImageBrowser.cpp:2303
-#: gui/mrvImageInformation.cpp:4853 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
+#: gui/mrvImageInformation.cpp:4851 gui/mrvSave.cpp:232 gui/mrvVersion.cpp:857
 #: gui/mrvVersion.cpp:860 video/mrvGLEngine.cpp:248 video/mrvGLEngine.cpp:249
 #: video/mrvGLEngine.cpp:250 video/mrvGLEngine.cpp:251
 #: video/mrvGLEngine.cpp:253 video/mrvGLEngine.cpp:257
@@ -32519,11 +32519,11 @@ msgstr ""
 msgid "mrViewer does not support YUV images."
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3431
+#: gui/mrvImageInformation.cpp:3430
 msgid "mrViewer knows codec used"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3493 gui/mrvImageInformation.cpp:3556
+#: gui/mrvImageInformation.cpp:3492 gui/mrvImageInformation.cpp:3555
 msgid "mrViewer knows the codec used"
 msgstr ""
 

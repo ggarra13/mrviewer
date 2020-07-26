@@ -43,12 +43,12 @@ class ImageInfoUI {open
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();} open
-      xywh {500 45 605 740} type Double resizable
+      xywh {500 45 605 737} type Double resizable
       code0 {main_ = main;} non_modal visible
     } {
       Fl_Scroll uiInfoText {
-        user_data uiInfoText user_data_type {mrv::ImageInformation*} open
-        xywh {0 30 605 770} resizable
+        user_data uiInfoText user_data_type {mrv::ImageInformation*} open selected
+        xywh {0 30 605 707} resizable
         code0 {o->main( main );}
         class {mrv::ImageInformation}
       } {}
@@ -61,7 +61,7 @@ o->hide();} open
         }
         Fl_Input uiSearch {
           user_data uiInfoText user_data_type {mrv::ImageInformation*}
-          callback {search_cb( o, v );} selected
+          callback {search_cb( o, v );}
           xywh {80 0 525 30} labeltype NO_LABEL textcolor 32
           code0 {uiInfoText->m_entry = uiSearch;}
           code1 {o->take_focus();}
