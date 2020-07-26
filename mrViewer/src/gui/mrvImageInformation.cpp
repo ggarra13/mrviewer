@@ -750,17 +750,19 @@ ImageView* ImageInformation::view() const
 
 }  // namespace mrv
 
-int idx = -1;
-std::string old_match;
-int num_matches = 0;
-int match_goal = 1;
-
 enum MatchType
 {
     kMatchAll,
     kMatchAttribute,
     kMatchValue
 };
+
+int idx = -1;
+std::string old_match;
+MatchType old_type = kMatchAll;
+int num_matches = 0;
+int match_goal = 1;
+
 
 static bool regex_match( float i, const std::string& regex, std::string text )
 {
@@ -826,7 +828,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
   MatchType type = (MatchType) info->m_type->value();
   num_matches = 0;
 
-  if ( match == old_match )
+  if ( match == old_match && type == old_type )
     {
       ++match_goal;
     }
@@ -836,6 +838,7 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
     }
 
   old_match = match;
+  old_type = type;
 
   if ( match.empty() )
   {
