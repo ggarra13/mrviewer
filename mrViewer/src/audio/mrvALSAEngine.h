@@ -51,6 +51,8 @@ public:
         return "ALSA";
     }
 
+    virtual void refresh_devices();
+
     // Open an audio stream for playback
     virtual bool open(
         const unsigned int channels,

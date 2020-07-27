@@ -70,112 +70,92 @@ ALSAEngine::~ALSAEngine()
     shutdown();
 }
 
+
+
+void ALSAEngine::refresh_devices()
+{
+    _devices.clear();
+
+    // Create default device
+    Device def( "default", _("Default Audio Device") );
+    _devices.push_back( def );
+
+    // Now get all others
+    int err = 0;
+    int card = -1;
+    if ( (err = snd_card_next(&card)) != 0 )
+        return false;
+
+    while ( card > -1 )
+    {
+        char* psz_card_name = NULL;
+        snd_ctl_t*      p_ctl = NULL;
+        snd_pcm_info_t* pcm_info = NULL;
+        int pcm_device = -1;
+
+        char psz_dev[20];
+        sprintf(psz_dev, "hw:%i", card);
+
+        err = snd_ctl_open(&p_ctl, psz_dev, 0);
+        if ( err < 0 )
+        {
+            LOG_ERROR( _("Can't open card ") << card
+                       << " " << _( snd_strerror(err) ) );
+            continue;
+        }
+
+        std::string card_name = _("Unknown");
+        err = snd_card_get_name(card, &psz_card_name);
+        if ( err >= 0 ) {
+            card_name = psz_card_name;
+            free( psz_card_name );
+        }
+
+        snd_pcm_info_alloca(&pcm_info);
+        memset(pcm_info, 0, snd_pcm_info_sizeof());
+
+        for (;;)
+        {
+            err = snd_ctl_pcm_next_device(p_ctl, &pcm_device);
+            if (err < 0 || pcm_device < 0 )
+                break;
+
+            snd_pcm_info_set_device(pcm_info, pcm_device);
+            snd_pcm_info_set_subdevice(pcm_info, 0);
+            snd_pcm_info_set_stream(pcm_info,
+                                    SND_PCM_STREAM_PLAYBACK);
+
+            if ((err = snd_ctl_pcm_info(p_ctl, pcm_info)) < 0)
+                continue;
+
+            char psz_device[256], psz_descr[1024];
+            sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
+            sprintf( psz_descr, "%s: %s (%s)", card_name.c_str(),
+                     snd_pcm_info_get_name(pcm_info), psz_device );
+
+            Device dev( psz_device, psz_descr );
+            _devices.push_back( dev );
+        }
+
+        if ( p_ctl )
+            snd_ctl_close( p_ctl );
+
+        err = snd_card_next(&card);
+        if ( err != 0 ) break;
+    }
+
+    // ALSA allocates some mem to load its config file when we call some
+    // of the above functions. Now that we're done getting the info,
+    // let's tell ALSA to unload the info and free up that mem
+    snd_config_update_free_global();
+}
+
 bool ALSAEngine::initialize()
 {
 
     if ( _devices.empty() )
     {
-#if 0
-        void **hints, **n;
-        char *name = NULL, *descr = NULL, *io = NULL;
-        const char *filter = "Output";
-        if (snd_device_name_hint(-1, "pcm", &hints) < 0)
-            return false;
-        n = hints;
-        while (*n != NULL) {
-            name = snd_device_name_get_hint(*n, "NAME");
-            descr = snd_device_name_get_hint(*n, "DESC");
-            io = snd_device_name_get_hint(*n, "IOID");
-            if (io != NULL && strcmp(io, filter) != 0)
-            {
-                free(name);
-                free(descr);
-                free(io);
-                n++;
-                continue;
-            }
-            Device dev( name, descr );
-            _devices.push_back( dev );
-            free(name);
-            free(descr);
-            free(io);
-            n++;
-        }
-        snd_device_name_free_hint(hints);
-#else
-        // Create default device
-        Device def( "default", _("Default Audio Device") );
-        _devices.push_back( def );
-
-        // Now get all others
-        int err = 0;
-        int card = -1;
-        if ( (err = snd_card_next(&card)) != 0 )
-            return false;
-
-        while ( card > -1 )
-        {
-            char* psz_card_name = NULL;
-            snd_ctl_t*      p_ctl = NULL;
-            snd_pcm_info_t* pcm_info = NULL;
-            int pcm_device = -1;
-
-            char psz_dev[20];
-            sprintf(psz_dev, "hw:%i", card);
-
-            err = snd_ctl_open(&p_ctl, psz_dev, 0);
-            if ( err < 0 )
-            {
-                LOG_ERROR( _("Can't open card ") << card
-                           << " " << _( snd_strerror(err) ) );
-                continue;
-            }
-
-            std::string card_name = _("Unknown");
-            err = snd_card_get_name(card, &psz_card_name);
-            if ( err >= 0 ) {
-                card_name = psz_card_name;
-                free( psz_card_name );
-            }
-
-            snd_pcm_info_alloca(&pcm_info);
-            memset(pcm_info, 0, snd_pcm_info_sizeof());
-
-            for (;;)
-            {
-                err = snd_ctl_pcm_next_device(p_ctl, &pcm_device);
-                if (err < 0 || pcm_device < 0 )
-                    break;
-
-                snd_pcm_info_set_device(pcm_info, pcm_device);
-                snd_pcm_info_set_subdevice(pcm_info, 0);
-                snd_pcm_info_set_stream(pcm_info,
-                                        SND_PCM_STREAM_PLAYBACK);
-
-                if ((err = snd_ctl_pcm_info(p_ctl, pcm_info)) < 0)
-                    continue;
-
-                char psz_device[256], psz_descr[1024];
-                sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
-                sprintf( psz_descr, "%s: %s (%s)", card_name.c_str(),
-                         snd_pcm_info_get_name(pcm_info), psz_device );
-
-                Device dev( psz_device, psz_descr );
-                _devices.push_back( dev );
-            }
-
-            if ( p_ctl )
-                snd_ctl_close( p_ctl );
-
-            err = snd_card_next(&card);
-            if ( err != 0 ) break;
-        }
-
-        // ALSA allocates some mem to load its config file when we call some
-        // of the above functions. Now that we're done getting the info,
-        // let's tell ALSA to unload the info and free up that mem
-        snd_config_update_free_global();
-#endif
+        refresh_devices();
     }
     ++_instances;
     return true;

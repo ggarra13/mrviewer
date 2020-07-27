@@ -53,6 +53,8 @@ public:
         return "Windows Multimedia";
     }
 
+    virtual void refresh_devices();
+
     virtual void buffers( int num ) {
         _num_buffers = num;
     }

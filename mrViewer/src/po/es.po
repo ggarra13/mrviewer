@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-07-27 08:15-0300\n"
+"POT-Creation-Date: 2020-07-27 09:23-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -345,7 +345,7 @@ msgid ""
 "RtAudio: no compiled support for specified API argument!\n"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:130 core/CMedia.cpp:2872 core/CMedia.cpp:2884
+#: audio/mrvALSAEngine.cpp:103 core/CMedia.cpp:2872 core/CMedia.cpp:2884
 #: core/CMedia.cpp:3861 core/CMedia.cpp:3863 core/CMedia.cpp:3878
 #: core/CMedia.cpp:4383 core/CMedia.cpp:4405 core/CMedia.cpp:4465
 #: core/CMedia.cpp:4513 core/CMedia_audio.cpp:1202 core/CMedia_audio.cpp:2279
@@ -2872,7 +2872,7 @@ msgstr ""
 msgid "  < [ } | 1 2 | | 3 4 5 6 7 8 9 0 a b   "
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:568
+#: audio/mrvALSAEngine.cpp:548
 msgid "  ==> Using "
 msgstr "  ==> Usando "
 
@@ -3402,7 +3402,7 @@ msgstr ""
 msgid " .~{!!''.>)'.+    "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:568
+#: audio/mrvWaveEngine.cpp:573
 msgid " / num "
 msgstr ""
 
@@ -3578,11 +3578,11 @@ msgstr " C:"
 msgid " FAILED"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:568
+#: audio/mrvALSAEngine.cpp:548
 msgid " Hz instead."
 msgstr " Hz en remplazo."
 
-#: audio/mrvALSAEngine.cpp:567
+#: audio/mrvALSAEngine.cpp:547
 msgid " Hz is not supported by your hardware."
 msgstr " Hz no es soportado por su hardware."
 
@@ -3730,7 +3730,7 @@ msgstr ""
 msgid " bytes"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:567
+#: audio/mrvWaveEngine.cpp:572
 msgid " bytes "
 msgstr ""
 
@@ -6059,7 +6059,7 @@ msgid "%c%d"
 msgstr ""
 
 #: audio/mrvAOEngine.cpp:97 audio/mrvRtAudioEngine.cpp:117
-#: audio/mrvWaveEngine.cpp:161 core/CMedia.cpp:342 core/slateImage.cpp:322
+#: audio/mrvWaveEngine.cpp:159 core/CMedia.cpp:342 core/slateImage.cpp:322
 #: core/wandImage.cpp:790 core/wandImage.cpp:935 core/mrSocket.cpp:115
 #: core/mrvClient.cpp:454 gui/FLU/Flu_File_Chooser.cpp:1335
 #: gui/FLU/Flu_File_Chooser.cpp:4592 gui/mrvImageBrowser.cpp:652
@@ -6115,7 +6115,7 @@ msgid "%d / %d"
 msgstr ""
 
 # c-format
-#: audio/mrvWaveEngine.cpp:154
+#: audio/mrvWaveEngine.cpp:152
 #, c-format
 msgid "%d Channels"
 msgstr "%d Canales"
@@ -6363,7 +6363,7 @@ msgstr ""
 msgid "%s %s %d %d:%d:%d %d"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:389
+#: audio/mrvWaveEngine.cpp:387
 #, c-format
 msgid "%s (%s) - %s %s"
 msgstr ""
@@ -6452,7 +6452,7 @@ msgstr ""
 msgid "%s: %s\n"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:160
+#: audio/mrvALSAEngine.cpp:133
 #, c-format
 msgid "%s: %s (%s)"
 msgstr ""
@@ -11608,7 +11608,7 @@ msgid "5.\tc #BEA26D"
 msgstr ""
 
 #: gui/mrvVersion.cpp:123
-msgid "5.5.7"
+msgid "5.5.8"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:152
@@ -11622,7 +11622,7 @@ msgstr "50"
 msgid "59.94"
 msgstr "59,94"
 
-#: audio/mrvWaveEngine.cpp:147 gui/mrvImageInformation.cpp:3519
+#: audio/mrvWaveEngine.cpp:145 gui/mrvImageInformation.cpp:3519
 msgid "5:1"
 msgstr "1:1"
 
@@ -11895,7 +11895,7 @@ msgstr ""
 msgid "70mm"
 msgstr "70mm"
 
-#: audio/mrvWaveEngine.cpp:150 gui/mrvImageInformation.cpp:3520
+#: audio/mrvWaveEngine.cpp:148 gui/mrvImageInformation.cpp:3520
 msgid "7:1"
 msgstr "1:1"
 
@@ -13611,7 +13611,7 @@ msgstr ""
 msgid "AO_PLUGIN_PATH=%s"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:173
+#: audio/mrvWaveEngine.cpp:171
 msgid "APPS"
 msgstr ""
 
@@ -13639,11 +13639,11 @@ msgstr ""
 msgid "ASSIGNMENT "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:179
+#: audio/mrvWaveEngine.cpp:177
 msgid "AST Research, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:182
+#: audio/mrvWaveEngine.cpp:180
 msgid "ATI Technologies, Inc."
 msgstr ""
 
@@ -13766,7 +13766,7 @@ msgstr "Avance un cuadro."
 msgid "Advanced Core"
 msgstr "Núcleo Avanzado"
 
-#: audio/mrvWaveEngine.cpp:167
+#: audio/mrvWaveEngine.cpp:165
 msgid "Advanced Gravis Computer Technology, Ltd."
 msgstr ""
 
@@ -13984,7 +13984,7 @@ msgstr ""
 "Otra instancia de mrViewer está abierta.\n"
 "Remueva "
 
-#: audio/mrvWaveEngine.cpp:170
+#: audio/mrvWaveEngine.cpp:168
 msgid "Antex"
 msgstr ""
 
@@ -14048,7 +14048,7 @@ msgstr ""
 msgid "Array of "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:176
+#: audio/mrvWaveEngine.cpp:174
 msgid "Artisoft"
 msgstr ""
 
@@ -14115,7 +14115,7 @@ msgstr "Audio "
 msgid "Audio Options"
 msgstr "Opciones de Audio:"
 
-#: audio/mrvWaveEngine.cpp:189
+#: audio/mrvWaveEngine.cpp:187
 msgid "Audio Processing Technology"
 msgstr ""
 
@@ -14153,7 +14153,7 @@ msgid "Audio packets empty at end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
 #
-#: audio/mrvWaveEngine.cpp:185
+#: audio/mrvWaveEngine.cpp:183
 msgid "Audio, Inc."
 msgstr ""
 
@@ -14199,7 +14199,7 @@ msgstr "Audios (*.{"
 msgid "Aug"
 msgstr "Ago"
 
-#: audio/mrvWaveEngine.cpp:192
+#: audio/mrvWaveEngine.cpp:190
 msgid "Auravision"
 msgstr ""
 
@@ -14231,7 +14231,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: audio/mrvWaveEngine.cpp:195
+#: audio/mrvWaveEngine.cpp:193
 msgid "Aztech Labs, Inc."
 msgstr ""
 
@@ -14651,7 +14651,7 @@ msgstr "Brillo"
 msgid "Buffer lost"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:771
+#: audio/mrvALSAEngine.cpp:751
 msgid "Buffer underrun: "
 msgstr ""
 
@@ -14958,7 +14958,7 @@ msgstr ""
 msgid "Can't load shader file '"
 msgstr "Usando perfil de shader de hardware: "
 
-#: audio/mrvALSAEngine.cpp:129
+#: audio/mrvALSAEngine.cpp:102
 msgid "Can't open card "
 msgstr "No pude abrir tarjeta "
 
@@ -15035,7 +15035,7 @@ msgstr ""
 msgid "Canon Raw Picture"
 msgstr "Imagen Cruda de Canon"
 
-#: audio/mrvWaveEngine.cpp:198
+#: audio/mrvWaveEngine.cpp:196
 msgid "Canopus, Co., Ltd."
 msgstr ""
 
@@ -15464,15 +15464,15 @@ msgid "Compression to use when saving an exr."
 msgstr "Compresión a usar cuando se graba un exr."
 
 #
-#: audio/mrvWaveEngine.cpp:201
+#: audio/mrvWaveEngine.cpp:199
 msgid "Compusic"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:204
+#: audio/mrvWaveEngine.cpp:202
 msgid "Computer Aided Technology, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:207
+#: audio/mrvWaveEngine.cpp:205
 msgid "Computer Friends, Inc."
 msgstr ""
 
@@ -15515,7 +15515,7 @@ msgstr "Comentarios"
 msgid "Contrast"
 msgstr "Contraste"
 
-#: audio/mrvWaveEngine.cpp:210
+#: audio/mrvWaveEngine.cpp:208
 msgid "Control Resources Corporation"
 msgstr ""
 
@@ -16123,33 +16123,33 @@ msgid "Could not write to fifo buffer. Error: "
 msgstr "No pude escribir al buffer fifo. Error: "
 
 # c-format
-#: audio/mrvALSAEngine.cpp:464
+#: audio/mrvALSAEngine.cpp:444
 #, c-format
 msgid "Couldn't allocate hwparams %s"
 msgstr "No pude alocar hwparams %s"
 
 #
 #
-#: audio/mrvALSAEngine.cpp:532
+#: audio/mrvALSAEngine.cpp:512
 msgid "Couldn't find any hardware audio formats"
 msgstr "No pude encontrar ningun hardware para formatos de audio"
 
-#: audio/mrvALSAEngine.cpp:473
+#: audio/mrvALSAEngine.cpp:453
 #, c-format
 msgid "Couldn't get hardware config: %s"
 msgstr "No pude obtener configuración de hardware: %s"
 
-#: audio/mrvALSAEngine.cpp:581
+#: audio/mrvALSAEngine.cpp:561
 #, c-format
 msgid "Couldn't get hw_params_set_period_time_near: %s"
 msgstr "No pude obtener hw_params_set_period_time_near: %s"
 
-#: audio/mrvALSAEngine.cpp:602
+#: audio/mrvALSAEngine.cpp:582
 #, c-format
 msgid "Couldn't get period size: %s"
 msgstr "No pude obtener tamaño del período: %s"
 
-#: audio/mrvALSAEngine.cpp:624
+#: audio/mrvALSAEngine.cpp:604
 #, c-format
 msgid "Couldn't get software config: %s"
 msgstr "No pude obtener configuración de software: %s"
@@ -16158,58 +16158,58 @@ msgstr "No pude obtener configuración de software: %s"
 msgid "Couldn't open '"
 msgstr "No pude abrir '"
 
-#: audio/mrvALSAEngine.cpp:452
+#: audio/mrvALSAEngine.cpp:432
 #, c-format
 msgid "Couldn't open audio device %s: %s"
 msgstr "No pude abrir el dispositivo de audio %s: %s"
 
-#: audio/mrvALSAEngine.cpp:660
+#: audio/mrvALSAEngine.cpp:640
 #, c-format
 msgid "Couldn't prepare sound device: %s"
 msgstr "No pude preparar el dispositivo de sonido: %s"
 
 #
-#: audio/mrvALSAEngine.cpp:483
+#: audio/mrvALSAEngine.cpp:463
 #, c-format
 msgid "Couldn't set access: %s"
 msgstr "No pude setear acceso: %s"
 
-#: audio/mrvALSAEngine.cpp:548
+#: audio/mrvALSAEngine.cpp:528
 msgid "Couldn't set audio channels"
 msgstr "No pude setear canales de audio"
 
-#: audio/mrvALSAEngine.cpp:560
+#: audio/mrvALSAEngine.cpp:540
 #, c-format
 msgid "Couldn't set audio frequency: %s"
 msgstr "No pude setear frecuencia de audio: %s"
 
-#: audio/mrvALSAEngine.cpp:641
+#: audio/mrvALSAEngine.cpp:621
 #, c-format
 msgid "Couldn't set avail min: %s"
 msgstr "No pude setear min disponible: %s"
 
-#: audio/mrvALSAEngine.cpp:593
+#: audio/mrvALSAEngine.cpp:573
 #, c-format
 msgid "Couldn't set buffer time near: %s"
 msgstr "No pude setear tiempo de buffer cercano: %s"
 
-#: audio/mrvALSAEngine.cpp:610
+#: audio/mrvALSAEngine.cpp:590
 #, c-format
 msgid "Couldn't set hardware audio parameters: %s"
 msgstr "No pude setear parámetros de hardware del audio: %s"
 
-#: audio/mrvALSAEngine.cpp:650
+#: audio/mrvALSAEngine.cpp:630
 #, c-format
 msgid "Couldn't set software audio parameters: %s"
 msgstr "No pude codificar cuadro de audio:"
 
 #
-#: audio/mrvALSAEngine.cpp:633
+#: audio/mrvALSAEngine.cpp:613
 #, c-format
 msgid "Couldn't set start threshold: %s"
 msgstr "No pude setear comienzo de límite: %s"
 
-#: audio/mrvALSAEngine.cpp:543
+#: audio/mrvALSAEngine.cpp:523
 msgid "Couldn't set/get audio channels"
 msgstr "No pude setear/obtener canales de audio"
 
@@ -16332,7 +16332,7 @@ msgstr "Fecha de Creación"
 msgid "Creation Date:    "
 msgstr "Fecha de Creación"
 
-#: audio/mrvWaveEngine.cpp:213
+#: audio/mrvWaveEngine.cpp:211
 msgid "Creative Labs, Inc."
 msgstr ""
 
@@ -16639,10 +16639,6 @@ msgstr ""
 msgid "DECODE END"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:87
-msgid "DESC"
-msgstr ""
-
 #: core/aviImage.cpp:389
 msgid "DHAV"
 msgstr ""
@@ -16675,11 +16671,11 @@ msgstr ""
 msgid "DRAGON color2"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:222
+#: audio/mrvWaveEngine.cpp:220
 msgid "DSP Group, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:225
+#: audio/mrvWaveEngine.cpp:223
 msgid "DSP Solutions, Inc."
 msgstr ""
 
@@ -16869,7 +16865,7 @@ msgid "Default Action"
 msgstr "Acción por Defecto"
 
 #: audio/mrvAOEngine.cpp:106 audio/mrvRtAudioEngine.cpp:103
-#: audio/mrvWaveEngine.cpp:124 audio/mrvALSAEngine.cpp:107
+#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "Dispositivo de Audio por Defecto"
 
@@ -16967,7 +16963,7 @@ msgstr ""
 msgid "Device"
 msgstr "Dispositivos"
 
-#: audio/mrvWaveEngine.cpp:216
+#: audio/mrvWaveEngine.cpp:214
 msgid "Dialogic Corporation"
 msgstr ""
 
@@ -17108,7 +17104,7 @@ msgstr ""
 msgid "Do you want to replace '%s'?"
 msgstr "¿Quiere reemplazar '%s'?"
 
-#: audio/mrvWaveEngine.cpp:219
+#: audio/mrvWaveEngine.cpp:217
 msgid "Dolby Laboratories"
 msgstr ""
 
@@ -17259,11 +17255,11 @@ msgstr ""
 msgid "E.\tc #FFEAA0"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:759
+#: audio/mrvALSAEngine.cpp:739
 msgid "EAGAIN: "
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:778
+#: audio/mrvALSAEngine.cpp:758
 msgid "EBADFD: "
 msgstr ""
 
@@ -17313,11 +17309,11 @@ msgstr ""
 msgid "ENTER SUBTITLE THREAD "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:231
+#: audio/mrvWaveEngine.cpp:229
 msgid "ESS Technology, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:237
+#: audio/mrvWaveEngine.cpp:235
 msgid "EXAN, Ltd."
 msgstr ""
 
@@ -17353,7 +17349,7 @@ msgstr "Algoritmo de compresión de EXR"
 msgid "Early 35mm"
 msgstr "35mm Temprano"
 
-#: audio/mrvWaveEngine.cpp:228
+#: audio/mrvWaveEngine.cpp:226
 msgid "Echo Speech Corporation"
 msgstr ""
 
@@ -17447,7 +17443,7 @@ msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
 
-#: audio/mrvWaveEngine.cpp:318
+#: audio/mrvWaveEngine.cpp:316
 msgid "Epson"
 msgstr ""
 
@@ -17542,7 +17538,7 @@ msgstr "Impar/par columnas"
 msgid "Even/odd rows"
 msgstr "Impar/par renglones"
 
-#: audio/mrvWaveEngine.cpp:234
+#: audio/mrvWaveEngine.cpp:232
 msgid "Everex Systems, Inc."
 msgstr ""
 
@@ -18350,7 +18346,7 @@ msgstr "Frecuencia"
 msgid "Frequency of audio"
 msgstr "Frecuencia del audio"
 
-#: audio/mrvWaveEngine.cpp:240
+#: audio/mrvWaveEngine.cpp:238
 msgid "Fujitsu, Ltd.."
 msgstr ""
 
@@ -19254,7 +19250,7 @@ msgstr ""
 msgid "I.\tc #FFE199"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:243
+#: audio/mrvWaveEngine.cpp:241
 msgid "I/O Magic Corporation"
 msgstr ""
 
@@ -19262,7 +19258,7 @@ msgstr ""
 msgid "IA"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:261
+#: audio/mrvWaveEngine.cpp:259
 msgid "IBM"
 msgstr ""
 
@@ -19300,7 +19296,7 @@ msgstr "Perfil ICC"
 msgid "ICC_PROFILES"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:246
+#: audio/mrvWaveEngine.cpp:244
 msgid "ICL Personal Systems"
 msgstr ""
 
@@ -19357,10 +19353,6 @@ msgstr ""
 #: gui/mrvVersion.cpp:577
 msgid "ILM OpenEXR v"
 msgstr "OpenEXR"
-
-#: audio/mrvALSAEngine.cpp:88
-msgid "IOID"
-msgstr ""
 
 #: gui/mrvImageInformation.cpp:3156
 msgid "IPP2 Mode"
@@ -19793,7 +19785,7 @@ msgstr "Incrementando en Y"
 msgid "Index "
 msgstr "Índice inválido "
 
-#: audio/mrvWaveEngine.cpp:249
+#: audio/mrvWaveEngine.cpp:247
 msgid "Ing. C. Olivetti & C., S.p.A."
 msgstr ""
 
@@ -19856,11 +19848,11 @@ msgstr "Entero"
 msgid "Integer"
 msgstr "Entero"
 
-#: audio/mrvWaveEngine.cpp:252
+#: audio/mrvWaveEngine.cpp:250
 msgid "Integrated Circuit Systems, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:255
+#: audio/mrvWaveEngine.cpp:253
 msgid "Intel Corporation"
 msgstr ""
 
@@ -19868,7 +19860,7 @@ msgstr ""
 msgid "Intensity"
 msgstr "Intensidad"
 
-#: audio/mrvWaveEngine.cpp:258
+#: audio/mrvWaveEngine.cpp:256
 msgid "InterActive, Inc."
 msgstr ""
 
@@ -19956,7 +19948,7 @@ msgstr ""
 msgid "Item was not found in tree."
 msgstr " no encontrada en el carrete"
 
-#: audio/mrvWaveEngine.cpp:264
+#: audio/mrvWaveEngine.cpp:262
 msgid "Iterated Systems, Inc."
 msgstr ""
 
@@ -20217,7 +20209,7 @@ msgstr "Negativo Digital de Kodak"
 msgid "Koff"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:339
+#: audio/mrvWaveEngine.cpp:337
 msgid "Korg"
 msgstr ""
 
@@ -20692,7 +20684,7 @@ msgstr ""
 msgid "Logarithmic"
 msgstr "Logaritmico"
 
-#: audio/mrvWaveEngine.cpp:267
+#: audio/mrvWaveEngine.cpp:265
 msgid "Logitech, Inc."
 msgstr ""
 
@@ -20799,7 +20791,7 @@ msgstr "Lut"
 msgid "Luv CIELUV (L*u*v*)"
 msgstr "Luv CIELUV (L*u*v*)"
 
-#: audio/mrvWaveEngine.cpp:270
+#: audio/mrvWaveEngine.cpp:268
 msgid "Lyrrus, Inc."
 msgstr ""
 
@@ -20924,7 +20916,7 @@ msgstr ""
 msgid "MMX2 "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:288
+#: audio/mrvWaveEngine.cpp:286
 msgid "MOSCOM Corporation"
 msgstr ""
 
@@ -21048,7 +21040,7 @@ msgstr "Principal"
 msgid "Main 10"
 msgstr "Principal 10"
 
-#: audio/mrvWaveEngine.cpp:379
+#: audio/mrvWaveEngine.cpp:377
 #, c-format
 msgid "Manufacturer: %d"
 msgstr "Manufacturador: %d"
@@ -21086,7 +21078,7 @@ msgstr ""
 msgid "Mask %g"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:257 audio/mrvALSAEngine.cpp:372
+#: audio/mrvALSAEngine.cpp:237 audio/mrvALSAEngine.cpp:352
 msgid "Master"
 msgstr ""
 
@@ -21094,7 +21086,7 @@ msgstr ""
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
-#: audio/mrvWaveEngine.cpp:273
+#: audio/mrvWaveEngine.cpp:271
 msgid "Matsushita Electric Corporation of America"
 msgstr ""
 
@@ -21152,7 +21144,7 @@ msgstr "Info del Medio"
 msgid "Media Information"
 msgstr "Informe del Medio"
 
-#: audio/mrvWaveEngine.cpp:276
+#: audio/mrvWaveEngine.cpp:274
 msgid "Media Vision, Inc."
 msgstr ""
 
@@ -21213,7 +21205,7 @@ msgstr "Meta"
 msgid "Metadata"
 msgstr "Metadatos"
 
-#: audio/mrvWaveEngine.cpp:279
+#: audio/mrvWaveEngine.cpp:277
 msgid "Metheus Corporation"
 msgstr ""
 
@@ -21221,7 +21213,7 @@ msgstr ""
 msgid "Microsoft Bitmap (.bmp)"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:285
+#: audio/mrvWaveEngine.cpp:283
 msgid "Microsoft Corporation"
 msgstr ""
 
@@ -21281,22 +21273,22 @@ msgstr "Faltan transformaciones para aces:GradeRef en '"
 msgid "Mixed"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:241 audio/mrvALSAEngine.cpp:353
+#: audio/mrvALSAEngine.cpp:221 audio/mrvALSAEngine.cpp:333
 #, c-format
 msgid "Mixer %s load error: %s"
 msgstr "Error de carga de Mixer %s: %s"
 
-#: audio/mrvALSAEngine.cpp:218 audio/mrvALSAEngine.cpp:330
+#: audio/mrvALSAEngine.cpp:198 audio/mrvALSAEngine.cpp:310
 #, c-format
 msgid "Mixer %s open error: %s\n"
 msgstr "Error de apertura de Mixer %s: %s\n"
 
-#: audio/mrvALSAEngine.cpp:224 audio/mrvALSAEngine.cpp:336
+#: audio/mrvALSAEngine.cpp:204 audio/mrvALSAEngine.cpp:316
 #, c-format
 msgid "Mixer attach %s error: %s"
 msgstr "Error de juntura de Mixer %s: %s"
 
-#: audio/mrvALSAEngine.cpp:232 audio/mrvALSAEngine.cpp:344
+#: audio/mrvALSAEngine.cpp:212 audio/mrvALSAEngine.cpp:324
 #, c-format
 msgid "Mixer register error: %s"
 msgstr "Error de registro de Mixer: %s"
@@ -21333,7 +21325,7 @@ msgstr "Monitor/Agregar Perfil de Color ICC"
 msgid "Monitors:\t"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:142 gui/mrvImageInformation.cpp:3517
+#: audio/mrvWaveEngine.cpp:140 gui/mrvImageInformation.cpp:3517
 msgid "Mono"
 msgstr ""
 
@@ -21345,7 +21337,7 @@ msgstr "Localidad"
 msgid "Motion Estimation Methods"
 msgstr "Métodos de Estimación de Movimiento"
 
-#: audio/mrvWaveEngine.cpp:291
+#: audio/mrvWaveEngine.cpp:289
 msgid "Motorola, Inc."
 msgstr ""
 
@@ -21491,16 +21483,12 @@ msgstr ""
 msgid "N.\tc #FFF3A7"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:86
-msgid "NAME"
-msgstr ""
-
 #
-#: audio/mrvWaveEngine.cpp:297
+#: audio/mrvWaveEngine.cpp:295
 msgid "NCR Corporation"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:300
+#: audio/mrvWaveEngine.cpp:298
 msgid "NEC Corporation"
 msgstr ""
 
@@ -21546,7 +21534,7 @@ msgstr ""
 "Los nombres no pueden contener espacios en sus directorios.\n"
 "\n"
 
-#: audio/mrvWaveEngine.cpp:294
+#: audio/mrvWaveEngine.cpp:292
 msgid "Natural MicroSystems Corporation"
 msgstr ""
 
@@ -21570,7 +21558,7 @@ msgstr "Nunca"
 msgid "New Folder"
 msgstr "Nueva Carpeta"
 
-#: audio/mrvWaveEngine.cpp:303
+#: audio/mrvWaveEngine.cpp:301
 msgid "New Media Corporation"
 msgstr ""
 
@@ -22186,7 +22174,7 @@ msgstr "Grabando OIIO"
 msgid "OK"
 msgstr "OK"
 
-#: audio/mrvWaveEngine.cpp:306
+#: audio/mrvWaveEngine.cpp:304
 msgid "OKI"
 msgstr ""
 
@@ -22194,7 +22182,7 @@ msgstr ""
 msgid "OPENGL"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:309
+#: audio/mrvWaveEngine.cpp:307
 msgid "OPTi, Inc."
 msgstr ""
 
@@ -22408,7 +22396,6 @@ msgstr ""
 msgid "Out of memory for audio buffer"
 msgstr "Sin memoria para buffer de audio"
 
-#: audio/mrvALSAEngine.cpp:81
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:127
 msgid "Output"
 msgstr "Salida"
@@ -22573,7 +22560,7 @@ msgstr "Vídeo PAL"
 msgid "PBO Textures:\t"
 msgstr "Texturas PBO:\t"
 
-#: audio/mrvALSAEngine.cpp:251 audio/mrvALSAEngine.cpp:365
+#: audio/mrvALSAEngine.cpp:231 audio/mrvALSAEngine.cpp:345
 msgid "PCM"
 msgstr ""
 
@@ -23005,7 +22992,7 @@ msgstr "Problema asignando imagen"
 msgid "Problem with tile"
 msgstr "Problema con azulejo"
 
-#: audio/mrvWaveEngine.cpp:386
+#: audio/mrvWaveEngine.cpp:384
 #, c-format
 msgid "Product: %d"
 msgstr ""
@@ -23906,7 +23893,7 @@ msgstr "Meta Derecho"
 msgid "RightShift"
 msgstr "Shift Derecho"
 
-#: audio/mrvWaveEngine.cpp:312
+#: audio/mrvWaveEngine.cpp:310
 msgid "Roland"
 msgstr ""
 
@@ -25298,7 +25285,7 @@ msgstr ""
 msgid "S.\tc #FFEBA1"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:315
+#: audio/mrvWaveEngine.cpp:313
 msgid "SCALACS"
 msgstr ""
 
@@ -25976,11 +25963,11 @@ msgstr "Ratio de Pixel"
 msgid "Shown"
 msgstr "Mostrado"
 
-#: audio/mrvWaveEngine.cpp:321
+#: audio/mrvWaveEngine.cpp:319
 msgid "Sierra Semiconductor Corporation"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:324
+#: audio/mrvWaveEngine.cpp:322
 msgid "Silicon Software"
 msgstr ""
 
@@ -26047,7 +26034,7 @@ msgstr ""
 msgid "Some default frame rate settings."
 msgstr "Algunos seteos de velocidad de reproducción por defecto"
 
-#: audio/mrvWaveEngine.cpp:327
+#: audio/mrvWaveEngine.cpp:325
 msgid "Sonic Foundry"
 msgstr ""
 
@@ -26064,7 +26051,7 @@ msgstr "Especial"
 msgid "Special Instructions"
 msgstr "Instrucciones Especiales"
 
-#: audio/mrvWaveEngine.cpp:330
+#: audio/mrvWaveEngine.cpp:328
 msgid "Speech Compression"
 msgstr "Compresión del habla"
 
@@ -26114,7 +26101,7 @@ msgstr "Comienzo del Vídeo"
 msgid "Stepping: "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:144 gui/mrvImageInformation.cpp:3516
+#: audio/mrvWaveEngine.cpp:142 gui/mrvImageInformation.cpp:3516
 #: gui/mrvImageInformation.cpp:3518
 msgid "Stereo"
 msgstr "Estéreo OpenGL"
@@ -26272,7 +26259,7 @@ msgstr "Subtitulos son validos solo en archivos de vídeo"
 msgid "Subtract"
 msgstr "Sustraer"
 
-#: audio/mrvWaveEngine.cpp:333
+#: audio/mrvWaveEngine.cpp:331
 msgid "Supermac"
 msgstr ""
 
@@ -26469,7 +26456,7 @@ msgstr ""
 msgid "Take Current Window Values"
 msgstr "Tomar Valores de la Ventana"
 
-#: audio/mrvWaveEngine.cpp:336
+#: audio/mrvWaveEngine.cpp:334
 msgid "Tandy"
 msgstr ""
 
@@ -26902,7 +26889,7 @@ msgstr ""
 "El perfil controla las característica y calidad del codec.  Si esta en duda, "
 "setéelo al mas alto perfil."
 
-#: audio/mrvALSAEngine.cpp:566
+#: audio/mrvALSAEngine.cpp:546
 msgid "The rate "
 msgstr ""
 
@@ -27311,7 +27298,7 @@ msgstr "Tradicional Sin Gama"
 msgid "Transform"
 msgstr "Transformación"
 
-#: audio/mrvWaveEngine.cpp:342
+#: audio/mrvWaveEngine.cpp:340
 msgid "TrueVision"
 msgstr ""
 
@@ -27331,7 +27318,7 @@ msgstr "Active LDE cuando se cargan multiple imágenes"
 msgid "Turn on debugging console"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:345
+#: audio/mrvWaveEngine.cpp:343
 msgid "Turtle Beach Systems"
 msgstr ""
 
@@ -27490,12 +27477,12 @@ msgstr ""
 msgid "UTF-8"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:264 audio/mrvALSAEngine.cpp:379
+#: audio/mrvALSAEngine.cpp:244 audio/mrvALSAEngine.cpp:359
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
 msgstr "No se pudo encontrar un simple control '%s', id: %i\n"
 
-#: audio/mrvALSAEngine.cpp:276 audio/mrvALSAEngine.cpp:391
+#: audio/mrvALSAEngine.cpp:256 audio/mrvALSAEngine.cpp:371
 #, c-format
 msgid "Unable to find volume range '%s', id: %i\n"
 msgstr "No se pudo encontrar un rango de volumen '%s', id: %i\n"
@@ -27533,7 +27520,7 @@ msgstr "Excepción sin manejo"
 msgid "Uninitialized"
 msgstr ""
 
-#: audio/RtAudio.cpp:106 audio/RtAudio.cpp:180 audio/mrvALSAEngine.cpp:134
+#: audio/RtAudio.cpp:106 audio/RtAudio.cpp:180 audio/mrvALSAEngine.cpp:107
 #: core/CMedia_audio.cpp:634 core/aviImage.cpp:2359 core/aviImage.cpp:2845
 #: core/ddsImage.cpp:1241 gui/mrvImageInformation.cpp:2791
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:237
@@ -28099,7 +28086,7 @@ msgstr "Vídeo "
 msgid "Video / Audio Frames"
 msgstr "Cuadros de Vídeo / Audio"
 
-#: audio/mrvWaveEngine.cpp:348
+#: audio/mrvWaveEngine.cpp:346
 msgid "Video Associates Labs"
 msgstr ""
 
@@ -28168,7 +28155,7 @@ msgstr "El atributo de Código de Tiempo de Video ya existe"
 msgid "Video/Track #%d - %s"
 msgstr "Video/Pista #%d - %s"
 
-#: audio/mrvWaveEngine.cpp:351
+#: audio/mrvWaveEngine.cpp:349
 msgid "VideoLogic"
 msgstr ""
 
@@ -28222,7 +28209,7 @@ msgstr "Vista/Áreas Seguras"
 msgid "View/Texture Filtering  "
 msgstr "Vista/Filtrado de Texturas  "
 
-#: audio/mrvWaveEngine.cpp:354
+#: audio/mrvWaveEngine.cpp:352
 msgid "Visual Information Technologies"
 msgstr ""
 
@@ -28234,7 +28221,7 @@ msgstr ""
 msgid "VmSize:"
 msgstr "Tamaño"
 
-#: audio/mrvWaveEngine.cpp:357
+#: audio/mrvWaveEngine.cpp:355
 msgid "VocalTec"
 msgstr ""
 
@@ -28247,7 +28234,7 @@ msgstr "Volumen de Audio"
 msgid "Volume %g"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:360
+#: audio/mrvWaveEngine.cpp:358
 msgid "Voyetra"
 msgstr ""
 
@@ -28357,7 +28344,7 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: audio/mrvWaveEngine.cpp:363
+#: audio/mrvWaveEngine.cpp:361
 msgid "Wang Labs"
 msgstr ""
 
@@ -28722,7 +28709,7 @@ msgstr "Ancho"
 msgid "Width of clip"
 msgstr "Ancho del clip"
 
-#: audio/mrvWaveEngine.cpp:366
+#: audio/mrvWaveEngine.cpp:364
 msgid "Willow Pond"
 msgstr ""
 
@@ -28735,7 +28722,7 @@ msgstr "Comportamiento de la Ventana"
 msgid "Windows/%s"
 msgstr "Ventanas/%s"
 
-#: audio/mrvWaveEngine.cpp:369
+#: audio/mrvWaveEngine.cpp:367
 msgid "Winnov"
 msgstr ""
 
@@ -28990,7 +28977,7 @@ msgstr ""
 msgid "XYZ CIE XYZ"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:372
+#: audio/mrvWaveEngine.cpp:370
 msgid "Xebec"
 msgstr ""
 
@@ -29269,7 +29256,7 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
-#: audio/mrvWaveEngine.cpp:375
+#: audio/mrvWaveEngine.cpp:373
 msgid "Yamaha"
 msgstr ""
 
@@ -30257,7 +30244,7 @@ msgstr "Algoritmo"
 msgid "all_layers"
 msgstr "Todas las Capas"
 
-#: audio/mrvWaveEngine.cpp:567
+#: audio/mrvWaveEngine.cpp:572
 msgid "allocated data at "
 msgstr ""
 
@@ -30274,7 +30261,7 @@ msgstr "Altitud"
 msgid "always_on_top"
 msgstr "Siempre Arriba de Otras"
 
-#: audio/mrvALSAEngine.cpp:424
+#: audio/mrvALSAEngine.cpp:404
 #, c-format
 msgid "amixer -q set PCM %d"
 msgstr ""
@@ -31260,8 +31247,8 @@ msgstr "Error de decodificación de audio:"
 #: audio/mrvAOEngine.cpp:91 audio/mrvAOEngine.cpp:106
 #: audio/mrvRtAudioEngine.cpp:103 audio/RtAudio.cpp:7183 audio/RtAudio.cpp:7238
 #: audio/RtAudio.cpp:7241 audio/RtAudio.cpp:7510 audio/RtAudio.cpp:7539
-#: audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:124
-#: audio/mrvALSAEngine.cpp:107 core/CMedia.cpp:3494 gui/mrvPreferences.cpp:829
+#: audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:122
+#: audio/mrvALSAEngine.cpp:80 core/CMedia.cpp:3494 gui/mrvPreferences.cpp:829
 #: gui/mrvPreferences.cpp:2400
 msgid "default"
 msgstr "defecto"
@@ -31291,7 +31278,7 @@ msgstr "Profundidad"
 msgid "device"
 msgstr "Dispositivos"
 
-#: audio/mrvALSAEngine.cpp:447
+#: audio/mrvALSAEngine.cpp:427
 msgid "device="
 msgstr "dispositivo="
 
@@ -31600,7 +31587,7 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:591
+#: audio/mrvWaveEngine.cpp:596
 msgid "enabled ok"
 msgstr ""
 
@@ -31841,7 +31828,7 @@ msgstr "b.arch"
 msgid "files"
 msgstr "archivos"
 
-#: audio/mrvWaveEngine.cpp:573
+#: audio/mrvWaveEngine.cpp:578
 msgid "fill headers "
 msgstr ""
 
@@ -32446,7 +32433,7 @@ msgstr ""
 msgid "hw:%d,%d"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:124
+#: audio/mrvALSAEngine.cpp:97
 #, c-format
 msgid "hw:%i"
 msgstr ""
@@ -33445,7 +33432,7 @@ msgstr "Imagen de Sombras de mental ray"
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de Profundidad en Z de mental ray"
 
-#: audio/mrvWaveEngine.cpp:282
+#: audio/mrvWaveEngine.cpp:280
 msgid "microEngineering Labs"
 msgstr ""
 
@@ -34231,7 +34218,7 @@ msgstr "Teclado Numérico Enter"
 msgid "parser"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:82 core/aviImage_save.cpp:1342
+#: core/aviImage_save.cpp:1342
 msgid "pcm"
 msgstr ""
 
@@ -34327,7 +34314,7 @@ msgstr ""
 msgid "playfwd"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:159
+#: audio/mrvALSAEngine.cpp:132
 #, c-format
 msgid "plughw:%d,%d"
 msgstr ""
@@ -35218,15 +35205,15 @@ msgid "smpte"
 msgstr ""
 
 #
-#: audio/mrvALSAEngine.cpp:826
+#: audio/mrvALSAEngine.cpp:806
 msgid "snd_pcm_close failed with "
 msgstr "snd_pcm_close falló con "
 
-#: audio/mrvALSAEngine.cpp:809
+#: audio/mrvALSAEngine.cpp:789
 msgid "snd_pcm_drop failed with "
 msgstr "snd_pcm_drop falló con "
 
-#: audio/mrvALSAEngine.cpp:774 audio/mrvALSAEngine.cpp:781
+#: audio/mrvALSAEngine.cpp:754 audio/mrvALSAEngine.cpp:761
 msgid "snd_pcm_prepare failed"
 msgstr "snd_pcm_prepare falló con "
 
@@ -36107,55 +36094,55 @@ msgstr ""
 msgid "wav"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:715
+#: audio/mrvWaveEngine.cpp:720
 msgid "waveOutClose"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:428
+#: audio/mrvWaveEngine.cpp:433
 msgid "waveOutGetVolume"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:553
+#: audio/mrvWaveEngine.cpp:558
 msgid "waveOutOpen"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:532
+#: audio/mrvWaveEngine.cpp:537
 msgid "waveOutOpen WAVE_MAPPER? "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:538
+#: audio/mrvWaveEngine.cpp:543
 msgid "waveOutOpen WAVE_MAPPER? ok "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:547
+#: audio/mrvWaveEngine.cpp:552
 msgid "waveOutOpen failed WAVERR_ALLOCATED"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:543
+#: audio/mrvWaveEngine.cpp:548
 msgid "waveOutOpen failed WAVERR_BADFORMAT"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:551
+#: audio/mrvWaveEngine.cpp:556
 msgid "waveOutOpen invalid flag"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:649
+#: audio/mrvWaveEngine.cpp:654
 msgid "waveOutPrepareHeader"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:699
+#: audio/mrvWaveEngine.cpp:704
 msgid "waveOutReset"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:456
+#: audio/mrvWaveEngine.cpp:461
 msgid "waveOutSetVolume"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:682
+#: audio/mrvWaveEngine.cpp:687
 msgid "waveOutUnprepareHeader"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:658
+#: audio/mrvWaveEngine.cpp:663
 msgid "waveOutWrite"
 msgstr ""
 
