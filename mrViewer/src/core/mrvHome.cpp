@@ -71,7 +71,6 @@ std::string homepath()
        if ( fs::is_directory( path ) )
            return path;
    }
-  }
 #else
    char* e = NULL;
    if ( (e = fl_getenv("HOME")) )
