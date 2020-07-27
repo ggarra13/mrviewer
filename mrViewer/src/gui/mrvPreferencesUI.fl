@@ -1824,6 +1824,7 @@ delete engine;
 const mrv::AudioEngine::DeviceList& devices = mrv::AudioEngine::devices();
 mrv::AudioEngine::DeviceList::const_iterator i = devices.begin();
 mrv::AudioEngine::DeviceList::const_iterator e = devices.end();
+o->clear();
 for ( ; i != e; ++i )
    {
       o->add( (*i).description.c_str() );

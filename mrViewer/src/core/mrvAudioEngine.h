@@ -105,6 +105,8 @@ public:
     AudioEngine();
     virtual ~AudioEngine();
 
+    virtual void refresh_devices() {};
+
     // List devices available for playback on machine
     static const DeviceList& devices();
 
@@ -127,6 +129,7 @@ public:
 
     // Name of audio engine
     virtual const char* name() = 0;
+
 
     virtual void buffers( int num ) {}
 

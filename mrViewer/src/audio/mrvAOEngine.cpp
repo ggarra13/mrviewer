@@ -70,30 +70,11 @@ AOEngine::~AOEngine()
     shutdown();
 }
 
-bool AOEngine::initialize()
-{
-    if ( _instances == 0 )
+    void AOEngine::refresh_devices()
     {
         // Create default device
         _devices.clear();
         _device_idx = 0;
-
-        const char* env = fl_getenv( "AO_PLUGIN_PATH" );
-        if (! env || strlen(env) == 0 )
-        {
-            env = fl_getenv( "MRV_ROOT" );
-            if ( env )
-            {
-                std::string path = env;
-                path += "/lib/ao/plugins-4";
-
-                char buf[1024];
-                sprintf( buf, "AO_PLUGIN_PATH=%s", path.c_str() );
-                LOG_INFO( buf );
-                putenv( strdup( buf ) );
-            }
-        }
-
         RtAudio audio;
         // Determine the number of devices available
         unsigned int devices = audio.getDeviceCount();
@@ -125,6 +106,30 @@ bool AOEngine::initialize()
             Device def( "default", "Default Audio Device" );
             _devices.push_back( def );
         }
+    }
+
+bool AOEngine::initialize()
+{
+    if ( _instances == 0 )
+    {
+
+        const char* env = fl_getenv( "AO_PLUGIN_PATH" );
+        if (! env || strlen(env) == 0 )
+        {
+            env = fl_getenv( "MRV_ROOT" );
+            if ( env )
+            {
+                std::string path = env;
+                path += "/lib/ao/plugins-4";
+
+                char buf[1024];
+                sprintf( buf, "AO_PLUGIN_PATH=%s", path.c_str() );
+                LOG_INFO( buf );
+                putenv( strdup( buf ) );
+            }
+        }
+
+        refresh_devices();
 
         ao_initialize();
     }

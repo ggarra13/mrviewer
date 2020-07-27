@@ -58,6 +58,8 @@ public:
         const unsigned int bits
     );
 
+    virtual void refresh_devices();
+
     ao_device* device() const { return _device; }
 
     bool enabled() const { return _enabled; }
