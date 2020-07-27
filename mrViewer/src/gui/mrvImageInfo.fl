@@ -47,7 +47,7 @@ o->hide();} open
       code0 {main_ = main;} non_modal visible
     } {
       Fl_Scroll uiInfoText {
-        user_data uiInfoText user_data_type {mrv::ImageInformation*} open selected
+        user_data uiInfoText user_data_type {mrv::ImageInformation*} open
         xywh {0 30 605 707} resizable
         code0 {o->main( main );}
         class {mrv::ImageInformation}
@@ -56,7 +56,7 @@ o->hide();} open
         xywh {0 0 605 30} box FLAT_BOX
       } {
         Fl_Box {} {
-          label Search
+          label Search selected
           xywh {0 0 80 30} box FLAT_BOX
         }
         Fl_Input uiSearch {

@@ -84,7 +84,7 @@ void ALSAEngine::refresh_devices()
     int err = 0;
     int card = -1;
     if ( (err = snd_card_next(&card)) != 0 )
-        return false;
+        return;
 
     while ( card > -1 )
     {
