@@ -864,6 +864,8 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
   int H3 = 12 + info->line_height();
 
   MyPack* p = (MyPack*) info->m_image->child(1);
+  if ( ! p->children() ) return;
+
   mrv::Table* t = (mrv::Table*) p->child(0);
 
   float row = 0;
