@@ -779,6 +779,43 @@ static bool regex_match( float i, const std::string& regex, std::string text )
 }
 
 
+static bool process_row( float row, Fl_Widget* w, const std::string& match,
+                         MatchType type )
+{
+  if ( ( type == kMatchValue || type == kMatchAll ) &&
+       dynamic_cast< Fl_Input* >( w ) != NULL )
+  {
+    Fl_Input* input = (Fl_Input*) w;
+    if ( regex_match( row, match, input->value() ) )
+      return true;
+  }
+  else if ( ( type == kMatchValue || type == kMatchAll ) &&
+            dynamic_cast< Fl_Output* >( w ) != NULL )
+  {
+    Fl_Output* output = (Fl_Output*) w;
+    if ( regex_match( row, match, output->value() ) )
+      return true;
+  }
+  else if ( dynamic_cast< Fl_Group* >( w ) != NULL )
+  {
+    Fl_Group* g = (Fl_Group*) w;
+    for ( int c = 0; c < g->children(); ++c )
+    {
+      w = (Fl_Widget*) g->child(c);
+      bool ok = process_row( row, w, match, type );
+      if ( ok ) return ok;
+    }
+  }
+  else
+  {
+    if ( type != kMatchAttribute && type != kMatchAll ) return false;
+    if ( !w->label() ) return false;
+    if ( regex_match( row, match, w->label() ) )
+      return true;
+  }
+  return false;
+}
+
 static int search_table( mrv::Table* t, float& row, const std::string& match,
                          MatchType type )
 {
@@ -789,34 +826,8 @@ static int search_table( mrv::Table* t, float& row, const std::string& match,
 
       row += 0.5;
       Fl_Widget* w = t->child(i);
-    tryagain:
-      if ( ( type == kMatchValue || type == kMatchAll ) &&
-           dynamic_cast< Fl_Input* >( w ) != NULL )
-        {
-          Fl_Input* input = (Fl_Input*) w;
-          if ( regex_match( row, match, input->value() ) )
-            break;
-        }
-      else if ( ( type == kMatchValue || type == kMatchAll ) &&
-                dynamic_cast< Fl_Output* >( w ) != NULL )
-        {
-          Fl_Output* output = (Fl_Output*) w;
-          if ( regex_match( row, match, output->value() ) )
-            break;
-        }
-      else if ( dynamic_cast< Fl_Group* >( w ) != NULL )
-        {
-          Fl_Group* g = (Fl_Group*) w;
-          w = (Fl_Widget*) g->child(0);
-          goto tryagain;
-        }
-      else
-        {
-          if ( type != kMatchAttribute && type != kMatchAll ) continue;
-          if ( !w->label() ) continue;
-          if ( regex_match( row, match, w->label() ) )
-            break;
-        }
+      if ( process_row( row, w, match, type ) )
+        break;
     }
 
   return idx;
@@ -853,6 +864,8 @@ void search_cb( Fl_Widget* o, mrv::ImageInformation* info )
   int H3 = 12 + info->line_height();
 
   MyPack* p = (MyPack*) info->m_image->child(1);
+  if ( ! p->children() ) return;
+
   mrv::Table* t = (mrv::Table*) p->child(0);
 
   float row = 0;
@@ -3684,7 +3697,7 @@ ImageInformation::resize( int x, int y, int w, int h )
 {
   scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
   int sw = Fl::scrollbar_size();                // scrollbar width
-  m_entry->size( w-sw-m_type->w(), 30 );
+  m_entry->size( w - m_entry->x() - m_type->w(), 30 );
   m_all->size( w-sw, h );
   Fl_Group::resize( x, y, w, h );
 

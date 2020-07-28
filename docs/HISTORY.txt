@@ -10,6 +10,11 @@ v5.5.8  - Prevented system sleep on Macs while mrViewer is open.
 	- Made default fps be 24 for files not recognized as images or movies.
 	- Updated media information window when gamma/gain are reset with the
 	  SHIFT+c keys.
+	- Made search in media info also search rectangular rows (like
+	  Display Window).
+	- Added searching by value, attribute or both on media info window.
+	- Bug fixed a crash which would happen when searching on an empty
+	  media info.
 
 v5.5.7  - Fixed HUD display on Macs, which had disappeared.
 	- Made HUD display match the font on all platforms.
