@@ -61,6 +61,7 @@ extern "C" {
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrvPreferencesUI.h"
 #include "mrvReelUI.h"
 #include "mrViewer.h"
 
@@ -1294,7 +1295,8 @@ void video_thread( PlaybackData* data )
 
                 if (sdiff <= -sync_threshold)
                 {
-                    delay = FFMAX(0.00001, delay + sdiff);
+                    if ( ! uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
+                        delay = FFMAX(0.00001, delay + sdiff);
                 }
                 else if (sdiff >= sync_threshold &&
                          delay > AV_SYNC_FRAMEDUP_THRESHOLD)
