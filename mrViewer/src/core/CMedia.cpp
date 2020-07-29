@@ -1417,6 +1417,8 @@ void CMedia::display_window( const int xmin, const int ymin,
         _displayWindow = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+
     int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t)num || idx < 0 ) return;
@@ -1440,6 +1442,8 @@ void CMedia::display_window2( const int xmin, const int ymin,
         _displayWindow2 = new mrv::Recti[ (unsigned)num];
 
     int64_t f = frame;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+
     int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t) num || idx < 0 ) return;
@@ -1463,6 +1467,8 @@ void CMedia::data_window( const int xmin, const int ymin,
         _dataWindow = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+
     int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t) num || idx < 0 ) return;
@@ -1489,6 +1495,8 @@ void CMedia::data_window2( const int xmin, const int ymin,
         _dataWindow2 = new mrv::Recti[ (unsigned) num];
 
     int64_t f = frame;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+
     int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t)num || idx < 0 ) return;
