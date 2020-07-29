@@ -2002,7 +2002,8 @@ static void change_pixel_ratio_cb( Fl_Float_Input* w,
 {
     CMedia* img = info->get_image();
 
-    img->pixel_ratio( atof( w->value() ) );
+    for ( int64_t i = img->start_frame(); i <= img->end_frame(); ++i )
+        img->pixel_ratio( i, atof( w->value() ) );
     update_float_slider( w );
 
     info->main()->uiView->redraw();
