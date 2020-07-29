@@ -1155,6 +1155,8 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
       else
         num = _frame_end - _frame_start + 1;
       _pixel_ratio = new double[ num ];
+      for ( unsigned i = 0; i < num; ++i )
+          _pixel_ratio[i] = p;
     }
   int64_t idx = f - _frame_start;
   if ( dynamic_cast< aviImage* >(this) != NULL ||

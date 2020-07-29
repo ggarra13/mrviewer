@@ -473,7 +473,8 @@ public:
 
   /// Set the image pixel ratio
   inline void  pixel_ratio( double f ) {
-    pixel_ratio( _frame, f );
+      for ( int64_t i = _frame_start; i <= _frame_end; ++i )
+          pixel_ratio( i, f );
   }
 
     /////////////////// Set the image size, allocating a 4-float buffer

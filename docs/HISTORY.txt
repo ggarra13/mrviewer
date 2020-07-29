@@ -1,4 +1,9 @@
-v5.5.8  - Prevented system sleep on Macs while mrViewer is open.
+v5.5.9  - Bug fixed pixel ratio on image sequences.  Now pixel ratio is set
+	  for the whole sequence and then can be changed for one frame
+	  programatically.
+
+v5.5.8  - Prevented system sleep on Macs while mrViewer is open, like on
+	  Windows and Linux.
 	- Fixed preferences' versioning reverting to 3.  This would not allow
 	  you to save and use the non-native file browser on Mac, for example.
 	- Fixed a stall on non-native file browser on Mac when selecting an
