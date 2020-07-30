@@ -40,7 +40,7 @@ int64_t Reel_t::maximum() const
     return m->position() + m->duration() - 1;
 }
 
-size_t Reel_t::duration() const
+uint64_t Reel_t::duration() const
 {
     return maximum() - minimum() + 1;
 }

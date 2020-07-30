@@ -50,7 +50,7 @@ struct Reel_t
 	return m->image();
     }
 
-    size_t duration() const;
+    uint64_t duration() const;
 
     size_t index( const CMedia* const img ) const;
     size_t index( const int64_t frame ) const;

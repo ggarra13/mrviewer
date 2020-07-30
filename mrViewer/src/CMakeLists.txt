@@ -376,10 +376,6 @@ SET( SOURCES
 #
 SET( SOURCES audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
-IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  SET( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
-  SET( SOURCES gui/resource.rc ${SOURCES} )
-ENDIF()
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
@@ -390,6 +386,11 @@ ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Fi
 DEPENDS mrViewer
 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
+
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  SET( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
+  SET( SOURCES gui/resource.rc ${SOURCES} )
+ENDIF()
 
 IF( NOT WIN32 )
 
