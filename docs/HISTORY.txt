@@ -1,6 +1,8 @@
 v5.5.9  - Bug fixed pixel ratio on image sequences.  Now pixel ratio is set
 	  for the whole sequence and then can be changed for one frame
 	  programatically.
+	- Removed subtitle searching when in thumbnail mode ( non-native
+	  file requester ).
 
 v5.5.8  - Prevented system sleep on Macs while mrViewer is open, like on
 	  Windows and Linux.

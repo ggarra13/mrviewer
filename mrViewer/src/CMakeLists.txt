@@ -869,7 +869,6 @@ ENDIF(TINYXML2_FOUND)
 
 MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 
-
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 

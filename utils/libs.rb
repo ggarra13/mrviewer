@@ -87,14 +87,14 @@ def parse( files, dest )
       puts "#{loc} ==> #{libpath} ==> #{orig}" if @options[:verbose]
       lib = libpath.gsub(/.*\//, '' )
       puts "#{loc} ==> #{lib} ==> #{orig}" if @options[:verbose]
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
       `chrpath -d "#{dest}/lib/#{lib}"`
       print `readelf -d #{dest}/lib/#{lib} | grep PATH`
       if not File.exists?( "#{dest}/lib/#{orig}" )
-        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}" )
+        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => true )
       end
     else
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}" )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
       `chrpath -d "#{dest}/lib/#{lib}"`
       $stdout.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
@@ -231,10 +231,10 @@ if kernel !~ /MINGW.*/
     $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
     FileUtils.ln_s "#{dest}/lib/libACESclip.so.0.2.6",
-                   "#{dest}/lib/libACESclip.so"
+                   "#{dest}/lib/libACESclip.so", :force => true
   elsif kernel =~ /Darwin/
     FileUtils.ln_s "#{dest}/lib/libACESclip.dylib.0.2.6",
-                   "#{dest}/lib/libACESclip.dylib"
+                   "#{dest}/lib/libACESclip.dylib", :force => true
   end
 
 else

@@ -615,7 +615,7 @@ void aviImage::subtitle_file( const char* f )
     _subtitle_info.clear();
     _subtitle_index = -1;
 
-    if ( f == NULL || strlen(f) == 0 )
+    if ( f == NULL || strlen(f) == 0 || is_thumbnail() )
         _subtitle_file.clear();
     else
     {
