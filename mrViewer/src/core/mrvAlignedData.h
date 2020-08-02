@@ -28,19 +28,23 @@
 #ifndef mrvAlignedData_h
 #define mrvAlignedData_h
 
+
 extern "C" {
 #include <libavutil/mem.h>
 }
 
+#include <malloc.h>
 #include "gui/mrvIO.h"
 #include <boost/cstdint.hpp>
 
-// #if defined(_WIN32) || defined(_WIN64)
-// #  define memalign( b, a )   _aligned_malloc( a, b )
-// #  define memalign_free( a ) _aligned_free( a )
-// #else
-// #  define memalign_free( a ) free( a )
-// #endif
+#if defined(_WIN32) || defined(_WIN64)
+#  define memalign( b, a )   _aligned_malloc( a, b )
+#  define memalign_free( a ) _aligned_free( a )
+#elif OSX
+#  define memalign_free( a ) av_free( a )
+#else
+#  define memalign_free( a ) free( a )
+#endif
 
 
 
@@ -53,22 +57,48 @@ namespace mrv {
 
     inline void* operator new(size_t size)
     {
-        return av_malloc( size );
+#ifdef LINUX
+        void* tmp = NULL;
+        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+        if ( err != 0 )
+        {
+            mrvLOG_ERROR( "mem", "Allocation returned error " << err
+                          << std::endl );
+        }
+        return tmp;
+#elif _WIN32
+      return memalign( 16, size*sizeof(aligned16_uint8_t) );
+#else
+      return av_malloc( size*sizeof(aligned_uint8_t) );
+#endif
     }
 
     inline void operator delete( void* ptr )
     {
-        av_free( ptr );
+        memalign_free( ptr );
     }
 
     inline void* operator new[](size_t size)
     {
-        return av_malloc( size * sizeof(aligned16_uint8_t) );
+#ifdef LINUX
+        void* tmp = NULL;
+        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+        if ( err != 0 )
+        {
+            mrvLOG_ERROR( "mem", "Allocation returned error " << err
+                          << std::endl );
+        }
+        return tmp;
+#elif _WIN32
+      return memalign( 16, size*sizeof(aligned16_uint8_t) );
+#else
+      return av_malloc_array( 16, sizeof(aligned_uint8_t) );
+#endif
     }
 
     inline void operator delete[]( void* ptr )
     {
-        av_free( ptr );
+      memalign_free( ptr );
     }
   };
 
