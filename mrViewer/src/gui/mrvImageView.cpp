@@ -2597,6 +2597,8 @@ bool ImageView::should_update( mrv::media fg )
 
 void static_preload( mrv::ImageView* v )
 {
+    return;
+
     v->preload();
 
     mrv::media m = v->foreground();

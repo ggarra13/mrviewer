@@ -98,6 +98,8 @@ namespace fs = boost::filesystem;
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferences.h"
 
+#include "mrvVersion.h"
+
 namespace {
 
 const char* kModule = "img";
@@ -1112,9 +1114,6 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
         h = height();
     }
     assert( w != 0 && h != 0 );
-    // LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
-    //           << " channels: " << channels << " format: "
-    //           << format << " pixel type: " << pixel_type );
 
     //image_damage( image_damage() & ~kDamageContents );
     try {
@@ -3726,18 +3725,22 @@ void CMedia::limit_video_store( const int64_t f )
     typedef std::map< timeval, uint64_t, customMore > TimedSeqMap;
 
     TimedSeqMap tmp;
-    uint64_t image_count = 0;
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->data_size() == 0 )
             continue;
 
-        ++image_count;
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
 
 
+    uint64_t image_count = tmp.size();
     TimedSeqMap::iterator it = tmp.begin();
+
+    // std::cerr << "mem used: " << (memory_used / 1024 / 1024) << " max mem "
+    //           << (Preferences::max_memory / 1024 / 1024) << std::endl;
+    // std::cerr << "image_count: " << image_count << " max frames "
+    //           << max_frames << std::endl;
 
     // Erase enough frames to make sure memory used is less than max memory
     for ( ; it != tmp.end() && memory_used >= Preferences::max_memory; ++it )
@@ -3870,11 +3873,11 @@ void CMedia::debug_video_stores(const int64_t frame,
 {
     std::cerr << this << std::dec << " " << name()
               << " S:" << _frame << " D:" << _dts
-              << " A:" << frame << " " << routine << " image stores "
-              << ": ";
+              << " A:" << frame << " " << routine;
 
     if (detail && _sequence )
     {
+        std::cerr << " image stores: " << std::endl;
         uint64_t i = 0;
         uint64_t num = _frame_end - _frame_start + 1;
         for ( ; i < num; ++i )
@@ -3888,6 +3891,10 @@ void CMedia::debug_video_stores(const int64_t frame,
                 std::cerr << i << " ";
             }
         }
+        std::cerr << std::endl;
+    }
+    else
+    {
         std::cerr << std::endl;
     }
 }

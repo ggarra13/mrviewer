@@ -690,7 +690,7 @@ public:
     ////////////////// Set the frame for the current image (sequence)
     virtual bool    frame( const int64_t frame );
     inline int64_t frame() const {
-        return _frame;
+        return _frame.load();
     }
 
     ///////////////// Decoding time stamp

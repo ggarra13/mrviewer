@@ -131,13 +131,13 @@ private:
     boost::int64_t              _repeat;  //!< number of frames to repeat
     size_t                      _width;
     size_t                      _height;
+    bool                        _valid;   //! invalid frame
     short unsigned int          _channels; //!< number of channels of image
     time_t                      _ctime;  //!< creation time of frame
     time_t                      _mtime;  //!< modification time of frame
     timeval                     _ptime;  //!< pos. time to erase in timeline
     Format                      _format; //!< rgb/yuv format
     PixelType                   _type;   //!< pixel type
-    bool                       _valid;   //! invalid frame
     PixelData                   _data;   //!< video data
 
 public:
@@ -149,12 +149,12 @@ public:
         _repeat( 0 ),
         _width( 0 ),
         _height( 0 ),
+        _valid( true ),
         _channels( 0 ),
         _ctime( 0 ),
         _mtime( 0 ),
         _format( kRGBA ),
-        _type( kByte ),
-        _valid( true )
+        _type( kByte )
     {
         gettimeofday( &_ptime, NULL );
     }
@@ -165,16 +165,16 @@ public:
         _repeat( b._repeat ),
         _width( b._width ),
         _height( b._height ),
+        _valid( true ),
         _channels( b._channels ),
         _ctime( b._ctime ),
         _mtime( b._mtime ),
         _format( b._format ),
-        _type( b._type ),
-        _valid( true )
+        _type( b._type )
     {
         gettimeofday( &_ptime, NULL );
         allocate();
-        memcpy( _data.get(), b.data().get(), data_size() );
+        memcpy( _data.get(), b.data().get(), b.data_size() );
     }
 
     VideoFrame( const boost::int64_t& frame,
@@ -190,12 +190,12 @@ public:
         _repeat( repeat ),
         _width( w ),
         _height( h ),
+        _valid( valid ),
         _channels( c ),
         _ctime( 0 ),
         _mtime( 0 ),
         _format( format ),
-        _type( type ),
-        _valid( valid )
+        _type( type )
     {
         gettimeofday( &_ptime, NULL );
         allocate();
@@ -205,7 +205,7 @@ public:
 
     void allocate();
 
-    self& operator=( const self& b ) noexcept;
+    self& operator=( const self& b );
 
     inline const timeval& ptime() const {
         return _ptime;

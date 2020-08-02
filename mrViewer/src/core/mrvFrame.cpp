@@ -113,6 +113,8 @@ const char* const VideoFrame::fmts[] = {
     "YByRy444A", // @todo: not done
 };
 
+
+
 /**
  * Return the size of a pixel in memory.
  *
@@ -271,6 +273,7 @@ size_t VideoFrame::data_size() const
 VideoFrame::~VideoFrame()
 {
     CMedia::memory_used -= data_size();
+    assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 
@@ -280,10 +283,9 @@ VideoFrame::~VideoFrame()
  */
 void VideoFrame::allocate()
 {
-    mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size()+15 ];
-    assert0( uint64_t(ptr) % 16 == 0 );
+    mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
     _data.reset( ptr );
-    CMedia::memory_used += data_size() + 15;
+    CMedia::memory_used += data_size();
 }
 
 /**
@@ -625,9 +627,8 @@ bool VideoFrame::has_alpha() const
  *
  * @return The new video frame.
  */
-VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b ) noexcept
+VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 {
-    std::cerr << "ASSIGNMENT " << b.frame() << std::endl;
     _frame    = b.frame();
     _pts      = b.pts();
     _repeat   = b.repeat();
@@ -638,8 +639,9 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b ) noexcept
     _ctime    = time(NULL);
     _mtime    = b.mtime();
     _type     = b.pixel_type();
+    _valid    = b.valid();
     allocate();
-    memcpy( _data.get(), b.data().get(), data_size() );
+    memcpy( _data.get(), b.data().get(), b.data_size() );
     return *this;
 }
 
