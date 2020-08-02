@@ -33,7 +33,10 @@ extern "C" {
 #include <libavutil/mem.h>
 }
 
+#ifndef OSX
 #include <malloc.h>
+#endif
+
 #include "gui/mrvIO.h"
 #include <boost/cstdint.hpp>
 
@@ -69,7 +72,7 @@ namespace mrv {
 #elif _WIN32
       return memalign( 16, size*sizeof(aligned16_uint8_t) );
 #else
-      return av_malloc( size*sizeof(aligned_uint8_t) );
+      return av_malloc( size*sizeof(aligned16_uint8_t) );
 #endif
     }
 
@@ -92,7 +95,7 @@ namespace mrv {
 #elif _WIN32
       return memalign( 16, size*sizeof(aligned16_uint8_t) );
 #else
-      return av_malloc_array( 16, sizeof(aligned_uint8_t) );
+      return av_malloc_array( size, sizeof(aligned16_uint8_t) );
 #endif
     }
 
