@@ -60,44 +60,22 @@ namespace mrv {
 
     inline void* operator new(size_t size)
     {
-#ifdef LINUX
-        void* tmp = NULL;
-        int err = posix_memalign( &tmp, 16, size );
-        if ( err != 0 )
-        {
-            mrvLOG_ERROR( "mem", "Allocation returned error " << err
-                          << std::endl );
-        }
-        return tmp;
-#else
         return av_malloc( size );
-#endif
     }
 
     inline void operator delete( void* ptr )
     {
-        memalign_free( ptr );
+        av_free( ptr );
     }
 
     inline void* operator new[](size_t size)
     {
-#ifdef LINUX
-        void* tmp = NULL;
-        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
-        if ( err != 0 )
-        {
-            mrvLOG_ERROR( "mem", "Allocation returned error " << err
-                          << std::endl );
-        }
-        return tmp;
-#else
         return av_malloc_array( size, sizeof(aligned16_uint8_t) );
-#endif
     }
 
     inline void operator delete[]( void* ptr )
     {
-        memalign_free( ptr );
+        av_free( ptr );
     }
   };
 

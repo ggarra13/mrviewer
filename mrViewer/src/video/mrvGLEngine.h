@@ -57,7 +57,7 @@ protected:
     typedef std::vector< GLQuad*  > QuadList;
 
 public:
-    GLEngine( const mrv::ImageView* );
+    GLEngine( mrv::ImageView* );
     ~GLEngine();
 
     /// Name of engine

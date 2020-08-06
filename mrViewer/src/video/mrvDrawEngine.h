@@ -105,7 +105,7 @@ public:
 
 
 public:
-    DrawEngine(const ImageView* v );
+    DrawEngine(ImageView* v );
 
     virtual ~DrawEngine();
 
@@ -254,7 +254,7 @@ protected:
 
 
 protected:
-    const ImageView* _view;
+    ImageView* const _view;
 
     //! Min-max pixel values (for normalization)
     float _normMin, _normMax;

@@ -656,6 +656,7 @@ void GLEngine::reset_view_matrix()
     ImageView* view = const_cast< ImageView* >( _view );
     unsigned W = view->pixel_w();
     unsigned H = view->pixel_h();
+    DBGM1( "view pixels: " << W << "x" << H );
     glViewport(0, 0, W, H);
     if ( view->vr() == ImageView::kNoVR )
     {
@@ -1174,7 +1175,7 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
             CMedia* img = fg->image();
             CMedia* oimg = old->image();
             if ( img->display_window() != oimg->display_window() )
-                const_cast<ImageView*>(_view)->fit_image();
+                _view->fit_image();
         }
     }
 
@@ -1279,19 +1280,13 @@ void GLEngine::draw_mask( const float pct )
     //
     // Bottom mask
     //
-    glBegin( GL_POLYGON );
+    glBegin( GL_QUADS );
     {
         glVertex2d( -0.5,  -0.5 + amount );
         glVertex2d(  0.5,  -0.5 + amount );
         glVertex2d(  0.5,  -0.5 );
         glVertex2d( -0.5,  -0.5 );
     }
-    glEnd();
-
-    //
-    // Top mask
-    //
-    glBegin( GL_POLYGON );
     {
         glVertex2d( -0.5,  0.5 );
         glVertex2d(  0.5,  0.5 );
@@ -1916,6 +1911,8 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( texWidth == 0 ) texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
+
+
 
         texWidth  = int( texWidth * img->scale_x() );
         texHeight = int( texHeight * img->scale_y() );
@@ -4182,7 +4179,7 @@ void GLEngine::resize_background()
 {
 }
 
-GLEngine::GLEngine(const mrv::ImageView* v) :
+GLEngine::GLEngine(mrv::ImageView* v) :
     DrawEngine( v ),
     texWidth( 0 ),
     texHeight( 0 ),

@@ -486,7 +486,7 @@ const char* DrawEngine::shader_type_name()
     return kShaderType[ _hardwareShaders ];
 }
 
-DrawEngine::DrawEngine(const mrv::ImageView* v) :
+DrawEngine::DrawEngine(mrv::ImageView* v) :
     _view(v),
     _normMin( 0 ),
     _normMax( 1.0f ),
