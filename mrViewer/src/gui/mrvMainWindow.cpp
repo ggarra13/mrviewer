@@ -88,7 +88,7 @@ Fl_Double_Window( W, H, title )
         EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
     }
 
-
+    Fl::use_high_res_GL(true);
 }
 
 MainWindow::~MainWindow()

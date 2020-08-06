@@ -8158,7 +8158,7 @@ void ImageView::zoom( float z )
     send_network( buf );
 
     float scale = Fl::screen_scale( window()->screen_num() );
-    std::cerr << "scale " << scale << std::endl;
+    DBGM1( "scale factor= " << scale );
     z = z / scale;
 
     _zoom = z;
