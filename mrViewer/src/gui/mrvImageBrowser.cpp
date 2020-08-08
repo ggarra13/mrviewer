@@ -3144,7 +3144,6 @@ void ImageBrowser::handle_dnd()
 
     last_image();
 
-    uiMain->uiMain->take_focus();
     uiMain->uiView->take_focus();
 }
 

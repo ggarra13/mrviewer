@@ -378,7 +378,7 @@ public:
 
     /// Return current zoom factor
     float zoom() const {
-        return _zoom;
+        return _real_zoom;
     };
 
     void resize( int X, int Y, int W, int H );
@@ -906,6 +906,7 @@ protected:
     float        _gamma;      //<- display gamma
     float        _gain;       //<- display gain (exposure)
     float        _zoom;       //<- display zoom
+    float        _real_zoom;  //<- real display zoom ( with screen factor )
     double       xoffset, yoffset; //<- display offsets
     double     spinx, spiny;   //<- VR's rotation offsets
 

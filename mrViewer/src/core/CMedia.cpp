@@ -3048,13 +3048,10 @@ void CMedia::cache( mrv::image_type_ptr& pic )
          dynamic_cast< const brawImage* >( this ) != NULL )
         return;
 
-
-
     if ( !is_sequence() || !_cache_active || !pic )
         return;
 
     _depth = pic->pixel_type();
-
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {

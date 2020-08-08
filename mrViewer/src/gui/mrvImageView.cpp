@@ -1464,6 +1464,7 @@ _wipe( 1.0 ),
 _gamma( 1.0f ),
 _gain( 1.0f ),
 _zoom( 1 ),
+_real_zoom( 1 ),
 xoffset( 0 ),
 yoffset( 0 ),
 spinx( 0.0 ),
@@ -1516,6 +1517,9 @@ _lastFrame( 0 )
 #ifdef OSX
     Fl_Sys_Menu_Bar::about( (Fl_Callback*)about_cb, this );
 #endif
+
+    float scale = Fl::screen_scale( window()->screen_num() );
+    _real_zoom = _zoom / scale;
 
     create_timeout( 0.25f / 60.0f );
 }
@@ -2273,19 +2277,13 @@ void ImageView::fit_image()
     //     W *= 2;
 
     // Fl::flush();
-    double w = (double) fltk_main()->w();
+
+    double w = (double) this->pixel_w();
+    double h = (double) this->pixel_h();
+
+
     double z = w / (double)W;
-
-
-    double h = (double) fltk_main()->h();
-    if ( uiMain->uiTopBar->visible() )
-        h -= uiMain->uiTopBar->h();
-    if ( uiMain->uiPixelBar->visible() )
-        h -= uiMain->uiPixelBar->h();
-    if ( uiMain->uiBottomBar->visible() )
-        h -= uiMain->uiBottomBar->h();
-
-    h /= H;
+        h /= H;
 
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
@@ -2320,8 +2318,6 @@ void ImageView::fit_image()
         send_network( buf );
     }
 
-    float scale = Fl::screen_scale( window()->screen_num() );
-    z *= scale;
     if ( ! mrv::is_equal( _zoom, float(z) ) )
     {
         zoom( float(z) );
@@ -7218,7 +7214,7 @@ void ImageView::toggle_presentation()
         int W = window()->w();
         int H = window()->h();
 #if defined(_WIN32) || defined(OSX)
-        H += 40 * scale;
+        H += int(40 * scale);
 #endif
         resize( X, Y, W, H );
         uiMain->uiRegion->layout();
@@ -8152,16 +8148,14 @@ void ImageView::zoom( float z )
     uiMain->uiZoom->redraw();
 
 
+    _zoom = z;
 
     char buf[128];
     sprintf( buf, N_("Zoom %g"), z );
     send_network( buf );
 
     float scale = Fl::screen_scale( window()->screen_num() );
-    DBGM1( "scale factor= " << scale );
-    z = z / scale;
-
-    _zoom = z;
+    _real_zoom = z / scale;
 
     redraw();
 }
@@ -8337,7 +8331,7 @@ void ImageView::exposure_change( float d )
  */
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
-    if ( !vr() && (z == _zoom || z > kMaxZoom || z < kMinZoom) ) return;
+    if ( !vr() && (z > kMaxZoom || z < kMinZoom) ) return;
     double mw = (double) w() / 2;
     double mh = (double) h() / 2;
     double offx = mw - x;
@@ -8898,27 +8892,6 @@ void ImageView::resize_main_window()
     }
 
 
-    if ( uiMain->uiTopBar->visible() )
-    {
-        uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                                int(28) );
-        h += uiMain->uiTopBar->h();
-    }
-
-    if ( uiMain->uiPixelBar->visible() )
-    {
-        uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                                  int(28) );
-        h += uiMain->uiPixelBar->h();
-    }
-
-    if ( uiMain->uiBottomBar->visible() )
-    {
-        uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-                                   int(49) );
-        h += uiMain->uiBottomBar->h();
-    }
-
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
     {
@@ -8926,11 +8899,6 @@ void ImageView::resize_main_window()
         posY = (int) uiPrefs->uiWindowYPosition->value();
     }
 
-    if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
-    {
-        w = (int) uiPrefs->uiWindowXSize->value();
-        h = (int) uiPrefs->uiWindowYSize->value();
-    }
 
 #if defined( _WIN32 )
     const int kTitleBar = 28;
@@ -8943,7 +8911,11 @@ void ImageView::resize_main_window()
     int minx, miny, maxw, maxh;
 
     int screen = window()->screen_num();
+    float scale = Fl::screen_scale( screen );
     Fl::screen_work_area( minx, miny, maxw, maxh, screen );
+
+    maxw = int(maxw * scale);
+    maxh = int(maxh * scale);
 
     int maxx = minx + maxw;
     int maxy = miny + maxh;
@@ -8953,11 +8925,14 @@ void ImageView::resize_main_window()
     if ( w > maxw ) {
         fit = true;
         w = maxw;
+        posX = 0;
     }
     if ( h > maxh ) {
         fit = true;
         h = maxh;
+        posY = 0;
     }
+
 
     if ( posX + w > maxx ) {
         posX = ( w + posX - maxw ) / 2;
@@ -8980,8 +8955,51 @@ void ImageView::resize_main_window()
         posY = miny + kTitleBar;
     }
 
+    w = int(w / scale);
+    h = int(h / scale);
+
+    if ( uiMain->uiTopBar->visible() )
+    {
+        // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+        //                         int(28) );
+        h += uiMain->uiTopBar->h();
+    }
+
+    if ( uiMain->uiPixelBar->visible() )
+    {
+        // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+        //                           int(28) );
+        h += uiMain->uiPixelBar->h();
+    }
+
+    if ( uiMain->uiBottomBar->visible() )
+    {
+        // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+        //                            int(49) );
+        h += uiMain->uiBottomBar->h();
+    }
+
+    if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
+    {
+        w = (int) uiPrefs->uiWindowXSize->value();
+        h = (int) uiPrefs->uiWindowYSize->value();
+    }
+
+    maxw = (int) (maxw / scale);
     if ( w < 640 )  w = 640;
+    else if ( w > maxw )
+    {
+        w = maxw;
+    }
+
+    int bar = uiMain->uiBottomBar->h();
+
+    maxh = (int) ((maxh - bar) / scale);
     if ( h < 535 )  h = 535;
+    else if ( h > maxh )
+    {
+        h = maxh;
+    }
 
     if ( fltk_main()->fullscreen_active() )
         fltk_main()->fullscreen_off( posX, posY, w, h );
@@ -8989,20 +9007,19 @@ void ImageView::resize_main_window()
         fltk_main()->resize( posX, posY, w, h );
 
 
-    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                            int(28) );
+    // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+    //                         int(28) );
 
-    uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                              int(28) );
+    // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+    //                           int(28) );
 
-    uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-                               int(49) );
+    // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+    //                            int(49) );
 
     uiMain->uiRegion->layout();
     uiMain->uiRegion->init_sizes();
 
     uiMain->uiRegion->redraw();
-
 
 
     if ( fit ) fit_image();
