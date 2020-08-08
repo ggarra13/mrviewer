@@ -2278,12 +2278,11 @@ void ImageView::fit_image()
 
     // Fl::flush();
 
-#ifdef OSX
-    double w = (double) this->w();
-    double h = (double) this->h();
-#else
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
+
+#ifdef OSX
+    h /= 2;  // On OSX Y pixel coords are doubled
 #endif
 
     double z = w / (double)W;
