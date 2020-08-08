@@ -2278,9 +2278,13 @@ void ImageView::fit_image()
 
     // Fl::flush();
 
+#ifdef OSX
+    double w = (double) this->w();
+    double h = (double) this->h();
+#else
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
-
+#endif
 
     double z = w / (double)W;
         h /= H;
