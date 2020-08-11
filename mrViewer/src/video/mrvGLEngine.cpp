@@ -533,13 +533,13 @@ void GLEngine::initialize()
     {
         _sdiOutput = true;
     }
-#elif LINUX
+#elif defined(LINUX)
     if ( glxewIsSupported( N_("GLX_NV_video_out") ) ||
-            glxewIsSupported( N_("GLX_NV_video_output") ) )
+         glxewIsSupported( N_("GLX_NV_video_output") ) )
     {
         _sdiOutput = true;
     }
-#elif OSX
+#elif defined(OSX)
     if ( glewIsSupported( N_("GLX_NV_video_out") ) ||
          glewIsSupported( N_("GLX_NV_video_output") ) )
     {

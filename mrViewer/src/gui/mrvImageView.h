@@ -886,6 +886,8 @@ protected:
                      mrv::image_type_ptr& pic, int& xp, int& yp,
                      short& idx, bool& outside, int w, int h ) const;
 
+    void restore_locale() const;
+
     void log() const;
 
 protected:

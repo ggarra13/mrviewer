@@ -191,8 +191,9 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale("") );
     // else
     //     std::locale::global( std::locale(env) );
-    is.imbue(std::locale());
+    // is.imbue(std::locale());
 
+    setlocale( LC_NUMERIC, "C" );
 
 
     mrv::Reel r;
@@ -1683,6 +1684,15 @@ bool Parser::parse( const std::string& s )
     if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
 
     v->network_active( true );
+
+
+#ifdef OSX
+    const char* loc = setlocale( LC_MESSAGES, NULL );
+    setlocale( LC_NUMERIC, loc );
+#else
+    setlocale( LC_NUMERIC, NULL );
+#endif
+
     return ok;
 }
 

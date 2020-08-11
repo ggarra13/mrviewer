@@ -162,7 +162,7 @@ void MainWindow::always_on_top()
     // Microsoft (R) Windows(TM)
     SetWindowPos(fl_xid(this), HWND_TOPMOST,
                  0, 0, w()+8, h()+27, 0);
-#elif LINUX
+#elif defined(LINUX)
     // XOrg / XWindows(TM)
     XEvent ev;
     static const char* const names[2] = { "_NET_WM_STATE",

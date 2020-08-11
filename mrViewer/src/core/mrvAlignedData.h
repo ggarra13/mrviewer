@@ -33,22 +33,8 @@ extern "C" {
 #include <libavutil/mem.h>
 }
 
-#ifndef OSX
+#include <stdlib.h>
 #include <malloc.h>
-#endif
-
-#include "gui/mrvIO.h"
-#include <boost/cstdint.hpp>
-
-#if defined(_WIN32) || defined(_WIN64)
-#  define memalign( b, a )   _aligned_malloc( a, b )
-#  define memalign_free( a ) _aligned_free( a )
-#elif OSX
-#  define memalign_free( a ) av_free( a )
-#else
-#  define memalign_free( a ) free( a )
-#endif
-
 
 
 namespace mrv {
@@ -60,22 +46,46 @@ namespace mrv {
 
     inline void* operator new(size_t size)
     {
-        return av_malloc( size );
+#ifdef LINUX
+        void* ptr = NULL;
+        if ( posix_memalign( &ptr, 16, size ) != 0 )
+            throw std::bad_alloc();
+#else
+        void* ptr = av_malloc( size );
+#endif
+        if (!ptr) throw std::bad_alloc();
+        return ptr;
     }
 
     inline void operator delete( void* ptr )
     {
+#ifdef LINUX
+        free( ptr );
+#else
         av_free( ptr );
+#endif
     }
 
     inline void* operator new[](size_t size)
     {
-        return av_malloc_array( size, sizeof(aligned16_uint8_t) );
+#ifdef LINUX
+        void* ptr = NULL;
+        if ( posix_memalign( &ptr, 16, size * sizeof(aligned16_uint8_t) ) != 0 )
+            throw std::bad_alloc();
+#else
+        void* ptr = av_malloc_array( size, sizeof(aligned16_uint8_t) );
+#endif
+        if (!ptr) throw std::bad_alloc();
+        return ptr;
     }
 
     inline void operator delete[]( void* ptr )
     {
+#ifdef LINUX
+        free( ptr );
+#else
         av_free( ptr );
+#endif
     }
   };
 

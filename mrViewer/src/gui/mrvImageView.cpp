@@ -636,9 +636,13 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
     const char* fmt = o->label();
     mask = (float) atof( fmt );
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, "Mask %g", mask );
     view->send_network( buf );
+
+    setlocale( LC_NUMERIC, NULL );
 
     view->masking( mask );
 
@@ -867,6 +871,17 @@ namespace mrv {
 
         uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
+
+void ImageView::restore_locale() const
+{
+#ifdef OSX
+    const char* loc = setlocale( LC_MESSAGES, NULL );
+    setlocale( LC_NUMERIC, loc );
+#else
+    setlocale( LC_NUMERIC, NULL );
+#endif
+}
+
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
 {
@@ -2165,9 +2180,14 @@ void ImageView::center_image()
     zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
+
+    restore_locale();
+
     redraw();
 }
 
@@ -2316,9 +2336,13 @@ void ImageView::fit_image()
     if ( ! mrv::is_equal( ox, xoffset ) ||
          ! mrv::is_equal( oy, yoffset ) )
     {
+        setlocale( LC_NUMERIC, "C" );
+
         char buf[128];
         sprintf( buf, "Offset %g %g", xoffset, yoffset );
         send_network( buf );
+
+        restore_locale();
     }
 
     if ( ! mrv::is_equal( _zoom, float(z) ) )
@@ -5873,9 +5897,13 @@ void ImageView::vr_angle( const float t )
 {
     if ( t >= 90.0f || t <= 5.0f || !_engine ) return;
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[32];
     sprintf( buf, "VRangle %g", t );
     send_network( buf );
+
+    restore_locale();
 
     _engine->angle( t );
     valid(0);
@@ -5941,9 +5969,13 @@ void ImageView::mouseDrag(int x,int y)
                 else if ( spinx < -SPINX_MAX ) spinx = -SPINX_MAX;
                 else if ( std::abs(spinx) <= SPINX_MIN ) spinx = 0.0;
 
+                setlocale( LC_NUMERIC, "C" );
+
                 char buf[128];
                 sprintf( buf, "Spin %g %g", spinx, spiny );
                 send_network( buf );
+
+                restore_locale();
             }
             else
             {
@@ -5955,9 +5987,13 @@ void ImageView::mouseDrag(int x,int y)
                 if ( !mrv::is_equal( ox, xoffset ) ||
                      !mrv::is_equal( oy, yoffset ) )
                 {
+                    setlocale( LC_NUMERIC, "C" );
+
                     char buf[128];
                     sprintf( buf, "Offset %g %g", xoffset, yoffset );
                     send_network( buf );
+
+                    restore_locale();
                 }
             }
 
@@ -5995,9 +6031,13 @@ void ImageView::mouseDrag(int x,int y)
 
                 update_image_info();
 
+                setlocale( LC_NUMERIC, "C" );
+
                 char buf[128];
                 sprintf( buf, "ScalePicture %g %g", px, py );
                 send_network( buf );
+
+                restore_locale();
             }
             else
             {
@@ -6012,9 +6052,13 @@ void ImageView::mouseDrag(int x,int y)
 
                 update_image_info();
 
+                setlocale( LC_NUMERIC, "C" );
+
                 char buf[128];
                 sprintf( buf, "MovePicture %g %g", px, py );
                 send_network( buf );
+
+                restore_locale();
             }
             lastX = x;
             lastY = y;
@@ -6188,10 +6232,13 @@ void ImageView::mouseDrag(int x,int y)
 
                 _selection = mrv::Rectd( xt, yt, dx, dy );
 
+                setlocale( LC_NUMERIC, "C" );
+
                 char buf[128];
                 sprintf( buf, "Selection %g %g %g %g", _selection.x(),
                          _selection.y(), _selection.w(), _selection.h() );
 
+                restore_locale();
 
                 send_network( buf );
 
@@ -6581,9 +6628,13 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe_dir = kWipeVertical;
             _wipe = (float) Fl::event_x() / float( w() );
 
+            setlocale( LC_NUMERIC, "C" );
+
             char buf[128];
             sprintf( buf, "WipeVertical %g", _wipe );
             send_network( buf );
+
+            restore_locale();
 
             window()->cursor(FL_CURSOR_WE);
         }
@@ -6591,10 +6642,15 @@ int ImageView::keyDown(unsigned int rawkey)
         {
             _wipe_dir = kWipeHorizontal;
             _wipe = (float) (h() - Fl::event_y()) / float( h() );
+
+            setlocale( LC_NUMERIC, "C" );
+
             char buf[128];
             sprintf( buf, "WipeHorizontal %g", _wipe );
             send_network( buf );
             window()->cursor(FL_CURSOR_NS);
+
+            restore_locale();
         }
         else if ( _wipe_dir & kWipeHorizontal ) {
             _wipe_dir = kNoWipe;
@@ -8083,9 +8139,13 @@ void ImageView::gain( const float f )
 
     _gain = f;
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[256];
     sprintf( buf, "Gain %g", f );
     send_network( buf );
+
+    restore_locale();
 
     uiMain->uiGain->value( f );
     uiMain->uiGainInput->value( f );
@@ -8114,9 +8174,13 @@ void ImageView::gamma( const float f )
         DBGM3(  "gamma " << f );
         fg->image()->gamma( f );
 
+        setlocale( LC_NUMERIC, "C" );
+
         char buf[256];
         sprintf( buf, "Gamma %g", f );
         send_network( buf );
+
+        restore_locale();
 
         uiMain->uiGamma->value( f );
         uiMain->uiGammaInput->value( f );
@@ -8153,9 +8217,13 @@ void ImageView::zoom( float z )
 
     _zoom = z;
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, N_("Zoom %g"), z );
     send_network( buf );
+
+    restore_locale();
 
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = z / scale;
@@ -8318,9 +8386,13 @@ void ImageView::exposure_change( float d )
     uiMain->uiGain->value( _gain );
     uiMain->uiGainInput->value( _gain );
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[64];
     sprintf( buf, N_("Gain %g"), _gain );
     uiMain->uiView->send_network( buf );
+
+    restore_locale();
 }
 
 
@@ -8370,9 +8442,13 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     if ( _showPixelRatio ) ratio = img->pixel_ratio();
     yoffset += (offy / _zoom * ratio);
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
+
+    restore_locale();
 
     mouseMove( x, y );
 }
@@ -9716,9 +9792,13 @@ void ImageView::fps( double x )
     uiMain->uiStartFrame->frame( start );  // needed not sure why
     uiMain->uiEndFrame->frame( end );  // needed not sure why
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, N_("FPS %g"), x );
     send_network( buf );
+
+    restore_locale();
 }
 
 /**
@@ -9749,9 +9829,13 @@ void ImageView::volume( float v )
     uiMain->uiVolume->redraw();
 
 
+    setlocale( LC_NUMERIC, "C" );
+
     char buf[128];
     sprintf( buf, N_("Volume %g"), v );
     send_network( buf );
+
+    restore_locale();
 
 }
 
