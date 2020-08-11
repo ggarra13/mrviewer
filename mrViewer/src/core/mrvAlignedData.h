@@ -33,8 +33,10 @@ extern "C" {
 #include <libavutil/mem.h>
 }
 
-#include <stdlib.h>
-#include <malloc.h>
+#ifdef LINUX
+#  include <stdlib.h>
+#  include <malloc.h>
+#endif
 
 
 namespace mrv {
