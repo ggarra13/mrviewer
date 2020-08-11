@@ -161,10 +161,10 @@ void load_new_files( void* s )
 
 
 
-mrv::LoadList OSXfiles;
+stringArray OSXfiles;
 void osx_open_cb(const char *fname)
 {
-    OSXfiles.push_back( mrv::LoadInfo( fname ) );
+    OSXfiles.push_back( fname );
 }
 
 int main( int argc, const char** argv )
@@ -289,7 +289,31 @@ int main( int argc, const char** argv )
           argc = 0;
 
           if ( !OSXfiles.empty() )
-              load_files( OSXfiles );
+          {
+              stringArray::iterator it = OSXfiles.begin();
+              stringArray::iterator et = OSXfiles.end();
+
+              for ( ; it != et; ++it )
+              {
+                  int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
+                  std::string fileroot;
+
+                  mrv::fileroot( fileroot, *it, true, false );
+                  if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() &&
+                       mrv::is_valid_sequence( fileroot.c_str() ) )
+                  {
+                      mrv::get_sequence_limits( start, end, fileroot );
+                      opts.files.push_back( mrv::LoadInfo( fileroot, start, end,
+                                                           start, end ) );
+                  }
+                  else
+                  {
+                      opts.files.push_back( mrv::LoadInfo( *it ) );
+                  }
+              }
+              load_files( opts.files );
+          }
+
 
           lockfile = mrv::lockfile();
 
