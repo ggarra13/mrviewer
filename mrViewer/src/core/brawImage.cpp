@@ -160,10 +160,10 @@ namespace mrv {
 #ifdef WIN32
         virtual void STDMETHODCALLTYPE SidecarMetadataParseWarning(IBlackmagicRawClip*, BSTR, uint32_t, BSTR) {}
         virtual void STDMETHODCALLTYPE SidecarMetadataParseError(IBlackmagicRawClip*, BSTR, uint32_t, BSTR) {}
-#elif LINUX
+#elif defined(LINUX)
         virtual void SidecarMetadataParseWarning(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
         virtual void SidecarMetadataParseError(IBlackmagicRawClip*, const char*, uint32_t, const char*) {}
-#elif OSX
+#elif defined(OSX)
         virtual void SidecarMetadataParseWarning(IBlackmagicRawClip*, CFStringRef, uint32_t, CFStringRef) {}
         virtual void SidecarMetadataParseError(IBlackmagicRawClip*, CFStringRef, uint32_t, CFStringRef) {}
 #endif
@@ -200,9 +200,9 @@ namespace mrv {
 
 #ifdef WIN32
         _bstr_t clib( libpath.c_str() );
-#elif LINUX
+#elif defined(LINUX)
         const char* clib = libpath.c_str();
-#elif OSX
+#elif defined(OSX)
         CFStringRef clib = CFStringCreateWithCString( NULL,
                                                       libpath.c_str(),
                                                       kCFStringEncodingUTF8 );
@@ -315,9 +315,9 @@ namespace mrv {
 
 #ifdef WIN32
         _bstr_t filename( file );
-#elif LINUX
+#elif defined(LINUX)
         const char* filename = file;
-#elif OSX
+#elif defined(OSX)
         CFStringRef filename = CFStringCreateWithCString( NULL,
                                                           file,
                                                           kCFStringEncodingUTF8 );
@@ -353,10 +353,10 @@ namespace mrv {
 #ifdef WIN32
         BSTR keyStr;
         VARIANT value;
-#elif LINUX
+#elif defined(LINUX)
         const char* keyStr = nullptr;
         Variant value;
-#elif OSX
+#elif defined(OSX)
         CFStringRef keyStr;
         Variant value;
 #endif
@@ -382,12 +382,12 @@ namespace mrv {
 #ifdef LINUX
             const char* key = (const char*) keyStr;
             BlackmagicRawVariantType variantType = value.vt;
-#elif WIN32
+#elif defined(_WIN32)
             // or use true to get original BSTR released through wrapper
             _bstr_t interim(keyStr, false);
             const char* key((const char*) interim);
             VARTYPE variantType = value.vt;
-#elif OSX
+#elif defined(OSX)
             const char* key = CFStringGetCStringPtr( keyStr,
                                                      kCFStringEncodingUTF8 );
             BlackmagicRawVariantType variantType = value.vt;
@@ -475,12 +475,12 @@ namespace mrv {
             {
 #ifdef LINUX
                 const char* str = value.bstrVal;
-#elif WIN32
+#elif defined(_WIN32)
                 BSTR tmp = value.bstrVal;
                 // or use true to get original BSTR released through wrapper
                 _bstr_t interim(tmp, false);
                 const char* str((const char*) interim);
-#elif OSX
+#elif defined(OSX)
                 const char* str = CFStringGetCStringPtr( value.bstrVal,
                                                          kCFStringEncodingUTF8 );
 #endif
@@ -525,9 +525,9 @@ namespace mrv {
 
 #ifdef WIN32
         _bstr_t file = fname;
-#elif LINUX
+#elif defined(LINUX)
         const char* file = fname;
-#elif OSX
+#elif defined(OSX)
         CFStringRef file = CFStringCreateWithCString( NULL,
                                                       fname,
                                                       kCFStringEncodingUTF8 );
@@ -896,9 +896,9 @@ namespace mrv {
 
 #ifdef WIN32
         _bstr_t file = fname;
-#elif LINUX
+#elif defined(LINUX)
         const char* file = fname;
-#elif OSX
+#elif defined(OSX)
         CFStringRef file = CFStringCreateWithCString( NULL,
                                                       fname,
                                                       kCFStringEncodingUTF8 );
@@ -1094,9 +1094,9 @@ namespace mrv {
 
 #ifdef WIN32
             BSTR timeCode;
-#elif LINUX
+#elif defined(LINUX)
             const char* timeCode = nullptr;
-#elif OSX // APPLE
+#elif defined(OSX) // APPLE
             CFStringRef timeCode;
 #endif
             HRESULT result = clip->GetTimecodeForFrame( frame, &timeCode );
@@ -1108,9 +1108,9 @@ namespace mrv {
 #ifdef WIN32
             _bstr_t tmp( timeCode, false );
             const char* timecode( (const char*)tmp );
-#elif LINUX
+#elif defined(LINUX)
             const char* timecode = timeCode;
-#elif OSX  // APPLE
+#elif defined(OSX)  // APPLE
             const char* timecode = CFStringGetCStringPtr( timeCode,
                                                           kCFStringEncodingUTF8 );
             if ( timecode == NULL ) return false;
