@@ -422,14 +422,14 @@ class PaintUI {open
       label Action
       user_data this user_data_type {PaintUI*}
       callback {v->main()->uiView->send_network( "PaintTools 0" );
-o->hide();} open selected
-      xywh {733 95 165 505} type Double resizable non_modal visible
+o->hide();} open
+      xywh {733 95 145 485} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
-        xywh {0 0 165 505} box PLASTIC_UP_BOX
+        xywh {0 0 145 485} box PLASTIC_UP_BOX
       } {
-        Fl_Group {} {
-          xywh {33 15 92 115}
+        Fl_Group {} {open
+          xywh {25 15 100 115}
         } {
           Fl_Button uiScrub {
             user_data m user_data_type {ViewerUI*}
@@ -439,7 +439,7 @@ uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiMovePic->value(0);}
-            tooltip {Area Select Tool} xywh {35 15 43 35} value 1
+            tooltip {Area Select Tool} xywh {27 15 43 35} down_box DOWN_BOX value 1 selection_color 63
             code0 {o->value(1);
 o->image( scrub );}
           }
@@ -450,7 +450,7 @@ o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);}
-            tooltip {Area Select Tool} xywh {34 54 43 35} value 1
+            tooltip {Area Select Tool} xywh {26 54 43 35} down_box DOWN_BOX value 1 selection_color 63
             code0 {o->value(1);
 o->image( select_pic );}
           }
@@ -461,7 +461,7 @@ o->value(1);
 uiSelection->value(0);
 uiErase->value(0);
 uiText->value(0);}
-            tooltip {Freehand Drawing Tool} xywh {82 54 40 35}
+            tooltip {Freehand Drawing Tool} xywh {74 54 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( draw );}
           }
           Fl_Button uiErase {
@@ -471,7 +471,7 @@ o->value(1);
 uiSelection->value(0);
 uiDraw->value(0);
 uiText->value(0);}
-            tooltip {Eraser Tool} xywh {82 95 40 35}
+            tooltip {Eraser Tool} xywh {74 95 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( erase );}
           }
           Fl_Button uiText {
@@ -479,7 +479,7 @@ uiText->value(0);}
             user_data m user_data_type {ViewerUI*}
             callback {o->value(1);
 v->uiView->text_mode();}
-            tooltip {Text Tool} xywh {33 94 45 35} labelfont 8 labelsize 24 align 32
+            tooltip {Text Tool} xywh {25 94 45 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
           }
           Fl_Button uiMovePic {
             user_data m user_data_type {ViewerUI*}
@@ -489,14 +489,13 @@ uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiScrub->value(0);}
-            tooltip {Area Select Tool} xywh {82 15 40 35} value 1
+            tooltip {Area Select Tool} xywh {74 15 40 35} down_box DOWN_BOX value 1 selection_color 63
             code0 {o->image( move_pic );}
           }
         }
         Fl_Value_Slider uiPenSize {
           label {Pen Size}
-          tooltip {Selects the size of brush.} xywh {37 155 85 25} type Horizontal align 1 minimum 1 maximum 50 step 1 value 5
-          code0 {o->labelcolor( FL_BLACK );}
+          tooltip {Selects the size of brush.} xywh {15 155 115 25} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
         }
         Fl_Group {} {
           xywh {40 415 84 70}
@@ -544,45 +543,37 @@ o->redraw();}
           code0 {o->labelcolor( FL_BLACK );}
         }
         Fl_Group {} {
-          label Frames open
-          xywh {20 245 120 55} box UP_BOX
-          code0 {o->labelcolor( FL_BLACK );}
+          label Frames open selected
+          xywh {15 245 120 55} box UP_BOX labelcolor 7
         } {
           Fl_Round_Button uiCurrentFrame {
             label Current user_data_type {void*}
-            xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 8
+            xywh {35 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
-            code1 {o->labelcolor( FL_BLACK );}
           }
           Fl_Round_Button uiAllFrames {
             label All user_data_type {void*}
-            xywh {40 270 80 20} type Radio down_box ROUND_DOWN_BOX
+            xywh {35 270 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
-            code1 {o->labelcolor( FL_BLACK );}
           }
         }
         Fl_Group {} {
           label Ghosting open
-          xywh {20 330 120 85} box UP_BOX
-          code0 {o->labelcolor( FL_BLACK );}
+          xywh {15 330 120 85} box UP_BOX labelcolor 7
         } {
           Fl_Counter {} {
             label Previous
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
-            xywh {35 349 95 22} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
-            code0 {o->labelcolor( FL_BLACK );}
-            code1 {o->textcolor( FL_BLACK );}
+            xywh {30 349 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5
           }
           Fl_Counter {} {
             label Next
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
-            xywh {35 389 95 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
-            code0 {o->labelcolor( FL_BLACK );}
-            code1 {o->textcolor( FL_BLACK );}
+            xywh {30 389 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5
           }
         }
       }

@@ -273,7 +273,6 @@ size_t VideoFrame::data_size() const
 VideoFrame::~VideoFrame()
 {
     CMedia::memory_used -= data_size();
-    assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 
@@ -283,9 +282,10 @@ VideoFrame::~VideoFrame()
  */
 void VideoFrame::allocate()
 {
-    mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
+    size_t size = data_size();
+    mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
     _data.reset( ptr );
-    CMedia::memory_used += data_size();
+    CMedia::memory_used += size;
 }
 
 /**
@@ -744,6 +744,7 @@ AudioFrame::~AudioFrame()
     delete [] _data;
     _data = NULL;
     CMedia::memory_used -= _size;
+    assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 

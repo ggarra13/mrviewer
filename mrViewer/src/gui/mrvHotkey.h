@@ -171,6 +171,9 @@ extern Hotkey kMoveSizeMode;
 extern Hotkey kPenSizeMore;
 extern Hotkey kPenSizeLess;
 
+extern Hotkey kUndoDraw;
+extern Hotkey kRedoDraw;
+
 extern Hotkey kResetChanges;
 extern Hotkey kExposureMore;
 extern Hotkey kExposureLess;

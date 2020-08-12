@@ -122,6 +122,10 @@ Hotkey kMoveSizeMode( false, false, false, true, 'm' );
 
 Hotkey kPenSizeMore( false, false, false, false, 0, "]" );
 Hotkey kPenSizeLess( false, false, false, false, 0, "[" );
+
+Hotkey kUndoDraw( false, false, false, false, '<' );
+Hotkey kRedoDraw( false, false, false, false, '>' );
+
 Hotkey kResetChanges( false, false, false, true, 'c' );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
 Hotkey kExposureLess( false, false, false, false, 0, "[" );
@@ -348,6 +352,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Move/Size Mode"), kMoveSizeMode ),
     HotkeyEntry( _("Pen Size More"), kPenSizeMore),
     HotkeyEntry( _("Pen Size Less"), kPenSizeLess),
+    HotkeyEntry( _("Undo Draw"), kUndoDraw),
+    HotkeyEntry( _("Redo Draw"), kRedoDraw),
     HotkeyEntry( _("Gamma More"), kGammaMore),
     HotkeyEntry( _("Gamma Less"), kGammaLess),
     HotkeyEntry( _("Switch FG/BG Images"), kSwitchFGBG ),

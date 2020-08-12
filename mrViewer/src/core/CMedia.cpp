@@ -895,7 +895,6 @@ CMedia::~CMedia()
 
     delete [] _audio_buf;
     _audio_buf = NULL;
-    memory_used -= _audio_max;
 
     if ( has_audio() )
     {

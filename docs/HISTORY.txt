@@ -1,5 +1,7 @@
 v5.6.0  - Bug fixed loading of sequences in Mac OSX when clicking on an image
 	  or dragging an image of a sequence to the icon of mrViewer.
+	- Bug fixed an assertion when displaying braw/r3d movies with audio
+	  in custom file requester.
 
 v5.5.9  - Bug fixed pixel ratio on image sequences.  Now pixel ratio is set
 	  for the whole sequence and then can be changed for one frame

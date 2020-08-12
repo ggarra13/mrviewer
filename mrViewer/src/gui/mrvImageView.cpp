@@ -6572,6 +6572,16 @@ int ImageView::keyDown(unsigned int rawkey)
         texture_filtering_cb( NULL, this );
         return 1;
     }
+    else if ( kUndoDraw.match( rawkey ) )
+    {
+        undo_draw();
+        return 1;
+    }
+    else if ( kRedoDraw.match( rawkey ) )
+    {
+        redo_draw();
+        return 1;
+    }
     else if ( kFitScreen.match( rawkey ) )
     {
         if ( vr() )
