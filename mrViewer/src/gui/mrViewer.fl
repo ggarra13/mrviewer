@@ -489,7 +489,7 @@ uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiScrub->value(0);}
-            tooltip {Area Select Tool} xywh {74 15 40 35} down_box DOWN_BOX value 1 selection_color 63
+            tooltip {Move Picture Tool} xywh {74 15 40 35} down_box DOWN_BOX value 1 selection_color 63
             code0 {o->image( move_pic );}
           }
         }
@@ -538,12 +538,12 @@ if ( r == 0 && g == 0 && b == 0 )
    o->color( FL_BLACK );
 else
    o->color( c );
-o->redraw();}
-          tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 111 labelsize 11 align 4
+o->redraw();} selected
+          tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 111 labelsize 11 labelcolor 7 align 4
           code0 {o->labelcolor( FL_BLACK );}
         }
         Fl_Group {} {
-          label Frames open selected
+          label Frames open
           xywh {15 245 120 55} box UP_BOX labelcolor 7
         } {
           Fl_Round_Button uiCurrentFrame {
