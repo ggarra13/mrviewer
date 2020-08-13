@@ -80,16 +80,16 @@ Hotkey kPlayBackTwiceSpeed( true, false, false, false,
                             FL_Up, "", FL_KP + 8 );
 Hotkey kPlayBackHalfSpeed( false, false, true, false,
                            FL_Up, "", FL_KP + 8 );
-Hotkey kPlayBack( false, false, false, false, FL_Up, "", FL_KP + 8 );
+Hotkey kPlayBack( false, false, false, false, FL_Up, "", 'j' );
 Hotkey kPlayFwd( false, false, false, false, ' ', "",
-                 FL_KP + 2 );
+                 'k' );
 Hotkey kPlayFwdTwiceSpeed( true, false, false, false,
                            FL_Down, "", FL_KP + 2 );
 Hotkey kPlayFwdHalfSpeed( false, false, true, false,
                           FL_Down, "", FL_KP + 2 );
-Hotkey kStop( false, false, false, false, FL_Enter, "", FL_KP + 5 );
+Hotkey kStop( false, false, false, false, FL_Enter, "", 'k' );
 
-Hotkey kSwitchFGBG( false, false, false, false, 'j' );
+Hotkey kSwitchFGBG( true, false, false, false, 'j' );
 
 Hotkey kPreviousVersionImage( false, false, true, false, FL_Page_Up );
 Hotkey kNextVersionImage( false, false, true, false, FL_Page_Down );
@@ -152,7 +152,7 @@ Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
 Hotkey kPreloadCache( false, false, false, false, 'p' );
-Hotkey kClearCache( false, false, false, false, 'k' );
+Hotkey kClearCache( false, false, false, false, 'c' );
 Hotkey kClearSingleFrameCache( false, false, false, false, 'u' );
 
 Hotkey kSetInPoint( false, false, false, false, 'i' );

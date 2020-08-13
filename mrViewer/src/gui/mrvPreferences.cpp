@@ -359,7 +359,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
                          "mrViewer" );
 
     DBG3;
-    base.get( "version", version, 5 );
+    base.get( "version", version, 6 );
 
     //
     // Get ui preferences
@@ -1244,6 +1244,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
         // If version >= 1 of preferences, do not set scrub
         if ( version >= 1 && hotkeys[i].name == "Scrub" )
+            continue;
+
+        if ( version <= 5 && hotkeys[i].name == "Play Forwards" )
+            continue;
+        if ( version <= 5 && hotkeys[i].name == "Play Backwards" )
+            continue;
+        if ( version <= 5 && hotkeys[i].name == "Stop" )
             continue;
 
     DBG3;
@@ -2162,8 +2169,8 @@ void Preferences::save()
 
 
     Fl_Preferences base( prefspath().c_str(), "filmaura",
-                            "mrViewer" );
-    base.set( "version", 5 );
+                         "mrViewer" );
+    base.set( "version", 6 );
 
     // Save ui preferences
     Fl_Preferences ui( base, "ui" );

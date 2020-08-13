@@ -539,8 +539,8 @@ if ( r == 0 && g == 0 && b == 0 )
 else
    o->color( c );
 o->redraw();} selected
-          tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 111 labelsize 11 labelcolor 7 align 4
-          code0 {o->labelcolor( FL_BLACK );}
+          tooltip {Selects the current pen color.} xywh {92 195 25 25} box EMBOSSED_BOX color 63 labelsize 11 labelcolor 7 align 4
+          code0 {o->color( 0x00ff0000 );}
         }
         Fl_Group {} {
           label Frames open

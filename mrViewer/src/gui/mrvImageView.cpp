@@ -1365,9 +1365,12 @@ void ImageView::scrub_mode()
     redraw();
 }
 
-void ImageView::selection_mode()
+void ImageView::selection_mode( bool temporary )
 {
-    _mode = kSelection;
+    if ( temporary )
+        _mode = kSelectionTemporary;
+    else
+        _mode = kSelection;
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(true);
     uiMain->uiPaint->uiErase->value(false);
@@ -4260,7 +4263,7 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else
             {
-                selection_mode();
+                selection_mode( true );
             }
         }
         else if ( Fl::event_state( FL_CTRL ) )
@@ -4270,7 +4273,7 @@ int ImageView::leftMouseDown(int x, int y)
             flags |= kGain;
         }
 
-        if ( _mode == kSelection )
+        if ( _mode == kSelection || _mode == kSelectionTemporary )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
             char buf[64];
@@ -4896,7 +4899,7 @@ void ImageView::leftMouseUp( int x, int y )
     else
         flags &= ~kMouseRight;
 
-    if ( _mode == kSelection )
+    if ( _mode == kSelectionTemporary )
     {
         scrub_mode();
         return;
@@ -6169,7 +6172,7 @@ void ImageView::mouseDrag(int x,int y)
             yn = floor(yn+0.5f);
 
 
-            if ( _mode == kSelection )
+            if ( _mode == kSelection || _mode == kSelectionTemporary )
             {
 
                 if ( xn < xf )

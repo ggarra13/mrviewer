@@ -201,7 +201,7 @@ std::string GLPathShape::send() const
 
 void GLPathShape::draw( double z )
 {
-    //Turn on Color Buffer and Depth Buffer
+    //Turn on Color Buffer
     glColorMask(true, true, true, true);
 
     //Only write to the Stencil Buffer where 1 is not set
