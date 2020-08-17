@@ -36,16 +36,16 @@ public:
     FontDisplay(Fl_Boxtype B, int X, int Y, int W, int H, const char* L = 0) :
     Fl_Text_Editor(X,Y,W,H,L) {
         box(B);
-	buffer( new Fl_Text_Buffer() );
+    buffer( new Fl_Text_Buffer() );
     }
 };
 
 
 namespace mrv {
 
-Fl_Font  font_current = 0;
-unsigned    font_size = 32;
-std::string font_text;
+  Fl_Font  font_current = (Fl_Font) 0;
+  unsigned    font_size = 32;
+  std::string font_text;
 
 }
 
@@ -119,28 +119,27 @@ bool make_window() {
             {   Fl_Choice* o = new Fl_Choice(40, 120, 360, 25, "Font");
                 int numfonts = Fl::set_fonts("-*");
                 for (int i = 0; i < numfonts; ++i)
-		{
-		    int t; // bold/italic flags
+        {
+            int t; // bold/italic flags
                     o->add(Fl::get_font_name( (Fl_Font)i, &t ) );
-		}
-		o->labelcolor( FL_BLACK );
-		o->value(0);
-                mrv::font_current = (Fl_Font) 0;
+        }
+        o->labelcolor( FL_BLACK );
+        o->value(mrv::font_current);
                 uiText->textfont( mrv::font_current );
                 mrv::font_text = "Type here";
                 uiText->buffer()->text( mrv::font_text.c_str() );
                 uiText->textsize( mrv::font_size );
                 uiText->callback( new_text );
-		uiText->textcolor( FL_BLACK );
+        uiText->textcolor( FL_BLACK );
                 o->callback( new_font );
             }
             {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(70, 160, 325, 25, "Font Size");
-		o->type( FL_HORIZONTAL );
+        o->type( FL_HORIZONTAL );
                 o->minimum(8);
                 o->maximum(100);
                 o->step(1);
-                o->value(32);
-		o->labelcolor( FL_BLACK );
+                o->value(mrv::font_size);
+        o->labelcolor( FL_BLACK );
                 o->align(FL_ALIGN_LEFT);
                 o->callback( new_size );
             }
@@ -166,10 +165,10 @@ bool make_window() {
 
     w->show();
     while ( w->visible() )
-	Fl::check();
+    Fl::check();
     if ( ! w->active() ) {
-	delete w;
-	return false;
+    delete w;
+    return false;
     }
     delete w;
     return true;

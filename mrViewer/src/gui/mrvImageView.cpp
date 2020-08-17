@@ -1334,6 +1334,8 @@ void ImageView::scale_pic_mode()
     uiMain->uiPaint->uiMovePic->value(true);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
@@ -1346,6 +1348,8 @@ void ImageView::move_pic_mode()
     uiMain->uiPaint->uiMovePic->value(true);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
@@ -1359,6 +1363,8 @@ void ImageView::scrub_mode()
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(true);
@@ -1375,29 +1381,70 @@ void ImageView::selection_mode( bool temporary )
     uiMain->uiPaint->uiSelection->value(true);
     uiMain->uiPaint->uiErase->value(false);
     uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
     redraw();
 }
 
-void ImageView::draw_mode()
+void ImageView::draw_mode( bool tmp )
 {
-    _mode = kDraw;
+    if ( tmp )
+        _mode = kDrawTemporary;
+    else
+        _mode = kDraw;
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(true);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
     redraw();
 }
 
-void ImageView::erase_mode()
+void ImageView::circle_mode()
 {
-    _mode = kErase;
+    _mode = kCircle;
+    uiMain->uiPaint->uiMovePic->value(false);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(true);
+    uiMain->uiPaint->uiArrow->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+    redraw();
+}
+
+void ImageView::arrow_mode()
+{
+    _mode = kArrow;
+    uiMain->uiPaint->uiMovePic->value(false);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(true);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+    redraw();
+}
+
+
+void ImageView::erase_mode( bool tmp )
+{
+    if ( tmp )
+        _mode = kEraseTemporary;
+    else
+        _mode = kErase;
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(true);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
@@ -1420,8 +1467,10 @@ void ImageView::text_mode()
         uiMain->uiPaint->uiScrub->value(true);
     }
 
+    uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     redraw();
@@ -3883,7 +3932,8 @@ void ImageView::draw()
         _engine->draw_grid( img, _grid_size );
     }
 
-    if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
+    if ( !(flags & kMouseDown) && ( (_mode & kDraw) || (_mode & kErase) ||
+                                    (_mode & kCircle) || (_mode & kArrow ) ) )
     {
         double xf = X;
         double yf = Y;
@@ -4273,7 +4323,7 @@ int ImageView::leftMouseDown(int x, int y)
             flags |= kGain;
         }
 
-        if ( _mode == kSelection || _mode == kSelectionTemporary )
+        if ( _mode & kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
             char buf[64];
@@ -4363,7 +4413,8 @@ int ImageView::leftMouseDown(int x, int y)
 
             return 1;
         }
-        else if ( _mode == kDraw || _mode == kErase || _mode == kText )
+        else if ( (_mode & kDraw) || (_mode & kErase) || (_mode == kCircle) ||
+                  (_mode & kArrow) || _mode == kText )
         {
 
             _selection = mrv::Rectd( 0, 0, 0, 0 );
@@ -4386,14 +4437,22 @@ int ImageView::leftMouseDown(int x, int y)
             yf -= daw.y();
 
             std::string str;
-            GLPathShape* s;
-            if ( _mode == kDraw )
+            GLShape* s;
+            if ( _mode & kDraw )
             {
                 s = new GLPathShape;
             }
-            else if ( _mode == kErase )
+            else if ( _mode & kErase )
             {
                 s = new GLErasePathShape;
+            }
+            else if ( _mode & kCircle )
+            {
+                 s = new GLCircleShape;
+            }
+            else if ( _mode & kArrow )
+            {
+                 s = new GLArrowShape;
             }
             else if ( _mode == kText )
             {
@@ -4440,8 +4499,28 @@ int ImageView::leftMouseDown(int x, int y)
                 s->frame = frame();
             }
 
-            mrv::Point p( xf, yf );
-            s->pts.push_back( p );
+            if ( dynamic_cast< GLCircleShape* >( s ) )
+                {
+                    GLCircleShape* c = static_cast< GLCircleShape* >( s );
+                    c->center = mrv::Point( xf, yf );
+                }
+            else
+                {
+                    GLPathShape* path = nullptr;
+                    if ( ( path = dynamic_cast< GLPathShape* >( s ) ) )
+                        {
+                            mrv::Point p( xf, yf );
+                            path->pts.push_back( p );
+                        }
+                    if ( ( path = dynamic_cast< GLArrowShape* >( s ) ) )
+                        {
+                            mrv::Point p( xf, yf );
+                            path->pts.push_back( p );
+                            path->pts.push_back( p );
+                            path->pts.push_back( p );
+                            path->pts.push_back( p );
+                        }
+                }
 
             send_network( str );
 
@@ -4899,7 +4978,7 @@ void ImageView::leftMouseUp( int x, int y )
     else
         flags &= ~kMouseRight;
 
-    if ( _mode == kSelectionTemporary )
+    if ( _mode & kTemporary )
     {
         scrub_mode();
         return;
@@ -4914,7 +4993,7 @@ void ImageView::leftMouseUp( int x, int y )
     //
     // Send the shapes over the network
     //
-    if ( _mode == kDraw )
+    if ( _mode & kDraw )
     {
         mrv::shape_type_ptr o = fg->image()->shapes().back();
         GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
@@ -4927,10 +5006,23 @@ void ImageView::leftMouseUp( int x, int y )
             send_network( s->send() );
         }
     }
-    else if ( _mode == kErase )
+    else if ( _mode & kErase )
     {
         mrv::shape_type_ptr o = fg->image()->shapes().back();
         GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLErasePathShape pointer") );
+        }
+        else
+        {
+            send_network( s->send() );
+        }
+    }
+    else if ( _mode & kArrow )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLArrowShape* s = dynamic_cast< GLArrowShape* >( o.get() );
         if ( s == NULL )
         {
             LOG_ERROR( _("Not a GLErasePathShape pointer") );
@@ -4944,6 +5036,19 @@ void ImageView::leftMouseUp( int x, int y )
     {
         mrv::shape_type_ptr o = fg->image()->shapes().back();
         GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
+        }
+        else
+        {
+            send_network( s->send() );
+        }
+    }
+    else if ( _mode == kCircle )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLCircleShape* s = dynamic_cast< GLCircleShape* >( o.get() );
         if ( s == NULL )
         {
             LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
@@ -6172,7 +6277,7 @@ void ImageView::mouseDrag(int x,int y)
             yn = floor(yn+0.5f);
 
 
-            if ( _mode == kSelection || _mode == kSelectionTemporary )
+            if ( _mode & kSelection )
             {
 
                 if ( xn < xf )
@@ -6248,7 +6353,7 @@ void ImageView::mouseDrag(int x,int y)
             }
 
 
-            if ( _mode == kDraw || _mode == kErase )
+            if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) )
             {
                 GLShapeList& shapes = fg->image()->shapes();
                 if ( shapes.empty() ) return;
@@ -6267,9 +6372,54 @@ void ImageView::mouseDrag(int x,int y)
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
 
-                    mrv::Point p( xn, yn );
-                    s->pts.push_back( p );
+                    mrv::Point p2( xn, yn );
+                    if ( _mode == kArrow )
+                        {
+                            mrv::Point p1 = s->pts[0];
+                            double slopy , cosy , siny;
+                            // double Par = 100.0;  //length of Arrow (>)
+                            double A = ( p1.y - p2.y );
+                            double B = ( p1.x - p2.x );
+                            double Par = sqrt( A*A + B*B ) / 1.5f;
+                            slopy = atan2( A, B );
+                            cosy = cos( slopy );
+                            siny = sin( slopy );
+                            s->pts[1] = p2;
+
+                            s->pts[2] = mrv::Point( p1.x + int( - Par * cosy + ( Par / 2.0 * siny ) ),
+                                                    p1.y - int( Par / 2.0 * cosy + Par * siny ) );
+
+                            s->pts[3] = p2;
+                            s->pts[4] = mrv::Point( p1.x + int( - Par * cosy - ( Par / 2.0 * siny ) ),
+                                                    p1.y + int( - Par * siny + ( Par / 2.0 * cosy ) ) );
+                        }
+                    else
+                        {
+                            s->pts.push_back( p2 );
+                        }
                 }
+            }
+            else if ( _mode == kCircle )
+            {
+                GLShapeList& shapes = fg->image()->shapes();
+                if ( shapes.empty() ) return;
+
+                mrv::shape_type_ptr o = shapes.back();
+                GLCircleShape* s = dynamic_cast< GLCircleShape* >( o.get() );
+                if ( s == NULL )
+                {
+                    LOG_ERROR( _("Not a GLCircleShape pointer") );
+                }
+
+                yn = -yn;
+
+                xn += daw[idx].x();
+                yn -= daw[idx].y();
+
+                mrv::Point p( xn, yn );
+                double A = p.x - s->center.x;
+                double B = p.y - s->center.y;
+                s->radius = sqrt( A*A+B*B );
             }
             else if ( _mode == kText )
             {
@@ -6328,7 +6478,7 @@ void ImageView::texture_filtering( const TextureFiltering p )
  */
 int ImageView::keyDown(unsigned int rawkey)
 {
-    if ( _mode == kDraw || _mode == kErase )
+    if ( _mode & kDraw || _mode & kErase || _mode & kArrow )
     {
         double pen = uiMain->uiPaint->uiPenSize->value();
         // Use exposure hotkey ( default [ and ] )
@@ -6360,9 +6510,19 @@ int ImageView::keyDown(unsigned int rawkey)
         open_single_cb( this, browser() );
         return 1;
     }
+    else if ( kDrawTemporaryMode.match( rawkey ) )
+    {
+        draw_mode( true );
+        return 1;
+    }
     else if ( kDrawMode.match( rawkey ) )
     {
         draw_mode();
+        return 1;
+    }
+    else if ( kEraseTemporaryMode.match( rawkey ) )
+    {
+        erase_mode( true );
         return 1;
     }
     else if ( kEraseMode.match( rawkey ) )
@@ -6751,36 +6911,40 @@ int ImageView::keyDown(unsigned int rawkey)
         redraw();
         return 1;
     }
-    else if ( kPlayBackTwiceSpeed.match( rawkey ) )
-    {
-        mrv::media fg = foreground();
-        if ( ! fg ) return 1;
-
-        const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-        fps( FPS * 2 );
-        if ( playback() == CMedia::kBackwards )
-            stop();
-        else
-            play_backwards();
-        mouseMove( Fl::event_x(), Fl::event_y() );
-        return 1;
-    }
     else if ( kPlayBackHalfSpeed.match( rawkey ) )
     {
         mrv::media fg = foreground();
         if ( ! fg ) return 1;
 
         const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-        fps( FPS / 2 );
+        double FPS = 24.0f;
+        if ( img ) {
+            const double kFPS_INCR = img->orig_fps() / 2.0;
+            FPS = img->play_fps();
+            if ( img->playback() == CMedia::kForwards )
+              {
+                  if ( FPS > img->orig_fps() )
+                    {
+                        fps( FPS - kFPS_INCR );
+                        play_forwards();
+                    }
+                  else
+                    {
+                        fps( img->orig_fps() );
+                        play_backwards();
+                    }
+              }
+            else if ( img->playback() == CMedia::kBackwards )
+              {
+                  fps( FPS + kFPS_INCR );
+                  play_backwards();
+              }
+            else
+              {
+                  play_backwards();
+              }
+        }
 
-        if ( playback() == CMedia::kBackwards )
-            stop();
-        else
-            play_backwards();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
@@ -6799,31 +6963,33 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( ! fg ) return 1;
 
         const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-
-        fps( FPS * 2 );
-        if ( playback() == CMedia::kForwards )
-            stop();
-        else
-            play_forwards();
-        mouseMove( Fl::event_x(), Fl::event_y() );
-        return 1;
-    }
-    else if ( kPlayFwdHalfSpeed.match( rawkey ) )
-    {
-        mrv::media fg = foreground();
-        if ( ! fg ) return 1;
-
-        const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-
-        fps( FPS / 2 );
-        if ( playback() == CMedia::kForwards )
-            stop();
-        else
-            play_forwards();
+        double FPS = 24.0f;
+        if ( img ) {
+            const double kFPS_INCR = img->orig_fps() / 2.0;
+            FPS = img->play_fps();
+            if ( img->playback() == CMedia::kBackwards )
+              {
+                  if ( FPS > img->orig_fps() )
+                    {
+                        fps( FPS - kFPS_INCR );
+                        play_backwards();
+                    }
+                  else
+                    {
+                        fps( img->orig_fps() );
+                        play_forwards();
+                    }
+              }
+            else if ( img->playback() == CMedia::kForwards )
+              {
+                    fps( FPS + kFPS_INCR );
+                    play_forwards();
+              }
+            else
+              {
+                  play_forwards();
+              }
+        }
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
@@ -7155,6 +7321,7 @@ int ImageView::keyDown(unsigned int rawkey)
  */
 int ImageView::keyUp(unsigned int key)
 {
+
     if ( key == FL_Alt_L )
     {
         flags &= ~kLeftAlt;
@@ -7168,6 +7335,12 @@ int ImageView::keyUp(unsigned int key)
         return 1;
     }
 #endif
+
+    if ( _mode & kTemporary )
+    {
+        scrub_mode();
+        return 1;
+    }
     return 0;
 }
 
@@ -7590,11 +7763,9 @@ int ImageView::handle(int event)
         }
 
         if ( playback() == CMedia::kStopped )
-                mouseMove(int(X), int(Y));
+            mouseMove(int(X), int(Y));
 
-        if ( _mode == kDraw || _mode == kErase )
-            redraw();
-
+        redraw();
 
         Fl_Gl_Window::handle( event );
 

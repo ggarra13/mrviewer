@@ -1104,6 +1104,11 @@ public:
         return _play_fps;
     }
 
+    /// Return current play rate of movie
+    inline double orig_fps() const {
+        return _orig_fps;
+    }
+
 
     /// Change audio volume
     virtual void volume( float v );

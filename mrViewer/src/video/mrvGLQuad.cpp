@@ -272,7 +272,6 @@ void GLQuad::init_texture()
         CHECK_GL;
     }
 
-
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     CHECK_GL;
 }

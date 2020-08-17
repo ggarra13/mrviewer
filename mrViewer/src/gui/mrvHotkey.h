@@ -66,6 +66,7 @@ struct Hotkey
 
     bool match( unsigned rawkey );
 
+    bool operator==( const Hotkey& b ) const;
 
     unsigned hotkey()
     {
@@ -77,6 +78,8 @@ struct Hotkey
         r += key;
         return r;
     }
+
+    std::string to_s() const;
 
 public:
     bool ctrl;
@@ -127,11 +130,9 @@ extern Hotkey kFrameStepFPSBack;
 extern Hotkey kFrameStepFwd;
 extern Hotkey kFrameStepFPSFwd;
 extern Hotkey kPlayBack;
-extern Hotkey kPlayBackTwiceSpeed;
 extern Hotkey kPlayBackHalfSpeed;
 extern Hotkey kPlayFwd;
 extern Hotkey kPlayFwdTwiceSpeed;
-extern Hotkey kPlayFwdHalfSpeed;
 extern Hotkey kStop;
 
 extern Hotkey kPreviousVersionImage;
@@ -162,7 +163,9 @@ extern Hotkey kDensityUp;
 extern Hotkey kDensityDown;
 
 extern Hotkey kDrawMode;
+extern Hotkey kDrawTemporaryMode;
 extern Hotkey kEraseMode;
+extern Hotkey kEraseTemporaryMode;
 extern Hotkey kScrubMode;
 extern Hotkey kTextMode;
 extern Hotkey kAreaMode;

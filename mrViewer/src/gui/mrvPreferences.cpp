@@ -1238,7 +1238,19 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // Hotkeys
     //
-    Fl_Preferences keys( base, "hotkeys" );
+    Fl_Preferences* keys;
+
+    if ( version >= 6 )
+      {
+        keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
+                                   "mrViewer.keys" );
+        keys->get( "version", version, 6 );
+      }
+    else
+      {
+        keys = new Fl_Preferences( base, "hotkeys" );
+      }
+
     DBG3;
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
@@ -1254,41 +1266,61 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
             continue;
 
     DBG3;
-        keys.get( (hotkeys[i].name + " ctrl").c_str(),
-                  tmp, (int)hotkeys[i].hotkey.ctrl );
+        keys->get( (hotkeys[i].name + " ctrl").c_str(),
+                   tmp, (int)hotkeys[i].hotkey.ctrl );
         if ( tmp ) hotkeys[i].hotkey.ctrl = true;
         else       hotkeys[i].hotkey.ctrl = false;
-        keys.get( (hotkeys[i].name + " alt").c_str(),
-                  tmp, (int)hotkeys[i].hotkey.alt );
+        keys->get( (hotkeys[i].name + " alt").c_str(),
+                   tmp, (int)hotkeys[i].hotkey.alt );
         if ( tmp ) hotkeys[i].hotkey.alt = true;
         else       hotkeys[i].hotkey.alt = false;
 
-        keys.get( (hotkeys[i].name + " meta").c_str(),
+        keys->get( (hotkeys[i].name + " meta").c_str(),
                   tmp, (int)hotkeys[i].hotkey.meta );
         if ( tmp ) hotkeys[i].hotkey.meta = true;
         else       hotkeys[i].hotkey.meta = false;
 
     DBG3;
 
-        keys.get( (hotkeys[i].name + " shift").c_str(),
+        keys->get( (hotkeys[i].name + " shift").c_str(),
                   tmp, (int)hotkeys[i].hotkey.shift );
         if ( tmp ) hotkeys[i].hotkey.shift = true;
         else       hotkeys[i].hotkey.shift = false;
 
-        keys.get( (hotkeys[i].name + " key").c_str(),
+        keys->get( (hotkeys[i].name + " key").c_str(),
                   tmp, (int)hotkeys[i].hotkey.key );
         hotkeys[i].hotkey.key = unsigned(tmp);
 
-        keys.get( (hotkeys[i].name + " key2").c_str(),
+        keys->get( (hotkeys[i].name + " key2").c_str(),
                   tmp, (int)hotkeys[i].hotkey.key2 );
         hotkeys[i].hotkey.key2 = unsigned(tmp);
 
     DBG3;
-        keys.get( (hotkeys[i].name + " text").c_str(),
+        keys->get( (hotkeys[i].name + " text").c_str(),
                   tmpS,
                   hotkeys[i].hotkey.text.c_str(), 16 );
         if ( strlen(tmpS) > 0 ) hotkeys[i].hotkey.text = tmpS;
         else hotkeys[i].hotkey.text.clear();
+
+        for ( int j = 0; hotkeys[j].name != "END"; ++j )
+          {
+              bool view3d = false;
+              if ( j < 4 ) view3d = true;
+
+              if ( hotkeys[j].hotkey == hotkeys[i].hotkey && j != i &&
+                   (i > 4 && !view3d) &&
+                   hotkeys[j].hotkey.to_s() != "[" &&
+                   hotkeys[j].hotkey.to_s() != "]" )
+                {
+                    LOG_ERROR( _("Corruption in hotkeys preferences. ")
+                               << _("Hotkey '") << hotkeys[j].hotkey.to_s()
+                               << _("' for ") << _(hotkeys[j].name.c_str())
+                               << _(" will not be available.  ")
+                               << _("Already used in ")
+                               << _(hotkeys[i].name.c_str()) );
+                    hotkeys[j].hotkey = Hotkey();
+                }
+          }
     }
 
 
@@ -2528,7 +2560,9 @@ void Preferences::save()
     //
     // Hotkeys
     //
-    Fl_Preferences keys( base, "hotkeys" );
+    Fl_Preferences keys( prefspath().c_str(), "filmaura",
+                         "mrViewer.keys" );
+    keys.set( "version", 6 );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
         keys.set( (hotkeys[i].name + " ctrl").c_str(),

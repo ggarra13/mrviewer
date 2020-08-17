@@ -76,18 +76,11 @@ Hotkey kFrameStepFwd( false, false, false, false, FL_Right, "",
                       FL_KP + 6 );
 Hotkey kFrameStepFPSFwd( true, false, false, false, FL_Right, "",
                          FL_KP + 6 );
-Hotkey kPlayBackTwiceSpeed( true, false, false, false,
-                            FL_Up, "", FL_KP + 8 );
-Hotkey kPlayBackHalfSpeed( false, false, true, false,
-                           FL_Up, "", FL_KP + 8 );
-Hotkey kPlayBack( false, false, false, false, FL_Up, "", 'j' );
-Hotkey kPlayFwd( false, false, false, false, ' ', "",
-                 'k' );
-Hotkey kPlayFwdTwiceSpeed( true, false, false, false,
-                           FL_Down, "", FL_KP + 2 );
-Hotkey kPlayFwdHalfSpeed( false, false, true, false,
-                          FL_Down, "", FL_KP + 2 );
-Hotkey kStop( false, false, false, false, FL_Enter, "", 'k' );
+Hotkey kPlayBackHalfSpeed( false, false, false, false, 'j' );
+Hotkey kPlayBack( false, false, false, false, FL_Up, "", FL_KP + 8 );
+Hotkey kPlayFwd( false, false, false, false, ' ', "", FL_KP + 2 );
+Hotkey kPlayFwdTwiceSpeed( false, false, false, false, 'k' );
+Hotkey kStop( false, false, false, false, FL_Enter );
 
 Hotkey kSwitchFGBG( true, false, false, false, 'j' );
 
@@ -113,7 +106,9 @@ Hotkey kSwitchChannels( false, false, false, false, 'e' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
 
+Hotkey kDrawTemporaryMode( false, false, false, false, 0 );
 Hotkey kDrawMode( false, false, false, true, 'd' );
+Hotkey kEraseTemporaryMode( false, false, false, false, 0 );
 Hotkey kEraseMode( false, false, false, true, 'e' );
 Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
@@ -313,11 +308,9 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
     HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
     HotkeyEntry( _("Play Backwards"), kPlayBack),
-    HotkeyEntry( _("Play Backwards X2  Speed"), kPlayBackTwiceSpeed),
-    HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
+    HotkeyEntry( _("Play Backwards / Change Speed"), kPlayBackHalfSpeed),
     HotkeyEntry( _("Play Forwards"), kPlayFwd),
-    HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
-    HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
+    HotkeyEntry( _("Play Forwards / Change Speed"), kPlayFwdTwiceSpeed),
     HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
     HotkeyEntry( _("Clear Image Cache"), kClearCache),
     HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
@@ -345,7 +338,9 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
     HotkeyEntry( _("OCIO View"), kOCIOView ),
     HotkeyEntry( _("Draw Mode"), kDrawMode ),
+    HotkeyEntry( _("Draw Temporary Mode"), kDrawTemporaryMode ),
     HotkeyEntry( _("Erase Mode"), kEraseMode ),
+    HotkeyEntry( _("Erase Temporary Mode"), kEraseTemporaryMode ),
     HotkeyEntry( _("Scrub Mode"), kScrubMode ),
     HotkeyEntry( _("Area Mode"), kAreaMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
@@ -447,6 +442,45 @@ struct TableText table[] = {
 };
 
 
+
+std::string Hotkey::to_s() const
+{
+    std::string r;
+    if ( ctrl ) r += "Ctrl+";
+    if ( alt ) r += "Alt+";
+    if ( meta ) r += "Meta+";
+    if ( shift ) r += "Shift+";
+
+    unsigned k = key;
+
+    bool special = false;
+    for ( unsigned j = 0; j < sizeof(table)/sizeof(TableText); ++j )
+      {
+          if ( k == table[j].n )
+            {
+                r += table[j].text;
+                special = true;
+                break;
+            }
+      }
+
+    if ( !special )
+      {
+          if (k >= FL_F && k <= FL_F_Last) {
+              char buf[16];
+              sprintf(buf, "F%d", k - FL_F);
+              r += buf;
+          }
+          else
+            {
+                if ( key != 0 ) r += (char) key;
+                if ( key == 0 && text != "" )
+                    r += text;
+            }
+        }
+    return r;
+}
+
 void fill_ui_hotkeys( mrv::Browser* b )
 {
     int r = b->position();
@@ -468,42 +502,8 @@ void fill_ui_hotkeys( mrv::Browser* b )
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
         HotkeyEntry& h = hotkeys[i];
-        std::string key;
-        if ( h.hotkey.ctrl ) key += "Ctrl+";
-        if ( h.hotkey.alt ) key += "Alt+";
-        if ( h.hotkey.meta ) key += "Meta+";
-        if ( h.hotkey.shift ) key += "Shift+";
-
-        unsigned k = h.hotkey.key;
-
-        bool special = false;
-        for ( unsigned j = 0; j < sizeof(table)/sizeof(TableText); ++j )
-        {
-            if ( k == table[j].n )
-            {
-                key += table[j].text;
-                special = true;
-                break;
-            }
-        }
-
-        if ( !special )
-        {
-            if (k >= FL_F && k <= FL_F_Last) {
-                char buf[16];
-                sprintf(buf, "F%d", k - FL_F);
-                key += buf;
-            }
-            else
-            {
-                if ( h.hotkey.key != 0 ) key += (char) h.hotkey.key;
-                if ( h.hotkey.key == 0 && h.hotkey.text != "" )
-                    key += h.hotkey.text;
-            }
-        }
-
         std::string row( _(h.name.c_str()) );
-        row += "\t" + key;
+        row += "\t" + h.hotkey.to_s();
 
         b->add( row.c_str() );
     }
@@ -512,6 +512,13 @@ void fill_ui_hotkeys( mrv::Browser* b )
 }
 
 
+bool Hotkey::operator==( const Hotkey& b ) const
+{
+    const std::string& A = to_s();
+    const std::string& B = b.to_s();
+    if ( A == B && !A.empty() && !B.empty() ) return true;
+    return false;
+}
 
 void select_hotkey( HotkeyUI* b )
 {
@@ -530,6 +537,24 @@ void select_hotkey( HotkeyUI* b )
 
     while ( window->visible() )
         Fl::check();
+
+
+    for ( int i = 0; hotkeys[i].name != "END"; ++i )
+      {
+          bool view3d = false;
+          if ( i < 4 ) view3d = true;
+
+
+          if ( h->hk == hotkeys[i].hotkey && idx != i && (idx > 4 && !view3d) &&
+               hotkeys[i].hotkey.to_s() != "[" &&
+               hotkeys[i].hotkey.to_s() != "]"  )
+            {
+                fl_alert( _("Hotkey \"%s\" already used in \"%s\""),
+                          h->hk.to_s().c_str(), _(hotkeys[i].name.c_str()) );
+                delete h;
+                return select_hotkey( b );
+            }
+      }
 
     hk = h->hk;
 

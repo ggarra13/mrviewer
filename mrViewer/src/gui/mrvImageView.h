@@ -141,12 +141,17 @@ public:
         kNoAction  = 0,
         kScrub     = 1 << 0,
         kSelection = 1 << 1,
-        kSelectionTemporary = 1 << 2,
+        kTemporary = 1 << 2,
+        kSelectionTemporary = kSelection | kTemporary,
         kDraw      = 1 << 3,
+        kDrawTemporary      = kDraw | kTemporary,
         kErase     = 1 << 4,
+        kEraseTemporary     = kErase | kTemporary,
         kText      = 1 << 5,
         kMovePicture = 1 << 6,
         kScalePicture = 1 << 7,
+        kCircle       = 1 << 8,
+        kArrow        = 1 << 9
     };
 
 
@@ -665,8 +670,10 @@ public:
     void text_mode();
     void scrub_mode();
     void selection_mode( bool temporary = false );
-    void draw_mode();
-    void erase_mode();
+    void draw_mode( bool temporary = false );
+    void erase_mode( bool temporary = false );
+    void circle_mode();
+    void arrow_mode();
     void move_pic_mode();
     void scale_pic_mode();
 

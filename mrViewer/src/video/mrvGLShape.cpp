@@ -78,10 +78,27 @@ Point slerp2d( const Point& v0, const Point& v1, float t )
     return ( v0*cos(theta) + v2*sin(theta) );
 }
 
-void glCircle( const Point& p, const double radius )
+void glCircle( const Point& p, const double radius, double pen_size )
 {
-    GLint triangleAmount = 20;
-    GLdouble twoPi = M_PI * 2.0;
+    const GLint triangleAmount = 40;
+    const GLdouble twoPi = M_PI * 2.0;
+
+    glLineWidth( pen_size );
+    glBegin( GL_LINE_LOOP );
+    for ( int i = 0; i < triangleAmount; ++i )
+    {
+        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                    p.y + (radius * sin( i* twoPi / triangleAmount ))
+                  );
+    }
+    glEnd();
+}
+
+
+void glDisk( const Point& p, const double radius )
+{
+    const GLint triangleAmount = 20;
+    const GLdouble twoPi = M_PI * 2.0;
 
     glBegin( GL_TRIANGLE_FAN );
     glVertex2d( p.x, p.y );
@@ -218,12 +235,90 @@ void GLPathShape::draw( double z )
     glColor4f( r, g, b, a );
 
 
-    glCircle( pts[0], pen_size / 2.0 );
+    glDisk( pts[0], pen_size / 2.0 );
     glPolyline( pts, pen_size );
-    glCircle( pts[pts.size()-1], pen_size / 2.0 );
+    glDisk( pts[pts.size()-1], pen_size / 2.0 );
 
     glDisable( GL_BLEND );
 }
+
+void GLArrowShape::draw( double z )
+{
+    //Turn on Color Buffer
+    glColorMask(true, true, true, true);
+
+    //Only write to the Stencil Buffer where 1 is not set
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+    //Keep the content of the Stencil Buffer
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+
+
+    glEnable( GL_BLEND );
+    // So compositing works properly
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f( r, g, b, a );
+
+    glPolyline( pts, pen_size );
+    glDisable( GL_BLEND );
+
+}
+
+std::string GLArrowShape::send() const
+{
+    std::string buf = "GLArrowShape ";
+    char tmp[256];
+    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
+             pen_size, frame );
+    buf += tmp;
+    GLPathShape::PointList::const_iterator i = pts.begin();
+    GLPathShape::PointList::const_iterator e = pts.end();
+    for ( ; i != e; ++i )
+    {
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
+    }
+    return buf;
+}
+
+
+void GLCircleShape::draw( double z )
+{
+    //Turn on Color Buffer
+    glColorMask(true, true, true, true);
+
+    //Only write to the Stencil Buffer where 1 is not set
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+    //Keep the content of the Stencil Buffer
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+
+
+    glEnable( GL_BLEND );
+    // So compositing works properly
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f( r, g, b, a );
+
+    glCircle( center, radius, pen_size );
+}
+
+
+std::string GLCircleShape::send() const
+{
+    std::string buf = "GLCircleShape ";
+    char tmp[128];
+    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a, pen_size, frame );
+
+    buf += tmp;
+
+    sprintf( tmp, " %g %g %g", center.x, center.y, radius );
+    buf += tmp;
+
+    return buf;
+}
+
 
 std::string GLErasePathShape::send() const
 {
@@ -254,9 +349,9 @@ void GLErasePathShape::draw( double z )
     glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
     glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
-    glCircle( pts[0], pen_size / 2.0 );
+    glDisk( pts[0], pen_size / 2.0 );
     glPolyline( pts, pen_size );
-    glCircle( pts[pts.size()-1], pen_size / 2.0 );
+    glDisk( pts[pts.size()-1], pen_size / 2.0 );
 }
 
 
@@ -295,10 +390,13 @@ void GLTextShape::draw( double z )
     glDisable( GL_LIGHTING );
     glEnable( GL_BLEND );
 
+    glActiveTexture( GL_TEXTURE0 );
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
     // So compositing works properly
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glActiveTexture( GL_TEXTURE0 );
 
     glColor4f( r, g, b, a );
 
