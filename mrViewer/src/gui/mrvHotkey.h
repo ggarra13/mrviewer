@@ -166,6 +166,8 @@ extern Hotkey kDrawMode;
 extern Hotkey kDrawTemporaryMode;
 extern Hotkey kEraseMode;
 extern Hotkey kEraseTemporaryMode;
+extern Hotkey kCircleMode;
+extern Hotkey kArrowMode;
 extern Hotkey kScrubMode;
 extern Hotkey kTextMode;
 extern Hotkey kAreaMode;

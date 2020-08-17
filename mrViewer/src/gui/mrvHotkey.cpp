@@ -112,6 +112,8 @@ Hotkey kEraseTemporaryMode( false, false, false, false, 0 );
 Hotkey kEraseMode( false, false, false, true, 'e' );
 Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
+Hotkey kArrowMode;
+Hotkey kCircleMode;
 Hotkey kTextMode( false, false, false, true, 't' );
 Hotkey kMoveSizeMode( false, false, false, true, 'm' );
 
@@ -337,12 +339,14 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
     HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
     HotkeyEntry( _("OCIO View"), kOCIOView ),
+    HotkeyEntry( _("Scrub Mode"), kScrubMode ),
+    HotkeyEntry( _("Area Selection Mode"), kAreaMode ),
     HotkeyEntry( _("Draw Mode"), kDrawMode ),
     HotkeyEntry( _("Draw Temporary Mode"), kDrawTemporaryMode ),
     HotkeyEntry( _("Erase Mode"), kEraseMode ),
     HotkeyEntry( _("Erase Temporary Mode"), kEraseTemporaryMode ),
-    HotkeyEntry( _("Scrub Mode"), kScrubMode ),
-    HotkeyEntry( _("Area Mode"), kAreaMode ),
+    HotkeyEntry( _("Arrow Mode"), kArrowMode ),
+    HotkeyEntry( _("Circle Mode"), kCircleMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
     HotkeyEntry( _("Move/Size Mode"), kMoveSizeMode ),
     HotkeyEntry( _("Pen Size More"), kPenSizeMore),

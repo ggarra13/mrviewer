@@ -478,7 +478,7 @@ v->uiView->text_mode();}
           }
           Fl_Button uiArrow {
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->arrow_mode();} selected
+            callback {v->uiView->arrow_mode();}
             tooltip {Eraser Tool} xywh {30 135 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( arrow_28 );}
           }
@@ -524,13 +524,13 @@ else
 Fl::get_color(c,r,g,b);
 if (!fl_color_chooser("Pick Draw Color", r,g,b,3)) return;
 Fl::set_color(c,r,g,b);
+std::cerr << std::hex << c << " " << (int)r << " " << (int)g << " "  << (int)b << std::endl;
 if ( r == 0 && g == 0 && b == 0 )
    o->color( FL_BLACK );
 else
    o->color( c );
-o->redraw();}
-          tooltip {Selects the current pen color.} xywh {92 235 25 25} box EMBOSSED_BOX color 63 labelsize 11 labelcolor 7 align 4
-          code0 {o->color( 0x00ff0000 );}
+o->redraw();} selected
+          tooltip {Selects the current pen color.} xywh {92 235 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 4
         }
         Fl_Group {} {
           label Frames open

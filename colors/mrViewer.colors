@@ -80,7 +80,7 @@ theme "Default"
     cmap 59  0   109 0		# "Done" green
     cmap 60  0   146 0
     cmap 61  0   182 0
-    cmap 62  0   219 0
+    cmap 62  0   255 0
     cmap 63  0   255 0
     cmap 64  64  0   0
     cmap 65  64  36  0
@@ -328,7 +328,7 @@ theme "Dark Grey"
     cmap 59 30 140 30		# Done green
 #   cmap 60 0 145 0
 #   cmap 61 0 182 0
-#   cmap 62 0 218 0
+    cmap 62 0 255 0
     cmap 63 0 180 0
 #   cmap 64 63 0 0
 #   cmap 65 63 36 0
@@ -579,7 +579,7 @@ theme "Tan"
     cmap 59  0   109 0		# "Done" green
     cmap 60  0   146 0
     cmap 61  0   182 0
-    cmap 62  0   219 0
+    cmap 62  0   255 0
     cmap 63  0   255 0
     cmap 64  64  0   0
     cmap 65  64  36  0
@@ -845,7 +845,7 @@ theme "Plain Gray"
     cmap 59  0   109 0		# "Done" green
     cmap 60  0   146 0
     cmap 61  0   182 0
-    cmap 62  0   219 0
+    cmap 62  0   255 0
     cmap 63  0   255 0
     cmap 64  64  0   0
     cmap 65  64  36  0
@@ -1090,6 +1090,7 @@ theme "Shake"
     cmap 55 110 110 110		# BG COLOR FOR SELECTED MENU ITEMS (color #55 must have enough contrast from #56 to be readable)
     # cmap 56 0 0 0		# BLACK COLOR FOR PIXEL BAR
     cmap 59 80 150 80		# "Done" green
+    cmap 62 0 255 0
     cmap 63 0 180 0
     cmap 71 0 180 0
     cmap 88 180 0 0
@@ -1180,7 +1181,7 @@ theme "Black"
     cmap 59  0   47  0
     cmap 60  0   63  0
     cmap 61  0   79  0
-    cmap 62  0   94  0
+    cmap 62  0  255  0
     cmap 63  0  160  0          # "3D Stereo" green
     cmap 64  28  0   0
     cmap 65  28  16  0

@@ -6529,6 +6529,16 @@ int ImageView::keyDown(unsigned int rawkey)
         erase_mode();
         return 1;
     }
+    else if ( kArrowMode.match( rawkey ) )
+    {
+        arrow_mode();
+        return 1;
+    }
+    else if ( kCircleMode.match( rawkey ) )
+    {
+        circle_mode();
+        return 1;
+    }
     else if ( kTextMode.match( rawkey ) )
     {
         text_mode();
