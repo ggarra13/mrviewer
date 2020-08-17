@@ -6376,22 +6376,21 @@ void ImageView::mouseDrag(int x,int y)
                     if ( _mode == kArrow )
                         {
                             mrv::Point p1 = s->pts[0];
-                            double slopy , cosy , siny;
-                            // double Par = 100.0;  //length of Arrow (>)
                             double A = ( p1.y - p2.y );
                             double B = ( p1.x - p2.x );
                             double Par = sqrt( A*A + B*B ) / 1.5f;
-                            slopy = atan2( A, B );
-                            cosy = cos( slopy );
-                            siny = sin( slopy );
+                            double slopy = atan2( A, B );
+                            double cosy = cos( slopy );
+                            double siny = sin( slopy );
                             s->pts[1] = p2;
 
-                            s->pts[2] = mrv::Point( p1.x + int( - Par * cosy + ( Par / 2.0 * siny ) ),
-                                                    p1.y - int( Par / 2.0 * cosy + Par * siny ) );
-
+                            s->pts[2] =
+                              mrv::Point(p1.x - Par * cosy + Par / 2.0 * siny,
+                                         p1.y - Par / 2.0 * cosy - Par * siny);
                             s->pts[3] = p2;
-                            s->pts[4] = mrv::Point( p1.x + int( - Par * cosy - ( Par / 2.0 * siny ) ),
-                                                    p1.y + int( - Par * siny + ( Par / 2.0 * cosy ) ) );
+                            s->pts[4] =
+                              mrv::Point(p1.x - Par * cosy - Par / 2.0 * siny,
+                                         p1.y - Par * siny + Par / 2.0 * cosy);
                         }
                     else
                         {
