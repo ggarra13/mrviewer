@@ -80,6 +80,7 @@ struct Hotkey
     }
 
     std::string to_s() const;
+    std::string to_s2() const;
 
 public:
     bool ctrl;

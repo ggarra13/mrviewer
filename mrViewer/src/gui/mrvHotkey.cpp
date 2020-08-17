@@ -478,12 +478,54 @@ std::string Hotkey::to_s() const
           else
             {
                 if ( key != 0 ) r += (char) key;
-                if ( key == 0 && text != "" )
+                if ( key == 0 && !text.empty() )
                     r += text;
             }
         }
     return r;
 }
+
+
+std::string Hotkey::to_s2() const
+{
+    std::string r;
+
+    unsigned k = key2;
+    if ( k == 0 ) return r;
+
+
+    if ( ctrl ) r += "Ctrl+";
+    if ( alt ) r += "Alt+";
+    if ( meta ) r += "Meta+";
+    if ( shift ) r += "Shift+";
+
+
+    bool special = false;
+    for ( unsigned j = 0; j < sizeof(table)/sizeof(TableText); ++j )
+      {
+          if ( k == table[j].n )
+            {
+                r += table[j].text;
+                special = true;
+                break;
+            }
+      }
+
+    if ( !special )
+      {
+          if (k >= FL_F && k <= FL_F_Last) {
+              char buf[16];
+              sprintf(buf, "F%d", k - FL_F);
+              r += buf;
+          }
+          else
+            {
+                if ( key2 != 0 ) r += (char) key2;
+            }
+        }
+    return r;
+}
+
 
 void fill_ui_hotkeys( mrv::Browser* b )
 {
@@ -521,6 +563,11 @@ bool Hotkey::operator==( const Hotkey& b ) const
     const std::string& A = to_s();
     const std::string& B = b.to_s();
     if ( A == B && !A.empty() && !B.empty() ) return true;
+    const std::string& A2 = to_s2();
+    const std::string& B2 = b.to_s2();
+    if ( A2 == B2 && !A2.empty() && !B2.empty() ) return true;
+    if ( A  == B2 && !A.empty() && !B2.empty() ) return true;
+    if ( A2 == B  && !A2.empty() && !B.empty() ) return true;
     return false;
 }
 
