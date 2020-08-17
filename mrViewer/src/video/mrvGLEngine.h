@@ -36,7 +36,7 @@
 
 #include "gui/mrvIO.h"
 
-#if 1
+#if 0
 #define CHECK_GL DBG2; GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL

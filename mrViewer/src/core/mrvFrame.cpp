@@ -273,6 +273,7 @@ size_t VideoFrame::data_size() const
 VideoFrame::~VideoFrame()
 {
     CMedia::memory_used -= data_size();
+    //assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 
@@ -744,7 +745,7 @@ AudioFrame::~AudioFrame()
     delete [] _data;
     _data = NULL;
     CMedia::memory_used -= _size;
-    assert0( CMedia::memory_used >= 0 );
+    //assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
 }
 

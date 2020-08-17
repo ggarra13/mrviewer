@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-08-17 10:04-0300\n"
+"POT-Creation-Date: 2020-08-17 17:04-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -21952,7 +21952,7 @@ msgstr "Sin memoria para imagen"
 msgid "Not enough memory for black image"
 msgstr "Sin memoria para imagen en negro"
 
-#: core/mrvFrame.cpp:705
+#: core/mrvFrame.cpp:706
 msgid "Not enough memory for color transform"
 msgstr "Sin memoria para transformación de color"
 
@@ -27598,9 +27598,8 @@ msgid "Undefined framebuffer"
 msgstr "Framebuffer indefinido"
 
 #: gui/mrvHotkey.cpp:354
-#, fuzzy
 msgid "Undo Draw"
-msgstr "Deshacer La Última Figura Dibujada"
+msgstr "Deshacer Dibujo"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-5.4.0-42-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:517
 msgid "Undo Last Shape Drawn"
@@ -27766,7 +27765,7 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown mrv event size "
 msgstr "Tamaño de mrv event desconocido "
 
-#: core/mrvFrame.cpp:138 core/mrvFrame.cpp:326 core/mrvFrame.cpp:359
+#: core/mrvFrame.cpp:138 core/mrvFrame.cpp:327 core/mrvFrame.cpp:360
 msgid "Unknown mrv::Frame pixel type"
 msgstr "Formato de pixel en mrv::Frame desconocido"
 
@@ -30453,7 +30452,7 @@ msgstr ""
 
 #: core/Sequence.cpp:841
 msgid "audio: "
-msgstr "audio"
+msgstr ""
 
 #: gui/mrvImageBrowser.cpp:871
 #, c-format
@@ -33768,7 +33767,7 @@ msgstr ""
 msgid "mrViewer.lock"
 msgstr "mrViewer"
 
-#: core/mrvFrame.cpp:341
+#: core/mrvFrame.cpp:342
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame No hay datos de pixel a cambiar"
 
@@ -37370,6 +37369,10 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:762
 msgid "~/"
 msgstr ""
+
+#, fuzzy
+#~ msgid "audio destructor "
+#~ msgstr "Pista de Audio #%d"
 
 #
 #~ msgid "Area Mode"

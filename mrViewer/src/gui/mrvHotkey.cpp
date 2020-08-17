@@ -149,7 +149,7 @@ Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
 Hotkey kPreloadCache( false, false, false, false, 'p' );
-Hotkey kClearCache( false, false, false, false, 'c' );
+Hotkey kClearCache( false, false, false, true, 'k' );
 Hotkey kClearSingleFrameCache( false, false, false, false, 'u' );
 
 Hotkey kSetInPoint( false, false, false, false, 'i' );

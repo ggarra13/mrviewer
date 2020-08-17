@@ -30,7 +30,7 @@
 #define mrvFrame_h
 
 #if defined(_WIN32) || defined(_WIN64)
-#include <Winsock2.h>
+#include <winsock2.h>
 #include <windows.h>
 #undef min
 #undef max
