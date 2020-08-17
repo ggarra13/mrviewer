@@ -26,7 +26,7 @@ decl {\#include "gui/mrvPopupMenu.h"} {public local
 decl {\#include "gui/mrvColorOps.h"} {private local
 }
 
-decl {\#include "gui/mrvHistogram.h"} {private local
+decl {\#include "gui/mrvHistogram.h"} {public local
 }
 
 decl {\#include "gui/mrvValueInput.h"} {public local
@@ -39,12 +39,6 @@ decl {\#include "gui/mrvPreferences.h"} {private local
 }
 
 decl {\#include "gui/mrvLogDisplay.h"} {private local
-}
-
-decl {\#include "gui/mrvGlWindow3d.h"} {public local
-}
-
-decl {\#include "mrvHistogram.h"} {public local
 }
 
 decl {\#include "mrViewer.h"} {private global
