@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
@@ -29,12 +30,17 @@
 
 #include <iostream>
 #include <Iex.h>
-
+ 
 #include <FL/Fl.H>
 
-#include "core/mrvI8N.h"
+extern "C" {
+#include <GL/glew.h>
+}
+
+#include "gui/mrvIO.h"
 #include "mrvGLShader.h"
 #include "mrvGLEngine.h"
+
 
 namespace {
   const char* kModule = "shader";

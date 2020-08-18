@@ -41,6 +41,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <boost/shared_array.hpp>
+
 
 #if defined(WIN32) || defined(WIN64)
 #  include <winsock2.h>  // to avoid winsock issues
@@ -49,12 +51,10 @@
 #  undef max
 #endif
 
-#if defined(WIN32) || defined(WIN64)
-#  include <FL/platform.H>   // for Fl::getDC()
-#endif
-
+#include <FL/platform.H>   // for Fl::getDC()
 #include <FL/fl_utf8.h>   // for fl_getenv
 
+#include "gui/mrvIO.h"
 #include "mrvPreferencesUI.h"
 
 extern "C" {
@@ -113,7 +113,6 @@ extern "C" {
 #undef TRACE
 #define TRACE(x)
 
-#include <FL/platform.H>
 
 namespace
 {

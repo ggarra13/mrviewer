@@ -28,13 +28,11 @@
 #include <vector>
 
 #include <FL/gl.h>
-#include <boost/shared_array.hpp>
 
 #include "core/mrvAlignedData.h"
 #include "gui/mrvImageView.h"
 #include "mrvDrawEngine.h"
 
-#include "gui/mrvIO.h"
 
 #if 0
 #define CHECK_GL DBG2; GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__, true )

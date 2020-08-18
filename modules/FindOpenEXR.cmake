@@ -78,7 +78,7 @@ FIND_LIBRARY( IexMath
 )
 
 FIND_LIBRARY( Half
-  NAMES Half-2_4_dll Half-2_4 Half-2_3_dll Half-2_3 Half_dll Half_dll_d Half Halfd
+  NAMES Half-2_5 Half-2_4 Half-2_3 Half Halfd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Half library"
