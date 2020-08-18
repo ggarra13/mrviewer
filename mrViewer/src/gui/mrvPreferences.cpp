@@ -1244,6 +1244,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
       {
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    "mrViewer.keys" );
+        LOG_INFO( _("Loaded hotkeys from ") << prefspath()
+                  << "mrViewer.keys.prefs" );
         keys->get( "version", version, 6 );
       }
     else
