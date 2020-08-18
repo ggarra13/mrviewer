@@ -1244,8 +1244,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
       {
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    "mrViewer.keys" );
-        LOG_INFO( _("Loaded hotkeys from ") << prefspath()
-                  << "mrViewer.keys.prefs" );
         keys->get( "version", version, 6 );
       }
     else
@@ -1261,10 +1259,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
             continue;
 
         if ( version <= 5 && hotkeys[i].name == "Clear Image Cache" )
-          continue;
-
+            continue;
         if ( version <= 5 && hotkeys[i].name == "Switch FG/BG Images" )
-          continue;
+            continue;
 
     DBG3;
         keys->get( (hotkeys[i].name + " ctrl").c_str(),
