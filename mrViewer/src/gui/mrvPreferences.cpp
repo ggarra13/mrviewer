@@ -1260,12 +1260,11 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         if ( version >= 1 && hotkeys[i].name == "Scrub" )
             continue;
 
-        if ( version <= 5 && hotkeys[i].name == "Play Forwards" )
-            continue;
-        if ( version <= 5 && hotkeys[i].name == "Play Backwards" )
-            continue;
-        if ( version <= 5 && hotkeys[i].name == "Stop" )
-            continue;
+        if ( version <= 5 && hotkeys[i].name == "Clear Image Cache" )
+          continue;
+
+        if ( version <= 5 && hotkeys[i].name == "Switch FG/BG Images" )
+          continue;
 
     DBG3;
         keys->get( (hotkeys[i].name + " ctrl").c_str(),
