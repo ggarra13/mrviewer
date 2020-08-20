@@ -7351,11 +7351,11 @@ int ImageView::keyUp(unsigned int key)
     }
 #endif
 
-    if ( _mode & kTemporary )
-    {
-        scrub_mode();
-        return 1;
-    }
+    if ( _mode & kTemporary && !Fl::get_key(key))
+      {
+          scrub_mode();
+          return 1;
+      }
     return 0;
 }
 
