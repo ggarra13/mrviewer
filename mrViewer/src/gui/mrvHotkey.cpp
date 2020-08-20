@@ -600,10 +600,21 @@ void select_hotkey( HotkeyUI* b )
                hotkeys[i].hotkey.to_s() != "[" &&
                hotkeys[i].hotkey.to_s() != "]"  )
             {
-                fl_alert( _("Hotkey \"%s\" already used in \"%s\""),
-                          h->hk.to_s().c_str(), _(hotkeys[i].name.c_str()) );
-                delete h;
-                return select_hotkey( b );
+                int ok = fl_choice( _("Hotkey \"%s\" already used in \"%s\".\n"
+                                      "Do you want to override it?"),
+                                    _("Yes"), _("No"), 0L,
+                                    h->hk.to_s().c_str(),
+                                    _(hotkeys[i].name.c_str())
+                                    );
+                if ( ok )
+                  {
+                      delete h;
+                      return select_hotkey( b );
+                  }
+                else
+                  {
+                      hotkeys[i].hotkey.clear();
+                  }
             }
       }
 

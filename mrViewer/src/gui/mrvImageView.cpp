@@ -3932,27 +3932,35 @@ void ImageView::draw()
         _engine->draw_grid( img, _grid_size );
     }
 
-    if ( !(flags & kMouseDown) && ( (_mode & kDraw) || (_mode & kErase) ||
-                                    (_mode & kCircle) || (_mode & kArrow ) ) )
-    {
-        double xf = X;
-        double yf = Y;
+    if ( !(flags & kMouseDown) )
+      {
+          if (  (_mode & kDraw) || (_mode & kErase) ||
+                (_mode & kCircle) || (_mode & kArrow ) )
+            {
+                double xf = X;
+                double yf = Y;
 
-        data_window_coordinates( img, xf, yf );
+                data_window_coordinates( img, xf, yf );
 
-        const mrv::Recti& dpw = img->display_window();
+                const mrv::Recti& dpw = img->display_window();
 
-        unsigned int H = dpw.h();
-        if ( H == 0 ) H = img->height();
+                unsigned int H = dpw.h();
+                if ( H == 0 ) H = img->height();
 
-        yf = -yf;
+                yf = -yf;
 
-        const mrv::Recti& daw = img->data_window();
-        xf += daw.x();
-        yf -= daw.y();
+                const mrv::Recti& daw = img->data_window();
+                xf += daw.x();
+                yf -= daw.y();
 
-        _engine->draw_cursor( xf, yf, _mode );
-    }
+                _engine->draw_cursor( xf, yf, _mode );
+                window()->cursor(FL_CURSOR_NONE);
+            }
+          else
+            {
+                window()->cursor(FL_CURSOR_CROSS);
+            }
+      }
 
     TRACE("");
 
@@ -4488,7 +4496,7 @@ int ImageView::leftMouseDown(int x, int y)
             s->b = b / 255.0f;
             s->a = 1.0f;
             s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
-            if ( _mode == kErase ) s->pen_size *= 2;
+            if ( _mode & kErase ) s->pen_size *= 2;
 
             if ( uiMain->uiPaint->uiAllFrames->value() )
             {
@@ -4531,8 +4539,6 @@ int ImageView::leftMouseDown(int x, int y)
         {
             _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
             window()->cursor(FL_CURSOR_CROSS);
-            if ( _interactive )
-                Fl::check();
         }
 
 
@@ -7788,6 +7794,7 @@ int ImageView::handle(int event)
         return 1;
         break;
     case FL_SHORTCUT:
+        return Fl_Gl_Window::handle( event );
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();

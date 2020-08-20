@@ -64,6 +64,13 @@ struct Hotkey
     {
     };
 
+    void clear()
+    {
+        ctrl = meta = alt = shift = false;
+        key = key2 = 0;
+        text.clear();
+    }
+
     bool match( unsigned rawkey );
 
     bool operator==( const Hotkey& b ) const;

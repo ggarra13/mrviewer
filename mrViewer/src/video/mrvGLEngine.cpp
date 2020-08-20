@@ -1104,7 +1104,7 @@ void GLEngine::draw_cursor( const double x, const double y,
     glColor4f( 1, 0, 0, 1 );
 
     double pct = 1.0;
-    if ( mode == ImageView::kDraw ) pct = 0.5;
+    if ( mode & ImageView::kDraw ) pct = 0.5;
     glDisk( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
 }
 
