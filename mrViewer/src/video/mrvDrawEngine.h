@@ -216,7 +216,8 @@ public:
     virtual void draw_cursor( const double x, const double y,
                               ImageView::Mode mode ) = 0;
 
-    virtual void draw_annotation( const GLShapeList& shapes ) = 0;
+    virtual void draw_annotation( const GLShapeList& shapes,
+                                  const CMedia* const img ) = 0;
 
     virtual void draw_grid( const CMedia* const img, unsigned size ) = 0;
 

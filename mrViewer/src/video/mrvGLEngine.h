@@ -134,7 +134,8 @@ public:
     virtual void draw_cursor( const double x, const double y,
                               ImageView::Mode mode = ImageView::kDraw );
 
-    virtual void draw_annotation( const GLShapeList& shapes );
+    virtual void draw_annotation( const GLShapeList& shapes,
+                                  const CMedia* const img );
 
     virtual void resize_background();
 

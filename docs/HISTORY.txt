@@ -1,7 +1,21 @@
-v5.6.1  - Bug fixed the draw cursor being bigger than it should be.
+v5.6.1  *** SOME IMPORTANT CHANGES TO THE DISTRIBUTION ***
+	- Removed all aces_* from distribution as they were taking too much
+	  space (the latest aces_1.3 was 2GB).  Left only nuke-default.
+	  To download the other configs, please go to opencolorio.org for
+	  instructions.  Now the installers are around 84Mb, instead of 256Mb.
+	- Switched compilers and Linux version to Ubuntu 16.04.  This was
+	  needed to compile the latest OpenColorIO and OpenImageIO.
+	- Compiled oiiotool on Windows with latest OpenImageIO and OpenColorIO
+	  and OpenEXR 2.5.2.
+	- Bug fixed removal of old mrViewer from PATH when installing from
+	  chocolatey.
+	- Added the option to keep all nuspecs for downloading old chocolatey
+	  images from archive.  Now the install will try to download first
+	  from the normal location and if it fails, it will try to download
+	  from the archive location.
+	- Bug fixed the draw cursor being bigger than it should be.
 	- Added the option to override the hotkey when a matching hotkey is
 	  found.
-	- Added aces_1.2 to the ocio directory and removed aces_1.0.3 from it.
 
 v5.6.0  - Bug fixed loading of sequences in Mac OSX when clicking on an image
 	  or dragging an image of a sequence to the icon of mrViewer.

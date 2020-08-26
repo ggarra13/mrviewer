@@ -19,13 +19,17 @@ Else
 
 
 $target = Join-Path $programFiles "${packageName}-v*-Windows-${osBitness}"
-rm -r -fo $target | ForEach-Object {
-	      rm -r -fo $_   # Unneeded I think
-	      $PathToRemove = Join-Path $_ "bin"
+Write-Host "Check targets '${target}'.";
+cd $programFiles
+Get-ChildItem -Path $programFiles -Filter "${packageName}-v*-Windows-${osBitness}" | ForEach-Object {
+	      Write-Host "Removed $_"
+	      rm -r -fo $_  
+	      $PathToRemove = Join-Path $programFiles -childPath $_ | Join-Path -ChildPath "bin"
 	      $Newpath = @{}
 	      foreach ($path in [Environment]::GetEnvironmentVariable("PATH","Machine").split(';'))
 	      {
-		 If ($Path)
+		Write-Verbose "Comparing path '${path}' to '$PathToRemove'.";
+		 If ($path)
 		  {
 		    If (($path -ine "$PathToRemove") -AND ($path -ine "$PathToRemove\"))
 		    {
@@ -33,7 +37,9 @@ rm -r -fo $target | ForEach-Object {
 		    }
 		  }
 	      }
-	      $AssembledNewPath = ($newpath -join(';')).trimend(';')
+	      $AssembledNewPath = ($Newpath -join(';')).trimend(';')
+
+	      Write-Debug "New PATH=${AssembledNewPath}"
 
 	      [Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"Machine")
 

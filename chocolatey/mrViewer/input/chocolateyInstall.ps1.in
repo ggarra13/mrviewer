@@ -9,6 +9,8 @@ $packageName= 'mrViewer'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url        = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${shortVersion}-Windows-32.zip"
 $url64      = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${shortVersion}-Windows-64.zip"
+$altUrl        = "https://sourceforge.net/projects/mrviewer/files/archive/v${shortVersion}/${packageName}-v${shortVersion}-Windows-32.zip"
+$altUrl64      = "https://sourceforge.net/projects/mrviewer/files/archive/v${shortVersion}/${packageName}-v${shortVersion}-Windows-64.zip"
 
 If ( $osBitness -Match "32" )
 {
@@ -37,8 +39,28 @@ $packageArgs = @{
   silentArgs   = ''
 }
 
-Install-ChocolateyZipPackage @packageArgs
+try {
+    Install-ChocolateyZipPackage @packageArgs
+catch {
+	$altPackageArgs = @{
+	    packageName   = $packageName
+	    unzipLocation = $programFiles
+	    fileType      = 'exe'
+	    url           = $altUrl
+	    url64bit      = $altUrl64
 
+	    softwareName  = 'mrViewer*'
+
+	    checksum      = '@CHECKSUM@'
+	    checksumType  = 'sha256'
+	    checksum64    = '@CHECKSUM64@'
+	    checksumType64= 'sha256'
+	    
+	    validExitCodes= @(0, 3010, 1641)
+	    silentArgs   = ''
+	}
+	Install-ChocolateyZipPackage @altPackageArgs
+}
 
 
 $target = Join-Path $programFiles "${packageName}-v${shortVersion}-Windows-${osBitness}/bin"
