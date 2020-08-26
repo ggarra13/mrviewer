@@ -2492,7 +2492,8 @@ void GLEngine::draw_shape( GLShape* const shape )
 }
 
 
-void GLEngine::draw_annotation( const GLShapeList& shapes )
+void GLEngine::draw_annotation( const GLShapeList& shapes,
+                                const CMedia* const img )
 {
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     glMatrixMode (GL_MODELVIEW);
@@ -2518,6 +2519,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
 
     glScaled(zoomX, zoomY * pr, 1.0f);
 
+
+    glRotated( img->rot_z(), 0, 0, 1 );
     CHECK_GL;
 
     glClear(GL_STENCIL_BUFFER_BIT);

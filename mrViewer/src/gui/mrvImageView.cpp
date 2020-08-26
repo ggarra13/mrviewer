@@ -3925,7 +3925,7 @@ void ImageView::draw()
         return;
     }
 
-    _engine->draw_annotation( img->shapes() );
+    _engine->draw_annotation( img->shapes(), img );
 
     if ( _grid )
     {

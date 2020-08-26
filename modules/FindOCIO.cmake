@@ -20,7 +20,6 @@ ELSE( OCIO_LIBRARY_DIR )
     "$ENV{OCIO_ROOT}/lib"
     "$ENV{OCIO_ROOT}/${CMAKE_BUILD_TYPE}/bin"
     "$ENV{OCIO_ROOT}/bin/${CMAKE_BUILD_TYPE}"
-    "$ENV{OCIO_ROOT}/lib/"
     "$ENV{OCIO_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
@@ -35,10 +34,11 @@ FIND_PATH( OCIO_INCLUDE_DIR OpenColorIO/OpenColorIO.h
   /usr/local/include/OpenColorIO
   /usr/include/
   DOC   "OCIO includes" 
- )
+  )
+
 
 FIND_LIBRARY( OpenColorIO
-  NAMES OpenColorIO
+  NAMES OpenColorIO_2_0 OpenColorIO
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
   DOC   "OCIO library"

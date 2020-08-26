@@ -4,6 +4,7 @@ export ROOT=/D/code/applications/mrv
 export DIST=/D/code/lib/vc14_Windows_64
 
 export ZLIB_ROOT=$DIST
+export HALF_ROOT=$DIST
 export OPENEXR_ROOT=$DIST
 export     CTL_ROOT=$DIST
 export TINYXML2_ROOT=$DIST
@@ -15,6 +16,7 @@ export PATH=$DIST/gettext/bin:$PATH
 export BOOST_ROOT="/D/code/lib/boost_1_73_0"
 export FFMPEG_ROOT="$ROOT/win64_deps/ffmpeg-20191004-e6625ca-win64-shared"
 export OCIO_ROOT=$DIST
+export OpenColorIO_ROOT=$OCIO_ROOT
 export  GLUT_ROOT_PATH=$DIST
 export FLTK_DIR="$ROOT/../fltk-win64"
 export MAGICK_HOME="$ROOT/win64_deps/ImageMagick-Windows64"
