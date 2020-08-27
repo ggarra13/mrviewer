@@ -1458,7 +1458,6 @@ void decode_thread( PlaybackData* data )
             if ( img->stopped() ) continue;
         }
 
-        std::cerr << "call frame " << frame << std::endl;
         // If we could not get a frame (buffers full, usually),
         // wait a little.
         while ( !img->frame( frame ) )
