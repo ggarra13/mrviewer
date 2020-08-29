@@ -1330,6 +1330,7 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
 
     if ( ret == AVERROR_EOF ) eof = true;
 
+
     if (ret >= 0)
     {
         *got_frame = 1;
@@ -1346,6 +1347,12 @@ aviImage::decode_video_packet( int64_t& ptsframe,
                              )
 {
     AVPacket* pkt = (AVPacket*)p;
+
+    if ( pkt && _video_packets.is_jump( *pkt ) )
+    {
+        return kDecodeDone;
+    }
+
 
     AVStream* stream = get_video_stream();
 
@@ -1364,143 +1371,122 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
 
 
-      int ret = 0;
-
-      if (pkt) {
-        ret = avcodec_send_packet(_video_ctx, pkt);
-
-        // In particular, we don't expect AVERROR(EAGAIN), because we read all
-        // decoded frames with avcodec_receive_frame() until done.-
-        if ( ret < 0 && ret != AVERROR_EOF )
-        {
-            char buf[128];
-            av_strerror(ret, buf, 128);
-            IMG_ERROR( _("send_packet error: ") << buf
-                       << _(" for codec ")
-                       << avcodec_get_name( _video_ctx->codec_id )  );
-            return kDecodeError;
-        }
-
-        if ( ret == AVERROR_EOF ) return kDecodeDone;
-    }
-
-    while ( ret >= 0 )
+    while( !pkt || pkt->size > 0 || pkt->data == NULL )
     {
-      got_pict = 0;
-
-      ret = avcodec_receive_frame(_video_ctx, _av_frame);
-
-      if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF )
-      {
-        char buf[128];
-        av_strerror(ret, buf, 128);
-        IMG_ERROR( "receive_frame error: " << buf
-                   << " for codec "
-                   << avcodec_get_name( _video_ctx->codec_id )  );
-        return kDecodeMissingFrame;
-      }
-
-      if ( ret == AVERROR(EAGAIN) ) return kDecodeDone;
-
-      if ( ret >= 0 )
-        got_pict = 1;
+        int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
 
-
-      if ( got_pict ) {
-
-        ptsframe = _av_frame->best_effort_timestamp;
-
-        if ( pkt && ptsframe == AV_NOPTS_VALUE )
-        {
-          ptsframe = pkt->pts;
-          if ( ptsframe == AV_NOPTS_VALUE )
-          {
-            ptsframe = pkt->dts;
-          }
-        }
-
-
-        // The following is a work around for bug in decoding
-        // bgc.sub.dub.ogm
-        if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
-             pkt->dts < ptsframe  )
-        {
-          ptsframe = pkt->dts;
-        }
-
-
-
-        // needed for some corrupt movies
-        _av_frame->pts = ptsframe;
-
-
-        // Turn PTS into a frame
-
-        if ( pkt && ptsframe == AV_NOPTS_VALUE )
-        {
-
-          ptsframe = get_frame( stream, *p );
-          if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
-        }
-        else
-        {
-
-          ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
-        }
-
-
-
-        if ( filter_graph && _subtitle_index >= 0 )
-        {
-
-
-          SCOPED_LOCK( _subtitle_mutex );
-          /* push the decoded frame into the filtergraph */
-          if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
-                                           AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
-            LOG_ERROR( _("Error while feeding the filtergraph") );
-            close_subtitle_codec();
-            break;
-          }
-
-          int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
-          if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
-            break;
-          if (ret < 0)
-          {
-            LOG_ERROR( "av_buffersink_get frame failed" );
-            close_subtitle_codec();
+        if ( err < 0 ) {
+            IMG_ERROR( "Decode video error: " << get_error_text(err) );
             return kDecodeError;
-          }
-
-          av_frame_unref( _av_frame );
-          _av_frame = av_frame_clone( _filt_frame );
-          av_frame_unref( _filt_frame );
-          if (!_av_frame )
-          {
-            LOG_ERROR( _("Could not clone subtitle frame") );
-            close_subtitle_codec();
-            return kDecodeError;
-          }
         }
 
 
-        if ( eof )
-        {
 
-          eof_found = true;
-          pkt->size = 0;
-          pkt->data = NULL;
-          store_image( ptsframe, _av_frame->pts + 1 );
-          av_frame_unref( _av_frame );
-          av_frame_unref( _filt_frame );
-          continue;
+        if ( got_pict ) {
+
+            ptsframe = _av_frame->best_effort_timestamp;
+
+            if ( pkt && ptsframe == AV_NOPTS_VALUE )
+            {
+                ptsframe = pkt->pts;
+                if ( ptsframe == AV_NOPTS_VALUE )
+                {
+                    ptsframe = pkt->dts;
+                }
+            }
+
+
+            // The following is a work around for bug in decoding
+            // bgc.sub.dub.ogm
+            if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
+                 pkt->dts < ptsframe  )
+            {
+                ptsframe = pkt->dts;
+            }
+
+
+
+            // needed for some corrupt movies
+            _av_frame->pts = ptsframe;
+
+
+            // Turn PTS into a frame
+
+            if ( pkt && ptsframe == AV_NOPTS_VALUE )
+            {
+
+                ptsframe = get_frame( stream, *p );
+                if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
+            }
+            else
+            {
+
+                ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
+            }
+
+
+
+            if ( filter_graph && _subtitle_index >= 0 )
+            {
+
+
+                SCOPED_LOCK( _subtitle_mutex );
+                /* push the decoded frame into the filtergraph */
+                if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
+                                                 AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
+                    LOG_ERROR( _("Error while feeding the filtergraph") );
+                    close_subtitle_codec();
+                    break;
+                }
+
+                int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+                if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+                    break;
+                if (ret < 0)
+                {
+                    LOG_ERROR( "av_buffersink_get frame failed" );
+                    close_subtitle_codec();
+                    return kDecodeError;
+                }
+
+                av_frame_unref( _av_frame );
+                _av_frame = av_frame_clone( _filt_frame );
+                av_frame_unref( _filt_frame );
+                if (!_av_frame )
+                {
+                    LOG_ERROR( _("Could not clone subtitle frame") );
+                    close_subtitle_codec();
+                    return kDecodeError;
+                }
+            }
+
+
+            if ( eof )
+            {
+
+                eof_found = true;
+                pkt->size = 0;
+                pkt->data = NULL;
+                store_image( ptsframe, _av_frame->pts + 1 );
+                av_frame_unref( _av_frame );
+                av_frame_unref( _filt_frame );
+                continue;
+            }
+
+
+            return kDecodeOK;
         }
 
-        store_image( ptsframe, _av_frame->pts );
-      }
+        if ( err == 0 ) {
+
+            // If flushing caches, return done.
+            if ( pkt && pkt->data == NULL ) return kDecodeDone;
+            break;
+        }
+
     }
+
 
     return kDecodeMissingFrame;
 }
