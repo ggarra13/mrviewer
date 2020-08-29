@@ -1,3 +1,5 @@
+v5.6.2  - Fixed ocio* utilities on Windows which used OpenImageIO.
+
 v5.6.1  *** SOME IMPORTANT CHANGES TO THE DISTRIBUTION ***
 	- Removed all aces_* from distribution as they were taking too much
 	  space (the latest aces_1.3 was 2GB).  Left only nuke-default.

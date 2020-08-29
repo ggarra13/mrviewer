@@ -21,6 +21,9 @@ ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.py /usr/bin/cube2ctl.py
 #
 
 name=`logname`
+if [ -z "$name" ]; then
+    name=$LOGNAME
+fi
 
 # First, check if user-dirs.dirs exists in user's config directory
 config=.config

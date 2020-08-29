@@ -38,6 +38,7 @@ IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/input/chocolateyUninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyUninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
 
+    execute_process( COMMAND ${CMAKE_COMMAND} -E copy tools/chocolateyInstall.ps1 "old/chocolateyInstall.${SHORTVERSION}.ps1"  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
 
     execute_process( COMMAND choco pack WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
 

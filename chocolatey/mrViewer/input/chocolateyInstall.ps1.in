@@ -39,9 +39,10 @@ $packageArgs = @{
   silentArgs   = ''
 }
 
-try {
+Try {
     Install-ChocolateyZipPackage @packageArgs
-catch {
+    }
+Catch {
 	$altPackageArgs = @{
 	    packageName   = $packageName
 	    unzipLocation = $programFiles
