@@ -928,13 +928,14 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
-    if ( (stopped() || saving()) &&
+    if ( (stopped() || saving() || playback() == kBackwards ) &&
          (got_video || in_video_store( frame - _start_number )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
     {
         skip = true;
     }
+
 
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
@@ -946,10 +947,6 @@ bool aviImage::seek_to_position( const int64_t frame )
         if ( _start_number != 0 )
         {
             start -= _start_number;
-        }
-        else
-        {
-            if ( playback() == kBackwards ) --start;
         }
     }
     if ( !skip ) --start;
@@ -973,10 +970,9 @@ bool aviImage::seek_to_position( const int64_t frame )
     int flag = AVSEEK_FLAG_BACKWARD;
     if ( !skip )
     {
-        ret = av_seek_frame( _context, -1, offset, flag );
-        // ret = avformat_seek_file( _context, -1,
-        //                        std::numeric_limits<int64_t>::min(), offset,
-        //                        std::numeric_limits<int64_t>::max(), flag );
+        ret = avformat_seek_file( _context, -1,
+                                  std::numeric_limits<int64_t>::min(), offset,
+                                  std::numeric_limits<int64_t>::max(), flag );
     }
 
     if (ret < 0)
@@ -1333,7 +1329,7 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
 
     if (ret >= 0)
     {
-        *got_frame = 1;
+      *got_frame = 1;
     }
 
     return 0;
@@ -2597,10 +2593,11 @@ void aviImage::populate()
                         ++duration;
 
                     flush_video();
-                    av_seek_frame( _context,
-                                   video_stream_index(),
-                                   0,
-                                   AVSEEK_FLAG_BACKWARD|AVSEEK_FLAG_BYTE);
+                    avformat_seek_file( _context, video_stream_index(),
+                                        std::numeric_limits<int64_t>::min(),
+                                        0,
+                                        std::numeric_limits<int64_t>::max(),
+                                        AVSEEK_FLAG_BACKWARD|AVSEEK_FLAG_BYTE);
                 }
                 else
                 {

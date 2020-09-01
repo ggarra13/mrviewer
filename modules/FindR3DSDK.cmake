@@ -13,6 +13,7 @@ SET(R3DSDK_FOUND "NO")
 FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   "$ENV{R3DSDK_ROOT}/Include"
   "$ENV{R3DSDK_ROOT}"
+  ../../../R3DSDKv7_3_4/Include
   ../../../R3DSDKv7_3_1/Include
   ../../../R3DSDKv7_2_0/Include
   ../../../R3DSDKv7_1_0/Include

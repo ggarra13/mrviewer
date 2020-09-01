@@ -1468,13 +1468,18 @@ void decode_thread( PlaybackData* data )
         }
 
 
-        // After read, when playing backwards or playing audio files,
+        // After read, when playing audio files,
         // decode position may be several frames advanced as we buffer
         // multiple frames, so get back the dts frame from image.
+        // When playing backwards, we get the previous frame to force a re-read
+        // if needed.  See aviImage::seek_to_position().
 
         if ( img->has_video() || img->has_audio() )
         {
+          if ( img->playback() != CMedia::kBackwards || !img->has_audio() )
             frame = img->dts();
+          else
+            --frame;
         }
 
 

@@ -1,4 +1,11 @@
 v5.6.2  - Fixed ocio* utilities on Windows which used OpenImageIO.
+	- Fixed F11/F12 when switching away from fullscreen and the image would
+	  fit in the viewer without any zooming change.
+	- Upgraded to REDSDK 3D 7.3.4, which has improvements in the speed of
+	  decoding.
+	- Bug fixed a resizing of the top bar on Linux when switching away from
+	  fullscreen.
+	- Bug fixed reading of some mpeg1 movies.
 
 v5.6.1  *** SOME IMPORTANT CHANGES TO THE DISTRIBUTION ***
 	- Removed all aces_* from distribution as they were taking too much

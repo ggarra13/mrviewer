@@ -4305,9 +4305,10 @@ int ImageView::leftMouseDown(int x, int y)
         if (Fl::event_key(FL_Alt_L) || vr() )
         {
             // Handle ALT+LMB moves
-            flags |= kMouseMove;
-            flags |= kMouseMiddle;
-            return 1;
+          flags |= kLeftAlt;
+          flags |= kMouseMove;
+          flags |= kMouseMiddle;
+          return 1;
         }
 
         flags |= kMouseLeft;
@@ -4558,7 +4559,6 @@ int ImageView::leftMouseDown(int x, int y)
     {
         if ( (flags & kLeftAlt) == 0 )
         {
-
             TRACE("");
 
             menu->clear();
@@ -7337,14 +7337,14 @@ int ImageView::keyDown(unsigned int rawkey)
 int ImageView::keyUp(unsigned int key)
 {
 
-    if ( key == FL_Alt_L )
+  if ( ( key & FL_Alt_L ) != 0 )
     {
         flags &= ~kLeftAlt;
         flags &= ~kZoom;
         return 1;
     }
 #ifdef __APPLE__
-    if ( key == FL_Control_L )
+  if ( ( key & FL_Control_L ) != 0 )
     {
         flags &= ~kZoom;
         return 1;
@@ -9239,23 +9239,23 @@ void ImageView::resize_main_window()
 
     if ( uiMain->uiTopBar->visible() )
     {
-        // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-        //                         int(28) );
-        h += uiMain->uiTopBar->h();
+      uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+                              int(28) );
+      h += uiMain->uiTopBar->h();
     }
 
     if ( uiMain->uiPixelBar->visible() )
     {
-        // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-        //                           int(28) );
-        h += uiMain->uiPixelBar->h();
+      uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+                                int(28) );
+      h += uiMain->uiPixelBar->h();
     }
 
     if ( uiMain->uiBottomBar->visible() )
     {
-        // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-        //                            int(49) );
-        h += uiMain->uiBottomBar->h();
+      uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+                                 int(49) );
+      h += uiMain->uiBottomBar->h();
     }
 
     if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
@@ -9282,24 +9282,22 @@ void ImageView::resize_main_window()
 
     if ( fltk_main()->fullscreen_active() )
         fltk_main()->fullscreen_off( posX, posY, w, h );
-    else
-        fltk_main()->resize( posX, posY, w, h );
+    fltk_main()->resize( posX, posY, w, h );
 
 
-    // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-    //                         int(28) );
+    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+                            int(28) );
 
-    // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-    //                           int(28) );
+    uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+                              int(28) );
 
-    // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-    //                            int(49) );
+    uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+                               int(49) );
 
     uiMain->uiRegion->layout();
     uiMain->uiRegion->init_sizes();
 
     uiMain->uiRegion->redraw();
-
 
     if ( fit ) fit_image();
 
