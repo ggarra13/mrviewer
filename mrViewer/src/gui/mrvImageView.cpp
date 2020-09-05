@@ -4332,7 +4332,7 @@ int ImageView::leftMouseDown(int x, int y)
         if ( Fl::event_state( FL_SHIFT ) )
         {
             flags |= kLeftShift;
-            flags = flags & ~kGain;
+            flags &= ~kGain;
             if ( Fl::event_state( FL_CTRL ) )
             {
                 flags |= kLeftCtrl;
@@ -4340,14 +4340,14 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else
             {
-              flags = flags & ~kLeftCtrl;
-              flags = flags & ~kGamma;
+              flags &= ~kLeftCtrl;
+              flags &= ~kGamma;
               selection_mode( true );
             }
         }
         else if ( Fl::event_state( FL_CTRL ) )
         {
-          flags = flags & ~kLeftShift;
+          flags &= ~kLeftShift;
           flags |= kLeftCtrl;
           flags |= kGain;
         }
@@ -7374,7 +7374,7 @@ int ImageView::keyUp(unsigned int key)
 {
 
 #ifdef DEBUG_KEYS
-  std::cerr << "KEYUP flags " << flags << std::endl;
+  std::cerr << "KEYUP key: " << key << " flags " << flags << std::endl;
   std::cerr << "\tMouseDown: " << (flags & kMouseDown) << std::endl;
   std::cerr << "\tMouseLeft: " << (flags & kMouseLeft) << std::endl;
   std::cerr << "\tMouseMiddle: " << (flags & kMouseMiddle) << std::endl;
@@ -7388,14 +7388,15 @@ int ImageView::keyUp(unsigned int key)
   std::cerr << "\tGamma: " << (flags & kGamma) << std::endl;
 #endif
 
-  if ( ( key & FL_Alt_L ) != 0 )
+  if ( ( key & FL_Alt_L ) == FL_Alt_L )
     {
         flags &= ~kLeftAlt;
         flags &= ~kZoom;
         return 1;
     }
+
 #ifdef __APPLE__
-  if ( ( key & FL_Control_L ) != 0 )
+  if ( ( key & FL_Control_L ) == FL_Control_L )
     {
       flags &= ~kGamma;
       flags &= ~kZoom;
@@ -7415,15 +7416,19 @@ int ImageView::keyUp(unsigned int key)
     if ( _mode & kSelection && (key & FL_Shift_L || key & FL_Shift_R ) )
     {
       scrub_mode();
+      flags &= ~kGain;
+      flags &= ~kGamma;
       return 1;
     }
-    else if ( key & FL_Shift_L )
+    else if ( flags & kLeftShift &&
+              !Fl::get_key(FL_Shift_L) && !Fl::get_key( FL_Shift_R ) )
     {
       flags &= ~kGain;
       flags &= ~kGamma;
       return 1;
     }
-    else if ( key & FL_Control_L )
+    else if ( flags & kLeftCtrl &&
+              !Fl::get_key(FL_Control_L) && !Fl::get_key( FL_Control_R ) )
     {
       flags &= ~kGamma;
       return 1;
