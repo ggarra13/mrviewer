@@ -7413,7 +7413,8 @@ int ImageView::keyUp(unsigned int key)
           return 1;
       }
 
-    if ( _mode & kSelection && (key & FL_Shift_L || key & FL_Shift_R ) )
+    if ( ( _mode & kSelection ) && (((key & FL_Shift_L) == FL_Shift_L) ||
+                                    ((key & FL_Shift_R) == FL_Shift_R)))
     {
       scrub_mode();
       flags &= ~kGain;
