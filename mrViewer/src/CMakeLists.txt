@@ -36,7 +36,7 @@ if (APPLE)
    set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
-	  ${OSX_FRAMEWORKS}")
+    ${OSX_FRAMEWORKS}")
 
   # stop OpenGL deprecation warnings on MacOSX > 10.14
   add_definitions(-DGL_SILENCE_DEPRECATION=1)
@@ -149,7 +149,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DLINUX -DNDEBUG )
   ADD_COMPILE_OPTIONS( -O3 -msse )
   SET(OS_LIBRARIES
-    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx #dvdnav dvdread
+    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW -static-libstdc++ lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
     )
 
   IF( AOENGINE )
@@ -874,23 +874,23 @@ IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
   MESSAGE( STATUS "NO CPACK RUN" )
   ADD_CUSTOM_TARGET( bundle ALL
-	 COMMAND echo here we would run cpack
-	 DEPENDS translations
+   COMMAND echo here we would run cpack
+   DEPENDS translations
       )
 ELSE()
   ADD_CUSTOM_TARGET( bundle "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/libs.rb"
-	 COMMAND "${CMAKE_CPACK_COMMAND}"
-	 "-C" "$<CONFIGURATION>"
-	 "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
-	 COMMENT "Running CPack. Please wait..."
-	 USES_TERMINAL
-	 DEPENDS translations )
+   COMMAND "${CMAKE_CPACK_COMMAND}"
+   "-C" "$<CONFIGURATION>"
+   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
+   COMMENT "Running CPack. Please wait..."
+   USES_TERMINAL
+   DEPENDS translations )
 ENDIF()
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
-	POST_BUILD
-	COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
-	WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-	)
+  POST_BUILD
+  COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  )
 ENDIF( WIN32 )

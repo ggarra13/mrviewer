@@ -34,6 +34,9 @@
 #define NETWORK_COMMANDS
 #endif
 
+// #define DEBUG_KEYS
+
+
 #ifdef NETWORK_COMMANDS
 #  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << " for " << name << std::endl;
 #else
@@ -4290,7 +4293,21 @@ int ImageView::leftMouseDown(int x, int y)
 
 
     flags	|= kMouseDown;
-    //flags	= 0;
+
+#ifdef DEBUG_KEYS
+    std::cerr << "MOUSEDOWN flags " << flags << std::endl;
+    std::cerr << "\tMouseDown: " << (flags & kMouseDown) << std::endl;
+    std::cerr << "\tMouseLeft: " << (flags & kMouseLeft) << std::endl;
+    std::cerr << "\tMouseMiddle: " << (flags & kMouseMiddle) << std::endl;
+    std::cerr << "\tMouseRight: " << (flags & kMouseRight) << std::endl;
+    std::cerr << "\tMouseMove: " << (flags & kMouseMove) << std::endl;
+    std::cerr << "\tLeftAlt: " << (flags & kLeftAlt) << std::endl;
+    std::cerr << "\tLeftShift: " << (flags & kLeftShift) << std::endl;
+    std::cerr << "\tLeftCtrl: " << (flags & kLeftCtrl) << std::endl
+              << std::endl;
+    std::cerr << "\tGain: " << (flags & kGain) << std::endl;
+    std::cerr << "\tGamma: " << (flags & kGamma) << std::endl;
+#endif
 
     int button = Fl::event_button();
 #ifdef __APPLE__
@@ -4301,20 +4318,21 @@ int ImageView::leftMouseDown(int x, int y)
 #endif
     if ( button == FL_LEFT_MOUSE )
     {
-        flags	= kMouseDown;
+        flags	|= kMouseLeft;
         if (Fl::event_key(FL_Alt_L) || vr() )
         {
             // Handle ALT+LMB moves
           flags |= kLeftAlt;
           flags |= kMouseMove;
           flags |= kMouseMiddle;
+          flags &= ~kMouseLeft;
           return 1;
         }
 
-        flags |= kMouseLeft;
         if ( Fl::event_state( FL_SHIFT ) )
         {
             flags |= kLeftShift;
+            flags = flags & ~kGain;
             if ( Fl::event_state( FL_CTRL ) )
             {
                 flags |= kLeftCtrl;
@@ -4322,14 +4340,16 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else
             {
-                selection_mode( true );
+              flags = flags & ~kLeftCtrl;
+              flags = flags & ~kGamma;
+              selection_mode( true );
             }
         }
         else if ( Fl::event_state( FL_CTRL ) )
         {
-            flags |= kMouseLeft;
-            flags |= kLeftCtrl;
-            flags |= kGain;
+          flags = flags & ~kLeftShift;
+          flags |= kLeftCtrl;
+          flags |= kGain;
         }
 
         if ( _mode & kSelection )
@@ -4550,7 +4570,6 @@ int ImageView::leftMouseDown(int x, int y)
     else if ( button == FL_MIDDLE_MOUSE )
     {
         // handle MMB moves
-        flags  = kMouseDown;
         flags |= kMouseMove;
         flags |= kMouseMiddle;
         return 1;
@@ -4969,6 +4988,23 @@ void ImageView::leftMouseUp( int x, int y )
     flags &= ~kMouseDown;
     flags &= ~kMouseMove;
     flags &= ~kZoom;
+    flags &= ~kGain;
+    flags &= ~kGamma;
+
+#ifdef DEBUG_KEYS
+    std::cerr << "MOUSEUP flags " << flags << std::endl;
+    std::cerr << "\tMouseDown: " << (flags & kMouseDown) << std::endl;
+    std::cerr << "\tMouseLeft: " << (flags & kMouseLeft) << std::endl;
+    std::cerr << "\tMouseMiddle: " << (flags & kMouseMiddle) << std::endl;
+    std::cerr << "\tMouseRight: " << (flags & kMouseRight) << std::endl;
+    std::cerr << "\tMouseMove: " << (flags & kMouseMove) << std::endl;
+    std::cerr << "\tLeftAlt: " << (flags & kLeftAlt) << std::endl;
+    std::cerr << "\tLeftShift: " << (flags & kLeftShift) << std::endl;
+    std::cerr << "\tLeftCtrl: " << (flags & kLeftCtrl) << std::endl
+              << std::endl;
+    std::cerr << "\tGain: " << (flags & kGain) << std::endl;
+    std::cerr << "\tGamma: " << (flags & kGamma) << std::endl;
+#endif
 
     int button = Fl::event_button();
 #ifdef __APPLE__
@@ -7337,6 +7373,21 @@ int ImageView::keyDown(unsigned int rawkey)
 int ImageView::keyUp(unsigned int key)
 {
 
+#ifdef DEBUG_KEYS
+  std::cerr << "KEYUP flags " << flags << std::endl;
+  std::cerr << "\tMouseDown: " << (flags & kMouseDown) << std::endl;
+  std::cerr << "\tMouseLeft: " << (flags & kMouseLeft) << std::endl;
+  std::cerr << "\tMouseMiddle: " << (flags & kMouseMiddle) << std::endl;
+  std::cerr << "\tMouseRight: " << (flags & kMouseRight) << std::endl;
+  std::cerr << "\tMouseMove: " << (flags & kMouseMove) << std::endl;
+  std::cerr << "\tLeftAlt: " << (flags & kLeftAlt) << std::endl;
+  std::cerr << "\tLeftShift: " << (flags & kLeftShift) << std::endl;
+  std::cerr << "\tLeftCtrl: " << (flags & kLeftCtrl) << std::endl
+              << std::endl;
+  std::cerr << "\tGain: " << (flags & kGain) << std::endl;
+  std::cerr << "\tGamma: " << (flags & kGamma) << std::endl;
+#endif
+
   if ( ( key & FL_Alt_L ) != 0 )
     {
         flags &= ~kLeftAlt;
@@ -7346,16 +7397,38 @@ int ImageView::keyUp(unsigned int key)
 #ifdef __APPLE__
   if ( ( key & FL_Control_L ) != 0 )
     {
-        flags &= ~kZoom;
-        return 1;
+      flags &= ~kGamma;
+      flags &= ~kZoom;
+      return 1;
     }
 #endif
+
 
     if ( _mode & kTemporary && !Fl::get_key(key))
       {
           scrub_mode();
+          flags &= ~kGain;
+          flags &= ~kGamma;
           return 1;
       }
+
+    if ( _mode & kSelection && (key & FL_Shift_L || key & FL_Shift_R ) )
+    {
+      scrub_mode();
+      return 1;
+    }
+    else if ( key & FL_Shift_L )
+    {
+      flags &= ~kGain;
+      flags &= ~kGamma;
+      return 1;
+    }
+    else if ( key & FL_Control_L )
+    {
+      flags &= ~kGamma;
+      return 1;
+    }
+
     return 0;
 }
 

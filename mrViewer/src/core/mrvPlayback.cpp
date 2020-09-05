@@ -1476,10 +1476,7 @@ void decode_thread( PlaybackData* data )
 
         if ( img->has_video() || img->has_audio() )
         {
-          if ( img->playback() != CMedia::kBackwards || !img->has_audio() )
             frame = img->dts();
-          else
-            --frame;
         }
 
 

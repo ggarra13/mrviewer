@@ -112,7 +112,7 @@ namespace
 // #define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
-
+//#define DEBUG_DECODE_IMAGE
 
 
 //  in ffmpeg, sizes are in bytes...
@@ -884,7 +884,7 @@ CMedia::Cache aviImage::is_cache_filled( int64_t frame )
     SCOPED_LOCK( _mutex );
 
     int64_t f = frame - _start_number;
-#if 0
+#if 1
     // Check if video is already in video store
     bool ok = in_video_store( f );
 #else
@@ -927,6 +927,8 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_audio = !has_audio();
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
+
+
 
     if ( (stopped() || saving() || playback() == kBackwards ) &&
          (got_video || in_video_store( frame - _start_number )) &&
@@ -1005,15 +1007,15 @@ bool aviImage::seek_to_position( const int64_t frame )
     // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-        int64_t f = start;
-        if ( f > _frame_end ) f = _frame_end;
-        int64_t dts = queue_packets( f, false, got_video,
-                                     got_audio, got_subtitle );
-        _dts = _adts = dts;
-        // Set the expected to an impossible frame
-        _expected = _expected_audio = _frame_start-1;
-        _seek_req = false;
-        return true;
+      int64_t f = frame; //start;
+      if ( f > last_frame() ) f = last_frame();
+      int64_t dts = queue_packets( f, false, got_video,
+                                   got_audio, got_subtitle );
+      _dts = _adts = dts;
+      // Set the expected to an impossible frame
+      _expected = _expected_audio = _frame_start-1;
+      _seek_req = false;
+      return true;
     }
 
 
@@ -1344,10 +1346,6 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 {
     AVPacket* pkt = (AVPacket*)p;
 
-    if ( pkt && _video_packets.is_jump( *pkt ) )
-    {
-        return kDecodeDone;
-    }
 
 
     AVStream* stream = get_video_stream();
@@ -1378,50 +1376,51 @@ aviImage::decode_video_packet( int64_t& ptsframe,
         }
 
 
+        ptsframe = _av_frame->best_effort_timestamp;
+
+        if ( pkt && ptsframe == AV_NOPTS_VALUE )
+        {
+          ptsframe = pkt->pts;
+          if ( ptsframe == AV_NOPTS_VALUE )
+          {
+            ptsframe = pkt->dts;
+          }
+        }
+
+
+        // The following is a work around for bug in decoding
+        // bgc.sub.dub.ogm
+        if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
+             pkt->dts < ptsframe  )
+        {
+          ptsframe = pkt->dts;
+        }
+
+        // needed for some corrupt movies
+        _av_frame->pts = ptsframe;
+
+
+        // Turn PTS into a frame
+
+        if ( pkt && ptsframe == AV_NOPTS_VALUE )
+        {
+
+          ptsframe = get_frame( stream, *p );
+          if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
+        }
+        else
+        {
+
+          ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
+        }
 
         if ( got_pict ) {
 
-            ptsframe = _av_frame->best_effort_timestamp;
-
-            if ( pkt && ptsframe == AV_NOPTS_VALUE )
-            {
-                ptsframe = pkt->pts;
-                if ( ptsframe == AV_NOPTS_VALUE )
-                {
-                    ptsframe = pkt->dts;
-                }
-            }
-
-
-            // The following is a work around for bug in decoding
-            // bgc.sub.dub.ogm
-            if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
-                 pkt->dts < ptsframe  )
-            {
-                ptsframe = pkt->dts;
-            }
-
-
-
-            // needed for some corrupt movies
-            _av_frame->pts = ptsframe;
-
-
-            // Turn PTS into a frame
-
-            if ( pkt && ptsframe == AV_NOPTS_VALUE )
-            {
-
-                ptsframe = get_frame( stream, *p );
-                if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
-            }
-            else
-            {
-
-                ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
-            }
-
-
+#ifdef DEBUG_DECODE_IMAGE
+            std::cerr << "got image " << ptsframe << " "
+                      << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                      << std::endl;
+#endif
 
             if ( filter_graph && _subtitle_index >= 0 )
             {
@@ -1474,6 +1473,13 @@ aviImage::decode_video_packet( int64_t& ptsframe,
             return kDecodeOK;
         }
 
+#ifdef DEBUG_DECODE_IMAGE
+        std::cerr << "did not get image err:" << err
+                  << " " << ptsframe  << " "
+                  << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                  << std::endl;
+#endif
+
         if ( err == 0 ) {
 
             // If flushing caches, return done.
@@ -1499,21 +1505,9 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
     {
         store_image( ptsframe, _av_frame->pts );
 
-        do {
-            status = decode_video_packet( ptsframe, frame, NULL );
-
-            if ( status == kDecodeOK )
-            {
-                store_image( ptsframe, _av_frame->pts );
-            }
-        } while ( status == kDecodeOK );
-
-        av_frame_unref(_av_frame);
-        av_frame_unref(_filt_frame);
         if ( ( stopped() || saving() ) && ptsframe != frame &&
              frame != first_frame() )
-            return kDecodeMissingFrame;
-        return kDecodeOK;
+            status = kDecodeMissingFrame;
     }
     else if ( status == kDecodeError )
     {
@@ -1524,15 +1518,10 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
                          << (pkt.pts == AV_NOPTS_VALUE ?
                              -1 : pkt.pts ) << " dts: " << pkt.dts
                          << " data: " << (void*)pkt.data);
-        av_frame_unref(_av_frame);
-        av_frame_unref(_filt_frame);
-    }
-    else
-    {
-        av_frame_unref(_av_frame);
-        av_frame_unref(_filt_frame);
     }
 
+    av_frame_unref(_av_frame);
+    av_frame_unref(_filt_frame);
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
@@ -3135,14 +3124,30 @@ int64_t aviImage::queue_packets( const int64_t frame,
         {
             int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset + _start_number; // needed
 
+
             if ( playback() == kBackwards )
             {
                 if ( pktframe <= frame )
                 {
+#ifdef DEBUG_DECODE_IMAGE
+                  std::cerr << "queued " << pktframe << " <= " << frame
+                            << " is_seek? " << is_seek << ' '
+                            << ( pkt.flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                            << std::endl;
+#endif
                     _video_packets.push_back( pkt );
                 }
+                else
+                {
+#ifdef DEBUG_DECODE_IMAGE
+                  std::cerr << "did not queue " << pktframe << " <= " << frame
+                            << " is_seek? " << is_seek << ' '
+                            << ( pkt.flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                            << std::endl;
+#endif
+                }
                 // should be pktframe without +1 but it works better with it.
-                if ( pktframe < dts ) dts = pktframe + 1;
+                if ( pktframe < dts ) dts = pktframe;
             }
             else
             {
@@ -3428,13 +3433,6 @@ CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
     if ( status == kDecodeOK )
     {
         store_image( ptsframe, _av_frame->pts );
-        do {
-            status = decode_video_packet( ptsframe, frame, NULL );
-            if ( status == kDecodeOK )
-            {
-                store_image( ptsframe, _av_frame->pts );
-            }
-        } while ( status == kDecodeOK );
     }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
