@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -423,7 +423,7 @@ class PaintUI {open
       user_data this user_data_type {PaintUI*}
       callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-      xywh {733 95 145 525} type Double resizable non_modal visible
+      xywh {733 123 145 525} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {0 0 145 520} box PLASTIC_UP_BOX
@@ -529,7 +529,7 @@ if ( r == 0 && g == 0 && b == 0 )
    o->color( FL_BLACK );
 else
    o->color( c );
-o->redraw();} selected
+o->redraw();}
           tooltip {Selects the current pen color.} xywh {92 235 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 4
         }
         Fl_Group {} {
@@ -656,7 +656,8 @@ else
   }
 }
 
-class ViewerUI {} {
+class ViewerUI {open
+} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -698,7 +699,7 @@ class ViewerUI {} {
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {1130 70 640 535} type Double align 80 resizable
+      xywh {1130 210 640 535} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -824,16 +825,19 @@ uiICCProfiles->uiMain->show();}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.01 value 1
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 maximum 64 value 1
               code0 {o->textsize( 12 );}
               code1 {o->textcolor( FL_BLACK );}
             }
             Fl_Slider uiGain {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
-v->uiGainInput->value( (float) o->value() );}
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.02 maximum 64 step 1 value 1
-              code0 {o->slider_type( mrv::Slider::kLOG );}
+v->uiGainInput->value( (float) o->value() );} selected
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} maximum 64 value 1
+              code0 {o->minimum( 0.02 );}
+              code1 {o->maximum( 64.0 ); o->step( 0.1 );}
+              code2 {o->value( 1.0 );}
+              code3 {o->slider_type( mrv::Slider::kLOG );}
               class {mrv::Slider}
             }
             Fl_Menu_Button uiICS {
@@ -999,7 +1003,7 @@ else
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 minimum 0.015625 maximum 64 step 0.01 value 1
+Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 maximum 64 value 1
                   code0 {o->textsize(12);}
                   code1 {o->textcolor( FL_BLACK );}
                 }
@@ -1008,7 +1012,7 @@ Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maximum 4 step 0.01 value 0.25
+Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} maximum 4
                 }
               }
             }
@@ -1607,7 +1611,7 @@ o->value(24);}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->volume((float) o->value() );}
-                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1 slider_size 0.3
+                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 value 1
                     }
                   }
                 }
