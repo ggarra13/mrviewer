@@ -114,7 +114,7 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 
         OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
 
-        OCIO::DisplayViewTransformRcPtr transform = OCIO::DisplayViewTransform::Create();
+        OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
 
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() )
@@ -125,7 +125,7 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
             ics = defaultcs->getName();
         }
 
-        transform->setSrc( ics.c_str() );
+        transform->setInputColorSpaceName( ics.c_str() );
         transform->setDisplay( display.c_str() );
         transform->setView( view.c_str() );
 
@@ -136,14 +136,9 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
         ptrdiff_t xstride = pic->pixel_size() * pic->channels();
         ptrdiff_t ystride = xstride * pic->width();
         OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
-                                    pic->channels(), OCIO::BIT_DEPTH_F32,
-                                    chanstride, xstride,
+                                    pic->channels(), chanstride, xstride,
                                     ystride );
-        OCIO::ConstCPUProcessorRcPtr cpu = 
-        processor->getOptimizedCPUProcessor(OCIO::BIT_DEPTH_F32,
-                                            OCIO::BIT_DEPTH_F32,
-                                            OCIO::OPTIMIZATION_DEFAULT);
-        cpu->apply( baker );
+        processor->apply( baker );
     }
     catch( OCIO::Exception& e )
     {

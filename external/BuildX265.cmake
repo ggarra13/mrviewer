@@ -2,8 +2,8 @@ include( ExternalProject )
 
 ExternalProject_Add(
   x265
-  URL "https://bitbucket.org/multicoreware/x265/downloads/x265_3.0.tar.gz"
-  SOURCE_SUBDIR source
+  HG_REPOSITORY "http://hg.videolan.org/x265"
+  HG_TAG tip
   DEPENDS NASM
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}

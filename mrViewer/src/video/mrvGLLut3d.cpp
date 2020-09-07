@@ -552,8 +552,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
         const std::string& view = mrv::Preferences::OCIO_View;
         DBG;
 
-        OCIO::DisplayViewTransformRcPtr transform =
-            OCIO::DisplayViewTransform::Create();
+        OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
         DBG;
 
         std::string ics = img->ocio_input_color_space();
@@ -570,7 +569,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
         DBG;
-        transform->setSrc( ics.c_str() );
+        transform->setInputColorSpaceName( ics.c_str() );
         DBG;
         transform->setDisplay( display.c_str() );
         DBG;
@@ -587,12 +586,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
                                   /* width */ lut_size()/_channels,
                                   /*height*/ 1,
                                   /*channels*/ _channels);
-        
-        OCIO::ConstCPUProcessorRcPtr cpu =
-        processor->getOptimizedCPUProcessor(OCIO::BIT_DEPTH_F32,
-                                            OCIO::BIT_DEPTH_F32,
-                                            OCIO::OPTIMIZATION_DEFAULT);
-        cpu->apply( img );
+
+        processor->apply( img );
         DBG;
 
         // std::ostringstream os;
