@@ -9,6 +9,8 @@ v5.6.2  - Fixed ocio* utilities on Windows which used OpenImageIO.
 	- Bug fixed zooming/panning and menu appearing afterwards by mistake.
 	- Bug fixed changing gain/gamma and then dragging and having the
 	  selection appear incorrectly.
+	- Reverted OpenColorIO to 1.1.1 so the distro is compatible with
+	  CentOS 7.
 
 v5.6.1  *** SOME IMPORTANT CHANGES TO THE DISTRIBUTION ***
 	- Removed all aces_* from distribution as they were taking too much

@@ -114,7 +114,13 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 
         OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
 
-        OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
+#if OCIO_VERSION_HEX >= 0x02000000
+        OCIO::DisplayViewTransformRcPtr transform =
+          OCIO::DisplayViewTransform::Create();
+#else
+        OCIO::DisplayTransformRcPtr transform =
+          OCIO::DisplayTransform::Create();
+#endif
 
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() )
@@ -125,20 +131,37 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
             ics = defaultcs->getName();
         }
 
+#if OCIO_VERSION_HEX >= 0x02000000
+        transform->setSrc( ics.c_str() );
+#else
         transform->setInputColorSpaceName( ics.c_str() );
+#endif
         transform->setDisplay( display.c_str() );
         transform->setView( view.c_str() );
 
         OCIO::ConstProcessorRcPtr processor = config->getProcessor( transform );
 
+#if OCIO_VERSION_HEX >= 0x02000000
+        OCIO::ConstCPUProcessorRcPtr cpu =
+          processor->getOptimizedCPUProcessor(BIT_DEPTH_F32, BIT_DEPTH_F32,
+                                              OCIO::OPTIMIZATION_DEFAULT);
+#endif
+
         float* p = (float*)pic->data().get();
         ptrdiff_t chanstride = pic->pixel_size();
         ptrdiff_t xstride = pic->pixel_size() * pic->channels();
         ptrdiff_t ystride = xstride * pic->width();
+#if OCIO_VERSION_HEX >= 0x02000000
+        OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
+                                    pic->channels(), BIT_DEPTH_F32,
+                                    chanstride, xstride, ystride );
+        cpu->apply( baker );
+#else
         OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
                                     pic->channels(), chanstride, xstride,
                                     ystride );
         processor->apply( baker );
+#endif
     }
     catch( OCIO::Exception& e )
     {

@@ -95,7 +95,7 @@
 #: gui/mrvTimecode.cpp:481 gui/mrvVersion.cpp:335 gui/mrvVersion.cpp:346
 #: video/mrvGLEngine.cpp:3802 video/mrvGLEngine.cpp:3860
 #: video/mrvGLEngine.cpp:3884 video/mrvGLShader.cpp:70
-#: video/mrvGLLut3d.cpp:1173 video/mrvGLLut3d.cpp:1218
+#: video/mrvGLLut3d.cpp:1192 video/mrvGLLut3d.cpp:1237
 #: video/mrvGLShape.cpp:119 video/mrvGLShape.cpp:123 video/mrvGLShape.cpp:151
 #: video/mrvGLShape.cpp:169 video/mrvGLShape.cpp:180 video/mrvGLShape.cpp:196
 #: standalone/mrvCommandLine.cpp:240 standalone/mrvCommandLine.cpp:287
@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-09-07 17:19-0300\n"
+"POT-Creation-Date: 2020-09-07 23:01-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -432,7 +432,7 @@ msgstr ""
 #: video/mrvGLEngine.cpp:1709 video/mrvGLEngine.cpp:2453
 #: video/mrvGLEngine.cpp:2498 video/mrvGLEngine.cpp:2568
 #: video/mrvGLEngine.cpp:4097 video/mrvGLEngine.cpp:4138
-#: video/mrvGLQuad.cpp:826 video/mrvGLLut3d.cpp:1007 video/mrvGLLut3d.cpp:1014
+#: video/mrvGLQuad.cpp:826 video/mrvGLLut3d.cpp:1026 video/mrvGLLut3d.cpp:1033
 #: standalone/mrvCommandLine.cpp:119 standalone/mrvCommandLine.cpp:633
 #, c-format
 msgid " "
@@ -2954,7 +2954,7 @@ msgstr ""
 msgid "  @@vBC;;DEFGH      "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1309
+#: video/mrvGLLut3d.cpp:1328
 msgid "  Choosing "
 msgstr "  Eligiendo "
 
@@ -3148,12 +3148,12 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: video/mrvGLLut3d.cpp:983 video/mrvGLLut3d.cpp:1017
-#: video/mrvGLLut3d.cpp:1030 video/mrvGLLut3d.cpp:1091
+#: video/mrvGLLut3d.cpp:1002 video/mrvGLLut3d.cpp:1036
+#: video/mrvGLLut3d.cpp:1049 video/mrvGLLut3d.cpp:1110
 msgid " (C)"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1066 video/mrvGLLut3d.cpp:1115
+#: video/mrvGLLut3d.cpp:1085 video/mrvGLLut3d.cpp:1134
 msgid " (I)"
 msgstr ""
 
@@ -3239,11 +3239,11 @@ msgid ""
 " --no-warnings -F --flat-playlist --no-playlist --no-check-certificate -- "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:184 video/mrvGLLut3d.cpp:981 video/mrvGLLut3d.cpp:998
-#: video/mrvGLLut3d.cpp:1028 video/mrvGLLut3d.cpp:1064
-#: video/mrvGLLut3d.cpp:1089 video/mrvGLLut3d.cpp:1113
-#: video/mrvGLLut3d.cpp:1261 video/mrvGLLut3d.cpp:1265
-#: video/mrvGLLut3d.cpp:1267
+#: video/mrvGLEngine.cpp:184 video/mrvGLLut3d.cpp:1000
+#: video/mrvGLLut3d.cpp:1017 video/mrvGLLut3d.cpp:1047
+#: video/mrvGLLut3d.cpp:1083 video/mrvGLLut3d.cpp:1108
+#: video/mrvGLLut3d.cpp:1132 video/mrvGLLut3d.cpp:1280
+#: video/mrvGLLut3d.cpp:1284 video/mrvGLLut3d.cpp:1286
 msgid " -> "
 msgstr ""
 
@@ -3739,7 +3739,7 @@ msgstr " cuadro "
 msgid " _frame_offset "
 msgstr "Desplazamiento de Cuadro"
 
-#: video/mrvGLLut3d.cpp:1285
+#: video/mrvGLLut3d.cpp:1304
 msgid " already created: "
 msgstr " ya creada: "
 
@@ -4017,7 +4017,7 @@ msgstr " en remplazo"
 #
 #
 #
-#: video/mrvGLLut3d.cpp:1335
+#: video/mrvGLLut3d.cpp:1354
 msgid " is "
 msgstr " es "
 
@@ -5094,8 +5094,8 @@ msgstr ""
 #: core/mrvServer.cpp:1358 gui/mrvFileRequester.cpp:594
 #: gui/mrvFileRequester.cpp:754 gui/mrvImageView.cpp:870
 #: gui/mrvImageInformation.cpp:1595 gui/mrvPreferences.cpp:542
-#: video/mrvGLLut3d.cpp:826 video/mrvGLLut3d.cpp:1041
-#: video/mrvGLLut3d.cpp:1071
+#: video/mrvGLLut3d.cpp:845 video/mrvGLLut3d.cpp:1060
+#: video/mrvGLLut3d.cpp:1090
 msgid "\""
 msgstr ""
 
@@ -5182,7 +5182,7 @@ msgstr ""
 msgid "\"."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1183
+#: video/mrvGLLut3d.cpp:1202
 msgid "\": "
 msgstr ""
 
@@ -6248,7 +6248,7 @@ msgstr ""
 #: core/wandImage.cpp:802 gui/mrvImageInformation.cpp:1138
 #: gui/mrvImageInformation.cpp:1147 gui/mrvImageInformation.cpp:4797
 #: gui/mrvImageInformation.cpp:4810 gui/mrvSlider.cpp:15
-#: video/mrvGLLut3d.cpp:1013
+#: video/mrvGLLut3d.cpp:1032
 #, c-format
 msgid "%g"
 msgstr ""
@@ -6318,7 +6318,7 @@ msgstr ""
 msgid "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1003
+#: video/mrvGLLut3d.cpp:1022
 #, c-format
 msgid "%g %g %g - %g %g %g - %g %g %g"
 msgstr ""
@@ -8915,8 +8915,8 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:4369 gui/mrvImageView.cpp:8810
 #: gui/mrvPreferences.cpp:549 gui/mrvPreferences.cpp:990
 #: gui/mrvVersion.cpp:552 gui/mrvVersion.cpp:553 video/mrvGLEngine.cpp:480
-#: video/mrvGLLut3d.cpp:1183 video/mrvGLLut3d.cpp:1227
-#: video/mrvGLLut3d.cpp:1298 video/mrvGLLut3d.cpp:1309
+#: video/mrvGLLut3d.cpp:1202 video/mrvGLLut3d.cpp:1246
+#: video/mrvGLLut3d.cpp:1317 video/mrvGLLut3d.cpp:1328
 msgid "."
 msgstr ""
 
@@ -11326,7 +11326,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1284 video/mrvGLLut3d.cpp:1384
+#: video/mrvGLLut3d.cpp:1303 video/mrvGLLut3d.cpp:1403
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -12278,7 +12278,7 @@ msgstr ""
 #: audio/RtAudio.cpp:2273 core/mrvColorProfile.cpp:260
 #: core/mrvColorProfile.cpp:261 gui/mrvCTLBrowser.cpp:93
 #: gui/mrvFileRequester.cpp:78 gui/mrvVersion.cpp:455 gui/mrvVersion.cpp:461
-#: video/mrvGLLut3d.cpp:1384
+#: video/mrvGLLut3d.cpp:1403
 msgid ":"
 msgstr ""
 
@@ -13897,7 +13897,7 @@ msgstr ""
 msgid "All rights reserved."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:726
+#: video/mrvGLLut3d.cpp:745
 msgid "Allocation error"
 msgstr ""
 
@@ -14088,7 +14088,7 @@ msgstr "Apertura"
 msgid "Aperture Value"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:926
+#: video/mrvGLLut3d.cpp:945
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -14604,11 +14604,11 @@ msgstr ""
 "El carrete de fondo tiene varias imágenes y EDL activado.  Esto no es "
 "permitido.  Apagando edl."
 
-#: video/mrvGLLut3d.cpp:747 video/mrvGLLut3d.cpp:750
+#: video/mrvGLLut3d.cpp:766 video/mrvGLLut3d.cpp:769
 msgid "Bad color encoding"
 msgstr " codificando"
 
-#: video/mrvGLLut3d.cpp:753
+#: video/mrvGLLut3d.cpp:772
 msgid "Bad color space link"
 msgstr "Obtuve el espacio de color '"
 
@@ -14616,7 +14616,7 @@ msgstr "Obtuve el espacio de color '"
 msgid "Bad port number "
 msgstr "Mal número de puerto"
 
-#: video/mrvGLLut3d.cpp:732
+#: video/mrvGLLut3d.cpp:751
 msgid "Bad transform"
 msgstr "Transformación"
 
@@ -14794,7 +14794,7 @@ msgstr "Byte"
 #: gui/mrvPreferences.cpp:1794 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:55 video/mrvGLEngine.cpp:60
 #: video/mrvGLEngine.cpp:3799 video/mrvGLEngine.cpp:4099
-#: video/mrvGLShader.cpp:36 video/mrvCSPUtils.cpp:38 video/mrvGLLut3d.cpp:1394
+#: video/mrvGLShader.cpp:36 video/mrvCSPUtils.cpp:38 video/mrvGLLut3d.cpp:1413
 #: standalone/mrvRoot.cpp:35
 msgid "C"
 msgstr ""
@@ -15070,7 +15070,7 @@ msgstr "Usando perfil de shader de hardware: "
 msgid "Can't open card "
 msgstr "No pude abrir tarjeta "
 
-#: video/mrvGLLut3d.cpp:729
+#: video/mrvGLLut3d.cpp:748
 msgid "Can't open profile"
 msgstr "No pude localizar el perfil ICC"
 
@@ -15478,7 +15478,7 @@ msgstr "Version de Color"
 msgid "Color channel not found at index "
 msgstr "Canal de color no encontrado para índice "
 
-#: video/mrvGLLut3d.cpp:741
+#: video/mrvGLLut3d.cpp:760
 msgid "Color not found"
 msgstr " no encontrado"
 
@@ -15701,7 +15701,7 @@ msgstr ""
 msgid "Corruption in hotkeys preferences. "
 msgstr "Corrupción en preferencias de teclas de manejo. "
 
-#: video/mrvGLLut3d.cpp:834
+#: video/mrvGLLut3d.cpp:853
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -15752,7 +15752,7 @@ msgstr "No pude asignar samples de fuente.  Error:"
 msgid "Could not allocate stream"
 msgstr "No pude alojar pista"
 
-#: video/mrvGLLut3d.cpp:1396
+#: video/mrvGLLut3d.cpp:1415
 msgid "Could not calculate OCIO Lut"
 msgstr "No pude calcular Lut de OCIO"
 
@@ -16044,7 +16044,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not get timecode for frame "
 msgstr "¡Fallé en obtener timecode para el cuadro "
 
-#: video/mrvGLLut3d.cpp:915
+#: video/mrvGLLut3d.cpp:934
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -16070,7 +16070,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:825
+#: video/mrvGLLut3d.cpp:844
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -17047,7 +17047,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:902
+#: video/mrvGLLut3d.cpp:921
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -17055,7 +17055,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:908
+#: video/mrvGLLut3d.cpp:927
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -19293,7 +19293,8 @@ msgstr "Inicio"
 msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
 "Do you want to override it?"
-msgstr "Tecla de Manejo \"%s\" ya usada en \"%s\".\n"
+msgstr ""
+"Tecla de Manejo \"%s\" ya usada en \"%s\".\n"
 "¿Quiere sobreescribirla?"
 
 #: gui/mrvPreferences.cpp:1314
@@ -19467,7 +19468,7 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:879
 #: core/mrvServer.cpp:1289 gui/mrvFileRequester.cpp:413
-#: video/mrvGLLut3d.cpp:1314
+#: video/mrvGLLut3d.cpp:1333
 #, c-format
 msgid "ICS \"%s\""
 msgstr ""
@@ -19715,7 +19716,7 @@ msgid "Image file \""
 msgstr "Archivo de imagen \""
 
 #
-#: video/mrvGLLut3d.cpp:1297
+#: video/mrvGLLut3d.cpp:1316
 msgid "Image input color space is undefined for "
 msgstr "Espacio de Color de Entrada de la imagen sin definir para "
 
@@ -19925,7 +19926,7 @@ msgstr "Imágenes, secuencias o peliculas para mostrar."
 msgid "Img is NULL"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:744
+#: video/mrvGLLut3d.cpp:763
 msgid "Incorrect Apply"
 msgstr ""
 
@@ -19970,7 +19971,7 @@ msgid "Input Device Transform"
 msgstr "Transformación de Dispositivo de Entrada"
 
 #
-#: video/mrvGLLut3d.cpp:1335
+#: video/mrvGLLut3d.cpp:1354
 msgid "Input color space for "
 msgstr "Espacio de Color de Entrada para "
 
@@ -20025,11 +20026,11 @@ msgstr ""
 msgid "Internal Image: Unknown image type"
 msgstr ": Tipo de pixel desconocido"
 
-#: video/mrvGLLut3d.cpp:735
+#: video/mrvGLLut3d.cpp:754
 msgid "Invalid Lut"
 msgstr "Servidor inválido: "
 
-#: video/mrvGLLut3d.cpp:846
+#: video/mrvGLLut3d.cpp:865
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
@@ -20037,7 +20038,7 @@ msgstr "Perfil inválido para CMM: "
 msgid "Invalid call"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:896
+#: video/mrvGLLut3d.cpp:915
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -20078,7 +20079,7 @@ msgstr ""
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:861
+#: video/mrvGLLut3d.cpp:880
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -20517,7 +20518,7 @@ msgstr ""
 msgid "LMT."
 msgstr ""
 
-#: core/mrvServer.cpp:580 gui/mrvImageView.cpp:1171 video/mrvGLLut3d.cpp:1000
+#: core/mrvServer.cpp:580 gui/mrvImageView.cpp:1171 video/mrvGLLut3d.cpp:1019
 msgid "LMT.SOPNode"
 msgstr ""
 
@@ -20526,7 +20527,7 @@ msgstr ""
 msgid "LMT.SOPNode %g %g %g %g %g %g %g %g %g"
 msgstr ""
 
-#: core/mrvServer.cpp:603 gui/mrvImageView.cpp:1172 video/mrvGLLut3d.cpp:1010
+#: core/mrvServer.cpp:603 gui/mrvImageView.cpp:1172 video/mrvGLLut3d.cpp:1029
 msgid "LMT.SatNode"
 msgstr ""
 
@@ -20932,7 +20933,7 @@ msgstr "Luma"
 msgid "Lut Active"
 msgstr "Lut Activo"
 
-#: video/mrvGLLut3d.cpp:1418 video/mrvGLLut3d.cpp:1431
+#: video/mrvGLLut3d.cpp:1437 video/mrvGLLut3d.cpp:1450
 msgid "Lut calculate failed"
 msgstr ""
 
@@ -21774,11 +21775,11 @@ msgstr "Próxima Versión de la Imagen"
 msgid "No"
 msgstr "No"
 
-#: video/mrvGLLut3d.cpp:1178 video/mrvGLLut3d.cpp:1223
+#: video/mrvGLLut3d.cpp:1197 video/mrvGLLut3d.cpp:1242
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:1176 video/mrvGLLut3d.cpp:1221
+#: video/mrvGLLut3d.cpp:1195 video/mrvGLLut3d.cpp:1240
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
@@ -21786,7 +21787,7 @@ msgstr "No existe escritura CTL o perfil ICC"
 msgid "No GPU."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1180 video/mrvGLLut3d.cpp:1225
+#: video/mrvGLLut3d.cpp:1199 video/mrvGLLut3d.cpp:1244
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -21891,11 +21892,11 @@ msgstr "No se pudo elegir formato de pixel"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:1227
+#: video/mrvGLLut3d.cpp:1246
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:1182
+#: video/mrvGLLut3d.cpp:1201
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -22308,13 +22309,13 @@ msgstr "ODT"
 msgid "ODT \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1119
+#: video/mrvGLLut3d.cpp:1138
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:1095
+#: video/mrvGLLut3d.cpp:1114
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -22584,7 +22585,7 @@ msgstr "Salida"
 msgid "Output - Rec.709"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1252
+#: video/mrvGLLut3d.cpp:1271
 msgid "Output - sRGB"
 msgstr ""
 
@@ -23183,7 +23184,7 @@ msgid "Profile ID:       "
 msgstr ""
 
 #
-#: video/mrvGLLut3d.cpp:738
+#: video/mrvGLLut3d.cpp:757
 msgid "Profile Missing Tag"
 msgstr "Nombre de Perfil "
 
@@ -23619,7 +23620,7 @@ msgstr ""
 msgid "RLE"
 msgstr "RLE"
 
-#: core/mrvColorOps.cpp:124 video/mrvGLLut3d.cpp:564
+#: core/mrvColorOps.cpp:130 video/mrvGLLut3d.cpp:570
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr "ROLE_SCENE_LINEAR no está definido."
 
@@ -23654,13 +23655,13 @@ msgstr ""
 msgid "RT \"%s\""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1070
+#: video/mrvGLLut3d.cpp:1089
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:1039
+#: video/mrvGLLut3d.cpp:1058
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -27807,7 +27808,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: video/mrvGLLut3d.cpp:756 standalone/main.cpp:558
+#: video/mrvGLLut3d.cpp:775 standalone/main.cpp:558
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -27815,11 +27816,11 @@ msgstr "Error Desconocido"
 msgid "Unknown error in loadBuiltinFragShader"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:611
+#: video/mrvGLLut3d.cpp:630
 msgid "Unknown error returned from OCIO processor"
 msgstr "Error desconocido retornado del procesador de OCIo"
 
-#: video/mrvGLLut3d.cpp:708
+#: video/mrvGLLut3d.cpp:727
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
@@ -30375,7 +30376,7 @@ msgstr ""
 msgid "a.\tc #EBCFA9"
 msgstr ""
 
-#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:656
+#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:675
 msgid "aIn"
 msgstr "Entero"
 
@@ -30720,7 +30721,7 @@ msgstr ""
 msgid "b.\tc #FEF6AA"
 msgstr ""
 
-#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:655
+#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:674
 msgid "bIn"
 msgstr ""
 
@@ -31291,7 +31292,7 @@ msgstr ""
 msgid "ctl"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:703
+#: video/mrvGLLut3d.cpp:722
 msgid "ctlToLut: "
 msgstr ""
 
@@ -32322,7 +32323,7 @@ msgstr ""
 msgid "g.\tc #FFDF97"
 msgstr ""
 
-#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:655
+#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:674
 msgid "gIn"
 msgstr ""
 
@@ -34045,7 +34046,7 @@ msgid "ntss"
 msgstr ""
 
 #: core/R3dImage.cpp:1438 gui/mrvPreferences.cpp:1575
-#: video/mrvGLLut3d.cpp:1249
+#: video/mrvGLLut3d.cpp:1268
 msgid "nuke-default"
 msgstr ""
 
@@ -34875,7 +34876,7 @@ msgstr ""
 msgid "rFetch"
 msgstr ""
 
-#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:655
+#: core/ctlToLut.cpp:120 video/mrvGLLut3d.cpp:674
 msgid "rIn"
 msgstr ""
 
@@ -35234,7 +35235,7 @@ msgstr ""
 
 #: core/mrvColorBarsImage.cpp:53 core/mrvColorBarsImage.cpp:61
 #: core/mrvColorBarsImage.cpp:76 core/mrvColorBarsImage.cpp:98
-#: core/R3dImage.cpp:1296 core/R3dImage.cpp:1365 video/mrvGLLut3d.cpp:1250
+#: core/R3dImage.cpp:1296 core/R3dImage.cpp:1365 video/mrvGLLut3d.cpp:1269
 msgid "sRGB"
 msgstr ""
 
@@ -35264,7 +35265,7 @@ msgstr "Grabando"
 msgid "scale"
 msgstr "Escala"
 
-#: core/R3dImage.cpp:1458 gui/mrvImageView.cpp:1241 video/mrvGLLut3d.cpp:1301
+#: core/R3dImage.cpp:1458 gui/mrvImageView.cpp:1241 video/mrvGLLut3d.cpp:1320
 msgid "scene_linear"
 msgstr "Básica"
 
@@ -37480,6 +37481,10 @@ msgid "~/"
 msgstr ""
 
 #, fuzzy
+#~ msgid "BlackmagicRawAPI.dll"
+#~ msgstr "¡Fallé en crear IBlackmagicRawJob!"
+
+#, fuzzy
 #~ msgid " not processed"
 #~ msgstr "Ninguna imagen fue decodificada"
 
@@ -37502,10 +37507,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "SHIFT selection mode"
 #~ msgstr "Modo de Seleccion de Área"
-
-#, fuzzy
-#~ msgid "BlackmagicRawAPI.dll"
-#~ msgstr "¡Fallé en crear IBlackmagicRawJob!"
 
 #
 #, fuzzy

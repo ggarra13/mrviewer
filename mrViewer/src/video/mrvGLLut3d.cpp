@@ -552,7 +552,13 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
         const std::string& view = mrv::Preferences::OCIO_View;
         DBG;
 
-        OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
+#if OCIO_VERSION_HEX >= 0x02000000
+        OCIO::DisplayViewTransformRcPtr transform =
+          OCIO::DisplayViewTransform::Create();
+#else
+        OCIO::DisplayTransformRcPtr transform =
+          OCIO::DisplayTransform::Create();
+#endif
         DBG;
 
         std::string ics = img->ocio_input_color_space();
@@ -569,7 +575,11 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
         DBG;
+#if OCIO_VERSION_HEX >= 0x02000000
+        transform->setSrc( ics.c_str() );
+#else
         transform->setInputColorSpaceName( ics.c_str() );
+#endif
         DBG;
         transform->setDisplay( display.c_str() );
         DBG;
@@ -581,13 +591,22 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
         DBG;
 
 
+#if OCIO_VERSION_HEX >= 0x02000000
+        OCIO::ConstCPUProcessorRcPtr cpu =
+            processor->getOptimizedCPUProcessor(BIT_DEPTH_F32, BIT_DEPTH_F32,
+                                                OCIO::OPTIMIZATION_DEFAULT);
+#endif
 
         OCIO::PackedImageDesc img(&lut[0],
                                   /* width */ lut_size()/_channels,
                                   /*height*/ 1,
                                   /*channels*/ _channels);
 
+#if OCIO_VERSION_HEX >= 0x02000000
+        cpu->apply( img );
+#else
         processor->apply( img );
+#endif
         DBG;
 
         // std::ostringstream os;
