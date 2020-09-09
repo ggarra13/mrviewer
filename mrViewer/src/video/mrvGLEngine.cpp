@@ -195,33 +195,13 @@ void zrot2offsets( double& x, double& y,
                    const CMedia* img )
 {
     return;
-    x = 0.0;
-    y = 0.0;
     double zdeg = img->rot_z();
     double rad = zdeg * M_PI / 180.0;
     double sn = sin( rad );
     double cs = cos( rad );
-    mrv::Recti dpw = img->display_window();
-    if ( is_equal( sn, -1.0 ) )
-    {
-        if ( img->flipY() )    y = (double)-dpw.w();
-        if ( img->flipX() )  x = (double)-dpw.h();
-    }
-    else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
-    {
-        if ( img->flipY() )    x = (double)dpw.w();
-        if ( img->flipX() )  y = (double)-dpw.h();
-    }
-    else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
-    {
-        if ( img->flipY() )    y = (double)dpw.w();
-        if ( img->flipX() )  x = (double)dpw.h();
-    }
-    else
-    {
-        if ( img->flipY() )    x = (double)-dpw.w();
-        if ( img->flipX() )  y = (double) dpw.h();
-    }
+    double x2 = x;
+    x = x * cs - y * sn;
+    y = x2 * sn + y * cs;
 }
 
 std::string GLEngine::options()
@@ -1260,8 +1240,8 @@ void GLEngine::draw_mask( const float pct )
 
     double zdeg = img->rot_z();
 
-    double x=0.0, y = 0.0;
-    //zrot2offsets( x, y, img, flip, zdeg );
+    double x=1.0, y = 0.0;
+    //zrot2offsets( x, y, img );
 
 
     glRotated( zdeg, 0, 0, 1 );
@@ -1315,7 +1295,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     set_matrix( img, false );
 
-    double x = 0.0, y = 0.0;
+    double x = 1.0, y = 0.0;
     //zrot2offsets( x, y, img );
 
     glRotated( img->rot_z(), 0, 0, 1 );
@@ -1419,8 +1399,6 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     dpw.merge( dpw2 );
 
     double zdeg = img->rot_z();
-
-    //zrot2offsets( x, y, img );
 
     glRotated( zdeg, 0, 0, 1 );
     translate(  x + tw, - y - th, 0 );
