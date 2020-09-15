@@ -143,7 +143,8 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::ConstCPUProcessorRcPtr cpu =
-          processor->getOptimizedCPUProcessor(BIT_DEPTH_F32, BIT_DEPTH_F32,
+          processor->getOptimizedCPUProcessor(OCIO::BIT_DEPTH_F32,
+                                              OCIO::BIT_DEPTH_F32,
                                               OCIO::OPTIMIZATION_DEFAULT);
 #endif
 
@@ -153,7 +154,7 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
         ptrdiff_t ystride = xstride * pic->width();
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
-                                    pic->channels(), BIT_DEPTH_F32,
+                                    pic->channels(), OCIO::BIT_DEPTH_F32,
                                     chanstride, xstride, ystride );
         cpu->apply( baker );
 #else
