@@ -45,7 +45,7 @@ namespace mrv {
 
   Fl_Font  font_current = (Fl_Font) 0;
   unsigned    font_size = 32;
-  std::string font_text;
+  std::string font_text = "Type here";
 
 }
 
@@ -126,7 +126,6 @@ bool make_window() {
         o->labelcolor( FL_BLACK );
         o->value(mrv::font_current);
                 uiText->textfont( mrv::font_current );
-                mrv::font_text = "Type here";
                 uiText->buffer()->text( mrv::font_text.c_str() );
                 uiText->textsize( mrv::font_size );
                 uiText->callback( new_text );
