@@ -176,6 +176,7 @@ extern Hotkey kEraseMode;
 extern Hotkey kEraseTemporaryMode;
 extern Hotkey kCircleMode;
 extern Hotkey kArrowMode;
+extern Hotkey kRotateCanvasMode;
 extern Hotkey kScrubMode;
 extern Hotkey kTextMode;
 extern Hotkey kAreaMode;
@@ -245,6 +246,9 @@ extern Hotkey kToggleAbout;
 
 extern Hotkey kTogglePixelRatio;
 extern Hotkey kToggleLut;
+
+extern Hotkey kRotatePlus10;
+extern Hotkey kRotateMinus10;
 
 extern Hotkey kRotatePlus90;
 extern Hotkey kRotateMinus90;

@@ -114,6 +114,7 @@ Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
 Hotkey kArrowMode;
 Hotkey kCircleMode;
+Hotkey kRotateCanvasMode( false, false, false, false, 'r' );
 Hotkey kTextMode( false, false, false, true, 't' );
 Hotkey kMoveSizeMode( false, false, false, true, 'm' );
 
@@ -180,8 +181,11 @@ Hotkey kToggleHotkeys( false, false, false, false, 0 );
 Hotkey kToggleLogs( false, false, false, false, FL_F + 10 );
 Hotkey kToggleAbout( false, false, false, false, 0 );
 
-Hotkey kRotatePlus90( false, false, false, false, '+' );
-Hotkey kRotateMinus90( false, false, false, false, '-' );
+Hotkey kRotatePlus10( false, false, false, false, '+' );
+Hotkey kRotateMinus10( false, false, false, false, '-' );
+
+    Hotkey kRotatePlus90; //( false, false, false, false, '+' );
+    Hotkey kRotateMinus90; //( false, false, false, false, '-' );
 
 Hotkey kTogglePixelRatio( true, false, false, false, 'p' );
 Hotkey kToggleLut( false, false, false, false, 't' );
@@ -347,6 +351,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Erase Temporary Mode"), kEraseTemporaryMode ),
     HotkeyEntry( _("Arrow Mode"), kArrowMode ),
     HotkeyEntry( _("Circle Mode"), kCircleMode ),
+    HotkeyEntry( _("Rotate Canvas Mode"), kRotateCanvasMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
     HotkeyEntry( _("Move/Size Mode"), kMoveSizeMode ),
     HotkeyEntry( _("Pen Size More"), kPenSizeMore),
@@ -383,6 +388,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
     HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
     HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
+    HotkeyEntry( _("Rotate Image +10 Degrees"), kRotatePlus10),
+    HotkeyEntry( _("Rotate Image -10 Degrees"), kRotateMinus10),
     HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
     HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
     HotkeyEntry( N_("END"), kGammaLess),
