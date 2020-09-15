@@ -64,6 +64,18 @@ public:
     return Point( x*t, y*t );
     }
 
+    inline Point&	operator+=(const Point &v)
+    {
+        x += v.x; y += v.y;
+        return *this;
+    }
+
+    inline Point&	operator-=(const Point &v)
+    {
+        x -= v.x; y -= v.y;
+        return *this;
+    }
+
     inline Point	operator+(const Point &v) const
     {
     return Point( x + v.x, y + v.y );
