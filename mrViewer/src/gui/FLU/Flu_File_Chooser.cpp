@@ -1098,7 +1098,9 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   // if pathname does not start with "/" or "~", set the filename to it
   if( pathname && pathname[0] != '/' && pathname[0] != '~' &&
       (strlen(pathname) < 2 || pathname[1] != ':' ) )
+  {
     filename.value( pathname );
+  }
 }
 
 Flu_File_Chooser :: ~Flu_File_Chooser()
@@ -4465,7 +4467,8 @@ void Flu_File_Chooser :: cd( const char *path )
                          tmp == N_(".icm")  ||
                          tmp == N_(".ctl")  ||
                          tmp == N_(".xml")  ||
-                         tmp == N_(".ocio") )
+                         tmp == N_(".ocio") ||
+                         tmp == N_(".prefs") )
                        is_sequence = false;
                  }
                  else
@@ -4688,9 +4691,9 @@ void Flu_File_Chooser :: cd( const char *path )
           isCurrentFile = ( currentFile == entry->filename );
           if( isCurrentFile )
             {
-              filename.value( name );
-              entry->selected = true;
-              lastSelected = entry;
+                filename.value( currentFile.c_str() );
+                entry->selected = true;
+                lastSelected = entry;
 
               filelist->scroll_to( entry );
 

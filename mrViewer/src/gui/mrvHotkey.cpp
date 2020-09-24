@@ -622,6 +622,7 @@ void select_hotkey( HotkeyUI* b )
 
     delete h;
 
+    b->uiHotkeyFile->value( mrv::Preferences::hotkeys_file.c_str() );
     fill_ui_hotkeys( b->uiFunction );
 }
 

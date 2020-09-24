@@ -593,7 +593,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::ConstCPUProcessorRcPtr cpu =
-            processor->getOptimizedCPUProcessor(BIT_DEPTH_F32, BIT_DEPTH_F32,
+            processor->getOptimizedCPUProcessor(OCIO::BIT_DEPTH_F32,
+                                                OCIO::BIT_DEPTH_F32,
                                                 OCIO::OPTIMIZATION_DEFAULT);
 #endif
 
