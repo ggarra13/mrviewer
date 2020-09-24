@@ -1,3 +1,12 @@
+v5.6.3  - Made hotkeys loadable and savable.  This allows several hotkeys
+	  combinations for different users (animator, TD, compositor, etc).
+	  When Preferences are now saved a link to the latest hotkey setting
+	  is saved with them.
+	  Note that hotkeys must reside in the $HOME/.filmaura directory,
+	  with an extension .keys.prefs.
+	- Bug fixed file selection in custom file requester sometimes not
+	  selecting the right file in the filename input field.
+
 v5.6.2  - Fixed ocio* utilities on Windows which used OpenImageIO.
 	- Fixed F11/F12 when switching away from fullscreen and the image would
 	  fit in the viewer without any zooming change.

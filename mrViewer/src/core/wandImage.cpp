@@ -126,7 +126,8 @@ bool wandImage::test(const char* file)
         std::string ext = f.substr( pos+1, f.size() );
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int))tolower );
-        if ( ext == "pdf" || ext == "tx" || ext == "rmd" || ext == "r3d" )
+        if ( ext == "pdf" || ext == "tx" || ext == "rmd" || ext == "r3d" ||
+             ext == "prefs" || ext == "favorites" )
             return false;
     }
 
