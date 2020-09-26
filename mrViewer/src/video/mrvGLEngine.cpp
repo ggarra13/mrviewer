@@ -1039,6 +1039,8 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
+    glMatrixMode( GL_MODELVIEW );
+    
     glLoadIdentity();
     glRasterPos2i( x, y );
 
@@ -2501,6 +2503,7 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
     glRotated( img->rot_z(), 0, 0, 1 );
     CHECK_GL;
 
+
     glClear(GL_STENCIL_BUFFER_BIT);
 
     CHECK_GL;
@@ -2534,6 +2537,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
     CHECK_GL;
     glDisable(GL_STENCIL_TEST);
     CHECK_GL;
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
 }
 
 

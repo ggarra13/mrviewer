@@ -193,9 +193,9 @@ if kernel !~ /MINGW.*/
   home=ENV['HOME']+"/bin/mrViewer"
   if build =~ /Linux/
     FileUtils.rm_f( home )
-    FileUtils.ln_s( Dir.pwd + "/" + dest + "/bin/mrViewer.sh", home )
+    FileUtils.ln_s( Dir.pwd + '/' + dest + "/bin/mrViewer.sh", home )
     FileUtils.rm_f( home + '-dbg' )
-    FileUtils.ln_s( Dir.pwd + "/" + dest + "/bin/mrViewer.sh", home + "-dbg" )
+    FileUtils.ln_s( Dir.pwd + '/' + dest + "/bin/mrViewer.sh", home + "-dbg" )
   end
 
   Dir.chdir( root  )

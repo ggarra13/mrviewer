@@ -55,6 +55,7 @@
 #include "gui/mrvOCIOBrowser.h"
 #include "gui/mrvHotkey.h"
 #include "mrViewer.h"
+#include "mrvHotkeyUI.h"
 #include "aviSave.h"
 
 #ifdef OSX
@@ -873,7 +874,31 @@ std::string save_reel( const char* startdir,
                                       startdir);
 }
 
-    void save_hotkeys( std::string filename )
+    void save_hotkeys( Fl_Preferences& keys )
+    {
+        keys.set( "version", 7 );
+        for ( int i = 0; hotkeys[i].name != "END"; ++i )
+        {
+            keys.set( (hotkeys[i].name + " ctrl").c_str(),
+                      hotkeys[i].hotkey.ctrl );
+            keys.set( (hotkeys[i].name + " alt").c_str(),
+                      hotkeys[i].hotkey.alt );
+            keys.set( (hotkeys[i].name + " meta").c_str(),
+                      hotkeys[i].hotkey.meta );
+            keys.set( (hotkeys[i].name + " shift").c_str(),
+                      hotkeys[i].hotkey.shift );
+            keys.set( (hotkeys[i].name + " key").c_str(),
+                      (int)hotkeys[i].hotkey.key );
+            keys.set( (hotkeys[i].name + " key2").c_str(),
+                      (int)hotkeys[i].hotkey.key2 );
+            keys.set( (hotkeys[i].name + " text").c_str(),
+                      hotkeys[i].hotkey.text.c_str() );
+
+        }
+    }
+
+
+    void save_hotkeys( ViewerUI* uiMain, std::string filename )
     {
         //
         // Hotkeys
@@ -910,30 +935,11 @@ std::string save_reel( const char* startdir,
         Fl_Preferences keys( prefspath().c_str(), "filmaura",
                              filename.c_str() );
         save_hotkeys( keys );
+
+        HotkeyUI* h = uiMain->uiHotkey;
+        h->uiHotkeyFile->value( mrv::Preferences::hotkeys_file.c_str() );
     }
 
-    void save_hotkeys( Fl_Preferences& keys )
-    {
-        keys.set( "version", 7 );
-        for ( int i = 0; hotkeys[i].name != "END"; ++i )
-        {
-            keys.set( (hotkeys[i].name + " ctrl").c_str(),
-                      hotkeys[i].hotkey.ctrl );
-            keys.set( (hotkeys[i].name + " alt").c_str(),
-                      hotkeys[i].hotkey.alt );
-            keys.set( (hotkeys[i].name + " meta").c_str(),
-                      hotkeys[i].hotkey.meta );
-            keys.set( (hotkeys[i].name + " shift").c_str(),
-                      hotkeys[i].hotkey.shift );
-            keys.set( (hotkeys[i].name + " key").c_str(),
-                      (int)hotkeys[i].hotkey.key );
-            keys.set( (hotkeys[i].name + " key2").c_str(),
-                      (int)hotkeys[i].hotkey.key2 );
-            keys.set( (hotkeys[i].name + " text").c_str(),
-                      hotkeys[i].hotkey.text.c_str() );
-
-        }
-    }
 
     void load_hotkeys( ViewerUI* uiMain, std::string filename )
     {

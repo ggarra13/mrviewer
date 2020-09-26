@@ -383,6 +383,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "timeline_toolbar", tmp, 1 );
     uiPrefs->uiPrefsTimeline->value( (bool) tmp );
 
+    ui.get( "action_toolbar", tmp, 1 );
+    uiPrefs->uiPrefsToolBar->value( (bool) tmp );
+
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value( (bool) tmp );
 
@@ -1391,6 +1394,20 @@ void Preferences::run( ViewerUI* main )
     {
         main->uiBottomBar->hide();
     }
+    DBG3;
+    if ( uiPrefs->uiPrefsToolBar->value() )
+    {
+        main->uiToolsGroup->show();
+        main->uiToolsGroup->size( 45, 433 );
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
+    }
+    else
+    {
+        main->uiToolsGroup->hide();
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
+    }
 
     main->uiView->resize_main_window();
 
@@ -2167,6 +2184,7 @@ void Preferences::save()
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
+    ui.set( "action_toolbar", (int) uiPrefs->uiPrefsToolBar->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );

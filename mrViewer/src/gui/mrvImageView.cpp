@@ -140,6 +140,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvEvents.h"
+#include "mrvHotkeyUI.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvWaveformUI.h"
 #include "mrvVectorscopeUI.h"
@@ -885,6 +886,21 @@ void ImageView::restore_locale() const
 #endif
 }
 
+    void toggle_action_tool_dock(Fl_Widget* w, ViewerUI* uiMain)
+    {
+        if ( uiMain->uiToolsGroup->visible() )
+        {
+            uiMain->uiToolsGroup->hide();
+        }
+        else
+        {
+            uiMain->uiToolsGroup->show();
+            uiMain->uiToolsGroup->size( 45, 433 );
+        }
+        uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->redraw();
+    }
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
 {
@@ -3619,6 +3635,7 @@ void ImageView::redo_draw()
     {
         shapes.push_back( undo_shapes.back() );
         uiMain->uiPaint->uiUndoDraw->activate();
+        uiMain->uiUndoDraw->activate();
         undo_shapes.pop_back();
 
         send_network( "RedoDraw" );
@@ -3638,6 +3655,7 @@ void ImageView::undo_draw()
     {
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
+        uiMain->uiRedoDraw->activate();
         shapes.pop_back();
         send_network( "UndoDraw" );
         redraw();
@@ -4492,8 +4510,6 @@ int ImageView::leftMouseDown(int x, int y)
                     t->font( mrv::font_current );
                     t->size( mrv::font_size );
                     t->text( mrv::font_text );
-
-                    mrv::font_text = "";
                     s = t;
                 }
                 else
@@ -4656,6 +4672,15 @@ int ImageView::leftMouseDown(int x, int y)
                                  FL_MENU_TOGGLE );
                 item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                 if ( texture_filtering() == ImageView::kBilinearFiltering )
+                    item->set();
+
+
+                sprintf( buf, "%s", _("View/Toggle Action Dock") );
+                idx = menu->add( buf, kToggleToolBar.hotkey(),
+                                 (Fl_Callback*)toggle_action_tool_dock, uiMain,
+                                 FL_MENU_TOGGLE );
+                item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+                if ( uiMain->uiToolsGroup->visible() )
                     item->set();
 
                 TRACE("");
@@ -7217,6 +7242,12 @@ int ImageView::keyDown(unsigned int rawkey)
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kToggleToolBar.match( rawkey ) )
+    {
+        toggle_action_tool_dock(NULL, uiMain);
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }

@@ -6,6 +6,14 @@ v5.6.3  - Made hotkeys loadable and savable.  This allows several hotkeys
 	  with an extension .keys.prefs.
 	- Bug fixed file selection in custom file requester sometimes not
 	  selecting the right file in the filename input field.
+	- Bug fixed text tool reverting to empty string after applying it.
+	- Added action tooldock to mrViewer's main window, which can be
+	  opened with SHIFT+F7 (if hotkeys are reset by removing the
+	  .keys.prefs file) or from the Preferences->User Interface.
+	  This allows access to mrViewer's action tools in a more convenient
+	  location.
+	  Note that not all settings are available there (ghosting, pen
+	  size and frame length are currently not available).
 
 v5.6.2  - Fixed ocio* utilities on Windows which used OpenImageIO.
 	- Fixed F11/F12 when switching away from fullscreen and the image would

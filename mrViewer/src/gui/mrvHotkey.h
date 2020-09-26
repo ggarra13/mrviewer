@@ -161,6 +161,7 @@ extern Hotkey kToggleEDL;
 extern Hotkey kToggleTopBar;
 extern Hotkey kTogglePixelBar;
 extern Hotkey kToggleTimeline;
+extern Hotkey kToggleToolBar;
 extern Hotkey kTogglePresentation;
 
 

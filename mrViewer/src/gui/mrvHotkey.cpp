@@ -25,8 +25,9 @@
 
 #include "keyboard_ui.h"
 #include "mrViewer.h"
+#include "mrvHotkeyUI.h"
 
-#include "mrvHotkey.h"
+#include "gui/mrvHotkey.h"
 
 namespace {
 const char* kModule = "key";
@@ -96,10 +97,10 @@ Hotkey kLastFrame( false, false, false, false, FL_End );
 Hotkey kToggleBG( false, false, false, false, FL_Tab );
 Hotkey kToggleEDL( false, false, false, false, FL_KP_Enter );
 
-
 Hotkey kToggleTopBar( false, false, false, false, FL_F + 1 );
 Hotkey kTogglePixelBar( false, false, false, false, FL_F + 2 );
 Hotkey kToggleTimeline( false, false, false, false, FL_F + 3 );
+Hotkey kToggleToolBar( false, false, false, true, FL_F + 7 );
 Hotkey kTogglePresentation( false, false, false, false, FL_F + 12 );
 
 Hotkey kSwitchChannels( false, false, false, false, 'e' );
@@ -335,6 +336,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
     HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
     HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
+    HotkeyEntry( _("Toggle Tool Dock"), kToggleToolBar ),
     HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
     HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
     HotkeyEntry( _("Reset Gain/Gamma"), kResetChanges),

@@ -214,7 +214,7 @@ void save_image_file( CMedia* const image,
 
     void load_hotkeys( ViewerUI* uiMain, std::string filename = "" );
     void load_hotkeys( ViewerUI* uiMain, Fl_Preferences* prefs );
-    void save_hotkeys( std::string filename = "" );
+    void save_hotkeys( ViewerUI* uiMain, std::string filename = "" );
     void save_hotkeys( Fl_Preferences& keys );
 
 } // namespace mrv
