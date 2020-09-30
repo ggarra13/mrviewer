@@ -15,10 +15,22 @@ $altUrl64      = "https://sourceforge.net/projects/mrviewer/files/archive/v${sho
 If ( $osBitness -Match "32" )
 {
 	$programFiles = $env:ProgramFiles
+	$hasUrl = Test-URL $url
+	if ( -Not $hasUrl )
+	{
+		Write-Host "No URL"
+        	$url = $altUrl;
+	}
 }
 Else
 {
 	$programFiles = $env:ProgramW6432
+	$hasUrl = Test-URL $url64
+	if ( -Not $hasUrl )
+	{
+		Write-Host "No URL64"
+        	$url64 = $altUrl64;
+	}
 }
 
 $packageArgs = @{
@@ -39,30 +51,7 @@ $packageArgs = @{
   silentArgs   = ''
 }
 
-Try {
-    Install-ChocolateyZipPackage @packageArgs
-    }
-Catch {
-	$altPackageArgs = @{
-	    packageName   = $packageName
-	    unzipLocation = $programFiles
-	    fileType      = 'exe'
-	    url           = $altUrl
-	    url64bit      = $altUrl64
-
-	    softwareName  = 'mrViewer*'
-
-	    checksum      = '@CHECKSUM@'
-	    checksumType  = 'sha256'
-	    checksum64    = '@CHECKSUM64@'
-	    checksumType64= 'sha256'
-	    
-	    validExitCodes= @(0, 3010, 1641)
-	    silentArgs   = ''
-	}
-	Install-ChocolateyZipPackage @altPackageArgs
-}
-
+Install-ChocolateyZipPackage @packageArgs
 
 $target = Join-Path $programFiles "${packageName}-v${shortVersion}-Windows-${osBitness}/bin"
 Install-ChocolateyPath -PathToInstall "${target}" -PathType 'Machine'

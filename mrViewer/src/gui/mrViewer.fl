@@ -485,6 +485,8 @@ v->uiView->text_mode();}
         }
         Fl_Value_Slider uiPenSize {
           label {Pen Size}
+          user_data m user_data_type {ViewerUI*}
+          callback {v->uiPenSize->value( o->value() );}
           tooltip {Selects the size of brush.} xywh {15 195 115 25} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
         }
         Fl_Group {} {open
@@ -533,18 +535,22 @@ o->redraw();}
           xywh {15 285 120 55} box UP_BOX labelcolor 7
         } {
           Fl_Round_Button uiCurrentFrame {
-            label Current user_data_type {void*}
+            label Current
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiCurrentFrame->value( o->value() );}
             xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
           }
           Fl_Round_Button uiAllFrames {
-            label All user_data_type {void*}
+            label All
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiAllFrames->value( o->value() );}
             xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
           }
         }
         Fl_Group {} {
-          label Ghosting open
+          label Ghosting
           xywh {15 370 120 85} box UP_BOX labelcolor 7
         } {
           Fl_Counter {} {
@@ -665,6 +671,8 @@ class ViewerUI {open
   decl {static HotkeyUI* uiHotkey;} {public local
   }
   decl {static ConnectionUI* uiConnection;} {public local
+  }
+  decl {Fl_Double_Window* uiAttrsWindow = NULL;} {protected local
   }
   decl {ReelUI* uiReelWindow;} {public local
   }
@@ -1070,20 +1078,20 @@ o->image( scrub );}
             Fl_Button uiSelection {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->selection_mode();}
-              tooltip {Area Select Tool} xywh {2 80 39 35} down_box DOWN_BOX value 1 selection_color 63
+              tooltip {Area Select Tool} xywh {2 80 40 35} down_box DOWN_BOX value 1 selection_color 63
               code0 {o->value(1);
 o->image( select_pic );}
             }
             Fl_Button uiDraw {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->draw_mode();}
-              tooltip {Freehand Drawing Tool} xywh {2 150 40 35} down_box DOWN_BOX selection_color 63
+              tooltip {Freehand Drawing Tool} xywh {2 115 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( draw );}
             }
             Fl_Button uiErase {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->erase_mode();}
-              tooltip {Eraser Tool} xywh {2 185 40 35} down_box DOWN_BOX selection_color 63
+              tooltip {Eraser Tool} xywh {2 150 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( erase );}
             }
             Fl_Button uiText {
@@ -1091,49 +1099,19 @@ o->image( select_pic );}
               user_data this user_data_type {ViewerUI*}
               callback {o->value(1);
 v->uiView->text_mode();}
-              tooltip {Text Tool} xywh {2 290 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
-            }
-            Fl_Button uiMovePic {
-              user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->move_pic_mode();}
-              tooltip {Move Picture Tool} xywh {2 115 40 35} down_box DOWN_BOX value 1 selection_color 63
-              code0 {o->image( move_pic );}
+              tooltip {Text Tool} xywh {2 255 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
             }
             Fl_Button uiCircle {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->circle_mode();}
-              tooltip {Circle Tool} xywh {2 220 40 35} down_box DOWN_BOX selection_color 63
+              tooltip {Circle Tool} xywh {2 185 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( circle );}
             }
             Fl_Button uiArrow {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->arrow_mode();}
-              tooltip {Arrow Tool} xywh {2 255 40 35} down_box DOWN_BOX selection_color 63
+              tooltip {Arrow Tool} xywh {2 220 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( arrow_28 );}
-            }
-            Fl_Group {} {open
-              xywh {0 335 45 104}
-            } {
-              Fl_Button uiUndoDraw {
-                user_data this user_data_type {ViewerUI*}
-                callback {v->uiView->undo_draw();
-if ( !v->uiView->has_undo() )
- o->deactivate();
-else
- o->activate();}
-                tooltip {Undo Last Shape Drawn} xywh {4 369 40 35}
-                code0 {o->image( undo );}
-              }
-              Fl_Button uiRedoDraw {
-                user_data this user_data_type {ViewerUI*}
-                callback {v->uiView->redo_draw();
-if ( !v->uiView->has_redo() )
-   o->deactivate();
-else
-   o->activate();} selected
-                tooltip {Redo Previous Shape Drawn} xywh {4 404 40 35}
-                code0 {o->image( redo );}
-              }
             }
             Fl_Button uiPenColor {
               label Color
@@ -1146,10 +1124,45 @@ if ( r == 0 && g == 0 && b == 0 )
 else
    o->color( c );
 o->redraw();}
-              tooltip {Selects the current pen color.} xywh {10 340 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 1
+              tooltip {Selects the current pen color.} xywh {10 310 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 1
+            }
+            Fl_Group {} {open
+              xywh {0 366 45 73}
+            } {
+              Fl_Button uiUndoDraw {
+                user_data this user_data_type {ViewerUI*}
+                callback {v->uiView->undo_draw();
+if ( !v->uiView->has_undo() )
+ o->deactivate();
+else
+ o->activate();}
+                tooltip {Undo Last Shape Drawn} xywh {2 369 40 35}
+                code0 {o->image( undo );}
+              }
+              Fl_Button uiRedoDraw {
+                user_data this user_data_type {ViewerUI*}
+                callback {v->uiView->redo_draw();
+if ( !v->uiView->has_redo() )
+   o->deactivate();
+else
+   o->activate();}
+                tooltip {Redo Previous Shape Drawn} xywh {2 404 40 35}
+                code0 {o->image( redo );}
+              }
+            }
+            Fl_Button {} {
+              label Attrs
+              user_data this user_data_type {ViewerUI*}
+              callback {if ( uiAttrsWindow &&
+     uiAttrsWindow->visible() )
+     return;
+else if ( !uiAttrsWindow )
+     uiAttrsWindow = make_attrs_window();
+uiAttrsWindow->show();}
+              xywh {2 340 40 25}
             }
           }
-          Fl_Group uiView {open
+          Fl_Group uiView {
             xywh {46 28 594 430} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}
@@ -1815,7 +1828,8 @@ mrv::Preferences prefs( uiPrefs );} {}
   }
   Function {~ViewerUI()} {open
   } {
-    code {delete uiICCProfiles; uiICCProfiles = NULL;
+    code {delete uiAttrsWindow; uiAttrsWindow = NULL;
+delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
@@ -1854,5 +1868,62 @@ if ( uiSOPNode ) uiSOPNode->uiMain->redraw();
 if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
 Fl::check(); // needed to refresh windows} {}
+  }
+  Function {make_attrs_window()} {open
+  } {
+    Fl_Window {} {open
+      xywh {1188 638 150 285} type Double resizable non_modal visible
+    } {
+      Fl_Group {} {open
+        xywh {0 0 150 285} box FLAT_BOX
+      } {
+        Fl_Value_Slider uiPenSize {
+          label {Pen Size}
+          user_data this user_data_type {ViewerUI*}
+          callback {v->uiPaint->uiPenSize->value( o->value() );}
+          tooltip {Selects the size of brush.} xywh {20 20 105 30} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
+        }
+      }
+      Fl_Group {} {
+        label Frames open
+        xywh {10 90 120 55} box UP_BOX labelcolor 7
+      } {
+        Fl_Round_Button uiCurrentFrame {
+          label Current
+          user_data this user_data_type {ViewerUI*}
+          callback {v->uiPaint->uiCurrentFrame->value( o->value() );
+v->uiPaint->uiAllFrames->value( !o->value() );}
+          xywh {30 95 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
+          code0 {o->value(1);}
+        }
+        Fl_Round_Button uiAllFrames {
+          label All
+          user_data this user_data_type {ViewerUI*}
+          callback {v->uiPaint->uiAllFrames->value( o->value() );
+v->uiPaint->uiCurrentFrame->value( !o->value() );} selected
+          xywh {30 115 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
+          code0 {o->value(0);}
+        }
+      }
+      Fl_Group {} {
+        label Ghosting open
+        xywh {10 175 120 85} box UP_BOX labelcolor 7
+      } {
+        Fl_Counter {} {
+          label Previous
+          user_data this user_data_type {ViewerUI*}
+          callback {v->uiView->ghost_previous( o->value() );
+v->uiView->redraw();}
+          xywh {25 194 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+        }
+        Fl_Counter {} {
+          label Next
+          user_data this user_data_type {ViewerUI*}
+          callback {v->uiView->ghost_next( o->value() );
+v->uiView->redraw();}
+          xywh {25 234 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+        }
+      }
+    }
   }
 }
