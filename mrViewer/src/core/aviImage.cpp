@@ -1287,6 +1287,109 @@ void aviImage::store_image( const int64_t frame,
 
 }
 
+    struct aviData {
+        aviImage* avi;
+        AVPacket* pkt;
+    };
+
+    typedef CMedia::DecodeStatus (*process_frame_cb)(aviData& priv);
+
+
+    CMedia::DecodeStatus process_vframe_cb( aviData& priv )
+    {
+        aviImage* avi = priv.avi;
+        AVPacket* pkt = priv.pkt;
+        return avi->process_video_frame_cb( pkt );
+    }
+
+    CMedia::DecodeStatus aviImage::process_video_frame_cb( AVPacket* pkt )
+    {
+
+        int64_t ptsframe = _av_frame->best_effort_timestamp;
+
+        if ( pkt && ptsframe == AV_NOPTS_VALUE )
+        {
+          ptsframe = pkt->pts;
+          if ( ptsframe == AV_NOPTS_VALUE )
+          {
+            ptsframe = pkt->dts;
+          }
+        }
+
+
+        // The following is a work around for bug in decoding
+        // bgc.sub.dub.ogm
+        if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
+             pkt->dts < ptsframe  )
+        {
+          ptsframe = pkt->dts;
+        }
+
+        // needed for some corrupt movies
+        _av_frame->pts = ptsframe;
+
+
+        // Turn PTS into a frame
+
+        AVStream* stream = get_video_stream();
+        if ( pkt && ptsframe == AV_NOPTS_VALUE )
+        {
+            ptsframe = get_frame( stream, *pkt );
+            if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = 0;
+        }
+        else
+        {
+            ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
+        }
+
+        store_image( ptsframe, ptsframe );
+
+        return kDecodeOK;
+    }
+
+    CMedia::DecodeStatus
+    static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
+                  process_frame_cb cb, aviData& priv )
+    {
+        int ret = 0;
+
+        if (pkt) {
+            ret = avcodec_send_packet(avctx, pkt);
+
+            // In particular, we don't expect AVERROR(EAGAIN), because we
+            // read all decoded frames with avcodec_receive_frame() until done.-
+            if ( ret < 0 && ret != AVERROR_EOF )
+            {
+                char buf[128];
+                av_strerror(ret, buf, 128);
+                LOG_ERROR( _("send_packet error: ") << buf
+                           << _(" for codec ")
+                           << avcodec_get_name( avctx->codec_id )  );
+                return CMedia::kDecodeError;
+            }
+
+        }
+
+        ret = avcodec_receive_frame(avctx, frame);
+
+        if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF )
+        {
+            char buf[128];
+            av_strerror(ret, buf, 128);
+            LOG_ERROR( "receive_frame error: " << buf
+                       << " for codec "
+                       << avcodec_get_name( avctx->codec_id )  );
+            return CMedia::kDecodeError;
+        }
+
+
+        if (ret >= 0)
+        {
+            return cb( priv );
+        }
+        return CMedia::kDecodeMissingFrame;
+}
+
 
 int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
                    AVPacket *pkt, bool& eof)
@@ -1331,9 +1434,8 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
 
     if (ret >= 0)
     {
-      *got_frame = 1;
+        *got_frame = 1;
     }
-
     return 0;
 }
 
@@ -1347,150 +1449,22 @@ aviImage::decode_video_packet( int64_t& ptsframe,
     AVPacket* pkt = (AVPacket*)p;
 
 
-
-    AVStream* stream = get_video_stream();
-
-    assert0( stream != NULL );
-
-    int got_pict = 0;
-
-    bool eof_found = false;
     bool eof = false;
-
     if ( pkt && pkt->data == NULL ) {
-
         eof = true;
         pkt->size = 0;
     }
 
 
 
-    while( !pkt || pkt->size > 0 || pkt->data == NULL )
-    {
-        int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
+    aviData data;
+    data.avi = this;
+    data.pkt = pkt;
 
-
-        if ( err < 0 ) {
-            IMG_ERROR( "Decode video error: " << get_error_text(err) );
-            return kDecodeError;
-        }
-
-
-        ptsframe = _av_frame->best_effort_timestamp;
-
-        if ( pkt && ptsframe == AV_NOPTS_VALUE )
-        {
-          ptsframe = pkt->pts;
-          if ( ptsframe == AV_NOPTS_VALUE )
-          {
-            ptsframe = pkt->dts;
-          }
-        }
-
-
-        // The following is a work around for bug in decoding
-        // bgc.sub.dub.ogm
-        if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
-             pkt->dts < ptsframe  )
-        {
-          ptsframe = pkt->dts;
-        }
-
-        // needed for some corrupt movies
-        _av_frame->pts = ptsframe;
-
-
-        // Turn PTS into a frame
-
-        if ( pkt && ptsframe == AV_NOPTS_VALUE )
-        {
-
-          ptsframe = get_frame( stream, *p );
-          if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
-        }
-        else
-        {
-
-          ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
-        }
-
-        if ( got_pict ) {
-
-#ifdef DEBUG_DECODE_IMAGE
-            std::cerr << "got image " << ptsframe << " "
-                      << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
-                      << std::endl;
-#endif
-
-            if ( filter_graph && _subtitle_index >= 0 )
-            {
-
-
-                SCOPED_LOCK( _subtitle_mutex );
-                /* push the decoded frame into the filtergraph */
-                if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
-                                                 AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
-                    LOG_ERROR( _("Error while feeding the filtergraph") );
-                    close_subtitle_codec();
-                    break;
-                }
-
-                int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
-                if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
-                    break;
-                if (ret < 0)
-                {
-                    LOG_ERROR( "av_buffersink_get frame failed" );
-                    close_subtitle_codec();
-                    return kDecodeError;
-                }
-
-                av_frame_unref( _av_frame );
-                _av_frame = av_frame_clone( _filt_frame );
-                av_frame_unref( _filt_frame );
-                if (!_av_frame )
-                {
-                    LOG_ERROR( _("Could not clone subtitle frame") );
-                    close_subtitle_codec();
-                    return kDecodeError;
-                }
-            }
-
-
-            if ( eof )
-            {
-
-                eof_found = true;
-                pkt->size = 0;
-                pkt->data = NULL;
-                store_image( ptsframe, _av_frame->pts + 1 );
-                av_frame_unref( _av_frame );
-                av_frame_unref( _filt_frame );
-                continue;
-            }
-
-
-            return kDecodeOK;
-        }
-
-#ifdef DEBUG_DECODE_IMAGE
-        std::cerr << "did not get image err:" << err
-                  << " " << ptsframe  << " "
-                  << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
-                  << std::endl;
-#endif
-
-        if ( err == 0 ) {
-
-            // If flushing caches, return done.
-            if ( pkt && pkt->data == NULL ) return kDecodeDone;
-            break;
-        }
-
-    }
-
-
-    return kDecodeMissingFrame;
+    DecodeStatus err = static_decode( _video_ctx, _av_frame, pkt,
+                                      process_vframe_cb,
+                                      data );
+    return err;
 }
 
 

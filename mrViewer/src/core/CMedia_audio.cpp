@@ -1091,6 +1091,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = decode( ctx, _aframe, &got_audio, avpkt, eof );
     if ( !got_audio ) return ret;
 
+
     av_assert0( _aframe->nb_samples > 0 );
     av_assert0( ctx->channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, ctx->channels,

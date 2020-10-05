@@ -172,6 +172,8 @@ public:
         subtitle_file( _subtitle_file.c_str() );
     }
 
+    DecodeStatus process_video_frame_cb( AVPacket* pkt );
+
     void debug_video_stores(const int64_t frame,
                             const char* routine = "",
                             const bool detail = false);
