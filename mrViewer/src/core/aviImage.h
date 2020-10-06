@@ -41,6 +41,8 @@ class ViewerUI;
 namespace mrv {
 
 
+class aviData;
+
 extern const char* const kColorSpaces[];
 
 class aviImage : public CMedia
@@ -172,7 +174,7 @@ public:
         subtitle_file( _subtitle_file.c_str() );
     }
 
-    DecodeStatus process_video_frame_cb( AVPacket* pkt );
+    DecodeStatus process_video_frame_cb( aviData& );
 
     void debug_video_stores(const int64_t frame,
                             const char* routine = "",

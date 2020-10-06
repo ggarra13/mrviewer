@@ -1290,20 +1290,25 @@ void aviImage::store_image( const int64_t frame,
     struct aviData {
         aviImage* avi;
         AVPacket* pkt;
+        int64_t   frame;
     };
 
-    typedef CMedia::DecodeStatus (*process_frame_cb)(aviData& priv);
+    typedef int (*process_frame_cb)(aviData& priv);
 
 
-    CMedia::DecodeStatus process_vframe_cb( aviData& priv )
+    int process_vframe_cb( aviData& priv )
     {
         aviImage* avi = priv.avi;
         AVPacket* pkt = priv.pkt;
-        return avi->process_video_frame_cb( pkt );
+        CMedia::DecodeStatus status = avi->process_video_frame_cb( priv );
+        if ( status == CMedia::kDecodeOK ) return 0;
+        return -1;
     }
 
-    CMedia::DecodeStatus aviImage::process_video_frame_cb( AVPacket* pkt )
+    CMedia::DecodeStatus aviImage::process_video_frame_cb( aviData& priv )
     {
+        AVPacket* pkt = priv.pkt;
+        int64_t frame = priv.frame;
 
         int64_t ptsframe = _av_frame->best_effort_timestamp;
 
@@ -1335,14 +1340,14 @@ void aviImage::store_image( const int64_t frame,
         if ( pkt && ptsframe == AV_NOPTS_VALUE )
         {
             ptsframe = get_frame( stream, *pkt );
-            if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = 0;
+            if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
         }
         else
         {
             ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
         }
 
-        store_image( ptsframe, ptsframe );
+        store_image( ptsframe, frame );
 
         return kDecodeOK;
     }
@@ -1370,24 +1375,27 @@ void aviImage::store_image( const int64_t frame,
 
         }
 
-        ret = avcodec_receive_frame(avctx, frame);
 
-        if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF )
+        CMedia::DecodeStatus status = CMedia::kDecodeMissingFrame;
+        while ( !ret )
         {
-            char buf[128];
-            av_strerror(ret, buf, 128);
-            LOG_ERROR( "receive_frame error: " << buf
-                       << " for codec "
-                       << avcodec_get_name( avctx->codec_id )  );
-            return CMedia::kDecodeError;
+            ret = avcodec_receive_frame(avctx, frame);
+            if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF )
+            {
+                char buf[128];
+                av_strerror(ret, buf, 128);
+                LOG_ERROR( "receive_frame error: " << buf
+                           << " for codec "
+                           << avcodec_get_name( avctx->codec_id )  );
+                return CMedia::kDecodeError;
+            }
+            if ( !ret ) {
+                ret = cb( priv );
+                if (ret == 0) status = CMedia::kDecodeOK;
+            }
         }
 
-
-        if (ret >= 0)
-        {
-            return cb( priv );
-        }
-        return CMedia::kDecodeMissingFrame;
+        return status;
 }
 
 
@@ -1460,6 +1468,7 @@ aviImage::decode_video_packet( int64_t& ptsframe,
     aviData data;
     data.avi = this;
     data.pkt = pkt;
+    data.frame = frame;
 
     DecodeStatus err = static_decode( _video_ctx, _av_frame, pkt,
                                       process_vframe_cb,
@@ -1475,25 +1484,6 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 {
     int64_t ptsframe = frame;
     DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
-    if ( status == kDecodeOK )
-    {
-        store_image( ptsframe, _av_frame->pts );
-
-        if ( ( stopped() || saving() ) && ptsframe != frame &&
-             frame != first_frame() )
-            status = kDecodeMissingFrame;
-    }
-    else if ( status == kDecodeError )
-    {
-        char ftype = av_get_picture_type_char( _av_frame->pict_type );
-        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-            IMG_WARNING( _("Could not decode video frame ") << ptsframe
-                         << _(" type ") << ftype << " pts: "
-                         << (pkt.pts == AV_NOPTS_VALUE ?
-                             -1 : pkt.pts ) << " dts: " << pkt.dts
-                         << " data: " << (void*)pkt.data);
-    }
-
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
     if ( status == kDecodeDone ) status = kDecodeOK;
@@ -3404,10 +3394,6 @@ CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
 {
     //int64_t oldpktframe = pktframe;
     CMedia::DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
-    if ( status == kDecodeOK )
-    {
-        store_image( ptsframe, _av_frame->pts );
-    }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
     if ( status == kDecodeDone ) status = kDecodeOK;
