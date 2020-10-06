@@ -1347,18 +1347,63 @@ void aviImage::store_image( const int64_t frame,
             ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
         }
 
-        store_image( ptsframe, frame );
+        if ( filter_graph && _subtitle_index >= 0 )
+        {
+            SCOPED_LOCK( _subtitle_mutex );
+            /* push the decoded frame into the filtergraph */
+            if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
+                                             AV_BUFFERSRC_FLAG_KEEP_REF) < 0 ) {
+                LOG_ERROR( _("Error while feeding the filtergraph") );
+                close_subtitle_codec();
+                return kDecodeError;
+            }
 
-        return kDecodeOK;
-    }
+            int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+                return kDecodeMissingFrame;
 
-    CMedia::DecodeStatus
-    static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
-                  process_frame_cb cb, aviData& priv )
-    {
-        int ret = 0;
+            if (ret < 0)
+            {
+                LOG_ERROR( "av_buffersink_get frame failed" );
+                close_subtitle_codec();
+                return kDecodeError;
+            }
 
-        if (pkt) {
+            av_frame_unref( _av_frame );
+            _av_frame = av_frame_clone( _filt_frame );
+            av_frame_unref( _filt_frame );
+            if (!_av_frame )
+            {
+                LOG_ERROR( _("Could not clone subtitle frame") );
+                close_subtitle_codec();
+                return kDecodeError;
+            }
+        }
+
+
+        // if ( eof )
+        // {
+        //     pkt->size = 0;
+        //     pkt->data = NULL;
+        //     store_image( ptsframe, _av_frame->pts + 1 );
+        //     av_frame_unref( _av_frame );
+        //     av_frame_unref( _filt_frame );
+
+        //     return kDecodeOK;
+        // }
+
+    store_image( ptsframe, frame );
+
+    return kDecodeOK;
+}
+
+CMedia::DecodeStatus
+static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
+              process_frame_cb cb, aviData& priv )
+{
+    int ret = 0;
+
+    if (pkt) {
             ret = avcodec_send_packet(avctx, pkt);
 
             // In particular, we don't expect AVERROR(EAGAIN), because we
