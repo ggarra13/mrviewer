@@ -1060,6 +1060,9 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     if ( !_seek_req && playback() == kBackwards )
     {
+        std::cerr << start+1 << " reverse" << std::endl;
+        _rev.push_back( start+1 );
+
         if ( !got_video )    _video_packets.preroll(vpts);
         if ( !got_audio )    _audio_packets.preroll(apts);
         if ( !got_subtitle ) _subtitle_packets.preroll(spts);
@@ -1381,16 +1384,6 @@ void aviImage::store_image( const int64_t frame,
         }
 
 
-        // if ( eof )
-        // {
-        //     pkt->size = 0;
-        //     pkt->data = NULL;
-        //     store_image( ptsframe, _av_frame->pts + 1 );
-        //     av_frame_unref( _av_frame );
-        //     av_frame_unref( _filt_frame );
-
-        //     return kDecodeOK;
-        // }
 
     store_image( ptsframe, frame );
 
@@ -1402,6 +1395,8 @@ static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
               process_frame_cb cb, aviData& priv )
 {
     int ret = 0;
+
+    CMedia::DecodeStatus status = CMedia::kDecodeMissingFrame;
 
     if (pkt) {
             ret = avcodec_send_packet(avctx, pkt);
@@ -1418,10 +1413,10 @@ static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
                 return CMedia::kDecodeError;
             }
 
+            if ( ret == AVERROR_EOF ) status = CMedia::kDecodeDone;
         }
 
 
-        CMedia::DecodeStatus status = CMedia::kDecodeMissingFrame;
         while ( !ret )
         {
             ret = avcodec_receive_frame(avctx, frame);
@@ -1436,7 +1431,9 @@ static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
             }
             if ( !ret ) {
                 ret = cb( priv );
-                if (ret == 0) status = CMedia::kDecodeOK;
+                if (ret == 0) {
+                        status = CMedia::kDecodeOK;
+                }
             }
         }
 
@@ -1502,14 +1499,6 @@ aviImage::decode_video_packet( int64_t& ptsframe,
     AVPacket* pkt = (AVPacket*)p;
 
 
-    bool eof = false;
-    if ( pkt && pkt->data == NULL ) {
-        eof = true;
-        pkt->size = 0;
-    }
-
-
-
     aviData data;
     data.avi = this;
     data.pkt = pkt;
@@ -1529,6 +1518,10 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 {
     int64_t ptsframe = frame;
     DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
+    if ( status == kDecodeDone )
+    {
+        status = decode_video_packet( ptsframe, frame, NULL );
+    }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
     if ( status == kDecodeDone ) status = kDecodeOK;
@@ -1636,7 +1629,6 @@ void aviImage::limit_video_store(const int64_t frame)
     _images.erase( std::remove_if( _images.begin(), _images.end(),
                                    NotInRangeFunctor( first, last ) ),
                    _images.end() );
-
 
 }
 
@@ -1764,7 +1756,25 @@ bool aviImage::find_image( int64_t& frame )
     debug_video_stores(frame, "find_image", true);
 #endif
 
-
+    if ( playback() == kBackwards )
+    {
+        std::vector<int64_t>::iterator r = std::find( _rev.begin(), _rev.end(),
+                                                      frame );
+        if ( r != _rev.end() )
+        {
+            std::cerr << "erase " << *r << std::endl;
+            _rev.erase( r );
+            for ( auto t : _rev )
+            {
+                std::cerr << t << " ";
+            }
+            std::cerr << std::endl;
+        }
+        else
+        {
+            std::cerr << "find " << frame << " not in rev" << std::endl;
+        }
+    }
 
     _frame = frame;
 
@@ -3404,13 +3414,19 @@ bool aviImage::frame( const int64_t f )
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
 
-
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
             ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
+        return false;
+    }
+
+
+    if ( _rev.size() > 2 )
+    {
+        _video_packets.cond().notify_all();
         return false;
     }
 
@@ -3438,7 +3454,11 @@ CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
                                                const AVPacket& pkt )
 {
     //int64_t oldpktframe = pktframe;
-    CMedia::DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
+    DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
+    if ( status == kDecodeDone )
+    {
+        status = decode_video_packet( ptsframe, frame, NULL );
+    }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
     if ( status == kDecodeDone ) status = kDecodeOK;

@@ -1157,7 +1157,7 @@ void video_thread( PlaybackData* data )
                 bool ok = barrier->wait();
             }
 
-            // img->debug_video_packets( frame, "debug", true );
+            img->debug_video_packets( frame, "debug", true );
             img->clear_video_packets();
 
             if ( img->stopped() ) continue;
@@ -1476,14 +1476,7 @@ void decode_thread( PlaybackData* data )
 
         if ( img->has_video() || img->has_audio() )
         {
-            if ( img->playback() == CMedia::kBackwards )
-            {
-                frame--;
-                if ( frame < img->first_frame() )
-                     frame = img->last_frame();
-            }
-            else
-                frame = img->dts();
+            frame = img->dts();
         }
 
 

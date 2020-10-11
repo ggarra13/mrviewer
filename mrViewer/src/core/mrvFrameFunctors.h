@@ -160,6 +160,11 @@ struct NotInRangeFunctor
     assert( end >= start );
   }
 
+    inline bool operator()( const int64_t& b ) const
+    {
+        return ( b < _start || b > _end );
+    }
+
   inline bool operator()( const audio_type_ptr& b ) const
   {
      return ( b->frame() < _start || b->frame() > _end );

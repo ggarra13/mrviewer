@@ -134,6 +134,7 @@ namespace mrv {
 
 void CMedia::clear_video_packets()
 {
+    _rev.clear();
     _video_packets.clear();
     _subtitle_packets.clear();
 }
@@ -2234,7 +2235,7 @@ void CMedia::do_seek()
     if ( !got_audio )
     {
         if ( x != _expected_audio )
-            clear_packets();
+            clear_audio_packets();
 
         fetch_audio( x );
     }

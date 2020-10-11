@@ -339,6 +339,7 @@ protected:
     AVFilterGraph*        filter_graph;
     subtitle_cache_t      _subtitles;
     AVSubtitle            _sub;
+
 };
 
 } // namespace mrv
