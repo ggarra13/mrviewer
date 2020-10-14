@@ -1350,6 +1350,14 @@ static void detach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
 void ImageView::scale_pic_mode()
 {
     _mode = kScalePicture;
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(true);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1364,6 +1372,14 @@ void ImageView::scale_pic_mode()
 void ImageView::move_pic_mode()
 {
     _mode = kMovePicture;
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(true);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1379,6 +1395,15 @@ void ImageView::move_pic_mode()
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(true);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1396,6 +1421,15 @@ void ImageView::selection_mode( bool temporary )
         _mode = kSelectionTemporary;
     else
         _mode = kSelection;
+
+    uiMain->uiSelection->value(true);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(true);
     uiMain->uiPaint->uiErase->value(false);
@@ -1413,6 +1447,14 @@ void ImageView::draw_mode( bool tmp )
         _mode = kDrawTemporary;
     else
         _mode = kDraw;
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(true);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1427,6 +1469,16 @@ void ImageView::draw_mode( bool tmp )
 void ImageView::circle_mode()
 {
     _mode = kCircle;
+
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(true);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1441,6 +1493,16 @@ void ImageView::circle_mode()
 void ImageView::arrow_mode()
 {
     _mode = kArrow;
+
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(true);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
@@ -1476,15 +1538,25 @@ void ImageView::text_mode()
     if ( ok )
     {
         _mode = kText;
+        uiMain->uiText->value(true);
+        uiMain->uiScrub->value(false);
         uiMain->uiPaint->uiText->value(true);
         uiMain->uiPaint->uiScrub->value(false);
     }
     else
     {
         _mode = kScrub;
+        uiMain->uiText->value(false);
+        uiMain->uiScrub->value(true);
         uiMain->uiPaint->uiText->value(false);
         uiMain->uiPaint->uiScrub->value(true);
     }
+
+    uiMain->uiArrow->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiSelection->value(false);
 
     uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiMovePic->value(false);
@@ -1714,8 +1786,6 @@ void ImageView::switch_channels()
 
 void ImageView::ghost_previous( short x ) {
     _ghost_previous = x;
-    if ( uiMain->uiAttrsWindow ) uiMain->GhostPrevious->value( x );
-    uiMain->uiPaint->GhostPrevious->value( x );
     char buf[64];
     sprintf( buf, N_("GhostPrevious %d"), x );
     send_network( buf );
@@ -1723,8 +1793,6 @@ void ImageView::ghost_previous( short x ) {
 }
 void ImageView::ghost_next( short x ) {
     _ghost_next = x;
-    if ( uiMain->uiAttrsWindow ) uiMain->GhostNext->value( x );
-    uiMain->uiPaint->GhostNext->value( x );
     char buf[64];
     sprintf( buf, N_("GhostNext %d"), x );
     send_network( buf );
@@ -3645,17 +3713,6 @@ void ImageView::redo_draw()
         send_network( "RedoDraw" );
         redraw();
     }
-
-    if ( ! has_redo() )
-    {
-        uiMain->uiPaint->uiRedoDraw->deactivate();
-        uiMain->uiRedoDraw->deactivate();
-    }
-    else
-    {
-        uiMain->uiPaint->uiRedoDraw->activate();
-        uiMain->uiRedoDraw->activate();
-    }
 }
 
 void ImageView::undo_draw()
@@ -3676,16 +3733,6 @@ void ImageView::undo_draw()
         redraw();
     }
 
-    if ( ! has_undo() )
-    {
-        uiMain->uiPaint->uiUndoDraw->deactivate();
-        uiMain->uiUndoDraw->deactivate();
-    }
-    else
-    {
-        uiMain->uiPaint->uiUndoDraw->activate();
-        uiMain->uiUndoDraw->activate();
-    }
 }
 
 void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
@@ -3999,6 +4046,10 @@ void ImageView::draw()
                 xf += daw.x();
                 yf -= daw.y();
 
+                float scale = Fl::screen_scale( window()->screen_num() );
+                xf *= scale;
+                yf *= scale;
+
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
             }
@@ -4264,10 +4315,7 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
     }
 
     fg->image()->add_shape( s );
-
-    uiMain->uiUndoDraw->activate();
     uiMain->uiPaint->uiUndoDraw->activate();
-    uiMain->uiRedoDraw->deactivate();
     uiMain->uiPaint->uiRedoDraw->deactivate();
 }
 
@@ -4510,6 +4558,10 @@ int ImageView::leftMouseDown(int x, int y)
             const mrv::Recti& daw = img->data_window();
             xf += daw.x();
             yf -= daw.y();
+
+            float scale = Fl::screen_scale( window()->screen_num() );
+            xf *= scale;
+            yf *= scale;
 
             std::string str;
             GLShape* s;
@@ -6467,6 +6519,11 @@ void ImageView::mouseDrag(int x,int y)
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
 
+
+                    float scale = Fl::screen_scale( window()->screen_num() );
+                    xn *= scale;
+                    yn *= scale;
+
                     mrv::Point p2( xn, yn );
                     if ( _mode == kArrow )
                         {
@@ -6578,14 +6635,12 @@ int ImageView::keyDown(unsigned int rawkey)
         // Use exposure hotkey ( default [ and ] )
         if ( kPenSizeMore.match( rawkey ) )
         {
-            if ( uiMain->uiAttrsWindow ) uiMain->uiPenSize->value( pen + 1.0 );
             uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
             redraw();
             return 1;
         }
         else if ( kPenSizeLess.match( rawkey ) )
         {
-            if ( uiMain->uiAttrsWindow ) uiMain->uiPenSize->value( pen - 1.0 );
             uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
             redraw();
             return 1;
