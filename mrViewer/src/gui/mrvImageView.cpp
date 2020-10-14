@@ -1714,6 +1714,8 @@ void ImageView::switch_channels()
 
 void ImageView::ghost_previous( short x ) {
     _ghost_previous = x;
+    if ( uiMain->uiAttrsWindow ) uiMain->GhostPrevious->value( x );
+    uiMain->uiPaint->GhostPrevious->value( x );
     char buf[64];
     sprintf( buf, N_("GhostPrevious %d"), x );
     send_network( buf );
@@ -1721,6 +1723,8 @@ void ImageView::ghost_previous( short x ) {
 }
 void ImageView::ghost_next( short x ) {
     _ghost_next = x;
+    if ( uiMain->uiAttrsWindow ) uiMain->GhostNext->value( x );
+    uiMain->uiPaint->GhostNext->value( x );
     char buf[64];
     sprintf( buf, N_("GhostNext %d"), x );
     send_network( buf );
@@ -3641,6 +3645,17 @@ void ImageView::redo_draw()
         send_network( "RedoDraw" );
         redraw();
     }
+
+    if ( ! has_redo() )
+    {
+        uiMain->uiPaint->uiRedoDraw->deactivate();
+        uiMain->uiRedoDraw->deactivate();
+    }
+    else
+    {
+        uiMain->uiPaint->uiRedoDraw->activate();
+        uiMain->uiRedoDraw->activate();
+    }
 }
 
 void ImageView::undo_draw()
@@ -3661,6 +3676,16 @@ void ImageView::undo_draw()
         redraw();
     }
 
+    if ( ! has_undo() )
+    {
+        uiMain->uiPaint->uiUndoDraw->deactivate();
+        uiMain->uiUndoDraw->deactivate();
+    }
+    else
+    {
+        uiMain->uiPaint->uiUndoDraw->activate();
+        uiMain->uiUndoDraw->activate();
+    }
 }
 
 void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
@@ -4239,7 +4264,10 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
     }
 
     fg->image()->add_shape( s );
+
+    uiMain->uiUndoDraw->activate();
     uiMain->uiPaint->uiUndoDraw->activate();
+    uiMain->uiRedoDraw->deactivate();
     uiMain->uiPaint->uiRedoDraw->deactivate();
 }
 
@@ -6550,12 +6578,14 @@ int ImageView::keyDown(unsigned int rawkey)
         // Use exposure hotkey ( default [ and ] )
         if ( kPenSizeMore.match( rawkey ) )
         {
+            if ( uiMain->uiAttrsWindow ) uiMain->uiPenSize->value( pen + 1.0 );
             uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
             redraw();
             return 1;
         }
         else if ( kPenSizeLess.match( rawkey ) )
         {
+            if ( uiMain->uiAttrsWindow ) uiMain->uiPenSize->value( pen - 1.0 );
             uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
             redraw();
             return 1;

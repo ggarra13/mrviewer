@@ -1157,7 +1157,7 @@ void video_thread( PlaybackData* data )
                 bool ok = barrier->wait();
             }
 
-            img->debug_video_packets( frame, "debug", true );
+            // img->debug_video_packets( frame, "debug", true );
             img->clear_video_packets();
 
             if ( img->stopped() ) continue;
