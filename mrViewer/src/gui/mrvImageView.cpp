@@ -4033,8 +4033,13 @@ void ImageView::draw()
                 double xf = X;
                 double yf = Y;
 
+                std::cerr << "1 xf,yf=" << xf << "," << yf
+                          << std::endl;
+
                 data_window_coordinates( img, xf, yf );
 
+                std::cerr << "2 xf,yf=" << xf << "," << yf
+                          << std::endl;
                 const mrv::Recti& dpw = img->display_window();
 
                 unsigned int H = dpw.h();
@@ -4046,10 +4051,13 @@ void ImageView::draw()
                 xf += daw.x();
                 yf -= daw.y();
 
+                std::cerr << "3 xf,yf=" << xf << "," << yf
+                          << std::endl;
                 float scale = Fl::screen_scale( window()->screen_num() );
                 xf *= scale;
                 yf *= scale;
-
+                std::cerr << "scale: " << scale << " xf,yf=" << xf << "," << yf
+                          << std::endl;
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
             }
