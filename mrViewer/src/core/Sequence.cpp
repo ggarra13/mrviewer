@@ -931,6 +931,48 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 }
                 continue;
             }
+            else if ( cmd == "GLCircleShape" )
+            {
+                Point xy;
+                std::string points;
+                GLCircleShape* shape = new GLCircleShape;
+                is.clear();
+                std::getline( is, points );
+                is.str( points );
+                is.clear();
+                is >> shape->r >> shape->g >> shape->b >> shape->a
+                   >> shape->pen_size >> shape->frame;
+                is >> shape->center.x >> shape->center.y;
+                is >> shape->radius;
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
+                continue;
+            }
+            else if ( cmd == "GLArrowShape" )
+            {
+                Point xy;
+                std::string points;
+                GLArrowShape* shape = new GLArrowShape;
+                is.clear();
+                std::getline( is, points );
+                is.str( points );
+                is.clear();
+                is >> shape->r >> shape->g >> shape->b >> shape->a
+                   >> shape->pen_size >> shape->frame;
+                while ( is >> xy.x >> xy.y )
+                {
+                    shape->pts.push_back( xy );
+                }
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
+                continue;
+            }
             else if ( cmd == "GLErasePathShape" )
             {
                 Point xy;
