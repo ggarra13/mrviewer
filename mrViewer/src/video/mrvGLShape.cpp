@@ -116,11 +116,9 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
     if( polyline.size() < 2 ) return;
     float w = width / 2.0f;
 
-    DBGM1("");
     glBegin(GL_TRIANGLES);
     for( size_t i = 0; i < polyline.size()-1; ++i )
     {
-        DBGM1("");
         const Point& cur = polyline[ i ];
         const Point& nxt = polyline[i+1];
 
@@ -148,7 +146,6 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
         Point a = (prv - cur).normalized();
         Point a_perp( a.y, -a.x );
 
-        DBGM1("");
         double det = a.x*b.y - b.x*a.y;
         if( det > 0 )
         {
@@ -166,7 +163,6 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
         b_perp.x = -b_perp.x;
         b_perp.y = -b_perp.y;
 
-        DBGM1("");
         size_t num_pts = 4;
         vector< Point > round( 1 + num_pts + 1 );
         for( size_t j = 0; j <= num_pts+1; ++j )
@@ -177,7 +173,6 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
             else
                 round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
         }
-        DBGM1("");
 
         for( size_t j = 0; j < round.size()-1; ++j )
         {
@@ -193,7 +188,6 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
                 glVertex2dv( &(round[j+1].x) );
             }
         }
-        DBGM1("");
     }
     glEnd();
 }

@@ -225,11 +225,8 @@ bool Parser::parse( const std::string& s )
         is.clear();
         is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
            >> shape->frame;
-        float scale = Fl::screen_scale( v->window()->screen_num() );
         while ( is >> xy.x >> xy.y )
         {
-            xy.x *= scale;
-            xy.y *= scale;
             shape->pts.push_back( xy );
         }
         v->add_shape( mrv::shape_type_ptr(shape) );
@@ -241,7 +238,6 @@ bool Parser::parse( const std::string& s )
         Point xy;
         std::string points;
         GLArrowShape* shape = new GLArrowShape;
-        float scale = Fl::screen_scale( v->window()->screen_num() );
         std::getline( is, points );
         is.str( points );
         is.clear();
@@ -249,8 +245,6 @@ bool Parser::parse( const std::string& s )
            >> shape->frame;
         while ( is >> xy.x >> xy.y )
         {
-            xy.x *= scale;
-            xy.y *= scale;
             shape->pts.push_back( xy );
         }
         v->add_shape( mrv::shape_type_ptr(shape) );
@@ -265,14 +259,10 @@ bool Parser::parse( const std::string& s )
         std::getline( is, points );
         is.str( points );
         is.clear();
-        float scale = Fl::screen_scale( v->window()->screen_num() );
         is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
            >> shape->frame;
         is >> shape->center.x >> shape->center.y;
-        shape->center.x *= scale;
-        shape->center.y *= scale;
         is >> shape->radius;
-        shape->radius *= scale;
         v->add_shape( mrv::shape_type_ptr(shape) );
         v->redraw();
         ok = true;
@@ -287,11 +277,8 @@ bool Parser::parse( const std::string& s )
         is.str( points );
         is.clear();
         is >> shape->pen_size >> shape->frame;
-        float scale = Fl::screen_scale( v->window()->screen_num() );
         while ( is >> xy.x >> xy.y )
         {
-            xy.x *= scale;
-            xy.y *= scale;
             shape->pts.push_back( xy );
         }
         v->add_shape( mrv::shape_type_ptr(shape) );
@@ -360,10 +347,7 @@ bool Parser::parse( const std::string& s )
 
         shape->font( (Fl_Font) i );
         is >> xy.x >> xy.y;
-        float scale = Fl::screen_scale( v->window()->screen_num() );
-        xy.x *= scale;
-        xy.y *= scale;
-        shape->size( font_size * scale );
+        shape->size( font_size );
         shape->r = color.r;
         shape->g = color.g;
         shape->b = color.b;

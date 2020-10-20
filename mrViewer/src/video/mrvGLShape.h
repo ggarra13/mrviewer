@@ -30,118 +30,42 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <OpenEXR/ImathVec.h>
 
 namespace mrv
 {
 
 class ImageView;
 
-class Point
-{
-public:
-    Point() :
-    x( 0 ), y( 0 )
+    class Point : public Imath::V2d
     {
-    }
+    public:
+        Point() : Imath::V2d()
+        {
+        }
 
-    Point( double xx, double yy ) :
-    x( xx ), y( yy )
-    {
-    }
+        Point( double xx, double yy ) :
+            Imath::V2d( xx, yy )
+        {
+        }
 
-    Point( const Point& b ) :
-    x( b.x ), y( b.y )
-    {
-    }
+        Point( const Point& b ) :
+            Imath::V2d( b.x, b.y )
+        {
+        }
 
-    inline Point operator-() const
-    {
-    return Point( -x, -y );
-    }
+        Point( const Imath::V2d& b ) :
+            Imath::V2d( b.x, b.y )
+        {
+        }
 
-    inline Point operator*( const double t ) const
-    {
-    return Point( x*t, y*t );
-    }
-
-    inline Point&	operator+=(const Point &v)
-    {
-        x += v.x; y += v.y;
-        return *this;
-    }
-
-    inline Point&	operator-=(const Point &v)
-    {
-        x -= v.x; y -= v.y;
-        return *this;
-    }
-
-    inline Point	operator+(const Point &v) const
-    {
-    return Point( x + v.x, y + v.y );
-    }
-
-    inline Point	operator-(const Point &v) const
-    {
-    return Point( x - v.x, y - v.y );
-    }
-
-    inline double		dot (const Point &v) const
-    {
-    return x * v.x + y * v.y;
-    }
-
-    double lengthTiny () const
-    {
-    double absX = (x >= double(0))? x: -x;
-    double absY = (y >= double(0))? y: -y;
-
-    double max = absX;
-
-    if (max < absY)
-        max = absY;
-
-    if (max == double(0))
-        return double(0);
-
-    //
-    // Do not replace the divisions by max with multiplications by 1/max.
-    // Computing 1/max can overflow but the divisions below will always
-    // produce results less than or equal to 1.
-    //
-
-    absX /= max;
-    absY /= max;
-
-    return max * sqrt (absX * absX + absY * absY);
-    }
-
-    inline double length () const
-    {
-    double length2 = dot (*this);
-
-    if (length2 < 2 * DBL_MIN )
-        return lengthTiny();
-
-    return sqrt (length2);
-    }
-
-    inline Point normalized() const
-    {
-    double l = length();
-    if ( l == 0 )
-        return Point();
-
-    return Point( x / l, y / l );
-    }
-
-    double x, y;
+        inline Point& operator=( const Imath::V2d& b )
+        {
+            x = b.x; y = b.y;
+            return *this;
+        }
 };
 
-inline std::ostream& operator<<( std::ostream& o, const Point& p )
-{
-    return o << p.x << "," << p.y;
-}
 
 void glCircle( const Point& p, const double radius, double pen_size );
 void glDisk( const Point& p, const double radius );
@@ -228,30 +152,30 @@ public:
     {};
     virtual ~GLTextShape();
 
-    void position( int x, int y ) {
-    pts[0].x = x;
-    pts[0].y = y;
+    void position( double x, double y ) {
+        pts[0].x = x;
+        pts[0].y = y;
     }
 
     inline void text( std::string t ) {
-    _text = t;
+        _text = t;
     }
     inline std::string text() const   {
-    return _text;
+        return _text;
     }
 
     inline void font( Fl_Font f ) {
-    _font = f;
+        _font = f;
     }
     inline Fl_Font font() const   {
-    return _font;
+        return _font;
     }
 
     inline void size( unsigned f ) {
-    _fontsize = f;
+        _fontsize = f;
     }
     inline unsigned size() const   {
-    return _fontsize;
+        return _fontsize;
     }
 
     virtual void draw( double z );
