@@ -193,10 +193,10 @@ if kernel !~ /MINGW.*/
   home=ENV['HOME']+"/bin/mrViewer"
   if build =~ /Linux/
     FileUtils.rm_f( home )
-    FileUtils.ln_s( Dir.pwd + '/' + dest + "/bin/mrViewer.sh", home,
+    FileUtils.ln_s( Dir.pwd + "/#{build}/Release/bin/mrViewer.sh", home,
                     :verbose => true )
     FileUtils.rm_f( home + '-dbg' )
-    FileUtils.ln_s( Dir.pwd + '/' + dest + "/bin/mrViewer.sh", home + "-dbg",
+    FileUtils.ln_s( Dir.pwd + '/' + "/#{build}/Debug/bin/mrViewer.sh", home + "-dbg",
                     :verbose => true )
   end
 

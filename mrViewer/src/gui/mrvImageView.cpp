@@ -6541,34 +6541,31 @@ void ImageView::mouseDrag(int x,int y)
                     mrv::Point p2( xn, yn );
                     if ( _mode == kArrow )
                         {
-                            Imath::V2f p01( s->pts[0].x, s->pts[0].y );
-                            Imath::V2f p02( p2.x, p2.y );
-                            Imath::V2f lineVector = p02 - p01;
+                            Imath::V2d p1 = s->pts[0];
+                            Imath::V2d lineVector = p2 - p1;
                             double lineLength = lineVector.length();
 
 
                             const float theta = 45 * M_PI / 180;
-                            const int nWidth = 25;
+                            const int nWidth = 35;
 
-                            float tPointOnLine = nWidth /
+                            double tPointOnLine = nWidth /
                                                   (2 * (tanf(theta) / 2) *
                                                    lineLength);
-                            Imath::V2f pointOnLine = p02 +
+                            Imath::V2d pointOnLine = p2 +
                                                      -tPointOnLine * lineVector;
 
-                            Imath::V2f normalVector( -lineVector.y,
-                                                     lineVector.x );
+                            Imath::V2d normalVector( -lineVector.y,
+                                                      lineVector.x );
 
-                            float tNormal = nWidth / (2 * lineLength );
-                            s->pts[1] = p2;
-                            Imath::V2f tmp = pointOnLine +
+                            double tNormal = nWidth / (2 * lineLength );
+                            Imath::V2d tmp = pointOnLine +
                                              tNormal * normalVector;
-                            s->pts[2].x = tmp.x;
-                            s->pts[2].y = tmp.y;
+                            s->pts[1] = p2;
+                            s->pts[2] = tmp;
                             s->pts[3] = p2;
                             tmp = pointOnLine + -tNormal * normalVector;
-                            s->pts[4].x = tmp.x;
-                            s->pts[4].y = tmp.y;
+                            s->pts[4] = tmp;
                         }
                     else
                         {
