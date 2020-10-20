@@ -1,3 +1,9 @@
+v5.6.4  - Fixed drawing when scaling factor is > 100%.
+	- Fixed saving of arrow and circle drawing shapes in reel.
+	- Fixed shapes in server/client connection when different scaling
+	  factor is in place.
+	- Fixed saving of reels on Mac OSX.
+
 v5.6.3  - Made hotkeys loadable and savable.  This allows several hotkeys
 	  combinations for different users (animator, TD, compositor, etc).
 	  When Preferences are now saved a link to the latest hotkey setting

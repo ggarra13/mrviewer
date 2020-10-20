@@ -1521,6 +1521,15 @@ void ImageView::erase_mode( bool tmp )
         _mode = kEraseTemporary;
     else
         _mode = kErase;
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(true);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(true);
@@ -2120,6 +2129,7 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     y -= H/2.0;
 
 
+
     {
         const mrv::Recti& daw = img->data_window();
         x -= daw.x();
@@ -2173,8 +2183,8 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     x -= tw;
     y -= th;
-    x /= _zoom;
-    y /= _zoom;
+    x /= _real_zoom;
+    y /= _real_zoom;
     x += tw;
     y += th;
     x -= xoffset;
@@ -4033,13 +4043,9 @@ void ImageView::draw()
                 double xf = X;
                 double yf = Y;
 
-                std::cerr << "1 xf,yf=" << xf << "," << yf
-                          << std::endl;
 
                 data_window_coordinates( img, xf, yf );
 
-                std::cerr << "2 xf,yf=" << xf << "," << yf
-                          << std::endl;
                 const mrv::Recti& dpw = img->display_window();
 
                 unsigned int H = dpw.h();
@@ -4051,13 +4057,13 @@ void ImageView::draw()
                 xf += daw.x();
                 yf -= daw.y();
 
-                std::cerr << "3 xf,yf=" << xf << "," << yf
-                          << std::endl;
-                float scale = Fl::screen_scale( window()->screen_num() );
-                xf *= scale;
-                yf *= scale;
-                std::cerr << "scale: " << scale << " xf,yf=" << xf << "," << yf
-                          << std::endl;
+
+                // float scale = Fl::screen_scale( window()->screen_num() );
+                // xf *= scale;
+                // yf *= scale;
+                // std::cerr << "scale=" << scale << " xf,yf=" << xf << "," << yf
+                //           << std::endl;
+
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
             }
@@ -4567,9 +4573,9 @@ int ImageView::leftMouseDown(int x, int y)
             xf += daw.x();
             yf -= daw.y();
 
-            float scale = Fl::screen_scale( window()->screen_num() );
-            xf *= scale;
-            yf *= scale;
+            // float scale = Fl::screen_scale( window()->screen_num() );
+            // xf *= scale;
+            // yf *= scale;
 
             std::string str;
             GLShape* s;
@@ -6508,6 +6514,8 @@ void ImageView::mouseDrag(int x,int y)
             }
 
 
+            float scale = Fl::screen_scale( window()->screen_num() );
+
             if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) )
             {
                 GLShapeList& shapes = fg->image()->shapes();
@@ -6528,9 +6536,6 @@ void ImageView::mouseDrag(int x,int y)
                     yn -= daw[idx].y();
 
 
-                    float scale = Fl::screen_scale( window()->screen_num() );
-                    xn *= scale;
-                    yn *= scale;
 
                     mrv::Point p2( xn, yn );
                     if ( _mode == kArrow )
@@ -6575,10 +6580,11 @@ void ImageView::mouseDrag(int x,int y)
                 xn += daw[idx].x();
                 yn -= daw[idx].y();
 
+
                 mrv::Point p( xn, yn );
                 double A = p.x - s->center.x;
                 double B = p.y - s->center.y;
-                s->radius = sqrt( A*A+B*B );
+                s->radius = sqrt( A*A+B*B ) / scale;
             }
             else if ( _mode == kText )
             {
@@ -6597,6 +6603,7 @@ void ImageView::mouseDrag(int x,int y)
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
+
 
                     s->position( int(xn), int(yn) );
                 }
