@@ -1040,7 +1040,7 @@ void GLEngine::draw_title( const float size,
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
     glMatrixMode( GL_MODELVIEW );
-    
+
     glLoadIdentity();
     glRasterPos2i( x, y );
 
@@ -1297,7 +1297,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     set_matrix( img, false );
 
-    double x = 1.0, y = 0.0;
+    double x = 0.0, y = 0.0;
     //zrot2offsets( x, y, img );
 
     glRotated( img->rot_z(), 0, 0, 1 );
