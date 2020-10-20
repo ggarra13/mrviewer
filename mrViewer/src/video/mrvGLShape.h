@@ -135,6 +135,7 @@ public:
     return Point( x / l, y / l );
     }
 
+
     double x, y;
 };
 

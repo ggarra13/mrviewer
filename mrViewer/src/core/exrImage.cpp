@@ -259,6 +259,7 @@ bool exrImage::channels_order(
     int idx = 0;
     int xsampling[4], ysampling[4];
 
+    std::string oldext;
     bool Zchannel = false;
     std::string c;
     if ( channel() ) c = channel();
@@ -297,6 +298,7 @@ bool exrImage::channels_order(
                                 ext == N_("Y") || ext == N_("U") ||
                                 ext == N_("X") || ext == N_("Z")) )
         {
+            oldext = ext;
             int k = order[0] = (int)channelList.size();
             imfPixelType = ch.type;
             xsampling[k] = ch.xSampling;
@@ -307,6 +309,7 @@ bool exrImage::channels_order(
                                      ext == N_("RY") || ext == N_("V") ||
                                      ext == N_("Y") ) )
         {
+            oldext = ext;
             int k = order[1] = (int)channelList.size();
             imfPixelType = ch.type;
             xsampling[k] = ch.xSampling;
@@ -317,14 +320,19 @@ bool exrImage::channels_order(
                                      ext == N_("BY") || ext == N_("W") ||
                                      ext == N_("Z") ) )
         {
+            oldext = ext;
             int k = order[2] = (int)channelList.size();
             imfPixelType = ch.type;
             xsampling[k] = ch.xSampling;
             ysampling[k] = ch.ySampling;
             channelList.push_back( layerName );
         }
-        else if ( order[3] == -1 && (ext == N_("A") && Zchannel == false) )
+        else if ( order[3] == -1 && (( ext == N_("AR") && oldext == N_("R") ) ||
+                                     ( ext == N_("AG") && oldext == N_("G") ) ||
+                                     ( ext == N_("AB") && oldext == N_("B") ) ||
+                                     ( ext == N_("A") )) && Zchannel == false )
         {
+            oldext = ext;
             int k = order[3] = (int)channelList.size();
             imfPixelType = ch.type;
             xsampling[k] = ch.xSampling;
@@ -336,6 +344,7 @@ bool exrImage::channels_order(
                   order[0] == -1 && order[1] == -1 && order[2] == -1 &&
                   order[3] == -1 && (no_layer || ext.size() > 1) )
         {
+            oldext = ext;
             int k = order[0] = (int) channelList.size();
             imfPixelType = ch.type;
             xsampling[k] = ch.xSampling;

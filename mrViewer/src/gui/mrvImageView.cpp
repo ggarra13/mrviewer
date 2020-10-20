@@ -1521,7 +1521,7 @@ void ImageView::erase_mode( bool tmp )
         _mode = kEraseTemporary;
     else
         _mode = kErase;
-    
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(true);
     uiMain->uiCircle->value(false);
@@ -1529,7 +1529,7 @@ void ImageView::erase_mode( bool tmp )
     uiMain->uiDraw->value(false);
     uiMain->uiText->value(false);
     uiMain->uiScrub->value(false);
-    
+
     uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(true);
@@ -4043,7 +4043,7 @@ void ImageView::draw()
                 double xf = X;
                 double yf = Y;
 
-                
+
                 data_window_coordinates( img, xf, yf );
 
                 const mrv::Recti& dpw = img->display_window();
@@ -4057,7 +4057,7 @@ void ImageView::draw()
                 xf += daw.x();
                 yf -= daw.y();
 
-                
+
                 // float scale = Fl::screen_scale( window()->screen_num() );
                 // xf *= scale;
                 // yf *= scale;
@@ -6500,6 +6500,7 @@ void ImageView::mouseDrag(int x,int y)
                 double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
                 _selection = mrv::Rectd( xt, yt, dx, dy );
+                std::cerr << _selection << "  " << xf << std::endl;
 
                 setlocale( LC_NUMERIC, "C" );
 
@@ -6515,7 +6516,7 @@ void ImageView::mouseDrag(int x,int y)
 
 
             float scale = Fl::screen_scale( window()->screen_num() );
-            
+
             if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) )
             {
                 GLShapeList& shapes = fg->image()->shapes();
@@ -6540,22 +6541,34 @@ void ImageView::mouseDrag(int x,int y)
                     mrv::Point p2( xn, yn );
                     if ( _mode == kArrow )
                         {
-                            mrv::Point p1 = s->pts[0];
-                            double A = ( p1.y - p2.y );
-                            double B = ( p1.x - p2.x );
-                            double Par = sqrt( A*A + B*B ) / 1.5f;
-                            double slopy = atan2( A, B );
-                            double cosy = cos( slopy );
-                            double siny = sin( slopy );
-                            s->pts[1] = p2;
+                            Imath::V2f p01( s->pts[0].x, s->pts[0].y );
+                            Imath::V2f p02( p2.x, p2.y );
+                            Imath::V2f lineVector = p02 - p01;
+                            double lineLength = lineVector.length();
 
-                            s->pts[2] =
-                              mrv::Point(p1.x - Par * cosy + Par / 2.0 * siny,
-                                         p1.y - Par / 2.0 * cosy - Par * siny);
+
+                            const float theta = 45 * M_PI / 180;
+                            const int nWidth = 25;
+
+                            float tPointOnLine = nWidth /
+                                                  (2 * (tanf(theta) / 2) *
+                                                   lineLength);
+                            Imath::V2f pointOnLine = p02 +
+                                                     -tPointOnLine * lineVector;
+
+                            Imath::V2f normalVector( -lineVector.y,
+                                                     lineVector.x );
+
+                            float tNormal = nWidth / (2 * lineLength );
+                            s->pts[1] = p2;
+                            Imath::V2f tmp = pointOnLine +
+                                             tNormal * normalVector;
+                            s->pts[2].x = tmp.x;
+                            s->pts[2].y = tmp.y;
                             s->pts[3] = p2;
-                            s->pts[4] =
-                              mrv::Point(p1.x - Par * cosy - Par / 2.0 * siny,
-                                         p1.y - Par * siny + Par / 2.0 * cosy);
+                            tmp = pointOnLine + -tNormal * normalVector;
+                            s->pts[4].x = tmp.x;
+                            s->pts[4].y = tmp.y;
                         }
                     else
                         {
@@ -6604,7 +6617,7 @@ void ImageView::mouseDrag(int x,int y)
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
 
-                    
+
                     s->position( int(xn), int(yn) );
                 }
             }
