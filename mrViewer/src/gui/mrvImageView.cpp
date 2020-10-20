@@ -6540,22 +6540,31 @@ void ImageView::mouseDrag(int x,int y)
                     mrv::Point p2( xn, yn );
                     if ( _mode == kArrow )
                         {
-                            mrv::Point p1 = s->pts[0];
-                            double A = ( p1.y - p2.y );
-                            double B = ( p1.x - p2.x );
-                            double Par = sqrt( A*A + B*B ) / 1.5f;
-                            double slopy = atan2( A, B );
-                            double cosy = cos( slopy );
-                            double siny = sin( slopy );
-                            s->pts[1] = p2;
+                            Imath::V2d p1 = s->pts[0];
+                            Imath::V2d lineVector = p2 - p1;
+                            double lineLength = lineVector.length();
 
-                            s->pts[2] =
-                              mrv::Point(p1.x - Par * cosy + Par / 2.0 * siny,
-                                         p1.y - Par / 2.0 * cosy - Par * siny);
+
+                            const float theta = 45 * M_PI / 180;
+                            const int nWidth = 35;
+
+                            double tPointOnLine = nWidth /
+                                                  (2 * (tanf(theta) / 2) *
+                                                   lineLength);
+                            Imath::V2d pointOnLine = p2 +
+                                                     -tPointOnLine * lineVector;
+
+                            Imath::V2d normalVector( -lineVector.y,
+                                                      lineVector.x );
+
+                            double tNormal = nWidth / (2 * lineLength );
+                            Imath::V2d tmp = pointOnLine +
+                                             tNormal * normalVector;
+                            s->pts[1] = p2;
+                            s->pts[2] = tmp;
                             s->pts[3] = p2;
-                            s->pts[4] =
-                              mrv::Point(p1.x - Par * cosy - Par / 2.0 * siny,
-                                         p1.y - Par * siny + Par / 2.0 * cosy);
+                            tmp = pointOnLine + -tNormal * normalVector;
+                            s->pts[4] = tmp;
                         }
                     else
                         {
