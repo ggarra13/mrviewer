@@ -6500,7 +6500,6 @@ void ImageView::mouseDrag(int x,int y)
                 double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
                 _selection = mrv::Rectd( xt, yt, dx, dy );
-                std::cerr << _selection << "  " << xf << std::endl;
 
                 setlocale( LC_NUMERIC, "C" );
 
