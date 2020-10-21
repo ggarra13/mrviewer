@@ -158,7 +158,14 @@ def copy_third_party( root, dest )
                     "#{dest}/lib/", :verbose => true )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
-
+  elsif dest =~ /Windows.*-64/
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
+                    "#{dest}/lib", :verbose => true )
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
+                    "#{dest}/lib", :verbose => true )
+  elsif dest =~ /Windows.*-32/
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
+                    "#{dest}/lib", :verbose => true )
   end
 end
 
@@ -245,11 +252,13 @@ else
   dest  = "#{build}/#@debug"
   Dir.chdir( root  )
   copy_files( dest )
+  copy_third_party( root, dest )
 
   build = "BUILD/Windows-6.3.9600-32/"
   dest  = "#{build}/#@debug"
   Dir.chdir( root  )
   copy_files( dest )
+  copy_third_party( root, dest )
 end
 
 exit(0)
