@@ -1,4 +1,6 @@
 v5.6.5 - Improved arrow drawing with no such big tips when arrow is long.
+       - Fixed Windows distribution not carrying RED3D*.dll and
+	 BlackMagicAPI.dll.
 
 v5.6.4  - Fixed drawing when scaling factor is > 100%.
     - Fixed saving of arrow and circle drawing shapes in reel.
@@ -509,13 +511,13 @@ v5.3.1  - Made single clips change timeline start/end frames when not in
 v5.3.0  - Bug fixed crashes related to thumbnails.
     - Added a first command-line video tutorial for OpenTimelineIO
       usage in:
-        https://youtu.be/yXaYj406xiM
+	https://youtu.be/yXaYj406xiM
 
 v5.2.9  - Bug fixed timeline adjustment when loading new clips which got
       broken on the v5.2.8 windows re-release.
     - Added a first command-line video tutorial for OpenTimelineIO
       usage in:
-        https://youtu.be/yXaYj406xiM
+	https://youtu.be/yXaYj406xiM
 
 v5.2.8  - Made reel converter more solid and added features in mrViewer to
       support the conversion more seamlessly.
@@ -526,7 +528,7 @@ v5.2.8  - Made reel converter more solid and added features in mrViewer to
       a frame range is provided.
     - Added a first command-line video tutorial for OpenTimelineIO
       usage in:
-        https://youtu.be/yXaYj406xiM
+	https://youtu.be/yXaYj406xiM
 
 v5.2.7  - Bug fixed .reel saver to save the fps with decimals.  Previously,
       only integers were saved.
@@ -1128,9 +1130,9 @@ v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
        The two syntaxes work on both platforms.  This allows the OCIO
        variable to be defined, like this example:
        under Linux syntax:
-         $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
+	 $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
        or in Windows syntax:
-         $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
+	 $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
        and then set SHOW and SHOT in the environment that calls mrViewer.
      - Made HDR shader show when _has_hdr is set.  This variable is only
        set when the shader type is GL.
@@ -1344,24 +1346,24 @@ v4.1.3   - Native file requester on Windows does not leave their menus open
 
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
      - Improvements to channel/layer usage per request from Dominik Pott:
-        * Next/Previous channel hotkeys are less granular.  They now
-          jump RGBA channel groups.
-        * Switching to the Z channel no longer breaks the hotkeys of
-          RGBA.
-        * Channel names are now sorted according to function (ex.
-          XYZ, RGB, etc ).
-        * Precaching now starts from the current frame, not from
-          the start.
-        * Changing channels past the last or first channel loops
-          to the beginning and to the end channels respectively.
-        * There's a new hotkey (e) to toggle two channels for easy
-          comparison.
-        * The cache now respects the IN/OUT points in the timeline
-          and won't cache further than that, except it has already
-          been cached.
-        * The hotkeys have been changed so that 'c' always brings
-          you to the color image, while r,g,b change based on what
-          group of channels you have selected ( N, P, etc ).
+	* Next/Previous channel hotkeys are less granular.  They now
+	  jump RGBA channel groups.
+	* Switching to the Z channel no longer breaks the hotkeys of
+	  RGBA.
+	* Channel names are now sorted according to function (ex.
+	  XYZ, RGB, etc ).
+	* Precaching now starts from the current frame, not from
+	  the start.
+	* Changing channels past the last or first channel loops
+	  to the beginning and to the end channels respectively.
+	* There's a new hotkey (e) to toggle two channels for easy
+	  comparison.
+	* The cache now respects the IN/OUT points in the timeline
+	  and won't cache further than that, except it has already
+	  been cached.
+	* The hotkeys have been changed so that 'c' always brings
+	  you to the color image, while r,g,b change based on what
+	  group of channels you have selected ( N, P, etc ).
      - On Windows, the file requester is the native one by default now.
        This effects both loading and saving.  Note that if you have
        preferences saved, you will need to remove it for this to take
@@ -1429,9 +1431,9 @@ v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
      - Added --stereo-output flag to command line.  This controls the
        stereo output setting when loading a stereo set of images.
        Options are: Left view, Right view, Top/bottom, Bottom/top,
-            Left/right, Right/left, Even/odd rows,
-            Even/odd columns, Checkerboard pattern,
-            Red/cyan glasses, Cyan/red glasses.
+	    Left/right, Right/left, Even/odd rows,
+	    Even/odd columns, Checkerboard pattern,
+	    Red/cyan glasses, Cyan/red glasses.
      - Reverted the change to timecode/timeline accepting view shortcuts
        as it was causing conflict with the presentation mode.
      - Improved loading of IFF images to not consume so much memory.
@@ -1474,7 +1476,7 @@ v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
        shortcuts) set the start/end frame of the timeline but not by
        shrinking the timeline, but by highlighting the area instead.
        This is a preference option in:
-        Preferences->Playback->Timeline->Selection.
+	Preferences->Playback->Timeline->Selection.
 
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
        will bake the lut in the picture.
@@ -1958,10 +1960,10 @@ v3.6.8   - Made timecode start editable in the Media Info Window.
 
 v3.6.7   - Made timecode be a separate variable, instead of modifying
        frame directly.  This means:
-          * Frames, Seconds and Time do not take the timecode
-        start into account.
-          * Timecode Drop Frame and Timecode Non-Drop Frame take
-        timecode start into account.
+	  * Frames, Seconds and Time do not take the timecode
+	start into account.
+	  * Timecode Drop Frame and Timecode Non-Drop Frame take
+	timecode start into account.
      - Bug fixed OpenEXR timecode ( "timeCode" attribute ) to work
        as said in v3.6.6.
      - Made playback not start at the point of a preloading cache,
@@ -2104,7 +2106,7 @@ v3.5.4   - Restored sRGBColorspace hint as it was not the cause
        of double gamma.  It is a bug with Windows' photo
        app.
      - Allowed sequences without first periods, like:
-           image0001.pic
+	   image0001.pic
        instead of image.0001.pic or image_0001.pic
      - Improved window positioning when image is too large.
        Previously, the borders would be placed outside the
@@ -2144,7 +2146,7 @@ v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter
      - Made scrubbing be more sensitive to drag. This allows
        viewing more frames before reseting the scrub with CTRL.
      - Added a new Preference setting:
-         Playback->Defaults->Scrubbing Sensitivity
+	 Playback->Defaults->Scrubbing Sensitivity
        which controls the speed of scrubbing when moving the
        mouse right and left after SHIFT clicking.
        The new setting is 4 times more sensitive than what
@@ -2194,7 +2196,7 @@ v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
      - Made GUI SOP and Saturation add 4 look mod transforms if
        not present:
        ACEScsc.ACES_to_ACEScg -> LMT.SOPNode ->
-              LMT.SatNode -> ACEScsc.ACEScg_to_ACES
+	      LMT.SatNode -> ACEScsc.ACEScg_to_ACES
      - Made GUI SOP and Saturation turn on LUT automatically.
      - Made OpenGL use any fixed text if no font of 16 pixels is
        found.
@@ -2534,7 +2536,7 @@ v3.2.9   - It is now possible to switch audio device in the
        By default, the system default audio device is used.
      - In Windows, UNC network paths are now accepted.
        For example:
-           //gga-desktop1/D/movies/test.mov
+	   //gga-desktop1/D/movies/test.mov
        They can be used from Drag and Drop.  Currently,
        it is not possible to type or pick them in yourself.
 
@@ -2642,8 +2644,8 @@ v3.2.0   - Thumbnails in file requester are created with the audio
        play the audio in mono.  Previous fix was incorrect.
 
 v3.1.9   **NOTE** If using the Windows installer, it is
-          recommended you uninstall v3.1.8 before
-          installing v3.1.9.
+	  recommended you uninstall v3.1.8 before
+	  installing v3.1.9.
      - Fixed multithreading issues in file requester.  It should
        not crash anymore.
      - Added an option in main UI preferences to select what
@@ -2987,7 +2989,7 @@ v2.9.8   - Bug fixed OpenEXR reader for multipart image files that
 v2.9.7   - Allowed command-line loading of stereo images/movies
        without any prefix.  The syntax is using the -s keyword:
 
-           mrViewer -s leftimage.1.exr -s rightimage.1.exr
+	   mrViewer -s leftimage.1.exr -s rightimage.1.exr
 
      - Updated media information's value and sliders to trigger
        an update of the slider if the value is typed in.
@@ -3069,18 +3071,18 @@ v2.9.3   - Bug fixed saving of OpenExr files when data window was
        or two sets of movie files with a common prefix.  The
        syntax is a single letter prefix or a full keyword:
        Examples:
-          rootname.prefix.number.extension
-          da20.L.0001.exr
-          da20.R.0001.exr
+	  rootname.prefix.number.extension
+	  da20.L.0001.exr
+	  da20.R.0001.exr
        For movies:
-          rootname.prefix.extension
-          da20.left.mov
-          da20.right.mov
+	  rootname.prefix.extension
+	  da20.left.mov
+	  da20.right.mov
 
        In the file requester, the movies and sequences
        will appear as:
-          da20.%v.mov      # for da20.L|R.mov
-          da20.%V.%04d.exr # for da20.left|right.0001.exr
+	  da20.%v.mov      # for da20.L|R.mov
+	  da20.%V.%04d.exr # for da20.left|right.0001.exr
 
        The names of left and right and L and R can be changed
        with environment variables. See documentation.
@@ -3406,11 +3408,11 @@ v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
 
 v2.6.6.1 - Reworked the Cache Preferences to allow:
        * Not using any cache for streaming images directly from disk.
-         The performance of this is extremely dependant on the images being
-         loaded.
+	 The performance of this is extremely dependant on the images being
+	 loaded.
        * 8 bit caches to save RAM at the expense of baking the gamma in.
        * Scale to proxy images (one half, one quarter or one eighth of the
-         original size) also to save RAM.
+	 original size) also to save RAM.
 
 v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
        Progress goes from one sequence to the next.
