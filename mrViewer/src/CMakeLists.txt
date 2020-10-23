@@ -105,7 +105,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
      #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-     ADD_COMPILE_OPTIONS( -fsanitize=address )
+     ADD_COMPILE_OPTIONS( -g -fsanitize=address )
      SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 

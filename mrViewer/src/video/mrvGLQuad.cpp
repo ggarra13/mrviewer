@@ -453,7 +453,7 @@ void GLQuad::update_texsub( unsigned int idx,
             // In other words: This call is at most a real DMA transfer,
             // without any (expensive) interference by the CPU.
             //
-            glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format,
+             glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format,
                             pixel_type, BUFFER_OFFSET(0) );
             CHECK_GL;
             //
@@ -678,6 +678,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             {
                 htw /= 2;
             }
+
 
             glTexImage2D( GL_TEXTURE_2D,
                           0,              // level
