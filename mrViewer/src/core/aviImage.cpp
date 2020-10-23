@@ -1116,10 +1116,15 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
                                             )
 {
     double aspect_ratio = (double)_w / (double) _h;
-    if ( _w > mrv::GLEngine::maxTexWidth() )
+    if ( _w > mrv::GLEngine::maxTexWidth() &&
+         mrv::GLEngine::maxTexWidth() > 0 )
         _w = mrv::GLEngine::maxTexWidth();
-    if ( _h > mrv::GLEngine::maxTexHeight() )
+    if ( _h > mrv::GLEngine::maxTexHeight() &&
+         mrv::GLEngine::maxTexHeight() > 0 )
         _h = (unsigned int) ( mrv::GLEngine::maxTexHeight() / aspect_ratio );
+    DBGM1( "WxH max=" << _w << "x" << _h );;
+    DBGM1( "WxH maxgl=" <<  mrv::GLEngine::maxTexWidth() << "x"
+           << mrv::GLEngine::maxTexHeight() );
     return mrv::image_type_ptr( new image_type( frame,
                                 width(),
                                 height(),
@@ -2370,9 +2375,11 @@ void aviImage::populate()
             _video_info.push_back( s );
             if ( _video_index < 0 && s.has_codec )
             {
+                DBGM1("Video Stream #" << _video_info.size() << " found" );
                 video_stream( _video_info.size()-1 );
                 int w = ctx->width;
                 int h = ctx->height;
+                DBGM1( "WxH=" << w << "x" << h );
                 image_size( w, h );
             }
             else if ( _video_info.size() == 2 )
@@ -2412,7 +2419,10 @@ void aviImage::populate()
 
             _audio_info.push_back( s );
             if ( _audio_index < 0 && s.has_codec )
+            {
+                DBGM1("Audio Stream #" << _audio_info.size() << " found" );
                 _audio_index = _audio_info.size()-1;
+            }
             break;
         }
         case AVMEDIA_TYPE_SUBTITLE:
@@ -2424,7 +2434,11 @@ void aviImage::populate()
             s.bitrate    = calculate_bitrate( stream, par );
             _subtitle_info.push_back( s );
             if ( _subtitle_index < 0 )
+            {
                 _subtitle_index = _subtitle_info.size()-1;
+                DBGM1("Subtitle Stream #" << _subtitle_info.size()
+                      << " found" );
+            }
             break;
         }
         default:
@@ -2476,10 +2490,12 @@ void aviImage::populate()
 
     if ( has_video() )
     {
+        DBGM1( "get video stream" );
         stream = get_video_stream();
     }
     else if ( has_audio() )
     {
+        DBGM1( "get audio stream" );
         stream = get_audio_stream();
     }
     else

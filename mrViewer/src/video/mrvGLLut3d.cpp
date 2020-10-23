@@ -544,13 +544,9 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
     try
     {
-        DBG;
         OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
-        DBG;
         const std::string& display = mrv::Preferences::OCIO_Display;
-        DBG;
         const std::string& view = mrv::Preferences::OCIO_View;
-        DBG;
 
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::DisplayViewTransformRcPtr transform =
@@ -559,36 +555,27 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
         OCIO::DisplayTransformRcPtr transform =
           OCIO::DisplayTransform::Create();
 #endif
-        DBG;
 
         std::string ics = img->ocio_input_color_space();
         if  ( ics.empty() )
         {
-        DBG;
             OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
             if(!defaultcs)
                 throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
-            DBG;
             ics = defaultcs->getName();
-            DBG;
         }
 
 
-        DBG;
 #if OCIO_VERSION_HEX >= 0x02000000
         transform->setSrc( ics.c_str() );
 #else
         transform->setInputColorSpaceName( ics.c_str() );
 #endif
-        DBG;
         transform->setDisplay( display.c_str() );
-        DBG;
         transform->setView( view.c_str() );
-        DBG;
 
         OCIO::ConstProcessorRcPtr processor =
             config->getProcessor( transform );
-        DBG;
 
 
 #if OCIO_VERSION_HEX >= 0x02000000
@@ -1253,11 +1240,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     }
     else
     {
-        DBG;
-
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() ) {
-            DBG;
             ics = OCIO::ROLE_SCENE_LINEAR;
 
             const char* var = uiPrefs->uiPrefsOCIOConfig->value();
@@ -1274,18 +1258,14 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             }
             CMedia* c = const_cast< CMedia* >( img );
             c->ocio_input_color_space( ics );
-            DBG;
         }
         OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
         fullpath = config->getCacheID();
         fullpath += " -> ";
 
         path = ics;
-        DBG;
         path += " -> " + Preferences::OCIO_Display;
-        DBG;
         path += " -> " + Preferences::OCIO_View;
-        DBG;
     }
 
     fullpath += path;
@@ -1313,30 +1293,23 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
-            DBG;
             std::string msg = _( "Image input color space is undefined for ") +
                               img->name() + ".";
             mrv::PopupMenu* uiICS = view->uiICS;
-            DBG;
             const char* const lbl = "scene_linear";
             for ( unsigned i = 0; i < uiICS->children(); ++i )
             {
-                DBG;
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
-                    DBG;
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
 
-                    DBG;
                     char buf[1024];
                     sprintf( buf, "ICS \"%s\"", name.c_str() );
                     view->uiView->send_network( buf );
 
-                    DBG;
                     c->ocio_input_color_space( name );
-                    DBG;
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
                     uiICS->redraw();
@@ -1347,11 +1320,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         }
         else
         {
-            DBG;
             mrv::PopupMenu* uiICS = view->uiICS;
-            DBG;
             const std::string& lbl = img->ocio_input_color_space();
-            DBG;
             LOG_INFO( _("Input color space for ") << img->name() << _(" is ")
                       << lbl );
             for ( unsigned i = 0; i < uiICS->children(); ++i )
@@ -1359,11 +1329,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                 const char* name = uiICS->child(i)->label();
                 if ( name && name == lbl )
                 {
-                    DBG;
                     uiICS->copy_label( lbl.c_str() );
-                    DBG;
                     uiICS->value(i);
-                    DBG;
                     uiICS->redraw();
                     break;
                 }

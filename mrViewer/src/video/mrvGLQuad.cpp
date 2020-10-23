@@ -216,14 +216,15 @@ GLenum GLQuad::gl_format( const image_type::Format format )
         return GL_BGR;
     case image_type::kLummaA:
         return GL_LUMINANCE_ALPHA;
-    case image_type::kLumma:
-    case image_type::kYUV:
     case image_type::kITU_709_YCbCr444A:
     case image_type::kITU_601_YCbCr444A:
     case image_type::kITU_709_YCbCr420A:
     case image_type::kITU_601_YCbCr420A:
     case image_type::kITU_709_YCbCr410A:
     case image_type::kITU_601_YCbCr410A:
+        return GL_LUMINANCE_ALPHA;
+    case image_type::kLumma:
+    case image_type::kYUV:
     case image_type::kITU_709_YCbCr444:
     case image_type::kITU_601_YCbCr444:
     case image_type::kITU_709_YCbCr420:
@@ -369,7 +370,7 @@ void GLQuad::update_texsub( unsigned int idx,
 
     if ( _view->field() == ImageView::kFrameDisplay )
     {
-// #define TEST_NO_PBO_TEXTURES
+//#define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
 #ifdef NVIDIA_PBO_BUG
@@ -645,7 +646,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
                 _pixel_type = pixel_type;
                 _channels = channels;
                 _format = pic->format();
-                // _shader = ( pic->format() >= image_type::kYByRy420 ?
+                //_shader = ( pic->format() >= image_type::kYByRy420 ?
                 //            GLEngine::YByRyShader() : GLEngine::YCbCrShader() );
                 _glformat = GL_LUMINANCE;
                 _internalFormat = internalFormat;

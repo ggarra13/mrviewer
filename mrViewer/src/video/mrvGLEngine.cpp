@@ -157,8 +157,8 @@ bool   GLEngine::_pow2Textures    = true;
 bool   GLEngine::_pboTextures     = false;
 bool   GLEngine::_sdiOutput       = false;
 
-unsigned int GLEngine::_maxTexWidth;
-unsigned int GLEngine::_maxTexHeight;
+unsigned int GLEngine::_maxTexWidth = 0;
+unsigned int GLEngine::_maxTexHeight = 0;
 
 char buf1[512];
 #define GLSL(x) do { code << #x << std::endl; } while( 0 );
@@ -250,6 +250,8 @@ std::string GLEngine::options()
  */
 void GLEngine::init_textures()
 {
+    DBGM1( "init_textures"  );
+    
     // Get maximum texture resolution for gfx card
     GLint glMaxTexDim;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &glMaxTexDim);

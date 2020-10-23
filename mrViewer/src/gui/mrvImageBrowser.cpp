@@ -1733,6 +1733,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                          const bool edl,
                          const bool progressBar )
 {
+    DBGM1( "load LoadList" );
     bool net = view()->network_active();
     view()->update( false );
 
@@ -2064,6 +2065,7 @@ void ImageBrowser::load( const stringArray& files,
                          const bool edl,
                          const bool progress )
 {
+    DBGM1( "load stringArray" );
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
 
