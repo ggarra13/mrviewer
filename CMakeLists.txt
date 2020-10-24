@@ -3,7 +3,7 @@
 #
 
 IF(WIN32)
-    SET( TEST_BUNDLE 0 )
+    SET( TEST_BUNDLE 1 )
 ENDIF()
 
 #
