@@ -357,7 +357,7 @@ void GLQuad::update_texsub( unsigned int idx,
                             GLenum format, GLenum pixel_type,
                             unsigned short  channels,
                             unsigned short  pixel_size,
-                            boost::uint8_t* pixels )
+                            boost::uint8_t* pixels)
 {
     assert( pixels != NULL );
     assert( rx <  tw );
@@ -392,7 +392,7 @@ void GLQuad::update_texsub( unsigned int idx,
             // This avoids a potential stall.
             //
             // glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
-            //           rw*rh*pixel_size, NULL, GL_STREAM_DRAW);
+            //            rw*rh*pixel_size*channels, NULL, GL_STREAM_DRAW);
             glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
                          tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
             CHECK_GL;
@@ -426,7 +426,7 @@ void GLQuad::update_texsub( unsigned int idx,
             // "memcpy" the double precision array into the driver memory,
             // doing the explicit conversion to single precision.
             //
-            unsigned offset = ( ry * tw + rx ) * pixel_size * channels;
+            unsigned offset = ( ry * rw + rx ) * pixel_size * channels;
             unsigned size   = tw * rh * pixel_size * channels;
 
             memcpy( ioMem + offset, pixels, size );
@@ -691,7 +691,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             CHECK_GL;
         }
 
-        unsigned off = 0;
+        int off = 0;
         if ( _right )
         {
             if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
@@ -703,6 +703,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             {
                 unsigned dx = ow / 2;
                 off = dx * pixel_size;
+                if ( i >= 2 ) off = -off;  // avoid overstepping bounds
             }
         }
 
