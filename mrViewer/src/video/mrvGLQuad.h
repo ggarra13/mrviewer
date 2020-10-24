@@ -161,7 +161,7 @@ protected:
                         GLenum format, GLenum pixel_type,
                         unsigned short  channels,
                         unsigned short  pixel_size,
-                        boost::uint8_t* pixels );
+                        boost::uint8_t* pixels);
 
 protected:
     const ImageView*   _view;
