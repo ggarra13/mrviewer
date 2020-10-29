@@ -1060,7 +1060,6 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     if ( !_seek_req && playback() == kBackwards )
     {
-        std::cerr << start+1 << " reverse" << std::endl;
         _rev.push_back( start+1 );
 
         if ( !got_video )    _video_packets.preroll(vpts);
@@ -1767,17 +1766,7 @@ bool aviImage::find_image( int64_t& frame )
                                                       frame );
         if ( r != _rev.end() )
         {
-            std::cerr << "erase " << *r << std::endl;
             _rev.erase( r );
-            for ( auto t : _rev )
-            {
-                std::cerr << t << " ";
-            }
-            std::cerr << std::endl;
-        }
-        else
-        {
-            std::cerr << "find " << frame << " not in rev" << std::endl;
         }
     }
 
@@ -2490,12 +2479,10 @@ void aviImage::populate()
 
     if ( has_video() )
     {
-        DBGM1( "get video stream" );
         stream = get_video_stream();
     }
     else if ( has_audio() )
     {
-        DBGM1( "get audio stream" );
         stream = get_audio_stream();
     }
     else
