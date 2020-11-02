@@ -7641,7 +7641,7 @@ void ImageView::toggle_presentation()
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
         has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-        has_stereo, has_paint, has_sop, has_log;
+        has_stereo, has_paint, has_sop, has_log, has_tools_grp = false;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7662,6 +7662,7 @@ void ImageView::toggle_presentation()
         has_stereo     = uiStereo ? uiStereo->visible() : false;
         has_sop        = uiSOP ? uiSOP->visible() : false;
         has_log        = uiLog ? uiLog->visible() : false;
+        has_tools_grp  = uiMain->uiToolsGroup->visible();
         filter         = texture_filtering();
 
         if (uiSOP) uiSOP->hide();
@@ -7674,9 +7675,14 @@ void ImageView::toggle_presentation()
         uiPrefs->hide();
         uiAbout->hide();
         uiLog->hide();
+        uiMain->uiToolsGroup->hide();
         uiMain->uiBottomBar->hide();
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
+
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
+
 
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
@@ -7692,12 +7698,16 @@ void ImageView::toggle_presentation()
         int Y = window()->y();
         int W = window()->w();
         int H = window()->h();
-#if defined(_WIN32) || defined(OSX)
+#ifdef OSX
+        resize( X, Y, W, H ); // needed
+#elif defined(_WIN32)
         H += int(40 * scale);
+        resize( X, Y, W, H ); // needed
+#else
+        resize( X, Y, W, H ); // needed
 #endif
-        resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
-        uiMain->uiRegion->init_sizes();
+        // uiMain->uiRegion->layout();
+        // uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -7713,6 +7723,7 @@ void ImageView::toggle_presentation()
         if ( has_log )        uiLog->show();
 
 
+        if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
         if ( has_top_bar )    {
             uiMain->uiTopBar->show();
