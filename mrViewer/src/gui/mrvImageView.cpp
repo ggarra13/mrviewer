@@ -7680,6 +7680,10 @@ void ImageView::toggle_presentation()
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
 
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
+
+
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
              kPresentationOnly )
@@ -7687,19 +7691,23 @@ void ImageView::toggle_presentation()
             texture_filtering( kBilinearFiltering );
         }
 
-        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
+        //if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         fltk_main()->fullscreen();
         float scale = Fl::screen_scale( window()->screen_num() );
         int X = window()->x();
         int Y = window()->y();
         int W = window()->w();
         int H = window()->h();
-#if defined(_WIN32) || defined(OSX)
-        H += int(40 * scale);
-#endif
+#ifdef OSX
         resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
-        uiMain->uiRegion->init_sizes();
+#elif defined(_WIN32)
+        H += int(40 * scale);
+        resize( X, Y, W, H );
+#else
+        resize( X, Y, W, H );
+#endif
+        // uiMain->uiRegion->layout();
+        // uiMain->uiRegion->init_sizes();
     }
     else
     {
