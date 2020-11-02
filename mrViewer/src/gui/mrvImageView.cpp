@@ -7611,7 +7611,6 @@ void ImageView::toggle_fullscreen()
     else
     {
         FullScreen = false;
-        uiMain->uiToolsGroup->show();
         presentation = false;
         resize_main_window();
     }
