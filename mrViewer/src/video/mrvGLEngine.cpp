@@ -251,7 +251,7 @@ std::string GLEngine::options()
 void GLEngine::init_textures()
 {
     DBGM1( "init_textures"  );
-    
+
     // Get maximum texture resolution for gfx card
     GLint glMaxTexDim;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &glMaxTexDim);
@@ -2433,12 +2433,14 @@ void GLEngine::draw_shape( GLShape* const shape )
 
     double zoomX = _view->zoom();
     DBGM3( __FUNCTION__ << " " << __LINE__ );
-    if ( _view->ghost_previous() )
+    short num = _view->ghost_previous();
+    int64_t vframe = _view->frame();
+    int64_t sframe = shape->frame;
+    if ( num )
     {
-        short num = _view->ghost_previous();
         for ( short i = num; i > 0; --i )
         {
-            if ( shape->frame - i == _view->frame() )
+            if ( sframe - i == vframe )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
@@ -2449,12 +2451,12 @@ void GLEngine::draw_shape( GLShape* const shape )
         }
     }
 
-    if ( _view->ghost_next() )
+    num = _view->ghost_next();
+    if ( num )
     {
-        short num = _view->ghost_next();
         for ( short i = 1; i <= num; ++i )
         {
-            if ( shape->frame + i == _view->frame() )
+            if ( sframe + i == vframe )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
@@ -2465,8 +2467,8 @@ void GLEngine::draw_shape( GLShape* const shape )
         }
     }
 
-    if ( shape->frame == MRV_NOPTS_VALUE ||
-         shape->frame == _view->frame() )
+    if ( sframe == MRV_NOPTS_VALUE ||
+         sframe == vframe )
     {
         shape->draw(zoomX);
     }

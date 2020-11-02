@@ -3,7 +3,7 @@ v5.6.5  - Improved arrow drawing with no such big tips when arrow is long.
 	  BlackMagicAPI.dll.
 	- Fixed FFMPEG's picture size being 0x0 due to improper inatialization
 	  of gl context.  This would sometimes lead to video not appearing and
-	  playback of audio only, mainly on file associations.
+	  playback of audio only, mainly on file associations on Windows.
 	- Made video decoding of frames decode all possible frames at a time.
 	  This fixes some issues with some videos.
 	- Bug fixed video crashes with Left/Right stereo viewing of videos.
