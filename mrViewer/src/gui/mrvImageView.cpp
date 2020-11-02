@@ -221,8 +221,9 @@ ChannelShortcuts shortcuts[] = {
 
 namespace
 {
-bool FullScreen = false;
-bool presentation = false;
+    bool FullScreen = false;
+    bool presentation = false;
+    bool has_tools_grp = true;
 
 inline std::string remove_hash_number( std::string r )
 {
@@ -7610,6 +7611,7 @@ void ImageView::toggle_fullscreen()
     else
     {
         FullScreen = false;
+        uiMain->uiToolsGroup->show();
         presentation = false;
         resize_main_window();
     }
@@ -7641,7 +7643,7 @@ void ImageView::toggle_presentation()
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
         has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-        has_stereo, has_paint, has_sop, has_log, has_tools_grp = false;
+        has_stereo, has_paint, has_sop, has_log;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7662,7 +7664,8 @@ void ImageView::toggle_presentation()
         has_stereo     = uiStereo ? uiStereo->visible() : false;
         has_sop        = uiSOP ? uiSOP->visible() : false;
         has_log        = uiLog ? uiLog->visible() : false;
-        has_tools_grp  = uiMain->uiToolsGroup->visible();
+        has_tools_grp  = uiMain->uiToolsGroup ?
+                         uiMain->uiToolsGroup->visible() : false;
         filter         = texture_filtering();
 
         if (uiSOP) uiSOP->hide();
@@ -7680,9 +7683,9 @@ void ImageView::toggle_presentation()
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
 
+
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
-
 
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
@@ -7706,8 +7709,11 @@ void ImageView::toggle_presentation()
 #else
         resize( X, Y, W, H ); // needed
 #endif
-        // uiMain->uiRegion->layout();
-        // uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
+        uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->redraw();
     }
     else
     {
@@ -7741,6 +7747,9 @@ void ImageView::toggle_presentation()
 
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->redraw();
         resize_main_window();
     }
 
