@@ -223,7 +223,7 @@ namespace
 {
     bool FullScreen = false;
     bool presentation = false;
-    bool has_tools_grp = true;
+    bool has_tools_grp, has_top_bar, has_bottom_bar, has_pixel_bar;
 
 inline std::string remove_hash_number( std::string r )
 {
@@ -7590,6 +7590,29 @@ void ImageView::show_background( const bool b )
     damage_contents();
 }
 
+
+    void show_bars( ViewerUI* uiMain )
+    {
+        if ( has_tools_grp ) uiMain->uiToolsGroup->show();
+
+        if ( has_top_bar )    {
+            uiMain->uiTopBar->show();
+        }
+        if ( has_bottom_bar)  {
+            uiMain->uiBottomBar->show();
+        }
+        if ( has_pixel_bar )  {
+            uiMain->uiPixelBar->show();
+        }
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->redraw();
+        uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->redraw();
+        uiMain->uiView->redraw();
+    }
+
 /**
  * Toggle between a fullscreen view and a normal view with window borders.
  *
@@ -7612,6 +7635,10 @@ void ImageView::toggle_fullscreen()
     {
         FullScreen = false;
         presentation = false;
+        has_top_bar = true;
+        has_bottom_bar = true;
+        has_pixel_bar = true;
+        show_bars( uiMain );
         resize_main_window();
     }
 
@@ -7641,8 +7668,7 @@ void ImageView::toggle_presentation()
     Fl_Window* uiLog = uiMain->uiLog->uiMain;
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-        has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-        has_stereo, has_paint, has_sop, has_log;
+        has_prefs, has_about, has_stereo, has_paint, has_sop, has_log;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7700,13 +7726,14 @@ void ImageView::toggle_presentation()
         int Y = window()->y();
         int W = window()->w();
         int H = window()->h();
+
 #ifdef OSX
         resize( X, Y, W, H ); // needed
 #elif defined(_WIN32)
         H += int(40 * scale);
         resize( X, Y, W, H ); // needed
 #else
-        resize( X, Y, W, H ); // needed
+        //resize( X, Y, W, H ); // needed
 #endif
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
@@ -7727,29 +7754,13 @@ void ImageView::toggle_presentation()
         if ( has_sop )        uiSOP->show();
         if ( has_log )        uiLog->show();
 
-
-        if ( has_tools_grp ) uiMain->uiToolsGroup->show();
-
-        if ( has_top_bar )    {
-            uiMain->uiTopBar->show();
-        }
-        if ( has_bottom_bar)  {
-            uiMain->uiBottomBar->show();
-        }
-        if ( has_pixel_bar )  {
-            uiMain->uiPixelBar->show();
-        }
-
         texture_filtering( filter );
         presentation = false;
         FullScreen = false;
 
-        uiMain->uiRegion->layout();
-        uiMain->uiRegion->init_sizes();
-        uiMain->uiViewGroup->layout();
-        uiMain->uiViewGroup->init_sizes();
-        uiMain->uiViewGroup->redraw();
+        show_bars( uiMain );
         resize_main_window();
+
     }
 
     take_focus();
