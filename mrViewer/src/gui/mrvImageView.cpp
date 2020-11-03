@@ -7627,19 +7627,20 @@ void ImageView::toggle_fullscreen()
         presentation = false;
         posX = fltk_main()->x();
         posY = fltk_main()->y();
+        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
+        has_top_bar = true;
+        has_bottom_bar = true;
+        has_pixel_bar = true;
     }
     else
     {
         FullScreen = false;
         presentation = false;
-        has_top_bar = true;
-        has_bottom_bar = true;
-        has_pixel_bar = true;
         show_bars( uiMain );
         resize_main_window();
     }
