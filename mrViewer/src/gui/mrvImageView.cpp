@@ -3831,7 +3831,7 @@ void ImageView::draw()
     //
     {
         float r, g, b, a = 0.0f;
-        if ( !presentation && !FullScreen )
+        if ( !presentation )
         {
             uchar ur, ug, ub;
             Fl::get_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
@@ -9534,7 +9534,8 @@ void ImageView::resize_main_window()
 
     if ( fltk_main()->fullscreen_active() )
         fltk_main()->fullscreen_off( posX, posY, w, h );
-    fltk_main()->resize( posX, posY, w, h );
+    else
+        fltk_main()->resize( posX, posY, w, h );
 
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
@@ -9550,6 +9551,7 @@ void ImageView::resize_main_window()
     uiMain->uiRegion->init_sizes();
 
     uiMain->uiRegion->redraw();
+
 
     if ( fit ) fit_image();
 
