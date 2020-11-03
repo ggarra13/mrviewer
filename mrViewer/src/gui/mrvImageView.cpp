@@ -7630,6 +7630,8 @@ void ImageView::toggle_fullscreen()
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        has_tools_grp  = uiMain->uiToolsGroup ?
+                         uiMain->uiToolsGroup->visible() : false;
     }
     else
     {
