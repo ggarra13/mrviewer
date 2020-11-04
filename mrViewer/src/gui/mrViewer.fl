@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -703,7 +703,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {1130 518 640 535} type Double align 80 resizable
+      xywh {704 247 640 535} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -1065,8 +1065,8 @@ Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} maximum 4
           code3 {o->init_sizes();}
           class MyPack
         } {
-          Fl_Group uiToolsGroup {open
-            xywh {0 25 45 433} box FLAT_BOX
+          Fl_Group uiToolsGroup {selected
+            xywh {0 28 45 430} box FLAT_BOX
           } {
             Fl_Button uiScrub {
               user_data this user_data_type {ViewerUI*}
@@ -1872,7 +1872,7 @@ Fl::check(); // needed to refresh windows} {}
   Function {make_attrs_window()} {open
   } {
     Fl_Window {} {open
-      xywh {1188 638 150 285} type Double resizable non_modal visible
+      xywh {1188 497 150 285} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 150 285} box FLAT_BOX
@@ -1900,7 +1900,7 @@ v->uiPaint->uiAllFrames->value( !o->value() );}
           label All
           user_data this user_data_type {ViewerUI*}
           callback {v->uiPaint->uiAllFrames->value( o->value() );
-v->uiPaint->uiCurrentFrame->value( !o->value() );} selected
+v->uiPaint->uiCurrentFrame->value( !o->value() );}
           xywh {30 115 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
           code0 {o->value(0);}
         }

@@ -7711,7 +7711,6 @@ void ImageView::toggle_presentation()
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
 
-
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
 
@@ -7736,7 +7735,8 @@ void ImageView::toggle_presentation()
         H += int(40 * scale);
         resize( X, Y, W, H ); // needed
 #else
-        //resize( X, Y, W, H ); // needed
+        H += int(40 * scale);
+        resize( X, Y, W, H ); // needed
 #endif
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
@@ -7762,6 +7762,7 @@ void ImageView::toggle_presentation()
         FullScreen = false;
 
         show_bars( uiMain );
+
         resize_main_window();
 
     }
@@ -9496,19 +9497,23 @@ void ImageView::resize_main_window()
       h += uiMain->uiTopBar->h();
     }
 
+    int h2 = 0;
+
     if ( uiMain->uiPixelBar->visible() )
     {
       uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
                                 int(28) );
-      h += uiMain->uiPixelBar->h();
+      h2 += uiMain->uiPixelBar->h();
     }
 
     if ( uiMain->uiBottomBar->visible() )
     {
       uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                  int(49) );
-      h += uiMain->uiBottomBar->h();
+      h2 += uiMain->uiBottomBar->h();
     }
+
+    h += h2;
 
     if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
     {
@@ -9524,6 +9529,7 @@ void ImageView::resize_main_window()
     }
 
     int bar = uiMain->uiBottomBar->h();
+    if ( ! uiMain->uiBottomBar->visible() ) bar = 0;
 
     maxh = (int) ((maxh - bar) / scale);
     if ( h < 535 )  h = 535;
@@ -9532,11 +9538,22 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
-    if ( fltk_main()->fullscreen_active() )
-        fltk_main()->fullscreen_off( posX, posY, w, h );
-    else
-        fltk_main()->resize( posX, posY, w, h );
+    std::cerr << "0 uviw y h = "
+              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
+              << std::endl;
 
+    if ( fltk_main()->fullscreen_active() )
+    {
+        fltk_main()->fullscreen_off( posX, posY, w, h );
+    }
+    else
+    {
+        fltk_main()->resize( posX, posY, w, h );
+    }
+
+    std::cerr << "1 uviw y h = "
+              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
+              << std::endl;
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                             int(28) );
@@ -9552,6 +9569,18 @@ void ImageView::resize_main_window()
 
     uiMain->uiRegion->redraw();
 
+    std::cerr << "2 tbar y h = "
+              << uiMain->uiTopBar->y() << " " <<  uiMain->uiTopBar->h()
+              << std::endl;
+    std::cerr << "2 uviw y h = "
+              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
+              << std::endl;
+    std::cerr << "2 pbar y h = "
+              << uiMain->uiPixelBar->y() << " " <<  uiMain->uiPixelBar->h()
+              << std::endl;
+    std::cerr << "2 bbar y h = "
+              << uiMain->uiBottomBar->y() << " " <<  uiMain->uiBottomBar->h()
+              << std::endl;
 
     if ( fit ) fit_image();
 
