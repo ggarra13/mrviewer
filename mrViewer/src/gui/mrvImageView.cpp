@@ -7591,12 +7591,21 @@ void ImageView::show_background( const bool b )
 }
 
 
-    void show_bars( ViewerUI* uiMain )
+void show_bars( ViewerUI* uiMain, bool showtop = true )
     {
         if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
-        if ( has_top_bar )    {
+        if ( has_top_bar && showtop )    {
+            int H = uiMain->uiRegion->h();
+            int w = uiMain->uiTopBar->w();
+            // Topbar MUST be 28 pixels-- for some reason it changes size
+            uiMain->uiTopBar->resize( 0, 0, w, int(28) );
             uiMain->uiTopBar->show();
+            H -= uiMain->uiTopBar->h();
+            int X = uiMain->uiRegion->x();
+            int Y = uiMain->uiRegion->y();
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( X, Y, W, H );
         }
         if ( has_bottom_bar)  {
             uiMain->uiBottomBar->show();
@@ -7761,9 +7770,11 @@ void ImageView::toggle_presentation()
         presentation = false;
         FullScreen = false;
 
-        show_bars( uiMain );
+        show_bars( uiMain, false );
 
         resize_main_window();
+
+        show_bars( uiMain, true );
 
     }
 
@@ -9538,10 +9549,6 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
-    std::cerr << "0 uviw y h = "
-              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
-              << std::endl;
-
     if ( fltk_main()->fullscreen_active() )
     {
         fltk_main()->fullscreen_off( posX, posY, w, h );
@@ -9550,10 +9557,6 @@ void ImageView::resize_main_window()
     {
         fltk_main()->resize( posX, posY, w, h );
     }
-
-    std::cerr << "1 uviw y h = "
-              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
-              << std::endl;
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                             int(28) );
@@ -9568,19 +9571,6 @@ void ImageView::resize_main_window()
     uiMain->uiRegion->init_sizes();
 
     uiMain->uiRegion->redraw();
-
-    std::cerr << "2 tbar y h = "
-              << uiMain->uiTopBar->y() << " " <<  uiMain->uiTopBar->h()
-              << std::endl;
-    std::cerr << "2 uviw y h = "
-              << uiMain->uiView->y() << " " <<  uiMain->uiView->h()
-              << std::endl;
-    std::cerr << "2 pbar y h = "
-              << uiMain->uiPixelBar->y() << " " <<  uiMain->uiPixelBar->h()
-              << std::endl;
-    std::cerr << "2 bbar y h = "
-              << uiMain->uiBottomBar->y() << " " <<  uiMain->uiBottomBar->h()
-              << std::endl;
 
     if ( fit ) fit_image();
 
