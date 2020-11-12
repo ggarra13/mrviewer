@@ -116,7 +116,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-11-04 19:00-0300\n"
+"POT-Creation-Date: 2020-11-12 18:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14605,7 +14605,7 @@ msgstr ""
 msgid "Both"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10363
+#: gui/mrvImageView.cpp:10361
 msgid "Bottom"
 msgstr ""
 
@@ -14675,8 +14675,8 @@ msgstr ""
 #: gui/mrvImageView.cpp:6990 gui/mrvImageView.cpp:7005
 #: gui/mrvImageView.cpp:8606 gui/mrvImageView.cpp:8641
 #: gui/mrvImageView.cpp:8684 gui/mrvImageView.cpp:8853
-#: gui/mrvImageView.cpp:8909 gui/mrvImageView.cpp:10266
-#: gui/mrvImageView.cpp:10303 gui/mrvImageBrowser.cpp:775
+#: gui/mrvImageView.cpp:8909 gui/mrvImageView.cpp:10264
+#: gui/mrvImageView.cpp:10301 gui/mrvImageBrowser.cpp:775
 #: gui/mrvPreferences.cpp:1278 gui/mrvPreferences.cpp:1551
 #: gui/mrvPreferences.cpp:1748 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:55 video/mrvGLEngine.cpp:60
@@ -16628,7 +16628,7 @@ msgstr ""
 msgid "DataWindow"
 msgstr ""
 
-#: gui/mrvImageView.cpp:9596
+#: gui/mrvImageView.cpp:9594
 #, c-format
 msgid "DataWindow %d"
 msgstr ""
@@ -16913,7 +16913,7 @@ msgstr ""
 msgid "DisplayWindow"
 msgstr ""
 
-#: gui/mrvImageView.cpp:9605
+#: gui/mrvImageView.cpp:9603
 #, c-format
 msgid "DisplayWindow %d"
 msgstr ""
@@ -17697,7 +17697,7 @@ msgstr ""
 msgid "FPS %5.3g"
 msgstr ""
 
-#: core/mrvServer.cpp:1495 gui/mrvImageView.cpp:10269
+#: core/mrvServer.cpp:1495 gui/mrvImageView.cpp:10267
 #, c-format
 msgid "FPS %g"
 msgstr ""
@@ -17870,7 +17870,7 @@ msgstr ""
 msgid "FieldDisplay"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10372
+#: gui/mrvImageView.cpp:10370
 #, c-format
 msgid "FieldDisplay %d"
 msgstr ""
@@ -18081,7 +18081,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1226
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1043
-#: gui/mrvImageView.cpp:10361
+#: gui/mrvImageView.cpp:10359
 msgid "Frame"
 msgstr ""
 
@@ -20557,7 +20557,7 @@ msgstr ""
 msgid "Looping"
 msgstr ""
 
-#: core/mrvServer.cpp:1422 gui/mrvImageView.cpp:10346
+#: core/mrvServer.cpp:1422 gui/mrvImageView.cpp:10344
 #: gui/mrvImageBrowser.cpp:1102
 #, c-format
 msgid "Looping %d"
@@ -21579,7 +21579,7 @@ msgstr ""
 msgid "Normalize"
 msgstr ""
 
-#: core/mrvServer.cpp:1489 gui/mrvImageView.cpp:9633
+#: core/mrvServer.cpp:1489 gui/mrvImageView.cpp:9631
 #: gui/mrvImageBrowser.cpp:1093
 #, c-format
 msgid "Normalize %d"
@@ -21650,7 +21650,7 @@ msgstr ""
 msgid "Not a valid picture to be bound"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10084
+#: gui/mrvImageView.cpp:10082
 msgid "Not a valid playback mode"
 msgstr ""
 
@@ -21904,7 +21904,7 @@ msgstr ""
 msgid "OCIOView"
 msgstr ""
 
-#: core/mrvServer.cpp:1466 gui/mrvImageView.cpp:9713
+#: core/mrvServer.cpp:1466 gui/mrvImageView.cpp:9711
 #, c-format
 msgid "OCIOView \"%s\" \"%s\""
 msgstr ""
@@ -25147,7 +25147,7 @@ msgstr ""
 msgid "SafeAreas"
 msgstr ""
 
-#: core/mrvServer.cpp:1473 gui/mrvImageView.cpp:9614
+#: core/mrvServer.cpp:1473 gui/mrvImageView.cpp:9612
 #: gui/mrvImageBrowser.cpp:1090
 #, c-format
 msgid "SafeAreas %d"
@@ -25668,7 +25668,7 @@ msgstr ""
 msgid "ShowPixelRatio"
 msgstr ""
 
-#: core/mrvServer.cpp:1485 gui/mrvImageView.cpp:9689
+#: core/mrvServer.cpp:1485 gui/mrvImageView.cpp:9687
 #, c-format
 msgid "ShowPixelRatio %d"
 msgstr ""
@@ -26705,7 +26705,7 @@ msgstr ""
 msgid "Tooldock"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10362
+#: gui/mrvImageView.cpp:10360
 msgid "Top"
 msgstr ""
 
@@ -27207,7 +27207,7 @@ msgstr ""
 msgid "UseLUT"
 msgstr ""
 
-#: core/mrvServer.cpp:1470 gui/mrvImageView.cpp:9718
+#: core/mrvServer.cpp:1470 gui/mrvImageView.cpp:9716
 #: gui/mrvImageBrowser.cpp:1087
 #, c-format
 msgid "UseLUT %d"
@@ -27649,7 +27649,7 @@ msgstr ""
 msgid "Volume"
 msgstr ""
 
-#: core/mrvServer.cpp:1476 gui/mrvImageView.cpp:10306
+#: core/mrvServer.cpp:1476 gui/mrvImageView.cpp:10304
 #, c-format
 msgid "Volume %g"
 msgstr ""
@@ -33534,7 +33534,7 @@ msgstr ""
 msgid "play_all_frames"
 msgstr ""
 
-#: core/mrvServer.cpp:1546 gui/mrvImageView.cpp:10080
+#: core/mrvServer.cpp:1546 gui/mrvImageView.cpp:10078
 #: gui/mrvPreferences.cpp:706 gui/mrvPreferences.cpp:2307
 #: standalone/mrvCommandLine.cpp:344
 msgid "playback"
@@ -33544,7 +33544,7 @@ msgstr ""
 msgid "playbwd"
 msgstr ""
 
-#: core/mrvServer.cpp:1538 gui/mrvImageView.cpp:3272 gui/mrvImageView.cpp:10076
+#: core/mrvServer.cpp:1538 gui/mrvImageView.cpp:3272 gui/mrvImageView.cpp:10074
 msgid "playfwd"
 msgstr ""
 
@@ -34540,7 +34540,7 @@ msgstr ""
 msgid "stop"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10219
+#: gui/mrvImageView.cpp:10217
 #, c-format
 msgid "stop %<PRId64>"
 msgstr ""

@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-11-04 19:00-0300\n"
+"POT-Creation-Date: 2020-11-12 18:57-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -14750,7 +14750,7 @@ msgstr ""
 msgid "Both"
 msgstr "Ambos"
 
-#: gui/mrvImageView.cpp:10363
+#: gui/mrvImageView.cpp:10361
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -14821,8 +14821,8 @@ msgstr "Byte"
 #: gui/mrvImageView.cpp:6990 gui/mrvImageView.cpp:7005
 #: gui/mrvImageView.cpp:8606 gui/mrvImageView.cpp:8641
 #: gui/mrvImageView.cpp:8684 gui/mrvImageView.cpp:8853
-#: gui/mrvImageView.cpp:8909 gui/mrvImageView.cpp:10266
-#: gui/mrvImageView.cpp:10303 gui/mrvImageBrowser.cpp:775
+#: gui/mrvImageView.cpp:8909 gui/mrvImageView.cpp:10264
+#: gui/mrvImageView.cpp:10301 gui/mrvImageBrowser.cpp:775
 #: gui/mrvPreferences.cpp:1278 gui/mrvPreferences.cpp:1551
 #: gui/mrvPreferences.cpp:1748 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:114 gui/mrvVersion.cpp:55 video/mrvGLEngine.cpp:60
@@ -16913,7 +16913,7 @@ msgstr "Ventana de Datos del Clip"
 msgid "DataWindow"
 msgstr "Ventana de Datos"
 
-#: gui/mrvImageView.cpp:9596
+#: gui/mrvImageView.cpp:9594
 #, c-format
 msgid "DataWindow %d"
 msgstr "Ventana de Datos 2"
@@ -17209,7 +17209,7 @@ msgstr "Ventana de Display del Clip"
 msgid "DisplayWindow"
 msgstr "Ventana de Display"
 
-#: gui/mrvImageView.cpp:9605
+#: gui/mrvImageView.cpp:9603
 #, c-format
 msgid "DisplayWindow %d"
 msgstr "Ventana de Display 2"
@@ -18016,7 +18016,7 @@ msgstr "CPS"
 msgid "FPS %5.3g"
 msgstr ""
 
-#: core/mrvServer.cpp:1495 gui/mrvImageView.cpp:10269
+#: core/mrvServer.cpp:1495 gui/mrvImageView.cpp:10267
 #, c-format
 msgid "FPS %g"
 msgstr ""
@@ -18191,7 +18191,7 @@ msgstr "Cargar falló para ripmap Y "
 msgid "FieldDisplay"
 msgstr "Display"
 
-#: gui/mrvImageView.cpp:10372
+#: gui/mrvImageView.cpp:10370
 #, c-format
 msgid "FieldDisplay %d"
 msgstr ""
@@ -18403,7 +18403,7 @@ msgstr "CuatroCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1226
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-19.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1043
-#: gui/mrvImageView.cpp:10361
+#: gui/mrvImageView.cpp:10359
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -20929,7 +20929,7 @@ msgstr "Bucle"
 msgid "Looping"
 msgstr "Modo de Bucle"
 
-#: core/mrvServer.cpp:1422 gui/mrvImageView.cpp:10346
+#: core/mrvServer.cpp:1422 gui/mrvImageView.cpp:10344
 #: gui/mrvImageBrowser.cpp:1102
 #, c-format
 msgid "Looping %d"
@@ -22004,7 +22004,7 @@ msgstr "Normal"
 msgid "Normalize"
 msgstr "Normal"
 
-#: core/mrvServer.cpp:1489 gui/mrvImageView.cpp:9633
+#: core/mrvServer.cpp:1489 gui/mrvImageView.cpp:9631
 #: gui/mrvImageBrowser.cpp:1093
 #, c-format
 msgid "Normalize %d"
@@ -22078,7 +22078,7 @@ msgid "Not a valid picture to be bound"
 msgstr "No es una imagen válida para ser atada"
 
 #
-#: gui/mrvImageView.cpp:10084
+#: gui/mrvImageView.cpp:10082
 msgid "Not a valid playback mode"
 msgstr "No es una imagen válida para ser atada"
 
@@ -22348,7 +22348,7 @@ msgstr "Archivo de Configuracion de OCIO"
 msgid "OCIOView"
 msgstr "Vista OCIO"
 
-#: core/mrvServer.cpp:1466 gui/mrvImageView.cpp:9713
+#: core/mrvServer.cpp:1466 gui/mrvImageView.cpp:9711
 #, c-format
 msgid "OCIOView \"%s\" \"%s\""
 msgstr ""
@@ -25655,7 +25655,7 @@ msgstr "Áreas Seguras"
 msgid "SafeAreas"
 msgstr ""
 
-#: core/mrvServer.cpp:1473 gui/mrvImageView.cpp:9614
+#: core/mrvServer.cpp:1473 gui/mrvImageView.cpp:9612
 #: gui/mrvImageBrowser.cpp:1090
 #, c-format
 msgid "SafeAreas %d"
@@ -26221,7 +26221,7 @@ msgstr ""
 msgid "ShowPixelRatio"
 msgstr "Ratio de Pixel"
 
-#: core/mrvServer.cpp:1485 gui/mrvImageView.cpp:9689
+#: core/mrvServer.cpp:1485 gui/mrvImageView.cpp:9687
 #, c-format
 msgid "ShowPixelRatio %d"
 msgstr "Ratio de Pixel"
@@ -27534,7 +27534,7 @@ msgstr "Demasiado audio usado:"
 msgid "Tooldock"
 msgstr "Dock de Acción"
 
-#: gui/mrvImageView.cpp:10362
+#: gui/mrvImageView.cpp:10360
 msgid "Top"
 msgstr "Superior"
 
@@ -28058,7 +28058,7 @@ msgstr "Use multiples hilos (threads) cuando se carge un cuadro"
 msgid "UseLUT"
 msgstr ""
 
-#: core/mrvServer.cpp:1470 gui/mrvImageView.cpp:9718
+#: core/mrvServer.cpp:1470 gui/mrvImageView.cpp:9716
 #: gui/mrvImageBrowser.cpp:1087
 #, c-format
 msgid "UseLUT %d"
@@ -28523,7 +28523,7 @@ msgstr ""
 msgid "Volume"
 msgstr "Volumen de Audio"
 
-#: core/mrvServer.cpp:1476 gui/mrvImageView.cpp:10306
+#: core/mrvServer.cpp:1476 gui/mrvImageView.cpp:10304
 #, c-format
 msgid "Volume %g"
 msgstr ""
@@ -34639,7 +34639,7 @@ msgstr "Display"
 msgid "play_all_frames"
 msgstr "Todos los Cuadros"
 
-#: core/mrvServer.cpp:1546 gui/mrvImageView.cpp:10080
+#: core/mrvServer.cpp:1546 gui/mrvImageView.cpp:10078
 #: gui/mrvPreferences.cpp:706 gui/mrvPreferences.cpp:2307
 #: standalone/mrvCommandLine.cpp:344
 msgid "playback"
@@ -34649,7 +34649,7 @@ msgstr "Reproducir"
 msgid "playbwd"
 msgstr ""
 
-#: core/mrvServer.cpp:1538 gui/mrvImageView.cpp:3272 gui/mrvImageView.cpp:10076
+#: core/mrvServer.cpp:1538 gui/mrvImageView.cpp:3272 gui/mrvImageView.cpp:10074
 msgid "playfwd"
 msgstr ""
 
@@ -35665,7 +35665,7 @@ msgstr ""
 msgid "stop"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10219
+#: gui/mrvImageView.cpp:10217
 #, c-format
 msgid "stop %<PRId64>"
 msgstr "Audio: %<PRId64> "

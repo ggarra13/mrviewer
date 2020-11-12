@@ -9448,7 +9448,7 @@ void ImageView::resize_main_window()
 #elif defined(LINUX)
     const int kTitleBar = 0;
 #else
-    const int kTitleBar = 40;
+    const int kTitleBar = 0;
 #endif
 
     int minx, miny, maxw, maxh;
@@ -9539,10 +9539,8 @@ void ImageView::resize_main_window()
         w = maxw;
     }
 
-    int bar = uiMain->uiBottomBar->h();
-    if ( ! uiMain->uiBottomBar->visible() ) bar = 0;
 
-    maxh = (int) ((maxh - bar) / scale);
+    maxh = (int) (maxh / scale);
     if ( h < 535 )  h = 535;
     else if ( h > maxh )
     {
