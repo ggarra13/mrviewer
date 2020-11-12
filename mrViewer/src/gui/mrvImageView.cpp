@@ -9539,8 +9539,13 @@ void ImageView::resize_main_window()
         w = maxw;
     }
 
+#ifdef _WIN32
+    int bar = uiMain->uiBottomBar->visible() ? uiMain->uiBottomBar->h() : 0;
+#else
+    int bar = 0;
+#endif
 
-    maxh = (int) (maxh / scale);
+    maxh = (int) ((maxh - bar) / scale);
     if ( h < 535 )  h = 535;
     else if ( h > maxh )
     {
