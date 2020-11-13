@@ -544,6 +544,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
             return;
         }
         CMedia* img = CMedia::guess_image( m->image()->fileroot() );
+        img->audio_stream(-1);
         img->seek( frame );
         fg.reset( new mrv::gui::media( img ) );
         fg->create_thumbnail();
