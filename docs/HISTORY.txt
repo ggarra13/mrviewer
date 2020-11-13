@@ -1,3 +1,8 @@
+v5.6.7  - Added thumbnail previews to timeline.
+	- Made focus be more consistent.  Now the main window does not
+	  swallow focus all the time.  Only when a button press is done on
+	  the main view, the focus is captured on the view window.
+
 v5.6.6  - Bug fixed white bars in presentation (F12) mode that got broken
 	  with v5.6.3.
 	- Made action dock bar disappear when in presentation (F12) mode.

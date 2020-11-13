@@ -6672,7 +6672,12 @@ int ImageView::keyDown(unsigned int rawkey)
         }
     }
 
-    if ( kResetChanges.match( rawkey ) )
+    if ( rawkey == FL_Escape )
+    {
+        delete fltk_main();
+        return 1;
+    }
+    else if ( kResetChanges.match( rawkey ) )
     {
         gamma( 1.0 );
         gain( 1.0 );
@@ -7993,7 +7998,6 @@ int ImageView::handle(int event)
         return 1;
     }
     case FL_ENTER:
-      focus(this);
       window()->cursor(FL_CURSOR_CROSS);
       Fl_Gl_Window::handle( event );
       return 1;
@@ -8007,6 +8011,7 @@ int ImageView::handle(int event)
 
         return 1;
     case FL_PUSH:
+        focus(this);
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:

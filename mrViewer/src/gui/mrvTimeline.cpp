@@ -524,8 +524,9 @@ void Timeline::draw_selection( const mrv::Recti& r )
     void Timeline::show_thumb()
     {
         int WX = window()->x();
+        int WY = window()->y();
         int X = Fl::event_x() + WX - 64;
-        int Y = Fl::event_y();
+        int Y = Fl::event_y() + WY - 64;
         Fl_Box* b = NULL;
         if (! win ) {
             win = new Fl_Window( X, Y-29, 128, 64 );
@@ -538,20 +539,19 @@ void Timeline::draw_selection( const mrv::Recti& r )
         }
         int64_t frame = ((X-WX) / (double)w()) * ( maximum() - minimum() );
         mrv::media m = media_at( frame );
-        if ( ! m ) {
+        if ( ! m || m->image()->playback() != CMedia::kStopped ) {
             win->hide();
             return;
         }
-        CMedia* img = new CMedia( m->image() );
-        img->frame( frame );
-        img->decode_video( frame );
-        img->find_image( frame );
-        m->image( img );
-        m->create_thumbnail();
-        b->image( m->thumbnail() );
+        CMedia* img = CMedia::guess_image( m->image()->fileroot() );
+        img->seek( frame );
+        fg.reset( new mrv::gui::media( img ) );
+        fg->create_thumbnail();
+        b->image( fg->thumbnail() );
         b->redraw();
         win->end();
         win->show();
+        take_focus();
     }
 
 int Timeline::handle( int e )
@@ -559,11 +559,13 @@ int Timeline::handle( int e )
     if ( e == FL_MOVE )
     {
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
-        Fl::add_timeout( 0.2, (Fl_Timeout_Handler)showwin, this );
+        Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
     }
-    else if ( e == FL_LEAVE || e == FL_UNFOCUS )
+    else if ( e == FL_LEAVE )
     {
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+        if (win) win->hide();
+        uiMain->uiView->take_focus();
     }
     return Fl_Slider::handle( e );
     // if ( r != 0 ) return r;

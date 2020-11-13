@@ -715,12 +715,15 @@ _audio_engine( NULL )
     _audio_offset = other->audio_offset() + _frame - 1;
     audio_stream( other->_audio_index );
 
-    image_type_ptr canvas;
-    if ( fetch( canvas, _frame ) )
-    {
-        cache( canvas );
-        default_color_corrections();
-    }
+    DBGM1( "past audio stream" );
+
+    int64_t f = _frame.load();
+    frame( f );
+    DBGM1( "past frame" );
+    decode_video( f );
+    DBGM1( "past decode_video" );
+    find_image( f );
+    DBGM1( "past find_image" );
 }
 
 
@@ -1699,8 +1702,6 @@ void CMedia::sequence( const char* fileroot,
 
     av_free( _fileroot );
     _fileroot = av_strdup( fileroot );
-
-    assert0( _fileroot != NULL );
 
     std::string f = _fileroot;
     size_t idx = f.find( N_("%V") );
