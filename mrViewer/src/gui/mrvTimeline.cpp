@@ -525,19 +525,27 @@ void Timeline::draw_selection( const mrv::Recti& r )
     {
         int WX = window()->x();
         int WY = window()->y();
-        int X = Fl::event_x() + WX - 64;
-        int Y = Fl::event_y() + WY - 64;
+        int X = event_x - 64;
+        int Y = event_y - 64;
+
         Fl_Box* b = NULL;
         if (! win ) {
-            win = new Fl_Window( X, Y-29, 128, 64 );
+            win = new Fl_Window( X, Y-29, 128, 76 );
+            win->parent( window() );
             win->border(0);
+            win->begin();
             b = new Fl_Box( 0, 0, win->w(), win->h() );
         }
         else {
-            win->resize( X, Y-29, 128, 64 );
+            win->resize( X, Y-29, 128, 76 );
             b = (Fl_Box*)win->child(0);
         }
-        int64_t frame = ((X-WX) / (double)w()) * ( maximum() - minimum() );
+
+        X = x() + Fl::box_dx(box());
+        int W = w() - Fl::box_dw(box());
+        int S = int(slider_size()-1)/2;
+        int64_t frame = ((double)(event_x - X - S) / (double)W) *
+                        ( maximum() - minimum() );
         mrv::media m = media_at( frame );
         if ( ! m || m->image()->playback() != CMedia::kStopped ) {
             win->hide();
@@ -545,9 +553,13 @@ void Timeline::draw_selection( const mrv::Recti& r )
         }
         CMedia* img = CMedia::guess_image( m->image()->fileroot() );
         img->audio_stream(-1);
+        frame = global_to_local( frame );
         img->seek( frame );
         fg.reset( new mrv::gui::media( img ) );
         fg->create_thumbnail();
+        char buf[64];
+        sprintf( buf, "%" PRId64, frame );
+        b->copy_label( buf );
         b->image( fg->thumbnail() );
         b->redraw();
         win->end();
@@ -557,8 +569,11 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
 int Timeline::handle( int e )
 {
+    if ( e == FL_ENTER ) return 1;
     if ( e == FL_MOVE )
     {
+        event_x = Fl::event_x();
+        event_y = Fl::event_y();
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
         Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
     }
