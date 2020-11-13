@@ -420,6 +420,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "timeline_display", tmp, 0 );
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
 
+    ui.get( "timeline_thumbnails", tmp, 1 );
+    uiPrefs->uiPrefsTimelineThumbnails->value(tmp);
+
 
     DBG3;
     //
@@ -2198,6 +2201,9 @@ void Preferences::save()
 
     ui.set( "timeline_display",
             uiPrefs->uiPrefsTimelineDisplay->value() );
+
+    ui.set( "timeline_thumbnails",
+            uiPrefs->uiPrefsTimelineThumbnails->value() );
 
     //
     // ui/view prefs

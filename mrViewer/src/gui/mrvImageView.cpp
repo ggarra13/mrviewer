@@ -6674,7 +6674,7 @@ int ImageView::keyDown(unsigned int rawkey)
 
     if ( rawkey == FL_Escape )
     {
-        delete fltk_main();
+        delete uiMain;
         return 1;
     }
     else if ( kResetChanges.match( rawkey ) )

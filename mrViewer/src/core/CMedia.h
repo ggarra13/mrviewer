@@ -461,8 +461,6 @@ public:
     //  (cut_frame - last_frame)
     CMedia( const CMedia* other, int64_t cut_frame );
 
-    /// Copy Constructor - creates a deep copy of image
-    CMedia( const CMedia* other );
 
     virtual ~CMedia();
 

@@ -535,6 +535,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
             win->border(0);
             win->begin();
             b = new Fl_Box( 0, 0, win->w(), win->h() );
+            b->box( FL_FLAT_BOX );
+            b->labelcolor( fl_contrast( b->labelcolor(), b->color() ) );
         }
         else {
             win->resize( X, Y-29, 128, 76 );

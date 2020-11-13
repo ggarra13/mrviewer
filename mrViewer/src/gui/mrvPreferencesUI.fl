@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {961 214 675 455} type Double resizable
+      xywh {669 214 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -110,8 +110,8 @@ class PreferencesUI {open
         xywh {200 25 473 520} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface} open
-          xywh {210 48 453 497} box EMBOSSED_BOX align 5
+          label {User Interface}
+          xywh {210 48 453 497} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label {Window Behavior}
@@ -148,7 +148,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements} open
+            label {UI Elements}
             xywh {213 193 442 193} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsTopbar {
@@ -200,7 +200,7 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 306 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsToolBar {
-              label Tooldock selected
+              label Tooldock
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 330 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
@@ -533,161 +533,165 @@ uiWindowYSize->value( v->uiMain->h() );}
         }
         Fl_Group Playback {
           label Playback
-          xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
+          xywh {230 57 433 335} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label Defaults open
-            xywh {265 55 339 224} box ROUNDED_BOX align 5
+            label Defaults
+            xywh {270 91 339 224} box ROUNDED_BOX align 5
           } {
             Fl_Check_Button uiPrefsAutoPlayback {
               label {Auto Playback}
-              tooltip {Start Playback when opening files.} xywh {395 74 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+              tooltip {Start Playback when opening files.} xywh {400 110 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
             Fl_Group {} {open
-              xywh {280 120 300 154} box ROUNDED_BOX
+              xywh {285 156 300 154} box ROUNDED_BOX
             } {
               Fl_Group {} {
                 label Sequences open
-                xywh {290 138 280 68} box ROUNDED_FRAME color 35
+                xywh {295 174 280 68} box ROUNDED_FRAME color 35
               } {
                 Fl_Check_Button uiPrefsOverrideFPS {
                   label {Override FPS}
-                  tooltip {Override playback fps when loading sequences.} xywh {442 140 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+                  tooltip {Override playback fps when loading sequences.} xywh {447 176 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
                 }
                 Fl_Group {} {
-                  xywh {300 163 270 37}
+                  xywh {305 199 270 37}
                 } {
                   Fl_Value_Input uiPrefsFPS {
                     label Speed
-                    xywh {390 170 80 25} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
+                    xywh {395 206 80 25} color -1733777408 selection_color 0 maximum 120 value 24 textcolor 56
                   }
                   Fl_Menu_Button {} {
                     label FPS
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 uiPrefsFPS->value( g );} open
-                    xywh {472 170 75 25}
+                    xywh {477 206 75 25}
                     class {mrv::PopupMenu}
                   } {
                     MenuItem {} {
                       label 60
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label {59.94}
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label 50
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label 30
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label {29.97}
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label 25
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label 24
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label {14.985}
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label {12.5}
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                     MenuItem {} {
                       label 12
-                      xywh {0 0 100 20}
+                      xywh {5 5 100 20}
                     }
                   }
                 }
               }
               Fl_Choice uiPrefsLoopMode {
                 label {Looping Mode}
-                tooltip {Select default looping mode in timeline.} xywh {400 210 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
+                tooltip {Select default looping mode in timeline.} xywh {405 246 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
                 class {mrv::Choice}
               } {
                 MenuItem {} {
                   label Stop
-                  xywh {0 0 100 20}
+                  xywh {5 5 100 20}
                 }
                 MenuItem {} {
                   label Loop
-                  xywh {0 0 100 20}
+                  xywh {5 5 100 20}
                 }
                 MenuItem {} {
                   label {Ping Pong}
-                  xywh {0 0 100 20}
+                  xywh {5 5 100 20}
                 }
               }
             }
             Fl_Value_Input uiPrefsScrubbingSensitivity {
               label {Scrub Sensitivity}
-              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {480 240 60 25} minimum 2 maximum 50 step 1 value 5 textcolor 56
+              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {485 276 60 25} minimum 2 maximum 50 step 1 value 5 textcolor 56
             }
             Fl_Check_Button uiPrefsPlayAllFrames {
               label {Play All Frames}
-              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {550 74 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
-            }
-          }
-          Fl_Group {} {
-            label Timeline open
-            xywh {270 303 327 82} box ROUNDED_BOX
-          } {
-            Fl_Choice uiPrefsTimelineDisplay {
-              label Display
-              tooltip {How to display timeline by default.} xywh {375 314 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
-              code0 {o->value(0);}
-            } {
-              MenuItem {} {
-                label Frames
-                xywh {0 0 100 20}
-              }
-              MenuItem {} {
-                label Seconds
-                xywh {0 0 100 20}
-              }
-              MenuItem {} {
-                label Time
-                xywh {0 0 100 20}
-              }
-              MenuItem {} {
-                label {Non-Drop Frame Timecode}
-                xywh {0 0 100 20}
-              }
-              MenuItem {} {
-                label {Drop Frame Timecode}
-                xywh {0 0 100 20}
-              }
-            }
-            Fl_Choice uiPrefsTimelineSelectionDisplay {
-              label Selection open
-              tooltip {How to display timeline selection by default.} xywh {375 354 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
-              code0 {o->value(0);}
-            } {
-              MenuItem {} {
-                label {Hilited in Full Timeline}
-                xywh {0 0 100 20}
-              }
-              MenuItem {} {
-                label {Shortened to Timeline}
-                xywh {0 0 100 20}
-              }
+              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {555 110 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
           }
         }
         Fl_Group {} {
-          label {Pixel Toolbar}
-          xywh {225 45 432 350} box EMBOSSED_BOX align 5 hide
+          label Timeline
+          xywh {275 58 322 176} box ROUNDED_BOX align 17 hide
+        } {
+          Fl_Choice uiPrefsTimelineDisplay {
+            label Display
+            tooltip {How to display timeline by default.} xywh {375 97 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            code0 {o->value(0);}
+          } {
+            MenuItem {} {
+              label Frames
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label Seconds
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label Time
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label {Non-Drop Frame Timecode}
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label {Drop Frame Timecode}
+              xywh {10 10 100 20}
+            }
+          }
+          Fl_Choice uiPrefsTimelineSelectionDisplay {
+            label Selection
+            tooltip {How to display timeline selection by default.} xywh {375 137 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            code0 {o->value(0);}
+          } {
+            MenuItem {} {
+              label {Hilited in Full Timeline}
+              xywh {10 10 100 20}
+            }
+            MenuItem {} {
+              label {Shortened to Timeline}
+              xywh {10 10 100 20}
+            }
+          }
+          Fl_Check_Button uiPrefsTimelineThumbnails {
+            label {Preview Thumbnails}
+            xywh {375 183 63 15} down_box DOWN_BOX
+          }
+        }
+        Fl_Group {} {
+          label {Pixel Toolbar} selected
+          xywh {225 45 432 350} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {open
             xywh {255 45 363 302}
@@ -2192,6 +2196,7 @@ o->add( _("User Interface/View Window/Colors") );
 o->add( _("User Interface/Positioning") );
 o->add( _("User Interface/File Requester") );
 o->add( _("Playback") );
+o->add( _("Timeline") );
 o->add( _("Pixel Toolbar") );
 o->add( _("Actions") );
 o->add( _("Caches") );

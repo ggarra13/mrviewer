@@ -1,8 +1,6 @@
-
-
 #include <FL/Enumerations.H>
 
-#if defined(_WIN32) || defined(_WIN64) 
+#if defined(_WIN32) || defined(_WIN64)
 #include "winsock2.h"
 #endif
 
@@ -19,7 +17,7 @@ ImageView* ActionWindow::view() const {
 int ActionWindow::handle( int event )
 {
     int ok = 0;
-    if ( event == FL_KEYBOARD )
+    if ( event == FL_KEYBOARD && view() )
         ok = view()->handle( event );
     if ( !ok ) ok = Fl_Window::handle( event );
     return ok;
