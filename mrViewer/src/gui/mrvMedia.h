@@ -66,6 +66,11 @@ public:
             return _own_image;
         }
 
+    inline void image( CMedia* img )
+        {
+            _image = img;
+        }
+
     inline CMedia* image()             {
         return _image;
     }

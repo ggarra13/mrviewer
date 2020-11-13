@@ -71,6 +71,7 @@ _display_min( AV_NOPTS_VALUE ),
 _display_max( AV_NOPTS_VALUE ),
 _undo_display_min( AV_NOPTS_VALUE ),
 _undo_display_max( AV_NOPTS_VALUE ),
+win( NULL ),
 uiMain( NULL )
 {
     type( TICK_ABOVE );
@@ -84,6 +85,7 @@ Timeline::~Timeline()
     _draw_cache = false;
     _edl = false;
     uiMain = NULL;
+    delete win; win = NULL;
 }
 
 mrv::ImageBrowser* Timeline::browser() const
@@ -514,8 +516,55 @@ void Timeline::draw_selection( const mrv::Recti& r )
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
 }
 
+    void showwin(mrv::Timeline* self)
+    {
+        self->show_thumb();
+    }
+
+    void Timeline::show_thumb()
+    {
+        int WX = window()->x();
+        int X = Fl::event_x() + WX - 64;
+        int Y = Fl::event_y();
+        Fl_Box* b = NULL;
+        if (! win ) {
+            win = new Fl_Window( X, Y-29, 128, 64 );
+            win->border(0);
+            b = new Fl_Box( 0, 0, win->w(), win->h() );
+        }
+        else {
+            win->resize( X, Y-29, 128, 64 );
+            b = (Fl_Box*)win->child(0);
+        }
+        int64_t frame = ((X-WX) / (double)w()) * ( maximum() - minimum() );
+        mrv::media m = media_at( frame );
+        if ( ! m ) {
+            win->hide();
+            return;
+        }
+        CMedia* img = new CMedia( m->image() );
+        img->frame( frame );
+        img->decode_video( frame );
+        img->find_image( frame );
+        m->image( img );
+        m->create_thumbnail();
+        b->image( m->thumbnail() );
+        b->redraw();
+        win->end();
+        win->show();
+    }
+
 int Timeline::handle( int e )
 {
+    if ( e == FL_MOVE )
+    {
+        Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+        Fl::add_timeout( 0.2, (Fl_Timeout_Handler)showwin, this );
+    }
+    else if ( e == FL_LEAVE || e == FL_UNFOCUS )
+    {
+        Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+    }
     return Fl_Slider::handle( e );
     // if ( r != 0 ) return r;
     // return uiMain->uiView->handle( e );

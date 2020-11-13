@@ -144,6 +144,8 @@ public:
         return _draw_cache;
     }
 
+    void show_thumb();
+
     ImageBrowser* browser() const;
 
 protected:
@@ -166,6 +168,7 @@ protected:
     int64_t _undo_display_min;
     int64_t _undo_display_max;
 
+    Fl_Window* win;
     ViewerUI* uiMain;
 };
 
