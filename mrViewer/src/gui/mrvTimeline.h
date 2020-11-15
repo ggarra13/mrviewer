@@ -169,6 +169,7 @@ protected:
     int64_t _undo_display_max;
 
     int event_x, event_y;
+    int64_t frame;
     mrv::media fg;
     Fl_Window* win;
     ViewerUI* uiMain;

@@ -525,8 +525,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
     {
         int WX = window()->x();
         int WY = window()->y();
-        int X = event_x - 64;
-        int Y = event_y - 64;
+        int X = Fl::event_x() - 64;
+        int Y = Fl::event_y() - 64;
 
         Fl_Box* b = NULL;
         if (! win ) {
@@ -543,13 +543,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
             b = (Fl_Box*)win->child(0);
         }
 
-        X = x() + Fl::box_dx(box());
-        int W = w() - Fl::box_dw(box());
-        int S = int(slider_size()-1)/2;
-        int64_t frame = ((double)(event_x - X - S) / (double)W) *
-                        ( maximum() - minimum() );
         mrv::media m = media_at( frame );
-        if ( ! m || m->image()->playback() != CMedia::kStopped ) {
+        if ( ! m ) {
             win->hide();
             return;
         }
@@ -560,7 +555,10 @@ void Timeline::draw_selection( const mrv::Recti& r )
         fg.reset( new mrv::gui::media( img ) );
         fg->create_thumbnail();
         char buf[64];
-        sprintf( buf, "%" PRId64, frame );
+        Timecode::Display display;
+        Timecode::format( buf, _display,
+                          frame, _tc,
+                          img->fps(), true );
         b->copy_label( buf );
         b->image( fg->thumbnail() );
         b->redraw();
@@ -574,8 +572,52 @@ int Timeline::handle( int e )
     if ( e == FL_ENTER ) return 1;
     if ( e == FL_MOVE )
     {
-        event_x = Fl::event_x();
-        event_y = Fl::event_y();
+        int X = x()+Fl::box_dx(box());
+        int Y = y()+Fl::box_dy(box());
+        int W = w()-Fl::box_dw(box());
+        int H = h()-Fl::box_dh(box());
+
+        // HERE, SET A VALUE TO CURRENT HOVERING PLACE,
+        // *NOT* TO value().
+        double val;
+        if (minimum() == maximum())
+            val = 0.5;
+        else {
+            val = (value()-minimum())/(maximum()-minimum());
+            if (val > 1.0) val = 1.0;
+            else if (val < 0.0) val = 0.0;
+        }
+
+        int ww = W;
+        int mx = Fl::event_x()-X;
+        int S;
+        static int offcenter;
+
+        S = int(slider_size()*ww+.5); if (S >= ww) return 0;
+        int T = H / 2+1;
+        if (type()==FL_VERT_NICE_SLIDER || type()==FL_HOR_NICE_SLIDER) T += 4;
+        if (S < T) S = T;
+
+        if (1) {
+            int xx = int(val*(ww-S)+.5);
+            offcenter = mx-xx;
+            if (offcenter < 0) offcenter = 0;
+            else if (offcenter > S) offcenter = S;
+            else return 1;
+        }
+
+        int xx = mx-offcenter;
+        double v = 0;
+        if (xx < 0) {
+            xx = 0;
+            offcenter = mx; if (offcenter < 0) offcenter = 0;
+        } else if (xx > (ww-S)) {
+            xx = ww-S;
+            offcenter = mx-xx; if (offcenter > S) offcenter = S;
+        }
+        v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
+        frame = clamp(v);
+
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
         Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
     }
@@ -583,7 +625,7 @@ int Timeline::handle( int e )
     {
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
         if (win) win->hide();
-        uiMain->uiView->take_focus();
+        if ( uiMain->uiView ) uiMain->uiView->take_focus();
     }
     return Fl_Slider::handle( e );
     // if ( r != 0 ) return r;

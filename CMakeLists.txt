@@ -3,7 +3,7 @@
 #
 
 IF(WIN32)
-    SET( TEST_BUNDLE 0 )
+    SET( TEST_BUNDLE 1 )
 ENDIF()
 
 #
@@ -49,10 +49,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 5 )
 SET( VersionMinor 6 )
-SET( VersionPatch 7 )
+SET( VersionPatch 6 )
 
-#STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
-SET( VersionDate "" )
+STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
+#SET( VersionDate "" )
 
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
