@@ -40,6 +40,7 @@
 #include "gui/mrvPreferences.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvHotkey.h"
 #include "mrViewer.h"
 #include "mrvPreferencesUI.h"
 #include "mrvReelUI.h"
@@ -626,6 +627,18 @@ int Timeline::handle( int e )
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
         if (win) win->hide();
         if ( uiMain->uiView ) uiMain->uiView->take_focus();
+    }
+    else if ( e == FL_KEYDOWN )
+    {
+        unsigned int rawkey = Fl::event_key();
+        if ( kPlayBack.match( rawkey ) ||
+             kPlayFwd.match( rawkey ) ||
+             kPlayFwdTwiceSpeed.match( rawkey ) ||
+             kPlayBackHalfSpeed.match( rawkey ) ||
+             kStop.match( rawkey ) )
+        {
+            return uiMain->uiView->handle( e );
+        }
     }
     return Fl_Slider::handle( e );
     // if ( r != 0 ) return r;
