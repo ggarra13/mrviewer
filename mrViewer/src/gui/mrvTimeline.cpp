@@ -571,7 +571,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 int Timeline::handle( int e )
 {
     if ( e == FL_ENTER ) return 1;
-    if ( e == FL_MOVE )
+    else if ( e == FL_MOVE || e == FL_DRAG )
     {
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());
@@ -599,7 +599,7 @@ int Timeline::handle( int e )
         if (type()==FL_VERT_NICE_SLIDER || type()==FL_HOR_NICE_SLIDER) T += 4;
         if (S < T) S = T;
 
-        if (1) {
+        if ( e == FL_MOVE ) {
             int xx = int(val*(ww-S)+.5);
             offcenter = mx-xx;
             if (offcenter < 0) offcenter = 0;
