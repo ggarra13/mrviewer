@@ -527,11 +527,11 @@ void Timeline::draw_selection( const mrv::Recti& r )
         int WX = window()->x();
         int WY = window()->y();
         int X = Fl::event_x() - 64;
-        int Y = Fl::event_y() - 64;
+        int Y = y() - 80;
 
         Fl_Box* b = NULL;
         if (! win ) {
-            win = new Fl_Window( X, Y-29, 128, 76 );
+            win = new Fl_Window( X, Y, 128, 76 );
             win->parent( window() );
             win->border(0);
             win->begin();
@@ -540,7 +540,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
             b->labelcolor( fl_contrast( b->labelcolor(), b->color() ) );
         }
         else {
-            win->resize( X, Y-29, 128, 76 );
+            win->resize( X, Y, 128, 76 );
             b = (Fl_Box*)win->child(0);
         }
 
