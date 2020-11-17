@@ -194,7 +194,7 @@ unsigned long get_thread_id();
 #define IMG_INFO_F(msg) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << msg )
 #define IMG_INFO(msg) LOG_INFO( name() << " - " << msg )
 
-#ifndef OSX
+#if 1
 #include "gui/mrvPreferences.h"
 #define DBGM3(msg) do { \
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \

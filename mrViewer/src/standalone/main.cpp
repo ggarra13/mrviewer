@@ -270,7 +270,7 @@ int main( int argc, const char** argv )
       std::string lockfile;
 
 
-      Fl::lock();  // Start locking mechanism
+      //Fl::lock();  // Start locking mechanism
       Fl::scheme("plastic");
 
       fl_open_callback( osx_open_cb );
