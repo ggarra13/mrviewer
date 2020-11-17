@@ -84,6 +84,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include <FL/names.h>
 #include <FL/fl_utf8.h>
 #include <FL/Enumerations.H>
 #include <FL/fl_draw.H>
@@ -3544,6 +3545,7 @@ again:
 
 void ImageView::timeout()
 {
+
     mrv::Timeline* timeline = this->timeline();
     if  (!timeline) return;
 
@@ -3694,8 +3696,8 @@ void ImageView::timeout()
         }
    }
 
-
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_timeout, this );
+    redraw();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -5285,6 +5287,11 @@ std::string hex_printf( float x )
         static std::string empty( "        " );
         return empty;
     }
+    else if ( !isfinite(x) )
+    {
+        static std::string inf( _("  INF.  ") );
+        return inf;
+    }
     else
     {
         char buf[ 64 ];
@@ -5309,6 +5316,11 @@ std::string dec_printf( float x )
     {
         static std::string empty( "        " );
         return empty;
+    }
+    else if ( !isfinite(x) )
+    {
+        static std::string inf( _("  INF.  ") );
+        return inf;
     }
     else
     {
@@ -5872,7 +5884,7 @@ void ImageView::mouseMove(int x, int y)
     uiMain->uiCoord->value(buf);
 
     CMedia::Pixel rgba;
-    if ( outside || ypr < 0 )
+    if ( outside || ypr < 0 || vr() )
     {
         rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
     }
@@ -6042,11 +6054,6 @@ void ImageView::mouseMove(int x, int y)
         }
     }
 
-    if ( vr() )
-    {
-        rgba.r = rgba.g = rgba.b = rgba.a =
-                                       std::numeric_limits<float>::quiet_NaN();
-    }
 
     switch( uiMain->uiAColorType->value() )
     {
@@ -7979,7 +7986,6 @@ void ImageView::handle_timeout()
  */
 int ImageView::handle(int event)
 {
-
 
     switch( event )
     {

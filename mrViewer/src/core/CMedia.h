@@ -180,8 +180,8 @@ public:
         {
         }
 
-        bool has_data( const int64_t& frame, const int64_t offset,
-                       const double& fps ) const
+        inline bool has_data( const int64_t& frame, const int64_t offset,
+                              const double& fps ) const
         {
             int64_t last = int64_t( ( duration + start ) * fps );
             last -= offset;
@@ -859,7 +859,7 @@ public:
     /// Add default icc profile for this image bit depth.
     void default_icc_profile();
 
-    std::string ocio_input_color_space() const {
+    inline std::string ocio_input_color_space() const {
         return _input_color_space;
     }
 
@@ -913,7 +913,7 @@ public:
     }
 
     /// True if image represents a sequence
-    bool is_sequence() const {
+    inline bool is_sequence() const {
         return _is_sequence;
     }
 
@@ -1121,7 +1121,7 @@ public:
                  _subtitle_info[ _subtitle_index ].play );
     }
 
-    const subtitle_info_t& subtitle_info( unsigned int i )
+    inline const subtitle_info_t& subtitle_info( unsigned int i )
     {
         assert( i < _subtitle_info.size() );
         return _subtitle_info[ i ];
@@ -1157,7 +1157,7 @@ public:
         return _audio_info[ _audio_index ].context;
     }
 
-    AudioEngine::AudioFormat audio_format() const {
+    inline AudioEngine::AudioFormat audio_format() const {
         return _audio_format;
     }
 
@@ -1233,11 +1233,11 @@ public:
 
     const Attributes& attributes() const;
 
-    const Attributes& clip_attributes() const {
+    inline const Attributes& clip_attributes() const {
         return _clip_attrs;
     }
 
-    const AttributesFrame attrs_frames() const {
+    inline const AttributesFrame attrs_frames() const {
         return _attrs;
     }
 
@@ -1245,10 +1245,10 @@ public:
 
     void flush_all();
 
-    void seek_request( bool b ) {
+    inline void seek_request( bool b ) {
         _seek_req = b;
     }
-    bool seek_request()         {
+    inline bool seek_request()         {
         return _seek_req;
     }
 
@@ -1487,11 +1487,11 @@ public:
         return _rot_z;
     }
 
-    void flipX(bool t) { _flipX = t; }
-    void flipY(bool t) { _flipY = t; }
+    inline void flipX(bool t) { _flipX = t; }
+    inline void flipY(bool t) { _flipY = t; }
 
-    bool flipX() const { return _flipX; }
-    bool flipY() const { return _flipY; }
+    inline bool flipX() const { return _flipX; }
+    inline bool flipY() const { return _flipY; }
 
     inline void scale_x( double t ) {
         _scale_x = t;
@@ -1522,10 +1522,10 @@ public:
     // Wait for all threads to exit
     void wait_for_threads();
 
-    void audio_offset( const int64_t f ) {
+    inline void audio_offset( const int64_t f ) {
         _audio_offset = f;
     }
-    int64_t audio_offset() const {
+    inline int64_t audio_offset() const {
         return _audio_offset;
     }
 
@@ -1533,7 +1533,7 @@ public:
                             const char* routine = "",
                             const bool detail = true);
 
-    bool has_deep_data() const {
+    inline bool has_deep_data() const {
         return _has_deep_data;
     }
 
@@ -1543,24 +1543,24 @@ public:
     static int from_stereo_output( StereoOutput x );
     static StereoOutput to_stereo_output( int x );
 
-    static bool supports_yuv()         {
+    static inline bool supports_yuv()         {
         return _supports_yuv;
     }
-    static void supports_yuv( bool x ) {
+    static inline void supports_yuv( bool x ) {
         _supports_yuv = x;
     }
 
-    static bool supports_yuva()         {
+    static inline bool supports_yuva()         {
         return _supports_yuva;
     }
-    static void supports_yuva( bool x ) {
+    static inline void supports_yuva( bool x ) {
         _supports_yuva = x;
     }
 
-    static bool uses_16bits()         {
+    static inline bool uses_16bits()         {
         return _uses_16bits;
     }
-    static void uses_16bits( bool x ) {
+    static inline void uses_16bits( bool x ) {
         _uses_16bits = x;
     }
 
@@ -1574,24 +1574,24 @@ public:
         if (f) _default_subtitle_font = f;
     }
 
-    static bool aces_metadata()         {
+    static inline bool aces_metadata()         {
         return _aces_metadata;
     }
-    static void aces_metadata( bool x ) {
+    static inline void aces_metadata( bool x ) {
         _aces_metadata = x;
     }
 
-    static bool ocio_color_space()         {
+    static inline bool ocio_color_space()         {
         return _ocio_color_space;
     }
-    static void ocio_color_space( bool x ) {
+    static inline void ocio_color_space( bool x ) {
         _ocio_color_space = x;
     }
 
-    static bool all_layers()         {
+    static inline bool all_layers()         {
         return _all_layers;
     }
-    static void all_layers( bool x ) {
+    static inline void all_layers( bool x ) {
         _all_layers = x;
     }
 

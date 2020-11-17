@@ -252,7 +252,7 @@ public:
     // Set the display to frame or specific field
     void field( const FieldDisplay p );
 
-    FieldDisplay field() const {
+    inline FieldDisplay field() const {
         return _field;
     }
 
@@ -261,10 +261,10 @@ public:
 
     double fps() const;
 
-    int fg_reel() const {
+    inline int fg_reel() const {
         return _fg_reel;
     }
-    int bg_reel() const {
+    inline int bg_reel() const {
         return _bg_reel;
     }
 
@@ -273,7 +273,7 @@ public:
     void bg_reel(int idx);
 
     /// Return the viewer's gamma
-    float gamma() const {
+    inline float gamma() const {
         return _gamma;
     }
 
@@ -281,7 +281,7 @@ public:
     void gamma(const float f);
 
     /// Return current gain (exposure) settings
-    float gain() const {
+    inline float gain() const {
         return _gain;
     }
 
@@ -329,14 +329,14 @@ public:
     void volume( float v );
 
     // Return audio volue [0..1]
-    float volume() {
+    inline float volume() {
         return _volume;
     }
 
     /// Change channel shown in viewer
     void channel( Fl_Menu_Item* w ); // widget is one of the menus or submenus
     void channel( unsigned short c );
-    unsigned short channel() const {
+    inline unsigned short channel() const {
         return _channel;
     };
 
@@ -345,12 +345,12 @@ public:
     void old_channel( unsigned short c ) {
         _old_channel = c;
     };
-    unsigned short old_channel() const {
+    inline unsigned short old_channel() const {
         return _old_channel;
     };
 
     /// Return current channel shown in viewer
-    ChannelType channel_type() const {
+    inline ChannelType channel_type() const {
         return _channelType;
     };
 
@@ -358,7 +358,7 @@ public:
     void foreground( mrv::media img );
 
     /// Return viewer's current foreground image
-    mrv::media foreground() const {
+    inline mrv::media foreground() const {
         return _fg;
     }
 
@@ -366,7 +366,7 @@ public:
     void background( mrv::media img );
 
     /// Return viewer's current background image
-    mrv::media background() const {
+    inline mrv::media background() const {
         return _bg;
     };
 
@@ -383,7 +383,7 @@ public:
     void zoom( float x );
 
     /// Return current zoom factor
-    float zoom() const {
+    inline float zoom() const {
         return _real_zoom;
     };
 
@@ -455,7 +455,7 @@ public:
 
     void show_background( const bool b );
 
-    void update( bool t ) {
+    inline void update( bool t ) {
         _update = t;
     }
 
@@ -481,7 +481,7 @@ public:
     void playback( CMedia::Playback b );
 
     /// Return Playback status
-    CMedia::Playback playback() const {
+    inline CMedia::Playback playback() const {
         return _playback;
     }
 
@@ -517,12 +517,12 @@ public:
     }
 
     /// Returns the main window class associated to this view
-    ViewerUI* main()  {
+    inline ViewerUI* main()  {
         return uiMain;
     }
 
     /// Returns the main window class associated to this view
-    const ViewerUI* main() const {
+    inline const ViewerUI* main() const {
         return uiMain;
     }
 
