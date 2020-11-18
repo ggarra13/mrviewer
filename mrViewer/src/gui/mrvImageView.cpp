@@ -3696,8 +3696,8 @@ void ImageView::timeout()
         }
    }
 
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_timeout, this );
     redraw();
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_timeout, this );
 }
 
 void ImageView::selection( const mrv::Rectd& r )

@@ -19,9 +19,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -33,8 +33,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -80,8 +80,8 @@ namespace mrv {
     // Constructor
     //------------
 
-    Timer ();
-
+      Timer ();
+      ~Timer();
 
     //--------------------------------------------------------
     // Timing control to maintain the desired frame rate:
@@ -104,7 +104,7 @@ namespace mrv {
 
     void	setDesiredFrameRate (double fps) {
        _pspf = _spf;
-       _spf = 1 / fps; 
+       _spf = 1 / fps;
     }
     inline double actualFrameRate() { return _actualFrameRate; }
 
@@ -120,19 +120,19 @@ namespace mrv {
     //-------------------
     // Current play state
     //-------------------
-    
+
     CMedia::Playback	playState;
 
 
   private:
 
     double	_spf;				// desired frame rate,
-    						// in seconds per frame
+                                                // in seconds per frame
 
     double      _pspf;                       // last frame rate we waited on
 
     timeval	_lastFrameTime;			// time when we displayed the
-    						// last frame
+                                                // last frame
 
     double	_timingError;			// cumulative timing error
     double      _timeSinceLastFrame;            // time since last frame
@@ -146,4 +146,3 @@ namespace mrv {
 
 
 #endif  // mrvTimer_h
-

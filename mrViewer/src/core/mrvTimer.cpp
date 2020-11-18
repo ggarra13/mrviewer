@@ -20,9 +20,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -34,8 +34,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -58,6 +58,7 @@
 
 #include "core/mrvFrame.h"
 #include <mrvTimer.h>
+#include <mrvOSX.h>
 #include <time.h>
 
 #ifdef _WIN32
@@ -88,9 +89,17 @@ Timer::Timer ():
 {
   gettimeofday (&_lastFrameTime, 0);
   _lastFpsFrameTime = _lastFrameTime;
+#if 0  // def OSX
+  osx_latencycritical_start();
+#endif
 }
 
-
+    Timer::~Timer()
+    {
+#if 0  // def OSX
+  osx_latencycritical_end();
+#endif
+    }
 void
 Timer::waitUntilNextFrameIsDue ()
 {
@@ -100,7 +109,7 @@ Timer::waitUntilNextFrameIsDue ()
       // If we are not running, reset all timing state
       // variables and return without waiting.
       //
-      
+
       gettimeofday (&_lastFrameTime, 0);
       _timingError = 0;
       _lastFpsFrameTime = _lastFrameTime;
@@ -123,18 +132,18 @@ Timer::waitUntilNextFrameIsDue ()
 
     #ifdef _WIN32
 
-	if (timeToSleep > 0)
-	    Sleep (int (timeToSleep * 1000.0f));
+        if (timeToSleep > 0)
+            Sleep (int (timeToSleep * 1000.0f));
 
     #else
 
-	if (timeToSleep > 0)
-	{
-	    timespec ts;
-	    ts.tv_sec = (time_t) timeToSleep;
-	    ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
-	    nanosleep (&ts, 0);
-	}
+        if (timeToSleep > 0)
+        {
+            timespec ts;
+            ts.tv_sec = (time_t) timeToSleep;
+            ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
+            nanosleep (&ts, 0);
+        }
 
     #endif
 
@@ -149,15 +158,15 @@ Timer::waitUntilNextFrameIsDue ()
     gettimeofday (&now, 0);
 
     float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
-    		              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
- 
+                              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+
     _timingError += timeSinceLastSleep - _spf;
 
     if (_timingError < -2 * _spf)
-    	_timingError = -2 * _spf;
+        _timingError = -2 * _spf;
 
     if (_timingError >  2 * _spf)
-    	_timingError =  2 * _spf;
+        _timingError =  2 * _spf;
 
     _lastFrameTime = now;
 
@@ -167,17 +176,17 @@ Timer::waitUntilNextFrameIsDue ()
 
     if (_framesSinceLastFpsFrame >= 24)
     {
-	float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
-		  (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
+        float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
+                  (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
 
-	if (t > 0)
-	    _actualFrameRate = _framesSinceLastFpsFrame / t;
+        if (t > 0)
+            _actualFrameRate = _framesSinceLastFpsFrame / t;
 
-	_framesSinceLastFpsFrame = 0;
+        _framesSinceLastFpsFrame = 0;
     }
 
     if (_framesSinceLastFpsFrame == 0)
-	_lastFpsFrameTime = now;
+        _lastFpsFrameTime = now;
 
     _framesSinceLastFpsFrame += 1;
 }

@@ -280,6 +280,7 @@ SET( SOURCES
   # core/mrvScale.cpp
   core/mrvString.cpp
   core/mrvTimer.cpp
+  # core/mrvOSX.cpp
   core/mrvACES.cpp
   # core/generic/mrEvent.cpp
 
