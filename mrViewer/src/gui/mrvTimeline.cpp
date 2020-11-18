@@ -550,6 +550,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
             return;
         }
         CMedia* img = CMedia::guess_image( m->image()->fileroot() );
+        if ( ! img ) return;
+
         img->audio_stream(-1);
         frame = global_to_local( frame );
         img->seek( frame );
