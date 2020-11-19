@@ -498,15 +498,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     Fl_Preferences colors( ui, "colors" );
     DBG3;
-    colors.get( "scheme", tmpS, "plastic", 2048 );
-    DBG3;
-    const Fl_Menu_Item* item = uiPrefs->uiScheme->find_item( tmpS );
-    if ( item )
-    {
-    DBG3;
-        uiPrefs->uiScheme->picked( item );
-    }
-    DBG3;
     colors.get( "background_color", bgcolor, 0x43434300 );
     DBG3;
     colors.get( "text_color", textcolor, 0xababab00 );
@@ -558,13 +549,23 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
     DBG3;
-    for ( auto& s: schemes.themes )
+    for ( auto& t: schemes.themes )
     {
-    DBG3;
-        uiPrefs->uiColorTheme->add( s.name.c_str() );
+        DBG3;
+        uiPrefs->uiColorTheme->add( t.name.c_str() );
     }
 
-    colors.get( "theme", tmpS, "Shake", 2048 );
+    colors.get( "scheme", tmpS, "plastic", 2048 );
+    DBG3;
+    const Fl_Menu_Item* item = uiPrefs->uiScheme->find_item( tmpS );
+    if ( item )
+    {
+    DBG3;
+        uiPrefs->uiScheme->picked( item );
+        Fl::scheme( tmpS );
+    }
+
+    colors.get( "theme", tmpS, "Default", 2048 );
     DBG3;
     item = uiPrefs->uiColorTheme->find_item( tmpS );
     if ( item )
@@ -2291,6 +2292,7 @@ void Preferences::save()
     //
     Fl_Preferences colors( ui, "colors" );
     colors.set( "scheme", uiPrefs->uiScheme->text() );
+    colors.set( "theme", uiPrefs->uiColorTheme->text() );
     colors.set( "background_color", bgcolor );
     colors.set( "text_color", textcolor );
     colors.set( "selection_color", selectioncolor );
