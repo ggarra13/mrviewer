@@ -72,6 +72,7 @@ _display_min( AV_NOPTS_VALUE ),
 _display_max( AV_NOPTS_VALUE ),
 _undo_display_min( AV_NOPTS_VALUE ),
 _undo_display_max( AV_NOPTS_VALUE ),
+image( NULL ),
 win( NULL ),
 uiMain( NULL )
 {
@@ -549,17 +550,17 @@ void Timeline::draw_selection( const mrv::Recti& r )
             win->hide();
             return;
         }
-        CMedia* img = CMedia::guess_image( m->image()->fileroot() );
-        img->audio_stream(-1);
+        image = CMedia::guess_image( m->image()->fileroot() );
+        image->audio_stream(-1);
         frame = global_to_local( frame );
-        img->seek( frame );
-        fg.reset( new mrv::gui::media( img ) );
+        image->seek( frame );
+        fg.reset( new mrv::gui::media( image ) );
         fg->create_thumbnail();
         char buf[64];
         Timecode::Display display;
         Timecode::format( buf, _display,
                           frame, _tc,
-                          img->fps(), true );
+                          image->fps(), true );
         b->copy_label( buf );
         b->image( fg->thumbnail() );
         b->redraw();

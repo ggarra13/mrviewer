@@ -171,6 +171,7 @@ protected:
     int event_x, event_y;
     int64_t frame;
     mrv::media fg;
+    CMedia*    image;
     Fl_Window* win;
     ViewerUI* uiMain;
 };
