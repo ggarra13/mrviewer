@@ -530,6 +530,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
         int X = Fl::event_x() - 64;
         int Y = y() - 80;
 
+        if ( Y < 0 ) return;
+
         Fl_Box* b = NULL;
         if (! win ) {
             win = new Fl_Window( X, Y, 128, 76 );
@@ -550,11 +552,19 @@ void Timeline::draw_selection( const mrv::Recti& r )
             win->hide();
             return;
         }
-        image = CMedia::guess_image( m->image()->fileroot() );
-        image->audio_stream(-1);
+        if ( !fg || strcmp( fg->image()->fileroot(), m->image()->fileroot() )
+             != 0 )
+        {
+            image = CMedia::guess_image( m->image()->fileroot() );
+            image->audio_stream(-1);
+            fg.reset( new mrv::gui::media( image ) );
+        }
+        else
+        {
+            image = fg->image();
+        }
         frame = global_to_local( frame );
         image->seek( frame );
-        fg.reset( new mrv::gui::media( image ) );
         fg->create_thumbnail();
         char buf[64];
         Timecode::Display display;

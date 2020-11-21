@@ -1311,7 +1311,6 @@ void video_thread( PlaybackData* data )
 
 
 
-
         // LOGT_INFO( "find image " << frame << " delay " << delay );
         //img->debug_video_packets( frame, "find_image", true );
         // img->debug_video_stores( frame, "find_image", false );
@@ -1320,7 +1319,6 @@ void video_thread( PlaybackData* data )
         {
             LOG_ERROR( _("Could not find image ") << frame );
         }
-
 
         if ( reel->edl && fg && img->is_left_eye() )
         {
