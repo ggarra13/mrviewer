@@ -72,6 +72,7 @@ _display_min( AV_NOPTS_VALUE ),
 _display_max( AV_NOPTS_VALUE ),
 _undo_display_min( AV_NOPTS_VALUE ),
 _undo_display_max( AV_NOPTS_VALUE ),
+image( NULL ),
 win( NULL ),
 uiMain( NULL )
 {
@@ -529,6 +530,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
         int X = Fl::event_x() - 64;
         int Y = y() - 80;
 
+        if ( Y < 0 ) return;
+
         Fl_Box* b = NULL;
         if (! win ) {
             win = new Fl_Window( X, Y, 128, 76 );
@@ -549,19 +552,25 @@ void Timeline::draw_selection( const mrv::Recti& r )
             win->hide();
             return;
         }
-        CMedia* img = CMedia::guess_image( m->image()->fileroot() );
-        if ( ! img ) return;
-
-        img->audio_stream(-1);
+        if ( !fg || strcmp( fg->image()->fileroot(), m->image()->fileroot() )
+             != 0 )
+        {
+            image = CMedia::guess_image( m->image()->fileroot() );
+            image->audio_stream(-1);
+            fg.reset( new mrv::gui::media( image ) );
+        }
+        else
+        {
+            image = fg->image();
+        }
         frame = global_to_local( frame );
-        img->seek( frame );
-        fg.reset( new mrv::gui::media( img ) );
+        image->seek( frame );
         fg->create_thumbnail();
         char buf[64];
         Timecode::Display display;
         Timecode::format( buf, _display,
                           frame, _tc,
-                          img->fps(), true );
+                          image->fps(), true );
         b->copy_label( buf );
         b->image( fg->thumbnail() );
         b->redraw();

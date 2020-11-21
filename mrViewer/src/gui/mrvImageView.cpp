@@ -3697,7 +3697,7 @@ void ImageView::timeout()
    }
 
     redraw();
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_timeout, this );
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -9433,8 +9433,8 @@ void ImageView::resize_main_window()
     mrv::media fg = foreground();
     if ( !fg )
     {
-        w = 640;
-        h = 480;
+        w = 1260;
+        h = 800;
     }
     else
     {

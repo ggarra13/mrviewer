@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include "mrvEDLGroup.h"} {public local
@@ -38,7 +38,7 @@ class EDLWindowUI {open
   } {
     Fl_Window uiMain {
       label {EDL Window} open
-      xywh {473 149 1015 265} type Double resizable non_modal size_range {1015 265 1015 265} visible
+      xywh {473 317 1015 265} type Double resizable non_modal size_range {1015 265 1015 265} visible
     } {
       Fl_Group uiEDLRedraw {open
         xywh {0 0 1015 265} box UP_BOX
@@ -62,7 +62,7 @@ o->draw_cache( false );}
           xywh {0 63 95 177}
         } {
           Fl_Group {} {open
-            xywh {5 63 80 31}
+            xywh {5 63 80 77}
           } {
             Fl_Button {} {
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
@@ -75,7 +75,7 @@ uiEDLChoiceOne->value( idx );}
             Fl_Button {} {
               user_data main user_data_type {ViewerUI*}
               callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
-mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
+mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceOne;
 if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
@@ -96,11 +96,10 @@ b->remove_reel();}
               tooltip {Delete current reel} xywh {59 63 26 26}
               code0 {o->image( reel_delete_24 );}
             }
-          }
-          Fl_Choice uiEDLChoiceOne {
-            label {Track \#0}
-            user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
-            callback {if ( o->value() >= 0 && v->media_track(0) )
+            Fl_Choice uiEDLChoiceOne {
+              label {Track \#1}
+              user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
+              callback {if ( o->value() >= 0 && v->media_track(0) )
 {
    v->media_track(0)->reel( (int) o->value() );
    v->redraw();
@@ -109,13 +108,14 @@ else
 {
    o->value(-1);
 }}
-            xywh {5 107 80 28} down_box BORDER_BOX align 5
-            class {mrv::Choice}
-          } {}
+              xywh {5 107 80 28} down_box BORDER_BOX align 5
+              class {mrv::Choice}
+            } {}
+          }
           Fl_Group {} {open
             xywh {5 168 90 72}
           } {
-            Fl_Group {} {
+            Fl_Group {} {open
               xywh {6 168 80 31}
             } {
               Fl_Button {} {
@@ -140,19 +140,19 @@ b->save_reel();}
               Fl_Button {} {
                 user_data main user_data_type {ViewerUI*}
                 callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
-mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceOne;
+mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 
 int sel = c->value();
 if ( sel < 0 ) return;
 
 b->reel( sel );
-b->remove_reel();}
+b->remove_reel();} selected
                 tooltip {Delete current reel} xywh {60 168 26 26}
                 code0 {o->image( reel_delete_24 );}
               }
             }
             Fl_Choice uiEDLChoiceTwo {
-              label {Track \#0}
+              label {Track \#2}
               user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
               callback {if ( o->value() >= 0 && v->media_track(1) )
 {
@@ -202,7 +202,7 @@ o->value(1);}
             label {Fade Out}
             user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
             callback {v->fade_out();
-o->value(1);} selected
+o->value(1);}
             tooltip {Fade Out a clip} xywh {260 6 75 26} down_box DOWN_BOX
           }
           Fl_Button uiBGButton {

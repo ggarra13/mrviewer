@@ -1,4 +1,3 @@
-
 #include "FL/Fl.H"
 #include "FL/fl_draw.H"
 #include "gui/mrvIO.h"

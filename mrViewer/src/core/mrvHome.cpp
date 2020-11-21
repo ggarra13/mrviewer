@@ -93,12 +93,23 @@ std::string homepath()
    return path;
 }
 
+std::string studiopath()
+{
+    const char* c = getenv( "STUDIOPATH" );
+    if (!c) return "";
+    else return c;
+}
 
 std::string prefspath()
 {
-  std::string lockfile = mrv::homepath();
-   lockfile += "/.filmaura/";
-   return lockfile;
+    std::string studio = mrv::studiopath();
+    if ( fs::is_directory( studio )  )
+    {
+        return studio;
+    }
+    std::string lockfile = mrv::homepath();
+    lockfile += "/.filmaura/";
+    return lockfile;
 }
 
 std::string lockfile()
