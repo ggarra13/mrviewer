@@ -58,7 +58,6 @@
 
 #include "core/mrvFrame.h"
 #include <mrvTimer.h>
-#include <mrvOSX.h>
 #include <time.h>
 
 #ifdef _WIN32
