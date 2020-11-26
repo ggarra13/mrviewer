@@ -644,6 +644,7 @@ int Timeline::handle( int e )
         unsigned int rawkey = Fl::event_key();
         if ( kPlayBack.match( rawkey ) ||
              kPlayFwd.match( rawkey ) ||
+             kPlayDirection.match( rawkey ) ||
              kPlayFwdTwiceSpeed.match( rawkey ) ||
              kPlayBackHalfSpeed.match( rawkey ) ||
              kStop.match( rawkey ) )

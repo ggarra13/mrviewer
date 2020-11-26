@@ -139,6 +139,7 @@ extern Hotkey kFrameStepFwd;
 extern Hotkey kFrameStepFPSFwd;
 extern Hotkey kPlayBack;
 extern Hotkey kPlayBackHalfSpeed;
+extern Hotkey kPlayDirection;
 extern Hotkey kPlayFwd;
 extern Hotkey kPlayFwdTwiceSpeed;
 extern Hotkey kStop;

@@ -79,7 +79,8 @@ Hotkey kFrameStepFPSFwd( true, false, false, false, FL_Right, "",
                          FL_KP + 6 );
 Hotkey kPlayBackHalfSpeed( false, false, false, false, 'j' );
 Hotkey kPlayBack( false, false, false, false, FL_Up, "", FL_KP + 8 );
-Hotkey kPlayFwd( false, false, false, false, ' ', "", FL_KP + 2 );
+Hotkey kPlayDirection( false, false, false, false, ' ' );
+Hotkey kPlayFwd( false, false, false, false, FL_Down, "", FL_KP + 2 );
 Hotkey kPlayFwdTwiceSpeed( false, false, false, false, 'k' );
 Hotkey kStop( false, false, false, false, FL_Enter );
 
@@ -316,6 +317,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
     HotkeyEntry( _("Play Backwards"), kPlayBack),
     HotkeyEntry( _("Play Backwards / Change Speed"), kPlayBackHalfSpeed),
+    HotkeyEntry( _("Play in Current Direction"), kPlayDirection),
     HotkeyEntry( _("Play Forwards"), kPlayFwd),
     HotkeyEntry( _("Play Forwards / Change Speed"), kPlayFwdTwiceSpeed),
     HotkeyEntry( _("Preload Image Cache"), kPreloadCache),

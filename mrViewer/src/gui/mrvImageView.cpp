@@ -1668,6 +1668,7 @@ _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
+_orig_playback( CMedia::kForwards ),
 _network_active( true ),
 _interactive( true ),
 _frame( 1 ),
@@ -7200,6 +7201,22 @@ int ImageView::keyDown(unsigned int rawkey)
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
+    else if ( kPlayDirection.match( rawkey ) )
+    {
+        if ( playback() != CMedia::kStopped )
+        {
+            stop();
+        }
+        else
+        {
+            if ( _orig_playback == CMedia::kBackwards )
+                play_backwards();
+            else
+                play_forwards();
+        }
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
     else if ( kStop.match( rawkey ) )
     {
         stop();
@@ -10039,7 +10056,7 @@ void ImageView::update_image_info() const
 void ImageView::playback( const CMedia::Playback b )
 {
 
-    _playback = b;
+    _playback = _orig_playback = b;
 
     _lastFrame = this->frame();
 

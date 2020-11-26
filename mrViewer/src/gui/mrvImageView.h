@@ -989,6 +989,7 @@ protected:
     // Playback state
     ///////////////////
     std::atomic<CMedia::Playback>   _playback;         //!< status of view
+    CMedia::Playback   _orig_playback;    //!< play direction once started
 
     bool _network_active;  //<- whether to send commands across the network
     bool _interactive;     //<- whether fltk should update (Fl::check)
