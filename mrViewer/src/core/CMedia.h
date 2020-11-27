@@ -2074,7 +2074,6 @@ protected:
     std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
-    std::vector<int64_t>  _rev;
 
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;

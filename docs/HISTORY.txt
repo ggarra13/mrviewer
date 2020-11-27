@@ -9,6 +9,14 @@ v5.6.8  - Bug fixed scheme/color theme preferences.
 	- Made thumbnail preview in timeline faster.
 	- Added Playback in Same Direction hotkey.  This allows you to stop
 	  and start the playback in the same direction that was playing.
+	- Reverted new playback in reverse algorithm as it was not working
+	  right for videos.
+	- Added option in Preferences->Images to Edit metadata by default.
+	  This turns on the metadata and allows you to change it.  It can
+	  be dangerous as there's no turning back other than CTRL+Z (undo for
+	  the current line only).
+	- Bug fixed thumbnails previews for images in reel other than the
+	  first image or edl.
 
 v5.6.7  - Added thumbnail previews to timeline.
 	- Made focus be more consistent.  Now the main window does not

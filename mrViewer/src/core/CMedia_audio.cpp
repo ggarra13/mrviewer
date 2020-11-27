@@ -134,7 +134,6 @@ namespace mrv {
 
 void CMedia::clear_video_packets()
 {
-    _rev.clear();
     _video_packets.clear();
     _subtitle_packets.clear();
 }

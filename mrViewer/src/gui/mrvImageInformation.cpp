@@ -76,6 +76,7 @@ using namespace std;
 #include "gui/mrvHotkey.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrvPreferencesUI.h"
 #include "mrViewer.h"
 #include "CMedia.h"
 #include "mrvIO.h"
@@ -664,6 +665,7 @@ void toggle_modify_attribute_cb( Fl_Menu_Button* widget,
     std::string key = widget->text();
     toggle_modify_attribute( key, info );
 }
+
 
 static void add_attribute_cb( Fl_Box* widget, ImageInformation* info )
 {
@@ -2359,6 +2361,7 @@ void ImageInformation::hide_tabs()
 
 void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterator& i )
 {
+    bool active = uiMain->uiPrefs->uiMetadataEditable->value();
     {
         Imf::TimeCodeAttribute* attr =
             dynamic_cast< Imf::TimeCodeAttribute*>( i->second );
@@ -2373,7 +2376,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->timecode(),
                                            img->play_fps(), true );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*)timecode_cb );
+                      buf, true, active, (Fl_Callback*)timecode_cb );
             return;
         }
     }
@@ -2386,7 +2389,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             sprintf( buf, "%d / %d", r.n, r.d );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*)change_string_cb );
+                      buf, true, active, (Fl_Callback*)change_string_cb );
             return;
         }
     }
@@ -2396,7 +2399,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_float( i->first.c_str(), NULL,
-                       (float)attr->value(), true, false,
+                       (float)attr->value(), true, active,
                        (Fl_Callback*)change_float_cb );
             return;
         }
@@ -2407,7 +2410,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_float( i->first.c_str(), NULL,
-                       attr->value(), true, false,
+                       attr->value(), true, active,
                        (Fl_Callback*)change_float_cb );
             return;
         }
@@ -2418,7 +2421,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_int( i->first.c_str(), NULL,
-                     attr->value(), true, false,
+                     attr->value(), true, active,
                      (Fl_Callback*)change_int_cb, 0, 10,
                      FL_WHEN_CHANGED );
             return;
@@ -2433,7 +2436,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2i& v = attr->value();
             sprintf( buf, "%d %d", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2446,7 +2449,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2d& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2459,7 +2462,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2f& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2472,7 +2475,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3i& v = attr->value();
             sprintf( buf, "%d %d %d", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2485,7 +2488,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3d& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2498,7 +2501,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3f& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2511,7 +2514,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::Box2i& v = attr->value();
             sprintf( buf, "%d %d %d %d", v.min.x, v.min.y, v.max.x, v.max.x );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2524,7 +2527,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::Box2f& v = attr->value();
             sprintf( buf, "%g %g %g %g", v.min.x, v.min.y, v.max.x, v.max.x );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2539,7 +2542,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v.red.x, v.red.y, v.green.x, v.green.y,
                      v.blue.x, v.blue.y, v.white.x, v.white.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2555,7 +2558,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2571,7 +2574,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2588,7 +2591,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2605,7 +2608,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (Fl_Callback*) change_string_cb );
+                      buf, true, active, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -2622,7 +2625,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             {
                 sprintf( buf, "%s #%td", i->first.c_str(), (it - ib)+1 );
                 add_text( buf, NULL,
-                          *it, false, false,
+                          *it, true, false,
                           (Fl_Callback*) change_string_cb );
             }
             return;
@@ -2634,7 +2637,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_text( i->first.c_str(), NULL,
-                      attr->value().c_str(), true, false,
+                      attr->value().c_str(), true, active,
                       (Fl_Callback*) change_string_cb );
             return;
         }
@@ -2657,25 +2660,25 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imf::KeyCode& k = attr->value();
             std::string key = i->first;
             add_int( (key + ".filmMfcCode").c_str(), NULL,
-                     k.filmMfcCode(), true, false,
+                     k.filmMfcCode(), true, active,
                      (Fl_Callback*) change_keycode_cb, 0, 99 );
             add_int( (key + ".filmType").c_str(), NULL,
-                     k.filmType(), true, false,
+                     k.filmType(), true, active,
                      (Fl_Callback*) change_keycode_cb, 0, 99 );
             add_int( (key + ".prefix").c_str(), NULL,
-                     k.prefix(), true, false,
+                     k.prefix(), true, active,
                      (Fl_Callback*) change_keycode_cb, 0, 999999 );
             add_int( (key + ".count").c_str(), NULL,
-                     k.count(), true, false,
+                     k.count(), true, active,
                      (Fl_Callback*) change_keycode_cb, 0, 9999 );
             add_int( (key + ".perfOffset").c_str(), NULL,
-                     k.perfOffset(), true, false,
+                     k.perfOffset(), true, active,
                      (Fl_Callback*) change_keycode_cb, 0, 119 );
             add_int( (key + ".perfsPerFrame").c_str(), NULL,
-                     k.perfsPerFrame(), true, false,
+                     k.perfsPerFrame(), true, active,
                      (Fl_Callback*) change_keycode_cb, 1, 15 );
             add_int( (key + ".perfsPerCount").c_str(), NULL,
-                     k.perfsPerCount(), true, false,
+                     k.perfsPerCount(), true, active,
                      (Fl_Callback*) change_keycode_cb, 20, 120 );
             return;
         }

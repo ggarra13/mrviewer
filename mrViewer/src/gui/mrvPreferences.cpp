@@ -887,6 +887,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // Images
     DBG3;
     Fl_Preferences images( base, "images" );
+    images.get( "editable_metadata", tmp, 0 );
+    uiPrefs->uiMetadataEditable->value( tmp );
+
     images.get( "all_layers", tmp, 0 );
     uiPrefs->uiPrefsAllLayers->value( tmp );
 
@@ -2499,6 +2502,7 @@ void Preferences::save()
 
     // Images
     Fl_Preferences images( base, "images" );
+    images.set( "editable_metadata", uiPrefs->uiMetadataEditable->value());
     images.set( "all_layers", (int) uiPrefs->uiPrefsAllLayers->value() );
     images.set( "aces_metadata",
                 (int) uiPrefs->uiPrefsACESClipMetadata->value());

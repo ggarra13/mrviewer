@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {669 214 675 455} type Double resizable
+      xywh {669 242 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -690,8 +690,8 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label {Pixel Toolbar} selected
-          xywh {225 45 432 350} box EMBOSSED_BOX align 5
+          label {Pixel Toolbar}
+          xywh {225 45 432 350} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open
             xywh {255 45 363 302}
@@ -1959,20 +1959,29 @@ v->uiView->redraw();}
           }
         }
         Fl_Group {} {
-          label Images
-          tooltip {Options controlling the OpenEXR reader/writer} xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
+          label Images open
+          tooltip {Options controlling the OpenEXR reader/writer} xywh {225 44 423 352} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Saving open
-            xywh {260 123 330 188} box ROUNDED_BOX labelsize 15
+            xywh {260 214 330 151} box ROUNDED_BOX labelsize 15
           } {
             Fl_Light_Button uiPrefsACESClipMetadata {
               label {ACES Clip Metadata}
-              tooltip {Whether to save ACES clip metadata in a sidecar.} xywh {310 171 210 30}
+              tooltip {Whether to save ACES clip metadata in a sidecar.} xywh {310 262 210 30}
             }
             Fl_Light_Button uiPrefsAllLayers {
               label {All Layers}
-              tooltip {Whether to save all layers in image file if there are several.} xywh {310 221 210 30}
+              tooltip {Whether to save all layers in image file if there are several.} xywh {310 312 210 30}
+            }
+          }
+          Fl_Group {} {
+            label Metadata open
+            xywh {255 75 335 100} box ROUNDED_BOX
+          } {
+            Fl_Light_Button uiMetadataEditable {
+              label {Editable by Default} selected
+              xywh {325 105 180 40}
             }
           }
         }

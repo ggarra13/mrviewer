@@ -1060,8 +1060,6 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     if ( !_seek_req && playback() == kBackwards )
     {
-        _rev.push_back( start+1 );
-
         if ( !got_video )    _video_packets.preroll(vpts);
         if ( !got_audio )    _audio_packets.preroll(apts);
         if ( !got_subtitle ) _subtitle_packets.preroll(spts);
@@ -1760,15 +1758,6 @@ bool aviImage::find_image( int64_t& frame )
     debug_video_stores(frame, "find_image", true);
 #endif
 
-    if ( playback() == kBackwards )
-    {
-        std::vector<int64_t>::iterator r = std::find( _rev.begin(), _rev.end(),
-                                                      frame );
-        if ( r != _rev.end() )
-        {
-            _rev.erase( r );
-        }
-    }
 
     _frame = frame;
 
@@ -2251,8 +2240,15 @@ bool aviImage::readFrame(int64_t & pts)
         bool eof = false;
         if ( video_stream_index() == packet.stream_index)
         {
-            if (decode( _video_ctx, _av_frame, &got_video, pkt, eof ) <= 0)
+            aviData data;
+            data.avi = this;
+            data.pkt = pkt;
+            data.frame = pts;
+
+            if ( static_decode( _video_ctx, _av_frame, pkt,
+                                process_vframe_cb, data ) <= 0 )
             {
+                got_video = true;
                 break;
             }
         }
@@ -3427,11 +3423,6 @@ bool aviImage::frame( const int64_t f )
     }
 
 
-    if ( _rev.size() > 2 )
-    {
-        _video_packets.cond().notify_all();
-        return false;
-    }
 
 
     if ( f < _frameStart )    _dts = _adts = _frameStart;
@@ -3508,7 +3499,9 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
         ++count;
 
         int64_t pktframe;
-        if ( pkt.dts != AV_NOPTS_VALUE )
+        if ( pkt.pts != AV_NOPTS_VALUE )
+            pktframe = pts2frame( get_video_stream(), pkt.pts );
+        else if ( pkt.dts != AV_NOPTS_VALUE )
             pktframe = pts2frame( get_video_stream(), pkt.dts );
         else
             pktframe = frame;

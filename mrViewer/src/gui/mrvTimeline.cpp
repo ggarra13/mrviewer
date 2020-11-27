@@ -547,7 +547,11 @@ void Timeline::draw_selection( const mrv::Recti& r )
             b = (Fl_Box*)win->child(0);
         }
 
-        mrv::media m = media_at( frame );
+        mrv::media m;
+        if ( _edl )
+            m = media_at( frame );
+        else
+            m = browser()->current_image();
         if ( ! m ) {
             win->hide();
             return;
