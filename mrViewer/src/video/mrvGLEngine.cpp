@@ -1759,6 +1759,7 @@ void GLEngine::draw_images( ImageList& images )
     ImageList::iterator e = images.end();
 
     static CMedia* previous_img = NULL;
+    int is_hdr = 2;
     for ( ; i != e; ++i )
     {
         const Image_ptr& img = *i;
@@ -1774,9 +1775,11 @@ void GLEngine::draw_images( ImageList& images )
         if ( img != previous_img && pix_fmt.substr(0, 3) == "yuv" )
         {
             previous_img = img;
-            delete _YCbCr;
             loadOpenGLShader();
-            if ( ! _YCbCr ) return;
+            if ( ! _YCbCr ) {
+                LOG_ERROR( "YCbCr shader not created!" );
+                return;
+            }
         }
 
     }
@@ -3975,6 +3978,7 @@ void GLEngine::loadOpenGLShader()
 
         std::string all = hdr.str() + code.str() + foot.str();
 
+        delete _YCbCr;
         _YCbCr = new GLShader();
         _YCbCr->load( N_("builtin"), all.c_str() );
         return;
@@ -4068,6 +4072,7 @@ void GLEngine::loadOpenGLShader()
 
     //std::cerr << all << std::endl;
 
+    delete _YCbCr;
     _YCbCr = new GLShader();
     _YCbCr->load( N_("builtin"), all.c_str() );
 
