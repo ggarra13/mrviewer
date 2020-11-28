@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
@@ -30,7 +29,7 @@
 
 #include <iostream>
 #include <Iex.h>
- 
+
 #include <FL/Fl.H>
 
 extern "C" {

@@ -2541,8 +2541,6 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
     CHECK_GL;
     glDisable(GL_STENCIL_TEST);
     CHECK_GL;
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
 }
 
 
