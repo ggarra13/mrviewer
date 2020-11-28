@@ -1678,6 +1678,11 @@ bool GLEngine::is_hdr_image( const CMedia* img )
     if (m && size == sizeof( AVMasteringDisplayMetadata ) )
         return true;
 
+    AVCodecParameters* c = st->codecpar;
+
+    mp_csp_trc gamma = avcol_trc_to_mp_csp_trc( c->color_trc );   // gamma
+    if ( mp_trc_is_hdr( gamma ) )
+        return true;
 
     return false;
 }
@@ -1759,7 +1764,7 @@ void GLEngine::draw_images( ImageList& images )
     ImageList::iterator e = images.end();
 
     static CMedia* previous_img = NULL;
-    int is_hdr = 2;
+    static int old_hdr = 2;
     for ( ; i != e; ++i )
     {
         const Image_ptr& img = *i;
@@ -1772,9 +1777,13 @@ void GLEngine::draw_images( ImageList& images )
 
         const CMedia::video_info_t& vinfo = img->video_info(0);
         const std::string& pix_fmt = vinfo.pixel_format;
-        if ( img != previous_img && pix_fmt.substr(0, 3) == "yuv" )
+        const int hdr = is_hdr_image( img );
+        if ( previous_img == NULL ||
+             ( img != previous_img && pix_fmt.substr(0, 3) == "yuv" &&
+               ( old_hdr != hdr ) ) )
         {
             previous_img = img;
+            old_hdr = hdr;
             loadOpenGLShader();
             if ( ! _YCbCr ) {
                 LOG_ERROR( "YCbCr shader not created!" );
@@ -2064,8 +2073,9 @@ void GLEngine::draw_images( ImageList& images )
                           pic->format() == image_type::kITU_709_YCbCr444A
                     )
                     quad->shader( GLEngine::YCbCrAShader() );
-                else
+                else {
                     quad->shader( GLEngine::YCbCrShader() );
+                }
                 CHECK_GL;
                 quad->bind( pic );
             }
@@ -2288,8 +2298,9 @@ void GLEngine::draw_images( ImageList& images )
                       pic->format() == image_type::kITU_709_YCbCr444A
                 )
                 quad->shader( GLEngine::YCbCrAShader() );
-            else
+            else {
                 quad->shader( GLEngine::YCbCrShader() );
+            }
             CHECK_GL;
             quad->bind( pic );
             CHECK_GL;
