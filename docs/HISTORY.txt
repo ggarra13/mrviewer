@@ -17,6 +17,9 @@ v5.6.8  - Bug fixed scheme/color theme preferences.
 	  the current line only).
 	- Bug fixed thumbnails previews for images in reel other than the
 	  first image or edl.
+	- Bug fixed (silent) setUniform errors due to deleting of shader.
+	- Bug fixed (silent) stack underflow due to popping GL_PROJECTION
+	  matrix.
 
 v5.6.7  - Added thumbnail previews to timeline.
 	- Made focus be more consistent.  Now the main window does not
