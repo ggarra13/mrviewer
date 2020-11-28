@@ -7033,6 +7033,8 @@ int ImageView::keyDown(unsigned int rawkey)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
+        _wipe = std::abs( _wipe );
+
         mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
