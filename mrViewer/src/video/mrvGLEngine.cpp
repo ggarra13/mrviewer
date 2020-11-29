@@ -1967,18 +1967,16 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         GLQuad* quad = *q;
-            CHECK_GL;
+        CHECK_GL;
         quad->minmax( _normMin, _normMax );
-            CHECK_GL;
+        CHECK_GL;
         quad->image( img );
-            CHECK_GL;
+        CHECK_GL;
         // Handle rotation of cube/sphere
-            CHECK_GL;
         quad->rot_x( _rotX );
-            CHECK_GL;
+        CHECK_GL;
         quad->rot_y( _rotY );
-
-            CHECK_GL;
+        CHECK_GL;
         if ( _view->use_lut() )
         {
             if ( img->image_damage() & CMedia::kDamageLut )
@@ -3882,6 +3880,8 @@ void GLEngine::loadOpenGLShader()
     foot.clear();
     foot.str("");
     foot << " }\n"
+         "  c.rgb = clamp( c.rgb, 0.0, 1.0 );\n"
+         "  c.a = 1.0;\n"
          "       //\n"
          "       // Apply channel selection\n"
          "       //\n"
