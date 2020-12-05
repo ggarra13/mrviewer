@@ -2784,7 +2784,10 @@ void static_preload( mrv::ImageView* v )
     {
         CMedia* img = m->image();
         double delay = 1.0 / img->fps();
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+        if ( ! img->is_stereo() )
+            Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+        else
+            Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
     }
 }
 
@@ -8269,7 +8272,7 @@ void ImageView::preload_cache_start()
         mrv::media m = foreground();
         if ( m ) {
             img = m->image();
-            // if ( !img->is_stereo() )
+            if ( !img->is_stereo() )
             {
                 CMedia::preload_cache( true );
                 _idle_callback = true;
