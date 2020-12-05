@@ -468,7 +468,7 @@ static void update_title_bar( mrv::ImageView* view )
         snprintf( bufs, 255, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
                   fg->image()->name().c_str(), view->fg_reel(),
                   bg->image()->name().c_str(), view->bg_reel(),
-                  view->show_background() ? _("Shown") : _("Not Shown") );
+                  view->show_background() ? _("Comped") : _("Not Comped") );
     }
     else if ( fg )
     {
@@ -1731,6 +1731,28 @@ ImageView::~ImageView()
 
     delete uiMain->uiSOPNode;
     uiMain->uiSOPNode = NULL;
+
+    // Remove background image when in stereo BImageInput mode to
+    // avoid deleting the pointer twice.
+    if ( stereo_input() == CMedia::kBImageInput )
+    {
+        mrv::media bg = background();
+        CMedia* bimg = bg->image();
+        for ( size_t r = 0; r < browser()->number_of_reels(); ++r )
+        {
+            const mrv::Reel& reel = browser()->reel_at(r);
+            size_t size = reel->images.size();
+            for ( size_t i = 0; i < size; ++i )
+            {
+                mrv::media m = reel->images[i];
+                CMedia* img = m->image();
+                if ( img->right_eye() == bimg )
+                {
+                    img->right_eye( NULL );
+                }
+            }
+        }
+    }
 
     uiMain = NULL;
 }
@@ -3883,9 +3905,8 @@ void ImageView::draw()
     ImageList images;
     images.reserve(2);
 
-    if ( _showBG && bg && bg != fg  )
+    if ( bg && bg != fg  )
     {
-        TRACE("");
         CMedia* img = bg->image();
         TRACE("");
         if ( img->has_picture() )
@@ -3896,8 +3917,8 @@ void ImageView::draw()
 
     if ( fg )
     {
-        TRACE("");
         CMedia* img = fg->image();
+        TRACE("");
         if ( img->has_picture() )
         {
             images.push_back( img );

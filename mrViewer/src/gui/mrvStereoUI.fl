@@ -47,136 +47,156 @@ o->main( main );}
       class {mrv::StereoWindow} non_modal visible
     } {
       Fl_Group {} {open
-        xywh {0 0 280 160} box UP_BOX
+	xywh {0 0 280 160} box UP_BOX
       } {
-        Fl_Choice uiStereoInput {
-          label Input
-          user_data main user_data_type {ViewerUI*}
-          callback {int x = o->value(); 
-mrv::CMedia::StereoInput in = mrv::CMedia::to_stereo_input( x ); 
-v->uiView->stereo_input( in );} open
-          tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.} xywh {80 60 175 25} down_box BORDER_BOX
-          code0 {mrv::media fg = main->uiView->foreground();
+	Fl_Choice uiStereoInput {
+	  label Input
+	  user_data main user_data_type {ViewerUI*}
+	  callback {int x = o->value();
+mrv::CMedia::StereoInput in = mrv::CMedia::to_stereo_input( x );
+v->uiView->stereo_input( in );
+
+mrv::media fg = v->uiView->foreground();
+mrv::media bg = v->uiView->background();
+if ( fg && bg && in == mrv::CMedia::kBImageInput )
+{
+   mrv::CMedia* img = fg->image();
+   mrv::CMedia* bimg = bg->image();
+
+   img->right_eye( bimg );
+   img->is_stereo( true );
+   img->is_left_eye( true );
+
+   bimg->is_stereo( true );
+   bimg->is_left_eye( false );
+}
+} open
+	  tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.} xywh {80 60 175 25} down_box BORDER_BOX
+	  code0 {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
 {
 mrv::CMedia* img = fg->image();
 mrv::CMedia::StereoInput in = img->stereo_input();
 int x = mrv::CMedia::from_stereo_input( in );
-o->value( x ); 
+o->value( x );
 }}
-        } {
-          MenuItem {} {
-            label {Separate layers}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Top/bottom}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Left/right}
-            xywh {0 0 100 20}
-          }
-        }
-        Fl_Choice uiStereoOutput {
-          label Output
-          user_data main user_data_type {ViewerUI*}
-          callback {int x = o->value(); 
-mrv::CMedia::StereoOutput out = mrv::CMedia::to_stereo_output( x ); 
+	} {
+	  MenuItem {} {
+	    label {Separate layers}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Top/bottom}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Left/right}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {BG Image}
+	    xywh {0 0 100 20}
+	  }
+	}
+	Fl_Choice uiStereoOutput {
+	  label Output
+	  user_data main user_data_type {ViewerUI*}
+	  callback {int x = o->value();
+mrv::CMedia::StereoOutput out = mrv::CMedia::to_stereo_output( x );
 v->uiView->stereo_output( out );} open
-          tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa).} xywh {80 100 175 30} down_box BORDER_BOX
-          code0 {mrv::media fg = main->uiView->foreground();
+	  tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa).} xywh {80 100 175 30} down_box BORDER_BOX
+	  code0 {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
 {
 mrv::CMedia* img = fg->image();
 mrv::CMedia::StereoOutput out = img->stereo_output();
 int x = mrv::CMedia::from_stereo_output( out );
-o->value( x ); 
+o->value( x );
 }}
-        } {
-          MenuItem {} {
-            label {No Stereo Output}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Left view}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Right view}
-            xywh {0 0 100 20}
-          }
-          MenuItem uiStereoOpenGL {
-            label {Stereo OpenGL}
-            xywh {0 0 100 20}
-            code0 {if ( main->uiView->can_do( FL_STEREO ) )
+	} {
+	  MenuItem {} {
+	    label {No Stereo Output}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Left view}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Right view}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem uiStereoOpenGL {
+	    label {Stereo OpenGL}
+	    xywh {0 0 100 20}
+	    code0 {if ( main->uiView->can_do( FL_STEREO ) )
   uiStereoOpenGL->activate();
 else
   uiStereoOpenGL->deactivate();}
-          }
-          MenuItem {} {
-            label {Top/bottom}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Bottom/top}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Left/right}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Right/left}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Even/odd rows}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Even/odd columns}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Checkerboard pattern}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Red/cyan glasses}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Cyan/red glasses}
-            xywh {0 0 100 20}
-          }
-        }
-        Fl_Light_Button uiVR360Sphere {
-          label {VR 360 Sphere}
-          user_data main user_data_type {ViewerUI*}
-          callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
+	  }
+	  MenuItem {} {
+	    label {Top/bottom}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Bottom/top}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Left/right}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Right/left}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Even/odd rows}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Even/odd columns}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Checkerboard pattern}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Red/cyan glasses}
+	    xywh {0 0 100 20}
+	  }
+	  MenuItem {} {
+	    label {Cyan/red glasses}
+	    xywh {0 0 100 20}
+	  }
+	}
+	Fl_Light_Button uiVR360Sphere {
+	  label {VR 360 Sphere}
+	  user_data main user_data_type {ViewerUI*}
+	  callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
 if ( o->value() ) {
   t = mrv::ImageView::kVRSphericalMap;
   uiVR360Cube->value(0);
 }
 v->uiView->vr( t );
 v->uiView->redraw();}
-          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.} xywh {15 15 135 40}
-        }
-        Fl_Light_Button uiVR360Cube {
-          label {VR 360 Cube}
-          user_data main user_data_type {ViewerUI*}
-          callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
+	  tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.} xywh {15 15 135 40}
+	}
+	Fl_Light_Button uiVR360Cube {
+	  label {VR 360 Cube}
+	  user_data main user_data_type {ViewerUI*}
+	  callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
 if ( o->value() ) {
   t = mrv::ImageView::kVRCubeMap;
   uiVR360Sphere->value(0);
 }
 v->uiView->vr( t );
 v->uiView->redraw();}
-          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.} xywh {155 15 110 40}
-        }
+	  tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.} xywh {155 15 110 40}
+	}
       }
     }
   }
@@ -202,7 +222,7 @@ if ( m && m->uiView )
 		mrv::CMedia* img = fg->image();
 		mrv::CMedia::StereoInput in = img->stereo_input();
 		int x = mrv::CMedia::from_stereo_input( in );
-		uiStereoInput->value( x ); 
+		uiStereoInput->value( x );
 
 		mrv::CMedia::StereoOutput out = img->stereo_output();
 		x = mrv::CMedia::from_stereo_output( out );

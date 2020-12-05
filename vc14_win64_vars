@@ -14,7 +14,7 @@ export GLEW_ROOT=$DIST
 export PATH=$DIST/gettext/bin:$PATH
 
 export BOOST_ROOT="/D/code/lib/boost_1_73_0"
-export FFMPEG_ROOT="$ROOT/win64_deps/ffmpeg-20191004-e6625ca-win64-shared"
+export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
 export OCIO_ROOT=$DIST
 export OpenColorIO_ROOT=$OCIO_ROOT
 export  GLUT_ROOT_PATH=$DIST

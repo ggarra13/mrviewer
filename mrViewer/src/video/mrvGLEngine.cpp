@@ -1857,7 +1857,7 @@ void GLEngine::draw_images( ImageList& images )
     {
         img = *i;
         pic = img->left();
-        if (!pic)  continue;
+        if (!pic )  continue;
 
 
         DBGM3( "draw image " << img->name() );
@@ -2257,7 +2257,7 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
         }
 
-        if ( fg == img && bg != fg &&  _view->show_background() )
+        if ( fg == img && bg != fg && _view->show_background() )
             glEnable( GL_BLEND );
 
         CHECK_GL;

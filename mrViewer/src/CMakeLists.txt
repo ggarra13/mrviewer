@@ -534,7 +534,7 @@ endif()
 
 
 FILE(GLOB scriptfiles ${SOURCE_DIR}/bin/*.rb ${SOURCE_DIR}/bin/*.py )
-FILE(GLOB ffmpegfiles ${FFMPEG_ROOT}/ff* ${FFMPEG_ROOT}/av* ${FFMPEG_ROOT}/sw* ${FFMPEG_ROOT}/pos*)
+FILE(GLOB ffmpegfiles ${FFMPEG_ROOT}/ff*.exe ${FFMPEG_ROOT}/av*.dll ${FFMPEG_ROOT}/sw*.dll ${FFMPEG_ROOT}/pos*.dll)
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )

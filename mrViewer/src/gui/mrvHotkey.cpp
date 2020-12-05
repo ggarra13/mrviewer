@@ -333,7 +333,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Next Channel"), kNextChannel ),
     HotkeyEntry( _("First Frame"), kFirstFrame ),
     HotkeyEntry( _("Last Frame"), kLastFrame ),
-    HotkeyEntry( _("Toggle Background"), kToggleBG ),
+    HotkeyEntry( _("Toggle Background Composite"), kToggleBG ),
     HotkeyEntry( _("Toggle EDL"), kToggleEDL ),
     HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
     HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
