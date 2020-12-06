@@ -1161,6 +1161,7 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
       for ( unsigned i = 0; i < num; ++i )
           _pixel_ratio[i] = p;
     }
+  if ( f > _frame_end ) f = _frame_end;
   int64_t idx = f - _frame_start;
   if ( dynamic_cast< aviImage* >(this) != NULL ||
        dynamic_cast< brawImage* >( this ) != NULL ||
@@ -1809,7 +1810,6 @@ bool CMedia::has_changed()
              _sequence[idx]->mtime() != sbuf.st_mtime ||
              _sequence[idx]->ctime() != sbuf.st_ctime )
         {
-            assert( f == _sequence[idx]->frame() );
             // update frame...
             _sequence[idx].reset();
 
@@ -2805,7 +2805,7 @@ bool CMedia::frame( const int64_t f )
 {
     assert( _fileroot != NULL );
 
-    if ( stopped() && _right_eye && _stereo_output )
+    if ( stopped() && _right_eye && _right_eye != this && _stereo_output )
         _right_eye->frame(f);
 
 
@@ -3073,7 +3073,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
         pic.reset();
     }
 
-    if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
+    if ( _stereo[1] && pic && _stereo[1]->frame() == pic->frame() )
     {
         DBGM1( "stereo[1]" );
         update_cache_pic( _right, _stereo[1] );
@@ -3157,7 +3157,7 @@ int64_t CMedia::first_cache_empty_frame()
  */
 void CMedia::flush_all()
 {
-    if ( _right_eye ) _right_eye->flush_all();
+    if ( _right_eye && _right_eye != this ) _right_eye->flush_all();
 
     if ( has_video() )
         flush_video();
@@ -3904,7 +3904,7 @@ void CMedia::debug_video_stores(const int64_t frame,
 
 CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
 {
-    if ( stopped() && _right_eye && _stereo_output ) {
+    if ( stopped() && _right_eye && _right_eye != this && _stereo_output ) {
         int64_t f = frame;
         _right_eye->decode_video(f);
     }
@@ -4027,7 +4027,7 @@ int64_t CMedia::loops_offset( int64_t f,
 
 bool CMedia::find_image( int64_t& frame )
 {
-    if ( stopped() && _right_eye && _stereo_output )
+    if ( stopped() && _right_eye && _right_eye != this && _stereo_output )
         _right_eye->find_image(frame);
 
 

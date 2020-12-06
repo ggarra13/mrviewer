@@ -1897,7 +1897,7 @@ bool CMedia::find_audio( const int64_t frame )
 
     }
 
-    assert( result->frame() == frame );
+    //assert( result->frame() == frame );
     assert( result->size() > 0 );
     assert( result->data() != NULL );
 

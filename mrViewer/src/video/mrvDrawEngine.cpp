@@ -76,16 +76,6 @@ namespace {
 const char* kModule = "draw";
 
 
-/**
- * Dummy function used to have a boost::shared_ptr that does not
- * delete its element.
- *
- * @param ptr ptr to memory allocated by new uchar[x]
- */
-void shared_ptr_no_delete( uchar* ptr )
-{
-}
-
 #pragma pack(push,16) /* Must ensure class & union 16-B aligned */
 
 struct RgbaGainGamma

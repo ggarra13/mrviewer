@@ -2129,8 +2129,11 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             if ( root.find( "%V" ) != std::string::npos ||
                  root.find( "%v" ) != std::string::npos )
                 return true;
-            IMG_WARNING( _("Could not find both stereo images in file") );
-            return false;
+            if ( _right_eye && !_right_eye->fetch( canvas, frame ) )
+            {
+                IMG_WARNING( _("Could not find both stereo images in file") );
+                return false;
+            }
         }
     }
 
