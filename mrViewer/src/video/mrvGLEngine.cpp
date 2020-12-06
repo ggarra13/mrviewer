@@ -1860,7 +1860,7 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic )  continue;
 
 
-        DBGM3( "draw image " << img->name() );
+        DBGM1( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
@@ -1996,9 +1996,7 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
         }
 
-            CHECK_GL;
         if ( i+1 == e ) wipe_area();
-            CHECK_GL;
 
         float g = img->gamma();
 

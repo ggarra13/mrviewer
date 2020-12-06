@@ -911,7 +911,14 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         // Reel window
         if ( force || !uiMain->uiReelWindow->uiMain->visible() )
+        {
             uiMain->uiReelWindow->uiMain->show();
+            mrv::media bg = background();
+            if ( bg )
+                uiMain->uiReelWindow->uiBGButton->value(1);
+            else
+                uiMain->uiReelWindow->uiBGButton->value(0);
+        }
         else
             uiMain->uiReelWindow->uiMain->hide();
     }
@@ -1736,8 +1743,8 @@ ImageView::~ImageView()
     // avoid deleting the pointer twice.
     if ( stereo_input() == CMedia::kBImageInput )
     {
-        mrv::media bg = background();
-        CMedia* bimg = bg->image();
+        // mrv::media bg = background();
+        // CMedia* bimg = bg->image();
         for ( size_t r = 0; r < browser()->number_of_reels(); ++r )
         {
             const mrv::Reel& reel = browser()->reel_at(r);
@@ -1746,7 +1753,7 @@ ImageView::~ImageView()
             {
                 mrv::media m = reel->images[i];
                 CMedia* img = m->image();
-                if ( img->right_eye() == bimg )
+                // if ( img->right_eye() == bimg )
                 {
                     img->right_eye( NULL );
                 }
@@ -3905,7 +3912,7 @@ void ImageView::draw()
     ImageList images;
     images.reserve(2);
 
-    if ( bg && bg != fg  )
+    if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
         CMedia* img = bg->image();
         TRACE("");
@@ -4515,7 +4522,7 @@ int ImageView::leftMouseDown(int x, int y)
 
             }
 
-            if ( _showBG && bg && bg != fg )
+            if ( bg && bg != fg )
             {
 
                 CMedia* img = bg->image();

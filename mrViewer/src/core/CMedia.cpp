@@ -2997,23 +2997,18 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         }
         else
         {
-            DBG;
             seq[idx] = pic;
-            DBG;
             // Use count should be 2, but it fails on stereo images when loaded
             // twice.
             assert0( pic.use_count() >= 1 );
         }
     }
 
-    DBG;
 
     _w = w;
     _h = h;
-    DBG;
 
     timestamp(idx, seq);
-    DBG;
 }
 
 /**
@@ -3061,21 +3056,17 @@ void CMedia::cache( mrv::image_type_ptr& pic )
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
-        DBGM1( "stereo[0]" );
-        // update_cache_pic( _sequence, pic );
         update_cache_pic( _sequence, _stereo[0] );
         _stereo[0].reset();
     }
     else
     {
-        DBGM1( "sequence" );
         update_cache_pic( _sequence, pic );
         pic.reset();
     }
 
     if ( _stereo[1] && pic && _stereo[1]->frame() == pic->frame() )
     {
-        DBGM1( "stereo[1]" );
         update_cache_pic( _right, _stereo[1] );
         _stereo[1].reset();
     }
