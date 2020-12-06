@@ -1911,6 +1911,7 @@ void GLEngine::draw_images( ImageList& images )
         texHeight = int( texHeight * img->scale_y() );
 
 
+
         set_matrix( img );
 
         if ( !_view->vr() )

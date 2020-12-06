@@ -1287,7 +1287,10 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
 const mrv::Recti CMedia::display_window2( int64_t f ) const
 {
     if ( _right_eye )
+    {
+        _right_eye->stereo_input( stereo_input() );
         return _right_eye->display_window(f);
+    }
 
     int dw = width();
     int dh = height();
@@ -1370,7 +1373,10 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
 const mrv::Recti CMedia::data_window2( int64_t f ) const
 {
     if ( _right_eye )
+    {
+        _right_eye->stereo_input( stereo_input() );
         return _right_eye->data_window(f);
+    }
 
     int64_t num = _frame_end - _frame_start + 1;
 

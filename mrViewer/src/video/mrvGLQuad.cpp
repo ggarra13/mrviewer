@@ -720,6 +720,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             ow /= 2;
         }
 
+
         update_texsub( i, 0, 0, ow, oh, tw, th, GL_LUMINANCE, pixel_type,
                        1, pixel_size, p );
     }
@@ -884,8 +885,10 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         }
         else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
         {
-            unsigned dx = dw;
+            int dx = dw;
             off = dx * psize;
+            th -= 1;
+            dh -= 1;
         }
     }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;

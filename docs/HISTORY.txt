@@ -1,3 +1,10 @@
+v5.6.9  - Bug fixed a memory bound problem on RGBA stereo images.
+	- Made Background image always shown but not composited when it is
+	  deactivated.  This allows for a proper A/B wipe checking.
+	- Bug fixed crash due to empty pic pointer on stereo image sequences.
+	- Bug fixed crash due to a write out of bounds in pixel ratio when
+	  playing back stereo images of different length.
+
 v5.6.8  - Bug fixed scheme/color theme preferences.
 	- Added STUDIOPATH environment variable to set preferences on a
 	  STUDIO basis.
