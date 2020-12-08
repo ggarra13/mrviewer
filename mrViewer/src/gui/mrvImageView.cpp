@@ -2478,10 +2478,9 @@ void ImageView::fit_image()
         W = tmp;
     }
 
-    // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
-    //     W *= 2;
+    if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
+        W *= 2;
 
-    // Fl::flush();
 
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
@@ -2497,7 +2496,7 @@ void ImageView::fit_image()
     if ( _showPixelRatio ) pr = pixel_ratio();
     h *= pr;
 
-    if ( h < z && ((stereo_out & CMedia::kStereoSideBySide) == 0) ) {
+    if ( h < z ) {
         z = h;
     }
 
@@ -2505,7 +2504,18 @@ void ImageView::fit_image()
     double ox = xoffset;
     double oy = yoffset;
 
-    xoffset = -dpw.x() - W / 2.0;
+    if ( stereo_out & CMedia::kStereoSideBySide )
+    {
+        xoffset = -W/4.0 + 0.5;
+    }
+    else if ( stereo_out & CMedia::kStereoTopBottom )
+    {
+        yoffset = (( -H/2.0 ) / pr + 0.5 );
+    }
+    else
+    {
+        xoffset = -dpw.x() - W / 2.0;
+    }
 
 
     if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )

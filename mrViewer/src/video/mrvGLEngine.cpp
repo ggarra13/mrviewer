@@ -1872,8 +1872,6 @@ void GLEngine::draw_images( ImageList& images )
         {
             dpw = img->display_window2(frame);
             daw = img->data_window2(frame);
-            std::cerr << "dpw2.w()=" << dpw.w() << " daw2.w()=" << daw.w()
-                      << std::endl;
         }
 
         // Handle background image size
