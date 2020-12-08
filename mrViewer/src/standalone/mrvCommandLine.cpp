@@ -457,8 +457,8 @@ void parse_command_line( const int argc, const char** argv,
     stringArray infiles = afiles.getValue();
     stringArray files;
     stringArray::const_iterator f = infiles.begin();
-    stringArray::const_iterator fe = infiles.end();
-    for ( ; f != fe; ++f )
+    stringArray::const_iterator ef = infiles.end();
+    for ( ; f != ef; ++f )
     {
         if ( f->substr( 0, 5 ) == "-psn_" )
             continue;

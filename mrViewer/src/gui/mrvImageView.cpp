@@ -2491,7 +2491,7 @@ void ImageView::fit_image()
 #endif
 
     double z = w / (double)W;
-        h /= H;
+    h /= H;
 
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
@@ -2505,7 +2505,22 @@ void ImageView::fit_image()
     double ox = xoffset;
     double oy = yoffset;
 
-    xoffset = -dpw.x() - W / 2.0;
+    if ( stereo_out & CMedia::kStereoSideBySide )
+    {
+#ifdef OSX
+        xoffset = -W/4.0 + 0.5;
+#else
+        xoffset = -W/2.0 + 0.5;
+#endif
+    }
+    else if ( stereo_out & CMedia::kStereoTopBottom )
+    {
+        yoffset = (( -H/2.0 ) / pr + 0.5 );
+    }
+    else
+    {
+        xoffset = -dpw.x() - W / 2.0;
+    }
 
 
     if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
