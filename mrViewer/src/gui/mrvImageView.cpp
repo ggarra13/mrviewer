@@ -2507,7 +2507,11 @@ void ImageView::fit_image()
 
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
+#ifdef OSX
         xoffset = -W/4.0 + 0.5;
+#else
+        xoffset = -W/2.0 + 0.5;
+#endif
     }
     else if ( stereo_out & CMedia::kStereoTopBottom )
     {
