@@ -8,6 +8,7 @@ v5.6.9  - Bug fixed a memory bound problem on RGBA stereo images.
         - Bug fixed display_window2/data_window2 for _right_eye stereo images.
         - Made --fps command-line switch be a multiple argument for each image
           loaded.
+	- Removed crash when using PgUp/Down and no images were loaded.
 
 v5.6.8  - Bug fixed scheme/color theme preferences.
         - Added STUDIOPATH environment variable to set preferences on a

@@ -2709,7 +2709,6 @@ void ImageBrowser::next_image()
         view()->stop();
 
     int v = value();
-    mrv::media orig = reel->images[v];
 
     ++v;
     if ( size_t(v) >= reel->images.size() )
@@ -2717,6 +2716,8 @@ void ImageBrowser::next_image()
         if ( play ) view()->play(play);
         return;
     }
+    
+    mrv::media orig = reel->images[v-1];
 
     Fl_Tree_Item* item = root()->child(v-1);
     int ok = deselect( item, 0 );
@@ -2780,14 +2781,15 @@ void ImageBrowser::previous_image()
         view()->stop();
 
     int v = value();
-    mrv::media orig = reel->images[v];
-
     --v;
     if ( v < 0 )
     {
         if ( play ) view()->play(play);
         return;
     }
+
+    mrv::media orig = reel->images[v];
+
 
 
     value( v );
