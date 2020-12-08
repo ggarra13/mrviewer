@@ -1166,6 +1166,9 @@ void aviImage::store_image( const int64_t frame,
     unsigned int w = width();
     unsigned int h = height();
 
+    assert0( _h > 0 );
+    assert0( _w > 0 );
+
     // Fill the fields of AVFrame output based on _av_dst_pix_fmt
     av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
                           w, h, 1);
@@ -3499,9 +3502,7 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
         ++count;
 
         int64_t pktframe;
-        if ( pkt.pts != AV_NOPTS_VALUE )
-            pktframe = pts2frame( get_video_stream(), pkt.pts );
-        else if ( pkt.dts != AV_NOPTS_VALUE )
+        if ( pkt.dts != AV_NOPTS_VALUE )
             pktframe = pts2frame( get_video_stream(), pkt.dts );
         else
             pktframe = frame;
@@ -4026,8 +4027,10 @@ void aviImage::debug_subtitle_packets(const int64_t frame,
 
 void aviImage::do_seek()
 {
-    // No need to set seek frame for right eye here
-    if ( _right_eye )  _right_eye->do_seek();
+    if ( _right_eye ) {
+        _right_eye->seek_request( _seek_req, _seek_frame );
+        _right_eye->do_seek();
+    }
 
     if ( saving() ) _seek_req = false;
 
