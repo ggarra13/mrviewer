@@ -3492,9 +3492,7 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
         ++count;
 
         int64_t pktframe;
-        if ( pkt.pts != AV_NOPTS_VALUE )
-            pktframe = pts2frame( get_video_stream(), pkt.pts );
-        else if ( pkt.dts != AV_NOPTS_VALUE )
+        if ( pkt.dts != AV_NOPTS_VALUE )
             pktframe = pts2frame( get_video_stream(), pkt.dts );
         else
             pktframe = frame;
