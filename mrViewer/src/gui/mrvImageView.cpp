@@ -1739,28 +1739,6 @@ ImageView::~ImageView()
     delete uiMain->uiSOPNode;
     uiMain->uiSOPNode = NULL;
 
-    // Remove background image when in stereo BImageInput mode to
-    // avoid deleting the pointer twice.
-    if ( stereo_input() == CMedia::kBImageInput )
-    {
-        // mrv::media bg = background();
-        // CMedia* bimg = bg->image();
-        for ( size_t r = 0; r < browser()->number_of_reels(); ++r )
-        {
-            const mrv::Reel& reel = browser()->reel_at(r);
-            size_t size = reel->images.size();
-            for ( size_t i = 0; i < size; ++i )
-            {
-                mrv::media m = reel->images[i];
-                CMedia* img = m->image();
-                // if ( img->right_eye() == bimg )
-                {
-                    img->right_eye( NULL );
-                }
-            }
-        }
-    }
-
     uiMain = NULL;
 }
 

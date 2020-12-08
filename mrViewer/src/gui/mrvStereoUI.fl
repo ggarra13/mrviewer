@@ -55,21 +55,6 @@ o->main( main );}
           callback {int x = o->value();
 mrv::CMedia::StereoInput in = mrv::CMedia::to_stereo_input( x );
 v->uiView->stereo_input( in );
-
-mrv::media fg = v->uiView->foreground();
-mrv::media bg = v->uiView->background();
-if ( fg && bg && in == mrv::CMedia::kBImageInput )
-{
-   mrv::CMedia* img = fg->image();
-   mrv::CMedia* bimg = bg->image();
-
-   img->right_eye( bimg );
-   img->is_stereo( true );
-   img->is_left_eye( true );
-
-   bimg->is_stereo( true );
-   bimg->is_left_eye( false );
-}
 } open
           tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.} xywh {80 60 175 25} down_box BORDER_BOX
           code0 {mrv::media fg = main->uiView->foreground();
@@ -94,10 +79,6 @@ o->value( x );
             label {Left/right}
             xywh {0 0 100 20}
           }
-#         MenuItem {} {
-#           label {BG Image}
-#           xywh {0 0 100 20}
-#         }
         }
         Fl_Choice uiStereoOutput {
           label Output

@@ -1067,8 +1067,6 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
             return 1;
         case kLeftRightStereoInput:
             return 2;
-        case kBImageInput:
-            return 3;
         case kNoStereoInput:
         default:
             return 0;
@@ -1085,8 +1083,6 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
             return kTopBottomStereoInput;
         case 2:
             return kLeftRightStereoInput;
-        case 3:
-            return kBImageInput;
         default:
             return kNoStereoInput;
     }
