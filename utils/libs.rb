@@ -105,8 +105,9 @@ end
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
-elsif not @debug == "Debug" and not @debug == "Release"
-  $stdout.puts "Invalid option: #@debug [Debug|Release]"
+elsif not @debug == "Debug" and not @debug == "Release" and
+    not @debug == "RelWithDebInfo"
+  $stdout.puts "Invalid option: #@debug [Debug|RelWithDebInfo|Release]"
   exit 1
 end
 

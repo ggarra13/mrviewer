@@ -3306,12 +3306,6 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
         int64_t f = frame;
-        DecodeStatus status = _right_eye->decode_video( f );
-        if ( status != kDecodeOK )
-        {
-            LOG_ERROR( "Decoding right frame " << frame << " failed." );
-            return false;
-        }
         _right_eye->find_image( f );
         _stereo[1] = _right_eye->left();
     }

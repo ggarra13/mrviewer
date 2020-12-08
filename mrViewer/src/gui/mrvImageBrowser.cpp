@@ -1216,7 +1216,7 @@ mrv::media ImageBrowser::add( const char* filename,
     }
     else
     {
-        return load_image( file.c_str(), start, end, start, end );
+        return load_image( file.c_str(), start, end, start, end, 24.0 );
     }
 }
 
@@ -1545,7 +1545,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
                                 const int64_t first,
                                 const int64_t last,
                                 const int64_t start,
-                                const int64_t end )
+                                const int64_t end,
+                                const double fps )
 {
     CMedia* img;
 
@@ -1566,6 +1567,12 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     if ( last != AV_NOPTS_VALUE )
     {
         img->last_frame( last );
+    }
+
+    if ( fps > 0.0 )
+    {
+        img->fps( fps );
+        img->play_fps( fps );
     }
 
     if ( img->has_video() || img->has_audio() )
@@ -1644,6 +1651,7 @@ mrv::media ImageBrowser::load_image( const char* name,
                                      const int64_t last,
                                      const int64_t start,
                                      const int64_t end,
+                                     const double fps,
                                      const bool avoid_seq )
 {
 
@@ -1678,6 +1686,12 @@ mrv::media ImageBrowser::load_image( const char* name,
     if ( last != AV_NOPTS_VALUE )
     {
         img->last_frame( last );
+    }
+
+    if ( fps > 0.0 )
+    {
+        img->fps( fps );
+        img->play_fps( fps );
     }
 
     if ( img->has_video() || img->has_audio() )
@@ -1746,7 +1760,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
             mrv::get_sequence_limits( start, end, bgimage );
         }
         mrv::media bg = load_image( bgimage.c_str(),
-                                    start, end, start, end, false );
+                                    start, end, start, end, 24.0f, false );
         view()->bg_reel( _reel );
         view()->background( bg );
     }
@@ -1868,7 +1882,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                                  load.filename.c_str(),
                                  load.first, load.last,
                                  load.start,
-                                 load.end );
+                                 load.end, load.fps );
                 }
                 else
                 {
@@ -1880,7 +1894,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                     }
                     fg = load_image( load.filename.c_str(),
                                      load.first, load.last, load.start,
-                                     load.end, avoid_seq );
+                                     load.end, load.fps, avoid_seq );
                     if (!fg)
                     {
                         if ( load.filename.find( "ACESclip" ) ==
@@ -1897,7 +1911,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                                          load.right_filename.c_str(),
                                          load.first, load.last,
                                          load.start,
-                                         load.end );
+                                         load.end, load.fps );
                         }
                     }
                 }
@@ -2156,7 +2170,7 @@ void ImageBrowser::open_stereo()
     load_stereo( fg,
                  loadlist[0].filename.c_str(),
                  loadlist[0].first, loadlist[0].last,
-                 loadlist[0].start, loadlist[0].end );
+                 loadlist[0].start, loadlist[0].end, loadlist[0].fps );
 }
 
 void ImageBrowser::open_single()
@@ -2611,7 +2625,7 @@ void ImageBrowser::image_version( int sum )
     }
 
     mrv::media m = load_image( newfile.c_str(),
-                               start, end, start, end, false );
+                               start, end, start, end, 24.0f, false );
     if ( !m ) return;
 
     m->image()->channel( img->channel() );
