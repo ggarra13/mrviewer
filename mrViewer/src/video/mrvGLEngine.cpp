@@ -1868,11 +1868,12 @@ void GLEngine::draw_images( ImageList& images )
         mrv::Recti dpw = img->display_window(frame);
         mrv::Recti daw = img->data_window(frame);
 
-
         if ( stereo & CMedia::kStereoRight )
         {
             dpw = img->display_window2(frame);
             daw = img->data_window2(frame);
+            std::cerr << "dpw2.w()=" << dpw.w() << " daw2.w()=" << daw.w()
+                      << std::endl;
         }
 
         // Handle background image size
@@ -1904,7 +1905,6 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( texWidth == 0 ) texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
-
 
 
         texWidth  = int( texWidth * img->scale_x() );
@@ -2202,6 +2202,7 @@ void GLEngine::draw_images( ImageList& images )
                 }
 
                 CHECK_GL;
+
                 prepare_image( img, daw2, texWidth, texHeight, _view );
                 CHECK_GL;
             }

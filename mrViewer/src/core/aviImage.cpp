@@ -3303,7 +3303,6 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( _right_eye && (stopped() || saving() ) )
     {
-        _right_eye->stop();
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
         int64_t f = frame;

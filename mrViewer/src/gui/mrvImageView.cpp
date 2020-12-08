@@ -2491,13 +2491,13 @@ void ImageView::fit_image()
 #endif
 
     double z = w / (double)W;
-        h /= H;
+    h /= H;
 
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
     h *= pr;
 
-    if ( h < z ) {
+    if ( h < z && ((stereo_out & CMedia::kStereoSideBySide) == 0) ) {
         z = h;
     }
 
