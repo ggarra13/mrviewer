@@ -218,6 +218,10 @@ for i in $@; do
 	    shift
 	    export CMAKE_BUILD_TYPE=Release
 	    ;;
+	reldebug)
+	    shift
+	    export CMAKE_BUILD_TYPE=RelWithDebInfo
+	    ;;
 	small)
 	    shift
 	    export CMAKE_BUILD_TYPE=MinSizeRel

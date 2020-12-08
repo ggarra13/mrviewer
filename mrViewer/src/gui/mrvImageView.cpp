@@ -2478,10 +2478,10 @@ void ImageView::fit_image()
         W = tmp;
     }
 
-    // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
-    //     W *= 2;
-
-    // Fl::flush();
+#ifdef OSX
+    if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
+        W *= 2;
+#endif
 
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
@@ -2512,6 +2512,20 @@ void ImageView::fit_image()
         xoffset = 0.0;
 
     yoffset = ( dpw.y() + H / 2.0) / pr;
+
+    if ( stereo_out & CMedia::kStereoSideBySide )
+    {
+#ifdef OSX
+        xoffset = -W/4.0 + 0.5;
+#else
+        xoffset = -W/2.0 + 0.5;
+#endif
+    }
+    else
+    {
+        xoffset = -dpw.x() - W / 2.0;
+    }
+
     if ( img->flipX() &&
          stereo_out & CMedia::kStereoTopBottom  )
         yoffset = 0.0;

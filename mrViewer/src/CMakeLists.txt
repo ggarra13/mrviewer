@@ -100,7 +100,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ENDIF()
 
 
-   IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+   IF( CMAKE_BUILD_TYPE STREQUAL "Debug" OR
+       CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" )
      #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
      # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
      #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
