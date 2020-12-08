@@ -1166,9 +1166,6 @@ void aviImage::store_image( const int64_t frame,
     unsigned int w = width();
     unsigned int h = height();
 
-    assert0( _h > 0 );
-    assert0( _w > 0 );
-
     // Fill the fields of AVFrame output based on _av_dst_pix_fmt
     av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
                           w, h, 1);
@@ -3306,7 +3303,6 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( _right_eye && (stopped() || saving() ) )
     {
-        _right_eye->stop();
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
         int64_t f = frame;
@@ -3316,6 +3312,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
             LOG_ERROR( "Decoding right frame " << frame << " failed." );
             return false;
         }
+
         _right_eye->find_image( f );
         _stereo[1] = _right_eye->left();
     }
@@ -4027,6 +4024,7 @@ void aviImage::debug_subtitle_packets(const int64_t frame,
 
 void aviImage::do_seek()
 {
+    // No need to set seek frame for right eye here
     if ( _right_eye ) {
         _right_eye->seek_request( _seek_req, _seek_frame );
         _right_eye->do_seek();

@@ -339,7 +339,6 @@ public:
         kSeparateLayersInput = 1,
         kTopBottomStereoInput = 2,
         kLeftRightStereoInput = 4,
-        kBImageInput = 8,
     };
 
     enum StereoOutput {
