@@ -243,7 +243,7 @@ public:
 
 public:
     void dnd_text( const std::string text ) { _dnd_text = text; }
-    
+
     //! Create a tree element from a media
     mrv::Element* new_item(mrv::media img);
 
@@ -279,12 +279,14 @@ protected:
     void load_stereo( mrv::media& fg,
                       const char* name,
                       const int64_t first, const int64_t last,
-                      const int64_t start, const int64_t end );
+                      const int64_t start, const int64_t end,
+                      const double fps );
 
     //! Load an image
     mrv::media load_image( const char* name,
                            const int64_t first, const int64_t last,
                            const int64_t start, const int64_t end,
+                           const double fps,
                            const bool avoid_seq = false );
 
     //! Handle mouse drag
