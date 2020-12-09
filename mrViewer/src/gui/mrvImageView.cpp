@@ -2329,7 +2329,11 @@ void ImageView::center_image()
 
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
+#ifdef OSX
+        xoffset = -W/4.0 + 0.5;
+#else
         xoffset = -W/2.0 + 0.5;
+#endif
     }
     else if ( stereo_out & CMedia::kStereoTopBottom )
     {
@@ -2464,6 +2468,8 @@ void ImageView::fit_image()
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
 
+    if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
+
 #ifdef OSX
     h /= 2;  // On OSX Y pixel coords are doubled
 #endif
@@ -2483,27 +2489,6 @@ void ImageView::fit_image()
     double ox = xoffset;
     double oy = yoffset;
 
-    if ( stereo_out & CMedia::kStereoSideBySide )
-    {
-#ifdef OSX
-        xoffset = -W/4.0 + 0.5;
-#else
-        xoffset = -W/2.0 + 0.5;
-#endif
-    }
-    else if ( stereo_out & CMedia::kStereoTopBottom )
-    {
-        yoffset = (( -H/2.0 ) / pr + 0.5 );
-    }
-    else
-    {
-        xoffset = -dpw.x() - W / 2.0;
-    }
-
-
-    if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
-        xoffset = 0.0;
-
     yoffset = ( dpw.y() + H / 2.0) / pr;
 
     if ( stereo_out & CMedia::kStereoSideBySide )
@@ -2518,6 +2503,11 @@ void ImageView::fit_image()
     {
         xoffset = -dpw.x() - W / 2.0;
     }
+
+
+    if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
+        xoffset = 0.0;
+
 
     if ( img->flipX() &&
          stereo_out & CMedia::kStereoTopBottom  )
