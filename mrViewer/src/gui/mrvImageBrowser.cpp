@@ -1569,7 +1569,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img->last_frame( last );
     }
 
-    if ( fps > 0.0 )
+    if ( fps > 0.0 && !img->has_video() )
     {
         img->fps( fps );
         img->play_fps( fps );
@@ -1688,7 +1688,7 @@ mrv::media ImageBrowser::load_image( const char* name,
         img->last_frame( last );
     }
 
-    if ( fps > 0.0 )
+    if ( fps > 0.0 && !img->has_video() )
     {
         img->fps( fps );
         img->play_fps( fps );
@@ -2716,7 +2716,7 @@ void ImageBrowser::next_image()
         if ( play ) view()->play(play);
         return;
     }
-    
+
     mrv::media orig = reel->images[v-1];
 
     Fl_Tree_Item* item = root()->child(v-1);

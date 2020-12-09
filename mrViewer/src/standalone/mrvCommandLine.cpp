@@ -355,9 +355,9 @@ void parse_command_line( const int argc, const char** argv,
                    _("Turn on EDL when loading multiple images") );
 
 
-    MultiArg< float >
+    ValueArg< float >
       afps("f", "fps",
-           _("Override sequence default fps."), false, "float");
+           _("Override sequence default fps."), false, opts.fps, "float");
 
     ValueArg< float >
       agamma("g", "gamma",
@@ -444,10 +444,7 @@ void parse_command_line( const int argc, const char** argv,
     opts.host = ahostname.getValue();
     opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
-
-    floatArray fps  = afps.getValue();
-    if ( fps.size() == 1 ) opts.fps = fps[0];
-
+    opts.fps  = afps.getValue();
     opts.bgfile = abg.getValue();
     opts.run    = arun.getValue();
     opts.stereo_output = astereo_output.getValue();
@@ -522,8 +519,6 @@ void parse_command_line( const int argc, const char** argv,
     stringArray::const_iterator ae = audios.end();
     IntArray::const_iterator oi = aoffsets.begin();
     IntArray::const_iterator oe = aoffsets.end();
-    floatArray::const_iterator fi = afps.begin();
-    floatArray::const_iterator fe = afps.end();
     for ( ; i != e; ++i )
       {
         const std::string& arg = *i;
@@ -574,12 +569,6 @@ void parse_command_line( const int argc, const char** argv,
                    mrv::get_sequence_limits( start, end, fileroot );
                 }
 
-                double fps = opts.fps;
-                if ( fi != fe ) {
-                    fps = *fi;
-                    ++fi;
-                }
-                std::cerr << fileroot << " fps " << fps << std::endl;
 
                 if ( (size_t)(e - i) <= files.size() - normalFiles )
                 {
@@ -594,7 +583,7 @@ void parse_command_line( const int argc, const char** argv,
 
                         opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
                                                               end, start, end,
-                                                              fps,
+                                                              opts.fps,
                                                               *ai, "",
                                                               offset ) );
                         ++ai;
@@ -603,7 +592,7 @@ void parse_command_line( const int argc, const char** argv,
                   {
                       opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
                                                             end, start, end,
-                                                            fps ) );
+                                                            opts.fps ) );
                   }
                }
                else
@@ -620,7 +609,7 @@ void parse_command_line( const int argc, const char** argv,
                       opts.files.push_back( mrv::LoadInfo( fileroot, start,
                                                            end, AV_NOPTS_VALUE,
                                                            AV_NOPTS_VALUE,
-                                                           fps,
+                                                           opts.fps,
                                                            *ai, "", offset ) );
                      ++ai;
                   }
@@ -630,7 +619,8 @@ void parse_command_line( const int argc, const char** argv,
                       {
                           opts.files.push_back( mrv::LoadInfo( fileroot, start,
                                                                end,
-                                                               start, end, fps
+                                                               start, end,
+                                                               opts.fps
                                                     ) );
                       }
                       else

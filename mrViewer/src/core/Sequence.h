@@ -138,7 +138,7 @@ struct LoadInfo
               const boost::int64_t sf, const boost::int64_t ef,
               const boost::int64_t s = AV_NOPTS_VALUE,
               const boost::int64_t e = AV_NOPTS_VALUE,
-              const double f = 24.0f,
+              const double f = -1.0,
               const std::string& a = "",
               const std::string& right = "",
               const boost::int64_t aoffset = 0,
@@ -169,7 +169,7 @@ struct LoadInfo
               const GLShapeList& shl,
               const boost::int64_t s = AV_NOPTS_VALUE,
               const boost::int64_t e = AV_NOPTS_VALUE,
-              const double f = 24.0f,
+              const double f = -1.0,
               const std::string& a = "",
               const std::string& right = "",
               const boost::int64_t aoffset = 0,
@@ -204,7 +204,7 @@ struct LoadInfo
         end( AV_NOPTS_VALUE ),
         fade_in( 0 ),
         fade_out( 0 ),
-        fps( 0.0 ),
+        fps( -1.0 ),
         reel( false ),
         audio_offset( 0 )
     {

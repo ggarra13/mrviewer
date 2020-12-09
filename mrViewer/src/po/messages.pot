@@ -108,8 +108,8 @@
 #: standalone/mrvCommandLine.cpp:325 standalone/mrvCommandLine.cpp:367
 #: standalone/mrvCommandLine.cpp:386 standalone/mrvCommandLine.cpp:403
 #: standalone/mrvCommandLine.cpp:404 standalone/mrvCommandLine.cpp:408
-#: standalone/mrvCommandLine.cpp:409 standalone/mrvCommandLine.cpp:598
-#: standalone/mrvCommandLine.cpp:624 standalone/main.cpp:87
+#: standalone/mrvCommandLine.cpp:409 standalone/mrvCommandLine.cpp:587
+#: standalone/mrvCommandLine.cpp:613 standalone/main.cpp:87
 #: standalone/main.cpp:124 standalone/main.cpp:125 standalone/main.cpp:198
 #: standalone/main.cpp:254
 #, fuzzy
@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2020-12-08 20:49-0300\n"
+"POT-Creation-Date: 2020-12-08 22:05-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -425,7 +425,7 @@ msgstr ""
 #: video/mrvGLEngine.cpp:2563 video/mrvGLEngine.cpp:4096
 #: video/mrvGLEngine.cpp:4137 video/mrvGLQuad.cpp:830
 #: video/mrvGLLut3d.cpp:1014 video/mrvGLLut3d.cpp:1021
-#: standalone/mrvCommandLine.cpp:120 standalone/mrvCommandLine.cpp:650
+#: standalone/mrvCommandLine.cpp:120 standalone/mrvCommandLine.cpp:640
 #, c-format
 msgid " "
 msgstr ""
@@ -3913,10 +3913,6 @@ msgstr ""
 
 #: core/aviImage.cpp:2363 core/aviImage.cpp:2408 core/aviImage.cpp:2425
 msgid " found"
-msgstr ""
-
-#: standalone/mrvCommandLine.cpp:582
-msgid " fps "
 msgstr ""
 
 #: core/aviImage_save.cpp:1549
@@ -8568,7 +8564,7 @@ msgstr ""
 #: core/CMedia_audio.cpp:2287 core/aviImage.cpp:1808 core/aviImage.cpp:3914
 #: core/R3dImage.cpp:889 core/brawImage.cpp:1039 core/brawImage.cpp:1547
 #: gui/mrvTimecode.cpp:375 gui/mrvTimecode.cpp:483
-#: standalone/mrvCommandLine.cpp:562
+#: standalone/mrvCommandLine.cpp:557
 msgid "-"
 msgstr ""
 
@@ -8763,7 +8759,7 @@ msgstr ""
 msgid "--debug"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:478
+#: standalone/mrvCommandLine.cpp:475
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr ""
 
@@ -8807,7 +8803,7 @@ msgstr ""
 msgid "-d"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:463
+#: standalone/mrvCommandLine.cpp:460
 msgid "-psn_"
 msgstr ""
 
@@ -9842,7 +9838,7 @@ msgstr ""
 
 #: gui/mrvImageBrowser.cpp:752 gui/mrvImageBrowser.cpp:754
 #: gui/mrvImageBrowser.cpp:1212 gui/mrvImageBrowser.cpp:2098
-#: gui/mrvImageBrowser.cpp:2154 standalone/mrvCommandLine.cpp:540
+#: gui/mrvImageBrowser.cpp:2154 standalone/mrvCommandLine.cpp:535
 msgid ".reel"
 msgstr ""
 
@@ -10411,8 +10407,8 @@ msgstr ""
 msgid "0123456789"
 msgstr ""
 
-#: core/Sequence.cpp:708 standalone/mrvCommandLine.cpp:533
-#: standalone/mrvCommandLine.cpp:559
+#: core/Sequence.cpp:708 standalone/mrvCommandLine.cpp:528
+#: standalone/mrvCommandLine.cpp:554
 msgid "0123456789-"
 msgstr ""
 
@@ -14840,12 +14836,12 @@ msgstr ""
 msgid "COLORCORR"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:501
+#: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:498
 msgid "CONIN$"
 msgstr ""
 
 #: standalone/mrvCommandLine.cpp:78 standalone/mrvCommandLine.cpp:79
-#: standalone/mrvCommandLine.cpp:502 standalone/mrvCommandLine.cpp:503
+#: standalone/mrvCommandLine.cpp:499 standalone/mrvCommandLine.cpp:500
 msgid "CONOUT$"
 msgstr ""
 
@@ -26719,7 +26715,7 @@ msgstr ""
 msgid "Toggle Waveform Window"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:517
+#: standalone/mrvCommandLine.cpp:514
 msgid "Too many audio offsets for fewer audios"
 msgstr ""
 
@@ -33831,7 +33827,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1053 gui/FLU/Flu_File_Chooser.cpp:3709
 #: gui/mrvColorSchemes.cpp:29 gui/mrvVersion.cpp:685 gui/mrvVersion.cpp:701
 #: standalone/mrvCommandLine.cpp:77 standalone/mrvCommandLine.cpp:348
-#: standalone/mrvCommandLine.cpp:501 standalone/main.cpp:581
+#: standalone/mrvCommandLine.cpp:498 standalone/main.cpp:581
 msgid "r"
 msgstr ""
 
@@ -35240,7 +35236,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1487 gui/FLU/Flu_File_Chooser.cpp:3360
 #: gui/mrvImageBrowser.cpp:777 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:78 standalone/mrvCommandLine.cpp:79
-#: standalone/mrvCommandLine.cpp:502 standalone/mrvCommandLine.cpp:503
+#: standalone/mrvCommandLine.cpp:499 standalone/mrvCommandLine.cpp:500
 #: standalone/main.cpp:582 standalone/main.cpp:583
 msgid "w"
 msgstr ""
