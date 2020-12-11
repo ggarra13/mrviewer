@@ -10456,6 +10456,9 @@ void ImageView::field( FieldDisplay p )
         if (!fg) return;
 
         _stereo_fg = fg->image();
+        _stereo_fg->is_stereo( false );
+        _stereo_fg->is_left_eye( true );
+        _stereo_fg->right_eye( NULL );
 
         mrv::media bg = background();
         if ( !bg || fg == bg ) return;

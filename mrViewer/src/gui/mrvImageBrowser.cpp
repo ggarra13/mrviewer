@@ -1326,8 +1326,9 @@ void ImageBrowser::set_bg( mrv::media bg )
     view()->bg_reel( _reel );
     view()->background( bg );
 
+    mrv::media fg = view()->foreground();
     CMedia* img = view()->stereo_fg();
-    if ( bg && img )
+    if ( bg && fg != bg && img )
     {
         CMedia* bimg = bg->image();
         bimg->is_stereo( true );
@@ -1336,6 +1337,7 @@ void ImageBrowser::set_bg( mrv::media bg )
         img->is_stereo( true );
         img->right_eye( bimg );
         img->is_left_eye( true );
+        img->owns_right_eye( false );
     }
     uiMain->uiReelWindow->uiBGButton->value(1);
 }
