@@ -354,6 +354,9 @@ public:
         return _channelType;
     };
 
+    /// Change stereo main image and attach B image
+    void change_foreground();
+
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
 
@@ -760,6 +763,10 @@ public:
         return _mode;
     }
 
+    inline CMedia* stereo_fg() {
+        return _stereo_fg;
+    }
+
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
     // This function is used in fit_image and center_image.
@@ -983,6 +990,7 @@ protected:
     bool     _scale; // boolean to indicate whether move tool is scaling or
     // moving
     CMedia*  _selected_image;
+    CMedia*  _stereo_fg;
     mrv::Rectd _selection;
 
     ///////////////////

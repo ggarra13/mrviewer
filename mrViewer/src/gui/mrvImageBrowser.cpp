@@ -1326,12 +1326,41 @@ void ImageBrowser::set_bg( mrv::media bg )
     view()->bg_reel( _reel );
     view()->background( bg );
 
+    CMedia* img = view()->stereo_fg();
+    if ( bg && img )
+    {
+        CMedia* bimg = bg->image();
+        bimg->is_stereo( true );
+        bimg->is_left_eye( false );
+
+        img->is_stereo( true );
+        img->right_eye( bimg );
+        img->is_left_eye( true );
+    }
     uiMain->uiReelWindow->uiBGButton->value(1);
 }
 
 void ImageBrowser::clear_bg()
 {
     view()->bg_reel( -1 );
+
+    mrv::media fg = view()->foreground();
+    mrv::media bg = view()->background();
+    if ( bg && bg != fg )
+    {
+        CMedia* bimg = bg->image();
+        bimg->is_stereo( false );
+        bimg->is_left_eye( false );
+
+        CMedia* img = view()->stereo_fg();
+        if ( img )
+        {
+            img->is_stereo( false );
+            img->right_eye( NULL );
+            img->is_left_eye( false );
+        }
+    }
+
     view()->background( mrv::media() );
     uiMain->uiReelWindow->uiBGButton->value(0);
 }
@@ -2370,6 +2399,7 @@ void ImageBrowser::change_background()
     {
         DBGM3( "BG REEL ************* " << -1 );
         clear_bg();
+        uiMain->uiBButton->value(0);
     }
     else
     {
@@ -2378,6 +2408,7 @@ void ImageBrowser::change_background()
         view()->bg_reel( _reel );
         mrv::media bg = reel->images[sel];
         set_bg( bg );
+        uiMain->uiBButton->value(1);
     }
 }
 
@@ -2909,6 +2940,15 @@ int ImageBrowser::mousePush( int x, int y )
         mrv::media m = e->media();
         assert0( m );
         view()->foreground( m );
+
+        if ( m == view()->background() )
+        {
+            uiMain->uiBButton->value(1);
+        }
+        else
+        {
+            uiMain->uiBButton->value(0);
+        }
 
         match_tree_order();
 

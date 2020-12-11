@@ -876,7 +876,7 @@ std::string save_reel( const char* startdir,
 
     void save_hotkeys( Fl_Preferences& keys )
     {
-        keys.set( "version", 7 );
+        keys.set( "version", 8 );
         for ( int i = 0; hotkeys[i].name != "END"; ++i )
         {
             keys.set( (hotkeys[i].name + " ctrl").c_str(),
@@ -989,7 +989,7 @@ std::string save_reel( const char* startdir,
     void load_hotkeys( ViewerUI* uiMain, Fl_Preferences* keys )
     {
         int version = 0;
-        keys->get( "version", version, 7 );
+        keys->get( "version", version, 8 );
         DBG3;
         int tmp = 0;
         char  tmpS[2048];
@@ -1015,7 +1015,11 @@ std::string save_reel( const char* startdir,
             continue;
             if ( version <= 5 && hotkeys[i].name == "Switch FG/BG Images" )
             continue;
-
+            if ( version >= 8 && hotkeys[i].name == "Toggle Background" )
+                continue;
+            if ( version <= 7 && hotkeys[i].name ==
+                 "Toggle Background Composite" )
+                hotkeys[i].name = "Toggle Background";
 
             DBG3;
             keys->get( (hotkeys[i].name + " ctrl").c_str(),

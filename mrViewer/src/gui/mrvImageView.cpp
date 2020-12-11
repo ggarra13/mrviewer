@@ -445,11 +445,7 @@ void switch_channels_cb( Fl_Widget* o, mrv::ImageView* v )
 
 void set_as_background_cb( Fl_Widget* o, mrv::ImageView* view )
 {
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-
-    view->bg_reel( view->fg_reel() );
-    view->background( fg );
+    view->browser()->change_background();
 }
 
 static void update_title_bar( mrv::ImageView* view )
@@ -915,9 +911,13 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             uiMain->uiReelWindow->uiMain->show();
             mrv::media bg = background();
             if ( bg )
+            {
                 uiMain->uiReelWindow->uiBGButton->value(1);
+            }
             else
+            {
                 uiMain->uiReelWindow->uiBGButton->value(0);
+            }
         }
         else
             uiMain->uiReelWindow->uiMain->hide();
@@ -1673,6 +1673,7 @@ _fg_reel( 0 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
 _selected_image( NULL ),
+_stereo_fg( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _orig_playback( CMedia::kForwards ),
@@ -2468,7 +2469,9 @@ void ImageView::fit_image()
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
 
+#ifndef _WIN32
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
+#endif
 
 #ifdef OSX
     h /= 2;  // On OSX Y pixel coords are doubled
@@ -3909,27 +3912,36 @@ void ImageView::draw()
     ImageList images;
     images.reserve(2);
 
-    if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
+    if ( _stereo_fg && _stereo_fg->right_eye() )
     {
-        CMedia* img = bg->image();
-        TRACE("");
+        CMedia* img = _stereo_fg->right_eye();
         if ( img->has_picture() )
             images.push_back( img );
-        TRACE("");
+        if ( _stereo_fg->has_picture() )
+            images.push_back( _stereo_fg );
     }
-
-
-    if ( fg )
+    else
     {
-        CMedia* img = fg->image();
-        TRACE("");
-        if ( img->has_picture() )
+        if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
         {
-            images.push_back( img );
+            CMedia* img = bg->image();
+            TRACE("");
+            if ( img->has_picture() )
+                images.push_back( img );
+            TRACE("");
         }
-        TRACE("");
-    }
 
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            TRACE("");
+            if ( img->has_picture() )
+            {
+                images.push_back( img );
+            }
+            TRACE("");
+        }
+    }
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
@@ -10436,5 +10448,33 @@ void ImageView::field( FieldDisplay p )
     damage_contents();
 }
 
+
+/// Change stereo main image and attach B image
+    void ImageView::change_foreground()
+    {
+        mrv::media fg = foreground();
+        if (!fg) return;
+
+        _stereo_fg = fg->image();
+
+        mrv::media bg = background();
+        if ( !bg || fg == bg ) return;
+
+        CMedia* bimg = bg->image();
+
+        std::cerr << "set stereo fg to true" << std::endl;
+        std::cerr << "set stereo fg to " << _stereo_fg->name() << std::endl;
+
+        _stereo_fg->is_stereo( true );
+        _stereo_fg->is_left_eye( true );
+        _stereo_fg->right_eye( bimg );
+        _stereo_fg->owns_right_eye( false );
+
+        std::cerr << "set stereo bg to " << bimg->name() << std::endl;
+        bimg->is_stereo( true );
+        bimg->is_left_eye( false );
+        bimg->right_eye( NULL );
+
+    }
 
 } // namespace mrv

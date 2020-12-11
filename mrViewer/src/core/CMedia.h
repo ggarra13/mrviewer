@@ -1341,6 +1341,11 @@ public:
     }
 
     // Set an image as the right eye for stereo decoding
+    inline void owns_right_eye( bool c ) {
+        _owns_right_eye = c;
+    }
+
+    // Set an image as the right eye for stereo decoding
     inline void right_eye( CMedia* c ) {
         _right_eye = c;
         refresh();
@@ -2057,6 +2062,7 @@ protected:
     char*                _subtitle_encoding;
     char*                _subtitle_font;
 
+    bool              _owns_right_eye;
     bool              _flipX;
     bool              _flipY;
 

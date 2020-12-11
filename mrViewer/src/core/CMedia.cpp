@@ -451,6 +451,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( av_strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( av_strdup( _default_subtitle_font.c_str() ) ),
+_owns_right_eye( true ),
 _flipX( false ),
 _flipY( false ),
 _last_audio_cached( false ),
@@ -561,6 +562,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( av_strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( av_strdup( _default_subtitle_font.c_str() ) ),
+_owns_right_eye( true ),
 _flipX( false ),
 _flipY( false ),
 _last_audio_cached( false ),
@@ -678,6 +680,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( av_strdup( other->_subtitle_encoding ) ),
 _subtitle_font( av_strdup( other->_subtitle_font ) ),
+_owns_right_eye( false ),
 _flipX( other->flipX() ),
 _flipY( other->flipY() ),
 _last_audio_cached( false ),
@@ -838,7 +841,11 @@ CMedia::~CMedia()
         stop();
 
 
-    delete _right_eye;
+    if ( _owns_right_eye )
+    {
+        delete _right_eye;
+    }
+
     _right_eye = NULL;
 
     image_damage( kNoDamage );
