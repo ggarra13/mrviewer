@@ -30,9 +30,9 @@ CMAKE_OPTS=${CMAKE_OPTS=""}
 
 export CMAKE_NATIVE_ARCH=32
 export CMAKE_BUILD_TYPE=Release
-export CMAKE_PROCS=8
+export CMAKE_PROCS=4
 if [[ $KERNEL == Darwin* ]]; then
-    CMAKE_PROCS=16
+    CMAKE_PROCS=8
 fi
 export OS_32_BITS=1
 export OS_64_BITS=
