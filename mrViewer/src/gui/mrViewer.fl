@@ -701,12 +701,12 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {215 117 690 540} type Double align 80 resizable
+      xywh {215 257 690 540} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
     } {
-      Fl_Pack uiRegion {open selected
+      Fl_Pack uiRegion {open
         xywh {0 2 690 536}
         class MyPack
       } {
@@ -714,7 +714,7 @@ o->main( this );}
           xywh {0 2 685 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
-            label W
+            label W open
             tooltip {Opens different windows} xywh {2 4 25 22}
             code0 {o->disable_glyph();}
             class {mrv::PopupMenu}
@@ -747,7 +747,7 @@ uiView->update_color_info();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
-              label {Stereo 3D Options} user_data_type {void*}
+              label {Stereo 3D, A-B Options} user_data_type {void*}
               callback {uiStereo->uiMain->show();}
               xywh {10 10 100 20}
             }
@@ -804,25 +804,18 @@ uiICCProfiles->uiMain->show();}
             }
           }
           Fl_Group {} {open
-            xywh {29 2 51 25}
+            xywh {29 2 41 25}
           } {
-            Fl_Button uiAButton {
-              label {A }
-              user_data this user_data_type {ViewerUI*}
-              callback {o->value( !o->value() );
-v->uiView->change_foreground();}
-              xywh {29 4 25 22}
-            }
             Fl_Button uiBButton {
-              label {B }
+              label {A/B}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiReelWindow->uiBrowser->change_background();
-			v->uiView->show_background(false);}
-              xywh {54 4 25 22}
+v->uiView->show_background(false);}
+              tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 4 40 22} down_box DOWN_BOX
             }
           }
           Fl_Group {} {open
-            xywh {79 4 94 23} color 1397969664
+            xywh {75 4 98 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
@@ -830,16 +823,16 @@ v->uiView->change_foreground();}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
-              tooltip {Allows you to select different image channels or layers.} xywh {83 4 90 22}
+              tooltip {Allows you to select different image channels or layers.} xywh {76 4 90 22}
               class {mrv::PopupMenu}
             } {}
           }
           Fl_Group {} {open
-            xywh {120 3 335 24} color 1397969664
+            xywh {170 3 285 24} color 1397969664
           } {
             Fl_Box {} {
               label Gain
-              xywh {169 4 33 22} labelsize 12 align 120
+              xywh {170 4 32 22} labelsize 12 align 120
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
@@ -1178,7 +1171,7 @@ uiAttrsWindow->show();}
               xywh {2 342 40 25}
             }
           }
-          Fl_Group uiView {
+          Fl_Group uiView {selected
             xywh {46 30 639 430} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}

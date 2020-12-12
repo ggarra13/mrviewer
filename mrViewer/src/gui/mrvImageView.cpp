@@ -1673,7 +1673,6 @@ _fg_reel( 0 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
 _selected_image( NULL ),
-_stereo_fg( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _orig_playback( CMedia::kForwards ),
@@ -3912,35 +3911,24 @@ void ImageView::draw()
     ImageList images;
     images.reserve(2);
 
-    if ( _stereo_fg && _stereo_fg->right_eye() )
+    if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
-        CMedia* img = _stereo_fg->right_eye();
+        CMedia* img = bg->image();
+        TRACE("");
         if ( img->has_picture() )
             images.push_back( img );
-        if ( _stereo_fg->has_picture() )
-            images.push_back( _stereo_fg );
+        TRACE("");
     }
-    else
-    {
-        if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
-        {
-            CMedia* img = bg->image();
-            TRACE("");
-            if ( img->has_picture() )
-                images.push_back( img );
-            TRACE("");
-        }
 
-        if ( fg )
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        TRACE("");
+        if ( img->has_picture() )
         {
-            CMedia* img = fg->image();
-            TRACE("");
-            if ( img->has_picture() )
-            {
-                images.push_back( img );
-            }
-            TRACE("");
+            images.push_back( img );
         }
+        TRACE("");
     }
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
@@ -9335,6 +9323,23 @@ void ImageView::foreground( mrv::media fg )
     update_image_info();
     update_color_info( fg );
 
+    mrv::media bg = background();
+    if ( fg == bg )
+    {
+        uiMain->uiBButton->copy_label( "B" );
+        uiMain->uiBButton->down_box( FL_PLASTIC_DOWN_BOX );
+        uiMain->uiBButton->selection_color( FL_YELLOW );
+        uiMain->uiBButton->redraw();
+    }
+    else
+    {
+        uiMain->uiBButton->copy_label( "A/B" );
+        uiMain->uiBButton->selection_color( FL_BACKGROUND_COLOR );
+        uiMain->uiBButton->redraw();
+    }
+
+    change_foreground();
+
     //if (_engine && valid() ) _engine->refresh_shaders();
 
     redraw();
@@ -10452,28 +10457,32 @@ void ImageView::field( FieldDisplay p )
 /// Change stereo main image and attach B image
     void ImageView::change_foreground()
     {
+        uiMain->uiBButton->color( FL_BACKGROUND_COLOR );
+
         mrv::media fg = foreground();
         if (!fg) return;
 
-        _stereo_fg = fg->image();
-        _stereo_fg->is_stereo( false );
-        _stereo_fg->is_left_eye( true );
-        _stereo_fg->right_eye( NULL );
+
+        CMedia* img = fg->image();
+        img->is_stereo( false );
+        img->is_left_eye( true );
+        if ( !img->owns_right_eye() )
+            img->right_eye( NULL );
 
         mrv::media bg = background();
-        if ( !bg || fg == bg ) return;
+        if ( !bg || fg == bg )
+            return;
 
         CMedia* bimg = bg->image();
 
-        std::cerr << "set stereo fg to true" << std::endl;
-        std::cerr << "set stereo fg to " << _stereo_fg->name() << std::endl;
+        img->is_stereo( true );
+        img->is_left_eye( true );
+        if ( !img->owns_right_eye() || img->right_eye() == NULL )
+        {
+            img->right_eye( bimg );
+            img->owns_right_eye( false );
+        }
 
-        _stereo_fg->is_stereo( true );
-        _stereo_fg->is_left_eye( true );
-        _stereo_fg->right_eye( bimg );
-        _stereo_fg->owns_right_eye( false );
-
-        std::cerr << "set stereo bg to " << bimg->name() << std::endl;
         bimg->is_stereo( true );
         bimg->is_left_eye( false );
         bimg->right_eye( NULL );

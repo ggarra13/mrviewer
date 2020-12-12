@@ -880,10 +880,11 @@ IF( TEST_BUNDLE  )
    DEPENDS translations
       )
 ELSE()
-  ADD_CUSTOM_TARGET( bundle "${CMAKE_CURRENT_SOURCE_DIR}/../../utils/libs.rb"
+  ADD_CUSTOM_TARGET( bundle utils/libs.rb
    COMMAND "${CMAKE_CPACK_COMMAND}"
    "-C" "$<CONFIGURATION>"
    "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
+   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../.."
    COMMENT "Running CPack. Please wait..."
    USES_TERMINAL
    DEPENDS translations )

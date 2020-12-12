@@ -2380,6 +2380,9 @@ void aviImage::populate()
                                                       NULL, 0, true );
                     _right_eye->is_stereo( true );
                     _right_eye->is_left_eye( false );
+                    _right_eye->right_eye( NULL );
+                    _right_eye->owns_right_eye( false );
+                    owns_right_eye( true );
                     _right_eye->video_stream( 1 );
                     _right_eye->audio_stream( -1 );
                 }

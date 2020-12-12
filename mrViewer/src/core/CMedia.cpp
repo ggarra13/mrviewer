@@ -2700,7 +2700,7 @@ void CMedia::stop(const bool bg)
 
     if ( _playback == kStopped && _threads.empty() ) return;
 
-    if ( _right_eye ) _right_eye->stop();
+    if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 
     TRACE("");
 

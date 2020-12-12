@@ -763,9 +763,6 @@ public:
         return _mode;
     }
 
-    inline CMedia* stereo_fg() {
-        return _stereo_fg;
-    }
 
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
@@ -990,7 +987,6 @@ protected:
     bool     _scale; // boolean to indicate whether move tool is scaling or
     // moving
     CMedia*  _selected_image;
-    CMedia*  _stereo_fg;
     mrv::Rectd _selection;
 
     ///////////////////

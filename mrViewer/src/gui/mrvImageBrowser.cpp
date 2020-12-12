@@ -1327,18 +1327,25 @@ void ImageBrowser::set_bg( mrv::media bg )
     view()->background( bg );
 
     mrv::media fg = view()->foreground();
-    CMedia* img = view()->stereo_fg();
-    if ( bg && fg != bg && img )
+
+    if ( bg && fg != bg )
     {
         CMedia* bimg = bg->image();
         bimg->is_stereo( true );
         bimg->is_left_eye( false );
 
+        CMedia* img = fg->image();
         img->is_stereo( true );
         img->right_eye( bimg );
         img->is_left_eye( true );
         img->owns_right_eye( false );
+
     }
+
+    uiMain->uiBButton->copy_label( "B" );
+    uiMain->uiBButton->down_box( FL_PLASTIC_DOWN_BOX );
+    uiMain->uiBButton->selection_color( FL_YELLOW );
+    uiMain->uiBButton->value(1);
     uiMain->uiReelWindow->uiBGButton->value(1);
 }
 
@@ -1354,14 +1361,18 @@ void ImageBrowser::clear_bg()
         bimg->is_stereo( false );
         bimg->is_left_eye( false );
 
-        CMedia* img = view()->stereo_fg();
-        if ( img )
+        if ( fg )
         {
+            CMedia* img = fg->image();
             img->is_stereo( false );
             img->right_eye( NULL );
             img->is_left_eye( false );
         }
     }
+
+    uiMain->uiBButton->copy_label( "A/B" );
+    uiMain->uiBButton->selection_color( FL_BACKGROUND_COLOR );
+    uiMain->uiBButton->value(0);
 
     view()->background( mrv::media() );
     uiMain->uiReelWindow->uiBGButton->value(0);
@@ -2410,7 +2421,6 @@ void ImageBrowser::change_background()
         view()->bg_reel( _reel );
         mrv::media bg = reel->images[sel];
         set_bg( bg );
-        uiMain->uiBButton->value(1);
     }
 }
 

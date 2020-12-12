@@ -1340,6 +1340,10 @@ public:
         return this;
     }
 
+    inline bool owns_right_eye() const {
+        return _owns_right_eye;
+    }
+
     // Set an image as the right eye for stereo decoding
     inline void owns_right_eye( bool c ) {
         _owns_right_eye = c;
