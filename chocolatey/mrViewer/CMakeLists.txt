@@ -2,8 +2,8 @@ cmake_minimum_required( VERSION 3.1 FATAL_ERROR )
 
 set(mrViewerPackageName32 mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-32)
 set(mrViewerPackageName64 mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-64)
-set( ZIPFILE32 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-32/Release/tmp/mrViewer/src/${mrViewerPackageName32}.zip" )
-set( ZIPFILE64 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/${mrViewerPackageName64}.zip" )
+set( ZIPFILE32 "${CMAKE_BINARY_DIR}/../../${mrViewerPackageName32}.zip" )
+set( ZIPFILE64 "${CMAKE_BINARY_DIR}/../../${mrViewerPackageName64}.zip" )
 
 FILE( GLOB NUPACKAGES "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/*.nupkg" )
 
