@@ -1566,7 +1566,7 @@ void CMedia::audio_stream( int idx )
     if ( idx < -1 || unsigned(idx) >= number_of_audio_streams() )
         idx = -1;
 
-    if ( _right_eye ) _right_eye->audio_stream(idx);
+    if ( _right_eye && _owns_right_eye ) _right_eye->audio_stream(idx);
 
 
     if ( idx == _audio_index ) {

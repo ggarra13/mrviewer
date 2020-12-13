@@ -701,7 +701,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {215 257 690 540} type Double align 80 resizable
+      xywh {215 537 690 540} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -747,9 +747,10 @@ uiView->update_color_info();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
-              label {Stereo 3D, A-B Options} user_data_type {void*}
-              callback {uiStereo->uiMain->show();}
+              label {A-B, Stereo 3D Options} user_data_type {void*}
+              callback {uiStereo->uiMain->show();} selected
               xywh {10 10 100 20}
+              code0 {o->label( "A/B, Stereo 3D Options" );}
             }
             MenuItem {} {
               label 3dView user_data_type {void*}
@@ -1171,7 +1172,7 @@ uiAttrsWindow->show();}
               xywh {2 342 40 25}
             }
           }
-          Fl_Group uiView {selected
+          Fl_Group uiView {
             xywh {46 30 639 430} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}

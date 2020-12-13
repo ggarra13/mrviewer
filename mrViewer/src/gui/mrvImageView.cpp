@@ -4766,14 +4766,21 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
             char buf[256];
-            const char* tmp;
             Fl_Menu_Item* item;
             int num = uiMain->uiWindows->children() - 1;
             int i;
             for ( i = 0; i < num; ++i )
             {
-                tmp = uiMain->uiWindows->child(i)->label();
-                sprintf( buf, _("Windows/%s"), tmp );
+                std::string tmp = uiMain->uiWindows->child(i)->label();
+
+                // Quote any / to avoid submenu ( A/B Options for example ).
+                size_t pos = tmp.find( '/' );
+                if ( pos != std::string::npos )
+                {
+                    tmp = tmp.substr( 0, pos ) + '\\' +
+                          tmp.substr( pos, tmp.size() );
+                }
+                sprintf( buf, _("Windows/%s"), tmp.c_str() );
                 menu->add( buf, 0, (Fl_Callback*)window_cb, uiMain );
             }
 
@@ -4810,6 +4817,7 @@ int ImageView::leftMouseDown(int x, int y)
                     item->set();
 
                 TRACE("");
+                const char* tmp;
                 num = uiMain->uiPrefs->uiPrefsCropArea->children();
                 for ( i = 0; i < num; ++i )
                 {
