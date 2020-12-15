@@ -255,10 +255,12 @@ public:
 
     //! Returns GUI view window
     mrv::ImageView* view() const;
+
+    //! Set item from a media or NULL if not found
+    Fl_Tree_Item* media_to_item( const mrv::media m );
+
 protected:
 
-    //! Set pathname from a media
-    Fl_Tree_Item* media_to_item( const mrv::media m );
 
     //! Set pathname from a media
     std::string media_to_pathname( const mrv::media m );

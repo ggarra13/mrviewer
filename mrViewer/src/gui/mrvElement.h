@@ -41,6 +41,7 @@ public:
     Element(mrv::media m);
     ~Element();
 
+    Fl_Box* Label() { return label; }
     void Label(const char *s);
 
     // Draw ourself at a specific X,Y position

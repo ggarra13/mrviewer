@@ -811,8 +811,10 @@ void media_track::draw()
 
         Fl_Image* thumb = fg->thumbnail();
 
+        int dw1 = dw;
         if ( thumb && dw > thumb->w() )
         {
+            dw1 = thumb->w() * 2;
             thumb->draw( r.x()+2, y()+2 );
         }
 
@@ -836,12 +838,12 @@ void media_track::draw()
                 fl_begin_loop();
                 fl_vertex( r.x(), Y );
                 fl_vertex( r.x(), yh );
-                fl_vertex( r.x() + dw/2, yh );
+                fl_vertex( r.x() + dw1, yh );
                 fl_end_loop();
                 if ( ! _audio_selected )
                 {
                     sprintf( buf, "%" PRId64, img->first_frame() );
-                    fl_draw( buf, r.x() + dw/4, yh-5 );
+                    fl_draw( buf, r.x() + dw1/4, yh-5 );
                 }
             }
             else
@@ -849,12 +851,12 @@ void media_track::draw()
                 fl_begin_loop();
                 fl_vertex( r.x()+dw, Y );
                 fl_vertex( r.x()+dw, yh );
-                fl_vertex( r.x()+dw/2, yh );
+                fl_vertex( r.x()+dw-dw1, yh );
                 fl_end_loop();
                 if ( ! _audio_selected )
                 {
                     sprintf( buf, "%" PRId64, img->last_frame() );
-                    fl_draw( buf, r.x() + dw/2 + dw/4, yh-5 );
+                    fl_draw( buf, r.x() + dw - dw1 + dw1/4, yh-5 );
                 }
             }
         }

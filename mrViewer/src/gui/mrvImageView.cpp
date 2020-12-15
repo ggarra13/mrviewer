@@ -155,6 +155,7 @@
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvLogDisplay.h"
+#include "gui/mrvElement.h"
 #include "gui/mrvImageView.h"
 
 
@@ -481,19 +482,40 @@ static void update_title_bar( mrv::ImageView* view )
 
 void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
 {
+    size_t fg_reel = view->fg_reel();
+    size_t bg_reel = view->bg_reel();
+
     const mrv::media& fg = view->foreground();
     if ( !fg ) {
         LOG_ERROR( _("No foreground image to switch to") );
         return;
     }
-    size_t fg_reel = view->fg_reel();
 
     mrv::media bg = view->background();
     if ( !bg ) {
         LOG_ERROR( _("No background image to switch to") );
         return;
     }
-    size_t bg_reel = view->bg_reel();
+
+    if ( fg_reel == bg_reel && fg == bg )
+    {
+        mrv::Reel r = view->browser()->reel_at( fg_reel );
+        size_t num = r->images.size();
+        if ( num == 2 )
+        {
+            bg = r->images[0];
+            if ( r->images[0] == fg ) bg = r->images[1];
+        }
+        else if ( num > 2 )
+        {
+            for ( size_t i = 0; i < num - 1; ++i )
+            {
+                if ( r->images[i] == fg ) {
+                    bg = r->images[i+1]; break;
+                }
+            }
+        }
+    }
 
     if ( fg == bg )
     {
@@ -503,9 +525,25 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
 
     view->foreground( bg );
     view->fg_reel( bg_reel );
+    Fl_Tree_Item* item = view->browser()->media_to_item( bg );
+    if ( item )
+    {
+        view->browser()->Fl_Tree::select( item, 0 );
+        mrv::Element* elem = (mrv::Element*) item->widget();
+        elem->Label()->box( FL_NO_BOX );
+        elem->redraw();
+    }
 
     view->background( fg );
     view->bg_reel( fg_reel );
+    item = view->browser()->media_to_item( fg );
+    if ( item )
+    {
+        mrv::Element* elem = (mrv::Element*) item->widget();
+        elem->Label()->box( FL_PLASTIC_DOWN_BOX );
+        elem->Label()->color( FL_YELLOW );
+        elem->redraw();
+    }
 
     ViewerUI* m = view->main();
     mrv::Timeline* t = m->uiTimeline;

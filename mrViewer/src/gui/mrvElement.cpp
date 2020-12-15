@@ -121,12 +121,11 @@ void Element::make_thumbnail()
 
         label->copy_label( info );
 
-        label->color(0xddddff00);
         label->labelcolor( FL_BLACK );
 
         label->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
 
-        label->box(FL_NO_BOX);
+        label->box( FL_NO_BOX );
 
         end();
 
