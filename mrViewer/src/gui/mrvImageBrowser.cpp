@@ -1322,6 +1322,18 @@ void ImageBrowser::set_bg( mrv::media bg )
     mrv::Reel reel = reel_at( _reel );
     if ( !reel ) return;
 
+    if ( bg )
+    {
+        Fl_Tree_Item* bgitem = media_to_item( bg );
+        if ( bgitem )
+        {
+            mrv::Element* elem = (mrv::Element*) bgitem->widget();
+            elem->Label()->box( FL_PLASTIC_DOWN_BOX );
+            elem->Label()->color( FL_YELLOW );
+            redraw();
+        }
+    }
+
     view()->bg_reel( _reel );
     view()->background( bg );
 
@@ -1786,8 +1798,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         }
         mrv::media bg = load_image( bgimage.c_str(),
                                     start, end, start, end, 24.0f, false );
-        view()->bg_reel( _reel );
-        view()->background( bg );
+        set_bg( bg );
     }
 
     //
@@ -2417,22 +2428,9 @@ void ImageBrowser::change_background()
     {
         DBGM3( "BG REEL ************* " << _reel << "  SEL " << sel
              << " " << reel->images[sel]->image()->name() );
-        view()->bg_reel( _reel );
-
         clear_items();
 
         mrv::media bg = reel->images[sel];
-        if ( bg )
-        {
-            Fl_Tree_Item* bgitem = media_to_item( bg );
-            if ( bgitem )
-            {
-                mrv::Element* elem = (mrv::Element*) bgitem->widget();
-                elem->Label()->box( FL_PLASTIC_DOWN_BOX );
-                elem->Label()->color( FL_YELLOW );
-                redraw();
-            }
-        }
 
         set_bg( bg );
     }

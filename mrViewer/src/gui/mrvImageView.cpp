@@ -526,6 +526,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     view->foreground( bg );
     view->fg_reel( bg_reel );
     Fl_Tree_Item* item = view->browser()->media_to_item( bg );
+    view->browser()->Fl_Tree::deselect_all( NULL, 0 );
     if ( item )
     {
         mrv::Element* elem = (mrv::Element*) item->widget();
@@ -561,7 +562,6 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
         {
             b->seek( view->frame() );
         }
-        b->clear_items();
         b->redraw();
     }
 
@@ -8184,13 +8184,18 @@ int ImageView::handle(int event)
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
+        std::cerr << "KEY: " << Fl::event_key() << "." << std::endl;
         if ( !keyDown( Fl::event_key() ) )
         {
             return Fl_Gl_Window::handle( event );
         }
         return 1;
     case FL_KEYUP:
-        return keyUp(Fl::event_key());
+        if ( ! keyUp(Fl::event_key() ) )
+        {
+            return Fl_Gl_Window::handle( event );
+        }
+        return 1;
     case FL_MOUSEWHEEL:
     {
         if ( vr() )
