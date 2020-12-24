@@ -47,7 +47,7 @@ LMTBrowser::~LMTBrowser()
 }
 
 
-void LMTBrowser::fill( const mrv::media& fg )
+void LMTBrowser::fill( const mrv::media fg )
 {
     this->clear();
 

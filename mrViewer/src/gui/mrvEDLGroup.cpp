@@ -426,7 +426,7 @@ int EDLGroup::handle( int event )
                 {
                     for ( ; j != k; ++j )
                     {
-                        const mrv::media& m = *j;
+                        const mrv::media m = *j;
                         if (m == fg)
                         {
                             int64_t tmi = m->position() - 5;
@@ -444,7 +444,7 @@ int EDLGroup::handle( int event )
 
                     for ( ; j != k; ++j )
                     {
-                        const mrv::media& m = *j;
+                        const mrv::media m = *j;
                         int64_t tmi = m->position();
                         int64_t tma = m->position() + m->duration();
                         if ( tmi < tmin ) tmin = tmi;
@@ -806,7 +806,7 @@ void EDLGroup::refresh()
     }
 }
 
-int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
+int EDLGroup::process_fade( mrv::media_track*& track, mrv::media m,
                             int64_t& pt)
 {
     int X = Fl::event_x();

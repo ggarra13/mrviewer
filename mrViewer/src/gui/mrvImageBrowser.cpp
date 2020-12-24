@@ -1153,8 +1153,7 @@ mrv::media ImageBrowser::add( const mrv::media m )
 
     if ( reel->images.size() == 1 )
     {
-        value(0);
-        change_image();
+        change_image( 0 );
     }
 
     send_reel( reel );
@@ -1368,7 +1367,11 @@ void ImageBrowser::clear_bg()
             img->right_eye( NULL );
             img->is_left_eye( false );
         }
+
     }
+
+    clear_items();
+
 
     uiMain->uiBButton->copy_label( "A/B" );
     uiMain->uiBButton->selection_color( FL_BACKGROUND_COLOR );
@@ -1450,99 +1453,6 @@ void ImageBrowser::change_reel()
     redraw();
 }
 
-/**
- * Change image in image view display to reflect browser's change
- *
- */
-void ImageBrowser::change_image()
-{
-
-    int sel = value();
-
-    mrv::ImageView* v = view();
-    if ( !v ) return;
-
-    if ( sel < 0 )
-    {
-        v->fg_reel( -1 );
-        // v->bg_reel( -1 );
-        // clear_bg();
-        // v->background( mrv::media() );
-        v->foreground( mrv::media() );
-        v->redraw();
-    }
-    else
-    {
-        mrv::Reel reel = current_reel();
-
-        assert( (unsigned)sel < reel->images.size() );
-
-        CMedia::Playback play = v->playback();
-        if ( play ) v->stop();
-
-        mrv::media m;
-        if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
-
-
-        if ( m )
-        {
-            DBGM3( "FG REEL " << _reel << " m: " << m->image()->name() );
-
-            v->fg_reel( _reel );
-            v->foreground( m );
-            v->redraw();
-
-            mrv::EDLGroup* e = edl_group();
-            if ( e )
-            {
-                e->redraw();
-            }
-
-            Fl_Tree::deselect_all( NULL, 0 );
-
-            Fl_Tree_Item* item = media_to_item( m );
-            if ( item == NULL )
-            {
-                LOG_ERROR( _("Item ") << m->image()->name()
-                           << _(" was not found in tree.") );
-                return;
-            }
-
-            mrv::Element* elem = (mrv::Element*) item->widget();
-            elem->Label()->box( FL_NO_BOX );
-
-            Fl_Tree::select( item, 0 );
-
-            mrv::media bg = v->background();
-            if ( bg && bg != m )
-            {
-                Fl_Tree_Item* bgitem = media_to_item( bg );
-                if ( bgitem )
-                {
-                    mrv::Element* elem = (mrv::Element*) bgitem->widget();
-                    elem->Label()->box( FL_PLASTIC_DOWN_BOX );
-                    elem->Label()->color( FL_YELLOW );
-                    elem->redraw();
-                }
-            }
-
-            send_image( sel );
-
-            int64_t first, last;
-            adjust_timeline( first, last );
-
-            mrv::Timeline* t = timeline();
-            if ( t && !t->edl() )
-            {
-                set_timeline( first, last );
-            }
-        }
-
-        if ( play != CMedia::kStopped ) v->play( play );
-    }
-
-    redraw();
-}
 
 
 void ImageBrowser::send_image( int i )
@@ -1553,7 +1463,7 @@ void ImageBrowser::send_image( int i )
 
 }
 
-void ImageBrowser::change_image(int i)
+void ImageBrowser::change_image( int i )
 {
 
     mrv::Reel reel = current_reel();
@@ -1569,12 +1479,69 @@ void ImageBrowser::change_image(int i)
         return;
     }
 
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )  view()->stop();
+
+    int v = value();
+    if ( i == v ) {
+        if ( play != CMedia::kStopped ) view()->play(play);
+        return;
+    }
+
+    int ok;
+    Fl_Tree_Item* item;
+    if ( v >= 0 )
+    {
+        assert0( v < (int)reel->images.size() );
+        mrv::media orig = reel->images[v];
+        item = root()->child(v);
+        ok = deselect( item, 0 );
+        if ( ok < 0 )
+        {
+            LOG_ERROR( _("Old item was not found in tree.") );
+            return;
+        }
+    }
+
     send_reel( reel );
 
-    DBGM3( "CHANGE IMAGE TO INDEX " << i );
     value( i );
+    assert0( i < (int)reel->images.size() );
+    mrv::media m = reel->images[i];
+
+    item = root()->child(i);
+    ok = select( item, 0 );
+    if ( ok < 0 )
+    {
+        LOG_ERROR( _("New item was not found in tree.") );
+        return;
+    }
+
+    DBGM3( "CHANGE IMAGE TO INDEX " << i );
+    view()->foreground( m );
+
+    int64_t first, last;
+    adjust_timeline( first, last );
+    mrv::Timeline* t = timeline();
+    if ( t && !t->edl() )
+    {
+        set_timeline( first, last );
+    }
+
     send_image( i );
-    change_image();
+
+    if ( reel->edl )
+    {
+        int64_t pos = m->position();
+        DBGM3( "seek to " << pos );
+        seek( pos );
+    }
+    else
+    {
+        seek( view()->frame() );
+    }
+
+    if ( play ) view()->play(play);
 }
 
 /**
@@ -2379,8 +2346,7 @@ void ImageBrowser::remove_current()
     int sel = value();
     if ( sel < 0 ) return;
 
-    mrv::media& m = reel->images[sel];
-
+    mrv::media m = reel->images[sel];
 
     Fl_Tree_Item* item = media_to_item( m );
     if ( !item )
@@ -2410,7 +2376,24 @@ void ImageBrowser::remove_current()
 }
 
 
+void ImageBrowser::clear_items()
+{
+    mrv::Reel reel = current_reel();
+    if (!reel) return;
 
+    size_t num = reel->images.size();
+    for ( size_t i = 0; i < num; ++i )
+    {
+        mrv::media m = reel->images[i];
+        Fl_Tree_Item* item = media_to_item( m );
+        if (!item) continue;
+        mrv::Element* elem = (mrv::Element*) item->widget();
+        elem->Label()->box( FL_NO_BOX );
+        elem->redraw();
+    }
+
+    redraw();
+}
 
 /**
  * Change background image to current image
@@ -2436,17 +2419,21 @@ void ImageBrowser::change_background()
              << " " << reel->images[sel]->image()->name() );
         view()->bg_reel( _reel );
 
-        size_t num = reel->images.size();
-        for ( size_t i = 0; i < num; ++i )
-        {
-            mrv::media m = reel->images[i];
-            Fl_Tree_Item* item = media_to_item( m );
-            if (!item) continue;
-            mrv::Element* elem = (mrv::Element*) item->widget();
-            elem->Label()->box( FL_NO_BOX );
-        }
+        clear_items();
 
         mrv::media bg = reel->images[sel];
+        if ( bg )
+        {
+            Fl_Tree_Item* bgitem = media_to_item( bg );
+            if ( bgitem )
+            {
+                mrv::Element* elem = (mrv::Element*) bgitem->widget();
+                elem->Label()->box( FL_PLASTIC_DOWN_BOX );
+                elem->Label()->color( FL_YELLOW );
+                redraw();
+            }
+        }
+
         set_bg( bg );
     }
 }
@@ -2974,6 +2961,7 @@ int ImageBrowser::mousePush( int x, int y )
         DBGM3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
         mrv::Reel reel = current_reel();
+        if ( !reel ) return 0;
         mrv::Element* e = (mrv::Element*) dragging->widget();
         assert0( e != NULL );
         mrv::media m = e->media();
@@ -3009,6 +2997,7 @@ int ImageBrowser::mousePush( int x, int y )
         Fl_Menu_Button menu( Fl::event_x(), Fl::event_y(),0,0);
 
         mrv::Reel reel = current_reel();
+        if ( !reel ) return 0;
 
         CMedia* img = NULL;
         bool valid = false;
@@ -3027,7 +3016,7 @@ int ImageBrowser::mousePush( int x, int y )
 
         if ( sel >= 0 )
         {
-            change_image();
+            change_image(sel);
 
             mrv::media m = reel->images[sel];
             img = m->image();
@@ -3127,7 +3116,7 @@ int ImageBrowser::mousePush( int x, int y )
         return 1;
     }
 
-    return ok;
+    return ( ok != 0 );
 }
 
 void static_handle_dnd( mrv::ImageBrowser* b )
@@ -3377,8 +3366,6 @@ void ImageBrowser::match_tree_order()
         r->images.push_back( m );
         if ( m == fg && m ) {
             idx = int( r->images.size() - 1 );
-            Fl_Tree::deselect_all(NULL, 0);
-            Fl_Tree::select( i, 0 );
         }
     }
 
@@ -3571,7 +3558,6 @@ void ImageBrowser::seek( const int64_t tframe )
             if ( bg )
             {
                 bg = reel->media_at( tframe );
-                img = bg->image();
 
                 if ( bg )
                 {
@@ -3598,7 +3584,7 @@ void ImageBrowser::seek( const int64_t tframe )
         if ( bg )
         {
             img = bg->image();
-            f += img->first_frame();
+            // f += img->first_frame();
             img->seek( f );
         }
     }

@@ -567,13 +567,14 @@ void Timeline::draw_selection( const mrv::Recti& r )
         {
             image = fg->image();
         }
+        int64_t global = frame;
         frame = global_to_local( frame );
         image->seek( frame );
         fg->create_thumbnail();
         char buf[64];
         Timecode::Display display;
         Timecode::format( buf, _display,
-                          frame, _tc,
+                          global, _tc,
                           image->fps(), true );
         b->copy_label( buf );
         b->image( fg->thumbnail() );
@@ -611,7 +612,7 @@ int Timeline::handle( int e )
 
         S = int(slider_size()*ww+.5); if (S >= ww) return 0;
         int T = H / 2+1;
-        if (type()==FL_VERT_NICE_SLIDER || type()==FL_HOR_NICE_SLIDER) T += 4;
+        if (type()==FL_HOR_NICE_SLIDER) T += 4;
         if (S < T) S = T;
 
         if ( e == FL_MOVE ) {
@@ -919,6 +920,8 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 {
     mrv::Reel reel = browser()->current_reel();
     if (!reel) return 0;
+
+    if ( !_edl ) return frame;
 
     return reel->global_to_local( frame );
 }

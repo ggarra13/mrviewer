@@ -68,7 +68,7 @@ public:
     int index_at( const boost::int64_t frame );
 
     // Return first image index for a media or -1 if not found
-    int index_for( const mrv::media& m );
+    int index_for( const mrv::media m );
 
     // Return first image index for a media or -1 if not found
     int index_for( const std::string s );

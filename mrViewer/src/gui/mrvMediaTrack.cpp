@@ -115,7 +115,7 @@ mrv::ImageBrowser* media_track::browser() const {
     return _main->uiReelWindow->uiBrowser;
 }
 
-int media_track::index_for( const mrv::media& m )
+int media_track::index_for( const mrv::media m )
 {
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) {
@@ -126,7 +126,7 @@ int media_track::index_for( const mrv::media& m )
 
     for (unsigned i = 0; i < e; ++i )
     {
-        const mrv::media& m2 = reel->images[i];
+        mrv::media m2 = reel->images[i];
         if ( m == m2 )
         {
             return i;
@@ -253,7 +253,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
     // Shift medias that come after
     for (size_t i = idx+1; i < e; ++i )
     {
-        mrv::media& fg = reel->images[i-1];
+        mrv::media fg = reel->images[i-1];
         boost::int64_t end = fg->position() + fg->duration() - 1;
         reel->images[i]->position( end );
     }
@@ -267,7 +267,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
     for (int i = int(idx)-1; i >= 0; --i )
     {
         boost::int64_t start = reel->images[i+1]->position();
-        mrv::media& o = reel->images[i];
+        mrv::media o = reel->images[i];
         boost::int64_t ee = o->position() + o->duration() - 1;
         boost::int64_t ss = o->position();
 
@@ -354,9 +354,9 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
     // Shift medias that come after
     for (size_t i = idx+1; i < e; ++i )
     {
-        mrv::media& o = reel->images[i-1];
+        mrv::media o = reel->images[i-1];
         boost::int64_t end = o->position() + o->duration();
-        mrv::media& fg = reel->images[i];
+        mrv::media fg = reel->images[i];
         fg->position( end );
     }
 
@@ -369,7 +369,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
     for (int i = int(idx)-1; i >= 0; --i )
     {
         boost::int64_t start = reel->images[i+1]->position();
-        mrv::media& o = reel->images[i];
+        mrv::media o = reel->images[i];
         boost::int64_t ee = o->position() + o->duration() - 1;
         boost::int64_t ss = o->position();
 
@@ -453,7 +453,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
     size_t i = 0;
     for ( ; i < e; ++i )
     {
-        mrv::media& fg = reel->images[i];
+        mrv::media fg = reel->images[i];
         if ( fg == m )
         {
             CMedia* img = m->image();

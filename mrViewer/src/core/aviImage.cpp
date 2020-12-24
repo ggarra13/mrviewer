@@ -1745,7 +1745,7 @@ bool aviImage::find_image( int64_t& frame )
 
     static constexpr int kDiffFrames = 10;
 
-    if ( _right_eye && (stopped() || saving() ) )
+    if ( _right_eye && _owns_right_eye && (stopped() || saving() ) )
         _right_eye->find_image( frame );
 
     assert0( frame != AV_NOPTS_VALUE );
@@ -3025,23 +3025,25 @@ int64_t aviImage::queue_packets( const int64_t frame,
     int64_t vpts = 0, apts = 0, spts = 0;
 
     if ( !got_video ) {
+        assert0( get_video_stream() != NULL );
         vpts = frame2pts( get_video_stream(), frame );
     }
 
     if ( !got_audio ) {
         if ( _acontext )
         {
-            assert( get_audio_stream() != NULL );
+            assert0( get_audio_stream() != NULL );
             apts = frame2pts( get_audio_stream(), frame + _audio_offset );
         }
         else
         {
-            assert( get_audio_stream() != NULL );
+            assert0( get_audio_stream() != NULL );
             apts = frame2pts( get_audio_stream(), frame );
         }
     }
 
     if ( !got_subtitle ) {
+        assert0( get_subtitle_stream() != NULL );
         spts = frame2pts( get_subtitle_stream(), frame );
     }
 
@@ -3274,7 +3276,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             }
         }
 
-        av_packet_unref( &pkt );
+        // av_packet_unref( &pkt );
 
 
     } // (!got_video || !got_audio)
@@ -3304,7 +3306,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 #endif
 
 
-    if ( _right_eye && (stopped() || saving() ) )
+    if ( _right_eye && _owns_right_eye && (stopped() || saving() ) )
     {
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
@@ -4021,7 +4023,7 @@ void aviImage::debug_subtitle_packets(const int64_t frame,
 void aviImage::do_seek()
 {
     // No need to set seek frame for right eye here
-    if ( _right_eye )  _right_eye->do_seek();
+    if ( _right_eye && _owns_right_eye )  _right_eye->do_seek();
 
     if ( saving() ) _seek_req = false;
 

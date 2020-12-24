@@ -1,4 +1,4 @@
-#!/bin/bash --norc
+#!/bin/bash
 
 #valgrind -v --trace-children=yes --gen-suppressions=yes $*
 

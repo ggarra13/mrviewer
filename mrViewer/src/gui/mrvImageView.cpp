@@ -485,7 +485,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     size_t fg_reel = view->fg_reel();
     size_t bg_reel = view->bg_reel();
 
-    const mrv::media& fg = view->foreground();
+    mrv::media fg = view->foreground();
     if ( !fg ) {
         LOG_ERROR( _("No foreground image to switch to") );
         return;
@@ -497,7 +497,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
         return;
     }
 
-    if ( fg_reel == bg_reel && fg == bg )
+    if ( fg_reel == bg_reel && fg == bg && fg_reel >= 0 )
     {
         mrv::Reel r = view->browser()->reel_at( fg_reel );
         size_t num = r->images.size();
@@ -528,9 +528,9 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     Fl_Tree_Item* item = view->browser()->media_to_item( bg );
     if ( item )
     {
-        view->browser()->Fl_Tree::select( item, 0 );
         mrv::Element* elem = (mrv::Element*) item->widget();
         elem->Label()->box( FL_NO_BOX );
+        view->browser()->Fl_Tree::select( item, 0 );
         elem->redraw();
     }
 
@@ -548,6 +548,23 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     ViewerUI* m = view->main();
     mrv::Timeline* t = m->uiTimeline;
     mrv::CMedia* img = bg->image();
+
+    if ( fg_reel >= 0 )
+    {
+        mrv::ImageBrowser* b = view->browser();
+        mrv::Reel r = b->reel_at( fg_reel );
+        if ( r->edl )
+        {
+            b->seek( fg->position() );
+        }
+        else
+        {
+            b->seek( view->frame() );
+        }
+        b->clear_items();
+        b->redraw();
+    }
+
     // int64_t f = m->uiFrame->value();
 
     // std::cerr << "f " << f << std::endl;
@@ -562,6 +579,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     // t->value( f );
 
     update_title_bar( view );
+    view->browser()->redraw();
     view->fit_image();
 }
 
@@ -3835,7 +3853,7 @@ void ImageView::vr( VRType t )
     _vr = t;
     valid(0);
 
-    const mrv::media& fg = foreground();
+    const mrv::media fg = foreground();
 
     if ( fg )
     {
@@ -3843,7 +3861,7 @@ void ImageView::vr( VRType t )
         img->image_damage( img->image_damage() | CMedia::kDamageContents );
     }
 
-    const mrv::media& bg = foreground();
+    const mrv::media bg = foreground();
 
     if ( bg )
     {
@@ -3938,7 +3956,7 @@ void ImageView::draw()
     }
 
 
-    const mrv::media& fg = foreground();
+    const mrv::media fg = foreground();
     if ( fg )
     {
         _engine->image( fg->image() );
@@ -8564,7 +8582,7 @@ void ImageView::channel( unsigned short c )
 
     // If user selected the same channel again, toggle it with
     // other channel (diffuse.r goes to diffuse, for example)
-    const mrv::media& fg = foreground();
+    const mrv::media fg = foreground();
     if ( c == _channel && fg && _old_fg == fg->image() && network_active() ) {
         c = _old_channel;
     }
@@ -9029,7 +9047,7 @@ double ImageView::pixel_ratio() const
     return fg->image()->pixel_ratio();
 }
 
-int ImageView::update_shortcuts( const mrv::media& fg,
+int ImageView::update_shortcuts( const mrv::media fg,
                                  const char* channelName )
 {
     if ( !fg ) return -1;
@@ -10070,7 +10088,7 @@ void ImageView::last_frame_timeline()
  * Update color information
  *
  */
-void ImageView::update_color_info( const mrv::media& fg ) const
+void ImageView::update_color_info( const mrv::media fg ) const
 {
     if ( uiMain->uiColorArea )
     {

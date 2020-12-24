@@ -42,7 +42,7 @@ public:
     ~LMTBrowser();
 
 
-    void fill( const mrv::media& fg );
+    void fill( const mrv::media fg );
     virtual int handle( int event );
 
 protected:

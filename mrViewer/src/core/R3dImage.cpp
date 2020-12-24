@@ -834,7 +834,6 @@ namespace mrv {
   if ( _right_eye && (stopped() || saving() ) )
       _right_eye->find_image( frame );
 
-  assert0( frame != AV_NOPTS_VALUE );
   if ( frame < _frame_start || frame > _frame_end )
       return false;
 

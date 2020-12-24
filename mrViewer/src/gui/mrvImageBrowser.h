@@ -204,6 +204,9 @@ public:
     void set_edl();
     void toggle_edl();
 
+    // Clear tree items
+    void clear_items();
+
     //! Clear bg image
     void clear_bg();
 
@@ -224,7 +227,7 @@ public:
 
     //! Sets and returns the current index of the selected image
     void value( int idx );
-    int value() const { return _value; }
+    inline int value() const { return _value; }
 
     virtual void draw();
     virtual int handle( int event );
@@ -272,10 +275,6 @@ protected:
 
     //! Change reel to new one selected
     void change_reel();
-
-    //! Change image to new one selected
-    void change_image();
-
 
     //! Load a stereo image for fg
     void load_stereo( mrv::media& fg,

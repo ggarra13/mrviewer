@@ -466,7 +466,7 @@ public:
     void update_image_info() const;
 
     /// Update the color information display
-    void update_color_info( const mrv::media& fg ) const;
+    void update_color_info( const mrv::media fg ) const;
     void update_color_info() const;
 
     // Channel navigation (for hotkeys)
@@ -824,7 +824,7 @@ protected:
     void mouseMove(int,int);
     int  keyUp(unsigned int);
 
-    int update_shortcuts( const mrv::media& fg, const char* channelName );
+    int update_shortcuts( const mrv::media fg, const char* channelName );
 
     void draw_text( unsigned char r, unsigned char g, unsigned char b,
                     double x, double y, const char* text );

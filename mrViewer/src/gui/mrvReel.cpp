@@ -104,7 +104,7 @@ size_t Reel_t::index( const int64_t f ) const
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
-        const mrv::media& m = *i;
+        const mrv::media m = *i;
         CMedia* img = m->image();
         int64_t start = m->position();
         int64_t end = start + img->duration();
@@ -144,7 +144,7 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
-        const mrv::media& m = *i;
+        const mrv::media m = *i;
         if ( !m ) continue;
 
         CMedia* img = m->image();
@@ -162,14 +162,15 @@ mrv::media Reel_t::media_at( const int64_t f ) const
 
 int64_t Reel_t::global_to_local( const int64_t f ) const
 {
+    if ( !edl ) return f;
 
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
-    int64_t r = AV_NOPTS_VALUE;
+    int64_t r = 0;
     for ( ; i != e; ++i )
     {
-        const mrv::media& m = *i;
+        const mrv::media m = *i;
         if ( !m ) continue;
 
         CMedia* img = m->image();
