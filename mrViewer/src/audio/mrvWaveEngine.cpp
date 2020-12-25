@@ -487,21 +487,28 @@ bool WaveEngine::open( const unsigned channels,
         {
         case kFloatLSB:
         case kFloatMSB:
-            wavefmt.Format.wBitsPerSample = sizeof(float) * 8;
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
-            wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
-            break;
+            {
+                int bits = sizeof(float) * 8;
+                wavefmt.Format.wBitsPerSample = bits;
+                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
+                break;
+            }
         case kS16LSB:
         case kS16MSB:
-            wavefmt.Format.wBitsPerSample = sizeof(short) * 8;
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_PCM;
-            wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
-            break;
+            {
+                int bits = sizeof(short) * 8;
+                wavefmt.Format.wBitsPerSample = bits;
+                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+                break;
+            }
         case kS32LSB:
         case kS32MSB:
-            wavefmt.Format.wBitsPerSample = sizeof(int32_t) * 8;
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_PCM;
-            wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+            {
+                int bits = sizeof(int32_t) * 8;
+                wavefmt.Format.wBitsPerSample = bits;
+                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+                break;
+            }
         }
 
         wavefmt.Samples.wValidBitsPerSample = wavefmt.Format.wBitsPerSample;
@@ -516,15 +523,8 @@ bool WaveEngine::open( const unsigned channels,
 
         /* Only use the new WAVE_FORMAT_EXTENSIBLE format for
                multichannel audio */
-        if( ch <= 2 )
-        {
-            wavefmt.Format.cbSize = 0;
-        }
-        else
-        {
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
-            wavefmt.Format.cbSize = sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX);
-        }
+        wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+        wavefmt.Format.cbSize = sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX);
 
 
         unsigned device = _device_idx;
@@ -534,13 +534,13 @@ bool WaveEngine::open( const unsigned channels,
         else
             device -= 1;
 
-        DBGM3( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
+        DBGM1( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
         MMRESULT result =
             waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                         //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                         0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
-        DBGM3( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
+        DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )
@@ -569,7 +569,7 @@ bool WaveEngine::open( const unsigned channels,
         size_t bytes = _num_buffers * bytesPerBlock;
         _data = new aligned16_uint8_t[ bytes ];
         memset( _data, 0, bytes );
-        DBGM3( "allocated data at " << _data << " bytes " << bytes
+        DBGM1( "allocated data at " << _data << " bytes " << bytes
              << " / num " << bytes / _num_buffers);
 
         delete [] _buffer;
@@ -593,7 +593,7 @@ bool WaveEngine::open( const unsigned channels,
             ptr += bytesPerBlock;
         }
 
-        DBGM3( "enabled ok" );
+        DBGM1( "enabled ok" );
         // All okay, enable device
         _enabled = true;
         return true;
