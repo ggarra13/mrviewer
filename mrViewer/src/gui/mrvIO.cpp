@@ -80,6 +80,7 @@ int logbuffer::sync()
     // lock mutex
     boost::recursive_mutex::scoped_lock lk( _mutex );
 
+
     // make sure to null terminate the string
     sputc('\0');
 
