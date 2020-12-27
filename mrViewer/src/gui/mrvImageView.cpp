@@ -550,20 +550,25 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     mrv::Timeline* t = m->uiTimeline;
     mrv::CMedia* img = bg->image();
 
+#if 1
     if ( fg_reel >= 0 )
     {
         mrv::ImageBrowser* b = view->browser();
         mrv::Reel r = b->reel_at( fg_reel );
-        if ( r->edl )
+        if ( r )
         {
-            b->seek( fg->position() );
-        }
-        else
-        {
-            b->seek( view->frame() );
+            if ( r->edl )
+            {
+                b->seek( fg->position() );
+            }
+            else
+            {
+                b->seek( view->frame() );
+            }
         }
         b->redraw();
     }
+#endif
 
     // int64_t f = m->uiFrame->value();
 
@@ -1666,7 +1671,7 @@ static void about_cb( Fl_Widget* o, mrv::ImageView* v )
 
 static void static_timeout( mrv::ImageView* v )
 {
-  v->handle_timeout();
+    v->handle_timeout();
 }
 
 void ImageView::create_timeout( double t )
@@ -8097,7 +8102,6 @@ void ImageView::handle_timeout()
  */
 int ImageView::handle(int event)
 {
-
     switch( event )
     {
     case FL_FOCUS:
@@ -8119,8 +8123,8 @@ int ImageView::handle(int event)
       Fl_Gl_Window::handle( event );
       return 1;
     case FL_UNFOCUS:
-        return Fl_Gl_Window::handle( event );
-
+        Fl_Gl_Window::handle( event );
+        return 1;
     case FL_LEAVE:
         window()->cursor(FL_CURSOR_DEFAULT);
 
@@ -8180,7 +8184,6 @@ int ImageView::handle(int event)
         return 1;
         break;
     case FL_SHORTCUT:
-        return Fl_Gl_Window::handle( event );
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
@@ -10231,6 +10234,7 @@ void ImageView::play( const CMedia::Playback dir )
         return;
     }
 
+    std::cerr << "play" << std::endl;
 
     mrv::media fg = foreground();
     if (!fg) return;
@@ -10327,6 +10331,8 @@ void ImageView::stop()
     if ( playback() == CMedia::kStopped ) {
         return;
     }
+
+    delete_timeout();
 
     _playback = CMedia::kStopped;
 

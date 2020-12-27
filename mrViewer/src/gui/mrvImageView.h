@@ -113,6 +113,7 @@ public:
         kLUT_CHANGE = 42,
         kZoomChange = 43,
         kOCIOViewChange = 44,
+        kSwitch_FG_BG = 45,
         kLastCommand
     };
 

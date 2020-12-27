@@ -2541,7 +2541,7 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
-    if ( _right_eye ) _right_eye->play( dir, uiMain, fg );
+    if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
     TRACE("");
     stop();
@@ -2614,7 +2614,7 @@ void CMedia::play(const CMedia::Playback dir,
         //           << " output " << _stereo_output << std::endl;
         // if ( _is_stereo && _is_left_eye == false &&
         //      _stereo_output != kNoStereo )
-        if ( _is_stereo && _right_eye )
+        if ( _is_stereo && _right_eye && _owns_right_eye )
         {
             delete _right_eye->_stereo_barrier;
             if ( number_of_video_streams() % 2 == 0 )
@@ -2900,7 +2900,7 @@ void CMedia::seek( const int64_t f )
     _seek_req   = true;
 
 
-    if ( _right_eye )
+    if ( _right_eye && _owns_right_eye )
     {
 #ifdef DEBUG_SEEK
         std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
