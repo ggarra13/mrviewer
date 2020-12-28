@@ -151,6 +151,8 @@ public:
 
     /// Reset the view matrix
     virtual void reset_view_matrix() = 0;
+    virtual void reset_vr_matrix() = 0;
+    virtual void restore_vr_matrix() = 0;
 
     // rotate model an angle in Z in degrees
     virtual void rotate( const double z ) = 0;

@@ -620,6 +620,41 @@ void GLEngine::initialize()
 
 
 /**
+ * Resets the view matrix for VR and sets the projection to match the
+ * window's viewport
+ *
+ */
+void GLEngine::reset_vr_matrix()
+{
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glViewport( 0, 0, _view->pixel_w(), _view->pixel_h() );
+    glOrtho( 0, _view->w(), 0, _view->h(), -1, 1 );
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    FLUSH_GL_ERRORS;
+}
+
+/**
+ * Resets the view matrix for VR and sets the projection to match the
+ * window's viewport
+ *
+ */
+void GLEngine::restore_vr_matrix()
+{
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    FLUSH_GL_ERRORS;
+
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    FLUSH_GL_ERRORS;
+}
+
+/**
  * Resets the view matrix and sets the projection to match the window's viewport
  *
  */

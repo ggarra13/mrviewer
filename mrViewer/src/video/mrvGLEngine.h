@@ -79,6 +79,8 @@ public:
     virtual void clear_canvas( float r, float g, float b, float a );
     virtual void set_blend_function( int source, int dest );
     virtual void reset_view_matrix();
+    virtual void reset_vr_matrix();
+    virtual void restore_vr_matrix();
 
     virtual void color( uchar r, uchar g, uchar b, uchar a  );
     virtual void color( float r, float g, float b, float a );

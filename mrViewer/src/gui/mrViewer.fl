@@ -411,10 +411,12 @@ class LogUI {} {
   }
 }
 
-class PaintUI {} {
+class PaintUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
-  Function {make_window( ViewerUI* m )} {} {
+  Function {make_window( ViewerUI* m )} {open
+  } {
     code {main_ = m;} {}
     Fl_Window uiMain {
       label Action
@@ -535,14 +537,22 @@ o->redraw();}
           Fl_Round_Button uiCurrentFrame {
             label Current
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiCurrentFrame->value( o->value() );}
+            callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
+if ( v->uiAttrsWindow )
+{
+	v->uiCurrentFrame->value( o->value() );
+}}
             xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
           }
           Fl_Round_Button uiAllFrames {
             label All
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiAllFrames->value( o->value() );}
+            callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
+if ( v->uiAttrsWindow )
+{
+	v->uiAllFrames->value( o->value() );
+}}
             xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
           }
@@ -670,7 +680,7 @@ class ViewerUI {open
   }
   decl {static ConnectionUI* uiConnection;} {public local
   }
-  decl {Fl_Double_Window* uiAttrsWindow = NULL;} {protected local
+  decl {Fl_Double_Window* uiAttrsWindow = NULL;} {selected public local
   }
   decl {ReelUI* uiReelWindow;} {public local
   }
@@ -710,11 +720,11 @@ o->main( this );}
         xywh {0 2 690 536}
         class MyPack
       } {
-        Fl_Group uiTopBar {open
+        Fl_Group uiTopBar {
           xywh {0 2 685 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
-            label W open
+            label W
             tooltip {Opens different windows} xywh {2 4 25 22}
             code0 {o->disable_glyph();}
             class {mrv::PopupMenu}
@@ -748,7 +758,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label {A-B, Stereo 3D Options} user_data_type {void*}
-              callback {uiStereo->uiMain->show();} selected
+              callback {uiStereo->uiMain->show();}
               xywh {10 10 100 20}
               code0 {o->label( "A/B, Stereo 3D Options" );}
             }
@@ -804,7 +814,7 @@ uiICCProfiles->uiMain->show();}
               xywh {0 0 100 20}
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {29 2 41 25}
           } {
             Fl_Button uiBButton {
@@ -815,7 +825,7 @@ v->uiView->show_background(false);}
               tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 4 40 22} down_box DOWN_BOX
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {75 4 98 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
@@ -828,7 +838,7 @@ v->uiView->show_background(false);}
               class {mrv::PopupMenu}
             } {}
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {170 3 285 24} color 1397969664
           } {
             Fl_Box {} {
@@ -927,7 +937,7 @@ Click to toggle between current and normal exposure.} xywh {329 4 64 22} labelfo
               }
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {450 4 154 23} color 1397969664
           } {
             Fl_Group {} {open
@@ -1075,7 +1085,7 @@ Value is:  pow( 2, 1/x );} xywh {544 4 60 22} type {Horz Knob} maximum 4
           code3 {o->init_sizes();}
           class MyPack
         } {
-          Fl_Group uiToolsGroup {
+          Fl_Group uiToolsGroup {open
             xywh {0 30 45 430} box FLAT_BOX
           } {
             Fl_Button uiScrub {
@@ -1136,7 +1146,7 @@ else
 o->redraw();}
               tooltip {Selects the current pen color.} xywh {10 312 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 1
             }
-            Fl_Group {} {open
+            Fl_Group {} {
               xywh {0 368 45 73}
             } {
               Fl_Button uiUndoDraw {
@@ -1489,7 +1499,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
             }
           }
         }
-        Fl_Group uiBottomBar {open
+        Fl_Group uiBottomBar {
           xywh {0 488 690 50} box ENGRAVED_BOX
         } {
           Fl_Group uiTimeToolbar {
@@ -1833,7 +1843,8 @@ Fl_Group::current(0);
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );} {}
   }
-  Function {ViewerUI()} {} {
+  Function {ViewerUI()} {open
+  } {
     code {uiMain = make_window();} {}
   }
   Function {~ViewerUI()} {open

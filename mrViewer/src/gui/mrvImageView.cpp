@@ -4177,15 +4177,7 @@ void ImageView::draw()
     //
     if ( vr() )
     {
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glViewport( 0, 0, pixel_w(), pixel_h() );
-        glOrtho( 0, w(), 0, h(), -1, 1 );
-
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        FLUSH_GL_ERRORS;
+        _engine->reset_vr_matrix();
 
     }
 
@@ -4385,6 +4377,7 @@ void ImageView::draw()
 
     if ( vr() )
     {
+        _engine->restore_vr_matrix();
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();
         FLUSH_GL_ERRORS;
@@ -10219,6 +10212,8 @@ void ImageView::play_forwards()
 void ImageView::play( const CMedia::Playback dir )
 {
 
+    if ( dir == playback() )
+        return;
 
     if ( dir == CMedia::kForwards )
     {
@@ -10234,7 +10229,7 @@ void ImageView::play( const CMedia::Playback dir )
         return;
     }
 
-    std::cerr << "play" << std::endl;
+
 
     mrv::media fg = foreground();
     if (!fg) return;
