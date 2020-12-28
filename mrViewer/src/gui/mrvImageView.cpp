@@ -4378,13 +4378,6 @@ void ImageView::draw()
     if ( vr() )
     {
         _engine->restore_vr_matrix();
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        FLUSH_GL_ERRORS;
-
-        glMatrixMode(GL_MODELVIEW);
-        glPopMatrix();
-        FLUSH_GL_ERRORS;
 
     }
 
