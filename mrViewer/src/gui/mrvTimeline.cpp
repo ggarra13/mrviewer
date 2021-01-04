@@ -635,7 +635,10 @@ int Timeline::handle( int e )
         v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
         frame = clamp(v);
 
-        Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+        if ( Fl::has_timeout( (Fl_Timeout_Handler)showwin, this ) )
+        {
+            Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+        }
         Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
     }
     else if ( e == FL_LEAVE )

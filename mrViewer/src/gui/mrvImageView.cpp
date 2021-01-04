@@ -173,7 +173,7 @@
 
 // Audio
 
-// #define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
+#define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
 
 using namespace std;
 
@@ -1676,12 +1676,18 @@ static void static_timeout( mrv::ImageView* v )
 
 void ImageView::create_timeout( double t )
 {
-    Fl::add_timeout( t, (Fl_Timeout_Handler) static_timeout, this );
+    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+    {
+        Fl::add_timeout( t, (Fl_Timeout_Handler) static_timeout, this );
+    }
 }
 
 void ImageView::delete_timeout()
 {
-    Fl::remove_timeout( (Fl_Timeout_Handler) static_timeout, this );
+    if ( Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+    {
+        Fl::remove_timeout( (Fl_Timeout_Handler) static_timeout, this );
+    }
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
@@ -2868,16 +2874,29 @@ void static_preload( mrv::ImageView* v )
 {
     v->preload();
 
+#ifdef USE_TIMEOUT
     mrv::media m = v->foreground();
     if ( m )
     {
         CMedia* img = m->image();
         double delay = 1.0 / img->fps();
         if ( ! img->is_stereo() )
-            Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+        {
+            if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_preload, v ) )
+            {
+                Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload,
+                                    v );
+            }
+        }
         else
-            Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
+        {
+            if ( Fl::has_timeout( (Fl_Timeout_Handler) static_preload, v ) )
+            {
+                Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
+            }
+        }
     }
+#endif
 }
 
 
@@ -3790,7 +3809,10 @@ void ImageView::timeout()
    }
 
     redraw();
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    if ( !Fl::has_timeout( (Fl_Timeout_Handler)static_timeout, this ) )
+    {
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    }
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -8358,11 +8380,20 @@ void ImageView::preload_cache_start()
             {
                 CMedia::preload_cache( true );
                 _idle_callback = true;
-                Fl::add_timeout( 1.0/img->fps(),
-                                 (Fl_Timeout_Handler) static_preload, this );
+#ifdef USE_TIMEOUT
+                if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_preload,
+                                        this ) )
+                {
+                    Fl::add_timeout( 1.0/img->fps(),
+                                     (Fl_Timeout_Handler) static_preload,
+                                     this );
+                }
+#endif
             }
         }
-        //Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
+#ifndef USE_TIMEOUT
+        Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
+#endif
     }
 }
 
@@ -8377,8 +8408,14 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         _idle_callback = false;
-        Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, this );
-        //Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
+#ifdef USE_TIMEOUT
+        if ( Fl::has_timeout(  (Fl_Timeout_Handler) static_preload, this ) )
+        {
+            Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, this );
+        }
+#else
+        Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
+#endif
     }
 }
 
@@ -10245,7 +10282,6 @@ void ImageView::play( const CMedia::Playback dir )
 
     playback( dir );
 
-    delete_timeout();
 
     double fps = uiMain->uiFPS->value();
 
