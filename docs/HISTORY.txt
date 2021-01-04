@@ -7,9 +7,9 @@ v5.7.0  - Added A/B button to topbar to allow adding a B (Background) image
 	- Bug fixed RMB shortening of sequences in EDL window.
 	- Bug fixed 5.1 and 7.1 float audio on Windows.  Now they are played
 	  as s32 for 5.1 or s16 for 7.1 audio.
-	- Bug fixed All Frames y Current Frames in Action Window which was
-	  crashing before.
-	- Bug fixed VR HUD display which was overlapping.
+	- Bug fixed All Frames and Current Frames in Action Window which was
+	  crashing before. (re-release)
+	- Bug fixed VR HUD display which was overlapping. (re-relase)
 
 v5.6.9  - Bug fixed a memory bound problem on RGBA stereo images.
 	- Made Background image always shown but not composited when it is

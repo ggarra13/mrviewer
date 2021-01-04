@@ -48,8 +48,8 @@
 class F32vec4
 {
     union {
-        __m128 v;
-        float f[4];
+	__m128 v;
+	float f[4];
     };
 
 public:
@@ -79,33 +79,33 @@ public:
   }
 
     inline operator __m128() const
-        {
-            return v;
-        }
+	{
+	    return v;
+	}
 
     inline operator __m128()
-        {
-            return v;
-        }
+	{
+	    return v;
+	}
 };
 
 
 inline F32vec4 select_lt( const F32vec4& a, const F32vec4& b,
-                          const F32vec4& c, const F32vec4& d )
+			  const F32vec4& c, const F32vec4& d )
 {
   return F32vec4( a[0] < b[0] ? c[0] : d[0],
-                  a[1] < b[1] ? c[1] : d[1],
-                  a[2] < b[2] ? c[2] : d[2],
-                  a[3] < b[3] ? c[3] : d[3] );
+		  a[1] < b[1] ? c[1] : d[1],
+		  a[2] < b[2] ? c[2] : d[2],
+		  a[3] < b[3] ? c[3] : d[3] );
 }
 
 inline F32vec4 select_gt( const F32vec4& a, const F32vec4& b,
-                          const F32vec4& c, const F32vec4& d )
+			  const F32vec4& c, const F32vec4& d )
 {
   return F32vec4( a[0] > b[0] ? c[0] : d[0],
-                  a[1] > b[1] ? c[1] : d[1],
-                  a[2] > b[2] ? c[2] : d[2],
-                  a[3] > b[3] ? c[3] : d[3] );
+		  a[1] > b[1] ? c[1] : d[1],
+		  a[2] > b[2] ? c[2] : d[2],
+		  a[3] > b[3] ? c[3] : d[3] );
 }
 
 
@@ -157,21 +157,21 @@ public:
 
 
 inline F32vec4 select_lt( const F32vec4& a, const F32vec4& b,
-                          const F32vec4& c, const F32vec4& d )
+			  const F32vec4& c, const F32vec4& d )
 {
   return F32vec4( a[0] < b[0] ? c[0] : d[0],
-                  a[1] < b[1] ? c[1] : d[1],
-                  a[2] < b[2] ? c[2] : d[2],
-                  a[3] < b[3] ? c[3] : d[3] );
+		  a[1] < b[1] ? c[1] : d[1],
+		  a[2] < b[2] ? c[2] : d[2],
+		  a[3] < b[3] ? c[3] : d[3] );
 }
 
 inline F32vec4 select_gt( const F32vec4& a, const F32vec4& b,
-                          const F32vec4& c, const F32vec4& d )
+			  const F32vec4& c, const F32vec4& d )
 {
   return F32vec4( a[0] > b[0] ? c[0] : d[0],
-                  a[1] > b[1] ? c[1] : d[1],
-                  a[2] > b[2] ? c[2] : d[2],
-                  a[3] > b[3] ? c[3] : d[3] );
+		  a[1] > b[1] ? c[1] : d[1],
+		  a[2] > b[2] ? c[2] : d[2],
+		  a[3] > b[3] ? c[3] : d[3] );
 }
 
 

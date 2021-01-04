@@ -91,6 +91,8 @@ public:
         _thumbnail_frozen = t;
     }
 
+    void create_thumbnail( unsigned W, unsigned H );
+
     void create_thumbnail();
 
 protected:

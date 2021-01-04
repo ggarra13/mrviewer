@@ -3727,7 +3727,12 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
     int64_t f = view()->frame();
 
     mrv::Reel reel = current_reel();
-    if ( reel->images.empty() ) return;
+    if ( reel->images.empty() ) {
+        first = 1;
+        last = 50;
+        frame( 1 );
+        return;
+    }
 
     if ( reel->edl )
     {

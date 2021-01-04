@@ -24,6 +24,7 @@ ELSE( LibRaw_LIBRARY_DIR )
     "$ENV{LibRaw_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
+    /lib/x86_64-linux-gnu/
     /usr/lib${CMAKE_BUILD_ARCH}
     /usr/lib
     )
@@ -38,7 +39,7 @@ FIND_PATH( LibRaw_INCLUDE_DIR libraw/libraw.h
  )
 
 FIND_LIBRARY( LibRaw
-  NAMES raw libraw 
+  NAMES raw libraw libraw_r
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
   DOC   "LibRaw library"

@@ -99,8 +99,7 @@ void media::thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b )
     *ptr++ = b;
 }
 
-
-void media::create_thumbnail()
+void media::create_thumbnail( unsigned W, unsigned H )
 {
     if ( (!_image->stopped()) || thumbnail_frozen() ) return;
 
@@ -125,11 +124,11 @@ void media::create_thumbnail()
         return;
     }
 
-    unsigned int h = _thumbnail_height;
+    unsigned int h = H;
 
     float yScale = (float)(h+0.5) / (float)dh;
     unsigned int w = unsigned( (float)(dw+0.5) * (float)yScale );
-    if ( w > 150 ) w = 150;
+    if ( w > W ) w = W;
 
     // Resize image to thumbnail size
     pic.reset( pic->quick_resize( w, h ) );
@@ -221,6 +220,11 @@ void media::create_thumbnail()
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
+}
+
+void media::create_thumbnail()
+{
+    create_thumbnail( 150, _thumbnail_height );
 }
 
 

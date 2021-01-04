@@ -51,6 +51,8 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Shared_Image.H>
 
+#include "newFLU/File_Chooser.h"
+
 #include "FLU/flu_pixmaps.h"
 #include "FLU/Flu_Label.h"
 #include "FLU/Flu_Separator.h"

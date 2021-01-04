@@ -58,7 +58,7 @@ def parse( files, dest )
   for line in files
     lib, loc = line.split(" => ")
 
-    next if not loc or not lib
+    next if not loc or not lib or loc =~ /not found/
 
     loc.strip!
     lib.strip!
@@ -204,10 +204,12 @@ if kernel !~ /MINGW.*/
     FileUtils.ln_s( Dir.pwd + "/#{build}/Release/bin/mrViewer.sh", home,
                     :verbose => true )
     FileUtils.rm_f( home + '-dbg' )
-    FileUtils.ln_s( Dir.pwd + '/' + "/#{build}/Debug/bin/mrViewer.sh", home + "-dbg",
-                    :verbose => true )
+    if File.exists?( Dir.pwd + '/' + "/#{build}/Debug/bin/mrViewer.sh" )
+      FileUtils.ln_s( Dir.pwd + '/' + "/#{build}/Debug/bin/mrViewer.sh", home + "-dbg",
+                      :verbose => true )
+    end
   end
-
+  
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
   FileUtils.rm_f( libs )
@@ -241,8 +243,6 @@ if kernel !~ /MINGW.*/
   if kernel =~ /Linux/
     $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
-    FileUtils.ln_s "#{dest}/lib/libACESclip.so.0.2.6",
-                   "#{dest}/lib/libACESclip.so", :force => true
   elsif kernel =~ /Darwin/
     FileUtils.ln_s "#{dest}/lib/libACESclip.dylib.0.2.6",
                    "#{dest}/lib/libACESclip.dylib", :force => true
