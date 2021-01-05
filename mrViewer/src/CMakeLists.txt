@@ -294,7 +294,6 @@ SET( SOURCES
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
 
-  gui/newFLU/File_Chooser.cpp     # new file requester
   gui/FLU/Flu_Combo_Box.cpp       # needed
   gui/FLU/Flu_Combo_Tree.cpp      # needed
   gui/FLU/Flu_Combo_List.cpp      # needed
