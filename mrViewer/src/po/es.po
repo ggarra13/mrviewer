@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-01-05 19:38-0300\n"
+"POT-Creation-Date: 2021-01-05 20:02-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -20001,7 +20001,7 @@ msgstr ""
 
 #: gui/mrvPreferences.cpp:525
 msgid "Inited R3D SDK from: "
-msgstr ""
+msgstr "Inicialicé R3D SDK desde: "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.1.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:103
 msgid "Input"
@@ -20918,10 +20918,6 @@ msgstr "Longitud"
 
 #: gui/mrvPreferences.cpp:521
 msgid "Looked for it in: "
-msgstr ""
-
-#: standalone/main.cpp:248
-msgid "Looking for translations in "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.1.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:166
@@ -27605,6 +27601,12 @@ msgstr "Tradicional Sin Gama"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.1.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2042
 msgid "Transform"
 msgstr "Transformación"
+
+#
+#: standalone/main.cpp:248
+#, fuzzy
+msgid "Translations: "
+msgstr "Versiones "
 
 #: audio/mrvWaveEngine.cpp:340
 msgid "TrueVision"

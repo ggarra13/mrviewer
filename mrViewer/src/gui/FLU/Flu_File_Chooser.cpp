@@ -794,8 +794,8 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   desktopBtn->callback( _desktopCB, this );
   {
       Flu_Label *l = new Flu_Label( 5, 62, 100, 20, _(desktopTxt.c_str()) );
-    l->labelcolor( FL_WHITE );
-    l->align( FL_ALIGN_CENTER );
+      l->labelcolor( fl_contrast( FL_WHITE, l->color() ) );
+      l->align( FL_ALIGN_CENTER );
   }
 
   Flu_Button *homeBtn = new Flu_Button( 30, 98, 50, 48 );
@@ -811,14 +811,14 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
       Flu_Label *l = new Flu_Label( 5, 142, 100, 20, _(myComputerTxt.c_str()) );
       homeBtn->image( home );
 #endif
-      l->labelcolor( FL_WHITE );
+      l->labelcolor( fl_contrast( FL_WHITE, l->color() ) );
       l->align( FL_ALIGN_CENTER );
   }
 
   Flu_Button *documentsBtn = new Flu_Button( 30, 178, 50, 48 );
   documentsBtn->box( FL_FLAT_BOX );
   documentsBtn->enter_box( FL_THIN_UP_BOX );
-  documentsBtn->labelcolor( FL_WHITE );
+  documentsBtn->labelcolor( fl_contrast( FL_WHITE, documentsBtn->color() ) );
   documentsBtn->color( FL_DARK3 );
   documentsBtn->callback( _documentsCB, this );
   {
@@ -829,7 +829,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     Flu_Label *l = new Flu_Label( 5, 222, 100, 20, _(myDocumentsTxt.c_str()) );
     documentsBtn->image( &bigtemporary );
 #endif
-    l->labelcolor( FL_WHITE );
+    l->labelcolor( fl_contrast( FL_WHITE, l->color() ) );
     l->align( FL_ALIGN_CENTER );
   }
 
@@ -841,7 +841,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   favoritesBtn->callback( _favoritesCB, this );
   {
     Flu_Label *l = new Flu_Label( 5, 302, 100, 20, _(favoritesTxt.c_str()) );
-    l->labelcolor( FL_WHITE );
+    l->labelcolor( fl_contrast( FL_WHITE, l->color() ) );
     l->align( FL_ALIGN_CENTER );
   }
 

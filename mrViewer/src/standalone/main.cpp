@@ -245,7 +245,7 @@ int main( int argc, const char** argv )
 #endif
     path += "/share/locale";
 
-    LOG_INFO( _("Looking for translations in ") << path );
+    LOG_INFO( "Translations: " << path );
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
 
