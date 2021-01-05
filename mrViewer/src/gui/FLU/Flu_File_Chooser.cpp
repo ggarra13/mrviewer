@@ -1761,7 +1761,6 @@ void Flu_File_Chooser :: sortCB( Fl_Widget *w )
   }
 }
 
-#if 0
 Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
    : Fl_Tile( x, y, w, h )
 {
@@ -1779,26 +1778,6 @@ int Flu_File_Chooser :: CBTile :: handle( int event )
     }
   return Fl_Tile::handle(event);
 }
-#else
-
-Flu_File_Chooser :: CBTile :: CBTile( int x, int y, int w, int h, Flu_File_Chooser *c )
-   : Fl_Group( x, y, w, h )
-{
-  chooser = c;
-}
-
-int Flu_File_Chooser :: CBTile :: handle( int event )
-{
-  if( event == FL_DRAG )
-    {
-      // the user is probably dragging to resize the columns
-      // update the sizes for each entry
-      chooser->updateEntrySizes();
-      chooser->redraw();
-    }
-  return Fl_Group::handle(event);
-}
-#endif
 
 Flu_File_Chooser :: FileColumns :: FileColumns( int x, int y, int w, int h, Flu_File_Chooser *c )
   : Fl_Tile( x, y, w, h )
@@ -1846,7 +1825,8 @@ Flu_File_Chooser :: FileColumns :: ~FileColumns()
 void Flu_File_Chooser :: FileColumns :: resize( int x, int y, int w, int h )
 {
   // TODO resize the buttons/tiles according to their stored relative sizes
-  Fl_Tile::resize( x, y, w, h );
+  Fl_Tile::resize( x, y, w, 20 );
+  chooser->filescroll->resize( x, y+20, w, chooser->fileDetailsGroup->h()-20 );
 }
 
 int Flu_File_Chooser :: FileColumns :: handle( int event )
@@ -3223,7 +3203,8 @@ void Flu_File_Chooser :: updateEntrySizes()
   filecolumns->W4 = detailDateBtn->w();
 
   // update the size of each entry because the user changed the size of each column
-  filedetails->resize( filedetails->x(), filedetails->y(), filescroll->w(), filedetails->h() );
+  filedetails->resize( filedetails->x(), filedetails->y(),
+		       filescroll->w(), filedetails->h() );
   int i;
   for( i = 0; i < filedetails->children(); ++i )
     ((Entry*)filedetails->child(i))->updateSize();
