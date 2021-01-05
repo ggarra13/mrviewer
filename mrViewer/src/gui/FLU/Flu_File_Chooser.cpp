@@ -1784,9 +1784,9 @@ Flu_File_Chooser :: FileColumns :: FileColumns( int x, int y, int w, int h, Flu_
 {
   chooser = c;
 
-  W1 = int(float(w)*0.35f);
-  W2 = int(float(w)*0.20f);
-  W3 = int(float(w)*0.15f);
+  W1 = int(float(w)*0.45f);
+  W2 = int(float(w)*0.15f);
+  W3 = int(float(w)*0.10f);
   W4 = w-W1-W2-W3;
 
   Fl_Box *box = new Fl_Box( x+50, y, w-200, h );

@@ -131,7 +131,10 @@ void MainWindow::set_icon()
     // Turn off screensaver and black screen
     DBGM1( _("Turn off screensaver") );
 #ifdef LINUX
-    XScreenSaverSuspend( fl_display, True );
+    int event_base, error_base;
+    Bool ok = XScreenSaverQueryExtension(fl_display, &event_base, &error_base );
+    if ( ok == True )
+        XScreenSaverSuspend( fl_display, True );
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
                              ES_DISPLAY_REQUIRED );

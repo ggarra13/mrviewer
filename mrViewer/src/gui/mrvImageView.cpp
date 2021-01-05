@@ -2874,7 +2874,11 @@ void static_preload( mrv::ImageView* v )
         CMedia* img = m->image();
         double delay = 1.0 / img->fps();
         if ( ! img->is_stereo() )
-            Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+        {
+            if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_preload, v ) )
+                Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload,
+                                    v );
+        }
         else
             Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
     }
@@ -3790,7 +3794,10 @@ void ImageView::timeout()
    }
 
     redraw();
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    if ( ! Fl::has_timeout ((Fl_Timeout_Handler) static_timeout, this ) )
+    {
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    }
 }
 
 void ImageView::selection( const mrv::Rectd& r )
