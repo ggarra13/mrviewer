@@ -603,12 +603,12 @@ Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser :: find_type( const char *exten
 }
 
 Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int type, const char *title, const bool compact )
-  : Fl_Double_Window( 600, 400, title ),
+  : Fl_Double_Window( 900, 600, title ),
     _compact( compact ),
     filename( 70, h()-60, w()-70-85-10, 25, "", this ),
     ok( w()-90, h()-60, 85, 25 ),
     cancel( w()-90, h()-30, 85, 25 ),
-    wingrp( new Fl_Group( 0, 0, 600, 400 ) ),
+    wingrp( new Fl_Group( 0, 0, 900, 600 ) ),
     entryPopup( 0, 0, 0, 0 ),
     num_timeouts( 0 ),
     serial( 0 ),
@@ -621,7 +621,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   _userdata = 0;
   Fl_Double_Window::callback( _hideCB, this );
 
-  Fl_Double_Window::size_range( 600, 400 );
+  Fl_Double_Window::size_range( 900, 600 );
 
   wingrp->box( FL_UP_BOX );
   resizable( wingrp );
@@ -700,8 +700,9 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   for( int j = 0; j < 4; j++ )
     {
-      dArrow[j] = "@-12DnArrow " + detailTxt[j];
-      uArrow[j] = "@-18UpArrow " + detailTxt[j];
+      std::string text = _( detailTxt[j].c_str() );
+      dArrow[j] = "@-12DnArrow " + text;
+      uArrow[j] = "@-18UpArrow " + text;
     }
 
   history = currentHist = NULL;
@@ -961,13 +962,12 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     fileListWideBtn = new Flu_Button( 540, 43, 25, 25 );
     fileListWideBtn->type( FL_RADIO_BUTTON );
     fileListWideBtn->callback( _listModeCB, this );
-    fileListWideBtn->value(1);
     fileListWideBtn->image( file_listwide_img );
-    fileListWideBtn->value(1);
     fileListWideBtn->tooltip( wideListTTxt.c_str() );
     fileDetailsBtn = new Flu_Button( 569, 43, 25, 25 );
     fileDetailsBtn->type( FL_RADIO_BUTTON );
     fileDetailsBtn->image( fileDetails );
+    fileDetailsBtn->value(1);
     fileDetailsBtn->callback( _listModeCB, this );
     fileDetailsBtn->tooltip( detailTTxt.c_str() );
     g2->end();
@@ -1827,6 +1827,8 @@ void Flu_File_Chooser :: FileColumns :: resize( int x, int y, int w, int h )
   // TODO resize the buttons/tiles according to their stored relative sizes
   Fl_Tile::resize( x, y, w, 20 );
   chooser->filescroll->resize( x, y+20, w, chooser->fileDetailsGroup->h()-20 );
+  chooser->updateEntrySizes();
+  chooser->redraw();
 }
 
 int Flu_File_Chooser :: FileColumns :: handle( int event )
@@ -2518,6 +2520,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
         {
             H = icon->h() + 4;
         }
+        if ( delete_icon ) H += 24;
     }
   if( type==ENTRY_FAVORITE || chooser->fileListWideBtn->value() )
     {
@@ -3089,17 +3092,26 @@ void Flu_File_Chooser :: Entry :: draw()
     }
 
   int X = x()+4;
+  int Y = y();
+  int iH = 0;
   if( icon )
     {
-      icon->draw( X, y()+h()/2-icon->h()/2 );
-      X += icon->w()+2;
+      if ( delete_icon ) {
+          icon->draw( X, y()+2 );
+          Y += icon->h()+2;
+          iH = icon->h()+2;
+      }
+      else
+      {
+          icon->draw( X, y()+h()/2-icon->h()/2 );
+          X += icon->w()+2;
+      }
     }
 
-  int iW = 0, iH = 0, W = 0, H = 0;
-  if( icon )
+  int iW = 0, W = 0, H = 0;
+  if( icon && !delete_icon )
     {
       iW = icon->w()+2;
-      iH = icon->h();
     }
 
   fl_font( textfont(), textsize() );
@@ -3137,7 +3149,7 @@ void Flu_File_Chooser :: Entry :: draw()
       pos += 2;
   }
 
-  fl_draw( shortname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
+  fl_draw( shortname.c_str(), X, Y, nameW, h()-iH, FL_ALIGN_LEFT );
 
   shortname = filename;
 
@@ -3204,7 +3216,7 @@ void Flu_File_Chooser :: updateEntrySizes()
 
   // update the size of each entry because the user changed the size of each column
   filedetails->resize( filedetails->x(), filedetails->y(),
-		       filescroll->w(), filedetails->h() );
+                       filescroll->w(), filedetails->h() );
   int i;
   for( i = 0; i < filedetails->children(); ++i )
     ((Entry*)filedetails->child(i))->updateSize();

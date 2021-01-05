@@ -51,70 +51,70 @@ void Flu_Combo_Tree :: cb()
 
 void Flu_Combo_Tree :: _hilight( int event, int x, int y )
 {
-    // @TODO: fltk1.4
+
     Fl_Tree_Item* i;
     for ( i = tree.first(); i; i = tree.next_item(i) )
     {
-	if ( i->is_root() ) continue;
-    	if ( i->event_on_label( tree.prefs() ) )
-    	{
-    	    tree.deselect_all();
-    	    tree.select( i, 0 );
-    	    break;
-    	}
+        if ( i->is_root() ) continue;
+        if ( i->event_on_label( tree.prefs() ) )
+        {
+            tree.deselect_all();
+            tree.select( i, 0 );
+            break;
+        }
     }
 
     if ( event == FL_PUSH && i )
     {
-	std::string path = i->label();
-	selected( path.c_str() );
+        std::string path = i->label();
+        selected( path.c_str() );
     }
 }
 
 bool Flu_Combo_Tree :: _value( const char *v )
 {
-  // see if 'v' is in the tree, and if so, make it the current selection
-  Fl_Tree_Item *n = tree.find_item( v );
-  if( n )
+    // see if 'v' is in the tree, and if so, make it the current selection
+    Fl_Tree_Item *n = tree.find_item( v );
+    if( n )
     {
-      tree.deselect_all();
-      n->select( true );
-      return true;
+        tree.deselect_all();
+        tree.select( n, 0 );
+        return true;
     }
-  return false;
+    return false;
 }
 
 const char* Flu_Combo_Tree :: _next()
 {
-  Fl_Tree_Item *n = tree.first_selected_item();
-  if( n )
+    Fl_Tree_Item *n = tree.first_selected_item();
+    if( n )
     {
-      Fl_Tree_Item *n2 = tree.next_selected_item(n);
-      if( n2 )
+        Fl_Tree_Item *n2 = tree.next_selected_item(n);
+        if( n2 )
         {
-          n->select( false );
-          n2->select( true );
-          const char *path = n2->label();
-          return( strlen(path) ? path : NULL );
+            n->select( false );
+            n2->select( true );
+            const char *path = n2->label();
+            return( strlen(path) ? path : NULL );
         }
     }
-  return NULL;
+    return NULL;
 }
 
 const char* Flu_Combo_Tree :: _previous()
 {
-  Fl_Tree_Item *n = tree.last_selected_item();
-  if( n )
+    Fl_Tree_Item *n = tree.last_selected_item();
+    if( n )
     {
         Fl_Tree_Item *n2 = tree.next_selected_item(n, FL_Up);
-      if( n2 )
+        if( n2 )
         {
-          if( n2->is_root() && !tree.showroot() )
-            return NULL;
-          n->select( false );
-          n2->select( true );
-          const char *path = n2->label();
-          return( strlen(path) ? path : NULL );
+            if( n2->is_root() && !tree.showroot() )
+                return NULL;
+            n->select( false );
+            n2->select( true );
+            const char *path = n2->label();
+            return( strlen(path) ? path : NULL );
         }
     }
   return NULL;
