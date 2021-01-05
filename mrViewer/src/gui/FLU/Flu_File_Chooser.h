@@ -607,7 +607,6 @@ description, shortDescription, toolTip, altname;
 
   History *history, *currentHist;
 
-  std::vector< RealIcon* > idle;
   Fl_Callback *_callback;
   void *_userdata;
 

@@ -484,7 +484,6 @@ void Flu_File_Chooser::previewCB()
 #ifdef ICONS_TIMEOUT
                 Fl::add_timeout( 0.1, (Fl_Timeout_Handler) loadRealIcon, ri );
 #else
-                idle.push_back( ri );
                 Fl::add_idle( (Fl_Timeout_Handler) loadRealIcon, ri );
 #endif
 
@@ -1265,9 +1264,7 @@ void Flu_File_Chooser::clear_threads()
     for (unsigned i = 0; i < num_timeouts; ++i )
         Fl::remove_timeout( (Fl_Timeout_Handler) loadRealIcon );
 #else
-    for (unsigned i = 0; i < idle.size(); ++i )
-        Fl::remove_idle( (Fl_Timeout_Handler) loadRealIcon, idle[i] );
-    idle.clear();
+    Fl::remove_idle( (Fl_Timeout_Handler) loadRealIcon, NULL );
 #endif
     num_timeouts = 0;
 #else
