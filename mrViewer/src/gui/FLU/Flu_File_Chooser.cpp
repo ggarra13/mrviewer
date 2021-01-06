@@ -49,6 +49,7 @@
 #include <FL/filename.H>
 #include <FL/Fl_Pixmap.H>
 #include <FL/Fl_Scroll.H>
+#include <FL/Fl_Rect.H>
 #include <FL/Fl_Shared_Image.H>
 
 
@@ -1775,6 +1776,8 @@ int Flu_File_Chooser :: CBTile :: handle( int event )
   return Fl_Tile::handle(event);
 }
 
+
+
 Flu_File_Chooser :: FileColumns :: FileColumns( int x, int y, int w, int h, Flu_File_Chooser *c )
   : Fl_Tile( x, y, w, h )
 {
@@ -2510,7 +2513,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
              ( icon == &reel || icon == &picture ) &&
              thumbnailsFileReq )
         {
-            H = 68;
+            H = 92; //68;
         }
         else
         {
@@ -2524,6 +2527,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
     }
   else
     resize( x(), y(), DEFAULT_ENTRY_WIDTH, H );
+
 
   details = chooser->fileDetailsBtn->value() && ( type != ENTRY_FAVORITE );
 
@@ -2539,11 +2543,10 @@ void Flu_File_Chooser :: Entry :: updateSize()
     nameW = w();
 
   // how big is the icon?
-  int iW = 22, iH = 0;
+  int iW = 22;
   if( icon )
     {
       iW = icon->w()+2;
-      iH = icon->h();
     }
 
   fl_font( textfont(), textsize() );
@@ -3062,6 +3065,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
   return 1;
 }
 
+
 void Flu_File_Chooser :: Entry :: draw()
 {
   if( editMode )
@@ -3205,19 +3209,26 @@ void Flu_File_Chooser :: select_all()
 
 void Flu_File_Chooser :: updateEntrySizes()
 {
+  int i;
   filecolumns->W1 = detailNameBtn->w();
   filecolumns->W2 = detailTypeBtn->w();
   filecolumns->W3 = detailSizeBtn->w();
   filecolumns->W4 = detailDateBtn->w();
 
+  for( i = 0; i < filedetails->children(); ++i )
+  {
+      Entry* e = ((Entry*)filedetails->child(i));
+      e->position( 0, filedetails->y()+e->y() );
+  }
+
   // update the size of each entry because the user changed the size of each column
   filedetails->resize( filedetails->x(), filedetails->y(),
                        filescroll->w(), filedetails->h() );
-  int i;
   for( i = 0; i < filedetails->children(); ++i )
     ((Entry*)filedetails->child(i))->updateSize();
   for( i = 0; i < filelist->children(); ++i )
     ((Entry*)filelist->child(i))->updateSize();
+
 }
 
 const char* Flu_File_Chooser :: value()
@@ -3969,8 +3980,8 @@ void Flu_File_Chooser :: cd( const char *path )
       //filescroll->parent()->resizable( filescroll );
       fileDetailsGroup->show();
       fileDetailsGroup->parent()->resizable( fileDetailsGroup );
-      //updateEntrySizes();
     }
+  updateEntrySizes();
 
   std::string currentFile = filename.value();
   filescroll->scroll_to( 0, 0 );
