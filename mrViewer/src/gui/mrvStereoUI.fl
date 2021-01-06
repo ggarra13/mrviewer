@@ -1,11 +1,11 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
 header_name {.h}
 code_name {.cxx}
-decl {\#include "core/mrvFrame.h"} {selected public local
+decl {\#include "core/mrvFrame.h"} {public local
 }
 
 decl {\#include "gui/mrvIO.h"} {public local
@@ -41,7 +41,7 @@ class StereoUI {open
       user_data this user_data_type {StereoUI*}
       callback {v->main()->uiView->send_network( "StereoOptions 0" );
 o->hide();} open
-      xywh {866 456 280 160} type Double resizable
+      xywh {369 191 280 160} type Double resizable
       code0 {main_ = main;
 o->main( main );}
       class {mrv::StereoWindow} non_modal visible
@@ -54,8 +54,7 @@ o->main( main );}
           user_data main user_data_type {ViewerUI*}
           callback {int x = o->value();
 mrv::CMedia::StereoInput in = mrv::CMedia::to_stereo_input( x );
-v->uiView->stereo_input( in );
-} open
+v->uiView->stereo_input( in );} open
           tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.} xywh {80 60 175 25} down_box BORDER_BOX
           code0 {mrv::media fg = main->uiView->foreground();
 
@@ -110,12 +109,11 @@ o->value( x );
             xywh {0 0 100 20}
           }
           MenuItem uiStereoOpenGL {
-            label {Stereo OpenGL}
+            label {Stereo OpenGL} selected
             xywh {0 0 100 20}
-            code0 {if ( main->uiView->can_do( FL_STEREO ) )
-  uiStereoOpenGL->activate();
-else
-  uiStereoOpenGL->deactivate();}
+            code0 {if ( main->uiView->can_do( FL_STEREO ) )  uiStereoOpenGL->activate();}
+            code1 else
+            code2 {uiStereoOpenGL->deactivate();}
           }
           MenuItem {} {
             label {Top/bottom}

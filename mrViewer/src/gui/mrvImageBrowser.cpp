@@ -2302,6 +2302,7 @@ void ImageBrowser::set_timeline( const int64_t& first, const int64_t& last )
     {
         t->minimum( double(first) );
         t->maximum( double(last) );
+        t->redraw();
     }
     uiMain->uiStartFrame->value( first );
     uiMain->uiEndFrame->value( last );

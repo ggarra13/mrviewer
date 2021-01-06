@@ -35,7 +35,7 @@
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
-//#define USE_STEREO_GL
+#define USE_STEREO_GL
 
 #include <vector>
 #include <iostream>
