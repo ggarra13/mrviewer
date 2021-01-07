@@ -1676,11 +1676,13 @@ static void static_timeout( mrv::ImageView* v )
 
 void ImageView::create_timeout( double t )
 {
+  if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
     Fl::add_timeout( t, (Fl_Timeout_Handler) static_timeout, this );
 }
 
 void ImageView::delete_timeout()
 {
+  if ( Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
     Fl::remove_timeout( (Fl_Timeout_Handler) static_timeout, this );
 }
 

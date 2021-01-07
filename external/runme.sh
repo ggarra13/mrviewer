@@ -2,7 +2,7 @@
 
 KERNEL=`uname`
 RELEASE=`uname -r`
-installdir=/usr/local/ #$PWD/../install-$KERNEL-$RELEASE
+installdir=$PWD/../install-$KERNEL-$RELEASE
 echo "INSTALLDIR = " $installdir
 if [[ $KERNEL == Linux ]]; then
     copy='sudo cp'
