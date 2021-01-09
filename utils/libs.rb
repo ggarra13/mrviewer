@@ -180,13 +180,13 @@ $stdout.puts "kernel: #{kernel}"
 
 root = $0.sub(/utils\/libs.rb/, "")
 if root.size <= 1
-  root = '.'
+  root = Dir.pwd
 end
 $stdout.puts "DIRECTORY: #{root}"
 
 
 
-#root = Dir.pwd
+
 
 if kernel !~ /MINGW.*/
 
@@ -209,7 +209,7 @@ if kernel !~ /MINGW.*/
                       :verbose => true )
     end
   end
-  
+
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
   FileUtils.rm_f( libs )
@@ -241,6 +241,10 @@ if kernel !~ /MINGW.*/
   copy_files( dest )
 
   if kernel =~ /Linux/
+    Dir.chdir( dest + "/lib" )
+    FileUtils.ln_s "libACESclip.so.0.2.6",
+                   "libACESclip.so", :verbose => true, :force => true
+    Dir.chdir( root )
     $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
   elsif kernel =~ /Darwin/
