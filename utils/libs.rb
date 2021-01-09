@@ -240,17 +240,17 @@ if kernel !~ /MINGW.*/
   Dir.chdir( root  )
   copy_files( dest )
 
+  Dir.chdir( dest + "/lib" )
   if kernel =~ /Linux/
-    Dir.chdir( dest + "/lib" )
     FileUtils.ln_s "libACESclip.so.0.2.6",
                    "libACESclip.so", :verbose => true, :force => true
-    Dir.chdir( root )
     $stdout.puts "remove .fuse files"
     `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
   elsif kernel =~ /Darwin/
-    FileUtils.ln_s "#{dest}/lib/libACESclip.dylib.0.2.6",
-                   "#{dest}/lib/libACESclip.dylib", :force => true
+    FileUtils.ln_s "libACESclip.dylib.0.2.6",
+                   "libACESclip.dylib", :verbose => true, :force => true
   end
+  Dir.chdir( root )
 
 else
   build = "BUILD/Windows-6.3.9600-64/"
