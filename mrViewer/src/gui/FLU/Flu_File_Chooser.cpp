@@ -975,7 +975,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   g->resizable( hiddenFiles );
   g->end();
 
-  dummy->resizable( location );
+  //dummy->resizable( location );
   dummy->end();
 
   ////////////////////////////////////////////////////////////////

@@ -1,9 +1,15 @@
+v5.7.2  - Bug fixed pull down trees and menus from custom file requester
+	  ( location and extension ).  Previously this menus were shown in
+	  the middle of the screen.
+
 v5.7.1  - Fixed MacOS crash on two timeouts when playing a deleted clip.
 	- Bug fixed timeline start/end when all clips are deleted from reel.
 	- Bug fixed translation of Up/Down column names in file requester.
 	- Bug fixed scaling of custom file requester.
 	- Improved custom file requester look and behavior.
 	- Allowed for OpenGL HW stereo (untested but should work).
+	- Bug fixed a fullscreen bug on MacOS that would leave a two pixel
+	  line at the top of the screen.
 
 v5.7.0  - Added A/B button to topbar to allow adding a B (Background) image
 	  easily for A/B checking.

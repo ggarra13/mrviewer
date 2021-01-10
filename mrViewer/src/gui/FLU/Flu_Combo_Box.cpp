@@ -107,7 +107,8 @@ void Flu_Combo_Box :: draw()
 
 int global_x( Fl_Widget *w )
 {
-  int x = Fl::x()+w->x();
+  // int x = Fl::x()+w->x();
+  int x = w->x();
   Fl_Widget *o = w->parent();
   while( o )
     {
@@ -119,7 +120,8 @@ int global_x( Fl_Widget *w )
 
 int global_y( Fl_Widget *w )
 {
-  int y = Fl::y()+w->y();
+  //int y = Fl::y()+w->y();
+  int y = w->y();
   Fl_Widget *o = w->parent();
   while( o )
     {
@@ -142,8 +144,10 @@ Flu_Combo_Box::Popup :: Popup( Flu_Combo_Box *b, Fl_Widget *c, int H )
   border( 0 );
   add( c );
   end();
+
   //set_non_modal();
-  set_modal();
+  //set_modal();
+  set_menu_window();
 
   c->resize( 1, 1, w()-2, h()-2 );
 }
