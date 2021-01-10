@@ -145,9 +145,11 @@ Flu_Combo_Box::Popup :: Popup( Flu_Combo_Box *b, Fl_Widget *c, int H )
   add( c );
   end();
 
-  //set_non_modal();
-  //set_modal();
+#ifdef LINUX
   set_menu_window();
+#else
+  set_modal();
+#endif
 
   c->resize( 1, 1, w()-2, h()-2 );
 }
