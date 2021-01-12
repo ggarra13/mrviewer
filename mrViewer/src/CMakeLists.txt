@@ -90,7 +90,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   set( AOENGINE 1 )
 
   LINK_DIRECTORIES( /usr/local/lib )
-  set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
+  set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} -static-libgcc -static-libstdc++  pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
   ADD_DEFINITIONS( -D__MACOSX_CORE__ )
 
@@ -114,6 +114,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DMR_SSE )
   # ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=0 )
   ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
+
 
   # Media libraries for Linux
   # FIND_PACKAGE( ALSA        REQUIRED )
@@ -151,7 +152,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DLINUX -DNDEBUG )
   ADD_COMPILE_OPTIONS( -O3 -msse )
   SET(OS_LIBRARIES
-    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW -static-libstdc++ lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
+    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
     )
 
   IF( AOENGINE )

@@ -9904,6 +9904,9 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
+    uiMain->uiFrame->value( f );
+    uiMain->uiTimeline->value( f );
+
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
 }

@@ -3533,10 +3533,10 @@ void ImageBrowser::seek( const int64_t tframe )
 
             size_t i = reel->index( f );
             img = reel->image_at( f );
-            f = reel->global_to_local( f );
+            int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
 
-            img->seek( f );
+            img->seek( lf );
 
             if ( (int) i < children() )
                 change_image((int)i);
@@ -3548,8 +3548,8 @@ void ImageBrowser::seek( const int64_t tframe )
         }
         else
         {
-            f = reel->global_to_local( f );
-            img->seek( f );
+            int64_t lf = reel->global_to_local( f );
+            img->seek( lf );
         }
 
         mrv::Reel reel = reel_at( view()->bg_reel() );
@@ -3562,10 +3562,10 @@ void ImageBrowser::seek( const int64_t tframe )
 
                 if ( bg )
                 {
-                    f = reel->global_to_local( tframe );
+                    int64_t lf = reel->global_to_local( f );
 
                     img = bg->image();
-                    img->seek( f );
+                    img->seek( lf );
                 }
             }
         }
@@ -3585,7 +3585,6 @@ void ImageBrowser::seek( const int64_t tframe )
         if ( bg )
         {
             img = bg->image();
-            // f += img->first_frame();
             img->seek( f );
         }
     }
