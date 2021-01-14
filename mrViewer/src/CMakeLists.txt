@@ -90,7 +90,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   set( AOENGINE 1 )
 
   LINK_DIRECTORIES( /usr/local/lib )
-  set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} -static-libgcc -static-libstdc++  pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
+  set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
   ADD_DEFINITIONS( -D__MACOSX_CORE__ )
 
