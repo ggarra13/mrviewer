@@ -1542,7 +1542,7 @@ void ImageBrowser::change_image( int i )
 
     send_image( i );
 
-#if 0
+#if 1
     if ( reel->edl )
     {
         int64_t pos = m->position();

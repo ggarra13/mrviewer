@@ -1,6 +1,11 @@
 v5.7.2  - Bug fixed pull down trees and menus from custom file requester
 	  ( location and extension ).  Previously this menus were shown in
 	  the middle of the screen.
+	- Bug fixed go to first frame button as it was not working anymore.
+	  (Regression of v5.6.7).
+	- Bug fixed swap fg/bg (A/B) images being offset by one frame.
+	- Bug fixed bg yellow color on B image not showing up on reel window
+	  sometimes.
 
 v5.7.1  - Fixed MacOS crash on two timeouts when playing a deleted clip.
 	- Bug fixed timeline start/end when all clips are deleted from reel.

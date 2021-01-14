@@ -523,9 +523,20 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
         return;
     }
 
+    view->background( fg );
+    view->bg_reel( fg_reel );
+    Fl_Tree_Item* item = view->browser()->media_to_item( fg );
+    if ( item )
+    {
+        mrv::Element* elem = (mrv::Element*) item->widget();
+        elem->Label()->box( FL_PLASTIC_DOWN_BOX );
+        elem->Label()->color( FL_YELLOW );
+        elem->redraw();
+    }
+    
     view->foreground( bg );
     view->fg_reel( bg_reel );
-    Fl_Tree_Item* item = view->browser()->media_to_item( bg );
+    item = view->browser()->media_to_item( bg );
     view->browser()->Fl_Tree::deselect_all( NULL, 0 );
     if ( item )
     {
@@ -535,21 +546,12 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
         elem->redraw();
     }
 
-    view->background( fg );
-    view->bg_reel( fg_reel );
-    item = view->browser()->media_to_item( fg );
-    if ( item )
-    {
-        mrv::Element* elem = (mrv::Element*) item->widget();
-        elem->Label()->box( FL_PLASTIC_DOWN_BOX );
-        elem->Label()->color( FL_YELLOW );
-        elem->redraw();
-    }
 
     ViewerUI* m = view->main();
     mrv::Timeline* t = m->uiTimeline;
     mrv::CMedia* img = bg->image();
 
+    int64_t f = img->frame();
 #if 1
     if ( fg_reel >= 0 )
     {
@@ -563,14 +565,13 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
             }
             else
             {
-                b->seek( view->frame() );
+                b->seek( f );
             }
         }
         b->redraw();
     }
 #endif
 
-    // int64_t f = m->uiFrame->value();
 
     // std::cerr << "f " << f << std::endl;
 
@@ -1767,8 +1768,14 @@ _lastFrame( 0 )
 
 void ImageView::stop_playback()
 {
+    CMedia* img = NULL;
+
     mrv::media fg = foreground();
-    if ( fg ) fg->image()->stop();
+    if ( fg ) {
+        img = fg->image();
+        img->stop();
+        this->frame( img->frame() );
+    }
 
     mrv::media bg = background();
     if ( bg ) bg->image()->stop(true);
@@ -9401,6 +9408,7 @@ void ImageView::foreground( mrv::media fg )
     {
         uiMain->uiBButton->copy_label( "A/B" );
         uiMain->uiBButton->selection_color( FL_BACKGROUND_COLOR );
+        uiMain->uiBButton->down_box( FL_PLASTIC_DOWN_BOX );
         uiMain->uiBButton->redraw();
     }
 
@@ -9904,7 +9912,7 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
-    uiMain->uiFrame->value( f );
+    uiMain->uiFrame->frame( f );
     uiMain->uiTimeline->value( f );
 
     mrv::ImageBrowser* b = browser();
