@@ -533,7 +533,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
         elem->Label()->color( FL_YELLOW );
         elem->redraw();
     }
-    
+
     view->foreground( bg );
     view->fg_reel( bg_reel );
     item = view->browser()->media_to_item( bg );
@@ -10140,7 +10140,6 @@ void ImageView::update_color_info( const mrv::media fg ) const
     CMedia* img = fg->image();
     if ( ! (img->image_damage() & CMedia::kDamageLut) )
         return;
-
 
     if ( uiMain->uiICS->visible() )
     {

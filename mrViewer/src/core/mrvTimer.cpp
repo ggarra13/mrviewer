@@ -86,18 +86,16 @@ Timer::Timer ():
   _framesSinceLastFpsFrame (0),
   _actualFrameRate (0)
 {
+#ifndef OSX
   gettimeofday (&_lastFrameTime, 0);
-  _lastFpsFrameTime = _lastFrameTime;
-#if 0  // def OSX
-  osx_latencycritical_start();
+#else
+  _lastFrameTime = CACurrentMediaTime();
 #endif
+  _lastFpsFrameTime = _lastFrameTime;
 }
 
     Timer::~Timer()
     {
-#if 0  // def OSX
-  osx_latencycritical_end();
-#endif
     }
 void
 Timer::waitUntilNextFrameIsDue ()
@@ -109,7 +107,11 @@ Timer::waitUntilNextFrameIsDue ()
       // variables and return without waiting.
       //
 
-      gettimeofday (&_lastFrameTime, 0);
+#ifndef OSX
+        gettimeofday (&_lastFrameTime, 0);
+#else
+        _lastFrameTime = CACurrentMediaTime();
+#endif
       _timingError = 0;
       _lastFpsFrameTime = _lastFrameTime;
       _framesSinceLastFpsFrame = 0;
@@ -121,11 +123,18 @@ Timer::waitUntilNextFrameIsDue ()
     // was displayed, sleep until exactly _spf seconds have gone by.
     //
 
-    timeval now;
-    gettimeofday (&now, 0);
+#ifndef OSX
+  timeval now;
+  gettimeofday (&now, 0);
 
-    _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
-                          (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+  _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
+                         (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+#else
+  int64_t now;
+  now = CACurrentMediaTime();
+  _timeSinceLastFrame = now - _lastFrameTime;
+#endif
+
 
     double timeToSleep = _spf - _timeSinceLastFrame - _timingError;
 
@@ -154,10 +163,17 @@ Timer::waitUntilNextFrameIsDue ()
     // keep our average frame rate close to one frame every _spf seconds.
     //
 
-    gettimeofday (&now, 0);
+#ifndef OSX
+  gettimeofday (&now, 0);
 
-    float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
-                              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+  float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
+                             (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+#else
+  now = CACurrentMediaTime();
+
+  float timeSinceLastSleep = now  - _lastFrameTime;
+#endif
+
 
     _timingError += timeSinceLastSleep - _spf;
 

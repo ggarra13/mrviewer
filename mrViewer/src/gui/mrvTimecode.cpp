@@ -513,7 +513,7 @@ void Timecode::value( const int64_t x )
 
     _frame = x;
 
-    char buf[100];
+    char buf[32];
     int n = format( buf, _display, x, _tc_frame, _fps, true );
     Fl_Input::value(buf, n);
     redraw();
