@@ -86,16 +86,18 @@ Timer::Timer ():
   _framesSinceLastFpsFrame (0),
   _actualFrameRate (0)
 {
-#ifndef OSX
   gettimeofday (&_lastFrameTime, 0);
-#else
-  _lastFrameTime = CACurrentMediaTime();
-#endif
   _lastFpsFrameTime = _lastFrameTime;
+#if 0  // def OSX
+  osx_latencycritical_start();
+#endif
 }
 
     Timer::~Timer()
     {
+#if 0  // def OSX
+  osx_latencycritical_end();
+#endif
     }
 void
 Timer::waitUntilNextFrameIsDue ()
@@ -107,11 +109,7 @@ Timer::waitUntilNextFrameIsDue ()
       // variables and return without waiting.
       //
 
-#ifndef OSX
-        gettimeofday (&_lastFrameTime, 0);
-#else
-        _lastFrameTime = CACurrentMediaTime();
-#endif
+      gettimeofday (&_lastFrameTime, 0);
       _timingError = 0;
       _lastFpsFrameTime = _lastFrameTime;
       _framesSinceLastFpsFrame = 0;
@@ -123,18 +121,11 @@ Timer::waitUntilNextFrameIsDue ()
     // was displayed, sleep until exactly _spf seconds have gone by.
     //
 
-#ifndef OSX
-  timeval now;
-  gettimeofday (&now, 0);
+    timeval now;
+    gettimeofday (&now, 0);
 
-  _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
-                         (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
-#else
-  int64_t now;
-  now = CACurrentMediaTime();
-  _timeSinceLastFrame = now - _lastFrameTime;
-#endif
-
+    _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
+                          (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
     double timeToSleep = _spf - _timeSinceLastFrame - _timingError;
 
@@ -163,17 +154,10 @@ Timer::waitUntilNextFrameIsDue ()
     // keep our average frame rate close to one frame every _spf seconds.
     //
 
-#ifndef OSX
-  gettimeofday (&now, 0);
+    gettimeofday (&now, 0);
 
-  float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
-                             (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
-#else
-  now = CACurrentMediaTime();
-
-  float timeSinceLastSleep = now  - _lastFrameTime;
-#endif
-
+    float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
+                              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
     _timingError += timeSinceLastSleep - _spf;
 
