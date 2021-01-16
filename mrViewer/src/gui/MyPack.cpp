@@ -26,6 +26,7 @@
 MyPack::MyPack(int X, int Y, int W, int H,const char *l)
 : Fl_Group(X, Y, W, H, l){
   resizable(0);
+  box( FL_NO_BOX );
   spacing_ = 0;
   // type(VERTICAL); // already set like this
 }
@@ -155,7 +156,7 @@ int MyPack::handle( int e )
     // for (int i = 0; i < children(); ++i )
     // {
     //     Fl_Widget* e = child(i);
-    //     std::cerr << "\t" << e << " label=" 
+    //     std::cerr << "\t" << e << " label="
     //               << (e->label() ? e->label() : "none" ) << std::endl;
     // }
     return Fl_Group::handle( e );

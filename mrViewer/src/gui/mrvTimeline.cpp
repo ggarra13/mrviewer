@@ -51,7 +51,11 @@ namespace
 {
 // Maximum number of frames to show cacheline.  Setting it too high can
 // impact GUI playback when the image/movies are that long.
+#ifdef OSX
+unsigned kMAX_FRAMES = 500;
+#else
 unsigned kMAX_FRAMES = 5000;
+#endif
 double kMinFrame = std::numeric_limits<double>::min();
 double kMaxFrame = std::numeric_limits<double>::max();
 }

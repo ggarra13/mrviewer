@@ -279,9 +279,8 @@ void Timecode::display( Timecode::Display x )
     else
         type( FL_NORMAL_INPUT );
 
-    char buf[100];
-    int n = format( buf, _display, v, _tc_frame, _fps, true );
-    Fl_Input::value(buf, n);
+    int n = format( _buf, _display, v, _tc_frame, _fps, true );
+    Fl_Input::static_value( _buf, n );
     redraw();
 }
 
@@ -513,9 +512,8 @@ void Timecode::value( const int64_t x )
 
     _frame = x;
 
-    char buf[32];
-    int n = format( buf, _display, x, _tc_frame, _fps, true );
-    Fl_Input::value(buf, n);
+    int n = format( _buf, _display, x, _tc_frame, _fps, true );
+    Fl_Input::static_value( _buf, n );
     redraw();
 }
 

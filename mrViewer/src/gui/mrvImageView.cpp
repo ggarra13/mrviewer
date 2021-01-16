@@ -1762,7 +1762,7 @@ _lastFrame( 0 )
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = _zoom / scale;
 
-    create_timeout( 0.25f / 60.0f );
+    create_timeout( 0.5f / 60.0f );
 }
 
 
@@ -3681,15 +3681,18 @@ void ImageView::timeout()
     mrv::media fg = foreground();
 
     int64_t tframe = _frame;
-    timeline->value( double(tframe) );
-    timeline->redraw();
-    uiMain->uiFrame->value( tframe );  // so it is displayed properly
-    uiMain->uiFrame->redraw();
+    if ( timeline->visible() )
+    {
+        timeline->value( double(tframe) );
+        timeline->redraw();
+        uiMain->uiFrame->value( tframe );  // so it is displayed properly
+        uiMain->uiFrame->redraw();
+    }
 
     if ( uiMain->uiEDLWindow )
     {
         mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
-        if (t)
+        if (t && t->visible() )
         {
             t->value( double(tframe) );
             t->redraw();
@@ -3730,7 +3733,7 @@ void ImageView::timeout()
     {
         TRACE("");
         CMedia* img = fg->image();
-        delay = 0.25 / img->play_fps();
+        delay = 0.5 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
@@ -3744,7 +3747,7 @@ void ImageView::timeout()
     }
 
 
-    if ( timeline && timeline->visible() )
+    if ( timeline->visible() )
     {
 
         TRACE("");
@@ -3803,10 +3806,7 @@ void ImageView::timeout()
    }
 
     redraw();
-    if ( ! Fl::has_timeout ((Fl_Timeout_Handler) static_timeout, this ) )
-    {
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    }
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -4405,6 +4405,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,0); glVertex2f(W,H); glEnd();
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
+
 
 }
 
@@ -10268,7 +10269,7 @@ void ImageView::play( const CMedia::Playback dir )
 
     double fps = uiMain->uiFPS->value();
 
-    create_timeout( 0.25/fps );
+    create_timeout( 0.5/fps );
 
     // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
     //      !CMedia::cache_active() ||
