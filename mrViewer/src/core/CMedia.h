@@ -1907,6 +1907,7 @@ protected:
 
 
     std::atomic<size_t>  _w, _h;     //!< width and height of image
+    short   _cache_full;   // 0, 1 or 2
     bool   _internal;      //!< image is internal with no filename
     bool   _is_thumbnail;     //!< image is a thumbnail (no printing of errors)
     bool   _is_sequence;      //!< true if a sequence

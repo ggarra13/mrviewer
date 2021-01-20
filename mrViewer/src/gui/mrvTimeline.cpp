@@ -52,7 +52,7 @@ namespace
 // Maximum number of frames to show cacheline.  Setting it too high can
 // impact GUI playback when the image/movies are that long.
 #ifdef OSX
-unsigned kMAX_FRAMES = 500;
+unsigned kMAX_FRAMES = 5000;
 #else
 unsigned kMAX_FRAMES = 5000;
 #endif
@@ -306,13 +306,14 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color textcolor = fl_contrast( this->labelcolor(), color() );
     if ( _edl ) textcolor = FL_BLACK;
     Fl_Color linecolor = FL_BLACK;
-    if ( Preferences::schemes.name == "Black" && !edl() )
+    if ( !_edl && Preferences::schemes.name == "Black" )
     {
         linecolor = fl_rgb_color( 70, 70, 70 );
     }
 
     fl_color(linecolor);
-    char buffer[128];
+    char buffer[16];
+    fl_font(labelfont(), labelsize());
     for (int n = 0; ; n++) {
         // every ten they get further apart for log slider:
         if (n > powincr) {
@@ -324,31 +325,31 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
         int sm = n%smallmod ? 3 : 0;
         if (v >= A && v <= B) {
             int t = slider_position(v, w);
-            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+            int x1dxt = x1 + dx*t;
+            int y1dyt = y1 + dy*t;
+            fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
             if (n-1 != 0 && (n-1)%nummod == 0) {
-                mrv::Timecode::format( buffer, _display, boost::int64_t(v),
+                mrv::Timecode::format( buffer, _display, int64_t(v),
                                        _tc, _fps );
-                char* p = buffer;
-                fl_font(labelfont(), labelsize());
                 fl_color(textcolor);
                 int wt = 0, ht = 0;
-                fl_measure( p, wt, ht );
-                fl_draw(p, x1+dx*t-wt/2, y1+dy*t+fl_height()-fl_descent());
+                fl_measure( buffer, wt, ht );
+                fl_draw(buffer, x1dxt-wt/2, y1dyt+fl_height()-fl_descent());
                 fl_color(linecolor);
             }
         }
         if (v && -v >= A && -v <= B) {
             int t = slider_position(-v, w);
-            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+            int x1dxt = x1 + dx*t;
+            int y1dyt = y1 + dy*t;
+            fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
             if (n%nummod == 0) {
-                mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _tc,
+                mrv::Timecode::format( buffer, _display, int64_t(-v), _tc,
                                        _fps );
-                char* p = buffer;
-                fl_font(labelfont(), labelsize());
                 fl_color(textcolor);
                 // int wt = 0, ht = 0;
                 // measure( p, wt, ht );
-                fl_draw(p, x1+dx*t, y1+dy*t+fl_height()-fl_descent());
+                fl_draw(buffer, x1dxt, y1dyt+fl_height()-fl_descent());
                 fl_color(linecolor);
             }
         }

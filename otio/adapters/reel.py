@@ -572,6 +572,7 @@ class Reel2Otio(object):
 
         has_video, has_audio = _ffprobe_video_audio( self.media_path, path,
                                     False )
+        print(path, " ", self.media_path, " video=", has_video, " audio=", has_audio)
         return has_video, has_audio
 
     def _find_video_line( self, line ):
@@ -846,17 +847,19 @@ class Reel2Otio(object):
                             start_time + self.playhead + \
                             trange.duration \
                                 )
-                        else:
-                            self.clip.source_range = trange
                     else:
-                        atrange = self.clip.trimmed_range()
-                        trange = self.video_tracks[-1].trimmed_range()
-                        if trange.contains( atrange ):
+                        trange = self.clip.trimmed_range()
+                        self.clip = copy.deepcopy(self.clip)
+                        self.clip.source_range = trange
+                else:
+                    atrange = self.clip.trimmed_range()
+                    trange = self.video_tracks[-1].trimmed_range()
+                    if trange.contains( atrange ):
                             idx += 1
                             continue
-                        self.clip = otio.schema.Gap()
-                        self.clip.source_range = atrange
-                        if not self.audio_tracks:
+                    self.clip = otio.schema.Gap()
+                    self.clip.source_range = atrange
+                    if not self.audio_tracks:
                             track = otio.schema.Track()
                             track.name = "Audio 1"
                             track.kind = "Audio"
@@ -864,7 +867,7 @@ class Reel2Otio(object):
 
 
                 for track in self.audio_tracks:
-                    print(self.clip)
+                    #print(self.clip)
                     track.append(copy.deepcopy(self.clip))
 
             self.playhead = self.end_time_exclusive

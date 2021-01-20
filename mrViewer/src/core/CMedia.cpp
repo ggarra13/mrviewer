@@ -371,6 +371,7 @@ av_sync_type( CMedia::AV_SYNC_AUDIO_MASTER ),
 _has_deep_data( false ),
 _w( 0 ),
 _h( 0 ),
+_cache_full( 0 ),
 _internal( false ),
 _is_thumbnail( false ),
 _is_sequence( false ),
@@ -747,7 +748,10 @@ void CMedia::clear_cache()
 {
     if ( !_sequence ) return;
 
+
     SCOPED_LOCK( _mutex);
+
+    _cache_full = 0;
 
     boost::uint64_t num = _frame_end - _frame_start + 1;
     for ( boost::uint64_t i = 0; i < num; ++i )
@@ -783,6 +787,8 @@ void CMedia::update_frame( const int64_t& f )
     if ( f < _frame_start || f > _frame_end ) return;
 
     SCOPED_LOCK( _mutex);
+
+    _cache_full = 0;
 
     boost::uint64_t i = f - _frame_start;
     if ( _sequence[i] )        _sequence[i].reset();
@@ -3128,10 +3134,14 @@ bool CMedia::is_cache_full()
          dynamic_cast< brawImage* >( this ) != NULL )
         return true;
 
+    if ( _cache_full == 2 ) return true;
+
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
     {
         if ( is_cache_filled(i) == kNoCache ) return false;
     }
+
+    _cache_full = 2;
     return true;
 }
 

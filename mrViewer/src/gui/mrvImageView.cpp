@@ -1678,13 +1678,17 @@ static void static_timeout( mrv::ImageView* v )
 void ImageView::create_timeout( double t )
 {
   if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-    Fl::add_timeout( t, (Fl_Timeout_Handler) static_timeout, this );
+  {
+      Fl::add_timeout( t, (Fl_Timeout_Handler) static_timeout, this );
+  }
 }
 
 void ImageView::delete_timeout()
 {
   if ( Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+  {
     Fl::remove_timeout( (Fl_Timeout_Handler) static_timeout, this );
+  }
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
@@ -1762,7 +1766,7 @@ _lastFrame( 0 )
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = _zoom / scale;
 
-    create_timeout( 0.5f / 60.0f );
+    create_timeout( 0.5 / 60.0 );
 }
 
 
@@ -2752,7 +2756,8 @@ bool ImageView::should_update( mrv::media fg )
             update = true;
         }
 
-        if ( img->image_damage() & CMedia::kDamageThumbnail )
+        if ( _playback == CMedia::kStopped &&
+             img->image_damage() & CMedia::kDamageThumbnail )
         {
             // Redraw browser to update thumbnail
             mrv::ImageBrowser* b = browser();
@@ -2847,7 +2852,8 @@ bool ImageView::should_update( mrv::media fg )
             update = true;
         }
 
-        if ( bimg->image_damage() & CMedia::kDamageThumbnail )
+        if ( _playback == CMedia::kStopped &&
+             bimg->image_damage() & CMedia::kDamageThumbnail )
         {
             // Redraw browser to update thumbnail
             mrv::ImageBrowser* b = browser();
@@ -3675,18 +3681,15 @@ void ImageView::timeout()
     log();
 
 
+
     mrv::Reel reel = b->reel_at( _fg_reel );
     mrv::Reel bgreel = b->reel_at( _bg_reel );
 
-    mrv::media fg = foreground();
 
-    int64_t tframe = _frame;
-    if ( timeline->visible() )
+    if ( timeline->visible() && reel && reel->edl )
     {
-        timeline->value( double(tframe) );
-        timeline->redraw();
-        uiMain->uiFrame->value( tframe );  // so it is displayed properly
-        uiMain->uiFrame->redraw();
+        timeline->value( double(_frame) );
+        uiMain->uiFrame->value( _frame );  // so it is displayed properly
     }
 
     if ( uiMain->uiEDLWindow )
@@ -3694,17 +3697,17 @@ void ImageView::timeout()
         mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
         if (t && t->visible() )
         {
-            t->value( double(tframe) );
-            t->redraw();
+            t->value( double(_frame) );
         }
     }
 
 
+    mrv::media fg = foreground();
     mrv::media bg = background();
 
     if ( bgreel && bgreel->edl )
     {
-        bg = bgreel->media_at( tframe );
+        bg = bgreel->media_at( _frame );
 
         if ( bg && bg != background() )
         {
@@ -3712,7 +3715,6 @@ void ImageView::timeout()
         }
     }
 
-    bg = background();
 
     if ( bg && bg != fg )
     {
@@ -3729,18 +3731,17 @@ void ImageView::timeout()
 
 
     double delay = 0.5;
+    CMedia* img = NULL;
     if ( fg )
     {
-        TRACE("");
-        CMedia* img = fg->image();
-        delay = 0.5 / img->play_fps();
+        img = fg->image();
+        delay = 0.25 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
         if ( ! img->has_video() &&
              uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
         {
-            TRACE("");
             img->has_changed();
         }
 
@@ -3750,16 +3751,12 @@ void ImageView::timeout()
     if ( timeline->visible() )
     {
 
-        TRACE("");
-        if ( reel && !reel->edl && fg )
+        if ( reel && !reel->edl && img )
         {
-            TRACE("");
-            CMedia* img = fg->image();
             int64_t frame = img->frame();
 
             if ( this->frame() != frame && playback() != CMedia::kStopped )
             {
-                TRACE("");
                 this->frame( frame );
             }
         }
@@ -3807,6 +3804,7 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    Fl::flush();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -5354,55 +5352,55 @@ bool ImageView::has_undo() const
  *
  * @return a new 9 character buffer
  */
-std::string float_printf( float x )
+const char* float_printf( char* buf, float x )
 {
     if ( isnan(x) )
     {
-        static std::string empty( _("   NAN  ") );
-        return empty;
+        static char* empty = _("   NAN  ");
+        buf = empty;
     }
     else if ( !isfinite(x) )
     {
-        static std::string inf( _("  INF.  ") );
-        return inf;
+        static char* inf =  _("  INF.  ");
+        buf = inf;
     }
     else
     {
-        char buf[ 64 ];
         sprintf( buf, " %7.4f", x );
-        return buf + strlen(buf) - 8;
+        buf[8] = 0; //buf + strlen(buf) - 8;
     }
+    return buf;
 }
 
+
+
+
 /**
- * Utility function to print a float value with 8 digits
+ * Utility function to print an hex value with 8 digits
  *
  * @param x float number
  *
  * @return a new 9 character buffer
  */
-std::string hex_printf( float x )
+const char* hex_printf( char* buf, float x )
 {
     if ( isnan(x) )
     {
-        static std::string empty( "        " );
-        return empty;
+        buf = _("  NAN. ");
     }
     else if ( !isfinite(x) )
     {
-        static std::string inf( _("  INF.  ") );
-        return inf;
+        buf = _("  INF.  ");
     }
     else
     {
-        char buf[ 64 ];
         unsigned h = 0;
         if ( x > 0.0f ) h = unsigned(x*255.0f);
         sprintf( buf, " %7x", h );
-        return buf + strlen(buf) - 8;
+        buf[8] = 0;
     }
+    return buf;
 }
-
 
 /**
  * Utility function to print a float value with 8 digits
@@ -5411,26 +5409,24 @@ std::string hex_printf( float x )
  *
  * @return a new 9 character buffer
  */
-std::string dec_printf( float x )
+const char* dec_printf( char* buf, float x )
 {
     if ( isnan(x) )
     {
-        static std::string empty( "        " );
-        return empty;
+        buf = _("  NAN.  ");
     }
     else if ( !isfinite(x) )
     {
-        static std::string inf( _("  INF.  ") );
-        return inf;
+        buf = _("  INF.  ");
     }
     else
     {
-        char buf[ 64 ];
         unsigned h = 0;
         if ( x > 0.0f ) h = unsigned(x*255.0f);
         sprintf( buf, " %7d", h );
-        return buf + strlen(buf) - 8;
+        buf[8] = 0;
     }
+    return buf;
 }
 
 void ImageView::pixel_processed( const CMedia* img,
@@ -5962,6 +5958,7 @@ void ImageView::mouseMove(int x, int y)
 {
     if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
 
+
     mrv::media fg = foreground();
     if ( !fg ) return;
 
@@ -6155,26 +6152,25 @@ void ImageView::mouseMove(int x, int y)
         }
     }
 
-
     switch( uiMain->uiAColorType->value() )
     {
     case kRGBA_Float:
-        uiMain->uiPixelR->value( float_printf( rgba.r ).c_str() );
-        uiMain->uiPixelG->value( float_printf( rgba.g ).c_str() );
-        uiMain->uiPixelB->value( float_printf( rgba.b ).c_str() );
-        uiMain->uiPixelA->value( float_printf( rgba.a ).c_str() );
+        uiMain->uiPixelR->value( float_printf( buf, rgba.r ) );
+        uiMain->uiPixelG->value( float_printf( buf, rgba.g ) );
+        uiMain->uiPixelB->value( float_printf( buf, rgba.b ) );
+        uiMain->uiPixelA->value( float_printf( buf, rgba.a ) );
         break;
     case kRGBA_Hex:
-        uiMain->uiPixelR->value( hex_printf( rgba.r ).c_str() );
-        uiMain->uiPixelG->value( hex_printf( rgba.g ).c_str() );
-        uiMain->uiPixelB->value( hex_printf( rgba.b ).c_str() );
-        uiMain->uiPixelA->value( hex_printf( rgba.a ).c_str() );
+        uiMain->uiPixelR->value( hex_printf( buf, rgba.r ) );
+        uiMain->uiPixelG->value( hex_printf( buf, rgba.g ) );
+        uiMain->uiPixelB->value( hex_printf( buf, rgba.b ) );
+        uiMain->uiPixelA->value( hex_printf( buf, rgba.a ) );
         break;
     case kRGBA_Decimal:
-        uiMain->uiPixelR->value( dec_printf( rgba.r ).c_str() );
-        uiMain->uiPixelG->value( dec_printf( rgba.g ).c_str() );
-        uiMain->uiPixelB->value( dec_printf( rgba.b ).c_str() );
-        uiMain->uiPixelA->value( dec_printf( rgba.a ).c_str() );
+        uiMain->uiPixelR->value( dec_printf( buf, rgba.r ) );
+        uiMain->uiPixelG->value( dec_printf( buf, rgba.g ) );
+        uiMain->uiPixelB->value( dec_printf( buf, rgba.b ) );
+        uiMain->uiPixelA->value( dec_printf( buf, rgba.a ) );
         break;
     }
 
@@ -6255,14 +6251,19 @@ void ImageView::mouseMove(int x, int y)
         LOG_ERROR("Unknown color type");
     }
 
-    uiMain->uiPixelH->value( float_printf( hsv.r ).c_str() );
-    uiMain->uiPixelS->value( float_printf( hsv.g ).c_str() );
-    uiMain->uiPixelV->value( float_printf( hsv.b ).c_str() );
-
+    float_printf( buf, hsv.r );
+    uiMain->uiPixelH->value( buf );
+    float_printf( buf, hsv.g );
+    uiMain->uiPixelS->value( buf );
+    float_printf( buf, hsv.b );
+    uiMain->uiPixelV->value( buf );
+    float_printf( buf, hsv.a );
+    uiMain->uiPixelL->value( buf );
     mrv::BrightnessType brightness_type = (mrv::BrightnessType)
                                           uiMain->uiLType->value();
     hsv.a = calculate_brightness( rgba, brightness_type );
-    uiMain->uiPixelL->value( float_printf( hsv.a ).c_str() );
+    float_printf( buf, hsv.a );
+    uiMain->uiPixelL->value( buf );
 }
 
 float ImageView::vr_angle() const
@@ -9237,18 +9238,16 @@ void ImageView::update_layers()
     int v = update_shortcuts( fg, lbl );
 
     CMedia* img = fg->image();
-    if ( v >= 0 && img != _old_fg )
-    {
-        channel( (unsigned short) v );
-    }
-
-
-    uiColorChannel->redraw();
-
     if ( v >= 0 )
     {
+        if ( img != _old_fg )
+        {
+            channel( (unsigned short) v );
+        }
         img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
     }
+
+    uiColorChannel->redraw();
 }
 
 
@@ -10269,7 +10268,7 @@ void ImageView::play( const CMedia::Playback dir )
 
     double fps = uiMain->uiFPS->value();
 
-    create_timeout( 0.5/fps );
+    create_timeout( 0.25 / fps );
 
     // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
     //      !CMedia::cache_active() ||
