@@ -21,3 +21,4 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export PATH=$PATH:$DIR/../../bin:$DIR/../
 export OTIO_PLUGIN_MANIFEST_PATH=$DIR/mrviewer.plugin_manifest.json
+

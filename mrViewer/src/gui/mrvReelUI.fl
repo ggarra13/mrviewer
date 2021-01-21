@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -35,7 +35,7 @@ class ReelUI {open
   } {
     Fl_Window uiMain {
       label {Reel List} open
-      xywh {236 148 515 489} type Double resizable
+      xywh {236 372 515 489} type Double align 10 resizable
       code0 {o->size_range(350,320);} non_modal size_range {405 350 0 0} visible
     } {
       Fl_Group {} {open
@@ -51,7 +51,7 @@ class ReelUI {open
         } {
           Fl_Choice {} {
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-            callback {v->reel(o->value());} open selected
+            callback {v->reel(o->value());} open
             xywh {5 2 120 36} box THIN_DOWN_BOX down_box BORDER_BOX align 36
             code0 {uiBrowser->reel_choice(o);}
             class {mrv::Choice}
@@ -60,24 +60,22 @@ class ReelUI {open
             xywh {125 -2 116 45}
           } {
             Fl_Button {} {
+              label new
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {const char* name = mrv::fl_input("Reel Name", "reel" );
 if ( name == NULL ) return;
-v->new_reel(name);}
-              tooltip {Create a new reel} xywh {127 2 36 36}
-              code0 {o->image( reel_new_24 );}
+v->new_reel(name);} selected
+              tooltip {Create a new reel} image {../../icons/reel_24.xpm} xywh {127 2 36 36} labeltype EMBOSSED_LABEL labelcolor 175 align 594
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->save_reel();}
-              tooltip {Save current reel} xywh {167 2 36 36}
-              code0 {o->image( reel_save_24 );}
+              tooltip {Save current reel} image {../../icons/reel_save_24.xpm} xywh {167 2 36 36}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->remove_reel();}
-              tooltip {Delete current reel} xywh {205 2 36 36}
-              code0 {o->image( reel_delete_24 );}
+              tooltip {Delete current reel} image {../../icons/reel_delete_24.xpm} xywh {205 2 36 36}
             }
           }
           Fl_Group uiImageOps {open
@@ -86,25 +84,25 @@ v->new_reel(name);}
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->open();}
-              tooltip {Open new image, sequence or movie} xywh {260 2 36 36}
+              tooltip {Open new image, sequence or movie} image {../../icons/file_open_24.xpm} xywh {260 2 36 36}
               code0 {o->image(file_open_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->save_sequence();}
-              tooltip {Save sequence or movie.} xywh {299 2 36 36}
+              tooltip {Save sequence or movie.} image {../../icons/file_save_24.xpm} xywh {299 2 36 36}
               code0 {o->image(file_save_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->clone_current();}
-              tooltip {Clone image} xywh {338 2 36 36}
+              tooltip {Clone image} image {../../icons/file_clone_24.xpm} xywh {338 2 36 36}
               code0 {o->image(file_clone_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->remove_current();}
-              tooltip {Remove current image from reel.} xywh {377 2 36 36}
+              tooltip {Remove current image from reel.} image {../../icons/file_delete_24.xpm} xywh {377 2 36 36}
               code0 {o->image(file_delete_24);}
             }
           }

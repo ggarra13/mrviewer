@@ -185,10 +185,10 @@ bool is_valid_movie( const char* ext )
          tmp == ".mvb"  || tmp == ".mxf"   ||
          tmp == ".ogg"  || tmp == ".ogm"   ||
          tmp == ".ogv"  || tmp == ".qt"    ||
-         tmp == ".r3d"  || tmp == ".rm"    ||
-         tmp == ".ts"   || tmp == ".vob"   ||
-         tmp == ".vp9"  || tmp == ".webm"  ||
-         tmp == ".wmv"  )
+         tmp == ".r3d"  || tmp == ".reel"  ||
+         tmp == ".rm"   || tmp == ".ts"    ||
+         tmp == ".vob"  || tmp == ".vp9"   ||
+         tmp == ".webm" || tmp == ".wmv"  )
     {
         return true;
     }
@@ -1168,6 +1168,7 @@ bool is_valid_sequence( const char* filename )
     if ( strlen(filename) == 0 ) return true;
     std::string root, frame, view, ext;
     bool ok = split_sequence( root, frame, view, ext, filename );
+    if ( ext == "reel" ) return false;
     return ok;
 }
 
