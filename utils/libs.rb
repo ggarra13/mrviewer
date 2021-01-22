@@ -4,10 +4,11 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
+libACESclip.*
 libOpenGL.*
 libGL\.so
 libGLdispatch\.so
-libGLX\.so
+libGLX\.s
 libX.*
 .*nvidia.*
 libdrm2.*
@@ -58,7 +59,12 @@ def parse( files, dest )
   for line in files
     lib, loc = line.split(" => ")
 
-    next if not loc or not lib or loc =~ /not found/
+    puts lib.to_s + " -> " + loc.to_s
+    next if not loc or not lib
+    if loc =~ /not found/
+      puts ">>>>>>>>NOT FOUND"
+      next
+    end
 
     loc.strip!
     lib.strip!
@@ -212,6 +218,7 @@ if kernel !~ /MINGW.*/
 
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
+  libs.map! { |x| x if x !~ /.*libACESclip.*/ }.compact!
   FileUtils.rm_f( libs )
   exes = Dir.glob( "#{dest}/bin/*" )
 
@@ -242,10 +249,11 @@ if kernel !~ /MINGW.*/
 
   Dir.chdir( dest + "/lib" )
   if kernel =~ /Linux/
-    FileUtils.ln_s "libACESclip.so.0.2.6",
-                   "libACESclip.so", :verbose => true, :force => true
+    #FileUtils.ln_s "libACESclip.so.0.2.6",
+    #               "libACESclip.so", :verbose => true, :force => true
     $stdout.puts "remove .fuse files"
-    `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
+    Dir.chdir( root )
+    `find #{dest}/* -name '*fuse*' -exec rm {} \\;`
   elsif kernel =~ /Darwin/
     FileUtils.ln_s "libACESclip.dylib.0.2.6",
                    "libACESclip.dylib", :verbose => true, :force => true
