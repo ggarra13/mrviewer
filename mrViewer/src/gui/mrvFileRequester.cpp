@@ -876,7 +876,7 @@ std::string save_reel( const char* startdir,
 
     void save_hotkeys( Fl_Preferences& keys )
     {
-        keys.set( "version", 8 );
+        keys.set( "version", 9 );
         for ( int i = 0; hotkeys[i].name != "END"; ++i )
         {
             keys.set( (hotkeys[i].name + " ctrl").c_str(),
@@ -998,6 +998,8 @@ std::string save_reel( const char* startdir,
         {
             for ( int i = 0; hotkeys[i].name != "END"; ++i )
             {
+                if ( version == 8 && hotkeys[i].name == "Toggle Menu Bar" )
+                    continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;
                 hotkeys[i].hotkey.key = hotkeys[i].hotkey.key2 = 0;

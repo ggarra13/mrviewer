@@ -373,6 +373,10 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
     DBG3;
+    ui.get( "menubar", tmp, 1 );
+    uiPrefs->uiPrefsMenuBar->value( (bool) tmp );
+
+    DBG3;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
@@ -1372,6 +1376,21 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
+    int H = uiMain->uiRegion->h();
+    int w = uiMain->uiMenuBar->w();
+    // MenuBar MUST be 25 pixels-- for some reason it changes size
+    uiMain->uiMenuBar->size( w, int(25) );
+    if ( ! uiPrefs->uiPrefsMenuBar->value() )
+    {
+        uiMain->uiMenuBar->hide();
+        H += uiMain->uiMenuBar->h();
+    }
+    else {
+        uiMain->uiMenuBar->show();
+        H -= uiMain->uiMenuBar->h();
+    }
+
+
     DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
@@ -1401,20 +1420,30 @@ void Preferences::run( ViewerUI* main )
     {
         main->uiBottomBar->hide();
     }
+
+
+    int X = uiMain->uiRegion->x();
+    int Y = uiMain->uiRegion->y();
+    int W = uiMain->uiRegion->w();
+    uiMain->uiRegion->resize( X, Y, W, H );
+    uiMain->uiRegion->layout();
+    uiMain->uiRegion->init_sizes();
+    uiMain->uiRegion->redraw();
+
     DBG3;
     if ( uiPrefs->uiPrefsToolBar->value() )
     {
         main->uiToolsGroup->show();
         main->uiToolsGroup->size( 45, 433 );
-        main->uiViewGroup->layout();
-        main->uiViewGroup->init_sizes();
     }
     else
     {
         main->uiToolsGroup->hide();
-        main->uiViewGroup->layout();
-        main->uiViewGroup->init_sizes();
     }
+
+    main->uiViewGroup->layout();
+    main->uiViewGroup->init_sizes();
+
 
     main->uiView->resize_main_window();
 
@@ -2187,6 +2216,7 @@ void Preferences::save()
     //
     // ui options
     //
+    ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );

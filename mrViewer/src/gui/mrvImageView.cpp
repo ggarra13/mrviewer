@@ -7429,12 +7429,36 @@ int ImageView::keyDown(unsigned int rawkey)
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
+    else if ( kToggleMenuBar.match( rawkey ) )
+    {
+        int H = uiMain->uiRegion->h();
+        int w = uiMain->uiMenuBar->w();
+        // MenuBar MUST be 25 pixels-- for some reason it changes size
+        uiMain->uiMenuBar->size( w, int(25) );
+        if ( uiMain->uiMenuBar->visible() ) {
+            uiMain->uiMenuBar->hide();
+            H += uiMain->uiMenuBar->h();
+        }
+        else {
+            uiMain->uiMenuBar->show();
+            H -= uiMain->uiMenuBar->h();
+        }
+        int X = uiMain->uiRegion->x();
+        int Y = uiMain->uiRegion->y();
+        int W = uiMain->uiRegion->w();
+        uiMain->uiRegion->resize( X, Y, W, H );
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->redraw();
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
     else if ( kToggleTopBar.match( rawkey ) )
     {
         int H = uiMain->uiRegion->h();
         int w = uiMain->uiTopBar->w();
         // Topbar MUST be 28 pixels-- for some reason it changes size
-        uiMain->uiTopBar->resize( 0, 0, w, int(25+28) );
+        uiMain->uiTopBar->size( w, int(28) );
         if ( uiMain->uiTopBar->visible() ) {
             uiMain->uiTopBar->hide();
             H += uiMain->uiTopBar->h();
@@ -7738,7 +7762,7 @@ void ImageView::show_background( const bool b )
             int H = uiMain->uiRegion->h();
             int w = uiMain->uiTopBar->w();
             // Topbar MUST be 28 pixels-- for some reason it changes size
-            uiMain->uiTopBar->resize( 0, 0, w, int(25+28) );
+            uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
             H -= uiMain->uiTopBar->h();
             int X = uiMain->uiRegion->x();
@@ -9658,10 +9682,19 @@ void ImageView::resize_main_window()
     w = int(w / scale);
     h = int(h / scale);
 
+    if ( uiMain->uiMenuBar->visible() )
+    {
+      uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
+                               int(25) );
+      h += uiMain->uiMenuBar->h();
+      std::cerr << "uiMain.>uiMenuBar->h=" << uiMain->uiMenuBar->h()
+                << std::endl;
+    }
+
     if ( uiMain->uiTopBar->visible() )
     {
       uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                              int(25+28) );
+                              int(28) );
       h += uiMain->uiTopBar->h();
     }
 
@@ -9715,14 +9748,22 @@ void ImageView::resize_main_window()
     }
     else
     {
+        std::cerr << "fltkmain resize " << posX << "," << posY << " "
+                  << w << ", " << h << std::endl;
         fltk_main()->resize( posX, posY, w, h );
     }
 
-    Fl_Menu_Bar* menu = main()->uiTopMenu;
-    fill_menu( menu );
+    if ( uiMain->uiMenuBar->visible() )
+    {
+        Fl_Menu_Bar* menu = uiMain->uiMenuBar;
+        fill_menu( menu );
+    }
+
+    uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
+                             int(25) );
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                            int(25+28) );
+                            int(28) );
 
     uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
                               int(28) );

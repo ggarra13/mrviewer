@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -710,24 +710,24 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {117 514 690 565} type Double align 80 resizable
+      xywh {75 162 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
     } {
-      Fl_Pack uiRegion {open
-        xywh {0 0 694 564}
+      Fl_Pack uiRegion {open selected
+        xywh {0 0 690 565}
         class MyPack
       } {
-        Fl_Group uiTopBar {open
-          xywh {0 0 694 54} box ENGRAVED_BOX
+        Fl_Menu_Bar uiMenuBar {open
+          xywh {0 0 690 25}
+        } {}
+        Fl_Group uiTopBar {
+          xywh {0 25 694 28} box ENGRAVED_BOX
         } {
-          Fl_Menu_Bar uiTopMenu {open selected
-            xywh {1 2 690 25}
-          } {}
           Fl_Menu_Button uiWindows {
             label W
-            tooltip {Opens different windows} xywh {2 30 25 22}
+            tooltip {Opens different windows} xywh {2 27 25 22}
             code0 {o->disable_glyph();}
             class {mrv::PopupMenu}
           } {
@@ -817,18 +817,18 @@ uiICCProfiles->uiMain->show();}
             }
           }
           Fl_Group {} {
-            xywh {29 28 41 25}
+            xywh {29 25 41 25}
           } {
             Fl_Button uiBButton {
               label {A/B}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiReelWindow->uiBrowser->change_background();
 v->uiView->show_background(false);}
-              tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 30 40 22} down_box DOWN_BOX
+              tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 27 40 22} down_box DOWN_BOX
             }
           }
           Fl_Group {} {
-            xywh {75 30 98 23} color 1397969664
+            xywh {75 27 98 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
@@ -836,22 +836,22 @@ v->uiView->show_background(false);}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
-              tooltip {Allows you to select different image channels or layers.} xywh {76 30 90 22}
+              tooltip {Allows you to select different image channels or layers.} xywh {76 27 90 22}
               class {mrv::PopupMenu}
             } {}
           }
           Fl_Group {} {
-            xywh {170 29 285 24} color 1397969664
+            xywh {170 26 285 24} color 1397969664
           } {
             Fl_Box {} {
               label Gain
-              xywh {170 30 32 22} labelsize 12 align 120
+              xywh {170 27 32 22} labelsize 12 align 120
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {204 30 35 22} color -1733777408 selection_color 0 maximum 64 value 1
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {204 27 35 22} color -1733777408 selection_color 0 maximum 64 value 1
               code0 {o->textsize( 12 );}
               code1 {o->textcolor( FL_BLACK );}
             }
@@ -859,7 +859,7 @@ v->uiGain->value( (float) o->value() );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {239 30 70 22} type {Horz Knob} maximum 64 value 1
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {239 27 70 22} type {Horz Knob} maximum 64 value 1
               code0 {o->minimum( 0.02 );}
               code1 {o->maximum( 64.0 ); o->step( 0.1 );}
               code2 {o->value( 1.0 );}
@@ -887,20 +887,20 @@ v->uiView->use_lut(true);
 v->uiLUT->value(true);
 o->redraw();
 refresh();} open
-              tooltip {OCIO input color space for the image} xywh {312 30 140 22} labelsize 12 align 96
+              tooltip {OCIO input color space for the image} xywh {312 27 140 22} labelsize 12 align 96
               class {mrv::PopupMenu}
             } {}
             Fl_Group uiFstopGroup {open
-              xywh {310 30 144 22}
+              xywh {310 27 144 22}
             } {
               Fl_Group {} {open
-                xywh {310 30 99 22}
+                xywh {310 27 99 22}
               } {
                 Fl_Button {} {
                   label {@<}
                   user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->exposure_change(-0.5f);}
-                  tooltip {Decrease exposure by 0.5.} xywh {314 30 16 22}
+                  tooltip {Decrease exposure by 0.5.} xywh {314 27 16 22}
                 }
                 Fl_Button uiFstop {
                   label {+0.0  f/8.0}
@@ -921,32 +921,32 @@ v->uiGain->value( 1.0f );
 v->uiGainInput->value( 1.0f );
 }}
                   tooltip {Displays gain as film exposure and fstop.
-Click to toggle between current and normal exposure.} xywh {329 30 64 22} labelfont 1
+Click to toggle between current and normal exposure.} xywh {329 27 64 22} labelfont 1
                   code0 {o->labelsize( 12 );}
                 }
                 Fl_Button {} {
                   label {@>}
                   user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->exposure_change(0.5f);}
-                  tooltip {Increase exposure by 0.5.} xywh {393 30 16 22}
+                  tooltip {Increase exposure by 0.5.} xywh {393 27 16 22}
                 }
               }
               Fl_Button uiNormalize {
                 label Norm
                 user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->toggle_normalize();}
-                tooltip {Normalize pixel values to remain in [0,1] range.} xywh {410 30 44 22} align 64
+                tooltip {Normalize pixel values to remain in [0,1] range.} xywh {410 27 44 22} align 64
               }
             }
           }
           Fl_Group {} {
-            xywh {450 30 154 23} color 1397969664
+            xywh {450 27 154 23} color 1397969664
           } {
             Fl_Group {} {open
-              xywh {450 30 154 22}
+              xywh {450 27 154 22}
             } {
               Fl_Group {} {open
-                xywh {455 30 149 22}
+                xywh {455 27 149 22}
               } {
                 Fl_Menu_Button gammaDefaults {
                   label Gamma
@@ -1000,7 +1000,7 @@ else
     fg->image()->image_damage( mrv::CMedia::kDamageAll );
     v->uiView->redraw();
  }}
-                  tooltip {OCIO Display/View or some default gamma settings.} xywh {455 30 54 22} labelsize 12 align 80
+                  tooltip {OCIO Display/View or some default gamma settings.} xywh {455 27 54 22} labelsize 12 align 80
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
@@ -1029,7 +1029,7 @@ else
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {509 30 35 22} color -1733777408 selection_color 0 maximum 64 value 1
+Value is:  pow( 2, 1/x );} xywh {509 27 35 22} color -1733777408 selection_color 0 maximum 64 value 1
                   code0 {o->textsize(12);}
                   code1 {o->textcolor( FL_BLACK );}
                 }
@@ -1038,19 +1038,19 @@ Value is:  pow( 2, 1/x );} xywh {509 30 35 22} color -1733777408 selection_color
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {544 30 60 22} type {Horz Knob} maximum 4
+Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
                 }
               }
             }
           }
           Fl_Group {} {
-            xywh {550 31 134 22}
+            xywh {550 28 134 22}
           } {
             Fl_Menu_Button uiField {
               label F
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );}
-              tooltip {Changes frame/field display} xywh {604 31 25 22}
+              tooltip {Changes frame/field display} xywh {604 28 25 22}
               code0 {o->disable_glyph();}
               class {mrv::PopupMenu}
             } {
@@ -1071,18 +1071,18 @@ Value is:  pow( 2, 1/x );} xywh {544 30 60 22} type {Horz Knob} maximum 4
               label {1:1}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_pixel_ratio();}
-              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {624 31 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
+              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {624 28 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
             }
             Fl_Button uiLUT {
               label LUT
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_lut();}
-              tooltip {Activate viewer's 3D Lut.} xywh {654 31 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
+              tooltip {Activate viewer's 3D Lut.} xywh {654 28 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
             }
           }
         }
         Fl_Pack uiViewGroup {open
-          xywh {0 54 685 432} type HORIZONTAL resizable
+          xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
           class MyPack
@@ -1185,7 +1185,7 @@ uiAttrsWindow->show();}
             }
           }
           Fl_Group uiView {
-            xywh {46 54 639 432} resizable
+            xywh {45 54 645 432} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}
           } {}

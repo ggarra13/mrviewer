@@ -159,6 +159,7 @@ extern Hotkey kLastFrame;
 extern Hotkey kToggleBG;
 extern Hotkey kToggleEDL;
 
+extern Hotkey kToggleMenuBar;
 extern Hotkey kToggleTopBar;
 extern Hotkey kTogglePixelBar;
 extern Hotkey kToggleTimeline;

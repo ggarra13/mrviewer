@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {669 242 675 455} type Double resizable
+      xywh {-13 112 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -110,8 +110,8 @@ class PreferencesUI {open
         xywh {200 25 473 520} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface}
-          xywh {210 48 453 497} box EMBOSSED_BOX align 5 hide
+          label {User Interface} open
+          xywh {210 48 453 497} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label {Window Behavior}
@@ -148,20 +148,20 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements}
+            label {UI Elements} open
             xywh {213 193 442 193} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsTopbar {
               label Topbar
-              tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible.} xywh {218 221 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible.} xywh {218 248 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPixelToolbar {
               label {Pixel Toolbar}
-              tooltip {When selected, mrViewer will start with the pixel toolbar shown.} xywh {218 251 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the pixel toolbar shown.} xywh {218 278 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsTimeline {
               label Timeline
-              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 280 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
+              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 307 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
             }
             Fl_Check_Button uiPrefsReelList {
               label {Reel List}
@@ -189,11 +189,11 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Check_Button uiPrefsStereoOptions {
               label {Stereo 3D Options}
-              tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {219 308 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {219 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPaintTools {
               label {Action Tools}
-              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {219 336 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {375 310 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsWaveform {
               label Waveform
@@ -202,6 +202,10 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Check_Button uiPrefsToolBar {
               label Tooldock
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 330 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+            }
+            Fl_Check_Button uiPrefsMenuBar {
+              label {Menu Bar} selected
+              tooltip {When selected, mrViewer will start with the menu bar already shown.} xywh {217 220 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
           }
         }
@@ -1960,7 +1964,7 @@ v->uiView->redraw();}
         }
         Fl_Group {} {
           label Images open
-          tooltip {Options controlling the OpenEXR reader/writer} xywh {225 44 423 352} box EMBOSSED_BOX align 5
+          tooltip {Options controlling the OpenEXR reader/writer} xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label Saving open
@@ -1980,7 +1984,7 @@ v->uiView->redraw();}
             xywh {255 75 335 100} box ROUNDED_BOX
           } {
             Fl_Light_Button uiMetadataEditable {
-              label {Editable by Default} selected
+              label {Editable by Default}
               xywh {325 105 180 40}
             }
           }

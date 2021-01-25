@@ -98,6 +98,7 @@ Hotkey kLastFrame( false, false, false, false, FL_End );
 Hotkey kToggleBG( false, false, false, false, FL_Tab );
 Hotkey kToggleEDL( false, false, false, false, FL_KP_Enter );
 
+Hotkey kToggleMenuBar( false, false, false, true, FL_F + 1 );
 Hotkey kToggleTopBar( false, false, false, false, FL_F + 1 );
 Hotkey kTogglePixelBar( false, false, false, false, FL_F + 2 );
 Hotkey kToggleTimeline( false, false, false, false, FL_F + 3 );
@@ -335,6 +336,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Last Frame"), kLastFrame ),
     HotkeyEntry( _("Toggle Background Composite"), kToggleBG ),
     HotkeyEntry( _("Toggle EDL"), kToggleEDL ),
+    HotkeyEntry( _("Toggle Menu Bar"), kToggleMenuBar ),
     HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
     HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
     HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
