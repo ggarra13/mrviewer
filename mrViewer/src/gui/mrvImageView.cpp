@@ -5179,6 +5179,8 @@ int ImageView::leftMouseDown(int x, int y)
         {
             TRACE("");
             TRACE("");
+            Fl_Menu_Bar* bar = uiMain->uiMenuBar;
+            fill_menu( bar );
             fill_menu( menu );
             menu->popup();
 
@@ -7440,6 +7442,7 @@ int ImageView::keyDown(unsigned int rawkey)
             H += uiMain->uiMenuBar->h();
         }
         else {
+            fill_menu( uiMain->uiMenuBar );
             uiMain->uiMenuBar->show();
             H -= uiMain->uiMenuBar->h();
         }
@@ -7765,10 +7768,10 @@ void ImageView::show_background( const bool b )
             uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
             H -= uiMain->uiTopBar->h();
-            int X = uiMain->uiRegion->x();
-            int Y = uiMain->uiRegion->y();
-            int W = uiMain->uiRegion->w();
-            uiMain->uiRegion->resize( X, Y, W, H );
+            // int X = uiMain->uiRegion->x();
+            // int Y = uiMain->uiRegion->y();
+            // int W = uiMain->uiRegion->w();
+            // uiMain->uiRegion->resize( X, Y, W, H );
 
         }
         if ( has_bottom_bar)  {
@@ -9687,8 +9690,6 @@ void ImageView::resize_main_window()
       uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
                                int(25) );
       h += uiMain->uiMenuBar->h();
-      std::cerr << "uiMain.>uiMenuBar->h=" << uiMain->uiMenuBar->h()
-                << std::endl;
     }
 
     if ( uiMain->uiTopBar->visible() )
@@ -9729,7 +9730,7 @@ void ImageView::resize_main_window()
         w = maxw;
     }
 
-#ifdef _WIN32
+#if defined(_WIN32)
     int bar = uiMain->uiBottomBar->visible() ? uiMain->uiBottomBar->h() : 0;
 #else
     int bar = 0;
@@ -9748,16 +9749,17 @@ void ImageView::resize_main_window()
     }
     else
     {
-        std::cerr << "fltkmain resize " << posX << "," << posY << " "
-                  << w << ", " << h << std::endl;
         fltk_main()->resize( posX, posY, w, h );
     }
 
     if ( uiMain->uiMenuBar->visible() )
     {
         Fl_Menu_Bar* menu = uiMain->uiMenuBar;
-        fill_menu( menu );
     }
+    fill_menu( menu );
+
+    uiMain->uiRegion->size( uiMain->uiRegion->w(),
+                            h-25 );
 
     uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
                              int(25) );
