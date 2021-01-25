@@ -1386,6 +1386,7 @@ void Preferences::run( ViewerUI* main )
         H += uiMain->uiMenuBar->h();
     }
     else {
+        uiMain->uiView->fill_menu( uiMain->uiMenuBar );
         uiMain->uiMenuBar->show();
         H -= uiMain->uiMenuBar->h();
     }

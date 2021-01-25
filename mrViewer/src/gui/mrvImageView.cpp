@@ -5179,8 +5179,6 @@ int ImageView::leftMouseDown(int x, int y)
         {
             TRACE("");
             TRACE("");
-            Fl_Menu_Bar* bar = uiMain->uiMenuBar;
-            fill_menu( bar );
             fill_menu( menu );
             menu->popup();
 
@@ -9752,10 +9750,7 @@ void ImageView::resize_main_window()
         fltk_main()->resize( posX, posY, w, h );
     }
 
-    if ( uiMain->uiMenuBar->visible() )
-    {
-        Fl_Menu_Bar* menu = uiMain->uiMenuBar;
-    }
+    Fl_Menu_Bar* menu = uiMain->uiMenuBar;
     fill_menu( menu );
 
     uiMain->uiRegion->size( uiMain->uiRegion->w(),

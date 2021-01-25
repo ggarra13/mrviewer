@@ -770,6 +770,9 @@ public:
         return _mode;
     }
 
+    /// Fill menu based on context information
+    void fill_menu( Fl_Menu_* menu );
+
 
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
@@ -848,9 +851,6 @@ protected:
 
     /// Set a new zoom factor, but keep relative mouse position the same
     void zoom_under_mouse( float z, int x, int y );
-
-    /// Fill menu based on context information
-    void fill_menu( Fl_Menu_* menu );
 
     /// Prepare the foreground for opengl
     void bind_foreground();
