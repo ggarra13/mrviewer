@@ -51,6 +51,10 @@
 
 class ViewerUI;
 
+void open_dir_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
+void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
+void open_single_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
+
 namespace mrv {
 
 void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
@@ -382,6 +386,8 @@ public:
 
     bool show_pixel_ratio() const;
     void show_pixel_ratio( const bool b );
+
+    void show_bars( ViewerUI* uiMain, bool showtop = true );
 
     /// Set a new zoom factor
     void zoom( float x );
@@ -842,6 +848,9 @@ protected:
 
     /// Set a new zoom factor, but keep relative mouse position the same
     void zoom_under_mouse( float z, int x, int y );
+
+    /// Fill menu based on context information
+    void fill_menu( Fl_Menu_* menu );
 
     /// Prepare the foreground for opengl
     void bind_foreground();
