@@ -3812,7 +3812,7 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    Fl::flush();
+    Fl::check();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
