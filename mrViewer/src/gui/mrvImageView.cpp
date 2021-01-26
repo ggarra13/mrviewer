@@ -7766,11 +7766,10 @@ void ImageView::show_background( const bool b )
             uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
             H -= uiMain->uiTopBar->h();
-            // int X = uiMain->uiRegion->x();
-            // int Y = uiMain->uiRegion->y();
-            // int W = uiMain->uiRegion->w();
-            // uiMain->uiRegion->resize( X, Y, W, H );
-
+            int X = uiMain->uiTopBar->x();
+            int Y = uiMain->uiTopBar->y();
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
         if ( has_bottom_bar)  {
             uiMain->uiBottomBar->show();
@@ -9753,8 +9752,6 @@ void ImageView::resize_main_window()
     Fl_Menu_Bar* menu = uiMain->uiMenuBar;
     fill_menu( menu );
 
-    uiMain->uiRegion->size( uiMain->uiRegion->w(),
-                            h-25 );
 
     uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
                              int(25) );
@@ -9768,8 +9765,8 @@ void ImageView::resize_main_window()
     uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                int(49) );
 
-    uiMain->uiRegion->layout();
     uiMain->uiRegion->init_sizes();
+    uiMain->uiRegion->layout();
 
     uiMain->uiRegion->redraw();
 

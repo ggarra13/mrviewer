@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1,0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -199,8 +199,8 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
   }
   code {if (!w->exec())
 {
-	delete w; w = NULL;
-	return orig;
+        delete w; w = NULL;
+        return orig;
 }
 
 delete w; w = NULL;
@@ -539,7 +539,7 @@ o->redraw();}
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-	v->uiCurrentFrame->value( o->value() );
+        v->uiCurrentFrame->value( o->value() );
 }}
             xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
@@ -550,7 +550,7 @@ if ( v->uiAttrsWindow )
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-	v->uiAllFrames->value( o->value() );
+        v->uiAllFrames->value( o->value() );
 }}
             xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
@@ -710,20 +710,20 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {75 162 690 565} type Double align 80 resizable
+      xywh {75 190 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
     } {
-      Fl_Pack uiRegion {open selected
-        xywh {0 0 690 565}
+      Fl_Pack uiRegion {open
+        xywh {0 0 690 563} resizable
         class MyPack
       } {
         Fl_Menu_Bar uiMenuBar {open
           xywh {0 0 690 25}
         } {}
         Fl_Group uiTopBar {
-          xywh {0 25 694 28} box ENGRAVED_BOX
+          xywh {0 25 690 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
             label W
@@ -834,8 +834,8 @@ v->uiView->show_background(false);}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
-	      v->uiView->channel( m );
-	      //v->uiView->channel( o->value() );} open
+              v->uiView->channel( m );
+              //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {76 27 90 22}
               class {mrv::PopupMenu}
             } {}
@@ -969,25 +969,25 @@ else
     const Fl_Menu_Item* c = o->child(0);
     for ( ; c != w; ++c )
     {
-	if ( c->flags & FL_SUBMENU ) p = c;
+        if ( c->flags & FL_SUBMENU ) p = c;
     }
     if ( p && p->label() )
     {
        mrv::Preferences::OCIO_Display = p->label();
        if ( lbl && strcmp(lbl, p->label()) != 0 )
        {
-	 mrv::Preferences::OCIO_View = lbl;
+         mrv::Preferences::OCIO_View = lbl;
        }
     }
     else
     {
-	if (!c || !c->label() ) return;
-	std::string view = c->label();
-	size_t pos = view.find( '(' );
-	std::string display = view.substr( pos+1, view.size() );
-	mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
-	pos = display.find( ')' );
-	mrv::Preferences::OCIO_Display = display.substr( 0, pos );
+        if (!c || !c->label() ) return;
+        std::string view = c->label();
+        size_t pos = view.find( '(' );
+        std::string display = view.substr( pos+1, view.size() );
+        mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
+        pos = display.find( ')' );
+        mrv::Preferences::OCIO_Display = display.substr( 0, pos );
     }
 
     v->uiGamma->value( 1.0f );
@@ -1081,7 +1081,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
             }
           }
         }
-        Fl_Pack uiViewGroup {open
+        Fl_Pack uiViewGroup {selected
           xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
@@ -1542,7 +1542,7 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
                 }
               }
               Fl_Group {} {open
-                xywh {0 537 686 27} resizable
+                xywh {0 537 686 27}
               } {
                 Fl_Group {} {
                   xywh {4 541 94 20}

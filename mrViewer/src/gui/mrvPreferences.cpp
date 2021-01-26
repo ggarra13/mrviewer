@@ -1376,19 +1376,16 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
-    int H = uiMain->uiRegion->h();
     int w = uiMain->uiMenuBar->w();
     // MenuBar MUST be 25 pixels-- for some reason it changes size
     uiMain->uiMenuBar->size( w, int(25) );
     if ( ! uiPrefs->uiPrefsMenuBar->value() )
     {
         uiMain->uiMenuBar->hide();
-        H += uiMain->uiMenuBar->h();
     }
     else {
         uiMain->uiView->fill_menu( uiMain->uiMenuBar );
         uiMain->uiMenuBar->show();
-        H -= uiMain->uiMenuBar->h();
     }
 
 
@@ -1423,13 +1420,6 @@ void Preferences::run( ViewerUI* main )
     }
 
 
-    int X = uiMain->uiRegion->x();
-    int Y = uiMain->uiRegion->y();
-    int W = uiMain->uiRegion->w();
-    uiMain->uiRegion->resize( X, Y, W, H );
-    uiMain->uiRegion->layout();
-    uiMain->uiRegion->init_sizes();
-    uiMain->uiRegion->redraw();
 
     DBG3;
     if ( uiPrefs->uiPrefsToolBar->value() )
