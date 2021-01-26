@@ -3812,7 +3812,11 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+#ifdef _WIN32
     Fl::check();
+#else
+    Fl::flush();
+#endif
 }
 
 void ImageView::selection( const mrv::Rectd& r )
