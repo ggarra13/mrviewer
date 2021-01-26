@@ -225,7 +225,15 @@ namespace
 {
     bool FullScreen = false;
     bool presentation = false;
-    bool has_tools_grp, has_top_bar, has_bottom_bar, has_pixel_bar;
+    bool has_tools_grp, has_menu_bar,
+        has_top_bar, has_bottom_bar, has_pixel_bar;
+
+
+    void exit_cb( Fl_Widget* o, ViewerUI* main )
+    {
+        delete main;
+        exit(0);
+    }
 
 inline std::string remove_hash_number( std::string r )
 {
@@ -957,8 +965,8 @@ void ImageView::restore_locale() const
             uiMain->uiToolsGroup->show();
             uiMain->uiToolsGroup->size( 45, 433 );
         }
-        uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->redraw();
     }
 
@@ -4523,6 +4531,9 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)save_clip_xml_metadata_cb, this );
      }
 
+     if ( dynamic_cast< Fl_Menu_Bar* >( menu ) )
+         menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
+
      TRACE("");
 
      char buf[256];
@@ -4874,6 +4885,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                     uiMain, FL_MENU_DIVIDER);
      }
 
+     menu->menu_end();
  }
 
 /**
@@ -7448,8 +7460,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -7472,8 +7484,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -7493,8 +7505,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -7513,8 +7525,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -7759,6 +7771,19 @@ void ImageView::show_background( const bool b )
     {
         if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
+        if ( has_menu_bar && showtop )    {
+            int H = uiMain->uiRegion->h();
+            int w = uiMain->uiMenuBar->w();
+            // Menubar MUST be 25 pixels-- for some reason it changes size
+            uiMain->uiMenuBar->size( w, int(25) );
+            uiMain->uiMenuBar->show();
+            H -= uiMain->uiMenuBar->h();
+            int X = uiMain->uiMenuBar->x();
+            int Y = uiMain->uiMenuBar->y();
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( 0, 0, W, H );
+        }
+
         if ( has_top_bar && showtop )    {
             int H = uiMain->uiRegion->h();
             int w = uiMain->uiTopBar->w();
@@ -7766,11 +7791,10 @@ void ImageView::show_background( const bool b )
             uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
             H -= uiMain->uiTopBar->h();
-            // int X = uiMain->uiRegion->x();
-            // int Y = uiMain->uiRegion->y();
-            // int W = uiMain->uiRegion->w();
-            // uiMain->uiRegion->resize( X, Y, W, H );
-
+            int X = uiMain->uiTopBar->x();
+            int Y = uiMain->uiTopBar->y();
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
         if ( has_bottom_bar)  {
             uiMain->uiBottomBar->show();
@@ -7778,12 +7802,12 @@ void ImageView::show_background( const bool b )
         if ( has_pixel_bar )  {
             uiMain->uiPixelBar->show();
         }
-        uiMain->uiRegion->layout();
-        uiMain->uiRegion->init_sizes();
-        uiMain->uiRegion->redraw();
-        uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->redraw();
+        uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->redraw();
         uiMain->uiView->redraw();
     }
 
@@ -7803,10 +7827,12 @@ void ImageView::toggle_fullscreen()
         posY = fltk_main()->y();
         if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         fltk_main()->fullscreen();
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
+        has_menu_bar = uiMain->uiMenuBar ?
+                       uiMain->uiMenuBar->visible() : false;
         has_top_bar = true;
         has_bottom_bar = true;
         has_pixel_bar = true;
@@ -7859,6 +7885,7 @@ void ImageView::toggle_presentation()
         has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
         has_prefs      = uiPrefs ? uiPrefs->visible() : false;
         has_about      = uiAbout ? uiAbout->visible() : false;
+        has_menu_bar   = uiMain->uiMenuBar->visible();
         has_top_bar    = uiMain->uiTopBar->visible();
         has_bottom_bar = uiMain->uiBottomBar->visible();
         has_pixel_bar  = uiMain->uiPixelBar->visible();
@@ -7885,8 +7912,8 @@ void ImageView::toggle_presentation()
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
 
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
 
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
@@ -7912,10 +7939,10 @@ void ImageView::toggle_presentation()
         H += int(40 * scale);
         resize( X, Y, W, H ); // needed
 #endif
-        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
-        uiMain->uiViewGroup->layout();
+        uiMain->uiRegion->layout();
         uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->redraw();
     }
     else
@@ -9753,8 +9780,6 @@ void ImageView::resize_main_window()
     Fl_Menu_Bar* menu = uiMain->uiMenuBar;
     fill_menu( menu );
 
-    uiMain->uiRegion->size( uiMain->uiRegion->w(),
-                            h-25 );
 
     uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
                              int(25) );
@@ -9768,8 +9793,8 @@ void ImageView::resize_main_window()
     uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                int(49) );
 
-    uiMain->uiRegion->layout();
     uiMain->uiRegion->init_sizes();
+    uiMain->uiRegion->layout();
 
     uiMain->uiRegion->redraw();
 
