@@ -2131,11 +2131,11 @@ void ImageView::copy_pixel() const
     int xp, yp, w, h;
     picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
 
-    
+
     if ( outside || !pic ) return;
 
     int ypr = pic->height() - yp - 1;
-    
+
     CMedia::Pixel rgba = pic->pixel( xp, yp );
     pixel_processed( img, rgba );
 
@@ -3811,7 +3811,7 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    //Fl::check();
+    Fl::check();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -4538,7 +4538,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          item->flags |= FL_MENU_DIVIDER;
          menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
      }
-     
+
      TRACE("");
 
      char buf[256];
@@ -5994,7 +5994,7 @@ void ImageView::mouseMove(int x, int y)
     double ypct = 1.0 / img->scale_y();
 
     int ypr = pic->height() - yp - 1;
-    
+
     off[0] += xp;
     off[1] += ypr;
 
