@@ -2121,6 +2121,7 @@ void ImageView::copy_pixel() const
     int x = lastX;
     int y = lastY;
 
+
     if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
         return;
 
@@ -2130,8 +2131,11 @@ void ImageView::copy_pixel() const
     int xp, yp, w, h;
     picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
 
+    
     if ( outside || !pic ) return;
 
+    int ypr = pic->height() - yp - 1;
+    
     CMedia::Pixel rgba = pic->pixel( xp, yp );
     pixel_processed( img, rgba );
 
@@ -3807,7 +3811,7 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    Fl::check();
+    //Fl::check();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -4528,11 +4532,13 @@ bool PointInTriangle (const Imath::V2i& pt,
      }
 
      Fl_Menu_Item* item = (Fl_Menu_Item*) &menu->menu()[idx];
-     item->flags |= FL_MENU_DIVIDER;
 
      if ( dynamic_cast< Fl_Menu_Bar* >( menu ) )
+     {
+         item->flags |= FL_MENU_DIVIDER;
          menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
-
+     }
+     
      TRACE("");
 
      char buf[256];
@@ -5782,6 +5788,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
     data_window_coordinates( img, xf, yf );
 
+
     CMedia::StereoOutput output = img->stereo_output();
     CMedia::StereoInput  input  = img->stereo_input();
 
@@ -5828,11 +5835,6 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
         h = pic->height();
         dpm.y( 0 );
         dpm.h( h );
-    }
-
-    if ( _wait )
-    {
-        window()->cursor( FL_CURSOR_WAIT );
     }
 
 
@@ -5979,8 +5981,6 @@ void ImageView::mouseMove(int x, int y)
     mrv::media fg = foreground();
     if ( !fg ) return;
 
-    lastX = x; lastY = y;
-
     CMedia* img = fg->image();
 
     mrv::image_type_ptr pic;
@@ -5994,8 +5994,10 @@ void ImageView::mouseMove(int x, int y)
     double ypct = 1.0 / img->scale_y();
 
     int ypr = pic->height() - yp - 1;
+    
     off[0] += xp;
     off[1] += ypr;
+
     char buf[40];
     sprintf( buf, "%5d, %5d", off[0], off[1] );
     uiMain->uiCoord->value(buf);
@@ -7403,6 +7405,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kRotateMinus90.match( rawkey ) )
     {
         rotate_minus_90_cb( NULL, this );
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kCopyRGBAValues.match( rawkey ) )
+    {
+        copy_pixel_rgba_cb( NULL, this);
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }

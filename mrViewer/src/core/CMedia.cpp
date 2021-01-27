@@ -468,6 +468,10 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
+    gettimeofday (&_lastFrameTime, 0);
+    _lastFpsFrameTime = _lastFrameTime;
+    _framesSinceLastFpsFrame = 0;
+
     audio_initialize();
     if ( ! _initialize )
     {
@@ -578,6 +582,10 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
+    gettimeofday (&_lastFrameTime, 0);
+    _lastFpsFrameTime = _lastFrameTime;
+    _framesSinceLastFpsFrame = 0;
+
     unsigned int W = other->width();
     unsigned int H = other->height();
     image_size( W, H );
@@ -696,6 +704,9 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
+    gettimeofday (&_lastFrameTime, 0);
+    _lastFpsFrameTime = _lastFrameTime;
+    _framesSinceLastFpsFrame = 0;
 
     _fileroot = av_strdup( other->fileroot() );
     _filename = av_strdup( other->filename() );
@@ -1535,6 +1546,29 @@ void CMedia::data_window2( const int xmin, const int ymin,
  */
 void CMedia::refresh( const mrv::Recti& r )
 {
+    timeval now;
+    gettimeofday(&now, 0 );
+
+    if (_playback == kStopped)
+    {
+        if (_framesSinceLastFpsFrame >= 24)
+        {
+            float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
+                       (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
+
+            if (t > 0)
+                _actual_frame_rate = _framesSinceLastFpsFrame / t;
+
+            _framesSinceLastFpsFrame = 0;
+        }
+
+        if (_framesSinceLastFpsFrame == 0)
+            _lastFpsFrameTime = now;
+
+        _framesSinceLastFpsFrame += 1;
+    }
+
+
     // Merge the bounding box of area to update
     _damageRectangle.merge( r );
     image_damage( image_damage() | kDamageContents );
@@ -2846,6 +2880,11 @@ bool CMedia::frame( const int64_t f )
         return false;
     }
 
+    timeval now;
+    gettimeofday (&now, 0);
+
+    _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
+                          (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
 
     if ( f < _frameStart )     _dts = _frameStart;
@@ -2865,6 +2904,10 @@ bool CMedia::frame( const int64_t f )
 
         if ( fs::exists( file ) )
         {
+            timeval now;
+            gettimeofday (&now, 0);
+            _lastFrameTime = now;
+
             if ( fetch( canvas, _dts ) )
             {
                 cache( canvas );
@@ -3066,6 +3109,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
 
     if ( !is_sequence() || !_cache_active || !pic )
         return;
+
 
     _depth = pic->pixel_type();
 
@@ -4113,6 +4157,9 @@ bool CMedia::find_image( int64_t& frame )
             SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
+            timeval now;
+            gettimeofday (&now, 0);
+            _lastFrameTime = now;
             if ( fetch( canvas, f ) )
             {
                 cache( canvas );
@@ -4129,6 +4176,9 @@ bool CMedia::find_image( int64_t& frame )
                     Preferences::max_memory = maxmem;
                     LOG_INFO( "[mem] Max memory is now " << maxmem );
                     limit_video_store( frame );
+                    timeval now;
+                    gettimeofday (&now, 0);
+                    _lastFrameTime = now;
                     if ( fetch( canvas, f ) )
                     {
                         cache( canvas );
@@ -4571,6 +4621,10 @@ const char* const get_error_text(const int error)
 
 bool CMedia::refetch( int64_t f )
 {
+    timeval now;
+    gettimeofday (&now, 0);
+    _lastFrameTime = now;
+
     image_type_ptr canvas;
     bool ok = fetch( canvas, f );
     if ( ok )

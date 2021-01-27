@@ -3323,25 +3323,6 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     if ( !saving() )
     {
-
-#if 0
-        if ( ( got_audio ||
-               in_audio_store( f + _audio_offset - _start_number) ) &&
-             ( got_video || in_video_store( f - _start_number ) ) )
-        {
-            f -= _start_number;
-            int64_t pts = frame2pts( get_video_stream(), f );
-            if ( !got_video ) _video_packets.jump( pts );
-            _dts = f;
-            _expected = _dts + 1;
-            // _expected = -99999;   // NOT CORRECT
-            // _expected_audio = -99999;
-
-            return true;
-        }
-#endif
-
-
         if ( f != _expected && (!got_video || !got_audio || !got_subtitle) )
         {
             return seek_to_position( f );
@@ -3427,6 +3408,9 @@ bool aviImage::frame( const int64_t f )
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
 
 
+    timeval now;
+    gettimeofday (&now, 0);
+    _lastFrameTime = now;
 
     image_type_ptr canvas;
     bool ok = fetch(canvas, f);
@@ -4038,8 +4022,14 @@ void aviImage::do_seek()
 
         if ( !saving() || _seek_frame == _expected )
         {
+            timeval now;
+            gettimeofday (&now, 0);
+            _lastFrameTime = now;
+
             image_type_ptr canvas;
             fetch( canvas, _seek_frame );
+
+            cache( canvas );
         }
 
     }

@@ -2084,8 +2084,10 @@ protected:
 
     std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
-
-
+    float     _timeSinceLastFrame;
+    int       _framesSinceLastFpsFrame;
+    timeval    _lastFrameTime;
+    timeval    _lastFpsFrameTime;
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
 
