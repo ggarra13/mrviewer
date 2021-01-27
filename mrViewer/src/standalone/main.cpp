@@ -245,9 +245,9 @@ int main( int argc, const char** argv )
 #endif
     path += "/share/locale";
 
-    LOG_INFO( "Translations: " << path );
     bindtextdomain(buf, path.c_str() );
     textdomain(buf);
+    LOG_INFO( _("Translations: ") << path );
 
 #ifdef OSX
     Fl_Mac_App_Menu::about = _("About mrViewer");

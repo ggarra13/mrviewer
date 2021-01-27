@@ -2115,7 +2115,6 @@ void ImageView::bg_reel(int idx)
 void ImageView::copy_pixel() const
 {
     mrv::media fg = foreground();
-    if ( !fg ) return;
 
     CMedia* img = fg->image();
 
@@ -2133,10 +2132,7 @@ void ImageView::copy_pixel() const
 
     if ( outside || !pic ) return;
 
-    int xpr = int((double)xp / img->width());
-    int ypr = pic->height() - int((double)yp / img->height()) - 1;
-
-    CMedia::Pixel rgba = pic->pixel( xpr, ypr );
+    CMedia::Pixel rgba = pic->pixel( xp, yp );
     pixel_processed( img, rgba );
 
     mrv::Recti daw[2];
@@ -2179,8 +2175,7 @@ void ImageView::copy_pixel() const
         if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
         {
             float r = rgba.r;
-            ypr = pic->height() - yp - 1;
-            rgba = pic->pixel( xp, ypr );
+            rgba = pic->pixel( xp, yp );
             pixel_processed( img, rgba );
             rgba.r = r;
         }
@@ -3812,11 +3807,7 @@ void ImageView::timeout()
 
     redraw();
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-#ifdef _WIN32
     Fl::check();
-#else
-    Fl::flush();
-#endif
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -4495,9 +4486,9 @@ bool PointInTriangle (const Imath::V2i& pt,
  void ImageView::fill_menu( Fl_Menu_* menu )
  {
      menu->clear();
-     int idx;
+     int idx = 1;
 
-     idx = menu->add( _("File/Open/Movie or Sequence"),
+     menu->add( _("File/Open/Movie or Sequence"),
                       kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
 
@@ -4509,7 +4500,7 @@ bool PointInTriangle (const Imath::V2i& pt,
      if ( !fg )
      {
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
-                    (Fl_Callback*)open_dir_cb, browser() );
+                          (Fl_Callback*)open_dir_cb, browser() );
      }
      if ( fg )
      {
@@ -4519,8 +4510,8 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("File/Open/Clip XML Metadata"),
                     kOpenClipXMLMetadata.hotkey(),
                     (Fl_Callback*)open_clip_xml_metadata_cb, this );
-         menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
-                    (Fl_Callback*)open_dir_cb, browser() );
+         idx = menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                          (Fl_Callback*)open_dir_cb, browser() );
          menu->add( _("File/Save/Movie or Sequence As"),
                     kSaveSequence.hotkey(),
                     (Fl_Callback*)save_sequence_cb, this );
@@ -4533,7 +4524,11 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("File/Save/Clip XML Metadata As"),
                     kSaveClipXMLMetadata.hotkey(),
                     (Fl_Callback*)save_clip_xml_metadata_cb, this );
+         idx += 2;
      }
+
+     Fl_Menu_Item* item = (Fl_Menu_Item*) &menu->menu()[idx];
+     item->flags |= FL_MENU_DIVIDER;
 
      if ( dynamic_cast< Fl_Menu_Bar* >( menu ) )
          menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
@@ -4541,7 +4536,6 @@ bool PointInTriangle (const Imath::V2i& pt,
      TRACE("");
 
      char buf[256];
-     Fl_Menu_Item* item;
      int num = uiMain->uiWindows->children() - 1;
      int i;
      for ( i = 0; i < num; ++i )
@@ -5984,6 +5978,8 @@ void ImageView::mouseMove(int x, int y)
 
     mrv::media fg = foreground();
     if ( !fg ) return;
+
+    lastX = x; lastY = y;
 
     CMedia* img = fg->image();
 
@@ -8238,6 +8234,9 @@ int ImageView::handle(int event)
         if ( playback() == CMedia::kStopped )
             mouseMove(int(X), int(Y));
 
+        lastX = X;
+        lastY = Y;
+
         redraw();
 
         Fl_Gl_Window::handle( event );
@@ -8253,8 +8252,8 @@ int ImageView::handle(int event)
         break;
     case FL_SHORTCUT:
     case FL_KEYBOARD:
-        // lastX = Fl::event_x();
-        // lastY = Fl::event_y();
+        lastX = Fl::event_x();
+        lastY = Fl::event_y();
         if ( !keyDown( Fl::event_key() ) )
         {
             return Fl_Gl_Window::handle( event );
