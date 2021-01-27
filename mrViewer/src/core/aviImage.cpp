@@ -4029,7 +4029,7 @@ void aviImage::do_seek()
             image_type_ptr canvas;
             fetch( canvas, _seek_frame );
 
-            cache( canvas );
+            //cache( canvas );
         }
 
     }
