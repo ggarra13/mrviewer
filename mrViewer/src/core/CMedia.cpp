@@ -1565,7 +1565,11 @@ void CMedia::refresh( const mrv::Recti& r )
         if (_framesSinceLastFpsFrame == 0)
             _lastFpsFrameTime = now;
 
-        _framesSinceLastFpsFrame += 1;
+        static int64_t old_frame = _frame - 1;
+        int64_t frameDiff = std::abs( _frame - old_frame );
+        if ( frameDiff < 10 )
+            _framesSinceLastFpsFrame += frameDiff;
+        old_frame = _frame;
     }
 
 

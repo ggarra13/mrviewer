@@ -3442,6 +3442,12 @@ int ImageBrowser::handle( int event )
             redraw();
             return 1;
         }
+        else if ( Fl::event_key() == FL_Delete )
+        {
+            remove_current();
+            redraw();
+            return 1;
+        }
 
         int ok = view()->handle( event );
         if ( ok ) return ok;

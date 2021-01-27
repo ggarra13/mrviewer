@@ -60,11 +60,7 @@ def parse( files, dest )
     lib, loc = line.split(" => ")
 
     puts lib.to_s + " -> " + loc.to_s
-    next if not loc or not lib
-    if loc =~ /not found/
-      puts ">>>>>>>>NOT FOUND"
-      next
-    end
+    next if not loc or not lib or loc =~ /not found/
 
     loc.strip!
     lib.strip!
@@ -261,17 +257,21 @@ if kernel !~ /MINGW.*/
   Dir.chdir( root )
 
 else
-  build = "BUILD/Windows-6.3.9600-64/"
-  dest  = "#{build}/#@debug"
-  Dir.chdir( root  )
-  copy_files( dest )
-  copy_third_party( root, dest )
 
-  build = "BUILD/Windows-6.3.9600-32/"
-  dest  = "#{build}/#@debug"
-  Dir.chdir( root  )
-  copy_files( dest )
-  copy_third_party( root, dest )
+  cl = `cl.exe 2>&1`
+  if cl =~ /x64/
+    build = "BUILD/Windows-6.3.9600-64/"
+    dest  = "#{build}/#@debug"
+    Dir.chdir( root  )
+    copy_files( dest )
+    copy_third_party( root, dest )
+  else
+    build = "BUILD/Windows-6.3.9600-32/"
+    dest  = "#{build}/#@debug"
+    Dir.chdir( root  )
+    copy_files( dest )
+    copy_third_party( root, dest )
+  end
 end
 
 exit(0)
