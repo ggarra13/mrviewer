@@ -145,7 +145,6 @@
 #include "mrvHistogramUI.h"
 #include "mrvImageInfo.h"
 #include "mrvGl3dView.h"
-#include "mrvSOPNode.h"
 #include "mrvAudioOffset.h"
 #include "AboutUI.h"
 #include "mrvReelUI.h"
