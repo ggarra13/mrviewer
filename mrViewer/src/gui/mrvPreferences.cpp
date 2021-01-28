@@ -56,7 +56,6 @@ namespace fs = boost::filesystem;
 #include "core/R3dImage.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvHome.h"
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
@@ -270,7 +269,6 @@ Imf::Chromaticities chromaticities(
 AboutUI*          ViewerUI::uiAbout = NULL;
 LogUI*            ViewerUI::uiLog   = NULL;
 PreferencesUI*    ViewerUI::uiPrefs = NULL;
-ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
 HotkeyUI*         ViewerUI::uiHotkey = NULL;
 ConnectionUI*     ViewerUI::uiConnection = NULL;
 
@@ -283,20 +281,11 @@ ViewerUI*           Preferences::uiMain = NULL;
 bool                Preferences::native_file_chooser;
 std::string         Preferences::OCIO_Display;
 std::string         Preferences::OCIO_View;
-std::string         Preferences::ODT_CTL_transform;
-std::string         Preferences::ODT_ICC_profile;
-Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
-float               Preferences::ODT_CTL_white_luminance = 120.0f;
-float               Preferences::ODT_CTL_surround_luminance = 12.0f;
 
 mrv::Preferences::MissingFrameType      Preferences::missing_frame;
 
 std::string         Preferences::video_threads;
 
-std::string         Preferences::CTL_8bits_save_transform;
-std::string         Preferences::CTL_16bits_save_transform;
-std::string         Preferences::CTL_32bits_save_transform;
-std::string         Preferences::CTL_float_save_transform;
 std::string         Preferences::root;
 int                 Preferences::debug = -1;
 std::string         Preferences::tempDir = "/usr/tmp/";
@@ -945,82 +934,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // Get environment preferences (LUTS)
     //
-    const char* env = fl_getenv( "CTL_MODULE_PATH");
-    std::string ctlEnv = temporaryDirectory();
-#if defined(WIN32) || defined(WIN64)
-    char sep = ';';
-#else
-    char sep = ':';
-#endif
 
-    DBG3;
-    ctlEnv += sep;
-
-    if ( !env )
-    {
-    DBG3;
-        ctlEnv += root;
-        ctlEnv += N_("/ctl");
-    }
-    else
-    {
-    DBG3;
-        ctlEnv += env;
-    }
-
-    DBG3;
-    std::string var = "CTL_MODULE_PATH=" + ctlEnv;
-    putenv( av_strdup( var.c_str() ) );
-
-
-    size_t found = 0;
-    DBG3;
-    while( (found = ctlEnv.find(sep)) != std::string::npos )
-    {
-        std::string part2;
-        if ( found+1 < ctlEnv.size() )
-            part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
-    DBG3;
-        ctlEnv = ctlEnv.substr(0, found);
-    DBG3;
-        uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
-        ctlEnv = part2;
-    }
-
-    for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
-    {
-    DBG3;
-        char* name;
-        dirent** e;
-        const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
-        int num = fl_filename_list( dir, &e );
-        for( int i = 0; i < num; i++ )
-        {
-            name = e[i]->d_name;
-
-            // if 'name' ends in '/' or '\', remove it
-            if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
-                name[strlen(name)-1] = '\0';
-
-            // ignore the "." and ".." names
-            if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
-                continue;
-
-            std::string fullpath = dir;
-            fullpath += "/";
-            fullpath += name;
-
-            if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
-                 ".ctl" ) continue;
-
-            if( fl_filename_isdir( fullpath.c_str() ) )
-                continue;
-
-            uiPrefs->uiPrefsCTLScripts->add( name );
-        }
-
-        fl_filename_free_list( &e, num );
-    }
 
 
 
@@ -1045,107 +959,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     lut.get("number_stops", tmp, 10 );
     uiPrefs->uiPrefsNumStops->value( tmp );
-
-    {
-        Fl_Preferences odt( lut, "ODT" );
-        {
-            odt.get( "algorithm", tmp, 0 );
-            uiPrefs->ODT_algorithm->value(tmp);
-
-    DBG3;
-            Fl_Preferences ctl( odt, "CTL" );
-            {
-                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
-                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
-                                                        tmpS, ok );
-
-    DBG3;
-                Fl_Preferences chroma( ctl, "Chromaticities" );
-                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
-                                         tmpC, chroma );
-
-
-    DBG3;
-                ok = ctl.get( "white_luminance", tmpF, 120.0 );
-                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
-                                          tmpF, ok );
-                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
-                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
-                                          tmpF, ok );
-    DBG3;
-            }
-            Fl_Preferences icc( odt, "ICC" );
-            {
-                ok = icc.get( "profile", tmpS, "", 2048 );
-                ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
-                                                      tmpS, ok );
-    DBG3;
-                if ( !ODT_ICC_profile.empty() )
-                    mrv::colorProfile::add( ODT_ICC_profile.c_str() );
-            }
-        }
-
-        //
-        // CTL
-        //
-
-
-#if 0
-        Fl_Preferences idt( lut, "IDT" );
-        {
-            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
-            uiPrefs->IDT_transform->value(tmpS);
-        }
-#endif
-
-
-        Fl_Preferences rt( lut, "RT" );
-        {
-    DBG3;
-            rt.get( "algorithm", tmp, 0 );
-            uiPrefs->RT_algorithm->value(tmp);
-
-    DBG3;
-            Fl_Preferences ctl( rt, "CTL" );
-            {
-#define RENDER_TRANSFORM(x, d)						\
-          ok = ctl.get( #x, tmpS, d, 2048 );				\
-          CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
-
-                RENDER_TRANSFORM( 8bits,  "" );
-    DBG3;
-                RENDER_TRANSFORM( 16bits, "" );
-    DBG3;
-                RENDER_TRANSFORM( 32bits, "" );
-    DBG3;
-                RENDER_TRANSFORM( float,  "RRT" );
-    DBG3;
-#undef RENDER_TRANSFORM
-            }
-
-            //
-            // ICC
-            //
-
-            Fl_Preferences icc( rt, "ICC" );
-            {
-#define ICC_PROFILE(x, d)						\
-          ok = icc.get( #x, tmpS, d, 2048 );				\
-          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
-          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
-          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
-    DBG3;
-                ICC_PROFILE( 8bits,  "" );
-    DBG3;
-                ICC_PROFILE( 16bits, "" );
-    DBG3;
-                ICC_PROFILE( 32bits, "" );
-    DBG3;
-                ICC_PROFILE( float,  "" );
-#undef ICC_PROFILE
-            }
-        }
-    }
 
 
     Fl_Preferences loading( base, "loading" );
@@ -1275,12 +1088,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
     load_hotkeys(uiMain, keys);
 
-    // Set the CTL/ICC transforms in GUI
-    if ( ! set_transforms() )
-    {
-    DBG3;
-        LOG_ERROR( _("Could not set transforms in GUI") );
-    }
 }
 
 #ifdef _WIN32
@@ -1754,8 +1561,8 @@ void Preferences::run( ViewerUI* main )
     {
         DBG3;
         if ( !var || strlen(var) == 0 )
-            LOG_INFO( _("OCIO environment variable is not set.  "
-                        "Defaulting to CTL. ") );
+            LOG_INFO( _("OCIO environment variable is not set.\n"
+                        "No OpenColorIO will be used.") );
         DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
         DBG3;
@@ -2444,66 +2251,6 @@ void Preferences::save()
     lut.set( "number_stops", uiPrefs->uiPrefsNumStops->value() );
 
     {
-        Fl_Preferences odt( lut, "ODT" );
-        {
-            odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
-            Fl_Preferences ctl( odt, "CTL" );
-            {
-                ctl.set( "transform", uiPrefs->uiODT_CTL_transform->value() );
-
-                Fl_Preferences chroma( ctl, "Chromaticities" );
-                chroma.set( "red_x",
-                            uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
-                chroma.set( "red_y",
-                            uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
-                chroma.set( "green_x",
-                            uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
-                chroma.set( "green_y",
-                            uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
-                chroma.set( "blue_x",
-                            uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
-                chroma.set( "blue_y",
-                            uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
-                chroma.set( "white_x",
-                            uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
-                chroma.set( "white_y",
-                            uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
-
-                ctl.set( "white_luminance",
-                         uiPrefs->uiODT_CTL_white_luminance->value() );
-                ctl.set( "surround_luminance",
-                         uiPrefs->uiODT_CTL_surround_luminance->value() );
-            }
-            Fl_Preferences icc( odt, "ICC" );
-            {
-                icc.set( "profile",   uiPrefs->uiODT_ICC_profile->value() );
-            }
-        }
-
-        Fl_Preferences  rt( lut, "RT" );
-        {
-            rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
-
-            Fl_Preferences ctl( rt, "CTL" );
-            {
-                ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->value() );
-                ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->value() );
-                ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->value() );
-                ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->value() );
-            }
-
-            Fl_Preferences icc( rt, "ICC" );
-            {
-                icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->value() );
-                icc.set( "16bits", uiPrefs->uiICC_16bits_profile->value() );
-                icc.set( "32bits", uiPrefs->uiICC_32bits_profile->value() );
-                icc.set( "float",  uiPrefs->uiICC_float_profile->value() );
-            }
-        }
-
-    }
-
-    {
         Fl_Preferences subtitles( base, "subtitles" );
         int idx = uiPrefs->uiPrefsSubtitleFont->value();
         if ( idx >= 0 )
@@ -2554,37 +2301,6 @@ void Preferences::save()
 }
 
 
-bool Preferences::set_transforms()
-{
-
-    // Set ui window settings
-    PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
-    if (!uiPrefs) return true;
-
-    uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
-    uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
-    uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );
-    uiPrefs->uiODT_CTL_chromaticities_green_x->value( ODT_CTL_chromaticities.green.x );
-    uiPrefs->uiODT_CTL_chromaticities_green_y->value( ODT_CTL_chromaticities.green.y );
-    uiPrefs->uiODT_CTL_chromaticities_blue_x->value( ODT_CTL_chromaticities.blue.x );
-    uiPrefs->uiODT_CTL_chromaticities_blue_y->value( ODT_CTL_chromaticities.blue.y );
-    uiPrefs->uiODT_CTL_chromaticities_white_x->value( ODT_CTL_chromaticities.white.x );
-    uiPrefs->uiODT_CTL_chromaticities_white_y->value( ODT_CTL_chromaticities.white.y );
-
-    uiPrefs->uiCTL_8bits_load_transform->value( CMedia::rendering_transform_8bits.c_str() );
-    uiPrefs->uiCTL_16bits_load_transform->value( CMedia::rendering_transform_16bits.c_str() );
-    uiPrefs->uiCTL_32bits_load_transform->value( CMedia::rendering_transform_32bits.c_str() );
-    uiPrefs->uiCTL_float_load_transform->value( CMedia::rendering_transform_float.c_str() );
-
-    uiPrefs->uiODT_ICC_profile->value( ODT_ICC_profile.c_str() );
-    uiPrefs->uiICC_8bits_profile->value( CMedia::icc_profile_8bits.c_str() );
-    uiPrefs->uiICC_16bits_profile->value( CMedia::icc_profile_16bits.c_str() );
-    uiPrefs->uiICC_32bits_profile->value( CMedia::icc_profile_32bits.c_str() );
-    uiPrefs->uiICC_float_profile->value( CMedia::icc_profile_float.c_str() );
-
-
-    return true;
-}
 
 
 Preferences::~Preferences()

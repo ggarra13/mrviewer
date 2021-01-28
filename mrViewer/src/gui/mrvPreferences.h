@@ -61,13 +61,6 @@ public:
         kScratchedRepeatFrame
     };
 
-    enum LutAlgorithm
-    {
-        kLutPreferCTL,
-        kLutOnlyCTL,
-        kLutPreferICC,
-        kLutOnlyICC
-    };
 
 public:
     Preferences( PreferencesUI* ui );
@@ -84,9 +77,6 @@ public:
         {
             return config;
         }
-
-protected:
-    static bool set_transforms();
 
 public:
     static ViewerUI* uiMain;
@@ -106,22 +96,12 @@ public:
     static std::string OCIO_Display;
     static std::string OCIO_View;
 
-    static std::string ODT_CTL_transform;
-    static std::string ODT_ICC_profile;
 
     static CacheType           cache_type;
-    static Imf::Chromaticities ODT_CTL_chromaticities;
-
-    static float ODT_CTL_white_luminance;
-    static float ODT_CTL_surround_luminance;
 
     static MissingFrameType missing_frame;
     static std::string video_threads;
 
-    static std::string CTL_8bits_save_transform;
-    static std::string CTL_16bits_save_transform;
-    static std::string CTL_32bits_save_transform;
-    static std::string CTL_float_save_transform;
 
     static std::string root;
     static std::string tempDir;

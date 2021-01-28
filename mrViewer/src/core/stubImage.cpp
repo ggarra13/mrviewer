@@ -635,20 +635,6 @@ stubImage::stubImage( const CMedia* other ) :
     if ( oStub->channel() )
         _channel = av_strdup( oStub->channel() );
 
-    const char* profile = other->icc_profile();
-    if ( profile )  icc_profile( profile );
-
-
-    size_t num = other->number_of_lmts();
-    size_t j = 0;
-    for ( ; j < num; ++j )
-    {
-        _look_mod_transform.push_back( av_strdup(
-                                           other->look_mod_transform( j ) ) );
-    }
-
-    const char* transform = other->rendering_transform();
-    if ( transform )  rendering_transform( transform );
 
     const char* lbl = other->label();
     if ( lbl )  _label = av_strdup( lbl );

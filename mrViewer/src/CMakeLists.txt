@@ -51,16 +51,12 @@ FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
 FIND_PACKAGE( OCIO        REQUIRED )    # for OCIO color correction
 FIND_PACKAGE( OIIO        REQUIRED )    # for OIIO image loading
-FIND_PACKAGE( CTL         REQUIRED )    # for CTL color language
-FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for OpenEXRCTL color language add-ons
 FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
 FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
 FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
-FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
-#FIND_PACKAGE( RefIccMAX  REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
@@ -193,15 +189,12 @@ INCLUDE_DIRECTORIES(
   ${FLTK_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
-  ${OpenEXRCTL_INCLUDE_DIR}
-  ${CTL_INCLUDE_DIR}
   ${TINYXML2_INCLUDE_DIR}
   ${OPENEXR_INCLUDE_DIR}
   ${OIIO_INCLUDE_DIR}
   ${OCIO_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
-  ${SampleICC_INCLUDE_DIR}
   )
 
 
@@ -213,13 +206,11 @@ FLTK_WRAP_UI( mrViewer
   gui/EXROptionsUI.fl
   gui/OIIOOptionsUI.fl
   gui/mrvEDLWindowUI.fl
-  gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl
   gui/mrvHotkeyUI.fl
   gui/keyboard_ui.fl
   gui/mrvImageInfo.fl
   gui/mrvReelUI.fl
-  gui/mrvSOPNode.fl
   gui/mrvStereoUI.fl
   gui/mrvPreferencesUI.fl
   gui/mrvHistogramUI.fl
@@ -276,7 +267,6 @@ SET( SOURCES
   core/mrvAudioEngine.cpp
   core/mrvColor.cpp
   core/mrvColorSpaces.cpp
-  core/ctlToLut.cpp
   core/mrvLicensing.cpp
   core/mrvPacketQueue.cpp
   core/mrvPlayback.cpp
@@ -291,7 +281,6 @@ SET( SOURCES
   core/Sequence.cpp
   core/mrStackTrace.cpp
   core/mrvCPU.cpp
-  core/mrvColorProfile.cpp
   core/mrvImageOpts.cpp
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
@@ -324,7 +313,6 @@ SET( SOURCES
   gui/mrvColorOps.cpp
   gui/mrvMedia.cpp
   gui/mrvBrowser.cpp
-  gui/mrvCTLBrowser.cpp
   gui/mrvCollapsibleGroup.cpp
   gui/mrvColorInfo.cpp
   gui/mrvChoice.cpp
@@ -448,8 +436,6 @@ SET( LIBRARIES
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
-  ${OpenEXRCTL_LIBRARIES}
-  ${CTL_LIBRARIES}
   ${OPENEXR_LIBRARIES}
   ${FLTK_LIBRARIES}
   ${OPENGL_LIBRARIES}
@@ -457,7 +443,6 @@ SET( LIBRARIES
   ${OCIO_LIBRARIES}
   ${OIIO_LIBRARIES}
   ${LibRaw_LIBRARIES}
-  ${SampleICC_LIBRARIES}
   ${TINYXML2_LIBRARIES}
   ${OS_LIBRARIES}
   )
@@ -514,11 +499,11 @@ SET( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 IF(UNIX AND NOT APPLE)
   IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
     FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
     DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
   ELSE()
-    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
     FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
     DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
   ENDIF()
@@ -544,8 +529,6 @@ FILE(GLOB ociofiles ${EXE_DIR}/ocio* )
 FILE(COPY ${ociodlls} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB oiiofiles ${EXE_DIR}/oiio* )
 FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
-FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/../otio ${CMAKE_BINARY_DIR}/../otio/adapters )
 FILE(GLOB otiofiles "${SOURCE_DIR}/otio/adapters/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/adapters )
@@ -567,7 +550,6 @@ FILE( COPY ${SOURCE_DIR}/colors/
     DESTINATION ${CMAKE_BINARY_DIR}/../colors )
 
   INSTALL( DIRECTORY ${SOURCE_DIR}/colors/ DESTINATION colors )
-  INSTALL( DIRECTORY ${SOURCE_DIR}/ctl/ DESTINATION ctl )
   INSTALL( DIRECTORY ${SOURCE_DIR}/shaders/ DESTINATION shaders )
   INSTALL( DIRECTORY ${SOURCE_DIR}/otio/ DESTINATION otio )
   INSTALL( DIRECTORY ${SOURCE_DIR}/ocio/ DESTINATION ocio )
@@ -586,7 +568,7 @@ if (NOT APPLE )
      DESTINATION ./ )
 endif()
 
-INSTALL( PROGRAMS ${ctlfiles} ${ffmpegfiles} ${scriptfiles} ${exrfiles}
+INSTALL( PROGRAMS ${ffmpegfiles} ${scriptfiles} ${exrfiles}
       ${oiiofiles} ${ociofiles} ${dllfiles}
    DESTINATION bin )
 INSTALL( TARGETS mrViewer DESTINATION bin )
@@ -789,7 +771,6 @@ MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
 MESSAGE( STATUS "R3DSDK:        ${R3DSDK_FOUND} ${R3SDK_VERSION}" )
-MESSAGE( STATUS "CTL:           ${CTL_FOUND} ${CTL_VERSION}" )
 MESSAGE( STATUS "libintl:       ${LIBINTL_FOUND} ${LIBINTL_VERSION}" )
 MESSAGE( STATUS "TinyXML2:      ${TINYXML2_FOUND} ${TINYXML2_VERSION}" )
 
@@ -842,23 +823,11 @@ IF(TCLAP_FOUND)
   MESSAGE( STATUS "TCLAP include:    ${TCLAP_INCLUDE_DIR}" )
 ENDIF(TCLAP_FOUND)
 
-IF(CTL_FOUND)
-  MESSAGE( STATUS "CTL include:    ${CTL_INCLUDE_DIR}" )
-  MESSAGE( STATUS "CTL library:    ${CTL_LIBRARY_DIR}" )
-  MESSAGE( STATUS "CTL libraries:  ${CTL_LIBRARIES}" )
-ENDIF(CTL_FOUND)
-
 IF(LIBINTL_FOUND)
   MESSAGE( STATUS "LibIntl include:     ${LIBINTL_INCLUDE_DIR}" )
   MESSAGE( STATUS "LibIntl library dir: ${LIBINTL_LIBRARY_DIR}" )
   MESSAGE( STATUS "LibIntl libraries:   ${LIBINTL_LIBRARIES}" )
 ENDIF(LIBINTL_FOUND)
-
-IF(OpenEXRCTL_FOUND)
-  MESSAGE( STATUS "OpenEXR CTL include:    ${OpenEXRCTL_INCLUDE_DIR}" )
-  MESSAGE( STATUS "OpenEXR CTL library:    ${OpenEXRCTL_LIBRARY_DIR}" )
-  MESSAGE( STATUS "OpenEXR CTL libraries:  ${OpenEXRCTL_LIBRARIES}" )
-ENDIF(OpenEXRCTL_FOUND)
 
 IF(TINYXML2_FOUND)
   MESSAGE( STATUS "TinyXML2 include:    ${TINYXML2_INCLUDE_DIR}" )

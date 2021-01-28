@@ -56,7 +56,6 @@ namespace fs = boost::filesystem;
 #include "core/mrvClient.h"
 #include "core/mrvI8N.h"
 #include "core/mrvException.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvCPU.h"
 
 #include "gui/mrvImageBrowser.h"

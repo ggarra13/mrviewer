@@ -56,7 +56,6 @@ using namespace std;
 #include "core/mrvImageOpts.h"
 #include "core/mrvColorOps.h"
 #include "core/Sequence.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/wandImage.h"
 #include "core/picImage.h"
@@ -217,14 +216,6 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
             alpha_layers();
         }
 
-        size_t profileSize;
-        unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
-        if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
-        if ( profileSize > 0 )
-        {
-            _profile = av_strdup( fileroot() );
-            mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
-        }
 
         size_t index = 0;
         unsigned numLayers = (unsigned) MagickGetNumberImages( wand );

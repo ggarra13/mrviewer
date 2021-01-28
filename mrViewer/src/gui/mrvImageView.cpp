@@ -111,7 +111,6 @@
 // CORE classes
 #include "core/mrvClient.h"
 #include "core/mrvColor.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvI8N.h"
 #include "core/mrvLicensing.h"
 #include "core/mrvMath.h"
@@ -125,8 +124,6 @@
 #include "core/mrvHome.h"
 #include "core/mrStackTrace.h"
 #include "core/exrImage.h"
-#include "core/mrvACES.h"
-#include "core/ctlToLut.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -164,7 +161,6 @@
 
 // Widgets
 #include "mrViewer.h"
-#include "mrvIccProfileUI.h"
 #include "mrvColorAreaUI.h"
 #include "mrvPreferencesUI.h"
 
@@ -1113,18 +1109,6 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             uiMain->uiView->send_network( "WaveformWindow 0" );
         }
     }
-    else if ( idx == kICCProfiles )
-    {
-        if ( force || !uiMain->uiICCProfiles->uiMain->visible() )
-        {
-            uiMain->uiICCProfiles->uiMain->show();
-            uiMain->uiICCProfiles->fill();
-        }
-        else
-        {
-            uiMain->uiICCProfiles->uiMain->hide();
-        }
-    }
     else if ( idx == kConnections )
     {
         if ( force || !uiMain->uiConnection->uiMain->visible() )
@@ -1187,13 +1171,6 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
 }
 
 
-static void attach_color_profile_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    attach_icc_profile( fg->image() );
-}
 
 
 void load_subtitle_cb( Fl_Widget* o, ViewerUI* uiMain )
@@ -1239,79 +1216,6 @@ static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
     view->redraw();
 }
 
-static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    CMedia* img = fg->image();
-    const char* script = "";
-    if ( img->rendering_transform() ) script = img->rendering_transform();
-
-    attach_ctl_script( fg->image(), script, view->main() );
-}
-
-static void modify_sop_sat( mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    CMedia* img = fg->image();
-    size_t num = img->number_of_lmts();
-    size_t num_graderefs = img->number_of_grade_refs();
-    if ( num_graderefs == 0 )
-    {
-        attach_look_mod_transform( img, "ACEScsc.ACES_to_ACEScg", 0,
-                                   view->main() );
-        attach_look_mod_transform( img, "LMT.SOPNode", 1, view->main() );
-        attach_look_mod_transform( img, "LMT.SatNode", 2, view->main() );
-        attach_look_mod_transform( img, "ACEScsc.ACEScg_to_ACES", 3,
-                                   view->main() );
-    }
-
-    if ( ! img->rendering_transform() )
-    {
-        attach_rt_script( img, "RRT", view->main() );
-    }
-    if ( mrv::Preferences::ODT_CTL_transform == "" )
-    {
-        mrv::Preferences::ODT_CTL_transform =
-            "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
-    }
-
-    ViewerUI* main = view->main();
-    if ( main->uiSOPNode )
-    {
-        main->uiSOPNode->media( fg );
-        main->uiSOPNode->uiMain->show();
-    }
-    else
-    {
-        main->uiSOPNode = new SopNode( view );
-    }
-    img->image_damage( img->image_damage() | CMedia::kDamageAll );
-    view->use_lut( true );
-    view->redraw();
-}
-
-void modify_sop_sat_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    modify_sop_sat( view );
-}
-
-static void attach_ctl_lmt_script_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    CMedia* img = fg->image();
-
-    attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
-}
-
 void ImageView::update_ICS() const
 {
     mrv::media fg = foreground();
@@ -1355,6 +1259,7 @@ static void attach_ocio_display_cb( Fl_Widget* o, mrv::ImageView* view )
 
     attach_ocio_display( fg->image(), view );
 }
+
 static void attach_ocio_view_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::media fg = view->foreground();
@@ -1363,24 +1268,7 @@ static void attach_ocio_view_cb( Fl_Widget* o, mrv::ImageView* view )
     attach_ocio_view( fg->image(), view );
 }
 
-static void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
 
-    attach_ctl_idt_script( fg->image(), view->main() );
-}
-
-static void monitor_icc_profile_cb( Fl_Widget* o, ViewerUI* uiMain )
-{
-    monitor_icc_profile(uiMain);
-}
-
-
-static void monitor_ctl_script_cb( Fl_Widget* o, ViewerUI* uiMain )
-{
-    monitor_ctl_script(uiMain);
-}
 
 static void copy_pixel_rgba_cb( Fl_Widget* o, mrv::ImageView* view )
 {
@@ -1817,9 +1705,6 @@ ImageView::~ImageView()
 
     delete _engine;
     _engine = NULL;
-
-    delete uiMain->uiSOPNode;
-    uiMain->uiSOPNode = NULL;
 
     uiMain = NULL;
 }
@@ -2775,8 +2660,6 @@ bool ImageView::should_update( mrv::media fg )
         if ( img->image_damage() & CMedia::kDamageData )
         {
             update_image_info();
-            if ( uiMain && uiMain->uiICCProfiles )
-                uiMain->uiICCProfiles->fill();
         }
 
         if ( img->image_damage() & CMedia::kDamageTimecode )
@@ -3443,26 +3326,6 @@ again:
             CMedia* img = fg->image();
             img->ocio_input_color_space( s );
             update_ICS();
-        }
-        break;
-    }
-    case kRT:
-    {
-        Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
-        if ( !attr )
-        {
-            LOG_ERROR( "RT for image failed" );
-            break;
-        }
-        const std::string& s = attr->value();
-        NET( "RT " << s );
-        mrv::media fg = foreground();
-        if (fg)
-        {
-            CMedia* img = fg->image();
-            img->rendering_transform( s.c_str() );
-            img->image_damage( img->image_damage() |
-                               CMedia::kDamageLut );
         }
         break;
     }
@@ -4718,34 +4581,6 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
          TRACE("");
-         if ( !Preferences::use_ocio )
-         {
-
-             TRACE("");
-             menu->add( _("Image/Attach CTL Input Device Transform"),
-                        kIDTScript.hotkey(),
-                        (Fl_Callback*)attach_ctl_idt_script_cb,
-                        this);
-             menu->add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
-                        kSOPSatNodes.hotkey(),
-                        (Fl_Callback*)modify_sop_sat_cb,
-                        this);
-             menu->add( _("Image/Add CTL Look Mod Transform"),
-                        kLookModScript.hotkey(),
-                        (Fl_Callback*)attach_ctl_lmt_script_cb,
-                        this);
-             menu->add( _("Image/Attach CTL Rendering Transform"),
-                        kCTLScript.hotkey(),
-                        (Fl_Callback*)attach_ctl_script_cb,
-                        this, FL_MENU_DIVIDER);
-             menu->add( _("Image/Attach ICC Color Profile"),
-                        kIccProfile.hotkey(),
-                        (Fl_Callback*)attach_color_profile_cb,
-                        this, FL_MENU_DIVIDER);
-         }
-
-
-         TRACE("");
          menu->add( _("Image/Mirror/Horizontal"),
                     kFlipX.hotkey(),
                     (Fl_Callback*)flip_x_cb,
@@ -4873,21 +4708,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
      }
 
-
-     if ( !Preferences::use_ocio )
-     {
-
-         TRACE("");
-
-         menu->add( _("Monitor/Attach CTL Display Transform"),
-                    kMonitorCTLScript.hotkey(),
-                    (Fl_Callback*)monitor_ctl_script_cb,
-                    uiMain);
-         menu->add( _("Monitor/Attach ICC Color Profile"),
-                    kMonitorIccProfile.hotkey(),
-                    (Fl_Callback*)monitor_icc_profile_cb,
-                    uiMain, FL_MENU_DIVIDER);
-     }
 
      menu->menu_end();
  }
@@ -6926,41 +6746,6 @@ int ImageView::keyDown(unsigned int rawkey)
         save_snap_cb( this, this );
         return 1;
     }
-    else if ( kSaveClipXMLMetadata.match( rawkey ) )
-    {
-        save_clip_xml_metadata_cb( this, this );
-        return 1;
-    }
-    else if ( kIDTScript.match( rawkey ) )
-    {
-        attach_ctl_idt_script_cb( NULL, this );
-        return 1;
-    }
-    else if ( kIccProfile.match( rawkey ) )
-    {
-        attach_color_profile_cb( NULL, this );
-        return 1;
-    }
-    else if ( kLookModScript.match( rawkey ) )
-    {
-        attach_ctl_lmt_script_cb( NULL, this );
-        return 1;
-    }
-    else if ( kCTLScript.match( rawkey ) )
-    {
-        attach_ctl_script_cb( NULL, this );
-        return 1;
-    }
-    else if ( kMonitorCTLScript.match( rawkey ) )
-    {
-        monitor_ctl_script_cb( NULL, uiMain );
-        return 1;
-    }
-    else if ( kMonitorIccProfile.match( rawkey ) )
-    {
-        monitor_icc_profile_cb( NULL, uiMain );
-        return 1;
-    }
     else if ( kSetAsBG.match( rawkey ) )
     {
         set_as_background_cb( NULL, this );
@@ -7613,11 +7398,6 @@ int ImageView::keyDown(unsigned int rawkey)
         toggle_window( kWaveform );
         return 1;
     }
-    else if ( kToggleICCProfiles.match( rawkey ) )
-    {
-        toggle_window( kICCProfiles );
-        return 1;
-    }
     else if ( kToggleConnections.match( rawkey ) )
     {
         toggle_window( kConnections );
@@ -7875,11 +7655,10 @@ void ImageView::toggle_presentation()
     Fl_Window* uiAbout = uiMain->uiAbout->uiMain;
     Fl_Window* uiStereo = uiMain->uiStereo->uiMain;
     Fl_Window* uiPaint = uiMain->uiPaint->uiMain;
-    Fl_Window* uiSOP = uiMain->uiSOPNode ? uiMain->uiSOPNode->uiMain : NULL;
     Fl_Window* uiLog = uiMain->uiLog->uiMain;
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-        has_prefs, has_about, has_stereo, has_paint, has_sop, has_log;
+        has_prefs, has_about, has_stereo, has_paint, has_log;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7899,13 +7678,11 @@ void ImageView::toggle_presentation()
         has_pixel_bar  = uiMain->uiPixelBar->visible();
         has_paint      = uiPaint ? uiPaint->visible() : false;
         has_stereo     = uiStereo ? uiStereo->visible() : false;
-        has_sop        = uiSOP ? uiSOP->visible() : false;
         has_log        = uiLog ? uiLog->visible() : false;
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
         filter         = texture_filtering();
 
-        if (uiSOP) uiSOP->hide();
         uiPaint->hide();
         uiStereo->hide();
         uiImageInfo->hide();
@@ -7963,7 +7740,6 @@ void ImageView::toggle_presentation()
         if ( has_about )      uiAbout->show();
         if ( has_paint )      uiPaint->show();
         if ( has_stereo )     uiStereo->show();
-        if ( has_sop )        uiSOP->show();
         if ( has_log )        uiLog->show();
 
         texture_filtering( filter );
@@ -10195,12 +9971,6 @@ void ImageView::update_color_info( const mrv::media fg ) const
         {
             uiMain->uiColorArea->uiColorText->update();
         }
-    }
-
-    if ( uiMain->uiSOPNode )
-    {
-        Fl_Window* uiSOPNode = uiMain->uiSOPNode->uiMain;
-        if ( uiSOPNode->visible() ) uiMain->uiSOPNode->media( fg );
     }
 
     if ( uiMain->uiVectorscope )

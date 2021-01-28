@@ -52,7 +52,6 @@ using namespace std;
 
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/rawImage.h"
 #include "gui/mrvIO.h"

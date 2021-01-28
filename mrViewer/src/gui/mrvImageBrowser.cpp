@@ -147,7 +147,6 @@ namespace {
         mrv::image_type_ptr canvas;
         img->fetch( canvas, i.first );
         img->cache( canvas );
-        img->default_rendering_transform();
         return b->add( img );
     }
 
@@ -180,8 +179,6 @@ namespace {
         img->last_frame( i.last );
         img->fps( i.fps );
         img->play_fps( i.fps );
-        img->default_icc_profile();
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -217,7 +214,6 @@ namespace {
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -252,7 +248,6 @@ namespace {
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -288,7 +283,6 @@ namespace {
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -323,7 +317,6 @@ namespace {
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -364,7 +357,6 @@ static mrv::media gamma_chart( mrv::LoadInfo& i, mrv::ImageBrowser* b,
     mrv::image_type_ptr canvas;
     img->fetch( canvas, 1 );
     img->cache( canvas );
-    img->default_rendering_transform();
     img->gamma( 1.0f );
     img->seek( i.first );
     return b->add( img );
@@ -420,8 +412,6 @@ void gamma_chart_24_cb( Fl_Widget* o, mrv::ImageBrowser* b )
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_icc_profile();
-        img->default_rendering_transform();
         img->seek( i.first );
         return b->add( img );
     }
@@ -459,8 +449,6 @@ void linear_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
         mrv::image_type_ptr canvas;
         img->fetch( canvas, 1 );
         img->cache( canvas );
-        img->default_icc_profile();
-        img->default_rendering_transform();
         return b->add( img );
     }
 
@@ -485,31 +473,9 @@ void luminance_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 //     mrv::image_type_ptr canvas;
 //     img->fetch( canvas, 1 );
 //     img->cache( canvas );
-//     img->default_icc_profile();
-//     img->default_rendering_transform();
 //     img->refresh();
 //     b->add( img );
 // }
-
-/**
- * Callback used to attach a color profile to the current image
- *
- * @param o     ImageBrowser*
- * @param data  unused
- */
-static void attach_color_profile_cb( Fl_Widget* o, mrv::ImageBrowser* b )
-{
-    b->attach_icc_profile();
-}
-
-
-static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageBrowser* b )
-{
-    mrv::media fg = b->current_image();
-    if ( ! fg ) return;
-
-    attach_ctl_script( fg->image() );
-}
 }
 
 namespace mrv {
@@ -1625,8 +1591,6 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img->find_image( f );
     }
 
-    img->default_icc_profile();
-    img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
@@ -2707,8 +2671,6 @@ void ImageBrowser::image_version( int sum )
     m->position( fg->position() );
 
     // Transfer all attributes to new image
-    newImg->icc_profile( img->icc_profile() );
-    newImg->rendering_transform( img->rendering_transform() );
     newImg->ocio_input_color_space( img->ocio_input_color_space() );
     newImg->gamma( img->gamma() );
     newImg->fps( img->fps() );
@@ -3063,16 +3025,6 @@ int ImageBrowser::mousePush( int x, int y )
                 menu.add( _("Image/Media Info"), 0,
                           (Fl_Callback*)media_info_cb, this,
                           FL_MENU_DIVIDER );
-            }
-
-            if ( valid )
-            {
-                menu.add( _("Image/Attach ICC Color Profile"), 0,
-                          (Fl_Callback*)attach_color_profile_cb, this,
-                          FL_MENU_DIVIDER);
-                menu.add( _("Image/Attach CTL Script"), 0,
-                          (Fl_Callback*)attach_ctl_script_cb, this,
-                          FL_MENU_DIVIDER);
             }
 
             menu.add( _("Image/Set as Background"), 0,
@@ -3708,23 +3660,7 @@ void ImageBrowser::toggle_edl()
 }
 
 
-void ImageBrowser::attach_icc_profile()
-{
-    mrv::media m = current_image();
-    if ( ! m ) return;
 
-    CMedia* img = m->image();
-    mrv::attach_icc_profile( img );
-}
-
-void ImageBrowser::attach_ctl_script()
-{
-    mrv::media m = current_image();
-    if ( ! m ) return;
-
-    CMedia* img = m->image();
-    mrv::attach_ctl_script( img );
-}
 
 
 

@@ -122,9 +122,6 @@ decl {\#include "mrvPlayback.h"} {private local
 decl {\#include "mrvVersion.h"} {private local
 }
 
-decl {\#include "mrvIccProfileUI.h"} {private local
-}
-
 decl {\#include "mrvColorAreaUI.h"} {private local
 }
 
@@ -143,9 +140,6 @@ decl {\#include "mrvHotkeyUI.h"} {private local
 decl {\#include "mrvWaveformUI.h"} {private local
 }
 
-decl {\#include "mrvSOPNode.h"} {public global
-}
-
 decl {\#include "icons/icons.c"} {private local
 }
 
@@ -159,52 +153,6 @@ decl {\#include "FL/Fl.H"} {public global
 }
 
 decl {\#include "namespace.h"} {public global
-}
-
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
-} {
-  code {std::string orig = ctl;} {}
-  Fl_Window {} {
-    label {CTL Browser} open
-    xywh {1207 382 395 440} type Double hide resizable hotspot
-    class mrvDoubleWindow modal
-  } {
-    Fl_Group {} {open
-      xywh {10 25 375 405}
-    } {
-      Fl_Browser uiBrowser {
-        label {Select a CTL script}
-        user_data {&ctl} user_data_type {std::string*}
-        callback {int elem = o->value();
-if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
-*v = o->text(elem);}
-        private xywh {10 25 375 345} type Hold box DOWN_BOX labelcolor 32
-        code0 {o->set_prefix(prefix);}
-        code1 {o->find( ctl.c_str() );}
-        class {mrv::CTLBrowser}
-      }
-      Fl_Button {} {
-        label Accept
-        user_data w user_data_type {mrvDoubleWindow*}
-        callback {v->make_exec_return(true);}
-        xywh {205 400 85 25}
-      }
-      Fl_Button {} {
-        label Cancel
-        user_data w user_data_type {mrvDoubleWindow*}
-        callback {v->make_exec_return(false);}
-        xywh {300 400 80 25}
-      }
-    }
-  }
-  code {if (!w->exec())
-{
-        delete w; w = NULL;
-        return orig;
-}
-
-delete w; w = NULL;
-return ctl;} {}
 }
 
 class SaveOptionsUI {} {
@@ -673,8 +621,6 @@ class ViewerUI {open
   }
   decl {static AboutUI* uiAbout;} {public local
   }
-  decl {static ICCProfileListUI* uiICCProfiles;} {public local
-  }
   decl {static HotkeyUI* uiHotkey;} {public local
   }
   decl {static ConnectionUI* uiConnection;} {public local
@@ -697,20 +643,18 @@ class ViewerUI {open
   }
   decl {PaintUI* uiPaint;} {public local
   }
-  decl {SopNode* uiSOPNode;} {public local
-  }
   decl {EDLWindowUI* uiEDLWindow;} {public local
   }
   decl {StereoUI* uiStereo;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
       label mrViewer
       user_data this user_data_type {ViewerUI*}
-      callback {delete v;} open
-      xywh {75 190 690 565} type Double align 80 resizable
+      callback {delete v;}
+      xywh {75 302 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -722,11 +666,11 @@ o->main( this );}
         Fl_Menu_Bar uiMenuBar {open
           xywh {0 0 690 25}
         } {}
-        Fl_Group uiTopBar {
+        Fl_Group uiTopBar {open
           xywh {0 25 690 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
-            label W
+            label W open
             tooltip {Opens different windows} xywh {2 27 25 22}
             code0 {o->disable_glyph();}
             class {mrv::PopupMenu}
@@ -783,12 +727,6 @@ uiView->update_color_info();}
               label Waveform user_data_type {void*}
               callback {uiWaveform->uiMain->show();}
               xywh {10 10 100 20}
-            }
-            MenuItem {} {
-              label {ICC Profiles} user_data_type {void*}
-              callback {uiICCProfiles->fill();
-uiICCProfiles->uiMain->show();}
-              xywh {0 0 100 20}
             }
             MenuItem {} {
               label Connections user_data_type {void*}
@@ -1081,7 +1019,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
             }
           }
         }
-        Fl_Pack uiViewGroup {selected
+        Fl_Pack uiViewGroup {
           xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
@@ -1837,22 +1775,17 @@ if (!uiLog) uiLog   = new LogUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 if (!uiConnection) uiConnection = new ConnectionUI( this );
 uiHotkey = new HotkeyUI(this);
-uiICCProfiles = new ICCProfileListUI(this);
 uiEDLWindow = new EDLWindowUI(this);
-uiSOPNode = NULL;
 Fl_Group::current(0);
 
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );} {}
   }
-  Function {ViewerUI()} {open
-  } {
+  Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {open
-  } {
+  Function {~ViewerUI()} {} {
     code {delete uiAttrsWindow; uiAttrsWindow = NULL;
-delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
@@ -1876,7 +1809,6 @@ delete uiPrefs; uiPrefs = NULL;} {}
 if ( uiPrefs ) uiPrefs->uiMain->redraw();
 if ( uiLog ) uiLog->uiMain->redraw();
 if ( uiAbout ) uiAbout->uiMain->redraw();
-if ( uiICCProfiles ) uiICCProfiles->uiMain->redraw();
 if ( uiHotkey ) uiHotkey->uiMain->redraw();
 if ( uiConnection ) uiConnection->uiMain->redraw();
 if ( uiReelWindow ) uiReelWindow->uiMain->redraw();
@@ -1887,13 +1819,11 @@ if ( uiHistogram ) uiHistogram->uiMain->redraw();
 if ( uiVectorscope ) uiVectorscope->uiMain->redraw();
 if ( uiWaveform ) uiWaveform->uiMain->redraw();
 if ( uiPaint ) uiPaint->uiMain->redraw();
-if ( uiSOPNode ) uiSOPNode->uiMain->redraw();
 if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
 Fl::check(); // needed to refresh windows} {}
   }
-  Function {make_attrs_window()} {open
-  } {
+  Function {make_attrs_window()} {} {
     Fl_Window {} {open
       xywh {1188 581 150 285} type Double hide resizable non_modal
     } {

@@ -59,7 +59,6 @@ OIIO_NAMESPACE_USING;
 #include "core/mrvMath.h"
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/oiioImage.h"
 #include "gui/mrvPreferences.h"

@@ -559,119 +559,6 @@ bool Parser::parse( const std::string& s )
         v->redraw();
         ok = true;
     }
-    else if ( cmd == N_("IDT") )
-    {
-        std::string s;
-
-        std::string imgname;
-        is.clear();
-        std::getline( is, s, '"' ); // skip first quote
-        is.clear();
-        std::getline( is, s, '"' );
-
-        mrv::media fg = v->foreground();
-        if ( fg )
-        {
-            CMedia* img = fg->image();
-            img->idt_transform( s.c_str() );
-            ok = true;
-        }
-    }
-    else if ( cmd == N_("LMT.SOPNode") )
-    {
-        float s0, s1, s2, o0, o1, o2, p0, p1, p2;
-        is >> s0 >> s1 >> s2 >> o0 >> o1 >> o2 >> p0 >> p1 >> p2;
-
-        mrv::media fg = v->foreground();
-        if ( fg )
-        {
-            CMedia* img = fg->image();
-            ACES::ASC_CDL& a = img->asc_cdl();
-            a.slope( 0, s0 );
-            a.slope( 1, s1 );
-            a.slope( 2, s2 );
-            a.offset( 0, o0 );
-            a.offset( 1, o1 );
-            a.offset( 2, o2 );
-            a.power( 0, p0 );
-            a.power( 1, p1 );
-            a.power( 2, p2 );
-            img->image_damage( img->image_damage() | CMedia::kDamageAll );
-            ok = true;
-        }
-    }
-    else if ( cmd == N_("LMT.SatNode") )
-    {
-        float f;
-        is >> f;
-
-        mrv::media fg = v->foreground();
-        if ( fg )
-        {
-            CMedia* img = fg->image();
-            img->asc_cdl().saturation( f );
-            img->image_damage( img->image_damage() | CMedia::kDamageAll );
-            ok = true;
-        }
-    }
-    else if ( cmd == N_("LMT") )
-    {
-        std::string s;
-        is.clear();
-        size_t idx;
-        is >> idx;
-        std::getline( is, s, '"' ); // skip first quote
-        is.clear();
-        std::getline( is, s, '"' );
-
-        mrv::media fg = v->foreground();
-        if ( fg )
-        {
-            CMedia* img = fg->image();
-            if ( img )
-            {
-                if ( idx == 0 ) img->clear_look_mod_transform();
-                if ( idx <= img->number_of_lmts() )
-                {
-                    img->append_look_mod_transform( s.c_str() );
-                }
-                else
-                {
-                    img->insert_look_mod_transform( idx, s.c_str() );
-                }
-            }
-        }
-        ok = true;
-    }
-    else if ( cmd == N_("RT") )
-    {
-        std::string s;
-        is.clear();
-        std::getline( is, s, '"' ); // skip first quote
-        is.clear();
-        std::getline( is, s, '"' );
-
-        ImageView::Command c;
-        c.type = ImageView::kRT;
-        c.data = new Imf::StringAttribute( s );
-
-        v->commands.push_back( c );
-
-        ok = true;
-
-    }
-    else if ( cmd == N_("ODT") )
-    {
-        std::string s;
-        is.clear();
-        std::getline( is, s, '"' ); // skip first quote
-        is.clear();
-        std::getline( is, s, '"' );
-
-        mrv::Preferences::ODT_CTL_transform = s;
-        v->redraw();
-        ok = true;
-    }
     else if ( cmd == N_("OCIO") )
     {
         bool t;
@@ -1281,7 +1168,7 @@ bool Parser::parse( const std::string& s )
                 deliver( cmd );
 
                 //
-                // Handle color management (OCIO/CTL)
+                // Handle color management (OCIO)
                 //
                 const std::string& s = img->ocio_input_color_space();
                 if ( ! s.empty() )
@@ -1289,29 +1176,6 @@ bool Parser::parse( const std::string& s )
                     sprintf( buf, N_("ICS \"%s\""), s.c_str() );
                     deliver( buf );
                 }
-
-                const char* idt = img->idt_transform();
-                if ( idt )
-                {
-                    sprintf( buf, N_("IDT \"%s\""), idt );
-                    deliver( buf );
-                }
-
-                size_t num_luts = img->number_of_lmts();
-                for ( size_t i = 0; i < num_luts; ++i )
-                {
-                    sprintf( buf, N_("LMT %zd \"%s\""), i,
-                             img->look_mod_transform(i) );
-                    deliver( buf );
-                }
-
-                const char* rt = img->rendering_transform();
-                if ( rt )
-                {
-                    sprintf( buf, N_("RT \"%s\""), rt );
-                    deliver( buf );
-                }
-
 
                 //
                 // Handle shape drawings

@@ -89,7 +89,6 @@ namespace fs = boost::filesystem;
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
-#include "core/mrvColorProfile.h"
 #include "core/mrvException.h"
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
@@ -871,16 +870,6 @@ CMedia::~CMedia()
     av_free( _channel );
 
     av_free( _label );
-
-    av_free( _profile );
-
-    av_free( _rendering_transform );
-
-
-    clear_look_mod_transform();
-
-    av_free( _idt_transform );
-
 
     delete [] _dataWindow;
     _dataWindow = NULL;
@@ -1690,8 +1679,6 @@ void CMedia::sequence( const char* fileroot,
 //! Adds default OCIO, ICC, and CTL profiles
 void CMedia::default_color_corrections()
 {
-    default_icc_profile();
-    default_rendering_transform();
     default_ocio_input_color_space();
 }
 
@@ -2327,207 +2314,6 @@ const std::string CMedia::creation_date() const
     date = date.substr( 0, date.size() - 1 ); // eliminate \n
     return date;
 }
-
-/**
- * Returns image CTL script (or NULL if no script)
- *
- *
- * @return CTL script or NULL
- */
-const char* CMedia::rendering_transform()  const
-{
-    return _rendering_transform;
-}
-
-/**
- * Change the rendering transform (CTL script) for the image
- *
- * @param cfile  CTL script name
- */
-void CMedia::rendering_transform( const char* cfile )
-{
-    av_free( _rendering_transform );
-    _rendering_transform = NULL;
-    if ( cfile && strlen(cfile) > 0 )
-    {
-        _rendering_transform = av_strdup( cfile );
-    }
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
-/**
- * Returns image IDT CTL script (or NULL if no script)
- *
- * @return CTL script or NULL
- */
-const char* CMedia::idt_transform()  const
-{
-    return _idt_transform;
-}
-
-
-/**
- * Change the IDT transform for the image
- *
- * @param cfile  CTL script name
- */
-void CMedia::idt_transform( const char* cfile )
-{
-    av_free( _idt_transform );
-    _idt_transform = NULL;
-    if ( cfile && strlen(cfile) > 0 ) _idt_transform = av_strdup( cfile );
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
-
-/**
- * Returns image LMT CTL script (or NULL if no script)
- *
- *
- * @return CTL script or NULL
- */
-const char* CMedia::look_mod_transform( const size_t idx )  const
-{
-    if ( idx >= _look_mod_transform.size() ) return NULL;
-    return _look_mod_transform[idx];
-}
-
-
-void CMedia::clear_look_mod_transform()
-{
-    for ( const auto& i : _look_mod_transform )
-    {
-        av_free( i );
-    }
-    _look_mod_transform.clear();
-
-}
-
-/**
- * Change the look mod transform for the image
- *
- * @param cfile  CTL script name
- */
-void CMedia::append_look_mod_transform( const char* cfile )
-{
-
-
-    if ( cfile && strlen(cfile) > 0 )
-        _look_mod_transform.push_back( av_strdup( cfile ) );
-    else
-    {
-
-        size_t idx = _look_mod_transform.size();
-        if ( idx == 0 ) return;
-        idx -= 1;
-        av_free( _look_mod_transform[idx] );
-        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
-    }
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
-// Count how many LMTs are GradeRef's components (Nodes)
-size_t  CMedia::number_of_grade_refs() const
-{
-    size_t c = 0;
-
-    LMT::const_iterator i = _look_mod_transform.begin();
-    LMT::const_iterator e = _look_mod_transform.end();
-    for ( ; i != e; ++i )
-    {
-        size_t num = strlen( *i );
-        if ( num < 4 ) continue;
-
-        for ( size_t j = 0; j < num - 3; ++j )
-        {
-            if ( strncmp( "Node", (*i) + j, 4 ) == 0 )
-            {
-                ++c;
-                break;
-            }
-        }
-    }
-
-    return c;
-}
-
-/**
- * Change the look mod transform for the image
- *
- * @param cfile  CTL script name
- */
-void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
-{
-    if ( idx >= _look_mod_transform.size() ) return;
-
-    if ( cfile && strlen(cfile) > 0 )
-    {
-        _look_mod_transform.insert( _look_mod_transform.begin() + idx,
-                                    av_strdup( cfile ) );
-    }
-    else
-    {
-        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
-    }
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
-/**
- * Change the look mod transform for the image
- *
- * @param cfile  CTL script name
- */
-void CMedia::look_mod_transform( const size_t idx, const char* cfile )
-{
-    if ( idx >= _look_mod_transform.size() ) return;
-
-    av_free( _look_mod_transform[idx] );
-    if ( cfile && strlen(cfile) > 0 )
-    {
-        _look_mod_transform[idx] = av_strdup( cfile );
-    }
-    else
-    {
-        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
-    }
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
-/**
- * Returns image color profile information (or NULL if no profile)
- *
- *
- * @return color profile or NULL
- */
-const char* CMedia::icc_profile()  const
-{
-    return _profile;
-}
-
-
-/**
- * Change ICC profile of image
- *
- * @param cfile   color profile of image
- */
-void CMedia::icc_profile( const char* cfile )
-{
-    av_free( _profile );
-    _profile = NULL;
-    if ( cfile && strlen(cfile) > 0 )
-    {
-        mrv::colorProfile::add( cfile );
-        _profile = av_strdup( cfile );
-    }
-    image_damage( image_damage() | kDamageData | kDamageLut );
-    refresh();
-}
-
 
 
 // If sequence or has picture return true
@@ -4253,36 +4039,6 @@ bool CMedia::find_image( int64_t& frame )
 }
 
 
-void CMedia::default_icc_profile()
-{
-    if ( icc_profile() ) return;
-
-    if ( internal() ) return;
-
-    switch( depth() )
-    {
-    case image_type::kByte:
-        if ( !icc_profile_8bits.empty() )
-            icc_profile( icc_profile_8bits.c_str() );
-        break;
-    case image_type::kShort:
-        if ( !icc_profile_16bits.empty() )
-            icc_profile( icc_profile_16bits.c_str() );
-        break;
-    case image_type::kInt:
-        if ( !icc_profile_32bits.empty() )
-            icc_profile( icc_profile_32bits.c_str() );
-        break;
-    case image_type::kHalf:
-    case image_type::kFloat:
-        if ( !icc_profile_float.empty() )
-            icc_profile( icc_profile_float.c_str() );
-        break;
-    default:
-        IMG_ERROR("default_icc_profile - unknown bit depth");
-        break;
-    }
-}
 
 
 void CMedia::default_ocio_input_color_space()
@@ -4378,36 +4134,6 @@ void CMedia::ocio_input_color_space( const std::string& n )
     image_damage( image_damage() | kDamageData | kDamageLut );
 }
 
-void CMedia::default_rendering_transform()
-{
-    if ( rendering_transform() ) return;
-
-    if ( internal() ) return;
-
-    switch( depth() )
-    {
-    case image_type::kByte:
-        if ( !rendering_transform_8bits.empty() )
-            rendering_transform( rendering_transform_8bits.c_str() );
-        break;
-    case image_type::kShort:
-        if ( !rendering_transform_16bits.empty() )
-            rendering_transform( rendering_transform_16bits.c_str() );
-        break;
-    case image_type::kInt:
-        if ( !rendering_transform_32bits.empty() )
-            rendering_transform( rendering_transform_32bits.c_str() );
-        break;
-    case image_type::kHalf:
-    case image_type::kFloat:
-        if ( !rendering_transform_float.empty() )
-            rendering_transform( rendering_transform_float.c_str() );
-        break;
-    default:
-        IMG_ERROR("default_rendering_tranform - unknown bit depth");
-        break;
-    }
-}
 
 // Outputs the indices of the stream that are keyframes
 // (keyframes are used only for video streams)

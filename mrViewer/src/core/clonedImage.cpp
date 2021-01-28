@@ -102,24 +102,6 @@ namespace mrv {
         }
     }
 
-    const char* profile = other->icc_profile();
-    if ( profile )  icc_profile( profile );
-
-
-    size_t num = other->number_of_lmts();
-    size_t i = 0;
-    for ( ; i < num; ++i )
-    {
-        _look_mod_transform.push_back( av_strdup(
-                                       other->look_mod_transform( i ) ) );
-    }
-
-    const char* transform = other->idt_transform();
-    if ( transform )  idt_transform( av_strdup(transform) );
-
-    transform = other->rendering_transform();
-    if ( transform )  rendering_transform( av_strdup(transform) );
-
 
     std::string ocio = other->ocio_input_color_space();
     ocio_input_color_space( ocio );

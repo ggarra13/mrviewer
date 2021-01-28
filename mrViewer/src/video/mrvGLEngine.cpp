@@ -54,11 +54,11 @@
 #include <FL/platform.H>   // for Fl::getDC()
 #include <FL/fl_utf8.h>   // for fl_getenv
 
+#include "core/mrvOS.h"
 #include "gui/mrvIO.h"
 #include "mrvPreferencesUI.h"
 
 extern "C" {
-
 
 #include <GL/glew.h>
 
@@ -87,7 +87,6 @@ extern "C" {
 #include <ImfHeader.h>
 #include <ImfStringAttribute.h>
 #include <Iex.h>
-#include <CtlExc.h>
 #include <halfLimits.h>
 
 
@@ -120,7 +119,7 @@ const char* kModule = N_("opengl");
 }
 
 #ifdef _WIN32
-#define stricmp _stricmp
+#define strcasecmp _strcasecmp
 #endif
 
 /*
@@ -531,15 +530,15 @@ void GLEngine::initialize()
     const char* shader_type = fl_getenv("MRV_SHADER_TYPE");
     if ( shader_type )
     {
-        if ( stricmp( shader_type, "GL" ) == 0 ||
-             stricmp( shader_type, "GLSL" ) == 0 ||
-             stricmp( shader_type, "OPENGL" ) == 0 )
+        if ( strcasecmp( shader_type, "GL" ) == 0 ||
+             strcasecmp( shader_type, "GLSL" ) == 0 ||
+             strcasecmp( shader_type, "OPENGL" ) == 0 )
         {
             _hardwareShaders = kGLSL;
             _has_hdr = USE_HDR;
         }
-        else if ( stricmp( shader_type, "ARBFP1" ) == 0 ||
-                  stricmp( shader_type, "ARBFP" ) == 0 )
+        else if ( strcasecmp( shader_type, "ARBFP1" ) == 0 ||
+                  strcasecmp( shader_type, "ARBFP" ) == 0 )
             _hardwareShaders = kARBFP1;
         else
             _hardwareShaders = kAuto;
@@ -1730,59 +1729,11 @@ void GLEngine::draw_images( ImageList& images )
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     // Check if lut types changed since last time
-    static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
-    static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
     static int LUT_quality           = 2;
-    static std::string ODT_ICC_old_profile;
-    static std::string ODT_CTL_old_transform;
     static unsigned kNumStops = 10;
 
     PreferencesUI* uiPrefs = _view->main()->uiPrefs;
 
-    bool use_ocio = uiPrefs->uiPrefsUseOcio->value();
-
-    if ( _view->use_lut() )
-    {
-        int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
-        int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
-        const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->value();
-        int lut_quality = uiPrefs->uiLUT_quality->value();
-        unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
-
-        // Check if there was a change effecting lut.
-        if (  (! use_ocio) &&
-              ((( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-                ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-                ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-                ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
-               ( LUT_quality != lut_quality ) ||
-               ( kNumStops != num_stops) ))
-        {
-            if ( !use_ocio )
-            {
-                RT_lut_old_algorithm = RT_lut_algorithm;
-                ODT_lut_old_algorithm = ODT_lut_algorithm;
-                if ( ODT_ICC_profile )
-                    ODT_ICC_old_profile = ODT_ICC_profile;
-                else
-                    ODT_ICC_old_profile.clear();
-
-                ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
-
-            }
-
-            refresh_luts();
-
-            if ( LUT_quality != lut_quality ||
-                 kNumStops != num_stops )
-            {
-                LUT_quality = lut_quality;
-                kNumStops = num_stops;
-                mrv::GLLut3d::clear();
-            }
-        }
-
-    }
 
 
 

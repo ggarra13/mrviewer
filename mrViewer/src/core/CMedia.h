@@ -835,29 +835,13 @@ public:
     // Returns the creation date as a string
     virtual const std::string creation_date() const;
 
-    /// Returns image ICC color profile if present or NULL
-    const char* icc_profile() const;
 
-    /// Assigns a new color profile to the image or NULL to clear it
-    void icc_profile( const char* cfile );
-
-    /// Returns rendering transform name ( CTL script )
-    const char* rendering_transform() const;
-
-    /// Assigns a new rendering transform ( CTL script ) or NULL to remove it
-    void rendering_transform( const char* cfile );
-
-    // Adds default OCIO, ICC, and CTL profiles
+    // Adds default OCIO profiles
     void default_color_corrections();
 
     /// Add default OCIO Input Color Space for this image bit depth.
     void default_ocio_input_color_space();
 
-    /// Add default rendering transform (CTL script) for this image bit depth.
-    void default_rendering_transform();
-
-    /// Add default icc profile for this image bit depth.
-    void default_icc_profile();
 
     inline std::string ocio_input_color_space() const {
         return _input_color_space;
@@ -867,50 +851,6 @@ public:
     void ocio_input_color_space( const std::string& n );
 
 
-    /// Returns input device transform name ( CTL script ) or NULL
-    const char* idt_transform() const;
-
-    /// Assigns a new input device transform ( CTL script ) oR NULL to clear it
-    void idt_transform( const char* cfile );
-
-    /// Returns the number of Look Mod Transforms ( CTL scripts )
-    inline size_t number_of_lmts() const {
-        return _look_mod_transform.size();
-    }
-
-    /// Returns look mod transform name ( CTL script ) or NULL if not present
-    const char* look_mod_transform( const size_t idx ) const;
-
-    /// Clears all the look mod transforms.
-    void clear_look_mod_transform();
-
-    /// Appends a new look mod transform ( CTL script )
-    /// cfile cannot be NULL.
-    void append_look_mod_transform( const char* cfile );
-
-    /// Assigns a new look mod transform to a certain index ( CTL script )
-    /// and moves all other indexes down.
-    /// If cfile is NULL, the look mod at the index is removed.
-    void insert_look_mod_transform( const size_t idx, const char* cfile );
-
-    /// Assigns a new look mod transform to a certain index ( CTL script )
-    /// If cfile is NULL, the look mod at the index is removed.
-    void look_mod_transform( const size_t idx, const char* cfile );
-
-    void asc_cdl( const ACES::ASC_CDL& o )
-    {
-        _sops = o;
-    }
-
-    size_t number_of_grade_refs() const;
-
-
-    inline const ACES::ASC_CDL& asc_cdl() const {
-        return _sops;
-    }
-    inline ACES::ASC_CDL& asc_cdl() {
-        return _sops;
-    }
 
     /// True if image represents a sequence
     inline bool is_sequence() const {

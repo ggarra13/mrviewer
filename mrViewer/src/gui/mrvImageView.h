@@ -57,8 +57,6 @@ void open_single_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
 
 namespace mrv {
 
-void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
-
 class MainWindow;
 class ImageBrowser;
 class Timeline;
@@ -226,12 +224,11 @@ public:
         kHistogram = 7,
         kVectorscope = 8,
         kWaveform = 9,
-        kICCProfiles = 10,
-        kConnections = 11,
-        kPreferences = 12,
-        kHotkeys = 13,
-        kLogs = 14,
-        kAbout = 15,
+        kConnections = 10,
+        kPreferences = 11,
+        kHotkeys = 12,
+        kLogs = 13,
+        kAbout = 14,
         kLastWindow
     };
 

@@ -744,7 +744,6 @@ void EDLGroup::cut( boost::int64_t frame )
 
     uiMain->uiTimeline->edl(true);
     right->ocio_input_color_space( img->ocio_input_color_space() );
-    right->rendering_transform( img->rendering_transform() );
 
     redraw();
 }

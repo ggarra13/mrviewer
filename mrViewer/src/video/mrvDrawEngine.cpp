@@ -57,7 +57,6 @@
 
 #include "CMedia.h"
 #include "mrvImageView.h"
-#include "mrvColorProfile.h"
 #include "mrvException.h"
 #include "mrvIO.h"
 #include "mrViewer.h"
@@ -247,27 +246,6 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
         status = MagickConstituteImage( wand, bw, bh, fmt, FloatPixel, icc );
         if ( status != MagickTrue )
             LOG_ERROR( "Could not create image" );
-
-
-        uchar* profile;
-        size_t  length;
-
-        colorProfile::get( profile, length, d->image->color_profile() );
-
-        if ( profile )
-        {
-            status  = MagickSetImageProfile( wand, "ICC", profile, length );
-            if ( status != MagickTrue )
-                LOG_ERROR( "Could not profile image" );
-
-            colorProfile::get_monitor_profile( profile, length );
-            if ( profile )
-            {
-                status  = MagickProfileImage( wand, "ICC", profile, length );
-                if ( status != MagickTrue )
-                    LOG_ERROR( "Could not profile image" );
-            }
-        }
 
 
         MagickGetImagePixels(wand, 0, 0, bw, bh, fmt, FloatPixel, icc );
