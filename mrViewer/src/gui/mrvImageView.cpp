@@ -7242,17 +7242,17 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kToggleMenuBar.match( rawkey ) )
     {
         int H = uiMain->uiRegion->h();
-        int w = uiMain->uiMenuBar->w();
+        int w = uiMain->uiMenuGroup->w();
         // MenuBar MUST be 25 pixels-- for some reason it changes size
-        uiMain->uiMenuBar->size( w, int(25) );
-        if ( uiMain->uiMenuBar->visible() ) {
-            uiMain->uiMenuBar->hide();
-            H += uiMain->uiMenuBar->h();
+        uiMain->uiMenuGroup->size( w, int(25) );
+        if ( uiMain->uiMenuGroup->visible() ) {
+            uiMain->uiMenuGroup->hide();
+            H += uiMain->uiMenuGroup->h();
         }
         else {
             fill_menu( uiMain->uiMenuBar );
-            uiMain->uiMenuBar->show();
-            H -= uiMain->uiMenuBar->h();
+            uiMain->uiMenuGroup->show();
+            H -= uiMain->uiMenuGroup->h();
         }
         int X = uiMain->uiRegion->x();
         int Y = uiMain->uiRegion->y();
@@ -7566,13 +7566,13 @@ void ImageView::show_background( const bool b )
 
         if ( has_menu_bar && showtop )    {
             int H = uiMain->uiRegion->h();
-            int w = uiMain->uiMenuBar->w();
+            int w = uiMain->uiMenuGroup->w();
             // Menubar MUST be 25 pixels-- for some reason it changes size
-            uiMain->uiMenuBar->size( w, int(25) );
-            uiMain->uiMenuBar->show();
-            H -= uiMain->uiMenuBar->h();
-            int X = uiMain->uiMenuBar->x();
-            int Y = uiMain->uiMenuBar->y();
+            uiMain->uiMenuGroup->size( w, int(25) );
+            uiMain->uiMenuGroup->show();
+            H -= uiMain->uiMenuGroup->h();
+            int X = uiMain->uiMenuGroup->x();
+            int Y = uiMain->uiMenuGroup->y();
             int W = uiMain->uiRegion->w();
             uiMain->uiRegion->resize( 0, 0, W, H );
         }
@@ -7624,8 +7624,8 @@ void ImageView::toggle_fullscreen()
         uiMain->uiRegion->layout();
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
-        has_menu_bar = uiMain->uiMenuBar ?
-                       uiMain->uiMenuBar->visible() : false;
+        has_menu_bar = uiMain->uiMenuGroup ?
+                       uiMain->uiMenuGroup->visible() : false;
         has_top_bar = true;
         has_bottom_bar = true;
         has_pixel_bar = true;
@@ -7677,7 +7677,7 @@ void ImageView::toggle_presentation()
         has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
         has_prefs      = uiPrefs ? uiPrefs->visible() : false;
         has_about      = uiAbout ? uiAbout->visible() : false;
-        has_menu_bar   = uiMain->uiMenuBar->visible();
+        has_menu_bar   = uiMain->uiMenuGroup->visible();
         has_top_bar    = uiMain->uiTopBar->visible();
         has_bottom_bar = uiMain->uiBottomBar->visible();
         has_pixel_bar  = uiMain->uiPixelBar->visible();
@@ -9504,11 +9504,11 @@ void ImageView::resize_main_window()
     w = int(w / scale);
     h = int(h / scale);
 
-    if ( uiMain->uiMenuBar->visible() )
+    if ( uiMain->uiMenuGroup->visible() )
     {
-      uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
+      uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
                                int(25) );
-      h += uiMain->uiMenuBar->h();
+      h += uiMain->uiMenuGroup->h();
     }
 
     if ( uiMain->uiTopBar->visible() )
@@ -9575,8 +9575,8 @@ void ImageView::resize_main_window()
     fill_menu( menu );
 
 
-    uiMain->uiMenuBar->size( uiMain->uiMenuBar->w(),
-                             int(25) );
+    uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
+			       int(25) );
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                             int(28) );
