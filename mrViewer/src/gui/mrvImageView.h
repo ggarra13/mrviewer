@@ -918,6 +918,7 @@ protected:
     bool         _normalize;   //<- normalize pixel values
     bool         _safeAreas;   //<- safe view/title area is active
     bool         _grid;        //<- grid is active
+    bool         _zoom_grid;     //<- zoom grid is active
     unsigned     _grid_size;   //<- size of grid in pixels
     HudDisplay   _hud;         //<- hud display
     float        _masking;     //<- film masking ratio (top/bottom bars)

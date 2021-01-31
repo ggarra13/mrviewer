@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {65 168 675 455} type Double resizable
+      xywh {697 463 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -110,7 +110,7 @@ class PreferencesUI {open
         xywh {200 25 473 520} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface} open
+          label {User Interface}
           xywh {210 48 453 497} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -148,7 +148,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements} open
+            label {UI Elements}
             xywh {213 193 442 193} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsTopbar {
@@ -910,11 +910,11 @@ This setting thus allows caching more pictures in memory for float and half pict
           }
         }
         Fl_Group {} {
-          label {3D Luts} open
+          label {3D Luts}
           xywh {210 32 438 358} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
-            label Quality open selected
+            label Quality open
             tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.} xywh {235 172 353 96} box ROUNDED_BOX
           } {
             Fl_Choice uiLUT_quality {
@@ -1761,9 +1761,6 @@ o->add( _("Actions") );
 o->add( _("Caches") );
 o->add( _("3D Luts") );
 o->add( _("3D Luts/OCIO") );
-o->add( _("3D Luts/CTL Paths") );
-o->add( _("3D Luts/Default Output Device Transform (ODT)") );
-o->add( _("3D Luts/Default Rendering Transform (RT)") );
 o->add( _("Loading") );
 o->add( _("Saving") );
 o->add( _("Video") );
@@ -1774,6 +1771,7 @@ o->add( _("Errors") );
 o->add( _("Images") );
 o->add( _("OpenEXR") );
 o->add( _("RED3D - BRAW") );
-o->select( item );} {}
+o->select( item );} {selected
+    }
   }
 }

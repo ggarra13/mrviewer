@@ -800,7 +800,7 @@ void grid_size_cb( Fl_Widget* o, mrv::ImageView* view )
         o->textcolor( FL_BLACK );
         o->value( view->grid_size() );
         o->step( 1.0 );
-        o->minimum( 2.0 );
+        o->minimum( 1.0 );
         o->maximum( 1920.0 );
         o->callback( (Fl_Callback*)change_grid_size_cb, view );
         gridWindow->end();
@@ -907,7 +907,7 @@ void data_window_cb( Fl_Widget* o, mrv::ImageView* view )
 }
 
 static const float kMinZoom = 0.01f;  // Zoom 1/64
-static const float kMaxZoom = 64.f;   // Zoom 64x
+static const float kMaxZoom = 96.f;   // Zoom 96x
 
 
 
@@ -3640,6 +3640,7 @@ void ImageView::timeout()
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
 
+
     if ( vr() )
     {
 #define sumX 0.005
@@ -4006,6 +4007,11 @@ void ImageView::draw()
 
     _engine->draw_annotation( img->shapes(), img );
 
+    if ( _zoom_grid )
+      {
+        _engine->draw_grid( img, 1.0 );
+      }
+    
     if ( _grid )
     {
         _engine->draw_grid( img, _grid_size );
@@ -8659,7 +8665,9 @@ void ImageView::zoom( float z )
 
 
     _zoom = z;
-
+    if ( z >= 32.0f ) { _zoom_grid = true; }
+    else _zoom_grid = false;
+    
     setlocale( LC_NUMERIC, "C" );
 
     char buf[128];

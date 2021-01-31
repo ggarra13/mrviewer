@@ -143,6 +143,7 @@ void MyPack::layout() {
     Fl_Widget::resize(x(),y(),tw,th);
     //NODRAW d = FL_DAMAGE_ALL;
   }
+
   //NODRAW if (d&FL_DAMAGE_ALL) {
   //NODRAW   draw_box();
   //NODRAW   draw_label();
