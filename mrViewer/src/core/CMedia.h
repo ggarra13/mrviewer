@@ -1603,9 +1603,9 @@ public:
     bool _has_deep_data;
     enum LoadLib
     {
-        kFFMPEGLibrary,
-        kOIIOLibrary,
-        kImageMagickLibrary
+        kFFMPEGLibrary = 0,
+        kOIIOLibrary = 1,
+        kImageMagickLibrary = 2
     };
     static LoadLib load_library;
     static int64_t memory_used;

@@ -666,11 +666,11 @@ o->main( this );}
         Fl_Group uiMenuGroup {open
           xywh {0 0 690 25} box FLAT_BOX
         } {
-          Fl_Menu_Bar uiMenuBar {
-            xywh {0 0 485 25}
+          Fl_Menu_Bar uiMenuBar {selected
+            xywh {0 0 550 25}
           } {}
-          Fl_Group uiMenuButtons {open selected
-            xywh {485 0 205 25} box DOWN_BOX color 63
+          Fl_Group uiMenuButtons {open
+            xywh {550 0 140 25} box DOWN_BOX color 63
           } {
             Fl_Button {} {
               callback {uiPrefs->uiMain->show();}
