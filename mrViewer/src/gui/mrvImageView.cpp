@@ -4011,7 +4011,7 @@ void ImageView::draw()
       {
         _engine->draw_grid( img, 1.0 );
       }
-    
+
     if ( _grid )
     {
         _engine->draw_grid( img, _grid_size );
@@ -6627,12 +6627,7 @@ int ImageView::keyDown(unsigned int rawkey)
         }
     }
 
-    if ( rawkey == FL_Escape )
-    {
-        delete uiMain;
-        return 1;
-    }
-    else if ( kResetChanges.match( rawkey ) )
+    if ( kResetChanges.match( rawkey ) )
     {
         gamma( 1.0 );
         gain( 1.0 );
@@ -8045,13 +8040,13 @@ int ImageView::handle(int event)
         lastY = Fl::event_y();
         if ( !keyDown( Fl::event_key() ) )
         {
-            return Fl_Gl_Window::handle( event );
+            return 0; //Fl_Gl_Window::handle( event );
         }
         return 1;
     case FL_KEYUP:
         if ( ! keyUp(Fl::event_key() ) )
         {
-            return Fl_Gl_Window::handle( event );
+            return 0; //Fl_Gl_Window::handle( event );
         }
         return 1;
     case FL_MOUSEWHEEL:
@@ -8667,7 +8662,7 @@ void ImageView::zoom( float z )
     _zoom = z;
     if ( z >= 32.0f ) { _zoom_grid = true; }
     else _zoom_grid = false;
-    
+
     setlocale( LC_NUMERIC, "C" );
 
     char buf[128];
@@ -9576,7 +9571,7 @@ void ImageView::resize_main_window()
 
 
     uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
-			       int(25) );
+                               int(25) );
 
     uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                             int(28) );

@@ -40,6 +40,7 @@ ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
     _time( 0 )
 {
     Fl_Group::current(main);
+    main->begin();
     w = new Fl_Window( main->x() + main->w() / 2 - 320,
                        main->y() + main->h()/2,
                        640, 120 );
@@ -76,6 +77,7 @@ ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
     w->resizable(w);
     w->set_modal();
     w->end();
+    main->end();
     Fl_Group::current(0);
 
     timer.setDesiredFrameRate( 500.0 );
