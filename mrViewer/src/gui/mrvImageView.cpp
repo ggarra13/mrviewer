@@ -8873,8 +8873,14 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     int W = dpw.w();
     int H = dpw.h();
 
+    float scale = Fl::screen_scale( window()->screen_num() );
+
+    DBGM1( "1 screen=" << window()->screen_num() << " scale= " << scale
+           << " x,y=" << x << ", " << y );
     image_coordinates( img, xf, yf );
 
+    DBGM1( "2 screen=" << window()->screen_num() << " scale= " << scale
+           << " xf,yf=" << xf << ", " << yf );
 
     zoom( z );
 
@@ -8890,6 +8896,8 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
     setlocale( LC_NUMERIC, "C" );
 
+    DBGM1( "3 xoff,yoff=" << xoffset << ", " << yoffset );
+    
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );

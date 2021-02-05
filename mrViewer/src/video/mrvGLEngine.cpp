@@ -54,7 +54,6 @@
 #include <FL/platform.H>   // for Fl::getDC()
 #include <FL/fl_utf8.h>   // for fl_getenv
 
-#include "core/mrvOS.h"
 #include "gui/mrvIO.h"
 #include "mrvPreferencesUI.h"
 
@@ -94,7 +93,6 @@ extern "C" {
 #include "core/mrvThread.h"
 #include "core/mrvRectangle.h"
 
-#include "gui/mrvIO.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvPreferences.h"
@@ -108,6 +106,7 @@ extern "C" {
 #include "video/mrvGLCube.h"
 #include "video/mrvGLLut3d.h"
 #include "video/mrvCSPUtils.h"
+#include "core/mrvOS.h"
 
 #undef TRACE
 #define TRACE(x)
@@ -118,9 +117,6 @@ namespace
 const char* kModule = N_("opengl");
 }
 
-#ifdef _WIN32
-#define strcasecmp _strcasecmp
-#endif
 
 /*
 #define glPushMatrix() do {                     \

@@ -575,20 +575,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                      LPSTR lpCmdLine, int nCmdShow )
 {
 
-#ifdef ALLOC_CONSOLE
-    AllocConsole();
-    freopen("conin$", "r", stdin);
+    AttachConsole( -1 );
     freopen("conout$", "w", stdout);
     freopen("conout$", "w", stderr);
-#endif
 
     int rc = main( __argc, (const char**) __argv );
 
-#ifdef ALLOC_CONSOLE
-    fclose(stdin);
     fclose(stdout);
     fclose(stderr);
-#endif
 
     return rc;
 }

@@ -654,10 +654,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {777 441 690 565} type Double align 80 resizable
+      xywh {777 469 690 565} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} visible
+      class {mrv::MainWindow}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -667,10 +667,10 @@ o->main( this );}
           xywh {0 0 690 25} box FLAT_BOX
         } {
           Fl_Menu_Bar uiMenuBar {selected
-            xywh {0 0 550 25}
+            xywh {0 0 660 25}
           } {}
           Fl_Group uiMenuButtons {open
-            xywh {550 0 140 25} box DOWN_BOX color 63
+            xywh {660 0 30 25} color 63
           } {
             Fl_Button {} {
               callback {uiPrefs->uiMain->show();}
