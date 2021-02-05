@@ -4139,64 +4139,11 @@ void CMedia::ocio_input_color_space( const std::string& n )
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-    if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
-
-    int64_t  max_distance  = 0;
-    unsigned num_keyframes = 0;
-
-    int num = stream->nb_index_entries;
-    LOG_INFO( "# indices: " << num );
-    if ( num <= 0 ) return;
-
-    int64_t last_frame = pts2frame( stream,
-                                    stream->index_entries[0].timestamp );
-
-    for ( int i = 0; i < num; ++i )
-    {
-        const AVIndexEntry& e = stream->index_entries[i];
-        if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
-
-        int64_t frame = pts2frame( stream, e.timestamp );
-        int64_t dist  = frame - last_frame;
-        if ( dist > max_distance ) max_distance = dist;
-        last_frame = frame;
-
-        ++num_keyframes;
-    }
-
-    LOG_INFO( "# keyframes: " << num_keyframes );
-    LOG_INFO( " max frames: " << max_distance );
-
-    for ( int i = 0; i < num; ++i )
-    {
-        const AVIndexEntry& e = stream->index_entries[i];
-        if ( ! (e.flags & AVINDEX_KEYFRAME) ) continue;
-
-        LOG_INFO( "\t#" << i
-                  << " pos: " << e.pos << " pts: " << e.timestamp
-                  << " frame: " << pts2frame( stream, e.timestamp ) );
-        LOG_INFO( "\t\tflags: "<< e.flags
-                  << " size: " << e.size << " dist: " << e.min_distance );
-    }
-
 }
 
 // Outputs the indices of the stream
 void CMedia::debug_stream_index( const AVStream* stream )
 {
-    int num = stream->nb_index_entries;
-    LOG_INFO( "# indices: " << num );
-    for ( int i = 0; i < num; ++i )
-    {
-        const AVIndexEntry& e = stream->index_entries[i];
-        LOG_INFO( "\t#" << i
-                  << ( e.flags & AVINDEX_KEYFRAME ? "K" : " " )
-                  << " pos: " << e.pos << " pts: " << e.timestamp
-                  << " frame: " << pts2frame( stream, e.timestamp ) );
-        LOG_INFO( "\t\tflags: "<< e.flags
-                  << " size: " << e.size
-                  << " dist: " << e.min_distance );
-    }
 }
 
 

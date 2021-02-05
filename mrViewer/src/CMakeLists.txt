@@ -684,9 +684,13 @@ ELSEIF (UNIX)
   INSTALL(FILES ${SOURCE_DIR}/etc/mrViewer.png
     DESTINATION ${MRV_PIXMAPS_DIR})
 
-  # try to set up the menu system
+  # try to set up the menu sys
 
-  SET(CPACK_GENERATOR DEB RPM TGZ )
+  if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0 )
+      SET(CPACK_GENERATOR DEB TGZ )
+  else()
+      SET(CPACK_GENERATOR DEB RPM TGZ )
+  endif()
 
   # SET the installation directory.
 

@@ -2,6 +2,7 @@ v5.7.3  - Made Windows print out help and version to startup console
 	  without popping a new console window.
 	- Bug fixed crash when saving a movie and requester was stopped midway.
 	- Ported code to CentOS 7 virtualbox.
+	- Fixed bitrate in movie save requester defaulting to 6.
 
 v5.7.2  - Bug fixed pull down menus and tree from custom file requester
 	  ( location and extension menu buttons).  Previously these menus

@@ -142,12 +142,21 @@ def copy_third_party( root, dest )
     # Copy the RED library
     FileUtils.cp_r( "../R3DSDKv7_3_4/Redistributable/linux/REDR3D-x64.so",
                     "#{dest}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
-                    "#{dest}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
-                    "#{dest}/lib" )
-    FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
-                    "#{dest}/lib" )
+    if File.exists?( "/usr/lib64/blackmagic" )
+      FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
+                      "#{dest}/lib" )
+      FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libc++.so.1",
+                      "#{dest}/lib" )
+      FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libc++abi.so.1",
+                      "#{dest}/lib" )
+    else
+      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
+                      "#{dest}/lib" )
+      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
+                      "#{dest}/lib" )
+      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
+                      "#{dest}/lib" )
+    end
   elsif dest =~ /Darwin/
     force = ''
     if @options[:force]
