@@ -8889,15 +8889,15 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
     xoffset = w2 - xf;
     yoffset = h2 - ( H - yf );
-    xoffset -= (offx / _zoom);
+    xoffset -= (offx / _real_zoom);
     double ratio = 1.0f;
     if ( _showPixelRatio ) ratio = img->pixel_ratio();
-    yoffset += (offy / _zoom * ratio);
+    yoffset += (offy / _real_zoom * ratio);
 
     setlocale( LC_NUMERIC, "C" );
 
     DBGM1( "3 xoff,yoff=" << xoffset << ", " << yoffset );
-    
+
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
