@@ -762,6 +762,7 @@ void ColorInfo::update( const CMedia* img,
 
         char buf[16];
         text.str("");
+        text.str().reserve(1024);
         text << "@b\t"
              << kR
              << _("R") << "\t"
@@ -772,16 +773,16 @@ void ColorInfo::update( const CMedia* img,
              << kA
              << _("A")
              << std::endl
-             << _("Maximum") << ":\t@c"
-             << float_printf(buf, pmax.r) << "\t@c"
-             << float_printf(buf, pmax.g) << "\t@c"
-             << float_printf(buf, pmax.b) << "\t@c"
-             << float_printf(buf, pmax.a) << std::endl
-             << _("Minimum") << ":\t@c"
-             << float_printf(buf, pmin.r) << "\t@c"
-             << float_printf(buf, pmin.g) << "\t@c"
-             << float_printf(buf, pmin.b) << "\t@c"
-             << float_printf(buf, pmin.a) << std::endl;
+             << _("Maximum") << ":\t@c";
+        text << float_printf(buf, pmax.r) << "\t@c";
+        text << float_printf(buf, pmax.g) << "\t@c";
+        text << float_printf(buf, pmax.b) << "\t@c";
+        text << float_printf(buf, pmax.a) << std::endl;
+        text << _("Minimum") << ":\t@c"
+             << float_printf(buf, pmin.r) << "\t@c";
+        text << float_printf(buf, pmin.g) << "\t@c";
+        text << float_printf(buf, pmin.b) << "\t@c";
+        text << float_printf(buf, pmin.a) << std::endl;
 
         CMedia::Pixel r(pmax);
         r.r -= pmin.r;
@@ -790,18 +791,18 @@ void ColorInfo::update( const CMedia* img,
         r.a -= pmin.a;
 
         text << _("Range") << ":\t@c"
-             << float_printf(buf, r.r) << "\t@c"
-             << float_printf(buf, r.g) << "\t@c"
-             << float_printf(buf, r.b) << "\t@c"
-             << float_printf(buf, r.a) << std::endl
-             << "@b" << _("Mean") << ":\t@c"
+             << float_printf(buf, r.r) << "\t@c";
+        text << float_printf(buf, r.g) << "\t@c";
+        text << float_printf(buf, r.b) << "\t@c";
+        text << float_printf(buf, r.a) << std::endl;
+        text << "@b" << _("Mean") << ":\t@c"
              << kR
-             << float_printf(buf, pmean.r) << "\t@c"
-             << kG
-             << float_printf(buf, pmean.g) << "\t@c"
-             << kB
-             << float_printf(buf, pmean.b) << "\t@c"
-             << kA
+             << float_printf(buf, pmean.r) << "\t@c";
+        text << kG
+             << float_printf(buf, pmean.g) << "\t@c";
+        text << kB
+             << float_printf(buf, pmean.b) << "\t@c";
+        text << kA
              << float_printf(buf, pmean.a) << std::endl
              << std::endl
              << "@b\t";
@@ -883,15 +884,15 @@ void ColorInfo::update( const CMedia* img,
 
         text << std::endl
              << _("Maximum") << ":\t@c"
-             << float_printf(buf, hmax.r) << "\t@c"
-             << float_printf(buf, hmax.g) << "\t@c"
-             << float_printf(buf, hmax.b) << "\t@c"
-             << float_printf(buf, hmax.a) << std::endl
-             << _("Minimum") << ":\t@c"
-             << float_printf(buf, hmin.r) << "\t@c"
-             << float_printf(buf, hmin.g) << "\t@c"
-             << float_printf(buf, hmin.b) << "\t@c"
-             << float_printf(buf, hmin.a) << std::endl;
+             << float_printf(buf, hmax.r) << "\t@c";
+        text << float_printf(buf, hmax.g) << "\t@c";
+        text << float_printf(buf, hmax.b) << "\t@c";
+        text << float_printf(buf, hmax.a) << std::endl;
+        text << _("Minimum") << ":\t@c"
+             << float_printf(buf, hmin.r) << "\t@c";
+        text << float_printf(buf, hmin.g) << "\t@c";
+        text << float_printf(buf, hmin.b) << "\t@c";
+        text << float_printf(buf, hmin.a) << std::endl;;
 
         r = hmax;
         r.r -= hmin.r;
@@ -900,18 +901,18 @@ void ColorInfo::update( const CMedia* img,
         r.a -= hmin.a;
 
         text << _("Range") << ":\t@c"
-             << float_printf(buf, r.r) << "\t@c"
-             << float_printf(buf, r.g) << "\t@c"
-             << float_printf(buf, r.b) << "\t@c"
-             << float_printf(buf, r.a) << std::endl
-             << "@b" << _("Mean") << ":\t@c"
+             << float_printf(buf, r.r) << "\t@c";
+        text << float_printf(buf, r.g) << "\t@c";
+        text << float_printf(buf, r.b) << "\t@c";
+        text << float_printf(buf, r.a) << std::endl;
+        text << "@b" << _("Mean") << ":\t@c"
              << kH
-             << float_printf(buf, hmean.r) << "\t@c"
-             << kS
-             << float_printf(buf, hmean.g) << "\t@c"
-             << kV
-             << float_printf(buf, hmean.b) << "\t@c"
-             << kL
+             << float_printf(buf, hmean.r) << "\t@c";
+        text << kS
+             << float_printf(buf, hmean.g) << "\t@c";
+        text << kV
+             << float_printf(buf, hmean.b) << "\t@c";
+        text << kL
              << float_printf(buf, hmean.a);
     }
 

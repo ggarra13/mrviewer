@@ -2158,6 +2158,11 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     x -= tw;
     y -= th;
+
+    ImageView* self = const_cast< ImageView* >( this );
+    float scale = Fl::screen_scale( window()->screen_num() );
+    self->_real_zoom = _zoom / scale;
+    
     x /= _real_zoom;
     y /= _real_zoom;
     x += tw;
@@ -6221,7 +6226,7 @@ void ImageView::mouseDrag(int x,int y)
                     restore_locale();
                 }
             }
-
+ 
             lastX = x;
             lastY = y;
 
@@ -7950,6 +7955,7 @@ void ImageView::handle_timeout()
  */
 int ImageView::handle(int event)
 {
+    int ret = Fl_Gl_Window::handle( event );
     switch( event )
     {
     case FL_FOCUS:
@@ -7962,22 +7968,15 @@ int ImageView::handle(int event)
         {
             window()->cursor(FL_CURSOR_CROSS);
         }
-
-        Fl_Gl_Window::handle( event );
         return 1;
     }
     case FL_ENTER:
       window()->cursor(FL_CURSOR_CROSS);
-      Fl_Gl_Window::handle( event );
       return 1;
     case FL_UNFOCUS:
-        Fl_Gl_Window::handle( event );
         return 1;
     case FL_LEAVE:
         window()->cursor(FL_CURSOR_DEFAULT);
-
-        Fl_Gl_Window::handle( event );
-
         return 1;
     case FL_PUSH:
         focus(this);
@@ -8023,8 +8022,6 @@ int ImageView::handle(int event)
 
         redraw();
 
-        Fl_Gl_Window::handle( event );
-
         return 1;
         break;
     case FL_DRAG:
@@ -8036,8 +8033,9 @@ int ImageView::handle(int event)
         break;
     case FL_SHORTCUT:
     case FL_KEYBOARD:
-        lastX = Fl::event_x();
-        lastY = Fl::event_y();
+        // DON'T DO THIS!
+        // lastX = Fl::event_x();
+        // lastY = Fl::event_y();
         if ( !keyDown( Fl::event_key() ) )
         {
             return 0; //Fl_Gl_Window::handle( event );
@@ -8077,7 +8075,8 @@ int ImageView::handle(int event)
     case FL_DND_LEAVE:
     case FL_DND_DRAG:
     case FL_DND_RELEASE:
-        Fl_Gl_Window::handle( event );
+    case FL_SHOW:
+    case FL_HIDE:
         return 1;
     case FL_PASTE:
         {
@@ -8085,15 +8084,14 @@ int ImageView::handle(int event)
             if ( Fl::event_text() ) text = Fl::event_text();
             browser()->dnd_text( text );
             LOG_INFO( "DND: " << text );
-            Fl_Gl_Window::handle( event );
             Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, browser() );
             return 1;
         }
     default:
-        return Fl_Gl_Window::handle( event );
+        break;
     }
 
-    return 0;
+    return ret;
 }
 
 

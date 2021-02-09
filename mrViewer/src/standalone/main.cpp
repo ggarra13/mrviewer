@@ -182,7 +182,20 @@ int main( int argc, const char** argv )
         }
     }
 
-
+#ifdef _WIN32
+    if ( mrv::Preferences::debug > 0 )
+    {
+        AttachConsole( -1 );
+        DWORD err = GetLastError();
+        if ( err == ERROR_INVALID_HANDLE ||
+             err == ERROR_INVALID_PARAMETER )
+        {
+            AllocConsole();
+        }
+        freopen("conout$", "w", stdout);
+        freopen("conout$", "w", stderr);
+    }
+#endif
 
 #ifdef LINUX
   Fl_File_Icon::load_system_icons();
@@ -575,9 +588,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                      LPSTR lpCmdLine, int nCmdShow )
 {
 
-    AttachConsole( -1 );
-    freopen("conout$", "w", stdout);
-    freopen("conout$", "w", stderr);
 
     int rc = main( __argc, (const char**) __argv );
 

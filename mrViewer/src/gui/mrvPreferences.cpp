@@ -1186,10 +1186,10 @@ void Preferences::run( ViewerUI* main )
     uiMain->uiView->fill_menu( uiMain->uiMenuBar );
     if ( uiPrefs->uiPrefsMenuBar->value() )
     {
-        uiMain->uiMenuBar->show();
+        uiMain->uiMenuGroup->show();
     }
     else {
-        uiMain->uiMenuBar->hide();
+        uiMain->uiMenuGroup->hide();
     }
 
 
