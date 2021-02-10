@@ -1462,6 +1462,23 @@ bool Parser::parse( const std::string& s )
         v->commands.push_back( c );
         ok = true;
     }
+    else if ( cmd == N_("ColorControlWindow") )
+    {
+        int x;
+        is >> x;
+        ImageView::Command c;
+
+        if ( x )
+        {
+            c.type = ImageView::kCOLOR_CONTROL_WINDOW_SHOW;
+        }
+        else
+        {
+            c.type = ImageView::kCOLOR_CONTROL_WINDOW_HIDE;
+        }
+        v->commands.push_back( c );
+        ok = true;
+    }
     else if ( cmd == N_("GL3dView") )
     {
         int x;

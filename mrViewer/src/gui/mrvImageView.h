@@ -116,6 +116,8 @@ public:
         kZoomChange = 43,
         kOCIOViewChange = 44,
         kSwitch_FG_BG = 45,
+        kCOLOR_CONTROL_WINDOW_SHOW = 46,
+        kCOLOR_CONTROL_WINDOW_HIDE = 47,
         kLastCommand
     };
 
@@ -558,6 +560,7 @@ public:
     void toggle_presentation();
 
     void toggle_media_info(bool show);
+    void toggle_color_control(bool show);
     void toggle_color_area(bool show);
     void toggle_stereo_options(bool show);
     void toggle_paint_tools(bool show);

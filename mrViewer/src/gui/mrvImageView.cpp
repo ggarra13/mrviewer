@@ -2176,7 +2176,7 @@ void ImageView::image_coordinates( const CMedia* const img,
     ImageView* self = const_cast< ImageView* >( this );
     float scale = Fl::screen_scale( window()->screen_num() );
     self->_real_zoom = _zoom / scale;
-    
+
     x /= _real_zoom;
     y /= _real_zoom;
     x += tw;
@@ -3385,6 +3385,15 @@ again:
         break;
     case kCOLOR_AREA_WINDOW_HIDE:
         toggle_color_area(false);
+#ifdef OSX
+        if ( old_interactive ) Fl::check();
+#endif
+        break;
+    case kCOLOR_CONTROL_WINDOW_SHOW:
+        toggle_color_control(true);
+        break;
+    case kCOLOR_CONTROL_WINDOW_HIDE:
+        toggle_color_control(false);
 #ifdef OSX
         if ( old_interactive ) Fl::check();
 #endif
@@ -6240,7 +6249,7 @@ void ImageView::mouseDrag(int x,int y)
                     restore_locale();
                 }
             }
- 
+
             lastX = x;
             lastY = y;
 
@@ -7668,6 +7677,7 @@ void ImageView::toggle_presentation()
 {
     Fl_Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
     Fl_Window* uiColorArea = uiMain->uiColorArea->uiMain;
+    Fl_Window* uiColorControls = uiMain->uiColorControls->uiMain;
     Fl_Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
     Fl_Window* uiReel  = uiMain->uiReelWindow->uiMain;
     Fl_Window* uiPrefs = uiMain->uiPrefs->uiMain;
@@ -7677,7 +7687,7 @@ void ImageView::toggle_presentation()
     Fl_Window* uiLog = uiMain->uiLog->uiMain;
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-        has_prefs, has_about, has_stereo, has_paint, has_log;
+        has_prefs, has_about, has_stereo, has_paint, has_log, has_color_ctrl;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7687,6 +7697,7 @@ void ImageView::toggle_presentation()
 
         has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
         has_color_area = uiColorArea ? uiColorArea->visible() : false;
+        has_color_ctrl = uiColorControls ? uiColorControls->visible() : false;
         has_reel       = uiReel ? uiReel->visible() : false;
         has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
         has_prefs      = uiPrefs ? uiPrefs->visible() : false;
@@ -7706,6 +7717,7 @@ void ImageView::toggle_presentation()
         uiStereo->hide();
         uiImageInfo->hide();
         uiColorArea->hide();
+        uiColorControls->hide();
         uiReel->hide();
         uiEDLWindow->hide();
         uiPrefs->hide();
@@ -7753,6 +7765,7 @@ void ImageView::toggle_presentation()
     {
         if ( has_image_info ) uiImageInfo->show();
         if ( has_color_area ) uiColorArea->show();
+        if ( has_color_ctrl ) uiColorControls->show();
         if ( has_reel  )      uiReel->show();
         if ( has_edl_edit )   uiEDLWindow->show();
         if ( has_prefs )      uiPrefs->show();
@@ -7796,6 +7809,18 @@ void ImageView::scrub( double dx )
     uiMain->uiPlayBackwards->value(0);
 
     step_frame( int64_t(dx) );
+}
+
+void ImageView::toggle_color_control( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiColorControls->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiColorControls->uiMain->show();
+    }
 }
 
 void ImageView::toggle_color_area( bool show )
@@ -9990,6 +10015,7 @@ void ImageView::update_color_info( const mrv::media fg ) const
         if ( uiColorWindow->visible() )
         {
             uiMain->uiColorArea->uiColorText->update();
+            uiMain->uiColorArea->uiColorText->redraw();
         }
     }
 
