@@ -53,6 +53,7 @@ uniform float lutT;
 uniform float scale;
 uniform float offset;
 
+uniform mat4x4 colorMatrix;
 
 void main()
 {
@@ -178,6 +179,8 @@ void main()
     {
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
+
+  c.rgba *= colorMatrix;
 
   if ( premult )
   {

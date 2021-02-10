@@ -134,6 +134,9 @@ decl {\#include "mrvReelUI.h"} {private local
 decl {\#include "mrvStereoUI.h"} {public global
 }
 
+decl {\#include "mrvColorControlsUI.h"} {public global
+}
+
 decl {\#include "mrvHotkeyUI.h"} {private local
 }
 
@@ -647,6 +650,8 @@ class ViewerUI {open
   }
   decl {StereoUI* uiStereo;} {public local
   }
+  decl {ColorControlsUI* uiColorControls;} {public local
+  }
   Function {make_window()} {open private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
@@ -654,10 +659,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {777 469 690 565} type Double align 80 hide resizable
+      xywh {777 469 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow}
+      class {mrv::MainWindow} visible
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -666,15 +671,19 @@ o->main( this );}
         Fl_Group uiMenuGroup {open
           xywh {0 0 690 25} box FLAT_BOX
         } {
-          Fl_Menu_Bar uiMenuBar {selected
-            xywh {0 0 660 25}
+          Fl_Menu_Bar uiMenuBar {
+            xywh {0 0 635 25}
           } {}
           Fl_Group uiMenuButtons {open
-            xywh {660 0 30 25} color 63
+            xywh {635 0 55 25} color 63
           } {
             Fl_Button {} {
               callback {uiPrefs->uiMain->show();}
               tooltip Preferences image {../../icons/settings.xpm} xywh {662 0 28 25}
+            }
+            Fl_Button {} {
+              callback {uiColorControls->uiMain->show();}
+              tooltip {Color controls} image {../../icons/settings.xpm} xywh {635 0 28 25}
             }
           }
         }
@@ -703,6 +712,12 @@ uiView->update_image_info();}
               callback {uiColorArea->uiMain->show();
 uiView->update_color_info();}
               xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Color Controls} user_data_type {void*}
+              callback {uiColorArea->uiMain->show();
+uiView->update_color_info();} selected
+              xywh {10 10 100 20}
             }
             MenuItem {} {
               label {EDL Edit} user_data_type {void*}
@@ -1783,6 +1798,7 @@ uiHistogram = new HistogramUI(this);
 uiWaveform = new WaveformUI(this);
 uiPaint = new PaintUI(this);
 uiStereo = new StereoUI(this);
+uiColorControls = new ColorControlsUI(uiView);
 if (!uiLog) uiLog   = new LogUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 if (!uiConnection) uiConnection = new ConnectionUI( this );

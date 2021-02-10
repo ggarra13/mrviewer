@@ -199,6 +199,7 @@ void zrot2offsets( double& x, double& y,
     y = x2 * sn + y * cs;
 }
 
+
 std::string GLEngine::options()
 {
     using std::endl;
@@ -3831,6 +3832,7 @@ void GLEngine::loadOpenGLShader()
         "uniform float scale; \n"
         "uniform float offset; \n"
         "\n"
+        "uniform mat4x4 colorMatrix; \n"
         "\n";
 
     code.clear();
@@ -3949,6 +3951,7 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
          "    }\n"
          "\n"
+         "  c.rgba *= colorMatrix; "
          "  if ( premult )\n"
          "  {\n"
          "      c.rgb *= c.a;\n"

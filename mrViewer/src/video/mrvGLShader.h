@@ -27,7 +27,7 @@
 
 
 #include <map>
-
+#include <OpenEXR/ImathMatrix.h>
 
 namespace mrv {
 
@@ -70,6 +70,7 @@ namespace mrv {
 		     const int z );
     void setUniform( const GLint location, const int x, const int y, 
 		     const int z, const int w );
+      void setUniform( const GLint location, const Imath::M44f& m );
 
     void setUniform( const char* uniform, const int x );
     void setUniform( const char* uniform, const int x, const int y);
@@ -77,7 +78,7 @@ namespace mrv {
 		     const int z );
     void setUniform( const char* uniform, const int x, const int y, 
 		     const int z, const int w );
-
+      void setUniform( const char* uniform, const Imath::M44f& m );
   protected:
 
     void  store_uniforms( const char* arbfp1_code );

@@ -1017,6 +1017,20 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             send_network( "ColorInfoWindow 0" );
         }
     }
+    else if ( idx == kColorControls )
+    {
+        if ( force || !uiMain->uiColorControls->uiMain->visible() )
+        {
+            // Color Area
+            uiMain->uiColorControls->uiMain->show();
+            send_network( "ColorControlWindow 1" );
+        }
+        else
+        {
+            uiMain->uiColorControls->uiMain->hide();
+            send_network( "ColorControlWindow 0" );
+        }
+    }
     else if ( idx == k3DStereoOptions )
     {
         if ( force || !uiMain->uiStereo->uiMain->visible() )
@@ -8059,13 +8073,11 @@ int ImageView::handle(int event)
         {
             if ( Fl::event_dy() < 0.f )
             {
-                zoom_under_mouse( _zoom * 2.0f,
-                                  Fl::event_x(), Fl::event_y() );
+                zoom_under_mouse( _zoom * 2.0f, X, Y );
             }
             else
             {
-                zoom_under_mouse( _zoom * 0.5f,
-                                  Fl::event_x(), Fl::event_y() );
+                zoom_under_mouse( _zoom * 0.5f, X, Y );
             }
         }
         return 1;

@@ -215,6 +215,7 @@ FLTK_WRAP_UI( mrViewer
   gui/mrvPreferencesUI.fl
   gui/mrvHistogramUI.fl
   gui/mrvVectorscopeUI.fl
+  gui/mrvColorControlsUI.fl
   gui/mrvWaveformUI.fl
   gui/WandOptionsUI.fl
   gui/make_ocio_chooser.fl

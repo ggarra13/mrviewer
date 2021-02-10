@@ -374,6 +374,12 @@ namespace mrv {
     CHECK_GL;
   }
 
+void GLShader::setUniform( const GLint location, const Imath::M44f& m  )
+  {
+      glUniformMatrix4fv(location, 1, GL_FALSE, &m[0][0]);
+      CHECK_GL;
+  }
+
   void GLShader::setUniform( const char* uniform,
                              const int x )
   {
@@ -451,6 +457,16 @@ namespace mrv {
         CHECK_GL;
       }
   }
+
+void GLShader::setUniform( const char* uniform, const Imath::M44f& m )
+{
+    if ( _program )
+      {
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
+        setUniform( location, m );
+      }
+}
 
   void GLShader::setTextureUnit( const char* uniform, const GLint unit )
   {

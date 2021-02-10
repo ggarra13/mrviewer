@@ -75,6 +75,62 @@ const char* kModule = "glquad";
 
 namespace mrv {
 
+inline Imath::M44f brightnessMatrix(float r, float g, float b)
+{
+    return Imath::M44f(
+    r, 0.F, 0.F, 0.F,
+    0.F, g, 0.F, 0.F,
+    0.F, 0.F, b, 0.F,
+    0.F, 0.F, 0.F, 1.F);
+}
+
+inline Imath::M44f contrastMatrix(float r, float g, float b)
+{
+    return
+    Imath::M44f(
+    1.F, 0.F, 0.F, -.5F,
+    0.F, 1.F, 0.F, -.5F,
+    0.F, 0.F, 1.F, -.5F,
+    0.F, 0.F, 0.F, 1.F) *
+    Imath::M44f(
+    r, 0.F, 0.F, 0.F,
+    0.F, g, 0.F, 0.F,
+    0.F, 0.F, b, 0.F,
+    0.F, 0.F, 0.F, 1.F) *
+    Imath::M44f(
+    1.F, 0.F, 0.F, .5F,
+    0.F, 1.F, 0.F, .5F,
+    0.F, 0.F, 1.F, .5F,
+    0.F, 0.F, 0.F, 1.F);
+}
+
+inline Imath::M44f saturationMatrix(float r, float g, float b)
+{
+    const float s[] =
+    {
+    (1.F - r) * .3086F,
+    (1.F - g) * .6094F,
+    (1.F - b) * .0820F
+    };
+    return Imath::M44f(
+    s[0] + r, s[1], s[2], 0.F,
+    s[0], s[1] + g, s[2], 0.F,
+    s[0], s[1], s[2] + b, 0.F,
+    0.F, 0.F, 0.F, 1.F);
+}
+
+inline Imath::M44f colorMatrix(const ColorControlsUI* v)
+{
+    return   brightnessMatrix(v->uiBrightness->value(),
+                              v->uiBrightness->value(),
+                              v->uiBrightness->value()) *
+    contrastMatrix(v->uiContrast->value(), v->uiContrast->value(),
+                   v->uiContrast->value()) *
+    saturationMatrix(v->uiSaturation->value(), v->uiSaturation->value(),
+                     v->uiSaturation->value());
+}
+
+
 const char* GLQuad::debug_internal_format( const GLenum format )
 {
     switch( format )
@@ -1086,6 +1142,8 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         CHECK_GL;
 
         _shader->setUniform( "channel", _view->channel_type() );
+        
+        _shader->setUniform("colorMatrix", colorMatrix(_view->main()->uiColorControls));
         CHECK_GL;
 
         if ( use_lut && _lut )
