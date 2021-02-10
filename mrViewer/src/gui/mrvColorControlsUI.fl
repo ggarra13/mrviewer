@@ -1,0 +1,60 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "gui/mrvImageView.h"} {selected public local
+}
+
+class ColorControlsUI {open
+} {
+  Function {make_window( mrv::ImageView* view )} {open
+  } {
+    Fl_Window uiMain {open
+      xywh {711 98 342 140} type Double visible
+    } {
+      Fl_Group {} {open
+        xywh {0 0 342 140} box FLAT_BOX
+      } {}
+      Fl_Value_Slider uiBrightness {
+        label Brightness
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        xywh {85 25 185 20} type Horizontal align 4 maximum 4 value 1 textsize 14
+      }
+      Fl_Value_Slider uiContrast {
+        label Contrast
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        tooltip {Adjust Image Contrast} xywh {85 55 185 20} type Horizontal align 4 maximum 4 value 1 textsize 14
+      }
+      Fl_Value_Slider uiSaturation {
+        label Saturation
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        tooltip {Adjust Image Saturation} xywh {85 90 185 20} type Horizontal align 4 maximum 4 value 1 textsize 14
+      }
+      Fl_Button {} {
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiBrightness->value(1.0)}
+        xywh {290 25 35 20} box NO_BOX
+      }
+      Fl_Button {} {
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiContrast->value(1.0);}
+        xywh {290 55 35 20} box NO_BOX
+      }
+      Fl_Button {} {
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiSaturation->value(1.0);}
+        xywh {290 90 35 20} box NO_BOX
+      }
+    }
+  }
+  Function {ColorControlsUI( mrv::ImageView* view )} {open
+  } {
+    code {make_window(view);} {}
+  }
+}
