@@ -3944,13 +3944,6 @@ void ImageView::draw()
         }
     }
 
-    if ( _selection.w() > 0 || _selection.h() > 0 )
-    {
-        uchar r, g, b;
-        Fl::get_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
-        _engine->color( r, g, b, 255 );
-        _engine->draw_rectangle( _selection, img );
-    }
 
 
 
@@ -4034,6 +4027,7 @@ void ImageView::draw()
     }
 
     _engine->draw_annotation( img->shapes(), img );
+    _engine->line_width(1.0);
 
     if ( _zoom_grid )
       {
@@ -4045,6 +4039,16 @@ void ImageView::draw()
         _engine->draw_grid( img, _grid_size );
     }
 
+    if ( _selection.w() > 0 || _selection.h() > 0 )
+    {
+        uchar r, g, b;
+        Fl::get_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
+        _engine->color( r, g, b, 255 );
+        if ( _zoom >= 32 ) _engine->line_width(4.0);
+        _engine->draw_rectangle( _selection, img );
+        if ( _zoom >= 32 ) _engine->line_width(1.0);
+    }
+    
     if ( !(flags & kMouseDown) )
       {
           if (  (_mode & kDraw) || (_mode & kErase) ||
@@ -8026,6 +8030,7 @@ int ImageView::handle(int event)
         return 1;
         break;
     case FL_MOVE:
+        // Store X, Y for MOUSEWHEEL support
         X = Fl::event_x();
         Y = Fl::event_y();
 
@@ -8910,12 +8915,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
     float scale = Fl::screen_scale( window()->screen_num() );
 
-    DBGM1( "1 screen=" << window()->screen_num() << " scale= " << scale
-           << " x,y=" << x << ", " << y );
     image_coordinates( img, xf, yf );
-
-    DBGM1( "2 screen=" << window()->screen_num() << " scale= " << scale
-           << " xf,yf=" << xf << ", " << yf );
 
     zoom( z );
 
@@ -8930,8 +8930,6 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     yoffset += (offy / _real_zoom * ratio);
 
     setlocale( LC_NUMERIC, "C" );
-
-    DBGM1( "3 xoff,yoff=" << xoffset << ", " << yoffset );
 
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );

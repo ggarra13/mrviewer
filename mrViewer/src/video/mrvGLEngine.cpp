@@ -1339,8 +1339,6 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     double rw = r.w();
     double rh = r.h();
 
-    glLineWidth( 1.0 );
-
     // glEnable(GL_COLOR_LOGIC_OP);
     // glLogicOp(GL_XOR);
 
@@ -1534,7 +1532,8 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     {
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
-
+    
+    line_width(1.0);
     draw_rectangle( r, img );
 
     glMatrixMode(GL_MODELVIEW);
@@ -1643,6 +1642,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     if ( fg )
     {
         CMedia* img = fg->image();
+        line_width(1.0);
         draw_rectangle( r, img );
     }
     glDisable( GL_LINE_STIPPLE );

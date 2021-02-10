@@ -106,6 +106,8 @@ public:
 
     virtual void wipe_area();
 
+    virtual void line_width( float p ) { glLineWidth( p ); }
+    
     virtual void draw_square_stencil( const int x, const int y,
                                       const int x2, const int y2 );
     virtual void draw_mask(const float pct);

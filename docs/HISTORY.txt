@@ -3,6 +3,12 @@ v5.7.3  - Made Windows print out help and version to startup console
 	- Bug fixed crash when saving a movie and requester was stopped midway.
 	- Ported code to CentOS 7 virtualbox.
 	- Fixed bitrate in movie save requester defaulting to 6.
+	- Fixed scrollwheel zoom on multiple screens sometimes not zooming
+	  correctly.
+	- Fixed color info window showing all the same values for all channels
+	  (regression from v5.7.2).
+	- Bug fixed area selection window not marking all area correctly
+	  (regression from v5.7.2).
 
 v5.7.2  - Bug fixed pull down menus and tree from custom file requester
 	  ( location and extension menu buttons).  Previously these menus
