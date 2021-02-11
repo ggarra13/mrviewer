@@ -2,15 +2,18 @@
 version 1.0400
 header_name {.h}
 code_name {.cxx}
-decl {\#include "gui/mrvImageView.h"} {selected public local
+decl {\#include "gui/mrvImageView.h"} {public local
 }
 
 class ColorControlsUI {open
 } {
   Function {make_window( mrv::ImageView* view )} {open
   } {
-    Fl_Window uiMain {open
-      xywh {711 98 342 140} type Double visible
+    Fl_Window uiMain {open selected
+      xywh {221 579 342 140} type Double
+      code0 {int x = view->x() + view->w() - o->w()/2;}
+      code1 {int y = view->y() + view->h() / 2 - o->h()/2;}
+      code2 {o->position(x,y);} visible
     } {
       Fl_Group {} {open
         xywh {0 0 342 140} box FLAT_BOX
