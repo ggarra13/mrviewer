@@ -134,10 +134,10 @@ decl {\#include "mrvReelUI.h"} {private local
 decl {\#include "mrvStereoUI.h"} {public global
 }
 
-decl {\#include "mrvColorControlsUI.h"} {public global
+decl {\#include "mrvHotkeyUI.h"} {private local
 }
 
-decl {\#include "mrvHotkeyUI.h"} {private local
+decl {\#include "mrvColorControlsUI.h"} {public global
 }
 
 decl {\#include "mrvWaveformUI.h"} {private local
@@ -659,7 +659,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {577 466 690 565} type Double align 80 resizable
+      xywh {266 201 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -682,7 +682,7 @@ o->main( this );}
               tooltip Preferences image {../../icons/settings.xpm} xywh {662 0 28 25}
             }
             Fl_Button {} {
-              callback {uiColorControls->uiMain->show();} selected
+              callback {uiColorControls->uiMain->show();}
               tooltip {Color controls} image {../../icons/color_ctls.xpm} xywh {635 0 28 25}
             }
           }
@@ -1798,7 +1798,7 @@ uiHistogram = new HistogramUI(this);
 uiWaveform = new WaveformUI(this);
 uiPaint = new PaintUI(this);
 uiStereo = new StereoUI(this);
-uiColorControls = new ColorControlsUI(uiView);
+uiColorControls = new ColorControlsUI(this);
 if (!uiLog) uiLog   = new LogUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 if (!uiConnection) uiConnection = new ConnectionUI( this );
@@ -1807,12 +1807,15 @@ uiEDLWindow = new EDLWindowUI(this);
 Fl_Group::current(0);
 
 // read and use preferences
-mrv::Preferences prefs( uiPrefs );} {}
+mrv::Preferences prefs( uiPrefs );} {selected
+    }
   }
-  Function {ViewerUI()} {} {
+  Function {ViewerUI()} {open
+  } {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {} {
+  Function {~ViewerUI()} {open
+  } {
     code {delete uiAttrsWindow; uiAttrsWindow = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -1821,6 +1824,7 @@ delete uiVectorscope; uiVectorscope = NULL;
 delete uiWaveform; uiWaveform = NULL;
 delete uiGL3dView; uiGL3dView = NULL;
 delete uiStereo; uiStereo = NULL;
+delete uiColorControls; uiColorControls = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
