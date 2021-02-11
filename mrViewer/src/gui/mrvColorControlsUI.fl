@@ -31,43 +31,43 @@ class ColorControlsUI {open
       code2 {o->position(x,y);} non_modal visible
     } {
       Fl_Group {} {open selected
-        xywh {0 0 342 140} box FLAT_BOX
+	xywh {0 0 342 140} box FLAT_BOX
       } {}
       Fl_Value_Slider uiBrightness {
-        label Brightness
-        user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
-        xywh {85 25 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+	label Brightness
+	user_data view user_data_type {mrv::ImageView*}
+	callback {v->redraw();}
+	xywh {85 25 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiContrast {
-        label Contrast
-        user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
-        tooltip {Adjust Image Contrast} xywh {85 55 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+	label Contrast
+	user_data view user_data_type {mrv::ImageView*}
+	callback {v->redraw();}
+	tooltip {Adjust Image Contrast} xywh {85 55 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiSaturation {
-        label Saturation
-        user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
-        tooltip {Adjust Image Saturation} xywh {85 90 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+	label Saturation
+	user_data view user_data_type {mrv::ImageView*}
+	callback {v->redraw();}
+	tooltip {Adjust Image Saturation} xywh {85 90 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Button {} {
-        label X
-        user_data this user_data_type {ColorControlsUI*}
-        callback {v->uiBrightness->value(1.0)}
-        tooltip {Reset value} xywh {295 25 30 20} box NO_BOX
+	label X
+	user_data this user_data_type {ColorControlsUI*}
+	callback {v->uiBrightness->value(1.0); v->uiBrightness->do_callback();}
+	tooltip {Reset value} xywh {295 25 30 20} box NO_BOX
       }
       Fl_Button {} {
-        label X
-        user_data this user_data_type {ColorControlsUI*}
-        callback {v->uiContrast->value(1.0);}
-        tooltip {Reset value} xywh {295 55 30 20} box NO_BOX
+	label X
+	user_data this user_data_type {ColorControlsUI*}
+	callback {v->uiContrast->value(1.0); v->uiContrast->do_callback(); }
+	tooltip {Reset value} xywh {295 55 30 20} box NO_BOX
       }
       Fl_Button {} {
-        label X
-        user_data this user_data_type {ColorControlsUI*}
-        callback {v->uiSaturation->value(1.0);}
-        tooltip {Reset value} xywh {295 90 30 20} box NO_BOX
+	label X
+	user_data this user_data_type {ColorControlsUI*}
+	callback {v->uiSaturation->value(1.0); v->uiSaturation->do_callback();}
+	tooltip {Reset value} xywh {295 90 30 20} box NO_BOX
       }
     }
   }

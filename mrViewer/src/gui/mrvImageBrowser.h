@@ -148,8 +148,14 @@ public:
     //! Changes to previous image on reel
     void previous_image();
 
+    //! Changes to next image on reel and limits start/end frame to it
+    void previous_image_limited();
+
     //! Changes to next image on reel
     void next_image();
+
+    //! Changes to next image on reel and limits start/end frame to it
+    void next_image_limited();
 
     //! Clears reel->images array and rebuilds it from the tree
     void match_tree_order();

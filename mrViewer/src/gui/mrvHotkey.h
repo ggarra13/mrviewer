@@ -150,6 +150,9 @@ extern Hotkey kNextVersionImage;
 extern Hotkey kPreviousImage;
 extern Hotkey kNextImage;
 
+extern Hotkey kPreviousImageLimited;
+extern Hotkey kNextImageLimited;
+
 extern Hotkey kSwitchChannels;
 extern Hotkey kPreviousChannel;
 extern Hotkey kNextChannel;

@@ -432,6 +432,16 @@ void previous_image_cb( Fl_Widget* o, mrv::ImageBrowser* b )
     b->previous_image();
 }
 
+void next_image_limited_cb( Fl_Widget* o, mrv::ImageBrowser* b )
+{
+    b->next_image_limited();
+}
+
+void previous_image_limited_cb( Fl_Widget* o, mrv::ImageBrowser* b )
+{
+    b->previous_image_limited();
+}
+
 void next_channel_cb( Fl_Widget* o, mrv::ImageView* v )
 {
     v->next_channel();
@@ -4048,7 +4058,7 @@ void ImageView::draw()
         _engine->draw_rectangle( _selection, img );
         if ( _zoom >= 32 ) _engine->line_width(1.0);
     }
-    
+
     if ( !(flags & kMouseDown) )
       {
           if (  (_mode & kDraw) || (_mode & kErase) ||
@@ -7184,6 +7194,20 @@ int ImageView::keyDown(unsigned int rawkey)
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
+    else if ( kPreviousImageLimited.match( rawkey ) )
+    {
+        previous_image_limited_cb(this, browser());
+        update_title_bar( this );
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kNextImageLimited.match( rawkey ) )
+    {
+        next_image_limited_cb(this, browser());
+        update_title_bar( this );
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
     else if ( kPreviousImage.match( rawkey ) )
     {
         previous_image_cb(this, browser());
@@ -8391,6 +8415,7 @@ void ImageView::channel( Fl_Menu_Item* o )
 {
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
+    if ( num == 0 ) return;
     uiColorChannel->menu_end();
     unsigned int i = 0;
     for ( ; i < num; ++i )

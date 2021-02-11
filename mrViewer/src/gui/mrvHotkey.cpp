@@ -92,6 +92,8 @@ Hotkey kNextVersionImage( false, false, true, false, FL_Page_Down );
 Hotkey kPreviousImage( false, false, false, false, FL_Page_Up );
 Hotkey kNextImage( false, false, false, false, FL_Page_Down );
 
+Hotkey kPreviousImageLimited( true, false, false, false, FL_Page_Up );
+Hotkey kNextImageLimited( true, false, false, false, FL_Page_Down );
 
 Hotkey kFirstFrame( false, false, false, false, FL_Home );
 Hotkey kLastFrame( false, false, false, false, FL_End );
@@ -329,6 +331,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Next Image Version"), kNextVersionImage ),
     HotkeyEntry( _("Previous Image"), kPreviousImage ),
     HotkeyEntry( _("Next Image"), kNextImage ),
+    HotkeyEntry( _("Previous Image Limited"), kPreviousImageLimited ),
+    HotkeyEntry( _("Next Image Limited"), kNextImageLimited ),
     HotkeyEntry( _("Switch Channels"), kSwitchChannels ),
     HotkeyEntry( _("Previous Channel"), kPreviousChannel ),
     HotkeyEntry( _("Next Channel"), kNextChannel ),

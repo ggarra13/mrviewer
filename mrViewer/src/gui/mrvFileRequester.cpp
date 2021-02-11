@@ -737,7 +737,7 @@ std::string save_reel( const char* startdir,
     void load_hotkeys( ViewerUI* uiMain, Fl_Preferences* keys )
     {
         int version = 0;
-        keys->get( "version", version, 8 );
+        keys->get( "version", version, 9 );
         DBG3;
         int tmp = 0;
         char  tmpS[2048];
@@ -747,6 +747,10 @@ std::string save_reel( const char* startdir,
             for ( int i = 0; hotkeys[i].name != "END"; ++i )
             {
                 if ( version == 8 && hotkeys[i].name == "Toggle Menu Bar" )
+                    continue;
+                if ( version == 9 &&
+                     ( hotkeys[i].name == "Next Image Limited" ||
+                       hotkeys[i].name == "Previous Image Limited" ) )
                     continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;

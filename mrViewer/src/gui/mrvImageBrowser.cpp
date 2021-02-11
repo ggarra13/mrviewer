@@ -2786,6 +2786,82 @@ void ImageBrowser::next_image()
 }
 
 
+
+/**
+ * Go to next image in browser's list
+ *
+ */
+void ImageBrowser::next_image_limited()
+{
+    mrv::Reel reel = current_reel();
+    if ( !reel ) return;
+
+    DBGM3( "reel name " << reel->name );
+
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )
+        view()->stop();
+
+    int v = value();
+
+    ++v;
+    if ( size_t(v) >= reel->images.size() )
+    {
+        if ( play ) view()->play(play);
+        return;
+    }
+
+    mrv::media orig = reel->images[v-1];
+
+    Fl_Tree_Item* item = root()->child(v-1);
+    int ok = deselect( item, 0 );
+    if ( ok < 0 )
+    {
+        LOG_ERROR( _("Old item was not found in tree.") );
+        return;
+    }
+
+    value( v );
+    mrv::media m = reel->images[v];
+
+    item = root()->child(v);
+    ok = select( item, 0 );
+    if ( ok < 0 )
+    {
+        LOG_ERROR( _("New item was not found in tree.") );
+        return;
+    }
+
+    view()->foreground( m );
+
+
+    int64_t first, last;
+    adjust_timeline( first, last );
+    mrv::Timeline* t = timeline();
+    if ( t && !t->edl() )
+    {
+        set_timeline( first, last );
+    }
+
+    send_image( v );
+
+    if ( reel->edl )
+    {
+        first = m->position();
+        last = first + m->image()->duration() - 1;
+        uiMain->uiTimeline->display_minimum( first );
+        uiMain->uiStartFrame->value( first );
+        uiMain->uiTimeline->display_maximum( last );
+        uiMain->uiEndFrame->value( last );
+    }
+
+    seek( first );
+
+
+    if ( play ) view()->play(play);
+}
+
+
 /**
  * Go to previous image in browser's list
  *
@@ -2854,6 +2930,81 @@ void ImageBrowser::previous_image()
     {
         seek( view()->frame() );
     }
+
+    if ( play ) view()->play(play);
+}
+
+
+/**
+ * Go to previous image in browser's list
+ *
+ */
+void ImageBrowser::previous_image_limited()
+{
+    mrv::Reel reel = current_reel();
+
+    DBGM3( "reel name " << reel->name );
+
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )
+        view()->stop();
+
+    int v = value();
+    --v;
+    if ( v < 0 )
+    {
+        if ( play ) view()->play(play);
+        return;
+    }
+
+    mrv::media orig = reel->images[v];
+
+
+
+    value( v );
+
+    Fl_Tree_Item* item = root()->child( v+1 );
+    int ok = deselect( item, 0 );
+    if ( ok < 0 )
+    {
+        LOG_ERROR( _("Item was not found in tree.") );
+        return;
+    }
+
+    item = root()->child( v );
+    ok = select( item, 0 );
+    if ( ok < 0 )
+    {
+        LOG_ERROR( _("Item was not found in tree.") );
+        return;
+    }
+
+    mrv::media m = reel->images[v];
+    view()->foreground( m );
+
+
+    send_image( v );
+
+    int64_t first, last;
+    adjust_timeline( first, last );
+
+    mrv::Timeline* t = timeline();
+    if ( t && !t->edl() )
+    {
+        set_timeline( first, last );
+    }
+
+    if ( reel->edl )
+    {
+        first = m->position();
+        last = first + m->image()->duration() - 1;
+        uiMain->uiTimeline->display_minimum( first );
+        uiMain->uiStartFrame->value( first );
+        uiMain->uiTimeline->display_maximum( last );
+        uiMain->uiEndFrame->value( last );
+    }
+
+    seek( first );
 
     if ( play ) view()->play(play);
 }
