@@ -303,10 +303,10 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     }
     if ( nummod <= 1 ) nummod = 1;
 
-    Fl_Color textcolor = fl_contrast( this->labelcolor(), color() );
+    Fl_Color textcolor = fl_contrast( labelcolor(), color() );
     if ( _edl ) textcolor = FL_BLACK;
     Fl_Color linecolor = FL_BLACK;
-    if ( !_edl && Preferences::schemes.name == "Black" )
+    if ( Preferences::schemes.name == "Black" )
     {
         linecolor = fl_rgb_color( 70, 70, 70 );
     }
