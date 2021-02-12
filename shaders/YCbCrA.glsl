@@ -53,6 +53,7 @@ uniform float lutT;
 uniform float scale;
 uniform float offset;
 
+uniform bool   enableColorMatrix;
 uniform mat4x4 colorMatrix;
 
 void main()
@@ -73,11 +74,11 @@ void main()
 
   if ( coeffs )
   {
-	pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
+        pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
 
-	c.r = dot(Kr, pre.xyz);
-	c.g = dot(Kg, pre.xyz);
-	c.b = dot(Kb, pre.xyz);
+        c.r = dot(Kr, pre.xyz);
+        c.g = dot(Kg, pre.xyz);
+        c.b = dot(Kb, pre.xyz);
   }
   else
   {
@@ -180,7 +181,8 @@ void main()
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
 
-  c.rgba *= colorMatrix;
+  if ( enableColorMatrix )
+      c.rgba *= colorMatrix;
 
   if ( premult )
   {

@@ -25,49 +25,66 @@ class ColorControlsUI {open
   Function {make_window( mrv::ImageView* view )} {open
   } {
     Fl_Window uiMain {open
-      xywh {221 719 342 140} type Double
+      xywh {221 733 340 210} type Double
       code0 {int x = view->x() + view->w() - o->w()/2;}
       code1 {int y = view->y() + view->h() / 2 - o->h()/2;}
       code2 {o->position(x,y);} non_modal visible
     } {
       Fl_Group {} {open selected
-	xywh {0 0 342 140} box FLAT_BOX
-      } {}
+        xywh {0 0 342 210} box FLAT_BOX
+      } {
+        Fl_Light_Button uiActive {
+          label Active
+          xywh {85 10 80 25}
+        }
+      }
+      Fl_Value_Slider uiHue {
+        label Hue
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        xywh {85 47 210 20} type Horizontal align 4 textsize 14
+      }
       Fl_Value_Slider uiBrightness {
-	label Brightness
-	user_data view user_data_type {mrv::ImageView*}
-	callback {v->redraw();}
-	xywh {85 25 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+        label Brightness
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        xywh {85 75 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiContrast {
-	label Contrast
-	user_data view user_data_type {mrv::ImageView*}
-	callback {v->redraw();}
-	tooltip {Adjust Image Contrast} xywh {85 55 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+        label Contrast
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        tooltip {Adjust Image Contrast} xywh {85 105 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiSaturation {
-	label Saturation
-	user_data view user_data_type {mrv::ImageView*}
-	callback {v->redraw();}
-	tooltip {Adjust Image Saturation} xywh {85 90 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
+        label Saturation
+        user_data view user_data_type {mrv::ImageView*}
+        callback {v->redraw();}
+        tooltip {Adjust Image Saturation} xywh {85 138 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Button {} {
-	label X
-	user_data this user_data_type {ColorControlsUI*}
-	callback {v->uiBrightness->value(1.0); v->uiBrightness->do_callback();}
-	tooltip {Reset value} xywh {295 25 30 20} box NO_BOX
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiHue->value(0.0); v->uiHue->do_callback();}
+        tooltip {Reset value} xywh {295 47 30 20} box NO_BOX
       }
       Fl_Button {} {
-	label X
-	user_data this user_data_type {ColorControlsUI*}
-	callback {v->uiContrast->value(1.0); v->uiContrast->do_callback(); }
-	tooltip {Reset value} xywh {295 55 30 20} box NO_BOX
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiBrightness->value(1.0); v->uiBrightness->do_callback();}
+        tooltip {Reset value} xywh {295 75 30 20} box NO_BOX
       }
       Fl_Button {} {
-	label X
-	user_data this user_data_type {ColorControlsUI*}
-	callback {v->uiSaturation->value(1.0); v->uiSaturation->do_callback();}
-	tooltip {Reset value} xywh {295 90 30 20} box NO_BOX
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiContrast->value(1.0); v->uiContrast->do_callback();}
+        tooltip {Reset value} xywh {295 105 30 20} box NO_BOX
+      }
+      Fl_Button {} {
+        label X
+        user_data this user_data_type {ColorControlsUI*}
+        callback {v->uiSaturation->value(1.0); v->uiSaturation->do_callback();}
+        tooltip {Reset value} xywh {295 138 30 20} box NO_BOX
       }
     }
   }

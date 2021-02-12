@@ -620,6 +620,11 @@ void toggle_background_cb( Fl_Widget* o, mrv::ImageView* view )
     view->toggle_background();
 }
 
+void open_session_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
+{
+    uiReelWindow->open_session();
+}
+
 void open_dir_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
     uiReelWindow->open_directory();
@@ -651,15 +656,6 @@ void open_stereo_cb( Fl_Widget* o,
     uiReelWindow->open_stereo();
 }
 
-void save_clip_xml_metadata_cb( Fl_Widget* o,
-                                mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-
-    mrv::CMedia* img = fg->image();
-    save_clip_xml_metadata( img );
-}
 
 void save_cb( Fl_Widget* o, mrv::ImageView* view )
 {
@@ -667,6 +663,14 @@ void save_cb( Fl_Widget* o, mrv::ImageView* view )
     if ( !fg ) return;
 
     view->browser()->save();
+}
+
+void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+    view->browser()->save_session();
 }
 
 void save_reel_cb( Fl_Widget* o, mrv::ImageView* view )
@@ -4415,17 +4419,20 @@ bool PointInTriangle (const Imath::V2i& pt,
      {
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                           (Fl_Callback*)open_dir_cb, browser() );
+         menu->add( _("File/Open/Session"),
+                    kOpenSession.hotkey(),
+                    (Fl_Callback*)open_session_cb, browser() );
      }
      if ( fg )
      {
          menu->add( _("File/Open/Stereo Sequence or Movie"),
                     kOpenStereoImage.hotkey(),
                     (Fl_Callback*)open_stereo_cb, browser() );
-         menu->add( _("File/Open/Clip XML Metadata"),
-                    kOpenClipXMLMetadata.hotkey(),
-                    (Fl_Callback*)open_clip_xml_metadata_cb, this );
-         idx = menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
-                          (Fl_Callback*)open_dir_cb, browser() );
+         menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                    (Fl_Callback*)open_dir_cb, browser() );
+         idx = menu->add( _("File/Open/Session"),
+                    kOpenSession.hotkey(),
+                    (Fl_Callback*)open_session_cb, browser() );
          menu->add( _("File/Save/Movie or Sequence As"),
                     kSaveSequence.hotkey(),
                     (Fl_Callback*)save_sequence_cb, this );
@@ -4435,9 +4442,9 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)save_cb, this );
          menu->add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
                     (Fl_Callback*)save_snap_cb, this );
-         menu->add( _("File/Save/Clip XML Metadata As"),
-                    kSaveClipXMLMetadata.hotkey(),
-                    (Fl_Callback*)save_clip_xml_metadata_cb, this );
+         menu->add( _("File/Save/Session As"),
+                    kSaveSession.hotkey(),
+                    (Fl_Callback*)save_session_as_cb, this );
          idx += 2;
      }
 
@@ -6743,11 +6750,6 @@ int ImageView::keyDown(unsigned int rawkey)
         open_stereo_cb( this, browser() );
         return 1;
     }
-    else if ( kOpenClipXMLMetadata.match( rawkey ) )
-    {
-        open_clip_xml_metadata_cb( this, this );
-        return 1;
-    }
     else if ( kCloneImage.match( rawkey ) )
     {
         clone_image_cb( NULL, browser() );
@@ -6786,6 +6788,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSaveSnapshot.match( rawkey ) )
     {
         save_snap_cb( this, this );
+        return 1;
+    }
+    else if ( kSaveSession.match( rawkey ) )
+    {
+        save_session_as_cb( this, this );
         return 1;
     }
     else if ( kSetAsBG.match( rawkey ) )

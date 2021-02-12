@@ -89,11 +89,25 @@ public:
     //! Ask for filename and save sequence under it
     void save_sequence();
 
-    //! Ask for filename and save reeel under it
+    //! Ask for filename and save all reels and a session file under it
+    void save_session();
+
+    //! Ask for filename and save reel under it
     void save_reel();
+
+    //! Save session under a file name
+    void save_session_( const std::string& file );
+
+    //! Save reel under a file name
+    void save_reel_( mrv::Reel r, const std::string& file );
 
     //! Load a reel from filename
     void load_reel( const char* filename );
+
+    //! Load a session and all reels from filename
+    void load_session( const char* filename );
+
+    void open_session();
 
     //! Removes the current reel from reel list
     void remove_reel();
@@ -103,7 +117,7 @@ public:
 
     //! Returns the number of reels
     size_t number_of_reels() const {
-        return _reels.size();
+	return _reels.size();
     }
     //! Creates a new reel with name (or name #x if name already exists)
     mrv::Reel new_reel( const char* name = "reel" );
@@ -123,7 +137,7 @@ public:
 
     //! Sets the Fl_Choice for the reel
     void reel_choice( mrv::Choice* c ) {
-        _reel_choice = c;
+	_reel_choice = c;
     }
 
 
@@ -171,21 +185,21 @@ public:
 
     //! Addes filename as media to tree
     mrv::media add( const char* filename,
-                    const int64_t start = -999999,
-                    const int64_t end = -999999 );
+		    const int64_t start = -999999,
+		    const int64_t end = -999999 );
 
     //! Loads files as media to tree
     void load( const LoadList& files, const bool stereo = false,
-               std::string bgfile = "",
-               const bool edl = false,
-               const bool progressBar = false );
+	       std::string bgfile = "",
+	       const bool edl = false,
+	       const bool progressBar = false );
 
     //! Loads files as media to tree
     void load( const stringArray& files, const bool seqs = true,
-               const bool stereo = false,
-               const std::string bgfile = "",
-               const bool edl = false,
-               const bool progressBar = false );
+	       const bool stereo = false,
+	       const std::string bgfile = "",
+	       const bool edl = false,
+	       const bool progressBar = false );
 
     //! Replaces media at index idx in tree with media m.
     void replace( int idx, mrv::media m );
@@ -209,6 +223,9 @@ public:
     void clear_edl();
     void set_edl();
     void toggle_edl();
+
+    // Clear all reels
+    void clear_reels();
 
     // Clear tree items
     void clear_items();
@@ -239,10 +256,10 @@ public:
     virtual int handle( int event );
 
     void main( ViewerUI* m ) {
-        uiMain = m;
+	uiMain = m;
     }
     ViewerUI* main() {
-        return uiMain;
+	return uiMain;
     }
 
     void send_image( int idx );
@@ -284,17 +301,17 @@ protected:
 
     //! Load a stereo image for fg
     void load_stereo( mrv::media& fg,
-                      const char* name,
-                      const int64_t first, const int64_t last,
-                      const int64_t start, const int64_t end,
-                      const double fps );
+		      const char* name,
+		      const int64_t first, const int64_t last,
+		      const int64_t start, const int64_t end,
+		      const double fps );
 
     //! Load an image
     mrv::media load_image( const char* name,
-                           const int64_t first, const int64_t last,
-                           const int64_t start, const int64_t end,
-                           const double fps,
-                           const bool avoid_seq = false );
+			   const int64_t first, const int64_t last,
+			   const int64_t start, const int64_t end,
+			   const double fps,
+			   const bool avoid_seq = false );
 
     //! Handle mouse drag
     int mouseDrag( int x, int y );

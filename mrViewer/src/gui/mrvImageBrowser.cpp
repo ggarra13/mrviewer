@@ -63,6 +63,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvThread.h"
+#include "core/picojson.h"
 #include "core/mrStackTrace.h"
 
 #include "gui/mrvAsk.h"
@@ -112,8 +113,7 @@ extern void save_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_reel_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_snap_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view );
-extern void save_clip_xml_metadata_cb( Fl_Widget* o,
-                                       mrv::ImageView* view );
+extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
 
 void media_info_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -690,6 +690,103 @@ mrv::Reel ImageBrowser::new_reel( const char* orig )
 #undef fclose
 #undef fopen
 
+void ImageBrowser::save_session()
+{
+    std::string dir;
+    std::string file;
+    for ( unsigned i = 0; i < number_of_reels(); ++i )
+    {
+        mrv::Reel reel = reel_at(i);
+
+        if ( uiMain->uiPrefs->uiPrefsImagePathReelPath->value() )
+        {
+            mrv::media fg = current_image();
+            if ( fg && i == 0 )
+            {
+                dir = fg->image()->directory();
+            }
+        }
+
+        if ( i == 0 ) file = mrv::save_session( dir.c_str() );
+        if ( file.empty() ) return;
+
+        if ( i == 0 ) save_session_(file);
+        std::string reelfile = file;
+        size_t pos = file.find( ".session" );
+        if ( pos != std::string::npos )
+        {
+            reelfile = file.substr( 0, pos );
+            fs::path path = reelfile;
+            path = path.parent_path();
+            path /= reel->name;
+            reelfile = path.string();
+        }
+        reelfile += ".reel";
+        save_reel_( reel, reelfile );
+    }
+}
+
+    void ImageBrowser::clear_reels()
+    {
+        clear_items();
+        _reels.clear();
+    }
+
+    void ImageBrowser::save_session_( const std::string& file )
+    {
+        FILE* f = fl_fopen( file.c_str(), "w" );
+        if (!f)
+        {
+            mrvALERT("Could not save '" << file << "'" );
+            return;
+        }
+
+        // Declaring argument for time()
+        time_t tt;
+
+        // Declaring variable to store return value of
+        // localtime()
+        struct tm * ti;
+
+        // Applying time()
+        time (&tt);
+
+        // Using localtime()
+        ti = localtime(&tt);
+
+        char date[128];
+        // Monday February 12 2019 20:14:05
+        strftime( date, 128, "%A %B %e %Y %H:%M:%S", ti );
+
+        fprintf( f, _("#\n"
+                      "# mrViewer Session \n"
+                      "# \n"
+                      "# Created with mrViewer\n"
+                      "#\n"
+                      "# on %s\n"
+                      "#\n\nVersion 6.0\n"),
+                 date );
+
+        for ( unsigned i = 0; i < number_of_reels(); ++i )
+        {
+            mrv::Reel reel = reel_at( i );
+            std::string reelfile = file;
+            size_t pos = file.find( ".session" );
+            if ( pos != std::string::npos )
+            {
+                reelfile = file.substr( 0, pos );
+            }
+            char buf[16];
+
+            fs::path path = reelfile;
+            path = path.parent_path();
+            path /= reel->name;
+            reelfile = path.string();
+            reelfile += ".reel";
+            std::cerr << "save session reel: " << reelfile << std::endl;
+            fprintf( f, "%s\n", reelfile.c_str() );
+        }
+    }
 /**
  * Save current reel to a disk file
  *
@@ -712,6 +809,14 @@ void ImageBrowser::save_reel()
 
     std::string file = mrv::save_reel( dir.c_str() );
     if ( file.empty() ) return;
+    save_reel_( reel, file );
+}
+
+    void ImageBrowser::save_reel_( mrv::Reel reel,
+                                   const std::string& file )
+ {
+
+     std::cerr << "save_reel_ " << reel->name << " file " << file << std::endl;
 
     std::string reelname( file );
     if ( reelname.size() < 5 ||
@@ -2030,6 +2135,58 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
 }
 
+void ImageBrowser::open_session()
+{
+    std::string file = mrv::open_session(NULL, uiMain);
+    if ( file.empty() ) return;
+
+    load_session( file.c_str() );
+}
+
+void ImageBrowser::load_session( const char* name )
+{
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
+    FILE* f = fl_fopen( name, "r" );
+    if (!f ) {
+        setlocale( LC_NUMERIC, oldloc );
+        av_free( oldloc );
+        return;
+    }
+
+    clear_reels();
+
+    char buf[16000];
+    float version = 1.0;
+    while ( !feof(f) )
+    {
+        char* c;
+        while ( (c = fgets( buf, 15999, f )) )
+        {
+            if ( c[0] == '#' ) continue;  // comment line
+            while ( *c != 0 && ( *c == ' ' || *c == '\t' ) ) ++c;
+            if ( strlen(c) <= 1 ) continue; // empty line
+            c[ strlen(c)-1 ] = 0;  // remove newline
+
+            if ( strncmp( "Version", c, 7 ) == 0)
+            {
+                version = atof( c+8 );
+                if ( version < 6 )
+                    LOG_ERROR( "Invalid version " << version );
+                continue;
+            }
+
+            load_reel( c );
+        }
+    }
+
+    fclose(f);
+
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
+}
 
 /**
  * Load an image reel
@@ -3135,9 +3292,6 @@ int ImageBrowser::mousePush( int x, int y )
             mrv::media m = reel->images[sel];
             img = m->image();
 
-            menu.add( _("File/Open/Clip XML Metadata"),
-                      kOpenClipXMLMetadata.hotkey(),
-                      (Fl_Callback*)open_clip_xml_metadata_cb, view() );
             menu.add( _("File/Save/Movie or Sequence As"),
                       kSaveSequence.hotkey(),
                       (Fl_Callback*)save_sequence_cb, view() );
@@ -3147,9 +3301,9 @@ int ImageBrowser::mousePush( int x, int y )
                       (Fl_Callback*)save_cb, view() );
             menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
                       (Fl_Callback*)save_snap_cb, view() );
-            menu.add( _("File/Save/Clip XML Metadata As"),
-                      kSaveClipXMLMetadata.hotkey(),
-                      (Fl_Callback*)save_clip_xml_metadata_cb, view() );
+            menu.add( _("File/Save/Session As"),
+                      kSaveSession.hotkey(),
+                      (Fl_Callback*)save_session_as_cb, view() );
 
             valid = ( /* dynamic_cast< slateImage* >( img ) == NULL && */
                       dynamic_cast< smpteImage* >( img ) == NULL &&

@@ -75,6 +75,28 @@ const char* kModule = "glquad";
 
 namespace mrv {
 
+#define radians(x) x * M_PI / 180.0f
+
+inline Imath::M44f hueMatrix(float degrees)
+{
+    float cosA = cos(radians(degrees));
+    float sinA = sin(radians(degrees));
+
+    return Imath::M44f( cosA + (1.0 - cosA) / 3.0,
+                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
+                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
+                        0.0,
+                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
+                        cosA + 1./3.*(1.0 - cosA),
+                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
+                        0.0,
+                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
+                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
+                        cosA + 1./3. * (1.0 - cosA),
+                        0.0f,
+                        0.0, 0.0, 0.0, 1.0 );
+}
+
 inline Imath::M44f brightnessMatrix(float r, float g, float b)
 {
     return Imath::M44f(
@@ -121,7 +143,8 @@ inline Imath::M44f saturationMatrix(float r, float g, float b)
 
 inline Imath::M44f colorMatrix(const ColorControlsUI* v)
 {
-    return   brightnessMatrix(v->uiBrightness->value(),
+    return  hueMatrix(v->uiHue->value()*360.0) *
+      brightnessMatrix(v->uiBrightness->value(),
                               v->uiBrightness->value(),
                               v->uiBrightness->value()) *
     contrastMatrix(v->uiContrast->value(), v->uiContrast->value(),
@@ -1142,8 +1165,19 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         CHECK_GL;
 
         _shader->setUniform( "channel", _view->channel_type() );
-        
-        _shader->setUniform("colorMatrix", colorMatrix(_view->main()->uiColorControls));
+
+        ColorControlsUI* cc = _view->main()->uiColorControls;
+        if ( cc->uiActive->value() )
+        {
+            _shader->setUniform("enableColorMatrix", true );
+            CHECK_GL;
+            _shader->setUniform("colorMatrix", colorMatrix(cc));
+        }
+        else
+        {
+            _shader->setUniform("enableColorMatrix", false );
+        }
+
         CHECK_GL;
 
         if ( use_lut && _lut )

@@ -177,15 +177,16 @@ bool is_valid_movie( const char* ext )
          tmp == ".avc"   || tmp == ".avchd" ||
          tmp == ".avi"   || tmp == ".braw"  ||
          tmp == ".divx"  || tmp == ".dv"    ||
-	 tmp == ".flv"   || tmp == ".gif"   ||
-	 tmp == ".m2ts"  || tmp == ".m2t"   ||
-	 tmp == ".m4v"   || tmp == ".mkv"   ||
+         tmp == ".flv"   || tmp == ".gif"   ||
+         tmp == ".m2ts"  || tmp == ".m2t"   ||
+         tmp == ".m4v"   || tmp == ".mkv"   ||
          tmp == ".mov"   || tmp == ".mp4"   ||
          tmp == ".mpeg"  || tmp == ".mpg"   ||
          tmp == ".mvb"   || tmp == ".mxf"   ||
          tmp == ".ogg"   || tmp == ".ogm"   ||
          tmp == ".ogv"   || tmp == ".qt"    ||
          tmp == ".r3d"   || tmp == ".reel"  ||
+         tmp == ".session" ||
          tmp == ".rm"    || tmp == ".ts"    ||
          tmp == ".vob"   || tmp == ".vp9"   ||
          tmp == ".webm"  || tmp == ".wmv"  )

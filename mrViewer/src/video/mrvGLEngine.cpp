@@ -1532,7 +1532,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     {
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
-    
+
     line_width(1.0);
     draw_rectangle( r, img );
 
@@ -3832,6 +3832,7 @@ void GLEngine::loadOpenGLShader()
         "uniform float scale; \n"
         "uniform float offset; \n"
         "\n"
+        "uniform bool enableColorMatrix; \n"
         "uniform mat4x4 colorMatrix; \n"
         "\n";
 
@@ -3951,7 +3952,8 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
          "    }\n"
          "\n"
-         "  c.rgba *= colorMatrix; "
+         "  if ( enableColorMatrix ) \n"
+         "     c.rgba *= colorMatrix;\n"
          "  if ( premult )\n"
          "  {\n"
          "      c.rgb *= c.a;\n"

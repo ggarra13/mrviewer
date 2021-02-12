@@ -39,12 +39,12 @@ Hotkey kOpenDirectory( true, false, false, true, 'o' );
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kOpenSingleImage( true, true, false, false, 'o' );
 Hotkey kOpenStereoImage( false, false, true, false, 'o' );
-Hotkey kOpenClipXMLMetadata( true, false, false, false, 'x' );
+Hotkey kOpenSession( false, true, false, false, 'o' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );
-Hotkey kSaveClipXMLMetadata( false, false, true, false, 'x' );
+Hotkey kSaveSession( false, true, true, false, 's' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
 Hotkey kIDTScript( true, false, false, true, 'i' );
 Hotkey kLookModScript( true, false, false, false, 'l' );
@@ -292,12 +292,12 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Open Directory"), kOpenDirectory),
     HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
     HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
-    HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
+    HotkeyEntry( _("Open Session"), kOpenSession),
     HotkeyEntry( _("Save Reel"), kSaveReel),
     HotkeyEntry( _("Save Image"), kSaveImage),
     HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
     HotkeyEntry( _("Save Sequence"), kSaveSequence),
-    HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
+    HotkeyEntry( _("Save Session"), kSaveSession),
     HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
     HotkeyEntry( _("Image CTL script"), kCTLScript ),
     HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),

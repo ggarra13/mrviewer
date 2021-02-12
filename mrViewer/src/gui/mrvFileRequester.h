@@ -40,6 +40,9 @@ class CMedia;
 std::string open_directory( const char* startfile = NULL,
                             ViewerUI* main = NULL );
 
+std::string open_session( const char* startfile = NULL,
+                          ViewerUI* main = NULL);
+
 /**
  * Opens a file requester to load a reel
  *
@@ -203,11 +206,20 @@ void save_image_file( CMedia* const image,
                            bool opengl = false  );
 
 /**
+ * Save a session under a new filename, with all reels
+ *
+ * @param startdir start directory to save to
+ *
+ * @return session to save or empty
+ */
+    std::string save_session( const char* startdir = NULL,
+                              ViewerUI* main = NULL );
+/**
  * Save a reel under a new filename
  *
  * @param startdir start directory to save to
  *
- * @return reel to save or NULL
+ * @return reel to save or empty
  */
     std::string save_reel( const char* startdir = NULL,
                            ViewerUI* main = NULL );
