@@ -136,6 +136,9 @@ namespace mrv {
   if ( strcasecmp( file+strlen(file)-4, ".rmd" ) == 0 )
       return false;
 
+  if ( strcasecmp( file+strlen(file)-8, ".session" ) == 0 )
+      return false;
+
   Clip* c = new Clip( file );
 
   if ( !c ) {
@@ -143,7 +146,6 @@ namespace mrv {
   }
   c->Close();
   delete c;
-
   return true;
     }
 

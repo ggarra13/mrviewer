@@ -107,8 +107,6 @@ extern void toggle_background_cb( Fl_Widget* o, mrv::ImageView* v );
 
 extern void open_cb( Fl_Widget* w, mrv::ImageBrowser* b );
 extern void open_single_cb( Fl_Widget* w, mrv::ImageBrowser* b );
-extern void open_clip_xml_metadata_cb( Fl_Widget* o,
-                                       mrv::ImageView* view );
 extern void save_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_reel_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_snap_cb( Fl_Widget* o, mrv::ImageView* view );
@@ -566,7 +564,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
  */
 mrv::Reel ImageBrowser::reel( unsigned idx )
 {
-    assert0( idx < _reels.size() );
+    if (! ( idx < _reels.size() ) ) idx = 0;
     if ( _reel == idx ) {
         // change_reel();
         return _reels[ idx ];
@@ -712,12 +710,15 @@ void ImageBrowser::save_session()
 
         if ( i == 0 ) save_session_(file);
         std::string reelfile = file;
+        fs::path session = file;
         size_t pos = file.find( ".session" );
         if ( pos != std::string::npos )
         {
             reelfile = file.substr( 0, pos );
             fs::path path = reelfile;
+            session = path.filename();
             path = path.parent_path();
+            path /= session;
             path /= reel->name;
             reelfile = path.string();
         }
@@ -772,14 +773,19 @@ void ImageBrowser::save_session()
             mrv::Reel reel = reel_at( i );
             std::string reelfile = file;
             size_t pos = file.find( ".session" );
+            fs::path session = file;
             if ( pos != std::string::npos )
             {
                 reelfile = file.substr( 0, pos );
+                session = reelfile;
+                session = session.filename();
             }
             char buf[16];
 
             fs::path path = reelfile;
             path = path.parent_path();
+            path /= session;
+            fs::create_directories( path );
             path /= reel->name;
             reelfile = path.string();
             reelfile += ".reel";
@@ -815,8 +821,6 @@ void ImageBrowser::save_reel()
     void ImageBrowser::save_reel_( mrv::Reel reel,
                                    const std::string& file )
  {
-
-     std::cerr << "save_reel_ " << reel->name << " file " << file << std::endl;
 
     std::string reelname( file );
     if ( reelname.size() < 5 ||
@@ -2004,6 +2008,12 @@ void ImageBrowser::load( const mrv::LoadList& files,
                                      load.end, load.fps, avoid_seq );
                     if (!fg)
                     {
+                        if ( load.filename.rfind( ".session" ) !=
+                             std::string::npos )
+                        {
+                            load_session( load.filename.c_str() );
+                            continue;
+                        }
                         if ( load.filename.find( "ACESclip" ) ==
                              std::string::npos )
                             LOG_ERROR( _("Could not load '")
