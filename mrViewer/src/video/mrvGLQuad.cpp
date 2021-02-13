@@ -1171,7 +1171,8 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         {
             _shader->setUniform("enableColorMatrix", true );
             CHECK_GL;
-            _shader->setUniform("colorMatrix", colorMatrix(cc));
+	    const Imath::M44f& m = colorMatrix(cc);
+            _shader->setUniform("colorMatrix", m);
         }
         else
         {

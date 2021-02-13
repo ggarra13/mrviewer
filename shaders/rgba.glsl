@@ -43,7 +43,7 @@ uniform float lutT;
 uniform float scale;
 uniform float offset;
 
-bool    enableColorMatrix;
+uniform bool   enableColorMatrix;
 uniform mat4x4 colorMatrix;
 
 void main()

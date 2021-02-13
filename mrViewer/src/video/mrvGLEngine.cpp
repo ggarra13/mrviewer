@@ -382,8 +382,7 @@ void GLEngine::refresh_shaders()
 
             sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
 
-            DBGM3( __FUNCTION__ << " " << __LINE__ << " shader file "
-                 << shaderFile );
+            DBGM1( shaderFile );
 
 
             _rgba = new GLShader( shaderFile );
@@ -3832,7 +3831,7 @@ void GLEngine::loadOpenGLShader()
         "uniform float scale; \n"
         "uniform float offset; \n"
         "\n"
-        "uniform bool enableColorMatrix; \n"
+        "uniform bool   enableColorMatrix; \n"
         "uniform mat4x4 colorMatrix; \n"
         "\n";
 
@@ -3952,8 +3951,10 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
          "    }\n"
          "\n"
-         "  if ( enableColorMatrix ) \n"
-         "     c.rgba *= colorMatrix;\n"
+         "  if ( enableColorMatrix )\n"
+         "    {\n"
+         "       c.rgba *= colorMatrix;\n"
+         "    }\n"
          "  if ( premult )\n"
          "  {\n"
          "      c.rgb *= c.a;\n"

@@ -164,6 +164,7 @@ namespace mrv {
     code[read] = '\0';    // null-terminate
     fclose(f);
 
+    
     load( filename, code );
 
     delete [] code;
@@ -460,12 +461,12 @@ void GLShader::setUniform( const GLint location, const Imath::M44f& m  )
 
 void GLShader::setUniform( const char* uniform, const Imath::M44f& m )
 {
-    if ( _program )
-      {
-        GLint location = glGetUniformLocationARB( _program, uniform );
-        CHECK_GL;
-        setUniform( location, m );
-      }
+  if ( ! _program ) return;
+  
+  GLint location = glGetUniformLocationARB( _program, uniform );
+  CHECK_GL;
+  setUniform( location, m );
+  CHECK_GL;
 }
 
   void GLShader::setTextureUnit( const char* uniform, const GLint unit )
