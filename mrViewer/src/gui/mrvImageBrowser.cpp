@@ -564,7 +564,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
  */
 mrv::Reel ImageBrowser::reel( unsigned idx )
 {
-    if (! ( idx < _reels.size() ) ) idx = 0;
+    assert0( idx < _reels.size() );
     if ( _reel == idx ) {
         // change_reel();
         return _reels[ idx ];
@@ -714,9 +714,10 @@ void ImageBrowser::save_session()
         size_t pos = file.find( ".session" );
         if ( pos != std::string::npos )
         {
+            session = session.filename();
+            session += ".reels";
             reelfile = file.substr( 0, pos );
             fs::path path = reelfile;
-            session = path.filename();
             path = path.parent_path();
             path /= session;
             path /= reel->name;
@@ -777,8 +778,8 @@ void ImageBrowser::save_session()
             if ( pos != std::string::npos )
             {
                 reelfile = file.substr( 0, pos );
-                session = reelfile;
                 session = session.filename();
+                session += ".reels";
             }
             char buf[16];
 
@@ -789,9 +790,10 @@ void ImageBrowser::save_session()
             path /= reel->name;
             reelfile = path.string();
             reelfile += ".reel";
-            std::cerr << "save session reel: " << reelfile << std::endl;
             fprintf( f, "%s\n", reelfile.c_str() );
         }
+
+        fclose( f );
     }
 /**
  * Save current reel to a disk file
@@ -2158,6 +2160,7 @@ void ImageBrowser::load_session( const char* name )
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
 
+
     FILE* f = fl_fopen( name, "r" );
     if (!f ) {
         setlocale( LC_NUMERIC, oldloc );
@@ -2167,14 +2170,15 @@ void ImageBrowser::load_session( const char* name )
 
     clear_reels();
 
-    char buf[16000];
+    char buf[2048];
     float version = 1.0;
     while ( !feof(f) )
     {
-        char* c;
-        while ( (c = fgets( buf, 15999, f )) )
+        char* c = NULL;
+        while ( (c = fgets( buf, 2047, f )) )
         {
             if ( c[0] == '#' ) continue;  // comment line
+            // skip starting whitespace
             while ( *c != 0 && ( *c == ' ' || *c == '\t' ) ) ++c;
             if ( strlen(c) <= 1 ) continue; // empty line
             c[ strlen(c)-1 ] = 0;  // remove newline
@@ -2222,7 +2226,8 @@ void ImageBrowser::load_reel( const char* name )
     reelname = reelname.substr(0, reelname.size()-5);
 
     new_reel( reelname.c_str() );
-
+    std::cerr << "REEL: " << reelname << std::endl;
+    std::cerr << "SEQS: " << sequences.size() << std::endl;
     load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();

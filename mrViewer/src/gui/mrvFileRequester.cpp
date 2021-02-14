@@ -796,6 +796,10 @@ std::string save_reel( const char* startdir,
                      ( hotkeys[i].name == "Next Image Limited" ||
                        hotkeys[i].name == "Previous Image Limited" ) )
                     continue;
+                if ( version == 9 &&
+                     ( hotkeys[i].name == "Save Session" ||
+                       hotkeys[i].name == "Open Session" ) )
+                    continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;
                 hotkeys[i].hotkey.key = hotkeys[i].hotkey.key2 = 0;
