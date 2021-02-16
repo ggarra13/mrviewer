@@ -815,15 +815,18 @@ void ImageBrowser::save_session()
             if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
             {
                 fs::path childPath = reelfile; //fs::current_path();
-                DBGM0( "childPath=" << childPath );
+                DBGM1( "childPath=" << childPath );
                 fs::path parentPath = session;
-                DBGM0( "parentPath=" << parentPath );
+                DBGM1( "parentPath=" << parentPath );
                 fs::path relativePath = fs::relative( childPath,
                                                       parentPath );
-                DBGM0( "relativePath=" << relativePath );
+                DBGM1( "relativePath=" << relativePath );
                 reelfile = relativePath.string();
+		path = relativePath;
+		reelfile = path.string();
             }
             
+	    std::replace( reelfile.begin(), reelfile.end(), '\\', '/' );
             fprintf( f, "%s\n", reelfile.c_str() );
         }
 

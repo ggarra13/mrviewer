@@ -275,30 +275,38 @@ int main( int argc, const char** argv )
     mrv::set_root_path( argc, argv );
 
     DBG;
+    fl_open_display();
 
     // Adjust ui based on preferences
     for (;;) {
+    DBG;
 
       std::string lockfile;
 
 
+    DBG;
       //Fl::lock();  // Start locking mechanism
       Fl::scheme("plastic");
+    DBG;
 
       fl_open_callback( osx_open_cb );
+    DBG;
 
       try {
-          DBG;
-              ui = new ViewerUI();
-          DBG;
-
-          // Make the main view window start with focus
-          ui->uiView->take_focus();
-
           mrv::Options opts;
           if ( argc > 0 )
+	    {
+	      DBG;
               mrv::parse_command_line( argc, argv, opts );
+	    }
           argc = 0;
+
+          DBG;
+
+	  if ( !ui ) ui = new ViewerUI;
+	  
+          // Make the main view window start with focus
+          ui->uiView->take_focus();
 
           ui->uiMain->show();
 

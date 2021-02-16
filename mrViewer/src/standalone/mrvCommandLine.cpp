@@ -350,8 +350,8 @@ void parse_command_line( const int argc, const char** argv,
 {
 
   // Some default values
-  opts.gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
-  opts.gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
+  opts.gamma = (float)1.0; //ui->uiPrefs->uiPrefsViewGamma->value();
+  opts.gain  = (float)1.0; //ui->uiPrefs->uiPrefsViewGain->value();
   opts.fps   = -1.f;
   opts.host = "";
   opts.port = 0;
@@ -360,20 +360,25 @@ void parse_command_line( const int argc, const char** argv,
     using namespace TCLAP;
 
     
+    DBG;
     CmdLine cmd(
                 _("A professional image and movie viewer\n"
                   "Examples:\n")
                  , ' ', mrv::version() );
 
+    DBG;
     //
     // set the output
     //
     mrv::CmdLineOutput my;
+    DBG;
     cmd.setOutput(&my);
+    DBG;
 
     ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
                           false, -1, "int" );
 
+    DBG;
     SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
 
@@ -443,6 +448,7 @@ void parse_command_line( const int argc, const char** argv,
 #endif
 
     cmd.add(adebug);
+    DBG;
     cmd.add(arun);
     cmd.add(aplay);
     cmd.add(agamma);
@@ -463,10 +469,11 @@ void parse_command_line( const int argc, const char** argv,
 
     //
     // Do the parsing
+    DBG;
     //
     cmd.parse( argc, argv );
 
-
+    DBG;
     
     //
     // Extract the options
@@ -520,8 +527,13 @@ void parse_command_line( const int argc, const char** argv,
        files.push_back( stereo[i] );
     }
 
+  
 #endif
 
+    /// CREATE THE MAIN INTERFACE
+    ui = new ViewerUI;
+
+    
     int debug = adebug.getValue();
 
     Preferences::debug = debug;
