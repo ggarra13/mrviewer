@@ -3960,8 +3960,9 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb *= c.a;\n"
          "  }\n"
          "\n"
-         "  c.rgb *= fade;\n"
-         "  c.rgba *= dissolve;\n"
+         "    c.rgb *= fade; \n"
+         "    c.rgba *= dissolve; \n"
+         "\n"
          "\n"
          "  gl_FragColor = c;\n"
          "} ";

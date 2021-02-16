@@ -785,41 +785,43 @@ void ImageBrowser::save_session()
             mrv::Reel reel = reel_at( i );
             std::string reelfile = file;
 
-            DBGM0( "reelfile= " << reelfile );
             // @WARNING:  Do not use generic_string() as it has problems
             //            on Windows and returns an empty string.
             size_t pos = reelfile.find( ".session" );
+            fs::path subdir = reelfile;
             fs::path session = reelfile;
             if ( pos != std::string::npos )
             {
                 reelfile = reelfile.substr( 0, pos );
             }
-            session = session.filename();
-            session += ".reels";
+            subdir = subdir.filename();
+            subdir += ".reels";
+
+
+            session = session.parent_path();
+            
             char buf[16];
 
             fs::path path = reelfile;
             path = path.parent_path();
-            path /= session;
+            path /= subdir;
             fs::create_directories( path );
 
-            // Save path to reel (relative)
+            // Save full path to reel
             path /= reel->name;
             path += ".reel";
             reelfile = path.string();
-            DBGM0( "reelfile6 reelfile= " << reelfile );
 
             if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
             {
-                fs::path parentPath = reelfile; //fs::current_path();
-                parentPath = parentPath.parent_path();
-                fs::path childPath = path;
+                fs::path childPath = reelfile; //fs::current_path();
                 DBGM0( "childPath=" << childPath );
+                fs::path parentPath = session;
                 DBGM0( "parentPath=" << parentPath );
                 fs::path relativePath = fs::relative( childPath,
                                                       parentPath );
+                DBGM0( "relativePath=" << relativePath );
                 reelfile = relativePath.string();
-                DBGM0( "reelfile2= " << reelfile );
             }
             
             fprintf( f, "%s\n", reelfile.c_str() );
@@ -2272,6 +2274,9 @@ void ImageBrowser::save_session()
         setlocale( LC_NUMERIC, "C" );
 
 
+        fs::path orig = fs::current_path();
+        
+
         FILE* f = fl_fopen( name, "r" );
         if (!f ) {
             setlocale( LC_NUMERIC, oldloc );
@@ -2281,6 +2286,9 @@ void ImageBrowser::save_session()
 
         clear_reels();
 
+        fs::path path = name;
+        fs::path dir = path.parent_path();
+        fs::current_path( dir );
 
         uiMain->uiReelWindow->uiMain->hide();
         uiMain->uiImageInfo->uiMain->hide();
@@ -2304,9 +2312,9 @@ void ImageBrowser::save_session()
                 if ( strlen(c) <= 1 ) continue; // empty line
                 c[ strlen(c)-1 ] = 0;  // remove newline
 
-                if ( strncmp( "Version:", c, 8 ) == 0)
+                if ( strncmp( "Version ", c, 8 ) == 0)
                 {
-                    version = atof( c+9 );
+                    version = atof( c+8 );
                     if ( version < 6 )
                         LOG_ERROR( "Invalid version " << version );
                     continue;
@@ -2553,6 +2561,7 @@ void ImageBrowser::save_session()
 
     fclose(f);
 
+    fs::current_path( orig );
     setlocale( LC_NUMERIC, oldloc );
     av_free( oldloc );
 

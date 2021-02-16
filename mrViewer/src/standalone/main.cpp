@@ -300,6 +300,8 @@ int main( int argc, const char** argv )
               mrv::parse_command_line( argc, argv, opts );
           argc = 0;
 
+          ui->uiMain->show();
+
           if ( !OSXfiles.empty() )
           {
               stringArray::iterator it = OSXfiles.begin();
