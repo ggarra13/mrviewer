@@ -60,11 +60,10 @@ class HistogramUI {open
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send_network( "HistogramWindow 0" );
-o->hide();} open
-      xywh {163 59 325 240} type Double hide resizable
-      code0 {// Make the window transient
-main_ = main;
-o->size_range(325, 80);} non_modal
+o->hide();} open selected
+      xywh {163 87 325 240} type Double resizable
+      code1 {main_ = main;}
+      code2 {o->size_range(325, 80);} non_modal visible
     } {
       Fl_Group {} {open
         xywh {-2 0 332 250} box PLASTIC_UP_BOX
@@ -150,9 +149,11 @@ o->label( o->child( o->value() )->label() );}
       }
     }
   }
-  Function {HistogramUI(ViewerUI* m)} {} {
-    code {Fl_Group::current( 0 );
-      make_window( m );} {}
+  Function {HistogramUI(ViewerUI* m)} {open
+  } {
+    code {Fl_Group::current( m->uiMain );
+      make_window( m );
+      Fl_Group::current(0);} {}
   }
   Function {~HistogramUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}

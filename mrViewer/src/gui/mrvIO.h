@@ -208,6 +208,10 @@ unsigned long get_thread_id();
     if ( mrv::Preferences::debug > 0 ) LOG_DEBUG( msg ); \
 } while(0)
 
+#define DBGM0(msg) do { \
+    LOG_DEBUG( msg ); \
+} while(0)
+
 #define DBG3 do { \
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( " " ); \
 } while(0)

@@ -44,13 +44,7 @@ Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );
-Hotkey kSaveSession( false, true, true, false, 's' );
-Hotkey kIccProfile( true, false, false, false, 'i' );
-Hotkey kIDTScript( true, false, false, true, 'i' );
-Hotkey kLookModScript( true, false, false, false, 'l' );
-Hotkey kCTLScript( true, false, false, false, 't' );
-Hotkey kMonitorCTLScript( true, false, false, false, 'm' );
-Hotkey kMonitorIccProfile( true, false, false, false, 'n' );
+Hotkey kSaveSession( false, true, false, false, 's' );
 
 Hotkey kZoomMin( false, false, false, false, '0' );
 Hotkey kZoomMax( false, false, false, false, '9' );
@@ -145,8 +139,6 @@ Hotkey kZDepthDown( false, false, false, false, 'a' );
 
 Hotkey kDensityUp( false, false, false, false, 'c' );
 Hotkey kDensityDown( false, false, false, false, 'd' );
-
-Hotkey kSOPSatNodes( false, false, false, false, 0 );
 
 Hotkey kAttachAudio( false, false, false, false, 0 );
 Hotkey kEditAudio( false, false, false, false, 0 );
@@ -298,10 +290,6 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
     HotkeyEntry( _("Save Sequence"), kSaveSequence),
     HotkeyEntry( _("Save Session"), kSaveSession),
-    HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
-    HotkeyEntry( _("Image CTL script"), kCTLScript ),
-    HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
-    HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
 //HotkeyEntry( _("Zoom Minimum"), kZoomMin),
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
     HotkeyEntry( _("Center Image"), kCenterImage ),

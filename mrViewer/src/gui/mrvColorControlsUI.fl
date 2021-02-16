@@ -34,7 +34,9 @@ class ColorControlsUI {open
         xywh {0 0 342 210} box FLAT_BOX
       } {
         Fl_Light_Button uiActive {
-          label Active selected
+          label Active
+          user_data view user_data_type {mrv::ImageView*}
+          callback {v->redraw();} selected
           tooltip {Activates / Deactivates all color corrections as they can be a tad expensive} xywh {85 10 80 25}
         }
       }

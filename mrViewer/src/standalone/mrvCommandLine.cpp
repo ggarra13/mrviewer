@@ -65,16 +65,55 @@ typedef std::vector<float> floatArray;
 
   class CmdLineOutput : public TCLAP::StdOutput
   {
+      bool newconsole;
   public:
+      void open_console()
+      {
+#ifdef _WIN32
+          newconsole = false;
+          AttachConsole( -1 );
+          DWORD err = GetLastError();
+          if ( err == ERROR_INVALID_HANDLE ||
+               err == ERROR_INVALID_PARAMETER )
+          {
+              newconsole = true;
+              AllocConsole();
+          }
+          freopen("conout$", "w", stdout);
+          freopen("conout$", "w", stderr);
+#endif
+      }
 
+      void close_console()
+      {
+#if defined(_WIN32)||defined(_WIN64)
+          if ( newconsole )
+          {
+              fclose(stdout);
+              fclose(stderr);
+              Sleep(INFINITE);
+          }
+#endif
+      }
+
+    virtual void version(TCLAP::CmdLineInterface& c)
+      {
+          open_console();
+          std::cerr << std::endl
+                    << c.getProgramName() << " v" << c.getVersion()
+                    << std::endl;
+      }
     virtual void usage(TCLAP::CmdLineInterface& c)
     {
       using namespace TCLAP;
       using namespace std;
 
+#ifdef _WIN32
+      open_console();
+#endif
 
       std::string cmd = c.getProgramName();
-      fprintf( stderr, N_("\n%s %s\n\n"), cmd.c_str(), c.getVersion().c_str() );
+      fprintf( stderr, N_("\n%s v%s\n\n"), cmd.c_str(), c.getVersion().c_str() );
 
       //
       // Output usage line
@@ -124,9 +163,7 @@ typedef std::vector<float> floatArray;
       fprintf( stderr, "  > %s beauty.001-020.iff background.%%04d.exr 1-20\n", cmd.c_str() );
       fprintf( stderr, "  > %s beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi\n", cmd.c_str() );
 
-#if defined(_WIN32)||defined(_WIN64)
-       Sleep(INFINITE);
-#endif
+      close_console();
 
     }
 
@@ -322,6 +359,7 @@ void parse_command_line( const int argc, const char** argv,
   try {
     using namespace TCLAP;
 
+    
     CmdLine cmd(
                 _("A professional image and movie viewer\n"
                   "Examples:\n")
@@ -429,6 +467,7 @@ void parse_command_line( const int argc, const char** argv,
     cmd.parse( argc, argv );
 
 
+    
     //
     // Extract the options
     //
@@ -484,19 +523,6 @@ void parse_command_line( const int argc, const char** argv,
 #endif
 
     int debug = adebug.getValue();
-#ifdef _WIN32
-    if ( debug >= 0 )
-    {
-        AllocConsole();
-        FILE *fDummy;
-        freopen_s(&fDummy, "CONIN$", "r", stdin);
-        freopen_s(&fDummy, "CONOUT$", "w", stderr);
-        freopen_s(&fDummy, "CONOUT$", "w", stdout);
-        std::cout.clear();
-        std::cerr.clear();
-        std::cin.clear();
-    }
-#endif
 
     Preferences::debug = debug;
     if ( debug > 0 ) mrv::io::logbuffer::debug( true );
