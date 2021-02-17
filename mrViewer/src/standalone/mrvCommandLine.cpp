@@ -101,7 +101,9 @@ typedef std::vector<float> floatArray;
           open_console();
           std::cerr << std::endl
                     << c.getProgramName() << " v" << c.getVersion()
-                    << std::endl;
+                    << std::endl
+                    << mrv::build_date() << std::endl;
+          close_console();
       }
     virtual void usage(TCLAP::CmdLineInterface& c)
     {
@@ -375,21 +377,21 @@ void parse_command_line( const int argc, const char** argv,
     cmd.setOutput(&my);
     DBG;
 
-    ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
+    ValueArg<int> adebug( "d", "debug", _("Turn on debugging console." ),
                           false, -1, "int" );
 
     DBG;
     SwitchArg aplay("P", "playback",
-                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
+                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback).") );
 
     SwitchArg arun( "r", "run",
-                    _("Run mrViewer regardless of single instance setting") );
+                    _("Run mrViewer regardless of single instance setting.") );
 
     //
     // The command-line arguments (parsed in order)
     //
     SwitchArg aedl("e", "edl",
-                   _("Turn on EDL when loading multiple images") );
+                   _("Turn on EDL when loading multiple images.") );
 
 
     ValueArg< float >
@@ -680,6 +682,8 @@ void parse_command_line( const int argc, const char** argv,
   //
 
 
+  if ( opts.gamma == 1.0f ) opts.gamma = ui->uiPrefs->uiPrefsViewGamma->value();
+  if ( opts.gain  == 1.0f ) opts.gain = ui->uiPrefs->uiPrefsViewGain->value();
 
   ui->uiView->gamma( opts.gamma );
   ui->uiGammaInput->value( opts.gamma );

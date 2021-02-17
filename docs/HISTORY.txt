@@ -11,6 +11,11 @@ v5.7.4  - Made Color Controls window non-modal so it stays with the main window
 	- Made Windows print out help and version to startup console
 	  without popping a new console window if the program was started
 	  command-line.
+	- Added a File->Save->Session to save the current session of mrViewer
+	  (ie. all reels and windows opened).
+	- Added a File->Open->Session to load a session of mrViewer
+	  (ie. all reels and windows opened).
+	- Made --help in Spanish be translated a little more properly.
 
 v5.7.3  - Bug fixed crash when saving a movie and requester was stopped midway.
 	- Ported code to CentOS 7 virtualbox.

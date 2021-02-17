@@ -177,6 +177,11 @@ static const char* kArch = "32";
     return kVersion;
   }
 
+  const char* build_date()
+  {
+    return kBuild;
+  }
+
 void ffmpeg_formats( mrv::Browser& browser )
   {
     using namespace std;
