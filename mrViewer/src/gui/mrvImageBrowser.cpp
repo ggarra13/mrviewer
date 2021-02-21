@@ -50,6 +50,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Progress.H>
 #include <FL/Fl.H>
+#include <FL/names.h>
 
 #include "core/R3dImage.h"
 #include "core/aviImage.h"
@@ -501,12 +502,17 @@ dragging( NULL ),
 old_dragging( NULL )
 {
     showroot(0);// don't show root of tree
+    //selectmode(FL_TREE_SELECT_MULTI);
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
+    item_reselect_mode( FL_TREE_SELECTABLE_ALWAYS );
     connectorstyle( FL_TREE_CONNECTOR_NONE );
     connectorwidth( 0 );
     widgetmarginleft( 0 );
-
+    marginleft(0);
+    usericonmarginleft( 0 );
+    labelmarginleft( 0 );
+    linespacing(3);
 }
 
 ImageBrowser::~ImageBrowser()
@@ -799,13 +805,24 @@ void ImageBrowser::save_session()
 
 
             session = session.parent_path();
-            
+
             char buf[16];
 
             fs::path path = reelfile;
             path = path.parent_path();
             path /= subdir;
-            fs::create_directories( path );
+            try
+            {
+                fs::create_directories( path );
+            }
+            catch ( const fs::filesystem_error& e )
+            {
+                LOG_ERROR( "Error creating dirs: " << e.what() );
+            }
+            catch ( const std::bad_alloc& e )
+            {
+                LOG_ERROR( "Error creating dirs: " << e.what() );
+            }
 
             // Save full path to reel
             path /= reel->name;
@@ -822,11 +839,11 @@ void ImageBrowser::save_session()
                                                       parentPath );
                 DBGM1( "relativePath=" << relativePath );
                 reelfile = relativePath.string();
-		path = relativePath;
-		reelfile = path.string();
+                path = relativePath;
+                reelfile = path.string();
             }
-            
-	    std::replace( reelfile.begin(), reelfile.end(), '\\', '/' );
+
+            std::replace( reelfile.begin(), reelfile.end(), '\\', '/' );
             fprintf( f, "%s\n", reelfile.c_str() );
         }
 
@@ -2278,7 +2295,7 @@ void ImageBrowser::save_session()
 
 
         fs::path orig = fs::current_path();
-        
+
 
         FILE* f = fl_fopen( name, "r" );
         if (!f ) {
@@ -2771,6 +2788,13 @@ void ImageBrowser::save_sequence()
  */
 void ImageBrowser::clone_current()
 {
+    if ( selectmode() == FL_TREE_SELECT_SINGLE_DRAGGABLE )
+        selectmode( FL_TREE_SELECT_MULTI );
+    else
+        selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
+    DBGM1( "Changed select mode to " << selectmode() );
+    return;
+
     int sel = value();
     if ( sel < 0 ) return;
 
@@ -3559,13 +3583,12 @@ void ImageBrowser::previous_image_limited()
 int ImageBrowser::mousePush( int x, int y )
 {
     DBG;
-    int ok = Fl_Tree::handle( FL_PUSH );
-    DBG;
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
         view()->stop();
 
+    int ok = 0;
     int button = Fl::event_button();
 
     if ( button == FL_LEFT_MOUSE )
@@ -3575,32 +3598,35 @@ int ImageBrowser::mousePush( int x, int y )
         lastX = x;
         lastY = y;
         DBG;
-        if ( x >= _tiw ) return 0;
 
         dragging = callback_item();
 
-        DBG;
-        if ( (! dragging) || (! dragging->widget()) ) return 0;
-
-        DBG;
-        if ( dragging == old_dragging && clicks > 0 )
+        if ( selectmode() == FL_TREE_SELECT_SINGLE_DRAGGABLE )
         {
             DBG;
-            Fl::event_clicks(0);
-            redraw();
-            uiMain->uiImageInfo->uiMain->show();
-            view()->update_image_info();
-            if ( play != CMedia::kStopped )
-                view()->play( play );
-            return 1;
-        }
+            if ( (! dragging) || (! dragging->widget()) ) return 0;
 
-        old_dragging = dragging;
+            DBG;
+            if ( dragging == old_dragging && clicks > 0 )
+            {
+                DBG;
+                Fl::event_clicks(0);
+                redraw();
+                uiMain->uiImageInfo->uiMain->show();
+                view()->update_image_info();
+                if ( play != CMedia::kStopped )
+                    view()->play( play );
+                return 1;
+            }
 
-        int ok = Fl_Tree::deselect_all( NULL, 0 );
-        if ( ok < 0 )
-        {
-            LOG_ERROR( "Could not deselect all" );
+            old_dragging = dragging;
+
+            int ok = Fl_Tree::deselect_all( NULL, 0 );
+            if ( ok < 0 )
+            {
+                LOG_ERROR( "Could not deselect all" );
+            }
+
         }
 
         ok = Fl_Tree::select( dragging, 0 );
@@ -3610,7 +3636,7 @@ int ImageBrowser::mousePush( int x, int y )
         }
 
 
-        DBGM3( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
+        DBGM1( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
         mrv::Reel reel = current_reel();
         if ( !reel ) return 0;
@@ -4027,6 +4053,7 @@ void ImageBrowser::match_tree_order()
 
 int ImageBrowser::mouseRelease( int x, int y )
 {
+    int ok = 0;
     if (!dragging )
     {
         redraw();
@@ -4035,8 +4062,6 @@ int ImageBrowser::mouseRelease( int x, int y )
     dragging = NULL;
 
     int old = value();
-
-    int ok = Fl_Tree::handle( FL_RELEASE );
 
     match_tree_order();
 
@@ -4055,7 +4080,7 @@ int ImageBrowser::mouseRelease( int x, int y )
     adjust_timeline( first, last );
     set_timeline( first, last );
 
-    return ok;
+    return 1;
 }
 
 /**
@@ -4108,6 +4133,9 @@ int ImageBrowser::handle( int event )
             Fl::add_idle( (Fl_Idle_Handler)static_handle_dnd, this );
             return 1;
         }
+    case FL_UNFOCUS:
+    case FL_FOCUS:
+        return 1;
     case FL_PUSH:
         return mousePush( Fl::event_x(), Fl::event_y() );
     case FL_DRAG:
@@ -4450,6 +4478,7 @@ void ImageBrowser::draw()
     {
         if ( ! i->widget() ) continue;
 
+
         if ( view()->playback() == CMedia::kStopped )
         {
             mrv::Element* elem = (mrv::Element*) i->widget();
@@ -4457,18 +4486,37 @@ void ImageBrowser::draw()
         }
     }
 
+
     // Let tree draw itself
     Fl_Tree::draw();
 
     // Dragging item that has a widget()?
     //    Assume widget() is a group, draw it where the mouse is..
     //
-    if ( dragging && dragging->widget() )
+    if ( selectmode() == FL_TREE_SELECT_SINGLE_DRAGGABLE &&
+         dragging && dragging->widget() )
     {
+        // Draw dragging line
+        if (Fl::pushed() == this)
+        { // item clicked is the one we're drawing?
+            Fl_Tree_Item *item = root()->find_clicked(prefs(), 1); // item we're on, vertically
+            if (item &&                   // we're over a valid item?
+                item != get_item_focus()) { // item doesn't have keyboard focus?
+                // Are we dropping above or below the target item?
+                const int h = Fl::event_y() - item->y(); // mouse relative to item's top/left
+                const int mid = item->h() / 2;  // middle of item relative to item's top/left
+                const bool is_above = h < mid; // is mouse above middle of item?
+                fl_color(FL_RED);
+                int tgt = item->y() + (is_above ? 0 : item->h());
+                fl_line_style( FL_SOLID, 4 );
+                fl_line(item->x(), tgt, item->x() + item->w(), tgt);
+            }
+        }
         mrv::Element* elem = (mrv::Element*) dragging->widget();
         fl_push_clip( _tix, _tiy, _tiw, _tih );
         elem->DrawAt( Fl::event_x(), Fl::event_y() );
         fl_pop_clip();
+
     }
 }
 

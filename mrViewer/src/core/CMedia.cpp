@@ -4047,18 +4047,23 @@ void CMedia::default_ocio_input_color_space()
 
     if ( internal() ) return;
 
-    if ( ! Preferences::use_ocio ) return;
 
     std::string n = filename();
     OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
-    if ( n.rfind( ".braw" ) == std::string::npos )
+
+    if ( ! Preferences::use_ocio ) return;
+
+    if ( config )
     {
-        std::string cs = config->parseColorSpaceFromString(n.c_str());
-        if ( !cs.empty() )
+        if ( n.rfind( ".braw" ) == std::string::npos )
         {
-            IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
-            ocio_input_color_space( cs );
-            return;
+            std::string cs = config->parseColorSpaceFromString(n.c_str());
+            if ( !cs.empty() )
+            {
+                IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
+                ocio_input_color_space( cs );
+                return;
+            }
         }
     }
 
@@ -4106,8 +4111,8 @@ void CMedia::default_ocio_input_color_space()
                   << _("' from bitdepth ") << bit_depth << _(" as default") );
         return;
     }
-    if ( n.rfind( ".dpx" ) != std::string::npos ||
-         n.rfind( ".cin")  != std::string::npos )
+    if ( config && ( n.rfind( ".dpx" ) != std::string::npos ||
+                     n.rfind( ".cin")  != std::string::npos ) )
     {
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("Cineon");
         if ( ! defaultcs )
@@ -4131,7 +4136,7 @@ void CMedia::ocio_input_color_space( const std::string& n )
 
 
     _input_color_space = n;
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
 }
 
 

@@ -315,6 +315,7 @@ public:
         kDamage3DData    = 1 << 7,
         kDamageCache     = 1 << 8,
         kDamageTimecode  = 1 << 9,
+        kDamageICS       = 1 << 10,
         kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut |
                             kDamageThumbnail | kDamageData | kDamageSubtitle |
                             kDamage3DData | kDamageCache | kDamageTimecode )

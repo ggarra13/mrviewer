@@ -378,6 +378,8 @@ std::string open_directory( const char* startfile, ViewerUI* main )
 stringArray open_image_file( const char* startfile, const bool compact_images,
                              ViewerUI* main )
 {
+    const std::string kSESSION_PATTERN = _( "Sessions (*.{" ) +
+                                         kSessionPattern + "})\t";
     const std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                       kReelPattern + "})\t";
     const std::string kAUDIO_PATTERN = ("Audios (*.{") + kAudioPattern +
@@ -387,11 +389,14 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     const std::string kALL_PATTERN = _("All (*.{") +
                                      kImagePattern + "," + kMoviePattern +
                                      "," + kReelPattern + "," +
-                                     kAudioPattern + "})\t" +
+                                     kAudioPattern + "," +
+                                     kReelPattern + "," +
+                                     kSessionPattern + "})\t" +
                                      kIMAGE_PATTERN +
                                      kAUDIO_PATTERN +
                                      _("Movies (*.{") + kMoviePattern +
-                                     "})\t" + kREEL_PATTERN;
+                                     "})\t" + kREEL_PATTERN +
+                                     kSESSION_PATTERN;
 
     std::string pattern = kIMAGE_PATTERN + kAUDIO_PATTERN;
     std::string title = _("Load Image");

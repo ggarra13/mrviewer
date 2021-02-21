@@ -407,7 +407,7 @@ public:
     void update_layers();
 
     /// Update the Display of Input Color Space of foreground image
-    void update_ICS() const;
+    void update_ICS(mrv::media fg) const;
 
     /// Turn on or off safe areas
     void safe_areas( const bool t );

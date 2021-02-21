@@ -1243,15 +1243,12 @@ static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
     view->redraw();
 }
 
-void ImageView::update_ICS() const
+void ImageView::update_ICS(mrv::media fg) const
 {
-    mrv::media fg = foreground();
-    if ( ! fg ) {
-        return;
-    }
     CMedia* img = fg->image();
     mrv::PopupMenu* o = uiMain->uiICS;
     int n = o->children();
+
     for ( int i = 0; i < n; ++i )
     {
         const Fl_Menu_Item* w = o->child(i);
@@ -1275,7 +1272,7 @@ void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageView* view )
 
     attach_ocio_input_color_space( fg->image(), view );
 
-    view->update_ICS();
+    view->update_ICS(fg);
 
 
 }
@@ -2674,6 +2671,13 @@ bool ImageView::should_update( mrv::media fg )
             update_layers();
         }
 
+        if ( uiMain->uiICS->visible() &&
+             ( img->image_damage() & CMedia::kDamageICS ) )
+        {
+            update_ICS(fg);
+            img->image_damage( img->image_damage() & ~CMedia::kDamageICS );
+        }
+
         if ( img->image_damage() & CMedia::kDamageContents )
         {
             redraw();
@@ -3357,7 +3361,7 @@ again:
         {
             CMedia* img = fg->image();
             img->ocio_input_color_space( s );
-            update_ICS();
+            update_ICS(fg);
         }
         break;
     }
@@ -10067,15 +10071,6 @@ void ImageView::update_color_info( const mrv::media fg ) const
         if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
 
-    if (!fg) return;
-    CMedia* img = fg->image();
-    if ( ! (img->image_damage() & CMedia::kDamageLut) )
-        return;
-
-    if ( uiMain->uiICS->visible() )
-    {
-        update_ICS();
-    }
 
 }
 

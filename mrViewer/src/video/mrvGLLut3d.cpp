@@ -504,8 +504,11 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     try
     {
         OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
+        if ( !config ) return true;
+
         const std::string& display = mrv::Preferences::OCIO_Display;
         const std::string& view = mrv::Preferences::OCIO_View;
+
 
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::DisplayViewTransformRcPtr transform =
@@ -621,13 +624,19 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     }
 
     OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
-    fullpath = config->getCacheID();
+    if ( config ) fullpath = config->getCacheID();
     fullpath += " -> ";
 
-    path = ics;
-    path += " -> " + Preferences::OCIO_Display;
-    path += " -> " + Preferences::OCIO_View;
-
+    if ( Preferences::use_ocio )
+    {
+        path = ics;
+        path += " -> " + Preferences::OCIO_Display;
+        path += " -> " + Preferences::OCIO_View;
+    }
+    else
+    {
+        path = "NO OCIO";
+    }
     fullpath += path;
     //
     // Check if this lut path was already calculated by some other
