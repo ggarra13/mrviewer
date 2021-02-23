@@ -250,6 +250,9 @@ extern Hotkey kToggleHotkeys;
 extern Hotkey kToggleLogs;
 extern Hotkey kToggleAbout;
 
+extern Hotkey kSelectSingleImage;
+extern Hotkey kSelectMultiImage;
+
 extern Hotkey kTogglePixelRatio;
 extern Hotkey kToggleLut;
 

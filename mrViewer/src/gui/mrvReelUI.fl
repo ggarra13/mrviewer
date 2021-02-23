@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1,0400
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -35,29 +35,33 @@ class ReelUI {open
   } {
     Fl_Window uiMain {
       label {Reel List} open
-      xywh {236 400 515 489} type Double align 10 resizable
+      xywh {539 513 515 489} type Double align 10 resizable
       code0 {o->size_range(350,320);} non_modal size_range {405 350 0 0} visible
     } {
-      Fl_Group {} {open
-        xywh {0 -2 515 492} box UP_BOX resizable
+      Fl_Menu_Bar uiMenuBar {open
+        xywh {0 0 515 28}
+      } {}
+      Fl_Group {} {open selected
+        xywh {0 28 515 462} box UP_BOX resizable
       } {
-        Fl_Tree uiBrowser {selected
-          xywh {0 43 515 447} box UP_BOX resizable
+        Fl_Tree uiBrowser {
+          xywh {0 73 515 417} box UP_BOX resizable
           code0 {o->main( main );o->end();o->resizable(0);}
+          code2 {o->add_menu( uiMenuBar );}
           class {mrv::ImageBrowser}
         }
-        Fl_Group uiControls {open
-          xywh {0 -2 510 46} box UP_BOX
+        Fl_Group uiControls {
+          xywh {0 29 510 46} box UP_BOX
         } {
           Fl_Choice {} {
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
             callback {v->reel(o->value());} open
-            xywh {5 2 120 36} box THIN_DOWN_BOX down_box BORDER_BOX align 36
+            xywh {5 33 120 36} box THIN_DOWN_BOX down_box BORDER_BOX align 36
             code0 {uiBrowser->reel_choice(o);}
             class {mrv::Choice}
           } {}
-          Fl_Group uiReelOps {open
-            xywh {125 -2 116 45}
+          Fl_Group uiReelOps {
+            xywh {125 29 116 45}
           } {
             Fl_Button {} {
               label new
@@ -65,61 +69,61 @@ class ReelUI {open
               callback {const char* name = mrv::fl_input("Reel Name", "reel" );
 if ( name == NULL ) return;
 v->new_reel(name);}
-              tooltip {Create a new reel} image {../../icons/reel_24.xpm} xywh {127 2 36 36} labeltype EMBOSSED_LABEL labelcolor 175 align 594
+              tooltip {Create a new reel} image {../../icons/reel_24.xpm} xywh {127 33 36 36} labeltype EMBOSSED_LABEL labelcolor 175 align 594
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->save_reel();}
-              tooltip {Save current reel} image {../../icons/reel_save_24.xpm} xywh {167 2 36 36}
+              tooltip {Save current reel} image {../../icons/reel_save_24.xpm} xywh {167 33 36 36}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->remove_reel();}
-              tooltip {Delete current reel} image {../../icons/reel_delete_24.xpm} xywh {205 2 36 36}
+              tooltip {Delete current reel} image {../../icons/reel_delete_24.xpm} xywh {205 33 36 36}
             }
           }
-          Fl_Group uiImageOps {open
-            xywh {240 0 173 44}
+          Fl_Group uiImageOps {
+            xywh {240 31 173 44}
           } {
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->open();}
-              tooltip {Open new image, sequence or movie} image {../../icons/file_open_24.xpm} xywh {260 2 36 36}
+              tooltip {Open new image, sequence or movie} image {../../icons/file_open_24.xpm} xywh {260 33 36 36}
               code0 {o->image(file_open_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->save_sequence();}
-              tooltip {Save sequence or movie.} image {../../icons/file_save_24.xpm} xywh {299 2 36 36}
+              tooltip {Save sequence or movie.} image {../../icons/file_save_24.xpm} xywh {299 33 36 36}
               code0 {o->image(file_save_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->clone_current();}
-              tooltip {Clone image} image {../../icons/file_clone_24.xpm} xywh {338 2 36 36}
+              tooltip {Clone image} image {../../icons/file_clone_24.xpm} xywh {338 33 36 36}
               code0 {o->image(file_clone_24);}
             }
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->remove_current();}
-              tooltip {Remove current image from reel.} image {../../icons/file_delete_24.xpm} xywh {377 2 36 36}
+              tooltip {Remove current image from reel.} image {../../icons/file_delete_24.xpm} xywh {377 33 36 36}
               code0 {o->image(file_delete_24);}
             }
           }
-          Fl_Group uiViewerOps {open
-            xywh {430 -1 80 45}
+          Fl_Group uiViewerOps {
+            xywh {430 30 80 45}
           } {
             Fl_Button uiBGButton {
               label BG
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->change_background();}
-              tooltip {Set reel images as background.} xywh {433 2 36 36} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1
+              tooltip {Set reel images as background.} xywh {433 33 36 36} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1
             }
             Fl_Button uiEDLButton {
               label EDL
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
               callback {v->toggle_edl();}
-              tooltip {Toggle Reel EDL in Timeline} xywh {470 2 36 36} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1 labelsize 11
+              tooltip {Toggle Reel EDL in Timeline} xywh {470 33 36 36} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1 labelsize 11
             }
           }
         }

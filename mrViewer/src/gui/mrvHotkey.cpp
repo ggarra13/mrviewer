@@ -130,6 +130,8 @@ Hotkey kGammaMore( false, false, false, false, 0, ")" );
 Hotkey kGammaLess( false, false, false, false, 0, "(" );
 
 Hotkey kSetAsBG( false, false, false, false, 0 );
+Hotkey kSelectSingleImage( false, false, false, false, 0 );
+Hotkey kSelectMultiImage( false, false, false, false, 0 );
 
 Hotkey kAddIPTCMetadata( false, false, false, false, 0 );
 Hotkey kRemoveIPTCMetadata( false, false, false, false, 0 );
@@ -381,6 +383,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
     HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
     HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
+    HotkeyEntry( _("Select Single Image"), kSelectSingleImage ),
+    HotkeyEntry( _("Select Multi Image"), kSelectMultiImage ),
     HotkeyEntry( _("Toggle LUT"), kToggleLut),
     HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
     HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),

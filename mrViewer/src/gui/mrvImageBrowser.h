@@ -117,7 +117,7 @@ public:
 
     //! Returns the number of reels
     size_t number_of_reels() const {
-	return _reels.size();
+        return _reels.size();
     }
     //! Creates a new reel with name (or name #x if name already exists)
     mrv::Reel new_reel( const char* name = "reel" );
@@ -137,7 +137,7 @@ public:
 
     //! Sets the Fl_Choice for the reel
     void reel_choice( mrv::Choice* c ) {
-	_reel_choice = c;
+        _reel_choice = c;
     }
 
 
@@ -152,6 +152,9 @@ public:
 
     //! Changes image version up or down by 1 or more.
     void image_version( int sum );
+
+    //! Changes image version up or down by 1 or more.
+    void image_version( size_t i, int sum, mrv::media fg );
 
     //! Change image version to previous one (if found on disk )
     void previous_image_version();
@@ -185,21 +188,21 @@ public:
 
     //! Addes filename as media to tree
     mrv::media add( const char* filename,
-		    const int64_t start = -999999,
-		    const int64_t end = -999999 );
+                    const int64_t start = -999999,
+                    const int64_t end = -999999 );
 
     //! Loads files as media to tree
     void load( const LoadList& files, const bool stereo = false,
-	       std::string bgfile = "",
-	       const bool edl = false,
-	       const bool progressBar = false );
+               std::string bgfile = "",
+               const bool edl = false,
+               const bool progressBar = false );
 
     //! Loads files as media to tree
     void load( const stringArray& files, const bool seqs = true,
-	       const bool stereo = false,
-	       const std::string bgfile = "",
-	       const bool edl = false,
-	       const bool progressBar = false );
+               const bool stereo = false,
+               const std::string bgfile = "",
+               const bool edl = false,
+               const bool progressBar = false );
 
     //! Replaces media at index idx in tree with media m.
     void replace( int idx, mrv::media m );
@@ -256,10 +259,10 @@ public:
     virtual int handle( int event );
 
     void main( ViewerUI* m ) {
-	uiMain = m;
+        uiMain = m;
     }
     ViewerUI* main() {
-	return uiMain;
+        return uiMain;
     }
 
     void send_image( int idx );
@@ -285,6 +288,9 @@ public:
     //! Set item from a media or NULL if not found
     Fl_Tree_Item* media_to_item( const mrv::media m );
 
+    //! Add all menus and submenus to RMB or to menu bar
+    void add_menu( Fl_Menu_* menu );
+
 protected:
 
 
@@ -301,17 +307,18 @@ protected:
 
     //! Load a stereo image for fg
     void load_stereo( mrv::media& fg,
-		      const char* name,
-		      const int64_t first, const int64_t last,
-		      const int64_t start, const int64_t end,
-		      const double fps );
+                      const char* name,
+                      const int64_t first, const int64_t last,
+                      const int64_t start, const int64_t end,
+                      const double fps );
 
     //! Load an image
     mrv::media load_image( const char* name,
-			   const int64_t first, const int64_t last,
-			   const int64_t start, const int64_t end,
-			   const double fps,
-			   const bool avoid_seq = false );
+                           const int64_t first, const int64_t last,
+                           const int64_t start, const int64_t end,
+                           const double fps,
+                           const bool avoid_seq = false );
+
 
     //! Handle mouse drag
     int mouseDrag( int x, int y );

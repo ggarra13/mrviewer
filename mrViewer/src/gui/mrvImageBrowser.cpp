@@ -513,6 +513,7 @@ old_dragging( NULL )
     usericonmarginleft( 0 );
     labelmarginleft( 0 );
     linespacing(3);
+
 }
 
 ImageBrowser::~ImageBrowser()
@@ -2788,12 +2789,6 @@ void ImageBrowser::save_sequence()
  */
 void ImageBrowser::clone_current()
 {
-    if ( selectmode() == FL_TREE_SELECT_SINGLE_DRAGGABLE )
-        selectmode( FL_TREE_SELECT_MULTI );
-    else
-        selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
-    DBGM1( "Changed select mode to " << selectmode() );
-    return;
 
     int sel = value();
     if ( sel < 0 ) return;
@@ -3085,6 +3080,7 @@ void ImageBrowser::image_version( int sum )
     if ( play != CMedia::kStopped )
         view()->stop();
 
+
     mrv::media fg = current_image();
     if (!fg) return;
 
@@ -3105,6 +3101,14 @@ void ImageBrowser::image_version( int sum )
             return;
         }
     }
+
+    image_version( i, sum, fg );
+
+    if ( play ) view()->play(play);
+}
+
+void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
+ {
 
     short add = sum;
     unsigned short tries = 0;
@@ -3214,18 +3218,6 @@ void ImageBrowser::image_version( int sum )
 
     m->image()->channel( img->channel() );
 
-    // {
-    //  mrv::MediaList::const_iterator j = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  LOG_CONN( "**** after load" );
-    //  for ( ; j != e; ++j, ++idx )
-    //  {
-    //      Fl_Widget* w = child(idx);
-    //      LOG_CONN( "\t" << (*j)->name() << " " << w->label() );
-    //  }
-    // }
 
     CMedia* newImg = m->image();
     int64_t frame = img->frame();
@@ -3271,7 +3263,6 @@ void ImageBrowser::image_version( int sum )
     set_timeline( first, last );
 
 
-    if ( play ) view()->play(play);
 }
 
 
@@ -3571,6 +3562,46 @@ void ImageBrowser::previous_image_limited()
     if ( play ) view()->play(play);
 }
 
+    void select_single_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        v->selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
+        Fl_Tree_Item* item = v->first_selected_item();
+        v->deselect_all( NULL, 0 );
+        v->select( item, 0 );
+    }
+
+    void select_multi_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        v->selectmode( FL_TREE_SELECT_MULTI );
+    }
+
+    void update_selected_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        Fl_Tree_Item* item = v->first_selected_item();
+        size_t i = 0;
+        for ( ; ( item = v->next_selected_item() ); ++i )
+        {
+            mrv::Element* w = (mrv::Element*) item->widget();
+            mrv::media m = w->media();
+            v->image_version( i, 1, m );
+        }
+    }
+
+    void ImageBrowser::add_menu( Fl_Menu_* menu )
+    {
+        menu->clear();
+        menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
+                   (Fl_Callback*)open_cb, this);
+        menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+                   (Fl_Callback*)open_single_cb, this);
+        menu->add( _("Select/Single Image"), kSelectSingleImage.hotkey(),
+                   (Fl_Callback*)select_single_cb, this);
+        menu->add( _("Select/Multiple Images"), kSelectMultiImage.hotkey(),
+                   (Fl_Callback*)select_multi_cb, this);
+        menu->add( _("Update/Selected Images/Latest Version"), 0,
+                   (Fl_Callback*)update_selected_cb, this );
+        menu->menu_end();
+    }
 
 /**
  * Handle a mouse push
@@ -3680,10 +3711,7 @@ int ImageBrowser::mousePush( int x, int y )
         CMedia* img = NULL;
         bool valid = false;
 
-        menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
-                  (Fl_Callback*)open_cb, this);
-        menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
-                  (Fl_Callback*)open_single_cb, this);
+        add_menu( &menu );
 
         match_tree_order();
 
