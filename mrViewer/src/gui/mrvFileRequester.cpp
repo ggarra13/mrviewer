@@ -673,7 +673,7 @@ std::string save_reel( const char* startdir,
 
     void save_hotkeys( Fl_Preferences& keys )
     {
-        keys.set( "version", 9 );
+        keys.set( "version", 10 );
         for ( int i = 0; hotkeys[i].name != "END"; ++i )
         {
             keys.set( (hotkeys[i].name + " ctrl").c_str(),
@@ -786,7 +786,7 @@ std::string save_reel( const char* startdir,
     void load_hotkeys( ViewerUI* uiMain, Fl_Preferences* keys )
     {
         int version = 0;
-        keys->get( "version", version, 9 );
+        keys->get( "version", version, 10 );
         DBG3;
         int tmp = 0;
         char  tmpS[2048];
@@ -805,7 +805,7 @@ std::string save_reel( const char* startdir,
                      ( hotkeys[i].name == "Save Session" ||
                        hotkeys[i].name == "Open Session" ) )
                     continue;
-                if ( hotkeys[i].force == true ) continue;
+                if ( version < 10 && hotkeys[i].force == true ) continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;
                 hotkeys[i].hotkey.key = hotkeys[i].hotkey.key2 = 0;
@@ -829,7 +829,7 @@ std::string save_reel( const char* startdir,
                  "Toggle Background Composite" )
                 hotkeys[i].name = "Toggle Background";
 
-            if ( hotkeys[i].force == true ) continue;
+            if ( version < 10 && hotkeys[i].force == true ) continue;
 
             DBG3;
             keys->get( (hotkeys[i].name + " ctrl").c_str(),

@@ -3,6 +3,12 @@ v5.7.5  - Fixed selection of selected clip on dragging in reel list.
 	- Bug fixed non OCIO lut paths which were crashing since v5.7.3.
 	- Bug fixed non OCIO gamma setting for non English locales.
 	- Sped up opening of mrViewer a tad.
+	- Added two modes to Reel List: Single Selection and Dragging and
+	  Multi Selection.  Dragging is the standard from before.  The new
+	  multi selection allows you to select multiple clips and apply
+	  different algorithms to them.  Currently, you can apply OCIO
+	  input color space and version manipulation to them.
+	- Added Menu bar to Reel List, which mimics the RMB menu.
 
 v5.7.4  - Made Color Controls window non-modal so it stays with the main window
 	  and does not go behind it.

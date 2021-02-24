@@ -400,6 +400,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   static void _qSort( int how, bool caseSort, Fl_Widget **array, int low, int high );
 
   friend class Entry;
+
+
   class Entry : public Fl_Input
     {
     public:
@@ -438,6 +440,24 @@ description, shortDescription, toolTip, altname;
         { ((Entry*)arg)->editCB(); }
       void editCB();
     };
+
+  class EntryArray : public std::vector< Entry* >
+  {
+  public:
+      EntryArray()  {};
+      ~EntryArray() {};
+
+      void push_back( Entry* e )
+      {
+          for ( auto x: *this )
+          {
+              if ( x == e ) return;
+          }
+
+          std::vector< Entry* >::push_back( e );
+      }
+  };
+
 
   friend class FileList;
   class FileList : public Flu_Wrap_Group
@@ -500,6 +520,8 @@ description, shortDescription, toolTip, altname;
     };
 
 
+  //! Selection array in the order of elements as they were selected
+  EntryArray selection;
 
   Fl_Group *getEntryGroup();
   Fl_Group *getEntryContainer();
@@ -509,6 +531,7 @@ description, shortDescription, toolTip, altname;
   void cleanupPath( std::string &s );
 
   bool correctPath( std::string &path );
+
 
   void updateEntrySizes();
 

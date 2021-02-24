@@ -135,6 +135,12 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
 
     void first_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* v )
     {
+        mrv::ImageView* view = v->view();
+
+        mrv::CMedia::Playback play = view->playback();
+        if ( play != mrv::CMedia::kStopped )
+            view->stop();
+
         Fl_Tree_Item* item = v->first();
         typedef std::map< size_t, mrv::media > mediaMap;
 
@@ -157,10 +163,17 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
             mrv::media m = ai->second;
             v->image_version( i, -1, m, true );
         }
+        if ( play ) view->play(play);
     }
 
     void previous_image_version_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
     {
+        mrv::ImageView* view = v->view();
+
+        mrv::CMedia::Playback play = view->playback();
+        if ( play != mrv::CMedia::kStopped )
+            view->stop();
+
         Fl_Tree_Item* item = v->first();
         typedef std::map< size_t, mrv::media > mediaMap;
 
@@ -183,10 +196,18 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
             mrv::media m = ai->second;
             v->image_version( i, -1, m );
         }
+
+        if ( play ) view->play(play);
     }
 
     void next_image_version_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
     {
+        mrv::ImageView* view = v->view();
+
+        mrv::CMedia::Playback play = view->playback();
+        if ( play != mrv::CMedia::kStopped )
+            view->stop();
+
         Fl_Tree_Item* item = v->first();
         typedef std::map< size_t, mrv::media > mediaMap;
 
@@ -210,11 +231,18 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
             v->image_version( i, 1, m );
         }
 
+        if ( play ) view->play(play);
     }
 
 
     void last_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* v )
     {
+        mrv::ImageView* view = v->view();
+
+        mrv::CMedia::Playback play = view->playback();
+        if ( play != mrv::CMedia::kStopped )
+            view->stop();
+
         Fl_Tree_Item* item = v->first();
         typedef std::map< size_t, mrv::media > mediaMap;
 
@@ -238,6 +266,7 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
             v->image_version( i, 1, m, true );
         }
 
+        if ( play ) view->play(play);
     }
 
 void media_info_cb( Fl_Widget* o, mrv::ImageBrowser* b )
