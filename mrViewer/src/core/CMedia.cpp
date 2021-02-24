@@ -2687,6 +2687,7 @@ bool CMedia::frame( const int64_t f )
     pkt.size = 0;
     pkt.data = NULL;
 
+
     if ( ! is_cache_filled( _dts ) )
     {
         image_type_ptr canvas;

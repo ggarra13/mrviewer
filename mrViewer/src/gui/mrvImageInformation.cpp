@@ -89,6 +89,9 @@ namespace {
 const char* kModule = "info";
 }
 
+extern void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageBrowser* v );
+
+
 namespace mrv
 {
 
@@ -3865,7 +3868,7 @@ void ImageInformation::add_ocio_ics( const char* name,
 
         Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
                                          _("Pick") );
-        pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view() );
+        pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view()->browser() );
         sg->add( pick );
 
         m_curr->add( sg );

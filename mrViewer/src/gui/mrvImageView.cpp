@@ -343,6 +343,7 @@ short get_shortcut( const char* channel )
 
 extern void clone_all_cb( Fl_Widget* o, mrv::ImageBrowser* b );
 extern void clone_image_cb( Fl_Widget* o, mrv::ImageBrowser* b );
+extern void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageBrowser* v );
 
 void edit_audio_cb( Fl_Widget* o, mrv::ImageView* v )
 {
@@ -411,6 +412,9 @@ void update_frame_cb( Fl_Widget* o, mrv::ImageView* v )
     img->has_changed();
     v->redraw();
 }
+
+extern void first_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* b );
+extern void last_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* b );
 
 void next_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -1265,17 +1269,8 @@ void ImageView::update_ICS(mrv::media fg) const
     o->redraw();
 }
 
-void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
-
-    attach_ocio_input_color_space( fg->image(), view );
-
-    view->update_ICS(fg);
 
 
-}
 static void attach_ocio_display_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::media fg = view->foreground();
@@ -4573,11 +4568,18 @@ bool PointInTriangle (const Imath::V2i& pt,
          TRACE("");
          if ( has_version )
          {
-             menu->add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+             menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
+                        (Fl_Callback*)first_image_version_cb, browser(),
+                        FL_MENU_DIVIDER);
+             menu->add( _("Version/Next"), kNextVersionImage.hotkey(),
                         (Fl_Callback*)next_image_version_cb, browser());
-             menu->add( _("Image/Previous Version"),
+             menu->add( _("Version/Previous"),
                         kPreviousVersionImage.hotkey(),
                         (Fl_Callback*)previous_image_version_cb,
+                        browser(), FL_MENU_DIVIDER);
+             menu->add( _("Version/Last"),
+                        kLastVersionImage.hotkey(),
+                        (Fl_Callback*)last_image_version_cb,
                         browser(), FL_MENU_DIVIDER);
          }
 
@@ -4677,7 +4679,7 @@ bool PointInTriangle (const Imath::V2i& pt,
              TRACE("");
              menu->add( _("OCIO/Input Color Space"),
                         kOCIOInputColorSpace.hotkey(),
-                        (Fl_Callback*)attach_ocio_ics_cb, (void*)this);
+                        (Fl_Callback*)attach_ocio_ics_cb, (void*)browser());
 
              menu->add( _("OCIO/Display"),
                         kOCIODisplay.hotkey(),
@@ -6761,7 +6763,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kOCIOInputColorSpace.match( rawkey ) )
     {
-        attach_ocio_ics_cb( NULL, this );
+        attach_ocio_ics_cb( NULL, browser() );
         return 1;
     }
     else if ( kOCIODisplay.match( rawkey ) )

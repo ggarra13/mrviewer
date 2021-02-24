@@ -120,6 +120,126 @@ extern void save_snap_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
 
+    void select_single_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        v->selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
+        Fl_Tree_Item* item = v->first_selected_item();
+        v->deselect_all( NULL, 0 );
+        v->select( item, 0 );
+    }
+
+    void select_multi_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        v->selectmode( FL_TREE_SELECT_MULTI );
+    }
+
+    void first_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+    {
+        Fl_Tree_Item* item = v->first();
+        typedef std::map< size_t, mrv::media > mediaMap;
+
+        mediaMap a;
+        size_t i = 0;
+        for ( ; item; item = v->next(item) )
+        {
+            mrv::Element* w = (mrv::Element*) item->widget();
+            if ( !w ) continue;
+            if ( v->is_selected(item) )
+                a.insert( std::make_pair( i, w->media() ) );
+            ++i;
+        }
+
+        mediaMap::iterator ai = a.begin();
+        mediaMap::iterator ae = a.end();
+        for ( ; ai != ae; ++ai )
+        {
+            i = ai->first;
+            mrv::media m = ai->second;
+            v->image_version( i, -1, m, true );
+        }
+    }
+
+    void previous_image_version_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        Fl_Tree_Item* item = v->first();
+        typedef std::map< size_t, mrv::media > mediaMap;
+
+        mediaMap a;
+        size_t i = 0;
+        for ( ; item; item = v->next(item) )
+        {
+            mrv::Element* w = (mrv::Element*) item->widget();
+            if ( !w ) continue;
+            if ( v->is_selected(item) )
+                a.insert( std::make_pair( i, w->media() ) );
+            ++i;
+        }
+
+        mediaMap::iterator ai = a.begin();
+        mediaMap::iterator ae = a.end();
+        for ( ; ai != ae; ++ai )
+        {
+            i = ai->first;
+            mrv::media m = ai->second;
+            v->image_version( i, -1, m );
+        }
+    }
+
+    void next_image_version_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
+    {
+        Fl_Tree_Item* item = v->first();
+        typedef std::map< size_t, mrv::media > mediaMap;
+
+        mediaMap a;
+        size_t i = 0;
+        for ( ; item; item = v->next(item) )
+        {
+            mrv::Element* w = (mrv::Element*) item->widget();
+            if ( !w ) continue;
+            if ( v->is_selected(item) )
+                a.insert( std::make_pair( i, w->media() ) );
+            ++i;
+        }
+
+        mediaMap::iterator ai = a.begin();
+        mediaMap::iterator ae = a.end();
+        for ( ; ai != ae; ++ai )
+        {
+            i = ai->first;
+            mrv::media m = ai->second;
+            v->image_version( i, 1, m );
+        }
+
+    }
+
+
+    void last_image_version_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+    {
+        Fl_Tree_Item* item = v->first();
+        typedef std::map< size_t, mrv::media > mediaMap;
+
+        mediaMap a;
+        size_t i = 0;
+        for ( ; item; item = v->next(item) )
+        {
+            mrv::Element* w = (mrv::Element*) item->widget();
+            if ( !w ) continue;
+            if ( v->is_selected(item) )
+                a.insert( std::make_pair( i, w->media() ) );
+            ++i;
+        }
+
+        mediaMap::iterator ai = a.begin();
+        mediaMap::iterator ae = a.end();
+        for ( ; ai != ae; ++ai )
+        {
+            i = ai->first;
+            mrv::media m = ai->second;
+            v->image_version( i, 1, m, true );
+        }
+
+    }
+
 void media_info_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
     b->main()->uiImageInfo->uiMain->show();
@@ -483,8 +603,35 @@ void luminance_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 // }
 }
 
-namespace mrv {
+//
+// Attach a new OCIO Input Color Space to selected images.
+//
+void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+    mrv::ImageView* view = v->view();
 
+    mrv::Element* w = (mrv::Element*) item->widget();
+    mrv::media m = w->media();
+    mrv::CMedia* img = m->image();
+    std::string ret = make_ocio_chooser( img->ocio_input_color_space(),
+                                         mrv::OCIOBrowser::kInputColorSpace );
+
+
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        w = (mrv::Element*) item->widget();
+        m = w->media();
+        img = m->image();
+        img->ocio_input_color_space( ret );
+        if ( i == 0 ) view->update_ICS(m);
+    }
+
+    view->redraw();
+}
+
+namespace mrv {
 
 /**
  * Constructor
@@ -1426,7 +1573,8 @@ void ImageBrowser::save_session()
         }
         else
         {
-            return load_image( file.c_str(), start, end, start, end, 24.0 );
+            return load_image_in_reel( file.c_str(), start, end, start, end,
+                                       24.0 );
         }
     }
 
@@ -1894,16 +2042,24 @@ void ImageBrowser::save_session()
  *
  * @return new image
  */
-    mrv::media ImageBrowser::load_image( const char* name,
-                                         const int64_t first,
-                                         const int64_t last,
-                                         const int64_t start,
-                                         const int64_t end,
-                                         const double fps,
-                                         const bool avoid_seq )
+/**
+ * Load an image
+ *
+ * @param name name of image
+ * @param start first frame to load
+ * @param end   last frame to load
+ *
+ * @return new image
+ */
+    mrv::CMedia* ImageBrowser::load_image( const char* name,
+                                           const int64_t first,
+                                           const int64_t last,
+                                           const int64_t start,
+                                           const int64_t end,
+                                           const double fps,
+                                           const bool avoid_seq )
     {
 
-        mrv::Reel reel = current_reel();
 
 
         if ( first != AV_NOPTS_VALUE ) frame( first );
@@ -1923,7 +2079,7 @@ void ImageBrowser::save_session()
 
         if ( img == NULL )
         {
-            return mrv::media();
+            return NULL;
         }
 
         if ( first != AV_NOPTS_VALUE )
@@ -1957,6 +2113,22 @@ void ImageBrowser::save_session()
         PreferencesUI* prefs = ViewerUI::uiPrefs;
         img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
+        return img;
+    }
+
+    mrv::media ImageBrowser::load_image_in_reel( const char* name,
+                                                 const int64_t first,
+                                                 const int64_t last,
+                                                 const int64_t start,
+                                                 const int64_t end,
+                                                 const double fps,
+                                                 const bool avoid_seq )
+    {
+
+        mrv::Reel reel = current_reel();
+        CMedia* img = load_image( name, first, last, start, end, fps,
+                                  avoid_seq );
+        if ( !img ) return mrv::media();
 
         mrv::media m = this->add( img );
 
@@ -2007,8 +2179,9 @@ void ImageBrowser::save_session()
             {
                 mrv::get_sequence_limits( start, end, bgimage );
             }
-            mrv::media bg = load_image( bgimage.c_str(),
-                                        start, end, start, end, 24.0f, false );
+            mrv::media bg = load_image_in_reel( bgimage.c_str(),
+                                                start, end, start, end, 24.0f,
+                                                false );
             set_bg( bg );
         }
 
@@ -2139,9 +2312,11 @@ void ImageBrowser::save_session()
                         {
                             avoid_seq = false;
                         }
-                        fg = load_image( load.filename.c_str(),
-                                         load.first, load.last, load.start,
-                                         load.end, load.fps, avoid_seq );
+                        fg = load_image_in_reel( load.filename.c_str(),
+                                                 load.first, load.last,
+                                                 load.start,
+                                                 load.end, load.fps,
+                                                 avoid_seq );
                         if (!fg)
                         {
                             if ( load.filename.rfind( ".session" ) !=
@@ -2987,12 +3162,11 @@ void ImageBrowser::replace( int i, mrv::media m )
         return;
     }
 
+    mrv::media fg = reel->images[i];
+
     CMedia::Playback play = view()->playback();
     if ( play != CMedia::kStopped )
         view()->stop();
-
-    mrv::media fg = current_image();
-    if (!fg) return;
 
 
     // Sanely remove item from tree
@@ -3003,7 +3177,6 @@ void ImageBrowser::replace( int i, mrv::media m )
         return;
     }
     Element* oldnw = (Element*)item->widget();
-
     Fl_Tree::remove( item );
 
     // Create new item
@@ -3028,6 +3201,8 @@ void ImageBrowser::replace( int i, mrv::media m )
 
     redraw();
     window()->redraw();
+
+    //match_tree_order();
 
     // Sanely remove image from reel
     mrv::MediaList::iterator j = reel->images.begin();
@@ -3107,15 +3282,18 @@ void ImageBrowser::image_version( int sum )
     if ( play ) view()->play(play);
 }
 
-void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
- {
+
+
+void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
+                                  bool max_files )
+{
 
     short add = sum;
     unsigned short tries = 0;
     int64_t start = AV_NOPTS_VALUE;
     int64_t end   = AV_NOPTS_VALUE;
     PreferencesUI* prefs = main()->uiPrefs;
-    std::string newfile;
+    std::string newfile, loadfile;
     std::string number;
     int64_t     num = 1;
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
@@ -3126,7 +3304,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
     }
     CMedia* img = fg->image();
     unsigned max_tries = (unsigned) prefs->uiPrefsMaxImagesApart->value();
-    while ( start == AV_NOPTS_VALUE && tries <= max_tries )
+    while ( (max_files || start == AV_NOPTS_VALUE) && tries <= max_tries )
     {
         std::string file = img->fileroot();
         file = fs::path( file ).leaf().string();
@@ -3170,6 +3348,15 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
         if ( mrv::is_valid_sequence( newfile.c_str() ) )
         {
             mrv::get_sequence_limits( start, end, newfile, false );
+            if ( start != AV_NOPTS_VALUE ) {
+                char fmt[1024], buf[1024];
+                sprintf( fmt, "%s", newfile.c_str() );
+                sprintf( buf, fmt, start );
+                if ( fs::exists( buf ) )
+                {
+                    loadfile = newfile;
+                }
+            }
         }
         else
         {
@@ -3186,8 +3373,9 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
             {
                 if ( fs::exists( newfile ) )
                 {
+                    loadfile = newfile;
                     start = 1;
-                    break;
+                    if ( !max_files ) break;
                 }
             }
         }
@@ -3196,7 +3384,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
         sum += add;
     }
 
-    if ( start == AV_NOPTS_VALUE )
+    if ( start == AV_NOPTS_VALUE  )
     {
         int64_t num2 = num;
         if ( add > 0 ) {
@@ -3207,17 +3395,23 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
             num--;
             num2 += sum;
         }
-        LOG_ERROR( _("Versions ") << num << _(" to ") << num2
-                   << _(" not found on disk for ") << img->name()  );
+        if ( sum > 0 )
+            LOG_ERROR( img->name()
+                       << _(" is already the last version on disk." ) );
+        else
+            LOG_ERROR( img->name()
+                       << _(" is already the first version on disk." ) );
         return;
     }
 
-    mrv::media m = load_image( newfile.c_str(),
-                               start, end, start, end, 24.0f, false );
-    if ( !m ) return;
+    img = load_image( loadfile.c_str(),
+                      start, end, start, end, 24.0f, false );
+    if ( !img ) return;
 
+
+
+    mrv::media m( new mrv::gui::media( img ) );
     m->image()->channel( img->channel() );
-
 
     CMedia* newImg = m->image();
     int64_t frame = img->frame();
@@ -3229,19 +3423,17 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg )
     newImg->gamma( img->gamma() );
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
-    newImg->seek( frame );
+    newImg->seek( img->frame() );
     // newImg->decode_video( frame );
     // newImg->find_image( frame );
     view()->update_layers();
 
 
     // Sanely remove icon item from browser and replace it with another
-    // this->replace( int(i), m );
-    remove( int(i) );
+    this->replace( int(i), m );
 
     change_image( int(i) );
 
-    seek( newImg->frame() );
 
     mrv::EDLGroup* e = edl_group();
 
@@ -3562,31 +3754,6 @@ void ImageBrowser::previous_image_limited()
     if ( play ) view()->play(play);
 }
 
-    void select_single_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
-    {
-        v->selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
-        Fl_Tree_Item* item = v->first_selected_item();
-        v->deselect_all( NULL, 0 );
-        v->select( item, 0 );
-    }
-
-    void select_multi_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
-    {
-        v->selectmode( FL_TREE_SELECT_MULTI );
-    }
-
-    void update_selected_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
-    {
-        Fl_Tree_Item* item = v->first_selected_item();
-        size_t i = 0;
-        for ( ; ( item = v->next_selected_item() ); ++i )
-        {
-            mrv::Element* w = (mrv::Element*) item->widget();
-            mrv::media m = w->media();
-            v->image_version( i, 1, m );
-        }
-    }
-
     void ImageBrowser::add_menu( Fl_Menu_* menu )
     {
         menu->clear();
@@ -3594,12 +3761,26 @@ void ImageBrowser::previous_image_limited()
                    (Fl_Callback*)open_cb, this);
         menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                    (Fl_Callback*)open_single_cb, this);
-        menu->add( _("Select/Single Image"), kSelectSingleImage.hotkey(),
+        menu->add( _("Select/Single Image for Dragging"),
+                   kSelectSingleImage.hotkey(),
                    (Fl_Callback*)select_single_cb, this);
-        menu->add( _("Select/Multiple Images"), kSelectMultiImage.hotkey(),
+        menu->add( _("Select/Multiple Images for Modifying"),
+                   kSelectMultiImage.hotkey(),
                    (Fl_Callback*)select_multi_cb, this);
-        menu->add( _("Update/Selected Images/Latest Version"), 0,
-                   (Fl_Callback*)update_selected_cb, this );
+        menu->add( _("OCIO/Input Color Space"),
+                   kOCIOInputColorSpace.hotkey(),
+                   (Fl_Callback*)attach_ocio_ics_cb, this);
+        menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
+                   (Fl_Callback*)first_image_version_cb, this,
+                   FL_MENU_DIVIDER);
+        menu->add( _("Version/Previous"),
+                   kPreviousVersionImage.hotkey(),
+                   (Fl_Callback*)previous_image_version_cb, this );
+        menu->add( _("Version/Next"), kNextVersionImage.hotkey(),
+                   (Fl_Callback*)next_image_version_cb, this,
+                   FL_MENU_DIVIDER );
+        menu->add( _("Version/Last"), kLastVersionImage.hotkey(),
+                   (Fl_Callback*)last_image_version_cb, this );
         menu->menu_end();
     }
 

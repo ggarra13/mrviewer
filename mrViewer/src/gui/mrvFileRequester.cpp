@@ -805,6 +805,7 @@ std::string save_reel( const char* startdir,
                      ( hotkeys[i].name == "Save Session" ||
                        hotkeys[i].name == "Open Session" ) )
                     continue;
+                if ( hotkeys[i].force == true ) continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;
                 hotkeys[i].hotkey.key = hotkeys[i].hotkey.key2 = 0;
@@ -827,6 +828,8 @@ std::string save_reel( const char* startdir,
             if ( version <= 7 && hotkeys[i].name ==
                  "Toggle Background Composite" )
                 hotkeys[i].name = "Toggle Background";
+
+            if ( hotkeys[i].force == true ) continue;
 
             DBG3;
             keys->get( (hotkeys[i].name + " ctrl").c_str(),

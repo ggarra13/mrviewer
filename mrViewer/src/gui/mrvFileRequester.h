@@ -35,6 +35,7 @@ class ViewerUI;
 namespace mrv
 {
 
+class ImageBrowser;
 class CMedia;
 
 std::string open_directory( const char* startfile = NULL,
@@ -80,7 +81,6 @@ const char* open_ctl_dir( const char* startfile = NULL,
                           ViewerUI* main = NULL);
 
 
-void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageView* view );
 void attach_ocio_input_color_space( CMedia* img, ImageView* view );
 void attach_ocio_display( CMedia* img, ImageView* view );
 void attach_ocio_view( CMedia* img, ImageView* view );

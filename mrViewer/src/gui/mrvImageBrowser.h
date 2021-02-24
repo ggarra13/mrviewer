@@ -154,7 +154,10 @@ public:
     void image_version( int sum );
 
     //! Changes image version up or down by 1 or more.
-    void image_version( size_t i, int sum, mrv::media fg );
+    //! If max files is true, it goes to last version or first one.
+    void image_version( size_t i, int sum, mrv::media fg,
+                        bool max_files = false );
+
 
     //! Change image version to previous one (if found on disk )
     void previous_image_version();
@@ -313,11 +316,19 @@ protected:
                       const double fps );
 
     //! Load an image
-    mrv::media load_image( const char* name,
-                           const int64_t first, const int64_t last,
-                           const int64_t start, const int64_t end,
-                           const double fps,
-                           const bool avoid_seq = false );
+    mrv::CMedia* load_image( const char* name,
+                             const int64_t first, const int64_t last,
+                             const int64_t start, const int64_t end,
+                             const double fps,
+                             const bool avoid_seq = false );
+
+    //! Load an image and store it at the end of current reel
+    mrv::media load_image_in_reel( const char* name,
+                                   const int64_t first, const int64_t last,
+                                   const int64_t start, const int64_t end,
+                                   const double fps,
+                                   const bool avoid_seq = false );
+
 
 
     //! Handle mouse drag

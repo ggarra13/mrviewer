@@ -144,8 +144,10 @@ extern Hotkey kPlayFwd;
 extern Hotkey kPlayFwdTwiceSpeed;
 extern Hotkey kStop;
 
+extern Hotkey kFirstVersionImage;
 extern Hotkey kPreviousVersionImage;
 extern Hotkey kNextVersionImage;
+extern Hotkey kLastVersionImage;
 
 extern Hotkey kPreviousImage;
 extern Hotkey kNextImage;
@@ -267,12 +269,14 @@ extern Hotkey kToggleICS;
 struct HotkeyEntry
 {
     HotkeyEntry( const std::string n,
-                 Hotkey& h ) :
+                 Hotkey& h, bool f = false ) :
+        force( f ),
         name(n),
         hotkey(h)
     {
     };
 
+    bool force;
     std::string name;
     Hotkey& hotkey;
 };

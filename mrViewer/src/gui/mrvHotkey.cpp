@@ -80,8 +80,10 @@ Hotkey kStop( false, false, false, false, FL_Enter );
 
 Hotkey kSwitchFGBG( true, false, false, false, 'j' );
 
+Hotkey kFirstVersionImage( false, false, true, true, FL_Page_Up );
 Hotkey kPreviousVersionImage( false, false, true, false, FL_Page_Up );
 Hotkey kNextVersionImage( false, false, true, false, FL_Page_Down );
+Hotkey kLastVersionImage( false, false, true, true, FL_Page_Down );
 
 Hotkey kPreviousImage( false, false, false, false, FL_Page_Up );
 Hotkey kNextImage( false, false, false, false, FL_Page_Down );
@@ -286,12 +288,12 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Open Directory"), kOpenDirectory),
     HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
     HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
-    HotkeyEntry( _("Open Session"), kOpenSession),
+    HotkeyEntry( _("Open Session"), kOpenSession, true),
     HotkeyEntry( _("Save Reel"), kSaveReel),
     HotkeyEntry( _("Save Image"), kSaveImage),
     HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
     HotkeyEntry( _("Save Sequence"), kSaveSequence),
-    HotkeyEntry( _("Save Session"), kSaveSession),
+    HotkeyEntry( _("Save Session"), kSaveSession, true),
 //HotkeyEntry( _("Zoom Minimum"), kZoomMin),
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
     HotkeyEntry( _("Center Image"), kCenterImage ),
@@ -317,8 +319,10 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Clear Image Cache"), kClearCache),
     HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
     HotkeyEntry( _("Stop"), kStop),
+    HotkeyEntry( _("First Image Version"), kFirstVersionImage, true ),
     HotkeyEntry( _("Previous Image Version"), kPreviousVersionImage ),
     HotkeyEntry( _("Next Image Version"), kNextVersionImage ),
+    HotkeyEntry( _("Last Image Version"), kLastVersionImage, true ),
     HotkeyEntry( _("Previous Image"), kPreviousImage ),
     HotkeyEntry( _("Next Image"), kNextImage ),
     HotkeyEntry( _("Previous Image Limited"), kPreviousImageLimited ),
