@@ -2816,7 +2816,8 @@ void static_preload( mrv::ImageView* v )
                                     v );
         }
         else
-            Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
+            if ( Fl::has_timeout( (Fl_Timeout_Handler) static_preload, v ) )
+                Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, v );
     }
 }
 
@@ -3596,11 +3597,11 @@ void ImageView::timeout()
     mrv::Reel bgreel = b->reel_at( _bg_reel );
 
 
-    if ( timeline->visible() && reel && reel->edl )
-    {
-        timeline->value( double(_frame) );
-        uiMain->uiFrame->value( _frame );  // so it is displayed properly
-    }
+    // if ( timeline->visible() && reel && reel->edl )
+    // {
+    //     timeline->value( double(_frame) );
+    //     uiMain->uiFrame->value( _frame );  // so it is displayed properly
+    // }
 
     if ( uiMain->uiEDLWindow )
     {
@@ -3714,7 +3715,8 @@ void ImageView::timeout()
    }
 
     redraw();
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     Fl::check();
 }
 
@@ -8059,7 +8061,6 @@ int ImageView::handle(int event)
         window()->cursor(FL_CURSOR_DEFAULT);
         return 1;
     case FL_PUSH:
-        focus(this);
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:
@@ -8156,7 +8157,9 @@ int ImageView::handle(int event)
     case FL_DND_RELEASE:
     case FL_SHOW:
     case FL_HIDE:
-        return 1;
+    {
+        return ret;
+    }
     case FL_PASTE:
         {
             std::string text;
@@ -9854,7 +9857,7 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
-    uiMain->uiFrame->frame( f );
+    uiMain->uiFrame->value( f );
     uiMain->uiTimeline->value( f );
 
     mrv::ImageBrowser* b = browser();

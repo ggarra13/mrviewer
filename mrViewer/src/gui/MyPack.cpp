@@ -9,6 +9,7 @@
 // Bugs: ?
 
 #include <FL/Fl.H>
+#include <FL/names.h>
 #include <FL/fl_draw.H>
 #include <iostream>
 #include "MyPack.h"

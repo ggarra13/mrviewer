@@ -1320,6 +1320,7 @@ void video_thread( PlaybackData* data )
             LOG_ERROR( _("Could not find image ") << frame );
         }
 
+
         if ( reel->edl && fg && img->is_left_eye() )
         {
             int64_t f = frame + reel->location(img) - img->first_frame();

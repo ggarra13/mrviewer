@@ -434,7 +434,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int64_t j = frame;
 
 
-//    if ( !img->has_video() && pos < j ) j = pos;
+    // if ( !img->has_video() && pos < j ) j = pos;
 
     int64_t max = frame + size;
     if ( mx < max ) max = mx;
