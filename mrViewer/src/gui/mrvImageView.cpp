@@ -602,7 +602,7 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
     // t->value( f );
 
     update_title_bar( view );
-    view->browser()->redraw();
+    //view->browser()->redraw();
     view->fit_image();
 }
 
@@ -2660,6 +2660,12 @@ bool ImageView::should_update( mrv::media fg )
     {
         img = fg->image();
 
+        std::cerr << img->frame() << " " << img->image_damage()
+                  << " contents: " << (img->image_damage() & CMedia::kDamageContents)
+                  << " layers: " << (img->image_damage() & CMedia::kDamageLayers)
+                  << " ICS: " << (img->image_damage() & CMedia::kDamageICS)
+                  << " data: " << (img->image_damage() & CMedia::kDamageData)
+                  << std::endl;
 
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
@@ -3589,7 +3595,7 @@ void ImageView::timeout()
     // If in EDL mode, we check timeline to see if frame points to
     // new image.
     //
-    log();
+    //log();
 
 
 
@@ -3714,7 +3720,7 @@ void ImageView::timeout()
         }
    }
 
-    redraw();
+    // redraw();
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     Fl::check();
@@ -8303,8 +8309,11 @@ void ImageView::preload_cache_start()
             {
                 CMedia::preload_cache( true );
                 _idle_callback = true;
-                Fl::add_timeout( 1.0/img->fps(),
-                                 (Fl_Timeout_Handler) static_preload, this );
+                if ( !Fl::has_timeout( (Fl_Timeout_Handler) static_preload,
+                                       this ) )
+                    Fl::add_timeout( 1.0/img->fps(),
+                                     (Fl_Timeout_Handler) static_preload,
+                                     this );
             }
         }
         //Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
@@ -8322,7 +8331,8 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         _idle_callback = false;
-        Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, this );
+        if ( Fl::has_timeout( (Fl_Timeout_Handler) static_preload, this ) )
+            Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, this );
         //Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
     }
 }
@@ -10094,7 +10104,8 @@ void ImageView::update_color_info() const
 
 void ImageView::update_image_info() const
 {
-    if ( !uiMain->uiImageInfo ) return;
+    if ( !uiMain->uiImageInfo ||
+         !uiMain->uiImageInfo->uiInfoText->visible()) return;
 
     mrv::media fg = foreground();
     if ( ! fg ) return;
