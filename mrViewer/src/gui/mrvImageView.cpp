@@ -3597,7 +3597,7 @@ void ImageView::timeout()
     // If in EDL mode, we check timeline to see if frame points to
     // new image.
     //
-    //log();
+    log();
 
 
 
