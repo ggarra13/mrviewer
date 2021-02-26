@@ -36,8 +36,8 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
-elsif not @debug == "Debug" and not @debug == "Release"
-  $stderr.puts "Invalid option: #@debug [Debug|Release]"
+elsif not @debug == "Debug" and not @debug == "Release" and not @debug == "RelWithDebInfo"
+  $stderr.puts "Invalid option: #@debug [Debug|Release|RelWithDebInfo]"
   exit 1
 end
 

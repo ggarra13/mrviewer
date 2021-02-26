@@ -2660,12 +2660,14 @@ bool ImageView::should_update( mrv::media fg )
     {
         img = fg->image();
 
+#if 0
         std::cerr << img->frame() << " " << img->image_damage()
                   << " contents: " << (img->image_damage() & CMedia::kDamageContents)
                   << " layers: " << (img->image_damage() & CMedia::kDamageLayers)
                   << " ICS: " << (img->image_damage() & CMedia::kDamageICS)
                   << " data: " << (img->image_damage() & CMedia::kDamageData)
                   << std::endl;
+#endif
 
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
@@ -3684,7 +3686,7 @@ void ImageView::timeout()
         TRACE("");
         update_color_info( fg );
         TRACE("");
-        if ( uiMain->uiEDLWindow )
+        if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
 
@@ -3723,7 +3725,7 @@ void ImageView::timeout()
     // redraw();
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    Fl::check();
+    //Fl::check();
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -5263,54 +5265,24 @@ bool ImageView::has_undo() const
  *
  * @return a new 9 character buffer
  */
-const char* float_printf( char* buf, float x )
+std::string float_printf( float x )
 {
     if ( isnan(x) )
     {
-        static char* empty = _("   NAN  ");
-        buf = empty;
+        static std::string empty( _("   NAN  ") );
+        return empty;
     }
     else if ( !isfinite(x) )
     {
-        static char* inf =  _("  INF.  ");
-        buf = inf;
+        static std::string inf( _("  INF.  ") );
+        return inf;
     }
     else
     {
+        char buf[ 64 ];
         sprintf( buf, " %7.4f", x );
-        buf[8] = 0; //buf + strlen(buf) - 8;
+        return buf + strlen(buf) - 8;
     }
-    return buf;
-}
-
-
-
-
-/**
- * Utility function to print an hex value with 8 digits
- *
- * @param x float number
- *
- * @return a new 9 character buffer
- */
-const char* hex_printf( char* buf, float x )
-{
-    if ( isnan(x) )
-    {
-        buf = _("  NAN. ");
-    }
-    else if ( !isfinite(x) )
-    {
-        buf = _("  INF.  ");
-    }
-    else
-    {
-        unsigned h = 0;
-        if ( x > 0.0f ) h = unsigned(x*255.0f);
-        sprintf( buf, " %7x", h );
-        buf[8] = 0;
-    }
-    return buf;
 }
 
 /**
@@ -5320,25 +5292,48 @@ const char* hex_printf( char* buf, float x )
  *
  * @return a new 9 character buffer
  */
-const char* dec_printf( char* buf, float x )
+std::string hex_printf( float x )
 {
     if ( isnan(x) )
     {
-        buf = _("  NAN.  ");
-    }
-    else if ( !isfinite(x) )
-    {
-        buf = _("  INF.  ");
+        static std::string empty( "        " );
+        return empty;
     }
     else
     {
+        char buf[ 64 ];
+        unsigned h = 0;
+        if ( x > 0.0f ) h = unsigned(x*255.0f);
+        sprintf( buf, " %7x", h );
+        return buf + strlen(buf) - 8;
+    }
+}
+
+
+/**
+ * Utility function to print a float value with 8 digits
+ *
+ * @param x float number
+ *
+ * @return a new 9 character buffer
+ */
+std::string dec_printf( float x )
+{
+    if ( isnan(x) )
+    {
+        static std::string empty( "        " );
+        return empty;
+    }
+    else
+    {
+        char buf[ 64 ];
         unsigned h = 0;
         if ( x > 0.0f ) h = unsigned(x*255.0f);
         sprintf( buf, " %7d", h );
-        buf[8] = 0;
+        return buf + strlen(buf) - 8;
     }
-    return buf;
 }
+
 
 void ImageView::pixel_processed( const CMedia* img,
                                  CMedia::Pixel& rgba ) const
@@ -6064,22 +6059,22 @@ void ImageView::mouseMove(int x, int y)
     switch( uiMain->uiAColorType->value() )
     {
     case kRGBA_Float:
-        uiMain->uiPixelR->value( float_printf( buf, rgba.r ) );
-        uiMain->uiPixelG->value( float_printf( buf, rgba.g ) );
-        uiMain->uiPixelB->value( float_printf( buf, rgba.b ) );
-        uiMain->uiPixelA->value( float_printf( buf, rgba.a ) );
+        uiMain->uiPixelR->value( float_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->value( float_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->value( float_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->value( float_printf( rgba.a ).c_str() );
         break;
     case kRGBA_Hex:
-        uiMain->uiPixelR->value( hex_printf( buf, rgba.r ) );
-        uiMain->uiPixelG->value( hex_printf( buf, rgba.g ) );
-        uiMain->uiPixelB->value( hex_printf( buf, rgba.b ) );
-        uiMain->uiPixelA->value( hex_printf( buf, rgba.a ) );
+        uiMain->uiPixelR->value( hex_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->value( hex_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->value( hex_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->value( hex_printf( rgba.a ).c_str() );
         break;
     case kRGBA_Decimal:
-        uiMain->uiPixelR->value( dec_printf( buf, rgba.r ) );
-        uiMain->uiPixelG->value( dec_printf( buf, rgba.g ) );
-        uiMain->uiPixelB->value( dec_printf( buf, rgba.b ) );
-        uiMain->uiPixelA->value( dec_printf( buf, rgba.a ) );
+        uiMain->uiPixelR->value( dec_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->value( dec_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->value( dec_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->value( dec_printf( rgba.a ).c_str() );
         break;
     }
 
@@ -6160,19 +6155,13 @@ void ImageView::mouseMove(int x, int y)
         LOG_ERROR("Unknown color type");
     }
 
-    float_printf( buf, hsv.r );
-    uiMain->uiPixelH->value( buf );
-    float_printf( buf, hsv.g );
-    uiMain->uiPixelS->value( buf );
-    float_printf( buf, hsv.b );
-    uiMain->uiPixelV->value( buf );
-    float_printf( buf, hsv.a );
-    uiMain->uiPixelL->value( buf );
+    uiMain->uiPixelH->value( float_printf( hsv.r ).c_str() );
+    uiMain->uiPixelS->value( float_printf( hsv.g ).c_str() );
+    uiMain->uiPixelV->value( float_printf( hsv.b ).c_str() );
     mrv::BrightnessType brightness_type = (mrv::BrightnessType)
                                           uiMain->uiLType->value();
     hsv.a = calculate_brightness( rgba, brightness_type );
-    float_printf( buf, hsv.a );
-    uiMain->uiPixelL->value( buf );
+    uiMain->uiPixelL->value( float_printf( hsv.a ).c_str() );
 }
 
 float ImageView::vr_angle() const

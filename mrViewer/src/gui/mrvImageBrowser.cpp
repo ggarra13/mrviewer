@@ -1930,7 +1930,7 @@ void ImageBrowser::save_session()
 
         send_image( i );
 
-#if 1
+#if 0
         if ( reel->edl )
         {
             int64_t pos = m->position();
@@ -1938,6 +1938,8 @@ void ImageBrowser::save_session()
             seek( pos );
         }
         else
+#endif
+#if 1
         {
             seek( view()->frame() );
         }
