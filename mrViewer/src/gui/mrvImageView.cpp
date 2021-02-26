@@ -5885,6 +5885,7 @@ void ImageView::mouseMove(int x, int y)
     sprintf( buf, "%5d, %5d", off[0], off[1] );
     uiMain->uiCoord->value(buf);
 
+
     CMedia::Pixel rgba;
     if ( outside || ypr < 0 || vr() )
     {

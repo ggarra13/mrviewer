@@ -729,10 +729,11 @@ void Timeline::draw()
         uint64_t frame = 1;
         int rx = r.x() + int(slider_size()-1)/2;
 
+        CMedia* img = NULL;
         for ( ; i != e; frame += size, ++i )
         {
             int64_t pos = (*i)->position();
-            CMedia* img = (*i)->image();
+            img = (*i)->image();
             size = img->duration();
 
             // skip this block if outside visible timeline span
@@ -746,7 +747,6 @@ void Timeline::draw()
             // Draw a block
             if ( v >= frame && v < frame + size )
             {
-                _fps = img->fps();
                 fl_color( fl_darker( FL_YELLOW ) );
             }
             else
@@ -757,6 +757,7 @@ void Timeline::draw()
             fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
         }
 
+        if ( img ) _fps = img->fps();
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
              ( _display_min > minimum() || _display_max < maximum() ) )
@@ -806,10 +807,7 @@ void Timeline::draw()
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
                 boost::int64_t first = img->first_frame();
-                int64_t pos = 1;
-                if ( _edl )
-                    pos = m->position() - img->first_frame();
-                draw_cacheline( img, pos,
+                draw_cacheline( img, 1,
                                 img->duration() + img->start_number(),
                                 int64_t(mn), int64_t(mx),
                                 first, r );
@@ -828,6 +826,7 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
+    // Draw cursor
     fl_push_clip( X, Y, W, H );
     X += draw_coordinate( value(), w() - Fl::box_dw(box()) );
     W = 15  - Fl::box_dw(box());
