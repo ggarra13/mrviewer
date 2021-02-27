@@ -3682,6 +3682,7 @@ void ImageView::timeout()
 
     if ( should_update( fg ) )
     {
+        redraw();  // Clear the damage to redraw it
         update_color_info( fg );
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
@@ -3693,8 +3694,9 @@ void ImageView::timeout()
         handle_vr( delay );
     }
 
-    redraw();  // Clear the damage to redraw it
+#ifdef OSX
     draw();  // Force a draw of the gl canvas
+#endif
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
