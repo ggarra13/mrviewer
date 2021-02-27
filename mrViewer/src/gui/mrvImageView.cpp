@@ -2684,7 +2684,6 @@ bool ImageView::should_update( mrv::media fg )
 
         if ( img->image_damage() & CMedia::kDamageContents )
         {
-            redraw();
             update = true;
         }
 
@@ -2718,7 +2717,7 @@ bool ImageView::should_update( mrv::media fg )
 
         if ( img->image_damage() & CMedia::kDamageCache )
         {
-            uiMain->uiTimeline->redraw();
+            uiMain->uiTimeline->draw();
             img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
         }
 
@@ -2778,7 +2777,6 @@ bool ImageView::should_update( mrv::media fg )
         if ( bimg->image_damage() & CMedia::kDamageContents )
         {
             // resize_background();
-            redraw();
             update = true;
         }
 
@@ -3693,12 +3691,12 @@ void ImageView::timeout()
     if ( vr() )
     {
         handle_vr( delay );
-   }
+    }
 
-    // redraw();
+    redraw();  // Clear the damage to redraw it
+    draw();  // Force a draw of the gl canvas
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    draw();
 }
 
 void ImageView::handle_vr( double& delay )
