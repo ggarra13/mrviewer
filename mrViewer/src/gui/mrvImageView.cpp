@@ -3698,7 +3698,7 @@ void ImageView::timeout()
     // redraw();
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-    //Fl::check();
+    Fl::check();
 }
 
 void ImageView::handle_vr( double& delay )
