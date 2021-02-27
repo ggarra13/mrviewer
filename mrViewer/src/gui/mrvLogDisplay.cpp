@@ -129,12 +129,13 @@ void LogDisplay::save( const char* file )
     if ( f ) fclose(f);
 }
 
+
 void LogDisplay::info( const char* x )
 {
     SCOPED_LOCK( mtx );
 
     size_t t = strlen(x);
-    char* buf = new char[t+1];
+    char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
     {
@@ -149,7 +150,7 @@ void LogDisplay::info( const char* x )
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    delete [] buf;
+    free( buf );
 
     update_v_scrollbar();
 }
@@ -159,7 +160,7 @@ void LogDisplay::warning( const char* x )
     SCOPED_LOCK( mtx );
 
     size_t t = strlen(x);
-    char* buf = new char[t+1];
+    char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
     {
@@ -174,7 +175,7 @@ void LogDisplay::warning( const char* x )
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    delete [] buf;
+    free( buf );
 
     update_v_scrollbar();
 }
@@ -184,7 +185,7 @@ void LogDisplay::error( const char* x )
     SCOPED_LOCK( mtx );
 
     size_t t = strlen(x);
-    char* buf = new char[t+1];
+    char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
     {
@@ -199,7 +200,7 @@ void LogDisplay::error( const char* x )
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    delete [] buf;
+    free( buf );
 
     update_v_scrollbar();
     if ( prefs == kAlways || (prefs == kOnce && !shown) )

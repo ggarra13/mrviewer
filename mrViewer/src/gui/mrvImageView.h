@@ -302,6 +302,9 @@ public:
     /// True if image needs updating, false if not.  fg image may change.
     bool should_update( mrv::media fg );
 
+    // Handle vr mouse movements and rotate sphere/cube
+    void handle_vr( double& delay );
+
     /// Change gain by changing exposure value.
     void exposure_change( float d );
 

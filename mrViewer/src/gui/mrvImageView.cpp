@@ -2662,6 +2662,7 @@ bool ImageView::should_update( mrv::media fg )
 
 #if 0
         std::cerr << img->frame() << " " << img->image_damage()
+                  << " update " << update
                   << " contents: " << (img->image_damage() & CMedia::kDamageContents)
                   << " layers: " << (img->image_damage() & CMedia::kDamageLayers)
                   << " ICS: " << (img->image_damage() & CMedia::kDamageICS)
@@ -3578,11 +3579,10 @@ void ImageView::timeout()
 {
 
     mrv::Timeline* timeline = this->timeline();
-    if  (!timeline) return;
 
     // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
-    if (!b) return;
+    if ( !b || !timeline ) return;
 
     {
         SCOPED_LOCK( commands_mutex );
@@ -3681,11 +3681,10 @@ void ImageView::timeout()
         }
     }
 
-    if ( fg && should_update( fg ) )
+
+    if ( should_update( fg ) )
     {
-        TRACE("");
         update_color_info( fg );
-        TRACE("");
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
@@ -3693,33 +3692,7 @@ void ImageView::timeout()
 
     if ( vr() )
     {
-#define sumX 0.005
-#define sumY 0.005
-        bool changed = false;
-        if (spinx >= sumX ) {
-            spinx -= sumX;
-            changed = true;
-        }
-        else if ( spinx <= -sumX ) {
-            spinx += sumX;
-            changed = true;
-        }
-        else spinx = 0.0;
-
-        if (spiny >= sumY ) {
-            spiny -= sumY;
-            changed = true;
-        }
-        else if ( spiny <= -sumY ) {
-            spiny += sumY;
-            changed = true;
-        }
-        else spiny = 0.0;
-
-        if ( changed ) {
-            if ( delay > 0.03 ) delay = 0.03;
-            redraw();
-        }
+        handle_vr( delay );
    }
 
     // redraw();
@@ -3727,6 +3700,38 @@ void ImageView::timeout()
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     //Fl::check();
 }
+
+void ImageView::handle_vr( double& delay )
+{
+#define sumX 0.005
+#define sumY 0.005
+    bool changed = false;
+    if (spinx >= sumX ) {
+        spinx -= sumX;
+        changed = true;
+    }
+    else if ( spinx <= -sumX ) {
+        spinx += sumX;
+        changed = true;
+    }
+    else spinx = 0.0;
+
+    if (spiny >= sumY ) {
+        spiny -= sumY;
+        changed = true;
+    }
+    else if ( spiny <= -sumY ) {
+        spiny += sumY;
+        changed = true;
+    }
+    else spiny = 0.0;
+
+    if ( changed ) {
+        if ( delay > 0.03 ) delay = 0.03;
+        redraw();
+    }
+}
+
 
 void ImageView::selection( const mrv::Rectd& r )
 {
@@ -4145,15 +4150,15 @@ void ImageView::draw()
 
     if ( _hud & kHudDirectory )
     {
-        hud << img->directory();
-        draw_text( r, g, b, 5, y, hud.str().c_str() );
+        draw_text( r, g, b, 5, y, img->directory().c_str() );
         y -= yi;
-        hud.str("");
     }
+
+    int64_t frame = img->frame();
 
     if ( _hud & kHudFilename )
     {
-        sprintf( buf, img->name().c_str(), img->frame() );
+        sprintf( buf, img->name().c_str(), frame );
         hud << buf;
     }
 
@@ -4177,7 +4182,7 @@ void ImageView::draw()
         if ( d.w() == 0 )
         {
             // Work around for data window not set yet (use previous frame)
-            d = img->data_window( img->frame()-1 );
+            d = img->data_window( frame-1 );
         }
         sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
         draw_text( r, g, b, 5, y, buf );
@@ -4192,7 +4197,7 @@ void ImageView::draw()
 
     if ( _hud & kHudFrame )
     {
-        sprintf( buf, "% 4" PRId64, img->frame() );
+        sprintf( buf, "% 4" PRId64, frame );
         hud << _("F: ") << buf;
     }
 
@@ -4202,7 +4207,7 @@ void ImageView::draw()
         if ( d != mrv::Timecode::kTimecodeDropFrame )
             d = mrv::Timecode::kTimecodeNonDrop;
 
-        mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
+        mrv::Timecode::format( buf, d, frame, img->timecode(),
                                img->play_fps(), true );
         if ( !hud.str().empty() ) hud << " ";
         hud << _("T: ") << buf;
@@ -4222,9 +4227,8 @@ void ImageView::draw()
     //
     if ( _hud & kHudFPS )
     {
-        static int64_t unshown_frames = 0;
+        static uint64_t unshown_frames = 0;
         static CMedia* oldimg = NULL;
-        int64_t frame = img->frame();
 
         CMedia::Playback p = playback();
 
@@ -4234,7 +4238,6 @@ void ImageView::draw()
                 (p == CMedia::kBackwards && _lastFrame > frame ))
             {
                 int64_t frame_diff = frame - _lastFrame;
-
                 if ( p == CMedia::kForwards ) --frame_diff;
                 else ++frame_diff;
 
@@ -8020,6 +8023,7 @@ void ImageView::handle_timeout()
             }
         }
     }
+
     timeout();
 
 }
