@@ -767,6 +767,8 @@ void Timeline::draw()
 
         frame = 1;
         unsigned idx = 0;
+        mrv::media fg = browser()->current_image();
+
         for ( i = reel->images.begin(); i != e; frame += size, ++i )
         {
             CMedia* img = (*i)->image();
@@ -781,7 +783,7 @@ void Timeline::draw()
             // skip this block if outside visible timeline span
             if ( frame + size < mn || frame > mx ) continue;
 
-            if ( _draw_cache )
+            if ( _draw_cache && (*i) == fg )
             {
                 draw_cacheline( img, pos, size, int64_t(mn),
                                 int64_t(mx),

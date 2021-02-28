@@ -3695,7 +3695,7 @@ void ImageView::timeout()
     }
 
 #ifdef OSX
-//    draw();  // Force a draw of the gl canvas
+    draw();  // Force a draw of the gl canvas
 #endif
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
