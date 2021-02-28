@@ -9,6 +9,10 @@ v5.7.5  - Fixed selection of selected clip on dragging in reel list.
 	  different algorithms to them.  Currently, you can apply OCIO
 	  input color space and version manipulation to them.
 	- Added Menu bar to Reel List, which mimics the RMB menu.
+	- Bug fixed MacOS crashing due to new algorithm in color info widgets.
+	  Regression since v5.7.3.
+	- Made EDL timeline not show cachebar for other clips other than the
+	  one being played.
 
 v5.7.4  - Made Color Controls window non-modal so it stays with the main window
 	  and does not go behind it.
