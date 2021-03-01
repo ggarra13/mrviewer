@@ -1879,6 +1879,7 @@ void ImageBrowser::save_session()
             return;
         }
 
+
         CMedia::Playback play = (CMedia::Playback) view()->playback();
         if ( play != CMedia::kStopped )  view()->stop();
 
@@ -1887,6 +1888,7 @@ void ImageBrowser::save_session()
             if ( play != CMedia::kStopped ) view()->play(play);
             return;
         }
+
 
         int ok;
         Fl_Tree_Item* item;
@@ -1906,7 +1908,7 @@ void ImageBrowser::save_session()
         send_reel( reel );
 
         value( i );
-        assert0( i < (int)reel->images.size() );
+        assert0( i >= 0 && i < (int)reel->images.size() );
         mrv::media m = reel->images[i];
 
         item = root()->child(i);
@@ -1944,6 +1946,7 @@ void ImageBrowser::save_session()
             seek( view()->frame() );
         }
 #endif
+        add_menu( main()->uiReelWindow->uiMenuBar );
 
         if ( play ) view()->play(play);
     }
@@ -2051,17 +2054,7 @@ void ImageBrowser::save_session()
 
     void ImageBrowser::value( int idx )
     {
-        int sel = value();
-        mrv::Reel reel = current_reel();
         _value = idx;
-        if ( sel < 0 ) return;
-
-        // mrv::media orig = reel->images[sel];
-        // if ( orig )
-        // {
-        //     CMedia* img = orig->image();
-        //     if (img->has_video()) img->clear_cache();
-        // }
     }
 
 /**
@@ -3534,6 +3527,8 @@ void ImageBrowser::next_image()
         return;
     }
 
+    add_menu( main()->uiReelWindow->uiMenuBar );
+
     view()->foreground( m );
 
 
@@ -3682,6 +3677,8 @@ void ImageBrowser::previous_image()
         return;
     }
 
+    add_menu( main()->uiReelWindow->uiMenuBar );
+
     mrv::media m = reel->images[v];
     view()->foreground( m );
 
@@ -3787,6 +3784,7 @@ void ImageBrowser::previous_image_limited()
 
     void ImageBrowser::add_menu( Fl_Menu_* menu )
     {
+
         menu->clear();
         menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                    (Fl_Callback*)open_cb, this);
@@ -3801,18 +3799,57 @@ void ImageBrowser::previous_image_limited()
         menu->add( _("OCIO/Input Color Space"),
                    kOCIOInputColorSpace.hotkey(),
                    (Fl_Callback*)attach_ocio_ics_cb, this);
-        menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
-                   (Fl_Callback*)first_image_version_cb, this,
-                   FL_MENU_DIVIDER);
-        menu->add( _("Version/Previous"),
-                   kPreviousVersionImage.hotkey(),
-                   (Fl_Callback*)previous_image_version_cb, this );
-        menu->add( _("Version/Next"), kNextVersionImage.hotkey(),
-                   (Fl_Callback*)next_image_version_cb, this,
-                   FL_MENU_DIVIDER );
-        menu->add( _("Version/Last"), kLastVersionImage.hotkey(),
-                   (Fl_Callback*)last_image_version_cb, this );
+
+        bool has_version = false;
+
+        PreferencesUI* prefs = main()->uiPrefs;
+        std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+        if ( prefix.empty() )
+        {
+            LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
+            return;
+        }
+
+        static int count = 0;
+
+        Fl_Tree_Item* i = NULL;
+        for ( i = first_selected_item(); i; i = next_selected_item(i) )
+        {
+            if ( ! i->widget() ) {
+                continue;
+            }
+
+            mrv::Element* elem = (mrv::Element*) i->widget();
+            mrv::media m = elem->media();
+            if ( m ) {
+                CMedia* img = m->image();
+                const std::string& name = img->fileroot();
+                if ( name.find( prefix ) != std::string::npos )
+                {
+                    has_version = true;
+                    std::cerr << name << " has version" << std::endl;
+                    break;
+                }
+            }
+        }
+
+       if ( has_version )
+        {
+            menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
+                       (Fl_Callback*)first_image_version_cb, this,
+                       FL_MENU_DIVIDER);
+            menu->add( _("Version/Previous"),
+                       kPreviousVersionImage.hotkey(),
+                       (Fl_Callback*)previous_image_version_cb, this );
+            menu->add( _("Version/Next"), kNextVersionImage.hotkey(),
+                       (Fl_Callback*)next_image_version_cb, this,
+                       FL_MENU_DIVIDER );
+            menu->add( _("Version/Last"), kLastVersionImage.hotkey(),
+                       (Fl_Callback*)last_image_version_cb, this );
+        }
         menu->menu_end();
+
+        menu->redraw();
     }
 
 /**
@@ -3923,6 +3960,7 @@ int ImageBrowser::mousePush( int x, int y )
         CMedia* img = NULL;
         bool valid = false;
 
+        std::cerr << "add menu " << __LINE__ << std::endl;
         add_menu( &menu );
 
         match_tree_order();

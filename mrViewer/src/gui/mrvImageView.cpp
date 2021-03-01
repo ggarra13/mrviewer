@@ -4571,13 +4571,15 @@ bool PointInTriangle (const Imath::V2i& pt,
          file = fs::path( file ).leaf().string();
          std::string dir = img->directory();
          file = dir + "/" + file;
+
          size_t pos = 0;
+
          PreferencesUI* prefs = main()->uiPrefs;
          std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
          if ( (pos = file.find( prefix, pos) ) != std::string::npos )
              has_version = true;
 
-
+         std::cerr << "imgview " << file << " has_version=" << has_version << std::endl;
          TRACE("");
          if ( has_version )
          {
@@ -4783,6 +4785,7 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
      menu->menu_end();
+     menu->redraw();
  }
 
 /**
@@ -9326,6 +9329,7 @@ void ImageView::foreground( mrv::media fg )
 
     update_layers();
 
+    fill_menu( uiMain->uiMenuBar );
 
     update_title_bar( this );
     update_image_info();
@@ -9652,8 +9656,6 @@ void ImageView::resize_main_window()
         fltk_main()->resize( posX, posY, w, h );
     }
 
-    Fl_Menu_Bar* menu = uiMain->uiMenuBar;
-    fill_menu( menu );
 
 
     uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
@@ -9897,6 +9899,7 @@ void ImageView::seek( const int64_t f )
     thumbnails();
     update_color_info();
     mouseMove( lastX, lastY );
+
 
     _lastFrame = f;
 
