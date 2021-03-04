@@ -4578,8 +4578,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
          if ( (pos = file.find( prefix, pos) ) != std::string::npos )
              has_version = true;
-
-         std::cerr << "imgview " << file << " has_version=" << has_version << std::endl;
+ 
          TRACE("");
          if ( has_version )
          {
@@ -6919,6 +6918,11 @@ int ImageView::keyDown(unsigned int rawkey)
         }
         fit_image();
         return 1;
+    }
+    else if ( kResizeMainWindow.match( rawkey ) )
+    {
+         resize_main_window();
+         return 1;
     }
     else if ( kSafeAreas.match( rawkey ) )
     {

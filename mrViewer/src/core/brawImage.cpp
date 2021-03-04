@@ -755,19 +755,25 @@ namespace mrv {
 
     bool brawImage::finalize()
     {
+      try
+	{
         if ( audio )
-            audio->Release();
+	  audio->Release();
         audio = nullptr;
         if ( clip )
-            clip->Release();
+	  clip->Release();
         clip = nullptr;
         if ( codec )
-            codec->Release();
+	  codec->Release();
         codec = nullptr;
         if ( factory )
-            factory->Release();
+	  factory->Release();
         factory = nullptr;
-
+	}
+      catch( const std::exception& e )
+	{
+	  LOG_ERROR( e.what() );
+	}
         delete [] audiobuffer;
         audiobuffer = NULL;
 

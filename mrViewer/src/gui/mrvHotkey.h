@@ -124,6 +124,7 @@ extern Hotkey kZoomOut;
 extern Hotkey kFullScreen;
 extern Hotkey kCenterImage;
 extern Hotkey kFitScreen;
+extern Hotkey kResizeMainWindow;
 extern Hotkey kFitAll;
 extern Hotkey kTextureFiltering;
 extern Hotkey kSafeAreas;

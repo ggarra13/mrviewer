@@ -3827,7 +3827,6 @@ void ImageBrowser::previous_image_limited()
                 if ( name.find( prefix ) != std::string::npos )
                 {
                     has_version = true;
-                    std::cerr << name << " has version" << std::endl;
                     break;
                 }
             }

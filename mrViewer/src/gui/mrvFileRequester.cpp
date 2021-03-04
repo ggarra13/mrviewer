@@ -829,8 +829,27 @@ std::string save_reel( const char* startdir,
                  "Toggle Background Composite" )
                 hotkeys[i].name = "Toggle Background";
 
-            if ( version < 10 && hotkeys[i].force == true ) continue;
+            keys->get( (hotkeys[i].name + " key").c_str(),
+                       tmp, (int)hotkeys[i].hotkey.key );
+            if (tmp) hotkeys[i].force = false;
+            hotkeys[i].hotkey.key = unsigned(tmp);
 
+            keys->get( (hotkeys[i].name + " key2").c_str(),
+                       tmp, (int)hotkeys[i].hotkey.key2 );
+            if (tmp) hotkeys[i].force = false;
+            hotkeys[i].hotkey.key2 = unsigned(tmp);
+
+            DBG3;
+            keys->get( (hotkeys[i].name + " text").c_str(),
+                       tmpS,
+                       hotkeys[i].hotkey.text.c_str(), 16 );
+            if ( strlen(tmpS) > 0 ) {
+                hotkeys[i].force = false;
+                hotkeys[i].hotkey.text = tmpS;
+            }
+            else hotkeys[i].hotkey.text.clear();
+
+            if ( hotkeys[i].force ) continue;
             DBG3;
             keys->get( (hotkeys[i].name + " ctrl").c_str(),
                        tmp, (int)hotkeys[i].hotkey.ctrl );
@@ -852,21 +871,6 @@ std::string save_reel( const char* startdir,
                        tmp, (int)hotkeys[i].hotkey.shift );
             if ( tmp ) hotkeys[i].hotkey.shift = true;
             else       hotkeys[i].hotkey.shift = false;
-
-            keys->get( (hotkeys[i].name + " key").c_str(),
-                       tmp, (int)hotkeys[i].hotkey.key );
-            hotkeys[i].hotkey.key = unsigned(tmp);
-
-            keys->get( (hotkeys[i].name + " key2").c_str(),
-                       tmp, (int)hotkeys[i].hotkey.key2 );
-            hotkeys[i].hotkey.key2 = unsigned(tmp);
-
-            DBG3;
-            keys->get( (hotkeys[i].name + " text").c_str(),
-                       tmpS,
-                       hotkeys[i].hotkey.text.c_str(), 16 );
-            if ( strlen(tmpS) > 0 ) hotkeys[i].hotkey.text = tmpS;
-            else hotkeys[i].hotkey.text.clear();
 
 
             for ( int j = 0; hotkeys[j].name != "END"; ++j )
