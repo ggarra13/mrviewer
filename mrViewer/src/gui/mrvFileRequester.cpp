@@ -819,6 +819,8 @@ std::string save_reel( const char* startdir,
             if ( version >= 1 && hotkeys[i].name == "Scrub" )
             continue;
 
+            Hotkey saved = hotkeys[i].hotkey;
+
             if ( version <= 5 && hotkeys[i].name == "Clear Image Cache" )
             continue;
             if ( version <= 5 && hotkeys[i].name == "Switch FG/BG Images" )
@@ -849,7 +851,10 @@ std::string save_reel( const char* startdir,
             }
             else hotkeys[i].hotkey.text.clear();
 
-            if ( hotkeys[i].force ) continue;
+            if ( hotkeys[i].force ) {
+                hotkeys[i].hotkey = saved;
+                continue;
+            }
             DBG3;
             keys->get( (hotkeys[i].name + " ctrl").c_str(),
                        tmp, (int)hotkeys[i].hotkey.ctrl );

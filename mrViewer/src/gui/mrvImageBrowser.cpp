@@ -125,7 +125,7 @@ extern void save_session_as_cb( Fl_Widget* o, mrv::ImageView* view );
         v->selectmode( FL_TREE_SELECT_SINGLE_DRAGGABLE );
         Fl_Tree_Item* item = v->first_selected_item();
         v->deselect_all( NULL, 0 );
-        v->select( item, 0 );
+        if ( item ) v->select( item, 0 );
     }
 
     void select_multi_cb( Fl_Menu_* o, mrv::ImageBrowser* v )
@@ -3792,10 +3792,11 @@ void ImageBrowser::previous_image_limited()
                    (Fl_Callback*)open_single_cb, this);
         menu->add( _("Select/Single Image for Dragging"),
                    kSelectSingleImage.hotkey(),
-                   (Fl_Callback*)select_single_cb, this);
+                   (Fl_Callback*)select_single_cb, this,
+                   FL_MENU_RADIO|FL_MENU_VALUE );
         menu->add( _("Select/Multiple Images for Modifying"),
                    kSelectMultiImage.hotkey(),
-                   (Fl_Callback*)select_multi_cb, this);
+                   (Fl_Callback*)select_multi_cb, this, FL_MENU_RADIO);
         menu->add( _("OCIO/Input Color Space"),
                    kOCIOInputColorSpace.hotkey(),
                    (Fl_Callback*)attach_ocio_ics_cb, this);
@@ -3959,7 +3960,6 @@ int ImageBrowser::mousePush( int x, int y )
         CMedia* img = NULL;
         bool valid = false;
 
-        std::cerr << "add menu " << __LINE__ << std::endl;
         add_menu( &menu );
 
         match_tree_order();
