@@ -3111,7 +3111,11 @@ int64_t aviImage::queue_packets( const int64_t frame,
             break;
         }
 
-        int error = av_read_frame( _context, &pkt );
+        int ret = 0;
+        int flag = AVSEEK_FLAG_BACKWARD;
+        int error;
+        int64_t offset = -1;
+        error = av_read_frame( _context, &pkt );
 
         if ( error < 0 )
         {

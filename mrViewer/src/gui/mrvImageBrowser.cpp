@@ -1863,6 +1863,76 @@ void ImageBrowser::save_session()
 
     }
 
+    void ImageBrowser::real_change_image( int v, int i, CMedia::Playback play )
+    {
+        mrv::Reel reel = current_reel();
+
+        int ok;
+        Fl_Tree_Item* item;
+        if ( v >= 0 && v < (int)reel->images.size() )
+        {
+            mrv::media orig = reel->images[v];
+            item = root()->child(v);
+            ok = deselect( item, 0 );
+            if ( ok < 0 )
+            {
+                LOG_ERROR( _("Old item was not found in tree.") );
+                return;
+            }
+        }
+
+        send_reel( reel );
+
+        value( i );
+
+        mrv::media m;
+        if ( i >= 0 && i < (int)reel->images.size() )
+        {
+            m = reel->images[i];
+
+            item = root()->child(i);
+            ok = select( item, 0 );
+            if ( ok < 0 )
+            {
+                LOG_ERROR( _("New item was not found in tree.") );
+                return;
+            }
+        }
+
+        DBGM1( "CHANGE IMAGE TO INDEX " << i );
+        view()->foreground( m );
+
+        int64_t first, last;
+        adjust_timeline( first, last );
+        mrv::Timeline* t = timeline();
+        if ( t && !t->edl() )
+        {
+            set_timeline( first, last );
+        }
+
+        send_image( i );
+
+#if 1
+        CMedia* img = NULL;
+        if ( m ) img = m->image();
+        if ( reel->edl && img )
+        {
+            int64_t pos = m->position() - img->first_frame() + img->frame();
+            DBGM3( "seek to " << pos );
+            seek( pos );
+        }
+        else
+//#endif
+//#if 1
+        {
+            seek( view()->frame() );
+        }
+#endif
+        add_menu( main()->uiReelWindow->uiMenuBar );
+
+        if ( play ) view()->play(play);
+    }
+
     void ImageBrowser::change_image( int i )
     {
 
@@ -1889,66 +1959,8 @@ void ImageBrowser::save_session()
             return;
         }
 
+        real_change_image( v, i, play );
 
-        int ok;
-        Fl_Tree_Item* item;
-        if ( v >= 0 )
-        {
-            assert0( v < (int)reel->images.size() );
-            mrv::media orig = reel->images[v];
-            item = root()->child(v);
-            ok = deselect( item, 0 );
-            if ( ok < 0 )
-            {
-                LOG_ERROR( _("Old item was not found in tree.") );
-                return;
-            }
-        }
-
-        send_reel( reel );
-
-        value( i );
-        assert0( i >= 0 && i < (int)reel->images.size() );
-        mrv::media m = reel->images[i];
-
-        item = root()->child(i);
-        ok = select( item, 0 );
-        if ( ok < 0 )
-        {
-            LOG_ERROR( _("New item was not found in tree.") );
-            return;
-        }
-
-        DBGM3( "CHANGE IMAGE TO INDEX " << i );
-        view()->foreground( m );
-
-        int64_t first, last;
-        adjust_timeline( first, last );
-        mrv::Timeline* t = timeline();
-        if ( t && !t->edl() )
-        {
-            set_timeline( first, last );
-        }
-
-        send_image( i );
-
-#if 0
-        if ( reel->edl )
-        {
-            int64_t pos = m->position();
-            DBGM3( "seek to " << pos );
-            seek( pos );
-        }
-        else
-#endif
-#if 1
-        {
-            seek( view()->frame() );
-        }
-#endif
-        add_menu( main()->uiReelWindow->uiMenuBar );
-
-        if ( play ) view()->play(play);
     }
 
 /**
@@ -3069,36 +3081,51 @@ void ImageBrowser::remove_current()
     mrv::Reel reel = current_reel();
     if (!reel || reel->images.empty() ) return;
 
-    if ( view()->playback() != CMedia::kStopped )
-        view()->stop();
 
-    int ok = mrv::fl_choice( _( "Are you sure you want to\n"
+    Fl_Tree_Item_Array items;
+    int num = get_selected_items( items );
+
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )  view()->stop();
+
+    int ok;
+    if ( num == 1 )
+        ok = mrv::fl_choice( _( "Are you sure you want to\n"
                                 "remove image from reel?" ),
+                             _("Yes"), _("No"), NULL );
+    else
+        ok = mrv::fl_choice( _( "Are you sure you want to\n"
+                                "remove all selected images from reel?" ),
                              _("Yes"), _("No"), NULL );
     if ( ok == 1 ) return; // No
 
-    int sel = value();
-    if ( sel < 0 ) return;
-
-    mrv::media m = reel->images[sel];
-
-    Fl_Tree_Item* item = media_to_item( m );
-    if ( !item )
+    for ( int i = 0; i < num; ++i )
     {
-        LOG_ERROR( _("Image item not found for ") << m->image()->name() );
-        return;
+        Fl_Tree_Item* item = items[i];
+        mrv::Element* elem = (mrv::Element*) item->widget();
+        mrv::media m = elem->media();
+        delete elem;
     }
-    delete item->widget(); item->widget( NULL );
-    Fl_Tree::remove( item );
+
+
+    for ( int i = 0; i < num; ++i )
+    {
+        Fl_Tree_Item* item = items[i];
+        Fl_Tree::remove( item );
+    }
+
+
+    mrv::Reel r = current_reel();
+    int v = value();
+
+    int sel = v;
 
     match_tree_order();
 
-    if ( sel >= (int)reel->images.size() )
-    {
-        sel = int( reel->images.size() - 1 );
-    }
+    if ( sel >= (int) r->images.size() )
+        sel = r->images.size() - 1;
 
-    change_image(sel);
+    real_change_image( v, sel, play );
 
     view()->fit_image();
 
