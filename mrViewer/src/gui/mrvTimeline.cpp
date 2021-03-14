@@ -705,7 +705,7 @@ void Timeline::draw()
         mx = display_maximum();
     }
 
-    double v  = value();
+    double v  = uiMain->uiView->frame(); //value();
 
     if ( !browser() ) return;
 
@@ -734,6 +734,7 @@ void Timeline::draw()
         {
             int64_t pos = (*i)->position();
             img = (*i)->image();
+
             size = img->duration();
 
 
@@ -773,9 +774,6 @@ void Timeline::draw()
         for ( i = reel->images.begin(); i != e; frame += size, ++i )
         {
             CMedia* img = (*i)->image();
-
-            // CMedia::Mutex& m = img->video_mutex();
-            // SCOPED_LOCK( m );
 
             size = img->duration();
             int64_t pos = (*i)->position() - img->first_frame();
