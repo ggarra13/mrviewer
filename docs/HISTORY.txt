@@ -1,3 +1,9 @@
+v5.7.7  - Fixed long standing bug with playback in edl mode hanging or
+	  segfaulting.
+	- Bug fixed presentation mode not hiding the menu bar.
+	- Bug fixed macOS release which had gotten broken unadvertedly.
+	  If the icons on your version are wrong, you should upgrade.
+
 v5.7.6  - Bug fixed selecting Single Selection when no image was in reel.
 	- Made Selcect Single Selection / Multi Selection be RADIO menus.
 (rerelase)

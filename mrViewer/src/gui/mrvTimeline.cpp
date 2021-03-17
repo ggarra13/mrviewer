@@ -705,7 +705,7 @@ void Timeline::draw()
         mx = display_maximum();
     }
 
-    double v  = value();
+    double v  = uiMain->uiView->frame(); //value();
 
     if ( !browser() ) return;
 
@@ -734,7 +734,9 @@ void Timeline::draw()
         {
             int64_t pos = (*i)->position();
             img = (*i)->image();
+
             size = img->duration();
+
 
             // skip this block if outside visible timeline span
             if ( frame + size < mn || frame > mx ) continue;
@@ -773,9 +775,6 @@ void Timeline::draw()
         {
             CMedia* img = (*i)->image();
 
-            CMedia::Mutex& m = img->video_mutex();
-            SCOPED_LOCK( m );
-
             size = img->duration();
             int64_t pos = (*i)->position() - img->first_frame();
 
@@ -806,8 +805,8 @@ void Timeline::draw()
             if ( m )
             {
                 CMedia* img = m->image();
-                CMedia::Mutex& mtx = img->video_mutex();
-                SCOPED_LOCK( mtx );
+                // CMedia::Mutex& mtx = img->video_mutex();
+                // SCOPED_LOCK( mtx );
                 boost::int64_t first = img->first_frame();
                 draw_cacheline( img, 1,
                                 img->duration() + img->start_number(),

@@ -2712,6 +2712,12 @@ bool ImageView::should_update( mrv::media fg )
             uiMain->uiEndFrame->timecode( tc );
             uiMain->uiEndFrame->frame( end );  // needed not sure why
             uiMain->uiTimeline->timecode( tc );
+
+            mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
+            if (t && t->visible() )
+            {
+                t->timecode( tc );
+            }
             img->image_damage( img->image_damage() & ~CMedia::kDamageTimecode );
         }
 
@@ -3603,11 +3609,11 @@ void ImageView::timeout()
     mrv::Reel bgreel = b->reel_at( _bg_reel );
 
 
-    // if ( timeline->visible() && reel && reel->edl )
-    // {
-    //     timeline->value( double(_frame) );
-    //     uiMain->uiFrame->value( _frame );  // so it is displayed properly
-    // }
+    if ( timeline->visible() )
+    {
+        timeline->value( double(_frame) );
+        uiMain->uiFrame->value( _frame );  // so it is displayed properly
+    }
 
     if ( uiMain->uiEDLWindow )
     {
@@ -3665,19 +3671,19 @@ void ImageView::timeout()
     }
 
 
-    if ( timeline->visible() )
-    {
+    // if ( timeline->visible() )
+    // {
 
-        if ( reel && !reel->edl && img )
-        {
-            int64_t frame = img->frame();
+    //     if ( reel && !reel->edl && img )
+    //     {
+    //         int64_t frame = img->frame();
 
-            if ( this->frame() != frame && playback() != CMedia::kStopped )
-            {
-                this->frame( frame );
-            }
-        }
-    }
+    //         if ( this->frame() != frame && playback() != CMedia::kStopped )
+    //         {
+    //             this->frame( frame );
+    //         }
+    //     }
+    // }
 
 
     if ( should_update( fg ) )
@@ -4578,7 +4584,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
          if ( (pos = file.find( prefix, pos) ) != std::string::npos )
              has_version = true;
- 
+
          TRACE("");
          if ( has_version )
          {
@@ -7636,18 +7642,6 @@ void ImageView::show_background( const bool b )
     {
         if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
-        if ( has_menu_bar && showtop )    {
-            int H = uiMain->uiRegion->h();
-            int w = uiMain->uiMenuGroup->w();
-            // Menubar MUST be 25 pixels-- for some reason it changes size
-            uiMain->uiMenuGroup->size( w, int(25) );
-            uiMain->uiMenuGroup->show();
-            H -= uiMain->uiMenuGroup->h();
-            int X = uiMain->uiMenuGroup->x();
-            int Y = uiMain->uiMenuGroup->y();
-            int W = uiMain->uiRegion->w();
-            uiMain->uiRegion->resize( 0, 0, W, H );
-        }
 
         if ( has_top_bar && showtop )    {
             int H = uiMain->uiRegion->h();
@@ -7661,6 +7655,22 @@ void ImageView::show_background( const bool b )
             int W = uiMain->uiRegion->w();
             uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
+
+        if ( has_menu_bar )    {
+            int H = uiMain->uiRegion->h();
+            int w = uiMain->uiMenuGroup->w();
+            // Menubar MUST be 25 pixels-- for some reason it changes size
+            uiMain->uiMenuGroup->size( w, int(25) );
+            uiMain->uiMenuGroup->show();
+            H -= (uiMain->uiMenuGroup->h() + 6 );
+            fill_menu( uiMain->uiMenuBar );
+            int X = uiMain->uiMenuGroup->x();
+            int Y = uiMain->uiMenuGroup->y();
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
+        }
+
+
         if ( has_bottom_bar)  {
             uiMain->uiBottomBar->show();
         }
@@ -7776,6 +7786,7 @@ void ImageView::toggle_presentation()
         uiMain->uiBottomBar->hide();
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
+        uiMain->uiMenuGroup->hide();
 
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
@@ -9866,9 +9877,6 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
-
-    uiMain->uiFrame->value( f );
-    uiMain->uiTimeline->value( f );
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();

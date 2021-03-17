@@ -4466,7 +4466,7 @@ void ImageBrowser::seek( const int64_t tframe )
     view()->send_network(buf);
 
 
-    frame( tframe );
+    view()->frame( tframe );
 
 
     CMedia::Playback playback = view()->playback();
@@ -4578,7 +4578,7 @@ void ImageBrowser::seek( const int64_t tframe )
 
 
 /**
- * Switch to a new frame, changing timeline value and uiFrame.
+ * Switch to a new frame, later changing timeline value and uiFrame.
  * This function does not check frame is in range in timeline.
  *
  * @param f new frame in timeline units

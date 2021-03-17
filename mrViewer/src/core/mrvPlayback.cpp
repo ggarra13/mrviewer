@@ -775,8 +775,7 @@ void audio_thread( PlaybackData* data )
         case CMedia::kDecodeNoStream:
             timer.setDesiredFrameRate( img->play_fps() );
             timer.waitUntilNextFrameIsDue();
-            if ( fg && !img->has_picture() && reel->edl &&
-                    img->is_left_eye() )
+            if ( fg && !img->has_picture() && img->is_left_eye() )
             {
                 int64_t f = frame + reel->location(img) - img->first_frame();
                 f -= img->audio_offset();
@@ -860,7 +859,7 @@ void audio_thread( PlaybackData* data )
 
 
 
-        if ( fg && !img->has_picture() && reel->edl && img->is_left_eye() )
+        if ( fg && !img->has_picture() && img->is_left_eye() )
         {
             int64_t offset = img->audio_offset();
             int64_t f = frame + reel->location(img) - img->first_frame();
@@ -1116,6 +1115,8 @@ void video_thread( PlaybackData* data )
         int64_t first, last;
         status = check_loop( frame, img, false, reel, timeline, first, last );
 
+
+
         // img->debug_video_packets( frame, img->name().c_str(), true );
         // img->debug_video_stores( frame, img->name().c_str(), true );
 
@@ -1321,10 +1322,18 @@ void video_thread( PlaybackData* data )
         }
 
 
-        if ( reel->edl && fg && img->is_left_eye() )
+        if ( fg && img->is_left_eye() )
         {
-            int64_t f = frame + reel->location(img) - img->first_frame();
-            view->frame( f );
+            int64_t f = frame;
+            if ( reel->edl )
+            {
+                f += reel->location(img) - img->first_frame();
+            }
+            else
+            {
+                f += img->first_frame() - 1;
+            }
+           view->frame( f );
         }
 
         timer.setDesiredSecondsPerFrame( delay );
