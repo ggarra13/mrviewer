@@ -4,11 +4,19 @@ v5.7.7  - Fixed long standing bug with playback in edl mode hanging or
 	- Bug fixed macOS release which had gotten broken unadvertedly.
 	  This made macOS icons wrong and forced you to validate the
 	  permissions on all dylibs besides the main executable.
+	  If the icons on your version are wrong, you should upgrade.
 
 v5.7.6  - Bug fixed selecting Single Selection when no image was in reel.
-	- Made Selcect Single Selection / Multi Selection be RADIO menus.
-(rerelase)
+	- Made Select Single Selection / Multi Selection be RADIO menus.
+
+	Rerelase
+	--------
+
 	- Bug fixed deletion of multiple clips.
+	- Bug fixed macOS release which had gotten broken unadvertedly..
+	  This made macOS icons wrong and forced you to validate the
+	  permissions on all dylibs besides the main executable.
+	  If the icons on your version are wrong, you should upgrade.
 
 v5.7.5  - Fixed selection of selected clip on dragging in reel list.
 	- Made Reel List insertion point be red and 4 pixels in height.
