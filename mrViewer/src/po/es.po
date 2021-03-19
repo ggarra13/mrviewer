@@ -21749,7 +21749,7 @@ msgstr "Archivo/Abrir/Pelicula o Secuencia para Estéreo"
 
 #: gui/mrvImageView.cpp:4474
 msgid "File/Quit"
-msgstr ""
+msgstr "Archivo/Salir"
 
 #: gui/mrvImageView.cpp:4459 gui/mrvImageBrowser.cpp:4011
 msgid "File/Save/Frame As"
@@ -21806,9 +21806,8 @@ msgstr "Primer Cuadro"
 
 #
 #: gui/mrvHotkey.cpp:324
-#, fuzzy
 msgid "First Image Version"
-msgstr "Próxima Versión de la Imagen"
+msgstr "Primera Versión de la Imagen"
 
 #: gui/mrvImageInformation.cpp:2742
 msgid "First frame of clip - User selected"
@@ -21816,7 +21815,7 @@ msgstr "Primer cuadro del clip - Selección del Usario"
 
 #: gui/mrvHotkey.cpp:303
 msgid "Fit All"
-msgstr ""
+msgstr "Encuadrar Todo"
 
 #: gui/mrvHotkey.cpp:301
 msgid "Fit Screen"
@@ -22947,9 +22946,8 @@ msgid "How to display timeline selection by default."
 msgstr "Cómo mostrar la selección de la línea de tiempo por defecto."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:79
-#, fuzzy
 msgid "Hue"
-msgstr "Hex"
+msgstr "Tono"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2228
 msgid "Hue value of image pixel under mouse."
@@ -23529,9 +23527,9 @@ msgstr "Índice inválido "
 
 #
 #: gui/mrvImageBrowser.cpp:2570
-#, fuzzy
+#
 msgid "InfoWindow"
-msgstr "Permutar Ventana de Forma de Onda"
+msgstr "Ventana de Información"
 
 #: gui/mrvImageBrowser.cpp:1034
 #, c-format
@@ -23670,9 +23668,8 @@ msgid "Invalid timecode "
 msgstr "Código de Tiempo inválido "
 
 #: gui/mrvImageBrowser.cpp:2551
-#, fuzzy
 msgid "Invalid version "
-msgstr "Índice inválido "
+msgstr "Versión inválida "
 
 #: core/aviImage.cpp:1888
 msgid "Invalid video stream "
@@ -24224,9 +24221,8 @@ msgstr "Último Cuadro"
 
 #
 #: gui/mrvHotkey.cpp:327
-#, fuzzy
 msgid "Last Image Version"
-msgstr "Próxima Versión de la Imagen"
+msgstr "Última Versión de la Imagen"
 
 #: gui/mrvImageInformation.cpp:2745
 msgid "Last frame of clip - User selected"
@@ -24969,7 +24965,7 @@ msgid "Menu"
 msgstr "Menu"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:808
-#, fuzzy
+#
 msgid "Menu Bar"
 msgstr "Menu"
 
@@ -25298,9 +25294,9 @@ msgid "NEC Corporation"
 msgstr ""
 
 #: video/mrvGLLut3d.cpp:638
-#, fuzzy
+#,
 msgid "NO OCIO"
-msgstr "OCIO"
+msgstr "SIN OCIO"
 
 #: gui/mrvImageBrowser.cpp:1806
 msgid "NO images in reel"
@@ -25395,9 +25391,8 @@ msgid "Next Image"
 msgstr "Próxima Imagen"
 
 #: gui/mrvHotkey.cpp:331 gui/mrvFileRequester.cpp:801
-#, fuzzy
 msgid "Next Image Limited"
-msgstr "Próxima Imagen"
+msgstr "Próxima Imagen Limitada"
 
 #
 #: gui/mrvHotkey.cpp:326
@@ -25896,11 +25891,11 @@ msgstr "Configuracion de OCIO (*.{"
 
 #
 #: gui/mrvPreferences.cpp:1564
-#, fuzzy
+#
 msgid ""
 "OCIO environment variable is not set.\n"
 "No OpenColorIO will be used."
-msgstr "La variable de entorno OCIO no existe.  Usando CTL."
+msgstr "La variable de entorno OCIO no existe.  No se usará OpenColorIO."
 
 #
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1856
@@ -26457,7 +26452,6 @@ msgid "PageUp"
 msgstr "Re Pág"
 
 #: gui/mrvImageBrowser.cpp:2681
-#, fuzzy
 msgid "Paint"
 msgstr "Herramientas de Acción"
 
@@ -26762,7 +26756,7 @@ msgid "PresentationMode %d"
 msgstr "Presentación"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1273
-#, fuzzy
+#,
 msgid "Preview Thumbnails"
 msgstr "Archivos de Previz"
 
@@ -26784,9 +26778,8 @@ msgid "Previous Image"
 msgstr "Imagen Previa"
 
 #: gui/mrvHotkey.cpp:330 gui/mrvFileRequester.cpp:802
-#, fuzzy
 msgid "Previous Image Limited"
-msgstr "Imagen Previa"
+msgstr "Imagen Previa Limitada"
 
 #: gui/mrvHotkey.cpp:325
 msgid "Previous Image Version"
@@ -27622,7 +27615,6 @@ msgid "Reel Name"
 msgstr "Nombre del Codec"
 
 #: gui/mrvImageBrowser.cpp:2554
-#, fuzzy
 msgid "ReelWindow"
 msgstr "Permutar Ventana de Carretes"
 
@@ -29708,14 +29700,12 @@ msgid "Select Audio Track"
 msgstr "Seleccionar Pista de Audio"
 
 #: gui/mrvHotkey.cpp:393
-#, fuzzy
 msgid "Select Multi Image"
-msgstr "Seleccionar Pista de Audio"
+msgstr "Seleccionar Multi Imagen"
 
 #: gui/mrvHotkey.cpp:392
-#, fuzzy
 msgid "Select Single Image"
-msgstr "Abrir Sólo una Imágen"
+msgstr "Seleccionars Sólo una Imágen"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:36
 msgid "Select an OCIO Transform"
@@ -29786,7 +29776,7 @@ msgstr "Selección"
 #: gui/mrvImageBrowser.cpp:1100
 #, fuzzy, c-format
 msgid "Selection %g %g %g %g\n"
-msgstr "Selección"
+msgstr ""
 
 # c-format
 #: gui/mrvImageView.cpp:4873
@@ -29879,7 +29869,7 @@ msgid "Set each movie/sequence default audio."
 msgstr "Setear el audio por defecto de cada película/secuencia"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1543
-#, fuzzy
+#
 msgid "Set reel images as background."
 msgstr "Setear la imagenes del carrete como fondo"
 
@@ -30908,7 +30898,7 @@ msgid "Toggle Background"
 msgstr "Permuta Fondo"
 
 #: gui/mrvHotkey.cpp:337 gui/mrvFileRequester.cpp:831
-#, fuzzy
+#
 msgid "Toggle Background Composite"
 msgstr "Permuta Fondo"
 
@@ -30971,9 +30961,9 @@ msgid "Toggle Media Info Window"
 msgstr "Permutar Ventana de Info del Medio"
 
 #: gui/mrvHotkey.cpp:339 gui/mrvFileRequester.cpp:798
-#, fuzzy
+#
 msgid "Toggle Menu Bar"
-msgstr "Permutar Barra de Pixel"
+msgstr "Permutar Barra de Menú"
 
 #: gui/mrvImageInformation.cpp:1021
 #, c-format
@@ -31093,14 +31083,14 @@ msgid "Track #%02zd"
 msgstr "Pista #%02zd"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:908
-#, fuzzy
+#
 msgid "Track #1"
 msgstr "Pista #"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:942
-#, fuzzy
+#,
 msgid "Track #2"
-msgstr "Pista #"
+msgstr "Pista #2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:447
 msgid "Traditional"
@@ -31112,9 +31102,9 @@ msgstr "Tradicional Sin Gama"
 
 #
 #: standalone/main.cpp:262
-#, fuzzy
+#
 msgid "Translations: "
-msgstr "Versiones "
+msgstr "Traducciones: "
 
 #: audio/mrvWaveEngine.cpp:340
 msgid "TrueVision"
@@ -31129,7 +31119,7 @@ msgid "Turn off screensaver"
 msgstr ""
 
 #: standalone/mrvCommandLine.cpp:394
-#, fuzzy
+#
 msgid "Turn on EDL when loading multiple images."
 msgstr "Active LDE cuando se cargan multiple imágenes"
 
@@ -31920,31 +31910,31 @@ msgstr "Versión:\t"
 
 #
 #: gui/mrvImageBrowser.cpp:2547
-#, fuzzy
+#
 msgid "Version "
-msgstr "Versiones "
+msgstr "Version "
 
 #
 #: gui/mrvImageView.cpp:4591 gui/mrvImageBrowser.cpp:3865
-#, fuzzy
+#
 msgid "Version/First"
-msgstr "Versiones "
+msgstr "Versión/Primera"
 
 #
 #: gui/mrvImageView.cpp:4600 gui/mrvImageBrowser.cpp:3874
-#, fuzzy
+#
 msgid "Version/Last"
-msgstr "Versiones "
+msgstr "Versión/Última "
 
 #: gui/mrvImageView.cpp:4594 gui/mrvImageBrowser.cpp:3871
-#, fuzzy
+#
 msgid "Version/Next"
-msgstr "Versión:\t"
+msgstr "Versión/Próxima"
 
 #: gui/mrvImageView.cpp:4596 gui/mrvImageBrowser.cpp:3868
-#, fuzzy
+#
 msgid "Version/Previous"
-msgstr "Imagen/Previa"
+msgstr "Versión/Previa"
 
 #: video/mrvGLEngine.cpp:221
 msgid "Version:\t"
@@ -32463,10 +32453,10 @@ msgstr ""
 "medio ya abierta."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:809
-#, fuzzy
+#
 msgid "When selected, mrViewer will start with the menu bar already shown."
 msgstr ""
-"Cuando está seleccionado, mrViewer comenzará con la línea de tiempo mostrada."
+"Cuando está seleccionado, mrViewer comenzará con la barra de menu mostrada."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:721
 msgid "When selected, mrViewer will start with the pixel toolbar shown."
@@ -33136,9 +33126,8 @@ msgid "YCbCr"
 msgstr ""
 
 #: video/mrvGLEngine.cpp:1771
-#, fuzzy
 msgid "YCbCr shader not created!"
-msgstr "No pude crear varita"
+msgstr "Shader YCbCr no creado!"
 
 #: video/mrvGLEngine.cpp:432
 msgid "YCbCrA"
@@ -35450,9 +35439,8 @@ msgid "color conversion"
 msgstr "Conversion de audio de "
 
 #: video/mrvGLQuad.cpp:1175
-#, fuzzy
 msgid "colorMatrix"
-msgstr "Área de Color"
+msgstr ""
 
 #: gui/mrvPreferences.cpp:399 gui/mrvPreferences.cpp:757
 #: gui/mrvPreferences.cpp:2026 gui/mrvPreferences.cpp:2167

@@ -18,6 +18,10 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in
 set( OpenGL_GL_PREFERENCE LEGACY )
 #set( OpenGL_GL_PREFERENCE GLVND )
 
+if ( NOT WIN32 )
+#   set( CMAKE_FIND_LIBRARY_SUFFIXES ".a" )
+endif()
+
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
