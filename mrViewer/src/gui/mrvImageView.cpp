@@ -7643,8 +7643,26 @@ void ImageView::show_background( const bool b )
         if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
 
+        int H = uiMain->uiRegion->h();
+
+        if ( has_menu_bar )    {
+            int w = uiMain->uiMenuGroup->w();
+            // Menubar MUST be 25 pixels-- for some reason it changes size
+            uiMain->uiMenuGroup->size( w, int(25) );
+            fill_menu( uiMain->uiMenuBar );
+            uiMain->uiMenuGroup->show();
+            H -= uiMain->uiMenuGroup->h();
+            // full screen...
+            if ( !FullScreen && !presentation )
+                H -= 6;
+            int X = 0;
+            int Y = 0;
+            int W = uiMain->uiRegion->w();
+            uiMain->uiRegion->resize( 0, 0, W, H );
+        }
+
+
         if ( has_top_bar && showtop )    {
-            int H = uiMain->uiRegion->h();
             int w = uiMain->uiTopBar->w();
             // Topbar MUST be 28 pixels-- for some reason it changes size
             uiMain->uiTopBar->size( w, int(28) );
@@ -7655,21 +7673,6 @@ void ImageView::show_background( const bool b )
             int W = uiMain->uiRegion->w();
             uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
-
-        if ( has_menu_bar )    {
-            int H = uiMain->uiRegion->h();
-            int w = uiMain->uiMenuGroup->w();
-            // Menubar MUST be 25 pixels-- for some reason it changes size
-            uiMain->uiMenuGroup->size( w, int(25) );
-            uiMain->uiMenuGroup->show();
-            H -= (uiMain->uiMenuGroup->h() + 6 );
-            fill_menu( uiMain->uiMenuBar );
-            int X = uiMain->uiMenuGroup->x();
-            int Y = uiMain->uiMenuGroup->y();
-            int W = uiMain->uiRegion->w();
-            uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
-        }
-
 
         if ( has_bottom_bar)  {
             uiMain->uiBottomBar->show();
