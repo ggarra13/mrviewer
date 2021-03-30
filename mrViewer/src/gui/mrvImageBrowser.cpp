@@ -635,10 +635,27 @@ void luminance_gradient_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 //
 // Attach a new OCIO Input Color Space to selected images.
 //
+void attach_ocio_ics_cb2( const std::string& ret, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::ImageView* view = v->view();
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        mrv::Element* w = (mrv::Element*) item->widget();
+        mrv::media m = w->media();
+        mrv::CMedia* img = m->image();
+        img->ocio_input_color_space( ret );
+        if ( i == 0 ) view->update_ICS(m);
+    }
+
+    view->redraw();
+}
+
 void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageBrowser* v )
 {
     Fl_Tree_Item* item = v->first_selected_item();
-    mrv::ImageView* view = v->view();
 
     mrv::Element* w = (mrv::Element*) item->widget();
     mrv::media m = w->media();
@@ -646,18 +663,7 @@ void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageBrowser* v )
     std::string ret = make_ocio_chooser( img->ocio_input_color_space(),
                                          mrv::OCIOBrowser::kInputColorSpace );
 
-
-    size_t i = 0;
-    for ( ; item; item = v->next_selected_item(item), ++i )
-    {
-        w = (mrv::Element*) item->widget();
-        m = w->media();
-        img = m->image();
-        img->ocio_input_color_space( ret );
-        if ( i == 0 ) view->update_ICS(m);
-    }
-
-    view->redraw();
+    attach_ocio_ics_cb2( ret, v );
 }
 
 namespace mrv {
@@ -3817,13 +3823,32 @@ void ImageBrowser::previous_image_limited()
                    (Fl_Callback*)open_cb, this);
         menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                    (Fl_Callback*)open_single_cb, this);
-        menu->add( _("Select/Single Image for Dragging"),
-                   kSelectSingleImage.hotkey(),
-                   (Fl_Callback*)select_single_cb, this,
-                   FL_MENU_RADIO|FL_MENU_VALUE );
-        menu->add( _("Select/Multiple Images for Modifying"),
-                   kSelectMultiImage.hotkey(),
-                   (Fl_Callback*)select_multi_cb, this, FL_MENU_RADIO);
+        int idx = menu->add( _("Select/Single Image for Dragging"),
+                             kSelectSingleImage.hotkey(),
+                             (Fl_Callback*)select_single_cb, this,
+                             FL_MENU_RADIO|FL_MENU_VALUE );
+        Fl_Menu_Item* item = (Fl_Menu_Item*) &menu->menu()[idx];
+        if ( selectmode() == FL_TREE_SELECT_MULTI )
+        {
+            item->clear();
+        }
+        else
+        {
+            item->set();
+        }
+        idx = menu->add( _("Select/Multiple Images for Modifying"),
+                         kSelectMultiImage.hotkey(),
+                         (Fl_Callback*)select_multi_cb, this,
+                         FL_MENU_RADIO);
+        item = (Fl_Menu_Item*) &menu->menu()[idx];
+        if ( selectmode() == FL_TREE_SELECT_MULTI )
+        {
+            item->set();
+        }
+        else
+        {
+            item->clear();
+        }
         menu->add( _("OCIO/Input Color Space"),
                    kOCIOInputColorSpace.hotkey(),
                    (Fl_Callback*)attach_ocio_ics_cb, this);

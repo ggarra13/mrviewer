@@ -588,6 +588,34 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
 
+    std::string GLLut3d::update_ICS( const ViewerUI* view,
+                                     const CMedia* img,
+                                     const char* lbl )
+    {
+        std::string msg;
+        mrv::PopupMenu* uiICS = view->uiICS;
+        for ( unsigned i = 0; i < uiICS->children(); ++i )
+        {
+            if ( ! uiICS->child(i)->label() ) continue;
+            std::string name = uiICS->child(i)->label();
+            if ( name == lbl )
+            {
+                msg += _("  Choosing ") + name + ".";
+                CMedia* c = const_cast< CMedia* >( img );
+
+                char buf[1024];
+                sprintf( buf, "ICS \"%s\"", name.c_str() );
+                view->uiView->send_network( buf );
+
+                c->ocio_input_color_space( name );
+                uiICS->copy_label( lbl );
+                uiICS->value(i);
+                uiICS->redraw();
+                break;
+            }
+        }
+        return msg;
+    }
 
 
 
@@ -653,6 +681,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                 LOG_INFO( _("3D Lut for ") << img->name()
                           << _(" already created: " ) );
                 LOG_INFO( path );
+                update_ICS( view, img, "" );
             }
             return i->second;
         }
@@ -664,27 +693,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         {
             std::string msg = _( "Image input color space is undefined for ") +
                               img->name() + ".";
-            mrv::PopupMenu* uiICS = view->uiICS;
-            const char* const lbl = "scene_linear";
-            for ( unsigned i = 0; i < uiICS->children(); ++i )
-            {
-                std::string name = uiICS->child(i)->label();
-                if ( name == lbl )
-                {
-                    msg += _("  Choosing ") + name + ".";
-                    CMedia* c = const_cast< CMedia* >( img );
-
-                    char buf[1024];
-                    sprintf( buf, "ICS \"%s\"", name.c_str() );
-                    view->uiView->send_network( buf );
-
-                    c->ocio_input_color_space( name );
-                    uiICS->copy_label( lbl );
-                    uiICS->value(i);
-                    uiICS->redraw();
-                    break;
-                }
-            }
+            msg += update_ICS( view, img );
             LOG_INFO( msg );
         }
         else

@@ -121,7 +121,10 @@ void errorbuffer::print( const char* c )
     // Send string to Log Window
     if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
+        Fl::lock();
         ViewerUI::uiLog->uiLogText->error( c );
+        Fl::unlock();
+        Fl::awake();
     }
 }
 
@@ -132,7 +135,10 @@ void warnbuffer::print( const char* c )
     // Send string to Log Window
     if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
+        Fl::lock();
         ViewerUI::uiLog->uiLogText->warning( c );
+        Fl::unlock();
+        Fl::awake();
     }
 }
 
@@ -143,7 +149,10 @@ void infobuffer::print( const char* c )
     // Send string to Log Window
     if ( ViewerUI::uiLog && ViewerUI::uiLog->uiLogText )
     {
+        Fl::lock();
         ViewerUI::uiLog->uiLogText->info( c );
+        Fl::unlock();
+        Fl::awake();
     }
 }
 
@@ -154,8 +163,11 @@ void connbuffer::print( const char* c )
     // Send string to Log Window in Connection panel
     if ( ViewerUI::uiConnection && ViewerUI::uiConnection->uiLog )
     {
+        Fl::lock();
         ViewerUI::uiConnection->uiLog->info( c );
         ViewerUI::uiConnection->uiLog->redraw();
+        Fl::unlock();
+        Fl::awake();
     }
 }
 

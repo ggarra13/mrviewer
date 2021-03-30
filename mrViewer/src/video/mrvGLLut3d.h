@@ -120,6 +120,9 @@ protected:
     void init_pixel_values( Imf::Array< float >& pixelValues );
 
 public:
+    static std::string update_ICS( const ViewerUI* view,
+                                   const CMedia* img,
+                                   const char* lbl = "scene_linear" );
 
     static GLLut3d_ptr factory( const ViewerUI* ui, const CMedia* img );
     static void     clear();

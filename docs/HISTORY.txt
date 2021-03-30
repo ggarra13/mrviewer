@@ -1,3 +1,12 @@
+v5.7.8  - Allowed changing multiple Input Color Spaces for multiple images
+	  when selecting multiple images and using the main pulldown menu.
+	  You can also do it with the OCIO/Input Color Space option.
+	- Fixed selection of multiple images tick which would revert to
+	  single image when the menus were recreated.
+	- Fixed selection of input color space for images that don't have
+	  one by default.  Previously, they would always revert to
+	  scene_linear even when the video was left as RGB.
+
 v5.7.7  - Fixed long standing bug with playback in edl mode hanging or
 	  segfaulting.
 	- Bug fixed presentation mode not hiding the menu bar.

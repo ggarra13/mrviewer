@@ -3370,7 +3370,6 @@ again:
         {
             CMedia* img = fg->image();
             img->ocio_input_color_space( s );
-            update_ICS(fg);
         }
         break;
     }
@@ -9326,6 +9325,8 @@ void ImageView::foreground( mrv::media fg )
             {
                 create_timeout( 0.2 );
             }
+
+            update_ICS( fg );
         }
     }
 

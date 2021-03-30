@@ -47,6 +47,9 @@
 extern std::string retname;
 class ViewerUI;
 
+// Callbacks
+void attach_ocio_ics_cb2( const std::string& ret, mrv::ImageBrowser* v );
+
 namespace mrv
 {
 class Element;

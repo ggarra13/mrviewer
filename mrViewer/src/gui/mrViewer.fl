@@ -844,7 +844,7 @@ if ( i < 0 || i >= (int)o->children() ) return;
 
 std::string c = o->child( i )->label();
 o->copy_label( c.c_str() );
-img->ocio_input_color_space( c );
+attach_ocio_ics_cb2( c, v->uiView->browser() );
 char buf[256];
 sprintf( buf, "ICS \\"%s\\"", c.c_str() );
 v->uiView->send_network( buf );
