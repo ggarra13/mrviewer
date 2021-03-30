@@ -6,6 +6,7 @@ v5.7.8  - Allowed changing multiple Input Color Spaces for multiple images
 	- Fixed selection of input color space for images that don't have
 	  one by default.  Previously, they would always revert to
 	  scene_linear even when the video was left as RGB.
+	- Made logger be fully thread safe.
 
 v5.7.7  - Fixed long standing bug with playback in edl mode hanging or
 	  segfaulting.
