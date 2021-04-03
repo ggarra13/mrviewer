@@ -586,7 +586,6 @@ void Timeline::draw_selection( const mrv::Recti& r )
         b->redraw();
         win->end();
         win->show();
-        take_focus();
     }
 
 int Timeline::handle( int e )
@@ -640,15 +639,17 @@ int Timeline::handle( int e )
         v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
         frame = clamp(v);
 
-        if ( Fl::has_timeout( (Fl_Timeout_Handler)showwin, this ) )
-            Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
-        Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
+        if ( uiMain->uiPrefs->uiPrefsTimelineThumbnails->value() )
+        {
+            if ( Fl::has_timeout( (Fl_Timeout_Handler)showwin, this ) )
+                Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+            Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
+        }
     }
     else if ( e == FL_LEAVE )
     {
         Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
         if (win) win->hide();
-        if ( uiMain->uiView ) uiMain->uiView->take_focus();
     }
     else if ( e == FL_KEYDOWN )
     {

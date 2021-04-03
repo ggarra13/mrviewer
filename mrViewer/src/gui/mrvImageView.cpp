@@ -8081,6 +8081,7 @@ int ImageView::handle(int event)
         window()->cursor(FL_CURSOR_DEFAULT);
         return 1;
     case FL_PUSH:
+        focus(this);
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:

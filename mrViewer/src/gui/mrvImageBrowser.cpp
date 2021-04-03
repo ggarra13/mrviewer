@@ -4596,6 +4596,22 @@ void ImageBrowser::seek( const int64_t tframe )
     }
 
 
+    // Update current frame and timeline
+    mrv::Timeline* timeline = uiMain->uiTimeline;
+    if ( timeline->visible() )
+    {
+        timeline->value( double(f) );
+        uiMain->uiFrame->value(f );  // so it is displayed properly
+    }
+
+    if ( uiMain->uiEDLWindow )
+    {
+        mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
+        if (t && t->visible() )
+        {
+            t->value( double(f) );
+        }
+    }
 
     view()->redraw();
     redraw();
@@ -4814,7 +4830,6 @@ void ImageBrowser::draw()
             if ( elem->visible_r() ) elem->make_thumbnail();
         }
     }
-
 
     // Let tree draw itself
     Fl_Tree::draw();

@@ -98,20 +98,20 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {697 463 675 455} type Double resizable
+      xywh {326 405 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
-      Fl_Group {} {
+      Fl_Group {} {open
         xywh {0 0 675 455} box UP_BOX resizable
       } {}
       Fl_Wizard uiWizard {
-        label Settings open
-        xywh {200 25 473 520} box PLASTIC_UP_BOX labelcolor 32
+        label Settings open selected
+        xywh {200 25 473 430} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
           label {User Interface}
-          xywh {210 48 453 497} box EMBOSSED_BOX align 5 hide
+          xywh {210 48 453 349} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label {Window Behavior}
@@ -211,7 +211,7 @@ If you try to open several mrViewers with different images, all these images wil
         }
         Fl_Group {} {
           label {View Window}
-          xywh {220 34 423 417} box EMBOSSED_BOX align 5 hide
+          xywh {220 34 423 354} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label Defaults
@@ -375,7 +375,7 @@ If you try to open several mrViewers with different images, all these images wil
         }
         Fl_Group {} {
           label Colors
-          xywh {220 36 439 409} box EMBOSSED_BOX align 5 hide
+          xywh {220 36 439 349} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label UI open
@@ -537,7 +537,7 @@ uiWindowYSize->value( v->uiMain->h() );}
         }
         Fl_Group Playback {
           label Playback
-          xywh {230 57 433 335} box EMBOSSED_BOX align 5 hide
+          xywh {230 57 433 335} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Defaults
@@ -646,11 +646,11 @@ uiPrefsFPS->value( g );} open
         }
         Fl_Group {} {
           label Timeline
-          xywh {275 58 322 176} box ROUNDED_BOX align 17 hide
+          xywh {235 58 400 338} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Choice uiPrefsTimelineDisplay {
             label Display
-            tooltip {How to display timeline by default.} xywh {375 97 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            tooltip {How to display timeline by default.} xywh {310 97 310 25} box THIN_DOWN_BOX down_box BORDER_BOX
             code0 {o->value(0);}
           } {
             MenuItem {} {
@@ -676,7 +676,7 @@ uiPrefsFPS->value( g );} open
           }
           Fl_Choice uiPrefsTimelineSelectionDisplay {
             label Selection
-            tooltip {How to display timeline selection by default.} xywh {375 137 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            tooltip {How to display timeline selection by default.} xywh {310 137 310 25} box THIN_DOWN_BOX down_box BORDER_BOX
             code0 {o->value(0);}
           } {
             MenuItem {} {
@@ -690,7 +690,7 @@ uiPrefsFPS->value( g );} open
           }
           Fl_Check_Button uiPrefsTimelineThumbnails {
             label {Preview Thumbnails}
-            xywh {375 183 63 15} down_box DOWN_BOX
+            xywh {305 179 63 19} down_box DOWN_BOX
           }
         }
         Fl_Group {} {
@@ -911,7 +911,7 @@ This setting thus allows caching more pictures in memory for float and half pict
         }
         Fl_Group {} {
           label {3D Luts}
-          xywh {210 32 438 358} box EMBOSSED_BOX align 5
+          xywh {210 32 438 358} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label Quality open
@@ -1509,7 +1509,7 @@ v->uiView->redraw();}
           }
         }
         Fl_Group {} {
-          label Images open
+          label Images
           tooltip {Options controlling the OpenEXR reader/writer} xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1681,7 +1681,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           }
         }
       }
-      Fl_Group {} {open
+      Fl_Group {} {
         xywh {0 3 200 447} box PLASTIC_UP_BOX
       } {
         Fl_Tree {} {
@@ -1705,7 +1705,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           class {mrv::PreferencesTree}
         }
       }
-      Fl_Group {} {open
+      Fl_Group {} {
         xywh {235 402 415 36}
       } {
         Fl_Button {} {
@@ -1771,7 +1771,6 @@ o->add( _("Errors") );
 o->add( _("Images") );
 o->add( _("OpenEXR") );
 o->add( _("RED3D - BRAW") );
-o->select( item );} {selected
-    }
+o->select( item );} {}
   }
 }

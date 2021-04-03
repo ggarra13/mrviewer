@@ -490,7 +490,7 @@ o->redraw();}
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-        v->uiCurrentFrame->value( o->value() );
+	v->uiCurrentFrame->value( o->value() );
 }}
             xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
@@ -501,7 +501,7 @@ if ( v->uiAttrsWindow )
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-        v->uiAllFrames->value( o->value() );
+	v->uiAllFrames->value( o->value() );
 }}
             xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
@@ -659,7 +659,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {266 229 690 565} type Double align 80 resizable
+      xywh {266 425 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -672,11 +672,17 @@ o->main( this );}
           xywh {0 0 690 25} box FLAT_BOX
         } {
           Fl_Menu_Bar uiMenuBar {
-            xywh {0 0 635 25}
+            xywh {0 0 605 25}
           } {}
           Fl_Group uiMenuButtons {open
-            xywh {635 0 55 25} color 63
+            xywh {605 0 85 25} color 63
           } {
+            Fl_Button {} {
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->resize_main_window();
+v->uiView->fit_image();}
+              tooltip {Fit Window to Image} image {../../icons/fit_image.png} xywh {606 0 28 25}
+            }
             Fl_Button {} {
               callback {uiPrefs->uiMain->show();}
               tooltip Preferences image {../../icons/settings.xpm} xywh {662 0 28 25}
@@ -799,8 +805,8 @@ v->uiView->show_background(false);}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
-              v->uiView->channel( m );
-              //v->uiView->channel( o->value() );} open
+	      v->uiView->channel( m );
+	      //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {76 27 90 22}
               class {mrv::PopupMenu}
             } {}
@@ -916,8 +922,7 @@ Click to toggle between current and normal exposure.} xywh {329 27 64 22} labelf
                 Fl_Menu_Button gammaDefaults {
                   label Gamma
                   user_data this user_data_type {ViewerUI*}
-                  callback {
-char* oldloc = av_strdup( setlocale(LC_NUMERIC, "" ) );
+                  callback {char* oldloc = av_strdup( setlocale(LC_NUMERIC, "" ) );
 float g = (float) atof( o->child( o->value() )->label() );
 if ( !mrv::is_equal( g, 0.0f ) )
 {
@@ -936,25 +941,25 @@ else
     const Fl_Menu_Item* c = o->child(0);
     for ( ; c != w; ++c )
     {
-        if ( c->flags & FL_SUBMENU ) p = c;
+	if ( c->flags & FL_SUBMENU ) p = c;
     }
     if ( p && p->label() )
     {
        mrv::Preferences::OCIO_Display = p->label();
        if ( lbl && strcmp(lbl, p->label()) != 0 )
        {
-         mrv::Preferences::OCIO_View = lbl;
+	 mrv::Preferences::OCIO_View = lbl;
        }
     }
     else
     {
-        if (!c || !c->label() ) return;
-        std::string view = c->label();
-        size_t pos = view.find( '(' );
-        std::string display = view.substr( pos+1, view.size() );
-        mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
-        pos = display.find( ')' );
-        mrv::Preferences::OCIO_Display = display.substr( 0, pos );
+	if (!c || !c->label() ) return;
+	std::string view = c->label();
+	size_t pos = view.find( '(' );
+	std::string display = view.substr( pos+1, view.size() );
+	mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
+	pos = display.find( ')' );
+	mrv::Preferences::OCIO_Display = display.substr( 0, pos );
     }
 
     setlocale(LC_NUMERIC, oldloc );
@@ -1012,7 +1017,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
               }
             }
           }
-          Fl_Group {} {selected
+          Fl_Group {} {
             xywh {605 28 79 22}
           } {
             Fl_Menu_Button uiField {
@@ -1470,13 +1475,13 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
             }
           }
         }
-        Fl_Group uiBottomBar {
+        Fl_Group uiBottomBar {open
           xywh {0 514 690 50} box ENGRAVED_BOX
         } {
-          Fl_Group uiTimeToolbar {
+          Fl_Group uiTimeToolbar {open
             xywh {0 514 690 50}
           } {
-            Fl_Group {} {
+            Fl_Group {} {open
               xywh {0 514 690 50}
             } {
               Fl_Slider uiTimeline {
@@ -1513,7 +1518,7 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
               Fl_Group {} {open
                 xywh {0 537 686 27}
               } {
-                Fl_Group {} {
+                Fl_Group {} {open
                   xywh {4 541 94 20}
                 } {
                   Fl_Menu_Button uiTimecodeSwitch {
@@ -1548,11 +1553,12 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
                   Fl_Input uiFrame {
                     user_data this user_data_type {ViewerUI*}
                     callback {int64_t f = o->value();
+if ( !v->uiTimeline ) return;
 if ( f < v->uiTimeline->minimum() )
    f = int64_t( v->uiTimeline->minimum() );
 else if ( f > v->uiTimeline->maximum() )
    f = int64_t( v->uiTimeline->maximum() );
-v->uiView->seek( f );}
+v->uiView->seek( f );} selected
                     tooltip {Current frame.} xywh {24 541 70 20} color -1733777408 selection_color 0
                     code0 {o->value(1);}
                     class {mrv::Timecode}
@@ -1715,6 +1721,7 @@ o->value(24);}
                   Fl_Input uiStartFrame {
                     user_data this user_data_type {ViewerUI*}
                     callback {int64_t f = o->value();
+if ( !v->uiTimeline ) return;
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
@@ -1725,6 +1732,7 @@ v->uiTimeline->redraw();}
                   Fl_Input uiEndFrame {
                     user_data this user_data_type {ViewerUI*}
                     callback {int64_t f = o->value();
+if ( !v->uiTimeline ) return;
 v->uiTimeline->maximum( double(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
