@@ -177,10 +177,16 @@ void media::create_thumbnail( unsigned W, unsigned H )
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
+    bool flipX = _image->flipX();
+    bool flipY = _image->flipY();
+    if ( _image->rot_z() == 180.0f )
+    {
+        flipX ^= true; flipY ^= true;
+    }
     int yinc = 1;
     int ymin = 0;
     int ymax = h;
-    if ( _image->flipY() )
+    if ( flipY )
     {
         yinc = -1;
         ymin = h - 1;
@@ -189,7 +195,7 @@ void media::create_thumbnail( unsigned W, unsigned H )
     int xinc = 1;
     int xmin = 0;
     int xmax = w;
-    if ( _image->flipX() )
+    if ( flipX )
     {
         xinc = -1;
         xmin = w - 1;
@@ -217,6 +223,7 @@ void media::create_thumbnail( unsigned W, unsigned H )
             thumbnail_pixel( ptr, r, g, b );
         }
     }
+
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );

@@ -7710,9 +7710,9 @@ void ImageView::toggle_fullscreen()
                          uiMain->uiToolsGroup->visible() : false;
         has_menu_bar = uiMain->uiMenuGroup ?
                        uiMain->uiMenuGroup->visible() : false;
-        has_top_bar = true;
-        has_bottom_bar = true;
-        has_pixel_bar = true;
+        has_top_bar = uiMain->uiTopBar->visible();
+        has_bottom_bar = uiMain->uiBottomBar->visible();
+        has_pixel_bar = uiMain->uiPixelBar->visible();
     }
     else
     {

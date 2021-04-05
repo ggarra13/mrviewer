@@ -857,6 +857,11 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
             _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
             image_damage( image_damage() | kDamageTimecode );
         }
+        else if ( name == N_("Video rotate") || name == _("Video rotate") ||
+                  name == N_("rotate") )
+        {
+            _rot_z = atof( tag->value );
+        }
         else
         {
             Imf::StringAttribute attr( tag->value );
