@@ -1541,17 +1541,43 @@ static void change_float_cb( Fl_Float_Input* w, ImageInformation* info )
     if ( !img ) return;
 
     Fl_Group* g = (Fl_Group*)w->parent()->parent();
+
+    for ( int j = 0; j < g->children(); ++j )
+    {
+        Fl_Group* sg = dynamic_cast< Fl_Group* >( g->child(j) );
+        if ( !sg || sg->children() == 0 ) continue;
+
+        Fl_Widget* widget = sg->child(0);  // Fl_Box Label
+
+        Fl_Group* tg = dynamic_cast< Fl_Group* >( g->child(j+1) );
+        if ( !tg || tg->children() == 0 ) continue;
+        Fl_Widget* sw = tg->child(0);  // Fl_Float_Input Value
+
+        if ( !widget->label() || sw != w ) continue;
+        std::string key = widget->label();
+
+        CMedia::Attributes& attributes = img->attributes();
+        CMedia::Attributes::iterator i = attributes.find( key );
+        if ( i != attributes.end() )
+        {
+            if ( key == "rotate" || key == "Video rotate" ||
+                 key == _("Video rotate") )
+            {
+                img->rot_z( (float) atof( w->value() ) );
+                img->image_damage( img->image_damage() |
+                                   CMedia::kDamageContents );
+                info->view()->redraw();
+            }
+            modify_float( w, i );
+            return;
+        }
+    }
+
+
+
     Fl_Widget* widget = g->child(0);
     if ( !widget->label() ) return;
 
-    std::string key = widget->label();
-    CMedia::Attributes& attributes = img->attributes();
-    CMedia::Attributes::iterator i = attributes.find( key );
-    if ( i != attributes.end() )
-    {
-        modify_float( w, i );
-        return;
-    }
 }
 
 static void change_string_cb( Fl_Input* w, ImageInformation* info )
@@ -4441,7 +4467,6 @@ void ImageInformation::add_float( const char* name,
     int hh = line_height();
     Y += hh;
     Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
-    g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
@@ -4449,6 +4474,7 @@ void ImageInformation::add_float( const char* name,
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
+        g->end();
     }
     m_curr->add( g );
 

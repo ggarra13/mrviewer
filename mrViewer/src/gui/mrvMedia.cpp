@@ -179,7 +179,9 @@ void media::create_thumbnail( unsigned W, unsigned H )
     float gamma = 1.0f / _image->gamma();
     bool flipX = _image->flipX();
     bool flipY = _image->flipY();
-    if ( _image->rot_z() == 180.0f )
+    if ( (_image->rot_z() >= 179.99f  && _image->rot_z() <= 180.01) ||
+         (_image->rot_z() <= -179.99f && _image->rot_z() >= -180.01)
+        )
     {
         flipX ^= true; flipY ^= true;
     }

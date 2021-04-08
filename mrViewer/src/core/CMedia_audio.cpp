@@ -60,6 +60,7 @@ extern "C" {
 #include <limits>
 
 #include <ImfTimeCodeAttribute.h>
+#include <ImfFloatAttribute.h>
 #include <ImfStringAttribute.h>
 
 
@@ -861,6 +862,8 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
                   name == N_("rotate") )
         {
             _rot_z = atof( tag->value );
+            Imf::FloatAttribute attr( _rot_z );
+            _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
         }
         else
         {

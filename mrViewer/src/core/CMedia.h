@@ -1433,6 +1433,9 @@ public:
     inline void rotate( float t ) {
         _rot_z += t;
     }
+    inline void rot_z( float t ) {
+        _rot_z = t;
+    }
     inline double rot_z() const {
         return _rot_z;
     }
