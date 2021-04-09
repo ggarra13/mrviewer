@@ -7348,10 +7348,12 @@ int ImageView::keyDown(unsigned int rawkey)
         // Topbar MUST be 28 pixels-- for some reason it changes size
         uiMain->uiTopBar->size( w, int(28) );
         if ( uiMain->uiTopBar->visible() ) {
+            has_top_bar = false;
             uiMain->uiTopBar->hide();
             H += uiMain->uiTopBar->h();
         }
         else {
+            has_top_bar = true;
             uiMain->uiTopBar->show();
             H -= uiMain->uiTopBar->h();
         }
@@ -7369,10 +7371,12 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         int H = uiMain->uiRegion->h();
         if ( uiMain->uiPixelBar->visible() ) {
+            has_pixel_bar = false;
             uiMain->uiPixelBar->hide();
             H += uiMain->uiPixelBar->h();
         }
         else {
+            has_pixel_bar = true;
             uiMain->uiPixelBar->show();
             H -= uiMain->uiPixelBar->h();
         }
@@ -7389,10 +7393,12 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         int H = uiMain->uiRegion->h();
         if ( uiMain->uiBottomBar->visible() ) {
+            has_bottom_bar = false;
             uiMain->uiBottomBar->hide();
             H += uiMain->uiBottomBar->h();
         }
         else {
+            has_bottom_bar = true;
             uiMain->uiBottomBar->show();
             H -= uiMain->uiBottomBar->h();
         }
