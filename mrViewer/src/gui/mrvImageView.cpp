@@ -7323,10 +7323,12 @@ int ImageView::keyDown(unsigned int rawkey)
         // MenuBar MUST be 25 pixels-- for some reason it changes size
         uiMain->uiMenuGroup->size( w, int(25) );
         if ( uiMain->uiMenuGroup->visible() ) {
+            has_menu_bar = false;
             uiMain->uiMenuGroup->hide();
             H += uiMain->uiMenuGroup->h();
         }
         else {
+            has_menu_bar = true;
             fill_menu( uiMain->uiMenuBar );
             uiMain->uiMenuGroup->show();
             H -= uiMain->uiMenuGroup->h();
