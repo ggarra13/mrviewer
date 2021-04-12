@@ -5,7 +5,9 @@
 !define /math LVM_GETITEMTEXTW ${LVM_FIRST} + 115 
 ${_NSIS_DEFAW} LVM_GETITEMTEXT 
 !endif 
-Var hListCtl 
+Var hListCtl
+Var bCheckAll
+Var bUnCheckAll
 Page Custom LVPageCreate LVPageLeave 
 
 Function AddCheckedListViewItemWith1SubItem  
@@ -25,6 +27,28 @@ System::Free $9
 System::Store L  
 FunctionEnd
 
+!macro LVUnCheckAll hLV tempvar
+System::Call '*(i ${LVIF_STATE},i,i 0,i0x1000,&i${NSIS_PTR_SIZE} ${LVIS_STATEIMAGEMASK},p0,i0,i,p)p.s'
+Pop ${tempvar}
+SendMessage ${hLV} ${LVM_SETITEMSTATE} -1 ${tempvar}
+System::Free ${tempvar}
+!macroend
+
+Function UnCheckAll
+  !insertmacro LVUnCheckAll $hListCtl $0
+FunctionEnd
+
+!macro LVCheckAll hLV tempvar
+System::Call '*(i ${LVIF_STATE},i,i 0,i0x2000,&i${NSIS_PTR_SIZE} ${LVIS_STATEIMAGEMASK},p0,i0,i,p)p.s'
+Pop ${tempvar}
+SendMessage ${hLV} ${LVM_SETITEMSTATE} -1 ${tempvar}
+System::Free ${tempvar}
+!macroend
+
+Function CheckAll
+  !insertmacro LVCheckAll $hListCtl $0
+FunctionEnd
+
 !macro AddCheckedListViewItemWith1SubItem hLV txt sub1 checked 
 Push ${hLV}  
 Push "${txt}"  
@@ -39,7 +63,7 @@ Pop $0
 
 ${NSD_CreateLabel} 0 0 100% 12u "File associations for mrViewer"
 
-nsDialogs::CreateControl "SysListView32" ${DEFAULT_STYLES}|${WS_TABSTOP}|${WS_VSCROLL}|${LVS_REPORT} ${WS_EX_WINDOWEDGE}|${WS_EX_CLIENTEDGE} 0 20 100% 90% "" 
+nsDialogs::CreateControl "SysListView32" ${DEFAULT_STYLES}|${WS_TABSTOP}|${WS_VSCROLL}|${LVS_REPORT} ${WS_EX_WINDOWEDGE}|${WS_EX_CLIENTEDGE} 0 30% 100% 75% "" 
 Pop $hListCtl 
 IntOp $0 ${LVS_EX_FULLROWSELECT} | ${LVS_EX_CHECKBOXES} 
 SendMessage $hListCtl ${LVM_SETEXTENDEDLISTVIEWSTYLE} 0 $0 
@@ -119,7 +143,16 @@ System::Free $9
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".wav" "Waveform Audio Format" 0
 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 0 -1 
-SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 1 -1 
+SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 1 -1
+
+${NSD_CreateButton} 0 20u 30% 10% "Check All"
+Pop $bCheckAll
+${NSD_OnClick} $bCheckAll checkAll
+
+${NSD_CreateButton} 60% 20u 30% 10% "UnCheck All"
+Pop $bUnCheckAll
+${NSD_OnClick} $bUnCheckAll unCheckAll
+
 System::Call 'USER32::PostMessage(p $hwndparent, i ${WM_NEXTDLGCTL}, p $hListCtl, i1)'
 nsDialogs::Show 
 FunctionEnd 

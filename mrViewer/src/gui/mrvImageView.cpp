@@ -7674,11 +7674,11 @@ void ImageView::show_background( const bool b )
             // Topbar MUST be 28 pixels-- for some reason it changes size
             uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
-            H -= uiMain->uiTopBar->h();
-            int X = uiMain->uiTopBar->x();
-            int Y = uiMain->uiTopBar->y();
-            int W = uiMain->uiRegion->w();
-            uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
+            // H -= uiMain->uiTopBar->h();
+            // int X = uiMain->uiTopBar->x();
+            // int Y = uiMain->uiTopBar->y();
+            // int W = uiMain->uiRegion->w();
+            // uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
 
         if ( has_bottom_bar)  {
@@ -7711,6 +7711,8 @@ void ImageView::toggle_fullscreen()
         posX = fltk_main()->x();
         posY = fltk_main()->y();
         if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
+        sizeX = fltk_main()->w();
+        sizeY = fltk_main()->h();
         fltk_main()->fullscreen();
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
@@ -7727,7 +7729,19 @@ void ImageView::toggle_fullscreen()
         FullScreen = false;
         presentation = false;
         show_bars( uiMain );
-        resize_main_window();
+        if ( fltk_main()->fullscreen_active() )
+        {
+            DBGM0( "POSF x, y " << posX << " " << posY );
+            fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
+            DBGM0( "WNDF x, y " << fltk_main()->x() << " "
+                   << fltk_main()->y() );
+        }
+        else
+        {
+            resize_main_window();
+        }
+        DBGM0( "POS2 x, y " << posX << " " << posY );
+        DBGM0( "WND2 x, y " << fltk_main()->x() << " " << fltk_main()->y() );
     }
 
 
@@ -7808,8 +7822,13 @@ void ImageView::toggle_presentation()
             texture_filtering( kBilinearFiltering );
         }
 
+        sizeX = fltk_main()->w();
+        sizeY = fltk_main()->h();
+
         if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
+
         fltk_main()->fullscreen();
+
         float scale = Fl::screen_scale( window()->screen_num() );
         int X = window()->x();
         int Y = window()->y();
@@ -7846,11 +7865,13 @@ void ImageView::toggle_presentation()
 
         texture_filtering( filter );
         presentation = false;
-        FullScreen = false;
+        //FullScreen = false;
+        fltk_main()->fullscreen_off();
 
         show_bars( uiMain, false );
 
-        resize_main_window();
+        fltk_main()->resize( posX, posY, sizeX, sizeY );
+        // resize_main_window();
 
         show_bars( uiMain, true );
 
@@ -9592,8 +9613,9 @@ void ImageView::resize_main_window()
         posY = 0;
     }
 
-
+#if 0
     if ( posX + w > maxx ) {
+        w = maxw;
         posX = ( w + posX - maxw ) / 2;
     }
     if ( posX + w > maxx ) {
@@ -9613,6 +9635,7 @@ void ImageView::resize_main_window()
     if ( posY < miny + kTitleBar ) {
         posY = miny + kTitleBar;
     }
+#endif
 
     w = int(w / scale);
     h = int(h / scale);
@@ -9675,9 +9698,11 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
+    DBGM0( "RES X,Y " << posX << ", " << posY );
+
     if ( fltk_main()->fullscreen_active() )
     {
-        fltk_main()->fullscreen_off( posX, posY, w, h );
+        fltk_main()->fullscreen_off();
     }
     else
     {

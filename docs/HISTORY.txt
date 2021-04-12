@@ -1,9 +1,10 @@
+v5.8.1  - Windows' .EXE installer now supports two buttons for check all and
+	  uncheck all for all extensions.
+
 v5.8.0  - Added support for video rotate in movie files.
 	- Bug fixed F11 returning and resetting the interface.
 	- Bug fixed change_float_cb in Media Information window.
 	- Added translation for init R3D SDK.
-	- Set BuildFFmpeg.cmake without x265 dependency as it is a pain to
-	  compile.
 	- Fixed BuildFFmpeg.cmake to compile without pkgconfig.
 	- Fixed BuildImageMagick.cmake without master branch
 	  (it is called main).

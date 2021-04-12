@@ -944,6 +944,7 @@ protected:
     // Old state for actions
     //
     int           posX, posY;  //<- non-fullscreen window position
+    int           sizeX, sizeY; //<- non-fullscreen window size
     double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
     int                flags;  //<- flags containing current user action
