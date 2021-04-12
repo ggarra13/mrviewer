@@ -7731,17 +7731,12 @@ void ImageView::toggle_fullscreen()
         show_bars( uiMain );
         if ( fltk_main()->fullscreen_active() )
         {
-            DBGM0( "POSF x, y " << posX << " " << posY );
-            fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
-            DBGM0( "WNDF x, y " << fltk_main()->x() << " "
-                   << fltk_main()->y() );
+            fltk_main()->fullscreen_off();
         }
         else
         {
             resize_main_window();
         }
-        DBGM0( "POS2 x, y " << posX << " " << posY );
-        DBGM0( "WND2 x, y " << fltk_main()->x() << " " << fltk_main()->y() );
     }
 
 
@@ -7866,12 +7861,12 @@ void ImageView::toggle_presentation()
         texture_filtering( filter );
         presentation = false;
         //FullScreen = false;
-        fltk_main()->fullscreen_off();
+        //fltk_main()->fullscreen_off();
 
         show_bars( uiMain, false );
 
-        fltk_main()->resize( posX, posY, sizeX, sizeY );
-        // resize_main_window();
+        // fltk_main()->resize( posX, posY, sizeX, sizeY );
+        resize_main_window();
 
         show_bars( uiMain, true );
 
@@ -9594,9 +9589,6 @@ void ImageView::resize_main_window()
     float scale = Fl::screen_scale( screen );
     Fl::screen_work_area( minx, miny, maxw, maxh, screen );
 
-    maxw = int(maxw * scale);
-    maxh = int(maxh * scale);
-
     int maxx = minx + maxw;
     int maxy = miny + maxh;
 
@@ -9637,9 +9629,6 @@ void ImageView::resize_main_window()
     }
 #endif
 
-    w = int(w / scale);
-    h = int(h / scale);
-
     if ( uiMain->uiMenuGroup->visible() )
     {
       uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
@@ -9654,23 +9643,19 @@ void ImageView::resize_main_window()
       h += uiMain->uiTopBar->h();
     }
 
-    int h2 = 0;
-
     if ( uiMain->uiPixelBar->visible() )
     {
       uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
                                 int(28) );
-      h2 += uiMain->uiPixelBar->h();
+      h += uiMain->uiPixelBar->h();
     }
 
     if ( uiMain->uiBottomBar->visible() )
     {
       uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                  int(49) );
-      h2 += uiMain->uiBottomBar->h();
+      h += uiMain->uiBottomBar->h();
     }
-
-    h += h2;
 
     if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
     {
@@ -9698,7 +9683,7 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
-    DBGM0( "RES X,Y " << posX << ", " << posY );
+    DBGM1( "RES X,Y " << posX << ", " << posY );
 
     if ( fltk_main()->fullscreen_active() )
     {
