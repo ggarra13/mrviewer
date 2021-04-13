@@ -2457,6 +2457,9 @@ void ImageView::fit_image()
 
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
+    DBGM1( "fit h=" << h );
+    DBGM1( "fit H=" << H );
+    DBGM1( "fit h/H=" << h/H );
 
 #ifndef _WIN32
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
@@ -2476,6 +2479,7 @@ void ImageView::fit_image()
     if ( h < z ) {
         z = h;
     }
+    DBGM1( "fit z=" << z );
 
 
     double ox = xoffset;
@@ -3850,6 +3854,8 @@ void ImageView::draw()
             DBGM3( __FUNCTION__ << " " << __LINE__ );
             init_draw_engine();
         }
+
+        DBGM1( "***** NOT VALID OPENGL CONTEXT - REINIT" );
 
         DBGM3( "GLengine " << _engine );
         if ( !_engine ) return;
@@ -7729,14 +7735,8 @@ void ImageView::toggle_fullscreen()
         FullScreen = false;
         presentation = false;
         show_bars( uiMain );
-        if ( fltk_main()->fullscreen_active() )
-        {
-            fltk_main()->fullscreen_off();
-        }
-        else
-        {
-            resize_main_window();
-        }
+        resize_main_window();
+        resize_main_window();
     }
 
 
@@ -7770,9 +7770,12 @@ void ImageView::toggle_presentation()
 
     if ( !presentation )
     {
-        posX = fltk_main()->x();
-        posY = fltk_main()->y();
-
+        if ( !FullScreen )
+        {
+            posX = fltk_main()->x();
+            posY = fltk_main()->y();
+        }
+        
         has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
         has_color_area = uiColorArea ? uiColorArea->visible() : false;
         has_color_ctrl = uiColorControls ? uiColorControls->visible() : false;
@@ -7809,7 +7812,7 @@ void ImageView::toggle_presentation()
 
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
-
+        
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
              kPresentationOnly )
@@ -7824,6 +7827,7 @@ void ImageView::toggle_presentation()
 
         fltk_main()->fullscreen();
 
+
         float scale = Fl::screen_scale( window()->screen_num() );
         int X = window()->x();
         int Y = window()->y();
@@ -7831,19 +7835,23 @@ void ImageView::toggle_presentation()
         int H = window()->h();
 
 #ifdef OSX
-        resize( X, Y, W, H ); // needed
+        window()->resize( X, Y, W, H );  // needed
 #elif defined(_WIN32)
         H += int(40 * scale);
-        resize( X, Y, W, H ); // needed
+        window()->resize( X, Y, W, H ); // needed
 #else
         H += int(40 * scale);
-        resize( X, Y, W, H ); // needed
+        window()->resize( X, Y, W, H ); // needed
 #endif
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->redraw();
         uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->redraw();
+        redraw();
+
+        Fl::check();
     }
     else
     {
@@ -7869,12 +7877,15 @@ void ImageView::toggle_presentation()
         resize_main_window();
 
         show_bars( uiMain, true );
+        resize_main_window();
+
+        if ( FullScreen ) fltk_main()->fullscreen();
 
     }
 
-    take_focus();
-
     fit_image();
+
+    take_focus();
 
     char buf[128];
     sprintf( buf, "PresentationMode %d", presentation );
@@ -9683,11 +9694,9 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
-    DBGM1( "RES X,Y " << posX << ", " << posY );
-
     if ( fltk_main()->fullscreen_active() )
     {
-        fltk_main()->fullscreen_off();
+        fltk_main()->fullscreen_off( posX, posY, w, h );
     }
     else
     {
@@ -9712,6 +9721,11 @@ void ImageView::resize_main_window()
     uiMain->uiRegion->layout();
 
     uiMain->uiRegion->redraw();
+
+    valid(0);
+    redraw();
+
+    Fl::check();
 
     if ( fit ) fit_image();
 

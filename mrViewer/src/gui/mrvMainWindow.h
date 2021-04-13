@@ -51,6 +51,8 @@ public:
 
     virtual int handle( int event );
 
+    void resize( int X, int Y, int W, int H );
+    
     /**
      * Make window appear always on top of others
      *

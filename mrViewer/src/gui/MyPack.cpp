@@ -12,7 +12,12 @@
 #include <FL/names.h>
 #include <FL/fl_draw.H>
 #include <iostream>
+#include "gui/mrvIO.h"
 #include "MyPack.h"
+
+namespace {
+const char* kModule = "MyPack";
+}
 
 /**
   Creates a new MyPack widget using the given position, size,
@@ -263,4 +268,15 @@ void MyPack::draw() {
     draw_box();
     draw_label();
   }
+}
+
+void MyPack::resize( int X, int Y, int W, int H )
+{
+    static int oldH = H;
+    if ( oldH != H )
+    {
+        DBGM1( X << ", " << Y << " " << W << "x" << H );
+        oldH = H;
+    }
+    return Fl_Group::resize( X, Y, W, H );
 }

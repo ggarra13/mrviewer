@@ -198,7 +198,7 @@ void MainWindow::iconize_all()
 {
     Fl_Window* uiReelWindow = uiMain->uiReelWindow->uiMain;
     if (uiReelWindow) uiReelWindow->iconize();
-    return Fl_Window::iconize();
+    return Fl_Double_Window::iconize();
 }
 
 /**
@@ -210,8 +210,22 @@ void MainWindow::iconize_all()
  */
 int MainWindow::handle( int event )
 {
-    return Fl_Window::handle( event );
+    return Fl_Double_Window::handle( event );
 }
+
+
+void MainWindow::resize( int X, int Y, int W, int H )
+{
+    static int oldH = H;
+    static int counter = 0;
+    if ( oldH != H )
+    {
+        DBGM1( X << ", " << Y << " " << W << "x" << H );
+        oldH = H;
+    }
+    return Fl_Double_Window::resize( X, Y, W, H );
+}
+
 
 
 } // namespace mrv
