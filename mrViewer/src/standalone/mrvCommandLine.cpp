@@ -423,10 +423,14 @@ void parse_command_line( const int argc, const char** argv,
     ValueArg< std::string >
         abg( N_("b"), N_("bg"),
              _("Provide a sequence or movie for background."), false, "", "image");
+    
+    MultiArg< std::string >
+    acolorspace( N_("c"), N_("colorspace"),
+            _("Set each input color space for each image."), false, "color space");
 
     MultiArg< std::string >
     aaudio( N_("a"), N_("audio"),
-            _("Set each movie/sequence default audio."), false, "audio files");
+            _("Set each movie/sequence default audio."), false, "audio file");
 
     MultiArg< int >
     aoffset( N_("o"), N_("audio_offset"),
@@ -435,7 +439,7 @@ void parse_command_line( const int argc, const char** argv,
 #ifdef USE_STEREO
     MultiArg< std::string >
     astereo( N_("s"), N_("stereo"),
-            _("Provide two sequences or movies for stereo."), false, "images");
+            _("Provide two sequences or movies for stereo."), false, "image");
 
 
     ValueArg< std::string >
@@ -460,6 +464,7 @@ void parse_command_line( const int argc, const char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+    cmd.add(acolorspace);
     cmd.add(aoffset);
 #ifdef USE_STEREO
     cmd.add(astereo);
@@ -541,6 +546,11 @@ void parse_command_line( const int argc, const char** argv,
     Preferences::debug = debug;
     if ( debug > 0 ) mrv::io::logbuffer::debug( true );
 
+    const stringArray& colorspaces = acolorspace.getValue();
+    if ( colorspaces.size() != files.size() && !colorspaces.empty() )
+    {
+        LOG_ERROR( "Color spaces must match the number of files" );
+    }
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();
 
@@ -549,6 +559,8 @@ void parse_command_line( const int argc, const char** argv,
 
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
+    stringArray::const_iterator ci = colorspaces.begin();
+    stringArray::const_iterator ce = colorspaces.end();
     stringArray::const_iterator ai = audios.begin();
     stringArray::const_iterator ae = audios.end();
     IntArray::const_iterator oi = aoffsets.begin();
@@ -621,14 +633,19 @@ void parse_command_line( const int argc, const char** argv,
                                                               *ai, "",
                                                               offset ) );
                         ++ai;
-                  }
-                  else
-                  {
+                    }
+                    else
+                    {
                       opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
                                                             end, start, end,
                                                             opts.fps ) );
-                  }
-               }
+                    }
+                    
+                    if ( ci != ce )
+                    {
+                        opts.stereo.back().colorspace = *ci; ++ci;
+                    }
+                }
                else
                {
                   // Add audio file to last fileroot
@@ -662,6 +679,11 @@ void parse_command_line( const int argc, const char** argv,
                           opts.files.push_back( mrv::LoadInfo( arg ) );
                       }
                   }
+
+                  if ( ci != ce )
+                  {
+                      opts.files.back().colorspace = *ci; ++ci;
+                  }
                }
             }
           }
@@ -689,8 +711,6 @@ void parse_command_line( const int argc, const char** argv,
   ui->uiGammaInput->value( opts.gamma );
   ui->uiGamma->value( opts.gamma );
 
-  ui->uiGainInput->value( opts.gain );
-  ui->uiGain->value( opts.gain );
   ui->uiView->gain( opts.gain );
 
 }

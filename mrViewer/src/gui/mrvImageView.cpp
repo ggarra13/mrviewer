@@ -9,7 +9,7 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -1678,6 +1678,7 @@ _lastFrame( 0 )
     Fl_Sys_Menu_Bar::about( (Fl_Callback*)about_cb, this );
 #endif
 
+
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = _zoom / scale;
 
@@ -2457,9 +2458,9 @@ void ImageView::fit_image()
 
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
-    DBGM1( "fit h=" << h );
-    DBGM1( "fit H=" << H );
-    DBGM1( "fit h/H=" << h/H );
+    DBGM2( "fit h=" << h );
+    DBGM2( "fit H=" << H );
+    DBGM2( "fit h/H=" << h/H );
 
 #ifndef _WIN32
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
@@ -2479,7 +2480,7 @@ void ImageView::fit_image()
     if ( h < z ) {
         z = h;
     }
-    DBGM1( "fit z=" << z );
+    DBGM2( "fit z=" << z );
 
 
     double ox = xoffset;
@@ -7714,9 +7715,9 @@ void ImageView::toggle_fullscreen()
     {
         FullScreen = true;
         presentation = false;
+        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         posX = fltk_main()->x();
         posY = fltk_main()->y();
-        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
         sizeX = fltk_main()->w();
         sizeY = fltk_main()->h();
         fltk_main()->fullscreen();
@@ -7735,8 +7736,14 @@ void ImageView::toggle_fullscreen()
         FullScreen = false;
         presentation = false;
         show_bars( uiMain );
-        resize_main_window();
-        resize_main_window();
+        // resize_main_window();
+        // resize_main_window();
+        DBGM1( "posXY=" << posX << "," << posY << " sizeXY " << sizeX << "x"
+               << sizeY);
+        fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
+        Fl::check();
+        fltk_main()->resize( posX, posY, sizeX, sizeY );
+        Fl::check();
     }
 
 
@@ -7775,7 +7782,7 @@ void ImageView::toggle_presentation()
             posX = fltk_main()->x();
             posY = fltk_main()->y();
         }
-        
+
         has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
         has_color_area = uiColorArea ? uiColorArea->visible() : false;
         has_color_ctrl = uiColorControls ? uiColorControls->visible() : false;
@@ -7812,7 +7819,7 @@ void ImageView::toggle_presentation()
 
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
-        
+
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
              kPresentationOnly )
@@ -7820,8 +7827,11 @@ void ImageView::toggle_presentation()
             texture_filtering( kBilinearFiltering );
         }
 
-        sizeX = fltk_main()->w();
-        sizeY = fltk_main()->h();
+        if ( !FullScreen )
+        {
+            sizeX = fltk_main()->w();
+            sizeY = fltk_main()->h();
+        }
 
         if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
 
@@ -7873,13 +7883,18 @@ void ImageView::toggle_presentation()
 
         show_bars( uiMain, false );
 
-        // fltk_main()->resize( posX, posY, sizeX, sizeY );
-        resize_main_window();
+        fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
+        Fl::check();
+        //resize_main_window();
 
         show_bars( uiMain, true );
-        resize_main_window();
+        //resize_main_window();
 
-        if ( FullScreen ) fltk_main()->fullscreen();
+        if ( FullScreen ) {
+            fltk_main()->fullscreen();
+        }
+        else fltk_main()->resize( posX, posY, sizeX, sizeY );
+        Fl::check();
 
     }
 
@@ -9375,10 +9390,13 @@ void ImageView::foreground( mrv::media fg )
         posX = fltk_main()->x();
         posY = fltk_main()->y();
 
+        DBGM1( "!OLD " << posX << ", " << posY );
+
         Fl_Round_Button* r = (Fl_Round_Button*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
         if ( r->value() == 1 )
         {
             resize_main_window();
+            fit_image();
         }
     }
 
@@ -9616,6 +9634,8 @@ void ImageView::resize_main_window()
         posY = 0;
     }
 
+    DBGM1( "posX, posY=" << posX << ", " << posY );
+
 #if 0
     if ( posX + w > maxx ) {
         w = maxw;
@@ -9693,6 +9713,8 @@ void ImageView::resize_main_window()
     {
         h = maxh;
     }
+
+    DBGM1( "posX, posY = " << posX << ", " << posY );
 
     if ( fltk_main()->fullscreen_active() )
     {

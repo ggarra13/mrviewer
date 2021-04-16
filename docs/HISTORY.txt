@@ -1,5 +1,11 @@
 v5.8.1  - Windows' .EXE installer now supports two buttons for check all and
 	  uncheck all for all extensions.
+	- F11/F12 now respect the window position and fit image when
+	  minimizing after a maximize.
+	- There's a new flag -c <colorspace> to establish the input
+	  color space of each image.
+	- Reverted loggers to not use Fl::lock as they were locking on missing
+	  frames errors.
 
 v5.8.0  - Added support for video rotate in movie files.
 	- Bug fixed F11 returning and resetting the interface.

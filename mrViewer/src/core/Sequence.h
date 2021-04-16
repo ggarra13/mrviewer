@@ -117,6 +117,7 @@ struct LoadInfo
 {
     std::string filename;
     std::string right_filename;
+    std::string colorspace;
     std::string audio;
 
     int64_t first;
@@ -218,6 +219,7 @@ struct LoadInfo
     LoadInfo( const LoadInfo& b ) :
         filename( b.filename ),
         right_filename( b.right_filename ),
+        colorspace( b.colorspace ),
         audio( b.audio ),
         first( b.first ),
         last( b.last ),
@@ -237,6 +239,7 @@ struct LoadInfo
         {
             filename = b.filename;
             right_filename = b.right_filename;
+            colorspace = b.colorspace;
             audio = b.audio;
             first = b.first;
             last = b.last;

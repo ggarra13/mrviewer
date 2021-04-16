@@ -2399,6 +2399,11 @@ void ImageBrowser::save_session()
                         view()->refresh_audio_tracks();
                     }
 
+                    if ( load.colorspace != "" )
+                    {
+                        img->ocio_input_color_space( load.colorspace );
+                    }
+
                     if ( load.subtitle != "" )
                     {
                         aviImage* avi = dynamic_cast< aviImage* >( fg->image() );

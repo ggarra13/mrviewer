@@ -4025,8 +4025,8 @@ bool CMedia::find_image( int64_t& frame )
                     }
                 }
                 refresh();
-                if ( limit ) limit_video_store( f );
-                image_damage( image_damage() | kDamageData | kDamage3DData );
+                // if ( limit ) limit_video_store( f );
+                // image_damage( image_damage() | kDamageData | kDamage3DData );
                 return true;
             }
         }
