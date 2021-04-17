@@ -217,7 +217,6 @@ int MainWindow::handle( int event )
 void MainWindow::resize( int X, int Y, int W, int H )
 {
     static int oldH = H;
-    static int counter = 0;
     if ( oldH != H )
     {
         DBGM1( X << ", " << Y << " " << W << "x" << H );

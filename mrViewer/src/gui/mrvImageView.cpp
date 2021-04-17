@@ -2458,9 +2458,9 @@ void ImageView::fit_image()
 
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
-    DBGM2( "fit h=" << h );
-    DBGM2( "fit H=" << H );
-    DBGM2( "fit h/H=" << h/H );
+    DBGM1( "fit h=" << h );
+    DBGM1( "fit H=" << H << " pic->h()= " << pic->height() );
+    DBGM1( "fit h/H=" << h/H );
 
 #ifndef _WIN32
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
@@ -2480,7 +2480,7 @@ void ImageView::fit_image()
     if ( h < z ) {
         z = h;
     }
-    DBGM2( "fit z=" << z );
+    DBGM1( "fit z=" << z );
 
 
     double ox = xoffset;
@@ -7848,10 +7848,10 @@ void ImageView::toggle_presentation()
         window()->resize( X, Y, W, H );  // needed
 #elif defined(_WIN32)
         H += int(40 * scale);
-        window()->resize( X, Y, W, H ); // needed
+        resize( X, Y, W, H ); // needed
 #else
         H += int(40 * scale);
-        window()->resize( X, Y, W, H ); // needed
+        resize( X, Y, W, H ); // needed
 #endif
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
