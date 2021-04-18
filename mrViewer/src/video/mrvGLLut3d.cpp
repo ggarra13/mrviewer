@@ -60,7 +60,6 @@
 #include "video/mrvGLLut3d.h"
 #include "video/mrvGLEngine.h"
 
-
 namespace
 {
 const char* kModule = N_("cmm");
@@ -72,7 +71,6 @@ const char* kModule = N_("cmm");
     } while (0);
 
 namespace mrv {
-
 
 void prepare_ACES( const CMedia* img, const std::string& name,
                    Imf::Header& h )
@@ -547,11 +545,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     try
     {
         OCIO::ConstConfigRcPtr config = mrv::Preferences::OCIOConfig();
-        if ( !config ) return true;
-
         const std::string& display = mrv::Preferences::OCIO_Display;
         const std::string& view = mrv::Preferences::OCIO_View;
-
 
 #if OCIO_VERSION_HEX >= 0x02000000
         OCIO::DisplayViewTransformRcPtr transform =
@@ -625,7 +620,6 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     }
     return true;
 }
-
 
 
 
@@ -960,7 +954,6 @@ bool GLLut3d::calculate_icc( const Transforms::const_iterator& start,
 
 
 
-
 bool GLLut3d::calculate(
     GLLut3d::GLLut3d_ptr lut,
     const Transforms::const_iterator& start,
@@ -979,42 +972,6 @@ bool GLLut3d::calculate(
         return false;
     }
 }
-
-
-
-
-
-
-    std::string GLLut3d::update_ICS( const ViewerUI* view,
-                                     const CMedia* img,
-                                     const char* lbl )
-    {
-        std::string msg;
-        mrv::PopupMenu* uiICS = view->uiICS;
-        for ( unsigned i = 0; i < uiICS->children(); ++i )
-        {
-            if ( ! uiICS->child(i)->label() ) continue;
-            std::string name = uiICS->child(i)->label();
-            if ( name == lbl )
-            {
-                msg += _("  Choosing ") + name + ".";
-                CMedia* c = const_cast< CMedia* >( img );
-
-                char buf[1024];
-                sprintf( buf, "ICS \"%s\"", name.c_str() );
-                view->uiView->send_network( buf );
-
-                c->ocio_input_color_space( name );
-                uiICS->copy_label( lbl );
-                uiICS->value(i);
-                uiICS->redraw();
-                break;
-            }
-        }
-        return msg;
-    }
-
-
 
 
 
@@ -1182,8 +1139,6 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-
-
 GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                                        const CMedia* img )
 {
@@ -1304,9 +1259,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             CMedia* c = const_cast< CMedia* >( img );
             c->ocio_input_color_space( ics );
         }
-
         OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
-        if ( config ) fullpath = config->getCacheID();
+        fullpath = config->getCacheID();
         fullpath += " -> ";
 
         path = ics;
@@ -1330,7 +1284,6 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                 LOG_INFO( _("3D Lut for ") << img->name()
                           << _(" already created: " ) );
                 LOG_INFO( path );
-                update_ICS( view, img, "" );
             }
             return i->second;
         }
@@ -1342,7 +1295,27 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         {
             std::string msg = _( "Image input color space is undefined for ") +
                               img->name() + ".";
-            msg += update_ICS( view, img );
+            mrv::PopupMenu* uiICS = view->uiICS;
+            const char* const lbl = "scene_linear";
+            for ( unsigned i = 0; i < uiICS->children(); ++i )
+            {
+                std::string name = uiICS->child(i)->label();
+                if ( name == lbl )
+                {
+                    msg += _("  Choosing ") + name + ".";
+                    CMedia* c = const_cast< CMedia* >( img );
+
+                    char buf[1024];
+                    sprintf( buf, "ICS \"%s\"", name.c_str() );
+                    view->uiView->send_network( buf );
+
+                    c->ocio_input_color_space( name );
+                    uiICS->copy_label( lbl );
+                    uiICS->value(i);
+                    uiICS->redraw();
+                    break;
+                }
+            }
             LOG_INFO( msg );
         }
         else
@@ -1400,6 +1373,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 
     GLLut3d_ptr lut( new GLLut3d(view, size) );
 
+    //lut->calculate_range( img->hires() );
 
     if ( Preferences::use_ocio )
     {

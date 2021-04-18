@@ -7811,22 +7811,15 @@ void ImageView::show_background( const bool b )
         if ( has_tools_grp ) uiMain->uiToolsGroup->show();
 
 
+        int W = uiMain->uiRegion->w();
         int H = uiMain->uiRegion->h();
 
-        if ( has_menu_bar )    {
-            int w = uiMain->uiMenuGroup->w();
+        if ( has_menu_bar && showtop )    {
             // Menubar MUST be 25 pixels-- for some reason it changes size
-            uiMain->uiMenuGroup->size( w, int(25) );
+            uiMain->uiMenuGroup->size( W, int(25) );
             fill_menu( uiMain->uiMenuBar );
             uiMain->uiMenuGroup->show();
             H -= uiMain->uiMenuGroup->h();
-            // full screen...
-            if ( !FullScreen && !presentation )
-                H -= 6;
-            int X = 0;
-            int Y = 0;
-            int W = uiMain->uiRegion->w();
-            uiMain->uiRegion->resize( 0, 0, W, H );
         }
 
 
@@ -7835,11 +7828,6 @@ void ImageView::show_background( const bool b )
             // Topbar MUST be 28 pixels-- for some reason it changes size
             uiMain->uiTopBar->size( w, int(28) );
             uiMain->uiTopBar->show();
-            // H -= uiMain->uiTopBar->h();
-            // int X = uiMain->uiTopBar->x();
-            // int Y = uiMain->uiTopBar->y();
-            // int W = uiMain->uiRegion->w();
-            // uiMain->uiRegion->resize( 0, 0, W+X, H+Y );
         }
 
         if ( has_bottom_bar)  {
@@ -7918,6 +7906,7 @@ void ImageView::toggle_presentation()
     Fl_Window* uiColorArea = uiMain->uiColorArea->uiMain;
     Fl_Window* uiColorControls = uiMain->uiColorControls->uiMain;
     Fl_Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
+    Fl_Window* uiICCProfiles  = uiMain->uiICCProfiles->uiMain;
     Fl_Window* uiReel  = uiMain->uiReelWindow->uiMain;
     Fl_Window* uiPrefs = uiMain->uiPrefs->uiMain;
     Fl_Window* uiAbout = uiMain->uiAbout->uiMain;
@@ -7926,7 +7915,8 @@ void ImageView::toggle_presentation()
     Fl_Window* uiLog = uiMain->uiLog->uiMain;
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-        has_prefs, has_about, has_stereo, has_paint, has_log, has_color_ctrl;
+        has_icc, has_prefs, has_about, has_stereo, has_paint, has_log,
+        has_color_ctrl;
     static TextureFiltering filter;
 
     if ( !presentation )
@@ -7941,6 +7931,7 @@ void ImageView::toggle_presentation()
         has_color_area = uiColorArea ? uiColorArea->visible() : false;
         has_color_ctrl = uiColorControls ? uiColorControls->visible() : false;
         has_reel       = uiReel ? uiReel->visible() : false;
+        has_icc        = uiICCProfiles->visible();
         has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
         has_prefs      = uiPrefs ? uiPrefs->visible() : false;
         has_about      = uiAbout ? uiAbout->visible() : false;
@@ -7961,6 +7952,7 @@ void ImageView::toggle_presentation()
         uiColorArea->hide();
         uiColorControls->hide();
         uiReel->hide();
+        uiICCProfiles->hide();
         uiEDLWindow->hide();
         uiPrefs->hide();
         uiAbout->hide();
@@ -7970,6 +7962,8 @@ void ImageView::toggle_presentation()
         uiMain->uiPixelBar->hide();
         uiMain->uiTopBar->hide();
         uiMain->uiMenuGroup->hide();
+
+        Fl::check();
 
         uiMain->uiRegion->init_sizes();
         uiMain->uiViewGroup->init_sizes();
@@ -7987,8 +7981,6 @@ void ImageView::toggle_presentation()
             sizeY = fltk_main()->h();
         }
 
-        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
-
         fltk_main()->fullscreen();
 
 
@@ -7999,49 +7991,27 @@ void ImageView::toggle_presentation()
         int H = window()->h();
 
 #ifdef OSX
-        window()->resize( X, Y, W, H );  // needed
+         window()->resize( X, Y, W, H );  // needed
 #elif defined(_WIN32)
-        if ( scale == 1.0f )
-        {
-            H += int(130 * scale);
-        }
-        if ( scale == 1.25f )
-        {
-            H += int(110 * scale);
-        }
-        else if ( scale == 1.5f )
-        {
-            H += int(90 * scale);
-        }
-        else if ( scale == 2.0f )
-        {
-            H += int(70 * scale);
-        }
-        else if ( scale == 2.25f )
-        {
-            H += int(60 * scale);
-        }
-        else if ( scale == 2.5f )
-        {
-            H += int(50 * scale);
-        }
-        window()->resize( X, Y, W, H ); // needed
-#else
-        H += int(40 * scale);
-        window()->resize( X, Y, W, H ); // needed
+//         resize( X, Y, W, H ); // needed
+#elif defined(LINUX)
+         // H += int(40 * scale);
+         // resize( X, Y, W, H ); // needed
 #endif
-        uiMain->uiRegion->init_sizes();
-        uiMain->uiRegion->layout();
-        uiMain->uiRegion->redraw();
-        uiMain->uiViewGroup->init_sizes();
-        uiMain->uiViewGroup->layout();
-        uiMain->uiViewGroup->redraw();
+        // uiMain->uiRegion->init_sizes();
+        // uiMain->uiRegion->layout();
+        // uiMain->uiRegion->redraw();
+        // uiMain->uiViewGroup->init_sizes();
+        // uiMain->uiViewGroup->layout();
+        // uiMain->uiViewGroup->redraw();
         redraw();
         Fl::check();
+        DBGM1( "v->h()= " << h() << " v->pixel_h()= " << pixel_h() );
     }
     else
     {
         if ( has_image_info ) uiImageInfo->show();
+        if ( has_icc )        uiICCProfiles->show();
         if ( has_color_area ) uiColorArea->show();
         if ( has_color_ctrl ) uiColorControls->show();
         if ( has_reel  )      uiReel->show();
