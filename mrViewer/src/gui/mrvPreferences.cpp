@@ -56,6 +56,7 @@ namespace fs = boost::filesystem;
 #include "core/R3dImage.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
+#include "core/mrvColorProfile.h"
 #include "core/mrvHome.h"
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
@@ -269,6 +270,7 @@ Imf::Chromaticities chromaticities(
 AboutUI*          ViewerUI::uiAbout = NULL;
 LogUI*            ViewerUI::uiLog   = NULL;
 PreferencesUI*    ViewerUI::uiPrefs = NULL;
+ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
 HotkeyUI*         ViewerUI::uiHotkey = NULL;
 ConnectionUI*     ViewerUI::uiConnection = NULL;
 
@@ -281,11 +283,20 @@ ViewerUI*           Preferences::uiMain = NULL;
 bool                Preferences::native_file_chooser;
 std::string         Preferences::OCIO_Display;
 std::string         Preferences::OCIO_View;
+std::string         Preferences::ODT_CTL_transform;
+std::string         Preferences::ODT_ICC_profile;
+Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
+float               Preferences::ODT_CTL_white_luminance = 120.0f;
+float               Preferences::ODT_CTL_surround_luminance = 12.0f;
 
 mrv::Preferences::MissingFrameType      Preferences::missing_frame;
 
 std::string         Preferences::video_threads;
 
+std::string         Preferences::CTL_8bits_save_transform;
+std::string         Preferences::CTL_16bits_save_transform;
+std::string         Preferences::CTL_32bits_save_transform;
+std::string         Preferences::CTL_float_save_transform;
 std::string         Preferences::root;
 int                 Preferences::debug = -1;
 std::string         Preferences::tempDir = "/usr/tmp/";
@@ -934,7 +945,82 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     // Get environment preferences (LUTS)
     //
+    const char* env = fl_getenv( "CTL_MODULE_PATH");
+    std::string ctlEnv = temporaryDirectory();
+#if defined(WIN32) || defined(WIN64)
+    char sep = ';';
+#else
+    char sep = ':';
+#endif
 
+    DBG3;
+    ctlEnv += sep;
+
+    if ( !env )
+    {
+    DBG3;
+        ctlEnv += root;
+        ctlEnv += N_("/ctl");
+    }
+    else
+    {
+    DBG3;
+        ctlEnv += env;
+    }
+
+    DBG3;
+    std::string var = "CTL_MODULE_PATH=" + ctlEnv;
+    putenv( av_strdup( var.c_str() ) );
+
+
+    size_t found = 0;
+    DBG3;
+    while( (found = ctlEnv.find(sep)) != std::string::npos )
+    {
+        std::string part2;
+        if ( found+1 < ctlEnv.size() )
+            part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
+    DBG3;
+        ctlEnv = ctlEnv.substr(0, found);
+    DBG3;
+        uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
+        ctlEnv = part2;
+    }
+
+    for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
+    {
+    DBG3;
+        char* name;
+        dirent** e;
+        const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
+        int num = fl_filename_list( dir, &e );
+        for( int i = 0; i < num; i++ )
+        {
+            name = e[i]->d_name;
+
+            // if 'name' ends in '/' or '\', remove it
+            if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
+                name[strlen(name)-1] = '\0';
+
+            // ignore the "." and ".." names
+            if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
+                continue;
+
+            std::string fullpath = dir;
+            fullpath += "/";
+            fullpath += name;
+
+            if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
+                 ".ctl" ) continue;
+
+            if( fl_filename_isdir( fullpath.c_str() ) )
+                continue;
+
+            uiPrefs->uiPrefsCTLScripts->add( name );
+        }
+
+        fl_filename_free_list( &e, num );
+    }
 
 
 
@@ -1088,6 +1174,12 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
     load_hotkeys(uiMain, keys);
 
+    // Set the CTL/ICC transforms in GUI
+    if ( ! set_transforms() )
+    {
+    DBG3;
+        LOG_ERROR( _("Could not set transforms in GUI") );
+    }
 }
 
 #ifdef _WIN32
@@ -1561,8 +1653,8 @@ void Preferences::run( ViewerUI* main )
     {
         DBG3;
         if ( !var || strlen(var) == 0 )
-            LOG_INFO( _("OCIO environment variable is not set.\n"
-                        "No OpenColorIO will be used.") );
+            LOG_INFO( _("OCIO environment variable is not set.  "
+                        "Defaulting to CTL. ") );
         DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
         DBG3;
@@ -2301,6 +2393,37 @@ void Preferences::save()
 }
 
 
+bool Preferences::set_transforms()
+{
+
+    // Set ui window settings
+    PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
+    if (!uiPrefs) return true;
+
+    uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
+    uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
+    uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );
+    uiPrefs->uiODT_CTL_chromaticities_green_x->value( ODT_CTL_chromaticities.green.x );
+    uiPrefs->uiODT_CTL_chromaticities_green_y->value( ODT_CTL_chromaticities.green.y );
+    uiPrefs->uiODT_CTL_chromaticities_blue_x->value( ODT_CTL_chromaticities.blue.x );
+    uiPrefs->uiODT_CTL_chromaticities_blue_y->value( ODT_CTL_chromaticities.blue.y );
+    uiPrefs->uiODT_CTL_chromaticities_white_x->value( ODT_CTL_chromaticities.white.x );
+    uiPrefs->uiODT_CTL_chromaticities_white_y->value( ODT_CTL_chromaticities.white.y );
+
+    uiPrefs->uiCTL_8bits_load_transform->value( CMedia::rendering_transform_8bits.c_str() );
+    uiPrefs->uiCTL_16bits_load_transform->value( CMedia::rendering_transform_16bits.c_str() );
+    uiPrefs->uiCTL_32bits_load_transform->value( CMedia::rendering_transform_32bits.c_str() );
+    uiPrefs->uiCTL_float_load_transform->value( CMedia::rendering_transform_float.c_str() );
+
+    uiPrefs->uiODT_ICC_profile->value( ODT_ICC_profile.c_str() );
+    uiPrefs->uiICC_8bits_profile->value( CMedia::icc_profile_8bits.c_str() );
+    uiPrefs->uiICC_16bits_profile->value( CMedia::icc_profile_16bits.c_str() );
+    uiPrefs->uiICC_32bits_profile->value( CMedia::icc_profile_32bits.c_str() );
+    uiPrefs->uiICC_float_profile->value( CMedia::icc_profile_float.c_str() );
+
+
+    return true;
+}
 
 
 Preferences::~Preferences()

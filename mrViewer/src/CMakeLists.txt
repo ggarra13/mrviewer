@@ -49,6 +49,8 @@ FIND_PACKAGE( FLTK        REQUIRED )    # for window management
 endif()
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
+FIND_PACKAGE( CTL  REQUIRED )           # for CTL
+FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for CTL-> EXR
 FIND_PACKAGE( OCIO        REQUIRED )    # for OCIO color correction
 FIND_PACKAGE( OIIO        REQUIRED )    # for OIIO image loading
 FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
@@ -56,6 +58,7 @@ FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
+FIND_PACKAGE( SampleICC   REQUIRED )    # For ICC reading
 FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
@@ -190,7 +193,9 @@ INCLUDE_DIRECTORIES(
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
   ${TINYXML2_INCLUDE_DIR}
+  ${CTL_INCLUDE_DIR}
   ${OPENEXR_INCLUDE_DIR}
+  ${OPENEXRCTL_INCLUDE_DIR}
   ${OIIO_INCLUDE_DIR}
   ${OCIO_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
@@ -232,6 +237,7 @@ SET( SOURCES
   ${mrViewer_FLTK_UI_SRCS}
 
   # Image files
+  core/ctlToLut.cpp
   core/CMedia.cpp
   core/CMedia_audio.cpp
   core/mrvFrame.cpp
@@ -441,6 +447,8 @@ SET( LIBRARIES
   ${FLTK_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
+  ${CTL_LIBRARIES}
+  ${OPENEXRCTL_LIBRARIES}
   ${OCIO_LIBRARIES}
   ${OIIO_LIBRARIES}
   ${LibRaw_LIBRARIES}
