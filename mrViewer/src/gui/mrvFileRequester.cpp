@@ -40,6 +40,7 @@
 #include "core/aviImage.h"
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
+#include "core/mrvColorProfile.h"
 #include "core/mrvPlayback.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvSave.h"
@@ -456,9 +457,77 @@ void attach_ocio_view( CMedia* img, ImageView* view )
     view->redraw();
 }
 
+/**
+ * Opens a file requester to load an icc profile
+ *
+ * @param startfile  start filename (directory)
+ *
+ * @return  opened audio file or null
+ */
+std::string open_icc_profile( const char* startfile,
+                              const char* title,
+                              ViewerUI* main )
+{
+    stringArray filelist;
+
+    if ( !startfile )
+        startfile = fl_getenv("ICC_PROFILES");
+
+    if ( !startfile || strlen( startfile ) == 0 )
+    {
+#if defined(WIN32) || defined(WIN64)
+        char buf[256];
+        sprintf( buf, "%s/SYSTEM32/spool/drivers/color",
+                 fl_getenv("WINDIR") );
+        startfile = buf;
+#else
+        startfile = "/usr/share/color/icc";
+#endif
+    }
+
+    std::string kICC_PATTERN   = _("Color Profiles (*.{" ) +
+                                 kProfilePattern + "})";
+
+    std::string profile = file_single_requester( title, kICC_PATTERN.c_str(),
+                                                 startfile );
+
+
+    if ( !profile.empty() ) mrv::colorProfile::add( profile.c_str() );
+    return profile;
+}
 
 
 
+const char* open_ctl_dir( const char* startfile,
+                          const char* title,
+                          ViewerUI* main )
+{
+    std::string path, modulepath, ext;
+
+    if ( !startfile )
+        startfile = fl_getenv("CTL_MODULE_PATH");
+
+    if ( startfile )
+    {
+        modulepath = "CTL_MODULE_PATH=";
+        modulepath += startfile;
+        path = startfile;
+        size_t len = path.find( kSeparator );
+        path = path.substr( 0, len-1 );
+    }
+
+    const char* profile = flu_dir_chooser(title,
+                                          path.c_str());
+    if ( profile )
+    {
+        path = profile;
+        modulepath += kSeparator;
+        modulepath += path;
+        putenv( av_strdup( modulepath.c_str() ) );
+        profile = av_strdup( ext.c_str() );
+    }
+    return profile;
+}
 
 /**
    * Opens a file requester to load subtitle files
@@ -503,7 +572,128 @@ std::string open_audio_file( const char* startfile,
 
 
 
+void attach_icc_profile( CMedia* image,
+                         const char* startfile,
+                         ViewerUI* main )
+{
+    if ( !image ) return;
 
+    std::string profile = open_icc_profile( startfile, _("Attach ICC Profile"),
+                                            main );
+    if ( !profile.empty() )
+        image->icc_profile( profile.c_str() );
+    else
+        image->icc_profile( NULL );
+}
+
+
+
+void attach_icc_profile( CMedia* image,
+                         ViewerUI* main )
+{
+    if (!image) return;
+    attach_icc_profile( image, image->icc_profile(), main );
+}
+
+
+void attach_rt_script( CMedia* image, const std::string& script,
+                       ViewerUI* main )
+{
+    if ( ! script.empty() )
+        main->uiView->send_network( "RT \"" + script + "\"" );
+
+    if ( script.empty() ) image->rendering_transform( NULL );
+    else  image->rendering_transform( script.c_str() );
+}
+
+void attach_ctl_script( CMedia* image, const char* startfile,
+                        ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    std::string script = make_ctl_browser( startfile, "RRT,RT" );
+
+    attach_rt_script( image, script, main );
+}
+
+void attach_look_mod_transform( CMedia* image, const std::string& script,
+                                const size_t idx,
+                                ViewerUI* main )
+{
+    char buf[1024];
+    sprintf( buf, "LMT %zd \"%s\"", idx, script.c_str() );
+    main->uiView->send_network( buf );
+
+    if ( idx >= image->number_of_lmts() && script != "" )
+        image->append_look_mod_transform( script.c_str() );
+    else
+        image->look_mod_transform( idx, script.c_str() );
+}
+
+void attach_ctl_lmt_script( CMedia* image, const char* startfile,
+                            const size_t idx,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    // @todo: pass index to look mod
+    std::string script = make_ctl_browser( startfile, "LMT,ACEScsc" );
+
+    attach_look_mod_transform( image, script, idx, main );
+
+}
+
+
+
+
+void attach_ctl_script( CMedia* image,
+                        ViewerUI* main )
+{
+    if (!image || !main ) {
+        return;
+    }
+
+    const char* transform = image->rendering_transform();
+    if ( !transform )
+        transform = mrv::CMedia::rendering_transform_float.c_str();
+
+    attach_ctl_script( image, transform, main );
+}
+
+void attach_ctl_idt_script( CMedia* image, const char* startfile,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    std::string script = make_ctl_browser( startfile, "ACEScsc,IDT" );
+
+    char buf[1024];
+    sprintf( buf, "IDT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+
+    image->idt_transform( script.c_str() );
+}
+
+void attach_ctl_idt_script( CMedia* image,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    const char* transform = image->idt_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_idt_script( image, transform, main );
+}
+
+void attach_ctl_lmt_script( CMedia* image, const size_t idx,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    const char* transform = image->look_mod_transform(idx);
+    if ( !transform )  transform = "";
+
+    attach_ctl_lmt_script( image, transform, idx, main );
+}
 
 
 std::string open_ocio_config( const char* startfile )
@@ -521,14 +711,76 @@ std::string open_ocio_config( const char* startfile )
 void read_clip_xml_metadata( CMedia* img,
                              ViewerUI* main )
 {
+    if ( !img ) return;
+
+    std::string xml = aces_xml_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") +
+                               kXMLPattern + "})";
+
+    std::string title = _("Load XML Clip Metadata");
+
+    stringArray filelist;
+
+    std::string file = file_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    if ( file.empty() ) return;
+
+    load_aces_xml( img, file.c_str() );
 
 }
 
 void save_clip_xml_metadata( const CMedia* img,
                              ViewerUI* main )
 {
+    if ( !img ) return;
+
+    std::string xml = aces_xml_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") +
+                               kXMLPattern + "})";
+
+    std::string title = _( "Save XML Clip Metadata" );
+
+    std::string file = file_save_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    if ( file.empty() ) return;
+
+    save_aces_xml( img, file.c_str() );
 }
 
+void monitor_ctl_script( ViewerUI* main,
+                         const unsigned index, const char* startfile )
+{
+    if ( !startfile )
+        startfile = mrv::Preferences::ODT_CTL_transform.c_str();
+
+    std::string script = make_ctl_browser( startfile, "ODT" );
+
+    mrv::Preferences::ODT_CTL_transform = script;
+    main->uiView->send_network( "ODT \"" + script + "\"" );
+
+    main->uiView->redraw();
+
+    // @todo: prefs
+    //     uiCTL_display_transform->static_text( script );
+    //     uiCTL_display_transform->do_callback();
+}
+
+void monitor_icc_profile( ViewerUI* main,
+                          const unsigned index )
+{
+    std::string profile = open_icc_profile( NULL,
+                                            "Load Monitor Profile" );
+    if ( profile.empty() ) return;
+
+    mrv::Preferences::ODT_ICC_profile = profile;
+    mrv::colorProfile::set_monitor_profile( profile.c_str(), index );
+
+    main->uiView->redraw();
+}
 
 
 
