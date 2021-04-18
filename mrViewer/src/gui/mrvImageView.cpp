@@ -930,6 +930,18 @@ static const float kMaxZoom = 96.f;   // Zoom 96x
 namespace mrv {
 
 
+static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+
+    CMedia* img = fg->image();
+    const char* script = "";
+    if ( img->rendering_transform() ) script = img->rendering_transform();
+
+    attach_ctl_script( fg->image(), script, view->main() );
+}
+
     static void modify_sop_sat( mrv::ImageView* view )
     {
         mrv::media fg = view->foreground();
@@ -1252,6 +1264,15 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
 }
 
 
+static void attach_color_profile_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+
+    attach_icc_profile( fg->image() );
+}
+
+
 
 
 void load_subtitle_cb( Fl_Widget* o, ViewerUI* uiMain )
@@ -1297,6 +1318,17 @@ static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
     view->redraw();
 }
 
+static void attach_ctl_lmt_script_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+
+    CMedia* img = fg->image();
+
+    attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
+}
+
+
 void ImageView::update_ICS(mrv::media fg) const
 {
     CMedia* img = fg->image();
@@ -1337,7 +1369,23 @@ static void attach_ocio_view_cb( Fl_Widget* o, mrv::ImageView* view )
     attach_ocio_view( fg->image(), view );
 }
 
+static void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
+    attach_ctl_idt_script( fg->image(), view->main() );
+}
+
+static void monitor_icc_profile_cb( Fl_Widget* o, ViewerUI* uiMain )
+{
+    monitor_icc_profile(uiMain);
+}
+
+static void monitor_ctl_script_cb( Fl_Widget* o, ViewerUI* uiMain )
+{
+    monitor_ctl_script(uiMain);
+}
 
 static void copy_pixel_rgba_cb( Fl_Widget* o, mrv::ImageView* view )
 {
@@ -4865,6 +4913,21 @@ bool PointInTriangle (const Imath::V2i& pt,
              menu->add( _("Pixel/Copy RGBA Values to Clipboard"),
                         kCopyRGBAValues.hotkey(),
                         (Fl_Callback*)copy_pixel_rgba_cb, (void*)this);
+         }
+
+         if ( !Preferences::use_ocio )
+         {
+
+             TRACE("");
+
+             menu->add( _("Monitor/Attach CTL Display Transform"),
+                        kMonitorCTLScript.hotkey(),
+                        (Fl_Callback*)monitor_ctl_script_cb,
+                        uiMain);
+             menu->add( _("Monitor/Attach ICC Color Profile"),
+                        kMonitorIccProfile.hotkey(),
+                        (Fl_Callback*)monitor_icc_profile_cb,
+                        uiMain, FL_MENU_DIVIDER);
          }
      }
 
