@@ -243,6 +243,7 @@ SET( SOURCES
   core/ctlToLut.cpp
   core/CMedia.cpp
   core/CMedia_audio.cpp
+  core/mrvColorProfile.cpp
   core/mrvFrame.cpp
   core/mrvHome.cpp
   core/guessImage.cpp
@@ -315,6 +316,7 @@ SET( SOURCES
   gui/MyPack.cpp
   gui/mrvActionWindow.cpp
   gui/mrvAsk.cpp
+  gui/mrvCTLBrowser.cpp
   gui/mrvOCIOBrowser.cpp
   gui/mrvColorSchemes.cpp
   gui/mrvDoubleWindow.cpp
@@ -451,7 +453,7 @@ SET( LIBRARIES
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${CTL_LIBRARIES}
-  ${OPENEXRCTL_LIBRARIES}
+  ${OpenEXRCTL_LIBRARIES}
   ${OCIO_LIBRARIES}
   ${OIIO_LIBRARIES}
   ${SampleICC_LIBRARIES}
