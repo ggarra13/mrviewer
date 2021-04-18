@@ -7818,7 +7818,7 @@ void ImageView::toggle_presentation()
         uiMain->uiMenuGroup->hide();
 
         uiMain->uiRegion->init_sizes();
-        uiMain->uiRegion->layout();
+        uiMain->uiViewGroup->init_sizes();
 
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
@@ -7847,11 +7847,34 @@ void ImageView::toggle_presentation()
 #ifdef OSX
         window()->resize( X, Y, W, H );  // needed
 #elif defined(_WIN32)
-        H += int(40 * scale);
-        resize( X, Y, W, H ); // needed
+        if ( scale == 1.0f )
+        {
+            H += int(130 * scale);
+        }
+        if ( scale == 1.25f )
+        {
+            H += int(110 * scale);
+        }
+        else if ( scale == 1.5f )
+        {
+            H += int(90 * scale);
+        }
+        else if ( scale == 2.0f )
+        {
+            H += int(70 * scale);
+        }
+        else if ( scale == 2.25f )
+        {
+            H += int(60 * scale);
+        }
+        else if ( scale == 2.5f )
+        {
+            H += int(50 * scale);
+        }
+        window()->resize( X, Y, W, H ); // needed
 #else
         H += int(40 * scale);
-        resize( X, Y, W, H ); // needed
+        window()->resize( X, Y, W, H ); // needed
 #endif
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
@@ -7860,7 +7883,6 @@ void ImageView::toggle_presentation()
         uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->redraw();
         redraw();
-
         Fl::check();
     }
     else
@@ -9626,12 +9648,12 @@ void ImageView::resize_main_window()
     if ( w > maxw ) {
         fit = true;
         w = maxw;
-        posX = 0;
+        //        posX = 0;
     }
     if ( h > maxh ) {
         fit = true;
         h = maxh;
-        posY = 0;
+        // posY = 0;
     }
 
     DBGM1( "posX, posY=" << posX << ", " << posY );
@@ -9744,7 +9766,7 @@ void ImageView::resize_main_window()
 
     uiMain->uiRegion->redraw();
 
-    valid(0);
+    //valid(0);
     redraw();
 
     Fl::check();

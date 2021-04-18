@@ -51,6 +51,8 @@ public:
 
     virtual int handle( int event );
 
+    void fullscreen();
+    
     void resize( int X, int Y, int W, int H );
     
     /**
