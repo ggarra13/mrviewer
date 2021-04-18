@@ -57,6 +57,8 @@ void open_single_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
 
 namespace mrv {
 
+void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
+
 class MainWindow;
 class ImageBrowser;
 class Timeline;
@@ -227,11 +229,12 @@ public:
         kHistogram = 8,
         kVectorscope = 9,
         kWaveform = 10,
-        kConnections = 11,
-        kPreferences = 12,
-        kHotkeys = 13,
-        kLogs = 14,
-        kAbout = 15,
+        kICCProfiles = 11,
+        kConnections = 12,
+        kPreferences = 13,
+        kHotkeys = 14,
+        kLogs = 15,
+        kAbout = 16,
         kLastWindow
     };
 
@@ -314,6 +317,9 @@ public:
     /// Change frame number to +/- N frames, respecting
     /// loop and timeline endings
     void step_frame( int64_t n );
+
+    /// update ICS
+    void update_ICS() const;
 
     /// Change frame number to first frame of image
     void first_frame();
@@ -947,7 +953,7 @@ protected:
     int           sizeX, sizeY; //<- non-fullscreen window size
 
     int           widthX, heightY; // <- size of opengl view
-    
+
     double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
     int                flags;  //<- flags containing current user action

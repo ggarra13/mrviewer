@@ -255,8 +255,6 @@ inline std::string extract_root( std::string r )
 }
 
 
-
-
 /**
  * Get a shortcut for a channel by looking at the channel mappings
  *
@@ -930,6 +928,58 @@ static const float kMaxZoom = 96.f;   // Zoom 96x
 
 
 namespace mrv {
+
+
+    static void modify_sop_sat( mrv::ImageView* view )
+    {
+        mrv::media fg = view->foreground();
+        if ( ! fg ) return;
+
+        mrv::CMedia* img = fg->image();
+        size_t num = img->number_of_lmts();
+        size_t num_graderefs = img->number_of_grade_refs();
+        if ( num_graderefs == 0 )
+        {
+            attach_look_mod_transform( img, "ACEScsc.ACES_to_ACEScg", 0,
+                                       view->main() );
+            attach_look_mod_transform( img, "LMT.SOPNode", 1, view->main() );
+            attach_look_mod_transform( img, "LMT.SatNode", 2, view->main() );
+            attach_look_mod_transform( img, "ACEScsc.ACEScg_to_ACES", 3,
+                                       view->main() );
+        }
+
+        if ( ! img->rendering_transform() )
+        {
+            attach_rt_script( img, "RRT", view->main() );
+        }
+        if ( mrv::Preferences::ODT_CTL_transform == "" )
+        {
+            mrv::Preferences::ODT_CTL_transform =
+                "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
+        }
+
+        ViewerUI* main = view->main();
+        if ( main->uiSOPNode )
+        {
+            main->uiSOPNode->media( fg );
+            main->uiSOPNode->uiMain->show();
+        }
+        else
+        {
+            main->uiSOPNode = new SopNode( view );
+        }
+        img->image_damage( img->image_damage() | mrv::CMedia::kDamageAll );
+        view->use_lut( true );
+        view->redraw();
+    }
+
+    void modify_sop_sat_cb( Fl_Widget* o, mrv::ImageView* view )
+    {
+        mrv::media fg = view->foreground();
+        if ( ! fg ) return;
+
+        modify_sop_sat( view );
+    }
 
     void static_handle_dnd( mrv::ImageBrowser* b );
 
@@ -4665,6 +4715,31 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)rotate_minus_90_cb, this,
                     FL_MENU_DIVIDER );
 
+         if ( !Preferences::use_ocio )
+         {
+
+             TRACE("");
+             menu->add( _("Image/Attach CTL Input Device Transform"),
+                        kIDTScript.hotkey(),
+                        (Fl_Callback*)attach_ctl_idt_script_cb,
+                        this);
+             menu->add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
+                        kSOPSatNodes.hotkey(),
+                        (Fl_Callback*)modify_sop_sat_cb,
+                        this);
+             menu->add( _("Image/Add CTL Look Mod Transform"),
+                        kLookModScript.hotkey(),
+                        (Fl_Callback*)attach_ctl_lmt_script_cb,
+                        this);
+             menu->add( _("Image/Attach CTL Rendering Transform"),
+                        kCTLScript.hotkey(),
+                        (Fl_Callback*)attach_ctl_script_cb,
+                        this, FL_MENU_DIVIDER);
+             menu->add( _("Image/Attach ICC Color Profile"),
+                        kIccProfile.hotkey(),
+                        (Fl_Callback*)attach_color_profile_cb,
+                        this, FL_MENU_DIVIDER);
+         }
 
          TRACE("");
          menu->add( _("Image/Mirror/Horizontal"),
@@ -4696,7 +4771,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
          Image_ptr image = fg->image();
-
 
          TRACE("");
          if ( Preferences::use_ocio )
