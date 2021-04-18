@@ -1213,6 +1213,17 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             uiMain->uiConnection->uiMain->hide();
         }
     }
+    else if ( idx == kICCProfiles )
+    {
+        if ( force || !uiMain->uiICCProfiles->uiMain->visible() )
+        {
+            uiMain->uiICCProfiles->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiICCProfiles->uiMain->hide();
+        }
+    }
     else if ( idx == kPreferences )
     {
         if ( force || !uiMain->uiPrefs->uiMain->visible() )
@@ -7630,6 +7641,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kToggleWaveform.match( rawkey ) )
     {
         toggle_window( kWaveform );
+        return 1;
+    }
+    else if ( kToggleICCProfiles.match( rawkey ) )
+    {
+        toggle_window( kICCProfiles );
         return 1;
     }
     else if ( kToggleConnections.match( rawkey ) )
