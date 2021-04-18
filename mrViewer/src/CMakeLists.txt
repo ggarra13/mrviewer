@@ -213,6 +213,8 @@ FLTK_WRAP_UI( mrViewer
   gui/OIIOOptionsUI.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvColorAreaUI.fl
+  gui/mrvIccProfileUI.fl
+  gui/mrvSOPNode.fl
   gui/mrvHotkeyUI.fl
   gui/keyboard_ui.fl
   gui/mrvImageInfo.fl

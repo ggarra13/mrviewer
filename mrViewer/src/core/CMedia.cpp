@@ -89,6 +89,7 @@ namespace fs = boost::filesystem;
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
+#include "core/mrvColorProfile.h"
 #include "core/mrvException.h"
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
@@ -870,6 +871,16 @@ CMedia::~CMedia()
     av_free( _channel );
 
     av_free( _label );
+
+    av_free( _profile );
+
+    av_free( _rendering_transform );
+
+
+    clear_look_mod_transform();
+
+    av_free( _idt_transform );
+
 
     delete [] _dataWindow;
     _dataWindow = NULL;
@@ -1679,6 +1690,8 @@ void CMedia::sequence( const char* fileroot,
 //! Adds default OCIO, ICC, and CTL profiles
 void CMedia::default_color_corrections()
 {
+    default_icc_profile();
+    default_rendering_transform();
     default_ocio_input_color_space();
 }
 
@@ -4140,6 +4153,36 @@ void CMedia::ocio_input_color_space( const std::string& n )
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
 }
 
+void CMedia::default_rendering_transform()
+{
+    if ( rendering_transform() ) return;
+
+    if ( internal() ) return;
+
+    switch( depth() )
+    {
+    case image_type::kByte:
+        if ( !rendering_transform_8bits.empty() )
+            rendering_transform( rendering_transform_8bits.c_str() );
+        break;
+    case image_type::kShort:
+        if ( !rendering_transform_16bits.empty() )
+            rendering_transform( rendering_transform_16bits.c_str() );
+        break;
+    case image_type::kInt:
+        if ( !rendering_transform_32bits.empty() )
+            rendering_transform( rendering_transform_32bits.c_str() );
+        break;
+    case image_type::kHalf:
+    case image_type::kFloat:
+        if ( !rendering_transform_float.empty() )
+            rendering_transform( rendering_transform_float.c_str() );
+        break;
+    default:
+        IMG_ERROR("default_rendering_tranform - unknown bit depth");
+        break;
+    }
+}
 
 // Outputs the indices of the stream that are keyframes
 // (keyframes are used only for video streams)

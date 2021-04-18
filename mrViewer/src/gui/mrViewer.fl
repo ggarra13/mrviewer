@@ -122,6 +122,9 @@ decl {\#include "mrvPlayback.h"} {private local
 decl {\#include "mrvVersion.h"} {private local
 }
 
+decl {\#include "mrvIccProfileUI.h"} {private local
+}
+
 decl {\#include "mrvColorAreaUI.h"} {private local
 }
 
@@ -143,6 +146,9 @@ decl {\#include "mrvColorControlsUI.h"} {public global
 decl {\#include "mrvWaveformUI.h"} {private local
 }
 
+decl {\#include "mrvSOPNode.h"} {public global
+}
+
 decl {\#include "icons/icons.c"} {private local
 }
 
@@ -156,6 +162,52 @@ decl {\#include "FL/Fl.H"} {public global
 }
 
 decl {\#include "namespace.h"} {public global
+}
+
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
+} {
+  code {std::string orig = ctl;} {}
+  Fl_Window {} {
+    label {CTL Browser} open
+    xywh {1207 382 395 440} type Double hide resizable hotspot
+    class mrvDoubleWindow modal
+  } {
+    Fl_Group {} {open
+      xywh {10 25 375 405}
+    } {
+      Fl_Browser uiBrowser {
+        label {Select a CTL script}
+        user_data {&ctl} user_data_type {std::string*}
+        callback {int elem = o->value();
+if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
+*v = o->text(elem);}
+        private xywh {10 25 375 345} type Hold box DOWN_BOX labelcolor 32
+        code0 {o->set_prefix(prefix);}
+        code1 {o->find( ctl.c_str() );}
+        class {mrv::CTLBrowser}
+      }
+      Fl_Button {} {
+        label Accept
+        user_data w user_data_type {mrvDoubleWindow*}
+        callback {v->make_exec_return(true);}
+        xywh {205 400 85 25}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data w user_data_type {mrvDoubleWindow*}
+        callback {v->make_exec_return(false);}
+        xywh {300 400 80 25}
+      }
+    }
+  }
+  code {if (!w->exec())
+{
+	delete w; w = NULL;
+	return orig;
+}
+
+delete w; w = NULL;
+return ctl;} {}
 }
 
 class SaveOptionsUI {} {
@@ -627,6 +679,8 @@ class ViewerUI {open
   decl {static HotkeyUI* uiHotkey;} {public local
   }
   decl {static ConnectionUI* uiConnection;} {public local
+  }
+  decl {static ICCProfileListUI* uiICCProfiles;} {public local
   }
   decl {Fl_Double_Window* uiAttrsWindow = NULL;} {public local
   }
