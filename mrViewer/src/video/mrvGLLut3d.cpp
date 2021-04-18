@@ -37,22 +37,29 @@
 #include <ImfVecAttribute.h>
 #include <ImfStandardAttributes.h>
 #include <ImfVecAttribute.h>
+#include <CtlExc.h>
 
 #include <FL/Enumerations.H>
 
 
+#include "IccProfile.h"
+#include "IccCmm.h"
 
 
+#include "core/ctlToLut.h"
 #include "core/CMedia.h"
+#include "core/mrvColorProfile.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvPreferences.h"
 
 #include "mrViewer.h"
+#include "ACES_ASC_CDL.h"
 #include "mrvPreferencesUI.h"
 
 #include "video/mrvGLLut3d.h"
 #include "video/mrvGLEngine.h"
+
 
 namespace
 {
@@ -66,6 +73,42 @@ const char* kModule = N_("cmm");
 
 namespace mrv {
 
+
+void prepare_ACES( const CMedia* img, const std::string& name,
+                   Imf::Header& h )
+{
+    using namespace Imf;
+    using namespace Imath;
+
+    if ( name.size() < 4 ) return;
+
+    const ACES::ASC_CDL& c = img->asc_cdl();
+
+    // Transform LMT.SOPNode/LMT.SatNode into SOPNode/SatNode
+    std::string n = name.substr( 4, 7 );
+
+
+    if ( n == "SOPNode" )
+    {
+        {
+            V3fAttribute attr( V3f( c.slope(0), c.slope(1), c.slope(2) ) );
+            h.insert( "slope", attr );
+        }
+        {
+            V3fAttribute attr( V3f( c.offset(0), c.offset(1), c.offset(2) ) );
+            h.insert( "offset", attr );
+        }
+        {
+            V3fAttribute attr( V3f( c.power(0), c.power(1), c.power(2) ) );
+            h.insert( "power", attr );
+        }
+    }
+    else if ( n == "SatNode" )
+    {
+        FloatAttribute attr( c.saturation() );
+        h.insert( "saturation", attr );
+    }
+}
 
 namespace {
 
@@ -586,6 +629,360 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
 
+bool GLLut3d::calculate_ctl(
+    const Transforms::const_iterator& start,
+    const Transforms::const_iterator& end,
+    const CMedia* img,
+    const XformFlags flags
+)
+{
+    //
+    // We build a 3D color lookup table by running a set of color
+    // samples through a series of CTL transforms.
+    //
+    // The 3D lookup table covers a range from lutMin to lutMax or
+    // NUM_STOPS f-stops above and below 0.18 or MIDDLE_GRAY.  The
+    // size of the table is _lutN by _lutN by _lutN samples.
+    //
+    // In order make the distribution of the samples in the table
+    // approximately perceptually uniform, the Cg shaders that use
+    // the table perform lookups in "log space":
+    // In a Cg shader, the lookup table is represented as a 3D texture.
+    // In order to apply the table to a pixel value, the Cg shader takes
+    // the logarithm of the pixel value and scales and offsets the result
+    // so that lutMin and lutMax map to 0 and 1 respectively.  The scaled
+    // value is used to perform a texture lookup and the shader computes
+    // e raised to the power of the result of the texture lookup.
+    //
+    _channels = 4;
+    Imf::Array<float> pixelValues( lut_size() );
+
+    //
+    // Generate output pixel values by applying CTL transforms
+    // to the pixel values.  (If the CTL transforms fail to
+    // write to the output values, zero-initialization, above,
+    // causes the displayed image to be black.)
+    //
+    const char** channelNames;
+
+    static const char* InRGBAchannels[4] = { N_("rIn"), N_("gIn"), N_("bIn"),
+                                             N_("aIn")
+                                           };
+
+    channelNames = InRGBAchannels;
+
+    TransformNames transformNames;
+    Transforms::const_iterator i = start;
+    for ( ; i != end; ++i )
+    {
+
+        Imf::Header header( img->width(), img->height(),
+                            float( img->pixel_ratio() ) );
+        Imf::addChromaticities( header, img->chromaticities() );
+
+        if ( !_inited )
+        {
+            //
+            // Init lut table to 0
+            //
+            clear_lut();
+
+            //
+            // Init table of pixel values
+            //
+            init_pixel_values( pixelValues );
+        }
+        else
+        {
+            //
+            // Copy rOut, gOut, bOut, aOut to rIn, gIn, bIn, aIn
+            //
+            memcpy( &pixelValues[0], &lut[0], lut_size() * sizeof(float) );
+        }
+
+        transformNames.clear();
+        transformNames.push_back( (*i).name );
+
+        prepare_ACES( img, (*i).name, header );
+
+        try
+        {
+            ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
+                      channelNames );
+            _inited = true;
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( "ctlToLut: " << e.what() );
+            return false;
+        }
+        catch( ... )
+        {
+            LOG_ERROR( _("Unknown error returned from ctlToLut") );
+            return false;
+        }
+    }
+
+
+    return true;
+}
+
+
+
+void GLLut3d::icc_cmm_error( const char* prefix,
+                             const icStatusCMM& status )
+{
+    std::string err;
+    switch( status )
+    {
+    case icCmmStatAllocErr:
+        err = "Allocation error";
+        break;
+    case icCmmStatCantOpenProfile:
+        err = "Can't open profile";
+        break;
+    case icCmmStatBadXform:
+        err = "Bad transform";
+        break;
+    case icCmmStatInvalidLut:
+        err = "Invalid Lut";
+        break;
+    case icCmmStatProfileMissingTag:
+        err = "Profile Missing Tag";
+        break;
+    case icCmmStatColorNotFound:
+        err = "Color not found";
+        break;
+    case icCmmStatIncorrectApply:
+        err = "Incorrect Apply";
+        break;
+    case icCmmStatBadColorEncoding:
+        err = "Bad color encoding";
+        break;
+    case icCmmStatBadLutType:
+        err = "Bad color encoding";
+        break;
+    case icCmmStatBadSpaceLink:
+        err = "Bad color space link";
+        break;
+    default:
+        err = "Unknown error";
+    }
+
+    LOG_ERROR( prefix << err );
+}
+
+
+
+bool GLLut3d::calculate_icc( const Transforms::const_iterator& start,
+                             const Transforms::const_iterator& end,
+                             const XformFlags flags )
+{
+    //
+    // We build a 3D color lookup table by running a set of color
+    // samples through a series of CTL transforms.
+    //
+    // The 3D lookup table covers a range from lutMin to lutMax or
+    // NUM_STOPS f-stops above and below 0.18 or MIDDLE_GRAY.  The
+    // size of the table is _lutN by _lutN by _lutN samples.
+    //
+    // In order make the distribution of the samples in the table
+    // approximately perceptually uniform, the Cg shaders that use
+    // the table perform lookups in "log space":
+    // In a Cg shader, the lookup table is represented as a 3D texture.
+    // In order to apply the table to a pixel value, the Cg shader takes
+    // the logarithm of the pixel value and scales and offsets the result
+    // so that lutMin and lutMax map to 0 and 1 respectively.  The scaled
+    // value is used to perform a texture lookup and the shader computes
+    // e raised to the power of the result of the texture lookup.
+    //
+
+    _channels = 4;
+    Imf::Array<float> pixelValues ( lut_size() );
+    if ( !_inited )
+    {
+        clear_lut();
+        init_pixel_values( pixelValues );
+    }
+    else
+    {
+        float* dst = pixelValues;
+        for (unsigned i = 0; i < lut_size(); ++i )
+        {
+            dst[i] = lut[i];
+        }
+    }
+
+    //
+    // Generate output pixel values by applying CMM ICC transforms
+    // to the pixel values.
+    //
+
+    // We leak some memory here but it is needed so profiles don't
+    // get deleted by CIccCmm.
+    CIccCmm* cmm = new CIccCmm( icSigUnknownData,
+                                icSigUnknownData,
+//                       (flags & kXformLast) ? icSigRgbData : icSigXYZData,
+                                (flags & kXformFirst) );
+
+
+    icStatusCMM status;
+    {
+        Transforms::const_iterator i = start;
+        for ( ; i != end; ++i )
+        {
+            const char* name = (*i).name.c_str();
+            CIccProfile* pIcc = colorProfile::get( name );
+            if ( !pIcc )
+            {
+                LOG_ERROR( _("Could not locate ICC profile \"")
+                           << name << N_("\"") );
+                return false;
+            }
+
+            status = cmm->AddXform( pIcc, (*i).intent );
+            if ( status != icCmmStatOk )
+            {
+                char err[1024];
+                sprintf( err, _("Could not add profile \"%s\" to CMM: "),
+                         name );
+                icc_cmm_error( err, status );
+                return false;
+            }
+        }
+    }
+
+
+    status = cmm->Begin();
+    if ( status != icCmmStatOk )
+    {
+        icc_cmm_error( _("Invalid Profile for CMM: "), status );
+        return false;
+    }
+
+    unsigned src_space = cmm->GetSourceSpace();
+
+    if ( !((src_space==icSigRgbData)  ||
+            (src_space==icSigGrayData) ||
+            (src_space==icSigLabData)  ||
+            (src_space==icSigXYZData)  ||
+            (src_space==icSigCmykData) ||
+            (src_space==icSigMCH4Data) ||
+            (src_space==icSigMCH5Data) ||
+            (src_space==icSigMCH6Data)) )
+    {
+        LOG_ERROR( _("Invalid source profile/image pixel format") );
+        return false;
+    }
+
+    bool convert = false;
+    unsigned dst_space = cmm->GetDestSpace();
+    unsigned channels  = 3;
+    switch( dst_space )
+    {
+    case icSigXYZData:
+        if ( (flags & kXformLast) ) convert = true;
+    // fall through - No break here
+    // case icSigGrayData:
+    case icSigRgbData:
+    case icSigLabData:
+    case icSigCmyData:
+        channels = 3;
+        break;
+    case icSig4colorData:
+    case icSigCmykData:
+        channels = 4;
+        break;
+    case icSig5colorData:
+        channels = 5;
+        break;
+    case icSig6colorData:
+        channels = 6;
+        break;
+    case icSig7colorData:
+        channels = 7;
+        break;
+    case icSig8colorData:
+        channels = 8;
+        break;
+    default:
+        LOG_ERROR( _("Invalid destination profile/image format") );
+        return false;
+    }
+
+    if ( channels > 3 )
+    {
+        LOG_WARNING( _("Destination color space has more than 3 channels - "
+                       "only first 3 will be shown.") );
+    }
+
+    if ( dst_space != icSigRgbData && dst_space != icSigXYZData )
+    {
+        LOG_WARNING( _("Destination color space is not RGB or XYZ.  "
+                       "Colors may look weird displayed as RGB.") );
+    }
+
+    status = cmm->Begin();
+    if ( status != icCmmStatOk )
+    {
+        icc_cmm_error(  _("Could not init cmm: "), status );
+        return false;
+    }
+
+    float* p = new float[channels];
+    size_t len = lut_size()/_channels;
+    for (size_t i = 0; i < len; ++i)
+    {
+        size_t j = i*4;
+        status = cmm->Apply( p, &(pixelValues[j]) );
+        if ( status != icCmmStatOk) {
+            icc_cmm_error( _("Apply: "), status );
+            return false;
+        }
+
+        if ( convert )
+        {
+            icXyzFromPcs( p );
+            icXYZtoLab( p );
+            icLabToPcs( p );
+        }
+
+        lut[j]   = p[0];
+        lut[j+1] = p[1];
+        lut[j+2] = p[2];
+    }
+
+    _inited = true;
+    delete [] p;
+
+    return true;
+}
+
+
+
+
+bool GLLut3d::calculate(
+    GLLut3d::GLLut3d_ptr lut,
+    const Transforms::const_iterator& start,
+    const Transforms::const_iterator& end,
+    const CMedia* img,
+    const GLLut3d::XformFlags flags
+)
+{
+    switch( (*start).type )
+    {
+    case Transform::kCTL:
+        return lut->calculate_ctl( start, end, img, flags );
+    case Transform::kICC:
+        return lut->calculate_icc( start, end, flags );
+    default:
+        return false;
+    }
+}
+
+
+
+
 
 
     std::string GLLut3d::update_ICS( const ViewerUI* view,
@@ -621,6 +1018,170 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
 
+bool     GLLut3d::RT_ctl_transforms( std::string& key,
+                                     Transforms& transforms,
+                                     const CMedia* img,
+                                     const bool warn )
+{
+    bool ok = false;
+    if ( img->idt_transform() )
+    {
+        std::string name = img->idt_transform();
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        ok = true;
+    }
+
+    if ( img->number_of_lmts() )
+    {
+        char buf[128];
+        size_t i = 0;
+        size_t num = img->number_of_lmts();
+
+        for ( ; i < num; ++i )
+        {
+            std::string name = img->look_mod_transform(i);
+            Transform t( name, Transform::kCTL );
+            if ( !key.empty() ) key += " -> ";
+            key += name;
+            if ( name == "LMT.SOPNode" )
+            {
+                const ACES::ASC_CDL& m = img->asc_cdl();
+                sprintf( buf, "%g %g %g - %g %g %g - %g %g %g",
+                         m.slope(0), m.slope(1), m.slope(2),
+                         m.offset(0), m.offset(1), m.offset(2),
+                         m.power(0), m.power(1), m.power(2) );
+                key += " ";
+                key += buf;
+            }
+            else if ( name == "LMT.SatNode" )
+            {
+                const ACES::ASC_CDL& m = img->asc_cdl();
+                sprintf( buf, "%g", m.saturation() );
+                key += " ";
+                key += buf;
+            }
+            key += " (C)";
+            transforms.push_back( t );
+            ok = true;
+        }
+    }
+
+    const char* rrt = img->rendering_transform();
+    if ( rrt )
+    {
+        std::string name = rrt;
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+
+        static const CMedia* lastImg = NULL;
+
+        if ( lastImg != img )
+        {
+            if ( warn )
+            {
+                LOG_WARNING( _("RT Lut is set to prefer ICC profile but only "
+                               "CTL script found in \"")
+                             << img->name() << N_("\"") );
+            }
+            lastImg = img;
+        }
+        ok = true;
+    }
+
+    return ok;
+}
+
+
+
+bool    GLLut3d::RT_icc_transforms( std::string& key,
+                                    Transforms& transforms,
+                                    const CMedia* img,
+                                    const bool warn )
+{
+    const char* profile = img->icc_profile();
+    CIccProfile* pIcc = colorProfile::get( profile );
+    if ( pIcc )
+    {
+        Transform t( profile, Transform::kICC,
+                     (icRenderingIntent) img->rendering_intent() );
+        if ( !key.empty() ) key += " -> ";
+        key += profile;
+        key += " (I)";
+        transforms.push_back( t );
+        if ( warn )
+        {
+            LOG_WARNING( _("RT Lut is set to prefer CTL but only "
+                           "ICC profile found in \"") << img->name() << N_("\"") );
+        }
+        return true;
+    }
+    return false;
+}
+
+
+
+bool    GLLut3d::ODT_ctl_transforms( std::string& key,
+                                     Transforms& transforms,
+                                     const CMedia* img,
+                                     const bool warn )
+{
+    if ( !mrv::Preferences::ODT_CTL_transform.empty() )
+    {
+        const std::string& name = mrv::Preferences::ODT_CTL_transform;
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        if ( warn )
+        {
+            LOG_WARNING( _("ODT Lut is set to prefer ICC profile but only "
+                           "CTL script found in ODT.") );
+        }
+        return true;
+    }
+    return false;
+}
+
+
+bool     GLLut3d::ODT_icc_transforms( std::string& key,
+                                      Transforms& transforms,
+                                      const CMedia* img,
+                                      const bool warn )
+{
+    if ( !mrv::Preferences::ODT_ICC_profile.empty() )
+    {
+        const std::string& name = mrv::Preferences::ODT_ICC_profile;
+        Transform t( name, Transform::kICC );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (I)";
+        transforms.push_back( t );
+        if ( warn )
+        {
+            LOG_WARNING( _("ODT Lut is set to prefer CTL script but only "
+                           "ICC profile found in ODT.") );
+        }
+        return true;
+    }
+    return false;
+}
+
+void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
+{
+    std::string path;
+
+    RT_ctl_transforms( path, t, img, false );
+    ODT_ctl_transforms( path, t, img );
+}
+
 
 
 GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
@@ -628,43 +1189,131 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 {
     const PreferencesUI* uiPrefs = view->uiPrefs;
     std::string path, fullpath;
+    GLLut3d::Transforms transforms;
 
     static const CMedia* lastImg = NULL;
-
-    std::string ics = img->ocio_input_color_space();
-    if ( ics.empty() ) {
-        ics = OCIO::ROLE_SCENE_LINEAR;
-
-        const char* var = uiPrefs->uiPrefsOCIOConfig->value();
-        if ( var )
-        {
-            std::string ocio = var;
-            if ( img->depth() == image_type::kByte ||
-                 img->depth() == image_type::kShort ) {
-                if ( ocio.rfind( "nuke-default" ) != std::string::npos )
-                    ics = "sRGB";
-                else
-                    ics = "Output - sRGB";
-            }
-        }
-        CMedia* c = const_cast< CMedia* >( img );
-        c->ocio_input_color_space( ics );
-    }
-
-    OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
-    if ( config ) fullpath = config->getCacheID();
-    fullpath += " -> ";
-
-    if ( Preferences::use_ocio )
+    if ( !Preferences::use_ocio )
     {
+
+        unsigned int algorithm = uiPrefs->RT_algorithm->value();
+
+        bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
+                         algorithm == Preferences::kLutPreferCTL );
+        bool find_icc = (algorithm == Preferences::kLutOnlyICC ||
+                         algorithm == Preferences::kLutPreferICC );
+
+        bool found;
+        if ( find_ctl )
+        {
+            found = RT_ctl_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferCTL )
+                RT_icc_transforms( path, transforms, img, true );
+        }
+        else
+        {
+            found = RT_icc_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferICC )
+                RT_ctl_transforms( path, transforms, img, true );
+        }
+
+        if ( transforms.empty() )
+        {
+
+            if ( img != lastImg )
+            {
+
+                const char* err = N_("");
+                if ( algorithm == Preferences::kLutPreferICC ||
+                        algorithm == Preferences::kLutPreferCTL )
+                    err = _("No CTL script or ICC profile");
+                else if ( find_ctl )
+                    err = _("No CTL script");
+                else if ( find_icc )
+                    err = _("No ICC profile");
+
+                LOG_ERROR( _("No valid RT transform for \"")
+                           << img->name() << N_("\": ") << err << N_(".") );
+            }
+
+            lastImg = img;
+
+            return NULL;
+        }
+
+        size_t num = transforms.size();
+
+        algorithm = uiPrefs->ODT_algorithm->value();
+        find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
+                    algorithm == Preferences::kLutPreferCTL );
+        find_icc = (algorithm == Preferences::kLutOnlyICC ||
+                    algorithm == Preferences::kLutPreferICC );
+
+        if ( find_ctl )
+        {
+            found = ODT_ctl_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferCTL )
+                ODT_icc_transforms( path, transforms, img, true );
+        }
+        else
+        {
+            found = ODT_icc_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferICC )
+                ODT_ctl_transforms( path, transforms, img, true );
+        }
+
+        if ( transforms.size() == num )
+        {
+            static const CMedia* lastImg = NULL;
+
+            if ( img != lastImg )
+            {
+                const char* err = N_("");
+                if ( algorithm == Preferences::kLutPreferICC ||
+                        algorithm == Preferences::kLutPreferCTL )
+                    err = _("No CTL script or ICC profile");
+                else if ( find_ctl )
+                    err = _("No CTL script");
+                else if ( find_icc )
+                    err = _("No ICC profile");
+
+                LOG_ERROR( _("No valid ODT transform: ") << err << N_(".") );
+            }
+
+            lastImg = img;
+            return NULL;
+        }
+    }
+    else
+    {
+        std::string ics = img->ocio_input_color_space();
+        if ( ics.empty() ) {
+            ics = OCIO::ROLE_SCENE_LINEAR;
+
+            const char* var = uiPrefs->uiPrefsOCIOConfig->value();
+            if ( var )
+            {
+                std::string ocio = var;
+                if ( img->depth() == image_type::kByte ||
+                     img->depth() == image_type::kShort ) {
+                    if ( ocio.rfind( "nuke-default" ) != std::string::npos )
+                        ics = "sRGB";
+                    else
+                        ics = "Output - sRGB";
+                }
+            }
+            CMedia* c = const_cast< CMedia* >( img );
+            c->ocio_input_color_space( ics );
+        }
+
+        OCIO::ConstConfigRcPtr config = Preferences::OCIOConfig();
+        if ( config ) fullpath = config->getCacheID();
+        fullpath += " -> ";
+
         path = ics;
         path += " -> " + Preferences::OCIO_Display;
         path += " -> " + Preferences::OCIO_View;
     }
-    else
-    {
-        path = "NO OCIO";
-    }
+
     fullpath += path;
     //
     // Check if this lut path was already calculated by some other
@@ -752,12 +1401,51 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     GLLut3d_ptr lut( new GLLut3d(view, size) );
 
 
-    char* oldloc = av_strdup( setlocale(LC_NUMERIC, NULL ) );
-    setlocale(LC_NUMERIC, "C" );
-    if ( ! lut->calculate_ocio( img ) )
-        LOG_ERROR( _("Could not calculate OCIO Lut") );
-    setlocale(LC_NUMERIC, oldloc );
-    av_free( oldloc );
+    if ( Preferences::use_ocio )
+    {
+        char* oldloc = av_strdup( setlocale(LC_NUMERIC, NULL ) );
+        setlocale(LC_NUMERIC, "C" );
+        if ( ! lut->calculate_ocio( img ) )
+            LOG_ERROR( _("Could not calculate OCIO Lut") );
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
+    }
+    else
+    {
+
+        //
+        // Create Luts
+        unsigned int flags = kXformFirst;
+
+        Transforms::const_iterator i = transforms.begin();
+        Transforms::const_iterator e = transforms.end();
+        Transforms::const_iterator start = i;
+
+        for ( ++i; i != e; ++i )
+        {
+            if ( (*i).type != (*start).type )
+            {
+                if ( ! lut->calculate( lut, start, i, img,
+                                       (XformFlags)flags ) )
+                {
+                    LOG_ERROR( "Lut calculate failed" );
+                    return NULL;
+                }
+                start = i;
+                flags = kXformNone;
+            }
+        }
+
+        if ( (e - start) != 0 )
+        {
+            flags |= kXformLast;
+            if ( ! lut->calculate( lut, start, e, img, (XformFlags)flags ) )
+            {
+                LOG_ERROR( "Lut calculate failed" );
+                return NULL;
+            }
+        }
+    }
 
     lut->create_gl_texture();
 
