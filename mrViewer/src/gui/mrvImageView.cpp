@@ -148,6 +148,7 @@
 #include "mrvAudioOffset.h"
 #include "AboutUI.h"
 #include "mrvReelUI.h"
+#include "mrvIccProfileUI.h"
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvLogDisplay.h"

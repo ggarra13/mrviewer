@@ -127,7 +127,7 @@ def copy_files( dest )
   FileUtils.cp_r( "colors/", "#{dest}/", :verbose => true )
   # $stdout.puts "Copy ctl scripts"
   FileUtils.rm_rf( "#{dest}/ctl" )
-  # FileUtils.cp_r( "ctl/", "#{dest}/", :verbose => true )
+  FileUtils.cp_r( "ctl/", "#{dest}/", :verbose => true )
   $stdout.puts "Copy ocio configs"
   FileUtils.rm_rf( "#{dest}/ocio" )
   FileUtils.cp_r( "ocio/", "#{dest}/", :verbose => true )

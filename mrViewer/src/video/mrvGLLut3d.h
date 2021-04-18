@@ -39,6 +39,7 @@
 #include <ImathVec.h>
 #include <ImfArray.h>
 
+#include <IccCmm.h>
 
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
@@ -46,6 +47,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include <boost/shared_ptr.hpp>
 #include "core/mrvFrame.h"
 
+class CIccProfile;
 class ViewerUI;
 class PreferencesUI;
 
@@ -63,6 +65,32 @@ public:
 
     static unsigned NUM_STOPS;
 
+    struct Transform
+    {
+        enum Type
+        {
+            kCTL = 'C',
+            kICC = 'I'
+        };
+
+        std::string       name;
+        Type              type;
+        icRenderingIntent intent;
+
+        Transform( const std::string& n, const Type t,
+                   const icRenderingIntent i = icPerceptual ) :
+            name(n), type(t), intent(i)
+        {
+        }
+    };
+
+    enum XformFlags
+    {
+        kXformNone  = 0,
+        kXformFirst = 1,
+        kXformLast  = 2,
+    };
+
     enum LutSizes
     {
         kNoBake,
@@ -74,6 +102,8 @@ public:
         kLut256,
     };
 
+    typedef std::vector< Transform >         Transforms;
+    typedef std::vector< std::string  >      TransformNames;
 
     typedef boost::shared_ptr< GLLut3d >         GLLut3d_ptr;
     // typedef std::multimap< std::string, GLLut3d_ptr > LutsMap;
@@ -99,6 +129,14 @@ public:
     void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
     bool calculate_ocio( const CMedia* img );
+    virtual bool calculate_ctl( const Transforms::const_iterator& start,
+                                const Transforms::const_iterator& end,
+                                const CMedia* img,
+                                const XformFlags flags );
+
+    virtual bool calculate_icc( const Transforms::const_iterator& start,
+                                const Transforms::const_iterator& end,
+                                const XformFlags flags );
 
     void clear_lut();
     void create_gl_texture();
@@ -111,6 +149,8 @@ public:
     }
 
 protected:
+    void icc_cmm_error( const char* prefix,
+                        const icStatusCMM& status );
 
     // Returns size of lut with 3 or 4 channels
     unsigned lut_size() const {
@@ -124,10 +164,38 @@ public:
                                    const CMedia* img,
                                    const char* lbl = "scene_linear" );
 
+    static bool calculate(
+        GLLut3d_ptr lut,
+        const Transforms::const_iterator& start,
+        const Transforms::const_iterator& end,
+        const CMedia* img,
+        const XformFlags flags
+    );
     static GLLut3d_ptr factory( const ViewerUI* ui, const CMedia* img );
     static void     clear();
+    static void   transform_names( Transforms& t,
+                                   const CMedia* img );
 
 protected:
+    static bool     RT_ctl_transforms( std::string& key,
+                                       Transforms& transforms,
+                                       const CMedia* img,
+                                       const bool warn = false );
+
+    static bool     RT_icc_transforms( std::string& key,
+                                       Transforms& transforms,
+                                       const CMedia* img,
+                                       const bool warn = false );
+
+    static bool     ODT_ctl_transforms( std::string& key,
+                                        Transforms& transforms,
+                                        const CMedia* img,
+                                        const bool warn = false );
+
+    static bool     ODT_icc_transforms( std::string& key,
+                                        Transforms& transforms,
+                                        const CMedia* img,
+                                        const bool warn = false );
 
 public:
     float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
