@@ -7814,7 +7814,7 @@ void ImageView::show_background( const bool b )
         int W = uiMain->uiRegion->w();
         int H = uiMain->uiRegion->h();
 
-        if ( has_menu_bar && showtop )    {
+        if ( has_menu_bar )    {
             // Menubar MUST be 25 pixels-- for some reason it changes size
             uiMain->uiMenuGroup->size( W, int(25) );
             fill_menu( uiMain->uiMenuBar );
@@ -7823,7 +7823,7 @@ void ImageView::show_background( const bool b )
         }
 
 
-        if ( has_top_bar && showtop )    {
+        if ( has_top_bar )    {
             int w = uiMain->uiTopBar->w();
             // Topbar MUST be 28 pixels-- for some reason it changes size
             uiMain->uiTopBar->size( w, int(28) );
@@ -7831,9 +7831,11 @@ void ImageView::show_background( const bool b )
         }
 
         if ( has_bottom_bar)  {
+            uiMain->uiBottomBar->size( W, int(49) );
             uiMain->uiBottomBar->show();
         }
         if ( has_pixel_bar )  {
+            uiMain->uiPixelBar->size( W, int(28) );
             uiMain->uiPixelBar->show();
         }
         uiMain->uiViewGroup->init_sizes();
@@ -7991,7 +7993,7 @@ void ImageView::toggle_presentation()
         int H = window()->h();
 
 #ifdef OSX
-         window()->resize( X, Y, W, H );  // needed
+        // window()->resize( X, Y, W, H );  // needed
 #elif defined(_WIN32)
 //         resize( X, Y, W, H ); // needed
 #elif defined(LINUX)
@@ -8024,12 +8026,9 @@ void ImageView::toggle_presentation()
 
         texture_filtering( filter );
         presentation = false;
-        //FullScreen = false;
-        //fltk_main()->fullscreen_off();
-
         show_bars( uiMain, false );
 
-        fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
+        fltk_main()->fullscreen_off();
         Fl::check();
         //resize_main_window();
 
