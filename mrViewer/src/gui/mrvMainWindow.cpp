@@ -216,13 +216,14 @@ int MainWindow::handle( int event )
 
 void MainWindow::fullscreen()
 {
-    DBGM1( "******** FULLSCREEN" );
     Fl_Double_Window::fullscreen();
+    DBGM1( "******** FULLSCREEN " << x() << ", " << y() << " " << w()
+           << "x" << h() );
 }
 
 void MainWindow::resize( int X, int Y, int W, int H )
 {
-    static int oldH = H;
+    static int oldH = 0;
     if ( oldH != H )
     {
         DBGM1( X << ", " << Y << " " << W << "x" << H );

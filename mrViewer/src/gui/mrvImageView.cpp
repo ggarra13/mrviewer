@@ -7877,7 +7877,7 @@ void ImageView::toggle_fullscreen()
     }
     else
     {
-        FullScreen = false;
+        if ( !presentation ) FullScreen = false;
         presentation = false;
         show_bars( uiMain );
         // resize_main_window();
@@ -7886,10 +7886,9 @@ void ImageView::toggle_fullscreen()
                << sizeY);
         fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
         Fl::check();
-        fltk_main()->resize( posX, posY, sizeX, sizeY );
-        Fl::check();
+        if ( FullScreen ) fltk_main()->fullscreen();
+        else fltk_main()->resize( posX, posY, sizeX, sizeY );
     }
-
 
 
     fit_image();
@@ -7965,10 +7964,16 @@ void ImageView::toggle_presentation()
         uiMain->uiTopBar->hide();
         uiMain->uiMenuGroup->hide();
 
+        if ( fltk_main()->fullscreen_active() ) fltk_main()->fullscreen_off();
+
         Fl::check();
 
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
+
         uiMain->uiViewGroup->init_sizes();
+        uiMain->uiViewGroup->layout();
+
 
         presentation = true;
         if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
@@ -8006,8 +8011,6 @@ void ImageView::toggle_presentation()
         // uiMain->uiViewGroup->init_sizes();
         // uiMain->uiViewGroup->layout();
         // uiMain->uiViewGroup->redraw();
-        redraw();
-        Fl::check();
         DBGM1( "v->h()= " << h() << " v->pixel_h()= " << pixel_h() );
     }
     else
@@ -8039,7 +8042,6 @@ void ImageView::toggle_presentation()
             fltk_main()->fullscreen();
         }
         else fltk_main()->resize( posX, posY, sizeX, sizeY );
-        Fl::check();
 
     }
 
