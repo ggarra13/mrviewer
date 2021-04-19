@@ -780,6 +780,7 @@ public:
         return _mode;
     }
 
+
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
 
