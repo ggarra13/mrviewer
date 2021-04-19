@@ -97,6 +97,15 @@ namespace mrv
 
     using namespace R3DSDK;
 
+struct CtlLMTData
+{
+    Fl_Widget* widget;
+    size_t idx;
+};
+
+typedef std::vector< CtlLMTData* > LMTData;
+
+static LMTData widget_data;
 
 static const Fl_Color kTitleColors[] = {
     0x608080ff,
@@ -2350,6 +2359,19 @@ void ImageInformation::set_image( CMedia* i )
     refresh();
 }
 
+void ImageInformation::clear_callback_data()
+{
+
+    LMTData::iterator i = widget_data.begin();
+    LMTData::iterator e = widget_data.end();
+
+    for ( ; i != e; ++i)
+    {
+        delete *i;
+    }
+
+    widget_data.clear();
+}
 
 void ImageInformation::hide_tabs()
 {
@@ -3005,9 +3027,43 @@ void ImageInformation::fill_data()
         add_text( _("CIExy White Point"), _("CIExy White Point"), buf );
     }
 
-    add_ocio_ics( _("Input Color Space"),
-                  _("OCIO Input Color Space"),
-                  img->ocio_input_color_space().c_str() );
+    if ( Preferences::use_ocio )
+    {
+    DBG3;
+        add_ocio_ics( _("Input Color Space"),
+                      _("OCIO Input Color Space"),
+                      img->ocio_input_color_space().c_str() );
+    }
+    else
+    {
+
+        add_ctl_idt( _("Input Device Transform"),
+                     _("(IDT) Input Device Transform"),
+                     img->idt_transform() );
+
+
+        clear_callback_data();
+
+        {
+
+
+            unsigned count = (unsigned) img->number_of_lmts();
+            for ( unsigned i = 0; i <= count; ++i )
+            {
+                sprintf( buf, _("LMTransform %u"), i+1 );
+                add_ctl_lmt( buf, _("(LMT) Look Mod Transform"),
+                             img->look_mod_transform(i), i );
+            }
+        }
+
+
+
+        add_ctl( _("Render Transform"), _("(RT) Render Transform"),
+                 img->rendering_transform() );
+
+
+        add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
+    }
 
     DBG3;
     ++group;
@@ -3723,6 +3779,36 @@ Fl_Color ImageInformation::get_widget_color()
     return col;
 }
 
+void ImageInformation::icc_callback( Fl_Widget* t, ImageInformation* v )
+{
+    attach_icc_profile( v->get_image() );
+    v->filled = false;
+    v->refresh(); // @TODO: move this somewhere else
+}
+
+void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
+{
+    attach_ctl_script( v->get_image(), v->main() );
+    v->filled = false;
+}
+
+void ImageInformation::ctl_idt_callback( Fl_Widget* t,
+                                         ImageInformation* v )
+{
+    attach_ctl_idt_script( v->get_image(), v->main() );
+    v->filled = false;
+}
+
+void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
+                                         CtlLMTData* c )
+{
+    ImageInformation* v = (ImageInformation*) c->widget;
+    size_t idx = c->idx;
+
+    attach_ctl_lmt_script( v->get_image(), idx, v->main() );
+    v->filled = false;
+}
+
 void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
 {
     unsigned   idx = t->value();
@@ -3730,6 +3816,67 @@ void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
     img->compression( idx );
     t->label( t->child(idx)->label() );
     v->filled = false;
+}
+
+void ImageInformation::add_icc( const char* name,
+                                const char* tooltip,
+                                const char* content,
+                                const bool editable,
+                                Fl_Callback* callback )
+{
+    if ( !content )
+        content = _("None");
+
+
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)icc_callback, (void*)this );
+
+        sg->add( widget );
+
+        Fl_Button* pick = new Fl_Button( X + kMiddle + sg->w()-50, Y,
+                                         50, hh, _("Load") );
+        pick->callback( (Fl_Callback*)icc_callback, (void*)this );
+        sg->add( pick );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+
+    m_curr->layout();
 }
 
 void ImageInformation::add_button( const char* name,
@@ -3849,6 +3996,59 @@ void ImageInformation::add_scale( const char* name,
 }
 
 
+void ImageInformation::add_ctl( const char* name,
+                                const char* tooltip,
+                                const char* content,
+                                const bool editable,
+                                Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->end();
+    }
+    m_curr->add( g );
+
+
+    {
+        Fl_Group* sg = new Fl_Group( kMiddle, Y, w()-kMiddle, hh );
+
+        Fl_Input* widget = new Fl_Input( kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)ctl_callback, (void*)this );
+
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_callback, this );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
+
 
 
 void ImageInformation::add_ocio_ics( const char* name,
@@ -3894,7 +4094,7 @@ void ImageInformation::add_ocio_ics( const char* name,
 
         Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
                                          _("Pick") );
-        pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view()->browser() );
+        pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view() );
         sg->add( pick );
 
         m_curr->add( sg );
@@ -3903,6 +4103,145 @@ void ImageInformation::add_ocio_ics( const char* name,
 }
 
 
+void ImageInformation::add_ctl_idt( const char* name,
+                                    const char* tooltip,
+                                    const char* content,
+                                    const bool editable,
+                                    Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
+
+        sg->add( widget );
+
+        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_idt_callback, this );
+        sg->add( pick );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
+
+
+
+void ImageInformation::add_ctl_lmt( const char* name,
+                                    const char* tooltip,
+                                    const char* content,
+                                    const size_t idx,
+                                    const bool editable,
+                                    Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    bool sop_sat_node = false;
+    if ( content )
+    {
+        std::string n = content;
+        n = n.substr( 4, 7 );
+        if ( n == "SOPNode" || n == "SatNode" )
+            sop_sat_node = true;
+    }
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+        sg->end();
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50
+                                         -50*sop_sat_node, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+
+        CtlLMTData* c = new CtlLMTData;
+        c->widget = this;
+        c->idx    = idx;
+
+        widget_data.push_back( c );
+
+        if ( callback )
+            widget->callback( callback, (void*)c );
+
+        sg->add( widget );
+
+        if ( sop_sat_node )
+        {
+            Fl_Button* modify = new Fl_Button( X+kMiddle + sg->w()-100, Y,
+                                               50, hh, _("Values") );
+            mrv::ImageView* view = main()->uiView;
+            modify->callback( (Fl_Callback*)modify_sop_sat_cb, view );
+            sg->add( modify );
+        }
+
+
+        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_lmt_callback, c );
+        sg->add( pick );
+        sg->resizable(widget);
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
 
 
 void ImageInformation::add_text( const char* name,

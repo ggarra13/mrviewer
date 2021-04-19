@@ -62,6 +62,7 @@ class ViewerUI;
 namespace mrv
 {
 class CMedia;
+struct CtlLMTData;
 class ImageView;
 
 
@@ -70,7 +71,9 @@ class ImageInformation : public Fl_Scroll
 
 public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
-    ~ImageInformation() {}
+    ~ImageInformation() {
+        clear_callback_data();
+    }
 
     CMedia* get_image() {
         return img;
@@ -96,8 +99,14 @@ protected:
     Fl_Color get_title_color();
     Fl_Color get_widget_color();
 
+    void clear_callback_data();
+
     void hide_tabs();
 
+    static void ctl_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_lmt_callback( Fl_Widget* t, CtlLMTData* v );
+    static void ctl_idt_callback( Fl_Widget* t, ImageInformation* v );
+    static void icc_callback( Fl_Widget* t, ImageInformation* v );
     static void compression_cb( mrv::PopupMenu* t, ImageInformation* v );
     static void enum_cb( mrv::PopupMenu* w, ImageInformation* v );
 
@@ -117,6 +126,27 @@ protected:
                     int pressed, int num_scales,
                     Fl_Callback* callback = NULL );
 
+    void add_icc( const char* name, const char* tooltip,
+                  const char* content,
+                  const bool editable = true,
+                  Fl_Callback* callback = NULL );
+
+
+    void add_ctl( const char* name, const char* tooltip,
+                  const char* content,
+                  const bool editable = true,
+                  Fl_Callback* callback = NULL );
+
+    void add_ctl_lmt( const char* name, const char* tooltip,
+                      const char* content,
+                      const size_t idx,
+                      const bool editable = true,
+                      Fl_Callback* callback = NULL );
+
+    void add_ctl_idt( const char* name, const char* tooltip,
+                      const char* content,
+                      const bool editable = true,
+                      Fl_Callback* callback = NULL );
 
 
     void add_ocio_ics( const char* name, const char* tooltip,
