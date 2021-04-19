@@ -7878,12 +7878,13 @@ void ImageView::toggle_fullscreen()
     else
     {
         if ( !presentation ) FullScreen = false;
+        else FullScreen = true;
         presentation = false;
         show_bars( uiMain );
         // resize_main_window();
         // resize_main_window();
         DBGM1( "posXY=" << posX << "," << posY << " sizeXY " << sizeX << "x"
-               << sizeY);
+               << sizeY << " fullscreen " << FullScreen );
         fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
         Fl::check();
         if ( FullScreen ) fltk_main()->fullscreen();
@@ -7990,28 +7991,6 @@ void ImageView::toggle_presentation()
 
         fltk_main()->fullscreen();
 
-
-        float scale = Fl::screen_scale( window()->screen_num() );
-        int X = window()->x();
-        int Y = window()->y();
-        int W = window()->w();
-        int H = window()->h();
-
-#ifdef OSX
-        // window()->resize( X, Y, W, H );  // needed
-#elif defined(_WIN32)
-//         resize( X, Y, W, H ); // needed
-#elif defined(LINUX)
-         // H += int(40 * scale);
-         // resize( X, Y, W, H ); // needed
-#endif
-        // uiMain->uiRegion->init_sizes();
-        // uiMain->uiRegion->layout();
-        // uiMain->uiRegion->redraw();
-        // uiMain->uiViewGroup->init_sizes();
-        // uiMain->uiViewGroup->layout();
-        // uiMain->uiViewGroup->redraw();
-        DBGM1( "v->h()= " << h() << " v->pixel_h()= " << pixel_h() );
     }
     else
     {
@@ -8028,21 +8007,17 @@ void ImageView::toggle_presentation()
         if ( has_log )        uiLog->show();
 
         texture_filtering( filter );
-        presentation = false;
+        presentation = FullScreen = false;
+        
         show_bars( uiMain, false );
 
         fltk_main()->fullscreen_off();
         Fl::check();
-        //resize_main_window();
 
         show_bars( uiMain, true );
-        //resize_main_window();
 
-        if ( FullScreen ) {
-            fltk_main()->fullscreen();
-        }
-        else fltk_main()->resize( posX, posY, sizeX, sizeY );
 
+        fltk_main()->resize( posX, posY, sizeX, sizeY );
     }
 
     fit_image();
