@@ -1147,7 +1147,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     GLLut3d::Transforms transforms;
 
     static const CMedia* lastImg = NULL;
-    if ( !Preferences::use_ocio )
+    if ( ! Preferences::use_ocio )
     {
 
         unsigned int algorithm = uiPrefs->RT_algorithm->value();
@@ -1179,7 +1179,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 
                 const char* err = N_("");
                 if ( algorithm == Preferences::kLutPreferICC ||
-                        algorithm == Preferences::kLutPreferCTL )
+                     algorithm == Preferences::kLutPreferCTL )
                     err = _("No CTL script or ICC profile");
                 else if ( find_ctl )
                     err = _("No CTL script");
@@ -1224,7 +1224,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             {
                 const char* err = N_("");
                 if ( algorithm == Preferences::kLutPreferICC ||
-                        algorithm == Preferences::kLutPreferCTL )
+                     algorithm == Preferences::kLutPreferCTL )
                     err = _("No CTL script or ICC profile");
                 else if ( find_ctl )
                     err = _("No CTL script");

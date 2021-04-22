@@ -2058,7 +2058,7 @@ void CMedia::chromaticities( const Imf::Chromaticities& c )
 {
     _chromaticities = c;
     _has_chromaticities = true;
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2352,7 +2352,7 @@ void CMedia::rendering_transform( const char* cfile )
     {
         _rendering_transform = av_strdup( cfile );
     }
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2377,7 +2377,7 @@ void CMedia::idt_transform( const char* cfile )
     av_free( _idt_transform );
     _idt_transform = NULL;
     if ( cfile && strlen(cfile) > 0 ) _idt_transform = av_strdup( cfile );
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2425,7 +2425,7 @@ void CMedia::append_look_mod_transform( const char* cfile )
         av_free( _look_mod_transform[idx] );
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2472,7 +2472,7 @@ void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
     {
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2494,7 +2494,7 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
     {
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 
@@ -2524,7 +2524,7 @@ void CMedia::icc_profile( const char* cfile )
         mrv::colorProfile::add( cfile );
         _profile = av_strdup( cfile );
     }
-    image_damage( image_damage() | kDamageData | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
 

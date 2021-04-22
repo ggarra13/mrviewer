@@ -58,5 +58,6 @@ if( UNIX )
      include( BuildImageMagick.cmake )
 endif()
 
+include( BuildCTL.cmake )
 include( BuildOIIO.cmake )
 include( BuildFLTK.cmake )

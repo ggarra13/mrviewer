@@ -1197,7 +1197,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
                                                    attr->copy() ) );
             attrs.insert( N_("adoptedNeutral") );
             if ( _frame == _frameStart )
-                image_damage( image_damage() | kDamageLut );
+                image_damage( image_damage() | kDamageLut | kDamageICS );
         }
     }
 
