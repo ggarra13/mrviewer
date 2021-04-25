@@ -8008,7 +8008,7 @@ void ImageView::toggle_presentation()
 
         texture_filtering( filter );
         presentation = FullScreen = false;
-        
+
         show_bars( uiMain, false );
 
         fltk_main()->fullscreen_off();
@@ -8351,7 +8351,7 @@ int ImageView::handle(int event)
     case FL_SHOW:
     case FL_HIDE:
     {
-        return ret;
+        return 1;
     }
     case FL_PASTE:
         {
