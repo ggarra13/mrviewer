@@ -65,8 +65,7 @@ if( NOT DEFINED LIB_AMF_ONLY )
   install( FILES
     src/AMFReader.h
     src/AMFWriter.h
+    src/AMFBase.h
     src/AMFExport.h
-    src/AMFTransform.h
-    src/AMF_ASC_CDL.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
 endif()

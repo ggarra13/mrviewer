@@ -4,6 +4,7 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
+libAMF.*
 libACESclip.*
 libOpenGL.*
 libGL\.so

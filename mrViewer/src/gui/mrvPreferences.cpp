@@ -373,10 +373,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
     DBG3;
-    ui.get( "menubar", tmp, 1 );
-    uiPrefs->uiPrefsMenuBar->value( (bool) tmp );
-
-    DBG3;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
@@ -1046,6 +1042,107 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     lut.get("number_stops", tmp, 10 );
     uiPrefs->uiPrefsNumStops->value( tmp );
 
+    {
+        Fl_Preferences odt( lut, "ODT" );
+        {
+            odt.get( "algorithm", tmp, 0 );
+            uiPrefs->ODT_algorithm->value(tmp);
+
+    DBG3;
+            Fl_Preferences ctl( odt, "CTL" );
+            {
+                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
+                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
+                                                        tmpS, ok );
+
+    DBG3;
+                Fl_Preferences chroma( ctl, "Chromaticities" );
+                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
+                                         tmpC, chroma );
+
+
+    DBG3;
+                ok = ctl.get( "white_luminance", tmpF, 120.0 );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
+                                          tmpF, ok );
+                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
+                                          tmpF, ok );
+    DBG3;
+            }
+            Fl_Preferences icc( odt, "ICC" );
+            {
+                ok = icc.get( "profile", tmpS, "", 2048 );
+                ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
+                                                      tmpS, ok );
+    DBG3;
+                if ( !ODT_ICC_profile.empty() )
+                    mrv::colorProfile::add( ODT_ICC_profile.c_str() );
+            }
+        }
+
+        //
+        // CTL
+        //
+
+
+#if 0
+        Fl_Preferences idt( lut, "IDT" );
+        {
+            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
+            uiPrefs->IDT_transform->value(tmpS);
+        }
+#endif
+
+
+        Fl_Preferences rt( lut, "RT" );
+        {
+    DBG3;
+            rt.get( "algorithm", tmp, 0 );
+            uiPrefs->RT_algorithm->value(tmp);
+
+    DBG3;
+            Fl_Preferences ctl( rt, "CTL" );
+            {
+#define RENDER_TRANSFORM(x, d)						\
+          ok = ctl.get( #x, tmpS, d, 2048 );				\
+          CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
+
+                RENDER_TRANSFORM( 8bits,  "" );
+    DBG3;
+                RENDER_TRANSFORM( 16bits, "" );
+    DBG3;
+                RENDER_TRANSFORM( 32bits, "" );
+    DBG3;
+                RENDER_TRANSFORM( float,  "RRT" );
+    DBG3;
+#undef RENDER_TRANSFORM
+            }
+
+            //
+            // ICC
+            //
+
+            Fl_Preferences icc( rt, "ICC" );
+            {
+#define ICC_PROFILE(x, d)						\
+          ok = icc.get( #x, tmpS, d, 2048 );				\
+          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
+          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
+          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
+    DBG3;
+                ICC_PROFILE( 8bits,  "" );
+    DBG3;
+                ICC_PROFILE( 16bits, "" );
+    DBG3;
+                ICC_PROFILE( 32bits, "" );
+    DBG3;
+                ICC_PROFILE( float,  "" );
+#undef ICC_PROFILE
+            }
+        }
+    }
+
 
     Fl_Preferences loading( base, "loading" );
 
@@ -1275,16 +1372,6 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
-    uiMain->uiView->fill_menu( uiMain->uiMenuBar );
-    if ( uiPrefs->uiPrefsMenuBar->value() )
-    {
-        uiMain->uiMenuGroup->show();
-    }
-    else {
-        uiMain->uiMenuGroup->hide();
-    }
-
-
     DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
@@ -1314,26 +1401,22 @@ void Preferences::run( ViewerUI* main )
     {
         main->uiBottomBar->hide();
     }
-
-
-
     DBG3;
     if ( uiPrefs->uiPrefsToolBar->value() )
     {
         main->uiToolsGroup->show();
         main->uiToolsGroup->size( 45, 433 );
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
     }
     else
     {
         main->uiToolsGroup->hide();
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
     }
 
-    main->uiViewGroup->layout();
-    main->uiViewGroup->init_sizes();
-
-    // @BUG: fix to uiRegion scaling badly (too much or too little)
     main->uiView->resize_main_window();
-    main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
 
     //
     // Widget/Viewer settings
@@ -2104,7 +2187,6 @@ void Preferences::save()
     //
     // ui options
     //
-    ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
@@ -2345,85 +2427,62 @@ void Preferences::save()
     {
         Fl_Preferences odt( lut, "ODT" );
         {
-            odt.get( "algorithm", tmp, 0 );
-            uiPrefs->ODT_algorithm->value(tmp);
-
-    DBG3;
+            odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
             Fl_Preferences ctl( odt, "CTL" );
             {
-                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
-                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
+                ctl.set( "transform", uiPrefs->uiODT_CTL_transform->value() );
 
-                                                        tmpS, ok );
-
-    DBG3;
                 Fl_Preferences chroma( ctl, "Chromaticities" );
-                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
+                chroma.set( "red_x",
+                            uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
+                chroma.set( "red_y",
+                            uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
+                chroma.set( "green_x",
+                            uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
+                chroma.set( "green_y",
+                            uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
+                chroma.set( "blue_x",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
+                chroma.set( "blue_y",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
+                chroma.set( "white_x",
+                            uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
+                chroma.set( "white_y",
+                            uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
 
-                                         tmpC, chroma );
-
-                ok = ctl.get( "white_luminance", tmpF, 120.0 );
-                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
-                                          tmpF, ok );
-                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
-                ODT_CTL_surround_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
-                                          tmpF, ok );
-
-        Fl_Preferences idt( lut, "IDT" );
-        {
-            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
-            uiPrefs->IDT_transform->value(tmpS);
+                ctl.set( "white_luminance",
+                         uiPrefs->uiODT_CTL_white_luminance->value() );
+                ctl.set( "surround_luminance",
+                         uiPrefs->uiODT_CTL_surround_luminance->value() );
+            }
+            Fl_Preferences icc( odt, "ICC" );
+            {
+                icc.set( "profile",   uiPrefs->uiODT_ICC_profile->value() );
+            }
         }
 
-
-        Fl_Preferences rt( lut, "RT" );
+        Fl_Preferences  rt( lut, "RT" );
         {
-    DBG3;
-            rt.get( "algorithm", tmp, 0 );
-            uiPrefs->RT_algorithm->value(tmp);
+            rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
 
-    DBG3;
             Fl_Preferences ctl( rt, "CTL" );
             {
-#define RENDER_TRANSFORM(x, d)                                         \
-          ok = ctl.get( #x, tmpS, d, 2048 );                           \
-          CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
-
-                RENDER_TRANSFORM( 8bits,  "" );
-    DBG3;
-                RENDER_TRANSFORM( 16bits, "" );
-    DBG3;
-                RENDER_TRANSFORM( 32bits, "" );
-    DBG3;
-                RENDER_TRANSFORM( float,  "RRT" );
-    DBG3;
-#undef RENDER_TRANSFORM
+                ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->value() );
+                ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->value() );
+                ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->value() );
+                ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->value() );
             }
-
-            //
-            // ICC
-            //
 
             Fl_Preferences icc( rt, "ICC" );
             {
-#define ICC_PROFILE(x, d)                                              \
-          ok = icc.get( #x, tmpS, d, 2048 );                           \
-          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
-          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
-          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
-    DBG3;
-                ICC_PROFILE( 8bits,  "" );
-    DBG3;
-                ICC_PROFILE( 16bits, "" );
-    DBG3;
-                ICC_PROFILE( 32bits, "" );
-    DBG3;
-                ICC_PROFILE( float,  "" );
-#undef ICC_PROFILE
+                icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->value() );
+                icc.set( "16bits", uiPrefs->uiICC_16bits_profile->value() );
+                icc.set( "32bits", uiPrefs->uiICC_32bits_profile->value() );
+                icc.set( "float",  uiPrefs->uiICC_float_profile->value() );
             }
         }
-    }
 
+    }
 
     {
         Fl_Preferences subtitles( base, "subtitles" );

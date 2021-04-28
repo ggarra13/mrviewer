@@ -44,11 +44,9 @@ std::string aces_xml_filename( const char* file )
     xml = fs::canonical( p ).string();
 #endif
     if ( ! xml.empty() ) xml += "/";
-    xml += "AMF.";
+    xml += "ACESclip.";
     xml += filename;
-    xml += "amf";
-
-    std::cerr << "xml " << xml << std::endl;
+    xml += "xml";
 
     return xml;
 }
@@ -131,6 +129,21 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
 bool load_amf( CMedia* img, const char* filename )
 {
+    AMF::AMFReader::AMFError err;
+    AMF::AMFReader r;
+    err = r.load( filename );
+    if ( err != AMF::AMFReader::kAllOK ) {
+        LOG_ERROR( "Could not load " << filename );
+        return false;
+    }
+
+    pipelineType& p = r.aces.pipeline;
+    img->idt_transform( p.inputTransform.transformId.c_str() );
+
+    outputTransformType& o = p.outputTransform;
+    img->rendering_transform( o.referenceRenderingTransform.transformId.c_str() );
+     mrv::Preferences::ODT_CTL_transform = o.outputDeviceTransform.transformId.c_str();
+
     return true;
 }
 
