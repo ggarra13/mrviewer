@@ -65,10 +65,17 @@ class AMF_EXPORT AMFWriter : public AMFReader
     void aces_transform_id( std::string transformId, XMLElement*& element );
     void aces_uuid( std::string& uuid );
     void aces_applied( XMLElement*& e, bool applied );
+    void aces_anyURI( XMLNode* r, std::string& file );
+
   public:
     AMFWriter();
     ~AMFWriter() {};
 
+
+    /*
+      File header
+     */
+    void header();
 
     /*
       info section

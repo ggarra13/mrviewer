@@ -103,6 +103,11 @@ void AMFWriter::aces_applied( XMLElement*& element, bool applied )
  */
 AMFWriter::AMFWriter()
 {
+
+}
+
+void AMFWriter::header()
+{
     XMLDeclaration* decl = doc.NewDeclaration( NULL );
     doc.InsertFirstChild( decl );  // ?xml version="1.0" encoding="UTF-8"
 
@@ -114,7 +119,6 @@ AMFWriter::AMFWriter()
     element->SetAttribute( "version", aces.version );
     doc.InsertAfterChild( decl, element );
     root = element;
-
 }
 
 void AMFWriter::aces_author( const authorType& author, XMLNode*& r )
@@ -167,6 +171,15 @@ void AMFWriter::info( infoType& amfInfo )
     root->InsertEndChild( root2 );
 }
 
+void AMFWriter::aces_anyURI( XMLNode* r, std::string& file )
+{
+    if ( file.empty() ) return;
+
+    element = doc.NewElement( "aces:file" );
+    element->SetText( file.c_str() );
+    r->InsertEndChild( element );
+}
+
 /**
  * amf:clipId information
  *
@@ -194,6 +207,8 @@ void AMFWriter::clip_id( clipIdType& clipId )
         root2->InsertEndChild( element );
     }
 
+    aces_anyURI( root2, clipId.file );
+
     element = doc.NewElement( "aces:uuid" );
     if ( clipId.uuid.empty() )
     {
@@ -214,6 +229,7 @@ void AMFWriter::pipeline_info( pipelineInfoType& t )
         {
             element = doc.NewElement( "aces:description" );
             element->SetText( t.description.c_str() );
+            root3->InsertEndChild( element );
         }
 
         {
@@ -266,14 +282,34 @@ void AMFWriter::default_pipeline( pipelineType& pipeline )
 /**
  * Pipeline
  */
-void AMFWriter::archived_pipeline( pipelineType& archivedPipeline )
+void AMFWriter::archived_pipeline( pipelineType& t )
 {
+
+    pipelineInfoType& p = t.pipelineInfo;
+    inputTransformType& i = t.inputTransform;
+    lookTransformType& l = t.lookTransform;
+    outputTransformType& o = t.outputTransform;
+
+    if ( ( p.description.empty() ) &&
+         ( i.transformId.empty() ) &&
+         ( i.inverseReferenceRenderingTransform.transformId.empty() ) &&
+         ( i.inverseOutputTransform.transformId.empty() ) &&
+         ( i.inverseOutputDeviceTransform.transformId.empty() ) &&
+         ( l.transformId.empty() ) &&
+         ( l.cdlWorkingSpace.fromCdlWorkingSpace.transformId.empty() ) &&
+         ( l.cdlWorkingSpace.toCdlWorkingSpace.transformId.empty() ) &&
+         ( o.transformId.empty() ) &&
+         ( o.outputDeviceTransform.transformId.empty() ) &&
+         ( o.referenceRenderingTransform.transformId.empty() )
+        )
+        return;
+
     root2 = doc.NewElement( "aces:archivedPipeline" );
     {
-        pipeline_info( archivedPipeline.pipelineInfo );
-        input_transform( archivedPipeline.inputTransform );
-        look_transform( archivedPipeline.lookTransform );
-        output_transform( archivedPipeline.outputTransform );
+        pipeline_info( p );
+        input_transform( i );
+        look_transform( l );
+        output_transform( o );
     }
     root->InsertEndChild( root2 );
 }
@@ -358,13 +394,7 @@ void AMFWriter::inverse_output_transform( XMLNode* r,
     }
 
 
-
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     if ( ! t.transformId.empty() )
     {
@@ -397,12 +427,7 @@ void AMFWriter::inverse_reference_rendering_transform( XMLNode* r,
 
 
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     aces_hash( t.hash, root3, t.transformId );
     element = doc.NewElement( "aces:uuid" );
@@ -432,13 +457,7 @@ void AMFWriter::inverse_output_device_transform( XMLNode* r,
     }
 
 
-
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     aces_hash( t.hash, root3, t.transformId );
     element = doc.NewElement( "aces:uuid" );
@@ -467,13 +486,8 @@ void AMFWriter::inverse_output_device_transform( XMLNode* r,
     }
 
 
+    aces_anyURI( root3, t.file );
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
 
     if ( ! t.transformId.empty() )
     {
@@ -542,13 +556,7 @@ void AMFWriter::to_cdl_working_space( XMLNode* r, toCdlWorkingSpaceType& t )
     }
 
 
-
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     if ( ! t.transformId.empty() )
     {
@@ -598,12 +606,7 @@ void AMFWriter::look_transform( lookTransformType& t )
 
 
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     if ( ! t.transformId.empty() )
     {
@@ -692,12 +695,8 @@ void AMFWriter::reference_rendering_transform( referenceRenderingTransformType& 
 
 
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root4->InsertEndChild(element);
-    }
+    aces_anyURI( root4, t.file );
+
 
     if ( ! t.transformId.empty() )
     {
@@ -729,12 +728,7 @@ void AMFWriter::output_device_transform( outputDeviceTransformType& t )
 
 
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root4->InsertEndChild(element);
-    }
+    aces_anyURI( root4, t.file );
 
     if ( ! t.transformId.empty() )
     {
@@ -777,12 +771,7 @@ void AMFWriter::input_transform( inputTransformType& t)
 
 
 
-    if ( ! t.file.empty() )
-    {
-        element = doc.NewElement( "aces:file" );
-        element->SetText( t.file.c_str() );
-        root3->InsertEndChild(element);
-    }
+    aces_anyURI( root3, t.file );
 
     if ( ! t.transformId.empty() )
     {
@@ -811,6 +800,7 @@ void AMFWriter::input_transform( inputTransformType& t)
  */
 bool AMFWriter::save( const char* filename )
 {
+    header();
     info( aces.amfInfo );
     clip_id( aces.clipId );
     default_pipeline( aces.pipeline);

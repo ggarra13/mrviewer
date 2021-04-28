@@ -221,7 +221,7 @@ AMFReader::AMFError AMFReader::info()
     root = element = doc.FirstChildElement( "aces:acesMetadataFile" );
     if ( !root ) return kNotAnAcesFile;
 
-    float version = element->FloatAttribute( "version" );
+    aces.version = element->FloatAttribute( "version" );
 
     XMLNode* root2 = root->FirstChildElement( "aces:amfInfo" );
     if ( !root2 ) return kNotAnAcesFile;
