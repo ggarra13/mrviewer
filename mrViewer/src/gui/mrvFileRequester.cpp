@@ -98,7 +98,7 @@ static const std::string kSubtitlePattern = "srt,sub,ass,vtt";
 
 static const std::string kCTLPattern = "ctl";
 
-static const std::string kXMLPattern = "xml";
+static const std::string kXMLPattern = "xml,amf";
 
 static const std::string kOCIOPattern = "ocio";
 
@@ -727,8 +727,14 @@ void read_clip_xml_metadata( CMedia* img,
                        xml.c_str() );
     if ( file.empty() ) return;
 
-    load_aces_xml( img, file.c_str() );
-
+    if ( file.rfind( ".amf" ) != std::string::npos )
+    {
+        load_amf( img, file.c_str() );
+    }
+    else
+    {
+        load_aces_xml( img, file.c_str() );
+    }
 }
 
 void save_clip_xml_metadata( const CMedia* img,
@@ -748,7 +754,14 @@ void save_clip_xml_metadata( const CMedia* img,
                        xml.c_str() );
     if ( file.empty() ) return;
 
-    save_aces_xml( img, file.c_str() );
+    if ( file.rfind( ".amf" ) != std::string::npos )
+    {
+        save_amf( img, file.c_str() );
+    }
+    else
+    {
+        save_aces_xml( img, file.c_str() );
+    }
 }
 
 void monitor_ctl_script( ViewerUI* main,

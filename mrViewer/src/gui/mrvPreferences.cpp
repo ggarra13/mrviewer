@@ -2343,6 +2343,89 @@ void Preferences::save()
     lut.set( "number_stops", uiPrefs->uiPrefsNumStops->value() );
 
     {
+        Fl_Preferences odt( lut, "ODT" );
+        {
+            odt.get( "algorithm", tmp, 0 );
+            uiPrefs->ODT_algorithm->value(tmp);
+
+    DBG3;
+            Fl_Preferences ctl( odt, "CTL" );
+            {
+                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
+                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
+
+                                                        tmpS, ok );
+
+    DBG3;
+                Fl_Preferences chroma( ctl, "Chromaticities" );
+                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
+
+                                         tmpC, chroma );
+
+                ok = ctl.get( "white_luminance", tmpF, 120.0 );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
+                                          tmpF, ok );
+                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
+                ODT_CTL_surround_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
+                                          tmpF, ok );
+
+        Fl_Preferences idt( lut, "IDT" );
+        {
+            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
+            uiPrefs->IDT_transform->value(tmpS);
+        }
+
+
+        Fl_Preferences rt( lut, "RT" );
+        {
+    DBG3;
+            rt.get( "algorithm", tmp, 0 );
+            uiPrefs->RT_algorithm->value(tmp);
+
+    DBG3;
+            Fl_Preferences ctl( rt, "CTL" );
+            {
+#define RENDER_TRANSFORM(x, d)                                         \
+          ok = ctl.get( #x, tmpS, d, 2048 );                           \
+          CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
+
+                RENDER_TRANSFORM( 8bits,  "" );
+    DBG3;
+                RENDER_TRANSFORM( 16bits, "" );
+    DBG3;
+                RENDER_TRANSFORM( 32bits, "" );
+    DBG3;
+                RENDER_TRANSFORM( float,  "RRT" );
+    DBG3;
+#undef RENDER_TRANSFORM
+            }
+
+            //
+            // ICC
+            //
+
+            Fl_Preferences icc( rt, "ICC" );
+            {
+#define ICC_PROFILE(x, d)                                              \
+          ok = icc.get( #x, tmpS, d, 2048 );                           \
+          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
+          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
+          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
+    DBG3;
+                ICC_PROFILE( 8bits,  "" );
+    DBG3;
+                ICC_PROFILE( 16bits, "" );
+    DBG3;
+                ICC_PROFILE( 32bits, "" );
+    DBG3;
+                ICC_PROFILE( float,  "" );
+#undef ICC_PROFILE
+            }
+        }
+    }
+
+
+    {
         Fl_Preferences subtitles( base, "subtitles" );
         int idx = uiPrefs->uiPrefsSubtitleFont->value();
         if ( idx >= 0 )

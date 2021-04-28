@@ -182,6 +182,7 @@ INCLUDE_DIRECTORIES(
   ./gui
   ./video
   ../../libACESclip/include
+  ../../libAMF/src
   "${BlackMagicRAW_INCLUDE_DIR}"
   ${R3DSDK_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR}
@@ -478,7 +479,7 @@ endif(WIN32)
 
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
+TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip AMF )
 
 #
 # CMake 3.15 new variable for windows runtime library

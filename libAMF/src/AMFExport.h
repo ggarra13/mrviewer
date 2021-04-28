@@ -26,8 +26,8 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
-#ifndef ACESExport_h
-#define ACESExport_h
+#ifndef AMFExport_h
+#define AMFExport_h
 
 #if defined(AMF_DLL)
     #if defined(AMF_EXPORTS)

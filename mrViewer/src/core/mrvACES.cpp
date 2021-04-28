@@ -7,6 +7,8 @@
 
 #include "ACESclipWriter.h"
 #include "ACESclipReader.h"
+#include "AMFReader.h"
+#include "AMFWriter.h"
 
 #include "core/CMedia.h"
 #include "core/Sequence.h"
@@ -42,10 +44,11 @@ std::string aces_xml_filename( const char* file )
     xml = fs::canonical( p ).string();
 #endif
     if ( ! xml.empty() ) xml += "/";
-    xml += "ACESclip.";
+    xml += "AMF.";
     xml += filename;
-    xml += "xml";
+    xml += "amf";
 
+    std::cerr << "xml " << xml << std::endl;
 
     return xml;
 }
@@ -123,6 +126,130 @@ bool load_aces_xml( CMedia* img, const char* filename )
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
 
     LOG_INFO( _("Loaded ACES clip metadata file '") << filename << "'" );
+    return true;
+}
+
+bool load_amf( CMedia* img, const char* filename )
+{
+    return true;
+}
+
+bool save_amf( const CMedia* img, const char* filename )
+{
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" ); // Make floating point values be like 1.2
+
+    AMF::AMFWriter w;
+    acesMetadataFile& aces = w.aces;
+
+    aces.version = 1.0;
+
+    char buf[128];
+    const char* show = fl_getenv( N_("SHOW") );
+    if ( !show ) show = fl_getenv( _("SHOW") );
+    if ( !show ) show = _("Unknown Show");
+
+    const char* shot = fl_getenv( N_("SHOT") );
+    if ( !shot ) shot = fl_getenv( _("SHOT") );
+    if ( !shot ) shot = _("Unknown Shot");
+
+    sprintf( buf, "%s-%s", show, shot );
+
+    clipIdType& c = aces.clipId;
+    c.clipName = buf;
+    c.file = img->fileroot();
+    size_t pos = c.file.rfind( '%' );
+    if ( pos != std::string::npos )
+    {
+        size_t pos2 = c.file.rfind( 'd', pos );
+        int digits = atoi( c.file.substr( pos+1, pos2-1 ).c_str() );
+        c.sequence.file = c.file.substr(0, pos-1 );
+        while ( digits-- )
+            c.sequence.file += '#';
+        c.sequence.file += c.file.substr( pos2+1, c.file.size() );
+        c.sequence.idx = "#";
+        c.sequence.min = img->first_frame();
+        c.sequence.max = img->last_frame();
+    }
+
+    pipelineType& p = aces.pipeline;
+
+    if ( img->idt_transform() )
+    {
+        p.inputTransform.transformId = img->idt_transform();
+    }
+
+    size_t i = 0;
+    const ACES::ASC_CDL& t = img->asc_cdl();
+    size_t num = img->number_of_lmts();
+    size_t num_graderefs = img->number_of_grade_refs();
+
+    lookTransformType& l = p.lookTransform;
+    //
+    // GradeRefs are transformed into Look Mod Transforms.
+    // Here we extract them back again into the xml file.
+    //
+    if ( num_graderefs > 0 )
+    {
+        i = num_graderefs + 2;
+        if ( i > num )
+        {
+            LOG_ERROR( _("Missing transforms for aces:GradeRef in '") <<
+                       img->name() << "'" );
+            i = num;
+        }
+
+        cdlWorkingSpaceType& c = l.cdlWorkingSpace;
+        toCdlWorkingSpaceType& to = c.toCdlWorkingSpace;
+        to.transformId = img->look_mod_transform(0);
+
+        for ( unsigned j = 0; j < num_graderefs; ++j )
+        {
+            const std::string& g = img->look_mod_transform( j+1 );
+            if ( g.substr(4, 7) == N_("SOPNode") )
+            {
+                SOPNodeType& s = l.SOPNode;
+                s.slope[0] = t.slope(0); s.slope[1] = t.slope(1);
+                s.slope[2] = t.slope(2);
+                s.offset[0] = t.offset(0); s.offset[1] = t.offset(1);
+                s.offset[2] = t.offset(2);
+                s.power[0] = t.power(0); s.power[1] = t.power(1);
+                s.power[2] = t.power(2);
+            }
+            else if ( g.substr(4, 7) == N_("SatNode") )
+            {
+                l.SatNode = t.saturation();
+            }
+            else
+            {
+                LOG_ERROR( _("Unknown node in CDL") );
+            }
+        }
+
+        fromCdlWorkingSpaceType& f = c.fromCdlWorkingSpace;
+        f.transformId = img->look_mod_transform(1);
+    }
+
+    if ( num > 2 )
+        l.transformId = img->look_mod_transform(2);
+
+    outputTransformType& o = p.outputTransform;
+    if ( img->rendering_transform() )
+        o.referenceRenderingTransform.transformId = img->rendering_transform();
+
+    if ( ! mrv::Preferences::ODT_CTL_transform.empty() )
+        o.outputDeviceTransform.transformId =
+            mrv::Preferences::ODT_CTL_transform;
+
+    if ( ! w.save( filename ) )
+        LOG_ERROR( _("Could not save AMF clip data file '") << filename << "'." );
+    else
+        LOG_INFO( _("Saved AMF clip metadata file '") << filename << "'" );
+
+
+    setlocale( LC_NUMERIC, oldloc );  // Return floating point form to our locale
+    av_free( oldloc );
+
     return true;
 }
 
