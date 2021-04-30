@@ -1,7 +1,5 @@
-#include <tinyxml2.h>
 #include <string>
-
-using namespace tinyxml2;
+#include <time.h>
 
 typedef std::string tnInputTransform;
 typedef std::string tnInverseOutputTransform;

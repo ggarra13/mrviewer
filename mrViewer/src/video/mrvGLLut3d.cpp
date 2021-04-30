@@ -649,7 +649,7 @@ bool GLLut3d::calculate_ctl(
     // e raised to the power of the result of the texture lookup.
     //
     _channels = 4;
-    Imf::Array<float> pixelValues( lut_size() );
+    Imf::Array<float> pixelValues( lut_size() + 4 );
 
     //
     // Generate output pixel values by applying CTL transforms

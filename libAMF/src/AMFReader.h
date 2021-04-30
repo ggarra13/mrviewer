@@ -32,11 +32,10 @@ either expressed or implied, of the FreeBSD Project.
 
 #include <tinyxml2.h>
 
-#include <locale.h>
-
 #ifdef _WIN32
 #include <stdlib.h>
 #define locale_t _locale_t
+#undef XMLDocument
 #else
 #include <locale.h>
 #endif
@@ -47,7 +46,8 @@ either expressed or implied, of the FreeBSD Project.
 
 namespace AMF {
 
-using namespace tinyxml2;
+using tinyxml2::XMLNode;
+using tinyxml2::XMLElement;
 
 /**
  * AMF:  class encompasing an AMF.xml file
@@ -138,8 +138,8 @@ class AMF_EXPORT AMFReader
 
   protected:
     tinyxml2::XMLDocument doc;
-    XMLElement* element;
-    XMLNode* root, *root2, *root3, *root4;
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLNode* root, *root2, *root3, *root4;
     locale_t loc;
 };
 

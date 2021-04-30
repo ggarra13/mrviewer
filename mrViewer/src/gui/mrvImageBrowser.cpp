@@ -66,6 +66,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/picojson.h"
 #include "core/mrStackTrace.h"
+#include "AMFReader.h"
 
 #include "gui/mrvAsk.h"
 #include "gui/mrvIO.h"
@@ -2422,9 +2423,13 @@ void ImageBrowser::save_session()
                     GLShapeList& shapes = img->shapes();
                     shapes = load.shapes;
 
-                    std::string xml = aces_xml_filename( img->fileroot() );
-                    load_aces_xml( img, xml.c_str() );
-
+                    std::string amf = aces_amf_filename( img->fileroot() );
+                    bool ok = load_amf( img, amf.c_str() );
+                    if ( ok == false )
+                    {
+                        std::string xml = aces_xml_filename( img->fileroot() );
+                        load_aces_xml( img, xml.c_str() );
+                    }
                 }
             }
 

@@ -39,8 +39,13 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
 {
     if ( ipts && ipts->ACES_metadata() )
     {
+#if 1
+        const std::string& amf = aces_amf_filename( file );
+        save_amf( img, amf.c_str() );
+#else
         const std::string& xml = aces_xml_filename( file );
         save_aces_xml( img, xml.c_str() );
+#endif
     }
     return true;
 }

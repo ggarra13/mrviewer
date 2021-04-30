@@ -30,10 +30,6 @@ either expressed or implied, of the FreeBSD Project.
 #ifndef AMFWriter_h
 #define AMFWriter_h
 
-#include <time.h>
-
-#include <tinyxml2.h>
-
 #include "AMFExport.h"
 #include "AMFReader.h"
 
@@ -157,9 +153,9 @@ class AMF_EXPORT AMFWriter : public AMFReader
     bool save( const char* filename );
 
   protected:
-    XMLDocument doc;
-    XMLElement* element;
-    XMLNode* root, *root2, *root3, *root4, *root5, *root6, *root7;
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLElement* element;
+    tinyxml2::XMLNode* root, *root2, *root3, *root4, *root5, *root6, *root7;
 };
 
 

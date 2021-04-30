@@ -28,10 +28,15 @@ either expressed or implied, of the FreeBSD Project.
 */
 
 #include <stdio.h>
+#ifndef _WIN32
 #include <locale.h>
+#endif
 #include <iostream>
 
 #ifdef _WIN32
+#include <time.h>
+#include <stdlib.h>
+#define locale_t _locale_t
 #define strtod_l _strtod_l
 #endif
 
@@ -233,6 +238,7 @@ AMFReader::AMFError AMFReader::info()
     err = aces_date_time( root2, aces.amfInfo.dateTime );
     if ( err != kAllOK ) return err;
     aces_uuid( root2, aces.amfInfo.uuid );
+    return err;
 }
 
 AMFReader::AMFError AMFReader::clip_id( clipIdType& c )
@@ -269,6 +275,7 @@ AMFReader::AMFError AMFReader::aces_transform_id( XMLNode* r, std::string& t )
 
     t = element->GetText();
     t = t.replace( t.begin(), t.begin()+kTRANSFORM_ID.size(), "" );
+    return kAllOK;
 }
 
 AMFReader::AMFError AMFReader::aces_system_version( XMLNode* r, versionType& t )
@@ -287,6 +294,8 @@ AMFReader::AMFError AMFReader::aces_system_version( XMLNode* r, versionType& t )
     element = root2->FirstChildElement( "aces:patchVersion" );
     if ( !element ) return kErrorVersion;
     t.patchVersion = atoi( element->GetText() );
+
+    return kAllOK;
 }
 
 void AMFReader::aces_applied( XMLElement* element, bool& t )
@@ -498,6 +507,7 @@ AMFReader::AMFError AMFReader::color_correction_ref( XMLNode* r,
     if ( !element || !element->GetText() ) return kErrorParsingElement;
 
     t.ref = element->GetText();
+    return kAllOK;
 }
 
 AMFReader::AMFError AMFReader::look_transform( XMLNode* r,
@@ -615,6 +625,5 @@ AMFReader::AMFError AMFReader::load( const char* filename )
 
     return kAllOK;
 }
-
 
 }  // namespace AMF

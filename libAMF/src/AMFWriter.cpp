@@ -39,7 +39,7 @@ either expressed or implied, of the FreeBSD Project.
 #include <boost/uuid/uuid_io.hpp> // input-output
 #include <boost/lexical_cast.hpp> // for casting uuid into std::string
 
-#include <gnutls/openssl.h>
+ //#include <gnutls/openssl.h>
 
 #include "AMFWriter.h"
 

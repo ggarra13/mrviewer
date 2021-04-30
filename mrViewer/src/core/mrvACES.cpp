@@ -1,14 +1,15 @@
 #include <vector>
 
-#include <boost/filesystem.hpp>
 
 #include <FL/Fl.H>
 #include <FL/fl_utf8.h>
 
-#include "ACESclipWriter.h"
-#include "ACESclipReader.h"
 #include "AMFReader.h"
 #include "AMFWriter.h"
+#include "ACESclipWriter.h"
+#include "ACESclipReader.h"
+
+#include <boost/filesystem.hpp>
 
 #include "core/CMedia.h"
 #include "core/Sequence.h"
@@ -24,7 +25,7 @@ namespace fs = boost::filesystem;
 
 namespace mrv {
 
-std::string aces_xml_filename( const char* file )
+std::string aces_amf_filename( const char* file )
 {
 
     std::string root, frame, view, ext;
@@ -33,8 +34,30 @@ std::string aces_xml_filename( const char* file )
     fs::path f = root;
     std::string filename = f.filename().string();
 
-    if ( !fs::exists( f ) )
-        return "";
+    std::string xml;
+    fs::path p = fs::absolute( f ).parent_path();
+#ifdef _WIN32
+    xml = p.string();
+#else
+    xml = fs::canonical( p ).string();
+#endif
+    if ( ! xml.empty() ) xml += "/";
+    xml += "AMF.";
+    xml += filename;
+    xml += "amf";
+
+    return xml;
+}
+
+
+std::string aces_xml_filename( const char* file )
+{
+
+    std::string root, frame, view, ext;
+    mrv::split_sequence( root, frame, view, ext, file );
+
+    fs::path f = root;
+    std::string filename = f.filename().string();
 
     std::string xml;
     fs::path p = fs::absolute( f ).parent_path();
@@ -131,6 +154,7 @@ bool load_amf( CMedia* img, const char* filename )
 {
     AMF::AMFReader::AMFError err;
     AMF::AMFReader r;
+    if ( ! fs::exists( filename ) ) return false;
     err = r.load( filename );
     if ( err != AMF::AMFReader::kAllOK ) {
         LOG_ERROR( "Could not load " << filename );

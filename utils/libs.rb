@@ -263,6 +263,8 @@ if kernel !~ /MINGW.*/
   elsif kernel =~ /Darwin/
     FileUtils.ln_s "libACESclip.dylib.0.2.6",
                    "libACESclip.dylib", :verbose => true, :force => true
+    FileUtils.ln_s "libAMF.dylib.0.1.0",
+                   "libAMF.dylib", :verbose => true, :force => true
   end
   Dir.chdir( root )
 
