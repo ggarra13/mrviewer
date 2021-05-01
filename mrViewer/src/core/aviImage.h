@@ -41,7 +41,7 @@ class ViewerUI;
 namespace mrv {
 
 
-class aviData;
+struct aviData;
 
 extern const char* const kColorSpaces[];
 

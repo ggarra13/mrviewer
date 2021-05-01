@@ -9458,6 +9458,7 @@ void ImageView::foreground( mrv::media fg )
         }
         else
         {
+            img->audio_initialize();
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
             {

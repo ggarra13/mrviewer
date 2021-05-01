@@ -1527,6 +1527,9 @@ public:
     // Conver a string like HH:MM:SS:FF or HH;MM;SS;FF into Imf::TimeCode
     static Imf::TimeCode str2timecode( const std::string text );
 
+    // Initialize audio engine
+    void audio_initialize();
+    
     void fetch_audio( const int64_t frame );
 
     // Wait for load threads to exit (unused)
@@ -1817,7 +1820,6 @@ protected:
 
     unsigned int audio_bytes_per_frame();
 
-    void audio_initialize();
     void audio_shutdown();
 
     // Extract frame from pts or dts

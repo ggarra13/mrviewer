@@ -1754,6 +1754,14 @@ void CMedia::audio_initialize()
     _audio_engine = mrv::AudioEngine::factory();
     _audio_channels = (unsigned short) _audio_engine->channels();
     _audio_format = _audio_engine->default_format();
+    double speedup = _play_fps / _fps;
+    unsigned nSamplesPerSec = unsigned( (double) 41000 * speedup );
+    SCOPED_LOCK( _audio_mutex );
+    // if ( ! open_audio( _audio_channels, nSamplesPerSec ) )
+    // {
+    //     LOG_ERROR( _("Could not initialize audio") );
+    //     _audio_index = -1;
+    // }
 }
 
 
