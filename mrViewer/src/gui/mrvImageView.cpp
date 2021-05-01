@@ -684,31 +684,6 @@ void save_reel_cb( Fl_Widget* o, mrv::ImageView* view )
     view->browser()->save_reel();
 }
 
-void open_aces_metadata_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-    view->stop();
-
-    mrv::CMedia* img = fg->image();
-    if ( !img ) return;
-
-    mrv::read_clip_xml_metadata( img, view->main() );
-}
-
-
-void save_aces_metadata_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-    view->stop();
-
-    mrv::CMedia* img = fg->image();
-    if ( !img ) return;
-
-    mrv::save_clip_xml_metadata( img, view->main() );
-}
-
 void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::media fg = view->foreground();
@@ -4589,9 +4564,6 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)open_stereo_cb, browser() );
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                     (Fl_Callback*)open_dir_cb, browser() );
-         idx = menu->add( _("File/Open/ACES metadata"),
-                          kOpenClipXMLMetadata.hotkey(),
-                          (Fl_Callback*)open_aces_metadata_cb, this );
          idx = menu->add( _("File/Open/Session"),
                     kOpenSession.hotkey(),
                     (Fl_Callback*)open_session_cb, browser() );
@@ -4604,8 +4576,6 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)save_cb, this );
          menu->add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
                     (Fl_Callback*)save_snap_cb, this );
-         menu->add( _("File/Save/ACES metadata"), kSaveClipXMLMetadata.hotkey(),
-                    (Fl_Callback*)save_aces_metadata_cb, this );
          menu->add( _("File/Save/Session As"),
                     kSaveSession.hotkey(),
                     (Fl_Callback*)save_session_as_cb, this );
@@ -9458,7 +9428,6 @@ void ImageView::foreground( mrv::media fg )
         }
         else
         {
-            img->audio_initialize();
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
             {
