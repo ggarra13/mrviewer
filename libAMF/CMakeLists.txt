@@ -15,6 +15,8 @@ find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 
 include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/md5
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/SHA1
   ${CMAKE_CURRENT_SOURCE_DIR}/src/SHA256
   ${CMAKE_CURRENT_SOURCE_DIR}/src
   ${TINYXML2_INCLUDE_DIR}
@@ -31,6 +33,8 @@ add_library( AMF SHARED
   src/AMFWriter.cpp
   src/AMFReader.cpp
   )
+
+message( STATUS "TinyXML2 libs=${TINYXML2_LIBRARIES}" )
 
 set( LIBRARIES ${TINYXML2_LIBRARIES}  )
 
