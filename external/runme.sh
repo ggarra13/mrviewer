@@ -16,12 +16,12 @@ else
     export CXXFLAGS=-DOCIO_USE_BOOST_PTR=1
 fi
 
-if [[ $RELEASE == 3* ]]; then
-    export CC=gcc-4.8
-    export CXX=g++-4.8
-    export CFLAGS=
-    export CXXFLAGS=-std=c++11
-fi
+# if [[ $RELEASE == 3* ]]; then
+#     export CC=gcc-4.8
+#     export CXX=g++-4.8
+#     export CFLAGS=
+#     export CXXFLAGS=-std=c++11
+# fi
 
 export PATH=$installdir/bin:$PATH
 
