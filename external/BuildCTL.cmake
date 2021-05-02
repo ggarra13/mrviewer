@@ -5,7 +5,7 @@ include( ExternalProject )
 ## as Release as it is created by the mk bash script file.
 ## However, the install command will report the proper configuration at its
 ## beginning.
-if (CMAKE_CXX_COMPILER_VERSION MATCHES "^7\." )
+if (CMAKE_CXX_COMPILER_VERSION STRGREATER "7.0" )
   set( CMAKE_BUILD_TYPE "Debug" )
 endif()
 
@@ -25,7 +25,7 @@ ExternalProject_Add(
     CTL
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
     GIT_PROGRESS 1
-    DEPENDS OpenEXR
+#    DEPENDS OpenEXR
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
