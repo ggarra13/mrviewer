@@ -1,3 +1,7 @@
+v5.8.3  - On Windows, volume is kept between invocations of mrViewer.  The
+	  slider, however, did not reflect that.  Now it does.
+	- Fixed menubar to show File and Windows when no image is loaded.
+
 v5.8.2  - F11/F12 behave better in respecting each other.
 	- CTL/ICC is back by request of one user.  No idea how long we can
 	  still support it, but for the time being, we will.

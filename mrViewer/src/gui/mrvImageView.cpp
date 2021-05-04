@@ -9386,9 +9386,11 @@ void ImageView::update_layers()
  */
 void ImageView::foreground( mrv::media fg )
 {
-
     mrv::media old = foreground();
-    if ( old == fg ) return;
+    if ( old == fg ) {
+        fill_menu( uiMain->uiMenuBar );
+        return;
+    }
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
