@@ -5,7 +5,7 @@ i18n_include <libintl.h>
 i18n_function gettext
 header_name {.h}
 code_name {.cxx}
-decl {\#include "string"} {public local
+decl {\#include <string>} {selected public local
 }
 
 decl {\#include "core/mrvFrame.h"} {public local
@@ -1771,7 +1771,7 @@ o->value(24);}
                     } {}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
-                      callback {v->uiView->volume((float) o->value() );} selected
+                      callback {v->uiView->volume((float) o->value() );}
                       tooltip {Audio Volume} xywh {451 543 55 15} type Horizontal align 4 value 1 slider_size 0.25
                     }
                   }
