@@ -108,7 +108,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-05-04 21:17-0300\n"
+"POT-Creation-Date: 2021-05-05 10:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -6060,7 +6060,7 @@ msgstr ""
 msgid "\"url\": \""
 msgstr ""
 
-#: core/mrvACES.cpp:207 core/Sequence.cpp:1183 core/Sequence.cpp:1188
+#: core/mrvACES.cpp:234 core/Sequence.cpp:1183 core/Sequence.cpp:1188
 #: gui/mrvColorSchemes.cpp:14
 msgid "#"
 msgstr ""
@@ -8120,7 +8120,7 @@ msgstr ""
 msgid "%s%s%%0%d%s%s"
 msgstr ""
 
-#: core/mrvACES.cpp:193 core/mrvACES.cpp:311
+#: core/mrvACES.cpp:220 core/mrvACES.cpp:338
 #, c-format
 msgid "%s-%s"
 msgstr ""
@@ -8446,8 +8446,8 @@ msgid "&@\tc #525252"
 msgstr ""
 
 #: core/aviImage.cpp:685 core/aviImage.cpp:721 core/aviImage_save.cpp:246
-#: core/aviImage_save.cpp:1383 core/mrvACES.cpp:149 core/mrvACES.cpp:235
-#: core/mrvACES.cpp:284 core/mrvACES.cpp:335 core/mrvACES.cpp:384
+#: core/aviImage_save.cpp:1383 core/mrvACES.cpp:149 core/mrvACES.cpp:262
+#: core/mrvACES.cpp:311 core/mrvACES.cpp:362 core/mrvACES.cpp:411
 #: gui/mrvMedia.cpp:172 gui/mrvImageBrowser.cpp:941
 #: gui/mrvImageBrowser.cpp:1176 gui/mrvImageBrowser.cpp:2375
 #: gui/mrvImageInformation.cpp:594 gui/mrvImageInformation.cpp:2747
@@ -8647,7 +8647,7 @@ msgstr ""
 msgid "'+\tc #FFF4A9"
 msgstr ""
 
-#: core/mrvACES.cpp:282 core/mrvACES.cpp:382
+#: core/mrvACES.cpp:309 core/mrvACES.cpp:409
 msgid "'."
 msgstr ""
 
@@ -18561,8 +18561,8 @@ msgstr "Byte"
 #: core/mrvFrame.cpp:34 core/aviImage.cpp:54 core/aviImage_save.cpp:37
 #: core/iffImage.cpp:39 core/wandImage.cpp:407 core/wandImage.cpp:1580
 #: core/R3dImage.cpp:11 core/brawImage.cpp:25 core/mrvServer.cpp:196
-#: core/mrvPlayback.cpp:34 core/mrvPlayback.cpp:134 core/mrvACES.cpp:177
-#: core/mrvACES.cpp:296 core/Sequence.cpp:821 core/Sequence.cpp:894
+#: core/mrvPlayback.cpp:34 core/mrvPlayback.cpp:134 core/mrvACES.cpp:204
+#: core/mrvACES.cpp:323 core/Sequence.cpp:821 core/Sequence.cpp:894
 #: core/mrvCPU.cpp:40 core/mrvColorOps.cpp:108 gui/FLU/Flu_File_Chooser.cpp:76
 #: gui/mrvAsk.cpp:13 gui/mrvOCIOBrowser.cpp:148 gui/mrvImageView.cpp:723
 #: gui/mrvImageView.cpp:2451 gui/mrvImageView.cpp:2628
@@ -20047,12 +20047,12 @@ msgstr " No pude abrir el archivo"
 msgid "Could not remove lock file!"
 msgstr " No pude abrir el archivo"
 
-#: core/mrvACES.cpp:382 gui/mrvImageBrowser.cpp:941
+#: core/mrvACES.cpp:409 gui/mrvImageBrowser.cpp:941
 #: gui/mrvImageBrowser.cpp:1176
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/mrvACES.cpp:282
+#: core/mrvACES.cpp:309
 msgid "Could not save AMF clip data file '"
 msgstr "No pude grabar archivo de Clip Metadata de AMF '"
 
@@ -24729,7 +24729,7 @@ msgstr ""
 msgid "LMT."
 msgstr ""
 
-#: gui/mrvImageView.cpp:958 video/mrvGLLut3d.cpp:1007
+#: core/mrvACES.cpp:187 gui/mrvImageView.cpp:958 video/mrvGLLut3d.cpp:1007
 msgid "LMT.SOPNode"
 msgstr ""
 
@@ -24738,7 +24738,7 @@ msgstr ""
 msgid "LMT.SOPNode %g %g %g %g %g %g %g %g %g"
 msgstr ""
 
-#: gui/mrvImageView.cpp:959 video/mrvGLLut3d.cpp:1017
+#: core/mrvACES.cpp:188 gui/mrvImageView.cpp:959 video/mrvGLLut3d.cpp:1017
 msgid "LMT.SatNode"
 msgstr ""
 
@@ -25737,7 +25737,7 @@ msgstr "Cuadro faltante de audio "
 msgid "Missing picture"
 msgstr "Cuadros Faltantes"
 
-#: core/mrvACES.cpp:234 core/mrvACES.cpp:334
+#: core/mrvACES.cpp:261 core/mrvACES.cpp:361
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Faltan transformaciones para aces:GradeRef en '"
 
@@ -30195,13 +30195,13 @@ msgstr "Imagen SGI"
 msgid "SHMAP"
 msgstr ""
 
-#: core/slateImage.cpp:277 core/mrvACES.cpp:189 core/mrvACES.cpp:190
-#: core/mrvACES.cpp:307 core/mrvACES.cpp:308
+#: core/slateImage.cpp:277 core/mrvACES.cpp:216 core/mrvACES.cpp:217
+#: core/mrvACES.cpp:334 core/mrvACES.cpp:335
 msgid "SHOT"
 msgstr "TOMA"
 
-#: core/slateImage.cpp:242 core/mrvACES.cpp:185 core/mrvACES.cpp:186
-#: core/mrvACES.cpp:303 core/mrvACES.cpp:304
+#: core/slateImage.cpp:242 core/mrvACES.cpp:212 core/mrvACES.cpp:213
+#: core/mrvACES.cpp:330 core/mrvACES.cpp:331
 msgid "SHOW"
 msgstr "SHOW"
 
@@ -30238,7 +30238,7 @@ msgstr ""
 msgid "SOFTWARE"
 msgstr ""
 
-#: core/mrvACES.cpp:246 core/mrvACES.cpp:344 gui/mrvImageInformation.cpp:4196
+#: core/mrvACES.cpp:273 core/mrvACES.cpp:371 gui/mrvImageInformation.cpp:4196
 #: video/mrvGLLut3d.cpp:89
 msgid "SOPNode"
 msgstr ""
@@ -30348,7 +30348,7 @@ msgstr ""
 msgid "Sample position not advancing."
 msgstr ""
 
-#: core/mrvACES.cpp:256 core/mrvACES.cpp:348 gui/mrvImageInformation.cpp:4196
+#: core/mrvACES.cpp:283 core/mrvACES.cpp:375 gui/mrvImageInformation.cpp:4196
 #: video/mrvGLLut3d.cpp:104
 msgid "SatNode"
 msgstr ""
@@ -30453,11 +30453,11 @@ msgstr "Grabar preferencias al disco por defecto."
 msgid "Save sequence or movie."
 msgstr "Grabar secuencia o película."
 
-#: core/mrvACES.cpp:384
+#: core/mrvACES.cpp:411
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabé archivo de Clip Metadatos de ACES '"
 
-#: core/mrvACES.cpp:284
+#: core/mrvACES.cpp:311
 #, fuzzy
 msgid "Saved AMF clip metadata file '"
 msgstr "Grabé archivo de Clip Metadatos de ACES '"
@@ -32607,11 +32607,11 @@ msgstr "Formato de imagen desconocido"
 msgid "Unknown Radiance HDR keyword \""
 msgstr "Tipo de dato desconocido para clave '"
 
-#: core/mrvACES.cpp:191 core/mrvACES.cpp:309
+#: core/mrvACES.cpp:218 core/mrvACES.cpp:336
 msgid "Unknown Shot"
 msgstr "Toma Desconocida"
 
-#: core/mrvACES.cpp:187 core/mrvACES.cpp:305
+#: core/mrvACES.cpp:214 core/mrvACES.cpp:332
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
@@ -32725,11 +32725,11 @@ msgstr "Formato de pixel en mrv::Frame desconocido"
 msgid "Unknown mrv::Frame pixel type: "
 msgstr "Formato de pixel en mrv::Frame desconocido"
 
-#: core/mrvACES.cpp:262
+#: core/mrvACES.cpp:289
 msgid "Unknown node in CDL"
 msgstr "Nodo desconocido en CDL"
 
-#: core/mrvACES.cpp:354
+#: core/mrvACES.cpp:381
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
 
@@ -39776,7 +39776,7 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
-#: core/mrvACES.cpp:300 gui/mrvImageView.cpp:493 gui/mrvMainWindow.cpp:76
+#: core/mrvACES.cpp:327 gui/mrvImageView.cpp:493 gui/mrvMainWindow.cpp:76
 #: gui/mrvPreferences.cpp:361 gui/mrvPreferences.cpp:2163
 msgid "mrViewer"
 msgstr "mrViewer"
