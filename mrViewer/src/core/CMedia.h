@@ -1002,6 +1002,9 @@ public:
     /// Returns the pixel type of the image
     image_type::PixelType depth() const;
 
+    /// Returns the pixel type of the image as a string
+    std::string pixel_depth() const;
+
     /// Stores an embedded gamma value
     void gamma(const float g);
 
@@ -1529,7 +1532,7 @@ public:
 
     // Initialize audio engine
     void audio_initialize();
-    
+
     void fetch_audio( const int64_t frame );
 
     // Wait for load threads to exit (unused)

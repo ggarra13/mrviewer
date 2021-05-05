@@ -2040,6 +2040,13 @@ image_type::PixelType CMedia::depth() const
     return _depth;
 }
 
+/// Returns the pixel type of the image as a string
+std::string CMedia::pixel_depth() const
+{
+    mrv::image_type_ptr pic = left();
+    if ( ! pic ) return "unknown";
+    return pic->pixel_depth();
+}
 
 void CMedia::gamma( const float x )
 {

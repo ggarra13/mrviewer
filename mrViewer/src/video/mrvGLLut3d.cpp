@@ -1187,7 +1187,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                     err = _("No ICC profile");
 
                 LOG_ERROR( _("No valid RT transform for \"")
-                           << img->name() << N_("\": ") << err << N_(".") );
+                           << img->name() << N_("\": ") << err << _(", depth ")
+                           << img->pixel_depth() << N_(".") );
             }
 
             lastImg = img;

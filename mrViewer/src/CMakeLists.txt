@@ -50,7 +50,7 @@ endif()
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
 FIND_PACKAGE( CTL  REQUIRED )           # for CTL
-FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for CTL-> EXR
+FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for CTL <-> EXR
 FIND_PACKAGE( OCIO        REQUIRED )    # for OCIO color correction
 FIND_PACKAGE( OIIO        REQUIRED )    # for OIIO image loading
 FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
