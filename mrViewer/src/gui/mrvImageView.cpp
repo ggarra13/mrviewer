@@ -1931,7 +1931,7 @@ bool ImageView::previous_channel()
     // Count (total) number of channels
     uiColorChannel->menu_end();
     total = uiColorChannel->children() - 1;
-
+    --num;
     unsigned short idx = 0;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
@@ -1945,7 +1945,7 @@ bool ImageView::previous_channel()
             const Fl_Menu_Item* last = uiColorChannel->child(total-1);
 
             // Jump to Z based on label
-            if ( total > 8 &&
+            if ( total > 8 && last && last->label() &&
                  strcmp( last->label(), N_("Z") ) == 0 )
             {
                 previous = total-1;
@@ -1953,14 +1953,14 @@ bool ImageView::previous_channel()
                 break;
             }
             // Jump to color based on label
-            else if ( total >= 7 &&
+            else if ( total >= 7 && last && last->label() &&
                       strcmp( last->label(), _("Alpha Overlay") ) == 0 )
             {
                 previous = total - 1;
                 is_group = true;
                 break;
             }
-            else if ( total >= 5 && last->label() &&
+            else if ( total >= 5 && last && last->label() &&
                       strcmp( last->label(), _("Lumma") ) == 0 )
             {
                 previous = total - 1;
@@ -1970,7 +1970,7 @@ bool ImageView::previous_channel()
         }
 
         // This handles jump from Z to Color
-        if ( c == idx && c >= 4 && w->label() &&
+        if ( c == idx && c >= 4 && w && w->label() &&
              ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
         {
             // Handle Z, Alpha Overlay and Lumma and RGBA
@@ -1982,7 +1982,7 @@ bool ImageView::previous_channel()
                 previous = c - 4;
             is_group = true;
         }
-        if ( w->flags & FL_SUBMENU )
+        if ( w && w->flags & FL_SUBMENU )
         {
             if ( c == idx && previous >= 0) {
                 is_group = true;
@@ -1990,7 +1990,7 @@ bool ImageView::previous_channel()
 
             if ( !is_group ) previous = idx;
         }
-        else if ( c == idx && w->label() &&
+        else if ( c == idx && w && w->label() &&
                   previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
         {
             is_group = true;
@@ -2011,9 +2011,13 @@ bool ImageView::previous_channel()
     else
     {
         if ( previous > 0 && previous < idx )
+        {
             channel( previous );
+        }
         else
+        {
             channel( idx - 1 );
+        }
     }
 
     return true;
@@ -8655,7 +8659,6 @@ void ImageView::channel( Fl_Menu_Item* o )
 void ImageView::channel( unsigned short c )
 {
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-
 
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();

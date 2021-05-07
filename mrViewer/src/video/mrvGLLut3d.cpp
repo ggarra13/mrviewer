@@ -991,6 +991,37 @@ bool     GLLut3d::RT_ctl_transforms( std::string& key,
         transforms.push_back( t );
         ok = true;
     }
+    else if ( img->inverse_ot_transform() )
+    {
+        std::string name = img->inverse_ot_transform();
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        ok = true;
+    }
+    else if ( img->inverse_odt_transform() )
+    {
+        std::string name = img->inverse_odt_transform();
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        ok = true;
+
+        if ( img->inverse_rrt_transform() )
+        {
+            std::string name = img->inverse_rrt_transform();
+            Transform t( name, Transform::kCTL );
+            if ( !key.empty() ) key += " -> ";
+            key += name;
+            key += " (C)";
+            transforms.push_back( t );
+            ok = true;
+        }
+    }
 
     if ( img->number_of_lmts() )
     {

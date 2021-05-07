@@ -162,8 +162,15 @@ bool load_amf( CMedia* img, const char* filename )
     }
 
     pipelineType& p = r.aces.pipeline;
-    img->idt_transform( p.inputTransform.transformId.c_str() );
-
+    inputTransformType& i = p.inputTransform;
+    if ( !i.transformId.empty() )
+        img->idt_transform( i.transformId.c_str() );
+    if ( !i.inverseOutputDeviceTransform.transformId.empty() )
+        img->inverse_odt_transform( i.inverseOutputDeviceTransform.transformId.c_str() );
+    if ( !i.inverseOutputTransform.transformId.empty() )
+        img->inverse_ot_transform( i.inverseOutputTransform.transformId.c_str() );
+    if ( !i.inverseReferenceRenderingTransform.transformId.empty() )
+        img->inverse_rrt_transform( i.inverseReferenceRenderingTransform.transformId.c_str() );
 
     lookTransformType& l = p.lookTransform;
     if ( ! l.transformId.empty() )
@@ -249,6 +256,8 @@ bool save_amf( const CMedia* img, const char* filename )
     size_t num_graderefs = img->number_of_grade_refs();
 
     lookTransformType& l = p.lookTransform;
+    l.applied = true;
+
     //
     // GradeRefs are transformed into Look Mod Transforms.
     // Here we extract them back again into the xml file.

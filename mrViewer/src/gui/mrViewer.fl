@@ -5,7 +5,7 @@ i18n_include <libintl.h>
 i18n_function gettext
 header_name {.h}
 code_name {.cxx}
-decl {\#include <string>} {selected public local
+decl {\#include <string>} {public local
 }
 
 decl {\#include "core/mrvFrame.h"} {public local
@@ -169,8 +169,8 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
   code {std::string orig = ctl;} {}
   Fl_Window {} {
     label {CTL Browser} open
-    xywh {1207 438 395 440} type Double resizable hotspot
-    class mrvDoubleWindow modal visible
+    xywh {1207 438 395 440} type Double hide resizable hotspot
+    class mrvDoubleWindow modal
   } {
     Fl_Group {} {open
       xywh {0 0 395 440} box PLASTIC_UP_BOX
@@ -715,12 +715,12 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {324 348 690 565} type Double align 80 resizable
+      xywh {324 348 690 565} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} visible
+      class {mrv::MainWindow}
     } {
-      Fl_Pack uiRegion {open
+      Fl_Pack uiRegion {open selected
         xywh {0 0 690 564} resizable
         class MyPack
       } {
@@ -1106,7 +1106,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
               label {1:1}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_pixel_ratio();}
-              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {624 28 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
+              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {630 28 24 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
             }
             Fl_Button uiLUT {
               label LUT

@@ -871,8 +871,26 @@ public:
     /// Returns input device transform name ( CTL script ) or NULL
     const char* idt_transform() const;
 
-    /// Assigns a new input device transform ( CTL script ) oR NULL to clear it
+    /// Assigns a new input device transform ( CTL script ) or NULL to clear it
     void idt_transform( const char* cfile );
+    
+    /// Returns inverse output transform name ( CTL script ) or NULL
+    const char* inverse_ot_transform() const;
+
+    /// Assigns a new inverse output transform ( CTL script ) or NULL to clear it
+    void inverse_ot_transform( const char* cfile );
+    
+    /// Returns inverse output device transform name ( CTL script ) or NULL
+    const char* inverse_odt_transform() const;
+
+    /// Assigns a new inverse output device transform ( CTL script ) or NULL to clear it
+    void inverse_odt_transform( const char* cfile );
+    
+    /// Returns inverse reference rendering transform name ( CTL script ) or NULL
+    const char* inverse_rrt_transform() const;
+
+    /// Assigns a new inverse reference rendering transform ( CTL script ) or NULL to clear it
+    void inverse_rrt_transform( const char* cfile );
 
     /// Returns the number of Look Mod Transforms ( CTL scripts )
     inline size_t number_of_lmts() const {
@@ -2029,6 +2047,9 @@ protected:
     // Input Device Transform for CTL
     char*     _idt_transform;
 
+    char*     _inverse_odt_transform;
+    char*     _inverse_ot_transform;
+    char*     _inverse_rrt_transform;
 
     // OCIO
     std::string _input_color_space;

@@ -3041,6 +3041,18 @@ void ImageInformation::fill_data()
                      _("(IDT) Input Device Transform"),
                      img->idt_transform() );
 
+        add_ctl_inverse_ot( _("Inverse Output Transform"),
+                            _("(IOT) Input Output Transform"),
+                     img->inverse_ot_transform() );
+
+        add_ctl_inverse_odt( _("Inverse Output Device Transform"),
+                             _("(IODT) Input Output Device Transform"),
+                     img->inverse_odt_transform() );
+
+        add_ctl_inverse_rrt( _("Inverse Reference Rendering Transform"),
+                             _("(IRRT) Input Reference Rendering Transform"),
+                     img->inverse_rrt_transform() );
+
 
         clear_callback_data();
 
@@ -3790,6 +3802,7 @@ void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
 {
     attach_ctl_script( v->get_image(), v->main() );
     v->filled = false;
+    v->refresh();
 }
 
 void ImageInformation::ctl_idt_callback( Fl_Widget* t,
@@ -3797,6 +3810,31 @@ void ImageInformation::ctl_idt_callback( Fl_Widget* t,
 {
     attach_ctl_idt_script( v->get_image(), v->main() );
     v->filled = false;
+    v->refresh();
+}
+
+void ImageInformation::ctl_iot_callback( Fl_Widget* t,
+                                         ImageInformation* v )
+{
+    attach_ctl_iot_script( v->get_image(), v->main() );
+    v->filled = false;
+    v->refresh();
+}
+
+void ImageInformation::ctl_iodt_callback( Fl_Widget* t,
+                                         ImageInformation* v )
+{
+    attach_ctl_iodt_script( v->get_image(), v->main() );
+    v->filled = false;
+    v->refresh();
+}
+
+void ImageInformation::ctl_irrt_callback( Fl_Widget* t,
+                                         ImageInformation* v )
+{
+    attach_ctl_irrt_script( v->get_image(), v->main() );
+    v->filled = false;
+    v->refresh();
 }
 
 void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
@@ -3807,6 +3845,7 @@ void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
 
     attach_ctl_lmt_script( v->get_image(), idx, v->main() );
     v->filled = false;
+    v->refresh();
 }
 
 void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
@@ -3816,6 +3855,7 @@ void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
     img->compression( idx );
     t->label( t->child(idx)->label() );
     v->filled = false;
+    v->refresh();
 }
 
 void ImageInformation::add_icc( const char* name,
@@ -4159,6 +4199,172 @@ void ImageInformation::add_ctl_idt( const char* name,
 }
 
 
+void ImageInformation::add_ctl_inverse_ot( const char* name,
+                                           const char* tooltip,
+                                           const char* content,
+                                           const bool editable,
+                                           Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)ctl_iot_callback, (void*)this );
+
+        sg->add( widget );
+
+        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_iot_callback, this );
+        sg->add( pick );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
+
+
+void ImageInformation::add_ctl_inverse_odt( const char* name,
+                                            const char* tooltip,
+                                            const char* content,
+                                            const bool editable,
+                                            Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)ctl_iodt_callback, (void*)this );
+
+        sg->add( widget );
+
+        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_iodt_callback, this );
+        sg->add( pick );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
+
+
+void ImageInformation::add_ctl_inverse_rrt( const char* name,
+                                            const char* tooltip,
+                                            const char* content,
+                                            const bool editable,
+                                            Fl_Callback* callback )
+{
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
+
+    Fl_Box* lbl;
+    int hh = line_height();
+    Y += hh;
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
+    g->end();
+    {
+        Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->color( colA );
+        widget->labelcolor( FL_BLACK );
+        widget->copy_label( name );
+        g->add( widget );
+    }
+    m_curr->add( g );
+
+    {
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
+
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        widget->value( content );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_WHITE );
+        widget->color( colB );
+        if ( tooltip ) widget->tooltip( tooltip );
+        else widget->tooltip( lbl->label() );
+        if ( callback )
+            widget->callback( (Fl_Callback*)ctl_irrt_callback, (void*)this );
+
+        sg->add( widget );
+
+        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+                                         _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_irrt_callback, this );
+        sg->add( pick );
+        sg->resizable(widget);
+        sg->end();
+
+        m_curr->add( sg );
+    }
+    m_curr->layout();
+}
 
 void ImageInformation::add_ctl_lmt( const char* name,
                                     const char* tooltip,

@@ -471,7 +471,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsViewGamma->value( tmpF );
 
     DBG3;
-    view.get("compensate_pixel_ratio", tmp, 0 );
+    view.get("compensate_pixel_ratio", tmp, 1 );
     uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
     view.get("lut", tmp, 1 );
@@ -1435,7 +1435,7 @@ void Preferences::run( ViewerUI* main )
     DBG3;
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
-        view->toggle_pixel_ratio();
+        view->show_pixel_ratio( main->uiPixelRatio->value() );
 
     view->texture_filtering( ImageView::kNearestNeighbor );
     if ( main->uiPrefs->uiPrefsFiltering->value() ==
