@@ -324,7 +324,7 @@ run_cmake()
     fi
 
     if [[ $OS == Darwin* ]]; then
-	installdir=~/mrv
+	installdir=/usr/local
     fi
 
     if [[ $OS == Windows* ]]; then
