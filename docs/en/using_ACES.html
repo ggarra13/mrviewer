@@ -22,7 +22,7 @@
 <span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
 <span style="font-family: Andale Mono;">ODT from OCES to Display</span><br style="font-family: Andale Mono;">
 <br>
-<p>mrViewer reads ACESClip xml files that describe the different CTL
+<p>mrViewer reads AMF amf files that describe the different CTL
 transforms applied to an image.&nbsp; It also contains ASC-CDL color
 corrections which are emulated as Look Mod Transforms.<br>
  </p><p>mrViewer
@@ -54,23 +54,23 @@ productions. &nbsp;If your project requires some special film effect
 third transform available is the Look Modification Transform (LMT).
 &nbsp;This transformation is intended mainly for camera devices to take
 their input images and color correct them based on certain knobs as
-done on set and is particular to each camera model.  You can have an unlimited number of LMTs.<p></p>
+done on set and is particular to each camera model.  You can have only one LMT, but SOPNode/SatNode and transformation spaces from/to color correction.<p></p>
 Finally, there's an Input Device Transform (IDT) which is a transform
 used to take the camera's raw data into a proper ACES workspace.
 mrViewer ships with a list of input device transforms for some popular
 film cameras.&nbsp; If not one of the cameras listed, contact your
 camera manufacturer.<br>
 <br>
-All of these transforms can be stored in an ACES Clip metadata
-file.&nbsp; mrViewer loads equivalent named ACESClip metadata files if
+All of these transforms can be stored in an AMF metadata
+file.&nbsp; mrViewer loads equivalent named AMF metadata files if
 they are present.&nbsp; For example, for a frame called
-nature.%04d.exr, the clip file named ACESclip.nature.xml file would be
+nature.%04d.exr, the clip file named AMF.nature.amf file would be
 loaded.&nbsp; Once the clip file is loaded you can press the <span style="font-weight: bold;">LUT </span>button in the main toolbar and wait for it to cook the transform (which should take a couple of seconds).<br>
 
 
 <br>
 
-<iframe title="YouTube video player" class="youtube-player" type="text/html" 
+<iframe title="YouTube video player" class="youtube-player" type="text/html"
 width="640" height="390" src="http://www.youtube.com/embed/A2zMjjKaDRY"
 frameborder="0" allowFullScreen></iframe>
 

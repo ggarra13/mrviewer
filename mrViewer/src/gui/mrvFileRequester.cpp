@@ -684,6 +684,78 @@ void attach_ctl_idt_script( CMedia* image,
     attach_ctl_idt_script( image, transform, main );
 }
 
+void attach_ctl_iot_script( CMedia* image, const char* startfile,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    std::string script = make_ctl_browser( startfile, "IOT,InvOT" );
+
+    char buf[1024];
+    sprintf( buf, "IOT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+
+    image->inverse_ot_transform( script.c_str() );
+}
+
+void attach_ctl_iot_script( CMedia* image,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    const char* transform = image->inverse_ot_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_iot_script( image, transform, main );
+}
+
+void attach_ctl_iodt_script( CMedia* image, const char* startfile,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    std::string script = make_ctl_browser( startfile, "IODT,InvODT" );
+
+    char buf[1024];
+    sprintf( buf, "IODT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+
+    image->inverse_odt_transform( script.c_str() );
+}
+
+void attach_ctl_iodt_script( CMedia* image,
+                            ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    const char* transform = image->inverse_odt_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_iodt_script( image, transform, main );
+}
+
+void attach_ctl_irrt_script( CMedia* image, const char* startfile,
+                             ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    std::string script = make_ctl_browser( startfile, "IRT,InvRT,InvRRT" );
+
+    char buf[1024];
+    sprintf( buf, "IRRT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+
+    image->inverse_rrt_transform( script.c_str() );
+}
+
+void attach_ctl_irrt_script( CMedia* image,
+                             ViewerUI* main )
+{
+    if ( !image || !main ) return;
+
+    const char* transform = image->inverse_rrt_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_irrt_script( image, transform, main );
+}
+
 void attach_ctl_lmt_script( CMedia* image, const size_t idx,
                             ViewerUI* main )
 {
