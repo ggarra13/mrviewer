@@ -4,10 +4,10 @@
 #include <FL/Fl.H>
 #include <FL/fl_utf8.h>
 
-#include "AMFReader.h"
-#include "AMFWriter.h"
 #include "ACESclipWriter.h"
 #include "ACESclipReader.h"
+#include "AMFReader.h"
+#include "AMFWriter.h"
 
 #include <boost/filesystem.hpp>
 
@@ -165,12 +165,19 @@ bool load_amf( CMedia* img, const char* filename )
     inputTransformType& i = p.inputTransform;
     if ( !i.transformId.empty() )
         img->idt_transform( i.transformId.c_str() );
-    if ( !i.inverseOutputDeviceTransform.transformId.empty() )
-        img->inverse_odt_transform( i.inverseOutputDeviceTransform.transformId.c_str() );
-    if ( !i.inverseOutputTransform.transformId.empty() )
-        img->inverse_ot_transform( i.inverseOutputTransform.transformId.c_str() );
-    if ( !i.inverseReferenceRenderingTransform.transformId.empty() )
-        img->inverse_rrt_transform( i.inverseReferenceRenderingTransform.transformId.c_str() );
+
+    inverseOutputDeviceTransformType& iodt = i.inverseOutputDeviceTransform;
+    if ( !iodt.transformId.empty() )
+        img->inverse_odt_transform( iodt.transformId.c_str() );
+
+    inverseOutputTransformType& iot = i.inverseOutputTransform;
+    if ( !iot.transformId.empty() )
+        img->inverse_ot_transform( iot.transformId.c_str() );
+
+    inverseReferenceRenderingTransformType& irrt =
+        i.inverseReferenceRenderingTransform;
+    if ( !irrt.transformId.empty() )
+        img->inverse_rrt_transform( irrt.transformId.c_str() );
 
     lookTransformType& l = p.lookTransform;
     if ( ! l.transformId.empty() )
