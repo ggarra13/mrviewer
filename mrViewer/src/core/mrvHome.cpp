@@ -54,16 +54,21 @@ std::string homepath()
    if ( (e = fl_getenv("HOME")) )
    {
        path = e;
+       size_t pos = path.rfind( "Documents" );
+       if ( pos != std::string::npos )
+       {
+           path = path.replace( pos, path.size(), "" );
+       }
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( (e = fl_getenv("USERPROFILE")) )
+   if ( (e = fl_getenv("USERPROFILE")) )
    {
        path = e;
        if ( fs::is_directory( path ) )
            return path;
    }
-   else if ( (e = fl_getenv("HOMEDRIVE")) )
+   if ( (e = fl_getenv("HOMEDRIVE")) )
    {
        path = e;
        path += sgetenv("HOMEPATH");
@@ -89,6 +94,18 @@ std::string homepath()
    }
 #endif
 
+   if ( (e = fl_getenv("TMP")) )
+   {
+       path = e;
+       if ( fs::is_directory( path ) )
+           return path;
+   }
+   if ( (e = fl_getenv("TEMP")) )
+   {
+       path = e;
+       if ( fs::is_directory( path ) )
+           return path;
+   }
    path = "/usr/tmp";
    return path;
 }
