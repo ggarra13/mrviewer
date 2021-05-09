@@ -8336,13 +8336,27 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( Fl::event_dy() < 0.f )
+            float dy = Fl::event_dy();
+            if ( Fl::event_state( FL_ALT ) )
             {
-                zoom_under_mouse( _zoom * 2.0f, X, Y );
+                scrub( -dy );
             }
             else
             {
-                zoom_under_mouse( _zoom * 0.5f, X, Y );
+                if ( dy < 0.f )
+                {
+                    if ( _zoom > 15.0f || _zoom <= 2.0f )
+                        zoom_under_mouse( _zoom * 2.0f, X, Y );
+                    else
+                        zoom_under_mouse( _zoom + 0.5f, X, Y );
+                }
+                else
+                {
+                    if ( _zoom > 15.0f || _zoom <= 2.0f )
+                        zoom_under_mouse( _zoom * 0.5f, X, Y );
+                    else
+                        zoom_under_mouse( _zoom - 0.5f, X, Y );
+                }
             }
         }
         return 1;

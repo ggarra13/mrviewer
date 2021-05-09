@@ -356,6 +356,7 @@ SET( SOURCES
   gui/mrvTree.cpp
   gui/mrvVectorscope.cpp
   gui/mrvVersion.cpp
+  gui/mrvVolumeSlider.cpp
   gui/mrvWaveform.cpp
 
   video/mrvDrawEngine.cpp

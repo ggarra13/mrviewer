@@ -80,6 +80,9 @@ decl {\#include "gui/mrvHistogram.h"} {private local
 decl {\#include "gui/mrvVectorscope.h"} {private local
 }
 
+decl {\#include "gui/mrvVolumeSlider.h"} {public local
+}
+
 decl {\#include "gui/mrvImageInformation.h"} {private local
 }
 
@@ -720,7 +723,7 @@ class ViewerUI {open
 o->main( this );}
       class {mrv::MainWindow}
     } {
-      Fl_Pack uiRegion {open selected
+      Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
         class MyPack
       } {
@@ -1628,7 +1631,7 @@ v->uiView->seek( f );}
                 Fl_Group {} {open
                   xywh {95 539 411 25}
                 } {
-                  Fl_Group {} {open
+                  Fl_Group {} {
                     xywh {95 540 260 22}
                   } {
                     Fl_Button {} {
@@ -1674,7 +1677,7 @@ v->uiView->seek( f );}
                       tooltip {Go to the end of the sequence.} xywh {315 542 38 18} labelcolor 28
                     }
                   }
-                  Fl_Group {} {open
+                  Fl_Group {} {
                     xywh {360 539 64 20}
                   } {
                     Fl_Menu_Button fpsDefaults {
@@ -1771,8 +1774,9 @@ o->value(24);}
                     } {}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
-                      callback {v->uiView->volume((float) o->value() );}
+                      callback {v->uiView->volume((float) o->value() );} selected
                       tooltip {Audio Volume} xywh {451 543 55 15} type Horizontal align 4 value 1 slider_size 0.25
+                      class {mrv::VolumeSlider}
                     }
                   }
                 }
