@@ -374,6 +374,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
+    ui.get( "menubar", tmp, 1 );
+    uiPrefs->uiPrefsMenuBar->value( (bool) tmp );
     DBG3;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
@@ -1374,6 +1376,15 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
+    uiMain->uiView->fill_menu( uiMain->uiMenuBar );
+    if ( uiPrefs->uiPrefsMenuBar->value() )
+    {
+        uiMain->uiMenuGroup->show();
+    }
+    else {
+        uiMain->uiMenuGroup->hide();
+    }
+
     DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
@@ -1418,7 +1429,9 @@ void Preferences::run( ViewerUI* main )
         main->uiViewGroup->init_sizes();
     }
 
+    // @BUG: fix to uiRegion scaling badly (too much or too little)
     main->uiView->resize_main_window();
+    main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
 
     //
     // Widget/Viewer settings
@@ -2189,6 +2202,7 @@ void Preferences::save()
     //
     // ui options
     //
+    ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
