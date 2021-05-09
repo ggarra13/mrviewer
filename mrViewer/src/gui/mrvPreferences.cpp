@@ -354,6 +354,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char  tmpS[2048];
     Imf::Chromaticities tmpC, c;
 
+    LOG_INFO( _("Loaded preferences from ") << prefspath()
+              << "mrViewer.prefs" );
 
 
     DBG3;

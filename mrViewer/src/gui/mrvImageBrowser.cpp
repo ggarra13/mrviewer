@@ -990,8 +990,6 @@ void ImageBrowser::save_session()
 
             session = session.parent_path();
 
-            char buf[16];
-
             fs::path path = reelfile;
             path = path.parent_path();
             path /= subdir;
@@ -2020,7 +2018,7 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 && !img->has_video() )
+        if ( fps > 0.0 )
         {
             img->fps( fps );
             img->play_fps( fps );
