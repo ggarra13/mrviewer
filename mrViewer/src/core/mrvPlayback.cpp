@@ -1336,10 +1336,6 @@ void video_thread( PlaybackData* data )
             {
                 f += reel->location(img) - img->first_frame();
             }
-            else
-            {
-                f += img->first_frame() - 1;
-            }
            view->frame( f );
         }
 
