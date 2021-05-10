@@ -8345,7 +8345,7 @@ int ImageView::handle(int event)
             {
                 if ( dy < 0.f )
                 {
-                    if ( _zoom > 15.0f || _zoom <= 2.0f )
+                    if ( _zoom > 15.0f || _zoom <= 0.5f )
                         zoom_under_mouse( _zoom * 2.0f, X, Y );
                     else
                         zoom_under_mouse( _zoom + 0.5f, X, Y );
