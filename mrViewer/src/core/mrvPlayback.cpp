@@ -871,6 +871,13 @@ void audio_thread( PlaybackData* data )
         if ( !img->stopped() )
         {
             img->find_audio(frame);
+#ifdef _WIN32 // WIN32 stores application audio volume
+            mrv::AudioEngine* engine = img->audio_engine();
+            if ( engine )
+            {
+                uiMain->uiVolume->value( engine->volume() );
+            }
+#endif
         }
 
         frame += step;
@@ -1328,10 +1335,6 @@ void video_thread( PlaybackData* data )
             if ( reel->edl )
             {
                 f += reel->location(img) - img->first_frame();
-            }
-            else
-            {
-                f += img->first_frame() - 1;
             }
            view->frame( f );
         }

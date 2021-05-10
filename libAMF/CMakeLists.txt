@@ -23,8 +23,9 @@ include_directories(
   ${Boost_INCLUDE_DIR}
   )
 
+add_definitions(  -DAMF_EXPORTS )
 if(WIN32)
-  add_definitions( -DAMF_DLL -DAMF_EXPORTS -D_WIN32_WINNT=0x0501 )
+  add_definitions( -DAMF_DLL -D_WIN32_WINNT=0x0501 )
 endif()
 
 
@@ -37,7 +38,6 @@ add_library( AMF SHARED
 message( STATUS "TinyXML2 libs=${TINYXML2_LIBRARIES}" )
 
 set( LIBRARIES ${TINYXML2_LIBRARIES}  )
-
 target_link_libraries( AMF ${LIBRARIES} )
 
 set_target_properties( AMF

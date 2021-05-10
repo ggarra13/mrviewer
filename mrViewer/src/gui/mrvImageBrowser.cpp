@@ -990,8 +990,6 @@ void ImageBrowser::save_session()
 
             session = session.parent_path();
 
-            char buf[16];
-
             fs::path path = reelfile;
             path = path.parent_path();
             path /= subdir;
@@ -2020,7 +2018,7 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 && !img->has_video() )
+        if ( fps > 0.0 )
         {
             img->fps( fps );
             img->play_fps( fps );
@@ -3471,16 +3469,15 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    img = load_image( loadfile.c_str(),
+    CMedia* newImg = load_image( loadfile.c_str(),
                       start, end, start, end, 24.0f, false );
-    if ( !img ) return;
+    if ( !newImg ) return;
 
 
 
-    mrv::media m( new mrv::gui::media( img ) );
+    mrv::media m( new mrv::gui::media( newImg ) );
     m->image()->channel( img->channel() );
 
-    CMedia* newImg = m->image();
     int64_t frame = img->frame();
 
     m->position( fg->position() );

@@ -439,6 +439,9 @@ _eye_separation( 0.0f ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
+_inverse_odt_transform( NULL ),
+_inverse_ot_transform( NULL ),
+_inverse_rrt_transform( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -555,6 +558,9 @@ _eye_separation( 0.0f ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
+_inverse_odt_transform( NULL ),
+_inverse_ot_transform( NULL ),
+_inverse_rrt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
@@ -677,6 +683,9 @@ _eye_separation( 0.0f ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
+_inverse_odt_transform( NULL ),
+_inverse_ot_transform( NULL ),
+_inverse_rrt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
@@ -880,6 +889,9 @@ CMedia::~CMedia()
     clear_look_mod_transform();
 
     av_free( _idt_transform );
+    av_free( _inverse_odt_transform );
+    av_free( _inverse_ot_transform );
+    av_free( _inverse_rrt_transform );
 
 
     delete [] _dataWindow;
@@ -2040,6 +2052,13 @@ image_type::PixelType CMedia::depth() const
     return _depth;
 }
 
+/// Returns the pixel type of the image as a string
+std::string CMedia::pixel_depth() const
+{
+    mrv::image_type_ptr pic = left();
+    if ( ! pic ) return "unknown";
+    return pic->pixel_depth();
+}
 
 void CMedia::gamma( const float x )
 {
@@ -2366,6 +2385,83 @@ const char* CMedia::idt_transform()  const
     return _idt_transform;
 }
 
+/**
+ * Returns image inverse ouput device CTL script (or NULL if no script)
+ *
+ * @return CTL script or NULL
+ */
+const char* CMedia::inverse_odt_transform()  const
+{
+    return _inverse_odt_transform;
+}
+
+
+/**
+ * Change the inverse output device transform for the image
+ *
+ * @param cfile  CTL script name or NULL to clear it
+ */
+void CMedia::inverse_odt_transform( const char* cfile )
+{
+    av_free( _inverse_odt_transform );
+    _inverse_odt_transform = NULL;
+    if ( cfile && strlen(cfile) > 0 )
+        _inverse_odt_transform = av_strdup( cfile );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
+    refresh();
+}
+
+/**
+ * Returns image inverse ouput CTL script (or NULL if no script)
+ *
+ * @return CTL script or NULL
+ */
+const char* CMedia::inverse_ot_transform()  const
+{
+    return _inverse_ot_transform;
+}
+
+
+/**
+ * Change the inverse output transform for the image
+ *
+ * @param cfile  CTL script name or NULL to clear it
+ */
+void CMedia::inverse_ot_transform( const char* cfile )
+{
+    av_free( _inverse_ot_transform );
+    _inverse_ot_transform = NULL;
+    if ( cfile && strlen(cfile) > 0 )
+        _inverse_ot_transform = av_strdup( cfile );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
+    refresh();
+}
+
+/**
+ * Returns image inverse reference rendering CTL script (or NULL if no script)
+ *
+ * @return CTL script or NULL
+ */
+const char* CMedia::inverse_rrt_transform()  const
+{
+    return _inverse_rrt_transform;
+}
+
+
+/**
+ * Change the inverse reference rendering transform for the image
+ *
+ * @param cfile  CTL script name or NULL to clear it
+ */
+void CMedia::inverse_rrt_transform( const char* cfile )
+{
+    av_free( _inverse_rrt_transform );
+    _inverse_rrt_transform = NULL;
+    if ( cfile && strlen(cfile) > 0 )
+        _inverse_rrt_transform = av_strdup( cfile );
+    image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
+    refresh();
+}
 
 /**
  * Change the IDT transform for the image

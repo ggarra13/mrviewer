@@ -151,9 +151,24 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
  * @param startfile  start filename (directory)
  */
 void attach_ctl_idt_script( CMedia* image, const char* ctlfile,
-                              ViewerUI* main = NULL  );
+                            ViewerUI* main = NULL  );
 void attach_ctl_idt_script( CMedia* image,
-                              ViewerUI* main = NULL  );
+                            ViewerUI* main = NULL  );
+
+void attach_ctl_iot_script( CMedia* image, const char* ctlfile,
+                            ViewerUI* main = NULL  );
+void attach_ctl_iot_script( CMedia* image,
+                            ViewerUI* main = NULL  );
+
+void attach_ctl_iodt_script( CMedia* image, const char* ctlfile,
+                            ViewerUI* main = NULL  );
+void attach_ctl_iodt_script( CMedia* image,
+                            ViewerUI* main = NULL  );
+
+void attach_ctl_irrt_script( CMedia* image, const char* ctlfile,
+                            ViewerUI* main = NULL  );
+void attach_ctl_irrt_script( CMedia* image,
+                            ViewerUI* main = NULL  );
 
 void read_clip_xml_metadata( CMedia* image,
                              ViewerUI* main = NULL  );

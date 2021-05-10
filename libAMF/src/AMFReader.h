@@ -35,7 +35,6 @@ either expressed or implied, of the FreeBSD Project.
 #ifdef _WIN32
 #include <stdlib.h>
 #define locale_t _locale_t
-#undef XMLDocument
 #else
 #include <locale.h>
 #endif

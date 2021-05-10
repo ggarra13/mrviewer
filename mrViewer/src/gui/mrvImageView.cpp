@@ -684,31 +684,6 @@ void save_reel_cb( Fl_Widget* o, mrv::ImageView* view )
     view->browser()->save_reel();
 }
 
-void open_aces_metadata_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-    view->stop();
-
-    mrv::CMedia* img = fg->image();
-    if ( !img ) return;
-
-    mrv::read_clip_xml_metadata( img, view->main() );
-}
-
-
-void save_aces_metadata_cb( Fl_Widget* o, mrv::ImageView* view )
-{
-    mrv::media fg = view->foreground();
-    if ( !fg ) return;
-    view->stop();
-
-    mrv::CMedia* img = fg->image();
-    if ( !img ) return;
-
-    mrv::save_clip_xml_metadata( img, view->main() );
-}
-
 void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::media fg = view->foreground();
@@ -1956,7 +1931,7 @@ bool ImageView::previous_channel()
     // Count (total) number of channels
     uiColorChannel->menu_end();
     total = uiColorChannel->children() - 1;
-
+    --num;
     unsigned short idx = 0;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
@@ -1970,7 +1945,7 @@ bool ImageView::previous_channel()
             const Fl_Menu_Item* last = uiColorChannel->child(total-1);
 
             // Jump to Z based on label
-            if ( total > 8 &&
+            if ( total > 8 && last && last->label() &&
                  strcmp( last->label(), N_("Z") ) == 0 )
             {
                 previous = total-1;
@@ -1978,14 +1953,14 @@ bool ImageView::previous_channel()
                 break;
             }
             // Jump to color based on label
-            else if ( total >= 7 &&
+            else if ( total >= 7 && last && last->label() &&
                       strcmp( last->label(), _("Alpha Overlay") ) == 0 )
             {
                 previous = total - 1;
                 is_group = true;
                 break;
             }
-            else if ( total >= 5 && last->label() &&
+            else if ( total >= 5 && last && last->label() &&
                       strcmp( last->label(), _("Lumma") ) == 0 )
             {
                 previous = total - 1;
@@ -1995,7 +1970,7 @@ bool ImageView::previous_channel()
         }
 
         // This handles jump from Z to Color
-        if ( c == idx && c >= 4 && w->label() &&
+        if ( c == idx && c >= 4 && w && w->label() &&
              ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
         {
             // Handle Z, Alpha Overlay and Lumma and RGBA
@@ -2007,7 +1982,7 @@ bool ImageView::previous_channel()
                 previous = c - 4;
             is_group = true;
         }
-        if ( w->flags & FL_SUBMENU )
+        if ( w && w->flags & FL_SUBMENU )
         {
             if ( c == idx && previous >= 0) {
                 is_group = true;
@@ -2015,7 +1990,7 @@ bool ImageView::previous_channel()
 
             if ( !is_group ) previous = idx;
         }
-        else if ( c == idx && w->label() &&
+        else if ( c == idx && w && w->label() &&
                   previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
         {
             is_group = true;
@@ -2036,9 +2011,13 @@ bool ImageView::previous_channel()
     else
     {
         if ( previous > 0 && previous < idx )
+        {
             channel( previous );
+        }
         else
+        {
             channel( idx - 1 );
+        }
     }
 
     return true;
@@ -4589,9 +4568,6 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)open_stereo_cb, browser() );
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                     (Fl_Callback*)open_dir_cb, browser() );
-         idx = menu->add( _("File/Open/ACES metadata"),
-                          kOpenClipXMLMetadata.hotkey(),
-                          (Fl_Callback*)open_aces_metadata_cb, this );
          idx = menu->add( _("File/Open/Session"),
                     kOpenSession.hotkey(),
                     (Fl_Callback*)open_session_cb, browser() );
@@ -4604,8 +4580,6 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)save_cb, this );
          menu->add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
                     (Fl_Callback*)save_snap_cb, this );
-         menu->add( _("File/Save/ACES metadata"), kSaveClipXMLMetadata.hotkey(),
-                    (Fl_Callback*)save_aces_metadata_cb, this );
          menu->add( _("File/Save/Session As"),
                     kSaveSession.hotkey(),
                     (Fl_Callback*)save_session_as_cb, this );
@@ -8362,13 +8336,17 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( Fl::event_dy() < 0.f )
+            float dy = Fl::event_dy();
+            if ( Fl::event_state( FL_ALT ) )
             {
-                zoom_under_mouse( _zoom * 2.0f, X, Y );
+                scrub( -dy );
             }
             else
             {
-                zoom_under_mouse( _zoom * 0.5f, X, Y );
+                int idx = uiMain->uiPrefs->uiPrefsZoomSpeed->value();
+                const float speedValues[] = { 0.1f, 0.25f, 0.5f };
+                float speed = speedValues[idx];
+                zoom_under_mouse( _zoom * (1.0f - dy * speed), X, Y );
             }
         }
         return 1;
@@ -8685,7 +8663,6 @@ void ImageView::channel( Fl_Menu_Item* o )
 void ImageView::channel( unsigned short c )
 {
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-
 
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
@@ -9416,9 +9393,11 @@ void ImageView::update_layers()
  */
 void ImageView::foreground( mrv::media fg )
 {
-
     mrv::media old = foreground();
-    if ( old == fg ) return;
+    if ( old == fg ) {
+        fill_menu( uiMain->uiMenuBar );
+        return;
+    }
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -9458,7 +9437,6 @@ void ImageView::foreground( mrv::media fg )
         }
         else
         {
-            img->audio_initialize();
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
             {

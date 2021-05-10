@@ -4,10 +4,10 @@
 #include <FL/Fl.H>
 #include <FL/fl_utf8.h>
 
-#include "AMFReader.h"
-#include "AMFWriter.h"
 #include "ACESclipWriter.h"
 #include "ACESclipReader.h"
+#include "AMFReader.h"
+#include "AMFWriter.h"
 
 #include <boost/filesystem.hpp>
 
@@ -162,7 +162,48 @@ bool load_amf( CMedia* img, const char* filename )
     }
 
     pipelineType& p = r.aces.pipeline;
-    img->idt_transform( p.inputTransform.transformId.c_str() );
+    inputTransformType& i = p.inputTransform;
+    if ( !i.transformId.empty() )
+        img->idt_transform( i.transformId.c_str() );
+
+    inverseOutputDeviceTransformType& iodt = i.inverseOutputDeviceTransform;
+    if ( !iodt.transformId.empty() )
+        img->inverse_odt_transform( iodt.transformId.c_str() );
+
+    inverseOutputTransformType& iot = i.inverseOutputTransform;
+    if ( !iot.transformId.empty() )
+        img->inverse_ot_transform( iot.transformId.c_str() );
+
+    inverseReferenceRenderingTransformType& irrt =
+        i.inverseReferenceRenderingTransform;
+    if ( !irrt.transformId.empty() )
+        img->inverse_rrt_transform( irrt.transformId.c_str() );
+
+    lookTransformType& l = p.lookTransform;
+    if ( ! l.transformId.empty() )
+        img->append_look_mod_transform( l.transformId.c_str() );
+
+    cdlWorkingSpaceType& c = l.cdlWorkingSpace;
+
+    toCdlWorkingSpaceType& to = c.toCdlWorkingSpace;
+    if ( ! to.transformId.empty() )
+        img->append_look_mod_transform( to.transformId.c_str() );
+
+    ACES::ASC_CDL sops;
+
+    SOPNodeType& s = l.SOPNode;
+    sops.slope( s.slope[0], s.slope[1], s.slope[2] );
+    sops.offset( s.offset[0], s.offset[1], s.offset[2] );
+    sops.power( s.power[0], s.power[1], s.power[2] );
+    sops.saturation( l.SatNode );
+
+    img->asc_cdl( sops );
+    img->append_look_mod_transform( "LMT.SOPNode" );
+    img->append_look_mod_transform( "LMT.SatNode" );
+
+    fromCdlWorkingSpaceType& from = c.fromCdlWorkingSpace;
+    if ( ! from.transformId.empty() )
+        img->append_look_mod_transform( from.transformId.c_str() );
 
     outputTransformType& o = p.outputTransform;
     img->rendering_transform( o.referenceRenderingTransform.transformId.c_str() );
@@ -222,6 +263,8 @@ bool save_amf( const CMedia* img, const char* filename )
     size_t num_graderefs = img->number_of_grade_refs();
 
     lookTransformType& l = p.lookTransform;
+    l.applied = true;
+
     //
     // GradeRefs are transformed into Look Mod Transforms.
     // Here we extract them back again into the xml file.
@@ -264,11 +307,11 @@ bool save_amf( const CMedia* img, const char* filename )
         }
 
         fromCdlWorkingSpaceType& f = c.fromCdlWorkingSpace;
-        f.transformId = img->look_mod_transform(1);
+        f.transformId = img->look_mod_transform(i-1);
     }
 
-    if ( num > 2 )
-        l.transformId = img->look_mod_transform(2);
+    if ( img->look_mod_transform(i) )
+        l.transformId = img->look_mod_transform(i);
 
     outputTransformType& o = p.outputTransform;
     if ( img->rendering_transform() )

@@ -354,6 +354,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     char  tmpS[2048];
     Imf::Chromaticities tmpC, c;
 
+    LOG_INFO( _("Loaded preferences from ") << prefspath()
+              << "mrViewer.prefs" );
 
 
     DBG3;
@@ -372,6 +374,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
+    ui.get( "menubar", tmp, 1 );
+    uiPrefs->uiPrefsMenuBar->value( (bool) tmp );
     DBG3;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
@@ -471,7 +475,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsViewGamma->value( tmpF );
 
     DBG3;
-    view.get("compensate_pixel_ratio", tmp, 0 );
+    view.get("compensate_pixel_ratio", tmp, 1 );
     uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
     view.get("lut", tmp, 1 );
@@ -484,6 +488,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
+    
+    view.get( "zoom_speed", tmp, 2 );
+    uiPrefs->uiPrefsZoomSpeed->value( tmp );
 
     DBG3;
     view.get("display_window", tmp, 1 );
@@ -1372,6 +1379,15 @@ void Preferences::run( ViewerUI* main )
     //
     // Toolbars
     //
+    uiMain->uiView->fill_menu( uiMain->uiMenuBar );
+    if ( uiPrefs->uiPrefsMenuBar->value() )
+    {
+        uiMain->uiMenuGroup->show();
+    }
+    else {
+        uiMain->uiMenuGroup->hide();
+    }
+
     DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
@@ -1416,7 +1432,9 @@ void Preferences::run( ViewerUI* main )
         main->uiViewGroup->init_sizes();
     }
 
+    // @BUG: fix to uiRegion scaling badly (too much or too little)
     main->uiView->resize_main_window();
+    main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
 
     //
     // Widget/Viewer settings
@@ -1435,7 +1453,7 @@ void Preferences::run( ViewerUI* main )
     DBG3;
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
-        view->toggle_pixel_ratio();
+        view->show_pixel_ratio( main->uiPixelRatio->value() );
 
     view->texture_filtering( ImageView::kNearestNeighbor );
     if ( main->uiPrefs->uiPrefsFiltering->value() ==
@@ -2187,6 +2205,7 @@ void Preferences::save()
     //
     // ui options
     //
+    ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
@@ -2222,6 +2241,7 @@ void Preferences::save()
     view.set("lut", uiPrefs->uiPrefsViewLut->value() );
     view.set("safe_areas", uiPrefs->uiPrefsSafeAreas->value() );
     view.set("crop_area", uiPrefs->uiPrefsCropArea->value() );
+    view.set( "zoom_speed", (int) uiPrefs->uiPrefsZoomSpeed->value() );
 
     //
     // view/colors prefs

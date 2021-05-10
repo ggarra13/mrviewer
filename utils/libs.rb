@@ -4,8 +4,6 @@ require 'fileutils'
 require 'optparse'
 
 EXCLUDE = %w(
-libAMF.*
-libACESclip.*
 libOpenGL.*
 libGL\.so
 libGLdispatch\.so
@@ -255,8 +253,10 @@ if kernel !~ /MINGW.*/
 
   Dir.chdir( dest + "/lib" )
   if kernel =~ /Linux/
-    #FileUtils.ln_s "libACESclip.so.0.2.6",
-    #               "libACESclip.so", :verbose => true, :force => true
+    FileUtils.ln_s "libACESclip.so.0.2.6",
+                  "libACESclip.so", :verbose => true, :force => true
+    FileUtils.ln_s "libAMF.so.0.1.0", "libAMF.so", :verbose => true,
+                   :force => true
     $stdout.puts "remove .fuse files"
     Dir.chdir( root )
     `find #{dest}/* -name '*fuse*' -exec rm {} \\;`

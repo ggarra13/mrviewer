@@ -104,6 +104,9 @@ protected:
     void hide_tabs();
 
     static void ctl_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_iot_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_iodt_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_irrt_callback( Fl_Widget* t, ImageInformation* v );
     static void ctl_lmt_callback( Fl_Widget* t, CtlLMTData* v );
     static void ctl_idt_callback( Fl_Widget* t, ImageInformation* v );
     static void icc_callback( Fl_Widget* t, ImageInformation* v );
@@ -147,6 +150,21 @@ protected:
                       const char* content,
                       const bool editable = true,
                       Fl_Callback* callback = NULL );
+
+    void add_ctl_inverse_ot( const char* name, const char* tooltip,
+                             const char* content,
+                             const bool editable = true,
+                             Fl_Callback* callback = NULL );
+
+    void add_ctl_inverse_odt( const char* name, const char* tooltip,
+                              const char* content,
+                              const bool editable = true,
+                              Fl_Callback* callback = NULL );
+
+    void add_ctl_inverse_rrt( const char* name, const char* tooltip,
+                              const char* content,
+                              const bool editable = true,
+                              Fl_Callback* callback = NULL );
 
 
     void add_ocio_ics( const char* name, const char* tooltip,
