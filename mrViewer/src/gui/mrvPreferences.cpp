@@ -488,6 +488,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
+    
+    view.get( "zoom_speed", tmp, 2 );
+    uiPrefs->uiPrefsZoomSpeed->value( tmp );
 
     DBG3;
     view.get("display_window", tmp, 1 );
@@ -2238,6 +2241,7 @@ void Preferences::save()
     view.set("lut", uiPrefs->uiPrefsViewLut->value() );
     view.set("safe_areas", uiPrefs->uiPrefsSafeAreas->value() );
     view.set("crop_area", uiPrefs->uiPrefsCropArea->value() );
+    view.set( "zoom_speed", (int) uiPrefs->uiPrefsZoomSpeed->value() );
 
     //
     // view/colors prefs

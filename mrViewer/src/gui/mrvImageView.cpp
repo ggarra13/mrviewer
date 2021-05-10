@@ -8343,20 +8343,10 @@ int ImageView::handle(int event)
             }
             else
             {
-                if ( dy < 0.f )
-                {
-                    if ( _zoom > 15.0f || _zoom <= 0.5f )
-                        zoom_under_mouse( _zoom * 2.0f, X, Y );
-                    else
-                        zoom_under_mouse( _zoom + 0.5f, X, Y );
-                }
-                else
-                {
-                    if ( _zoom > 15.0f || _zoom <= 2.0f )
-                        zoom_under_mouse( _zoom * 0.5f, X, Y );
-                    else
-                        zoom_under_mouse( _zoom - 0.5f, X, Y );
-                }
+                int idx = uiMain->uiPrefs->uiPrefsZoomSpeed->value();
+                const float speedValues[] = { 0.1f, 0.25f, 0.5f };
+                float speed = speedValues[idx];
+                zoom_under_mouse( _zoom * (1.0f - dy * speed), X, Y );
             }
         }
         return 1;
