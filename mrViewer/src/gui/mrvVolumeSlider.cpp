@@ -18,8 +18,10 @@ int VolumeSlider::handle( int event )
             float dx = Fl::event_dx();
             float dy = Fl::event_dy();
             float d = dx + dy;
-            if ( d > 0 ) v += 0.1;
-            else if ( d < 0 ) v -= .1;
+            if ( d < 0 ) v += 0.1;
+            else if ( d > 0 ) v -= .1;
+            if ( v >= 1.0f ) v = 1.0f;
+            else if ( v <= 0.0f ) v = 0.0f;
             value(v);
             do_callback();
             redraw();
