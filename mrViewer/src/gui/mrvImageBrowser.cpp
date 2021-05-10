@@ -3469,16 +3469,15 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    img = load_image( loadfile.c_str(),
+    CMedia* newImg = load_image( loadfile.c_str(),
                       start, end, start, end, 24.0f, false );
-    if ( !img ) return;
+    if ( !newImg ) return;
 
 
 
-    mrv::media m( new mrv::gui::media( img ) );
+    mrv::media m( new mrv::gui::media( newImg ) );
     m->image()->channel( img->channel() );
 
-    CMedia* newImg = m->image();
     int64_t frame = img->frame();
 
     m->position( fg->position() );
