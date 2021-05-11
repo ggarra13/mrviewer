@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {326 433 675 455} type Double resizable
+      xywh {627 442 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -110,11 +110,11 @@ class PreferencesUI {open
         xywh {200 25 473 430} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface}
-          xywh {210 48 453 349} box EMBOSSED_BOX align 5 hide
+          label {User Interface} open
+          xywh {210 48 453 349} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
-            label {Window Behavior}
+            label {Window Behavior} open
             xywh {218 52 432 124} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsAlwaysOnTop {
@@ -131,19 +131,19 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.} xywh {234 130 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Group uiPrefsOpenMode {open
-              xywh {430 66 215 96} box UP_BOX
+              xywh {445 66 195 95} box UP_BOX
             } {
               Fl_Round_Button {} {
                 label Normal
-                tooltip {When selected, mrViewer will resize its window to the first image.} xywh {438 72 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 selection_color 15 align 8
+                tooltip {When selected, mrViewer will resize its window to the first image.} xywh {450 72 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 selection_color 15 align 8
               }
               Fl_Round_Button {} {
                 label Fullscreen
-                tooltip {When selected, mrViewer will start in full screen mode.} xywh {438 100 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
+                tooltip {When selected, mrViewer will start in full screen mode.} xywh {450 100 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
               }
               Fl_Round_Button {} {
                 label Presentation
-                tooltip {When selected, mrViewer will start in presentation mode.} xywh {438 129 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
+                tooltip {When selected, mrViewer will start in presentation mode.} xywh {450 129 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
               }
             }
           }
@@ -161,7 +161,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Check_Button uiPrefsTimeline {
               label Timeline
-              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 307 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
+              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 306 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
             }
             Fl_Check_Button uiPrefsReelList {
               label {Reel List}
@@ -173,7 +173,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Check_Button uiPrefsVectorscope {
               label Vectorscope
-              tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {514 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {514 278 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsImageInfo {
               label {Media Info}
@@ -181,27 +181,27 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Check_Button uiPrefsColorArea {
               label {Color Area}
-              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {374 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {374 278 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsEDLEdit {
               label {EDL Edit}
-              tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {514 224 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {514 221 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsStereoOptions {
-              label {Stereo 3D Options}
+              label {Stereo 3D Options} selected
               tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {219 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPaintTools {
               label {Action Tools}
-              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {375 310 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {374 307 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsWaveform {
               label Waveform
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 306 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsToolBar {
-              label Tooldock
-              tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 330 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              label Tooldock selected
+              tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsMenuBar {
               label {Menu Bar}
@@ -211,10 +211,10 @@ If you try to open several mrViewers with different images, all these images wil
         }
         Fl_Group {} {
           label {View Window} open
-          xywh {220 34 423 354} box EMBOSSED_BOX align 5
+          xywh {220 34 423 354} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label Defaults open selected
+            label Defaults open
             xywh {230 64 394 163} box ROUNDED_BOX
           } {
             Fl_Value_Input uiPrefsViewGain {
@@ -330,7 +330,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           Fl_Group uiPrefsHud {
             label HUD
-            user_data this user_data_type {PreferencesUI*}
+            user_data this user_data_type {PreferencesUI*} open
             tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.} xywh {235 249 397 127} box UP_BOX
           } {
             Fl_Check_Button uiPrefsHudFilename {
@@ -387,6 +387,11 @@ If you try to open several mrViewers with different images, all these images wil
               label Memory
               user_data this user_data_type {PreferencesUI*}
               xywh {516 316 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+            }
+            Fl_Check_Button uiPrefsHudCenter {
+              label Center
+              user_data this user_data_type {PreferencesUI*}
+              xywh {517 341 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
         }

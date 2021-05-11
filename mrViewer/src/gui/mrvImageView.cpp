@@ -4446,6 +4446,23 @@ void ImageView::draw()
         }
     }
 
+    if ( _hud & kHudCenter )
+    {
+        int W = w() / 2;
+        int H = h() / 2;
+        _engine->color( (uchar)0, (uchar)0, (uchar)0 );
+        glBegin(GL_LINES);
+          glVertex2f(W+1,H-10); glVertex2f(W+1,H+10);
+          glVertex2f(W-10,H-1); glVertex2f(W+10,H-1);
+        glEnd();
+        _engine->color( r, g, b );
+        glBegin(GL_LINES);
+          glVertex2f(W,H-10); glVertex2f(W,H+10);
+          glVertex2f(W-10,H); glVertex2f(W+10,H);
+        glEnd();
+
+    }
+
     TRACE("");
 
     if ( vr() )
@@ -8346,7 +8363,17 @@ int ImageView::handle(int event)
                 int idx = uiMain->uiPrefs->uiPrefsZoomSpeed->value();
                 const float speedValues[] = { 0.1f, 0.25f, 0.5f };
                 float speed = speedValues[idx];
-                zoom_under_mouse( _zoom * (1.0f - dy * speed), X, Y );
+                float change;
+                if ( dy > 0 )
+                {
+                    change = 1.0f + dy * speed;
+                    change = 1.0f / change;
+                }
+                else
+                {
+                    change = 1.0f - dy * speed;
+                }
+                zoom_under_mouse( _zoom * change, X, Y );
             }
         }
         return 1;
