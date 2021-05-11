@@ -189,6 +189,7 @@ public:
         kHudTimecode      = 1 << 8,
         kHudWipe          = 1 << 9,
         kHudMemoryUse     = 1 << 10,
+        kHudCenter        = 1 << 11,
     };
 
     enum PixelValue {
