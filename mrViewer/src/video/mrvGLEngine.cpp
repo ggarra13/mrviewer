@@ -2295,6 +2295,37 @@ void GLEngine::draw_images( ImageList& images )
         quad->draw( texWidth, texHeight );
         CHECK_GL;
 
+        if ( _view->hud() & ImageView::kHudCenter )
+        {
+            glScaled( 1.0/texWidth, 1.0/texHeight, 1.0 );
+
+            glDisable( GL_STENCIL_TEST );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_3D );
+            CHECK_GL;
+            glEnable(GL_BLEND);
+            CHECK_GL;
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            uchar r, g, b;
+            Fl::get_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
+
+            color( (uchar)0, (uchar)0, (uchar)0, 255 );
+            float o = 1.0 / _view->zoom();
+            glLineWidth(2.0);
+            glBegin(GL_LINES);
+            glVertex2f(o,-20); glVertex2f(o,20);
+            glVertex2f(-20,-o); glVertex2f(20,-o);
+            glEnd();
+            color( r, g, b, 255 );
+            glBegin(GL_LINES);
+            glVertex2f(0,-20); glVertex2f(0,20);
+            glVertex2f(-20,0); glVertex2f(20,0);
+            glEnd();
+        }
+
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {

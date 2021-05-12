@@ -4446,22 +4446,6 @@ void ImageView::draw()
         }
     }
 
-    if ( _hud & kHudCenter )
-    {
-        int W = w() / 2;
-        int H = h() / 2;
-        _engine->color( (uchar)0, (uchar)0, (uchar)0 );
-        glBegin(GL_LINES);
-          glVertex2f(W+1,H-10); glVertex2f(W+1,H+10);
-          glVertex2f(W-10,H-1); glVertex2f(W+10,H-1);
-        glEnd();
-        _engine->color( r, g, b );
-        glBegin(GL_LINES);
-          glVertex2f(W,H-10); glVertex2f(W,H+10);
-          glVertex2f(W-10,H); glVertex2f(W+10,H);
-        glEnd();
-
-    }
 
     TRACE("");
 
