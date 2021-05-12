@@ -2316,13 +2316,13 @@ void GLEngine::draw_images( ImageList& images )
             float o = 1.0 / _view->zoom();
             glLineWidth(2.0);
             glBegin(GL_LINES);
-            glVertex2f(o,-20); glVertex2f(o,20);
-            glVertex2f(-20,-o); glVertex2f(20,-o);
+              glVertex2f(o,-20); glVertex2f(o,20);
+              glVertex2f(-20,-o); glVertex2f(20,-o);
             glEnd();
             color( r, g, b, 255 );
             glBegin(GL_LINES);
-            glVertex2f(0,-20); glVertex2f(0,20);
-            glVertex2f(-20,0); glVertex2f(20,0);
+              glVertex2f(0,-20); glVertex2f(0,20);
+              glVertex2f(-20,0); glVertex2f(20,0);
             glEnd();
         }
 
