@@ -1,3 +1,6 @@
+v5.8.7	- Fixed subtitles flashing the video when displayed and the mouse was
+	  moved.
+
 v5.8.6  - Mousewheel zoom now returns to the same zoom factor when zooming in
 	  and then out.
 	- HUD has a new option called Center which displays the center of the
@@ -5,8 +8,6 @@ v5.8.6  - Mousewheel zoom now returns to the same zoom factor when zooming in
 	  as in the Preferences->View Window->Hud area.
 	- Made mrViewer preferences compatible with Maya on all platforms.  Now
 	  it no longer uses the default preferences when called from Maya.
-	- Fixed subtitles flashing the video when displayed and the mouse was
-	  moved.
 
 v5.8.5  - ALT+Mousewheel now scrub the timeline one frame at a time.
 	- Mousewheel when mouse is above the volume widget adjust the volume.
