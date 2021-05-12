@@ -1119,8 +1119,8 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
     if ( _h > mrv::GLEngine::maxTexHeight() &&
          mrv::GLEngine::maxTexHeight() > 0 )
         _h = (unsigned int) ( mrv::GLEngine::maxTexHeight() / aspect_ratio );
-    DBGM2( "WxH max=" << _w << "x" << _h );;
-    DBGM3( "WxH maxgl=" <<  mrv::GLEngine::maxTexWidth() << "x"
+    DBGM2( "WxH max=" << _w << "x" << _h << " frame " << frame );
+    DBGM3( "WxH maxgl=" << mrv::GLEngine::maxTexWidth() << "x"
            << mrv::GLEngine::maxTexHeight() );
     return mrv::image_type_ptr( new image_type( frame,
                                 width(),

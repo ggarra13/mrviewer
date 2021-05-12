@@ -1842,10 +1842,10 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic )  continue;
 
 
-        DBGM2( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
+        DBGM2( "draw image " << img->name() << " frame " << frame );
 
         mrv::Recti dpw = img->display_window(frame);
         mrv::Recti daw = img->data_window(frame);
@@ -2305,9 +2305,6 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
             glDisable( GL_TEXTURE_3D );
             CHECK_GL;
-            glEnable(GL_BLEND);
-            CHECK_GL;
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             uchar r, g, b;
             Fl::get_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
@@ -2324,6 +2321,11 @@ void GLEngine::draw_images( ImageList& images )
               glVertex2f(0,-20); glVertex2f(0,20);
               glVertex2f(-20,0); glVertex2f(20,0);
             glEnd();
+
+            CHECK_GL;
+            glEnable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glEnable( GL_TEXTURE_3D );
         }
 
         if ( ! pic->valid() && pic->channels() >= 2 &&

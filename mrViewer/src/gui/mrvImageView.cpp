@@ -8290,7 +8290,6 @@ int ImageView::handle(int event)
             default:
                 break;
             }
-            redraw();
             return 1;
         }
 
@@ -8299,8 +8298,6 @@ int ImageView::handle(int event)
 
         lastX = X;
         lastY = Y;
-
-        redraw();
 
         return 1;
         break;
