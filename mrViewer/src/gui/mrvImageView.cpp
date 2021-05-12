@@ -8290,6 +8290,11 @@ int ImageView::handle(int event)
             default:
                 break;
             }
+
+
+            if ( playback() == CMedia::kStopped )
+                redraw();
+
             return 1;
         }
 
