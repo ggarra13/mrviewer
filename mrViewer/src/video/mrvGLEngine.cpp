@@ -2297,9 +2297,6 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( _view->hud() & ImageView::kHudCenter )
         {
-            double W = 0;
-            double H = 0;
-
             glScaled( 1.0/texWidth, 1.0/texHeight, 1.0 );
 
             glDisable( GL_STENCIL_TEST );
@@ -2317,15 +2314,15 @@ void GLEngine::draw_images( ImageList& images )
 
             color( (uchar)0, (uchar)0, (uchar)0, 255 );
             float o = 1.0 / _view->zoom();
-            glLineWidth(1.0);
+            glLineWidth(2.0);
             glBegin(GL_LINES);
-            glVertex2f(W+o,H-10); glVertex2f(W+o,H+10);
-            glVertex2f(W-10,H-o); glVertex2f(W+10,H-o);
+            glVertex2f(o,-20); glVertex2f(o,20);
+            glVertex2f(-20,-o); glVertex2f(20,-o);
             glEnd();
             color( r, g, b, 255 );
             glBegin(GL_LINES);
-            glVertex2f(W,H-10); glVertex2f(W,H+10);
-            glVertex2f(W-10,H); glVertex2f(W+10,H);
+            glVertex2f(0,-20); glVertex2f(0,20);
+            glVertex2f(-20,0); glVertex2f(20,0);
             glEnd();
         }
 
