@@ -1,13 +1,12 @@
-
 #ifndef mrvAsk_h
 #define mrvAsk_h
 
 #include "FL/Enumerations.H"
+class Fl_Widget;
+
 
 namespace mrv {
 
-
-class Fl_Widget;
 
 
 #  ifdef __GNUC__
@@ -47,5 +46,3 @@ extern FL_EXPORT const char* fl_close;
 }  // namespace mrv
 
 #endif
-
-

@@ -57,7 +57,6 @@ void open_single_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
 
 namespace mrv {
 
-void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
 class MainWindow;
 class ImageBrowser;
@@ -66,6 +65,10 @@ class DrawEngine;
 class Event;
 class Parser;
 class server;
+
+void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
+void attach_ctl_idt_script_cb( Fl_Widget* o, ImageBrowser* v );
+void attach_ctl_rrt_script_cb( Fl_Widget* o, ImageBrowser* v );
 
 class ImageView : public Fl_Gl_Window
 {

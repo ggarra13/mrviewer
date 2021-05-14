@@ -1381,12 +1381,69 @@ static void attach_ocio_view_cb( Fl_Widget* o, mrv::ImageView* view )
     attach_ocio_view( fg->image(), view );
 }
 
-static void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageView* view )
+static void attach_ctl_idt_script_cb2( const std::string& ret,
+                                       mrv::ImageBrowser* v )
 {
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
+    Fl_Tree_Item* item = v->first_selected_item();
 
-    attach_ctl_idt_script( fg->image(), view->main() );
+    mrv::ImageView* view = v->view();
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        mrv::Element* w = (mrv::Element*) item->widget();
+        mrv::media m = w->media();
+        mrv::CMedia* img = m->image();
+        img->idt_transform( ret.c_str() );
+    }
+
+    view->redraw();
+}
+
+static void attach_ctl_rrt_script_cb2( const std::string& ret,
+                                       mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::ImageView* view = v->view();
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        mrv::Element* w = (mrv::Element*) item->widget();
+        mrv::media m = w->media();
+        mrv::CMedia* img = m->image();
+        img->rendering_transform( ret.c_str() );
+    }
+
+    view->redraw();
+}
+
+
+void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::Element* w = (mrv::Element*) item->widget();
+    mrv::media m = w->media();
+    mrv::CMedia* img = m->image();
+    const char* transform = "";
+    if ( img->idt_transform() ) transform = img->idt_transform();
+    std::string ret = make_ctl_browser( transform,
+                                        "ACEScsc,IDT" );
+    attach_ctl_idt_script_cb2( ret, v );
+}
+
+void attach_ctl_rrt_script_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::Element* w = (mrv::Element*) item->widget();
+    mrv::media m = w->media();
+    mrv::CMedia* img = m->image();
+    const char* transform = "";
+    if ( img->rendering_transform() ) transform = img->rendering_transform();
+    std::string ret = make_ctl_browser( transform,
+                                        "RRT,RT" );
+    attach_ctl_rrt_script_cb2( ret, v );
 }
 
 static void monitor_icc_profile_cb( Fl_Widget* o, ViewerUI* uiMain )
@@ -4788,7 +4845,7 @@ bool PointInTriangle (const Imath::V2i& pt,
              menu->add( _("Image/Attach CTL Input Device Transform"),
                         kIDTScript.hotkey(),
                         (Fl_Callback*)attach_ctl_idt_script_cb,
-                        this);
+                        browser() );
              menu->add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
                         kSOPSatNodes.hotkey(),
                         (Fl_Callback*)modify_sop_sat_cb,

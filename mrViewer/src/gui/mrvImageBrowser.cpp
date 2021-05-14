@@ -64,7 +64,6 @@ namespace fs = boost::filesystem;
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvThread.h"
-#include "core/picojson.h"
 #include "core/mrStackTrace.h"
 #include "AMFReader.h"
 
@@ -77,8 +76,8 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "mrvImageInfo.h"
 #include "mrvReelUI.h"
-#include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvImageView.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvEDLGroup.h"
 #include "gui/mrvHotkey.h"
@@ -3856,9 +3855,26 @@ void ImageBrowser::previous_image_limited()
         {
             item->clear();
         }
-        menu->add( _("OCIO/Input Color Space"),
-                   kOCIOInputColorSpace.hotkey(),
-                   (Fl_Callback*)attach_ocio_ics_cb, this);
+
+        if ( Preferences::use_ocio )
+        {
+            menu->add( _("OCIO/Input Color Space"),
+                       kOCIOInputColorSpace.hotkey(),
+                       (Fl_Callback*)attach_ocio_ics_cb, this);
+        }
+        else
+        {
+            // CTL / ICC
+            menu->add( _("CTL/Attach Input Device Transform"),
+                       kIDTScript.hotkey(),
+                       (Fl_Callback*)attach_ctl_idt_script_cb,
+                       this );
+            menu->add( _("CTL/Attach Rendering Transform"),
+                        kCTLScript.hotkey(),
+                        (Fl_Callback*)attach_ctl_rrt_script_cb,
+                        this, FL_MENU_DIVIDER);
+        }
+
 
         bool has_version = false;
 
