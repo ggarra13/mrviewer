@@ -2454,6 +2454,7 @@ void ImageView::center_image()
 
     setlocale( LC_NUMERIC, "C" );
 
+
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
@@ -9145,7 +9146,8 @@ void ImageView::exposure_change( float d )
  */
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
-    if ( !vr() && (z > kMaxZoom || z < kMinZoom) ) return;
+    if ( !vr() && (z > kMaxZoom || z < kMinZoom ||
+                   (z == 1.0f && _zoom == z) ) ) return;
     double mw = (double) w() / 2;
     double mh = (double) h() / 2;
     double offx = mw - x;
