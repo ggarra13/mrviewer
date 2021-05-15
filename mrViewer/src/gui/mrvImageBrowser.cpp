@@ -3482,6 +3482,16 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     m->position( fg->position() );
 
     // Transfer all attributes to new image
+    newImg->idt_transform( img->idt_transform() );
+    newImg->inverse_ot_transform( img->inverse_ot_transform() );
+    newImg->inverse_odt_transform( img->inverse_odt_transform() );
+    newImg->inverse_rrt_transform( img->inverse_rrt_transform() );
+    for (size_t i = 0; i < img->number_of_lmts(); ++i )
+    {
+        newImg->append_look_mod_transform( img->look_mod_transform( i ) );
+    }
+    newImg->asc_cdl( img->asc_cdl() );
+    newImg->rendering_transform( img->rendering_transform() );
     newImg->ocio_input_color_space( img->ocio_input_color_space() );
     newImg->gamma( img->gamma() );
     newImg->fps( img->fps() );
