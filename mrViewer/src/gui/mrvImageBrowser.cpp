@@ -3493,6 +3493,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         newImg->seek( newImg->last_frame() );
     // newImg->decode_video( frame );
     // newImg->find_image( frame );
+    timeline()->value( newImg->frame() );
     view()->frame( newImg->frame() );
     view()->update_layers();
 
