@@ -3469,7 +3469,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     }
 
     CMedia* newImg = load_image( loadfile.c_str(),
-                      start, end, start, end, 24.0f, false );
+                                 start, end, start, end, 24.0f, false );
     if ( !newImg ) return;
 
 
@@ -3487,8 +3487,13 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
     newImg->seek( img->frame() );
+    if ( img->frame() < newImg->first_frame() )
+        newImg->seek( newImg->first_frame() );
+    if ( img->frame() > newImg->last_frame() )
+        newImg->seek( newImg->last_frame() );
     // newImg->decode_video( frame );
     // newImg->find_image( frame );
+    view()->frame( newImg->frame() );
     view()->update_layers();
 
 

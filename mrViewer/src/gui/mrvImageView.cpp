@@ -3077,12 +3077,12 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
             switch( looping() )
             {
             case CMedia::kPingPong:
-                if ( p == CMedia::kForwards ) f = last;
+                f = last;
                 // playback( CMedia::kBackwards );
                 // img->playback( CMedia::kBackwards );
                 break;
             case CMedia::kLoop:
-                if ( p == CMedia::kForwards ) f = first;
+                f = first;
                 break;
             default:
                 break;
@@ -8515,6 +8515,7 @@ void ImageView::clear_reel_cache( size_t idx )
     }
 
     _preframe = frame();
+
 }
 
 void ImageView::flush_image( mrv::media fg )
@@ -8550,7 +8551,8 @@ void ImageView::reset_caches()
         mrv::media fg = foreground();
         if (!fg) return;
         CMedia* img = fg->image();
-        _preframe = img->first_frame();
+        _preframe = img->frame();
+
     }
 }
 
@@ -8914,9 +8916,15 @@ void ImageView::channel( unsigned short c )
     if ( r && r->edl )
     {
         timeline()->edl( true );
+        _preframe = frame();
+    }
+    else
+    {
+        CMedia* img = fg->image();
+        _preframe = img->frame();
     }
 
-    _preframe = frame();
+
 
     smart_refresh();
 }
@@ -10169,7 +10177,6 @@ void ImageView::seek( const int64_t f )
 
     if ( b ) b->seek( f );
 
-
     thumbnails();
     update_color_info();
     mouseMove( lastX, lastY );
@@ -10472,6 +10479,7 @@ void ImageView::play( const CMedia::Playback dir )
     else
     {
         _preframe = frame();
+
     }
 
 

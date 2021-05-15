@@ -1271,7 +1271,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( version >= 6 )
     {
         if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
-        LOG_INFO( _("Loading hotkeys from ") << _( hotkeys_file.c_str() ) );
+        LOG_INFO( _("Loading hotkeys from ") << prefspath()
+                  << _( hotkeys_file.c_str() ) );
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    tmpS );
     }
@@ -2553,7 +2554,7 @@ void Preferences::save()
     Fl_Preferences hotkeys( base, "hotkeys" );
     hotkeys.set( "default", hotkeys_file.c_str() );
 
-    if ( ! fs::exists( prefspath() + "/" + hotkeys_file ) )
+    if ( ! fs::exists( prefspath() + hotkeys_file ) )
     {
         Fl_Preferences keys( prefspath().c_str(), "filmaura",
                              hotkeys_file.c_str() );
