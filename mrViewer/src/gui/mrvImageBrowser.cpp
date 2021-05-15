@@ -3504,6 +3504,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     // newImg->decode_video( frame );
     // newImg->find_image( frame );
     timeline()->value( newImg->frame() );
+    uiMain->uiFrame->value( newImg->frame() );
     view()->frame( newImg->frame() );
     view()->update_layers();
 
