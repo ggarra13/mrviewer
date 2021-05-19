@@ -995,14 +995,19 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 
     scroll_to( 0, -y );  // needed to reset scroll bar
 
-    hide_tabs();
+        DBG3;
+    hide_tabs(); 
+
+        DBG3;
 }
 
 
 int ImageInformation::handle( int event )
 {
+        DBG3;
     if ( ! filled || !img ) return 0;
 
+        DBG3;
 
     if ( event == FL_MOUSEWHEEL )
     {
@@ -3664,6 +3669,8 @@ void ImageInformation::fill_data()
 
 void ImageInformation::refresh()
 {
+
+    DBG3;
     img->image_damage( img->image_damage() & ~CMedia::kDamageData );
     bool movie = ( dynamic_cast< aviImage* >( get_image() ) != NULL );
     if ( movie && filled && !img->right_eye() && !img->is_left_eye() )
@@ -3674,6 +3681,8 @@ void ImageInformation::refresh()
     filled = false;
 
     hide_tabs();
+
+    DBG3;
 
     m_image->clear();
     m_video->clear();

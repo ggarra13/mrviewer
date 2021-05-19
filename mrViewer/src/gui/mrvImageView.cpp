@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
@@ -8458,18 +8459,21 @@ void ImageView::refresh()
 {
     mrv::media fg = foreground();
 
+    DBG3;
     if ( fg )
     {
         CMedia* img = fg->image();
         img->refresh();
     }
 
+    DBG3;
     mrv::media bg = background();
     if ( bg )
     {
         CMedia* img = bg->image();
         img->refresh();
     }
+    DBG3;
 }
 
 void ImageView::clear_reel_cache( size_t idx )
@@ -10349,7 +10353,8 @@ void ImageView::update_color_info( const mrv::media fg ) const
     if ( uiMain->uiVectorscope )
     {
         Fl_Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
-        if ( uiVectorscope->visible() ) uiVectorscope->redraw();
+        if ( uiVectorscope->visible() )
+            uiMain->uiVectorscope->uiVectorscope->redraw();
     }
 
     if ( uiMain->uiWaveform )

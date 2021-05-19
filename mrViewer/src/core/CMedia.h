@@ -606,7 +606,7 @@ public:
     bool is_cache_full();
 
     // For sequences, returns the first empty cache frame if any.
-    // For videos, returns first frame.
+    // For videos, returns current frame.
     int64_t first_cache_empty_frame();
 
     // Store a frame in sequence cache
@@ -873,19 +873,19 @@ public:
 
     /// Assigns a new input device transform ( CTL script ) or NULL to clear it
     void idt_transform( const char* cfile );
-    
+
     /// Returns inverse output transform name ( CTL script ) or NULL
     const char* inverse_ot_transform() const;
 
     /// Assigns a new inverse output transform ( CTL script ) or NULL to clear it
     void inverse_ot_transform( const char* cfile );
-    
+
     /// Returns inverse output device transform name ( CTL script ) or NULL
     const char* inverse_odt_transform() const;
 
     /// Assigns a new inverse output device transform ( CTL script ) or NULL to clear it
     void inverse_odt_transform( const char* cfile );
-    
+
     /// Returns inverse reference rendering transform name ( CTL script ) or NULL
     const char* inverse_rrt_transform() const;
 

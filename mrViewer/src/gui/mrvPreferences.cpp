@@ -579,6 +579,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
     DBG3;
         uiPrefs->uiColorTheme->picked( item );
+    DBG3;
     }
 
     //

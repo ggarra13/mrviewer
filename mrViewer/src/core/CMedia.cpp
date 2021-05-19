@@ -3295,7 +3295,7 @@ int64_t CMedia::first_cache_empty_frame()
     if ( dynamic_cast< aviImage* >( this )  != NULL ||
          dynamic_cast< R3dImage* >( this )  != NULL ||
          dynamic_cast< brawImage* >( this ) != NULL )
-        return first_frame();
+        return frame();
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
     {

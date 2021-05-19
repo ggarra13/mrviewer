@@ -3523,11 +3523,6 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         e->redraw();
     }
 
-    // We need two calls to foreground as it was previously set to m
-    // and would return early.
-    // view()->foreground( fg );
-    // view()->foreground( m );
-    // view()->redraw();
 
 
     int64_t first, last;

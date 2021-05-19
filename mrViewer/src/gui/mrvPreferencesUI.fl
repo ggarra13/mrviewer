@@ -111,7 +111,7 @@ class PreferencesUI {open
       } {
         Fl_Group {} {
           label {User Interface} open
-          xywh {210 48 453 349} box EMBOSSED_BOX align 5
+          xywh {210 48 453 349} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label {Window Behavior} open
@@ -148,7 +148,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements}
+            label {UI Elements} open
             xywh {213 193 442 193} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsTopbar {
@@ -188,7 +188,7 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {514 221 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsStereoOptions {
-              label {Stereo 3D Options} selected
+              label {Stereo 3D Options}
               tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {219 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPaintTools {
@@ -200,7 +200,7 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 306 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsToolBar {
-              label Tooldock selected
+              label Tooldock
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsMenuBar {
@@ -396,8 +396,8 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label Colors
-          xywh {220 36 439 349} box EMBOSSED_BOX align 5 hide
+          label Colors open selected
+          xywh {220 36 439 349} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label UI open
@@ -428,10 +428,17 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Choice uiColorTheme {
               label {Color Theme}
               user_data m user_data_type {ViewerUI*}
-              callback {mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-v->refresh();} open
+              callback { if (!o->mvalue() || !o->mvalue()->text ) return;
+	      std::cerr << "text: " << o->mvalue()->text << std::endl; mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
+	      std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+v->refresh(); std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;} open
               xywh {375 159 150 25} down_box BORDER_BOX align 1
-            } {}
+            } {
+              MenuItem {} {
+                label Default
+                xywh {0 0 30 20}
+              }
+            }
             Fl_Button {} {
               label {Reload Theme}
               user_data m user_data_type {ViewerUI*}

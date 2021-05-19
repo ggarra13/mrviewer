@@ -634,8 +634,7 @@ void GLEngine::reset_vr_matrix()
 }
 
 /**
- * Resets the view matrix for VR and sets the projection to match the
- * window's viewport
+ * Restores the view and model matrix from VR
  *
  */
 void GLEngine::restore_vr_matrix()

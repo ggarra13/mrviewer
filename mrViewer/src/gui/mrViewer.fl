@@ -1774,7 +1774,7 @@ o->value(24);}
                     } {}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
-                      callback {v->uiView->volume((float) o->value() );} selected
+                      callback {v->uiView->volume((float) o->value() );}
                       tooltip {Audio Volume} xywh {451 543 55 15} type Horizontal align 4 value 1 slider_size 0.25
                       class {mrv::VolumeSlider}
                     }
@@ -1910,9 +1910,10 @@ delete uiReelWindow; uiReelWindow = NULL;
 delete uiHotkey; uiHotkey = NULL;
 delete uiPrefs; uiPrefs = NULL;} {}
   }
-  Function {refresh()} {} {
-    code {Fl::check();  // needed to refresh menu
-    if ( uiMain ) uiMain->redraw();
+  Function {refresh()} {open
+  } {
+    code { Fl::check();  // needed to refresh menu
+if ( uiMain ) uiMain->redraw();
 if ( uiPrefs ) uiPrefs->uiMain->redraw();
 if ( uiLog ) uiLog->uiMain->redraw();
 if ( uiAbout ) uiAbout->uiMain->redraw();
@@ -1928,7 +1929,8 @@ if ( uiWaveform ) uiWaveform->uiMain->redraw();
 if ( uiPaint ) uiPaint->uiMain->redraw();
 if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
-Fl::check(); // needed to refresh windows} {}
+Fl::check(); // needed to refresh windows} {selected
+    }
   }
   Function {make_attrs_window()} {} {
     Fl_Window {} {open
