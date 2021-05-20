@@ -122,7 +122,6 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     glPopMatrix();
 
 
-#if 1
     int RW  = int( diameter_ * 0.05f );
     int RH  = RW;
 
@@ -169,13 +168,14 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
 
         // @TODO: fltk1.4 cannot draw transformed letters
+        glEnable( GL_TEXTURE_2D );
         gl_font( FL_HELVETICA, 12 );
         gl_draw(names[i], coords[i][0], coords[i][1]);
+        glDisable( GL_TEXTURE_2D );
         glPopMatrix();
     }
 
     glPopMatrix();
-#endif
 
 }
 
