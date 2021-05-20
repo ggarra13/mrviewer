@@ -81,6 +81,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     // Draw surronding circle
     glPushMatrix();
+    glLoadIdentity();
     glTranslatef( W, H, 0 );
     glBegin(GL_LINE_LOOP);
     const int sides = 32;
@@ -101,6 +102,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     for ( i = 0; i < 4; ++i, angle += 90 )
     {
         glPushMatrix();
+        glLoadIdentity();
         glTranslatef( W2 + W, H2 + H, 0 );
         glRotatef( angle, 0, 0, 1 );
         glBegin( GL_LINES );
@@ -112,6 +114,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     // Draw cross
     glPushMatrix();
+    glLoadIdentity();
     glTranslatef( W2, H2,0 );
     glBegin( GL_LINES );
       glVertex2i( W, 0);
@@ -127,6 +130,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     // Translate cursor to center of drawing
     glPushMatrix();
+    glLoadIdentity();
     glTranslatef( W2 + W, H2 + H, 0 );
 
     static const char* names[] = {
@@ -152,6 +156,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
         glPushMatrix();
+        glLoadIdentity();
         glRotatef(angle, 0, 0, 1);
         glTranslatef( 0, int(W * 0.75f), 0 );
 
