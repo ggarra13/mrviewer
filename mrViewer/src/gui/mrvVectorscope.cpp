@@ -80,6 +80,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     glColor4f( 1.0, 1.0, 1.0, 1.0 );
 
     // Draw surronding circle
+    glMatrixMode( GL_MODELVIEW );
     glPushMatrix();
     glLoadIdentity();
     glTranslatef( W, H, 0 );
@@ -156,7 +157,6 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
         glPushMatrix();
-        glLoadIdentity();
         glRotatef(angle, 0, 0, 1);
         glTranslatef( 0, int(W * 0.75f), 0 );
 
@@ -206,6 +206,9 @@ void Vectorscope::draw()
 
     diameter_ = pixel_h();
     if ( pixel_w() < diameter_ ) diameter_ = pixel_w();
+#ifdef OSX
+    diameter_ /= 2.0;
+#endif
     diameter_ *= 0.95;
 
     draw_grid(r);
