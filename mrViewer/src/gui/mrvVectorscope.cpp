@@ -73,9 +73,9 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor( 0, 0, 0, 0 );
-    glClearStencil( 0 );
-    glClear( GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT );
+    glClear( GL_COLOR_BUFFER_BIT );
     glShadeModel( GL_FLAT );
+    glDisable( GL_TEXTURE_2D );
 
     glColor4f( 1.0, 1.0, 1.0, 1.0 );
 
@@ -156,6 +156,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
+        glDisable( GL_TEXTURE_2D );
         glPushMatrix();
         glRotatef(angle, 0, 0, 1);
         glTranslatef( 0, int(W * 0.75f), 0 );
@@ -163,12 +164,8 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
         glBegin( GL_LINE_LOOP );
         glVertex2i(  -RW, -RH );
         glVertex2i( RW, -RH );
-        glVertex2i( RW, -RH );
         glVertex2i( RW, RH );
         glVertex2i( -RW,  RH );
-        glVertex2i( RW, RH );
-        glVertex2i( -RW,  RH );
-        glVertex2i( -RW, -RH );
         glEnd();
 
 
@@ -176,7 +173,6 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
         glEnable( GL_TEXTURE_2D );
         gl_font( FL_HELVETICA, 12 );
         gl_draw(names[i], coords[i][0], coords[i][1]);
-        glDisable( GL_TEXTURE_2D );
         glPopMatrix();
     }
 

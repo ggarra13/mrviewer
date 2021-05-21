@@ -56,29 +56,25 @@
 namespace mrv
 {
 
-static void static_draw_histogram( Histogram* v )
-{
-    v->redraw();
-}
 
 Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
-Fl_Box( x, y, w, h, l ),
+Fl_Gl_Window( x, y, w, h, l ),
 _channel( kRGB ),
 _histtype( kLog ),
 maxLumma( 0 ),
-maxColor( 0 ),
-lastImg( NULL ),
-lastFrame( std::numeric_limits< int64_t >::min() )
+maxColor( 0 )
 {
-    color( FL_DARK3 );
-    //buttoncolor( FL_BLACK );
-
-    Fl::add_timeout(0.016f, (Fl_Timeout_Handler) static_draw_histogram, this );
 }
 
 
 void Histogram::draw_grid(const mrv::Recti& r)
 {
+    glDisable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+    glClearColor( 0, 0, 0, 0 );
+    glClear( GL_COLOR_BUFFER_BIT );
+    glShadeModel( GL_FLAT );
 //     fl_color( FL_GRAY0 );
 
 //     int X = r.x() + 2;
@@ -92,10 +88,30 @@ void Histogram::draw_grid(const mrv::Recti& r)
 
 void Histogram::draw()
 {
-    mrv::Recti r( 0, 0, w(), h() );
-    draw_box();
 
-    // draw_grid(r);
+    if ( !valid() )
+    {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glViewport( 0, 0, pixel_w(), pixel_h() );
+        glOrtho( 0, w(), 0, h(), -1, 1 );
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        valid(1);
+    }
+
+
+#ifdef OSX
+    mrv::Recti r( 0, 0, pixel_w()/2, pixel_h()/2 );
+#else
+    mrv::Recti r( 0, 0, pixel_w(), pixel_h() );
+#endif
+    // draw_box();
+
+
+
+    draw_grid(r);
     draw_pixels(r);
 }
 
@@ -291,73 +307,55 @@ void Histogram::draw_pixels( const mrv::Recti& r )
         break;
     }
 
+    glEnable( GL_BLEND );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    glBegin( GL_LINES );
 
     for ( int i = 0; i <= W; ++i )
     {
         int x = i + 4;
-        int y1 = 0, y2 = 0, y3 = 0;
 
         idx = int( ((float) i / (float) W) * 255 );
         if ( _channel == kLumma )
         {
-            fl_color( FL_WHITE );
+            glColor3f( 1.0, 1.0, 1.0 );
             v = histogram_scale( lumma[idx], maxL );
             int y = int(HH*v);
-            fl_line( x, H, x, H-y );
+            glVertex2i( x, y );
+            glVertex2i( x, 0 );
         }
 
         if ( _channel == kRed || _channel == kRGB )
         {
-            fl_color( FL_RED );
+            glColor3f( 1.0f, 0.0f, 0.0f );
             v = histogram_scale( red[idx], maxC );
-            int y = y1 = int(HH*v);
-            fl_line( x, H, x, H-y );
+            int y = int(HH*v);
+            glVertex2i( x, y );
+            glVertex2i( x, 0 );
         }
 
         if ( _channel == kGreen || _channel == kRGB )
         {
-            fl_color( FL_GREEN );
+            glColor3f( 0.0f, 1.0f, 0.0f );
             v = histogram_scale( green[idx], maxC );
-            int y = y2 = int(HH*v);
-            fl_line( x, H, x, H-y );
+            int y = int(HH*v);
+            glVertex2i( x, y );
+            glVertex2i( x, 0 );
         }
 
         if ( _channel == kBlue || _channel == kRGB )
         {
-            fl_color( FL_BLUE );
+            glColor3f( 0.0f, 0.0f, 1.0f );
             v = histogram_scale( blue[idx], maxC );
-            int y = y3 = int(HH*v);
-            fl_line( x, H, x, H-y );
+            int y = int(HH*v);
+            glVertex2i( x, y );
+            glVertex2i( x, 0 );
         }
 
-        if ( _channel != kRGB ) continue;
-
-        if ( y1 > 0 && y2 > 0 )
-        {
-            fl_color( FL_YELLOW );
-            fl_line( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
-        }
-        if ( y2 > 0 && y3 > 0 )
-        {
-            fl_color( FL_CYAN );
-            fl_line( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
-        }
-        if ( y1 > 0 && y3 > 0 )
-        {
-            fl_color( FL_MAGENTA );
-            fl_line( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
-        }
-        if ( y1 > 0 && y2 > 0 && y3 > 0 )
-        {
-            fl_color( FL_WHITE );
-            if ( y1 < y2 && y1 < y3 )
-                fl_line( x, H, x, H-y1 );
-            else if ( y2 < y1 && y2 < y3 )
-                fl_line( x, H, x, H-y2 );
-            else
-                fl_line( x, H, x, H-y3 );
-        }
     }
+
+    glEnd();
 }
 
 }

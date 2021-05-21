@@ -1929,7 +1929,7 @@ void ImageBrowser::save_session()
 //#endif
 //#if 1
         {
-            seek( view()->frame() );
+            seek( img->first_frame() );
         }
 #endif
         add_menu( main()->uiReelWindow->uiMenuBar );
@@ -4661,10 +4661,10 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
-    if ( uiMain->uiView )
-    {
-        uiMain->uiView->frame( f );
-    }
+    if ( ! uiMain->uiView ) return;
+
+    uiMain->uiView->frame( f );
+
 }
 
 void ImageBrowser::clear_edl()

@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
@@ -10151,6 +10150,7 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
+    uiMain->uiFrame->value( f );
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
@@ -10365,8 +10365,9 @@ void ImageView::update_color_info( const mrv::media fg ) const
 
     if ( uiMain->uiHistogram )
     {
-        Fl_Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
-        if ( uiHistogram->visible() ) uiHistogram->redraw();
+        Fl_Double_Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
+        if ( uiHistogram->visible() )
+            uiMain->uiHistogram->uiHistogram->redraw();
     }
 
 
