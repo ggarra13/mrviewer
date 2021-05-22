@@ -23,7 +23,7 @@ FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
-ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
+ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
 
