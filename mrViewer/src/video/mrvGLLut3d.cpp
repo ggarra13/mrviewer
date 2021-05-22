@@ -1032,6 +1032,8 @@ bool     GLLut3d::RT_ctl_transforms( std::string& key,
 
         for ( ; i < num; ++i )
         {
+            const CMedia::TransformId& id = img->look_mod_transform_id( i );
+            if ( ! id.enabled || id.applied ) continue;
             std::string name = img->look_mod_transform(i);
             Transform t( name, Transform::kCTL );
             if ( !key.empty() ) key += " -> ";

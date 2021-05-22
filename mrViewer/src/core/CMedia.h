@@ -939,6 +939,14 @@ public:
 
     /// Returns look mod transform name ( CTL script and attributes ) or
     /// an exception if index is out of range
+    const TransformId& look_mod_transform_id( const size_t idx ) const {
+        if ( idx >= number_of_lmts() )
+            throw std::runtime_error("idx > number of look mod transforms" );
+        return _look_mod_transform[idx];
+    }
+
+    /// Returns look mod transform name ( CTL script and attributes ) or
+    /// an exception if index is out of range
     TransformId& look_mod_transform_id( const size_t idx ) {
         if ( idx >= number_of_lmts() )
             throw std::runtime_error("idx > number of look mod transforms" );
