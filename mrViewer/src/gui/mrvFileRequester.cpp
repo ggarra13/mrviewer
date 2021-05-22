@@ -780,6 +780,22 @@ std::string open_ocio_config( const char* startfile )
     return file;
 }
 
+std::string open_amf_file( CMedia* img, ViewerUI* main )
+{
+    std::string xml = aces_amf_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("ACES Metadata File (*.{amf})");
+
+    std::string title = _("Load ACES Metadata File (AMF)");
+
+    stringArray filelist;
+
+    std::string file = file_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    return file;
+}
+
 void read_clip_xml_metadata( CMedia* img,
                              ViewerUI* main )
 {

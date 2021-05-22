@@ -633,6 +633,11 @@ void open_dir_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
     uiReelWindow->open_directory();
 }
 
+void open_amf_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
+{
+    uiReelWindow->open_amf();
+}
+
 void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
     uiReelWindow->open();
@@ -4627,6 +4632,8 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)open_stereo_cb, browser() );
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                     (Fl_Callback*)open_dir_cb, browser() );
+         menu->add( _("File/Open/AMF file"), kOpenAMF.hotkey(),
+                    (Fl_Callback*)open_amf_cb, browser() );
          idx = menu->add( _("File/Open/Session"),
                     kOpenSession.hotkey(),
                     (Fl_Callback*)open_session_cb, browser() );

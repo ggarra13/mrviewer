@@ -4206,7 +4206,7 @@ void ImageInformation::add_ctl_idt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_WHITE );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -4446,7 +4446,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_WHITE );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );

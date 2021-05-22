@@ -170,6 +170,8 @@ void attach_ctl_irrt_script( CMedia* image, const char* ctlfile,
 void attach_ctl_irrt_script( CMedia* image,
                             ViewerUI* main = NULL  );
 
+std::string open_amf_file( CMedia* image, ViewerUI* main = NULL );
+
 void read_clip_xml_metadata( CMedia* image,
                              ViewerUI* main = NULL  );
 void save_clip_xml_metadata( const CMedia* image,

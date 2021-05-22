@@ -31,6 +31,7 @@ std::string aces_amf_filename( const char* file )
     std::string root, frame, view, ext;
     mrv::split_sequence( root, frame, view, ext, file );
 
+
     fs::path f = root;
     std::string filename = f.filename().string();
 
@@ -42,7 +43,7 @@ std::string aces_amf_filename( const char* file )
     xml = fs::canonical( p ).string();
 #endif
     if ( ! xml.empty() ) xml += "/";
-    xml += "AMF.";
+
     xml += filename;
     xml += "amf";
 
@@ -208,9 +209,17 @@ bool load_amf( CMedia* img, const char* filename )
     sops.saturation( l.SatNode );
 
     img->asc_cdl( sops );
-    img->append_look_mod_transform( "LMT.SOPNode" );
-    img->append_look_mod_transform( "LMT.SatNode" );
 
+    if ( s.slope[0] != 1.0f || s.slope[1] != 1.0f || s.slope[2] != 1.0f ||
+         s.offset[0] != 0.0f || s.offset[1] != 0.0f || s.offset[2] != 0.0f ||
+         s.power[0] != 1.0f || s.power[1] != 1.0f || s.power[2] != 1.0f )
+    {
+        img->append_look_mod_transform( "LMT.SOPNode" );
+    }
+    if ( l.SatNode != 1.0f )
+    {
+        img->append_look_mod_transform( "LMT.SatNode" );
+    }
     fromCdlWorkingSpaceType& from = c.fromCdlWorkingSpace;
     if ( ! from.transformId.empty() )
         img->append_look_mod_transform( from.transformId.c_str() );

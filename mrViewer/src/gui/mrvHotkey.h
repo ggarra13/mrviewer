@@ -105,6 +105,7 @@ extern Hotkey kOpenSingleImage;
 extern Hotkey kOpenStereoImage;
 extern Hotkey kOpenSession;
 extern Hotkey kOpenClipXMLMetadata;
+extern Hotkey kOpenAMF;
 extern Hotkey kSaveReel;
 extern Hotkey kSaveImage;
 extern Hotkey kSaveSnapshot;

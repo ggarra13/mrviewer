@@ -4469,6 +4469,7 @@ void Flu_File_Chooser :: cd( const char *path )
                          tmp == N_(".icm")  ||
                          tmp == N_(".ctl")  ||
                          tmp == N_(".xml")  ||
+                         tmp == N_(".amf")  ||
                          tmp == N_(".ocio") ||
                          tmp == N_(".prefs") )
                        is_sequence = false;

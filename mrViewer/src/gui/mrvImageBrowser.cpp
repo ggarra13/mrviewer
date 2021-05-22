@@ -2912,6 +2912,34 @@ void ImageBrowser::open()
     load( files );
 }
 
+/**
+ * Open new image, sequence or movie file(s).
+ *
+ */
+void ImageBrowser::open_amf()
+{
+
+    Fl_Tree_Item* item = first_selected_item();
+    if ( !item ) return;
+
+    mrv::Element* e = (mrv::Element*) item->widget();
+    mrv::media m = e->media();
+    mrv::CMedia* img = m->image();
+
+    std::string file = mrv::open_amf_file(img, uiMain);
+    if (file.empty()) return;
+
+    for ( ; item; item = next_selected_item(item) )
+    {
+        e = (mrv::Element*) item->widget();
+        m = e->media();
+        img = m->image();
+        load_amf( img, file.c_str() );
+    }
+
+    view()->redraw();
+}
+
 void ImageBrowser::open_stereo()
 {
     stringArray files = mrv::open_image_file(NULL,true, uiMain);
