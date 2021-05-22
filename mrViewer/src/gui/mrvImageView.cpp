@@ -9241,6 +9241,11 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     int W = dpw.w();
     int H = dpw.h();
 
+    double pr = 1.0f;
+    if ( _showPixelRatio ) pr = img->pixel_ratio();
+
+    H /= pr;
+
     float scale = Fl::screen_scale( window()->screen_num() );
 
     image_coordinates( img, xf, yf );
@@ -9250,12 +9255,12 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     int w2 = W / 2;
     int h2 = H / 2;
 
+    yf /= pr;
+
     xoffset = w2 - xf;
     yoffset = h2 - ( H - yf );
     xoffset -= (offx / _real_zoom);
-    double ratio = 1.0f;
-    if ( _showPixelRatio ) ratio = img->pixel_ratio();
-    yoffset += (offy / _real_zoom * ratio);
+    yoffset += (offy / _real_zoom);
 
     setlocale( LC_NUMERIC, "C" );
 

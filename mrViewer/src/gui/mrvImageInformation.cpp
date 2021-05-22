@@ -996,7 +996,7 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
     scroll_to( 0, -y );  // needed to reset scroll bar
 
         DBG3;
-    hide_tabs(); 
+    hide_tabs();
 
         DBG3;
 }
@@ -3814,6 +3814,26 @@ void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
     v->refresh();
 }
 
+void ImageInformation::ctl_enable_idt_callback( Fl_Widget* t,
+                                                ImageInformation* v )
+{
+    CMedia* img = v->get_image();
+    bool e = true;
+    std::string label = t->label();
+    if ( label == "Off" )
+    {
+        e = false;
+        t->label( "On" );
+    }
+    else
+    {
+        t->label( "Off" );
+    }
+    img->idt_transform_id().enabled = e;
+    img->image_damage( img->image_damage() | CMedia::kDamageLut );
+    v->view()->redraw();
+}
+
 void ImageInformation::ctl_idt_callback( Fl_Widget* t,
                                          ImageInformation* v )
 {
@@ -4182,7 +4202,7 @@ void ImageInformation::add_ctl_idt( const char* name,
     {
         Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
 
-        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-100, hh );
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
@@ -4194,6 +4214,11 @@ void ImageInformation::add_ctl_idt( const char* name,
             widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
 
         sg->add( widget );
+
+        Fl_Button* enabled = new Fl_Button( X+kMiddle + sg->w()-100, Y, 50, hh,
+                                            "Off" );
+        enabled->callback( (Fl_Callback*)ctl_enable_idt_callback, this );
+        sg->add( enabled );
 
         Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
                                          _("Pick") );
