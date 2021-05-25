@@ -2964,11 +2964,11 @@ bool CMedia::frame( const int64_t f )
     else if ( f > _frameEnd )  _dts = _frameEnd;
     else                       _dts = f;
 
-    AVPacket pkt;
-    av_init_packet( &pkt );
-    pkt.dts = pkt.pts = _dts;
-    pkt.size = 0;
-    pkt.data = NULL;
+    AVPacket* pkt;
+    pkt = av_packet_alloc();
+    pkt->dts = pkt->pts = _dts;
+    pkt->size = 0;
+    pkt->data = NULL;
 
 
     if ( ! is_cache_filled( _dts ) )
@@ -2990,7 +2990,7 @@ bool CMedia::frame( const int64_t f )
         }
     }
 
-    _video_packets.push_back( pkt );
+    _video_packets.push_back( *pkt );
 
     if ( has_audio() )
     {
@@ -3451,7 +3451,7 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
  */
 std::string CMedia::codec_name( const AVCodecParameters* par )
 {
-    AVCodec* p = avcodec_find_decoder(par->codec_id);
+    const AVCodec* p = avcodec_find_decoder(par->codec_id);
     const char* codec_name;
     char buf[20];
 
@@ -3493,7 +3493,7 @@ std::string CMedia::codec_name( const AVCodecParameters* par )
  */
 std::string CMedia::codec_name( const AVCodecContext* ctx )
 {
-    AVCodec* p = avcodec_find_decoder(ctx->codec_id);
+    const AVCodec* p = avcodec_find_decoder(ctx->codec_id);
     const char* codec_name;
     char buf[20];
 
@@ -3582,7 +3582,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     bool has_codec = true;
 
     // Mark streams that we don't have a decoder for
-    AVCodec* codec = avcodec_find_decoder( par->codec_id );
+    const AVCodec* codec = avcodec_find_decoder( par->codec_id );
     if ( ! codec )
     {
         has_codec = false;

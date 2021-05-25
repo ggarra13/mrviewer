@@ -1698,7 +1698,11 @@ bool GLEngine::is_hdr_image( const CMedia* img )
     AVStream* st = img->get_video_stream();
     if (!st) return false;
 
+#ifdef _WIN32
+    size_t size;
+#else
     int size;
+#endif
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
                                     av_stream_get_side_data( st,
                                                              AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
@@ -4015,7 +4019,11 @@ void GLEngine::loadOpenGLShader()
     }
     AVCodecParameters* c = st->codecpar;
 
+#ifdef _WIN32
+    size_t size;
+#else
     int size;
+#endif
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
                                     av_stream_get_side_data( st,
                                                              AV_PKT_DATA_MASTERING_DISPLAY_METADATA,

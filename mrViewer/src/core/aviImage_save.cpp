@@ -230,14 +230,15 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     AVStream *st;
 
     const AVCodecDescriptor *desc;
-    *codec = avcodec_find_encoder_by_name( name );
+
+    *codec = (AVCodec*)avcodec_find_encoder_by_name( name );
     if ( !*codec )
     {
         desc = avcodec_descriptor_get_by_name( name );
         if ( desc )
         {
             codec_id = desc->id;
-            *codec = avcodec_find_encoder(codec_id);
+            *codec = (AVCodec*)avcodec_find_encoder(codec_id);
         }
     }
 
@@ -1295,7 +1296,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     oc->flags |= AVFMT_FLAG_NOBUFFER|AVFMT_FLAG_FLUSH_PACKETS;
     oc->max_interleave_delta = 1;
 
-    fmt = oc->oformat;
+    fmt = (AVOutputFormat*) oc->oformat;
     assert( fmt != NULL );
 
     if ( opts->video_codec == _("None") )
@@ -1323,7 +1324,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     }
     else
     {
-        AVCodec* c = avcodec_find_encoder( fmt->video_codec );
+        const AVCodec* c = avcodec_find_encoder( fmt->video_codec );
         opts->video_codec = c->name;
         LOG_INFO( "Codec " << c->name << " " << c->long_name << " "
                   << fmt->video_codec << " selected"  );

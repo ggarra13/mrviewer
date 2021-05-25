@@ -447,7 +447,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
             memcpy( d, data, len );
 
             AVProbeData pd = { NULL, d, static_cast<int>(len), "video/MP2T" };
-            AVInputFormat* ctx = av_probe_input_format(&pd, 1);
+            const AVInputFormat* ctx = av_probe_input_format(&pd, 1);
 
             delete [] d;
 
@@ -648,7 +648,7 @@ void aviImage::subtitle_file( const char* f )
             if ( par == NULL ) continue;
 
 
-            AVCodec* codec = avcodec_find_decoder( par->codec_id );
+            const AVCodec* codec = avcodec_find_decoder( par->codec_id );
             AVCodecContext* ctx = avcodec_alloc_context3( codec );
             int err = avcodec_parameters_to_context( ctx, par );
             if ( err < 0 )
@@ -780,7 +780,7 @@ void aviImage::open_video_codec()
 
     AVCodecParameters* par = stream->codecpar;
 
-    AVCodec* video_codec = avcodec_find_decoder( par->codec_id );
+    const AVCodec* video_codec = avcodec_find_decoder( par->codec_id );
 
     _video_ctx = avcodec_alloc_context3(video_codec);
     int r = avcodec_parameters_to_context(_video_ctx, par);
@@ -1677,7 +1677,7 @@ void aviImage::open_subtitle_codec()
     if (!stream) return;
 
     AVCodecParameters* par = stream->codecpar;
-    AVCodec* subtitle_codec = avcodec_find_decoder( par->codec_id );
+    const AVCodec* subtitle_codec = avcodec_find_decoder( par->codec_id );
 
     _subtitle_ctx = avcodec_alloc_context3(subtitle_codec);
     int r = avcodec_parameters_to_context(_subtitle_ctx, par);

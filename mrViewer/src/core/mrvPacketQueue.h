@@ -168,13 +168,13 @@ public:
         _packets.push_back( pkt );
 
 
-        if ( pkt.data != _flush.data &&
-             pkt.data != _seek.data  &&
-             pkt.data != _seek_end.data  &&
-             pkt.data != _jump.data &&
-             pkt.data != _preroll.data &&
-             pkt.data != _loop_start.data &&
-             pkt.data != _loop_end.data &&
+        if ( pkt.data != _flush->data &&
+             pkt.data != _seek->data  &&
+             pkt.data != _seek_end->data  &&
+             pkt.data != _jump->data &&
+             pkt.data != _preroll->data &&
+             pkt.data != _loop_start->data &&
+             pkt.data != _loop_end->data &&
              pkt.data != NULL &&
              pkt.size != 0 )
         {
@@ -259,13 +259,13 @@ public:
 
         AVPacket& pkt = *it;
 
-        if ( pkt.data != _flush.data &&
-             pkt.data != _seek.data  &&
-             pkt.data != _seek_end.data  &&
-             pkt.data != _jump.data &&
-             pkt.data != _preroll.data &&
-             pkt.data != _loop_start.data &&
-             pkt.data != _loop_end.data &&
+        if ( pkt.data != _flush->data &&
+             pkt.data != _seek->data  &&
+             pkt.data != _seek_end->data  &&
+             pkt.data != _jump->data &&
+             pkt.data != _preroll->data &&
+             pkt.data != _loop_start->data &&
+             pkt.data != _loop_end->data &&
              pkt.data != NULL &&
              pkt.size !=0 )
         {
@@ -301,13 +301,13 @@ public:
 
         AVPacket& pkt = _packets.front();
 
-        if ( pkt.data != _flush.data &&
-             pkt.data != _seek.data  &&
-             pkt.data != _seek_end.data  &&
-             pkt.data != _jump.data &&
-             pkt.data != _preroll.data &&
-             pkt.data != _loop_start.data &&
-             pkt.data != _loop_end.data &&
+        if ( pkt.data != _flush->data &&
+             pkt.data != _seek->data  &&
+             pkt.data != _seek_end->data  &&
+             pkt.data != _jump->data &&
+             pkt.data != _preroll->data &&
+             pkt.data != _loop_start->data &&
+             pkt.data != _loop_end->data &&
              pkt.data != NULL &&
              pkt.size != 0 )
         {
@@ -367,7 +367,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _flush.data ) return true;
+        if ( _packets.front().data == _flush->data ) return true;
         return false;
     }
 
@@ -375,7 +375,7 @@ public:
     {
         Mutex& m = const_cast< Mutex& >( _mutex );
         Mutex::scoped_lock lk( m );
-        if ( pkt.data == _flush.data ) return true;
+        if ( pkt.data == _flush->data ) return true;
         return false;
     }
 
@@ -383,7 +383,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _seek.data ) return true;
+        if ( _packets.front().data == _seek->data ) return true;
         return false;
     }
 
@@ -391,7 +391,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _jump.data ) return true;
+        if ( _packets.front().data == _jump->data ) return true;
         return false;
     }
 
@@ -399,7 +399,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _preroll.data ) return true;
+        if ( _packets.front().data == _preroll->data ) return true;
         return false;
     }
 
@@ -407,7 +407,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _seek_end.data ) return true;
+        if ( _packets.front().data == _seek_end->data ) return true;
         return false;
     }
 
@@ -415,7 +415,7 @@ public:
     {
         Mutex& m = const_cast< Mutex& >( _mutex );
         Mutex::scoped_lock lk( m );
-        if ( pkt.data == _seek.data ) return true;
+        if ( pkt.data == _seek->data ) return true;
         return false;
     }
 
@@ -423,7 +423,7 @@ public:
     {
         Mutex& m = const_cast< Mutex& >( _mutex );
         Mutex::scoped_lock lk( m );
-        if ( pkt.data == _jump.data ) return true;
+        if ( pkt.data == _jump->data ) return true;
         return false;
     }
 
@@ -431,7 +431,7 @@ public:
     {
         Mutex& m = const_cast< Mutex& >( _mutex );
         Mutex::scoped_lock lk( m );
-        if ( pkt.data == _preroll.data ) return true;
+        if ( pkt.data == _preroll->data ) return true;
         return false;
     }
 
@@ -439,7 +439,7 @@ public:
     {
         Mutex& m = const_cast< Mutex& >( _mutex );
         Mutex::scoped_lock lk( m );
-        if ( pkt.data == _seek_end.data ) return true;
+        if ( pkt.data == _seek_end->data ) return true;
         return false;
     }
 
@@ -447,13 +447,13 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _loop_start.data ) return true;
+        if ( _packets.front().data == _loop_start->data ) return true;
         return false;
     }
 
     bool is_loop_start(const AVPacket& pkt) const
     {
-        if ( pkt.data == _loop_start.data ) return true;
+        if ( pkt.data == _loop_start->data ) return true;
         return false;
     }
 
@@ -462,20 +462,20 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         if ( _packets.empty() ) return false;
-        if ( _packets.front().data == _loop_end.data ) return true;
+        if ( _packets.front().data == _loop_end->data ) return true;
         return false;
     }
 
     bool is_loop_end(const AVPacket& pkt) const
     {
-        if ( pkt.data == _loop_end.data ) return true;
+        if ( pkt.data == _loop_end->data ) return true;
         return false;
     }
 
     void flush(const int64_t pts)
     {
         Mutex::scoped_lock lk( _mutex );
-        _packets.push_back( _flush );
+        _packets.push_back( *_flush );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = pts;
         _cond.notify_one();
@@ -484,7 +484,7 @@ public:
     void jump(const int64_t pts)
     {
         Mutex::scoped_lock lk( _mutex );
-        _packets.push_back( _jump );
+        _packets.push_back( *_jump );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = pts;
         _cond.notify_one();
@@ -494,7 +494,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         flush(pts);
-        _packets.push_back( _preroll );
+        _packets.push_back( *_preroll );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = pts;
         _cond.notify_one();
@@ -503,7 +503,7 @@ public:
     void loop_at_start(const int64_t frame)
     {
         Mutex::scoped_lock lk( _mutex );
-        _packets.push_back( _loop_start );
+        _packets.push_back( *_loop_start );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = frame;
         _cond.notify_one();
@@ -512,7 +512,7 @@ public:
     void loop_at_end(const int64_t frame)
     {
         Mutex::scoped_lock lk( _mutex );
-        push_back( _loop_end );
+        push_back( *_loop_end );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = frame;
         _cond.notify_one();
@@ -522,7 +522,7 @@ public:
     {
         Mutex::scoped_lock lk( _mutex );
         flush(pts);
-        _packets.push_back( _seek );
+        _packets.push_back( *_seek );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = pts;
         _cond.notify_one();
@@ -531,7 +531,7 @@ public:
     void seek_end(const int64_t pts)
     {
         Mutex::scoped_lock lk( _mutex );
-        _packets.push_back( _seek_end );
+        _packets.push_back( *_seek_end );
         AVPacket& pkt = _packets.back();
         pkt.dts = pkt.pts = pts;
         _cond.notify_one();
@@ -539,40 +539,47 @@ public:
 
     static void initialize()
     {
-        av_init_packet( &_flush );
-        _flush.data = (uint8_t*)av_strdup("FLUSH");
-        _flush.size = 0;
-        av_init_packet( &_seek );
-        _seek.data  = (uint8_t*)av_strdup("SEEK");
-        _seek.size  = 0;
-        av_init_packet( &_jump );
-        _jump.data = (uint8_t*)av_strdup("JUMP");
-        _jump.size = 0;
-        av_init_packet( &_preroll );
-        _preroll.data = (uint8_t*)av_strdup("PREROLL");
-        _preroll.size = 0;
-        av_init_packet( &_seek_end );
-        _seek_end.data = (uint8_t*)av_strdup("SEEK END");
-        _seek_end.size = 0;
-        av_init_packet( &_loop_start );
-        _loop_start.data = (uint8_t*)av_strdup("LOOP START");
-        _loop_start.size = 0;
-        av_init_packet( &_loop_end );
-        _loop_end.data = (uint8_t*)av_strdup("LOOP END");
-        _loop_end.size = 0;
+         _flush = av_packet_alloc();
+        _flush->data = (uint8_t*)av_strdup("FLUSH");
+        _flush->size = 0;
+        _seek = av_packet_alloc();
+        _seek->data  = (uint8_t*)av_strdup("SEEK");
+        _seek->size  = 0;
+        _jump = av_packet_alloc();
+        _jump->data = (uint8_t*)av_strdup("JUMP");
+        _jump->size = 0;
+        _preroll = av_packet_alloc();
+        _preroll->data = (uint8_t*)av_strdup("PREROLL");
+        _preroll->size = 0;
+        _seek_end = av_packet_alloc();
+        _seek_end->data = (uint8_t*)av_strdup("SEEK END");
+        _seek_end->size = 0;
+        _loop_start = av_packet_alloc();
+        _loop_start->data = (uint8_t*)av_strdup("LOOP START");
+        _loop_start->size = 0;
+        _loop_end = av_packet_alloc();
+        _loop_end->data = (uint8_t*)av_strdup("LOOP END");
+        _loop_end->size = 0;
 
         inited = true;
     }
 
     static void release()
     {
-        av_free( _loop_end.data );   _loop_end.data = NULL;
-        av_free( _loop_start.data ); _loop_start.data = NULL;
-        av_free( _seek_end.data );   _seek_end.data = NULL;
-        av_free( _preroll.data );    _preroll.data = NULL;
-        av_free( _jump.data );       _jump.data = NULL;
-        av_free( _seek.data );       _seek.data = NULL;
-        av_free( _flush.data );      _flush.data = NULL;
+        av_free( _loop_end->data );  _loop_end->data = NULL;
+        av_packet_free( &_loop_end );
+        av_free( _loop_start->data ); _loop_start->data = NULL;
+        av_packet_free( &_loop_start );
+        av_free( _seek_end->data ); _seek_end->data = NULL;
+        av_packet_free( &_seek_end );
+        av_free( _preroll->data );  _preroll->data = NULL;
+        av_packet_free( &_preroll );
+        av_free( _jump->data ); _jump->data = NULL;
+        av_packet_free( &_jump );
+        av_free( _seek->data ); _seek->data = NULL;
+        av_packet_free( &_seek );
+        av_free( _flush->data ); _flush->data = NULL;
+        av_packet_free( &_flush );
 
         inited = false;
     }
@@ -584,14 +591,14 @@ protected:
     mutable Mutex  _mutex;
     Condition       _cond;
 
-    static AVPacket _flush;      // special packet used to flush buffers
-    static AVPacket _seek;       // special packet used to mark seeks to skip
-    static AVPacket _jump;       // special packet used to mark jumps
-    static AVPacket _preroll;    // special packet used to mark preroll seeks
-    static AVPacket _seek_end;   // special packet used to mark seek/preroll
+    static AVPacket* _flush;      // special packet used to flush buffers
+    static AVPacket* _seek;       // special packet used to mark seeks to skip
+    static AVPacket* _jump;       // special packet used to mark jumps
+    static AVPacket* _preroll;    // special packet used to mark preroll seeks
+    static AVPacket* _seek_end;   // special packet used to mark seek/preroll
                                  // endings (used when playing backwards)
-    static AVPacket _loop_end;   // special packet to mark loops in playback
-    static AVPacket _loop_start; // special packet to mark loops in reverse playback
+    static AVPacket* _loop_end;   // special packet to mark loops in playback
+    static AVPacket* _loop_start; // special packet to mark loops in reverse playback
 };
 
 

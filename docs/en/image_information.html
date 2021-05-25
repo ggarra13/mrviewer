@@ -309,6 +309,15 @@ gamma of the image (if any).</td>
 
     <tr>
 
+      <td style="font-weight: bold; font-family: monospace;">Input Color Space (ICS)<br>
+      </td>
+      <td style="font-family: monospace;">The OCIO Input Color Space (ICS) for the image when using OpenColorIO.  This transform turns, for example, a log camera image into a linear one.<br>
+      </td>
+
+    </tr>
+
+    <tr>
+
       <td style="font-weight: bold; font-family: monospace;">IDT
 Transform<br>
 
@@ -316,6 +325,45 @@ Transform<br>
 
       <td style="font-family: monospace;">Any Input Device Transform (IDT) CTL
 (Color Transformation Language).  This transform turns, for example, a log camera image into a linear one.<br>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Inverse Output
+Transform<br>
+
+      </td>
+
+      <td style="font-family: monospace;">Any Inverse Output Transform (IOT) CTL
+(Color Transformation Language).  This transform turns, for example, a Rec.709 image into a linear one.  It contains both the IODT and IRRT together.<br>
+
+      </td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Inverse Output
+Device Transform<br>
+
+      </td>
+
+      <td style="font-family: monospace;">Any Inverse Output Device Transform (IOT) CTL
+(Color Transformation Language).  This transform turns, for example, a Rec.709 image into a scene referred one.<br>
+
+      </td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Inverse Reference Rendering Transform<br>
+
+      </td>
+
+      <td style="font-family: monospace;">Any Inverse Reference Rendering Transform (IRRT) CTL
+(Color Transformation Language).  This transform turns, for example, a scene referred image into a scene linear one.<br>
 
       </td>
 
