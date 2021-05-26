@@ -642,11 +642,8 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
 static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                               CMedia* img)
 {
-    AVPacket pkt = {0};
+    AVPacket* pkt = av_packet_alloc();
     int got_packet, ret, dst_nb_samples;
-
-
-    av_init_packet(&pkt);
 
     AVCodecContext* c = enc_ctx[st->id];
 
@@ -825,12 +822,12 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
         audio_frame->pts = av_rescale_q( samples_count, ratio,
                                          c->time_base );
 
-        ret = encode(c, &pkt, audio_frame, &got_packet);
+        ret = encode(c, pkt, audio_frame, &got_packet);
         if (ret < 0)
         {
             LOG_ERROR( _("Could not encode audio frame: ") <<
                        get_error_text(ret) );
-            av_packet_unref( &pkt );
+            av_packet_unref( pkt );
             return false;
         }
 
@@ -844,11 +841,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
         samples_count += frame_size;
 
 
-        ret = write_frame(oc, &c->time_base, st, &pkt);
+        ret = write_frame(oc, &c->time_base, st, pkt);
         if (ret < 0) {
             LOG_ERROR( "Error while writing audio frame: " <<
                        get_error_text(ret) );
-            av_packet_unref( &pkt );
+            av_packet_unref( pkt );
             return false;
         }
 
@@ -896,7 +893,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     // }
 
 
-    av_packet_unref( &pkt );
+    av_packet_unref( pkt );
 
     return true;
 
@@ -1156,14 +1153,13 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
     fill_yuv_image( c, picture, img );
 
-    AVPacket pkt = { 0 };
-    av_init_packet(&pkt);
+    AVPacket* pkt = av_packet_alloc();
 
     int got_packet = 0;
 
     /* encode the image */
     picture->pts = frame_count;
-    ret = encode(c, &pkt, picture, &got_packet);
+    ret = encode(c, pkt, picture, &got_packet);
     if (ret < 0) {
         LOG_ERROR( _("Error while encoding video frame: ") <<
                    get_error_text(ret) );
@@ -1173,9 +1169,9 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     /* If size is zero, it means the image was buffered. */
     if ( got_packet )
     {
-        ret = write_frame( oc, &c->time_base, st, &pkt );
+        ret = write_frame( oc, &c->time_base, st, pkt );
 
-        av_packet_unref( &pkt );
+        av_packet_unref( pkt );
 
         if (ret < 0) {
             LOG_ERROR( _("Error while writing video frame: ") <<
@@ -1452,8 +1448,7 @@ bool flush_video_and_audio( const CMedia* img )
         AVRational ratio = { 1, c->sample_rate };
 
         int got_packet = 0;
-        AVPacket pkt = { 0 };
-        av_init_packet(&pkt);
+        AVPacket* pkt = av_packet_alloc();
 
         // Send last packet to encode
         if ( cache_size > 0 )
@@ -1474,7 +1469,7 @@ bool flush_video_and_audio( const CMedia* img )
                 audio_frame->pts = av_rescale_q( samples_count, ratio,
                                                  c->time_base );
 
-                ret = encode(c, &pkt, audio_frame, &got_packet);
+                ret = encode(c, pkt, audio_frame, &got_packet);
                 if (ret < 0)
                 {
                     LOG_ERROR( _("Could not encode audio frame: ") <<
@@ -1485,7 +1480,7 @@ bool flush_video_and_audio( const CMedia* img )
             }
         }
 
-        av_packet_unref( &pkt );
+        av_packet_unref( pkt );
 
     }
 
@@ -1525,11 +1520,10 @@ bool flush_video_and_audio( const CMedia* img )
             }
 
             if (encoding) {
-                AVPacket pkt = {0};
+                AVPacket* pkt = av_packet_alloc();
                 int got_packet = 0;
-                av_init_packet(&pkt);
 
-                ret = encode(c, &pkt, NULL, &got_packet);
+                ret = encode(c, pkt, NULL, &got_packet);
 
                 if (ret < 0 && ret != AVERROR_EOF) {
                     LOG_ERROR( _("Failed ") << desc << _(" encoding") );
@@ -1543,9 +1537,9 @@ bool flush_video_and_audio( const CMedia* img )
                     break;
                 }
 
-                ret = write_frame(oc, &c->time_base, s, &pkt);
+                ret = write_frame(oc, &c->time_base, s, pkt);
 
-                av_packet_unref( &pkt );
+                av_packet_unref( pkt );
 
                 if ( ret < 0 )
                 {

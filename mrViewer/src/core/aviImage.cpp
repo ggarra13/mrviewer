@@ -2712,11 +2712,10 @@ void aviImage::populate()
     {
 
         // Loop until we get first frame
-        AVPacket pkt = {0};
         // Clear the packet
-        av_init_packet( &pkt );
-        pkt.size = 0;
-        pkt.data = NULL;
+        AVPacket* pkt = av_packet_alloc();
+        pkt->size = 0;
+        pkt->data = NULL;
 
         int force_exit = 0;
         _eof = false;
@@ -2729,7 +2728,7 @@ void aviImage::populate()
             ++force_exit;
             if ( force_exit == 1200 )  break;
 
-            int error = av_read_frame( _context, &pkt );
+            int error = av_read_frame( _context, pkt );
             if ( error < 0 )
             {
                 int err = _context->pb ? _context->pb->error : 0;
@@ -2743,11 +2742,11 @@ void aviImage::populate()
                 }
             }
 
-            if ( has_video() && pkt.stream_index == video_stream_index() )
+            if ( has_video() && pkt->stream_index == video_stream_index() )
             {
                 if ( !got_video )
                 {
-                    DecodeStatus status = decode_image( _frameStart, pkt );
+                    DecodeStatus status = decode_image( _frameStart, *pkt );
                     if ( status == kDecodeOK )
                     {
                         got_video = true;
@@ -2759,26 +2758,26 @@ void aviImage::populate()
                 }
                 else
                 {
-                    _video_packets.push_back( pkt );
+                    _video_packets.push_back( *pkt );
                     continue;
                 }
             }
-            else if ( has_audio() && pkt.stream_index == audio_stream_index() )
+            else if ( has_audio() && pkt->stream_index == audio_stream_index() )
             {
                 int64_t pktframe = get_frame( get_audio_stream(),
-                                              pkt ) - _frame_offset;
+                                              *pkt ) - _frame_offset;
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )
                 {
                     // Only add packet if it comes before first frame
                     if ( pktframe >= first_frame() )
-                        _audio_packets.push_back( pkt );
+                        _audio_packets.push_back( *pkt );
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
                 else
                 {
-                    _audio_packets.push_back( pkt );
+                    _audio_packets.push_back( *pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
 
@@ -2787,7 +2786,7 @@ void aviImage::populate()
                     if ( pktframe > _frameStart ) got_audio = true;
                     else if ( pktframe == _frameStart )
                     {
-                        audio_bytes += pkt.size;
+                        audio_bytes += pkt->size;
                         if ( audio_bytes >= bytes_per_frame )
                             got_audio = true;
                     }
@@ -2795,23 +2794,22 @@ void aviImage::populate()
 
                 if ( !has_video() )
                 {
-                    AVPacket pkt;
-                    av_init_packet( &pkt );
-                    pkt.size = 0;
-                    pkt.data = NULL;
-                    pkt.dts = pkt.pts = _dts;
-                    _video_packets.push_back( pkt );
+                    AVPacket* pkt = av_packet_alloc();
+                    pkt->size = 0;
+                    pkt->data = NULL;
+                    pkt->dts = pkt->pts = _dts;
+                    _video_packets.push_back( *pkt );
                 }
 
 #ifdef DEBUG_DECODE_POP_AUDIO
                 fprintf( stderr, "\t[avi]POP. A f: %05" PRId64 " audio pts: %07" PRId64
                          " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
-                         pktframe, pkt.pts, pkt.dts, pktframe );
+                         pktframe, pkt->pts, pkt->dts, pktframe );
 #endif
                 continue;
             }
 
-            av_packet_unref( &pkt );
+            av_packet_unref( pkt );
         }
 
 
@@ -3051,12 +3049,11 @@ int64_t aviImage::queue_packets( const int64_t frame,
     if ( apts < 0 ) apts = 0;
     if ( spts < 0 ) spts = 0;
 
-    AVPacket pkt = {0};
+    AVPacket* pkt = av_packet_alloc();
 
     // Clear the packet
-    av_init_packet( &pkt );
-    pkt.size = 0;
-    pkt.data = NULL;
+    pkt->size = 0;
+    pkt->data = NULL;
 
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
@@ -3071,11 +3068,13 @@ int64_t aviImage::queue_packets( const int64_t frame,
             _eof = false;
 
             if (!got_video && video_stream_index() >= 0) {
-                av_init_packet(&pkt);
-                pkt.size = 0;
-                pkt.data = NULL;
-                pkt.stream_index = video_stream_index();
-                _video_packets.push_back( pkt );
+                AVPacket* pkt = av_packet_alloc();
+
+                // Clear the packet
+                pkt->size = 0;
+                pkt->data = NULL;
+                pkt->stream_index = video_stream_index();
+                _video_packets.push_back( *pkt );
                 got_video = true;
                 got_subtitle = true;
                 if ( is_seek )
@@ -3088,11 +3087,13 @@ int64_t aviImage::queue_packets( const int64_t frame,
             {
                 if (audio_context() == _context && _audio_ctx &&
                     _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
-                    av_init_packet(&pkt);
-                    pkt.size = 0;
-                    pkt.data = NULL;
-                    pkt.stream_index = audio_stream_index();
-                    _audio_packets.push_back( pkt );
+                    AVPacket* pkt = av_packet_alloc();
+
+                    // Clear the packet
+                    pkt->size = 0;
+                    pkt->data = NULL;
+                    pkt->stream_index = audio_stream_index();
+                    _audio_packets.push_back( *pkt );
                 }
 
                 got_audio = true;
@@ -3115,7 +3116,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
         int flag = AVSEEK_FLAG_BACKWARD;
         int error;
         int64_t offset = -1;
-        error = av_read_frame( _context, &pkt );
+        error = av_read_frame( _context, pkt );
 
         if ( error < 0 )
         {
@@ -3141,15 +3142,15 @@ int64_t aviImage::queue_packets( const int64_t frame,
             }
 
 
-            av_packet_unref( &pkt );
+            av_packet_unref( pkt );
 
             break;
         }
 
 
-        if ( has_video() && pkt.stream_index == video_stream_index() )
+        if ( has_video() && pkt->stream_index == video_stream_index() )
         {
-            int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset + _start_number; // needed
+            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts )                                      - _frame_offset + _start_number; // needed
 
 
             if ( playback() == kBackwards )
@@ -3159,17 +3160,17 @@ int64_t aviImage::queue_packets( const int64_t frame,
 #ifdef DEBUG_DECODE_IMAGE
                   std::cerr << "queued " << pktframe << " <= " << frame
                             << " is_seek? " << is_seek << ' '
-                            << ( pkt.flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                            << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
                             << std::endl;
 #endif
-                    _video_packets.push_back( pkt );
+                  _video_packets.push_back( *pkt );
                 }
                 else
                 {
 #ifdef DEBUG_DECODE_IMAGE
                   std::cerr << "did not queue " << pktframe << " <= " << frame
                             << " is_seek? " << is_seek << ' '
-                            << ( pkt.flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
+                            << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
                             << std::endl;
 #endif
                 }
@@ -3181,7 +3182,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 // std::cerr << "push back pkt "
                 //           << get_frame( get_video_stream(), pkt )
                 //           << std::endl;
-                _video_packets.push_back( pkt );
+                _video_packets.push_back( *pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
 
@@ -3200,17 +3201,17 @@ int64_t aviImage::queue_packets( const int64_t frame,
             continue;
         }
         else if ( has_subtitle()  &&
-                  pkt.stream_index == subtitle_stream_index() )
+                  pkt->stream_index == subtitle_stream_index() )
         {
-            int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
+            int64_t pktframe = get_frame( get_subtitle_stream(), *pkt );
             if ( playback() == kBackwards )
             {
                 if ( pktframe <= frame )
-                    _subtitle_packets.push_back( pkt );
+                    _subtitle_packets.push_back( *pkt );
             }
             else
             {
-                _subtitle_packets.push_back( pkt );
+                _subtitle_packets.push_back( *pkt );
             }
 
             if ( !got_subtitle && pktframe >= frame )
@@ -3224,9 +3225,9 @@ int64_t aviImage::queue_packets( const int64_t frame,
         {
 
             if ( has_audio() && audio_context() == _context &&
-                 pkt.stream_index == audio_stream_index() )
+                 pkt->stream_index == audio_stream_index() )
             {
-                int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )                                      - _frame_offset; // needed
+                int64_t pktframe = pts2frame( get_audio_stream(), pkt->dts )                                      - _frame_offset; // needed
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )
@@ -3234,13 +3235,13 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     // Only add packet if it comes before seek frame
                     if ( pktframe <= frame )
                     {
-                        _audio_packets.push_back( pkt );
+                        _audio_packets.push_back( *pkt );
                     }
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
                 else
                 {
-                    _audio_packets.push_back( pkt );
+                    _audio_packets.push_back( *pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
 
@@ -3249,19 +3250,18 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     if ( pktframe > frame ) got_audio = true;
                     else if ( pktframe == frame )
                     {
-                        audio_bytes += pkt.size;
+                        audio_bytes += pkt->size;
                         if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                     }
                     if ( got_audio && !has_video() )
                     {
                         for (int64_t t = frame; t <= pktframe; ++t )
                         {
-                            AVPacket pkt;
-                            av_init_packet( &pkt );
-                            pkt.size = 0;
-                            pkt.data = NULL;
-                            pkt.dts = pkt.pts = t;
-                            _video_packets.push_back( pkt );
+                            AVPacket* pkt = av_packet_alloc();
+                            pkt->size = 0;
+                            pkt->data = NULL;
+                            pkt->dts = pkt->pts = t;
+                            _video_packets.push_back( *pkt );
                         }
                     }
 
@@ -3274,7 +3274,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64
                          " audio pts: %07" PRId64
                          " dts: %07" PRId64 "   as frame: %05" PRId64 "\n",
-                         frame, pkt.pts, pkt.dts, pktframe );
+                         frame, pkt->pts, pkt->dts, pktframe );
 #endif
                 continue;
             }
