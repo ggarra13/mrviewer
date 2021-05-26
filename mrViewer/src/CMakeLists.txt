@@ -112,7 +112,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   ELSE(APPLE)
     ADD_DEFINITIONS( -DMR_SSE )
-  # ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=0 )
+    ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=1 )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
 
