@@ -4300,7 +4300,10 @@ void ImageView::draw()
             }
           else
             {
-                window()->cursor(FL_CURSOR_CROSS);
+                if ( presentation )
+                    window()->cursor( FL_CURSOR_NONE );
+                else
+                    window()->cursor(FL_CURSOR_CROSS);
             }
       }
 
@@ -5396,7 +5399,10 @@ void ImageView::leftMouseUp( int x, int y )
         return;
     }
 
-    window()->cursor( FL_CURSOR_CROSS );
+    if ( presentation )
+        window()->cursor( FL_CURSOR_NONE );
+    else
+        window()->cursor( FL_CURSOR_CROSS );
 
     mrv::media fg = foreground();
 
@@ -8310,17 +8316,26 @@ int ImageView::handle(int event)
         }
         else
         {
-            window()->cursor(FL_CURSOR_CROSS);
+            if ( presentation )
+                window()->cursor( FL_CURSOR_NONE );
+            else
+                window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-      window()->cursor(FL_CURSOR_CROSS);
+        if ( presentation )
+            window()->cursor( FL_CURSOR_NONE );
+        else
+            window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
         return 1;
     case FL_LEAVE:
-        window()->cursor(FL_CURSOR_DEFAULT);
+        if ( presentation )
+            window()->cursor( FL_CURSOR_NONE );
+        else
+            window()->cursor( FL_CURSOR_DEFAULT );
         return 1;
     case FL_PUSH:
         focus(this);
