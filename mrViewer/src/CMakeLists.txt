@@ -63,7 +63,10 @@ FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
-FIND_PACKAGE( PortAudio REQUIRED )
+
+if( USE_PORTAUDIO )
+    FIND_PACKAGE( PortAudio REQUIRED )
+endif()
 
 # SET( OpenTime_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
 # FIND_PACKAGE( OpenTime REQUIRED )  # for OTIO
