@@ -1126,12 +1126,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 #if defined(_WIN32)
-        if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
-            _audio_format = AudioEngine::kS32LSB;
-        if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-                                     ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
-                                     ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
-            _audio_format = AudioEngine::kS16LSB;
+    if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+        _audio_format = AudioEngine::kS32LSB;
+    if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
+                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
+        _audio_format = AudioEngine::kS16LSB;
 #endif
 
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );

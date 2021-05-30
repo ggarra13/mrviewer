@@ -522,10 +522,16 @@ bool WaveEngine::open( const unsigned channels,
 
 
         /* Only use the new WAVE_FORMAT_EXTENSIBLE format for
-               multichannel audio */
-        wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
-        wavefmt.Format.cbSize = sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX);
-
+           multichannel audio */
+        if( ch <= 2 && format != kFloatLSB )
+        {
+            wavefmt.Format.cbSize = 0;
+        }
+        else
+        {
+            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+            wavefmt.Format.cbSize = sizeof(wavefmt) - sizeof(wavefmt.Format);
+	}
 
         unsigned device = _device_idx;
         _old_device_idx = _device_idx;
@@ -540,7 +546,8 @@ bool WaveEngine::open( const unsigned channels,
             waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                         //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                         0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
-        DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
+        DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( _audio_device != NULL )
+               << " result ? " << (result == MMSYSERR_NOERROR) );
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )

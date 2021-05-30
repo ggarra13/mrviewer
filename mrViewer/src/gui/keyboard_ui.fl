@@ -58,10 +58,10 @@ class ChooseHotkey {open
         Fl_Button {} {
           label Okay
           user_data this user_data_type {ChooseHotkey*}
-          callback {v->hk.ctrl  = v->uiCtrl->value();
-v->hk.alt   = v->uiAlt->value();
-v->hk.meta  = v->uiMeta->value();
-v->hk.shift = v->uiShift->value();
+          callback {v->hk.ctrl  = (bool) v->uiCtrl->value();
+v->hk.alt   = (bool) v->uiAlt->value();
+v->hk.meta  = (bool) v->uiMeta->value();
+v->hk.shift = (bool) v->uiShift->value();
 
 v->hk.key = 0;
 v->hk.text = "";

@@ -63,6 +63,7 @@ FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
+FIND_PACKAGE( PortAudio REQUIRED )
 
 # SET( OpenTime_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
 # FIND_PACKAGE( OpenTime REQUIRED )  # for OTIO
@@ -71,6 +72,9 @@ FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -D_CRT_SECURE_NO_WARNINGS )
 
+if( PORTAUDIO_FOUND )
+    ADD_DEFINITIONS( -DPORTAUDIO )
+endif()
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
@@ -205,6 +209,9 @@ INCLUDE_DIRECTORIES(
   ${GLEW_INCLUDE_DIR}
   )
 
+if( PORTAUDIO_FOUND )
+  INCLUDE_DIRECTORIES( ${PORTAUDIO_INCLUDE_DIR} )
+endif()
 
 FLTK_WRAP_UI( mrViewer
   gui/aviSave.fl
@@ -380,7 +387,7 @@ SET( SOURCES
 #
 # Audio Engines
 #
-SET( SOURCES audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
@@ -465,6 +472,9 @@ SET( LIBRARIES
   ${OS_LIBRARIES}
   )
 
+if( PORTAUDIO_FOUND )
+    set( LIBRARIES ${PORTAUDIO_LIBRARIES} ${LIBRARIES} )
+endif()
 
 #
 # RELEASE VERSION

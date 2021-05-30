@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-05-26 19:49-0300\n"
+"POT-Creation-Date: 2021-05-30 09:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -380,23 +380,23 @@ msgid ""
 "RtAudio: no compiled support for specified API argument!\n"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:103 core/CMedia.cpp:3017 core/CMedia.cpp:3029
-#: core/CMedia.cpp:4005 core/CMedia.cpp:4007 core/CMedia.cpp:4022
-#: core/CMedia.cpp:4511 core/CMedia.cpp:4571 core/CMedia.cpp:4619
-#: core/CMedia_audio.cpp:1219 core/CMedia_audio.cpp:2295
-#: core/CMedia_audio.cpp:2297 core/CMedia_audio.cpp:2315
-#: core/CMedia_audio.cpp:2378 core/CMedia_audio.cpp:2495 core/aviImage.cpp:727
-#: core/aviImage.cpp:2181 core/aviImage.cpp:3867 core/aviImage.cpp:3879
-#: core/aviImage.cpp:3896 core/aviImage.cpp:3945 core/aviImage.cpp:4002
-#: core/aviImage_save.cpp:593 core/aviImage_save.cpp:599
-#: core/aviImage_save.cpp:1325 core/hdrImage.cpp:255 core/hdrImage.cpp:263
-#: core/hdrImage.cpp:266 core/hdrImage.cpp:273 core/slateImage.cpp:371
-#: core/wandImage.cpp:89 core/brawImage.cpp:1332 core/brawImage.cpp:1541
-#: core/mrvServer.cpp:1018 core/mrvServer.cpp:1599 core/mrvPlayback.cpp:89
-#: core/mrvPlayback.cpp:90 core/mrvPlayback.cpp:91
-#: gui/FLU/Flu_File_Chooser.cpp:400 gui/FLU/Flu_File_Chooser.cpp:420
-#: gui/MyPack.cpp:278 gui/mrvColorInfo.cpp:89 gui/mrvColorInfo.cpp:97
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:2158
+#: audio/mrvPortAudioEngine.cpp:94 audio/mrvALSAEngine.cpp:103
+#: core/CMedia.cpp:3017 core/CMedia.cpp:3029 core/CMedia.cpp:4005
+#: core/CMedia.cpp:4007 core/CMedia.cpp:4022 core/CMedia.cpp:4511
+#: core/CMedia.cpp:4571 core/CMedia.cpp:4619 core/CMedia_audio.cpp:1219
+#: core/CMedia_audio.cpp:2295 core/CMedia_audio.cpp:2297
+#: core/CMedia_audio.cpp:2315 core/CMedia_audio.cpp:2378
+#: core/CMedia_audio.cpp:2495 core/aviImage.cpp:727 core/aviImage.cpp:2181
+#: core/aviImage.cpp:3867 core/aviImage.cpp:3879 core/aviImage.cpp:3896
+#: core/aviImage.cpp:3945 core/aviImage.cpp:4002 core/aviImage_save.cpp:593
+#: core/aviImage_save.cpp:599 core/aviImage_save.cpp:1325
+#: core/hdrImage.cpp:255 core/hdrImage.cpp:263 core/hdrImage.cpp:266
+#: core/hdrImage.cpp:273 core/slateImage.cpp:371 core/wandImage.cpp:89
+#: core/brawImage.cpp:1332 core/brawImage.cpp:1541 core/mrvServer.cpp:1018
+#: core/mrvServer.cpp:1599 core/mrvPlayback.cpp:89 core/mrvPlayback.cpp:90
+#: core/mrvPlayback.cpp:91 gui/FLU/Flu_File_Chooser.cpp:400
+#: gui/FLU/Flu_File_Chooser.cpp:420 gui/MyPack.cpp:278 gui/mrvColorInfo.cpp:89
+#: gui/mrvColorInfo.cpp:97 gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:2158
 #: gui/mrvImageView.cpp:2848 gui/mrvImageView.cpp:3348
 #: gui/mrvImageView.cpp:3376 gui/mrvImageView.cpp:4034
 #: gui/mrvImageView.cpp:4044 gui/mrvImageView.cpp:4073
@@ -3971,8 +3971,9 @@ msgstr ""
 msgid " ,"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:94 core/YouTube.cpp:206 core/aviImage.cpp:635
-#: gui/mrvMedia.cpp:52 gui/mrvImageView.cpp:4374
+#: audio/mrvPortAudioEngine.cpp:94 audio/mrvWaveEngine.cpp:94
+#: core/YouTube.cpp:206 core/aviImage.cpp:635 gui/mrvMedia.cpp:52
+#: gui/mrvImageView.cpp:4374
 msgid " - "
 msgstr ""
 
@@ -4230,7 +4231,7 @@ msgstr ""
 msgid " .~{!!''.>)'.+    "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:573
+#: audio/mrvWaveEngine.cpp:580
 msgid " / num "
 msgstr ""
 
@@ -4560,7 +4561,7 @@ msgstr ""
 msgid " bytes"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:572
+#: audio/mrvWaveEngine.cpp:579
 msgid " bytes "
 msgstr ""
 
@@ -4871,6 +4872,10 @@ msgstr ""
 #: gui/mrvPreferences.cpp:223
 #, c-format
 msgid " red %f %f green %f %f blue %f %f white %f %f"
+msgstr ""
+
+#: audio/mrvWaveEngine.cpp:550
+msgid " result ? "
 msgstr ""
 
 #: core/exrImage.cpp:3489 core/mrvPlayback.cpp:1137
@@ -7660,19 +7665,19 @@ msgstr ""
 msgid "%c%d"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:97 audio/mrvRtAudioEngine.cpp:117
-#: audio/mrvWaveEngine.cpp:159 core/CMedia.cpp:344 core/slateImage.cpp:322
-#: core/wandImage.cpp:782 core/wandImage.cpp:927 core/mrSocket.cpp:115
-#: core/mrvClient.cpp:454 gui/FLU/Flu_File_Chooser.cpp:1336
-#: gui/FLU/Flu_File_Chooser.cpp:4598 gui/mrvImageBrowser.cpp:811
-#: gui/mrvImageInformation.cpp:3197 gui/mrvImageInformation.cpp:3586
-#: gui/mrvImageInformation.cpp:4597 gui/mrvImageInformation.cpp:4610
-#: gui/mrvImageInformation.cpp:4787 gui/mrvImageInformation.cpp:4800
-#: gui/mrvImageInformation.cpp:4923 gui/mrvImageInformation.cpp:4943
-#: gui/mrvImageInformation.cpp:4963 gui/mrvImageInformation.cpp:4983
-#: gui/mrvImageInformation.cpp:5004 gui/mrvImageInformation.cpp:5017
-#: gui/mrvPreferences.cpp:1878 standalone/mrvCommandLine.cpp:297
-#: standalone/main.cpp:524
+#: audio/mrvPortAudioEngine.cpp:131 audio/mrvAOEngine.cpp:97
+#: audio/mrvRtAudioEngine.cpp:117 audio/mrvWaveEngine.cpp:159
+#: core/CMedia.cpp:344 core/slateImage.cpp:322 core/wandImage.cpp:782
+#: core/wandImage.cpp:927 core/mrSocket.cpp:115 core/mrvClient.cpp:454
+#: gui/FLU/Flu_File_Chooser.cpp:1336 gui/FLU/Flu_File_Chooser.cpp:4598
+#: gui/mrvImageBrowser.cpp:811 gui/mrvImageInformation.cpp:3197
+#: gui/mrvImageInformation.cpp:3586 gui/mrvImageInformation.cpp:4597
+#: gui/mrvImageInformation.cpp:4610 gui/mrvImageInformation.cpp:4787
+#: gui/mrvImageInformation.cpp:4800 gui/mrvImageInformation.cpp:4923
+#: gui/mrvImageInformation.cpp:4943 gui/mrvImageInformation.cpp:4963
+#: gui/mrvImageInformation.cpp:4983 gui/mrvImageInformation.cpp:5004
+#: gui/mrvImageInformation.cpp:5017 gui/mrvPreferences.cpp:1878
+#: standalone/mrvCommandLine.cpp:297 standalone/main.cpp:524
 #, c-format
 msgid "%d"
 msgstr ""
@@ -7716,7 +7721,7 @@ msgstr ""
 msgid "%d / %d"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:152
+#: audio/mrvPortAudioEngine.cpp:154 audio/mrvWaveEngine.cpp:152
 #, c-format
 msgid "%d Channels"
 msgstr ""
@@ -7731,7 +7736,7 @@ msgstr ""
 msgid "%d bytes"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3596 gui/mrvImageInformation.cpp:3644
+#: gui/mrvImageInformation.cpp:3597 gui/mrvImageInformation.cpp:3644
 #, c-format
 msgid "%d kb/s"
 msgstr ""
@@ -8008,7 +8013,7 @@ msgstr ""
 msgid "%s %s %d %d:%d:%d %d"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:387
+#: audio/mrvPortAudioEngine.cpp:387 audio/mrvWaveEngine.cpp:387
 #, c-format
 msgid "%s (%s) - %s %s"
 msgstr ""
@@ -14726,7 +14731,8 @@ msgstr ""
 msgid "59.94"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:145 gui/mrvImageInformation.cpp:3583
+#: audio/mrvPortAudioEngine.cpp:147 audio/mrvWaveEngine.cpp:145
+#: gui/mrvImageInformation.cpp:3583
 msgid "5:1"
 msgstr ""
 
@@ -15101,7 +15107,8 @@ msgstr ""
 msgid "70mm"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:148 gui/mrvImageInformation.cpp:3584
+#: audio/mrvPortAudioEngine.cpp:150 audio/mrvWaveEngine.cpp:148
+#: gui/mrvImageInformation.cpp:3584
 msgid "7:1"
 msgstr ""
 
@@ -17309,7 +17316,7 @@ msgstr ""
 msgid "AO_PLUGIN_PATH=%s"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:171
+#: audio/mrvPortAudioEngine.cpp:171 audio/mrvWaveEngine.cpp:171
 msgid "APPS"
 msgstr ""
 
@@ -17337,11 +17344,11 @@ msgstr ""
 msgid "ASIO"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:177
+#: audio/mrvPortAudioEngine.cpp:177 audio/mrvWaveEngine.cpp:177
 msgid "AST Research, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:180
+#: audio/mrvPortAudioEngine.cpp:180 audio/mrvWaveEngine.cpp:180
 msgid "ATI Technologies, Inc."
 msgstr ""
 
@@ -17475,7 +17482,7 @@ msgstr ""
 msgid "Advanced Core"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:165
+#: audio/mrvPortAudioEngine.cpp:165 audio/mrvWaveEngine.cpp:165
 msgid "Advanced Gravis Computer Technology, Ltd."
 msgstr ""
 
@@ -17677,7 +17684,7 @@ msgid ""
 "Remove "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:168
+#: audio/mrvPortAudioEngine.cpp:168 audio/mrvWaveEngine.cpp:168
 msgid "Antex"
 msgstr ""
 
@@ -17750,7 +17757,7 @@ msgstr ""
 msgid "Arrow Tool"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:174
+#: audio/mrvPortAudioEngine.cpp:174 audio/mrvWaveEngine.cpp:174
 msgid "Artisoft"
 msgstr ""
 
@@ -17829,7 +17836,7 @@ msgstr ""
 msgid "Audio Options"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:187
+#: audio/mrvPortAudioEngine.cpp:187 audio/mrvWaveEngine.cpp:187
 msgid "Audio Processing Technology"
 msgstr ""
 
@@ -17870,7 +17877,7 @@ msgstr ""
 msgid "Audio packets empty at end of seek"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:183
+#: audio/mrvPortAudioEngine.cpp:183 audio/mrvWaveEngine.cpp:183
 msgid "Audio, Inc."
 msgstr ""
 
@@ -17916,7 +17923,7 @@ msgstr ""
 msgid "Aug"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:190
+#: audio/mrvPortAudioEngine.cpp:190 audio/mrvWaveEngine.cpp:190
 msgid "Auravision"
 msgstr ""
 
@@ -17948,7 +17955,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:193
+#: audio/mrvPortAudioEngine.cpp:193 audio/mrvWaveEngine.cpp:193
 msgid "Aztech Labs, Inc."
 msgstr ""
 
@@ -18348,6 +18355,11 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2381
 msgid "Blue value of image pixel under mouse."
+msgstr ""
+
+#: audio/mrvPortAudioEngine.cpp:391
+#, c-format
+msgid "Board #%d"
 msgstr ""
 
 #: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:576
@@ -18823,7 +18835,7 @@ msgstr ""
 msgid "Canon Raw Picture"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:196
+#: audio/mrvPortAudioEngine.cpp:196 audio/mrvWaveEngine.cpp:196
 msgid "Canopus, Co., Ltd."
 msgstr ""
 
@@ -19282,15 +19294,15 @@ msgstr ""
 msgid "Compression to use when saving an exr."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:199
+#: audio/mrvPortAudioEngine.cpp:199 audio/mrvWaveEngine.cpp:199
 msgid "Compusic"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:202
+#: audio/mrvPortAudioEngine.cpp:202 audio/mrvWaveEngine.cpp:202
 msgid "Computer Aided Technology, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:205
+#: audio/mrvPortAudioEngine.cpp:205 audio/mrvWaveEngine.cpp:205
 msgid "Computer Friends, Inc."
 msgstr ""
 
@@ -19334,7 +19346,7 @@ msgstr ""
 msgid "Contrast"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:208
+#: audio/mrvPortAudioEngine.cpp:208 audio/mrvWaveEngine.cpp:208
 msgid "Control Resources Corporation"
 msgstr ""
 
@@ -20052,7 +20064,7 @@ msgstr ""
 msgid "Creation Date:    "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:211
+#: audio/mrvPortAudioEngine.cpp:211 audio/mrvWaveEngine.cpp:211
 msgid "Creative Labs, Inc."
 msgstr ""
 
@@ -20429,11 +20441,11 @@ msgstr ""
 msgid "DRAGON color2"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:220
+#: audio/mrvPortAudioEngine.cpp:220 audio/mrvWaveEngine.cpp:220
 msgid "DSP Group, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:223
+#: audio/mrvPortAudioEngine.cpp:223 audio/mrvWaveEngine.cpp:223
 msgid "DSP Solutions, Inc."
 msgstr ""
 
@@ -20612,8 +20624,9 @@ msgstr ""
 msgid "Default Action"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:106 audio/mrvRtAudioEngine.cpp:103
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvPortAudioEngine.cpp:121 audio/mrvAOEngine.cpp:106
+#: audio/mrvRtAudioEngine.cpp:103 audio/mrvWaveEngine.cpp:122
+#: audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr ""
 
@@ -20707,7 +20720,7 @@ msgstr ""
 msgid "Device"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:214
+#: audio/mrvPortAudioEngine.cpp:214 audio/mrvWaveEngine.cpp:214
 msgid "Dialogic Corporation"
 msgstr ""
 
@@ -20837,7 +20850,7 @@ msgstr ""
 msgid "Documents"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:217
+#: audio/mrvPortAudioEngine.cpp:217 audio/mrvWaveEngine.cpp:217
 msgid "Dolby Laboratories"
 msgstr ""
 
@@ -21092,11 +21105,11 @@ msgstr ""
 msgid "ENTER SUBTITLE THREAD "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:229
+#: audio/mrvPortAudioEngine.cpp:229 audio/mrvWaveEngine.cpp:229
 msgid "ESS Technology, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:235
+#: audio/mrvPortAudioEngine.cpp:235 audio/mrvWaveEngine.cpp:235
 msgid "EXAN, Ltd."
 msgstr ""
 
@@ -21132,7 +21145,7 @@ msgstr ""
 msgid "Early 35mm"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:226
+#: audio/mrvPortAudioEngine.cpp:226 audio/mrvWaveEngine.cpp:226
 msgid "Echo Speech Corporation"
 msgstr ""
 
@@ -21225,7 +21238,7 @@ msgstr ""
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:316
+#: audio/mrvPortAudioEngine.cpp:316 audio/mrvWaveEngine.cpp:316
 msgid "Epson"
 msgstr ""
 
@@ -21329,7 +21342,7 @@ msgstr ""
 msgid "Even/odd rows"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:232
+#: audio/mrvPortAudioEngine.cpp:232 audio/mrvWaveEngine.cpp:232
 msgid "Everex Systems, Inc."
 msgstr ""
 
@@ -22178,7 +22191,7 @@ msgstr ""
 msgid "Frequency of audio"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:238
+#: audio/mrvPortAudioEngine.cpp:238 audio/mrvWaveEngine.cpp:238
 msgid "Fujitsu, Ltd.."
 msgstr ""
 
@@ -23230,7 +23243,7 @@ msgstr ""
 msgid "I.\tc #FFE199"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:241
+#: audio/mrvPortAudioEngine.cpp:241 audio/mrvWaveEngine.cpp:241
 msgid "I/O Magic Corporation"
 msgstr ""
 
@@ -23238,7 +23251,7 @@ msgstr ""
 msgid "IA"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:259
+#: audio/mrvPortAudioEngine.cpp:259 audio/mrvWaveEngine.cpp:259
 msgid "IBM"
 msgstr ""
 
@@ -23275,7 +23288,7 @@ msgstr ""
 msgid "ICC_PROFILES"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:244
+#: audio/mrvPortAudioEngine.cpp:244 audio/mrvWaveEngine.cpp:244
 msgid "ICL Personal Systems"
 msgstr ""
 
@@ -23757,7 +23770,7 @@ msgstr ""
 msgid "InfoWindow %d %d %d %d %d\n"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:247
+#: audio/mrvPortAudioEngine.cpp:247 audio/mrvWaveEngine.cpp:247
 msgid "Ing. C. Olivetti & C., S.p.A."
 msgstr ""
 
@@ -23819,11 +23832,11 @@ msgstr ""
 msgid "Integer"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:250
+#: audio/mrvPortAudioEngine.cpp:250 audio/mrvWaveEngine.cpp:250
 msgid "Integrated Circuit Systems, Inc."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:253
+#: audio/mrvPortAudioEngine.cpp:253 audio/mrvWaveEngine.cpp:253
 msgid "Intel Corporation"
 msgstr ""
 
@@ -23831,7 +23844,7 @@ msgstr ""
 msgid "Intensity"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:256
+#: audio/mrvPortAudioEngine.cpp:256 audio/mrvWaveEngine.cpp:256
 msgid "InterActive, Inc."
 msgstr ""
 
@@ -23928,7 +23941,7 @@ msgstr ""
 msgid "Item was not found in tree."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:262
+#: audio/mrvPortAudioEngine.cpp:262 audio/mrvWaveEngine.cpp:262
 msgid "Iterated Systems, Inc."
 msgstr ""
 
@@ -24255,7 +24268,7 @@ msgstr ""
 msgid "Koff"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:337
+#: audio/mrvPortAudioEngine.cpp:337 audio/mrvWaveEngine.cpp:337
 msgid "Korg"
 msgstr ""
 
@@ -24774,7 +24787,7 @@ msgstr ""
 msgid "Logarithmic"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:265
+#: audio/mrvPortAudioEngine.cpp:265 audio/mrvWaveEngine.cpp:265
 msgid "Logitech, Inc."
 msgstr ""
 
@@ -24875,7 +24888,7 @@ msgstr ""
 msgid "Luv CIELUV (L*u*v*)"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:268
+#: audio/mrvPortAudioEngine.cpp:268 audio/mrvWaveEngine.cpp:268
 msgid "Lyrrus, Inc."
 msgstr ""
 
@@ -25032,7 +25045,7 @@ msgstr ""
 msgid "MMX2 "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:286
+#: audio/mrvPortAudioEngine.cpp:286 audio/mrvWaveEngine.cpp:286
 msgid "MOSCOM Corporation"
 msgstr ""
 
@@ -25155,7 +25168,7 @@ msgstr ""
 msgid "Main 10"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:377
+#: audio/mrvPortAudioEngine.cpp:377 audio/mrvWaveEngine.cpp:377
 #, c-format
 msgid "Manufacturer: %d"
 msgstr ""
@@ -25199,7 +25212,7 @@ msgstr ""
 msgid "Matroska Movie"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:271
+#: audio/mrvPortAudioEngine.cpp:271 audio/mrvWaveEngine.cpp:271
 msgid "Matsushita Electric Corporation of America"
 msgstr ""
 
@@ -25252,7 +25265,7 @@ msgstr ""
 msgid "Media Information"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:274
+#: audio/mrvPortAudioEngine.cpp:274 audio/mrvWaveEngine.cpp:274
 msgid "Media Vision, Inc."
 msgstr ""
 
@@ -25316,7 +25329,7 @@ msgstr ""
 msgid "Metadata"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:277
+#: audio/mrvPortAudioEngine.cpp:277 audio/mrvWaveEngine.cpp:277
 msgid "Metheus Corporation"
 msgstr ""
 
@@ -25324,7 +25337,7 @@ msgstr ""
 msgid "Microsoft Bitmap (.bmp)"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:283
+#: audio/mrvPortAudioEngine.cpp:283 audio/mrvWaveEngine.cpp:283
 msgid "Microsoft Corporation"
 msgstr ""
 
@@ -25434,7 +25447,8 @@ msgstr ""
 msgid "Monitors:\t"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:140 gui/mrvImageInformation.cpp:3581
+#: audio/mrvPortAudioEngine.cpp:142 audio/mrvWaveEngine.cpp:140
+#: gui/mrvImageInformation.cpp:3581
 msgid "Mono"
 msgstr ""
 
@@ -25446,7 +25460,7 @@ msgstr ""
 msgid "Motion Estimation Methods"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:289
+#: audio/mrvPortAudioEngine.cpp:289 audio/mrvWaveEngine.cpp:289
 msgid "Motorola, Inc."
 msgstr ""
 
@@ -25616,11 +25630,11 @@ msgstr ""
 msgid "N.\tc #FFF3A7"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:295
+#: audio/mrvPortAudioEngine.cpp:295 audio/mrvWaveEngine.cpp:295
 msgid "NCR Corporation"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:298
+#: audio/mrvPortAudioEngine.cpp:298 audio/mrvWaveEngine.cpp:298
 msgid "NEC Corporation"
 msgstr ""
 
@@ -25665,7 +25679,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:292
+#: audio/mrvPortAudioEngine.cpp:292 audio/mrvWaveEngine.cpp:292
 msgid "Natural MicroSystems Corporation"
 msgstr ""
 
@@ -25689,7 +25703,7 @@ msgstr ""
 msgid "New Folder"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:301
+#: audio/mrvPortAudioEngine.cpp:301 audio/mrvWaveEngine.cpp:301
 msgid "New Media Corporation"
 msgstr ""
 
@@ -25772,7 +25786,7 @@ msgstr ""
 msgid "No attribute named '%s'"
 msgstr ""
 
-#: core/mrvAudioEngine.cpp:132 core/mrvAudioEngine.cpp:146
+#: core/mrvAudioEngine.cpp:136 core/mrvAudioEngine.cpp:150
 msgid "No audio device found"
 msgstr ""
 
@@ -26318,7 +26332,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:304
+#: audio/mrvPortAudioEngine.cpp:304 audio/mrvWaveEngine.cpp:304
 msgid "OKI"
 msgstr ""
 
@@ -26326,7 +26340,7 @@ msgstr ""
 msgid "OPENGL"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:307
+#: audio/mrvPortAudioEngine.cpp:307 audio/mrvWaveEngine.cpp:307
 msgid "OPTi, Inc."
 msgstr ""
 
@@ -27164,7 +27178,7 @@ msgstr ""
 msgid "Problem with tile"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:384
+#: audio/mrvPortAudioEngine.cpp:384 audio/mrvWaveEngine.cpp:384
 #, c-format
 msgid "Product: %d"
 msgstr ""
@@ -28265,7 +28279,7 @@ msgstr ""
 msgid "RightShift"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:310
+#: audio/mrvPortAudioEngine.cpp:310 audio/mrvWaveEngine.cpp:310
 msgid "Roland"
 msgstr ""
 
@@ -29701,7 +29715,7 @@ msgstr ""
 msgid "S.\tc #FFEBA1"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:313
+#: audio/mrvPortAudioEngine.cpp:313 audio/mrvWaveEngine.cpp:313
 msgid "SCALACS"
 msgstr ""
 
@@ -30394,11 +30408,11 @@ msgstr ""
 msgid "ShowPixelRatio %d"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:319
+#: audio/mrvPortAudioEngine.cpp:319 audio/mrvWaveEngine.cpp:319
 msgid "Sierra Semiconductor Corporation"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:322
+#: audio/mrvPortAudioEngine.cpp:322 audio/mrvWaveEngine.cpp:322
 msgid "Silicon Software"
 msgstr ""
 
@@ -30467,7 +30481,7 @@ msgstr ""
 msgid "Some default frame rate settings."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:325
+#: audio/mrvPortAudioEngine.cpp:325 audio/mrvWaveEngine.cpp:325
 msgid "Sonic Foundry"
 msgstr ""
 
@@ -30484,7 +30498,7 @@ msgstr ""
 msgid "Special Instructions"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:328
+#: audio/mrvPortAudioEngine.cpp:328 audio/mrvWaveEngine.cpp:328
 msgid "Speech Compression"
 msgstr ""
 
@@ -30534,8 +30548,9 @@ msgstr ""
 msgid "Stepping: "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:142 gui/mrvImageBrowser.cpp:2762
-#: gui/mrvImageInformation.cpp:3580 gui/mrvImageInformation.cpp:3582
+#: audio/mrvPortAudioEngine.cpp:144 audio/mrvWaveEngine.cpp:142
+#: gui/mrvImageBrowser.cpp:2762 gui/mrvImageInformation.cpp:3580
+#: gui/mrvImageInformation.cpp:3582
 msgid "Stereo"
 msgstr ""
 
@@ -30698,7 +30713,7 @@ msgstr ""
 msgid "Subtract"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:331
+#: audio/mrvPortAudioEngine.cpp:331 audio/mrvWaveEngine.cpp:331
 msgid "Supermac"
 msgstr ""
 
@@ -30911,7 +30926,7 @@ msgstr ""
 msgid "Take Current Window Values"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:334
+#: audio/mrvPortAudioEngine.cpp:334 audio/mrvWaveEngine.cpp:334
 msgid "Tandy"
 msgstr ""
 
@@ -31532,7 +31547,7 @@ msgstr ""
 msgid "Translations: "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:340
+#: audio/mrvPortAudioEngine.cpp:340 audio/mrvWaveEngine.cpp:340
 msgid "TrueVision"
 msgstr ""
 
@@ -31552,7 +31567,7 @@ msgstr ""
 msgid "Turn on debugging console."
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:343
+#: audio/mrvPortAudioEngine.cpp:343 audio/mrvWaveEngine.cpp:343
 msgid "Turtle Beach Systems"
 msgstr ""
 
@@ -32378,7 +32393,7 @@ msgstr ""
 msgid "Video / Audio Frames"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:346
+#: audio/mrvPortAudioEngine.cpp:346 audio/mrvWaveEngine.cpp:346
 msgid "Video Associates Labs"
 msgstr ""
 
@@ -32450,7 +32465,7 @@ msgstr ""
 msgid "Video/Track #%d - %s"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:349
+#: audio/mrvPortAudioEngine.cpp:349 audio/mrvWaveEngine.cpp:349
 msgid "VideoLogic"
 msgstr ""
 
@@ -32508,7 +32523,7 @@ msgstr ""
 msgid "View/Toggle Action Dock"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:352
+#: audio/mrvPortAudioEngine.cpp:352 audio/mrvWaveEngine.cpp:352
 msgid "Visual Information Technologies"
 msgstr ""
 
@@ -32520,7 +32535,7 @@ msgstr ""
 msgid "VmSize:"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:355
+#: audio/mrvPortAudioEngine.cpp:355 audio/mrvWaveEngine.cpp:355
 msgid "VocalTec"
 msgstr ""
 
@@ -32533,7 +32548,7 @@ msgstr ""
 msgid "Volume %g"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:358
+#: audio/mrvPortAudioEngine.cpp:358 audio/mrvWaveEngine.cpp:358
 msgid "Voyetra"
 msgstr ""
 
@@ -32675,7 +32690,7 @@ msgstr ""
 msgid "WSA not ready\n"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:361
+#: audio/mrvPortAudioEngine.cpp:361 audio/mrvWaveEngine.cpp:361
 msgid "Wang Labs"
 msgstr ""
 
@@ -32953,7 +32968,7 @@ msgstr ""
 msgid "Width of clip"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:364
+#: audio/mrvPortAudioEngine.cpp:364 audio/mrvWaveEngine.cpp:364
 msgid "Willow Pond"
 msgstr ""
 
@@ -32966,7 +32981,7 @@ msgstr ""
 msgid "Windows/%s"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:367
+#: audio/mrvPortAudioEngine.cpp:367 audio/mrvWaveEngine.cpp:367
 msgid "Winnov"
 msgstr ""
 
@@ -33239,7 +33254,7 @@ msgstr ""
 msgid "XYZ CIE XYZ"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:370
+#: audio/mrvPortAudioEngine.cpp:370 audio/mrvWaveEngine.cpp:370
 msgid "Xebec"
 msgstr ""
 
@@ -33545,7 +33560,7 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:373
+#: audio/mrvPortAudioEngine.cpp:373 audio/mrvWaveEngine.cpp:373
 msgid "Yamaha"
 msgstr ""
 
@@ -34929,7 +34944,7 @@ msgstr ""
 msgid "all_layers"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:572
+#: audio/mrvWaveEngine.cpp:579
 msgid "allocated data at "
 msgstr ""
 
@@ -36108,13 +36123,13 @@ msgstr ""
 msgid "decode_video"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:91 audio/mrvAOEngine.cpp:106
-#: audio/mrvRtAudioEngine.cpp:103 audio/RtAudio.cpp:7183
-#: audio/RtAudio.cpp:7238 audio/RtAudio.cpp:7241 audio/RtAudio.cpp:7510
-#: audio/RtAudio.cpp:7539 audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:122
-#: audio/mrvALSAEngine.cpp:80 core/CMedia.cpp:3634 gui/mrvPreferences.cpp:849
-#: gui/mrvPreferences.cpp:1268 gui/mrvPreferences.cpp:2432
-#: gui/mrvPreferences.cpp:2556
+#: audio/mrvPortAudioEngine.cpp:121 audio/mrvAOEngine.cpp:91
+#: audio/mrvAOEngine.cpp:106 audio/mrvRtAudioEngine.cpp:103
+#: audio/RtAudio.cpp:7183 audio/RtAudio.cpp:7238 audio/RtAudio.cpp:7241
+#: audio/RtAudio.cpp:7510 audio/RtAudio.cpp:7539 audio/RtAudio.cpp:7542
+#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80 core/CMedia.cpp:3634
+#: gui/mrvPreferences.cpp:849 gui/mrvPreferences.cpp:1268
+#: gui/mrvPreferences.cpp:2432 gui/mrvPreferences.cpp:2556
 msgid "default"
 msgstr ""
 
@@ -36501,7 +36516,7 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:596
+#: audio/mrvPortAudioEngine.cpp:503 audio/mrvWaveEngine.cpp:603
 msgid "enabled ok"
 msgstr ""
 
@@ -36785,7 +36800,7 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:578
+#: audio/mrvWaveEngine.cpp:585
 msgid "fill headers "
 msgstr ""
 
@@ -38703,7 +38718,7 @@ msgstr ""
 msgid "menubar"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:280
+#: audio/mrvPortAudioEngine.cpp:280 audio/mrvWaveEngine.cpp:280
 msgid "microEngineering Labs"
 msgstr ""
 
@@ -39553,6 +39568,10 @@ msgstr ""
 
 #: core/mrvServer.cpp:94 standalone/mrvCommandLine.cpp:53
 msgid "parser"
+msgstr ""
+
+#: audio/mrvPortAudioEngine.cpp:48
+msgid "paudio"
 msgstr ""
 
 #: core/aviImage_save.cpp:1339
@@ -41701,7 +41720,7 @@ msgstr ""
 msgid "wav"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:720
+#: audio/mrvWaveEngine.cpp:727
 msgid "waveOutClose"
 msgstr ""
 
@@ -41709,35 +41728,35 @@ msgstr ""
 msgid "waveOutGetVolume"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:558
+#: audio/mrvWaveEngine.cpp:565
 msgid "waveOutOpen"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:537
+#: audio/mrvWaveEngine.cpp:543
 msgid "waveOutOpen WAVE_MAPPER? "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:543
+#: audio/mrvWaveEngine.cpp:549
 msgid "waveOutOpen WAVE_MAPPER? ok "
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:552
+#: audio/mrvWaveEngine.cpp:559
 msgid "waveOutOpen failed WAVERR_ALLOCATED"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:548
+#: audio/mrvWaveEngine.cpp:555
 msgid "waveOutOpen failed WAVERR_BADFORMAT"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:556
+#: audio/mrvWaveEngine.cpp:563
 msgid "waveOutOpen invalid flag"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:654
+#: audio/mrvWaveEngine.cpp:661
 msgid "waveOutPrepareHeader"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:704
+#: audio/mrvWaveEngine.cpp:711
 msgid "waveOutReset"
 msgstr ""
 
@@ -41745,11 +41764,11 @@ msgstr ""
 msgid "waveOutSetVolume"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:687
+#: audio/mrvWaveEngine.cpp:694
 msgid "waveOutUnprepareHeader"
 msgstr ""
 
-#: audio/mrvWaveEngine.cpp:663
+#: audio/mrvWaveEngine.cpp:670
 msgid "waveOutWrite"
 msgstr ""
 

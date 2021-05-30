@@ -13,6 +13,7 @@ export OIIO_ROOT=$DIST
 export GLEW_ROOT=$DIST
 export PATH=$DIST/gettext/bin:$PATH
 
+export PORTAUDIO_ROOT=$DIST
 export BOOST_ROOT="/D/code/lib/boost_1_73_0"
 export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
 export OCIO_ROOT=$DIST

@@ -46,6 +46,7 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option( USE_PORTAUDIO "Use PortAudio interface (Not working)" OFF )
 
 SET( VersionMajor 5 )
 SET( VersionMinor 8 )
