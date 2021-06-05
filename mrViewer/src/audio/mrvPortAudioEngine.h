@@ -31,11 +31,13 @@
 #define mrvPortAudioEngine_h
 
 
+#ifdef _WIN32
 #include <windows.h>
 #define IN
 #define OUT
 #define INOUT
 #include <mmsystem.h>
+#endif
 
 #include "core/mrvAlignedData.h"
 #include "core/mrvAudioEngine.h"
@@ -43,7 +45,7 @@
 
 namespace mrv {
 
-class PortAudioEngine : public mrv::AudioEngine
+class PortAudioEngine : public AudioEngine
 {
 public:
     PortAudioEngine();

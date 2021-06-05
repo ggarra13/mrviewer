@@ -44,7 +44,7 @@ FIND_PATH( PORTAUDIO_INCLUDE_DIR portaudio.h
   )
 
 FIND_LIBRARY( portaudio
-  NAMES portaudio_x64
+  NAMES portaudio_x64 portaudio
   PATHS ${SEARCH_DIRS}
   DOC   "Portaudio library"
 )

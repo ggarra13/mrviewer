@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   mrvWMMEngine.cpp
+ * @file   mrvPortAudioEngine.cpp
  * @author gga
  * @date   Tue Jul 10 03:26:02 2007
  *
- * @brief  An Audio Engine using Windows' Multimedia (WMM) engine
+ * @brief  An Audio Engine using PortAudio engine
  *
  *
  */
@@ -77,19 +77,19 @@ unsigned int     PortAudioEngine::_instances = 0;
 #define WAVE_SPEAKER_RESERVED               0x80000000
 
 static const int channel_mask[] = {
-    SPEAKER_FRONT_CENTER,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT  | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT     | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_CENTER  | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_LEFT  | SPEAKER_BACK_RIGHT | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_LEFT  | SPEAKER_BACK_CENTER  | SPEAKER_BACK_RIGHT | SPEAKER_LOW_FREQUENCY
+    WAVE_SPEAKER_FRONT_CENTER,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT     | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY
 };
 
 
-static void MMerror(char *function, int err)
+static void MMerror(const char *function, int err)
 {
     LOG_ERROR( function << " - " << err << " " << Pa_GetErrorText(err) );
 }
@@ -102,8 +102,8 @@ PortAudioEngine::PortAudioEngine() :
     _sample_size(0),
     stream( NULL ),
     _samples_per_block( 48000 ),  // 1 second of 48khz audio
-    bytesPerBlock( 0 ),
-    _audio_playback( false )
+    _audio_playback( false ),
+    bytesPerBlock( 0 )
 {
     initialize();
 }
@@ -121,22 +121,18 @@ void PortAudioEngine::refresh_devices()
     Device def( "default", _("Default Audio Device") );
     _devices.push_back( def );
 
-    unsigned int num = waveOutGetNumDevs();
+    unsigned int num = Pa_GetDeviceCount();
 
     char name[256];
     char desc[1024];
 
     for (unsigned i = 0; i < num; ++i )
     {
-        sprintf( name, "%d", i );
-
-#ifdef _WIN32
-        WAVEOUTCAPS woc;
-        if ( waveOutGetDevCaps(i, &woc, sizeof(woc) ) !=
-             MMSYSERR_NOERROR ) continue;
+        const PaDeviceInfo* woc;
+	woc = Pa_GetDeviceInfo( i );
 
         std::string channels;
-        switch( woc.wChannels )
+        switch( woc->maxOutputChannels )
         {
         case 1:
             channels = "Mono";
@@ -151,245 +147,15 @@ void PortAudioEngine::refresh_devices()
             break;
         default:
             char buf[128];
-            sprintf( buf, "%d Channels", woc.wChannels );
+            sprintf( buf, "%d Channels", woc->maxOutputChannels );
             channels = buf;
             break;
         }
 
         _channels = 0;
 
-        std::string manufacturer;
-        switch( woc.wMid )
-        {
-        case MM_GRAVIS:
-            manufacturer = "Advanced Gravis Computer Technology, Ltd.";
-            break;
-        case MM_ANTEX:
-            manufacturer = "Antex";
-            break;
-        case MM_APPS:
-            manufacturer = "APPS";
-            break;
-        case MM_ARTISOFT:
-            manufacturer = "Artisoft";
-            break;
-        case MM_AST:
-            manufacturer = "AST Research, Inc.";
-            break;
-        case MM_ATI:
-            manufacturer = "ATI Technologies, Inc.";
-            break;
-        case MM_AUDIOFILE:
-            manufacturer = "Audio, Inc.";
-            break;
-        case MM_APT:  // same as MM_AUDIOPT
-        case MM_AUDIOPT:
-            manufacturer = "Audio Processing Technology";
-            break;
-        case MM_AURAVISION:
-            manufacturer = "Auravision";
-            break;
-        case MM_AZTECH:
-            manufacturer = "Aztech Labs, Inc.";
-            break;
-        case MM_CANOPUS:
-            manufacturer = "Canopus, Co., Ltd.";
-            break;
-        case MM_COMPUSIC:
-            manufacturer = "Compusic";
-            break;
-        case MM_CAT:
-            manufacturer = "Computer Aided Technology, Inc.";
-            break;
-        case MM_COMPUTER_FRIENDS:
-            manufacturer = "Computer Friends, Inc.";
-            break;
-        case MM_CONTROLRES:
-            manufacturer = "Control Resources Corporation";
-            break;
-        case MM_CREATIVE:
-            manufacturer = "Creative Labs, Inc.";
-            break;
-        case MM_DIALOGIC:
-            manufacturer = "Dialogic Corporation";
-            break;
-        case MM_DOLBY:
-            manufacturer = "Dolby Laboratories";
-            break;
-        case MM_DSP_GROUP:
-            manufacturer = "DSP Group, Inc.";
-            break;
-        case MM_DSP_SOLUTIONS:
-            manufacturer = "DSP Solutions, Inc.";
-            break;
-        case MM_ECHO:
-            manufacturer = "Echo Speech Corporation";
-            break;
-        case MM_ESS:
-            manufacturer = "ESS Technology, Inc.";
-            break;
-        case MM_EVEREX:
-            manufacturer = "Everex Systems, Inc.";
-            break;
-        case MM_EXAN:
-            manufacturer = "EXAN, Ltd.";
-            break;
-        case MM_FUJITSU:
-            manufacturer = "Fujitsu, Ltd..";
-            break;
-        case MM_IOMAGIC:
-            manufacturer = "I/O Magic Corporation";
-            break;
-        case MM_ICL_PS:
-            manufacturer = "ICL Personal Systems";
-            break;
-        case MM_OLIVETTI:
-            manufacturer = "Ing. C. Olivetti & C., S.p.A.";
-            break;
-        case MM_ICS:
-            manufacturer = "Integrated Circuit Systems, Inc.";
-            break;
-        case MM_INTEL:
-            manufacturer = "Intel Corporation";
-            break;
-        case MM_INTERACTIVE:
-            manufacturer = "InterActive, Inc.";
-            break;
-        case MM_IBM:
-            manufacturer = "IBM";
-            break;
-        case MM_ITERATEDSYS:
-            manufacturer = "Iterated Systems, Inc.";
-            break;
-        case MM_LOGITECH:
-            manufacturer = "Logitech, Inc.";
-            break;
-        case MM_LYRRUS:
-            manufacturer = "Lyrrus, Inc.";
-            break;
-        case MM_MATSUSHITA:
-            manufacturer = "Matsushita Electric Corporation of America";
-            break;
-        case MM_MEDIAVISION:
-            manufacturer = "Media Vision, Inc.";
-            break;
-        case MM_METHEUS:
-            manufacturer = "Metheus Corporation";
-            break;
-        case MM_MELABS:
-            manufacturer = "microEngineering Labs";
-            break;
-        case MM_MICROSOFT:
-            manufacturer = "Microsoft Corporation";
-            break;
-        case MM_MOSCOM:
-            manufacturer = "MOSCOM Corporation";
-            break;
-        case MM_MOTOROLA:
-            manufacturer = "Motorola, Inc.";
-            break;
-        case MM_NMS:
-            manufacturer = "Natural MicroSystems Corporation";
-            break;
-        case MM_NCR:
-            manufacturer = "NCR Corporation";
-            break;
-        case MM_NEC:
-            manufacturer = "NEC Corporation";
-            break;
-        case MM_NEWMEDIA:
-            manufacturer = "New Media Corporation";
-            break;
-        case MM_OKI:
-            manufacturer = "OKI";
-            break;
-        case MM_OPTI:
-            manufacturer = "OPTi, Inc.";
-            break;
-        case MM_ROLAND:
-            manufacturer = "Roland";
-            break;
-        case MM_SCALACS:
-            manufacturer = "SCALACS";
-            break;
-        case MM_EPSON:
-            manufacturer = "Epson";
-            break;
-        case MM_SIERRA:
-            manufacturer = "Sierra Semiconductor Corporation";
-            break;
-        case MM_SILICONSOFT:
-            manufacturer = "Silicon Software";
-            break;
-        case MM_SONICFOUNDRY:
-            manufacturer = "Sonic Foundry";
-            break;
-        case MM_SPEECHCOMP:
-            manufacturer = "Speech Compression";
-            break;
-        case MM_SUPERMAC:
-            manufacturer = "Supermac";
-            break;
-        case MM_TANDY:
-            manufacturer = "Tandy";
-            break;
-        case MM_KORG:
-            manufacturer = "Korg";
-            break;
-        case MM_TRUEVISION:
-            manufacturer = "TrueVision";
-            break;
-        case MM_TURTLE_BEACH:
-            manufacturer = "Turtle Beach Systems";
-            break;
-        case MM_VAL:
-            manufacturer = "Video Associates Labs";
-            break;
-        case MM_VIDEOLOGIC:
-            manufacturer = "VideoLogic";
-            break;
-        case MM_VITEC:
-            manufacturer = "Visual Information Technologies";
-            break;
-        case MM_VOCALTEC:
-            manufacturer = "VocalTec";
-            break;
-        case MM_VOYETRA:
-            manufacturer = "Voyetra";
-            break;
-        case MM_WANGLABS:
-            manufacturer = "Wang Labs";
-            break;
-        case MM_WILLOWPOND:
-            manufacturer = "Willow Pond";
-            break;
-        case MM_WINNOV:
-            manufacturer = "Winnov";
-            break;
-        case MM_XEBEC:
-            manufacturer = "Xebec";
-            break;
-        case MM_YAMAHA:
-            manufacturer = "Yamaha";
-            break;
-        default:
-            char buf[64];
-            sprintf( buf, "Manufacturer: %d", woc.wMid );
-            manufacturer = buf;
-            break;
-        }
-
-        std::string product;
-        char buf[64];
-        sprintf( buf, "Product: %d", woc.wPid );
-        product = buf;
-
-        sprintf( desc, "%s (%s) - %s %s",
-                 woc.szPname, channels.c_str(),
-                 manufacturer.c_str(), product.c_str() );
-#else
-        sprintf( desc, "Board #%d", i );
-#endif
+        sprintf( desc, "%s (%s)",
+                 woc->name, channels.c_str() );
         
         Device dev( name, desc );
         _devices.push_back( dev );
@@ -461,32 +227,36 @@ bool PortAudioEngine::open( const unsigned channels,
 	outputParameters.channelCount = channels;
 	outputParameters.suggestedLatency = 0.050;
 	outputParameters.hostApiSpecificStreamInfo = NULL;
+	unsigned bits = 32;
 	switch( format )
         {
-            case kFloatLSB:
-            case kFloatMSB:
-                outputParameters.sampleFormat = paFloat32;
-                break;
-            case kS32LSB:
-            case kS32MSB:
-                outputParameters.sampleFormat = paInt32;
-                break;
-            case kS16LSB:
-            case kS16MSB:
-                outputParameters.sampleFormat = paInt16;
-                break;
-            case kU8:
-                outputParameters.sampleFormat = paUInt8;
-                break;
+	case kFloatLSB:
+	case kFloatMSB:
+	  outputParameters.sampleFormat = paFloat32;
+	  break;
+	case kS32LSB:
+	case kS32MSB:
+	  outputParameters.sampleFormat = paInt32;
+	  break;
+	case kS16LSB:
+	case kS16MSB:
+	  bits = 16;
+	  outputParameters.sampleFormat = paInt16;
+	  break;
+	case kU8:
+	  bits = 8;
+	  outputParameters.sampleFormat = paUInt8;
+	  break;
         }
 	
+        size_t bytes = 1 * 1024;
 	int err = Pa_OpenStream(
 				&stream,
 				NULL, /* no input */
 				&outputParameters,
 				freq,
-				1024, // FRAMES_PER_BUFFER
-				0,      /* we won't output out of range samples so don't bother clipping them */
+				0, // FRAMES_PER_BUFFER
+				paClipOff,      /* we won't output out of range samples so don't bother clipping them */
 				NULL, /* no callback, use blocking API */
 				NULL ); /* no callback, so no callback userData */
 	if( err != paNoError )
@@ -516,15 +286,25 @@ bool PortAudioEngine::open( const unsigned channels,
 void PortAudioEngine::wait_audio()
 {
   while ( ( outputParameters.device != paNoDevice ) && _enabled &&
-	  _audio_playback )
+	  _audio_playback && Pa_IsStreamActive( stream ) == 1 )
     {
-        Sleep(10);
+      int milliseconds = 10;
+#ifdef _WIN32
+      Sleep(milliseconds);
+#elif _POSIX_C_SOURCE >= 199309L
+      struct timespec ts;
+      ts.tv_sec = milliseconds / 1000;
+      ts.tv_nsec = (milliseconds % 1000) * 1000000;
+      nanosleep(&ts, NULL);
+#else
+      usleep(milliseconds * 1000);
+#endif
     }
 }
 
 bool PortAudioEngine::play( const char* data, const size_t size )
 {
-    wait_audio();
+    //wait_audio();
 
     if ( outputParameters.device == paNoDevice ) {
         return false;
@@ -533,17 +313,12 @@ bool PortAudioEngine::play( const char* data, const size_t size )
         return true;
     }
 
-    
-    _audio_playback = true;
-    
     int err = Pa_WriteStream( stream, data, (unsigned)size );
     if( err != paNoError ) {
         PA_ERROR( err );
       _enabled = false;
       return false;
     }
-    
-    _audio_playback = false;
 
     return true;
 }

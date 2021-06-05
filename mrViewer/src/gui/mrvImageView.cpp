@@ -221,8 +221,6 @@ namespace
 {
     bool FullScreen = false;
     bool presentation = false;
-    bool cursor_on = true;
-    int cursor_counter = 0;
     bool has_tools_grp, has_menu_bar,
         has_top_bar, has_bottom_bar, has_pixel_bar;
 
@@ -4303,21 +4301,9 @@ void ImageView::draw()
           else
             {
                 if ( presentation )
-                {
-                    cursor_counter++;
-                    if ( cursor_on && cursor_counter == 240 )
-                    {
-                        window()->cursor( FL_CURSOR_NONE );
-                        cursor_on = false;
-                        cursor_counter = 0;
-                    }
-                }
+                    window()->cursor( FL_CURSOR_NONE );
                 else
-                {
-                    cursor_on = true;
-                    cursor_counter = 0;
                     window()->cursor(FL_CURSOR_CROSS);
-                }
             }
       }
 
@@ -5413,7 +5399,10 @@ void ImageView::leftMouseUp( int x, int y )
         return;
     }
 
-    window()->cursor( FL_CURSOR_CROSS );
+    if ( presentation )
+        window()->cursor( FL_CURSOR_NONE );
+    else
+        window()->cursor( FL_CURSOR_CROSS );
 
     mrv::media fg = foreground();
 
@@ -8327,17 +8316,26 @@ int ImageView::handle(int event)
         }
         else
         {
-            window()->cursor( FL_CURSOR_CROSS );
+            if ( presentation )
+                window()->cursor( FL_CURSOR_NONE );
+            else
+                window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-        window()->cursor( FL_CURSOR_CROSS );
+        if ( presentation )
+            window()->cursor( FL_CURSOR_NONE );
+        else
+            window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
         return 1;
     case FL_LEAVE:
-        window()->cursor( FL_CURSOR_DEFAULT );
+        if ( presentation )
+            window()->cursor( FL_CURSOR_NONE );
+        else
+            window()->cursor( FL_CURSOR_DEFAULT );
         return 1;
     case FL_PUSH:
         focus(this);
@@ -8380,14 +8378,6 @@ int ImageView::handle(int event)
             return 1;
         }
 
-
-        if ( presentation && !cursor_on )
-        {
-            window()->cursor( FL_CURSOR_CROSS );
-            cursor_on = true;
-            cursor_counter = 0;
-        }
-        
         if ( playback() == CMedia::kStopped )
             mouseMove(int(X), int(Y));
 

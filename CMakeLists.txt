@@ -1,6 +1,7 @@
 #
 # This cmake file must be run under cmake 3.1 or later
 #
+cmake_minimum_required( VERSION 3.1 )
 
 IF(WIN32)
     SET( TEST_BUNDLE 0 )
@@ -89,7 +90,6 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 set( LIB_ACES_CLIP_ONLY 1 )
 set( LIB_AMF_ONLY 1 )
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.15 FATAL_ERROR)
 
 # CMAKE_POLICY( SET CMP0003 NEW )
 cmake_policy( SET CMP0092 NEW )

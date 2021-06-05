@@ -27,6 +27,7 @@ ELSE( LibRaw_LIBRARY_DIR )
     /lib/x86_64-linux-gnu/
     /usr/lib${CMAKE_BUILD_ARCH}
     /usr/lib
+    /usr/lib/x86_64-linux-gnu/
     )
 ENDIF( LibRaw_LIBRARY_DIR )
 
