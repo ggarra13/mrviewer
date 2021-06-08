@@ -221,6 +221,7 @@ namespace
 {
     bool FullScreen = false;
     bool presentation = false;
+  uint64_t cursor_counter = 0;
     bool has_tools_grp, has_menu_bar,
         has_top_bar, has_bottom_bar, has_pixel_bar;
 
@@ -4301,9 +4302,19 @@ void ImageView::draw()
           else
             {
                 if ( presentation )
-                    window()->cursor( FL_CURSOR_NONE );
+		  {
+		    ++cursor_counter;
+		    if ( cursor_counter >= 24 * 5 )
+		      {
+			cursor_counter = 0;
+			window()->cursor( FL_CURSOR_NONE );
+		      }
+		  }
                 else
+		  {
+		    cursor_counter = 0;
                     window()->cursor(FL_CURSOR_CROSS);
+		  }
             }
       }
 
@@ -5399,9 +5410,7 @@ void ImageView::leftMouseUp( int x, int y )
         return;
     }
 
-    if ( presentation )
-        window()->cursor( FL_CURSOR_NONE );
-    else
+    if ( !presentation )
         window()->cursor( FL_CURSOR_CROSS );
 
     mrv::media fg = foreground();
@@ -8316,25 +8325,19 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( presentation )
-                window()->cursor( FL_CURSOR_NONE );
-            else
+            if ( !presentation )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-        if ( presentation )
-            window()->cursor( FL_CURSOR_NONE );
-        else
+        if ( !presentation )
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
         return 1;
     case FL_LEAVE:
-        if ( presentation )
-            window()->cursor( FL_CURSOR_NONE );
-        else
+        if ( !presentation )
             window()->cursor( FL_CURSOR_DEFAULT );
         return 1;
     case FL_PUSH:
@@ -8350,6 +8353,9 @@ int ImageView::handle(int event)
         X = Fl::event_x();
         Y = Fl::event_y();
 
+	cursor_counter = 0;
+	window()->cursor( FL_CURSOR_CROSS );
+	
         if ( _wipe_dir != kNoWipe )
         {
             char buf[128];

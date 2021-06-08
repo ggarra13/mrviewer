@@ -4,8 +4,8 @@ endif()
 
 ExternalProject_Add(
   OIIO
-  URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
-  #GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
+  #URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
+  GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
   GIT_PROGRESS 1
   DEPENDS OpenEXR LibTIFF LIBPNG OCIO ${LibRaw} ${LibWebP} FFmpeg
   CMAKE_ARGS

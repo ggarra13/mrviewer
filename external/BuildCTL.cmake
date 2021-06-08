@@ -5,8 +5,9 @@ include( ExternalProject )
 ## as Release as it is created by the mk bash script file.
 ## However, the install command will report the proper configuration at its
 ## beginning.
+set( build_type ${CMAKE_BUILD_TYPE} )
 if (CMAKE_CXX_COMPILER_VERSION STRGREATER "7.0" )
-  set( CMAKE_BUILD_TYPE "Debug" )
+  set( build_type "Debug" )
 endif()
 
 if (WIN32)
@@ -29,7 +30,7 @@ ExternalProject_Add(
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    -DCMAKE_BUILD_TYPE=${build_type}
     -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
     -DCMAKE_CXX_FLAGS=${cxx_flags}
     -DENABLE_SHARED=${DO_SHARED}
