@@ -2641,14 +2641,20 @@ void ImageView::fit_image()
     DBGM1( "fit h/H=" << h/H );
 
 #ifndef _WIN32
+    DBGM1("fit W1=" << W );
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
+    DBGM1("fit W2=" << W );
 #endif
 
 #ifdef OSX
     h /= 2;  // On OSX Y pixel coords are doubled
+    w /= 2;
 #endif
 
+    DBGM1("fit w=" << w );
+    DBGM1("fit W=" << W );
     double z = w / (double)W;
+    DBGM1( "fit w/W=" << z );
     h /= H;
 
     double pr = 1.0;
@@ -4302,19 +4308,19 @@ void ImageView::draw()
           else
             {
                 if ( presentation )
-		  {
-		    ++cursor_counter;
-		    if ( cursor_counter >= 24 * 5 )
-		      {
-			cursor_counter = 0;
-			window()->cursor( FL_CURSOR_NONE );
-		      }
-		  }
+                  {
+                    ++cursor_counter;
+                    if ( cursor_counter >= 24 * 5 )
+                      {
+                        cursor_counter = 0;
+                        window()->cursor( FL_CURSOR_NONE );
+                      }
+                  }
                 else
-		  {
-		    cursor_counter = 0;
+                  {
+                    cursor_counter = 0;
                     window()->cursor(FL_CURSOR_CROSS);
-		  }
+                  }
             }
       }
 
@@ -8353,9 +8359,9 @@ int ImageView::handle(int event)
         X = Fl::event_x();
         Y = Fl::event_y();
 
-	cursor_counter = 0;
-	window()->cursor( FL_CURSOR_CROSS );
-	
+        cursor_counter = 0;
+        window()->cursor( FL_CURSOR_CROSS );
+
         if ( _wipe_dir != kNoWipe )
         {
             char buf[128];
