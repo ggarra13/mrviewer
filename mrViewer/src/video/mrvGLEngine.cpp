@@ -1698,7 +1698,7 @@ bool GLEngine::is_hdr_image( const CMedia* img )
     AVStream* st = img->get_video_stream();
     if (!st) return false;
 
-#ifdef _WIN32
+#if LIBAVFORMAT_VERSION_INT > AV_VERSION_INT(59, 0, 0 )
     size_t size;
 #else
     int size;
@@ -4019,7 +4019,7 @@ void GLEngine::loadOpenGLShader()
     }
     AVCodecParameters* c = st->codecpar;
 
-#ifdef _WIN32
+#if LIBAVFORMAT_VERSION_INT > AV_VERSION_INT(59, 0, 0 )
     size_t size;
 #else
     int size;
