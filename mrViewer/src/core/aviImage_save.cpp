@@ -186,11 +186,12 @@ static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
             pkt->stream_index);
 }
 
-static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st, AVPacket *pkt)
+static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st, AVPacket*& pkt)
 {
     /* rescale output packet timestamp values from codec to stream timebase */
     av_packet_rescale_ts(pkt, *time_base, st->time_base);
     pkt->stream_index = st->index;
+
 
     /* Write the compressed frame to the media file. */
 #ifdef DEBUG_PACKET
@@ -231,14 +232,18 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
     const AVCodecDescriptor *desc;
 
-    *codec = (AVCodec*)avcodec_find_encoder_by_name( name );
+    *codec = (AVCodec*)avcodec_find_encoder(codec_id);
     if ( !*codec )
     {
-        desc = avcodec_descriptor_get_by_name( name );
-        if ( desc )
+        *codec = (AVCodec*)avcodec_find_encoder_by_name( name );
+        if (!*codec)
         {
-            codec_id = desc->id;
-            *codec = (AVCodec*)avcodec_find_encoder(codec_id);
+            desc = avcodec_descriptor_get_by_name( name );
+            if ( desc )
+            {
+                codec_id = desc->id;
+                *codec = (AVCodec*)avcodec_find_encoder(codec_id);
+            }
         }
     }
 
@@ -247,7 +252,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
         return NULL;
     }
-
 
     LOG_INFO( _("Open encoder ") << (*codec)->name );
 
@@ -263,6 +267,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         return NULL;
     }
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
+
+    /* Some container formats (like MP4) require global headers to be present.
+     * Mark the encoder so that it behaves accordingly. */
+    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
 
 
     switch ((*codec)->type) {
@@ -308,7 +318,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
         c->framerate.num = c->time_base.den;
         c->framerate.den = c->time_base.num;
-        //c->ticks_per_frame = 2;
+
+        if ( codec_id == AV_CODEC_ID_H264 ) c->ticks_per_frame = 2;
 
 
         c->gop_size = int(5 * fps);
@@ -472,10 +483,6 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
-    /* Some container formats (like MP4) require global headers to be present.
-     * Mark the encoder so that it behaves accordingly. */
-    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     c->audio_service_type = AV_AUDIO_SERVICE_TYPE_MAIN;
     //c->channel_layout = av_get_default_channel_layout(c->channels);
@@ -961,10 +968,12 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     if ( opts->metadata )
         av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
 
-    /* open the codec */
     // Some containers like MP4 require a global header.  Set it here, not
     // later as it is too late.
-    // c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+
+    /* open the codec */
     if (avcodec_open2(c, codec, &info) < 0) {
         LOG_ERROR( _("Could not open video codec") );
         return false;
@@ -1031,7 +1040,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     return true;
 }
 
-static void close_video(AVFormatContext *oc, AVStream *st)
+static void close_video_stream(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(enc_ctx[st->id]);
     avcodec_free_context( &enc_ctx[st->id] );
@@ -1159,10 +1168,12 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
     /* encode the image */
     picture->pts = frame_count;
+    std::cerr << "frame " << frame_count << std::endl;
     ret = encode(c, pkt, picture, &got_packet);
     if (ret < 0) {
         LOG_ERROR( _("Error while encoding video frame: ") <<
                    get_error_text(ret) );
+        av_packet_unref( pkt );
         return false;
     }
 
@@ -1170,6 +1181,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     if ( got_packet )
     {
         ret = write_frame( oc, &c->time_base, st, pkt );
+
 
         av_packet_unref( pkt );
 
@@ -1179,6 +1191,10 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
             return false;
         }
 
+    }
+    else
+    {
+        av_packet_unref( pkt );
     }
 
     ++frame_count;
@@ -1273,7 +1289,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     size_t pos = file.rfind( '.' );
     if ( pos != std::string::npos )
     {
-        ext = file.substr( pos, file.size() );
+        ext = file.substr( pos + 1, file.size() );
     }
 
 
@@ -1294,6 +1310,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
     fmt = (AVOutputFormat*) oc->oformat;
     assert( fmt != NULL );
+
+    const AVCodec* c = avcodec_find_encoder( fmt->video_codec );
+
 
     if ( opts->video_codec == _("None") )
     {
@@ -1338,6 +1357,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
         fmt->audio_codec = AV_CODEC_ID_VORBIS;
     else if ( opts->audio_codec == "pcm" )
         fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
+
 
 
     video_st = NULL;
@@ -1537,6 +1557,7 @@ bool flush_video_and_audio( const CMedia* img )
                     break;
                 }
 
+
                 ret = write_frame(oc, &c->time_base, s, pkt);
 
                 av_packet_unref( pkt );
@@ -1582,7 +1603,7 @@ bool aviImage::close_movie( const CMedia* img )
 
     /* Close each codec. */
     if (video_st)
-        close_video(oc, video_st);
+        close_video_stream(oc, video_st);
     if (audio_st)
         close_audio_stream(oc, audio_st);
 
