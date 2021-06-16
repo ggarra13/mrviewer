@@ -31,6 +31,7 @@
 extern "C" {
 #include "libswscale/swscale.h"
 #include "libavfilter/avfilter.h"
+#include "libavcodec/avcodec.h"
 }
 
 #include "CMedia.h"

@@ -50,6 +50,7 @@ extern "C" {
 #include <libavutil/time.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/avassert.h>
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 }

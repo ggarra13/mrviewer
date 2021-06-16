@@ -90,7 +90,14 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     bool ok = mrv::fileroot( root, fileseq, false );
     if ( !ok && !movie ) {
         mrvALERT( _("Could not save sequence or movie, "
-                    "only single frame specified.  Use %d syntax") );
+                    "only single frame specified.\nUse %d syntax or "
+                    "a proper movie extension.") );
+        return;
+    }
+
+    if ( movie && ( ext == ".r3d" || ext == ".braw" ) )
+    {
+        mrvALERT( _("Cannot currently save a movie in those formats.") );
         return;
     }
 

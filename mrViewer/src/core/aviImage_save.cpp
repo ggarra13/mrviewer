@@ -277,7 +277,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
     switch ((*codec)->type) {
     case AVMEDIA_TYPE_AUDIO:
-        c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
+        c->strict_std_compliance = FF_COMPLIANCE_NORMAL;
         aformat = AudioEngine::ffmpeg_format( img->audio_format() );
         if ( opts->audio_codec == "pcm_s16le" )
             c->sample_fmt = AV_SAMPLE_FMT_S16;
@@ -966,7 +966,12 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     AVDictionary* info = NULL;
 
     if ( opts->metadata )
+    {
         av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
+        av_dict_set( &info, "movflags",
+                     "frag_keyframe+empty_moov+default_base_moof", 0 );
+        av_dict_set( &info, "tune", "zerolatency", 0 );
+    }
 
     // Some containers like MP4 require a global header.  Set it here, not
     // later as it is too late.
@@ -1167,8 +1172,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     int got_packet = 0;
 
     /* encode the image */
-    picture->pts = frame_count;
-    std::cerr << "frame " << frame_count << std::endl;
+    picture->pts = frame_count++;
     ret = encode(c, pkt, picture, &got_packet);
     if (ret < 0) {
         LOG_ERROR( _("Error while encoding video frame: ") <<
@@ -1196,8 +1200,6 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     {
         av_packet_unref( pkt );
     }
-
-    ++frame_count;
 
     return true;
 }
