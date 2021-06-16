@@ -227,6 +227,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                             enum AVCodecID codec_id, const CMedia* const img,
                             const AviSaveUI* opts)
 {
+
     AVCodecContext *c;
     AVStream *st;
 
@@ -247,6 +248,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         }
     }
 
+
     /* find the encoder */
     if (!(*codec)) {
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
@@ -254,6 +256,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     }
 
     LOG_INFO( _("Open encoder ") << (*codec)->name );
+
 
     st = avformat_new_stream(oc, *codec);
     if (!st) {
@@ -266,7 +269,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         LOG_ERROR( _("Too many streams in output context") );
         return NULL;
     }
+
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
+
 
     /* Some container formats (like MP4) require global headers to be present.
      * Mark the encoder so that it behaves accordingly. */
@@ -275,9 +280,10 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
 
 
+
     switch ((*codec)->type) {
     case AVMEDIA_TYPE_AUDIO:
-        c->strict_std_compliance = FF_COMPLIANCE_NORMAL;
+        c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
         aformat = AudioEngine::ffmpeg_format( img->audio_format() );
         if ( opts->audio_codec == "pcm_s16le" )
             c->sample_fmt = AV_SAMPLE_FMT_S16;
@@ -295,10 +301,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
             c->block_align = 0;
         if(c->codec_id == AV_CODEC_ID_AC3)
             c->block_align = 0;
+
         break;
 
     case AVMEDIA_TYPE_VIDEO:
     {
+
         c->codec_id = codec_id;
         c->bit_rate = opts->video_bitrate;
         // c->rc_min_rate = c->bit_rate;
@@ -456,6 +464,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
             c->mb_decision = 2;
         }
 
+
         const char* name = avcodec_profile_name( codec_id, c->profile );
         if (name) LOG_INFO( _("Profile name ") << name );
         break;
@@ -463,6 +472,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     default:
         break;
     }
+
 
 
     return st;
@@ -474,6 +484,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
                        const AviSaveUI* opts)
 
 {
+
     AVCodecContext* c = enc_ctx[st->id];
 
     /* allocate and init a re-usable frame */
@@ -493,6 +504,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         LOG_ERROR( _("Could not open audio codec" ) );
         return false;
     }
+
 
     int ret = avcodec_parameters_from_context(st->codecpar, c);
     if ( ret < 0 )
@@ -943,6 +955,8 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     picture->width = width;
     picture->height = height;
 
+
+
     /* the image can be allocated by any means and av_image_alloc() is
      * just the most convenient way if av_malloc() is to be used */
     ret = av_image_alloc(picture->data, picture->linesize, width, height,
@@ -962,27 +976,23 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
                        const CMedia* img, const AviSaveUI* opts )
 {
     AVCodecContext* c = enc_ctx[st->id];
-
     AVDictionary* info = NULL;
+    av_dict_set( &info, "tune", "zerolatency", 0 );
 
     if ( opts->metadata )
     {
         av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
         av_dict_set( &info, "movflags",
                      "frag_keyframe+empty_moov+default_base_moof", 0 );
-        av_dict_set( &info, "tune", "zerolatency", 0 );
     }
 
-    // Some containers like MP4 require a global header.  Set it here, not
-    // later as it is too late.
-    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     /* open the codec */
     if (avcodec_open2(c, codec, &info) < 0) {
         LOG_ERROR( _("Could not open video codec") );
         return false;
     }
+
 
     int ret = avcodec_parameters_from_context(st->codecpar, c);
     if ( ret < 0 )
@@ -993,6 +1003,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 
     //st->codec->time_base = c->time_base;
     st->time_base = c->time_base;
+
 
     if ( opts->metadata )
     {
@@ -1034,6 +1045,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     }
 
     /* Allocate the encoded raw frame. */
+
     picture = alloc_picture(c->pix_fmt, c->width, c->height);
     if (!picture) {
         LOG_ERROR( _("Could not allocate picture") );
@@ -1206,7 +1218,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
 
 static AVFormatContext *oc = NULL;
-static AVOutputFormat* fmt = NULL;
+static const AVOutputFormat* fmt = NULL;
 static AVStream* audio_st = NULL, *video_st = NULL;
 
 AVCodec* audio_cdc, *video_codec;
@@ -1295,7 +1307,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     }
 
 
-    int err = avformat_alloc_output_context2(&oc, NULL, NULL, filename);
+    int err = avformat_alloc_output_context2(&oc, NULL, ext.c_str(), filename);
     if (!oc || err < 0) {
         LOG_WARNING( _("Could not deduce output format from file extension: using MPEG.") );
 
@@ -1310,68 +1322,81 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     oc->flags |= AVFMT_FLAG_NOBUFFER|AVFMT_FLAG_FLUSH_PACKETS;
     oc->max_interleave_delta = 1;
 
-    fmt = (AVOutputFormat*) oc->oformat;
+
+
+    fmt = oc->oformat;
     assert( fmt != NULL );
 
-    const AVCodec* c = avcodec_find_encoder( fmt->video_codec );
+
+
+    AVCodecID video_codec_id = fmt->video_codec,
+              audio_codec_id = fmt->audio_codec;
 
 
     if ( opts->video_codec == _("None") )
     {
-        fmt->video_codec = AV_CODEC_ID_NONE;
+        video_codec_id = AV_CODEC_ID_NONE;
     }
 
     if ( opts->video_codec == "png" )
-        fmt->video_codec = AV_CODEC_ID_PNG;
+        video_codec_id = AV_CODEC_ID_PNG;
     else if ( opts->video_codec == "tiff" )
-        fmt->video_codec = AV_CODEC_ID_TIFF;
+        video_codec_id = AV_CODEC_ID_TIFF;
     else if ( opts->video_codec == "hevc" )
-        fmt->video_codec = AV_CODEC_ID_HEVC;
+        video_codec_id = AV_CODEC_ID_HEVC;
     else if ( opts->video_codec == "h264" )
-        fmt->video_codec = AV_CODEC_ID_H264;
+        video_codec_id = AV_CODEC_ID_H264;
     else if ( opts->video_codec == "mpeg4" )
-        fmt->video_codec = AV_CODEC_ID_MPEG4;
+        video_codec_id = AV_CODEC_ID_MPEG4;
     else if ( opts->video_codec == "prores_ks" )
-        fmt->video_codec = AV_CODEC_ID_PRORES;
+        video_codec_id = AV_CODEC_ID_PRORES;
     else if ( opts->video_codec == "ffv1" )
-        fmt->video_codec = AV_CODEC_ID_FFV1;
-    else if ( fmt->video_codec == AV_CODEC_ID_NONE )
+        video_codec_id = AV_CODEC_ID_FFV1;
+    else if ( video_codec_id == AV_CODEC_ID_NONE )
     {
         // empty on purpose
     }
     else
     {
-        const AVCodec* c = avcodec_find_encoder( fmt->video_codec );
+        const AVCodec* c = avcodec_find_encoder( video_codec_id );
         opts->video_codec = c->name;
         LOG_INFO( "Codec " << c->name << " " << c->long_name << " "
-                  << fmt->video_codec << " selected"  );
+                  << video_codec_id << " selected"  );
     }
 
+
+
     if ( opts->audio_codec == _("None") )
-        fmt->audio_codec = AV_CODEC_ID_NONE;
+        audio_codec_id = AV_CODEC_ID_NONE;
     else if ( opts->audio_codec == "mp3" )
-        fmt->audio_codec = AV_CODEC_ID_MP3;
+        audio_codec_id = AV_CODEC_ID_MP3;
     else if ( opts->audio_codec == "ac3" )
-        fmt->audio_codec = AV_CODEC_ID_AC3;
+        audio_codec_id = AV_CODEC_ID_AC3;
     else if ( opts->audio_codec == "aac" )
-        fmt->audio_codec = AV_CODEC_ID_AAC;
+        audio_codec_id = AV_CODEC_ID_AAC;
     else if ( opts->audio_codec == "vorbis" )
-        fmt->audio_codec = AV_CODEC_ID_VORBIS;
+        audio_codec_id = AV_CODEC_ID_VORBIS;
     else if ( opts->audio_codec == "pcm" )
-        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
+        audio_codec_id = AV_CODEC_ID_PCM_S16LE;
+
+
 
 
 
     video_st = NULL;
     audio_st = NULL;
-    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
+    if (img->has_picture() && video_codec_id != AV_CODEC_ID_NONE ) {
+
+
         video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
-                              fmt->video_codec, img, opts);
+                              video_codec_id, img, opts);
     }
 
-    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
+    if (img->has_audio() && audio_codec_id != AV_CODEC_ID_NONE ) {
+
+
         audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
-                              fmt->audio_codec, img, opts );
+                              audio_codec_id, img, opts );
     }
 
     if ( video_st == NULL && audio_st == NULL )
@@ -1385,6 +1410,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
      * video codecs and allocate the necessary encode buffers. */
     if (video_st)
     {
+
+
         if ( ! open_video(oc, video_codec, video_st, img, opts ) )
             return false;
     }
@@ -1403,6 +1430,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
             return false;
         }
     }
+
+
 
     AVDictionary* info = NULL;
 

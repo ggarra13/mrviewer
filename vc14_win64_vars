@@ -16,6 +16,7 @@ export PATH=$DIST/gettext/bin:$PATH
 export PORTAUDIO_ROOT=$DIST
 export BOOST_ROOT="/D/code/lib/boost_1_73_0"
 export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
+#export FFMPEG_ROOT="/D/code/lib/vc14_Windows_64/ffmpeg-zeranoe"
 export OCIO_ROOT=$DIST
 export OpenColorIO_ROOT=$OCIO_ROOT
 export  GLUT_ROOT_PATH=$DIST
