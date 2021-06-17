@@ -556,7 +556,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 #else
       << "With msvc " << _MSC_VER << endl
 #endif
-      << "(C) 2007-2020 Film Aura, LLC." << endl
+      << "(C) 2007-2021 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
       << endl
@@ -566,7 +566,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << endl
       << "FLTK 1.4" << endl
       << "http://www.fltk.org/" << endl
-      << "(C) 2000-2020 Bill Spitzak & others" << endl
+      << "(C) 2000-2021 Bill Spitzak & others" << endl
       << endl
       << "GLEW " << glewGetString( GLEW_VERSION ) << endl
       << "http://glew.sourceforge.net/" << endl
@@ -583,19 +583,19 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << "libswscale       v" << AV_STRINGIFY( LIBSWSCALE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "License: " << avcodec_license() << endl
-      << "(C) 2000-2020 Fabrice Bellard, et al." << endl
+      << "(C) 2000-2021 Fabrice Bellard, et al." << endl
       << "Configuration: " << avcodec_configuration() << endl << endl
       << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2005-2020 Industrial Light & Magic" << endl
+      << "(C) 2005-2021 Industrial Light & Magic" << endl
       << endl
       << "OpenColorIO v" << OCIO::GetVersion() <<  " or later" << endl
       << "http://www.opencolorio.org/" << endl
-      << "(C) 2005-2020 Sony Pictures Imageworks" << endl
+      << "(C) 2005-2021 Sony Pictures Imageworks" << endl
       << endl
       << "OpenImageIO v" << OIIO_VERSION_STRING <<  " or later" << endl
       << "http://www.openimageio.org/" << endl
-      << "(C) 2003-2020 Larry Gritz, et al. " << endl
+      << "(C) 2003-2021 Larry Gritz, et al. " << endl
       << "All rights reserved." << endl;
     int columns = 80;
     std::string libs = OIIO::get_string_attribute("library_list");
@@ -614,11 +614,11 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
     o << endl
       << "AMPAS ACES v1.0 or later" << endl
       << "https://github.com/ampas/aces-dev" << endl
-      << "(C) 2019-2020 AMPAS" << endl
+      << "(C) 2019-2021 AMPAS" << endl
       << endl
       << "AMPAS CTL v1.5 or later" << endl
       << "https://github.com/ampas/CTL" << endl
-      << "(C) 2014-2020 AMPAS" << endl
+      << "(C) 2014-2021 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl
@@ -627,14 +627,14 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << endl
 #endif
       << "IccProfLib (ICC v4.2)" << endl
-      << "(C) 2003-2020 - The International Color Consortium" << endl
+      << "(C) 2003-2021 - The International Color Consortium" << endl
       << endl
       << "LibRaw " << libraw_version() << endl
-      << "(C) 2008-2020 LibRaw LLC (info@libraw.org)"
+      << "(C) 2008-2021 LibRaw LLC (info@libraw.org)"
       << endl
       << endl
       << "zlib v" << ZLIB_VERSION
-      << "(C) 2008-2020 Jean-loup Gailly and Mark Adler"
+      << "(C) 2008-2021 Jean-loup Gailly and Mark Adler"
       << endl
       << endl
       << R3DSDK::GetSdkVersion()

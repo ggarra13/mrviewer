@@ -43,6 +43,7 @@ typedef std::vector< std::string > stringArray;
       mrv::LoadList stereo;
       bool edl;
       bool play;
+      bool single;
       bool run;
       float gamma;
       float gain;
@@ -57,7 +58,7 @@ typedef std::vector< std::string > stringArray;
       int debug;
 
 
-      Options() : edl(false), play(false), run( false ),
+      Options() : edl(false), play(false), single( false ), run( false ),
                   gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 ), debug( 0 )
           {}
   };

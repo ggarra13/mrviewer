@@ -81,6 +81,11 @@ std::string homepath()
    if ( (e = fl_getenv("HOME")) )
    {
        path = e;
+       size_t pos = path.rfind( "Documents" );
+       if ( pos != std::string::npos )
+       {
+           path = path.replace( pos, path.size(), "" );
+       }
        if ( fs::is_directory( path ) )
            return path;
    }

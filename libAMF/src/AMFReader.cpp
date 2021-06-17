@@ -311,6 +311,20 @@ void AMFReader::aces_applied( XMLElement* element, bool& t )
     }
 }
 
+void AMFReader::aces_enabled( XMLElement* element, bool& t )
+{
+    t = true;
+    const char* enabled = element->Attribute( "enabled" );
+    if ( enabled )
+    {
+        std::string a = enabled;
+        if ( a == "true" || a == "1" )
+            t = true;
+        else
+            t = false;
+    }
+}
+
 AMFReader::AMFError
 AMFReader::output_device_transform( XMLNode* r,
                                     outputDeviceTransformType& t )
@@ -519,6 +533,7 @@ AMFReader::AMFError AMFReader::look_transform( XMLNode* r,
 
     AMFError err = kAllOK;
     aces_applied( element, t.applied );
+    aces_enabled( element, t.enabled );
     aces_description( root2, t.description );
     aces_uuid( root2, t.uuid );
     aces_hash( root2, t.hash );
@@ -547,6 +562,7 @@ AMFReader::AMFError AMFReader::input_transform( XMLNode* r,
 
     AMFError err = kAllOK;
     aces_applied( element, t.applied );
+    aces_enabled( element, t.enabled );
     aces_description( root2, t.description );
     aces_uuid( root2, t.uuid );
     aces_hash( root2, t.hash );

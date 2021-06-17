@@ -103,6 +103,7 @@ struct inverseReferenceRenderingTransformType
 struct inputTransformType
 {
     bool applied;
+    bool enabled;
     std::string description;
     hashType hash;
     UUIDType uuid;
@@ -161,6 +162,7 @@ struct ColorCorrectionRefType
 struct lookTransformType
 {
     bool applied;
+    bool enabled;
     std::string description;
     hashType hash;
     UUIDType uuid;

@@ -634,8 +634,7 @@ void GLEngine::reset_vr_matrix()
 }
 
 /**
- * Resets the view matrix for VR and sets the projection to match the
- * window's viewport
+ * Restores the view and model matrix from VR
  *
  */
 void GLEngine::restore_vr_matrix()
@@ -1699,7 +1698,11 @@ bool GLEngine::is_hdr_image( const CMedia* img )
     AVStream* st = img->get_video_stream();
     if (!st) return false;
 
+#if LIBAVFORMAT_VERSION_INT > AV_VERSION_INT(59, 0, 0 )
+    size_t size;
+#else
     int size;
+#endif
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
                                     av_stream_get_side_data( st,
                                                              AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
@@ -1842,10 +1845,10 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic )  continue;
 
 
-        DBGM2( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
+        DBGM2( "draw image " << img->name() << " frame " << frame );
 
         mrv::Recti dpw = img->display_window(frame);
         mrv::Recti daw = img->data_window(frame);
@@ -2294,6 +2297,39 @@ void GLEngine::draw_images( ImageList& images )
         CHECK_GL;
         quad->draw( texWidth, texHeight );
         CHECK_GL;
+
+        if ( _view->hud() & ImageView::kHudCenter )
+        {
+            glScaled( 1.0/texWidth, 1.0/texHeight, 1.0 );
+
+            glDisable( GL_STENCIL_TEST );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glDisable( GL_TEXTURE_3D );
+            CHECK_GL;
+
+            uchar r, g, b;
+            Fl::get_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
+
+            color( (uchar)0, (uchar)0, (uchar)0, 255 );
+            float o = 1.0 / _view->zoom();
+            glLineWidth(2.0);
+            glBegin(GL_LINES);
+              glVertex2f(o,-20); glVertex2f(o,20);
+              glVertex2f(-20,-o); glVertex2f(20,-o);
+            glEnd();
+            color( r, g, b, 255 );
+            glBegin(GL_LINES);
+              glVertex2f(0,-20); glVertex2f(0,20);
+              glVertex2f(-20,0); glVertex2f(20,0);
+            glEnd();
+
+            CHECK_GL;
+            glEnable( GL_TEXTURE_2D );
+            CHECK_GL;
+            glEnable( GL_TEXTURE_3D );
+        }
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
@@ -3983,7 +4019,11 @@ void GLEngine::loadOpenGLShader()
     }
     AVCodecParameters* c = st->codecpar;
 
+#if LIBAVFORMAT_VERSION_INT > AV_VERSION_INT(59, 0, 0 )
+    size_t size;
+#else
     int size;
+#endif
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
                                     av_stream_get_side_data( st,
                                                              AV_PKT_DATA_MASTERING_DISPLAY_METADATA,

@@ -4,6 +4,7 @@ ExternalProject_Add(
   AcesContainer
   GIT_REPOSITORY "https://github.com/ampas/aces_container.git"
   GIT_PROGRESS 1
+  DEPENDS LibTIFF
   CMAKE_ARGS
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
   -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}

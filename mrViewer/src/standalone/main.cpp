@@ -295,16 +295,16 @@ int main( int argc, const char** argv )
       try {
           mrv::Options opts;
           if ( argc > 0 )
-	    {
-	      DBG;
+            {
+              DBG;
               mrv::parse_command_line( argc, argv, opts );
-	    }
+            }
           argc = 0;
 
           DBG;
 
-	  if ( !ui ) ui = new ViewerUI;
-	  
+          if ( !ui ) ui = new ViewerUI;
+
           // Make the main view window start with focus
           ui->uiView->take_focus();
 
@@ -322,7 +322,8 @@ int main( int argc, const char** argv )
 
                   mrv::fileroot( fileroot, *it, true, false );
                   if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() &&
-                       mrv::is_valid_sequence( fileroot.c_str() ) )
+                       mrv::is_valid_sequence( fileroot.c_str() ) &&
+                       !opts.single )
                   {
                       mrv::get_sequence_limits( start, end, fileroot );
                       opts.files.push_back( mrv::LoadInfo( fileroot, start, end,

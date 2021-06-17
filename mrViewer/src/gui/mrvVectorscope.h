@@ -27,7 +27,7 @@
 #ifndef mrvVectorscope_h
 #define mrvVectorscope_h
 
-#include <FL/Fl_Box.H>
+#include <FL/Fl_Gl_Window.H>
 
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
@@ -36,7 +36,7 @@ class ViewerUI;
 
 namespace mrv
 {
-class Vectorscope : public Fl_Box
+class Vectorscope : public Fl_Gl_Window
 {
 public:
     Vectorscope( int x, int y, int w, int h, const char* l = 0 );

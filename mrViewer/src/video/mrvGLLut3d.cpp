@@ -981,7 +981,8 @@ bool     GLLut3d::RT_ctl_transforms( std::string& key,
                                      const bool warn )
 {
     bool ok = false;
-    if ( img->idt_transform() )
+    const CMedia::TransformId& t = img->idt_transform_id();
+    if ( img->idt_transform() && t.enabled && !t.applied )
     {
         std::string name = img->idt_transform();
         Transform t( name, Transform::kCTL );
@@ -1031,6 +1032,8 @@ bool     GLLut3d::RT_ctl_transforms( std::string& key,
 
         for ( ; i < num; ++i )
         {
+            const CMedia::TransformId& id = img->look_mod_transform_id( i );
+            if ( ! id.enabled || id.applied ) continue;
             std::string name = img->look_mod_transform(i);
             Transform t( name, Transform::kCTL );
             if ( !key.empty() ) key += " -> ";
@@ -1097,7 +1100,7 @@ bool    GLLut3d::RT_icc_transforms( std::string& key,
     CIccProfile* pIcc = colorProfile::get( profile );
     if ( pIcc )
     {
-        Transform t( profile, Transform::kICC,
+        Transform t( profile, Transform::kICC, true,
                      (icRenderingIntent) img->rendering_intent() );
         if ( !key.empty() ) key += " -> ";
         key += profile;

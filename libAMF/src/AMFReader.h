@@ -90,6 +90,7 @@ class AMF_EXPORT AMFReader
     AMFError aces_system_version( XMLNode* root2, versionType& t );
     AMFError aces_transform_id( XMLNode* r, std::string& t );
     void aces_applied( XMLElement* element, bool& t );
+    void aces_enabled( XMLElement* element, bool& t );
 
   public:
     AMFReader();

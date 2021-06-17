@@ -1,4 +1,3 @@
-cmake_minimum_required( VERSION 3.1 )
 
 PROJECT( mrViewer )
 
@@ -23,7 +22,7 @@ FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
-ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
+ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
 
@@ -64,34 +63,42 @@ FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
 
+if( USE_PORTAUDIO )
+    FIND_PACKAGE( PortAudio REQUIRED )
+endif()
+
+# SET( OpenTime_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
+# FIND_PACKAGE( OpenTime REQUIRED )  # for OTIO
+# SET( OpenTimelineIO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
+# FIND_PACKAGE( OpenTimelineIO REQUIRED )  # for OTIO
+
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -D_CRT_SECURE_NO_WARNINGS )
 
+if( PORTAUDIO_FOUND )
+    ADD_DEFINITIONS( -DPORTAUDIO )
+endif()
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
   #  ADD_COMPILE_OPTIONS( -W1 )
-   ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
-  SET(OS_LIBRARIES
-  Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
-  )
 
-   #SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCPMTD -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBCMT -NODEFAULTLIB:LIBCMTD" )
+  ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
 
-   SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF" )
+  SET(OS_LIBRARIES GDIplus Winmm ws2_32 Psapi ${GLEW_LIBRARIES} )
+
+  SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF" )
 
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   IF(APPLE)
   # Media libraries for Apple
-  ADD_DEFINITIONS( -DOSX -DMR_SSE )
+  ADD_DEFINITIONS( -DOSX -DMR_SSE -D__MACOSX_CORE__ )
   ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
   set( AOENGINE 1 )
 
   LINK_DIRECTORIES( /usr/local/lib )
   set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
-
-  ADD_DEFINITIONS( -D__MACOSX_CORE__ )
 
   IF( AOENGINE )
     ADD_DEFINITIONS( -DAOENGINE )
@@ -110,9 +117,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ELSE(APPLE)
-  ADD_DEFINITIONS( -DMR_SSE )
-  # ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=0 )
-  ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
+    ADD_DEFINITIONS( -DMR_SSE )
+    ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=1 )
+    ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
 
 
   # Media libraries for Linux
@@ -190,7 +197,7 @@ INCLUDE_DIRECTORIES(
   ${LibRaw_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
-  ${FLTK_INCLUDE_DIR}
+  ${FLTK_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
   ${TINYXML2_INCLUDE_DIR}
@@ -204,6 +211,9 @@ INCLUDE_DIRECTORIES(
   ${GLEW_INCLUDE_DIR}
   )
 
+if( PORTAUDIO_FOUND )
+  INCLUDE_DIRECTORIES( ${PORTAUDIO_INCLUDE_DIR} )
+endif()
 
 FLTK_WRAP_UI( mrViewer
   gui/aviSave.fl
@@ -379,7 +389,7 @@ SET( SOURCES
 #
 # Audio Engines
 #
-SET( SOURCES audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
@@ -464,6 +474,9 @@ SET( LIBRARIES
   ${OS_LIBRARIES}
   )
 
+if( PORTAUDIO_FOUND )
+    set( LIBRARIES ${PORTAUDIO_LIBRARIES} ${LIBRARIES} )
+endif()
 
 #
 # RELEASE VERSION
@@ -795,6 +808,7 @@ MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
 MESSAGE( STATUS "R3DSDK:        ${R3DSDK_FOUND} ${R3SDK_VERSION}" )
 MESSAGE( STATUS "libintl:       ${LIBINTL_FOUND} ${LIBINTL_VERSION}" )
 MESSAGE( STATUS "TinyXML2:      ${TINYXML2_FOUND} ${TINYXML2_VERSION}" )
+MESSAGE( STATUS "PortAudio:     ${PORTAUDIO_FOUND} ${PORTAUDIO_VERSION}" )
 
 IF(R3DSDK_FOUND)
   MESSAGE( STATUS "R3DSDK INCLUDE DIR=${R3DSDK_INCLUDE_DIR}" )
@@ -807,7 +821,7 @@ IF(GLUT_FOUND)
 ENDIF(GLUT_FOUND)
 
 IF(FLTK_FOUND)
-  MESSAGE( STATUS "FLTK INCLUDE DIR=${FLTK_INCLUDE_DIR}" )
+  MESSAGE( STATUS "FLTK INCLUDE DIRS=${FLTK_INCLUDE_DIRS}" )
   MESSAGE( STATUS "FLTK LIBRARIES=${FLTK_LIBRARIES}" )
 ENDIF(FLTK_FOUND)
 

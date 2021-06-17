@@ -79,6 +79,9 @@ public:
     //! Ask for filename and open sequence or movie file
     void open();
 
+    //! Ask for filename and open AMF (ACES Metadata File)
+    void open_amf();
+
     //! Ask for filename and open it as a stereo image for current
     //! selected image
     void open_stereo();

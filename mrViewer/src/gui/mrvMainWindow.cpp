@@ -73,8 +73,11 @@ namespace mrv {
 MainWindow::MainWindow( int W, int H, const char* title ) :
 Fl_Double_Window( W, H, title )
 {
+    DBG3;
     xclass("mrViewer");
+    DBG3;
     set_icon();
+    DBG3;
 
     const char* r = fl_getenv( "MRV_ROOT" );
     if ( r )
@@ -82,13 +85,16 @@ Fl_Double_Window( W, H, title )
         Preferences::root = r;
     }
 
+    DBG3;
 
     if ( Preferences::root.empty() )
     {
         EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
     }
 
+    DBG3;
     Fl::use_high_res_GL(true);
+    DBG3;
 }
 
 MainWindow::~MainWindow()
@@ -126,6 +132,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::set_icon()
 {
+    DBG3;
     fl_open_display();  // Needed for icons
 
     // Turn off screensaver and black screen

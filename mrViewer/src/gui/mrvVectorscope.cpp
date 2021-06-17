@@ -17,7 +17,6 @@
 */
 
 
-#include <FL/fl_draw.H>
 
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
@@ -31,6 +30,23 @@
 #include "mrViewer.h"
 
 
+#include <GL/glew.h>
+
+#ifdef OSX
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/glu.h>
+#include <GL/glut.h>
+#endif
+
+#if defined(WIN32) || defined(WIN64)
+#  include <GL/wglew.h>
+#elif defined(LINUX)
+#  include <GL/glxew.h>
+#endif
+
+#include <FL/gl.h>
 
 #ifdef _WIN32
 #define isfinite(x) _finite(x)
@@ -40,9 +56,10 @@ namespace mrv
 {
 
 Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
-Fl_Box( x, y, w, h, l )
+Fl_Gl_Window( x, y, w, h, l )
 {
-    color( FL_BLACK );
+    box( FL_NO_BOX );
+    // color( FL_BLACK );
     //    buttoncolor( FL_BLACK );
     tooltip( _("Mark an area in the image with the left mouse button") );
 }
@@ -54,9 +71,28 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     int W = diameter_/2;
     int H = diameter_/2;
 
-    fl_color( FL_WHITE );
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+    glClearColor( 0, 0, 0, 0 );
+    glClear( GL_COLOR_BUFFER_BIT );
+    glShadeModel( GL_FLAT );
+    glDisable( GL_TEXTURE_2D );
 
-    mrv::Recti r2( diameter_, diameter_ );
+    glColor4f( 1.0, 1.0, 1.0, 1.0 );
+
+    // Draw surronding circle
+    glMatrixMode( GL_MODELVIEW );
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef( W, H, 0 );
+    glBegin(GL_LINE_LOOP);
+    const int sides = 32;
+    for (int j=0; j<sides; j++) {
+        double ang = j*2*M_PI/sides;
+        glVertex3f(cos(ang)*W,sin(ang)*W,0);
+    }
+    glEnd();
+    glPopMatrix();
+
 
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
@@ -66,106 +102,109 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     // Draw diagonal center lines
     for ( i = 0; i < 4; ++i, angle += 90 )
     {
-        fl_push_matrix();
-        fl_translate( W2 + W, H2 + H );
-        fl_rotate(angle);
-        fl_begin_line();
-          fl_vertex( 0, 4 );
-          fl_vertex( 0, R2 );
-        fl_end_line();
-        fl_pop_matrix();
+        glPushMatrix();
+        glLoadIdentity();
+        glTranslatef( W2 + W, H2 + H, 0 );
+        glRotatef( angle, 0, 0, 1 );
+        glBegin( GL_LINES );
+        glVertex2i( 0, 4 );
+        glVertex2i( 0, R2 );
+        glEnd();
+        glPopMatrix();
     }
 
     // Draw cross
-    fl_push_matrix();
-    fl_translate( W2, H2 );
-        fl_begin_line();
-          fl_vertex( W, 0);
-          fl_vertex( W, diameter_ );
-        fl_end_line();
-        fl_begin_line();
-           fl_vertex( 0, H );
-           fl_vertex( diameter_, H );
-        fl_end_line();
-    fl_pop_matrix();
-
-
-    // Draw surronding circle
-    fl_push_matrix();
-    fl_translate( W2 - W, H2 - H );
-    fl_begin_line();
-       fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 ); // @TODO: fltk1.4 fl_chord
-    fl_end_line();
-    fl_pop_matrix();
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef( W2, H2,0 );
+    glBegin( GL_LINES );
+      glVertex2i( W, 0);
+      glVertex2i( W, diameter_ );
+      glVertex2i( 0, H );
+      glVertex2i( diameter_, H );
+    glEnd();
+    glPopMatrix();
 
 
     int RW  = int( diameter_ * 0.05f );
     int RH  = RW;
 
     // Translate cursor to center of drawing
-    fl_push_matrix();
-    fl_translate( W2 + W, H2 + H );
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef( W2 + W, H2 + H, 0 );
 
     static const char* names[] = {
         "R",
-        "B",
-        "M",
         "Y",
+        "G",
         "C",
-        "G"
+        "B",
+        "M"
     };
 
     const float coords[][2] = {
-    {8,   3}, //
-    {18, 14}, //
-    {15,  5}, //
-    {3,  10}, //
-    {12, 19}, //
-    {3,  17}, //
+    {14, 14}, // R
+    {18, 14}, // Y
+    {12, 26}, // G
+    {20, 20}, // C
+    {24, 10}, // B
+    {14, 14}, // M
     };
 
     // Draw rectangles with letters near them
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
-        fl_push_matrix();
-        fl_rotate(angle);
-        fl_translate( 0, int(W * 0.75f) );
+        glDisable( GL_TEXTURE_2D );
+        glPushMatrix();
+        glRotatef(angle, 0, 0, 1);
+        glTranslatef( 0, int(W * 0.75f), 0 );
 
-        fl_begin_loop();
-        fl_vertex(  -RW, -RH );
-        fl_vertex( RW, -RH );
-        fl_vertex( RW, -RH );
-        fl_vertex( RW, RH );
-        fl_vertex( -RW,  RH );
-        fl_vertex( RW, RH );
-        fl_vertex( -RW,  RH );
-        fl_vertex( -RW, -RH );
-        fl_end_loop();
+        glBegin( GL_LINE_LOOP );
+        glVertex2i(  -RW, -RH );
+        glVertex2i( RW, -RH );
+        glVertex2i( RW, RH );
+        glVertex2i( -RW,  RH );
+        glEnd();
 
-        fl_pop_matrix();
 
         // @TODO: fltk1.4 cannot draw transformed letters
-        // fl_translate( 0, int(W * 0.15f) );
-        fl_draw(names[i], coords[i][0] * RW, coords[i][1] * RH);
+        glEnable( GL_TEXTURE_2D );
+        gl_font( FL_HELVETICA, 12 );
+        gl_draw(names[i], coords[i][0], coords[i][1]);
+        glPopMatrix();
     }
 
-    fl_pop_matrix();
-
+    glPopMatrix();
 
 }
 
 void Vectorscope::draw()
 {
-    draw_box();
+    if ( !valid() )
+    {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glViewport( 0, 0, pixel_w(), pixel_h() );
+        glOrtho( 0, w(), 0, h(), -1, 1 );
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        valid(1);
+    }
+
 
     mrv::Recti r( Fl::box_dx(box()),
                   Fl::box_dy(box()),
                   Fl::box_dw(box()),
                   Fl::box_dh(box()) );
 
-    diameter_ = h();
-    if ( w() < diameter_ ) diameter_ = w();
+    diameter_ = pixel_h();
+    if ( pixel_w() < diameter_ ) diameter_ = pixel_w();
+#ifdef OSX
+    diameter_ /= 2.0;
+#endif
     diameter_ *= 0.95;
 
     draw_grid(r);
@@ -179,22 +218,22 @@ void Vectorscope::draw_pixel( const mrv::Recti& r,
                               const CMedia::Pixel& rgb,
                               const CMedia::Pixel& hsv )
 {
-    fl_color( fl_rgb_color( (unsigned char)(rgb.r * 255),
-                            (unsigned char)(rgb.g * 255),
-                            (unsigned char)(rgb.b * 255) ) );
+    glColor4f( rgb.r, rgb.g, rgb.b, 1.0f );
 
     int W2 = (r.w() + diameter_) / 2;
     int H2 = (r.h() + diameter_ )/ 2;
 
-    fl_push_matrix();
-    fl_translate( W2, H2 );
-    fl_rotate( -165.0f + hsv.r * 360.0f );
-    fl_scale( hsv.g * 0.375f );
-    fl_begin_line();
-    fl_vertex( 0, diameter_ );
-    fl_vertex( 1, diameter_+1 );
-    fl_end_line();
-    fl_pop_matrix();
+    glDisable( GL_TEXTURE_2D );
+    glDisable( GL_TEXTURE_3D );
+
+    glPushMatrix();
+    glTranslatef( W2, H2, 0 );
+    glRotatef( 15.0 + hsv.r * 360.0f, 0, 0, 1 );
+    glScalef( hsv.g * 0.375f, hsv.g * 0.375, 1 );
+    glBegin( GL_POINTS );
+    glVertex2i( 0, diameter_ );
+    glEnd();
+    glPopMatrix();
 }
 
 void Vectorscope::draw_pixels( const mrv::Recti& r )

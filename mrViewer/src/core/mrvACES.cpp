@@ -31,6 +31,7 @@ std::string aces_amf_filename( const char* file )
     std::string root, frame, view, ext;
     mrv::split_sequence( root, frame, view, ext, file );
 
+
     fs::path f = root;
     std::string filename = f.filename().string();
 
@@ -42,7 +43,7 @@ std::string aces_amf_filename( const char* file )
     xml = fs::canonical( p ).string();
 #endif
     if ( ! xml.empty() ) xml += "/";
-    xml += "AMF.";
+
     xml += filename;
     xml += "amf";
 
@@ -165,19 +166,29 @@ bool load_amf( CMedia* img, const char* filename )
     inputTransformType& i = p.inputTransform;
     if ( !i.transformId.empty() )
         img->idt_transform( i.transformId.c_str() );
+    img->idt_transform_id().enabled = i.enabled;
+    img->idt_transform_id().applied = i.applied;
 
     inverseOutputDeviceTransformType& iodt = i.inverseOutputDeviceTransform;
     if ( !iodt.transformId.empty() )
         img->inverse_odt_transform( iodt.transformId.c_str() );
+    // img->inverse_odt_transform_id().enabled = iodt.enabled;
+    // img->inverse_odt_transform_id().applied = iodt.applied;
+
+
 
     inverseOutputTransformType& iot = i.inverseOutputTransform;
     if ( !iot.transformId.empty() )
         img->inverse_ot_transform( iot.transformId.c_str() );
+    // img->inverse_ot_transform_id().enabled = iot.enabled;
+    // img->inverse_ot_transform_id().applied = iot.applied;
 
     inverseReferenceRenderingTransformType& irrt =
         i.inverseReferenceRenderingTransform;
     if ( !irrt.transformId.empty() )
         img->inverse_rrt_transform( irrt.transformId.c_str() );
+    // img->inverse_rrt_transform_id().enabled = irrt.enabled;
+    // img->inverse_rrt_transform_id().applied = irrt.applied;
 
     lookTransformType& l = p.lookTransform;
     if ( ! l.transformId.empty() )
@@ -198,16 +209,26 @@ bool load_amf( CMedia* img, const char* filename )
     sops.saturation( l.SatNode );
 
     img->asc_cdl( sops );
-    img->append_look_mod_transform( "LMT.SOPNode" );
-    img->append_look_mod_transform( "LMT.SatNode" );
 
+    if ( s.slope[0] != 1.0f || s.slope[1] != 1.0f || s.slope[2] != 1.0f ||
+         s.offset[0] != 0.0f || s.offset[1] != 0.0f || s.offset[2] != 0.0f ||
+         s.power[0] != 1.0f || s.power[1] != 1.0f || s.power[2] != 1.0f )
+    {
+        img->append_look_mod_transform( "LMT.SOPNode" );
+    }
+    if ( l.SatNode != 1.0f )
+    {
+        img->append_look_mod_transform( "LMT.SatNode" );
+    }
     fromCdlWorkingSpaceType& from = c.fromCdlWorkingSpace;
     if ( ! from.transformId.empty() )
         img->append_look_mod_transform( from.transformId.c_str() );
 
     outputTransformType& o = p.outputTransform;
-    img->rendering_transform( o.referenceRenderingTransform.transformId.c_str() );
-     mrv::Preferences::ODT_CTL_transform = o.outputDeviceTransform.transformId.c_str();
+    referenceRenderingTransformType& rrt = o.referenceRenderingTransform;
+    outputDeviceTransformType& odt = o.outputDeviceTransform;
+    img->rendering_transform( rrt.transformId.c_str() );
+    mrv::Preferences::ODT_CTL_transform = odt.transformId.c_str();
 
     return true;
 }
@@ -254,7 +275,10 @@ bool save_amf( const CMedia* img, const char* filename )
 
     if ( img->idt_transform() )
     {
-        p.inputTransform.transformId = img->idt_transform();
+        inputTransformType& i = p.inputTransform;
+        i.applied = false;
+        i.enabled = true;
+        i.transformId = img->idt_transform();
     }
 
     size_t i = 0;
@@ -263,7 +287,8 @@ bool save_amf( const CMedia* img, const char* filename )
     size_t num_graderefs = img->number_of_grade_refs();
 
     lookTransformType& l = p.lookTransform;
-    l.applied = true;
+    l.applied = false;
+    l.enabled = true;
 
     //
     // GradeRefs are transformed into Look Mod Transforms.

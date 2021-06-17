@@ -75,11 +75,13 @@ public:
 
         std::string       name;
         Type              type;
+        bool              enabled;
         icRenderingIntent intent;
 
         Transform( const std::string& n, const Type t,
+                   const bool e = true,
                    const icRenderingIntent i = icPerceptual ) :
-            name(n), type(t), intent(i)
+            name(n), type(t), enabled(e), intent(i)
         {
         }
     };

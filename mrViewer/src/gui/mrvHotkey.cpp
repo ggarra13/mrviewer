@@ -39,6 +39,7 @@ Hotkey kOpenDirectory( true, false, false, true, 'o' );
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kOpenSingleImage( true, true, false, false, 'o' );
 Hotkey kOpenStereoImage( false, false, true, false, 'o' );
+Hotkey kOpenAMF( false, false, false, true, 'o' );
 Hotkey kOpenClipXMLMetadata( true, false, false, false, 'x' );
 Hotkey kOpenSession( false, true, false, false, 'o' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
@@ -299,6 +300,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Open Directory"), kOpenDirectory),
     HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
     HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
+    HotkeyEntry( _("Open Aces Metadata File (AMF)"), kOpenAMF, true),
     HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
     HotkeyEntry( _("Open Session"), kOpenSession, true),
     HotkeyEntry( _("Save Reel"), kSaveReel),

@@ -488,7 +488,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
-    
+
     view.get( "zoom_speed", tmp, 2 );
     uiPrefs->uiPrefsZoomSpeed->value( tmp );
 
@@ -579,6 +579,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
     DBG3;
         uiPrefs->uiColorTheme->picked( item );
+    DBG3;
     }
 
     //
@@ -681,6 +682,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     hud.get("attributes", tmp, 0 );
     DBG3;
     uiPrefs->uiPrefsHudAttributes->value( (bool) tmp );
+    hud.get("center", tmp, 0 );
+    DBG3;
+    uiPrefs->uiPrefsHudCenter->value( (bool) tmp );
 
     Fl_Preferences win( view, "window" );
     win.get("fixed_position", tmp, 0 );
@@ -1268,7 +1272,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( version >= 6 )
     {
         if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
-        LOG_INFO( _("Loading hotkeys from ") << _( hotkeys_file.c_str() ) );
+        LOG_INFO( _("Loading hotkeys from ") << prefspath()
+                  << _( hotkeys_file.c_str() ) );
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    tmpS );
     }
@@ -1993,6 +1998,9 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsHudAttributes->value() )
         hud |= mrv::ImageView::kHudAttributes;
 
+    if ( uiPrefs->uiPrefsHudCenter->value() )
+        hud |= mrv::ImageView::kHudCenter;
+
         DBG3;
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
@@ -2299,6 +2307,7 @@ void Preferences::save()
     hud.set("frame_range", uiPrefs->uiPrefsHudFrameRange->value() );
     hud.set("memory", uiPrefs->uiPrefsHudMemory->value() );
     hud.set("attributes", uiPrefs->uiPrefsHudAttributes->value() );
+    hud.set("center", uiPrefs->uiPrefsHudCenter->value() );
 
     {
         Fl_Preferences win( view, "window" );
@@ -2546,7 +2555,7 @@ void Preferences::save()
     Fl_Preferences hotkeys( base, "hotkeys" );
     hotkeys.set( "default", hotkeys_file.c_str() );
 
-    if ( ! fs::exists( prefspath() + "/" + hotkeys_file ) )
+    if ( ! fs::exists( prefspath() + hotkeys_file ) )
     {
         Fl_Preferences keys( prefspath().c_str(), "filmaura",
                              hotkeys_file.c_str() );

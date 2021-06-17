@@ -1,6 +1,7 @@
 #
 # This cmake file must be run under cmake 3.1 or later
 #
+cmake_minimum_required( VERSION 3.1 )
 
 IF(WIN32)
     SET( TEST_BUNDLE 0 )
@@ -46,10 +47,11 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+option( USE_PORTAUDIO "Use PortAudio interface (Not working)" OFF )
 
 SET( VersionMajor 5 )
 SET( VersionMinor 8 )
-SET( VersionPatch 4 )
+SET( VersionPatch 9 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )
@@ -63,10 +65,12 @@ set(mrViewerPackageName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_B
 
 # use, i.e. don't skip the full RPATH for the build tree
 SET(CMAKE_SKIP_BUILD_RPATH FALSE)
+SET(CMAKE_SKIP_RPATH FALSE)
 
 # when building, don't use the install RPATH already
 # (but later on when installing)
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+SET(CMAKE_SKIP_INSTALL_RPATH TRUE)
 
 # the RPATH to be used when installing
 SET(CMAKE_INSTALL_RPATH "")
@@ -88,7 +92,6 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 set( LIB_ACES_CLIP_ONLY 1 )
 set( LIB_AMF_ONLY 1 )
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.15 FATAL_ERROR)
 
 # CMAKE_POLICY( SET CMP0003 NEW )
 cmake_policy( SET CMP0092 NEW )

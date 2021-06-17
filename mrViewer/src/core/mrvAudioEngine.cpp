@@ -43,6 +43,10 @@
 #    include "audio/mrvAOEngine.h"
 #endif
 
+#ifdef PORTAUDIO
+#    include "audio/mrvPortAudioEngine.h"
+#endif
+
 namespace mrv {
 
 AudioEngine::DeviceList AudioEngine::_devices;
@@ -176,6 +180,11 @@ AudioEngine* AudioEngine::factory()
 {
     AudioEngine* r = NULL;
 
+#ifdef PORTAUDIO
+    r = new mrv::PortAudioEngine();
+
+#else
+    
 #if defined(_WIN32) || defined(_WIN64)
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
@@ -194,6 +203,7 @@ AudioEngine* AudioEngine::factory()
 #  endif
 #endif
 
+#endif
     return r;
 }
 

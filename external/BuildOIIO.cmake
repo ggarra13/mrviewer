@@ -4,10 +4,10 @@ endif()
 
 ExternalProject_Add(
   OIIO
-  URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
-  #GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
+  #URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
+  GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
   GIT_PROGRESS 1
-  DEPENDS OpenEXR # LibTIFF LIBPNG OCIO ${LibRaw} ${LibWebP} FFmpeg
+  DEPENDS OpenEXR LibTIFF LIBPNG OCIO ${LibRaw} ${LibWebP} FFmpeg
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

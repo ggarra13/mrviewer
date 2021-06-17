@@ -28,7 +28,7 @@
 #define mrvHistogram_h
 
 #include <core/mrvRectangle.h>
-#include <FL/Fl_Box.H>
+#include <FL/Fl_Gl_Window.H>
 
 class ViewerUI;
 
@@ -37,7 +37,7 @@ namespace mrv
 
 class CMedia;
 
-class Histogram : public Fl_Box
+class Histogram : public Fl_Gl_Window
 {
 public:
     enum Type

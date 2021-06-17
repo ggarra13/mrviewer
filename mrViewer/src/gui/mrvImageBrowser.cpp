@@ -64,7 +64,6 @@ namespace fs = boost::filesystem;
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvThread.h"
-#include "core/picojson.h"
 #include "core/mrStackTrace.h"
 #include "AMFReader.h"
 
@@ -77,8 +76,8 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "mrvImageInfo.h"
 #include "mrvReelUI.h"
-#include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvImageView.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvEDLGroup.h"
 #include "gui/mrvHotkey.h"
@@ -1930,7 +1929,7 @@ void ImageBrowser::save_session()
 //#endif
 //#if 1
         {
-            seek( view()->frame() );
+            seek( img->first_frame() );
         }
 #endif
         add_menu( main()->uiReelWindow->uiMenuBar );
@@ -2913,6 +2912,34 @@ void ImageBrowser::open()
     load( files );
 }
 
+/**
+ * Open new image, sequence or movie file(s).
+ *
+ */
+void ImageBrowser::open_amf()
+{
+
+    Fl_Tree_Item* item = first_selected_item();
+    if ( !item ) return;
+
+    mrv::Element* e = (mrv::Element*) item->widget();
+    mrv::media m = e->media();
+    mrv::CMedia* img = m->image();
+
+    std::string file = mrv::open_amf_file(img, uiMain);
+    if (file.empty()) return;
+
+    for ( ; item; item = next_selected_item(item) )
+    {
+        e = (mrv::Element*) item->widget();
+        m = e->media();
+        img = m->image();
+        load_amf( img, file.c_str() );
+    }
+
+    view()->redraw();
+}
+
 void ImageBrowser::open_stereo()
 {
     stringArray files = mrv::open_image_file(NULL,true, uiMain);
@@ -3470,7 +3497,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     }
 
     CMedia* newImg = load_image( loadfile.c_str(),
-                      start, end, start, end, 24.0f, false );
+                                 start, end, start, end, 24.0f, false );
     if ( !newImg ) return;
 
 
@@ -3483,13 +3510,30 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     m->position( fg->position() );
 
     // Transfer all attributes to new image
+    newImg->idt_transform( img->idt_transform() );
+    newImg->inverse_ot_transform( img->inverse_ot_transform() );
+    newImg->inverse_odt_transform( img->inverse_odt_transform() );
+    newImg->inverse_rrt_transform( img->inverse_rrt_transform() );
+    for (size_t i = 0; i < img->number_of_lmts(); ++i )
+    {
+        newImg->append_look_mod_transform( img->look_mod_transform( i ) );
+    }
+    newImg->asc_cdl( img->asc_cdl() );
+    newImg->rendering_transform( img->rendering_transform() );
     newImg->ocio_input_color_space( img->ocio_input_color_space() );
     newImg->gamma( img->gamma() );
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
     newImg->seek( img->frame() );
+    if ( img->frame() < newImg->first_frame() )
+        newImg->seek( newImg->first_frame() );
+    if ( img->frame() > newImg->last_frame() )
+        newImg->seek( newImg->last_frame() );
     // newImg->decode_video( frame );
     // newImg->find_image( frame );
+    timeline()->value( newImg->frame() );
+    uiMain->uiFrame->value( newImg->frame() );
+    view()->frame( newImg->frame() );
     view()->update_layers();
 
 
@@ -3507,11 +3551,6 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         e->redraw();
     }
 
-    // We need two calls to foreground as it was previously set to m
-    // and would return early.
-    // view()->foreground( fg );
-    // view()->foreground( m );
-    // view()->redraw();
 
 
     int64_t first, last;
@@ -3856,9 +3895,26 @@ void ImageBrowser::previous_image_limited()
         {
             item->clear();
         }
-        menu->add( _("OCIO/Input Color Space"),
-                   kOCIOInputColorSpace.hotkey(),
-                   (Fl_Callback*)attach_ocio_ics_cb, this);
+
+        if ( Preferences::use_ocio )
+        {
+            menu->add( _("OCIO/Input Color Space"),
+                       kOCIOInputColorSpace.hotkey(),
+                       (Fl_Callback*)attach_ocio_ics_cb, this);
+        }
+        else
+        {
+            // CTL / ICC
+            menu->add( _("CTL/Attach Input Device Transform"),
+                       kIDTScript.hotkey(),
+                       (Fl_Callback*)attach_ctl_idt_script_cb,
+                       this );
+            menu->add( _("CTL/Attach Rendering Transform"),
+                        kCTLScript.hotkey(),
+                        (Fl_Callback*)attach_ctl_rrt_script_cb,
+                        this, FL_MENU_DIVIDER);
+        }
+
 
         bool has_version = false;
 
@@ -4633,10 +4689,10 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
-    if ( uiMain->uiView )
-    {
-        uiMain->uiView->frame( f );
-    }
+    if ( ! uiMain->uiView ) return;
+
+    uiMain->uiView->frame( f );
+
 }
 
 void ImageBrowser::clear_edl()

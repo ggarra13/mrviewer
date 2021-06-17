@@ -50,6 +50,7 @@ extern "C" {
 #include <libavutil/time.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/avassert.h>
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 }
@@ -196,7 +197,7 @@ void CMedia::open_audio_codec()
         return;
     }
 
-    _audio_codec = avcodec_find_decoder( cpar->codec_id );
+    _audio_codec = (AVCodec*)avcodec_find_decoder( cpar->codec_id );
     if ( _audio_codec == NULL )
     {
         IMG_ERROR( _("No decoder found for audio stream. ID: ")
@@ -281,12 +282,11 @@ int64_t CMedia::queue_packets( const int64_t frame,
     mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
     SCOPED_LOCK( apm );
 
-    AVPacket pkt = {0};
+    AVPacket* pkt = av_packet_alloc();
 
     // Clear the packet
-    av_init_packet( &pkt );
-    pkt.size = 0;
-    pkt.data = NULL;
+    pkt->size = 0;
+    pkt->data = NULL;
 
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
@@ -302,18 +302,18 @@ int64_t CMedia::queue_packets( const int64_t frame,
         if (eof) {
             if (!got_audio && _audio_ctx &&
                 _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
-                av_init_packet(&pkt);
-                pkt.dts = pkt.pts = apts;
-                pkt.data = NULL;
-                pkt.size = 0;
-                pkt.stream_index = audio_stream_index();
-                _audio_packets.push_back( pkt );
+                pkt = av_packet_alloc();
+                pkt->dts = pkt->pts = apts;
+                pkt->data = NULL;
+                pkt->size = 0;
+                pkt->stream_index = audio_stream_index();
+                _audio_packets.push_back( *pkt );
             }
 
             eof = false;
         }
 
-        int error = av_read_frame( _acontext, &pkt );
+        int error = av_read_frame( _acontext, pkt );
 
         if ( error < 0 )
         {
@@ -357,19 +357,19 @@ int64_t CMedia::queue_packets( const int64_t frame,
             break;
         }
 
-        if ( pkt.stream_index == audio_stream_index() )
+        if ( pkt->stream_index == audio_stream_index() )
         {
-            int64_t pktframe = get_frame( stream, pkt );
+            int64_t pktframe = get_frame( stream, *pkt );
 
             if ( playback() == kBackwards )
             {
                 // Only add packet if it comes before seek frame
-                if ( pktframe <= frame ) _audio_packets.push_back( pkt );
+                if ( pktframe <= frame ) _audio_packets.push_back( *pkt );
                 if ( pktframe < dts ) dts = pktframe;
             }
             else
             {
-                _audio_packets.push_back( pkt );
+                _audio_packets.push_back( *pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
 
@@ -381,7 +381,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     got_audio = true;
                 else if ( pktframe == frame )
                 {
-                    audio_bytes += pkt.size;
+                    audio_bytes += pkt->size;
                     if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                 }
                 if ( (is_seek || playback() == kBackwards) &&
@@ -397,12 +397,12 @@ int64_t CMedia::queue_packets( const int64_t frame,
             fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64
                      " audio pts: %07" PRId64
                      " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
-                     frame, pkt.pts, pkt.dts, pktframe );
+                     frame, pkt->pts, pkt->dts, pktframe );
 #endif
             continue;
         }
 
-        av_packet_unref( &pkt );
+        av_packet_unref( pkt );
     }
 
     int64_t last = last_frame() + _audio_offset;
@@ -1127,12 +1127,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 #if defined(_WIN32)
-        if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
-            _audio_format = AudioEngine::kS32LSB;
-        if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-                                     ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
-                                     ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
-            _audio_format = AudioEngine::kS16LSB;
+    if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+        _audio_format = AudioEngine::kS32LSB;
+    if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
+                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
+        _audio_format = AudioEngine::kS16LSB;
 #endif
 
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
@@ -1408,10 +1408,9 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     //     return kDecodeOK;
     // }
 
-    AVPacket pkt_temp;
-    av_init_packet(&pkt_temp);
-    pkt_temp.data = pkt.data;
-    pkt_temp.size = pkt.size;
+    AVPacket* pkt_temp = av_packet_alloc();
+    pkt_temp->data = pkt.data;
+    pkt_temp->size = pkt.size;
 
     //    assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
 
@@ -1419,7 +1418,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     assert0( pkt.size + _audio_buf_used < _audio_max );
 
     int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
-    assert0( pkt_temp.size <= audio_size );
+    assert0( pkt_temp->size <= audio_size );
 
     if ( _audio_buf_used + audio_size > _audio_max )
     {
@@ -1436,7 +1435,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         int ret = decode_audio3( _audio_ctx,
                                  ( int16_t * )( (int8_t*)_audio_buf +
                                                 _audio_buf_used ),
-                                 &audio_size, &pkt_temp );
+                                 &audio_size, pkt_temp );
         if ( ret < 0 )
         {
             IMG_ERROR( _("Decode_audio failed with error: ")
@@ -1448,7 +1447,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         // If no samples are returned, then break now
         if ( audio_size <= 0 )
         {
-            pkt_temp.size = 0;
+            pkt_temp->size = 0;
             return kDecodeMissingSamples;
         }
 

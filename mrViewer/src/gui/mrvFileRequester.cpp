@@ -780,6 +780,22 @@ std::string open_ocio_config( const char* startfile )
     return file;
 }
 
+std::string open_amf_file( CMedia* img, ViewerUI* main )
+{
+    std::string xml = aces_amf_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("ACES Metadata File (*.{amf})");
+
+    std::string title = _("Load ACES Metadata File (AMF)");
+
+    stringArray filelist;
+
+    std::string file = file_single_requester( title.c_str(),
+                       kXML_PATTERN.c_str(),
+                       xml.c_str() );
+    return file;
+}
+
 void read_clip_xml_metadata( CMedia* img,
                              ViewerUI* main )
 {
@@ -1010,7 +1026,7 @@ std::string save_reel( const char* startdir,
 
     void save_hotkeys( Fl_Preferences& keys )
     {
-        keys.set( "version", 10 );
+        keys.set( "version", 11 );
         for ( int i = 0; hotkeys[i].name != "END"; ++i )
         {
             keys.set( (hotkeys[i].name + " ctrl").c_str(),
@@ -1123,7 +1139,7 @@ std::string save_reel( const char* startdir,
     void load_hotkeys( ViewerUI* uiMain, Fl_Preferences* keys )
     {
         int version = 0;
-        keys->get( "version", version, 10 );
+        keys->get( "version", version, 11 );
         DBG3;
         int tmp = 0;
         char  tmpS[2048];
@@ -1142,7 +1158,7 @@ std::string save_reel( const char* startdir,
                      ( hotkeys[i].name == "Save Session" ||
                        hotkeys[i].name == "Open Session" ) )
                     continue;
-                if ( version < 10 && hotkeys[i].force == true ) continue;
+                if ( version < 11 && hotkeys[i].force == true ) continue;
                 hotkeys[i].hotkey.shift = hotkeys[i].hotkey.ctrl =
                   hotkeys[i].hotkey.alt = hotkeys[i].hotkey.meta = false;
                 hotkeys[i].hotkey.key = hotkeys[i].hotkey.key2 = 0;
