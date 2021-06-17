@@ -977,6 +977,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 {
     AVCodecContext* c = enc_ctx[st->id];
     AVDictionary* info = NULL;
+
     av_dict_set( &info, "tune", "zerolatency", 0 );
 
     if ( opts->metadata )
@@ -1435,9 +1436,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
     AVDictionary* info = NULL;
 
-    av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
-    av_dict_set( &info, "movflags",
-                 "frag_keyframe+empty_moov+default_base_moof", 0 );
 
     /* Write the stream header, if any. */
     err = avformat_write_header(oc, &info);
