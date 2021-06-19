@@ -19,7 +19,7 @@ else()
 endif()
 
 if (APPLE)
-   set( cxx_flags ${cxx_flags} -std=c++11 )
+   set( cxx_flags ${cxx_flags} )
 endif()
 
 ExternalProject_Add(

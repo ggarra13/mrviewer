@@ -231,7 +231,8 @@ bool AOEngine::open( const unsigned channels,
         if ( _device == NULL )
         {
             _enabled = false;
-            LOG_ERROR( _("Error opening ao driver: ") << ao_error_text(errno) );
+            LOG_ERROR( _("Error opening ao driver: ")
+                       << ao_error_text(errno) );
             return false;
         }
 

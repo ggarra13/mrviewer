@@ -2,7 +2,7 @@
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2020  Gonzalo Garramuño
 
-    This program is free software: you can redistribute it and/or modify
+    This program is free software you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -193,6 +193,7 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
     pkt->stream_index = st->index;
 
 
+
     /* Write the compressed frame to the media file. */
 #ifdef DEBUG_PACKET
     log_packet(fmt_ctx, pkt);
@@ -327,6 +328,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         c->framerate.num = c->time_base.den;
         c->framerate.den = c->time_base.num;
 
+        c->ticks_per_frame = 1;
         if ( codec_id == AV_CODEC_ID_H264 ) c->ticks_per_frame = 2;
 
 
@@ -667,6 +669,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     AVCodecContext* c = enc_ctx[st->id];
 
 
+
     audio_type_ptr audio = img->get_audio_frame( frame_audio );
 
     if ( !audio ) {
@@ -690,6 +693,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
         LOG_ERROR( _( "src_nb_samples is 0") );
         return false;
     }
+
 
 
     if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
@@ -729,7 +733,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
         if (dst_nb_samples > max_dst_nb_samples) {
 
+
             av_free(dst_samples_data[0]);
+
 
             ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize,
                                    c->channels, dst_nb_samples,
@@ -740,12 +746,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                 return false;
             }
 
+
             max_dst_nb_samples = dst_nb_samples;
         }
 
         assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
 
         /* convert to destination format */
+
 
         ret = swr_convert(swr_ctx,
                           dst_samples_data, dst_nb_samples,
@@ -756,6 +764,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                        << get_error_text(ret) );
             return false;
         }
+
 
         if ( c->channels >= 6 )
         {
@@ -799,6 +808,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     } else {
         dst_nb_samples = src_nb_samples;
 
+
         ret = av_audio_fifo_write(fifo, (void**)src_samples_data, src_nb_samples);
         if ( ret != dst_nb_samples )
         {
@@ -841,6 +851,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
         audio_frame->pts = av_rescale_q( samples_count, ratio,
                                          c->time_base );
 
+
         ret = encode(c, pkt, audio_frame, &got_packet);
         if (ret < 0)
         {
@@ -858,6 +869,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
         samples_count += frame_size;
+
 
 
         ret = write_frame(oc, &c->time_base, st, pkt);
@@ -923,15 +935,21 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 static void close_audio_stream(AVFormatContext *oc, AVStream *st)
 {
+
     avcodec_close(enc_ctx[st->id]);
+
     avcodec_free_context( &enc_ctx[st->id] );
+
 
     av_audio_fifo_free( fifo );
     fifo = NULL;
+
     swr_free( &swr_ctx );
 
     if (dst_samples_data != src_samples_data) {
+
         av_free(dst_samples_data[0]);
+
         av_free(dst_samples_data);
     }
     src_samples_data = NULL;
@@ -940,7 +958,9 @@ static void close_audio_stream(AVFormatContext *oc, AVStream *st)
     max_dst_nb_samples = 0;
     dst_samples_data = NULL;
     dst_samples_linesize = 0;
+
     av_frame_free(&audio_frame);
+
 }
 
 static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
@@ -957,10 +977,10 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
 
 
 
+
     /* the image can be allocated by any means and av_image_alloc() is
      * just the most convenient way if av_malloc() is to be used */
-    ret = av_image_alloc(picture->data, picture->linesize, width, height,
-                         pix_fmt, 32);
+    ret = av_frame_get_buffer( picture, 0 );
     if ( ret < 0 )
     {
         LOG_ERROR( _("Could not allocate raw picture buffer") );
@@ -987,11 +1007,13 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     }
 
 
+
     /* open the codec */
     if (avcodec_open2(c, codec, &info) < 0) {
         LOG_ERROR( _("Could not open video codec") );
         return false;
     }
+
 
 
     int ret = avcodec_parameters_from_context(st->codecpar, c);
@@ -1060,7 +1082,9 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 static void close_video_stream(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(enc_ctx[st->id]);
+
     avcodec_free_context( &enc_ctx[st->id] );
+
     av_frame_free(&picture);
 }
 
@@ -1072,12 +1096,21 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     image_type_ptr hires = img->hires();
     if ( !hires )  hires = img->left();
 
+
     if ( !hires )
     {
-        LOG_ERROR( "Missing picture" );
+        LOG_ERROR( _("Missing picture") );
         return;
     }
 
+
+    int ret = av_frame_make_writable(picture);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not make picture writable: ")
+                   << get_error_text(ret) );
+        return;
+    }
 
     unsigned w = c->width;
     unsigned h = c->height;
@@ -1099,13 +1132,17 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
          Preferences::uiMain->uiView->use_lut() )
     {
 
+
         ptr = mrv::image_type_ptr( new image_type( hires->frame(),
                                    w, h,
                                    hires->channels(),
                                    format,
                                    mrv::image_type::kFloat ) );
+
         copy_image( ptr, hires );
+
         if ( hires == img->left() ) bake_ocio( ptr, img );
+
     }
 
     sho = mrv::image_type_ptr( new image_type( hires->frame(),
@@ -1113,6 +1150,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                hires->channels(),
                                format,
                                mrv::image_type::kByte ) );
+
     if ( mrv::is_equal( one_gamma, 1.0f ) )
     {
         for ( unsigned y = 0; y < h; ++y )
@@ -1154,9 +1192,14 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 
     AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                              hires->pixel_type() );
-    sws_ctx = sws_getCachedContext( sws_ctx, w, h,
-                                    fmt, c->width, c->height, c->pix_fmt, 0,
-                                    NULL, NULL, NULL );
+
+        AVPixelFormat dstfmt = (AVPixelFormat) picture->format;
+
+        av_assert0( dstfmt == c->pix_fmt );
+
+        sws_ctx = sws_getCachedContext( sws_ctx, w, h, fmt,
+                                        c->width, c->height, c->pix_fmt, 0,
+                                        NULL, NULL, NULL );
     if ( !sws_ctx )
     {
         LOG_ERROR( _("Failed to initialize swscale conversion context") );
@@ -1166,8 +1209,12 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     uint8_t* buf = (uint8_t*)hires->data().get();
     uint8_t* data[4] = {NULL, NULL, NULL, NULL};
     int linesize[4] = { 0, 0, 0, 0 };
+
     av_image_fill_arrays( data, linesize, buf, fmt, w, h, 1 );
-    sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
+
+    sws_scale( sws_ctx, data, linesize, 0, h, picture->data,
+               picture->linesize );
+
 
 }
 
@@ -1212,6 +1259,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     {
         av_packet_unref( pkt );
     }
+
 
     return true;
 }

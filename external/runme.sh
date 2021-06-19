@@ -25,7 +25,7 @@ fi
 
 export PATH=$installdir/bin:$PATH
 
-../mk  --installdir=$installdir -j 4
+../mk  --installdir=$installdir -j 1
 
 $copy -r $installdir/bin/* $finaldir/bin
 $copy -r $installdir/lib/* $finaldir/lib

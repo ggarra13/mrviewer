@@ -660,12 +660,15 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
     av_assert0( dst->channels() > 0 );
     av_assert0( dst->width() > 0 );
     av_assert0( dst->height() > 0 );
+
     if ( src->pixel_type() == dst->pixel_type() &&
          src->channels() == dst->channels() &&
          src->format() == dst->format() &&
          dw == dst->width() && dh == dst->height() )
     {
+
         memcpy( dst->data().get(), src->data().get(), src->data_size() );
+
     }
     else
     {
@@ -679,8 +682,8 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             {
                 tmp.reset( new image_type( src->frame(),
                                            dw, dh,
-                                           4,
-                                           image_type::kRGBA,
+                                           dst->channels(),
+                                           dst->format(),
                                            image_type::kByte ) );
             }
             catch( const std::bad_alloc& e )
@@ -696,10 +699,14 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
+
+            AVPixelFormat dstfmt = ffmpeg_pixel_format( tmp->format(),
+                                                        tmp->pixel_type() );
+
             sws_ctx = sws_getCachedContext(sws_ctx,
                                            dw, dh,
                                            fmt, dw, dh,
-                                           AV_PIX_FMT_RGBA, 0,
+                                           dstfmt, 0,
                                            NULL, NULL, NULL);
             if ( !sws_ctx )
             {
@@ -707,20 +714,36 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                 return;
             }
 
+
             uint8_t* buf = (uint8_t*)src->data().get();
             uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
             int src_linesize[4] = { 0, 0, 0, 0 };
             av_image_fill_arrays( src_data, src_linesize, buf, fmt, dw, dh, 1 );
 
+
             uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
             uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
             int tmp_linesize[4] = { 0, 0, 0, 0 };
             av_image_fill_arrays( tmp_data, tmp_linesize, tmpbuf,
-                                  AV_PIX_FMT_RGBA, dw, dh, 1 );
+                                  dstfmt, dw, dh, 1 );
+
+
+            assert0( src_data != NULL );
+            assert0( src_data[0] != NULL );
+            assert0( src_linesize[0] > 0 );
+
+            assert0( tmp_data != NULL );
+            assert0( tmp_data[0] != NULL );
+            assert0( tmp_linesize[0] > 0 );
+
+            av_assert0( dw <= dst->width() );
+            av_assert0( dh <= dst->height() );
 
             sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
                        tmp_data, tmp_linesize );
+
         }
+
 
         av_assert0( dw <= dst->width() );
         av_assert0( dh <= dst->height() );
@@ -732,6 +755,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                 dst->pixel( x, y, p );
             }
         }
+
     }
 }
 
