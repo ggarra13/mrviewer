@@ -1249,6 +1249,11 @@ public:
         return _audio_info[ _audio_index ].channels;
     }
 
+    inline unsigned out_audio_channels()  const
+    {
+        return _audio_channels;
+    }
+
     inline unsigned audio_frequency() const
     {
         return _audio_info[ _audio_index ].frequency;

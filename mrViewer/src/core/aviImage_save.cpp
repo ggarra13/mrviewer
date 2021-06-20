@@ -293,7 +293,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         c->bit_rate    = opts->audio_bitrate;
         //c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
         c->sample_rate = img->audio_frequency();
-        c->channels    = img->audio_channels();
+        c->channels    = img->out_audio_channels();
         c->time_base.num = st->time_base.num = 1;
         c->time_base.den = st->time_base.den = c->sample_rate;
 
@@ -589,7 +589,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
             return false;
         }
 
-        uint64_t in_layout = av_get_default_channel_layout(c->channels);
+        uint64_t in_layout = av_get_default_channel_layout(img->out_audio_channels());
         av_opt_set_int       (swr_ctx, N_("in_channel_layout"),
                               in_layout, 0);
         av_opt_set_int       (swr_ctx, N_("in_channel_count"),
@@ -599,24 +599,24 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         av_opt_set_sample_fmt(swr_ctx, N_("in_sample_fmt"),      aformat, 0);
         av_opt_set_int       (swr_ctx, N_("out_channel_layout"),
                               c->channel_layout, 0);
-        av_opt_set_int       (swr_ctx, N_("out_channel_count"), c->channels, 0);
+        av_opt_set_int       (swr_ctx, N_("out_channel_count"), img->out_audio_channels(), 0);
         av_opt_set_int       (swr_ctx, N_("out_sample_rate"), c->sample_rate,
                               0);
         av_opt_set_sample_fmt(swr_ctx, N_("out_sample_fmt"), c->sample_fmt, 0);
 
         char buf[256], buf2[256];
-        av_get_channel_layout_string( buf, 256, c->channels, in_layout );
-        av_get_channel_layout_string( buf2, 256, c->channels, c->channel_layout);
+        av_get_channel_layout_string( buf, 256, img->out_audio_channels(), in_layout );
+        av_get_channel_layout_string( buf2, 256, img->out_audio_channels(), c->channel_layout);
 
         LOG_INFO( _( "Audio conversion of " )
                   << buf
-                  << _(" channels ") << c->channels << _(", freq ")
+                  << _(" channels ") << img->out_audio_channels() << _(", freq ")
                   << img->audio_frequency() << N_(" ")
                   << av_get_sample_fmt_name( aformat )
                   << _(" to ") << std::endl
                   << N_("              ")
                   << buf2
-                  << _(" channels ") << c->channels
+                  << _(" channels ") << img->out_audio_channels()
                   << _(", freq ") << c->sample_rate << N_(" ")
                   << av_get_sample_fmt_name( c->sample_fmt ) << N_(".") );
 
@@ -629,7 +629,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
 
         int ret = av_samples_alloc_array_and_samples(&dst_samples_data,
                   &dst_samples_linesize,
-                  c->channels,
+                  img->out_audio_channels(),
                   max_dst_nb_samples,
                   c->sample_fmt, 1);
         if ( ret < 0 )
@@ -686,7 +686,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     frame_audio++;
 
     src_nb_samples = audio->size();
-    src_nb_samples /= img->audio_channels();
+    src_nb_samples /= img->out_audio_channels();
     src_nb_samples /= av_get_bytes_per_sample( aformat );
 
     if ( src_nb_samples == 0 ) {
@@ -707,7 +707,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
     if ( !fifo )
     {
-        fifo = av_audio_fifo_alloc(c->sample_fmt, c->channels, 1);
+        fifo = av_audio_fifo_alloc(c->sample_fmt, img->out_audio_channels(), 1);
         if ( !fifo )
         {
             LOG_ERROR( _("Could not allocate fifo buffer") );
@@ -750,7 +750,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
             max_dst_nb_samples = dst_nb_samples;
         }
 
-        assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
+        assert( audio->size() / img->out_audio_channels() / av_get_bytes_per_sample(aformat) == src_nb_samples );
 
         /* convert to destination format */
 
