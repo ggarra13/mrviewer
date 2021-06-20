@@ -1916,7 +1916,6 @@ void ImageBrowser::save_session()
 
         send_image( i );
 
-#if 1
         CMedia* img = NULL;
         if ( m ) img = m->image();
         if ( reel->edl && img )
@@ -1926,12 +1925,10 @@ void ImageBrowser::save_session()
             seek( pos );
         }
         else
-//#endif
-//#if 1
         {
-            seek( img->first_frame() );
+            if (img) seek( img->first_frame() );
         }
-#endif
+
         add_menu( main()->uiReelWindow->uiMenuBar );
 
         if ( play ) view()->play(play);

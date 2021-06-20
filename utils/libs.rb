@@ -271,6 +271,7 @@ if kernel !~ /MINGW.*/
 else
 
   cl = `cl.exe 2>&1`
+  cl = cl.force_encoding( "ISO-8859-1" )
   if cl =~ /x64/
     build = "BUILD/Windows-6.3.9600-64/"
     dest  = "#{build}/#@debug"

@@ -1,7 +1,11 @@
-v5.8.9  - Bug fixed saving of movies in all formats and codecs ( except R3D
-	  and BRAW ).
+v5.8.9  - Bug fixed saving of movies in all formats and codecs and in all
+	  platforms ( except R3D and BRAW ).
 	- Made timeline be more sensitive to pushing.
 	- Centered and resized pixel color preview box.
+	- Removed a crash when removing all images from a reel.
+	- Updated the microsoft runtime to use msvc2019.  This change should
+	  go unnoticed, but it might force users to install the msvc2019
+	  runtimes if not.
 
 v5.8.8  - Made cursor disappear when in presentation mode.
 	- Added -S ( --single_image ) flag to load a single image even when
