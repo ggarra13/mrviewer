@@ -52,6 +52,8 @@ namespace mrv {
         void* ptr = NULL;
         if ( posix_memalign( &ptr, 16, size ) != 0 )
             throw std::bad_alloc();
+#elif OSX
+        void* ptr = av_malloc( size + 8 );
 #else
         void* ptr = av_malloc( size );
 #endif
@@ -74,6 +76,8 @@ namespace mrv {
         void* ptr = NULL;
         if ( posix_memalign( &ptr, 16, size * sizeof(aligned16_uint8_t) ) != 0 )
             throw std::bad_alloc();
+#elif OSX
+        void* ptr = av_malloc_array( size + 8, sizeof(aligned16_uint8_t) );
 #else
         void* ptr = av_malloc_array( size, sizeof(aligned16_uint8_t) );
 #endif
