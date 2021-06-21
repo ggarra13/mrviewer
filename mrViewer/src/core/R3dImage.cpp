@@ -11,6 +11,7 @@
 extern "C" {
 #include <libavutil/time.h>
 #include <libavutil/intreadwrite.h>
+#include <libavcodec/avcodec.h>
 }
 
 #include <boost/filesystem.hpp>
@@ -801,11 +802,10 @@ namespace mrv {
   else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
   else                      _dts = _adts = f;
 
-  AVPacket pkt;
-  av_init_packet( &pkt );
-  pkt.dts = pkt.pts = _dts;
-  pkt.size = 0;
-  pkt.data = NULL;
+  AVPacket* pkt = av_packet_alloc();
+  pkt->dts = pkt->pts = _dts;
+  pkt->size = 0;
+  pkt->data = NULL;
 
 
   if ( ! is_cache_filled( _dts ) )
@@ -813,15 +813,15 @@ namespace mrv {
       image_type_ptr canvas;
       if ( fetch( canvas, _dts ) )
       {
-    default_color_corrections();
+          default_color_corrections();
       }
   }
 
-  _video_packets.push_back( pkt );
+  _video_packets.push_back( *pkt );
 
   if ( has_audio() )
   {
-      _audio_packets.push_back( pkt );
+      _audio_packets.push_back( *pkt );
   }
 
 

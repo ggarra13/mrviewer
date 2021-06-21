@@ -437,11 +437,6 @@ _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
 _profile( NULL ),
-_rendering_transform( NULL ),
-_idt_transform( NULL ),
-_inverse_odt_transform( NULL ),
-_inverse_ot_transform( NULL ),
-_inverse_rrt_transform( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -556,11 +551,6 @@ _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
 _profile( NULL ),
-_rendering_transform( NULL ),
-_idt_transform( NULL ),
-_inverse_odt_transform( NULL ),
-_inverse_ot_transform( NULL ),
-_inverse_rrt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
@@ -681,11 +671,6 @@ _is_left_eye( other->_is_left_eye ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
 _profile( NULL ),
-_rendering_transform( NULL ),
-_idt_transform( NULL ),
-_inverse_odt_transform( NULL ),
-_inverse_ot_transform( NULL ),
-_inverse_rrt_transform( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
 _right( NULL ),
@@ -883,15 +868,9 @@ CMedia::~CMedia()
 
     av_free( _profile );
 
-    av_free( _rendering_transform );
-
 
     clear_look_mod_transform();
 
-    av_free( _idt_transform );
-    av_free( _inverse_odt_transform );
-    av_free( _inverse_ot_transform );
-    av_free( _inverse_rrt_transform );
 
 
     delete [] _dataWindow;
@@ -2355,7 +2334,7 @@ const std::string CMedia::creation_date() const
  */
 const char* CMedia::rendering_transform()  const
 {
-    return _rendering_transform;
+    return _rendering_transform.name;
 }
 
 /**
@@ -2365,11 +2344,11 @@ const char* CMedia::rendering_transform()  const
  */
 void CMedia::rendering_transform( const char* cfile )
 {
-    av_free( _rendering_transform );
-    _rendering_transform = NULL;
+    av_free( _rendering_transform.name );
+    _rendering_transform.name = NULL;
     if ( cfile && strlen(cfile) > 0 )
     {
-        _rendering_transform = av_strdup( cfile );
+        _rendering_transform.name = av_strdup( cfile );
     }
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
@@ -2382,7 +2361,7 @@ void CMedia::rendering_transform( const char* cfile )
  */
 const char* CMedia::idt_transform()  const
 {
-    return _idt_transform;
+    return _idt_transform.name;
 }
 
 /**
@@ -2392,7 +2371,7 @@ const char* CMedia::idt_transform()  const
  */
 const char* CMedia::inverse_odt_transform()  const
 {
-    return _inverse_odt_transform;
+    return _inverse_odt_transform.name;
 }
 
 
@@ -2403,10 +2382,10 @@ const char* CMedia::inverse_odt_transform()  const
  */
 void CMedia::inverse_odt_transform( const char* cfile )
 {
-    av_free( _inverse_odt_transform );
-    _inverse_odt_transform = NULL;
+    av_free( _inverse_odt_transform.name );
+    _inverse_odt_transform.name = NULL;
     if ( cfile && strlen(cfile) > 0 )
-        _inverse_odt_transform = av_strdup( cfile );
+        _inverse_odt_transform.name = av_strdup( cfile );
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
@@ -2418,7 +2397,7 @@ void CMedia::inverse_odt_transform( const char* cfile )
  */
 const char* CMedia::inverse_ot_transform()  const
 {
-    return _inverse_ot_transform;
+    return _inverse_ot_transform.name;
 }
 
 
@@ -2429,10 +2408,10 @@ const char* CMedia::inverse_ot_transform()  const
  */
 void CMedia::inverse_ot_transform( const char* cfile )
 {
-    av_free( _inverse_ot_transform );
-    _inverse_ot_transform = NULL;
+    av_free( _inverse_ot_transform.name );
+    _inverse_ot_transform.name = NULL;
     if ( cfile && strlen(cfile) > 0 )
-        _inverse_ot_transform = av_strdup( cfile );
+        _inverse_ot_transform.name = av_strdup( cfile );
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
@@ -2444,7 +2423,7 @@ void CMedia::inverse_ot_transform( const char* cfile )
  */
 const char* CMedia::inverse_rrt_transform()  const
 {
-    return _inverse_rrt_transform;
+    return _inverse_rrt_transform.name;
 }
 
 
@@ -2455,10 +2434,10 @@ const char* CMedia::inverse_rrt_transform()  const
  */
 void CMedia::inverse_rrt_transform( const char* cfile )
 {
-    av_free( _inverse_rrt_transform );
-    _inverse_rrt_transform = NULL;
+    av_free( _inverse_rrt_transform.name );
+    _inverse_rrt_transform.name = NULL;
     if ( cfile && strlen(cfile) > 0 )
-        _inverse_rrt_transform = av_strdup( cfile );
+        _inverse_rrt_transform.name = av_strdup( cfile );
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
@@ -2470,9 +2449,10 @@ void CMedia::inverse_rrt_transform( const char* cfile )
  */
 void CMedia::idt_transform( const char* cfile )
 {
-    av_free( _idt_transform );
-    _idt_transform = NULL;
-    if ( cfile && strlen(cfile) > 0 ) _idt_transform = av_strdup( cfile );
+    av_free( _idt_transform.name );
+    _idt_transform.name = NULL;
+    if ( cfile && strlen(cfile) > 0 ) _idt_transform.name = av_strdup( cfile );
+    _idt_transform.enabled = true;
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
     refresh();
 }
@@ -2487,18 +2467,13 @@ void CMedia::idt_transform( const char* cfile )
 const char* CMedia::look_mod_transform( const size_t idx )  const
 {
     if ( idx >= _look_mod_transform.size() ) return NULL;
-    return _look_mod_transform[idx];
+    return _look_mod_transform[idx].name;
 }
 
 
 void CMedia::clear_look_mod_transform()
 {
-    for ( const auto& i : _look_mod_transform )
-    {
-        av_free( i );
-    }
     _look_mod_transform.clear();
-
 }
 
 /**
@@ -2511,14 +2486,13 @@ void CMedia::append_look_mod_transform( const char* cfile )
 
 
     if ( cfile && strlen(cfile) > 0 )
-        _look_mod_transform.push_back( av_strdup( cfile ) );
+        _look_mod_transform.push_back( TransformId( cfile ) );
     else
     {
 
         size_t idx = _look_mod_transform.size();
         if ( idx == 0 ) return;
         idx -= 1;
-        av_free( _look_mod_transform[idx] );
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
     image_damage( image_damage() | kDamageData | kDamageLut | kDamageICS );
@@ -2534,12 +2508,12 @@ size_t  CMedia::number_of_grade_refs() const
     LMT::const_iterator e = _look_mod_transform.end();
     for ( ; i != e; ++i )
     {
-        size_t num = strlen( *i );
+        size_t num = strlen( (*i).name );
         if ( num < 4 ) continue;
 
         for ( size_t j = 0; j < num - 3; ++j )
         {
-            if ( strncmp( "Node", (*i) + j, 4 ) == 0 )
+            if ( strncmp( "Node", (*i).name + j, 4 ) == 0 )
             {
                 ++c;
                 break;
@@ -2562,7 +2536,7 @@ void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
     if ( cfile && strlen(cfile) > 0 )
     {
         _look_mod_transform.insert( _look_mod_transform.begin() + idx,
-                                    av_strdup( cfile ) );
+                                    TransformId( cfile ) );
     }
     else
     {
@@ -2581,10 +2555,9 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
 {
     if ( idx >= _look_mod_transform.size() ) return;
 
-    av_free( _look_mod_transform[idx] );
     if ( cfile && strlen(cfile) > 0 )
     {
-        _look_mod_transform[idx] = av_strdup( cfile );
+        _look_mod_transform[idx] = TransformId( cfile );
     }
     else
     {
@@ -2991,11 +2964,11 @@ bool CMedia::frame( const int64_t f )
     else if ( f > _frameEnd )  _dts = _frameEnd;
     else                       _dts = f;
 
-    AVPacket pkt;
-    av_init_packet( &pkt );
-    pkt.dts = pkt.pts = _dts;
-    pkt.size = 0;
-    pkt.data = NULL;
+    AVPacket* pkt;
+    pkt = av_packet_alloc();
+    pkt->dts = pkt->pts = _dts;
+    pkt->size = 0;
+    pkt->data = NULL;
 
 
     if ( ! is_cache_filled( _dts ) )
@@ -3017,7 +2990,7 @@ bool CMedia::frame( const int64_t f )
         }
     }
 
-    _video_packets.push_back( pkt );
+    _video_packets.push_back( *pkt );
 
     if ( has_audio() )
     {
@@ -3295,7 +3268,7 @@ int64_t CMedia::first_cache_empty_frame()
     if ( dynamic_cast< aviImage* >( this )  != NULL ||
          dynamic_cast< R3dImage* >( this )  != NULL ||
          dynamic_cast< brawImage* >( this ) != NULL )
-        return first_frame();
+        return frame();
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
     {
@@ -3478,7 +3451,7 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
  */
 std::string CMedia::codec_name( const AVCodecParameters* par )
 {
-    AVCodec* p = avcodec_find_decoder(par->codec_id);
+    const AVCodec* p = avcodec_find_decoder(par->codec_id);
     const char* codec_name;
     char buf[20];
 
@@ -3520,7 +3493,7 @@ std::string CMedia::codec_name( const AVCodecParameters* par )
  */
 std::string CMedia::codec_name( const AVCodecContext* ctx )
 {
-    AVCodec* p = avcodec_find_decoder(ctx->codec_id);
+    const AVCodec* p = avcodec_find_decoder(ctx->codec_id);
     const char* codec_name;
     char buf[20];
 
@@ -3609,7 +3582,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     bool has_codec = true;
 
     // Mark streams that we don't have a decoder for
-    AVCodec* codec = avcodec_find_decoder( par->codec_id );
+    const AVCodec* codec = avcodec_find_decoder( par->codec_id );
     if ( ! codec )
     {
         has_codec = false;

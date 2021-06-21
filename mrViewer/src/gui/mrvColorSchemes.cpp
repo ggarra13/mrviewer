@@ -95,6 +95,7 @@ namespace mrv
 
     void ColorSchemes::apply_colors( std::string n )
     {
+        DBG3;
         for ( auto& s : themes )
         {
             if ( s.name == "Default" )
@@ -105,6 +106,7 @@ namespace mrv
                 }
             }
         }
+        DBG3;
 
         for ( auto& s : themes )
         {
@@ -117,13 +119,17 @@ namespace mrv
                 }
             }
         }
+        DBG3;
     }
 
     void
     ColorSchemes::reload_theme( std::string t )
     {
         themes.clear();
+        DBG3;
         read_themes( filename.c_str() );
+        DBG3;
         apply_colors( t );
+        DBG3;
     }
 }

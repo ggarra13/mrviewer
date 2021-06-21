@@ -34,7 +34,7 @@
 #include "mrvDrawEngine.h"
 
 
-#if 1
+#if 0
 #define CHECK_GL DBG2; GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
@@ -107,7 +107,7 @@ public:
     virtual void wipe_area();
 
     virtual void line_width( float p ) { glLineWidth( p ); }
-    
+
     virtual void draw_square_stencil( const int x, const int y,
                                       const int x2, const int y2 );
     virtual void draw_mask(const float pct);

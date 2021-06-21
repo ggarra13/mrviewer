@@ -42,16 +42,49 @@ This option allows you to select which library is used for loading of those form
 	<br>
 	<br>
 
+      </td>
+      <br>
+    </tr>
+    <tr>
+      <td>
+	<br>
 	<div class="menu">Auto load images as they change on disk</div>
 	<br>
 	When this option is on, mrViewer will monitor the image on disk and will update it as soon as it sees a change in it.
 	<br>
 	<br>
-
       </td>
-
-      <br>
     </tr>
+    <tr>
+      <td>
+	<br>
+	<div class="menu">Read 16 bits movies when possible</div>
+	<br>
+	When this option is on, mrViewer will load 16 bits movies natively instead of downgrading them to 8 bits.
+	<br>
+	<br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	<br>
+	<div class="menu">Versioning Prefix</div>
+	<br>
+	With this option, you can tell mrViewer how to find the version of the different clips.  So, the default: _v will look for images and movies named like gizmo_v001.%04d.exr.  Note that the text replacement will happen on all the path of the clip, so if you have a directory named the same, the versioning will be found there too.
+	<br>
+	<br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	<br>
+	<div class="menu">Max. Images Apart</div>
+	<br>
+	This is the version maximum distance to search for a next or previous clip when you increment or decrement the version number.
+	<br>
+      </td>
+    </tr>
+
 
   </tbody>
 </table>

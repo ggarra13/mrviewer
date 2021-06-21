@@ -995,14 +995,19 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
 
     scroll_to( 0, -y );  // needed to reset scroll bar
 
+        DBG3;
     hide_tabs();
+
+        DBG3;
 }
 
 
 int ImageInformation::handle( int event )
 {
+        DBG3;
     if ( ! filled || !img ) return 0;
 
+        DBG3;
 
     if ( event == FL_MOUSEWHEEL )
     {
@@ -3588,8 +3593,8 @@ void ImageInformation::fill_data()
             sprintf( buf, _("%d Hz."), s.frequency );
 
             add_text( _("Frequency"), _("Frequency of audio"), buf );
+            
             sprintf( buf, _("%d kb/s"), s.bitrate/1000 );
-
             add_text( _("Max. Bitrate"), _("Max. Bitrate"), buf );
 
             ++group;
@@ -3664,6 +3669,8 @@ void ImageInformation::fill_data()
 
 void ImageInformation::refresh()
 {
+
+    DBG3;
     img->image_damage( img->image_damage() & ~CMedia::kDamageData );
     bool movie = ( dynamic_cast< aviImage* >( get_image() ) != NULL );
     if ( movie && filled && !img->right_eye() && !img->is_left_eye() )
@@ -3674,6 +3681,8 @@ void ImageInformation::refresh()
     filled = false;
 
     hide_tabs();
+
+    DBG3;
 
     m_image->clear();
     m_video->clear();
@@ -3803,6 +3812,26 @@ void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
     attach_ctl_script( v->get_image(), v->main() );
     v->filled = false;
     v->refresh();
+}
+
+void ImageInformation::ctl_enable_idt_callback( Fl_Widget* t,
+                                                ImageInformation* v )
+{
+    CMedia* img = v->get_image();
+    bool e = true;
+    std::string label = t->label();
+    if ( label == "Off" )
+    {
+        e = false;
+        t->label( "On" );
+    }
+    else
+    {
+        t->label( "Off" );
+    }
+    img->idt_transform_id().enabled = e;
+    img->image_damage( img->image_damage() | CMedia::kDamageLut );
+    v->view()->redraw();
 }
 
 void ImageInformation::ctl_idt_callback( Fl_Widget* t,
@@ -4173,11 +4202,11 @@ void ImageInformation::add_ctl_idt( const char* name,
     {
         Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
 
-        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-100, hh );
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_WHITE );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -4185,6 +4214,11 @@ void ImageInformation::add_ctl_idt( const char* name,
             widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
 
         sg->add( widget );
+
+        Fl_Button* enabled = new Fl_Button( X+kMiddle + sg->w()-100, Y, 50, hh,
+                                            "Off" );
+        enabled->callback( (Fl_Callback*)ctl_enable_idt_callback, this );
+        sg->add( enabled );
 
         Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
                                          _("Pick") );
@@ -4412,7 +4446,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_WHITE );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );

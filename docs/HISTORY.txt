@@ -1,3 +1,45 @@
+v5.8.9  - Bug fixed saving of movies in all formats and codecs and in all
+	  platforms ( except R3D and BRAW ).
+	- Made timeline be more sensitive to pushing.
+	- Centered and resized pixel color preview box.
+	- Removed a crash when removing all images from a reel.
+	- Updated the microsoft runtime to use msvc2019.  This change should
+	  go unnoticed, but it might force users to install the msvc2019
+	  runtimes if not.
+
+v5.8.8  - Made cursor disappear when in presentation mode.
+	- Added -S ( --single_image ) flag to load a single image even when
+	  there is a sequence present.
+	- Bug fixed a macOS image fitting error on presentation mode resulting
+	  in zoom images.
+
+v5.8.7	- Fixed subtitles flashing the video when displayed and the mouse was
+	  moved.
+	- Fixed hitting the 1 key repeatedly moving the image upwards/downwards.
+	- Made image version switching start cache on current frame instead of
+	  on first frame of sequence.
+	- Fixed and improved performance of vectorscope dramatically.
+	- Improved performance of histogram dramatically.
+	- Fixed mousewheel zoom on anamorphic videos.
+
+v5.8.6  - Mousewheel zoom now returns to the same zoom factor when zooming in
+	  and then out.
+	- HUD has a new option called Center which displays the center of the
+	  image/movie.  This option is available in the pulldown menu as well
+	  as in the Preferences->View Window->Hud area.
+	- Made mrViewer preferences compatible with Maya on all platforms.  Now
+	  it no longer uses the default preferences when called from Maya.
+
+v5.8.5  - ALT+Mousewheel now scrub the timeline one frame at a time.
+	- Mousewheel when mouse is above the volume widget adjust the volume.
+	- Mousewheel zoom is less abrupt and more predictable.
+	  Also there's a new Preferences->View Window->Zoom Speed factor
+	  that can choose between a Slow, Medium and Fast zoom.
+
+v5.8.4  - Bug fixed menubar not allowed to be hidden.
+	- Bug fixed playback of sequences that do not start at frame 1.
+	- Bug fixed image version switching remaining at the same frame.
+
 v5.8.3  - On Windows, volume is kept between invocations of mrViewer.  The
 	  slider, however, did not reflect that.  Now it does.
 	- Fixed menubar to show File and Windows when no image is loaded.
@@ -6,6 +48,9 @@ v5.8.3  - On Windows, volume is kept between invocations of mrViewer.  The
 	- Fixed overlap of 1:1 button with Frame/Field button.
 	- Fixed saving of Pixel Compensation in Preferences reverting it to
 	  off when saved twice.
+	- Fixed home path on Windows to never take into consideration Documents.
+	  This fixes an issue with Maya's startup not using mrViewer's
+	  preferences.
 
 v5.8.2  - F11/F12 behave better in respecting each other.
 	- CTL/ICC is back by request of one user.  No idea how long we can

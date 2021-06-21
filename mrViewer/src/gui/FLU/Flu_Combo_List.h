@@ -36,6 +36,7 @@ public:
   Fl_Hold_Browser list;
 
  protected:
+  void add( const char* v, void* c = NULL ) { list.add(v, c); }
 
   bool _value( const char *v );
   const char* _next();

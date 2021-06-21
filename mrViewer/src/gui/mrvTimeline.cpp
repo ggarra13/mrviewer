@@ -591,7 +591,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 int Timeline::handle( int e )
 {
     if ( e == FL_ENTER ) return 1;
-    else if ( e == FL_MOVE || e == FL_DRAG )
+    else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());
@@ -664,7 +664,11 @@ int Timeline::handle( int e )
             return uiMain->uiView->handle( e );
         }
     }
-    return Fl_Slider::handle( e );
+    Fl_Boxtype bx = box();
+    box( FL_FLAT_BOX );
+    int ok = Fl_Slider::handle( e );
+    box( bx );
+    return ok;
     // if ( r != 0 ) return r;
     // return uiMain->uiView->handle( e );
 }

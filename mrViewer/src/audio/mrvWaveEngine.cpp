@@ -75,15 +75,15 @@ unsigned int     WaveEngine::_instances = 0;
 #define WAVE_SPEAKER_RESERVED               0x80000000
 
 static const int channel_mask[] = {
-    SPEAKER_FRONT_CENTER,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT  | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT     | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_CENTER  | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_LEFT  | SPEAKER_BACK_RIGHT | SPEAKER_LOW_FREQUENCY,
-    SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SIDE_LEFT    | SPEAKER_SIDE_RIGHT     | SPEAKER_BACK_LEFT  | SPEAKER_BACK_CENTER  | SPEAKER_BACK_RIGHT | SPEAKER_LOW_FREQUENCY
+    WAVE_SPEAKER_FRONT_CENTER,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT     | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY,
+    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY
 };
 
 
@@ -490,7 +490,10 @@ bool WaveEngine::open( const unsigned channels,
             {
                 int bits = sizeof(float) * 8;
                 wavefmt.Format.wBitsPerSample = bits;
-                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
+                if ( channels > 2 )
+                    wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
+                else
+                    wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
                 break;
             }
         case kS16LSB:
@@ -522,10 +525,19 @@ bool WaveEngine::open( const unsigned channels,
 
 
         /* Only use the new WAVE_FORMAT_EXTENSIBLE format for
-               multichannel audio */
-        wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
-        wavefmt.Format.cbSize = sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX);
-
+           multichannel audio */
+        if( ch <= 2 && format == kFloatLSB )
+        {
+            wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+            wavefmt.Samples.wValidBitsPerSample = 0;
+            wavefmt.dwChannelMask = 0;
+            wavefmt.Format.cbSize = 0;
+        }
+        else
+        {
+            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+            wavefmt.Format.cbSize = sizeof(wavefmt) - sizeof(wavefmt.Format);
+	}
 
         unsigned device = _device_idx;
         _old_device_idx = _device_idx;
@@ -540,7 +552,8 @@ bool WaveEngine::open( const unsigned channels,
             waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                         //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                         0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
-        DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
+        DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( _audio_device != NULL )
+               << " result ? " << (result == MMSYSERR_NOERROR) );
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )

@@ -98,7 +98,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {326 433 675 455} type Double resizable
+      xywh {627 442 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -110,11 +110,11 @@ class PreferencesUI {open
 	xywh {200 25 473 430} box PLASTIC_UP_BOX labelcolor 32
       } {
 	Fl_Group {} {
-	  label {User Interface}
+	  label {User Interface} open
 	  xywh {210 48 453 349} box EMBOSSED_BOX align 5 hide
 	} {
 	  Fl_Group {} {
-	    label {Window Behavior}
+	    label {Window Behavior} open
 	    xywh {218 52 432 124} box ROUNDED_BOX
 	  } {
 	    Fl_Check_Button uiPrefsAlwaysOnTop {
@@ -131,24 +131,24 @@ If you try to open several mrViewers with different images, all these images wil
 	      tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.} xywh {234 130 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
 	    }
 	    Fl_Group uiPrefsOpenMode {open
-	      xywh {463 66 165 96} box UP_BOX
+	      xywh {445 66 195 95} box UP_BOX
 	    } {
 	      Fl_Round_Button {} {
 		label Normal
-		tooltip {When selected, mrViewer will resize its window to the first image.} xywh {471 72 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 selection_color 15 align 8
+		tooltip {When selected, mrViewer will resize its window to the first image.} xywh {450 72 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 selection_color 15 align 8
 	      }
 	      Fl_Round_Button {} {
 		label Fullscreen
-		tooltip {When selected, mrViewer will start in full screen mode.} xywh {471 100 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
+		tooltip {When selected, mrViewer will start in full screen mode.} xywh {450 100 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
 	      }
 	      Fl_Round_Button {} {
 		label Presentation
-		tooltip {When selected, mrViewer will start in presentation mode.} xywh {471 129 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
+		tooltip {When selected, mrViewer will start in presentation mode.} xywh {450 129 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
 	      }
 	    }
 	  }
 	  Fl_Group {} {
-	    label {UI Elements}
+	    label {UI Elements} open
 	    xywh {213 193 442 193} box ROUNDED_BOX
 	  } {
 	    Fl_Check_Button uiPrefsTopbar {
@@ -161,7 +161,7 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsTimeline {
 	      label Timeline
-	      tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 307 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
+	      tooltip {When selected, mrViewer will start with the timeline shown.} xywh {218 306 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 136
 	    }
 	    Fl_Check_Button uiPrefsReelList {
 	      label {Reel List}
@@ -173,7 +173,7 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsVectorscope {
 	      label Vectorscope
-	      tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {514 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {514 278 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsImageInfo {
 	      label {Media Info}
@@ -181,11 +181,11 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsColorArea {
 	      label {Color Area}
-	      tooltip {When selected, mrViewer will start with the color area window already open.} xywh {374 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When selected, mrViewer will start with the color area window already open.} xywh {374 278 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsEDLEdit {
 	      label {EDL Edit}
-	      tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {514 224 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {514 221 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsStereoOptions {
 	      label {Stereo 3D Options}
@@ -193,7 +193,7 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsPaintTools {
 	      label {Action Tools}
-	      tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {375 310 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {374 307 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsWaveform {
 	      label Waveform
@@ -201,7 +201,7 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsToolBar {
 	      label Tooldock
-	      tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 330 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When selected, mrViewer will start with the waveform already open.} xywh {515 335 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsMenuBar {
 	      label {Menu Bar}
@@ -210,12 +210,12 @@ If you try to open several mrViewers with different images, all these images wil
 	  }
 	}
 	Fl_Group {} {
-	  label {View Window}
+	  label {View Window} open
 	  xywh {220 34 423 354} box EMBOSSED_BOX align 5 hide
 	} {
 	  Fl_Group {} {
-	    label Defaults
-	    xywh {230 64 394 157} box ROUNDED_BOX
+	    label Defaults open
+	    xywh {230 64 394 163} box ROUNDED_BOX
 	  } {
 	    Fl_Value_Input uiPrefsViewGain {
 	      label Gain
@@ -228,7 +228,7 @@ If you try to open several mrViewers with different images, all these images wil
 	    Fl_Choice uiPrefsCropArea {
 	      label Crop
 	      user_data this user_data_type {PreferencesUI*}
-	      tooltip {Allows you to select a standard cropping area around image.} xywh {240 129 155 25} box THIN_DOWN_BOX down_box BORDER_BOX align 1
+	      tooltip {Allows you to select a standard cropping area around image.} xywh {245 123 155 25} box THIN_DOWN_BOX down_box BORDER_BOX align 1
 	      class {mrv::Choice}
 	    } {
 	      MenuItem {} {
@@ -290,30 +290,47 @@ If you try to open several mrViewers with different images, all these images wil
 	    }
 	    Fl_Check_Button uiPrefsViewPixelRatio {
 	      label {Compensate Pixel Ratio}
-	      tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.} xywh {423 126 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.} xywh {428 120 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsViewLut {
 	      label {Lut Active}
 	      user_data this user_data_type {PreferencesUI*}
-	      tooltip {When mrViewer starts, the 3D Lut will be active.} xywh {423 151 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When mrViewer starts, the 3D Lut will be active.} xywh {428 145 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsSafeAreas {
 	      label {Safe Areas}
 	      user_data this user_data_type {PreferencesUI*}
-	      tooltip {When mrViewer starts, the safe area display will be active by default.} xywh {423 178 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	      tooltip {When mrViewer starts, the safe area display will be active by default.} xywh {428 172 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsViewDisplayWindow {
 	      label {Display Window}
-	      tooltip {When mrViewer starts, the display window will be shown when appropiate.} xywh {245 159 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+	      tooltip {When mrViewer starts, the display window will be shown when appropiate.} xywh {250 153 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
 	    }
 	    Fl_Check_Button uiPrefsViewDataWindow {
 	      label {Data Window}
-	      tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.} xywh {245 179 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+	      tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.} xywh {250 173 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
+	    }
+	    Fl_Choice uiPrefsZoomSpeed {
+	      label {Zoom Speed} open
+	      xywh {360 195 90 25} down_box BORDER_BOX align 8
+	    } {
+	      MenuItem {} {
+		label Slow
+		xywh {5 5 30 20}
+	      }
+	      MenuItem {} {
+		label Medium
+		xywh {15 15 30 20}
+	      }
+	      MenuItem {} {
+		label Fast
+		xywh {25 25 30 20}
+	      }
 	    }
 	  }
 	  Fl_Group uiPrefsHud {
 	    label HUD
-	    user_data this user_data_type {PreferencesUI*}
+	    user_data this user_data_type {PreferencesUI*} open
 	    tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.} xywh {235 249 397 127} box UP_BOX
 	  } {
 	    Fl_Check_Button uiPrefsHudFilename {
@@ -371,11 +388,16 @@ If you try to open several mrViewers with different images, all these images wil
 	      user_data this user_data_type {PreferencesUI*}
 	      xywh {516 316 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
 	    }
+	    Fl_Check_Button uiPrefsHudCenter {
+	      label Center
+	      user_data this user_data_type {PreferencesUI*}
+	      xywh {517 341 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+	    }
 	  }
 	}
 	Fl_Group {} {
-	  label Colors
-	  xywh {220 36 439 349} box EMBOSSED_BOX align 5 hide
+	  label Colors open selected
+	  xywh {220 36 439 349} box EMBOSSED_BOX align 5
 	} {
 	  Fl_Group {} {
 	    label UI open
@@ -406,10 +428,16 @@ If you try to open several mrViewers with different images, all these images wil
 	    Fl_Choice uiColorTheme {
 	      label {Color Theme}
 	      user_data m user_data_type {ViewerUI*}
-	      callback {mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-v->refresh();} open
+	      callback { if (!o->mvalue() || !o->mvalue()->text ) return;
+	      mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
+	      v->refresh();} open
 	      xywh {375 159 150 25} down_box BORDER_BOX align 1
-	    } {}
+	    } {
+	      MenuItem {} {
+		label Default
+		xywh {0 0 30 20}
+	      }
+	    }
 	    Fl_Button {} {
 	      label {Reload Theme}
 	      user_data m user_data_type {ViewerUI*}
@@ -911,7 +939,7 @@ This setting thus allows caching more pictures in memory for float and half pict
 	}
 	Fl_Group {} {
 	  label {3D Luts} open
-	  xywh {210 32 438 358} box EMBOSSED_BOX align 5
+	  xywh {210 32 438 358} box EMBOSSED_BOX align 5 hide
 	} {
 	  Fl_Group {} {
 	    label {Algorithm when not OCIO}
@@ -991,7 +1019,7 @@ If unsure what this means, keep your display and images setting always using the
 	    Fl_Choice uiLUT_quality {
 	      label Resolution
 	      user_data this user_data_type {PreferencesUI*}
-	      callback {v->refresh();} selected
+	      callback {v->refresh();}
 	      tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.
 

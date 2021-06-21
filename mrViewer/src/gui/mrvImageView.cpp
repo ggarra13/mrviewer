@@ -221,6 +221,7 @@ namespace
 {
     bool FullScreen = false;
     bool presentation = false;
+  uint64_t cursor_counter = 0;
     bool has_tools_grp, has_menu_bar,
         has_top_bar, has_bottom_bar, has_pixel_bar;
 
@@ -631,6 +632,11 @@ void open_session_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 void open_dir_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
     uiReelWindow->open_directory();
+}
+
+void open_amf_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
+{
+    uiReelWindow->open_amf();
 }
 
 void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
@@ -1381,12 +1387,69 @@ static void attach_ocio_view_cb( Fl_Widget* o, mrv::ImageView* view )
     attach_ocio_view( fg->image(), view );
 }
 
-static void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageView* view )
+static void attach_ctl_idt_script_cb2( const std::string& ret,
+                                       mrv::ImageBrowser* v )
 {
-    mrv::media fg = view->foreground();
-    if ( ! fg ) return;
+    Fl_Tree_Item* item = v->first_selected_item();
 
-    attach_ctl_idt_script( fg->image(), view->main() );
+    mrv::ImageView* view = v->view();
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        mrv::Element* w = (mrv::Element*) item->widget();
+        mrv::media m = w->media();
+        mrv::CMedia* img = m->image();
+        img->idt_transform( ret.c_str() );
+    }
+
+    view->redraw();
+}
+
+static void attach_ctl_rrt_script_cb2( const std::string& ret,
+                                       mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::ImageView* view = v->view();
+    size_t i = 0;
+    for ( ; item; item = v->next_selected_item(item), ++i )
+    {
+        mrv::Element* w = (mrv::Element*) item->widget();
+        mrv::media m = w->media();
+        mrv::CMedia* img = m->image();
+        img->rendering_transform( ret.c_str() );
+    }
+
+    view->redraw();
+}
+
+
+void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::Element* w = (mrv::Element*) item->widget();
+    mrv::media m = w->media();
+    mrv::CMedia* img = m->image();
+    const char* transform = "";
+    if ( img->idt_transform() ) transform = img->idt_transform();
+    std::string ret = make_ctl_browser( transform,
+                                        "ACEScsc,IDT" );
+    attach_ctl_idt_script_cb2( ret, v );
+}
+
+void attach_ctl_rrt_script_cb( Fl_Widget* o, mrv::ImageBrowser* v )
+{
+    Fl_Tree_Item* item = v->first_selected_item();
+
+    mrv::Element* w = (mrv::Element*) item->widget();
+    mrv::media m = w->media();
+    mrv::CMedia* img = m->image();
+    const char* transform = "";
+    if ( img->rendering_transform() ) transform = img->rendering_transform();
+    std::string ret = make_ctl_browser( transform,
+                                        "RRT,RT" );
+    attach_ctl_rrt_script_cb2( ret, v );
 }
 
 static void monitor_icc_profile_cb( Fl_Widget* o, ViewerUI* uiMain )
@@ -2454,6 +2517,7 @@ void ImageView::center_image()
 
     setlocale( LC_NUMERIC, "C" );
 
+
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
@@ -2577,14 +2641,20 @@ void ImageView::fit_image()
     DBGM1( "fit h/H=" << h/H );
 
 #ifndef _WIN32
+    DBGM1("fit W1=" << W );
     if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
+    DBGM1("fit W2=" << W );
 #endif
 
 #ifdef OSX
     h /= 2;  // On OSX Y pixel coords are doubled
+    w /= 2;
 #endif
 
+    DBGM1("fit w=" << w );
+    DBGM1("fit W=" << W );
     double z = w / (double)W;
+    DBGM1( "fit w/W=" << z );
     h /= H;
 
     double pr = 1.0;
@@ -3019,12 +3089,12 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
             switch( looping() )
             {
             case CMedia::kPingPong:
-                if ( p == CMedia::kForwards ) f = last;
+                f = last;
                 // playback( CMedia::kBackwards );
                 // img->playback( CMedia::kBackwards );
                 break;
             case CMedia::kLoop:
-                if ( p == CMedia::kForwards ) f = first;
+                f = first;
                 break;
             default:
                 break;
@@ -4237,7 +4307,20 @@ void ImageView::draw()
             }
           else
             {
-                window()->cursor(FL_CURSOR_CROSS);
+                if ( presentation )
+                  {
+                    ++cursor_counter;
+                    if ( cursor_counter >= 24 * 5 )
+                      {
+                        cursor_counter = 0;
+                        window()->cursor( FL_CURSOR_NONE );
+                      }
+                  }
+                else
+                  {
+                    cursor_counter = 0;
+                    window()->cursor(FL_CURSOR_CROSS);
+                  }
             }
       }
 
@@ -4446,6 +4529,7 @@ void ImageView::draw()
         }
     }
 
+
     TRACE("");
 
     if ( vr() )
@@ -4568,6 +4652,8 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)open_stereo_cb, browser() );
          menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                     (Fl_Callback*)open_dir_cb, browser() );
+         menu->add( _("File/Open/AMF file"), kOpenAMF.hotkey(),
+                    (Fl_Callback*)open_amf_cb, browser() );
          idx = menu->add( _("File/Open/Session"),
                     kOpenSession.hotkey(),
                     (Fl_Callback*)open_session_cb, browser() );
@@ -4786,7 +4872,7 @@ bool PointInTriangle (const Imath::V2i& pt,
              menu->add( _("Image/Attach CTL Input Device Transform"),
                         kIDTScript.hotkey(),
                         (Fl_Callback*)attach_ctl_idt_script_cb,
-                        this);
+                        browser() );
              menu->add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
                         kSOPSatNodes.hotkey(),
                         (Fl_Callback*)modify_sop_sat_cb,
@@ -5330,7 +5416,8 @@ void ImageView::leftMouseUp( int x, int y )
         return;
     }
 
-    window()->cursor( FL_CURSOR_CROSS );
+    if ( !presentation )
+        window()->cursor( FL_CURSOR_CROSS );
 
     mrv::media fg = foreground();
 
@@ -8244,17 +8331,20 @@ int ImageView::handle(int event)
         }
         else
         {
-            window()->cursor(FL_CURSOR_CROSS);
+            if ( !presentation )
+                window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-      window()->cursor(FL_CURSOR_CROSS);
+        if ( !presentation )
+            window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
         return 1;
     case FL_LEAVE:
-        window()->cursor(FL_CURSOR_DEFAULT);
+        if ( !presentation )
+            window()->cursor( FL_CURSOR_DEFAULT );
         return 1;
     case FL_PUSH:
         focus(this);
@@ -8268,6 +8358,9 @@ int ImageView::handle(int event)
         // Store X, Y for MOUSEWHEEL support
         X = Fl::event_x();
         Y = Fl::event_y();
+
+        cursor_counter = 0;
+        window()->cursor( FL_CURSOR_CROSS );
 
         if ( _wipe_dir != kNoWipe )
         {
@@ -8289,7 +8382,11 @@ int ImageView::handle(int event)
             default:
                 break;
             }
-            redraw();
+
+
+            if ( playback() == CMedia::kStopped )
+                redraw();
+
             return 1;
         }
 
@@ -8298,8 +8395,6 @@ int ImageView::handle(int event)
 
         lastX = X;
         lastY = Y;
-
-        redraw();
 
         return 1;
         break;
@@ -8336,13 +8431,27 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( Fl::event_dy() < 0.f )
+            float dy = Fl::event_dy();
+            if ( Fl::event_state( FL_ALT ) )
             {
-                zoom_under_mouse( _zoom * 2.0f, X, Y );
+                scrub( -dy );
             }
             else
             {
-                zoom_under_mouse( _zoom * 0.5f, X, Y );
+                int idx = uiMain->uiPrefs->uiPrefsZoomSpeed->value();
+                const float speedValues[] = { 0.1f, 0.25f, 0.5f };
+                float speed = speedValues[idx];
+                float change;
+                if ( dy > 0 )
+                {
+                    change = 1.0f + dy * speed;
+                    change = 1.0f / change;
+                }
+                else
+                {
+                    change = 1.0f - dy * speed;
+                }
+                zoom_under_mouse( _zoom * change, X, Y );
             }
         }
         return 1;
@@ -8383,18 +8492,21 @@ void ImageView::refresh()
 {
     mrv::media fg = foreground();
 
+    DBG3;
     if ( fg )
     {
         CMedia* img = fg->image();
         img->refresh();
     }
 
+    DBG3;
     mrv::media bg = background();
     if ( bg )
     {
         CMedia* img = bg->image();
         img->refresh();
     }
+    DBG3;
 }
 
 void ImageView::clear_reel_cache( size_t idx )
@@ -8440,6 +8552,7 @@ void ImageView::clear_reel_cache( size_t idx )
     }
 
     _preframe = frame();
+
 }
 
 void ImageView::flush_image( mrv::media fg )
@@ -8475,7 +8588,8 @@ void ImageView::reset_caches()
         mrv::media fg = foreground();
         if (!fg) return;
         CMedia* img = fg->image();
-        _preframe = img->first_frame();
+        _preframe = img->frame();
+
     }
 }
 
@@ -8839,9 +8953,15 @@ void ImageView::channel( unsigned short c )
     if ( r && r->edl )
     {
         timeline()->edl( true );
+        _preframe = frame();
+    }
+    else
+    {
+        CMedia* img = fg->image();
+        _preframe = img->frame();
     }
 
-    _preframe = frame();
+
 
     smart_refresh();
 }
@@ -9133,7 +9253,8 @@ void ImageView::exposure_change( float d )
  */
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
-    if ( !vr() && (z > kMaxZoom || z < kMinZoom) ) return;
+    if ( !vr() && (z > kMaxZoom || z < kMinZoom ||
+                   (z == 1.0f && _zoom == z) ) ) return;
     double mw = (double) w() / 2;
     double mh = (double) h() / 2;
     double offx = mw - x;
@@ -9154,6 +9275,11 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     int W = dpw.w();
     int H = dpw.h();
 
+    double pr = 1.0f;
+    if ( _showPixelRatio ) pr = img->pixel_ratio();
+
+    H /= pr;
+
     float scale = Fl::screen_scale( window()->screen_num() );
 
     image_coordinates( img, xf, yf );
@@ -9163,12 +9289,12 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     int w2 = W / 2;
     int h2 = H / 2;
 
+    yf /= pr;
+
     xoffset = w2 - xf;
     yoffset = h2 - ( H - yf );
     xoffset -= (offx / _real_zoom);
-    double ratio = 1.0f;
-    if ( _showPixelRatio ) ratio = img->pixel_ratio();
-    yoffset += (offy / _real_zoom * ratio);
+    yoffset += (offy / _real_zoom);
 
     setlocale( LC_NUMERIC, "C" );
 
@@ -10063,6 +10189,7 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
+    uiMain->uiFrame->value( f );
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
@@ -10092,7 +10219,6 @@ void ImageView::seek( const int64_t f )
 
 
     if ( b ) b->seek( f );
-
 
     thumbnails();
     update_color_info();
@@ -10266,7 +10392,8 @@ void ImageView::update_color_info( const mrv::media fg ) const
     if ( uiMain->uiVectorscope )
     {
         Fl_Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
-        if ( uiVectorscope->visible() ) uiVectorscope->redraw();
+        if ( uiVectorscope->visible() )
+            uiMain->uiVectorscope->uiVectorscope->redraw();
     }
 
     if ( uiMain->uiWaveform )
@@ -10277,8 +10404,9 @@ void ImageView::update_color_info( const mrv::media fg ) const
 
     if ( uiMain->uiHistogram )
     {
-        Fl_Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
-        if ( uiHistogram->visible() ) uiHistogram->redraw();
+        Fl_Double_Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
+        if ( uiHistogram->visible() )
+            uiMain->uiHistogram->uiHistogram->redraw();
     }
 
 
@@ -10396,6 +10524,7 @@ void ImageView::play( const CMedia::Playback dir )
     else
     {
         _preframe = frame();
+
     }
 
 

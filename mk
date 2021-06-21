@@ -47,7 +47,7 @@ else
     arch=`uname -a`
 fi
 
-if [[ $arch == *x86_64* ]]; then
+if [[ $arch == *64* ]]; then
     CMAKE_NATIVE_ARCH=64
     export OS_64_BITS=1
 else
@@ -164,7 +164,7 @@ if [[ $OS == Windows* ]]; then
     cmake_generator=Ninja
     #cmake_generator="NMake Makefiles"
     win32cl=`which cl`
-    if [[ $win32cl != *amd64* ]]; then
+    if [[ $win32cl != *64* ]]; then
 	CMAKE_BUILD_ARCH=32
     fi
 else

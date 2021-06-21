@@ -109,6 +109,7 @@ protected:
     static void ctl_irrt_callback( Fl_Widget* t, ImageInformation* v );
     static void ctl_lmt_callback( Fl_Widget* t, CtlLMTData* v );
     static void ctl_idt_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_enable_idt_callback( Fl_Widget* t, ImageInformation* v );
     static void icc_callback( Fl_Widget* t, ImageInformation* v );
     static void compression_cb( mrv::PopupMenu* t, ImageInformation* v );
     static void enum_cb( mrv::PopupMenu* w, ImageInformation* v );

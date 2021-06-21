@@ -760,7 +760,6 @@ void ColorInfo::update( const CMedia* img,
         dcol->redraw();
 
 
-        char buf[16];
         text.str("");
         text.str().reserve(1024);
         text << "@b\t"

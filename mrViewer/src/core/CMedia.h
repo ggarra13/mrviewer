@@ -268,7 +268,29 @@ public:
 
     typedef std::deque< mrv::audio_type_ptr > audio_cache_t;
 
-    typedef std::vector< char* >          LMT;
+    struct TransformId
+    {
+        TransformId() :
+            name(NULL), enabled( true ), applied( false ) {};
+        TransformId(const char* n) :
+            name( av_strdup(n) ), enabled( true ), applied( false ) {};
+        TransformId(const TransformId& b) :
+            name( av_strdup(b.name) ),
+            enabled( b.enabled ),
+            applied( b.applied ) {};
+        TransformId& operator=(const TransformId& b)
+            {
+                name = av_strdup(b.name);
+                enabled = b.enabled; applied = b.applied;
+                return *this;
+            }
+        ~TransformId() { av_free( name ); }
+        char* name;
+        bool enabled;
+        bool applied;
+    };
+
+    typedef std::vector< TransformId >          LMT;
     typedef std::vector< boost::thread* > thread_pool_t;
 
     enum Looping
@@ -316,9 +338,10 @@ public:
         kDamageCache     = 1 << 8,
         kDamageTimecode  = 1 << 9,
         kDamageICS       = 1 << 10,
-        kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut |
-                            kDamageThumbnail | kDamageData | kDamageSubtitle |
-                            kDamage3DData | kDamageCache | kDamageTimecode )
+        kDamageAll       = ( kDamageLayers | kDamageContents | kDamageLut |
+                             kDamageThumbnail | kDamageData | kDamageSubtitle |
+                             kDamage3DData | kDamageCache | kDamageTimecode |
+                             kDamageICS )
     };
 
     enum DecodeStatus {
@@ -606,7 +629,7 @@ public:
     bool is_cache_full();
 
     // For sequences, returns the first empty cache frame if any.
-    // For videos, returns first frame.
+    // For videos, returns current frame.
     int64_t first_cache_empty_frame();
 
     // Store a frame in sequence cache
@@ -868,25 +891,42 @@ public:
     void ocio_input_color_space( const std::string& n );
 
 
-    /// Returns input device transform name ( CTL script ) or NULL
+    /// Returns input device transform id ( CTL script and attributes )
+    const TransformId& idt_transform_id() const {return _idt_transform;}
+
+    /// Returns input device transform id ( CTL script and attributes )
+    TransformId& idt_transform_id() {return _idt_transform;}
+
+    /// Returns input device transform name ( CTL script )
     const char* idt_transform() const;
 
     /// Assigns a new input device transform ( CTL script ) or NULL to clear it
     void idt_transform( const char* cfile );
-    
-    /// Returns inverse output transform name ( CTL script ) or NULL
+
+
+
+    /// Returns inverse output transform name ( CTL script and attributes )
+    TransformId& inverse_ot_transform_id() { return _inverse_ot_transform; }
+
+    /// Returns inverse output transform name ( CTL script )
     const char* inverse_ot_transform() const;
 
     /// Assigns a new inverse output transform ( CTL script ) or NULL to clear it
     void inverse_ot_transform( const char* cfile );
-    
-    /// Returns inverse output device transform name ( CTL script ) or NULL
+
+    /// Returns inverse output transform name ( CTL script and attributes )
+    TransformId& inverse_odt_transform_id() { return _inverse_odt_transform; }
+
+    /// Returns inverse output device transform name ( CTL script )
     const char* inverse_odt_transform() const;
 
     /// Assigns a new inverse output device transform ( CTL script ) or NULL to clear it
     void inverse_odt_transform( const char* cfile );
-    
-    /// Returns inverse reference rendering transform name ( CTL script ) or NULL
+
+    /// Returns inverse output transform name ( CTL script and attributes )
+    TransformId& inverse_rrt_transform_id() { return _inverse_rrt_transform; }
+
+    /// Returns inverse reference rendering transform name ( CTL script )
     const char* inverse_rrt_transform() const;
 
     /// Assigns a new inverse reference rendering transform ( CTL script ) or NULL to clear it
@@ -895,6 +935,22 @@ public:
     /// Returns the number of Look Mod Transforms ( CTL scripts )
     inline size_t number_of_lmts() const {
         return _look_mod_transform.size();
+    }
+
+    /// Returns look mod transform name ( CTL script and attributes ) or
+    /// an exception if index is out of range
+    const TransformId& look_mod_transform_id( const size_t idx ) const {
+        if ( idx >= number_of_lmts() )
+            throw std::runtime_error("idx > number of look mod transforms" );
+        return _look_mod_transform[idx];
+    }
+
+    /// Returns look mod transform name ( CTL script and attributes ) or
+    /// an exception if index is out of range
+    TransformId& look_mod_transform_id( const size_t idx ) {
+        if ( idx >= number_of_lmts() )
+            throw std::runtime_error("idx > number of look mod transforms" );
+        return _look_mod_transform[idx];
     }
 
     /// Returns look mod transform name ( CTL script ) or NULL if not present
@@ -2039,17 +2095,18 @@ protected:
     char*     _profile;
 
     // Rendering transform for CTL
-    char*     _rendering_transform;
+    TransformId     _rendering_transform;
 
     // Look Mod Transform(s) for CTL
     LMT   _look_mod_transform;
 
     // Input Device Transform for CTL
-    char*     _idt_transform;
+    TransformId     _idt_transform;
 
-    char*     _inverse_odt_transform;
-    char*     _inverse_ot_transform;
-    char*     _inverse_rrt_transform;
+
+    TransformId     _inverse_odt_transform;
+    TransformId     _inverse_ot_transform;
+    TransformId     _inverse_rrt_transform;
 
     // OCIO
     std::string _input_color_space;

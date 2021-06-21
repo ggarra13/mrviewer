@@ -306,25 +306,25 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 		{
 		    img = new smpteImage( smpteImage::kGammaChart,
 					  1280, 960 );
-		    img->gamma( 1.4 );
+		    img->gamma( 1.4f );
 		}
 		else if ( strcmp( name, _("Gamma 1.8 Chart") ) == 0 )
 		{
 		    img = new smpteImage( smpteImage::kGammaChart,
 					  1280, 960 );
-		    img->gamma( 1.8 );
+		    img->gamma( 1.8f );
 		}
 		else if ( strcmp( name, _("Gamma 2.2 Chart") ) == 0 )
 		{
 		    img = new smpteImage( smpteImage::kGammaChart,
 					  1280, 960 );
-		    img->gamma( 2.2 );
+		    img->gamma( 2.2f );
 		}
 		else if ( strcmp( name, _("Gamma 2.4 Chart") ) == 0 )
 		{
 		    img = new smpteImage( smpteImage::kGammaChart,
 					  1280, 960 );
-		    img->gamma( 2.4 );
+		    img->gamma( 2.4f );
 		}
 		// @todo: slate image cannot be created since it needs info
 		//        from other image.

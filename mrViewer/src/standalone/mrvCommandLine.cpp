@@ -352,6 +352,7 @@ void parse_command_line( const int argc, const char** argv,
 {
 
   // Some default values
+    opts.single = false;
   opts.gamma = (float)1.0; //ui->uiPrefs->uiPrefsViewGamma->value();
   opts.gain  = (float)1.0; //ui->uiPrefs->uiPrefsViewGain->value();
   opts.fps   = -1.f;
@@ -361,7 +362,7 @@ void parse_command_line( const int argc, const char** argv,
   try {
     using namespace TCLAP;
 
-    
+
     DBG;
     CmdLine cmd(
                 _("A professional image and movie viewer\n"
@@ -383,6 +384,9 @@ void parse_command_line( const int argc, const char** argv,
     DBG;
     SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback).") );
+
+    SwitchArg asingle("S", "single_image",
+                      _("Load a single image even if there's a sequence present.") );
 
     SwitchArg arun( "r", "run",
                     _("Run mrViewer regardless of single instance setting.") );
@@ -423,7 +427,7 @@ void parse_command_line( const int argc, const char** argv,
     ValueArg< std::string >
         abg( N_("b"), N_("bg"),
              _("Provide a sequence or movie for background."), false, "", "image");
-    
+
     MultiArg< std::string >
     acolorspace( N_("c"), N_("colorspace"),
             _("Set each input color space for each image."), false, "color space");
@@ -457,6 +461,7 @@ void parse_command_line( const int argc, const char** argv,
     DBG;
     cmd.add(arun);
     cmd.add(aplay);
+    cmd.add(asingle);
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(ahostname);
@@ -481,13 +486,14 @@ void parse_command_line( const int argc, const char** argv,
     cmd.parse( argc, argv );
 
     DBG;
-    
+
     //
     // Extract the options
     //
-    opts.play  = aplay.getValue();
-    opts.gamma = agamma.getValue();
-    opts.gain  = again.getValue();
+    opts.play   = aplay.getValue();
+    opts.single = asingle.getValue();
+    opts.gamma  = agamma.getValue();
+    opts.gain   = again.getValue();
     opts.host = ahostname.getValue();
     opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
@@ -534,13 +540,13 @@ void parse_command_line( const int argc, const char** argv,
        files.push_back( stereo[i] );
     }
 
-  
+
 #endif
 
     /// CREATE THE MAIN INTERFACE
     ui = new ViewerUI;
 
-    
+
     int debug = adebug.getValue();
 
     Preferences::debug = debug;
@@ -640,7 +646,7 @@ void parse_command_line( const int argc, const char** argv,
                                                             end, start, end,
                                                             opts.fps ) );
                     }
-                    
+
                     if ( ci != ce )
                     {
                         opts.stereo.back().colorspace = *ci; ++ci;
@@ -666,7 +672,8 @@ void parse_command_line( const int argc, const char** argv,
                   }
                   else
                   {
-                      if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() )
+                      if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() &&
+                          ! opts.single )
                       {
                           opts.files.push_back( mrv::LoadInfo( fileroot, start,
                                                                end,
