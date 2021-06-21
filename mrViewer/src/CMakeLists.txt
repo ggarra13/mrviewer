@@ -859,6 +859,12 @@ IF(TCLAP_FOUND)
   MESSAGE( STATUS "TCLAP include:    ${TCLAP_INCLUDE_DIR}" )
 ENDIF(TCLAP_FOUND)
 
+IF(LibRaw_FOUND)
+  MESSAGE( STATUS "LibRaw include:     ${LibRaw_INCLUDE_DIR}" )
+  MESSAGE( STATUS "LibRaw library dir: ${LibRaw_LIBRARY_DIR}" )
+  MESSAGE( STATUS "LibRaw libraries:   ${LibRaw_LIBRARIES}" )
+ENDIF(LibRaw_FOUND)
+
 IF(LIBINTL_FOUND)
   MESSAGE( STATUS "LibIntl include:     ${LIBINTL_INCLUDE_DIR}" )
   MESSAGE( STATUS "LibIntl library dir: ${LIBINTL_LIBRARY_DIR}" )

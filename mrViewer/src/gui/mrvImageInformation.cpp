@@ -772,15 +772,20 @@ int match_goal = 1;
 
 static bool regex_match( float i, const std::string& regex, std::string text )
 {
-  boost::regex expr{ regex };
-  if ( boost::regex_search( text, expr ) ) {
-    ++num_matches;
-    if ( match_goal == num_matches )
-      {
-        idx = int(i - 0.5f);
-        return true;
-      }
-  }
+    try {
+        boost::regex expr{ regex };
+        if ( boost::regex_search( text, expr ) ) {
+            ++num_matches;
+            if ( match_goal == num_matches )
+            {
+                idx = int(i - 0.5f);
+                return true;
+            }
+        }
+    }
+    catch ( const boost::regex_error& e )
+    {
+    }
   return false;
 }
 
