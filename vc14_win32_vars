@@ -6,7 +6,7 @@ export DIST=/D/code/lib/vc14_Windows_32
 export OPENEXR_ROOT=$DIST
 export     CTL_ROOT=$DIST
 export TINYXML2_ROOT=$DIST
-export LibRaw_ROOT=$ROOT/dependencies/LibRaw-x86
+export LibRaw_ROOT=$ROOT/dependencies/LibRaw-0.20.2-x86
 export OIIO_ROOT=$DIST
 export GLEW_ROOT=$DIST
 export OCIO_ROOT=$DIST
@@ -23,3 +23,5 @@ export TCLAP_ROOT="$ROOT/dependencies/tclap-1.2.2"
 export SampleICC_ROOT="$ROOT/win64_deps/SampleICC-1.6.10-vc14-win32"
 export LIBINTL_ROOT="$ROOT/dependencies/libintl-win32/"
 export LIBICONV="$ROOT/dependencies/gettext-iconv-win32"
+
+export PATH=$DIST/bin:$PATH

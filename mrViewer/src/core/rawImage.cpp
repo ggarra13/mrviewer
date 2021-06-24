@@ -199,6 +199,7 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
     if ( is_thumbnail() )
     {
         //@todo: extract thumb image if present
+        iprc->params.half_size = 4; // dcraw -h
         ret = libraw_unpack_thumb(iprc);
         HANDLE_ERRORS( ret, false );
 
