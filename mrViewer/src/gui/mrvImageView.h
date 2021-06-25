@@ -1001,7 +1001,6 @@ protected:
     // Foreground and background images in view
     ///////////////////
 
-
     mrv::media _fg;
     CMedia* _old_fg;
     mrv::media _bg;
