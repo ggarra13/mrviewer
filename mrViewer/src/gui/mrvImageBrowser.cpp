@@ -4812,17 +4812,11 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 
         // if (! update ) return;
 
-        MediaList::iterator j;
         if ( i != e )
         {
-            (*i)->position( 1 );
-
-            for ( j = i, ++i; i != e; j = i, ++i )
-            {
-                int64_t frame = (*j)->position() + (*j)->duration();
-                DBGM3( (*i)->image()->name() << " moved to frame " << frame );
-                (*i)->position( frame );
-            }
+            first = (*i)->position();
+            MediaList::reverse_iterator j = reel->images.rbegin();
+            last  = (*j)->position() + (*j)->duration();
         }
 
         mrv::EDLGroup* eg = edl_group();

@@ -1512,19 +1512,37 @@ void Preferences::run( ViewerUI* main )
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->value(),
                                           true );
-
         DBG3;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
+
+    if ( uiPrefs->uiPrefsSaveOcio->value() )
+    {
+        Fl_Preferences base( prefspath().c_str(), "filmaura",
+                             "mrViewer" );
+        Fl_Preferences ui( base, "ui" );
+        Fl_Preferences view( ui, "view" );
+        Fl_Preferences ocio( view, "ocio" );
+        char tmpS[2048];
+        ocio.get( "config", tmpS, "", 2048 );
+        uiPrefs->uiPrefsOCIOConfig->value( tmpS );
+
+        var = uiPrefs->uiPrefsOCIOConfig->value();
+        mrvLOG_INFO( "ocio",
+                     _( "Setting OCIO config to saved preferences:" )
+                     << std::endl );
+        mrvLOG_INFO( "ocio", var << std::endl );
+    }
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
         DBG3;
         mrvLOG_INFO( "ocio",
-                     _("Setting OCIO environment variable to nuke-default." )
+                     _("Setting OCIO config to nuke-default." )
                      << std::endl );
         var = av_strdup( tmp.c_str() );
     }
     DBG3;
+
 
     bool nuke_default = false;
 
@@ -1536,7 +1554,7 @@ void Preferences::run( ViewerUI* main )
         if ( old_ocio != var )
         {
         DBG3;
-            mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
+            mrvLOG_INFO( "ocio", _("Setting OCIO config to:")
                          << std::endl );
             old_ocio = var;
             mrvLOG_INFO( "ocio", old_ocio << std::endl );
@@ -1550,7 +1568,7 @@ void Preferences::run( ViewerUI* main )
         if ( old_ocio != parsed )
         {
         DBG3;
-            mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
+            mrvLOG_INFO( "ocio", _("Expanded OCIO config to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", parsed << std::endl );
 
@@ -1560,21 +1578,11 @@ void Preferences::run( ViewerUI* main )
             nuke_default = true;
 
         DBG3;
-        sprintf( buf, "OCIO=%s", parsed.c_str() );
-        putenv( av_strdup(buf) );
+        // sprintf( buf, "OCIO=%s", parsed.c_str() );
+        // putenv( av_strdup(buf) );
         DBG3;
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
-// #ifdef __linux__
-//         char tmpS[256];
-//         sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
-//         const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
-//         mrvLOG_INFO( "ocio", _("Setting OCIO's view environment variable to:")
-//                      << std::endl );
-//         sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
-//         mrvLOG_INFO( "ocio", buf << std::endl );
-//         putenv( av_strdup(buf) );
-// #endif
 
         DBG3;
         char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
@@ -1585,7 +1593,7 @@ void Preferences::run( ViewerUI* main )
         try
         {
             DBG3;
-            config = OCIO::Config::CreateFromEnv();
+            config = OCIO::Config::CreateFromFile( parsed.c_str() );
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
@@ -1759,7 +1767,7 @@ void Preferences::run( ViewerUI* main )
     {
         DBG3;
         if ( !var || strlen(var) == 0 )
-            LOG_INFO( _("OCIO environment variable is not set.  "
+            LOG_INFO( _("OCIO config is not set.  "
                         "Defaulting to CTL. ") );
         DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
