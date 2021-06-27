@@ -71,6 +71,7 @@ namespace fs = boost::filesystem;
 #include <opentimelineio/timeline.h>
 #include <opentimelineio/transition.h>
 #include "opentimelineio/externalReference.h"
+#include <opentimelineio/stackAlgorithm.h>
 
 
 #include <iostream>
@@ -1255,17 +1256,36 @@ bool fileroot( std::string& fileroot, const std::string& file,
     return true;
 }
 
-    bool parse_timeline(LoadList& sequences,
-                        const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
+bool parse_timeline(LoadList& sequences,
+                    const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
 {
-    for (const auto i : timeline.value->tracks()->children())
+
+    otio::ErrorStatus errorStatus;
+    auto video_tracks = timeline.value->video_tracks();
+    auto onetrack = otio::flatten_stack(video_tracks, &errorStatus);
+    if (!onetrack)
+    {
+        LOG_ERROR( _("Could not flatten tracks. Error: ") << errorStatus);
+        return false;
+    }
+
+    std::string name;
+    std::stringstream ss(name);
+    ss << timeline.value->name() << " Flattened";
+    auto newtimeline = otio::SerializableObject::Retainer<otio::Timeline>(new otio::Timeline(ss.str()));
+    auto stack = otio::SerializableObject::Retainer<otio::Stack>(new otio::Stack());
+    newtimeline.value->set_tracks(stack);
+    if (!stack.value->append_child(onetrack, &errorStatus))
+    {
+        LOG_ERROR(_("Could not append child to stack. Error: ")
+                  << errorStatus);
+        return false;
+    }
+
+    for (const auto i : newtimeline.value->tracks()->children())
     {
         if (auto track = dynamic_cast<otio::Track*>(i.value))
         {
-            if ( track->kind() != "Video" ) continue;
-
-            otio::ErrorStatus errorStatus;
-
             for (auto child : track->children())
             {
                 if (auto item = dynamic_cast<otio::Item*>(child.value))
@@ -1275,7 +1295,7 @@ bool fileroot( std::string& fileroot, const std::string& file,
                         auto s = clip->visible_range(&errorStatus).start_time();
                         auto d = clip->visible_range(&errorStatus).duration();
                         int64_t start = s.value();
-                        int64_t duration = d.value();
+                        int64_t duration = d.value() - 1;
                         auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
                         if ( e )
                         {
@@ -1296,7 +1316,7 @@ bool fileroot( std::string& fileroot, const std::string& file,
                         auto s = gap->visible_range(&errorStatus).start_time();
                         auto d = gap->visible_range(&errorStatus).duration();
                         int64_t start = s.value();
-                        int64_t duration = d.value();
+                        int64_t duration = d.value() - 1;
                         LoadInfo info( _("Black Gap"),
                                        start, start + duration,
                                        start, start + duration, d.rate() );
