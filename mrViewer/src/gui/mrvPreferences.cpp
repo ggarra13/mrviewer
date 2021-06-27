@@ -1516,7 +1516,7 @@ void Preferences::run( ViewerUI* main )
         DBG3;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
-    if ( uiPrefs->uiPrefsSaveOcio->value() )
+    if ( uiPrefs->uiPrefsSaveOcio->value() && use_ocio )
     {
         Fl_Preferences base( prefspath().c_str(), "filmaura",
                              "mrViewer" );
