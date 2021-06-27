@@ -274,7 +274,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
         last = reel->global_to_local( last );
         first = reel->global_to_local( first );
-
     }
     else
     {
@@ -302,31 +301,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         return CMedia::kDecodeLoopStart;
     }
 
-    if ( reel->edl && !decode )
-    {
-        // int64_t dissolve = img->fade_frames( CMedia::kCrossDissolveAtEnd );
-        // if ( frame + dissolve >= last )
-        // {
-        //     int64_t f = last + 1;
-        //     mrv::media m = reel->media_at( f );
-        //     CMedia* next = m->image();
-        //     if ( next && next->stopped() )
-        //     {
-        //         std::cerr << "START " << next->name() << std::endl;
-        //         next->seek( next->first_frame() );
-        //         ViewerUI* ui = timeline->main();
-        //         next->play( CMedia::kForwards, ui, true );
-        //         ui->uiView->background( m );
-        //         return CMedia::kDecodeDissolveAtEnd;
-        //     }
-        // }
-
-        // dissolve = img->fade_frames( CMedia::kCrossDissolveAtStart );
-        // if ( frame - dissolve <= first )
-        // {
-        //     return CMedia::kDecodeDissolveAtStart;
-        // }
-    }
 
     return CMedia::kDecodeOK;
 }
@@ -342,14 +316,16 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
     if ( status == CMedia::kDecodeLoopEnd )
     {
         img->loop_at_end( last+1 );
-        img->loop_at_end( last+1 );
+        img->loop_at_end( last+2 );
     }
     else if ( status == CMedia::kDecodeLoopStart )
     {
         // We need two loops at start to force clips
         img->loop_at_start( first-1 );
-        img->loop_at_start( first-1 );
+        img->loop_at_start( first-2 );
     }
+
+
     return status;
 }
 
@@ -403,6 +379,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     int64_t first, last;
     end = check_loop( frame, img, false, reel, timeline, first, last );
+
 
     CMedia::Looping loop = view->looping();
 
@@ -902,7 +879,7 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
-
+    img->close_audio();
 
 } // audio_thread
 
@@ -1118,6 +1095,7 @@ void video_thread( PlaybackData* data )
 
 
         CMedia::DecodeStatus status = img->decode_video( frame );
+
 
         int64_t first, last;
         status = check_loop( frame, img, false, reel, timeline, first, last );

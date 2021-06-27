@@ -51,7 +51,8 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
                     (int(*)(int))tolower);
 
     if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" ||
-         ext == "srt" || ext == "sub" || ext == "txt" || ext == "vtt" )
+         ext == "srt" || ext == "sub" || ext == "txt" || ext == "vtt" ||
+         ext == "otio" )
         return NULL;
 
     bool shown = LogDisplay::shown;

@@ -4153,7 +4153,7 @@ int64_t CMedia::loops_offset( int64_t f,
 
 
 
-bool CMedia::find_image( int64_t& frame )
+bool CMedia::find_image( const int64_t frame )
 {
     if ( stopped() && _right_eye && _owns_right_eye && _stereo_output )
         _right_eye->find_image(frame);

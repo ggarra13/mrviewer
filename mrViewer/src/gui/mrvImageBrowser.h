@@ -107,6 +107,9 @@ public:
     //! Save reel under a file name
     void save_reel_( mrv::Reel r, const std::string& file );
 
+    //! Load an otio edit
+    void load_otio( const char* name );
+
     //! Load a reel from filename
     void load_reel( const char* filename );
 

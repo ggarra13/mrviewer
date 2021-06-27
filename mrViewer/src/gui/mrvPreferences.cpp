@@ -1512,6 +1512,7 @@ void Preferences::run( ViewerUI* main )
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->value(),
                                           true );
+    const char* envvar = var;
         DBG3;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
@@ -1528,9 +1529,8 @@ void Preferences::run( ViewerUI* main )
 
         var = uiPrefs->uiPrefsOCIOConfig->value();
         mrvLOG_INFO( "ocio",
-                     _( "Setting OCIO config to saved preferences:" )
+                     _( "Setting OCIO config to saved preferences." )
                      << std::endl );
-        mrvLOG_INFO( "ocio", var << std::endl );
     }
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
@@ -1553,9 +1553,18 @@ void Preferences::run( ViewerUI* main )
         DBG3;
         if ( old_ocio != var )
         {
-        DBG3;
-            mrvLOG_INFO( "ocio", _("Setting OCIO config to:")
-                         << std::endl );
+            DBG3;
+            if ( var == envvar )
+            {
+                mrvLOG_INFO( "ocio", _("Setting OCIO config from OCIO "
+                                       "environment variable:")
+                             << std::endl );
+            }
+            else
+            {
+                mrvLOG_INFO( "ocio", _("Setting OCIO config to:")
+                             << std::endl );
+            }
             old_ocio = var;
             mrvLOG_INFO( "ocio", old_ocio << std::endl );
         }

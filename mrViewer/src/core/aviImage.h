@@ -100,7 +100,7 @@ public:
 
     virtual void wait_image();
 
-    virtual bool find_image( int64_t& frame );
+    virtual bool find_image( const int64_t frame );
 
     virtual boost::uint64_t video_pts() {
         return frame2pts( get_video_stream(), _frame );

@@ -1604,6 +1604,11 @@ void ImageBrowser::save_session()
             load_reel( file.c_str() );
             return current_image();
         }
+        else if ( len > 5 && file.substr( len - 5, 5 ) == ".otio" )
+        {
+            load_otio( file.c_str() );
+            return current_image();
+        }
         else
         {
             return load_image_in_reel( file.c_str(), start, end, start, end,
@@ -2275,9 +2280,14 @@ void ImageBrowser::save_session()
                 if ( net ) Fl::check();
             }
 
+
             if ( load.reel )
             {
                 load_reel( load.filename.c_str() );
+            }
+            else if ( load.otio )
+            {
+                load_otio( load.filename.c_str() );
             }
             else
             {
@@ -2809,6 +2819,36 @@ void ImageBrowser::save_session()
 
 }
 
+
+/**
+ * Load an image reel
+ *
+ * @param name name of reel to load
+ */
+void ImageBrowser::load_otio( const char* name )
+{
+    bool edl = true;
+    mrv::LoadList sequences;
+    if ( ! parse_otio( sequences, name ) )
+    {
+        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        return;
+    }
+
+    fs::path path( name );
+    std::string reelname = path.leaf().string();
+    reelname = reelname.substr(0, reelname.size()-5);
+
+    load( sequences, false, "", edl, true );
+
+    mrv::Reel reel = current_reel();
+
+    if ( reel->images.empty() ) return;
+
+    set_edl();
+
+}
+
 /**
  * Load an image reel
  *
@@ -2867,14 +2907,15 @@ void ImageBrowser::load( const stringArray& files,
     {
         std::string file = *i;
 
-        if ( file.substr(0, 5) == "file:" )
-            file = file.substr( 5, file.size() );
+        if ( file.substr(0, 7) == "file://" )
+            file = file.substr( 7, file.size() );
 
 
         if ( file.empty() ) continue;
 
         size_t len = file.size();
-        if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
+        if ( len > 5 && ( file.substr( len - 5, 5 ) == ".reel" ||
+                          file.substr( len - 5, 5 ) == ".otio" ) )
         {
             loadlist.push_back( mrv::LoadInfo( file ) );
         }
@@ -2952,8 +2993,8 @@ void ImageBrowser::open_stereo()
 
     std::string file = files[0];
 
-    if ( file.substr(0, 5) == "file:" )
-        file = file.substr( 5, file.size() );
+    if ( file.substr(0, 7) == "file://" )
+        file = file.substr( 7, file.size() );
 
     if ( file.empty() ) return;
 
@@ -4216,7 +4257,7 @@ void ImageBrowser::handle_dnd()
 #endif
 
         if ( file.substr(0, 7) == "file://" )
-            file = file.substr( 6, file.size() );
+            file = file.substr( 7, file.size() );
 
         if ( file.empty() ) continue;
 
@@ -4549,7 +4590,6 @@ void ImageBrowser::seek( const int64_t tframe )
     char buf[64];
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
-
 
     view()->frame( tframe );
 

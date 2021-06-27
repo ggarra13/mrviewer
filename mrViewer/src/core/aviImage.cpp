@@ -1740,7 +1740,7 @@ bool aviImage::find_subtitle( const int64_t frame )
     return false;
 }
 
-bool aviImage::find_image( int64_t& frame )
+bool aviImage::find_image( const int64_t frame )
 {
 
     static constexpr int kDiffFrames = 10;
@@ -1832,7 +1832,7 @@ bool aviImage::find_image( int64_t& frame )
                      diff > 1 && diff < kDiffFrames &&
                      counter < kDiffFrames && f <= _frameEnd )
                 {
-                    _frame = frame = f = _hires->frame();
+                    _frame = f = _hires->frame();
                     // IMG_WARNING( _("find_image: frame ") << frame
                     //              << _(" not found, choosing ")
                     //              << _hires->frame()

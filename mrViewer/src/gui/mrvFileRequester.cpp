@@ -83,7 +83,7 @@ static const char* kModule = "file";
 // File extension patterns
 static const std::string kSessionPattern = "session";
 
-static const std::string kReelPattern = "reel";
+static const std::string kReelPattern = "reel,otio";
 
 static const std::string kMoviePattern = "3gp,asf,avc,avchd,avi,braw,BRAW,divx,dv,flv,m2ts,m2t,mkv,m4v,mp4,mpg,mpeg,mov,mxf,ogm,ogv,qt,r3d,R3D,ts,vob,VOB,vp9,webm,wmv,y4m";
 

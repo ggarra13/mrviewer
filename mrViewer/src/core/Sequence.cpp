@@ -62,6 +62,22 @@ namespace fs = boost::filesystem;
 
 
 // #define LOG_ERROR(x) std::cerr << x << std::endl
+#include <opentimelineio/clip.h>
+#include <opentimelineio/deserialization.h>
+#include <opentimelineio/effect.h>
+#include <opentimelineio/freezeFrame.h>
+#include <opentimelineio/gap.h>
+#include <opentimelineio/linearTimeWarp.h>
+#include <opentimelineio/timeline.h>
+#include <opentimelineio/transition.h>
+#include "opentimelineio/externalReference.h"
+
+
+#include <iostream>
+
+namespace otio = opentimelineio::OPENTIMELINEIO_VERSION;
+namespace otime = opentime::OPENTIME_VERSION;
+
 
 #include "gui/mrvImageView.h"
 #include "video/mrvGLShape.h"
@@ -403,8 +419,8 @@ bool split_sequence(
     if ( periods.size() == 4 )
     {
         root = file.substr( 0, len ) + periods[0] + ".";
-        if ( root.find( "file:" ) == 0 )
-            root = root.substr(5, root.size());
+        if ( root.find( "file://" ) == 0 )
+            root = root.substr(7, root.size());
         view = periods[1];
         frame = periods[2];
         ext = '.' + periods[3];
@@ -437,8 +453,8 @@ bool split_sequence(
     else if ( periods.size() == 3 )
     {
         root = file.substr( 0, len ) + periods[0] + ".";
-        if ( root.find( "file:" ) == 0 )
-            root = root.substr( 5, root.size() );
+        if ( root.find( "file://" ) == 0 )
+            root = root.substr( 7, root.size() );
         frame = periods[1];
         ext = '.' + periods[2];
         if ( mrv::is_valid_movie( ext.c_str() ) ||
@@ -508,8 +524,8 @@ bool split_sequence(
     if ( count == 2 && minus < 2 )
     {
         root  = f.substr( 0, idx[1]+1 );
-        if ( root.find( "file:" ) == 0 )
-            root = root.substr( 5, root.size() );
+        if ( root.find( "file://" ) == 0 )
+            root = root.substr( 7, root.size() );
         frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
         ext   = f.substr( idx[0], file.size()-idx[0] );
 
@@ -544,8 +560,8 @@ bool split_sequence(
     else
     {
         root = f.substr( 0, idx[0]+1 );
-        if ( root.find( "file:" ) == 0 )
-            root = root.substr( 5, root.size() );
+        if ( root.find( "file://" ) == 0 )
+            root = root.substr( 7, root.size() );
         ext  = f.substr( idx[0]+1, file.size() );
 
         if ( is_valid_movie( ext.c_str() ) ||
@@ -580,8 +596,8 @@ bool split_sequence(
         size_t len = root.size();
         if ( len >= 2 && !valid )
         {
-            if ( root.find( "file:" ) == 0 )
-                root = root.substr( 5, root.size() );
+            if ( root.find( "file://" ) == 0 )
+                root = root.substr( 7, root.size() );
             size_t pos;
             std::string fspec;
             if ( ( pos = root.rfind('%') ) != std::string::npos ||
@@ -1125,19 +1141,19 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 fs::path file = root;
 
                 if ( root[0] != '/' && root[1] != ':' &&
-                     root != "Black Gap" &&
-                     root.substr(0,9) != "Checkered" &&
-                     root != "SMPTE NTSC Color Bars" &&
-                     root != "PAL Color Bars" &&
-                     root != "PAL HDTV Color Bars" &&
-                     root != "NTSC HDTV Color Bars" &&
-                     root != "PAL HDTV Color Bars" &&
-                     root != "Linear Gradient" &&
-                     root != "Luminance Gradient" &&
-                     root != "Gamma 1.4 Chart" &&
-                     root != "Gamma 1.8 Chart" &&
-                     root != "Gamma 2.2 Chart" &&
-                     root != "Gamma 2.4 Chart"
+                     root != _("Black Gap") &&
+                     root.substr(0,9) != _("Checkered") &&
+                     root != _("SMPTE NTSC Color Bars") &&
+                     root != _("PAL Color Bars") &&
+                     root != _("PAL HDTV Color Bars") &&
+                     root != _("NTSC HDTV Color Bars") &&
+                     root != _("PAL HDTV Color Bars") &&
+                     root != _("Linear Gradient") &&
+                     root != _("Luminance Gradient") &&
+                     root != _("Gamma 1.4 Chart") &&
+                     root != _("Gamma 1.8 Chart") &&
+                     root != _("Gamma 2.2 Chart") &&
+                     root != _("Gamma 2.4 Chart")
                     )
                 {
                     dir /= file;
@@ -1169,7 +1185,7 @@ bool is_valid_sequence( const char* filename )
     if ( strlen(filename) == 0 ) return true;
     std::string root, frame, view, ext;
     bool ok = split_sequence( root, frame, view, ext, filename );
-    if ( ext == "reel" ) return false;
+    if ( ext == "reel" || ext == "otio" ) return false;
     return ok;
 }
 
@@ -1237,6 +1253,80 @@ bool fileroot( std::string& fileroot, const std::string& file,
 
     fileroot = full;
     return true;
+}
+
+    bool parse_timeline(LoadList& sequences,
+                        const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
+{
+    for (const auto i : timeline.value->tracks()->children())
+    {
+        if (auto track = dynamic_cast<otio::Track*>(i.value))
+        {
+            if ( track->kind() != "Video" ) continue;
+
+            otio::ErrorStatus errorStatus;
+
+            for (auto child : track->children())
+            {
+                if (auto item = dynamic_cast<otio::Item*>(child.value))
+                {
+                    if (auto clip = dynamic_cast<otio::Clip*>(item))
+                    {
+                        auto s = clip->visible_range(&errorStatus).start_time();
+                        auto d = clip->visible_range(&errorStatus).duration();
+                        int64_t start = s.value();
+                        int64_t duration = d.value();
+                        auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
+                        if ( e )
+                        {
+                            LoadInfo info( e->target_url(),
+                                           start, start + duration,
+                                           start, start + duration, d.rate() );
+                            sequences.push_back( info );
+                        }
+                    }
+                    // See the documentation to understand the difference
+                    // between each of these ranges:
+                    // https://opentimelineio.readthedocs.io/en/latest/tutorials/time-ranges.html
+                    // summarize_range("  Trimmed Range", clip->trimmed_range(&errorStatus), errorStatus);
+                    // summarize_range("  Visible Range", clip->visible_range(&errorStatus), errorStatus);
+                    // summarize_range("Available Range", clip->available_range(&errorStatus), errorStatus);
+                    else if (auto gap = dynamic_cast<otio::Gap*>(item))
+                    {
+                        auto s = gap->visible_range(&errorStatus).start_time();
+                        auto d = gap->visible_range(&errorStatus).duration();
+                        int64_t start = s.value();
+                        int64_t duration = d.value();
+                        LoadInfo info( _("Black Gap"),
+                                       start, start + duration,
+                                       start, start + duration, d.rate() );
+                        sequences.push_back( info );
+                    }
+                }
+
+            }
+        }
+    }
+    return true;
+}
+
+bool parse_otio( mrv::LoadList& sequences, const char* file )
+{
+    otio::ErrorStatus error_status;
+    otio::SerializableObject::Retainer<otio::Timeline> timeline(dynamic_cast<otio::Timeline*>(otio::Timeline::from_json_file(file, &error_status)));
+
+    if (!timeline)
+    {
+        LOG_ERROR( _("Could not open .otio file. Error: ") << error_status );
+        return false;
+    }
+
+    // Change directory to that of otio file, so that relative paths work fine.
+    fs::path p = file;
+    p = p.parent_path();
+    int ok = chdir( p.string().c_str() );
+
+    return parse_timeline( sequences, timeline );
 }
 
 } // namespace mrv

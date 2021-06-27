@@ -126,7 +126,8 @@ bool wandImage::test(const char* file)
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int))tolower );
         if ( ext == "pdf" || ext == "tx" || ext == "rmd" || ext == "r3d" ||
-             ext == "prefs" || ext == "favorites" || ext == "session" )
+             ext == "prefs" || ext == "favorites" || ext == "session" ||
+             ext == "otio" )
             return false;
     }
 

@@ -584,7 +584,8 @@ void parse_command_line( const int argc, const char** argv,
 
 
         size_t len = arg.size();
-        if ( len > 5 && arg.substr(len - 5, 5) == ".reel" )
+        if ( len > 5 && ( arg.substr(len - 5, 5) == ".reel" ||
+                          arg.substr(len - 5, 5) == ".otio" ) )
           {
             opts.files.push_back( mrv::LoadInfo(arg) );
           }

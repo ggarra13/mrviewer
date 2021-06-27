@@ -1867,7 +1867,7 @@ void ImageView::stop_playback()
     if ( fg ) {
         img = fg->image();
         img->stop();
-        this->frame( img->frame() );
+        if ( !timeline()->edl() ) frame( img->frame() );
     }
 
     mrv::media bg = background();
@@ -10189,7 +10189,6 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
-    uiMain->uiFrame->value( f );
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
@@ -10216,7 +10215,6 @@ void ImageView::seek( const int64_t f )
     {
         _preframe = f;
     }
-
 
     if ( b ) b->seek( f );
 
@@ -10316,7 +10314,7 @@ void ImageView::first_frame()
             return;
         }
 
-        uiMain->uiFrame->frame( f );
+        frame( f );
     }
 
     int64_t t = int64_t( timeline()->display_minimum() );
@@ -10348,7 +10346,7 @@ void ImageView::last_frame()
             return;
         }
 
-        uiMain->uiFrame->frame( f );
+        frame( f );
 
     }
 

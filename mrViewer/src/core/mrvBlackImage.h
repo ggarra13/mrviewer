@@ -43,7 +43,7 @@ public:
     };
 
 public:
-    BlackImage( Type type = kGap );
+    BlackImage( Type type = kGap, int64_t first = 1, int64_t last = 50 );
     virtual ~BlackImage() {};
 
     static bool test(const char* file) {

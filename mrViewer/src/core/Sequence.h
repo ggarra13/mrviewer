@@ -130,6 +130,7 @@ struct LoadInfo
     double fps;
 
     bool    reel;
+    bool    otio;
     GLShapeList shapes;
     int64_t audio_offset;
 
@@ -155,6 +156,7 @@ struct LoadInfo
         fade_out( 0 ),
         fps( f ),
         reel( false ),
+        otio( false ),
         audio_offset( aoffset ),
         subtitle( sub )
     {
@@ -186,6 +188,7 @@ struct LoadInfo
         fade_out( 0 ),
         fps( f ),
         reel( false ),
+        otio( false ),
         shapes( shl ),
         audio_offset( aoffset ),
         subtitle( sub )
@@ -194,6 +197,10 @@ struct LoadInfo
         if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
         {
             reel = true;
+        }
+        else if ( len > 5 && filename.substr( len - 5, len ) == ".otio" )
+        {
+            otio = true;
         }
     }
 
@@ -207,12 +214,17 @@ struct LoadInfo
         fade_out( 0 ),
         fps( -1.0 ),
         reel( false ),
+        otio( false ),
         audio_offset( 0 )
     {
         size_t len = filename.size();
         if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
         {
             reel = true;
+        }
+        else if ( len > 5 && filename.substr( len - 5, len ) == ".otio" )
+        {
+            otio = true;
         }
     }
 
@@ -229,6 +241,7 @@ struct LoadInfo
         fade_out( 0 ),
         fps( b.fps ),
         reel( b.reel ),
+        otio( b.otio ),
         shapes( b.shapes ),
         audio_offset( b.audio_offset ),
         subtitle( b.subtitle )
@@ -249,6 +262,7 @@ struct LoadInfo
             fade_out = 0;
             fps = b.fps;
             reel = b.reel;
+            otio = b.otio;
             shapes = b.shapes;
             audio_offset = b.audio_offset;
             subtitle = b.subtitle;
@@ -407,6 +421,9 @@ std::string get_long_view( bool left );
 
 // Parse a %v or %V fileroot and return the appropiate view name.
 std::string parse_view( const std::string& fileroot, bool left = true );
+
+bool parse_otio( mrv::LoadList& sequences, const char* file );
+
 
 }  // namespace mrv
 

@@ -35,10 +35,12 @@ namespace {
 namespace mrv {
 
 
-BlackImage::BlackImage( const BlackImage::Type c ) :
+BlackImage::BlackImage( const BlackImage::Type c,
+                        int64_t first, int64_t last ) :
     CMedia()
 {
-    _fileroot = av_strdup("Black Gap");
+    _fileroot = av_strdup(_("Black Gap"));
+    _filename = av_strdup(_("Black Gap"));
     _gamma = 1.0f;
     _internal = true;
 
@@ -46,8 +48,8 @@ BlackImage::BlackImage( const BlackImage::Type c ) :
     lumma_layers();
 
     _fps = 25.0f;
-    _frameStart = _frame_start = 1;
-    _frameEnd = _frame_end = int64_t( (_fps * 3) + 0.5f );
+    _frameStart = _frame_start = first;
+    _frameEnd = _frame_end = last;
 
     default_color_corrections();
 }
@@ -77,6 +79,14 @@ bool BlackImage::fetch(
         _hires = canvas;
         if ( !_hires ) return false;
     }
+
+    Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
+
+    AVPacket* pkt = av_packet_alloc();
+    pkt->dts = pkt->pts = frame;
+    _video_packets.push_back( *pkt );
+
     return true;
 }
 

@@ -1304,7 +1304,7 @@ public:
     }
     virtual bool find_subtitle( const int64_t frame );
     virtual void wait_image();
-    virtual bool find_image( int64_t& frame );
+    virtual bool find_image( const int64_t frame );
 
 
     Attributes& attributes();
@@ -1621,6 +1621,13 @@ public:
     inline int64_t audio_offset() const {
         return _audio_offset;
     }
+
+    void notify_all()
+        {
+            _video_packets.cond().notify_all();
+            _audio_packets.cond().notify_all();
+            _subtitle_packets.cond().notify_all();
+        }
 
     void debug_audio_stores(const int64_t frame,
                             const char* routine = "",
