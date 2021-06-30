@@ -1354,7 +1354,6 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
     }
 
 
-
     glBegin( GL_QUADS );
     {
         glTexCoord2f( 0.0f, _uvMax.v );

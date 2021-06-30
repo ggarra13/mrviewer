@@ -49,13 +49,9 @@
 
 namespace
 {
-// Maximum number of frames to show cacheline.  Setting it too high can
+// Maximum number of frames to show cacheline for.  Setting it too high can
 // impact GUI playback when the image/movies are that long.
-#ifdef OSX
 unsigned kMAX_FRAMES = 5000;
-#else
-unsigned kMAX_FRAMES = 5000;
-#endif
 double kMinFrame = std::numeric_limits<double>::min();
 double kMaxFrame = std::numeric_limits<double>::max();
 }
@@ -532,7 +528,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
     {
         int WX = window()->x();
         int WY = window()->y();
-        int X = Fl::event_x() - 64;
+        int X = event_x - 64;
         int Y = y() - 80;
 
         if ( Y < 0 ) return;
@@ -593,6 +589,7 @@ int Timeline::handle( int e )
     if ( e == FL_ENTER ) return 1;
     else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
+        event_x = Fl::event_x();
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());
         int W = w()-Fl::box_dw(box());

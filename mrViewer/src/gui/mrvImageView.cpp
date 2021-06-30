@@ -3033,28 +3033,25 @@ void ImageView::log() const
     //
     // First, handle log window showing up and scrolling
     //
-    if (main() && main()->uiLog && main()->uiLog->uiMain )
+    LogUI* logUI = main()->uiLog;
+    Fl_Window* logwindow = logUI->uiMain;
+    if ( logwindow )
     {
-        LogUI* logUI = main()->uiLog;
-        Fl_Window* logwindow = logUI->uiMain;
-        if ( logwindow )
-        {
-            mrv::LogDisplay* log = logUI->uiLogText;
+        mrv::LogDisplay* log = logUI->uiLogText;
 
-            if ( mrv::LogDisplay::show == true )
+        if ( mrv::LogDisplay::show == true )
+        {
+            mrv::LogDisplay::show = false;
+            if (main() && logUI && logwindow )
             {
-                mrv::LogDisplay::show = false;
-                if (main() && logUI && logwindow )
-                {
-                    logwindow->show();
-                }
+                logwindow->show();
             }
-            static unsigned  lines = 0;
-            if ( log->visible() && log->lines() != lines )
-            {
-                log->scroll( log->lines()-1, 0 );
-                lines = log->lines();
-            }
+        }
+        static unsigned  lines = 0;
+        if ( log->visible() && log->lines() != lines )
+        {
+            log->scroll( log->lines()-1, 0 );
+            lines = log->lines();
         }
     }
 }
@@ -3784,12 +3781,9 @@ void ImageView::timeout()
         }
     }
 
-    TRACE( "" );
     //
-    // If in EDL mode, we check timeline to see if frame points to
-    // new image.
-    //
-    log();
+    if (main() && main()->uiLog && main()->uiLog->uiMain )
+        log();
 
 
 
@@ -3797,6 +3791,10 @@ void ImageView::timeout()
     mrv::Reel bgreel = b->reel_at( _bg_reel );
 
 
+    //
+    // If in EDL mode, we check timeline to see if frame points to
+    // new image.
+    //
     if ( timeline->visible() )
     {
         timeline->value( double(_frame) );
@@ -3829,7 +3827,6 @@ void ImageView::timeout()
 
     if ( bg && bg != fg )
     {
-        TRACE("");
         CMedia* img = bg->image();
         // If not a video image check if image has changed on disk
         if ( ! img->has_video() &&
@@ -4097,13 +4094,8 @@ void ImageView::draw()
     }
 
 
-    const mrv::media fg = foreground();
-    if ( fg )
-    {
-        _engine->image( fg->image() );
-    }
-    mrv::media bg = background();
-    TRACE("");
+    const mrv::media& fg = foreground();
+    const mrv::media& bg = background();
 
     ImageList images;
     images.reserve(2);
@@ -4111,26 +4103,22 @@ void ImageView::draw()
     if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
         CMedia* img = bg->image();
-        TRACE("");
         if ( img->has_picture() )
             images.push_back( img );
-        TRACE("");
     }
 
     if ( fg )
     {
         CMedia* img = fg->image();
-        TRACE("");
         if ( img->has_picture() )
         {
+            _engine->image( fg->image() );
             images.push_back( img );
         }
-        TRACE("");
     }
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
-    TRACE("");
 
     CMedia* img = NULL;
     if ( fg )
@@ -4143,7 +4131,6 @@ void ImageView::draw()
         _engine->draw_images( images );
     }
 
-    TRACE("");
 
 
     if ( _masking != 0.0f )
@@ -4324,7 +4311,6 @@ void ImageView::draw()
             }
       }
 
-    TRACE("");
 
     if ( _hud == kHudNone )
         return;
@@ -4530,8 +4516,6 @@ void ImageView::draw()
     }
 
 
-    TRACE("");
-
     if ( vr() )
     {
         _engine->restore_vr_matrix();
@@ -4635,7 +4619,6 @@ bool PointInTriangle (const Imath::V2i& pt,
      menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                 (Fl_Callback*)open_single_cb, browser() );
 
-     TRACE("");
      mrv::media fg = foreground();
      if ( !fg )
      {
@@ -4680,7 +4663,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
      }
 
-     TRACE("");
 
      char buf[256];
      int num = uiMain->uiWindows->children() - 1;
@@ -4701,7 +4683,6 @@ bool PointInTriangle (const Imath::V2i& pt,
      }
 
 
-     TRACE("");
      if ( fg && fg->image()->has_picture() )
      {
 
@@ -4732,7 +4713,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( uiMain->uiToolsGroup->visible() )
              item->set();
 
-         TRACE("");
          const char* tmp;
          num = uiMain->uiPrefs->uiPrefsCropArea->children();
          for ( i = 0; i < num; ++i )
@@ -4745,11 +4725,9 @@ bool PointInTriangle (const Imath::V2i& pt,
              item = (Fl_Menu_Item*) &(menu->menu()[idx]);
              float mask = -1.0f;
              mask = (float) atof( tmp );
-             TRACE("");
              if ( mask == _masking ) item->set();
          }
 
-         TRACE("");
 
          sprintf( buf, "%s", _("View/Grid/Toggle Selected") );
          menu->add( buf, kGridToggle.hotkey(),
@@ -4775,7 +4753,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
          bool has_version = false;
 
          CMedia* img = fg->image();
@@ -4791,7 +4768,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( (pos = file.find( prefix, pos) ) != std::string::npos )
              has_version = true;
 
-         TRACE("");
          if ( has_version )
          {
              menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
@@ -4810,7 +4786,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
          menu->add( _("Image/Next"), kNextImage.hotkey(),
                     (Fl_Callback*)next_image_cb, browser());
          menu->add( _("Image/Previous"), kPreviousImage.hotkey(),
@@ -4820,7 +4795,6 @@ bool PointInTriangle (const Imath::V2i& pt,
 
          const stubImage* simg = dynamic_cast< const stubImage* >( image() );
 
-         TRACE("");
          if ( simg )
          {
              menu->add( _("Image/Clone"), kCloneImage.hotkey(),
@@ -4837,7 +4811,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          idx = menu->add( _("Image/Preload Caches"),
                           kPreloadCache.hotkey(),
                           (Fl_Callback*)preload_image_cache_cb, this,
@@ -4846,7 +4820,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( CMedia::preload_cache() ) item->set();
 
 
-         TRACE("");
+
          menu->add( _("Image/Clear Caches"), kClearCache.hotkey(),
                     (Fl_Callback*)clear_image_cache_cb, this );
 
@@ -4856,7 +4830,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                     FL_MENU_DIVIDER );
 
 
-         TRACE("");
+
          menu->add( _("Image/Rotate +90"),
                     kRotatePlus90.hotkey(),
                     (Fl_Callback*)rotate_plus_90_cb, this );
@@ -4868,7 +4842,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( !Preferences::use_ocio )
          {
 
-             TRACE("");
+
              menu->add( _("Image/Attach CTL Input Device Transform"),
                         kIDTScript.hotkey(),
                         (Fl_Callback*)attach_ctl_idt_script_cb,
@@ -4891,7 +4865,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                         this, FL_MENU_DIVIDER);
          }
 
-         TRACE("");
+
          menu->add( _("Image/Mirror/Horizontal"),
                     kFlipX.hotkey(),
                     (Fl_Callback*)flip_x_cb,
@@ -4904,7 +4878,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)set_as_background_cb,
                     (void*)this);
 
-         TRACE("");
+
          menu->add( _("Image/Switch FG and BG"),
                     kSwitchFGBG.hotkey(),
                     (Fl_Callback*)switch_fg_bg_cb, (void*)this);
@@ -4922,11 +4896,11 @@ bool PointInTriangle (const Imath::V2i& pt,
 
          Image_ptr image = fg->image();
 
-         TRACE("");
+
          if ( Preferences::use_ocio )
          {
 
-             TRACE("");
+
              menu->add( _("OCIO/Input Color Space"),
                         kOCIOInputColorSpace.hotkey(),
                         (Fl_Callback*)attach_ocio_ics_cb, (void*)browser());
@@ -4941,12 +4915,12 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
 
-         TRACE("");
+
          size_t num = image->number_of_video_streams();
          if ( num > 1 )
          {
 
-             TRACE("");
+
              for ( unsigned i = 0; i < num; ++i )
              {
                  char buf[256];
@@ -4971,7 +4945,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( num > 0 )
          {
              idx = menu->add( _("Subtitle/No Subtitle"), 0,
@@ -4995,7 +4969,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( 1 )
          {
 
@@ -5009,7 +4983,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( dynamic_cast< Fl_Menu_Button* >( menu ) )
          {
              menu->add( _("Pixel/Copy RGBA Values to Clipboard"),
@@ -5020,7 +4994,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( !Preferences::use_ocio )
          {
 
-             TRACE("");
+
 
              menu->add( _("Monitor/Attach CTL Display Transform"),
                         kMonitorCTLScript.hotkey(),
@@ -5339,12 +5313,8 @@ int ImageView::leftMouseDown(int x, int y)
     {
         if ( (flags & kLeftAlt) == 0 )
         {
-            TRACE("");
-            TRACE("");
             fill_menu( menu );
             menu->popup();
-
-            TRACE("");
             return 1;
         }
         else
@@ -7929,11 +7899,11 @@ void ImageView::show_background( const bool b )
             uiMain->uiPixelBar->size( W, int(28) );
             uiMain->uiPixelBar->show();
         }
-        uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->redraw();
-        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         uiMain->uiView->redraw();
     }
@@ -7956,8 +7926,6 @@ void ImageView::toggle_fullscreen()
         sizeX = fltk_main()->w();
         sizeY = fltk_main()->h();
         fltk_main()->fullscreen();
-        uiMain->uiRegion->init_sizes();
-        uiMain->uiRegion->layout();
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
         has_menu_bar = uiMain->uiMenuGroup ?
@@ -7965,6 +7933,8 @@ void ImageView::toggle_fullscreen()
         has_top_bar = uiMain->uiTopBar->visible();
         has_bottom_bar = uiMain->uiBottomBar->visible();
         has_pixel_bar = uiMain->uiPixelBar->visible();
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -10190,8 +10160,13 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
-    mrv::ImageBrowser* b = browser();
-    if ( b ) b->redraw();
+    if  ( playback() == CMedia::kStopped )
+    {
+        mrv::ImageBrowser* b = browser();
+        if ( b ) b->redraw();
+    }
+
+    redraw();
 }
 
 
@@ -10206,12 +10181,6 @@ void ImageView::seek( const int64_t f )
 {
     mrv::ImageBrowser* b = browser();
 
-    // mrv::Reel r = b->current_reel();
-    // if ( r && r->edl )
-    // {
-    //  _preframe = r->global_to_local( f );
-    // }
-    // else
     {
         _preframe = f;
     }

@@ -272,7 +272,6 @@ void GLEngine::init_textures()
     }
 
     _maxTexWidth = _maxTexHeight = glMaxTexDim;
-
 }
 
 /**

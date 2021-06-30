@@ -1161,7 +1161,7 @@ void aviImage::store_image( const int64_t frame,
     }
 
     AVFrame output = { 0 };
-    boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
+    uint8_t* ptr = (uint8_t*)image->data().get();
 
     unsigned int w = width();
     unsigned int h = height();
