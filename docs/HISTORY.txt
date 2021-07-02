@@ -3,7 +3,7 @@ v5.9.0  - Bug fixed crashes when regular expression was wrong in media
 	- Fixed Save OCIO to save the OCIO config on the preferences or use
 	  the OCIO environment variable otherwise.
 	- Added first pass of support of OpenTimelineIO.  Currently, only
-	  loading is provided.  Also, only the first video track is loaded.
+	  loading is provided.  All video tracks are flattened into one.
 	  All effects are discarded and only the visible ranges are left.
 	- Bug fixed an audio crashing issue on Linux when many videos were
 	  opened in an EDL.
