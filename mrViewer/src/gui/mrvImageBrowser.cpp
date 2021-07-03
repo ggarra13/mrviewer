@@ -1131,6 +1131,17 @@ void ImageBrowser::save_session()
 
         std::string file = mrv::save_reel( dir.c_str() );
         if ( file.empty() ) return;
+
+        if ( fs::exists( file ) )
+          {
+            int ok = mrv::fl_choice( _("Are you sure you want to "
+                                       "overwrite '%s'?"),
+                                     _("Yes"), _("No"), NULL,
+                                     file.c_str() );
+            if ( ok == 1 ) // No
+              return;
+          }
+
         save_reel_( reel, file );
     }
 
@@ -1140,9 +1151,15 @@ void ImageBrowser::save_session()
 
         std::string reelname( file );
         if ( reelname.size() < 5 ||
-             reelname.substr(reelname.size()-5, 5) != ".reel" )
+             ( reelname.substr(reelname.size()-5, 5) != ".reel" &&
+               reelname.substr(reelname.size()-5, 5) != ".otio" ) )
         {
             reelname += ".reel";
+        }
+
+        if ( reelname.substr(reelname.size()-5, 5) == ".otio" )
+        {
+            return save_otio( reel, reelname );
         }
 
         // Declaring argument for time()
@@ -1290,6 +1307,8 @@ void ImageBrowser::save_session()
         }
 
 
+
+
         if ( reel->edl )
             fprintf( f, "EDL\n" );
 
@@ -1300,6 +1319,10 @@ void ImageBrowser::save_session()
 
         setlocale( LC_NUMERIC, oldloc );
         av_free( oldloc );
+
+        char buf[1024];
+        sprintf( buf, _("Reel '%s' saved"), file.c_str() );
+        mrv::alert( buf );
 
     }
 
@@ -1333,7 +1356,23 @@ void ImageBrowser::save_session()
                                  _("Yes"), _("No"), NULL );
         if ( ok == 1 ) return; // No
 
+        mrv::Reel reel = current_reel();
+        if (!reel) return;
+
+        size_t num = reel->images.size();
+        for ( size_t i = 0; i < num; ++i )
+        {
+            mrv::media m = reel->images[i];
+            Fl_Tree_Item* item = media_to_item( m );
+            if (!item) continue;
+            mrv::Element* elem = (mrv::Element*) item->widget();
+            delete elem;
+            item->widget( NULL );
+        }
+
         _reel_choice->remove(_reel);
+
+
         _reels.erase( _reels.begin() + _reel );
 
         Fl_Choice* c = uiMain->uiEDLWindow->uiEDLChoiceOne;
@@ -1357,6 +1396,7 @@ void ImageBrowser::save_session()
             c->value( sel );
             c->redraw();
         }
+
 
         if ( _reels.empty() ) new_reel();
         if ( _reel >= (unsigned int)_reels.size() )
@@ -2839,6 +2879,7 @@ void ImageBrowser::load_otio( const char* name )
     std::string reelname = path.leaf().string();
     reelname = reelname.substr(0, reelname.size()-5);
 
+    new_reel( reelname.c_str() );
     load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();
@@ -3230,6 +3271,13 @@ void ImageBrowser::clear_items()
         mrv::Element* elem = (mrv::Element*) item->widget();
         elem->Label()->box( FL_NO_BOX );
         elem->redraw();
+    }
+
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
     }
 
     redraw();
