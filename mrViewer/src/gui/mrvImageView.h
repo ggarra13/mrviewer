@@ -486,7 +486,6 @@ public:
     void update_image_info() const;
 
     /// Update the color information display
-    void update_color_info( const mrv::media fg ) const;
     void update_color_info() const;
 
     // Channel navigation (for hotkeys)
@@ -788,6 +787,7 @@ public:
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
 
+    void clear_old();
 
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.

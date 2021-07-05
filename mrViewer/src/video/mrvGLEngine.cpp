@@ -1177,7 +1177,6 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
 {
     if ( _view->vr() ) return;
 
-    static mrv::media old;
     mrv::media fg = _view->foreground();
     if ( old != fg && old && fg )
     {
@@ -1635,7 +1634,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    const mrv::media& fg = _view->foreground();
+    mrv::media fg = _view->foreground();
     if ( fg )
     {
         CMedia* img = fg->image();

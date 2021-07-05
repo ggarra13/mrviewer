@@ -58,7 +58,7 @@ public:
 
     inline void own_image( bool t )
         {
-            _own_image = t;
+             _own_image = t;
         }
 
     inline bool own_image() const
