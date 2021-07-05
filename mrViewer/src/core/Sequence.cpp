@@ -89,6 +89,8 @@ namespace otime = opentime::OPENTIME_VERSION;
 #include "mrvOS.h"
 
 #include "gui/mrvIO.h"
+#include "mrvPreferencesUI.h"
+#include "mrViewer.h"
 
 namespace {
 const char* kModule = "seq";
@@ -1367,7 +1369,36 @@ void ImageBrowser::save_otio( mrv::Reel reel,
         otio::RationalTime d( img->end_frame() - img->start_frame() + 1,
                               img->fps() );
         otio::TimeRange availableRange( s, d );
-        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( std::string("file://") + img->fileroot(), availableRange ));
+        std::string path = img->fileroot();
+
+        if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+        {
+            fs::path parentPath = file; //fs::current_path();
+            parentPath = parentPath.parent_path();
+            fs::path childPath = img->fileroot();
+
+            // @WARNING: do not generic_string() here as it fails on windows
+            //           and leaves path empty.
+            if ( img->internal() )
+            {
+                path = childPath.string();
+            }
+            else
+            {
+                fs::path relativePath = fs::relative( childPath, parentPath );
+                path = relativePath.string();
+            }
+
+            if ( path.empty() )
+            {
+                LOG_ERROR( "Error in processing relative path for "
+                           << img->fileroot() );
+                path = img->fileroot();
+            }
+
+            std::replace( path.begin(), path.end(), '\\', '/' );
+        }
+        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( std::string("file://") + path, availableRange ));
 
         otio::RationalTime start( img->first_frame(), img->fps() );
         otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
@@ -1393,7 +1424,7 @@ void ImageBrowser::save_otio( mrv::Reel reel,
         LOG_ERROR( _("Could not save .otio timeline: ") << error_status);
         return;
     }
-    
+
     char buf[1024];
     sprintf( buf, _("Otio timeline saved to '%s'."), file.c_str() );
     mrv::alert( buf );

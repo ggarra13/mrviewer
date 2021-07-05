@@ -2508,11 +2508,14 @@ void ImageBrowser::save_session()
             if ( net ) Fl::check();
         }
 
-        view()->update(true);
-        view()->redraw();
-        if ( net ) Fl::check();
+        if ( view() )
+        {
+            view()->update(true);
+            view()->redraw();
+            if ( net ) Fl::check();
 
-        view()->reset_caches(); // Redo preloaded sequence caches
+            view()->reset_caches(); // Redo preloaded sequence caches
+        }
 
         mrv::Reel reel = current_reel();
         if ( reel->images.empty() ) return;
@@ -4514,11 +4517,8 @@ void ImageBrowser::match_tree_order()
     Fl_Tree_Item* i;
     for ( i = first(); i; i = next(i) )
     {
-        if ( ! i->widget() ) {
-            continue;
-        }
-
         mrv::Element* elem = (mrv::Element*) i->widget();
+        if ( !elem ) continue;
         mrv::media m = elem->media();
         r->images.push_back( m );
         if ( m == fg && m ) {
@@ -4853,6 +4853,7 @@ void ImageBrowser::set_edl()
     match_tree_order();
     int64_t first, last;
     adjust_timeline( first, last );
+
     set_timeline( first, last );
 
     mrv::media m = current_image();
@@ -4916,9 +4917,16 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 
         if ( i != e )
         {
-            first = (*i)->position();
-            MediaList::reverse_iterator j = reel->images.rbegin();
-            last  = (*j)->position() + (*j)->duration();
+            MediaList::iterator j;
+            (*i)->position( 1 );
+
+            for ( j = i, ++i; i != e; j = i, ++i )
+            {
+                int64_t frame = (*j)->position() + (*j)->duration();
+                DBGM1( (*i)->image()->name() << " moved to frame " << frame );
+                if ( (*i)->position() > frame ) continue;
+                (*i)->position( frame );
+            }
         }
 
         mrv::EDLGroup* eg = edl_group();
@@ -4927,7 +4935,7 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
             eg->redraw();
         }
 
-        mrv::media m = current_image();
+        mrv::media m = reel->images.front();
         if (! m ) return;
 
         CMedia* img = m->image();

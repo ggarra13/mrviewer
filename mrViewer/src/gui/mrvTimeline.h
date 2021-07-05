@@ -85,23 +85,23 @@ public:
         _fps = x;
     }
 
-    inline double maximum() const {
+    double maximum() const {
         return Fl_Slider::maximum();
     }
     void maximum( double x );
-    inline double minimum() const {
+    double minimum() const {
         return Fl_Slider::minimum();
     }
     void minimum( double x );
 
-    inline double display_minimum() const {
+    double display_minimum() const {
         return _display_min;
     }
     void display_minimum( const double& x );
     void undo_display_minimum();
     int64_t undo_minimum() const { return _undo_display_min; }
 
-    inline double display_maximum() const {
+    double display_maximum() const {
         return _display_max;
     }
     void display_maximum( const double& x );

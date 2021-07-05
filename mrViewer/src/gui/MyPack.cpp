@@ -272,7 +272,7 @@ void MyPack::draw() {
 
 void MyPack::resize( int X, int Y, int W, int H )
 {
-    static int oldH = H;
+    static int oldH = 0;
     if ( oldH != H )
     {
         DBGM1( X << ", " << Y << " " << W << "x" << H );

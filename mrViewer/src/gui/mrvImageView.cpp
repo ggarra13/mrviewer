@@ -8563,7 +8563,6 @@ void ImageView::reset_caches()
         if (!fg) return;
         CMedia* img = fg->image();
         _preframe = img->frame();
-
     }
 }
 

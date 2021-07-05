@@ -115,7 +115,7 @@ void Timeline::display_minimum( const double& x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMinDisplay %g"), x );
+        sprintf( buf, N_("TimelineMinDisplay %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -160,7 +160,7 @@ void Timeline::display_maximum( const double& x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMaxDisplay %g"), x );
+        sprintf( buf, N_("TimelineMaxDisplay %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -173,7 +173,7 @@ void Timeline::minimum( double x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMin %g"), x );
+        sprintf( buf, N_("TimelineMin %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -186,7 +186,7 @@ void Timeline::maximum( double x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMax %g"), x );
+        sprintf( buf, N_("TimelineMax %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }

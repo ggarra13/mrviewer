@@ -86,6 +86,7 @@ void load_files( mrv::LoadList& files,
                  std::string bgimage = "",
                  bool edl = false  )
 {
+    if ( files.empty() ) return;
    //
    // Window must be shown after images have been loaded.
    //

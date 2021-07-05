@@ -1,3 +1,6 @@
+v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
+	  was loaded twice.
+
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
 	- Bug fixed a memory leak when deleting the last image of a reel.
 	- Bug fixed a memory overallocation when reading sequences with the
