@@ -144,6 +144,8 @@ public:
         return _draw_cache;
     }
 
+    void clear_thumb() { fg.reset(); }
+
     void show_thumb();
 
     ImageBrowser* browser() const;

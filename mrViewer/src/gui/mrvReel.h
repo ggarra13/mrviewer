@@ -45,9 +45,9 @@ struct Reel_t
     mrv::media media_at( const int64_t f ) const;
     inline CMedia* image_at( const int64_t f ) const
     {
-	mrv::media m = media_at( f );
-	if (!m) return NULL;
-	return m->image();
+        mrv::media m = media_at( f );
+        if (!m) return NULL;
+        return m->image();
     }
 
     uint64_t duration() const;
@@ -62,7 +62,7 @@ struct Reel_t
     int64_t offset( const CMedia* const img ) const;
     inline int64_t location( const CMedia* const img ) const
     {
-	return offset( img ) + 1;
+        return offset( img ) + 1;
     }
 
     int64_t minimum() const;

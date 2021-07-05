@@ -66,6 +66,8 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 #include "core/mrvFrame_f32.inl"
 
 
+//#define DEBUG_ALLOCS
+
 namespace mrv {
 
 const char* const VideoFrame::ptype[] = {
@@ -272,6 +274,9 @@ size_t VideoFrame::data_size() const
 
 VideoFrame::~VideoFrame()
 {
+#ifdef DEBUG_ALLOCS
+    std::cerr << "free video frame " << _frame << " " << (void*) _data.get() << std::endl;
+#endif
     CMedia::memory_used -= data_size();
     //assert0( CMedia::memory_used >= 0 );
     if ( CMedia::memory_used < 0 ) CMedia::memory_used = 0;
@@ -285,6 +290,9 @@ void VideoFrame::allocate()
 {
     size_t size = data_size();
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
+#ifdef DEBUG_ALLOCS
+    std::cerr << "alloc video frame " << _frame << " " << (void*) ptr << " size: " << size << std::endl;
+#endif
     _data.reset( ptr );
     CMedia::memory_used += size;
 }
@@ -737,11 +745,18 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
 
 void AudioFrame::sum_memory() noexcept
 {
+#ifdef DEBUG_ALLOCS
+    std::cerr << "alloc audio frame " << _frame << " " << (void*) _data
+              << " size: " << _size << std::endl;
+#endif
     CMedia::memory_used += _size;
 }
 
 AudioFrame::~AudioFrame()
 {
+#ifdef DEBUG_ALLOCS
+    std::cerr << "free audio frame " << _frame << " " << (void*) _data << std::endl;
+#endif
     delete [] _data;
     _data = NULL;
     CMedia::memory_used -= _size;

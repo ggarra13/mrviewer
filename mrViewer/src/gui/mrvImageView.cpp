@@ -1026,6 +1026,13 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
         uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
 
+
+void ImageView::clear_old()
+{
+    if ( _engine ) _engine->clear_old();
+}
+
+
 void ImageView::restore_locale() const
 {
 #ifdef OSX
@@ -3877,7 +3884,7 @@ void ImageView::timeout()
     if ( should_update( fg ) )
     {
         redraw();  // Clear the damage to redraw it
-        update_color_info( fg );
+        update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
@@ -3931,9 +3938,7 @@ void ImageView::selection( const mrv::Rectd& r )
 {
     _selection = r;
 
-    mrv::media fg = foreground();
-    if ( fg )
-        update_color_info( fg );
+    update_color_info();
 }
 
 void ImageView::redo_draw()
@@ -6887,8 +6892,7 @@ void ImageView::mouseDrag(int x,int y)
             assert( _selection.w() >= 0.0 );
             assert( _selection.h() >= 0.0 );
 
-            update_color_info( fg );
-
+            update_color_info();
 
             mouseMove( x, y );
         }
@@ -9569,6 +9573,7 @@ void ImageView::foreground( mrv::media fg )
 
     _fg = fg;
 
+
     if ( fg )
     {
         CMedia* img = fg->image();
@@ -9659,7 +9664,7 @@ void ImageView::foreground( mrv::media fg )
 
     update_title_bar( this );
     update_image_info();
-    update_color_info( fg );
+    update_color_info();
 
     mrv::media bg = background();
     if ( fg == bg )
@@ -10375,7 +10380,7 @@ void ImageView::last_frame_timeline()
  * Update color information
  *
  */
-void ImageView::update_color_info( const mrv::media fg ) const
+void ImageView::update_color_info() const
 {
     if ( uiMain->uiColorArea )
     {
@@ -10410,13 +10415,6 @@ void ImageView::update_color_info( const mrv::media fg ) const
 
 }
 
-void ImageView::update_color_info() const
-{
-    mrv::media fg = foreground();
-    if ( !fg ) return;
-
-    update_color_info(fg);
-}
 
 /**
  * Update the image window information display

@@ -67,7 +67,6 @@ void Element::make_thumbnail()
             return;
         }
 
-
         make_thumbnail();
 
         // Create label
@@ -160,7 +159,9 @@ void Element::make_thumbnail()
         redraw();
     }
 
-    const mrv::media Element::media() const { return _elem; }
+    const mrv::media Element::media() const {
+        return _elem;
+    }
 
     void Element::draw() {
 

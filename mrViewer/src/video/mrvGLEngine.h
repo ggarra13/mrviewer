@@ -194,6 +194,8 @@ public:
                                  const char* function, const unsigned line,
                                  const bool print = false);
 
+    virtual void clear_old() { old = mrv::media(); };
+
 protected:
     void set_matrix( const CMedia* img, const bool flip = true );
 
@@ -268,6 +270,7 @@ protected:
     double  _rotX, _rotY; // Sphere start rotation
     QuadList  _quads;
 
+    mrv::media old;
     const CMedia* _image;
 
     //

@@ -220,7 +220,6 @@ aviImage::~aviImage()
 
     image_damage(kNoDamage);
 
-
     clear_cache();
 
     _video_packets.clear();
@@ -1139,6 +1138,22 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
 void aviImage::store_image( const int64_t frame,
                             const int64_t pts )
 {
+    video_cache_t::iterator at = std::lower_bound( _images.begin(),
+                                                   _images.end(),
+                                                   frame,
+                                                   LessThanFunctor() );
+
+
+    // Avoid storing duplicate frames, don't replace old frame with this one
+    if ( at != _images.end() )
+    {
+        if ( (*at)->frame() == frame )
+        {
+            return;
+            // at = _images.erase(at);
+        }
+    }
+
     mrv::image_type_ptr image;
     try {
         image = allocate_image( frame, pts );
@@ -1275,21 +1290,6 @@ void aviImage::store_image( const int64_t frame,
     }
     else
     {
-        video_cache_t::iterator at = std::lower_bound( _images.begin(),
-                                     _images.end(),
-                                     frame,
-                                     LessThanFunctor() );
-
-
-        // Avoid storing duplicate frames, replace old frame with this one
-        if ( at != _images.end() )
-        {
-            if ( (*at)->frame() == frame )
-            {
-                at = _images.erase(at);
-            }
-        }
-
         _images.insert( at, image );
     }
 
@@ -3086,7 +3086,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 }
             }
 
-             if (!got_audio )
+            if (!got_audio )
             {
                 if (audio_context() == _context && _audio_ctx &&
                     _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {

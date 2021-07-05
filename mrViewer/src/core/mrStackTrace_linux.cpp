@@ -78,7 +78,7 @@ void ExceptionHandler::ShowStack() {
 
   trace_size = backtrace(trace, 200);
   messages = backtrace_symbols(trace, trace_size);
-  fprintf( stderr, "[bt] Execution path:\n");
+  fprintf( stderr, "[bt] Execution path (last first):\n");
   for (i=0; i<trace_size; ++i)
   {
      fprintf( stderr, "[bt] %s\n", messages[i]);

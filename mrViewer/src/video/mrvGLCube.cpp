@@ -292,7 +292,7 @@ void GLCube::draw_cube( const unsigned dw, const unsigned dh ) const
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     {
-        const mrv::media& fg = _view->foreground();
+        mrv::media fg = _view->foreground();
         if ( fg )
         {
             CMedia* img = fg->image();

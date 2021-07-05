@@ -1,4 +1,9 @@
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
+	- Bug fixed a memory leak when deleting the last image of a reel.
+	- Bug fixed a memory overallocation when reading sequences with the
+	  FFMpeg loader.
+	- Improved memory fragmentation on Linux by using malloc_trim(0).
+	  This avoids crashes due to lack of memory.
 
 v5.9.0  - Bug fixed crashes when regular expression was wrong in media
 	  information window's search requester.

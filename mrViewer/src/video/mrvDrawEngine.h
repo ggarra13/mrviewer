@@ -250,6 +250,8 @@ public:
         return _fboRenderBuffer;
     }
 
+    virtual void clear_old() = 0;
+
 protected:
 
 

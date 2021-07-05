@@ -3838,7 +3838,7 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( !_sequence ) return;
 
-    uint64_t max_frames = max_image_frames();
+    uint64_t max_frames = 1; //max_image_frames();
 
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
@@ -3881,6 +3881,7 @@ void CMedia::limit_video_store( const int64_t f )
     for ( ; it != tmp.end() && memory_used >= Preferences::max_memory; ++it )
     {
         uint64_t idx = it->second;
+
         if ( image_count <= max_frames ) break;
 
         if ( _sequence[idx] )
@@ -3905,6 +3906,10 @@ void CMedia::limit_video_store( const int64_t f )
             _right[ idx ].reset();
         }
     }
+
+#ifdef LINUX
+    malloc_trim(0);
+#endif
 
 }
 
@@ -4238,6 +4243,7 @@ bool CMedia::find_image( const int64_t frame )
             timeval now;
             gettimeofday (&now, 0);
             _lastFrameTime = now;
+            std::cerr << "**** fetch sequence " << f << std::endl;
             if ( fetch( canvas, f ) )
             {
                 cache( canvas );

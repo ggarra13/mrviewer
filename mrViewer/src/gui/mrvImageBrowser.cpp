@@ -1372,7 +1372,7 @@ void ImageBrowser::save_session()
 
         _reel_choice->remove(_reel);
 
-
+        reel->images.clear();
         _reels.erase( _reels.begin() + _reel );
 
         Fl_Choice* c = uiMain->uiEDLWindow->uiEDLChoiceOne;
@@ -1397,13 +1397,19 @@ void ImageBrowser::save_session()
             c->redraw();
         }
 
+        timeline()->clear_thumb();
 
-        if ( _reels.empty() ) new_reel();
+        if ( _reels.empty() ) {
+            new_reel();
+        }
         if ( _reel >= (unsigned int)_reels.size() )
             _reel = (unsigned int)_reels.size() - 1;
 
         _reel_choice->value( _reel );
         _reel_choice->redraw();
+
+        view()->clear_old();
+
         change_reel();
     }
 
@@ -1576,15 +1582,13 @@ void ImageBrowser::save_session()
     {
         mrv::Reel reel = current_reel();
 
-
         add_to_tree( m );
-
 
         match_tree_order();
 
         if ( reel->images.size() == 1 )
         {
-            change_image( 0 );
+            change_image(0);
         }
 
         send_reel( reel );
@@ -1619,6 +1623,7 @@ void ImageBrowser::save_session()
         if ( img == NULL ) return media();
 
         mrv::media m( new mrv::gui::media(img) );
+
         return add( m );
     }
 
@@ -1745,6 +1750,7 @@ void ImageBrowser::save_session()
         // clear dragging in case we were dragging the removed media
         dragging = NULL;
 
+        view()->clear_old();
         if (play) view()->play( play );
 
         view()->redraw();
@@ -1954,9 +1960,13 @@ void ImageBrowser::save_session()
         int64_t first, last;
         adjust_timeline( first, last );
         mrv::Timeline* t = timeline();
-        if ( t && !t->edl() )
+        if ( t )
         {
-            set_timeline( first, last );
+            t->clear_thumb();
+            if ( !t->edl() )
+            {
+                set_timeline( first, last );
+            }
         }
 
         send_image( i );
@@ -2213,6 +2223,7 @@ void ImageBrowser::save_session()
         if ( !img ) return mrv::media();
 
         mrv::media m = this->add( img );
+
 
         if ( !m )
         {
@@ -3222,9 +3233,11 @@ void ImageBrowser::remove_current()
     for ( int i = 0; i < num; ++i )
     {
         Fl_Tree_Item* item = items[i];
+        if ( ! item ) continue;
         mrv::Element* elem = (mrv::Element*) item->widget();
         mrv::media m = elem->media();
         delete elem;
+        item->widget( NULL );
     }
 
 
@@ -3234,6 +3247,7 @@ void ImageBrowser::remove_current()
         Fl_Tree::remove( item );
     }
 
+    view()->clear_old();
 
     mrv::Reel r = current_reel();
     int v = value();
