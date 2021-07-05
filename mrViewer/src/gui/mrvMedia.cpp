@@ -77,11 +77,8 @@ media::~media()
         delete _image;
     }
     _image = NULL;
-    if ( _thumbnail )
-    {
-        delete _thumbnail;
-        _thumbnail = NULL;
-    }
+    delete _thumbnail;
+    _thumbnail = NULL;
 }
 
 void media::position( int64_t x ) {

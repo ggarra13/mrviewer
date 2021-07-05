@@ -1,5 +1,6 @@
 v5.9.1  - Fixed a bug with timeline thumbnail showing up to the left of the
 	  timeline at first.
+	- Bug fixed a huge memory leak when deleting reels.
 
 v5.9.0  - Bug fixed crashes when regular expression was wrong in media
 	  information window's search requester.

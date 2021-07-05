@@ -104,7 +104,10 @@ public:
     //! Save session under a file name
     void save_session_( const std::string& file );
 
-    //! Save reel under a file name
+    //! Save reel under an otio file name
+    void save_otio( mrv::Reel r, const std::string& file );
+
+    //! Save reel under a reel or otio file name
     void save_reel_( mrv::Reel r, const std::string& file );
 
     //! Load an otio edit

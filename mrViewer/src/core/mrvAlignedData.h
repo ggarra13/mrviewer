@@ -34,6 +34,7 @@ extern "C" {
 }
 
 #ifdef LINUX
+#  include <iostream>
 #  include <stdlib.h>
 #  include <malloc.h>
 #endif

@@ -365,59 +365,18 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     // for back compatability, use type flag to set slider size:
     if (type()&16/*FILL*/) slider_size(0);
 
-    mrv::Recti r = sr;
 
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
-        mrv::Recti tr = r;
-        // r.move_b(-tick_size());
-        // switch (type()&TICK_BOTH) {
-        // case TICK_BOTH:
-        //     r.y(r.y()+tick_size()/2);
-        //     break;
-        // case TICK_ABOVE:
-        //     r.y(r.h()-tick_size());
-        //     tr.set_b(r.center_y());
-        //     break;
-        // case TICK_BELOW:
-        //     tr.set_y(r.center_y()+(slot?3:0));
-        //     break;
-        // }
         fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
-        draw_ticks(tr, int(slider_size()+1)/2);
+        draw_ticks(sr, int(slider_size()+1)/2);
     }
-
-    // if (slot) {
-    //     const int slot_size_ = 6;
-    //     mrv::Recti sl;
-    //     int dx = (slider_size()-slot_size_)/2;
-    //     if (dx < 0) dx = 0;
-    //     sl.x(dx+r.x());
-    //     sl.w(r.w()-2*dx);
-    //     sl.y(r.y()+(r.h()-slot_size_+1)/2);
-    //     sl.h(slot_size_);
-    //     Fl::set_box_color(FL_BLACK);
-    //     Fl_Boxtype b = box();
-    //     box( FL_THIN_DOWN_BOX );
-    //     draw_box();
-    //     box( b );
-    // }
 
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
         Fl::set_box_color( selection_color() );
         fl_color(fl_contrast(labelcolor(), selection_color()));
     }
-
-    // figure out where the slider should be:
-    // mrv::Recti s(r);
-    // int sglyph = FL_ALIGN_INSIDE; // draw a box
-    // s.x(r.x()+slider_position(value(),r.w()));
-    // s.w(slider_size());
-    // if (!s.w()) {
-    //     s.w(s.x()-r.x());    // fill slider
-    //     s.x(r.x());
-    // }
 
     return true;
 }
@@ -825,7 +784,7 @@ void Timeline::draw()
 
     }
 
-    //Fl_Slider::draw();
+    // return Fl_Slider::draw();
 
     draw( r, f2, r.y()==0 );
 

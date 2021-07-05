@@ -220,6 +220,9 @@ aviImage::~aviImage()
 
     image_damage(kNoDamage);
 
+
+    clear_cache();
+
     _video_packets.clear();
     _subtitle_packets.clear();
 
