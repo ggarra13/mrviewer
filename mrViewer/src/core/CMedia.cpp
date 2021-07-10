@@ -4243,7 +4243,6 @@ bool CMedia::find_image( const int64_t frame )
             timeval now;
             gettimeofday (&now, 0);
             _lastFrameTime = now;
-            std::cerr << "**** fetch sequence " << f << std::endl;
             if ( fetch( canvas, f ) )
             {
                 cache( canvas );

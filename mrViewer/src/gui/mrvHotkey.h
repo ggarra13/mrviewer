@@ -219,6 +219,7 @@ extern Hotkey kAttachAudio;
 extern Hotkey kEditAudio;
 extern Hotkey kDetachAudio;
 
+extern Hotkey kCopyFrameXYValues;
 extern Hotkey kCopyRGBAValues;
 extern Hotkey kCloneImage;
 

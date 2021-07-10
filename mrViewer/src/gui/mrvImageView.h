@@ -161,7 +161,8 @@ public:
         kMovePicture = 1 << 6,
         kScalePicture = 1 << 7,
         kCircle       = 1 << 8,
-        kArrow        = 1 << 9
+        kArrow        = 1 << 9,
+        kCopyFrameXY  = 1 << 10,
     };
 
 
@@ -564,6 +565,12 @@ public:
 
     /// Copy pixel values of image under cursor
     void copy_pixel() const;
+
+    /// Toggle copy frame, x, y pixel copying to clipboard when LMB clicking
+    void toggle_copy_frame_xy();
+
+    /// Copy frame, x, y pixel to clipboard when LMB clicking
+    void copy_frame_xy() const;
 
     // Toggle between fullscreen and normal resolution
     void toggle_fullscreen();
