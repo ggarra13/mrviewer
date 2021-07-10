@@ -1543,6 +1543,9 @@ void ImageView::scale_pic_mode()
 void ImageView::move_pic_mode()
 {
     _mode = kMovePicture;
+
+    uiMain->uiStatus->copy_label( _("Move Pic.") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);

@@ -1,5 +1,9 @@
 v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  was loaded twice.
+	- Added a copy frame and X, Y coordinates to the clipboard.  Shortcut
+	  CTRL+SHIFT+c by default.  After that mode is entered, any left mouse
+	  click on the image will copy the frame and the XY coordinates to the
+	  clipboard.
 
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
 	- Bug fixed a memory leak when deleting the last image of a reel.
