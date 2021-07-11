@@ -879,7 +879,7 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
-    img->close_audio();
+    //img->close_audio();
 
 } // audio_thread
 
