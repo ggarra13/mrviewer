@@ -1941,8 +1941,7 @@ const mrv::MainWindow* ImageView::fltk_main() const
 }
 
 
-ImageBrowser*
-ImageView::browser() {
+ImageBrowser* ImageView::browser() const {
     if ( !uiMain ) return NULL;
     if ( !uiMain->uiReelWindow ) return NULL;
     assert( uiMain->uiReelWindow );
@@ -2290,8 +2289,22 @@ void ImageView::copy_frame_xy() const
 
     }
 
+    const mrv::Reel& r = browser()->current_reel();
+    unsigned shot_id = 0;
+    for ( unsigned i = 0; i < r->images.size(); ++i )
+    {
+        if ( r->images[i] == fg )
+        {
+            shot_id = i; break;
+        }
+    }
+
     char buf[256];
-    sprintf( buf, "%" PRId64 " %d %d\n", _frame, xp, yp );
+    sprintf( buf,
+             _("Reel %d (%s) | Shot %d (%s) | Frame %" PRId64
+               " | X = %d | Y = %d\n"),
+             _fg_reel, r->name.c_str(), shot_id, img->name().c_str(),
+             _frame, xp, yp );
 
     // Copy text to both the clipboard and to X's XA_PRIMARY
     Fl::copy( buf, unsigned( strlen(buf) ), true );

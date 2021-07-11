@@ -558,7 +558,7 @@ public:
     void toggle_window( const WindowList idx, const bool force = false );
 
     /// Auxiliary function to return reel list's browser for this view
-    ImageBrowser* browser();
+    ImageBrowser* browser() const;
 
     /// Auxiliary function to return timeline for this view
     Timeline* timeline();
