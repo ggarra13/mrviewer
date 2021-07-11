@@ -2786,7 +2786,7 @@ void aviImage::populate()
 
                 if ( !got_audio )
                 {
-                    if ( pktframe > _frameStart ) got_audio = true;
+                    if ( pktframe > _frameStart + 1 ) got_audio = true;
                     else if ( pktframe == _frameStart )
                     {
                         audio_bytes += pkt->size;
@@ -2948,7 +2948,7 @@ bool aviImage::initialize()
 
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
-        av_dict_set( &opts, "initial_pause", "1", 0 );
+        av_dict_set( &opts, "initial_pause", "0", 0 );
         av_dict_set( &opts, "reconnect", "1", 0 );
         av_dict_set( &opts, "reconnect_streamed", "1", 0 );
         DBGM1( "Open " << fileroot() );
