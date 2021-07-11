@@ -92,7 +92,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-07-10 23:36-0300\n"
+"POT-Creation-Date: 2021-07-11 00:08-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -14433,7 +14433,7 @@ msgid ""
 "mov,mxf,ogm,ogv,qt,r3d,R3D,ts,vob,VOB,vp9,webm,wmv,y4m"
 msgstr ""
 
-#: core/mrvCPU.cpp:82
+#: core/aviImage.cpp:836 core/mrvCPU.cpp:82
 msgid "4"
 msgstr "24"
 
@@ -14813,7 +14813,7 @@ msgid "5.\tc #EEB256"
 msgstr ""
 
 #: gui/mrvVersion.cpp:123
-msgid "5.9.1"
+msgid "5.9.2"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:167
@@ -42400,7 +42400,7 @@ msgstr ""
 msgid "thread_count"
 msgstr "Número de Threads"
 
-#: core/CMedia_audio.cpp:221 core/aviImage.cpp:834 core/aviImage.cpp:835
+#: core/CMedia_audio.cpp:221 core/aviImage.cpp:834 core/aviImage.cpp:836
 msgid "threads"
 msgstr ""
 
@@ -44602,6 +44602,10 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:764
 msgid "~/"
 msgstr ""
+
+#, fuzzy
+#~ msgid "2"
+#~ msgstr "12"
 
 #, fuzzy
 #~ msgid "BlackmagicRawAPI"
