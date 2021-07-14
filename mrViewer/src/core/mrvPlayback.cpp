@@ -879,7 +879,7 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
-#ifdef LINUX
+#if defined( LINUX )
     img->close_audio();
 #endif
 

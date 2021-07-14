@@ -124,7 +124,7 @@ protected:
 
     time_t _startRenderTime;
 
-    thread_pool_t  _rthreads;  //!< render threads used to monitor
+    boost::thread_group  _rthreads;  //!< render threads used to monitor
     bool  _aborted;
     float _version;
     unsigned int   _portA;
@@ -141,4 +141,3 @@ protected:
 
 
 #endif // stubImage_h
-

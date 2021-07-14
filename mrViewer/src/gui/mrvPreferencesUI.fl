@@ -868,7 +868,7 @@ uiPrefsFPS->value( g );} open
         }
         Fl_Group {} {
           label Caches open
-          xywh {230 40 423 345} box EMBOSSED_BOX align 5
+          xywh {230 40 423 345} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
@@ -927,7 +927,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             xywh {295 274 321 86} box ROUNDED_BOX
           } {
             Fl_Spinner uiPrefsCacheMemory {
-              label Memory selected
+              label Memory
               xywh {415 300 50 25} type Float step 0.1 value 3
               code0 {o->textcolor( FL_BLACK );}
             }
@@ -1672,8 +1672,8 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
         }
         Fl_Group {} {
-          label Video
-          xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
+          label Video open
+          xywh {225 44 423 352} box EMBOSSED_BOX align 5
         } {
           Fl_Choice VideoDriver {
             label Driver
@@ -1709,7 +1709,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
           } {
             Fl_Value_Input uiPrefsVideoThreadCount {
               label {Video Thread Count}
-              tooltip {This setting effects the number of threads used in decoding your video.  A value of 0 means to use as many threads as possible.  Note that currently this setting is in beta, as some movies decode with artifacts when setting is 3 or higher (0 too).} xywh {475 168 58 33} maximum 64 step 1 textcolor 56
+              tooltip {This setting effects the number of threads used in decoding your video.  A value of 0 means to use 4 threads by default.} xywh {475 168 58 33} maximum 64 step 1 textcolor 56
             }
             Fl_Choice uiPrefsYUVConversion {
               label {YUV Conversion}
@@ -1728,12 +1728,12 @@ case 3:
 default:
 idx = 5; break;
 }
-mrv::CMedia::colorspace_override = idx;}
+mrv::CMedia::colorspace_override = idx;} selected
               tooltip {Controls the YUV Conversion of the movie in the shader to emulate different tv standards.
 Use File YUV Hint will take the value from the movie being loaded if the data is present.
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
-BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 213 31} box THIN_DOWN_BOX down_box BORDER_BOX
+BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {370 224 213 31} box THIN_DOWN_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1751,23 +1751,6 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 213 31}
               MenuItem {} {
                 label {Always use BT470BG / SMPTE170M}
                 xywh {0 0 100 20}
-              }
-            }
-            Fl_Choice uiPrefsSwitchingImages {
-              label {Switching Images}
-              user_data uiMain user_data_type {ViewerUI*}
-              callback {int idx = o->value();
-mrv::Preferences::switching_images = idx;} open
-              tooltip {Select the behavior of timeline when switching images.} xywh {375 249 210 31} box THIN_DOWN_BOX down_box BORDER_BOX
-              class {mrv::Choice}
-            } {
-              MenuItem {} {
-                label {Keep Frame Number}
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label {Use Image's Frame Number}
-                xywh {10 10 100 20}
               }
             }
           }

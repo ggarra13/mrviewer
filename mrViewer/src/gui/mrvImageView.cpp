@@ -31,7 +31,7 @@
 
 
 #ifdef DEBUG
-#define NETWORK_COMMANDS
+//#define NETWORK_COMMANDS
 #endif
 
 // #define DEBUG_KEYS
@@ -2304,7 +2304,9 @@ void ImageView::copy_frame_xy() const
              _("Reel %d (%s) | Shot %d (%s) | Frame %" PRId64
                " | X = %d | Y = %d\n"),
              _fg_reel, r->name.c_str(), shot_id, img->name().c_str(),
-             _frame, xp, yp );
+             _frame.load(), xp, yp );
+
+    LOG_INFO( buf );
 
     // Copy text to both the clipboard and to X's XA_PRIMARY
     Fl::copy( buf, unsigned( strlen(buf) ), true );
@@ -3936,7 +3938,7 @@ void ImageView::timeout()
     }
 
 
-    mrv::media fg = foreground();
+    const mrv::media fg = foreground();
     mrv::media bg = background();
 
     if ( bgreel && bgreel->edl )
@@ -4013,8 +4015,8 @@ void ImageView::timeout()
 #ifdef OSX
     draw();  // Force a draw of the gl canvas
 #endif
-    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    // if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::handle_vr( double& delay )

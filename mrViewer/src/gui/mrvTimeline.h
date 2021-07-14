@@ -165,8 +165,8 @@ protected:
     bool _draw_cache;
     int64_t _tc;
     double _fps;
-    double _display_min;
-    double _display_max;
+    std::atomic<double> _display_min;
+    std::atomic<double> _display_max;
     int64_t _undo_display_min;
     int64_t _undo_display_max;
 

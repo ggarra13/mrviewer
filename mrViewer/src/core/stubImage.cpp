@@ -667,29 +667,12 @@ stubImage::~stubImage()
 void stubImage::wait_for_rthreads()
 {
     // Wait for all threads to exit
-    thread_pool_t::iterator i = _rthreads.begin();
-    thread_pool_t::iterator e = _rthreads.end();
-    for ( ; i != e; ++i )
-    {
-        // std::cerr << "join thread" << std::endl;
-        // (*i)->join();
-        // std::cerr << "joined thread" << std::endl;
-        delete *i;
-    }
-
-    _rthreads.clear();
+    _rthreads.join_all();
 }
 
 void stubImage::thread_exit()
 {
-    thread_pool_t::iterator i = _rthreads.begin();
-    thread_pool_t::iterator e = _rthreads.end();
-    for ( ; i != e; ++i )
-    {
-        delete *i;
-    }
-
-    _rthreads.clear();
+    _rthreads.interrupt_all();
 }
 /*! Test a block of data read from the start of the file to see if it
   looks like the start of an .stub file. This returns true if the
@@ -817,7 +800,7 @@ bool stubImage::has_changed()
             if ( ret == true )
             {
                 _ctime = sbuf.st_mtime;
-                if ( ! _rthreads.empty() )
+                if ( ! ( _rthreads.size() == 0 ) )
                 {
                     _aborted = true;
                     thread_exit();
@@ -835,7 +818,7 @@ bool stubImage::has_changed()
             // if not connected to host already, return true
             // Otherwise, image is already being refreshed thanks to stub
             // connection (no need to reload image)
-            if ( _rthreads.empty() ) return true;
+            if ( _rthreads.size() == 0 ) return true;
         }
     }
     return false;
@@ -843,7 +826,7 @@ bool stubImage::has_changed()
 
 bool stubImage::fetch( mrv::image_type_ptr& canvas, const int64_t frame)
 {
-    if ( !_rthreads.empty() ) return true;
+    if ( ! (_rthreads.size() == 0) ) return true;
 
     struct stat sbuf;
     int result = stat( filename(), &sbuf );
@@ -875,7 +858,7 @@ bool stubImage::fetch( mrv::image_type_ptr& canvas, const int64_t frame)
     stubData* data = new stubData( id );
     data->stub = this;
 
-    _rthreads.push_back( new boost::thread( boost::bind( mray_read, data ) ) );
+    _rthreads.add_thread( new boost::thread( boost::bind( mray_read, data ) ) );
     return true;
 }
 

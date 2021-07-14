@@ -291,7 +291,6 @@ public:
     };
 
     typedef std::vector< TransformId >          LMT;
-    typedef std::vector< boost::thread* > thread_pool_t;
 
     enum Looping
     {
@@ -1759,7 +1758,7 @@ public:
         kImageMagickLibrary = 2
     };
     static LoadLib load_library;
-    static int64_t memory_used;
+    static std::atomic< int64_t > memory_used;
     static double thumbnail_percent;
 
 protected:
@@ -1993,7 +1992,7 @@ protected:
     static int _video_cache_size;
     static int _audio_cache_size;
 
-    thread_pool_t  _threads;         //!< any threads associated with process
+    boost::thread_group*  _threads;  //!< any threads associated with process
 
 
     std::atomic<size_t>  _w, _h;     //!< width and height of image
@@ -2025,7 +2024,7 @@ protected:
     bool    _audio_start;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
-    int64_t _pos;             //!< position offset in timeline
+    std::atomic<int64_t> _pos;  //!< position offset in timeline
 
     char*  _channel;          //!< current channel/layer being shown
 
@@ -2130,7 +2129,7 @@ protected:
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
 
-    double _actual_frame_rate;
+    std::atomic<double> _actual_frame_rate;
     image_type::PixelType _depth;
 
     stringArray  _layers;                //!< list of layers in file

@@ -109,11 +109,12 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" OR
        CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" )
      #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
-     # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-     #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+     ADD_DEFINITIONS( -DTHREAD_SANITIZER )
+     ADD_COMPILE_OPTIONS( -fsanitize=thread )
+     SET(OS_LIBRARIES -fsanitize=thread ${OS_LIBRARIES} )
 
-     ADD_COMPILE_OPTIONS( -g -fsanitize=address )
-     SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+     #ADD_COMPILE_OPTIONS( -g -fsanitize=address )
+     #SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ELSE(APPLE)
