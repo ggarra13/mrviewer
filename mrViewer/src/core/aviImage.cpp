@@ -832,7 +832,7 @@ void aviImage::open_video_codec()
 
     AVDictionary* info = NULL;
     std::string threads = Preferences::video_threads;
-    if ( threads == "0" ) threads = "4";
+    if ( threads == "0" ) threads = "auto";
     if (!av_dict_get(info, "threads", NULL, 0))
         av_dict_set(&info, "threads", threads.c_str(), 0 );
 

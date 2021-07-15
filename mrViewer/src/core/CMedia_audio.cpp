@@ -566,7 +566,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
 
-    SCOPED_LOCK( _audio_mutex );
+    // SCOPED_LOCK( _audio_mutex );
     // AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     // unsigned bps = av_get_bytes_per_sample( fmt );
     unsigned bps = AudioEngine::bits_for_format( _audio_format );
@@ -1521,7 +1521,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
         if ( bytes_per_frame > _audio_buf_used ) break;
 
-#ifdef DEBUG
+#ifdef DEBUG_BYTES
         if ( index + bytes_per_frame >= _audio_max )
         {
             std::cerr << "frame: " << frame << std::endl

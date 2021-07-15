@@ -2748,7 +2748,6 @@ void CMedia::play(const CMedia::Playback dir,
         }
         else if ( !fg && _fg_bg_barrier )
         {
-            _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
         else
@@ -2846,11 +2845,6 @@ void CMedia::stop(const bool bg)
     //
     TRACE("");
 
-    if ( _loop_barrier )  _loop_barrier->notify_all();
-
-    TRACE("");
-    if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
     // Wait for all threads to exit
     wait_for_threads();
