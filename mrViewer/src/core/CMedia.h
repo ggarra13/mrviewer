@@ -1621,12 +1621,14 @@ public:
         return _audio_offset;
     }
 
+#if 0
     void notify_all()
         {
             _video_packets.cond().notify_all();
             _audio_packets.cond().notify_all();
             _subtitle_packets.cond().notify_all();
         }
+#endif
 
     void debug_audio_stores(const int64_t frame,
                             const char* routine = "",

@@ -92,7 +92,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-07-15 02:04-0300\n"
+"POT-Creation-Date: 2021-07-15 18:41-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -372,9 +372,9 @@ msgstr ""
 #: core/CMedia.cpp:3018 core/CMedia.cpp:3030 core/CMedia.cpp:4011
 #: core/CMedia.cpp:4013 core/CMedia.cpp:4028 core/CMedia.cpp:4517
 #: core/CMedia.cpp:4577 core/CMedia.cpp:4625 core/CMedia_audio.cpp:1222
-#: core/CMedia_audio.cpp:2298 core/CMedia_audio.cpp:2300
-#: core/CMedia_audio.cpp:2318 core/CMedia_audio.cpp:2381
-#: core/CMedia_audio.cpp:2498 core/mrvFrame.cpp:278 core/mrvFrame.cpp:294
+#: core/CMedia_audio.cpp:2297 core/CMedia_audio.cpp:2299
+#: core/CMedia_audio.cpp:2317 core/CMedia_audio.cpp:2380
+#: core/CMedia_audio.cpp:2497 core/mrvFrame.cpp:278 core/mrvFrame.cpp:294
 #: core/mrvFrame.cpp:749 core/mrvFrame.cpp:758 core/aviImage.cpp:729
 #: core/aviImage.cpp:2185 core/aviImage.cpp:3871 core/aviImage.cpp:3883
 #: core/aviImage.cpp:3900 core/aviImage.cpp:3949 core/aviImage.cpp:4006
@@ -3647,7 +3647,7 @@ msgstr ""
 msgid "  audio->size()= "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1530 core/R3dImage.cpp:1166 core/brawImage.cpp:1410
+#: core/CMedia_audio.cpp:1529 core/R3dImage.cpp:1166 core/brawImage.cpp:1410
 msgid "  bpf: "
 msgstr ""
 
@@ -3670,7 +3670,7 @@ msgstr ""
 msgid "  img->frame: "
 msgstr " cuadro "
 
-#: core/CMedia_audio.cpp:1532 core/R3dImage.cpp:1168 core/brawImage.cpp:1412
+#: core/CMedia_audio.cpp:1531 core/R3dImage.cpp:1168 core/brawImage.cpp:1412
 msgid "  max: "
 msgstr ""
 
@@ -3804,7 +3804,7 @@ msgstr ""
 msgid " %g %g %g"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2382 core/mrvColorProfile.cpp:250
+#: core/CMedia_audio.cpp:2381 core/mrvColorProfile.cpp:250
 #: core/aviImage.cpp:1813 core/aviImage.cpp:3930 core/R3dImage.cpp:895
 #: core/brawImage.cpp:1045 core/brawImage.cpp:1571
 #: gui/FLU/Flu_File_Chooser.cpp:3650 gui/mrvPreferences.cpp:1702
@@ -3903,7 +3903,7 @@ msgstr ""
 msgid " ); "
 msgstr ""
 
-#: core/CMedia_audio.cpp:2430
+#: core/CMedia_audio.cpp:2429
 msgid " *"
 msgstr ""
 
@@ -4309,7 +4309,7 @@ msgstr ""
 msgid " @@I@@JKLMNOFP      "
 msgstr ""
 
-#: core/CMedia.cpp:4013 core/CMedia_audio.cpp:2300 core/CMedia_audio.cpp:2381
+#: core/CMedia.cpp:4013 core/CMedia_audio.cpp:2299 core/CMedia_audio.cpp:2380
 msgid " A:"
 msgstr ""
 
@@ -4355,8 +4355,8 @@ msgstr " Seleccion de Área de Color"
 msgid " Could not open file. "
 msgstr " No pude abrir el archivo. "
 
-#: core/CMedia.cpp:4012 core/CMedia.cpp:4516 core/CMedia_audio.cpp:2299
-#: core/CMedia_audio.cpp:2380 core/aviImage.cpp:3870 core/aviImage.cpp:3899
+#: core/CMedia.cpp:4012 core/CMedia.cpp:4516 core/CMedia_audio.cpp:2298
+#: core/CMedia_audio.cpp:2379 core/aviImage.cpp:3870 core/aviImage.cpp:3899
 #: core/aviImage.cpp:3948 core/brawImage.cpp:1539
 msgid " D:"
 msgstr ""
@@ -4383,7 +4383,7 @@ msgstr ""
 msgid " EF4444444444G          "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1743
+#: core/CMedia_audio.cpp:1742
 msgid " EXPECTED "
 msgstr ""
 
@@ -4397,7 +4397,7 @@ msgid " Eraser"
 msgstr " Goma de Borrar"
 
 #
-#: core/CMedia_audio.cpp:2380
+#: core/CMedia_audio.cpp:2379
 msgid " F:"
 msgstr " C:"
 
@@ -4421,7 +4421,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " ICS: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1726
+#: core/CMedia_audio.cpp:1725
 msgid " IS EXPECTED "
 msgstr ""
 
@@ -4444,7 +4444,7 @@ msgstr " No hay audio o video en el archivo"
 msgid " Pencil"
 msgstr " Lápiz"
 
-#: core/CMedia.cpp:4012 core/CMedia.cpp:4516 core/CMedia_audio.cpp:2299
+#: core/CMedia.cpp:4012 core/CMedia.cpp:4516 core/CMedia_audio.cpp:2298
 #: core/aviImage.cpp:3870 core/aviImage.cpp:3899 core/aviImage.cpp:3948
 #: core/brawImage.cpp:1539
 msgid " S:"
@@ -4549,11 +4549,11 @@ msgstr " en el puerto "
 msgid " attribute"
 msgstr " atributo"
 
-#: core/CMedia_audio.cpp:2381
+#: core/CMedia_audio.cpp:2380
 msgid " audio packets #"
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2300
+#: core/CMedia_audio.cpp:2299
 msgid " audio stores #"
 msgstr "Pista de Audio #%d"
 
@@ -4642,11 +4642,11 @@ msgstr ": Error "
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1855
+#: core/CMedia_audio.cpp:1854
 msgid " failed"
 msgstr " falló."
 
-#: core/CMedia_audio.cpp:1494
+#: core/CMedia_audio.cpp:1493
 msgid " failed with "
 msgstr " falló con "
 
@@ -4746,7 +4746,7 @@ msgstr " frecuencia: "
 msgid " fullscreen "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1733
+#: core/CMedia_audio.cpp:1732
 msgid " got audio "
 msgstr ""
 
@@ -4822,7 +4822,7 @@ msgstr " está faltante."
 msgid " is missing. Choosing "
 msgstr " está faltante. Eligiendo "
 
-#: core/CMedia_audio.cpp:1732
+#: core/CMedia_audio.cpp:1731
 msgid " is_seek "
 msgstr ""
 
@@ -4850,7 +4850,7 @@ msgstr ""
 msgid " moved to frame "
 msgstr " para cuadro "
 
-#: core/CMedia_audio.cpp:1909 core/aviImage.cpp:1853 core/R3dImage.cpp:934
+#: core/CMedia_audio.cpp:1908 core/aviImage.cpp:1853 core/R3dImage.cpp:934
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " no encontrado"
@@ -4923,7 +4923,7 @@ msgstr " para cuadro "
 msgid " shift"
 msgstr "Mayúsculas"
 
-#: core/CMedia_audio.cpp:1643
+#: core/CMedia_audio.cpp:1642
 msgid " size is "
 msgstr " tamaño es "
 
@@ -5001,7 +5001,7 @@ msgstr " desconocido"
 msgid " update "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1531 core/R3dImage.cpp:1167 core/brawImage.cpp:1411
+#: core/CMedia_audio.cpp:1530 core/R3dImage.cpp:1167 core/brawImage.cpp:1411
 msgid " used: "
 msgstr " usado: "
 
@@ -9041,9 +9041,9 @@ msgid "(unknown GL pixel type)"
 msgstr "Tipo de pixel desconocido"
 
 #: core/CMedia_audio.cpp:1111 core/CMedia_audio.cpp:1117
-#: core/CMedia_audio.cpp:1719 core/CMedia_audio.cpp:1722
-#: core/CMedia_audio.cpp:2396 core/CMedia_audio.cpp:2408
-#: core/CMedia_audio.cpp:2435 core/CMedia_audio.cpp:2440
+#: core/CMedia_audio.cpp:1718 core/CMedia_audio.cpp:1721
+#: core/CMedia_audio.cpp:2395 core/CMedia_audio.cpp:2407
+#: core/CMedia_audio.cpp:2434 core/CMedia_audio.cpp:2439
 #: core/mrvColorProfile.cpp:217 core/oiioImage.cpp:160 core/picImage.cpp:450
 #: core/picImage.cpp:466 core/mrvCPU.cpp:345 core/mrvCPU.cpp:441
 #: core/mrvCPU.cpp:443 gui/mrvHotkey.cpp:141 gui/mrvColorInfo.cpp:546
@@ -9179,7 +9179,7 @@ msgstr ""
 msgid ")      c #8CDEB5"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1718
+#: core/CMedia_audio.cpp:1717
 msgid ") != EXPECTED ("
 msgstr ""
 
@@ -9192,7 +9192,7 @@ msgstr ""
 msgid ") - ("
 msgstr ""
 
-#: core/CMedia_audio.cpp:1721
+#: core/CMedia_audio.cpp:1720
 msgid ") NEW EXPECTED ("
 msgstr ""
 
@@ -9728,7 +9728,7 @@ msgstr ""
 msgid ")/"
 msgstr ""
 
-#: core/CMedia.cpp:4519 core/CMedia_audio.cpp:2382 core/aviImage.cpp:3951
+#: core/CMedia.cpp:4519 core/CMedia_audio.cpp:2381 core/aviImage.cpp:3951
 msgid "): "
 msgstr ""
 
@@ -9916,7 +9916,7 @@ msgstr ""
 msgid "*******Added EMPTY media"
 msgstr ""
 
-#: core/CMedia.cpp:4525 core/CMedia_audio.cpp:2388
+#: core/CMedia.cpp:4525 core/CMedia_audio.cpp:2387
 msgid "***EMPTY***"
 msgstr ""
 
@@ -10001,7 +10001,7 @@ msgstr ""
 msgid "*;|[]?"
 msgstr ""
 
-#: core/CMedia.cpp:4607 core/CMedia_audio.cpp:2476 core/aviImage.cpp:3988
+#: core/CMedia.cpp:4607 core/CMedia_audio.cpp:2475 core/aviImage.cpp:3988
 #: core/iffImage.cpp:325
 msgid "+"
 msgstr ""
@@ -10321,7 +10321,7 @@ msgstr ""
 msgid "+@\tc #5C3E44"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2476
+#: core/CMedia_audio.cpp:2475
 msgid "+BAD SEEK END:"
 msgstr ""
 
@@ -10667,7 +10667,7 @@ msgstr ""
 msgid ",.'.@.).A !.,.%.~.{.].H N ).+. .>."
 msgstr ""
 
-#: core/CMedia_audio.cpp:2305 core/aviImage.cpp:1812 core/aviImage.cpp:3911
+#: core/CMedia_audio.cpp:2304 core/aviImage.cpp:1812 core/aviImage.cpp:3911
 #: core/R3dImage.cpp:894 core/brawImage.cpp:1044 core/brawImage.cpp:1552
 #: gui/mrvTimecode.cpp:374 gui/mrvTimecode.cpp:482
 #: standalone/mrvCommandLine.cpp:610
@@ -13621,7 +13621,7 @@ msgstr ""
 msgid "15 18 5 1"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1803
+#: core/CMedia_audio.cpp:1802
 msgid "16 audio buffers"
 msgstr ""
 
@@ -15652,7 +15652,7 @@ msgstr ""
 msgid ":\tc #FFFFFF"
 msgstr ""
 
-#: audio/RtAudio.cpp:707 core/CMedia_audio.cpp:2301 core/aviImage.cpp:637
+#: audio/RtAudio.cpp:707 core/CMedia_audio.cpp:2300 core/aviImage.cpp:637
 #: core/aviImage.cpp:987 core/aviImage.cpp:1003 core/aviImage.cpp:3872
 #: core/aviImage.cpp:3901 core/wandImage.cpp:89 core/rawImage.cpp:63
 #: core/rawImage.cpp:146 core/brawImage.cpp:1542 core/mrSocket.cpp:151
@@ -16198,7 +16198,7 @@ msgstr ""
 msgid "< _ ( _ [ [ } | 1 2 3 4 ( 5 6 4 ! "
 msgstr ""
 
-#: core/CMedia_audio.cpp:2469
+#: core/CMedia_audio.cpp:2468
 msgid "<**BAD** SEEK: "
 msgstr ""
 
@@ -16281,11 +16281,11 @@ msgstr " CNM: %<PRId64> "
 msgid "<SEEK END:"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2465
+#: core/CMedia_audio.cpp:2464
 msgid "<SEEK END: "
 msgstr ""
 
-#: core/CMedia.cpp:4612 core/CMedia_audio.cpp:2481 core/aviImage.cpp:3993
+#: core/CMedia.cpp:4612 core/CMedia_audio.cpp:2480 core/aviImage.cpp:3993
 msgid "<SEEK:"
 msgstr ""
 
@@ -16539,8 +16539,8 @@ msgstr ""
 msgid "=d"
 msgstr ""
 
-#: core/CMedia.cpp:4602 core/CMedia.cpp:4612 core/CMedia_audio.cpp:2465
-#: core/CMedia_audio.cpp:2469 core/CMedia_audio.cpp:2481 core/aviImage.cpp:3983
+#: core/CMedia.cpp:4602 core/CMedia.cpp:4612 core/CMedia_audio.cpp:2464
+#: core/CMedia_audio.cpp:2468 core/CMedia_audio.cpp:2480 core/aviImage.cpp:3983
 #: core/aviImage.cpp:3993
 msgid ">"
 msgstr ""
@@ -16749,7 +16749,7 @@ msgstr ""
 msgid ">.\tc #DEC282"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1726
+#: core/CMedia_audio.cpp:1725
 msgid ">>>>>>>> FRAME "
 msgstr ""
 
@@ -17997,7 +17997,7 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1909
+#: core/CMedia_audio.cpp:1908
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
@@ -18005,11 +18005,11 @@ msgstr "Cuadro de audio "
 msgid "Audio frame has NOPTS value."
 msgstr "Cuadro de audio "
 
-#: core/CMedia_audio.cpp:2003
+#: core/CMedia_audio.cpp:2002
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:2053
+#: core/CMedia_audio.cpp:2052
 msgid "Audio packets empty at end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -18048,7 +18048,7 @@ msgstr ""
 msgid "AudioVolume"
 msgstr "Volumen de Audio"
 
-#: core/CMedia_audio.cpp:1670 core/aviImage.cpp:1177
+#: core/CMedia_audio.cpp:1669 core/aviImage.cpp:1177
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -19993,7 +19993,7 @@ msgstr "No pude inicializar el cmm: "
 msgid "Could not init filters: ret "
 msgstr "No pude encontrar dos enteros para el vector "
 
-#: core/CMedia_audio.cpp:1847
+#: core/CMedia_audio.cpp:1846
 msgid "Could not initialize audio engine"
 msgstr "No pude inicializar el motor de audio"
 
@@ -20073,7 +20073,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1839
+#: core/CMedia_audio.cpp:1838
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -20099,7 +20099,7 @@ msgstr "No puede abrir video codec"
 msgid "Could not parse \""
 msgstr "No pude setear "
 
-#: core/CMedia_audio.cpp:1925
+#: core/CMedia_audio.cpp:1924
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -20580,8 +20580,8 @@ msgstr "Cortar Clip en el lugar actual"
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
-#: core/CMedia.cpp:4024 core/CMedia.cpp:4623 core/CMedia_audio.cpp:2316
-#: core/CMedia_audio.cpp:2496 core/aviImage.cpp:3881 core/aviImage.cpp:3928
+#: core/CMedia.cpp:4024 core/CMedia.cpp:4623 core/CMedia_audio.cpp:2315
+#: core/CMedia_audio.cpp:2495 core/aviImage.cpp:3881 core/aviImage.cpp:3928
 #: core/aviImage.cpp:4004 core/brawImage.cpp:1569
 msgid "D"
 msgstr ""
@@ -20741,11 +20741,11 @@ msgstr ""
 msgid "DEBUG LOG"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2102 core/CMedia_audio.cpp:2106
+#: core/CMedia_audio.cpp:2101 core/CMedia_audio.cpp:2105
 msgid "DECODE"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2229 core/CMedia_audio.cpp:2233
+#: core/CMedia_audio.cpp:2228 core/CMedia_audio.cpp:2232
 msgid "DECODE END"
 msgstr ""
 
@@ -20761,7 +20761,7 @@ msgstr "Película DIVX"
 msgid "DND: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:2071 core/CMedia_audio.cpp:2075
+#: core/CMedia_audio.cpp:2070 core/CMedia_audio.cpp:2074
 msgid "DOSEEK END"
 msgstr ""
 
@@ -20789,7 +20789,7 @@ msgstr ""
 msgid "DSP Solutions, Inc."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1743
+#: core/CMedia_audio.cpp:1742
 msgid "DTS "
 msgstr ""
 
@@ -21839,8 +21839,8 @@ msgstr "Separación de las Vistas"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2457
-#: core/CMedia.cpp:4025 core/CMedia.cpp:4624 core/CMedia_audio.cpp:2317
-#: core/CMedia_audio.cpp:2497 core/aviImage.cpp:3882 core/aviImage.cpp:3929
+#: core/CMedia.cpp:4025 core/CMedia.cpp:4624 core/CMedia_audio.cpp:2316
+#: core/CMedia_audio.cpp:2496 core/aviImage.cpp:3882 core/aviImage.cpp:3929
 #: core/aviImage.cpp:4005 core/brawImage.cpp:1570
 msgid "F"
 msgstr "C"
@@ -22032,7 +22032,7 @@ msgstr ""
 msgid "FGReel failed"
 msgstr "Carrete de Frente falló."
 
-#: core/CMedia_audio.cpp:1886 core/CMedia_audio.cpp:1890
+#: core/CMedia_audio.cpp:1885 core/CMedia_audio.cpp:1889
 msgid "FIND"
 msgstr ""
 
@@ -22077,7 +22077,7 @@ msgstr ""
 msgid "FPS: %.3f"
 msgstr "CPS: %.3f"
 
-#: core/CMedia_audio.cpp:1718 core/CMedia_audio.cpp:1721
+#: core/CMedia_audio.cpp:1717 core/CMedia_audio.cpp:1720
 msgid "FRAME("
 msgstr ""
 
@@ -23288,7 +23288,7 @@ msgstr ""
 msgid "H:"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1984 core/CMedia_audio.cpp:1988
+#: core/CMedia_audio.cpp:1983 core/CMedia_audio.cpp:1987
 msgid "HANDLESEEK"
 msgstr ""
 
@@ -24810,7 +24810,7 @@ msgstr ""
 msgid "L u v"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2396 core/CMedia_audio.cpp:2408
+#: core/CMedia_audio.cpp:2395 core/CMedia_audio.cpp:2407
 msgid "L("
 msgstr ""
 
@@ -24978,7 +24978,7 @@ msgstr "Latitud"
 msgid "Layer %d"
 msgstr "Capa %d"
 
-#: core/CMedia_audio.cpp:2435
+#: core/CMedia_audio.cpp:2434
 msgid "Le("
 msgstr ""
 
@@ -25284,7 +25284,7 @@ msgstr "Modo de Bucle"
 msgid "Low"
 msgstr "Bajo"
 
-#: core/CMedia_audio.cpp:2440
+#: core/CMedia_audio.cpp:2439
 msgid "Ls("
 msgstr ""
 
@@ -26397,7 +26397,7 @@ msgstr "Ninguna imagen fue decodificada"
 msgid "No left image to attach a stereo image pair"
 msgstr "No hay imagen izquierda para atar a un par de imágenes estéreo."
 
-#: core/CMedia_audio.cpp:248 core/CMedia_audio.cpp:1669
+#: core/CMedia_audio.cpp:248 core/CMedia_audio.cpp:1668
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -27226,7 +27226,7 @@ msgstr "Sobre escritura línea (Repetir) ["
 msgid "Owner"
 msgstr "Propietario"
 
-#: core/CMedia.cpp:4023 core/CMedia_audio.cpp:2315
+#: core/CMedia.cpp:4023 core/CMedia_audio.cpp:2314
 #: standalone/mrvCommandLine.cpp:385
 msgid "P"
 msgstr ""
@@ -27649,7 +27649,7 @@ msgstr ""
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1854
+#: core/CMedia_audio.cpp:1853
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -28297,15 +28297,15 @@ msgstr "Disco RAM"
 msgid "RBEFORE SEEK"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2102 core/CMedia_audio.cpp:2106
+#: core/CMedia_audio.cpp:2101 core/CMedia_audio.cpp:2105
 msgid "RDECODE"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2229 core/CMedia_audio.cpp:2233
+#: core/CMedia_audio.cpp:2228 core/CMedia_audio.cpp:2232
 msgid "RDECODE END"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2071 core/CMedia_audio.cpp:2075
+#: core/CMedia_audio.cpp:2070 core/CMedia_audio.cpp:2074
 msgid "RDOSEEK END"
 msgstr ""
 
@@ -28408,7 +28408,7 @@ msgstr ""
 msgid "RFETCH DONE"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1886 core/CMedia_audio.cpp:1890
+#: core/CMedia_audio.cpp:1885 core/CMedia_audio.cpp:1889
 msgid "RFIND"
 msgstr ""
 
@@ -28446,7 +28446,7 @@ msgstr "Display RGBA"
 msgid "RGBA_pixel"
 msgstr "pixel"
 
-#: core/CMedia_audio.cpp:1984 core/CMedia_audio.cpp:1988
+#: core/CMedia_audio.cpp:1983 core/CMedia_audio.cpp:1987
 msgid "RHANDLESEEK"
 msgstr ""
 
@@ -30271,7 +30271,7 @@ msgid "Run mrViewer regardless of single instance setting."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
-#: core/CMedia.cpp:4622 core/CMedia_audio.cpp:2495 core/aviImage.cpp:3880
+#: core/CMedia.cpp:4622 core/CMedia_audio.cpp:2494 core/aviImage.cpp:3880
 #: core/aviImage.cpp:3927 core/aviImage.cpp:4003 core/brawImage.cpp:1568
 #: gui/mrvColorInfo.cpp:858 gui/mrvColorInfo.cpp:864 gui/mrvImageView.cpp:9011
 #: standalone/mrvCommandLine.cpp:388
@@ -34239,7 +34239,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/CMedia_audio.cpp:1992
+#: core/CMedia_audio.cpp:1991
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -35047,7 +35047,7 @@ msgstr ""
 msgid "[      c #BDD67B"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2456
+#: core/CMedia_audio.cpp:2455
 msgid "[**BAD** PREROLL: "
 msgstr ""
 
@@ -35119,11 +35119,11 @@ msgstr ""
 msgid "[.\tc #C7A48B"
 msgstr ""
 
-#: core/CMedia.cpp:4597 core/CMedia_audio.cpp:2452 core/aviImage.cpp:3978
+#: core/CMedia.cpp:4597 core/CMedia_audio.cpp:2451 core/aviImage.cpp:3978
 msgid "[PREROLL END: "
 msgstr ""
 
-#: core/CMedia.cpp:4617 core/CMedia_audio.cpp:2486 core/aviImage.cpp:3998
+#: core/CMedia.cpp:4617 core/CMedia_audio.cpp:2485 core/aviImage.cpp:3998
 msgid "[PREROLL:"
 msgstr ""
 
@@ -35143,8 +35143,8 @@ msgstr ""
 msgid "\\\\"
 msgstr ""
 
-#: core/CMedia.cpp:4597 core/CMedia.cpp:4617 core/CMedia_audio.cpp:2452
-#: core/CMedia_audio.cpp:2456 core/CMedia_audio.cpp:2486 core/aviImage.cpp:3978
+#: core/CMedia.cpp:4597 core/CMedia.cpp:4617 core/CMedia_audio.cpp:2451
+#: core/CMedia_audio.cpp:2455 core/CMedia_audio.cpp:2485 core/aviImage.cpp:3978
 #: core/aviImage.cpp:3998 core/iffImage.cpp:539 gui/mrvHotkey.cpp:132
 #: gui/mrvHotkey.cpp:139 gui/mrvHotkey.cpp:636 gui/mrvFileRequester.cpp:1242
 msgid "]"
@@ -36259,7 +36259,7 @@ msgstr "archivo de audio"
 msgid "audio frame is missing"
 msgstr "Cuadro de audio está faltante."
 
-#: core/CMedia_audio.cpp:1528
+#: core/CMedia_audio.cpp:1527
 msgid "audio frame: "
 msgstr "Cuadro de audio "
 
@@ -37308,11 +37308,11 @@ msgstr ""
 msgid "debug"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1494
+#: core/CMedia_audio.cpp:1493
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2045
+#: core/CMedia_audio.cpp:2044
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
@@ -38207,7 +38207,7 @@ msgid "frame"
 msgstr " cuadro"
 
 #
-#: core/CMedia_audio.cpp:1527 core/R3dImage.cpp:1164 core/brawImage.cpp:1408
+#: core/CMedia_audio.cpp:1526 core/R3dImage.cpp:1164 core/brawImage.cpp:1408
 msgid "frame: "
 msgstr " cuadro "
 
@@ -38963,7 +38963,7 @@ msgstr ""
 msgid "in_sample_rate"
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia_audio.cpp:1529 core/R3dImage.cpp:1165 core/brawImage.cpp:1409
+#: core/CMedia_audio.cpp:1528 core/R3dImage.cpp:1165 core/brawImage.cpp:1409
 msgid "index: "
 msgstr ""
 
@@ -41264,7 +41264,7 @@ msgstr "Calidad"
 msgid "queue"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1732
+#: core/CMedia_audio.cpp:1731
 msgid "queue packets "
 msgstr ""
 
@@ -42154,7 +42154,7 @@ msgstr "Audio: %<PRId64> "
 msgid "stop at "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1642
+#: core/CMedia_audio.cpp:1641
 msgid "store_audio: Invalid data.  buf is "
 msgstr "almacenar_audio: datos inválidos. Buffer es "
 

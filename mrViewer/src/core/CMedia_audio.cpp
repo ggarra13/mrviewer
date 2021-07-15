@@ -1454,7 +1454,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         }
 
         assert( audio_size > 0 );
-        assert( audio_size + _audio_buf_used <= _audio_max );
 
 
         _audio_buf_used += audio_size;
