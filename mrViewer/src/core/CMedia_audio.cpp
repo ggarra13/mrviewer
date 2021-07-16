@@ -923,7 +923,7 @@ void CMedia::audio_file( const char* file )
 
     AVInputFormat*   format = NULL;
     AVDictionary* opts = NULL;
-    av_dict_set( &opts, "initial_pause", "1", 0 );
+    av_dict_set( &opts, "initial_pause", "0", 0 );
     av_dict_set( &opts, "reconnect", "1", 0 );
     av_dict_set( &opts, "reconnect_streamed", "1", 0 );
 

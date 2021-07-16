@@ -688,7 +688,7 @@ void audio_thread( PlaybackData* data )
     mrv::Timeline*      timeline = uiMain->uiTimeline;
     mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
-    int64_t frame = img->frame() + img->audio_offset();
+    int64_t frame = img->audio_frame() + img->audio_offset();
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
@@ -715,8 +715,8 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        img->wait_audio();
 
+        img->wait_audio();
 
 
         boost::int64_t f = frame;
@@ -724,7 +724,6 @@ void audio_thread( PlaybackData* data )
         // if (!fg)
         //img->debug_audio_packets( frame, "play", false );
 
-        // std::cerr << "decode audio " << frame << std::endl;
 
         CMedia::DecodeStatus status = img->decode_audio( f );
         // std::cerr << img->name() << " decoded audio " << f
@@ -849,7 +848,6 @@ void audio_thread( PlaybackData* data )
             view->frame( f );
         }
 
-
         if ( !img->stopped() )
         {
             img->find_audio(frame);
@@ -863,7 +861,7 @@ void audio_thread( PlaybackData* data )
         }
 
         frame += step;
-    }
+   }
 
 
 #ifdef DEBUG_THREADS

@@ -2656,7 +2656,7 @@ void CMedia::play(const CMedia::Playback dir,
     if ( saving() ) return;
 
     assert0( dir != kStopped );
-    // if ( _playback == kStopped && !( _threads->size() == 0 ) )
+    // if ( _playback != kStopped && !( _threads->size() == 0 ) )
     //     return;
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );

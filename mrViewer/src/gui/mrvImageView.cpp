@@ -34,6 +34,7 @@
 //#define NETWORK_COMMANDS
 #endif
 
+//#define NETWORK_COMMANDS
 // #define DEBUG_KEYS
 
 
