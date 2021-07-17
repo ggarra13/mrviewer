@@ -31,7 +31,7 @@
 
 
 #ifdef DEBUG
-//#define NETWORK_COMMANDS
+#define NETWORK_COMMANDS
 #endif
 
 //#define NETWORK_COMMANDS
@@ -3627,6 +3627,7 @@ again:
     {
         NET( "seek " << c.frame );
         seek( c.frame );
+        NET( "seeked " << c.frame );
         break;
     }
     case kPlayForwards:

@@ -88,7 +88,6 @@ void load_files( mrv::LoadList& files,
 {
     if ( files.empty() ) return;
 
-    std::cerr << ">>>>>>>>> LOAD FILES " << files.size() << std::endl;
    //
    // Window must be shown after images have been loaded.
    //

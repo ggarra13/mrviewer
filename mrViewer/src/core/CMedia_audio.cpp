@@ -1398,12 +1398,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 
 
-#ifdef DEBUG
-    if ( _audio_buf_used + pkt.size >= _audio_max )
-    {
-        IMG_ERROR( _("Too much audio used:") << _audio_buf_used  );
-    }
-#endif
 
     // if ( _audio_packets.is_jump( pkt ) )
     // {
@@ -1417,7 +1411,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     //    av_assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
 
     av_assert0( _audio_buf != NULL );
-    av_assert0( pkt.size + _audio_buf_used < _audio_max );
 
     int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
     av_assert0( pkt_temp->size <= audio_size );

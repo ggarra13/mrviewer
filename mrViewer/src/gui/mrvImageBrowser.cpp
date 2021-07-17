@@ -2011,7 +2011,7 @@ void ImageBrowser::save_session()
 
         int v = value();
         if ( i == v ) {
-            if ( play != CMedia::kStopped ) view()->play(play);
+            if ( play ) view()->play(play);
             return;
         }
 
@@ -4432,9 +4432,9 @@ void ImageBrowser::exchange( int oldsel, int sel )
     sprintf( buf, _("ExchangeImage %d %d"), sel, oldsel );
     view()->send_network( buf );
 
-    CMedia::Playback playback = view()->playback();
+    CMedia::Playback play = view()->playback();
 
-    if ( playback != CMedia::kStopped )
+    if ( play != CMedia::kStopped )
         view()->stop();
 
     root()->swap_children( sel, oldsel );
@@ -4476,8 +4476,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
         frame( f );
     }
 
-    if ( playback != CMedia::kStopped )
-        view()->play(playback);
+    if ( play ) view()->play(play);
 
     redraw();
 }
@@ -4655,16 +4654,15 @@ void ImageBrowser::seek( const int64_t tframe )
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
+
+    CMedia::Playback play = view()->playback();
+
+
+    if ( play != CMedia::kStopped )
+        view()->stop();
+
     view()->frame( tframe );
 
-
-    CMedia::Playback playback = view()->playback();
-
-
-    if ( playback != CMedia::kStopped )
-    {
-        view()->stop();
-    }
 
     mrv::Timeline* t = timeline();
 
@@ -4754,9 +4752,9 @@ void ImageBrowser::seek( const int64_t tframe )
         }
     }
 
-    if ( playback != CMedia::kStopped )
+    if ( play )
     {
-        view()->play( playback );
+        view()->play( play );
     }
 
 
@@ -4818,9 +4816,10 @@ void ImageBrowser::clear_edl()
     if (!m) return;
 
     CMedia* img = m->image();
+    if ( !img ) return;
+
     int64_t f = img->frame();
 
-    if ( !img ) return;
 
     frame( f );
 
