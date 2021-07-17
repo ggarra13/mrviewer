@@ -756,24 +756,24 @@ namespace mrv {
     bool brawImage::finalize()
     {
       try
-	{
+        {
         if ( audio )
-	  audio->Release();
+          audio->Release();
         audio = nullptr;
         if ( clip )
-	  clip->Release();
+          clip->Release();
         clip = nullptr;
         if ( codec )
-	  codec->Release();
+          codec->Release();
         codec = nullptr;
         if ( factory )
-	  factory->Release();
+          factory->Release();
         factory = nullptr;
-	}
+        }
       catch( const std::exception& e )
-	{
-	  LOG_ERROR( e.what() );
-	}
+        {
+          LOG_ERROR( e.what() );
+        }
         delete [] audiobuffer;
         audiobuffer = NULL;
 
@@ -983,7 +983,7 @@ namespace mrv {
         return true;
     }
 
-    bool brawImage::find_image( int64_t& frame )
+    bool brawImage::find_image( const int64_t frame )
     {
 
         if ( _right_eye && (stopped() || saving() ) )
@@ -1067,7 +1067,7 @@ namespace mrv {
                          diff > 1 && diff < 10 && counter < 10 &&
                          f <= _frameEnd )
                     {
-                        frame = _frame = _hires->frame();
+                        _frame = _hires->frame();
                         // ++counter;
                         // IMG_WARNING( _("find_image: frame ") << frame
                         //              << _(" not found, choosing ")

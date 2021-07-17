@@ -798,6 +798,7 @@ void CMedia::update_frame( const int64_t& f )
 
     _cache_full = 0;
 
+
     boost::uint64_t i = f - _frame_start;
     if ( _sequence[i] )        _sequence[i].reset();
     if ( _right && _right[i] )    _right[i].reset();
