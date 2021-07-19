@@ -11,11 +11,11 @@
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:16
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:96
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1305
-#: core/CMedia.cpp:2157 core/CMedia.cpp:2161 core/CMedia.cpp:2665
-#: core/CMedia.cpp:2668 core/CMedia.cpp:2695 core/CMedia.cpp:2699
-#: core/CMedia.cpp:2703 core/CMedia.cpp:2706 core/CMedia.cpp:2823
-#: core/CMedia.cpp:2831 core/CMedia.cpp:2836 core/CMedia.cpp:2838
-#: core/CMedia.cpp:2840 core/CMedia.cpp:2842 core/CMedia.cpp:2847
+#: core/CMedia.cpp:2156 core/CMedia.cpp:2160 core/CMedia.cpp:2664
+#: core/CMedia.cpp:2667 core/CMedia.cpp:2694 core/CMedia.cpp:2698
+#: core/CMedia.cpp:2702 core/CMedia.cpp:2705 core/CMedia.cpp:2822
+#: core/CMedia.cpp:2830 core/CMedia.cpp:2835 core/CMedia.cpp:2837
+#: core/CMedia.cpp:2839 core/CMedia.cpp:2841 core/CMedia.cpp:2846
 #: core/CMedia.cpp:2857 core/CMedia.cpp:2859 core/CMedia.cpp:2865
 #: core/CMedia.cpp:2871 core/CMedia.cpp:2879 core/CMedia.cpp:2881
 #: core/CMedia.cpp:3486 core/CMedia.cpp:3528 core/CMedia_audio.cpp:846
@@ -92,7 +92,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-07-17 19:11-0300\n"
+"POT-Creation-Date: 2021-07-19 14:59-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -7690,7 +7690,7 @@ msgstr ""
 msgid "%H:%M:%S - %d %b"
 msgstr ""
 
-#: core/CMedia.cpp:1635 core/guessImage.cpp:135 core/guessImage.cpp:403
+#: core/CMedia.cpp:1634 core/guessImage.cpp:135 core/guessImage.cpp:403
 #: core/exrImage.cpp:2129 core/Sequence.cpp:367 core/Sequence.cpp:371
 #: gui/FLU/Flu_File_Chooser.cpp:355
 msgid "%V"
@@ -17672,7 +17672,7 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:2075 core/CMedia.cpp:2158 core/exrImage.cpp:3039
+#: core/CMedia.cpp:2074 core/CMedia.cpp:2157 core/exrImage.cpp:3039
 #: core/stubImage.cpp:989 core/wandImage.cpp:1157 gui/mrvImageView.cpp:209
 #: gui/mrvImageView.cpp:9027 gui/mrvImageView.cpp:9491
 #: gui/mrvImageView.cpp:9553
@@ -17683,7 +17683,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "Alfa Sobreimpreso"
 
-#: core/CMedia.cpp:2077 core/CMedia.cpp:2158 core/exrImage.cpp:3037
+#: core/CMedia.cpp:2076 core/CMedia.cpp:2157 core/exrImage.cpp:3037
 #: core/stubImage.cpp:989 core/wandImage.cpp:1155 gui/mrvImageView.cpp:210
 #: gui/mrvImageView.cpp:2043 gui/mrvImageView.cpp:9008
 #: gui/mrvImageView.cpp:9554
@@ -18362,7 +18362,7 @@ msgstr ""
 msgid "BT709"
 msgstr ""
 
-#: core/CMedia.cpp:2227 core/exrImage.cpp:320 core/exrImage.cpp:845
+#: core/CMedia.cpp:2226 core/exrImage.cpp:320 core/exrImage.cpp:845
 #: core/exrImage.cpp:847 core/exrImage.cpp:881 core/exrImage.cpp:1955
 #: core/exrImage.cpp:1957 core/exrImage.cpp:2779 core/exrImage.cpp:2986
 #: core/exrImage.cpp:3045 core/exrImage.cpp:3391 core/wandImage.cpp:1158
@@ -18494,7 +18494,7 @@ msgstr "Modo de Mezcla"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2130
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2157 core/exrImage.cpp:3039
+#: core/CMedia.cpp:2090 core/CMedia.cpp:2156 core/exrImage.cpp:3039
 #: core/stubImage.cpp:989 core/wandImage.cpp:1157 gui/mrvImageView.cpp:208
 #: gui/mrvImageView.cpp:9022 gui/mrvImageView.cpp:9552
 msgid "Blue"
@@ -19290,7 +19290,7 @@ msgstr " no encontrado"
 #
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/aviSave.cxx:209
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
-#: core/CMedia.cpp:2088 core/CMedia.cpp:2156 core/exrImage.cpp:2784
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2155 core/exrImage.cpp:2784
 #: core/exrImage.cpp:3041 core/exrImage.cpp:3049 core/exrImage.cpp:3061
 #: core/exrImage.cpp:3066 core/exrImage.cpp:3068 core/exrImage.cpp:3105
 #: core/exrImage.cpp:3138 core/stubImage.cpp:988 core/wandImage.cpp:1116
@@ -23138,7 +23138,7 @@ msgstr "Obtuve: "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2115
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:36
-#: core/CMedia.cpp:2090 core/CMedia.cpp:2156 core/exrImage.cpp:3038
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3038
 #: core/stubImage.cpp:988 core/wandImage.cpp:1156 gui/mrvImageView.cpp:207
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9552
 msgid "Green"
@@ -25306,7 +25306,7 @@ msgid "Luminance: "
 msgstr "Luminosidad"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2032 core/CMedia.cpp:2103 core/CMedia.cpp:2158
+#: core/CMedia.cpp:2031 core/CMedia.cpp:2102 core/CMedia.cpp:2157
 #: core/mrvFrame.cpp:83 core/exrImage.cpp:3037 core/stubImage.cpp:990
 #: core/wandImage.cpp:1155 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2050
 #: gui/mrvImageView.cpp:9031 gui/mrvImageView.cpp:9553
@@ -26437,7 +26437,7 @@ msgstr ""
 msgid "NoWipe"
 msgstr "Wipe"
 
-#: core/CMedia.cpp:2522
+#: core/CMedia.cpp:2521
 msgid "Node"
 msgstr ""
 
@@ -27148,7 +27148,7 @@ msgstr "Programa Originario"
 msgid "Otio timeline saved to '%s'."
 msgstr ""
 
-#: audio/RtAudio.cpp:7080 core/CMedia.cpp:1157
+#: audio/RtAudio.cpp:7080 core/CMedia.cpp:1156
 msgid "Out of memory"
 msgstr ""
 
@@ -28505,7 +28505,7 @@ msgstr ""
 msgid "RXGB"
 msgstr ""
 
-#: core/CMedia.cpp:2227 core/exrImage.cpp:309 core/exrImage.cpp:840
+#: core/CMedia.cpp:2226 core/exrImage.cpp:309 core/exrImage.cpp:840
 #: core/exrImage.cpp:842 core/exrImage.cpp:882 core/exrImage.cpp:1950
 #: core/exrImage.cpp:1952 core/exrImage.cpp:2781 core/exrImage.cpp:2986
 #: core/exrImage.cpp:3045 core/exrImage.cpp:3385 core/wandImage.cpp:1158
@@ -28609,7 +28609,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2100
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:35
-#: core/CMedia.cpp:2089 core/CMedia.cpp:2156 core/exrImage.cpp:3038
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2155 core/exrImage.cpp:3038
 #: core/stubImage.cpp:988 core/wandImage.cpp:1156 gui/mrvImageView.cpp:206
 #: gui/mrvImageView.cpp:9012 gui/mrvImageView.cpp:9551
 msgid "Red"
@@ -31161,7 +31161,7 @@ msgstr "Tamaño en cuadros del cache de AUDIO y VÍDEO."
 msgid "Size:             "
 msgstr ""
 
-#: core/CMedia.cpp:1717 core/CMedia.cpp:2906 core/slateImage.cpp:58
+#: core/CMedia.cpp:1716 core/CMedia.cpp:2906 core/slateImage.cpp:58
 msgid "Slate "
 msgstr ""
 
@@ -34422,7 +34422,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2098
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-20.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2483
-#: core/CMedia.cpp:2227 core/exrImage.cpp:298 core/exrImage.cpp:310
+#: core/CMedia.cpp:2226 core/exrImage.cpp:298 core/exrImage.cpp:310
 #: core/exrImage.cpp:835 core/exrImage.cpp:837 core/exrImage.cpp:881
 #: core/exrImage.cpp:1060 core/exrImage.cpp:1103 core/exrImage.cpp:1945
 #: core/exrImage.cpp:1947 core/exrImage.cpp:2770 core/exrImage.cpp:2777
@@ -34758,7 +34758,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: core/CMedia.cpp:2230 core/CMedia.cpp:2231 core/CMedia.cpp:2235
+#: core/CMedia.cpp:2229 core/CMedia.cpp:2230 core/CMedia.cpp:2234
 #: core/exrImage.cpp:272 core/exrImage.cpp:299 core/exrImage.cpp:321
 #: core/exrImage.cpp:765 core/exrImage.cpp:1570 core/exrImage.cpp:1585
 #: core/exrImage.cpp:1601 core/exrImage.cpp:1756 core/exrImage.cpp:1771
@@ -36562,7 +36562,7 @@ msgstr ""
 msgid "bluray"
 msgstr ""
 
-#: core/CMedia.cpp:1726
+#: core/CMedia.cpp:1725
 msgid "bluray:"
 msgstr ""
 
@@ -37483,7 +37483,7 @@ msgstr ""
 msgid "dvd"
 msgstr ""
 
-#: core/CMedia.cpp:1727
+#: core/CMedia.cpp:1726
 msgid "dvd:"
 msgstr ""
 
@@ -37972,7 +37972,7 @@ msgstr "archivos"
 msgid "file%d"
 msgstr "archivos"
 
-#: core/CMedia.cpp:1624 core/CMedia.cpp:1706
+#: core/CMedia.cpp:1623 core/CMedia.cpp:1705
 msgid "file:"
 msgstr "archivos"
 
@@ -38671,7 +38671,7 @@ msgstr ""
 msgid "hotkeys"
 msgstr "Teclas de Manejo"
 
-#: core/CMedia.cpp:1722 core/guessImage.cpp:245 core/guessImage.cpp:402
+#: core/CMedia.cpp:1721 core/guessImage.cpp:245 core/guessImage.cpp:402
 #: core/aviImage.cpp:2919 core/Sequence.cpp:686
 msgid "http"
 msgstr ""
@@ -41640,11 +41640,11 @@ msgstr ""
 msgid "rtaudio"
 msgstr ""
 
-#: core/CMedia.cpp:1724 core/guessImage.cpp:243 core/Sequence.cpp:690
+#: core/CMedia.cpp:1723 core/guessImage.cpp:243 core/Sequence.cpp:690
 msgid "rtmp"
 msgstr ""
 
-#: core/CMedia.cpp:1723 core/Sequence.cpp:691
+#: core/CMedia.cpp:1722 core/Sequence.cpp:691
 msgid "rtp"
 msgstr ""
 
@@ -42640,7 +42640,7 @@ msgstr "formato "
 msgid "uniform vec3 "
 msgstr ""
 
-#: core/CMedia.cpp:2044 core/CMedia.cpp:3371 core/CMedia.cpp:3402
+#: core/CMedia.cpp:2043 core/CMedia.cpp:3371 core/CMedia.cpp:3402
 #: core/CMedia.cpp:4391 core/wandImage.cpp:674 core/R3dImage.cpp:1349
 #: core/R3dImage.cpp:1424 gui/FLU/Flu_File_Chooser.cpp:3859
 msgid "unknown"
@@ -43197,7 +43197,7 @@ msgstr "Modo de Wrap"
 msgid "writer"
 msgstr "Escritor"
 
-#: core/CMedia.cpp:1728 core/guessImage.cpp:247 core/aviImage.cpp:2922
+#: core/CMedia.cpp:1727 core/guessImage.cpp:247 core/aviImage.cpp:2922
 #: core/aviImage.cpp:2927 core/Sequence.cpp:694
 msgid "www."
 msgstr ""
@@ -43576,7 +43576,7 @@ msgstr ""
 msgid "youtu.be"
 msgstr ""
 
-#: core/CMedia.cpp:1725 core/guessImage.cpp:246 core/aviImage.cpp:2920
+#: core/CMedia.cpp:1724 core/guessImage.cpp:246 core/aviImage.cpp:2920
 #: core/aviImage.cpp:2924 core/Sequence.cpp:693
 msgid "youtube"
 msgstr ""

@@ -566,7 +566,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
 
-    // SCOPED_LOCK( _audio_mutex );
+    SCOPED_LOCK( _audio_mutex );
     // AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     // unsigned bps = av_get_bytes_per_sample( fmt );
     unsigned bps = AudioEngine::bits_for_format( _audio_format );

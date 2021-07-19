@@ -88,14 +88,14 @@ Timer::Timer ():
 {
   gettimeofday (&_lastFrameTime, 0);
   _lastFpsFrameTime = _lastFrameTime;
-#if 0  // def OSX
+#if 0 // def OSX
   osx_latencycritical_start();
 #endif
 }
 
     Timer::~Timer()
     {
-#if 0  // def OSX
+#if 0 // def OSX
   osx_latencycritical_end();
 #endif
     }

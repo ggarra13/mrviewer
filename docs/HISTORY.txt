@@ -5,6 +5,10 @@ v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  entered, any left mouse click on the image will copy the reel, shot,
 	  frame and the XY coordinates to the clipboard.
 	- Removed useless setting in preferences called Switching Images.
+	- Bug fixed R3D (RED) and BRAW (Blackmagick RAW) loaders which got
+	  broken in the v5.9.0 update.
+	- Made annotations' metadata in HUD be displayed in different columns
+	  when they don't fit in one column.
 
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
 	- Bug fixed a memory leak when deleting the last image of a reel.

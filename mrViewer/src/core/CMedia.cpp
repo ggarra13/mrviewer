@@ -830,7 +830,6 @@ void CMedia::wait_for_load_threads()
  */
 void CMedia::wait_for_threads()
 {
-    _threads->interrupt_all();
     _threads->join_all();
     delete _threads;
     _threads = new boost::thread_group;
@@ -2846,21 +2845,22 @@ void CMedia::stop(const bool bg)
     //
     TRACE("");
 
-
     // Wait for all threads to exit
     wait_for_threads();
 
 
-    // Clear barriers
-
-    delete _loop_barrier;
-    TRACE("");
-    _loop_barrier = NULL;
-    TRACE("");
-    delete _stereo_barrier;
-    _stereo_barrier = NULL;
 
 #if 0
+    // Clear barriers
+    {
+        delete _loop_barrier;
+        TRACE("");
+        _loop_barrier = NULL;
+        TRACE("");
+        delete _stereo_barrier;
+        _stereo_barrier = NULL;
+    }
+
     if ( bg ) {
     TRACE("");
         delete _fg_bg_barrier;
@@ -4379,7 +4379,7 @@ void CMedia::default_ocio_input_color_space()
         if ( n.rfind( ".braw" ) == std::string::npos )
         {
             std::string cs = config->parseColorSpaceFromString(n.c_str());
-            if ( !cs.empty() )
+            if ( !cs.empty() && !is_thumbnail() )
             {
                 IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
                 ocio_input_color_space( cs );
@@ -4426,7 +4426,7 @@ void CMedia::default_ocio_input_color_space()
         break;
     }
 
-    if (! ocio_input_color_space().empty() )
+    if (! ocio_input_color_space().empty() && !is_thumbnail() )
     {
         IMG_INFO( _("Got colorspace '") << ocio_input_color_space()
                   << _("' from bitdepth ") << bit_depth << _(" as default") );
