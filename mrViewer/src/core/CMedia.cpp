@@ -149,7 +149,7 @@ std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
 
-int64_t CMedia::memory_used = 0;
+std::atomic<int64_t> CMedia::memory_used( 0 );
 double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
@@ -1560,11 +1560,11 @@ void CMedia::refresh( const mrv::Recti& r )
         if (_framesSinceLastFpsFrame == 0)
             _lastFpsFrameTime = now;
 
-        static int64_t old_frame = _frame - 1;
+        static std::atomic<int64_t> old_frame( _frame - 1 );
         int64_t frameDiff = std::abs( _frame - old_frame );
         if ( frameDiff < 10 )
             _framesSinceLastFpsFrame += frameDiff;
-        old_frame = _frame;
+        old_frame.store( _frame );
     }
 
 
@@ -4243,7 +4243,6 @@ bool CMedia::find_image( const int64_t frame )
             timeval now;
             gettimeofday (&now, 0);
             _lastFrameTime = now;
-            std::cerr << "**** fetch sequence " << f << std::endl;
             if ( fetch( canvas, f ) )
             {
                 cache( canvas );

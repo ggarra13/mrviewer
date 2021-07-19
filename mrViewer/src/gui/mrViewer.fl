@@ -718,10 +718,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {324 348 690 565} type Double align 80 hide resizable
+      xywh {324 432 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow}
+      class {mrv::MainWindow} visible
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -731,9 +731,9 @@ o->main( this );}
           xywh {0 0 690 25} box FLAT_BOX
         } {
           Fl_Menu_Bar uiMenuBar {
-            xywh {0 0 605 25}
+            xywh {0 0 540 25}
           } {}
-          Fl_Group uiMenuButtons {open
+          Fl_Group uiMenuButtons {
             xywh {605 0 85 25} color 63
           } {
             Fl_Button {} {
@@ -751,6 +751,10 @@ v->uiView->fit_image();}
               tooltip {Color controls} image {../../icons/color_ctls.xpm} xywh {635 0 28 25}
             }
           }
+          Fl_Group uiStatus {
+            label Scrub open selected
+            xywh {540 0 65 25} align 80
+          } {}
         }
         Fl_Group uiTopBar {
           xywh {0 25 690 28} box ENGRAVED_BOX
@@ -1912,8 +1916,7 @@ delete uiPrefs; uiPrefs = NULL;} {}
   }
   Function {refresh()} {open
   } {
-    code {
-static const char* kModule = "mrv";
+    code {static const char* kModule = "mrv";
 DBGM1("Fl::check");
 Fl::check();  // needed to refresh menu
 DBGM1("Fl::check ok");
@@ -1935,8 +1938,7 @@ if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
  DBGM1("Fl::check 2");
 Fl::check(); // needed to refresh windows
-DBGM1("Fl::check 2 ok");} {selected
-    }
+DBGM1("Fl::check 2 ok");} {}
   }
   Function {make_attrs_window()} {} {
     Fl_Window {} {open

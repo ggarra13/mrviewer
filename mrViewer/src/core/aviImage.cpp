@@ -831,8 +831,10 @@ void aviImage::open_video_codec()
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );
 
     AVDictionary* info = NULL;
+    std::string threads = Preferences::video_threads;
+    if ( threads == "0" ) threads = "4";
     if (!av_dict_get(info, "threads", NULL, 0))
-        av_dict_set(&info, "threads", Preferences::video_threads.c_str(), 0 );
+        av_dict_set(&info, "threads", threads.c_str(), 0 );
     //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
 
     // recounted frames needed for subtitles
@@ -2786,7 +2788,7 @@ void aviImage::populate()
 
                 if ( !got_audio )
                 {
-                    if ( pktframe > _frameStart ) got_audio = true;
+                    if ( pktframe > _frameStart + 1 ) got_audio = true;
                     else if ( pktframe == _frameStart )
                     {
                         audio_bytes += pkt->size;

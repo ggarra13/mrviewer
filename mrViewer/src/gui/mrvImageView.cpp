@@ -1477,6 +1477,11 @@ static void copy_pixel_rgba_cb( Fl_Widget* o, mrv::ImageView* view )
     view->copy_pixel();
 }
 
+static void toggle_copy_frame_xy_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    view->toggle_copy_frame_xy();
+}
+
 
 static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
 {
@@ -1538,6 +1543,9 @@ void ImageView::scale_pic_mode()
 void ImageView::move_pic_mode()
 {
     _mode = kMovePicture;
+
+    uiMain->uiStatus->copy_label( _("Move Pic.") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1561,6 +1569,7 @@ void ImageView::move_pic_mode()
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
+    uiMain->uiStatus->copy_label( _("Scrub") );
 
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
@@ -1588,6 +1597,8 @@ void ImageView::selection_mode( bool temporary )
     else
         _mode = kSelection;
 
+    uiMain->uiStatus->copy_label( _("Selection") );
+
     uiMain->uiSelection->value(true);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1613,6 +1624,9 @@ void ImageView::draw_mode( bool tmp )
         _mode = kDrawTemporary;
     else
         _mode = kDraw;
+
+    uiMain->uiStatus->copy_label( _("Draw") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1635,6 +1649,8 @@ void ImageView::draw_mode( bool tmp )
 void ImageView::circle_mode()
 {
     _mode = kCircle;
+
+    uiMain->uiStatus->copy_label( _("Circle") );
 
 
     uiMain->uiSelection->value(false);
@@ -1660,6 +1676,7 @@ void ImageView::arrow_mode()
 {
     _mode = kArrow;
 
+    uiMain->uiStatus->copy_label( _("Arrow") );
 
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
@@ -1688,6 +1705,8 @@ void ImageView::erase_mode( bool tmp )
     else
         _mode = kErase;
 
+    uiMain->uiStatus->copy_label( _("Erase") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(true);
     uiMain->uiCircle->value(false);
@@ -1713,32 +1732,29 @@ void ImageView::text_mode()
     if ( ok )
     {
         _mode = kText;
+        uiMain->uiStatus->copy_label( _("Text") );
         uiMain->uiText->value(true);
         uiMain->uiScrub->value(false);
-        uiMain->uiPaint->uiText->value(true);
         uiMain->uiPaint->uiScrub->value(false);
+        uiMain->uiArrow->value(false);
+        uiMain->uiErase->value(false);
+        uiMain->uiCircle->value(false);
+        uiMain->uiDraw->value(false);
+        uiMain->uiSelection->value(false);
+
+        uiMain->uiPaint->uiText->value(true);
+        uiMain->uiPaint->uiArrow->value(false);
+        uiMain->uiPaint->uiMovePic->value(false);
+        uiMain->uiPaint->uiErase->value(false);
+        uiMain->uiPaint->uiCircle->value(false);
+        uiMain->uiPaint->uiDraw->value(false);
+        uiMain->uiPaint->uiSelection->value(false);
     }
     else
     {
-        _mode = kScrub;
-        uiMain->uiText->value(false);
-        uiMain->uiScrub->value(true);
-        uiMain->uiPaint->uiText->value(false);
-        uiMain->uiPaint->uiScrub->value(true);
+        scrub_mode();
     }
 
-    uiMain->uiArrow->value(false);
-    uiMain->uiErase->value(false);
-    uiMain->uiCircle->value(false);
-    uiMain->uiDraw->value(false);
-    uiMain->uiSelection->value(false);
-
-    uiMain->uiPaint->uiArrow->value(false);
-    uiMain->uiPaint->uiMovePic->value(false);
-    uiMain->uiPaint->uiErase->value(false);
-    uiMain->uiPaint->uiCircle->value(false);
-    uiMain->uiPaint->uiDraw->value(false);
-    uiMain->uiPaint->uiSelection->value(false);
     redraw();
 }
 
@@ -1925,8 +1941,7 @@ const mrv::MainWindow* ImageView::fltk_main() const
 }
 
 
-ImageBrowser*
-ImageView::browser() {
+ImageBrowser* ImageView::browser() const {
     if ( !uiMain ) return NULL;
     if ( !uiMain->uiReelWindow ) return NULL;
     assert( uiMain->uiReelWindow );
@@ -2192,6 +2207,111 @@ void ImageView::bg_reel(int idx)
     send_network( buf );
 }
 
+void ImageView::toggle_copy_frame_xy()
+{
+    if ( _mode == kCopyFrameXY )
+        scrub_mode();
+    else
+    {
+        _mode = kCopyFrameXY;
+        uiMain->uiStatus->copy_label( _("Copy X Y") );
+    }
+}
+
+/**
+ * Given window's x and y coordinates, return an image's
+ * corresponding x and y coordinate
+ *
+ * @param img image to find coordinates for
+ * @param x   window's x position
+ * @param y   window's y position
+ */
+void ImageView::copy_frame_xy() const
+{
+    mrv::media fg = foreground();
+
+    CMedia* img = fg->image();
+
+    int x = lastX;
+    int y = lastY;
+
+
+    if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
+        return;
+
+    mrv::image_type_ptr pic;
+    bool outside = false;
+    int off[2];
+    int xp, yp, w, h;
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
+
+
+    if ( outside || !pic ) return;
+
+    yp = pic->height() - yp - 1;
+
+    mrv::Recti daw[2];
+    daw[0] = img->data_window();
+    daw[1] = img->data_window2();
+
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    CMedia::StereoInput  stereo_in  = img->stereo_input();
+
+    if ( stereo_out & CMedia::kStereoAnaglyph )
+    {
+        if ( stereo_in == CMedia::kTopBottomStereoInput )
+        {
+            yp += h;
+        }
+        else if ( stereo_in == CMedia::kLeftRightStereoInput )
+        {
+            xp += w;
+        }
+        else
+        {
+            if ( stereo_out & CMedia::kStereoRight )
+            {
+                pic = img->left();
+                xp += daw[1].x();
+                yp += daw[1].y();
+                xp -= daw[0].x();
+                yp -= daw[0].y();
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
+
+    }
+
+    const mrv::Reel& r = browser()->current_reel();
+    unsigned shot_id = 0;
+    for ( unsigned i = 0; i < r->images.size(); ++i )
+    {
+        if ( r->images[i] == fg )
+        {
+            shot_id = i; break;
+        }
+    }
+
+    char buf[256];
+    sprintf( buf,
+             _("Reel %d (%s) | Shot %d (%s) | Frame %" PRId64
+               " | X = %d | Y = %d\n"),
+             _fg_reel, r->name.c_str(), shot_id, img->name().c_str(),
+             _frame.load(), xp, yp );
+
+    LOG_INFO( buf );
+
+    // Copy text to both the clipboard and to X's XA_PRIMARY
+    Fl::copy( buf, unsigned( strlen(buf) ), true );
+    Fl::copy( buf, unsigned( strlen(buf) ), false );
+}
 
 /**
  * Given window's x and y coordinates, return an image's
@@ -3818,7 +3938,7 @@ void ImageView::timeout()
     }
 
 
-    mrv::media fg = foreground();
+    const mrv::media fg = foreground();
     mrv::media bg = background();
 
     if ( bgreel && bgreel->edl )
@@ -3895,8 +4015,8 @@ void ImageView::timeout()
 #ifdef OSX
     draw();  // Force a draw of the gl canvas
 #endif
-    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    // if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::handle_vr( double& delay )
@@ -5096,6 +5216,11 @@ int ImageView::leftMouseDown(int x, int y)
             char buf[64];
             sprintf( buf, "Selection 0 0 0 0" );
             send_network( buf );
+            return 1;
+        }
+        else if ( _mode == kCopyFrameXY )
+        {
+            copy_frame_xy();
             return 1;
         }
         else if ( _mode == kMovePicture || _mode == kScalePicture )
@@ -7493,6 +7618,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kRotateMinus90.match( rawkey ) )
     {
         rotate_minus_90_cb( NULL, this );
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kCopyFrameXYValues.match( rawkey ) )
+    {
+        toggle_copy_frame_xy_cb( NULL, this);
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }

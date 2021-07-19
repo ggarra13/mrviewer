@@ -1398,13 +1398,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 
 
-#ifdef DEBUG
-    if ( _audio_buf_used + pkt.size >= _audio_max )
-    {
-        IMG_ERROR( _("Too much audio used:") << _audio_buf_used  );
-    }
-#endif
-
     // if ( _audio_packets.is_jump( pkt ) )
     // {
     //     return kDecodeOK;
@@ -1417,7 +1410,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     //    av_assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
 
     av_assert0( _audio_buf != NULL );
-    av_assert0( pkt.size + _audio_buf_used < _audio_max );
 
     int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
     av_assert0( pkt_temp->size <= audio_size );
@@ -1454,7 +1446,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         }
 
         assert( audio_size > 0 );
-        assert( audio_size + _audio_buf_used <= _audio_max );
 
 
         _audio_buf_used += audio_size;
@@ -1520,18 +1511,6 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
     {
 
         if ( bytes_per_frame > _audio_buf_used ) break;
-
-#ifdef DEBUG
-        if ( index + bytes_per_frame >= _audio_max )
-        {
-            std::cerr << "frame: " << frame << std::endl
-                      << "audio frame: " << audio_frame << std::endl
-                      << "index: " << index << std::endl
-                      << "  bpf: " << bytes_per_frame << std::endl
-                      << " used: " << _audio_buf_used << std::endl
-                      << "  max: " << _audio_max << std::endl;
-        }
-#endif
 
         uint32_t skip = store_audio( last,
                                      (uint8_t*)_audio_buf + index,

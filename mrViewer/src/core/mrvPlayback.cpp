@@ -879,7 +879,9 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
+#if defined(LINUX)
     img->close_audio();
+#endif
 
 } // audio_thread
 
@@ -1146,7 +1148,6 @@ void video_thread( PlaybackData* data )
             // img->debug_video_packets( frame, "debug", true );
             img->clear_video_packets();
 
-            if ( img->stopped() ) continue;
 
             barrier = img->fg_bg_barrier();
             if ( barrier )
@@ -1165,7 +1166,6 @@ void video_thread( PlaybackData* data )
                 //            << " used: " << barrier->used() );
             }
 
-            if ( img->stopped() ) continue;
 
             barrier = img->stereo_barrier();
             // LOGT_INFO( img->name() << "@" << barrier << " wait" );
