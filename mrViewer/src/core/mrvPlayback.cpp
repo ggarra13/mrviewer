@@ -90,7 +90,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( std::hex << get_thread_id() << std::dec << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( std::hex << get_thread_id() << std::dec << " " << x );
 
-//#define DEBUG_THREADS  // do not use as it generates a tsan warning
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -267,10 +267,10 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         SCOPED_LOCK( m );
 
         first = reel->location(img);
-        if ( mn > first ) first = mn;
-
         last  = first + img->duration() - 1;
+
         if ( mx < last )  last = mx;
+        if ( mn > first ) first = mn;
 
         last = reel->global_to_local( last );
         first = reel->global_to_local( first );
@@ -688,7 +688,7 @@ void audio_thread( PlaybackData* data )
     mrv::Timeline*      timeline = uiMain->uiTimeline;
     mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
-    int64_t frame = img->audio_frame() + img->audio_offset();
+    int64_t frame = img->frame() + img->audio_offset();
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
@@ -715,8 +715,8 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-
         img->wait_audio();
+
 
 
         boost::int64_t f = frame;
@@ -724,6 +724,7 @@ void audio_thread( PlaybackData* data )
         // if (!fg)
         //img->debug_audio_packets( frame, "play", false );
 
+        // std::cerr << "decode audio " << frame << std::endl;
 
         CMedia::DecodeStatus status = img->decode_audio( f );
         // std::cerr << img->name() << " decoded audio " << f
@@ -770,13 +771,8 @@ void audio_thread( PlaybackData* data )
             CMedia::Barrier* barrier = img->loop_barrier();
             if ( barrier )
             {
-                // LOGT_WARNING( img->name() << " BARRIER AUDIO WAIT      gen: "
-                //      << barrier->generation()
-                //      << " count: " << barrier->count()
-                //      << " threshold: " << barrier->threshold()
-                //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
-                barrier->wait();
+                bool ok = barrier->wait();
                 DBGM1( img->name() << " BARRIER PASSED IN AUDIO "
                        << frame );
             }
@@ -791,7 +787,7 @@ void audio_thread( PlaybackData* data )
                 //           << " count: " << barrier->count()
                 //           << " threshold: " << barrier->threshold()
                 //           << " used: " << barrier->used() );
-                barrier->wait();
+                bool ok = barrier->wait();
                 // LOGT_INFO( img->name() << " BARRIER " << barrier
                 //           << " AUDIO FG/BG PASS gen: "
                 //           << barrier->generation()
@@ -848,6 +844,7 @@ void audio_thread( PlaybackData* data )
             view->frame( f );
         }
 
+
         if ( !img->stopped() )
         {
             img->find_audio(frame);
@@ -861,8 +858,20 @@ void audio_thread( PlaybackData* data )
         }
 
         frame += step;
-   }
+    }
 
+    Mutex& mtx = img->audio_mutex();
+    SCOPED_LOCK( mtx );
+    CMedia::Barrier* barrier = img->loop_barrier();
+    if ( barrier ) barrier->notify_all();
+    barrier = img->fg_bg_barrier();
+    if ( barrier ) {
+        // barrier->notify_all();
+        // if ( !fg ) {
+        //     delete barrier;
+        // }
+        // img->fg_bg_barrier( NULL );
+    }
 
 #ifdef DEBUG_THREADS
     LOGT_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
@@ -870,7 +879,7 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
-#if defined( LINUX )
+#if defined(LINUX)
     img->close_audio();
 #endif
 
@@ -943,6 +952,8 @@ void subtitle_thread( PlaybackData* data )
             continue;
         case CMedia::kDecodeLoopEnd:
         case CMedia::kDecodeLoopStart:
+
+            if ( img->stopped() ) continue;
 
             CMedia::Barrier* barrier = img->loop_barrier();
             if ( barrier )
@@ -1119,6 +1130,7 @@ void video_thread( PlaybackData* data )
             //     std::cerr << "waited for img " << img->name() << std::endl;
             // }
 
+            if ( img->stopped() ) continue;
 
             CMedia::Barrier* barrier = img->loop_barrier();
 
@@ -1130,7 +1142,7 @@ void video_thread( PlaybackData* data )
                 //      << " threshold: " << barrier->threshold()
                 //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
-                barrier->wait();
+                bool ok = barrier->wait();
             }
 
             // img->debug_video_packets( frame, "debug", true );
@@ -1145,7 +1157,7 @@ void video_thread( PlaybackData* data )
                 //      << " count: " << barrier->count()
                 //      << " threshold: " << barrier->threshold()
                 //      << " used: " << barrier->used() );
-                barrier->wait();
+                bool ok = barrier->wait();
                 // LOGT_INFO( img->name() << " BARRIER " << barrier
                 //            << " VIDEO FG/BG PASS gen: "
                 //            << barrier->generation()
@@ -1154,13 +1166,12 @@ void video_thread( PlaybackData* data )
                 //            << " used: " << barrier->used() );
             }
 
-            if ( img->stopped() ) continue;
 
             barrier = img->stereo_barrier();
             // LOGT_INFO( img->name() << "@" << barrier << " wait" );
             if ( barrier )
             {
-                barrier->wait();
+                bool ok = barrier->wait();
             }
             // LOGT_INFO( img->name() << "@" << barrier << " waited" );
 
@@ -1313,7 +1324,15 @@ void video_thread( PlaybackData* data )
         frame += step;
     }
 
+    Mutex& mtx = img->video_mutex();
+    SCOPED_LOCK( mtx );
 
+    CMedia::Barrier* barrier = img->loop_barrier();
+    if ( barrier ) barrier->notify_all();
+    barrier = img->fg_bg_barrier();
+    if ( barrier ) barrier->notify_all();
+    barrier = img->stereo_barrier();
+    if ( barrier ) barrier->notify_all();
 
 #ifdef DEBUG_THREADS
     LOGT_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
@@ -1394,19 +1413,20 @@ void decode_thread( PlaybackData* data )
              status != CMedia::kDecodeDissolveAtEnd &&
              status != CMedia::kDecodeDissolveAtStart )
         {
+            if ( img->stopped() ) continue;
 
 
             CMedia::Barrier* barrier = img->loop_barrier();
 
             if ( barrier )
             {
-                // LOGT_WARNING( img->name() << " BARRIER DECODE WAIT     gen: "
-                //               << barrier->generation()
-                //               << " count: " << barrier->count()
-                //               << " threshold: " << barrier->threshold()
-                //               << " used: " << barrier->used() );
+                // DEBUG( img->name() << " BARRIER DECODE WAIT      gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
-                barrier->wait();
+                bool ok = barrier->wait();
                 // DBGM3( img->name() << " BARRIER DECODE LOCK PASS gen: "
                 //      << barrier->generation()
                 //      << " count: " << barrier->count()
@@ -1414,7 +1434,6 @@ void decode_thread( PlaybackData* data )
                 //      << " used: " << barrier->used() );
             }
 
-            if ( img->stopped() ) continue;
             // img->clear_packets();
 
             // Do the looping, taking into account ui state

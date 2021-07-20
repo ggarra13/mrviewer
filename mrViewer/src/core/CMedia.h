@@ -291,6 +291,7 @@ public:
     };
 
     typedef std::vector< TransformId >          LMT;
+    typedef std::vector< boost::thread* > thread_pool_t;
 
     enum Looping
     {
@@ -1621,14 +1622,12 @@ public:
         return _audio_offset;
     }
 
-#if 0
     void notify_all()
         {
             _video_packets.cond().notify_all();
             _audio_packets.cond().notify_all();
             _subtitle_packets.cond().notify_all();
         }
-#endif
 
     void debug_audio_stores(const int64_t frame,
                             const char* routine = "",
@@ -1760,7 +1759,7 @@ public:
         kImageMagickLibrary = 2
     };
     static LoadLib load_library;
-    static std::atomic< int64_t > memory_used;
+    static std::atomic<int64_t> memory_used;
     static double thumbnail_percent;
 
 protected:
@@ -1994,7 +1993,7 @@ protected:
     static int _video_cache_size;
     static int _audio_cache_size;
 
-    boost::thread_group*  _threads;  //!< any threads associated with process
+    thread_pool_t  _threads;         //!< any threads associated with process
 
 
     std::atomic<size_t>  _w, _h;     //!< width and height of image

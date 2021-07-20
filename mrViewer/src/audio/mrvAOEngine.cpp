@@ -50,7 +50,7 @@ namespace mrv {
 
 #define THROW(x) throw( exception(x) )
 
-unsigned int     AOEngine::_instances = 0;
+    std::atomic< unsigned int >    AOEngine::_instances( 0 );
 
 AOEngine::AOEngine() :
     AudioEngine(),

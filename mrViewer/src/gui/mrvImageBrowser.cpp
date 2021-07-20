@@ -4664,6 +4664,8 @@ void ImageBrowser::seek( const int64_t tframe )
     view()->frame( tframe );
 
 
+    view()->frame( tframe );
+
     mrv::Timeline* t = timeline();
 
     mrv::Reel reel = reel_at( view()->fg_reel() );

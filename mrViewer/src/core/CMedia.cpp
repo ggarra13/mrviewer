@@ -149,7 +149,7 @@ std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
 
-std::atomic< int64_t > CMedia::memory_used( 0 );
+std::atomic<int64_t> CMedia::memory_used( 0 );
 double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
@@ -369,7 +369,6 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
 CMedia::CMedia() :
 av_sync_type( CMedia::AV_SYNC_AUDIO_MASTER ),
 _has_deep_data( false ),
-_threads( new boost::thread_group ),
 _w( 0 ),
 _h( 0 ),
 _cache_full( 0 ),
@@ -492,7 +491,6 @@ _audio_engine( NULL )
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
 av_sync_type( other->av_sync_type ),
 _has_deep_data( other->_has_deep_data ),
-_threads( new boost::thread_group ),
 _w( 0 ),
 _h( 0 ),
 _is_thumbnail( false ),
@@ -612,7 +610,6 @@ _audio_engine( NULL )
 CMedia::CMedia( const CMedia* other, int64_t f ) :
 av_sync_type( other->av_sync_type ),
 _has_deep_data( other->_has_deep_data ),
-_threads( new boost::thread_group ),
 _w( 0 ),
 _h( 0 ),
 _is_thumbnail( other->_is_thumbnail ),
@@ -798,7 +795,6 @@ void CMedia::update_frame( const int64_t& f )
 
     _cache_full = 0;
 
-
     boost::uint64_t i = f - _frame_start;
     if ( _sequence[i] )        _sequence[i].reset();
     if ( _right && _right[i] )    _right[i].reset();
@@ -830,9 +826,14 @@ void CMedia::wait_for_load_threads()
  */
 void CMedia::wait_for_threads()
 {
-    _threads->join_all();
-    delete _threads;
-    _threads = new boost::thread_group;
+    for ( const auto& i : _threads )
+    {
+        i->interrupt();
+        i->join();
+        delete i;
+    }
+
+    _threads.clear();
 }
 
 
@@ -917,8 +918,6 @@ CMedia::~CMedia()
 
         close_audio();
 
-        flush_audio();
-
         close_audio_codec();
 
     }
@@ -931,6 +930,7 @@ CMedia::~CMedia()
         forw_ctx = NULL;
     }
 
+    flush_audio();
 
 
 
@@ -2656,19 +2656,21 @@ void CMedia::play(const CMedia::Playback dir,
     if ( saving() ) return;
 
     assert0( dir != kStopped );
-    // if ( _playback != kStopped && !( _threads->size() == 0 ) )
+    // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
+    if ( dir == _playback && !_threads.empty() ) return;
+
     TRACE("");
-    stop();
+    stop(fg);
 
     TRACE("");
     _playback = dir;
 
     assert( uiMain != NULL );
-    assert( _threads->size() == 0 );
+    assert( _threads.size() == 0 );
 
     if ( _frame < first_frame() ) _frame = first_frame();
     if ( _frame > last_frame() )  _frame = last_frame();
@@ -2748,6 +2750,7 @@ void CMedia::play(const CMedia::Playback dir,
         }
         else if ( !fg && _fg_bg_barrier )
         {
+            _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
         else
@@ -2765,7 +2768,7 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::video_thread,
                              video_data ) );
-            _threads->add_thread( t );
+            _threads.push_back( t );
         }
 
         if ( valid_a )
@@ -2775,14 +2778,14 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::audio_thread,
                              audio_data ) );
-            _threads->add_thread( t );
+            _threads.push_back( t );
         }
 
         if ( valid_s )
         {
             // Subtitle playback thread
             subtitle_data = new PlaybackData( *data );
-            _threads->add_thread( new boost::thread(
+            _threads.push_back( new boost::thread(
                                     boost::bind( mrv::subtitle_thread,
                                                  subtitle_data ) ) );
         }
@@ -2794,12 +2797,12 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::decode_thread,
                              data ) );
-            _threads->add_thread( t );
+            _threads.push_back( t );
         }
 
 
-        assert0( _threads->size() <= ( 1 + 2 * ( valid_a || valid_v ) +
-                                       1 * valid_s ) );
+        assert0( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
+                                           1 * valid_s ) );
     }
     catch( boost::exception& e )
     {
@@ -2815,9 +2818,10 @@ void CMedia::stop(const bool bg)
 {
 
 
-    if ( _playback == kStopped && _threads->size() == 0 ) return;
+    if ( _playback == kStopped && _threads.empty() ) return;
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
+
 
     TRACE("");
 
@@ -2827,40 +2831,36 @@ void CMedia::stop(const bool bg)
     //
     //
 
-    TRACE("");
+    //
+    // Notify loop barrier, to exit any wait on a loop
+    //w
+
+    if ( _loop_barrier )  _loop_barrier->notify_all();
+
+    if ( _stereo_barrier ) _stereo_barrier->notify_all();
+    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
 
-    TRACE("");
     _audio_packets.cond().notify_all();
-    TRACE("");
     _video_packets.cond().notify_all();
-    TRACE("");
     _subtitle_packets.cond().notify_all();
-    TRACE("");
 
-    //
-    // Notify loop barrier, to exit any wait on a loop
-    //
-    TRACE("");
 
     // Wait for all threads to exit
     wait_for_threads();
 
 
+    // Clear barrier
+
+    delete _loop_barrier;
+    _loop_barrier = NULL;
+    delete _stereo_barrier;
+    _stereo_barrier = NULL;
 
 #if 0
-    // Clear barriers
-    {
-        delete _loop_barrier;
-        TRACE("");
-        _loop_barrier = NULL;
-        TRACE("");
-        delete _stereo_barrier;
-        _stereo_barrier = NULL;
-    }
-
     if ( bg ) {
     TRACE("");
         delete _fg_bg_barrier;
@@ -2869,14 +2869,12 @@ void CMedia::stop(const bool bg)
 #endif
 
     TRACE("");
-
-    // Clear any audio/video/subtitle packets
-    clear_packets();
-
     // close_audio();
 
 
     TRACE("");
+    // Clear any audio/video/subtitle packets
+    clear_packets();
 
     TRACE("");
     // Queue thumbnail for update
@@ -4379,7 +4377,7 @@ void CMedia::default_ocio_input_color_space()
         if ( n.rfind( ".braw" ) == std::string::npos )
         {
             std::string cs = config->parseColorSpaceFromString(n.c_str());
-            if ( !cs.empty() && !is_thumbnail() )
+            if ( !cs.empty() )
             {
                 IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
                 ocio_input_color_space( cs );
@@ -4426,7 +4424,7 @@ void CMedia::default_ocio_input_color_space()
         break;
     }
 
-    if (! ocio_input_color_space().empty() && !is_thumbnail() )
+    if (! ocio_input_color_space().empty() )
     {
         IMG_INFO( _("Got colorspace '") << ocio_input_color_space()
                   << _("' from bitdepth ") << bit_depth << _(" as default") );

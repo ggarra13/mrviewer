@@ -832,9 +832,10 @@ void aviImage::open_video_codec()
 
     AVDictionary* info = NULL;
     std::string threads = Preferences::video_threads;
-    if ( threads == "0" ) threads = "auto";
+    if ( threads == "0" ) threads = "4";
     if (!av_dict_get(info, "threads", NULL, 0))
         av_dict_set(&info, "threads", threads.c_str(), 0 );
+    //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
 
     // recounted frames needed for subtitles
     av_dict_set(&info, "refcounted_frames", "1", 0);

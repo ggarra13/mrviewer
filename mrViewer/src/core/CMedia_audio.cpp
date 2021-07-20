@@ -923,7 +923,7 @@ void CMedia::audio_file( const char* file )
 
     AVInputFormat*   format = NULL;
     AVDictionary* opts = NULL;
-    av_dict_set( &opts, "initial_pause", "0", 0 );
+    av_dict_set( &opts, "initial_pause", "1", 0 );
     av_dict_set( &opts, "reconnect", "1", 0 );
     av_dict_set( &opts, "reconnect_streamed", "1", 0 );
 
@@ -1398,7 +1398,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 
 
-
     // if ( _audio_packets.is_jump( pkt ) )
     // {
     //     return kDecodeOK;
@@ -1512,18 +1511,6 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
     {
 
         if ( bytes_per_frame > _audio_buf_used ) break;
-
-#ifdef DEBUG_BYTES
-        if ( index + bytes_per_frame >= _audio_max )
-        {
-            std::cerr << "frame: " << frame << std::endl
-                      << "audio frame: " << audio_frame << std::endl
-                      << "index: " << index << std::endl
-                      << "  bpf: " << bytes_per_frame << std::endl
-                      << " used: " << _audio_buf_used << std::endl
-                      << "  max: " << _audio_max << std::endl;
-        }
-#endif
 
         uint32_t skip = store_audio( last,
                                      (uint8_t*)_audio_buf + index,
