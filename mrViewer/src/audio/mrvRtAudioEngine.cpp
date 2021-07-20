@@ -182,14 +182,14 @@ bool RtAudioEngine::open( const unsigned channels,
         parameters.deviceId = 1; //audio.getDefaultOutputDevice();
         parameters.nChannels = channels;
         unsigned int sampleRate = freq;
-        unsigned int bufferFrames = 512; // 256 sample frames
+        unsigned int bufferFrames = 8192; // 256 sample frames
 
         RtAudio::StreamOptions options;
         options.flags = RTAUDIO_HOG_DEVICE |
                         RTAUDIO_NONINTERLEAVED | RTAUDIO_MINIMIZE_LATENCY |
                         RTAUDIO_SCHEDULE_REALTIME;
 
-        double *data = (double*) calloc( channels, sizeof( double ) );
+        double *data = (double*) calloc( 8192*channels, sizeof( double ) );
 
         audio.showWarnings( true );
 
