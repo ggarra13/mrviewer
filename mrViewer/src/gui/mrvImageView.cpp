@@ -3631,13 +3631,13 @@ again:
     case kPlayForwards:
     {
         NET( "playfwd" );
-        play_forwards();
+        play( CMedia::kForwards );
         break;
     }
     case kPlayBackwards:
     {
         NET( "playbwd" );
-        play_backwards();
+        play( CMedia::kBackwards );
         break;
     }
     case kRemoveImage:
@@ -4012,9 +4012,6 @@ void ImageView::timeout()
         handle_vr( delay );
     }
 
-#ifdef OSX
-    draw();  // Force a draw of the gl canvas
-#endif
     // if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
@@ -10668,7 +10665,7 @@ void ImageView::play( const CMedia::Playback dir )
  */
 void ImageView::play_backwards()
 {
-    stop();
+    std::cerr << "play backwards stop" << std::endl;
     play( CMedia::kBackwards );
 }
 
@@ -10699,6 +10696,7 @@ void ImageView::stop()
     if ( playback() == CMedia::kStopped ) {
         return;
     }
+
 
     delete_timeout();
 

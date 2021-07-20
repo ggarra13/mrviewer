@@ -2335,10 +2335,12 @@ void ImageBrowser::save_session()
             if ( load.reel )
             {
                 load_reel( load.filename.c_str() );
+                return;
             }
             else if ( load.otio )
             {
                 load_otio( load.filename.c_str() );
+                return;
             }
             else
             {
@@ -4653,8 +4655,6 @@ void ImageBrowser::seek( const int64_t tframe )
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
-    view()->frame( tframe );
-
 
     CMedia::Playback playback = view()->playback();
 
@@ -4663,6 +4663,8 @@ void ImageBrowser::seek( const int64_t tframe )
     {
         view()->stop();
     }
+
+    view()->frame( tframe );
 
     mrv::Timeline* t = timeline();
 

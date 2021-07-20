@@ -828,6 +828,7 @@ void CMedia::wait_for_threads()
 {
     for ( const auto& i : _threads )
     {
+        i->interrupt();
         i->join();
         delete i;
     }
@@ -2660,8 +2661,10 @@ void CMedia::play(const CMedia::Playback dir,
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
+    if ( dir == _playback && !_threads.empty() ) return;
+
     TRACE("");
-    stop();
+    stop(fg);
 
     TRACE("");
     _playback = dir;
@@ -2819,6 +2822,7 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 
+
     TRACE("");
 
     _playback = kStopped;
@@ -2829,27 +2833,21 @@ void CMedia::stop(const bool bg)
 
     //
     // Notify loop barrier, to exit any wait on a loop
-    //
-    TRACE("");
+    //w
 
     if ( _loop_barrier )  _loop_barrier->notify_all();
 
-    TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
-    TRACE("");
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
 
-    TRACE("");
     _audio_packets.cond().notify_all();
-    TRACE("");
     _video_packets.cond().notify_all();
-    TRACE("");
     _subtitle_packets.cond().notify_all();
-    TRACE("");
+
 
     // Wait for all threads to exit
     wait_for_threads();
@@ -2858,9 +2856,7 @@ void CMedia::stop(const bool bg)
     // Clear barrier
 
     delete _loop_barrier;
-    TRACE("");
     _loop_barrier = NULL;
-    TRACE("");
     delete _stereo_barrier;
     _stereo_barrier = NULL;
 

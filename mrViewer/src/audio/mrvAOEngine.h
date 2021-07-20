@@ -98,7 +98,7 @@ protected:
     ao_option*        _options;
 
 protected:
-    static unsigned int     _instances;
+    static std::atomic<unsigned int>     _instances;
 };
 
 

@@ -1069,6 +1069,8 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
+    assert( s != nullptr );
+
     glMatrixMode( GL_MODELVIEW );
 
     glLoadIdentity();
