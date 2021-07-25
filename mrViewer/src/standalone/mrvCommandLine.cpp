@@ -29,6 +29,8 @@
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
+#include <ImfStringAttribute.h>
+
 #include <tclap/CmdLine.h>
 
 #include "core/mrvI8N.h"
@@ -436,6 +438,11 @@ void parse_command_line( const int argc, const char** argv,
     aaudio( N_("a"), N_("audio"),
             _("Set each movie/sequence default audio."), false, "audio file");
 
+    MultiArg< std::string >
+    aattrs( N_("A"), N_("attr"),
+            _("Set an attribute/value to display in the hud."), false,
+            "attr=value");
+
     MultiArg< int >
     aoffset( N_("o"), N_("audio_offset"),
              _("Set added audio offset."), false, "offset");
@@ -469,6 +476,7 @@ void parse_command_line( const int argc, const char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+    cmd.add(aattrs);
     cmd.add(acolorspace);
     cmd.add(aoffset);
 #ifdef USE_STEREO
@@ -691,6 +699,26 @@ void parse_command_line( const int argc, const char** argv,
                   if ( ci != ce )
                   {
                       opts.files.back().colorspace = *ci; ++ci;
+                  }
+
+                  stringArray attrs = aattrs.getValue();
+                  stringArray::const_iterator atf = attrs.begin();
+                  stringArray::const_iterator aef = attrs.end();
+                  for ( ; atf != aef; ++atf )
+                  {
+                      size_t pos = atf->find('=');
+                      if ( pos == std::string::npos )
+                      {
+                          LOG_ERROR( _("Invalud attribute ") << *f
+                                     << _(".  Attribute must be of the form attr=value.") );
+                          continue;
+                      }
+                      std::string attr, value;
+                      attr = atf->substr(0,pos-1);
+                      value = atf->substr(pos+1, f->size() );
+                      Imf::StringAttribute* val = new Imf::StringAttribute(value);
+                      CMedia::Attributes& cm = opts.files.back().attrs;
+                      cm.insert( std::make_pair( attr, val ) );
                   }
                }
             }

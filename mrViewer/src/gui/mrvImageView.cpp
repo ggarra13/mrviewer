@@ -10665,7 +10665,6 @@ void ImageView::play( const CMedia::Playback dir )
  */
 void ImageView::play_backwards()
 {
-    std::cerr << "play backwards stop" << std::endl;
     play( CMedia::kBackwards );
 }
 

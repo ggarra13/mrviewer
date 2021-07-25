@@ -831,8 +831,7 @@ void aviImage::open_video_codec()
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );
 
     AVDictionary* info = NULL;
-    std::string threads = Preferences::video_threads;
-    if ( threads == "0" ) threads = "4";
+    const std::string& threads = Preferences::video_threads;
     if (!av_dict_get(info, "threads", NULL, 0))
         av_dict_set(&info, "threads", threads.c_str(), 0 );
     //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
@@ -1140,21 +1139,6 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
 void aviImage::store_image( const int64_t frame,
                             const int64_t pts )
 {
-    video_cache_t::iterator at = std::lower_bound( _images.begin(),
-                                                   _images.end(),
-                                                   frame,
-                                                   LessThanFunctor() );
-
-
-    // Avoid storing duplicate frames, don't replace old frame with this one
-    if ( at != _images.end() )
-    {
-        if ( (*at)->frame() == frame )
-        {
-            return;
-            // at = _images.erase(at);
-        }
-    }
 
     mrv::image_type_ptr image;
     try {
@@ -1292,6 +1276,21 @@ void aviImage::store_image( const int64_t frame,
     }
     else
     {
+        video_cache_t::iterator at = std::lower_bound( _images.begin(),
+                                                       _images.end(),
+                                                       frame,
+                                                       LessThanFunctor() );
+
+
+        // Avoid storing duplicate frames, replace old frame with this one
+        if ( at != _images.end() )
+        {
+            if ( (*at)->frame() == frame )
+            {
+                at = _images.erase(at);
+            }
+        }
+
         _images.insert( at, image );
     }
 
@@ -2542,6 +2541,8 @@ void aviImage::populate()
 
 
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
+
+    std::cerr << "frameStart " << _frameStart << std::endl;
 
     assert0( _frameStart != AV_NOPTS_VALUE );
 
@@ -4069,6 +4070,7 @@ void aviImage::do_seek()
         if ( has_video() || has_audio() )
         {
             status = decode_video( _seek_frame );
+
 
             if ( !find_image( _seek_frame ) && status != kDecodeOK )
                 IMG_ERROR( _("Decode video error seek frame " )

@@ -678,6 +678,7 @@ namespace mrv {
  */
 ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
 Fl_Tree( x, y, w, h ),
+_loading( false ),
 _reel( 0 ),
 _value( -1 ),
 dragging( NULL ),
@@ -1977,7 +1978,7 @@ void ImageBrowser::save_session()
         {
             int64_t pos = m->position() - img->first_frame() + img->frame();
             DBGM3( "seek to " << pos );
-            seek( pos );
+            if ( !_loading ) seek( pos );
         }
         else
         {
@@ -2883,11 +2884,13 @@ void ImageBrowser::save_session()
  */
 void ImageBrowser::load_otio( const char* name )
 {
+    _loading = true;
     bool edl = true;
     mrv::LoadList sequences;
     if ( ! parse_otio( sequences, name ) )
     {
         LOG_ERROR( "Could not parse \"" << name << "\"." );
+        _loading = false;
         return;
     }
 
@@ -2899,6 +2902,7 @@ void ImageBrowser::load_otio( const char* name )
     load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();
+    _loading = false;
 
     if ( reel->images.empty() ) return;
 
@@ -2913,12 +2917,14 @@ void ImageBrowser::load_otio( const char* name )
  */
 void ImageBrowser::load_reel( const char* name )
 {
+    _loading = true;
     bool edl;
     mrv::LoadList sequences;
     short previous, next;
     if ( ! parse_reel( sequences, edl, previous, next, name ) )
     {
         LOG_ERROR( "Could not parse \"" << name << "\"." );
+        _loading = false;
         return;
     }
 
@@ -2934,6 +2940,7 @@ void ImageBrowser::load_reel( const char* name )
 
     mrv::Reel reel = current_reel();
 
+    _loading = false;
     if ( reel->images.empty() ) return;
 
 
@@ -4663,8 +4670,6 @@ void ImageBrowser::seek( const int64_t tframe )
 
     view()->frame( tframe );
 
-
-    view()->frame( tframe );
 
     mrv::Timeline* t = timeline();
 

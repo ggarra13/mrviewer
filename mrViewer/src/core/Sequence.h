@@ -38,6 +38,7 @@
 
 #include <boost/cstdint.hpp>      // for int64_t
 
+#include "core/CMedia.h"
 #include "video/mrvGLShape.h"
 
 inline std::string uncomment_slashes( std::string path )
@@ -109,6 +110,7 @@ struct SequenceSort
 };
 
 
+
 /**
    * Struct used to store information about stuff to load
    *
@@ -135,6 +137,8 @@ struct LoadInfo
     int64_t audio_offset;
 
     std::string subtitle;
+
+    CMedia::Attributes attrs;
 
     LoadInfo( const std::string& fileroot,
               const boost::int64_t sf, const boost::int64_t ef,

@@ -9,6 +9,8 @@ v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  broken in the v5.9.0 update.
 	- Made annotations' metadata in HUD be displayed in different columns
 	  when they don't fit in one column.
+	- Fixed scrubbing and advancing playback with arrows which had gotten
+	  somewhat broken on 5.9.0.
 
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
 	- Bug fixed a memory leak when deleting the last image of a reel.

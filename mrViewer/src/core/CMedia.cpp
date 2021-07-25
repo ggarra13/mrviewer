@@ -3012,15 +3012,15 @@ bool CMedia::frame( const int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
-// #define DEBUG_SEEK
-#ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
-              << stopped() << std::endl;
-#endif
+//#define DEBUG_SEEK
 
 
     _seek_frame = f;
     _seek_req   = true;
+#ifdef DEBUG_SEEK
+    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
+              << stopped() << " _seek_frame " << _seek_frame << std::endl;
+#endif
 
 
     if ( _right_eye && _owns_right_eye )

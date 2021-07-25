@@ -359,7 +359,7 @@ protected:
     //! Returns GUI EDL group
     mrv::EDLGroup* edl_group() const;
 
-
+    bool           _loading; // set to on when loading a reel or an otio file
     unsigned       _reel;
     mrv::ReelList  _reels;
     mrv::Choice*  _reel_choice;
