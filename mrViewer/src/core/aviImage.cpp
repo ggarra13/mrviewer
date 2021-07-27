@@ -2542,7 +2542,6 @@ void aviImage::populate()
 
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
 
-    std::cerr << "frameStart " << _frameStart << std::endl;
 
     assert0( _frameStart != AV_NOPTS_VALUE );
 

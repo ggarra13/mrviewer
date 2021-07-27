@@ -438,6 +438,10 @@ void parse_command_line( const int argc, const char** argv,
     aaudio( N_("a"), N_("audio"),
             _("Set each movie/sequence default audio."), false, "audio file");
 
+    SwitchArg
+    rattrs( N_("R"), N_("replace_attr"),
+            _("Replace all attribute/values to display in the hud, leaving only those specified in the command line."), false);
+
     MultiArg< std::string >
     aattrs( N_("A"), N_("attr"),
             _("Set an attribute/value to display in the hud."), false,
@@ -476,6 +480,7 @@ void parse_command_line( const int argc, const char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+    cmd.add(rattrs);
     cmd.add(aattrs);
     cmd.add(acolorspace);
     cmd.add(aoffset);
@@ -701,6 +706,9 @@ void parse_command_line( const int argc, const char** argv,
                       opts.files.back().colorspace = *ci; ++ci;
                   }
 
+                  if ( opts.files.empty() ) continue;
+
+                  opts.files.back().replace_attrs = rattrs.getValue();
                   stringArray attrs = aattrs.getValue();
                   stringArray::const_iterator atf = attrs.begin();
                   stringArray::const_iterator aef = attrs.end();
@@ -714,7 +722,7 @@ void parse_command_line( const int argc, const char** argv,
                           continue;
                       }
                       std::string attr, value;
-                      attr = atf->substr(0,pos-1);
+                      attr = atf->substr(0,pos);
                       value = atf->substr(pos+1, f->size() );
                       Imf::StringAttribute* val = new Imf::StringAttribute(value);
                       CMedia::Attributes& cm = opts.files.back().attrs;
@@ -722,7 +730,7 @@ void parse_command_line( const int argc, const char** argv,
                   }
                }
             }
-          }
+        }
       }
 
 

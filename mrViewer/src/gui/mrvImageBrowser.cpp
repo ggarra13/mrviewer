@@ -2175,12 +2175,14 @@ void ImageBrowser::save_session()
             return NULL;
         }
 
-        if ( first != AV_NOPTS_VALUE )
+        if ( ( img->first_frame() == AV_NOPTS_VALUE ||
+               first > img->first_frame() ) && first != AV_NOPTS_VALUE )
         {
             img->first_frame( first );
         }
 
-        if ( last != AV_NOPTS_VALUE )
+        if ( ( img->last_frame() == AV_NOPTS_VALUE ||
+               last < img->last_frame() ) && last != AV_NOPTS_VALUE )
         {
             img->last_frame( last );
         }
@@ -2480,6 +2482,21 @@ void ImageBrowser::save_session()
 
                     GLShapeList& shapes = img->shapes();
                     shapes = load.shapes;
+
+                    CMedia::Attributes& attrs = img->attributes();
+                    if ( load.replace_attrs )
+                    {
+                        attrs = load.attrs;
+                    }
+                    else
+                    {
+                        auto ati = load.attrs.begin();
+                        auto ate = load.attrs.end();
+                        for ( ; ati != ate; ++ati )
+                        {
+                            attrs.insert( *ati );
+                        }
+                    }
 
                     std::string amf = aces_amf_filename( img->fileroot() );
                     bool ok = load_amf( img, amf.c_str() );

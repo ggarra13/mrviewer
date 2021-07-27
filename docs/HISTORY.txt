@@ -11,6 +11,14 @@ v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  when they don't fit in one column.
 	- Fixed scrubbing and advancing playback with arrows which had gotten
 	  somewhat broken on 5.9.0.
+	- Added command-line argument (-A) to add an attribute to the image.
+	  This attribute can then be displayed in the HUD with the rest of
+	  the attributes.
+	- Added the command-line switch (-R) to replace all attributes,
+	  leaving only those specified in the command-line.
+	- Added an action tool status in the menu bar which shows what tool
+	  is being used (draw, erase, circle, arrow, scrub, move picture,
+	  text, copy x y values, etc.).
 
 v5.9.1  - Bug fixed a huge memory leak when deleting reels.
 	- Bug fixed a memory leak when deleting the last image of a reel.
