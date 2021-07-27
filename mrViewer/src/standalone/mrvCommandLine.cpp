@@ -717,13 +717,13 @@ void parse_command_line( const int argc, const char** argv,
                       size_t pos = atf->find('=');
                       if ( pos == std::string::npos )
                       {
-                          LOG_ERROR( _("Invalud attribute ") << *f
+                          LOG_ERROR( _("Invalid attribute ") << *atf
                                      << _(".  Attribute must be of the form attr=value.") );
                           continue;
                       }
                       std::string attr, value;
                       attr = atf->substr(0,pos);
-                      value = atf->substr(pos+1, f->size() );
+                      value = atf->substr(pos+1, atf->size() );
                       Imf::StringAttribute* val = new Imf::StringAttribute(value);
                       CMedia::Attributes& cm = opts.files.back().attrs;
                       cm.insert( std::make_pair( attr, val ) );
