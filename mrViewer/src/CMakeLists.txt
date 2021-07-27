@@ -31,7 +31,7 @@ if (APPLE)
    set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
    include_directories(${OPENGL_INCLUDE_DIRS})
 
-   set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio -framework AudioToolbox" )
+   set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
     ${OSX_FRAMEWORKS}")
@@ -391,7 +391,7 @@ SET( SOURCES
 #
 # Audio Engines
 #
-SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvAudioQueue.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
