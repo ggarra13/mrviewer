@@ -1,5 +1,6 @@
 v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  was loaded twice.
+	- Bug fixed audio playback glitch when switching images.
 	- Added a copy reel, shot, frame and X, Y coordinates to the
 	  clipboard.  Shortcut CTRL+SHIFT+c by default.  After that mode is
 	  entered, any left mouse click on the image will copy the reel, shot,

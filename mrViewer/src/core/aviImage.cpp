@@ -57,6 +57,7 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libavutil/time.h>
 #include <libavutil/opt.h>
+#include <libavutil/display.h>
 #include <libavutil/avstring.h>
 #include <libswresample/swresample.h>
 #include <libavutil/mastering_display_metadata.h>
@@ -178,6 +179,26 @@ const char* const aviImage::color_range() const
 {
     if ( !_av_frame ) return kColorRange[0];
     return kColorRange[_av_frame->color_range];
+}
+
+double get_rotation(AVStream *st)
+{
+    uint8_t* displaymatrix = av_stream_get_side_data(st,
+                                                     AV_PKT_DATA_DISPLAYMATRIX, NULL);
+    double theta = 0;
+    if (displaymatrix)
+        theta = -av_display_rotation_get((int32_t*) displaymatrix);
+
+    theta -= 360*floor(theta/360 + 0.9/360);
+
+    if (fabs(theta - 90*round(theta/90)) > 2)
+        av_log(NULL, AV_LOG_WARNING, "Odd rotation angle.\n"
+               "If you want to help, upload a sample "
+               "of this file to https://streams.videolan.org/upload/ "
+               "and contact the ffmpeg-devel mailing list. (ffmpeg-devel@ffmpeg.org)");
+
+
+    return theta;
 }
 
 
@@ -1752,7 +1773,6 @@ bool aviImage::find_image( const int64_t frame )
     if ( _right_eye && _owns_right_eye && (stopped() || saving() ) )
         _right_eye->find_image( frame );
 
-    assert0( frame != AV_NOPTS_VALUE );
 
 #ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "find_image");
@@ -1799,7 +1819,6 @@ bool aviImage::find_image( const int64_t frame )
 
             int64_t distance = f - _hires->frame();
 
-
             if ( distance > _hires->repeat() )
             {
                 int64_t first = (*_images.begin())->frame();
@@ -1837,10 +1856,10 @@ bool aviImage::find_image( const int64_t frame )
                      counter < kDiffFrames && f <= _frameEnd )
                 {
                     _frame = f = _hires->frame();
-                    // IMG_WARNING( _("find_image: frame ") << frame
-                    //              << _(" not found, choosing ")
-                    //              << _hires->frame()
-                    //              << _(" instead") );
+                    IMG_ERROR( _("find_image: frame ") << frame
+                                 << _(" not found, choosing ")
+                                 << _hires->frame()
+                                 << _(" instead") );
 
                 }
                 else
@@ -1866,6 +1885,7 @@ bool aviImage::find_image( const int64_t frame )
         update_video_pts(this, _video_pts, 0, 0);
 
     }  // release lock
+
 
 
     refresh();
@@ -2483,6 +2503,9 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
+        double theta = get_rotation( stream );
+        if ( fabs( theta ) > 1.0 )
+            rot_z( theta );
     }
     else if ( has_audio() )
     {

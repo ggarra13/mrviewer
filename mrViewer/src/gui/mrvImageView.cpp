@@ -3970,7 +3970,7 @@ void ImageView::timeout()
     if ( fg )
     {
         img = fg->image();
-        delay = 0.25 / img->play_fps();
+        delay = 0.5 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
@@ -4012,8 +4012,8 @@ void ImageView::timeout()
         handle_vr( delay );
     }
 
-    // if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::handle_vr( double& delay )

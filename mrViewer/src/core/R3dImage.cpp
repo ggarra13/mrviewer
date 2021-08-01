@@ -10,6 +10,7 @@
 
 extern "C" {
 #include <libavutil/time.h>
+#include <libavutil/channel_layout.h>
 #include <libavutil/intreadwrite.h>
 #include <libavcodec/avcodec.h>
 }
