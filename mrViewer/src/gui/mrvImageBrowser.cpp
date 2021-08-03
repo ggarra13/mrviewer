@@ -2488,17 +2488,15 @@ void ImageBrowser::save_session()
                     CMedia::Attributes& attrs = img->attributes();
                     if ( load.replace_attrs )
                     {
-                        attrs = load.attrs;
+                        attrs.clear();
                     }
-                    else
+                    auto ati = load.attrs.begin();
+                    auto ate = load.attrs.end();
+                    for ( ; ati != ate; ++ati )
                     {
-                        auto ati = load.attrs.begin();
-                        auto ate = load.attrs.end();
-                        for ( ; ati != ate; ++ati )
-                        {
-                            attrs.insert( *ati );
-                        }
+                        attrs.insert( *ati );
                     }
+
 
                     std::string amf = aces_amf_filename( img->fileroot() );
                     bool ok = load_amf( img, amf.c_str() );
@@ -2897,17 +2895,23 @@ void ImageBrowser::save_session()
 }
 
 
-    void append_attributes( const LoadInfo& info, LoadList& sequences )
+void append_attributes( const LoadInfo& info, LoadList& sequences )
+{
+    LoadList::iterator i = sequences.begin();
+    LoadList::iterator e = sequences.end();
+    for ( ; i != e; ++i )
     {
-        LoadList::iterator i = sequences.begin();
-        LoadList::iterator e = sequences.end();
-        for ( ; i != e; ++i )
+        LoadInfo& d = *i;
+        d.replace_attrs = info.replace_attrs;
+
+        auto ai = info.attrs.begin();
+        auto ae = info.attrs.end();
+        for ( ; ai != ae; ++ai )
         {
-            LoadInfo& d = *i;
-            d.replace_attrs = info.replace_attrs;
-            d.attrs = info.attrs;
+            d.attrs.insert( std::make_pair( ai->first, ai->second->copy() ) );
         }
     }
+}
 
 /**
  * Load an image reel
