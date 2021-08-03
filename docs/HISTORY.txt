@@ -1,3 +1,5 @@
+V5.9.3  - Fixed audio hangup on Linux when switching images with the arrows/reel
+	  list.
 v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  was loaded twice.
 	- Bug fixed audio playback glitch when switching images.
@@ -14,7 +16,7 @@ v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  somewhat broken on 5.9.0.
 	- Added command-line argument (-A) to add an attribute to the image.
 	  This attribute can then be displayed in the HUD with the rest of
-	  the attributes.
+	  the attributes.  It is used like -A key=value.
 	- Added the command-line switch (-R) to replace all attributes,
 	  leaving only those specified in the command-line.
 	- Added an action tool status in the menu bar which shows what tool

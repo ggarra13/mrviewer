@@ -346,6 +346,31 @@ void parse_directory( const std::string& fileroot,
    }
 }
 
+void add_attributes( LoadInfo& info, TCLAP::SwitchArg& rattrs,
+                     TCLAP::MultiArg<std::string>& aattrs )
+{
+    info.replace_attrs = rattrs.getValue();
+    stringArray attrs = aattrs.getValue();
+    stringArray::const_iterator atf = attrs.begin();
+    stringArray::const_iterator aef = attrs.end();
+    for ( ; atf != aef; ++atf )
+    {
+        size_t pos = atf->find('=');
+        if ( pos == std::string::npos )
+        {
+            LOG_ERROR( _("Invalid attribute ") << *atf
+                       << _(".  Attribute must be of the form attr=value.") );
+            continue;
+        }
+        std::string attr, value;
+        attr = atf->substr(0,pos);
+        value = atf->substr(pos+1, atf->size() );
+        Imf::StringAttribute* val = new Imf::StringAttribute(value);
+        CMedia::Attributes& cm = info.attrs;
+        cm.insert( std::make_pair( attr, val ) );
+    }
+}
+
 //
 // Command-line parser
 //
@@ -601,6 +626,9 @@ void parse_command_line( const int argc, const char** argv,
                           arg.substr(len - 5, 5) == ".otio" ) )
           {
             opts.files.push_back( mrv::LoadInfo(arg) );
+
+            add_attributes( opts.files.back(), rattrs, aattrs );
+
           }
         else
         {
@@ -708,26 +736,7 @@ void parse_command_line( const int argc, const char** argv,
 
                   if ( opts.files.empty() ) continue;
 
-                  opts.files.back().replace_attrs = rattrs.getValue();
-                  stringArray attrs = aattrs.getValue();
-                  stringArray::const_iterator atf = attrs.begin();
-                  stringArray::const_iterator aef = attrs.end();
-                  for ( ; atf != aef; ++atf )
-                  {
-                      size_t pos = atf->find('=');
-                      if ( pos == std::string::npos )
-                      {
-                          LOG_ERROR( _("Invalid attribute ") << *atf
-                                     << _(".  Attribute must be of the form attr=value.") );
-                          continue;
-                      }
-                      std::string attr, value;
-                      attr = atf->substr(0,pos);
-                      value = atf->substr(pos+1, atf->size() );
-                      Imf::StringAttribute* val = new Imf::StringAttribute(value);
-                      CMedia::Attributes& cm = opts.files.back().attrs;
-                      cm.insert( std::make_pair( attr, val ) );
-                  }
+                  add_attributes( opts.files.back(), rattrs, aattrs );
                }
             }
         }
