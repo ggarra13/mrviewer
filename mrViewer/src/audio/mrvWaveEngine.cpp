@@ -525,8 +525,15 @@ bool WaveEngine::open( const unsigned channels,
 
 
         /* Only use the new WAVE_FORMAT_EXTENSIBLE format for
-           multichannel audio */
-        if( ch <= 2 && format == kFloatLSB )
+           multichannel audio
+        if( ch < 2 && format != kFloatLSB )
+        {
+            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+            wavefmt.Format.cbSize = sizeof(wavefmt) - sizeof(wavefmt.Format);
+            wavefmt.Samples.wValidBitsPerSample = 0;
+            wavefmt.dwChannelMask = 0;
+        }
+        else */ if( ch <= 2 && format == kFloatLSB )
         {
             wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
             wavefmt.Samples.wValidBitsPerSample = 0;
