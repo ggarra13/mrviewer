@@ -194,8 +194,7 @@ AOEngine::AudioFormat AOEngine::default_format()
 
 bool AOEngine::open( const unsigned channels,
                      const unsigned freq,
-                     const AudioFormat format,
-                     const unsigned bits )
+                     const AudioFormat format )
 {
     try
     {

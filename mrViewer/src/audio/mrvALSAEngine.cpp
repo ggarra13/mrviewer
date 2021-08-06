@@ -409,8 +409,7 @@ void ALSAEngine::volume( float v )
 
 bool ALSAEngine::open( const unsigned channels,
                        const unsigned freq,
-                       const AudioFormat format,
-                       const unsigned bits )
+                       const AudioFormat format )
 {
 
     try
@@ -530,7 +529,7 @@ bool ALSAEngine::open( const unsigned channels,
         }
 
         _channels = ch;
-        _sample_size = ( bits * ch ) / 8;
+        _sample_size = 4 * ch;
 
         /* Set the audio rate */
         unsigned int exact_rate = freq;

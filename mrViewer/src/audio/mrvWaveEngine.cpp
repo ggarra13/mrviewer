@@ -469,82 +469,100 @@ inline WAVEHDR* WaveEngine::get_header()
     return &( _buffer[ _idx ] );
 }
 
+int get_bits_per_sample( const WaveEngine::AudioFormat format )
+{
+    switch( format )
+    {
+        case WaveEngine::kFloatLSB:
+        case WaveEngine::kFloatMSB:
+            {
+                return sizeof(float) * 8;
+            }
+        case WaveEngine::kS16LSB:
+        case WaveEngine::kS16MSB:
+            {
+                return sizeof(short) * 8;
+            }
+        case WaveEngine::kS32LSB:
+        case WaveEngine::kS32MSB:
+            {
+                return sizeof(int32_t) * 8;
+            }
+        case WaveEngine::kU8:
+            return sizeof(char) * 8;
+    }
+}
+        
+MMRESULT WaveEngine::reopen( const unsigned channels,
+                         const unsigned freq,
+                         const AudioFormat format )
+{
+    WAVEFORMATEX f;
+    memset( &f, 0, sizeof(f) );
+    f.wBitsPerSample = get_bits_per_sample( format );
+    f.nChannels = channels;
+    f.nSamplesPerSec = freq;
+    f.nBlockAlign = (f.wBitsPerSample / 8) * channels;
+    f.nAvgBytesPerSec = freq * f.nBlockAlign;
+
+    f.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+    unsigned device = _device_idx;
+    _old_device_idx = _device_idx;
+    if ( device == 0 )
+        device = WAVE_MAPPER; // default device
+    else
+        device -= 1;
+    
+    MMRESULT result =
+    waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &f,
+                0, 0, CALLBACK_NULL | WAVE_ALLOWSYNC );
+    return result;
+}
+
 bool WaveEngine::open( const unsigned channels,
                        const unsigned freq,
-                       const AudioFormat format,
-                       const unsigned bits )
+                       const AudioFormat format )
 {
     try
     {
         close();
 
-        WAVEFORMATEXTENSIBLE wavefmt;
-        memset( &wavefmt, 0, sizeof(wavefmt) );
+        WAVEFORMATEXTENSIBLE w;
+        memset( &w, 0, sizeof(w) );
 
-        wavefmt.dwChannelMask = channel_mask[ channels-1 ];
-
-        switch( format )
-        {
-        case kFloatLSB:
-        case kFloatMSB:
-            {
-                int bits = sizeof(float) * 8;
-                wavefmt.Format.wBitsPerSample = bits;
-                if ( channels > 2 )
-                    wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
-                else
-                    wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
-                break;
-            }
-        case kS16LSB:
-        case kS16MSB:
-            {
-                int bits = sizeof(short) * 8;
-                wavefmt.Format.wBitsPerSample = bits;
-                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
-                break;
-            }
-        case kS32LSB:
-        case kS32MSB:
-            {
-                int bits = sizeof(int32_t) * 8;
-                wavefmt.Format.wBitsPerSample = bits;
-                wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
-                break;
-            }
-        }
-
-        wavefmt.Samples.wValidBitsPerSample = wavefmt.Format.wBitsPerSample;
+        w.dwChannelMask = channel_mask[ channels-1 ];
+        w.Format.wBitsPerSample = get_bits_per_sample( format );
+        
 
         unsigned ch = channels;
         _channels = ch;
-        wavefmt.Format.nChannels = ch;
-        wavefmt.Format.nSamplesPerSec = freq;
-        wavefmt.Format.nBlockAlign = wavefmt.Format.wBitsPerSample * ch / 8;
-        wavefmt.Format.nAvgBytesPerSec = freq * wavefmt.Format.nBlockAlign;
+        w.Format.nChannels = ch;
+        w.Format.nSamplesPerSec = freq;
+        w.Format.nBlockAlign = w.Format.wBitsPerSample * ch / 8;
+        w.Format.nAvgBytesPerSec = freq * w.Format.nBlockAlign;
 
-
-        /* Only use the new WAVE_FORMAT_EXTENSIBLE format for
-           multichannel audio
-        if( ch < 2 && format != kFloatLSB )
+        w.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+        w.Samples.wValidBitsPerSample = w.Format.wBitsPerSample;
+        w.Format.cbSize = sizeof(w) - sizeof(w.Format);
+        switch( format )
         {
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
-            wavefmt.Format.cbSize = sizeof(wavefmt) - sizeof(wavefmt.Format);
-            wavefmt.Samples.wValidBitsPerSample = 0;
-            wavefmt.dwChannelMask = 0;
+            case kFloatLSB:
+                {
+                    if ( channels > 1 )
+                        w.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
+                    break;
+                }
+            case kS16LSB:
+                {
+                    w.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+                    break;
+                }
+            case kS32LSB:
+                {
+                    w.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+                    break;
+                }
         }
-        else */ if( ch <= 2 && format == kFloatLSB )
-        {
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
-            wavefmt.Samples.wValidBitsPerSample = 0;
-            wavefmt.dwChannelMask = 0;
-            wavefmt.Format.cbSize = 0;
-        }
-        else
-        {
-            wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
-            wavefmt.Format.cbSize = sizeof(wavefmt) - sizeof(wavefmt.Format);
-	}
 
         unsigned device = _device_idx;
         _old_device_idx = _device_idx;
@@ -553,14 +571,21 @@ bool WaveEngine::open( const unsigned channels,
         else
             device -= 1;
 
+        
         DBGM1( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
-        MMRESULT result =
-            waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
-                        //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
-                        0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
+        MMRESULT result;
+
+        
+        result =
+        waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &w,
+                    0, 0, CALLBACK_NULL | WAVE_FORMAT_DIRECT |
+                    WAVE_ALLOWSYNC );
+
         DBGM1( "waveOutOpen WAVE_MAPPER? ok " << ( _audio_device != NULL )
                << " result ? " << (result == MMSYSERR_NOERROR) );
+
+
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )
@@ -581,10 +606,19 @@ bool WaveEngine::open( const unsigned channels,
             return false;
         }
 
+        WAVEOUTCAPS caps;
+        result = waveOutGetDevCaps( device, &caps, sizeof(caps));
+        if (result != MMSYSERR_NOERROR) {
+            MMerror("waveOutGetDevCaps()", result);
+            close();
+            _enabled = false;
+            return false;
+        }
+            
         _audio_format = format;
 
         // Allocate internal sound buffer
-        bytesPerBlock = wavefmt.Format.nBlockAlign * _samples_per_block;
+        bytesPerBlock = w.Format.nBlockAlign * _samples_per_block;
         assert( bytesPerBlock > 16 );
         size_t bytes = _num_buffers * bytesPerBlock;
         _data = new aligned16_uint8_t[ bytes ];
@@ -604,7 +638,7 @@ bool WaveEngine::open( const unsigned channels,
             WAVEHDR& hdr = _buffer[i];
             memset( &hdr, 0, sizeof(WAVEHDR) );
 
-            // assert( ((ptr % wavefmt.Format.nBlockAlign) == 0 );
+            // assert( ((ptr % w.Format.nBlockAlign) == 0 );
             // assert( ((ptr % 16) == 0 );
 
             hdr.lpData  = (LPSTR)ptr;
