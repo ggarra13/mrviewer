@@ -152,8 +152,7 @@ void RtAudioEngine::volume( float v )
 
 bool RtAudioEngine::open( const unsigned channels,
                           const unsigned freq,
-                          const AudioFormat format,
-                          const unsigned bits )
+                          const AudioFormat format )
 {
 
     try
