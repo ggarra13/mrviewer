@@ -115,7 +115,7 @@ public:
     void pan(int value);
 
 protected:
-    int process_fade(mrv::media_track*& track, mrv::media m,
+    int process_fade(mrv::media_track*& track, mrv::media& m,
                      int64_t& pt);
 
 protected:

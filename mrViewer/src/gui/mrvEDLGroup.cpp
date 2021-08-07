@@ -805,7 +805,7 @@ void EDLGroup::refresh()
     }
 }
 
-int EDLGroup::process_fade( mrv::media_track*& track, mrv::media m,
+int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
                             int64_t& pt)
 {
     int X = Fl::event_x();

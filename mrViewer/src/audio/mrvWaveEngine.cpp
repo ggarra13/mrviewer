@@ -491,6 +491,7 @@ int get_bits_per_sample( const WaveEngine::AudioFormat format )
         case WaveEngine::kU8:
             return sizeof(char) * 8;
     }
+    return sizeof(float) * 8;
 }
         
 MMRESULT WaveEngine::reopen( const unsigned channels,

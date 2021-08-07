@@ -362,7 +362,7 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_CFG_INTDIR=/$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
+    cmd="cmake ../../../.. -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' rules.ninja"
 
 
     run_cmd  $cmd

@@ -3970,7 +3970,8 @@ void ImageView::timeout()
     if ( fg )
     {
         img = fg->image();
-        delay = 0.5 / img->play_fps();
+
+        delay = 0.25 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
@@ -3983,19 +3984,6 @@ void ImageView::timeout()
     }
 
 
-    // if ( timeline->visible() )
-    // {
-
-    //     if ( reel && !reel->edl && img )
-    //     {
-    //         int64_t frame = img->frame();
-
-    //         if ( this->frame() != frame && playback() != CMedia::kStopped )
-    //         {
-    //             this->frame( frame );
-    //         }
-    //     }
-    // }
 
 
     if ( should_update( fg ) )
@@ -4149,6 +4137,7 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
+
 
     DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
