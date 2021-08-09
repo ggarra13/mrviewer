@@ -304,7 +304,8 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color linecolor = FL_BLACK;
     if ( Preferences::schemes.name == "Black" )
     {
-        linecolor = fl_rgb_color( 70, 70, 70 );
+        linecolor = fl_inactive( fl_contrast( fl_rgb_color( 70, 70, 70 ),
+                                              selection_color() ) );
     }
 
     fl_color(linecolor);
