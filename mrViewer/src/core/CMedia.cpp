@@ -829,7 +829,9 @@ void CMedia::wait_for_threads()
     for ( const auto& i : _threads )
     {
         i->interrupt();
-        //i->join();
+#ifndef OSX
+        i->join();
+#endif
         delete i;
     }
 
