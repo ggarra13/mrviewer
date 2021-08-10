@@ -4720,6 +4720,8 @@ bool PointInTriangle (const Imath::V2i& pt,
 
  void ImageView::fill_menu( Fl_Menu_* menu )
  {
+     SCOPED_LOCK( _shortcut_mutex );
+
      menu->clear();
      int idx = 1;
 
