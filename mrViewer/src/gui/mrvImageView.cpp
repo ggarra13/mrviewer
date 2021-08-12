@@ -1035,12 +1035,8 @@ void ImageView::clear_old()
 
 void ImageView::restore_locale() const
 {
-#ifdef OSX
     const char* loc = setlocale( LC_MESSAGES, NULL );
     setlocale( LC_NUMERIC, loc );
-#else
-    setlocale( LC_NUMERIC, NULL );
-#endif
 }
 
     void toggle_action_tool_dock(Fl_Widget* w, ViewerUI* uiMain)
@@ -10533,18 +10529,25 @@ void ImageView::playback( const CMedia::Playback b )
 
     _last_fps = 0.0;
 
+    if ( !uiMain->uiPlayForwards || !uiMain->uiPlayBackwards )
+        return;
+
     if ( b == CMedia::kForwards )
     {
+        uiMain->uiPlayForwards->labelcolor( FL_CYAN );
         uiMain->uiPlayForwards->value(1);
         uiMain->uiPlayBackwards->value(0);
     }
     else if ( b == CMedia::kBackwards )
     {
         uiMain->uiPlayForwards->value(0);
+        uiMain->uiPlayBackwards->labelcolor( FL_CYAN );
         uiMain->uiPlayBackwards->value(1);
     }
     else
     {
+        uiMain->uiPlayForwards->labelcolor( 28 );
+        uiMain->uiPlayBackwards->labelcolor( 28 );
         uiMain->uiPlayForwards->value(0);
         uiMain->uiPlayBackwards->value(0);
     }
@@ -10697,13 +10700,7 @@ void ImageView::stop()
 
     stop_playback();
 
-
-    if ( uiMain->uiPlayForwards )
-        uiMain->uiPlayForwards->value(0);
-
-    if ( uiMain->uiPlayBackwards )
-        uiMain->uiPlayBackwards->value(0);
-
+    playback( CMedia::kStopped );
 
     frame( frame() );
     // seek( int64_t(timeline()->value()) );

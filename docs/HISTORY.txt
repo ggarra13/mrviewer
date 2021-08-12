@@ -4,6 +4,9 @@ V5.9.3  - Fixed audio hangup on Linux when switching images with the arrows/reel
 	- Fixed dragging clip in EDL Window, which had broken when fading was
 	  introduced.
 	- Fixed crash when selecting menu and image changes.
+	- Fixed floating point locale on Linux.
+	- Simplified the UI a tad to make it nicer looking.
+	- Bug fixed crash when saving logs.
 
 v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
 	  was loaded twice.
