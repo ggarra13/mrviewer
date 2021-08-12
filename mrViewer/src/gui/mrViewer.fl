@@ -62,6 +62,9 @@ decl {\#include "gui/mrvSlider.h"} {public local
 decl {\#include "gui/mrvChoice.h"} {public local
 }
 
+decl {\#include "gui/mrvButton.h"} {public global
+}
+
 decl {\#include "gui/mrvPopupMenu.h"} {public global
 }
 
@@ -193,12 +196,14 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
         label Accept
         user_data w user_data_type {mrvDoubleWindow*}
         callback {v->make_exec_return(true);}
+        class {mrv::Button}
         xywh {205 400 85 25}
       }
       Fl_Button {} {
         label Cancel
         user_data w user_data_type {mrvDoubleWindow*}
         callback {v->make_exec_return(false);}
+        class {mrv::Button}
         xywh {300 400 80 25}
       }
     }
@@ -361,6 +366,7 @@ class SaveOptionsUI {} {
           Fl_Button {} {
             label Cancel
             xywh {144 335 70 25}
+            class {mrv::Button}
           }
         }
       }
@@ -397,11 +403,13 @@ class LogUI {} {
             user_data uiLogText user_data_type {mrv::LogDisplay*}
             callback {v->save();}
             xywh {885 210 75 30}
+            class {mrv::Button}
           }
           Fl_Button {} {
             label Clear
             user_data uiLogText user_data_type {mrv::LogDisplay*}
             callback {v->clear();}
+            class {mrv::Button}
             xywh {805 210 75 30}
           }
         }
@@ -440,6 +448,7 @@ o->hide();} open
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->scrub_mode();}
             tooltip {Scrubbing Tool} xywh {30 15 40 35} down_box DOWN_BOX value 1 selection_color 63
+            class {mrv::Button}
             code0 {o->value(1);
 o->image( scrub );}
           }
@@ -447,6 +456,7 @@ o->image( scrub );}
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->selection_mode();}
             tooltip {Area Select Tool} xywh {30 54 39 35} down_box DOWN_BOX value 1 selection_color 63
+            class {mrv::Button}
             code0 {o->value(1);
 o->image( select_pic );}
           }
@@ -454,11 +464,13 @@ o->image( select_pic );}
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->draw_mode();}
             tooltip {Freehand Drawing Tool} xywh {74 54 40 35} down_box DOWN_BOX selection_color 63
+            class {mrv::Button}
             code0 {o->image( draw );}
           }
           Fl_Button uiErase {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->erase_mode();}
+            class {mrv::Button}
             tooltip {Eraser Tool} xywh {74 95 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( erase );}
           }
@@ -467,23 +479,27 @@ o->image( select_pic );}
             user_data m user_data_type {ViewerUI*}
             callback {o->value(1);
 v->uiView->text_mode();}
+            class {mrv::Button}
             tooltip {Text Tool} xywh {75 135 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
           }
           Fl_Button uiMovePic {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->move_pic_mode();}
+            class {mrv::Button}
             tooltip {Move Picture Tool} xywh {74 15 40 35} down_box DOWN_BOX value 1 selection_color 63
             code0 {o->image( move_pic );}
           }
           Fl_Button uiCircle {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->circle_mode();}
+            class {mrv::Button}
             tooltip {Circle Tool} xywh {30 95 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( circle );}
           }
           Fl_Button uiArrow {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->arrow_mode();}
+            class {mrv::Button}
             tooltip {Arrow Tool} xywh {30 135 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( arrow_28 );}
           }
@@ -499,6 +515,7 @@ v->uiView->text_mode();}
         } {
           Fl_Button uiUndoDraw {
             user_data m user_data_type {ViewerUI*}
+            class {mrv::Button}
             callback {v->uiView->undo_draw();
 if ( !v->uiView->has_undo() )
  o->deactivate();
@@ -509,6 +526,7 @@ else
           }
           Fl_Button uiRedoDraw {
             user_data m user_data_type {ViewerUI*}
+            class {mrv::Button}
             callback {v->uiView->redo_draw();
 if ( !v->uiView->has_redo() )
    o->deactivate();
@@ -620,6 +638,7 @@ class ConnectionUI {} {
           Fl_Button uiCreate {
             label Create
             user_data main user_data_type {ViewerUI*}
+            class {mrv::Button}
             callback {if ( strcmp( o->label(), _("Create") ) == 0 )
     mrv::server::create(v);
 else
@@ -645,6 +664,7 @@ else
           Fl_Button uiConnect {
             label Connect
             user_data main user_data_type {ViewerUI*}
+            class {mrv::Button}
             callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
    mrv::client::create(v);
 else
@@ -740,14 +760,17 @@ o->main( this );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->resize_main_window();
 v->uiView->fit_image();}
+              class {mrv::Button}
               tooltip {Fit Window to Image} image {../../icons/fit_image.png} xywh {606 0 28 25}
             }
             Fl_Button {} {
               callback {uiPrefs->uiMain->show();}
+              class {mrv::Button}
               tooltip Preferences image {../../icons/settings.xpm} xywh {662 0 28 25}
             }
             Fl_Button {} {
               callback {uiColorControls->uiMain->show();}
+              class {mrv::Button}
               tooltip {Color controls} image {../../icons/color_ctls.xpm} xywh {635 0 28 25}
             }
           }
@@ -938,12 +961,14 @@ refresh();} open
                 Fl_Button {} {
                   label {@<}
                   user_data this user_data_type {ViewerUI*}
+                  class {mrv::Button}
                   callback {v->uiView->exposure_change(-0.5f);}
                   tooltip {Decrease exposure by 0.5.} xywh {314 27 16 22}
                 }
                 Fl_Button uiFstop {
                   label {+0.0  f/8.0}
                   user_data this user_data_type {ViewerUI*}
+                  class {mrv::Button}
                   callback {static float old_gain = 1.0f;
 float gain = v->uiView->gain();
 if ( gain == 1.0f )
@@ -967,6 +992,7 @@ Click to toggle between current and normal exposure.} xywh {329 27 64 22} labelf
                   label {@>}
                   user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->exposure_change(0.5f);}
+                  class {mrv::Button}
                   tooltip {Increase exposure by 0.5.} xywh {393 27 16 22}
                 }
               }
@@ -974,6 +1000,7 @@ Click to toggle between current and normal exposure.} xywh {329 27 64 22} labelf
                 label Norm
                 user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->toggle_normalize();}
+                class {mrv::Button}
                 tooltip {Normalize pixel values to remain in [0,1] range.} xywh {410 27 44 22} align 64
               }
             }
@@ -1113,12 +1140,14 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
               label {1:1}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_pixel_ratio();}
+              class {mrv::Button}
               tooltip {Stretch image to compensate for image's pixel ratio.} xywh {630 28 24 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
             }
             Fl_Button uiLUT {
               label LUT
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_lut();}
+              class {mrv::Button}
               tooltip {Activate viewer's 3D Lut.} xywh {654 28 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
             }
           }
@@ -1136,6 +1165,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->scrub_mode();}
               tooltip {Scrubbing Tool} xywh {2 73 40 35} down_box DOWN_BOX value 1 selection_color 63
+              class {mrv::Button}
               code0 {o->value(1);
 o->image( scrub );}
             }
@@ -1143,6 +1173,7 @@ o->image( scrub );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->selection_mode();}
               tooltip {Area Select Tool} xywh {2 108 40 35} down_box DOWN_BOX value 1 selection_color 63
+              class {mrv::Button}
               code0 {o->value(1);
 o->image( select_pic );}
             }
@@ -1150,12 +1181,14 @@ o->image( select_pic );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->draw_mode();}
               tooltip {Freehand Drawing Tool} xywh {2 143 40 35} down_box DOWN_BOX selection_color 63
+              class {mrv::Button}
               code0 {o->image( draw );}
             }
             Fl_Button uiErase {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->erase_mode();}
               tooltip {Eraser Tool} xywh {2 178 40 35} down_box DOWN_BOX selection_color 63
+              class {mrv::Button}
               code0 {o->image( erase );}
             }
             Fl_Button uiText {
@@ -1642,23 +1675,27 @@ v->uiView->seek( f );}
                       label {@|<}
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->first_frame();}
+                      class {mrv::Button}
                       tooltip {Go to the beginning of the sequence.} xywh {98 542 38 18} labelcolor 28
                     }
                     Fl_Button uiPlayBackwards {
                       label {@<}
                       user_data this user_data_type {ViewerUI*}
+                      class {mrv::Button}
                       callback {v->uiView->play_backwards();}
                       tooltip {Play sequence backwards.} xywh {135 542 38 18} labelcolor 28
                     }
                     Fl_Button {} {
                       label {@<|}
                       user_data this user_data_type {ViewerUI*}
+                      class {mrv::Button}
                       callback {v->uiView->step_frame(-1);}
                       tooltip {Go back one frame.} xywh {171 542 38 18} labelcolor 28
                     }
                     Fl_Button {} {
                       label {@||}
                       user_data this user_data_type {ViewerUI*}
+                      class {mrv::Button}
                       callback {v->uiView->stop();}
                       tooltip {Stop playback.} xywh {205 542 38 18} labelcolor 19
                     }
@@ -1666,17 +1703,20 @@ v->uiView->seek( f );}
                       label {@|>}
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->step_frame(1);}
+                      class {mrv::Button}
                       tooltip {Advance one frame.} xywh {242 542 38 18} labelcolor 28
                     }
                     Fl_Button uiPlayForwards {
                       label {@>}
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->play_forwards();}
+                      class {mrv::Button}
                       tooltip {Play sequence forward.} xywh {279 542 38 18} labelcolor 28
                     }
                     Fl_Button {} {
                       label {@>|}
                       user_data this user_data_type {ViewerUI*}
+                      class {mrv::Button}
                       callback {v->uiView->last_frame();}
                       tooltip {Go to the end of the sequence.} xywh {315 542 38 18} labelcolor 28
                     }
@@ -1812,6 +1852,7 @@ v->uiTimeline->redraw();}
                   Fl_Button uiStartButton {
                     label S
                     user_data this user_data_type {ViewerUI*}
+                    class {mrv::Button}
                     callback {double f;
 mrv::CMedia* img = NULL;
 mrv::media fg = v->uiView->foreground();
@@ -1841,6 +1882,7 @@ v->uiTimeline->redraw();}
                   Fl_Button uiEndButton {
                     label E
                     user_data this user_data_type {ViewerUI*}
+                    class {mrv::Button}
                     callback {double f;
 if ( !o->value() )
 {

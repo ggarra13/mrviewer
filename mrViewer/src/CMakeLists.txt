@@ -328,6 +328,7 @@ SET( SOURCES
   gui/FLU/flu_pixmaps.cpp         # needed
 
   gui/MyPack.cpp
+  gui/mrvButton.cpp
   gui/mrvActionWindow.cpp
   gui/mrvAsk.cpp
   gui/mrvCTLBrowser.cpp
