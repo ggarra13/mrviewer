@@ -81,10 +81,12 @@ void PopupMenu::draw() {
   if ( _enable_glyph ) H = (labelsize()-3)&-2;
   int X = x()+w()-H-Fl::box_dx(box())-Fl::box_dw(box())-1;
   int Y = y()+(h()-H)/2;
-  draw_box(pressed_menu_button_ == this ? fl_down(box()) : box(), color());
+  color( Fl_Color( fl_rgb_color( 75, 75, 75 ) ) );
+  if ( pressed_menu_button_ == this ) draw_box( fl_down(box()), color());
+  else draw_box( FL_ROUNDED_BOX, color() );
+  // draw_box(pressed_menu_button_ == this ? fl_down(box()) : box(), color());
   draw_label(x()+Fl::box_dx(box()), y(), X-x()+2, h());
   if (Fl::focus() == this) draw_focus();
-  // ** if (box() == FL_FLAT_BOX) return; // for XForms compatibility
   if ( !_enable_glyph ) return;
   fl_color(active_r() ? FL_DARK3 : fl_inactive(FL_DARK3));
   fl_line(X+H/2, Y+H, X, Y, X+H, Y);
