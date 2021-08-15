@@ -437,8 +437,8 @@ public:
     inline unsigned int      size() const {
         return _size;
     }
-    inline const boost::uint8_t*  data() const {
-        return (boost::uint8_t*) _data;
+    inline const uint8_t*  data() const {
+        return (uint8_t*) _data;
     }
 
     inline bool operator==( const self& b ) const

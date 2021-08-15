@@ -10,6 +10,7 @@
 
 extern "C" {
 #include <libavutil/time.h>
+#include <libavutil/channel_layout.h>
 #include <libavutil/intreadwrite.h>
 #include <libavcodec/avcodec.h>
 }
@@ -834,7 +835,7 @@ namespace mrv {
         return true;
     }
 
-    bool R3dImage::find_image( int64_t& frame )
+    bool R3dImage::find_image( const int64_t frame )
     {
 
         if ( _right_eye && (stopped() || saving() ) )
@@ -917,7 +918,7 @@ namespace mrv {
                          diff > 1 && diff < 10 && counter < 10 &&
                          f <= _frameEnd )
                     {
-                        frame = _frame = _hires->frame();
+                        _frame = _hires->frame();
                         // ++counter;
                         // IMG_WARNING( _("find_image: frame ") << frame
                         //              << _(" not found, choosing ")

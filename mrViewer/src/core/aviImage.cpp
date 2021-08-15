@@ -57,6 +57,7 @@ extern "C" {
 #include <libavutil/imgutils.h>
 #include <libavutil/time.h>
 #include <libavutil/opt.h>
+#include <libavutil/display.h>
 #include <libavutil/avstring.h>
 #include <libswresample/swresample.h>
 #include <libavutil/mastering_display_metadata.h>
@@ -180,6 +181,26 @@ const char* const aviImage::color_range() const
     return kColorRange[_av_frame->color_range];
 }
 
+double get_rotation(AVStream *st)
+{
+    uint8_t* displaymatrix = av_stream_get_side_data(st,
+                                                     AV_PKT_DATA_DISPLAYMATRIX, NULL);
+    double theta = 0;
+    if (displaymatrix)
+        theta = -av_display_rotation_get((int32_t*) displaymatrix);
+
+    theta -= 360*floor(theta/360 + 0.9/360);
+
+    if (fabs(theta - 90*round(theta/90)) > 2)
+        av_log(NULL, AV_LOG_WARNING, "Odd rotation angle.\n"
+               "If you want to help, upload a sample "
+               "of this file to https://streams.videolan.org/upload/ "
+               "and contact the ffmpeg-devel mailing list. (ffmpeg-devel@ffmpeg.org)");
+
+
+    return theta;
+}
+
 
 aviImage::aviImage() :
     CMedia(),
@@ -219,6 +240,8 @@ aviImage::~aviImage()
         stop();
 
     image_damage(kNoDamage);
+
+    clear_cache();
 
     _video_packets.clear();
     _subtitle_packets.clear();
@@ -829,8 +852,9 @@ void aviImage::open_video_codec()
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );
 
     AVDictionary* info = NULL;
+    const std::string& threads = Preferences::video_threads;
     if (!av_dict_get(info, "threads", NULL, 0))
-        av_dict_set(&info, "threads", Preferences::video_threads.c_str(), 0 );
+        av_dict_set(&info, "threads", threads.c_str(), 0 );
     //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
 
     // recounted frames needed for subtitles
@@ -1136,6 +1160,7 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
 void aviImage::store_image( const int64_t frame,
                             const int64_t pts )
 {
+
     mrv::image_type_ptr image;
     try {
         image = allocate_image( frame, pts );
@@ -1161,7 +1186,7 @@ void aviImage::store_image( const int64_t frame,
     }
 
     AVFrame output = { 0 };
-    boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
+    uint8_t* ptr = (uint8_t*)image->data().get();
 
     unsigned int w = width();
     unsigned int h = height();
@@ -1273,9 +1298,9 @@ void aviImage::store_image( const int64_t frame,
     else
     {
         video_cache_t::iterator at = std::lower_bound( _images.begin(),
-                                     _images.end(),
-                                     frame,
-                                     LessThanFunctor() );
+                                                       _images.end(),
+                                                       frame,
+                                                       LessThanFunctor() );
 
 
         // Avoid storing duplicate frames, replace old frame with this one
@@ -1748,7 +1773,6 @@ bool aviImage::find_image( const int64_t frame )
     if ( _right_eye && _owns_right_eye && (stopped() || saving() ) )
         _right_eye->find_image( frame );
 
-    assert0( frame != AV_NOPTS_VALUE );
 
 #ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "find_image");
@@ -1795,7 +1819,6 @@ bool aviImage::find_image( const int64_t frame )
 
             int64_t distance = f - _hires->frame();
 
-
             if ( distance > _hires->repeat() )
             {
                 int64_t first = (*_images.begin())->frame();
@@ -1833,10 +1856,10 @@ bool aviImage::find_image( const int64_t frame )
                      counter < kDiffFrames && f <= _frameEnd )
                 {
                     _frame = f = _hires->frame();
-                    // IMG_WARNING( _("find_image: frame ") << frame
-                    //              << _(" not found, choosing ")
-                    //              << _hires->frame()
-                    //              << _(" instead") );
+                    IMG_ERROR( _("find_image: frame ") << frame
+                                 << _(" not found, choosing ")
+                                 << _hires->frame()
+                                 << _(" instead") );
 
                 }
                 else
@@ -1862,6 +1885,7 @@ bool aviImage::find_image( const int64_t frame )
         update_video_pts(this, _video_pts, 0, 0);
 
     }  // release lock
+
 
 
     refresh();
@@ -2479,6 +2503,9 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
+        double theta = get_rotation( stream );
+        if ( fabs( theta ) > 1.0 )
+            rot_z( theta );
     }
     else if ( has_audio() )
     {
@@ -2537,6 +2564,7 @@ void aviImage::populate()
 
 
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
+
 
     assert0( _frameStart != AV_NOPTS_VALUE );
 
@@ -2783,7 +2811,7 @@ void aviImage::populate()
 
                 if ( !got_audio )
                 {
-                    if ( pktframe > _frameStart ) got_audio = true;
+                    if ( pktframe > _frameStart + 1 ) got_audio = true;
                     else if ( pktframe == _frameStart )
                     {
                         audio_bytes += pkt->size;
@@ -2945,7 +2973,7 @@ bool aviImage::initialize()
 
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
-        av_dict_set( &opts, "initial_pause", "1", 0 );
+        av_dict_set( &opts, "initial_pause", "0", 0 );
         av_dict_set( &opts, "reconnect", "1", 0 );
         av_dict_set( &opts, "reconnect_streamed", "1", 0 );
         DBGM1( "Open " << fileroot() );
@@ -3083,7 +3111,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 }
             }
 
-             if (!got_audio )
+            if (!got_audio )
             {
                 if (audio_context() == _context && _audio_ctx &&
                     _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
@@ -4064,6 +4092,7 @@ void aviImage::do_seek()
         if ( has_video() || has_audio() )
         {
             status = decode_video( _seek_frame );
+
 
             if ( !find_image( _seek_frame ) && status != kDecodeOK )
                 IMG_ERROR( _("Decode video error seek frame " )

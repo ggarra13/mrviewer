@@ -236,7 +236,8 @@ void MainWindow::resize( int X, int Y, int W, int H )
         DBGM1( X << ", " << Y << " " << W << "x" << H );
         oldH = H;
     }
-    return Fl_Double_Window::resize( X, Y, W, H );
+    Fl_Double_Window::resize( X, Y, W, H );
+    return;
 }
 
 

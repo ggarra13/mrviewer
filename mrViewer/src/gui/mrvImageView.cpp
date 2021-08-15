@@ -1026,14 +1026,17 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
         uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
 
+
+void ImageView::clear_old()
+{
+    if ( _engine ) _engine->clear_old();
+}
+
+
 void ImageView::restore_locale() const
 {
-#ifdef OSX
     const char* loc = setlocale( LC_MESSAGES, NULL );
     setlocale( LC_NUMERIC, loc );
-#else
-    setlocale( LC_NUMERIC, NULL );
-#endif
 }
 
     void toggle_action_tool_dock(Fl_Widget* w, ViewerUI* uiMain)
@@ -1470,6 +1473,11 @@ static void copy_pixel_rgba_cb( Fl_Widget* o, mrv::ImageView* view )
     view->copy_pixel();
 }
 
+static void toggle_copy_frame_xy_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    view->toggle_copy_frame_xy();
+}
+
 
 static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
 {
@@ -1531,6 +1539,9 @@ void ImageView::scale_pic_mode()
 void ImageView::move_pic_mode()
 {
     _mode = kMovePicture;
+
+    uiMain->uiStatus->copy_label( _("Move Pic.") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1554,6 +1565,7 @@ void ImageView::move_pic_mode()
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
+    uiMain->uiStatus->copy_label( _("Scrub") );
 
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
@@ -1581,6 +1593,8 @@ void ImageView::selection_mode( bool temporary )
     else
         _mode = kSelection;
 
+    uiMain->uiStatus->copy_label( _("Selection") );
+
     uiMain->uiSelection->value(true);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1606,6 +1620,9 @@ void ImageView::draw_mode( bool tmp )
         _mode = kDrawTemporary;
     else
         _mode = kDraw;
+
+    uiMain->uiStatus->copy_label( _("Draw") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
     uiMain->uiCircle->value(false);
@@ -1628,6 +1645,8 @@ void ImageView::draw_mode( bool tmp )
 void ImageView::circle_mode()
 {
     _mode = kCircle;
+
+    uiMain->uiStatus->copy_label( _("Circle") );
 
 
     uiMain->uiSelection->value(false);
@@ -1653,6 +1672,7 @@ void ImageView::arrow_mode()
 {
     _mode = kArrow;
 
+    uiMain->uiStatus->copy_label( _("Arrow") );
 
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(false);
@@ -1681,6 +1701,8 @@ void ImageView::erase_mode( bool tmp )
     else
         _mode = kErase;
 
+    uiMain->uiStatus->copy_label( _("Erase") );
+
     uiMain->uiSelection->value(false);
     uiMain->uiErase->value(true);
     uiMain->uiCircle->value(false);
@@ -1706,32 +1728,29 @@ void ImageView::text_mode()
     if ( ok )
     {
         _mode = kText;
+        uiMain->uiStatus->copy_label( _("Text") );
         uiMain->uiText->value(true);
         uiMain->uiScrub->value(false);
-        uiMain->uiPaint->uiText->value(true);
         uiMain->uiPaint->uiScrub->value(false);
+        uiMain->uiArrow->value(false);
+        uiMain->uiErase->value(false);
+        uiMain->uiCircle->value(false);
+        uiMain->uiDraw->value(false);
+        uiMain->uiSelection->value(false);
+
+        uiMain->uiPaint->uiText->value(true);
+        uiMain->uiPaint->uiArrow->value(false);
+        uiMain->uiPaint->uiMovePic->value(false);
+        uiMain->uiPaint->uiErase->value(false);
+        uiMain->uiPaint->uiCircle->value(false);
+        uiMain->uiPaint->uiDraw->value(false);
+        uiMain->uiPaint->uiSelection->value(false);
     }
     else
     {
-        _mode = kScrub;
-        uiMain->uiText->value(false);
-        uiMain->uiScrub->value(true);
-        uiMain->uiPaint->uiText->value(false);
-        uiMain->uiPaint->uiScrub->value(true);
+        scrub_mode();
     }
 
-    uiMain->uiArrow->value(false);
-    uiMain->uiErase->value(false);
-    uiMain->uiCircle->value(false);
-    uiMain->uiDraw->value(false);
-    uiMain->uiSelection->value(false);
-
-    uiMain->uiPaint->uiArrow->value(false);
-    uiMain->uiPaint->uiMovePic->value(false);
-    uiMain->uiPaint->uiErase->value(false);
-    uiMain->uiPaint->uiCircle->value(false);
-    uiMain->uiPaint->uiDraw->value(false);
-    uiMain->uiPaint->uiSelection->value(false);
     redraw();
 }
 
@@ -1918,8 +1937,7 @@ const mrv::MainWindow* ImageView::fltk_main() const
 }
 
 
-ImageBrowser*
-ImageView::browser() {
+ImageBrowser* ImageView::browser() const {
     if ( !uiMain ) return NULL;
     if ( !uiMain->uiReelWindow ) return NULL;
     assert( uiMain->uiReelWindow );
@@ -2185,6 +2203,111 @@ void ImageView::bg_reel(int idx)
     send_network( buf );
 }
 
+void ImageView::toggle_copy_frame_xy()
+{
+    if ( _mode == kCopyFrameXY )
+        scrub_mode();
+    else
+    {
+        _mode = kCopyFrameXY;
+        uiMain->uiStatus->copy_label( _("Copy X Y") );
+    }
+}
+
+/**
+ * Given window's x and y coordinates, return an image's
+ * corresponding x and y coordinate
+ *
+ * @param img image to find coordinates for
+ * @param x   window's x position
+ * @param y   window's y position
+ */
+void ImageView::copy_frame_xy() const
+{
+    mrv::media fg = foreground();
+
+    CMedia* img = fg->image();
+
+    int x = lastX;
+    int y = lastY;
+
+
+    if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
+        return;
+
+    mrv::image_type_ptr pic;
+    bool outside = false;
+    int off[2];
+    int xp, yp, w, h;
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h, off );
+
+
+    if ( outside || !pic ) return;
+
+    yp = pic->height() - yp - 1;
+
+    mrv::Recti daw[2];
+    daw[0] = img->data_window();
+    daw[1] = img->data_window2();
+
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    CMedia::StereoInput  stereo_in  = img->stereo_input();
+
+    if ( stereo_out & CMedia::kStereoAnaglyph )
+    {
+        if ( stereo_in == CMedia::kTopBottomStereoInput )
+        {
+            yp += h;
+        }
+        else if ( stereo_in == CMedia::kLeftRightStereoInput )
+        {
+            xp += w;
+        }
+        else
+        {
+            if ( stereo_out & CMedia::kStereoRight )
+            {
+                pic = img->left();
+                xp += daw[1].x();
+                yp += daw[1].y();
+                xp -= daw[0].x();
+                yp -= daw[0].y();
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
+
+    }
+
+    const mrv::Reel& r = browser()->current_reel();
+    unsigned shot_id = 0;
+    for ( unsigned i = 0; i < r->images.size(); ++i )
+    {
+        if ( r->images[i] == fg )
+        {
+            shot_id = i; break;
+        }
+    }
+
+    char buf[256];
+    sprintf( buf,
+             _("Reel %d (%s) | Shot %d (%s) | Frame %" PRId64
+               " | X = %d | Y = %d\n"),
+             _fg_reel, r->name.c_str(), shot_id, img->name().c_str(),
+             _frame.load(), xp, yp );
+
+    LOG_INFO( buf );
+
+    // Copy text to both the clipboard and to X's XA_PRIMARY
+    Fl::copy( buf, unsigned( strlen(buf) ), true );
+    Fl::copy( buf, unsigned( strlen(buf) ), false );
+}
 
 /**
  * Given window's x and y coordinates, return an image's
@@ -3033,28 +3156,25 @@ void ImageView::log() const
     //
     // First, handle log window showing up and scrolling
     //
-    if (main() && main()->uiLog && main()->uiLog->uiMain )
+    LogUI* logUI = main()->uiLog;
+    Fl_Window* logwindow = logUI->uiMain;
+    if ( logwindow )
     {
-        LogUI* logUI = main()->uiLog;
-        Fl_Window* logwindow = logUI->uiMain;
-        if ( logwindow )
-        {
-            mrv::LogDisplay* log = logUI->uiLogText;
+        mrv::LogDisplay* log = logUI->uiLogText;
 
-            if ( mrv::LogDisplay::show == true )
+        if ( mrv::LogDisplay::show == true )
+        {
+            mrv::LogDisplay::show = false;
+            if (main() && logUI && logwindow )
             {
-                mrv::LogDisplay::show = false;
-                if (main() && logUI && logwindow )
-                {
-                    logwindow->show();
-                }
+                logwindow->show();
             }
-            static unsigned  lines = 0;
-            if ( log->visible() && log->lines() != lines )
-            {
-                log->scroll( log->lines()-1, 0 );
-                lines = log->lines();
-            }
+        }
+        static unsigned  lines = 0;
+        if ( log->visible() && log->lines() != lines )
+        {
+            log->scroll( log->lines()-1, 0 );
+            lines = log->lines();
         }
     }
 }
@@ -3507,13 +3627,13 @@ again:
     case kPlayForwards:
     {
         NET( "playfwd" );
-        play_forwards();
+        play( CMedia::kForwards );
         break;
     }
     case kPlayBackwards:
     {
         NET( "playbwd" );
-        play_backwards();
+        play( CMedia::kBackwards );
         break;
     }
     case kRemoveImage:
@@ -3784,12 +3904,9 @@ void ImageView::timeout()
         }
     }
 
-    TRACE( "" );
     //
-    // If in EDL mode, we check timeline to see if frame points to
-    // new image.
-    //
-    log();
+    if (main() && main()->uiLog && main()->uiLog->uiMain )
+        log();
 
 
 
@@ -3797,6 +3914,10 @@ void ImageView::timeout()
     mrv::Reel bgreel = b->reel_at( _bg_reel );
 
 
+    //
+    // If in EDL mode, we check timeline to see if frame points to
+    // new image.
+    //
     if ( timeline->visible() )
     {
         timeline->value( double(_frame) );
@@ -3813,7 +3934,7 @@ void ImageView::timeout()
     }
 
 
-    mrv::media fg = foreground();
+    const mrv::media fg = foreground();
     mrv::media bg = background();
 
     if ( bgreel && bgreel->edl )
@@ -3829,7 +3950,6 @@ void ImageView::timeout()
 
     if ( bg && bg != fg )
     {
-        TRACE("");
         CMedia* img = bg->image();
         // If not a video image check if image has changed on disk
         if ( ! img->has_video() &&
@@ -3846,6 +3966,7 @@ void ImageView::timeout()
     if ( fg )
     {
         img = fg->image();
+
         delay = 0.25 / img->play_fps();
 
         // If not a video image check if image has changed on disk
@@ -3859,25 +3980,12 @@ void ImageView::timeout()
     }
 
 
-    // if ( timeline->visible() )
-    // {
-
-    //     if ( reel && !reel->edl && img )
-    //     {
-    //         int64_t frame = img->frame();
-
-    //         if ( this->frame() != frame && playback() != CMedia::kStopped )
-    //         {
-    //             this->frame( frame );
-    //         }
-    //     }
-    // }
 
 
     if ( should_update( fg ) )
     {
         redraw();  // Clear the damage to redraw it
-        update_color_info( fg );
+        update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
@@ -3888,9 +3996,6 @@ void ImageView::timeout()
         handle_vr( delay );
     }
 
-#ifdef OSX
-    draw();  // Force a draw of the gl canvas
-#endif
     if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
@@ -3931,9 +4036,7 @@ void ImageView::selection( const mrv::Rectd& r )
 {
     _selection = r;
 
-    mrv::media fg = foreground();
-    if ( fg )
-        update_color_info( fg );
+    update_color_info();
 }
 
 void ImageView::redo_draw()
@@ -4031,6 +4134,7 @@ void ImageView::vr( VRType t )
 void ImageView::draw()
 {
 
+
     DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
@@ -4097,13 +4201,8 @@ void ImageView::draw()
     }
 
 
-    const mrv::media fg = foreground();
-    if ( fg )
-    {
-        _engine->image( fg->image() );
-    }
-    mrv::media bg = background();
-    TRACE("");
+    const mrv::media& fg = foreground();
+    const mrv::media& bg = background();
 
     ImageList images;
     images.reserve(2);
@@ -4111,26 +4210,22 @@ void ImageView::draw()
     if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
         CMedia* img = bg->image();
-        TRACE("");
         if ( img->has_picture() )
             images.push_back( img );
-        TRACE("");
     }
 
     if ( fg )
     {
         CMedia* img = fg->image();
-        TRACE("");
         if ( img->has_picture() )
         {
+            _engine->image( fg->image() );
             images.push_back( img );
         }
-        TRACE("");
     }
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
-    TRACE("");
 
     CMedia* img = NULL;
     if ( fg )
@@ -4143,7 +4238,6 @@ void ImageView::draw()
         _engine->draw_images( images );
     }
 
-    TRACE("");
 
 
     if ( _masking != 0.0f )
@@ -4324,7 +4418,6 @@ void ImageView::draw()
             }
       }
 
-    TRACE("");
 
     if ( _hud == kHudNone )
         return;
@@ -4530,8 +4623,6 @@ void ImageView::draw()
     }
 
 
-    TRACE("");
-
     if ( vr() )
     {
         _engine->restore_vr_matrix();
@@ -4625,6 +4716,8 @@ bool PointInTriangle (const Imath::V2i& pt,
 
  void ImageView::fill_menu( Fl_Menu_* menu )
  {
+     SCOPED_LOCK( _shortcut_mutex );
+
      menu->clear();
      int idx = 1;
 
@@ -4635,7 +4728,6 @@ bool PointInTriangle (const Imath::V2i& pt,
      menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                 (Fl_Callback*)open_single_cb, browser() );
 
-     TRACE("");
      mrv::media fg = foreground();
      if ( !fg )
      {
@@ -4680,7 +4772,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
      }
 
-     TRACE("");
 
      char buf[256];
      int num = uiMain->uiWindows->children() - 1;
@@ -4701,7 +4792,6 @@ bool PointInTriangle (const Imath::V2i& pt,
      }
 
 
-     TRACE("");
      if ( fg && fg->image()->has_picture() )
      {
 
@@ -4732,7 +4822,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( uiMain->uiToolsGroup->visible() )
              item->set();
 
-         TRACE("");
          const char* tmp;
          num = uiMain->uiPrefs->uiPrefsCropArea->children();
          for ( i = 0; i < num; ++i )
@@ -4745,11 +4834,9 @@ bool PointInTriangle (const Imath::V2i& pt,
              item = (Fl_Menu_Item*) &(menu->menu()[idx]);
              float mask = -1.0f;
              mask = (float) atof( tmp );
-             TRACE("");
              if ( mask == _masking ) item->set();
          }
 
-         TRACE("");
 
          sprintf( buf, "%s", _("View/Grid/Toggle Selected") );
          menu->add( buf, kGridToggle.hotkey(),
@@ -4775,7 +4862,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
          bool has_version = false;
 
          CMedia* img = fg->image();
@@ -4791,7 +4877,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( (pos = file.find( prefix, pos) ) != std::string::npos )
              has_version = true;
 
-         TRACE("");
          if ( has_version )
          {
              menu->add( _("Version/First"), kFirstVersionImage.hotkey(),
@@ -4810,7 +4895,6 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
          menu->add( _("Image/Next"), kNextImage.hotkey(),
                     (Fl_Callback*)next_image_cb, browser());
          menu->add( _("Image/Previous"), kPreviousImage.hotkey(),
@@ -4820,7 +4904,6 @@ bool PointInTriangle (const Imath::V2i& pt,
 
          const stubImage* simg = dynamic_cast< const stubImage* >( image() );
 
-         TRACE("");
          if ( simg )
          {
              menu->add( _("Image/Clone"), kCloneImage.hotkey(),
@@ -4837,7 +4920,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          idx = menu->add( _("Image/Preload Caches"),
                           kPreloadCache.hotkey(),
                           (Fl_Callback*)preload_image_cache_cb, this,
@@ -4846,7 +4929,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( CMedia::preload_cache() ) item->set();
 
 
-         TRACE("");
+
          menu->add( _("Image/Clear Caches"), kClearCache.hotkey(),
                     (Fl_Callback*)clear_image_cache_cb, this );
 
@@ -4856,7 +4939,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                     FL_MENU_DIVIDER );
 
 
-         TRACE("");
+
          menu->add( _("Image/Rotate +90"),
                     kRotatePlus90.hotkey(),
                     (Fl_Callback*)rotate_plus_90_cb, this );
@@ -4868,7 +4951,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( !Preferences::use_ocio )
          {
 
-             TRACE("");
+
              menu->add( _("Image/Attach CTL Input Device Transform"),
                         kIDTScript.hotkey(),
                         (Fl_Callback*)attach_ctl_idt_script_cb,
@@ -4891,7 +4974,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                         this, FL_MENU_DIVIDER);
          }
 
-         TRACE("");
+
          menu->add( _("Image/Mirror/Horizontal"),
                     kFlipX.hotkey(),
                     (Fl_Callback*)flip_x_cb,
@@ -4904,7 +4987,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                     (Fl_Callback*)set_as_background_cb,
                     (void*)this);
 
-         TRACE("");
+
          menu->add( _("Image/Switch FG and BG"),
                     kSwitchFGBG.hotkey(),
                     (Fl_Callback*)switch_fg_bg_cb, (void*)this);
@@ -4922,11 +5005,11 @@ bool PointInTriangle (const Imath::V2i& pt,
 
          Image_ptr image = fg->image();
 
-         TRACE("");
+
          if ( Preferences::use_ocio )
          {
 
-             TRACE("");
+
              menu->add( _("OCIO/Input Color Space"),
                         kOCIOInputColorSpace.hotkey(),
                         (Fl_Callback*)attach_ocio_ics_cb, (void*)browser());
@@ -4941,12 +5024,12 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
 
-         TRACE("");
+
          size_t num = image->number_of_video_streams();
          if ( num > 1 )
          {
 
-             TRACE("");
+
              for ( unsigned i = 0; i < num; ++i )
              {
                  char buf[256];
@@ -4971,7 +5054,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( num > 0 )
          {
              idx = menu->add( _("Subtitle/No Subtitle"), 0,
@@ -4995,7 +5078,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( 1 )
          {
 
@@ -5009,7 +5092,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          }
 
 
-         TRACE("");
+
          if ( dynamic_cast< Fl_Menu_Button* >( menu ) )
          {
              menu->add( _("Pixel/Copy RGBA Values to Clipboard"),
@@ -5020,7 +5103,7 @@ bool PointInTriangle (const Imath::V2i& pt,
          if ( !Preferences::use_ocio )
          {
 
-             TRACE("");
+
 
              menu->add( _("Monitor/Attach CTL Display Transform"),
                         kMonitorCTLScript.hotkey(),
@@ -5117,6 +5200,11 @@ int ImageView::leftMouseDown(int x, int y)
             char buf[64];
             sprintf( buf, "Selection 0 0 0 0" );
             send_network( buf );
+            return 1;
+        }
+        else if ( _mode == kCopyFrameXY )
+        {
+            copy_frame_xy();
             return 1;
         }
         else if ( _mode == kMovePicture || _mode == kScalePicture )
@@ -5339,12 +5427,8 @@ int ImageView::leftMouseDown(int x, int y)
     {
         if ( (flags & kLeftAlt) == 0 )
         {
-            TRACE("");
-            TRACE("");
             fill_menu( menu );
             menu->popup();
-
-            TRACE("");
             return 1;
         }
         else
@@ -6887,8 +6971,7 @@ void ImageView::mouseDrag(int x,int y)
             assert( _selection.w() >= 0.0 );
             assert( _selection.h() >= 0.0 );
 
-            update_color_info( fg );
-
+            update_color_info();
 
             mouseMove( x, y );
         }
@@ -7522,6 +7605,12 @@ int ImageView::keyDown(unsigned int rawkey)
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
+    else if ( kCopyFrameXYValues.match( rawkey ) )
+    {
+        toggle_copy_frame_xy_cb( NULL, this);
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
     else if ( kCopyRGBAValues.match( rawkey ) )
     {
         copy_pixel_rgba_cb( NULL, this);
@@ -7929,11 +8018,11 @@ void ImageView::show_background( const bool b )
             uiMain->uiPixelBar->size( W, int(28) );
             uiMain->uiPixelBar->show();
         }
-        uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->layout();
+        uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->redraw();
-        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         uiMain->uiView->redraw();
     }
@@ -7956,8 +8045,6 @@ void ImageView::toggle_fullscreen()
         sizeX = fltk_main()->w();
         sizeY = fltk_main()->h();
         fltk_main()->fullscreen();
-        uiMain->uiRegion->init_sizes();
-        uiMain->uiRegion->layout();
         has_tools_grp  = uiMain->uiToolsGroup ?
                          uiMain->uiToolsGroup->visible() : false;
         has_menu_bar = uiMain->uiMenuGroup ?
@@ -7965,6 +8052,8 @@ void ImageView::toggle_fullscreen()
         has_top_bar = uiMain->uiTopBar->visible();
         has_bottom_bar = uiMain->uiBottomBar->visible();
         has_pixel_bar = uiMain->uiPixelBar->visible();
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -8589,7 +8678,6 @@ void ImageView::reset_caches()
         if (!fg) return;
         CMedia* img = fg->image();
         _preframe = img->frame();
-
     }
 }
 
@@ -9569,6 +9657,7 @@ void ImageView::foreground( mrv::media fg )
 
     _fg = fg;
 
+
     if ( fg )
     {
         CMedia* img = fg->image();
@@ -9659,7 +9748,7 @@ void ImageView::foreground( mrv::media fg )
 
     update_title_bar( this );
     update_image_info();
-    update_color_info( fg );
+    update_color_info();
 
     mrv::media bg = background();
     if ( fg == bg )
@@ -10190,8 +10279,13 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
-    mrv::ImageBrowser* b = browser();
-    if ( b ) b->redraw();
+    if  ( playback() == CMedia::kStopped )
+    {
+        mrv::ImageBrowser* b = browser();
+        if ( b ) b->redraw();
+    }
+
+    redraw();
 }
 
 
@@ -10206,12 +10300,6 @@ void ImageView::seek( const int64_t f )
 {
     mrv::ImageBrowser* b = browser();
 
-    // mrv::Reel r = b->current_reel();
-    // if ( r && r->edl )
-    // {
-    //  _preframe = r->global_to_local( f );
-    // }
-    // else
     {
         _preframe = f;
     }
@@ -10375,7 +10463,7 @@ void ImageView::last_frame_timeline()
  * Update color information
  *
  */
-void ImageView::update_color_info( const mrv::media fg ) const
+void ImageView::update_color_info() const
 {
     if ( uiMain->uiColorArea )
     {
@@ -10410,13 +10498,6 @@ void ImageView::update_color_info( const mrv::media fg ) const
 
 }
 
-void ImageView::update_color_info() const
-{
-    mrv::media fg = foreground();
-    if ( !fg ) return;
-
-    update_color_info(fg);
-}
 
 /**
  * Update the image window information display
@@ -10448,18 +10529,25 @@ void ImageView::playback( const CMedia::Playback b )
 
     _last_fps = 0.0;
 
+    if ( !uiMain->uiPlayForwards || !uiMain->uiPlayBackwards )
+        return;
+
     if ( b == CMedia::kForwards )
     {
+        uiMain->uiPlayForwards->labelcolor( FL_CYAN );
         uiMain->uiPlayForwards->value(1);
         uiMain->uiPlayBackwards->value(0);
     }
     else if ( b == CMedia::kBackwards )
     {
         uiMain->uiPlayForwards->value(0);
+        uiMain->uiPlayBackwards->labelcolor( FL_CYAN );
         uiMain->uiPlayBackwards->value(1);
     }
     else
     {
+        uiMain->uiPlayForwards->labelcolor( 28 );
+        uiMain->uiPlayBackwards->labelcolor( 28 );
         uiMain->uiPlayForwards->value(0);
         uiMain->uiPlayBackwards->value(0);
     }
@@ -10571,7 +10659,6 @@ void ImageView::play( const CMedia::Playback dir )
  */
 void ImageView::play_backwards()
 {
-    stop();
     play( CMedia::kBackwards );
 }
 
@@ -10603,6 +10690,7 @@ void ImageView::stop()
         return;
     }
 
+
     delete_timeout();
 
     _playback = CMedia::kStopped;
@@ -10612,13 +10700,7 @@ void ImageView::stop()
 
     stop_playback();
 
-
-    if ( uiMain->uiPlayForwards )
-        uiMain->uiPlayForwards->value(0);
-
-    if ( uiMain->uiPlayBackwards )
-        uiMain->uiPlayBackwards->value(0);
-
+    playback( CMedia::kStopped );
 
     frame( frame() );
     // seek( int64_t(timeline()->value()) );

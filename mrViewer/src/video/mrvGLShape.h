@@ -30,7 +30,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <OpenEXR/ImathVec.h>
+#include <ImathVec.h>
 
 namespace mrv
 {

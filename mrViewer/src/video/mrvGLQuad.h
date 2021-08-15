@@ -171,6 +171,7 @@ protected:
     const CMedia*   _image;
     unsigned short _lut_attempt;
 
+    GLuint       _vbo;
     bool         _right;
     bool         _blend;
     float        _fade;

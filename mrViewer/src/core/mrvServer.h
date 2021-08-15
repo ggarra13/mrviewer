@@ -77,7 +77,6 @@ class Parser
     tcp::socket socket_;
     Mutex mtx;
     mrv::Reel r;
-    mrv::media m;
     ViewerUI* ui;
     boost::asio::streambuf input_buffer_;
     deadline_timer deadline_;

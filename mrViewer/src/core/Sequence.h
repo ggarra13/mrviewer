@@ -38,6 +38,7 @@
 
 #include <boost/cstdint.hpp>      // for int64_t
 
+#include "core/CMedia.h"
 #include "video/mrvGLShape.h"
 
 inline std::string uncomment_slashes( std::string path )
@@ -109,6 +110,7 @@ struct SequenceSort
 };
 
 
+
 /**
    * Struct used to store information about stuff to load
    *
@@ -136,6 +138,9 @@ struct LoadInfo
 
     std::string subtitle;
 
+    bool replace_attrs;
+    CMedia::Attributes attrs;
+
     LoadInfo( const std::string& fileroot,
               const boost::int64_t sf, const boost::int64_t ef,
               const boost::int64_t s = AV_NOPTS_VALUE,
@@ -158,7 +163,8 @@ struct LoadInfo
         reel( false ),
         otio( false ),
         audio_offset( aoffset ),
-        subtitle( sub )
+        subtitle( sub ),
+        replace_attrs( false )
     {
         size_t len = filename.size();
         if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
@@ -191,7 +197,8 @@ struct LoadInfo
         otio( false ),
         shapes( shl ),
         audio_offset( aoffset ),
-        subtitle( sub )
+        subtitle( sub ),
+        replace_attrs( false )
     {
         size_t len = filename.size();
         if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
@@ -215,7 +222,8 @@ struct LoadInfo
         fps( -1.0 ),
         reel( false ),
         otio( false ),
-        audio_offset( 0 )
+        audio_offset( 0 ),
+        replace_attrs( false )
     {
         size_t len = filename.size();
         if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
@@ -244,7 +252,9 @@ struct LoadInfo
         otio( b.otio ),
         shapes( b.shapes ),
         audio_offset( b.audio_offset ),
-        subtitle( b.subtitle )
+        subtitle( b.subtitle ),
+        replace_attrs( b.replace_attrs ),
+        attrs( b.attrs )
     {
     }
 
@@ -266,6 +276,8 @@ struct LoadInfo
             shapes = b.shapes;
             audio_offset = b.audio_offset;
             subtitle = b.subtitle;
+            replace_attrs = b.replace_attrs;
+            attrs = b.attrs;
             return *this;
         }
 

@@ -79,9 +79,12 @@ def find_lib( lib )
     return ''
   end
   @searched_libs.push lib
-  lib = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
-  $stderr.puts lib
-  return lib.strip
+  libpath = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
+  if libpath.strip.empty?
+    libpath = "/usr/local/lib/#{lib}"
+  end
+  $stderr.puts libpath
+  return libpath.strip
 end
 
 def copy( file, dest )

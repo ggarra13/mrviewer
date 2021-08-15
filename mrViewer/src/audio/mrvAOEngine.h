@@ -54,8 +54,7 @@ public:
     virtual bool open(
         const unsigned int channels,
         const unsigned int frequency,
-        const AudioFormat  format,
-        const unsigned int bits
+        const AudioFormat  format
     );
 
     virtual void refresh_devices();
@@ -98,7 +97,7 @@ protected:
     ao_option*        _options;
 
 protected:
-    static unsigned int     _instances;
+    static std::atomic<unsigned int>     _instances;
 };
 
 

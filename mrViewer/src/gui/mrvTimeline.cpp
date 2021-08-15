@@ -49,13 +49,9 @@
 
 namespace
 {
-// Maximum number of frames to show cacheline.  Setting it too high can
+// Maximum number of frames to show cacheline for.  Setting it too high can
 // impact GUI playback when the image/movies are that long.
-#ifdef OSX
 unsigned kMAX_FRAMES = 5000;
-#else
-unsigned kMAX_FRAMES = 5000;
-#endif
 double kMinFrame = std::numeric_limits<double>::min();
 double kMaxFrame = std::numeric_limits<double>::max();
 }
@@ -119,7 +115,7 @@ void Timeline::display_minimum( const double& x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMinDisplay %g"), x );
+        sprintf( buf, N_("TimelineMinDisplay %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -164,7 +160,7 @@ void Timeline::display_maximum( const double& x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMaxDisplay %g"), x );
+        sprintf( buf, N_("TimelineMaxDisplay %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -177,7 +173,7 @@ void Timeline::minimum( double x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMin %g"), x );
+        sprintf( buf, N_("TimelineMin %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -190,7 +186,7 @@ void Timeline::maximum( double x )
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
-        sprintf( buf, N_("TimelineMax %g"), x );
+        sprintf( buf, N_("TimelineMax %lf"), x );
         uiMain->uiView->send_network( buf );
     }
 }
@@ -308,7 +304,8 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color linecolor = FL_BLACK;
     if ( Preferences::schemes.name == "Black" )
     {
-        linecolor = fl_rgb_color( 70, 70, 70 );
+        linecolor = fl_inactive( fl_contrast( fl_rgb_color( 70, 70, 70 ),
+                                              selection_color() ) );
     }
 
     fl_color(linecolor);
@@ -369,59 +366,18 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     // for back compatability, use type flag to set slider size:
     if (type()&16/*FILL*/) slider_size(0);
 
-    mrv::Recti r = sr;
 
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
-        mrv::Recti tr = r;
-        // r.move_b(-tick_size());
-        // switch (type()&TICK_BOTH) {
-        // case TICK_BOTH:
-        //     r.y(r.y()+tick_size()/2);
-        //     break;
-        // case TICK_ABOVE:
-        //     r.y(r.h()-tick_size());
-        //     tr.set_b(r.center_y());
-        //     break;
-        // case TICK_BELOW:
-        //     tr.set_y(r.center_y()+(slot?3:0));
-        //     break;
-        // }
         fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
-        draw_ticks(tr, int(slider_size()+1)/2);
+        draw_ticks(sr, int(slider_size()+1)/2);
     }
-
-    // if (slot) {
-    //     const int slot_size_ = 6;
-    //     mrv::Recti sl;
-    //     int dx = (slider_size()-slot_size_)/2;
-    //     if (dx < 0) dx = 0;
-    //     sl.x(dx+r.x());
-    //     sl.w(r.w()-2*dx);
-    //     sl.y(r.y()+(r.h()-slot_size_+1)/2);
-    //     sl.h(slot_size_);
-    //     Fl::set_box_color(FL_BLACK);
-    //     Fl_Boxtype b = box();
-    //     box( FL_THIN_DOWN_BOX );
-    //     draw_box();
-    //     box( b );
-    // }
 
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
         Fl::set_box_color( selection_color() );
         fl_color(fl_contrast(labelcolor(), selection_color()));
     }
-
-    // figure out where the slider should be:
-    // mrv::Recti s(r);
-    // int sglyph = FL_ALIGN_INSIDE; // draw a box
-    // s.x(r.x()+slider_position(value(),r.w()));
-    // s.w(slider_size());
-    // if (!s.w()) {
-    //     s.w(s.x()-r.x());    // fill slider
-    //     s.x(r.x());
-    // }
 
     return true;
 }
@@ -532,7 +488,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
     {
         int WX = window()->x();
         int WY = window()->y();
-        int X = Fl::event_x() - 64;
+        int X = event_x - 64;
         int Y = y() - 80;
 
         if ( Y < 0 ) return;
@@ -565,6 +521,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
              != 0 )
         {
             image = CMedia::guess_image( m->image()->fileroot() );
+            image->is_thumbnail(true);
             image->audio_stream(-1);
             fg.reset( new mrv::gui::media( image ) );
         }
@@ -593,6 +550,7 @@ int Timeline::handle( int e )
     if ( e == FL_ENTER ) return 1;
     else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
+        event_x = Fl::event_x();
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());
         int W = w()-Fl::box_dw(box());
@@ -828,7 +786,7 @@ void Timeline::draw()
 
     }
 
-    //Fl_Slider::draw();
+    // return Fl_Slider::draw();
 
     draw( r, f2, r.y()==0 );
 

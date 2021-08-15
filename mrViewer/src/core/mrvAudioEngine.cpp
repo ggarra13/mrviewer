@@ -37,6 +37,7 @@
 #    include "audio/mrvALSAEngine.h"
 #elif defined(OSX)
 #    include "audio/mrvRtAudioEngine.h"
+#    include "audio/mrvAudioQueue.h"
 #endif
 
 #ifdef AOENGINE
@@ -184,7 +185,7 @@ AudioEngine* AudioEngine::factory()
     r = new mrv::PortAudioEngine();
 
 #else
-    
+
 #if defined(_WIN32) || defined(_WIN64)
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();

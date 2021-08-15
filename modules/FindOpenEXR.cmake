@@ -40,6 +40,20 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   DOC   "OpenEXR includes"
   )
 
+
+FIND_PATH( IMATH_INCLUDE_DIR ImathForward.h
+  "$ENV{OPENEXR_ROOT}/include/Imath"
+  "$ENV{OPENEXR_ROOT}/include/OpenEXR"
+  "$ENV{OPENEXR_ROOT}/include"
+  /usr/local/include/Imath
+  /usr/include/Imath
+  /usr/local/include/OpenEXR
+  /usr/include/OpenEXR
+  DOC   "Imath includes"
+  )
+
+SET( OPENEXR_INCLUDE_DIR ${OPENEXR_INCLUDE_DIR} ${IMATH_INCLUDE_DIR} )
+
 FIND_LIBRARY( IlmImfUtil
   NAMES IlmImfUtil-2_5 IlmImfUtil-2_4 IlmImfUtil-2_3 IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
   PATHS ${SEARCH_DIRS}

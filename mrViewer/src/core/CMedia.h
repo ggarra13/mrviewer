@@ -1759,7 +1759,7 @@ public:
         kImageMagickLibrary = 2
     };
     static LoadLib load_library;
-    static int64_t memory_used;
+    static std::atomic<int64_t> memory_used;
     static double thumbnail_percent;
 
 protected:
@@ -2025,7 +2025,7 @@ protected:
     bool    _audio_start;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
-    int64_t _pos;             //!< position offset in timeline
+    std::atomic<int64_t> _pos;  //!< position offset in timeline
 
     char*  _channel;          //!< current channel/layer being shown
 
@@ -2130,7 +2130,7 @@ protected:
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
 
-    double _actual_frame_rate;
+    std::atomic<double> _actual_frame_rate;
     image_type::PixelType _depth;
 
     stringArray  _layers;                //!< list of layers in file

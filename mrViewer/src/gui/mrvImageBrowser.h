@@ -104,14 +104,17 @@ public:
     //! Save session under a file name
     void save_session_( const std::string& file );
 
-    //! Save reel under a file name
+    //! Save reel under an otio file name
+    void save_otio( mrv::Reel r, const std::string& file );
+
+    //! Save reel under a reel or otio file name
     void save_reel_( mrv::Reel r, const std::string& file );
 
     //! Load an otio edit
-    void load_otio( const char* name );
+    void load_otio( const LoadInfo& load );
 
     //! Load a reel from filename
-    void load_reel( const char* filename );
+    void load_reel( const LoadInfo& load );
 
     //! Load a session and all reels from filename
     void load_session( const char* filename );
@@ -356,7 +359,7 @@ protected:
     //! Returns GUI EDL group
     mrv::EDLGroup* edl_group() const;
 
-
+    bool           _loading; // set to on when loading a reel or an otio file
     unsigned       _reel;
     mrv::ReelList  _reels;
     mrv::Choice*  _reel_choice;

@@ -1,9 +1,50 @@
+V5.9.3  - Fixed audio hangup on Linux when switching images with the arrows/reel
+	  list.
+	- Fixed float mono audio on Windows not playing or playing distorted.
+	- Fixed dragging clip in EDL Window, which had broken when fading was
+	  introduced.
+	- Fixed crash when selecting menu and image changes.
+	- Fixed floating point locale on Linux.
+	- Simplified the UI a tad to make it nicer looking.
+	- Bug fixed crash when saving logs.
+
+v5.9.2  - Bug fixed a corruption that would happen when the same reel/otio file
+	  was loaded twice.
+	- Bug fixed audio playback glitch when switching images.
+	- Added a copy reel, shot, frame and X, Y coordinates to the
+	  clipboard.  Shortcut CTRL+SHIFT+c by default.  After that mode is
+	  entered, any left mouse click on the image will copy the reel, shot,
+	  frame and the XY coordinates to the clipboard.
+	- Removed useless setting in preferences called Switching Images.
+	- Bug fixed R3D (RED) and BRAW (Blackmagick RAW) loaders which got
+	  broken in the v5.9.0 update.
+	- Made annotations' metadata in HUD be displayed in different columns
+	  when they don't fit in one column.
+	- Fixed scrubbing and advancing playback with arrows which had gotten
+	  somewhat broken on 5.9.0.
+	- Added command-line argument (-A) to add an attribute to the image.
+	  This attribute can then be displayed in the HUD with the rest of
+	  the attributes.  It is used like -A key=value.
+	- Added the command-line switch (-R) to replace all attributes,
+	  leaving only those specified in the command-line.
+	- Added an action tool status in the menu bar which shows what tool
+	  is being used (draw, erase, circle, arrow, scrub, move picture,
+	  text, copy x y values, etc.).
+
+v5.9.1  - Bug fixed a huge memory leak when deleting reels.
+	- Bug fixed a memory leak when deleting the last image of a reel.
+	- Bug fixed a memory overallocation when reading sequences with the
+	  FFMpeg loader.
+	- Improved memory fragmentation on Linux by using malloc_trim(0).
+	  This avoids crashes due to lack of memory.
+	- Bug fixed arrows not working in cache memory preference.
+
 v5.9.0  - Bug fixed crashes when regular expression was wrong in media
 	  information window's search requester.
 	- Fixed Save OCIO to save the OCIO config on the preferences or use
 	  the OCIO environment variable otherwise.
 	- Added first pass of support of OpenTimelineIO.  Currently, only
-	  loading is provided.  Also, only the first video track is loaded.
+	  loading is provided.  All video tracks are flattened into one.
 	  All effects are discarded and only the visible ranges are left.
 	- Bug fixed an audio crashing issue on Linux when many videos were
 	  opened in an EDL.

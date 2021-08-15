@@ -129,7 +129,7 @@ void PortAudioEngine::refresh_devices()
     for (unsigned i = 0; i < num; ++i )
     {
         const PaDeviceInfo* woc;
-	woc = Pa_GetDeviceInfo( i );
+        woc = Pa_GetDeviceInfo( i );
 
         std::string channels;
         switch( woc->maxOutputChannels )
@@ -156,7 +156,7 @@ void PortAudioEngine::refresh_devices()
 
         sprintf( desc, "%s (%s)",
                  woc->name, channels.c_str() );
-        
+
         Device dev( name, desc );
         _devices.push_back( dev );
     }
@@ -169,10 +169,10 @@ bool PortAudioEngine::initialize()
     {
       int err = Pa_Initialize();
       if ( err != paNoError )
-	{
+        {
             PA_ERROR( err );
             return false;
-	}
+        }
       outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
       if (outputParameters.device == paNoDevice) {
           PA_ERROR( err );
@@ -193,7 +193,7 @@ bool PortAudioEngine::shutdown()
 
     if ( ! _instances )
       {
-	Pa_Terminate();
+        Pa_Terminate();
       }
 
     return true;
@@ -217,59 +217,58 @@ void PortAudioEngine::volume( float v )
 
 bool PortAudioEngine::open( const unsigned channels,
                        const unsigned freq,
-                       const AudioFormat format,
-                       const unsigned bits )
+                       const AudioFormat format )
 {
     try
     {
         close();
 
-	outputParameters.channelCount = channels;
-	outputParameters.suggestedLatency = 0.050;
-	outputParameters.hostApiSpecificStreamInfo = NULL;
-	unsigned bits = 32;
-	switch( format )
+        outputParameters.channelCount = channels;
+        outputParameters.suggestedLatency = 0.050;
+        outputParameters.hostApiSpecificStreamInfo = NULL;
+        unsigned bits = 32;
+        switch( format )
         {
-	case kFloatLSB:
-	case kFloatMSB:
-	  outputParameters.sampleFormat = paFloat32;
-	  break;
-	case kS32LSB:
-	case kS32MSB:
-	  outputParameters.sampleFormat = paInt32;
-	  break;
-	case kS16LSB:
-	case kS16MSB:
-	  bits = 16;
-	  outputParameters.sampleFormat = paInt16;
-	  break;
-	case kU8:
-	  bits = 8;
-	  outputParameters.sampleFormat = paUInt8;
-	  break;
+        case kFloatLSB:
+        case kFloatMSB:
+          outputParameters.sampleFormat = paFloat32;
+          break;
+        case kS32LSB:
+        case kS32MSB:
+          outputParameters.sampleFormat = paInt32;
+          break;
+        case kS16LSB:
+        case kS16MSB:
+          bits = 16;
+          outputParameters.sampleFormat = paInt16;
+          break;
+        case kU8:
+          bits = 8;
+          outputParameters.sampleFormat = paUInt8;
+          break;
         }
-	
+
         size_t bytes = 1 * 1024;
-	int err = Pa_OpenStream(
-				&stream,
-				NULL, /* no input */
-				&outputParameters,
-				freq,
-				0, // FRAMES_PER_BUFFER
-				paClipOff,      /* we won't output out of range samples so don't bother clipping them */
-				NULL, /* no callback, use blocking API */
-				NULL ); /* no callback, so no callback userData */
-	if( err != paNoError )
+        int err = Pa_OpenStream(
+                                &stream,
+                                NULL, /* no input */
+                                &outputParameters,
+                                freq,
+                                0, // FRAMES_PER_BUFFER
+                                paClipOff,      /* we won't output out of range samples so don't bother clipping them */
+                                NULL, /* no callback, use blocking API */
+                                NULL ); /* no callback, so no callback userData */
+        if( err != paNoError )
             PA_ERROR( err );
-	
+
         _audio_format = format;
 
         // Allocate internal sound buffer
-        
-	err = Pa_StartStream( stream );
+
+        err = Pa_StartStream( stream );
         if( err != paNoError )
             PA_ERROR( err );
-	
+
         DBGM1( "enabled ok" );
         // All okay, enable device
         _enabled = true;
@@ -286,7 +285,7 @@ bool PortAudioEngine::open( const unsigned channels,
 void PortAudioEngine::wait_audio()
 {
   while ( ( outputParameters.device != paNoDevice ) && _enabled &&
-	  _audio_playback && Pa_IsStreamActive( stream ) == 1 )
+          _audio_playback && Pa_IsStreamActive( stream ) == 1 )
     {
       int milliseconds = 10;
 #ifdef _WIN32
@@ -330,9 +329,9 @@ void PortAudioEngine::flush()
     if ( !stream ) return;
 
     int err = Pa_StopStream( stream );
-    if( err != paNoError ) 
+    if( err != paNoError )
         PA_ERROR( err );
-	
+
     _enabled = false;
 
 }
@@ -343,9 +342,9 @@ bool PortAudioEngine::close()
     if (!stream) return false;
 
     flush();
-    
+
     int err = Pa_CloseStream( stream );
-    if( err != paNoError ) 
+    if( err != paNoError )
         PA_ERROR( err );
 
     _enabled = false;

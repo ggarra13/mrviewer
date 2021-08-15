@@ -149,7 +149,7 @@ std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
 
-int64_t CMedia::memory_used = 0;
+std::atomic<int64_t> CMedia::memory_used( 0 );
 double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
@@ -828,7 +828,10 @@ void CMedia::wait_for_threads()
 {
     for ( const auto& i : _threads )
     {
-        i->join();
+        i->interrupt();
+        boost::posix_time::time_duration timeout =
+            boost::posix_time::milliseconds(10000);
+        i->timed_join(timeout);
         delete i;
     }
 
@@ -962,6 +965,10 @@ CMedia::~CMedia()
             }
         }
     }
+
+#ifdef LINUX
+    malloc_trim(0);
+#endif
 
     _context = _acontext = NULL;
 }
@@ -1556,11 +1563,11 @@ void CMedia::refresh( const mrv::Recti& r )
         if (_framesSinceLastFpsFrame == 0)
             _lastFpsFrameTime = now;
 
-        static int64_t old_frame = _frame - 1;
+        static std::atomic<int64_t> old_frame( _frame - 1 );
         int64_t frameDiff = std::abs( _frame - old_frame );
         if ( frameDiff < 10 )
             _framesSinceLastFpsFrame += frameDiff;
-        old_frame = _frame;
+        old_frame.store( _frame );
     }
 
 
@@ -2656,8 +2663,10 @@ void CMedia::play(const CMedia::Playback dir,
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
+    if ( dir == _playback && !_threads.empty() ) return;
+
     TRACE("");
-    stop();
+    stop(fg);
 
     TRACE("");
     _playback = dir;
@@ -2815,6 +2824,7 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 
+
     TRACE("");
 
     _playback = kStopped;
@@ -2825,27 +2835,21 @@ void CMedia::stop(const bool bg)
 
     //
     // Notify loop barrier, to exit any wait on a loop
-    //
-    TRACE("");
+    //w
 
     if ( _loop_barrier )  _loop_barrier->notify_all();
 
-    TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
-    TRACE("");
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
 
-    TRACE("");
     _audio_packets.cond().notify_all();
-    TRACE("");
     _video_packets.cond().notify_all();
-    TRACE("");
     _subtitle_packets.cond().notify_all();
-    TRACE("");
+
 
     // Wait for all threads to exit
     wait_for_threads();
@@ -2854,9 +2858,7 @@ void CMedia::stop(const bool bg)
     // Clear barrier
 
     delete _loop_barrier;
-    TRACE("");
     _loop_barrier = NULL;
-    TRACE("");
     delete _stereo_barrier;
     _stereo_barrier = NULL;
 
@@ -3012,15 +3014,15 @@ bool CMedia::frame( const int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
-// #define DEBUG_SEEK
-#ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
-              << stopped() << std::endl;
-#endif
+//#define DEBUG_SEEK
 
 
     _seek_frame = f;
     _seek_req   = true;
+#ifdef DEBUG_SEEK
+    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
+              << stopped() << " _seek_frame " << _seek_frame << std::endl;
+#endif
 
 
     if ( _right_eye && _owns_right_eye )
@@ -3834,7 +3836,7 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( !_sequence ) return;
 
-    uint64_t max_frames = max_image_frames();
+    uint64_t max_frames = 1; //max_image_frames();
 
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
@@ -3877,6 +3879,7 @@ void CMedia::limit_video_store( const int64_t f )
     for ( ; it != tmp.end() && memory_used >= Preferences::max_memory; ++it )
     {
         uint64_t idx = it->second;
+
         if ( image_count <= max_frames ) break;
 
         if ( _sequence[idx] )
@@ -3901,6 +3904,10 @@ void CMedia::limit_video_store( const int64_t f )
             _right[ idx ].reset();
         }
     }
+
+#ifdef LINUX
+    malloc_trim(0);
+#endif
 
 }
 

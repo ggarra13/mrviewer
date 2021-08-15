@@ -80,6 +80,7 @@ namespace otio = opentimelineio::OPENTIMELINEIO_VERSION;
 namespace otime = opentime::OPENTIME_VERSION;
 
 
+#include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "video/mrvGLShape.h"
 #include "core/Sequence.h"
@@ -88,6 +89,8 @@ namespace otime = opentime::OPENTIME_VERSION;
 #include "mrvOS.h"
 
 #include "gui/mrvIO.h"
+#include "mrvPreferencesUI.h"
+#include "mrViewer.h"
 
 namespace {
 const char* kModule = "seq";
@@ -1347,6 +1350,84 @@ bool parse_otio( mrv::LoadList& sequences, const char* file )
     int ok = chdir( p.string().c_str() );
 
     return parse_timeline( sequences, timeline );
+}
+
+void ImageBrowser::save_otio( mrv::Reel reel,
+                              const std::string& file )
+{
+    otio::ErrorStatus error_status;
+    auto timeline = otio::SerializableObject::Retainer<otio::Timeline>(new otio::Timeline(reel->name));
+    auto track = otio::SerializableObject::Retainer<otio::Track>(new otio::Track());
+
+    for ( unsigned i = 0 ; i < reel->images.size(); ++i )
+    {
+        char shotID[64];
+        sprintf( shotID, "shot #%d", i );
+        mrv::media& m = reel->images[i];
+        CMedia* img = m->image();
+        otio::RationalTime s( img->start_frame(), img->fps() );
+        otio::RationalTime d( img->end_frame() - img->start_frame() + 1,
+                              img->fps() );
+        otio::TimeRange availableRange( s, d );
+        std::string path = img->fileroot();
+
+        if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+        {
+            fs::path parentPath = file; //fs::current_path();
+            parentPath = parentPath.parent_path();
+            fs::path childPath = img->fileroot();
+
+            // @WARNING: do not generic_string() here as it fails on windows
+            //           and leaves path empty.
+            if ( img->internal() )
+            {
+                path = childPath.string();
+            }
+            else
+            {
+                fs::path relativePath = fs::relative( childPath, parentPath );
+                path = relativePath.string();
+            }
+
+            if ( path.empty() )
+            {
+                LOG_ERROR( "Error in processing relative path for "
+                           << img->fileroot() );
+                path = img->fileroot();
+            }
+
+            std::replace( path.begin(), path.end(), '\\', '/' );
+        }
+        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( std::string("file://") + path, availableRange ));
+
+        otio::RationalTime start( img->first_frame(), img->fps() );
+        otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
+                                     img->fps() );
+        otio::TimeRange visibleRange( start, duration );
+        auto clip = otio::SerializableObject::Retainer<otio::Clip>(new otio::Clip(shotID, mediaReference, visibleRange ));
+        if ( ! track.value->append_child( clip, &error_status ) )
+        {
+            LOG_ERROR( _("Could not append one clip to track: ") << error_status );
+        }
+    }
+
+    auto stack = otio::SerializableObject::Retainer<otio::Stack>(new otio::Stack());
+    timeline.value->set_tracks(stack);
+    if (!stack.value->append_child(track, &error_status))
+    {
+        LOG_ERROR( _("Could not append one track to stack: ") << error_status );
+        return;
+    }
+
+    if (!timeline.value->to_json_file(file.c_str(), &error_status))
+    {
+        LOG_ERROR( _("Could not save .otio timeline: ") << error_status);
+        return;
+    }
+
+    char buf[1024];
+    sprintf( buf, _("Otio timeline saved to '%s'."), file.c_str() );
+    mrv::alert( buf );
 }
 
 } // namespace mrv

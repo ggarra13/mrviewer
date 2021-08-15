@@ -59,20 +59,25 @@ public:
         if ( used > m_threshold ) m_count = 0;
         else m_count = m_threshold - used;
     }
-    inline unsigned threshold()  const {
+    inline unsigned threshold()   {
+        SCOPED_LOCK( m_mutex );
         return m_threshold;
     }
-    inline unsigned generation() const {
+    inline unsigned generation()  {
+        SCOPED_LOCK( m_mutex );
         return m_generation;
     }
-    inline unsigned count()      const {
+    inline unsigned count()       {
+        SCOPED_LOCK( m_mutex );
         return m_count;
     }
-    inline unsigned used()       const {
+    inline unsigned used()        {
+        SCOPED_LOCK( m_mutex );
         return m_threshold - m_count;
     }
 
-    inline bool is_active() const {
+    inline bool is_active()  {
+        SCOPED_LOCK( m_mutex );
         return (m_count < m_threshold);
     }
 
@@ -99,8 +104,8 @@ public:
 
         while (gen == m_generation)
             CONDITION_WAIT( m_cond, m_mutex );
-	
-	return false;
+
+        return false;
     }
 
 protected:

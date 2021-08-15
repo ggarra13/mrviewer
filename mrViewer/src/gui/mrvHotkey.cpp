@@ -159,6 +159,7 @@ Hotkey kSOPSatNodes( false, false, false, false, 0 );
 Hotkey kAttachAudio( false, false, false, false, 0 );
 Hotkey kEditAudio( false, false, false, false, 0 );
 Hotkey kDetachAudio( false, false, false, false, 0 );
+Hotkey kCopyFrameXYValues( true, false, false, true, 'c' );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
@@ -388,6 +389,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Set As BG Image"), kSetAsBG),
     HotkeyEntry( _("Attach Audio File"), kAttachAudio),
     HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
+    HotkeyEntry( _("Copy Frame, X, Y Values"), kCopyFrameXYValues, true),
     HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
     HotkeyEntry( _("Clone Image"), kCloneImage),
     HotkeyEntry( _("Set In Point"), kSetInPoint),

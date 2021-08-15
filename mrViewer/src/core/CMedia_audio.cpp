@@ -1127,7 +1127,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 #if defined(_WIN32)
-    if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+    if ( ( ctx->channels == 1 || ctx->channels >= 6 ) &&
+         ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
         _audio_format = AudioEngine::kS32LSB;
     if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
                                  ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
@@ -1138,8 +1139,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 
 
-    if ( ctx->sample_fmt != fmt  ||
-         unsigned(ctx->channels) != _audio_channels )
+    if ( ctx->sample_fmt != fmt || unsigned(ctx->channels) != _audio_channels )
     {
 #if defined( OSX )
         if ( ctx->channels > 2 ) _audio_channels = 2;
@@ -1214,6 +1214,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
             if(swr_init(forw_ctx) < 0)
             {
+                swr_free( &forw_ctx );
+                forw_ctx = NULL;
                 char buf[256];
                 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
                 LOG_ERROR( _("Failed to init swresample library with ")
@@ -1224,16 +1226,16 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             }
         }
 
-        assert0( forw_ctx != NULL );
-        assert0( ret >= 0 );
-        assert0( samples != NULL );
-        assert0( _aframe->nb_samples > 0 );
-        assert0( _aframe->data != NULL );
-        assert0( _aframe->data[0] != NULL );
-        assert0( _aframe->extended_data != NULL );
-        assert0( _aframe->extended_data[0] != NULL );
-        assert0( _aframe->buf != NULL );
-        assert0( _aframe->buf[0] != NULL );
+        av_assert0( forw_ctx != NULL );
+        av_assert0( ret >= 0 );
+        av_assert0( samples != NULL );
+        av_assert0( _aframe->nb_samples > 0 );
+        av_assert0( _aframe->data != NULL );
+        av_assert0( _aframe->data[0] != NULL );
+        av_assert0( _aframe->extended_data != NULL );
+        av_assert0( _aframe->extended_data[0] != NULL );
+        av_assert0( _aframe->buf != NULL );
+        av_assert0( _aframe->buf[0] != NULL );
 
         int len2 = swr_convert(forw_ctx, (uint8_t**)&samples,
                                _aframe->nb_samples,
@@ -1325,8 +1327,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         if ( _audio_channels > 0 )
         {
-            assert0( _aframe->extended_data != NULL );
-            assert0( _aframe->extended_data[0] != NULL );
+            av_assert0( _aframe->extended_data != NULL );
+            av_assert0( _aframe->extended_data[0] != NULL );
             memcpy(samples, _aframe->extended_data[0], data_size);
         }
     }
@@ -1363,13 +1365,13 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     if ( !_audio_ctx ) return kDecodeNoStream;
 
 #if 0
-    assert0( !_audio_packets.is_seek_end( pkt ) );
-    assert0( !_audio_packets.is_seek( pkt ) );
-    assert0( !_audio_packets.is_flush( pkt ) );
-    assert0( !_audio_packets.is_preroll( pkt ) );
-    assert0( !_audio_packets.is_jump( pkt ) );
-    assert0( !_audio_packets.is_loop_end( pkt ) );
-    assert0( !_audio_packets.is_loop_start( pkt ) );
+    av_assert0( !_audio_packets.is_seek_end( pkt ) );
+    av_assert0( !_audio_packets.is_seek( pkt ) );
+    av_assert0( !_audio_packets.is_flush( pkt ) );
+    av_assert0( !_audio_packets.is_preroll( pkt ) );
+    av_assert0( !_audio_packets.is_jump( pkt ) );
+    av_assert0( !_audio_packets.is_loop_end( pkt ) );
+    av_assert0( !_audio_packets.is_loop_start( pkt ) );
 #else
     if ( _audio_packets.is_seek_end( pkt ) ||
          _audio_packets.is_seek( pkt ) ||
@@ -1396,13 +1398,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 
 
-#ifdef DEBUG
-    if ( _audio_buf_used + pkt.size >= _audio_max )
-    {
-        IMG_ERROR( _("Too much audio used:") << _audio_buf_used  );
-    }
-#endif
-
     // if ( _audio_packets.is_jump( pkt ) )
     // {
     //     return kDecodeOK;
@@ -1412,13 +1407,12 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     pkt_temp->data = pkt.data;
     pkt_temp->size = pkt.size;
 
-    //    assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
+    //    av_assert0( pkt.size != 0 && pkt.data != NULL );  // can crash
 
-    assert0( _audio_buf != NULL );
-    assert0( pkt.size + _audio_buf_used < _audio_max );
+    av_assert0( _audio_buf != NULL );
 
     int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
-    assert0( pkt_temp->size <= audio_size );
+    av_assert0( pkt_temp->size <= audio_size );
 
     if ( _audio_buf_used + audio_size > _audio_max )
     {
@@ -1452,7 +1446,6 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         }
 
         assert( audio_size > 0 );
-        assert( audio_size + _audio_buf_used <= _audio_max );
 
 
         _audio_buf_used += audio_size;
@@ -1518,18 +1511,6 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
     {
 
         if ( bytes_per_frame > _audio_buf_used ) break;
-
-#ifdef DEBUG
-        if ( index + bytes_per_frame >= _audio_max )
-        {
-            std::cerr << "frame: " << frame << std::endl
-                      << "audio frame: " << audio_frame << std::endl
-                      << "index: " << index << std::endl
-                      << "  bpf: " << bytes_per_frame << std::endl
-                      << " used: " << _audio_buf_used << std::endl
-                      << "  max: " << _audio_max << std::endl;
-        }
-#endif
 
         uint32_t skip = store_audio( last,
                                      (uint8_t*)_audio_buf + index,
@@ -1803,14 +1784,13 @@ bool CMedia::open_audio( const short channels,
     }
 
     AVSampleFormat ft = AudioEngine::ffmpeg_format( format );
-    unsigned bps = av_get_bytes_per_sample( ft ) * 8;
 
     bool ok = false;
     int ch = channels;
     for ( int fmt = format; fmt > 0; fmt -= 2 ) // -2 to skip be/le versions
     {
         ok = _audio_engine->open( ch, nSamplesPerSec,
-                                  (AudioEngine::AudioFormat)fmt, bps );
+                                  (AudioEngine::AudioFormat)fmt );
         if ( ok ) break;
     }
 
@@ -2055,7 +2035,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
     if ( count > 0 && is_seek )
     {
-        assert0( !_audio_packets.empty() );
+        av_assert0( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
         frame = get_frame( get_audio_stream(), pkt ) /*+ _audio_offset*/ ;
     }
@@ -2130,7 +2110,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 
     while ( got_audio != kDecodeOK && !_audio_packets.empty() )
     {
-        assert0( !_audio_packets.is_seek_end() );
+        av_assert0( !_audio_packets.is_seek_end() );
         if ( _audio_packets.is_flush() )
         {
             flush_audio();
@@ -2201,7 +2181,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
         // }
         else
         {
-            assert0( !_audio_packets.empty() );
+            av_assert0( !_audio_packets.empty() );
             AVPacket& pkt = _audio_packets.front();
 
 #if 0

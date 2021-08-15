@@ -678,6 +678,7 @@ namespace mrv {
  */
 ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
 Fl_Tree( x, y, w, h ),
+_loading( false ),
 _reel( 0 ),
 _value( -1 ),
 dragging( NULL ),
@@ -1131,6 +1132,17 @@ void ImageBrowser::save_session()
 
         std::string file = mrv::save_reel( dir.c_str() );
         if ( file.empty() ) return;
+
+        if ( fs::exists( file ) )
+          {
+            int ok = mrv::fl_choice( _("Are you sure you want to "
+                                       "overwrite '%s'?"),
+                                     _("Yes"), _("No"), NULL,
+                                     file.c_str() );
+            if ( ok == 1 ) // No
+              return;
+          }
+
         save_reel_( reel, file );
     }
 
@@ -1140,9 +1152,15 @@ void ImageBrowser::save_session()
 
         std::string reelname( file );
         if ( reelname.size() < 5 ||
-             reelname.substr(reelname.size()-5, 5) != ".reel" )
+             ( reelname.substr(reelname.size()-5, 5) != ".reel" &&
+               reelname.substr(reelname.size()-5, 5) != ".otio" ) )
         {
             reelname += ".reel";
+        }
+
+        if ( reelname.substr(reelname.size()-5, 5) == ".otio" )
+        {
+            return save_otio( reel, reelname );
         }
 
         // Declaring argument for time()
@@ -1290,6 +1308,8 @@ void ImageBrowser::save_session()
         }
 
 
+
+
         if ( reel->edl )
             fprintf( f, "EDL\n" );
 
@@ -1300,6 +1320,10 @@ void ImageBrowser::save_session()
 
         setlocale( LC_NUMERIC, oldloc );
         av_free( oldloc );
+
+        char buf[1024];
+        sprintf( buf, _("Reel '%s' saved"), file.c_str() );
+        mrv::alert( buf );
 
     }
 
@@ -1333,7 +1357,23 @@ void ImageBrowser::save_session()
                                  _("Yes"), _("No"), NULL );
         if ( ok == 1 ) return; // No
 
+        mrv::Reel reel = current_reel();
+        if (!reel) return;
+
+        size_t num = reel->images.size();
+        for ( size_t i = 0; i < num; ++i )
+        {
+            mrv::media m = reel->images[i];
+            Fl_Tree_Item* item = media_to_item( m );
+            if (!item) continue;
+            mrv::Element* elem = (mrv::Element*) item->widget();
+            delete elem;
+            item->widget( NULL );
+        }
+
         _reel_choice->remove(_reel);
+
+        reel->images.clear();
         _reels.erase( _reels.begin() + _reel );
 
         Fl_Choice* c = uiMain->uiEDLWindow->uiEDLChoiceOne;
@@ -1358,12 +1398,19 @@ void ImageBrowser::save_session()
             c->redraw();
         }
 
-        if ( _reels.empty() ) new_reel();
+        timeline()->clear_thumb();
+
+        if ( _reels.empty() ) {
+            new_reel();
+        }
         if ( _reel >= (unsigned int)_reels.size() )
             _reel = (unsigned int)_reels.size() - 1;
 
         _reel_choice->value( _reel );
         _reel_choice->redraw();
+
+        view()->clear_old();
+
         change_reel();
     }
 
@@ -1536,15 +1583,13 @@ void ImageBrowser::save_session()
     {
         mrv::Reel reel = current_reel();
 
-
         add_to_tree( m );
-
 
         match_tree_order();
 
         if ( reel->images.size() == 1 )
         {
-            change_image( 0 );
+            change_image(0);
         }
 
         send_reel( reel );
@@ -1579,6 +1624,7 @@ void ImageBrowser::save_session()
         if ( img == NULL ) return media();
 
         mrv::media m( new mrv::gui::media(img) );
+
         return add( m );
     }
 
@@ -1601,12 +1647,14 @@ void ImageBrowser::save_session()
         size_t len = file.size();
         if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
         {
-            load_reel( file.c_str() );
+            LoadInfo load( file );
+            load_reel( load );
             return current_image();
         }
         else if ( len > 5 && file.substr( len - 5, 5 ) == ".otio" )
         {
-            load_otio( file.c_str() );
+            LoadInfo load( file );
+            load_otio( load );
             return current_image();
         }
         else
@@ -1705,6 +1753,7 @@ void ImageBrowser::save_session()
         // clear dragging in case we were dragging the removed media
         dragging = NULL;
 
+        view()->clear_old();
         if (play) view()->play( play );
 
         view()->redraw();
@@ -1914,9 +1963,13 @@ void ImageBrowser::save_session()
         int64_t first, last;
         adjust_timeline( first, last );
         mrv::Timeline* t = timeline();
-        if ( t && !t->edl() )
+        if ( t )
         {
-            set_timeline( first, last );
+            t->clear_thumb();
+            if ( !t->edl() )
+            {
+                set_timeline( first, last );
+            }
         }
 
         send_image( i );
@@ -1927,7 +1980,7 @@ void ImageBrowser::save_session()
         {
             int64_t pos = m->position() - img->first_frame() + img->frame();
             DBGM3( "seek to " << pos );
-            seek( pos );
+            if ( !_loading ) seek( pos );
         }
         else
         {
@@ -1961,7 +2014,7 @@ void ImageBrowser::save_session()
 
         int v = value();
         if ( i == v ) {
-            if ( play != CMedia::kStopped ) view()->play(play);
+            if ( play ) view()->play(play);
             return;
         }
 
@@ -2124,12 +2177,14 @@ void ImageBrowser::save_session()
             return NULL;
         }
 
-        if ( first != AV_NOPTS_VALUE )
+        if ( ( img->first_frame() == AV_NOPTS_VALUE ||
+               first > img->first_frame() ) && first != AV_NOPTS_VALUE )
         {
             img->first_frame( first );
         }
 
-        if ( last != AV_NOPTS_VALUE )
+        if ( ( img->last_frame() == AV_NOPTS_VALUE ||
+               last < img->last_frame() ) && last != AV_NOPTS_VALUE )
         {
             img->last_frame( last );
         }
@@ -2173,6 +2228,7 @@ void ImageBrowser::save_session()
         if ( !img ) return mrv::media();
 
         mrv::media m = this->add( img );
+
 
         if ( !m )
         {
@@ -2283,11 +2339,13 @@ void ImageBrowser::save_session()
 
             if ( load.reel )
             {
-                load_reel( load.filename.c_str() );
+                load_reel( load );
+                return;
             }
             else if ( load.otio )
             {
-                load_otio( load.filename.c_str() );
+                load_otio( load );
+                return;
             }
             else
             {
@@ -2427,6 +2485,19 @@ void ImageBrowser::save_session()
                     GLShapeList& shapes = img->shapes();
                     shapes = load.shapes;
 
+                    CMedia::Attributes& attrs = img->attributes();
+                    if ( load.replace_attrs )
+                    {
+                        attrs.clear();
+                    }
+                    auto ati = load.attrs.begin();
+                    auto ate = load.attrs.end();
+                    for ( ; ati != ate; ++ati )
+                    {
+                        attrs.insert( *ati );
+                    }
+
+
                     std::string amf = aces_amf_filename( img->fileroot() );
                     bool ok = load_amf( img, amf.c_str() );
                     if ( ok == false )
@@ -2457,11 +2528,14 @@ void ImageBrowser::save_session()
             if ( net ) Fl::check();
         }
 
-        view()->update(true);
-        view()->redraw();
-        if ( net ) Fl::check();
+        if ( view() )
+        {
+            view()->update(true);
+            view()->redraw();
+            if ( net ) Fl::check();
 
-        view()->reset_caches(); // Redo preloaded sequence caches
+            view()->reset_caches(); // Redo preloaded sequence caches
+        }
 
         mrv::Reel reel = current_reel();
         if ( reel->images.empty() ) return;
@@ -2807,7 +2881,8 @@ void ImageBrowser::save_session()
                 uiMain->uiView->selection( r );
                 continue;
             }
-            load_reel( c );
+                LoadInfo load( c );
+                load_reel( load );
         }
     }
 
@@ -2820,28 +2895,52 @@ void ImageBrowser::save_session()
 }
 
 
+void append_attributes( const LoadInfo& info, LoadList& sequences )
+{
+    LoadList::iterator i = sequences.begin();
+    LoadList::iterator e = sequences.end();
+    for ( ; i != e; ++i )
+    {
+        LoadInfo& d = *i;
+        d.replace_attrs = info.replace_attrs;
+
+        auto ai = info.attrs.begin();
+        auto ae = info.attrs.end();
+        for ( ; ai != ae; ++ai )
+        {
+            d.attrs.insert( std::make_pair( ai->first, ai->second->copy() ) );
+        }
+    }
+}
+
 /**
  * Load an image reel
  *
  * @param name name of reel to load
  */
-void ImageBrowser::load_otio( const char* name )
+void ImageBrowser::load_otio( const LoadInfo& info )
 {
+    _loading = true;
     bool edl = true;
     mrv::LoadList sequences;
-    if ( ! parse_otio( sequences, name ) )
+    if ( ! parse_otio( sequences, info.filename.c_str() ) )
     {
-        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
+        _loading = false;
         return;
     }
 
-    fs::path path( name );
+    append_attributes( info, sequences );
+
+    fs::path path( info.filename );
     std::string reelname = path.leaf().string();
     reelname = reelname.substr(0, reelname.size()-5);
 
+    new_reel( reelname.c_str() );
     load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();
+    _loading = false;
 
     if ( reel->images.empty() ) return;
 
@@ -2854,21 +2953,25 @@ void ImageBrowser::load_otio( const char* name )
  *
  * @param name name of reel to load
  */
-void ImageBrowser::load_reel( const char* name )
+void ImageBrowser::load_reel( const LoadInfo& info )
 {
+    _loading = true;
     bool edl;
     mrv::LoadList sequences;
     short previous, next;
-    if ( ! parse_reel( sequences, edl, previous, next, name ) )
+    if ( ! parse_reel( sequences, edl, previous, next, info.filename.c_str() ) )
     {
-        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
+        _loading = false;
         return;
     }
 
     view()->ghost_previous( previous );
     view()->ghost_next( next );
 
-    fs::path path( name );
+    append_attributes( info, sequences );
+
+    fs::path path( info.filename );
     std::string reelname = path.leaf().string();
     reelname = reelname.substr(0, reelname.size()-5);
 
@@ -2877,6 +2980,7 @@ void ImageBrowser::load_reel( const char* name )
 
     mrv::Reel reel = current_reel();
 
+    _loading = false;
     if ( reel->images.empty() ) return;
 
 
@@ -3181,9 +3285,11 @@ void ImageBrowser::remove_current()
     for ( int i = 0; i < num; ++i )
     {
         Fl_Tree_Item* item = items[i];
+        if ( ! item ) continue;
         mrv::Element* elem = (mrv::Element*) item->widget();
         mrv::media m = elem->media();
         delete elem;
+        item->widget( NULL );
     }
 
 
@@ -3193,6 +3299,7 @@ void ImageBrowser::remove_current()
         Fl_Tree::remove( item );
     }
 
+    view()->clear_old();
 
     mrv::Reel r = current_reel();
     int v = value();
@@ -3230,6 +3337,13 @@ void ImageBrowser::clear_items()
         mrv::Element* elem = (mrv::Element*) item->widget();
         elem->Label()->box( FL_NO_BOX );
         elem->redraw();
+    }
+
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
     }
 
     redraw();
@@ -3624,6 +3738,14 @@ void ImageBrowser::next_image()
     }
 
     mrv::media orig = reel->images[v-1];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
     Fl_Tree_Item* item = root()->child(v-1);
     int ok = deselect( item, 0 );
@@ -3700,6 +3822,14 @@ void ImageBrowser::next_image_limited()
     }
 
     mrv::media orig = reel->images[v-1];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
     Fl_Tree_Item* item = root()->child(v-1);
     int ok = deselect( item, 0 );
@@ -3773,6 +3903,14 @@ void ImageBrowser::previous_image()
     }
 
     mrv::media orig = reel->images[v];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
 
 
@@ -3848,6 +3986,14 @@ void ImageBrowser::previous_image_limited()
     }
 
     mrv::media orig = reel->images[v];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
 
 
@@ -4365,9 +4511,9 @@ void ImageBrowser::exchange( int oldsel, int sel )
     sprintf( buf, _("ExchangeImage %d %d"), sel, oldsel );
     view()->send_network( buf );
 
-    CMedia::Playback playback = view()->playback();
+    CMedia::Playback play = view()->playback();
 
-    if ( playback != CMedia::kStopped )
+    if ( play != CMedia::kStopped )
         view()->stop();
 
     root()->swap_children( sel, oldsel );
@@ -4409,8 +4555,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
         frame( f );
     }
 
-    if ( playback != CMedia::kStopped )
-        view()->play(playback);
+    if ( play ) view()->play(play);
 
     redraw();
 }
@@ -4452,11 +4597,8 @@ void ImageBrowser::match_tree_order()
     Fl_Tree_Item* i;
     for ( i = first(); i; i = next(i) )
     {
-        if ( ! i->widget() ) {
-            continue;
-        }
-
         mrv::Element* elem = (mrv::Element*) i->widget();
+        if ( !elem ) continue;
         mrv::media m = elem->media();
         r->images.push_back( m );
         if ( m == fg && m ) {
@@ -4591,16 +4733,15 @@ void ImageBrowser::seek( const int64_t tframe )
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
+
+    CMedia::Playback play = view()->playback();
+
+
+    if ( play != CMedia::kStopped )
+        view()->stop();
+
     view()->frame( tframe );
 
-
-    CMedia::Playback playback = view()->playback();
-
-
-    if ( playback != CMedia::kStopped )
-    {
-        view()->stop();
-    }
 
     mrv::Timeline* t = timeline();
 
@@ -4690,9 +4831,9 @@ void ImageBrowser::seek( const int64_t tframe )
         }
     }
 
-    if ( playback != CMedia::kStopped )
+    if ( play )
     {
-        view()->play( playback );
+        view()->play( play );
     }
 
 
@@ -4754,9 +4895,10 @@ void ImageBrowser::clear_edl()
     if (!m) return;
 
     CMedia* img = m->image();
+    if ( !img ) return;
+
     int64_t f = img->frame();
 
-    if ( !img ) return;
 
     frame( f );
 
@@ -4791,6 +4933,7 @@ void ImageBrowser::set_edl()
     match_tree_order();
     int64_t first, last;
     adjust_timeline( first, last );
+
     set_timeline( first, last );
 
     mrv::media m = current_image();
@@ -4854,9 +4997,16 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 
         if ( i != e )
         {
-            first = (*i)->position();
-            MediaList::reverse_iterator j = reel->images.rbegin();
-            last  = (*j)->position() + (*j)->duration();
+            MediaList::iterator j;
+            (*i)->position( 1 );
+
+            for ( j = i, ++i; i != e; j = i, ++i )
+            {
+                int64_t frame = (*j)->position() + (*j)->duration();
+                DBGM1( (*i)->image()->name() << " moved to frame " << frame );
+                if ( (*i)->position() > frame ) continue;
+                (*i)->position( frame );
+            }
         }
 
         mrv::EDLGroup* eg = edl_group();
@@ -4865,7 +5015,7 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
             eg->redraw();
         }
 
-        mrv::media m = current_image();
+        mrv::media m = reel->images.front();
         if (! m ) return;
 
         CMedia* img = m->image();

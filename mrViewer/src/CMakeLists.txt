@@ -31,7 +31,7 @@ if (APPLE)
    set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
    include_directories(${OPENGL_INCLUDE_DIRS})
 
-   set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio " )
+   set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
     ${OSX_FRAMEWORKS}")
@@ -109,8 +109,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" OR
        CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" )
      #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
-     # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-     #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+     # ADD_DEFINITIONS( -DTHREAD_SANITIZER )
+     # ADD_COMPILE_OPTIONS( -fsanitize=thread )
+     # SET(OS_LIBRARIES -fsanitize=thread ${OS_LIBRARIES} )
 
      ADD_COMPILE_OPTIONS( -g -fsanitize=address )
      SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
@@ -168,10 +169,11 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
      #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
-     # ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-     #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+     # ADD_COMPILE_OPTIONS( -g -fsanitize=thread )
+     # ADD_DEFINITIONS( -DTHREAD_SANITIZER )
+     # SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-     ADD_COMPILE_OPTIONS( -fsanitize=address )
+     ADD_COMPILE_OPTIONS( -g -fsanitize=address )
      SET(LIBRARIES asan ${LIBRARIES} )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
@@ -326,6 +328,7 @@ SET( SOURCES
   gui/FLU/flu_pixmaps.cpp         # needed
 
   gui/MyPack.cpp
+  gui/mrvButton.cpp
   gui/mrvActionWindow.cpp
   gui/mrvAsk.cpp
   gui/mrvCTLBrowser.cpp

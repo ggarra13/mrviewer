@@ -86,6 +86,8 @@ void load_files( mrv::LoadList& files,
                  std::string bgimage = "",
                  bool edl = false  )
 {
+    if ( files.empty() ) return;
+
    //
    // Window must be shown after images have been loaded.
    //
@@ -141,6 +143,7 @@ void load_new_files( void* s )
    if ( !files.empty() )
    {
        load_files( files );
+       files.clear();
 
        std::string lockfile = mrv::lockfile();
 
@@ -335,6 +338,7 @@ int main( int argc, const char** argv )
                   }
               }
               load_files( opts.files );
+              opts.files.clear();
           }
 
 
@@ -416,6 +420,7 @@ int main( int argc, const char** argv )
           // mrv::open_license( argv[0] );
           // mrv::checkout_license();
           load_files( opts.files, false, opts.bgfile, opts.edl );
+          opts.files.clear();
 
           if ( !opts.stereo_input.empty() )
           {
@@ -483,6 +488,7 @@ int main( int argc, const char** argv )
             if ( opts.stereo.size() > 1 )
             {
                 load_files( opts.stereo, true );
+                opts.stereo.clear();
             }
 
             if ( idx )

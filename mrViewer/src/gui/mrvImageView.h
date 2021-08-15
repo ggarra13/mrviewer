@@ -161,7 +161,8 @@ public:
         kMovePicture = 1 << 6,
         kScalePicture = 1 << 7,
         kCircle       = 1 << 8,
-        kArrow        = 1 << 9
+        kArrow        = 1 << 9,
+        kCopyFrameXY  = 1 << 10,
     };
 
 
@@ -486,7 +487,6 @@ public:
     void update_image_info() const;
 
     /// Update the color information display
-    void update_color_info( const mrv::media fg ) const;
     void update_color_info() const;
 
     // Channel navigation (for hotkeys)
@@ -558,13 +558,19 @@ public:
     void toggle_window( const WindowList idx, const bool force = false );
 
     /// Auxiliary function to return reel list's browser for this view
-    ImageBrowser* browser();
+    ImageBrowser* browser() const;
 
     /// Auxiliary function to return timeline for this view
     Timeline* timeline();
 
     /// Copy pixel values of image under cursor
     void copy_pixel() const;
+
+    /// Toggle copy frame, x, y pixel copying to clipboard when LMB clicking
+    void toggle_copy_frame_xy();
+
+    /// Copy frame, x, y pixel to clipboard when LMB clicking
+    void copy_frame_xy() const;
 
     // Toggle between fullscreen and normal resolution
     void toggle_fullscreen();
@@ -788,6 +794,7 @@ public:
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
 
+    void clear_old();
 
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
@@ -1034,7 +1041,7 @@ protected:
     double       _real_fps;     //!< current fps
     double       _last_fps;     //!< last fps
     int          _redraws_fps;  //!< # of redraws done for fps calculation
-    int64_t      _frame;        //!< current frame in viewer
+    std::atomic<int64_t>      _frame;        //!< current frame in viewer
     int64_t      _lastFrame;    //!< last frame for fps calculation
     bool       _do_seek;
     CMedia::Mutex _shortcut_mutex;

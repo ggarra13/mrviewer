@@ -272,7 +272,6 @@ void GLEngine::init_textures()
     }
 
     _maxTexWidth = _maxTexHeight = glMaxTexDim;
-
 }
 
 /**
@@ -1070,6 +1069,8 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
+    assert( s != nullptr );
+
     glMatrixMode( GL_MODELVIEW );
 
     glLoadIdentity();
@@ -1178,7 +1179,6 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
 {
     if ( _view->vr() ) return;
 
-    static mrv::media old;
     mrv::media fg = _view->foreground();
     if ( old != fg && old && fg )
     {
@@ -1636,7 +1636,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    const mrv::media& fg = _view->foreground();
+    mrv::media fg = _view->foreground();
     if ( fg )
     {
         CMedia* img = fg->image();

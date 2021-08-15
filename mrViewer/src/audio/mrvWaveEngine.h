@@ -60,11 +60,17 @@ public:
     }
 
     // Open an audio stream for playback
+    MMRESULT reopen(
+        const unsigned int channels,
+        const unsigned int frequency,
+        const AudioFormat  format
+    );
+    
+    // Open an audio stream for playback
     virtual bool open(
         const unsigned int channels,
         const unsigned int frequency,
-        const AudioFormat  format,
-        const unsigned int bits
+        const AudioFormat  format
     );
 
     // Play some samples (this function does not return until
