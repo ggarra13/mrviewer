@@ -54,8 +54,7 @@ public:
     virtual bool open(
         const unsigned int channels,
         const unsigned int frequency,
-        const AudioFormat  format,
-        const unsigned int bits
+        const AudioFormat  format
     );
 
     virtual void refresh_devices();

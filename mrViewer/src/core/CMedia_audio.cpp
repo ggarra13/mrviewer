@@ -1127,7 +1127,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 #if defined(_WIN32)
-    if ( ctx->channels >= 6 && ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+    if ( ( ctx->channels == 1 || ctx->channels >= 6 ) &&
+         ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
         _audio_format = AudioEngine::kS32LSB;
     if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
                                  ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
@@ -1138,8 +1139,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 
 
-    if ( ctx->sample_fmt != fmt  ||
-         unsigned(ctx->channels) != _audio_channels )
+    if ( ctx->sample_fmt != fmt || unsigned(ctx->channels) != _audio_channels )
     {
 #if defined( OSX )
         if ( ctx->channels > 2 ) _audio_channels = 2;
@@ -1784,14 +1784,13 @@ bool CMedia::open_audio( const short channels,
     }
 
     AVSampleFormat ft = AudioEngine::ffmpeg_format( format );
-    unsigned bps = av_get_bytes_per_sample( ft ) * 8;
 
     bool ok = false;
     int ch = channels;
     for ( int fmt = format; fmt > 0; fmt -= 2 ) // -2 to skip be/le versions
     {
         ok = _audio_engine->open( ch, nSamplesPerSec,
-                                  (AudioEngine::AudioFormat)fmt, bps );
+                                  (AudioEngine::AudioFormat)fmt );
         if ( ok ) break;
     }
 
