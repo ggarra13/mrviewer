@@ -90,6 +90,7 @@ void LogDisplay::clear()
     SCOPED_LOCK( mtx );
     mStyleBuffer->text("");
     mBuffer->text("");
+    redraw();
     _lines = 0;
 }
 
