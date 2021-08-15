@@ -90,6 +90,7 @@ void LogDisplay::clear()
     SCOPED_LOCK( mtx );
     mStyleBuffer->text("");
     mBuffer->text("");
+    redraw();
     _lines = 0;
 }
 
@@ -103,21 +104,24 @@ void LogDisplay::save( const char* file )
         file = buf;
     }
 
-    FILE* f = NULL;
-
     try {
 
         SCOPED_LOCK( mtx );
 
-        f = fl_fopen( file, "w" );
-
-        if ( !f ) throw;
-        if ( fputs( buffer_->text(), f ) < 0 ) throw;
+        int err = mBuffer->savefile( file );
+        if ( err != 0 ) throw std::runtime_error( strerror(err) );
 
 
         info( "Saved log as \"" );
         info( file );
         info( "\"." );
+    }
+    catch( const std::runtime_error& e )
+    {
+        char err[4200];
+        sprintf( err, "Could not save log file \"%s\".", file );
+        error( err );
+        error( e.what() );
     }
     catch( ... )
     {
@@ -126,7 +130,6 @@ void LogDisplay::save( const char* file )
         error( err );
     }
 
-    if ( f ) fclose(f);
 }
 
 

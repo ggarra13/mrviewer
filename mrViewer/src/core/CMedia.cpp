@@ -828,8 +828,9 @@ void CMedia::wait_for_threads()
 {
     for ( const auto& i : _threads )
     {
-        i->interrupt();
-        i->join();
+        boost::posix_time::time_duration timeout =
+        boost::posix_time::milliseconds(10000);
+        i->timed_join(timeout);
         delete i;
     }
 

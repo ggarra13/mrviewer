@@ -1647,12 +1647,14 @@ void ImageBrowser::save_session()
         size_t len = file.size();
         if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
         {
-            load_reel( file.c_str() );
+            LoadInfo load( file );
+            load_reel( load );
             return current_image();
         }
         else if ( len > 5 && file.substr( len - 5, 5 ) == ".otio" )
         {
-            load_otio( file.c_str() );
+            LoadInfo load( file );
+            load_otio( load );
             return current_image();
         }
         else
@@ -2337,12 +2339,12 @@ void ImageBrowser::save_session()
 
             if ( load.reel )
             {
-                load_reel( load.filename.c_str() );
+                load_reel( load );
                 return;
             }
             else if ( load.otio )
             {
-                load_otio( load.filename.c_str() );
+                load_otio( load );
                 return;
             }
             else
@@ -2486,17 +2488,15 @@ void ImageBrowser::save_session()
                     CMedia::Attributes& attrs = img->attributes();
                     if ( load.replace_attrs )
                     {
-                        attrs = load.attrs;
+                        attrs.clear();
                     }
-                    else
+                    auto ati = load.attrs.begin();
+                    auto ate = load.attrs.end();
+                    for ( ; ati != ate; ++ati )
                     {
-                        auto ati = load.attrs.begin();
-                        auto ate = load.attrs.end();
-                        for ( ; ati != ate; ++ati )
-                        {
-                            attrs.insert( *ati );
-                        }
+                        attrs.insert( *ati );
                     }
+
 
                     std::string amf = aces_amf_filename( img->fileroot() );
                     bool ok = load_amf( img, amf.c_str() );
@@ -2881,7 +2881,8 @@ void ImageBrowser::save_session()
                 uiMain->uiView->selection( r );
                 continue;
             }
-            load_reel( c );
+                LoadInfo load( c );
+                load_reel( load );
         }
     }
 
@@ -2894,24 +2895,44 @@ void ImageBrowser::save_session()
 }
 
 
+void append_attributes( const LoadInfo& info, LoadList& sequences )
+{
+    LoadList::iterator i = sequences.begin();
+    LoadList::iterator e = sequences.end();
+    for ( ; i != e; ++i )
+    {
+        LoadInfo& d = *i;
+        d.replace_attrs = info.replace_attrs;
+
+        auto ai = info.attrs.begin();
+        auto ae = info.attrs.end();
+        for ( ; ai != ae; ++ai )
+        {
+            d.attrs.insert( std::make_pair( ai->first, ai->second->copy() ) );
+        }
+    }
+}
+
 /**
  * Load an image reel
  *
  * @param name name of reel to load
  */
-void ImageBrowser::load_otio( const char* name )
+void ImageBrowser::load_otio( const LoadInfo& info )
 {
     _loading = true;
     bool edl = true;
     mrv::LoadList sequences;
-    if ( ! parse_otio( sequences, name ) )
+    if ( ! parse_otio( sequences, info.filename.c_str() ) )
     {
-        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
         _loading = false;
         return;
     }
 
-    fs::path path( name );
+    append_attributes( info, sequences );
+
+    fs::path path( info.filename );
     std::string reelname = path.leaf().string();
     reelname = reelname.substr(0, reelname.size()-5);
 
@@ -2932,15 +2953,15 @@ void ImageBrowser::load_otio( const char* name )
  *
  * @param name name of reel to load
  */
-void ImageBrowser::load_reel( const char* name )
+void ImageBrowser::load_reel( const LoadInfo& info )
 {
     _loading = true;
     bool edl;
     mrv::LoadList sequences;
     short previous, next;
-    if ( ! parse_reel( sequences, edl, previous, next, name ) )
+    if ( ! parse_reel( sequences, edl, previous, next, info.filename.c_str() ) )
     {
-        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
         _loading = false;
         return;
     }
@@ -2948,7 +2969,9 @@ void ImageBrowser::load_reel( const char* name )
     view()->ghost_previous( previous );
     view()->ghost_next( next );
 
-    fs::path path( name );
+    append_attributes( info, sequences );
+
+    fs::path path( info.filename );
     std::string reelname = path.leaf().string();
     reelname = reelname.substr(0, reelname.size()-5);
 
@@ -3715,6 +3738,14 @@ void ImageBrowser::next_image()
     }
 
     mrv::media orig = reel->images[v-1];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
     Fl_Tree_Item* item = root()->child(v-1);
     int ok = deselect( item, 0 );
@@ -3791,6 +3822,14 @@ void ImageBrowser::next_image_limited()
     }
 
     mrv::media orig = reel->images[v-1];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
     Fl_Tree_Item* item = root()->child(v-1);
     int ok = deselect( item, 0 );
@@ -3864,6 +3903,14 @@ void ImageBrowser::previous_image()
     }
 
     mrv::media orig = reel->images[v];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
 
 
@@ -3939,6 +3986,14 @@ void ImageBrowser::previous_image_limited()
     }
 
     mrv::media orig = reel->images[v];
+    if ( orig )
+    {
+        CMedia* img = orig->image();
+        if ( img )
+        {
+            img->close_audio();
+        }
+    }
 
 
 

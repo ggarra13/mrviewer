@@ -111,10 +111,10 @@ public:
     void save_reel_( mrv::Reel r, const std::string& file );
 
     //! Load an otio edit
-    void load_otio( const char* name );
+    void load_otio( const LoadInfo& load );
 
     //! Load a reel from filename
-    void load_reel( const char* filename );
+    void load_reel( const LoadInfo& load );
 
     //! Load a session and all reels from filename
     void load_session( const char* filename );
