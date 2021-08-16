@@ -732,7 +732,7 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
     sprintf( buf, "Mask %g", mask );
     view->send_network( buf );
 
-    setlocale( LC_NUMERIC, NULL );
+    view->restore_locale();
 
     view->masking( mask );
 
@@ -1035,8 +1035,12 @@ void ImageView::clear_old()
 
 void ImageView::restore_locale() const
 {
+#ifdef OSX
     const char* loc = setlocale( LC_MESSAGES, NULL );
     setlocale( LC_NUMERIC, loc );
+#else
+    setlocale( LC_NUMERIC, NULL );
+#endif
 }
 
     void toggle_action_tool_dock(Fl_Widget* w, ViewerUI* uiMain)
@@ -3966,8 +3970,7 @@ void ImageView::timeout()
     if ( fg )
     {
         img = fg->image();
-
-        delay = 0.25 / img->play_fps();
+        delay = 0.5 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
@@ -3980,6 +3983,19 @@ void ImageView::timeout()
     }
 
 
+    // if ( timeline->visible() )
+    // {
+
+    //     if ( reel && !reel->edl && img )
+    //     {
+    //         int64_t frame = img->frame();
+
+    //         if ( this->frame() != frame && playback() != CMedia::kStopped )
+    //         {
+    //             this->frame( frame );
+    //         }
+    //     }
+    // }
 
 
     if ( should_update( fg ) )
@@ -4133,7 +4149,6 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
-
 
     DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
@@ -4716,8 +4731,6 @@ bool PointInTriangle (const Imath::V2i& pt,
 
  void ImageView::fill_menu( Fl_Menu_* menu )
  {
-     SCOPED_LOCK( _shortcut_mutex );
-
      menu->clear();
      int idx = 1;
 
@@ -10529,25 +10542,18 @@ void ImageView::playback( const CMedia::Playback b )
 
     _last_fps = 0.0;
 
-    if ( !uiMain->uiPlayForwards || !uiMain->uiPlayBackwards )
-        return;
-
     if ( b == CMedia::kForwards )
     {
-        uiMain->uiPlayForwards->labelcolor( FL_CYAN );
         uiMain->uiPlayForwards->value(1);
         uiMain->uiPlayBackwards->value(0);
     }
     else if ( b == CMedia::kBackwards )
     {
         uiMain->uiPlayForwards->value(0);
-        uiMain->uiPlayBackwards->labelcolor( FL_CYAN );
         uiMain->uiPlayBackwards->value(1);
     }
     else
     {
-        uiMain->uiPlayForwards->labelcolor( 28 );
-        uiMain->uiPlayBackwards->labelcolor( 28 );
         uiMain->uiPlayForwards->value(0);
         uiMain->uiPlayBackwards->value(0);
     }
@@ -10700,7 +10706,13 @@ void ImageView::stop()
 
     stop_playback();
 
-    playback( CMedia::kStopped );
+
+    if ( uiMain->uiPlayForwards )
+        uiMain->uiPlayForwards->value(0);
+
+    if ( uiMain->uiPlayBackwards )
+        uiMain->uiPlayBackwards->value(0);
+
 
     frame( frame() );
     // seek( int64_t(timeline()->value()) );

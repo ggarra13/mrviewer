@@ -794,6 +794,8 @@ public:
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
 
+    void restore_locale() const;
+    
     void clear_old();
 
 public:
@@ -929,8 +931,6 @@ protected:
     void left_right( const CMedia* const img,
                      mrv::image_type_ptr& pic, int& xp, int& yp,
                      short& idx, bool& outside, int w, int h ) const;
-
-    void restore_locale() const;
 
     void log() const;
 
