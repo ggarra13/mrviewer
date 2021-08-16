@@ -10561,6 +10561,8 @@ void ImageView::playback( const CMedia::Playback b )
     uiMain->uiPlayForwards->redraw();
     uiMain->uiPlayBackwards->redraw();
 
+    take_focus();
+
 }
 
 
@@ -10699,19 +10701,13 @@ void ImageView::stop()
 
     delete_timeout();
 
-    _playback = CMedia::kStopped;
+    playback( CMedia::kStopped );
 
     _last_fps = 0.0;
     _real_fps = 0.0;
 
     stop_playback();
 
-
-    if ( uiMain->uiPlayForwards )
-        uiMain->uiPlayForwards->value(0);
-
-    if ( uiMain->uiPlayBackwards )
-        uiMain->uiPlayBackwards->value(0);
 
 
     frame( frame() );
