@@ -1372,8 +1372,6 @@ void ImageView::update_ICS(mrv::media fg) const
             return;
         }
     }
-    o->copy_label( "scene_linear"  );
-    o->redraw();
 }
 
 
@@ -4731,6 +4729,8 @@ bool PointInTriangle (const Imath::V2i& pt,
 
  void ImageView::fill_menu( Fl_Menu_* menu )
  {
+     SCOPED_LOCK( _shortcut_mutex );
+
      menu->clear();
      int idx = 1;
 
@@ -10687,6 +10687,15 @@ void ImageView::thumbnails()
     if ( b ) b->redraw();
 }
 
+
+bool ImageView::preload_cache_full( CMedia* img )
+{
+    if ( img->is_cache_full() ) return true;
+    if ( Preferences::max_memory <= CMedia::memory_used )
+        return true;
+    return false;
+}
+
 /**
  * Stop image sequence.
  *
@@ -10720,11 +10729,12 @@ void ImageView::stop()
         if (fg)
         {
             _preframe = fg->image()->first_cache_empty_frame();
-        }
-        if ( _idle_callback )
-        {
-            preload_cache_stop();
-            preload_cache_start();
+            if ( _idle_callback )
+            {
+                preload_cache_stop();
+                if ( ! preload_cache_full( fg->image() ) ) 
+                    preload_cache_start();
+            }
         }
     }
 

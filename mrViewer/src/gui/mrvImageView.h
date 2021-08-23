@@ -745,6 +745,8 @@ public:
 
     /// Start preload image caches
     void preload_cache_start();
+    
+    bool preload_cache_full( CMedia* img );
 
     int64_t preload_frame() const {
         return _preframe;

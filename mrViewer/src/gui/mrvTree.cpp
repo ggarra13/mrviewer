@@ -1,6 +1,7 @@
 #include <FL/Fl_XPM_Image.H>
 #include "FLU/flu_pixmaps.h"
 #include "gui/mrvTree.h"
+#include "gui/mrvPreferences.h"
 
 namespace mrv
 {
@@ -23,10 +24,19 @@ Fl_Tree( x, y, w, h, l )
 
 }
 
-    PreferencesTree::~PreferencesTree()
+void PreferencesTree::draw()
+{
+    if ( Preferences::schemes.name == "Black" )
     {
-        delete openicon();
-        delete closeicon();
+        color( fl_contrast( labelcolor(), color2() ) );
     }
+    Fl_Tree::draw();
+}
+
+PreferencesTree::~PreferencesTree()
+{
+    delete openicon();
+    delete closeicon();
+}
 
 }
