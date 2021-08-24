@@ -333,8 +333,7 @@ bool exrImage::channels_order(
         else if ( order[3] == -1 && (( ext == N_("AR") && oldext == N_("R") ) ||
                                      ( ext == N_("AG") && oldext == N_("G") ) ||
                                      ( ext == N_("AB") && oldext == N_("B") ) ||
-                                     ( ext == N_("A") || ext == N_("ALPHA"))) &&
-                                     Zchannel == false )
+                                     ( ext == N_("A")  && Zchannel == false )) )
         {
             oldext = ext;
             int k = order[3] = (int)channelList.size();
