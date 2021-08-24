@@ -9,6 +9,7 @@ namespace mrv {
     {
     }
 
+
     unsigned Choice::children() { return size(); }
 
 Fl_Menu_Item* Choice::child( int idx ) { return (Fl_Menu_Item*) &menu()[idx]; }

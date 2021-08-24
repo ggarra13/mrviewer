@@ -296,7 +296,8 @@ bool exrImage::channels_order(
 
         if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
                                 ext == N_("Y") || ext == N_("U") ||
-                                ext == N_("X") || ext == N_("Z")) )
+                                ext == N_("X") || ext == N_("Z") ||
+                                ext == N_("RED")) )
         {
             oldext = ext;
             int k = order[0] = (int)channelList.size();
@@ -307,7 +308,8 @@ bool exrImage::channels_order(
         }
         else if ( order[1] == -1 && ((ext == N_("G") && Zchannel == false) ||
                                      ext == N_("RY") || ext == N_("V") ||
-                                     ext == N_("Y") ) )
+                                     ext == N_("Y")  ||
+                                     ext == N_("GREEN")) )
         {
             oldext = ext;
             int k = order[1] = (int)channelList.size();
@@ -318,7 +320,8 @@ bool exrImage::channels_order(
         }
         else if ( order[2] == -1 && ((ext == N_("B") && Zchannel == false) ||
                                      ext == N_("BY") || ext == N_("W") ||
-                                     ext == N_("Z") ) )
+                                     ext == N_("Z") ||
+                                     ext == N_("BLUE")) )
         {
             oldext = ext;
             int k = order[2] = (int)channelList.size();
@@ -330,7 +333,8 @@ bool exrImage::channels_order(
         else if ( order[3] == -1 && (( ext == N_("AR") && oldext == N_("R") ) ||
                                      ( ext == N_("AG") && oldext == N_("G") ) ||
                                      ( ext == N_("AB") && oldext == N_("B") ) ||
-                                     ( ext == N_("A") )) && Zchannel == false )
+                                     ( ext == N_("A") || ext == N_("ALPHA"))) &&
+                                     Zchannel == false )
         {
             oldext = ext;
             int k = order[3] = (int)channelList.size();
@@ -1058,7 +1062,9 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
             // from prefix.
             if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" ||
                     ext == "X" || ext == "Y" || ext == "U" ||
-                    ext == "V" || ext == "W" )
+                    ext == "V" || ext == "W" ||
+                 ext == N_("RED") || ext == N_("GREEN") || ext == N_("BLUE") ||
+                 ext == N_("ALPHA") )
             {
                 ext = "";
                 if ( idx == std::string::npos || idx == 1 )
