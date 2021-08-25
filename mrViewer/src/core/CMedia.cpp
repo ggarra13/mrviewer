@@ -2227,6 +2227,7 @@ void CMedia::channel( const char* c )
             if ( ( ch == "Y" || ch == "RY" || ch == "BY" ) ||
                  ( ch.find(ch2) == std::string::npos &&
                    ch2.find(ch) == std::string::npos ) ||
+                 ch.size() == 1 || ch2.size() == 1 ||
                  ( ext == "Z" && chl.size() > 1 ) ||
                  ( ext2 == "Z" && chl2.size() > 1 ) ||
                  _channel == NULL || c == NULL)

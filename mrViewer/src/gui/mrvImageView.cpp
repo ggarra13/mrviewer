@@ -10732,9 +10732,9 @@ void ImageView::stop()
             if ( _idle_callback )
             {
                 preload_cache_stop();
-                if ( ! preload_cache_full( fg->image() ) ) 
-                    preload_cache_start();
             }
+            if ( ! preload_cache_full( fg->image() ) )
+                preload_cache_start();
         }
     }
 

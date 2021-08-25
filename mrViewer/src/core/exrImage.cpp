@@ -294,10 +294,10 @@ bool exrImage::channels_order(
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
 
-        if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
+        if ( order[0] == -1 && ((( ext == N_("R") ||
+                                   ext == N_("RED")) && Zchannel == false) ||
                                 ext == N_("Y") || ext == N_("U") ||
-                                ext == N_("X") || ext == N_("Z") ||
-                                ext == N_("RED")) )
+                                ext == N_("X") || ext == N_("Z") ))
         {
             oldext = ext;
             int k = order[0] = (int)channelList.size();
@@ -306,10 +306,10 @@ bool exrImage::channels_order(
             ysampling[k] = ch.ySampling;
             channelList.push_back( layerName );
         }
-        else if ( order[1] == -1 && ((ext == N_("G") && Zchannel == false) ||
+        else if ( order[1] == -1 && (((ext == N_("G") || ext == N_("GREEN")) &&
+                                      Zchannel == false) ||
                                      ext == N_("RY") || ext == N_("V") ||
-                                     ext == N_("Y")  ||
-                                     ext == N_("GREEN")) )
+                                     ext == N_("Y")  ) )
         {
             oldext = ext;
             int k = order[1] = (int)channelList.size();
@@ -318,10 +318,10 @@ bool exrImage::channels_order(
             ysampling[k] = ch.ySampling;
             channelList.push_back( layerName );
         }
-        else if ( order[2] == -1 && ((ext == N_("B") && Zchannel == false) ||
+        else if ( order[2] == -1 && (((ext == N_("B") || ext == N_("BLUE")) &&
+                                      Zchannel == false) ||
                                      ext == N_("BY") || ext == N_("W") ||
-                                     ext == N_("Z") ||
-                                     ext == N_("BLUE")) )
+                                     ext == N_("Z")) )
         {
             oldext = ext;
             int k = order[2] = (int)channelList.size();
@@ -333,7 +333,7 @@ bool exrImage::channels_order(
         else if ( order[3] == -1 && (( ext == N_("AR") && oldext == N_("R") ) ||
                                      ( ext == N_("AG") && oldext == N_("G") ) ||
                                      ( ext == N_("AB") && oldext == N_("B") ) ||
-                                     ( ext == N_("A")  && Zchannel == false )) )
+                                     ((ext == N_("A") && Zchannel == false ))))
         {
             oldext = ext;
             int k = order[3] = (int)channelList.size();
@@ -920,9 +920,9 @@ bool exrImage::find_layers( const Imf::Header& h )
                 stringArray::iterator ke = lg.end();
                 std::string lcase = *(ks + (lg.size() > 1));
                 if ( lcase.rfind( ".g" ) != std::string::npos ||
-                        lcase.rfind( ".G" ) != std::string::npos ||
-                        lcase.rfind( ".B" ) != std::string::npos ||
-                        lcase.rfind( ".b" ) != std::string::npos )
+                     lcase.rfind( ".G" ) != std::string::npos ||
+                     lcase.rfind( ".B" ) != std::string::npos ||
+                     lcase.rfind( ".b" ) != std::string::npos )
                 {
                     std::sort( ks, ke, std::greater<std::string>() );
                 }
@@ -1005,6 +1005,7 @@ bool exrImage::handle_stereo( mrv::image_type_ptr& canvas,
         e = channels.end();
     }
 
+
     ok = channels_order( canvas, frame, s, e, channels, h, fb );
     _stereo[0] = canvas; //_hires;
 
@@ -1023,7 +1024,6 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
 
     char* channelPrefix = NULL;
     if ( _channel ) channelPrefix = av_strdup( _channel );
-
 
     // If channel starts with #, we are dealing with a multipart exr
 
@@ -1105,9 +1105,11 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
 
         // If extension is one of a group, load all channels
         if ( ext == "A" || ext == "R" || ext == "G" ||
-                ext == "B" || ext == "X" || ext == "Y" ||
-                ext == "U" || ext == "V" ||
-                ext == "W" ) prefix = prefix.substr(0, pos);
+             ext == "B" || ext == "X" || ext == "Y" ||
+             ext == "U" || ext == "V" || ext == "W" ||
+             ext == N_("RED") || ext == N_("GREEN") || ext == N_("BLUE") ||
+             ext == N_("ALPHA") ) prefix = prefix.substr(0, pos);
+
 
         channels.channelsWithPrefix( prefix, s, e );
         if ( s == e )
