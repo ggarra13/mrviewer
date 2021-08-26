@@ -710,6 +710,13 @@ void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 
 void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
 {
+    if ( view->action_mode() & mrv::ImageView::kSelection )
+    {
+        scrub_mode();
+        mrv::Rectd r( 0, 0, 0, 0 );
+        view->selection( r );
+        view->redraw();
+    }
     view->stop();
     view->browser()->save_sequence();
 }
