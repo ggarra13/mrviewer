@@ -9005,21 +9005,22 @@ void ImageView::channel( unsigned short c )
         _channelType = kAlphaOverlay;
     }
     else if ( channelName == _("Red") || ext == N_("R") || ext == N_("X") ||
-              ext == N_("U") || ext == N_("S") )
+              ext == N_("U") || ext == N_("S") || ext == N_("RED") )
     {
         _channelType = kRed;
     }
     else if ( channelName == _("Green") || ext == N_("G") || ext == N_("Y") ||
-              ext == N_("V") || ext == N_("T") )
+              ext == N_("V") || ext == N_("T") || ext == N_("GREEN") )
     {
         _channelType = kGreen;
     }
     else if ( channelName == _("Blue")  || ext == N_("B") || ext == N_("Z") ||
-              ext == N_("W") )
+              ext == N_("W") || ext == N_("BLUE") )
     {
         _channelType = kBlue;
     }
-    else if ( channelName == _("Alpha") || ext == N_("A") )
+    else if ( channelName == _("Alpha") || ext == N_("A") ||
+              ext == N_("ALPHA") )
     {
         _channelType = kAlpha;
     }
