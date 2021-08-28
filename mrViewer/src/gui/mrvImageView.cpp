@@ -2973,7 +2973,7 @@ CMedia::StereoOutput ImageView::stereo_output() const
  */
 bool ImageView::should_update( mrv::media fg )
 {
-    bool update = _idle_callback;
+    bool update = _idle_callback || playback() != CMedia::kStopped;
 
 
     CMedia* img = NULL;
@@ -4009,16 +4009,16 @@ void ImageView::timeout()
         update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
 
 
     if ( vr() )
     {
         handle_vr( delay );
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
 
-    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::handle_vr( double& delay )

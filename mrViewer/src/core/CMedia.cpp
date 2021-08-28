@@ -2708,6 +2708,7 @@ void CMedia::play(const CMedia::Playback dir,
 
     TRACE("");
 
+
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
     assert( data != NULL );
