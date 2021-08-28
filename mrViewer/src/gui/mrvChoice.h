@@ -12,6 +12,7 @@ namespace mrv {
     public:
         Choice( int x, int y, int w, int h, const char* l = 0 );
 
+        
         unsigned children();
         Fl_Menu_Item* child( int idx );
     };

@@ -710,6 +710,13 @@ void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 
 void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
 {
+    if ( view->action_mode() & mrv::ImageView::kSelection )
+    {
+        view->scrub_mode();
+        mrv::Rectd r( 0, 0, 0, 0 );
+        view->selection( r );
+        view->redraw();
+    }
     view->stop();
     view->browser()->save_sequence();
 }
@@ -732,7 +739,7 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
     sprintf( buf, "Mask %g", mask );
     view->send_network( buf );
 
-    setlocale( LC_NUMERIC, NULL );
+    view->restore_locale();
 
     view->masking( mask );
 
@@ -1035,8 +1042,12 @@ void ImageView::clear_old()
 
 void ImageView::restore_locale() const
 {
+#ifdef OSX
     const char* loc = setlocale( LC_MESSAGES, NULL );
     setlocale( LC_NUMERIC, loc );
+#else
+    setlocale( LC_NUMERIC, NULL );
+#endif
 }
 
     void toggle_action_tool_dock(Fl_Widget* w, ViewerUI* uiMain)
@@ -1368,8 +1379,6 @@ void ImageView::update_ICS(mrv::media fg) const
             return;
         }
     }
-    o->copy_label( "scene_linear"  );
-    o->redraw();
 }
 
 
@@ -2964,7 +2973,7 @@ CMedia::StereoOutput ImageView::stereo_output() const
  */
 bool ImageView::should_update( mrv::media fg )
 {
-    bool update = _idle_callback;
+    bool update = _idle_callback || playback() != CMedia::kStopped;
 
 
     CMedia* img = NULL;
@@ -3966,8 +3975,7 @@ void ImageView::timeout()
     if ( fg )
     {
         img = fg->image();
-
-        delay = 0.25 / img->play_fps();
+        delay = 0.5 / img->play_fps();
 
         // If not a video image check if image has changed on disk
 
@@ -3980,6 +3988,19 @@ void ImageView::timeout()
     }
 
 
+    // if ( timeline->visible() )
+    // {
+
+    //     if ( reel && !reel->edl && img )
+    //     {
+    //         int64_t frame = img->frame();
+
+    //         if ( this->frame() != frame && playback() != CMedia::kStopped )
+    //         {
+    //             this->frame( frame );
+    //         }
+    //     }
+    // }
 
 
     if ( should_update( fg ) )
@@ -3988,16 +4009,16 @@ void ImageView::timeout()
         update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
 
 
     if ( vr() )
     {
         handle_vr( delay );
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
 
-    if ( ! Fl::has_timeout( (Fl_Timeout_Handler) static_timeout, this ) )
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 }
 
 void ImageView::handle_vr( double& delay )
@@ -4133,7 +4154,6 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
-
 
     DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
@@ -8992,21 +9012,22 @@ void ImageView::channel( unsigned short c )
         _channelType = kAlphaOverlay;
     }
     else if ( channelName == _("Red") || ext == N_("R") || ext == N_("X") ||
-              ext == N_("U") || ext == N_("S") )
+              ext == N_("U") || ext == N_("S") || ext == N_("RED") )
     {
         _channelType = kRed;
     }
     else if ( channelName == _("Green") || ext == N_("G") || ext == N_("Y") ||
-              ext == N_("V") || ext == N_("T") )
+              ext == N_("V") || ext == N_("T") || ext == N_("GREEN") )
     {
         _channelType = kGreen;
     }
     else if ( channelName == _("Blue")  || ext == N_("B") || ext == N_("Z") ||
-              ext == N_("W") )
+              ext == N_("W") || ext == N_("BLUE") )
     {
         _channelType = kBlue;
     }
-    else if ( channelName == _("Alpha") || ext == N_("A") )
+    else if ( channelName == _("Alpha") || ext == N_("A") ||
+              ext == N_("ALPHA") )
     {
         _channelType = kAlpha;
     }
@@ -10529,31 +10550,26 @@ void ImageView::playback( const CMedia::Playback b )
 
     _last_fps = 0.0;
 
-    if ( !uiMain->uiPlayForwards || !uiMain->uiPlayBackwards )
-        return;
-
     if ( b == CMedia::kForwards )
     {
-        uiMain->uiPlayForwards->labelcolor( FL_CYAN );
         uiMain->uiPlayForwards->value(1);
         uiMain->uiPlayBackwards->value(0);
     }
     else if ( b == CMedia::kBackwards )
     {
         uiMain->uiPlayForwards->value(0);
-        uiMain->uiPlayBackwards->labelcolor( FL_CYAN );
         uiMain->uiPlayBackwards->value(1);
     }
     else
     {
-        uiMain->uiPlayForwards->labelcolor( 28 );
-        uiMain->uiPlayBackwards->labelcolor( 28 );
         uiMain->uiPlayForwards->value(0);
         uiMain->uiPlayBackwards->value(0);
     }
 
     uiMain->uiPlayForwards->redraw();
     uiMain->uiPlayBackwards->redraw();
+
+    take_focus();
 
 }
 
@@ -10679,6 +10695,15 @@ void ImageView::thumbnails()
     if ( b ) b->redraw();
 }
 
+
+bool ImageView::preload_cache_full( CMedia* img )
+{
+    if ( img->is_cache_full() ) return true;
+    if ( Preferences::max_memory <= CMedia::memory_used )
+        return true;
+    return false;
+}
+
 /**
  * Stop image sequence.
  *
@@ -10693,14 +10718,14 @@ void ImageView::stop()
 
     delete_timeout();
 
-    _playback = CMedia::kStopped;
+    playback( CMedia::kStopped );
 
     _last_fps = 0.0;
     _real_fps = 0.0;
 
     stop_playback();
 
-    playback( CMedia::kStopped );
+
 
     frame( frame() );
     // seek( int64_t(timeline()->value()) );
@@ -10712,11 +10737,12 @@ void ImageView::stop()
         if (fg)
         {
             _preframe = fg->image()->first_cache_empty_frame();
-        }
-        if ( _idle_callback )
-        {
-            preload_cache_stop();
-            preload_cache_start();
+            if ( _idle_callback )
+            {
+                preload_cache_stop();
+            }
+            if ( ! preload_cache_full( fg->image() ) )
+                preload_cache_start();
         }
     }
 

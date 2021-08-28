@@ -828,9 +828,8 @@ void CMedia::wait_for_threads()
 {
     for ( const auto& i : _threads )
     {
-        i->interrupt();
         boost::posix_time::time_duration timeout =
-            boost::posix_time::milliseconds(10000);
+        boost::posix_time::milliseconds(10000);
         i->timed_join(timeout);
         delete i;
     }
@@ -2228,6 +2227,7 @@ void CMedia::channel( const char* c )
             if ( ( ch == "Y" || ch == "RY" || ch == "BY" ) ||
                  ( ch.find(ch2) == std::string::npos &&
                    ch2.find(ch) == std::string::npos ) ||
+                 ch.size() == 1 || ch2.size() == 1 ||
                  ( ext == "Z" && chl.size() > 1 ) ||
                  ( ext2 == "Z" && chl2.size() > 1 ) ||
                  _channel == NULL || c == NULL)
@@ -2707,6 +2707,7 @@ void CMedia::play(const CMedia::Playback dir,
     seek_to_position( _frame );
 
     TRACE("");
+
 
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
