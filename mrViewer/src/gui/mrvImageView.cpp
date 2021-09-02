@@ -3121,7 +3121,10 @@ bool ImageView::should_update( mrv::media fg )
 
 #ifdef FLTK_TIMEOUT_EVENT_BUG
         int y = Fl::event_y();
-        if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
+        if ( uiMain->uiMenuGroup->visible() )
+            y -= uiMain->uiMenuGroup->h();
+        if ( uiMain->uiTopBar->visible() )
+            y -= uiMain->uiTopBar->h();
         mouseMove( Fl::event_x(), y );
 #else
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -4124,7 +4127,7 @@ void ImageView::vr( VRType t )
         img->image_damage( img->image_damage() | CMedia::kDamageContents );
     }
 
-    const mrv::media bg = foreground();
+    const mrv::media bg = background();
 
     if ( bg )
     {
@@ -6226,6 +6229,9 @@ void ImageView::mouseMove(int x, int y)
     if ( !fg ) return;
 
     CMedia* img = fg->image();
+    if ( !img ) return;
+
+
 
     mrv::image_type_ptr pic;
     bool outside = false;
@@ -6239,12 +6245,14 @@ void ImageView::mouseMove(int x, int y)
 
     int ypr = pic->height() - yp - 1;
 
+
     off[0] += xp;
     off[1] += ypr;
 
     char buf[40];
     sprintf( buf, "%5d, %5d", off[0], off[1] );
     uiMain->uiCoord->value(buf);
+
 
 
     CMedia::Pixel rgba;
@@ -6254,6 +6262,7 @@ void ImageView::mouseMove(int x, int y)
     }
     else
     {
+
         mrv::Recti daw[2];
         daw[0] = img->data_window();
         daw[1] = img->data_window2();
@@ -6263,8 +6272,6 @@ void ImageView::mouseMove(int x, int y)
         yp = int( (double)yp * ypct );
         rgba = pic->pixel( xp, yp );
 
-
-
         pixel_processed( img, rgba );
 
         if ( normalize() )
@@ -6273,8 +6280,10 @@ void ImageView::mouseMove(int x, int y)
         }
 
 
+
         CMedia::StereoOutput stereo_out = img->stereo_output();
         CMedia::StereoInput  stereo_in  = img->stereo_input();
+
 
         if ( stereo_out & CMedia::kStereoAnaglyph )
         {
@@ -6297,7 +6306,9 @@ void ImageView::mouseMove(int x, int y)
             {
                 if ( stereo_out & CMedia::kStereoRight )
                 {
+
                     pic = img->left();
+
                     xp += daw[1].x();
                     yp += daw[1].y();
                     xp -= daw[0].x();
@@ -6305,7 +6316,9 @@ void ImageView::mouseMove(int x, int y)
                 }
                 else
                 {
+
                     pic = img->right();
+
                     xp += daw[0].x();
                     yp += daw[0].y();
                     xp -= daw[1].x();
@@ -6321,8 +6334,10 @@ void ImageView::mouseMove(int x, int y)
 
                 if (!outside)
                 {
+
                     float r = rgba.r;
                     rgba = pic->pixel( xp, yp );
+
                     pixel_processed( img, rgba );
 
                     if ( normalize() )
@@ -6337,27 +6352,36 @@ void ImageView::mouseMove(int x, int y)
                     rgba.g = rgba.b = 0.0f;
                 }
             }
+
         }
         // double yp = yf;
         // if ( _showPixelRatio ) yp /= img->pixel_ratio();
     }
 
+
     CMedia* bgr = _engine->background();
+
 
     if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
     {
         double xf, yf;
         const mrv::image_type_ptr picb = bgr->left();
+
         const mrv::Recti& dpw = img->display_window();
+
         const mrv::Recti& daw = img->data_window();
-        const mrv::Recti& dpwb = bgr->display_window(picb->frame());
-        const mrv::Recti& dawb = bgr->data_window(picb->frame());
+
+        const mrv::Recti& dpwb = bgr->display_window();
+
+        const mrv::Recti& dawb = bgr->data_window();
+
         if ( picb )
         {
             int w = dawb.w();
             int h = dawb.h();
             if ( w == 0 ) w = picb->width()-1;
             if ( h == 0 ) h = picb->height()-1;
+
 
             if ( dpw == dpwb && dpwb.h() != 0 )
             {
@@ -6370,6 +6394,7 @@ void ImageView::mouseMove(int x, int y)
             else
             {
                 double px = 1.0, py = 1.0;
+
                 if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
                 {
                     if ( dpw.w() > 0 )
@@ -6391,6 +6416,7 @@ void ImageView::mouseMove(int x, int y)
             }
 
 
+
             CMedia::Pixel bg;
             bool outside = false;
             if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
@@ -6399,6 +6425,7 @@ void ImageView::mouseMove(int x, int y)
             }
             else
             {
+
                 bg = picb->pixel( xp, yp );
                 pixel_processed( bgr, bg );
             }
@@ -6409,6 +6436,7 @@ void ImageView::mouseMove(int x, int y)
             }
             else
             {
+
                 float t = 1.0f - rgba.a;
                 rgba.r += bg.r * t;
                 rgba.g += bg.g * t;
@@ -6421,18 +6449,21 @@ void ImageView::mouseMove(int x, int y)
     switch( uiMain->uiAColorType->value() )
     {
     case kRGBA_Float:
+
         uiMain->uiPixelR->value( float_printf( rgba.r ).c_str() );
         uiMain->uiPixelG->value( float_printf( rgba.g ).c_str() );
         uiMain->uiPixelB->value( float_printf( rgba.b ).c_str() );
         uiMain->uiPixelA->value( float_printf( rgba.a ).c_str() );
         break;
     case kRGBA_Hex:
+
         uiMain->uiPixelR->value( hex_printf( rgba.r ).c_str() );
         uiMain->uiPixelG->value( hex_printf( rgba.g ).c_str() );
         uiMain->uiPixelB->value( hex_printf( rgba.b ).c_str() );
         uiMain->uiPixelA->value( hex_printf( rgba.a ).c_str() );
         break;
     case kRGBA_Decimal:
+
         uiMain->uiPixelR->value( dec_printf( rgba.r ).c_str() );
         uiMain->uiPixelG->value( dec_printf( rgba.g ).c_str() );
         uiMain->uiPixelB->value( dec_printf( rgba.b ).c_str() );
@@ -6452,6 +6483,7 @@ void ImageView::mouseMove(int x, int y)
     else if ( rgba.b < 0.0f ) rgba.b = 0.0f;
 
     uchar col[3];
+
     col[0] = uchar(rgba.r * 255.f);
     col[1] = uchar(rgba.g * 255.f);
     col[2] = uchar(rgba.b * 255.f);
@@ -6461,6 +6493,7 @@ void ImageView::mouseMove(int x, int y)
     // bug in fltk color lookup? (0 != Fl_BLACK)
     if ( c == 0 )
     {
+
         uiMain->uiPixelView->color( FL_BLACK );
     }
     else
@@ -6473,6 +6506,7 @@ void ImageView::mouseMove(int x, int y)
 
 
     CMedia::Pixel hsv;
+
     int cspace = uiMain->uiBColorType->value() + 1;
 
     switch( cspace )
@@ -6517,6 +6551,7 @@ void ImageView::mouseMove(int x, int y)
         LOG_ERROR("Unknown color type");
     }
 
+
     uiMain->uiPixelH->value( float_printf( hsv.r ).c_str() );
     uiMain->uiPixelS->value( float_printf( hsv.g ).c_str() );
     uiMain->uiPixelV->value( float_printf( hsv.b ).c_str() );
@@ -6524,6 +6559,7 @@ void ImageView::mouseMove(int x, int y)
                                           uiMain->uiLType->value();
     hsv.a = calculate_brightness( rgba, brightness_type );
     uiMain->uiPixelL->value( float_printf( hsv.a ).c_str() );
+
 }
 
 float ImageView::vr_angle() const
@@ -10645,7 +10681,8 @@ void ImageView::play( const CMedia::Playback dir )
     //   img->has_audio() )
     {
         // preload_cache_stop();
-        img->play( dir, uiMain, true );
+        if ( img->start_frame() != img->end_frame() )
+            img->play( dir, uiMain, true );
     }
 
 

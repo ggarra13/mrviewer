@@ -63,12 +63,12 @@ namespace mr
 
 ExceptionHandler::ExceptionHandler()
 {
-      install_signal_handler();
+    install_signal_handler();
 }
 
 ExceptionHandler::~ExceptionHandler()
 {
-      restore_signal_handler();
+    restore_signal_handler();
 }
 
 void ExceptionHandler::ShowStack() {
@@ -78,10 +78,10 @@ void ExceptionHandler::ShowStack() {
 
   trace_size = backtrace(trace, 200);
   messages = backtrace_symbols(trace, trace_size);
-  fprintf( stderr, "[bt] Execution path (last first):\n");
+  fprintf( stderr, "[tb] Execution path (last first):\n");
   for (i=0; i<trace_size; ++i)
   {
-     fprintf( stderr, "[bt] %s\n", messages[i]);
+     fprintf( stderr, "[tb] %s\n", messages[i]);
   }
   free( messages );
 }
@@ -155,10 +155,10 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   messages = backtrace_symbols(trace, trace_size);
 
   /* skip first stack frame (points to here) */
-  fprintf( stderr, "[bt] Execution path:\n");
+  fprintf( stderr, "[tb] Execution path:\n");
   for (i=1; i<trace_size; ++i)
     {
-      fprintf( stderr, "[bt] %s\n", messages[i]);
+      fprintf( stderr, "[tb] %s\n", messages[i]);
     }
   free( messages );
 

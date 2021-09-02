@@ -70,7 +70,7 @@ _minimum( 1 ),
 _maximum( 50 ),
 _step( 1 )
 {
-    textcolor( fl_contrast( FL_BLACK, fl_color() ) );
+    textcolor( fl_contrast( FL_BLACK, color() ) );
 }
 
 
@@ -85,7 +85,7 @@ _minimum( 1 ),
 _maximum( 50 ),
 _step( 1 )
 {
-    textcolor( fl_contrast( FL_BLACK, fl_color() ) );
+    textcolor( fl_contrast( FL_BLACK, color() ) );
 }
 
 /**
