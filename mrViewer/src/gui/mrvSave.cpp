@@ -325,9 +325,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
             {
                 // Force a swap buffer to actualize back buffer.
                 uiMain->uiView->redraw();
-                // uiMain->uiView->swap_buffers();
-                // uiMain->uiView->redraw();
-                // uiMain->uiView->swap_buffers();
+                Fl::flush();
             }
 
             // Store real frame image we may replace
