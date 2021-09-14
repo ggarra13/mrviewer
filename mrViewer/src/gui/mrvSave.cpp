@@ -72,6 +72,7 @@ void decode_some( CMedia* img, int64_t& frame )
 void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                              const bool opengl )
 {
+
     std::string ext = file;
     std::transform( ext.begin(), ext.end(), ext.begin(),
                     (int(*)(int)) tolower);
@@ -126,7 +127,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     int movie_count = 1;
 
     bool edl = uiMain->uiTimeline->edl();
-
+    mrv::ImageView::HudDisplay hud = uiMain->uiView->hud();
 
     int audio_stream = -1;
 
@@ -159,6 +160,9 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     {
         unsigned w = uiMain->uiView->w();
         unsigned h = uiMain->uiView->h();
+#ifdef LINUX
+        uiMain->uiView->hud( mrv::ImageView::kHudNone );
+#endif
         data = new float[ 4 * w * h ];
     }
 
@@ -172,7 +176,6 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     img = fg->image();
     img->clear_cache();
 
-#if 1
     for ( ; frame <= last; ++frame )
     {
         uiMain->uiView->seek( frame );
@@ -181,39 +184,6 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
         if (!fg) return;
 
         img = fg->image();
-#else
-    for ( ; frame <= last; ++frame )
-    {
-        mrv::media fg = uiMain->uiView->foreground();
-        if (!fg) return;
-
-        img = fg->image();
-
-        if ( !skip )
-        {
-            ++dts;
-            img->frame( dts );
-        }
-
-
-        decode_some( img, frame );
-
-        // img->debug_audio_stores( frame, "decode", true );
-
-        size_t vsize = img->video_packets().size();
-        size_t asize = img->audio_packets().size();
-
-#define kMIN_SIZE 25
-        if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-            skip = true;
-        else
-            skip = false;
-
-        if ( !skip )
-        {
-            dts = img->dts();
-        }
-#endif
 
         if ( old != fg )
         {
@@ -435,6 +405,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
         img->audio_stream( audio_stream );
         open_movie = false;
     }
+
+    uiMain->uiView->hud( hud );
 
 
     delete w;

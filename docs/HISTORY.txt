@@ -1,3 +1,7 @@
+v5.9.6  - Fixed W menu opening Waveform when ICC Profiles was selected.
+	- Fixed saving of GL Snapshot.
+	- Improved version check using a regex, like nuke.
+
 v5.9.5  - Made timeout be less resource hungry.
 	- Fixed an Xlib error ( BadDrawable ) on Linux.
 	- Bug fixed a crash on compositing background images when there was

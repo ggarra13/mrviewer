@@ -738,7 +738,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {324 211 690 565} type Double align 80 resizable
+      xywh {324 239 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -849,7 +849,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label {ICC Profiles} user_data_type {void*}
-              callback {uiWaveform->uiMain->show();}
+              callback {uiICCProfiles->uiMain->show();}
               xywh {20 20 100 20}
             }
             MenuItem {} {
@@ -885,7 +885,7 @@ uiView->update_color_info();}
               label {A/B}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiReelWindow->uiBrowser->change_background();
-v->uiView->show_background(false);} selected
+v->uiView->show_background(false);}
               tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 27 40 22} down_box PLASTIC_ROUND_DOWN_BOX selection_color 95
               class {mrv::Toggle_Button}
             }
@@ -1438,7 +1438,7 @@ o->disable_glyph();}
                       callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
-v->update_color_info();}
+v->update_color_info();} selected
                       tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {405 489 28 21} labelsize 9 align 48
                       code0 {o->value(0);
 o->disable_glyph();}

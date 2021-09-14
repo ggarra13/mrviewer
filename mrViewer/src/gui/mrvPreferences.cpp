@@ -1195,7 +1195,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsUses16Bits->value( (bool) tmp );
     CMedia::uses_16bits( (bool) tmp );
 
-    loading.get( "image_version_prefix", tmpS, "_v", 10 );
+    loading.get( "image_version_prefix", tmpS, "_v", 256 );
     uiPrefs->uiPrefsImageVersionPrefix->value( tmpS );
 
     loading.get( "max_images_apart", tmp, 10 );

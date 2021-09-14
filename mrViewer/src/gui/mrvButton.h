@@ -2,6 +2,8 @@
 #define mrvButton_h
 
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Radio_Button.H>
+#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Toggle_Button.H>
 
 
@@ -11,6 +13,22 @@ namespace mrv
     {
     public:
         Button( int X, int Y, int W, int H, const char* L = 0 );
+
+        virtual void draw();
+    };
+
+    class CheckButton : public Fl_Check_Button
+    {
+    public:
+        CheckButton( int X, int Y, int W, int H, const char* L = 0 );
+
+        virtual void draw();
+    };
+
+    class RadioButton : public Fl_Radio_Button
+    {
+    public:
+        RadioButton( int X, int Y, int W, int H, const char* L = 0 );
 
         virtual void draw();
     };

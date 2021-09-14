@@ -945,12 +945,14 @@ void save_sequence_file( ViewerUI* uiMain,
                                      "})\t";
 
     std::string title = _("Save Sequence");
+    if ( opengl ) title = _("Save GL Snapshot");
+
     stringArray filelist;
     if ( !startdir ) startdir = "";
 
-    const std::string& file = file_save_single_requester( title.c_str(),
-                                                          kALL_PATTERN.c_str(),
-                                                          startdir, true );
+    const std::string file = file_save_single_requester( title.c_str(),
+                                                         kALL_PATTERN.c_str(),
+                                                         startdir, true );
     if ( file.empty() ) return;
 
     save_movie_or_sequence( file.c_str(), uiMain, opengl );

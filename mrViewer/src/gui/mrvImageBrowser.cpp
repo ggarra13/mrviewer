@@ -38,6 +38,7 @@
 #include <boost/exception_ptr.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/regex.hpp>
 namespace fs = boost::filesystem;
 
 #define FLTK_ABI_VERSION 10401
@@ -3538,14 +3539,35 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     int64_t end   = AV_NOPTS_VALUE;
     PreferencesUI* prefs = main()->uiPrefs;
     std::string newfile, loadfile;
-    std::string number;
     int64_t     num = 1;
+
+    std::string suffix;
+
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
     if ( prefix.empty() )
     {
-        LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
+        LOG_ERROR( _("Prefix cannot be an empty string.  Please type some regex to distinguish the version in the filename.  If unsure, use _v.") );
         return;
     }
+
+    if ( prefix == "_v" )
+    {
+        LOG_INFO( _("Regex _v replaced by complex regex.") );
+        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
+        prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
+    }
+
+    boost::regex expr;
+    try
+    {
+        expr = prefix;
+    }
+    catch ( const boost::regex_error& e )
+    {
+        LOG_ERROR( _("Regular expression error: ") << e.what()  );
+        return;
+    }
+
     CMedia* img = fg->image();
     unsigned max_tries = (unsigned) prefs->uiPrefsMaxImagesApart->value();
     while ( (max_files || start == AV_NOPTS_VALUE) && tries <= max_tries )
@@ -3555,39 +3577,56 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         std::string dir = img->directory();
         file = dir + "/" + file;
 
-        size_t pos = 0;
-        while ( ( pos = file.find( prefix, pos) ) != std::string::npos )
+        std::string::const_iterator tstart, tend;
+        tstart = file.begin();
+        tend = file.end();
+        boost::match_results<std::string::const_iterator> what;
+        boost::match_flag_type flags = boost::match_default;
+
+        newfile.clear();
+
+        try
         {
-            pos += prefix.size();
-            if ( pos >= file.size() ) continue;
-            newfile = file.substr( 0, pos );
-            std::string copy = file.substr( pos, file.size() );
-            const char* c = copy.c_str();
-            number.clear();
-            while ( *c >= '0' && *c <= '9' && *c != 0 )
+            while ( boost::regex_search( tstart, tend, what, expr, flags ) )
             {
-                number += *c;
-                ++c;
+                std::string prefix = what[1];
+                std::string number = what[2];
+                suffix = what[3];
+
+
+                newfile += prefix;
+
+                if ( !number.empty() )
+                {
+                    int padding = int( number.size() );
+                    num = atoi( number.c_str() );
+                    char buf[128];
+                    sprintf( buf, "%0*" PRId64, padding, num + sum );
+                    newfile += buf;
+                }
+
+                tstart = what[3].first;
+                flags |= boost::match_prev_avail;
+                flags |= boost::match_not_bob;
             }
-            int padding = int( number.size() );
-            if ( !number.empty() )
-            {
-                num = atoi( number.c_str() );
-                char buf[128];
-                sprintf( buf, "%0*" PRId64, padding, num + sum );
-                newfile += buf;
-            }
-            newfile += file.substr( pos + padding, file.size() );
-            file = newfile;
         }
+        catch ( const boost::regex_error& e )
+        {
+            LOG_ERROR( _("Regular expression error: ") << e.what()  );
+        }
+
 
         if ( newfile.empty() )
         {
             LOG_ERROR( _("No versioning in this clip.  "
-                         "Please create an image or directory named with ") << prefix );
-            LOG_ERROR( _("Example:  gizmo") << prefix << N_("003.0001.exr") );
+                         "Please create an image or directory named with "
+                         "a versioning string." ) );
+            LOG_ERROR( _("Example:  gizmo_v003.0001.exr") );
             return;
         }
+
+        newfile += suffix;
+
 
         if ( mrv::is_valid_sequence( newfile.c_str() ) )
         {
