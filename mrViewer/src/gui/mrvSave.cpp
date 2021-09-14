@@ -158,11 +158,11 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
     if ( opengl )
     {
-        unsigned w = uiMain->uiView->w();
-        unsigned h = uiMain->uiView->h();
-#ifdef LINUX
-        uiMain->uiView->hud( mrv::ImageView::kHudNone );
-#endif
+        unsigned w = uiMain->uiView->pixel_w();
+        unsigned h = uiMain->uiView->pixel_h();
+// #ifdef LINUX
+//         uiMain->uiView->hud( mrv::ImageView::kHudNone );
+// #endif
         data = new float[ 4 * w * h ];
     }
 
@@ -272,8 +272,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
                 if ( opengl )
                 {
-                    unsigned w = uiMain->uiView->w();
-                    unsigned h = uiMain->uiView->h();
+                    unsigned w = uiMain->uiView->pixel_w();
+                    unsigned h = uiMain->uiView->pixel_h();
                     img->width( w );
                     img->height( h );
                 }
@@ -324,10 +324,10 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
             if ( opengl )
             {
                 // Force a swap buffer to actualize back buffer.
-                uiMain->uiView->draw();
-                uiMain->uiView->swap_buffers();
-                uiMain->uiView->draw();
-                uiMain->uiView->swap_buffers();
+                uiMain->uiView->redraw();
+                // uiMain->uiView->swap_buffers();
+                // uiMain->uiView->redraw();
+                // uiMain->uiView->swap_buffers();
             }
 
             // Store real frame image we may replace
@@ -336,8 +336,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
             if ( opengl )
             {
-                unsigned w = uiMain->uiView->w();
-                unsigned h = uiMain->uiView->h();
+                unsigned w = uiMain->uiView->pixel_w();
+                unsigned h = uiMain->uiView->pixel_h();
 
                 mrv::image_type_ptr hires(
                     new mrv::image_type( img->frame(),

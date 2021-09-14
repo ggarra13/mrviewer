@@ -113,8 +113,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_COMPILE_OPTIONS( -fsanitize=thread )
      # SET(OS_LIBRARIES -fsanitize=thread ${OS_LIBRARIES} )
 
-     ADD_COMPILE_OPTIONS( -g -fsanitize=address )
-     SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+     #ADD_COMPILE_OPTIONS( -g -fsanitize=address )
+     #SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ELSE(APPLE)
