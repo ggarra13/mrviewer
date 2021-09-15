@@ -324,6 +324,10 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
             if ( opengl )
             {
                 // Force a swap buffer to actualize back buffer.
+                uiMain->uiView->swap_buffers();
+                Fl::flush();
+                uiMain->uiView->redraw();
+                Fl::flush();
                 uiMain->uiView->redraw();
                 Fl::flush();
             }
