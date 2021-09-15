@@ -3550,9 +3550,12 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    if ( prefix == "_v" )
+    if ( prefix.size() == 2 &&
+         (prefix[0] == '_' || prefix[0] == '.') &&
+         (prefix[1] == 'v' || prefix[1] == 'V') )
     {
-        LOG_INFO( _("Regex _v replaced by complex regex.") );
+        LOG_INFO( _("Regex ") << prefix <<
+                  (" replaced by complex regex.") );
         prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
         prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
     }
