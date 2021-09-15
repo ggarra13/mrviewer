@@ -22,14 +22,12 @@ Fl_Tree( x, y, w, h, l )
         closeicon( img );
     }
 
+    Fl_Tree::item_labelfgcolor(FL_BLACK);
+
 }
 
 void PreferencesTree::draw()
 {
-    if ( Preferences::schemes.name == "Black" )
-    {
-        color( fl_contrast( labelcolor(), color2() ) );
-    }
     Fl_Tree::draw();
 }
 
