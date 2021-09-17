@@ -697,7 +697,6 @@ old_dragging( NULL )
     usericonmarginleft( 0 );
     labelmarginleft( 0 );
     linespacing(3);
-
 }
 
 ImageBrowser::~ImageBrowser()
@@ -5116,6 +5115,8 @@ void ImageBrowser::draw()
             if ( elem->visible_r() ) elem->make_thumbnail();
         }
     }
+
+    Fl_Tree::selection_color( Fl_Color(0xffff0000) );
 
     // Let tree draw itself
     Fl_Tree::draw();
