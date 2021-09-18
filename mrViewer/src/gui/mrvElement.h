@@ -38,7 +38,7 @@ class Element : public Fl_Group {
     Fl_Box *image;		// image part of widget
     Fl_Box *label;		// label part of widget
 public:
-    Element(mrv::media m);
+    Element(Fl_Group* b, mrv::media m);
     ~Element();
 
     Fl_Box* Label() { return label; }
@@ -57,6 +57,7 @@ public:
 
   protected:
     mrv::media _elem;
+    Fl_Group* _browser;
 };
 
 

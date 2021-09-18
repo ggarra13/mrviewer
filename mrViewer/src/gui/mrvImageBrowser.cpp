@@ -1424,7 +1424,7 @@ void ImageBrowser::save_session()
     Element* ImageBrowser::new_item( mrv::media m )
     {
         Fl_Group::current(this);
-        Element* nw = new Element( m );
+        Element* nw = new Element( this, m );
         if ( !nw )
         {
             LOG_ERROR( _("Could not allocate new element" ) );

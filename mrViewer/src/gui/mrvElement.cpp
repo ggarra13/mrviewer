@@ -46,10 +46,11 @@ void Element::make_thumbnail()
 
 }
 
-    Element::Element(mrv::media m) :
+    Element::Element(Fl_Group* b, mrv::media m) :
         Fl_Group(0,0,1,64+VMARGIN*2),
         image(NULL),
-        _elem( m )
+        _elem( m ),
+        _browser( b )
     {	// VMARGIN makes group slightly larger than items
         // Create widget to hold image
         //
@@ -174,10 +175,10 @@ void Element::make_thumbnail()
 
         fl_color( fl_lighter(c) );
         fl_line_style( FL_SOLID, 3, NULL );
-        fl_line( x(), y()-1, x()+800, y()-1 );
+        fl_line( x(), y()-1, x()+_browser->w(), y()-1 );
 
         fl_color( fl_darker(c) );
-        fl_line( x(), y()+h(), x()+800, y()+h() );
+        fl_line( x(), y()+h(), x()+_browser->w(), y()+h() );
         fl_line_style( 0 );
     }
 
