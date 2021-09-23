@@ -154,6 +154,7 @@
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvImageView_shapes.h"
 
 
 #undef LOG
@@ -7088,6 +7089,16 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kOpenSingleImage.match( rawkey ) )
     {
         open_single_cb( this, browser() );
+        return 1;
+    }
+    else if ( kShapeFrameStepFwd.match(rawkey) )
+    {
+        next_shape_frame( this );
+        return 1;
+    }
+    else if ( kShapeFrameStepBack.match(rawkey) )
+    {
+        previous_shape_frame( this );
         return 1;
     }
     else if ( kDrawTemporaryMode.match( rawkey ) )

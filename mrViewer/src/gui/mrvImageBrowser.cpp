@@ -1294,13 +1294,19 @@ void ImageBrowser::save_session()
             {
                 GLShapeList::const_iterator i = shapes.begin();
                 GLShapeList::const_iterator e = shapes.end();
-
+                std::string cmd;
                 for ( ; i != e; ++i )
                 {
                     GLPathShape* shape = dynamic_cast< GLPathShape* >( (*i).get() );
-                    if ( !shape ) continue;
-
-                    std::string cmd = shape->send();
+                    if ( !shape ) {
+                        GLCircleShape* shape = dynamic_cast< GLCircleShape* >( (*i).get() );
+                        if ( !shape ) continue;
+                        cmd = shape->send();
+                    }
+                    else
+                    {
+                        cmd = shape->send();
+                    }
                     fprintf( f, "%s\n", cmd.c_str() );
                 }
             }

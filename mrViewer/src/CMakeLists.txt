@@ -350,6 +350,7 @@ SET( SOURCES
   gui/mrvFontsWindowUI.cpp
   gui/mrvHistogram.cpp
   gui/mrvImageView.cpp
+  gui/mrvImageView_shapes.cpp
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp

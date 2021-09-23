@@ -495,7 +495,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
         Fl_Box* b = NULL;
         if (! win ) {
-            win = new Fl_Window( X, Y, 128, 76 );
+            win = new Fl_Double_Window( X, Y, 128, 76 );
             win->parent( window() );
             win->border(0);
             win->begin();
@@ -618,6 +618,8 @@ int Timeline::handle( int e )
              kPlayDirection.match( rawkey ) ||
              kPlayFwdTwiceSpeed.match( rawkey ) ||
              kPlayBackHalfSpeed.match( rawkey ) ||
+             kShapeFrameStepFwd.match( rawkey ) ||
+             kShapeFrameStepBack.match( rawkey ) ||
              kStop.match( rawkey ) )
         {
             return uiMain->uiView->handle( e );

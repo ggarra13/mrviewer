@@ -73,12 +73,16 @@ Hotkey kFlipX( false, false, false, false, 'x' );
 Hotkey kFlipY( false, false, false, false, 'y' );
 Hotkey kCenterImage( false, false, false, false, 'h' );
 
+Hotkey kShapeFrameStepBack( false, false, false, true, FL_Left, "",
+                            FL_KP + 4 );
 Hotkey kFrameStepBack( false, false, false, false, FL_Left, "",
                        FL_KP + 4 );
 Hotkey kFrameStepFPSBack( true, false, false, false, FL_Left, "",
                           FL_KP + 4 );
 Hotkey kFrameStepFwd( false, false, false, false, FL_Right, "",
                       FL_KP + 6 );
+Hotkey kShapeFrameStepFwd( false, false, false, true, FL_Right, "",
+                           FL_KP + 6 );
 Hotkey kFrameStepFPSFwd( true, false, false, false, FL_Right, "",
                          FL_KP + 6 );
 Hotkey kPlayBackHalfSpeed( false, false, false, false, 'j' );
@@ -327,8 +331,11 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Wipe"), kWipe),
     HotkeyEntry( _("Flip X"), kFlipX),
     HotkeyEntry( _("Flip Y"), kFlipY),
+    HotkeyEntry( _("Annotation Frame Step Backwards"), kShapeFrameStepBack,
+                 true),
     HotkeyEntry( _("Frame Step Backwards"), kFrameStepBack),
     HotkeyEntry( _("Frame Step FPS Backwards"), kFrameStepFPSBack),
+    HotkeyEntry( _("Annotation Frame Step Forwards"), kShapeFrameStepFwd, true),
     HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
     HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
     HotkeyEntry( _("Play Backwards"), kPlayBack),
