@@ -210,8 +210,8 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
   }
   code {if (!w->exec())
 {
-	delete w; w = NULL;
-	return orig;
+        delete w; w = NULL;
+        return orig;
 }
 
 delete w; w = NULL;
@@ -563,7 +563,7 @@ o->redraw();}
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-	v->uiCurrentFrame->value( o->value() );
+        v->uiCurrentFrame->value( o->value() );
 }}
             xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
@@ -574,7 +574,7 @@ if ( v->uiAttrsWindow )
             callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
 if ( v->uiAttrsWindow )
 {
-	v->uiAllFrames->value( o->value() );
+        v->uiAllFrames->value( o->value() );
 }}
             xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
@@ -897,8 +897,8 @@ v->uiView->show_background(false);}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
-	      v->uiView->channel( m );
-	      //v->uiView->channel( o->value() );} open
+              v->uiView->channel( m );
+              //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {76 27 90 22}
               class {mrv::PopupMenu}
             } {}
@@ -1037,25 +1037,25 @@ else
     const Fl_Menu_Item* c = o->child(0);
     for ( ; c != w; ++c )
     {
-	if ( c->flags & FL_SUBMENU ) p = c;
+        if ( c->flags & FL_SUBMENU ) p = c;
     }
     if ( p && p->label() )
     {
        mrv::Preferences::OCIO_Display = p->label();
        if ( lbl && strcmp(lbl, p->label()) != 0 )
        {
-	 mrv::Preferences::OCIO_View = lbl;
+         mrv::Preferences::OCIO_View = lbl;
        }
     }
     else
     {
-	if (!c || !c->label() ) return;
-	std::string view = c->label();
-	size_t pos = view.find( '(' );
-	std::string display = view.substr( pos+1, view.size() );
-	mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
-	pos = display.find( ')' );
-	mrv::Preferences::OCIO_Display = display.substr( 0, pos );
+        if (!c || !c->label() ) return;
+        std::string view = c->label();
+        size_t pos = view.find( '(' );
+        std::string display = view.substr( pos+1, view.size() );
+        mrv::Preferences::OCIO_View = view.substr( 0, pos-1 );
+        pos = display.find( ')' );
+        mrv::Preferences::OCIO_Display = display.substr( 0, pos );
     }
 
     setlocale(LC_NUMERIC, oldloc );
@@ -1198,18 +1198,21 @@ o->image( select_pic );}
               callback {o->value(1);
 v->uiView->text_mode();}
               tooltip {Text Tool} xywh {2 283 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
+              class {mrv::Button}
             }
             Fl_Button uiCircle {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->circle_mode();}
               tooltip {Circle Tool} xywh {2 213 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( circle );}
+            class {mrv::Button}
             }
             Fl_Button uiArrow {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->arrow_mode();}
               tooltip {Arrow Tool} xywh {2 248 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( arrow_28 );}
+              class {mrv::Button}
             }
             Fl_Button uiPenColor {
               label Color
@@ -1236,6 +1239,7 @@ else
  o->activate();}
                 tooltip {Undo Last Shape Drawn} xywh {2 397 40 35}
                 code0 {o->image( undo );}
+                class {mrv::Button}
               }
               Fl_Button uiRedoDraw {
                 user_data this user_data_type {ViewerUI*}
@@ -1246,6 +1250,7 @@ else
    o->activate();}
                 tooltip {Redo Previous Shape Drawn} xywh {2 432 40 35}
                 code0 {o->image( redo );}
+                class {mrv::Button}
               }
             }
             Fl_Button {} {
@@ -1258,6 +1263,7 @@ else if ( !uiAttrsWindow )
      uiAttrsWindow = make_attrs_window();
 uiAttrsWindow->show();}
               xywh {2 368 40 25}
+              class {mrv::Button}
             }
           }
           Fl_Group uiView {

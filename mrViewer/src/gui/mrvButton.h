@@ -11,9 +11,11 @@ namespace mrv
 {
     class Button : public Fl_Button
     {
+        Fl_Color default_color;
     public:
         Button( int X, int Y, int W, int H, const char* L = 0 );
 
+        virtual int handle( int e );
         virtual void draw();
     };
 

@@ -2,7 +2,7 @@
 #include "mrvButton.h"
 
 #include <FL/fl_draw.H>
-
+#include <FL/names.h>
 
 namespace mrv
 {
@@ -12,6 +12,25 @@ namespace mrv
         Fl_Button( X, Y, W, H, L )
     {
         box( FL_FLAT_BOX ); // here it does not work
+        default_color = color();
+    }
+
+    int Button::handle( int e )
+    {
+        int ret = Fl_Button::handle( e );
+        switch( e )
+        {
+        case FL_ENTER:
+            default_color = color();
+            color( fl_lighter( default_color ) );
+            redraw();
+            return 1;
+        case FL_LEAVE:
+            color( default_color );
+            redraw();
+            return 1;
+        }
+        return ret;
     }
 
     void Button::draw()

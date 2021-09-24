@@ -3121,12 +3121,15 @@ bool ImageView::should_update( mrv::media fg )
     if ( update && _playback != CMedia::kStopped ) {
 
 #ifdef FLTK_TIMEOUT_EVENT_BUG
+        int x = Fl::event_x();
         int y = Fl::event_y();
         if ( uiMain->uiMenuGroup->visible() )
             y -= uiMain->uiMenuGroup->h();
         if ( uiMain->uiTopBar->visible() )
             y -= uiMain->uiTopBar->h();
-        mouseMove( Fl::event_x(), y );
+        if ( uiMain->uiToolsGroup->visible() )
+            x -= uiMain->uiToolsGroup->w();
+        mouseMove( x, y );
 #else
         mouseMove( Fl::event_x(), Fl::event_y() );
 #endif
