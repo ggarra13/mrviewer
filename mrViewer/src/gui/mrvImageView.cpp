@@ -4396,6 +4396,9 @@ void ImageView::draw()
 
     if ( !(flags & kMouseDown) )
       {
+          // std::cerr << "flags " << flags << " "
+          //           << !(flags & kMouseDown ) <
+          //     < std::endl;
           if (  (_mode & kDraw) || (_mode & kErase) ||
                 (_mode & kCircle) || (_mode & kArrow ) )
             {
@@ -4417,11 +4420,9 @@ void ImageView::draw()
                 yf -= daw.y();
 
 
-                // float scale = Fl::screen_scale( window()->screen_num() );
+                //float scale = Fl::screen_scale( window()->screen_num() );
                 // xf *= scale;
                 // yf *= scale;
-                // std::cerr << "scale=" << scale << " xf,yf=" << xf << "," << yf
-                //           << std::endl;
 
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
@@ -8490,13 +8491,13 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( !presentation )
+            if ( !presentation && ( _mode & kScrub || _mode & kSelection ) )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-        if ( !presentation )
+        if ( !presentation && ( _mode & kScrub || _mode & kSelection ) )
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
@@ -8554,6 +8555,7 @@ int ImageView::handle(int event)
 
         lastX = X;
         lastY = Y;
+        redraw();
 
         return 1;
         break;
