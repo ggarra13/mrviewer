@@ -91,7 +91,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-09-23 21:10-0300\n"
+"POT-Creation-Date: 2021-09-24 20:19-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -18517,7 +18517,7 @@ msgstr ""
 
 #
 #
-#: gui/mrvSlider.cpp:83 gui/mrvTimeline.cpp:305
+#: gui/mrvSlider.cpp:83 gui/mrvTimeline.cpp:306
 msgid "Black"
 msgstr "Cuadro en Negro"
 
@@ -32356,7 +32356,7 @@ msgstr "Línea Temporal"
 msgid "TimelineMax "
 msgstr ""
 
-#: gui/mrvTimeline.cpp:189
+#: gui/mrvTimeline.cpp:190
 #, c-format
 msgid "TimelineMax %lf"
 msgstr ""
@@ -32369,7 +32369,7 @@ msgstr ""
 msgid "TimelineMaxDisplay "
 msgstr ""
 
-#: gui/mrvTimeline.cpp:163
+#: gui/mrvTimeline.cpp:164
 #, c-format
 msgid "TimelineMaxDisplay %lf"
 msgstr ""
@@ -32382,7 +32382,7 @@ msgstr ""
 msgid "TimelineMin "
 msgstr ""
 
-#: gui/mrvTimeline.cpp:176
+#: gui/mrvTimeline.cpp:177
 #, c-format
 msgid "TimelineMin %lf"
 msgstr ""
@@ -32395,7 +32395,7 @@ msgstr ""
 msgid "TimelineMinDisplay "
 msgstr ""
 
-#: gui/mrvTimeline.cpp:118
+#: gui/mrvTimeline.cpp:119
 #, c-format
 msgid "TimelineMinDisplay %lf"
 msgstr ""
@@ -44700,6 +44700,22 @@ msgid "~/"
 msgstr ""
 
 #, fuzzy
+#~ msgid "draw red line at frame "
+#~ msgstr " para cuadro "
+
+#, fuzzy
+#~ msgid " maxframe1= "
+#~ msgstr " cuadros max: "
+
+#, fuzzy
+#~ msgid "maxframe0= "
+#~ msgstr " cuadros max: "
+
+#, fuzzy
+#~ msgid "maxframe2= "
+#~ msgstr " cuadros max: "
+
+#, fuzzy
 #~ msgid "label "
 #~ msgstr "(sin imagen)"
 
@@ -45220,9 +45236,6 @@ msgstr ""
 
 #~ msgid " failed."
 #~ msgstr " falló."
-
-#~ msgid " max frames: "
-#~ msgstr " cuadros max: "
 
 #
 #~ msgid " not found on disk for "

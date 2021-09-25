@@ -65,6 +65,7 @@ mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 mrv::Slider( x, y, w, h, l ),
 _edl( false ),
+_draw_annotation( true ),
 _draw_cache( true ),
 _tc( 0 ),
 _fps( 24 ),
@@ -84,7 +85,7 @@ uiMain( NULL )
 
 Timeline::~Timeline()
 {
-    _draw_cache = false;
+    _draw_cache = _draw_annotation = false;
     _edl = false;
     uiMain = NULL;
     delete win; win = NULL;
@@ -466,6 +467,21 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     fl_pop_clip();
 
+    if ( draw_annotation() )
+    {
+        GLShapeList::const_iterator si = img->shapes().begin();
+        GLShapeList::const_iterator se = img->shapes().end();
+        hh = r.h() / 2;
+        for ( ; si != se; ++si )
+        {
+            int64_t f = (*si)->frame;
+            fl_color( FL_RED );
+            fl_line_style( FL_SOLID, 2 );
+            dx = rx + slider_position( double(f), ww );
+            fl_xyline( dx, ry-hh, dx, ry+hh );
+        }
+    }
+
 }
 
 
@@ -477,6 +493,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
+
 }
 
     void showwin(mrv::Timeline* self)
@@ -754,6 +771,7 @@ void Timeline::draw()
                                 int64_t(mx),
                                 frame, r );
             }
+
 
             int dx = rx + slider_position( double(frame), ww );
 
