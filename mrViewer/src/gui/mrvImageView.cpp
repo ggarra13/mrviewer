@@ -4083,6 +4083,7 @@ void ImageView::redo_draw()
 
         send_network( "RedoDraw" );
         redraw();
+        timeline()->redraw();
     }
 }
 
@@ -4102,6 +4103,7 @@ void ImageView::undo_draw()
         shapes.pop_back();
         send_network( "UndoDraw" );
         redraw();
+        timeline()->redraw();
     }
 
 }
@@ -5549,6 +5551,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode & kErase )
@@ -5562,6 +5565,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode & kArrow )
@@ -5575,6 +5579,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode == kText )
@@ -5588,6 +5593,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode == kCircle )
@@ -5601,6 +5607,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     // else if ( _mode == kScrub || _mode == kMovePicture ||

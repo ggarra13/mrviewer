@@ -22,7 +22,8 @@ namespace mrv
         {
         case FL_ENTER:
             default_color = color();
-            color( fl_lighter( default_color ) );
+            if ( active_r() )
+                color( fl_lighter( default_color ) );
             redraw();
             return 1;
         case FL_LEAVE:
