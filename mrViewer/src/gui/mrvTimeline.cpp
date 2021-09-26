@@ -560,14 +560,19 @@ void Timeline::draw_selection( const mrv::Recti& r )
         b->image( fg->thumbnail() );
         b->redraw();
         win->end();
+        win->cursor( FL_CURSOR_DEFAULT );
         win->show();
     }
 
 int Timeline::handle( int e )
 {
-    if ( e == FL_ENTER ) return 1;
+    if ( e == FL_ENTER ) {
+        window()->cursor( FL_CURSOR_DEFAULT );
+        return 1;
+    }
     else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
+        window()->cursor( FL_CURSOR_DEFAULT );
         event_x = Fl::event_x();
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());

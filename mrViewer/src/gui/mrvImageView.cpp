@@ -4079,7 +4079,14 @@ void ImageView::redo_draw()
         shapes.push_back( undo_shapes.back() );
         uiMain->uiPaint->uiUndoDraw->activate();
         uiMain->uiUndoDraw->activate();
+        uiMain->uiPaint->uiUndoDraw->redraw();
+        uiMain->uiUndoDraw->redraw();
         undo_shapes.pop_back();
+        if ( undo_shapes.empty() )
+        {
+            uiMain->uiPaint->uiRedoDraw->deactivate();
+            uiMain->uiRedoDraw->deactivate();
+        }
 
         send_network( "RedoDraw" );
         redraw();
@@ -4101,6 +4108,11 @@ void ImageView::undo_draw()
         uiMain->uiPaint->uiRedoDraw->activate();
         uiMain->uiRedoDraw->activate();
         shapes.pop_back();
+        if ( shapes.empty() )
+        {
+            uiMain->uiPaint->uiUndoDraw->deactivate();
+            uiMain->uiUndoDraw->deactivate();
+        }
         send_network( "UndoDraw" );
         redraw();
         timeline()->redraw();
@@ -8498,13 +8510,15 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( !presentation && ( _mode & kScrub || _mode & kSelection ) )
+            if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
+                                     _mode & kArrow || _mode & kCircle ) )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-        if ( !presentation && ( _mode & kScrub || _mode & kSelection ) )
+        if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
+                                 _mode & kArrow || _mode & kCircle ) )
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
@@ -8527,7 +8541,8 @@ int ImageView::handle(int event)
         Y = Fl::event_y();
 
         cursor_counter = 0;
-        window()->cursor( FL_CURSOR_CROSS );
+        if ( presentation )
+            window()->cursor( FL_CURSOR_CROSS );
 
         if ( _wipe_dir != kNoWipe )
         {
