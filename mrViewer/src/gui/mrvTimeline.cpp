@@ -397,7 +397,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     if ( mx < max ) max = mx;
 
     // If too many frames, playback suffers, so we exit here
-    if ( max - j > kMAX_FRAMES ) return;
+    if ( max - j > uiMain->uiPrefs->uiPrefsMaxCachelineFrames->value() ) return;
 
     int rx = r.x() + int(slider_size()-1)/2;
     int ry = r.y() + r.h()/2;
@@ -467,20 +467,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     fl_pop_clip();
 
-    if ( draw_annotation() )
-    {
-        GLShapeList::const_iterator si = img->shapes().begin();
-        GLShapeList::const_iterator se = img->shapes().end();
-        hh = r.h() / 2;
-        for ( ; si != se; ++si )
-        {
-            int64_t f = (*si)->frame;
-            fl_color( FL_RED );
-            fl_line_style( FL_SOLID, 2 );
-            dx = rx + slider_position( double(f), ww );
-            fl_xyline( dx, ry-hh, dx, ry+hh );
-        }
-    }
 
 }
 
@@ -778,6 +764,25 @@ void Timeline::draw()
             }
 
 
+            if ( draw_annotation() && (*i) == fg )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int ry = r.y() + r.h()/2;
+                int ww = r.w();
+                int hh = r.h() - 8;
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                hh = r.h() / 2;
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+
             int dx = rx + slider_position( double(frame), ww );
 
             fl_color( FL_BLUE );
@@ -801,8 +806,32 @@ void Timeline::draw()
                                 img->duration() + img->start_number(),
                                 int64_t(mn), int64_t(mx),
                                 first, r );
+
             }
-        };
+        }
+
+        mrv::media m = browser()->current_image();
+        if ( m )
+        {
+            CMedia* img = m->image();
+            if ( draw_annotation() )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int hh = r.h() / 2;
+                int ry = r.y() + hh;
+                int ww = r.w();
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+        }
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
              ( _display_min > minimum() || _display_max < maximum() ) )
