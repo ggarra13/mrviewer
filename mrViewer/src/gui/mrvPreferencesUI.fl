@@ -101,7 +101,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {497 529 675 455} type Double resizable
+      xywh {497 557 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -766,7 +766,7 @@ uiPrefsFPS->value( g );} open
           }
           Fl_Value_Slider uiPrefsMaxCachelineFrames {
             label {Max. Cache Frames shown} selected
-            xywh {270 228 340 22} type Horizontal align 1 minimum 5000 maximum 10000 step 100 value 5000 slider_size 0.1 textsize 14
+            tooltip {Maximum number of cached frames shown in the timeline.  Too many frames can make playback sluggish.} xywh {270 228 340 22} type Horizontal align 1 minimum 5000 maximum 10000 step 100 value 5000 slider_size 0.1 textsize 14
           }
         }
         Fl_Group {} {
