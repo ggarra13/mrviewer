@@ -3803,7 +3803,12 @@ void ImageBrowser::next_image()
     }
 
     value( v );
+
+    if ( v < 0 || v >= (int)reel->images.size() )
+        return;
+
     mrv::media m = reel->images[v];
+
 
     item = root()->child(v);
     ok = select( item, 0 );
@@ -3862,7 +3867,7 @@ void ImageBrowser::next_image_limited()
     int v = value();
 
     ++v;
-    if ( size_t(v) >= reel->images.size() )
+    if ( size_t(v) >= (int)reel->images.size() )
     {
         if ( play ) view()->play(play);
         return;
@@ -3887,6 +3892,10 @@ void ImageBrowser::next_image_limited()
     }
 
     value( v );
+
+    if ( v < 0 || v >= (int)reel->images.size() )
+        return;
+
     mrv::media m = reel->images[v];
 
     item = root()->child(v);
@@ -3962,6 +3971,9 @@ void ImageBrowser::previous_image()
 
 
     value( v );
+
+    if ( v < 0 || (v+1 >= (int)reel->images.size()) )
+        return;
 
     Fl_Tree_Item* item = root()->child( v+1 );
     int ok = deselect( item, 0 );
@@ -4046,6 +4058,8 @@ void ImageBrowser::previous_image_limited()
 
     value( v );
 
+    if ( v < 0 || (v+1 >= (int)reel->images.size()) )
+        return;
     Fl_Tree_Item* item = root()->child( v+1 );
     int ok = deselect( item, 0 );
     if ( ok < 0 )
@@ -4254,6 +4268,8 @@ int ImageBrowser::mousePush( int x, int y )
             }
 
         }
+
+        if (!dragging) return 0;
 
         ok = Fl_Tree::select( dragging, 0 );
         if ( ok < 0 )
