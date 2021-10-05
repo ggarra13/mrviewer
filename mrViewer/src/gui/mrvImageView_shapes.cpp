@@ -48,7 +48,7 @@ void next_shape_frame( mrv::ImageView* view )
             fg = view->foreground();
         }
     }
-    while ( m != fg );
+    while ( fg != m );
 }
 
 void previous_shape_frame( mrv::ImageView* view )

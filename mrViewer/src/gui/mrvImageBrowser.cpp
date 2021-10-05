@@ -3867,7 +3867,7 @@ void ImageBrowser::next_image_limited()
     int v = value();
 
     ++v;
-    if ( size_t(v) >= (int)reel->images.size() )
+    if ( size_t(v) >= reel->images.size() )
     {
         if ( play ) view()->play(play);
         return;

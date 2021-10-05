@@ -38,7 +38,7 @@ class ReelUI {open
   } {
     Fl_Window uiMain {
       label {Reel List} open
-      xywh {167 227 515 485} type Double align 10 resizable
+      xywh {154 52 515 485} type Double align 10 resizable
       code0 {o->size_range(350,320);} non_modal size_range {405 350 0 0} visible
     } {
       Fl_Group {} {open
@@ -72,7 +72,7 @@ class ReelUI {open
               callback {const char* name = mrv::fl_input("Reel Name", "reel" );
 if ( name == NULL ) return;
 v->new_reel(name);} selected
-              tooltip {Create a new reel} image {../../icons/reel_24.xpm} xywh {127 33 36 36} labeltype EMBOSSED_LABEL labelcolor 175 align 593
+              tooltip {Create a new reel} image {../../icons/reel_down_24.png} xywh {127 33 36 36} labeltype EMBOSSED_LABEL labelcolor 175 align 593
               class {mrv::Button}
             }
             Fl_Button {} {
