@@ -386,7 +386,7 @@ class LogUI {} {
     Fl_Window uiMain {
       label {Log Messages} open
       xywh {334 205 970 250} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );} non_modal
+      code0 {//o->child_of( main->uiMain );} modal
     } {
       Fl_Group {} {
 	xywh {0 0 975 250} box UP_BOX resizable
@@ -1959,7 +1959,7 @@ delete uiGL3dView; uiGL3dView = NULL;
 delete uiStereo; uiStereo = NULL;
 delete uiColorControls; uiColorControls = NULL;
 delete uiAbout; uiAbout = NULL;
-delete uiLog; uiLog = NULL;
+//delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiConnection; uiConnection = NULL;

@@ -324,11 +324,14 @@ int main( int argc, const char** argv )
                   std::string fileroot;
 
                   mrv::fileroot( fileroot, *it, true, false );
-                  if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() &&
-                       mrv::is_valid_sequence( fileroot.c_str() ) &&
-                       !opts.single )
+                  if ( mrv::is_valid_sequence( fileroot.c_str() ) )
                   {
                       mrv::get_sequence_limits( start, end, fileroot );
+                  }
+
+                  if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() &&
+                       !opts.single )
+                  {
                       opts.files.push_back( mrv::LoadInfo( fileroot, start, end,
                                                            start, end ) );
                   }

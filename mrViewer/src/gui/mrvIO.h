@@ -94,6 +94,12 @@ struct warnbuffer : public logbuffer
 
 struct infobuffer : public logbuffer
 {
+    infobuffer() : logbuffer() {
+#ifdef DEBUG
+        debug(true);
+#endif
+    };
+
     virtual void print( const char* c );
 };
 

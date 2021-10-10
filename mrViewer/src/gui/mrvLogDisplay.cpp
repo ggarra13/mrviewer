@@ -54,7 +54,7 @@ Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
 };
 
 LogDisplay::Mutex LogDisplay::mtx;
-LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
+LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kAlways;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 

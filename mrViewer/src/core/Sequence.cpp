@@ -704,7 +704,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
     char buf[1024];
     if ( dir.string() == "" ) {
-        dir = fs::path( getcwd(buf,1024) );
+        dir = fs::current_path();
     }
 
     if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
@@ -779,33 +779,47 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     }
 
 
-    fs::directory_iterator e; // default constructor yields path iter. end
-    for ( fs::directory_iterator i( dir ) ; i != e; ++i )
+    try {
+
+        fs::directory_iterator e; // default constructor yields path iter. end
+        for ( fs::directory_iterator i( dir ) ; i != e; ++i )
+        {
+            if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
+
+            std::string tmp = (*i).path().leaf().generic_string();
+
+
+            // Do not continue on false return of split_sequence
+            if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
+            {
+                continue;
+            }
+
+            if ( cext != ext || croot != root || cview != view )
+            {
+                continue;  // not this sequence
+            }
+
+            if ( cframe[0] == '0' && cframe.size() > 1 && pad == 0 )
+                pad = (unsigned) cframe.size();
+
+
+            boost::int64_t f = atoi( cframe.c_str() );
+
+            if ( f < frameStart || frameStart == AV_NOPTS_VALUE )
+                frameStart = f;
+            if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )  frameEnd   = f;
+        }
+    }
+    catch( const fs::filesystem_error& e )
     {
-        if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
-
-        std::string tmp = (*i).path().leaf().generic_string();
-
-
-        // Do not continue on false return of split_sequence
-        if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
-        {
-            continue;
-        }
-
-        if ( cext != ext || croot != root || cview != view )
-        {
-            continue;  // not this sequence
-        }
-
-        if ( cframe[0] == '0' && cframe.size() > 1 && pad == 0 )
-            pad = (unsigned) cframe.size();
-
-
-        boost::int64_t f = atoi( cframe.c_str() );
-
-        if ( f < frameStart || frameStart == AV_NOPTS_VALUE ) frameStart = f;
-        if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )   frameEnd   = f;
+        LOG_ERROR( _("Filesystem error: ") << e.what() );
+        return false;
+    }
+    catch( const boost::exception& e )
+    {
+        LOG_ERROR( boost::diagnostic_information(e) );
+        return false;
     }
 
     const char* prdigits = PRId64;

@@ -20,9 +20,6 @@ OptionParser.new do |opts|
     @options[:force] = v
   end
 
-  opts.on("-l", "--libs_only", "Run verbosely") do |v|
-    @options[:libs_only] = v
-  end
 
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts

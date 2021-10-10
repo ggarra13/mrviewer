@@ -101,6 +101,7 @@ int logbuffer::sync()
 
 void logbuffer::open_stream()
 {
+    std::cerr << "open_sream" << std::endl;
     if ( !out.is_open() )
     {
         std::string file = mrv::homepath();
@@ -112,6 +113,7 @@ void logbuffer::open_stream()
         out << "DEBUG LOG" << std::endl
             << "=========" << std::endl << std::endl;
     }
+    std::cerr << "opened_sream" << std::endl;
 }
 
 void errorbuffer::print( const char* c )
