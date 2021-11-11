@@ -1742,6 +1742,25 @@ void ImageBrowser::save_session()
         // Remove image from reel
         reel->images.erase( i );
 
+
+        // Select the next image to the foreground
+        size_t num = reel->images.size();
+        mrv::media fg;
+        if ( (size_t)idx < num )
+            fg = reel->images[idx];
+        else if ( num != 0 )
+            fg = reel->images[num - 1];
+
+        view()->foreground( fg );
+
+        CMedia* img = fg->image();
+
+        int64_t pos = fg->position() - img->first_frame() + img->frame();
+        seek( pos );
+
+        // clear dragging in case we were dragging the removed media
+        dragging = NULL;
+
         match_tree_order();
 
         int64_t first, last;
@@ -1755,9 +1774,6 @@ void ImageBrowser::save_session()
             e->refresh();
             e->redraw();
         }
-
-        // clear dragging in case we were dragging the removed media
-        dragging = NULL;
 
         view()->clear_old();
         if (play) view()->play( play );
@@ -1861,6 +1877,21 @@ void ImageBrowser::save_session()
 
         _reel_choice->value( _reel );
 
+        {
+            Fl_Tree_Item* i = NULL;
+            for ( i = first(); i; i = next(i) )
+            {
+                if ( ! i->widget() ) {
+                    continue;
+                }
+
+                mrv::Element* elem = (mrv::Element*) i->widget();
+                mrv::media m = elem->media();
+                delete elem;
+            }
+        }
+
+
         clear_children( root() );
         dragging = NULL;
         callback_item( NULL );
@@ -1876,6 +1907,7 @@ void ImageBrowser::save_session()
             mrv::MediaList::iterator i = reel->images.begin();
             MediaList::iterator j;
             mrv::MediaList::iterator e = reel->images.end();
+
 
             for ( ; i != e; ++i )
             {
@@ -3294,38 +3326,30 @@ void ImageBrowser::remove_current()
         if ( ! item ) continue;
         mrv::Element* elem = (mrv::Element*) item->widget();
         mrv::media m = elem->media();
-        delete elem;
-        item->widget( NULL );
+        remove( m );
     }
 
 
-    for ( int i = 0; i < num; ++i )
-    {
-        Fl_Tree_Item* item = items[i];
-        Fl_Tree::remove( item );
-    }
 
-    view()->clear_old();
+    // mrv::Reel r = current_reel();
+    // int v = value();
 
-    mrv::Reel r = current_reel();
-    int v = value();
+    // int sel = v;
 
-    int sel = v;
+    // match_tree_order();
 
-    match_tree_order();
+    // if ( sel >= (int) r->images.size() )
+    //     sel = r->images.size() - 1;
 
-    if ( sel >= (int) r->images.size() )
-        sel = r->images.size() - 1;
+    // real_change_image( v, sel, play );
 
-    real_change_image( v, sel, play );
+    // view()->fit_image();
 
-    view()->fit_image();
+    // int64_t first, last;
+    // adjust_timeline( first, last );
+    // set_timeline( first, last );
 
-    int64_t first, last;
-    adjust_timeline( first, last );
-    set_timeline( first, last );
-
-    redraw();
+    // redraw();
 }
 
 
@@ -3427,6 +3451,11 @@ void ImageBrowser::replace( int i, mrv::media m )
         return;
     }
     Element* oldnw = (Element*)item->widget();
+    int X = oldnw->x();
+    int Y = oldnw->y();
+    int W = oldnw->w();
+    int H = oldnw->h();
+    delete oldnw;  // Delete old element and item
     Fl_Tree::remove( item );
 
     // Create new item
@@ -3443,8 +3472,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     Fl_Tree::select( newitem, 0 );
 
     // We resize new widget to old to avoid redraw issues
-    nw->resize( oldnw->x(), oldnw->y(), oldnw->w(), oldnw->h() );
-    delete oldnw;  // Delete old element and item
+    nw->resize( X, Y, W, H );
 
     // We attach widget to tree
     newitem->widget( nw );
@@ -5117,6 +5145,7 @@ bool ImageBrowser::add_to_tree( mrv::media m )
     Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
                                           root()->children() );
     if ( !item ) return false;
+
     Element* nw = new_item( m );
     if ( !nw ) return false;
     item->widget( nw );

@@ -635,7 +635,7 @@ int Timeline::handle( int e )
     }
     Fl_Boxtype bx = box();
     box( FL_FLAT_BOX );
-    int ok = Fl_Slider::handle( e );
+    int ok = mrv::Slider::handle( e );
     box( bx );
     return ok;
     // if ( r != 0 ) return r;

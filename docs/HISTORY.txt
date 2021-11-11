@@ -1,3 +1,7 @@
+v6.0.0  - Bug fixed a bad Windows release.
+	- Bug fixed too much memory used on long reels with many images.
+	- Bug fixed thumbnail creation on EDL timeline when switching images.
+
 v5.9.9  - Fixed rotation of videos that have a matrix parameter.
 	- Made SHIFT+Left and SHIFT+Right not stop on the beginning/ending of
 	  a clip when multiple clips with annotations are loaded, but instead

@@ -289,7 +289,7 @@ int main( int argc, const char** argv )
 
     DBG;
       //Fl::lock();  // Start locking mechanism
-      Fl::scheme("plastic");
+      Fl::scheme("gtk+");
     DBG;
 
       fl_open_callback( osx_open_cb );

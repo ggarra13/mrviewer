@@ -3698,7 +3698,9 @@ void ImageInformation::refresh()
     DBG2;
 
     if ( img == NULL || !visible_r() ) {
+        DBG3;
         Fl_Group::current(0);
+        DBG3;
         return;
     }
 

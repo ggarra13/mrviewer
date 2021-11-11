@@ -61,12 +61,14 @@ void Element::make_thumbnail()
         }
 
 
+
         CMedia* img = m->image();
         if ( !img )
         {
             LOG_ERROR( _("Empty image provided to Element constructor") );
             return;
         }
+
 
         make_thumbnail();
 
