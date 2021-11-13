@@ -165,7 +165,7 @@ def copy_third_party( root, dest )
       exit 1
     end
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv8_0_3/Redistributable/mac/REDR3D.dylib",
+    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )

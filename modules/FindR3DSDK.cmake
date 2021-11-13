@@ -13,6 +13,7 @@ SET(R3DSDK_FOUND "NO")
 FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   "$ENV{R3DSDK_ROOT}/Include"
   "$ENV{R3DSDK_ROOT}"
+  ../../../R3DSDKv8_1_0/Include
   ../../../R3DSDKv8_0_3/Include
   ../../../R3DSDKv7_3_4/Include
   ../../../R3DSDKv7_3_1/Include
@@ -25,8 +26,8 @@ FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
 
 get_filename_component( R3DSDK_ROOT ${R3DSDK_INCLUDE_DIR} DIRECTORY )
 IF(APPLE)
-#    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac32_64/libR3DSDK-libstdcpp.a )
-    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac32_64/libR3DSDK-libcpp.a )
+#    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac64/libR3DSDK-libstdcpp.a )
+    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac64/libR3DSDK-libcpp.a )
 ELSEIF(UNIX)
   if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 )
     set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC-cpp11.a )
