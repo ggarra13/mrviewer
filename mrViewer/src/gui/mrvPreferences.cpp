@@ -565,7 +565,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         uiPrefs->uiColorTheme->add( t.name.c_str() );
     }
 
-    colors.get( "scheme", tmpS, "gtk+", 2048 );
+    colors.get( "scheme", tmpS, "plastic", 2048 );
     DBG3;
     const Fl_Menu_Item* item = uiPrefs->uiScheme->find_item( tmpS );
     if ( item )
