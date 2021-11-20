@@ -184,13 +184,20 @@ const char* const aviImage::color_range() const
     return kColorRange[_av_frame->color_range];
 }
 
-double get_rotation(AVStream *st)
+double get_rotation_from_matrix( AVStream* st )
 {
     uint8_t* displaymatrix = av_stream_get_side_data(st,
-                                                     AV_PKT_DATA_DISPLAYMATRIX, NULL);
+                                                     AV_PKT_DATA_DISPLAYMATRIX,
+                                                     NULL);
     double theta = 0;
     if (displaymatrix)
         theta = -av_display_rotation_get((int32_t*) displaymatrix);
+    return theta;
+}
+
+double get_rotation(AVStream *st)
+{
+    double theta = get_rotation_from_matrix( st );
 
     theta -= 360*floor(theta/360 + 0.9/360);
 
@@ -535,7 +542,7 @@ static int configure_filtergraph(AVFilterGraph *graph, const char *filtergraph,
     }
 
     /* Reorder the filters to ensure that inputs of the custom filters are merged first */
-    for (i = 0; i < graph->nb_filters - nb_filters; i++)
+    for (i = 0; i < (int)graph->nb_filters - (int)nb_filters; i++)
         FFSWAP(AVFilterContext*, graph->filters[i], graph->filters[i + nb_filters]);
 
     ret = avfilter_graph_config(graph, NULL);
@@ -552,16 +559,15 @@ int aviImage::init_filters(const char *filters_descr)
     int ret = 0;
     const AVFilter *buffersrc  = avfilter_get_by_name("buffer");
     const AVFilter *buffersink = avfilter_get_by_name("buffersink");
-    AVFilterInOut *outputs = avfilter_inout_alloc();
-    AVFilterInOut *inputs  = avfilter_inout_alloc();
     AVRational time_base = get_video_stream()->time_base;
     AVRational fr = av_guess_frame_rate(_context, get_video_stream(), NULL);
     enum AVPixelFormat pix_fmts[] = { _video_ctx->pix_fmt, AV_PIX_FMT_NONE };
     AVFilterContext *filt_src = NULL, *filt_out = NULL, *last_filter = NULL;
     double theta = 0.0;
+    int nb_filters = 1;
 
     filter_graph = avfilter_graph_alloc();
-    if (!outputs || !inputs || !filter_graph || !buffersrc || !buffersink) {
+    if ( !filter_graph || !buffersrc || !buffersink) {
         LOG_ERROR( _("No memory to allocate filter graph") );
         ret = AVERROR(ENOMEM);
         goto end;
@@ -578,32 +584,41 @@ int aviImage::init_filters(const char *filters_descr)
     if (fr.num && fr.den)
         av_strlcatf(args, sizeof(args), ":frame_rate=%d/%d", fr.num, fr.den);
 
+    _filt_frame = av_frame_alloc();
+    if ( ! _filt_frame )
+    {
+        LOG_ERROR( _("Could not allocate filter frame.  "
+                     "Not enough memory.") );
+        goto end;
+    }
 
     LOG_INFO( "args " << args );
 
-    ret = avfilter_graph_create_filter(&buffersrc_ctx, buffersrc, "in",
+    ret = avfilter_graph_create_filter(&filt_src, buffersrc, "in",
                                        args, NULL, filter_graph);
     if (ret < 0) {
         LOG_ERROR( _( "Cannot create buffer source" ) );
         goto end;
     }
 
+    buffersrc_ctx = filt_src;
+
     /* buffer video sink: to terminate the filter chain. */
-    ret = avfilter_graph_create_filter(&buffersink_ctx, buffersink, "out",
+    ret = avfilter_graph_create_filter(&filt_out, buffersink, "out",
                                        NULL, NULL, filter_graph);
     if (ret < 0) {
         LOG_ERROR( _("Cannot create buffer sink" ) );
         goto end;
     }
 
-    ret = av_opt_set_int_list(buffersink_ctx, "pix_fmts", pix_fmts,
+    ret = av_opt_set_int_list(filt_out, "pix_fmts", pix_fmts,
                               AV_PIX_FMT_NONE, AV_OPT_SEARCH_CHILDREN);
     if (ret < 0) {
         LOG_ERROR( _("Cannot set output pixel format" ) );
         goto end;
     }
 
-    last_filter = buffersink_ctx;
+    last_filter = filt_out;
 
 /* Note: this macro adds a filter before the lastly added filter, so the
  * processing order of the filters is in reverse */
@@ -638,9 +653,12 @@ int aviImage::init_filters(const char *filters_descr)
         INSERT_FILT("rotate", rotate_buf);
     }
 
-    if ((ret = configure_filtergraph(filter_graph, "filtergraph",
+    if ((ret = configure_filtergraph(filter_graph, filters_descr,
                                      filt_src, last_filter)) < 0)
         goto end;
+
+
+    buffersink_ctx = filt_out;
 
 #if 0
     /*
@@ -848,12 +866,6 @@ void aviImage::subtitle_file( const char* f )
             _subtitle_index = 0;
         }
 
-        _filt_frame = av_frame_alloc();
-        if ( ! _filt_frame )
-        {
-            LOG_ERROR( _("Could not allocate filter frame.  "
-                         "Not enough memory.") );
-        }
 
         avformat_free_context( scontext );
 
@@ -962,6 +974,54 @@ void aviImage::close_video_codec()
     {
         avcodec_free_context( &_video_ctx );
     }
+}
+
+
+CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
+{
+    if ( filter_graph )
+    {
+
+        // Turn PTS into a frame
+        int64_t ptsframe = frame;
+
+        std::cerr << "decode eof " << frame << " ptsframe "
+                  << ptsframe << std::endl;
+
+        /* push the decoded frame into the filtergraph */
+        if (av_buffersrc_add_frame_flags(buffersrc_ctx, NULL,
+                                         AV_BUFFERSRC_FLAG_KEEP_REF) < 0 ) {
+            LOG_ERROR( _("Error while feeding the filtergraph") );
+            close_subtitle_codec();
+            return kDecodeError;
+        }
+
+        int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+        if (ret == AVERROR(EAGAIN)  )
+        {
+            LOG_INFO( "_filt_frame failed with missing frame" );
+            return kDecodeMissingFrame;
+        }
+
+        if (ret < 0)
+        {
+            LOG_ERROR( "av_buffersink_get frame failed" );
+            return kDecodeError;
+        }
+
+        av_frame_unref( _av_frame );
+        _av_frame = av_frame_clone( _filt_frame );
+        av_frame_unref( _filt_frame );
+        if (!_av_frame )
+        {
+            LOG_ERROR( _("Could not clone filter frame") );
+            return kDecodeError;
+        }
+        store_image( ptsframe, frame );
+        return kDecodeOK;
+    }
+
+    return kDecodeMissingFrame;
 }
 
 
@@ -1467,7 +1527,7 @@ void aviImage::store_image( const int64_t frame,
             ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
         }
 
-        if ( filter_graph && _subtitle_index >= 0 )
+        if ( filter_graph )
         {
             SCOPED_LOCK( _subtitle_mutex );
             /* push the decoded frame into the filtergraph */
@@ -1479,8 +1539,11 @@ void aviImage::store_image( const int64_t frame,
             }
 
             int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
-            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF )
+            {
+                LOG_INFO( "_filt_frame failed with missing frame" );
                 return kDecodeMissingFrame;
+            }
 
             if (ret < 0)
             {
@@ -1494,12 +1557,11 @@ void aviImage::store_image( const int64_t frame,
             av_frame_unref( _filt_frame );
             if (!_av_frame )
             {
-                LOG_ERROR( _("Could not clone subtitle frame") );
+                LOG_ERROR( _("Could not clone filter frame") );
                 close_subtitle_codec();
                 return kDecodeError;
             }
         }
-
 
 
     store_image( ptsframe, frame );
@@ -2818,6 +2880,13 @@ void aviImage::populate()
         //dump_metadata( pkt->side_data, "" );
     }
 
+    if ( has_video() &&
+         fabs( get_rotation_from_matrix( get_video_stream() ) ) > 0.0 )
+    {
+        init_filters( NULL );
+    }
+
+
     int64_t dts = _frameStart;
 
     unsigned audio_bytes = 0;
@@ -3919,6 +3988,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         }
         else
         {
+
             AVPacket& pkt = _video_packets.front();
 
             int64_t pktframe = get_frame( get_video_stream(), pkt );

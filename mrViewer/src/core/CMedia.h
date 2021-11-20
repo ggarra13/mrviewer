@@ -419,6 +419,8 @@ public:
 
 public:
 
+    virtual DecodeStatus decode_eof( int64_t frame ) { return kDecodeOK; }
+
     inline void fade_in( int64_t f ) {
         _fade[0].type = kFadeIn; _fade[0].frames = f;
     }

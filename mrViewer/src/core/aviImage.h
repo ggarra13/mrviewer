@@ -69,6 +69,8 @@ public:
     virtual ~aviImage();
 
 
+    virtual DecodeStatus decode_eof( int64_t frame );
+
     virtual const char* const format()      const {
         return _format.c_str();
     }
