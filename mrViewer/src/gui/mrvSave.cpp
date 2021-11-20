@@ -83,7 +83,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     }
 
     bool ffmpeg_handle = (ext == ".png" || ext == ".jpg" || ext == ".jpeg" ||
-                          ext == ".tif" || ext == ".tiff" );
+                          ext == ".tif" || ext == ".tiff" || ext == ".gif" );
     bool movie = is_valid_movie( ext.c_str() ) ||
                  is_valid_audio( ext.c_str() );
 

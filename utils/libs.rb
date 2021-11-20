@@ -139,7 +139,7 @@ def copy_third_party( root, dest )
   Dir.chdir( root )
   if dest =~ /Linux/
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv8_0_3/Redistributable/linux/REDR3D-x64.so",
+    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so",
                     "#{dest}/lib" )
     if File.exists?( "/usr/lib64/blackmagic" )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",

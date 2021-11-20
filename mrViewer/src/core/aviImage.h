@@ -337,6 +337,14 @@ protected:
     std::string           _filter_description;
     AVFilterContext*      buffersink_ctx;
     AVFilterContext*      buffersrc_ctx;
+
+    int vfilter_idx;
+    AVFilterContext *in_video_filter;   // the first filter in the video chain
+    AVFilterContext *out_video_filter;  // the last filter in the video chain
+    AVFilterContext *in_audio_filter;   // the first filter in the audio chain
+    AVFilterContext *out_audio_filter;  // the last filter in the audio chain
+    AVFilterGraph *agraph;              // audio filter graph
+
     AVFilterGraph*        filter_graph;
     subtitle_cache_t      _subtitles;
     AVSubtitle            _sub;

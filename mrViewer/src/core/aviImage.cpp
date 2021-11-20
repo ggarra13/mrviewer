@@ -61,8 +61,10 @@ extern "C" {
 #include <libavutil/avstring.h>
 #include <libswresample/swresample.h>
 #include <libavutil/mastering_display_metadata.h>
-#include <libavfilter/buffersrc.h>
+#include <libavfilter/avfilter.h>
 #include <libavfilter/buffersink.h>
+#include <libavfilter/buffersrc.h>
+
 }
 
 
@@ -70,6 +72,7 @@ extern "C" {
 namespace fs = boost::filesystem;
 
 #include <ImfStringAttribute.h>
+#include <ImfFloatAttribute.h>
 
 #include "core/mrvPlayback.h"
 #include "core/mrvHome.h"
@@ -187,10 +190,19 @@ double get_rotation(AVStream *st)
                                                      AV_PKT_DATA_DISPLAYMATRIX, NULL);
     double theta = 0;
     if (displaymatrix)
-        theta = av_display_rotation_get((int32_t*) displaymatrix);
+        theta = -av_display_rotation_get((int32_t*) displaymatrix);
+
+    theta -= 360*floor(theta/360 + 0.9/360);
+
+    if (fabs(theta - 90*round(theta/90)) > 2)
+        av_log(NULL, AV_LOG_WARNING, "Odd rotation angle.\n"
+               "If you want to help, upload a sample "
+               "of this file to https://streams.videolan.org/upload/ "
+               "and contact the ffmpeg-devel mailing list. (ffmpeg-devel@ffmpeg.org)");
 
     return theta;
 }
+
 
 
 aviImage::aviImage() :
@@ -490,6 +502,50 @@ AVStream* aviImage::get_video_stream() const
     return _video_index >= 0 ? _context->streams[ video_stream_index() ] : NULL;
 }
 
+static int configure_filtergraph(AVFilterGraph *graph, const char *filtergraph,
+                                 AVFilterContext *source_ctx, AVFilterContext *sink_ctx)
+{
+    int ret, i;
+    int nb_filters = graph->nb_filters;
+    AVFilterInOut *outputs = NULL, *inputs = NULL;
+
+    if (filtergraph) {
+        outputs = avfilter_inout_alloc();
+        inputs  = avfilter_inout_alloc();
+        if (!outputs || !inputs) {
+            ret = AVERROR(ENOMEM);
+            goto fail;
+        }
+
+        outputs->name       = av_strdup("in");
+        outputs->filter_ctx = source_ctx;
+        outputs->pad_idx    = 0;
+        outputs->next       = NULL;
+
+        inputs->name        = av_strdup("out");
+        inputs->filter_ctx  = sink_ctx;
+        inputs->pad_idx     = 0;
+        inputs->next        = NULL;
+
+        if ((ret = avfilter_graph_parse_ptr(graph, filtergraph, &inputs, &outputs, NULL)) < 0)
+            goto fail;
+    } else {
+        if ((ret = avfilter_link(source_ctx, 0, sink_ctx, 0)) < 0)
+            goto fail;
+    }
+
+    /* Reorder the filters to ensure that inputs of the custom filters are merged first */
+    for (i = 0; i < graph->nb_filters - nb_filters; i++)
+        FFSWAP(AVFilterContext*, graph->filters[i], graph->filters[i + nb_filters]);
+
+    ret = avfilter_graph_config(graph, NULL);
+fail:
+    avfilter_inout_free(&outputs);
+    avfilter_inout_free(&inputs);
+    return ret;
+}
+
+
 int aviImage::init_filters(const char *filters_descr)
 {
     char args[512];
@@ -501,6 +557,8 @@ int aviImage::init_filters(const char *filters_descr)
     AVRational time_base = get_video_stream()->time_base;
     AVRational fr = av_guess_frame_rate(_context, get_video_stream(), NULL);
     enum AVPixelFormat pix_fmts[] = { _video_ctx->pix_fmt, AV_PIX_FMT_NONE };
+    AVFilterContext *filt_src = NULL, *filt_out = NULL, *last_filter = NULL;
+    double theta = 0.0;
 
     filter_graph = avfilter_graph_alloc();
     if (!outputs || !inputs || !filter_graph || !buffersrc || !buffersink) {
@@ -545,6 +603,46 @@ int aviImage::init_filters(const char *filters_descr)
         goto end;
     }
 
+    last_filter = buffersink_ctx;
+
+/* Note: this macro adds a filter before the lastly added filter, so the
+ * processing order of the filters is in reverse */
+#define INSERT_FILT(name, arg) do {                                          \
+    AVFilterContext *filt_ctx;                                               \
+                                                                             \
+    ret = avfilter_graph_create_filter(&filt_ctx,                            \
+                                       avfilter_get_by_name(name),           \
+                                       "avi_" name, arg, NULL, filter_graph);\
+    if (ret < 0)                                                             \
+        goto end;                                                            \
+                                                                             \
+    ret = avfilter_link(filt_ctx, 0, last_filter, 0);                        \
+    if (ret < 0)                                                             \
+        goto end;                                                            \
+                                                                             \
+    last_filter = filt_ctx;                                                  \
+} while (0)
+
+    theta  = get_rotation( get_video_stream() );
+
+    if (fabs(theta - 90) < 1.0) {
+        INSERT_FILT("transpose", "clock");
+    } else if (fabs(theta - 180) < 1.0) {
+        INSERT_FILT("hflip", NULL);
+        INSERT_FILT("vflip", NULL);
+    } else if (fabs(theta - 270) < 1.0) {
+        INSERT_FILT("transpose", "cclock");
+    } else if (fabs(theta) > 1.0) {
+        char rotate_buf[64];
+        snprintf(rotate_buf, sizeof(rotate_buf), "%f*PI/180", theta);
+        INSERT_FILT("rotate", rotate_buf);
+    }
+
+    if ((ret = configure_filtergraph(filter_graph, "filtergraph",
+                                     filt_src, last_filter)) < 0)
+        goto end;
+
+#if 0
     /*
      * Set the endpoints for the filter graph. The filter_graph will
      * be linked to the graph described by filters_descr.
@@ -585,10 +683,11 @@ int aviImage::init_filters(const char *filters_descr)
         goto end;
     }
 
-
-end:
+fail:
     avfilter_inout_free(&inputs);
     avfilter_inout_free(&outputs);
+#endif
+end:
 
     return ret;
 }
@@ -2494,9 +2593,6 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
-        double theta = get_rotation( stream );
-        if ( fabs( theta ) > 1.0 )
-            rot_z( theta );
     }
     else if ( has_audio() )
     {

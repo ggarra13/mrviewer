@@ -1077,6 +1077,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         return picImage::save( file, this, opts );
     }
 
+
     if ( dynamic_cast< const OIIOOpts* >( opts ) != NULL )
     {
         OIIOOpts* o = (OIIOOpts*) opts;

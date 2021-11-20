@@ -39,12 +39,17 @@ extern "C" {
 #include <libavutil/mathematics.h>
 #include <libavutil/timestamp.h>
 #include <libavutil/avassert.h>
+#include <libavutil/display.h>
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
+
 #include <libavformat/avformat.h>
+
 #include <libavcodec/avcodec.h>
+
 #include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
+
 }
 
 #include "core/mrvColorOps.h"
@@ -421,6 +426,10 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         {
             c->pix_fmt = AV_PIX_FMT_BGR32;
         }
+        else if ( c->codec_id == AV_CODEC_ID_GIF )
+        {
+            c->pix_fmt = AV_PIX_FMT_BGR8;
+        }
         else if ( c->codec_id == AV_CODEC_ID_MJPEG )
         {
             c->pix_fmt = AV_PIX_FMT_YUVJ444P;
@@ -472,8 +481,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     default:
         break;
     }
-
-
 
     return st;
 }
@@ -978,6 +985,15 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     AVCodecContext* c = enc_ctx[st->id];
     AVDictionary* info = NULL;
 
+    if ( fabs(img->rot_z()) > 0.0f )
+    {
+        uint8_t *sd = av_stream_new_side_data(st, AV_PKT_DATA_DISPLAYMATRIX,
+                                              sizeof(int32_t) * 9);
+        if ( sd ) {
+            av_display_rotation_set( (int32_t*)sd, img->rot_z() );
+        }
+    }
+
     av_dict_set( &info, "tune", "zerolatency", 0 );
 
     if ( opts->metadata )
@@ -1238,6 +1254,7 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 
 
 
+
 /* prepare an audio frame of 'frame_size' samples and
    'nb_channels' channels */
 audio_type_ptr CMedia::get_audio_frame(const int64_t f )
@@ -1343,6 +1360,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
         video_codec_id = AV_CODEC_ID_PNG;
     else if ( opts->video_codec == "tiff" )
         video_codec_id = AV_CODEC_ID_TIFF;
+    else if ( opts->video_codec == "gif" )
+        video_codec_id = AV_CODEC_ID_GIF;
     else if ( opts->video_codec == "hevc" )
         video_codec_id = AV_CODEC_ID_HEVC;
     else if ( opts->video_codec == "h264" )
@@ -1386,15 +1405,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
     video_st = NULL;
     audio_st = NULL;
-    if (img->has_picture() && video_codec_id != AV_CODEC_ID_NONE ) {
-
+    if ( img->has_picture() && video_codec_id != AV_CODEC_ID_NONE ) {
 
         video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
                               video_codec_id, img, opts);
     }
 
-    if (img->has_audio() && audio_codec_id != AV_CODEC_ID_NONE ) {
-
+    if ( img->has_audio() && audio_codec_id != AV_CODEC_ID_NONE ) {
 
         audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
                               audio_codec_id, img, opts );
@@ -1411,8 +1428,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
      * video codecs and allocate the necessary encode buffers. */
     if (video_st)
     {
-
-
         if ( ! open_video(oc, video_codec, video_st, img, opts ) )
             return false;
     }
