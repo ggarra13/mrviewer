@@ -738,7 +738,7 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
     }
     else
     {
-        if ( pkt.dts != AV_NOPTS_VALUE )
+//         if ( pkt.dts != AV_NOPTS_VALUE )
             frame = pts2frame( stream, pkt.dts );
     }
     return frame;

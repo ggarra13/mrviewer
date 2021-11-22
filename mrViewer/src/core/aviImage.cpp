@@ -270,8 +270,11 @@ aviImage::~aviImage()
 
     if ( _av_frame )
         av_frame_unref( _av_frame );
+
+#ifdef FILT_FRAME
     if ( _filt_frame )
         av_frame_unref( _filt_frame );
+#endif
 
     close_video_codec();
     close_subtitle_codec();
@@ -279,8 +282,10 @@ aviImage::~aviImage()
     if ( _av_frame )
         av_frame_free( &_av_frame );
 
+#ifdef FILT_FRAME
     if ( _filt_frame )
         av_frame_free( &_filt_frame );
+#endif
 
     avsubtitle_free( &_sub );
 
@@ -584,6 +589,7 @@ int aviImage::init_filters(const char *filters_descr)
     if (fr.num && fr.den)
         av_strlcatf(args, sizeof(args), ":frame_rate=%d/%d", fr.num, fr.den);
 
+#ifdef FILT_FRAME
     _filt_frame = av_frame_alloc();
     if ( ! _filt_frame )
     {
@@ -591,6 +597,7 @@ int aviImage::init_filters(const char *filters_descr)
                      "Not enough memory.") );
         goto end;
     }
+#endif
 
     LOG_INFO( "args " << args );
 
@@ -641,13 +648,17 @@ int aviImage::init_filters(const char *filters_descr)
     theta  = get_rotation( get_video_stream() );
 
     if (fabs(theta - 90) < 1.0) {
+        std::cerr << "transpose clock" << std::endl;
         INSERT_FILT("transpose", "clock");
     } else if (fabs(theta - 180) < 1.0) {
+        std::cerr << "hflip/vflip" << std::endl;
         INSERT_FILT("hflip", NULL);
         INSERT_FILT("vflip", NULL);
     } else if (fabs(theta - 270) < 1.0) {
+        std::cerr << "transpose cclock" << std::endl;
         INSERT_FILT("transpose", "cclock");
     } else if (fabs(theta) > 1.0) {
+        std::cerr << "rotate random" << std::endl;
         char rotate_buf[64];
         snprintf(rotate_buf, sizeof(rotate_buf), "%f*PI/180", theta);
         INSERT_FILT("rotate", rotate_buf);
@@ -732,11 +743,13 @@ void aviImage::subtitle_file( const char* f )
     avfilter_graph_free( &filter_graph );
     filter_graph = NULL;
 
+#ifdef FILT_FRAME
     if ( _filt_frame )
     {
         av_frame_unref( _filt_frame );
         av_frame_free( &_filt_frame );
     }
+#endif
 
     if ( !has_video() )
     {
@@ -985,8 +998,6 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
         // Turn PTS into a frame
         int64_t ptsframe = frame;
 
-        std::cerr << "decode eof " << frame << " ptsframe "
-                  << ptsframe << std::endl;
 
         /* push the decoded frame into the filtergraph */
         if (av_buffersrc_add_frame_flags(buffersrc_ctx, NULL,
@@ -996,7 +1007,7 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
             return kDecodeError;
         }
 
-        int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+        int ret = av_buffersink_get_frame_flags(buffersink_ctx, _av_frame, 0);
         if (ret == AVERROR(EAGAIN)  )
         {
             LOG_INFO( "_filt_frame failed with missing frame" );
@@ -1009,6 +1020,7 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
             return kDecodeError;
         }
 
+#ifdef FILT_FRAME
         av_frame_unref( _av_frame );
         _av_frame = av_frame_clone( _filt_frame );
         av_frame_unref( _filt_frame );
@@ -1017,6 +1029,8 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
             LOG_ERROR( _("Could not clone filter frame") );
             return kDecodeError;
         }
+#endif
+
         store_image( ptsframe, frame );
         return kDecodeOK;
     }
@@ -1538,12 +1552,18 @@ void aviImage::store_image( const int64_t frame,
                 return kDecodeError;
             }
 
-            int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+
+            av_frame_unref( _av_frame );
+
+            int ret = av_buffersink_get_frame(buffersink_ctx, _av_frame);
+#ifdef FILT_FRAME
             if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF )
             {
                 LOG_INFO( "_filt_frame failed with missing frame" );
                 return kDecodeMissingFrame;
             }
+#endif
+
 
             if (ret < 0)
             {
@@ -1552,6 +1572,7 @@ void aviImage::store_image( const int64_t frame,
                 return kDecodeError;
             }
 
+#ifdef FILT_FRAME
             av_frame_unref( _av_frame );
             _av_frame = av_frame_clone( _filt_frame );
             av_frame_unref( _filt_frame );
@@ -1561,6 +1582,8 @@ void aviImage::store_image( const int64_t frame,
                 close_subtitle_codec();
                 return kDecodeError;
             }
+#endif
+
         }
 
 
@@ -1702,7 +1725,9 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
         status = decode_video_packet( ptsframe, frame, NULL );
     }
     av_frame_unref(_av_frame);
+#ifdef FILT_FRAME
     av_frame_unref(_filt_frame);
+#endif
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
@@ -3624,7 +3649,9 @@ CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
         status = decode_video_packet( ptsframe, frame, NULL );
     }
     av_frame_unref(_av_frame);
+#ifdef FILT_FRAME
     av_frame_unref(_filt_frame);
+#endif
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
