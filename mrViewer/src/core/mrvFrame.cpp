@@ -66,7 +66,7 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 #include "core/mrvFrame_f32.inl"
 
 
-//#define DEBUG_ALLOCS
+#define DEBUG_ALLOCS
 
 namespace mrv {
 
@@ -275,7 +275,7 @@ size_t VideoFrame::data_size() const
 VideoFrame::~VideoFrame()
 {
 #ifdef DEBUG_ALLOCS
-    std::cerr << "free video frame " << _frame << " " << (void*) _data.get() << std::endl;
+    std::cerr << this << " free video frame " << std::dec << _frame << " " << (void*) _data.get() << " size: " << data_size() << std::endl;
 #endif
     CMedia::memory_used -= data_size();
     //assert0( CMedia::memory_used >= 0 );
@@ -291,7 +291,7 @@ void VideoFrame::allocate()
     size_t size = data_size();
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
 #ifdef DEBUG_ALLOCS
-    std::cerr << "alloc video frame " << _frame << " " << (void*) ptr << " size: " << size << std::endl;
+    std::cerr << this << " alloc video frame " << std::dec << _frame << " " << (void*) ptr << " size: " << size << std::endl;
 #endif
     _data.reset( ptr );
     CMedia::memory_used += size;
@@ -348,9 +348,6 @@ void VideoFrame::pixel( const unsigned int x, const unsigned int y,
 {
     if ( !_data )
         throw std::runtime_error( _("mrv::Frame No pixel data to change") );
-
-    av_assert0( x < _width  );
-    av_assert0( y < _height );
 
     switch( _type )
     {
@@ -655,29 +652,31 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 }
 
 
-void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
+void copy_image( mrv::image_type_ptr dst, const mrv::image_type_ptr src,
                  SwsContext* sws_ctx )
 {
-    unsigned dw = src->width();
-    unsigned dh = src->height();
+    unsigned dw = dst->width();
+    unsigned dh = dst->height();
+    unsigned sw = src->width();
+    unsigned sh = src->height();
     dst->repeat( src->repeat() );
     dst->frame( src->frame() );
     dst->pts( src->pts() );
     dst->ctime( time(NULL) );
     dst->mtime( time(NULL) );
     av_assert0( dst->channels() > 0 );
-    av_assert0( dst->width() > 0 );
-    av_assert0( dst->height() > 0 );
+    av_assert0( dw > 0 );
+    av_assert0( dh > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
          src->channels() == dst->channels() &&
          src->format() == dst->format() &&
-         dw == dst->width() && dh == dst->height() )
+         sw == dw && sh == dh )
     {
         memcpy( dst->data().get(), src->data().get(), src->data_size() );
     }
     else
     {
-        image_type_ptr tmp = src;
+        image_type_ptr tmp;
         if ( src->format() > image_type::kRGBA &&
              ( dst->format() == image_type::kRGB ||
                dst->format() == image_type::kRGBA ) )
@@ -705,7 +704,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
             sws_ctx = sws_getCachedContext(sws_ctx,
-                                           dw, dh,
+                                           sw, sh,
                                            fmt, dw, dh,
                                            AV_PIX_FMT_RGBA, 0,
                                            NULL, NULL, NULL);
@@ -718,7 +717,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             uint8_t* buf = (uint8_t*)src->data().get();
             uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
             int src_linesize[4] = { 0, 0, 0, 0 };
-            av_image_fill_arrays( src_data, src_linesize, buf, fmt, dw, dh, 1 );
+            av_image_fill_arrays( src_data, src_linesize, buf, fmt, sw, sh, 1 );
 
             uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
             uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
@@ -729,15 +728,22 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
                        tmp_data, tmp_linesize );
         }
-
-        av_assert0( dw <= dst->width() );
-        av_assert0( dh <= dst->height() );
-        for ( unsigned y = 0; y < dh; ++y )
+        else
         {
-            for ( unsigned x = 0; x < dw; ++x )
+            tmp = src;
+        }
+
+        av_assert0( sw <= dw );
+        av_assert0( sh <= dh );
+        for ( unsigned y = 0; y < sh; ++y )
+        {
+            for ( unsigned x = 0; x < sw; ++x )
             {
-                const ImagePixel& p = tmp->pixel( x, y );
-                dst->pixel( x, y, p );
+                if ( tmp->width() < x && tmp->height() < y )
+                {
+                    const ImagePixel& p = tmp->pixel( x, y );
+                    dst->pixel( x, y, p );
+                }
             }
         }
     }

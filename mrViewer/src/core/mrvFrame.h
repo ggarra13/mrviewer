@@ -500,7 +500,7 @@ typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
 // to convert to RGBA (byte pixel type).
 // If not the same pixel type a loop is used and a float pixel is used
 // as intermediary.
-    void copy_image( image_type_ptr& dst, const image_type_ptr& src,
+    void copy_image( image_type_ptr dst, const image_type_ptr src,
                      SwsContext* sws = NULL );
 
 } // namespace mrv

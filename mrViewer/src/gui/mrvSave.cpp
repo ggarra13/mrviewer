@@ -264,7 +264,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                 }
 
                 audio_stream = img->audio_stream();
-                if ( opts->audio_codec == _("None") )
+                if ( opts->audio_codec == _("None") || ffmpeg_handle )
                 {
                     img->audio_stream( -1 );
                 }

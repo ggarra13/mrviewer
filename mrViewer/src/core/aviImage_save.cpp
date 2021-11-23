@@ -1062,8 +1062,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     }
 
     /* Allocate the encoded raw frame. */
-
-    picture = alloc_picture(c->pix_fmt, c->width, c->height);
+    picture = alloc_picture(c->pix_fmt, img->width(), img->height());
     if (!picture) {
         LOG_ERROR( _("Could not allocate picture") );
         return false;
@@ -1099,8 +1098,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     unsigned w = c->width;
     unsigned h = c->height;
 
-    if ( hires->width() != w )  w = hires->width();
-    if ( hires->height() != h ) h = hires->height();
+    if ( hires->width() > w )  w = hires->width();
+    if ( hires->height() > h ) h = hires->height();
 
     float one_gamma = 1.0f / img->gamma();
 
@@ -1108,7 +1107,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     const std::string& view = mrv::Preferences::OCIO_View;
 
     mrv::image_type_ptr ptr = hires;  // lut based image
-    mrv::image_type_ptr sho = hires;  // 16-bits image
+    mrv::image_type_ptr sho;  // 16-bits image
     VideoFrame::Format format = image_type::kRGB;
     if ( hires->channels() == 4 ) format = image_type::kRGBA;
 
@@ -1117,10 +1116,10 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     {
 
         ptr = mrv::image_type_ptr( new image_type( hires->frame(),
-                                   w, h,
-                                   hires->channels(),
-                                   format,
-                                   mrv::image_type::kFloat ) );
+                                                   w, h,
+                                                   hires->channels(),
+                                                   format,
+                                                   mrv::image_type::kFloat ) );
         copy_image( ptr, hires );
         if ( hires == img->left() ) bake_ocio( ptr, img );
     }
@@ -1172,7 +1171,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                              hires->pixel_type() );
     sws_ctx = sws_getCachedContext( sws_ctx, w, h,
-                                    fmt, c->width, c->height, c->pix_fmt, 0,
+                                    fmt, w, h, c->pix_fmt, 0,
                                     NULL, NULL, NULL );
     if ( !sws_ctx )
     {

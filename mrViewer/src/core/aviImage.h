@@ -320,7 +320,6 @@ protected:
     VideoFrame::Format _pix_fmt;
     VideoFrame::PixelType _ptype;
     AVFrame*              _av_frame;
-    AVFrame*              _filt_frame;
     AVCodecContext*       _subtitle_ctx;           //!< current video context
     SwsContext*           _convert_ctx;
 

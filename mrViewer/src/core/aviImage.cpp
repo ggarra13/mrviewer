@@ -223,7 +223,6 @@ aviImage::aviImage() :
     _pix_fmt( VideoFrame::kRGB ),
     _ptype( VideoFrame::kByte ),
     _av_frame( NULL ),
-    _filt_frame( NULL ),
     _subtitle_ctx( NULL ),
     _convert_ctx( NULL ),
     _eof( false ),
@@ -271,10 +270,6 @@ aviImage::~aviImage()
     if ( _av_frame )
         av_frame_unref( _av_frame );
 
-#ifdef FILT_FRAME
-    if ( _filt_frame )
-        av_frame_unref( _filt_frame );
-#endif
 
     close_video_codec();
     close_subtitle_codec();
@@ -282,10 +277,6 @@ aviImage::~aviImage()
     if ( _av_frame )
         av_frame_free( &_av_frame );
 
-#ifdef FILT_FRAME
-    if ( _filt_frame )
-        av_frame_free( &_filt_frame );
-#endif
 
     avsubtitle_free( &_sub );
 
@@ -589,15 +580,6 @@ int aviImage::init_filters(const char *filters_descr)
     if (fr.num && fr.den)
         av_strlcatf(args, sizeof(args), ":frame_rate=%d/%d", fr.num, fr.den);
 
-#ifdef FILT_FRAME
-    _filt_frame = av_frame_alloc();
-    if ( ! _filt_frame )
-    {
-        LOG_ERROR( _("Could not allocate filter frame.  "
-                     "Not enough memory.") );
-        goto end;
-    }
-#endif
 
     LOG_INFO( "args " << args );
 
@@ -743,13 +725,6 @@ void aviImage::subtitle_file( const char* f )
     avfilter_graph_free( &filter_graph );
     filter_graph = NULL;
 
-#ifdef FILT_FRAME
-    if ( _filt_frame )
-    {
-        av_frame_unref( _filt_frame );
-        av_frame_free( &_filt_frame );
-    }
-#endif
 
     if ( !has_video() )
     {
@@ -1008,28 +983,12 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
         }
 
         int ret = av_buffersink_get_frame_flags(buffersink_ctx, _av_frame, 0);
-        if (ret == AVERROR(EAGAIN)  )
-        {
-            LOG_INFO( "_filt_frame failed with missing frame" );
-            return kDecodeMissingFrame;
-        }
-
         if (ret < 0)
         {
             LOG_ERROR( "av_buffersink_get frame failed" );
             return kDecodeError;
         }
 
-#ifdef FILT_FRAME
-        av_frame_unref( _av_frame );
-        _av_frame = av_frame_clone( _filt_frame );
-        av_frame_unref( _filt_frame );
-        if (!_av_frame )
-        {
-            LOG_ERROR( _("Could not clone filter frame") );
-            return kDecodeError;
-        }
-#endif
 
         store_image( ptsframe, frame );
         return kDecodeOK;
@@ -1352,8 +1311,8 @@ void aviImage::store_image( const int64_t frame,
     AVFrame output = { 0 };
     uint8_t* ptr = (uint8_t*)image->data().get();
 
-    unsigned int w = width();
-    unsigned int h = height();
+    unsigned int w = _av_frame->width; // width();
+    unsigned int h = _av_frame->height; // height();
 
     // Fill the fields of AVFrame output based on _av_dst_pix_fmt
     av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
@@ -1384,9 +1343,11 @@ void aviImage::store_image( const int64_t frame,
 
     // We handle all cases directly except YUV410 and PAL8
     _convert_ctx = sws_getCachedContext(_convert_ctx,
-                                        _video_ctx->width,
-                                        _video_ctx->height,
-                                        fmt, w, h,
+                                        _av_frame->width,
+                                        _av_frame->height,
+                                        fmt,
+                                        _av_frame->width,
+                                        _av_frame->height,
                                         _av_dst_pix_fmt, sws_flags,
                                         NULL, NULL, NULL);
 
@@ -1447,7 +1408,7 @@ void aviImage::store_image( const int64_t frame,
     _av_frame->color_range = out_full ? AVCOL_RANGE_JPEG : AVCOL_RANGE_MPEG;
 
     sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
-              0, _video_ctx->height, output.data, output.linesize);
+              0, _av_frame->height, output.data, output.linesize);
 
     if ( _av_frame->interlaced_frame )
         _interlaced = ( _av_frame->top_field_first ?
@@ -1541,6 +1502,7 @@ void aviImage::store_image( const int64_t frame,
             ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
         }
 
+
         if ( filter_graph )
         {
             SCOPED_LOCK( _subtitle_mutex );
@@ -1556,14 +1518,6 @@ void aviImage::store_image( const int64_t frame,
             av_frame_unref( _av_frame );
 
             int ret = av_buffersink_get_frame(buffersink_ctx, _av_frame);
-#ifdef FILT_FRAME
-            if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF )
-            {
-                LOG_INFO( "_filt_frame failed with missing frame" );
-                return kDecodeMissingFrame;
-            }
-#endif
-
 
             if (ret < 0)
             {
@@ -1572,17 +1526,10 @@ void aviImage::store_image( const int64_t frame,
                 return kDecodeError;
             }
 
-#ifdef FILT_FRAME
-            av_frame_unref( _av_frame );
-            _av_frame = av_frame_clone( _filt_frame );
-            av_frame_unref( _filt_frame );
-            if (!_av_frame )
-            {
-                LOG_ERROR( _("Could not clone filter frame") );
-                close_subtitle_codec();
-                return kDecodeError;
-            }
-#endif
+            _w = _av_frame->width;
+            _h = _av_frame->height;
+
+
 
         }
 
@@ -1725,9 +1672,6 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
         status = decode_video_packet( ptsframe, frame, NULL );
     }
     av_frame_unref(_av_frame);
-#ifdef FILT_FRAME
-    av_frame_unref(_filt_frame);
-#endif
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
@@ -3649,9 +3593,6 @@ CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
         status = decode_video_packet( ptsframe, frame, NULL );
     }
     av_frame_unref(_av_frame);
-#ifdef FILT_FRAME
-    av_frame_unref(_filt_frame);
-#endif
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
