@@ -551,6 +551,8 @@ fail:
 
 int aviImage::init_filters(const char *filters_descr)
 {
+    std::cerr << "INIT FILTERS**** "
+              << ( filters_descr ? filters_descr : "NULL" ) << std::endl;
     char args[512];
     int ret = 0;
     const AVFilter *buffersrc  = avfilter_get_by_name("buffer");
@@ -640,7 +642,6 @@ int aviImage::init_filters(const char *filters_descr)
         std::cerr << "transpose cclock" << std::endl;
         INSERT_FILT("transpose", "cclock");
     } else if (fabs(theta) > 1.0) {
-        std::cerr << "rotate random" << std::endl;
         char rotate_buf[64];
         snprintf(rotate_buf, sizeof(rotate_buf), "%f*PI/180", theta);
         INSERT_FILT("rotate", rotate_buf);
@@ -744,6 +745,7 @@ void aviImage::subtitle_file( const char* f )
         AVFormatContext* scontext = NULL; //!< current read file context
 
         AVDictionary* opts = NULL;
+        av_dict_set(&opts, "noautorotate", NULL, 0);
         AVInputFormat*     format = NULL;
         int error = avformat_open_input( &scontext, _subtitle_file.c_str(),
                                          format, &opts );
@@ -949,6 +951,7 @@ void aviImage::open_video_codec()
 
     // recounted frames needed for subtitles
     av_dict_set(&info, "refcounted_frames", "1", 0);
+    av_dict_set(&info, "noautorotate", NULL, 0);
 
     if ( video_codec == NULL ||
             avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
@@ -967,33 +970,6 @@ void aviImage::close_video_codec()
 
 CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
 {
-    if ( filter_graph )
-    {
-
-        // Turn PTS into a frame
-        int64_t ptsframe = frame;
-
-
-        /* push the decoded frame into the filtergraph */
-        if (av_buffersrc_add_frame_flags(buffersrc_ctx, NULL,
-                                         AV_BUFFERSRC_FLAG_KEEP_REF) < 0 ) {
-            LOG_ERROR( _("Error while feeding the filtergraph") );
-            close_subtitle_codec();
-            return kDecodeError;
-        }
-
-        int ret = av_buffersink_get_frame_flags(buffersink_ctx, _av_frame, 0);
-        if (ret < 0)
-        {
-            LOG_ERROR( "av_buffersink_get frame failed" );
-            return kDecodeError;
-        }
-
-
-        store_image( ptsframe, frame );
-        return kDecodeOK;
-    }
-
     return kDecodeMissingFrame;
 }
 
@@ -1318,6 +1294,12 @@ void aviImage::store_image( const int64_t frame,
     av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
                           w, h, 1);
 
+    // std::cerr << "img " << (void*)ptr << std::endl
+    //           << (void*)output.data[0] << " " << output.linesize[0] << std::endl
+    //           << (void*)output.data[1] << " " << output.linesize[1] << std::endl
+    //           << (void*)output.data[2] << " " << output.linesize[2] << std::endl
+    //           << (void*)output.data[3] << " " << output.linesize[3] << std::endl;
+
     AVPixelFormat fmt = _video_ctx->pix_fmt;
     // switch (fmt)
     // {
@@ -1406,6 +1388,7 @@ void aviImage::store_image( const int64_t frame,
     }
 
     _av_frame->color_range = out_full ? AVCOL_RANGE_JPEG : AVCOL_RANGE_MPEG;
+
 
     sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
               0, _av_frame->height, output.data, output.linesize);
@@ -2852,7 +2835,11 @@ void aviImage::populate()
     if ( has_video() &&
          fabs( get_rotation_from_matrix( get_video_stream() ) ) > 0.0 )
     {
-        init_filters( NULL );
+        int ret;
+        if ( (ret = init_filters( NULL )) )
+        {
+            LOG_ERROR( "Init filters failed with " << ret );
+        }
     }
 
 

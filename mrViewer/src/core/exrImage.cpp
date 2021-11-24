@@ -43,6 +43,7 @@
 #include <ImfDeepScanLineInputPart.h>
 #include <ImfDeepFrameBuffer.h>
 #include <ImfCompositeDeepScanLine.h>
+#include <ImfOutputPart.h>
 #include <ImfTiledInputPart.h>
 #include <ImfTiledOutputPart.h>
 #include <ImfDeepScanLineOutputPart.h>

@@ -66,7 +66,7 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 #include "core/mrvFrame_f32.inl"
 
 
-#define DEBUG_ALLOCS
+// #define DEBUG_ALLOCS
 
 namespace mrv {
 

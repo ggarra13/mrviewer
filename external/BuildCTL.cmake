@@ -18,7 +18,7 @@ else()
   set( DO_SHARED TRUE )
 endif()
 
-if (APPLE)
+if (LINUX)
    set( cxx_flags ${cxx_flags} -std=c++11 )
 endif()
 
