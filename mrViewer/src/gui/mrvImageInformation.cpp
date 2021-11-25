@@ -1582,7 +1582,10 @@ static void change_float_cb( Fl_Float_Input* w, ImageInformation* info )
             if ( key == "rotate" || key == "Video rotate" ||
                  key == _("Video rotate") )
             {
-                img->rot_z( (float) atof( w->value() ) );
+
+                Imf::FloatAttribute attr( atof( w->value() ) );
+                attributes[key] = attr.copy();
+
                 img->image_damage( img->image_damage() |
                                    CMedia::kDamageContents );
                 info->view()->redraw();

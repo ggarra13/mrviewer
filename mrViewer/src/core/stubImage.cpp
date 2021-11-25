@@ -627,7 +627,8 @@ stubImage::stubImage( const CMedia* other ) :
 
         mrv::image_type_ptr buffer = _pixelBuffers[i->first];
         mrv::image_type_ptr oBuffer = oStub->frame_buffer( i->first );
-        copy_image( buffer, oBuffer );
+        SwsContext* save_ctx = NULL;
+        copy_image( buffer, oBuffer, &save_ctx );
     }
 
 

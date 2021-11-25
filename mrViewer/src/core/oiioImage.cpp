@@ -359,6 +359,8 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 }
 
 
+static SwsContext* save_ctx = NULL;
+
 bool oiioImage::save( const char* path, const CMedia* img,
                       const OIIOOpts* opts )
 {
@@ -508,7 +510,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
                                             dw, dh, 3,
                                             image_type::kRGB,
                                             pic->pixel_type() ) );
-                    copy_image( ptr, pic );
+                    copy_image( ptr, pic, &save_ctx );
                     pic = ptr;
                 }
 
@@ -546,6 +548,12 @@ bool oiioImage::save( const char* path, const CMedia* img,
         }
 
         out->close();
+    }
+
+    if ( save_ctx )
+    {
+        sws_freeContext( save_ctx );
+        save_ctx = NULL;
     }
 
     return true;

@@ -264,6 +264,7 @@ aviImage::~aviImage()
         _convert_ctx = NULL;
     }
 
+
     if ( filter_graph )
         avfilter_graph_free(&filter_graph);
 
@@ -551,8 +552,6 @@ fail:
 
 int aviImage::init_filters(const char *filters_descr)
 {
-    std::cerr << "INIT FILTERS**** "
-              << ( filters_descr ? filters_descr : "NULL" ) << std::endl;
     char args[512];
     int ret = 0;
     const AVFilter *buffersrc  = avfilter_get_by_name("buffer");
@@ -632,14 +631,11 @@ int aviImage::init_filters(const char *filters_descr)
     theta  = get_rotation( get_video_stream() );
 
     if (fabs(theta - 90) < 1.0) {
-        std::cerr << "transpose clock" << std::endl;
         INSERT_FILT("transpose", "clock");
     } else if (fabs(theta - 180) < 1.0) {
-        std::cerr << "hflip/vflip" << std::endl;
         INSERT_FILT("hflip", NULL);
         INSERT_FILT("vflip", NULL);
     } else if (fabs(theta - 270) < 1.0) {
-        std::cerr << "transpose cclock" << std::endl;
         INSERT_FILT("transpose", "cclock");
     } else if (fabs(theta) > 1.0) {
         char rotate_buf[64];

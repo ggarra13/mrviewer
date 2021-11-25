@@ -861,8 +861,7 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
         else if ( name == N_("Video rotate") || name == _("Video rotate") ||
                   name == N_("rotate") )
         {
-            _rot_z = atof( tag->value );
-            Imf::FloatAttribute attr( _rot_z );
+            Imf::FloatAttribute attr( atof( tag->value ) );
             _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
         }
         else

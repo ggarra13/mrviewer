@@ -652,8 +652,8 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 }
 
 
-void copy_image( mrv::image_type_ptr dst, const mrv::image_type_ptr src,
-                 SwsContext* sws_ctx )
+void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
+                 SwsContext** sws_ctx )
 {
     unsigned dw = dst->width();
     unsigned dh = dst->height();
@@ -703,12 +703,12 @@ void copy_image( mrv::image_type_ptr dst, const mrv::image_type_ptr src,
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
-            sws_ctx = sws_getCachedContext(sws_ctx,
-                                           sw, sh,
-                                           fmt, dw, dh,
-                                           AV_PIX_FMT_RGBA, 0,
-                                           NULL, NULL, NULL);
-            if ( !sws_ctx )
+            *sws_ctx = sws_getCachedContext(*sws_ctx,
+                                            sw, sh,
+                                            fmt, dw, dh,
+                                            AV_PIX_FMT_RGBA, 0,
+                                            NULL, NULL, NULL);
+            if ( !*sws_ctx )
             {
                 LOG_ERROR( _("Not enough memory for color transform") );
                 return;
@@ -725,7 +725,7 @@ void copy_image( mrv::image_type_ptr dst, const mrv::image_type_ptr src,
             av_image_fill_arrays( tmp_data, tmp_linesize, tmpbuf,
                                   AV_PIX_FMT_RGBA, dw, dh, 1 );
 
-            sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
+            sws_scale( *sws_ctx, src_data, src_linesize, 0, dh,
                        tmp_data, tmp_linesize );
         }
         else
@@ -739,11 +739,8 @@ void copy_image( mrv::image_type_ptr dst, const mrv::image_type_ptr src,
         {
             for ( unsigned x = 0; x < sw; ++x )
             {
-                if ( tmp->width() < x && tmp->height() < y )
-                {
-                    const ImagePixel& p = tmp->pixel( x, y );
-                    dst->pixel( x, y, p );
-                }
+                const ImagePixel& p = tmp->pixel( x, y );
+                dst->pixel( x, y, p );
             }
         }
     }

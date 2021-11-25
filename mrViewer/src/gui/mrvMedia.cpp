@@ -144,7 +144,12 @@ void media::create_thumbnail( unsigned W, unsigned H )
                                   w, h, 3,
                                   image_type::kRGB,
                                   image_type::kFloat ) );
-            copy_image( ptr, pic );
+            SwsContext* save_ctx = NULL;
+            copy_image( ptr, pic, &save_ctx );
+            if ( save_ctx )
+            {
+                sws_freeContext( save_ctx );
+            }
         }
         if ( pic->pixel_type() == mrv::image_type::kFloat ||
              pic->pixel_type() == mrv::image_type::kHalf )

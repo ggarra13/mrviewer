@@ -1080,6 +1080,7 @@ static void close_video_stream(AVFormatContext *oc, AVStream *st)
     av_frame_free(&picture);
 }
 
+static SwsContext* save_ctx = NULL;
 
 /* prepare a yuv image */
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
@@ -1107,7 +1108,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     const std::string& view = mrv::Preferences::OCIO_View;
 
     mrv::image_type_ptr ptr = hires;  // lut based image
-    mrv::image_type_ptr sho;  // 16-bits image
+    mrv::image_type_ptr sho = hires;  // 16-bits image
     VideoFrame::Format format = image_type::kRGB;
     if ( hires->channels() == 4 ) format = image_type::kRGBA;
 
@@ -1120,7 +1121,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                                    hires->channels(),
                                                    format,
                                                    mrv::image_type::kFloat ) );
-        copy_image( ptr, hires );
+        copy_image( ptr, hires, &save_ctx );
         if ( hires == img->left() ) bake_ocio( ptr, img );
     }
 
@@ -1633,6 +1634,12 @@ bool aviImage::close_movie( const CMedia* img )
     {
         sws_freeContext( sws_ctx );
         sws_ctx = NULL;
+    }
+
+    if ( save_ctx )
+    {
+        sws_freeContext( save_ctx );
+        save_ctx = NULL;
     }
 
     CMedia* image = const_cast<CMedia*>(img);

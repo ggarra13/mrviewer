@@ -177,6 +177,8 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     av_free( oldloc );
 }
 
+static SwsContext* save_ctx = NULL;
+
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
                     const image_type::Format format,
                     const image_type::PixelType pt )
@@ -200,7 +202,7 @@ bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
                                       dw, dh, 4,
                                       image_type::kRGBA,
                                       image_type::kFloat ) );
-            copy_image( ptr, pic );
+            copy_image( ptr, pic, &save_ctx );
             bake_ocio( ptr, img );
         }
         catch( const std::exception& e )
@@ -253,6 +255,12 @@ bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
             p.clamp();
             pic->pixel( x, y, p );
         }
+    }
+
+    if ( save_ctx )
+    {
+        sws_freeContext( save_ctx );
+        save_ctx = NULL;
     }
 
     return true;
