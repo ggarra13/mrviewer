@@ -67,6 +67,7 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 
 
 // #define DEBUG_ALLOCS
+// #define DEBUG_AUDIO_ALLOCS
 
 namespace mrv {
 
@@ -127,11 +128,11 @@ unsigned short VideoFrame::pixel_size() const
     switch( _type )
     {
     case kByte:
-        return sizeof(char);
+        return sizeof(uint8_t);
     case kShort:
-        return sizeof(short);
+        return sizeof(uint16_t);
     case kInt:
-        return sizeof(int);
+        return sizeof(int32_t);
     case kHalf:
         return sizeof(half);
     case kFloat:
@@ -291,7 +292,7 @@ void VideoFrame::allocate()
     size_t size = data_size();
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
 #ifdef DEBUG_ALLOCS
-    std::cerr << this << " alloc video frame " << std::dec << _frame << " " << (void*) ptr << " size: " << size << std::endl;
+    std::cerr << this << " alloc video frame " << std::dec << _frame << " " << (void*) ptr << " size: " << size << " ptr+size=" << (void*) (ptr+size) << std::endl;
 #endif
     _data.reset( ptr );
     CMedia::memory_used += size;
@@ -647,6 +648,9 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
     _type     = b.pixel_type();
     _valid    = b.valid();
     allocate();
+#ifdef DEBUG_ALLOCS
+    std::cerr << "VideoFrame::operator= memcpy" << std::endl;
+#endif
     memcpy( _data.get(), b.data().get(), b.data_size() );
     return *this;
 }
@@ -743,12 +747,13 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                 dst->pixel( x, y, p );
             }
         }
+        std::cerr << "exit loops" << std::endl;
     }
 }
 
 void AudioFrame::sum_memory() noexcept
 {
-#ifdef DEBUG_ALLOCS
+#ifdef DEBUG_AUDIO_ALLOCS
     std::cerr << "alloc audio frame " << _frame << " " << (void*) _data
               << " size: " << _size << std::endl;
 #endif
@@ -757,7 +762,7 @@ void AudioFrame::sum_memory() noexcept
 
 AudioFrame::~AudioFrame()
 {
-#ifdef DEBUG_ALLOCS
+#ifdef DEBUG_AUDIO_ALLOCS
     std::cerr << "free audio frame " << _frame << " " << (void*) _data << std::endl;
 #endif
     delete [] _data;

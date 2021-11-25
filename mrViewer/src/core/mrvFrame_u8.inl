@@ -22,6 +22,7 @@ namespace mrv {
     ImagePixel p( 0.f, 0.f, 0.f, 1.f );
     unsigned offset = y * _width + x;
 
+
     boost::uint8_t* d = (boost::uint8_t*)_data.get();
     boost::uint8_t* col = d + offset * _channels;
     boost::uint8_t yp = 0, cb = 0, cr = 0;
@@ -198,6 +199,7 @@ namespace mrv {
                              const ImagePixel& p )
   {
     unsigned offset = y * _width + x;
+
 
     boost::uint8_t* d = (boost::uint8_t*)_data.get();
     boost::uint8_t* col = d + offset * _channels;
