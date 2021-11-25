@@ -1,3 +1,9 @@
+v6.0.1  - Changed rotations to be done thru ffmpeg filters instead of
+	  thru opengl.  This allows the images to be saved rotated.
+	- Added support for .gif movie saving.
+	- Fixed a Linux memory problem which would result in crashes with
+	  aligned memory.
+
 v6.0.0  - Bug fixed a bad Windows release.
 	- Bug fixed too much memory used on long reels with many images.
 	- Bug fixed thumbnail creation on EDL timeline when switching images.
