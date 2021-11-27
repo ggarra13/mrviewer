@@ -234,82 +234,6 @@ static std::string flu_get_special_folder( int csidl )
 
 // taken explicitly from fltk/src/filename_match.cxx
 // and changed to support case-sensitive matching
-static int flu_filename_match(const char *s, const char *p)
-{
-  int matched;
-
-  for (;;) {
-    switch(*p++) {
-
-    case '?' :	// match any single character
-      if (!*s++) return 0;
-      break;
-
-    case '*' :	// match 0-n of any characters
-      if (!*p) return 1; // do trailing * quickly
-      while (!flu_filename_match(s, p)) if (!*s++) return 0;
-      return 1;
-
-    case '[': {	// match one character in set of form [abc-d] or [^a-b]
-      if (!*s) return 0;
-      int reverse = (*p=='^' || *p=='!'); if (reverse) p++;
-      matched = 0;
-      char last = 0;
-      while (*p) {
-        if (*p=='-' && last) {
-          if (*s <= *++p && *s >= last ) matched = 1;
-          last = 0;
-        } else {
-          if (*s == *p) matched = 1;
-        }
-        last = *p++;
-        if (*p==']') break;
-      }
-      if (matched == reverse) return 0;
-      s++; p++;}
-    break;
-
-    case '{' : // {pattern1|pattern2|pattern3}
-    NEXTCASE:
-    if (flu_filename_match(s,p)) return 1;
-    for (matched = 0;;) {
-      switch (*p++) {
-      case '\\': if (*p) p++; break;
-      case '{': matched++; break;
-      case '}': if (!matched--) return 0; break;
-      case '|': case ',': if (matched==0) goto NEXTCASE;
-      case 0: return 0;
-      }
-    }
-    case '|':	// skip rest of |pattern|pattern} when called recursively
-    case ',':
-      for (matched = 0; *p && matched >= 0;) {
-        switch (*p++) {
-        case '\\': if (*p) p++; break;
-        case '{': matched++; break;
-        case '}': matched--; break;
-        }
-      }
-      break;
-    case '}':
-      break;
-
-    case 0:	// end of pattern
-      return !*s;
-
-    case '\\':	// quote next character
-      if (*p) p++;
-    default:
-#ifdef WIN32
-      if (tolower(*s) != tolower(*(p-1))) return 0;
-#else
-      if( *s != *(p-1) ) return 0;
-#endif
-      s++;
-      break;
-    }
-  }
-}
 
 
 struct RealIcon
@@ -4397,7 +4321,9 @@ void Flu_File_Chooser :: cd( const char *path )
               !isDir &&
               !(selectionType & STDFILE) &&
               !(selectionType & DEACTIVATE_FILES) )
+          {
             continue;
+          }
 
           //if( !isDir /*!isCurrentFile*/ )
             {
@@ -4407,7 +4333,7 @@ void Flu_File_Chooser :: cd( const char *path )
                   bool cull = true;
                   for( unsigned int i = 0; i < userPatterns.size(); i++ )
                     {
-                      if( flu_filename_match( name, userPatterns[i].c_str() ) != 0 )
+                      if( fl_filename_match( name, userPatterns[i].c_str() ) != 0 )
                         {
                           cull = false;
                           break;
@@ -4426,7 +4352,7 @@ void Flu_File_Chooser :: cd( const char *path )
                   bool cull = true;
                   for( unsigned int i = 0; i < currentPatterns.size(); i++ )
                     {
-                        if( flu_filename_match( name, currentPatterns[i].c_str() ) != 0 )
+                        if( fl_filename_match( name, currentPatterns[i].c_str() ) != 0 )
                         {
                           cull = false;
                           break;
@@ -4449,71 +4375,74 @@ void Flu_File_Chooser :: cd( const char *path )
                 dirs.push_back( name );
             }
           else
-            {
-                bool is_sequence = false;
-                 std::string root, frame, view, ext;
-                 bool ok = mrv::split_sequence( root, frame, view, ext, name );
+          {
+              bool is_sequence = false;
+              std::string root, frame, view, ext;
 
-                 if ( compact_files() )
-                 {
-                     if ( (!root.empty() || !ext.empty()) && !frame.empty() )
-                       is_sequence = true;
+              bool ok = mrv::split_sequence( root, frame, view, ext, name );
 
-                    std::string tmp = ext;
-                    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-                                    (int(*)(int)) tolower);
-                    if ( mrv::is_valid_movie( tmp.c_str() ) ||
-                         mrv::is_valid_audio( tmp.c_str() ) ||
-                         mrv::is_valid_subtitle( tmp.c_str() ) ||
-                         tmp == N_(".icc")  ||
-                         tmp == N_(".icm")  ||
-                         tmp == N_(".ctl")  ||
-                         tmp == N_(".xml")  ||
-                         tmp == N_(".amf")  ||
-                         tmp == N_(".ocio") ||
-                         tmp == N_(".prefs") )
-                       is_sequence = false;
-                 }
-                 else
-                 {
-                    is_sequence = false;
-                 }
+              if ( compact_files() )
+              {
+                  if ( (!root.empty() || !ext.empty()) && !frame.empty() )
+                      is_sequence = true;
 
-                 if ( is_sequence )
-                 {
-                     mrv::Sequence seq;
-                     seq.ext = ext;
-                     seq.view = view;
-                     seq.number = frame;
-                     seq.root = root;
-                     tmpseqs.push_back( seq );
-                  }
-                else
+                  std::string tmp = ext;
+                  std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                                  (int(*)(int)) tolower);
+                  if ( mrv::is_valid_movie( tmp.c_str() ) ||
+                       mrv::is_valid_audio( tmp.c_str() ) ||
+                       mrv::is_valid_subtitle( tmp.c_str() ) ||
+                       tmp == N_(".icc")  ||
+                       tmp == N_(".icm")  ||
+                       tmp == N_(".ctl")  ||
+                       tmp == N_(".xml")  ||
+                       tmp == N_(".amf")  ||
+                       tmp == N_(".ocio") ||
+                       tmp == N_(".prefs") )
+                      is_sequence = false;
+              }
+              else
+              {
+                  is_sequence = false;
+              }
+
+              if ( is_sequence )
+              {
+                  mrv::Sequence seq;
+                  seq.ext = ext;
+                  seq.view = view;
+                  seq.number = frame;
+                  seq.root = root;
+                  tmpseqs.push_back( seq );
+              }
+              else
+              {
+                  if ( compact_files() &&
+                       root == croot && ext == cext && view == cview )
                   {
-                      if ( compact_files() &&
-                           root == croot && ext == cext && view == cview )
-                          continue;
-
-                      if ( root == "" )
-                      {
-                          files.push_back( name );
-                          continue;
-                      }
-
-                      croot = root;
-                      cext = ext;
-                      cview = view;
-
-                      std::string tmp = root + view + frame + ext;
-                      // int pos = -1;
-                      // while ( pos = tmp.find('@', pos+1) != std::string::npos )
-                      // {
-                      //     tmp = tmp.substr( 0, pos ) + '@' +
-                      //           tmp.substr( pos, tmp.size() );
-                      // }
-                      files.push_back( tmp );
+                      continue;
                   }
-            }
+
+                  if ( root == "" )
+                  {
+                      files.push_back( name );
+                      continue;
+                  }
+
+                  croot = root;
+                  cext = ext;
+                  cview = view;
+
+                  std::string tmp = root + view + frame + ext;
+                  // int pos = -1;
+                  // while ( pos = tmp.find('@', pos+1) != std::string::npos )
+                  // {
+                  //     tmp = tmp.substr( 0, pos ) + '@' +
+                  //           tmp.substr( pos, tmp.size() );
+                  // }
+                  files.push_back( tmp );
+              }
+          }
 
         }
 

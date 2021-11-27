@@ -1746,16 +1746,19 @@ void ImageBrowser::save_session()
         // Select the next image to the foreground
         size_t num = reel->images.size();
         mrv::media fg;
-        if ( (size_t)idx < num )
+        if ( (size_t)idx < num && num > 0 )
             fg = reel->images[idx];
         else if ( num != 0 )
             fg = reel->images[num - 1];
 
         view()->foreground( fg );
 
-        CMedia* img = fg->image();
-
-        int64_t pos = fg->position() - img->first_frame() + img->frame();
+        CMedia* img = NULL;
+        int64_t pos = 1;
+        if ( fg ) {
+            img = fg->image();
+            pos = fg->position() - img->first_frame() + img->frame();
+        }
         seek( pos );
 
         // clear dragging in case we were dragging the removed media
