@@ -97,7 +97,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-11-27 01:10-0300\n"
+"POT-Creation-Date: 2021-11-29 02:06-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,7 +367,7 @@ msgstr ""
 #: core/CMedia_audio.cpp:2275 core/CMedia_audio.cpp:2277
 #: core/CMedia_audio.cpp:2295 core/CMedia_audio.cpp:2358
 #: core/CMedia_audio.cpp:2475 core/mrvFrame.cpp:279 core/mrvFrame.cpp:295
-#: core/mrvFrame.cpp:757 core/mrvFrame.cpp:766 core/aviImage.cpp:844
+#: core/mrvFrame.cpp:738 core/mrvFrame.cpp:747 core/aviImage.cpp:844
 #: core/aviImage.cpp:2305 core/aviImage.cpp:4003 core/aviImage.cpp:4015
 #: core/aviImage.cpp:4032 core/aviImage.cpp:4081 core/aviImage.cpp:4138
 #: core/aviImage_save.cpp:619 core/aviImage_save.cpp:625
@@ -4891,7 +4891,7 @@ msgstr ""
 msgid " size is "
 msgstr ""
 
-#: core/mrvFrame.cpp:279 core/mrvFrame.cpp:295 core/mrvFrame.cpp:758
+#: core/mrvFrame.cpp:279 core/mrvFrame.cpp:295 core/mrvFrame.cpp:739
 msgid " size: "
 msgstr ""
 
@@ -26072,7 +26072,7 @@ msgstr ""
 msgid "Not enough memory for black image"
 msgstr ""
 
-#: core/mrvFrame.cpp:717
+#: core/mrvFrame.cpp:701
 msgid "Not enough memory for color transform"
 msgstr ""
 
@@ -35037,7 +35037,7 @@ msgstr ""
 msgid "all_layers"
 msgstr ""
 
-#: core/mrvFrame.cpp:757
+#: core/mrvFrame.cpp:738
 msgid "alloc audio frame "
 msgstr ""
 
@@ -36677,10 +36677,6 @@ msgstr ""
 msgid "exif:*"
 msgstr ""
 
-#: core/mrvFrame.cpp:750
-msgid "exit loops"
-msgstr ""
-
 #: core/exrImage.cpp:1296 core/exrImage.cpp:1300 core/exrImage.cpp:2564
 msgid "expTime"
 msgstr ""
@@ -37141,7 +37137,7 @@ msgstr ""
 msgid "free"
 msgstr ""
 
-#: core/mrvFrame.cpp:766
+#: core/mrvFrame.cpp:747
 msgid "free audio frame "
 msgstr ""
 

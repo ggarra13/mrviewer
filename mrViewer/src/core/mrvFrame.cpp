@@ -668,9 +668,6 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
     dst->pts( src->pts() );
     dst->ctime( time(NULL) );
     dst->mtime( time(NULL) );
-    av_assert0( dst->channels() > 0 );
-    av_assert0( dw > 0 );
-    av_assert0( dh > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
          src->channels() == dst->channels() &&
          src->format() == dst->format() &&
@@ -680,30 +677,17 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
     }
     else
     {
-        image_type_ptr tmp;
+        // YUV format, we need to convert to rgba
+        image_type_ptr tmp( new image_type( src->frame(),
+                                            dw, dh,
+                                            4,
+                                            image_type::kRGBA,
+                                            image_type::kByte ) );
+
         if ( src->format() > image_type::kRGBA &&
              ( dst->format() == image_type::kRGB ||
                dst->format() == image_type::kRGBA ) )
         {
-            // YUV format, we need to convert to rgba
-            try
-            {
-                tmp.reset( new image_type( src->frame(),
-                                           dw, dh,
-                                           4,
-                                           image_type::kRGBA,
-                                           image_type::kByte ) );
-            }
-            catch( const std::bad_alloc& e )
-            {
-                LOG_ERROR( e.what() );
-                return;
-            }
-            catch( const std::runtime_error& e )
-            {
-                LOG_ERROR( e.what() );
-                return;
-            }
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
@@ -721,7 +705,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             uint8_t* buf = (uint8_t*)src->data().get();
             uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
             int src_linesize[4] = { 0, 0, 0, 0 };
-            av_image_fill_arrays( src_data, src_linesize, buf, fmt, sw, sh, 1 );
+            av_image_fill_arrays(src_data, src_linesize, buf, fmt, sw, sh, 1);
 
             uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
             uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
@@ -737,8 +721,6 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             tmp = src;
         }
 
-        av_assert0( sw <= dw );
-        av_assert0( sh <= dh );
         for ( unsigned y = 0; y < sh; ++y )
         {
             for ( unsigned x = 0; x < sw; ++x )
@@ -747,7 +729,6 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                 dst->pixel( x, y, p );
             }
         }
-        std::cerr << "exit loops" << std::endl;
     }
 }
 
