@@ -1,5 +1,7 @@
 v6.0.2  - Made FLU file requester be case insensitive to extensions.
 	- Bug fixed crash when removing the last image of a reel.
+	- Fixed a problem when linking on Linux due to /usr/local/lib not
+	  being in the list of directories by default.
 
 v6.0.1  - Changed rotations to be done thru ffmpeg filters instead of
 	  thru opengl.  This allows the images to be saved rotated.

@@ -158,6 +158,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   ADD_DEFINITIONS( -DLINUX -DNDEBUG )
   ADD_COMPILE_OPTIONS( -O3 -msse )
+  LINK_DIRECTORIES( /usr/local/lib )
   SET(OS_LIBRARIES
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
     )

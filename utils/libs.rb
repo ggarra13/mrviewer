@@ -230,6 +230,7 @@ if kernel !~ /MINGW.*/
 
   if kernel =~ /Linux/
     for exe in exes
+      puts "PARSING #{exe}"
       output=`ldd "#{exe}"`
       output.gsub!( /\(0x.*\)/, '' )
       files += output.split("\n")
