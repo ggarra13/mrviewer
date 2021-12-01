@@ -1500,7 +1500,7 @@ void aviImage::store_image( const int64_t frame,
 
             if (ret < 0)
             {
-                LOG_ERROR( "av_buffersink_get frame failed" );
+                LOG_ERROR( "av_buffersink_get_frame failed" );
                 close_subtitle_codec();
                 return kDecodeError;
             }

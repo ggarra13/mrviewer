@@ -292,7 +292,9 @@ void VideoFrame::allocate()
     size_t size = data_size();
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
 #ifdef DEBUG_ALLOCS
-    std::cerr << this << " alloc video frame " << std::dec << _frame << " " << (void*) ptr << " size: " << size << " ptr+size=" << (void*) (ptr+size) << std::endl;
+    std::cerr << this << " alloc video frame " << std::dec << _frame << " "
+              << (void*) ptr << " size: " << size << std::endl
+              << this << " ptr+size=" << (void*) (ptr+size) << std::endl;
 #endif
     _data.reset( ptr );
     CMedia::memory_used += size;
@@ -659,10 +661,10 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                  SwsContext** sws_ctx )
 {
-    unsigned dw = dst->width();
-    unsigned dh = dst->height();
     unsigned sw = src->width();
     unsigned sh = src->height();
+    unsigned dw = sw; // dst->width();
+    unsigned dh = sh; // dst->height();
     dst->repeat( src->repeat() );
     dst->frame( src->frame() );
     dst->pts( src->pts() );
@@ -682,7 +684,9 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
                                             dw, dh,
                                             4,
                                             image_type::kRGBA,
-                                            image_type::kByte ) );
+                                            image_type::kByte,
+                                            src->repeat(),
+                                            src->pts() ) );
 
         if ( src->format() > image_type::kRGBA &&
              ( dst->format() == image_type::kRGB ||

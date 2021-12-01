@@ -2,6 +2,8 @@ v6.0.2  - Made FLU file requester be case insensitive to extensions.
 	- Bug fixed crash when removing the last image of a reel.
 	- Fixed a problem when linking on Linux due to /usr/local/lib not
 	  being in the list of directories by default.
+	- Fixed ACES sRGB default using Output - sRGB.  Now it will more
+	  correctly default to Utility - sRGB - Texture.
 
 v6.0.1  - Changed rotations to be done thru ffmpeg filters instead of
 	  thru opengl.  This allows the images to be saved rotated.
