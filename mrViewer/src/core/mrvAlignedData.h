@@ -45,7 +45,11 @@ namespace mrv {
 
   struct aligned16_uint8_t
   {
-    uint8_t x;
+#ifdef LINUX
+      DECLARE_ALIGNED( 16, uint8_t, x );
+#else
+      uint8_t x;
+#endif
 
     inline void* operator new(size_t size)
     {
