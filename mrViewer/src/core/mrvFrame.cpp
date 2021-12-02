@@ -680,18 +680,17 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
     else
     {
         // YUV format, we need to convert to rgba
-        image_type_ptr tmp( new image_type( src->frame(),
-                                            dw, dh,
-                                            4,
-                                            image_type::kRGBA,
-                                            image_type::kByte,
-                                            src->repeat(),
-                                            src->pts() ) );
+        image_type_ptr tmp;
 
         if ( src->format() > image_type::kRGBA &&
              ( dst->format() == image_type::kRGB ||
                dst->format() == image_type::kRGBA ) )
         {
+            tmp.reset( new image_type( src->frame(),
+                                       dw, dh+1, // dh+1 needed to avoid crash
+                                       4,
+                                       image_type::kRGBA,
+                                       image_type::kByte ) );
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );

@@ -334,8 +334,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
         if ( codec_id == AV_CODEC_ID_H264 ) c->ticks_per_frame = 2;
 
+        c->gop_size = FFMIN( int(5 * fps), img->duration()/100+1 );
 
-        c->gop_size = int(5 * fps);
 
         // Use a profile if possible
         c->profile = opts->video_profile;
@@ -424,11 +424,11 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         else if ( c->codec_id == AV_CODEC_ID_PNG ||
                   c->codec_id == AV_CODEC_ID_TIFF )
         {
-            c->pix_fmt = AV_PIX_FMT_BGR32;
+            c->pix_fmt = AV_PIX_FMT_RGB32;
         }
         else if ( c->codec_id == AV_CODEC_ID_GIF )
         {
-            c->pix_fmt = AV_PIX_FMT_BGR8;
+            c->pix_fmt = AV_PIX_FMT_RGB8;
         }
         else if ( c->codec_id == AV_CODEC_ID_MJPEG )
         {
@@ -465,7 +465,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                            << opts->video_color <<
                            _(") for movie file") );
         }
-        if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
+        if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO  ) {
             /* just for testing, we also add B frames */
             c->max_b_frames = 2;
         }

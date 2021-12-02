@@ -650,51 +650,6 @@ int aviImage::init_filters(const char *filters_descr)
 
     buffersink_ctx = filt_out;
 
-#if 0
-    /*
-     * Set the endpoints for the filter graph. The filter_graph will
-     * be linked to the graph described by filters_descr.
-     */
-
-    /*
-     * The buffer source output must be connected to the input pad of
-     * the first filter described by filters_descr; since the first
-     * filter input label is not specified, it is set to "in" by
-     * default.
-     */
-    outputs->name       = av_strdup("in");
-    outputs->filter_ctx = buffersrc_ctx;
-    outputs->pad_idx    = 0;
-    outputs->next       = NULL;
-
-    /*
-     * The buffer sink input must be connected to the output pad of
-     * the last filter described by filters_descr; since the last
-     * filter output label is not specified, it is set to "out" by
-     * default.
-     */
-    inputs->name       = av_strdup("out");
-    inputs->filter_ctx = buffersink_ctx;
-    inputs->pad_idx    = 0;
-    inputs->next       = NULL;
-
-    if ((ret = avfilter_graph_parse_ptr(filter_graph, filters_descr,
-                                        &inputs, &outputs, NULL)) < 0)
-    {
-        LOG_ERROR( _("Error parsing filter description") );
-        goto end;
-    }
-
-    if ((ret = avfilter_graph_config(filter_graph, NULL)) < 0)
-    {
-        LOG_ERROR( _("Error configuring filter graph") );
-        goto end;
-    }
-
-fail:
-    avfilter_inout_free(&inputs);
-    avfilter_inout_free(&outputs);
-#endif
 end:
 
     return ret;
