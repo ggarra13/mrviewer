@@ -338,7 +338,7 @@ std::string GetCpuCaps( CpuCaps *caps)
       while(*ptmpstr == ' ')        // strip leading spaces
         ptmpstr++;
       LOG_INFO(ptmpstr);
-      free(tmpstr);
+      av_free(tmpstr);
 
       LOG_INFO("(Family: " << caps->cpuType
                << ", Model: " << caps->cpuModel
