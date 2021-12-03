@@ -3006,8 +3006,8 @@ void Flu_File_Chooser :: Entry :: draw()
 
   if( selected )
     {
-      fl_draw_box( FL_FLAT_BOX, x(), y(), w(), h(), FL_SELECTION_COLOR );
-      fl_color( FL_WHITE );
+        fl_draw_box( FL_FLAT_BOX, x(), y(), w(), h(), Fl_Color(0x8f8f0000) );
+        fl_color( FL_BLACK );
     }
   else
     {
