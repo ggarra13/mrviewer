@@ -43,6 +43,7 @@
 #include <ImfDeepScanLineInputPart.h>
 #include <ImfDeepFrameBuffer.h>
 #include <ImfCompositeDeepScanLine.h>
+#include <ImfOutputPart.h>
 #include <ImfTiledInputPart.h>
 #include <ImfTiledOutputPart.h>
 #include <ImfDeepScanLineOutputPart.h>
@@ -2825,7 +2826,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     hdr.compression() = comp;
 
     if ( comp == Imf::DWAA_COMPRESSION ||
-            comp == Imf::DWAB_COMPRESSION )
+         comp == Imf::DWAB_COMPRESSION )
     {
         Imf::addDwaCompressionLevel( hdr,
                                      opts->compression_level() );

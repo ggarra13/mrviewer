@@ -22,6 +22,7 @@ namespace mrv {
     ImagePixel p( 0.f, 0.f, 0.f, 1.f );
     unsigned offset = y * _width + x;
 
+
     boost::uint8_t* d = (boost::uint8_t*)_data.get();
     boost::uint8_t* col = d + offset * _channels;
     boost::uint8_t yp = 0, cb = 0, cr = 0;
@@ -199,6 +200,7 @@ namespace mrv {
   {
     unsigned offset = y * _width + x;
 
+
     boost::uint8_t* d = (boost::uint8_t*)_data.get();
     boost::uint8_t* col = d + offset * _channels;
     boost::uint8_t* yp = NULL, *cb = NULL, *cr = NULL;
@@ -212,14 +214,14 @@ namespace mrv {
       case kLumma:
         col[0] = boost::uint8_t(p.r * 255.0f); break;
       case kBGRA:
-          col[3] = boost::uint8_t(p.a * 255.0f);
+        col[3] = boost::uint8_t(p.a * 255.0f);
       case kBGR:
         col[2] = boost::uint8_t(p.r * 255.0f);
         col[1] = boost::uint8_t(p.g * 255.0f);
         col[0] = boost::uint8_t(p.b * 255.0f);
         break;
       case kRGBA:
-          col[3] = boost::uint8_t(p.a * 255.0f);
+        col[3] = boost::uint8_t(p.a * 255.0f);
       case kRGB:
         col[0] = boost::uint8_t(p.r * 255.0f);
         col[1] = boost::uint8_t(p.g * 255.0f);

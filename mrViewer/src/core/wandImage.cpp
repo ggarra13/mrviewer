@@ -1062,6 +1062,8 @@ static void save_attribute( const CMedia* img,
     mrvALERT( _("Unknown data type to convert to string") );
 }
 
+static SwsContext* save_ctx = NULL;
+
 bool CMedia::save( const char* file, const ImageOpts* opts ) const
 {
     if ( dynamic_cast< const EXROpts* >( opts ) != NULL )
@@ -1076,6 +1078,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     {
         return picImage::save( file, this, opts );
     }
+
 
     if ( dynamic_cast< const OIIOOpts* >( opts ) != NULL )
     {
@@ -1352,8 +1355,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                     dw, dh, 4,
                     image_type::kRGBA,
                     image_type::kFloat
-                                                 ) );
-            copy_image( ptr, pic );
+                                                     ) );
+            copy_image( ptr, pic, &save_ctx );
 
             const std::string& display = mrv::Preferences::OCIO_Display;
             const std::string& view = mrv::Preferences::OCIO_View;
@@ -1633,6 +1636,13 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     }
 
     p->channel( old_channel );
+
+    if ( save_ctx )
+    {
+        sws_freeContext( save_ctx );
+        save_ctx = NULL;
+    }
+
 
     return true;
 }

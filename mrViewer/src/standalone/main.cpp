@@ -278,6 +278,7 @@ int main( int argc, const char** argv )
     mrv::set_root_path( argc, argv );
 
     DBG;
+    Fl::scheme("gtk+");
     fl_open_display();
 
     // Adjust ui based on preferences
@@ -289,7 +290,6 @@ int main( int argc, const char** argv )
 
     DBG;
       //Fl::lock();  // Start locking mechanism
-      Fl::scheme("plastic");
     DBG;
 
       fl_open_callback( osx_open_cb );

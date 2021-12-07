@@ -96,12 +96,16 @@ namespace mrv
     void ColorSchemes::apply_colors( std::string n )
     {
         DBG3;
+        char buf[16];
         for ( auto& s : themes )
         {
-            if ( s.name == "Default" )
+            if ( s.name == _("Default") ||
+                 s.name == "Default" )
             {
                 for ( auto& c: s.colormaps )
                 {
+                    sprintf( buf, "%08x", c.second );
+                    DBGM3( "Default: c.first " << c.first << " " << buf );
                     Fl::set_color( c.first, Fl_Color(c.second) );
                 }
             }
@@ -115,6 +119,8 @@ namespace mrv
                 name = n;
                 for ( auto& c: s.colormaps )
                 {
+                    sprintf( buf, "%08x", c.second );
+                    DBGM3( name << ": c.first " << c.first << " " << buf );
                     Fl::set_color( c.first, Fl_Color(c.second) );
                 }
             }
@@ -131,5 +137,17 @@ namespace mrv
         DBG3;
         apply_colors( t );
         DBG3;
+    }
+
+    void
+    ColorSchemes::debug()
+    {
+        char buf[16];
+        for ( int i = 0; i < 256; ++i )
+        {
+            Fl_Color c = Fl::get_color( i );
+            sprintf( buf, "%08x", c );
+            DBGM3( name << ": color " << i << " " << buf );
+        }
     }
 }

@@ -61,6 +61,8 @@ effect to the widget.
 
 #include "core/mrvAssert.h"
 
+#include "gui/mrvPreferences.h"
+
 extern Fl_Widget* fl_did_clipping;
 
 namespace mrv {
@@ -81,7 +83,11 @@ void PopupMenu::draw() {
   if ( _enable_glyph ) H = (labelsize()-3)&-2;
   int X = x()+w()-H-Fl::box_dx(box())-Fl::box_dw(box())-1;
   int Y = y()+(h()-H)/2;
-  color( Fl_Color( fl_rgb_color( 75, 75, 75 ) ) );
+  if ( Preferences::schemes.name == "Black" ||
+       Preferences::schemes.name == "Dark Grey"  )
+      color( Fl_Color( fl_rgb_color( 75, 75, 75 ) ) );
+  else
+      color( Fl_Color( fl_rgb_color( 140, 140, 140 ) )  );
   if ( pressed_menu_button_ == this ) draw_box( fl_down(box()), color());
   else draw_box( FL_ROUNDED_BOX, color() );
   // draw_box(pressed_menu_button_ == this ? fl_down(box()) : box(), color());

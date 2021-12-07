@@ -1616,9 +1616,6 @@ bool Parser::parse( const std::string& s )
 
 //----------------------------------------------------------------------
 
-namespace {
-const char* const kModule = "server";
-}
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
                          ViewerUI* const v) :

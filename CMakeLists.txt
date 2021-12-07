@@ -49,9 +49,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 option( USE_PORTAUDIO "Use PortAudio interface (Not working)" OFF )
 
-SET( VersionMajor 5 )
-SET( VersionMinor 9 )
-SET( VersionPatch 7 )
+SET( VersionMajor 6 )
+SET( VersionMinor 0 )
+SET( VersionPatch 2 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )

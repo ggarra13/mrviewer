@@ -144,7 +144,12 @@ void media::create_thumbnail( unsigned W, unsigned H )
                                   w, h, 3,
                                   image_type::kRGB,
                                   image_type::kFloat ) );
-            copy_image( ptr, pic );
+            SwsContext* save_ctx = NULL;
+            copy_image( ptr, pic, &save_ctx );
+            if ( save_ctx )
+            {
+                sws_freeContext( save_ctx );
+            }
         }
         if ( pic->pixel_type() == mrv::image_type::kFloat ||
              pic->pixel_type() == mrv::image_type::kHalf )
@@ -174,35 +179,13 @@ void media::create_thumbnail( unsigned W, unsigned H )
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
-    bool flipX = _image->flipX();
-    bool flipY = _image->flipY();
-    if ( (_image->rot_z() >= 179.99f  && _image->rot_z() <= 180.01) ||
-         (_image->rot_z() <= -179.99f && _image->rot_z() >= -180.01)
-        )
+    unsigned ymin = 0;
+    unsigned ymax = h;
+    unsigned xmin = 0;
+    unsigned xmax = w;
+    for (unsigned y = ymin; y < ymax; ++y )
     {
-        flipX ^= true; flipY ^= true;
-    }
-    int yinc = 1;
-    int ymin = 0;
-    int ymax = h;
-    if ( flipY )
-    {
-        yinc = -1;
-        ymin = h - 1;
-        ymax = -1;
-    }
-    int xinc = 1;
-    int xmin = 0;
-    int xmax = w;
-    if ( flipX )
-    {
-        xinc = -1;
-        xmin = w - 1;
-        xmax = -1;
-    }
-    for (int y = ymin; y != ymax; y += yinc )
-    {
-        for (int x = xmin; x != xmax; x += xinc )
+        for (unsigned x = xmin; x < xmax; ++x )
         {
             CMedia::Pixel fp = pic->pixel( x, y );
             if ( gamma != 1.0f )

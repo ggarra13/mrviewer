@@ -1,4 +1,4 @@
-if(UNIX)
+If(UNIX)
   string( JOIN " " cxx_flags ${CMAKE_CXX_FLAGS} -std=c++11 -Wno-error=deprecated-declarations  )
 endif()
 

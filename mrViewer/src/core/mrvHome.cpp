@@ -119,7 +119,10 @@ std::string studiopath()
 {
     const char* c = getenv( "STUDIOPATH" );
     if (!c) return "";
-    else return c;
+    std::string r = c;
+    if ( r.substr( r.size() - 1, r.size() ) != "/" )
+        r += "/";
+    return r;
 }
 
 std::string prefspath()

@@ -1,7 +1,7 @@
 include( ExternalProject )
 
 if (WIN32 OR UNIX )
-  IF( NOT APPLE )
+  # IF( NOT APPLE )
       ExternalProject_Add(
       x265
       HG_REPOSITORY "http://hg.videolan.org/x265"
@@ -11,5 +11,5 @@ if (WIN32 OR UNIX )
       INSTALL_COMMAND cd ${CMAKE_BINARY_DIR}/x265-prefix/src/x265/build/linux && make install
       BUILD_IN_SOURCE 1
     )
-    ENDIF()
+    # ENDIF()
 ENDIF()

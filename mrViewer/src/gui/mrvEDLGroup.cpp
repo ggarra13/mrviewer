@@ -259,11 +259,11 @@ int EDLGroup::handle( int event )
             {
 
                 _drag = browser()->new_item( m );
-                _drag->media()->thumbnail_freeze( true );
+                //_drag->media()->thumbnail_freeze( true );
 
                 int j = track->index_for( m );
                 if ( j < 0 ) {
-                    _drag->media()->thumbnail_freeze( false );
+                    //_drag->media()->thumbnail_freeze( false );
                     delete _drag; _drag = NULL;
                     return 0;
                 }
@@ -272,9 +272,7 @@ int EDLGroup::handle( int event )
 
                 browser()->reel( track->reel() );
                 DBGM3("Change  image " << j );
-                // browser()->change_image( j );
-
-                view()->stop();
+                //browser()->change_image( j );
 
 
                 view()->seek( pt );

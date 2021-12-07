@@ -427,6 +427,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "timeline_thumbnails", tmp, 1 );
     uiPrefs->uiPrefsTimelineThumbnails->value(tmp);
 
+    ui.get( "max_cacheline_frames", tmp, 5000 );
+    uiPrefs->uiPrefsMaxCachelineFrames->value(tmp);
+
 
     DBG3;
     //
@@ -2191,6 +2194,8 @@ void Preferences::run( ViewerUI* main )
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
         main->uiMain->always_on_top();
     DBG3;
+    if ( debug > 1 )
+        schemes.debug();
 }
 
 
@@ -2251,6 +2256,8 @@ void Preferences::save()
     ui.set( "timeline_thumbnails",
             uiPrefs->uiPrefsTimelineThumbnails->value() );
 
+    ui.set( "max_cacheline_frames",
+            uiPrefs->uiPrefsMaxCachelineFrames->value() );
     //
     // ui/view prefs
     //

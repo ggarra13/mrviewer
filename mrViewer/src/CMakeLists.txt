@@ -82,7 +82,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
   #  ADD_COMPILE_OPTIONS( -W1 )
 
-  ADD_DEFINITIONS( -DMR_SSE -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 )
+  ADD_DEFINITIONS( -DMR_SSE -DWIN32 -D_WIN32_WINNT=0x0501 )
 
   SET(OS_LIBRARIES GDIplus Winmm ws2_32 Psapi ${GLEW_LIBRARIES} )
 
@@ -158,6 +158,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
   ADD_DEFINITIONS( -DLINUX -DNDEBUG )
   ADD_COMPILE_OPTIONS( -O3 -msse )
+  LINK_DIRECTORIES( /usr/local/lib )
   SET(OS_LIBRARIES
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
     )
@@ -350,6 +351,7 @@ SET( SOURCES
   gui/mrvFontsWindowUI.cpp
   gui/mrvHistogram.cpp
   gui/mrvImageView.cpp
+  gui/mrvImageView_shapes.cpp
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
@@ -533,6 +535,9 @@ ENDIF()
 SET( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 IF(UNIX AND NOT APPLE)
+
+  set( LINK_FLAGS ${LINK_FLAGS})
+
   IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
     FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh

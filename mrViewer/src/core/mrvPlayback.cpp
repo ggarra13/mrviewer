@@ -292,6 +292,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
 
 
+
     if ( frame > last )
     {
         return CMedia::kDecodeLoopEnd;
@@ -1102,8 +1103,6 @@ void video_thread( PlaybackData* data )
         int64_t first, last;
         status = check_loop( frame, img, false, reel, timeline, first, last );
 
-
-
         // img->debug_video_packets( frame, img->name().c_str(), true );
         // img->debug_video_stores( frame, img->name().c_str(), true );
 
@@ -1204,6 +1203,7 @@ void video_thread( PlaybackData* data )
             continue;
         }
         case CMedia::kDecodeMissingFrame:
+            img->decode_eof( frame );
             break;
         case CMedia::kDecodeBufferFull:
         default:

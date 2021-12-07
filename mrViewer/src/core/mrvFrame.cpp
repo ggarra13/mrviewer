@@ -66,7 +66,8 @@ float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 #include "core/mrvFrame_f32.inl"
 
 
-//#define DEBUG_ALLOCS
+// #define DEBUG_ALLOCS
+// #define DEBUG_AUDIO_ALLOCS
 
 namespace mrv {
 
@@ -127,11 +128,11 @@ unsigned short VideoFrame::pixel_size() const
     switch( _type )
     {
     case kByte:
-        return sizeof(char);
+        return sizeof(uint8_t);
     case kShort:
-        return sizeof(short);
+        return sizeof(uint16_t);
     case kInt:
-        return sizeof(int);
+        return sizeof(int32_t);
     case kHalf:
         return sizeof(half);
     case kFloat:
@@ -275,7 +276,7 @@ size_t VideoFrame::data_size() const
 VideoFrame::~VideoFrame()
 {
 #ifdef DEBUG_ALLOCS
-    std::cerr << "free video frame " << _frame << " " << (void*) _data.get() << std::endl;
+    std::cerr << this << " free video frame " << std::dec << _frame << " " << (void*) _data.get() << " size: " << data_size() << std::endl;
 #endif
     CMedia::memory_used -= data_size();
     //assert0( CMedia::memory_used >= 0 );
@@ -291,7 +292,9 @@ void VideoFrame::allocate()
     size_t size = data_size();
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ size ];
 #ifdef DEBUG_ALLOCS
-    std::cerr << "alloc video frame " << _frame << " " << (void*) ptr << " size: " << size << std::endl;
+    std::cerr << this << " alloc video frame " << std::dec << _frame << " "
+              << (void*) ptr << " size: " << size << std::endl
+              << this << " ptr+size=" << (void*) (ptr+size) << std::endl;
 #endif
     _data.reset( ptr );
     CMedia::memory_used += size;
@@ -348,9 +351,6 @@ void VideoFrame::pixel( const unsigned int x, const unsigned int y,
 {
     if ( !_data )
         throw std::runtime_error( _("mrv::Frame No pixel data to change") );
-
-    av_assert0( x < _width  );
-    av_assert0( y < _height );
 
     switch( _type )
     {
@@ -650,66 +650,56 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
     _type     = b.pixel_type();
     _valid    = b.valid();
     allocate();
+#ifdef DEBUG_ALLOCS
+    std::cerr << "VideoFrame::operator= memcpy" << std::endl;
+#endif
     memcpy( _data.get(), b.data().get(), b.data_size() );
     return *this;
 }
 
 
 void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
-                 SwsContext* sws_ctx )
+                 SwsContext** sws_ctx )
 {
-    unsigned dw = src->width();
-    unsigned dh = src->height();
+    unsigned sw = src->width();
+    unsigned sh = src->height();
+    unsigned dw = sw; // dst->width();
+    unsigned dh = sh; // dst->height();
     dst->repeat( src->repeat() );
     dst->frame( src->frame() );
     dst->pts( src->pts() );
     dst->ctime( time(NULL) );
     dst->mtime( time(NULL) );
-    av_assert0( dst->channels() > 0 );
-    av_assert0( dst->width() > 0 );
-    av_assert0( dst->height() > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
          src->channels() == dst->channels() &&
          src->format() == dst->format() &&
-         dw == dst->width() && dh == dst->height() )
+         sw == dw && sh == dh )
     {
         memcpy( dst->data().get(), src->data().get(), src->data_size() );
     }
     else
     {
-        image_type_ptr tmp = src;
+        // YUV format, we need to convert to rgba
+        image_type_ptr tmp;
+
         if ( src->format() > image_type::kRGBA &&
              ( dst->format() == image_type::kRGB ||
                dst->format() == image_type::kRGBA ) )
         {
-            // YUV format, we need to convert to rgba
-            try
-            {
-                tmp.reset( new image_type( src->frame(),
-                                           dw, dh,
-                                           4,
-                                           image_type::kRGBA,
-                                           image_type::kByte ) );
-            }
-            catch( const std::bad_alloc& e )
-            {
-                LOG_ERROR( e.what() );
-                return;
-            }
-            catch( const std::runtime_error& e )
-            {
-                LOG_ERROR( e.what() );
-                return;
-            }
+            tmp.reset( new image_type( src->frame(),
+                                       dw, dh+1, // dh+1 needed to avoid crash
+                                       4,
+                                       image_type::kRGBA,
+                                       image_type::kByte ) );
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
-            sws_ctx = sws_getCachedContext(sws_ctx,
-                                           dw, dh,
-                                           fmt, dw, dh,
-                                           AV_PIX_FMT_RGBA, 0,
-                                           NULL, NULL, NULL);
-            if ( !sws_ctx )
+            *sws_ctx = sws_getCachedContext(*sws_ctx,
+                                            sw, sh,
+                                            fmt, dw, dh,
+                                            AV_PIX_FMT_RGBA, 0,
+                                            NULL, NULL, NULL);
+            if ( !*sws_ctx )
             {
                 LOG_ERROR( _("Not enough memory for color transform") );
                 return;
@@ -718,7 +708,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             uint8_t* buf = (uint8_t*)src->data().get();
             uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
             int src_linesize[4] = { 0, 0, 0, 0 };
-            av_image_fill_arrays( src_data, src_linesize, buf, fmt, dw, dh, 1 );
+            av_image_fill_arrays(src_data, src_linesize, buf, fmt, sw, sh, 1);
 
             uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
             uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
@@ -726,15 +716,17 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
             av_image_fill_arrays( tmp_data, tmp_linesize, tmpbuf,
                                   AV_PIX_FMT_RGBA, dw, dh, 1 );
 
-            sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
+            sws_scale( *sws_ctx, src_data, src_linesize, 0, dh,
                        tmp_data, tmp_linesize );
         }
-
-        av_assert0( dw <= dst->width() );
-        av_assert0( dh <= dst->height() );
-        for ( unsigned y = 0; y < dh; ++y )
+        else
         {
-            for ( unsigned x = 0; x < dw; ++x )
+            tmp = src;
+        }
+
+        for ( unsigned y = 0; y < sh; ++y )
+        {
+            for ( unsigned x = 0; x < sw; ++x )
             {
                 const ImagePixel& p = tmp->pixel( x, y );
                 dst->pixel( x, y, p );
@@ -745,7 +737,7 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
 
 void AudioFrame::sum_memory() noexcept
 {
-#ifdef DEBUG_ALLOCS
+#ifdef DEBUG_AUDIO_ALLOCS
     std::cerr << "alloc audio frame " << _frame << " " << (void*) _data
               << " size: " << _size << std::endl;
 #endif
@@ -754,7 +746,7 @@ void AudioFrame::sum_memory() noexcept
 
 AudioFrame::~AudioFrame()
 {
-#ifdef DEBUG_ALLOCS
+#ifdef DEBUG_AUDIO_ALLOCS
     std::cerr << "free audio frame " << _frame << " " << (void*) _data << std::endl;
 #endif
     delete [] _data;

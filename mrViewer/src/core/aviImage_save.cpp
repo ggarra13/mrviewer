@@ -39,12 +39,17 @@ extern "C" {
 #include <libavutil/mathematics.h>
 #include <libavutil/timestamp.h>
 #include <libavutil/avassert.h>
+#include <libavutil/display.h>
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
+
 #include <libavformat/avformat.h>
+
 #include <libavcodec/avcodec.h>
+
 #include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
+
 }
 
 #include "core/mrvColorOps.h"
@@ -329,8 +334,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
         if ( codec_id == AV_CODEC_ID_H264 ) c->ticks_per_frame = 2;
 
+        c->gop_size = FFMIN( int(5 * fps), img->duration()/100+1 );
 
-        c->gop_size = int(5 * fps);
 
         // Use a profile if possible
         c->profile = opts->video_profile;
@@ -419,7 +424,11 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         else if ( c->codec_id == AV_CODEC_ID_PNG ||
                   c->codec_id == AV_CODEC_ID_TIFF )
         {
-            c->pix_fmt = AV_PIX_FMT_BGR32;
+            c->pix_fmt = AV_PIX_FMT_RGB32;
+        }
+        else if ( c->codec_id == AV_CODEC_ID_GIF )
+        {
+            c->pix_fmt = AV_PIX_FMT_RGB8;
         }
         else if ( c->codec_id == AV_CODEC_ID_MJPEG )
         {
@@ -456,7 +465,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                            << opts->video_color <<
                            _(") for movie file") );
         }
-        if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
+        if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO  ) {
             /* just for testing, we also add B frames */
             c->max_b_frames = 2;
         }
@@ -472,8 +481,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     default:
         break;
     }
-
-
 
     return st;
 }
@@ -978,6 +985,15 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     AVCodecContext* c = enc_ctx[st->id];
     AVDictionary* info = NULL;
 
+    if ( fabs(img->rot_z()) > 0.0f )
+    {
+        uint8_t *sd = av_stream_new_side_data(st, AV_PKT_DATA_DISPLAYMATRIX,
+                                              sizeof(int32_t) * 9);
+        if ( sd ) {
+            av_display_rotation_set( (int32_t*)sd, img->rot_z() );
+        }
+    }
+
     av_dict_set( &info, "tune", "zerolatency", 0 );
 
     if ( opts->metadata )
@@ -1046,8 +1062,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     }
 
     /* Allocate the encoded raw frame. */
-
-    picture = alloc_picture(c->pix_fmt, c->width, c->height);
+    picture = alloc_picture(c->pix_fmt, img->width(), img->height());
     if (!picture) {
         LOG_ERROR( _("Could not allocate picture") );
         return false;
@@ -1065,6 +1080,7 @@ static void close_video_stream(AVFormatContext *oc, AVStream *st)
     av_frame_free(&picture);
 }
 
+static SwsContext* save_ctx = NULL;
 
 /* prepare a yuv image */
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
@@ -1083,8 +1099,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     unsigned w = c->width;
     unsigned h = c->height;
 
-    if ( hires->width() != w )  w = hires->width();
-    if ( hires->height() != h ) h = hires->height();
+    if ( hires->width() > w )  w = hires->width();
+    if ( hires->height() > h ) h = hires->height();
 
     float one_gamma = 1.0f / img->gamma();
 
@@ -1101,11 +1117,11 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     {
 
         ptr = mrv::image_type_ptr( new image_type( hires->frame(),
-                                   w, h,
-                                   hires->channels(),
-                                   format,
-                                   mrv::image_type::kFloat ) );
-        copy_image( ptr, hires );
+                                                   w, h,
+                                                   hires->channels(),
+                                                   format,
+                                                   mrv::image_type::kFloat ) );
+        copy_image( ptr, hires, &save_ctx );
         if ( hires == img->left() ) bake_ocio( ptr, img );
     }
 
@@ -1156,7 +1172,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                              hires->pixel_type() );
     sws_ctx = sws_getCachedContext( sws_ctx, w, h,
-                                    fmt, c->width, c->height, c->pix_fmt, 0,
+                                    fmt, w, h, c->pix_fmt, 0,
                                     NULL, NULL, NULL );
     if ( !sws_ctx )
     {
@@ -1235,6 +1251,7 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
     else
         return 0;
 }
+
 
 
 
@@ -1343,6 +1360,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
         video_codec_id = AV_CODEC_ID_PNG;
     else if ( opts->video_codec == "tiff" )
         video_codec_id = AV_CODEC_ID_TIFF;
+    else if ( opts->video_codec == "gif" )
+        video_codec_id = AV_CODEC_ID_GIF;
     else if ( opts->video_codec == "hevc" )
         video_codec_id = AV_CODEC_ID_HEVC;
     else if ( opts->video_codec == "h264" )
@@ -1386,15 +1405,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
     video_st = NULL;
     audio_st = NULL;
-    if (img->has_picture() && video_codec_id != AV_CODEC_ID_NONE ) {
-
+    if ( img->has_picture() && video_codec_id != AV_CODEC_ID_NONE ) {
 
         video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
                               video_codec_id, img, opts);
     }
 
-    if (img->has_audio() && audio_codec_id != AV_CODEC_ID_NONE ) {
-
+    if ( img->has_audio() && audio_codec_id != AV_CODEC_ID_NONE ) {
 
         audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
                               audio_codec_id, img, opts );
@@ -1411,8 +1428,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
      * video codecs and allocate the necessary encode buffers. */
     if (video_st)
     {
-
-
         if ( ! open_video(oc, video_codec, video_st, img, opts ) )
             return false;
     }
@@ -1619,6 +1634,12 @@ bool aviImage::close_movie( const CMedia* img )
     {
         sws_freeContext( sws_ctx );
         sws_ctx = NULL;
+    }
+
+    if ( save_ctx )
+    {
+        sws_freeContext( save_ctx );
+        save_ctx = NULL;
     }
 
     CMedia* image = const_cast<CMedia*>(img);

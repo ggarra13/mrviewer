@@ -45,40 +45,17 @@ namespace mrv {
 
   struct aligned16_uint8_t
   {
-    uint8_t x;
-
-    inline void* operator new(size_t size)
-    {
-#ifdef LINUX
-        void* ptr = NULL;
-        if ( posix_memalign( &ptr, 16, size ) != 0 )
-            throw std::bad_alloc();
-#elif OSX
-        void* ptr = av_malloc( size + 8 );
-#else
-        void* ptr = av_malloc( size );
-#endif
-        if (!ptr) throw std::bad_alloc();
-        return ptr;
-    }
-
-    inline void operator delete( void* ptr )
-    {
-#ifdef LINUX
-        free( ptr );
-#else
-        av_free( ptr );
-#endif
-    }
+      uint8_t x;
 
     inline void* operator new[](size_t size)
     {
 #ifdef LINUX
-        void* ptr = NULL;
-        if ( posix_memalign( &ptr, 16, size * sizeof(aligned16_uint8_t) ) != 0 )
-            throw std::bad_alloc();
+        void* ptr = av_malloc_array( size, sizeof(aligned16_uint8_t) );
+        // void* ptr = NULL;
+        // if ( posix_memalign( &ptr, 16, size * sizeof(aligned16_uint8_t) ) != 0 )
+        //     throw std::bad_alloc();
 #elif OSX
-        void* ptr = av_malloc_array( size + 8, sizeof(aligned16_uint8_t) );
+        void* ptr = av_malloc_array( size, sizeof(aligned16_uint8_t) );
 #else
         void* ptr = av_malloc_array( size, sizeof(aligned16_uint8_t) );
 #endif

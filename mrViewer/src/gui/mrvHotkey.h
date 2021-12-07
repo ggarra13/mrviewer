@@ -137,8 +137,10 @@ extern Hotkey kWipe;
 extern Hotkey kFlipX;
 extern Hotkey kFlipY;
 
+extern Hotkey kShapeFrameStepBack;
 extern Hotkey kFrameStepBack;
 extern Hotkey kFrameStepFPSBack;
+extern Hotkey kShapeFrameStepFwd;
 extern Hotkey kFrameStepFwd;
 extern Hotkey kFrameStepFPSFwd;
 extern Hotkey kPlayBack;

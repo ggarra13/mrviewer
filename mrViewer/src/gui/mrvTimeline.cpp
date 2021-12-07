@@ -65,6 +65,7 @@ mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 mrv::Slider( x, y, w, h, l ),
 _edl( false ),
+_draw_annotation( true ),
 _draw_cache( true ),
 _tc( 0 ),
 _fps( 24 ),
@@ -84,7 +85,7 @@ uiMain( NULL )
 
 Timeline::~Timeline()
 {
-    _draw_cache = false;
+    _draw_cache = _draw_annotation = false;
     _edl = false;
     uiMain = NULL;
     delete win; win = NULL;
@@ -396,7 +397,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     if ( mx < max ) max = mx;
 
     // If too many frames, playback suffers, so we exit here
-    if ( max - j > kMAX_FRAMES ) return;
+    if ( max - j > uiMain->uiPrefs->uiPrefsMaxCachelineFrames->value() ) return;
 
     int rx = r.x() + int(slider_size()-1)/2;
     int ry = r.y() + r.h()/2;
@@ -466,6 +467,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     fl_pop_clip();
 
+
 }
 
 
@@ -477,6 +479,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
+
 }
 
     void showwin(mrv::Timeline* self)
@@ -495,7 +498,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
         Fl_Box* b = NULL;
         if (! win ) {
-            win = new Fl_Window( X, Y, 128, 76 );
+            win = new Fl_Double_Window( X, Y, 128, 76 );
             win->parent( window() );
             win->border(0);
             win->begin();
@@ -543,14 +546,19 @@ void Timeline::draw_selection( const mrv::Recti& r )
         b->image( fg->thumbnail() );
         b->redraw();
         win->end();
+        win->cursor( FL_CURSOR_DEFAULT );
         win->show();
     }
 
 int Timeline::handle( int e )
 {
-    if ( e == FL_ENTER ) return 1;
+    if ( e == FL_ENTER ) {
+        window()->cursor( FL_CURSOR_DEFAULT );
+        return 1;
+    }
     else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
+        window()->cursor( FL_CURSOR_DEFAULT );
         event_x = Fl::event_x();
         int X = x()+Fl::box_dx(box());
         int Y = y()+Fl::box_dy(box());
@@ -618,6 +626,8 @@ int Timeline::handle( int e )
              kPlayDirection.match( rawkey ) ||
              kPlayFwdTwiceSpeed.match( rawkey ) ||
              kPlayBackHalfSpeed.match( rawkey ) ||
+             kShapeFrameStepFwd.match( rawkey ) ||
+             kShapeFrameStepBack.match( rawkey ) ||
              kStop.match( rawkey ) )
         {
             return uiMain->uiView->handle( e );
@@ -625,7 +635,7 @@ int Timeline::handle( int e )
     }
     Fl_Boxtype bx = box();
     box( FL_FLAT_BOX );
-    int ok = Fl_Slider::handle( e );
+    int ok = mrv::Slider::handle( e );
     box( bx );
     return ok;
     // if ( r != 0 ) return r;
@@ -753,6 +763,26 @@ void Timeline::draw()
                                 frame, r );
             }
 
+
+            if ( draw_annotation() && (*i) == fg )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int ry = r.y() + r.h()/2;
+                int ww = r.w();
+                int hh = r.h() - 8;
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                hh = r.h() / 2;
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+
             int dx = rx + slider_position( double(frame), ww );
 
             fl_color( FL_BLUE );
@@ -776,8 +806,32 @@ void Timeline::draw()
                                 img->duration() + img->start_number(),
                                 int64_t(mn), int64_t(mx),
                                 first, r );
+
             }
-        };
+        }
+
+        mrv::media m = browser()->current_image();
+        if ( m )
+        {
+            CMedia* img = m->image();
+            if ( draw_annotation() )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int hh = r.h() / 2;
+                int ry = r.y() + hh;
+                int ww = r.w();
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+        }
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
              ( _display_min > minimum() || _display_max < maximum() ) )

@@ -738,7 +738,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {324 239 690 565} type Double align 80 resizable
+      xywh {122 322 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible
@@ -887,11 +887,11 @@ uiView->update_color_info();}
               callback {v->uiReelWindow->uiBrowser->change_background();
 v->uiView->show_background(false);}
               tooltip {Set an A/B comparison.  B image goes in the background.  A (foreground) image is the selected image.} xywh {30 27 40 22} down_box PLASTIC_ROUND_DOWN_BOX selection_color 95
-              class {mrv::Toggle_Button}
+              class {mrv::Button}
             }
           }
           Fl_Group {} {
-            xywh {75 27 98 23} color 1397969664
+            xywh {75 27 90 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
@@ -899,22 +899,22 @@ v->uiView->show_background(false);}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
-              tooltip {Allows you to select different image channels or layers.} xywh {76 27 90 22}
+              tooltip {Allows you to select different image channels or layers.} xywh {76 27 89 22}
               class {mrv::PopupMenu}
             } {}
           }
-          Fl_Group {} {
+          Fl_Group {} {open
             xywh {170 26 285 24} color 1397969664
           } {
             Fl_Box {} {
               label Gain
-              xywh {170 27 32 22} labelsize 12 align 120
+              xywh {170 27 40 22} labelsize 12 align 120
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {204 27 35 22} color -1733777408 selection_color 0 maximum 64 value 1
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {215 27 35 22} color -1733777408 selection_color 0 maximum 64 value 1
               code0 {o->textsize( 12 );}
               code1 {o->textcolor( FL_BLACK );}
             }
@@ -922,7 +922,7 @@ v->uiGain->value( (float) o->value() );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {239 27 70 22} type {Horz Knob} maximum 64 value 1
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {250 27 59 22} type {Horz Knob} maximum 64 value 1
               code0 {o->minimum( 0.02 );}
               code1 {o->maximum( 64.0 ); o->step( 0.1 );}
               code2 {o->value( 1.0 );}
@@ -1198,18 +1198,21 @@ o->image( select_pic );}
               callback {o->value(1);
 v->uiView->text_mode();}
               tooltip {Text Tool} xywh {2 283 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
+              class {mrv::Button}
             }
             Fl_Button uiCircle {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->circle_mode();}
               tooltip {Circle Tool} xywh {2 213 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( circle );}
+              class {mrv::Button}
             }
             Fl_Button uiArrow {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->arrow_mode();}
               tooltip {Arrow Tool} xywh {2 248 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( arrow_28 );}
+              class {mrv::Button}
             }
             Fl_Button uiPenColor {
               label Color
@@ -1236,6 +1239,7 @@ else
  o->activate();}
                 tooltip {Undo Last Shape Drawn} xywh {2 397 40 35}
                 code0 {o->image( undo );}
+                class {mrv::Button}
               }
               Fl_Button uiRedoDraw {
                 user_data this user_data_type {ViewerUI*}
@@ -1246,6 +1250,7 @@ else
    o->activate();}
                 tooltip {Redo Previous Shape Drawn} xywh {2 432 40 35}
                 code0 {o->image( redo );}
+                class {mrv::Button}
               }
             }
             Fl_Button {} {
@@ -1258,9 +1263,10 @@ else if ( !uiAttrsWindow )
      uiAttrsWindow = make_attrs_window();
 uiAttrsWindow->show();}
               xywh {2 368 40 25}
+              class {mrv::Button}
             }
           }
-          Fl_Group uiView {
+          Fl_Group uiView {selected
             xywh {45 54 645 432} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}
@@ -1438,7 +1444,7 @@ o->disable_glyph();}
                       callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
-v->update_color_info();} selected
+v->update_color_info();}
                       tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {405 489 28 21} labelsize 9 align 48
                       code0 {o->value(0);
 o->disable_glyph();}

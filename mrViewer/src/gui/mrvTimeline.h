@@ -137,6 +137,13 @@ public:
 
     int64_t global_to_local( const int64_t frame ) const;
 
+    void draw_annotation( const bool t ) {
+        _draw_annotation = t;
+    }
+    bool draw_annotation() const {
+        return _draw_annotation;
+    }
+
     void draw_cache( const bool t ) {
         _draw_cache = t;
     }
@@ -155,6 +162,9 @@ protected:
     void draw_ticks(const mrv::Recti& r, int min_spacing);
 
     void draw_selection( const mrv::Recti& r);
+    void draw_annotations( CMedia* img, int64_t pos, int64_t size,
+                           int64_t mn, int64_t mx, int64_t frame,
+                           const mrv::Recti& r );
     void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                          int64_t mn, int64_t mx, int64_t frame,
                          const mrv::Recti& r );
@@ -162,6 +172,7 @@ protected:
 
     static mrv::Timecode::Display _display;
     bool   _edl;
+    bool _draw_annotation;
     bool _draw_cache;
     int64_t _tc;
     double _fps;

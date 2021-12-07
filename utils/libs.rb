@@ -139,7 +139,7 @@ def copy_third_party( root, dest )
   Dir.chdir( root )
   if dest =~ /Linux/
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_3_4/Redistributable/linux/REDR3D-x64.so",
+    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so",
                     "#{dest}/lib" )
     if File.exists?( "/usr/lib64/blackmagic" )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
@@ -165,7 +165,7 @@ def copy_third_party( root, dest )
       exit 1
     end
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv7_3_1/Redistributable/mac/REDR3D.dylib",
+    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
@@ -230,6 +230,7 @@ if kernel !~ /MINGW.*/
 
   if kernel =~ /Linux/
     for exe in exes
+      puts "PARSING #{exe}"
       output=`ldd "#{exe}"`
       output.gsub!( /\(0x.*\)/, '' )
       files += output.split("\n")

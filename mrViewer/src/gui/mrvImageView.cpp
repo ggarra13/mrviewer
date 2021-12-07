@@ -154,6 +154,7 @@
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvImageView_shapes.h"
 
 
 #undef LOG
@@ -3120,12 +3121,15 @@ bool ImageView::should_update( mrv::media fg )
     if ( update && _playback != CMedia::kStopped ) {
 
 #ifdef FLTK_TIMEOUT_EVENT_BUG
+        int x = Fl::event_x();
         int y = Fl::event_y();
         if ( uiMain->uiMenuGroup->visible() )
             y -= uiMain->uiMenuGroup->h();
         if ( uiMain->uiTopBar->visible() )
             y -= uiMain->uiTopBar->h();
-        mouseMove( Fl::event_x(), y );
+        if ( uiMain->uiToolsGroup->visible() )
+            x -= uiMain->uiToolsGroup->w();
+        mouseMove( x, y );
 #else
         mouseMove( Fl::event_x(), Fl::event_y() );
 #endif
@@ -4075,10 +4079,18 @@ void ImageView::redo_draw()
         shapes.push_back( undo_shapes.back() );
         uiMain->uiPaint->uiUndoDraw->activate();
         uiMain->uiUndoDraw->activate();
+        uiMain->uiPaint->uiUndoDraw->redraw();
+        uiMain->uiUndoDraw->redraw();
         undo_shapes.pop_back();
+        if ( undo_shapes.empty() )
+        {
+            uiMain->uiPaint->uiRedoDraw->deactivate();
+            uiMain->uiRedoDraw->deactivate();
+        }
 
         send_network( "RedoDraw" );
         redraw();
+        timeline()->redraw();
     }
 }
 
@@ -4096,8 +4108,14 @@ void ImageView::undo_draw()
         uiMain->uiPaint->uiRedoDraw->activate();
         uiMain->uiRedoDraw->activate();
         shapes.pop_back();
+        if ( shapes.empty() )
+        {
+            uiMain->uiPaint->uiUndoDraw->deactivate();
+            uiMain->uiUndoDraw->deactivate();
+        }
         send_network( "UndoDraw" );
         redraw();
+        timeline()->redraw();
     }
 
 }
@@ -4392,6 +4410,9 @@ void ImageView::draw()
 
     if ( !(flags & kMouseDown) )
       {
+          // std::cerr << "flags " << flags << " "
+          //           << !(flags & kMouseDown ) <
+          //     < std::endl;
           if (  (_mode & kDraw) || (_mode & kErase) ||
                 (_mode & kCircle) || (_mode & kArrow ) )
             {
@@ -4413,11 +4434,9 @@ void ImageView::draw()
                 yf -= daw.y();
 
 
-                // float scale = Fl::screen_scale( window()->screen_num() );
+                //float scale = Fl::screen_scale( window()->screen_num() );
                 // xf *= scale;
                 // yf *= scale;
-                // std::cerr << "scale=" << scale << " xf,yf=" << xf << "," << yf
-                //           << std::endl;
 
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
@@ -5544,6 +5563,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode & kErase )
@@ -5557,6 +5577,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode & kArrow )
@@ -5570,6 +5591,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode == kText )
@@ -5583,6 +5605,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     else if ( _mode == kCircle )
@@ -5596,6 +5619,7 @@ void ImageView::leftMouseUp( int x, int y )
         else
         {
             send_network( s->send() );
+            timeline()->redraw();
         }
     }
     // else if ( _mode == kScrub || _mode == kMovePicture ||
@@ -7090,6 +7114,16 @@ int ImageView::keyDown(unsigned int rawkey)
         open_single_cb( this, browser() );
         return 1;
     }
+    else if ( kShapeFrameStepFwd.match(rawkey) )
+    {
+        next_shape_frame( this );
+        return 1;
+    }
+    else if ( kShapeFrameStepBack.match(rawkey) )
+    {
+        previous_shape_frame( this );
+        return 1;
+    }
     else if ( kDrawTemporaryMode.match( rawkey ) )
     {
         draw_mode( true );
@@ -8476,13 +8510,15 @@ int ImageView::handle(int event)
         }
         else
         {
-            if ( !presentation )
+            if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
+                                     _mode & kArrow || _mode & kCircle ) )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
-        if ( !presentation )
+        if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
+                                 _mode & kArrow || _mode & kCircle ) )
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
@@ -8505,7 +8541,8 @@ int ImageView::handle(int event)
         Y = Fl::event_y();
 
         cursor_counter = 0;
-        window()->cursor( FL_CURSOR_CROSS );
+        if ( presentation )
+            window()->cursor( FL_CURSOR_CROSS );
 
         if ( _wipe_dir != kNoWipe )
         {
@@ -8540,6 +8577,7 @@ int ImageView::handle(int event)
 
         lastX = X;
         lastY = Y;
+        redraw();
 
         return 1;
         break;

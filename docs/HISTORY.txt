@@ -1,3 +1,41 @@
+v6.0.2  - Made FLU file requester be case insensitive to extensions.
+	- Bug fixed crash when removing the last image of a reel.
+	- Fixed a problem when linking on Linux due to /usr/local/lib not
+	  being in the list of directories by default.
+	- Fixed ACES sRGB default using Output - sRGB.  Now it will more
+	  correctly default to Utility - sRGB - Texture.
+
+v6.0.1  - Changed rotations to be done thru ffmpeg filters instead of
+	  thru opengl.  This allows the images to be saved rotated.
+	- Added support for .gif movie saving.
+	- Fixed a Linux memory problem which would result in crashes with
+	  aligned memory.
+
+v6.0.0  - Bug fixed a bad Windows release.
+	- Bug fixed too much memory used on long reels with many images.
+	- Bug fixed thumbnail creation on EDL timeline when switching images.
+	- Updated RED3DSDK to v8.1.0.
+
+v5.9.9  - Fixed rotation of videos that have a matrix parameter.
+	- Made SHIFT+Left and SHIFT+Right not stop on the beginning/ending of
+	  a clip when multiple clips with annotations are loaded, but instead
+	  just jump to the following/previous annotation in the timeline.
+	- Made annotations show in full length of selected clip, not only in
+	  the first 5000 frames.
+	- Made cache line show in arbitrary length (preferences setting), not
+	  in first 5000 frames.
+	- Fixed some buttons not being mrv::Buttons.
+	- Fixed a crash when multi selecting images in the reel window and
+	  no images were clicked on.
+	- Improved new reel icon.
+
+v5.9.8  - Made lines of Reel window's elements reach the end of the browser.
+	- Added SHIFT+Left and SHIFT+Right to move from one annotation (drawing)
+	  frame to the next.
+	- Fixed saving of Circles in reel files (.reel).
+	- Fixed cursor in drawing tools not being shown and using the cross
+	  instead.
+
 v5.9.7  - Fixed color sheme on selection in reel window.
 
 v5.9.6  - Fixed W menu opening Waveform when ICC Profiles was selected.

@@ -1,4 +1,3 @@
-
 #ifndef mrvColorSchemes_h
 #define mrvColorSchemes_h
 
@@ -37,6 +36,7 @@ namespace mrv {
         void apply_colors( std::string name );
         void reload_theme( std::string name );
 
+        void debug();
     };
 
 }
