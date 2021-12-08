@@ -4016,11 +4016,7 @@ void ImageView::timeout()
         update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
-//#ifdef OSX
-//        Fl::add_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-//#else
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
-//#endif
     }
 
 
