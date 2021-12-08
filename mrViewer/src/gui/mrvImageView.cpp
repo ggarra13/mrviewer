@@ -4016,7 +4016,11 @@ void ImageView::timeout()
         update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
+//#ifdef OSX
+//        Fl::add_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+//#else
         Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
+//#endif
     }
 
 
@@ -10706,7 +10710,6 @@ void ImageView::play( const CMedia::Playback dir )
 
     playback( dir );
 
-    delete_timeout();
 
     double fps = uiMain->uiFPS->value();
 
@@ -10791,7 +10794,6 @@ void ImageView::stop()
     }
 
 
-    delete_timeout();
 
     playback( CMedia::kStopped );
 

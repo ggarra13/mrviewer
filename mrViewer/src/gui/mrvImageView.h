@@ -745,7 +745,7 @@ public:
 
     /// Start preload image caches
     void preload_cache_start();
-    
+
     bool preload_cache_full( CMedia* img );
 
     int64_t preload_frame() const {
@@ -797,7 +797,7 @@ public:
     void fill_menu( Fl_Menu_* menu );
 
     void restore_locale() const;
-    
+
     void clear_old();
 
 public:
@@ -966,7 +966,6 @@ protected:
     int           posX, posY;  //<- non-fullscreen window position
     int           sizeX, sizeY; //<- non-fullscreen window size
 
-    int           widthX, heightY; // <- size of opengl view
 
     double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
