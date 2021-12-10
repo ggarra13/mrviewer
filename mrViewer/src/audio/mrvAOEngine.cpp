@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   mrvWMMEngine.cpp
+ * @file   mrvAOEngine.cpp
  * @author gga
  * @date   Tue Jul 10 03:26:02 2007
  *
- * @brief  An Audio Engine using a basic interface and hiding the details.
+ * @brief  An Audio Engine using libao.
  *
  *
  */
@@ -58,7 +58,6 @@ AOEngine::AOEngine() :
     _audio_device(0),
     _volume( 1.0f ),
     _format( NULL ),
-    _device( NULL ),
     _options( NULL )
 {
     initialize();
@@ -144,9 +143,10 @@ bool AOEngine::initialize()
 
 bool AOEngine::shutdown()
 {
-    --_instances;
 
     close();
+
+    --_instances;
 
     if ( _instances == 0 )
     {
@@ -234,13 +234,13 @@ bool AOEngine::open( const unsigned channels,
             return false;
         }
 
-
         // ao_plugin_device_init( _device );
 
         // Store these for future round
         _audio_format = format;
         _channels = channels;
         _old_device_idx = _device_idx;
+        _device_list.push_back( _device );
 
         // All okay, enable device
         _enabled = true;
@@ -329,13 +329,20 @@ bool AOEngine::close()
 {
     if ( _device )
     {
-        int ok = ao_close( _device );
-        if ( ok == 0 )
+
+        if (_device_list.size() > 10 )
         {
-            LOG_ERROR( _("Error closing ao device") );
+            _device = _device_list.front();
+            _device_list.pop_front();
+
+            int ok = ao_close( _device );
+            if ( ok == 0 )
+            {
+                LOG_ERROR( _("Error closing ao device") );
+            }
+            _device = NULL;
         }
 
-        _device = NULL;
         _enabled = false;
         return true;
     }

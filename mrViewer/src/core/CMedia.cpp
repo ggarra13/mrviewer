@@ -923,8 +923,6 @@ CMedia::~CMedia()
 
     }
 
-    audio_shutdown();
-
     if ( forw_ctx )
     {
         swr_free( &forw_ctx );
@@ -933,6 +931,8 @@ CMedia::~CMedia()
 
     flush_audio();
 
+
+    audio_shutdown();
 
 
     av_free( _fileroot );
