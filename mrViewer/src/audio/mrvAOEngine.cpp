@@ -58,6 +58,7 @@ AOEngine::AOEngine() :
     _audio_device(0),
     _volume( 1.0f ),
     _format( NULL ),
+    _device( NULL ),
     _options( NULL )
 {
     initialize();
@@ -240,7 +241,6 @@ bool AOEngine::open( const unsigned channels,
         _audio_format = format;
         _channels = channels;
         _old_device_idx = _device_idx;
-        _device_list.push_back( _device );
 
         // All okay, enable device
         _enabled = true;
@@ -259,8 +259,6 @@ bool AOEngine::open( const unsigned channels,
 bool AOEngine::play( const char* d, const size_t size )
 {
 
-    if ( !_device) return false;
-    if ( !_enabled ) return true;
 
     int16_t* data = (int16_t*)d;
     if ( _volume < 0.99f )
@@ -304,11 +302,14 @@ bool AOEngine::play( const char* d, const size_t size )
         }
     }
 
+    if ( !_enabled ) return true;
+    if ( !_device) return false;
+
     int ok = ao_play( _device, (char*)data, size );
 
     if ( ok == 0 )
     {
-        LOG_ERROR( _("Error playing sample") );
+        LOG_ERROR( _("Error playing sample. ") << ao_error_text(errno) );
         close();
         return false;
     }
@@ -330,18 +331,13 @@ bool AOEngine::close()
     if ( _device )
     {
 
-        if (_device_list.size() > 10 )
+        int ok = ao_close( _device );
+        if ( ok == 0 )
         {
-            _device = _device_list.front();
-            _device_list.pop_front();
-
-            int ok = ao_close( _device );
-            if ( ok == 0 )
-            {
-                LOG_ERROR( _("Error closing ao device") );
-            }
-            _device = NULL;
+            LOG_ERROR( _("Error closing ao device. ")
+                       << ao_error_text(errno) );
         }
+        _device = NULL;
 
         _enabled = false;
         return true;

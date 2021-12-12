@@ -2011,6 +2011,10 @@ void ImageBrowser::save_session()
             {
                 set_timeline( first, last );
             }
+            else
+            {
+                t->redraw();
+            }
         }
 
         send_image( i );
@@ -3864,9 +3868,12 @@ void ImageBrowser::next_image()
 
     send_image( v );
 
-    if ( reel->edl )
+    CMedia* img = nullptr;
+    if ( m ) img = m->image();
+
+    if ( reel->edl && img )
     {
-        int64_t pos = m->position();
+        int64_t pos = m->position() - img->first_frame() + img->frame();
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4038,9 +4045,11 @@ void ImageBrowser::previous_image()
         set_timeline( first, last );
     }
 
-    if ( reel->edl )
+    CMedia* img = NULL;
+    if ( m ) img = m->image();
+    if ( reel->edl && img )
     {
-        int64_t pos = m->position();
+        int64_t pos = m->position() - img->first_frame() + img->frame();
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4318,6 +4327,20 @@ int ImageBrowser::mousePush( int x, int y )
         mrv::media m = e->media();
         assert0( m );
         view()->foreground( m );
+
+
+        CMedia* img = NULL;
+        if ( m ) img = m->image();
+        if ( reel->edl && img )
+        {
+            int64_t pos = m->position() - img->first_frame() + img->frame();
+            DBGM3( "seek to " << pos );
+            seek( pos );
+        }
+        else
+        {
+            seek( view()->frame() );
+        }
 
         if ( m == view()->background() )
         {
@@ -4689,11 +4712,14 @@ void ImageBrowser::match_tree_order()
 
     int idx = -1;
     Fl_Tree_Item* i;
+    int64_t pos = 1;
     for ( i = first(); i; i = next(i) )
     {
         mrv::Element* elem = (mrv::Element*) i->widget();
         if ( !elem ) continue;
         mrv::media m = elem->media();
+        m->position( pos );
+        pos += m->duration();
         r->images.push_back( m );
         if ( m == fg && m ) {
             idx = int( r->images.size() - 1 );
@@ -4707,7 +4733,10 @@ void ImageBrowser::match_tree_order()
     std::cerr << "\n\n";
     for ( unsigned j = 0; j < r->images.size(); ++j )
     {
-        std::cerr << r->images[j]->name();
+        const mrv::media& m = r->images[j];
+        std::cerr << m->name() << " "
+                  << m->image()->first_frame() << "-"
+                  << m->image()->last_frame();
         if ( j == value() ) std::cerr << " <----";
         std::cerr << "\n";
     }
@@ -4834,7 +4863,10 @@ void ImageBrowser::seek( const int64_t tframe )
     if ( play != CMedia::kStopped )
         view()->stop();
 
+    float v = view()->volume();
+    view()->volume(0);
     view()->frame( tframe );
+    view()->volume(v);
 
 
     mrv::Timeline* t = timeline();

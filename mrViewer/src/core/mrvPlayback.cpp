@@ -1324,8 +1324,7 @@ void video_thread( PlaybackData* data )
         frame += step;
     }
 
-    Mutex& mtx = img->video_mutex();
-    SCOPED_LOCK( mtx );
+    boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
 
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) barrier->notify_all();

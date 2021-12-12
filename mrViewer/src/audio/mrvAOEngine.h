@@ -95,7 +95,6 @@ protected:
 
     ao_sample_format* _format;
     ao_device*        _device;
-    std::deque<ao_device*>        _device_list;
     ao_option*        _options;
 
 protected:

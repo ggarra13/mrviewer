@@ -523,10 +523,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
         if ( !fg || strcmp( fg->image()->fileroot(), m->image()->fileroot() )
              != 0 )
         {
-            image = CMedia::guess_image( m->image()->fileroot() );
+            image = CMedia::guess_image( m->image()->fileroot(), NULL, 0, true );
             if ( !image ) return;
-            image->is_thumbnail(true);
-            image->audio_stream(-1);
             fg.reset( new mrv::gui::media( image ) );
         }
         else

@@ -115,8 +115,8 @@ void Element::make_thumbnail()
                      img->directory().c_str(),
                      name.c_str(),
                      w, h,
-                     img->start_frame(),
-                     img->end_frame(),
+                     img->first_frame(),
+                     img->last_frame(),
                      img->fps()
                 );
         }

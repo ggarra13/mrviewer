@@ -9745,7 +9745,8 @@ void ImageView::foreground( mrv::media fg )
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
             {
-                uiMain->uiVolume->value( engine->volume() );
+                _volume = engine->volume();
+                uiMain->uiVolume->value( _volume );
             }
         }
     }
