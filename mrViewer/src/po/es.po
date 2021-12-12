@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-11 21:33-0300\n"
+"POT-Creation-Date: 2021-12-11 23:32-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -4836,7 +4836,7 @@ msgstr " capas: "
 msgid " meta"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:5132
+#: gui/mrvImageBrowser.cpp:5136
 msgid " moved to frame "
 msgstr " para cuadro "
 
@@ -18949,7 +18949,7 @@ msgstr ""
 msgid "Cannot map \""
 msgstr "No puedo mapear \""
 
-#: audio/mrvAOEngine.cpp:189
+#: audio/mrvAOEngine.cpp:188
 msgid "Cannot open device"
 msgstr "No pude abrir el dispositivo de audio"
 
@@ -21231,7 +21231,7 @@ msgstr "Modo de Dibujo Temporario"
 msgid "Driver"
 msgstr "Driver"
 
-#: audio/mrvAOEngine.cpp:185
+#: audio/mrvAOEngine.cpp:184
 msgid "Driver is not a live output device"
 msgstr ""
 
@@ -21409,12 +21409,12 @@ msgstr "LDE"
 msgid "EDL\n"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:5036
+#: gui/mrvImageBrowser.cpp:5040
 #, c-format
 msgid "EDL 0"
 msgstr "Editar LDE"
 
-#: core/mrvServer.cpp:1227 gui/mrvImageBrowser.cpp:5075
+#: core/mrvServer.cpp:1227 gui/mrvImageBrowser.cpp:5079
 #, c-format
 msgid "EDL 1"
 msgstr "Editar LDE"
@@ -21614,7 +21614,7 @@ msgstr "Modo de Borrado Temporario"
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#: audio/mrvAOEngine.cpp:337
+#: audio/mrvAOEngine.cpp:336
 #, fuzzy
 msgid "Error closing ao device. "
 msgstr "Error cerrando dispositivo ao "
@@ -21643,11 +21643,11 @@ msgstr "Error en recibir: "
 msgid "Error on send: "
 msgstr "Error en mandar: "
 
-#: audio/mrvAOEngine.cpp:234
+#: audio/mrvAOEngine.cpp:233
 msgid "Error opening ao driver: "
 msgstr "Error abriendo dispositivo ao: "
 
-#: audio/mrvAOEngine.cpp:312
+#: audio/mrvAOEngine.cpp:311
 #, fuzzy
 msgid "Error playing sample. "
 msgstr "Error ejecutando sample"
@@ -24806,7 +24806,7 @@ msgstr ""
 msgid "L+\tc #AF9564"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:222
+#: audio/mrvAOEngine.cpp:221
 msgid "L,C,R,CL,CR,SL,SR,BL,BC,BR,LFE"
 msgstr ""
 
@@ -26365,7 +26365,7 @@ msgid "No driver"
 msgstr "Driver"
 
 #
-#: audio/mrvAOEngine.cpp:183
+#: audio/mrvAOEngine.cpp:182
 msgid "No driver for device id"
 msgstr "No driver para id de dispositivo"
 
@@ -32881,7 +32881,7 @@ msgid "Unknown audio bit depth "
 msgstr "Profundidad de bits de audio desconocida "
 
 #
-#: audio/mrvAOEngine.cpp:216
+#: audio/mrvAOEngine.cpp:215
 msgid "Unknown audio format.  Setting 32 bits"
 msgstr "Profundidad de bits de audio desconocida "
 
@@ -32936,7 +32936,7 @@ msgstr "Error desconocido retornado de ctlToLut"
 msgid "Unknown error."
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:192
+#: audio/mrvAOEngine.cpp:191
 msgid "Unknown failure"
 msgstr "Fallo desconocido"
 
@@ -33286,7 +33286,7 @@ msgstr "VR angulo"
 msgid "VRangle %g"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:187
+#: audio/mrvAOEngine.cpp:186
 msgid "Valid option key has invalid value"
 msgstr ""
 

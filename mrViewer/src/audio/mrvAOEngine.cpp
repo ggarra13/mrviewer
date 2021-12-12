@@ -166,7 +166,6 @@ float AOEngine::volume() const
 
 void AOEngine::volume( float v )
 {
-    if (!_device) return;
     _volume = v;
 }
 

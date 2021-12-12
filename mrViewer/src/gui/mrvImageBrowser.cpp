@@ -2021,9 +2021,9 @@ void ImageBrowser::save_session()
 
         CMedia* img = NULL;
         if ( m ) img = m->image();
-        if ( reel->edl && img )
+        if ( reel->edl )
         {
-            int64_t pos = m->position() - img->first_frame() + img->frame();
+            int64_t pos = m->position();
             DBGM3( "seek to " << pos );
             if ( !_loading ) seek( pos );
         }
@@ -4863,10 +4863,7 @@ void ImageBrowser::seek( const int64_t tframe )
     if ( play != CMedia::kStopped )
         view()->stop();
 
-    float v = view()->volume();
-    view()->volume(0);
     view()->frame( tframe );
-    view()->volume(v);
 
 
     mrv::Timeline* t = timeline();
