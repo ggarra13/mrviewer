@@ -3873,7 +3873,7 @@ void ImageBrowser::next_image()
 
     if ( reel->edl && img )
     {
-        int64_t pos = m->position() - img->first_frame() + img->frame();
+        int64_t pos = m->position();
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4049,7 +4049,7 @@ void ImageBrowser::previous_image()
     if ( m ) img = m->image();
     if ( reel->edl && img )
     {
-        int64_t pos = m->position() - img->first_frame() + img->frame();
+        int64_t pos = m->position();
         DBGM3( "seek to " << pos );
         seek( pos );
     }
