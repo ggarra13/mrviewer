@@ -4,6 +4,8 @@ v6.0.3  - Made reel window reflect the first and last frames of the media
 	  moved and not positioning them in the timeline correctly.
 	- Fixed timeline not reflecting the image picked in the reel window
 	  when in edl mode.
+	- Bug fixed windows v6.0.2 release as it was crashing.
+	- Fixed audio closing on ending of movie files.
 
 v6.0.2  - Made FLU file requester be case insensitive to extensions.
 	- Bug fixed crash when removing the last image of a reel.
