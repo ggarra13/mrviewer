@@ -91,7 +91,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-14 09:50-0300\n"
+"POT-Creation-Date: 2021-12-14 20:06-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -27182,6 +27182,11 @@ msgstr "Salida"
 msgid "Output - Rec.709"
 msgstr ""
 
+#: video/mrvGLLut3d.cpp:1291
+#, fuzzy
+msgid "Output - sRGB"
+msgstr "Salida"
+
 #: core/CMedia_audio.cpp:1108
 msgid "Output buffer size is too small for the current frame ("
 msgstr "El tamaño del buffer de salida es muy chico para este cuadro ("
@@ -33121,10 +33126,6 @@ msgstr ""
 #: video/mrvGLEngine.cpp:576
 msgid "Using hardware shader profile: "
 msgstr "Usando perfil de shader de hardware: "
-
-#: video/mrvGLLut3d.cpp:1291
-msgid "Utility - sRGB - Texture"
-msgstr ""
 
 #: core/exrImage.cpp:313 core/exrImage.cpp:1066 core/exrImage.cpp:1111
 #: core/exrImage.cpp:3394 gui/mrvColorInfo.cpp:834 gui/mrvColorInfo.cpp:865
