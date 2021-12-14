@@ -34,7 +34,6 @@
 #include <sstream>
 #include <fstream>
 
-#include <FL/fl_ask.H>
 #include <boost/thread/recursive_mutex.hpp>
 
 #include "core/mrvThread.h"

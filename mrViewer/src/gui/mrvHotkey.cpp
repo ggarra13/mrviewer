@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include <FL/Enumerations.H>
+#include <FL/fl_ask.H>
 
 #include "keyboard_ui.h"
 #include "mrViewer.h"
