@@ -1,3 +1,6 @@
+v6.0.4  - Fixed sequence detection for images like mozilla's thunderbird
+	  which would lead to a std::bad_alloc due to running out of memory.
+
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.
 	- Fixed reel window not sorting out images correctly when they were
