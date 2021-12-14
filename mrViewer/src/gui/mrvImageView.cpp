@@ -8078,8 +8078,10 @@ void ImageView::show_background( const bool b )
 
     void ImageView::show_bars( ViewerUI* uiMain, bool showtop )
     {
-        if ( has_tools_grp ) uiMain->uiToolsGroup->show();
-
+        if ( has_tools_grp ) {
+            uiMain->uiToolsGroup->size( 45, 433 );
+            uiMain->uiToolsGroup->show();
+        }
 
         int W = uiMain->uiRegion->w();
         int H = uiMain->uiRegion->h();
