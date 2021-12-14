@@ -192,9 +192,12 @@ bool picImage::test(const boost::uint8_t *data, unsigned len)
 {
     if (!data || len < 7) return false;
 
+
     uint32_t magic = ntohl(((uint32_t*)data)[0]);
     if(magic != 0x5380F634) // 'S' + 845-1636 (SI's phone no in LE :-)
         return false;
+
+
     return true;
 }
 

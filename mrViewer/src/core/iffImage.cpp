@@ -207,6 +207,7 @@ bool iffImage::test(const boost::uint8_t *data, unsigned len)
 {
     if (!data || len == 0 ) return false;
 
+
     iffChunk* header = (iffChunk*) data;
     if ( ntohl( header->tag ) != kIFF_MAGIC )
         return false;

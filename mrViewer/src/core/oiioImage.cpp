@@ -118,6 +118,7 @@ bool oiioImage::test(const char* file)
     if ( f.rfind(".psd") != std::string::npos )
         return false;
 
+
     std::unique_ptr<ImageInput> in = ImageInput::open( file );
     if(!in)
     {

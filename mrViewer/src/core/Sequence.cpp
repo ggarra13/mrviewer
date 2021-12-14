@@ -179,6 +179,7 @@ bool is_valid_frame_spec( std::string& framespec )
 
     framespec = framespec.substr(0, idx);
 
+
     return range_found;
 }
 
@@ -737,6 +738,11 @@ bool get_sequence_limits( boost::int64_t& frameStart,
                 frameStart = atoi( frames[0].c_str() );
                 frameEnd   = atoi( frames[1].c_str() );
 
+                if ( frameEnd < frameStart ) {
+                    frameEnd = frameStart = AV_NOPTS_VALUE;
+                    return false;
+                }
+
                 stringArray::iterator i = tokens.begin();
                 stringArray::iterator e = tokens.end();
                 fileroot = tokens[0];
@@ -757,6 +763,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
                         fileroot += *i;
                     }
                 }
+
 
                 return true;
             }
@@ -1128,8 +1135,16 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                         }
                     }
 
-                    sequences.push_back( LoadInfo( root, first, last,
-                                                   first, last ) );
+                    if ( last <= first )
+                    {
+                        sequences.push_back( LoadInfo( root ) );
+                    }
+                    else
+                    {
+                        sequences.push_back( LoadInfo( root, first, last,
+                                                       first, last ) );
+                    }
+
                 }
             }
             else
