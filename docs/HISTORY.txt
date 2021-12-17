@@ -1,3 +1,7 @@
+v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
+	  type in the regex. field will turn into a complex regex once a version
+	  switch happens.
+
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.
 	- Fixed reel window not sorting out images correctly when they were

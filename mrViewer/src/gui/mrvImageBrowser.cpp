@@ -3582,7 +3582,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     int64_t     num = 1;
 
     std::string suffix;
-
+    static std::string short_prefix;
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
     if ( prefix.empty() )
     {
@@ -3594,11 +3594,19 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
          (prefix[0] == '_' || prefix[0] == '.') &&
          (prefix[1] == 'v' || prefix[1] == 'V') )
     {
+        short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
                   (" replaced by complex regex.") );
         prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
-        prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
     }
+    else if ( prefix.size() < 5 )
+    {
+        short_prefix = prefix;
+        LOG_INFO( _("Regex ") << prefix <<
+                  (" replaced by complex regex.") );
+        prefix = "([\\w:/]*?[/._]*" + prefix + ")(\\d+)([%\\w\\d./]*)";
+    }
+    prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
 
     boost::regex expr;
     try
@@ -3664,7 +3672,8 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
             LOG_ERROR( _("No versioning in this clip.  "
                          "Please create an image or directory named with "
                          "a versioning string." ) );
-            LOG_ERROR( _("Example:  gizmo_v003.0001.exr") );
+
+            LOG_ERROR( _("Example:  gizmo") + short_prefix + N_("003.0001.exr") );
             return;
         }
 
