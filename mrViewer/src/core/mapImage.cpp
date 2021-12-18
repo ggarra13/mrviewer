@@ -54,6 +54,8 @@
 
 namespace {
 
+    static const char* kModule = "map";
+
 static const char* kLineOrders[] =
 {
     "Increasing Y",

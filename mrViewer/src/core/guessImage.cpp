@@ -110,8 +110,6 @@ CMedia* test_image( const char* name,
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
     {
-        // if ( is_seq && type->test == aviImage::test )
-        //     continue;
         if ( type->test )
         {
             if ( type->test( datas, size ) )
@@ -368,6 +366,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         image->is_thumbnail( is_thumbnail );
         image->is_left_eye( left );
 
+
         if ( is_seq )
         {
             image->sequence( root.c_str(), frame, lastFrame, false );
@@ -460,7 +459,7 @@ CMedia* CMedia::guess_image( const char* file,
     }
     catch( const std::exception& e )
     {
-            LOG_ERROR( "Exception " << e.what() );
+        LOG_ERROR( "Exception: " << e.what() );
     }
 
     if ( image )

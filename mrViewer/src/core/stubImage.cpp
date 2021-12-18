@@ -700,6 +700,7 @@ void stubImage::thread_exit()
 bool stubImage::test(const boost::uint8_t *data, unsigned num)
 {
     if ( num != 128 ) return false;
+    LOG_INFO( "stubimage" );
     return (strstr((char*) data, N_("ray") ) != 0);
 }
 

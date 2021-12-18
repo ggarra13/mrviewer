@@ -224,6 +224,7 @@ stringArray exrImage::valid_compressions() const
 bool exrImage::test(const boost::uint8_t *data, unsigned size )
 {
     if ( !data || size == 0 ) return false;
+
     if ( Imf::isImfMagic( (const char*)data ) ) return true;
     return false;
 }
