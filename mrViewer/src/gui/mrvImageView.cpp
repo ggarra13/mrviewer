@@ -4438,6 +4438,7 @@ void ImageView::draw()
                 // xf *= scale;
                 // yf *= scale;
 
+
                 _engine->draw_cursor( xf, yf, _mode );
                 window()->cursor(FL_CURSOR_NONE);
             }
@@ -4446,6 +4447,7 @@ void ImageView::draw()
                 if ( presentation )
                   {
                     ++cursor_counter;
+                    // Wait 5 seconds and hide cursor in presentation mode
                     if ( cursor_counter >= 24 * 5 )
                       {
                         cursor_counter = 0;
@@ -8524,6 +8526,8 @@ int ImageView::handle(int event)
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:
+        if ( !presentation )
+            window()->cursor( FL_CURSOR_DEFAULT );
         return 1;
     case FL_LEAVE:
         if ( !presentation )
