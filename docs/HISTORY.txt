@@ -3,6 +3,9 @@ v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	  switch happens.
 	- Fixed sequence detection for images like mozilla's thunderbird
 	  which would lead to a std::bad_alloc due to running out of memory.
+	- Reverted to Output - sRGB on ACES sRGB default when no 8/16 bits
+	  ocio lut is set.
+	- Made arrow cursor appear in tooldock bar when drawing.
 
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.
