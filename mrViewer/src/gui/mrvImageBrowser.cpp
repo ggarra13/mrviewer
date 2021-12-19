@@ -4718,7 +4718,8 @@ void ImageBrowser::match_tree_order()
         mrv::Element* elem = (mrv::Element*) i->widget();
         if ( !elem ) continue;
         mrv::media m = elem->media();
-        m->position( pos );
+        if ( m->position() < pos )
+            m->position( pos );
         pos += m->duration();
         r->images.push_back( m );
         if ( m == fg && m ) {
@@ -4735,8 +4736,8 @@ void ImageBrowser::match_tree_order()
     {
         const mrv::media& m = r->images[j];
         std::cerr << m->name() << " "
-                  << m->image()->first_frame() << "-"
-                  << m->image()->last_frame();
+                  << m->position() << "-"
+                  << m->position()+m->duration()-1;
         if ( j == value() ) std::cerr << " <----";
         std::cerr << "\n";
     }

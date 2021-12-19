@@ -166,12 +166,13 @@ int media_track::index_for( const std::string s )
     return -1;
 }
 
-int media_track::index_at( const boost::int64_t frame )
+int media_track::index_at( const int64_t frame )
 {
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) return -1;
 
-    return (int)reel->index( frame );
+    int idx = reel->index( frame );
+    return idx;
 }
 
 mrv::media media_track::media_at( const boost::int64_t frame )
@@ -192,16 +193,16 @@ mrv::media media_track::media_at( const boost::int64_t frame )
 
 // Insert a media in the track at a specific frame which will turn into an image
 // index
-void media_track::insert( const boost::int64_t frame, mrv::media m )
+int media_track::insert( const int64_t frame, mrv::media m )
 {
     int idx = index_at( frame );
-    if ( _reel_idx < 0 ) return;
+    if ( _reel_idx < 0 ) return -1;
 
     browser()->reel( _reel_idx );
     browser()->insert( idx, m );
     browser()->parent()->redraw();
     parent()->redraw();
-    return;
+    return idx;
 }
 
 // Remove a media from the track
@@ -255,7 +256,9 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
     {
         mrv::media fg = reel->images[i-1];
         boost::int64_t end = fg->position() + fg->duration() - 1;
-        reel->images[i]->position( end );
+        mrv::media m = reel->images[i];
+        if ( m->position() < end )
+            m->position( end );
     }
 
 
@@ -267,12 +270,14 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
     for (int i = int(idx)-1; i >= 0; --i )
     {
         boost::int64_t start = reel->images[i+1]->position();
-        mrv::media o = reel->images[i];
-        boost::int64_t ee = o->position() + o->duration() - 1;
-        boost::int64_t ss = o->position();
+        mrv::media m = reel->images[i];
+        boost::int64_t ee = m->position() + m->duration() - 1;
+        boost::int64_t ss = m->position();
 
         // Shift indexes of position
-        reel->images[i]->position( start - (ee - ss ) );
+        int64_t pos = start - (ee - ss );
+        if ( m->position() > pos )
+            m->position( pos );
     }
 
     return;
@@ -369,12 +374,14 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
     for (int i = int(idx)-1; i >= 0; --i )
     {
         boost::int64_t start = reel->images[i+1]->position();
-        mrv::media o = reel->images[i];
-        boost::int64_t ee = o->position() + o->duration() - 1;
-        boost::int64_t ss = o->position();
+        mrv::media m = reel->images[i];
+        boost::int64_t ee = m->position() + m->duration() - 1;
+        boost::int64_t ss = m->position();
 
         // Shift indexes of position
-        o->position( start - (ee - ss ) );
+        int64_t pos = start - (ee - ss );
+        if ( m->position() > pos )
+            m->position( pos );
     }
 
 
@@ -484,11 +491,15 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
     // Shift medias that come after
     for ( ; i < e-1; ++i )
     {
-        boost::int64_t start = reel->images[i]->position();
-        boost::int64_t ee = reel->images[i]->duration();
+        const mrv::media m = reel->images[i];
+        boost::int64_t start = m->position();
+        boost::int64_t ee = m->duration();
 
         // Shift indexes of position
-        reel->images[i+1]->position(start + ee );
+        int64_t pos = start + ee;
+        const mrv::media o = reel->images[i+1];
+        if ( o->position() < pos )
+            o->position( pos );
     }
     timeline()->redraw();
     redraw();

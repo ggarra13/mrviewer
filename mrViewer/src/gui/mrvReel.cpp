@@ -84,35 +84,26 @@ size_t Reel_t::index( const CMedia* const img ) const
  *
  * @return index of image in reel list or std::
  */
-size_t Reel_t::index( const int64_t f ) const
+int Reel_t::index( const int64_t f ) const
 {
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
-    if ( i == e ) return std::numeric_limits<size_t>::max();
+    if ( i == e ) {
+        return std::numeric_limits<int>::min();
+    }
 
-    mrv::media fg = images.front();
-    int64_t mn = fg->position();
 
-
-    fg = images.back();
-    int64_t mx = fg->position() + fg->duration() - 1;
-
-    if ( f < mn || f > mx ) return std::numeric_limits<size_t>::max();
-
-    int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
         const mrv::media m = *i;
-        CMedia* img = m->image();
         int64_t start = m->position();
-        int64_t end = start + img->duration();
+        int64_t end = start + m->duration();
         if ( f >= start && f < end )
             break;
     }
 
-    if ( r >= images.size() ) r = std::numeric_limits<size_t>::max();
 
     return r;
 

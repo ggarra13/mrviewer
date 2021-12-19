@@ -541,21 +541,9 @@ int EDLGroup::handle( int event )
 
             if ( t1 == t2 )
             {
-
-                if ( pt < m->position() )
-                {
-
-                    t1->remove( m );
-                    t1->insert( pt, m );
-                    t1->refresh();
-                }
-                else
-                {
-
-                    t1->insert( pt, m );
-                    t1->remove( m );
-                    t1->refresh();
-                }
+                t1->remove( m );
+                t1->insert( pt, m );
+                t1->refresh();
 
 
                 browser()->reel( r->name.c_str() );

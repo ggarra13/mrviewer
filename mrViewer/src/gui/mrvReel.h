@@ -53,7 +53,7 @@ struct Reel_t
     uint64_t duration() const;
 
     size_t index( const CMedia* const img ) const;
-    size_t index( const int64_t frame ) const;
+    int index( const int64_t frame ) const;
 
     // Given a frame in the timeline, return the local frame for the image
     // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
