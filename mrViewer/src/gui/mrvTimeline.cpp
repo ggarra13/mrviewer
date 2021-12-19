@@ -698,11 +698,10 @@ void Timeline::draw()
 
         // If minimum less than 0, start boxes later
         uint64_t size = 0;
-        uint64_t frame = 1;
         int rx = r.x() + int(slider_size()-1)/2;
 
         CMedia* img = NULL;
-        for ( ; i != e; frame += size, ++i )
+        for ( ; i != e; ++i )
         {
             int64_t pos = (*i)->position();
             img = (*i)->image();
@@ -711,15 +710,15 @@ void Timeline::draw()
 
 
             // skip this block if outside visible timeline span
-            if ( frame + size < mn || frame > mx ) continue;
+            if ( pos + size < mn || pos > mx ) continue;
 
-            int  dx = slider_position( double(frame),      ww );
-            int end = slider_position( double(frame+size), ww );
+            int  dx = slider_position( double(pos),      ww );
+            int end = slider_position( double(pos+size), ww );
 
             mrv::Recti lr( rx+dx, r.y(), end-dx, r.h() );
 
             // Draw a block
-            if ( v >= frame && v < frame + size )
+            if ( v >= pos && v < pos + size )
             {
                 fl_color( fl_darker( FL_YELLOW ) );
             }
@@ -739,11 +738,10 @@ void Timeline::draw()
             draw_selection(r);
         }
 
-        frame = 1;
         unsigned idx = 0;
         mrv::media fg = browser()->current_image();
 
-        for ( i = reel->images.begin(); i != e; frame += size, ++i )
+        for ( i = reel->images.begin(); i != e; ++i )
         {
             CMedia* img = (*i)->image();
 
@@ -752,13 +750,13 @@ void Timeline::draw()
 
 
             // skip this block if outside visible timeline span
-            if ( frame + size < mn || frame > mx ) continue;
+            if ( pos + size < mn || pos > mx ) continue;
 
             if ( _draw_cache && (*i) == fg )
             {
                 draw_cacheline( img, pos, size, int64_t(mn),
                                 int64_t(mx),
-                                frame, r );
+                                pos, r );
             }
 
 
@@ -781,7 +779,7 @@ void Timeline::draw()
                 }
             }
 
-            int dx = rx + slider_position( double(frame), ww );
+            int dx = rx + slider_position( double(pos), ww );
 
             fl_color( FL_BLUE );
             fl_line_style( FL_SOLID, 3 );
