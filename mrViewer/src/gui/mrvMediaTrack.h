@@ -61,8 +61,8 @@ public:
     // Add a media at a certain frame (or append to end by default)
     void add( mrv::media m, boost::int64_t frame = AV_NOPTS_VALUE );
 
-    // Replace a media at a certain frame.
-    void insert( const boost::int64_t frame, mrv::media m );
+    // Replace a media at a certain frame.  Returns index of new media.
+    int insert( const int64_t frame, mrv::media m );
 
     // Return an image index for a frame or -1 if no image found
     int index_at( const boost::int64_t frame );
