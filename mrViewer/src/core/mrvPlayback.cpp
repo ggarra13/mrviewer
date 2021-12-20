@@ -261,30 +261,23 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
 
     // std::cerr << "check loop reel " << reel->name << std::endl;
+    bool gap = false;
+    CMedia* rimg = NULL;
     if ( reel->edl )
     {
         CMedia::Mutex& m = img->video_mutex();
         SCOPED_LOCK( m );
 
-        bool gap;
-        img = reel->image_at( frame, gap );
+        first = reel->location(img);
+        last  = first + img->duration() - 1;
 
-        if ( img && !gap )
-        {
-            first = reel->location(img);
-            last  = first + img->duration() - 1;
+        rimg = reel->image_at( frame, gap );
 
-            if ( mx < last )  last = mx;
-            if ( mn > first ) first = mn;
+        if ( mx < last )  last = mx;
+        if ( mn > first ) first = mn;
 
-            last = reel->global_to_local( last );
-            first = reel->global_to_local( first );
-        }
-        else
-        {
-            first = mn;
-            last = mx;
-        }
+        last = reel->global_to_local( last );
+        first = reel->global_to_local( first );
     }
     else
     {
@@ -303,12 +296,11 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
 
 
-
-    if ( frame > last )
+    if ( !gap && frame > last )
     {
         return CMedia::kDecodeLoopEnd;
     }
-    else if ( frame < first )
+    else if ( !gap && frame < first )
     {
         return CMedia::kDecodeLoopStart;
     }

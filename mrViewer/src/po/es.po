@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-19 20:57-0300\n"
+"POT-Creation-Date: 2021-12-19 23:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3622,7 +3622,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:1480
 msgid "  dts: "
 msgstr ""
 
@@ -3637,7 +3637,7 @@ msgid "  if (abs(diff) > frame_num * %d) {\n"
 msgstr ""
 
 #
-#: core/mrvPlayback.cpp:1353
+#: core/mrvPlayback.cpp:1345
 msgid "  img->frame: "
 msgstr " cuadro "
 
@@ -3937,11 +3937,11 @@ msgstr ""
 msgid " - "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1129
+#: core/mrvPlayback.cpp:1121
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:758
+#: core/mrvPlayback.cpp:750
 msgid " - decode Error audio frame "
 msgstr " - error de decodificacion del cuadro de audio "
 
@@ -4287,27 +4287,27 @@ msgstr ""
 msgid " A: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1260
+#: core/mrvPlayback.cpp:1252
 msgid " AC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:832
+#: core/mrvPlayback.cpp:824
 msgid " AUDIO LOOP END/START HAS FRAME "
 msgstr ""
 
-#: core/mrvPlayback.cpp:714 core/mrvPlayback.cpp:892
+#: core/mrvPlayback.cpp:706 core/mrvPlayback.cpp:884
 msgid " AUDIO THREAD "
 msgstr ""
 
-#: core/mrvPlayback.cpp:783
+#: core/mrvPlayback.cpp:775
 msgid " BARRIER IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:791
+#: core/mrvPlayback.cpp:783
 msgid " BARRIER PASSED IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1191
+#: core/mrvPlayback.cpp:1183
 msgid " BARRIER PASSED IN VIDEO stopped? "
 msgstr ""
 
@@ -4331,7 +4331,7 @@ msgstr " No pude abrir el archivo. "
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1400 core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:1392 core/mrvPlayback.cpp:1480
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -4344,7 +4344,7 @@ msgstr ""
 msgid " E: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1261
+#: core/mrvPlayback.cpp:1253
 msgid " EC: "
 msgstr ""
 
@@ -4395,7 +4395,7 @@ msgstr ""
 msgid " IS EXPECTED "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1259
+#: core/mrvPlayback.cpp:1251
 msgid " MC: "
 msgstr ""
 
@@ -4424,7 +4424,7 @@ msgstr ""
 msgid " Scrub"
 msgstr " Fregar"
 
-#: core/mrvPlayback.cpp:1204
+#: core/mrvPlayback.cpp:1196
 msgid " Stopped? "
 msgstr ""
 
@@ -4446,15 +4446,15 @@ msgstr ""
 msgid " V: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1258
+#: core/mrvPlayback.cpp:1250
 msgid " VC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1196
+#: core/mrvPlayback.cpp:1188
 msgid " VIDEO LOOP frame: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1097 core/mrvPlayback.cpp:1351
+#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1343
 msgid " VIDEO THREAD "
 msgstr ""
 
@@ -4507,12 +4507,12 @@ msgstr ""
 msgid " as default"
 msgstr " por defecto"
 
-#: core/mrvPlayback.cpp:1353
+#: core/mrvPlayback.cpp:1345
 msgid " at "
 msgstr " en el puerto "
 
 #
-#: core/mrvPlayback.cpp:1401
+#: core/mrvPlayback.cpp:1393
 msgid " at frame "
 msgstr " cuadro "
 
@@ -4611,7 +4611,7 @@ msgstr ""
 msgid " encoding"
 msgstr " codificando"
 
-#: core/mrvPlayback.cpp:1203
+#: core/mrvPlayback.cpp:1195
 msgid " end: "
 msgstr ""
 
@@ -4700,8 +4700,8 @@ msgid " frame"
 msgstr " cuadro"
 
 #
-#: core/aviImage.cpp:1196 core/mrvPlayback.cpp:714 core/mrvPlayback.cpp:892
-#: core/mrvPlayback.cpp:1098 core/mrvPlayback.cpp:1488
+#: core/aviImage.cpp:1196 core/mrvPlayback.cpp:706 core/mrvPlayback.cpp:884
+#: core/mrvPlayback.cpp:1090 core/mrvPlayback.cpp:1480
 #: video/mrvGLEngine.cpp:1851
 msgid " frame "
 msgstr " cuadro "
@@ -4711,7 +4711,7 @@ msgid " frame offset: "
 msgstr " dif. de cuadro: "
 
 #
-#: core/mrvPlayback.cpp:1192
+#: core/mrvPlayback.cpp:1184
 msgid " frame: "
 msgstr " cuadro "
 
@@ -4901,7 +4901,7 @@ msgstr ""
 msgid " result ? "
 msgstr ""
 
-#: core/exrImage.cpp:3498 core/mrvPlayback.cpp:1130
+#: core/exrImage.cpp:3498 core/mrvPlayback.cpp:1122
 msgid " returned "
 msgstr " retornó "
 
@@ -4916,10 +4916,6 @@ msgstr ""
 #: core/aviImage_save.cpp:1384
 msgid " selected"
 msgstr " esperado: "
-
-#: gui/mrvMediaTrack.cpp:533
-msgid " set to frame "
-msgstr " para cuadro "
 
 #: gui/mrvFileRequester.cpp:1040 gui/mrvFileRequester.cpp:1230
 msgid " shift"
@@ -4947,14 +4943,14 @@ msgstr " comienzo "
 msgid " status: "
 msgstr " estatus: "
 
-#: core/mrvPlayback.cpp:1402
+#: core/mrvPlayback.cpp:1394
 msgid " step "
 msgstr " paso "
 
-#: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/mrvPlayback.cpp:714
-#: core/mrvPlayback.cpp:892 core/mrvPlayback.cpp:996 core/mrvPlayback.cpp:1097
-#: core/mrvPlayback.cpp:1352 core/mrvPlayback.cpp:1400
-#: core/mrvPlayback.cpp:1488
+#: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/mrvPlayback.cpp:706
+#: core/mrvPlayback.cpp:884 core/mrvPlayback.cpp:988 core/mrvPlayback.cpp:1089
+#: core/mrvPlayback.cpp:1344 core/mrvPlayback.cpp:1392
+#: core/mrvPlayback.cpp:1480
 msgid " stopped? "
 msgstr " detenido? "
 
@@ -5023,8 +5019,8 @@ msgid " video stores  #"
 msgstr "Pista de video inválido "
 
 #
-#: core/mrvPlayback.cpp:1097 core/mrvPlayback.cpp:1353
-#: core/mrvPlayback.cpp:1400 core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1345
+#: core/mrvPlayback.cpp:1392 core/mrvPlayback.cpp:1480
 msgid " view playback "
 msgstr "Detener Playback."
 
@@ -18273,9 +18269,9 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:989
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1549
-#: core/mrvPlayback.cpp:714 core/mrvPlayback.cpp:892 core/mrvPlayback.cpp:1097
-#: core/mrvPlayback.cpp:1351 core/mrvPlayback.cpp:1400
-#: core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:706 core/mrvPlayback.cpp:884 core/mrvPlayback.cpp:1089
+#: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1392
+#: core/mrvPlayback.cpp:1480
 msgid "BG"
 msgstr "FD"
 
@@ -18380,7 +18376,7 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:1070
+#: core/mrvPlayback.cpp:1062
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
@@ -18388,7 +18384,7 @@ msgstr ""
 "funcionar correctamente."
 
 #
-#: core/mrvPlayback.cpp:1077
+#: core/mrvPlayback.cpp:1069
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -18397,13 +18393,13 @@ msgstr ""
 "Los cps de la imagen de fondo ( %lg ) no es igual a la del frente ( %lg ). "
 "Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:1054
+#: core/mrvPlayback.cpp:1046
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
 "correctamente."
 
-#: core/mrvPlayback.cpp:1044
+#: core/mrvPlayback.cpp:1036
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -19814,7 +19810,7 @@ msgid "Could not find four integers for box "
 msgstr "No pude encontrar cuatro enteros para la caja "
 
 #
-#: core/mrvPlayback.cpp:1320
+#: core/mrvPlayback.cpp:1312
 msgid "Could not find image "
 msgstr "No pude encontrar imagen "
 
@@ -21459,11 +21455,11 @@ msgstr ""
 msgid "END"
 msgstr "ROJO"
 
-#: core/mrvPlayback.cpp:714 core/mrvPlayback.cpp:1097 core/mrvPlayback.cpp:1400
+#: core/mrvPlayback.cpp:706 core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1392
 msgid "ENTER "
 msgstr ""
 
-#: core/mrvPlayback.cpp:937
+#: core/mrvPlayback.cpp:929
 msgid "ENTER SUBTITLE THREAD "
 msgstr ""
 
@@ -21475,15 +21471,15 @@ msgstr ""
 msgid "EXAN, Ltd."
 msgstr ""
 
-#: core/mrvPlayback.cpp:892
+#: core/mrvPlayback.cpp:884
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1351 core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1480
 msgid "EXIT  "
 msgstr ""
 
-#: core/mrvPlayback.cpp:995
+#: core/mrvPlayback.cpp:987
 msgid "EXIT  SUBTITLE THREAD "
 msgstr ""
 
@@ -22001,9 +21997,9 @@ msgstr ""
 msgid "FFMPEG"
 msgstr ""
 
-#: core/mrvPlayback.cpp:714 core/mrvPlayback.cpp:892 core/mrvPlayback.cpp:1097
-#: core/mrvPlayback.cpp:1351 core/mrvPlayback.cpp:1400
-#: core/mrvPlayback.cpp:1488
+#: core/mrvPlayback.cpp:706 core/mrvPlayback.cpp:884 core/mrvPlayback.cpp:1089
+#: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1392
+#: core/mrvPlayback.cpp:1480
 msgid "FG"
 msgstr "C"
 
@@ -44613,6 +44609,9 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:688
 msgid "~/"
 msgstr ""
+
+#~ msgid " set to frame "
+#~ msgstr " para cuadro "
 
 #~ msgid "Exception "
 #~ msgstr "Excepción "

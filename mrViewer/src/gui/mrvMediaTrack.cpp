@@ -530,8 +530,8 @@ void media_track::refresh()
         for ( j = i, ++i; i != end; j = i, ++i )
         {
             int64_t frame = (*j)->position() + (*j)->duration();
-            DBGM3( (*i)->image()->name() << " set to frame " << frame );
-            (*i)->position( frame );
+            if ( (*i)->position() < frame )
+                (*i)->position( frame );
         }
     }
 
