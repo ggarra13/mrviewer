@@ -4727,7 +4727,7 @@ void ImageBrowser::match_tree_order()
         mrv::Element* elem = (mrv::Element*) i->widget();
         if ( !elem ) continue;
         mrv::media m = elem->media();
-        if ( m->position() < pos )
+        if ( m->position() > pos )
             m->position( pos );
         pos += m->duration();
         r->images.push_back( m );
