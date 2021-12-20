@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-19 23:37-0300\n"
+"POT-Creation-Date: 2021-12-20 07:14-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -4679,7 +4679,7 @@ msgstr " para cuadro "
 msgid " for gamma_curve"
 msgstr ""
 
-#: gui/mrvReel.cpp:204 gui/mrvReel.cpp:217
+#: gui/mrvReel.cpp:193
 msgid " for reel "
 msgstr " para carrete "
 
@@ -24308,7 +24308,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid device selected"
 msgstr "Pista de video inválido "
 
-#: gui/mrvReel.cpp:216
+#: gui/mrvReel.cpp:192
 msgid "Invalid image "
 msgstr "Índice inválido "
 
@@ -24344,11 +24344,6 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 #: video/mrvGLLut3d.cpp:868
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
-
-#
-#: gui/mrvReel.cpp:203
-msgid "Invalid stereo image "
-msgstr "Imagen estéreo inválida "
 
 #
 #: core/CMedia_audio.cpp:802 core/CMedia_audio.cpp:814
@@ -44609,6 +44604,10 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:688
 msgid "~/"
 msgstr ""
+
+#
+#~ msgid "Invalid stereo image "
+#~ msgstr "Imagen estéreo inválida "
 
 #~ msgid " set to frame "
 #~ msgstr " para cuadro "

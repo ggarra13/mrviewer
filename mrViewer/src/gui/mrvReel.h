@@ -67,7 +67,7 @@ struct Reel_t
     int64_t offset( const CMedia* const img ) const;
     inline int64_t location( const CMedia* const img ) const
     {
-        return offset( img ) + 1;
+        return offset( img );
     }
 
     int64_t minimum() const;

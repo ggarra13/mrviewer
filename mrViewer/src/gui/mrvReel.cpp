@@ -186,35 +186,40 @@ int64_t Reel_t::offset( const CMedia* const img ) const
 
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
-    uint64_t t = 0;
+    int64_t t = 0;
+
+    if ( i == e ) {
+        LOG_ERROR( _("Invalid image ") << img->name()
+                   << _(" for reel " ) << name );
+        return t;
+    }
 
     if ( img->is_stereo() && ! img->is_left_eye() )
     {
-        for ( ; i != e && (*i)->image()->right_eye() != img; ++i )
+        CMedia* timg = (*i)->image()->right_eye();
+        for ( ; i != e && timg != img; ++i )
         {
-            CMedia* timg = (*i)->image()->right_eye();
-            assert( timg != NULL );
-            if ( timg )
-                t += timg->duration();
-            else
-                t += (*i)->image()->duration();
+            timg = (*i)->image()->right_eye();
         }
 
-        if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
-                                 << _(" for reel ") << name );
+        if ( timg )
+            t = timg->position();
+        else
+            t = (*i)->image()->position();
 
         return t;
     }
 
-    for ( ; i != e && (*i)->image() != img; ++i )
+    CMedia* timg = (*i)->image();
+    for ( ; i != e && timg != img; ++i )
     {
-        CMedia* timg = (*i)->image();
-        assert( timg != NULL );
-
-        t += timg->duration();
+        timg = (*i)->image();
     }
-    if ( i == e ) LOG_ERROR( _("Invalid image ") << img->name()
-                             << _(" for reel " ) << name );
+
+    assert( timg != NULL );
+
+    t = timg->position();
+
     return t;
 }
 
