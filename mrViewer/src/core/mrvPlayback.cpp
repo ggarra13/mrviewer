@@ -295,7 +295,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         }
     }
 
-
     if ( !gap && frame > last )
     {
         return CMedia::kDecodeLoopEnd;
@@ -1470,7 +1469,17 @@ void decode_thread( PlaybackData* data )
 
         if ( img->has_video() || img->has_audio() )
         {
+            int64_t old = frame;
+            CMedia::Playback play = img->playback();
             frame = img->dts();
+            if ( play == CMedia::kForwards && old > frame )
+            {
+                frame = old;
+            }
+            else if ( play == CMedia::kBackwards && old < frame )
+            {
+                frame = old;
+            }
         }
 
 
