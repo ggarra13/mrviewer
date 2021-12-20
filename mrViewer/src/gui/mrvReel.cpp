@@ -110,7 +110,7 @@ int Reel_t::index( const int64_t f ) const
 }
 
 
-mrv::media Reel_t::media_at( const int64_t f ) const
+    mrv::media Reel_t::media_at( const int64_t f, bool& gap ) const
 {
     if ( images.empty() ) return mrv::media();
 
@@ -131,7 +131,9 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     //     return mrv::media();
     // }
 
+    gap = false;
     size_t r = 0;
+    int64_t last = 1;
     for ( ; i != e; ++i, ++r )
     {
         const mrv::media m = *i;
@@ -139,10 +141,10 @@ mrv::media Reel_t::media_at( const int64_t f ) const
 
         int64_t start = m->position();
         int64_t end = start + m->duration();
-        // std::cerr << r << ") " << m->name() << " " << f << " >= "
-        //           << start << " && " << f << " < "
-        //           << end << std::endl;
         if ( f >= start && f < end ) break;
+        if ( last < start )
+            gap = true;
+        last = end;
     }
 
     if ( r >= images.size() ) {

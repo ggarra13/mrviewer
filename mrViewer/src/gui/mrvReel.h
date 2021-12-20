@@ -42,10 +42,15 @@ struct Reel_t
     Reel_t( const char* n ) : edl(false), name( n ) {}
     ~Reel_t() {}
 
-    mrv::media media_at( const int64_t f ) const;
-    inline CMedia* image_at( const int64_t f ) const
+    mrv::media media_at( const int64_t f, bool& gap ) const;
+    mrv::media media_at( const int64_t f )
+        {
+            bool gap;
+            return media_at( f, gap );
+        }
+    inline CMedia* image_at( const int64_t f, bool& gap ) const
     {
-        mrv::media m = media_at( f );
+        mrv::media m = media_at( f, gap );
         if (!m) return NULL;
         return m->image();
     }

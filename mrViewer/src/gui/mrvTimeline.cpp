@@ -920,7 +920,8 @@ mrv::media Timeline::media_at( const int64_t f ) const
     mrv::Reel reel = browser()->current_reel();
     if (!reel) return mrv::media();
 
-    return reel->media_at( f );
+    bool gap;
+    return reel->media_at( f, gap );
 }
 
 CMedia* Timeline::image_at( const int64_t f ) const

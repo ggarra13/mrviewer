@@ -4907,7 +4907,8 @@ void ImageBrowser::seek( const int64_t tframe )
         {
 
             size_t i = reel->index( f );
-            img = reel->image_at( f );
+            bool gap;
+            img = reel->image_at( f, gap );
             int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
 
