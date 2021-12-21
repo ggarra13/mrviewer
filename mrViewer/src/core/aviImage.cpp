@@ -3489,9 +3489,9 @@ bool aviImage::frame( const int64_t f )
 
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
-            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
+            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE )  ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
-            ( vpkts > kMIN_FRAMES || !has_video() ) )) )
+          ( vpkts > kMIN_FRAMES || !has_video() ) ) ) )
     {
         return false;
     }

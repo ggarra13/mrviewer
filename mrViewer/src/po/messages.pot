@@ -96,7 +96,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-20 19:39-0300\n"
+"POT-Creation-Date: 2021-12-20 23:54-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3615,7 +3615,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "  dts: "
 msgstr ""
 
@@ -4321,7 +4321,7 @@ msgstr ""
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -4672,7 +4672,7 @@ msgid " frame"
 msgstr ""
 
 #: core/aviImage.cpp:1196 core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883
-#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1490
 #: video/mrvGLEngine.cpp:1851
 msgid " frame "
 msgstr ""
@@ -4908,7 +4908,7 @@ msgstr ""
 #: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/mrvPlayback.cpp:705
 #: core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:987 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid " stopped? "
 msgstr ""
 
@@ -4977,7 +4977,7 @@ msgid " video stores  #"
 msgstr ""
 
 #: core/mrvPlayback.cpp:1088 core/mrvPlayback.cpp:1344
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
 msgid " view playback "
 msgstr ""
 
@@ -18121,7 +18121,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1549
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "BG"
 msgstr ""
 
@@ -21139,7 +21139,7 @@ msgstr ""
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1490
 msgid "EXIT  "
 msgstr ""
 
@@ -21645,7 +21645,7 @@ msgstr ""
 
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "FG"
 msgstr ""
 
@@ -37052,6 +37052,10 @@ msgstr ""
 
 #: core/R3dImage.cpp:408
 msgid "format s32be, frequency "
+msgstr ""
+
+#: core/mrvPlayback.cpp:1477
+msgid "forwards "
 msgstr ""
 
 #: core/mrvCPU.cpp:760

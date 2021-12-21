@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-20 19:39-0300\n"
+"POT-Creation-Date: 2021-12-20 23:49-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3622,7 +3622,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "  dts: "
 msgstr ""
 
@@ -4331,7 +4331,7 @@ msgstr " No pude abrir el archivo. "
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -4701,7 +4701,7 @@ msgstr " cuadro"
 
 #
 #: core/aviImage.cpp:1196 core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883
-#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1490
 #: video/mrvGLEngine.cpp:1851
 msgid " frame "
 msgstr " cuadro "
@@ -4950,7 +4950,7 @@ msgstr " paso "
 #: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/mrvPlayback.cpp:705
 #: core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:987 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid " stopped? "
 msgstr " detenido? "
 
@@ -5020,7 +5020,7 @@ msgstr "Pista de video inválido "
 
 #
 #: core/mrvPlayback.cpp:1088 core/mrvPlayback.cpp:1344
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
 msgid " view playback "
 msgstr "Detener Playback."
 
@@ -18271,7 +18271,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1549
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "BG"
 msgstr "FD"
 
@@ -21475,7 +21475,7 @@ msgstr ""
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1490
 msgid "EXIT  "
 msgstr ""
 
@@ -21999,7 +21999,7 @@ msgstr ""
 
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1489
+#: core/mrvPlayback.cpp:1490
 msgid "FG"
 msgstr "C"
 
@@ -38203,6 +38203,11 @@ msgstr "formato s24le"
 msgid "format s32be, frequency "
 msgstr "formato s32be, frecuencia "
 
+#: core/mrvPlayback.cpp:1477
+#, fuzzy
+msgid "forwards "
+msgstr "Reproducir para Adelante"
+
 #: core/mrvCPU.cpp:760
 msgid "found"
 msgstr " no encontrado"
@@ -44979,10 +44984,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "stop video  seek "
 #~ msgstr "Pista de video inválido "
-
-#, fuzzy
-#~ msgid "play forwards stop"
-#~ msgstr "Reproducir para Adelante"
 
 #, fuzzy
 #~ msgid "**** fetch sequence "

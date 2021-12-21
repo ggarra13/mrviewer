@@ -1208,7 +1208,7 @@ void video_thread( PlaybackData* data )
             continue;
         }
         case CMedia::kDecodeMissingFrame:
-            img->decode_eof( frame );
+            // img->decode_eof( frame );
             break;
         case CMedia::kDecodeBufferFull:
         default:
@@ -1474,6 +1474,7 @@ void decode_thread( PlaybackData* data )
             frame = img->dts();
             if ( play == CMedia::kForwards && old > frame )
             {
+                std::cerr << "forwards " << old << std::endl;
                 frame = old;
             }
             else if ( play == CMedia::kBackwards && old < frame )
