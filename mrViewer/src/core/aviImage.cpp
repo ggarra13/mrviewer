@@ -3499,8 +3499,12 @@ bool aviImage::frame( const int64_t f )
 
 
 
-    if ( f < _frameStart )    _dts = _adts = _frameStart;
-    else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
+    // if ( f < _frameStart )    {
+    //     _dts = _adts = _expected = _expected_audio = _frameStart;
+    // }
+    // else if ( f > _frameEnd ) {
+    //     _dts = _adts = _expected = _expected_audio = _frameEnd;
+    // }
 
 
     timeval now;

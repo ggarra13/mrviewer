@@ -257,8 +257,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
         mrv::media fg = reel->images[i-1];
         boost::int64_t end = fg->position() + fg->duration() - 1;
         mrv::media m = reel->images[i];
-        if ( m->position() < end )
-            m->position( end );
+        m->position( end ); 
     }
 
 
@@ -276,8 +275,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
 
         // Shift indexes of position
         int64_t pos = start - (ee - ss );
-        if ( m->position() > pos )
-            m->position( pos );
+        m->position( pos );
     }
 
     return;
@@ -380,8 +378,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 
         // Shift indexes of position
         int64_t pos = start - (ee - ss );
-        if ( m->position() > pos )
-            m->position( pos );
+        m->position( pos );
     }
 
 
@@ -498,8 +495,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
         // Shift indexes of position
         int64_t pos = start + ee;
         const mrv::media o = reel->images[i+1];
-        if ( o->position() < pos )
-            o->position( pos );
+        o->position( pos );
     }
     timeline()->redraw();
     redraw();

@@ -96,7 +96,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-20 23:54-0300\n"
+"POT-Creation-Date: 2021-12-24 06:00-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,8 +367,8 @@ msgstr ""
 #: core/CMedia_audio.cpp:2295 core/CMedia_audio.cpp:2358
 #: core/CMedia_audio.cpp:2475 core/mrvFrame.cpp:279 core/mrvFrame.cpp:295
 #: core/mrvFrame.cpp:741 core/mrvFrame.cpp:750 core/aviImage.cpp:799
-#: core/aviImage.cpp:2260 core/aviImage.cpp:3958 core/aviImage.cpp:3970
-#: core/aviImage.cpp:3987 core/aviImage.cpp:4036 core/aviImage.cpp:4093
+#: core/aviImage.cpp:2260 core/aviImage.cpp:3962 core/aviImage.cpp:3974
+#: core/aviImage.cpp:3991 core/aviImage.cpp:4040 core/aviImage.cpp:4097
 #: core/aviImage_save.cpp:619 core/aviImage_save.cpp:625
 #: core/aviImage_save.cpp:1383 core/hdrImage.cpp:255 core/hdrImage.cpp:263
 #: core/hdrImage.cpp:266 core/hdrImage.cpp:273 core/slateImage.cpp:371
@@ -3615,7 +3615,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1479
 msgid "  dts: "
 msgstr ""
 
@@ -3650,7 +3650,7 @@ msgstr ""
 msgid " != "
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:310
+#: gui/mrvMediaTrack.cpp:308
 #, c-format
 msgid " \"%s\" %<PRId64>"
 msgstr ""
@@ -3693,7 +3693,7 @@ msgstr ""
 msgid " #>,'&&&&&&&$;#%  "
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:517
+#: gui/mrvMediaTrack.cpp:513
 msgid " #images="
 msgstr ""
 
@@ -3768,7 +3768,7 @@ msgid " %g %g %g"
 msgstr ""
 
 #: core/CMedia_audio.cpp:2359 core/mrvColorProfile.cpp:250
-#: core/aviImage.cpp:1887 core/aviImage.cpp:4017 core/R3dImage.cpp:896
+#: core/aviImage.cpp:1887 core/aviImage.cpp:4021 core/R3dImage.cpp:896
 #: core/brawImage.cpp:1045 core/brawImage.cpp:1571
 #: gui/FLU/Flu_File_Chooser.cpp:3574 gui/mrvPreferences.cpp:1705
 #: gui/mrvPreferences.cpp:1736 video/mrvGLEngine.cpp:179
@@ -3854,7 +3854,7 @@ msgstr ""
 msgid " (NC="
 msgstr ""
 
-#: core/CMedia.cpp:4521 core/aviImage.cpp:4037
+#: core/CMedia.cpp:4521 core/aviImage.cpp:4041
 msgid " (bytes:"
 msgstr ""
 
@@ -4316,12 +4316,12 @@ msgid " Could not open file. "
 msgstr ""
 
 #: core/CMedia.cpp:4014 core/CMedia.cpp:4518 core/CMedia_audio.cpp:2276
-#: core/CMedia_audio.cpp:2357 core/aviImage.cpp:3957 core/aviImage.cpp:3986
-#: core/aviImage.cpp:4035 core/brawImage.cpp:1539
+#: core/CMedia_audio.cpp:2357 core/aviImage.cpp:3961 core/aviImage.cpp:3990
+#: core/aviImage.cpp:4039 core/brawImage.cpp:1539
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1479
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -4400,7 +4400,7 @@ msgid " Pencil"
 msgstr ""
 
 #: core/CMedia.cpp:4014 core/CMedia.cpp:4518 core/CMedia_audio.cpp:2276
-#: core/aviImage.cpp:3957 core/aviImage.cpp:3986 core/aviImage.cpp:4035
+#: core/aviImage.cpp:3961 core/aviImage.cpp:3990 core/aviImage.cpp:4039
 #: core/brawImage.cpp:1539
 msgid " S:"
 msgstr ""
@@ -4422,8 +4422,8 @@ msgstr ""
 msgid " UF: %<PRId64> "
 msgstr ""
 
-#: core/CMedia.cpp:4518 core/aviImage.cpp:3957 core/aviImage.cpp:3986
-#: core/aviImage.cpp:4035 core/brawImage.cpp:1539
+#: core/CMedia.cpp:4518 core/aviImage.cpp:3961 core/aviImage.cpp:3990
+#: core/aviImage.cpp:4039 core/brawImage.cpp:1539
 msgid " V:"
 msgstr ""
 
@@ -4455,11 +4455,11 @@ msgstr ""
 msgid " _dts: "
 msgstr ""
 
-#: core/CMedia.cpp:3051 core/aviImage.cpp:3516
+#: core/CMedia.cpp:3051 core/aviImage.cpp:3520
 msgid " _expected: "
 msgstr ""
 
-#: core/CMedia.cpp:3050 core/aviImage.cpp:3515
+#: core/CMedia.cpp:3050 core/aviImage.cpp:3519
 msgid " _frame: "
 msgstr ""
 
@@ -4561,7 +4561,7 @@ msgstr ""
 msgid " data format not supported by RtAudio."
 msgstr ""
 
-#: core/aviImage.cpp:4420 gui/mrvImageView.cpp:2991
+#: core/aviImage.cpp:4424 gui/mrvImageView.cpp:2991
 msgid " data: "
 msgstr ""
 
@@ -4577,7 +4577,7 @@ msgstr ""
 msgid " does not exist!"
 msgstr ""
 
-#: core/aviImage.cpp:1888 core/aviImage.cpp:4419 core/R3dImage.cpp:897
+#: core/aviImage.cpp:1888 core/aviImage.cpp:4423 core/R3dImage.cpp:897
 #: core/brawImage.cpp:1046
 msgid " dts: "
 msgstr ""
@@ -4643,7 +4643,7 @@ msgstr ""
 msgid " for color_space"
 msgstr ""
 
-#: core/aviImage.cpp:4148 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4152 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr ""
 
@@ -4672,7 +4672,7 @@ msgid " frame"
 msgstr ""
 
 #: core/aviImage.cpp:1196 core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883
-#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1089 core/mrvPlayback.cpp:1479
 #: video/mrvGLEngine.cpp:1851
 msgid " frame "
 msgstr ""
@@ -4820,7 +4820,7 @@ msgstr ""
 msgid " not found, choosing "
 msgstr ""
 
-#: core/aviImage.cpp:4300
+#: core/aviImage.cpp:4304
 msgid " not yet supported"
 msgstr ""
 
@@ -4844,7 +4844,7 @@ msgstr ""
 msgid " ptr+size="
 msgstr ""
 
-#: core/aviImage.cpp:4418
+#: core/aviImage.cpp:4422
 msgid " pts: "
 msgstr ""
 
@@ -4897,7 +4897,7 @@ msgstr ""
 msgid " start "
 msgstr ""
 
-#: core/aviImage.cpp:4163
+#: core/aviImage.cpp:4167
 msgid " status: "
 msgstr ""
 
@@ -4908,15 +4908,15 @@ msgstr ""
 #: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/mrvPlayback.cpp:705
 #: core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:987 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1343 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1479
 msgid " stopped? "
 msgstr ""
 
-#: core/aviImage.cpp:4036
+#: core/aviImage.cpp:4040
 msgid " subtitle packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3958
+#: core/aviImage.cpp:3962
 msgid " subtitle stores  #"
 msgstr ""
 
@@ -4972,12 +4972,12 @@ msgstr ""
 msgid " video packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3987 core/brawImage.cpp:1541
+#: core/aviImage.cpp:3991 core/brawImage.cpp:1541
 msgid " video stores  #"
 msgstr ""
 
 #: core/mrvPlayback.cpp:1088 core/mrvPlayback.cpp:1344
-#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1391 core/mrvPlayback.cpp:1479
 msgid " view playback "
 msgstr ""
 
@@ -7583,7 +7583,7 @@ msgstr ""
 
 #: core/aviImage.cpp:2992 gui/mrvImageInformation.cpp:1943
 #: gui/mrvImageInformation.cpp:1992 gui/mrvImageInformation.cpp:4898
-#: gui/mrvMediaTrack.cpp:856 gui/mrvMediaTrack.cpp:869 gui/mrvTimecode.cpp:295
+#: gui/mrvMediaTrack.cpp:852 gui/mrvMediaTrack.cpp:865 gui/mrvTimecode.cpp:295
 #: standalone/main.cpp:383 standalone/main.cpp:386 standalone/main.cpp:389
 #: standalone/main.cpp:392
 #, c-format
@@ -9029,7 +9029,7 @@ msgstr ""
 msgid ")\tc #FFE67D"
 msgstr ""
 
-#: core/aviImage.cpp:4017 core/brawImage.cpp:1572
+#: core/aviImage.cpp:4021 core/brawImage.cpp:1572
 msgid ") "
 msgstr ""
 
@@ -9634,7 +9634,7 @@ msgstr ""
 msgid ")/"
 msgstr ""
 
-#: core/CMedia.cpp:4521 core/CMedia_audio.cpp:2359 core/aviImage.cpp:4038
+#: core/CMedia.cpp:4521 core/CMedia_audio.cpp:2359 core/aviImage.cpp:4042
 msgid "): "
 msgstr ""
 
@@ -9742,7 +9742,7 @@ msgstr ""
 msgid "*\tc #FFFFFF"
 msgstr ""
 
-#: core/CMedia.cpp:4573 core/aviImage.cpp:4049
+#: core/CMedia.cpp:4573 core/aviImage.cpp:4053
 msgid "* "
 msgstr ""
 
@@ -9906,7 +9906,7 @@ msgid "*;|[]?"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1441
-#: core/CMedia.cpp:4609 core/CMedia_audio.cpp:2453 core/aviImage.cpp:4075
+#: core/CMedia.cpp:4609 core/CMedia_audio.cpp:2453 core/aviImage.cpp:4079
 #: core/iffImage.cpp:326
 msgid "+"
 msgstr ""
@@ -10228,7 +10228,7 @@ msgstr ""
 msgid "+BAD SEEK END:"
 msgstr ""
 
-#: core/CMedia.cpp:4609 core/aviImage.cpp:4075
+#: core/CMedia.cpp:4609 core/aviImage.cpp:4079
 msgid "+ERROR:"
 msgstr ""
 
@@ -10568,7 +10568,7 @@ msgstr ""
 msgid ",.'.@.).A !.,.%.~.{.].H N ).+. .>."
 msgstr ""
 
-#: core/CMedia_audio.cpp:2282 core/aviImage.cpp:1886 core/aviImage.cpp:3998
+#: core/CMedia_audio.cpp:2282 core/aviImage.cpp:1886 core/aviImage.cpp:4002
 #: core/R3dImage.cpp:895 core/brawImage.cpp:1044 core/brawImage.cpp:1552
 #: gui/mrvImageBrowser.cpp:4748 gui/mrvTimecode.cpp:374 gui/mrvTimecode.cpp:482
 #: standalone/mrvCommandLine.cpp:651
@@ -10771,7 +10771,7 @@ msgstr ""
 msgid "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK"
 msgstr ""
 
-#: core/aviImage.cpp:3515
+#: core/aviImage.cpp:3519
 msgid "------- FRAME DONE _dts: "
 msgstr ""
 
@@ -15533,8 +15533,8 @@ msgid ":\tc #FFFFFF"
 msgstr ""
 
 #: audio/RtAudio.cpp:707 core/CMedia_audio.cpp:2278 core/aviImage.cpp:707
-#: core/aviImage.cpp:1058 core/aviImage.cpp:1074 core/aviImage.cpp:3959
-#: core/aviImage.cpp:3988 core/wandImage.cpp:89 core/rawImage.cpp:63
+#: core/aviImage.cpp:1058 core/aviImage.cpp:1074 core/aviImage.cpp:3963
+#: core/aviImage.cpp:3992 core/wandImage.cpp:89 core/rawImage.cpp:63
 #: core/rawImage.cpp:146 core/brawImage.cpp:1542 core/mrSocket.cpp:151
 #: gui/FLU/Flu_File_Chooser.cpp:2354 gui/FLU/Flu_File_Chooser.cpp:2363
 #: gui/FLU/Flu_File_Chooser.cpp:2369 gui/FLU/Flu_File_Chooser.cpp:2373
@@ -16158,7 +16158,7 @@ msgstr ""
 msgid "<PRId64>"
 msgstr ""
 
-#: core/CMedia.cpp:4604 core/aviImage.cpp:4070
+#: core/CMedia.cpp:4604 core/aviImage.cpp:4074
 msgid "<SEEK END:"
 msgstr ""
 
@@ -16166,7 +16166,7 @@ msgstr ""
 msgid "<SEEK END: "
 msgstr ""
 
-#: core/CMedia.cpp:4614 core/CMedia_audio.cpp:2458 core/aviImage.cpp:4080
+#: core/CMedia.cpp:4614 core/CMedia_audio.cpp:2458 core/aviImage.cpp:4084
 msgid "<SEEK:"
 msgstr ""
 
@@ -16419,8 +16419,8 @@ msgid "=d"
 msgstr ""
 
 #: core/CMedia.cpp:4604 core/CMedia.cpp:4614 core/CMedia_audio.cpp:2442
-#: core/CMedia_audio.cpp:2446 core/CMedia_audio.cpp:2458 core/aviImage.cpp:4070
-#: core/aviImage.cpp:4080
+#: core/CMedia_audio.cpp:2446 core/CMedia_audio.cpp:2458 core/aviImage.cpp:4074
+#: core/aviImage.cpp:4084
 msgid ">"
 msgstr ""
 
@@ -17227,12 +17227,12 @@ msgstr ""
 msgid "AESNI "
 msgstr ""
 
-#: core/CMedia.cpp:4000 core/CMedia.cpp:4004 core/aviImage.cpp:3627
-#: core/aviImage.cpp:3631
+#: core/CMedia.cpp:4000 core/CMedia.cpp:4004 core/aviImage.cpp:3631
+#: core/aviImage.cpp:3635
 msgid "AFTER HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4513 core/aviImage.cpp:4517
+#: core/aviImage.cpp:4517 core/aviImage.cpp:4521
 msgid "AFTER PREROLL"
 msgstr ""
 
@@ -17877,7 +17877,7 @@ msgstr ""
 msgid "Audio/Edit Audio Frame Offset"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:800
+#: gui/mrvMediaTrack.cpp:796
 #, c-format
 msgid "Audio: %<PRId64>"
 msgstr ""
@@ -18097,11 +18097,11 @@ msgstr ""
 msgid "B44A"
 msgstr ""
 
-#: core/aviImage.cpp:3542 core/aviImage.cpp:3546
+#: core/aviImage.cpp:3546 core/aviImage.cpp:3550
 msgid "BEFORE HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4435 core/aviImage.cpp:4439
+#: core/aviImage.cpp:4439 core/aviImage.cpp:4443
 msgid "BEFORE PREROLL"
 msgstr ""
 
@@ -18121,7 +18121,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1549
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1479
 msgid "BG"
 msgstr ""
 
@@ -19497,7 +19497,7 @@ msgstr ""
 msgid "Could not create wand"
 msgstr ""
 
-#: core/aviImage.cpp:4417
+#: core/aviImage.cpp:4421
 msgid "Could not decode subtitle frame "
 msgstr ""
 
@@ -19509,7 +19509,7 @@ msgstr ""
 msgid "Could not deselect all"
 msgstr ""
 
-#: core/aviImage.cpp:4387
+#: core/aviImage.cpp:4391
 msgid "Could not determine pts for subtitle frame, using "
 msgstr ""
 
@@ -20253,8 +20253,8 @@ msgid "Cyan/red glasses"
 msgstr ""
 
 #: core/CMedia.cpp:4026 core/CMedia.cpp:4625 core/CMedia_audio.cpp:2293
-#: core/CMedia_audio.cpp:2473 core/aviImage.cpp:3968 core/aviImage.cpp:4015
-#: core/aviImage.cpp:4091 core/brawImage.cpp:1569
+#: core/CMedia_audio.cpp:2473 core/aviImage.cpp:3972 core/aviImage.cpp:4019
+#: core/aviImage.cpp:4095 core/brawImage.cpp:1569
 msgid "D"
 msgstr ""
 
@@ -20601,11 +20601,11 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:4146 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4150 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr ""
 
-#: core/aviImage.cpp:4161
+#: core/aviImage.cpp:4165
 msgid "Decode video error seek frame "
 msgstr ""
 
@@ -21109,7 +21109,7 @@ msgstr ""
 msgid "EDLWindow %d %d %d %d %d\n"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:513
+#: gui/mrvMediaTrack.cpp:509
 msgid "EMPTY REEL AT INDEX "
 msgstr ""
 
@@ -21139,7 +21139,7 @@ msgstr ""
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1479
 msgid "EXIT  "
 msgstr ""
 
@@ -21219,7 +21219,7 @@ msgstr ""
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
-#: core/aviImage.cpp:3605
+#: core/aviImage.cpp:3609
 msgid "Empty packets for video seek."
 msgstr ""
 
@@ -21227,7 +21227,7 @@ msgstr ""
 msgid "Empty pic file for media "
 msgstr ""
 
-#: core/aviImage.cpp:4509
+#: core/aviImage.cpp:4513
 msgid "Empty seek or preroll"
 msgstr ""
 
@@ -21474,8 +21474,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2361
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2768
 #: core/CMedia.cpp:4027 core/CMedia.cpp:4626 core/CMedia_audio.cpp:2294
-#: core/CMedia_audio.cpp:2474 core/aviImage.cpp:3969 core/aviImage.cpp:4016
-#: core/aviImage.cpp:4092 core/brawImage.cpp:1570
+#: core/CMedia_audio.cpp:2474 core/aviImage.cpp:3973 core/aviImage.cpp:4020
+#: core/aviImage.cpp:4096 core/brawImage.cpp:1570
 msgid "F"
 msgstr ""
 
@@ -21645,7 +21645,7 @@ msgstr ""
 
 #: core/mrvPlayback.cpp:705 core/mrvPlayback.cpp:883 core/mrvPlayback.cpp:1088
 #: core/mrvPlayback.cpp:1342 core/mrvPlayback.cpp:1391
-#: core/mrvPlayback.cpp:1490
+#: core/mrvPlayback.cpp:1479
 msgid "FG"
 msgstr ""
 
@@ -21906,7 +21906,7 @@ msgid "File/Open/Directory"
 msgstr ""
 
 #: gui/mrvImageView.cpp:4771 gui/mrvImageBrowser.cpp:4162
-#: gui/mrvMediaTrack.cpp:604
+#: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr ""
 
@@ -24319,7 +24319,7 @@ msgstr ""
 msgid "L\tc #FF9060"
 msgstr ""
 
-#: core/aviImage.cpp:4055
+#: core/aviImage.cpp:4059
 msgid "L "
 msgstr ""
 
@@ -29689,8 +29689,8 @@ msgid "Run mrViewer regardless of single instance setting."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3126
-#: core/CMedia.cpp:4624 core/CMedia_audio.cpp:2472 core/aviImage.cpp:3967
-#: core/aviImage.cpp:4014 core/aviImage.cpp:4090 core/brawImage.cpp:1568
+#: core/CMedia.cpp:4624 core/CMedia_audio.cpp:2472 core/aviImage.cpp:3971
+#: core/aviImage.cpp:4018 core/aviImage.cpp:4094 core/brawImage.cpp:1568
 #: gui/mrvColorInfo.cpp:858 gui/mrvColorInfo.cpp:864 gui/mrvImageView.cpp:9098
 #: standalone/mrvCommandLine.cpp:415
 msgid "S"
@@ -30433,7 +30433,7 @@ msgstr ""
 msgid "ShiftAudio"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:309
+#: gui/mrvMediaTrack.cpp:307
 #, c-format
 msgid "ShiftAudio %d"
 msgstr ""
@@ -30442,7 +30442,7 @@ msgstr ""
 msgid "ShiftMediaEnd"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:480
+#: gui/mrvMediaTrack.cpp:477
 #, c-format
 msgid "ShiftMediaEnd %d \"%s\" %<PRId64>"
 msgstr ""
@@ -30451,7 +30451,7 @@ msgstr ""
 msgid "ShiftMediaStart"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:351
+#: gui/mrvMediaTrack.cpp:349
 #, c-format
 msgid "ShiftMediaStart %d \"%s\" %<PRId64>"
 msgstr ""
@@ -30768,7 +30768,7 @@ msgstr ""
 msgid "Subtitle font "
 msgstr ""
 
-#: core/aviImage.cpp:4299
+#: core/aviImage.cpp:4303
 msgid "Subtitle type "
 msgstr ""
 
@@ -33154,7 +33154,7 @@ msgstr ""
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr ""
 
-#: core/aviImage.cpp:3551
+#: core/aviImage.cpp:3555
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr ""
 
@@ -34016,11 +34016,11 @@ msgstr ""
 msgid "[.\tc #C7A48B"
 msgstr ""
 
-#: core/CMedia.cpp:4599 core/CMedia_audio.cpp:2429 core/aviImage.cpp:4065
+#: core/CMedia.cpp:4599 core/CMedia_audio.cpp:2429 core/aviImage.cpp:4069
 msgid "[PREROLL END: "
 msgstr ""
 
-#: core/CMedia.cpp:4619 core/CMedia_audio.cpp:2463 core/aviImage.cpp:4085
+#: core/CMedia.cpp:4619 core/CMedia_audio.cpp:2463 core/aviImage.cpp:4089
 msgid "[PREROLL:"
 msgstr ""
 
@@ -34041,8 +34041,8 @@ msgid "\\\\"
 msgstr ""
 
 #: core/CMedia.cpp:4599 core/CMedia.cpp:4619 core/CMedia_audio.cpp:2429
-#: core/CMedia_audio.cpp:2433 core/CMedia_audio.cpp:2463 core/aviImage.cpp:4065
-#: core/aviImage.cpp:4085 core/iffImage.cpp:540 gui/mrvHotkey.cpp:137
+#: core/CMedia_audio.cpp:2433 core/CMedia_audio.cpp:2463 core/aviImage.cpp:4069
+#: core/aviImage.cpp:4089 core/iffImage.cpp:540 gui/mrvHotkey.cpp:137
 #: gui/mrvHotkey.cpp:144 gui/mrvHotkey.cpp:644 gui/mrvFileRequester.cpp:1244
 msgid "]"
 msgstr ""
@@ -34970,7 +34970,7 @@ msgstr ""
 msgid "af c #5c5c37"
 msgstr ""
 
-#: core/aviImage.cpp:3517
+#: core/aviImage.cpp:3521
 msgid "after fetch"
 msgstr ""
 
@@ -36194,11 +36194,11 @@ msgstr ""
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
-#: core/aviImage.cpp:4637
+#: core/aviImage.cpp:4641
 msgid "decode_subtitle"
 msgstr ""
 
-#: core/aviImage.cpp:3813 core/aviImage.cpp:3938
+#: core/aviImage.cpp:3817 core/aviImage.cpp:3942
 msgid "decode_video"
 msgstr ""
 
@@ -36281,7 +36281,7 @@ msgstr ""
 msgid "dng"
 msgstr ""
 
-#: core/aviImage.cpp:4173
+#: core/aviImage.cpp:4177
 msgid "doseek"
 msgstr ""
 
@@ -37054,10 +37054,6 @@ msgstr ""
 msgid "format s32be, frequency "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1477
-msgid "forwards "
-msgstr ""
-
 #: core/mrvCPU.cpp:760
 msgid "found"
 msgstr ""
@@ -37485,7 +37481,7 @@ msgstr ""
 msgid "handle_dnd"
 msgstr ""
 
-#: core/CMedia.cpp:3959 core/aviImage.cpp:3564
+#: core/CMedia.cpp:3959 core/aviImage.cpp:3568
 msgid "handle_video_packet_seek error - no seek/preroll packet"
 msgstr ""
 

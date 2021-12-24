@@ -1457,7 +1457,7 @@ void decode_thread( PlaybackData* data )
         {
             if ( img->stopped() ||
                  view->playback() == CMedia::kStopped ) break;
-            sleep_ms( 10 );
+            sleep_ms( 20 );
         }
 
 
@@ -1469,18 +1469,7 @@ void decode_thread( PlaybackData* data )
 
         if ( img->has_video() || img->has_audio() )
         {
-            int64_t old = frame;
-            CMedia::Playback play = img->playback();
             frame = img->dts();
-            if ( play == CMedia::kForwards && old > frame )
-            {
-                std::cerr << "forwards " << old << std::endl;
-                frame = old;
-            }
-            else if ( play == CMedia::kBackwards && old < frame )
-            {
-                frame = old;
-            }
         }
 
 
