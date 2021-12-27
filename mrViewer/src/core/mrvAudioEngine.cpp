@@ -44,6 +44,10 @@
 #    include "audio/mrvAOEngine.h"
 #endif
 
+#ifdef RT_AUDIO_ENGINE
+#    include "audio/mrvRtAudioEngine.h"
+#endif
+
 #ifdef PORTAUDIO
 #    include "audio/mrvPortAudioEngine.h"
 #endif
@@ -155,8 +159,6 @@ std::string AudioEngine::device()
 
 bool AudioEngine::device( const unsigned int idx )
 {
-    if ( idx >= _devices.size() ) return false;
-
     _device_idx = idx;
 
     return true;
@@ -167,13 +169,13 @@ bool AudioEngine::device( const std::string& d )
     DeviceList::iterator i = _devices.begin();
     DeviceList::iterator e = _devices.end();
 
-    unsigned idx = 0;
-    for ( ; i != e; ++i, ++idx )
+    for ( ; i != e; ++i )
     {
         if ( (*i).name == d ) break;
     }
 
-    return device( idx );
+
+    return device( (*i).index );
 }
 
 

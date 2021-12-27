@@ -4912,6 +4912,7 @@ void ImageBrowser::seek( const int64_t tframe )
             int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
 
+            img->volume( uiMain->uiVolume->value() );
             img->seek( lf );
 
             if ( (int) i < children() )
@@ -4925,6 +4926,7 @@ void ImageBrowser::seek( const int64_t tframe )
         else
         {
             int64_t lf = reel->global_to_local( f );
+            img->volume( uiMain->uiVolume->value() );
             img->seek( lf );
         }
 
@@ -4941,6 +4943,7 @@ void ImageBrowser::seek( const int64_t tframe )
                     int64_t lf = reel->global_to_local( f );
 
                     img = bg->image();
+                    img->volume( uiMain->uiVolume->value() );
                     img->seek( lf );
                 }
             }

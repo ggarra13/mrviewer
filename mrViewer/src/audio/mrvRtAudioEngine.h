@@ -15,24 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 /**
  * @file   mrvRtAudioEngine.h
  * @author gga
- * @date   Tue Jul 10 03:05:41 2007
+ * @date   Wed Jul 25 20:28:00 2007
  *
- * @brief  Simple RtAudio sound engine class
+ * @brief  Linux/MacOS RtAudio engine
  *
  *
  */
-
+#ifdef RT_AUDIO_ENGINE
 
 #ifndef mrvRtAudioEngine_h
 #define mrvRtAudioEngine_h
 
+#include "core/mrvAudioEngine.h"
 #include "RtAudio.h"
 
-#include "mrvAudioEngine.h"
 
 
 namespace mrv {
@@ -45,8 +44,10 @@ public:
 
     // Name of audio engine
     virtual const char* name() {
-        return "RtAudio";
+        return "RtAudio driver";
     }
+
+    virtual AudioFormat default_format();
 
     // Open an audio stream for playback
     virtual bool open(
@@ -55,17 +56,26 @@ public:
         const AudioFormat  format
     );
 
+    virtual void refresh_devices();
+
+
+    bool enabled() const { return _enabled; }
+
     // Play some samples (this function does not return until
     // playback has finished)
     virtual bool play( const char* data, const size_t size );
 
-    // Retrieve current master volume
     virtual float volume() const;
 
     // Change volume of playback
     virtual void volume( float f );
 
-    // Flush all audio sent for playback
+    void getOutputBuffer( void* out, unsigned nFrames );
+
+    bool stopped() const { return _stopped; }
+
+    bool aborted() const { return _aborted; }
+
     virtual void flush();
 
     // Close an audio stream
@@ -79,10 +89,31 @@ protected:
     // device for playback
     virtual bool initialize();
 
+
 protected:
-    RtAudio  audio;
+    RtAudio      audio;
+
+    unsigned     sample_size;
+    unsigned     _freq;
+    unsigned     _channels;
+    unsigned     _bits;
+
+
+    bool         _stopped, _aborted;
+
+    /* Our internal queue of samples waiting to be consumed by
+       CoreAudio */
+    unsigned char*               buffer;
+    unsigned int                 bufferByteCount;
+    unsigned int                 firstValidByteOffset;
+    unsigned int                 validByteCount;
+
+    unsigned int                 buffer_time;
+    unsigned int                 totalBytesToCopy;
+    unsigned int                 bufferSize;
+
 protected:
-    static unsigned int _instances;
+    static std::atomic<unsigned int>     _instances;
 };
 
 
@@ -90,3 +121,5 @@ protected:
 
 
 #endif // mrvRtAudioEngine_h
+
+#endif // RT_AUDIO_ENGINE

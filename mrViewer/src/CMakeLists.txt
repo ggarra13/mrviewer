@@ -95,7 +95,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DOSX -DMR_SSE -D__MACOSX_CORE__ )
   ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
-  set( AOENGINE 1 )
+  set( AOENGINE 0 )
+  set( RT_AUDIO_ENGINE 1 )
 
   LINK_DIRECTORIES( /usr/local/lib )
   set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
@@ -105,6 +106,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     set( OS_LIBRARIES ${OS_LIBRARIES} ao )
   ENDIF()
 
+  IF( RT_AUDIO_ENGINE )
+    ADD_DEFINITIONS( -DRT_AUDIO_ENGINE )
+  ENDIF()
 
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" OR
        CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" )
@@ -115,7 +119,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
      #ADD_COMPILE_OPTIONS( -g -fsanitize=address )
      #SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
-   ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+   ENDIF()
 
   ELSE(APPLE)
     ADD_DEFINITIONS( -DMR_SSE )
@@ -395,7 +399,7 @@ SET( SOURCES
 #
 # Audio Engines
 #
-SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvRtAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )

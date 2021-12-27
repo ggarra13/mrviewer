@@ -1288,6 +1288,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                     if ( ocio.rfind( "nuke-default" ) != std::string::npos )
                         ics = "sRGB";
                     else
+                        //ics = "Utility - sRGB - Texture";
                         ics = "Output - sRGB";
                 }
             }

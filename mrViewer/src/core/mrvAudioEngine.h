@@ -49,17 +49,21 @@ public:
     {
         std::string name;
         std::string description;
+        int         index;
 
         Device( const std::string n,
-                const std::string desc ) :
+                const std::string desc,
+                int idx = 0 ) :
             name( n ),
-            description( desc )
+            description( desc ),
+            index( idx )
         {
         }
 
         Device( const Device& b ) :
             name( b.name ),
-            description( b.description )
+            description( b.description ),
+            index( b.index )
         {
         }
     };

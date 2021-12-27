@@ -446,6 +446,8 @@ float mp_trc_nom_peak(enum mp_csp_trc trc)
         return 6.52f;
     case MP_CSP_TRC_S_LOG2:
         return 9.212f;
+    default:
+        break;
     }
 
     return 1.0f;

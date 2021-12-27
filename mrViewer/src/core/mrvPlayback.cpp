@@ -853,6 +853,9 @@ void audio_thread( PlaybackData* data )
 
         if ( !img->stopped() )
         {
+#ifndef _WIN32
+            img->volume( uiMain->uiVolume->value() );
+#endif
             img->find_audio(frame);
 #ifdef _WIN32 // WIN32 stores application audio volume
             mrv::AudioEngine* engine = img->audio_engine();
@@ -885,7 +888,7 @@ void audio_thread( PlaybackData* data )
 #endif
 
     img->playback( CMedia::kStopped );
-#if defined(LINUX) ||  defined(OSX)
+#if defined(LINUX) || defined(OSX)
     img->close_audio();
 #endif
 

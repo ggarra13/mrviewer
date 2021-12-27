@@ -6,6 +6,11 @@ v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	- Reverted to Output - sRGB on ACES sRGB default when no 8/16 bits
 	  ocio lut is set.
 	- Made arrow cursor appear in tooldock bar when drawing.
+	- Fixed audio volume when starting a new clip and audio was not at full
+	  volume.
+	- Made audio on macOS not exit when clip finishes to avoid hangs on
+	  the audio HAL.  The hanging up can still happen when exiting the
+	  program, but then CTRL+C solves it.
 
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.

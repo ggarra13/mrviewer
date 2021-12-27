@@ -56,7 +56,6 @@ AOEngine::AOEngine() :
     AudioEngine(),
     _sample_size(0),
     _audio_device(0),
-    _volume( 1.0f ),
     _format( NULL ),
     _device( NULL ),
     _options( NULL )
