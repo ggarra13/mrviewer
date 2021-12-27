@@ -270,8 +270,16 @@ bool RtAudioEngine::open( const unsigned channels,
 
         unsigned int bufferFrames = 250;
 
-        audio.openStream( &outputParameters, NULL, fmt, freq, &bufferFrames,
-                          callback, this, &options, errorCallback );
+        try
+        {
+            audio.openStream( &outputParameters, NULL, fmt, freq, &bufferFrames,
+                              callback, this, &options, errorCallback );
+        }
+        catch( const RtAudioError& e )
+        {
+            LOG_ERROR( e.getMessage() );
+            return false;
+        }
 
         buffer_time = 250;
 
@@ -283,7 +291,7 @@ bool RtAudioEngine::open( const unsigned channels,
         buffer = (unsigned char*)malloc(bufferByteCount);
         if (!buffer) {
             LOG_ERROR("Unable to allocate queue buffer.");
-            return 0;
+            return false;
         }
         memset(buffer, 0, bufferByteCount);
 
@@ -432,9 +440,17 @@ bool RtAudioEngine::close()
     {
         if ( ! audio.isStreamOpen() ) return false;
 
-        audio.stopStream();
+        try
+        {
+            audio.abortStream();
+            _aborted = true;
 
-        while ( audio.isStreamRunning() ) ;
+            while ( audio.isStreamRunning() ) ;
+        }
+        catch( const RtAudioError& e )
+        {
+            LOG_ERROR( e.getMessage() );
+        }
 
         audio.closeStream();
 
