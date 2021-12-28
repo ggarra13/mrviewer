@@ -154,6 +154,11 @@ public:
     // Change volume
     virtual void volume( float f ) = 0;
 
+
+    bool stopped() const { return _stopped; }
+
+    void stop() { _stopped = true; }
+
     // Flush all audio sent for playback
     virtual void flush() = 0;
 
@@ -201,6 +206,7 @@ protected:
     static unsigned int _device_idx;  //!< index to current device being used
     static unsigned int _old_device_idx;  //!< index to previous device used
     bool         _enabled;
+    bool         _stopped;
     std::atomic<float>        _volume;
     std::atomic<unsigned int> _channels;
     std::atomic<AudioFormat>  _audio_format;

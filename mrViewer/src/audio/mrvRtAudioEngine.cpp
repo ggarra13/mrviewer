@@ -220,6 +220,7 @@ RtAudioEngine::AudioFormat RtAudioEngine::default_format()
         firstValidByteOffset = (firstValidByteOffset + bytesToCopy) %
                                bufferByteCount;
 
+
         pthread_mutex_unlock(&mutex);
         pthread_cond_signal(&cond);
     }
@@ -230,6 +231,7 @@ bool RtAudioEngine::open( const unsigned channels,
 {
     try
     {
+        close();
 
         _enabled = false;
 
@@ -260,12 +262,10 @@ bool RtAudioEngine::open( const unsigned channels,
         }
         }
 
-        RtAudio::StreamParameters outputParameters;
         outputParameters.deviceId = device("default");
         outputParameters.nChannels = channels;
         outputParameters.firstChannel = 0;
 
-        RtAudio::StreamOptions options;
         options.streamName = "mrViewer";
 
         unsigned int bufferFrames = 250;

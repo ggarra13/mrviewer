@@ -93,6 +93,10 @@ protected:
 protected:
     RtAudio      audio;
 
+
+    RtAudio::StreamParameters outputParameters;
+    RtAudio::StreamOptions options;
+
     unsigned     sample_size;
     unsigned     _freq;
     unsigned     _channels;

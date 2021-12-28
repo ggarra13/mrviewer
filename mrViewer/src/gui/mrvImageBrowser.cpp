@@ -2024,6 +2024,8 @@ void ImageBrowser::save_session()
         if ( reel->edl )
         {
             int64_t pos = m->position();
+            if ( play == CMedia::kBackwards )
+                pos += m->duration() - 1;
             DBGM3( "seek to " << pos );
             if ( !_loading ) seek( pos );
         }
@@ -3883,6 +3885,8 @@ void ImageBrowser::next_image()
     if ( reel->edl && img )
     {
         int64_t pos = m->position();
+        if ( play == CMedia::kBackwards )
+            pos += m->duration() - 1;
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4059,6 +4063,8 @@ void ImageBrowser::previous_image()
     if ( reel->edl && img )
     {
         int64_t pos = m->position();
+        if ( play == CMedia::kBackwards )
+            pos += m->duration() - 1;
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4873,6 +4879,9 @@ void ImageBrowser::seek( const int64_t tframe )
     if ( play != CMedia::kStopped )
         view()->stop();
 
+    mrv::media fg = view()->foreground();
+    mrv::media bg = view()->background();
+
     view()->frame( tframe );
 
 
@@ -4886,6 +4895,18 @@ void ImageBrowser::seek( const int64_t tframe )
         // Check if we need to change to a new sequence based on frame
         mrv::media m = reel->media_at( tframe );
         if (! m ) return;
+
+        if ( fg && fg != m )
+        {
+            CMedia* img = fg->image();
+            img->close_audio();
+        }
+        if ( bg && bg != m )
+        {
+            CMedia* img = bg->image();
+            img->close_audio();
+        }
+
 
         CMedia* img = m->image();
         if ( ! img ) return;

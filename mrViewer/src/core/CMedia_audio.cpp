@@ -566,6 +566,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
 
+    SCOPED_LOCK( _audio_mutex );
     // AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     // unsigned bps = av_get_bytes_per_sample( fmt );
     unsigned bps = AudioEngine::bits_for_format( _audio_format );
@@ -881,6 +882,8 @@ void CMedia::audio_file( const char* file )
 {
     flush_audio();
 
+    SCOPED_LOCK( _audio_mutex );
+
     _audio_file.clear();
     close_audio();
     close_audio_codec();
@@ -971,8 +974,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
     typedef std::multimap< timeval, int64_t, customMore > TimedSeqMap;
     TimedSeqMap tmp;
     {
+        SCOPED_LOCK( _audio_mutex );
         {
-            SCOPED_LOCK( _audio_mutex );
             audio_cache_t::iterator  it = _audio.begin();
             audio_cache_t::iterator end = _audio.end();
             for ( ; it != end; ++it )
@@ -986,7 +989,6 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         }
 
         TimedSeqMap::iterator it = tmp.begin();
-        SCOPED_LOCK( _audio_mutex );
         for ( ; it != tmp.end() &&
                   ( memory_used >= Preferences::max_memory ||
                     _audio.size() > max_frames ); ++it )
@@ -1009,6 +1011,8 @@ void CMedia::limit_audio_store(const int64_t frame)
 
     if ( playback() == kForwards )
         return timed_limit_audio_store( frame );
+
+    SCOPED_LOCK( _audio_mutex );
 
     unsigned max_frames = max_video_frames();
 
@@ -1050,7 +1054,6 @@ void CMedia::limit_audio_store(const int64_t frame)
     }
 #endif
 
-    SCOPED_LOCK( _audio_mutex );
     _audio.erase( std::remove_if( _audio.begin(), _audio.end(),
                                   NotInRangeFunctor( first, last ) ),
                   _audio.end() );
@@ -1196,6 +1199,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                       << av_get_sample_fmt_name( out_sample_fmt )
                       << _(", frequency ")
                       << out_sample_rate);
+
 
             forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
                                            out_sample_fmt,  out_sample_rate,
@@ -1350,6 +1354,8 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
                              const int64_t frame,
                              const AVPacket& pkt )
 {
+
+    SCOPED_LOCK( _audio_mutex );
 
     AVStream* stream = get_audio_stream();
     if ( !stream ) return kDecodeNoStream;
@@ -1617,6 +1623,11 @@ CMedia::store_audio( const int64_t audio_frame,
     }
 
 
+    SCOPED_LOCK( _audio_mutex );
+
+//    if ( audio_frame % 8 == 0 )
+    {
+    }
 
     //  assert( audio_frame <= last_frame()  );
     //  assert( audio_frame >= first_frame() );
@@ -1637,8 +1648,6 @@ CMedia::store_audio( const int64_t audio_frame,
         IMG_ERROR( _("Audios #") << _audio.size() );
         return 0;
     }
-
-    SCOPED_LOCK( _audio_mutex );
 
     if ( _audio.empty() || _audio.back()->frame() < f )
     {
@@ -1784,10 +1793,10 @@ bool CMedia::open_audio( const short channels,
         if ( ok ) break;
     }
 
-    _audio_engine->volume( volume_ );
     _audio_format = _audio_engine->format();
     _audio_channels = _audio_engine->channels();
     _samples_per_sec = nSamplesPerSec;
+
 
     return ok;
 }
@@ -1802,6 +1811,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr result )
             _audio_format == AudioEngine::kNoAudioFormat ||
             AudioEngine::device_index() != AudioEngine::old_device_index())
     {
+        SCOPED_LOCK( _audio_mutex );
         if ( ! open_audio( result->channels(), nSamplesPerSec ) )
         {
             IMG_ERROR( _("Could not open audio driver") );
@@ -1858,12 +1868,12 @@ bool CMedia::find_audio( const int64_t frame )
         debug_audio_stores(frame, _right_eye ? "RFIND" : "FIND");
 #endif
 
+        SCOPED_LOCK( _audio_mutex );
+
         _audio_frame = frame;
 
         if ( frame < first_frame() )
             return true;
-
-        SCOPED_LOCK( _audio_mutex );
 
         audio_cache_t::iterator end = _audio.end();
         audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
@@ -1912,6 +1922,7 @@ void CMedia::flush_audio()
 {
     if ( _audio_ctx && _audio_index >= 0 )
     {
+        SCOPED_LOCK( _audio_mutex );
         avcodec_flush_buffers( _audio_ctx );
     }
 }
@@ -1920,6 +1931,8 @@ void CMedia::flush_audio()
 
 void CMedia::close_audio()
 {
+    SCOPED_LOCK( _audio_mutex);
+
     if ( _audio_engine ) _audio_engine->close();
     _samples_per_sec = 0;
 }
@@ -1936,7 +1949,6 @@ void CMedia::volume( float v )
 {
     if ( _right_eye ) _right_eye->volume( v );
 
-    volume_ = v;
     if ( !_audio_engine ) return;
     _audio_engine->volume( v );
 }
@@ -2146,6 +2158,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
         {
             bool ok = in_audio_store( frame );
             if ( ok ) {
+                SCOPED_LOCK( _audio_mutex );
                 assert( !_audio_packets.empty() );
                 AVPacket& pkt = _audio_packets.front();
                 int64_t pktframe = get_frame( stream, pkt );
