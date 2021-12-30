@@ -144,6 +144,8 @@ void RtAudioEngine::volume( float v )
 
     RtAudioEngine::AudioFormat RtAudioEngine::default_format()
     {
+        // if ( _device.nativeFormats & RTAUDIO_FLOAT64 )
+        //     return kDoubleLSB;
         if ( _device.nativeFormats & RTAUDIO_FLOAT32 )
             return kFloatLSB;
         if ( _device.nativeFormats & RTAUDIO_SINT32 )
@@ -229,7 +231,7 @@ void RtAudioEngine::volume( float v )
     }
 
 bool RtAudioEngine::open( const unsigned channels,
-                          const unsigned freq,
+                          const unsigned samplerate,
                           const AudioFormat format )
 {
     try
@@ -237,6 +239,9 @@ bool RtAudioEngine::open( const unsigned channels,
         close();
 
         _enabled = false;
+
+        unsigned freq = (( samplerate + 1 ) / 10 ) * 10;
+
 
         RtAudioFormat fmt;
 
@@ -250,6 +255,10 @@ bool RtAudioEngine::open( const unsigned channels,
         {
             fmt = RTAUDIO_SINT16; _bits = 16; break;
         }
+        case kS24LSB:
+        {
+            fmt = RTAUDIO_SINT24; _bits = 24; break;
+        }
         case kS32LSB:
         {
             fmt = RTAUDIO_SINT32; _bits = 32; break;
@@ -258,11 +267,34 @@ bool RtAudioEngine::open( const unsigned channels,
         {
             fmt = RTAUDIO_FLOAT32; _bits = 32; break;
         }
+        case kDoubleLSB:
+        {
+            fmt = RTAUDIO_FLOAT64; _bits = 64; break;
+        }
         default:
         {
             LOG_ERROR( "Unknown audio format.  Setting float 32 bits" );
             fmt = RTAUDIO_FLOAT32; _bits = 32; break;
         }
+        }
+
+        bool ok = false;
+        for (auto i : _device.sampleRates )
+        {
+            if ( i == freq ) ok = true;
+        }
+        if (! ok ) {
+            std::string r;
+            char buf[48];
+            bool ok = false;
+            for (auto i : _device.sampleRates )
+            {
+                sprintf( buf, " %d", i );
+                r += buf;
+            }
+            LOG_ERROR( _("Audio frequency ") << freq <<  _(" is invalid.") );
+            LOG_ERROR( _("Valid rates are:") << r );
+            return true;
         }
 
         outputParameters.deviceId = device("default");
@@ -280,8 +312,9 @@ bool RtAudioEngine::open( const unsigned channels,
         }
         catch( const RtAudioError& e )
         {
-            LOG_ERROR( e.getMessage() );
-            return false;
+            _enabled = false;
+            LOG_ERROR( freq << " " << e.getMessage() );
+            return true;
         }
 
         buffer_time = 250;
@@ -299,8 +332,7 @@ bool RtAudioEngine::open( const unsigned channels,
         memset(buffer, 0, bufferByteCount);
 
         // Store these for future round
-        if ( fmt == RTAUDIO_FLOAT32 ) _audio_format = kFloatLSB;
-        else _audio_format = format;
+        _audio_format = format;
 
         _channels = channels;
         _old_device_idx = _device_idx;
