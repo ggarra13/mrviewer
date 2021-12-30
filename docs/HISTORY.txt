@@ -14,6 +14,8 @@ v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	  warning that the frequency is not valid.
 	- Long  menus on macOS no longer go out of the screen and get covered
 	  by the dockbar.
+	- Looping of movies will not show a random frame from the end anymore
+	  (at least in most cases).
 
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.
