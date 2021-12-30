@@ -104,11 +104,7 @@ RtAudioEngine::~RtAudioEngine()
 
 bool RtAudioEngine::initialize()
 {
-    if ( _instances == 0 )
-    {
-        refresh_devices();
-    }
-
+    refresh_devices();
 
 
     ++_instances;
