@@ -59,8 +59,8 @@ unsigned  AudioEngine::_device_idx = 0;
 unsigned  AudioEngine::_old_device_idx = 99999;
 
 AudioEngine::AudioEngine() :
-    _stopped( false ),
     _enabled( false ),
+    _stopped( false ),
     _volume( 1.0f ),
     _channels( 0 ),
     _audio_format( kS16LSB )
