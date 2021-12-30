@@ -477,7 +477,7 @@ bool RtAudioEngine::close()
 
         try
         {
-            audio.stopStream();
+            audio.abortStream();
             _aborted = true;
 
             while ( audio.isStreamRunning() ) ;
