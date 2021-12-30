@@ -103,11 +103,11 @@ namespace
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-//#define DEBUG_SEEK_VIDEO_PACKETS
+// #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_HSEEK_VIDEO_PACKETS
-//#define DEBUG_VIDEO_PACKETS
+// #define DEBUG_HSEEK_VIDEO_PACKETS
+// #define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
@@ -3489,9 +3489,9 @@ bool aviImage::frame( const int64_t f )
 
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
-            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE )  ||
+            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
-          ( vpkts > kMIN_FRAMES || !has_video() ) ) ) )
+            ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
         return false;
     }
@@ -3499,12 +3499,9 @@ bool aviImage::frame( const int64_t f )
 
 
 
-    if ( f < _frameStart )    {
-        _dts = _adts =  _frameStart;
-    }
-    else if ( f > _frameEnd ) {
-        _dts = _adts =  _frameEnd;
-    }
+    int64_t sf = f;
+    if ( f < _frameStart )    sf = _dts = _adts = _frameStart;
+    else if ( f > _frameEnd ) sf = _dts = _adts = _frameEnd;
 
 
     timeval now;
@@ -3512,7 +3509,7 @@ bool aviImage::frame( const int64_t f )
     _lastFrameTime = now;
 
     image_type_ptr canvas;
-    bool ok = fetch(canvas, f);
+    bool ok = fetch(canvas, sf);
 
 
 #ifdef DEBUG_DECODE

@@ -421,7 +421,6 @@ _audio_pts( 0 ),
 _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
 _video_pts( 0 ),
 _video_clock( double( av_gettime_relative() ) / 1000000.0 ),
-volume_( 1.0 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -740,7 +739,7 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
     else
     {
 //         if ( pkt.dts != AV_NOPTS_VALUE )
-            frame = pts2frame( stream, pkt.dts );
+        frame = pts2frame( stream, pkt.dts );
     }
     return frame;
 }
@@ -924,6 +923,8 @@ CMedia::~CMedia()
 
     }
 
+    audio_shutdown();
+
     if ( forw_ctx )
     {
         swr_free( &forw_ctx );
@@ -932,8 +933,6 @@ CMedia::~CMedia()
 
     flush_audio();
 
-
-    audio_shutdown();
 
 
     av_free( _fileroot );
@@ -2873,7 +2872,7 @@ void CMedia::stop(const bool bg)
 #endif
 
     TRACE("");
-    close_audio();
+    // close_audio();
 
 
     TRACE("");
@@ -3769,6 +3768,7 @@ void CMedia::loop_at_end( const int64_t frame )
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
 
+#if 1
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
 
@@ -3779,7 +3779,9 @@ void CMedia::loop_at_end( const int64_t frame )
         mrv::PacketQueue::iterator i = _video_packets.begin();
         for ( ; i != _video_packets.end(); )
         {
-            int64_t pktframe = get_frame( stream, *i );
+            int64_t pktframe;
+            if ( _video_packets.is_loop_end(*i) ) pktframe = (*i).dts;
+            else pktframe = get_frame( stream, *i );
             if ( pktframe > limit )
             {
                 i = _video_packets.erase( i );
@@ -3789,6 +3791,7 @@ void CMedia::loop_at_end( const int64_t frame )
                 ++i;
             }
         }
+#endif
 
         _video_packets.loop_at_end( frame );
     }

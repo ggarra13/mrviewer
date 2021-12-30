@@ -92,7 +92,7 @@ protected:
 
 protected:
     RtAudio      audio;
-
+    RtAudio::DeviceInfo _device;
 
     RtAudio::StreamParameters outputParameters;
     RtAudio::StreamOptions options;

@@ -3294,9 +3294,8 @@ bool ImageView::preload()
 
     // Exit early if we are dealing with a video instead of a sequence
     if ( !img || !img->is_sequence() || img->has_video() ) {
-        bool gap = false;
-        img = r->image_at( _preframe, gap );
-        if (!img && !gap) {
+        img = r->image_at( _preframe );
+        if (!img) {
             // if no image, go to next reel
             if ( _reel + 1 < b->number_of_reels() )
                 _reel++;
@@ -3306,9 +3305,7 @@ bool ImageView::preload()
         }
         else
         {
-            if ( gap ) _preframe++;
-            else
-                _preframe = fg->position() + img->duration(); // go to next image
+            _preframe = fg->position() + img->duration(); // go to next image
             img->refresh();
         }
 

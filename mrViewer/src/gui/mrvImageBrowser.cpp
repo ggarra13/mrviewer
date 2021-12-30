@@ -2021,11 +2021,9 @@ void ImageBrowser::save_session()
 
         CMedia* img = NULL;
         if ( m ) img = m->image();
-        if ( reel->edl )
+        if ( reel->edl && img )
         {
-            int64_t pos = m->position();
-            if ( play == CMedia::kBackwards )
-                pos += m->duration() - 1;
+            int64_t pos = m->position() - img->first_frame() + img->frame();
             DBGM3( "seek to " << pos );
             if ( !_loading ) seek( pos );
         }
@@ -3885,8 +3883,6 @@ void ImageBrowser::next_image()
     if ( reel->edl && img )
     {
         int64_t pos = m->position();
-        if ( play == CMedia::kBackwards )
-            pos += m->duration() - 1;
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4063,8 +4059,6 @@ void ImageBrowser::previous_image()
     if ( reel->edl && img )
     {
         int64_t pos = m->position();
-        if ( play == CMedia::kBackwards )
-            pos += m->duration() - 1;
         DBGM3( "seek to " << pos );
         seek( pos );
     }
@@ -4727,15 +4721,11 @@ void ImageBrowser::match_tree_order()
 
     int idx = -1;
     Fl_Tree_Item* i;
-    int64_t pos = 1;
     for ( i = first(); i; i = next(i) )
     {
         mrv::Element* elem = (mrv::Element*) i->widget();
         if ( !elem ) continue;
         mrv::media m = elem->media();
-        if ( m->position() > pos )
-            m->position( pos );
-        pos += m->duration();
         r->images.push_back( m );
         if ( m == fg && m ) {
             idx = int( r->images.size() - 1 );
@@ -4928,8 +4918,7 @@ void ImageBrowser::seek( const int64_t tframe )
         {
 
             size_t i = reel->index( f );
-            bool gap;
-            img = reel->image_at( f, gap );
+            img = reel->image_at( f );
             int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
 

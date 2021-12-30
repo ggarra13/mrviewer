@@ -261,7 +261,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
 
     // std::cerr << "check loop reel " << reel->name << std::endl;
-    bool gap = false;
     CMedia* rimg = NULL;
     if ( reel->edl )
     {
@@ -271,7 +270,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         first = reel->location(img);
         last  = first + img->duration() - 1;
 
-        rimg = reel->image_at( frame, gap );
+        rimg = reel->image_at( frame );
 
         if ( mx < last )  last = mx;
         if ( mn > first ) first = mn;
@@ -295,11 +294,11 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         }
     }
 
-    if ( !gap && frame > last )
+    if ( frame > last )
     {
         return CMedia::kDecodeLoopEnd;
     }
-    else if ( !gap && frame < first )
+    else if ( frame < first )
     {
         return CMedia::kDecodeLoopStart;
     }
@@ -391,7 +390,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
     case CMedia::kDecodeLoopEnd:
     {
-        bool gap = false;
 
         if ( reel->edl )
         {
@@ -402,13 +400,13 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             int64_t dts = f;
 
-            next = reel->image_at( f, gap );
+            next = reel->image_at( f );
 
 
-            if ( !gap && next == NULL && loop == CMedia::kLoop )
+            if ( next == NULL && loop == CMedia::kLoop )
             {
                 f = boost::int64_t(timeline->display_minimum());
-                next = reel->image_at( f, gap );
+                next = reel->image_at( f );
                 dts = first = reel->location(next);
             }
             else if ( next == img )
@@ -468,7 +466,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             }
         }
 
-        if ( gap || decode == kDecode ) return kEndIgnore;
+        if ( decode == kDecode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
@@ -516,7 +514,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
     case CMedia::kDecodeLoopStart:
     {
-        bool gap = false;
         if ( reel->edl )
         {
             boost::int64_t f = frame;
@@ -526,12 +523,12 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             int64_t dts = f;
 
-            next = reel->image_at( f, gap );
+            next = reel->image_at( f );
 
-            if ( !gap && next == NULL && loop == CMedia::kLoop )
+            if ( next == NULL && loop == CMedia::kLoop )
             {
                 f = boost::int64_t(timeline->display_maximum());
-                next = reel->image_at( f, gap );
+                next = reel->image_at( f );
                 dts = last = f;
             }
             else if ( next == img )
@@ -596,7 +593,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             }
         }
 
-        if ( !gap && decode == kDecode ) return kEndIgnore;
+        if ( decode == kDecode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
@@ -1307,7 +1304,7 @@ void video_thread( PlaybackData* data )
 
         // LOGT_INFO( "find image " << frame << " delay " << delay );
         //img->debug_video_packets( frame, "find_image", true );
-        // img->debug_video_stores( frame, "find_image", false );
+        //img->debug_video_stores( frame, "find_image", false );
 
         if ( ! img->find_image( frame ) )
         {

@@ -1191,7 +1191,7 @@ public:
 
 
     /// Change audio volume
-    void volume( float v );
+    virtual void volume( float v );
 
 
     inline bool has_subtitle() const
@@ -1763,9 +1763,6 @@ public:
     static LoadLib load_library;
     static std::atomic<int64_t> memory_used;
     static double thumbnail_percent;
-
-protected:
-    float volume_;
 
 protected:
 

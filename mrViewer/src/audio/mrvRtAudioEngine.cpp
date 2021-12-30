@@ -87,7 +87,7 @@ RtAudioEngine::~RtAudioEngine()
 
             if ( info.isDefaultOutput )
             {
-
+                _device = info;
                 Device d( "default", info.name, i );
                 _devices.insert( _devices.begin(), d );
             }
@@ -99,12 +99,6 @@ RtAudioEngine::~RtAudioEngine()
                 Device d( buf, info.name, i );
                 _devices.push_back( d );
             }
-        }
-
-        if ( _devices.empty() )
-        {
-            Device def( "default", "Default Audio Device" );
-            _devices.push_back( def );
         }
     }
 
@@ -148,10 +142,19 @@ void RtAudioEngine::volume( float v )
     _volume = v;
 }
 
-RtAudioEngine::AudioFormat RtAudioEngine::default_format()
-{
-    return kFloatLSB;
-}
+    RtAudioEngine::AudioFormat RtAudioEngine::default_format()
+    {
+        if ( _device.nativeFormats & RTAUDIO_FLOAT32 )
+            return kFloatLSB;
+        if ( _device.nativeFormats & RTAUDIO_SINT32 )
+            return kS32LSB;
+        if ( _device.nativeFormats & RTAUDIO_SINT16 )
+            return kS16LSB;
+        if ( _device.nativeFormats & RTAUDIO_SINT8 )
+            return kU8;
+        else
+            return kFloatLSB;
+    }
 
     int callback( void *outputBuffer, void *inputBuffer,
                   unsigned int nFrames,
@@ -442,7 +445,7 @@ bool RtAudioEngine::close()
 
         try
         {
-            audio.abortStream();
+            audio.stopStream();
             _aborted = true;
 
             while ( audio.isStreamRunning() ) ;

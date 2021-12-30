@@ -42,15 +42,10 @@ struct Reel_t
     Reel_t( const char* n ) : edl(false), name( n ) {}
     ~Reel_t() {}
 
-    mrv::media media_at( const int64_t f, bool& gap ) const;
-    mrv::media media_at( const int64_t f )
-        {
-            bool gap;
-            return media_at( f, gap );
-        }
-    inline CMedia* image_at( const int64_t f, bool& gap ) const
+    mrv::media media_at( const int64_t f ) const;
+    inline CMedia* image_at( const int64_t f ) const
     {
-        mrv::media m = media_at( f, gap );
+        mrv::media m = media_at( f );
         if (!m) return NULL;
         return m->image();
     }
@@ -58,7 +53,7 @@ struct Reel_t
     uint64_t duration() const;
 
     size_t index( const CMedia* const img ) const;
-    int index( const int64_t frame ) const;
+    size_t index( const int64_t frame ) const;
 
     // Given a frame in the timeline, return the local frame for the image
     // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
@@ -67,7 +62,7 @@ struct Reel_t
     int64_t offset( const CMedia* const img ) const;
     inline int64_t location( const CMedia* const img ) const
     {
-        return offset( img );
+        return offset( img ) + 1;
     }
 
     int64_t minimum() const;

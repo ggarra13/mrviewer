@@ -679,8 +679,7 @@ void EDLGroup::cut( boost::int64_t frame )
     if (!r) return;
 
 
-    bool gap;
-    CMedia* img = r->image_at( frame, gap );
+    CMedia* img = r->image_at( frame );
     if ( !img ) return;
 
     int idx = (int) r->index( frame );
@@ -746,8 +745,7 @@ void EDLGroup::merge( boost::int64_t frame )
 
     if ( r->images.size() < 2 ) return;
 
-    bool gap;
-    CMedia* img = r->image_at( frame, gap );
+    CMedia* img = r->image_at( frame );
     int idx = (int) r->index( frame );
     int64_t f = r->global_to_local( frame );
 
