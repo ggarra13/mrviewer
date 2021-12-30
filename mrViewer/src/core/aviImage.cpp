@@ -132,6 +132,8 @@ const unsigned int  kMaxCacheImages = 70;
 
 namespace mrv {
 
+    extern void sleep_ms( int ms );
+
 
 int CMedia::colorspace_override = 0;
 
@@ -1371,7 +1373,9 @@ void aviImage::store_image( const int64_t frame,
             }
         }
 
+
         _images.insert( at, image );
+
     }
 
 }
@@ -1853,6 +1857,10 @@ bool aviImage::find_image( const int64_t frame )
         SCOPED_LOCK( _mutex );
 
         int64_t f = frame - _start_number;
+
+
+        if ( f > _frameEnd ) f = _frameEnd;
+        else if ( f < _frameStart ) f = _frameStart;
 
         video_cache_t::iterator end = _images.end();
         video_cache_t::iterator i;
@@ -3496,12 +3504,14 @@ bool aviImage::frame( const int64_t f )
         return false;
     }
 
-
-
-
     int64_t sf = f;
-    if ( f < _frameStart )    sf = _dts = _adts = _frameStart;
-    else if ( f > _frameEnd ) sf = _dts = _adts = _frameEnd;
+
+    if ( f < _frameStart )    {
+        sf = _dts = _adts = _frameStart - _frame_offset;
+    }
+    else if ( f > _frameEnd )  {
+        sf = _dts = _adts = _frameEnd - _frame_offset;
+    }
 
 
     timeval now;
