@@ -10,8 +10,10 @@ v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	  volume.
 	- Rewrote audio on macOS to use RtAudio insteaad of libao.  As a result
 	  of this, there's no more hangups due to audio and audio can be float.
-	- Fixed last frame of videos sometimes displaying one of the previous
-	  last frames.
+	  However, playback at half the speed or at 1 1/2 will result in a
+	  warning that the frequency is not valid.
+	- Long  menus on macOS no longer go out of the screen and get covered
+	  by the dockbar.
 
 v6.0.3  - Made reel window reflect the first and last frames of the media
 	  instead of the full start and end frames.
