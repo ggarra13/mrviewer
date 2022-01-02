@@ -1,3 +1,7 @@
+v6.0.5  - Rewrote the macOS audio engine yet again to use portaudio.  As a
+	  result of this, everything works (playback at different speeds, does
+	  not hang, there's no "cracking" noise when switching clips, etc).
+
 v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	  type in the regex. field will turn into a complex regex once a version
 	  switch happens.

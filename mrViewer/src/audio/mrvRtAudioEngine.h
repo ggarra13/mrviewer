@@ -70,7 +70,7 @@ public:
     // Change volume of playback
     virtual void volume( float f );
 
-    void getOutputBuffer( void* out, unsigned nFrames );
+    void getOutputBuffer( void* out, unsigned int nFrames );
 
     bool stopped() const { return _stopped; }
 

@@ -177,7 +177,7 @@ void RtAudioEngine::volume( float v )
         LOG_ERROR( type << " " << errorText );
     }
 
-    void RtAudioEngine::getOutputBuffer( void* out, unsigned nFrames )
+    void RtAudioEngine::getOutputBuffer( void* out, unsigned int nFrames )
     {
         pthread_mutex_lock(&mutex);
 
@@ -309,7 +309,7 @@ bool RtAudioEngine::open( const unsigned channels,
         catch( const RtAudioError& e )
         {
             _enabled = false;
-            LOG_ERROR( freq << " " << e.getMessage() );
+            LOG_ERROR( e.getMessage() );
             return true;
         }
 

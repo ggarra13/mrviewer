@@ -203,8 +203,8 @@ protected:
 
 protected:
     static DeviceList _devices;     //!< list of devices available
-    static unsigned int _device_idx;  //!< index to current device being used
-    static unsigned int _old_device_idx;  //!< index to previous device used
+    static int _device_idx;  //!< index to current device being used
+    static int _old_device_idx;  //!< index to previous device used
     bool         _enabled;
     bool         _stopped;
     std::atomic<float>        _volume;

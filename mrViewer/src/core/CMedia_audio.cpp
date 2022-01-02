@@ -1591,7 +1591,7 @@ void CMedia::audio_stream( int idx )
     if ( _audio_index >= 0 )
     {
         open_audio_codec();
-        _audio_start = true;
+        _audio_start = false; //true;
         seek( _frame );
         _audio_start = false;
     }
@@ -1931,9 +1931,9 @@ void CMedia::flush_audio()
 
 void CMedia::close_audio()
 {
-    SCOPED_LOCK( _audio_mutex);
-
+#ifndef OSX
     if ( _audio_engine ) _audio_engine->close();
+#endif
     _samples_per_sec = 0;
 }
 

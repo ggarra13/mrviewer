@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2021-12-30 06:54-0300\n"
+"POT-Creation-Date: 2022-01-02 10:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -366,18 +366,17 @@ msgid ""
 "RtAudio: no compiled support for specified API argument!\n"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:94 audio/mrvRtAudioEngine.cpp:177
-#: audio/mrvRtAudioEngine.cpp:312 audio/mrvALSAEngine.cpp:103
-#: core/CMedia.cpp:3024 core/CMedia.cpp:3032 core/CMedia.cpp:4017
-#: core/CMedia.cpp:4019 core/CMedia.cpp:4034 core/CMedia.cpp:4523
-#: core/CMedia.cpp:4583 core/CMedia.cpp:4631 core/CMedia_audio.cpp:1221
-#: core/CMedia_audio.cpp:2276 core/CMedia_audio.cpp:2278
-#: core/CMedia_audio.cpp:2296 core/CMedia_audio.cpp:2359
-#: core/CMedia_audio.cpp:2476 core/mrvFrame.cpp:279 core/mrvFrame.cpp:295
-#: core/mrvFrame.cpp:741 core/mrvFrame.cpp:750 core/aviImage.cpp:801
-#: core/aviImage.cpp:2268 core/aviImage.cpp:3969 core/aviImage.cpp:3981
-#: core/aviImage.cpp:3998 core/aviImage.cpp:4047 core/aviImage.cpp:4104
-#: core/aviImage_save.cpp:619 core/aviImage_save.cpp:625
+#: audio/mrvPortAudioEngine.cpp:101 audio/mrvRtAudioEngine.cpp:177
+#: audio/mrvALSAEngine.cpp:103 core/CMedia.cpp:3024 core/CMedia.cpp:3032
+#: core/CMedia.cpp:4017 core/CMedia.cpp:4019 core/CMedia.cpp:4034
+#: core/CMedia.cpp:4523 core/CMedia.cpp:4583 core/CMedia.cpp:4631
+#: core/CMedia_audio.cpp:1221 core/CMedia_audio.cpp:2276
+#: core/CMedia_audio.cpp:2278 core/CMedia_audio.cpp:2296
+#: core/CMedia_audio.cpp:2359 core/CMedia_audio.cpp:2476 core/mrvFrame.cpp:279
+#: core/mrvFrame.cpp:295 core/mrvFrame.cpp:741 core/mrvFrame.cpp:750
+#: core/aviImage.cpp:801 core/aviImage.cpp:2268 core/aviImage.cpp:3969
+#: core/aviImage.cpp:3981 core/aviImage.cpp:3998 core/aviImage.cpp:4047
+#: core/aviImage.cpp:4104 core/aviImage_save.cpp:619 core/aviImage_save.cpp:625
 #: core/aviImage_save.cpp:1383 core/hdrImage.cpp:255 core/hdrImage.cpp:263
 #: core/hdrImage.cpp:266 core/hdrImage.cpp:273 core/slateImage.cpp:371
 #: core/wandImage.cpp:89 core/brawImage.cpp:1332 core/brawImage.cpp:1541
@@ -3932,7 +3931,7 @@ msgstr ""
 msgid " ,"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:94 audio/mrvWaveEngine.cpp:94
+#: audio/mrvPortAudioEngine.cpp:101 audio/mrvWaveEngine.cpp:94
 #: core/YouTube.cpp:206 core/aviImage.cpp:709 gui/mrvMedia.cpp:52
 #: gui/mrvImageView.cpp:4514
 msgid " - "
@@ -7774,7 +7773,7 @@ msgid "%d / %d"
 msgstr ""
 
 # c-format
-#: audio/mrvPortAudioEngine.cpp:150 audio/mrvWaveEngine.cpp:152
+#: audio/mrvPortAudioEngine.cpp:158 audio/mrvWaveEngine.cpp:152
 #, c-format
 msgid "%d Channels"
 msgstr "%d Canales"
@@ -8061,7 +8060,7 @@ msgstr ""
 msgid "%s %s %d %d:%d:%d %d"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:157
+#: audio/mrvPortAudioEngine.cpp:172
 #, c-format
 msgid "%s (%s)"
 msgstr ""
@@ -14813,7 +14812,7 @@ msgstr "50"
 msgid "59.94"
 msgstr "59,94"
 
-#: audio/mrvPortAudioEngine.cpp:143 audio/mrvWaveEngine.cpp:145
+#: audio/mrvPortAudioEngine.cpp:151 audio/mrvWaveEngine.cpp:145
 #: gui/mrvImageInformation.cpp:3591
 msgid "5:1"
 msgstr "1:1"
@@ -15191,7 +15190,7 @@ msgstr ""
 msgid "70mm"
 msgstr "70mm"
 
-#: audio/mrvPortAudioEngine.cpp:146 audio/mrvWaveEngine.cpp:148
+#: audio/mrvPortAudioEngine.cpp:154 audio/mrvWaveEngine.cpp:148
 #: gui/mrvImageInformation.cpp:3592
 msgid "7:1"
 msgstr "1:1"
@@ -17999,6 +17998,10 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
+#: audio/mrvPortAudioEngine.cpp:297
+msgid "Audio format not known.  Choosing float32. "
+msgstr ""
+
 #: core/CMedia_audio.cpp:1887
 msgid "Audio frame "
 msgstr "Cuadro de audio "
@@ -19017,6 +19020,11 @@ msgstr "Escritor del Mensaje"
 msgid "Capture Date"
 msgstr "Fecha de Captura"
 
+#: audio/mrvPortAudioEngine.cpp:170
+#, c-format
+msgid "Card #%d"
+msgstr ""
+
 #: core/wandImage.cpp:529
 msgid "Category"
 msgstr "Categoría"
@@ -19965,6 +19973,11 @@ msgstr "No pude aplanar pistas.  Error:"
 #: core/brawImage.cpp:1257
 msgid "Could not get audio samples"
 msgstr "No pude obtener samples de audio"
+
+#: audio/mrvPortAudioEngine.cpp:265
+#, fuzzy
+msgid "Could not get device info for "
+msgstr "¡Fallé en obtener timecode para el cuadro "
 
 #: core/aviImage.cpp:1291
 msgid "Could not get image conversion context."
@@ -20965,8 +20978,8 @@ msgstr "Defecto"
 msgid "Default Action"
 msgstr "Acción por Defecto"
 
-#: audio/mrvPortAudioEngine.cpp:121 audio/mrvAOEngine.cpp:105
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvAOEngine.cpp:105 audio/mrvWaveEngine.cpp:122
+#: audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "Dispositivo de Audio por Defecto"
 
@@ -25976,7 +25989,7 @@ msgstr "Monitor/Agregar Perfil de Color ICC"
 msgid "Monitors:\t"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:138 audio/mrvWaveEngine.cpp:140
+#: audio/mrvPortAudioEngine.cpp:146 audio/mrvWaveEngine.cpp:140
 #: gui/mrvImageInformation.cpp:3589
 msgid "Mono"
 msgstr ""
@@ -31311,7 +31324,7 @@ msgstr "Comienzo del Vídeo"
 msgid "Stepping: "
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:140 audio/mrvWaveEngine.cpp:142
+#: audio/mrvPortAudioEngine.cpp:148 audio/mrvWaveEngine.cpp:142
 #: gui/mrvImageBrowser.cpp:2888 gui/mrvImageInformation.cpp:3588
 #: gui/mrvImageInformation.cpp:3590
 msgid "Stereo"
@@ -32785,7 +32798,7 @@ msgid "UTF-8"
 msgstr ""
 
 #
-#: audio/mrvRtAudioEngine.cpp:325
+#: audio/mrvPortAudioEngine.cpp:324 audio/mrvRtAudioEngine.cpp:325
 #, fuzzy
 msgid "Unable to allocate queue buffer."
 msgstr "No pude reservar fifo buffer"
@@ -37368,14 +37381,15 @@ msgstr "subtítulo"
 msgid "decode_video"
 msgstr "Error de decodificación de audio:"
 
-#: audio/mrvPortAudioEngine.cpp:121 audio/mrvRtAudioEngine.cpp:91
-#: audio/mrvRtAudioEngine.cpp:296 audio/mrvAOEngine.cpp:90
-#: audio/mrvAOEngine.cpp:105 audio/RtAudio.cpp:7183 audio/RtAudio.cpp:7238
-#: audio/RtAudio.cpp:7241 audio/RtAudio.cpp:7510 audio/RtAudio.cpp:7539
-#: audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:122
+#: audio/mrvPortAudioEngine.cpp:167 audio/mrvPortAudioEngine.cpp:196
+#: audio/mrvRtAudioEngine.cpp:91 audio/mrvRtAudioEngine.cpp:296
+#: audio/mrvAOEngine.cpp:90 audio/mrvAOEngine.cpp:105 audio/RtAudio.cpp:7183
+#: audio/RtAudio.cpp:7238 audio/RtAudio.cpp:7241 audio/RtAudio.cpp:7510
+#: audio/RtAudio.cpp:7539 audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:122
 #: audio/mrvALSAEngine.cpp:80 core/CMedia.cpp:3637 gui/mrvPreferences.cpp:852
 #: gui/mrvPreferences.cpp:1269 gui/mrvPreferences.cpp:2452
 #: gui/mrvPreferences.cpp:2576
+#, c-format
 msgid "default"
 msgstr "defecto"
 
@@ -37767,7 +37781,7 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:272 audio/mrvWaveEngine.cpp:651
+#: audio/mrvPortAudioEngine.cpp:344 audio/mrvWaveEngine.cpp:651
 msgid "enabled ok"
 msgstr ""
 
@@ -40932,7 +40946,7 @@ msgstr ""
 msgid "parser"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:48
+#: audio/mrvPortAudioEngine.cpp:47
 msgid "paudio"
 msgstr ""
 
@@ -41125,7 +41139,7 @@ msgstr ""
 msgid "psd"
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:433
+#: audio/mrvPortAudioEngine.cpp:493 audio/mrvRtAudioEngine.cpp:433
 #, fuzzy
 msgid "pthread_cond_wait() => "
 msgstr "Número de Threads"
@@ -44640,6 +44654,26 @@ msgid "~/"
 msgstr ""
 
 #, fuzzy
+#~ msgid "stream "
+#~ msgstr "Decodificacion sin Pista"
+
+#, fuzzy
+#~ msgid "close stream "
+#~ msgstr "Decodificacion sin Pista"
+
+#, fuzzy
+#~ msgid "channels "
+#~ msgstr " canales "
+
+#, fuzzy
+#~ msgid "refresh devices "
+#~ msgstr "Servicio de Referencia"
+
+#, fuzzy
+#~ msgid "close audio"
+#~ msgstr "Sustituir Audio"
+
+#, fuzzy
 #~ msgid " insert "
 #~ msgstr "Insertar"
 
@@ -44690,10 +44724,6 @@ msgstr ""
 #~ msgstr "Número de canales de audio"
 
 #, fuzzy
-#~ msgid " close_audio"
-#~ msgstr "Sustituir Audio"
-
-#, fuzzy
 #~ msgid "audio close"
 #~ msgstr "archivo de audio"
 
@@ -44727,10 +44757,6 @@ msgstr ""
 #, fuzzy
 #~ msgid " format rtaudio "
 #~ msgstr "audio"
-
-#, fuzzy
-#~ msgid "close stream"
-#~ msgstr "Decodificacion sin Pista"
 
 #, fuzzy
 #~ msgid "0) "
@@ -45714,10 +45740,6 @@ msgstr ""
 
 #~ msgid "Play Forwards X2  Speed"
 #~ msgstr "Reproducir para Adelante a X2 Velocidad"
-
-#, fuzzy
-#~ msgid "refresh devices"
-#~ msgstr "Servicio de Referencia"
 
 #~ msgid "Could not open any font of size "
 #~ msgstr "No pude abrir ningun font de tamaño "

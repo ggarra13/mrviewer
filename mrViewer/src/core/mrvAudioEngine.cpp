@@ -55,8 +55,8 @@
 namespace mrv {
 
 AudioEngine::DeviceList AudioEngine::_devices;
-unsigned  AudioEngine::_device_idx = 0;
-unsigned  AudioEngine::_old_device_idx = 99999;
+int  AudioEngine::_device_idx = 0;
+int  AudioEngine::_old_device_idx = 99999;
 
 AudioEngine::AudioEngine() :
     _enabled( false ),

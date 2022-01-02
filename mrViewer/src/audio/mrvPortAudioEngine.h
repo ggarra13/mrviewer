@@ -58,8 +58,6 @@ public:
 
     virtual void refresh_devices();
 
-    virtual void buffers( int num ) {
-    }
 
     // Open an audio stream for playback
     virtual bool open(
@@ -78,11 +76,17 @@ public:
     // Change volume of playback
     virtual void volume( float f );
 
+    void getOutputBuffer( void* out, unsigned long nFrames );
+
     // Flush all audio sent for playback
     virtual void flush();
 
     // Close an audio stream
     virtual bool close();
+
+    bool aborted() { return _aborted; }
+
+    bool stopped() { return _stopped; }
 
 
 protected:
@@ -94,15 +98,29 @@ protected:
     virtual bool initialize();
 
 
-    void wait_audio();
+
 
 protected:
-    unsigned int _sample_size;
+    unsigned int sample_size;
+    unsigned int _bits;
+    unsigned int _channels;
+    unsigned int _freq;
+
     PaStreamParameters outputParameters;
     PaStream *stream;
-    bool _audio_playback;
+    bool         _stopped, _aborted;
     unsigned int _samples_per_block;
     size_t        bytesPerBlock;
+    /* Our internal queue of samples waiting to be consumed by
+       CoreAudio */
+    unsigned char*               buffer;
+    unsigned int                 bufferByteCount;
+    unsigned int                 firstValidByteOffset;
+    unsigned int                 validByteCount;
+
+    unsigned int                 buffer_time;
+    unsigned int                 totalBytesToCopy;
+    unsigned int                 bufferSize;
 
 protected:
     static unsigned int     _instances;
