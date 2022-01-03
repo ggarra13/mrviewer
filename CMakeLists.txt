@@ -47,11 +47,11 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option( USE_PORTAUDIO "Use PortAudio interface (Not working)" OFF )
+option( USE_PORTAUDIO "Use PortAudio interface" OFF )
 
 SET( VersionMajor 6 )
 SET( VersionMinor 0 )
-SET( VersionPatch 4 )
+SET( VersionPatch 5 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )

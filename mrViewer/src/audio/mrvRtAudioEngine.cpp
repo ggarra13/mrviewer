@@ -164,6 +164,8 @@ void RtAudioEngine::volume( float v )
         // if ( e->stopped() ) return 1;
         // if ( e->aborted() ) return 2;
 
+        std::cerr << nFrames << std::endl;
+
         e->getOutputBuffer( outputBuffer, nFrames );
 
         // if ( status == RTAUDIO_OUTPUT_UNDERFLOW )

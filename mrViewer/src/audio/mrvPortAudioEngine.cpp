@@ -240,10 +240,13 @@ callback( const void *inputBuffer, void *outputBuffer,
 {
     PortAudioEngine* e = (PortAudioEngine*) userData;
 
+
     e->getOutputBuffer( outputBuffer, nFrames );
 
-    // if ( status == RTAUDIO_OUTPUT_UNDERFLOW )
-    //     LOG_WARNING( "output underflow" );
+    if ( status & paOutputUnderflow )
+         LOG_WARNING( "output underflow" );
+    if ( status & paOutputOverflow )
+         LOG_WARNING( "output overflow" );
     return paContinue;
 }
 
@@ -253,7 +256,7 @@ bool PortAudioEngine::open( const unsigned channels,
 {
     try
     {
-        if ( _freq != freq || _channels != channels || _audio_format != format )
+        if ( _freq != freq || _channels != channels )
             close();
 
         if ( stream && Pa_IsStreamActive( stream ) )
@@ -303,8 +306,8 @@ bool PortAudioEngine::open( const unsigned channels,
                                 NULL, /* no input */
                                 &outputParameters,
                                 freq,
-                                0,
-                                paClipOff,      /* we won't output out of range samples so don't bother clipping them */
+                                250,
+                                paClipOff,  /* we don't output out of range samples so no need to clip them */
                                 callback, /* callback, use non-blocking API */
                                 this ); /* userData */
         if( err != paNoError )
@@ -343,6 +346,7 @@ bool PortAudioEngine::open( const unsigned channels,
 
         DBGM1( "enabled ok" );
         // All okay, enable device
+        _aborted = _stopped = false;
         _enabled = true;
         return true;
     }
@@ -407,8 +411,6 @@ PortAudioEngine::getOutputBuffer( void* out, unsigned long nFrames )
 
 bool PortAudioEngine::play( const char* d, const size_t size )
 {
-    //wait_audio();
-
     if ( outputParameters.device == paNoDevice ) {
         return false;
     }
@@ -433,7 +435,6 @@ bool PortAudioEngine::play( const char* d, const size_t size )
         }
         case kFloatLSB:
         {
-
             size_t samples = size / 4;
             float* fdata = new float[samples];
             memcpy( fdata, d, size );
@@ -528,6 +529,7 @@ void PortAudioEngine::flush()
     if ( !stream ) return;
 
 
+
     int err = Pa_AbortStream( stream );
     if( err != paNoError )
         PA_ERROR( err );
@@ -542,8 +544,8 @@ bool PortAudioEngine::close()
 {
     if (!stream) return false;
 
-
     flush();
+
 
     int err = Pa_CloseStream( stream );
     if( err != paNoError )

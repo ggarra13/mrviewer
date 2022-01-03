@@ -96,7 +96,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-01-02 10:39-0300\n"
+"POT-Creation-Date: 2022-01-03 16:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -359,7 +359,7 @@ msgid ""
 "RtAudio: no compiled support for specified API argument!\n"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:101 audio/mrvRtAudioEngine.cpp:177
+#: audio/mrvPortAudioEngine.cpp:101 audio/mrvRtAudioEngine.cpp:179
 #: audio/mrvALSAEngine.cpp:103 core/CMedia.cpp:3024 core/CMedia.cpp:3032
 #: core/CMedia.cpp:4017 core/CMedia.cpp:4019 core/CMedia.cpp:4034
 #: core/CMedia.cpp:4523 core/CMedia.cpp:4583 core/CMedia.cpp:4631
@@ -3746,7 +3746,7 @@ msgstr ""
 msgid " %7x"
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:288 gui/mrvPreferences.cpp:127
+#: audio/mrvRtAudioEngine.cpp:290 gui/mrvPreferences.cpp:127
 #, c-format
 msgid " %d"
 msgstr ""
@@ -4767,7 +4767,7 @@ msgstr ""
 msgid " is already the last version on disk."
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:291
+#: audio/mrvRtAudioEngine.cpp:293
 msgid " is invalid."
 msgstr ""
 
@@ -14883,7 +14883,7 @@ msgid "6.\tc #A24F3E"
 msgstr ""
 
 #: gui/mrvVersion.cpp:123
-msgid "6.0.4"
+msgid "6.0.5"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:161
@@ -17849,7 +17849,7 @@ msgstr ""
 msgid "Audio conversion of "
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:297
+#: audio/mrvPortAudioEngine.cpp:300
 msgid "Audio format not known.  Choosing float32. "
 msgstr ""
 
@@ -17861,7 +17861,7 @@ msgstr ""
 msgid "Audio frame has NOPTS value."
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:291
+#: audio/mrvRtAudioEngine.cpp:293
 msgid "Audio frequency "
 msgstr ""
 
@@ -19682,7 +19682,7 @@ msgstr ""
 msgid "Could not get audio samples"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:265
+#: audio/mrvPortAudioEngine.cpp:268
 msgid "Could not get device info for "
 msgstr ""
 
@@ -31844,7 +31844,7 @@ msgstr ""
 msgid "UTF-8"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:324 audio/mrvRtAudioEngine.cpp:325
+#: audio/mrvPortAudioEngine.cpp:327 audio/mrvRtAudioEngine.cpp:327
 msgid "Unable to allocate queue buffer."
 msgstr ""
 
@@ -31960,7 +31960,7 @@ msgstr ""
 msgid "Unknown audio format.  Setting 32 bits"
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:272
+#: audio/mrvRtAudioEngine.cpp:274
 msgid "Unknown audio format.  Setting float 32 bits"
 msgstr ""
 
@@ -32357,7 +32357,7 @@ msgstr ""
 msgid "Valid option key has invalid value"
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:292
+#: audio/mrvRtAudioEngine.cpp:294
 msgid "Valid rates are:"
 msgstr ""
 
@@ -36235,7 +36235,7 @@ msgid "decode_video"
 msgstr ""
 
 #: audio/mrvPortAudioEngine.cpp:167 audio/mrvPortAudioEngine.cpp:196
-#: audio/mrvRtAudioEngine.cpp:91 audio/mrvRtAudioEngine.cpp:296
+#: audio/mrvRtAudioEngine.cpp:91 audio/mrvRtAudioEngine.cpp:298
 #: audio/mrvAOEngine.cpp:90 audio/mrvAOEngine.cpp:105 audio/RtAudio.cpp:7183
 #: audio/RtAudio.cpp:7238 audio/RtAudio.cpp:7241 audio/RtAudio.cpp:7510
 #: audio/RtAudio.cpp:7539 audio/RtAudio.cpp:7542 audio/mrvWaveEngine.cpp:122
@@ -36628,7 +36628,7 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:344 audio/mrvWaveEngine.cpp:651
+#: audio/mrvPortAudioEngine.cpp:347 audio/mrvWaveEngine.cpp:651
 msgid "enabled ok"
 msgstr ""
 
@@ -38924,7 +38924,7 @@ msgstr ""
 msgid "mpipe"
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:300
+#: audio/mrvRtAudioEngine.cpp:302
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.1.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
 #: core/mrvACES.cpp:368 gui/mrvImageView.cpp:495 gui/mrvMainWindow.cpp:77
@@ -39516,6 +39516,14 @@ msgstr ""
 msgid "outport %d"
 msgstr ""
 
+#: audio/mrvPortAudioEngine.cpp:249
+msgid "output overflow"
+msgstr ""
+
+#: audio/mrvPortAudioEngine.cpp:247
+msgid "output underflow"
+msgstr ""
+
 #: gui/mrvVersion.cpp:327
 msgid "output_format_list"
 msgstr ""
@@ -39901,7 +39909,7 @@ msgstr ""
 msgid "psd"
 msgstr ""
 
-#: audio/mrvPortAudioEngine.cpp:493 audio/mrvRtAudioEngine.cpp:433
+#: audio/mrvPortAudioEngine.cpp:493 audio/mrvRtAudioEngine.cpp:435
 msgid "pthread_cond_wait() => "
 msgstr ""
 
