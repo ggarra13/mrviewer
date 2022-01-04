@@ -63,7 +63,10 @@ FIND_PACKAGE( R3DSDK      REQUIRED )    # for R3D format
 FIND_PACKAGE( BlackMagicRAW  REQUIRED )    # for BRAW format
 FIND_PACKAGE( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
 
+if( APPLE )
 set( USE_PORTAUDIO 1 )
+endif()
+
 if( USE_PORTAUDIO )
     FIND_PACKAGE( PortAudio REQUIRED )
 endif()
