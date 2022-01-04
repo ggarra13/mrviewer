@@ -5203,8 +5203,8 @@ int ImageView::leftMouseDown(int x, int y)
 #ifdef __APPLE__
     int ev_state = Fl::event_state();
     // On apple, ctrl+left click as right click
-    if ( (ev_state & (FL_CTRL | FL_BUTTON1)) == (FL_CTRL | FL_BUTTON1) )
-        button = FL_RIGHT_MOUSE;
+    // if ( (ev_state & (FL_CTRL | FL_BUTTON1)) == (FL_CTRL | FL_BUTTON1) )
+    //     button = FL_RIGHT_MOUSE;
 #endif
     if ( button == FL_LEFT_MOUSE )
     {
