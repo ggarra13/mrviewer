@@ -2,6 +2,10 @@ v6.0.5  - Rewrote the macOS audio engine yet again to use portaudio.  As a
 	  result of this, everything works (playback at different speeds, does
 	  not hang, there's no "cracking" noise when switching clips, etc).
 	- Fixed unshown frames (UF: in hud) for movies that rate is > 29.976.
+	- CHanged behavior of CTRL+LMB on macOS to mimic what happens on other
+	  OSes, instead of bringing up the context menu.
+	- Added Shift+Mousewheel to change volume.
+	- Added CTRL+LMB Double Click to reset gain.
 
 v6.0.4  - Made versioning regex more flexible and easier to use.  Now what you
 	  type in the regex. field will turn into a complex regex once a version
