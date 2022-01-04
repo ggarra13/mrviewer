@@ -5240,6 +5240,12 @@ int ImageView::leftMouseDown(int x, int y)
           flags &= ~kLeftShift;
           flags |= kLeftCtrl;
           flags |= kGain;
+
+          if ( Fl::event_clicks() > 1 )
+          {
+              gain(1.0);
+              Fl::event_clicks(0);
+          }
         }
 
         if ( _mode & kSelection )
@@ -8628,6 +8634,10 @@ int ImageView::handle(int event)
             if ( Fl::event_state( FL_ALT ) )
             {
                 scrub( -dy );
+            }
+            else if ( Fl::event_state( FL_SHIFT ) )
+            {
+                volume( volume() - dy / 50 );
             }
             else
             {
