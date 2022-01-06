@@ -389,7 +389,7 @@ void WaveEngine::refresh_devices()
                  manufacturer.c_str(), product.c_str() );
 
         Device dev( name, desc );
-        _devices.push_back( dev );
+        AudioEngine::_devices.push_back( dev );
     }
 
 }
@@ -400,8 +400,8 @@ bool WaveEngine::initialize()
     {
         refresh_devices();
 
-        if ( ! _devices.empty() ) _device_idx = 0;
-        else                      _device_idx = WAVE_MAPPER;
+        if ( ! _devices.empty() ) AudioEngine::_device_idx = 0;
+        else                      AudioEngine::_device_idx = WAVE_MAPPER;
     }
 
     ++_instances;
@@ -565,8 +565,8 @@ bool WaveEngine::open( const unsigned channels,
                 }
         }
 
-        unsigned device = _device_idx;
-        _old_device_idx = _device_idx;
+        unsigned device = AudioEngine::_device_idx;
+        AudioEngine::_old_device_idx = device;
         if ( device == 0 )
             device = WAVE_MAPPER; // default device
         else
