@@ -103,7 +103,6 @@ protected:
 protected:
     unsigned int sample_size;
     unsigned int _bits;
-    unsigned int _channels;
     unsigned int _freq;
 
     PaStreamParameters outputParameters;

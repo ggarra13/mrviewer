@@ -133,7 +133,6 @@ std::ostream& operator<<( std::ostream& o, mrv::AudioEngine::AudioFormat s )
 namespace mrv {
 
 
-
 void CMedia::clear_video_packets()
 {
     _video_packets.clear();
