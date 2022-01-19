@@ -105,6 +105,8 @@ public:
         std::string _what;
     };
 
+  public:
+
 
     AudioEngine();
     virtual ~AudioEngine();
@@ -117,6 +119,13 @@ public:
     // Return default device (must be first one added)
     static std::string default_device();
 
+    static int device_index() {
+        return _device_idx;
+    };
+    static int old_device_index() {
+        return _old_device_idx;
+    };
+    
     // Allow the user to select a device for playback
     static bool device( const std::string& b );
 
@@ -124,12 +133,6 @@ public:
 
     static std::string device();
 
-    static unsigned device_index() {
-        return _device_idx;
-    }
-    static unsigned old_device_index() {
-        return _old_device_idx;
-    }
 
     // Name of audio engine
     virtual const char* name() = 0;
@@ -141,7 +144,7 @@ public:
     virtual bool open(
         const unsigned int channels,
         const unsigned int frequency,
-        const AudioFormat  format = kFloatLSB
+        const AudioFormat  format
     ) = 0;
 
     // Play some samples (this function does not return until
@@ -175,7 +178,7 @@ public:
         _enabled = false;
     }
 
-    inline  unsigned channels() const {
+    inline int channels() const {
         return _channels;
     }
 
@@ -200,11 +203,10 @@ protected:
     // device for playback
     virtual bool initialize() = 0;
 
-
 protected:
-    static DeviceList _devices;     //!< list of devices available
     static int _device_idx;  //!< index to current device being used
     static int _old_device_idx;  //!< index to previous device used
+    static DeviceList _devices;     //!< list of devices available
     bool         _enabled;
     bool         _stopped;
     std::atomic<float>        _volume;
