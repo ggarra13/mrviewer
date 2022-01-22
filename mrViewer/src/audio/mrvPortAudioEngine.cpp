@@ -160,8 +160,6 @@ void PortAudioEngine::refresh_devices()
             break;
         }
 
-        _channels = 0;
-
         if ( _device_idx < 0 ) {
             _device_idx = i;
             sprintf( name, "default" );

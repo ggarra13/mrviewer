@@ -411,7 +411,7 @@ SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
 COMMAND xgettext
-ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" -a --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
 DEPENDS mrViewer
 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
@@ -735,11 +735,7 @@ ELSEIF (UNIX)
 
   # try to set up the menu sys
 
-  if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0 )
-      SET(CPACK_GENERATOR DEB TGZ )
-  else()
-      SET(CPACK_GENERATOR DEB RPM TGZ )
-  endif()
+  SET(CPACK_GENERATOR DEB RPM TGZ )
 
   # SET the installation directory.
 
