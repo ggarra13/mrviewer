@@ -1283,7 +1283,7 @@ bool parse_timeline(LoadList& sequences,
     auto onetrack = otio::flatten_stack(video_tracks, &errorStatus);
     if (!onetrack)
     {
-        LOG_ERROR( _("Could not flatten tracks. Error: ") << errorStatus);
+        LOG_ERROR( _("Could not flatten tracks. Error: "));
         return false;
     }
 
@@ -1295,9 +1295,8 @@ bool parse_timeline(LoadList& sequences,
     newtimeline.value->set_tracks(stack);
     if (!stack.value->append_child(onetrack, &errorStatus))
     {
-        LOG_ERROR(_("Could not append child to stack. Error: ")
-                  << errorStatus);
-        return false;
+      LOG_ERROR(_("Could not append child to stack. Error: "));
+      return false;
     }
 
     for (const auto i : newtimeline.value->tracks()->children())
@@ -1355,7 +1354,7 @@ bool parse_otio( mrv::LoadList& sequences, const char* file )
 
     if (!timeline)
     {
-        LOG_ERROR( _("Could not open .otio file. Error: ") << error_status );
+        LOG_ERROR( _("Could not open .otio file. ") );
         return false;
     }
 
@@ -1422,7 +1421,7 @@ void ImageBrowser::save_otio( mrv::Reel reel,
         auto clip = otio::SerializableObject::Retainer<otio::Clip>(new otio::Clip(shotID, mediaReference, visibleRange ));
         if ( ! track.value->append_child( clip, &error_status ) )
         {
-            LOG_ERROR( _("Could not append one clip to track: ") << error_status );
+            LOG_ERROR( _("Could not append one clip to track: ") );
         }
     }
 
@@ -1430,13 +1429,13 @@ void ImageBrowser::save_otio( mrv::Reel reel,
     timeline.value->set_tracks(stack);
     if (!stack.value->append_child(track, &error_status))
     {
-        LOG_ERROR( _("Could not append one track to stack: ") << error_status );
+        LOG_ERROR( _("Could not append one track to stack: ") );
         return;
     }
 
     if (!timeline.value->to_json_file(file.c_str(), &error_status))
     {
-        LOG_ERROR( _("Could not save .otio timeline: ") << error_status);
+        LOG_ERROR( _("Could not save .otio timeline: "));
         return;
     }
 
