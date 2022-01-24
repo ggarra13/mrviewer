@@ -8119,7 +8119,7 @@ void ImageView::show_background( const bool b )
             uiMain->uiBottomBar->show();
         }
         if ( has_pixel_bar )  {
-            uiMain->uiPixelBar->size( W, int(29) );
+            uiMain->uiPixelBar->size( W, int(30) );
             uiMain->uiPixelBar->show();
         }
         uiMain->uiViewGroup->layout();
@@ -10135,7 +10135,7 @@ void ImageView::resize_main_window()
     if ( uiMain->uiPixelBar->visible() )
     {
       uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                                int(29) );
+                                int(30) );
       h += uiMain->uiPixelBar->h();
     }
 
@@ -10192,7 +10192,7 @@ void ImageView::resize_main_window()
                             int(28) );
 
     uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                              int(29) );
+                              int(30) );
 
     uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                int(49) );
