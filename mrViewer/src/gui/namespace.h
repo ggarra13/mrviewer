@@ -34,7 +34,6 @@ class GL3dViewUI;
 class HotkeyUI;
 class AboutUI;
 class PaintUI;
-class ConnectionUI;
 class StereoUI;
 class ColorControlsUI;
 class EDLWindowUI;

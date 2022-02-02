@@ -317,8 +317,6 @@ SET( SOURCES
   core/brawImage.cpp
 
   core/mrSocket.cpp
-  core/mrvClient.cpp
-  core/mrvServer.cpp
   core/mrvAudioEngine.cpp
   core/mrvColor.cpp
   core/mrvColorSpaces.cpp

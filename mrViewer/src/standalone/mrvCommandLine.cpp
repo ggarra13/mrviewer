@@ -35,7 +35,6 @@
 
 #include "core/mrvI8N.h"
 #include "core/mrvString.h"
-#include "core/mrvServer.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
@@ -437,15 +436,6 @@ void parse_command_line( const int argc, const char** argv,
       again( "", "gain",
              _("Override viewer's default gain."), false, opts.gain, "float");
 
-    ValueArg< std::string >
-    ahostname( "t", N_("host"),
-               _("Override viewer's default client hostname."), false,
-               opts.host, "string");
-
-    ValueArg< unsigned short >
-    aport( N_("p"), N_("port"),
-             _("Set viewer's default server/client port."), false,
-             opts.port, "string");
 
     UnlabeledMultiArg< std::string >
     afiles(_("files"),
@@ -500,8 +490,6 @@ void parse_command_line( const int argc, const char** argv,
     cmd.add(asingle);
     cmd.add(agamma);
     cmd.add(again);
-    cmd.add(ahostname);
-    cmd.add(aport);
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
@@ -532,8 +520,6 @@ void parse_command_line( const int argc, const char** argv,
     opts.single = asingle.getValue();
     opts.gamma  = agamma.getValue();
     opts.gain   = again.getValue();
-    opts.host = ahostname.getValue();
-    opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
     opts.bgfile = abg.getValue();

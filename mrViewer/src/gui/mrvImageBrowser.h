@@ -37,7 +37,6 @@
 #include <FL/Fl_Tree.H>
 
 #include "core/Sequence.h"
-#include "core/mrvServer.h"
 #include "gui/mrvReelList.h"
 #include "gui/mrvBrowser.h"
 #include "gui/mrvChoice.h"
@@ -47,8 +46,6 @@
 extern std::string retname;
 class ViewerUI;
 
-// Callbacks
-void attach_ocio_ics_cb2( const std::string& ret, mrv::ImageBrowser* v );
 
 namespace mrv
 {
@@ -376,5 +373,7 @@ protected:
 
 } // namespace mrv
 
+// Callbacks
+void attach_ocio_ics_cb2( const std::string& ret, mrv::ImageBrowser* v );
 
 #endif  // mrvImageBrowser_h

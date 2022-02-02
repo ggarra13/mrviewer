@@ -1,4 +1,5 @@
-v6.0.6  - Fixed syncing of images across network (it works again).
+v6.0.6  - Removed Connections from interface and code as it was never working
+	  properly.
 
 v6.0.5  - Rewrote the macOS audio engine yet again to use portaudio.  As a
 	  result of this, everything works (playback at different speeds, does

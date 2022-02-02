@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function {}
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -18,12 +20,6 @@ decl {\#include "core/mrvMath.h"} {private local
 }
 
 decl {\#include "core/mrvColorSpaces.h"} {private local
-}
-
-decl {\#include "core/mrvServer.h"} {private local
-}
-
-decl {\#include "core/mrvClient.h"} {private local
 }
 
 decl {\#include "gui/mrvMainWindow.h"} {private local
@@ -91,11 +87,11 @@ class VectorscopeUI {open
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
 o->hide();} open
-      xywh {155 348 240 240} type Double resizable
+      xywh {155 376 240 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;} non_modal visible
     } {
-      Fl_Box uiVectorscope {selected
+      Fl_Box uiVectorscope {
         xywh {0 0 240 240} color 47
         code0 {o->main( main );}
         class {mrv::Vectorscope}

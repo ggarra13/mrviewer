@@ -109,7 +109,6 @@
 #include <ImfStandardAttributes.h>
 
 // CORE classes
-#include "core/mrvClient.h"
 #include "core/mrvColor.h"
 #include "core/mrvI8N.h"
 #include "core/mrvLicensing.h"
@@ -736,10 +735,6 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 
     setlocale( LC_NUMERIC, "C" );
 
-    char buf[128];
-    sprintf( buf, "Mask %g", mask );
-    view->send_network( buf );
-
     view->restore_locale();
 
     view->masking( mask );
@@ -1096,12 +1091,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         {
             uiMain->uiImageInfo->uiMain->show();
             update_image_info();
-            send_network( "MediaInfoWindow 1" );
         }
         else
         {
             uiMain->uiImageInfo->uiMain->hide();
-            send_network( "MediaInfoWindow 0" );
         }
     }
     else if ( idx == kColorInfo )
@@ -1111,12 +1104,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             // Color Area
             uiMain->uiColorArea->uiMain->show();
             update_color_info();
-            send_network( "ColorInfoWindow 1" );
         }
         else
         {
             uiMain->uiColorArea->uiMain->hide();
-            send_network( "ColorInfoWindow 0" );
         }
     }
     else if ( idx == kColorControls )
@@ -1125,12 +1116,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         {
             // Color Area
             uiMain->uiColorControls->uiMain->show();
-            send_network( "ColorControlWindow 1" );
         }
         else
         {
             uiMain->uiColorControls->uiMain->hide();
-            send_network( "ColorControlWindow 0" );
         }
     }
     else if ( idx == k3DStereoOptions )
@@ -1138,12 +1127,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiStereo->uiMain->visible() )
         {
             uiMain->uiStereo->uiMain->show();
-            send_network( "StereoOptions 1" );
         }
         else
         {
             uiMain->uiStereo->uiMain->hide();
-            send_network( "StereoOptions 0" );
         }
     }
     else if ( idx == kEDLEdit )
@@ -1163,12 +1150,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiGL3dView->uiMain->visible() )
         {
             uiMain->uiGL3dView->uiMain->show();
-            send_network( "GL3dView 1" );
         }
         else
         {
             uiMain->uiGL3dView->uiMain->hide();
-            send_network( "GL3dView 0" );
         }
     }
     else if ( idx == kActionTools )
@@ -1177,12 +1162,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         {
             // Paint Tools
             uiMain->uiPaint->uiMain->show();
-            send_network( "PaintTools 1" );
         }
         else
         {
             uiMain->uiPaint->uiMain->hide();
-            send_network( "PaintTools 0" );
         }
     }
     else if ( idx == kHistogram )
@@ -1190,12 +1173,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiHistogram->uiMain->visible() )
         {
             uiMain->uiHistogram->uiMain->show();
-            uiMain->uiView->send_network( "HistogramWindow 1" );
         }
         else
         {
             uiMain->uiHistogram->uiMain->hide();
-            uiMain->uiView->send_network( "HistogramWindow 0" );
         }
     }
     else if ( idx == kVectorscope )
@@ -1203,12 +1184,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiVectorscope->uiMain->visible() )
         {
             uiMain->uiVectorscope->uiMain->show();
-            uiMain->uiView->send_network( "VectorscopeWindow 1" );
         }
         else
         {
             uiMain->uiVectorscope->uiMain->hide();
-            uiMain->uiView->send_network( "VectorscopeWindow 0" );
         }
     }
     else if ( idx == kWaveform )
@@ -1216,23 +1195,10 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiWaveform->uiMain->visible() )
         {
             uiMain->uiWaveform->uiMain->show();
-            uiMain->uiView->send_network( "WaveformWindow 1" );
         }
         else
         {
             uiMain->uiWaveform->uiMain->hide();
-            uiMain->uiView->send_network( "WaveformWindow 0" );
-        }
-    }
-    else if ( idx == kConnections )
-    {
-        if ( force || !uiMain->uiConnection->uiMain->visible() )
-        {
-            uiMain->uiConnection->uiMain->show();
-        }
-        else
-        {
-            uiMain->uiConnection->uiMain->hide();
         }
     }
     else if ( idx == kICCProfiles )
@@ -1771,15 +1737,6 @@ bool ImageView::in_presentation() const
 
 void ImageView::send_network( std::string m ) const
 {
-    if ( !_network_active) return;
-
-    ParserList::const_iterator i = _clients.begin();
-    ParserList::const_iterator e = _clients.end();
-
-    if ( i != e )
-    {
-        (*i)->write( m, "" );  //<- this line writes all clients
-    }
 }
 
 static void about_cb( Fl_Widget* o, mrv::ImageView* v )
@@ -1913,14 +1870,6 @@ ImageView::~ImageView()
     if ( CMedia::preload_cache() )
         preload_cache_stop();
 
-    // ParserList::iterator i = _clients.begin();
-    // ParserList::iterator e = _clients.end();
-    // for ( ; i != e; ++i )
-    // {
-    //     (*i)->connected = false;
-    // }
-
-    _clients.clear();
 
     // make sure to stop any playback
     stop_playback();
@@ -1993,16 +1942,10 @@ void ImageView::switch_channels()
 
 void ImageView::ghost_previous( short x ) {
     _ghost_previous = x;
-    char buf[64];
-    sprintf( buf, N_("GhostPrevious %d"), x );
-    send_network( buf );
     redraw();
 }
 void ImageView::ghost_next( short x ) {
     _ghost_next = x;
-    char buf[64];
-    sprintf( buf, N_("GhostNext %d"), x );
-    send_network( buf );
     redraw();
 }
 
@@ -2198,19 +2141,11 @@ void ImageView::init_draw_engine()
 void ImageView::fg_reel(int idx)
 {
     _fg_reel = idx;
-
-    char buf[128];
-    sprintf( buf, N_("FGReel %d"), idx );
-    send_network( buf );
 }
 
 void ImageView::bg_reel(int idx)
 {
     _bg_reel = idx;
-
-    char buf[128];
-    sprintf( buf, N_("BGReel %d"), idx );
-    send_network( buf );
 }
 
 void ImageView::toggle_copy_frame_xy()
@@ -2651,9 +2586,6 @@ void ImageView::center_image()
     setlocale( LC_NUMERIC, "C" );
 
 
-    char buf[128];
-    sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
-    send_network( buf );
 
     restore_locale();
 
@@ -2834,9 +2766,6 @@ void ImageView::fit_image()
     {
         setlocale( LC_NUMERIC, "C" );
 
-        char buf[128];
-        sprintf( buf, "Offset %g %g", xoffset, yoffset );
-        send_network( buf );
 
         restore_locale();
     }
@@ -2924,9 +2853,6 @@ void ImageView::stereo_input( CMedia::StereoInput x )
         m->uiStereo->refresh();
     }
 
-    char buf[64];
-    sprintf( buf, "StereoInput %d", x );
-    send_network( buf );
 }
 
 void ImageView::stereo_output( CMedia::StereoOutput x )
@@ -2943,9 +2869,6 @@ void ImageView::stereo_output( CMedia::StereoOutput x )
         m->uiStereo->refresh();
     }
 
-    char buf[64];
-    sprintf( buf, "StereoOutput %d", x );
-    send_network( buf );
 }
 
 CMedia::StereoInput ImageView::stereo_input() const
@@ -3491,6 +3414,7 @@ again:
         LoadList files;
         files.push_back( *file );
         b->load( files, false, "", false, false );
+        redraw();
         break;
     }
     case kCacheClear:
@@ -3536,6 +3460,7 @@ again:
         if ( found ) {
             NET( "change image to #" << idx );
             b->change_image(idx);
+            redraw();
         }
         else
         {
@@ -3632,12 +3557,14 @@ again:
         NET( "stop at " << c.frame );
         stop();
         seek( c.frame );
+        redraw();
         break;
     }
     case kSeek:
     {
         NET( "seek " << c.frame );
         seek( c.frame );
+        redraw();
         break;
     }
     case kPlayForwards:
@@ -3663,6 +3590,7 @@ again:
         int idx = attr->value();
         NET("remove image " << idx );
         b->remove(idx);
+        redraw();
         break;
     }
     case kExchangeImage:
@@ -3678,6 +3606,7 @@ again:
         int sel = list[1];
         NET( "exchange " << oldsel << " with " << sel );
         b->exchange(oldsel, sel);
+        redraw();
         break;
     }
     case kICS:
@@ -4088,7 +4017,6 @@ void ImageView::redo_draw()
             uiMain->uiRedoDraw->deactivate();
         }
 
-        send_network( "RedoDraw" );
         redraw();
         timeline()->redraw();
     }
@@ -4113,7 +4041,6 @@ void ImageView::undo_draw()
             uiMain->uiPaint->uiUndoDraw->deactivate();
             uiMain->uiUndoDraw->deactivate();
         }
-        send_network( "UndoDraw" );
         redraw();
         timeline()->redraw();
     }
@@ -4155,18 +4082,6 @@ void ImageView::vr( VRType t )
 
     redraw();
 
-    char buf[32];
-    if ( t == kVRSphericalMap )
-        sprintf( buf, "VRSpherical 1" );
-    else if ( t == kVRCubeMap )
-        sprintf( buf, "VRCubic 1" );
-    else
-    {
-        sprintf( buf, "VRSpherical 0" );
-        send_network( buf );
-        sprintf( buf, "VRCubic 0" );
-    }
-    send_network( buf );
 }
 
 /**
@@ -5251,9 +5166,6 @@ int ImageView::leftMouseDown(int x, int y)
         if ( _mode & kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
-            char buf[64];
-            sprintf( buf, "Selection 0 0 0 0" );
-            send_network( buf );
             return 1;
         }
         else if ( _mode == kCopyFrameXY )
@@ -5454,8 +5366,6 @@ int ImageView::leftMouseDown(int x, int y)
                         }
                 }
 
-            send_network( str );
-
             add_shape( mrv::shape_type_ptr(s) );
         }
 
@@ -5574,7 +5484,6 @@ void ImageView::leftMouseUp( int x, int y )
         }
         else
         {
-            send_network( s->send() );
             timeline()->redraw();
         }
     }
@@ -5588,7 +5497,6 @@ void ImageView::leftMouseUp( int x, int y )
         }
         else
         {
-            send_network( s->send() );
             timeline()->redraw();
         }
     }
@@ -5602,7 +5510,6 @@ void ImageView::leftMouseUp( int x, int y )
         }
         else
         {
-            send_network( s->send() );
             timeline()->redraw();
         }
     }
@@ -5616,7 +5523,6 @@ void ImageView::leftMouseUp( int x, int y )
         }
         else
         {
-            send_network( s->send() );
             timeline()->redraw();
         }
     }
@@ -5630,7 +5536,6 @@ void ImageView::leftMouseUp( int x, int y )
         }
         else
         {
-            send_network( s->send() );
             timeline()->redraw();
         }
     }
@@ -6610,10 +6515,6 @@ void ImageView::vr_angle( const float t )
 
     setlocale( LC_NUMERIC, "C" );
 
-    char buf[32];
-    sprintf( buf, "VRangle %g", t );
-    send_network( buf );
-
     restore_locale();
 
     _engine->angle( t );
@@ -6682,9 +6583,6 @@ void ImageView::mouseDrag(int x,int y)
 
                 setlocale( LC_NUMERIC, "C" );
 
-                char buf[128];
-                sprintf( buf, "Spin %g %g", spinx, spiny );
-                send_network( buf );
 
                 restore_locale();
             }
@@ -6700,9 +6598,6 @@ void ImageView::mouseDrag(int x,int y)
                 {
                     setlocale( LC_NUMERIC, "C" );
 
-                    char buf[128];
-                    sprintf( buf, "Offset %g %g", xoffset, yoffset );
-                    send_network( buf );
 
                     restore_locale();
                 }
@@ -6744,9 +6639,6 @@ void ImageView::mouseDrag(int x,int y)
 
                 setlocale( LC_NUMERIC, "C" );
 
-                char buf[128];
-                sprintf( buf, "ScalePicture %g %g", px, py );
-                send_network( buf );
 
                 restore_locale();
             }
@@ -6765,9 +6657,6 @@ void ImageView::mouseDrag(int x,int y)
 
                 setlocale( LC_NUMERIC, "C" );
 
-                char buf[128];
-                sprintf( buf, "MovePicture %g %g", px, py );
-                send_network( buf );
 
                 restore_locale();
             }
@@ -6951,7 +6840,6 @@ void ImageView::mouseDrag(int x,int y)
 
                 restore_locale();
 
-                send_network( buf );
 
             }
 
@@ -7077,9 +6965,6 @@ void ImageView::texture_filtering( const TextureFiltering p )
 {
     _texture_filtering = p;
 
-    char buf[64];
-    sprintf( buf, N_("TextureFiltering %d"), (int)p );
-    send_network( buf );
 
     redraw();
 }
@@ -7409,9 +7294,6 @@ int ImageView::keyDown(unsigned int rawkey)
 
             setlocale( LC_NUMERIC, "C" );
 
-            char buf[128];
-            sprintf( buf, "WipeVertical %g", _wipe );
-            send_network( buf );
 
             restore_locale();
 
@@ -7424,9 +7306,6 @@ int ImageView::keyDown(unsigned int rawkey)
 
             setlocale( LC_NUMERIC, "C" );
 
-            char buf[128];
-            sprintf( buf, "WipeHorizontal %g", _wipe );
-            send_network( buf );
             window()->cursor(FL_CURSOR_NS);
 
             restore_locale();
@@ -7434,9 +7313,6 @@ int ImageView::keyDown(unsigned int rawkey)
         else if ( _wipe_dir & kWipeHorizontal ) {
             _wipe_dir = kNoWipe;
             _wipe = 0.0f;
-            char buf[128];
-            sprintf( buf, "NoWipe" );
-            send_network( buf );
             window()->cursor(FL_CURSOR_CROSS);
         }
 
@@ -7931,11 +7807,6 @@ int ImageView::keyDown(unsigned int rawkey)
         toggle_window( kICCProfiles );
         return 1;
     }
-    else if ( kToggleConnections.match( rawkey ) )
-    {
-        toggle_window( kConnections );
-        return 1;
-    }
     else if ( kToggleHotkeys.match( rawkey ) )
     {
         toggle_window( kHotkeys );
@@ -8080,9 +7951,6 @@ void ImageView::show_background( const bool b )
 {
     _showBG = b;
 
-    char buf[128];
-    sprintf( buf, "ShowBG %d", (int) b );
-    send_network( buf );
 
     damage_contents();
 }
@@ -8181,9 +8049,6 @@ void ImageView::toggle_fullscreen()
     take_focus();
 
 
-    char buf[128];
-    sprintf( buf, "FullScreen %d", FullScreen );
-    send_network( buf );
 }
 
 void ImageView::toggle_presentation()
@@ -8308,9 +8173,6 @@ void ImageView::toggle_presentation()
 
     take_focus();
 
-    char buf[128];
-    sprintf( buf, "PresentationMode %d", presentation );
-    send_network( buf );
 
 }
 
@@ -8567,14 +8429,10 @@ int ImageView::handle(int event)
             {
             case kWipeVertical:
                 _wipe = (float) Fl::event_x() / (float)w();
-                sprintf( buf, "WipeVertical %g", _wipe );
-                send_network( buf );
                 window()->cursor(FL_CURSOR_WE);
                 break;
             case kWipeHorizontal:
                 _wipe = (float) (h() - Fl::event_y()) / (float)h();
-                sprintf( buf, "WipeHorizontal %g", _wipe );
-                send_network( buf );
                 window()->cursor(FL_CURSOR_NS);
                 break;
             default:
@@ -9055,9 +8913,6 @@ void ImageView::channel( unsigned short c )
     _channel = c;
 
 
-    char buf[128];
-    sprintf( buf, "Channel %d %s", c, lbl );
-    send_network( buf );
 
     std::string channelName( lbl );
 
@@ -9189,10 +9044,6 @@ void ImageView::gain( const float f )
 
     setlocale( LC_NUMERIC, "C" );
 
-    char buf[256];
-    sprintf( buf, "Gain %g", f );
-    send_network( buf );
-
     restore_locale();
 
     uiMain->uiGain->value( f );
@@ -9223,10 +9074,6 @@ void ImageView::gamma( const float f )
         fg->image()->gamma( f );
 
         setlocale( LC_NUMERIC, "C" );
-
-        char buf[256];
-        sprintf( buf, "Gamma %g", f );
-        send_network( buf );
 
         restore_locale();
 
@@ -9268,10 +9115,6 @@ void ImageView::zoom( float z )
     else _zoom_grid = false;
 
     setlocale( LC_NUMERIC, "C" );
-
-    char buf[128];
-    sprintf( buf, N_("Zoom %g"), z );
-    send_network( buf );
 
     restore_locale();
 
@@ -9438,10 +9281,6 @@ void ImageView::exposure_change( float d )
 
     setlocale( LC_NUMERIC, "C" );
 
-    char buf[64];
-    sprintf( buf, N_("Gain %g"), _gain );
-    uiMain->uiView->send_network( buf );
-
     restore_locale();
 }
 
@@ -9500,10 +9339,6 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     yoffset += (offy / _real_zoom);
 
     setlocale( LC_NUMERIC, "C" );
-
-    char buf[128];
-    sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
-    send_network( buf );
 
     restore_locale();
 
@@ -9959,9 +9794,6 @@ void ImageView::audio_stream( unsigned int idx )
 
     if ( p != CMedia::kStopped ) play( p );
 
-    char buf[64];
-    sprintf( buf, N_("AudioStream %d"), idx );
-    send_network( buf );
 }
 
 
@@ -9990,10 +9822,6 @@ void ImageView::background( mrv::media bg )
 
         std::string file = img->directory() + '/' + img->name();
 
-        sprintf( buf, N_("CurrentBGImage \"%s\" %" PRId64 " %" PRId64),
-                 file.c_str(), img->first_frame(), img->last_frame() );
-        send_network( buf );
-
 
         img->refresh();
 
@@ -10007,11 +9835,6 @@ void ImageView::background( mrv::media bg )
         {
             create_timeout( 0.2 );
         }
-    }
-    else
-    {
-        sprintf( buf, N_("CurrentBGImage \"\"") );
-        send_network( buf );
     }
 
 //   _BGpixelSize = 0;
@@ -10227,27 +10050,17 @@ void ImageView::data_window( const bool b )
 {
     _dataWindow = b;
 
-    char buf[128];
-    sprintf( buf, N_("DataWindow %d"), (int)b );
-    send_network( buf );
 }
 
 void ImageView::display_window( const bool b )
 {
     _displayWindow = b;
 
-    char buf[128];
-    sprintf( buf, N_("DisplayWindow %d"), (int)b );
-    send_network( buf );
 }
 
 void ImageView::safe_areas( const bool b )
 {
     _safeAreas = b;
-
-    char buf[128];
-    sprintf( buf, N_("SafeAreas %d"), (int)b );
-    send_network( buf );
 }
 
 /**
@@ -10263,10 +10076,6 @@ void ImageView::normalize( const bool normalize)
 {
     _normalize = normalize;
     uiMain->uiNormalize->value( normalize );
-
-    char buf[128];
-    sprintf( buf, N_("Normalize %d"), (int) _normalize );
-    send_network( buf );
 
     damage_contents();
 }
@@ -10320,10 +10129,6 @@ void ImageView::show_pixel_ratio( const bool b )
 {
     _showPixelRatio = b;
 
-    char buf[64];
-    sprintf( buf, N_("ShowPixelRatio %d"), (int) b );
-    send_network( buf );
-
     uiMain->uiPixelRatio->value( b );
 
 
@@ -10341,17 +10146,6 @@ void ImageView::toggle_lut()
 
     std::string display = mrv::Preferences::OCIO_Display;
     std::string view = mrv::Preferences::OCIO_View;
-
-    char buf[1024];
-    if ( _useLUT )
-    {
-        sprintf( buf, N_("OCIOView \"%s\" \"%s\""), display.c_str(),
-                 view.c_str() );
-        send_network( buf );
-    }
-
-    sprintf( buf, N_("UseLUT %d"), (int)_useLUT );
-    send_network( buf );
 
     flush_caches();
     if ( _useLUT ) {
@@ -10689,19 +10483,6 @@ void ImageView::play( const CMedia::Playback dir )
     if ( dir == playback() )
         return;
 
-    if ( dir == CMedia::kForwards )
-    {
-        send_network(N_("playfwd"));
-    }
-    else if ( dir == CMedia::kBackwards )
-    {
-        send_network(N_("playback"));
-    }
-    else
-    {
-        LOG_ERROR( "Not a valid playback mode" );
-        return;
-    }
 
 
 
@@ -10840,10 +10621,6 @@ void ImageView::stop()
         }
     }
 
-    char buf[256];
-    sprintf( buf, N_("stop %" PRId64), frame() );
-    send_network( buf );
-
 
     mouseMove( Fl::event_x(), Fl::event_y() );
     redraw();
@@ -10890,10 +10667,6 @@ void ImageView::fps( double x )
 
     setlocale( LC_NUMERIC, "C" );
 
-    char buf[128];
-    sprintf( buf, N_("FPS %g"), x );
-    send_network( buf );
-
     restore_locale();
 }
 
@@ -10926,10 +10699,6 @@ void ImageView::volume( float v )
 
 
     setlocale( LC_NUMERIC, "C" );
-
-    char buf[128];
-    sprintf( buf, N_("Volume %g"), v );
-    send_network( buf );
 
     restore_locale();
 
@@ -10967,10 +10736,6 @@ void  ImageView::looping( CMedia::Looping x )
         uiMain->uiLoopMode->redraw();
     }
 
-    char buf[64];
-    sprintf( buf, N_("Looping %d"), x );
-    send_network( buf );
-
 }
 
 /**
@@ -10992,10 +10757,6 @@ void ImageView::field( FieldDisplay p )
     f = f.substr( 0, 1 );
 
     uiMain->uiField->copy_label( f.c_str() );
-
-    char buf[128];
-    sprintf( buf, "FieldDisplay %d", _field );
-    send_network( buf );
 
     damage_contents();
 }

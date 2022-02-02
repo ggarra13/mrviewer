@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-02 16:59-0300\n"
+"POT-Creation-Date: 2022-02-02 20:32-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgid ""
 "Not a known stream type for stream #"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:136
+#: standalone/mrvCommandLine.cpp:135
 msgid ""
 "\n"
 "\n"
@@ -45,7 +45,7 @@ msgid ""
 "No audio stream in file"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5672
+#: gui/mrvImageView.cpp:5577
 msgid "   NAN  "
 msgstr ""
 
@@ -57,7 +57,7 @@ msgstr ""
 msgid "  Choosing "
 msgstr ""
 
-#: gui/mrvImageView.cpp:5677
+#: gui/mrvImageView.cpp:5582
 msgid "  INF.  "
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid " Text"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4607
+#: gui/mrvImageView.cpp:4522
 #, c-format
 msgid " UF: %<PRId64> "
 msgstr ""
@@ -172,7 +172,7 @@ msgstr ""
 msgid " failed. "
 msgstr ""
 
-#: gui/mrvImageView.cpp:9031
+#: gui/mrvImageView.cpp:8889
 msgid " for channel.  Maximum: "
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr ""
 msgid " has different display window than "
 msgstr ""
 
-#: standalone/main.cpp:404
+#: standalone/main.cpp:403
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -451,13 +451,13 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr ""
 
-#: standalone/main.cpp:364
+#: standalone/main.cpp:363
 msgid "(Remove if mrViewer does not start)"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2234
-#: gui/mrvImageView.cpp:9005 gui/mrvImageView.cpp:9687
-#: gui/mrvImageView.cpp:9688 gui/mrvImageView.cpp:9696
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2114
+#: gui/mrvImageView.cpp:8863 gui/mrvImageView.cpp:9522
+#: gui/mrvImageView.cpp:9523 gui/mrvImageView.cpp:9531
 msgid "(no image)"
 msgstr ""
 
@@ -485,7 +485,7 @@ msgstr ""
 msgid "+"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2193
 msgid "+0.0  f/8.0"
 msgstr ""
 
@@ -515,11 +515,11 @@ msgstr ""
 msgid ", type "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:566
+#: standalone/mrvCommandLine.cpp:552
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:362
+#: standalone/mrvCommandLine.cpp:361
 msgid ".  Attribute must be of the form attr=value."
 msgstr ""
 
@@ -527,7 +527,7 @@ msgstr ""
 msgid ".  Saving pixel type is "
 msgstr ""
 
-#: gui/mrvImageView.cpp:9032
+#: gui/mrvImageView.cpp:8890
 msgid ". Widget label is "
 msgstr ""
 
@@ -566,7 +566,7 @@ msgstr ""
 msgid "16-bits"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2440
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2320
 #: gui/mrvImageInformation.cpp:4034
 msgid "1:1"
 msgstr ""
@@ -702,7 +702,7 @@ msgstr ""
 msgid "8 bits"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2700
 msgid "8-bit sample of image pixel under mouse."
 msgstr ""
 
@@ -728,21 +728,21 @@ msgstr ""
 msgid ": Unknown pixel type"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3088
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2180
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2968
 msgid "@<"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3101
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2981
 msgid "@<|"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3140
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2208
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3020
 msgid "@>"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3153
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3033
 msgid "@>|"
 msgstr ""
 
@@ -750,19 +750,19 @@ msgstr ""
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3075
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2955
 msgid "@|<"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3127
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3007
 msgid "@|>"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3114
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2994
 msgid "@||"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3241
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3121
 #: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr ""
@@ -772,13 +772,13 @@ msgstr ""
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:394
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2095
 msgid "A/B"
 msgstr ""
 
@@ -794,7 +794,7 @@ msgstr ""
 msgid "ACES metadata"
 msgstr ""
 
-#: gui/mrvImageView.cpp:319
+#: gui/mrvImageView.cpp:318
 msgid "ALPHA"
 msgstr ""
 
@@ -809,7 +809,7 @@ msgid "AVI Movie"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
-#: standalone/main.cpp:268
+#: standalone/main.cpp:267
 msgid "About mrViewer"
 msgstr ""
 
@@ -817,7 +817,7 @@ msgstr ""
 msgid "Absolute"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:94
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:92
 msgid "Accept"
 msgstr ""
 
@@ -825,7 +825,7 @@ msgstr ""
 msgid "Accept settings but don't save."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:526
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:524
 msgid "Action"
 msgstr ""
 
@@ -838,7 +838,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2335
 msgid "Activate viewer's 3D Lut."
 msgstr ""
 
@@ -860,7 +860,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3008
 msgid "Advance one frame."
 msgstr ""
 
@@ -876,8 +876,8 @@ msgstr ""
 msgid "Algorithm when not OCIO"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:724
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3456
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:722
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3333
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr ""
@@ -892,22 +892,22 @@ msgstr ""
 msgid "All Layers"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:230
 msgid "All Possible"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3224
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3104
 msgid "Allows you to adjust frame rate playback."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2274
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2284
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2146
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr ""
 
@@ -915,31 +915,31 @@ msgstr ""
 msgid "Allows you to select a standard cropping area around image."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2235
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2115
 msgid "Allows you to select different image channels or layers."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3277
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3157
 msgid "Allows you to set starting frame for timeline."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3291
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
 msgid "Allows you to set the ending frame for timeline."
 msgstr ""
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2158 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9123
-#: gui/mrvImageView.cpp:9588 gui/mrvImageView.cpp:9650
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:8978
+#: gui/mrvImageView.cpp:9423 gui/mrvImageView.cpp:9485
 msgid "Alpha"
 msgstr ""
 
 #: core/CMedia.cpp:2077 core/CMedia.cpp:2158 core/exrImage.cpp:3046
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2048
-#: gui/mrvImageView.cpp:9104 gui/mrvImageView.cpp:9651
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:1991
+#: gui/mrvImageView.cpp:8959 gui/mrvImageView.cpp:9486
 msgid "Alpha Overlay"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2688
 msgid "Alpha value of image pixel under mouse."
 msgstr ""
 
@@ -980,7 +980,7 @@ msgstr ""
 msgid "Annotation Frame Step Forwards"
 msgstr ""
 
-#: standalone/main.cpp:402
+#: standalone/main.cpp:401
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1025,8 +1025,8 @@ msgstr ""
 msgid "Area"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:549
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:547
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2384
 msgid "Area Select Tool"
 msgstr ""
 
@@ -1034,7 +1034,7 @@ msgstr ""
 msgid "Area Selection Mode"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1685
+#: gui/mrvImageView.cpp:1651
 msgid "Arrow"
 msgstr ""
 
@@ -1042,8 +1042,8 @@ msgstr ""
 msgid "Arrow Mode"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:641
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:639
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2460
 msgid "Arrow Tool"
 msgstr ""
 
@@ -1075,7 +1075,7 @@ msgstr ""
 msgid "Attributes Menu"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2634
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2514
 msgid "Attrs"
 msgstr ""
 
@@ -1105,7 +1105,7 @@ msgstr ""
 msgid "Audio Streams"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3256
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3136
 msgid "Audio Volume"
 msgstr ""
 
@@ -1137,15 +1137,15 @@ msgstr ""
 msgid "Audio packets empty at end of seek"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5133
+#: gui/mrvImageView.cpp:5048
 msgid "Audio/Attach Audio File"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5138
+#: gui/mrvImageView.cpp:5053
 msgid "Audio/Detach Audio File"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5135
+#: gui/mrvImageView.cpp:5050
 msgid "Audio/Edit Audio Frame Offset"
 msgstr ""
 
@@ -1197,7 +1197,7 @@ msgstr ""
 msgid "BG"
 msgstr ""
 
-#: gui/mrvImageView.cpp:315
+#: gui/mrvImageView.cpp:314
 msgid "BLUE"
 msgstr ""
 
@@ -1275,8 +1275,8 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2523
 #: core/CMedia.cpp:2091 core/CMedia.cpp:2157 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9118
-#: gui/mrvImageView.cpp:9649
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:8973
+#: gui/mrvImageView.cpp:9484
 msgid "Blue"
 msgstr ""
 
@@ -1288,19 +1288,19 @@ msgstr ""
 msgid "Blue Gain of clip."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2680
 msgid "Blue value of image pixel under mouse."
 msgstr ""
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:583
+#: standalone/main.cpp:557
 msgid "Boost exception: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:10988
+#: gui/mrvImageView.cpp:10753
 msgid "Bottom"
 msgstr ""
 
-#: standalone/main.cpp:456 standalone/main.cpp:476
+#: standalone/main.cpp:455 standalone/main.cpp:475
 msgid "Bottom/top"
 msgstr ""
 
@@ -1347,7 +1347,7 @@ msgstr ""
 msgid "CIExy White Point"
 msgstr ""
 
-#: gui/mrvImageView.cpp:309
+#: gui/mrvImageView.cpp:308
 msgid "COLOR"
 msgstr ""
 
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "CPU Information"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:65
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:63
 msgid "CTL Browser"
 msgstr ""
 
@@ -1400,8 +1400,8 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:93
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:131
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:106
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:271
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:104
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
 #: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr ""
@@ -1438,7 +1438,7 @@ msgstr ""
 msgid "Cannot set output pixel format"
 msgstr ""
 
-#: gui/mrvImageView.cpp:540
+#: gui/mrvImageView.cpp:539
 msgid "Cannot switch images.  Foreground and background image are the same."
 msgstr ""
 
@@ -1474,11 +1474,11 @@ msgstr ""
 msgid "Center Image"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3505
+#: gui/mrvImageView.cpp:3429
 msgid "Change Image failed"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2297
 msgid "Changes frame/field display"
 msgstr ""
 
@@ -1486,7 +1486,7 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:227
 #: gui/mrvImageInformation.cpp:3600
 msgid "Channels"
 msgstr ""
@@ -1495,7 +1495,7 @@ msgstr ""
 msgid "Char"
 msgstr ""
 
-#: standalone/main.cpp:466 standalone/main.cpp:480
+#: standalone/main.cpp:465 standalone/main.cpp:479
 msgid "Checkerboard pattern"
 msgstr ""
 
@@ -1528,7 +1528,7 @@ msgstr ""
 msgid "Cineon Picture"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1659
+#: gui/mrvImageView.cpp:1625
 msgid "Circle"
 msgstr ""
 
@@ -1536,8 +1536,8 @@ msgstr ""
 msgid "Circle Mode"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:626
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2565
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:624
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2445
 msgid "Circle Tool"
 msgstr ""
 
@@ -1545,20 +1545,12 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:345
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:343
 msgid "Clear"
 msgstr ""
 
 #: gui/mrvHotkey.cpp:348
 msgid "Clear Image Cache"
-msgstr ""
-
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:826
-msgid "Client"
-msgstr ""
-
-#: core/mrvClient.cpp:506
-msgid "Client Exception: "
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:3115
@@ -1592,10 +1584,6 @@ msgstr ""
 
 #: core/aviImage_save.cpp:1668
 msgid "Closed movie file"
-msgstr ""
-
-#: core/mrvServer.cpp:2082
-msgid "Closed server at port "
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:235
@@ -1634,14 +1622,14 @@ msgid "CollapsibleGroup not found"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2594
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2474
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2156 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
-#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2085
-#: gui/mrvImageView.cpp:2147 gui/mrvImageView.cpp:9648
-#: gui/mrvImageView.cpp:9696
+#: gui/mrvImageView.cpp:200 gui/mrvImageView.cpp:2028
+#: gui/mrvImageView.cpp:2090 gui/mrvImageView.cpp:9483
+#: gui/mrvImageView.cpp:9531
 msgid "Color"
 msgstr ""
 
@@ -1673,11 +1661,11 @@ msgstr ""
 msgid "Color Version"
 msgstr ""
 
-#: gui/mrvImageView.cpp:8940
+#: gui/mrvImageView.cpp:8798
 msgid "Color channel not found at index "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2125
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2008
 msgid "Color controls"
 msgstr ""
 
@@ -1698,7 +1686,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: gui/mrvImageView.cpp:486
+#: gui/mrvImageView.cpp:485
 msgid "Comped"
 msgstr ""
 
@@ -1718,7 +1706,7 @@ msgid "Compositing"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3259
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:196
 #: gui/mrvImageInformation.cpp:3115
 msgid "Compression"
 msgstr ""
@@ -1733,24 +1721,6 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3260
 msgid "Compression to use when saving an exr."
-msgstr ""
-
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
-#: core/mrvClient.cpp:471
-msgid "Connect"
-msgstr ""
-
-#: core/mrvClient.cpp:235
-msgid "Connect error: "
-msgstr ""
-
-#: core/mrvClient.cpp:225
-msgid "Connect timed out."
-msgstr ""
-
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
-msgid "Connections"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:49
@@ -1789,7 +1759,7 @@ msgstr ""
 msgid "Copy RGBA Values"
 msgstr ""
 
-#: gui/mrvImageView.cpp:2223
+#: gui/mrvImageView.cpp:2158
 msgid "Copy X Y"
 msgstr ""
 
@@ -2074,7 +2044,7 @@ msgstr ""
 msgid "Could not initialize audio engine"
 msgstr ""
 
-#: gui/mrvImageView.cpp:2188
+#: gui/mrvImageView.cpp:2131
 msgid "Could not initialize draw engine"
 msgstr ""
 
@@ -2102,7 +2072,7 @@ msgstr ""
 msgid "Could not obtain frame rate"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:551
+#: gui/mrvPreferences.cpp:550
 msgid "Could not open \""
 msgstr ""
 
@@ -2198,7 +2168,7 @@ msgstr ""
 msgid "Could not set "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1291
+#: gui/mrvPreferences.cpp:1290
 msgid "Could not set transforms in GUI"
 msgstr ""
 
@@ -2312,12 +2282,6 @@ msgstr ""
 msgid "Country Code"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:780
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:812
-#: core/mrvServer.cpp:2053
-msgid "Create"
-msgstr ""
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1442
 msgid "Create a new reel"
 msgstr ""
@@ -2382,10 +2346,6 @@ msgstr ""
 msgid "Created Time"
 msgstr ""
 
-#: core/mrvServer.cpp:2079
-msgid "Created server at port "
-msgstr ""
-
 #: gui/mrvImageInformation.cpp:3165
 msgid "Creation Date"
 msgstr ""
@@ -2402,13 +2362,13 @@ msgstr ""
 msgid "Ctrl"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3448
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:252
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:714
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3325
 msgid "Current"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3058
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2938
 msgid "Current frame."
 msgstr ""
 
@@ -2492,11 +2452,11 @@ msgstr ""
 msgid "Custom Field 9"
 msgstr ""
 
-#: standalone/main.cpp:470 standalone/main.cpp:482
+#: standalone/main.cpp:469 standalone/main.cpp:481
 msgid "Cyan/red glasses"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4533
+#: gui/mrvImageView.cpp:4448
 #, c-format
 msgid "DAW: %d,%d %dx%d"
 msgstr ""
@@ -2518,7 +2478,7 @@ msgid ""
 "DWA/DWB compression to use when saving an exr with that compression scheme."
 msgstr ""
 
-#: gui/mrvImageView.cpp:4538
+#: gui/mrvImageView.cpp:4453
 #, c-format
 msgid "DYW: %d,%d %dx%d"
 msgstr ""
@@ -2588,7 +2548,7 @@ msgstr ""
 msgid "Decode_audio failed with error: "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2301
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2181
 msgid "Decrease exposure by 0.5."
 msgstr ""
 
@@ -2699,10 +2659,6 @@ msgid ""
 "Frames: %<PRId64>-%<PRId64> FPS %g"
 msgstr ""
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2024
-msgid "Disconnect"
-msgstr ""
-
 #: gui/mrvImageInformation.cpp:3147
 msgid "Disk space"
 msgstr ""
@@ -2729,7 +2685,7 @@ msgstr ""
 msgid "Display Window of Clip"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2314
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2194
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -2767,7 +2723,7 @@ msgstr ""
 msgid "Down"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1634
+#: gui/mrvImageView.cpp:1600
 msgid "Draw"
 msgstr ""
 
@@ -2804,7 +2760,7 @@ msgstr ""
 msgid "Duration of Video"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3317
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3197
 msgid "E"
 msgstr ""
 
@@ -2896,7 +2852,7 @@ msgstr ""
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: gui/mrvImageView.cpp:1714
+#: gui/mrvImageView.cpp:1680
 msgid "Erase"
 msgstr ""
 
@@ -2908,8 +2864,8 @@ msgstr ""
 msgid "Erase Temporary Mode"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:581
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2536
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:579
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
 msgid "Eraser Tool"
 msgstr ""
 
@@ -2923,10 +2879,6 @@ msgstr ""
 
 #: core/aviImage_save.cpp:1459
 msgid "Error occurred when opening output file: "
-msgstr ""
-
-#: core/mrvClient.cpp:355
-msgid "Error on receive: "
 msgstr ""
 
 #: audio/mrvAOEngine.cpp:232
@@ -2966,11 +2918,11 @@ msgstr ""
 msgid "Escape"
 msgstr ""
 
-#: standalone/main.cpp:464 standalone/main.cpp:479
+#: standalone/main.cpp:463 standalone/main.cpp:478
 msgid "Even/odd columns"
 msgstr ""
 
-#: standalone/main.cpp:462 standalone/main.cpp:478
+#: standalone/main.cpp:461 standalone/main.cpp:477
 msgid "Even/odd rows"
 msgstr ""
 
@@ -2978,13 +2930,13 @@ msgstr ""
 msgid "Example:  gizmo"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:165
+#: standalone/mrvCommandLine.cpp:164
 msgid ""
 "Examples:\n"
 "\n"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3673
+#: gui/mrvImageView.cpp:3601
 msgid "Exchange Image failed"
 msgstr ""
 
@@ -2993,7 +2945,7 @@ msgstr ""
 msgid "ExchangeImage %d %d"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1581
+#: gui/mrvPreferences.cpp:1580
 msgid "Expanded OCIO config to:"
 msgstr ""
 
@@ -3037,16 +2989,16 @@ msgstr ""
 msgid "Eye Separation"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2296
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2780
 msgid "F"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2907
 msgid "F:"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4547
+#: gui/mrvImageView.cpp:4462
 msgid "F: "
 msgstr ""
 
@@ -3054,13 +3006,13 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1429
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1752
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2146
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3169
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3049
 #: gui/mrvImageInformation.cpp:2817 gui/mrvImageInformation.cpp:3544
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4609
+#: gui/mrvImageView.cpp:4524
 #, c-format
 msgid "FPS: %.3f"
 msgstr ""
@@ -3129,7 +3081,7 @@ msgstr ""
 msgid "Failed to init swresample library with "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:530
+#: gui/mrvPreferences.cpp:529
 msgid "Failed to initialize R3D SDK: "
 msgstr ""
 
@@ -3161,52 +3113,52 @@ msgstr ""
 msgid "File Requester"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4795
+#: gui/mrvImageView.cpp:4710
 msgid "File/Open/AMF file"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4782 gui/mrvImageView.cpp:4793
+#: gui/mrvImageView.cpp:4697 gui/mrvImageView.cpp:4708
 msgid "File/Open/Directory"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4772 gui/mrvImageBrowser.cpp:4162
+#: gui/mrvImageView.cpp:4687 gui/mrvImageBrowser.cpp:4162
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4784 gui/mrvImageView.cpp:4797
+#: gui/mrvImageView.cpp:4699 gui/mrvImageView.cpp:4712
 msgid "File/Open/Session"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4776 gui/mrvImageBrowser.cpp:4164
+#: gui/mrvImageView.cpp:4691 gui/mrvImageBrowser.cpp:4164
 msgid "File/Open/Single Image"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4790
+#: gui/mrvImageView.cpp:4705
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4820
+#: gui/mrvImageView.cpp:4735
 msgid "File/Quit"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4805 gui/mrvImageBrowser.cpp:4409
+#: gui/mrvImageView.cpp:4720 gui/mrvImageBrowser.cpp:4409
 msgid "File/Save/Frame As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4807 gui/mrvImageBrowser.cpp:4411
+#: gui/mrvImageView.cpp:4722 gui/mrvImageBrowser.cpp:4411
 msgid "File/Save/GL Snapshots As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4800 gui/mrvImageBrowser.cpp:4404
+#: gui/mrvImageView.cpp:4715 gui/mrvImageBrowser.cpp:4404
 msgid "File/Save/Movie or Sequence As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4803 gui/mrvImageBrowser.cpp:4407
+#: gui/mrvImageView.cpp:4718 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/Reel As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4809 gui/mrvImageBrowser.cpp:4413
+#: gui/mrvImageView.cpp:4724 gui/mrvImageBrowser.cpp:4413
 msgid "File/Save/Session As"
 msgstr ""
 
@@ -3219,7 +3171,7 @@ msgstr ""
 msgid "Filename of the clip"
 msgstr ""
 
-#: standalone/main.cpp:579
+#: standalone/main.cpp:553
 msgid "Filesystem error: "
 msgstr ""
 
@@ -3259,7 +3211,7 @@ msgstr ""
 msgid "Fit Screen"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2097
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1980
 msgid "Fit Window to Image"
 msgstr ""
 
@@ -3319,7 +3271,7 @@ msgstr ""
 msgid "Font"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:173
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:171
 #: gui/mrvImageInformation.cpp:3098 gui/mrvImageInformation.cpp:3599
 msgid "Format"
 msgstr ""
@@ -3339,7 +3291,7 @@ msgid "FourCC"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1390
-#: gui/mrvImageView.cpp:10986
+#: gui/mrvImageView.cpp:10751
 msgid "Frame"
 msgstr ""
 
@@ -3408,9 +3360,9 @@ msgstr ""
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:251
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:713
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3445
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:249
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:711
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3322
 msgid "Frames"
 msgstr ""
 
@@ -3422,8 +3374,8 @@ msgstr ""
 msgid "Frames per Second"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:566
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2521
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:564
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2401
 msgid "Freehand Drawing Tool"
 msgstr ""
 
@@ -3462,28 +3414,28 @@ msgstr ""
 msgid "GPU Information"
 msgstr ""
 
-#: gui/mrvImageView.cpp:314
+#: gui/mrvImageView.cpp:313
 msgid "GREEN"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1203
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2131
 msgid "Gain"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3839
+#: gui/mrvImageView.cpp:3768
 msgid "Gain for image failed"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2136
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1209
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3248
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1471
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2364
-#: gui/mrvImageInformation.cpp:3026 gui/mrvPreferences.cpp:1783
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2244
+#: gui/mrvImageInformation.cpp:3026 gui/mrvPreferences.cpp:1782
 msgid "Gamma"
 msgstr ""
 
@@ -3515,7 +3467,7 @@ msgstr ""
 msgid "Gamma More"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3851
+#: gui/mrvImageView.cpp:3780
 msgid "Gamma for image failed"
 msgstr ""
 
@@ -3527,20 +3479,20 @@ msgstr ""
 msgid "Gb"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:733
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3465
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:731
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3342
 msgid "Ghosting"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2982
 msgid "Go back one frame."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2956
 msgid "Go to the beginning of the sequence."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3034
 msgid "Go to the end of the sequence."
 msgstr ""
 
@@ -3554,8 +3506,8 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2508
 #: core/CMedia.cpp:2090 core/CMedia.cpp:2156 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9113
-#: gui/mrvImageView.cpp:9649
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:8968
+#: gui/mrvImageView.cpp:9484
 msgid "Green"
 msgstr ""
 
@@ -3567,11 +3519,11 @@ msgstr ""
 msgid "Green Gain of clip."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
 msgid "Green value of image pixel under mouse."
 msgstr ""
 
-#: gui/mrvImageView.cpp:827 gui/mrvImageView.cpp:829
+#: gui/mrvImageView.cpp:822 gui/mrvImageView.cpp:824
 msgid "Grid Size"
 msgstr ""
 
@@ -3603,7 +3555,7 @@ msgstr ""
 msgid "HDTV / Widescreen 16:9"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2705
 msgid "HSV"
 msgstr ""
 
@@ -3645,11 +3597,11 @@ msgstr ""
 msgid "Height of clip"
 msgstr ""
 
-#: standalone/main.cpp:271
+#: standalone/main.cpp:270
 msgid "Hide Others"
 msgstr ""
 
-#: standalone/main.cpp:270
+#: standalone/main.cpp:269
 msgid "Hide mrViewer"
 msgstr ""
 
@@ -3706,7 +3658,7 @@ msgstr ""
 msgid "How to display timeline selection by default."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2875
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2755
 msgid "Hue value of image pixel under mouse."
 msgstr ""
 
@@ -3827,7 +3779,7 @@ msgstr ""
 msgid "Image Y Scale in Canvas"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2744
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2624
 msgid "Image coordinate of pixel under mouse."
 msgstr ""
 
@@ -3865,36 +3817,36 @@ msgid ""
 "will be loaded on demand but fluid playback may not be possible."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2553
 msgid "Image zoom setting."
 msgstr ""
 
-#: gui/mrvImageView.cpp:5011
+#: gui/mrvImageView.cpp:4926
 msgid "Image/Add CTL Look Mod Transform"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5003
+#: gui/mrvImageView.cpp:4918
 msgid "Image/Attach CTL Input Device Transform"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5015
+#: gui/mrvImageView.cpp:4930
 msgid "Image/Attach CTL Rendering Transform"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5019
+#: gui/mrvImageView.cpp:4934
 msgid "Image/Attach ICC Color Profile"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4981
+#: gui/mrvImageView.cpp:4896
 msgid "Image/Clear Caches"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4957 gui/mrvImageView.cpp:4965
+#: gui/mrvImageView.cpp:4872 gui/mrvImageView.cpp:4880
 #: gui/mrvImageBrowser.cpp:4425 gui/mrvImageBrowser.cpp:4435
 msgid "Image/Clone"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4959 gui/mrvImageBrowser.cpp:4427
+#: gui/mrvImageView.cpp:4874 gui/mrvImageBrowser.cpp:4427
 msgid "Image/Clone All Channels"
 msgstr ""
 
@@ -3902,55 +3854,55 @@ msgstr ""
 msgid "Image/Media Info"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5026
+#: gui/mrvImageView.cpp:4941
 msgid "Image/Mirror/Horizontal"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5030
+#: gui/mrvImageView.cpp:4945
 msgid "Image/Mirror/Vertical"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5007
+#: gui/mrvImageView.cpp:4922
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4946
+#: gui/mrvImageView.cpp:4861
 msgid "Image/Next"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4972
+#: gui/mrvImageView.cpp:4887
 msgid "Image/Preload Caches"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4948
+#: gui/mrvImageView.cpp:4863
 msgid "Image/Previous"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4991
+#: gui/mrvImageView.cpp:4906
 msgid "Image/Rotate +90"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4994
+#: gui/mrvImageView.cpp:4909
 msgid "Image/Rotate -90"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5034 gui/mrvImageBrowser.cpp:4444
+#: gui/mrvImageView.cpp:4949 gui/mrvImageBrowser.cpp:4444
 msgid "Image/Set as Background"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5039
+#: gui/mrvImageView.cpp:4954
 msgid "Image/Switch FG and BG"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5042
+#: gui/mrvImageView.cpp:4957
 msgid "Image/Toggle Background"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5049
+#: gui/mrvImageView.cpp:4964
 msgid "Image/Toggle EDL"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4984
+#: gui/mrvImageView.cpp:4899
 msgid "Image/Update Single Frame in Cache"
 msgstr ""
 
@@ -3989,11 +3941,11 @@ msgstr ""
 msgid "Images in stereo have different velocities (fps)."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:452
+#: standalone/mrvCommandLine.cpp:442
 msgid "Images, sequences or movies to display."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2329
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2209
 msgid "Increase exposure by 0.5."
 msgstr ""
 
@@ -4005,7 +3957,7 @@ msgstr ""
 msgid "Index "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:535
+#: gui/mrvPreferences.cpp:534
 msgid "Inited R3D SDK from: "
 msgstr ""
 
@@ -4014,7 +3966,7 @@ msgid "Input"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2385
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2285
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2165
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3046
 msgid "Input Color Space"
 msgstr ""
@@ -4050,7 +4002,7 @@ msgstr ""
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:360
 msgid "Invalid attribute "
 msgstr ""
 
@@ -4062,7 +4014,7 @@ msgstr ""
 msgid "Invalid image "
 msgstr ""
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9030
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:8888
 msgid "Invalid index "
 msgstr ""
 
@@ -4166,7 +4118,7 @@ msgstr ""
 msgid "Kodak Digital Negative"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3001
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2881
 msgid "L"
 msgstr ""
 
@@ -4175,7 +4127,7 @@ msgstr ""
 msgid "LMTransform %u"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2334
 msgid "LUT"
 msgstr ""
 
@@ -4219,12 +4171,12 @@ msgstr ""
 msgid "Left View"
 msgstr ""
 
-#: standalone/main.cpp:448 standalone/main.cpp:475
+#: standalone/main.cpp:447 standalone/main.cpp:474
 msgid "Left view"
 msgstr ""
 
-#: standalone/main.cpp:432 standalone/main.cpp:438 standalone/main.cpp:458
-#: standalone/main.cpp:477
+#: standalone/main.cpp:431 standalone/main.cpp:437 standalone/main.cpp:457
+#: standalone/main.cpp:476
 msgid "Left/right"
 msgstr ""
 
@@ -4333,7 +4285,7 @@ msgstr ""
 msgid "Load XML Clip Metadata"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:416
+#: standalone/mrvCommandLine.cpp:415
 msgid "Load a single image even if there's a sequence present."
 msgstr ""
 
@@ -4355,11 +4307,11 @@ msgstr ""
 msgid "Loaded braw lib from: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:558
+#: gui/mrvPreferences.cpp:557
 msgid "Loaded color themes from "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:357
+#: gui/mrvPreferences.cpp:356
 msgid "Loaded preferences from "
 msgstr ""
 
@@ -4383,7 +4335,7 @@ msgstr ""
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1276
+#: gui/mrvPreferences.cpp:1275
 msgid "Loading hotkeys from "
 msgstr ""
 
@@ -4391,11 +4343,11 @@ msgstr ""
 msgid "Local Caption"
 msgstr ""
 
-#: standalone/main.cpp:363
+#: standalone/main.cpp:362
 msgid "Lockfile "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:316
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:314
 msgid "Log Messages"
 msgstr ""
 
@@ -4404,11 +4356,11 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:531
+#: gui/mrvPreferences.cpp:530
 msgid "Looked for it in: "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3002
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2882
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr ""
 
@@ -4424,13 +4376,13 @@ msgstr ""
 msgid "Luminance Gradient"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2959
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2839
 msgid "Luminance of image pixel under mouse."
 msgstr ""
 
 #: core/CMedia.cpp:2103 core/CMedia.cpp:2158 core/exrImage.cpp:3046
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2055
-#: gui/mrvImageView.cpp:9128 gui/mrvImageView.cpp:9650
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:1998
+#: gui/mrvImageView.cpp:8983 gui/mrvImageView.cpp:9485
 msgid "Lumma"
 msgstr ""
 
@@ -4664,11 +4616,11 @@ msgstr ""
 msgid "Monitor Icc Profile"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5156
+#: gui/mrvImageView.cpp:5071
 msgid "Monitor/Attach CTL Display Transform"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5160
+#: gui/mrvImageView.cpp:5075
 msgid "Monitor/Attach ICC Color Profile"
 msgstr ""
 
@@ -4676,11 +4628,11 @@ msgstr ""
 msgid "Motion Estimation Methods"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1553
+#: gui/mrvImageView.cpp:1519
 msgid "Move Pic."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:610
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:608
 msgid "Move Picture Tool"
 msgstr ""
 
@@ -4725,11 +4677,11 @@ msgstr ""
 msgid "NTSC Video"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:174
 msgid "Name (.ext)"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:164
+#: standalone/mrvCommandLine.cpp:163
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
@@ -4748,8 +4700,8 @@ msgstr ""
 msgid "New item was not found in tree."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:746
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3478
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:744
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3355
 msgid "Next"
 msgstr ""
 
@@ -4800,7 +4752,7 @@ msgstr ""
 msgid "No audio nor video stream created"
 msgstr ""
 
-#: gui/mrvImageView.cpp:514
+#: gui/mrvImageView.cpp:513
 msgid "No background image to switch to"
 msgstr ""
 
@@ -4820,7 +4772,7 @@ msgstr ""
 msgid "No driver for device id"
 msgstr ""
 
-#: gui/mrvImageView.cpp:508
+#: gui/mrvImageView.cpp:507
 msgid "No foreground image to switch to"
 msgstr ""
 
@@ -4866,14 +4818,14 @@ msgstr ""
 msgid "Non-POT Textures:\t"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:199
 #: core/aviImage_save.cpp:1354 core/aviImage_save.cpp:1389
 #: core/exrImage.cpp:123 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:3907
 #: gui/mrvSave.cpp:256 gui/mrvSave.cpp:257 gui/mrvSave.cpp:267
 msgid "None"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2223
 msgid "Norm"
 msgstr ""
 
@@ -4881,39 +4833,35 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2224
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr ""
 
-#: gui/mrvImageView.cpp:213
+#: gui/mrvImageView.cpp:212
 msgid "Normals"
 msgstr ""
 
-#: gui/mrvImageView.cpp:486
+#: gui/mrvImageView.cpp:485
 msgid "Not Comped"
 msgstr ""
 
-#: core/mrvClient.cpp:326
-msgid "Not OK"
-msgstr ""
-
-#: gui/mrvImageView.cpp:7026
+#: gui/mrvImageView.cpp:6914
 msgid "Not a GLCircleShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5587 gui/mrvImageView.cpp:5601
+#: gui/mrvImageView.cpp:5496 gui/mrvImageView.cpp:5509
 msgid "Not a GLErasePathShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5573 gui/mrvImageView.cpp:6970
+#: gui/mrvImageView.cpp:5483 gui/mrvImageView.cpp:6858
 msgid "Not a GLPathShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5615 gui/mrvImageView.cpp:5629
+#: gui/mrvImageView.cpp:5522 gui/mrvImageView.cpp:5535
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr ""
 
-#: gui/mrvImageView.cpp:7049
+#: gui/mrvImageView.cpp:6937
 msgid "Not a GLTextShape pointer in position"
 msgstr ""
 
@@ -4991,14 +4939,6 @@ msgstr ""
 msgid "Number of channels in clip"
 msgstr ""
 
-#: core/mrvClient.cpp:496
-msgid "Number of client runs: "
-msgstr ""
-
-#: core/mrvServer.cpp:1739
-msgid "Number of connections now: "
-msgstr ""
-
 #: gui/mrvImageInformation.cpp:2793
 msgid "Number of subtitle streams in file"
 msgstr ""
@@ -5024,7 +4964,7 @@ msgstr ""
 msgid "OCIO Display"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2245
 msgid "OCIO Display/View or some default gamma settings."
 msgstr ""
 
@@ -5036,7 +4976,7 @@ msgstr ""
 msgid "OCIO View"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3864
+#: gui/mrvImageView.cpp:3793
 msgid "OCIO View change failed"
 msgstr ""
 
@@ -5044,23 +4984,23 @@ msgstr ""
 msgid "OCIO config (*.{"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1780
+#: gui/mrvPreferences.cpp:1779
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2166
 msgid "OCIO input color space for the image"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5065
+#: gui/mrvImageView.cpp:4980
 msgid "OCIO/Display"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5061 gui/mrvImageBrowser.cpp:4195
+#: gui/mrvImageView.cpp:4976 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5068
+#: gui/mrvImageView.cpp:4983
 msgid "OCIO/View"
 msgstr ""
 
@@ -5088,8 +5028,7 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:90
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3399
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:83
-#: core/mrvClient.cpp:322 gui/mrvImageInformation.cpp:251
-#: gui/mrvImageInformation.cpp:284
+#: gui/mrvImageInformation.cpp:251 gui/mrvImageInformation.cpp:284
 msgid "OK"
 msgstr ""
 
@@ -5173,7 +5112,7 @@ msgid ""
 "where SC is source color, SA is source alpha, and DC is destination color."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2032
 msgid "Opens different windows"
 msgstr ""
 
@@ -5248,19 +5187,15 @@ msgstr ""
 msgid "Override playback fps when loading sequences."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:430
+#: standalone/mrvCommandLine.cpp:429
 msgid "Override sequence default fps."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:442
-msgid "Override viewer's default client hostname."
-msgstr ""
-
-#: standalone/mrvCommandLine.cpp:438
+#: standalone/mrvCommandLine.cpp:437
 msgid "Override viewer's default gain."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:434
+#: standalone/mrvCommandLine.cpp:433
 msgid "Override viewer's default gamma."
 msgstr ""
 
@@ -5295,7 +5230,7 @@ msgstr ""
 msgid "PBO Textures:\t"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4650
+#: gui/mrvImageView.cpp:4565
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr ""
@@ -5316,12 +5251,12 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:704
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:702
 msgid "Pen Color"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:657
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3431
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:655
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3308
 msgid "Pen Size"
 msgstr ""
 
@@ -5390,7 +5325,7 @@ msgstr ""
 msgid "Pixel type not well supported in waveform monitor"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5146
+#: gui/mrvImageView.cpp:5061
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr ""
 
@@ -5422,15 +5357,15 @@ msgstr ""
 msgid "Play in Current Direction"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2969
 msgid "Play sequence backwards."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3021
 msgid "Play sequence forward."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:413
+#: standalone/mrvCommandLine.cpp:412
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
@@ -5445,11 +5380,6 @@ msgstr ""
 msgid "Playback of audio frame "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:833
-msgid "Port"
-msgstr ""
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1597
 msgid "Positioning"
 msgstr ""
@@ -5459,7 +5389,7 @@ msgid "Power"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:909
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2111
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1994
 msgid "Preferences"
 msgstr ""
 
@@ -5491,8 +5421,8 @@ msgstr ""
 msgid "Preview Thumbnails"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3468
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:734
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3345
 msgid "Previous"
 msgstr ""
 
@@ -5558,11 +5488,11 @@ msgstr ""
 msgid "Protocols"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:456
+#: standalone/mrvCommandLine.cpp:446
 msgid "Provide a sequence or movie for background."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:482
+#: standalone/mrvCommandLine.cpp:472
 msgid "Provide two sequences or movies for stereo."
 msgstr ""
 
@@ -5587,7 +5517,7 @@ msgstr ""
 msgid "Quicktime Movie"
 msgstr ""
 
-#: standalone/main.cpp:273
+#: standalone/main.cpp:272
 msgid "Quit mrViewer"
 msgstr ""
 
@@ -5607,7 +5537,7 @@ msgstr ""
 msgid "R: %g %g    G: %g %g    B: %g %g"
 msgstr ""
 
-#: gui/mrvImageView.cpp:312
+#: gui/mrvImageView.cpp:311
 msgid "RED"
 msgstr ""
 
@@ -5633,7 +5563,7 @@ msgid "RExt"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
-#: gui/mrvImageView.cpp:205
+#: gui/mrvImageView.cpp:204
 msgid "RGB"
 msgstr ""
 
@@ -5641,8 +5571,8 @@ msgstr ""
 msgid "RGB Picture"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2756
-#: gui/mrvImageView.cpp:204
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2636
+#: gui/mrvImageView.cpp:203
 msgid "RGBA"
 msgstr ""
 
@@ -5713,8 +5643,8 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2493
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2156 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9108
-#: gui/mrvImageView.cpp:9648
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:205 gui/mrvImageView.cpp:8963
+#: gui/mrvImageView.cpp:9483
 msgid "Red"
 msgstr ""
 
@@ -5726,11 +5656,11 @@ msgstr ""
 msgid "Red Gain of clip."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2664
 msgid "Red value of image pixel under mouse."
 msgstr ""
 
-#: standalone/main.cpp:468 standalone/main.cpp:481
+#: standalone/main.cpp:467 standalone/main.cpp:480
 msgid "Red/cyan glasses"
 msgstr ""
 
@@ -5738,12 +5668,12 @@ msgstr ""
 msgid "Redo Draw"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:685
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2619
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:683
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2499
 msgid "Redo Previous Shape Drawn"
 msgstr ""
 
-#: gui/mrvImageView.cpp:2310
+#: gui/mrvImageView.cpp:2245
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr ""
@@ -5795,7 +5725,7 @@ msgstr ""
 msgid "Regular expression error: "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:208
 #: gui/mrvImageInformation.cpp:3013
 msgid "Relative"
 msgstr ""
@@ -5834,11 +5764,7 @@ msgstr ""
 msgid "Remove current image from reel."
 msgstr ""
 
-#: core/mrvServer.cpp:1729
-msgid "Removed client "
-msgstr ""
-
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:207
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:205
 msgid "Render Intent"
 msgstr ""
 
@@ -5863,7 +5789,7 @@ msgstr ""
 msgid "Rendering Intent"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:468
+#: standalone/mrvCommandLine.cpp:458
 msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
@@ -5938,11 +5864,11 @@ msgstr ""
 msgid "Right View"
 msgstr ""
 
-#: standalone/main.cpp:450 standalone/main.cpp:475
+#: standalone/main.cpp:449 standalone/main.cpp:474
 msgid "Right view"
 msgstr ""
 
-#: standalone/main.cpp:460 standalone/main.cpp:477
+#: standalone/main.cpp:459 standalone/main.cpp:476
 msgid "Right/left"
 msgstr ""
 
@@ -5986,11 +5912,11 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:419
+#: standalone/mrvCommandLine.cpp:418
 msgid "Run mrViewer regardless of single instance setting."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3304
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3184
 msgid "S"
 msgstr ""
 
@@ -6028,14 +5954,14 @@ msgstr ""
 msgid "Saturation of clip."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2883
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2763
 msgid "Saturation value of image pixel under mouse."
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3395
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:333
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:267
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:331
 msgid "Save"
 msgstr ""
 
@@ -6069,7 +5995,7 @@ msgstr ""
 msgid "Save Ocio Config File in Preferences"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:167
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
 msgid "Save Options"
 msgstr ""
 
@@ -6148,8 +6074,8 @@ msgstr ""
 msgid "ScrollLock"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2140
-#: gui/mrvImageView.cpp:1578
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2023
+#: gui/mrvImageView.cpp:1544
 msgid "Scrub"
 msgstr ""
 
@@ -6161,8 +6087,8 @@ msgstr ""
 msgid "Scrub Sensitivity"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:532
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2487
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:530
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 msgid "Scrubbing Tool"
 msgstr ""
 
@@ -6186,7 +6112,7 @@ msgstr ""
 msgid "Secondary Display"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3242
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3122
 msgid "Select Audio Track"
 msgstr ""
 
@@ -6198,7 +6124,7 @@ msgstr ""
 msgid "Select Single Image"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:79
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:77
 msgid "Select a CTL script"
 msgstr ""
 
@@ -6221,11 +6147,11 @@ msgid ""
 "glasses (and viceversa)."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:487
+#: standalone/mrvCommandLine.cpp:477
 msgid "Select stereo input"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:492
+#: standalone/mrvCommandLine.cpp:482
 msgid "Select stereo output"
 msgstr ""
 
@@ -6243,7 +6169,7 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1580
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1876
-#: gui/mrvImageView.cpp:1606
+#: gui/mrvImageView.cpp:1572
 msgid "Selection"
 msgstr ""
 
@@ -6263,13 +6189,13 @@ msgstr ""
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:705
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:703
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2475
 msgid "Selects the current pen color."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:658
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3432
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:656
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3309
 msgid "Selects the size of brush."
 msgstr ""
 
@@ -6277,7 +6203,7 @@ msgstr ""
 msgid "Sep"
 msgstr ""
 
-#: standalone/main.cpp:428 standalone/main.cpp:437
+#: standalone/main.cpp:427 standalone/main.cpp:436
 msgid "Separate layers"
 msgstr ""
 
@@ -6289,12 +6215,7 @@ msgstr ""
 msgid "Sequences"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:804
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
-msgid "Server"
-msgstr ""
-
-#: standalone/main.cpp:272
+#: standalone/main.cpp:271
 msgid "Services"
 msgstr ""
 
@@ -6315,34 +6236,30 @@ msgstr ""
 msgid "Set Out Point"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:477
+#: standalone/mrvCommandLine.cpp:467
 msgid "Set added audio offset."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2216
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2096
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:472
+#: standalone/mrvCommandLine.cpp:462
 msgid "Set an attribute/value to display in the hud."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:460
+#: standalone/mrvCommandLine.cpp:450
 msgid "Set each input color space for each image."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:464
+#: standalone/mrvCommandLine.cpp:454
 msgid "Set each movie/sequence default audio."
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1550
 msgid "Set reel image as background."
-msgstr ""
-
-#: standalone/mrvCommandLine.cpp:447
-msgid "Set viewer's default server/client port."
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1204
@@ -6353,19 +6270,19 @@ msgstr ""
 msgid "Sets the default gamma when mrViewer starts."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1560
+#: gui/mrvPreferences.cpp:1559
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1541
+#: gui/mrvPreferences.cpp:1540
 msgid "Setting OCIO config to nuke-default."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1533
+#: gui/mrvPreferences.cpp:1532
 msgid "Setting OCIO config to saved preferences."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1566
+#: gui/mrvPreferences.cpp:1565
 msgid "Setting OCIO config to:"
 msgstr ""
 
@@ -6443,7 +6360,7 @@ msgstr ""
 msgid "Software"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3170
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3050
 msgid "Some default frame rate settings."
 msgstr ""
 
@@ -6497,11 +6414,11 @@ msgstr ""
 msgid "Stereo EXR Picture"
 msgstr ""
 
-#: standalone/main.cpp:452
+#: standalone/main.cpp:451
 msgid "Stereo OpenGL"
 msgstr ""
 
-#: standalone/main.cpp:474
+#: standalone/main.cpp:473
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr ""
 
@@ -6513,7 +6430,7 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2995
 msgid "Stop playback."
 msgstr ""
 
@@ -6525,7 +6442,7 @@ msgstr ""
 msgid "Stopped encoding cached "
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2441
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2321
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr ""
 
@@ -6563,15 +6480,15 @@ msgstr ""
 msgid "Subtitle type "
 msgstr ""
 
-#: gui/mrvImageView.cpp:5100
+#: gui/mrvImageView.cpp:5015
 msgid "Subtitle/Load"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5108
+#: gui/mrvImageView.cpp:5023
 msgid "Subtitle/No Subtitle"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5117
+#: gui/mrvImageView.cpp:5032
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr ""
@@ -6586,7 +6503,7 @@ msgstr ""
 msgid "Subtitles (*.{"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1325
+#: gui/mrvImageView.cpp:1291
 msgid "Subtitles are only valid on video files"
 msgstr ""
 
@@ -6610,17 +6527,17 @@ msgstr ""
 msgid "Switch FG/BG Images"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2637
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2908
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2809
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -6638,17 +6555,17 @@ msgid ""
 "1.0 (white)."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2706
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:593
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2430
 msgid "T"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4559
+#: gui/mrvImageView.cpp:4474
 msgid "T: "
 msgstr ""
 
@@ -6673,7 +6590,7 @@ msgstr ""
 msgid "Targa Picture"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1741 gui/mrvImageInformation.cpp:178
+#: gui/mrvImageView.cpp:1707 gui/mrvImageInformation.cpp:178
 msgid "Text"
 msgstr ""
 
@@ -6685,8 +6602,8 @@ msgstr ""
 msgid "Text Overlay"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:596
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:594
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2431
 msgid "Text Tool"
 msgstr ""
 
@@ -6945,7 +6862,7 @@ msgstr ""
 msgid "Timeline"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2983
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2863
 msgid "Timeline."
 msgstr ""
 
@@ -7110,12 +7027,12 @@ msgstr ""
 msgid "Tooldock"
 msgstr ""
 
-#: gui/mrvImageView.cpp:10987
+#: gui/mrvImageView.cpp:10752
 msgid "Top"
 msgstr ""
 
-#: standalone/main.cpp:430 standalone/main.cpp:437 standalone/main.cpp:454
-#: standalone/main.cpp:476
+#: standalone/main.cpp:429 standalone/main.cpp:436 standalone/main.cpp:453
+#: standalone/main.cpp:475
 msgid "Top/bottom"
 msgstr ""
 
@@ -7131,23 +7048,19 @@ msgstr ""
 msgid "Transform"
 msgstr ""
 
-#: standalone/main.cpp:265
+#: standalone/main.cpp:264
 msgid "Translations: "
-msgstr ""
-
-#: core/mrvClient.cpp:192
-msgid "Trying "
 msgstr ""
 
 #: gui/mrvMainWindow.cpp:142
 msgid "Turn off screensaver"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:425
+#: standalone/mrvCommandLine.cpp:424
 msgid "Turn on EDL when loading multiple images."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:408
+#: standalone/mrvCommandLine.cpp:407
 msgid "Turn on debugging console."
 msgstr ""
 
@@ -7156,7 +7069,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2781
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -7199,16 +7112,12 @@ msgstr ""
 msgid "Undo Draw"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:671
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:669
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2485
 msgid "Undo Last Shape Drawn"
 msgstr ""
 
-#: core/mrvClient.cpp:510
-msgid "Unhandled Exception"
-msgstr ""
-
-#: standalone/main.cpp:567
+#: standalone/main.cpp:541
 msgid "Unhandled exception"
 msgstr ""
 
@@ -7238,11 +7147,11 @@ msgstr ""
 msgid "Unknown Show"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1295
+#: gui/mrvImageView.cpp:1261
 msgid "Unknown Window "
 msgstr ""
 
-#: gui/mrvImageView.cpp:1029
+#: gui/mrvImageView.cpp:1024
 msgid "Unknown Window \""
 msgstr ""
 
@@ -7282,7 +7191,7 @@ msgstr ""
 msgid "Unknown destination video frame format: "
 msgstr ""
 
-#: standalone/main.cpp:587
+#: standalone/main.cpp:561
 msgid "Unknown error"
 msgstr ""
 
@@ -7300,10 +7209,6 @@ msgstr ""
 
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
-msgstr ""
-
-#: core/mrvClient.cpp:333
-msgid "Unknown message"
 msgstr ""
 
 #: core/exrImage.cpp:1407
@@ -7359,7 +7264,7 @@ msgstr ""
 msgid "Update Frame in Cache"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:125
+#: standalone/mrvCommandLine.cpp:124
 #, c-format
 msgid ""
 "Usage:\n"
@@ -7420,7 +7325,7 @@ msgstr ""
 msgid "Using hardware shader profile: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:4567
+#: gui/mrvImageView.cpp:4482
 msgid "V-A: "
 msgstr ""
 
@@ -7452,7 +7357,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2771
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr ""
 
@@ -7491,7 +7396,7 @@ msgid "Vector3 Integer"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:33
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 msgid "Vectorscope"
 msgstr ""
 
@@ -7503,19 +7408,19 @@ msgstr ""
 msgid "Version Regex"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4930 gui/mrvImageBrowser.cpp:4247
+#: gui/mrvImageView.cpp:4845 gui/mrvImageBrowser.cpp:4247
 msgid "Version/First"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4939 gui/mrvImageBrowser.cpp:4256
+#: gui/mrvImageView.cpp:4854 gui/mrvImageBrowser.cpp:4256
 msgid "Version/Last"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4933 gui/mrvImageBrowser.cpp:4253
+#: gui/mrvImageView.cpp:4848 gui/mrvImageBrowser.cpp:4253
 msgid "Version/Next"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4935 gui/mrvImageBrowser.cpp:4250
+#: gui/mrvImageView.cpp:4850 gui/mrvImageBrowser.cpp:4250
 msgid "Version/Previous"
 msgstr ""
 
@@ -7592,7 +7497,7 @@ msgstr ""
 msgid "Video timecode attribute already exists"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5084
+#: gui/mrvImageView.cpp:4999
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr ""
@@ -7605,49 +7510,49 @@ msgstr ""
 msgid "View Window"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4853
+#: gui/mrvImageView.cpp:4768
 msgid "View/Data Window"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4850
+#: gui/mrvImageView.cpp:4765
 msgid "View/Display Window"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4893
+#: gui/mrvImageView.cpp:4808
 msgid "View/Grid/Size"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4889
+#: gui/mrvImageView.cpp:4804
 msgid "View/Grid/Toggle Selected"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4905
+#: gui/mrvImageView.cpp:4820
 #, c-format
 msgid "View/Hud/%s"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4897
+#: gui/mrvImageView.cpp:4812
 msgid "View/Hud/Toggle Selected"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4879
+#: gui/mrvImageView.cpp:4794
 #, c-format
 msgid "View/Mask/%s"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4847
+#: gui/mrvImageView.cpp:4762
 msgid "View/Safe Areas"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4856
+#: gui/mrvImageView.cpp:4771
 msgid "View/Texture Filtering  "
 msgstr ""
 
-#: gui/mrvImageView.cpp:4865
+#: gui/mrvImageView.cpp:4780
 msgid "View/Toggle Action Dock"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2031
 msgid "W"
 msgstr ""
 
@@ -7924,7 +7829,7 @@ msgstr ""
 msgid "Window Behavior"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4838
+#: gui/mrvImageView.cpp:4753
 #, c-format
 msgid "Windows/%s"
 msgstr ""
@@ -8009,12 +7914,12 @@ msgstr ""
 msgid "XML Clip Metadata (*.{"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2743
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2623
 msgid "XY"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2491
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2928
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
 msgid "Y"
 msgstr ""
 
@@ -8092,15 +7997,15 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr ""
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9651
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9486
 msgid "Z"
 msgstr ""
 
-#: gui/mrvImageView.cpp:320
+#: gui/mrvImageView.cpp:319
 msgid "Z DEPTH"
 msgstr ""
 
-#: gui/mrvImageView.cpp:215
+#: gui/mrvImageView.cpp:214
 msgid "Z Depth"
 msgstr ""
 
@@ -8108,7 +8013,7 @@ msgstr ""
 msgid "Zoom Speed"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3814
+#: gui/mrvImageView.cpp:3743
 msgid "Zoom for image failed"
 msgstr ""
 
@@ -8189,7 +8094,7 @@ msgstr ""
 msgid "dub"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:451
+#: standalone/mrvCommandLine.cpp:441
 msgid "files"
 msgstr ""
 
@@ -8236,7 +8141,7 @@ msgstr ""
 msgid "has invalid magic number in the header."
 msgstr ""
 
-#: gui/mrvImageView.cpp:4353 gui/mrvImageView.cpp:4368
+#: gui/mrvImageView.cpp:4268 gui/mrvImageView.cpp:4283
 msgid "hdtv"
 msgstr ""
 
@@ -8305,17 +8210,17 @@ msgid "mental ray Z Depth Picture"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
-#: gui/mrvImageView.cpp:495
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1952
+#: gui/mrvImageView.cpp:494
 msgid "mrViewer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:490
+#: gui/mrvImageView.cpp:489
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr ""
 
-#: gui/mrvImageView.cpp:483
+#: gui/mrvImageView.cpp:482
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr ""
@@ -8377,8 +8282,8 @@ msgid ""
 "the same algorithm (CTL or ICC)."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:303 gui/mrvPreferences.cpp:1269
-#: gui/mrvPreferences.cpp:1275
+#: gui/mrvPreferences.cpp:302 gui/mrvPreferences.cpp:1268
+#: gui/mrvPreferences.cpp:1274
 msgid "mrViewer.keys"
 msgstr ""
 
@@ -8486,11 +8391,11 @@ msgstr ""
 msgid "task info failed"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4346 gui/mrvImageView.cpp:4376
+#: gui/mrvImageView.cpp:4261 gui/mrvImageView.cpp:4291
 msgid "tv action"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4347 gui/mrvImageView.cpp:4377
+#: gui/mrvImageView.cpp:4262 gui/mrvImageView.cpp:4292
 msgid "tv title"
 msgstr ""
 
@@ -8523,6 +8428,6 @@ msgstr ""
 msgid "visual impaired"
 msgstr ""
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2552
 msgid "x1"
 msgstr ""
