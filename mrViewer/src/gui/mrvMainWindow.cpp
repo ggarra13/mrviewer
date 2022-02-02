@@ -30,7 +30,11 @@
 #undef snprintf
 #include <iostream>
 
-#ifdef LINUX
+//#include "FL/fl_config.h"
+
+#undef FLTK_USE_WAYLAND
+
+#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
 #include <X11/extensions/scrnsaver.h>
 #endif
 
@@ -55,7 +59,6 @@
 
 #include "mrvPreferencesUI.h"
 #include "mrvReelUI.h"
-
 
 
 using namespace std;
@@ -101,11 +104,11 @@ MainWindow::~MainWindow()
 {
     // Restore screensaver/black screen
     DBGM1( _("Restore screensaver") );
-#ifdef LINUX
+#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
     XScreenSaverSuspend( fl_display, False );
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState(ES_CONTINUOUS);
-#else
+#elif defined(__APPLE__)
     if ( success )
     {
         success = IOPMAssertionRelease( assertionID );
@@ -137,7 +140,7 @@ void MainWindow::set_icon()
 
     // Turn off screensaver and black screen
     DBGM1( _("Turn off screensaver") );
-#ifdef LINUX
+#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
     int event_base, error_base;
     Bool ok = XScreenSaverQueryExtension(fl_display, &event_base, &error_base );
     if ( ok == True )
@@ -145,7 +148,7 @@ void MainWindow::set_icon()
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
                              ES_DISPLAY_REQUIRED );
-#else
+#elif defined(__APPLE__)
     CFStringRef reason = CFSTR( "mrViewer playback" );
     success = IOPMAssertionCreateWithName( kIOPMAssertionTypeNoDisplaySleep,
                                            kIOPMAssertionLevelOn,
@@ -171,8 +174,8 @@ void MainWindow::always_on_top()
 #if defined(_WIN32) || defined(_WIN64)
     // Microsoft (R) Windows(TM)
     SetWindowPos(fl_xid(this), HWND_TOPMOST,
-                 0, 0, w()+8, h()+27, 0);
-#elif defined(LINUX)
+                 0, 0, w()+8, h()+27, 0 );
+#elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
     // XOrg / XWindows(TM)
     XEvent ev;
     static const char* const names[2] = { "_NET_WM_STATE",

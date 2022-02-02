@@ -792,6 +792,7 @@ public:
         return _mode;
     }
 
+    void create_timeout( double t );
 
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
@@ -849,7 +850,6 @@ protected:
 
     void stop_playback();
 
-    void create_timeout( double t );
     void delete_timeout();
 
     void damage_contents();

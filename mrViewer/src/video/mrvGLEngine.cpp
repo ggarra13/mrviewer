@@ -66,12 +66,11 @@ extern "C" {
 #include <GLUT/glut.h>
 #else
 #include <GL/glu.h>
-#include <GL/glut.h>
 #endif
 
 #if defined(WIN32) || defined(WIN64)
 #  include <GL/wglew.h>
-#elif defined(LINUX)
+#elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
 #  include <GL/glxew.h>
 #endif
 
@@ -79,6 +78,11 @@ extern "C" {
 
 }
 
+#ifdef OSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 
 #include <half.h>
@@ -280,10 +284,10 @@ void GLEngine::init_textures()
  */
 void GLEngine::init_GLEW()
 {
-    DBGM3( __FUNCTION__ << " " << __LINE__ );
+    DBGM1( __FUNCTION__ << " " << __LINE__ );
     GLenum err = glewInit();
-    DBGM3( __FUNCTION__ << " " << __LINE__ );
-    if (GLEW_OK != err)
+    DBGM1( __FUNCTION__ << " " << __LINE__ );
+    if (GLEW_OK != err && err != 4)
     {
         DBGM3( "glewInit failed" );
         /* Problem: glewInit failed, something is seriously wrong. */
@@ -508,7 +512,7 @@ void GLEngine::initialize()
     {
         _sdiOutput = true;
     }
-#elif defined(LINUX)
+#elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
     if ( glxewIsSupported( N_("GLX_NV_video_out") ) ||
          glxewIsSupported( N_("GLX_NV_video_output") ) )
     {

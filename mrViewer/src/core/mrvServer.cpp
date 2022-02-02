@@ -1022,6 +1022,7 @@ bool Parser::parse( const std::string& s )
         c.linfo = new LoadInfo(imgname, first, last);
 
         v->commands.push_back( c );
+        v->create_timeout( 1.0 / 60.0 );
 
         ok = true;
 
@@ -1131,9 +1132,11 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("sync_image") )
     {
+
+#if 1
         std::string cmd;
-        size_t num = browser()->number_of_reels();
-        for (size_t i = 0; i < num; ++i )
+        size_t num_reels = browser()->number_of_reels();
+        for (size_t i = 0; i < num_reels; ++i )
         {
             r = browser()->reel_at( unsigned(i) );
             if (!r) continue;
@@ -1208,8 +1211,9 @@ bool Parser::parse( const std::string& s )
         sprintf( buf, N_("seek %" PRId64 ), frame );
         deliver( buf );
 
-        if ( num == 0 ) {
+        if ( num_reels == 0 ) {
             v->network_active( true );
+            deliver( "sync_image" );
             return true;
         }
 
@@ -1380,6 +1384,8 @@ bool Parser::parse( const std::string& s )
 
         browser()->redraw();
         v->redraw();
+#endif
+
 
         ok = true;
     }
@@ -1394,6 +1400,7 @@ bool Parser::parse( const std::string& s )
 
             c.frame = f;
             v->commands.push_back( c );
+            v->create_timeout( 1.0 / 60.0 );
         }
 
 
@@ -1405,6 +1412,7 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kPlayForwards;
 
         v->commands.push_back( c );
+        v->create_timeout( 1.0 / v->fps() );
         ok = true;
     }
     else if ( cmd == N_("playback") )
@@ -1413,6 +1421,7 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kPlayBackwards;
 
         v->commands.push_back( c );
+        v->create_timeout( 1.0 / v->fps() );
         ok = true;
     }
     else if ( cmd == N_("seek") )

@@ -14,6 +14,7 @@ class VolumeSlider : public Fl_Slider
         type( FL_HORIZONTAL );
     }
 
+    virtual ~VolumeSlider() {};
 
     virtual int handle(int e);
 };

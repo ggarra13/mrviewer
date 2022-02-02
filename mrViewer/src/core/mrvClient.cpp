@@ -305,8 +305,8 @@ void client::handle_read(const boost::system::error_code& ec)
     {
         // Extract the newline-delimited message from the buffer.
         std::istream is(&input_buffer_);
-        // is.exceptions( std::ifstream::failbit | std::ifstream::badbit |
-        //                std::ifstream::eofbit );
+        is.exceptions( std::ifstream::failbit | std::ifstream::badbit |
+                       std::ifstream::eofbit );
 
 
 
