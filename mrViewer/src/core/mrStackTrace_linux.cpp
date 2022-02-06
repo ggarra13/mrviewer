@@ -95,13 +95,13 @@ void ExceptionHandler::demangle( const char* name )
       free(demangle);
    } else if(status == -2)
       fprintf( stderr, "Error: %s  is not a valid name under the C++ ABI mangling "
-	       "rules\n", name);
+               "rules\n", name);
    else if(status == -1)
       fprintf( stderr, "Error: could not allocate memory.\n");
 }
 
 void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
-				     void *secret)
+                                     void *secret)
 {
 
    std::string lockfile = mrv::homepath();
@@ -109,7 +109,7 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
    if(fs::exists(lockfile))
    {
       if ( ! fs::remove( lockfile ) )
-	 std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+         std::cerr << "Could not remove lockfile " << lockfile << std::endl;
    }
 
    if ( sig == SIGINT ) exit(0);
@@ -124,8 +124,8 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   /* 32-bit OS */
   if (sig == SIGSEGV)
      fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr,
-	      uc->uc_mcontext.gregs[REG_EIP]);
+              "from %p\n", sig, info->si_addr,
+              uc->uc_mcontext.gregs[REG_EIP]);
   else if ( sig == SIGFPE )
      fprintf( stderr, "Got Floating Point Exception.\n");
   else
@@ -139,8 +139,8 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   /* 64-bit OS */
   if (sig == SIGSEGV)
      fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr,
-	      (void*)uc->uc_mcontext.gregs[REG_RIP]);
+              "from %p\n", sig, info->si_addr,
+              (void*)uc->uc_mcontext.gregs[REG_RIP]);
   else if ( sig == SIGFPE )
      fprintf( stderr, "Got Floating Point Exception.\n");
   else
@@ -160,15 +160,16 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
     {
       fprintf( stderr, "[tb] %s\n", messages[i]);
 
-      int p = 0;
+      size_t p = 0;
       while(messages[i][p] != '(' && messages[i][p] != ' '
-	    && messages[i][p] != 0)
-	  ++p;
+            && messages[i][p] != 0)
+          ++p;
+
 
       char syscom[256];
       sprintf(syscom,"addr2line %p -e %.*s", trace[i], p, messages[i]);
       //last parameter is the file name of the symbol
-      p = system(syscom);
+      system(syscom);
     }
   free( messages );
 
