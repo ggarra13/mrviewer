@@ -126,11 +126,11 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_COMPILE_OPTIONS( -fsanitize=thread )
      # SET(OS_LIBRARIES -fsanitize=thread ${OS_LIBRARIES} )
 
-     #ADD_COMPILE_OPTIONS( -g -fsanitize=address )
+     #ADD_COMPILE_OPTIONS( -fsanitize=address )
      #SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
    ENDIF()
 
-  ELSE(APPLE)
+  ELSE()
     ADD_DEFINITIONS( -DMR_SSE )
     ADD_DEFINITIONS( -D_GLIBCXX_USE_CXX11_ABI=1 )
     ADD_COMPILE_OPTIONS( -Wall -Wno-unused-variable -Wno-unused-value -Wno-unused-but-set-variable -Wno-unused-function -Wno-switch -Wno-deprecated-declarations)
@@ -169,7 +169,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   # SET THIS TO 1 to use AO ENGINE (libao) ON LINUX
   set( AOENGINE 0 )
 
-  ADD_DEFINITIONS( -DLINUX -DNDEBUG )
+  ADD_DEFINITIONS( -DLINUX )
   ADD_COMPILE_OPTIONS( -O3 -msse )
   LINK_DIRECTORIES( /usr/local/lib )
   SET(OS_LIBRARIES
@@ -187,11 +187,11 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_DEFINITIONS( -DTHREAD_SANITIZER )
      # SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-     # ADD_COMPILE_OPTIONS( -g -fsanitize=address )
-     # SET(LIBRARIES asan ${LIBRARIES} )
+     ADD_COMPILE_OPTIONS( -fsanitize=address )
+     SET(LIBRARIES asan ${LIBRARIES} )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
-  ENDIF(APPLE)
+  ENDIF()
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 

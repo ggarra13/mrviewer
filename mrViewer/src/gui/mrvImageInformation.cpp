@@ -2388,6 +2388,7 @@ void ImageInformation::clear_callback_data()
 
 void ImageInformation::hide_tabs()
 {
+
     DBG2;
     tooltip( _("Load an image or movie file") );
     m_all->hide();

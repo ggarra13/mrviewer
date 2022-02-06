@@ -136,7 +136,9 @@ void Element::make_thumbnail()
     Element::~Element()
     {
         _elem.reset();
+        std::cerr << "image " << image << std::endl;
         delete image; image = NULL;
+        std::cerr << "label " << label << std::endl;
         delete label; label = NULL;
     }
 

@@ -4279,7 +4279,6 @@ void ImageView::draw()
     }
 
 
-
     if ( _masking != 0.0f )
     {
         _engine->draw_mask( _masking );
@@ -8124,6 +8123,7 @@ void ImageView::show_background( const bool b )
         uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->redraw();
+        std::cerr << "uiRegion->layout show_bars" << std::endl;
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
@@ -10213,6 +10213,8 @@ void ImageView::resize_main_window()
 
     uiMain->uiRegion->init_sizes();
     uiMain->uiRegion->layout();
+
+    std::cerr << "uiRegion layout resize_main_window" << std::endl;
 
     uiMain->uiRegion->redraw();
 

@@ -201,8 +201,8 @@ exrImage::exrImage() :
 
 exrImage::~exrImage()
 {
-    av_free( _has_right_eye );
-    av_free( _has_left_eye );
+    av_free( _has_right_eye ); _has_right_eye = NULL;
+    av_free( _has_left_eye );  _has_left_eye = NULL;
 }
 
 stringArray exrImage::valid_compressions() const
