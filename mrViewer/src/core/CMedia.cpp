@@ -1190,6 +1190,8 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
 
 double CMedia::pixel_ratio() const    {
   int64_t idx = _frame - _frame_start;
+  if ( idx < 0 ) idx = 0;
+  else if ( idx > _frame_end - _frame_start ) idx = _frame_end - _frame_start;
   if ( dynamic_cast< const aviImage* >(this) != NULL ||
        dynamic_cast< const brawImage* >( this ) != NULL ||
        dynamic_cast< const R3dImage* >( this ) != NULL ||
