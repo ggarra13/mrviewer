@@ -147,7 +147,19 @@ void infobuffer::print( const char* c )
     }
 }
 
+void connbuffer::print( const char* c )
+{
+    std::cout << c << std::flush;
 
+    // Send string to Log Window in Connection panel
+    if ( ViewerUI::uiConnection && ViewerUI::uiConnection->uiLog )
+    {
+        ViewerUI::uiConnection->uiLog->info( c );
+        ViewerUI::uiConnection->uiLog->redraw();
+    }
+}
+
+connstream  conn;
 infostream  info;
 warnstream  warn;
 errorstream error;

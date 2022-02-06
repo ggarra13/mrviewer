@@ -39,12 +39,13 @@
 
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
+#include "core/mrvServer.h"
+#include "core/mrvClient.h"
 #include "core/Sequence.h"
 
 #include "core/mrvChannelType.h"
 #include "gui/mrvMedia.h"
 #include "gui/mrvReel.h"
-#include "gui/mrvImageBrowser.h"
 
 #include "video/mrvGLShape.h"
 
@@ -234,10 +235,11 @@ public:
         kVectorscope = 9,
         kWaveform = 10,
         kICCProfiles = 11,
-        kPreferences = 12,
-        kHotkeys = 13,
-        kLogs = 14,
-        kAbout = 15,
+        kConnections = 12,
+        kPreferences = 13,
+        kHotkeys = 14,
+        kLogs = 15,
+        kAbout = 16,
         kLastWindow
     };
 
@@ -790,7 +792,6 @@ public:
         return _mode;
     }
 
-    void create_timeout( double t );
 
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
@@ -839,6 +840,9 @@ public:
     Mutex                 commands_mutex;
     std::deque<Command>   commands;
     bool           _broadcast;
+    CMedia::Mutex  _clients_mtx;
+    ParserList     _clients;
+    tcp_server_ptr _server;
 
 protected:
 

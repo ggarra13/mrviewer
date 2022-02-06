@@ -96,6 +96,10 @@ struct infobuffer : public logbuffer
     virtual void print( const char* c );
 };
 
+struct connbuffer : public logbuffer
+{
+    virtual void print( const char* c );
+};
 
 
 struct  errorstream : public std::ostream
@@ -131,8 +135,19 @@ struct  infostream : public std::ostream
     };
 };
 
+struct  connstream : public std::ostream
+{
+    connstream() : std::ostream( new connbuffer )
+    {
+        flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+    };
+    ~connstream() {
+        delete rdbuf();
+    };
+};
 
 
+extern connstream  conn;
 extern infostream  info;
 extern warnstream  warn;
 extern errorstream error;
@@ -162,6 +177,9 @@ unsigned long get_thread_id();
 #define mrvLOG_INFO(mod, msg)    do {                \
     mrv::io::info << _("       ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
+#define mrvCONN_INFO(mod, msg)    do {               \
+    mrv::io::conn << _("{conn} ") << N_("[") << mod << N_("] ") << msg; \
+  } while(0)
 
 #define LOG_ERROR(msg)   mrvLOG_ERROR( kModule, msg << std::endl )
 #define LOG_WARNING(msg) mrvLOG_WARNING( kModule, msg << std::endl )
@@ -169,6 +187,7 @@ unsigned long get_thread_id();
 #define LOG_DEBUG(msg)   mrvLOG_INFO( kModule,       \
                                       __FUNCTION__ << "(" << __LINE__ << ") " \
                                       << msg << std::endl )
+#define LOG_CONN(msg)    mrvCONN_INFO( kModule, msg << std::endl )
 #define IMG_ERROR(msg)   do { if( !is_thumbnail() ) LOG_ERROR( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
 #define IMG_WARNING(msg) do { if( !is_thumbnail() ) LOG_WARNING( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
 #define IMG_INFO_F(msg) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << msg )
