@@ -187,8 +187,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_DEFINITIONS( -DTHREAD_SANITIZER )
      # SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
 
-     ADD_COMPILE_OPTIONS( -fsanitize=address )
+     ADD_COMPILE_OPTIONS( -g -fsanitize=address -rdynamic )
      SET(LIBRARIES asan ${LIBRARIES} )
+     SET( $ENV{ASAN_SYMBOLIZER_PATH}=/usr/bin/llvm-symbolizer-3.4 )
    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ENDIF()

@@ -74,11 +74,9 @@ media::media( CMedia* const img ) :
 media::~media()
 {
     if ( _own_image ) {
-        std::cerr << "own image " << _image << std::endl;
-        delete _image;
+	delete _image;
     }
     _image = NULL;
-    std::cerr << "thumbnail " << _thumbnail << std::endl;
     delete _thumbnail;
     _thumbnail = NULL;
 }
@@ -112,15 +110,15 @@ void media::create_thumbnail( unsigned W, unsigned H )
     mrv::image_type_ptr pic = _image->left();
 
     if ( !pic ) {
-        LOG_ERROR( _("Empty pic file for media ") << _image->name() );
-        return;
+	LOG_ERROR( _("Empty pic file for media ") << _image->name() );
+	return;
     }
 
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw == 0 || dh == 0 ) {
-        LOG_ERROR( _("Media file has zero size in width or height") );
-        return;
+	LOG_ERROR( _("Media file has zero size in width or height") );
+	return;
     }
 
     unsigned int h = H;
@@ -134,31 +132,31 @@ void media::create_thumbnail( unsigned W, unsigned H )
 
     if ( mrv::Preferences::use_ocio )
     {
-        mrv::image_type_ptr ptr;
-        if ( pic->pixel_type() == mrv::image_type::kFloat )
-        {
-            ptr = pic;
-        }
-        else if ( pic->pixel_type() == mrv::image_type::kHalf )
-        {
-            ptr = image_type_ptr( new image_type(
-                                  pic->frame(),
-                                  w, h, 3,
-                                  image_type::kRGB,
-                                  image_type::kFloat ) );
-            SwsContext* save_ctx = NULL;
-            copy_image( ptr, pic, &save_ctx );
-            if ( save_ctx )
-            {
-                sws_freeContext( save_ctx );
-            }
-        }
-        if ( pic->pixel_type() == mrv::image_type::kFloat ||
-             pic->pixel_type() == mrv::image_type::kHalf )
-        {
-            bake_ocio( ptr, _image );
-            pic = ptr;
-        }
+	mrv::image_type_ptr ptr;
+	if ( pic->pixel_type() == mrv::image_type::kFloat )
+	{
+	    ptr = pic;
+	}
+	else if ( pic->pixel_type() == mrv::image_type::kHalf )
+	{
+	    ptr = image_type_ptr( new image_type(
+				  pic->frame(),
+				  w, h, 3,
+				  image_type::kRGB,
+				  image_type::kFloat ) );
+	    SwsContext* save_ctx = NULL;
+	    copy_image( ptr, pic, &save_ctx );
+	    if ( save_ctx )
+	    {
+		sws_freeContext( save_ctx );
+	    }
+	}
+	if ( pic->pixel_type() == mrv::image_type::kFloat ||
+	     pic->pixel_type() == mrv::image_type::kHalf )
+	{
+	    bake_ocio( ptr, _image );
+	    pic = ptr;
+	}
     }
 
     w = pic->width();
@@ -172,9 +170,9 @@ void media::create_thumbnail( unsigned W, unsigned H )
 
     if ( !_thumbnail )
     {
-        IMG_ERROR( _("Could not create thumbnail picture for '")
-                   << _image->fileroot() << "'" );
-        return;
+	IMG_ERROR( _("Could not create thumbnail picture for '")
+		   << _image->fileroot() << "'" );
+	return;
     }
 
     uchar* ptr = data;
@@ -187,30 +185,30 @@ void media::create_thumbnail( unsigned W, unsigned H )
     unsigned xmax = w;
     for (unsigned y = ymin; y < ymax; ++y )
     {
-        for (unsigned x = xmin; x < xmax; ++x )
-        {
-            CMedia::Pixel fp = pic->pixel( x, y );
-            if ( gamma != 1.0f )
-            {
-                using namespace std;
-                if ( isfinite( fp.r ) )
-                    fp.r = Imath::Math<float>::pow( fp.r, gamma );
-                if ( isfinite( fp.g ) )
-                    fp.g = Imath::Math<float>::pow( fp.g, gamma );
-                if ( isfinite( fp.b ) )
-                    fp.b = Imath::Math<float>::pow( fp.b, gamma );
-            }
+	for (unsigned x = xmin; x < xmax; ++x )
+	{
+	    CMedia::Pixel fp = pic->pixel( x, y );
+	    if ( gamma != 1.0f )
+	    {
+		using namespace std;
+		if ( isfinite( fp.r ) )
+		    fp.r = Imath::Math<float>::pow( fp.r, gamma );
+		if ( isfinite( fp.g ) )
+		    fp.g = Imath::Math<float>::pow( fp.g, gamma );
+		if ( isfinite( fp.b ) )
+		    fp.b = Imath::Math<float>::pow( fp.b, gamma );
+	    }
 
-            uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
-            uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
-            uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-            thumbnail_pixel( ptr, r, g, b );
-        }
+	    uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
+	    uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
+	    uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
+	    thumbnail_pixel( ptr, r, g, b );
+	}
     }
 
 
     _image->image_damage( _image->image_damage() &
-                          ~CMedia::kDamageThumbnail );
+			  ~CMedia::kDamageThumbnail );
 }
 
 void media::create_thumbnail()
