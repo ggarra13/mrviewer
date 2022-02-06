@@ -4017,7 +4017,6 @@ void ImageView::timeout()
     if ( strcmp( uiConnection->uiConnect->label(), _("Disconnect") ) == 0 )
         connection = true;
 
-    std::cerr << "timeout " << connection << std::endl;
 
     if ( should_update( fg ) || connection )
     {

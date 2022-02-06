@@ -2012,9 +2012,6 @@ void server::create(ViewerUI* ui)
     data->port = port;
     data->ui = ui;
 
-    ui->uiConnection->uiCreate->label( _("Disconnect") );
-    ui->uiConnection->uiClientGroup->deactivate();
-
     boost::thread t( boost::bind( mrv::server_thread,
                                   data ) );
     t.detach();
@@ -2054,6 +2051,9 @@ void server::remove( ViewerUI* ui )
 
 void server_thread( const ServerData* s )
 {
+    s->ui->uiConnection->uiCreate->label( _("Disconnect") );
+    s->ui->uiConnection->uiClientGroup->deactivate();
+
     try
     {
 
