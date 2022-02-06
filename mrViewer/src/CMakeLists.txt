@@ -42,7 +42,12 @@ if (APPLE)
   set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
 
-FIND_PACKAGE( FLTK        REQUIRED )    # for window management
+set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" )
+
+FIND_PACKAGE( FLTK        REQUIRED NO_MODULE )    # for window management
+
+set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
+
 
 endif()
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats

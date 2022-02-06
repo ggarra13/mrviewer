@@ -63,10 +63,8 @@ extern "C" {
 
 #ifdef OSX
 #include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #else
 #include <GL/glu.h>
-#include <GL/glut.h>
 #endif
 
 #if defined(WIN32) || defined(WIN64)
@@ -80,6 +78,11 @@ extern "C" {
 }
 
 
+#ifdef OSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 #include <half.h>
 #include <ImfArray.h>
