@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-06 05:40-0300\n"
+"POT-Creation-Date: 2022-02-06 05:44-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgid ""
 "Not a known stream type for stream #"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:135
+#: standalone/mrvCommandLine.cpp:136
 msgid ""
 "\n"
 "\n"
@@ -515,11 +515,11 @@ msgstr ""
 msgid ", type "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:552
+#: standalone/mrvCommandLine.cpp:566
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:362
 msgid ".  Attribute must be of the form attr=value."
 msgstr ""
 
@@ -772,7 +772,7 @@ msgstr ""
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:394
+#: standalone/mrvCommandLine.cpp:395
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
@@ -2978,7 +2978,7 @@ msgstr ""
 msgid "Example:  gizmo"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:164
+#: standalone/mrvCommandLine.cpp:165
 msgid ""
 "Examples:\n"
 "\n"
@@ -3989,7 +3989,7 @@ msgstr ""
 msgid "Images in stereo have different velocities (fps)."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:442
+#: standalone/mrvCommandLine.cpp:452
 msgid "Images, sequences or movies to display."
 msgstr ""
 
@@ -4050,7 +4050,7 @@ msgstr ""
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:360
+#: standalone/mrvCommandLine.cpp:361
 msgid "Invalid attribute "
 msgstr ""
 
@@ -4333,7 +4333,7 @@ msgstr ""
 msgid "Load XML Clip Metadata"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:415
+#: standalone/mrvCommandLine.cpp:416
 msgid "Load a single image even if there's a sequence present."
 msgstr ""
 
@@ -4729,7 +4729,7 @@ msgstr ""
 msgid "Name (.ext)"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:163
+#: standalone/mrvCommandLine.cpp:164
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
@@ -5248,15 +5248,19 @@ msgstr ""
 msgid "Override playback fps when loading sequences."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:429
+#: standalone/mrvCommandLine.cpp:430
 msgid "Override sequence default fps."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:437
+#: standalone/mrvCommandLine.cpp:442
+msgid "Override viewer's default client hostname."
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:438
 msgid "Override viewer's default gain."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:433
+#: standalone/mrvCommandLine.cpp:434
 msgid "Override viewer's default gamma."
 msgstr ""
 
@@ -5426,7 +5430,7 @@ msgstr ""
 msgid "Play sequence forward."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:412
+#: standalone/mrvCommandLine.cpp:413
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
@@ -5554,11 +5558,11 @@ msgstr ""
 msgid "Protocols"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:446
+#: standalone/mrvCommandLine.cpp:456
 msgid "Provide a sequence or movie for background."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:472
+#: standalone/mrvCommandLine.cpp:482
 msgid "Provide two sequences or movies for stereo."
 msgstr ""
 
@@ -5859,7 +5863,7 @@ msgstr ""
 msgid "Rendering Intent"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:458
+#: standalone/mrvCommandLine.cpp:468
 msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
@@ -5982,7 +5986,7 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:418
+#: standalone/mrvCommandLine.cpp:419
 msgid "Run mrViewer regardless of single instance setting."
 msgstr ""
 
@@ -6217,11 +6221,11 @@ msgid ""
 "glasses (and viceversa)."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:477
+#: standalone/mrvCommandLine.cpp:487
 msgid "Select stereo input"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:482
+#: standalone/mrvCommandLine.cpp:492
 msgid "Select stereo output"
 msgstr ""
 
@@ -6311,7 +6315,7 @@ msgstr ""
 msgid "Set Out Point"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:467
+#: standalone/mrvCommandLine.cpp:477
 msgid "Set added audio offset."
 msgstr ""
 
@@ -6321,20 +6325,24 @@ msgid ""
 "image is the selected image."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:462
+#: standalone/mrvCommandLine.cpp:472
 msgid "Set an attribute/value to display in the hud."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:450
+#: standalone/mrvCommandLine.cpp:460
 msgid "Set each input color space for each image."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:454
+#: standalone/mrvCommandLine.cpp:464
 msgid "Set each movie/sequence default audio."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.2.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1550
 msgid "Set reel image as background."
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:447
+msgid "Set viewer's default server/client port."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.2.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1204
@@ -7135,11 +7143,11 @@ msgstr ""
 msgid "Turn off screensaver"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:424
+#: standalone/mrvCommandLine.cpp:425
 msgid "Turn on EDL when loading multiple images."
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:407
+#: standalone/mrvCommandLine.cpp:408
 msgid "Turn on debugging console."
 msgstr ""
 
@@ -7351,7 +7359,7 @@ msgstr ""
 msgid "Update Frame in Cache"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:124
+#: standalone/mrvCommandLine.cpp:125
 #, c-format
 msgid ""
 "Usage:\n"
@@ -8181,7 +8189,7 @@ msgstr ""
 msgid "dub"
 msgstr ""
 
-#: standalone/mrvCommandLine.cpp:441
+#: standalone/mrvCommandLine.cpp:451
 msgid "files"
 msgstr ""
 
