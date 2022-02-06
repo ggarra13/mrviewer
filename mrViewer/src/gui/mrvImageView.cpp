@@ -3977,7 +3977,7 @@ void ImageView::timeout()
     }
 
 
-    double delay = 0.5;
+    double delay = 0.025;
     CMedia* img = NULL;
     if ( fg )
     {
@@ -4024,15 +4024,14 @@ void ImageView::timeout()
         update_color_info();
         if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiEDLGroup->visible() )
             uiMain->uiEDLWindow->uiEDLGroup->redraw();
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
 
 
     if ( vr() )
     {
         handle_vr( delay );
-        Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
     }
+    Fl::repeat_timeout( delay, (Fl_Timeout_Handler)static_timeout, this );
 
 }
 
@@ -10028,7 +10027,13 @@ void ImageView::background( mrv::media bg )
 
 void ImageView::resize( int X, int Y, int W, int H )
 {
-    Fl_Gl_Window::resize( X, Y, W, H );
+    static int oX = 0, oY = 0, oW = 0, oH = 0;
+
+    if  ( X != oX || Y != oY || W != oW || H != oH )
+    {
+        Fl_Gl_Window::resize( X, Y, W, H );
+        oX = X; oY = Y; oW = W; oH = H;
+    }
 
     if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
     {
@@ -10046,6 +10051,9 @@ void ImageView::resize( int X, int Y, int W, int H )
 void ImageView::resize_main_window()
 {
     int w, h;
+
+    int oX = 0, oY = 0, oW = 0, oH = 0;
+
     mrv::media fg = foreground();
     if ( !fg )
     {
@@ -10181,14 +10189,20 @@ void ImageView::resize_main_window()
     }
 
     DBGM1( "posX, posY = " << posX << ", " << posY );
-
+    bool check = false;
     if ( fltk_main()->fullscreen_active() )
     {
+        check = true;
         fltk_main()->fullscreen_off( posX, posY, w, h );
     }
     else
     {
-        fltk_main()->resize( posX, posY, w, h );
+        if ( posX != oX || posY != oY || w != oW || h != oH )
+        {
+            check = true;
+            fltk_main()->resize( posX, posY, w, h );
+            oX = posX; oY = posY; oW = w; oH = h;
+        }
     }
 
 
@@ -10213,7 +10227,8 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
-    Fl::check();
+    if ( check )
+        Fl::check();
 
     if ( fit ) fit_image();
 
@@ -10710,7 +10725,6 @@ void ImageView::play( const CMedia::Playback dir )
         LOG_ERROR( "Not a valid playback mode" );
         return;
     }
-
 
 
     mrv::media fg = foreground();

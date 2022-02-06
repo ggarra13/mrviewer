@@ -230,14 +230,13 @@ void MainWindow::fullscreen()
 
 void MainWindow::resize( int X, int Y, int W, int H )
 {
-    static int oldH = 0;
-    if ( oldH != H )
+    static int oX = 0, oY = 0, oW = 0, oH = 0;
+
+    if  ( X != oX || Y != oY || W != oW || H != oH )
     {
-        DBGM1( X << ", " << Y << " " << W << "x" << H );
-        oldH = H;
+        Fl_Double_Window::resize( X, Y, W, H );
+        oX = X; oY = Y; oW = W; oH = H;
     }
-    Fl_Double_Window::resize( X, Y, W, H );
-    return;
 }
 
 

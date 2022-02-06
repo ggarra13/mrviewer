@@ -798,6 +798,8 @@ public:
 
     void restore_locale() const;
 
+    void create_timeout( double t );
+
     void clear_old();
 
 public:
@@ -849,7 +851,6 @@ protected:
 
     void stop_playback();
 
-    void create_timeout( double t );
     void delete_timeout();
 
     void damage_contents();
