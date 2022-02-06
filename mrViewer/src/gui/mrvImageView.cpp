@@ -4009,16 +4009,8 @@ void ImageView::timeout()
     //     }
     // }
 
-    ConnectionUI* uiConnection = ViewerUI::uiConnection;
 
-    bool connection = false;
-    if ( strcmp( uiConnection->uiCreate->label(), _("Disconnect") ) == 0 )
-        connection = true;
-    if ( strcmp( uiConnection->uiConnect->label(), _("Disconnect") ) == 0 )
-        connection = true;
-
-
-    if ( should_update( fg ) || connection )
+    if ( should_update( fg ) )
     {
         redraw();  // Clear the damage to redraw it
         update_color_info();

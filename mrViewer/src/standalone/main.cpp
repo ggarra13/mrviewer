@@ -44,7 +44,6 @@
 
 #include <MagickWand/MagickWand.h>
 
-#include <boost/exception/all.hpp>
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
@@ -53,6 +52,8 @@ namespace fs = boost::filesystem;
 #include "mrvReelUI.h"
 #include "mrViewer.h"
 #include "core/mrvHome.h"
+#include "core/mrvServer.h"
+#include "core/mrvClient.h"
 #include "core/mrvI8N.h"
 #include "core/mrvException.h"
 #include "core/mrvCPU.h"
@@ -507,6 +508,31 @@ int main( int argc, const char** argv )
           if (opts.fps > 0 )
           {
               ui->uiView->fps( opts.fps );
+          }
+
+          if ( single_instance )
+              Fl::add_timeout( 1.0, load_new_files );
+
+          if (opts.host.empty() && opts.port != 0)
+          {
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->port = opts.port;
+              boost::thread( boost::bind( mrv::server_thread,
+                                          data ) );
+          }
+          else if ( ! opts.host.empty() && opts.port != 0 )
+          {
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->host = opts.host;
+              data->port = opts.port;
+              char buf[128];
+              sprintf( buf, "%d", opts.port );
+              data->group = buf;
+
+              boost::thread( boost::bind( mrv::client_thread,
+                                          data ) );
           }
 
           if ( single_instance )
