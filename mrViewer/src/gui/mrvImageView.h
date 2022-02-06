@@ -797,6 +797,8 @@ public:
 
     void restore_locale() const;
 
+    void create_timeout( double t );
+
     void clear_old();
 
 public:

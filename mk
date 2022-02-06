@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Determine CPUg architecture
+# Determine CPU architecture
 #
 KERNEL=`uname -s`
 
@@ -28,7 +28,6 @@ fi
 
 CMAKE_OPTS=${CMAKE_OPTS=""}
 
-export fltk_dir=""
 export CMAKE_NATIVE_ARCH=32
 export CMAKE_BUILD_TYPE=Release
 export CMAKE_PROCS=4
@@ -37,6 +36,8 @@ if [[ $KERNEL == Darwin* ]]; then
 fi
 export OS_32_BITS=1
 export OS_64_BITS=
+
+export fltk_dir=""
 
 if [ $KERNEL == 'Windows' ]; then
     arch=`wmic OS get OSArchitecture`
@@ -203,10 +204,6 @@ for i in $@; do
 		break
 	    fi
 	    ;;
-	-DFLTK_DIR=*)
-	    shift
-	    fltk_dir="-DFLTK_DIR=${i#*=}"
-	    ;;
 	-DCMAKE_INSTALL_PREFIX=*|--installdir=*)
 	    shift
 	    installdir="${i#*=}"
@@ -230,6 +227,10 @@ for i in $@; do
 	small)
 	    shift
 	    export CMAKE_BUILD_TYPE=MinSizeRel
+	    ;;
+	-DFLTK_DIR=*)
+	    shift
+	    fltk_dir="-DFLTK_DIR=${i#*=}"
 	    ;;
 	swig)
 	    shift
@@ -367,7 +368,7 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_CFG_INTDIR=/$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. $fltk_dir --debug-find -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' $builddir/tmp/CMakeFiles/rules.ninja"
+    cmd="cmake ../../../.. $fltk_dir -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' rules.ninja"
 
 
     run_cmd  $cmd

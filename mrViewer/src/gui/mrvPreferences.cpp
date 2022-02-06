@@ -2191,7 +2191,11 @@ void Preferences::run( ViewerUI* main )
 
     DBG3;
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
+    {
+        DBGM1( "ALWAYS ON TOP" );
         main->uiMain->always_on_top();
+    }
+
     DBG3;
     if ( debug > 1 )
         schemes.debug();

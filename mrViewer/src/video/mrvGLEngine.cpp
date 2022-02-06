@@ -63,7 +63,6 @@ extern "C" {
 
 #ifdef OSX
 #include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #else
 #include <GL/glu.h>
 #endif
@@ -84,6 +83,11 @@ extern "C" {
 #include <GL/glut.h>
 #endif
 
+#ifdef OSX
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 #include <half.h>
 #include <ImfArray.h>

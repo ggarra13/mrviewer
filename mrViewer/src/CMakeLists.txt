@@ -21,7 +21,6 @@ FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
-find_package( Cairo       REQUIRED )
 ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
@@ -43,25 +42,12 @@ if (APPLE)
   set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
 
+set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" )
 
-  if (LINUX)
-    # set( FLTK_DIR "/usr/local/share/fltk/" CACHE FILEPATH "FLTK install" )
-   # set( FLTK_DIR "" CACHE FILEPATH "FLTK build dir" )
-    set( FLTK_DIR "/home/gga/code/lib/fltk-x11/build-linux" CACHE FILEPATTH "FLTK build dir" )
- #   set( FLTK_DIR "/home/gga/code/lib/wayland/fltk/build-linux" CACHE FILEPATH "FLTK installation or build dir" )
-  endif()
-
-FIND_PACKAGE( FLTK  REQUIRED CONFIG )    # for window management
+FIND_PACKAGE( FLTK        REQUIRED NO_MODULE )    # for window management
 
 set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
 
-if (1)
-  message (STATUS "--- Project: ${CMAKE_PROJECT_NAME} ---")
-  message (STATUS "FLTK_INCLUDE_DIRS     = '${FLTK_INCLUDE_DIRS}'")
-  message (STATUS "FLTK_LIBRARIES        = '${FLTK_LIBRARIES}'")
-  message (STATUS "FLTK_FLUID_EXECUTABLE = '${FLTK_FLUID_EXECUTABLE}'")
-  message (STATUS "FLTK_USE_FILE         = '${FLTK_USE_FILE}'")
-endif ()
 
 endif()
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
@@ -223,7 +209,6 @@ INCLUDE_DIRECTORIES(
   "${BlackMagicRAW_INCLUDE_DIR}"
   ${R3DSDK_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR}
- # ${CAIRO_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
@@ -282,7 +267,6 @@ SET( SOURCES
 
   ${mrViewer_FLTK_UI_SRCS}
 
-
   # Image files
   core/ctlToLut.cpp
   core/CMedia.cpp
@@ -317,6 +301,8 @@ SET( SOURCES
   core/brawImage.cpp
 
   core/mrSocket.cpp
+  core/mrvClient.cpp
+  core/mrvServer.cpp
   core/mrvAudioEngine.cpp
   core/mrvColor.cpp
   core/mrvColorSpaces.cpp
@@ -490,7 +476,6 @@ SET( LIBRARIES
   ${BlackMagicRAW_LIBRARIES}
   ${R3DSDK_LIBRARIES}
   ${LIBINTL_LIBRARIES}
-  # ${CAIRO_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
