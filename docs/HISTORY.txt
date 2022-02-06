@@ -1,5 +1,7 @@
 v6.0.6  - Fixed connections to work again.
 	- Fixed a memory trashing on swinging loop at start.
+	- Fixed a memory trashing on reading pixel ratio.
+	- Fixed window's focus when reaching the end of a loop.
 
 v6.0.5  - Rewrote the macOS audio engine yet again to use portaudio.  As a
 	  result of this, everything works (playback at different speeds, does

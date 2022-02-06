@@ -3401,6 +3401,7 @@ void ImageView::handle_commands()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
+
     std::string name;
 #define  DEBUG_IMAGES_IN_NETWORK
 #ifdef DEBUG_IMAGES_IN_NETWORK
@@ -4174,6 +4175,7 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
+
 
     DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
@@ -8123,7 +8125,6 @@ void ImageView::show_background( const bool b )
         uiMain->uiViewGroup->layout();
         uiMain->uiViewGroup->init_sizes();
         uiMain->uiViewGroup->redraw();
-        std::cerr << "uiRegion->layout show_bars" << std::endl;
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
@@ -10019,13 +10020,7 @@ void ImageView::background( mrv::media bg )
 
 void ImageView::resize( int X, int Y, int W, int H )
 {
-    static int oX = 0, oY = 0, oW = 0, oH = 0;
-
-    if  ( X != oX || Y != oY || W != oW || H != oH )
-    {
-        Fl_Gl_Window::resize( X, Y, W, H );
-        oX = X; oY = Y; oW = W; oH = H;
-    }
+    Fl_Gl_Window::resize( X, Y, W, H );
 
     if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
     {
@@ -10214,14 +10209,13 @@ void ImageView::resize_main_window()
     uiMain->uiRegion->init_sizes();
     uiMain->uiRegion->layout();
 
-    std::cerr << "uiRegion layout resize_main_window" << std::endl;
 
     uiMain->uiRegion->redraw();
 
     //valid(0);
     redraw();
 
-    if ( check )
+    // if ( check )
         Fl::check();
 
     if ( fit ) fit_image();
@@ -10681,8 +10675,7 @@ void ImageView::playback( const CMedia::Playback b )
     uiMain->uiPlayForwards->redraw();
     uiMain->uiPlayBackwards->redraw();
 
-    take_focus();
-
+    // take_focus();
 }
 
 
