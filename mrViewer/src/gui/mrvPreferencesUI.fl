@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function {}
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -101,7 +103,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {497 557 675 455} type Double resizable
+      xywh {156 307 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -109,7 +111,7 @@ class PreferencesUI {open
         xywh {0 0 675 455} box UP_BOX resizable
       } {}
       Fl_Wizard uiWizard {
-        label Settings open
+        label Settings open selected
         xywh {200 25 473 430} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
@@ -154,7 +156,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements} open
+            label {UI Elements}
             xywh {213 193 442 193} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsTopbar {
@@ -229,8 +231,8 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label {View Window}
-          xywh {220 34 423 354} box EMBOSSED_BOX align 5 hide
+          label {View Window} open
+          xywh {220 34 423 354} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Defaults open
@@ -372,13 +374,19 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Check_Button uiPrefsHudFrame {
               label Frame
               user_data this user_data_type {PreferencesUI*}
-              xywh {251 289 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {251 279 20 20} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
             Fl_Check_Button uiPrefsHudFrameRange {
               label {Frame Range}
               user_data this user_data_type {PreferencesUI*}
-              xywh {250 316 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {250 303 20 20} box UP_BOX down_box DOWN_BOX align 8
+              class {mrv::CheckButton}
+            }
+            Fl_Check_Button uiPrefsHudFrameCount {
+              label {Frame Count}
+              user_data this user_data_type {PreferencesUI*}
+              xywh {250 326 20 20} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
             Fl_Check_Button uiPrefsHudResolution {
@@ -390,7 +398,7 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Check_Button uiPrefsHudFPS {
               label FPS
               user_data this user_data_type {PreferencesUI*}
-              xywh {251 264 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {251 256 20 20} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
             Fl_Check_Button uiPrefsHudAttributes {
@@ -408,7 +416,7 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Check_Button uiPrefsHudTimecode {
               label Timecode
               user_data this user_data_type {PreferencesUI*}
-              xywh {250 341 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {250 349 20 18} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
             Fl_Check_Button uiPrefsHudWipeMode {
@@ -465,8 +473,8 @@ If you try to open several mrViewers with different images, all these images wil
               label {Color Theme}
               user_data m user_data_type {ViewerUI*}
               callback {if (!o->mvalue() || !o->mvalue()->text ) return;
-	      mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-	      v->refresh();} open
+              mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
+              v->refresh();} open
               xywh {375 159 150 25} down_box BORDER_BOX align 1
             } {
               MenuItem {} {
@@ -717,7 +725,7 @@ uiPrefsFPS->value( g );} open
         }
         Fl_Group {} {
           label Timeline open
-          xywh {235 58 400 338} box EMBOSSED_BOX align 5
+          xywh {235 58 400 338} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Choice uiPrefsTimelineDisplay {
             label Display
@@ -765,7 +773,7 @@ uiPrefsFPS->value( g );} open
             class {mrv::CheckButton}
           }
           Fl_Value_Slider uiPrefsMaxCachelineFrames {
-            label {Max. Cache Frames shown} selected
+            label {Max. Cache Frames shown}
             tooltip {Maximum number of cached frames shown in the timeline.  Too many frames can make playback sluggish.} xywh {270 228 340 22} type Horizontal align 1 minimum 5000 maximum 10000 step 100 value 5000 slider_size 0.1 textsize 14
           }
         }
@@ -969,7 +977,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               label FPS
               user_data uiPrefsCacheSize user_data_type {Fl_Value_Slider*}
               callback {if ( v->active() ) v->deactivate();
-		       else v->activate();}
+                       else v->activate();}
               tooltip {When selected, cache is set to twice the frames per second of the movie.} xywh {553 205 60 30}
             }
           }
@@ -1955,10 +1963,10 @@ v->uiView->redraw();}
             xywh {340 150 275 30} box THIN_DOWN_BOX down_box BORDER_BOX
             code0 {unsigned num = Fl::set_fonts( "-*" ); int t; for (unsigned i = 0; i < num; i++)
 {
-	const char* name =  Fl::get_font_name((Fl_Font)i,&t);
-	o->add(name);
+        const char* name =  Fl::get_font_name((Fl_Font)i,&t);
+        o->add(name);
        if ( strcmp( name, "Arial" ) == 0 )
-	   o->value(i);
+           o->value(i);
 }
 o->menu_end();}
             class {mrv::Choice}
@@ -2216,10 +2224,10 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
     if (!t || !w) return;
 
     if ( strcmp( _( w->label() ), t->label() ) == 0 )
-	{
-	     uiWizard->value( w );
-	     break;
-	 }
+        {
+             uiWizard->value( w );
+             break;
+         }
 }}
           xywh {0 25 195 423}
           code0 {fill_tree(o);}

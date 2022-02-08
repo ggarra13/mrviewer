@@ -4508,10 +4508,23 @@ void ImageView::draw()
         hud << buf;
     }
 
-    if ( img->first_frame() != img->last_frame() && _hud & kHudFrameRange )
+    int64_t last = img->last_frame();
+    if ( uiMain->uiEndFrame->frame() < last )
+        last = uiMain->uiEndFrame->frame();
+    int64_t first = img->first_frame();
+    if ( uiMain->uiStartFrame->frame() > first )
+        first = uiMain->uiStartFrame->frame();
+
+    if ( first != last && _hud & kHudFrameRange )
     {
         if ( !hud.str().empty() ) hud << " ";
-        hud << img->first_frame() << " - " << img->last_frame();
+        hud << first << " - " << last;
+    }
+
+    if ( _hud & kHudFrameCount )
+    {
+        if ( !hud.str().empty() ) hud << _(" FC: ");
+        hud << ( last - first + 1 );
     }
 
     if ( !hud.str().empty() )
@@ -8119,7 +8132,7 @@ void ImageView::show_background( const bool b )
             uiMain->uiBottomBar->show();
         }
         if ( has_pixel_bar )  {
-            uiMain->uiPixelBar->size( W, int(30) );
+            uiMain->uiPixelBar->size( W, int(28) );
             uiMain->uiPixelBar->show();
         }
         uiMain->uiViewGroup->layout();
@@ -10138,7 +10151,7 @@ void ImageView::resize_main_window()
     if ( uiMain->uiPixelBar->visible() )
     {
       uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                                int(30) );
+                                int(28) );
       h += uiMain->uiPixelBar->h();
     }
 
@@ -10194,7 +10207,7 @@ void ImageView::resize_main_window()
                             int(28) );
 
     uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                              int(30) );
+                              int(28) );
 
     uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
                                int(49) );

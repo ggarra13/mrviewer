@@ -62,6 +62,7 @@ namespace mrv
 
 Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
 Fl_Float_Input( x, y, w, h, l ),
+uiMain( NULL ),
 _display( mrv::Timecode::kFrames ),
 _fps( 24.f ),
 _frame( AV_NOPTS_VALUE ),
@@ -515,6 +516,7 @@ void Timecode::value( const int64_t x )
     int n = format( _buf, _display, x, _tc_frame, _fps, true );
     Fl_Input::static_value( _buf, n );
     redraw();
+    if ( uiMain ) uiMain->uiView->redraw();
 }
 
 

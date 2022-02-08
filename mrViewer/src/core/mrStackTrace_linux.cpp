@@ -165,11 +165,11 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
             && messages[i][p] != 0)
           ++p;
 
-
+      int t = (int)p;
       char syscom[256];
-      sprintf(syscom,"addr2line %p -e %.*s", trace[i], p, messages[i]);
+      sprintf(syscom,"addr2line %p -e %.*s", trace[i], t, messages[i]);
       //last parameter is the file name of the symbol
-      system(syscom);
+      p = system(syscom);
     }
   free( messages );
 

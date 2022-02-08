@@ -186,14 +186,15 @@ public:
         kHudDirectory     = 1 << 1,
         kHudFrame         = 1 << 2,
         kHudFrameRange    = 1 << 3,
-        kHudResolution    = 1 << 4,
-        kHudFPS           = 1 << 5,
-        kHudAttributes    = 1 << 6,
-        kHudAVDifference  = 1 << 7,
-        kHudTimecode      = 1 << 8,
-        kHudWipe          = 1 << 9,
-        kHudMemoryUse     = 1 << 10,
-        kHudCenter        = 1 << 11,
+        kHudFrameCount    = 1 << 4,
+        kHudResolution    = 1 << 5,
+        kHudFPS           = 1 << 6,
+        kHudAttributes    = 1 << 7,
+        kHudAVDifference  = 1 << 8,
+        kHudTimecode      = 1 << 9,
+        kHudWipe          = 1 << 10,
+        kHudMemoryUse     = 1 << 11,
+        kHudCenter        = 1 << 12,
     };
 
     enum PixelValue {

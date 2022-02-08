@@ -679,6 +679,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsHudResolution->value( (bool) tmp );
     hud.get("frame_range", tmp, 0 );
     uiPrefs->uiPrefsHudFrameRange->value( (bool) tmp );
+    hud.get("frame_count", tmp, 0 );
+    uiPrefs->uiPrefsHudFrameCount->value( (bool) tmp );
     hud.get("memory", tmp, 0 );
     DBG3;
     uiPrefs->uiPrefsHudMemory->value( (bool) tmp );
@@ -2010,6 +2012,9 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsHudFrameRange->value() )
         hud |= mrv::ImageView::kHudFrameRange;
 
+    if ( uiPrefs->uiPrefsHudFrameCount->value() )
+        hud |= mrv::ImageView::kHudFrameCount;
+
     if ( uiPrefs->uiPrefsHudMemory->value() )
         hud |= mrv::ImageView::kHudMemoryUse;
 
@@ -2331,6 +2336,7 @@ void Preferences::save()
     hud.set("frame", uiPrefs->uiPrefsHudFrame->value() );
     hud.set("resolution", uiPrefs->uiPrefsHudResolution->value() );
     hud.set("frame_range", uiPrefs->uiPrefsHudFrameRange->value() );
+    hud.set("frame_count", uiPrefs->uiPrefsHudFrameCount->value() );
     hud.set("memory", uiPrefs->uiPrefsHudMemory->value() );
     hud.set("attributes", uiPrefs->uiPrefsHudAttributes->value() );
     hud.set("center", uiPrefs->uiPrefsHudCenter->value() );

@@ -33,8 +33,8 @@
 
 #include "core/mrvInteger.h"
 
+#include "mrViewer.h"
 
-class ViewerUI;
 
 namespace mrv
 {
