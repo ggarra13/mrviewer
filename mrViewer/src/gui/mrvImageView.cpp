@@ -10176,20 +10176,13 @@ void ImageView::resize_main_window()
     }
 
     DBGM1( "posX, posY = " << posX << ", " << posY );
-    bool check = false;
     if ( fltk_main()->fullscreen_active() )
     {
-        check = true;
         fltk_main()->fullscreen_off( posX, posY, w, h );
     }
     else
     {
-        if ( posX != oX || posY != oY || w != oW || h != oH )
-        {
-            check = true;
-            fltk_main()->resize( posX, posY, w, h );
-            oX = posX; oY = posY; oW = w; oH = h;
-        }
+        fltk_main()->resize( posX, posY, w, h );
     }
 
 
@@ -10215,8 +10208,7 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
-    // if ( check )
-        Fl::check();
+    Fl::check();
 
     if ( fit ) fit_image();
 

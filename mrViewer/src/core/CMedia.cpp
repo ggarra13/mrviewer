@@ -965,6 +965,9 @@ CMedia::~CMedia()
         }
     }
 
+#ifdef LINUX
+    malloc_trim(0);
+#endif
 
     _context = _acontext = NULL;
 }
