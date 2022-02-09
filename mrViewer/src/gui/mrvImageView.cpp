@@ -4523,8 +4523,7 @@ void ImageView::draw()
 
     if ( _hud & kHudFrameCount )
     {
-        if ( !hud.str().empty() ) hud << _(" FC: ");
-        hud << ( last - first + 1 );
+        hud << _(" FC: ") << ( last - first + 1 );
     }
 
     if ( !hud.str().empty() )
