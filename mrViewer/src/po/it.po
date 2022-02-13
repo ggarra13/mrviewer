@@ -366,7 +366,7 @@ msgid ""
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:3155
-#, fuzzy, c-format
+#, c-format
 msgid "%4.8g %%"
 msgstr "% 4,8 g %%"
 
@@ -464,7 +464,7 @@ msgstr "(Rimuovi se mrViewer non si avvia)"
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9699
 #: gui/mrvImageView.cpp:9700 gui/mrvImageView.cpp:9708
 msgid "(no image)"
-msgstr "(nessuna immagine)"
+msgstr "(immagine vuota)"
 
 #: core/aviImage.cpp:1895 core/R3dImage.cpp:896 core/brawImage.cpp:1045
 msgid ") cache size: "
