@@ -1017,6 +1017,7 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
         mrv::PopupMenu* g = uiMain->uiWindows;
         for ( unsigned i = 0; i < g->children(); ++i )
         {
+            if (!o->label() || !g->child(i)->label() ) continue;
             if ( strcasecmp( o->label(),  g->child(i)->label() ) == 0 ) {
                 idx = i;
                 break;
@@ -4847,8 +4848,8 @@ bool PointInTriangle (const Imath::V2i& pt,
              tmp = tmp.substr( 0, pos ) + '\\' +
                    tmp.substr( pos, tmp.size() );
          }
-         sprintf( buf, _("Windows/%s"), tmp.c_str() );
-         menu->add( buf, 0, (Fl_Callback*)window_cb, uiMain );
+         tmp = _("Windows/") + tmp;
+         menu->add( tmp.c_str(), 0, (Fl_Callback*)window_cb, uiMain );
      }
 
 
