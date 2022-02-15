@@ -1,3 +1,15 @@
+v6.0.7  - Added frame count to HUD (FC:).
+	- Updated frame range and count to be interactive to the typing of the
+	  start/end frames.
+	- Added French, German and Italian translations done by Google
+	  translate.
+	  If you want the GUI to display in English and not in your natural
+	  language, you need to set the LANGUAGE environment variable, like:
+	  export LANGUAGE=en on Linux or macOS
+	  or
+	  set LANGUAGE=en in a .bat file in Windows
+	  (and call: start path/to/mrViewer)
+
 v6.0.6  - Fixed connections to work again.
 	- Fixed a memory trashing on swinging loop at start.
 	- Fixed a memory trashing on reading pixel ratio.
