@@ -69,9 +69,9 @@ msgid "  INF.  "
 msgstr "ИНФ."
 
 #: gui/mrvImageInformation.cpp:4885
-#, fuzzy, c-format
+#, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
-msgstr "(% 02<PRId64> :% 02<PRId64> :% 02<PRId64> % д мс.)"
+msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d мс. )"
 
 #: core/mrvPlayback.cpp:1120
 msgid " - Decode of image frame "
@@ -394,9 +394,9 @@ msgstr ""
 "Версия 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, fuzzy, c-format
+#, c-format
 msgid "%4.8g %%"
-msgstr "% 4,8 г %%"
+msgstr "%4,8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -404,9 +404,9 @@ msgid "%<PRId64> seconds %d ms."
 msgstr "%<PRId64> секунд %d мс."
 
 #: gui/mrvImageInformation.cpp:3602
-#, fuzzy, c-format
+#, c-format
 msgid "%d Hz."
-msgstr "% г Гц."
+msgstr "%d Гц."
 
 #: gui/mrvImageInformation.cpp:3606 gui/mrvImageInformation.cpp:3653
 #, c-format
@@ -3147,7 +3147,7 @@ msgstr "Ф:"
 
 #: gui/mrvImageView.cpp:4560
 msgid "F: "
-msgstr "Ф:"
+msgstr "Ф: "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:334
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1441
@@ -7953,9 +7953,9 @@ msgid "W:"
 msgstr "В:"
 
 #: gui/mrvImageInformation.cpp:3040
-#, fuzzy, c-format
+#, c-format
 msgid "W: %g %g"
-msgstr "В: % г % г"
+msgstr "В: %g %g"
 
 #: gui/FLU/Flu_File_Chooser.cpp:587
 msgid "WMV Movie"
@@ -8700,7 +8700,7 @@ msgstr "mrViewer FG: %s"
 #: gui/mrvImageView.cpp:483
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
-msgstr "mrViewer FG: %s [%d] BG: %s [%d] (%s)"
+msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
 #: video/mrvGLEngine.cpp:601
 msgid "mrViewer does not support YUV images."

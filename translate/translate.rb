@@ -94,6 +94,8 @@ def translate( text, lang )
     result.gsub!(/\\/, '\n')
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     result.sub!(/\s*（\*。{/, ' (*.{"')
+  elsif lang == 'ru' and result =~ /:/
+    result.sub!(/:/, ':')
   end
   return replace(result)
 end
@@ -108,7 +110,7 @@ def new_line( op, text )
   op.puts "msgstr \"#{text}\""
 end
 
-for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja' ]
+for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko' ]
   next if lang == 'es'
   @h = {}
   puts "=================== Translate to #{lang} ======================x"
@@ -138,10 +140,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-        r = translate( msg, lang )
-        new_line( op, r )
-        in_msg_id = false
-        next
+	r = translate( msg, lang )
+	new_line( op, r )
+	in_msg_id = false
+	next
       end
       text = $1
       @msgid << text

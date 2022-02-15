@@ -69,9 +69,9 @@ msgid "  INF.  "
 msgstr "INF."
 
 #: gui/mrvImageInformation.cpp:4885
-#, fuzzy, c-format
+#, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
-msgstr "(% 02<PRId64> :% 02<PRId64> :% 02<PRId64> % g ms.)"
+msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
 #: core/mrvPlayback.cpp:1120
 msgid " - Decode of image frame "
@@ -395,9 +395,9 @@ msgstr ""
 "Versione 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, fuzzy, c-format
+#, c-format
 msgid "%4.8g %%"
-msgstr "% 4,8 g %%"
+msgstr "%4,8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -4070,11 +4070,11 @@ msgstr "Immagine/Cambia FG e BG"
 
 #: gui/mrvImageView.cpp:5055
 msgid "Image/Toggle Background"
-msgstr "Immagine/Attiva/disattiva sfondo"
+msgstr "Immagine/Attiva-disattiva sfondo"
 
 #: gui/mrvImageView.cpp:5062
 msgid "Image/Toggle EDL"
-msgstr "Immagine/Attiva/disattiva EDL"
+msgstr "Immagine/Attiva-disattiva EDL"
 
 #: gui/mrvImageView.cpp:4997
 msgid "Image/Update Single Frame in Cache"
@@ -5921,10 +5921,10 @@ msgid "Redo Previous Shape Drawn"
 msgstr "Ripeti la forma precedente disegnata"
 
 #: gui/mrvImageView.cpp:2311
-#, fuzzy, c-format
+#, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr ""
-"Bobina %d (%s) | Colpo %d (%s) | Portafoto %<PRId64> | X = %d | S = %g\n"
+"Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | Y = %d\n"
 
 #: gui/mrvImageBrowser.cpp:1331
 #, c-format
@@ -7264,43 +7264,43 @@ msgstr "Colorazione della clip."
 
 #: gui/mrvHotkey.cpp:409
 msgid "Toggle 3D Stereo Options Window"
-msgstr "Attiva/disattiva la finestra delle opzioni stereo 3D"
+msgstr "Attiva-disattiva la finestra delle opzioni stereo 3D"
 
 #: gui/mrvHotkey.cpp:410
 msgid "Toggle 3D View Window"
-msgstr "Attiva/disattiva la finestra di visualizzazione 3D"
+msgstr "Attiva-disattiva la finestra di visualizzazione 3D"
 
 #: gui/mrvHotkey.cpp:411
 msgid "Toggle About Window"
-msgstr "Attiva/disattiva Informazioni sulla finestra"
+msgstr "Attiva-disattiva Informazioni sulla finestra"
 
 #: gui/mrvHotkey.cpp:408
 msgid "Toggle Action Window"
-msgstr "Attiva/disattiva finestra di azione"
+msgstr "Attiva-disattiva finestra di azione"
 
 #: gui/mrvHotkey.cpp:364
 msgid "Toggle Background Composite"
-msgstr "Attiva/disattiva composizione di sfondo"
+msgstr "Attiva-disattiva composizione di sfondo"
 
 #: gui/mrvHotkey.cpp:369
 msgid "Toggle Bottom Bar"
-msgstr "Attiva/disattiva barra inferiore"
+msgstr "Attiva-disattiva barra inferiore"
 
 #: gui/mrvHotkey.cpp:407
 msgid "Toggle Color Area Info Window"
-msgstr "Attiva/disattiva la finestra delle informazioni sull'area del colore"
+msgstr "Attiva-disattiva la finestra delle informazioni sull'area del colore"
 
 #: gui/mrvHotkey.cpp:415
 msgid "Toggle Connections Window"
-msgstr "Attiva/Disattiva finestra Connessioni"
+msgstr "Attiva-Disattiva finestra Connessioni"
 
 #: gui/mrvHotkey.cpp:365
 msgid "Toggle EDL"
-msgstr "Attiva/disattiva EDL"
+msgstr "Attiva-disattiva EDL"
 
 #: gui/mrvHotkey.cpp:412
 msgid "Toggle EDL Edit Window"
-msgstr "Attiva/disattiva finestra di modifica EDL"
+msgstr "Attiva-disattiva finestra di modifica EDL"
 
 #: gui/mrvHotkey.cpp:371
 msgid "Toggle Full Screen"
@@ -7308,87 +7308,87 @@ msgstr "Passare a schermo intero"
 
 #: gui/mrvHotkey.cpp:413
 msgid "Toggle Histogram Window"
-msgstr "Attiva/disattiva la finestra dell'istogramma"
+msgstr "Attiva-disattiva la finestra dell'istogramma"
 
 #: gui/mrvHotkey.cpp:416
 msgid "Toggle Hotkeys Window"
-msgstr "Attiva/disattiva la finestra dei tasti di scelta rapida"
+msgstr "Attiva-disattiva la finestra dei tasti di scelta rapida"
 
 #: gui/mrvHotkey.cpp:414
 msgid "Toggle Hud"
-msgstr "Attiva/disattiva Hud"
+msgstr "Attiva-disattiva Hud"
 
 #: gui/mrvHotkey.cpp:417
 msgid "Toggle ICC Profiles Window"
-msgstr "Attiva/disattiva la finestra dei profili ICC"
+msgstr "Attiva-disattiva la finestra dei profili ICC"
 
 #: gui/mrvHotkey.cpp:418
 msgid "Toggle Input Color Space"
-msgstr "Attiva/disattiva lo spazio colore di input"
+msgstr "Attiva-disattiva lo spazio colore di input"
 
 #: gui/mrvHotkey.cpp:422
 msgid "Toggle LUT"
-msgstr "Attiva/disattiva LUT"
+msgstr "Attiva-disattiva LUT"
 
 #: gui/mrvHotkey.cpp:419
 msgid "Toggle Log Window"
-msgstr "Attiva/disattiva finestra di registro"
+msgstr "Attiva-disattiva finestra di registro"
 
 #: gui/mrvHotkey.cpp:406
 msgid "Toggle Media Info Window"
-msgstr "Attiva/disattiva la finestra delle informazioni sui media"
+msgstr "Attiva-disattiva la finestra delle informazioni sui media"
 
 #: gui/mrvHotkey.cpp:366
 msgid "Toggle Menu Bar"
-msgstr "Attiva/disattiva la barra dei menu"
+msgstr "Attiva-disattiva la barra dei menu"
 
 #: gui/mrvImageInformation.cpp:1040
-#, fuzzy, c-format
+#, c-format
 msgid "Toggle Modify/%s"
-msgstr "Attiva/disattiva Modifica/%S"
+msgstr "Attiva-disattiva Modifica/%s"
 
 #: gui/mrvImageInformation.cpp:1034
 msgid "Toggle Modify/All"
-msgstr "Attiva/disattiva Modifica/Tutto"
+msgstr "Attiva-disattiva Modifica/Tutto"
 
 #: gui/mrvHotkey.cpp:368
 msgid "Toggle Pixel Bar"
-msgstr "Attiva/disattiva la barra dei pixel"
+msgstr "Attiva-disattiva la barra dei pixel"
 
 #: gui/mrvHotkey.cpp:423
 msgid "Toggle Pixel Ratio"
-msgstr "Attiva/disattiva il rapporto pixel"
+msgstr "Attiva-disattiva il rapporto pixel"
 
 #: gui/mrvHotkey.cpp:424
 msgid "Toggle Preferences Window"
-msgstr "Attiva/disattiva la finestra delle preferenze"
+msgstr "Attiva-disattiva la finestra delle preferenze"
 
 #: gui/mrvHotkey.cpp:372
 msgid "Toggle Presentation"
-msgstr "Attiva/Disattiva presentazione"
+msgstr "Attiva-Disattiva presentazione"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1564
 msgid "Toggle Reel EDL in Timeline"
-msgstr "Attiva/disattiva l'EDL della bobina nella sequenza temporale"
+msgstr "Attiva-disattiva l'EDL della bobina nella sequenza temporale"
 
 #: gui/mrvHotkey.cpp:405
 msgid "Toggle Reel Window"
-msgstr "Attiva/disattiva finestra bobina"
+msgstr "Attiva-disattiva finestra bobina"
 
 #: gui/mrvHotkey.cpp:370
 msgid "Toggle Tool Dock"
-msgstr "Attiva/disattiva Dock degli strumenti"
+msgstr "Attiva-disattiva Dock degli strumenti"
 
 #: gui/mrvHotkey.cpp:367
 msgid "Toggle Top Bar"
-msgstr "Attiva/disattiva barra superiore"
+msgstr "Attiva-disattiva barra superiore"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:188
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
 msgstr ""
-"Attiva/disattiva la visualizzazione VR 360 (panoramica) dell'immagine. "
+"Attiva-disattiva la visualizzazione VR 360 (panoramica) dell'immagine. "
 "L'immagine è avvolta attorno a una sfera quando questa è attiva."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:193
@@ -7396,17 +7396,17 @@ msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
 msgstr ""
-"Attiva/disattiva la visualizzazione VR 360 (panoramica) dell'immagine. "
+"Attiva-disattiva la visualizzazione VR 360 (panoramica) dell'immagine. "
 "L'immagine, che dovrebbe essere composta da 6 immagini, viene avvolta "
 "attorno a un cubo quando questo è attivo."
 
 #: gui/mrvHotkey.cpp:425
 msgid "Toggle Vectorscope Window"
-msgstr "Attiva/disattiva la finestra del vettorscopio"
+msgstr "Attiva-disattiva la finestra del vettorscopio"
 
 #: gui/mrvHotkey.cpp:426
 msgid "Toggle Waveform Window"
-msgstr "Attiva/disattiva la finestra della forma d'onda"
+msgstr "Attiva-disattiva la finestra della forma d'onda"
 
 #: core/oiioImage.cpp:454
 msgid "Too many channels in image.  Saving RGB only"
@@ -7938,21 +7938,21 @@ msgstr "Visualizzazione/Griglia/Misurare"
 
 #: gui/mrvImageView.cpp:4902
 msgid "View/Grid/Toggle Selected"
-msgstr "Visualizzazione/Griglia/Attiva/disattiva selezionato"
+msgstr "Visualizzazione/Griglia/Attiva-disattiva selezionato"
 
 #: gui/mrvImageView.cpp:4918
-#, fuzzy, c-format
+#, c-format
 msgid "View/Hud/%s"
-msgstr "Visualizzazione/Pelle/%S"
+msgstr "Visualizzazione/Pelle/%s"
 
 #: gui/mrvImageView.cpp:4910
 msgid "View/Hud/Toggle Selected"
-msgstr "Visualizzazione/Pelle/Attiva/disattiva selezionato"
+msgstr "Visualizzazione/Pelle/Attiva-disattiva selezionato"
 
 #: gui/mrvImageView.cpp:4892
-#, fuzzy, c-format
+#, c-format
 msgid "View/Mask/%s"
-msgstr "Visualizzazione/Maschera/%S"
+msgstr "Visualizzazione/Maschera/%s"
 
 #: gui/mrvImageView.cpp:4860
 msgid "View/Safe Areas"
@@ -7964,7 +7964,7 @@ msgstr "Visualizzazione/Filtraggio delle texture"
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
-msgstr "Visualizzazione/Attiva/disattiva Dock di azione"
+msgstr "Visualizzazione/Attiva-disattiva Dock di azione"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
 msgid "W"

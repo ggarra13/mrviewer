@@ -1077,7 +1077,7 @@ msgid "Annotation Frame Step Backwards"
 msgstr "Paso de Cuadro de Anotación Hacia Atrás"
 
 #: gui/mrvHotkey.cpp:339
-#, fuzzy
+#
 msgid "Annotation Frame Step Forwards"
 msgstr "Paso de Cuadro de Anotación Hacia Delante"
 
@@ -1238,9 +1238,9 @@ msgid "Audio frame has NOPTS value."
 msgstr "Cuadro de audio "
 
 #: audio/mrvRtAudioEngine.cpp:293
-#, fuzzy
+#
 msgid "Audio frequency "
-msgstr ", frecuencia "
+msgstr ", frecuencia audio "
 
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
@@ -2290,9 +2290,9 @@ msgid "Could not get audio samples"
 msgstr "No pude obtener samples de audio"
 
 #: audio/mrvPortAudioEngine.cpp:266
-#, fuzzy
+#,
 msgid "Could not get device info for "
-msgstr "¡Fallé en obtener timecode para el cuadro "
+msgstr "¡Fallé en obtener información del dispositivo para "
 
 #: core/aviImage.cpp:1291
 msgid "Could not get image conversion context."
@@ -2353,7 +2353,7 @@ msgstr "No pude abrir '"
 
 #
 #: core/Sequence.cpp:1357
-#, fuzzy
+#,
 msgid "Could not open .otio file. "
 msgstr "No pude abrir el archivo .otio. Error: "
 
@@ -3195,7 +3195,7 @@ msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
 #: audio/mrvAOEngine.cpp:335
-#, fuzzy
+#,
 msgid "Error closing ao device. "
 msgstr "Error cerrando dispositivo ao "
 
@@ -3216,7 +3216,7 @@ msgid "Error opening ao driver: "
 msgstr "Error abriendo dispositivo ao: "
 
 #: audio/mrvAOEngine.cpp:310
-#, fuzzy
+#
 msgid "Error playing sample. "
 msgstr "Error ejecutando sample"
 
@@ -3261,7 +3261,7 @@ msgstr "Impar/par renglones"
 #
 #
 #: gui/mrvImageBrowser.cpp:3676
-#, fuzzy
+#,
 msgid "Example:  gizmo"
 msgstr "Ejemplo:  gizmo_v003.0001.exr"
 
@@ -8225,9 +8225,9 @@ msgid "Valid option key has invalid value"
 msgstr ""
 
 #: audio/mrvRtAudioEngine.cpp:294
-#, fuzzy
+#
 msgid "Valid rates are:"
-msgstr " cuadro de video, cache "
+msgstr "Frecuencias válidas son:"
 
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
 msgid "Value"

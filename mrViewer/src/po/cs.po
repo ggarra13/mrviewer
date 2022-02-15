@@ -393,9 +393,9 @@ msgstr ""
 "Verze 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, fuzzy, c-format
+#, c-format
 msgid "%4.8g %%"
-msgstr "% 4,8 g %%"
+msgstr "%4,8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -3436,9 +3436,9 @@ msgid "Frame"
 msgstr "Rám"
 
 #: gui/mrvImageInformation.cpp:4870
-#, fuzzy, c-format
+#, c-format
 msgid "Frame %<PRId64> "
-msgstr "% snímků<PRId64>"
+msgstr "snímků %<PRId64>"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1415
 msgid "Frame Count"
@@ -5890,9 +5890,9 @@ msgid "Redo Previous Shape Drawn"
 msgstr "Opakovat předchozí nakreslený tvar"
 
 #: gui/mrvImageView.cpp:2311
-#, fuzzy, c-format
+#, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
-msgstr "Kotouč %d (%s) | Střela %d (%s) | % snímků<PRId64> | X = %d | Y = %d\n"
+msgstr "Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n"
 
 #: gui/mrvImageBrowser.cpp:1331
 #, c-format
@@ -6282,9 +6282,9 @@ msgid "Saving"
 msgstr "Ukládání"
 
 #: gui/mrvProgressReport.cpp:57
-#, fuzzy, c-format
+#, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
-msgstr "% ukládání sekvencí<PRId64> - %<PRId64>"
+msgstr "ukládání sekvencí %<PRId64> - %<PRId64>"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2120
 msgid "Scale"

@@ -393,9 +393,9 @@ msgstr ""
 "版本 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, fuzzy, c-format
+#, c-format
 msgid "%4.8g %%"
-msgstr "% 4.8 克 %%"
+msgstr "%4.8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -1202,9 +1202,9 @@ msgid "Audio/Edit Audio Frame Offset"
 msgstr "声音的/编辑音频帧偏移"
 
 #: gui/mrvMediaTrack.cpp:796
-#, fuzzy, c-format
+#, c-format
 msgid "Audio: %<PRId64>"
-msgstr "声音的： ％<PRId64>"
+msgstr "声音的: %<PRId64>"
 
 #: core/CMedia_audio.cpp:1647
 msgid "Audios #"
@@ -3420,9 +3420,9 @@ msgid "Frame"
 msgstr "框架"
 
 #: gui/mrvImageInformation.cpp:4870
-#, fuzzy, c-format
+#, c-format
 msgid "Frame %<PRId64> "
-msgstr "框架 ％<PRId64>"
+msgstr "框架 %<PRId64> "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1415
 msgid "Frame Count"
@@ -5848,9 +5848,9 @@ msgid "Redo Previous Shape Drawn"
 msgstr "重做先前绘制的形状"
 
 #: gui/mrvImageView.cpp:2311
-#, fuzzy, c-format
+#, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
-msgstr "卷轴 %d (%s) |拍摄 %d (%s) |框架 ％<PRId64> | X = %d | Y = %d\n"
+msgstr "卷轴 %d (%s) | 拍摄 %d (%s) | 框架 %<PRId64> | X = %d | Y = %d\n"
 
 #: gui/mrvImageBrowser.cpp:1331
 #, c-format
