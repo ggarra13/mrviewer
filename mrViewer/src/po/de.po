@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-13 19:08-0300\n"
+"POT-Creation-Date: 2022-02-15 01:54-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -18,6 +18,9 @@ msgid ""
 "\n"
 "Not a known codec "
 msgstr ""
+"\n"
+"\n"
+"Kein bekannter Codec"
 
 #: core/CMedia_audio.cpp:645 core/aviImage.cpp:2522
 msgid ""
@@ -25,6 +28,9 @@ msgid ""
 "\n"
 "Not a known stream type for stream #"
 msgstr ""
+"\n"
+"\n"
+"Kein bekannter Stream-Typ für Stream #"
 
 #: standalone/mrvCommandLine.cpp:136
 msgid ""
@@ -33,13 +39,18 @@ msgid ""
 "Options:\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Optionen:\n"
+"\n"
 
 #: core/CMedia_audio.cpp:659
-#, fuzzy
 msgid ""
 "\n"
 "No audio stream in file"
-msgstr "Anzahl der Audiostreams in der Datei"
+msgstr ""
+"\n"
+"Kein Audiostream in Datei"
 
 #: gui/mrvImageView.cpp:5685
 msgid "   NAN  "
@@ -47,7 +58,7 @@ msgstr "NAN"
 
 #: audio/mrvALSAEngine.cpp:547
 msgid "  ==> Using "
-msgstr "==&gt; Verwenden"
+msgstr "==> Verwenden"
 
 #: video/mrvGLLut3d.cpp:1341
 msgid "  Choosing "
@@ -221,6 +232,8 @@ msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
+"wenn mrViewer abstürzt\n"
+"oder Einstellungen->Benutzeroberfläche->Einzelinstanz ändern."
 
 #: core/aviImage.cpp:1925
 msgid " instead"
@@ -304,37 +317,34 @@ msgid " will not be available.  "
 msgstr "wird nicht verfügbar sein."
 
 #: gui/FLU/Flu_File_Chooser.cpp:4284
-#, fuzzy
 msgid "\" failed with error: "
-msgstr "mit gescheitert"
+msgstr "\" fehlgeschlagen mit Fehler:"
 
 #: gui/FLU/Flu_File_Chooser.cpp:1309
 msgid "\" failed!  Check permissions and use the native requester."
 msgstr ""
+"\" fehlgeschlagen! Überprüfen Sie die Berechtigungen und verwenden Sie den "
+"nativen Requester."
 
 #: core/exrImage.cpp:369
 msgid "\" has no channels named with prefix \""
-msgstr ""
+msgstr "\" hat keine Kanäle mit dem Präfix \""
 
 #: core/exrImage.cpp:374
-#, fuzzy
 msgid "\" has no channels."
-msgstr "Kanäle"
+msgstr "\" hat keine Kanäle."
 
 #: core/guessImage.cpp:340
-#, fuzzy
 msgid "\" not found."
-msgstr "nicht gefunden"
+msgstr "\" nicht gefunden."
 
 #: core/guessImage.cpp:263
-#, fuzzy
 msgid "\" not found. "
-msgstr "nicht gefunden"
+msgstr "\" nicht gefunden."
 
 #: core/mrSocket.cpp:184
-#, fuzzy
 msgid "\" to protocol number"
-msgstr "Falsche Portnummer"
+msgstr "\" zur Protokollnummer"
 
 #: gui/mrvImageBrowser.cpp:1196
 #, c-format
@@ -350,6 +360,16 @@ msgid ""
 "Version 5.0\n"
 "Ghosting %d %d\n"
 msgstr ""
+"#\n"
+"# mrViewer Reel \"%s\"\n"
+"# \n"
+"# Erstellt mit mrViewer\n"
+"#\n"
+"# auf %s\n"
+"#\n"
+"\n"
+"Version 5.0\n"
+"Ghosting %d %d\n"
 
 #: gui/mrvImageBrowser.cpp:964
 #, c-format
@@ -364,6 +384,15 @@ msgid ""
 "\n"
 "Version 6.0\n"
 msgstr ""
+"#\n"
+"# mrViewer-Sitzung \n"
+"# \n"
+"# Erstellt mit mrViewer\n"
+"#\n"
+"# auf %s\n"
+"#\n"
+"\n"
+"Version 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
 #, fuzzy, c-format
@@ -383,31 +412,31 @@ msgstr "%dHz."
 #: gui/mrvImageInformation.cpp:3606 gui/mrvImageInformation.cpp:3653
 #, c-format
 msgid "%d kb/s"
-msgstr "%d KB/s"
+msgstr "%d KB/S"
 
 #: gui/mrvFileRequester.cpp:1248
 msgid "' for "
-msgstr "&#39; Pro"
+msgstr "' Pro"
 
 #: core/picImage.cpp:706
 msgid "' for writing. Reason: "
-msgstr "&#39; zum Schreiben. Grund:"
+msgstr "' zum Schreiben. Grund:"
 
 #: core/CMedia.cpp:4440
 msgid "' from bitdepth "
-msgstr "&#39; von Bittiefe"
+msgstr "' von Bittiefe"
 
 #: core/CMedia.cpp:4392
 msgid "' from filename"
-msgstr "&#39; aus Dateiname"
+msgstr "' aus Dateiname"
 
 #: gui/mrvSave.cpp:289
 msgid "' to save."
-msgstr "&#39; speichern."
+msgstr "' speichern."
 
 #: gui/mrvImageInformation.cpp:593 gui/mrvImageInformation.cpp:2760
 msgid "' type '"
-msgstr "&#39; Typ &#39;"
+msgstr "' Typ '"
 
 #: gui/mrvImageInformation.cpp:309
 #, c-format
@@ -416,13 +445,15 @@ msgstr "Das Attribut „%s“ existiert bereits"
 
 #: core/picImage.cpp:745 core/picImage.cpp:775
 msgid "'. Reason: "
-msgstr "&#39;. Grund:"
+msgstr "'. Grund:"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2583
 msgid ""
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
+"(Umgebungsvariable:\n"
+"CTL_DISPLAY_WHITE_LUMINANCE)"
 
 #: gui/mrvImageInformation.cpp:3055
 msgid "(IDT) Input Device Transform"
@@ -492,7 +523,7 @@ msgstr "+"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
 msgid "+0.0  f/8.0"
-msgstr "+0,0 f/8,0"
+msgstr "+0,0 f/8.0"
 
 #: core/CMedia_audio.cpp:1167 core/CMedia_audio.cpp:1196 core/R3dImage.cpp:406
 #: core/brawImage.cpp:744 core/brawImage.cpp:1293 core/brawImage.cpp:1310
@@ -649,19 +680,19 @@ msgstr "3D Luts"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3453
 msgid "3D Luts/CTL Paths"
-msgstr "3D-Luts/CTL-Pfade"
+msgstr "3D Luts/CTL-Pfade"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3454
 msgid "3D Luts/Default Output Device Transform (ODT)"
-msgstr "3D-Luts/Standardausgabegerät-Transformation (ODT)"
+msgstr "3D Luts/Transformation des Standardausgabegeräts (ODT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3455
 msgid "3D Luts/Default Rendering Transform (RT)"
-msgstr "3D-Luts/Standard-Rendering-Transformation (RT)"
+msgstr "3D Luts/Standard-Rendering-Transformation (RT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3452
 msgid "3D Luts/OCIO"
-msgstr "3D Luts/OCIO"
+msgstr "3D Luts/FREIZEIT"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
 msgid "3D Stereo Options"
@@ -736,20 +767,20 @@ msgstr ": Unbekannter Pixeltyp"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
 msgid "@<"
-msgstr "@&lt;"
+msgstr "@<"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
 msgid "@<|"
-msgstr "@&lt;|"
+msgstr "@<|"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
 msgid "@>"
-msgstr "@&gt;"
+msgstr "@>"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
 msgid "@>|"
-msgstr "@&gt;|"
+msgstr "@>|"
 
 #: gui/mrvHotkey.cpp:589
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
@@ -757,11 +788,11 @@ msgstr "@B12@C7@b@.Funktion\t@B12@C7@b@.Hotkey"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
 msgid "@|<"
-msgstr "@|&lt;"
+msgstr "@|<"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
 msgid "@|>"
-msgstr "@|&gt;"
+msgstr "@|>"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
 msgid "@||"
@@ -782,10 +813,12 @@ msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
 msgstr ""
+"Ein professioneller Bild- und Filmbetrachter\n"
+"Beispiele:\n"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
 msgid "A/B"
-msgstr "A/B"
+msgstr "EIN/B"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3229
 msgid "ACES Clip Metadata"
@@ -860,6 +893,8 @@ msgid ""
 "Adjust ISO without clipping the highlights\n"
 "or crushing the shadows."
 msgstr ""
+"Passen Sie den ISO-Wert an, ohne die Lichter zu beschneiden\n"
+"der die Schatten zu zerstören."
 
 #: core/exrImage.cpp:1205 core/exrImage.cpp:2489 core/exrImage.cpp:2493
 msgid "Adopted Neutral"
@@ -911,6 +946,8 @@ msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
 msgstr ""
+"Ermöglicht Ihnen, die Gammakurve für die Anzeige anzupassen.\n"
+"Wert ist: pow( 2, 1/x );"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
 msgid "Allows you to adjust the gain or exposure of the image."
@@ -932,7 +969,7 @@ msgstr "Ermöglicht es Ihnen, den Startrahmen für die Zeitleiste festzulegen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
 msgid "Allows you to set the ending frame for timeline."
-msgstr "Ermöglicht Ihnen das Festlegen des Endframes für die Zeitleiste."
+msgstr "Ermöglicht Ihnen das Festlegen des Endframes für die Zeitachse."
 
 #: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9136
@@ -972,12 +1009,16 @@ msgid ""
 "Amount of denoise filter to apply.\n"
 "Only applicable when decoding 1:1."
 msgstr ""
+"Stärke des anzuwendenden Rauschunterdrückungsfilters.\n"
+"Nur anwendbar bei 1:1-Decodierung."
 
 #: gui/mrvImageInformation.cpp:3415
 msgid ""
 "Amount of detail extraction.\n"
 "Only applicable when decoding 1:1."
 msgstr ""
+"Menge der Detailextraktion.\n"
+"Nur anwendbar bei 1:1-Decodierung."
 
 #: gui/mrvHotkey.cpp:335
 msgid "Annotation Frame Step Backwards"
@@ -992,6 +1033,8 @@ msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
 msgstr ""
+"Eine andere Instanz von mrViewer ist geöffnet.\n"
+"Entfernen"
 
 #: core/exrImage.cpp:1310 core/exrImage.cpp:2569 core/exrImage.cpp:2573
 msgid "Aperture"
@@ -1006,30 +1049,33 @@ msgid "Apr"
 msgstr "Apr"
 
 #: gui/mrvImageBrowser.cpp:3325
-#, fuzzy
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
-msgstr "Möchten Sie &#39;%s&#39; wirklich überschreiben?"
+msgstr ""
+"Möchten Sie wirklich\n"
+"alle ausgewählten Bilder von der Rolle entfernen?"
 
 #: gui/mrvImageBrowser.cpp:3321
-#, fuzzy
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
-msgstr "Möchten Sie &#39;%s&#39; wirklich überschreiben?"
+msgstr ""
+"Sind Sie sicher, dass Sie das Bild\n"
+"von der Rolle entfernen möchten?"
 
 #: gui/mrvImageBrowser.cpp:1361
-#, fuzzy
 msgid ""
 "Are you sure you want to\n"
 "remove the reel?"
-msgstr "Möchten Sie &#39;%s&#39; wirklich überschreiben?"
+msgstr ""
+"Sind Sie sicher,\n"
+"dass Sie die Rolle entfernen möchten?"
 
 #: gui/mrvImageBrowser.cpp:1138
 #, c-format
 msgid "Are you sure you want to overwrite '%s'?"
-msgstr "Möchten Sie &#39;%s&#39; wirklich überschreiben?"
+msgstr "Möchten Sie '%s' wirklich überschreiben?"
 
 #: gui/mrvColorInfo.cpp:543
 msgid "Area"
@@ -1125,7 +1171,7 @@ msgstr "Audiokonvertierung von"
 
 #: audio/mrvPortAudioEngine.cpp:298
 msgid "Audio format not known.  Choosing float32. "
-msgstr "Audioformat nicht bekannt. Float32 wählen."
+msgstr "Audioformat nicht bekannt. Float32 auswählen."
 
 #: core/CMedia_audio.cpp:1886
 msgid "Audio frame "
@@ -1201,7 +1247,7 @@ msgstr "B"
 
 #: gui/mrvImageInformation.cpp:3524
 msgid "B Frames"
-msgstr "B-Rahmen"
+msgstr "B-Frames"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1549
 msgid "BG"
@@ -1224,21 +1270,20 @@ msgid "Background"
 msgstr "Hintergrund"
 
 #: core/mrvPlayback.cpp:1061
-#, fuzzy
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
-"Dauer der Hintergrundrolle ist zu kurz. Looping funktioniert möglicherweise "
-"nicht richtig."
+"Die Dauer des Hintergrundbilds ist zu kurz. Looping funktioniert "
+"möglicherweise nicht richtig."
 
 #: core/mrvPlayback.cpp:1068
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
 "Looping will not work correctly."
 msgstr ""
-"Dauer der Hintergrundrolle ist zu kurz. Looping funktioniert möglicherweise "
-"nicht richtig."
+"Wiedergabe-FPS des Hintergrundbilds ( %lg ) stimmt nicht mit dem Vordergrund "
+"( %lg ) überein. Looping funktioniert nicht richtig."
 
 #: core/mrvPlayback.cpp:1045
 msgid "Background reel duration is too short.  Looping may not work correctly."
@@ -1251,6 +1296,8 @@ msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
 msgstr ""
+"Die Hintergrundrolle enthält mehrere Bilder und EDL ist aktiviert. Das ist "
+"nicht erlaubt. edl ausschalten."
 
 #: core/mrSocket.cpp:178
 msgid "Bad port number "
@@ -1309,7 +1356,7 @@ msgstr "Blau Verstärkung des Clips."
 msgid "Blue value of image pixel under mouse."
 msgstr "Blauwert des Bildpixels unter der Maus."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:583
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:604
 msgid "Boost exception: "
 msgstr "Boost-Ausnahme:"
 
@@ -1319,7 +1366,7 @@ msgstr "Unterseite"
 
 #: standalone/main.cpp:456 standalone/main.cpp:476
 msgid "Bottom/top"
-msgstr "Unten oben"
+msgstr "Unterseite/oben"
 
 #: gui/mrvImageInformation.cpp:197 gui/mrvImageInformation.cpp:231
 #: gui/mrvImageInformation.cpp:462
@@ -1386,11 +1433,11 @@ msgstr "CTL-Skripte"
 
 #: gui/mrvImageBrowser.cpp:4202
 msgid "CTL/Attach Input Device Transform"
-msgstr "CTL/Attach Input Device Transform"
+msgstr "CTL/Eingabegerät-Transformation anhängen"
 
 #: gui/mrvImageBrowser.cpp:4206
 msgid "CTL/Attach Rendering Transform"
-msgstr "CTL/Attach Rendering Transform"
+msgstr "CTL/Rendering-Transformation anhängen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2468
 msgid "CTL_MODULE_PATH"
@@ -1445,7 +1492,7 @@ msgstr "Filme können derzeit nicht in diesen Formaten gespeichert werden."
 
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
-msgstr "Kann nicht zuordnen \""
+msgstr "Kann \" nicht zuordnen"
 
 #: audio/mrvAOEngine.cpp:187
 msgid "Cannot open device"
@@ -1499,7 +1546,7 @@ msgstr "Bild ändern fehlgeschlagen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
 msgid "Changes frame/field display"
-msgstr "Ändert die Rahmen-/Halbbildanzeige"
+msgstr "Ändert den Rahmen/Feldanzeige"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:77
 msgid "Channel"
@@ -1604,6 +1651,10 @@ msgid ""
 "Date: %s\n"
 "Resolution: %dx%d"
 msgstr ""
+"Geklontes Image\n"
+"Name: %s\n"
+"Datum: %s\n"
+"Auflösung: %dx%d"
 
 #: gui/mrvImageInformation.cpp:3649
 msgid "Closed Captions"
@@ -1631,6 +1682,11 @@ msgid ""
 "prores is a good codec for editing jobs.  Finally, ffv1 is good for "
 "preservation as it is a lossless codec."
 msgstr ""
+"Codec (Encoder), der zum Codieren des Films verwendet wird. hevc und h264 "
+"sind die bevorzugten Codecs in Bezug auf die Qualität/Kompression. mpeg4 ist "
+"ein Encoder für DVD und prores ist ein guter Codec für Bearbeitungsaufträge. "
+"Schließlich ist ffv1 gut für die Erhaltung, da es ein verlustfreier Codec "
+"ist."
 
 #: gui/mrvImageInformation.cpp:3522 gui/mrvImageInformation.cpp:3584
 msgid "Codec Name"
@@ -1730,6 +1786,8 @@ msgid ""
 "Compensation for the OLPF (low-pass) filter.\n"
 "Only applicable when decoding 1:1"
 msgstr ""
+"Kompensation für den OLPF-Filter (Tiefpass).\n"
+"Nur anwendbar bei 1:1-Decodierung"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3038
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3459
@@ -1791,6 +1849,14 @@ msgid ""
 "Unspecified is your standard computer translation of YUV.\n"
 "BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM)."
 msgstr ""
+"Steuert die YUV-Konvertierung des Films im Shader, um verschiedene TV-"
+"Standards zu emulieren.\n"
+"Use File YUV Hint übernimmt den Wert des geladenen Films, wenn die Daten "
+"vorhanden sind.\n"
+"BT709 ist eine Rec.709-Emulation (HDTV) und hat Schwarz Ebenen im 16-Bereich "
+"von 255.\n"
+"Nicht angegeben ist Ihre standardmäßige Computerübersetzung von YUV.\n"
+"BT470BG/SMPTE170M emuliert ITU-R BT 601-6 625 (PAL/SECAM)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3008
 msgid "Controls the codec used by default in saving a movie file."
@@ -1831,9 +1897,9 @@ msgid "Corruption in hotkeys preferences. "
 msgstr "Beschädigung der Hotkey-Einstellungen."
 
 #: video/mrvGLLut3d.cpp:841
-#, fuzzy, c-format
+#, c-format
 msgid "Could not add profile \"%s\" to CMM: "
-msgstr "Profil konnte nicht hinzugefügt werden \""
+msgstr "Profil »%s« konnte nicht zu CMM hinzugefügt werden:"
 
 #: core/aviImage_save.cpp:592
 msgid "Could not alloc swr_ctx"
@@ -1909,7 +1975,7 @@ msgstr "Pixelstab konnte nicht erstellt werden"
 
 #: gui/mrvMedia.cpp:173
 msgid "Could not create thumbnail picture for '"
-msgstr "Vorschaubild für &#39; konnte nicht erstellt werden"
+msgstr "Vorschaubild für ' konnte nicht erstellt werden"
 
 #: core/slateImage.cpp:204
 msgid "Could not create wand"
@@ -1931,7 +1997,7 @@ msgstr "Audioframe konnte nicht kodiert werden:"
 
 #: gui/mrvImageInformation.cpp:1640
 msgid "Could not find attribute \""
-msgstr "Attribut konnte nicht gefunden werden \""
+msgstr "Attribut \" konnte nicht gefunden werden"
 
 #: core/exrImage.cpp:2143
 msgid "Could not find both stereo images in file"
@@ -1952,7 +2018,7 @@ msgstr "Es konnten keine acht Floats für Chromatizitäten gefunden werden"
 
 #: core/aviImage_save.cpp:259
 msgid "Could not find encoder for '"
-msgstr "Encoder für &#39; konnte nicht gefunden werden"
+msgstr "Encoder für ' konnte nicht gefunden werden"
 
 #: gui/mrvImageInformation.cpp:468
 msgid "Could not find four floats for box"
@@ -2012,7 +2078,7 @@ msgstr "Stream-Informationen konnten nicht gefunden werden"
 
 #: core/aviImage.cpp:758
 msgid "Could not find subtitle in '"
-msgstr "Untertitel konnten nicht gefunden werden in &#39;"
+msgstr "Untertitel konnten nicht gefunden werden in '"
 
 #: gui/mrvImageInformation.cpp:441
 msgid "Could not find three doubles for vector"
@@ -2104,7 +2170,7 @@ msgstr "Zeichnungsmodul konnte nicht initialisiert werden"
 
 #: gui/mrvImageBrowser.cpp:2480
 msgid "Could not load '"
-msgstr "Konnte nicht laden &#39;"
+msgstr "Konnte nicht laden '"
 
 #: core/shmapImage.cpp:131
 msgid "Could not load shadow map image"
@@ -2132,7 +2198,7 @@ msgstr "Konnte nicht öffnen \""
 
 #: core/aviImage_save.cpp:1445
 msgid "Could not open '"
-msgstr "Konnte nicht öffnen &#39;"
+msgstr "Konnte nicht öffnen '"
 
 #: core/Sequence.cpp:1357
 msgid "Could not open .otio file. "
@@ -2144,7 +2210,7 @@ msgstr "ICC-Profil konnte nicht geöffnet werden \""
 
 #: core/mrvColorProfile.cpp:122
 msgid "Could not open ICC profile embedded in \""
-msgstr "Das in eingebettete ICC-Profil konnte nicht geöffnet werden"
+msgstr "Das in \" eingebettete ICC-Profil konnte nicht geöffnet werden"
 
 #: core/aviImage_save.cpp:511
 msgid "Could not open audio codec"
@@ -2192,7 +2258,7 @@ msgstr "FIFO-Puffer konnte nicht neu zugewiesen werden. Fehler:"
 
 #: core/mrvACES.cpp:450
 msgid "Could not save '"
-msgstr "Konnte nicht speichern &#39;"
+msgstr "Konnte nicht speichern '"
 
 #: core/Sequence.cpp:1438
 msgid "Could not save .otio timeline: "
@@ -2200,7 +2266,7 @@ msgstr ".otio-Zeitachse konnte nicht gespeichert werden:"
 
 #: core/mrvACES.cpp:350
 msgid "Could not save AMF clip data file '"
-msgstr "AMF-Clip-Datendatei &#39; konnte nicht gespeichert werden"
+msgstr "Die AMF-Clip-Datendatei ' konnte nicht gespeichert werden"
 
 #: gui/mrvSave.cpp:93
 #, c-format
@@ -2208,6 +2274,9 @@ msgid ""
 "Could not save sequence or movie, only single frame specified.\n"
 "Use %d syntax or a proper movie extension."
 msgstr ""
+"Sequenz oder Film konnte nicht gespeichert werden, es wurde nur ein "
+"Einzelbild angegeben.\n"
+"Verwenden Sie %d-Syntax oder eine geeignete Filmerweiterung."
 
 #: core/aviImage.cpp:1058 core/aviImage.cpp:1075
 msgid "Could not seek to frame "
@@ -2265,7 +2334,7 @@ msgstr "Softwarekonfiguration konnte nicht abgerufen werden: %s"
 
 #: core/picImage.cpp:705
 msgid "Couldn't open '"
-msgstr "Konnte nicht öffnen &#39;"
+msgstr "Konnte nicht öffnen '"
 
 #: audio/mrvALSAEngine.cpp:431
 #, c-format
@@ -2318,11 +2387,11 @@ msgstr "Startschwelle konnte nicht festgelegt werden: %s"
 
 #: audio/mrvALSAEngine.cpp:522
 msgid "Couldn't set/get audio channels"
-msgstr "Audiokanäle konnten nicht eingestellt/abgerufen werden"
+msgstr "Konnte nicht eingestellt werden/Audiokanäle bekommen"
 
 #: core/picImage.cpp:744 core/picImage.cpp:774
 msgid "Couldn't write out to '"
-msgstr "Konnte nicht schreiben an &#39;"
+msgstr "Konnte nicht schreiben an '"
 
 #: core/iffImage.cpp:326
 msgid "Count bad, "
@@ -2352,7 +2421,7 @@ msgstr "Audiokonvertierung erstellen aus"
 
 #: gui/mrvImageBrowser.cpp:4454
 msgid "Create/Black Gap"
-msgstr "Erstellen/schwarze Lücke"
+msgstr "Erstellen/Schwarze Lücke"
 
 #: gui/mrvImageBrowser.cpp:4476
 msgid "Create/Checkered"
@@ -2360,43 +2429,43 @@ msgstr "Erstellen/Kariert"
 
 #: gui/mrvImageBrowser.cpp:4460
 msgid "Create/Color Bars/PAL"
-msgstr "Erstellen/Farbbalken/PAL"
+msgstr "Erstellen/Farbbalken/KUMPEL"
 
 #: gui/mrvImageBrowser.cpp:4462
 msgid "Create/Color Bars/PAL HDTV"
-msgstr "Erstellen/Farbbalken/PAL HDTV"
+msgstr "Erstellen/Farbbalken/PAL-HDTV"
 
 #: gui/mrvImageBrowser.cpp:4456
 msgid "Create/Color Bars/SMPTE NTSC"
-msgstr "Erstellen/Farbbalken/SMPTE NTSC"
+msgstr "Erstellen/Farbbalken/SMPTE-NTSC"
 
 #: gui/mrvImageBrowser.cpp:4458
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
-msgstr "Erstellen/Farbbalken/SMPTE NTSC HDTV"
+msgstr "Erstellen/Farbbalken/SMPTE-NTSC-HDTV"
 
 #: gui/mrvImageBrowser.cpp:4464
 msgid "Create/Gamma Chart/1.4"
-msgstr "Erstellen/Gamma-Diagramm/1.4"
+msgstr "Erstellen/Bereichsdiagramm/1.4"
 
 #: gui/mrvImageBrowser.cpp:4466
 msgid "Create/Gamma Chart/1.8"
-msgstr "Erstellen/Gamma-Diagramm/1.8"
+msgstr "Erstellen/Bereichsdiagramm/1.8"
 
 #: gui/mrvImageBrowser.cpp:4468
 msgid "Create/Gamma Chart/2.2"
-msgstr "Erstellen/Gamma-Diagramm/2.2"
+msgstr "Erstellen/Bereichsdiagramm/2.2"
 
 #: gui/mrvImageBrowser.cpp:4470
 msgid "Create/Gamma Chart/2.4"
-msgstr "Erstellen/Gamma-Diagramm/2.4"
+msgstr "Erstellen/Bereichsdiagramm/2.4"
 
 #: gui/mrvImageBrowser.cpp:4472
 msgid "Create/Gradient/Linear"
-msgstr "Erstellen/Verlauf/Linear"
+msgstr "Erstellen/Gradient/Linear"
 
 #: gui/mrvImageBrowser.cpp:4474
 msgid "Create/Gradient/Luminance"
-msgstr "Erstellen/Verlauf/Luminanz"
+msgstr "Erstellen/Gradient/Leuchtdichte"
 
 #: core/wandImage.cpp:559
 msgid "Created Date"
@@ -2538,10 +2607,11 @@ msgid "DWA Compression"
 msgstr "DWA-Komprimierung"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3318
-#, fuzzy
 msgid ""
 "DWA/DWB compression to use when saving an exr with that compression scheme."
-msgstr "Zu verwendende Komprimierung beim Speichern eines Ausdrucks."
+msgstr ""
+"ZWEI/DWB-Komprimierung, die beim Speichern eines Exr mit diesem "
+"Komprimierungsschema verwendet werden soll."
 
 #: gui/mrvImageView.cpp:4551
 #, c-format
@@ -2675,12 +2745,15 @@ msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
 msgstr ""
+"Der Zielfarbraum hat mehr als 3 Kanäle – nur die ersten 3 werden angezeigt."
 
 #: video/mrvGLLut3d.cpp:915
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
 msgstr ""
+"Zielfarbraum ist nicht RGB oder XYZ. Farben können als RGB angezeigt seltsam "
+"aussehen."
 
 #: gui/mrvImageInformation.cpp:3414
 msgid "Detail"
@@ -2696,7 +2769,7 @@ msgstr "Nicht alle dst-Samples in Fifo geschrieben. Fehler:"
 
 #: core/aviImage_save.cpp:817
 msgid "Did not write all src samples to fifo. Error: "
-msgstr "Es wurden nicht alle src-Beispiele in fifo geschrieben. Fehler:"
+msgstr "Es wurden nicht alle src-Samples in fifo geschrieben. Fehler:"
 
 #: gui/FLU/Flu_File_Chooser.cpp:570
 msgid "Digital Video"
@@ -2723,6 +2796,10 @@ msgid ""
 "Resolution: %dx%d\n"
 "Frames: %<PRId64>-%<PRId64> FPS %g"
 msgstr ""
+"Verzeichnis: %s\n"
+"Name: %s\n"
+"Auflösung: %dx%d\n"
+"Frames: %<PRId64> -%<PRId64> FPS %g"
 
 #: core/mrvClient.cpp:257 core/mrvServer.cpp:2054
 msgid "Disconnect"
@@ -2759,6 +2836,8 @@ msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
 msgstr ""
+"Zeigt die Verstärkung als Filmbelichtung und fstop an.\n"
+"Klicken Sie, um zwischen aktueller und normaler Belichtung umzuschalten."
 
 #: gui/mrvImageInformation.cpp:3549 gui/mrvImageInformation.cpp:3614
 #: gui/mrvImageInformation.cpp:3659
@@ -2781,7 +2860,7 @@ msgstr "Mischung machen"
 #: gui/mrvSave.cpp:213
 #, c-format
 msgid "Do you want to replace '%s'?"
-msgstr "Möchten Sie &#39;%s&#39; ersetzen?"
+msgstr "Möchten Sie '%s' ersetzen?"
 
 #: core/wandImage.cpp:735 gui/mrvImageInformation.cpp:181
 #: gui/mrvImageInformation.cpp:223 gui/mrvImageInformation.cpp:349
@@ -2887,7 +2966,7 @@ msgstr "Leeres Bild, das dem Elementkonstruktor bereitgestellt wird"
 
 #: gui/mrvImageBrowser.cpp:1580
 msgid "Empty img->fileroot() passed to media_to_pathname"
-msgstr "Leeres img-&gt;fileroot() an media_to_pathname übergeben"
+msgstr "Leeres img->fileroot() an media_to_pathname übergeben"
 
 #: gui/mrvImageBrowser.cpp:1571
 msgid "Empty media passed to media_to_pathname"
@@ -2995,22 +3074,23 @@ msgstr "Flucht"
 
 #: standalone/main.cpp:464 standalone/main.cpp:479
 msgid "Even/odd columns"
-msgstr "Gerade/ungerade Spalten"
+msgstr "Auch/ungerade Spalten"
 
 #: standalone/main.cpp:462 standalone/main.cpp:478
 msgid "Even/odd rows"
-msgstr "Gerade/ungerade Reihen"
+msgstr "Auch/ungerade Reihen"
 
 #: gui/mrvImageBrowser.cpp:3676
 msgid "Example:  gizmo"
 msgstr "Beispiel: gizmo"
 
 #: standalone/mrvCommandLine.cpp:165
-#, fuzzy
 msgid ""
 "Examples:\n"
 "\n"
-msgstr "Beispiel: gizmo"
+msgstr ""
+"Beispiele:\n"
+"\n"
 
 #: gui/mrvImageView.cpp:3675
 msgid "Exchange Image failed"
@@ -3191,40 +3271,40 @@ msgstr "Dateianforderer"
 
 #: gui/mrvImageView.cpp:4808
 msgid "File/Open/AMF file"
-msgstr "Datei/Öffnen/AMF-Datei"
+msgstr "Datei/Offen/AMF-Datei"
 
 #: gui/mrvImageView.cpp:4795 gui/mrvImageView.cpp:4806
 msgid "File/Open/Directory"
-msgstr "Datei/Öffnen/Verzeichnis"
+msgstr "Datei/Offen/Verzeichnis"
 
 #: gui/mrvImageView.cpp:4785 gui/mrvImageBrowser.cpp:4162
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
-msgstr "Datei/Öffnen/Film oder Sequenz"
+msgstr "Datei/Offen/Film oder Sequenz"
 
 #: gui/mrvImageView.cpp:4797 gui/mrvImageView.cpp:4810
 msgid "File/Open/Session"
-msgstr "Datei/Öffnen/Sitzung"
+msgstr "Datei/Offen/Sitzung"
 
 #: gui/mrvImageView.cpp:4789 gui/mrvImageBrowser.cpp:4164
 msgid "File/Open/Single Image"
-msgstr "Datei/Öffnen/Einzelbild"
+msgstr "Datei/Offen/Einzelbild"
 
 #: gui/mrvImageView.cpp:4803
 msgid "File/Open/Stereo Sequence or Movie"
-msgstr "Datei/Öffnen/Stereosequenz oder Film"
+msgstr "Datei/Offen/Stereosequenz oder Film"
 
 #: gui/mrvImageView.cpp:4833
 msgid "File/Quit"
-msgstr "Datei/Beenden"
+msgstr "Datei/Aufhören"
 
 #: gui/mrvImageView.cpp:4818 gui/mrvImageBrowser.cpp:4409
 msgid "File/Save/Frame As"
-msgstr "Datei/Speichern/Frame unter"
+msgstr "Datei/Speichern/Rahmen wie"
 
 #: gui/mrvImageView.cpp:4820 gui/mrvImageBrowser.cpp:4411
 msgid "File/Save/GL Snapshots As"
-msgstr "Datei/Speichern/GL-Snapshots unter"
+msgstr "Datei/Speichern/GL-Snapshots als"
 
 #: gui/mrvImageView.cpp:4813 gui/mrvImageBrowser.cpp:4404
 msgid "File/Save/Movie or Sequence As"
@@ -3232,11 +3312,11 @@ msgstr "Datei/Speichern/Film oder Sequenz als"
 
 #: gui/mrvImageView.cpp:4816 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/Reel As"
-msgstr "Datei/Speichern/Rollen unter"
+msgstr "Datei/Speichern/Rolle als"
 
 #: gui/mrvImageView.cpp:4822 gui/mrvImageBrowser.cpp:4413
 msgid "File/Save/Session As"
-msgstr "Datei/Speichern/Sitzung unter"
+msgstr "Datei/Speichern/Sitzung als"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1363
 #: gui/mrvImageInformation.cpp:2775
@@ -3247,7 +3327,7 @@ msgstr "Dateinamen"
 msgid "Filename of the clip"
 msgstr "Dateiname des Clips"
 
-#: standalone/main.cpp:579
+#: standalone/main.cpp:600
 msgid "Filesystem error: "
 msgstr "Dateisystemfehler:"
 
@@ -3579,7 +3659,7 @@ msgstr "Gehen Sie zum Ende der Sequenz."
 
 #: core/CMedia.cpp:4392 core/CMedia.cpp:4439
 msgid "Got colorspace '"
-msgstr "Farbraum erhalten &#39;"
+msgstr "Farbraum erhalten '"
 
 #: core/stubImage.cpp:380
 msgid "Got: "
@@ -3634,7 +3714,7 @@ msgstr "HDRI-Bild"
 
 #: gui/mrvImageInformation.cpp:1094
 msgid "HDTV / Widescreen 16:9"
-msgstr "HDTV / Breitbild 16:9"
+msgstr "HDTV/Breitbild 16:9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
 msgid "HSV"
@@ -3709,10 +3789,12 @@ msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
 "Do you want to override it?"
 msgstr ""
+"Hotkey \"%s\" wird bereits in \"%s\" verwendet.\n"
+"Möchten Sie ihn überschreiben?"
 
 #: gui/mrvFileRequester.cpp:1247
 msgid "Hotkey '"
-msgstr "Hotkey &#39;"
+msgstr "Hotkey '"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:58
 msgid "Hotkey file:"
@@ -3802,6 +3884,8 @@ msgid ""
 "If selected, the natlve file chooser will be used.  If unselected, "
 "mrViewer's standard file chooser will be used."
 msgstr ""
+"Wenn ausgewählt, wird die native Dateiauswahl verwendet. Wenn nicht "
+"ausgewählt, wird die Standard-Dateiauswahl von mrViewer verwendet."
 
 #: gui/mrvImageBrowser.cpp:1708
 msgid "Image"
@@ -3891,12 +3975,19 @@ msgid ""
 "This setting thus allows caching more pictures in memory for float and half "
 "pictures."
 msgstr ""
+"Bildsequenzen werden als 8-Bit-Bilder zwischengespeichert, anstatt als "
+"Originaltiefe der Sequenz zwischengespeichert zu werden.\n"
+"Diese Einstellung ermöglicht somit das Zwischenspeichern von mehr Bildern im "
+"Speicher für Float- und Halbbilder."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2077
 msgid ""
 "Image sequences will be cached in memory.  If this setting is off, images "
 "will be loaded on demand but fluid playback may not be possible."
 msgstr ""
+"Bildsequenzen werden im Speicher zwischengespeichert. Wenn diese Einstellung "
+"deaktiviert ist, werden Bilder bei Bedarf geladen, aber eine flüssige "
+"Wiedergabe ist möglicherweise nicht möglich."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
 msgid "Image zoom setting."
@@ -3908,11 +3999,11 @@ msgstr "Bild/CTL-Look-Mod-Transformation hinzufügen"
 
 #: gui/mrvImageView.cpp:5016
 msgid "Image/Attach CTL Input Device Transform"
-msgstr "Image/Attach CTL Input Device Transform"
+msgstr "Bild/CTL Input Device Transform anhängen"
 
 #: gui/mrvImageView.cpp:5028
 msgid "Image/Attach CTL Rendering Transform"
-msgstr "Image/Attach CTL Rendering Transform"
+msgstr "Bild/Hängen Sie die CTL-Rendering-Transformation an"
 
 #: gui/mrvImageView.cpp:5032
 msgid "Image/Attach ICC Color Profile"
@@ -3920,7 +4011,7 @@ msgstr "Bild/ICC-Farbprofil anhängen"
 
 #: gui/mrvImageView.cpp:4994
 msgid "Image/Clear Caches"
-msgstr "Bild/Cache löschen"
+msgstr "Bild/Caches löschen"
 
 #: gui/mrvImageView.cpp:4970 gui/mrvImageView.cpp:4978
 #: gui/mrvImageBrowser.cpp:4425 gui/mrvImageBrowser.cpp:4435
@@ -3929,51 +4020,51 @@ msgstr "Bild/Klon"
 
 #: gui/mrvImageView.cpp:4972 gui/mrvImageBrowser.cpp:4427
 msgid "Image/Clone All Channels"
-msgstr "Alle Kanäle abbilden/klonen"
+msgstr "Bild/Alle Kanäle klonen"
 
 #: gui/mrvImageBrowser.cpp:4439
 msgid "Image/Media Info"
-msgstr "Bild-/Medieninfo"
+msgstr "Bild/Medieninformation"
 
 #: gui/mrvImageView.cpp:5039
 msgid "Image/Mirror/Horizontal"
-msgstr "Bild/Spiegeln/Horizontal"
+msgstr "Bild/Spiegel/Horizontal"
 
 #: gui/mrvImageView.cpp:5043
 msgid "Image/Mirror/Vertical"
-msgstr "Bild/Spiegeln/Vertikal"
+msgstr "Bild/Spiegel/Vertikal"
 
 #: gui/mrvImageView.cpp:5020
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
-msgstr "Image/Modify CTL ASC_CDL SOP Sättigung"
+msgstr "Bild/Ändern Sie die CTL ASC_CDL SOP-Sättigung"
 
 #: gui/mrvImageView.cpp:4959
 msgid "Image/Next"
-msgstr "Bild/Weiter"
+msgstr "Bild/Nächste"
 
 #: gui/mrvImageView.cpp:4985
 msgid "Image/Preload Caches"
-msgstr "Bild-/Preload-Caches"
+msgstr "Bild/Caches vorab laden"
 
 #: gui/mrvImageView.cpp:4961
 msgid "Image/Previous"
-msgstr "Bild/Vorheriges"
+msgstr "Bild/Vorherige"
 
 #: gui/mrvImageView.cpp:5004
 msgid "Image/Rotate +90"
-msgstr "Bild/Drehen +90"
+msgstr "Bild/+90 drehen"
 
 #: gui/mrvImageView.cpp:5007
 msgid "Image/Rotate -90"
-msgstr "Bild/Drehen -90"
+msgstr "Bild/-90 drehen"
 
 #: gui/mrvImageView.cpp:5047 gui/mrvImageBrowser.cpp:4444
 msgid "Image/Set as Background"
-msgstr "Bild/als Hintergrund festlegen"
+msgstr "Bild/Als Hintergrund setzen"
 
 #: gui/mrvImageView.cpp:5052
 msgid "Image/Switch FG and BG"
-msgstr "Bild/Schalter FG und BG"
+msgstr "Bild/FG und BG wechseln"
 
 #: gui/mrvImageView.cpp:5055
 msgid "Image/Toggle Background"
@@ -4010,12 +4101,11 @@ msgid "Images (*.{"
 msgstr "Bilder (*.{"
 
 #: core/guessImage.cpp:192
-#, fuzzy
 msgid ""
 "Images in stereo have different frame lengths.  They will not loop properly."
 msgstr ""
-"Bilder in Stereo haben unterschiedliche Längen. Sie werden nicht richtig "
-"geloopt."
+"Bilder in Stereo haben unterschiedliche Framelängen. Sie werden nicht "
+"richtig geloopt."
 
 #: core/guessImage.cpp:183
 msgid "Images in stereo have different lengths.  They will not loop properly."
@@ -4264,7 +4354,7 @@ msgstr "Linke Sicht"
 #: standalone/main.cpp:432 standalone/main.cpp:438 standalone/main.cpp:458
 #: standalone/main.cpp:477
 msgid "Left/right"
-msgstr "Links rechts"
+msgstr "Links/Rechts"
 
 #: gui/mrvHotkey.cpp:462
 msgid "LeftAlt"
@@ -4288,6 +4378,8 @@ msgid ""
 "Limit on the number of tasks supported by the Windows Sockets implementation "
 "has been reached.\n"
 msgstr ""
+"Das Limit für die Anzahl der Aufgaben, die von der Windows Sockets-"
+"Implementierung unterstützt werden, wurde erreicht.\n"
 
 #: gui/mrvImageInformation.cpp:3104
 msgid "Line Order"
@@ -4310,9 +4402,8 @@ msgid "Listing of directory \""
 msgstr "Auflistung des Verzeichnisses \""
 
 #: gui/FLU/Flu_File_Chooser.cpp:3600
-#, fuzzy
 msgid "Listing of directory \"/Volumes/\" failed!"
-msgstr "Auflistung des Verzeichnisses \""
+msgstr "Auflistung des Verzeichnisses \"/Bände/\" fehlgeschlagen!"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:54
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2609
@@ -4358,11 +4449,11 @@ msgstr "Rolle(n) laden"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2811
 msgid "Load Sequence on Drag&&Drop"
-msgstr "Sequenz per Drag&amp;&amp;Drop laden"
+msgstr "Sequenz per Drag&&Drop laden"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2826
 msgid "Load Sequence on File Association && CommandLine"
-msgstr "Ladesequenz auf Dateizuordnung &amp;&amp; Befehlszeile"
+msgstr "Ladesequenz auf Dateizuordnung && Befehlszeile"
 
 #: gui/mrvFileRequester.cpp:545
 msgid "Load Subtitle"
@@ -4385,10 +4476,12 @@ msgid ""
 "Load settings from RMD sidecar or\n"
 "reset them to camera settings."
 msgstr ""
+"Laden Sie die Einstellungen vom RMD-Sidecar oder\n"
+"setzen Sie sie auf die Kameraeinstellungen zurück."
 
 #: core/mrvACES.cpp:150
 msgid "Loaded ACES clip metadata file '"
-msgstr "Geladene ACES-Clip-Metadatendatei &#39;"
+msgstr "Geladene ACES-Clip-Metadatendatei '"
 
 #: core/brawImage.cpp:222
 msgid "Loaded braw lib from: "
@@ -4410,9 +4503,9 @@ msgid "Loading"
 msgstr "Wird geladen"
 
 #: gui/mrvImageBrowser.cpp:2378
-#, fuzzy, c-format
+#, c-format
 msgid "Loading \"%s\""
-msgstr "Wird geladen \""
+msgstr "»%s« wird geladen"
 
 #: video/mrvGLEngine.cpp:4142
 msgid "Loading built-in NV3.0 rgba shader"
@@ -4579,6 +4672,8 @@ msgid ""
 "Maximum number of cached frames shown in the timeline.  Too many frames can "
 "make playback sluggish."
 msgstr ""
+"Maximale Anzahl zwischengespeicherter Frames, die in der Timeline angezeigt "
+"werden. Zu viele Frames können die Wiedergabe träge machen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2868
 msgid ""
@@ -4586,6 +4681,10 @@ msgid ""
 "have v1, and this is set to 5, only up to a gap with v6 would be found.  v7 "
 "would not get found as the gap would be too big."
 msgstr ""
+"Maximale Anzahl von Bildern, abgesehen von denen sich die Versionen auf der "
+"Festplatte befinden können. Wenn Sie v1 haben und diese auf 5 gesetzt ist, "
+"würde nur bis zu einer Lücke mit v6 gefunden werden. v7 würde nicht gefunden "
+"werden, da die Lücke zu groß wäre."
 
 #: gui/FLU/Flu_File_Chooser.cpp:3321
 msgid "May"
@@ -4665,7 +4764,7 @@ msgstr "Fehlender Audioframe"
 
 #: core/mrvACES.cpp:302 core/mrvACES.cpp:402
 msgid "Missing transforms for aces:GradeRef in '"
-msgstr "Fehlende Transformationen für Asse:GradeRef in &#39;"
+msgstr "Fehlende Transformationen für Asse:GradeRef in '"
 
 #: audio/mrvALSAEngine.cpp:221 audio/mrvALSAEngine.cpp:333
 #, c-format
@@ -4705,11 +4804,11 @@ msgstr "Überwachen Sie das Icc-Profil"
 
 #: gui/mrvImageView.cpp:5169
 msgid "Monitor/Attach CTL Display Transform"
-msgstr "Monitor/Attach CTL Display Transform"
+msgstr "Monitor/Hängen Sie die CTL-Anzeigetransformation an"
 
 #: gui/mrvImageView.cpp:5173
 msgid "Monitor/Attach ICC Color Profile"
-msgstr "ICC-Farbprofil überwachen/anhängen"
+msgstr "Monitor/ICC-Farbprofil anhängen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:189
 msgid "Motion Estimation Methods"
@@ -4725,7 +4824,7 @@ msgstr "Werkzeug Bild verschieben"
 
 #: gui/mrvHotkey.cpp:389
 msgid "Move/Size Mode"
-msgstr "Bewegungs-/Größenmodus"
+msgstr "Umzug/Größenmodus"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:175
 msgid "Movie Saving Preferences"
@@ -4738,6 +4837,10 @@ msgid ""
 "This setting thus allows caching less pictures in memory but at an improved "
 "quality."
 msgstr ""
+"Filmdateien werden als 16-Bit-Bilder gelesen, anstatt als 8-Bit-Bilder "
+"geladen und zwischengespeichert zu werden.\n"
+"Diese Einstellung ermöglicht somit das Zwischenspeichern von weniger Bildern "
+"im Speicher, jedoch mit verbesserter Qualität."
 
 #: gui/mrvFileRequester.cpp:398 gui/mrvFileRequester.cpp:944
 msgid "Movies (*.{"
@@ -4773,6 +4876,8 @@ msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
 msgstr ""
+"Namen dürfen keine Leerzeichen in ihren Pfaden enthalten.\n"
+"\n"
 
 #: gui/mrvImageBrowser.cpp:4631
 msgid "Negative indices to exchange"
@@ -4833,7 +4938,7 @@ msgstr "Kein ICC-Profil"
 #: gui/mrvImageInformation.cpp:737
 #, c-format
 msgid "No attribute named '%s'"
-msgstr "Kein Attribut namens &#39;%s&#39;"
+msgstr "Kein Attribut namens '%s'"
 
 #: core/aviImage_save.cpp:1422
 msgid "No audio nor video stream created"
@@ -4900,6 +5005,8 @@ msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
 msgstr ""
+"Keine Versionierung in diesem Clip. Bitte erstellen Sie ein Image oder "
+"Verzeichnis mit dem Namen einer Versionierungszeichenfolge."
 
 #: video/mrvGLEngine.cpp:235
 msgid "Non-POT Textures:\t"
@@ -5009,6 +5116,8 @@ msgid ""
 "Number of FStops the LUT will cover.  Higher numbers show more detail in the "
 "black levels, while it makes the midrange be less defined."
 msgstr ""
+"Anzahl der FStops, die die LUT abdeckt. Höhere Zahlen zeigen mehr Details in "
+"den Schwarzwerten, während der Mittenbereich weniger definiert ist."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2302
 msgid "Number of Fstops"
@@ -5065,7 +5174,7 @@ msgstr "FREIZEIT Anzeige"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
 msgid "OCIO Display/View or some default gamma settings."
-msgstr "OCIO Display/View oder einige Standard-Gammaeinstellungen."
+msgstr "FREIZEIT Anzeige/Ansicht oder einige Standard-Gammaeinstellungen."
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5073,7 +5182,7 @@ msgstr "OCIO Eingabefarbraum"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "FREIZEIT anzeigen"
+msgstr "FREIZEIT ansehen"
 
 #: gui/mrvImageView.cpp:3866
 msgid "OCIO View change failed"
@@ -5093,11 +5202,11 @@ msgstr "OCIO-Eingabefarbraum für das Bild"
 
 #: gui/mrvImageView.cpp:5078
 msgid "OCIO/Display"
-msgstr "FREIZEIT/Display"
+msgstr "FREIZEIT/Anzeige"
 
 #: gui/mrvImageView.cpp:5074 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "OCIO/Eingabefarbraum"
+msgstr "FREIZEIT/Farbraum eingeben"
 
 #: gui/mrvImageView.cpp:5081
 msgid "OCIO/View"
@@ -5195,7 +5304,7 @@ msgstr "Encoder öffnen"
 
 #: gui/mrvSave.cpp:289
 msgid "Open movie '"
-msgstr "Film öffnen &#39;"
+msgstr "Film öffnen '"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1487
 msgid "Open new image, sequence, movie or reel"
@@ -5217,6 +5326,12 @@ msgid ""
 "SC + DC x ( 1 - SA )\n"
 "where SC is source color, SA is source alpha, and DC is destination color."
 msgstr ""
+"OpenGL-Blending-Compositing-Modus.\n"
+"Traditionell:\n"
+"SC x SA + DC x ( 1 - SA)\n"
+"Premult:\n"
+"SC + DC x ( 1 - SA )\n"
+"wobei SC die Quellfarbe, SA das Quell-Alpha und DC die Zielfarbe ist ."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
 msgid "Opens different windows"
@@ -5225,11 +5340,11 @@ msgstr "Öffnet verschiedene Fenster"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3222
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3246
 msgid "Options controlling the OpenEXR reader/writer"
-msgstr "Optionen zur Steuerung des OpenEXR-Lese-/Schreibgeräts"
+msgstr "Optionen zur Steuerung des OpenEXR-Readers/Schriftsteller"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3332
 msgid "Options controlling the R3D / BRAW readers"
-msgstr "Optionen zur Steuerung der R3D / BRAW-Lesegeräte"
+msgstr "Optionen zur Steuerung des R3D/BRAW-Leser"
 
 #: core/exrImage.cpp:2942
 msgid "Options for EXR were empty"
@@ -5343,7 +5458,7 @@ msgstr "PBO-Texturen:\t"
 #: gui/mrvImageView.cpp:4663
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
-msgstr "PMem: %<PRIu64> /%<PRIu64> MBVMem: %<PRIu64> /%<PRIu64> MB"
+msgstr "PMem: %<PRIu64>/%<PRIu64> MBVMem: %<PRIu64>/%<PRIu64> MB"
 
 #: gui/FLU/Flu_File_Chooser.cpp:607
 msgid "PNG Picture"
@@ -5455,7 +5570,7 @@ msgstr "Rückwärts spielen"
 
 #: gui/mrvHotkey.cpp:343
 msgid "Play Backwards / Change Speed"
-msgstr "Rückwärts abspielen / Geschwindigkeit ändern"
+msgstr "Rückwärts spielen/Geschwindigkeit ändern"
 
 #: gui/mrvHotkey.cpp:345
 msgid "Play Forwards"
@@ -5463,7 +5578,7 @@ msgstr "Vorwärts spielen"
 
 #: gui/mrvHotkey.cpp:346
 msgid "Play Forwards / Change Speed"
-msgstr "Vorwärts spielen / Geschwindigkeit ändern"
+msgstr "Vorwärts spielen/Geschwindigkeit ändern"
 
 #: gui/mrvHotkey.cpp:344
 msgid "Play in Current Direction"
@@ -5482,6 +5597,7 @@ msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
 msgstr ""
+"Video oder Sequenz automatisch ohne Pause am Anfang abspielen (Autoplayback)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1718
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3446
@@ -5515,12 +5631,17 @@ msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
 msgstr ""
+"Präfix darf keine leere Zeichenfolge sein. Bitte geben Sie einen regulären "
+"Ausdruck ein, um die Version im Dateinamen zu unterscheiden. Wenn Sie sich "
+"nicht sicher sind, verwenden Sie _v."
 
 #: gui/mrvImageBrowser.cpp:4219
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
 msgstr ""
+"Präfix darf keine leere Zeichenfolge sein. Bitte geben Sie einige eindeutige "
+"Zeichen ein, um die Version im Dateinamen zu unterscheiden."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2105
 msgid "Preload Cache"
@@ -5713,7 +5834,7 @@ msgstr "RT"
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut ist so eingestellt, dass es CTL bevorzugt, aber nur das ICC-Profil in "
-"\""
+"\" gefunden wird"
 
 #: video/mrvGLLut3d.cpp:1080
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
@@ -5783,7 +5904,7 @@ msgstr "Rotwert des Bildpixels unter der Maus."
 
 #: standalone/main.cpp:468 standalone/main.cpp:481
 msgid "Red/cyan glasses"
-msgstr "Rot/Cyan-Brille"
+msgstr "rot/Cyan-Brille"
 
 #: gui/mrvHotkey.cpp:393
 msgid "Redo Draw"
@@ -5802,7 +5923,7 @@ msgstr "Rolle %d (%s) | Schuss %d (%s) | Rahmen %<PRId64> | X = %d | Y = %d\n"
 #: gui/mrvImageBrowser.cpp:1331
 #, c-format
 msgid "Reel '%s' saved"
-msgstr "Band &#39;%s&#39; gespeichert"
+msgstr "Band '%s' gespeichert"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1403
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1047
@@ -5841,6 +5962,10 @@ msgid ""
 "  gizmo_v003.001.exr\n"
 "(version 3, frame 1)."
 msgstr ""
+"Regex wird verwendet, um Versionsnummern zu erkennen. Das Standard-_v "
+"erstellt eines, das Bilder findet wie:\n"
+" gizmo_v003.001.exr\n"
+"(Version 3, Bild 1)."
 
 #: gui/mrvImageBrowser.cpp:3618 gui/mrvImageBrowser.cpp:3666
 msgid "Regular expression error: "
@@ -5868,6 +5993,8 @@ msgid ""
 "Reload color theme from mrViewer.colors file again to refresh change in "
 "colors"
 msgstr ""
+"Laden Sie das Farbdesign erneut aus der Datei mrViewer.colors, um die "
+"Farbänderung zu aktualisieren"
 
 #: gui/mrvProgressReport.cpp:66
 msgid "Remaining"
@@ -5919,6 +6046,8 @@ msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
 msgstr ""
+"Alle Attribute ersetzen/Werte, die im Hud angezeigt werden sollen, wobei nur "
+"die in der Befehlszeile angegebenen übrig bleiben."
 
 #: gui/mrvImageBrowser.cpp:3442
 msgid "Replace image index is out of range"
@@ -5942,7 +6071,7 @@ msgstr "Zurücksetzen"
 
 #: gui/mrvHotkey.cpp:373
 msgid "Reset Gain/Gamma"
-msgstr "Verstärkung/Gamma zurücksetzen"
+msgstr "Verstärkung zurücksetzen/Gamma"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3077
 msgid "Resize Background to Match Foreground"
@@ -5997,7 +6126,7 @@ msgstr "Rechte Ansicht"
 
 #: standalone/main.cpp:460 standalone/main.cpp:477
 msgid "Right/left"
-msgstr "Rechts links"
+msgstr "Richtig/links"
 
 #: gui/mrvHotkey.cpp:463
 msgid "RightAlt"
@@ -6117,6 +6246,8 @@ msgid ""
 "Save OCIO config in preferences file or leave it empty so that environment "
 "variables can be used."
 msgstr ""
+"Speichern Sie die OCIO-Konfiguration in der Einstellungsdatei oder lassen "
+"Sie sie leer, damit Umgebungsvariablen verwendet werden können."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2376
 msgid "Save Ocio Config File in Preferences"
@@ -6148,7 +6279,7 @@ msgstr "Aktuelle Rolle speichern"
 
 #: gui/mrvSave.cpp:285
 msgid "Save frames '"
-msgstr "Frames speichern &#39;"
+msgstr "Frames speichern '"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3409
 msgid "Save preferences to disk as a default."
@@ -6160,11 +6291,11 @@ msgstr "Sequenz oder Film speichern."
 
 #: core/mrvACES.cpp:452
 msgid "Saved ACES clip metadata file '"
-msgstr "Gespeicherte ACES-Clip-Metadatendatei &#39;"
+msgstr "Gespeicherte ACES-Clip-Metadatendatei '"
 
 #: core/mrvACES.cpp:352
 msgid "Saved AMF clip metadata file '"
-msgstr "Gespeicherte AMF-Clip-Metadatendatei &#39;"
+msgstr "Gespeicherte AMF-Clip-Metadatendatei '"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:78
 msgid "Saves out OCIO's input color space in the metadata of the image."
@@ -6192,6 +6323,8 @@ msgid ""
 "Scale of images stored.  Smaller scale allows more images to be stored at "
 "the expense of pixelization."
 msgstr ""
+"Maßstab der gespeicherten Bilder. Ein kleinerer Maßstab ermöglicht die "
+"Speicherung von mehr Bildern auf Kosten der Pixelisierung."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1542
 msgid "Scheme"
@@ -6265,6 +6398,9 @@ msgid ""
 "(using a letter or view prefix), as Top/Bottom in the same image or as Left/"
 "Right in the same image."
 msgstr ""
+"Wählen Sie aus, wie Stereo im Bild codiert wird. Es kann sich um separate "
+"Ebenen (mit einem Buchstaben- oder Ansichtspräfix) als Top handeln/Unten im "
+"selben Bild oder wie Links/Direkt im selben Bild."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:128
 msgid ""
@@ -6273,6 +6409,10 @@ msgid ""
 "viceversa), interlaced rows or columns, checkerboard pattern, red/cyan "
 "glasses (and viceversa)."
 msgstr ""
+"Wählen Sie aus, wie die Stereobilder angezeigt werden sollen. Sie können "
+"keine Stereoansicht auswählen, eine Ansicht des Stereopaars oben/unten (und "
+"umgekehrt), links/rechts (und umgekehrt), verschachtelte Zeilen oder "
+"Spalten, Schachbrettmuster, rot/Cyangläser (und umgekehrt)."
 
 #: standalone/mrvCommandLine.cpp:487
 msgid "Select stereo input"
@@ -6284,11 +6424,11 @@ msgstr "Wählen Sie den Stereoausgang"
 
 #: gui/mrvImageBrowser.cpp:4179
 msgid "Select/Multiple Images for Modifying"
-msgstr "Wählen Sie/mehrere Bilder zum Ändern aus"
+msgstr "Wählen/Mehrere Bilder zum Ändern"
 
 #: gui/mrvImageBrowser.cpp:4166
 msgid "Select/Single Image for Dragging"
-msgstr "Auswählen/einzelnes Bild zum Ziehen"
+msgstr "Wählen/Einzelbild zum Ziehen"
 
 #: video/mrvGLEngine.cpp:575
 msgid "Selecting shader type automatically: "
@@ -6307,7 +6447,7 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1600
 msgid "Selects the color of HUD overlays."
-msgstr "Wählt die Farbe von HUD-Overlays."
+msgstr "Wählt die Farbe der HUD-Overlays."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1586
 msgid "Selects the color of text overlays printed over the current image."
@@ -6380,11 +6520,12 @@ msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
 msgstr ""
+"Setze ein A/B-Vergleich. B-Bild geht in den Hintergrund. Ein "
+"(Vordergrund-)Bild ist das ausgewählte Bild."
 
 #: standalone/mrvCommandLine.cpp:472
 msgid "Set an attribute/value to display in the hud."
-msgstr ""
-"Legen Sie ein Attribut/einen Wert fest, das im Hud angezeigt werden soll."
+msgstr "Legen Sie ein Attribut fest/Wert, der im Hud angezeigt werden soll."
 
 #: standalone/mrvCommandLine.cpp:460
 msgid "Set each input color space for each image."
@@ -6392,7 +6533,7 @@ msgstr "Stellen Sie jeden Eingabefarbraum für jedes Bild ein."
 
 #: standalone/mrvCommandLine.cpp:464
 msgid "Set each movie/sequence default audio."
-msgstr "Legen Sie für jeden Film/jede Sequenz das Standardaudio fest."
+msgstr "Stellen Sie jeden Film ein/Standardaudio der Sequenz."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1550
 msgid "Set reel image as background."
@@ -6400,7 +6541,7 @@ msgstr "Rollenbild als Hintergrund festlegen."
 
 #: standalone/mrvCommandLine.cpp:447
 msgid "Set viewer's default server/client port."
-msgstr "Legen Sie den Standard-Server/Client-Port des Viewers fest."
+msgstr "Legen Sie den Standardserver des Betrachters fest/Kundenport."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1203
 msgid "Sets the default gain when mrViewer starts."
@@ -6506,7 +6647,7 @@ msgstr "Einige Standardeinstellungen für die Bildrate."
 
 #: gui/mrvHotkey.cpp:482
 msgid "Space (' ')"
-msgstr "Platz (&#39; &#39;)"
+msgstr "Platz (' ')"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:134
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:162
@@ -6622,16 +6763,16 @@ msgstr "Untertiteltyp"
 
 #: gui/mrvImageView.cpp:5113
 msgid "Subtitle/Load"
-msgstr "Untertitel/Laden"
+msgstr "Untertitel/Belastung"
 
 #: gui/mrvImageView.cpp:5121
 msgid "Subtitle/No Subtitle"
-msgstr "Untertitel/Kein Untertitel"
+msgstr "Untertitel/Keine Untertitel"
 
 #: gui/mrvImageView.cpp:5130
 #, c-format
 msgid "Subtitle/Track #%d - %s"
-msgstr "Untertitel/Track #%d - %s"
+msgstr "Untertitel/Titel #%d - %s"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:155
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3132
@@ -6665,13 +6806,15 @@ msgstr "Kanäle wechseln"
 
 #: gui/mrvHotkey.cpp:396
 msgid "Switch FG/BG Images"
-msgstr "Schalten Sie FG/BG-Bilder um"
+msgstr "FG wechseln/BG-Bilder"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
 msgstr ""
+"Schalten Sie die RGBA-Anzeige zwischen Fließkomma, Hexadezimal (0..0xff) und "
+"Dezimal (0..255) um."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
 msgid "Switch between Frame, Seconds and Timecode display"
@@ -6694,11 +6837,27 @@ msgid ""
 "A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = "
 "1.0 (white)."
 msgstr ""
+"Helligkeitsberechnung wechseln.\n"
+"\n"
+"Y (Luminanz) ist der Pixelwert gemäß Rec709:\n"
+" Y = 0,2126 R + 0,7152 G + 0,0722 B\n"
+"\n"
+"Y' (Lumma) ist der gewichtete Pixelwert gemäß:\n"
+" Y ' = ( R + G + B )/3,0\n"
+"\n"
+"L (Helligkeit) ist die menschliche Wahrnehmung der Leuchtdichte des Bildes, "
+"die nicht linear ist.\n"
+"Gemäß CIE Nr.15.2:\n"
+" L = (116 * Y ^ 1/3 - 16)/100\n"
+"Ein Pixel von Y = 0,18 (L = 0,5) erscheint etwa halb so hell wie Y = L = 1,0 "
+"(weiß)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr ""
+"Schaltet die Pixelfarbraum-Informationsanzeige für das Pixel unter dem "
+"Cursor um."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
@@ -6770,6 +6929,10 @@ msgid ""
 "\n"
 "(Environment variable: MRV_ODT_CTL_CHROMATICITIES)"
 msgstr ""
+"Die CIE-x,y-Koordinaten der Primärfarben und des Weißpunkts der Anzeige\n"
+"(wie Rec. ITU-R BT.709-3)\n"
+"\n"
+"(Umgebungsvariable: MRV_ODT_CTL_CHROMATICITIES)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2525
 msgid "The Green CIE X coordinate of the display"
@@ -6802,6 +6965,10 @@ msgid ""
 "(Environment variable:\n"
 "MRV_ODT_CTL_SURROUND_LUMINANCE)"
 msgstr ""
+"Die Leuchtdichte in cd/m2 des Hintergrunds, der das Display umgibt.\n"
+"\n"
+"(Umgebungsvariable:\n"
+"MRV_ODT_CTL_SURROUND_LUMINANCE)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2572
 msgid ""
@@ -6810,6 +6977,10 @@ msgid ""
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
+"Die Leuchtdichte in cd/m2, des Displays.\n"
+"\n"
+"(Umgebungsvariable:\n"
+"CTL_DISPLAY_WHITE_LUMINANCE)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2641
 msgid ""
@@ -6817,6 +6988,9 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_CTL_RT_16bits)"
 msgstr ""
+"Der Name der CTL-Standardbildtransformation für 16-Bit-Bilder (cin, tiff "
+"usw.)\n"
+"(Umgebungsvariable: MRV_CTL_RT_16bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2656
 msgid ""
@@ -6824,6 +6998,9 @@ msgid ""
 "integers, etc)\n"
 "(Environment variable: MRV_CTL_RT_32bits)"
 msgstr ""
+"Der Name der CTL-Standardbildtransformation für 32-Bit-int-Bilder (openexr-"
+"Ganzzahlen usw.)\n"
+"(Umgebungsvariable: MRV_CTL_RT_32bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2626
 msgid ""
@@ -6831,6 +7008,9 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_CTL_RT_8bits)"
 msgstr ""
+"Der Name der CTL-Standardbildtransformation für 8-Bit-Bilder (jpg, bmp "
+"usw.)\n"
+"(Umgebungsvariable: MRV_CTL_RT_8bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2671
 msgid ""
@@ -6838,12 +7018,17 @@ msgid ""
 "(OpenEXR, dpx, etc)\n"
 "(Environment variable: MRV_CTL_RT_float)"
 msgstr ""
+"Der Name der CTL-Standardbildtransformation für Halb- und Floatbilder "
+"(OpenEXR, dpx usw.)\n"
+"(Umgebungsvariable: MRV_CTL_RT_float)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2485
 msgid ""
 "The name of the CTL display transform\n"
 "(Environment variable: MRV_ODT_CTL_TRANSFORM)"
 msgstr ""
+"Der Name der CTL-Anzeigetransformation\n"
+"(Umgebungsvariable: MRV_ODT_CTL_TRANSFORM)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2417
 msgid ""
@@ -6851,6 +7036,8 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_OCIO_16bits_ICS)"
 msgstr ""
+"Der Name des OCIO-Standardbildfarbraums für 16-Bit-Bilder (cin, tiff usw.)\n"
+"(Umgebungsvariable: MRV_OCIO_16bits_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2432
 msgid ""
@@ -6858,6 +7045,9 @@ msgid ""
 "(openexr integers, etc)\n"
 "(Environment variable: MRV_OCIO_32bits_ICS)"
 msgstr ""
+"Der Name des OCIO-Standardbildfarbraums für 32-Bit-int-Bilder (openexr-"
+"Ganzzahlen usw.)\n"
+"(Umgebungsvariable: MRV_OCIO_32bits_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2402
 msgid ""
@@ -6865,6 +7055,8 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_OCIO_8bits_ICS)"
 msgstr ""
+"Der Name des OCIO-Standardbildfarbraums für 8-Bit-Bilder (jpg, bmp usw.)\n"
+"(Umgebungsvariable: MRV_OCIO_8bits_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2447
 msgid ""
@@ -6872,12 +7064,17 @@ msgid ""
 "(OpenEXR, dpx, etc)\n"
 "(Environment variable: MRV_OCIO_float_ICS)"
 msgstr ""
+"Der Name des OCIO-Standardbildfarbraums für Halb- und Floatbilder (OpenEXR, "
+"dpx usw.)\n"
+"(Umgebungsvariable: MRV_OCIO_float_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2705
 msgid ""
 "The name of the default ICC profile for 16-bit images (cin, tiff, etc)\n"
 "(Environment variable: MRV_ICC_RT_16bits)"
 msgstr ""
+"Der Name des Standard-ICC-Profils für 16-Bit-Bilder (cin, tiff usw.)\n"
+"(Umgebungsvariable: MRV_ICC_RT_16bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2720
 msgid ""
@@ -6885,12 +7082,17 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_ICC_RT_32bits)"
 msgstr ""
+"Der Name des Standard-ICC-Profils für 32-Bit-int-Bilder (openexr-Ganzzahlen "
+"usw.)\n"
+"(Umgebungsvariable: MRV_ICC_RT_32bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2690
 msgid ""
 "The name of the default ICC profile for 8 bit images (jpg, bmp, etc)\n"
 "(Environment variable: MRV_ICC_RT_8bits)"
 msgstr ""
+"Der Name des Standard-ICC-Profils für 8-Bit-Bilder (jpg, bmp usw.)\n"
+"(Umgebungsvariable: MRV_ICC_RT_8bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2735
 msgid ""
@@ -6898,18 +7100,25 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_ICC_RT_float)"
 msgstr ""
+"Der Name des Standard-ICC-Profils für Halb- und Float-Bilder (OpenEXR, dpx "
+"usw.)\n"
+"(Umgebungsvariable: MRV_ICC_RT_float)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2601
 msgid ""
 "The name of the default ICC profile for your ODT (monitor)\n"
 "(Environment variable: MRV_ODT_ICC_PROFILE)"
 msgstr ""
+"Der Name des Standard-ICC-Profils für Ihr ODT (Monitor)\n"
+"(Umgebungsvariable: MRV_ODT_ICC_PROFILE)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:182
 msgid ""
 "The profile controls the characteristics and quality of the codec.  If in "
 "doubt, set it to the highest setting."
 msgstr ""
+"Das Profil steuert die Eigenschaften und die Qualität des Codecs. Stellen "
+"Sie im Zweifelsfall die höchste Stufe ein."
 
 #: audio/mrvALSAEngine.cpp:545
 msgid "The rate "
@@ -6921,18 +7130,25 @@ msgid ""
 "The version of Windows Sockets support requested is not provided by this "
 "particular Windows Sockets implementation.\n"
 msgstr ""
+"Die angeforderte Version der Windows Sockets-Unterstützung wird von dieser "
+"bestimmten Windows Sockets-Implementierung nicht bereitgestellt.\n"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1359
 msgid ""
 "This area specifies which elements should be shown as a HUD overlay on the "
 "view screen."
 msgstr ""
+"Dieser Bereich legt fest, welche Elemente als HUD-Overlay auf dem "
+"Ansichtsbildschirm angezeigt werden sollen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2365
 msgid ""
 "This is the path to your config.ocio file.  It can be set with the "
 "environment variable OCIO, which takes precedence over any saved setting."
 msgstr ""
+"Dies ist der Pfad zu Ihrer config.ocio-Datei. Sie kann mit der "
+"Umgebungsvariable OCIO gesetzt werden, die Vorrang vor jeder gespeicherten "
+"Einstellung hat."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:280
 msgid ""
@@ -6940,6 +7156,9 @@ msgid ""
 "decoded.  It is a hint to the viewer program and does not effect the colors "
 "saved in the movie file."
 msgstr ""
+"Diese Einstellung steuert, wie die YUV->RGB-Konvertierung durchgeführt wird, "
+"nachdem der Film dekodiert wurde. Es ist ein Hinweis für das Anzeigeprogramm "
+"und wirkt sich nicht auf die in der Filmdatei gespeicherten Farben aus."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:207
 msgid ""
@@ -6947,6 +7166,9 @@ msgid ""
 "best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per "
 "2 pixels, and YUV420 uses 6 bytes per 4 pixels."
 msgstr ""
+"Diese Einstellung steuert die YUV-Farbunterabtastung des Films. YUV444 ist "
+"das Beste, ohne Unterabtastung, nur 3 Bytes pro Pixel. YUV422 verwendet 4 "
+"Bytes pro 2 Pixel und YUV420 verwendet 6 Bytes pro 4 Pixel."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:347
 msgid ""
@@ -6954,18 +7176,25 @@ msgid ""
 "aac are the best codecs to use.  mp3 is popular as it is commonly used for "
 "compressing CDs."
 msgstr ""
+"Diese Einstellung steuert den Encoder (Codec), der zum Speichern von Audio "
+"verwendet wird. ac3 und aac sind die besten Codecs. mp3 ist beliebt, da es "
+"häufig zum Komprimieren von CDs verwendet wird."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:376
 msgid ""
 "This setting controls the quality of the audio encoding.  A smaller setting "
 "yields less quality but smaller sizes."
 msgstr ""
+"Diese Einstellung steuert die Qualität der Audiokodierung. Eine kleinere "
+"Einstellung ergibt weniger Qualität, aber kleinere Größen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:270
 msgid ""
 "This setting controls the quality of the movie file.  A smaller bitrate has "
 "more compression and artifacts."
 msgstr ""
+"Diese Einstellung steuert die Qualität der Filmdatei. Eine kleinere Bitrate "
+"hat mehr Komprimierung und Artefakte."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1837
 msgid ""
@@ -6973,12 +7202,18 @@ msgid ""
 "right and left).  Smaller values make the mouse move jump more frames while "
 "higher values does the opposite."
 msgstr ""
+"Diese Einstellung steuert die Scrubbing-Empfindlichkeit (SHIFT und dann die "
+"Maus nach rechts und links). Kleinere Werte lassen die Mausbewegung mehr "
+"Frames überspringen, während höhere Werte das Gegenteil bewirken."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2966
 msgid ""
 "This setting effects the number of threads used in decoding your video.  A "
 "value of 0 means to use 4 threads by default."
 msgstr ""
+"Diese Einstellung wirkt sich auf die Anzahl der Threads aus, die zum "
+"Decodieren Ihres Videos verwendet werden. Ein Wert von 0 bedeutet, dass "
+"standardmäßig 4 Threads verwendet werden."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3253
 msgid "Thread Count"
@@ -7072,7 +7307,7 @@ msgstr "Hud umschalten"
 
 #: gui/mrvHotkey.cpp:417
 msgid "Toggle ICC Profiles Window"
-msgstr "ICC-Profilfenster umschalten"
+msgstr "Toggle ICC-Profilfenster"
 
 #: gui/mrvHotkey.cpp:418
 msgid "Toggle Input Color Space"
@@ -7095,13 +7330,13 @@ msgid "Toggle Menu Bar"
 msgstr "Menüleiste umschalten"
 
 #: gui/mrvImageInformation.cpp:1040
-#, c-format
+#, fuzzy, c-format
 msgid "Toggle Modify/%s"
-msgstr "Ändern/%s umschalten"
+msgstr "Ändern umschalten/%S"
 
 #: gui/mrvImageInformation.cpp:1034
 msgid "Toggle Modify/All"
-msgstr "Schalten Sie Ändern/Alle um"
+msgstr "Ändern umschalten/Alle"
 
 #: gui/mrvHotkey.cpp:368
 msgid "Toggle Pixel Bar"
@@ -7140,12 +7375,17 @@ msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
 msgstr ""
+"Schalten Sie die VR 360 (Panorama)-Ansicht des Bildes um. Wenn diese aktiv "
+"ist, wird das Bild um eine Kugel gewickelt."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:193
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
 msgstr ""
+"Schalten Sie die VR 360 (Panorama)-Ansicht des Bildes um. Das Bild, das aus "
+"6 Bildern bestehen soll, wird um einen Würfel gewickelt, wenn dieser aktiv "
+"ist."
 
 #: gui/mrvHotkey.cpp:425
 msgid "Toggle Vectorscope Window"
@@ -7174,7 +7414,7 @@ msgstr "oben"
 #: standalone/main.cpp:430 standalone/main.cpp:437 standalone/main.cpp:454
 #: standalone/main.cpp:476
 msgid "Top/bottom"
-msgstr "Oben unten"
+msgstr "oben/Unterseite"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1011
 msgid "Topbar"
@@ -7220,6 +7460,10 @@ msgid ""
 "+ Gamma: pixel with gamma and gain but no lut.\n"
 "+ Original: pixel without gamma, gain or lut."
 msgstr ""
+"Art der anzuzeigenden Pixelwerte:\n"
+"+ Vollständig: Pixel mit Gamma, Verstärkung und Lut.\n"
+"+ Gamma: Pixel mit Gamma und Verstärkung, aber ohne Lut.\n"
+"+ Original: Pixel ohne Gamma, Verstärkung oder Lut."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1540
 msgid "UI"
@@ -7237,12 +7481,12 @@ msgstr "UTC-Offset"
 #: audio/mrvALSAEngine.cpp:244 audio/mrvALSAEngine.cpp:359
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
-msgstr "Das einfache Steuerelement &#39;%s&#39;, ID: %i\n"
+msgstr "Das einfache Steuerelement '%s', ID: %i\n"
 
 #: audio/mrvALSAEngine.cpp:256 audio/mrvALSAEngine.cpp:371
 #, c-format
 msgid "Unable to find volume range '%s', id: %i\n"
-msgstr "Datenträgerbereich &#39;%s&#39;, ID: %i\n"
+msgstr "Datenträgerbereich '%s', ID: %i\n"
 
 #: gui/mrvImageInformation.cpp:3010
 msgid "Undefined"
@@ -7265,7 +7509,7 @@ msgstr "Zuletzt gezeichnete Form rückgängig machen"
 msgid "Unhandled Exception"
 msgstr "Unbehandelte Ausnahme"
 
-#: standalone/main.cpp:567
+#: standalone/main.cpp:588
 msgid "Unhandled exception"
 msgstr "Unbehandelte Ausnahme"
 
@@ -7309,7 +7553,7 @@ msgstr "Unbekanntes Attribut zum Konvertieren aus Zeichenfolge"
 
 #: gui/mrvImageInformation.cpp:2760
 msgid "Unknown attribute type for '"
-msgstr "Unbekannter Attributtyp für &#39;"
+msgstr "Unbekannter Attributtyp für '"
 
 #: core/brawImage.cpp:665 core/brawImage.cpp:692
 msgid "Unknown audio bit depth "
@@ -7321,7 +7565,7 @@ msgstr "Unbekannte Bittiefe"
 
 #: core/aviImage_save.cpp:464
 msgid "Unknown c->pix_fmt ("
-msgstr "Unbekannt c-&gt;pix_fmt ("
+msgstr "Unbekannt c->pix_fmt ("
 
 #: core/iffImage.cpp:635
 msgid "Unknown channel type"
@@ -7329,7 +7573,7 @@ msgstr "Unbekannter Kanaltyp"
 
 #: gui/mrvImageInformation.cpp:593
 msgid "Unknown data type for keyword '"
-msgstr "Unbekannter Datentyp für Schlüsselwort &#39;"
+msgstr "Unbekannter Datentyp für Schlüsselwort '"
 
 #: core/wandImage.cpp:1064
 msgid "Unknown data type to convert to string"
@@ -7339,7 +7583,7 @@ msgstr "Unbekannter Datentyp, der in eine Zeichenfolge konvertiert werden soll"
 msgid "Unknown destination video frame format: "
 msgstr "Unbekanntes Zielvideoframeformat:"
 
-#: standalone/main.cpp:587
+#: standalone/main.cpp:608
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
@@ -7423,6 +7667,9 @@ msgid ""
 "\n"
 "  %s "
 msgstr ""
+"Nutzung:\n"
+"\n"
+" %s"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2887
 msgid "Use Image Path to Set Default Reel Saving Path"
@@ -7440,7 +7687,7 @@ msgstr "Verwenden Sie FREIZEIT"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2350
 msgid "Use OCIO or revert to CTL/ICC."
-msgstr "Verwenden Sie OCIO oder kehren Sie zu CTL/ICC zurück."
+msgstr "Verwenden Sie OCIO oder kehren Sie zu CTL zurück/ICC."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2902
 msgid "Use Relative Paths in Reel Content"
@@ -7461,7 +7708,7 @@ msgstr "Benutzeroberfläche"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3445
 msgid "User Interface/File Requester"
-msgstr "Benutzeroberfläche/Datei-Requester"
+msgstr "Benutzeroberfläche/Dateianforderer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3444
 msgid "User Interface/Positioning"
@@ -7547,7 +7794,7 @@ msgstr "Vektor3 Schweben"
 #: gui/mrvImageInformation.cpp:191 gui/mrvImageInformation.cpp:235
 #: gui/mrvImageInformation.cpp:409
 msgid "Vector3 Integer"
-msgstr "Vector3 Ganzzahl"
+msgstr "Vektor3 Ganzzahl"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
@@ -7564,19 +7811,19 @@ msgstr "Versions-Regex"
 
 #: gui/mrvImageView.cpp:4943 gui/mrvImageBrowser.cpp:4247
 msgid "Version/First"
-msgstr "Fassung/Erste"
+msgstr "Ausführung/Zuerst"
 
 #: gui/mrvImageView.cpp:4952 gui/mrvImageBrowser.cpp:4256
 msgid "Version/Last"
-msgstr "Version/Letzte"
+msgstr "Ausführung/Zuletzt"
 
 #: gui/mrvImageView.cpp:4946 gui/mrvImageBrowser.cpp:4253
 msgid "Version/Next"
-msgstr "Version/Weiter"
+msgstr "Ausführung/Nächste"
 
 #: gui/mrvImageView.cpp:4948 gui/mrvImageBrowser.cpp:4250
 msgid "Version/Previous"
-msgstr "Version/Vorherige"
+msgstr "Ausführung/Vorherige"
 
 #: video/mrvGLEngine.cpp:229
 msgid "Version:\t"
@@ -7596,7 +7843,7 @@ msgstr "Video"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2149
 msgid "Video / Audio Frames"
-msgstr "Video-/Audioframes"
+msgstr "Video/Audioframes"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3007
 msgid "Video Codec"
@@ -7666,45 +7913,45 @@ msgstr "Ansichtsfenster"
 
 #: gui/mrvImageView.cpp:4866
 msgid "View/Data Window"
-msgstr "Ansichts-/Datenfenster"
+msgstr "Aussicht/Datenfenster"
 
 #: gui/mrvImageView.cpp:4863
 msgid "View/Display Window"
-msgstr "Ansichts-/Anzeigefenster"
+msgstr "Aussicht/Anzeigefenster"
 
 #: gui/mrvImageView.cpp:4906
 msgid "View/Grid/Size"
-msgstr "Ansicht/Raster/Größe"
+msgstr "Aussicht/Netz/Größe"
 
 #: gui/mrvImageView.cpp:4902
 msgid "View/Grid/Toggle Selected"
-msgstr "Ansicht/Raster/Auswahl umschalten"
+msgstr "Aussicht/Netz/Ausgewählt umschalten"
 
 #: gui/mrvImageView.cpp:4918
-#, c-format
+#, fuzzy, c-format
 msgid "View/Hud/%s"
-msgstr "Ansicht/Hud/%s"
+msgstr "Aussicht/Haut/%S"
 
 #: gui/mrvImageView.cpp:4910
 msgid "View/Hud/Toggle Selected"
-msgstr "Anzeigen/Hud/Umschalten ausgewählt"
+msgstr "Aussicht/Haut/Ausgewählt umschalten"
 
 #: gui/mrvImageView.cpp:4892
-#, c-format
+#, fuzzy, c-format
 msgid "View/Mask/%s"
-msgstr "Ansicht/Maske/%s"
+msgstr "Aussicht/Maske/%S"
 
 #: gui/mrvImageView.cpp:4860
 msgid "View/Safe Areas"
-msgstr "Anzeigen/Sichere Bereiche"
+msgstr "Aussicht/Sichere Bereiche"
 
 #: gui/mrvImageView.cpp:4869
 msgid "View/Texture Filtering  "
-msgstr "Ansichts-/Texturfilterung"
+msgstr "Aussicht/Texturfilterung"
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
-msgstr "Aktionsdock anzeigen/umschalten"
+msgstr "Aussicht/Aktionsdock umschalten"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
 msgid "W"
@@ -7746,12 +7993,17 @@ msgid ""
 "When Override FPS is on, this setting controls the FPS of all movie files "
 "saved, instead of relying in Media Information->FPS."
 msgstr ""
+"Wenn Override FPS aktiviert ist, steuert diese Einstellung die FPS aller "
+"gespeicherten Filmdateien, anstatt sich auf Medieninformationen -> FPS zu "
+"verlassen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2812
 msgid ""
 "When dragging and dropping a frame from a sequence, make mrViewer load the "
 "full sequence.   Otherwise it loads the frame only."
 msgstr ""
+"Wenn Sie ein Bild aus einer Sequenz ziehen und ablegen, lassen Sie mrViewer "
+"die vollständige Sequenz laden. Andernfalls wird nur der Rahmen geladen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2827
 msgid ""
@@ -7759,12 +8011,17 @@ msgid ""
 "line, make mrViewer load the full sequence.   Otherwise it loads the frame "
 "only."
 msgstr ""
+"Wenn Sie einen Frame aus einer Sequenz aus einer Dateizuordnung oder "
+"Befehlszeile laden, lassen Sie mrViewer die vollständige Sequenz laden. "
+"Andernfalls wird nur der Rahmen geladen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2788
 msgid ""
 "When loading a sequence, and a frame is not found, mrViewer can either show "
 "a black frame or repeat the previous frame."
 msgstr ""
+"Wenn eine Sequenz geladen wird und kein Bild gefunden wird, kann mrViewer "
+"entweder ein schwarzes Bild anzeigen oder das vorherige Bild wiederholen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2759
 msgid ""
@@ -7777,19 +8034,27 @@ msgid ""
 "sequence.  Finally, ImageMagick loaders are not as fast but share the "
 "similar features of OIIO."
 msgstr ""
+"Beim Laden einer Sequenz verwendet mrViewer normalerweise OIIO-Loader, die "
+"einen guten Kompromiss zwischen Geschwindigkeit und Qualität bieten. OIIO-"
+"Loader erlauben Precaching und Lücken in der Sequenz. FFMPEG-Loader sind "
+"multithreaded JPG, DPX und PNG und können normalerweise in Echtzeit "
+"abgespielt werden, außer wenn die Auflösung zu hoch ist. In diesem Fall "
+"benötigen die Ladeprogramme einen Durchgang, um alle Bilder "
+"zwischenzuspeichern, da sie kein Precaching zulassen. Auch die FFMPEG-Loader "
+"dürfen keine Lücken in der Sequenz haben. Schließlich sind ImageMagick-"
+"Loader nicht so schnell, teilen aber die ähnlichen Funktionen von OIIO."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1286
 msgid "When mrViewer starts, the 3D Lut will be active."
 msgstr "Wenn mrViewer startet, ist die 3D Lut aktiv."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1328
-#, fuzzy
 msgid ""
 "When mrViewer starts, the data window will be shown when appropiate as a "
 "dotted line."
 msgstr ""
-"Wenn mrViewer startet, wird das Anzeigefenster angezeigt, wenn es angebracht "
-"ist."
+"Beim Start von mrViewer wird das Datenfenster ggf. als gepunktete Linie "
+"dargestellt."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1314
 msgid "When mrViewer starts, the display window will be shown when appropiate."
@@ -7798,12 +8063,11 @@ msgstr ""
 "ist."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1272
-#, fuzzy
 msgid ""
 "When mrViewer starts, the pixel aspect ratio compensation will be active by "
 "default."
 msgstr ""
-"Wenn mrViewer gestartet wird, ist die Anzeige des sicheren Bereichs "
+"Beim Start von mrViewer ist die Pixel-Seitenverhältnis-Kompensation "
 "standardmäßig aktiv."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1300
@@ -7816,6 +8080,8 @@ msgstr ""
 msgid ""
 "When selected, cache is set to twice the frames per second of the movie."
 msgstr ""
+"Wenn diese Option ausgewählt ist, wird der Cache auf das Doppelte der Bilder "
+"pro Sekunde des Films eingestellt."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:966
 msgid ""
@@ -7823,6 +8089,10 @@ msgid ""
 "played.  This effectly means the video will be resized automatically based "
 "on the size of the window."
 msgstr ""
+"Wenn diese Option ausgewählt ist, wendet mrViewer auf jedes abgespielte "
+"Video eine Bildanpassungsoperation an. Dies bedeutet effektiv, dass die "
+"Größe des Videos automatisch basierend auf der Größe des Fensters angepasst "
+"wird."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:984
 msgid "When selected, mrViewer will resize its window to the first image."
@@ -7839,35 +8109,33 @@ msgid "When selected, mrViewer will start in presentation mode."
 msgstr "Bei Auswahl startet mrViewer im Präsentationsmodus."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1012
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with its channel, gain, gamma toolbar "
 "visible."
 msgstr ""
-"Wenn diese Option ausgewählt ist, startet mrViewer mit der angezeigten "
-"Pixelsymbolleiste."
+"Wenn diese Option ausgewählt ist, startet mrViewer mit sichtbarer Kanal-, "
+"Verstärkungs- und Gamma-Symbolleiste."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1114
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with the EDL Edit window already open."
 msgstr ""
-"Wenn diese Option ausgewählt ist, startet mrViewer mit bereits geöffnetem "
-"Histogramm."
+"Wenn diese Option ausgewählt ist, startet mrViewer mit dem bereits "
+"geöffneten EDL-Bearbeitungsfenster."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1141
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with the action tools already showing."
-msgstr "Bei Auswahl startet mrViewer mit der bereits angezeigten Menüleiste."
+msgstr ""
+"Wenn diese Option ausgewählt ist, startet mrViewer mit den bereits "
+"angezeigten Aktionswerkzeugen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1101
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with the color area window already open."
 msgstr ""
-"Wenn diese Option ausgewählt ist, startet mrViewer mit der bereits "
-"geöffneten Reel-Liste."
+"Wenn diese Option ausgewählt ist, startet mrViewer mit bereits geöffnetem "
+"Farbbereichsfenster."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1061
 msgid "When selected, mrViewer will start with the histogram already open."
@@ -7876,13 +8144,12 @@ msgstr ""
 "Histogramm."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1087
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with the media information window already "
 "open."
 msgstr ""
-"Wenn diese Option ausgewählt ist, startet mrViewer mit der bereits "
-"geöffneten Wellenform."
+"Wenn diese Option ausgewählt ist, startet mrViewer mit bereits geöffnetem "
+"Medieninformationsfenster."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1180
 msgid "When selected, mrViewer will start with the menu bar already shown."
@@ -7901,13 +8168,12 @@ msgstr ""
 "geöffneten Reel-Liste."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1127
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with the stereo options window already "
 "open."
 msgstr ""
-"Wenn diese Option ausgewählt ist, startet mrViewer mit der bereits "
-"geöffneten Reel-Liste."
+"Wenn diese Option ausgewählt ist, startet mrViewer mit dem bereits "
+"geöffneten Fenster mit den Stereooptionen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1034
 msgid "When selected, mrViewer will start with the timeline shown."
@@ -7929,13 +8195,12 @@ msgstr ""
 "geöffneten Wellenform."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:935
-#, fuzzy
 msgid ""
 "When selected, mrViewer's window will always show up on top of other windows "
 "on the desktop."
 msgstr ""
-"Wenn diese Option ausgewählt ist, ändert mrViewer die Größe seines Fensters "
-"auf das erste Bild."
+"Wenn diese Option ausgewählt ist, wird das Fenster von mrViewer immer über "
+"anderen Fenstern auf dem Desktop angezeigt."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:950
 msgid ""
@@ -7943,12 +8208,18 @@ msgid ""
 "If you try to open several mrViewers with different images, all these images "
 "will be sent to the already open mrViewer."
 msgstr ""
+"Wenn diese Option ausgewählt ist, ist nur eine einzige mrViewer-Instanz "
+"zulässig.\n"
+"Wenn Sie versuchen, mehrere mrViewer mit unterschiedlichen Bildern zu "
+"öffnen, werden alle diese Bilder an den bereits geöffneten mrViewer gesendet."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2842
 msgid ""
 "When this option is active and an image changes on disk, mrViewer reloads it "
 "automatically."
 msgstr ""
+"Wenn diese Option aktiv ist und sich ein Bild auf der Festplatte ändert, "
+"lädt mrViewer es automatisch neu."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2106
 msgid ""
@@ -7956,30 +8227,43 @@ msgid ""
 "will begin loading in the background.  Note however, that this may make the "
 "GUI less responsive."
 msgstr ""
+"Wenn diese Option aktiviert ist und eine Sequenz geladen wird, werden die "
+"Frames des Caches im Hintergrund geladen. Beachten Sie jedoch, dass dies "
+"dazu führen kann, dass die GUI weniger reaktionsschnell ist."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1639
 msgid ""
 "When this option is on, mrViewer will always open to the size you set in W "
 "and H."
 msgstr ""
+"Wenn diese Option aktiviert ist, öffnet sich mrViewer immer in der Größe, "
+"die Sie in B und H eingestellt haben."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2888
 msgid ""
 "When this option is on, the file requester to save the reel will default to "
 "the path of the first image loaded in the current reel."
 msgstr ""
+"Wenn diese Option aktiviert ist, verwendet der Dateirequester zum Speichern "
+"der Rolle standardmäßig den Pfad des ersten Bildes, das in die aktuelle "
+"Rolle geladen wird."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1615
 msgid ""
 "When this option is set, mrViewer will open in the position you set here "
 "(except if the window goes out of the Desktop)."
 msgstr ""
+"Wenn diese Option gesetzt ist, wird mrViewer an der hier eingestellten "
+"Position geöffnet (außer wenn das Fenster den Desktop verlässt)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:330
 msgid ""
 "When this setting is on, Media Information Window's FPS setting is not taken "
 "into account, but the setting from this GUI is."
 msgstr ""
+"Wenn diese Einstellung aktiviert ist, wird die FPS-Einstellung des "
+"Medieninformationsfensters nicht berücksichtigt, die Einstellung von dieser "
+"GUI jedoch schon."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2316
 msgid ""
@@ -7989,6 +8273,11 @@ msgid ""
 "particularly when it does not have the same gamut (color/white range) as the "
 "linear RGB/XYZ space."
 msgstr ""
+"Wenn Sie Luts mit ICC-Profilen verwenden, können Sie mit dieser Einstellung "
+"den ICC-Rendering-Intent auswählen. Rendering Intents werden hauptsächlich "
+"für den Druck auf Film oder Papier verwendet, um die Ausgabe des "
+"Ausgabegeräts (ODT) zu emulieren oder zu prüfen, insbesondere wenn es nicht "
+"denselben Farbumfang (Farbe/weißer Bereich) als das lineare RGB/XYZ-Raum."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3230
 msgid "Whether to save ACES clip metadata in a sidecar."
@@ -8030,9 +8319,8 @@ msgid "Window Behavior"
 msgstr "Fensterverhalten"
 
 #: gui/mrvImageView.cpp:4851
-#, fuzzy
 msgid "Windows/"
-msgstr "Windows /%s"
+msgstr "Fenster/"
 
 #: gui/mrvHotkey.cpp:332
 msgid "Wipe"
@@ -8059,12 +8347,29 @@ msgid ""
 "\n"
 "It is recommended this setting is left at 64x64x64 or 128x128x128."
 msgstr ""
+"Mit modernen Grafikkarten emuliert mrViewer Farbtransformationen, indem er "
+"sie in eine 3D-Lut backt. Diese Einstellung steuert, wie genau die 3D-Lut "
+"ist. Je größer die Lut, desto länger dauert die Berechnung, aber desto "
+"genauer ist sie.\n"
+"Beachten Sie, dass große 3D-Luts ziemlich viel Speicher verbrauchen können.\n"
+"\n"
+"Größe Speicher Max. Fehler\n"
+"32 1/2 MB 12,5 %\n"
+"64 4 MB 1,6 %\n"
+"128 32 MB 0,7 %\n"
+"192 110,5 MB 0,5 %\n"
+"256 262 MB 0,2 %\n"
+"\n"
+"Es wird empfohlen, diese Einstellung bei 64 x 64 x 64 oder 128 x 128 x 128 "
+"zu belassen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2903
 msgid ""
 "With this option, the content of the reel (the reel images/movies) are saved "
 "with relative paths to the location of the reel."
 msgstr ""
+"Mit dieser Option wird der Inhalt der Rolle (die Rollenbilder/Filme) werden "
+"mit relativen Pfaden zum Speicherort der Rolle gespeichert."
 
 #: core/exrImage.cpp:1373 core/exrImage.cpp:2653 core/exrImage.cpp:2657
 msgid "Wrap Modes"
@@ -8162,6 +8467,10 @@ msgid ""
 ">Video->YUV Conversion.  That value shall take precedence upon loading of "
 "the movie file."
 msgstr ""
+"Konvertierung des YUV-Farbraums. Dieser Wert wird aus der Filmdatei "
+"extrahiert. Um zu sperren, dass immer derselbe Farbraum verwendet wird, "
+"stellen Sie den Wert in Einstellungen->Video->YUV-Konvertierung ein. Dieser "
+"Wert hat beim Laden der Filmdatei Vorrang."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2972
 msgid "YUV Conversion"
@@ -8254,7 +8563,7 @@ msgstr "capDatum"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2571
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2586
 msgid "cd/m2"
-msgstr "cd/m2"
+msgstr "CD/m2"
 
 #: gui/mrvImageBrowser.cpp:2051
 msgid "change_image index "
@@ -8337,7 +8646,7 @@ msgstr "Halbfloat (16 Bit pro Kanal)"
 
 #: core/CMedia.cpp:4427
 msgid "half/float"
-msgstr "halb/schwimmer"
+msgstr "halb/schweben"
 
 #: core/picImage.cpp:226
 msgid "has invalid magic number in the header."
@@ -8444,6 +8753,8 @@ msgid ""
 "mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These "
 "settings control the quality of the 3D Lut."
 msgstr ""
+"mrViewer unterstützt CTL-Skripte und ICC-Profile, die in 3D Luts gebacken "
+"werden. Diese Einstellungen steuern die Qualität der 3D-Lut."
 
 #: video/mrvGLEngine.cpp:596
 msgid "mrViewer supports YUV images through shaders."
@@ -8464,6 +8775,16 @@ msgid ""
 "If unsure what this means, keep your display and images setting always using "
 "the same algorithm (CTL or ICC)."
 msgstr ""
+"mrViewer unterstützt entweder ICC-Profile oder ein CTL-Skript für die Render-"
+"Transformation (RT) Ihrer Bilder. Diese Einstellung priorisiert die Auswahl "
+"einer gegenüber der anderen.\n"
+"Wenn Sie ein CTL RT-Skript mit einem ICC-Profil für Ihre "
+"Ausgabegerätetransformation (ODT) wie Ihr Monitorprofil mischen, ist es "
+"erforderlich, dass das CTL RT-Skript Daten im XYZ_OCES-Bereich (ICC v4 "
+"relative farbmetrisch).\n"
+"Wenn Sie sich nicht sicher sind, was dies bedeutet, behalten Sie Ihre "
+"Anzeige- und Bildeinstellungen bei und verwenden Sie immer denselben "
+"Algorithmus (CTL oder ICC)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2184
 msgid ""
@@ -8471,6 +8792,10 @@ msgid ""
 "transform (ODT) and for your rendering transform of your images (RT).  These "
 "settings prioritizes choosing one over the other."
 msgstr ""
+"mrViewer unterstützt entweder ICC-Profile oder ein CTL-Skript für Ihre "
+"Ausgabegerät-Transformation (ODT) und für Ihre Rendering-Transformation "
+"Ihrer Bilder (RT). Diese Einstellungen priorisieren die Auswahl einer "
+"gegenüber der anderen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2189
 msgid ""
@@ -8483,6 +8808,16 @@ msgid ""
 "If unsure what this means, keep your display and images setting always using "
 "the same algorithm (CTL or ICC)."
 msgstr ""
+"mrViewer unterstützt entweder ICC-Profile oder ein CTL-Skript für Ihre "
+"Ausgabegerät-Transformation (ODT). Diese Einstellung priorisiert die Auswahl "
+"eines gegenüber dem anderen.\n"
+"Wenn ein CTL-ODT-Skript mit einem ICC-Profil in einem Bild als Rendering-"
+"Transformation (RT) gemischt wird, ist es erforderlich, dass das CTL-ODT "
+"Daten im XYZ_OCES-Raum liest (ICC v4 relative Farbmetrik). Beachten Sie "
+"außerdem, dass ICC D50-Weißpunkte verwendet, während HDTV und CTL D65-"
+"Weißpunkte verwenden.\n"
+"Wenn Sie sich nicht sicher sind, was dies bedeutet, verwenden Sie für Ihre "
+"Anzeige- und Bildeinstellungen immer denselben Algorithmus (CTL oder ICC)."
 
 #: gui/mrvPreferences.cpp:303 gui/mrvPreferences.cpp:1271
 #: gui/mrvPreferences.cpp:1277

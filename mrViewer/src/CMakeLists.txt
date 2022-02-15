@@ -629,7 +629,8 @@ INSTALL( PROGRAMS ${ffmpegfiles} ${scriptfiles} ${exrfiles}
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
-SET( LANGUAGES "es" "fr" "de" "it" )
+# set( LANGUAGES "es" "it" "fr" "de" "ru" "cs" )
+SET( LANGUAGES "es" "it" "fr" "de" "cs" "ru" "ko" )
 
 SET( output_files "${_absPotFile}" )
 
