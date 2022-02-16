@@ -72,30 +72,36 @@ def translate( text, lang )
     result.gsub!(/\\an/, '\n')
   elsif lang == 'zh' and result =~ /\\“/
     result.sub!(/\\“/, '\"' )
-  elsif lang == 'ja' and result =~ /^@\s+(.*)$/
-    #
-    # Automatic translation returns @ || instead of @||
-    #
-    result = "@" + $1
-  elsif lang == 'ja' and result =~ /\\s+t/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\s+t/, '\t')
-  elsif lang == 'ja' and result =~ /\\s+"/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\s+"/, '\"')
-  elsif lang == 'ja' and result =~ /\\[^nt]/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\/, '\n')
+  elsif lang == 'ja'
+    if result =~ /^@\s+(.*)$/
+      #
+      # Automatic translation returns @ || instead of @||
+      #
+      result = "@" + $1
+    elsif result =~ /\\s+t/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\s+t/, '\t')
+    elsif result =~ /\\s+"/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\s+"/, '\"')
+    elsif result =~ /\\[^nt]/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\/, '\n')
+    elsif result =~ /：/
+      result.gsub!(/：/, ':')
+    elsif result =~ /。/
+      result.gsub!(/。/, '.')
+    elsif result =~ /％/
+      result.gsub!(/％/, '%')
+    end
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     result.sub!(/\s*（\*。{/, ' (*.{"')
-  elsif lang == 'ru' and result =~ /:/
-    result.sub!(/:/, ':')
   end
   return replace(result)
 end
@@ -110,7 +116,7 @@ def new_line( op, text )
   op.puts "msgstr \"#{text}\""
 end
 
-for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko' ]
+for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja' ]
   next if lang == 'es'
   @h = {}
   puts "=================== Translate to #{lang} ======================x"
@@ -140,10 +146,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-	r = translate( msg, lang )
-	new_line( op, r )
-	in_msg_id = false
-	next
+        r = translate( msg, lang )
+        new_line( op, r )
+        in_msg_id = false
+        next
       end
       text = $1
       @msgid << text
