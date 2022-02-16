@@ -37,7 +37,12 @@ def translate( text, lang )
   puts "origin: #{text}"
   r = @translate.translate text, to: lang
   result = r.text
-  if ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
+  if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
+      text == ' FC: ' or
+      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+      text == '  INF.  '
+    result = text
+  elsif ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
       ( text =~ /mrViewer crashed\n/ or text =~ /\nor crushing the shadows./ )
     result.sub!(/\\/, '\n' )
   elsif lang == 'fr' and text == 'files'
@@ -72,34 +77,26 @@ def translate( text, lang )
     result.gsub!(/\\an/, '\n')
   elsif lang == 'zh' and result =~ /\\“/
     result.sub!(/\\“/, '\"' )
-  elsif lang == 'ja'
-    if result =~ /^@\s+(.*)$/
-      #
-      # Automatic translation returns @ || instead of @||
-      #
-      result = "@" + $1
-    elsif result =~ /\\s+t/
-      #
-      # Automatic translation returns \ instead of \n
-      #
-      result.gsub!(/\\s+t/, '\t')
-    elsif result =~ /\\s+"/
-      #
-      # Automatic translation returns \ instead of \n
-      #
-      result.gsub!(/\\s+"/, '\"')
-    elsif result =~ /\\[^nt]/
-      #
-      # Automatic translation returns \ instead of \n
-      #
-      result.gsub!(/\\/, '\n')
-    elsif result =~ /：/
-      result.gsub!(/：/, ':')
-    elsif result =~ /。/
-      result.gsub!(/。/, '.')
-    elsif result =~ /％/
-      result.gsub!(/％/, '%')
-    end
+  elsif lang == 'ja' and result =~ /^@\s+(.*)$/
+    #
+    # Automatic translation returns @ || instead of @||
+    #
+    result = "@" + $1
+  elsif lang == 'ja' and result =~ /\\s+t/
+    #
+    # Automatic translation returns \ instead of \n
+    #
+    result.gsub!(/\\s+t/, '\t')
+  elsif lang == 'ja' and result =~ /\\s+"/
+    #
+    # Automatic translation returns \ instead of \n
+    #
+    result.gsub!(/\\s+"/, '\"')
+  elsif lang == 'ja' and result =~ /\\[^nt]/
+    #
+    # Automatic translation returns \ instead of \n
+    #
+    result.gsub!(/\\/, '\n')
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     result.sub!(/\s*（\*。{/, ' (*.{"')
   end
@@ -116,8 +113,9 @@ def new_line( op, text )
   op.puts "msgstr \"#{text}\""
 end
 
-for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja' ]
-  next if lang == 'es'
+langs = [ 'es', 'de', 'fr', 'it', 'cs', 'zh', 'ja' ]
+for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko' ]
+  next if langs.any? lang
   @h = {}
   puts "=================== Translate to #{lang} ======================x"
   in_msg_id = false
