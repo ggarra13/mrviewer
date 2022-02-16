@@ -30,6 +30,9 @@ def translate( text, lang )
       r = @translate.translate menus, to: lang
       result = []
       r.each { |m| result << m.text }
+      if menus[-1] == '%s'
+	result[-1] = '%s'
+      end
       result = result.join('/')
       return replace( result )
     end
@@ -38,14 +41,16 @@ def translate( text, lang )
   r = @translate.translate text, to: lang
   result = r.text
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-      text == ' FC: ' or
+      text == ' FC: ' or text == 'V-A: ' or
       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  '
+      text == '  INF.  ' or
+      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB'
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
-  elsif ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
-      ( text =~ /mrViewer crashed\n/ or text =~ /\nor crushing the shadows./ )
+  end
+  if ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
+      ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.sub!(/\\/, '\n' )
   elsif lang == 'fr' and text == 'files'
     #
@@ -101,6 +106,20 @@ def translate( text, lang )
     result.gsub!(/\\/, '\n')
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     result.sub!(/\s*（\*。{/, ' (*.{"')
+  elsif lang == 'ko' and result == 'LM변환% 유'
+    result = 'LM변환% %u'
+  elsif lang == 'it' and result =~ /TEMPO LIBERO/
+    result.sub!(/TEMPO LIBERO/, 'OCIO')
+  elsif lang == 'de' and result =~ /FREIZEIT/
+    result.sub!(/FREIZEIT/, 'OCIO')
+  elsif lang == 'cs' and result =~ /VOLNÝ ČAS/
+    result.sub!(/VOLNÝ ČAS/, 'OCIO')
+  elsif lang == 'ko' and result =~ /여가/
+    result.sub!(/여가/, 'OCIO')
+  elsif lang == 'ja' and result =~ /余暇/
+    result.sub!(/余暇/, 'OCIO')
+  elsif lang == 'zh' and result =~ /闲暇/
+    result.sub!(/闲暇/, 'OCIO')
   end
   return replace(result)
 end
@@ -122,8 +141,8 @@ for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko' ]
   puts "=================== Translate to #{lang} ======================x"
   in_msg_id = false
   msg = ''
-  fp = File.open("../mrViewer/src/po/messages.pot", encoding: "utf-8")
-  op = File.open("../mrViewer/src/po/#{lang}.po", "w", encoding: "utf-8")
+  fp = File.open("/home/gga/code/applications/mrv/mrViewer/src/po/messages.pot", encoding: "utf-8")
+  op = File.open("/home/gga/code/applications/mrv/mrViewer/src/po/#{lang}.po", "w", encoding: "utf-8")
   op.puts <<EOF
 msgid ""
 msgstr ""
@@ -146,10 +165,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-        r = translate( msg, lang )
-        new_line( op, r )
-        in_msg_id = false
-        next
+	r = translate( msg, lang )
+	new_line( op, r )
+	in_msg_id = false
+	next
       end
       text = $1
       @msgid << text
