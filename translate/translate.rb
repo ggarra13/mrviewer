@@ -3,7 +3,7 @@
 
 
 require "google/cloud/translate/v2"
-
+require "fileutils"
 
 
 @translate = Google::Cloud::Translate::V2.new(
@@ -18,7 +18,7 @@ def replace( text )
   text.gsub!(/&lt;/, "<" )
   text.gsub!(/&amp;/, "&" )
   text.gsub!(/&quot;/, '"' )
-  puts "result: #{text}"
+  puts "result: #{text}."
   return text
 end
 
@@ -31,7 +31,7 @@ def translate( text, lang )
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
-	result[-1] = '%s'
+        result[-1] = '%s'
       end
       result = result.join('/')
       return replace( result )
@@ -52,74 +52,100 @@ def translate( text, lang )
   if ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.sub!(/\\/, '\n' )
-  elsif lang == 'fr' and text == 'files'
+  elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     #
-    # Automatic translation returns "des dossiers" which conflicts with TCLAP
-    # command-line flags.  We shorten it to just dossiers.
+    # Automatic translation returns 。instead of .
     #
-    result = 'dossiers'
-  elsif lang == 'fr' and result =~ / :$/
-    #
-    # Automatic translation returns "des dossiers" which conflicts with TCLAP
-    # command-line flags.  We shorten it to just dossiers.
-    #
-    result.sub!(/ :$/, ": ")
+    result.sub!(/\s*（\*。{/, ' (*.{')
+  elsif lang == 'fr'
+    if text == 'files'
+      #
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
+      #
+      result = 'dossiers'
+    elsif result =~ / :$/
+      #
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
+      #
+      result.sub!(/\s:$/, ": ")
+    end
   elsif lang == 'de'
-    if result =~ /\\oder/
-      #
-      # Automatic translation returns "\oder" instead of "\nder"
-      #
-      result.sub!(/\\oder/, '\nder' )
-    elsif result =~ /" kann nicht gefunden werden"/
+    if result =~ /,? kann nicht gefunden werden/
       #
       # Automatic translation returns a second line instead of just a line
       # which conflicts with \n ending in original text.
       #
-      result.sub!( /" kann nicht gefunden werden"/, '' )
+      result.sub!( /,? kann nicht gefunden werden/, '' )
+    elsif result =~ /FREIZEIT/
+      result.sub!(/FREIZEIT/, 'OCIO')
+    elsif result =~ /\\oder/
+      #
+      # Automatic translation returns "\oder" instead of "\nder"
+      #
+      result.sub!(/\\oder/, '\nder' )
     end
-  elsif lang == 'cs' and result =~ /\\ani/
-    #
-    # Automatic translation returns \an instead of \n
-    #
-    result.gsub!(/\\an/, '\n')
-  elsif lang == 'zh' and result =~ /\\“/
-    result.sub!(/\\“/, '\"' )
-  elsif lang == 'ja' and result =~ /^@\s+(.*)$/
-    #
-    # Automatic translation returns @ || instead of @||
-    #
-    result = "@" + $1
-  elsif lang == 'ja' and result =~ /\\s+t/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\s+t/, '\t')
-  elsif lang == 'ja' and result =~ /\\s+"/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\s+"/, '\"')
-  elsif lang == 'ja' and result =~ /\\[^nt]/
-    #
-    # Automatic translation returns \ instead of \n
-    #
-    result.gsub!(/\\/, '\n')
-  elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
-    result.sub!(/\s*（\*。{/, ' (*.{"')
-  elsif lang == 'ko' and result == 'LM변환% 유'
-    result = 'LM변환% %u'
+  elsif lang == 'cs'
+    if result =~ /VOLNÝ ČAS/
+      result.sub!(/VOLNÝ ČAS/, 'OCIO')
+    elsif result =~ /\\ani/
+      #
+      # Automatic translation returns \an instead of \n
+      #
+      result.gsub!(/\\an/, '\n')
+    end
+  elsif lang == 'ja'
+    if result =~ /余暇/
+      result.sub!(/余暇/, 'OCIO')
+    elsif result =~ /^@\s+(.*)$/
+      #
+      # Automatic translation returns @ || instead of @||
+      #
+      result = "@" + $1
+    elsif result =~ /\\s+t/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\s+t/, '\t')
+    elsif result =~ /\\s+"/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\s+"/, '\"')
+    elsif result =~ /\\[^nt"]/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\/, '\n')
+    end
+  elsif lang == 'ko'
+    if result == 'LM변환% 유'
+      result = 'LM변환 %u'
+    elsif result =~ /여가/
+      result.sub!(/여가/, 'OCIO')
+    end
   elsif lang == 'it' and result =~ /TEMPO LIBERO/
     result.sub!(/TEMPO LIBERO/, 'OCIO')
-  elsif lang == 'de' and result =~ /FREIZEIT/
-    result.sub!(/FREIZEIT/, 'OCIO')
-  elsif lang == 'cs' and result =~ /VOLNÝ ČAS/
-    result.sub!(/VOLNÝ ČAS/, 'OCIO')
-  elsif lang == 'ko' and result =~ /여가/
-    result.sub!(/여가/, 'OCIO')
-  elsif lang == 'ja' and result =~ /余暇/
-    result.sub!(/余暇/, 'OCIO')
-  elsif lang == 'zh' and result =~ /闲暇/
-    result.sub!(/闲暇/, 'OCIO')
+  elsif lang == 'zh'
+    if result =~ /闲暇/
+      result.sub!(/闲暇/, 'OCIO')
+    elsif result =~ /\\”/
+      result.gsub!( /\\”/, '\"' )
+    end
+  end
+  if text =~ /(\s+)$/
+    spaces = $1
+    if result !~ /#{spaces}$/
+      result << spaces
+    end
+  end
+  if text =~ /^(\s+)/
+    spaces = $1
+    if result !~ /^#{spaces}/
+      text = result.gsub(/^s+/, '' )
+      result = spaces + text
+    end
   end
   return replace(result)
 end
@@ -134,15 +160,18 @@ def new_line( op, text )
   op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es', 'de', 'fr', 'it', 'cs', 'zh', 'ja' ]
+langs = [ 'es' ]
 for lang in [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko' ]
   next if langs.any? lang
   @h = {}
-  puts "=================== Translate to #{lang} ======================x"
+  $stderr.puts "=================== Translate to #{lang} ======================x"
   in_msg_id = false
   msg = ''
-  fp = File.open("/home/gga/code/applications/mrv/mrViewer/src/po/messages.pot", encoding: "utf-8")
-  op = File.open("/home/gga/code/applications/mrv/mrViewer/src/po/#{lang}.po", "w", encoding: "utf-8")
+  root = "/home/gga/code/applications/mrv/mrViewer/src/po"
+  fp = File.open( "#{root}/messages.pot", encoding: "utf-8")
+  FileUtils.cp( "#{root}/#{lang}.po",
+                "#{root}/#{lang}.po.old" )
+  op = File.open("#{root}/#{lang}.po", "w", encoding: "utf-8")
   op.puts <<EOF
 msgid ""
 msgstr ""
@@ -165,10 +194,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-	r = translate( msg, lang )
-	new_line( op, r )
-	in_msg_id = false
-	next
+        r = translate( msg, lang )
+        new_line( op, r )
+        in_msg_id = false
+        next
       end
       text = $1
       @msgid << text
