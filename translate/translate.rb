@@ -42,6 +42,8 @@ def translate( text, lang )
       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
       text == '  INF.  '
     result = text
+  elsif text =~ /FPS:/
+    result.sub!(/s*(FPS)./, 'FPS:')
   elsif ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
       ( text =~ /mrViewer crashed\n/ or text =~ /\nor crushing the shadows./ )
     result.sub!(/\\/, '\n' )
