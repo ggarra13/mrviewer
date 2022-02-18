@@ -691,7 +691,7 @@ msgstr "Lutes 3D/Transformation de rendu par défaut (RT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3452
 msgid "3D Luts/OCIO"
-msgstr "Lutes 3D/LOISIRS"
+msgstr "Lutes 3D/OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
 msgid "3D Stereo Options"
@@ -967,7 +967,7 @@ msgstr "Vous permet de définir l'image de départ pour la chronologie."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
 msgid "Allows you to set the ending frame for timeline."
-msgstr "Vous permet de définir l'image de fin pour la chronologie."
+msgstr "Vous permet de définir l'image de fin de la chronologie."
 
 #: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9136
@@ -1236,7 +1236,7 @@ msgstr ""
 
 #: gui/mrvImageInformation.cpp:3654
 msgid "Avg. Bitrate"
-msgstr "Moy. Débit binaire"
+msgstr "Moy. Débit"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:189
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:217
@@ -1326,7 +1326,7 @@ msgstr "Image bitmap"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:269
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:375
 msgid "Bitrate"
-msgstr "Débit binaire"
+msgstr "Débit"
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
 #: core/Sequence.cpp:1163 core/Sequence.cpp:1337
@@ -1555,7 +1555,7 @@ msgstr "Canaliser"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
-msgstr "Canaux"
+msgstr "Chaînes"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:100
 msgid "Char"
@@ -1864,7 +1864,7 @@ msgstr ""
 
 #: core/wandImage.cpp:1345
 msgid "Conversion needed.  Gamma: 1.0"
-msgstr "Conversion nécessaire. Gamma : 1,0"
+msgstr "Conversion nécessaire. Gamma : 1,0"
 
 #: gui/mrvHotkey.cpp:400
 msgid "Copy Frame, X, Y Values"
@@ -2302,7 +2302,7 @@ msgstr "Impossible d'écrire dans le tampon fifo. Erreur: "
 #: audio/mrvALSAEngine.cpp:443
 #, c-format
 msgid "Couldn't allocate hwparams %s"
-msgstr "Impossible d'allouer les hwparams %s"
+msgstr "Impossible d'allouer hwparams %s"
 
 #: audio/mrvALSAEngine.cpp:511
 msgid "Couldn't find any hardware audio formats"
@@ -3491,7 +3491,7 @@ msgstr "Fin d'image du clip dans le fichier"
 
 #: gui/mrvImageInformation.cpp:2814
 msgid "Frame start of clip in file"
-msgstr "Début de l'image du clip dans le fichier"
+msgstr "Début d'image du clip dans le fichier"
 
 #: video/mrvGLEngine.cpp:834
 msgid "Framebuffer incomplete layer targets."
@@ -4650,7 +4650,7 @@ msgstr "Film Matroska"
 
 #: gui/mrvImageInformation.cpp:3607
 msgid "Max. Bitrate"
-msgstr "Max. Débit binaire"
+msgstr "Max. Débit"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1914
 msgid "Max. Cache Frames shown"
@@ -4673,7 +4673,7 @@ msgid ""
 "Maximum number of cached frames shown in the timeline.  Too many frames can "
 "make playback sluggish."
 msgstr ""
-"Nombre maximal d'images mises en cache affichées dans la chronologie. Trop "
+"Nombre maximum d'images mises en cache affichées dans la chronologie. Trop "
 "d'images peuvent ralentir la lecture."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2868
@@ -5159,12 +5159,12 @@ msgstr "Nombre de flux vidéo dans le fichier"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2394
 msgid "OCIO"
-msgstr "LOISIRS"
+msgstr "OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:85
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:77
 msgid "OCIO Color Space"
-msgstr "Espace colorimétrique LOISIRS"
+msgstr "Espace colorimétrique OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2364
 msgid "OCIO Config File"
@@ -5172,11 +5172,11 @@ msgstr "Fichier de configuration OCIO"
 
 #: gui/mrvHotkey.cpp:377
 msgid "OCIO Display"
-msgstr "Affichage LOISIRS"
+msgstr "Affichage OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
 msgid "OCIO Display/View or some default gamma settings."
-msgstr "Affichage LOISIRS/Afficher ou certains paramètres gamma par défaut."
+msgstr "Affichage OCIO/Afficher ou certains paramètres gamma par défaut."
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5184,7 +5184,7 @@ msgstr "Espace colorimétrique d'entrée OCIO"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "LOISIRS Voir"
+msgstr "OCIO Voir"
 
 #: gui/mrvImageView.cpp:3866
 msgid "OCIO View change failed"
@@ -5204,15 +5204,15 @@ msgstr "Espace colorimétrique d'entrée OCIO pour l'image"
 
 #: gui/mrvImageView.cpp:5078
 msgid "OCIO/Display"
-msgstr "LOISIRS/Affichage"
+msgstr "OCIO/Affichage"
 
 #: gui/mrvImageView.cpp:5074 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "LOISIRS/Espace colorimétrique d'entrée"
+msgstr "OCIO/Espace colorimétrique d'entrée"
 
 #: gui/mrvImageView.cpp:5081
 msgid "OCIO/View"
-msgstr "LOISIRS/Voir"
+msgstr "OCIO/Voir"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2188
 msgid "ODT"
@@ -5424,7 +5424,7 @@ msgstr "Remplacer le gain par défaut du spectateur."
 
 #: standalone/mrvCommandLine.cpp:434
 msgid "Override viewer's default gamma."
-msgstr "Remplacer le gamma par défaut du spectateur."
+msgstr "Remplacer le gamma par défaut du visualiseur."
 
 #: core/picImage.cpp:467
 msgid "Overrun scanline (Raw) ["
@@ -5460,7 +5460,7 @@ msgstr "Textures PBO :\t"
 #: gui/mrvImageView.cpp:4663
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
-msgstr "PMem : %<PRIu64>/%<PRIu64> MBVMem : %<PRIu64>/%<PRIu64> Mo"
+msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 
 #: gui/FLU/Flu_File_Chooser.cpp:607
 msgid "PNG Picture"
@@ -5593,7 +5593,7 @@ msgstr "Lecture de la séquence à l'envers."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
 msgid "Play sequence forward."
-msgstr "Lire la séquence vers l'avant."
+msgstr "Lecture de la séquence vers l'avant."
 
 #: standalone/mrvCommandLine.cpp:413
 msgid ""
@@ -5832,7 +5832,7 @@ msgstr "ROLE_SCENE_LINEAR non défini."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2221
 msgid "RT"
-msgstr "RT"
+msgstr "TR"
 
 #: video/mrvGLLut3d.cpp:1111
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
@@ -6403,7 +6403,7 @@ msgid ""
 msgstr ""
 "Sélectionnez la manière dont la stéréo est encodée dans l'image. Il peut "
 "s'agir de calques séparés (en utilisant une lettre ou un préfixe de vue), "
-"comme Top/En bas dans la même image ou comme à gauche/Droit dans la même "
+"comme Top/En bas dans la même image ou comme à gauche/Juste dans la même "
 "image."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:128
@@ -7635,7 +7635,7 @@ msgstr "Nœud inconnu dans GradeRef"
 
 #: core/oiioImage.cpp:332
 msgid "Unknown number of channels"
-msgstr "Nombre de chaînes inconnu"
+msgstr "Nombre de canaux inconnu"
 
 #: core/iffImage.cpp:619 core/oiioImage.cpp:311
 msgid "Unknown pixel type"
@@ -7693,7 +7693,7 @@ msgstr "Utiliser le sélecteur de fichiers natif"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2349
 msgid "Use OCIO"
-msgstr "Utiliser LOISIRS"
+msgstr "Utiliser OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2350
 msgid "Use OCIO or revert to CTL/ICC."
@@ -7957,7 +7957,7 @@ msgstr "Voir/Zones de sécurité"
 
 #: gui/mrvImageView.cpp:4869
 msgid "View/Texture Filtering  "
-msgstr "Voir/Filtrage de texture"
+msgstr "Voir/Filtrage de texture  "
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
@@ -8012,8 +8012,8 @@ msgid ""
 "full sequence.   Otherwise it loads the frame only."
 msgstr ""
 "Lorsque vous faites glisser et déposez une image d'une séquence, faites en "
-"sorte que mrViewer charge la séquence complète. Sinon, il ne charge que le "
-"cadre."
+"sorte que mrViewer charge la séquence complète. Sinon, il charge uniquement "
+"le cadre."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2827
 msgid ""
@@ -8463,7 +8463,7 @@ msgstr "YBYRY"
 
 #: video/mrvGLEngine.cpp:240
 msgid "YUV  Support:\t"
-msgstr "Compatibilité YUV :\t"
+msgstr "Prise en charge YUV :\t"
 
 #: gui/mrvImageInformation.cpp:2994
 msgid "YUV Color Range"
@@ -8738,12 +8738,12 @@ msgstr "mrViewer"
 #: gui/mrvImageView.cpp:490
 #, c-format
 msgid "mrViewer    FG: %s"
-msgstr "mrViewer FG : %s"
+msgstr "mrViewer    FG: %s"
 
 #: gui/mrvImageView.cpp:483
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
-msgstr "mrViewer FG : %s [%d] BG : %s [%d] (%s)"
+msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
 #: video/mrvGLEngine.cpp:601
 msgid "mrViewer does not support YUV images."

@@ -395,7 +395,7 @@ msgstr ""
 "Versione 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, c-format
+#, fuzzy, c-format
 msgid "%4.8g %%"
 msgstr "%4,8g %%"
 
@@ -692,7 +692,7 @@ msgstr "Luts 3D/Trasformazione di rendering predefinita (RT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3452
 msgid "3D Luts/OCIO"
-msgstr "Luts 3D/TEMPO LIBERO"
+msgstr "Luts 3D/OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
 msgid "3D Stereo Options"
@@ -3005,7 +3005,7 @@ msgstr "Cancellare"
 
 #: gui/mrvHotkey.cpp:383
 msgid "Erase Mode"
-msgstr "Modalità Cancella"
+msgstr "Modalità di cancellazione"
 
 #: gui/mrvHotkey.cpp:384
 msgid "Erase Temporary Mode"
@@ -4302,7 +4302,7 @@ msgstr "L"
 #: gui/mrvImageInformation.cpp:3079
 #, c-format
 msgid "LMTransform %u"
-msgstr "LMTrasforma% u"
+msgstr "LMTransform% u"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
 msgid "LUT"
@@ -5176,8 +5176,7 @@ msgstr "Display OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
 msgid "OCIO Display/View or some default gamma settings."
-msgstr ""
-"Display TEMPO LIBERO/Visualizza o alcune impostazioni gamma predefinite."
+msgstr "Display OCIO/Visualizza o alcune impostazioni gamma predefinite."
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5206,15 +5205,15 @@ msgstr "Spazio colore di input OCIO per l'immagine"
 
 #: gui/mrvImageView.cpp:5078
 msgid "OCIO/Display"
-msgstr "TEMPO LIBERO/Schermo"
+msgstr "OCIO/Schermo"
 
 #: gui/mrvImageView.cpp:5074 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "TEMPO LIBERO/Inserisci spazio colore"
+msgstr "OCIO/Inserisci spazio colore"
 
 #: gui/mrvImageView.cpp:5081
 msgid "OCIO/View"
-msgstr "TEMPO LIBERO/Visualizzazione"
+msgstr "OCIO/Visualizzazione"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2188
 msgid "ODT"
@@ -5312,7 +5311,7 @@ msgstr "Filmato aperto '"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1487
 msgid "Open new image, sequence, movie or reel"
-msgstr "Apri una nuova immagine, sequenza, film o bobina"
+msgstr "Apri una nuova immagine, sequenza, filmato o bobina"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3245
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3464
@@ -5463,7 +5462,7 @@ msgstr "Texture PBO:\t"
 #: gui/mrvImageView.cpp:4663
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
-msgstr "PMem: %<PRIu64>/%<PRIu64> MBVMem: %<PRIu64>/%<PRIu64> MB"
+msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 
 #: gui/FLU/Flu_File_Chooser.cpp:607
 msgid "PNG Picture"
@@ -5591,7 +5590,7 @@ msgstr "Gioca nella direzione corrente"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3090
 msgid "Play sequence backwards."
-msgstr "Riproduci la sequenza al contrario."
+msgstr "Riproduci la sequenza all'indietro."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
 msgid "Play sequence forward."
@@ -5645,8 +5644,8 @@ msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
 msgstr ""
-"Il prefisso non può essere una stringa vuota. Digita alcuni caratteri "
-"univoci per distinguere la versione nel nome del file."
+"Il prefisso non può essere una stringa vuota. Si prega di digitare alcuni "
+"caratteri univoci per distinguere la versione nel nome del file."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2105
 msgid "Preload Cache"
@@ -5922,8 +5921,7 @@ msgstr "Ripeti la forma precedente disegnata"
 #: gui/mrvImageView.cpp:2311
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
-msgstr ""
-"Bobina %d (%s) | Colpo %d (%s) | Portafoto %<PRId64> | X = %d | Y = %d\n"
+msgstr "Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n"
 
 #: gui/mrvImageBrowser.cpp:1331
 #, c-format
@@ -7043,8 +7041,8 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_OCIO_16bits_ICS)"
 msgstr ""
-"Il nome dello spazio colore dell'immagine predefinito OCIO per immagini a 16 "
-"bit (cin, tiff, ecc.)\n"
+"Il nome dello spazio colore dell'immagine predefinito OCIO per le immagini a "
+"16 bit (cin, tiff, ecc.)\n"
 "(Variabile di ambiente: MRV_OCIO_16bits_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2432
@@ -7959,7 +7957,7 @@ msgstr "Visualizzazione/Aree sicure"
 
 #: gui/mrvImageView.cpp:4869
 msgid "View/Texture Filtering  "
-msgstr "Visualizzazione/Filtraggio delle texture"
+msgstr "Visualizzazione/Filtraggio delle texture  "
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
@@ -8729,12 +8727,12 @@ msgstr "mrViewer"
 #: gui/mrvImageView.cpp:490
 #, c-format
 msgid "mrViewer    FG: %s"
-msgstr "mrViewer FG: %s"
+msgstr "mrViewer    FG: %s"
 
 #: gui/mrvImageView.cpp:483
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
-msgstr "mrViewer FG: %s [%d] BG: %s [%d] (%s)"
+msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
 #: video/mrvGLEngine.cpp:601
 msgid "mrViewer does not support YUV images."

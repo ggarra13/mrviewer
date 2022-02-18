@@ -35,9 +35,9 @@ def fix( text, result, lang )
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'ko' or lang == 'zh' or lang == "ja" ) and
+  if ( lang == 'ko' or lang == 'zh' or lang == "ja" or lang == 'ru' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
-    result.sub!(/\\/, '\n' )
+    result.gsub!(/\\/, '\n' )
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     #
     # Automatic translation returns 。instead of .
@@ -50,7 +50,10 @@ def fix( text, result, lang )
       # command-line flags.  We shorten it to just dossiers.
       #
       result = 'dossiers'
-    elsif result =~ / :$/
+    elsif result =~ /LOISIRS/
+      result.sub!(/LOISIRS/, 'OCIO' )
+    end
+    if result =~ / :$/
       #
       # Automatic translation returns "des dossiers" which conflicts with TCLAP
       # command-line flags.  We shorten it to just dossiers.
@@ -58,7 +61,10 @@ def fix( text, result, lang )
       result.sub!(/\s:$/, ": ")
     end
   elsif lang == 'de'
-    if result =~ /,? kann nicht gefunden werden/
+    if text == '%4.8g %%'
+      result = text
+    end
+    if result =~ /,* kann nicht gefunden werden/
       #
       # Automatic translation returns a second line instead of just a line
       # which conflicts with \n ending in original text.
@@ -73,6 +79,18 @@ def fix( text, result, lang )
       result.sub!(/\\oder/, '\nder' )
     end
   elsif lang == 'cs'
+    if text == '%4.8g %%'
+      result = '%4,8g %%'
+    end
+    if text == 'Frame %<PRId64> '
+      result = 'snímků %<PRId64> '
+    end
+    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+      result = 'Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n'
+    end
+    if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
+      result = 'Ukládání sekvencí %<PRId64> - %<PRId64>'
+    end
     if result =~ /VOLNÝ ČAS/
       result.sub!(/VOLNÝ ČAS/, 'OCIO')
     elsif result =~ /\\ani/
@@ -81,7 +99,39 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\an/, '\n')
     end
+  elsif lang == 'ru'
+    if text == '%4.8g %%'
+      result = '%4,8g %%'
+    end
+    if text == '%d Hz.'
+      result = text
+    end
+    if text == 'W: %g %g'
+      result = 'B: %g %g'
+    end
+    if result =~ /ДОСУГ/
+      result.sub!(/ДОСУГ/, 'OCIO')
+    elsif result =~ /ОТДЫХ/
+      result.sub!(/ОТДЫХ/, 'OCIO')
+    elsif result =~ /Левый "/
+      result.gsub!(/"/, '\"' )
+    end
+    if result =~ /"\\[^n"t]/
+      result.gsub!(/\\[^n"t]/, '\n' )
+    end
+    if result =~ /"%s"/
+      result.gsub!(/"/, '\"' )
+    end
   elsif lang == 'ja'
+    if result =~ /：/
+      result.gsub!(/：/, ':')
+    end
+    if text =~ /:(\s+)/
+      spaces = $1
+      if result !~ /:#{spaces}/
+        result.gsub!( /:\s*/, ":#{spaces}" )
+      end
+    end
     if result =~ /余暇/
       result.sub!(/余暇/, 'OCIO')
     elsif result =~ /^@\s+(.*)$/
@@ -90,17 +140,14 @@ def fix( text, result, lang )
       #
       result = "@" + $1
     end
-    if result =~ /：/
-      result.gsub!(/：/, ':')
-    end
     if result =~ /。/
       result.gsub!(/。/, '.')
     end
-    if result =~ /％s/
-      result.gsub!(/％s/, '%s' )
+    if result =~ /％/
+      result.gsub!(/％/, '%' )
     end
-    if result =~ /％([dg])s*/
-      result.gsub!(/％([dg])s*/, '%' + $1 + ' ' )
+    if result =~ /(\s*)％\s*([dg])(\s*)/
+      result.gsub!(/(\s*)％\s*([dg])(\s*)/, $1 + '%' + $2 + $3 )
     end
     if result =~ /\\\s+"/
       #
@@ -116,7 +163,7 @@ def fix( text, result, lang )
     end
     if result =~ /\\\s+n/
       #
-      # Automatic translation returns \ instead of \n
+      # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
     end
@@ -126,20 +173,35 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+/, '\n')
     end
+    if text == 'W: %g %g'
+      result = text
+    end
   elsif lang == 'ko'
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
       result.sub!(/여가/, 'OCIO')
     end
-  elsif lang == 'it' and result =~ /TEMPO LIBERO/
-    result.sub!(/TEMPO LIBERO/, 'OCIO')
+  elsif lang == 'it'
+    if result =~ /TEMPO LIBERO/
+      result.sub!(/TEMPO LIBERO/, 'OCIO')
+    end
+    if text == '%4.8g %%'
+      result = '%4,8g %%'
+    end
+    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
+    end
   elsif lang == 'zh'
+    if text == '%4.8g %%'
+      result = text
+    end
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
     end
-    if result =~ /\\”/
-      result.gsub!( /\\”/, '\"' )
+    result.gsub!( /“/u, '*' )
+    if result =~ /％/
+      result.gsub!( /％/, '%' )
     end
   end
   if text =~ /(\s+)$/
@@ -186,6 +248,9 @@ def translate( text, lang )
   return replace( result )
 end
 
+translate( 'Could not open \"', 'zh' )
+exit
+
 @h = {}
 @op = nil
 
@@ -196,7 +261,7 @@ def new_line( text )
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ko' ]
+langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ko', 'ru' ]
 for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'ru' ]
   next if langs.any? lang
   @h = {}

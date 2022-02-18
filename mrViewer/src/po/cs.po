@@ -274,7 +274,7 @@ msgstr " nenalezeno"
 
 #: gui/mrvImageBrowser.cpp:1709
 msgid " not found in reel"
-msgstr " nenalezen v cívce"
+msgstr " nenalezen v kotouči"
 
 #: core/aviImage.cpp:1923
 msgid " not found, choosing "
@@ -393,7 +393,7 @@ msgstr ""
 "Verze 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
-#, c-format
+#, fuzzy, c-format
 msgid "%4.8g %%"
 msgstr "%4,8g %%"
 
@@ -690,7 +690,7 @@ msgstr "3D Luts/Výchozí transformace vykreslování (RT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3452
 msgid "3D Luts/OCIO"
-msgstr "3D Luts/VOLNÝ ČAS"
+msgstr "3D Luts/OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
 msgid "3D Stereo Options"
@@ -2634,7 +2634,7 @@ msgstr "Chyba dekódování"
 
 #: core/CMedia.cpp:177
 msgid "Decode Loop End"
-msgstr "Dekódování konce smyčky"
+msgstr "Dekódovat konec smyčky"
 
 #: core/CMedia.cpp:176
 msgid "Decode Loop Start"
@@ -3346,7 +3346,7 @@ msgstr "První snímek klipu – vybráno uživatelem"
 
 #: gui/mrvHotkey.cpp:327
 msgid "Fit All"
-msgstr "Vhodné pro všechny"
+msgstr "Fit All"
 
 #: gui/mrvHotkey.cpp:325
 msgid "Fit Screen"
@@ -5180,15 +5180,15 @@ msgstr "Vstupní barevný prostor OCIO pro obraz"
 
 #: gui/mrvImageView.cpp:5078
 msgid "OCIO/Display"
-msgstr "VOLNÝ ČAS/Zobrazit"
+msgstr "OCIO/Zobrazit"
 
 #: gui/mrvImageView.cpp:5074 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "VOLNÝ ČAS/Vstupní barevný prostor"
+msgstr "OCIO/Vstupní barevný prostor"
 
 #: gui/mrvImageView.cpp:5081
 msgid "OCIO/View"
-msgstr "VOLNÝ ČAS/Pohled"
+msgstr "OCIO/Pohled"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2188
 msgid "ODT"
@@ -5435,7 +5435,7 @@ msgstr "PBO textury:\t"
 #: gui/mrvImageView.cpp:4663
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
-msgstr "PMem: %<PRIu64>/%<PRIu64> MBVMem: %<PRIu64>/%<PRIu64> MB"
+msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 
 #: gui/FLU/Flu_File_Chooser.cpp:607
 msgid "PNG Picture"
@@ -5566,7 +5566,7 @@ msgstr "Přehrajte sekvenci pozpátku."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
 msgid "Play sequence forward."
-msgstr "Přehrát sekvenci dopředu."
+msgstr "Přehrajte sekvenci dopředu."
 
 #: standalone/mrvCommandLine.cpp:413
 msgid ""
@@ -7910,7 +7910,7 @@ msgstr "Pohled/Bezpečné oblasti"
 
 #: gui/mrvImageView.cpp:4869
 msgid "View/Texture Filtering  "
-msgstr "Pohled/Filtrování textur"
+msgstr "Pohled/Filtrování textur  "
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
@@ -8654,12 +8654,12 @@ msgstr "mrViewer"
 #: gui/mrvImageView.cpp:490
 #, c-format
 msgid "mrViewer    FG: %s"
-msgstr "mrViewer FG: %s"
+msgstr "mrViewer    FG: %s"
 
 #: gui/mrvImageView.cpp:483
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
-msgstr "mrViewer FG: %s [%d] BG: %s [%d] (%s)"
+msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
 #: video/mrvGLEngine.cpp:601
 msgid "mrViewer does not support YUV images."

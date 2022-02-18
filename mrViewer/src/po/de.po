@@ -397,7 +397,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:3155
 #, c-format
 msgid "%4.8g %%"
-msgstr "%4,8g %%"
+msgstr "%4.8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -692,7 +692,7 @@ msgstr "3D Luts/Standard-Rendering-Transformation (RT)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3452
 msgid "3D Luts/OCIO"
-msgstr "3D Luts/FREIZEIT"
+msgstr "3D Luts/OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
 msgid "3D Stereo Options"
@@ -1159,7 +1159,7 @@ msgstr "Audiostream #%d"
 
 #: gui/mrvImageInformation.cpp:2791
 msgid "Audio Streams"
-msgstr "Audiostreams"
+msgstr "Audio-Streams"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3257
 msgid "Audio Volume"
@@ -1171,7 +1171,7 @@ msgstr "Audiokonvertierung von "
 
 #: audio/mrvPortAudioEngine.cpp:298
 msgid "Audio format not known.  Choosing float32. "
-msgstr "Audioformat nicht bekannt. Float32 auswählen. "
+msgstr "Audioformat nicht bekannt. Float32 wählen. "
 
 #: core/CMedia_audio.cpp:1886
 msgid "Audio frame "
@@ -1472,7 +1472,7 @@ msgstr "Abbrechen"
 
 #: core/aviImage_save.cpp:746
 msgid "Cannot allocate dst samples"
-msgstr "Kann dst-Samples nicht zuordnen"
+msgstr "Kann dst-Samples nicht zuweisen"
 
 #: core/aviImage.cpp:602
 msgid "Cannot create buffer sink"
@@ -2181,7 +2181,7 @@ msgstr "ICC-Profil konnte nicht gefunden werden \""
 
 #: core/exrImage.cpp:2225 core/exrImage.cpp:2304 core/exrImage.cpp:2334
 msgid "Could not locate channels in header"
-msgstr "Kanäle konnten nicht im Header gefunden werden"
+msgstr "Sender konnten nicht im Header gefunden werden"
 
 #: core/brawImage.cpp:559
 msgid "Could not obtain frame count"
@@ -2412,7 +2412,7 @@ msgstr "Erstellen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1442
 msgid "Create a new reel"
-msgstr "Erstellen Sie eine neue Rolle"
+msgstr "Erstellen Sie eine neue Spule"
 
 #: core/CMedia_audio.cpp:1166 core/brawImage.cpp:1292
 msgid "Create audio conversion from "
@@ -2846,7 +2846,7 @@ msgstr "Anordnung"
 #: gui/mrvImageInformation.cpp:3549 gui/mrvImageInformation.cpp:3614
 #: gui/mrvImageInformation.cpp:3659
 msgid "Disposition of Track"
-msgstr "Anordnung der Spur"
+msgstr "Anordnung der Strecke"
 
 #: gui/mrvHotkey.cpp:488
 msgid "Divide"
@@ -4063,7 +4063,7 @@ msgstr "Bild/Als Hintergrund setzen"
 
 #: gui/mrvImageView.cpp:5052
 msgid "Image/Switch FG and BG"
-msgstr "Bild/FG und BG wechseln"
+msgstr "Bild/Wechseln Sie FG und BG"
 
 #: gui/mrvImageView.cpp:5055
 msgid "Image/Toggle Background"
@@ -5116,7 +5116,7 @@ msgid ""
 "black levels, while it makes the midrange be less defined."
 msgstr ""
 "Anzahl der FStops, die die LUT abdeckt. Höhere Zahlen zeigen mehr Details in "
-"den Schwarzwerten, während der Mittenbereich weniger definiert wird."
+"den Schwarzwerten, während der Mittenbereich weniger definiert ist."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2302
 msgid "Number of Fstops"
@@ -5173,7 +5173,7 @@ msgstr "OCIO Anzeige"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
 msgid "OCIO Display/View or some default gamma settings."
-msgstr "FREIZEIT Anzeige/Ansicht oder einige Standard-Gammaeinstellungen."
+msgstr "OCIO Anzeige/Ansicht oder einige Standard-Gammaeinstellungen."
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5201,15 +5201,15 @@ msgstr "OCIO-Eingabefarbraum für das Bild"
 
 #: gui/mrvImageView.cpp:5078
 msgid "OCIO/Display"
-msgstr "FREIZEIT/Anzeige"
+msgstr "OCIO/Anzeige"
 
 #: gui/mrvImageView.cpp:5074 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "FREIZEIT/Farbraum eingeben"
+msgstr "OCIO/Farbraum eingeben"
 
 #: gui/mrvImageView.cpp:5081
 msgid "OCIO/View"
-msgstr "FREIZEIT/Aussicht"
+msgstr "OCIO/Aussicht"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2188
 msgid "ODT"
@@ -5457,7 +5457,7 @@ msgstr "PBO-Texturen:\t"
 #: gui/mrvImageView.cpp:4663
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
-msgstr "PMem: %<PRIu64>/%<PRIu64> MBVMem: %<PRIu64>/%<PRIu64> MB"
+msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 
 #: gui/FLU/Flu_File_Chooser.cpp:607
 msgid "PNG Picture"
@@ -7184,7 +7184,7 @@ msgid ""
 "This setting controls the quality of the audio encoding.  A smaller setting "
 "yields less quality but smaller sizes."
 msgstr ""
-"Diese Einstellung steuert die Qualität der Audiokodierung. Eine kleinere "
+"Diese Einstellung steuert die Qualität der Audiocodierung. Eine kleinere "
 "Einstellung ergibt weniger Qualität, aber kleinere Größen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:270
@@ -7528,7 +7528,7 @@ msgstr "Unbekannter Imf::PixelType"
 
 #: gui/mrvImageInformation.cpp:1524
 msgid "Unknown KeyCode subattr"
-msgstr "Unbekanntes KeyCode-Unterattr"
+msgstr "Unbekanntes KeyCode-Subattr"
 
 #: core/mrvACES.cpp:253 core/mrvACES.cpp:377
 msgid "Unknown Shot"
@@ -7946,7 +7946,7 @@ msgstr "Aussicht/Sichere Bereiche"
 
 #: gui/mrvImageView.cpp:4869
 msgid "View/Texture Filtering  "
-msgstr "Aussicht/Texturfilterung"
+msgstr "Aussicht/Texturfilterung  "
 
 #: gui/mrvImageView.cpp:4878
 msgid "View/Toggle Action Dock"
@@ -8728,12 +8728,12 @@ msgstr "mrViewer"
 #: gui/mrvImageView.cpp:490
 #, c-format
 msgid "mrViewer    FG: %s"
-msgstr "mrViewer FG: %s"
+msgstr "mrViewer    FG: %s"
 
 #: gui/mrvImageView.cpp:483
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
-msgstr "mrViewer FG: %s [%d] BG: %s [%d] (%s)"
+msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
 #: video/mrvGLEngine.cpp:601
 msgid "mrViewer does not support YUV images."
