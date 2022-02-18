@@ -540,25 +540,6 @@ int main( int argc, const char** argv )
 
 
 
-          //
-          // Handle Korean, Japanese and Chinese characters
-          //
-          std::string lang;
-          const char* s = getenv( "LANG" );
-          if ( s ) lang = s;
-          else {
-              s = getenv( "LANGUAGE" );
-              if ( s ) lang = s;
-              else {
-                  s = getenv( "LC_ALL" );
-                  lang = s;
-              }
-          }
-
-          if ( lang.find( "ko" ) || lang.find( "ja" ) || lang.find( "ch" ) )
-          {
-          }
-
           ui->uiMain->show();   // so run() does something
 
           // Start playback if command line forced us to do so
