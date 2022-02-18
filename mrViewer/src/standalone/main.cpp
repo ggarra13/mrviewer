@@ -307,11 +307,14 @@ int main( int argc, const char** argv )
           DBG;
 
           if ( !ui ) ui = new ViewerUI;
+          DBG;
 
           // Make the main view window start with focus
           ui->uiView->take_focus();
+          DBG;
 
           ui->uiMain->show();
+          DBG;
 
           if ( !OSXfiles.empty() )
           {
@@ -539,27 +542,6 @@ int main( int argc, const char** argv )
               Fl::add_timeout( 1.0, load_new_files );
 
 
-
-          //
-          // Handle Korean, Japanese and Chinese characters
-          //
-          std::string lang;
-          const char* s = getenv( "LANG" );
-          if ( s ) lang = s;
-          else {
-              s = getenv( "LANGUAGE" );
-              if ( s ) lang = s;
-              else {
-                  s = getenv( "LC_ALL" );
-                  lang = s;
-              }
-          }
-
-          if ( lang.find( "ko" ) || lang.find( "ja" ) || lang.find( "ch" ) )
-          {
-          }
-
-          ui->uiMain->show();   // so run() does something
 
           // Start playback if command line forced us to do so
           if ( opts.play )
