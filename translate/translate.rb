@@ -18,6 +18,7 @@ end
   credentials: "#{cred}"
 )
 
+
 def fix( text, result, lang )
   result.gsub!(/&#39;/, "'" )
   result.gsub!(/&gt;/, ">" )
@@ -80,7 +81,7 @@ def fix( text, result, lang )
     end
   elsif lang == 'cs'
     if text == '%4.8g %%'
-      result = '%4,8g %%'
+      result = text
     end
     if text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
@@ -101,7 +102,7 @@ def fix( text, result, lang )
     end
   elsif lang == 'ru'
     if text == '%4.8g %%'
-      result = '%4,8g %%'
+      result = text
     end
     if text == '%d Hz.'
       result = text
@@ -131,6 +132,9 @@ def fix( text, result, lang )
       if result !~ /:#{spaces}/
         result.gsub!( /:\s*/, ":#{spaces}" )
       end
+    end
+    if text == 'LMTransform %u'
+      result = text
     end
     if result =~ /余暇/
       result.sub!(/余暇/, 'OCIO')
@@ -167,7 +171,7 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-    if result =~ /\\\s+[^nt"]/
+    if result =~ /\\\s+[^nt"\\]/
       #
       # Automatic translation returns \ instead of \n
       #
@@ -187,7 +191,7 @@ def fix( text, result, lang )
       result.sub!(/TEMPO LIBERO/, 'OCIO')
     end
     if text == '%4.8g %%'
-      result = '%4,8g %%'
+      result = text
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
@@ -199,9 +203,18 @@ def fix( text, result, lang )
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
     end
-    result.gsub!( /“/u, '*' )
+    #t = '“'
+    t = '[“”]'
+    if result =~ /#{t}/
+      result.gsub!( /#{t}/, '"' )
+      result.gsub!( /\\/, '' )
+      result.gsub!( /"/, '\"' )
+    end
     if result =~ /％/
       result.gsub!( /％/, '%' )
+    end
+    if result =~ /ID: %in/
+      result.sub!( /ID: %in/, 'ID: %i\n' )
     end
   end
   if text =~ /(\s+)$/
@@ -221,7 +234,7 @@ def fix( text, result, lang )
 end
 
 def replace( text )
-  puts "result: #{text}."
+  puts "result: #{text}." if @debug
   return text
 end
 
@@ -229,7 +242,7 @@ def translate( text, lang )
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
-      puts "origin: #{text} menus"
+      puts "#@count origin: #{text} menus" if @debug
       r = @translate.translate menus, to: lang
       result = []
       r.each { |m| result << m.text }
@@ -241,28 +254,31 @@ def translate( text, lang )
       return replace( result )
     end
   end
-  puts "origin: #{text}"
+  puts "#@count origin: #{text}" if @debug
   r = @translate.translate text, to: lang
   result = r.text
   result = fix( text, result, lang )
   return replace( result )
 end
 
-translate( 'Could not open \"', 'zh' )
-exit
 
+@debug = false
 @h = {}
 @op = nil
 
 def new_line( text )
   return if @msgid.empty? or @h[@msgid]
   @h[@msgid] = 1
+  @count += 1
+  puts "#@count origin: #@msgid"
   @op.puts "msgid \"#{@msgid}\""
+  @count += 1
+  puts "#@count result: #@msgid"
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ko', 'ru' ]
-for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'ru' ]
+langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru',  'ja', 'ko' ]
+for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
   next if langs.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
@@ -291,6 +307,7 @@ msgstr ""
 EOF
 
   lines = fp.readlines
+  @count = 14 # header
   for line in lines
     if in_msg_id
       msgstr = line =~ /msgstr\s+"/

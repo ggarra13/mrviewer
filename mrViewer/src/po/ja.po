@@ -1644,7 +1644,7 @@ msgid ""
 "Date: %s\n"
 "Resolution: %dx%d"
 msgstr ""
-"クローンイメージ\n"
+"クローン画像\n"
 "名前: %s \n"
 "日付: %s \n"
 "解決策: %dx%d"
@@ -3296,7 +3296,7 @@ msgstr "ファイル/保存する/映画またはシーケンスとして"
 
 #: gui/mrvImageView.cpp:4816 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/Reel As"
-msgstr "ファイル/保存する/リールとして"
+msgstr "ファイル/保存する/リールアズ"
 
 #: gui/mrvImageView.cpp:4822 gui/mrvImageBrowser.cpp:4413
 msgid "File/Save/Session As"
@@ -4050,7 +4050,7 @@ msgstr "画像/FGとBGを切り替える"
 
 #: gui/mrvImageView.cpp:5055
 msgid "Image/Toggle Background"
-msgstr "画像/背景を切り替える"
+msgstr "画像/背景を切り替えます"
 
 #: gui/mrvImageView.cpp:5062
 msgid "Image/Toggle EDL"
@@ -4085,7 +4085,7 @@ msgstr "画像 (*.{"
 #: core/guessImage.cpp:192
 msgid ""
 "Images in stereo have different frame lengths.  They will not loop properly."
-msgstr "ステレオの画像のフレーム長は異なります.それらは正しくループしません."
+msgstr "ステレオの画像のフレーム長は異なります.それらは適切にループしません."
 
 #: core/guessImage.cpp:183
 msgid "Images in stereo have different lengths.  They will not loop properly."
@@ -4190,7 +4190,7 @@ msgstr "無効なソースプロファイル/画像ピクセルフォーマッ�
 
 #: gui/mrvReel.cpp:209
 msgid "Invalid stereo image "
-msgstr "無効なステレオイメージ "
+msgstr "ステレオ画像が無効です "
 
 #: core/CMedia_audio.cpp:801 core/CMedia_audio.cpp:813
 msgid "Invalid timecode "
@@ -7915,7 +7915,7 @@ msgstr "の:"
 #: gui/mrvImageInformation.cpp:3040
 #, c-format
 msgid "W: %g %g"
-msgstr "W: %g%g"
+msgstr "W: %g %g"
 
 #: gui/FLU/Flu_File_Chooser.cpp:587
 msgid "WMV Movie"
