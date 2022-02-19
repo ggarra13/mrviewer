@@ -543,6 +543,11 @@ int main( int argc, const char** argv )
 
 
 
+<<<<<<< HEAD
+=======
+          ui->uiMain->show();   // so run() does something
+
+>>>>>>> 03f2e6e19ff1405a69e32ecf1ef271dc64748740
           // Start playback if command line forced us to do so
           if ( opts.play )
           {
