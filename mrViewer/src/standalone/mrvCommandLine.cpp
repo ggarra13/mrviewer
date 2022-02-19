@@ -437,6 +437,7 @@ void parse_command_line( const int argc, const char** argv,
       again( "", "gain",
              _("Override viewer's default gain."), false, opts.gain, "float");
 
+
     ValueArg< std::string >
     ahostname( "t", N_("host"),
                _("Override viewer's default client hostname."), false,
@@ -540,6 +541,7 @@ void parse_command_line( const int argc, const char** argv,
     opts.run    = arun.getValue();
     opts.stereo_output = astereo_output.getValue();
     opts.stereo_input = astereo_input.getValue();
+
 
 #if defined(OSX)
     stringArray infiles = afiles.getValue();
