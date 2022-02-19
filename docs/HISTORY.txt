@@ -1,14 +1,22 @@
 v6.0.7  - Added frame count to HUD (FC:).
 	- Updated frame range and count to be interactive to the typing of the
 	  start/end frames.
-	- Added French, German and Italian translations done by Google
-	  translate.
+	- Added French, German, Italian and Czech translations done by Google
+	  translate.  There's also Russian, Chinese, Japanese and Korean
+	  translations but these have not been tested on Windows (would like
+	  to know if they work for you).
 	  If you want the GUI to display in English and not in your natural
-	  language, you need to set the LANGUAGE environment variable, like:
-	  export LANGUAGE=en on Linux or macOS
-	  or
-	  set LANGUAGE=en in a .bat file in Windows
-	  (and call: start path/to/mrViewer)
+	  language, you need to set the LANGUAGE/LC_ALL environment variable,
+	  like:
+
+	  on Linux or macOS on mrViewer.sh:
+
+	  export LANGUAGE=en
+
+	  or on Windows in a .bat file:
+
+	  set LC_ALL=en
+	  start C:/path/to/mrViewer.exe
 
 v6.0.6  - Fixed connections to work again.
 	- Fixed a memory trashing on swinging loop at start.
