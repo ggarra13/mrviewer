@@ -29,14 +29,16 @@ def fix( text, result, lang )
       text == ' FC: ' or text == 'V-A: ' or
       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
       text == '  INF.  ' or
-    text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-    text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-    text == "mrViewer    FG: %s"
+      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+      text == "mrViewer    FG: %s" or
+      text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'ko' or lang == 'zh' or lang == "ja" or lang == 'ru' ) and
+  if ( lang == 'ko' or lang == 'zh' or lang == "ja" or lang == 'ru' or
+       lang == 'tr' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
@@ -130,7 +132,7 @@ def fix( text, result, lang )
     if text =~ /:(\s+)/
       spaces = $1
       if result !~ /:#{spaces}/
-        result.gsub!( /:\s*/, ":#{spaces}" )
+	result.gsub!( /:\s*/, ":#{spaces}" )
       end
     end
     if text == 'LMTransform %u'
@@ -203,7 +205,6 @@ def fix( text, result, lang )
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
     end
-    #t = '“'
     t = '[“”]'
     if result =~ /#{t}/
       result.gsub!( /#{t}/, '"' )
@@ -243,11 +244,11 @@ def translate( text, lang )
     menus = text.split('/')
     if menus.size > 1
       puts "#@count origin: #{text} menus" if @debug
-      r = @translate.translate menus, to: lang
+      r = @translate.translate menus, from: 'en', to: lang
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
-        result[-1] = '%s'
+	result[-1] = '%s'
       end
       result = result.join('/')
       result = fix( text, result, lang )
@@ -255,7 +256,7 @@ def translate( text, lang )
     end
   end
   puts "#@count origin: #{text}" if @debug
-  r = @translate.translate text, to: lang
+  r = @translate.translate text, from: 'en', to: lang
   result = r.text
   result = fix( text, result, lang )
   return replace( result )
@@ -273,7 +274,7 @@ def new_line( text )
   puts "#@count origin: #@msgid"
   @op.puts "msgid \"#{@msgid}\""
   @count += 1
-  puts "#@count result: #@msgid"
+  puts "#@count result: #{text}"
   @op.puts "msgstr \"#{text}\""
 end
 
@@ -288,7 +289,7 @@ for lang in [ 'tr' ]
   fp = File.open( "#{root}/messages.pot", encoding: "utf-8")
   if File.exists? "#{root}/#{lang}.po"
     FileUtils.cp( "#{root}/#{lang}.po",
-                  "#{root}/#{lang}.po.old" )
+		  "#{root}/#{lang}.po.old" )
   end
   @op = File.open("#{root}/#{lang}.po", "w", encoding: "utf-8")
   @op.puts <<EOF
@@ -315,10 +316,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-        r = translate( msg, lang )
-        new_line( r )
-        in_msg_id = false
-        next
+	r = translate( msg, lang )
+	new_line( r )
+	in_msg_id = false
+	next
       end
       text = $1
       @msgid << text
