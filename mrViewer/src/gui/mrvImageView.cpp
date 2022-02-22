@@ -4200,7 +4200,10 @@ void ImageView::draw()
         valid(1);
     }
 
-
+#ifdef OSX
+    if ( uiMain->uiGL3dView->uiMain->visible() )
+        _engine->reset_view_matrix();
+#endif
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
 

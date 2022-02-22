@@ -83,6 +83,7 @@
 #include "gui/mrvGlWindow3d.h"
 #include "gui/mrvHotkey.h"
 
+
 using std::max;
 using std::min;
 using std::cout;
@@ -196,7 +197,7 @@ GlWindow3d::Perspective (double focal, double aspect,
 void
 GlWindow3d::ReshapeViewport()
 {
-    glViewport (0, 0, w(), h());
+    glViewport (0, 0, pixel_w(), pixel_h());
 
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
