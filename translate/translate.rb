@@ -277,8 +277,8 @@ def new_line( text )
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru',  'ja', 'ko' ]
-for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
+langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
+for lang in [ 'tr' ]
   next if langs.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
@@ -286,8 +286,10 @@ for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
   msg = ''
   root = "#{home}/gga/code/applications/mrv/mrViewer/src/po"
   fp = File.open( "#{root}/messages.pot", encoding: "utf-8")
-  FileUtils.cp( "#{root}/#{lang}.po",
-                "#{root}/#{lang}.po.old" )
+  if File.exists? "#{root}/#{lang}.po"
+    FileUtils.cp( "#{root}/#{lang}.po",
+                  "#{root}/#{lang}.po.old" )
+  end
   @op = File.open("#{root}/#{lang}.po", "w", encoding: "utf-8")
   @op.puts <<EOF
 msgid ""
