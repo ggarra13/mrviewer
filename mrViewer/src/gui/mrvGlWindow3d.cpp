@@ -302,6 +302,7 @@ GlWindow3d::draw()
         valid (1);
     }
     ReshapeViewport();
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor (.5,.5,.5, 0.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();

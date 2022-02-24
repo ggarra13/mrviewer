@@ -132,7 +132,7 @@ def fix( text, result, lang )
     if text =~ /:(\s+)/
       spaces = $1
       if result !~ /:#{spaces}/
-	result.gsub!( /:\s*/, ":#{spaces}" )
+        result.gsub!( /:\s*/, ":#{spaces}" )
       end
     end
     if text == 'LMTransform %u'
@@ -248,7 +248,7 @@ def translate( text, lang )
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
-	result[-1] = '%s'
+        result[-1] = '%s'
       end
       result = result.join('/')
       result = fix( text, result, lang )
@@ -278,8 +278,8 @@ def new_line( text )
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
-for lang in [ 'tr' ]
+langs = [ 'es' ]
+for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
   next if langs.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
@@ -289,7 +289,7 @@ for lang in [ 'tr' ]
   fp = File.open( "#{root}/messages.pot", encoding: "utf-8")
   if File.exists? "#{root}/#{lang}.po"
     FileUtils.cp( "#{root}/#{lang}.po",
-		  "#{root}/#{lang}.po.old" )
+                  "#{root}/#{lang}.po.old" )
   end
   @op = File.open("#{root}/#{lang}.po", "w", encoding: "utf-8")
   @op.puts <<EOF
@@ -316,10 +316,10 @@ EOF
       msgstr = line =~ /msgstr\s+"/
       text = line =~ /"(.*)"/
       if not text or msgstr
-	r = translate( msg, lang )
-	new_line( r )
-	in_msg_id = false
-	next
+        r = translate( msg, lang )
+        new_line( r )
+        in_msg_id = false
+        next
       end
       text = $1
       @msgid << text
