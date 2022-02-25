@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-23 21:13-0300\n"
+"POT-Creation-Date: 2022-02-23 23:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -455,7 +455,7 @@ msgstr ""
 
 #: gui/mrvImageInformation.cpp:3055
 msgid "(IDT) Input Device Transform"
-msgstr "(IDT) 输入设备转换"
+msgstr "(IDT) 输入设备变换"
 
 #: gui/mrvImageInformation.cpp:3063
 msgid "(IODT) Input Output Device Transform"
@@ -467,7 +467,7 @@ msgstr "(IOT) 输入输出变换"
 
 #: gui/mrvImageInformation.cpp:3067
 msgid "(IRRT) Input Reference Rendering Transform"
-msgstr "(IRRT) 输入参考渲染转换"
+msgstr "(IRRT) 输入参考渲染变换"
 
 #: gui/mrvImageInformation.cpp:3080
 msgid "(LMT) Look Mod Transform"
@@ -489,7 +489,7 @@ msgstr "(RT) 渲染变换"
 msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 没有启动则删除）"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2234
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2237
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9699
 #: gui/mrvImageView.cpp:9700 gui/mrvImageView.cpp:9708
 msgid "(no image)"
@@ -519,7 +519,7 @@ msgstr "*******添加了 EMPTY 媒体"
 msgid "+"
 msgstr "+"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2316
 msgid "+0.0  f/8.0"
 msgstr "+0.0 英尺/8.0"
 
@@ -574,6 +574,14 @@ msgstr ".prefs"
 msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1527
+msgid "0.45"
+msgstr "0.45"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1526
+msgid "0.55"
+msgstr "0.55"
+
 #: gui/mrvImageInformation.cpp:200
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
@@ -590,6 +598,62 @@ msgstr "1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0"
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr "1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1525
+msgid "1.00"
+msgstr "1.00"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
+msgid "1.8"
+msgstr "1.8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
+msgid "1/2"
+msgstr "1/2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1704
+msgid "1/3"
+msgstr "1/3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1703
+msgid "1/4"
+msgstr "1/4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1702
+msgid "1/5"
+msgstr "1/5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1701
+msgid "1/6"
+msgstr "1/6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
+msgid "1/7"
+msgstr "1/7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
+msgid "1/8"
+msgstr "1/8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
+msgid "1/9"
+msgstr "1/9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
+msgid "12"
+msgstr "12"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
+msgid "12.5"
+msgstr "12.5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
+msgid "14.985"
+msgstr "14.985"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1928
+msgid "15"
+msgstr "15"
+
 #: core/CMedia.cpp:4412
 msgid "16 bits"
 msgstr "16 位"
@@ -600,7 +664,7 @@ msgstr "16 位"
 msgid "16-bits"
 msgstr "16 位"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2440
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2443
 #: gui/mrvImageInformation.cpp:4035
 msgid "1:1"
 msgstr "1:1"
@@ -621,6 +685,7 @@ msgstr "1:4"
 msgid "1:8"
 msgstr "1:8"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1523
 #: gui/mrvImageInformation.cpp:182
 msgid "2.2"
 msgstr "2.2"
@@ -633,9 +698,29 @@ msgstr "2.2 5.1"
 msgid "2.2 5.1 1.4"
 msgstr "2.2 5.1 1.4"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1927
+msgid "23.97"
+msgstr "23.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1926
+msgid "24"
+msgstr "24"
+
 #: gui/mrvImageInformation.cpp:186
 msgid "24000/1001"
 msgstr "24000/1001"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1925
+msgid "25"
+msgstr "25"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1924
+msgid "29.97"
+msgstr "29.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1923
+msgid "30"
+msgstr "30"
 
 #: core/CMedia.cpp:4419
 msgid "32 bits"
@@ -661,7 +746,7 @@ msgstr "35mm欧式宽屏"
 
 #: gui/mrvImageInformation.cpp:1095
 msgid "35mm Flat"
-msgstr "35毫米平"
+msgstr "35mm平"
 
 #: gui/mrvImageInformation.cpp:1098
 msgid "35mm Panavision"
@@ -708,13 +793,17 @@ msgstr "3GP电影"
 msgid "3d View"
 msgstr "3d 视图"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
+msgid "3dView"
+msgstr "3d视图"
+
 #: gui/mrvHotkey.cpp:305
 msgid "3dView Density Down"
 msgstr "3dView 密度降低"
 
 #: gui/mrvHotkey.cpp:304
 msgid "3dView Density Up"
-msgstr "3dView 密度增加"
+msgstr "3dView 密度提升"
 
 #: gui/mrvHotkey.cpp:303
 msgid "3dView Z Depth Down"
@@ -723,6 +812,18 @@ msgstr "3dView Z 深度向下"
 #: gui/mrvHotkey.cpp:302
 msgid "3dView Z Depth Up"
 msgstr "3dView Z 深度向上"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1922
+msgid "50"
+msgstr "50"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
+msgid "59.94"
+msgstr "59.94"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1920
+msgid "60"
+msgstr "60"
 
 #: gui/mrvImageInformation.cpp:1096
 msgid "70mm"
@@ -736,7 +837,7 @@ msgstr "8位缓存"
 msgid "8 bits"
 msgstr "8 位"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2823
 msgid "8-bit sample of image pixel under mouse."
 msgstr "鼠标下图像像素的 8 位样本。"
 
@@ -744,6 +845,10 @@ msgstr "鼠标下图像像素的 8 位样本。"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2689
 msgid "8-bits"
+msgstr "8位"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
+msgid "8bit"
 msgstr "8位"
 
 #: core/CMedia_audio.cpp:940
@@ -762,21 +867,25 @@ msgstr "： 错误 "
 msgid ": Unknown pixel type"
 msgstr "：未知像素类型"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2303
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3092
 msgid "@<"
 msgstr "@<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1817
+msgid "@<->"
+msgstr "@<->"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3105
 msgid "@<|"
 msgstr "@<|"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3144
 msgid "@>"
 msgstr "@>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3157
 msgid "@>|"
 msgstr "@>|"
 
@@ -784,19 +893,20 @@ msgstr "@>|"
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3079
 msgid "@|<"
 msgstr "@|<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3131
 msgid "@|>"
 msgstr "@|>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1815
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3118
 msgid "@||"
 msgstr "@||"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3242
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3245
 #: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr "一种"
@@ -814,7 +924,11 @@ msgstr ""
 "专业的图像和电影查看器\n"
 "示例：\n"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1351
+msgid "A-B, Stereo 3D Options"
+msgstr "AB，立体 3D 选项"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2218
 msgid "A/B"
 msgstr "一种/乙"
 
@@ -844,16 +958,21 @@ msgstr "AVCHD 视频"
 msgid "AVI Movie"
 msgstr "AVI电影"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1361
+msgid "About"
+msgstr "关于"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
 #: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "关于 mrViewer"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:149
 #: gui/mrvImageInformation.cpp:3013
 msgid "Absolute"
 msgstr "绝对"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:94
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:97
 msgid "Accept"
 msgstr "接受"
 
@@ -861,11 +980,12 @@ msgstr "接受"
 msgid "Accept settings but don't save."
 msgstr "接受设置但不保存。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:526
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:529
 msgid "Action"
 msgstr "行动"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1350
 msgid "Action Tools"
 msgstr "行动工具"
 
@@ -874,7 +994,7 @@ msgstr "行动工具"
 msgid "Actions"
 msgstr "行动"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2458
 msgid "Activate viewer's 3D Lut."
 msgstr "激活查看器的 3D Lut。"
 
@@ -898,7 +1018,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr "采用 中性"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3129
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
 msgid "Advance one frame."
 msgstr "前进一帧。"
 
@@ -914,8 +1034,9 @@ msgstr "高级系统格式媒体"
 msgid "Algorithm when not OCIO"
 msgstr "非 OCIO 时的算法"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:724
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3459
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:727
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3462
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "全部"
@@ -928,18 +1049,19 @@ msgstr "全部 (*.{"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3232
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:71
 msgid "All Layers"
-msgstr "所有图层"
+msgstr "所有层"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 msgid "All Possible"
 msgstr "一切可能"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3228
 msgid "Allows you to adjust frame rate playback."
 msgstr "允许您调整帧速率播放。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2397
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2407
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -947,7 +1069,7 @@ msgstr ""
 "允许您调整显示的伽马曲线。\n"
 "值为: pow( 2, 1/X ）;"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2269
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "允许您调整图像的增益或曝光。"
 
@@ -955,15 +1077,15 @@ msgstr "允许您调整图像的增益或曝光。"
 msgid "Allows you to select a standard cropping area around image."
 msgstr "允许您选择图像周围的标准裁剪区域。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2235
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2238
 msgid "Allows you to select different image channels or layers."
 msgstr "允许您选择不同的图像通道或图层。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3278
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3281
 msgid "Allows you to set starting frame for timeline."
 msgstr "允许您设置时间线的起始帧。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3296
 msgid "Allows you to set the ending frame for timeline."
 msgstr "允许您设置时间线的结束帧。"
 
@@ -973,13 +1095,17 @@ msgstr "允许您设置时间线的结束帧。"
 msgid "Alpha"
 msgstr "Α"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:158
+msgid "Alpha Only"
+msgstr "仅限阿尔法"
+
 #: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2049
 #: gui/mrvImageView.cpp:9116 gui/mrvImageView.cpp:9663
 msgid "Alpha Overlay"
 msgstr "阿尔法叠加"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
 msgid "Alpha value of image pixel under mouse."
 msgstr "鼠标下图像像素的 Alpha 值。"
 
@@ -1077,8 +1203,8 @@ msgstr "您确定要覆盖\"%s\"吗？"
 msgid "Area"
 msgstr "区域"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:549
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2507
 msgid "Area Select Tool"
 msgstr "区域选择工具"
 
@@ -1094,8 +1220,8 @@ msgstr "箭"
 msgid "Arrow Mode"
 msgstr "箭头模式"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:641
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:644
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2583
 msgid "Arrow Tool"
 msgstr "箭头工具"
 
@@ -1127,7 +1253,7 @@ msgstr "属性"
 msgid "Attributes Menu"
 msgstr "属性菜单"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2634
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2637
 msgid "Attrs"
 msgstr "属性"
 
@@ -1157,7 +1283,7 @@ msgstr "音频流 #%d"
 msgid "Audio Streams"
 msgstr "音频流"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3260
 msgid "Audio Volume"
 msgstr "音频音量"
 
@@ -1340,7 +1466,7 @@ msgstr "蓝色增益"
 msgid "Blue Gain of clip."
 msgstr "剪辑的蓝色增益。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2803
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下图像像素的蓝色值。"
 
@@ -1351,6 +1477,10 @@ msgstr "提升异常： "
 #: gui/mrvImageView.cpp:11001
 msgid "Bottom"
 msgstr "底部"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1557
+msgid "Bottom Field"
+msgstr "底场"
 
 #: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
@@ -1407,7 +1537,7 @@ msgstr "颜色"
 msgid "CPU Information"
 msgstr "中央处理器信息"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:65
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:68
 msgid "CTL Browser"
 msgstr "CTL 浏览器"
 
@@ -1452,8 +1582,8 @@ msgstr "打不开卡 "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:93
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:131
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:106
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:271
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:109
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:274
 #: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr "取消"
@@ -1530,7 +1660,7 @@ msgstr "中心图像"
 msgid "Change Image failed"
 msgstr "更改图片失败"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2420
 msgid "Changes frame/field display"
 msgstr "改变框架/现场展示"
 
@@ -1538,7 +1668,7 @@ msgstr "改变框架/现场展示"
 msgid "Channel"
 msgstr "渠道"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
 msgstr "频道"
@@ -1588,8 +1718,8 @@ msgstr "圆圈"
 msgid "Circle Mode"
 msgstr "圆形模式"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:626
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2565
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:629
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2568
 msgid "Circle Tool"
 msgstr "圆形工具"
 
@@ -1597,7 +1727,7 @@ msgstr "圆形工具"
 msgid "City"
 msgstr "城市"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:345
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:348
 msgid "Clear"
 msgstr "清除"
 
@@ -1605,7 +1735,7 @@ msgstr "清除"
 msgid "Clear Image Cache"
 msgstr "清除图像缓存"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
 msgid "Client"
 msgstr "客户"
 
@@ -1693,7 +1823,7 @@ msgid "CollapsibleGroup not found"
 msgstr "找不到可折叠组"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2594
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2597
 #: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
@@ -1706,6 +1836,14 @@ msgstr "颜色"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1100
 msgid "Color Area"
 msgstr "颜色区域"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1348
+msgid "Color Controls"
+msgstr "颜色控制"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1347
+msgid "Color Info"
+msgstr "颜色信息"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorAreaUI.cxx:18
 msgid "Color Information"
@@ -1735,7 +1873,7 @@ msgstr "彩色版"
 msgid "Color channel not found at index "
 msgstr "在索引处找不到颜色通道 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2125
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2128
 msgid "Color controls"
 msgstr "颜色控制"
 
@@ -1778,7 +1916,7 @@ msgid "Compositing"
 msgstr "合成"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3272
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
 #: gui/mrvImageInformation.cpp:3116
 msgid "Compression"
 msgstr "压缩"
@@ -1795,8 +1933,8 @@ msgstr "压缩方法不可用。使用 PIZ。"
 msgid "Compression to use when saving an exr."
 msgstr "保存 exr 时使用的压缩。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:841
 #: core/mrvClient.cpp:471
 msgid "Connect"
 msgstr "连接"
@@ -1809,7 +1947,8 @@ msgstr "连接错误： "
 msgid "Connect timed out."
 msgstr "连接超时。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
 msgid "Connections"
 msgstr "连接"
 
@@ -2049,7 +2188,7 @@ msgstr "找不到矩阵 4x4 的十六个浮点数 "
 
 #: core/aviImage.cpp:3075
 msgid "Could not find stream info"
-msgstr "找不到直播信息"
+msgstr "找不到流信息"
 
 #: core/aviImage.cpp:758
 msgid "Could not find subtitle in '"
@@ -2217,7 +2356,7 @@ msgstr "无法播放音频帧 "
 
 #: core/aviImage_save.cpp:1527
 msgid "Could not read audio fifo: "
-msgstr "无法读取音频FIFO： "
+msgstr "无法读取音频 fifo： "
 
 #: core/picImage.cpp:238
 msgid "Could not read header. Read "
@@ -2379,8 +2518,8 @@ msgstr "国家"
 msgid "Country Code"
 msgstr "国家代码"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:780
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:812
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
 #: core/mrvServer.cpp:2041
 msgid "Create"
 msgstr "创建"
@@ -2469,13 +2608,14 @@ msgstr "庄稼"
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:719
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3454
 msgid "Current"
 msgstr "当前的"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3058
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3061
 msgid "Current frame."
 msgstr "当前帧。"
 
@@ -2649,13 +2789,13 @@ msgstr "解码音频错误： "
 
 #: core/aviImage.cpp:4172
 msgid "Decode video error seek frame "
-msgstr "解码视频错误寻道帧 "
+msgstr "解码视频错误寻找帧 "
 
 #: core/CMedia_audio.cpp:1433
 msgid "Decode_audio failed with error: "
 msgstr "解码音频失败并出现错误： "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2301
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2304
 msgid "Decrease exposure by 0.5."
 msgstr "将曝光减少 0.5。"
 
@@ -2663,6 +2803,7 @@ msgstr "将曝光减少 0.5。"
 msgid "Decreasing Y"
 msgstr "减少 Y"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1919
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "默认"
@@ -2800,7 +2941,7 @@ msgstr "显示窗口 2"
 msgid "Display Window of Clip"
 msgstr "剪辑显示窗口"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2314
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2317
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -2860,6 +3001,10 @@ msgstr "司机"
 msgid "Driver is not a live output device"
 msgstr "驱动程序不是实时输出设备"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1833
+msgid "Drop Frame Timecode"
+msgstr "丢帧时间码"
+
 #: gui/mrvImageInformation.cpp:3555 gui/mrvImageInformation.cpp:3620
 #: gui/mrvImageInformation.cpp:3664
 msgid "Duration"
@@ -2877,9 +3022,9 @@ msgstr "字幕时长"
 msgid "Duration of Video"
 msgstr "视频时长"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3320
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3323
 msgid "E"
-msgstr "E"
+msgstr "乙"
 
 #: audio/mrvALSAEngine.cpp:738
 msgid "EAGAIN: "
@@ -2894,6 +3039,7 @@ msgid "EDL"
 msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
 msgstr "EDL 编辑"
 
@@ -2981,8 +3127,8 @@ msgstr "擦除模式"
 msgid "Erase Temporary Mode"
 msgstr "擦除临时模式"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:581
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2536
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2539
 msgid "Eraser Tool"
 msgstr "橡皮擦工具"
 
@@ -3020,7 +3166,7 @@ msgstr "编码视频帧时出错： "
 
 #: core/aviImage.cpp:1450
 msgid "Error while feeding the filtergraph"
-msgstr "输入过滤器图时出错"
+msgstr "提供过滤器图时出错"
 
 #: core/aviImage_save.cpp:1222
 msgid "Error while writing video frame: "
@@ -3112,12 +3258,12 @@ msgstr "扩展"
 msgid "Eye Separation"
 msgstr "眼睛分离"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2419
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2903
 msgid "F"
 msgstr "F"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3030
 msgid "F:"
 msgstr "F："
 
@@ -3125,11 +3271,15 @@ msgstr "F："
 msgid "F: "
 msgstr "F: "
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1715
+msgid "FIT"
+msgstr "合身"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:334
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1441
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1764
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2159
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3170
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3173
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3334,7 +3484,7 @@ msgstr "适合所有人"
 msgid "Fit Screen"
 msgstr "适合屏幕"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2097
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2100
 msgid "Fit Window to Image"
 msgstr "使窗口适合图像"
 
@@ -3394,7 +3544,7 @@ msgstr "重点"
 msgid "Font"
 msgstr "字体"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:173
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
 #: gui/mrvImageInformation.cpp:3099 gui/mrvImageInformation.cpp:3600
 msgid "Format"
 msgstr "格式"
@@ -3414,6 +3564,7 @@ msgid "FourCC"
 msgstr "四CC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1389
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
 #: gui/mrvImageView.cpp:10999
 msgid "Frame"
 msgstr "框架"
@@ -3453,7 +3604,7 @@ msgstr "帧步 FPS 转发"
 
 #: gui/mrvHotkey.cpp:340
 msgid "Frame Step Forwards"
-msgstr "帧前进"
+msgstr "帧步向前"
 
 #: gui/mrvImageInformation.cpp:2815
 msgid "Frame end of clip in file"
@@ -3487,9 +3638,10 @@ msgstr "帧缓冲区不完整：读取缓冲区。"
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "帧缓冲区多样本不完整：绘制缓冲区。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:251
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:713
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3448
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
 msgid "Frames"
 msgstr "框架"
 
@@ -3501,8 +3653,8 @@ msgstr "每秒帧数"
 msgid "Frames per Second"
 msgstr "每秒帧数"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:566
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2521
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2524
 msgid "Freehand Drawing Tool"
 msgstr "手绘工具"
 
@@ -3513,6 +3665,10 @@ msgstr "频率"
 #: gui/mrvImageInformation.cpp:3604
 msgid "Frequency of audio"
 msgstr "音频频率"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1774
+msgid "Full"
+msgstr "满的"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:991
 msgid "Fullscreen"
@@ -3546,7 +3702,7 @@ msgid "GREEN"
 msgstr "绿色"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1202
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2254
 msgid "Gain"
 msgstr "获得"
 
@@ -3554,14 +3710,15 @@ msgstr "获得"
 msgid "Gain for image failed"
 msgstr "图像增益失败"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2259
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "获得形象价值。图像像素值的简单乘数。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1208
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3261
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1471
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2364
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1775
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 #: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1785
 msgid "Gamma"
 msgstr "伽玛"
@@ -3606,20 +3763,20 @@ msgstr "加载 exr 且 OCIO 关闭时使用的 Gamma。"
 msgid "Gb"
 msgstr "国标"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:733
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3468
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
 msgid "Ghosting"
 msgstr "重影"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3103
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3106
 msgid "Go back one frame."
 msgstr "返回一帧。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3077
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3080
 msgid "Go to the beginning of the sequence."
 msgstr "转到序列的开头。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3158
 msgid "Go to the end of the sequence."
 msgstr "转到序列的末尾。"
 
@@ -3646,7 +3803,7 @@ msgstr "绿色增益"
 msgid "Green Gain of clip."
 msgstr "剪辑的绿色增益。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2795
 msgid "Green value of image pixel under mouse."
 msgstr "鼠标下图像像素的绿色值。"
 
@@ -3682,7 +3839,12 @@ msgstr "HDRI 图片"
 msgid "HDTV / Widescreen 16:9"
 msgstr "高清电视/宽屏 16:9"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
+msgid "HSL"
+msgstr "HSL"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2828
 msgid "HSV"
 msgstr "单纯疱疹病毒"
 
@@ -3724,6 +3886,10 @@ msgstr "高度"
 msgid "Height of clip"
 msgstr "夹子高度"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1730
+msgid "Hex"
+msgstr "十六进制"
+
 #: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "隐藏其他"
@@ -3742,6 +3908,7 @@ msgstr "高10"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1060
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "直方图"
 
@@ -3768,6 +3935,7 @@ msgstr "热键文件："
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1359
 msgid "Hotkeys"
 msgstr "热键"
 
@@ -3787,7 +3955,7 @@ msgstr "如何默认显示时间线。"
 msgid "How to display timeline selection by default."
 msgstr "默认情况下如何显示时间线选择。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2875
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2878
 msgid "Hue value of image pixel under mouse."
 msgstr "鼠标下图像像素的色调值。"
 
@@ -3806,6 +3974,7 @@ msgstr "国际商会简介"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2686
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1356
 msgid "ICC Profiles"
 msgstr "ICC 配置文件"
 
@@ -3824,6 +3993,10 @@ msgstr "ICC配置文件"
 #: gui/FLU/Flu_File_Chooser.cpp:599
 msgid "IFF Picture"
 msgstr "IFF图片"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:138
+msgid "ILM OpenEXR (.exr)"
+msgstr "ILM OpenEXR (.exr)"
 
 #: gui/mrvImageInformation.cpp:3229
 msgid "IPP2 Mode"
@@ -3844,6 +4017,14 @@ msgstr "ISO感光度"
 #: gui/mrvImageInformation.cpp:3258
 msgid "ISO of film stock."
 msgstr "胶片的 ISO。"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1755
+msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
+msgstr "ITU-601（数字 PAL/NTSC YCbCr)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1756
+msgid "ITU-709 (Digital HDTV YCbCr)"
+msgstr "ITU-709（数字高清电视 YCbCr）"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
 msgid ""
@@ -3910,7 +4091,7 @@ msgstr "画布中的图像 Y 位置"
 msgid "Image Y Scale in Canvas"
 msgstr "画布中的图像 Y 比例"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2744
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2747
 msgid "Image coordinate of pixel under mouse."
 msgstr "鼠标下像素的图像坐标。"
 
@@ -3951,7 +4132,7 @@ msgid ""
 msgstr ""
 "图像序列将缓存在内存中。如果此设置关闭，图像将按需加载，但可能无法流畅播放。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2676
 msgid "Image zoom setting."
 msgstr "图像缩放设置。"
 
@@ -4079,7 +4260,7 @@ msgstr "立体图像具有不同的速度 (fps)。"
 msgid "Images, sequences or movies to display."
 msgstr "要显示的图像、序列或电影。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2329
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2332
 msgid "Increase exposure by 0.5."
 msgstr "将曝光增加 0.5。"
 
@@ -4100,7 +4281,7 @@ msgid "Input"
 msgstr "输入"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2398
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2285
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2288
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3047
 msgid "Input Color Space"
 msgstr "输入色彩空间"
@@ -4197,6 +4378,10 @@ msgstr "反向参考渲染变换"
 msgid "Item was not found in tree."
 msgstr "在树中找不到项目。"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:139
+msgid "JPEG (.jpg)"
+msgstr "JPEG (.jpg)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:600 gui/FLU/Flu_File_Chooser.cpp:601
 msgid "JPEG Picture"
 msgstr "JPEG 图片"
@@ -4252,18 +4437,27 @@ msgstr "已知编解码器"
 msgid "Kodak Digital Negative"
 msgstr "柯达数码底片"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3001
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1816
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3004
 msgid "L"
 msgstr "大号"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
+msgid "L (Lightness)"
+msgstr "L（亮度）"
 
 #: gui/mrvImageInformation.cpp:3079
 #, c-format
 msgid "LMTransform %u"
 msgstr "LM变换 %u"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2457
 msgid "LUT"
 msgstr "查找表"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1750
+msgid "Lab CIELAB (L*a*b*)"
+msgstr "实验室 CIELAB (L*a*b*)"
 
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
@@ -4441,7 +4635,7 @@ msgstr "加载 ACES 剪辑元数据文件 '"
 
 #: core/brawImage.cpp:222
 msgid "Loaded braw lib from: "
-msgstr "从以下位置加载了 braw 库： "
+msgstr "从以下位置加载 braw 库： "
 
 #: gui/mrvPreferences.cpp:558
 msgid "Loaded color themes from "
@@ -4483,9 +4677,13 @@ msgstr "本地字幕"
 msgid "Lockfile "
 msgstr "锁定文件 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:316
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "记录消息"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
+msgid "Logs"
+msgstr "日志"
 
 #: core/exrImage.cpp:1260 core/exrImage.cpp:2447 core/exrImage.cpp:2451
 #: core/exrImage.cpp:2531 core/exrImage.cpp:2535
@@ -4496,7 +4694,7 @@ msgstr "经度"
 msgid "Looked for it in: "
 msgstr "在中寻找它： "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3002
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3005
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "循环行为（停止、循环、乒乓）"
 
@@ -4512,7 +4710,7 @@ msgstr "亮度"
 msgid "Luminance Gradient"
 msgstr "亮度梯度"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2959
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2962
 msgid "Luminance of image pixel under mouse."
 msgstr "鼠标下图像像素的亮度。"
 
@@ -4525,6 +4723,10 @@ msgstr "卢玛"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1285
 msgid "Lut Active"
 msgstr "鲁特活跃"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1751
+msgid "Luv CIELUV (L*u*v*)"
+msgstr "Luv CIELUV (L*u*v*)"
 
 #: gui/mrvImageInformation.cpp:201 gui/mrvImageInformation.cpp:227
 #: gui/mrvImageInformation.cpp:512
@@ -4647,6 +4849,7 @@ msgid "Mean"
 msgstr "意思是"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1086
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1346
 msgid "Media Info"
 msgstr "媒体信息"
 
@@ -4684,6 +4887,10 @@ msgstr "元"
 #: gui/mrvImageInformation.cpp:993
 msgid "Metadata"
 msgstr "元数据"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:140
+msgid "Microsoft Bitmap (.bmp)"
+msgstr "微软位图 (.bmp)"
 
 #: gui/mrvColorInfo.cpp:780 gui/mrvColorInfo.cpp:890
 msgid "Minimum"
@@ -4770,7 +4977,7 @@ msgstr "运动估计方法"
 msgid "Move Pic."
 msgstr "移动图片。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:610
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
 msgid "Move Picture Tool"
 msgstr "移动图片工具"
 
@@ -4817,7 +5024,7 @@ msgstr "NTSC 高清电视彩条"
 msgid "NTSC Video"
 msgstr "NTSC 视频"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:179
 msgid "Name (.ext)"
 msgstr "名称 (.ext)"
 
@@ -4842,8 +5049,8 @@ msgstr "新项目未创建于 "
 msgid "New item was not found in tree."
 msgstr "在树中找不到新项目。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:746
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:749
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3484
 msgid "Next"
 msgstr "下一个"
 
@@ -4956,18 +5163,22 @@ msgid ""
 "a versioning string."
 msgstr "此剪辑中没有版本控制。请创建一个以版本控制字符串命名的图像或目录。"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1832
+msgid "Non-Drop Frame Timecode"
+msgstr "不丢帧时间码"
+
 #: video/mrvGLEngine.cpp:235
 msgid "Non-POT Textures:\t"
 msgstr "非 POT 纹理：\t"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:204
 #: core/aviImage_save.cpp:1354 core/aviImage_save.cpp:1389
 #: core/exrImage.cpp:123 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:3908
 #: gui/mrvSave.cpp:256 gui/mrvSave.cpp:257 gui/mrvSave.cpp:267
 msgid "None"
 msgstr "没有"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2346
 msgid "Norm"
 msgstr "规范"
 
@@ -4975,7 +5186,7 @@ msgstr "规范"
 msgid "Normal"
 msgstr "普通的"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2347
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "标准化像素值以保持在 [0,1] 范围内。"
 
@@ -5009,7 +5220,7 @@ msgstr "不是 mouseRelease 中的 GLTextShape 指针"
 
 #: gui/mrvImageView.cpp:7061
 msgid "Not a GLTextShape pointer in position"
-msgstr "不是位置的 GLTextShape 指针"
+msgstr "位置上不是 GLTextShape 指针"
 
 #: core/stubImage.cpp:732
 msgid "Not a mental ray stub file anymore."
@@ -5033,7 +5244,7 @@ msgstr "没有足够的压缩数据"
 
 #: core/mrvBlackImage.cpp:63
 msgid "Not enough memory for black image"
-msgstr "黑色图像内存不足"
+msgstr "黑色图像没有足够的内存"
 
 #: core/mrvFrame.cpp:704
 msgid "Not enough memory for color transform"
@@ -5119,9 +5330,9 @@ msgstr "OCIO 配置文件"
 msgid "OCIO Display"
 msgstr "奥西奥显示"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2368
 msgid "OCIO Display/View or some default gamma settings."
-msgstr "奥西奥显示/查看或一些默认的伽玛设置。"
+msgstr "奥西奥显示/查看或一些默认的伽马设置。"
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5143,7 +5354,7 @@ msgstr "OCIO 配置 (*.{"
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 配置未设置。默认为 CTL。 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2289
 msgid "OCIO input color space for the image"
 msgstr "图像的 OCIO 输入色彩空间"
 
@@ -5274,7 +5485,7 @@ msgstr ""
 "SC + DC x ( 1 - SA )\n"
 "其中 SC 是源颜色，SA 是源 Alpha，DC 是目标颜色."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2152
 msgid "Opens different windows"
 msgstr "打开不同的窗口"
 
@@ -5291,13 +5502,17 @@ msgstr "控制 R3D 的选项/BRAW 阅读器"
 msgid "Options for EXR were empty"
 msgstr "EXR 的选项为空"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1776
+msgid "Original"
+msgstr "原版的"
+
 #: core/wandImage.cpp:592
 msgid "Original Transmission Reference"
 msgstr "原始传输参考"
 
 #: core/wandImage.cpp:1252
 msgid "Original pixel type is "
-msgstr "原始像素类型是 "
+msgstr "原始像素类型为 "
 
 #: core/wandImage.cpp:565
 msgid "Originating Program"
@@ -5417,12 +5632,12 @@ msgstr "向上翻页"
 msgid "Pause"
 msgstr "暂停"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:704
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
 msgstr "笔颜色"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:657
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3434
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3437
 msgid "Pen Size"
 msgstr "笔大小"
 
@@ -5434,6 +5649,7 @@ msgstr "笔尺寸较小"
 msgid "Pen Size More"
 msgstr "笔尺寸更多"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:148
 #: gui/mrvImageInformation.cpp:3012
 msgid "Perceptual"
 msgstr "感性的"
@@ -5523,11 +5739,11 @@ msgstr "前锋/改变速度"
 msgid "Play in Current Direction"
 msgstr "按当前方向播放"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3090
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3093
 msgid "Play sequence backwards."
 msgstr "向后播放顺序。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3145
 msgid "Play sequence forward."
 msgstr "播放顺序向前。"
 
@@ -5546,8 +5762,8 @@ msgstr "回放"
 msgid "Playback of audio frame "
 msgstr "播放音频帧 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:833
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
 msgid "Port"
 msgstr "港口"
 
@@ -5560,7 +5776,8 @@ msgid "Power"
 msgstr "力量"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:909
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2111
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1358
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2114
 msgid "Preferences"
 msgstr "优先"
 
@@ -5594,8 +5811,8 @@ msgstr "介绍"
 msgid "Preview Thumbnails"
 msgstr "预览缩略图"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:739
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3474
 msgid "Previous"
 msgstr "以前的"
 
@@ -5736,6 +5953,7 @@ msgid "RExt"
 msgstr "转发"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
 msgstr "RGB"
@@ -5744,7 +5962,9 @@ msgstr "RGB"
 msgid "RGB Picture"
 msgstr "RGB图片"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2756
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1729
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
 #: gui/mrvImageView.cpp:204
 msgid "RGBA"
 msgstr "RGBA"
@@ -5829,7 +6049,7 @@ msgstr "红色增益"
 msgid "Red Gain of clip."
 msgstr "剪辑的红色增益。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2787
 msgid "Red value of image pixel under mouse."
 msgstr "鼠标下图像像素的红色值。"
 
@@ -5841,8 +6061,8 @@ msgstr "红色的/青色眼镜"
 msgid "Redo Draw"
 msgstr "重做绘图"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:685
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2619
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2622
 msgid "Redo Previous Shape Drawn"
 msgstr "重做先前绘制的形状"
 
@@ -5862,6 +6082,7 @@ msgid "Reel List"
 msgstr "卷轴列表"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2885
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1345
 msgid "Reels"
 msgstr "卷轴"
 
@@ -5901,7 +6122,8 @@ msgstr ""
 msgid "Regular expression error: "
 msgstr "正则表达式错误： "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:213
 #: gui/mrvImageInformation.cpp:3014
 msgid "Relative"
 msgstr "相对的"
@@ -5944,7 +6166,7 @@ msgstr "从卷轴中删除当前图像。"
 msgid "Removed client "
 msgstr "删除客户端 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:207
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
 msgid "Render Intent"
 msgstr "渲染意图"
 
@@ -6096,7 +6318,7 @@ msgstr "舍入模式"
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "无论单实例设置如何，都运行 mrViewer。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3307
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3310
 msgid "S"
 msgstr "小号"
 
@@ -6126,6 +6348,7 @@ msgid "Safe Areas"
 msgstr "安全区域"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
 msgstr "饱和"
@@ -6134,14 +6357,14 @@ msgstr "饱和"
 msgid "Saturation of clip."
 msgstr "剪辑的饱和度。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2883
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2886
 msgid "Saturation value of image pixel under mouse."
 msgstr "鼠标下图像像素的饱和度值。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3408
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:333
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:272
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:336
 msgid "Save"
 msgstr "保存"
 
@@ -6175,7 +6398,7 @@ msgstr "将 OCIO 配置保存在首选项文件中或将其留空，以便可以
 msgid "Save Ocio Config File in Preferences"
 msgstr "在首选项中保存 Ocio 配置文件"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:167
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:170
 msgid "Save Options"
 msgstr "保存选项"
 
@@ -6244,7 +6467,7 @@ msgstr "规模"
 msgid ""
 "Scale of images stored.  Smaller scale allows more images to be stored at "
 "the expense of pixelization."
-msgstr "存储图像的比例。较小的比例允许以像素化为代价存储更多图像。"
+msgstr "存储图像的比例。较小的规模允许以像素化为代价存储更多图像。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1542
 msgid "Scheme"
@@ -6252,9 +6475,9 @@ msgstr "方案"
 
 #: gui/mrvHotkey.cpp:442
 msgid "ScrollLock"
-msgstr "滚动锁"
+msgstr "滚动锁定"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
 #: gui/mrvImageView.cpp:1579
 msgid "Scrub"
 msgstr "擦洗"
@@ -6267,8 +6490,8 @@ msgstr "擦洗模式"
 msgid "Scrub Sensitivity"
 msgstr "擦洗灵敏度"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:532
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2487
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:535
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2490
 msgid "Scrubbing Tool"
 msgstr "擦洗工具"
 
@@ -6292,19 +6515,23 @@ msgstr "剪辑的第二个显示窗口"
 msgid "Secondary Display"
 msgstr "辅助显示"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3243
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
+msgid "Seconds"
+msgstr "秒"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3246
 msgid "Select Audio Track"
 msgstr "选择音轨"
 
 #: gui/mrvHotkey.cpp:421
 msgid "Select Multi Image"
-msgstr "选择多图像"
+msgstr "选择多张图片"
 
 #: gui/mrvHotkey.cpp:420
 msgid "Select Single Image"
 msgstr "选择单个图像"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:79
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
 msgid "Select a CTL script"
 msgstr "选择 CTL 脚本"
 
@@ -6374,13 +6601,13 @@ msgstr "选择打印在当前图像上的文本覆盖的颜色。"
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr "在当前图像上选择选择矩形的颜色。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:705
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:708
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2598
 msgid "Selects the current pen color."
 msgstr "选择当前的画笔颜色。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:658
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3435
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:661
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3438
 msgid "Selects the size of brush."
 msgstr "选择画笔的大小。"
 
@@ -6400,8 +6627,8 @@ msgstr "顺序"
 msgid "Sequences"
 msgstr "序列"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:804
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:832
 msgid "Server"
 msgstr "服务器"
 
@@ -6430,7 +6657,7 @@ msgstr "出发点"
 msgid "Set added audio offset."
 msgstr "设置添加的音频偏移。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2216
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2219
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -6554,7 +6781,7 @@ msgstr "软图图片"
 msgid "Software"
 msgstr "软件"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
 msgid "Some default frame rate settings."
 msgstr "一些默认帧速率设置。"
 
@@ -6624,7 +6851,7 @@ msgstr "立体眼分离"
 msgid "Stop"
 msgstr "停止"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3116
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3119
 msgid "Stop playback."
 msgstr "停止播放。"
 
@@ -6636,7 +6863,7 @@ msgstr "停止 uiview"
 msgid "Stopped encoding cached "
 msgstr "停止编码缓存 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2444
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr "拉伸图像以补偿图像的像素比率。"
 
@@ -6721,17 +6948,17 @@ msgstr "切换频道"
 msgid "Switch FG/BG Images"
 msgstr "开关FG/背景图片"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2760
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
 msgstr "在浮点、十六进制 (0..0xff) 和十进制 (0..255) 之间切换 RGBA 显示。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3031
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "在帧、秒和时间码显示之间切换"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2932
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -6761,19 +6988,23 @@ msgstr ""
 " L = (116 * Y ^ 1/3 - 16)/100\n"
 "Y = 0.18 (L = 0.5) 的像素的亮度约为 Y = L = 1.0（白色）的一半。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2829
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr "切换光标下像素的像素色彩空间信息显示。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:598
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2553
 msgid "T"
 msgstr "吨"
 
 #: gui/mrvImageView.cpp:4571
 msgid "T: "
 msgstr "T: "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
+msgid "TIFF (.tif)"
+msgstr "TIFF (.tif)"
 
 #: gui/FLU/Flu_File_Chooser.cpp:598 gui/FLU/Flu_File_Chooser.cpp:616
 #: gui/FLU/Flu_File_Chooser.cpp:617
@@ -6792,6 +7023,10 @@ msgstr "标签"
 msgid "Take Current Window Values"
 msgstr "获取当前窗口值"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:142
+msgid "Targa (.tga)"
+msgstr "塔尔加 (.tga)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:615
 msgid "Targa Picture"
 msgstr "塔尔加图片"
@@ -6808,8 +7043,8 @@ msgstr "文本模式"
 msgid "Text Overlay"
 msgstr "文字叠加"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:596
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2554
 msgid "Text Tool"
 msgstr "文字工具"
 
@@ -7109,6 +7344,10 @@ msgstr "缩略图帧百分比"
 msgid "Thumbnails Active"
 msgstr "缩略图活动"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1831
+msgid "Time"
+msgstr "时间"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1480
 msgid "Timecode"
 msgstr "时间码"
@@ -7116,10 +7355,11 @@ msgstr "时间码"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1033
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1863
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3447
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:164
 msgid "Timeline"
 msgstr "时间线"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2983
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2986
 msgid "Timeline."
 msgstr "时间线。"
 
@@ -7291,6 +7531,10 @@ msgstr "工具坞"
 msgid "Top"
 msgstr "最佳"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1556
+msgid "Top Field"
+msgstr "顶场"
+
 #: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
 #: standalone/main.cpp:479
 msgid "Top/bottom"
@@ -7333,7 +7577,7 @@ msgstr "打开调试控制台。"
 msgid "Type"
 msgstr "类型"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2904
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -7380,8 +7624,8 @@ msgstr "未定义的帧缓冲区"
 msgid "Undo Draw"
 msgstr "撤消绘制"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:671
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2608
 msgid "Undo Last Shape Drawn"
 msgstr "撤消上次绘制的形状"
 
@@ -7469,7 +7713,7 @@ msgstr "未知错误"
 
 #: video/mrvGLLut3d.cpp:618
 msgid "Unknown error returned from OCIO processor"
-msgstr "从 OCIO 处理器返回的未知错误"
+msgstr "从 OCIO 处理器返回未知错误"
 
 #: video/mrvGLLut3d.cpp:715
 msgid "Unknown error returned from ctlToLut"
@@ -7636,7 +7880,7 @@ msgstr "有效费率是："
 msgid "Value"
 msgstr "价值"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2894
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "鼠标下图像像素的值（强度）。"
 
@@ -7676,6 +7920,7 @@ msgstr "Vector3 整数"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
 msgid "Vectorscope"
 msgstr "矢量示波器"
 
@@ -7831,7 +8076,7 @@ msgstr "看法/纹理过滤  "
 msgid "View/Toggle Action Dock"
 msgstr "看法/切换动作码头"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
 msgid "W"
 msgstr "W"
 
@@ -7859,6 +8104,7 @@ msgstr "波浪音乐"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1153
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1355
 msgid "Waveform"
 msgstr "波形"
 
@@ -7886,7 +8132,7 @@ msgid ""
 "line, make mrViewer load the full sequence.   Otherwise it loads the frame "
 "only."
 msgstr ""
-"从文件关联或命令行加载序列中的帧时，让 mrViewer 加载完整序列。否则它只加载框"
+"从文件关联或命令行加载序列中的帧时，使 mrViewer 加载完整序列。否则它只加载框"
 "架。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2788
@@ -7981,7 +8227,7 @@ msgstr "选择后，mrViewer 将从已经显示的操作工具开始。"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1101
 msgid ""
 "When selected, mrViewer will start with the color area window already open."
-msgstr "选择后，mrViewer 将以已打开的颜色区域窗口开始。"
+msgstr "选中后，mrViewer 将以已打开的颜色区域窗口开始。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1061
 msgid "When selected, mrViewer will start with the histogram already open."
@@ -7995,7 +8241,7 @@ msgstr "选择后，mrViewer 将在媒体信息窗口已打开的情况下启动
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1180
 msgid "When selected, mrViewer will start with the menu bar already shown."
-msgstr "选择后，mrViewer 将从已经显示的菜单栏开始。"
+msgstr "选择后，mrViewer 将从已显示的菜单栏开始。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1027
 msgid "When selected, mrViewer will start with the pixel toolbar shown."
@@ -8228,14 +8474,22 @@ msgstr "X："
 msgid "XML Clip Metadata (*.{"
 msgstr "XML 剪辑元数据 (*.{"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2743
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 msgid "XY"
 msgstr "XY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1748
+msgid "XYZ CIE XYZ"
+msgstr "XYZ CIE XYZ"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2928
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2931
 msgid "Y"
-msgstr "是的"
+msgstr "是"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
+msgid "Y (Luminance)"
+msgstr "Y（亮度）"
 
 #: gui/mrvImageInformation.cpp:2877
 msgid "Y Position"
@@ -8253,6 +8507,10 @@ msgstr "Y Ripmap 级别"
 msgid "Y Scale"
 msgstr "Y 比例尺"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1792
+msgid "Y' (Lumma)"
+msgstr "Y'（亮度）"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1631
 msgid "Y:"
 msgstr "是的："
@@ -8261,9 +8519,21 @@ msgstr "是的："
 msgid "YBYRY"
 msgstr "YBYRY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
+msgid "YDbDr (Analog SECAM/PAL-N)"
+msgstr "YDbDr（模拟 SECAM/朋友-N)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
+msgid "YIQ (Analog NTSC)"
+msgstr "YIQ（模拟 NTSC）"
+
 #: video/mrvGLEngine.cpp:240
 msgid "YUV  Support:\t"
 msgstr "YUV 支持：\t"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1752
+msgid "YUV (Analog PAL)"
+msgstr "YUV（模拟 PAL）"
 
 #: gui/mrvImageInformation.cpp:2994
 msgid "YUV Color Range"
@@ -8277,7 +8547,7 @@ msgid ""
 "the movie file."
 msgstr ""
 "YUV 颜色空间转换。该值是从电影文件中提取的。要将其锁定为始终使用相同的色彩空"
-"间，请在 Preferences->Video->YUV Conversion 中设置该值。该值应优先加载电影文"
+"间，请在 Preferences->Video->YUV Conversion 中设置值。该值应优先加载电影文"
 "件。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2972
@@ -8527,7 +8797,7 @@ msgid "mental ray Z Depth Picture"
 msgstr "mental ray Z 深度图片"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2072
 #: gui/mrvImageView.cpp:495
 msgid "mrViewer"
 msgstr "浏览器"
@@ -8611,7 +8881,7 @@ msgstr ""
 "mrViewer 支持用于输出设备转换 (ODT) 的 ICC 配置文件或 CTL 脚本。此设置优先选"
 "择一个。\n"
 "当将 CTL ODT 脚本与图像中的 ICC 配置文件混合作为渲染变换 (RT) 时，CTL ODT 必"
-"须读取 XYZ_OCES 空间中的数据（ICC v4 相对色度）。另请注意，ICC 使用 D50 白"
+"须读取 XYZ_OCES 空间中的数据（ICC v4 相对色度）。另外，请注意 ICC 使用 D50 白"
 "点，而 HDTV 和 CTL 使用 D65 白点。\n"
 "如果不确定这意味着什么，请始终使用相同的算法（CTL 或 ICC）保持显示和图像设"
 "置。"
@@ -8762,6 +9032,43 @@ msgstr "视频"
 msgid "visual impaired"
 msgstr "视力障碍"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1706
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2675
 msgid "x1"
 msgstr "x1"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1707
+msgid "x2"
+msgstr "x2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1708
+msgid "x3"
+msgstr "x3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1709
+msgid "x4"
+msgstr "x4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1710
+msgid "x5"
+msgstr "x5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1711
+msgid "x6"
+msgstr "x6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1712
+msgid "x7"
+msgstr "x7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1713
+msgid "x8"
+msgstr "x8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1714
+msgid "x9"
+msgstr "x9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+msgid "xyY CIE xyY"
+msgstr "xyY CIE xyY"

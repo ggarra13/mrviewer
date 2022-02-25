@@ -102,6 +102,13 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\an/, '\n')
     end
+  elsif lang == 'es'
+    if result =~ /\\\s+t/
+      #
+      # Automatic translation returns \ t instead of \t
+      #
+      result.gsub!(/\\\s+t/, '\t')
+    end
   elsif lang == 'ru'
     if text == '%4.8g %%'
       result = text
@@ -192,6 +199,9 @@ def fix( text, result, lang )
     if result =~ /TEMPO LIBERO/
       result.sub!(/TEMPO LIBERO/, 'OCIO')
     end
+    if text == '%d Hz.'
+      result = text
+    end
     if text == '%4.8g %%'
       result = text
     end
@@ -278,9 +288,10 @@ def new_line( text )
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'es' ]
-for lang in [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
-  next if langs.any? lang
+langs = [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'tr' ]
+translated = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
+for lang in langs
+  next if translated.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
   in_msg_id = false

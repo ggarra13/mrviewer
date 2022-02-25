@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-23 21:13-0300\n"
+"POT-Creation-Date: 2022-02-23 23:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -119,7 +119,7 @@ msgstr " Kalem"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2038
 msgid " Scrub"
-msgstr " fırçala"
+msgstr " fırçalayın"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2058
 msgid " Text"
@@ -384,19 +384,19 @@ msgid ""
 "Version 6.0\n"
 msgstr ""
 "#\n"
-"# mrViewer Oturumu \n"
+"# mrViewer Session \n"
 "# \n"
-"# %s üzerinde mrViewer\n"
+"# Created with mrViewer\n"
 "#\n"
-"# ile oluşturuldu\n"
+"# on %s\n"
 "#\n"
 "\n"
-"Sürüm 6.0\n"
+"Version 6.0\n"
 
 #: gui/mrvImageInformation.cpp:3155
 #, c-format
 msgid "%4.8g %%"
-msgstr "% 4.8g %%"
+msgstr "%4.8g %%"
 
 #: gui/mrvImageInformation.cpp:4873
 #, c-format
@@ -406,7 +406,7 @@ msgstr "%<PRId64> saniye %d ms."
 #: gui/mrvImageInformation.cpp:3602
 #, c-format
 msgid "%d Hz."
-msgstr "% d Hz."
+msgstr "%d Hz."
 
 #: gui/mrvImageInformation.cpp:3606 gui/mrvImageInformation.cpp:3653
 #, c-format
@@ -490,7 +490,7 @@ msgstr "(RT) İşleme Dönüşümü"
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2234
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2237
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9699
 #: gui/mrvImageView.cpp:9700 gui/mrvImageView.cpp:9708
 msgid "(no image)"
@@ -520,7 +520,7 @@ msgstr "******** BOŞ ortam eklendi"
 msgid "+"
 msgstr "+"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2316
 msgid "+0.0  f/8.0"
 msgstr "+0.0 f/8.0"
 
@@ -575,6 +575,14 @@ msgstr ".prefs"
 msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10.5 20.2"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1527
+msgid "0.45"
+msgstr "0.45"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1526
+msgid "0.55"
+msgstr "0,55"
+
 #: gui/mrvImageInformation.cpp:200
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
@@ -591,6 +599,62 @@ msgstr "1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0"
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr "1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1525
+msgid "1.00"
+msgstr "1.00"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
+msgid "1.8"
+msgstr "1.8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
+msgid "1/2"
+msgstr "1/2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1704
+msgid "1/3"
+msgstr "1/3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1703
+msgid "1/4"
+msgstr "1/4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1702
+msgid "1/5"
+msgstr "1/5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1701
+msgid "1/6"
+msgstr "1/6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
+msgid "1/7"
+msgstr "1/7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
+msgid "1/8"
+msgstr "1/8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
+msgid "1/9"
+msgstr "1/9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
+msgid "12"
+msgstr "12"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
+msgid "12.5"
+msgstr "12.5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
+msgid "14.985"
+msgstr "14.985"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1928
+msgid "15"
+msgstr "15"
+
 #: core/CMedia.cpp:4412
 msgid "16 bits"
 msgstr "16 bit"
@@ -601,7 +665,7 @@ msgstr "16 bit"
 msgid "16-bits"
 msgstr "16 bit"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2440
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2443
 #: gui/mrvImageInformation.cpp:4035
 msgid "1:1"
 msgstr "1:1"
@@ -622,6 +686,7 @@ msgstr "1:4"
 msgid "1:8"
 msgstr "1:8"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1523
 #: gui/mrvImageInformation.cpp:182
 msgid "2.2"
 msgstr "2.2"
@@ -634,9 +699,29 @@ msgstr "2.2 5.1"
 msgid "2.2 5.1 1.4"
 msgstr "2.2 5.1 1.4"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1927
+msgid "23.97"
+msgstr "23.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1926
+msgid "24"
+msgstr "24"
+
 #: gui/mrvImageInformation.cpp:186
 msgid "24000/1001"
 msgstr "24000/1001"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1925
+msgid "25"
+msgstr "25"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1924
+msgid "29.97"
+msgstr "29.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1923
+msgid "30"
+msgstr "30"
 
 #: core/CMedia.cpp:4419
 msgid "32 bits"
@@ -709,6 +794,10 @@ msgstr "3GP Film"
 msgid "3d View"
 msgstr "3d Görünüm"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
+msgid "3dView"
+msgstr "3dGörünüm"
+
 #: gui/mrvHotkey.cpp:305
 msgid "3dView Density Down"
 msgstr "3dGörünüm Yoğunluğu Aşağı"
@@ -725,6 +814,18 @@ msgstr "3dView Z Derinliği Aşağı"
 msgid "3dView Z Depth Up"
 msgstr "3dView Z Derinliği Yukarı"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1922
+msgid "50"
+msgstr "50"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
+msgid "59.94"
+msgstr "59.94"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1920
+msgid "60"
+msgstr "60"
+
 #: gui/mrvImageInformation.cpp:1096
 msgid "70mm"
 msgstr "70 mm"
@@ -737,7 +838,7 @@ msgstr "8 bit Önbellekler"
 msgid "8 bits"
 msgstr "8 bit"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2823
 msgid "8-bit sample of image pixel under mouse."
 msgstr "Fare altında görüntü pikselinin 8 bitlik örneği."
 
@@ -745,6 +846,10 @@ msgstr "Fare altında görüntü pikselinin 8 bitlik örneği."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2689
 msgid "8-bits"
+msgstr "8 bit"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
+msgid "8bit"
 msgstr "8 bit"
 
 #: core/CMedia_audio.cpp:940
@@ -763,21 +868,25 @@ msgstr ": Hata "
 msgid ": Unknown pixel type"
 msgstr ": Bilinmeyen piksel türü"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2303
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3092
 msgid "@<"
 msgstr "@<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1817
+msgid "@<->"
+msgstr "@<->"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3105
 msgid "@<|"
 msgstr "@<|"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3144
 msgid "@>"
 msgstr "@>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3157
 msgid "@>|"
 msgstr "@>|"
 
@@ -785,19 +894,20 @@ msgstr "@>|"
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.İşlev\t@B12@C7@b@.Kısayol tuşu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3079
 msgid "@|<"
 msgstr "@|<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3131
 msgid "@|>"
 msgstr "@|>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1815
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3118
 msgid "@||"
 msgstr "@||"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3242
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3245
 #: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr "A"
@@ -815,7 +925,11 @@ msgstr ""
 "Profesyonel bir resim ve film görüntüleyici\n"
 "Örnekler:\n"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1351
+msgid "A-B, Stereo 3D Options"
+msgstr "AB, Stereo 3D Seçenekleri"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2218
 msgid "A/B"
 msgstr "A/B"
 
@@ -845,16 +959,21 @@ msgstr "AVCHD Videosu"
 msgid "AVI Movie"
 msgstr "avi filmi"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1361
+msgid "About"
+msgstr "Hakkında"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
 #: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "mrViewer hakkında"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:149
 #: gui/mrvImageInformation.cpp:3013
 msgid "Absolute"
 msgstr "mutlak"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:94
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:97
 msgid "Accept"
 msgstr "Kabul"
 
@@ -862,11 +981,12 @@ msgstr "Kabul"
 msgid "Accept settings but don't save."
 msgstr "Ayarları kabul edin ancak kaydetmeyin."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:526
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:529
 msgid "Action"
 msgstr "Aksiyon"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1350
 msgid "Action Tools"
 msgstr "Eylem Araçları"
 
@@ -875,7 +995,7 @@ msgstr "Eylem Araçları"
 msgid "Actions"
 msgstr "Hareketler"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2458
 msgid "Activate viewer's 3D Lut."
 msgstr "İzleyicinin 3D Lut'unu etkinleştirin."
 
@@ -899,7 +1019,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr "Kabul Edilen Tarafsız"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3129
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
 msgid "Advance one frame."
 msgstr "Bir kare ilerletin."
 
@@ -915,8 +1035,9 @@ msgstr "Gelişmiş Sistemler Format Ortamı"
 msgid "Algorithm when not OCIO"
 msgstr "OCIO olmadığında algoritma"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:724
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3459
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:727
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3462
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "Tüm"
@@ -931,16 +1052,17 @@ msgstr "Tüm (*.{"
 msgid "All Layers"
 msgstr "Tüm Katmanlar"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 msgid "All Possible"
 msgstr "Hepsi mümkün"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3228
 msgid "Allows you to adjust frame rate playback."
 msgstr "Kare hızı oynatmayı ayarlamanızı sağlar."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2397
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2407
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -948,7 +1070,7 @@ msgstr ""
 "Görüntüleme için gama eğrisini ayarlamanıza izin verir.\n"
 "Değer: pow( 2, 1/x );"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2269
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "Görüntünün kazancını veya pozlamasını ayarlamanızı sağlar."
 
@@ -956,15 +1078,15 @@ msgstr "Görüntünün kazancını veya pozlamasını ayarlamanızı sağlar."
 msgid "Allows you to select a standard cropping area around image."
 msgstr "Resmin çevresinde standart bir kırpma alanı seçmenize olanak sağlar."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2235
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2238
 msgid "Allows you to select different image channels or layers."
 msgstr "Farklı görüntü kanalları veya katmanları seçmenizi sağlar."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3278
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3281
 msgid "Allows you to set starting frame for timeline."
 msgstr "Zaman çizelgesi için başlangıç çerçevesi belirlemenizi sağlar."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3296
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 
@@ -974,13 +1096,17 @@ msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 msgid "Alpha"
 msgstr "Alfa"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:158
+msgid "Alpha Only"
+msgstr "Yalnızca Alfa"
+
 #: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2049
 #: gui/mrvImageView.cpp:9116 gui/mrvImageView.cpp:9663
 msgid "Alpha Overlay"
 msgstr "Alfa Yerleşimi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
 msgid "Alpha value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin alfa değeri."
 
@@ -990,7 +1116,7 @@ msgstr "Zaten kullanılan "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:120
 msgid "Alt"
-msgstr "Her şey"
+msgstr "alt"
 
 #: core/exrImage.cpp:1280 core/exrImage.cpp:2461 core/exrImage.cpp:2465
 #: core/exrImage.cpp:2546 core/exrImage.cpp:2550
@@ -1078,8 +1204,8 @@ msgstr "'%s' üzerine yazmak istediğinizden emin misiniz?"
 msgid "Area"
 msgstr "Alan"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:549
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2507
 msgid "Area Select Tool"
 msgstr "Alan Seçim Aracı"
 
@@ -1095,8 +1221,8 @@ msgstr "Ok"
 msgid "Arrow Mode"
 msgstr "Ok Modu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:641
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:644
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2583
 msgid "Arrow Tool"
 msgstr "Ok Aracı"
 
@@ -1128,7 +1254,7 @@ msgstr "Öznitellikler"
 msgid "Attributes Menu"
 msgstr "Özellikler Menüsü"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2634
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2637
 msgid "Attrs"
 msgstr "Özellikler"
 
@@ -1158,7 +1284,7 @@ msgstr "Ses Akışı #%d"
 msgid "Audio Streams"
 msgstr "Ses Akışları"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3260
 msgid "Audio Volume"
 msgstr "Ses Seviyesi"
 
@@ -1209,7 +1335,7 @@ msgstr "Ses: %<PRId64>"
 
 #: core/CMedia_audio.cpp:1647
 msgid "Audios #"
-msgstr "ses #"
+msgstr "Sesler #"
 
 #: gui/mrvFileRequester.cpp:562
 msgid "Audios (*.{"
@@ -1345,7 +1471,7 @@ msgstr "Mavi Kazanç"
 msgid "Blue Gain of clip."
 msgstr "Mavi Kazanç klibi."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2803
 msgid "Blue value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin mavi değeri."
 
@@ -1356,6 +1482,10 @@ msgstr "Yükseltme istisnası: "
 #: gui/mrvImageView.cpp:11001
 msgid "Bottom"
 msgstr "Alt kısım"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1557
+msgid "Bottom Field"
+msgstr "Alt Alan"
 
 #: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
@@ -1412,7 +1542,7 @@ msgstr "RENK"
 msgid "CPU Information"
 msgstr "CPU Bilgileri"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:65
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:68
 msgid "CTL Browser"
 msgstr "CTL Tarayıcı"
 
@@ -1438,7 +1568,7 @@ msgstr "CTL_MODULE_PATH"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2076
 msgid "Cache Active"
-msgstr "Aktif Önbellek"
+msgstr "Önbellek Etkin"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2147
 msgid "Cache Size"
@@ -1457,8 +1587,8 @@ msgstr "kart açılamıyor "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:93
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:131
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:106
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:271
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:109
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:274
 #: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr "İptal"
@@ -1537,7 +1667,7 @@ msgstr "Orta Resim"
 msgid "Change Image failed"
 msgstr "Resmi Değiştir başarısız oldu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2420
 msgid "Changes frame/field display"
 msgstr "Çerçeveyi değiştirir/alan ekranı"
 
@@ -1545,7 +1675,7 @@ msgstr "Çerçeveyi değiştirir/alan ekranı"
 msgid "Channel"
 msgstr "Kanal"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
 msgstr "Kanallar"
@@ -1595,8 +1725,8 @@ msgstr "Daire"
 msgid "Circle Mode"
 msgstr "Daire modu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:626
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2565
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:629
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2568
 msgid "Circle Tool"
 msgstr "Daire Aracı"
 
@@ -1604,7 +1734,7 @@ msgstr "Daire Aracı"
 msgid "City"
 msgstr "Şehir"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:345
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:348
 msgid "Clear"
 msgstr "Temizlemek"
 
@@ -1612,7 +1742,7 @@ msgstr "Temizlemek"
 msgid "Clear Image Cache"
 msgstr "Görüntü Önbelleğini Temizle"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
 msgid "Client"
 msgstr "Müşteri"
 
@@ -1659,7 +1789,7 @@ msgstr "Kapalı film dosyası"
 
 #: core/mrvServer.cpp:2073
 msgid "Closed server at port "
-msgstr "Bağlantı noktasında kapalı sunucu "
+msgstr "Limanda kapalı sunucu "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:235
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:346
@@ -1701,7 +1831,7 @@ msgid "CollapsibleGroup not found"
 msgstr "CollapsibleGroup bulunamadı"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2594
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2597
 #: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
@@ -1714,6 +1844,14 @@ msgstr "Renk"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1100
 msgid "Color Area"
 msgstr "Renk Alanı"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1348
+msgid "Color Controls"
+msgstr "Renk Kontrolleri"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1347
+msgid "Color Info"
+msgstr "Renk Bilgisi"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorAreaUI.cxx:18
 msgid "Color Information"
@@ -1743,7 +1881,7 @@ msgstr "Renk Versiyonu"
 msgid "Color channel not found at index "
 msgstr "Renk kanalı dizinde bulunamadı "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2125
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2128
 msgid "Color controls"
 msgstr "Renk kontrolleri"
 
@@ -1786,7 +1924,7 @@ msgid "Compositing"
 msgstr "Kompozisyon"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3272
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
 #: gui/mrvImageInformation.cpp:3116
 msgid "Compression"
 msgstr "Sıkıştırma"
@@ -1803,8 +1941,8 @@ msgstr "Sıkıştırma yöntemi mevcut değil. PIZ'i kullanma."
 msgid "Compression to use when saving an exr."
 msgstr "Bir exr kaydederken kullanılacak sıkıştırma."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:841
 #: core/mrvClient.cpp:471
 msgid "Connect"
 msgstr "Bağlamak"
@@ -1817,7 +1955,8 @@ msgstr "Bağlantı hatası: "
 msgid "Connect timed out."
 msgstr "Bağlantı zaman aşımına uğradı."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
 msgid "Connections"
 msgstr "Bağlantılar"
 
@@ -2391,8 +2530,8 @@ msgstr "Ülke"
 msgid "Country Code"
 msgstr "Ülke kodu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:780
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:812
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
 #: core/mrvServer.cpp:2041
 msgid "Create"
 msgstr "Yaratmak"
@@ -2431,19 +2570,19 @@ msgstr "Yaratmak/Renk Çubukları/SMPTE NTSC HDTV"
 
 #: gui/mrvImageBrowser.cpp:4464
 msgid "Create/Gamma Chart/1.4"
-msgstr "Yaratmak/Aralık Tablosu/1.4"
+msgstr "Yaratmak/Gama Grafiği/1.4"
 
 #: gui/mrvImageBrowser.cpp:4466
 msgid "Create/Gamma Chart/1.8"
-msgstr "Yaratmak/Aralık Tablosu/1.8"
+msgstr "Yaratmak/Gama Grafiği/1.8"
 
 #: gui/mrvImageBrowser.cpp:4468
 msgid "Create/Gamma Chart/2.2"
-msgstr "Yaratmak/Aralık Tablosu/2.2"
+msgstr "Yaratmak/Gama Grafiği/2.2"
 
 #: gui/mrvImageBrowser.cpp:4470
 msgid "Create/Gamma Chart/2.4"
-msgstr "Yaratmak/Aralık Tablosu/2.4"
+msgstr "Yaratmak/Gama Grafiği/2.4"
 
 #: gui/mrvImageBrowser.cpp:4472
 msgid "Create/Gradient/Linear"
@@ -2481,13 +2620,14 @@ msgstr "Mahsul"
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:719
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3454
 msgid "Current"
 msgstr "Akım"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3058
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3061
 msgid "Current frame."
 msgstr "Mevcut çerçeve."
 
@@ -2596,12 +2736,13 @@ msgstr "DWA Sıkıştırma"
 msgid ""
 "DWA/DWB compression to use when saving an exr with that compression scheme."
 msgstr ""
-"2/Bu sıkıştırma şemasıyla bir exr kaydederken kullanılacak DWB sıkıştırması."
+"DWA/Bu sıkıştırma şemasıyla bir exr kaydederken kullanılacak DWB "
+"sıkıştırması."
 
 #: gui/mrvImageView.cpp:4550
 #, c-format
 msgid "DYW: %d,%d %dx%d"
-msgstr "DO:% d,% d% dx% d"
+msgstr "DYW: %d,%d %dx%d"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1327
 #: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2897
@@ -2668,7 +2809,7 @@ msgstr "Video hatası arama çerçevesinin kodunu çöz "
 msgid "Decode_audio failed with error: "
 msgstr "Decode_audio şu hatayla başarısız oldu: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2301
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2304
 msgid "Decrease exposure by 0.5."
 msgstr "Pozlamayı 0,5 azaltın."
 
@@ -2676,6 +2817,7 @@ msgstr "Pozlamayı 0,5 azaltın."
 msgid "Decreasing Y"
 msgstr "azalan Y"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1919
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "Varsayılan"
@@ -2816,7 +2958,7 @@ msgstr "Ekran Penceresi 2"
 msgid "Display Window of Clip"
 msgstr "Klip Görüntüleme Penceresi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2314
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2317
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -2827,7 +2969,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:3549 gui/mrvImageInformation.cpp:3614
 #: gui/mrvImageInformation.cpp:3659
 msgid "Disposition"
-msgstr "Ayarlama"
+msgstr "eğilim"
 
 #: gui/mrvImageInformation.cpp:3549 gui/mrvImageInformation.cpp:3614
 #: gui/mrvImageInformation.cpp:3659
@@ -2876,6 +3018,10 @@ msgstr "sürücü"
 msgid "Driver is not a live output device"
 msgstr "Sürücü, canlı bir çıktı aygıtı değil"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1833
+msgid "Drop Frame Timecode"
+msgstr "Kare Zaman Kodunu Bırak"
+
 #: gui/mrvImageInformation.cpp:3555 gui/mrvImageInformation.cpp:3620
 #: gui/mrvImageInformation.cpp:3664
 msgid "Duration"
@@ -2893,9 +3039,9 @@ msgstr "Altyazı Süresi"
 msgid "Duration of Video"
 msgstr "Video Süresi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3320
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3323
 msgid "E"
-msgstr "VE"
+msgstr "E"
 
 #: audio/mrvALSAEngine.cpp:738
 msgid "EAGAIN: "
@@ -2910,6 +3056,7 @@ msgid "EDL"
 msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
 msgstr "EDL Düzenle"
 
@@ -2999,8 +3146,8 @@ msgstr "Silme Modu"
 msgid "Erase Temporary Mode"
 msgstr "Geçici Modu Sil"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:581
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2536
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2539
 msgid "Eraser Tool"
 msgstr "Silgi aracı"
 
@@ -3130,12 +3277,12 @@ msgstr "Uzatılmış"
 msgid "Eye Separation"
 msgstr "Göz Ayrımı"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2419
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2903
 msgid "F"
 msgstr "F"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3030
 msgid "F:"
 msgstr "F:"
 
@@ -3143,11 +3290,15 @@ msgstr "F:"
 msgid "F: "
 msgstr "F: "
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1715
+msgid "FIT"
+msgstr "UYGUN"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:334
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1441
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1764
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2159
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3170
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3173
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3252,7 +3403,7 @@ msgstr "ripmap Y için getirme başarısız oldu "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1673
 msgid "File Requester"
-msgstr "Dosya İsteyen"
+msgstr "Dosya İstemcisi"
 
 #: gui/mrvImageView.cpp:4807
 msgid "File/Open/AMF file"
@@ -3352,7 +3503,7 @@ msgstr "Herkese uyar"
 msgid "Fit Screen"
 msgstr "Ekranı Sığdır"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2097
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2100
 msgid "Fit Window to Image"
 msgstr "Pencereyi Görüntüye Sığdır"
 
@@ -3378,7 +3529,7 @@ msgstr "X'i çevir"
 
 #: gui/mrvHotkey.cpp:334
 msgid "Flip Y"
-msgstr "Flip-Y"
+msgstr "Y'yi çevir"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:108
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:101
@@ -3402,7 +3553,7 @@ msgstr "Tamponların temizlenmesi başarısız oldu"
 
 #: gui/mrvImageInformation.cpp:3297
 msgid "Flut"
-msgstr "sel basmak"
+msgstr "flüt"
 
 #: core/exrImage.cpp:1290 core/exrImage.cpp:2554 core/exrImage.cpp:2558
 msgid "Focus"
@@ -3410,9 +3561,9 @@ msgstr "Odak"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3136
 msgid "Font"
-msgstr "Yapmak"
+msgstr "Yazı tipi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:173
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
 #: gui/mrvImageInformation.cpp:3099 gui/mrvImageInformation.cpp:3600
 msgid "Format"
 msgstr "Biçim"
@@ -3432,6 +3583,7 @@ msgid "FourCC"
 msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1389
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
 #: gui/mrvImageView.cpp:10999
 msgid "Frame"
 msgstr "Çerçeve"
@@ -3505,9 +3657,10 @@ msgstr "Çerçeve arabelleği eksik: Tamponu oku."
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Framebuffer multisample eksik: Tampon çizin."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:251
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:713
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3448
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
 msgid "Frames"
 msgstr "çerçeveler"
 
@@ -3519,8 +3672,8 @@ msgstr "Saniyedeki Kare Sayısı"
 msgid "Frames per Second"
 msgstr "Saniyedeki Kare Sayısı"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:566
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2521
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2524
 msgid "Freehand Drawing Tool"
 msgstr "Serbest Çizim Aracı"
 
@@ -3531,6 +3684,10 @@ msgstr "Sıklık"
 #: gui/mrvImageInformation.cpp:3604
 msgid "Frequency of audio"
 msgstr "ses frekansı"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1774
+msgid "Full"
+msgstr "Tam dolu"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:991
 msgid "Fullscreen"
@@ -3564,7 +3721,7 @@ msgid "GREEN"
 msgstr "YEŞİL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1202
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2254
 msgid "Gain"
 msgstr "Kazanmak"
 
@@ -3572,14 +3729,15 @@ msgstr "Kazanmak"
 msgid "Gain for image failed"
 msgstr "Görüntü için kazanç başarısız oldu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2259
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "Görüntü değeri kazanın. Görüntü piksel değerlerinin basit bir çarpanı."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1208
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3261
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1471
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2364
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1775
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 #: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1785
 msgid "Gamma"
 msgstr "Gama"
@@ -3594,15 +3752,15 @@ msgstr "Gama 1.8 Tablosu"
 
 #: core/guessImage.cpp:315 core/Sequence.cpp:1174 gui/mrvImageBrowser.cpp:534
 msgid "Gamma 2.2 Chart"
-msgstr "Aralık 2.2 Tablo"
+msgstr "Gama 2.2 Tablosu"
 
 #: core/guessImage.cpp:321 core/Sequence.cpp:1175 gui/mrvImageBrowser.cpp:540
 msgid "Gamma 2.4 Chart"
-msgstr "Aralık 2.4 Tablosu"
+msgstr "Gama 2.4 Tablosu"
 
 #: gui/mrvImageInformation.cpp:3240
 msgid "Gamma Curve"
-msgstr "Eğri aralığı"
+msgstr "Gama Eğrisi"
 
 #: gui/mrvHotkey.cpp:395
 msgid "Gamma Less"
@@ -3624,20 +3782,20 @@ msgstr "Bir exr yüklenirken kullanılacak gama ve OCIO kapalı."
 msgid "Gb"
 msgstr "GB"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:733
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3468
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
 msgid "Ghosting"
 msgstr "hayalet"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3103
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3106
 msgid "Go back one frame."
 msgstr "Bir kare geri git."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3077
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3080
 msgid "Go to the beginning of the sequence."
 msgstr "Dizinin başına git."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3158
 msgid "Go to the end of the sequence."
 msgstr "Sıranın sonuna git."
 
@@ -3664,7 +3822,7 @@ msgstr "Yeşil Kazanç"
 msgid "Green Gain of clip."
 msgstr "Yeşil Kazanç klibi."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2795
 msgid "Green value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin yeşil değeri."
 
@@ -3700,14 +3858,19 @@ msgstr "HDRI Resmi"
 msgid "HDTV / Widescreen 16:9"
 msgstr "HDTV/Geniş ekran 16:9"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
+msgid "HSL"
+msgstr "HSL"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2828
 msgid "HSV"
 msgstr "HSV"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1358
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1599
 msgid "HUD"
-msgstr "DERİ"
+msgstr "HUD"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:51
 msgid "HW"
@@ -3742,6 +3905,10 @@ msgstr "Yükseklik"
 msgid "Height of clip"
 msgstr "Klibin yüksekliği"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1730
+msgid "Hex"
+msgstr "altıgen"
+
 #: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "Diğerlerini sakla"
@@ -3760,6 +3927,7 @@ msgstr "yüksek 10"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1060
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "histogram"
 
@@ -3786,6 +3954,7 @@ msgstr "Kısayol dosyası:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1359
 msgid "Hotkeys"
 msgstr "Kısayol Tuşları"
 
@@ -3805,7 +3974,7 @@ msgstr "Varsayılan olarak zaman çizelgesi nasıl görüntülenir."
 msgid "How to display timeline selection by default."
 msgstr "Varsayılan olarak zaman çizelgesi seçimi nasıl görüntülenir."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2875
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2878
 msgid "Hue value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin renk tonu değeri."
 
@@ -3824,6 +3993,7 @@ msgstr "ICC Profili"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2686
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1356
 msgid "ICC Profiles"
 msgstr "ICC Profilleri"
 
@@ -3843,13 +4013,17 @@ msgstr "ICC profili"
 msgid "IFF Picture"
 msgstr "IFF Resmi"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:138
+msgid "ILM OpenEXR (.exr)"
+msgstr "ILM OpenEXR (.exr)"
+
 #: gui/mrvImageInformation.cpp:3229
 msgid "IPP2 Mode"
 msgstr "IPP2 Modu"
 
 #: gui/mrvImageInformation.cpp:3258
 msgid "ISO"
-msgstr "ANA"
+msgstr "ISO"
 
 #: core/R3dImage.cpp:477
 msgid "ISO Index out of bounds"
@@ -3862,6 +4036,14 @@ msgstr "ISO Hızı"
 #: gui/mrvImageInformation.cpp:3258
 msgid "ISO of film stock."
 msgstr "Film stokunun ISO'su."
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1755
+msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
+msgstr "ITU-601 (Dijital PAL/NTSC YCbCr)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1756
+msgid "ITU-709 (Digital HDTV YCbCr)"
+msgstr "İTÜ-709 (Dijital HDTV YCbCr)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
 msgid ""
@@ -3928,7 +4110,7 @@ msgstr "Tuvalde Resim Y Konumu"
 msgid "Image Y Scale in Canvas"
 msgstr "Tuvalde Resim Y Ölçeği"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2744
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2747
 msgid "Image coordinate of pixel under mouse."
 msgstr "Fare altındaki pikselin görüntü koordinatı."
 
@@ -3973,7 +4155,7 @@ msgstr ""
 "görüntüler isteğe bağlı olarak yüklenir ancak akıcı oynatma mümkün "
 "olmayabilir."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2676
 msgid "Image zoom setting."
 msgstr "Görüntü yakınlaştırma ayarı."
 
@@ -4105,7 +4287,7 @@ msgstr "Stereodaki görüntülerin farklı hızları (fps) vardır."
 msgid "Images, sequences or movies to display."
 msgstr "Görüntülenecek görüntüler, diziler veya filmler."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2329
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2332
 msgid "Increase exposure by 0.5."
 msgstr "Pozlamayı 0,5 artırın."
 
@@ -4126,7 +4308,7 @@ msgid "Input"
 msgstr "Giriş"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2398
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2285
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2288
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3047
 msgid "Input Color Space"
 msgstr "Giriş Renk Alanı"
@@ -4223,6 +4405,10 @@ msgstr "Ters Referans İşleme Dönüşümü"
 msgid "Item was not found in tree."
 msgstr "Öğe ağaçta bulunamadı."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:139
+msgid "JPEG (.jpg)"
+msgstr "JPEG (.jpg)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:600 gui/FLU/Flu_File_Chooser.cpp:601
 msgid "JPEG Picture"
 msgstr "JPEG Resmi"
@@ -4278,18 +4464,27 @@ msgstr "Bilinen Codec Bileşeni"
 msgid "Kodak Digital Negative"
 msgstr "Kodak Dijital Negatif"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3001
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1816
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3004
 msgid "L"
-msgstr "i"
+msgstr "L"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
+msgid "L (Lightness)"
+msgstr "L (Hafiflik)"
 
 #: gui/mrvImageInformation.cpp:3079
 #, c-format
 msgid "LMTransform %u"
-msgstr "LMTransform% u"
+msgstr "LMTransform %u"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2457
 msgid "LUT"
-msgstr "ŞUBAT"
+msgstr "LUT"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1750
+msgid "Lab CIELAB (L*a*b*)"
+msgstr "Laboratuvar CIELAB (L*a*b*)"
 
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
@@ -4511,9 +4706,13 @@ msgstr "Yerel Altyazı"
 msgid "Lockfile "
 msgstr "kilit dosyası "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:316
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "Günlük Mesajları"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
+msgid "Logs"
+msgstr "Kütükler"
 
 #: core/exrImage.cpp:1260 core/exrImage.cpp:2447 core/exrImage.cpp:2451
 #: core/exrImage.cpp:2531 core/exrImage.cpp:2535
@@ -4524,7 +4723,7 @@ msgstr "Boylam"
 msgid "Looked for it in: "
 msgstr "İçinde aradı: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3002
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3005
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "Döngü Davranışı (Dur, Döngü, Masa Tenisi)"
 
@@ -4540,7 +4739,7 @@ msgstr "parlaklık"
 msgid "Luminance Gradient"
 msgstr "Parlaklık Gradyanı"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2959
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2962
 msgid "Luminance of image pixel under mouse."
 msgstr "Fare altında görüntü pikselinin parlaklığı."
 
@@ -4552,7 +4751,11 @@ msgstr "lumma"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1285
 msgid "Lut Active"
-msgstr "Ud Aktif"
+msgstr "Lut Aktif"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1751
+msgid "Luv CIELUV (L*u*v*)"
+msgstr "Luv CIELUV (L*u*v*)"
 
 #: gui/mrvImageInformation.cpp:201 gui/mrvImageInformation.cpp:227
 #: gui/mrvImageInformation.cpp:512
@@ -4612,7 +4815,7 @@ msgstr "Harita Resmi"
 
 #: gui/FLU/Flu_File_Chooser.cpp:3319
 msgid "Mar"
-msgstr "Deniz"
+msgstr "Mart"
 
 #: gui/mrvWaveform.cpp:311
 msgid "Mark an area in the image with SHIFT + LMB"
@@ -4678,6 +4881,7 @@ msgid "Mean"
 msgstr "Anlamına gelmek"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1086
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1346
 msgid "Media Info"
 msgstr "Medya bilgisi"
 
@@ -4715,6 +4919,10 @@ msgstr "Meta"
 #: gui/mrvImageInformation.cpp:993
 msgid "Metadata"
 msgstr "meta veri"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:140
+msgid "Microsoft Bitmap (.bmp)"
+msgstr "Microsoft Bitmap (.bmp)"
 
 #: gui/mrvColorInfo.cpp:780 gui/mrvColorInfo.cpp:890
 msgid "Minimum"
@@ -4801,7 +5009,7 @@ msgstr "Hareket Tahmin Yöntemleri"
 msgid "Move Pic."
 msgstr "Resmi Taşı."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:610
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
 msgid "Move Picture Tool"
 msgstr "Resim Aracını Taşı"
 
@@ -4850,7 +5058,7 @@ msgstr "NTSC HDTV Renk Çubukları"
 msgid "NTSC Video"
 msgstr "NTSC Videosu"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:179
 msgid "Name (.ext)"
 msgstr "Ad (.ext)"
 
@@ -4875,8 +5083,8 @@ msgstr "Yeni öğe oluşturulmadı "
 msgid "New item was not found in tree."
 msgstr "Ağaçta yeni öğe bulunamadı."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:746
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:749
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3484
 msgid "Next"
 msgstr "Sonraki"
 
@@ -4961,7 +5169,7 @@ msgstr "Stereo görüntü çifti eklemek için sol görüntü yok"
 
 #: core/CMedia_audio.cpp:247 core/CMedia_audio.cpp:1646
 msgid "No memory for audio frame"
-msgstr "Ses çerçevesi için hafıza yok"
+msgstr "Ses çerçevesi için bellek yok"
 
 #: core/aviImage.cpp:570
 msgid "No memory to allocate filter graph"
@@ -4991,18 +5199,22 @@ msgstr ""
 "Bu klipte sürüm yok. Lütfen sürüm oluşturma dizesiyle adlandırılmış bir "
 "görüntü veya dizin oluşturun."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1832
+msgid "Non-Drop Frame Timecode"
+msgstr "Düşmeyen Çerçeve Zaman Kodu"
+
 #: video/mrvGLEngine.cpp:235
 msgid "Non-POT Textures:\t"
 msgstr "POT Olmayan Dokular:\t"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:204
 #: core/aviImage_save.cpp:1354 core/aviImage_save.cpp:1389
 #: core/exrImage.cpp:123 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:3908
 #: gui/mrvSave.cpp:256 gui/mrvSave.cpp:257 gui/mrvSave.cpp:267
 msgid "None"
 msgstr "Hiçbiri"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2346
 msgid "Norm"
 msgstr "Norm"
 
@@ -5010,7 +5222,7 @@ msgstr "Norm"
 msgid "Normal"
 msgstr "Normal"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2347
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "Piksel değerlerini [0,1] aralığında kalacak şekilde normalleştirin."
 
@@ -5146,7 +5358,7 @@ msgstr "OCIO"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:85
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:77
 msgid "OCIO Color Space"
-msgstr "EĞLENCE Renk Alanı"
+msgstr "OCIO Renk Alanı"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2364
 msgid "OCIO Config File"
@@ -5154,11 +5366,11 @@ msgstr "OCIO Yapılandırma Dosyası"
 
 #: gui/mrvHotkey.cpp:377
 msgid "OCIO Display"
-msgstr "EĞLENCE Ekranı"
+msgstr "OCIO Ekranı"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2368
 msgid "OCIO Display/View or some default gamma settings."
-msgstr "EĞLENCE Ekranı/Görünüm veya bazı varsayılan gama ayarları."
+msgstr "OCIO Ekranı/Görünüm veya bazı varsayılan gama ayarları."
 
 #: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3048
 msgid "OCIO Input Color Space"
@@ -5166,7 +5378,7 @@ msgstr "OCIO Giriş Renk Alanı"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "EĞLENCE Görünümü"
+msgstr "OCIO Görünümü"
 
 #: gui/mrvImageView.cpp:3866
 msgid "OCIO View change failed"
@@ -5181,7 +5393,7 @@ msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr ""
 "OCIO yapılandırması ayarlanmadı. Varsayılan olarak CTL'ye ayarlanıyor. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2289
 msgid "OCIO input color space for the image"
 msgstr "Görüntü için OCIO giriş renk alanı"
 
@@ -5316,7 +5528,7 @@ msgstr ""
 "SC + DC x ( 1 - SA )\n"
 "burada SC kaynak renk, SA kaynak alfa ve DC hedef renktir ."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2152
 msgid "Opens different windows"
 msgstr "Farklı pencereler açar"
 
@@ -5332,6 +5544,10 @@ msgstr "R3D'yi kontrol eden seçenekler/BRAW okuyucuları"
 #: core/exrImage.cpp:2942
 msgid "Options for EXR were empty"
 msgstr "EXR seçenekleri boştu"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1776
+msgid "Original"
+msgstr "orijinal"
 
 #: core/wandImage.cpp:592
 msgid "Original Transmission Reference"
@@ -5459,12 +5675,12 @@ msgstr "Sayfa yukarı"
 msgid "Pause"
 msgstr "Duraklat"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:704
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
 msgstr "Kalem Rengi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:657
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3434
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3437
 msgid "Pen Size"
 msgstr "Kalem Boyutu"
 
@@ -5476,6 +5692,7 @@ msgstr "Kalem Boyutu Daha Az"
 msgid "Pen Size More"
 msgstr "Kalem Boyutu Daha Fazla"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:148
 #: gui/mrvImageInformation.cpp:3012
 msgid "Perceptual"
 msgstr "algısal"
@@ -5565,11 +5782,11 @@ msgstr "Forvet Oyna/Hızı Değiştir"
 msgid "Play in Current Direction"
 msgstr "Mevcut Yönde Oynat"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3090
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3093
 msgid "Play sequence backwards."
 msgstr "Sıralamayı geriye doğru oynatın."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3145
 msgid "Play sequence forward."
 msgstr "Sıralamayı ileri oynat."
 
@@ -5590,8 +5807,8 @@ msgstr "Geri çalma"
 msgid "Playback of audio frame "
 msgstr "Ses çerçevesinin oynatılması "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:833
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
 msgid "Port"
 msgstr "Liman"
 
@@ -5604,7 +5821,8 @@ msgid "Power"
 msgstr "Güç"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:909
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2111
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1358
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2114
 msgid "Preferences"
 msgstr "tercihler"
 
@@ -5640,8 +5858,8 @@ msgstr "Sunum"
 msgid "Preview Thumbnails"
 msgstr "Önizleme Küçük Resimleri"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:739
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3474
 msgid "Previous"
 msgstr "Öncesi"
 
@@ -5782,6 +6000,7 @@ msgid "RExt"
 msgstr "TEKRAR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
 msgstr "RGB"
@@ -5790,7 +6009,9 @@ msgstr "RGB"
 msgid "RGB Picture"
 msgstr "RGB Resim"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2756
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1729
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
 #: gui/mrvImageView.cpp:204
 msgid "RGBA"
 msgstr "RGBA"
@@ -5879,7 +6100,7 @@ msgstr "Kırmızı Kazanç"
 msgid "Red Gain of clip."
 msgstr "Kırmızı Kazanç klibi."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2787
 msgid "Red value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin kırmızı değeri."
 
@@ -5891,8 +6112,8 @@ msgstr "kırmızı/camgöbeği gözlük"
 msgid "Redo Draw"
 msgstr "Beraberliği Yeniden Yap"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:685
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2619
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2622
 msgid "Redo Previous Shape Drawn"
 msgstr "Önceki Şekli Çizilmiş Yinele"
 
@@ -5912,6 +6133,7 @@ msgid "Reel List"
 msgstr "makara listesi"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2885
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1345
 msgid "Reels"
 msgstr "makaralar"
 
@@ -5952,7 +6174,8 @@ msgstr ""
 msgid "Regular expression error: "
 msgstr "Normal ifade hatası: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:213
 #: gui/mrvImageInformation.cpp:3014
 msgid "Relative"
 msgstr "Akraba"
@@ -5997,7 +6220,7 @@ msgstr "Geçerli görüntüyü makaradan çıkarın."
 msgid "Removed client "
 msgstr "Kaldırılan istemci "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:207
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
 msgid "Render Intent"
 msgstr "Oluşturma Amacı"
 
@@ -6032,7 +6255,7 @@ msgstr ""
 
 #: gui/mrvImageBrowser.cpp:3442
 msgid "Replace image index is out of range"
-msgstr "Resim dizini değiştir aralık dışında"
+msgstr "Görüntü dizini değiştir aralık dışında"
 
 #: core/CMedia_audio.cpp:1244
 msgid "Resampling audio failed"
@@ -6151,7 +6374,7 @@ msgstr "Yuvarlama Modu"
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "Tek örnek ayarından bağımsız olarak mrViewer'ı çalıştırın."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3307
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3310
 msgid "S"
 msgstr "S"
 
@@ -6181,6 +6404,7 @@ msgid "Safe Areas"
 msgstr "Güvenli Alanlar"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
 msgstr "Doyma"
@@ -6189,14 +6413,14 @@ msgstr "Doyma"
 msgid "Saturation of clip."
 msgstr "Klibin doygunluğu."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2883
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2886
 msgid "Saturation value of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin doygunluk değeri."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3408
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:333
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:272
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:336
 msgid "Save"
 msgstr "Kayıt etmek"
 
@@ -6232,7 +6456,7 @@ msgstr ""
 msgid "Save Ocio Config File in Preferences"
 msgstr "Ocio Yapılandırma Dosyasını Tercihler'e Kaydet"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:167
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:170
 msgid "Save Options"
 msgstr "Seçenekleri Kaydet"
 
@@ -6313,7 +6537,7 @@ msgstr "şema"
 msgid "ScrollLock"
 msgstr "Kaydırma kilidi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
 #: gui/mrvImageView.cpp:1579
 msgid "Scrub"
 msgstr "fırçala"
@@ -6326,8 +6550,8 @@ msgstr "Fırçalama Modu"
 msgid "Scrub Sensitivity"
 msgstr "Fırçalama Hassasiyeti"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:532
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2487
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:535
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2490
 msgid "Scrubbing Tool"
 msgstr "Ovma Aracı"
 
@@ -6351,7 +6575,11 @@ msgstr "Klibin İkinci Görüntüleme Penceresi"
 msgid "Secondary Display"
 msgstr "İkincil Ekran"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3243
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
+msgid "Seconds"
+msgstr "saniye"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3246
 msgid "Select Audio Track"
 msgstr "Ses Parçasını Seçin"
 
@@ -6363,7 +6591,7 @@ msgstr "Çoklu Görüntü Seç"
 msgid "Select Single Image"
 msgstr "Tek Görüntü Seç"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:79
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
 msgid "Select a CTL script"
 msgstr "Bir CTL komut dosyası seçin"
 
@@ -6436,13 +6664,13 @@ msgstr ""
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr "Geçerli görüntü üzerinde seçim dikdörtgeninin rengini seçer."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:705
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:708
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2598
 msgid "Selects the current pen color."
 msgstr "Geçerli kalem rengini seçer."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:658
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3435
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:661
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3438
 msgid "Selects the size of brush."
 msgstr "Fırça boyutunu seçer."
 
@@ -6462,8 +6690,8 @@ msgstr "Sekans"
 msgid "Sequences"
 msgstr "diziler"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:804
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:832
 msgid "Server"
 msgstr "sunucu"
 
@@ -6492,7 +6720,7 @@ msgstr "Çıkış Noktası"
 msgid "Set added audio offset."
 msgstr "Eklenen ses ofsetini ayarlayın."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2216
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2219
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -6518,7 +6746,8 @@ msgstr "Makara görüntüsünü arka plan olarak ayarlayın."
 
 #: standalone/mrvCommandLine.cpp:448
 msgid "Set viewer's default server/client port."
-msgstr "Görüntüleyicinin varsayılan sunucusunu ayarla/müşteri limanı."
+msgstr ""
+"Görüntüleyicinin varsayılan sunucusunu ayarla/istemci bağlantı noktası."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1203
 msgid "Sets the default gain when mrViewer starts."
@@ -6618,7 +6847,7 @@ msgstr "Softimage Resim"
 msgid "Software"
 msgstr "Yazılım"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
 msgid "Some default frame rate settings."
 msgstr "Bazı varsayılan kare hızı ayarları."
 
@@ -6688,7 +6917,7 @@ msgstr "Stereo göz ayırma"
 msgid "Stop"
 msgstr "Durmak"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3116
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3119
 msgid "Stop playback."
 msgstr "Oynatmayı durdur."
 
@@ -6700,7 +6929,7 @@ msgstr "uiview'i durdur"
 msgid "Stopped encoding cached "
 msgstr "Durdurulan kodlama önbelleğe alındı "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2444
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr "Görüntünün piksel oranını telafi etmek için görüntüyü uzatın."
 
@@ -6785,7 +7014,7 @@ msgstr "Kanal Değiştir"
 msgid "Switch FG/BG Images"
 msgstr "FG'yi değiştir/BG Görselleri"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2760
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
@@ -6793,11 +7022,11 @@ msgstr ""
 "RGBA görüntüsünü kayan nokta, onaltılık (0..0xff) ve ondalık (0..255) "
 "arasında değiştirin."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3031
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "Kare, Saniye ve Zaman Kodu ekranı arasında geçiş yapın"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2932
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -6828,20 +7057,24 @@ msgstr ""
 "Y = 0.18 (L = 0.5) pikseli, Y = L = 1.0 (beyaz) değerinin yaklaşık yarısı "
 "kadar parlak görünecektir."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2829
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr ""
 "İmlecin altındaki piksel için piksel renk alanı bilgi ekranını değiştirin."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:598
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2553
 msgid "T"
 msgstr "T"
 
 #: gui/mrvImageView.cpp:4571
 msgid "T: "
 msgstr "T: "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
+msgid "TIFF (.tif)"
+msgstr "TIFF (.tif)"
 
 #: gui/FLU/Flu_File_Chooser.cpp:598 gui/FLU/Flu_File_Chooser.cpp:616
 #: gui/FLU/Flu_File_Chooser.cpp:617
@@ -6860,6 +7093,10 @@ msgstr "Etiketler"
 msgid "Take Current Window Values"
 msgstr "Geçerli Pencere Değerlerini Al"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:142
+msgid "Targa (.tga)"
+msgstr "Targa (.tga)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:615
 msgid "Targa Picture"
 msgstr "Targa Resmi"
@@ -6876,8 +7113,8 @@ msgstr "Metin Modu"
 msgid "Text Overlay"
 msgstr "Metin Yerleşimi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:596
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2554
 msgid "Text Tool"
 msgstr "Metin Aracı"
 
@@ -7202,6 +7439,10 @@ msgstr "Küçük resim çerçevesi yüzdesi"
 msgid "Thumbnails Active"
 msgstr "Küçük Resimler Etkin"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1831
+msgid "Time"
+msgstr "Zaman"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1480
 msgid "Timecode"
 msgstr "Zaman kodu"
@@ -7209,10 +7450,11 @@ msgstr "Zaman kodu"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1033
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1863
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3447
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:164
 msgid "Timeline"
 msgstr "Zaman çizelgesi"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2983
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2986
 msgid "Timeline."
 msgstr "Zaman çizelgesi."
 
@@ -7385,6 +7627,10 @@ msgstr "alet takımı"
 msgid "Top"
 msgstr "Üst"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1556
+msgid "Top Field"
+msgstr "Üst Alan"
+
 #: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
 #: standalone/main.cpp:479
 msgid "Top/bottom"
@@ -7427,7 +7673,7 @@ msgstr "Hata ayıklama konsolunu açın."
 msgid "Type"
 msgstr "Tip"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2904
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -7441,7 +7687,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1540
 msgid "UI"
-msgstr "SOĞAN"
+msgstr "kullanıcı arayüzü"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1009
 msgid "UI Elements"
@@ -7474,8 +7720,8 @@ msgstr "tanımsız çerçeve arabelleği"
 msgid "Undo Draw"
 msgstr "Beraberliği Geri Al"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:671
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2608
 msgid "Undo Last Shape Drawn"
 msgstr "Çizilen Son Şekli Geri Al"
 
@@ -7656,7 +7902,7 @@ msgstr "Yerel Dosya Seçiciyi Kullan"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2349
 msgid "Use OCIO"
-msgstr "EĞLENCE kullanın"
+msgstr "OCIO'yu kullan"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2350
 msgid "Use OCIO or revert to CTL/ICC."
@@ -7681,7 +7927,7 @@ msgstr "Kullanıcı arayüzü"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3445
 msgid "User Interface/File Requester"
-msgstr "Kullanıcı arayüzü/Dosya İsteyen"
+msgstr "Kullanıcı arayüzü/Dosya İstemcisi"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3444
 msgid "User Interface/Positioning"
@@ -7731,7 +7977,7 @@ msgstr "Geçerli oranlar:"
 msgid "Value"
 msgstr "Değer"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2894
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "Fare altındaki görüntü pikselinin değeri (Yoğunluk)."
 
@@ -7771,6 +8017,7 @@ msgstr "Vektör3 Tamsayı"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
 msgid "Vectorscope"
 msgstr "vektörskop"
 
@@ -7903,11 +8150,11 @@ msgstr "Görünüm/Kafes/Seçileni Aç/Kapat"
 #: gui/mrvImageView.cpp:4917
 #, c-format
 msgid "View/Hud/%s"
-msgstr "Görünüm/Deri/%s"
+msgstr "Görünüm/hud/%s"
 
 #: gui/mrvImageView.cpp:4909
 msgid "View/Hud/Toggle Selected"
-msgstr "Görünüm/Deri/Seçileni Aç/Kapat"
+msgstr "Görünüm/hud/Seçileni Aç/Kapat"
 
 #: gui/mrvImageView.cpp:4891
 #, c-format
@@ -7926,18 +8173,18 @@ msgstr "Görünüm/Doku filtreleme  "
 msgid "View/Toggle Action Dock"
 msgstr "Görünüm/Eylem Yuvasını Aç/Kapat"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
 msgid "W"
-msgstr "İÇİNDE"
+msgstr "W"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1652
 msgid "W:"
-msgstr "İÇİNDE:"
+msgstr "W:"
 
 #: gui/mrvImageInformation.cpp:3040
 #, c-format
 msgid "W: %g %g"
-msgstr "B: %g %g"
+msgstr "W: %g %g"
 
 #: gui/FLU/Flu_File_Chooser.cpp:587
 msgid "WMV Movie"
@@ -7954,6 +8201,7 @@ msgstr "Dalga müziği"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1153
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1355
 msgid "Waveform"
 msgstr "dalga formu"
 
@@ -8365,14 +8613,22 @@ msgstr "X:"
 msgid "XML Clip Metadata (*.{"
 msgstr "XML Klip Meta Verisi (*.{"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2743
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 msgid "XY"
 msgstr "XY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1748
+msgid "XYZ CIE XYZ"
+msgstr "XYZ CIE XYZ"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2928
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2931
 msgid "Y"
-msgstr "VE"
+msgstr "Y"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
+msgid "Y (Luminance)"
+msgstr "Y (Parlaklık)"
 
 #: gui/mrvImageInformation.cpp:2877
 msgid "Y Position"
@@ -8390,17 +8646,33 @@ msgstr "Y Ripmap Düzeyleri"
 msgid "Y Scale"
 msgstr "Y Ölçeği"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1792
+msgid "Y' (Lumma)"
+msgstr "Y' (Lumma)"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1631
 msgid "Y:"
-msgstr "VE:"
+msgstr "Y:"
 
 #: core/exrImage.cpp:2784
 msgid "YBYRY"
 msgstr "YBYRY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
+msgid "YDbDr (Analog SECAM/PAL-N)"
+msgstr "YDbDr (Analog SECAM/PAL-N)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
+msgid "YIQ (Analog NTSC)"
+msgstr "YIQ (Analog NTSC)"
+
 #: video/mrvGLEngine.cpp:240
 msgid "YUV  Support:\t"
 msgstr "YUV Desteği:\t"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1752
+msgid "YUV (Analog PAL)"
+msgstr "YUV (Analog PAL)"
 
 #: gui/mrvImageInformation.cpp:2994
 msgid "YUV Color Range"
@@ -8456,15 +8728,15 @@ msgstr "Bir makarayı stereo görüntü olarak yükleyemezsiniz."
 
 #: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9663
 msgid "Z"
-msgstr "İLE BİRLİKTE"
+msgstr "Z"
 
 #: gui/mrvImageView.cpp:320
 msgid "Z DEPTH"
-msgstr "DERİNLİK İLE"
+msgstr "Z DERİNLİK"
 
 #: gui/mrvImageView.cpp:215
 msgid "Z Depth"
-msgstr "Derinlikten"
+msgstr "Z Derinliği"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1342
 msgid "Zoom Speed"
@@ -8667,7 +8939,7 @@ msgid "mental ray Z Depth Picture"
 msgstr "mental ray Z Derinlik Resim"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2072
 #: gui/mrvImageView.cpp:495
 msgid "mrViewer"
 msgstr "mrViewer"
@@ -8907,6 +9179,43 @@ msgstr "video"
 msgid "visual impaired"
 msgstr "görme engelli"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1706
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2675
 msgid "x1"
 msgstr "x1"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1707
+msgid "x2"
+msgstr "x2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1708
+msgid "x3"
+msgstr "x3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1709
+msgid "x4"
+msgstr "x4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1710
+msgid "x5"
+msgstr "x5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1711
+msgid "x6"
+msgstr "x6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1712
+msgid "x7"
+msgstr "x7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1713
+msgid "x8"
+msgstr "x8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1714
+msgid "x9"
+msgstr "x9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+msgid "xyY CIE xyY"
+msgstr "xyY CIE xyY"

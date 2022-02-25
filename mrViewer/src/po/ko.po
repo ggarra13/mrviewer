@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-23 21:13-0300\n"
+"POT-Creation-Date: 2022-02-23 23:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -318,7 +318,7 @@ msgstr " 사용할 수 없습니다.  "
 
 #: gui/FLU/Flu_File_Chooser.cpp:4284
 msgid "\" failed with error: "
-msgstr "\" 오류로 인해 실패했습니다: "
+msgstr "\" 오류로 실패: "
 
 #: gui/FLU/Flu_File_Chooser.cpp:1309
 msgid "\" failed!  Check permissions and use the native requester."
@@ -489,7 +489,7 @@ msgstr "(RT) 렌더 변환"
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2234
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2237
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9699
 #: gui/mrvImageView.cpp:9700 gui/mrvImageView.cpp:9708
 msgid "(no image)"
@@ -519,7 +519,7 @@ msgstr "*******빈 미디어 추가됨"
 msgid "+"
 msgstr "+"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2316
 msgid "+0.0  f/8.0"
 msgstr "+0.0 f/8.0"
 
@@ -574,6 +574,14 @@ msgstr ".prefs"
 msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1527
+msgid "0.45"
+msgstr "0.45"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1526
+msgid "0.55"
+msgstr "0.55"
+
 #: gui/mrvImageInformation.cpp:200
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
@@ -590,6 +598,62 @@ msgstr "1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0"
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr "1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1525
+msgid "1.00"
+msgstr "1.00"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
+msgid "1.8"
+msgstr "1.8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
+msgid "1/2"
+msgstr "1/2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1704
+msgid "1/3"
+msgstr "1/삼"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1703
+msgid "1/4"
+msgstr "1/4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1702
+msgid "1/5"
+msgstr "1/5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1701
+msgid "1/6"
+msgstr "1/6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
+msgid "1/7"
+msgstr "1/7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
+msgid "1/8"
+msgstr "1/8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
+msgid "1/9"
+msgstr "1/9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
+msgid "12"
+msgstr "12"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
+msgid "12.5"
+msgstr "12.5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
+msgid "14.985"
+msgstr "14.985"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1928
+msgid "15"
+msgstr "15"
+
 #: core/CMedia.cpp:4412
 msgid "16 bits"
 msgstr "16비트"
@@ -600,7 +664,7 @@ msgstr "16비트"
 msgid "16-bits"
 msgstr "16비트"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2440
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2443
 #: gui/mrvImageInformation.cpp:4035
 msgid "1:1"
 msgstr "1:1"
@@ -621,6 +685,7 @@ msgstr "1:4"
 msgid "1:8"
 msgstr "1:8"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1523
 #: gui/mrvImageInformation.cpp:182
 msgid "2.2"
 msgstr "2.2"
@@ -633,9 +698,29 @@ msgstr "2.2 5.1"
 msgid "2.2 5.1 1.4"
 msgstr "2.2 5.1 1.4"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1927
+msgid "23.97"
+msgstr "23.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1926
+msgid "24"
+msgstr "24"
+
 #: gui/mrvImageInformation.cpp:186
 msgid "24000/1001"
 msgstr "24000/1001"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1925
+msgid "25"
+msgstr "25"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1924
+msgid "29.97"
+msgstr "29.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1923
+msgid "30"
+msgstr "30"
 
 #: core/CMedia.cpp:4419
 msgid "32 bits"
@@ -708,6 +793,10 @@ msgstr "3GP 영화"
 msgid "3d View"
 msgstr "3D 보기"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
+msgid "3dView"
+msgstr "3d뷰"
+
 #: gui/mrvHotkey.cpp:305
 msgid "3dView Density Down"
 msgstr "3dView 밀도 감소"
@@ -724,6 +813,18 @@ msgstr "3dView Z 깊이 아래로"
 msgid "3dView Z Depth Up"
 msgstr "3dView Z 깊이 향상"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1922
+msgid "50"
+msgstr "50"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
+msgid "59.94"
+msgstr "59.94"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1920
+msgid "60"
+msgstr "60"
+
 #: gui/mrvImageInformation.cpp:1096
 msgid "70mm"
 msgstr "70mm"
@@ -736,7 +837,7 @@ msgstr "8비트 캐시"
 msgid "8 bits"
 msgstr "8비트"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2823
 msgid "8-bit sample of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 8비트 샘플."
 
@@ -744,6 +845,10 @@ msgstr "마우스 아래 이미지 픽셀의 8비트 샘플."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2689
 msgid "8-bits"
+msgstr "8비트"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
+msgid "8bit"
 msgstr "8비트"
 
 #: core/CMedia_audio.cpp:940
@@ -762,21 +867,25 @@ msgstr ": 오류 "
 msgid ": Unknown pixel type"
 msgstr ": 알 수 없는 픽셀 유형"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2303
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3092
 msgid "@<"
 msgstr "@<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1817
+msgid "@<->"
+msgstr "@<->"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3105
 msgid "@<|"
 msgstr "@<|"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3144
 msgid "@>"
 msgstr "@>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3157
 msgid "@>|"
 msgstr "@>|"
 
@@ -784,19 +893,20 @@ msgstr "@>|"
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3079
 msgid "@|<"
 msgstr "@|<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3131
 msgid "@|>"
 msgstr "@|>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1815
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3118
 msgid "@||"
 msgstr "@||"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3242
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3245
 #: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr "ㅏ"
@@ -814,7 +924,11 @@ msgstr ""
 "전문적인 이미지 및 동영상 뷰어\n"
 "예:\n"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1351
+msgid "A-B, Stereo 3D Options"
+msgstr "AB, 스테레오 3D 옵션"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2218
 msgid "A/B"
 msgstr "ㅏ/비"
 
@@ -844,16 +958,21 @@ msgstr "AVCHD 비디오"
 msgid "AVI Movie"
 msgstr "AVI 영화"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1361
+msgid "About"
+msgstr "에 대한"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
 #: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "mrViewer 정보"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:149
 #: gui/mrvImageInformation.cpp:3013
 msgid "Absolute"
 msgstr "순수한"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:94
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:97
 msgid "Accept"
 msgstr "수용하다"
 
@@ -861,11 +980,12 @@ msgstr "수용하다"
 msgid "Accept settings but don't save."
 msgstr "설정을 수락하지만 저장하지 마십시오."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:526
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:529
 msgid "Action"
 msgstr "동작"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1350
 msgid "Action Tools"
 msgstr "작업 도구"
 
@@ -874,7 +994,7 @@ msgstr "작업 도구"
 msgid "Actions"
 msgstr "행위"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2458
 msgid "Activate viewer's 3D Lut."
 msgstr "뷰어의 3D Lut를 활성화합니다."
 
@@ -898,7 +1018,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr "채택된 중립"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3129
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
 msgid "Advance one frame."
 msgstr "한 프레임 진행합니다."
 
@@ -914,8 +1034,9 @@ msgstr "고급 시스템 포맷 미디어"
 msgid "Algorithm when not OCIO"
 msgstr "OCIO가 아닐 때의 알고리즘"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:724
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3459
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:727
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3462
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "모두"
@@ -930,16 +1051,17 @@ msgstr "모두 (*.{"
 msgid "All Layers"
 msgstr "모든 레이어"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 msgid "All Possible"
 msgstr "모두 가능"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3228
 msgid "Allows you to adjust frame rate playback."
 msgstr "프레임 속도 재생을 조정할 수 있습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2397
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2407
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -947,7 +1069,7 @@ msgstr ""
 "표시할 감마 곡선을 조정할 수 있습니다.\n"
 "값: pow( 2, 1/x );"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2269
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "이미지의 게인 또는 노출을 조정할 수 있습니다."
 
@@ -955,15 +1077,15 @@ msgstr "이미지의 게인 또는 노출을 조정할 수 있습니다."
 msgid "Allows you to select a standard cropping area around image."
 msgstr "이미지 주변의 표준 자르기 영역을 선택할 수 있습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2235
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2238
 msgid "Allows you to select different image channels or layers."
 msgstr "다른 이미지 채널 또는 레이어를 선택할 수 있습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3278
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3281
 msgid "Allows you to set starting frame for timeline."
 msgstr "타임라인의 시작 프레임을 설정할 수 있습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3296
 msgid "Allows you to set the ending frame for timeline."
 msgstr "타임라인의 종료 프레임을 설정할 수 있습니다."
 
@@ -973,13 +1095,17 @@ msgstr "타임라인의 종료 프레임을 설정할 수 있습니다."
 msgid "Alpha"
 msgstr "알파"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:158
+msgid "Alpha Only"
+msgstr "알파 전용"
+
 #: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2049
 #: gui/mrvImageView.cpp:9116 gui/mrvImageView.cpp:9663
 msgid "Alpha Overlay"
 msgstr "알파 오버레이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
 msgid "Alpha value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 알파 값입니다."
 
@@ -1077,8 +1203,8 @@ msgstr "'%s'을(를) 덮어쓰시겠습니까?"
 msgid "Area"
 msgstr "지역"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:549
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2507
 msgid "Area Select Tool"
 msgstr "영역 선택 도구"
 
@@ -1094,8 +1220,8 @@ msgstr "화살"
 msgid "Arrow Mode"
 msgstr "화살표 모드"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:641
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:644
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2583
 msgid "Arrow Tool"
 msgstr "화살표 도구"
 
@@ -1127,7 +1253,7 @@ msgstr "속성"
 msgid "Attributes Menu"
 msgstr "속성 메뉴"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2634
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2637
 msgid "Attrs"
 msgstr "속성"
 
@@ -1157,7 +1283,7 @@ msgstr "오디오 스트림 #%d"
 msgid "Audio Streams"
 msgstr "오디오 스트림"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3260
 msgid "Audio Volume"
 msgstr "오디오 볼륨"
 
@@ -1346,7 +1472,7 @@ msgstr "블루 게인"
 msgid "Blue Gain of clip."
 msgstr "클립의 파란색 게인."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2803
 msgid "Blue value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 파란색 값입니다."
 
@@ -1357,6 +1483,10 @@ msgstr "부스트 예외: "
 #: gui/mrvImageView.cpp:11001
 msgid "Bottom"
 msgstr "맨 아래"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1557
+msgid "Bottom Field"
+msgstr "하단 필드"
 
 #: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
@@ -1413,7 +1543,7 @@ msgstr "색깔"
 msgid "CPU Information"
 msgstr "CPU 정보"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:65
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:68
 msgid "CTL Browser"
 msgstr "CTL 브라우저"
 
@@ -1458,8 +1588,8 @@ msgstr "카드를 열 수 없습니다 "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:93
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:131
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:106
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:271
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:109
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:274
 #: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr "취소"
@@ -1536,7 +1666,7 @@ msgstr "중앙 이미지"
 msgid "Change Image failed"
 msgstr "이미지 변경 실패"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2420
 msgid "Changes frame/field display"
 msgstr "프레임 변경/필드 디스플레이"
 
@@ -1544,7 +1674,7 @@ msgstr "프레임 변경/필드 디스플레이"
 msgid "Channel"
 msgstr "채널"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
 msgstr "채널"
@@ -1594,8 +1724,8 @@ msgstr "원"
 msgid "Circle Mode"
 msgstr "서클 모드"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:626
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2565
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:629
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2568
 msgid "Circle Tool"
 msgstr "원 도구"
 
@@ -1603,7 +1733,7 @@ msgstr "원 도구"
 msgid "City"
 msgstr "도시"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:345
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:348
 msgid "Clear"
 msgstr "분명한"
 
@@ -1611,7 +1741,7 @@ msgstr "분명한"
 msgid "Clear Image Cache"
 msgstr "이미지 캐시 지우기"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
 msgid "Client"
 msgstr "고객"
 
@@ -1699,7 +1829,7 @@ msgid "CollapsibleGroup not found"
 msgstr "CollapsibleGroup을 찾을 수 없습니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2594
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2597
 #: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
@@ -1712,6 +1842,14 @@ msgstr "색깔"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1100
 msgid "Color Area"
 msgstr "색상 영역"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1348
+msgid "Color Controls"
+msgstr "색상 컨트롤"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1347
+msgid "Color Info"
+msgstr "색상 정보"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorAreaUI.cxx:18
 msgid "Color Information"
@@ -1741,7 +1879,7 @@ msgstr "컬러 버전"
 msgid "Color channel not found at index "
 msgstr "색인에서 색상 채널을 찾을 수 없습니다. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2125
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2128
 msgid "Color controls"
 msgstr "색상 컨트롤"
 
@@ -1784,7 +1922,7 @@ msgid "Compositing"
 msgstr "합성"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3272
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
 #: gui/mrvImageInformation.cpp:3116
 msgid "Compression"
 msgstr "압축"
@@ -1801,8 +1939,8 @@ msgstr "압축 방법을 사용할 수 없습니다. PIZ를 사용합니다."
 msgid "Compression to use when saving an exr."
 msgstr "exr을 저장할 때 사용할 압축입니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:841
 #: core/mrvClient.cpp:471
 msgid "Connect"
 msgstr "연결하다"
@@ -1815,7 +1953,8 @@ msgstr "연결 오류: "
 msgid "Connect timed out."
 msgstr "연결 시간이 초과되었습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
 msgid "Connections"
 msgstr "사이"
 
@@ -2386,8 +2525,8 @@ msgstr "국가"
 msgid "Country Code"
 msgstr "국가 코드"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:780
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:812
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
 #: core/mrvServer.cpp:2041
 msgid "Create"
 msgstr "만들다"
@@ -2476,13 +2615,14 @@ msgstr "수확고"
 msgid "Ctrl"
 msgstr "Ctrl 키"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:719
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3454
 msgid "Current"
 msgstr "현재의"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3058
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3061
 msgid "Current frame."
 msgstr "현재 프레임."
 
@@ -2662,7 +2802,7 @@ msgstr "비디오 오류 탐색 프레임 디코딩 "
 msgid "Decode_audio failed with error: "
 msgstr "Decode_audio 오류로 실패: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2301
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2304
 msgid "Decrease exposure by 0.5."
 msgstr "0.5만큼 노출을 줄입니다."
 
@@ -2670,6 +2810,7 @@ msgstr "0.5만큼 노출을 줄입니다."
 msgid "Decreasing Y"
 msgstr "Y 감소"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1919
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "기본"
@@ -2809,7 +2950,7 @@ msgstr "디스플레이 창 2"
 msgid "Display Window of Clip"
 msgstr "클립 표시 창"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2314
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2317
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -2869,6 +3010,10 @@ msgstr "운전사"
 msgid "Driver is not a live output device"
 msgstr "드라이버가 라이브 출력 장치가 아닙니다."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1833
+msgid "Drop Frame Timecode"
+msgstr "드롭 프레임 타임코드"
+
 #: gui/mrvImageInformation.cpp:3555 gui/mrvImageInformation.cpp:3620
 #: gui/mrvImageInformation.cpp:3664
 msgid "Duration"
@@ -2886,7 +3031,7 @@ msgstr "자막 재생 시간"
 msgid "Duration of Video"
 msgstr "비디오 길이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3320
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3323
 msgid "E"
 msgstr "이자형"
 
@@ -2903,6 +3048,7 @@ msgid "EDL"
 msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
 msgstr "EDL 편집"
 
@@ -2990,8 +3136,8 @@ msgstr "지우기 모드"
 msgid "Erase Temporary Mode"
 msgstr "임시 모드 지우기"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:581
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2536
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2539
 msgid "Eraser Tool"
 msgstr "지우개 도구"
 
@@ -3075,7 +3221,7 @@ msgstr "이미지 교환 실패"
 #: gui/mrvImageBrowser.cpp:4637 gui/mrvImageBrowser.cpp:4777
 #, c-format
 msgid "ExchangeImage %d %d"
-msgstr "이미지 교환 %d %d"
+msgstr "교환 이미지 %d %d"
 
 #: gui/mrvPreferences.cpp:1583
 msgid "Expanded OCIO config to:"
@@ -3121,12 +3267,12 @@ msgstr "펼친"
 msgid "Eye Separation"
 msgstr "눈 분리"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2419
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2903
 msgid "F"
 msgstr "에프"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3030
 msgid "F:"
 msgstr "에프:"
 
@@ -3134,11 +3280,15 @@ msgstr "에프:"
 msgid "F: "
 msgstr "F: "
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1715
+msgid "FIT"
+msgstr "맞다"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:334
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1441
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1764
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2159
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3170
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3173
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3343,7 +3493,7 @@ msgstr "모두 맞추기"
 msgid "Fit Screen"
 msgstr "화면 맞추기"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2097
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2100
 msgid "Fit Window to Image"
 msgstr "이미지에 창 맞추기"
 
@@ -3403,7 +3553,7 @@ msgstr "집중하다"
 msgid "Font"
 msgstr "폰트"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:173
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
 #: gui/mrvImageInformation.cpp:3099 gui/mrvImageInformation.cpp:3600
 msgid "Format"
 msgstr "체재"
@@ -3423,6 +3573,7 @@ msgid "FourCC"
 msgstr "포씨씨씨"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1389
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
 #: gui/mrvImageView.cpp:10999
 msgid "Frame"
 msgstr "액자"
@@ -3496,9 +3647,10 @@ msgstr "프레임 버퍼 불완전: 버퍼를 읽습니다."
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "프레임 버퍼 다중 샘플 불완전: 버퍼를 그립니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:251
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:713
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3448
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
 msgid "Frames"
 msgstr "프레임"
 
@@ -3510,8 +3662,8 @@ msgstr "초당 프레임"
 msgid "Frames per Second"
 msgstr "초당 프레임"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:566
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2521
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2524
 msgid "Freehand Drawing Tool"
 msgstr "자유형 그리기 도구"
 
@@ -3522,6 +3674,10 @@ msgstr "빈도"
 #: gui/mrvImageInformation.cpp:3604
 msgid "Frequency of audio"
 msgstr "오디오 주파수"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1774
+msgid "Full"
+msgstr "가득한"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:991
 msgid "Fullscreen"
@@ -3555,7 +3711,7 @@ msgid "GREEN"
 msgstr "초록"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1202
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2254
 msgid "Gain"
 msgstr "얻다"
 
@@ -3563,14 +3719,15 @@ msgstr "얻다"
 msgid "Gain for image failed"
 msgstr "이미지 이득 실패"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2259
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "이미지 값을 얻습니다. 이미지 픽셀 값의 단순 승수입니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1208
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3261
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1471
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2364
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1775
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 #: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1785
 msgid "Gamma"
 msgstr "감마"
@@ -3615,20 +3772,20 @@ msgstr "exr 및 OCIO를 로드할 때 사용할 감마가 꺼져 있습니다."
 msgid "Gb"
 msgstr "기가바이트"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:733
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3468
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
 msgid "Ghosting"
 msgstr "고스팅"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3103
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3106
 msgid "Go back one frame."
 msgstr "한 프레임 뒤로 이동합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3077
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3080
 msgid "Go to the beginning of the sequence."
 msgstr "시퀀스의 시작 부분으로 이동합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3158
 msgid "Go to the end of the sequence."
 msgstr "시퀀스의 끝으로 이동합니다."
 
@@ -3655,7 +3812,7 @@ msgstr "녹색 이득"
 msgid "Green Gain of clip."
 msgstr "클립의 녹색 게인."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2795
 msgid "Green value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 녹색 값입니다."
 
@@ -3691,7 +3848,12 @@ msgstr "HDRI 사진"
 msgid "HDTV / Widescreen 16:9"
 msgstr "HDTV/와이드스크린 16:9"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
+msgid "HSL"
+msgstr "HSL"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2828
 msgid "HSV"
 msgstr "HSV"
 
@@ -3733,6 +3895,10 @@ msgstr "키"
 msgid "Height of clip"
 msgstr "클립의 높이"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1730
+msgid "Hex"
+msgstr "마녀"
+
 #: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "다른 사람 숨기기"
@@ -3751,6 +3917,7 @@ msgstr "하이 10"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1060
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "히스토그램"
 
@@ -3777,6 +3944,7 @@ msgstr "단축키 파일:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1359
 msgid "Hotkeys"
 msgstr "단축키"
 
@@ -3796,7 +3964,7 @@ msgstr "기본적으로 타임라인을 표시하는 방법."
 msgid "How to display timeline selection by default."
 msgstr "기본적으로 타임라인 선택을 표시하는 방법입니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2875
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2878
 msgid "Hue value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 색조 값입니다."
 
@@ -3815,6 +3983,7 @@ msgstr "ICC 프로필"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2686
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1356
 msgid "ICC Profiles"
 msgstr "ICC 프로필"
 
@@ -3833,6 +4002,10 @@ msgstr "ICC 프로필"
 #: gui/FLU/Flu_File_Chooser.cpp:599
 msgid "IFF Picture"
 msgstr "IFF 사진"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:138
+msgid "ILM OpenEXR (.exr)"
+msgstr "ILM OpenEXR(.exr)"
 
 #: gui/mrvImageInformation.cpp:3229
 msgid "IPP2 Mode"
@@ -3853,6 +4026,14 @@ msgstr "ISO 감도"
 #: gui/mrvImageInformation.cpp:3258
 msgid "ISO of film stock."
 msgstr "필름 스톡의 ISO입니다."
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1755
+msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
+msgstr "ITU-601(디지털 PAL/NTSC YCbCr)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1756
+msgid "ITU-709 (Digital HDTV YCbCr)"
+msgstr "ITU-709(디지털 HDTV YCbCr)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
 msgid ""
@@ -3919,7 +4100,7 @@ msgstr "캔버스의 이미지 Y 위치"
 msgid "Image Y Scale in Canvas"
 msgstr "캔버스의 이미지 Y 스케일"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2744
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2747
 msgid "Image coordinate of pixel under mouse."
 msgstr "마우스 아래 픽셀의 이미지 좌표입니다."
 
@@ -3963,7 +4144,7 @@ msgstr ""
 "이미지 시퀀스는 메모리에 캐시됩니다. 이 설정이 꺼져 있으면 요청 시 이미지가 "
 "로드되지만 유동 재생이 불가능할 수 있습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2676
 msgid "Image zoom setting."
 msgstr "이미지 줌 설정."
 
@@ -4092,7 +4273,7 @@ msgstr "스테레오의 이미지는 속도(fps)가 다릅니다."
 msgid "Images, sequences or movies to display."
 msgstr "표시할 이미지, 시퀀스 또는 동영상."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2329
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2332
 msgid "Increase exposure by 0.5."
 msgstr "노출을 0.5 증가시킵니다."
 
@@ -4113,7 +4294,7 @@ msgid "Input"
 msgstr "입력"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2398
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2285
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2288
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3047
 msgid "Input Color Space"
 msgstr "입력 색 공간"
@@ -4210,6 +4391,10 @@ msgstr "역 참조 렌더링 변환"
 msgid "Item was not found in tree."
 msgstr "트리에서 항목을 찾을 수 없습니다."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:139
+msgid "JPEG (.jpg)"
+msgstr "JPEG(.jpg)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:600 gui/FLU/Flu_File_Chooser.cpp:601
 msgid "JPEG Picture"
 msgstr "JPEG 사진"
@@ -4265,18 +4450,27 @@ msgstr "알려진 코덱"
 msgid "Kodak Digital Negative"
 msgstr "코닥 디지털 네거티브"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3001
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1816
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3004
 msgid "L"
 msgstr "엘"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
+msgid "L (Lightness)"
+msgstr "L(가벼움)"
 
 #: gui/mrvImageInformation.cpp:3079
 #, c-format
 msgid "LMTransform %u"
 msgstr "LM변환 %u"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2457
 msgid "LUT"
 msgstr "LUT"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1750
+msgid "Lab CIELAB (L*a*b*)"
+msgstr "랩 CIELAB(L*a*b*)"
 
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
@@ -4496,9 +4690,13 @@ msgstr "로컬 캡션"
 msgid "Lockfile "
 msgstr "잠금 파일 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:316
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "로그 메시지"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
+msgid "Logs"
+msgstr "로그"
 
 #: core/exrImage.cpp:1260 core/exrImage.cpp:2447 core/exrImage.cpp:2451
 #: core/exrImage.cpp:2531 core/exrImage.cpp:2535
@@ -4509,7 +4707,7 @@ msgstr "경도"
 msgid "Looked for it in: "
 msgstr "다음에서 찾았습니다. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3002
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3005
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "반복 동작( 정지, 반복, 핑퐁)"
 
@@ -4525,7 +4723,7 @@ msgstr "휘도"
 msgid "Luminance Gradient"
 msgstr "휘도 기울기"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2959
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2962
 msgid "Luminance of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 휘도."
 
@@ -4538,6 +4736,10 @@ msgstr "루마"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1285
 msgid "Lut Active"
 msgstr "루트 활성"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1751
+msgid "Luv CIELUV (L*u*v*)"
+msgstr "Luv CIELUV (L*u*v*)"
 
 #: gui/mrvImageInformation.cpp:201 gui/mrvImageInformation.cpp:227
 #: gui/mrvImageInformation.cpp:512
@@ -4662,6 +4864,7 @@ msgid "Mean"
 msgstr "평균"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1086
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1346
 msgid "Media Info"
 msgstr "미디어 정보"
 
@@ -4699,6 +4902,10 @@ msgstr "메타"
 #: gui/mrvImageInformation.cpp:993
 msgid "Metadata"
 msgstr "메타데이터"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:140
+msgid "Microsoft Bitmap (.bmp)"
+msgstr "마이크로소프트 비트맵(.bmp)"
 
 #: gui/mrvColorInfo.cpp:780 gui/mrvColorInfo.cpp:890
 msgid "Minimum"
@@ -4785,7 +4992,7 @@ msgstr "움직임 추정 방법"
 msgid "Move Pic."
 msgstr "사진 이동"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:610
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
 msgid "Move Picture Tool"
 msgstr "그림 이동 도구"
 
@@ -4833,7 +5040,7 @@ msgstr "NTSC HDTV 컬러 바"
 msgid "NTSC Video"
 msgstr "NTSC 비디오"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:179
 msgid "Name (.ext)"
 msgstr "이름(.ext)"
 
@@ -4858,8 +5065,8 @@ msgstr "에 생성되지 않은 새 항목 "
 msgid "New item was not found in tree."
 msgstr "트리에서 새 항목을 찾을 수 없습니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:746
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:749
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3484
 msgid "Next"
 msgstr "다음"
 
@@ -4974,18 +5181,22 @@ msgstr ""
 "이 클립에는 버전 관리가 없습니다. 버전 지정 문자열로 이름이 지정된 이미지 또"
 "는 디렉토리를 만드십시오."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1832
+msgid "Non-Drop Frame Timecode"
+msgstr "논드롭 프레임 타임코드"
+
 #: video/mrvGLEngine.cpp:235
 msgid "Non-POT Textures:\t"
 msgstr "비 POT 텍스처:\t"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:204
 #: core/aviImage_save.cpp:1354 core/aviImage_save.cpp:1389
 #: core/exrImage.cpp:123 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:3908
 #: gui/mrvSave.cpp:256 gui/mrvSave.cpp:257 gui/mrvSave.cpp:267
 msgid "None"
 msgstr "없음"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2346
 msgid "Norm"
 msgstr "표준"
 
@@ -4993,7 +5204,7 @@ msgstr "표준"
 msgid "Normal"
 msgstr "정상"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2347
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "[0,1] 범위를 유지하도록 픽셀 값을 정규화합니다."
 
@@ -5051,7 +5262,7 @@ msgstr "압축 데이터가 충분하지 않습니다."
 
 #: core/mrvBlackImage.cpp:63
 msgid "Not enough memory for black image"
-msgstr "검은색 이미지에 대한 메모리가 부족합니다."
+msgstr "검은색 이미지를 위한 메모리가 부족합니다."
 
 #: core/mrvFrame.cpp:704
 msgid "Not enough memory for color transform"
@@ -5138,7 +5349,7 @@ msgstr "OCIO 구성 파일"
 msgid "OCIO Display"
 msgstr "OCIO 디스플레이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2368
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "OCIO 디스플레이/보기 또는 일부 기본 감마 설정."
 
@@ -5162,7 +5373,7 @@ msgstr "OCIO 구성(*.{"
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 구성이 설정되지 않았습니다. 기본값은 CTL입니다. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2289
 msgid "OCIO input color space for the image"
 msgstr "이미지에 대한 OCIO 입력 색 공간"
 
@@ -5297,7 +5508,7 @@ msgstr ""
 "SC + DC x ( 1 - SA )\n"
 "여기서 SC는 소스 색상, SA는 소스 알파, DC는 대상 색상 ."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2152
 msgid "Opens different windows"
 msgstr "다른 창을 엽니다."
 
@@ -5313,6 +5524,10 @@ msgstr "R3D를 제어하는 옵션/BRAW 독자"
 #: core/exrImage.cpp:2942
 msgid "Options for EXR were empty"
 msgstr "EXR에 대한 옵션이 비어 있습니다."
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1776
+msgid "Original"
+msgstr "원래의"
 
 #: core/wandImage.cpp:592
 msgid "Original Transmission Reference"
@@ -5440,12 +5655,12 @@ msgstr "페이지 위로"
 msgid "Pause"
 msgstr "정지시키다"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:704
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
 msgstr "펜 색상"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:657
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3434
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3437
 msgid "Pen Size"
 msgstr "펜 크기"
 
@@ -5457,6 +5672,7 @@ msgstr "펜 크기 작게"
 msgid "Pen Size More"
 msgstr "펜 크기 더보기"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:148
 #: gui/mrvImageInformation.cpp:3012
 msgid "Perceptual"
 msgstr "지각"
@@ -5546,11 +5762,11 @@ msgstr "앞으로 재생/속도 변경"
 msgid "Play in Current Direction"
 msgstr "현재 방향으로 재생"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3090
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3093
 msgid "Play sequence backwards."
 msgstr "순서를 거꾸로 재생합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3145
 msgid "Play sequence forward."
 msgstr "앞으로 시퀀스를 재생합니다."
 
@@ -5571,8 +5787,8 @@ msgstr "재생"
 msgid "Playback of audio frame "
 msgstr "오디오 프레임 재생 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:833
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
 msgid "Port"
 msgstr "포트"
 
@@ -5585,7 +5801,8 @@ msgid "Power"
 msgstr "힘"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:909
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2111
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1358
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2114
 msgid "Preferences"
 msgstr "기본 설정"
 
@@ -5621,8 +5838,8 @@ msgstr "프레젠테이션"
 msgid "Preview Thumbnails"
 msgstr "미리보기 축소판"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:739
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3474
 msgid "Previous"
 msgstr "이전의"
 
@@ -5763,6 +5980,7 @@ msgid "RExt"
 msgstr "REExt"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
 msgstr "RGB"
@@ -5771,7 +5989,9 @@ msgstr "RGB"
 msgid "RGB Picture"
 msgstr "RGB 그림"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2756
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1729
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
 #: gui/mrvImageView.cpp:204
 msgid "RGBA"
 msgstr "RGBA"
@@ -5857,7 +6077,7 @@ msgstr "레드 게인"
 msgid "Red Gain of clip."
 msgstr "클립의 레드 게인."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2787
 msgid "Red value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 빨간색 값입니다."
 
@@ -5869,8 +6089,8 @@ msgstr "빨간색/청록색 안경"
 msgid "Redo Draw"
 msgstr "다시 그리기"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:685
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2619
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2622
 msgid "Redo Previous Shape Drawn"
 msgstr "그린 이전 모양 다시 실행"
 
@@ -5890,6 +6110,7 @@ msgid "Reel List"
 msgstr "릴 목록"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2885
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1345
 msgid "Reels"
 msgstr "릴"
 
@@ -5921,8 +6142,8 @@ msgid ""
 "  gizmo_v003.001.exr\n"
 "(version 3, frame 1)."
 msgstr ""
-"버전 번호를 감지하는 데 사용되는 정규식입니다. 기본 _v는 다음과 같은 이미지"
-"를 찾는 것을 생성합니다.\n"
+"버전 번호를 감지하는 데 사용되는 정규식. 기본 _v는 다음과 같은 이미지를 찾는 "
+"것을 생성합니다.\n"
 " gizmo_v003.001.exr\n"
 "(버전 3, 프레임 1)."
 
@@ -5930,7 +6151,8 @@ msgstr ""
 msgid "Regular expression error: "
 msgstr "정규식 오류: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:213
 #: gui/mrvImageInformation.cpp:3014
 msgid "Relative"
 msgstr "상대적인"
@@ -5973,7 +6195,7 @@ msgstr "릴에서 현재 이미지를 제거합니다."
 msgid "Removed client "
 msgstr "제거된 클라이언트 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:207
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
 msgid "Render Intent"
 msgstr "렌더 의도"
 
@@ -6083,7 +6305,7 @@ msgstr "오른쪽/왼쪽"
 
 #: gui/mrvHotkey.cpp:463
 msgid "RightAlt"
-msgstr "RightAlt"
+msgstr "오른쪽 Alt"
 
 #: gui/mrvHotkey.cpp:460
 msgid "RightCtrl"
@@ -6125,7 +6347,7 @@ msgstr "반올림 모드"
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "단일 인스턴스 설정과 상관없이 mrViewer를 실행합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3307
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3310
 msgid "S"
 msgstr "에스"
 
@@ -6155,6 +6377,7 @@ msgid "Safe Areas"
 msgstr "안전 구역"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
 msgstr "포화"
@@ -6163,14 +6386,14 @@ msgstr "포화"
 msgid "Saturation of clip."
 msgstr "클립의 채도."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2883
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2886
 msgid "Saturation value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 채도 값입니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3408
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:333
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:272
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:336
 msgid "Save"
 msgstr "구하다"
 
@@ -6206,7 +6429,7 @@ msgstr ""
 msgid "Save Ocio Config File in Preferences"
 msgstr "환경 설정에서 Ocio 구성 파일 저장"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:167
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:170
 msgid "Save Options"
 msgstr "저장 옵션"
 
@@ -6287,7 +6510,7 @@ msgstr "계획"
 msgid "ScrollLock"
 msgstr "스크롤 잠금"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
 #: gui/mrvImageView.cpp:1579
 msgid "Scrub"
 msgstr "북북 문질러 닦기"
@@ -6300,8 +6523,8 @@ msgstr "스크럽 모드"
 msgid "Scrub Sensitivity"
 msgstr "스크럽 감도"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:532
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2487
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:535
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2490
 msgid "Scrubbing Tool"
 msgstr "스크러빙 도구"
 
@@ -6325,7 +6548,11 @@ msgstr "클립의 두 번째 표시 창"
 msgid "Secondary Display"
 msgstr "보조 디스플레이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3243
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
+msgid "Seconds"
+msgstr "초"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3246
 msgid "Select Audio Track"
 msgstr "오디오 트랙 선택"
 
@@ -6337,7 +6564,7 @@ msgstr "다중 이미지 선택"
 msgid "Select Single Image"
 msgstr "단일 이미지 선택"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:79
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
 msgid "Select a CTL script"
 msgstr "CTL 스크립트 선택"
 
@@ -6407,13 +6634,13 @@ msgstr "현재 이미지 위에 인쇄된 텍스트 오버레이의 색상을 �
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr "현재 이미지에서 선택 사각형의 색상을 선택합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:705
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:708
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2598
 msgid "Selects the current pen color."
 msgstr "현재 펜 색상을 선택합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:658
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3435
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:661
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3438
 msgid "Selects the size of brush."
 msgstr "브러시의 크기를 선택합니다."
 
@@ -6433,8 +6660,8 @@ msgstr "순서"
 msgid "Sequences"
 msgstr "시퀀스"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:804
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:832
 msgid "Server"
 msgstr "섬기는 사람"
 
@@ -6463,7 +6690,7 @@ msgstr "출발 지점 설정"
 msgid "Set added audio offset."
 msgstr "추가된 오디오 오프셋을 설정합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2216
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2219
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -6589,7 +6816,7 @@ msgstr "소프트이미지 픽쳐"
 msgid "Software"
 msgstr "소프트웨어"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
 msgid "Some default frame rate settings."
 msgstr "일부 기본 프레임 속도 설정."
 
@@ -6659,7 +6886,7 @@ msgstr "스테레오 아이 분리"
 msgid "Stop"
 msgstr "중지"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3116
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3119
 msgid "Stop playback."
 msgstr "재생을 중지합니다."
 
@@ -6671,7 +6898,7 @@ msgstr "UI 보기 중지"
 msgid "Stopped encoding cached "
 msgstr "캐시된 인코딩 중지됨 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2444
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr "이미지의 픽셀 비율을 보정하기 위해 이미지를 늘립니다."
 
@@ -6756,7 +6983,7 @@ msgstr "채널 전환"
 msgid "Switch FG/BG Images"
 msgstr "스위치 FG/배경화면"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2760
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
@@ -6764,11 +6991,11 @@ msgstr ""
 "부동 소수점, 16진수(0..0xff) 및 10진수(0..255) 간에 RGBA 디스플레이를 전환합"
 "니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3031
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "프레임, 초 및 시간 코드 표시 간 전환"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2932
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -6798,19 +7025,23 @@ msgstr ""
 " L = (116 * Y ^ 1/3 - 16)/100\n"
 "Y = 0.18(L = 0.5) 픽셀은 Y = L = 1.0(흰색)의 절반 정도 밝게 나타납니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2829
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr "커서 아래의 픽셀에 대한 픽셀 색 공간 정보 표시를 전환합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:598
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2553
 msgid "T"
 msgstr "티"
 
 #: gui/mrvImageView.cpp:4571
 msgid "T: "
 msgstr "T: "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
+msgid "TIFF (.tif)"
+msgstr "TIFF(.tif)"
 
 #: gui/FLU/Flu_File_Chooser.cpp:598 gui/FLU/Flu_File_Chooser.cpp:616
 #: gui/FLU/Flu_File_Chooser.cpp:617
@@ -6829,6 +7060,10 @@ msgstr "태그"
 msgid "Take Current Window Values"
 msgstr "현재 창 값 가져오기"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:142
+msgid "Targa (.tga)"
+msgstr "타르가(.tga)"
+
 #: gui/FLU/Flu_File_Chooser.cpp:615
 msgid "Targa Picture"
 msgstr "타르가 사진"
@@ -6845,8 +7080,8 @@ msgstr "텍스트 모드"
 msgid "Text Overlay"
 msgstr "텍스트 오버레이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:596
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2554
 msgid "Text Tool"
 msgstr "텍스트 도구"
 
@@ -7161,6 +7396,10 @@ msgstr "썸네일 프레임 비율"
 msgid "Thumbnails Active"
 msgstr "썸네일 활성"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1831
+msgid "Time"
+msgstr "시간"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1480
 msgid "Timecode"
 msgstr "시간 코드"
@@ -7168,10 +7407,11 @@ msgstr "시간 코드"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1033
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1863
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3447
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:164
 msgid "Timeline"
 msgstr "타임라인"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2983
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2986
 msgid "Timeline."
 msgstr "타임라인."
 
@@ -7344,6 +7584,10 @@ msgstr "툴독"
 msgid "Top"
 msgstr "맨 위"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1556
+msgid "Top Field"
+msgstr "상위 필드"
+
 #: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
 #: standalone/main.cpp:479
 msgid "Top/bottom"
@@ -7386,7 +7630,7 @@ msgstr "디버깅 콘솔을 켭니다."
 msgid "Type"
 msgstr "유형"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2904
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -7433,8 +7677,8 @@ msgstr "정의되지 않은 프레임 버퍼"
 msgid "Undo Draw"
 msgstr "그리기 취소"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:671
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2608
 msgid "Undo Last Shape Drawn"
 msgstr "마지막으로 그린 모양 실행 취소"
 
@@ -7689,7 +7933,7 @@ msgstr "유효한 요금은 다음과 같습니다."
 msgid "Value"
 msgstr "값"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2894
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 값(강도)입니다."
 
@@ -7729,6 +7973,7 @@ msgstr "Vector3 정수"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
 msgid "Vectorscope"
 msgstr "벡터스코프"
 
@@ -7884,7 +8129,7 @@ msgstr "보다/텍스처 필터링  "
 msgid "View/Toggle Action Dock"
 msgstr "보다/토글 액션 도크"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
 msgid "W"
 msgstr "여"
 
@@ -7912,6 +8157,7 @@ msgstr "웨이브 음악"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1153
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1355
 msgid "Waveform"
 msgstr "파형"
 
@@ -8069,8 +8315,7 @@ msgstr "선택하면 mrViewer는 릴 목록이 이미 열려 있는 상태로 �
 msgid ""
 "When selected, mrViewer will start with the stereo options window already "
 "open."
-msgstr ""
-"선택하면 mrViewer가 스테레오 옵션 창이 이미 열려 있는 상태로 시작됩니다."
+msgstr "선택하면 mrViewer가 이미 열려 있는 스테레오 옵션 창과 함께 시작됩니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1034
 msgid "When selected, mrViewer will start with the timeline shown."
@@ -8089,7 +8334,7 @@ msgstr "선택하면 mrViewer가 이미 열려 있는 파형으로 시작됩니�
 msgid ""
 "When selected, mrViewer's window will always show up on top of other windows "
 "on the desktop."
-msgstr "선택하면 mrViewer의 창이 항상 바탕 화면의 다른 창 위에 표시됩니다."
+msgstr "선택하면 mrViewer의 창은 항상 바탕 화면의 다른 창 위에 표시됩니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:950
 msgid ""
@@ -8297,14 +8542,22 @@ msgstr "엑스:"
 msgid "XML Clip Metadata (*.{"
 msgstr "XML 클립 메타데이터(*.{"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2743
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 msgid "XY"
 msgstr "XY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1748
+msgid "XYZ CIE XYZ"
+msgstr "XYZ CIE XYZ"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2928
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2931
 msgid "Y"
 msgstr "와이"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
+msgid "Y (Luminance)"
+msgstr "Y(휘도)"
 
 #: gui/mrvImageInformation.cpp:2877
 msgid "Y Position"
@@ -8322,6 +8575,10 @@ msgstr "Y 립맵 수준"
 msgid "Y Scale"
 msgstr "Y 스케일"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1792
+msgid "Y' (Lumma)"
+msgstr "Y'(루마)"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1631
 msgid "Y:"
 msgstr "와이:"
@@ -8330,9 +8587,21 @@ msgstr "와이:"
 msgid "YBYRY"
 msgstr "YBYRY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
+msgid "YDbDr (Analog SECAM/PAL-N)"
+msgstr "YDbDr(아날로그 SECAM/팔-엔)"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
+msgid "YIQ (Analog NTSC)"
+msgstr "YIQ(아날로그 NTSC)"
+
 #: video/mrvGLEngine.cpp:240
 msgid "YUV  Support:\t"
 msgstr "YUV 지원:\t"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1752
+msgid "YUV (Analog PAL)"
+msgstr "YUV(아날로그 PAL)"
 
 #: gui/mrvImageInformation.cpp:2994
 msgid "YUV Color Range"
@@ -8596,7 +8865,7 @@ msgid "mental ray Z Depth Picture"
 msgstr "mental ray Z 깊이 사진"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2072
 #: gui/mrvImageView.cpp:495
 msgid "mrViewer"
 msgstr "미스터뷰어"
@@ -8833,6 +9102,43 @@ msgstr "동영상"
 msgid "visual impaired"
 msgstr "시각 장애인"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1706
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2675
 msgid "x1"
 msgstr "x1"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1707
+msgid "x2"
+msgstr "x2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1708
+msgid "x3"
+msgstr "x3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1709
+msgid "x4"
+msgstr "x4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1710
+msgid "x5"
+msgstr "x5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1711
+msgid "x6"
+msgstr "x6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1712
+msgid "x7"
+msgstr "x7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1713
+msgid "x8"
+msgstr "x8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1714
+msgid "x9"
+msgstr "x9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+msgid "xyY CIE xyY"
+msgstr "xyY CIE xyY"

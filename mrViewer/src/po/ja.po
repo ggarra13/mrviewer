@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-23 21:13-0300\n"
+"POT-Creation-Date: 2022-02-23 23:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -157,7 +157,7 @@ msgstr " チャンネル "
 
 #: core/Sequence.cpp:716
 msgid " does not exist or no directory"
-msgstr " 存在しないか、ディレクトリがありません"
+msgstr " ディレクトリが存在しないか、ディレクトリがありません"
 
 #: gui/mrvFileRequester.cpp:1123
 msgid " does not exist!"
@@ -491,7 +491,7 @@ msgstr "（RT）レンダリング変換"
 msgid "(Remove if mrViewer does not start)"
 msgstr "（mrViewerが起動しない場合は削除してください）"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2234
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2237
 #: gui/mrvImageView.cpp:9017 gui/mrvImageView.cpp:9699
 #: gui/mrvImageView.cpp:9700 gui/mrvImageView.cpp:9708
 msgid "(no image)"
@@ -521,7 +521,7 @@ msgstr "*******空のメディアを追加しました"
 msgid "+"
 msgstr "+"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2316
 msgid "+0.0  f/8.0"
 msgstr "+0.0 f/8.0"
 
@@ -576,6 +576,14 @@ msgstr ".prefs"
 msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1527
+msgid "0.45"
+msgstr "0.45"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1526
+msgid "0.55"
+msgstr "0.55"
+
 #: gui/mrvImageInformation.cpp:200
 msgid "0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290"
 msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
@@ -592,6 +600,62 @@ msgstr "1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0"
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr "1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1525
+msgid "1.00"
+msgstr "1.00"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
+msgid "1.8"
+msgstr "1.8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
+msgid "1/2"
+msgstr "1/2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1704
+msgid "1/3"
+msgstr "1/3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1703
+msgid "1/4"
+msgstr "1/4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1702
+msgid "1/5"
+msgstr "1/5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1701
+msgid "1/6"
+msgstr "1/6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
+msgid "1/7"
+msgstr "1/7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
+msgid "1/8"
+msgstr "1/8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
+msgid "1/9"
+msgstr "1/9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
+msgid "12"
+msgstr "12"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
+msgid "12.5"
+msgstr "12.5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
+msgid "14.985"
+msgstr "14.985"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1928
+msgid "15"
+msgstr "15"
+
 #: core/CMedia.cpp:4412
 msgid "16 bits"
 msgstr "16ビット"
@@ -602,7 +666,7 @@ msgstr "16ビット"
 msgid "16-bits"
 msgstr "16ビット"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2440
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2443
 #: gui/mrvImageInformation.cpp:4035
 msgid "1:1"
 msgstr "1:1"
@@ -623,6 +687,7 @@ msgstr "1:4"
 msgid "1:8"
 msgstr "1:8"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1523
 #: gui/mrvImageInformation.cpp:182
 msgid "2.2"
 msgstr "2.2"
@@ -635,9 +700,29 @@ msgstr "2.2 5.1"
 msgid "2.2 5.1 1.4"
 msgstr "2.2 5.1 1.4"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1927
+msgid "23.97"
+msgstr "23.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1926
+msgid "24"
+msgstr "24"
+
 #: gui/mrvImageInformation.cpp:186
 msgid "24000/1001"
 msgstr "24000/1001"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1925
+msgid "25"
+msgstr "25"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1924
+msgid "29.97"
+msgstr "29.97"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1923
+msgid "30"
+msgstr "30"
 
 #: core/CMedia.cpp:4419
 msgid "32 bits"
@@ -710,6 +795,10 @@ msgstr "3GPムービー"
 msgid "3d View"
 msgstr "3Dビュー"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
+msgid "3dView"
+msgstr "3dView"
+
 #: gui/mrvHotkey.cpp:305
 msgid "3dView Density Down"
 msgstr "3dView密度ダウン"
@@ -726,6 +815,18 @@ msgstr "3dViewZデプスダウン"
 msgid "3dView Z Depth Up"
 msgstr "3dView Z Depth Up"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1922
+msgid "50"
+msgstr "50"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
+msgid "59.94"
+msgstr "59.94"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1920
+msgid "60"
+msgstr "60"
+
 #: gui/mrvImageInformation.cpp:1096
 msgid "70mm"
 msgstr "70mm"
@@ -738,7 +839,7 @@ msgstr "8ビットキャッシュ"
 msgid "8 bits"
 msgstr "8ビット"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2823
 msgid "8-bit sample of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの8ビットサンプル."
 
@@ -746,6 +847,10 @@ msgstr "マウスの下の画像ピクセルの8ビットサンプル."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2689
 msgid "8-bits"
+msgstr "8ビット"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
+msgid "8bit"
 msgstr "8ビット"
 
 #: core/CMedia_audio.cpp:940
@@ -764,21 +869,25 @@ msgstr ": エラー "
 msgid ": Unknown pixel type"
 msgstr ": 不明なピクセルタイプ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2300
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3089
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2303
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3092
 msgid "@<"
 msgstr "@<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1817
+msgid "@<->"
+msgstr "@<->"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3105
 msgid "@<|"
 msgstr "@<|"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2328
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3144
 msgid "@>"
 msgstr "@>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3157
 msgid "@>|"
 msgstr "@> |"
 
@@ -786,19 +895,20 @@ msgstr "@> |"
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12 @ C7 @ b @ .Function \t @ B12 @ C7 @ b @ .Hotkey"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3076
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3079
 msgid "@|<"
 msgstr "@| <"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3131
 msgid "@|>"
 msgstr "@|>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1815
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3118
 msgid "@||"
 msgstr "@||"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3242
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3245
 #: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr "A"
@@ -816,7 +926,11 @@ msgstr ""
 "プロの画像および映画ビューア\n"
 "例:\n"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2215
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1351
+msgid "A-B, Stereo 3D Options"
+msgstr "AB、ステレオ3Dオプション"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2218
 msgid "A/B"
 msgstr "A/B"
 
@@ -846,16 +960,21 @@ msgstr "AVCHDビデオ"
 msgid "AVI Movie"
 msgstr "AVIムービー"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1361
+msgid "About"
+msgstr "だいたい"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:28
 #: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "mrViewerについて"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:149
 #: gui/mrvImageInformation.cpp:3013
 msgid "Absolute"
 msgstr "絶対の"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:94
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:97
 msgid "Accept"
 msgstr "承認"
 
@@ -863,11 +982,12 @@ msgstr "承認"
 msgid "Accept settings but don't save."
 msgstr "設定を受け入れますが、保存しないでください."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:526
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:529
 msgid "Action"
 msgstr "アクション"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1350
 msgid "Action Tools"
 msgstr "アクションツール"
 
@@ -876,7 +996,7 @@ msgstr "アクションツール"
 msgid "Actions"
 msgstr "行動"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2458
 msgid "Activate viewer's 3D Lut."
 msgstr "ビューアの3DLutをアクティブにします."
 
@@ -899,7 +1019,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr "ニュートラルを採用"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3129
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
 msgid "Advance one frame."
 msgstr "1フレーム進めます."
 
@@ -915,8 +1035,9 @@ msgstr "Advanced Systems Format Media"
 msgid "Algorithm when not OCIO"
 msgstr "OCIOでない場合のアルゴリズム"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:724
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3459
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:727
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3462
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "全て"
@@ -931,16 +1052,17 @@ msgstr "全て (*.{"
 msgid "All Layers"
 msgstr "すべてのレイヤー"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 msgid "All Possible"
 msgstr "すべての可能性"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3228
 msgid "Allows you to adjust frame rate playback."
 msgstr "フレームレートの再生を調整できます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2397
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2407
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -948,7 +1070,7 @@ msgstr ""
 "表示用にガンマカーブを調整できます.\n"
 "値は次のとおりです.pow（2、1/バツ ）;"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2266
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2269
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "画像のゲインや露出を調整できます."
 
@@ -956,15 +1078,15 @@ msgstr "画像のゲインや露出を調整できます."
 msgid "Allows you to select a standard cropping area around image."
 msgstr "画像の周囲の標準的なトリミング領域を選択できます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2235
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2238
 msgid "Allows you to select different image channels or layers."
 msgstr "さまざまな画像チャンネルまたはレイヤーを選択できます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3278
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3281
 msgid "Allows you to set starting frame for timeline."
 msgstr "タイムラインの開始フレームを設定できます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3293
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3296
 msgid "Allows you to set the ending frame for timeline."
 msgstr "タイムラインの終了フレームを設定できます."
 
@@ -974,13 +1096,17 @@ msgstr "タイムラインの終了フレームを設定できます."
 msgid "Alpha"
 msgstr "アルファ"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:158
+msgid "Alpha Only"
+msgstr "アルファのみ"
+
 #: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2049
 #: gui/mrvImageView.cpp:9116 gui/mrvImageView.cpp:9663
 msgid "Alpha Overlay"
 msgstr "アルファオーバーレイ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2808
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
 msgid "Alpha value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルのアルファ値."
 
@@ -1078,8 +1204,8 @@ msgstr "'%s'を上書きしてもよろしいですか？"
 msgid "Area"
 msgstr "領域"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:549
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2507
 msgid "Area Select Tool"
 msgstr "エリア選択ツール"
 
@@ -1095,8 +1221,8 @@ msgstr "矢印"
 msgid "Arrow Mode"
 msgstr "アローモード"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:641
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:644
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2583
 msgid "Arrow Tool"
 msgstr "矢印ツール"
 
@@ -1128,7 +1254,7 @@ msgstr "属性"
 msgid "Attributes Menu"
 msgstr "属性メニュー"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2634
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2637
 msgid "Attrs"
 msgstr "Attrs"
 
@@ -1158,7 +1284,7 @@ msgstr "オーディオストリーム＃%d"
 msgid "Audio Streams"
 msgstr "オーディオストリーム"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3260
 msgid "Audio Volume"
 msgstr "音量"
 
@@ -1347,7 +1473,7 @@ msgstr "ブルーゲイン"
 msgid "Blue Gain of clip."
 msgstr "クリップのブルーゲイン."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2803
 msgid "Blue value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの青の値."
 
@@ -1358,6 +1484,10 @@ msgstr "ブースト例外: "
 #: gui/mrvImageView.cpp:11001
 msgid "Bottom"
 msgstr "下"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1557
+msgid "Bottom Field"
+msgstr "ボトムフィールド"
 
 #: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
@@ -1414,7 +1544,7 @@ msgstr "色"
 msgid "CPU Information"
 msgstr "CPU情報"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:65
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:68
 msgid "CTL Browser"
 msgstr "CTLブラウザ"
 
@@ -1459,8 +1589,8 @@ msgstr "カードを開けない "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:93
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:131
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:106
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:271
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:109
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:274
 #: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr "キャンセル"
@@ -1537,7 +1667,7 @@ msgstr "中央の画像"
 msgid "Change Image failed"
 msgstr "画像の変更に失敗しました"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2420
 msgid "Changes frame/field display"
 msgstr "フレームを変更します/フィールド表示"
 
@@ -1545,7 +1675,7 @@ msgstr "フレームを変更します/フィールド表示"
 msgid "Channel"
 msgstr "チャネル"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:229
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
 msgstr "チャンネル"
@@ -1595,8 +1725,8 @@ msgstr "サークル"
 msgid "Circle Mode"
 msgstr "サークルモード"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:626
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2565
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:629
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2568
 msgid "Circle Tool"
 msgstr "サークルツール"
 
@@ -1604,7 +1734,7 @@ msgstr "サークルツール"
 msgid "City"
 msgstr "市"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:345
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:348
 msgid "Clear"
 msgstr "クリア"
 
@@ -1612,7 +1742,7 @@ msgstr "クリア"
 msgid "Clear Image Cache"
 msgstr "画像キャッシュをクリア"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
 msgid "Client"
 msgstr "クライアント"
 
@@ -1644,7 +1774,7 @@ msgid ""
 "Date: %s\n"
 "Resolution: %dx%d"
 msgstr ""
-"クローンイメージ\n"
+"クローン画像\n"
 "名前: %s \n"
 "日付: %s \n"
 "解決策: %dx%d"
@@ -1701,7 +1831,7 @@ msgid "CollapsibleGroup not found"
 msgstr "CollapsibleGroupが見つかりません"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2594
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2597
 #: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
@@ -1714,6 +1844,14 @@ msgstr "色"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1100
 msgid "Color Area"
 msgstr "カラーエリア"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1348
+msgid "Color Controls"
+msgstr "カラーコントロール"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1347
+msgid "Color Info"
+msgstr "色情報"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorAreaUI.cxx:18
 msgid "Color Information"
@@ -1743,7 +1881,7 @@ msgstr "カラーバージョン"
 msgid "Color channel not found at index "
 msgstr "インデックスにカラーチャンネルが見つかりません "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2125
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2128
 msgid "Color controls"
 msgstr "カラーコントロール"
 
@@ -1786,7 +1924,7 @@ msgid "Compositing"
 msgstr "合成"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3272
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
 #: gui/mrvImageInformation.cpp:3116
 msgid "Compression"
 msgstr "圧縮"
@@ -1803,8 +1941,8 @@ msgstr "圧縮方法は利用できません. PIZを使用します."
 msgid "Compression to use when saving an exr."
 msgstr "exrを保存するときに使用する圧縮."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:841
 #: core/mrvClient.cpp:471
 msgid "Connect"
 msgstr "接続"
@@ -1817,7 +1955,8 @@ msgstr "接続エラー: "
 msgid "Connect timed out."
 msgstr "接続がタイムアウトしました."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
 msgid "Connections"
 msgstr "接続"
 
@@ -2393,8 +2532,8 @@ msgstr "国"
 msgid "Country Code"
 msgstr "国コード"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:780
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:812
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
 #: core/mrvServer.cpp:2041
 msgid "Create"
 msgstr "作成"
@@ -2483,13 +2622,14 @@ msgstr "作物"
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:257
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:719
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3454
 msgid "Current"
 msgstr "電流"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3058
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3061
 msgid "Current frame."
 msgstr "現在のフレーム."
 
@@ -2669,7 +2809,7 @@ msgstr "ビデオエラーシークフレームをデコードする "
 msgid "Decode_audio failed with error: "
 msgstr "Decode_audioがエラーで失敗しました: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2301
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2304
 msgid "Decrease exposure by 0.5."
 msgstr "露出を0.5減らします."
 
@@ -2677,6 +2817,7 @@ msgstr "露出を0.5減らします."
 msgid "Decreasing Y"
 msgstr "Yを減らす"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1919
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "ディフォルト"
@@ -2816,7 +2957,7 @@ msgstr "表示ウィンドウ2"
 msgid "Display Window of Clip"
 msgstr "クリップの表示ウィンドウ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2314
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2317
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -2876,6 +3017,10 @@ msgstr "運転者"
 msgid "Driver is not a live output device"
 msgstr "ドライバーはライブ出力デバイスではありません"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1833
+msgid "Drop Frame Timecode"
+msgstr "ドロップフレームタイムコード"
+
 #: gui/mrvImageInformation.cpp:3555 gui/mrvImageInformation.cpp:3620
 #: gui/mrvImageInformation.cpp:3664
 msgid "Duration"
@@ -2893,7 +3038,7 @@ msgstr "字幕の長さ"
 msgid "Duration of Video"
 msgstr "ビデオの長さ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3320
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3323
 msgid "E"
 msgstr "E"
 
@@ -2910,6 +3055,7 @@ msgid "EDL"
 msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
 msgstr "EDL編集"
 
@@ -2998,8 +3144,8 @@ msgstr "消去モード"
 msgid "Erase Temporary Mode"
 msgstr "一時モードの消去"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:581
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2536
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2539
 msgid "Eraser Tool"
 msgstr "消しゴムツール"
 
@@ -3129,12 +3275,12 @@ msgstr "拡張"
 msgid "Eye Separation"
 msgstr "目の分離"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2419
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2903
 msgid "F"
 msgstr "F"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3030
 msgid "F:"
 msgstr "F:"
 
@@ -3142,11 +3288,15 @@ msgstr "F:"
 msgid "F: "
 msgstr "F: "
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1715
+msgid "FIT"
+msgstr "フィット"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/aviSave.cxx:334
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1441
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1764
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2159
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3170
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3173
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3296,7 +3446,7 @@ msgstr "ファイル/保存/映画またはシーケンスとして"
 
 #: gui/mrvImageView.cpp:4815 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/Reel As"
-msgstr "ファイル/保存/リールアズ"
+msgstr "ファイル/保存/リールとして"
 
 #: gui/mrvImageView.cpp:4821 gui/mrvImageBrowser.cpp:4413
 msgid "File/Save/Session As"
@@ -3351,7 +3501,7 @@ msgstr "すべてに合う"
 msgid "Fit Screen"
 msgstr "画面に合わせる"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2097
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2100
 msgid "Fit Window to Image"
 msgstr "ウィンドウを画像に合わせる"
 
@@ -3411,7 +3561,7 @@ msgstr "集中"
 msgid "Font"
 msgstr "フォント"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:173
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
 #: gui/mrvImageInformation.cpp:3099 gui/mrvImageInformation.cpp:3600
 msgid "Format"
 msgstr "フォーマット"
@@ -3431,6 +3581,7 @@ msgid "FourCC"
 msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1389
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
 #: gui/mrvImageView.cpp:10999
 msgid "Frame"
 msgstr "フレーム"
@@ -3504,9 +3655,10 @@ msgstr "フレームバッファが不完全です: バッファを読み取り�
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "フレームバッファマルチサンプルが不完全です: バッファを描画します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:251
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:713
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3448
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3451
 msgid "Frames"
 msgstr "フレーム"
 
@@ -3518,8 +3670,8 @@ msgstr "1秒あたりのフレーム数"
 msgid "Frames per Second"
 msgstr "1秒あたりのフレーム数"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:566
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2521
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2524
 msgid "Freehand Drawing Tool"
 msgstr "フリーハンド描画ツール"
 
@@ -3530,6 +3682,10 @@ msgstr "周波数"
 #: gui/mrvImageInformation.cpp:3604
 msgid "Frequency of audio"
 msgstr "可聴周波数"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1774
+msgid "Full"
+msgstr "満杯"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:991
 msgid "Fullscreen"
@@ -3563,7 +3719,7 @@ msgid "GREEN"
 msgstr "緑"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1202
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2254
 msgid "Gain"
 msgstr "利得"
 
@@ -3571,14 +3727,15 @@ msgstr "利得"
 msgid "Gain for image failed"
 msgstr "画像のゲインに失敗しました"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2256
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2259
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "画像値を取得します.画像のピクセル値の単純な乗数."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1208
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3261
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1471
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2364
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1775
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 #: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1785
 msgid "Gamma"
 msgstr "ガンマ"
@@ -3623,20 +3780,20 @@ msgstr "exrをロードし、OCIOがオフのときに使用するガンマ."
 msgid "Gb"
 msgstr "Gb"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:733
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3468
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
 msgid "Ghosting"
 msgstr "ゴースティング"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3103
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3106
 msgid "Go back one frame."
 msgstr "1フレーム戻ります."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3077
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3080
 msgid "Go to the beginning of the sequence."
 msgstr "シーケンスの最初に移動します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3155
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3158
 msgid "Go to the end of the sequence."
 msgstr "シーケンスの最後に移動します."
 
@@ -3663,7 +3820,7 @@ msgstr "グリーンゲイン"
 msgid "Green Gain of clip."
 msgstr "クリップのグリーンゲイン."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2795
 msgid "Green value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの緑の値."
 
@@ -3699,7 +3856,12 @@ msgstr "HDRI画像"
 msgid "HDTV / Widescreen 16:9"
 msgstr "HDTV/ワイドスクリーン16:9"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
+msgid "HSL"
+msgstr "HSL"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2828
 msgid "HSV"
 msgstr "HSV"
 
@@ -3741,6 +3903,10 @@ msgstr "高さ"
 msgid "Height of clip"
 msgstr "クリップの高さ"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1730
+msgid "Hex"
+msgstr "六角"
+
 #: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "他を隠す"
@@ -3759,6 +3925,7 @@ msgstr "高10"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1060
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "ヒストグラム"
 
@@ -3785,6 +3952,7 @@ msgstr "ホットキーファイル:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1359
 msgid "Hotkeys"
 msgstr "ホットキー"
 
@@ -3804,7 +3972,7 @@ msgstr "デフォルトでタイムラインを表示する方法."
 msgid "How to display timeline selection by default."
 msgstr "デフォルトでタイムライン選択を表示する方法."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2875
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2878
 msgid "Hue value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの色相値."
 
@@ -3823,6 +3991,7 @@ msgstr "ICCプロファイル"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2686
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1356
 msgid "ICC Profiles"
 msgstr "ICCプロファイル"
 
@@ -3841,6 +4010,10 @@ msgstr "ICCプロファイル"
 #: gui/FLU/Flu_File_Chooser.cpp:599
 msgid "IFF Picture"
 msgstr "IFF画像"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:138
+msgid "ILM OpenEXR (.exr)"
+msgstr "ILM OpenEXR（.exr）"
 
 #: gui/mrvImageInformation.cpp:3229
 msgid "IPP2 Mode"
@@ -3861,6 +4034,14 @@ msgstr "ISO感度"
 #: gui/mrvImageInformation.cpp:3258
 msgid "ISO of film stock."
 msgstr "フィルムストックのISO."
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1755
+msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
+msgstr "ITU-601（デジタルPAL/NTSC YCbCr）"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1756
+msgid "ITU-709 (Digital HDTV YCbCr)"
+msgstr "ITU-709（デジタルHDTV YCbCr）"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
 msgid ""
@@ -3927,7 +4108,7 @@ msgstr "キャンバス内の画像Yの位置"
 msgid "Image Y Scale in Canvas"
 msgstr "キャンバスの画像Yスケール"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2744
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2747
 msgid "Image coordinate of pixel under mouse."
 msgstr "マウスの下のピクセルの画像座標."
 
@@ -3971,7 +4152,7 @@ msgstr ""
 "画像シーケンスはメモリにキャッシュされます.この設定がオフの場合、画像はオンデ"
 "マンドでロードされますが、滑らかな再生ができない場合があります."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2673
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2676
 msgid "Image zoom setting."
 msgstr "画像ズーム設定."
 
@@ -4089,7 +4270,7 @@ msgstr "ステレオの画像のフレーム長は異なります.それらは�
 
 #: core/guessImage.cpp:183
 msgid "Images in stereo have different lengths.  They will not loop properly."
-msgstr "ステレオの画像の長さは異なります.それらは正しくループしません."
+msgstr "ステレオの画像の長さは異なります.それらは適切にループしません."
 
 #: core/guessImage.cpp:173
 msgid "Images in stereo have different velocities (fps)."
@@ -4099,7 +4280,7 @@ msgstr "ステレオの画像は異なる速度（fps）を持っています."
 msgid "Images, sequences or movies to display."
 msgstr "表示する画像、シーケンス、またはムービー."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2329
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2332
 msgid "Increase exposure by 0.5."
 msgstr "露出を0.5増やします."
 
@@ -4120,7 +4301,7 @@ msgid "Input"
 msgstr "入力"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2398
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2285
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2288
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3047
 msgid "Input Color Space"
 msgstr "入力色空間"
@@ -4217,6 +4398,10 @@ msgstr "逆参照レンダリング変換"
 msgid "Item was not found in tree."
 msgstr "ツリーにアイテムが見つかりませんでした."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:139
+msgid "JPEG (.jpg)"
+msgstr "JPEG（.jpg）"
+
 #: gui/FLU/Flu_File_Chooser.cpp:600 gui/FLU/Flu_File_Chooser.cpp:601
 msgid "JPEG Picture"
 msgstr "JPEG画像"
@@ -4272,18 +4457,27 @@ msgstr "既知のコーデック"
 msgid "Kodak Digital Negative"
 msgstr "コダックデジタルネガ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3001
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1816
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3004
 msgid "L"
 msgstr "L"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
+msgid "L (Lightness)"
+msgstr "L（明度）"
 
 #: gui/mrvImageInformation.cpp:3079
 #, c-format
 msgid "LMTransform %u"
 msgstr "LMTransform %u"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2457
 msgid "LUT"
 msgstr "LUT"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1750
+msgid "Lab CIELAB (L*a*b*)"
+msgstr "ラボCIELAB（L * a * b *）"
 
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
@@ -4401,7 +4595,7 @@ msgstr "オーディオの読み込み"
 
 #: gui/mrvFileRequester.cpp:342
 msgid "Load Directory"
-msgstr "ディレクトリの読み込み"
+msgstr "ディレクトリをロード"
 
 #: gui/mrvFileRequester.cpp:1107
 msgid "Load Hotkeys Preferences"
@@ -4503,9 +4697,13 @@ msgstr "ローカルキャプション"
 msgid "Lockfile "
 msgstr "ロックファイル "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:316
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "ログメッセージ"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
+msgid "Logs"
+msgstr "ログ"
 
 #: core/exrImage.cpp:1260 core/exrImage.cpp:2447 core/exrImage.cpp:2451
 #: core/exrImage.cpp:2531 core/exrImage.cpp:2535
@@ -4516,7 +4714,7 @@ msgstr "経度"
 msgid "Looked for it in: "
 msgstr "でそれを探しました: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3002
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3005
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "ループ動作（停止、ループ、ピンポン）"
 
@@ -4532,7 +4730,7 @@ msgstr "輝度"
 msgid "Luminance Gradient"
 msgstr "輝度グラデーション"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2959
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2962
 msgid "Luminance of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの輝度."
 
@@ -4545,6 +4743,10 @@ msgstr "ルマ"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1285
 msgid "Lut Active"
 msgstr "Lut Active"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1751
+msgid "Luv CIELUV (L*u*v*)"
+msgstr "Luv CIELUV（L * u * v *）"
 
 #: gui/mrvImageInformation.cpp:201 gui/mrvImageInformation.cpp:227
 #: gui/mrvImageInformation.cpp:512
@@ -4670,6 +4872,7 @@ msgid "Mean"
 msgstr "平均"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1086
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1346
 msgid "Media Info"
 msgstr "メディア情報"
 
@@ -4707,6 +4910,10 @@ msgstr "メタ"
 #: gui/mrvImageInformation.cpp:993
 msgid "Metadata"
 msgstr "メタデータ"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:140
+msgid "Microsoft Bitmap (.bmp)"
+msgstr "Microsoftビットマップ（.bmp）"
 
 #: gui/mrvColorInfo.cpp:780 gui/mrvColorInfo.cpp:890
 msgid "Minimum"
@@ -4794,7 +5001,7 @@ msgstr "モーションエスティメーション法"
 msgid "Move Pic."
 msgstr "Picを移動します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:610
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
 msgid "Move Picture Tool"
 msgstr "画像移動ツール"
 
@@ -4843,7 +5050,7 @@ msgstr "NTSCHDTVカラーバー"
 msgid "NTSC Video"
 msgstr "NTSCビデオ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:179
 msgid "Name (.ext)"
 msgstr "名前（.ext）"
 
@@ -4868,8 +5075,8 @@ msgstr "で作成されていない新しいアイテム "
 msgid "New item was not found in tree."
 msgstr "ツリーに新しいアイテムが見つかりませんでした."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:746
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:749
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3484
 msgid "Next"
 msgstr "次"
 
@@ -4984,18 +5191,22 @@ msgstr ""
 "このクリップにはバージョン管理はありません.バージョン管理文字列で名前が付けら"
 "れたイメージまたはディレクトリを作成してください."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1832
+msgid "Non-Drop Frame Timecode"
+msgstr "ノンドロップフレームタイムコード"
+
 #: video/mrvGLEngine.cpp:235
 msgid "Non-POT Textures:\t"
 msgstr "非POTテクスチャ:\t"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:204
 #: core/aviImage_save.cpp:1354 core/aviImage_save.cpp:1389
 #: core/exrImage.cpp:123 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:3908
 #: gui/mrvSave.cpp:256 gui/mrvSave.cpp:257 gui/mrvSave.cpp:267
 msgid "None"
 msgstr "なし"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2346
 msgid "Norm"
 msgstr "ノルム"
 
@@ -5003,7 +5214,7 @@ msgstr "ノルム"
 msgid "Normal"
 msgstr "普通"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2347
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "[0,1]の範囲にとどまるようにピクセル値を正規化します."
 
@@ -5148,7 +5359,7 @@ msgstr "OCIO構成ファイル"
 msgid "OCIO Display"
 msgstr "OCIOディスプレイ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2368
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "OCIOディスプレイ/表示またはいくつかのデフォルトのガンマ設定."
 
@@ -5172,7 +5383,7 @@ msgstr "OCIO構成 (*.{"
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO構成が設定されていません.デフォルトはCTLです. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2289
 msgid "OCIO input color space for the image"
 msgstr "画像のOCIO入力色空間"
 
@@ -5308,7 +5519,7 @@ msgstr ""
 "ここで、SCはソースカラー、SAはソースアルファ、DCはデスティネーションカラーで"
 "す. ."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2149
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2152
 msgid "Opens different windows"
 msgstr "別のウィンドウを開きます"
 
@@ -5324,6 +5535,10 @@ msgstr "R3Dを制御するオプション/BRAWリーダー"
 #: core/exrImage.cpp:2942
 msgid "Options for EXR were empty"
 msgstr "EXRのオプションは空でした"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1776
+msgid "Original"
+msgstr "オリジナル"
 
 #: core/wandImage.cpp:592
 msgid "Original Transmission Reference"
@@ -5451,12 +5666,12 @@ msgstr "ページアップ"
 msgid "Pause"
 msgstr "一時停止"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:704
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
 msgstr "ペンの色"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:657
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3434
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3437
 msgid "Pen Size"
 msgstr "ペンサイズ"
 
@@ -5468,6 +5683,7 @@ msgstr "ペンサイズが少ない"
 msgid "Pen Size More"
 msgstr "ペンサイズもっと"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:148
 #: gui/mrvImageInformation.cpp:3012
 msgid "Perceptual"
 msgstr "知覚的"
@@ -5558,11 +5774,11 @@ msgstr "フォワードを再生/速度を変更する"
 msgid "Play in Current Direction"
 msgstr "現在の方向で再生"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3090
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3093
 msgid "Play sequence backwards."
 msgstr "シーケンスを逆方向に再生します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3145
 msgid "Play sequence forward."
 msgstr "シーケンスを順方向に再生します."
 
@@ -5583,8 +5799,8 @@ msgstr "再生"
 msgid "Playback of audio frame "
 msgstr "オーディオフレームの再生 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:833
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
 msgid "Port"
 msgstr "港"
 
@@ -5597,7 +5813,8 @@ msgid "Power"
 msgstr "力"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:909
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2111
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1358
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2114
 msgid "Preferences"
 msgstr "環境設定"
 
@@ -5633,8 +5850,8 @@ msgstr "プレゼンテーション"
 msgid "Preview Thumbnails"
 msgstr "サムネイルのプレビュー"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3471
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:739
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3474
 msgid "Previous"
 msgstr "前"
 
@@ -5775,6 +5992,7 @@ msgid "RExt"
 msgstr "RExt"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
 msgstr "RGB"
@@ -5783,7 +6001,9 @@ msgstr "RGB"
 msgid "RGB Picture"
 msgstr "RGB画像"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2756
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1729
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
 #: gui/mrvImageView.cpp:204
 msgid "RGBA"
 msgstr "RGBA"
@@ -5835,7 +6055,7 @@ msgstr "合理的な"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2849
 msgid "Read 16 bit movies when possible"
-msgstr "可能な場合は16ビット映画を読む"
+msgstr "可能であれば16ビット映画を読む"
 
 #: gui/mrvImageInformation.cpp:2833
 msgid "Real Height"
@@ -5872,7 +6092,7 @@ msgstr "レッドゲイン"
 msgid "Red Gain of clip."
 msgstr "クリップの赤ゲイン."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2787
 msgid "Red value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの赤の値."
 
@@ -5884,8 +6104,8 @@ msgstr "赤/シアングラス"
 msgid "Redo Draw"
 msgstr "描画をやり直し"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:685
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2619
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2622
 msgid "Redo Previous Shape Drawn"
 msgstr "描画された前の形状をやり直す"
 
@@ -5905,6 +6125,7 @@ msgid "Reel List"
 msgstr "リールリスト"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2885
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1345
 msgid "Reels"
 msgstr "リール"
 
@@ -5945,7 +6166,8 @@ msgstr ""
 msgid "Regular expression error: "
 msgstr "正規表現エラー: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:213
 #: gui/mrvImageInformation.cpp:3014
 msgid "Relative"
 msgstr "相対的"
@@ -5990,7 +6212,7 @@ msgstr "リールから現在の画像を削除します."
 msgid "Removed client "
 msgstr "クライアントを削除しました "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:207
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:210
 msgid "Render Intent"
 msgstr "レンダリングインテント"
 
@@ -6144,7 +6366,7 @@ msgstr "丸めモード"
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "シングルインスタンスの設定に関係なく、mrViewerを実行します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3307
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3310
 msgid "S"
 msgstr "S"
 
@@ -6174,6 +6396,7 @@ msgid "Safe Areas"
 msgstr "安全なエリア"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
 msgstr "飽和"
@@ -6182,14 +6405,14 @@ msgstr "飽和"
 msgid "Saturation of clip."
 msgstr "クリップの飽和."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2883
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2886
 msgid "Saturation value of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの飽和値."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3408
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:269
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:333
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:272
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:336
 msgid "Save"
 msgstr "保存"
 
@@ -6225,7 +6448,7 @@ msgstr ""
 msgid "Save Ocio Config File in Preferences"
 msgstr "Ocio構成ファイルを設定に保存"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:167
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:170
 msgid "Save Options"
 msgstr "オプションの保存"
 
@@ -6306,7 +6529,7 @@ msgstr "図式"
 msgid "ScrollLock"
 msgstr "スクロールロック"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
 #: gui/mrvImageView.cpp:1579
 msgid "Scrub"
 msgstr "スクラブ"
@@ -6319,8 +6542,8 @@ msgstr "スクラブモード"
 msgid "Scrub Sensitivity"
 msgstr "スクラブ感度"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:532
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2487
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:535
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2490
 msgid "Scrubbing Tool"
 msgstr "スクラブツール"
 
@@ -6344,7 +6567,11 @@ msgstr "クリップの2番目の表示ウィンドウ"
 msgid "Secondary Display"
 msgstr "二次ディスプレイ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3243
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
+msgid "Seconds"
+msgstr "秒"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3246
 msgid "Select Audio Track"
 msgstr "オーディオトラックを選択"
 
@@ -6356,7 +6583,7 @@ msgstr "マルチイメージを選択"
 msgid "Select Single Image"
 msgstr "単一の画像を選択"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:79
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
 msgid "Select a CTL script"
 msgstr "CTLスクリプトを選択します"
 
@@ -6427,13 +6654,13 @@ msgstr "現在の画像に印刷されるテキストオーバーレイの色を
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr "現在の画像上の選択長方形の色を選択します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:705
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:708
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2598
 msgid "Selects the current pen color."
 msgstr "現在のペンの色を選択します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:658
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3435
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:661
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3438
 msgid "Selects the size of brush."
 msgstr "ブラシのサイズを選択します."
 
@@ -6453,8 +6680,8 @@ msgstr "順序"
 msgid "Sequences"
 msgstr "シーケンス"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:804
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:832
 msgid "Server"
 msgstr "サーバ"
 
@@ -6483,7 +6710,7 @@ msgstr "設定ポイント"
 msgid "Set added audio offset."
 msgstr "追加されたオーディオオフセットを設定します."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2216
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2219
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -6608,7 +6835,7 @@ msgstr "Softimageの画像"
 msgid "Software"
 msgstr "ソフトウェア"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
 msgid "Some default frame rate settings."
 msgstr "いくつかのデフォルトのフレームレート設定."
 
@@ -6678,7 +6905,7 @@ msgstr "ステレオアイセパレーション"
 msgid "Stop"
 msgstr "やめる"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3116
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3119
 msgid "Stop playback."
 msgstr "再生を停止します."
 
@@ -6690,7 +6917,7 @@ msgstr "uiviewを停止します"
 msgid "Stopped encoding cached "
 msgstr "キャッシュされたエンコーディングの停止 "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2444
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr "画像のピクセル比を補正するために画像をストレッチします."
 
@@ -6775,18 +7002,18 @@ msgstr "チャンネルの切り替え"
 msgid "Switch FG/BG Images"
 msgstr "スイッチFG/BG画像"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2757
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2760
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
 msgstr ""
 "RGBA表示を浮動小数点、16進数（0..0xff）、10進数（0..255）の間で切り替えます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3031
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "フレーム、秒、タイムコードの表示を切り替えます"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2932
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -6817,19 +7044,23 @@ msgstr ""
 "Y = 0.18（L = 0.5）のピクセルは、Y = L = 1.0（白）の約半分の明るさで表示され"
 "ます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2826
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2829
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr "カーソル下のピクセルのピクセル色空間情報表示を切り替えます."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:595
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2550
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:598
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2553
 msgid "T"
 msgstr "T"
 
 #: gui/mrvImageView.cpp:4571
 msgid "T: "
 msgstr "T: "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
+msgid "TIFF (.tif)"
+msgstr "TIFF（.tif）"
 
 #: gui/FLU/Flu_File_Chooser.cpp:598 gui/FLU/Flu_File_Chooser.cpp:616
 #: gui/FLU/Flu_File_Chooser.cpp:617
@@ -6848,6 +7079,10 @@ msgstr "タグ"
 msgid "Take Current Window Values"
 msgstr "現在のウィンドウ値を取得"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:142
+msgid "Targa (.tga)"
+msgstr "タルガ（.tga）"
+
 #: gui/FLU/Flu_File_Chooser.cpp:615
 msgid "Targa Picture"
 msgstr "タルガ画像"
@@ -6864,8 +7099,8 @@ msgstr "テキストモード"
 msgid "Text Overlay"
 msgstr "テキストオーバーレイ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:596
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2554
 msgid "Text Tool"
 msgstr "テキストツール"
 
@@ -7181,6 +7416,10 @@ msgstr "サムネイルフレームパーセント"
 msgid "Thumbnails Active"
 msgstr "アクティブなサムネイル"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1831
+msgid "Time"
+msgstr "時間"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1480
 msgid "Timecode"
 msgstr "タイムコード"
@@ -7188,10 +7427,11 @@ msgstr "タイムコード"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1033
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1863
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3447
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:164
 msgid "Timeline"
 msgstr "タイムライン"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2983
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2986
 msgid "Timeline."
 msgstr "タイムライン."
 
@@ -7364,6 +7604,10 @@ msgstr "ツールドック"
 msgid "Top"
 msgstr "上"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1556
+msgid "Top Field"
+msgstr "トップフィールド"
+
 #: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
 #: standalone/main.cpp:479
 msgid "Top/bottom"
@@ -7406,7 +7650,7 @@ msgstr "デバッグコンソールをオンにします."
 msgid "Type"
 msgstr "タイプ"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2904
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -7453,8 +7697,8 @@ msgstr "未定義のフレームバッファ"
 msgid "Undo Draw"
 msgstr "描画を元に戻す"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:671
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2608
 msgid "Undo Last Shape Drawn"
 msgstr "描画された最後の形状を元に戻す"
 
@@ -7709,7 +7953,7 @@ msgstr "有効な料金は次のとおりです."
 msgid "Value"
 msgstr "価値"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2894
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの値（強度）."
 
@@ -7749,6 +7993,7 @@ msgstr "Vector3整数"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1073
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
 msgid "Vectorscope"
 msgstr "Vectorscope"
 
@@ -7904,7 +8149,7 @@ msgstr "意見/テクスチャフィルタリング  "
 msgid "View/Toggle Action Dock"
 msgstr "意見/アクションドックを切り替えます"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
 msgid "W"
 msgstr "W"
 
@@ -7932,6 +8177,7 @@ msgstr "ウェーブミュージック"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1153
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1355
 msgid "Waveform"
 msgstr "波形"
 
@@ -8337,14 +8583,22 @@ msgstr "バツ:"
 msgid "XML Clip Metadata (*.{"
 msgstr "XMLクリップメタデータ (*.{"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2743
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 msgid "XY"
 msgstr "XY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1748
+msgid "XYZ CIE XYZ"
+msgstr "XYZ CIE XYZ"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2928
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2931
 msgid "Y"
 msgstr "Y"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
+msgid "Y (Luminance)"
+msgstr "Y（輝度）"
 
 #: gui/mrvImageInformation.cpp:2877
 msgid "Y Position"
@@ -8362,6 +8616,10 @@ msgstr "Yリップマップレベル"
 msgid "Y Scale"
 msgstr "Yスケール"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1792
+msgid "Y' (Lumma)"
+msgstr "Y '（ルマ）"
+
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1631
 msgid "Y:"
 msgstr "Y:"
@@ -8370,9 +8628,21 @@ msgstr "Y:"
 msgid "YBYRY"
 msgstr "YBYRY"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
+msgid "YDbDr (Analog SECAM/PAL-N)"
+msgstr "YDbDr（アナログSECAM/PAL-N）"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
+msgid "YIQ (Analog NTSC)"
+msgstr "YIQ（アナログNTSC）"
+
 #: video/mrvGLEngine.cpp:240
 msgid "YUV  Support:\t"
 msgstr "YUVサポート:\t"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1752
+msgid "YUV (Analog PAL)"
+msgstr "YUV（アナログPAL）"
 
 #: gui/mrvImageInformation.cpp:2994
 msgid "YUV Color Range"
@@ -8434,7 +8704,7 @@ msgstr "Z深さ"
 
 #: gui/mrvImageView.cpp:215
 msgid "Z Depth"
-msgstr "Z深さ"
+msgstr "Zの深さ"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1342
 msgid "Zoom Speed"
@@ -8637,7 +8907,7 @@ msgid "mental ray Z Depth Picture"
 msgstr "mental rayZ深度画像"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:35
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2069
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2072
 #: gui/mrvImageView.cpp:495
 msgid "mrViewer"
 msgstr "mrViewer"
@@ -8876,6 +9146,43 @@ msgstr "ビデオ"
 msgid "visual impaired"
 msgstr "視覚障害者"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1706
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2675
 msgid "x1"
 msgstr "x1"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1707
+msgid "x2"
+msgstr "x2"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1708
+msgid "x3"
+msgstr "x3"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1709
+msgid "x4"
+msgstr "x4"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1710
+msgid "x5"
+msgstr "x5"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1711
+msgid "x6"
+msgstr "x6"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1712
+msgid "x7"
+msgstr "x7"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1713
+msgid "x8"
+msgstr "x8"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1714
+msgid "x9"
+msgstr "x9"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+msgid "xyY CIE xyY"
+msgstr "xyY CIE xyY"
