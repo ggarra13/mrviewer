@@ -214,6 +214,7 @@ int main( int argc, const char** argv )
 
 #if defined __APPLE__ && defined __MACH__
     tmp = setlocale( LC_MESSAGES, NULL );
+    std::cerr << "numeric " << tmp << std::endl;
     setlocale( LC_NUMERIC, tmp );
 #endif
 

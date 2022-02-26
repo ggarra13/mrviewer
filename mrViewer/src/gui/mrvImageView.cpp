@@ -5691,6 +5691,12 @@ std::string float_printf( float x )
     }
     else
     {
+#ifdef OSX
+        const char* loc = setlocale( LC_MESSAGES, NULL );
+        setlocale( LC_NUMERIC, loc );
+#else
+        setlocale( LC_NUMERIC, NULL );
+#endif
         char buf[ 64 ];
         sprintf( buf, " %7.4f", x );
         return buf + strlen(buf) - 8;

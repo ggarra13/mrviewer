@@ -47,6 +47,7 @@ def fix( text, result, lang )
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
   elsif lang == 'fr'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if text == 'files'
       #
       # Automatic translation returns "des dossiers" which conflicts with TCLAP
@@ -64,10 +65,10 @@ def fix( text, result, lang )
       result.sub!(/\s:$/, ": ")
     end
   elsif lang == 'de'
-    if text == '%4.8g %%'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+    if text == '4.8g %%'
       result = text
-    end
-    if result =~ /,* kann nicht gefunden werden/
+    elsif result =~ /,* kann nicht gefunden werden/
       #
       # Automatic translation returns a second line instead of just a line
       # which conflicts with \n ending in original text.
@@ -82,10 +83,10 @@ def fix( text, result, lang )
       result.sub!(/\\oder/, '\nder' )
     end
   elsif lang == 'cs'
-    if text == '%4.8g %%'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+    if text == '4.8g %%'
       result = text
-    end
-    if text == 'Frame %<PRId64> '
+    elsif text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
@@ -103,23 +104,24 @@ def fix( text, result, lang )
       result.gsub!(/\\an/, '\n')
     end
   elsif lang == 'es'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if result =~ /\\\s+t/
       #
       # Automatic translation returns \ t instead of \t
       #
       result.gsub!(/\\\s+t/, '\t')
     end
+  elsif lang == 'tr'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
   elsif lang == 'ru'
-    if text == '%4.8g %%'
-      result = text
-    end
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if text == '%d Hz.'
       result = text
-    end
-    if text == 'W: %g %g'
+    elsif text == '4.8g %%'
+      result = text
+    elsif text == 'W: %g %g'
       result = 'B: %g %g'
-    end
-    if result =~ /ДОСУГ/
+    elsif result =~ /ДОСУГ/
       result.sub!(/ДОСУГ/, 'OCIO')
     elsif result =~ /ОТДЫХ/
       result.sub!(/ОТДЫХ/, 'OCIO')
@@ -199,12 +201,12 @@ def fix( text, result, lang )
     if result =~ /TEMPO LIBERO/
       result.sub!(/TEMPO LIBERO/, 'OCIO')
     end
-    if text == '%d Hz.'
+    if text == '4.8g %%'
+      result = text
+    elsif text == '%d Hz.'
       result = text
     end
-    if text == '%4.8g %%'
-      result = text
-    end
+    result.gsub!( /^(\d*)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
@@ -277,6 +279,7 @@ end
 @h = {}
 @op = nil
 
+
 def new_line( text )
   return if @msgid.empty? or @h[@msgid]
   @h[@msgid] = 1
@@ -288,8 +291,8 @@ def new_line( text )
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'tr' ]
-translated = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
+langs = [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko', 'tr', 'ru' ]
+translated = [ 'es' ]
 for lang in langs
   next if translated.any? lang
   @h = {}

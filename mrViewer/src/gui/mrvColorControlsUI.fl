@@ -1,8 +1,13 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
+i18n_type 1
+i18n_include {<libintl.h>}
+i18n_conditional {}
+i18n_function gettext
+i18n_static_function gettext_noop
 header_name {.h}
 code_name {.cxx}
-decl {\#include "gui/mrvIO.h"} {public local
+decl {\#include "gui/mrvIO.h"} {selected public local
 }
 
 decl {\#include "core/mrvI8N.h"} {public local
@@ -36,7 +41,7 @@ class ColorControlsUI {open
         Fl_Light_Button uiActive {
           label Active
           user_data view user_data_type {mrv::ImageView*}
-          callback {v->redraw();} selected
+          callback {v->redraw();}
           tooltip {Activates / Deactivates all color corrections as they can be a tad expensive} xywh {85 10 80 25}
         }
       }
