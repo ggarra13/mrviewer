@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-25 21:12-0300\n"
+"POT-Creation-Date: 2022-02-26 02:17-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -227,7 +227,7 @@ msgstr " 频率： "
 msgid " has different display window than "
 msgstr " 具有不同的显示窗口 "
 
-#: standalone/main.cpp:408
+#: standalone/main.cpp:407
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -485,7 +485,7 @@ msgstr "（PAL 字段）"
 msgid "(RT) Render Transform"
 msgstr "(RT) 渲染变换"
 
-#: standalone/main.cpp:368
+#: standalone/main.cpp:367
 msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 没有启动则删除）"
 
@@ -559,7 +559,7 @@ msgstr ".属性必须采用 attr=value 的形式。"
 
 #: core/wandImage.cpp:1254
 msgid ".  Saving pixel type is "
-msgstr ".保存像素类型为 "
+msgstr ".保存像素类型是 "
 
 #: gui/mrvImageView.cpp:9050
 msgid ". Widget label is "
@@ -834,7 +834,7 @@ msgstr "35mm欧式宽屏"
 
 #: gui/mrvImageInformation.cpp:1095
 msgid "35mm Flat"
-msgstr "35毫米平"
+msgstr "35mm平"
 
 #: gui/mrvImageInformation.cpp:1098
 msgid "35mm Panavision"
@@ -865,7 +865,7 @@ msgstr "3D Luts/默认渲染变换 (RT)"
 msgid "3D Luts/OCIO"
 msgstr "3D Luts/奥西奥"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:91
 msgid "3D Stereo Options"
 msgstr "3D 立体选项"
 
@@ -891,7 +891,7 @@ msgstr "3dView 密度降低"
 
 #: gui/mrvHotkey.cpp:304
 msgid "3dView Density Up"
-msgstr "3dView 密度提升"
+msgstr "3dView 密度增加"
 
 #: gui/mrvHotkey.cpp:303
 msgid "3dView Z Depth Down"
@@ -1071,7 +1071,7 @@ msgid "About"
 msgstr "关于"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:269
+#: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "关于 mrViewer"
 
@@ -1197,7 +1197,7 @@ msgid ""
 "Value is:  pow( 2, 1/x );"
 msgstr ""
 "允许您调整显示的伽马曲线。\n"
-"值为：pow(2, 1/X ）;"
+"值为: pow( 2, 1/X ）;"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2269
 msgid "Allows you to adjust the gain or exposure of the image."
@@ -1306,7 +1306,7 @@ msgstr "注释框架倒退"
 msgid "Annotation Frame Step Forwards"
 msgstr "注释框架向前迈进"
 
-#: standalone/main.cpp:406
+#: standalone/main.cpp:405
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1397,6 +1397,7 @@ msgstr "附加音频文件"
 msgid "Attach ICC Profile"
 msgstr "附加 ICC 配置文件"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:39
 #: gui/mrvImageInformation.cpp:3785
 msgid "Attribute"
 msgstr "属性"
@@ -1577,7 +1578,7 @@ msgstr "背景卷轴持续时间太短。循环可能无法正常工作。"
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
-msgstr "背景卷轴有几个图像，并打开了 EDL。这是不允许的。关闭 edl。"
+msgstr "背景卷轴有几个图像，并且 EDL 已打开。这是不允许的。关闭 edl。"
 
 #: core/mrSocket.cpp:178
 msgid "Bad port number "
@@ -1630,6 +1631,7 @@ msgid "Blend Mode"
 msgstr "混合模式"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2539
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9136
 #: gui/mrvImageView.cpp:9667
@@ -1648,9 +1650,13 @@ msgstr "剪辑的蓝色增益。"
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下图像像素的蓝色值。"
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:589
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:588
 msgid "Boost exception: "
 msgstr "提升异常： "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:38
+msgid "Both"
+msgstr "两个都"
 
 #: gui/mrvImageView.cpp:11007
 msgid "Bottom"
@@ -1660,7 +1666,8 @@ msgstr "底部"
 msgid "Bottom Field"
 msgstr "底场"
 
-#: standalone/main.cpp:460 standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
+#: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
 msgstr "底部/最佳"
 
@@ -1852,7 +1859,7 @@ msgstr "更改图片失败"
 msgid "Changes frame/field display"
 msgstr "改变框架/现场展示"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:77
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:80
 msgid "Channel"
 msgstr "渠道"
 
@@ -1865,7 +1872,8 @@ msgstr "频道"
 msgid "Char"
 msgstr "字符"
 
-#: standalone/main.cpp:470 standalone/main.cpp:484
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
+#: standalone/main.cpp:469 standalone/main.cpp:483
 msgid "Checkerboard pattern"
 msgstr "棋盘图案"
 
@@ -2177,7 +2185,7 @@ msgstr "需要转换。伽玛：1.0"
 
 #: gui/mrvHotkey.cpp:400
 msgid "Copy Frame, X, Y Values"
-msgstr "复制框架、X、Y 值"
+msgstr "复制帧、X、Y 值"
 
 #: gui/mrvHotkey.cpp:401
 msgid "Copy RGBA Values"
@@ -2889,7 +2897,8 @@ msgstr "自定义字段 8"
 msgid "Custom Field 9"
 msgstr "自定义字段 9"
 
-#: standalone/main.cpp:474 standalone/main.cpp:486
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
+#: standalone/main.cpp:473 standalone/main.cpp:485
 msgid "Cyan/red glasses"
 msgstr "青色/红色眼镜"
 
@@ -2994,7 +3003,7 @@ msgstr "解码音频错误： "
 
 #: core/aviImage.cpp:4172
 msgid "Decode video error seek frame "
-msgstr "解码视频错误寻找帧 "
+msgstr "解码视频错误寻道帧 "
 
 #: core/CMedia_audio.cpp:1433
 msgid "Decode_audio failed with error: "
@@ -3400,11 +3409,13 @@ msgstr "错误"
 msgid "Escape"
 msgstr "逃脱"
 
-#: standalone/main.cpp:468 standalone/main.cpp:483
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
+#: standalone/main.cpp:467 standalone/main.cpp:482
 msgid "Even/odd columns"
 msgstr "甚至/奇数列"
 
-#: standalone/main.cpp:466 standalone/main.cpp:482
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
+#: standalone/main.cpp:465 standalone/main.cpp:481
 msgid "Even/odd rows"
 msgstr "甚至/奇数行"
 
@@ -3667,7 +3678,7 @@ msgstr "文件名"
 msgid "Filename of the clip"
 msgstr "剪辑的文件名"
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:584
 msgid "Filesystem error: "
 msgstr "文件系统错误： "
 
@@ -3844,7 +3855,7 @@ msgstr "文件中剪辑的帧开始"
 
 #: video/mrvGLEngine.cpp:834
 msgid "Framebuffer incomplete layer targets."
-msgstr "帧缓冲不完整的图层目标。"
+msgstr "帧缓冲区不完整的图层目标。"
 
 #: video/mrvGLEngine.cpp:821
 msgid "Framebuffer incomplete: Attachment is NOT complete."
@@ -3958,7 +3969,7 @@ msgstr "伽玛"
 
 #: core/guessImage.cpp:303 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:522
 msgid "Gamma 1.4 Chart"
-msgstr "伽玛 1.4 图表"
+msgstr "Gamma 1.4 图表"
 
 #: core/guessImage.cpp:309 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:528
 msgid "Gamma 1.8 Chart"
@@ -4022,6 +4033,7 @@ msgid "Got: "
 msgstr "得到： "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2524
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9131
 #: gui/mrvImageView.cpp:9667
@@ -4130,11 +4142,11 @@ msgstr "十六进制"
 msgid "Hex Values"
 msgstr "十六进制值"
 
-#: standalone/main.cpp:272
+#: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "隐藏其他"
 
-#: standalone/main.cpp:271
+#: standalone/main.cpp:270
 msgid "Hide mrViewer"
 msgstr "隐藏 mrViewer"
 
@@ -4151,7 +4163,7 @@ msgid "Hilited in Full Timeline"
 msgstr "在完整时间线中出现"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1063
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "直方图"
@@ -4538,7 +4550,7 @@ msgstr "指数 "
 msgid "Inited R3D SDK from: "
 msgstr "从以下位置启动 R3D SDK： "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:101
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:104
 msgid "Input"
 msgstr "输入"
 
@@ -4739,7 +4751,7 @@ msgstr "最后一帧"
 
 #: gui/mrvHotkey.cpp:354
 msgid "Last Image Version"
-msgstr "最后的图像版本"
+msgstr "最后一个图像版本"
 
 #: gui/mrvImageInformation.cpp:2807
 msgid "Last frame of clip - User selected"
@@ -4763,12 +4775,15 @@ msgstr "剩下"
 msgid "Left View"
 msgstr "左视图"
 
-#: standalone/main.cpp:452 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
+#: standalone/main.cpp:451 standalone/main.cpp:478
 msgid "Left view"
 msgstr "左视图"
 
-#: standalone/main.cpp:436 standalone/main.cpp:442 standalone/main.cpp:462
-#: standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
+#: standalone/main.cpp:435 standalone/main.cpp:441 standalone/main.cpp:461
+#: standalone/main.cpp:480
 msgid "Left/right"
 msgstr "剩下/正确的"
 
@@ -4803,7 +4818,8 @@ msgstr "线序"
 msgid "Line order in file"
 msgstr "文件中的行顺序"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:118
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:54
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:121
 msgid "Linear"
 msgstr "线性"
 
@@ -4899,7 +4915,7 @@ msgstr "加载 ACES 剪辑元数据文件 '"
 
 #: core/brawImage.cpp:222
 msgid "Loaded braw lib from: "
-msgstr "从以下位置加载了 braw 库： "
+msgstr "从以下位置加载 braw 库： "
 
 #: gui/mrvPreferences.cpp:558
 msgid "Loaded color themes from "
@@ -4937,13 +4953,17 @@ msgstr "从加载热键 "
 msgid "Local Caption"
 msgstr "本地字幕"
 
-#: standalone/main.cpp:367
+#: standalone/main.cpp:366
 msgid "Lockfile "
 msgstr "锁定文件 "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "记录消息"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:55
+msgid "Logarithmic"
+msgstr "对数"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
 msgid "Logs"
@@ -4982,6 +5002,7 @@ msgstr "亮度梯度"
 msgid "Luminance of image pixel under mouse."
 msgstr "鼠标下图像像素的亮度。"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2056
 #: gui/mrvImageView.cpp:9146 gui/mrvImageView.cpp:9668
@@ -5126,7 +5147,7 @@ msgstr "意思是"
 msgid "Media Info"
 msgstr "媒体信息"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:42
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:45
 msgid "Media Information"
 msgstr "媒体信息"
 
@@ -5349,7 +5370,7 @@ msgstr "下一张图片"
 
 #: gui/mrvHotkey.cpp:358
 msgid "Next Image Limited"
-msgstr "下一个图像有限公司"
+msgstr "下一图像有限公司"
 
 #: gui/mrvHotkey.cpp:353
 msgid "Next Image Version"
@@ -5380,6 +5401,10 @@ msgstr "没有 ICC 配置文件"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:303
 msgid "No Lut"
 msgstr "没有卢特"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
+msgid "No Stereo Output"
+msgstr "无立体声输出"
 
 #: gui/mrvImageInformation.cpp:737
 #, c-format
@@ -5532,7 +5557,7 @@ msgstr "不是要绑定的有效图片"
 
 #: core/iffImage.cpp:316
 msgid "Not enough compressed data"
-msgstr "没有足够的压缩数据"
+msgstr "压缩数据不足"
 
 #: core/mrvBlackImage.cpp:63
 msgid "Not enough memory for black image"
@@ -5849,7 +5874,7 @@ msgstr "记不清"
 msgid "Out of memory for audio buffer"
 msgstr "音频缓冲区内存不足"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:127
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:130
 msgid "Output"
 msgstr "输出"
 
@@ -6263,7 +6288,7 @@ msgstr "质量"
 msgid "Quicktime Movie"
 msgstr "快速电影"
 
-#: standalone/main.cpp:274
+#: standalone/main.cpp:273
 msgid "Quit mrViewer"
 msgstr "退出 mrViewer"
 
@@ -6308,7 +6333,8 @@ msgstr "RED3D - BRAW"
 msgid "RExt"
 msgstr "转发"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:36
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:85
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
@@ -6393,6 +6419,7 @@ msgid "Real width of clip"
 msgstr "夹子的实际宽度"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2509
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9126
 #: gui/mrvImageView.cpp:9666
@@ -6411,13 +6438,14 @@ msgstr "剪辑的红色增益。"
 msgid "Red value of image pixel under mouse."
 msgstr "鼠标下图像像素的红色值。"
 
-#: standalone/main.cpp:472 standalone/main.cpp:485
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
+#: standalone/main.cpp:471 standalone/main.cpp:484
 msgid "Red/cyan glasses"
 msgstr "红色的/青色眼镜"
 
 #: gui/mrvHotkey.cpp:393
 msgid "Redo Draw"
-msgstr "重画"
+msgstr "重做绘图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2622
@@ -6639,11 +6667,13 @@ msgstr "正确的"
 msgid "Right View"
 msgstr "右视图"
 
-#: standalone/main.cpp:454 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
+#: standalone/main.cpp:453 standalone/main.cpp:478
 msgid "Right view"
 msgstr "右视图"
 
-#: standalone/main.cpp:464 standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
+#: standalone/main.cpp:463 standalone/main.cpp:480
 msgid "Right/left"
 msgstr "正确的/剩下"
 
@@ -6850,7 +6880,7 @@ msgstr "规模"
 msgid ""
 "Scale of images stored.  Smaller scale allows more images to be stored at "
 "the expense of pixelization."
-msgstr "存储的图像比例。较小的规模允许以像素化为代价存储更多图像。"
+msgstr "存储图像的比例。较小的规模允许以像素化为代价存储更多图像。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1545
 msgid "Scheme"
@@ -6882,7 +6912,7 @@ msgstr "擦洗灵敏度"
 msgid "Scrubbing Tool"
 msgstr "擦洗工具"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:61
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:64
 msgid "Search"
 msgstr "搜索"
 
@@ -6913,7 +6943,7 @@ msgstr "选择音轨"
 
 #: gui/mrvHotkey.cpp:421
 msgid "Select Multi Image"
-msgstr "选择多图像"
+msgstr "选择多张图片"
 
 #: gui/mrvHotkey.cpp:420
 msgid "Select Single Image"
@@ -6927,7 +6957,7 @@ msgstr "选择 CTL 脚本"
 msgid "Select default looping mode in timeline."
 msgstr "在时间轴中选择默认循环模式。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:105
 msgid ""
 "Select how stereo is encoded in the image.  It can be as separate layers "
 "(using a letter or view prefix), as Top/Bottom in the same image or as Left/"
@@ -6936,7 +6966,7 @@ msgstr ""
 "选择立体声在图像中的编码方式。它可以作为单独的层（使用字母或视图前缀），如 "
 "Top/底部在同一图像中或与左侧/就在同一个图像中。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:131
 msgid ""
 "Select how to view the stereo images.  You can select no stereo viewing, a "
 "view of the stereo pair, top/bottom (and viceversa), left/right (and "
@@ -7003,7 +7033,8 @@ msgstr "选择画笔的大小。"
 msgid "Sep"
 msgstr "九月"
 
-#: standalone/main.cpp:432 standalone/main.cpp:441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
+#: standalone/main.cpp:431 standalone/main.cpp:440
 msgid "Separate layers"
 msgstr "单独的层"
 
@@ -7020,7 +7051,7 @@ msgstr "序列"
 msgid "Server"
 msgstr "服务器"
 
-#: standalone/main.cpp:273
+#: standalone/main.cpp:272
 msgid "Services"
 msgstr "服务"
 
@@ -7198,6 +7229,10 @@ msgstr "特殊说明"
 msgid "Speed"
 msgstr "速度"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:56
+msgid "Square Root"
+msgstr "平方根"
+
 #: core/wandImage.cpp:601
 msgid "Src"
 msgstr "源"
@@ -7231,11 +7266,12 @@ msgstr "立体 3D 选项"
 msgid "Stereo EXR Picture"
 msgstr "立体 EXR 图片"
 
-#: standalone/main.cpp:456
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
+#: standalone/main.cpp:455
 msgid "Stereo OpenGL"
 msgstr "立体 OpenGL"
 
-#: standalone/main.cpp:478
+#: standalone/main.cpp:477
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "立体声输出无效。有效值为： "
 
@@ -7890,20 +7926,20 @@ msgstr "切换工具坞"
 msgid "Toggle Top Bar"
 msgstr "切换顶部栏"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:188
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:191
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
 msgstr ""
-"切换图像的 VR 360（全景）视图。当它处于活动状态时，图像会环绕在球体周围。"
+"切换图像的 VR 360（全景）视图。当它处于活动状态时，图像会环绕在一个球体上。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:193
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:196
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
 msgstr ""
-"切换图像的 VR 360（全景）视图。该图像应该由 6 个图像组成，当它被激活时，它被"
-"包裹在一个立方体周围。"
+"切换图像的 VR 360（全景）视图。该图像应该由 6 个图像组成，当它处于活动状态"
+"时，它被包裹在一个立方体周围。"
 
 #: gui/mrvHotkey.cpp:425
 msgid "Toggle Vectorscope Window"
@@ -7933,8 +7969,10 @@ msgstr "最佳"
 msgid "Top Field"
 msgstr "顶场"
 
-#: standalone/main.cpp:434 standalone/main.cpp:441 standalone/main.cpp:458
-#: standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
+#: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
+#: standalone/main.cpp:479
 msgid "Top/bottom"
 msgstr "最佳/底部"
 
@@ -7958,7 +7996,7 @@ msgstr "传统无伽玛"
 msgid "Transform"
 msgstr "转变"
 
-#: standalone/main.cpp:266
+#: standalone/main.cpp:265
 msgid "Translations: "
 msgstr "翻译： "
 
@@ -7978,7 +8016,7 @@ msgstr "加载多个图像时打开 EDL。"
 msgid "Turn on debugging console."
 msgstr "打开调试控制台。"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:114
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:117
 #: gui/mrvImageInformation.cpp:218
 msgid "Type"
 msgstr "类型"
@@ -8051,7 +8089,7 @@ msgstr "撤消上次绘制的形状"
 msgid "Unhandled Exception"
 msgstr "未处理的异常"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:572
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
@@ -8125,7 +8163,7 @@ msgstr "要转换为字符串的未知数据类型"
 msgid "Unknown destination video frame format: "
 msgstr "未知目标视频帧格式： "
 
-#: standalone/main.cpp:593
+#: standalone/main.cpp:592
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -8282,11 +8320,11 @@ msgstr "弗吉尼亚州差异"
 msgid "VOB Movie"
 msgstr "VOB电影"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:192
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:195
 msgid "VR 360 Cube"
 msgstr "VR 360 立方体"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:187
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 球体"
 
@@ -8298,6 +8336,7 @@ msgstr "有效选项键的值无效"
 msgid "Valid rates are:"
 msgstr "有效费率是："
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
 msgid "Value"
 msgstr "价值"
@@ -8554,7 +8593,7 @@ msgid ""
 "line, make mrViewer load the full sequence.   Otherwise it loads the frame "
 "only."
 msgstr ""
-"从文件关联或命令行加载序列中的帧时，使 mrViewer 加载完整序列。否则它只加载框"
+"从文件关联或命令行加载序列中的帧时，让 mrViewer 加载完整序列。否则它只加载框"
 "架。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2791

@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function _
 header_name {.h}
 code_name {.cxx}
 decl {\#include <string>} {public local
@@ -60,7 +62,7 @@ class HistogramUI {open
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send_network( "HistogramWindow 0" );
-o->hide();} open selected
+o->hide();} open
       xywh {163 87 325 240} type Double resizable
       code1 {main_ = main;}
       code2 {o->size_range(325, 80);} non_modal visible
@@ -125,7 +127,7 @@ o->label( o->child( c )->label() );}
               label Linear
               callback {int c = o->value();
 uiHistogram->histogram_type( (mrv::Histogram::Type) c);
-o->label( o->child( c )->label() );} open
+o->label( o->child( c )->label() );} open selected
               xywh {53 205 105 25} align 48
               code0 {o->value( (int) uiHistogram->histogram_type() );
 o->label( o->child( o->value() )->label() );}

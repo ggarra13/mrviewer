@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-25 21:12-0300\n"
+"POT-Creation-Date: 2022-02-26 02:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,7 +220,7 @@ msgstr ""
 msgid " has different display window than "
 msgstr ""
 
-#: standalone/main.cpp:408
+#: standalone/main.cpp:407
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -455,7 +455,7 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr ""
 
-#: standalone/main.cpp:368
+#: standalone/main.cpp:367
 msgid "(Remove if mrViewer does not start)"
 msgstr ""
 
@@ -835,7 +835,7 @@ msgstr ""
 msgid "3D Luts/OCIO"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:91
 msgid "3D Stereo Options"
 msgstr ""
 
@@ -1039,7 +1039,7 @@ msgid "About"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:269
+#: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr ""
 
@@ -1266,7 +1266,7 @@ msgstr ""
 msgid "Annotation Frame Step Forwards"
 msgstr ""
 
-#: standalone/main.cpp:406
+#: standalone/main.cpp:405
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1349,6 +1349,7 @@ msgstr ""
 msgid "Attach ICC Profile"
 msgstr ""
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:39
 #: gui/mrvImageInformation.cpp:3785
 msgid "Attribute"
 msgstr ""
@@ -1582,6 +1583,7 @@ msgid "Blend Mode"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2539
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9136
 #: gui/mrvImageView.cpp:9667
@@ -1600,8 +1602,12 @@ msgstr ""
 msgid "Blue value of image pixel under mouse."
 msgstr ""
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:589
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:588
 msgid "Boost exception: "
+msgstr ""
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:38
+msgid "Both"
 msgstr ""
 
 #: gui/mrvImageView.cpp:11007
@@ -1612,7 +1618,8 @@ msgstr ""
 msgid "Bottom Field"
 msgstr ""
 
-#: standalone/main.cpp:460 standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
+#: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
 msgstr ""
 
@@ -1804,7 +1811,7 @@ msgstr ""
 msgid "Changes frame/field display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:77
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:80
 msgid "Channel"
 msgstr ""
 
@@ -1817,7 +1824,8 @@ msgstr ""
 msgid "Char"
 msgstr ""
 
-#: standalone/main.cpp:470 standalone/main.cpp:484
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
+#: standalone/main.cpp:469 standalone/main.cpp:483
 msgid "Checkerboard pattern"
 msgstr ""
 
@@ -2825,7 +2833,8 @@ msgstr ""
 msgid "Custom Field 9"
 msgstr ""
 
-#: standalone/main.cpp:474 standalone/main.cpp:486
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
+#: standalone/main.cpp:473 standalone/main.cpp:485
 msgid "Cyan/red glasses"
 msgstr ""
 
@@ -3330,11 +3339,13 @@ msgstr ""
 msgid "Escape"
 msgstr ""
 
-#: standalone/main.cpp:468 standalone/main.cpp:483
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
+#: standalone/main.cpp:467 standalone/main.cpp:482
 msgid "Even/odd columns"
 msgstr ""
 
-#: standalone/main.cpp:466 standalone/main.cpp:482
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
+#: standalone/main.cpp:465 standalone/main.cpp:481
 msgid "Even/odd rows"
 msgstr ""
 
@@ -3595,7 +3606,7 @@ msgstr ""
 msgid "Filename of the clip"
 msgstr ""
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:584
 msgid "Filesystem error: "
 msgstr ""
 
@@ -3950,6 +3961,7 @@ msgid "Got: "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2524
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9131
 #: gui/mrvImageView.cpp:9667
@@ -4058,11 +4070,11 @@ msgstr ""
 msgid "Hex Values"
 msgstr ""
 
-#: standalone/main.cpp:272
+#: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr ""
 
-#: standalone/main.cpp:271
+#: standalone/main.cpp:270
 msgid "Hide mrViewer"
 msgstr ""
 
@@ -4079,7 +4091,7 @@ msgid "Hilited in Full Timeline"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1063
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr ""
@@ -4459,7 +4471,7 @@ msgstr ""
 msgid "Inited R3D SDK from: "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:101
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:104
 msgid "Input"
 msgstr ""
 
@@ -4684,12 +4696,15 @@ msgstr ""
 msgid "Left View"
 msgstr ""
 
-#: standalone/main.cpp:452 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
+#: standalone/main.cpp:451 standalone/main.cpp:478
 msgid "Left view"
 msgstr ""
 
-#: standalone/main.cpp:436 standalone/main.cpp:442 standalone/main.cpp:462
-#: standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
+#: standalone/main.cpp:435 standalone/main.cpp:441 standalone/main.cpp:461
+#: standalone/main.cpp:480
 msgid "Left/right"
 msgstr ""
 
@@ -4724,7 +4739,8 @@ msgstr ""
 msgid "Line order in file"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:118
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:54
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:121
 msgid "Linear"
 msgstr ""
 
@@ -4856,12 +4872,16 @@ msgstr ""
 msgid "Local Caption"
 msgstr ""
 
-#: standalone/main.cpp:367
+#: standalone/main.cpp:366
 msgid "Lockfile "
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
+msgstr ""
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:55
+msgid "Logarithmic"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
@@ -4901,6 +4921,7 @@ msgstr ""
 msgid "Luminance of image pixel under mouse."
 msgstr ""
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2056
 #: gui/mrvImageView.cpp:9146 gui/mrvImageView.cpp:9668
@@ -5043,7 +5064,7 @@ msgstr ""
 msgid "Media Info"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:42
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:45
 msgid "Media Information"
 msgstr ""
 
@@ -5292,6 +5313,10 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:303
 msgid "No Lut"
+msgstr ""
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
+msgid "No Stereo Output"
 msgstr ""
 
 #: gui/mrvImageInformation.cpp:737
@@ -5755,7 +5780,7 @@ msgstr ""
 msgid "Out of memory for audio buffer"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:127
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:130
 msgid "Output"
 msgstr ""
 
@@ -6167,7 +6192,7 @@ msgstr ""
 msgid "Quicktime Movie"
 msgstr ""
 
-#: standalone/main.cpp:274
+#: standalone/main.cpp:273
 msgid "Quit mrViewer"
 msgstr ""
 
@@ -6212,7 +6237,8 @@ msgstr ""
 msgid "RExt"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:36
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:85
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
@@ -6297,6 +6323,7 @@ msgid "Real width of clip"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2509
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9126
 #: gui/mrvImageView.cpp:9666
@@ -6315,7 +6342,8 @@ msgstr ""
 msgid "Red value of image pixel under mouse."
 msgstr ""
 
-#: standalone/main.cpp:472 standalone/main.cpp:485
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
+#: standalone/main.cpp:471 standalone/main.cpp:484
 msgid "Red/cyan glasses"
 msgstr ""
 
@@ -6540,11 +6568,13 @@ msgstr ""
 msgid "Right View"
 msgstr ""
 
-#: standalone/main.cpp:454 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
+#: standalone/main.cpp:453 standalone/main.cpp:478
 msgid "Right view"
 msgstr ""
 
-#: standalone/main.cpp:464 standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
+#: standalone/main.cpp:463 standalone/main.cpp:480
 msgid "Right/left"
 msgstr ""
 
@@ -6783,7 +6813,7 @@ msgstr ""
 msgid "Scrubbing Tool"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:61
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:64
 msgid "Search"
 msgstr ""
 
@@ -6828,14 +6858,14 @@ msgstr ""
 msgid "Select default looping mode in timeline."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:105
 msgid ""
 "Select how stereo is encoded in the image.  It can be as separate layers "
 "(using a letter or view prefix), as Top/Bottom in the same image or as Left/"
 "Right in the same image."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:131
 msgid ""
 "Select how to view the stereo images.  You can select no stereo viewing, a "
 "view of the stereo pair, top/bottom (and viceversa), left/right (and "
@@ -6899,7 +6929,8 @@ msgstr ""
 msgid "Sep"
 msgstr ""
 
-#: standalone/main.cpp:432 standalone/main.cpp:441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
+#: standalone/main.cpp:431 standalone/main.cpp:440
 msgid "Separate layers"
 msgstr ""
 
@@ -6916,7 +6947,7 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-#: standalone/main.cpp:273
+#: standalone/main.cpp:272
 msgid "Services"
 msgstr ""
 
@@ -7094,6 +7125,10 @@ msgstr ""
 msgid "Speed"
 msgstr ""
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:56
+msgid "Square Root"
+msgstr ""
+
 #: core/wandImage.cpp:601
 msgid "Src"
 msgstr ""
@@ -7127,11 +7162,12 @@ msgstr ""
 msgid "Stereo EXR Picture"
 msgstr ""
 
-#: standalone/main.cpp:456
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
+#: standalone/main.cpp:455
 msgid "Stereo OpenGL"
 msgstr ""
 
-#: standalone/main.cpp:478
+#: standalone/main.cpp:477
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr ""
 
@@ -7723,13 +7759,13 @@ msgstr ""
 msgid "Toggle Top Bar"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:188
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:191
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:193
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:196
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
@@ -7763,8 +7799,10 @@ msgstr ""
 msgid "Top Field"
 msgstr ""
 
-#: standalone/main.cpp:434 standalone/main.cpp:441 standalone/main.cpp:458
-#: standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
+#: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
+#: standalone/main.cpp:479
 msgid "Top/bottom"
 msgstr ""
 
@@ -7788,7 +7826,7 @@ msgstr ""
 msgid "Transform"
 msgstr ""
 
-#: standalone/main.cpp:266
+#: standalone/main.cpp:265
 msgid "Translations: "
 msgstr ""
 
@@ -7808,7 +7846,7 @@ msgstr ""
 msgid "Turn on debugging console."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:114
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:117
 #: gui/mrvImageInformation.cpp:218
 msgid "Type"
 msgstr ""
@@ -7877,7 +7915,7 @@ msgstr ""
 msgid "Unhandled Exception"
 msgstr ""
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:572
 msgid "Unhandled exception"
 msgstr ""
 
@@ -7951,7 +7989,7 @@ msgstr ""
 msgid "Unknown destination video frame format: "
 msgstr ""
 
-#: standalone/main.cpp:593
+#: standalone/main.cpp:592
 msgid "Unknown error"
 msgstr ""
 
@@ -8105,11 +8143,11 @@ msgstr ""
 msgid "VOB Movie"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:192
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:195
 msgid "VR 360 Cube"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:187
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr ""
 
@@ -8121,6 +8159,7 @@ msgstr ""
 msgid "Valid rates are:"
 msgstr ""
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
 msgid "Value"
 msgstr ""

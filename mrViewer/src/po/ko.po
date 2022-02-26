@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-02-25 21:12-0300\n"
+"POT-Creation-Date: 2022-02-26 02:17-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -227,7 +227,7 @@ msgstr " 빈도: "
 msgid " has different display window than "
 msgstr " 다른 디스플레이 창을 가지고 있습니다 "
 
-#: standalone/main.cpp:408
+#: standalone/main.cpp:407
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -485,7 +485,7 @@ msgstr "(PAL 필드)"
 msgid "(RT) Render Transform"
 msgstr "(RT) 렌더 변환"
 
-#: standalone/main.cpp:368
+#: standalone/main.cpp:367
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
@@ -640,7 +640,7 @@ msgstr "1.8"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:37
 msgid "1.85 Widescreen (3-perf)"
-msgstr "1.85 와이드스크린(3퍼프)"
+msgstr "1.85 와이드스크린(3-perf)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
 msgid "1/2"
@@ -865,7 +865,7 @@ msgstr "3D 루츠/기본 렌더링 변환(RT)"
 msgid "3D Luts/OCIO"
 msgstr "3D 루츠/오시오"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:88
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:91
 msgid "3D Stereo Options"
 msgstr "3D 스테레오 옵션"
 
@@ -1071,7 +1071,7 @@ msgid "About"
 msgstr "에 대한"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:269
+#: standalone/main.cpp:268
 msgid "About mrViewer"
 msgstr "mrViewer 정보"
 
@@ -1306,7 +1306,7 @@ msgstr "주석 프레임 뒤로 이동"
 msgid "Annotation Frame Step Forwards"
 msgstr "주석 프레임 앞으로 이동"
 
-#: standalone/main.cpp:406
+#: standalone/main.cpp:405
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1397,6 +1397,7 @@ msgstr "오디오 파일 첨부"
 msgid "Attach ICC Profile"
 msgstr "ICC 프로필 첨부"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:39
 #: gui/mrvImageInformation.cpp:3785
 msgid "Attribute"
 msgstr "기인하다"
@@ -1636,6 +1637,7 @@ msgid "Blend Mode"
 msgstr "혼합 모드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2539
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9136
 #: gui/mrvImageView.cpp:9667
@@ -1654,9 +1656,13 @@ msgstr "클립의 파란색 게인."
 msgid "Blue value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 파란색 값입니다."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:589
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:588
 msgid "Boost exception: "
 msgstr "부스트 예외: "
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:38
+msgid "Both"
+msgstr "둘 다"
 
 #: gui/mrvImageView.cpp:11007
 msgid "Bottom"
@@ -1666,7 +1672,8 @@ msgstr "맨 아래"
 msgid "Bottom Field"
 msgstr "하단 필드"
 
-#: standalone/main.cpp:460 standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
+#: standalone/main.cpp:459 standalone/main.cpp:479
 msgid "Bottom/top"
 msgstr "맨 아래/맨 위"
 
@@ -1858,7 +1865,7 @@ msgstr "이미지 변경 실패"
 msgid "Changes frame/field display"
 msgstr "프레임 변경/필드 디스플레이"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:77
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:80
 msgid "Channel"
 msgstr "채널"
 
@@ -1871,7 +1878,8 @@ msgstr "채널"
 msgid "Char"
 msgstr "숯"
 
-#: standalone/main.cpp:470 standalone/main.cpp:484
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
+#: standalone/main.cpp:469 standalone/main.cpp:483
 msgid "Checkerboard pattern"
 msgstr "바둑판 무늬"
 
@@ -2393,7 +2401,7 @@ msgstr "'에서 자막을 찾을 수 없습니다."
 
 #: gui/mrvImageInformation.cpp:441
 msgid "Could not find three doubles for vector"
-msgstr "벡터에 대한 세 개의 이중을 찾을 수 없습니다."
+msgstr "벡터에 대한 3개의 더블을 찾을 수 없습니다."
 
 #: gui/mrvImageInformation.cpp:1261
 msgid "Could not find three doubles for vector "
@@ -2896,7 +2904,8 @@ msgstr "사용자 정의 필드 8"
 msgid "Custom Field 9"
 msgstr "사용자 정의 필드 9"
 
-#: standalone/main.cpp:474 standalone/main.cpp:486
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
+#: standalone/main.cpp:473 standalone/main.cpp:485
 msgid "Cyan/red glasses"
 msgstr "시안/빨간 안경"
 
@@ -3301,7 +3310,7 @@ msgstr "미리보기 이미지의 빈 이미지"
 
 #: gui/mrvElement.cpp:68
 msgid "Empty image provided to Element constructor"
-msgstr "요소 생성자에 제공된 빈 이미지"
+msgstr "요소 생성자에 빈 이미지 제공"
 
 #: gui/mrvImageBrowser.cpp:1580
 msgid "Empty img->fileroot() passed to media_to_pathname"
@@ -3409,11 +3418,13 @@ msgstr "오류"
 msgid "Escape"
 msgstr "탈출하다"
 
-#: standalone/main.cpp:468 standalone/main.cpp:483
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
+#: standalone/main.cpp:467 standalone/main.cpp:482
 msgid "Even/odd columns"
 msgstr "조차/홀수 열"
 
-#: standalone/main.cpp:466 standalone/main.cpp:482
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
+#: standalone/main.cpp:465 standalone/main.cpp:481
 msgid "Even/odd rows"
 msgstr "조차/홀수 행"
 
@@ -3676,7 +3687,7 @@ msgstr "파일 이름"
 msgid "Filename of the clip"
 msgstr "클립의 파일 이름"
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:584
 msgid "Filesystem error: "
 msgstr "파일 시스템 오류: "
 
@@ -3865,7 +3876,7 @@ msgstr "프레임 버퍼 불완전: 버퍼를 그립니다."
 
 #: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete: No image is attached to FBO."
-msgstr "프레임 버퍼 불완전: FBO에 첨부된 이미지가 없습니다."
+msgstr "프레임 버퍼 불완전: FBO에 이미지가 첨부되지 않았습니다."
 
 #: video/mrvGLEngine.cpp:838
 msgid "Framebuffer incomplete: Read buffer."
@@ -4031,6 +4042,7 @@ msgid "Got: "
 msgstr "갖다: "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2524
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9131
 #: gui/mrvImageView.cpp:9667
@@ -4139,11 +4151,11 @@ msgstr "마녀"
 msgid "Hex Values"
 msgstr "16진수 값"
 
-#: standalone/main.cpp:272
+#: standalone/main.cpp:271
 msgid "Hide Others"
 msgstr "다른 사람 숨기기"
 
-#: standalone/main.cpp:271
+#: standalone/main.cpp:270
 msgid "Hide mrViewer"
 msgstr "mrViewer 숨기기"
 
@@ -4160,7 +4172,7 @@ msgid "Hilited in Full Timeline"
 msgstr "전체 타임라인에 등장"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1063
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:58
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
 msgid "Histogram"
 msgstr "히스토그램"
@@ -4551,7 +4563,7 @@ msgstr "색인 "
 msgid "Inited R3D SDK from: "
 msgstr "R3D SDK 시작: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:101
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:104
 msgid "Input"
 msgstr "입력"
 
@@ -4776,12 +4788,15 @@ msgstr "왼쪽"
 msgid "Left View"
 msgstr "왼쪽 보기"
 
-#: standalone/main.cpp:452 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
+#: standalone/main.cpp:451 standalone/main.cpp:478
 msgid "Left view"
 msgstr "왼쪽 보기"
 
-#: standalone/main.cpp:436 standalone/main.cpp:442 standalone/main.cpp:462
-#: standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
+#: standalone/main.cpp:435 standalone/main.cpp:441 standalone/main.cpp:461
+#: standalone/main.cpp:480
 msgid "Left/right"
 msgstr "왼쪽/오른쪽"
 
@@ -4816,7 +4831,8 @@ msgstr "라인 오더"
 msgid "Line order in file"
 msgstr "파일의 줄 순서"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:118
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:54
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:121
 msgid "Linear"
 msgstr "선의"
 
@@ -4876,7 +4892,7 @@ msgstr "릴 로드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2814
 msgid "Load Sequence on Drag&&Drop"
-msgstr "드래그&드롭 시 시퀀스 로드"
+msgstr "드래그 앤 드롭 시 로드 시퀀스"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2829
 msgid "Load Sequence on File Association && CommandLine"
@@ -4950,13 +4966,17 @@ msgstr "다음에서 핫키 로드 중 "
 msgid "Local Caption"
 msgstr "로컬 캡션"
 
-#: standalone/main.cpp:367
+#: standalone/main.cpp:366
 msgid "Lockfile "
 msgstr "잠금 파일 "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:319
 msgid "Log Messages"
 msgstr "로그 메시지"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:55
+msgid "Logarithmic"
+msgstr "대수"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
 msgid "Logs"
@@ -4995,6 +5015,7 @@ msgstr "휘도 기울기"
 msgid "Luminance of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 휘도."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2056
 #: gui/mrvImageView.cpp:9146 gui/mrvImageView.cpp:9668
@@ -5141,7 +5162,7 @@ msgstr "평균"
 msgid "Media Info"
 msgstr "미디어 정보"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:42
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:45
 msgid "Media Information"
 msgstr "미디어 정보"
 
@@ -5396,6 +5417,10 @@ msgstr "ICC 프로필 없음"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:303
 msgid "No Lut"
 msgstr "노 루트"
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:43
+msgid "No Stereo Output"
+msgstr "스테레오 출력 없음"
 
 #: gui/mrvImageInformation.cpp:737
 #, c-format
@@ -5872,7 +5897,7 @@ msgstr "메모리 부족"
 msgid "Out of memory for audio buffer"
 msgstr "오디오 버퍼 메모리 부족"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:127
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:130
 msgid "Output"
 msgstr "산출"
 
@@ -6004,7 +6029,7 @@ msgstr "펜 크기 더보기"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:148
 #: gui/mrvImageInformation.cpp:3012
 msgid "Perceptual"
-msgstr "지각적"
+msgstr "지각"
 
 #: gui/FLU/Flu_File_Chooser.cpp:608
 msgid "Photoshop Picture"
@@ -6290,7 +6315,7 @@ msgstr "품질"
 msgid "Quicktime Movie"
 msgstr "퀵타임 무비"
 
-#: standalone/main.cpp:274
+#: standalone/main.cpp:273
 msgid "Quit mrViewer"
 msgstr "mrViewer 종료"
 
@@ -6335,7 +6360,8 @@ msgstr "RED3D - 브로우"
 msgid "RExt"
 msgstr "REExt"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:36
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:85
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageView.cpp:205
 msgid "RGB"
@@ -6421,6 +6447,7 @@ msgid "Real width of clip"
 msgstr "클립의 실제 너비"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2509
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9126
 #: gui/mrvImageView.cpp:9666
@@ -6439,7 +6466,8 @@ msgstr "클립의 레드 게인."
 msgid "Red value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 빨간색 값입니다."
 
-#: standalone/main.cpp:472 standalone/main.cpp:485
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
+#: standalone/main.cpp:471 standalone/main.cpp:484
 msgid "Red/cyan glasses"
 msgstr "빨간색/청록색 안경"
 
@@ -6668,11 +6696,13 @@ msgstr "오른쪽"
 msgid "Right View"
 msgstr "오른쪽보기"
 
-#: standalone/main.cpp:454 standalone/main.cpp:479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
+#: standalone/main.cpp:453 standalone/main.cpp:478
 msgid "Right view"
 msgstr "오른쪽보기"
 
-#: standalone/main.cpp:464 standalone/main.cpp:481
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
+#: standalone/main.cpp:463 standalone/main.cpp:480
 msgid "Right/left"
 msgstr "오른쪽/왼쪽"
 
@@ -6834,7 +6864,7 @@ msgstr "프레임 저장 '"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3412
 msgid "Save preferences to disk as a default."
-msgstr "기본 설정을 디스크에 저장합니다."
+msgstr "기본 설정을 디스크에 기본으로 저장합니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1502
 msgid "Save sequence or movie."
@@ -6915,7 +6945,7 @@ msgstr "스크럽 감도"
 msgid "Scrubbing Tool"
 msgstr "스크러빙 도구"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:61
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:64
 msgid "Search"
 msgstr "검색"
 
@@ -6960,7 +6990,7 @@ msgstr "CTL 스크립트 선택"
 msgid "Select default looping mode in timeline."
 msgstr "타임라인에서 기본 루핑 모드를 선택합니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:102
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:105
 msgid ""
 "Select how stereo is encoded in the image.  It can be as separate layers "
 "(using a letter or view prefix), as Top/Bottom in the same image or as Left/"
@@ -6969,7 +6999,7 @@ msgstr ""
 "이미지에서 스테레오를 인코딩하는 방법을 선택합니다. Top과 같이 별도의 레이어"
 "(문자 또는 보기 접두사 사용)/같은 이미지의 아래쪽 또는 왼쪽/같은 이미지에서."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:131
 msgid ""
 "Select how to view the stereo images.  You can select no stereo viewing, a "
 "view of the stereo pair, top/bottom (and viceversa), left/right (and "
@@ -7036,7 +7066,8 @@ msgstr "브러시의 크기를 선택합니다."
 msgid "Sep"
 msgstr "9월"
 
-#: standalone/main.cpp:432 standalone/main.cpp:441
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
+#: standalone/main.cpp:431 standalone/main.cpp:440
 msgid "Separate layers"
 msgstr "레이어 분리"
 
@@ -7053,7 +7084,7 @@ msgstr "시퀀스"
 msgid "Server"
 msgstr "섬기는 사람"
 
-#: standalone/main.cpp:273
+#: standalone/main.cpp:272
 msgid "Services"
 msgstr "서비스"
 
@@ -7233,6 +7264,10 @@ msgstr "특별 지시"
 msgid "Speed"
 msgstr "속도"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:56
+msgid "Square Root"
+msgstr "제곱근"
+
 #: core/wandImage.cpp:601
 msgid "Src"
 msgstr "Src"
@@ -7266,11 +7301,12 @@ msgstr "스테레오 3D 옵션"
 msgid "Stereo EXR Picture"
 msgstr "스테레오 EXR 영상"
 
-#: standalone/main.cpp:456
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
+#: standalone/main.cpp:455
 msgid "Stereo OpenGL"
 msgstr "스테레오 OpenGL"
 
-#: standalone/main.cpp:478
+#: standalone/main.cpp:477
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "스테레오 출력이 잘못되었습니다. 유효한 값은 다음과 같습니다. "
 
@@ -7942,7 +7978,7 @@ msgstr "토글 도구 독"
 msgid "Toggle Top Bar"
 msgstr "상단 바 토글"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:188
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:191
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
@@ -7950,7 +7986,7 @@ msgstr ""
 "이미지의 VR 360(파노라마) 보기를 전환합니다. 이 기능이 활성화되면 이미지가 구"
 "를 둘러싸게 됩니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:193
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:196
 msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
@@ -7986,8 +8022,10 @@ msgstr "맨 위"
 msgid "Top Field"
 msgstr "상위 필드"
 
-#: standalone/main.cpp:434 standalone/main.cpp:441 standalone/main.cpp:458
-#: standalone/main.cpp:480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
+#: standalone/main.cpp:433 standalone/main.cpp:440 standalone/main.cpp:457
+#: standalone/main.cpp:479
 msgid "Top/bottom"
 msgstr "맨 위/맨 아래"
 
@@ -8011,7 +8049,7 @@ msgstr "전통적인 감마 없음"
 msgid "Transform"
 msgstr "변환"
 
-#: standalone/main.cpp:266
+#: standalone/main.cpp:265
 msgid "Translations: "
 msgstr "번역: "
 
@@ -8031,7 +8069,7 @@ msgstr "여러 이미지를 로드할 때 EDL을 켜십시오."
 msgid "Turn on debugging console."
 msgstr "디버깅 콘솔을 켭니다."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:114
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:117
 #: gui/mrvImageInformation.cpp:218
 msgid "Type"
 msgstr "유형"
@@ -8104,7 +8142,7 @@ msgstr "마지막으로 그린 모양 실행 취소"
 msgid "Unhandled Exception"
 msgstr "처리되지 않은 예외"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:572
 msgid "Unhandled exception"
 msgstr "처리되지 않은 예외"
 
@@ -8178,7 +8216,7 @@ msgstr "문자열로 변환할 알 수 없는 데이터 유형"
 msgid "Unknown destination video frame format: "
 msgstr "알 수 없는 대상 비디오 프레임 형식: "
 
-#: standalone/main.cpp:593
+#: standalone/main.cpp:592
 msgid "Unknown error"
 msgstr "알수없는 오류"
 
@@ -8335,11 +8373,11 @@ msgstr "버지니아 차이"
 msgid "VOB Movie"
 msgstr "VOB 영화"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:192
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:195
 msgid "VR 360 Cube"
 msgstr "VR 360 큐브"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:187
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 구체"
 
@@ -8351,6 +8389,7 @@ msgstr "유효한 옵션 키에 잘못된 값이 있습니다."
 msgid "Valid rates are:"
 msgstr "유효한 요금은 다음과 같습니다."
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
 msgid "Value"
 msgstr "값"
@@ -9254,7 +9293,7 @@ msgstr "h264"
 
 #: gui/mrvImageInformation.cpp:2966
 msgid "half float (16-bits per channel)"
-msgstr "하프 플로트(채널당 16비트)"
+msgstr "반 부동(채널당 16비트)"
 
 #: core/CMedia.cpp:4427
 msgid "half/float"

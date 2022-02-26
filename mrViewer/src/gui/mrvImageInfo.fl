@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function _
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -43,7 +45,7 @@ class ImageInfoUI {open
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();} open
-      xywh {672 204 605 735} type Double resizable
+      xywh {672 53 605 723} type Double resizable
       code0 {main_ = main;} non_modal visible
     } {
       Fl_Scroll uiInfoText {
