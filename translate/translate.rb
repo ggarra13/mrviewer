@@ -138,6 +138,13 @@ def fix( text, result )
     if result =~ /：/
       result.gsub!(/：/, ':')
     end
+    if text == "L (Lightness)"
+      result = "L （明度）"
+    elsif text == "Y' (Lumma)"
+      result = "Y' （ルマ）"
+    elsif text == "Y (Luminance)"
+      result = "Y （輝度）"
+    end
     if text =~ /:(\s+)/
       spaces = $1
       if result !~ /:#{spaces}/
@@ -192,6 +199,11 @@ def fix( text, result )
       result = text
     end
   elsif @lang == 'ko'
+    if text == "Y (Luminance)"
+      result = "Y (휘도)"
+    elsif text == "L (Lightness)"
+      result = "L (가벼움)"
+    end
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
@@ -211,7 +223,13 @@ def fix( text, result )
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
   elsif @lang == 'zh'
-    if text =~ '%4.8g %%'
+    if text == "Y' (Lumma)"
+      result = text
+    elsif text == "Y (Luminance)"
+      result = text
+    elsif text == "L (Lightness)"
+      result = text
+    elsif text =~ '%4.8g %%'
       result = text
     end
     if result =~ /闲暇/
