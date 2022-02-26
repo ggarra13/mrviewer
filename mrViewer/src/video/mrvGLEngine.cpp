@@ -1731,7 +1731,6 @@ bool GLEngine::is_hdr_image( const CMedia* img )
 void GLEngine::draw_images( ImageList& images )
 {
 
-
     CHECK_GL;
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
@@ -4023,6 +4022,9 @@ void GLEngine::loadOpenGLShader()
         delete _YCbCr;
         _YCbCr = new GLShader();
         _YCbCr->load( N_("builtin"), all.c_str() );
+
+        setlocale( LC_NUMERIC, oldloc );
+        av_free( oldloc );
         return;
     }
     AVCodecParameters* c = st->codecpar;

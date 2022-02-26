@@ -410,6 +410,7 @@ GLQuad::GLQuad( const ImageView* view ) :
 
         init_texture();
     }
+
 }
 
 GLQuad::~GLQuad()

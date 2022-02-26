@@ -1176,6 +1176,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
                                        const CMedia* img )
 {
+
     const PreferencesUI* uiPrefs = view->uiPrefs;
     std::string path, fullpath;
     GLLut3d::Transforms transforms;

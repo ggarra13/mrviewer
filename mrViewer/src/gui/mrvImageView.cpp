@@ -734,6 +734,7 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
     const char* fmt = o->label();
     mask = (float) atof( fmt );
 
+
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
 
