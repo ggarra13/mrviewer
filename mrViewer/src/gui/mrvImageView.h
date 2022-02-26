@@ -797,7 +797,7 @@ public:
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
 
-    void restore_locale() const;
+    void restore_locale( char* oldloc ) const;
 
     void create_timeout( double t );
 

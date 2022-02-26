@@ -193,6 +193,7 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale(env) );
     // is.imbue(std::locale());
 
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
 
 
@@ -1600,13 +1601,7 @@ bool Parser::parse( const std::string& s )
 
     v->network_active( true );
 
-
-#ifdef OSX
-    const char* loc = setlocale( LC_MESSAGES, NULL );
-    setlocale( LC_NUMERIC, loc );
-#else
-    setlocale( LC_NUMERIC, NULL );
-#endif
+    setlocale( LC_NUMERIC, oldloc );
 
     return ok;
 }
