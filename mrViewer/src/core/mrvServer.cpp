@@ -191,7 +191,7 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale("") );
     // else
     //     std::locale::global( std::locale(env) );
-    // is.imbue(std::locale());
+    is.imbue(std::locale("C"));
 
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );

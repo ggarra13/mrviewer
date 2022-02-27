@@ -195,6 +195,9 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
 
 std::string GLPathShape::send() const
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     std::string buf = "GLPathShape ";
     char tmp[256];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
@@ -207,6 +210,10 @@ std::string GLPathShape::send() const
         sprintf( tmp, " %g %g", (*i).x, (*i).y );
         buf += tmp;
     }
+
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
     return buf;
 }
 
@@ -228,6 +235,10 @@ void GLPathShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
+    if ( pts.size() < 1 )
+    {
+        return;
+    }
 
     glDisk( pts[0], pen_size / 2.0 );
     glPolyline( pts, pen_size );
@@ -261,6 +272,9 @@ void GLArrowShape::draw( double z )
 
 std::string GLArrowShape::send() const
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     std::string buf = "GLArrowShape ";
     char tmp[256];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
@@ -273,6 +287,9 @@ std::string GLArrowShape::send() const
         sprintf( tmp, " %g %g", (*i).x, (*i).y );
         buf += tmp;
     }
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
     return buf;
 }
 
@@ -301,6 +318,9 @@ void GLCircleShape::draw( double z )
 
 std::string GLCircleShape::send() const
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     std::string buf = "GLCircleShape ";
     char tmp[128];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a, pen_size, frame );
@@ -310,12 +330,18 @@ std::string GLCircleShape::send() const
     sprintf( tmp, " %g %g %g", center.x, center.y, radius );
     buf += tmp;
 
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
     return buf;
 }
 
 
 std::string GLErasePathShape::send() const
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     std::string buf = "GLErasePathShape ";
     char tmp[128];
     sprintf( tmp, "%g %" PRId64, pen_size, frame );
@@ -328,6 +354,9 @@ std::string GLErasePathShape::send() const
         sprintf( tmp, " %g %g", (*i).x, (*i).y );
         buf += tmp;
     }
+
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
 
     return buf;
 }
@@ -343,6 +372,11 @@ void GLErasePathShape::draw( double z )
     glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
     glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
+    if ( pts.size() < 1 )
+    {
+        return;
+    }
+
     glDisk( pts[0], pen_size / 2.0 );
     glPolyline( pts, pen_size );
     glDisk( pts[pts.size()-1], pen_size / 2.0 );
@@ -355,6 +389,9 @@ GLTextShape::~GLTextShape()
 
 std::string GLTextShape::send() const
 {
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
     std::string buf = "GLTextShape ";
 
     char tmp[512];
@@ -365,6 +402,8 @@ std::string GLTextShape::send() const
     sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
     buf += tmp;
 
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
     return buf;
 }
 

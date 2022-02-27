@@ -1,6 +1,9 @@
 v6.0.8  - Made pixel bar 30 pixels in height.
+	- Made RGBA color values in pixel bar use a larger font.
 	- Fixed locale's use of commas in those locales that use that as
 	  decimal separator.
+	- Fixed action tools on network connections which used the current
+	  locale.  Now they use the C locale for all connections.
 
 v6.0.7  - Added frame count to HUD (FC:).
 	- Updated frame range and count to be interactive to the typing of the
