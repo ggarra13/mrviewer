@@ -13,16 +13,15 @@ v6.0.7  - Added frame count to HUD (FC:).
 	  translations but these have not been tested on Windows (would like
 	  to know if they work for you).
 	  If you want the GUI to display in English and not in your natural
-	  language, you need to set the LANGUAGE/LC_ALL environment variable,
-	  like:
+	  language, you need to set the LC_ALL environment variable, like:
 
-	  on Linux or macOS on mrViewer.sh:
+	  on Linux or macOS on bin/mrViewer.sh:
 
-	  export LANGUAGE=en
+	  export LC_ALL=C
 
-	  or on Windows in a .bat file:
+	  or on Windows in a new .bat file:
 
-	  set LC_ALL=en
+	  set LC_ALL=C
 	  start C:/path/to/mrViewer.exe
 
 v6.0.6  - Fixed connections to work again.
