@@ -28,7 +28,7 @@ def fix( text, result )
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
       text == ' FC: ' or text == 'V-A: ' or
       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  ' or
+      text == '  INF.  ' or text == "   NAN  " or
       text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
       text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
       text == "mrViewer    FG: %s" or
