@@ -191,6 +191,7 @@ GlWindow3d::Perspective (double focal, double aspect,
     ymin = -ymax;
     xmin = ymin * aspect;
     xmax = ymax * aspect;
+    std::cerr << ymax << " " << ymin << " " << xmin << " " << xmax << std::endl;
     glFrustum (xmin, xmax, ymin, ymax, zNear, zFar);
 }
 
