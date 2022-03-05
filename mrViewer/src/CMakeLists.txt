@@ -630,7 +630,7 @@ INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
 # set( LANGUAGES "es" "it" "fr" "de" "ru" "cs" )
-SET( LANGUAGES "es" "it" "fr" "de" "cs" "tr" "ru" "ko" "zh" "ja" "pt" )
+SET( LANGUAGES "es" "it" "fr" "de" "cs" "tr" "ru" "ko" "zh" "ja" "pt" "ro" )
 
 SET( output_files "${_absPotFile}" )
 

@@ -38,7 +38,7 @@ def fix( text, result )
     result.sub!(/s*(FPS)./, 'FPS:')
   end
   if ( @lang == 'ko' or @lang == 'zh' or @lang == "ja" or @lang == 'ru' or
-       @lang == 'tr' or @lang == 'pt') and
+       @lang == 'tr' or @lang == 'pt'or @lang == 'ro') and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   elsif (@lang == 'zh' or @lang == 'ja' ) and result =~ /（\*。{/
@@ -63,6 +63,10 @@ def fix( text, result )
       # command-line flags.  We shorten it to just dossiers.
       #
       result.sub!(/\s:$/, ": ")
+    end
+  elsif @lang == 'ro'
+    if text == '4.8g %%'
+      result = text
     end
   elsif @lang == 'de'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
@@ -129,6 +133,13 @@ def fix( text, result )
     end
   elsif @lang == 'tr'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+  elsif @lang == 'ro'
+    if text =~ '4.8g %%'
+      result = text
+    end
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    end
   elsif @lang == 'ru'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if text == '%d Hz.'
