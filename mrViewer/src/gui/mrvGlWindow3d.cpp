@@ -191,7 +191,6 @@ GlWindow3d::Perspective (double focal, double aspect,
     ymin = -ymax;
     xmin = ymin * aspect;
     xmax = ymax * aspect;
-    std::cerr << ymax << " " << ymin << " " << xmin << " " << xmax << std::endl;
     glFrustum (xmin, xmax, ymin, ymax, zNear, zFar);
 }
 
@@ -220,7 +219,7 @@ GlWindow3d::GlInit()
     _translateX = 0;
     _translateY = 0;
     _scaleZ = 1.0;
-    _elevation = 0;
+    _elevation = 10;
     _azimuth = 0;
     _inverted = 0;
     _displayFactor = 1;
@@ -305,6 +304,12 @@ GlWindow3d::draw()
     ReshapeViewport();
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor (.5,.5,.5, 0.0);
+    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
+    if ( status != GL_FRAMEBUFFER_COMPLETE )
+    {
+        cerr << "frame buffer not complete" << endl;
+        return;
+    }
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
@@ -331,14 +336,14 @@ GlWindow3d::draw()
     glScaled (1.0, 1.0, _fitScale);
     glTranslated (0.0, 0.0, -_fitTran);
 
-    // loop dataZ to draw points
-    glPointSize (2);
-
-    glBegin (GL_POINTS);
-    glColor3f (0.0, 1.0, 1.0);
-
     if ( _dataZ && _sampleCount )
     {
+        // loop dataZ to draw points
+        glPointSize (2);
+
+        glBegin (GL_POINTS);
+        glColor3f (0.0, 1.0, 1.0);
+
         SCOPED_LOCK( _mutex );
         for (int y = 0; y < _dy; y++)
         {
@@ -357,12 +362,13 @@ GlWindow3d::draw()
                 }
             }
         }
+        glEnd();
     }
 
-    glEnd();
 
     // draw the display window OutLine
     drawOutLine (float(_dx), float(_dy), -(_zmax + _zmin) / 2.0f);
+
 
     // Check gl errors
     GLenum err = glGetError();

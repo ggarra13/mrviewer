@@ -54,7 +54,7 @@
 #include "mrvGLSphere.h"
 #include "mrvGLLut3d.h"
 
-#include "OpenEXR/ImathMatrix.h"
+#include "ImathMatrix.h"
 
 //#define TEST_NO_QUAD         // test not using textures
 //#define TEST_NO_PBO_TEXTURES // test not using pbo textures

@@ -42,6 +42,7 @@ target_link_libraries( AMF ${LIBRARIES} )
 
 set_target_properties( AMF
   PROPERTIES
+  VERSION ${SOVERSION}
   SOVERSION ${SOVERSION}
   MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
