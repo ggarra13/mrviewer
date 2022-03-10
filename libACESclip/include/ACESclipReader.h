@@ -151,7 +151,7 @@ class ACES_EXPORT ACESclipReader
     tinyxml2::XMLDocument doc;
     XMLElement* element;
     XMLNode* root, *root2, *root3, *root4;
-    locale_t loc;
+    char* loc;
 };
 
 

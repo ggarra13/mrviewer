@@ -304,12 +304,7 @@ GlWindow3d::draw()
     ReshapeViewport();
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor (.5,.5,.5, 0.0);
-    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
-    if ( status != GL_FRAMEBUFFER_COMPLETE )
-    {
-        cerr << "frame buffer not complete" << endl;
-        return;
-    }
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 

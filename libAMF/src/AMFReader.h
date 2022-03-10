@@ -140,7 +140,7 @@ class AMF_EXPORT AMFReader
     tinyxml2::XMLDocument doc;
     tinyxml2::XMLElement* element;
     tinyxml2::XMLNode* root, *root2, *root3, *root4;
-    locale_t loc;
+    char* loc;
 };
 
 

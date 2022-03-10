@@ -742,7 +742,8 @@ ELSEIF (UNIX)
 
   # try to set up the menu sys
 
-  SET(CPACK_GENERATOR DEB RPM TGZ )
+  #  SET(CPACK_GENERATOR DEB RPM TGZ )
+  SET(CPACK_GENERATOR TGZ )
 
   # SET the installation directory.
 
