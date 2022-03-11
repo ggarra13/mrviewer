@@ -88,14 +88,14 @@ void AMFReader::parse_V3( const char* v3, float out[3]  )
     AMFReader::AMFReader() :
         loc( NULL )
     {
-        char* current = setlocale( LC_ALL, NULL );
+        char* current = setlocale( LC_NUMERIC, NULL );
         if ( current ) loc = strdup( current );
-        setlocale(LC_ALL, "C");
+        setlocale(LC_NUMERIC, "C");
     }
 
     AMFReader::~AMFReader()
     {
-        setlocale( LC_ALL, loc );
+        setlocale( LC_NUMERIC, loc );
         if ( loc ) free( loc );
     }
 

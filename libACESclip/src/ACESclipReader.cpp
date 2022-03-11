@@ -111,14 +111,14 @@ ACESclipReader::ACESclipReader() :
     graderef_status( kApplied ),
     loc( NULL )
 {
-    char* current = setlocale( LC_ALL, NULL );
+    char* current = setlocale( LC_NUMERIC, NULL );
     if ( current ) loc = strdup( current );
-    setlocale(LC_ALL, "C");
+    setlocale(LC_NUMERIC, "C");
 }
 
 ACESclipReader::~ACESclipReader()
 {
-    setlocale( LC_ALL, loc );
+    setlocale( LC_NUMERIC, loc );
     if ( loc ) free( loc );
 }
 
