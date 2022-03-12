@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function {}
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -49,15 +51,14 @@ class GL3dViewUI {open
       user_data this user_data_type {GL3dViewUI*}
       callback {v->main()->uiView->send_network( "GL3dView 0" );
 o->hide();} open selected
-      xywh {158 521 325 240} type Double resizable
-      code0 {// Make the window transient
-main_ = main;
-// o->child_of( main->uiMain );}
+      xywh {10 53 500 500} type Double resizable
+      code0 {main_ = main;}
       class {mrv::GlWindow3d} non_modal visible
     } {}
   }
-  Function {GL3dViewUI(ViewerUI* m)} {} {
-    code {Fl_Group::current(0); make_window( m );} {}
+  Function {GL3dViewUI(ViewerUI* m)} {open
+  } {
+    code {make_window( m );} {}
   }
   Function {~GL3dViewUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}

@@ -76,37 +76,28 @@ void AMFReader::parse_V3( const char* v3, float out[3]  )
 {
     const char* s = v3;
     char* e;
-    out[0] = (float) strtod_l( s, &e, loc ); s = e;
-    out[1] = (float) strtod_l( s, &e, loc ); s = e;
-    out[2] = (float) strtod_l( s, &e, loc );
+    out[0] = (float) strtod( s, &e ); s = e;
+    out[1] = (float) strtod( s, &e ); s = e;
+    out[2] = (float) strtod( s, &e );
 }
 
 /**
  * Constructor
  *
  */
-AMFReader::AMFReader()
-{
-#ifdef _WIN32
-    // The following line should in theory work, but it doesn't
-    // _loc = _create_locale( LC_ALL, "en-US" );
-    // We instead use a full name
-    loc = _create_locale( LC_ALL, "C" );
-#else
-    locale_t empty;
-    memset( &empty, 0, sizeof(locale_t) );
-    loc = newlocale( LC_ALL, "en_US.UTF-8", empty );
-#endif
-}
+    AMFReader::AMFReader() :
+        loc( NULL )
+    {
+        char* current = setlocale( LC_NUMERIC, NULL );
+        if ( current ) loc = strdup( current );
+        setlocale(LC_NUMERIC, "C");
+    }
 
-AMFReader::~AMFReader()
-{
-#ifdef _WIN32
-    _free_locale( loc );
-#else
-    freelocale( loc );
-#endif
-}
+    AMFReader::~AMFReader()
+    {
+        setlocale( LC_NUMERIC, loc );
+        if ( loc ) free( loc );
+    }
 
 
 const char* AMFReader::error_name( AMFReader::AMFError err ) const

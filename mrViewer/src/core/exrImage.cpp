@@ -1448,8 +1448,8 @@ void exrImage::findZBound( float& zmin, float& zmax, float farPlane,
     //
     // find zmax and zmin values of deep data to set bound
     //
-    zmax = limits<float>::min();
-    zmin = limits<float>::max();
+    zmax = numeric_limits<float>::min();
+    zmin = numeric_limits<float>::max();
 
     unsigned maxCount = 0;
 

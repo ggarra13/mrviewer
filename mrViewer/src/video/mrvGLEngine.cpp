@@ -862,6 +862,7 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
     glClearColor( r, g, b, a );
     glClearStencil( 0 );
     CHECK_GL;
+
     glClear( GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT );
     CHECK_GL;
     glShadeModel( GL_FLAT );

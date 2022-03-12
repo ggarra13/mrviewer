@@ -25,7 +25,7 @@ ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
 
-   set(FLTK_DIR /Users/gga/code/lib/fltk/build)
+   set(FLTK_DIR /Users/gga/code/lib/fltk/build CACHE FILEPATH "fltk build dir" FORCE )
    find_package(FLTK REQUIRED NO_MODULE)
    include_directories(${FLTK_INCLUDE_DIRS})
    set( FLTK_LIBRARIES fltk fltk_gl fltk_images )
@@ -42,7 +42,7 @@ if (APPLE)
   set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
 
-set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" )
+set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" FORCE )
 
 FIND_PACKAGE( FLTK        REQUIRED NO_MODULE )    # for window management
 
@@ -743,6 +743,7 @@ ELSEIF (UNIX)
   # try to set up the menu sys
 
   SET(CPACK_GENERATOR DEB RPM TGZ )
+  # SET(CPACK_GENERATOR TGZ )
 
   # SET the installation directory.
 

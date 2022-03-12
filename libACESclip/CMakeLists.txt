@@ -41,6 +41,7 @@ target_link_libraries( ACESclip ${LIBRARIES} )
 
 set_target_properties( ACESclip
   PROPERTIES
+  VERSION ${SOVERSION}
   SOVERSION ${SOVERSION}
   MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 

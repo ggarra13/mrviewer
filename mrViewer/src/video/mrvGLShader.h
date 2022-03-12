@@ -19,15 +19,15 @@
  * @file   mrvGLShader.h
  * @author gga
  * @date   Fri Jan 18 22:42:38 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
 #include <map>
-#include <OpenEXR/ImathMatrix.h>
+#include <ImathMatrix.h>
 
 namespace mrv {
 
@@ -52,32 +52,32 @@ namespace mrv {
 
     void setUniform( const GLint location, const float x );
     void setUniform( const GLint location, const float x, const float y );
-    void setUniform( const GLint location, const float x, const float y, 
-		     const float z );
-    void setUniform( const GLint location, const float x, const float y, 
-		     const float z, const float w );
+    void setUniform( const GLint location, const float x, const float y,
+                     const float z );
+    void setUniform( const GLint location, const float x, const float y,
+                     const float z, const float w );
 
     void setUniform( const char* uniform, const float x );
     void setUniform( const char* uniform, const float x, const float y);
-    void setUniform( const char* uniform, const float x, const float y, 
-		     const float z );
-    void setUniform( const char* uniform, const float x, const float y, 
-		     const float z, const float w );
+    void setUniform( const char* uniform, const float x, const float y,
+                     const float z );
+    void setUniform( const char* uniform, const float x, const float y,
+                     const float z, const float w );
 
     void setUniform( const GLint location, const int x );
     void setUniform( const GLint location, const int x, const int y );
-    void setUniform( const GLint location, const int x, const int y, 
-		     const int z );
-    void setUniform( const GLint location, const int x, const int y, 
-		     const int z, const int w );
+    void setUniform( const GLint location, const int x, const int y,
+                     const int z );
+    void setUniform( const GLint location, const int x, const int y,
+                     const int z, const int w );
       void setUniform( const GLint location, const Imath::M44f& m );
 
     void setUniform( const char* uniform, const int x );
     void setUniform( const char* uniform, const int x, const int y);
-    void setUniform( const char* uniform, const int x, const int y, 
-		     const int z );
-    void setUniform( const char* uniform, const int x, const int y, 
-		     const int z, const int w );
+    void setUniform( const char* uniform, const int x, const int y,
+                     const int z );
+    void setUniform( const char* uniform, const int x, const int y,
+                     const int z, const int w );
       void setUniform( const char* uniform, const Imath::M44f& m );
   protected:
 

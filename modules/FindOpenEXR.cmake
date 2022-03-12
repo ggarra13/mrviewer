@@ -46,8 +46,8 @@ FIND_PATH( IMATH_INCLUDE_DIR ImathForward.h
   "$ENV{OPENEXR_ROOT}/include/OpenEXR"
   "$ENV{OPENEXR_ROOT}/include"
   /usr/local/include/Imath
-  /usr/include/Imath
   /usr/local/include/OpenEXR
+  /usr/include/Imath
   /usr/include/OpenEXR
   DOC   "Imath includes"
   )
