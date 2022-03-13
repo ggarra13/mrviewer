@@ -583,8 +583,8 @@ int aviImage::init_filters(const char *filters_descr)
     if (fr.num && fr.den)
         av_strlcatf(args, sizeof(args), ":frame_rate=%d/%d", fr.num, fr.den);
 
-
-    LOG_INFO( "args " << args );
+    if ( !_is_thumbnail )
+        LOG_INFO( "args " << args );
 
     ret = avfilter_graph_create_filter(&filt_src, buffersrc, "in",
                                        args, NULL, filter_graph);
