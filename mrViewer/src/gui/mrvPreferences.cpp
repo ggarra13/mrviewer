@@ -87,6 +87,7 @@ namespace fs = boost::filesystem;
 #include "mrvReelUI.h"
 #include "mrViewer.h"
 
+extern float kCrops[];
 
 namespace
 {
@@ -275,6 +276,8 @@ HotkeyUI*         ViewerUI::uiHotkey = NULL;
 ConnectionUI*     ViewerUI::uiConnection = NULL;
 
 namespace mrv {
+
+
 
 OCIO::ConstConfigRcPtr Preferences::config;
 ColorSchemes        Preferences::schemes;
@@ -1978,13 +1981,8 @@ void Preferences::run( ViewerUI* main )
     //
         DBG3;
     int crop = uiPrefs->uiPrefsCropArea->value();
-    if ( crop > 0 )
-    {
-        float mask = 1.0f;
-        const char* fmt = uiPrefs->uiPrefsCropArea->child(crop)->label();
-        sscanf( fmt, "%f", &mask );
-        view->masking( mask );
-    }
+    float mask = kCrops[crop];
+    view->masking( mask );
 
         DBG3;
     //
