@@ -90,12 +90,16 @@ def fix( text, result, lang )
       result = 'Não consegui definir os parâmetros de hardware de áudio: %s'
     elsif text == "xyY CIE xyY"
       result = text
+    elsif text == "A/B"
+      result = text
     end
     if result =~ /\\\s+n/
       #
       # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
+    elsif result =~ /LAZER/
+      result.gsub!( /LAZER/, 'OCIO')
     end
   elsif lang == 'cs'
     if text == '%4.8g %%'

@@ -31,7 +31,7 @@ def fix( text, result )
       text == '  INF.  ' or text == "   NAN  " or
       text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
       text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or
+      text == "mrViewer    FG: %s" or text == '4.8g %%' or
       text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
@@ -46,71 +46,9 @@ def fix( text, result )
     # Automatic translation returns 。instead of .
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
-  elsif @lang == 'fr'
-    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-    if text == 'files'
-      #
-      # Automatic translation returns "des dossiers" which conflicts with TCLAP
-      # command-line flags.  We shorten it to just dossiers.
-      #
-      result = 'dossiers'
-    elsif result =~ /LOISIRS/
-      result.sub!(/LOISIRS/, 'OCIO' )
-    end
-    if result =~ / :$/
-      #
-      # Automatic translation returns "des dossiers" which conflicts with TCLAP
-      # command-line flags.  We shorten it to just dossiers.
-      #
-      result.sub!(/\s:$/, ": ")
-    end
-  elsif @lang == 'ro'
-    if text == '4.8g %%'
-      result = text
-    end
-  elsif @lang == 'pl'
-    if text == '4.8g %%'
-      result = text
-    end
-  elsif @lang == 'de'
-    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-    if text == '4.8g %%'
-      result = text
-    elsif result =~ /,* kann nicht gefunden werden/
-      #
-      # Automatic translation returns a second line instead of just a line
-      # which conflicts with \n ending in original text.
-      #
-      result.sub!( /,? kann nicht gefunden werden/, '' )
-    elsif result =~ /FREIZEIT/
-      result.sub!(/FREIZEIT/, 'OCIO')
-    elsif result =~ /\\oder/
-      #
-      # Automatic translation returns "\oder" instead of "\nder"
-      #
-      result.sub!(/\\oder/, '\nder' )
-    end
-  elsif @lang == 'pt'
-    if text == '15' or text == '50'
-      result = text
-    elsif text == '%4.8g %%'
-      result = text
-    elsif text =~ /set software audio parameters: \%s/
-      result = 'Não consegui definir os parâmetros de hardware de áudio: %s'
-    elsif text == "xyY CIE xyY"
-      result = text
-    end
-    if result =~ /\\\s+n/
-      #
-      # Automatic translation returns \ n instead of \n
-      #
-      result.gsub!(/\\\s+n/, '\n')
-    end
   elsif @lang == 'cs'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-    if text == '4.8g %%'
-      result = text
-    elsif text == 'Frame %<PRId64> '
+    if text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
@@ -126,6 +64,27 @@ def fix( text, result )
       # Automatic translation returns \an instead of \n
       #
       result.gsub!(/\\an/, '\n')
+    elsif result =~ /Ukládání/ or result =~ /Úspora/
+      result.gsub!( /Ukládání/, 'Záznam' )
+      result.gsub!( /Úspora/, 'Záznam' )
+    elsif result =~ /ukládání/
+      result.gsub!( /ukládání/, 'záznam' )
+    end
+  elsif @lang == 'de'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+    if result =~ /,* kann nicht gefunden werden/
+      #
+      # Automatic translation returns a second line instead of just a line
+      # which conflicts with \n ending in original text.
+      #
+      result.sub!( /,? kann nicht gefunden werden/, '' )
+    elsif result =~ /FREIZEIT/
+      result.sub!(/FREIZEIT/, 'OCIO')
+    elsif result =~ /\\oder/
+      #
+      # Automatic translation returns "\oder" instead of "\nder"
+      #
+      result.sub!(/\\oder/, '\nder' )
     end
   elsif @lang == 'es'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
@@ -135,35 +94,49 @@ def fix( text, result )
       #
       result.gsub!(/\\\s+t/, '\t')
     end
-  elsif @lang == 'tr'
+  elsif @lang == 'fr'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-  elsif @lang == 'ro'
-    if text =~ '4.8g %%'
+    if text == 'files'
+      #
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
+      #
+      result = 'dossiers'
+    elsif text == "A/B"
+      result = text
+    elsif text == "A-B, Stereo 3D Options"
+      result = "A-B, options 3D stéréo"
+    elsif result =~ /LOISIRS/
+      result.sub!(/LOISIRS/, 'OCIO' )
+    elsif result =~ /Économie/
+      result.sub!( /Économie/, 'Sauvegarder' )
+    end
+    if result =~ / :$/
+      #
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
+      #
+      result.sub!(/\s:$/, ": ")
+    end
+  elsif @lang == 'it'
+    if result =~ /TEMPO LIBERO/
+      result.sub!(/TEMPO LIBERO/, 'OCIO')
+    elsif result =~ /Stai salvando/
+      result.gsub!( /Stai salvando/, "Stai registrando" )
+    elsif result =~ /salva/ or result =~ /risparmio/
+      result.gsub!( /risparmio/, "registrazione" )
+      result.gsub!( /salvataggio/, "registrazione" )
+      result.gsub!( /salva/, "registrazione" )
+    elsif result =~ /Salva/ or result =~ /Risparmio/
+      result.gsub!( /Risparmio/, "Registrazione" )
+      result.gsub!( /Salvataggio/, "Registrazione" )
+      result.gsub!( /Salva/, "Registrazione" )
+    elsif text == '%d Hz.'
       result = text
     end
-    if result =~ /[^\\]"/
-      result.gsub!( /"/, '\"' )
-    end
-  elsif @lang == 'ru'
-    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-    if text == '%d Hz.'
-      result = text
-    elsif text =~ '4.8g %%'
-      result = text
-    elsif text == 'W: %g %g'
-      result = 'B: %g %g'
-    elsif result =~ /ДОСУГ/
-      result.sub!(/ДОСУГ/, 'OCIO')
-    elsif result =~ /ОТДЫХ/
-      result.sub!(/ОТДЫХ/, 'OCIO')
-    elsif result =~ /Левый "/
-      result.gsub!(/"/, '\"' )
-    end
-    if result =~ /"\\[^n"t]/
-      result.gsub!(/\\[^n"t]/, '\n' )
-    end
-    if result =~ /"%s"/
-      result.gsub!(/"/, '\"' )
+    result.gsub!( /^(\d*)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
   elsif @lang == 'ja'
     if result =~ /：/
@@ -240,27 +213,69 @@ def fix( text, result )
     elsif result =~ /여가/
       result.sub!(/여가/, 'OCIO')
     end
-  elsif @lang == 'it'
-    if result =~ /TEMPO LIBERO/
-      result.sub!(/TEMPO LIBERO/, 'OCIO')
+  elsif @lang == 'pl'
+    if result =~ /Oszczędność/
+      result.sub!( /Oszczędność/, 'Nagrywać' )
+    elsif result =~ /zapisywania/
+      result.sub!( /zapisywania/, 'nagranie' )
+    elsif result =~ /Zapisywanie/
+      result.sub!( /Zapisywanie/, 'Nagranie' )
     end
-    if text =~ '4.8g %%'
+  elsif @lang == 'pt'
+    if text == '15' or text == '50'
       result = text
-    elsif text == '%d Hz.'
+    elsif text =~ /set software audio parameters: \%s/
+      result = 'Não consegui definir os parâmetros de hardware de áudio: %s'
+    elsif text == "xyY CIE xyY"
       result = text
     end
-    result.gsub!( /^(\d*)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
-    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
-      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    elsif result =~ /LAZER/
+      result.gsub!( /LAZER/, "OCIO" )
     end
+  elsif @lang == 'ro'
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    elsif result =~ /salvarea/
+      result.gsub!( /salvarea/, 'înregistrarea' )
+    elsif result =~ /Salvare/
+      result.gsub!( /Salvare/, 'înregistrare' )
+    elsif result =~ /salvați/ or result =~ /Salvați/ or result =~ /Economisire/
+      result.gsub!( /Economisire/, 'înregistrați' )
+      result.gsub!( /Salvați/, 'înregistrați' )
+      result.gsub!( /salvați/, 'înregistrați' )
+    end
+  elsif @lang == 'ru'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
+    if text == '%d Hz.'
+      result = text
+    elsif text == 'W: %g %g'
+      result = 'B: %g %g'
+    elsif result =~ /ДОСУГ/
+      result.sub!(/ДОСУГ/, 'OCIO')
+    elsif result =~ /ОТДЫХ/
+      result.sub!(/ОТДЫХ/, 'OCIO')
+    elsif result =~ /Левый "/
+      result.gsub!(/"/, '\"' )
+    end
+    if result =~ /"\\[^n"t]/
+      result.gsub!(/\\[^n"t]/, '\n' )
+    end
+    if result =~ /"%s"/
+      result.gsub!(/"/, '\"' )
+    end
+  elsif @lang == 'tr'
+    result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
   elsif @lang == 'zh'
     if text == "Y' (Lumma)"
       result = text
     elsif text == "Y (Luminance)"
       result = text
     elsif text == "L (Lightness)"
-      result = text
-    elsif text =~ '%4.8g %%'
       result = text
     end
     if result =~ /闲暇/
@@ -343,10 +358,11 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'de', 'fr', 'it', 'cs', 'zh', 'ja', 'ko', 'tr', 'ru' ]
+  langs = [ 'cs', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
+            'ro', 'ru', 'tr', 'zh' ]
 end
 
-translated = [ 'es' ]
+translated = [ 'es', 'ja', 'ko', 'tr', 'zh' ]
 for @lang in langs
   next if translated.any? @lang
   @h = {}
