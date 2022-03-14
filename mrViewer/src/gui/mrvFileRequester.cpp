@@ -1055,7 +1055,7 @@ std::string save_reel( const char* startdir,
         //
         // Hotkeys
         //
-        size_t pos = filename.rfind( _(".prefs") );
+        size_t pos = filename.rfind( ".prefs" );
         if ( pos != std::string::npos )
            filename = filename.replace( pos, filename.size(), "" );
 
@@ -1076,7 +1076,7 @@ std::string save_reel( const char* startdir,
         if ( start != std::string::npos )
            filename = filename.substr( start+1, filename.size() );
 
-        pos = filename.rfind( _(".prefs") );
+        pos = filename.rfind( ".prefs" );
         if ( pos != std::string::npos )
            filename = filename.replace( pos, filename.size(), "" );
 
@@ -1095,7 +1095,7 @@ std::string save_reel( const char* startdir,
 
     void load_hotkeys( ViewerUI* uiMain, std::string filename )
     {
-        size_t pos = filename.rfind( _(".prefs") );
+        size_t pos = filename.rfind( ".prefs" );
         if ( pos != std::string::npos )
            filename = filename.replace( pos, filename.size(), "" );
 
@@ -1125,7 +1125,7 @@ std::string save_reel( const char* startdir,
         }
 
 
-        pos = filename.rfind( _(".prefs") );
+        pos = filename.rfind( ".prefs" );
         if ( pos != std::string::npos )
            filename = filename.replace( pos, filename.size(), "" );
 
