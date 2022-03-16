@@ -103,7 +103,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {112 86 770 468} type Double resizable
+      xywh {112 113 770 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -195,7 +195,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             Fl_Check_Button uiPrefsColorArea {
-              label {Color Area} selected
+              label {Color Area}
               tooltip {When selected, mrViewer will start with the color area window already open.} xywh {390 281 25 25} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
@@ -209,10 +209,14 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {217 336 25 25} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
-            Fl_Check_Button uiPrefsPaintTools {
-              label {Action Tools}
-              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {390 310 25 25} box UP_BOX down_box DOWN_BOX align 8
-              class {mrv::CheckButton}
+            Fl_Group {} {open selected
+              xywh {380 290 200 60}
+            } {
+              Fl_Check_Button uiPrefsPaintTools {
+                label {Action Tools}
+                tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {391 311 25 25} box UP_BOX down_box DOWN_BOX align 136
+                class {mrv::CheckButton}
+              }
             }
             Fl_Check_Button uiPrefsWaveform {
               label Waveform
