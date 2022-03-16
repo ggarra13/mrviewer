@@ -26,13 +26,14 @@ def fix( text, result, lang )
   result.gsub!(/&amp;/, "&" )
   result.gsub!(/&quot;/, '"' )
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-      text == ' FC: ' or text == 'V-A: ' or
-      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  ' or
-      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or
-      text =~ /# Created with mrViewer/
+    text == ' FC: ' or text == 'V-A: ' or
+    text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+    text == '  INF.  ' or text == "   NAN  " or
+    text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+    text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+    text == "mrViewer    FG: %s" or text == '%4.8g %%' or
+    text == 'A/B' or text == 'A' or text == 'B' or
+    text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -97,6 +98,8 @@ def fix( text, result, lang )
       # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
+    elsif result =~ /LAZER/
+      result.gsub!( /LAZER/, 'OCIO')
     end
   elsif lang == 'cs'
     if text == 'Frame %<PRId64> '
@@ -327,14 +330,14 @@ def translate( text, lang )
         result[-1] = '%s'
       end
       result = result.join('/')
-      result = fix( text, result, lang )
+      result = fix( @msgid, result, lang )
       return replace( result )
     end
   end
   puts "#@count spanish: #{text}"
   r = @translate.translate text, from: 'es', to: lang
   result = r.text
-  result = fix( text, result, lang )
+  result = fix( @msgid, result, lang )
   return replace( result )
 end
 
@@ -347,21 +350,27 @@ def new_line( text )
   return if @msgid.empty? or @h[@msgid]
   @h[@msgid] = 1
   @count += 1
-  puts "#@count origin: #@msgid"
+  puts "#@count origin : #@msgid"
   @op.puts "msgid \"#{@msgid}\""
   @count += 1
-  puts "#@count result: #{text}"
+  puts "#@count result : #{text}"
   @op.puts "msgstr \"#{text}\""
 end
 
-langs = [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'tr', 'pt' ]
-translated = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'tr' ]
+if ARGV.size > 0
+  langs = ARGV
+else
+  langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
+            'ro', 'ru', 'tr', 'zh' ]
+end
+
+translated = [ 'es' ]
 for lang in langs
   next if translated.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
   in_msg_id = in_msg_es = false
-  msg = msges = ''
+  @msgid = ''
   root = "#{home}/gga/code/applications/mrv/mrViewer/src/po"
   fp = File.open( "#{root}/es.po", encoding: "utf-8")
   if File.exists? "#{root}/#{lang}.po"
@@ -386,6 +395,7 @@ msgstr ""
 
 EOF
 
+  msges = ''
   lines = fp.readlines
   @count = 14 # header
   for line in lines
@@ -414,7 +424,6 @@ EOF
       end
       text = $1
       @msgid << text
-      msg += text
       next
     end
     msgid = line =~ /msgid "(.*)"/
@@ -422,7 +431,6 @@ EOF
       next
     end
     @msgid = $1
-    msg = $1
     in_msg_id = true
     next
   end
