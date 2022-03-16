@@ -280,6 +280,10 @@ def fix( text, result, lang )
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
+  elsif lang == 'pt'
+    if result =~ /Editar PI/
+      result = 'Editar EDL'
+    end
   elsif lang == 'zh'
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
