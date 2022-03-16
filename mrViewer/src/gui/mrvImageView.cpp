@@ -5249,6 +5249,7 @@ int ImageView::leftMouseDown(int x, int y)
           flags |= kLeftCtrl;
           flags |= kGain;
 
+
           if ( Fl::event_clicks() > 1 )
           {
               gain(1.0);

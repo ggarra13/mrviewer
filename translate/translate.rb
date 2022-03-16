@@ -31,7 +31,7 @@ def fix( text, result )
       text == '  INF.  ' or text == "   NAN  " or
       text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
       text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or text == '4.8g %%' or
+      text == "mrViewer    FG: %s" or text == '%4.8g %%' or
       text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
@@ -106,6 +106,8 @@ def fix( text, result )
       result = text
     elsif text == "A-B, Stereo 3D Options"
       result = "A-B, options 3D stéréo"
+    elsif text == "OpenEXR"
+      result = text
     elsif result =~ /LOISIRS/
       result.sub!(/LOISIRS/, 'OCIO' )
     elsif result =~ /Économie/
@@ -362,7 +364,7 @@ else
             'ro', 'ru', 'tr', 'zh' ]
 end
 
-translated = [ 'es', 'ja', 'ko', 'tr', 'zh' ]
+translated = [ 'es' ]
 for @lang in langs
   next if translated.any? @lang
   @h = {}
