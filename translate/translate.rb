@@ -26,13 +26,14 @@ def fix( text, result )
   result.gsub!(/&amp;/, "&" )
   result.gsub!(/&quot;/, '"' )
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-      text == ' FC: ' or text == 'V-A: ' or
-      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  ' or text == "   NAN  " or
-      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or text == '%4.8g %%' or
-      text =~ /# Created with mrViewer/
+    text == ' FC: ' or text == 'V-A: ' or
+    text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+    text == '  INF.  ' or text == "   NAN  " or
+    text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+    text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+    text == "mrViewer    FG: %s" or text == '%4.8g %%' or
+    text == 'A' or text == 'A/B'
+    text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -238,6 +239,15 @@ def fix( text, result )
       result.gsub!(/\\\s+n/, '\n')
     elsif result =~ /LAZER/
       result.gsub!( /LAZER/, "OCIO" )
+    elsif result =~ /salvamento/
+      result.gsub!( /salvamento/, 'gravação' )
+    elsif result =~ /salvar/
+      result.gsub!( /salvar/, 'gravar' )
+    elsif result =~ /Salvar/
+      result.gsub!( /Salvar/, 'Gravar' )
+    elsif result =~ /Economia/ or result =~ /Salvando/
+      result.gsub!( /Economia/, 'Gravando' )
+      result.gsub!( /Salvando/, 'Gravando' )
     end
   elsif @lang == 'ro'
     if result =~ /[^\\]"/

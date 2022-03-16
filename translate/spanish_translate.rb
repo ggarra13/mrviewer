@@ -37,11 +37,13 @@ def fix( text, result, lang )
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'ko' or lang == 'zh' or lang == "ja" or lang == 'ru' or
-       lang == 'tr' ) and
+  if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'it' or
+       lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'ro' or
+       lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
-  elsif ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
+  end
+  if ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     #
     # Automatic translation returns 。instead of .
     #
@@ -53,10 +55,22 @@ def fix( text, result, lang )
       # command-line flags.  We shorten it to just dossiers.
       #
       result = 'dossiers'
-    elsif result =~ /LOISIRS/
+    elsif text == 'Looping Mode'
+      result = 'Mode en boucle'
+    end
+    if result =~ /LOISIRS/
       result.sub!(/LOISIRS/, 'OCIO' )
     end
-    if result =~ / :$/
+    if result =~ /s+i mrViewer plant\w+\s/
+      result.sub!( /s+i mrViewer plant\w+\s/, ' si mrViewer plantait' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /\s:$/
       #
       # Automatic translation returns "des dossiers" which conflicts with TCLAP
       # command-line flags.  We shorten it to just dossiers.
@@ -64,16 +78,7 @@ def fix( text, result, lang )
       result.sub!(/\s:$/, ": ")
     end
   elsif lang == 'de'
-    if text == '%4.8g %%'
-      result = text
-    end
-    if result =~ /,* kann nicht gefunden werden/
-      #
-      # Automatic translation returns a second line instead of just a line
-      # which conflicts with \n ending in original text.
-      #
-      result.sub!( /,? kann nicht gefunden werden/, '' )
-    elsif result =~ /FREIZEIT/
+    if result =~ /FREIZEIT/
       result.sub!(/FREIZEIT/, 'OCIO')
     elsif result =~ /\\oder/
       #
@@ -81,18 +86,25 @@ def fix( text, result, lang )
       #
       result.sub!(/\\oder/, '\nder' )
     end
-  elsif lang == 'cs'
-    if text == '%4.8g %%'
-      result = text
+    if text == 'Are you sure you want to\nremove all selected images from reel?'
+      result = 'Möchten Sie wirklich alle ausgewählten\nBilder aus der Kamerarolle löschen?'
     end
+    if result =~ /\\löschen/
+      result.sub!( /\\löschen/, '\nlöschen' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+  elsif lang == 'cs'
     if text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
-    end
-    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+    elsif text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n'
-    end
-    if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
-      result = 'Ukládání sekvencí %<PRId64> - %<PRId64>'
+    elsif text == 'Saving Sequence(s) %<PRId64> - %<PRId64>'
+      result = 'Nahrávací sekvence %<PRId64> - %<PRId64>'
     end
     if result =~ /VOLNÝ ČAS/
       result.sub!(/VOLNÝ ČAS/, 'OCIO')
@@ -102,12 +114,38 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\an/, '\n')
     end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
   elsif lang == 'es'
     if result =~ /\\\s+t/
       #
       # Automatic translation returns \ t instead of \t
       #
       result.gsub!(/\\\s+t/, '\t')
+    end
+  elsif lang == 'pl'
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+  elsif lang == 'ro'
+    if text == "Got colorspace '"
+      result = "Am spațiul de culoare '"
+    end
+    if result =~ /\\să/
+      result.sub!( /\\să/, '\nsă' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
     end
   elsif lang == 'ru'
     if text == '%4.8g %%'
@@ -129,12 +167,34 @@ def fix( text, result, lang )
     if result =~ /"\\[^n"t]/
       result.gsub!(/\\[^n"t]/, '\n' )
     end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
     if result =~ /"%s"/
       result.gsub!(/"/, '\"' )
+    end
+  elsif lang == 'tr'
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /\\silmek/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\silmek/, '\nsilmek')
     end
   elsif lang == 'ja'
     if result =~ /：/
       result.gsub!(/：/, ':')
+    end
+    if text == "Are you sure you want to overwrite '%s'?"
+      result = "'%s'を上書きしてもよろしいですか？"
     end
     if text =~ /:(\s+)/
       spaces = $1
@@ -202,16 +262,22 @@ def fix( text, result, lang )
     if text == '%d Hz.'
       result = text
     end
-    if text == '%4.8g %%'
-      result = text
+    if result =~ /\\eliminare/ or result =~ /\\cancellare/ or
+      result =~ /\\sostituire/
+      result.sub( /\\eliminare/, '\neliminare' )
+      result.sub( /\\cancellare/, '\ncancellare' )
+      result.sub( /\\sostituire/, '\nsostituire' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
   elsif lang == 'zh'
-    if text == '%4.8g %%'
-      result = text
-    end
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
     end

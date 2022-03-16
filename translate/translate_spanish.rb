@@ -26,13 +26,14 @@ def fix( text, result, lang )
   result.gsub!(/&amp;/, "&" )
   result.gsub!(/&quot;/, '"' )
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-      text == ' FC: ' or text == 'V-A: ' or
-      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  ' or text == "   NAN  " or
-      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or
-      text =~ /# Created with mrViewer/
+    text == ' FC: ' or text == 'V-A: ' or
+    text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+    text == '  INF.  ' or text == "   NAN  " or
+    text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+    text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+    text == "mrViewer    FG: %s" or text == '%4.8g %%' or
+    text == 'A/B' or text == 'A' or text == 'B' or
+    text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -84,8 +85,6 @@ def fix( text, result, lang )
   elsif lang == 'pt'
     if text == '15' or text == '50'
       result = text
-    elsif text == '%4.8g %%'
-      result = text
     elsif text =~ /set software audio parameters: \%s/
       result = 'Não consegui definir os parâmetros de hardware de áudio: %s'
     elsif text == "xyY CIE xyY"
@@ -102,20 +101,19 @@ def fix( text, result, lang )
       result.gsub!( /LAZER/, 'OCIO')
     end
   elsif lang == 'cs'
-    if text == '%4.8g %%'
-      result = text
-    end
     if text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n'
     end
-    if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
-      result = 'Ukládání sekvencí %<PRId64> - %<PRId64>'
-    end
     if result =~ /VOLNÝ ČAS/
       result.sub!(/VOLNÝ ČAS/, 'OCIO')
+    elsif result =~ /\\s/
+      #
+      # Automatic translation returns \an instead of \n
+      #
+      result.gsub!(/\\s/, '\n')
     elsif result =~ /\\ani/
       #
       # Automatic translation returns \an instead of \n
@@ -130,13 +128,9 @@ def fix( text, result, lang )
       result.gsub!(/\\\s+t/, '\t')
     end
   elsif lang == 'ru'
-    if text == '%4.8g %%'
-      result = text
-    end
     if text == '%d Hz.'
       result = text
-    end
-    if text == 'W: %g %g'
+    elsif text == 'W: %g %g'
       result = 'B: %g %g'
     end
     if result =~ /ДОСУГ/
@@ -273,7 +267,7 @@ def translate( text, lang )
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
-      puts "#@count origin: #{text} menus" if @debug
+      puts "#@count spanish: #{text} menus"
       r = @translate.translate menus, from: 'es', to: lang
       result = []
       r.each { |m| result << m.text }
@@ -281,14 +275,14 @@ def translate( text, lang )
         result[-1] = '%s'
       end
       result = result.join('/')
-      result = fix( text, result, lang )
+      result = fix( @msgid, result, lang )
       return replace( result )
     end
   end
-  puts "#@count origin: #{text}" if @debug
+  puts "#@count spanish: #{text}"
   r = @translate.translate text, from: 'es', to: lang
   result = r.text
-  result = fix( text, result, lang )
+  result = fix( @msgid, result, lang )
   return replace( result )
 end
 
@@ -301,26 +295,27 @@ def new_line( text )
   return if @msgid.empty? or @h[@msgid]
   @h[@msgid] = 1
   @count += 1
-  puts "#@count origin: #@msgid"
+  puts "#@count origin : #@msgid"
   @op.puts "msgid \"#{@msgid}\""
   @count += 1
-  puts "#@count result: #{text}"
+  puts "#@count result : #{text}"
   @op.puts "msgstr \"#{text}\""
 end
 
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko', 'tr' ]
+  langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
+            'ro', 'ru', 'tr', 'zh' ]
 end
 
-translated = [ 'es', 'de', 'fr', 'it', 'cs', 'ru', 'zh', 'ja', 'ko' ]
+translated = [ 'es' ]
 for lang in langs
   next if translated.any? lang
   @h = {}
   $stderr.puts "=================== Translate to #{lang} ======================"
   in_msg_id = in_msg_es = false
-  msg = ''
+  @msgid = ''
   root = "#{home}/gga/code/applications/mrv/mrViewer/src/po"
   fp = File.open( "#{root}/es.po", encoding: "utf-8")
   if File.exists? "#{root}/#{lang}.po"
@@ -374,7 +369,6 @@ EOF
       end
       text = $1
       @msgid << text
-      msg += text
       next
     end
     msgid = line =~ /msgid "(.*)"/
@@ -382,7 +376,6 @@ EOF
       next
     end
     @msgid = $1
-    msg = $1
     in_msg_id = true
     next
   end

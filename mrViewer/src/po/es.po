@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-15 21:18-0300\n"
+"POT-Creation-Date: 2022-03-16 00:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -232,8 +232,8 @@ msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
-" i mrViewer falla\n"
-"i modifica Preferencias->Interfaz de usuario->Instancia única."
+" si mrViewer falla\n"
+" o modifica Preferencias->Interfaz de usuario->Instancia única."
 
 #: core/aviImage.cpp:1925
 msgid " instead"
@@ -1363,7 +1363,7 @@ msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
 msgstr ""
-"¿Estás seguro que querés\n"
+"¿Estás seguro que quieres\n"
 "borrar todas las imágenes seleccionadas del carrete?"
 
 #: gui/mrvImageBrowser.cpp:3321
@@ -2750,7 +2750,7 @@ msgstr "No pude setear parámetros de hardware del audio: %s"
 #: audio/mrvALSAEngine.cpp:629
 #, c-format
 msgid "Couldn't set software audio parameters: %s"
-msgstr "No pude codificar cuadro de audio:"
+msgstr "No pude setear parametros de software del audio: %s"
 
 #: audio/mrvALSAEngine.cpp:612
 #, c-format
@@ -5172,17 +5172,17 @@ msgid "Mar"
 msgstr "Mar"
 
 #: gui/mrvWaveform.cpp:311
-msgid "Mark an area in the image with SHIFT + LMB"
-msgstr "Marque un area en la imagen con SHIFT + BIR"
+msgid "Mark an area in the image with SHIFT + Left Mouse Button"
+msgstr "Marque un area en la imagen con SHIFT + el botón izquierdo del ratón"
 
 #: gui/mrvColorInfo.cpp:242 gui/mrvWaveform.cpp:60
 msgid "Mark an area in the image with SHIFT + the left mouse button"
-msgstr "Marque un area en la imagen con SHIFT y el boton izquierdo del mouse"
+msgstr "Marque un area en la imagen con SHIFT y el botón izquierdo del ratón"
 
 #: gui/mrvHistogram.cpp:144 gui/mrvVectorscope.cpp:64
 #: gui/mrvVectorscope.cpp:243
 msgid "Mark an area in the image with the left mouse button"
-msgstr "Marque un area en la imagen con SHIFT y el boton izquierdo del mouse"
+msgstr "Marque un area en la imagen con SHIFT y el botón izquierdo del ratón"
 
 #: gui/FLU/Flu_File_Chooser.cpp:574
 msgid "Matroska Movie"
@@ -5194,7 +5194,7 @@ msgstr "Bitrate Máximo"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1915
 msgid "Max. Cache Frames shown"
-msgstr "máx. Marcos de caché mostrados"
+msgstr "Máx. Cuadros de caché mostrados"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2871
 msgid "Max. Images Apart"
@@ -6097,8 +6097,7 @@ msgstr "Pausa"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
 msgstr ""
-"Color \n"
-"del Lapiz"
+"Color del Lapiz"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3455
@@ -8239,12 +8238,12 @@ msgstr "UTF-8"
 #: audio/mrvALSAEngine.cpp:244 audio/mrvALSAEngine.cpp:359
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
-msgstr "No se pudo encontrar un simple control '%s', id: %i\n"
+msgstr "No se pudo encontrar un simple control '%s', id: %i \n"
 
 #: audio/mrvALSAEngine.cpp:256 audio/mrvALSAEngine.cpp:371
 #, c-format
 msgid "Unable to find volume range '%s', id: %i\n"
-msgstr "No se pudo encontrar un rango de volumen '%s', id: %i\n"
+msgstr "No se pudo encontrar un rango de volumen '%s', id: %i \n"
 
 #: gui/mrvImageInformation.cpp:3010
 msgid "Undefined"
@@ -9853,6 +9852,3 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
-
-#~ msgid ".prefs"
-#~ msgstr ".prefs"
