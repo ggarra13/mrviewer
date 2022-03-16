@@ -232,7 +232,8 @@ msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
-" 如果 mrViewer 崩溃或修改 Preferences->User Interface->Single Instance."
+" 如果 mrViewer 崩溃\n"
+"不修改 Preferences->User Interface->Single Instance。"
 
 #: core/aviImage.cpp:1925
 msgid " instead"
@@ -903,7 +904,7 @@ msgstr "3d 视图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
 msgid "3dView"
-msgstr "3dview"
+msgstr "3d视图"
 
 #: gui/mrvHotkey.cpp:305
 msgid "3dView Density Down"
@@ -1233,7 +1234,7 @@ msgstr "允许您选择图像的不同通道或图层。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3298
 msgid "Allows you to set starting frame for timeline."
-msgstr "允许您设置时间线的开始帧。"
+msgstr "允许您设置时间线的起始帧。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3313
 msgid "Allows you to set the ending frame for timeline."
@@ -1265,7 +1266,7 @@ msgstr "已经用在 "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:120
 msgid "Alt"
-msgstr "alt"
+msgstr "Alt"
 
 #: core/exrImage.cpp:1280 core/exrImage.cpp:2461 core/exrImage.cpp:2465
 #: core/exrImage.cpp:2546 core/exrImage.cpp:2550
@@ -1474,7 +1475,7 @@ msgstr "未知的音频格式。选择 float32。 "
 
 #: core/CMedia_audio.cpp:1886
 msgid "Audio frame "
-msgstr "音响盒 "
+msgstr "音频帧 "
 
 #: core/aviImage_save.cpp:686
 msgid "Audio frame has NOPTS value."
@@ -1835,7 +1836,7 @@ msgstr "我无法打开音频设备"
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
 msgid "Cannot parse environment variable \""
-msgstr "我无法解释环境变量\""
+msgstr "无法解释环境变量\""
 
 #: core/aviImage.cpp:609
 msgid "Cannot set output pixel format"
@@ -2195,9 +2196,9 @@ msgid ""
 "Unspecified is your standard computer translation of YUV.\n"
 "BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM)."
 msgstr ""
-"控制着色器中电影的 YUV 转换以模拟不同的电视标准。\n"
-"YUV 转换采用正在播放的电影的值（如果存在数据）。\n"
-"BT709 是 Rec.709 (HDTV) 的模拟，具有 16 级黑电平在 255 范围内。\n"
+"控制着色器中影片的 YUV 转换以模拟不同的电视标准。\n"
+"YUV 转换采用正在播放的影片的值（如果存在数据）。\n"
+"BT709 是 Rec.709 (HDTV) 的模拟，具有 16 级黑色在 255 范围内。\n"
 "未指定为 YUV 计算机转换标准。\n"
 "BT470BG/SMPTE170M 模拟 ITU-R BT 601-6 625（PAL/证监会）。"
 
@@ -2296,7 +2297,7 @@ msgstr "我无法向堆栈添加轨道： "
 
 #: video/mrvGLLut3d.cpp:1420
 msgid "Could not calculate OCIO Lut"
-msgstr "我无法从 LEISURE 计算 Lut"
+msgstr "我无法从 OCIO 计算 Lut"
 
 #: core/aviImage_save.cpp:519 core/aviImage_save.cpp:1017
 msgid "Could not copy context to parameters"
@@ -2404,11 +2405,11 @@ msgstr "我找不到 4x4 矩阵的双十六 "
 
 #: gui/mrvImageInformation.cpp:547
 msgid "Could not find sixteen floats for matrix 4x4"
-msgstr "我找不到 4x4 矩阵的十六个浮点数"
+msgstr "我找不到 4x4 数组的十六个浮点数"
 
 #: gui/mrvImageInformation.cpp:1350
 msgid "Could not find sixteen floats for matrix 4x4 "
-msgstr "我找不到 4x4 矩阵的十六个浮点数 "
+msgstr "我找不到 4x4 数组的十六个浮点数 "
 
 #: core/aviImage.cpp:3075
 msgid "Could not find stream info"
@@ -2612,8 +2613,8 @@ msgid ""
 "Could not save sequence or movie, only single frame specified.\n"
 "Use %d syntax or a proper movie extension."
 msgstr ""
-"我无法录制序列或电影，只能录制指定的图像。对序列使用 %d 语法或对电影使用自定"
-"义扩展名。"
+"我无法录制序列或电影，只能录制指定的图像。对流使用 %d 语法或对电影使用自定义"
+"扩展名。"
 
 #: core/aviImage.cpp:1058 core/aviImage.cpp:1075
 msgid "Could not seek to frame "
@@ -3287,7 +3288,7 @@ msgstr "EDL"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
-msgstr "编辑兴趣点"
+msgstr "编辑 EDL"
 
 #: gui/FLU/Flu_File_Chooser.cpp:596
 msgid "EXR Picture"
@@ -3421,7 +3422,7 @@ msgstr "视频帧编码错误： "
 
 #: core/aviImage.cpp:1450
 msgid "Error while feeding the filtergraph"
-msgstr "输入过滤器图时出错"
+msgstr "输入过滤器图表时出错"
 
 #: core/aviImage_save.cpp:1222
 msgid "Error while writing video frame: "
@@ -3561,7 +3562,7 @@ msgstr "未能将图层设置为 "
 
 #: core/CMedia_audio.cpp:1209 core/brawImage.cpp:1323
 msgid "Failed to alloc swresample library"
-msgstr "我无法映射 swresample 库"
+msgstr "我无法分配 swresample 库"
 
 #: core/brawImage.cpp:312 core/brawImage.cpp:522 core/brawImage.cpp:895
 msgid "Failed to create IBlackmagicRaw Codec!"
@@ -3882,7 +3883,7 @@ msgstr "在文件中剪辑结束帧"
 
 #: gui/mrvImageInformation.cpp:2814
 msgid "Frame start of clip in file"
-msgstr "剪辑文件中的起始帧"
+msgstr "文件中的剪辑起始帧"
 
 #: video/mrvGLEngine.cpp:834
 msgid "Framebuffer incomplete layer targets."
@@ -4024,7 +4025,7 @@ msgstr "范围更小"
 
 #: gui/mrvHotkey.cpp:394
 msgid "Gamma More"
-msgstr "更多范围"
+msgstr "范围更广"
 
 #: gui/mrvImageView.cpp:3850
 msgid "Gamma for image failed"
@@ -4279,7 +4280,7 @@ msgstr "ICC 渲染意图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2606
 msgid "ICC profile"
-msgstr "ICC配置文件"
+msgstr "国际商会简介"
 
 #: gui/FLU/Flu_File_Chooser.cpp:599
 msgid "IFF Picture"
@@ -4915,7 +4916,7 @@ msgstr "拖放中的加载序列"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2832
 msgid "Load Sequence on File Association && CommandLine"
-msgstr "文件关联中的加载序列"
+msgstr "文件关联中的加载顺序"
 
 #: gui/mrvFileRequester.cpp:545
 msgid "Load Subtitle"
@@ -4951,11 +4952,11 @@ msgstr "我从以下位置加载了 braw 库： "
 
 #: gui/mrvPreferences.cpp:563
 msgid "Loaded color themes from "
-msgstr "我从 "
+msgstr "加载的颜色主题来自 "
 
 #: gui/mrvPreferences.cpp:362
 msgid "Loaded preferences from "
-msgstr "我从 "
+msgstr "从加载的首选项 "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2758
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2970
@@ -4979,7 +4980,7 @@ msgstr "加载内部 rgba 着色器 arbfp1"
 
 #: gui/mrvPreferences.cpp:1283
 msgid "Loading hotkeys from "
-msgstr "我从 "
+msgstr "从加载热键 "
 
 #: core/wandImage.cpp:610
 msgid "Local Caption"
@@ -5116,7 +5117,7 @@ msgstr "海"
 
 #: gui/mrvWaveform.cpp:311
 msgid "Mark an area in the image with SHIFT + Left Mouse Button"
-msgstr "用 SHIFT 和鼠标左键在图像上标记一个区域"
+msgstr "使用 SHIFT + 鼠标左键在图像上标记一个区域"
 
 #: gui/mrvColorInfo.cpp:242 gui/mrvWaveform.cpp:60
 msgid "Mark an area in the image with SHIFT + the left mouse button"
@@ -5137,7 +5138,7 @@ msgstr "最大比特率"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1918
 msgid "Max. Cache Frames shown"
-msgstr "最大限度。显示的缓存帧"
+msgstr "最大限度。显示缓存框"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2874
 msgid "Max. Images Apart"
@@ -5402,7 +5403,7 @@ msgstr "下一张图片"
 
 #: gui/mrvHotkey.cpp:358
 msgid "Next Image Limited"
-msgstr "下一个图像有限公司"
+msgstr "下一图像有限公司"
 
 #: gui/mrvHotkey.cpp:353
 msgid "Next Image Version"
@@ -5690,7 +5691,7 @@ msgstr "OCIO 输入色彩空间"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "休闲观"
+msgstr "休闲景观"
 
 #: gui/mrvImageView.cpp:3863
 msgid "OCIO View change failed"
@@ -6024,7 +6025,7 @@ msgstr "暂停"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
-msgstr "铅笔的颜色"
+msgstr "铅笔颜色"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3455
@@ -6694,7 +6695,7 @@ msgstr "将设置恢复为上次保存的首选项。"
 
 #: gui/FLU/Flu_File_Chooser.cpp:610
 msgid "Rich Picture Format"
-msgstr "丰富的图片格式图片"
+msgstr "丰富的图片格式图像"
 
 #: gui/mrvHotkey.cpp:454
 msgid "Right"
@@ -6882,7 +6883,7 @@ msgstr "我录制了 ACES 的元数据剪辑文件"
 
 #: core/mrvACES.cpp:352
 msgid "Saved AMF clip metadata file '"
-msgstr "我录制了 AMF 剪辑元数据文件'"
+msgstr "我从 AMF 录制了剪辑元数据文件"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:175
 msgid "Saves out ACES clip metadata (CTL transforms) into an ACESclip file."
@@ -6929,7 +6930,7 @@ msgstr "重复复选框"
 
 #: gui/mrvHotkey.cpp:442
 msgid "ScrollLock"
-msgstr "滚动锁定"
+msgstr "滚动锁"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2164
 #: gui/mrvImageView.cpp:1574
@@ -7172,7 +7173,7 @@ msgstr "来自 RMD 的设置"
 
 #: video/mrvGLShader.cpp:210
 msgid "Shader did not compile. Error: "
-msgstr "着色器未编译。错误： "
+msgstr "着色器没有编译。错误： "
 
 #: gui/mrvImageInformation.cpp:3325
 msgid "Shadow"
@@ -7589,7 +7590,7 @@ msgid ""
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
-"亮度，以坎德拉为单位/屏幕的 m2。\n"
+"亮度，以坎德拉为单位/m2，屏幕。\n"
 "\n"
 "（环境变量：\n"
 "CTL_DISPLAY_WHITE_LUMINANCE）"
@@ -7618,7 +7619,7 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_CTL_RT_8bits)"
 msgstr ""
-"8 位图像（jpg、bmp 等）的图像 CTL 转换名称\n"
+"8 位图像（jpg、bmp 等）的图像 CTL 变换的名称\n"
 "（环境变量：MRV_CTL_RT_8bits）"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2677
@@ -7973,8 +7974,8 @@ msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image, which should be "
 "composed of 6 images, is wrapped around a cube when this is active."
 msgstr ""
-"允许图像的 VR 360（全景）视图。图像应该由立方体每一侧的 6 个图像组成，当启用"
-"此选项时，它会环绕在立方体周围。"
+"允许图像的 VR 360（全景）视图。图像应该由立方体每一侧的 6 个图像组成，当此选"
+"项打开时，它会环绕在立方体周围。"
 
 #: gui/mrvHotkey.cpp:425
 msgid "Toggle Vectorscope Window"
@@ -8045,7 +8046,7 @@ msgstr "禁用屏幕保护程序"
 
 #: standalone/mrvCommandLine.cpp:425
 msgid "Turn on EDL when loading multiple images."
-msgstr "上传多个图像时启用 EDL"
+msgstr "上传多张图片时启用 EDL"
 
 #: standalone/mrvCommandLine.cpp:408
 msgid "Turn on debugging console."
@@ -8096,7 +8097,7 @@ msgstr "UTF-8"
 #: audio/mrvALSAEngine.cpp:244 audio/mrvALSAEngine.cpp:359
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
-msgstr "找不到简单控件\"%s\"，ID: %i\n"
+msgstr "找不到简单控件\"%s\"，id: %i\n"
 
 #: audio/mrvALSAEngine.cpp:256 audio/mrvALSAEngine.cpp:371
 #, c-format
@@ -8624,7 +8625,7 @@ msgstr ""
 msgid ""
 "When dragging and dropping a frame from a sequence, make mrViewer load the "
 "full sequence.   Otherwise it loads the frame only."
-msgstr "当您从流中拖放帧时，它会导致 mrViewer 加载整个流。否则它只加载盒子。"
+msgstr "当您从流中拖放帧时，它会导致 mrViewer 加载整个流。否则它只加载框架。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2833
 msgid ""
@@ -8632,7 +8633,7 @@ msgid ""
 "line, make mrViewer load the full sequence.   Otherwise it loads the frame "
 "only."
 msgstr ""
-"从文件关联或命令行加载流中的帧会导致 mrViewer 加载整个流。否则它只加载框架。"
+"从文件关联或命令行加载流中的帧会导致 mrViewer 加载整个流。否则它只加载盒子。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2794
 msgid ""
@@ -8712,7 +8713,7 @@ msgstr "选择后，mrViewer 将以演示模式启动。"
 msgid ""
 "When selected, mrViewer will start with its channel, gain, gamma toolbar "
 "visible."
-msgstr "选择后，mrViewer 将开始显示其通道、增益和伽马工具栏。"
+msgstr "选择后，mrViewer 将开始显示其通道、增益和伽玛工具栏。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1114
 msgid ""
@@ -8745,7 +8746,7 @@ msgstr "选择后，mrViewer 将开始显示菜单栏。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1024
 msgid "When selected, mrViewer will start with the pixel toolbar shown."
-msgstr "选中后，mrViewer 将开始显示像素栏。"
+msgstr "选中后，mrViewer 将开始显示像素条。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1045
 msgid "When selected, mrViewer will start with the reel list already open."
@@ -8825,8 +8826,8 @@ msgid ""
 "When this setting is on, Media Information Window's FPS setting is not taken "
 "into account, but the setting from this GUI is."
 msgstr ""
-"当这个设置被激活时，Media Report的CPS（Frames Per Second）的值是不考虑的，但"
-"是这个接口的值是考虑的。"
+"激活此设置时，不考虑媒体报告的 CPS（Frames Per Second）的值，但考虑此接口的"
+"值。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2322
 msgid ""
@@ -8906,7 +8907,7 @@ msgid ""
 "It is recommended this setting is left at 64x64x64 or 128x128x128."
 msgstr ""
 "使用现代显卡，mrViewer 通过将颜色转换为 3D LUT（查找表）来模拟颜色转换。 lut "
-"越大，计算所需的时间越长，但它会越正确。\n"
+"越大，计算所需的时间就越长，但它会越正确。\n"
 "请注意，大型 3D Lut 可能会占用大量内存。\n"
 "\n"
 "Max Memory Size.Error\n"
@@ -9100,7 +9101,7 @@ msgstr "您只能上传一张立体图像以与当前图像组合。"
 
 #: gui/mrvImageBrowser.cpp:3153
 msgid "You cannot load a reel as a stereo image."
-msgstr "您不能将卷轴加载为立体图像。"
+msgstr "您不能将卷轴作为立体图像上传。"
 
 #: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9673
 msgid "Z"
@@ -9142,7 +9143,7 @@ msgstr "声音的"
 
 #: core/aviImage_save.cpp:680
 msgid "audio frame is missing"
-msgstr "音频盒丢失。"
+msgstr "音频盒不见了。"
 
 #: core/aviImage.cpp:857
 msgid "avcodec_context_from_parameters failed for video"
@@ -9632,6 +9633,3 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
-
-#~ msgid "Mark an area in the image with SHIFT + LMB"
-#~ msgstr "用 SHIFT + LIBER 在图像上标记一个区域"

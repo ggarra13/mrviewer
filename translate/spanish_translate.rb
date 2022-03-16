@@ -33,7 +33,7 @@ def fix( text, result, lang )
     text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
     text == "mrViewer    FG: %s" or text == '%4.8g %%' or
     text == 'A/B' or text == 'A' or text == 'B' or
-    text =~ /# Created with mrViewer/
+    text =~ /# Created with mrViewer/ or text == "xyY CIE xyY"
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -81,6 +81,8 @@ def fix( text, result, lang )
   elsif lang == 'de'
     if result =~ /FREIZEIT/
       result.sub!(/FREIZEIT/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
     elsif result =~ /\\oder/
       #
       # Automatic translation returns "\oder" instead of "\nder"
@@ -111,6 +113,8 @@ def fix( text, result, lang )
     end
     if result =~ /VOLNÝ ČAS/
       result.sub!(/VOLNÝ ČAS/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
     elsif result =~ /\\ani/
       #
       # Automatic translation returns \an instead of \n
@@ -137,6 +141,11 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
+    if result =~ /WYPOCZYNEK/
+      result.gsub!( /WYPOCZYNEK/, 'OCIO' )
+    elsif result =~ /leisure/
+      result.gsub!( /leisure/, 'ocio' )
+    end
   elsif lang == 'ro'
     if text == "Got colorspace '"
       result = "Am spațiul de culoare '"
@@ -150,10 +159,10 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-  elsif lang == 'ru'
-    if text == '%4.8g %%'
-      result = text
+    if result =~ /AGREMENT/
+      result.gsub!( /AGREMENT/, 'OCIO' )
     end
+  elsif lang == 'ru'
     if text == '%d Hz.'
       result = text
     end
@@ -192,6 +201,9 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\silmek/, '\nsilmek')
     end
+    if result =~ /BOŞ VAKİT/
+      result.gsub!( /BOŞ VAKİT/, 'OCIO' )
+    end
   elsif lang == 'ja'
     if result =~ /：/
       result.gsub!(/：/, ':')
@@ -210,6 +222,8 @@ def fix( text, result, lang )
     end
     if result =~ /余暇/
       result.sub!(/余暇/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
     elsif result =~ /^@\s+(.*)$/
       #
       # Automatic translation returns @ || instead of @||
@@ -257,6 +271,8 @@ def fix( text, result, lang )
       result = 'LM변환 %u'
     elsif result =~ /여가/
       result.sub!(/여가/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
     end
   elsif lang == 'it'
     if result =~ /TEMPO LIBERO/
@@ -280,13 +296,11 @@ def fix( text, result, lang )
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
       result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
-  elsif lang == 'pt'
-    if result =~ /Editar PI/
-      result = 'Editar EDL'
-    end
   elsif lang == 'zh'
     if result =~ /闲暇/
       result.sub!(/闲暇/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
     end
     t = '[“”]'
     if result =~ /#{t}/
@@ -297,8 +311,13 @@ def fix( text, result, lang )
     if result =~ /％/
       result.gsub!( /％/, '%' )
     end
-    if result =~ /ID: %in/
-      result.sub!( /ID: %in/, 'ID: %i\n' )
+    if result =~ /ID: %i n/
+      result.sub!( /ID: %i n/, 'ID: %i\n' )
+    elsif result =~ /id: %i n/
+      result.sub!( /id: %i n/, 'id: %i\n' )
+    end
+    if result =~ /^\s*我从\s*$/
+      result = translate( @msgid, 'zh' )
     end
   end
   if text =~ /(\s+)$/

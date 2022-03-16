@@ -887,7 +887,7 @@ msgstr "3D Luty/Domyślna transformacja renderowania (RT)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3465
 msgid "3D Luts/OCIO"
-msgstr "3D Luty/WYPOCZYNEK"
+msgstr "3D Luty/OCIO"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:91
 msgid "3D Stereo Options"
@@ -2310,7 +2310,7 @@ msgstr "Nie udało mi się dodać utworu do stosu: "
 
 #: video/mrvGLLut3d.cpp:1420
 msgid "Could not calculate OCIO Lut"
-msgstr "Nie mogłem obliczyć Luta z WYPOCZYNEK"
+msgstr "Nie mogłem obliczyć Luta z OCIO"
 
 #: core/aviImage_save.cpp:519 core/aviImage_save.cpp:1017
 msgid "Could not copy context to parameters"
@@ -5711,13 +5711,13 @@ msgstr "Liczba strumieni wideo w pliku"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2400
 msgid "OCIO"
-msgstr "WYPOCZYNEK"
+msgstr "OCIO"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:178
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:85
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:77
 msgid "OCIO Color Space"
-msgstr "WYPOCZYNEK Przestrzeń kolorów"
+msgstr "OCIO Przestrzeń kolorów"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2384
 msgid "OCIO Config File"
@@ -5737,7 +5737,7 @@ msgstr "Przestrzeń kolorów wejścia OCIO"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "WYPOCZYNEK Zobacz"
+msgstr "OCIO Zobacz"
 
 #: gui/mrvImageView.cpp:3863
 msgid "OCIO View change failed"
@@ -5757,15 +5757,15 @@ msgstr "Wejściowa przestrzeń kolorów obrazu niezdefiniowana."
 
 #: gui/mrvImageView.cpp:5073
 msgid "OCIO/Display"
-msgstr "WYPOCZYNEK/wyświetlacz"
+msgstr "OCIO/wyświetlacz"
 
 #: gui/mrvImageView.cpp:5069 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
-msgstr "WYPOCZYNEK/Wprowadź przestrzeń kolorów"
+msgstr "OCIO/Wprowadź przestrzeń kolorów"
 
 #: gui/mrvImageView.cpp:5076
 msgid "OCIO/View"
-msgstr "WYPOCZYNEK/Pogląd"
+msgstr "OCIO/Pogląd"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2194
 msgid "ODT"
@@ -8409,7 +8409,7 @@ msgstr "Użyj rodzimego selektora plików"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2355
 msgid "Use OCIO"
-msgstr "Skorzystaj z WYPOCZYNEK"
+msgstr "Skorzystaj z OCIO"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2356
 msgid "Use OCIO or revert to CTL/ICC."
@@ -9351,7 +9351,7 @@ msgstr "domyślna"
 
 #: core/CMedia.cpp:4432
 msgid "default_ocio_input_color_space - unknown bit depth"
-msgstr "default_leisure_input_color_space - nieznana głębia bitowa"
+msgstr "default_ocio_input_color_space - nieznana głębia bitowa"
 
 #: gui/mrvMainWindow.cpp:121
 msgid "delete uiview"
