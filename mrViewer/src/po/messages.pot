@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-16 20:36-0300\n"
+"POT-Creation-Date: 2022-03-17 01:30-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,10 +86,6 @@ msgstr ""
 msgid " Eraser"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4523
-msgid " FC: "
-msgstr ""
-
 #: audio/mrvALSAEngine.cpp:547
 msgid " Hz instead."
 msgstr ""
@@ -116,11 +112,6 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2064
 msgid " Text"
-msgstr ""
-
-#: gui/mrvImageView.cpp:4616
-#, c-format
-msgid " UF: %<PRId64> "
 msgstr ""
 
 #: video/mrvGLLut3d.cpp:1322
@@ -1005,7 +996,6 @@ msgid "@||"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3262
-#: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr ""
 
@@ -1493,7 +1483,6 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:189
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:217
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:243
-#: gui/mrvColorInfo.cpp:771
 msgid "B"
 msgstr ""
 
@@ -2865,11 +2854,6 @@ msgstr ""
 msgid "Cyan/red glasses"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4542
-#, c-format
-msgid "DAW: %d,%d %dx%d"
-msgstr ""
-
 #: gui/FLU/Flu_File_Chooser.cpp:569
 msgid "DIVX Movie"
 msgstr ""
@@ -2900,11 +2884,6 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:37
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:847
 msgid "DWAB"
-msgstr ""
-
-#: gui/mrvImageView.cpp:4547
-#, c-format
-msgid "DYW: %d,%d %dx%d"
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1331
@@ -3453,10 +3432,6 @@ msgstr ""
 msgid "F:"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4556
-msgid "F: "
-msgstr ""
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:670
 msgid "FFMPEG"
 msgstr ""
@@ -3473,11 +3448,6 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
-msgstr ""
-
-#: gui/mrvImageView.cpp:4618
-#, c-format
-msgid "FPS: %.3f"
 msgstr ""
 
 #: core/aviImage_save.cpp:1593
@@ -3881,7 +3851,6 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:181
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:209
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:236
-#: gui/mrvColorInfo.cpp:769
 msgid "G"
 msgstr ""
 
@@ -6231,7 +6200,6 @@ msgstr ""
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:173
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:201
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:229
-#: gui/mrvColorInfo.cpp:767
 msgid "R"
 msgstr ""
 
@@ -7347,10 +7315,6 @@ msgstr ""
 msgid "T"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4568
-msgid "T: "
-msgstr ""
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
 msgid "TIFF (.tif)"
 msgstr ""
@@ -8165,10 +8129,6 @@ msgstr ""
 
 #: video/mrvGLEngine.cpp:584
 msgid "Using hardware shader profile: "
-msgstr ""
-
-#: gui/mrvImageView.cpp:4576
-msgid "V-A: "
 msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1470
@@ -9129,7 +9089,6 @@ msgstr ""
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:38
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2093
-#: gui/mrvImageView.cpp:501
 msgid "mrViewer"
 msgstr ""
 

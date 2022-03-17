@@ -498,7 +498,7 @@ static void update_title_bar( mrv::ImageView* view )
     }
     else
     {
-        snprintf( bufs, 32, "%s", _("mrViewer") );
+        snprintf( bufs, 32, "%s", N_("mrViewer") );
     }
 
     view->main()->uiMain->copy_label( bufs );
@@ -4520,7 +4520,7 @@ void ImageView::draw()
 
     if ( _hud & kHudFrameCount )
     {
-        hud << _(" FC: ") << ( last - first + 1 );
+        hud << N_(" FC: ") << ( last - first + 1 );
     }
 
     if ( !hud.str().empty() )
@@ -4539,12 +4539,12 @@ void ImageView::draw()
             // Work around for data window not set yet (use previous frame)
             d = img->data_window( frame-1 );
         }
-        sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+        sprintf( buf, N_("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
         draw_text( r, g, b, 5, y, buf );
         y -= yi;
         {
             const mrv::Recti& d = img->display_window();
-            sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+            sprintf( buf, N_("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
             draw_text( r, g, b, 5, y, buf );
             y -= yi;
         }
@@ -4553,7 +4553,7 @@ void ImageView::draw()
     if ( _hud & kHudFrame )
     {
         sprintf( buf, "% 4" PRId64, frame );
-        hud << _("F: ") << buf;
+        hud << N_("F: ") << buf;
     }
 
     if ( _hud & kHudTimecode )
@@ -4565,7 +4565,7 @@ void ImageView::draw()
         mrv::Timecode::format( buf, d, frame, img->timecode(),
                                img->play_fps(), true );
         if ( !hud.str().empty() ) hud << " ";
-        hud << _("T: ") << buf;
+        hud << N_("T: ") << buf;
     }
 
     if ( (_hud & kHudAVDifference) && img->has_audio() )
@@ -4573,7 +4573,7 @@ void ImageView::draw()
         double avdiff = img->avdiff();
         if ( !hud.str().empty() ) hud << " ";
         sprintf( buf, "% 4f", avdiff );
-        hud << _("V-A: ") << buf;
+        hud << N_("V-A: ") << buf;
     }
 
 
@@ -4613,9 +4613,9 @@ void ImageView::draw()
 
 
         {
-            sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+            sprintf( buf, N_(" UF: %" PRId64 " "), unshown_frames );
             hud << buf;
-            sprintf( buf, _("FPS: %.3f" ), img->actual_frame_rate() );
+            sprintf( buf, N_("FPS: %.3f" ), img->actual_frame_rate() );
             hud << buf;
         }
 
@@ -4632,9 +4632,9 @@ void ImageView::draw()
     if ( _hud & kHudWipe )
     {
         if ( _wipe_dir == kWipeVertical )
-            hud << "Wipe V";
+            hud << N_("Wipe V");
         if ( _wipe_dir == kWipeHorizontal )
-            hud << "Wipe H";
+            hud << N_("Wipe H");
     }
 
     if ( !hud.str().empty() )

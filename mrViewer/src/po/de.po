@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-16 20:30-0300\n"
+"POT-Creation-Date: 2022-03-17 01:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -93,10 +93,6 @@ msgstr " Ich konnte die Datei nicht öffnen. "
 msgid " Eraser"
 msgstr " Radiergummi"
 
-#: gui/mrvImageView.cpp:4523
-msgid " FC: "
-msgstr " FC: "
-
 #: audio/mrvALSAEngine.cpp:547
 msgid " Hz instead."
 msgstr " Hz als Ersatz."
@@ -124,11 +120,6 @@ msgstr " Schrubben"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2064
 msgid " Text"
 msgstr " Text"
-
-#: gui/mrvImageView.cpp:4616
-#, c-format
-msgid " UF: %<PRId64> "
-msgstr " UF: %<PRId64> "
 
 #: video/mrvGLLut3d.cpp:1322
 msgid " already created: "
@@ -232,8 +223,8 @@ msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
-" wenn mrViewer stürzt ab\n"
-"und ändert Einstellungen->Benutzeroberfläche->Einzelinstanz nicht."
+" wenn mrViewer abstürzt\n"
+"nicht ändert Einstellungen->Benutzeroberfläche->Einzelinstanz."
 
 #: core/aviImage.cpp:1925
 msgid " instead"
@@ -318,7 +309,7 @@ msgstr " Es wird nicht verfügbar sein.  "
 
 #: gui/mrvPreferences.cpp:174
 msgid "\" as a float value; using "
-msgstr "\" als Fließkommawert; using "
+msgstr "\" als Gleitkommawert; using "
 
 #: gui/mrvPreferences.cpp:132
 msgid "\" as an integer value; using "
@@ -456,7 +447,7 @@ msgstr "'Bittiefe: "
 
 #: core/CMedia.cpp:4392
 msgid "' from filename"
-msgstr "' aus dem Dateinamen"
+msgstr "' aus Dateiname"
 
 #: gui/mrvSave.cpp:289
 msgid "' to save."
@@ -730,7 +721,7 @@ msgstr "16-bit"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2646
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2710
 msgid "16-bits"
-msgstr "16-bit"
+msgstr "16-Bit"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:308
 msgid "192x192x192"
@@ -1039,7 +1030,6 @@ msgid "@||"
 msgstr "@||"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3262
-#: gui/mrvColorInfo.cpp:773
 msgid "A"
 msgstr "A"
 
@@ -1323,7 +1313,7 @@ msgid ""
 "Amount of detail extraction.\n"
 "Only applicable when decoding 1:1."
 msgstr ""
-"Detailextraktionsbetrag.\n"
+"Detailextraktionsmenge.\n"
 "Nur verfügbar bei 1:1-Decodierung."
 
 #: gui/mrvHotkey.cpp:335
@@ -1359,7 +1349,7 @@ msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
 msgstr ""
-"Möchten Sie wirklich alle ausgewählte\n"
+"Möchten Sie wirklich alle ausgewählten\n"
 "Bilder aus der Kamerarolle löschen?"
 
 #: gui/mrvImageBrowser.cpp:3321
@@ -1482,7 +1472,7 @@ msgstr "Unbekanntes Audioformat. Wählen Sie float32. "
 
 #: core/CMedia_audio.cpp:1886
 msgid "Audio frame "
-msgstr "Audio-Box "
+msgstr "Audiorahmen "
 
 #: core/aviImage_save.cpp:686
 msgid "Audio frame has NOPTS value."
@@ -1548,13 +1538,12 @@ msgstr "Durchschnittliche Bitrate"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:189
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:217
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:243
-#: gui/mrvColorInfo.cpp:771
 msgid "B"
 msgstr "B"
 
 #: gui/mrvImageInformation.cpp:3524
 msgid "B Frames"
-msgstr "B-Rahmen"
+msgstr "B-Frames"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:34
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:844
@@ -1746,11 +1735,11 @@ msgstr "Byte"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:216
 msgid "CIE XYZ"
-msgstr "ICD-XYZ"
+msgstr "CIE XYZ"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:217
 msgid "CIE xyY"
-msgstr "ICD x und Y"
+msgstr "CIE xyY"
 
 #: gui/mrvImageInformation.cpp:3039
 msgid "CIExy Chromaticities"
@@ -2289,7 +2278,7 @@ msgstr "Ich konnte den Track nicht hosten"
 
 #: core/aviImage_save.cpp:565
 msgid "Could not allocate output frame samples. Error: "
-msgstr "Ich konnte Ausgabe-Frame-Samples nicht zuweisen. Fehler: "
+msgstr "Ich konnte Ausgabebox-Beispiele nicht zuweisen. Fehler: "
 
 #: core/aviImage_save.cpp:1067
 msgid "Could not allocate picture"
@@ -2317,7 +2306,7 @@ msgstr "Ich konnte dem Track keinen Clip hinzufügen: "
 
 #: core/Sequence.cpp:1432
 msgid "Could not append one track to stack: "
-msgstr "Ich konnte dem Stack keinen Track hinzufügen: "
+msgstr "Ich konnte dem Stack keinen Titel hinzufügen: "
 
 #: video/mrvGLLut3d.cpp:1420
 msgid "Could not calculate OCIO Lut"
@@ -2432,11 +2421,11 @@ msgstr "Ich konnte keine Doppelsechzehn für die 4x4-Matrix finden "
 
 #: gui/mrvImageInformation.cpp:547
 msgid "Could not find sixteen floats for matrix 4x4"
-msgstr "Ich konnte keine sechzehn Fließkommazahlen für die 4x4-Matrix finden"
+msgstr "Ich konnte keine sechzehn Fließkommazahlen für das 4x4-Array finden"
 
 #: gui/mrvImageInformation.cpp:1350
 msgid "Could not find sixteen floats for matrix 4x4 "
-msgstr "Ich konnte keine sechzehn Fließkommazahlen für die 4x4-Matrix finden "
+msgstr "Ich konnte keine sechzehn Fließkommazahlen für das 4x4-Array finden "
 
 #: core/aviImage.cpp:3075
 msgid "Could not find stream info"
@@ -2957,11 +2946,6 @@ msgstr "Benutzerdefiniertes Feld 9"
 msgid "Cyan/red glasses"
 msgstr "Cyan-Linsen/rot"
 
-#: gui/mrvImageView.cpp:4542
-#, c-format
-msgid "DAW: %d,%d %dx%d"
-msgstr "VDA: %d,%d %dx%d"
-
 #: gui/FLU/Flu_File_Chooser.cpp:569
 msgid "DIVX Movie"
 msgstr "DIVX-Film"
@@ -2995,11 +2979,6 @@ msgstr "DWAA"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:847
 msgid "DWAB"
 msgstr "DWAB"
-
-#: gui/mrvImageView.cpp:4547
-#, c-format
-msgid "DYW: %d,%d %dx%d"
-msgstr "VDY: %d,%d %dx%d"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1331
 #: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2897
@@ -3212,7 +3191,7 @@ msgstr "Bildanzeigebereich"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1317
 #: gui/mrvHotkey.cpp:330 gui/mrvImageInformation.cpp:2911
 msgid "Display Window"
-msgstr "Anzeigefenster"
+msgstr "Schaufenster"
 
 #: gui/mrvImageInformation.cpp:2938
 msgid "Display Window 2"
@@ -3306,7 +3285,7 @@ msgstr "Videolänge"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3340
 msgid "E"
-msgstr "UND"
+msgstr "E"
 
 #: audio/mrvALSAEngine.cpp:738
 msgid "EAGAIN: "
@@ -3323,7 +3302,7 @@ msgstr "EDL"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1113
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
 msgid "EDL Edit"
-msgstr "POI bearbeiten"
+msgstr "EDL bearbeiten"
 
 #: gui/FLU/Flu_File_Chooser.cpp:596
 msgid "EXR Picture"
@@ -3367,7 +3346,7 @@ msgstr "Leeres Bild, das im Elementkonstruktor bereitgestellt wird"
 
 #: gui/mrvImageBrowser.cpp:1580
 msgid "Empty img->fileroot() passed to media_to_pathname"
-msgstr "leeres img->fileroot() an media_to_pathname übergeben"
+msgstr "leeres img->fileroot() übergeben an media_to_pathname"
 
 #: gui/mrvImageBrowser.cpp:1571
 msgid "Empty media passed to media_to_pathname"
@@ -3561,10 +3540,6 @@ msgstr "C"
 msgid "F:"
 msgstr "C:"
 
-#: gui/mrvImageView.cpp:4556
-msgid "F: "
-msgstr "F: "
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:670
 msgid "FFMPEG"
 msgstr "FFMPEG"
@@ -3582,11 +3557,6 @@ msgstr "Hineinpassen"
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
 msgstr "CPS"
-
-#: gui/mrvImageView.cpp:4618
-#, c-format
-msgid "FPS: %.3f"
-msgstr "CPS: %.3f"
 
 #: core/aviImage_save.cpp:1593
 msgid "Failed "
@@ -3990,7 +3960,6 @@ msgstr "Vollbild"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:181
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:209
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:236
-#: gui/mrvColorInfo.cpp:769
 msgid "G"
 msgstr "v"
 
@@ -4038,7 +4007,7 @@ msgstr "Spektrum"
 
 #: core/guessImage.cpp:303 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:522
 msgid "Gamma 1.4 Chart"
-msgstr "Reichweitentabelle 1.4"
+msgstr "Reichweitendiagramm 1.4"
 
 #: core/guessImage.cpp:309 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:528
 msgid "Gamma 1.8 Chart"
@@ -5045,7 +5014,7 @@ msgstr "Beiträge"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:55
 msgid "Logarithmic"
-msgstr "logarithmisch"
+msgstr "Logarithmisch"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
 msgid "Logs"
@@ -5166,8 +5135,7 @@ msgstr "Meer"
 
 #: gui/mrvWaveform.cpp:311
 msgid "Mark an area in the image with SHIFT + Left Mouse Button"
-msgstr ""
-"Markieren Sie mit SHIFT und der linken Maustaste einen Bereich auf dem Bild"
+msgstr "Markieren Sie mit SHIFT + linker Maustaste einen Bereich auf dem Bild"
 
 #: gui/mrvColorInfo.cpp:242 gui/mrvWaveform.cpp:60
 msgid "Mark an area in the image with SHIFT + the left mouse button"
@@ -5190,7 +5158,7 @@ msgstr "Maximale Bitrate"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1918
 msgid "Max. Cache Frames shown"
-msgstr "max. Cache-Frames angezeigt"
+msgstr "max. Cache-Boxen angezeigt"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2874
 msgid "Max. Images Apart"
@@ -5221,7 +5189,7 @@ msgid ""
 msgstr ""
 "Maximale Anzahl separater Images, die Versionen auf der Festplatte haben "
 "können. Wenn Sie v1 haben und diese auf 5 gesetzt ist, werden nur Versionen "
-"bis zu v6 gefunden. v7 würde nicht gefunden, da die Trennung zu groß wäre."
+"bis v6 gefunden. v7 würde nicht gefunden, da die Trennung zu groß wäre."
 
 #: gui/FLU/Flu_File_Chooser.cpp:3321
 msgid "May"
@@ -5929,7 +5897,7 @@ msgstr ""
 "CF + CD x ( 1 - AF )\n"
 "\n"
 "wobei CF die Quellfarbe ist, \n"
-"AF ist das Quell-Alpha, und \n"
+"AF ist das Quell-Alpha und \n"
 "CD ist die Zielfarbe."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2173
@@ -6095,9 +6063,7 @@ msgstr "Pause"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
 msgid "Pen Color"
-msgstr ""
-"Farbe \n"
-"des Bleistifts"
+msgstr "Bleistiftfarbe"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3455
@@ -6412,7 +6378,6 @@ msgstr "Beenden Sie mrViewer"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:173
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:201
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:229
-#: gui/mrvColorInfo.cpp:767
 msgid "R"
 msgstr "R"
 
@@ -6849,7 +6814,7 @@ msgstr "Führen Sie mrViewer unabhängig von der Einzelinstanzkonfiguration aus.
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3327
 msgid "S"
-msgstr "Jawohl"
+msgstr "S"
 
 #: video/mrvGLEngine.cpp:242
 msgid "SDI Output:\t"
@@ -7254,7 +7219,7 @@ msgstr "Einstellen der OCIO-Konfiguration auf die OCIO-Umgebungsvariable:"
 
 #: gui/mrvPreferences.cpp:1548
 msgid "Setting OCIO config to nuke-default."
-msgstr "Setzen der OCIO-Konfiguration auf nuke-default."
+msgstr "Einstellen der OCIO-Konfiguration auf nuke-default."
 
 #: gui/mrvPreferences.cpp:1540
 msgid "Setting OCIO config to saved preferences."
@@ -7575,10 +7540,6 @@ msgstr "Ändern Sie das Sampling des Farbraums des Pixels unter dem Cursor."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2574
 msgid "T"
 msgstr "T"
-
-#: gui/mrvImageView.cpp:4568
-msgid "T: "
-msgstr "T: "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
 msgid "TIFF (.tif)"
@@ -8013,7 +7974,7 @@ msgstr "EDL tauschen"
 
 #: gui/mrvHotkey.cpp:412
 msgid "Toggle EDL Edit Window"
-msgstr "Tauschen Sie das EDL-Fenster aus"
+msgstr "EDL-Fenster austauschen"
 
 #: gui/mrvHotkey.cpp:371
 msgid "Toggle Full Screen"
@@ -8233,7 +8194,7 @@ msgstr "UTF-8"
 #: audio/mrvALSAEngine.cpp:244 audio/mrvALSAEngine.cpp:359
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
-msgstr "Konnte kein einfaches Steuerelement '%s' finden, ID: %i\n"
+msgstr "Es konnte kein einfaches Steuerelement '%s' gefunden werden, ID: %i \n"
 
 #: audio/mrvALSAEngine.cpp:256 audio/mrvALSAEngine.cpp:371
 #, c-format
@@ -8487,10 +8448,6 @@ msgstr ""
 msgid "Using hardware shader profile: "
 msgstr "Verwenden des Hardware-Shader-Profils: "
 
-#: gui/mrvImageView.cpp:4576
-msgid "V-A: "
-msgstr "V-A: "
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1470
 msgid "VA Difference"
 msgstr "Unterschied VA"
@@ -8536,7 +8493,7 @@ msgstr "Vektor2 Doppelt"
 #: gui/mrvImageInformation.cpp:189 gui/mrvImageInformation.cpp:233
 #: gui/mrvImageInformation.cpp:383
 msgid "Vector2 Float"
-msgstr "Vector2 Fließkomma"
+msgstr "Vektor2 Fließkomma"
 
 #: gui/mrvImageInformation.cpp:187 gui/mrvImageInformation.cpp:232
 #: gui/mrvImageInformation.cpp:370
@@ -8767,7 +8724,7 @@ msgid ""
 "full sequence.   Otherwise it loads the frame only."
 msgstr ""
 "Wenn Sie einen Frame per Drag & Drop aus einem Stream ziehen, lädt mrViewer "
-"den gesamten Stream. Andernfalls wird nur der Rahmen geladen."
+"den gesamten Stream. Ansonsten lädt es die Box nur."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2833
 msgid ""
@@ -8776,8 +8733,8 @@ msgid ""
 "only."
 msgstr ""
 "Das Laden eines Frames in einem Stream von einer Dateizuordnung oder von der "
-"Befehlszeile bewirkt, dass mrViewer den gesamten Stream lädt. Ansonsten lädt "
-"es die Box nur."
+"Befehlszeile bewirkt, dass mrViewer den gesamten Stream lädt. Andernfalls "
+"wird nur der Rahmen geladen."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2794
 msgid ""
@@ -9086,9 +9043,19 @@ msgstr "Fenster/"
 msgid "Wipe"
 msgstr "wischen"
 
+#: gui/mrvImageView.cpp:4637
+#, fuzzy
+msgid "Wipe H"
+msgstr "wischen"
+
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1496
 msgid "Wipe Mode"
 msgstr "Wipe-Modus"
+
+#: gui/mrvImageView.cpp:4635
+#, fuzzy
+msgid "Wipe V"
+msgstr "wischen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2267
 msgid ""
@@ -9166,7 +9133,7 @@ msgstr "Falsche Pakete in handle_video_packet_seek"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:125
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:130
 msgid "X"
-msgstr "x"
+msgstr "X"
 
 #: gui/mrvImageInformation.cpp:2872
 msgid "X Position"
@@ -9203,7 +9170,7 @@ msgstr "XYZ CIE XYZ"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2510
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2948
 msgid "Y"
-msgstr "UND"
+msgstr "Y"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:229
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1812
@@ -9233,7 +9200,7 @@ msgstr "Y' (Luma)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1634
 msgid "Y:"
-msgstr "UND:"
+msgstr "Y:"
 
 #: core/exrImage.cpp:2784
 msgid "YBYRY"
@@ -9298,7 +9265,7 @@ msgstr "Jawohl"
 
 #: core/aviImage_save.cpp:1312
 msgid "You are saving over the movie you are playing. Aborting..."
-msgstr "Sie nehmen über den Film auf, den Sie gerade abspielen. abbrechen ..."
+msgstr "Sie nehmen über den Film auf, den Sie gerade abspielen. abbrechen..."
 
 #: gui/mrvImageBrowser.cpp:3137
 msgid "You can load only a single stereo image to combine with current one."
@@ -9558,7 +9525,6 @@ msgstr "mpeg4"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:38
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2093
-#: gui/mrvImageView.cpp:501
 msgid "mrViewer"
 msgstr "mrViewer"
 
@@ -9845,8 +9811,30 @@ msgid "x9"
 msgstr "x9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+#, fuzzy
 msgid "xyY CIE xyY"
-msgstr "xyY CIE xyY"
+msgstr "CIE xyY"
 
-#~ msgid "Mark an area in the image with SHIFT + LMB"
-#~ msgstr "Markieren Sie mit SHIFT + LIB einen Bereich im Bild"
+#~ msgid " FC: "
+#~ msgstr " FC: "
+
+#~ msgid " UF: %<PRId64> "
+#~ msgstr " UF: %<PRId64> "
+
+#~ msgid "DAW: %d,%d %dx%d"
+#~ msgstr "VDA: %d,%d %dx%d"
+
+#~ msgid "DYW: %d,%d %dx%d"
+#~ msgstr "VDY: %d,%d %dx%d"
+
+#~ msgid "F: "
+#~ msgstr "F: "
+
+#~ msgid "FPS: %.3f"
+#~ msgstr "CPS: %.3f"
+
+#~ msgid "T: "
+#~ msgstr "T: "
+
+#~ msgid "V-A: "
+#~ msgstr "V-A: "

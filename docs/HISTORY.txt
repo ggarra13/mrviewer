@@ -4,10 +4,10 @@ v6.1.0  - Fixed masking (crop) on all locales and platforms including macOS.
 	  as reference for the automatic translator.
 	- Improved text alignment on Preferences and other areas to accomodate
 	  all languages.
+	- Fixed crash on Debian due to freelocale for the second time.
+	  Previously, it was not correctly fixed.
 
-v6.0.9  - Fixed crash on Debian due to freelocale.  Switch to using setlocale
-	  instead.
-	- Added Portuguese translation.
+v6.0.9  - Added Portuguese translation.
 
 v6.0.8  - Made pixel bar 30 pixels in height.
 	- Made RGBA color values in pixel bar use a larger font.

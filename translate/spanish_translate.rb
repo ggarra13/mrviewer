@@ -26,14 +26,20 @@ def fix( text, result, lang )
   result.gsub!(/&amp;/, "&" )
   result.gsub!(/&quot;/, '"' )
   if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-    text == ' FC: ' or text == 'V-A: ' or
-    text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-    text == '  INF.  ' or text == "   NAN  " or
-    text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-    text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-    text == "mrViewer    FG: %s" or text == '%4.8g %%' or
-    text == 'A/B' or text == 'A' or text == 'B' or
-    text =~ /# Created with mrViewer/ or text == "xyY CIE xyY"
+      text == ' FC: ' or text == 'V-A: ' or
+      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+      text == '  INF.  ' or text == "   NAN  " or
+      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+      # text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+      # text == "mrViewer    FG: %s" or
+      text == '%4.8g %%' or
+      text == 'A/B' or text == 'A' or text == 'B' or
+      text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
+      text == 'S' or text == 'E' or text == 'X' or text == 'Y' or
+      text == 'X:' or text == 'Y:' or text == 'R' or text == 'G' or
+      text == 'B' or text == 'H' or text == 'L' or text == 'V' or
+      text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
+      text =~ /^DAW:/
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -127,6 +133,9 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
+    if result =~ /\\[^n"t\\]/
+      result.gsub!(/\\([^n"t\\])/, '\n\\1' )
+    end
   elsif lang == 'es'
     if result =~ /\\\s+t/
       #
@@ -176,14 +185,14 @@ def fix( text, result, lang )
     elsif result =~ /Левый "/
       result.gsub!(/"/, '\"' )
     end
-    if result =~ /"\\[^n"t]/
-      result.gsub!(/\\[^n"t]/, '\n' )
-    end
     if result =~ /\\\s+n/
       #
       # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /"\\[^n"t]/
+      result.gsub!(/\\([^n"t])/, '\n\\1' )
     end
     if result =~ /"%s"/
       result.gsub!(/"/, '\"' )
@@ -287,6 +296,12 @@ def fix( text, result, lang )
       result.sub( /\\cancellare/, '\ncancellare' )
       result.sub( /\\sostituire/, '\nsostituire' )
     end
+    if result =~ /\\[^nt"\\]/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\[^nt"\\]/, '\n')
+    end
     if result =~ /\\\s+n/
       #
       # Automatic translation returns \ n instead of \n
@@ -320,17 +335,19 @@ def fix( text, result, lang )
       result = translate( @msgid, 'zh' )
     end
   end
+  # Make sure we have the same number of spaces at the end
   if text =~ /(\s+)$/
     spaces = $1
     if result !~ /#{spaces}$/
       result << spaces
     end
   end
+  # Make sure we have the same number of spaces at the start
   if text =~ /^(\s+)/
     spaces = $1
     if result !~ /^#{spaces}/
-      text = result.gsub(/^s+/, '' )
-      result = spaces + text
+      rest = result.gsub(/^s+/, '' )
+      result = spaces + rest
     end
   end
   return result
@@ -345,7 +362,7 @@ def translate( text, lang )
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
-      puts "#@count spanish: #{text} menus"
+      puts "#@count #{lang} spanish: #{text} menus"
       r = @translate.translate menus, from: 'es', to: lang
       result = []
       r.each { |m| result << m.text }
@@ -357,7 +374,7 @@ def translate( text, lang )
       return replace( result )
     end
   end
-  puts "#@count spanish: #{text}"
+  puts "#@count #{lang} spanish: #{text}"
   r = @translate.translate text, from: 'es', to: lang
   result = r.text
   result = fix( @msgid, result, lang )
@@ -373,12 +390,14 @@ def new_line( text )
   return if @msgid.empty? or @h[@msgid]
   @h[@msgid] = 1
   @count += 1
-  puts "#@count origin : #@msgid"
+  puts "#@count #@lang origin : #@msgid"
   @op.puts "msgid \"#{@msgid}\""
   @count += 1
-  puts "#@count result : #{text}"
+  puts "#@count #@lang result : #{text}"
   @op.puts "msgstr \"#{text}\""
 end
+
+
 
 if ARGV.size > 0
   langs = ARGV
@@ -388,19 +407,19 @@ else
 end
 
 translated = [ 'es' ]
-for lang in langs
-  next if translated.any? lang
+for @lang in @langs
+  next if translated.any? @lang
   @h = {}
-  $stderr.puts "=================== Translate to #{lang} ======================"
+  $stderr.puts "=================== Translate to #@lang ======================"
   in_msg_id = in_msg_es = false
   @msgid = ''
   root = "#{home}/gga/code/applications/mrv/mrViewer/src/po"
   fp = File.open( "#{root}/es.po", encoding: "utf-8")
-  if File.exists? "#{root}/#{lang}.po"
-    FileUtils.cp( "#{root}/#{lang}.po",
-                  "#{root}/#{lang}.po.old" )
+  if File.exists? "#{root}/#@lang.po"
+    FileUtils.cp( "#{root}/#@lang.po",
+                  "#{root}/#@lang.po.old" )
   end
-  @op = File.open("#{root}/#{lang}.po", "w", encoding: "utf-8")
+  @op = File.open("#{root}/#@lang.po", "w", encoding: "utf-8")
   @op.puts <<EOF
 msgid ""
 msgstr ""
@@ -410,7 +429,7 @@ msgstr ""
 "PO-Revision-Date: 2018-12-28 08:08-0300\\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\\n"
 "Language-Team: <google.com>\\n"
-"Language: #{lang}\\n"
+"Language: #{@lang}\\n"
 "MIME-Version: 1.0\\n"
 "Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: 8bit\\n"
@@ -425,7 +444,7 @@ EOF
     if in_msg_es
       text = line =~ /^"(.*)"$/
       if not text
-        r = translate( msges, lang )
+        r = translate( msges, @lang )
         new_line( r )
         in_msg_es = in_msg_id = false
         next
