@@ -37,6 +37,7 @@ def fix( text, result, lang )
       text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
       text == 'S' or text == 'E' or text == 'X' or text == 'Y' or
       text == 'X:' or text == 'Y:' or text == 'R' or text == 'G' or
+      text == '15' or text == '50' or
       text == 'B' or text == 'H' or text == 'L' or text == 'V' or
       text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
       text =~ /^DAW:/
