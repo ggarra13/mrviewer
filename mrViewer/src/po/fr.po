@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-17 01:00-0300\n"
+"POT-Creation-Date: 2022-03-17 01:30-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -144,7 +144,7 @@ msgstr " attribut"
 
 #: core/aviImage_save.cpp:618 core/aviImage_save.cpp:624
 msgid " channels "
-msgstr " canaux "
+msgstr " chaînes "
 
 #: core/Sequence.cpp:716
 msgid " does not exist or no directory"
@@ -1243,7 +1243,7 @@ msgstr "Alpha"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:158
 msgid "Alpha Only"
-msgstr "alpha uniquement"
+msgstr "alpha seulement"
 
 #: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
@@ -1363,7 +1363,7 @@ msgid ""
 "Are you sure you want to\n"
 "remove the reel?"
 msgstr ""
-"Voulez-vous vraiment\n"
+"Êtes-vous sûr de vouloir\n"
 "supprimer la bobine ?"
 
 #: gui/mrvImageBrowser.cpp:1138
@@ -1613,7 +1613,7 @@ msgstr "mauvais numéro de port "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:48
 msgid "Baseline"
-msgstr "de base"
+msgstr "De base"
 
 #: gui/mrvImageInformation.cpp:3368
 msgid "Bias"
@@ -1679,7 +1679,7 @@ msgstr "Valeur bleue de l'image en pixels sous la souris."
 
 #: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:588
 msgid "Boost exception: "
-msgstr "Exception d'amplification : "
+msgstr "Exception de suralimentation : "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:38
 msgid "Both"
@@ -1852,7 +1852,7 @@ msgstr "Impossible de définir le format de rendu des pixels de sortie"
 msgid "Cannot switch images.  Foreground and background image are the same."
 msgstr ""
 "Je ne peux pas échanger d'images. L'image de premier plan et d'arrière-plan "
-"sont les mêmes."
+"est la même."
 
 #: gui/FLU/Flu_File_Chooser.cpp:592
 msgid "Canon Raw Picture"
@@ -1901,7 +1901,7 @@ msgstr "Canal"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:232
 #: gui/mrvImageInformation.cpp:3601
 msgid "Channels"
-msgstr "Chaînes"
+msgstr "Canaux"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:100
 msgid "Char"
@@ -2279,7 +2279,8 @@ msgstr "Je n'ai pas pu héberger la piste"
 
 #: core/aviImage_save.cpp:565
 msgid "Could not allocate output frame samples. Error: "
-msgstr "Je n'ai pas pu assigner d'échantillons de boîte de sortie. Erreur: "
+msgstr ""
+"Je ne pouvais pas attribuer d'échantillons de trame de sortie. Erreur: "
 
 #: core/aviImage_save.cpp:1067
 msgid "Could not allocate picture"
@@ -2428,7 +2429,7 @@ msgstr "Je n'ai pas trouvé le double seize pour la matrice 4x4 "
 #: gui/mrvImageInformation.cpp:547
 msgid "Could not find sixteen floats for matrix 4x4"
 msgstr ""
-"Je n'ai pas pu trouver seize nombres à virgule flottante pour le tableau 4x4"
+"Je n'ai pas pu trouver seize nombres à virgule flottante pour la matrice 4x4"
 
 #: gui/mrvImageInformation.cpp:1350
 msgid "Could not find sixteen floats for matrix 4x4 "
@@ -2701,7 +2702,7 @@ msgstr "Impossible d'obtenir la configuration logicielle : %s"
 
 #: core/picImage.cpp:705
 msgid "Couldn't open '"
-msgstr "je ne pouvais pas ouvrir'"
+msgstr "Je ne pouvais pas ouvrir'"
 
 #: audio/mrvALSAEngine.cpp:431
 #, c-format
@@ -3453,7 +3454,7 @@ msgstr "Erreur d'encodage de l'image vidéo : "
 
 #: core/aviImage.cpp:1450
 msgid "Error while feeding the filtergraph"
-msgstr "Erreur lors de l'alimentation du graphique de filtre"
+msgstr "Erreur lors de l'alimentation du filtre graphique"
 
 #: core/aviImage_save.cpp:1222
 msgid "Error while writing video frame: "
@@ -3979,7 +3980,7 @@ msgstr "Plein écran"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:209
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:236
 msgid "G"
-msgstr "v"
+msgstr "G"
 
 #: gui/FLU/Flu_File_Chooser.cpp:603
 msgid "GIF Picture"
@@ -5029,7 +5030,7 @@ msgstr "Des postes"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:55
 msgid "Logarithmic"
-msgstr "Logarithmique"
+msgstr "logarithmique"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
 msgid "Logs"
@@ -5170,7 +5171,7 @@ msgstr "Film Matroska"
 
 #: gui/mrvImageInformation.cpp:3607
 msgid "Max. Bitrate"
-msgstr "Débit maximal"
+msgstr "Débit binaire maximal"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1918
 msgid "Max. Cache Frames shown"
@@ -5653,7 +5654,7 @@ msgstr "Pas de mémoire pour le contexte"
 
 #: core/aviImage.cpp:1222 core/oiioImage.cpp:352
 msgid "Not enough memory for image"
-msgstr "Pas de mémoire d'image"
+msgstr "Pas de mémoire d'images"
 
 #: gui/mrvImageInformation.cpp:636
 msgid "Not group child in table row "
@@ -5740,7 +5741,7 @@ msgstr "Espace colorimétrique d'entrée OCIO"
 
 #: gui/mrvHotkey.cpp:378
 msgid "OCIO View"
-msgstr "OCIO Voir"
+msgstr "Vue OCIO"
 
 #: gui/mrvImageView.cpp:3863
 msgid "OCIO View change failed"
@@ -6218,7 +6219,7 @@ msgstr "jouer"
 
 #: core/CMedia_audio.cpp:1831
 msgid "Playback of audio frame "
-msgstr "Lecture d'images audio "
+msgstr "Lecture de trame audio "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
@@ -6255,7 +6256,7 @@ msgid ""
 "version in the filename.  If unsure, use _v."
 msgstr ""
 "Le préfixe ne peut pas être un texte vide. Veuillez taper quelques lettres "
-"pour distinguer la version dans le nom du fichier. Si vous ne savez pas quoi "
+"pour distinguer la version dans le nom de fichier. Si vous ne savez pas quoi "
 "utiliser, utilisez _v qui créera une expression régulière englobante."
 
 #: gui/mrvImageBrowser.cpp:4219
@@ -7080,7 +7081,7 @@ msgid ""
 msgstr ""
 "Sélectionnez tel quel la stéréo encodée dans l'image. Il peut s'agir de "
 "calques séparés (en utilisant une lettre ou une vue de préfixe), tels que "
-"Top/Inférieur dans la même image ou comme Gauche/Juste dans la même image."
+"Top/Inférieur dans la même image ou comme Gauche/Droit dans la même image."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:131
 msgid ""
@@ -7778,7 +7779,7 @@ msgid ""
 "The name of the default ICC profile for 16-bit images (cin, tiff, etc)\n"
 "(Environment variable: MRV_ICC_RT_16bits)"
 msgstr ""
-"Le nom du profil ICC de l'image pour les images 16 bits (cin, tiff, etc.)\n"
+"Le nom du profil ICC de l'image pour les images 16 bits (cin, tiff, etc)\n"
 "(Variable d'environnement : MRV_ICC_RT_16bits)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2726
@@ -7891,8 +7892,8 @@ msgid ""
 "This setting controls the quality of the audio encoding.  A smaller setting "
 "yields less quality but smaller sizes."
 msgstr ""
-"Cette option contrôle la qualité de l'encodage audio. Un paramètre plus "
-"petit entraîne une qualité inférieure mais une taille de fichier plus petite."
+"Cette option contrôle la qualité de l'encodage audio. Un paramètre inférieur "
+"entraîne une qualité inférieure mais une taille de fichier plus petite."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:270
 msgid ""
@@ -8722,7 +8723,7 @@ msgstr "WSA n'est pas prêt\n"
 
 #: gui/FLU/Flu_File_Chooser.cpp:622
 msgid "Wave music"
-msgstr "Musique WAVE"
+msgstr "VAGUE Musique"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1156
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
@@ -8952,8 +8953,8 @@ msgid ""
 msgstr ""
 "Lorsque cette option est sélectionnée, une seule instance de mrViewer sera "
 "autorisée.\n"
-"Si vous essayez d'ouvrir plusieurs mrViewers avec différentes images, toutes "
-"ces images seront envoyées au mrViewer déjà ouvert."
+"Si vous essayez d'ouvrir plusieurs mrViewers avec des images différentes, "
+"toutes ces images seront envoyées au mrViewer déjà ouvert."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2848
 msgid ""
@@ -8995,7 +8996,7 @@ msgid ""
 "(except if the window goes out of the Desktop)."
 msgstr ""
 "Lorsque cette option est activée, mrViewer s'ouvrira à la position que vous "
-"avez définie ici (sauf si la fenêtre quitte le bureau)."
+"avez définie ici (sauf si la fenêtre s'éteint Bureau)."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:330
 msgid ""
@@ -9068,19 +9069,9 @@ msgstr "Les fenêtres/"
 msgid "Wipe"
 msgstr "essuyer"
 
-#: gui/mrvImageView.cpp:4637
-#, fuzzy
-msgid "Wipe H"
-msgstr "essuyer"
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1496
 msgid "Wipe Mode"
 msgstr "mode essuyage"
-
-#: gui/mrvImageView.cpp:4635
-#, fuzzy
-msgid "Wipe V"
-msgstr "essuyer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2267
 msgid ""
@@ -9261,8 +9252,8 @@ msgid ""
 ">Video->YUV Conversion.  That value shall take precedence upon loading of "
 "the movie file."
 msgstr ""
-"Conversion d'espace colorimétrique YUV. Cette valeur est par défaut extraite "
-"du film si elle le peut. Pour qu'il utilise toujours le même espace "
+"Conversion de l'espace colorimétrique YUV. Cette valeur est par défaut "
+"extraite du film si elle le peut. Pour qu'il utilise toujours le même espace "
 "colorimétrique, utilisez le paramètre Préférences->Vidéo->Conversion YUV. "
 "Cette valeur prévaudra lors du chargement du fichier vidéo."
 
@@ -9838,30 +9829,5 @@ msgid "x9"
 msgstr "x9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
-#, fuzzy
 msgid "xyY CIE xyY"
-msgstr "CIE xyY"
-
-#~ msgid " FC: "
-#~ msgstr " FC: "
-
-#~ msgid " UF: %<PRId64> "
-#~ msgstr " UF: %<PRId64> "
-
-#~ msgid "DAW: %d,%d %dx%d"
-#~ msgstr "VDA : %d,%d %dx%d"
-
-#~ msgid "DYW: %d,%d %dx%d"
-#~ msgstr "VDY : %d,%d %dx%d"
-
-#~ msgid "F: "
-#~ msgstr "F: "
-
-#~ msgid "FPS: %.3f"
-#~ msgstr "CPC : %.3f"
-
-#~ msgid "T: "
-#~ msgstr "T: "
-
-#~ msgid "V-A: "
-#~ msgstr "V-A: "
+msgstr "xyY CIE xyY"

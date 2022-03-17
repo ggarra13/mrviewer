@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-17 01:00-0300\n"
+"POT-Creation-Date: 2022-03-17 01:30-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -309,7 +309,7 @@ msgstr " Es wird nicht verfügbar sein.  "
 
 #: gui/mrvPreferences.cpp:174
 msgid "\" as a float value; using "
-msgstr "\" als Gleitkommawert; using "
+msgstr "\" als Fließkommawert; using "
 
 #: gui/mrvPreferences.cpp:132
 msgid "\" as an integer value; using "
@@ -715,7 +715,7 @@ msgstr "fünfzehn"
 
 #: core/CMedia.cpp:4412
 msgid "16 bits"
-msgstr "16-bit"
+msgstr "16-Bit"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2422
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2646
@@ -1472,7 +1472,7 @@ msgstr "Unbekanntes Audioformat. Wählen Sie float32. "
 
 #: core/CMedia_audio.cpp:1886
 msgid "Audio frame "
-msgstr "Audiorahmen "
+msgstr "Audio-Box "
 
 #: core/aviImage_save.cpp:686
 msgid "Audio frame has NOPTS value."
@@ -1543,7 +1543,7 @@ msgstr "B"
 
 #: gui/mrvImageInformation.cpp:3524
 msgid "B Frames"
-msgstr "B-Frames"
+msgstr "B-Rahmen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:34
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:844
@@ -2306,7 +2306,7 @@ msgstr "Ich konnte dem Track keinen Clip hinzufügen: "
 
 #: core/Sequence.cpp:1432
 msgid "Could not append one track to stack: "
-msgstr "Ich konnte dem Stack keinen Titel hinzufügen: "
+msgstr "Ich konnte dem Stack keinen Track hinzufügen: "
 
 #: video/mrvGLLut3d.cpp:1420
 msgid "Could not calculate OCIO Lut"
@@ -2425,7 +2425,7 @@ msgstr "Ich konnte keine sechzehn Fließkommazahlen für das 4x4-Array finden"
 
 #: gui/mrvImageInformation.cpp:1350
 msgid "Could not find sixteen floats for matrix 4x4 "
-msgstr "Ich konnte keine sechzehn Fließkommazahlen für das 4x4-Array finden "
+msgstr "Ich konnte keine sechzehn Fließkommazahlen für die 4x4-Matrix finden "
 
 #: core/aviImage.cpp:3075
 msgid "Could not find stream info"
@@ -2630,7 +2630,7 @@ msgid ""
 "Use %d syntax or a proper movie extension."
 msgstr ""
 "Ich konnte keine Sequenz oder keinen Film aufnehmen, nur ein bestimmtes "
-"Bild. Verwenden Sie die %d-Syntax für Streams oder eine benutzerdefinierte "
+"Bild. Verwenden Sie die %d-Syntax für Sequenzen oder eine benutzerdefinierte "
 "Erweiterung für Filme."
 
 #: core/aviImage.cpp:1058 core/aviImage.cpp:1075
@@ -3011,7 +3011,7 @@ msgstr "Dekodierungsfehler"
 
 #: core/CMedia.cpp:177
 msgid "Decode Loop End"
-msgstr "Letzte Schleife beim Decodieren"
+msgstr "Letzte Schleife beim Dekodieren"
 
 #: core/CMedia.cpp:176
 msgid "Decode Loop Start"
@@ -3346,7 +3346,7 @@ msgstr "Leeres Bild, das im Elementkonstruktor bereitgestellt wird"
 
 #: gui/mrvImageBrowser.cpp:1580
 msgid "Empty img->fileroot() passed to media_to_pathname"
-msgstr "leeres img->fileroot() übergeben an media_to_pathname"
+msgstr "leeres img->fileroot() an media_to_pathname übergeben"
 
 #: gui/mrvImageBrowser.cpp:1571
 msgid "Empty media passed to media_to_pathname"
@@ -3961,7 +3961,7 @@ msgstr "Vollbild"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:209
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:236
 msgid "G"
-msgstr "v"
+msgstr "G"
 
 #: gui/FLU/Flu_File_Chooser.cpp:603
 msgid "GIF Picture"
@@ -4007,7 +4007,7 @@ msgstr "Spektrum"
 
 #: core/guessImage.cpp:303 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:522
 msgid "Gamma 1.4 Chart"
-msgstr "Reichweitendiagramm 1.4"
+msgstr "Reichweitentabelle 1.4"
 
 #: core/guessImage.cpp:309 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:528
 msgid "Gamma 1.8 Chart"
@@ -5189,7 +5189,7 @@ msgid ""
 msgstr ""
 "Maximale Anzahl separater Images, die Versionen auf der Festplatte haben "
 "können. Wenn Sie v1 haben und diese auf 5 gesetzt ist, werden nur Versionen "
-"bis v6 gefunden. v7 würde nicht gefunden, da die Trennung zu groß wäre."
+"bis zu v6 gefunden. v7 würde nicht gefunden, da die Trennung zu groß wäre."
 
 #: gui/FLU/Flu_File_Chooser.cpp:3321
 msgid "May"
@@ -6855,7 +6855,7 @@ msgstr "Clip-Sättigung"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2903
 msgid "Saturation value of image pixel under mouse."
-msgstr "Sättigungswert des Pixels des Bildes unter der Maus."
+msgstr "Sättigungswert des Bildpixels unter der Maus."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:50
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3420
@@ -7219,7 +7219,7 @@ msgstr "Einstellen der OCIO-Konfiguration auf die OCIO-Umgebungsvariable:"
 
 #: gui/mrvPreferences.cpp:1548
 msgid "Setting OCIO config to nuke-default."
-msgstr "Einstellen der OCIO-Konfiguration auf nuke-default."
+msgstr "Setzen der OCIO-Konfiguration auf nuke-default."
 
 #: gui/mrvPreferences.cpp:1540
 msgid "Setting OCIO config to saved preferences."
@@ -7734,7 +7734,7 @@ msgid ""
 "etc)\n"
 "(Environment variable: MRV_OCIO_8bits_ICS)"
 msgstr ""
-"Der Name des OCIO-Farbraums des Bilds für 8-Bit-Bilder (jpg, bmp usw.)\n"
+"Der Name des OCIO-Farbraums des Bildes für 8-Bit-Bilder (jpg, bmp usw.)\n"
 "(Umgebungsvariable: MRV_OCIO_8bits_ICS)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2453
@@ -7865,7 +7865,7 @@ msgid ""
 "This setting controls the quality of the audio encoding.  A smaller setting "
 "yields less quality but smaller sizes."
 msgstr ""
-"Diese Option steuert die Qualität der Audiokodierung. Eine kleinere "
+"Diese Option steuert die Qualität der Audiocodierung. Eine niedrigere "
 "Einstellung führt zu einer geringeren Qualität, aber einer kleineren "
 "Dateigröße."
 
@@ -8637,7 +8637,7 @@ msgstr "Sicht/Datenfenster"
 
 #: gui/mrvImageView.cpp:4859
 msgid "View/Display Window"
-msgstr "Sicht/Schaufenster"
+msgstr "Sicht/Anzeigefenster"
 
 #: gui/mrvImageView.cpp:4901
 msgid "View/Grid/Size"
@@ -8733,8 +8733,8 @@ msgid ""
 "only."
 msgstr ""
 "Das Laden eines Frames in einem Stream von einer Dateizuordnung oder von der "
-"Befehlszeile bewirkt, dass mrViewer den gesamten Stream lädt. Andernfalls "
-"wird nur der Rahmen geladen."
+"Befehlszeile bewirkt, dass mrViewer den gesamten Stream lädt. Ansonsten lädt "
+"es die Box nur."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2794
 msgid ""
@@ -9043,19 +9043,9 @@ msgstr "Fenster/"
 msgid "Wipe"
 msgstr "wischen"
 
-#: gui/mrvImageView.cpp:4637
-#, fuzzy
-msgid "Wipe H"
-msgstr "wischen"
-
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1496
 msgid "Wipe Mode"
 msgstr "Wipe-Modus"
-
-#: gui/mrvImageView.cpp:4635
-#, fuzzy
-msgid "Wipe V"
-msgstr "wischen"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2267
 msgid ""
@@ -9265,7 +9255,7 @@ msgstr "Jawohl"
 
 #: core/aviImage_save.cpp:1312
 msgid "You are saving over the movie you are playing. Aborting..."
-msgstr "Sie nehmen über den Film auf, den Sie gerade abspielen. abbrechen..."
+msgstr "Sie nehmen über den Film auf, den Sie gerade abspielen. abbrechen ..."
 
 #: gui/mrvImageBrowser.cpp:3137
 msgid "You can load only a single stereo image to combine with current one."
@@ -9811,30 +9801,5 @@ msgid "x9"
 msgstr "x9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
-#, fuzzy
 msgid "xyY CIE xyY"
-msgstr "CIE xyY"
-
-#~ msgid " FC: "
-#~ msgstr " FC: "
-
-#~ msgid " UF: %<PRId64> "
-#~ msgstr " UF: %<PRId64> "
-
-#~ msgid "DAW: %d,%d %dx%d"
-#~ msgstr "VDA: %d,%d %dx%d"
-
-#~ msgid "DYW: %d,%d %dx%d"
-#~ msgstr "VDY: %d,%d %dx%d"
-
-#~ msgid "F: "
-#~ msgstr "F: "
-
-#~ msgid "FPS: %.3f"
-#~ msgstr "CPS: %.3f"
-
-#~ msgid "T: "
-#~ msgstr "T: "
-
-#~ msgid "V-A: "
-#~ msgstr "V-A: "
+msgstr "xyY CIE xyY"

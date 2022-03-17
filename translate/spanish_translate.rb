@@ -30,8 +30,8 @@ def fix( text, result, lang )
       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
       text == '  INF.  ' or text == "   NAN  " or
       text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-      # text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      # text == "mrViewer    FG: %s" or
+      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+      text == "mrViewer    FG: %s" or
       text == '%4.8g %%' or
       text == 'A/B' or text == 'A' or text == 'B' or
       text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
@@ -45,8 +45,8 @@ def fix( text, result, lang )
     result.sub!(/s*(FPS)./, 'FPS:')
   end
   if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'it' or
-       lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'ro' or
-       lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
+       lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'pt' or
+       lang == 'ro' or lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   end
@@ -154,6 +154,13 @@ def fix( text, result, lang )
       result.gsub!( /WYPOCZYNEK/, 'OCIO' )
     elsif result =~ /leisure/
       result.gsub!( /leisure/, 'ocio' )
+    end
+  elsif lang == 'pt'
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
     end
   elsif lang == 'ro'
     if text == "Got colorspace '"
