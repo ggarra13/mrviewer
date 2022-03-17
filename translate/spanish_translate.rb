@@ -407,7 +407,7 @@ else
 end
 
 translated = [ 'es' ]
-for @lang in @langs
+for @lang in langs
   next if translated.any? @lang
   @h = {}
   $stderr.puts "=================== Translate to #@lang ======================"
