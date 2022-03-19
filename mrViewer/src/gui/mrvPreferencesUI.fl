@@ -108,8 +108,10 @@ class PreferencesUI {open
       label Preferences
       callback {int idx = uiLanguage->value();
 o->hide();
-change_language( idx, o->main() );} open selected
-      xywh {148 203 770 469} type Double resizable
+ViewerUI* ui = o->main();
+delete o;
+change_language( idx, ui );} open selected
+      xywh {147 203 770 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
