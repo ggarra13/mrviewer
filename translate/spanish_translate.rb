@@ -25,22 +25,23 @@ def fix( text, result, lang )
   result.gsub!(/&lt;/, "<" )
   result.gsub!(/&amp;/, "&" )
   result.gsub!(/&quot;/, '"' )
-  if text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
-      text == ' FC: ' or text == 'V-A: ' or
-      text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
-      text == '  INF.  ' or text == "   NAN  " or
-      text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
-      text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-      text == "mrViewer    FG: %s" or
-      text == '%4.8g %%' or
-      text == 'A/B' or text == 'A' or text == 'B' or
-      text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
-      text == 'S' or text == 'E' or text == 'X' or text == 'Y' or
-      text == 'X:' or text == 'Y:' or text == 'R' or text == 'G' or
-      text == '15' or text == '50' or
-      text == 'B' or text == 'H' or text == 'L' or text == 'V' or
-      text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
-      text =~ /^DAW:/
+  if ( text == ' UF: %<PRId64> ' or text == 'F: ' or text == 'T: ' or
+       text == ' FC: ' or text == 'V-A: ' or
+       text == ' ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )' or
+       text == '  INF.  ' or text == "   NAN  " or
+       text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
+       text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
+       text == "mrViewer    FG: %s" or
+       text == '%4.8g %%' or
+       text == 'A/B' or text == 'A' or text == 'B' or
+       text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
+       text == "XYZ CIE XYZ" or
+       text == 'S' or text == 'E' or text == 'X' or text == 'Y' or
+       text == 'X:' or text == 'Y:' or text == 'R' or text == 'G' or
+       text == '15' or text == '50' or
+       text == 'B' or text == 'H' or text == 'L' or text == 'V' or
+       text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
+       text =~ /^DAW:/ )
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -56,21 +57,25 @@ def fix( text, result, lang )
     # Automatic translation returns 。instead of .
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
-  elsif lang == 'fr'
-    if text == 'files'
-      #
-      # Automatic translation returns "des dossiers" which conflicts with TCLAP
-      # command-line flags.  We shorten it to just dossiers.
-      #
-      result = 'dossiers'
-    elsif text == 'Looping Mode'
-      result = 'Mode en boucle'
+  elsif lang == 'cs'
+    if text == 'Frame %<PRId64> '
+      result = 'snímků %<PRId64> '
+    elsif text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+      result = 'Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n'
+    elsif text == 'Saving Sequence(s) %<PRId64> - %<PRId64>'
+      result = 'Uložení sekvence(í) %<PRId64> - %<PRId64>'
+    elsif text == "Save"
+      result = 'Uložit'
     end
-    if result =~ /LOISIRS/
-      result.sub!(/LOISIRS/, 'OCIO' )
-    end
-    if result =~ /s+i mrViewer plant\w+\s/
-      result.sub!( /s+i mrViewer plant\w+\s/, ' si mrViewer plantait' )
+    if result =~ /VOLNÝ ČAS/
+      result.sub!(/VOLNÝ ČAS/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
+    elsif result =~ /\\ani/
+      #
+      # Automatic translation returns \an instead of \n
+      #
+      result.gsub!(/\\an/, '\n')
     end
     if result =~ /\\\s+n/
       #
@@ -78,14 +83,13 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-    if result =~ /\s:$/
-      #
-      # Automatic translation returns "des dossiers" which conflicts with TCLAP
-      # command-line flags.  We shorten it to just dossiers.
-      #
-      result.sub!(/\s:$/, ": ")
+    if result =~ /\\[^n"t\\]/
+      result.gsub!(/\\([^n"t\\])/, '\n\\1' )
     end
   elsif lang == 'de'
+    if text == "Save"
+      result = 'Speichern'
+    end
     if result =~ /FREIZEIT/
       result.sub!(/FREIZEIT/, 'OCIO')
     elsif result =~ /LEISURE/
@@ -110,33 +114,6 @@ def fix( text, result, lang )
     elsif result =~ /LAZER/
       result.gsub!( /LAZER/, 'OCIO')
     end
-  elsif lang == 'cs'
-    if text == 'Frame %<PRId64> '
-      result = 'snímků %<PRId64> '
-    elsif text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
-      result = 'Kotouč %d (%s) | Střela %d (%s) | snímků %<PRId64> | X = %d | Y = %d\n'
-    elsif text == 'Saving Sequence(s) %<PRId64> - %<PRId64>'
-      result = 'Nahrávací sekvence %<PRId64> - %<PRId64>'
-    end
-    if result =~ /VOLNÝ ČAS/
-      result.sub!(/VOLNÝ ČAS/, 'OCIO')
-    elsif result =~ /LEISURE/
-      result.sub!(/LEISURE/, 'OCIO')
-    elsif result =~ /\\ani/
-      #
-      # Automatic translation returns \an instead of \n
-      #
-      result.gsub!(/\\an/, '\n')
-    end
-    if result =~ /\\\s+n/
-      #
-      # Automatic translation returns \ n instead of \n
-      #
-      result.gsub!(/\\\s+n/, '\n')
-    end
-    if result =~ /\\[^n"t\\]/
-      result.gsub!(/\\([^n"t\\])/, '\n\\1' )
-    end
   elsif lang == 'es'
     if result =~ /\\\s+t/
       #
@@ -144,54 +121,60 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+t/, '\t')
     end
-  elsif lang == 'pl'
+  elsif lang == 'fr'
+    if text == 'files'
+      #
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
+      #
+      result = 'dossiers'
+    elsif text == 'Looping Mode'
+      result = 'Mode en boucle'
+    elsif text == 'Saving'
+      result = "Sauvegarder"
+    elsif text =~ /saving/
+      result.sub!( /économisez/, "sauvegarder" )
+    end
+    if result =~ /LOISIRS/
+      result.sub!(/LOISIRS/, 'OCIO' )
+    end
+    if result =~ /s+i mrViewer plant\w+\s/
+      result.sub!( /s+i mrViewer plant\w+\s/, ' si mrViewer plantait' )
+    end
     if result =~ /\\\s+n/
       #
       # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-    if result =~ /WYPOCZYNEK/
-      result.gsub!( /WYPOCZYNEK/, 'OCIO' )
-    elsif result =~ /leisure/
-      result.gsub!( /leisure/, 'ocio' )
-    end
-  elsif lang == 'pt'
-    if result =~ /\\\s+n/
+    if result =~ /\s:$/
       #
-      # Automatic translation returns \ n instead of \n
+      # Automatic translation returns "des dossiers" which conflicts with TCLAP
+      # command-line flags.  We shorten it to just dossiers.
       #
-      result.gsub!(/\\\s+n/, '\n')
+      result.sub!(/\s:$/, ": ")
     end
-  elsif lang == 'ro'
-    if text == "Got colorspace '"
-      result = "Am spațiul de culoare '"
+  elsif lang == 'it'
+    if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
+      result = "Salvando Sequenza(e) %<PRId64> - %<PRId64>"
     end
-    if result =~ /\\să/
-      result.sub!( /\\să/, '\nsă' )
+    if result =~ /TEMPO LIBERO/
+      result.sub!(/TEMPO LIBERO/, 'OCIO')
     end
-    if result =~ /\\\s+n/
-      #
-      # Automatic translation returns \ n instead of \n
-      #
-      result.gsub!(/\\\s+n/, '\n')
-    end
-    if result =~ /AGREMENT/
-      result.gsub!( /AGREMENT/, 'OCIO' )
-    end
-  elsif lang == 'ru'
     if text == '%d Hz.'
       result = text
     end
-    if text == 'W: %g %g'
-      result = 'B: %g %g'
+    if result =~ /\\eliminare/ or result =~ /\\cancellare/ or
+      result =~ /\\sostituire/
+      result.sub( /\\eliminare/, '\neliminare' )
+      result.sub( /\\cancellare/, '\ncancellare' )
+      result.sub( /\\sostituire/, '\nsostituire' )
     end
-    if result =~ /ДОСУГ/
-      result.sub!(/ДОСУГ/, 'OCIO')
-    elsif result =~ /ОТДЫХ/
-      result.sub!(/ОТДЫХ/, 'OCIO')
-    elsif result =~ /Левый "/
-      result.gsub!(/"/, '\"' )
+    if result =~ /\\[^nt"\\]/
+      #
+      # Automatic translation returns \ instead of \n
+      #
+      result.gsub!(/\\[^nt"\\]/, '\n')
     end
     if result =~ /\\\s+n/
       #
@@ -199,29 +182,13 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-    if result =~ /"\\[^n"t]/
-      result.gsub!(/\\([^n"t])/, '\n\\1' )
-    end
-    if result =~ /"%s"/
-      result.gsub!(/"/, '\"' )
-    end
-  elsif lang == 'tr'
-    if result =~ /\\\s+n/
-      #
-      # Automatic translation returns \ n instead of \n
-      #
-      result.gsub!(/\\\s+n/, '\n')
-    end
-    if result =~ /\\silmek/
-      #
-      # Automatic translation returns \ n instead of \n
-      #
-      result.gsub!(/\\silmek/, '\nsilmek')
-    end
-    if result =~ /BOŞ VAKİT/
-      result.gsub!( /BOŞ VAKİT/, 'OCIO' )
+    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
+      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
     end
   elsif lang == 'ja'
+    if text == 'Save'
+      result = "救う"
+    end
     if result =~ /：/
       result.gsub!(/：/, ':')
     end
@@ -231,7 +198,7 @@ def fix( text, result, lang )
     if text =~ /:(\s+)/
       spaces = $1
       if result !~ /:#{spaces}/
-        result.gsub!( /:\s*/, ":#{spaces}" )
+	result.gsub!( /:\s*/, ":#{spaces}" )
       end
     end
     if text == 'LMTransform %u'
@@ -284,6 +251,9 @@ def fix( text, result, lang )
       result = text
     end
   elsif lang == 'ko'
+    if text == 'Save'
+      result = "저장"
+    end
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
@@ -291,24 +261,11 @@ def fix( text, result, lang )
     elsif result =~ /LEISURE/
       result.sub!(/LEISURE/, 'OCIO')
     end
-  elsif lang == 'it'
-    if result =~ /TEMPO LIBERO/
-      result.sub!(/TEMPO LIBERO/, 'OCIO')
-    end
-    if text == '%d Hz.'
-      result = text
-    end
-    if result =~ /\\eliminare/ or result =~ /\\cancellare/ or
-      result =~ /\\sostituire/
-      result.sub( /\\eliminare/, '\neliminare' )
-      result.sub( /\\cancellare/, '\ncancellare' )
-      result.sub( /\\sostituire/, '\nsostituire' )
-    end
-    if result =~ /\\[^nt"\\]/
-      #
-      # Automatic translation returns \ instead of \n
-      #
-      result.gsub!(/\\[^nt"\\]/, '\n')
+  elsif lang == 'pl'
+    if text == 'Save'
+      result = "Zapisz"
+    elsif text == "Saving"
+      result = "Oszczędzanie"
     end
     if result =~ /\\\s+n/
       #
@@ -316,8 +273,87 @@ def fix( text, result, lang )
       #
       result.gsub!(/\\\s+n/, '\n')
     end
-    if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
-      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
+    if result =~ /WYPOCZYNEK/
+      result.gsub!( /WYPOCZYNEK/, 'OCIO' )
+    elsif result =~ /leisure/
+      result.gsub!( /leisure/, 'ocio' )
+    end
+  elsif lang == 'pt'
+    if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
+      result = "Guardando sequência(s) %<PRId64> - %<PRId64>"
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+  elsif lang == 'ro'
+    if text == "Save"
+      result = "Salvați"
+    elsif text == "Saving"
+      result = "Salvarea"
+    elsif text == "Got colorspace '"
+      result = "Am spațiul de culoare '"
+    end
+    if result =~ /\\să/
+      result.sub!( /\\să/, '\nsă' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /AGREMENT/
+      result.gsub!( /AGREMENT/, 'OCIO' )
+    end
+  elsif lang == 'ru'
+    if text == '%d Hz.'
+      result = text
+    end
+    if text == 'W: %g %g'
+      result = 'B: %g %g'
+    end
+    if result =~ /ДОСУГ/
+      result.sub!(/ДОСУГ/, 'OCIO')
+    elsif result =~ /ОТДЫХ/
+      result.sub!(/ОТДЫХ/, 'OCIO')
+    elsif result =~ /Левый "/
+      result.gsub!(/"/, '\"' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /"\\[^n"t]/
+      result.gsub!(/\\([^n"t])/, '\n\\1' )
+    end
+    if result =~ /"%s"/
+      result.gsub!(/"/, '\"' )
+    end
+  elsif lang == 'tr'
+    if text == 'Save'
+      result = "Kaydet"
+    elsif text == "Saving"
+      result == "Kaydetme"
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /\\silmek/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\silmek/, '\nsilmek')
+    end
+    if result =~ /BOŞ VAKİT/
+      result.gsub!( /BOŞ VAKİT/, 'OCIO' )
     end
   elsif lang == 'zh'
     if result =~ /闲暇/
@@ -375,7 +411,7 @@ def translate( text, lang )
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
-        result[-1] = '%s'
+	result[-1] = '%s'
       end
       result = result.join('/')
       result = fix( @msgid, result, lang )
@@ -411,7 +447,7 @@ if ARGV.size > 0
   langs = ARGV
 else
   langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'tr', 'zh' ]
+	    'ro', 'ru', 'tr', 'zh' ]
 end
 
 translated = [ 'es' ]
@@ -425,7 +461,7 @@ for @lang in langs
   fp = File.open( "#{root}/es.po", encoding: "utf-8")
   if File.exists? "#{root}/#@lang.po"
     FileUtils.cp( "#{root}/#@lang.po",
-                  "#{root}/#@lang.po.old" )
+		  "#{root}/#@lang.po.old" )
   end
   @op = File.open("#{root}/#@lang.po", "w", encoding: "utf-8")
   @op.puts <<EOF
@@ -452,10 +488,10 @@ EOF
     if in_msg_es
       text = line =~ /^"(.*)"$/
       if not text
-        r = translate( msges, @lang )
-        new_line( r )
-        in_msg_es = in_msg_id = false
-        next
+	r = translate( msges, @lang )
+	new_line( r )
+	in_msg_es = in_msg_id = false
+	next
       end
       msges << $1
       next
@@ -463,14 +499,14 @@ EOF
     if in_msg_id
       msges = line =~ /msgstr\s+"(.*)"/
       if msges
-        in_msg_es = true
-        msges = $1
-        next
+	in_msg_es = true
+	msges = $1
+	next
       end
       text = line =~ /"(.*)"/
       if not text
-        in_msg_id = false
-        next
+	in_msg_id = false
+	next
       end
       text = $1
       @msgid << text
