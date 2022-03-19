@@ -369,6 +369,7 @@ SET( SOURCES
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
+  gui/mrvLanguages.cpp
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
