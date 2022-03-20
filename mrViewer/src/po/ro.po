@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " Este deja prima versiune pe disc."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " Este deja cea mai recentă versiune de pe disc."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " este invalid."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1474,10 +1470,6 @@ msgstr "cadru audio "
 msgid "Audio frame has NOPTS value."
 msgstr "Cadrul audio are o valoare NOPTS."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "frecventa audio "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Pachetul audio este necunoscut, așteptați căutare sau preroll"
@@ -1827,10 +1819,6 @@ msgstr "În prezent, nu este posibil să salvați un film în aceste formate."
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "Nu pot mapa \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "Nu am putut deschide dispozitivul audio"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3248,10 +3236,6 @@ msgstr "Modul de desen temporar"
 msgid "Driver"
 msgstr "șoferii"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "Controlerul nu este un dispozitiv de ieșire live"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3395,10 +3379,6 @@ msgstr "Modul de ștergere temporară"
 msgid "Eraser Tool"
 msgstr "Instrument de ștergere"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "Eroare la închiderea dispozitivului "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "Eroare la încărcarea fișierului "
@@ -3410,14 +3390,6 @@ msgstr "A apărut o eroare la deschiderea fișierului de ieșire: "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Nu s-a putut primi: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "Eroare la deschiderea dispozitivului: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "Eroare la executarea eșantionului "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5473,10 +5445,6 @@ msgstr "Nu este nevoie de conversie. Spectru: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "Nu a fost găsit niciun decodor pentru pista audio. ID: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "Nu există driver pentru id-ul dispozitivului"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8288,10 +8256,6 @@ msgstr "Eroare necunoscută returnată de procesorul OCIO"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Eroare necunoscută returnată de la ctlToLut"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "eșec necunoscut"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Format de imagine necunoscut de salvat"
@@ -8442,14 +8406,6 @@ msgstr "RV 360 Cube"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Sphere"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "Cheia de opțiune validă are o valoare nevalidă"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "Frecvențele valide sunt:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9764,3 +9720,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " este invalid."
+
+#~ msgid "Audio frequency "
+#~ msgstr "frecventa audio "
+
+#~ msgid "Cannot open device"
+#~ msgstr "Nu am putut deschide dispozitivul audio"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "Controlerul nu este un dispozitiv de ieșire live"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "Eroare la închiderea dispozitivului "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "Eroare la deschiderea dispozitivului: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "Eroare la executarea eșantionului "
+
+#~ msgid "No driver for device id"
+#~ msgstr "Nu există driver pentru id-ul dispozitivului"
+
+#~ msgid "Unknown failure"
+#~ msgstr "eșec necunoscut"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "Cheia de opțiune validă are o valoare nevalidă"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "Frecvențele valide sunt:"

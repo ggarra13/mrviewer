@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " 它已经是磁盘上的第一个版本。"
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " 它已经是磁盘上的最新版本。"
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " 是无效的。"
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1471,10 +1467,6 @@ msgstr "音频帧 "
 msgid "Audio frame has NOPTS value."
 msgstr "音频帧具有 NOPTS 值。"
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "音频 "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "音频包未知，期待搜索或预卷"
@@ -1817,10 +1809,6 @@ msgstr "目前无法以这些格式保存电影。"
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "我无法映射\""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "我无法打开音频设备"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3222,10 +3210,6 @@ msgstr "临时绘图模式"
 msgid "Driver"
 msgstr "司机"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "控制器不是实时输出设备"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3367,10 +3351,6 @@ msgstr "临时删除模式"
 msgid "Eraser Tool"
 msgstr "擦除工具"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "错误关闭设备 ao "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "上传文件时出错 "
@@ -3382,14 +3362,6 @@ msgstr "打开输出文件时出错： "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "接收失败： "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "打开设备 ao 时出错： "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "执行样本时出错 "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5432,10 +5404,6 @@ msgstr "无需转换。光谱： "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "未找到音轨的解码器。 ID： "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "没有设备 ID 的驱动程序"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8175,10 +8143,6 @@ msgstr "OCIO 处理器返回的未知错误"
 msgid "Unknown error returned from ctlToLut"
 msgstr "从 ctlToLut 返回未知错误"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "未知故障"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "要保存的未知图像格式"
@@ -8327,14 +8291,6 @@ msgstr "RV 360 立方体"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 球体"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "有效选项键的值无效"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "有效频率为："
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9592,3 +9548,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " 是无效的。"
+
+#~ msgid "Audio frequency "
+#~ msgstr "音频 "
+
+#~ msgid "Cannot open device"
+#~ msgstr "我无法打开音频设备"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "控制器不是实时输出设备"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "错误关闭设备 ao "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "打开设备 ao 时出错： "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "执行样本时出错 "
+
+#~ msgid "No driver for device id"
+#~ msgstr "没有设备 ID 的驱动程序"
+
+#~ msgid "Unknown failure"
+#~ msgstr "未知故障"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "有效选项键的值无效"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "有效频率为："

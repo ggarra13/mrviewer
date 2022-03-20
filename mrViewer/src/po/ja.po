@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " これはすでにディスク上の最初のバージョンです."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " すでにディスク上の最新バージョンです."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " 無効です."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1473,10 +1469,6 @@ msgstr "オーディオボックス "
 msgid "Audio frame has NOPTS value."
 msgstr "オーディオフレームにはNOPTS値があります."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "可聴周波数 "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr ""
@@ -1827,10 +1819,6 @@ msgstr "現在、これらの形式でムービーを保存することはでき
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "マップできません\""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "オーディオデバイスを開けませんでした"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3240,10 +3228,6 @@ msgstr "一時的な描画モード"
 msgid "Driver"
 msgstr "運転手"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "コントローラはライブ出力デバイスではありません"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3385,10 +3369,6 @@ msgstr "一時削除モード"
 msgid "Eraser Tool"
 msgstr "消去ツール"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "デバイスaoを閉じるときにエラーが発生しました "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "ファイルのアップロード中にエラーが発生しました "
@@ -3400,14 +3380,6 @@ msgstr "出力ファイルを開いているときにエラーが発生しまし
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "受信に失敗しました: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "デバイスaoを開くときにエラーが発生しました: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "サンプルの実行中にエラーが発生しました "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5457,10 +5429,6 @@ msgstr "変換は必要ありません.スペクトラム: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "オーディオトラックのデコーダーが見つかりません. ID: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "デバイスIDのドライバーがありません"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8250,10 +8218,6 @@ msgstr "OCIOプロセッサから返された不明なエラー"
 msgid "Unknown error returned from ctlToLut"
 msgstr "ctlToLutから不明なエラーが返されました"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "未知の失敗"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "保存する不明な画像形式"
@@ -8402,14 +8366,6 @@ msgstr "RV 360 Cube"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Sphere"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "有効なオプションキーの値が無効です"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "有効な頻度は次のとおりです."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9706,3 +9662,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " 無効です."
+
+#~ msgid "Audio frequency "
+#~ msgstr "可聴周波数 "
+
+#~ msgid "Cannot open device"
+#~ msgstr "オーディオデバイスを開けませんでした"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "コントローラはライブ出力デバイスではありません"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "デバイスaoを閉じるときにエラーが発生しました "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "デバイスaoを開くときにエラーが発生しました: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "サンプルの実行中にエラーが発生しました "
+
+#~ msgid "No driver for device id"
+#~ msgstr "デバイスIDのドライバーがありません"
+
+#~ msgid "Unknown failure"
+#~ msgstr "未知の失敗"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "有効なオプションキーの値が無効です"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "有効な頻度は次のとおりです."

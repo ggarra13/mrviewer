@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " Zaten diskteki ilk sürüm."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " Zaten diskteki en son sürüm."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " geçersizdir."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1477,10 +1473,6 @@ msgstr "ses kutusu "
 msgid "Audio frame has NOPTS value."
 msgstr "Ses çerçevesinin bir NOPTS değeri vardır."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "ses frekansı "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Ses paketi bilinmiyor, arama veya ön kayıt bekleniyor"
@@ -1828,10 +1820,6 @@ msgstr "Şu anda bir filmi bu formatlarda kaydetmek mümkün değil."
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "eşleyemiyorum \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "ses cihazını açamadım"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3244,10 +3232,6 @@ msgstr "Geçici Çizim Modu"
 msgid "Driver"
 msgstr "sürücüler"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "Denetleyici canlı bir çıkış aygıtı değil"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3391,10 +3375,6 @@ msgstr "Geçici Silme Modu"
 msgid "Eraser Tool"
 msgstr "silme aracı"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "Cihaz ao kapatılırken hata oluştu "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "Dosya yüklenirken hata oluştu "
@@ -3406,14 +3386,6 @@ msgstr "Çıktı dosyası açılırken bir hata oluştu: "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Alınamadı: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "Cihaz ao açılırken hata oluştu: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "Örnek yürütülürken hata oluştu "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5468,10 +5440,6 @@ msgstr "Dönüşüm gerekmez. spektrum: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ses parçası için kod çözücü bulunamadı. İD: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "Aygıt kimliği için sürücü yok"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8274,10 +8242,6 @@ msgstr "OCIO işlemcisi tarafından döndürülen bilinmeyen hata"
 msgid "Unknown error returned from ctlToLut"
 msgstr "ctlToLut'tan döndürülen bilinmeyen hata"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "bilinmeyen arıza"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Kaydedilecek bilinmeyen görüntü formatı"
@@ -8427,14 +8391,6 @@ msgstr "RV 360 Küp"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Küre"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "Geçerli seçenek anahtarı geçersiz bir değere sahip"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "Geçerli frekanslar:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9743,3 +9699,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " geçersizdir."
+
+#~ msgid "Audio frequency "
+#~ msgstr "ses frekansı "
+
+#~ msgid "Cannot open device"
+#~ msgstr "ses cihazını açamadım"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "Denetleyici canlı bir çıkış aygıtı değil"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "Cihaz ao kapatılırken hata oluştu "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "Cihaz ao açılırken hata oluştu: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "Örnek yürütülürken hata oluştu "
+
+#~ msgid "No driver for device id"
+#~ msgstr "Aygıt kimliği için sürücü yok"
+
+#~ msgid "Unknown failure"
+#~ msgstr "bilinmeyen arıza"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "Geçerli seçenek anahtarı geçersiz bir değere sahip"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "Geçerli frekanslar:"

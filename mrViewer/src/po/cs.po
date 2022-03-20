@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " Je to již první verze na disku."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " Je to již nejnovější verze na disku."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " je neplatný."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1476,10 +1472,6 @@ msgstr "audio box "
 msgid "Audio frame has NOPTS value."
 msgstr "Zvukový rámec má hodnotu NOPTS."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "zvukový kmitočet "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Audio balíček je neznámý, očekávejte seek nebo preroll"
@@ -1828,10 +1820,6 @@ msgstr "V současné době není možné uložit film v těchto formátech."
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "Nemohu mapovat \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "Zvukové zařízení se mi nepodařilo otevřít"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3248,10 +3236,6 @@ msgstr "Režim dočasného kreslení"
 msgid "Driver"
 msgstr "Řidiči"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "Ovladač není živé výstupní zařízení"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3395,10 +3379,6 @@ msgstr "Režim dočasného smazání"
 msgid "Eraser Tool"
 msgstr "Nástroj na mazání"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "Chyba při zavírání zařízení apod "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "Chyba při nahrávání souboru "
@@ -3410,14 +3390,6 @@ msgstr "Při otevírání výstupního souboru došlo k chybě: "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Nepodařilo se přijmout: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "Chyba při otevírání zařízení ao: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "Chyba při provádění ukázky "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5470,10 +5442,6 @@ msgstr "Není potřeba žádná konverze. Spektrum: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "Pro zvukovou stopu nebyl nalezen žádný dekodér. ID: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "Žádný ovladač pro ID zařízení"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8271,10 +8239,6 @@ msgstr "Neznámá chyba vrácená procesorem OCIO"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Z ctlToLut se vrátila neznámá chyba"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "neznámé selhání"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Neznámý formát obrázku k uložení"
@@ -8423,14 +8387,6 @@ msgstr "RV 360 Cube"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Sphere"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "Platný klíč volby má neplatnou hodnotu"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "Platné frekvence jsou:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9722,3 +9678,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " je neplatný."
+
+#~ msgid "Audio frequency "
+#~ msgstr "zvukový kmitočet "
+
+#~ msgid "Cannot open device"
+#~ msgstr "Zvukové zařízení se mi nepodařilo otevřít"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "Ovladač není živé výstupní zařízení"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "Chyba při zavírání zařízení apod "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "Chyba při otevírání zařízení ao: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "Chyba při provádění ukázky "
+
+#~ msgid "No driver for device id"
+#~ msgstr "Žádný ovladač pro ID zařízení"
+
+#~ msgid "Unknown failure"
+#~ msgstr "neznámé selhání"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "Platný klíč volby má neplatnou hodnotu"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "Platné frekvence jsou:"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " Это уже первая версия на диске."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " Это уже последняя версия на диске."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " является недействительным."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1476,10 +1472,6 @@ msgstr "звуковой кадр "
 msgid "Audio frame has NOPTS value."
 msgstr "Аудиокадр имеет значение NOPTS."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "звуковая частота "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Аудиопакет неизвестен, ожидайте поиска или преролла"
@@ -1829,10 +1821,6 @@ msgstr "В настоящее время невозможно сохранить
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "Я не могу составить карту \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "Я не мог открыть аудиоустройство"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3248,10 +3236,6 @@ msgstr "Временный режим рисования"
 msgid "Driver"
 msgstr "водители"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "Контроллер не является устройством вывода в реальном времени"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3394,10 +3378,6 @@ msgstr "Режим временного удаления"
 msgid "Eraser Tool"
 msgstr "Инструмент стирания"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "Ошибка закрытия устройства ao "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "Ошибка загрузки файла "
@@ -3409,14 +3389,6 @@ msgstr "Произошла ошибка при открытии выходног
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Не удалось получить: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "Ошибка открытия устройства ao: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "Ошибка выполнения примера "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5477,10 +5449,6 @@ msgstr "Преобразование не требуется. Спектр: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "Не найден декодер для звуковой дорожки. Я БЫ: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "Нет драйвера для идентификатора устройства"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8291,10 +8259,6 @@ msgstr "Неизвестная ошибка, возвращенная проце
 msgid "Unknown error returned from ctlToLut"
 msgstr "Неизвестная ошибка возвращена из ctlToLut"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "неизвестный сбой"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Неизвестный формат изображения для сохранения"
@@ -8447,14 +8411,6 @@ msgstr "РВ 360 Куб"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Сфера"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "Действительный ключ опции имеет недопустимое значение"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "Допустимые частоты:"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9758,3 +9714,36 @@ msgstr "х9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " является недействительным."
+
+#~ msgid "Audio frequency "
+#~ msgstr "звуковая частота "
+
+#~ msgid "Cannot open device"
+#~ msgstr "Я не мог открыть аудиоустройство"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "Контроллер не является устройством вывода в реальном времени"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "Ошибка закрытия устройства ao "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "Ошибка открытия устройства ao: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "Ошибка выполнения примера "
+
+#~ msgid "No driver for device id"
+#~ msgstr "Нет драйвера для идентификатора устройства"
+
+#~ msgid "Unknown failure"
+#~ msgstr "неизвестный сбой"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "Действительный ключ опции имеет недопустимое значение"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "Допустимые частоты:"

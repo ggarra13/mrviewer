@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " 이미 디스크의 첫 번째 버전입니다."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " 이미 디스크에 있는 최신 버전입니다."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " 유효하지 않다."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1471,10 +1467,6 @@ msgstr "오디오 박스 "
 msgid "Audio frame has NOPTS value."
 msgstr "오디오 프레임에는 NOPTS 값이 있습니다."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "오디오 주파수 "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "오디오 패키지를 알 수 없습니다. 검색 또는 프리롤이 필요합니다."
@@ -1823,10 +1815,6 @@ msgstr "현재 이러한 형식으로 동영상을 저장할 수 없습니다."
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "매핑할 수 없습니다 \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "오디오 장치를 열 수 없습니다"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3232,10 +3220,6 @@ msgstr "임시 그리기 모드"
 msgid "Driver"
 msgstr "운전사"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "컨트롤러가 라이브 출력 장치가 아닙니다."
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3377,10 +3361,6 @@ msgstr "임시 삭제 모드"
 msgid "Eraser Tool"
 msgstr "지우개 도구"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "장치를 닫는 동안 오류가 발생했습니다. "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "파일 업로드 오류 "
@@ -3392,14 +3372,6 @@ msgstr "출력 파일을 여는 동안 오류가 발생했습니다: "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "수신 실패: "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "장치를 여는 동안 오류 발생: "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "샘플 실행 중 오류 발생 "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5447,10 +5419,6 @@ msgstr "변환이 필요하지 않습니다. 스펙트럼: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "오디오 트랙에 대한 디코더를 찾을 수 없습니다. ID: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "장치 ID에 대한 드라이버가 없습니다."
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8237,10 +8205,6 @@ msgstr "OCIO 프로세서에서 반환된 알 수 없는 오류"
 msgid "Unknown error returned from ctlToLut"
 msgstr "ctlToLut에서 알 수 없는 오류가 반환되었습니다."
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "알 수 없는 실패"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "저장할 이미지 형식을 알 수 없습니다."
@@ -8389,14 +8353,6 @@ msgstr "RV 360 큐브"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 구체"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "유효한 옵션 키에 잘못된 값이 있습니다."
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "유효한 주파수는 다음과 같습니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9675,3 +9631,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " 유효하지 않다."
+
+#~ msgid "Audio frequency "
+#~ msgstr "오디오 주파수 "
+
+#~ msgid "Cannot open device"
+#~ msgstr "오디오 장치를 열 수 없습니다"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "컨트롤러가 라이브 출력 장치가 아닙니다."
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "장치를 닫는 동안 오류가 발생했습니다. "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "장치를 여는 동안 오류 발생: "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "샘플 실행 중 오류 발생 "
+
+#~ msgid "No driver for device id"
+#~ msgstr "장치 ID에 대한 드라이버가 없습니다."
+
+#~ msgid "Unknown failure"
+#~ msgstr "알 수 없는 실패"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "유효한 옵션 키에 잘못된 값이 있습니다."
+
+#~ msgid "Valid rates are:"
+#~ msgstr "유효한 주파수는 다음과 같습니다."

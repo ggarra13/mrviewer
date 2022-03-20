@@ -110,10 +110,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   LINK_DIRECTORIES( /usr/local/lib )
   set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
-  IF( AOENGINE )
-    ADD_DEFINITIONS( -DAOENGINE )
-    set( OS_LIBRARIES ${OS_LIBRARIES} ao )
-  ENDIF()
 
   IF( RT_AUDIO_ENGINE )
     ADD_DEFINITIONS( -DRT_AUDIO_ENGINE )
@@ -126,8 +122,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      # ADD_COMPILE_OPTIONS( -fsanitize=thread )
      # SET(OS_LIBRARIES -fsanitize=thread ${OS_LIBRARIES} )
 
-     #ADD_COMPILE_OPTIONS( -fsanitize=address )
-     #SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
+     ADD_COMPILE_OPTIONS( -fsanitize=address )
+     SET(LIBRARIES -fsanitize=address ${LIBRARIES} )
    ENDIF()
 
   ELSE()
@@ -175,11 +171,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET(OS_LIBRARIES
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
     )
-
-  IF( AOENGINE )
-    ADD_DEFINITIONS( -DAOENGINE )
-    set( OS_LIBRARIES ${OS_LIBRARIES} ao )
-  ENDIF()
 
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
      #       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
@@ -409,7 +400,7 @@ SET( SOURCES
 #
 # Audio Engines
 #
-SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvRtAudioEngine.cpp audio/mrvAOEngine.cpp audio/mrvRtAudioEngine.cpp audio/RtAudio.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
+SET( SOURCES audio/mrvPortAudioEngine.cpp audio/mrvWaveEngine.cpp audio/mrvALSAEngine.cpp ${SOURCES} )
 
 
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -235,10 +235,6 @@ msgstr ""
 
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
-msgstr ""
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
 msgstr ""
 
 #: core/CMedia.cpp:4297
@@ -1423,10 +1419,6 @@ msgstr ""
 msgid "Audio frame has NOPTS value."
 msgstr ""
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr ""
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr ""
@@ -1767,10 +1759,6 @@ msgstr ""
 
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
@@ -3151,10 +3139,6 @@ msgstr ""
 msgid "Driver"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr ""
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3296,10 +3280,6 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr ""
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr ""
@@ -3310,14 +3290,6 @@ msgstr ""
 
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
 msgstr ""
 
 #: core/aviImage_save.cpp:762
@@ -5342,10 +5314,6 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
 msgstr ""
 
 #: gui/mrvImageView.cpp:514
@@ -7996,10 +7964,6 @@ msgstr ""
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr ""
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr ""
@@ -8144,14 +8108,6 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
-msgstr ""
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr ""
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40

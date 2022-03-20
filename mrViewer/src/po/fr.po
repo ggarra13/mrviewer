@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-19 03:05-0300\n"
+"POT-Creation-Date: 2022-03-20 00:37-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -245,10 +245,6 @@ msgstr " C'est déjà la première version sur disque."
 #: gui/mrvImageBrowser.cpp:3735
 msgid " is already the last version on disk."
 msgstr " C'est déjà la dernière version sur disque."
-
-#: audio/mrvRtAudioEngine.cpp:293
-msgid " is invalid."
-msgstr " est invalide."
 
 #: core/CMedia.cpp:4297
 msgid " is missing."
@@ -1478,10 +1474,6 @@ msgstr "boîte audio "
 msgid "Audio frame has NOPTS value."
 msgstr "La trame audio a une valeur NOPTS."
 
-#: audio/mrvRtAudioEngine.cpp:293
-msgid "Audio frequency "
-msgstr "fréquence audio "
-
 #: core/CMedia_audio.cpp:1980
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr ""
@@ -1834,10 +1826,6 @@ msgstr ""
 #: core/mrSocket.cpp:184
 msgid "Cannot map \""
 msgstr "Je ne peux pas mapper \""
-
-#: audio/mrvAOEngine.cpp:187
-msgid "Cannot open device"
-msgstr "Je n'ai pas pu ouvrir le périphérique audio"
 
 #: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 #: gui/mrvPreferences.cpp:234
@@ -3273,10 +3261,6 @@ msgstr "Mode de dessin temporaire"
 msgid "Driver"
 msgstr "Conducteurs"
 
-#: audio/mrvAOEngine.cpp:183
-msgid "Driver is not a live output device"
-msgstr "Le contrôleur n'est pas un périphérique de sortie en direct"
-
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1854
 msgid "Drop Frame Timecode"
@@ -3420,10 +3404,6 @@ msgstr "Mode de suppression temporaire"
 msgid "Eraser Tool"
 msgstr "Outil d'effacement"
 
-#: audio/mrvAOEngine.cpp:335
-msgid "Error closing ao device. "
-msgstr "Erreur lors de la fermeture de l'appareil ao "
-
 #: core/R3dImage.cpp:169
 msgid "Error loading file "
 msgstr "Erreur lors du téléchargement du fichier "
@@ -3435,14 +3415,6 @@ msgstr "Une erreur s'est produite lors de l'ouverture du fichier de sortie : "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Échec de la réception : "
-
-#: audio/mrvAOEngine.cpp:232
-msgid "Error opening ao driver: "
-msgstr "Erreur lors de l'ouverture de l'appareil : "
-
-#: audio/mrvAOEngine.cpp:310
-msgid "Error playing sample. "
-msgstr "Erreur lors de l'exécution de l'échantillon "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "
@@ -5507,10 +5479,6 @@ msgstr "Aucune conversion nécessaire. Spectre: "
 #: core/CMedia_audio.cpp:202
 msgid "No decoder found for audio stream. ID: "
 msgstr "Aucun décodeur trouvé pour la piste audio. IDENTIFIANT: "
-
-#: audio/mrvAOEngine.cpp:181
-msgid "No driver for device id"
-msgstr "Pas de pilote pour l'ID de périphérique"
 
 #: gui/mrvImageView.cpp:514
 msgid "No foreground image to switch to"
@@ -8333,10 +8301,6 @@ msgstr "Erreur inconnue renvoyée par le processeur OCIO"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Erreur inconnue renvoyée par ctlToLut"
 
-#: audio/mrvAOEngine.cpp:190
-msgid "Unknown failure"
-msgstr "panne inconnue"
-
 #: core/wandImage.cpp:1094
 msgid "Unknown image format to save"
 msgstr "Format d'image inconnu à enregistrer"
@@ -8489,14 +8453,6 @@ msgstr "VR 360 Cube"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:190
 msgid "VR 360 Sphere"
 msgstr "VR 360 Sphère"
-
-#: audio/mrvAOEngine.cpp:185
-msgid "Valid option key has invalid value"
-msgstr "La clé d'option valide a une valeur non valide"
-
-#: audio/mrvRtAudioEngine.cpp:294
-msgid "Valid rates are:"
-msgstr "Les fréquences valides sont :"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvImageInfo.cxx:40
 #: gui/mrvImageInformation.cpp:247 gui/mrvImageInformation.cpp:3785
@@ -9831,3 +9787,36 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid " is invalid."
+#~ msgstr " est invalide."
+
+#~ msgid "Audio frequency "
+#~ msgstr "fréquence audio "
+
+#~ msgid "Cannot open device"
+#~ msgstr "Je n'ai pas pu ouvrir le périphérique audio"
+
+#~ msgid "Driver is not a live output device"
+#~ msgstr "Le contrôleur n'est pas un périphérique de sortie en direct"
+
+#~ msgid "Error closing ao device. "
+#~ msgstr "Erreur lors de la fermeture de l'appareil ao "
+
+#~ msgid "Error opening ao driver: "
+#~ msgstr "Erreur lors de l'ouverture de l'appareil : "
+
+#~ msgid "Error playing sample. "
+#~ msgstr "Erreur lors de l'exécution de l'échantillon "
+
+#~ msgid "No driver for device id"
+#~ msgstr "Pas de pilote pour l'ID de périphérique"
+
+#~ msgid "Unknown failure"
+#~ msgstr "panne inconnue"
+
+#~ msgid "Valid option key has invalid value"
+#~ msgstr "La clé d'option valide a une valeur non valide"
+
+#~ msgid "Valid rates are:"
+#~ msgstr "Les fréquences valides sont :"
