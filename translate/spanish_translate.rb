@@ -189,6 +189,9 @@ def fix( text, result, lang )
     if text == 'Save'
       result = "救う"
     end
+    if result =~ /^([YL])（/
+      result.sub!( /^([YL])（/, "\\1 （" )
+    end
     if result =~ /：/
       result.gsub!(/：/, ':')
     end
@@ -198,7 +201,7 @@ def fix( text, result, lang )
     if text =~ /:(\s+)/
       spaces = $1
       if result !~ /:#{spaces}/
-	result.gsub!( /:\s*/, ":#{spaces}" )
+        result.gsub!( /:\s*/, ":#{spaces}" )
       end
     end
     if text == 'LMTransform %u'
@@ -411,7 +414,7 @@ def translate( text, lang )
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
-	result[-1] = '%s'
+        result[-1] = '%s'
       end
       result = result.join('/')
       result = fix( @msgid, result, lang )
@@ -447,7 +450,7 @@ if ARGV.size > 0
   langs = ARGV
 else
   langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
-	    'ro', 'ru', 'tr', 'zh' ]
+            'ro', 'ru', 'tr', 'zh' ]
 end
 
 translated = [ 'es' ]
@@ -461,7 +464,7 @@ for @lang in langs
   fp = File.open( "#{root}/es.po", encoding: "utf-8")
   if File.exists? "#{root}/#@lang.po"
     FileUtils.cp( "#{root}/#@lang.po",
-		  "#{root}/#@lang.po.old" )
+                  "#{root}/#@lang.po.old" )
   end
   @op = File.open("#{root}/#@lang.po", "w", encoding: "utf-8")
   @op.puts <<EOF
@@ -488,10 +491,10 @@ EOF
     if in_msg_es
       text = line =~ /^"(.*)"$/
       if not text
-	r = translate( msges, @lang )
-	new_line( r )
-	in_msg_es = in_msg_id = false
-	next
+        r = translate( msges, @lang )
+        new_line( r )
+        in_msg_es = in_msg_id = false
+        next
       end
       msges << $1
       next
@@ -499,14 +502,14 @@ EOF
     if in_msg_id
       msges = line =~ /msgstr\s+"(.*)"/
       if msges
-	in_msg_es = true
-	msges = $1
-	next
+        in_msg_es = true
+        msges = $1
+        next
       end
       text = line =~ /"(.*)"/
       if not text
-	in_msg_id = false
-	next
+        in_msg_id = false
+        next
       end
       text = $1
       @msgid << text
