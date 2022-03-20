@@ -35,18 +35,8 @@
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
 #    include "audio/mrvALSAEngine.h"
-#elif defined(OSX)
-#    include "audio/mrvRtAudioEngine.h"
-#    include "audio/mrvAudioQueue.h"
 #endif
 
-#ifdef AOENGINE
-#    include "audio/mrvAOEngine.h"
-#endif
-
-#ifdef RT_AUDIO_ENGINE
-#    include "audio/mrvRtAudioEngine.h"
-#endif
 
 #ifdef PORTAUDIO
 #    include "audio/mrvPortAudioEngine.h"
@@ -193,18 +183,7 @@ AudioEngine* AudioEngine::factory()
     //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
 #elif defined(LINUX)
-#  ifdef AOENGINE
-    r = new mrv::AOEngine();
-#  else
     r = new mrv::ALSAEngine();
-#  endif
-
-#elif defined(OSX)
-#  ifdef AOENGINE
-    r = new mrv::AOEngine();
-#else
-    r = new mrv::RtAudioEngine();
-#  endif
 #endif
 
 #endif
