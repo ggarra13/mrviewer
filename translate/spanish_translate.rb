@@ -257,6 +257,9 @@ def fix( text, result, lang )
     if text == 'Save'
       result = "저장"
     end
+    if result =~ /^([YL])\(/
+      result.sub!( /^([YL])\(/, "\\1 （" )
+    end
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
@@ -373,6 +376,9 @@ def fix( text, result, lang )
     if result =~ /％/
       result.gsub!( /％/, '%' )
     end
+    if result =~ /^([YL])（/
+      result.sub!( /^([YL])（/, "\\1 （" )
+    end
     if result =~ /ID: %i n/
       result.sub!( /ID: %i n/, 'ID: %i\n' )
     elsif result =~ /id: %i n/
@@ -452,6 +458,7 @@ else
   langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
             'ro', 'ru', 'tr', 'zh' ]
 end
+
 
 translated = [ 'es' ]
 for @lang in langs
