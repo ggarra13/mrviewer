@@ -189,6 +189,11 @@ namespace
 const char* kModule = "gui";
 }
 
+const int kMASK_MENU_OFFSET = 43;
+float kCrops[] = {
+    0.00f, 1.00f, 1.19f, 1.37f, 1.50f, 1.56f, 1.66f, 1.77f, 1.85f, 2.10f, 2.20f,
+    2.35f, 2.39f, 4.00f
+};
 
 struct ChannelShortcuts
 {
@@ -233,7 +238,7 @@ namespace
         exit(0);
     }
 
-inline std::string remove_hash_number( std::string r )
+inline std::string remove_hash_number( std::string& r )
 {
     if ( r.empty() || r[0] != '#' ) return r;
 
@@ -245,7 +250,7 @@ inline std::string remove_hash_number( std::string r )
     return r;
 }
 
-inline std::string extract_root( std::string r )
+inline std::string extract_root( std::string& r )
 {
     if ( r.empty() ) return r;
 
@@ -268,7 +273,8 @@ inline std::string extract_root( std::string r )
 short get_shortcut( const char* channel )
 {
     static std::string oldChannel;
-    for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
+    for ( unsigned int i = 0;
+          i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
     {
         if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
         {
@@ -492,7 +498,7 @@ static void update_title_bar( mrv::ImageView* view )
     }
     else
     {
-        snprintf( bufs, 32, "%s", _("mrViewer") );
+        snprintf( bufs, 32, "%s", N_("mrViewer") );
     }
 
     view->main()->uiMain->copy_label( bufs );
@@ -591,19 +597,12 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
 #endif
 
 
-    // std::cerr << "f " << f << std::endl;
-
-    // if ( f > img->last_frame() ) f = img->last_frame();
-    // else if ( f < img->first_frame() ) f = img->first_frame();
     m->uiStartFrame->value( img->first_frame() );
     m->uiEndFrame->value( img->last_frame() );
     t->minimum( img->first_frame() );
     t->maximum( img->last_frame() );
-    // m->uiFrame->value( f );
-    // t->value( f );
 
     update_title_bar( view );
-    //view->browser()->redraw();
     view->fit_image();
 }
 
@@ -702,6 +701,15 @@ void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
     mrv::CMedia* img = fg->image();
     if ( !img ) return;
 
+    if ( view->action_mode() & mrv::ImageView::kSelection )
+    {
+        // We will saving opengl, make sure selection is not drawn.
+        view->scrub_mode();
+        mrv::Rectd r( 0, 0, 0, 0 );
+        view->selection( r );
+        view->redraw();
+    }
+
     mrv::save_sequence_file( view->main(), NULL, true );
 
     // Return all to normal
@@ -711,29 +719,18 @@ void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 
 void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
 {
-    if ( view->action_mode() & mrv::ImageView::kSelection )
-    {
-        view->scrub_mode();
-        mrv::Rectd r( 0, 0, 0, 0 );
-        view->selection( r );
-        view->redraw();
-    }
     view->stop();
     view->browser()->save_sequence();
 }
-
 
 
 void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 {
     mrv::ImageView* view = uiMain->uiView;
 
-    const Fl_Menu_Item* o = menu->mvalue();
+    int idx = menu->value() - kMASK_MENU_OFFSET;
 
-    float mask = 1.0f;
-    const char* fmt = o->label();
-    mask = (float) atof( fmt );
-
+    float mask = kCrops[idx];
 
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
@@ -4523,7 +4520,7 @@ void ImageView::draw()
 
     if ( _hud & kHudFrameCount )
     {
-        hud << _(" FC: ") << ( last - first + 1 );
+        hud << N_(" FC: ") << ( last - first + 1 );
     }
 
     if ( !hud.str().empty() )
@@ -4542,12 +4539,12 @@ void ImageView::draw()
             // Work around for data window not set yet (use previous frame)
             d = img->data_window( frame-1 );
         }
-        sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+        sprintf( buf, N_("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
         draw_text( r, g, b, 5, y, buf );
         y -= yi;
         {
             const mrv::Recti& d = img->display_window();
-            sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+            sprintf( buf, N_("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
             draw_text( r, g, b, 5, y, buf );
             y -= yi;
         }
@@ -4556,7 +4553,7 @@ void ImageView::draw()
     if ( _hud & kHudFrame )
     {
         sprintf( buf, "% 4" PRId64, frame );
-        hud << _("F: ") << buf;
+        hud << N_("F: ") << buf;
     }
 
     if ( _hud & kHudTimecode )
@@ -4568,7 +4565,7 @@ void ImageView::draw()
         mrv::Timecode::format( buf, d, frame, img->timecode(),
                                img->play_fps(), true );
         if ( !hud.str().empty() ) hud << " ";
-        hud << _("T: ") << buf;
+        hud << N_("T: ") << buf;
     }
 
     if ( (_hud & kHudAVDifference) && img->has_audio() )
@@ -4576,7 +4573,7 @@ void ImageView::draw()
         double avdiff = img->avdiff();
         if ( !hud.str().empty() ) hud << " ";
         sprintf( buf, "% 4f", avdiff );
-        hud << _("V-A: ") << buf;
+        hud << N_("V-A: ") << buf;
     }
 
 
@@ -4616,9 +4613,9 @@ void ImageView::draw()
 
 
         {
-            sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+            sprintf( buf, N_(" UF: %" PRId64 " "), unshown_frames );
             hud << buf;
-            sprintf( buf, _("FPS: %.3f" ), img->actual_frame_rate() );
+            sprintf( buf, N_("FPS: %.3f" ), img->actual_frame_rate() );
             hud << buf;
         }
 
@@ -4635,9 +4632,9 @@ void ImageView::draw()
     if ( _hud & kHudWipe )
     {
         if ( _wipe_dir == kWipeVertical )
-            hud << "Wipe V";
+            hud << N_("Wipe V");
         if ( _wipe_dir == kWipeHorizontal )
-            hud << "Wipe H";
+            hud << N_("Wipe H");
     }
 
     if ( !hud.str().empty() )
@@ -4892,8 +4889,7 @@ bool PointInTriangle (const Imath::V2i& pt,
              idx = menu->add( buf, 0, (Fl_Callback*)masking_cb, uiMain,
                               FL_MENU_RADIO );
              item = (Fl_Menu_Item*) &(menu->menu()[idx]);
-             float mask = -1.0f;
-             mask = (float) atof( tmp );
+             float mask = kCrops[i];
              if ( mask == _masking ) item->set();
          }
 
@@ -5252,6 +5248,7 @@ int ImageView::leftMouseDown(int x, int y)
           flags &= ~kLeftShift;
           flags |= kLeftCtrl;
           flags |= kGain;
+
 
           if ( Fl::event_clicks() > 1 )
           {

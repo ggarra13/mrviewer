@@ -308,7 +308,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
-        tooltip( _("Mark an area in the image with SHIFT + LMB") );
+        tooltip( _("Mark an area in the image with SHIFT + Left Mouse Button") );
         return;
     }
     CMedia* img = m->image();

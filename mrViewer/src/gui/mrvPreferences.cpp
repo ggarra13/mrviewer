@@ -87,6 +87,7 @@ namespace fs = boost::filesystem;
 #include "mrvReelUI.h"
 #include "mrViewer.h"
 
+extern float kCrops[];
 
 namespace
 {
@@ -117,9 +118,9 @@ int environmentSetting( const char* variable,
     {
         if ( !inPrefs )
         {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(" << defaultValue << ").");
+            LOG_WARNING( _("Environment variable \"") << variable <<
+                         _("\" is not set; using default value (")
+                         << defaultValue << ").");
         }
     }
     else
@@ -127,9 +128,9 @@ int environmentSetting( const char* variable,
         int n = sscanf( env, " %d", &r );
         if (n != 1)
         {
-            LOG_ERROR( "Cannot parse environment variable \"" << variable
-                       << "\" as an integer value; using "
-                       << defaultValue << " instead." );
+            LOG_ERROR( _("Cannot parse environment variable \"") << variable
+                       << _("\" as an integer value; using ")
+                       << defaultValue  );
         }
     }
     return r;
@@ -159,9 +160,9 @@ float environmentSetting( const char* variable,
     {
         if ( !inPrefs )
         {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(" << defaultValue << ").");
+            LOG_WARNING( _("Environment variable \"") << variable
+                         << _("\" is not set; using default value (")
+                         << defaultValue << ").");
         }
     }
     else
@@ -169,9 +170,9 @@ float environmentSetting( const char* variable,
         int n = sscanf( env, " %f", &r );
         if (n != 1)
         {
-            LOG_ERROR( "Cannot parse environment variable \"" << variable
-                       << "\" as a float value; using " << defaultValue
-                       << " instead.");
+            LOG_ERROR( _("Cannot parse environment variable \"") << variable
+                       << _("\" as a float value; using ")
+                       << defaultValue );
         }
     }
     return r;
@@ -201,9 +202,9 @@ const char* environmentSetting( const char* variable,
         env = defaultValue;
         if ( !inPrefs )
         {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(\"" << defaultValue << "\").");
+            LOG_WARNING( _("Environment variable \"") << variable
+                         << _("\" is not set; using default value (\"")
+                         << defaultValue << "\").");
         }
     }
     return env;
@@ -230,19 +231,21 @@ environmentSetting( const char* variable,
         {
             tmp = defaultValue;
 
-            LOG_ERROR("Cannot parse environment variable \"" <<
-                      variable << "\"; Format: "
-                      "\"red X X green X X blue X X white X X\"" );
-            LOG_ERROR("Using default value "
-                      "(chromaticities according to Rec. ITU-R BT.709).");
+            LOG_ERROR(_("Cannot parse environment variable \"") <<
+                      variable
+                      << _("\"; Format: ")
+                      << "\"red X X green X X blue X X white X X\"" );
+            LOG_ERROR(_("Using default value "
+                        "(chromaticities according to Rec. ITU-R BT.709).") );
         }
     }
     else
     {
         if ( !inPrefs )
-            LOG_WARNING("Environment variable \"" << variable << "\" is "
-                        "not set; using default value (chromaticities according "
-                        "to Rec. ITU-R BT.709).");
+            LOG_WARNING(_("Environment variable \"") << variable
+                        << _("\" is not set; using default value "
+                             "(chromaticities according "
+                             "to Rec. ITU-R BT.709).") );
     }
     return tmp;
 }
@@ -275,6 +278,8 @@ HotkeyUI*         ViewerUI::uiHotkey = NULL;
 ConnectionUI*     ViewerUI::uiConnection = NULL;
 
 namespace mrv {
+
+
 
 OCIO::ConstConfigRcPtr Preferences::config;
 ColorSchemes        Preferences::schemes;
@@ -1978,13 +1983,8 @@ void Preferences::run( ViewerUI* main )
     //
         DBG3;
     int crop = uiPrefs->uiPrefsCropArea->value();
-    if ( crop > 0 )
-    {
-        float mask = 1.0f;
-        const char* fmt = uiPrefs->uiPrefsCropArea->child(crop)->label();
-        sscanf( fmt, "%f", &mask );
-        view->masking( mask );
-    }
+    float mask = kCrops[crop];
+    view->masking( mask );
 
         DBG3;
     //

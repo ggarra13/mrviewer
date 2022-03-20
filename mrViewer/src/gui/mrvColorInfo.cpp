@@ -764,13 +764,13 @@ void ColorInfo::update( const CMedia* img,
         text.str().reserve(1024);
         text << "@b\t"
              << kR
-             << _("R") << "\t"
+             << N_("R") << "\t"
              << kG
-             << _("G") << "\t"
+             << N_("G") << "\t"
              << kB
-             << _("B") << "\t"
+             << N_("B") << "\t"
              << kA
-             << _("A")
+             << N_("A")
              << std::endl
              << _("Maximum") << ":\t@c"
              << float_printf( pmax.r ) << "\t@c"
