@@ -1993,7 +1993,7 @@ delete uiConnection; uiConnection = NULL;
 delete uiMain; uiMain = NULL;
 delete uiReelWindow; uiReelWindow = NULL;
 delete uiHotkey; uiHotkey = NULL;
-//delete uiPrefs; uiPrefs = NULL;} {selected
+delete uiPrefs; uiPrefs = NULL;} {selected
     }
   }
   Function {refresh()} {open
