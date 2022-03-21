@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-21 08:56-0300\n"
+"POT-Creation-Date: 2022-03-21 09:05-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2630,7 +2630,7 @@ msgstr "Nu am găsit tabloul "
 msgid "Could not set "
 msgstr "nu a putut fi setat "
 
-#: gui/mrvPreferences.cpp:1341
+#: gui/mrvPreferences.cpp:1346
 msgid "Could not set transforms in GUI"
 msgstr "Nu am putut seta transformări în GUI"
 
@@ -3463,7 +3463,7 @@ msgstr "Schimbarea imaginii a eșuat"
 msgid "ExchangeImage %d %d"
 msgstr "Schimbați imaginea %d %d"
 
-#: gui/mrvPreferences.cpp:1663
+#: gui/mrvPreferences.cpp:1671
 msgid "Expanded OCIO config to:"
 msgstr "Extinderea configurației OCIO la:"
 
@@ -3981,7 +3981,7 @@ msgstr ""
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:1796
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:2388
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1865
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1873
 msgid "Gamma"
 msgstr "Spectru"
 
@@ -4988,7 +4988,7 @@ msgstr "Se încarcă shaderul intern NV3.0 rgba"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Se încarcă shaderul intern rgba arbfp1"
 
-#: gui/mrvPreferences.cpp:1326
+#: gui/mrvPreferences.cpp:1331
 msgid "Loading hotkeys from "
 msgstr "Am încărcat cheile de unitate de la "
 
@@ -5386,7 +5386,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "Întotdeauna vecinul apropiat"
 
-#: gui/mrvPreferences.cpp:1360
+#: gui/mrvPreferences.cpp:1365
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5433,7 +5433,7 @@ msgstr "Versiunea următoare a imaginii"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1362 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1367 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5723,7 +5723,7 @@ msgstr "Comutatorul de vizualizare OCIO a eșuat"
 msgid "OCIO config (*.{"
 msgstr "Configurație LEISURE (*.{"
 
-#: gui/mrvPreferences.cpp:1862
+#: gui/mrvPreferences.cpp:1870
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "Variabila de mediu OCIO nu există. Se va folosi CTL. "
 
@@ -7214,19 +7214,19 @@ msgstr "Setați câștigul implicit când pornește mrViewer."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Setați intervalul implicit când pornește mrViewer."
 
-#: gui/mrvPreferences.cpp:1644
+#: gui/mrvPreferences.cpp:1652
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "Setarea configurației OCIO la variabila de mediu OCIO:"
 
-#: gui/mrvPreferences.cpp:1625
+#: gui/mrvPreferences.cpp:1633
 msgid "Setting OCIO config to nuke-default."
 msgstr "Setarea configurației OCIO la nuke-default."
 
-#: gui/mrvPreferences.cpp:1617
+#: gui/mrvPreferences.cpp:1625
 msgid "Setting OCIO config to saved preferences."
 msgstr "Setarea configurației OCIO la preferințele salvate."
 
-#: gui/mrvPreferences.cpp:1650
+#: gui/mrvPreferences.cpp:1658
 msgid "Setting OCIO config to:"
 msgstr "Setarea configurației OCIO la:"
 
@@ -9228,7 +9228,7 @@ msgstr "Suport YUVA:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1362 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1367 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9591,8 +9591,8 @@ msgstr ""
 "Dacă nu sunteți sigur ce înseamnă toate acestea, păstrați setările de "
 "afișare și imagine folosind același algoritm (CTL sau ICC) de fiecare dată."
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1319
-#: gui/mrvPreferences.cpp:1325
+#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1324
+#: gui/mrvPreferences.cpp:1330
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

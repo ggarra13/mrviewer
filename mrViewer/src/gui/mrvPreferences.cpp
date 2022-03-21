@@ -609,16 +609,21 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !language ) language = getenv( "LANG" );
 
 #ifdef _WIN32
-    WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
-    int iResult = GetUserDefaultLocaleName( wcBuffer, LOCALE_NAME_MAX_LENGTH );
-    if ( iResult )
+    if ( ! language )
     {
-        _bstr_t b( wcBuffer );
-        language = b;
+        WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
+        int iResult = GetUserDefaultLocaleName( wcBuffer,
+                                                LOCALE_NAME_MAX_LENGTH );
+        if ( iResult )
+        {
+            _bstr_t b( wcBuffer );
+            language = b;
+        }
     }
 #else
     if ( !language ) language = setlocale( LC_MESSAGES, "" );
 #endif
+
     if ( language && strlen(language) > 1 )
     {
         for ( int i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
@@ -1368,6 +1373,9 @@ void Preferences::run( ViewerUI* main )
 #ifdef _WIN32
             char* buf = new char[64];
             sprintf( buf, "LC_ALL=%s", language );
+            putenv( buf );
+            buf = new char[64];
+            sprintf( buf, "LANGUAGE=%s", language );
             putenv( buf );
 #else
             setenv( "LANGUAGE", language, 1 );

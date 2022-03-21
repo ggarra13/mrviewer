@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-21 08:56-0300\n"
+"POT-Creation-Date: 2022-03-21 09:05-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2610,7 +2610,7 @@ msgstr "我找不到那幅画 "
 msgid "Could not set "
 msgstr "无法设置 "
 
-#: gui/mrvPreferences.cpp:1341
+#: gui/mrvPreferences.cpp:1346
 msgid "Could not set transforms in GUI"
 msgstr "我无法在 GUI 中设置转换"
 
@@ -3435,7 +3435,7 @@ msgstr "交换图片失败"
 msgid "ExchangeImage %d %d"
 msgstr "交换图像 %d %d"
 
-#: gui/mrvPreferences.cpp:1663
+#: gui/mrvPreferences.cpp:1671
 msgid "Expanded OCIO config to:"
 msgstr "将 OCIO 配置扩展为："
 
@@ -3952,7 +3952,7 @@ msgstr "图像增益值。像素值的简单乘数。"
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:1796
 #: D:/code/applications/mrv/BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/mrViewer.cxx:2388
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1865
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1873
 msgid "Gamma"
 msgstr "光谱"
 
@@ -4952,7 +4952,7 @@ msgstr "加载内部着色器 NV3.0 rgba"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "加载内部 rgba 着色器 arbfp1"
 
-#: gui/mrvPreferences.cpp:1326
+#: gui/mrvPreferences.cpp:1331
 msgid "Loading hotkeys from "
 msgstr "从加载热键 "
 
@@ -5345,7 +5345,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "永远是近邻"
 
-#: gui/mrvPreferences.cpp:1360
+#: gui/mrvPreferences.cpp:1365
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5392,7 +5392,7 @@ msgstr "下一个图像版本"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1362 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1367 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5678,7 +5678,7 @@ msgstr "OCIO 视图切换失败"
 msgid "OCIO config (*.{"
 msgstr "休闲配置（*.{"
 
-#: gui/mrvPreferences.cpp:1862
+#: gui/mrvPreferences.cpp:1870
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 环境变量不存在。将使用 CTL。 "
 
@@ -7139,19 +7139,19 @@ msgstr "设置 mrViewer 启动时的默认增益。"
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "设置 mrViewer 启动时的默认范围。"
 
-#: gui/mrvPreferences.cpp:1644
+#: gui/mrvPreferences.cpp:1652
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "将 OCIO 配置设置为 OCIO 环境变量："
 
-#: gui/mrvPreferences.cpp:1625
+#: gui/mrvPreferences.cpp:1633
 msgid "Setting OCIO config to nuke-default."
 msgstr "将 OCIO 配置设置为 nuke-default。"
 
-#: gui/mrvPreferences.cpp:1617
+#: gui/mrvPreferences.cpp:1625
 msgid "Setting OCIO config to saved preferences."
 msgstr "将 OCIO 配置设置为保存的首选项。"
 
-#: gui/mrvPreferences.cpp:1650
+#: gui/mrvPreferences.cpp:1658
 msgid "Setting OCIO config to:"
 msgstr "将 OCIO 配置设置为："
 
@@ -9064,7 +9064,7 @@ msgstr "YUVA 支持：\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1362 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1367 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9419,8 +9419,8 @@ msgstr ""
 "如果您不确定这意味着什么，请每次使用相同的算法（CTL 或 ICC）保持显示和图像设"
 "置。"
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1319
-#: gui/mrvPreferences.cpp:1325
+#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1324
+#: gui/mrvPreferences.cpp:1330
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 
