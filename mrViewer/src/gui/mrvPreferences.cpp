@@ -627,7 +627,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     if ( language && strlen(language) > 1 )
     {
-        for ( int i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
+        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
         {
             if ( strncmp( language, kLanguages[i], 2 ) == 0 )
             {
@@ -1365,7 +1365,7 @@ void Preferences::run( ViewerUI* main )
     {
         int ok = fl_choice( _("Need to reboot mrViewer to change language.  "
                               "Are you sure you want to continue?" ),
-                            _("No"),  _("Yes"), NULL );
+                            _("No"),  _("Yes"), NULL, NULL );
         if ( ok )
         {
 
