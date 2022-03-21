@@ -1357,7 +1357,7 @@ void Preferences::run( ViewerUI* main )
 
     if ( uiPrefs->uiLanguage->value() != language_index )
     {
-        int ok = fl_choice( _("Need to close interface to change language.  "
+        int ok = fl_choice( _("Need to reboot mrViewer to change language.  "
                               "Are you sure you want to continue?" ),
                             _("No"),  _("Yes"), NULL );
         if ( ok )
