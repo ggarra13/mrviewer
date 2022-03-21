@@ -13,7 +13,7 @@ void redraw_all_windows(ViewerUI* ui)
     ui = new ViewerUI;
 }
 
-const char* kLanguages[] = {
+const char* kLanguages[14] = {
     "cs",
     "de",
     "C",

@@ -105,12 +105,7 @@ class PreferencesUI {open
   Function {make_window(ViewerUI* m)} {open private
   } {
     Fl_Window uiMain {
-      label Preferences
-      callback {int idx = uiLanguage->value();
-o->hide();
-ViewerUI* ui = o->main();
-delete uiMain; uiMain = NULL;
-change_language( idx, ui );} open selected
+      label Preferences open
       xywh {147 203 770 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
@@ -487,7 +482,7 @@ If you try to open several mrViewers with different images, all these images wil
               user_data m user_data_type {ViewerUI*}
               callback {if (!o->mvalue() || !o->mvalue()->text ) return;
               mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-              v->refresh();} open
+              v->refresh();} open selected
               xywh {414 164 150 25} down_box BORDER_BOX align 1
             } {
               MenuItem {} {

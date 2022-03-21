@@ -25,7 +25,6 @@
  *
  */
 
-#include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,6 +43,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
 #include <FL/fl_utf8.h>   // for fl_getenv
+#include <FL/fl_ask.H>
 #include <FL/Fl.H>
 
 // OpenEXR threadcount
@@ -77,6 +77,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvHotkey.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvFileRequester.h"
+#include "gui/mrvLanguages.h"
 #include "video/mrvGLLut3d.h"
 #include "video/mrvGLEngine.h"
 #include "mrvEDLWindowUI.h"
@@ -304,6 +305,7 @@ std::string         Preferences::CTL_32bits_save_transform;
 std::string         Preferences::CTL_float_save_transform;
 std::string         Preferences::root;
 int                 Preferences::debug = -1;
+int                 Preferences::language_index = 2;
 std::string         Preferences::tempDir = "/usr/tmp/";
 std::string         Preferences::hotkeys_file = _("mrViewer.keys");
 
@@ -589,6 +591,25 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         uiPrefs->uiColorTheme->picked( item );
     DBG3;
     }
+
+    const char* language = getenv( "LANGUAGE" );
+    if ( !language ) language = getenv( "LC_ALL" );
+    if ( !language ) language = getenv( "LC_MESSAGES" );
+    if ( !language ) language = getenv( "LANG" );
+    if ( !language ) language = setlocale( LC_MESSAGES, NULL );
+    if ( language )
+    {
+        for ( int i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
+        {
+            if ( strncmp( language, kLanguages[i], 2 ) == 0 )
+            {
+                language_index = i;
+                break;
+            }
+        }
+    }
+
+    uiPrefs->uiLanguage->value( language_index );
 
     //
     // ui/view/colors
@@ -1310,6 +1331,31 @@ void Preferences::run( ViewerUI* main )
 {
     uiMain = main;
     PreferencesUI* uiPrefs = main->uiPrefs;
+
+
+    if ( uiPrefs->uiLanguage->value() != language_index )
+    {
+        int ok = fl_choice( _("Need to close interface to change language.  "
+                              "Are you sure you want to continue?" ),
+                            _("No"),  _("Yes"), NULL );
+        if ( ok )
+        {
+
+            const char* language = kLanguages[uiPrefs->uiLanguage->value()];
+
+            setenv( "LANGUAGE", language, 1 );
+            setenv( "LC_MESSAGES", language, 1 );
+            setenv( "LC_NUMERIC", language, 1 );
+            setlocale( LC_MESSAGES, language );
+            setlocale( LC_NUMERIC, language );
+
+            std::string root = getenv( "MRV_ROOT" );
+            root += "/bin/mrViewer";
+
+            const char *const parmList[] = {root.c_str(), NULL};
+            execv( root.c_str(), (char* const*) parmList );
+        }
+    }
 
     DBG3;
 
