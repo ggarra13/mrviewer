@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-21 14:07-0300\n"
+"POT-Creation-Date: 2022-03-21 14:36-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3454,7 +3454,7 @@ msgstr "画像の交換に失敗しました"
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage%d%d"
 
-#: gui/mrvPreferences.cpp:1671
+#: gui/mrvPreferences.cpp:1667
 msgid "Expanded OCIO config to:"
 msgstr "OCIO構成を次のように拡張します."
 
@@ -3971,7 +3971,7 @@ msgstr "画像ゲイン値.ピクセル値の単純な乗数."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1474
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1796
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2388
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1873
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1869
 msgid "Gamma"
 msgstr "スペクトラム"
 
@@ -5371,7 +5371,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "常に近くの隣人"
 
-#: gui/mrvPreferences.cpp:1366
+#: gui/mrvPreferences.cpp:1362
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5420,7 +5420,7 @@ msgstr "次の画像バージョン"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1368 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5709,7 +5709,7 @@ msgstr "OCIOビュースイッチの失敗"
 msgid "OCIO config (*.{"
 msgstr "レジャー構成 (*.{"
 
-#: gui/mrvPreferences.cpp:1870
+#: gui/mrvPreferences.cpp:1866
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO環境変数が存在しません. CTLが使用されます. "
 
@@ -7196,19 +7196,19 @@ msgstr "mrViewerの起動時のデフォルトのゲインを設定します."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "mrViewerの起動時のデフォルト範囲を設定します."
 
-#: gui/mrvPreferences.cpp:1652
+#: gui/mrvPreferences.cpp:1648
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "OCIO構成をOCIO環境変数に設定します."
 
-#: gui/mrvPreferences.cpp:1633
+#: gui/mrvPreferences.cpp:1629
 msgid "Setting OCIO config to nuke-default."
 msgstr "OCIO構成をnuke-defaultに設定します."
 
-#: gui/mrvPreferences.cpp:1625
+#: gui/mrvPreferences.cpp:1621
 msgid "Setting OCIO config to saved preferences."
 msgstr "OCIO構成を保存されたプリファレンスに設定します."
 
-#: gui/mrvPreferences.cpp:1658
+#: gui/mrvPreferences.cpp:1654
 msgid "Setting OCIO config to:"
 msgstr "OCIO構成を次のように設定します."
 
@@ -9175,7 +9175,7 @@ msgstr "YUVAサポート:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1368 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241

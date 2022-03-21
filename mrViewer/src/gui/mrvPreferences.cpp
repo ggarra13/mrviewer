@@ -1348,11 +1348,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 }
 
-#ifdef _WIN32
-static const char* kCLocale = "English";
-#else
-static const char* kCLocale = "C";
-#endif
+
 
 
 void Preferences::run( ViewerUI* main )
@@ -1380,8 +1376,8 @@ void Preferences::run( ViewerUI* main )
             putenv( buf );
 #else
             setenv( "LANGUAGE", language, 1 );
-            setenv( "LC_MESSAGES", language, 1 );
-            setenv( "LC_NUMERIC", language, 1 );
+            // setenv( "LC_MESSAGES", language, 1 );
+            // setenv( "LC_NUMERIC", language, 1 );
 #endif
 
             std::string root = getenv( "MRV_ROOT" );
