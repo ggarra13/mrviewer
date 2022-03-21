@@ -1,10 +1,8 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include {<libintl.h>}
-i18n_conditional {}
+i18n_include <libintl.h>
 i18n_function gettext
-i18n_static_function _
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -482,7 +480,7 @@ If you try to open several mrViewers with different images, all these images wil
               user_data m user_data_type {ViewerUI*}
               callback {if (!o->mvalue() || !o->mvalue()->text ) return;
               mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-              v->refresh();} open selected
+              v->refresh();} open
               xywh {414 164 150 25} down_box BORDER_BOX align 1
             } {
               MenuItem {} {
@@ -499,7 +497,7 @@ v->refresh();}
               tooltip {Reload color theme from mrViewer.colors file again to refresh change in colors} xywh {424 194 135 30}
             }
             Fl_Choice uiLanguage {
-              label Language open
+              label Language open selected
               xywh {420 75 160 25} down_box BORDER_BOX
             } {
               MenuItem {} {

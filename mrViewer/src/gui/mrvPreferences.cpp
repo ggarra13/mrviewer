@@ -32,6 +32,7 @@
 #include <iostream>
 #include <algorithm>
 
+
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
@@ -87,6 +88,11 @@ namespace fs = boost::filesystem;
 #include "mrvColorAreaUI.h"
 #include "mrvReelUI.h"
 #include "mrViewer.h"
+
+#ifdef _WIN32
+#  include <comdef.h>  // you will need this
+#  include <Windows.h>
+#endif
 
 #ifdef _WIN32
 #  define execv _execv
@@ -601,8 +607,19 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !language ) language = getenv( "LC_ALL" );
     if ( !language ) language = getenv( "LC_MESSAGES" );
     if ( !language ) language = getenv( "LANG" );
-    if ( !language ) language = setlocale( LC_MESSAGES, NULL );
-    if ( language )
+
+#ifdef _WIN32
+    WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
+    int iResult = GetUserDefaultLocaleName( wcBuffer, LOCALE_NAME_MAX_LENGTH );
+    if ( iResult )
+    {
+        _bstr_t b( wcBuffer );
+        language = b;
+    }
+#else
+    if ( !language ) language = setlocale( LC_MESSAGES, "" );
+#endif
+    if ( language && strlen(language) > 1 )
     {
         for ( int i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
         {
@@ -1348,16 +1365,21 @@ void Preferences::run( ViewerUI* main )
 
             const char* language = kLanguages[uiPrefs->uiLanguage->value()];
 
+#ifdef _WIN32
+            char* buf = new char[64];
+            sprintf( buf, "LC_ALL=%s", language );
+            putenv( buf );
+#else
             setenv( "LANGUAGE", language, 1 );
             setenv( "LC_MESSAGES", language, 1 );
             setenv( "LC_NUMERIC", language, 1 );
-            setlocale( LC_MESSAGES, language );
-            setlocale( LC_NUMERIC, language );
+#endif
 
             std::string root = getenv( "MRV_ROOT" );
             root += "/bin/mrViewer";
 
             const char *const parmList[] = {root.c_str(), NULL};
+            std::cerr << "execv " << root << std::endl;
             execv( root.c_str(), (char* const*) parmList );
         }
         else
@@ -1631,8 +1653,6 @@ void Preferences::run( ViewerUI* main )
             old_ocio = var;
             mrvLOG_INFO( "ocio", old_ocio << std::endl );
         }
-
-        char buf[2048];
 
         DBG3;
         std::string parsed = expandVariables( var, "%", '%' );
