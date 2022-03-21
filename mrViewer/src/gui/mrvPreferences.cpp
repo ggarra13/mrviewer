@@ -621,8 +621,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         }
     }
 #else
-    if ( !language ) language = setlocale( LC_MESSAGES, "" );
+    if ( !language ) language = setlocale( LC_MESSAGES, NULL );
 #endif
+
 
     if ( language && strlen(language) > 1 )
     {
@@ -1387,7 +1388,6 @@ void Preferences::run( ViewerUI* main )
             root += "/bin/mrViewer";
 
             const char *const parmList[] = {root.c_str(), NULL};
-            std::cerr << "execv " << root << std::endl;
             execv( root.c_str(), (char* const*) parmList );
         }
         else
