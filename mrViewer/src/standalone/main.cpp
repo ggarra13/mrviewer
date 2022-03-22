@@ -217,10 +217,10 @@ int main( int argc, const char** argv )
 #endif
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language ) language = getenv( "LC_ALL" );
-    if ( !language ) language = getenv( "LC_NUMERIC" );
-    if ( !language ) language = getenv( "LANG" );
-    if ( language )
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_NUMERIC" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
+    if ( language && strlen(language) > 1 )
     {
         if ( strncmp( language, "ja", 2 ) == 0 ||
              strncmp( language, "ko", 2 ) == 0 ||

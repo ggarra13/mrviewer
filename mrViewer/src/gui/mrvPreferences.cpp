@@ -604,9 +604,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language ) language = getenv( "LC_ALL" );
-    if ( !language ) language = getenv( "LC_MESSAGES" );
-    if ( !language ) language = getenv( "LANG" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_MESSAGES" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
 
 #ifdef _WIN32
     if ( ! language )
