@@ -214,6 +214,15 @@ int main( int argc, const char** argv )
 
 #if defined __APPLE__ && defined __MACH__
     tmp = setlocale( LC_MESSAGES, NULL );
+    const char* language = getenv( "LANGUAGE" );
+    if ( language )
+    {
+        if ( strncmp( language, "ja", 2 ) == 0 ||
+             strncmp( language, "ko", 2 ) == 0 ||
+             strncmp( language, "zh", 2 ) == 0 )
+            tmp = "C";
+
+    }
     setlocale( LC_NUMERIC, tmp );
 #endif
 
