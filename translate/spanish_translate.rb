@@ -391,8 +391,8 @@ def fix( text, result, lang )
     if result =~ /％/
       result.gsub!( /％/, '%' )
     end
-    if result =~ /^([YL])（/
-      result.sub!( /^([YL])（/, "\\1 （" )
+    if result =~ /^([YL])\s*（/
+      result.sub!( /^([YL])\s*（/, "\\1 （" )
     end
     if result =~ /ID: %i n/
       result.sub!( /ID: %i n/, 'ID: %i\n' )
