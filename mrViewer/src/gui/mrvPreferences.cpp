@@ -1377,7 +1377,7 @@ void Preferences::run( ViewerUI* main )
 #else
             setenv( "LANGUAGE", language, 1 );
             // setenv( "LC_MESSAGES", language, 1 );
-            // setenv( "LC_NUMERIC", language, 1 );
+            setenv( "LC_NUMERIC", language, 1 );
 #endif
 
             std::string root = getenv( "MRV_ROOT" );
@@ -1867,6 +1867,11 @@ void Preferences::run( ViewerUI* main )
                         "Defaulting to CTL. ") );
         DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
+        main->gammaDefaults->clear();
+        main->gammaDefaults->add( _("2.2") );
+        main->gammaDefaults->add( _("1.8") );
+        main->gammaDefaults->add( _("1.0") );
+        main->gammaDefaults->add( _("0.45") );
         DBG3;
         use_ocio = false;
     }
