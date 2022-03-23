@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-22 19:45-0300\n"
+"POT-Creation-Date: 2022-03-23 02:59-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " 빈도: "
 msgid " has different display window than "
 msgstr " 다른 보기 창을 가지고 "
 
-#: standalone/main.cpp:420
+#: standalone/main.cpp:444
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -498,7 +498,7 @@ msgstr "(PAL 필드)"
 msgid "(RT) Render Transform"
 msgstr "렌더 변환"
 
-#: standalone/main.cpp:380
+#: standalone/main.cpp:405
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
@@ -587,7 +587,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1841
 msgid "0.45"
 msgstr "0.45"
 
@@ -603,7 +603,7 @@ msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1840
 msgid "1.0"
 msgstr "1.0"
 
@@ -648,7 +648,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1.77 HDTV(16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1839
 msgid "1.8"
 msgstr "1.8"
 
@@ -764,7 +764,7 @@ msgid "2.10 VistaVision"
 msgstr "2.10 비스타비전"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1838
 msgid "2.2"
 msgstr "2.2"
 
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "mrViewer 정보"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:281
+#: standalone/main.cpp:306
 msgid "About mrViewer"
 msgstr "mrViewer 정보"
 
@@ -1317,7 +1317,7 @@ msgstr "뒤로 주석 상자 단계"
 msgid "Annotation Frame Step Forwards"
 msgstr "단계 득점 상자 앞으로"
 
-#: standalone/main.cpp:418
+#: standalone/main.cpp:442
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1665,7 +1665,7 @@ msgstr "클립 블루스 게인"
 msgid "Blue value of image pixel under mouse."
 msgstr "마우스 아래 픽셀 이미지의 파란색 값입니다."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:601
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:625
 msgid "Boost exception: "
 msgstr "부스트 예외: "
 
@@ -1682,7 +1682,7 @@ msgid "Bottom Field"
 msgstr "로워 필드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:472 standalone/main.cpp:492
+#: standalone/main.cpp:496 standalone/main.cpp:516
 msgid "Bottom/top"
 msgstr "낮추다/더 높은"
 
@@ -1889,7 +1889,7 @@ msgid "Char"
 msgstr "성격"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:482 standalone/main.cpp:496
+#: standalone/main.cpp:506 standalone/main.cpp:520
 msgid "Checkerboard pattern"
 msgstr "그리드"
 
@@ -2092,10 +2092,6 @@ msgstr "색인에 대한 색상 채널을 찾을 수 없습니다. "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2146
 msgid "Color controls"
 msgstr "색상 컨트롤"
-
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
-msgid "Colors"
-msgstr "그림 물감"
 
 #: core/aviImage.cpp:1311
 msgid "Colorspace details not gotten "
@@ -2920,7 +2916,7 @@ msgid "Custom Field 9"
 msgstr "사용자 정의 필드 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:486 standalone/main.cpp:498
+#: standalone/main.cpp:510 standalone/main.cpp:522
 msgid "Cyan/red glasses"
 msgstr "시안 렌즈/빨간색"
 
@@ -3421,12 +3417,12 @@ msgid "Escape"
 msgstr "탈출하다"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:480 standalone/main.cpp:495
+#: standalone/main.cpp:504 standalone/main.cpp:519
 msgid "Even/odd columns"
 msgstr "이상한/쌍 열"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:478 standalone/main.cpp:494
+#: standalone/main.cpp:502 standalone/main.cpp:518
 msgid "Even/odd rows"
 msgstr "이상한/페어 라인"
 
@@ -3451,7 +3447,7 @@ msgstr "이미지 교체 실패"
 msgid "ExchangeImage %d %d"
 msgstr "이미지 교환 %d %d"
 
-#: gui/mrvPreferences.cpp:1667
+#: gui/mrvPreferences.cpp:1634
 msgid "Expanded OCIO config to:"
 msgstr "OCIO 구성 확장:"
 
@@ -3680,7 +3676,7 @@ msgstr "이름"
 msgid "Filename of the clip"
 msgstr "클립 파일 이름"
 
-#: standalone/main.cpp:597
+#: standalone/main.cpp:621
 msgid "Filesystem error: "
 msgstr "파일 시스템 오류: "
 
@@ -3968,7 +3964,7 @@ msgstr "이미지 게인 값. 픽셀 값의 단순 승수입니다."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1836
 msgid "Gamma"
 msgstr "스펙트럼"
 
@@ -4151,11 +4147,11 @@ msgstr "마녀"
 msgid "Hex Values"
 msgstr "16진수 값"
 
-#: standalone/main.cpp:284
+#: standalone/main.cpp:309
 msgid "Hide Others"
 msgstr "다른 사람 숨기기"
 
-#: standalone/main.cpp:283
+#: standalone/main.cpp:308
 msgid "Hide mrViewer"
 msgstr "mrViewer 숨기기"
 
@@ -4764,6 +4760,10 @@ msgstr "랩 CIELAB(L*a*b*)"
 msgid "Language"
 msgstr "언어"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
+msgid "Language and Colors"
+msgstr "언어 및 색상"
+
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
 msgid "Language if known"
@@ -4800,14 +4800,14 @@ msgid "Left View"
 msgstr "왼쪽 보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:464 standalone/main.cpp:491
+#: standalone/main.cpp:488 standalone/main.cpp:515
 msgid "Left view"
 msgstr "왼쪽 보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:448 standalone/main.cpp:454 standalone/main.cpp:474
-#: standalone/main.cpp:493
+#: standalone/main.cpp:472 standalone/main.cpp:478 standalone/main.cpp:498
+#: standalone/main.cpp:517
 msgid "Left/right"
 msgstr "왼쪽/오른쪽"
 
@@ -4977,7 +4977,7 @@ msgstr "에서 드라이브 키를 로드했습니다. "
 msgid "Local Caption"
 msgstr "지역 표지판"
 
-#: standalone/main.cpp:379
+#: standalone/main.cpp:404
 msgid "Lockfile "
 msgstr "파일 잠금 "
 
@@ -5366,7 +5366,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "항상 가까운 이웃"
 
-#: gui/mrvPreferences.cpp:1362
+#: gui/mrvLanguages.cpp:27
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5414,7 +5414,7 @@ msgstr "다음 이미지 버전"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5703,7 +5703,7 @@ msgstr "OCIO 보기 전환 실패"
 msgid "OCIO config (*.{"
 msgstr "레저 구성(*.{"
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1833
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 환경 변수가 존재하지 않습니다. CTL이 사용됩니다. "
 
@@ -6345,7 +6345,7 @@ msgstr "품질"
 msgid "Quicktime Movie"
 msgstr "퀵타임 영화"
 
-#: standalone/main.cpp:286
+#: standalone/main.cpp:311
 msgid "Quit mrViewer"
 msgstr "mrViewer 종료"
 
@@ -6498,7 +6498,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 빨간색 값입니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:484 standalone/main.cpp:497
+#: standalone/main.cpp:508 standalone/main.cpp:521
 msgid "Red/cyan glasses"
 msgstr "빨간 렌즈/시안"
 
@@ -6730,12 +6730,12 @@ msgid "Right View"
 msgstr "오른쪽보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:466 standalone/main.cpp:491
+#: standalone/main.cpp:490 standalone/main.cpp:515
 msgid "Right view"
 msgstr "오른쪽보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:476 standalone/main.cpp:493
+#: standalone/main.cpp:500 standalone/main.cpp:517
 msgid "Right/left"
 msgstr "오른쪽/왼쪽"
 
@@ -7110,7 +7110,7 @@ msgid "Sep"
 msgstr "9월"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:444 standalone/main.cpp:453
+#: standalone/main.cpp:468 standalone/main.cpp:477
 msgid "Separate layers"
 msgstr "별도의 레이어"
 
@@ -7127,7 +7127,7 @@ msgstr "시퀀스"
 msgid "Server"
 msgstr "섬기는 사람"
 
-#: standalone/main.cpp:285
+#: standalone/main.cpp:310
 msgid "Services"
 msgstr "서비스"
 
@@ -7188,19 +7188,19 @@ msgstr "mrViewer가 시작될 때 기본 게인을 설정합니다."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "mrViewer가 시작될 때 기본 범위를 설정합니다."
 
-#: gui/mrvPreferences.cpp:1648
+#: gui/mrvPreferences.cpp:1615
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "OCIO 구성을 OCIO 환경 변수로 설정:"
 
-#: gui/mrvPreferences.cpp:1629
+#: gui/mrvPreferences.cpp:1596
 msgid "Setting OCIO config to nuke-default."
 msgstr "OCIO 구성을 nuke-default로 설정합니다."
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1588
 msgid "Setting OCIO config to saved preferences."
 msgstr "OCIO 구성을 저장된 기본 설정으로 설정합니다."
 
-#: gui/mrvPreferences.cpp:1654
+#: gui/mrvPreferences.cpp:1621
 msgid "Setting OCIO config to:"
 msgstr "OCIO 구성을 다음과 같이 설정합니다."
 
@@ -7349,11 +7349,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 스테레오 이미지"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:468
+#: standalone/main.cpp:492
 msgid "Stereo OpenGL"
 msgstr "OpenGL 스테레오"
 
-#: standalone/main.cpp:490
+#: standalone/main.cpp:514
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "스테레오 출력이 잘못되었습니다. 유효한 값은 다음과 같습니다. "
 
@@ -8068,8 +8068,8 @@ msgstr "어퍼 필드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:446 standalone/main.cpp:453 standalone/main.cpp:470
-#: standalone/main.cpp:492
+#: standalone/main.cpp:470 standalone/main.cpp:477 standalone/main.cpp:494
+#: standalone/main.cpp:516
 msgid "Top/bottom"
 msgstr "더 높은/낮추다"
 
@@ -8093,7 +8093,7 @@ msgstr "범위가 없는 전통적"
 msgid "Transform"
 msgstr "변환"
 
-#: standalone/main.cpp:278
+#: standalone/main.cpp:303
 msgid "Translations: "
 msgstr "번역: "
 
@@ -8190,7 +8190,7 @@ msgstr "마지막으로 그린 모양 실행 취소"
 msgid "Unhandled Exception"
 msgstr "처리되지 않은 예외"
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:609
 msgid "Unhandled exception"
 msgstr "처리되지 않은 예외"
 
@@ -8264,7 +8264,7 @@ msgstr "텍스트에서 변환할 알 수 없는 데이터 유형"
 msgid "Unknown destination video frame format: "
 msgstr "알 수 없는 수신자 비디오 프레임 형식: "
 
-#: standalone/main.cpp:605
+#: standalone/main.cpp:629
 msgid "Unknown error"
 msgstr "알수없는 오류"
 
@@ -8395,11 +8395,11 @@ msgstr "사용자 인터페이스/포지셔닝"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3519
 msgid "User Interface/View Window"
-msgstr "사용자 인터페이스/보다"
+msgstr "사용자 인터페이스/보기 창"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3520
-msgid "User Interface/View Window/Colors"
-msgstr "사용자 인터페이스/보다/그림 물감"
+msgid "User Interface/View Window/Language and Colors"
+msgstr "사용자 인터페이스/보기 창/언어 및 색상"
 
 #: gui/mrvPreferences.cpp:250
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
@@ -8582,7 +8582,7 @@ msgstr "보다"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1219
 msgid "View Window"
-msgstr "보다"
+msgstr "보기 창"
 
 #: gui/mrvImageView.cpp:4862
 msgid "View/Data Window"
@@ -9151,7 +9151,7 @@ msgstr "YUVA 지원:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9703,6 +9703,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Colors"
+#~ msgstr "그림 물감"
 
 #~ msgid " is invalid."
 #~ msgstr " 유효하지 않다."

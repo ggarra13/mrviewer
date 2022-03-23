@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-22 19:45-0300\n"
+"POT-Creation-Date: 2022-03-23 02:59-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " frecvență: "
 msgid " has different display window than "
 msgstr " are o fereastră de vizualizare diferită de "
 
-#: standalone/main.cpp:420
+#: standalone/main.cpp:444
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -501,7 +501,7 @@ msgstr "(câmpuri PAL)"
 msgid "(RT) Render Transform"
 msgstr "Transformare de randare"
 
-#: standalone/main.cpp:380
+#: standalone/main.cpp:405
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Elimină-l dacă mrViewer nu pornește)"
 
@@ -590,7 +590,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1841
 msgid "0.45"
 msgstr "0,45"
 
@@ -606,7 +606,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1840
 msgid "1.0"
 msgstr "1,0"
 
@@ -651,7 +651,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1839
 msgid "1.8"
 msgstr "1,8"
 
@@ -767,7 +767,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 VistaVision"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1838
 msgid "2.2"
 msgstr "2,2"
 
@@ -1087,7 +1087,7 @@ msgid "About"
 msgstr "Despre mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:281
+#: standalone/main.cpp:306
 msgid "About mrViewer"
 msgstr "Despre mrViewer"
 
@@ -1320,7 +1320,7 @@ msgstr "Înapoi caseta de adnotare Pas"
 msgid "Annotation Frame Step Forwards"
 msgstr "Caseta de punctare a pasului înainte"
 
-#: standalone/main.cpp:418
+#: standalone/main.cpp:442
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1669,7 +1669,7 @@ msgstr "Clip Blues Gain"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valoarea albastră a imaginii pixelului de sub mouse."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:601
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:625
 msgid "Boost exception: "
 msgstr "Boost Excepție: "
 
@@ -1686,7 +1686,7 @@ msgid "Bottom Field"
 msgstr "Câmpul de Jos"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:472 standalone/main.cpp:492
+#: standalone/main.cpp:496 standalone/main.cpp:516
 msgid "Bottom/top"
 msgstr "inferior/Superior"
 
@@ -1895,7 +1895,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:482 standalone/main.cpp:496
+#: standalone/main.cpp:506 standalone/main.cpp:520
 msgid "Checkerboard pattern"
 msgstr "grilă"
 
@@ -2100,10 +2100,6 @@ msgstr "Canalul de culoare nu a fost găsit pentru index "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2146
 msgid "Color controls"
 msgstr "controale de culoare"
-
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
-msgid "Colors"
-msgstr "Culori"
 
 #: core/aviImage.cpp:1311
 msgid "Colorspace details not gotten "
@@ -2932,7 +2928,7 @@ msgid "Custom Field 9"
 msgstr "Câmp personalizat 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:486 standalone/main.cpp:498
+#: standalone/main.cpp:510 standalone/main.cpp:522
 msgid "Cyan/red glasses"
 msgstr "Lentile cyan/roșu"
 
@@ -3439,12 +3435,12 @@ msgid "Escape"
 msgstr "Evadare"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:480 standalone/main.cpp:495
+#: standalone/main.cpp:504 standalone/main.cpp:519
 msgid "Even/odd columns"
 msgstr "Ciudat/pereche de coloane"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:478 standalone/main.cpp:494
+#: standalone/main.cpp:502 standalone/main.cpp:518
 msgid "Even/odd rows"
 msgstr "Ciudat/linii de pereche"
 
@@ -3469,7 +3465,7 @@ msgstr "Schimbarea imaginii a eșuat"
 msgid "ExchangeImage %d %d"
 msgstr "Schimbați imaginea %d %d"
 
-#: gui/mrvPreferences.cpp:1667
+#: gui/mrvPreferences.cpp:1634
 msgid "Expanded OCIO config to:"
 msgstr "Extinderea configurației OCIO la:"
 
@@ -3698,7 +3694,7 @@ msgstr "Nume"
 msgid "Filename of the clip"
 msgstr "Numele fișierului clip"
 
-#: standalone/main.cpp:597
+#: standalone/main.cpp:621
 msgid "Filesystem error: "
 msgstr "Eroare de sistem de fișiere: "
 
@@ -3987,7 +3983,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1836
 msgid "Gamma"
 msgstr "Spectru"
 
@@ -4171,11 +4167,11 @@ msgstr "hex"
 msgid "Hex Values"
 msgstr "Valori hexazecimale"
 
-#: standalone/main.cpp:284
+#: standalone/main.cpp:309
 msgid "Hide Others"
 msgstr "Ascunde-i pe Ceilalți"
 
-#: standalone/main.cpp:283
+#: standalone/main.cpp:308
 msgid "Hide mrViewer"
 msgstr "Ascunde mrViewer"
 
@@ -4787,6 +4783,10 @@ msgstr "Laborator CIELAB (L*a*b*)"
 msgid "Language"
 msgstr "Limba"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
+msgid "Language and Colors"
+msgstr "Limbă și Culori"
+
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
 msgid "Language if known"
@@ -4823,14 +4823,14 @@ msgid "Left View"
 msgstr "Vedere din stânga"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:464 standalone/main.cpp:491
+#: standalone/main.cpp:488 standalone/main.cpp:515
 msgid "Left view"
 msgstr "Vedere din stânga"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:448 standalone/main.cpp:454 standalone/main.cpp:474
-#: standalone/main.cpp:493
+#: standalone/main.cpp:472 standalone/main.cpp:478 standalone/main.cpp:498
+#: standalone/main.cpp:517
 msgid "Left/right"
 msgstr "Stânga/dreapta"
 
@@ -5002,7 +5002,7 @@ msgstr "Am încărcat cheile de unitate de la "
 msgid "Local Caption"
 msgstr "semn local"
 
-#: standalone/main.cpp:379
+#: standalone/main.cpp:404
 msgid "Lockfile "
 msgstr "blocarea fișierului "
 
@@ -5392,7 +5392,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "Întotdeauna vecinul apropiat"
 
-#: gui/mrvPreferences.cpp:1362
+#: gui/mrvLanguages.cpp:27
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5441,7 +5441,7 @@ msgstr "Versiunea următoare a imaginii"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5731,7 +5731,7 @@ msgstr "Comutatorul de vizualizare OCIO a eșuat"
 msgid "OCIO config (*.{"
 msgstr "Configurație LEISURE (*.{"
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1833
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "Variabila de mediu OCIO nu există. Se va folosi CTL. "
 
@@ -6374,7 +6374,7 @@ msgstr "Calitate"
 msgid "Quicktime Movie"
 msgstr "film Quicktime"
 
-#: standalone/main.cpp:286
+#: standalone/main.cpp:311
 msgid "Quit mrViewer"
 msgstr "Ieșiți din mrViewer"
 
@@ -6526,7 +6526,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valoarea roșie a pixelului imaginii sub mouse."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:484 standalone/main.cpp:497
+#: standalone/main.cpp:508 standalone/main.cpp:521
 msgid "Red/cyan glasses"
 msgstr "Lentile roșii/cyan"
 
@@ -6761,12 +6761,12 @@ msgid "Right View"
 msgstr "Vedere dreapta"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:466 standalone/main.cpp:491
+#: standalone/main.cpp:490 standalone/main.cpp:515
 msgid "Right view"
 msgstr "Vedere dreapta"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:476 standalone/main.cpp:493
+#: standalone/main.cpp:500 standalone/main.cpp:517
 msgid "Right/left"
 msgstr "Dreapta/stânga"
 
@@ -7144,7 +7144,7 @@ msgid "Sep"
 msgstr "sept"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:444 standalone/main.cpp:453
+#: standalone/main.cpp:468 standalone/main.cpp:477
 msgid "Separate layers"
 msgstr "straturi separate"
 
@@ -7161,7 +7161,7 @@ msgstr "secvente"
 msgid "Server"
 msgstr "Server"
 
-#: standalone/main.cpp:285
+#: standalone/main.cpp:310
 msgid "Services"
 msgstr "Servicii"
 
@@ -7222,19 +7222,19 @@ msgstr "Setați câștigul implicit când pornește mrViewer."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Setați intervalul implicit când pornește mrViewer."
 
-#: gui/mrvPreferences.cpp:1648
+#: gui/mrvPreferences.cpp:1615
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "Setarea configurației OCIO la variabila de mediu OCIO:"
 
-#: gui/mrvPreferences.cpp:1629
+#: gui/mrvPreferences.cpp:1596
 msgid "Setting OCIO config to nuke-default."
 msgstr "Setarea configurației OCIO la nuke-default."
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1588
 msgid "Setting OCIO config to saved preferences."
 msgstr "Setarea configurației OCIO la preferințele salvate."
 
-#: gui/mrvPreferences.cpp:1654
+#: gui/mrvPreferences.cpp:1621
 msgid "Setting OCIO config to:"
 msgstr "Setarea configurației OCIO la:"
 
@@ -7383,11 +7383,11 @@ msgid "Stereo EXR Picture"
 msgstr "Imagine stereo EXR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:468
+#: standalone/main.cpp:492
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:490
+#: standalone/main.cpp:514
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Ieșirea stereo este invalidă. Valorile valide sunt: "
 
@@ -8120,8 +8120,8 @@ msgstr "Câmpul de Sus"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:446 standalone/main.cpp:453 standalone/main.cpp:470
-#: standalone/main.cpp:492
+#: standalone/main.cpp:470 standalone/main.cpp:477 standalone/main.cpp:494
+#: standalone/main.cpp:516
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -8145,7 +8145,7 @@ msgstr "Tradițional Fără Gamă"
 msgid "Transform"
 msgstr "Transformare"
 
-#: standalone/main.cpp:278
+#: standalone/main.cpp:303
 msgid "Translations: "
 msgstr "Traduceri: "
 
@@ -8242,7 +8242,7 @@ msgstr "Anulați ultima formă desenată"
 msgid "Unhandled Exception"
 msgstr "excepție netratată"
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:609
 msgid "Unhandled exception"
 msgstr "excepție netratată"
 
@@ -8316,7 +8316,7 @@ msgstr "Tip de date necunoscut de convertit din text"
 msgid "Unknown destination video frame format: "
 msgstr "Format de cadru video destinatar necunoscut: "
 
-#: standalone/main.cpp:605
+#: standalone/main.cpp:629
 msgid "Unknown error"
 msgstr "Eroare necunoscută"
 
@@ -8448,11 +8448,11 @@ msgstr "Interfața cu utilizatorul/poziționare"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3519
 msgid "User Interface/View Window"
-msgstr "Interfața cu utilizatorul/Vedere"
+msgstr "Interfața cu utilizatorul/Fereastra de vizualizare"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3520
-msgid "User Interface/View Window/Colors"
-msgstr "Interfața cu utilizatorul/Vedere/Culori"
+msgid "User Interface/View Window/Language and Colors"
+msgstr "Interfața cu utilizatorul/Fereastra de vizualizare/Limbă și Culori"
 
 #: gui/mrvPreferences.cpp:250
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
@@ -8636,7 +8636,7 @@ msgstr "Vedere"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1219
 msgid "View Window"
-msgstr "Vedere"
+msgstr "Fereastra de vizualizare"
 
 #: gui/mrvImageView.cpp:4862
 msgid "View/Data Window"
@@ -9236,7 +9236,7 @@ msgstr "Suport YUVA:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9793,6 +9793,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Colors"
+#~ msgstr "Culori"
 
 #~ msgid " is invalid."
 #~ msgstr " este invalid."

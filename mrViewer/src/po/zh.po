@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-22 19:45-0300\n"
+"POT-Creation-Date: 2022-03-23 02:59-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " 频率： "
 msgid " has different display window than "
 msgstr " 有不同的视窗 "
 
-#: standalone/main.cpp:420
+#: standalone/main.cpp:444
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -498,7 +498,7 @@ msgstr "（PAL 字段）"
 msgid "(RT) Render Transform"
 msgstr "渲染转换"
 
-#: standalone/main.cpp:380
+#: standalone/main.cpp:405
 msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 无法启动，请将其删除）"
 
@@ -587,7 +587,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1841
 msgid "0.45"
 msgstr "0.45"
 
@@ -603,7 +603,7 @@ msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1840
 msgid "1.0"
 msgstr "1.0"
 
@@ -648,7 +648,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1.77 高清电视 (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1839
 msgid "1.8"
 msgstr "1.8"
 
@@ -764,7 +764,7 @@ msgid "2.10 VistaVision"
 msgstr "2.10 远景"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1838
 msgid "2.2"
 msgstr "2.2"
 
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "关于 mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:281
+#: standalone/main.cpp:306
 msgid "About mrViewer"
 msgstr "关于 mrViewer"
 
@@ -1319,7 +1319,7 @@ msgstr "返回注释框步骤"
 msgid "Annotation Frame Step Forwards"
 msgstr "步得分框前进"
 
-#: standalone/main.cpp:418
+#: standalone/main.cpp:442
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1659,7 +1659,7 @@ msgstr "剪辑蓝调增益"
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下像素图像的蓝色值。"
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:601
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:625
 msgid "Boost exception: "
 msgstr "提升异常： "
 
@@ -1676,7 +1676,7 @@ msgid "Bottom Field"
 msgstr "下场"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:472 standalone/main.cpp:492
+#: standalone/main.cpp:496 standalone/main.cpp:516
 msgid "Bottom/top"
 msgstr "降低/更高"
 
@@ -1883,7 +1883,7 @@ msgid "Char"
 msgstr "特点"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:482 standalone/main.cpp:496
+#: standalone/main.cpp:506 standalone/main.cpp:520
 msgid "Checkerboard pattern"
 msgstr "网格"
 
@@ -2086,10 +2086,6 @@ msgstr "未找到索引的颜色通道 "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2146
 msgid "Color controls"
 msgstr "颜色控制"
-
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
-msgid "Colors"
-msgstr "颜色"
 
 #: core/aviImage.cpp:1311
 msgid "Colorspace details not gotten "
@@ -2912,7 +2908,7 @@ msgid "Custom Field 9"
 msgstr "自定义字段 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:486 standalone/main.cpp:498
+#: standalone/main.cpp:510 standalone/main.cpp:522
 msgid "Cyan/red glasses"
 msgstr "青色镜片/红色的"
 
@@ -3411,12 +3407,12 @@ msgid "Escape"
 msgstr "逃脱"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:480 standalone/main.cpp:495
+#: standalone/main.cpp:504 standalone/main.cpp:519
 msgid "Even/odd columns"
 msgstr "奇怪的/对列"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:478 standalone/main.cpp:494
+#: standalone/main.cpp:502 standalone/main.cpp:518
 msgid "Even/odd rows"
 msgstr "奇怪的/对线"
 
@@ -3441,7 +3437,7 @@ msgstr "交换图片失败"
 msgid "ExchangeImage %d %d"
 msgstr "交换图像 %d %d"
 
-#: gui/mrvPreferences.cpp:1667
+#: gui/mrvPreferences.cpp:1634
 msgid "Expanded OCIO config to:"
 msgstr "将 OCIO 配置扩展为："
 
@@ -3670,7 +3666,7 @@ msgstr "姓名"
 msgid "Filename of the clip"
 msgstr "剪辑文件名"
 
-#: standalone/main.cpp:597
+#: standalone/main.cpp:621
 msgid "Filesystem error: "
 msgstr "文件系统错误： "
 
@@ -3958,7 +3954,7 @@ msgstr "图像增益值。像素值的简单乘数。"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1836
 msgid "Gamma"
 msgstr "光谱"
 
@@ -4141,11 +4137,11 @@ msgstr "十六进制"
 msgid "Hex Values"
 msgstr "十六进制值"
 
-#: standalone/main.cpp:284
+#: standalone/main.cpp:309
 msgid "Hide Others"
 msgstr "隐藏其他人"
 
-#: standalone/main.cpp:283
+#: standalone/main.cpp:308
 msgid "Hide mrViewer"
 msgstr "隐藏 mrViewer"
 
@@ -4753,6 +4749,10 @@ msgstr "实验室 CIELAB (L*a*b*)"
 msgid "Language"
 msgstr "语言"
 
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1558
+msgid "Language and Colors"
+msgstr "语言和颜色"
+
 #: gui/mrvImageInformation.cpp:3548 gui/mrvImageInformation.cpp:3611
 #: gui/mrvImageInformation.cpp:3657
 msgid "Language if known"
@@ -4789,14 +4789,14 @@ msgid "Left View"
 msgstr "左视图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:464 standalone/main.cpp:491
+#: standalone/main.cpp:488 standalone/main.cpp:515
 msgid "Left view"
 msgstr "左视图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:448 standalone/main.cpp:454 standalone/main.cpp:474
-#: standalone/main.cpp:493
+#: standalone/main.cpp:472 standalone/main.cpp:478 standalone/main.cpp:498
+#: standalone/main.cpp:517
 msgid "Left/right"
 msgstr "剩下/正确的"
 
@@ -4966,7 +4966,7 @@ msgstr "从加载热键 "
 msgid "Local Caption"
 msgstr "地方标志"
 
-#: standalone/main.cpp:379
+#: standalone/main.cpp:404
 msgid "Lockfile "
 msgstr "文件锁 "
 
@@ -5351,7 +5351,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "永远是近邻"
 
-#: gui/mrvPreferences.cpp:1362
+#: gui/mrvLanguages.cpp:27
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5398,7 +5398,7 @@ msgstr "下一个图像版本"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5684,7 +5684,7 @@ msgstr "OCIO 视图切换失败"
 msgid "OCIO config (*.{"
 msgstr "休闲配置（*.{"
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1833
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 环境变量不存在。将使用 CTL。 "
 
@@ -6317,7 +6317,7 @@ msgstr "质量"
 msgid "Quicktime Movie"
 msgstr "快速电影"
 
-#: standalone/main.cpp:286
+#: standalone/main.cpp:311
 msgid "Quit mrViewer"
 msgstr "退出 mrViewer"
 
@@ -6467,7 +6467,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "鼠标下图像像素的红色值。"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:484 standalone/main.cpp:497
+#: standalone/main.cpp:508 standalone/main.cpp:521
 msgid "Red/cyan glasses"
 msgstr "红色镜片/青色"
 
@@ -6696,12 +6696,12 @@ msgid "Right View"
 msgstr "右视图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:466 standalone/main.cpp:491
+#: standalone/main.cpp:490 standalone/main.cpp:515
 msgid "Right view"
 msgstr "右视图"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:476 standalone/main.cpp:493
+#: standalone/main.cpp:500 standalone/main.cpp:517
 msgid "Right/left"
 msgstr "正确的/剩下"
 
@@ -7069,7 +7069,7 @@ msgid "Sep"
 msgstr "九月"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:444 standalone/main.cpp:453
+#: standalone/main.cpp:468 standalone/main.cpp:477
 msgid "Separate layers"
 msgstr "单独的层"
 
@@ -7086,7 +7086,7 @@ msgstr "序列"
 msgid "Server"
 msgstr "服务器"
 
-#: standalone/main.cpp:285
+#: standalone/main.cpp:310
 msgid "Services"
 msgstr "服务"
 
@@ -7145,19 +7145,19 @@ msgstr "设置 mrViewer 启动时的默认增益。"
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "设置 mrViewer 启动时的默认范围。"
 
-#: gui/mrvPreferences.cpp:1648
+#: gui/mrvPreferences.cpp:1615
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "将 OCIO 配置设置为 OCIO 环境变量："
 
-#: gui/mrvPreferences.cpp:1629
+#: gui/mrvPreferences.cpp:1596
 msgid "Setting OCIO config to nuke-default."
 msgstr "将 OCIO 配置设置为 nuke-default。"
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1588
 msgid "Setting OCIO config to saved preferences."
 msgstr "将 OCIO 配置设置为保存的首选项。"
 
-#: gui/mrvPreferences.cpp:1654
+#: gui/mrvPreferences.cpp:1621
 msgid "Setting OCIO config to:"
 msgstr "将 OCIO 配置设置为："
 
@@ -7306,11 +7306,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 立体影像"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:468
+#: standalone/main.cpp:492
 msgid "Stereo OpenGL"
 msgstr "OpenGL 立体"
 
-#: standalone/main.cpp:490
+#: standalone/main.cpp:514
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "立体声输出无效。有效值为： "
 
@@ -8005,8 +8005,8 @@ msgstr "上场"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:446 standalone/main.cpp:453 standalone/main.cpp:470
-#: standalone/main.cpp:492
+#: standalone/main.cpp:470 standalone/main.cpp:477 standalone/main.cpp:494
+#: standalone/main.cpp:516
 msgid "Top/bottom"
 msgstr "更高/降低"
 
@@ -8030,7 +8030,7 @@ msgstr "传统无范围"
 msgid "Transform"
 msgstr "转型"
 
-#: standalone/main.cpp:278
+#: standalone/main.cpp:303
 msgid "Translations: "
 msgstr "翻译： "
 
@@ -8127,7 +8127,7 @@ msgstr "撤消上次绘制的形状"
 msgid "Unhandled Exception"
 msgstr "未处理的异常"
 
-#: standalone/main.cpp:585
+#: standalone/main.cpp:609
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
@@ -8201,7 +8201,7 @@ msgstr "从文本转换的未知数据类型"
 msgid "Unknown destination video frame format: "
 msgstr "未知接收者视频帧格式： "
 
-#: standalone/main.cpp:605
+#: standalone/main.cpp:629
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -8332,11 +8332,11 @@ msgstr "用户界面/定位"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3519
 msgid "User Interface/View Window"
-msgstr "用户界面/看法"
+msgstr "用户界面/视窗"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3520
-msgid "User Interface/View Window/Colors"
-msgstr "用户界面/看法/颜色"
+msgid "User Interface/View Window/Language and Colors"
+msgstr "用户界面/视窗/语言和颜色"
 
 #: gui/mrvPreferences.cpp:250
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
@@ -8519,7 +8519,7 @@ msgstr "看法"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1219
 msgid "View Window"
-msgstr "看法"
+msgstr "视窗"
 
 #: gui/mrvImageView.cpp:4862
 msgid "View/Data Window"
@@ -9070,7 +9070,7 @@ msgstr "YUVA 支持：\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
 #: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
 #: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
-#: gui/mrvPreferences.cpp:1364 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9619,6 +9619,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Colors"
+#~ msgstr "颜色"
 
 #~ msgid " is invalid."
 #~ msgstr " 是无效的。"

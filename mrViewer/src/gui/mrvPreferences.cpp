@@ -1356,41 +1356,8 @@ void Preferences::run( ViewerUI* main )
     uiMain = main;
     PreferencesUI* uiPrefs = main->uiPrefs;
 
+    check_language( uiPrefs, language_index );
 
-    if ( uiPrefs->uiLanguage->value() != language_index )
-    {
-        int ok = fl_choice( _("Need to reboot mrViewer to change language.  "
-                              "Are you sure you want to continue?" ),
-                            _("No"),  _("Yes"), NULL, NULL );
-        if ( ok )
-        {
-
-            const char* language = kLanguages[uiPrefs->uiLanguage->value()];
-
-#ifdef _WIN32
-            char* buf = new char[64];
-            sprintf( buf, "LC_ALL=%s", language );
-            putenv( buf );
-            buf = new char[64];
-            sprintf( buf, "LANGUAGE=%s", language );
-            putenv( buf );
-#else
-            setenv( "LANGUAGE", language, 1 );
-            // setenv( "LC_MESSAGES", language, 1 );
-            setenv( "LC_NUMERIC", language, 1 );
-#endif
-
-            std::string root = getenv( "MRV_ROOT" );
-            root += "/bin/mrViewer";
-
-            const char *const parmList[] = {root.c_str(), NULL};
-            execv( root.c_str(), (char* const*) parmList );
-        }
-        else
-        {
-            uiPrefs->uiLanguage->value( language_index );
-        }
-    }
 
     DBG3;
 
@@ -2297,7 +2264,6 @@ void Preferences::save()
     int i;
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
 
-
     Fl_Preferences base( prefspath().c_str(), "filmaura",
                          "mrViewer" );
     base.set( "version", 6 );
@@ -2326,6 +2292,9 @@ void Preferences::save()
     //
     // ui options
     //
+
+    ui.set( "language", (int) uiPrefs->uiLanguage->value() );
+
     ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
@@ -2675,6 +2644,10 @@ void Preferences::save()
                              hotkeys_file.c_str() );
         save_hotkeys( keys );
     }
+
+    base.flush();
+
+    check_language( uiPrefs, language_index );
 }
 
 

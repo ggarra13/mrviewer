@@ -58,6 +58,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvException.h"
 #include "core/mrvCPU.h"
 
+#include "gui/mrvLanguages.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
@@ -209,6 +210,30 @@ int main( int argc, const char** argv )
 #if defined __APPLE__ && defined __MACH__
     setenv( "LC_CTYPE",  "UTF-8", 1 );
 #endif
+
+    {
+        Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                             "mrViewer" );
+
+        // Load ui language preferences
+        Fl_Preferences ui( base, "ui" );
+
+        int lang;
+        ui.get( "language", lang, -1 );
+        if ( lang >= 0 )
+        {
+            const char* code = kLanguages[lang];
+#ifdef _WIN32
+            char* buf = new char[64];
+            sprintf( buf, "LANGUAGE=%s", code );
+            putenv( buf );
+#else
+            setenv( "LANGUAGE", code, 1 );
+#endif
+        }
+    }
+
+
 
     const char* tmp = setlocale(LC_ALL, "");
 
@@ -408,7 +433,6 @@ int main( int argc, const char** argv )
                   sprintf( buf, "%" PRId64, (*i).end );
                   ui.set( "end", buf );
 
-                  ui.flush();
 
               }
               base.flush();
