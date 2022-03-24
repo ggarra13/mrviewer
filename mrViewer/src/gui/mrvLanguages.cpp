@@ -52,7 +52,8 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
 
             base.flush();
 
-
+            // deleete ViewerUI
+            delete mrv::Preferences::uiMain;
 
             std::string root = getenv( "MRV_ROOT" );
             root += "/bin/mrViewer";

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-23 02:59-0300\n"
+"POT-Creation-Date: 2022-03-24 06:11-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " frequenza: "
 msgid " has different display window than "
 msgstr " ha una finestra di visualizzazione diversa da "
 
-#: standalone/main.cpp:444
+#: standalone/main.cpp:446
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -238,11 +238,11 @@ msgstr " invece di 80"
 msgid " is "
 msgstr " è "
 
-#: gui/mrvImageBrowser.cpp:3738
+#: gui/mrvImageBrowser.cpp:3739
 msgid " is already the first version on disk."
 msgstr " È già la prima versione su disco."
 
-#: gui/mrvImageBrowser.cpp:3735
+#: gui/mrvImageBrowser.cpp:3736
 msgid " is already the last version on disk."
 msgstr " È già l'ultima versione su disco."
 
@@ -259,7 +259,7 @@ msgstr " manca. scegliendo "
 msgid " not found"
 msgstr " non trovato"
 
-#: gui/mrvImageBrowser.cpp:1709
+#: gui/mrvImageBrowser.cpp:1710
 msgid " not found in reel"
 msgstr " non si trova sulla bobina"
 
@@ -360,7 +360,7 @@ msgstr "\" al numero di protocollo"
 msgid "\"; Format: "
 msgstr "\"; Formato: "
 
-#: gui/mrvImageBrowser.cpp:1196
+#: gui/mrvImageBrowser.cpp:1197
 #, c-format
 msgid ""
 "#\n"
@@ -385,7 +385,7 @@ msgstr ""
 "Version 5.0\n"
 "Ghosting %d %d\n"
 
-#: gui/mrvImageBrowser.cpp:964
+#: gui/mrvImageBrowser.cpp:965
 #, c-format
 msgid ""
 "#\n"
@@ -501,7 +501,7 @@ msgstr "(campi PAL)"
 msgid "(RT) Render Transform"
 msgstr "Trasformazione di rendering"
 
-#: standalone/main.cpp:405
+#: standalone/main.cpp:407
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Rimuovilo se mrViewer non si avvia)"
 
@@ -519,7 +519,7 @@ msgstr ") dimensione della cache: "
 msgid ") for movie file"
 msgstr ") Per il film"
 
-#: gui/mrvImageBrowser.cpp:1686
+#: gui/mrvImageBrowser.cpp:1687
 msgid ") out of bounds"
 msgstr ") fuori dal limite"
 
@@ -527,7 +527,7 @@ msgstr ") fuori dal limite"
 msgid "** multivalue **"
 msgstr "** multivalore **"
 
-#: gui/mrvImageBrowser.cpp:2280
+#: gui/mrvImageBrowser.cpp:2281
 msgid "*******Added EMPTY media"
 msgstr "******* Aggiunto supporto VUOTO"
 
@@ -591,7 +591,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1841
+#: gui/mrvPreferences.cpp:1842
 msgid "0.45"
 msgstr "0,45"
 
@@ -607,7 +607,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1840
+#: gui/mrvPreferences.cpp:1841
 msgid "1.0"
 msgstr "1,0"
 
@@ -652,7 +652,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1839
+#: gui/mrvPreferences.cpp:1840
 msgid "1.8"
 msgstr "1,8"
 
@@ -768,7 +768,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 Vista Vision"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1838
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1839
 msgid "2.2"
 msgstr "2,2"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "Informazioni su mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:306
+#: standalone/main.cpp:308
 msgid "About mrViewer"
 msgstr "Informazioni su mrViewer"
 
@@ -1326,7 +1326,7 @@ msgstr "Passaggio della casella di annotazione indietro"
 msgid "Annotation Frame Step Forwards"
 msgstr "Passo in avanti con la casella segnapunti"
 
-#: standalone/main.cpp:442
+#: standalone/main.cpp:444
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1346,7 +1346,7 @@ msgstr "Applicare: "
 msgid "Apr"
 msgstr "aprile"
 
-#: gui/mrvImageBrowser.cpp:3325
+#: gui/mrvImageBrowser.cpp:3326
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
@@ -1354,7 +1354,7 @@ msgstr ""
 "Sei sicuro di voler\n"
 "liminare tutte le immagini selezionate dal rullino fotografico?"
 
-#: gui/mrvImageBrowser.cpp:3321
+#: gui/mrvImageBrowser.cpp:3322
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1362,7 +1362,7 @@ msgstr ""
 "Sei sicuro di voler\n"
 "liminare l'immagine dal rullino fotografico?"
 
-#: gui/mrvImageBrowser.cpp:1361
+#: gui/mrvImageBrowser.cpp:1362
 msgid ""
 "Are you sure you want to\n"
 "remove the reel?"
@@ -1370,7 +1370,7 @@ msgstr ""
 "Sei sicuro di voler\n"
 "ancellare la bobina?"
 
-#: gui/mrvImageBrowser.cpp:1138
+#: gui/mrvImageBrowser.cpp:1139
 #, c-format
 msgid "Are you sure you want to overwrite '%s'?"
 msgstr ""
@@ -1675,7 +1675,7 @@ msgstr "Clip Blues Guadagno"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valore blu dell'immagine pixel sotto il mouse."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:625
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:627
 msgid "Boost exception: "
 msgstr "Eccezione potenziamento: "
 
@@ -1692,7 +1692,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferiore"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:496 standalone/main.cpp:516
+#: standalone/main.cpp:498 standalone/main.cpp:518
 msgid "Bottom/top"
 msgstr "inferiore/Più alto"
 
@@ -1768,11 +1768,11 @@ msgstr "Percorsi CTL"
 msgid "CTL scripts"
 msgstr "Riassunti CTL"
 
-#: gui/mrvImageBrowser.cpp:4202
+#: gui/mrvImageBrowser.cpp:4203
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/Assegna trasformazione dispositivo di input (IDT)"
 
-#: gui/mrvImageBrowser.cpp:4206
+#: gui/mrvImageBrowser.cpp:4207
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/Assegna trasformazione rendering (RRT)"
 
@@ -1901,7 +1901,7 @@ msgid "Char"
 msgstr "Carattere"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:506 standalone/main.cpp:520
+#: standalone/main.cpp:508 standalone/main.cpp:522
 msgid "Checkerboard pattern"
 msgstr "griglia"
 
@@ -2266,7 +2266,7 @@ msgstr "Non ho potuto assegnare campioni di destinazione"
 msgid "Could not allocate fifo buffer"
 msgstr "Impossibile allocare il buffer fifo"
 
-#: gui/mrvImageBrowser.cpp:1436
+#: gui/mrvImageBrowser.cpp:1437
 msgid "Could not allocate new element"
 msgstr "Non ho potuto ospitare la traccia"
 
@@ -2529,7 +2529,7 @@ msgstr "Non ho potuto inizializzare il motore audio"
 msgid "Could not initialize draw engine"
 msgstr "Impossibile inizializzare il motore di disegno"
 
-#: gui/mrvImageBrowser.cpp:2480
+#: gui/mrvImageBrowser.cpp:2481
 msgid "Could not load '"
 msgstr "non riuscivo a caricare'"
 
@@ -2652,7 +2652,7 @@ msgstr "Non sono riuscito a trovare il dipinto "
 msgid "Could not set "
 msgstr "non è stato possibile impostare "
 
-#: gui/mrvPreferences.cpp:1347
+#: gui/mrvPreferences.cpp:1348
 msgid "Could not set transforms in GUI"
 msgstr "Non sono riuscito a impostare le trasformazioni nella GUI"
 
@@ -2780,51 +2780,51 @@ msgstr "Crea una nuova bobina"
 msgid "Create audio conversion from "
 msgstr "Crea conversione audio da "
 
-#: gui/mrvImageBrowser.cpp:4454
+#: gui/mrvImageBrowser.cpp:4455
 msgid "Create/Black Gap"
 msgstr "Creare/divario nero"
 
-#: gui/mrvImageBrowser.cpp:4476
+#: gui/mrvImageBrowser.cpp:4477
 msgid "Create/Checkered"
 msgstr "Creare/griglia"
 
-#: gui/mrvImageBrowser.cpp:4460
+#: gui/mrvImageBrowser.cpp:4461
 msgid "Create/Color Bars/PAL"
 msgstr "Creare/Barre di colore/AMICO"
 
-#: gui/mrvImageBrowser.cpp:4462
+#: gui/mrvImageBrowser.cpp:4463
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Creare/Barre di colore/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4456
+#: gui/mrvImageBrowser.cpp:4457
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Creare/Barre di colore/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4458
+#: gui/mrvImageBrowser.cpp:4459
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Creare/Barre di colore/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4464
+#: gui/mrvImageBrowser.cpp:4465
 msgid "Create/Gamma Chart/1.4"
 msgstr "Creare/Grafico della gamma/1.4"
 
-#: gui/mrvImageBrowser.cpp:4466
+#: gui/mrvImageBrowser.cpp:4467
 msgid "Create/Gamma Chart/1.8"
 msgstr "Creare/Grafico della gamma/1.8"
 
-#: gui/mrvImageBrowser.cpp:4468
+#: gui/mrvImageBrowser.cpp:4469
 msgid "Create/Gamma Chart/2.2"
 msgstr "Creare/Grafico della gamma/2.2"
 
-#: gui/mrvImageBrowser.cpp:4470
+#: gui/mrvImageBrowser.cpp:4471
 msgid "Create/Gamma Chart/2.4"
 msgstr "Creare/Grafico della gamma/2.4"
 
-#: gui/mrvImageBrowser.cpp:4472
+#: gui/mrvImageBrowser.cpp:4473
 msgid "Create/Gradient/Linear"
 msgstr "Creare/La laurea/lineare"
 
-#: gui/mrvImageBrowser.cpp:4474
+#: gui/mrvImageBrowser.cpp:4475
 msgid "Create/Gradient/Luminance"
 msgstr "Creare/La laurea/luminanza"
 
@@ -2948,7 +2948,7 @@ msgid "Custom Field 9"
 msgstr "Campo personalizzato 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:510 standalone/main.cpp:522
+#: standalone/main.cpp:512 standalone/main.cpp:524
 msgid "Cyan/red glasses"
 msgstr "Lenti ciano/rosso"
 
@@ -3339,7 +3339,7 @@ msgstr "modificabile per impostazione predefinita"
 msgid "Elapsed"
 msgstr "trascorso"
 
-#: gui/mrvImageBrowser.cpp:1578
+#: gui/mrvImageBrowser.cpp:1579
 msgid "Empty image in media passed to media_to_pathname"
 msgstr "Immagine multimediale vuota passata a media_to_pathname"
 
@@ -3351,11 +3351,11 @@ msgstr "Immagine vuota sulla cartolina"
 msgid "Empty image provided to Element constructor"
 msgstr "Immagine vuota fornita nel costruttore Element"
 
-#: gui/mrvImageBrowser.cpp:1580
+#: gui/mrvImageBrowser.cpp:1581
 msgid "Empty img->fileroot() passed to media_to_pathname"
 msgstr "vuoto img->fileroot() passato a media_to_pathname"
 
-#: gui/mrvImageBrowser.cpp:1571
+#: gui/mrvImageBrowser.cpp:1572
 msgid "Empty media passed to media_to_pathname"
 msgstr "Supporto vuoto passato a media_to_pathname"
 
@@ -3457,16 +3457,16 @@ msgid "Escape"
 msgstr "Fuga"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:504 standalone/main.cpp:519
+#: standalone/main.cpp:506 standalone/main.cpp:521
 msgid "Even/odd columns"
 msgstr "Strano/colonne di coppia"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:502 standalone/main.cpp:518
+#: standalone/main.cpp:504 standalone/main.cpp:520
 msgid "Even/odd rows"
 msgstr "Strano/linee di coppia"
 
-#: gui/mrvImageBrowser.cpp:3676
+#: gui/mrvImageBrowser.cpp:3677
 msgid "Example:  gizmo"
 msgstr "Esempio: gizmo_v003.0001.exr"
 
@@ -3482,12 +3482,12 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr "Scambio immagine non riuscito"
 
-#: gui/mrvImageBrowser.cpp:4637 gui/mrvImageBrowser.cpp:4777
+#: gui/mrvImageBrowser.cpp:4638 gui/mrvImageBrowser.cpp:4778
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "Immagine di scambio %d %d"
 
-#: gui/mrvPreferences.cpp:1634
+#: gui/mrvPreferences.cpp:1635
 msgid "Expanded OCIO config to:"
 msgstr "Espandere la configurazione OCIO a:"
 
@@ -3667,7 +3667,7 @@ msgstr "Archivio/Aprire/dossier AMF"
 msgid "File/Open/Directory"
 msgstr "Archivio/Aprire/directory"
 
-#: gui/mrvImageView.cpp:4781 gui/mrvImageBrowser.cpp:4162
+#: gui/mrvImageView.cpp:4781 gui/mrvImageBrowser.cpp:4163
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivio/Aprire/Film o sequenza"
@@ -3676,7 +3676,7 @@ msgstr "Archivio/Aprire/Film o sequenza"
 msgid "File/Open/Session"
 msgstr "Archivio/Aprire/Sessione"
 
-#: gui/mrvImageView.cpp:4785 gui/mrvImageBrowser.cpp:4164
+#: gui/mrvImageView.cpp:4785 gui/mrvImageBrowser.cpp:4165
 msgid "File/Open/Single Image"
 msgstr "Archivio/Aprire/Solo un'immagine"
 
@@ -3688,23 +3688,23 @@ msgstr "Archivio/Aprire/Film o sequenza per stereo"
 msgid "File/Quit"
 msgstr "Archivio/Lasciare"
 
-#: gui/mrvImageView.cpp:4814 gui/mrvImageBrowser.cpp:4409
+#: gui/mrvImageView.cpp:4814 gui/mrvImageBrowser.cpp:4410
 msgid "File/Save/Frame As"
 msgstr "Archivio/Mantenere/scatola come"
 
-#: gui/mrvImageView.cpp:4816 gui/mrvImageBrowser.cpp:4411
+#: gui/mrvImageView.cpp:4816 gui/mrvImageBrowser.cpp:4412
 msgid "File/Save/GL Snapshots As"
 msgstr "Archivio/Mantenere/Istantanee OpenGL"
 
-#: gui/mrvImageView.cpp:4809 gui/mrvImageBrowser.cpp:4404
+#: gui/mrvImageView.cpp:4809 gui/mrvImageBrowser.cpp:4405
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archivio/Mantenere/Film o sequenza Mi piace"
 
-#: gui/mrvImageView.cpp:4812 gui/mrvImageBrowser.cpp:4407
+#: gui/mrvImageView.cpp:4812 gui/mrvImageBrowser.cpp:4408
 msgid "File/Save/Reel As"
 msgstr "Archivio/Mantenere/come bobina"
 
-#: gui/mrvImageView.cpp:4818 gui/mrvImageBrowser.cpp:4413
+#: gui/mrvImageView.cpp:4818 gui/mrvImageBrowser.cpp:4414
 msgid "File/Save/Session As"
 msgstr "Archivio/Mantenere/sessione come"
 
@@ -3717,7 +3717,7 @@ msgstr "Nome"
 msgid "Filename of the clip"
 msgstr "Nome del file di clip"
 
-#: standalone/main.cpp:621
+#: standalone/main.cpp:623
 msgid "Filesystem error: "
 msgstr "Errore del file system: "
 
@@ -4007,7 +4007,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1836
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1837
 msgid "Gamma"
 msgstr "Spettro"
 
@@ -4191,11 +4191,11 @@ msgstr "esadecimale"
 msgid "Hex Values"
 msgstr "Valori esadecimali"
 
-#: standalone/main.cpp:309
+#: standalone/main.cpp:311
 msgid "Hide Others"
 msgstr "Nascondi gli altri"
 
-#: standalone/main.cpp:308
+#: standalone/main.cpp:310
 msgid "Hide mrViewer"
 msgstr "Nascondi mrViewer"
 
@@ -4355,7 +4355,7 @@ msgstr ""
 "Su Windows, se selezionato, verrà utilizzato il selettore di file nativo. Se "
 "non è selezionato, verrà utilizzato il selettore di file mrViewer."
 
-#: gui/mrvImageBrowser.cpp:1708
+#: gui/mrvImageBrowser.cpp:1709
 msgid "Image"
 msgstr "Immagine"
 
@@ -4424,11 +4424,11 @@ msgstr "File immagine \""
 msgid "Image input color space is undefined for "
 msgstr "Inserisci lo spazio colore dell'immagine non definita per "
 
-#: gui/mrvImageBrowser.cpp:3457
+#: gui/mrvImageBrowser.cpp:3458
 msgid "Image item not found for "
 msgstr "Articolo non trovato sulla bobina "
 
-#: gui/mrvImageBrowser.cpp:3560
+#: gui/mrvImageBrowser.cpp:3561
 msgid "Image not found in reel "
 msgstr "Immagine non trovata nel rullino fotografico "
 
@@ -4482,15 +4482,15 @@ msgid "Image/Clear Caches"
 msgstr "Immagine/Cancella cache"
 
 #: gui/mrvImageView.cpp:4965 gui/mrvImageView.cpp:4973
-#: gui/mrvImageBrowser.cpp:4425 gui/mrvImageBrowser.cpp:4435
+#: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "Immagine/Clone"
 
-#: gui/mrvImageView.cpp:4967 gui/mrvImageBrowser.cpp:4427
+#: gui/mrvImageView.cpp:4967 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "Immagine/Clona tutti i canali"
 
-#: gui/mrvImageBrowser.cpp:4439
+#: gui/mrvImageBrowser.cpp:4440
 msgid "Image/Media Info"
 msgstr "Immagine/Informazioni sui media"
 
@@ -4526,7 +4526,7 @@ msgstr "Immagine/Ruotalo di +90"
 msgid "Image/Rotate -90"
 msgstr "Immagine/Ruotalo di -90"
 
-#: gui/mrvImageView.cpp:5042 gui/mrvImageBrowser.cpp:4444
+#: gui/mrvImageView.cpp:5042 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "Immagine/Impostalo come sfondo"
 
@@ -4546,7 +4546,7 @@ msgstr "Immagine/Scambia EDL"
 msgid "Image/Update Single Frame in Cache"
 msgstr "Immagine/Aggiorna un frame della cache"
 
-#: gui/mrvImageBrowser.cpp:1685
+#: gui/mrvImageBrowser.cpp:1686
 msgid "ImageBrowser::remove idx value ("
 msgstr "ImageBrowser::rimuove il valore dell'indice ("
 
@@ -4601,7 +4601,7 @@ msgstr "Aumenta l'esposizione di 0,5."
 msgid "Increasing Y"
 msgstr "Incremento su Y"
 
-#: gui/mrvImageBrowser.cpp:1459
+#: gui/mrvImageBrowser.cpp:1460
 msgid "Index "
 msgstr "indice non valido "
 
@@ -4710,8 +4710,8 @@ msgstr "Trasformazione di riferimento di rendering inverso (RT)"
 msgid "Italian"
 msgstr "italiano"
 
-#: gui/mrvImageBrowser.cpp:4029 gui/mrvImageBrowser.cpp:4037
-#: gui/mrvImageBrowser.cpp:4116 gui/mrvImageBrowser.cpp:4124
+#: gui/mrvImageBrowser.cpp:4030 gui/mrvImageBrowser.cpp:4038
+#: gui/mrvImageBrowser.cpp:4117 gui/mrvImageBrowser.cpp:4125
 msgid "Item was not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -4852,14 +4852,14 @@ msgid "Left View"
 msgstr "Vista a sinistra"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:488 standalone/main.cpp:515
+#: standalone/main.cpp:490 standalone/main.cpp:517
 msgid "Left view"
 msgstr "Vista a sinistra"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:472 standalone/main.cpp:478 standalone/main.cpp:498
-#: standalone/main.cpp:517
+#: standalone/main.cpp:474 standalone/main.cpp:480 standalone/main.cpp:500
+#: standalone/main.cpp:519
 msgid "Left/right"
 msgstr "Sinistra/Giusto"
 
@@ -5010,7 +5010,7 @@ msgstr "Ho caricato le preferenze da "
 msgid "Loading"
 msgstr "Caricamento in corso"
 
-#: gui/mrvImageBrowser.cpp:2378
+#: gui/mrvImageBrowser.cpp:2379
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Caricamento \"%s\""
@@ -5023,7 +5023,7 @@ msgstr "Caricamento dello shader interno NV3.0 rgba"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Caricamento dello shader rgba interno arbfp1"
 
-#: gui/mrvPreferences.cpp:1332
+#: gui/mrvPreferences.cpp:1333
 msgid "Loading hotkeys from "
 msgstr "Ho caricato le chiavi di unità da "
 
@@ -5031,7 +5031,7 @@ msgstr "Ho caricato le chiavi di unità da "
 msgid "Local Caption"
 msgstr "segno locale"
 
-#: standalone/main.cpp:404
+#: standalone/main.cpp:406
 msgid "Lockfile "
 msgstr "blocco file "
 
@@ -5434,7 +5434,7 @@ msgstr ""
 "È necessario riavviare mrViewer per cambiare lingua. Sei sicuro di voler "
 "continuare?"
 
-#: gui/mrvImageBrowser.cpp:4631
+#: gui/mrvImageBrowser.cpp:4632
 msgid "Negative indices to exchange"
 msgstr "Indici negativi da negoziare"
 
@@ -5442,12 +5442,12 @@ msgstr "Indici negativi da negoziare"
 msgid "Never"
 msgstr "Mai"
 
-#: gui/mrvImageBrowser.cpp:3476
+#: gui/mrvImageBrowser.cpp:3477
 msgid "New item not created at "
 msgstr "Nuovo elemento non creato in "
 
-#: gui/mrvImageBrowser.cpp:1996 gui/mrvImageBrowser.cpp:3861
-#: gui/mrvImageBrowser.cpp:3952
+#: gui/mrvImageBrowser.cpp:1997 gui/mrvImageBrowser.cpp:3862
+#: gui/mrvImageBrowser.cpp:3953
 msgid "New item was not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -5472,9 +5472,9 @@ msgstr "Immagine successiva limitata"
 msgid "Next Image Version"
 msgstr "Versione immagine successiva"
 
-#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
-#: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
-#: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
+#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
+#: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
 #: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
@@ -5536,7 +5536,7 @@ msgstr "Nessuna immagine frontale da modificare"
 msgid "No image was decoded"
 msgstr "Nessuna immagine è stata decodificata"
 
-#: gui/mrvImageBrowser.cpp:2167
+#: gui/mrvImageBrowser.cpp:2168
 msgid "No left image to attach a stereo image pair"
 msgstr ""
 "Non è rimasta alcuna immagine per allegare una coppia di immagini stereo"
@@ -5565,7 +5565,7 @@ msgstr "Non esiste una trasformazione ODT valida: "
 msgid "No valid RT transform for \""
 msgstr "Non esiste una trasformazione RT valida per \""
 
-#: gui/mrvImageBrowser.cpp:3672
+#: gui/mrvImageBrowser.cpp:3673
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5766,7 +5766,7 @@ msgstr "Passaggio alla visualizzazione OCIO non riuscito"
 msgid "OCIO config (*.{"
 msgstr "Configurazione OCIO (*.{"
 
-#: gui/mrvPreferences.cpp:1833
+#: gui/mrvPreferences.cpp:1834
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "La variabile di ambiente OCIO non esiste. Verrà utilizzato CTL. "
 
@@ -5778,7 +5778,7 @@ msgstr "Immettere lo spazio colore dell'immagine non definito."
 msgid "OCIO/Display"
 msgstr "OCIO/Schermo"
 
-#: gui/mrvImageView.cpp:5069 gui/mrvImageBrowser.cpp:4195
+#: gui/mrvImageView.cpp:5069 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Inserisci spazio colore"
 
@@ -5848,8 +5848,8 @@ msgstr "ogg-video"
 msgid "Okay"
 msgstr "ok"
 
-#: gui/mrvImageBrowser.cpp:1978 gui/mrvImageBrowser.cpp:3845
-#: gui/mrvImageBrowser.cpp:3937
+#: gui/mrvImageBrowser.cpp:1979 gui/mrvImageBrowser.cpp:3846
+#: gui/mrvImageBrowser.cpp:3938
 msgid "Old item was not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -6275,7 +6275,7 @@ msgstr "Preferisci ICC"
 msgid "Preferences"
 msgstr "preferenze"
 
-#: gui/mrvImageBrowser.cpp:3589
+#: gui/mrvImageBrowser.cpp:3590
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
@@ -6284,7 +6284,7 @@ msgstr ""
 "lettere per distinguere la versione nel nome del file. Se dubiti di cosa "
 "usare, usa _v che creerà un'espressione regolare comprensiva."
 
-#: gui/mrvImageBrowser.cpp:4219
+#: gui/mrvImageBrowser.cpp:4220
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6412,7 +6412,7 @@ msgstr "Qualità"
 msgid "Quicktime Movie"
 msgstr "film veloce"
 
-#: standalone/main.cpp:311
+#: standalone/main.cpp:313
 msgid "Quit mrViewer"
 msgstr "Esci da mrViewer"
 
@@ -6565,7 +6565,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valore rosso del pixel dell'immagine sotto il mouse."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:508 standalone/main.cpp:521
+#: standalone/main.cpp:510 standalone/main.cpp:523
 msgid "Red/cyan glasses"
 msgstr "Lenti rosse/ciano"
 
@@ -6583,7 +6583,7 @@ msgstr "Ripeti la figura disegnata in precedenza"
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr "Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n"
 
-#: gui/mrvImageBrowser.cpp:1331
+#: gui/mrvImageBrowser.cpp:1332
 #, c-format
 msgid "Reel '%s' saved"
 msgstr "Bobina '%s' salvata"
@@ -6615,7 +6615,7 @@ msgstr "Numero di riferimento"
 msgid "Reference Service"
 msgstr "Servizio di riferimento"
 
-#: gui/mrvImageBrowser.cpp:3598 gui/mrvImageBrowser.cpp:3605
+#: gui/mrvImageBrowser.cpp:3599 gui/mrvImageBrowser.cpp:3606
 msgid "Regex "
 msgstr "Regex "
 
@@ -6631,7 +6631,7 @@ msgstr ""
 " gizmo_v003.001.exr\n"
 "(versione 3, frame 1)."
 
-#: gui/mrvImageBrowser.cpp:3618 gui/mrvImageBrowser.cpp:3666
+#: gui/mrvImageBrowser.cpp:3619 gui/mrvImageBrowser.cpp:3667
 msgid "Regular expression error: "
 msgstr "Errore di espressione regolare: "
 
@@ -6669,7 +6669,7 @@ msgstr ""
 msgid "Remaining"
 msgstr "mancante"
 
-#: gui/mrvImageBrowser.cpp:1722
+#: gui/mrvImageBrowser.cpp:1723
 msgid "Removal item not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -6722,7 +6722,7 @@ msgstr ""
 "Sostituisci tutti gli attributi/valori da visualizzare nell'hud, lasciando "
 "solo quelli specificati nella riga di comando."
 
-#: gui/mrvImageBrowser.cpp:3442
+#: gui/mrvImageBrowser.cpp:3443
 msgid "Replace image index is out of range"
 msgstr "Il tasso di sostituzione dell'immagine è fuori intervallo"
 
@@ -6799,12 +6799,12 @@ msgid "Right View"
 msgstr "Giusta vista"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:490 standalone/main.cpp:515
+#: standalone/main.cpp:492 standalone/main.cpp:517
 msgid "Right view"
 msgstr "Giusta vista"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:500 standalone/main.cpp:517
+#: standalone/main.cpp:502 standalone/main.cpp:519
 msgid "Right/left"
 msgstr "Destra/sinistra"
 
@@ -7134,11 +7134,11 @@ msgstr "Seleziona Ingresso stereo"
 msgid "Select stereo output"
 msgstr "Seleziona Uscita stereo"
 
-#: gui/mrvImageBrowser.cpp:4179
+#: gui/mrvImageBrowser.cpp:4180
 msgid "Select/Multiple Images for Modifying"
 msgstr "Selezionare/Più immagini da modificare"
 
-#: gui/mrvImageBrowser.cpp:4166
+#: gui/mrvImageBrowser.cpp:4167
 msgid "Select/Single Image for Dragging"
 msgstr "Selezionare/Un'immagine da trascinare"
 
@@ -7185,7 +7185,7 @@ msgid "Sep"
 msgstr "sett"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:468 standalone/main.cpp:477
+#: standalone/main.cpp:470 standalone/main.cpp:479
 msgid "Separate layers"
 msgstr "strati separati"
 
@@ -7202,7 +7202,7 @@ msgstr "sequenze"
 msgid "Server"
 msgstr "server"
 
-#: standalone/main.cpp:310
+#: standalone/main.cpp:312
 msgid "Services"
 msgstr "Servizi"
 
@@ -7263,20 +7263,20 @@ msgstr "Imposta il guadagno predefinito all'avvio di mrViewer."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Imposta l'intervallo predefinito all'avvio di mrViewer."
 
-#: gui/mrvPreferences.cpp:1615
+#: gui/mrvPreferences.cpp:1616
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr ""
 "Impostazione della configurazione OCIO sulla variabile di ambiente OCIO:"
 
-#: gui/mrvPreferences.cpp:1596
+#: gui/mrvPreferences.cpp:1597
 msgid "Setting OCIO config to nuke-default."
 msgstr "Impostazione della configurazione OCIO su nuke-default."
 
-#: gui/mrvPreferences.cpp:1588
+#: gui/mrvPreferences.cpp:1589
 msgid "Setting OCIO config to saved preferences."
 msgstr "Impostazione della configurazione OCIO sulle preferenze salvate."
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1622
 msgid "Setting OCIO config to:"
 msgstr "Impostazione della configurazione OCIO su:"
 
@@ -7425,11 +7425,11 @@ msgid "Stereo EXR Picture"
 msgstr "Immagine stereo EXR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:492
+#: standalone/main.cpp:494
 msgid "Stereo OpenGL"
 msgstr "Stereo OpenGL"
 
-#: standalone/main.cpp:514
+#: standalone/main.cpp:516
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "L'uscita stereo non è valida. I valori validi sono: "
 
@@ -8163,8 +8163,8 @@ msgstr "Campo Superiore"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:470 standalone/main.cpp:477 standalone/main.cpp:494
-#: standalone/main.cpp:516
+#: standalone/main.cpp:472 standalone/main.cpp:479 standalone/main.cpp:496
+#: standalone/main.cpp:518
 msgid "Top/bottom"
 msgstr "Più alto/inferiore"
 
@@ -8188,7 +8188,7 @@ msgstr "Tradizionale senza portata"
 msgid "Transform"
 msgstr "Trasformazione"
 
-#: standalone/main.cpp:303
+#: standalone/main.cpp:305
 msgid "Translations: "
 msgstr "Traduzioni: "
 
@@ -8285,7 +8285,7 @@ msgstr "Annulla l'ultima forma disegnata"
 msgid "Unhandled Exception"
 msgstr "eccezione non gestita"
 
-#: standalone/main.cpp:609
+#: standalone/main.cpp:611
 msgid "Unhandled exception"
 msgstr "eccezione non gestita"
 
@@ -8359,7 +8359,7 @@ msgstr "Tipo di dati sconosciuto da convertire da testo"
 msgid "Unknown destination video frame format: "
 msgstr "Formato frame video destinatario sconosciuto: "
 
-#: standalone/main.cpp:629
+#: standalone/main.cpp:631
 msgid "Unknown error"
 msgstr "Errore sconosciuto"
 
@@ -8580,19 +8580,19 @@ msgstr "Venditore:\t"
 msgid "Version Regex"
 msgstr "Versione ExpReg."
 
-#: gui/mrvImageView.cpp:4938 gui/mrvImageBrowser.cpp:4247
+#: gui/mrvImageView.cpp:4938 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "Versione/Primo"
 
-#: gui/mrvImageView.cpp:4947 gui/mrvImageBrowser.cpp:4256
+#: gui/mrvImageView.cpp:4947 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "Versione/Scorso"
 
-#: gui/mrvImageView.cpp:4941 gui/mrvImageBrowser.cpp:4253
+#: gui/mrvImageView.cpp:4941 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "Versione/A seguire"
 
-#: gui/mrvImageView.cpp:4943 gui/mrvImageBrowser.cpp:4250
+#: gui/mrvImageView.cpp:4943 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "Versione/Precedente"
 
@@ -9282,9 +9282,9 @@ msgstr "Sug. YUV"
 msgid "YUVA Support:\t"
 msgstr "Supporto YUVA:\t"
 
-#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1140
-#: gui/mrvImageBrowser.cpp:1363 gui/mrvImageBrowser.cpp:3323
-#: gui/mrvImageBrowser.cpp:3327 gui/mrvImageInformation.cpp:5167
+#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
+#: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
 #: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
@@ -9297,12 +9297,12 @@ msgstr "sì"
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr "Stai salvando il film che stai riproducendo. abortire..."
 
-#: gui/mrvImageBrowser.cpp:3137
+#: gui/mrvImageBrowser.cpp:3138
 msgid "You can load only a single stereo image to combine with current one."
 msgstr ""
 "Puoi caricare solo un'immagine stereo da combinare con quella corrente."
 
-#: gui/mrvImageBrowser.cpp:3153
+#: gui/mrvImageBrowser.cpp:3154
 msgid "You cannot load a reel as a stereo image."
 msgstr "Non è possibile caricare una bobina come immagine stereo."
 
@@ -9377,7 +9377,7 @@ msgstr "Data"
 msgid "cd/m2"
 msgstr "cd/m2"
 
-#: gui/mrvImageBrowser.cpp:2051
+#: gui/mrvImageBrowser.cpp:2052
 msgid "change_image index "
 msgstr "immagine change_imdice "
 
@@ -9650,8 +9650,8 @@ msgstr ""
 "display e dell'immagine utilizzando lo stesso algoritmo (CTL o ICC) ogni "
 "volta."
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1325
-#: gui/mrvPreferences.cpp:1331
+#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1326
+#: gui/mrvPreferences.cpp:1332
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

@@ -229,6 +229,8 @@ int main( int argc, const char** argv )
             putenv( buf );
 #else
             setenv( "LANGUAGE", code, 1 );
+            setenv( "LC_MESSAGES", code, 1 );
+            setenv( "LC_NUMERIC", code, 1 );
 #endif
         }
     }
