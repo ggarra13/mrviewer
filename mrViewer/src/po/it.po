@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-24 06:11-0300\n"
+"POT-Creation-Date: 2022-03-24 07:21-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " frequenza: "
 msgid " has different display window than "
 msgstr " ha una finestra di visualizzazione diversa da "
 
-#: standalone/main.cpp:446
+#: standalone/main.cpp:447
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -501,7 +501,7 @@ msgstr "(campi PAL)"
 msgid "(RT) Render Transform"
 msgstr "Trasformazione di rendering"
 
-#: standalone/main.cpp:407
+#: standalone/main.cpp:408
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Rimuovilo se mrViewer non si avvia)"
 
@@ -591,7 +591,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1842
+#: gui/mrvPreferences.cpp:1847
 msgid "0.45"
 msgstr "0,45"
 
@@ -607,7 +607,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1841
+#: gui/mrvPreferences.cpp:1846
 msgid "1.0"
 msgstr "1,0"
 
@@ -652,7 +652,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1840
+#: gui/mrvPreferences.cpp:1845
 msgid "1.8"
 msgstr "1,8"
 
@@ -768,7 +768,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 Vista Vision"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1839
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1844
 msgid "2.2"
 msgstr "2,2"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "Informazioni su mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:308
+#: standalone/main.cpp:309
 msgid "About mrViewer"
 msgstr "Informazioni su mrViewer"
 
@@ -1326,7 +1326,7 @@ msgstr "Passaggio della casella di annotazione indietro"
 msgid "Annotation Frame Step Forwards"
 msgstr "Passo in avanti con la casella segnapunti"
 
-#: standalone/main.cpp:444
+#: standalone/main.cpp:445
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1675,7 +1675,7 @@ msgstr "Clip Blues Guadagno"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valore blu dell'immagine pixel sotto il mouse."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:627
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:628
 msgid "Boost exception: "
 msgstr "Eccezione potenziamento: "
 
@@ -1692,7 +1692,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferiore"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:498 standalone/main.cpp:518
+#: standalone/main.cpp:499 standalone/main.cpp:519
 msgid "Bottom/top"
 msgstr "inferiore/Più alto"
 
@@ -1901,7 +1901,7 @@ msgid "Char"
 msgstr "Carattere"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:508 standalone/main.cpp:522
+#: standalone/main.cpp:509 standalone/main.cpp:523
 msgid "Checkerboard pattern"
 msgstr "griglia"
 
@@ -2652,7 +2652,7 @@ msgstr "Non sono riuscito a trovare il dipinto "
 msgid "Could not set "
 msgstr "non è stato possibile impostare "
 
-#: gui/mrvPreferences.cpp:1348
+#: gui/mrvPreferences.cpp:1353
 msgid "Could not set transforms in GUI"
 msgstr "Non sono riuscito a impostare le trasformazioni nella GUI"
 
@@ -2948,7 +2948,7 @@ msgid "Custom Field 9"
 msgstr "Campo personalizzato 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:512 standalone/main.cpp:524
+#: standalone/main.cpp:513 standalone/main.cpp:525
 msgid "Cyan/red glasses"
 msgstr "Lenti ciano/rosso"
 
@@ -3457,12 +3457,12 @@ msgid "Escape"
 msgstr "Fuga"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:506 standalone/main.cpp:521
+#: standalone/main.cpp:507 standalone/main.cpp:522
 msgid "Even/odd columns"
 msgstr "Strano/colonne di coppia"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:504 standalone/main.cpp:520
+#: standalone/main.cpp:505 standalone/main.cpp:521
 msgid "Even/odd rows"
 msgstr "Strano/linee di coppia"
 
@@ -3487,7 +3487,7 @@ msgstr "Scambio immagine non riuscito"
 msgid "ExchangeImage %d %d"
 msgstr "Immagine di scambio %d %d"
 
-#: gui/mrvPreferences.cpp:1635
+#: gui/mrvPreferences.cpp:1640
 msgid "Expanded OCIO config to:"
 msgstr "Espandere la configurazione OCIO a:"
 
@@ -3717,7 +3717,7 @@ msgstr "Nome"
 msgid "Filename of the clip"
 msgstr "Nome del file di clip"
 
-#: standalone/main.cpp:623
+#: standalone/main.cpp:624
 msgid "Filesystem error: "
 msgstr "Errore del file system: "
 
@@ -4007,7 +4007,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1837
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1842
 msgid "Gamma"
 msgstr "Spettro"
 
@@ -4191,11 +4191,11 @@ msgstr "esadecimale"
 msgid "Hex Values"
 msgstr "Valori esadecimali"
 
-#: standalone/main.cpp:311
+#: standalone/main.cpp:312
 msgid "Hide Others"
 msgstr "Nascondi gli altri"
 
-#: standalone/main.cpp:310
+#: standalone/main.cpp:311
 msgid "Hide mrViewer"
 msgstr "Nascondi mrViewer"
 
@@ -4852,14 +4852,14 @@ msgid "Left View"
 msgstr "Vista a sinistra"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:490 standalone/main.cpp:517
+#: standalone/main.cpp:491 standalone/main.cpp:518
 msgid "Left view"
 msgstr "Vista a sinistra"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:474 standalone/main.cpp:480 standalone/main.cpp:500
-#: standalone/main.cpp:519
+#: standalone/main.cpp:475 standalone/main.cpp:481 standalone/main.cpp:501
+#: standalone/main.cpp:520
 msgid "Left/right"
 msgstr "Sinistra/Giusto"
 
@@ -5023,7 +5023,7 @@ msgstr "Caricamento dello shader interno NV3.0 rgba"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Caricamento dello shader rgba interno arbfp1"
 
-#: gui/mrvPreferences.cpp:1333
+#: gui/mrvPreferences.cpp:1338
 msgid "Loading hotkeys from "
 msgstr "Ho caricato le chiavi di unità da "
 
@@ -5031,7 +5031,7 @@ msgstr "Ho caricato le chiavi di unità da "
 msgid "Local Caption"
 msgstr "segno locale"
 
-#: standalone/main.cpp:406
+#: standalone/main.cpp:407
 msgid "Lockfile "
 msgstr "blocco file "
 
@@ -5766,7 +5766,7 @@ msgstr "Passaggio alla visualizzazione OCIO non riuscito"
 msgid "OCIO config (*.{"
 msgstr "Configurazione OCIO (*.{"
 
-#: gui/mrvPreferences.cpp:1834
+#: gui/mrvPreferences.cpp:1839
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "La variabile di ambiente OCIO non esiste. Verrà utilizzato CTL. "
 
@@ -6412,7 +6412,7 @@ msgstr "Qualità"
 msgid "Quicktime Movie"
 msgstr "film veloce"
 
-#: standalone/main.cpp:313
+#: standalone/main.cpp:314
 msgid "Quit mrViewer"
 msgstr "Esci da mrViewer"
 
@@ -6565,7 +6565,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valore rosso del pixel dell'immagine sotto il mouse."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:510 standalone/main.cpp:523
+#: standalone/main.cpp:511 standalone/main.cpp:524
 msgid "Red/cyan glasses"
 msgstr "Lenti rosse/ciano"
 
@@ -6799,12 +6799,12 @@ msgid "Right View"
 msgstr "Giusta vista"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:492 standalone/main.cpp:517
+#: standalone/main.cpp:493 standalone/main.cpp:518
 msgid "Right view"
 msgstr "Giusta vista"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:502 standalone/main.cpp:519
+#: standalone/main.cpp:503 standalone/main.cpp:520
 msgid "Right/left"
 msgstr "Destra/sinistra"
 
@@ -7185,7 +7185,7 @@ msgid "Sep"
 msgstr "sett"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:470 standalone/main.cpp:479
+#: standalone/main.cpp:471 standalone/main.cpp:480
 msgid "Separate layers"
 msgstr "strati separati"
 
@@ -7202,7 +7202,7 @@ msgstr "sequenze"
 msgid "Server"
 msgstr "server"
 
-#: standalone/main.cpp:312
+#: standalone/main.cpp:313
 msgid "Services"
 msgstr "Servizi"
 
@@ -7263,20 +7263,20 @@ msgstr "Imposta il guadagno predefinito all'avvio di mrViewer."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Imposta l'intervallo predefinito all'avvio di mrViewer."
 
-#: gui/mrvPreferences.cpp:1616
+#: gui/mrvPreferences.cpp:1621
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr ""
 "Impostazione della configurazione OCIO sulla variabile di ambiente OCIO:"
 
-#: gui/mrvPreferences.cpp:1597
+#: gui/mrvPreferences.cpp:1602
 msgid "Setting OCIO config to nuke-default."
 msgstr "Impostazione della configurazione OCIO su nuke-default."
 
-#: gui/mrvPreferences.cpp:1589
+#: gui/mrvPreferences.cpp:1594
 msgid "Setting OCIO config to saved preferences."
 msgstr "Impostazione della configurazione OCIO sulle preferenze salvate."
 
-#: gui/mrvPreferences.cpp:1622
+#: gui/mrvPreferences.cpp:1627
 msgid "Setting OCIO config to:"
 msgstr "Impostazione della configurazione OCIO su:"
 
@@ -7425,11 +7425,11 @@ msgid "Stereo EXR Picture"
 msgstr "Immagine stereo EXR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:494
+#: standalone/main.cpp:495
 msgid "Stereo OpenGL"
 msgstr "Stereo OpenGL"
 
-#: standalone/main.cpp:516
+#: standalone/main.cpp:517
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "L'uscita stereo non è valida. I valori validi sono: "
 
@@ -8163,8 +8163,8 @@ msgstr "Campo Superiore"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:472 standalone/main.cpp:479 standalone/main.cpp:496
-#: standalone/main.cpp:518
+#: standalone/main.cpp:473 standalone/main.cpp:480 standalone/main.cpp:497
+#: standalone/main.cpp:519
 msgid "Top/bottom"
 msgstr "Più alto/inferiore"
 
@@ -8188,7 +8188,7 @@ msgstr "Tradizionale senza portata"
 msgid "Transform"
 msgstr "Trasformazione"
 
-#: standalone/main.cpp:305
+#: standalone/main.cpp:306
 msgid "Translations: "
 msgstr "Traduzioni: "
 
@@ -8285,7 +8285,7 @@ msgstr "Annulla l'ultima forma disegnata"
 msgid "Unhandled Exception"
 msgstr "eccezione non gestita"
 
-#: standalone/main.cpp:611
+#: standalone/main.cpp:612
 msgid "Unhandled exception"
 msgstr "eccezione non gestita"
 
@@ -8359,7 +8359,7 @@ msgstr "Tipo di dati sconosciuto da convertire da testo"
 msgid "Unknown destination video frame format: "
 msgstr "Formato frame video destinatario sconosciuto: "
 
-#: standalone/main.cpp:631
+#: standalone/main.cpp:632
 msgid "Unknown error"
 msgstr "Errore sconosciuto"
 
@@ -9650,8 +9650,8 @@ msgstr ""
 "display e dell'immagine utilizzando lo stesso algoritmo (CTL o ICC) ogni "
 "volta."
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1326
-#: gui/mrvPreferences.cpp:1332
+#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1331
+#: gui/mrvPreferences.cpp:1337
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

@@ -629,6 +629,11 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
         for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
         {
+            if ( strncmp( language, "en", 2 ) == 0 )
+            {
+                language_index = 2;
+                break;
+            }
             if ( strncmp( language, kLanguages[i], 2 ) == 0 )
             {
                 language_index = i;

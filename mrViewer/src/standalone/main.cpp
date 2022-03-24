@@ -249,7 +249,8 @@ int main( int argc, const char** argv )
     if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
     if ( language && strlen(language) > 1 )
     {
-        if ( strncmp( language, "ja", 2 ) == 0 ||
+        if ( strncmp( language, "en", 2 ) == 0 ||
+             strncmp( language, "ja", 2 ) == 0 ||
              strncmp( language, "ko", 2 ) == 0 ||
              strncmp( language, "zh", 2 ) == 0 )
             tmp = "C";
