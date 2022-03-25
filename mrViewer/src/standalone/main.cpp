@@ -229,8 +229,10 @@ int main( int argc, const char** argv )
             putenv( buf );
 #else
             setenv( "LANGUAGE", code, 1 );
-            setenv( "LC_MESSAGES", code, 1 );
             setenv( "LC_NUMERIC", code, 1 );
+#ifdef OSX
+            setenv( "LC_MESSAGES", code, 1 );
+#endif
 #endif
         }
     }
@@ -247,9 +249,10 @@ int main( int argc, const char** argv )
     if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
     if ( !language || strlen(language) < 2 ) language = getenv( "LC_NUMERIC" );
     if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
-    if ( language && strlen(language) > 1 )
+    if ( language )
     {
-        if ( strncmp( language, "en", 2 ) == 0 ||
+        if ( strncmp( language, "C",  1 ) == 0 ||
+             strncmp( language, "en", 2 ) == 0 ||
              strncmp( language, "ja", 2 ) == 0 ||
              strncmp( language, "ko", 2 ) == 0 ||
              strncmp( language, "zh", 2 ) == 0 )
