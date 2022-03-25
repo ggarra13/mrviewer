@@ -1,5 +1,3 @@
-
-
 #ifndef mrvActionWindow_h
 #define mrvActionWindow_h
 
@@ -22,6 +20,11 @@ public:
     void main( ViewerUI* m ) {
         uiMain = m;
     }
+
+    ViewerUI* main() const {
+        return uiMain;
+    }
+
     ImageView* view() const;
 
     virtual int handle( int event );

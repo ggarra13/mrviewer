@@ -903,22 +903,23 @@ void ImageBrowser::save_session()
 
         if ( i == 0 ) file = mrv::save_session( dir.c_str() );
         if ( file.empty() ) return;
+        size_t pos = file.find( ".session" );
+        if ( pos == std::string::npos )
+        {
+            file += ".session";
+        }
 
         if ( i == 0 ) save_session_(file);
         std::string reelfile = file;
         fs::path session = file;
-        size_t pos = file.find( ".session" );
-        if ( pos != std::string::npos )
-        {
-            session = session.filename();
-            session += ".reels";
-            reelfile = file.substr( 0, pos );
-            fs::path path = reelfile;
-            path = path.parent_path();
-            path /= session;
-            path /= reel->name;
-            reelfile = path.string();
-        }
+        session = session.filename();
+        session += ".reels";
+        reelfile = file.substr( 0, pos );
+        fs::path path = reelfile;
+        path = path.parent_path();
+        path /= session;
+        path /= reel->name;
+        reelfile = path.string();
         reelfile += ".reel";
         save_reel_( reel, reelfile );
     }

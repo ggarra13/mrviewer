@@ -127,6 +127,7 @@ public:
     static std::string tempDir;
     static std::string hotkeys_file;
     static ColorSchemes schemes;
+    static int language_index;
     static int debug;
 };
 

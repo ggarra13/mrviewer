@@ -91,7 +91,8 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
   #  ADD_COMPILE_OPTIONS( -W1 )
 
-  ADD_DEFINITIONS( -DMR_SSE -DWIN32 -D_WIN32_WINNT=0x0501 )
+ # ADD_DEFINITIONS( -DMR_SSE -DWIN32  )
+  ADD_DEFINITIONS( -DMR_SSE -DWIN32 -D_WIN32_WINNT=0x0601 )
 
   SET(OS_LIBRARIES GDIplus Winmm ws2_32 Psapi ${GLEW_LIBRARIES} )
 
@@ -104,8 +105,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DOSX -DMR_SSE -D__MACOSX_CORE__ )
   ADD_COMPILE_OPTIONS( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
-  set( AOENGINE 0 )
-  set( RT_AUDIO_ENGINE 1 )
 
   LINK_DIRECTORIES( /usr/local/lib )
   set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
@@ -162,8 +161,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     /usr/lib
     )
 
-  # SET THIS TO 1 to use AO ENGINE (libao) ON LINUX
-  set( AOENGINE 0 )
 
   ADD_DEFINITIONS( -DLINUX )
   ADD_COMPILE_OPTIONS( -O3 -msse )
@@ -360,6 +357,7 @@ SET( SOURCES
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
+  gui/mrvLanguages.cpp
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp

@@ -180,13 +180,12 @@ AudioEngine* AudioEngine::factory()
 #else
 
 #if defined(_WIN32) || defined(_WIN64)
-    //r = new mrv::DirectXEngine();
     r = new mrv::WaveEngine();
-#elif defined(LINUX)
+# elif defined(LINUX)
     r = new mrv::ALSAEngine();
 #endif
-
 #endif
+
     return r;
 }
 

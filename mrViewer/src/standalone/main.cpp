@@ -58,6 +58,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvException.h"
 #include "core/mrvCPU.h"
 
+#include "gui/mrvLanguages.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
@@ -210,12 +211,52 @@ int main( int argc, const char** argv )
     setenv( "LC_CTYPE",  "UTF-8", 1 );
 #endif
 
+    {
+        Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                             "mrViewer" );
+
+        // Load ui language preferences
+        Fl_Preferences ui( base, "ui" );
+
+        int lang;
+        ui.get( "language", lang, -1 );
+        if ( lang >= 0 )
+        {
+            const char* code = kLanguages[lang];
+#ifdef _WIN32
+            char* buf = new char[64];
+            sprintf( buf, "LANGUAGE=%s", code );
+            putenv( buf );
+#else
+            setenv( "LANGUAGE", code, 1 );
+            setenv( "LC_MESSAGES", code, 1 );
+            setenv( "LC_NUMERIC", code, 1 );
+#endif
+        }
+    }
+
+
+
     const char* tmp = setlocale(LC_ALL, "");
 
 #if defined __APPLE__ && defined __MACH__
     tmp = setlocale( LC_MESSAGES, NULL );
-    setlocale( LC_NUMERIC, tmp );
 #endif
+
+    const char* language = getenv( "LANGUAGE" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_NUMERIC" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
+    if ( language && strlen(language) > 1 )
+    {
+        if ( strncmp( language, "en", 2 ) == 0 ||
+             strncmp( language, "ja", 2 ) == 0 ||
+             strncmp( language, "ko", 2 ) == 0 ||
+             strncmp( language, "zh", 2 ) == 0 )
+            tmp = "C";
+    }
+
+    setlocale( LC_NUMERIC, tmp );
 
 
     // Create and install global locale
@@ -395,7 +436,6 @@ int main( int argc, const char** argv )
                   sprintf( buf, "%" PRId64, (*i).end );
                   ui.set( "end", buf );
 
-                  ui.flush();
 
               }
               base.flush();

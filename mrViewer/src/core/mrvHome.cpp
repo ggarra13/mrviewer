@@ -117,7 +117,7 @@ std::string homepath()
 
 std::string studiopath()
 {
-    const char* c = getenv( "STUDIOPATH" );
+    const char* c = fl_getenv( "STUDIOPATH" );
     if (!c) return "";
     std::string r = c;
     if ( r.substr( r.size() - 1, r.size() ) != "/" )

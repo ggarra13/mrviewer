@@ -38,7 +38,7 @@ def fix( text, result, lang )
        text == "XYZ CIE XYZ" or
        text == 'S' or text == 'E' or text == 'X' or text == 'Y' or
        text == 'X:' or text == 'Y:' or text == 'R' or text == 'G' or
-       text == '15' or text == '50' or
+       text == '15' or text == '50' or text == 'W' or text == "24000/1001" or
        text == 'B' or text == 'H' or text == 'L' or text == 'V' or
        text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
        text =~ /^DAW:/ )
@@ -58,6 +58,7 @@ def fix( text, result, lang )
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
   elsif lang == 'cs'
+    result.sub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' ) # for film aspects
     if text == 'Frame %<PRId64> '
       result = 'snímků %<PRId64> '
     elsif text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
@@ -66,6 +67,8 @@ def fix( text, result, lang )
       result = 'Uložení sekvence(í) %<PRId64> - %<PRId64>'
     elsif text == "Save"
       result = 'Uložit'
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /VOLNÝ ČAS/
       result.sub!(/VOLNÝ ČAS/, 'OCIO')
@@ -87,8 +90,11 @@ def fix( text, result, lang )
       result.gsub!(/\\([^n"t\\])/, '\n\\1' )
     end
   elsif lang == 'de'
+    result.sub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' ) # for film aspects
     if text == "Save"
       result = 'Speichern'
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /FREIZEIT/
       result.sub!(/FREIZEIT/, 'OCIO')
@@ -134,6 +140,8 @@ def fix( text, result, lang )
       result = "Sauvegarder"
     elsif text =~ /saving/
       result.sub!( /économisez/, "sauvegarder" )
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /LOISIRS/
       result.sub!(/LOISIRS/, 'OCIO' )
@@ -272,6 +280,8 @@ def fix( text, result, lang )
       result = "Zapisz"
     elsif text == "Saving"
       result = "Oszczędzanie"
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /\\\s+n/
       #
@@ -287,6 +297,8 @@ def fix( text, result, lang )
   elsif lang == 'pt'
     if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
       result = "Guardando sequência(s) %<PRId64> - %<PRId64>"
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /\\\s+n/
       #
@@ -301,6 +313,8 @@ def fix( text, result, lang )
       result = "Salvarea"
     elsif text == "Got colorspace '"
       result = "Am spațiul de culoare '"
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /\\să/
       result.sub!( /\\să/, '\nsă' )
@@ -317,9 +331,10 @@ def fix( text, result, lang )
   elsif lang == 'ru'
     if text == '%d Hz.'
       result = text
-    end
-    if text == 'W: %g %g'
-      result = 'B: %g %g'
+    elsif text == 'W: %g %g'
+      result = text
+    elsif text =~ /^\d+\.\d+$/
+      result = text.sub( /\./, ',' )
     end
     if result =~ /ДОСУГ/
       result.sub!(/ДОСУГ/, 'OCIO')
@@ -376,8 +391,8 @@ def fix( text, result, lang )
     if result =~ /％/
       result.gsub!( /％/, '%' )
     end
-    if result =~ /^([YL])（/
-      result.sub!( /^([YL])（/, "\\1 （" )
+    if result =~ /^([YL])\s*（/
+      result.sub!( /^([YL])\s*（/, "\\1 （" )
     end
     if result =~ /ID: %i n/
       result.sub!( /ID: %i n/, 'ID: %i\n' )

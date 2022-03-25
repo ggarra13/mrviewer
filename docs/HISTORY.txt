@@ -1,4 +1,14 @@
-v6.1.0  - Fixed masking (crop) on all locales and platforms including macOS.
+v6.1.2  - Fixed sessions saving and loading.
+
+v6.1.1  - Allowed changing languages from the Preferences without the need to
+	  set environment variables.  Just go to
+	    Preferences->User Interface->View Window->Language and Colors.
+	  The program is rebooted after each change.
+	  Note that on Windows, Asian languages (Russian, Chinese, Japanese and
+	  Korean) need special fonts (language packs) to be installed (or a
+	  Windows multilanguage edition).
+
+V6.1.0  - Fixed masking (crop) on all locales and platforms including macOS.
 	- Added Polish automatic translation.
 	- Improved translation on all languages by using the Spanish translation
 	  as reference for the automatic translator.

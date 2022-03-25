@@ -25,13 +25,13 @@
  *
  */
 
-#include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <iostream>
 #include <algorithm>
+
 
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
@@ -44,6 +44,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
 #include <FL/fl_utf8.h>   // for fl_getenv
+#include <FL/fl_ask.H>
 #include <FL/Fl.H>
 
 // OpenEXR threadcount
@@ -77,6 +78,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvHotkey.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvFileRequester.h"
+#include "gui/mrvLanguages.h"
 #include "video/mrvGLLut3d.h"
 #include "video/mrvGLEngine.h"
 #include "mrvEDLWindowUI.h"
@@ -86,6 +88,16 @@ namespace fs = boost::filesystem;
 #include "mrvColorAreaUI.h"
 #include "mrvReelUI.h"
 #include "mrViewer.h"
+
+#ifdef _WIN32
+#  include <comdef.h>  // you will need this
+#  include <Windows.h>
+#endif
+
+#ifdef _WIN32
+#  define execv _execv
+#endif
+
 
 extern float kCrops[];
 
@@ -304,6 +316,7 @@ std::string         Preferences::CTL_32bits_save_transform;
 std::string         Preferences::CTL_float_save_transform;
 std::string         Preferences::root;
 int                 Preferences::debug = -1;
+int                 Preferences::language_index = 2;
 std::string         Preferences::tempDir = "/usr/tmp/";
 std::string         Preferences::hotkeys_file = _("mrViewer.keys");
 
@@ -589,6 +602,48 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         uiPrefs->uiColorTheme->picked( item );
     DBG3;
     }
+
+    const char* language = getenv( "LANGUAGE" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LC_MESSAGES" );
+    if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
+
+#ifdef _WIN32
+    if ( ! language )
+    {
+        WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
+        int iResult = GetUserDefaultLocaleName( wcBuffer,
+                                                LOCALE_NAME_MAX_LENGTH );
+        if ( iResult )
+        {
+            _bstr_t b( wcBuffer );
+            language = b;
+        }
+    }
+#else
+    if ( !language ) language = setlocale( LC_MESSAGES, NULL );
+#endif
+
+
+    if ( language && strlen(language) > 1 )
+    {
+        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
+        {
+            if ( strncmp( language, "en", 2 ) == 0 )
+            {
+                language_index = 2;
+                break;
+            }
+            if ( strncmp( language, kLanguages[i], 2 ) == 0 )
+            {
+                language_index = i;
+                break;
+            }
+        }
+    }
+
+    LOG_INFO( "Setting language to " << kLanguages[language_index] );
+    uiPrefs->uiLanguage->value( language_index );
 
     //
     // ui/view/colors
@@ -1299,17 +1354,16 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 }
 
-#ifdef _WIN32
-static const char* kCLocale = "English";
-#else
-static const char* kCLocale = "C";
-#endif
+
 
 
 void Preferences::run( ViewerUI* main )
 {
     uiMain = main;
     PreferencesUI* uiPrefs = main->uiPrefs;
+
+    check_language( uiPrefs, language_index );
+
 
     DBG3;
 
@@ -1577,8 +1631,6 @@ void Preferences::run( ViewerUI* main )
             mrvLOG_INFO( "ocio", old_ocio << std::endl );
         }
 
-        char buf[2048];
-
         DBG3;
         std::string parsed = expandVariables( var, "%", '%' );
         parsed = expandVariables( parsed, "${", '}' );
@@ -1788,6 +1840,11 @@ void Preferences::run( ViewerUI* main )
                         "Defaulting to CTL. ") );
         DBG3;
         main->gammaDefaults->copy_label( _("Gamma") );
+        main->gammaDefaults->clear();
+        main->gammaDefaults->add( _("2.2") );
+        main->gammaDefaults->add( _("1.8") );
+        main->gammaDefaults->add( _("1.0") );
+        main->gammaDefaults->add( _("0.45") );
         DBG3;
         use_ocio = false;
     }
@@ -2213,7 +2270,6 @@ void Preferences::save()
     int i;
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
 
-
     Fl_Preferences base( prefspath().c_str(), "filmaura",
                          "mrViewer" );
     base.set( "version", 6 );
@@ -2242,6 +2298,9 @@ void Preferences::save()
     //
     // ui options
     //
+
+    ui.set( "language", (int) uiPrefs->uiLanguage->value() );
+
     ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
     ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
@@ -2591,6 +2650,10 @@ void Preferences::save()
                              hotkeys_file.c_str() );
         save_hotkeys( keys );
     }
+
+    base.flush();
+
+    check_language( uiPrefs, language_index );
 }
 
 
