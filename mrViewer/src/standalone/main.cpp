@@ -223,14 +223,15 @@ int main( int argc, const char** argv )
         if ( lang >= 0 )
         {
             const char* code = kLanguages[lang];
+            LOG_INFO( "Setting language to " << code );
 #ifdef _WIN32
             char* buf = new char[64];
             sprintf( buf, "LANGUAGE=%s", code );
             putenv( buf );
 #else
             setenv( "LANGUAGE", code, 1 );
-            setenv( "LC_NUMERIC", code, 1 );
 #ifdef OSX
+            setenv( "LC_NUMERIC", code, 1 );
             setenv( "LC_MESSAGES", code, 1 );
 #endif
 #endif
@@ -246,9 +247,9 @@ int main( int argc, const char** argv )
 #endif
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language || strlen(language) < 2 ) language = getenv( "LC_ALL" );
-    if ( !language || strlen(language) < 2 ) language = getenv( "LC_NUMERIC" );
-    if ( !language || strlen(language) < 2 ) language = getenv( "LANG" );
+    if ( !language || strlen(language) < 1 ) language = getenv( "LC_ALL" );
+    if ( !language || strlen(language) < 1 ) language = getenv( "LC_NUMERIC" );
+    if ( !language || strlen(language) < 1 ) language = getenv( "LANG" );
     if ( language )
     {
         if ( strncmp( language, "C",  1 ) == 0 ||
