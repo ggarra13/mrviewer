@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-25 00:42-0300\n"
+"POT-Creation-Date: 2022-03-25 00:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " frecvență: "
 msgid " has different display window than "
 msgstr " are o fereastră de vizualizare diferită de "
 
-#: standalone/main.cpp:449
+#: standalone/main.cpp:450
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -501,7 +501,7 @@ msgstr "(câmpuri PAL)"
 msgid "(RT) Render Transform"
 msgstr "Transformare de randare"
 
-#: standalone/main.cpp:410
+#: standalone/main.cpp:411
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Elimină-l dacă mrViewer nu pornește)"
 
@@ -1087,7 +1087,7 @@ msgid "About"
 msgstr "Despre mrViewer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:311
+#: standalone/main.cpp:312
 msgid "About mrViewer"
 msgstr "Despre mrViewer"
 
@@ -1320,7 +1320,7 @@ msgstr "Înapoi caseta de adnotare Pas"
 msgid "Annotation Frame Step Forwards"
 msgstr "Caseta de punctare a pasului înainte"
 
-#: standalone/main.cpp:447
+#: standalone/main.cpp:448
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1669,7 +1669,7 @@ msgstr "Clip Blues Gain"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valoarea albastră a imaginii pixelului de sub mouse."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:630
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:631
 msgid "Boost exception: "
 msgstr "Boost Excepție: "
 
@@ -1686,7 +1686,7 @@ msgid "Bottom Field"
 msgstr "Câmpul de Jos"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:501 standalone/main.cpp:521
+#: standalone/main.cpp:502 standalone/main.cpp:522
 msgid "Bottom/top"
 msgstr "inferior/Superior"
 
@@ -1895,7 +1895,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:511 standalone/main.cpp:525
+#: standalone/main.cpp:512 standalone/main.cpp:526
 msgid "Checkerboard pattern"
 msgstr "grilă"
 
@@ -2929,7 +2929,7 @@ msgid "Custom Field 9"
 msgstr "Câmp personalizat 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:515 standalone/main.cpp:527
+#: standalone/main.cpp:516 standalone/main.cpp:528
 msgid "Cyan/red glasses"
 msgstr "Lentile cyan/roșu"
 
@@ -3436,12 +3436,12 @@ msgid "Escape"
 msgstr "Evadare"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:509 standalone/main.cpp:524
+#: standalone/main.cpp:510 standalone/main.cpp:525
 msgid "Even/odd columns"
 msgstr "Ciudat/pereche de coloane"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:507 standalone/main.cpp:523
+#: standalone/main.cpp:508 standalone/main.cpp:524
 msgid "Even/odd rows"
 msgstr "Ciudat/linii de pereche"
 
@@ -3695,7 +3695,7 @@ msgstr "Nume"
 msgid "Filename of the clip"
 msgstr "Numele fișierului clip"
 
-#: standalone/main.cpp:626
+#: standalone/main.cpp:627
 msgid "Filesystem error: "
 msgstr "Eroare de sistem de fișiere: "
 
@@ -4168,11 +4168,11 @@ msgstr "hex"
 msgid "Hex Values"
 msgstr "Valori hexazecimale"
 
-#: standalone/main.cpp:314
+#: standalone/main.cpp:315
 msgid "Hide Others"
 msgstr "Ascunde-i pe Ceilalți"
 
-#: standalone/main.cpp:313
+#: standalone/main.cpp:314
 msgid "Hide mrViewer"
 msgstr "Ascunde mrViewer"
 
@@ -4824,14 +4824,14 @@ msgid "Left View"
 msgstr "Vedere din stânga"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:493 standalone/main.cpp:520
+#: standalone/main.cpp:494 standalone/main.cpp:521
 msgid "Left view"
 msgstr "Vedere din stânga"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:477 standalone/main.cpp:483 standalone/main.cpp:503
-#: standalone/main.cpp:522
+#: standalone/main.cpp:478 standalone/main.cpp:484 standalone/main.cpp:504
+#: standalone/main.cpp:523
 msgid "Left/right"
 msgstr "Stânga/dreapta"
 
@@ -5003,7 +5003,7 @@ msgstr "Am încărcat cheile de unitate de la "
 msgid "Local Caption"
 msgstr "semn local"
 
-#: standalone/main.cpp:409
+#: standalone/main.cpp:410
 msgid "Lockfile "
 msgstr "blocarea fișierului "
 
@@ -6375,7 +6375,7 @@ msgstr "Calitate"
 msgid "Quicktime Movie"
 msgstr "film Quicktime"
 
-#: standalone/main.cpp:316
+#: standalone/main.cpp:317
 msgid "Quit mrViewer"
 msgstr "Ieșiți din mrViewer"
 
@@ -6527,7 +6527,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valoarea roșie a pixelului imaginii sub mouse."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:513 standalone/main.cpp:526
+#: standalone/main.cpp:514 standalone/main.cpp:527
 msgid "Red/cyan glasses"
 msgstr "Lentile roșii/cyan"
 
@@ -6762,12 +6762,12 @@ msgid "Right View"
 msgstr "Vedere dreapta"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:495 standalone/main.cpp:520
+#: standalone/main.cpp:496 standalone/main.cpp:521
 msgid "Right view"
 msgstr "Vedere dreapta"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:505 standalone/main.cpp:522
+#: standalone/main.cpp:506 standalone/main.cpp:523
 msgid "Right/left"
 msgstr "Dreapta/stânga"
 
@@ -7145,7 +7145,7 @@ msgid "Sep"
 msgstr "sept"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:473 standalone/main.cpp:482
+#: standalone/main.cpp:474 standalone/main.cpp:483
 msgid "Separate layers"
 msgstr "straturi separate"
 
@@ -7162,7 +7162,7 @@ msgstr "secvente"
 msgid "Server"
 msgstr "Server"
 
-#: standalone/main.cpp:315
+#: standalone/main.cpp:316
 msgid "Services"
 msgstr "Servicii"
 
@@ -7384,11 +7384,11 @@ msgid "Stereo EXR Picture"
 msgstr "Imagine stereo EXR"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:497
+#: standalone/main.cpp:498
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:519
+#: standalone/main.cpp:520
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Ieșirea stereo este invalidă. Valorile valide sunt: "
 
@@ -8121,8 +8121,8 @@ msgstr "Câmpul de Sus"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:475 standalone/main.cpp:482 standalone/main.cpp:499
-#: standalone/main.cpp:521
+#: standalone/main.cpp:476 standalone/main.cpp:483 standalone/main.cpp:500
+#: standalone/main.cpp:522
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -8146,7 +8146,7 @@ msgstr "Tradițional Fără Gamă"
 msgid "Transform"
 msgstr "Transformare"
 
-#: standalone/main.cpp:308
+#: standalone/main.cpp:309
 msgid "Translations: "
 msgstr "Traduceri: "
 
@@ -8243,7 +8243,7 @@ msgstr "Anulați ultima formă desenată"
 msgid "Unhandled Exception"
 msgstr "excepție netratată"
 
-#: standalone/main.cpp:614
+#: standalone/main.cpp:615
 msgid "Unhandled exception"
 msgstr "excepție netratată"
 
@@ -8317,7 +8317,7 @@ msgstr "Tip de date necunoscut de convertit din text"
 msgid "Unknown destination video frame format: "
 msgstr "Format de cadru video destinatar necunoscut: "
 
-#: standalone/main.cpp:634
+#: standalone/main.cpp:635
 msgid "Unknown error"
 msgstr "Eroare necunoscută"
 
