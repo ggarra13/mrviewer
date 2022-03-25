@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-25 00:35-0300\n"
+"POT-Creation-Date: 2022-03-25 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " Sıklık: "
 msgid " has different display window than "
 msgstr " farklı görünüm penceresine sahip "
 
-#: standalone/main.cpp:447
+#: standalone/main.cpp:449
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -502,7 +502,7 @@ msgstr "(PAL alanları)"
 msgid "(RT) Render Transform"
 msgstr "Render Dönüşümü"
 
-#: standalone/main.cpp:408
+#: standalone/main.cpp:410
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "mrViewer hakkında"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:309
+#: standalone/main.cpp:311
 msgid "About mrViewer"
 msgstr "mrViewer hakkında"
 
@@ -1323,7 +1323,7 @@ msgstr "Geri Açıklama Kutusu Adımı"
 msgid "Annotation Frame Step Forwards"
 msgstr "Adım Puanlama Kutusu İleri"
 
-#: standalone/main.cpp:445
+#: standalone/main.cpp:447
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1670,7 +1670,7 @@ msgstr "Klip Blues Kazancı"
 msgid "Blue value of image pixel under mouse."
 msgstr "Farenin altındaki piksel görüntüsünün mavi değeri."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:628
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:630
 msgid "Boost exception: "
 msgstr "Boost İstisnası: "
 
@@ -1687,7 +1687,7 @@ msgid "Bottom Field"
 msgstr "Alt Alan"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:499 standalone/main.cpp:519
+#: standalone/main.cpp:501 standalone/main.cpp:521
 msgid "Bottom/top"
 msgstr "daha düşük/Daha yüksek"
 
@@ -1894,7 +1894,7 @@ msgid "Char"
 msgstr "Karakter"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:509 standalone/main.cpp:523
+#: standalone/main.cpp:511 standalone/main.cpp:525
 msgid "Checkerboard pattern"
 msgstr "Kafes"
 
@@ -2925,7 +2925,7 @@ msgid "Custom Field 9"
 msgstr "Özel Alan 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:513 standalone/main.cpp:525
+#: standalone/main.cpp:515 standalone/main.cpp:527
 msgid "Cyan/red glasses"
 msgstr "Camgöbeği Lensler/kırmızı"
 
@@ -3432,12 +3432,12 @@ msgid "Escape"
 msgstr "Kaçmak"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:507 standalone/main.cpp:522
+#: standalone/main.cpp:509 standalone/main.cpp:524
 msgid "Even/odd columns"
 msgstr "Garip/çift sütun"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:505 standalone/main.cpp:521
+#: standalone/main.cpp:507 standalone/main.cpp:523
 msgid "Even/odd rows"
 msgstr "Garip/çift çizgiler"
 
@@ -3691,7 +3691,7 @@ msgstr "İsim"
 msgid "Filename of the clip"
 msgstr "Klip dosyası adı"
 
-#: standalone/main.cpp:624
+#: standalone/main.cpp:626
 msgid "Filesystem error: "
 msgstr "Dosya sistemi hatası: "
 
@@ -4162,11 +4162,11 @@ msgstr "altıgen"
 msgid "Hex Values"
 msgstr "Onaltılık Değerler"
 
-#: standalone/main.cpp:312
+#: standalone/main.cpp:314
 msgid "Hide Others"
 msgstr "Diğerlerini Gizle"
 
-#: standalone/main.cpp:311
+#: standalone/main.cpp:313
 msgid "Hide mrViewer"
 msgstr "mrViewer'ı gizle"
 
@@ -4819,14 +4819,14 @@ msgid "Left View"
 msgstr "Sol Görünüm"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:491 standalone/main.cpp:518
+#: standalone/main.cpp:493 standalone/main.cpp:520
 msgid "Left view"
 msgstr "Sol Görünüm"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:475 standalone/main.cpp:481 standalone/main.cpp:501
-#: standalone/main.cpp:520
+#: standalone/main.cpp:477 standalone/main.cpp:483 standalone/main.cpp:503
+#: standalone/main.cpp:522
 msgid "Left/right"
 msgstr "Ayrıldı/Sağ"
 
@@ -4998,7 +4998,7 @@ msgstr "Sürücü anahtarlarını şuradan yükledim: "
 msgid "Local Caption"
 msgstr "yerel işaret"
 
-#: standalone/main.cpp:407
+#: standalone/main.cpp:409
 msgid "Lockfile "
 msgstr "dosya kilidi "
 
@@ -6370,7 +6370,7 @@ msgstr "Kalite"
 msgid "Quicktime Movie"
 msgstr "hızlı film"
 
-#: standalone/main.cpp:314
+#: standalone/main.cpp:316
 msgid "Quit mrViewer"
 msgstr "mrViewer'dan çıkın"
 
@@ -6524,7 +6524,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Farenin altındaki görüntü pikselinin kırmızı değeri."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:511 standalone/main.cpp:524
+#: standalone/main.cpp:513 standalone/main.cpp:526
 msgid "Red/cyan glasses"
 msgstr "Kırmızı Lensler/camgöbeği"
 
@@ -6758,12 +6758,12 @@ msgid "Right View"
 msgstr "Doğru görüş"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:493 standalone/main.cpp:518
+#: standalone/main.cpp:495 standalone/main.cpp:520
 msgid "Right view"
 msgstr "Doğru görüş"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:503 standalone/main.cpp:520
+#: standalone/main.cpp:505 standalone/main.cpp:522
 msgid "Right/left"
 msgstr "Doğru/ayrıldı"
 
@@ -7140,7 +7140,7 @@ msgid "Sep"
 msgstr "Eylül"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:471 standalone/main.cpp:480
+#: standalone/main.cpp:473 standalone/main.cpp:482
 msgid "Separate layers"
 msgstr "ayrı katmanlar"
 
@@ -7157,7 +7157,7 @@ msgstr "diziler"
 msgid "Server"
 msgstr "sunucu"
 
-#: standalone/main.cpp:313
+#: standalone/main.cpp:315
 msgid "Services"
 msgstr "Hizmetler"
 
@@ -7379,11 +7379,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR Stereo Görüntü"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:495
+#: standalone/main.cpp:497
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:517
+#: standalone/main.cpp:519
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Stereo çıkış geçersiz. Geçerli değerler şunlardır: "
 
@@ -8107,8 +8107,8 @@ msgstr "Üst Alan"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:473 standalone/main.cpp:480 standalone/main.cpp:497
-#: standalone/main.cpp:519
+#: standalone/main.cpp:475 standalone/main.cpp:482 standalone/main.cpp:499
+#: standalone/main.cpp:521
 msgid "Top/bottom"
 msgstr "Daha yüksek/daha düşük"
 
@@ -8132,7 +8132,7 @@ msgstr "Menzilsiz Geleneksel"
 msgid "Transform"
 msgstr "dönüşüm"
 
-#: standalone/main.cpp:306
+#: standalone/main.cpp:308
 msgid "Translations: "
 msgstr "Çeviriler: "
 
@@ -8229,7 +8229,7 @@ msgstr "Çizilen Son Şekli Geri Al"
 msgid "Unhandled Exception"
 msgstr "işlenmeyen özel durum"
 
-#: standalone/main.cpp:612
+#: standalone/main.cpp:614
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
@@ -8303,7 +8303,7 @@ msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
-#: standalone/main.cpp:632
+#: standalone/main.cpp:634
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
 
