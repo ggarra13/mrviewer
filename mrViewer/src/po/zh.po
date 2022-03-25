@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-25 01:25-0300\n"
+"POT-Creation-Date: 2022-03-25 20:03-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " 频率： "
 msgid " has different display window than "
 msgstr " 有不同的视窗 "
 
-#: standalone/main.cpp:452
+#: standalone/main.cpp:450
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -498,7 +498,7 @@ msgstr "（PAL 字段）"
 msgid "(RT) Render Transform"
 msgstr "渲染转换"
 
-#: standalone/main.cpp:413
+#: standalone/main.cpp:411
 msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 无法启动，请将其删除）"
 
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "关于 mrViewer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:314
+#: standalone/main.cpp:312
 msgid "About mrViewer"
 msgstr "关于 mrViewer"
 
@@ -1319,7 +1319,7 @@ msgstr "返回注释框步骤"
 msgid "Annotation Frame Step Forwards"
 msgstr "步得分框前进"
 
-#: standalone/main.cpp:450
+#: standalone/main.cpp:448
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1659,7 +1659,7 @@ msgstr "剪辑蓝调增益"
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下像素图像的蓝色值。"
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:633
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:631
 msgid "Boost exception: "
 msgstr "提升异常： "
 
@@ -1676,7 +1676,7 @@ msgid "Bottom Field"
 msgstr "下场"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:504 standalone/main.cpp:524
+#: standalone/main.cpp:502 standalone/main.cpp:522
 msgid "Bottom/top"
 msgstr "降低/更高"
 
@@ -1883,7 +1883,7 @@ msgid "Char"
 msgstr "特点"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:514 standalone/main.cpp:528
+#: standalone/main.cpp:512 standalone/main.cpp:526
 msgid "Checkerboard pattern"
 msgstr "网格"
 
@@ -2909,7 +2909,7 @@ msgid "Custom Field 9"
 msgstr "自定义字段 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:518 standalone/main.cpp:530
+#: standalone/main.cpp:516 standalone/main.cpp:528
 msgid "Cyan/red glasses"
 msgstr "青色镜片/红色的"
 
@@ -3408,12 +3408,12 @@ msgid "Escape"
 msgstr "逃脱"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:512 standalone/main.cpp:527
+#: standalone/main.cpp:510 standalone/main.cpp:525
 msgid "Even/odd columns"
 msgstr "奇怪的/对列"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:510 standalone/main.cpp:526
+#: standalone/main.cpp:508 standalone/main.cpp:524
 msgid "Even/odd rows"
 msgstr "奇怪的/对线"
 
@@ -3667,7 +3667,7 @@ msgstr "姓名"
 msgid "Filename of the clip"
 msgstr "剪辑文件名"
 
-#: standalone/main.cpp:629
+#: standalone/main.cpp:627
 msgid "Filesystem error: "
 msgstr "文件系统错误： "
 
@@ -4138,11 +4138,11 @@ msgstr "十六进制"
 msgid "Hex Values"
 msgstr "十六进制值"
 
-#: standalone/main.cpp:317
+#: standalone/main.cpp:315
 msgid "Hide Others"
 msgstr "隐藏其他人"
 
-#: standalone/main.cpp:316
+#: standalone/main.cpp:314
 msgid "Hide mrViewer"
 msgstr "隐藏 mrViewer"
 
@@ -4790,14 +4790,14 @@ msgid "Left View"
 msgstr "左视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:496 standalone/main.cpp:523
+#: standalone/main.cpp:494 standalone/main.cpp:521
 msgid "Left view"
 msgstr "左视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:480 standalone/main.cpp:486 standalone/main.cpp:506
-#: standalone/main.cpp:525
+#: standalone/main.cpp:478 standalone/main.cpp:484 standalone/main.cpp:504
+#: standalone/main.cpp:523
 msgid "Left/right"
 msgstr "剩下/正确的"
 
@@ -4967,7 +4967,7 @@ msgstr "从加载热键 "
 msgid "Local Caption"
 msgstr "地方标志"
 
-#: standalone/main.cpp:412
+#: standalone/main.cpp:410
 msgid "Lockfile "
 msgstr "文件锁 "
 
@@ -6318,7 +6318,7 @@ msgstr "质量"
 msgid "Quicktime Movie"
 msgstr "快速电影"
 
-#: standalone/main.cpp:319
+#: standalone/main.cpp:317
 msgid "Quit mrViewer"
 msgstr "退出 mrViewer"
 
@@ -6468,7 +6468,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "鼠标下图像像素的红色值。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:516 standalone/main.cpp:529
+#: standalone/main.cpp:514 standalone/main.cpp:527
 msgid "Red/cyan glasses"
 msgstr "红色镜片/青色"
 
@@ -6697,12 +6697,12 @@ msgid "Right View"
 msgstr "右视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:498 standalone/main.cpp:523
+#: standalone/main.cpp:496 standalone/main.cpp:521
 msgid "Right view"
 msgstr "右视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:508 standalone/main.cpp:525
+#: standalone/main.cpp:506 standalone/main.cpp:523
 msgid "Right/left"
 msgstr "正确的/剩下"
 
@@ -7070,7 +7070,7 @@ msgid "Sep"
 msgstr "九月"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:476 standalone/main.cpp:485
+#: standalone/main.cpp:474 standalone/main.cpp:483
 msgid "Separate layers"
 msgstr "单独的层"
 
@@ -7087,7 +7087,7 @@ msgstr "序列"
 msgid "Server"
 msgstr "服务器"
 
-#: standalone/main.cpp:318
+#: standalone/main.cpp:316
 msgid "Services"
 msgstr "服务"
 
@@ -7161,6 +7161,10 @@ msgstr "将 OCIO 配置设置为保存的首选项。"
 #: gui/mrvPreferences.cpp:1627
 msgid "Setting OCIO config to:"
 msgstr "将 OCIO 配置设置为："
+
+#: gui/mrvPreferences.cpp:645
+msgid "Setting language to "
+msgstr "将语言设置为 "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:941
 msgid "Settings"
@@ -7307,11 +7311,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 立体影像"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:500
+#: standalone/main.cpp:498
 msgid "Stereo OpenGL"
 msgstr "OpenGL 立体"
 
-#: standalone/main.cpp:522
+#: standalone/main.cpp:520
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "立体声输出无效。有效值为： "
 
@@ -8006,8 +8010,8 @@ msgstr "上场"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:478 standalone/main.cpp:485 standalone/main.cpp:502
-#: standalone/main.cpp:524
+#: standalone/main.cpp:476 standalone/main.cpp:483 standalone/main.cpp:500
+#: standalone/main.cpp:522
 msgid "Top/bottom"
 msgstr "更高/降低"
 
@@ -8031,7 +8035,7 @@ msgstr "传统无范围"
 msgid "Transform"
 msgstr "转型"
 
-#: standalone/main.cpp:311
+#: standalone/main.cpp:309
 msgid "Translations: "
 msgstr "翻译： "
 
@@ -8128,7 +8132,7 @@ msgstr "撤消上次绘制的形状"
 msgid "Unhandled Exception"
 msgstr "未处理的异常"
 
-#: standalone/main.cpp:617
+#: standalone/main.cpp:615
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
@@ -8202,7 +8206,7 @@ msgstr "从文本转换的未知数据类型"
 msgid "Unknown destination video frame format: "
 msgstr "未知接收者视频帧格式： "
 
-#: standalone/main.cpp:637
+#: standalone/main.cpp:635
 msgid "Unknown error"
 msgstr "未知错误"
 

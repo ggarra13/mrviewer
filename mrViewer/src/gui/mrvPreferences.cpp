@@ -642,7 +642,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         }
     }
 
-    LOG_INFO( "Setting language to " << kLanguages[language_index] );
+    LOG_INFO( _("Setting language to ") << kLanguages[language_index] );
     uiPrefs->uiLanguage->value( language_index );
 
     //
