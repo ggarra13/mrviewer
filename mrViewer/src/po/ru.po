@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-25 00:46-0300\n"
+"POT-Creation-Date: 2022-03-25 01:25-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " частота: "
 msgid " has different display window than "
 msgstr " имеет другое окно просмотра, чем "
 
-#: standalone/main.cpp:450
+#: standalone/main.cpp:452
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -502,7 +502,7 @@ msgstr "(поля PAL)"
 msgid "(RT) Render Transform"
 msgstr "Рендеринг трансформации"
 
-#: standalone/main.cpp:411
+#: standalone/main.cpp:413
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Удалите его, если mrViewer не запускается)"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "О mrViewer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:312
+#: standalone/main.cpp:314
 msgid "About mrViewer"
 msgstr "О mrViewer"
 
@@ -1322,7 +1322,7 @@ msgstr "Назад Шаг окна аннотации"
 msgid "Annotation Frame Step Forwards"
 msgstr "Шаг подсчета очков вперед"
 
-#: standalone/main.cpp:448
+#: standalone/main.cpp:450
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1671,7 +1671,7 @@ msgstr "Клип Блюз Усиление"
 msgid "Blue value of image pixel under mouse."
 msgstr "Голубое значение пикселя изображения под мышью."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:631
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:633
 msgid "Boost exception: "
 msgstr "Повышение исключения: "
 
@@ -1688,7 +1688,7 @@ msgid "Bottom Field"
 msgstr "Нижнее поле"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:502 standalone/main.cpp:522
+#: standalone/main.cpp:504 standalone/main.cpp:524
 msgid "Bottom/top"
 msgstr "ниже/Выше"
 
@@ -1897,7 +1897,7 @@ msgid "Char"
 msgstr "Персонаж"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:512 standalone/main.cpp:526
+#: standalone/main.cpp:514 standalone/main.cpp:528
 msgid "Checkerboard pattern"
 msgstr "сетка"
 
@@ -2930,7 +2930,7 @@ msgid "Custom Field 9"
 msgstr "Пользовательское поле 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:516 standalone/main.cpp:528
+#: standalone/main.cpp:518 standalone/main.cpp:530
 msgid "Cyan/red glasses"
 msgstr "Голубые линзы/красный"
 
@@ -3435,12 +3435,12 @@ msgid "Escape"
 msgstr "Побег"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:510 standalone/main.cpp:525
+#: standalone/main.cpp:512 standalone/main.cpp:527
 msgid "Even/odd columns"
 msgstr "Странный/пара столбцов"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:508 standalone/main.cpp:524
+#: standalone/main.cpp:510 standalone/main.cpp:526
 msgid "Even/odd rows"
 msgstr "Странный/пара линий"
 
@@ -3694,7 +3694,7 @@ msgstr "Имя"
 msgid "Filename of the clip"
 msgstr "Имя файла клипа"
 
-#: standalone/main.cpp:627
+#: standalone/main.cpp:629
 msgid "Filesystem error: "
 msgstr "Ошибка файловой системы: "
 
@@ -4165,11 +4165,11 @@ msgstr "шестигранник"
 msgid "Hex Values"
 msgstr "Шестнадцатеричные значения"
 
-#: standalone/main.cpp:315
+#: standalone/main.cpp:317
 msgid "Hide Others"
 msgstr "Скрыть другие"
 
-#: standalone/main.cpp:314
+#: standalone/main.cpp:316
 msgid "Hide mrViewer"
 msgstr "Скрыть mrViewer"
 
@@ -4825,14 +4825,14 @@ msgid "Left View"
 msgstr "Вид слева"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:494 standalone/main.cpp:521
+#: standalone/main.cpp:496 standalone/main.cpp:523
 msgid "Left view"
 msgstr "Вид слева"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:478 standalone/main.cpp:484 standalone/main.cpp:504
-#: standalone/main.cpp:523
+#: standalone/main.cpp:480 standalone/main.cpp:486 standalone/main.cpp:506
+#: standalone/main.cpp:525
 msgid "Left/right"
 msgstr "Осталось/правильно"
 
@@ -5004,7 +5004,7 @@ msgstr "Я загрузил ключи от диска "
 msgid "Local Caption"
 msgstr "местный знак"
 
-#: standalone/main.cpp:410
+#: standalone/main.cpp:412
 msgid "Lockfile "
 msgstr "блокировка файла "
 
@@ -6381,7 +6381,7 @@ msgstr "Качественный"
 msgid "Quicktime Movie"
 msgstr "быстрый фильм"
 
-#: standalone/main.cpp:317
+#: standalone/main.cpp:319
 msgid "Quit mrViewer"
 msgstr "Выйти из mrViewer"
 
@@ -6534,7 +6534,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Красное значение пикселя изображения под мышью."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:514 standalone/main.cpp:527
+#: standalone/main.cpp:516 standalone/main.cpp:529
 msgid "Red/cyan glasses"
 msgstr "Красные линзы/голубой"
 
@@ -6768,12 +6768,12 @@ msgid "Right View"
 msgstr "Правый вид"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:496 standalone/main.cpp:521
+#: standalone/main.cpp:498 standalone/main.cpp:523
 msgid "Right view"
 msgstr "Правый вид"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:506 standalone/main.cpp:523
+#: standalone/main.cpp:508 standalone/main.cpp:525
 msgid "Right/left"
 msgstr "Верно/осталось"
 
@@ -7150,7 +7150,7 @@ msgid "Sep"
 msgstr "сен"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:474 standalone/main.cpp:483
+#: standalone/main.cpp:476 standalone/main.cpp:485
 msgid "Separate layers"
 msgstr "отдельные слои"
 
@@ -7167,7 +7167,7 @@ msgstr "последовательности"
 msgid "Server"
 msgstr "Сервер"
 
-#: standalone/main.cpp:316
+#: standalone/main.cpp:318
 msgid "Services"
 msgstr "Услуги"
 
@@ -7389,11 +7389,11 @@ msgid "Stereo EXR Picture"
 msgstr "Стереоизображение EXR"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:498
+#: standalone/main.cpp:500
 msgid "Stereo OpenGL"
 msgstr "Стерео OpenGL"
 
-#: standalone/main.cpp:520
+#: standalone/main.cpp:522
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Стерео выход недействителен. Допустимые значения: "
 
@@ -8124,8 +8124,8 @@ msgstr "Верхнее поле"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:476 standalone/main.cpp:483 standalone/main.cpp:500
-#: standalone/main.cpp:522
+#: standalone/main.cpp:478 standalone/main.cpp:485 standalone/main.cpp:502
+#: standalone/main.cpp:524
 msgid "Top/bottom"
 msgstr "Выше/ниже"
 
@@ -8149,7 +8149,7 @@ msgstr "Традиционный без диапазона"
 msgid "Transform"
 msgstr "Трансформация"
 
-#: standalone/main.cpp:309
+#: standalone/main.cpp:311
 msgid "Translations: "
 msgstr "Переводы: "
 
@@ -8246,7 +8246,7 @@ msgstr "Отменить последнюю нарисованную фигур�
 msgid "Unhandled Exception"
 msgstr "необработанное исключение"
 
-#: standalone/main.cpp:615
+#: standalone/main.cpp:617
 msgid "Unhandled exception"
 msgstr "необработанное исключение"
 
@@ -8320,7 +8320,7 @@ msgstr "Неизвестный тип данных для преобразова
 msgid "Unknown destination video frame format: "
 msgstr "Неизвестный формат видеокадра получателя: "
 
-#: standalone/main.cpp:635
+#: standalone/main.cpp:637
 msgid "Unknown error"
 msgstr "Неизвестная ошибка"
 
