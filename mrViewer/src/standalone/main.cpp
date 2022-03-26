@@ -223,7 +223,6 @@ int main( int argc, const char** argv )
         if ( lang >= 0 )
         {
             const char* code = kLanguages[lang];
-            LOG_INFO( "Setting language to " << code );
 #ifdef _WIN32
             char* buf = new char[64];
             sprintf( buf, "LANGUAGE=%s", code );

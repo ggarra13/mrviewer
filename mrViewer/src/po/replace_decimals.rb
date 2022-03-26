@@ -16,7 +16,7 @@ for lang in langs
     match = line =~ /^msgstr \"(\d+\.\d+)(.*)\"$/
     if not match
       o.puts line
-    next
+      next
     end
     msgstr = $1
     rest   = $2
