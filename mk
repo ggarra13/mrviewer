@@ -325,6 +325,7 @@ run_cmake()
 {
 
     builddir=$PWD/BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+    
     if [[ $installdir == "" ]]; then
 	installdir=/usr/local
     fi

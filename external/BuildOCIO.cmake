@@ -14,9 +14,10 @@ endif()
 
 ExternalProject_Add(
   ${OCIO_NAME}
-  # GIT_REPOSITORY "https://github.com/imageworks/OpenColorIO.git"
-  #URL "https://github.com/imageworks/OpenColorIO/zipball/master"
-  URL "https://github.com/imageworks/OpenColorIO/zipball/v1.0.9"
+  #URL "https://github.com/imageworks/OpenColorIO/zipball/v1.0.9"
+  GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
+  GIT_TAG "v1.1.1"
+  PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/OCIO_v1_1_1.patch
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR ${OCIO_DEPENDS}
   CMAKE_ARGS
@@ -34,4 +35,5 @@ ExternalProject_Add(
   -DOCIO_BUILD_TESTS=OFF
   -DOCIO_BUILD_PYGLUE=OFF
   -DOCIO_BUILD_JNIGLUE=OFF
-  -DOCIO_STATIC_JNIGLUE=OFF)
+  -DOCIO_STATIC_JNIGLUE=OFF
+  )

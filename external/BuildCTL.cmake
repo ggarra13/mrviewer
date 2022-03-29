@@ -24,7 +24,7 @@ endif()
 
 ExternalProject_Add(
     CTL
-    GIT_REPOSITORY "git@github.com:ggarra13/CTL.git"
+    GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
     GIT_PROGRESS 1
     DEPENDS OpenEXR
     CMAKE_ARGS
