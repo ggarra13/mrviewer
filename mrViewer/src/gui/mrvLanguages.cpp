@@ -3,6 +3,16 @@
 #include <gui/mrvLanguages.h>
 #include <mrvPreferencesUI.h>
 
+
+#ifdef _WIN32
+#  define execv _execv
+#endif
+
+namespace {
+const char* kModule = "lang";
+}
+
+
 const char* kLanguages[14] = {
     "cs.UTF-8",
     "de.UTF-8",
@@ -20,6 +30,7 @@ const char* kLanguages[14] = {
     "zh.UTF-8"
 };
 
+
 void check_language( PreferencesUI* uiPrefs, int& language_index )
 {
     if ( uiPrefs->uiLanguage->value() != language_index )
@@ -33,12 +44,46 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
             const char* language = kLanguages[language_index];
 
 #ifdef _WIN32
-            char* buf = new char[64];
-            sprintf( buf, "LC_ALL=%s", language );
-            putenv( buf );
-            buf = new char[64];
-            sprintf( buf, "LANGUAGE=%s", language );
-            putenv( buf );
+            setenv( "LC_CTYPE", "UTF-8", 1 );
+            setenv( "LANGUAGE", language, 1 );
+
+            char buf[128];
+            // We change the system language environment variable so that
+            // the next time we start we start with the same language.
+            // Saving the setting in the preferences is not enough on Windows.
+            sprintf( buf, "setx LANGUAGE %s", language );
+
+            STARTUPINFO si;
+            PROCESS_INFORMATION pi;
+
+            ZeroMemory( &si, sizeof(si) );
+            si.cb = sizeof(si);
+            ZeroMemory( &pi, sizeof(pi) );
+            
+            // Start the child process. 
+            if( !CreateProcess( NULL,   // No module name (use command line)
+                                buf,    // Command line
+                                NULL,   // Process handle not inheritable
+                                NULL,   // Thread handle not inheritable
+                                FALSE,  // Set handle inheritance to FALSE
+                                CREATE_NO_WINDOW,  // No console window
+                                NULL,   // Use parent's environment block
+                                NULL,   // Use parent's starting directory 
+                                &si,    // Pointer to STARTUPINFO structure
+                                &pi )   // Pointer to PROCESS_INFORMATION struct
+            )
+            {
+                LOG_ERROR( "CreateProcess failed" );
+                return;
+            }
+
+            // Wait until child process exits.
+            WaitForSingleObject( pi.hProcess, INFINITE );
+
+            // Close process and thread handles. 
+            CloseHandle( pi.hProcess );
+            CloseHandle( pi.hThread );
+
 #else
             setenv( "LANGUAGE", language, 1 );
 #endif

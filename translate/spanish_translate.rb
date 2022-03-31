@@ -41,7 +41,7 @@ def fix( text, result, lang )
        text == '15' or text == '50' or text == 'W' or text == "24000/1001" or
        text == 'B' or text == 'H' or text == 'L' or text == 'V' or
        text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
-       text =~ /^DAW:/ )
+       text =~ /^DAW:/ or text == "FPS" )
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
@@ -51,6 +51,9 @@ def fix( text, result, lang )
        lang == 'ro' or lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
+  end
+  if result =~ /CPS/
+    result.gsub!( /CPS/, "FPS" )
   end
   if ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     #

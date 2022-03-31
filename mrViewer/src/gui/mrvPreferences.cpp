@@ -94,9 +94,6 @@ namespace fs = boost::filesystem;
 #  include <Windows.h>
 #endif
 
-#ifdef _WIN32
-#  define execv _execv
-#endif
 
 
 extern float kCrops[];
@@ -604,9 +601,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_ALL" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_MESSAGES" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LANG" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_ALL" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_MESSAGES" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LANG" );
 
 #ifdef _WIN32
     if ( ! language )

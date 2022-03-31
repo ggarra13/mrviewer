@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-30 23:58-0300\n"
+"POT-Creation-Date: 2022-03-31 20:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "트랙 번호에 대해 알려진 트랙 유형이 아닙니다."
 
-#: standalone/mrvCommandLine.cpp:136
+#: standalone/mrvCommandLine.cpp:138
 msgid ""
 "\n"
 "\n"
@@ -218,7 +218,7 @@ msgstr " 빈도: "
 msgid " has different display window than "
 msgstr " 다른 보기 창을 가지고 "
 
-#: standalone/main.cpp:453
+#: standalone/main.cpp:469
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -303,11 +303,11 @@ msgstr " ~에 맞서 "
 msgid " will not be available.  "
 msgstr " 사용할 수 없습니다.  "
 
-#: gui/mrvPreferences.cpp:186
+#: gui/mrvPreferences.cpp:183
 msgid "\" as a float value; using "
 msgstr "\" 부동 소수점 값으로, 사용 "
 
-#: gui/mrvPreferences.cpp:144
+#: gui/mrvPreferences.cpp:141
 msgid "\" as an integer value; using "
 msgstr "\" 정수 값으로, 사용 "
 
@@ -327,15 +327,15 @@ msgstr "\" 접두사가 \"인 채널이 없습니다."
 msgid "\" has no channels."
 msgstr "\" 채널이 없습니다."
 
-#: gui/mrvPreferences.cpp:134 gui/mrvPreferences.cpp:176
+#: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 msgid "\" is not set; using default value ("
 msgstr "\"이(가) 설정되지 않았습니다. 기본값("
 
-#: gui/mrvPreferences.cpp:218
+#: gui/mrvPreferences.cpp:215
 msgid "\" is not set; using default value (\""
 msgstr "\"이(가) 설정되지 않았습니다. 기본값(\""
 
-#: gui/mrvPreferences.cpp:258
+#: gui/mrvPreferences.cpp:255
 msgid ""
 "\" is not set; using default value (chromaticities according to Rec. ITU-R "
 "BT.709)."
@@ -353,7 +353,7 @@ msgstr "\" 찾을 수 없습니다. "
 msgid "\" to protocol number"
 msgstr "\"를 프로토콜 번호로"
 
-#: gui/mrvPreferences.cpp:248
+#: gui/mrvPreferences.cpp:245
 msgid "\"; Format: "
 msgstr "\"; 형식: "
 
@@ -498,7 +498,7 @@ msgstr "(PAL 필드)"
 msgid "(RT) Render Transform"
 msgstr "렌더 변환"
 
-#: standalone/main.cpp:414
+#: standalone/main.cpp:430
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
@@ -562,11 +562,11 @@ msgstr ", 빈도 "
 msgid ", type "
 msgstr ", 유형 "
 
-#: standalone/mrvCommandLine.cpp:568
+#: standalone/mrvCommandLine.cpp:570
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "--stereo 옵션은 2번의 배수로 지정해야 합니다."
 
-#: standalone/mrvCommandLine.cpp:362
+#: standalone/mrvCommandLine.cpp:364
 msgid ".  Attribute must be of the form attr=value."
 msgstr ". 속성은 attr=value 형식이어야 합니다."
 
@@ -587,7 +587,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1847
+#: gui/mrvPreferences.cpp:1844
 msgid "0.45"
 msgstr "0.45"
 
@@ -603,7 +603,7 @@ msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1846
+#: gui/mrvPreferences.cpp:1843
 msgid "1.0"
 msgstr "1.0"
 
@@ -648,7 +648,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1.77 HDTV(16:9)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1845
+#: gui/mrvPreferences.cpp:1842
 msgid "1.8"
 msgstr "1.8"
 
@@ -764,7 +764,7 @@ msgid "2.10 VistaVision"
 msgstr "2.10 비스타비전"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1844
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1841
 msgid "2.2"
 msgstr "2.2"
 
@@ -1036,7 +1036,7 @@ msgstr "A"
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr "Windows 소켓 1.1 잠금 작업이 진행 중입니다.\n"
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:397
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "mrViewer 정보"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:315
+#: standalone/main.cpp:336
 msgid "About mrViewer"
 msgstr "mrViewer 정보"
 
@@ -1317,7 +1317,7 @@ msgstr "뒤로 주석 상자 단계"
 msgid "Annotation Frame Step Forwards"
 msgstr "단계 득점 상자 앞으로"
 
-#: standalone/main.cpp:451
+#: standalone/main.cpp:467
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1665,7 +1665,7 @@ msgstr "클립 블루스 게인"
 msgid "Blue value of image pixel under mouse."
 msgstr "마우스 아래 픽셀 이미지의 파란색 값입니다."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:634
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:650
 msgid "Boost exception: "
 msgstr "부스트 예외: "
 
@@ -1682,7 +1682,7 @@ msgid "Bottom Field"
 msgstr "로워 필드"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:505 standalone/main.cpp:525
+#: standalone/main.cpp:521 standalone/main.cpp:541
 msgid "Bottom/top"
 msgstr "낮추다/더 높은"
 
@@ -1822,8 +1822,8 @@ msgstr "현재 이러한 형식으로 동영상을 저장할 수 없습니다."
 msgid "Cannot map \""
 msgstr "매핑할 수 없습니다 \""
 
-#: gui/mrvPreferences.cpp:143 gui/mrvPreferences.cpp:185
-#: gui/mrvPreferences.cpp:246
+#: gui/mrvPreferences.cpp:140 gui/mrvPreferences.cpp:182
+#: gui/mrvPreferences.cpp:243
 msgid "Cannot parse environment variable \""
 msgstr "환경 변수 \"를 해석할 수 없습니다."
 
@@ -1889,7 +1889,7 @@ msgid "Char"
 msgstr "성격"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:515 standalone/main.cpp:529
+#: standalone/main.cpp:531 standalone/main.cpp:545
 msgid "Checkerboard pattern"
 msgstr "그리드"
 
@@ -2523,7 +2523,7 @@ msgstr "프레임 수를 얻지 못했습니다."
 msgid "Could not obtain frame rate"
 msgstr "재생 속도를 얻을 수 없습니다"
 
-#: gui/mrvPreferences.cpp:569
+#: gui/mrvPreferences.cpp:566
 msgid "Could not open \""
 msgstr "열 수 없습니다 \""
 
@@ -2621,7 +2621,7 @@ msgstr "나는 그림을 찾을 수 없었다 "
 msgid "Could not set "
 msgstr "설정할 수 없습니다 "
 
-#: gui/mrvPreferences.cpp:1353
+#: gui/mrvPreferences.cpp:1350
 msgid "Could not set transforms in GUI"
 msgstr "GUI에서 변환을 설정할 수 없습니다."
 
@@ -2917,7 +2917,7 @@ msgid "Custom Field 9"
 msgstr "사용자 정의 필드 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:519 standalone/main.cpp:531
+#: standalone/main.cpp:535 standalone/main.cpp:547
 msgid "Cyan/red glasses"
 msgstr "시안 렌즈/빨간색"
 
@@ -3143,7 +3143,7 @@ msgstr ""
 "폴더: %s\n"
 "이름: %s\n"
 "해상도: %dx%d\n"
-"프레임: %<PRId64> -%<PRId64> CPS %g"
+"프레임: %<PRId64> -%<PRId64> FPS %g"
 
 #: core/mrvClient.cpp:257 core/mrvServer.cpp:2049
 msgid "Disconnect"
@@ -3350,8 +3350,8 @@ msgstr "끝"
 msgid "English"
 msgstr "영어"
 
-#: gui/mrvPreferences.cpp:133 gui/mrvPreferences.cpp:175
-#: gui/mrvPreferences.cpp:217 gui/mrvPreferences.cpp:257
+#: gui/mrvPreferences.cpp:130 gui/mrvPreferences.cpp:172
+#: gui/mrvPreferences.cpp:214 gui/mrvPreferences.cpp:254
 msgid "Environment variable \""
 msgstr "환경 변수 \""
 
@@ -3418,12 +3418,12 @@ msgid "Escape"
 msgstr "탈출하다"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:513 standalone/main.cpp:528
+#: standalone/main.cpp:529 standalone/main.cpp:544
 msgid "Even/odd columns"
 msgstr "이상한/쌍 열"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:511 standalone/main.cpp:527
+#: standalone/main.cpp:527 standalone/main.cpp:543
 msgid "Even/odd rows"
 msgstr "이상한/페어 라인"
 
@@ -3431,7 +3431,7 @@ msgstr "이상한/페어 라인"
 msgid "Example:  gizmo"
 msgstr "예: gizmo_v003.0001.exr"
 
-#: standalone/mrvCommandLine.cpp:165
+#: standalone/mrvCommandLine.cpp:167
 msgid ""
 "Examples:\n"
 "\n"
@@ -3448,7 +3448,7 @@ msgstr "이미지 교체 실패"
 msgid "ExchangeImage %d %d"
 msgstr "이미지 교환 %d %d"
 
-#: gui/mrvPreferences.cpp:1640
+#: gui/mrvPreferences.cpp:1637
 msgid "Expanded OCIO config to:"
 msgstr "OCIO 구성 확장:"
 
@@ -3517,7 +3517,7 @@ msgstr "에 맞게"
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
-msgstr "CPS"
+msgstr "FPS"
 
 #: core/aviImage_save.cpp:1593
 msgid "Failed "
@@ -3583,7 +3583,7 @@ msgstr "총 오디오 샘플 수를 가져오지 못했습니다!"
 msgid "Failed to init swresample library with "
 msgstr "swresample 라이브러리를 초기화하지 못했습니다. "
 
-#: gui/mrvPreferences.cpp:548
+#: gui/mrvPreferences.cpp:545
 msgid "Failed to initialize R3D SDK: "
 msgstr "R3D SDK를 초기화하지 못했습니다. "
 
@@ -3677,7 +3677,7 @@ msgstr "이름"
 msgid "Filename of the clip"
 msgstr "클립 파일 이름"
 
-#: standalone/main.cpp:630
+#: standalone/main.cpp:646
 msgid "Filesystem error: "
 msgstr "파일 시스템 오류: "
 
@@ -3834,11 +3834,11 @@ msgstr "프레임 스텝백"
 
 #: gui/mrvHotkey.cpp:338
 msgid "Frame Step FPS Backwards"
-msgstr "프레임 스텝백 CPS"
+msgstr "프레임 스텝백 FPS"
 
 #: gui/mrvHotkey.cpp:341
 msgid "Frame Step FPS Forwards"
-msgstr "프레임 스텝 포워드 CPS"
+msgstr "프레임 스텝 포워드 FPS"
 
 #: gui/mrvHotkey.cpp:340
 msgid "Frame Step Forwards"
@@ -3965,7 +3965,7 @@ msgstr "이미지 게인 값. 픽셀 값의 단순 승수입니다."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1842
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1839
 msgid "Gamma"
 msgstr "스펙트럼"
 
@@ -4148,11 +4148,11 @@ msgstr "마녀"
 msgid "Hex Values"
 msgstr "16진수 값"
 
-#: standalone/main.cpp:318
+#: standalone/main.cpp:339
 msgid "Hide Others"
 msgstr "다른 사람 숨기기"
 
-#: standalone/main.cpp:317
+#: standalone/main.cpp:338
 msgid "Hide mrViewer"
 msgstr "mrViewer 숨기기"
 
@@ -4538,7 +4538,7 @@ msgstr "스테레오 이미지의 길이가 다릅니다. 제대로 반복되지
 msgid "Images in stereo have different velocities (fps)."
 msgstr "스테레오 이미지의 속도(초당 프레임 수)가 다릅니다."
 
-#: standalone/mrvCommandLine.cpp:453
+#: standalone/mrvCommandLine.cpp:455
 msgid "Images, sequences or movies to display."
 msgstr "보여줄 이미지, 시퀀스 또는 영화."
 
@@ -4554,7 +4554,7 @@ msgstr "Y에서 증분"
 msgid "Index "
 msgstr "잘못된 인덱스 "
 
-#: gui/mrvPreferences.cpp:553
+#: gui/mrvPreferences.cpp:550
 msgid "Inited R3D SDK from: "
 msgstr "다음에서 R3D SDK를 시작했습니다. "
 
@@ -4599,7 +4599,7 @@ msgstr "강함"
 msgid "Invalid Profile for CMM: "
 msgstr "CMM에 대한 잘못된 프로필: "
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:363
 msgid "Invalid attribute "
 msgstr "잘못된 속성 "
 
@@ -4801,14 +4801,14 @@ msgid "Left View"
 msgstr "왼쪽 보기"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:497 standalone/main.cpp:524
+#: standalone/main.cpp:513 standalone/main.cpp:540
 msgid "Left view"
 msgstr "왼쪽 보기"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:481 standalone/main.cpp:487 standalone/main.cpp:507
-#: standalone/main.cpp:526
+#: standalone/main.cpp:497 standalone/main.cpp:503 standalone/main.cpp:523
+#: standalone/main.cpp:542
 msgid "Left/right"
 msgstr "왼쪽/오른쪽"
 
@@ -4918,7 +4918,7 @@ msgstr "자막 불러오기"
 msgid "Load XML Clip Metadata"
 msgstr "클립 XML 메타데이터 로드"
 
-#: standalone/mrvCommandLine.cpp:416
+#: standalone/mrvCommandLine.cpp:418
 msgid "Load a single image even if there's a sequence present."
 msgstr "시퀀스가 있더라도 단일 이미지를 업로드하십시오."
 
@@ -4942,11 +4942,11 @@ msgstr "ACES'에서 Clip Metadata 파일을 업로드했습니다."
 msgid "Loaded braw lib from: "
 msgstr "다음에서 braw 라이브러리를 로드했습니다. "
 
-#: gui/mrvPreferences.cpp:576
+#: gui/mrvPreferences.cpp:573
 msgid "Loaded color themes from "
 msgstr "색상 테마를 로드했습니다. "
 
-#: gui/mrvPreferences.cpp:375
+#: gui/mrvPreferences.cpp:372
 msgid "Loaded preferences from "
 msgstr "다음에서 환경 설정을 로드했습니다. "
 
@@ -4970,7 +4970,7 @@ msgstr "내부 셰이더 NV3.0 rgba 로드 중"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "내부 rgba 셰이더 arbfp1 로드 중"
 
-#: gui/mrvPreferences.cpp:1338
+#: gui/mrvPreferences.cpp:1335
 msgid "Loading hotkeys from "
 msgstr "에서 드라이브 키를 로드했습니다. "
 
@@ -4978,7 +4978,7 @@ msgstr "에서 드라이브 키를 로드했습니다. "
 msgid "Local Caption"
 msgstr "지역 표지판"
 
-#: standalone/main.cpp:413
+#: standalone/main.cpp:429
 msgid "Lockfile "
 msgstr "파일 잠금 "
 
@@ -4999,7 +4999,7 @@ msgstr "게시물"
 msgid "Longitude"
 msgstr "길이"
 
-#: gui/mrvPreferences.cpp:549
+#: gui/mrvPreferences.cpp:546
 msgid "Looked for it in: "
 msgstr "나는 그것을 보았다 : "
 
@@ -5355,7 +5355,7 @@ msgstr "NTSC 비디오"
 msgid "Name (.ext)"
 msgstr "이름(.ext)"
 
-#: standalone/mrvCommandLine.cpp:164
+#: standalone/mrvCommandLine.cpp:166
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
@@ -5367,7 +5367,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "항상 가까운 이웃"
 
-#: gui/mrvLanguages.cpp:27
+#: gui/mrvLanguages.cpp:38
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5415,7 +5415,7 @@ msgstr "다음 이미지 버전"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5704,7 +5704,7 @@ msgstr "OCIO 보기 전환 실패"
 msgid "OCIO config (*.{"
 msgstr "레저 구성(*.{"
 
-#: gui/mrvPreferences.cpp:1839
+#: gui/mrvPreferences.cpp:1836
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 환경 변수가 존재하지 않습니다. CTL이 사용됩니다. "
 
@@ -5952,19 +5952,19 @@ msgstr "FPS 재정의"
 msgid "Override playback fps when loading sequences."
 msgstr "푸티지를 로드할 때 재생 fps를 재정의합니다."
 
-#: standalone/mrvCommandLine.cpp:430
+#: standalone/mrvCommandLine.cpp:432
 msgid "Override sequence default fps."
 msgstr "스트림의 초당 프레임을 취소합니다."
 
-#: standalone/mrvCommandLine.cpp:443
+#: standalone/mrvCommandLine.cpp:445
 msgid "Override viewer's default client hostname."
 msgstr "뷰어의 기본 클라이언트 호스트 이름을 무시합니다."
 
-#: standalone/mrvCommandLine.cpp:438
+#: standalone/mrvCommandLine.cpp:440
 msgid "Override viewer's default gain."
 msgstr "뷰파인더의 내부 게인을 무시합니다."
 
-#: standalone/mrvCommandLine.cpp:434
+#: standalone/mrvCommandLine.cpp:436
 msgid "Override viewer's default gamma."
 msgstr "뷰파인더의 내부 범위를 제거합니다."
 
@@ -6155,7 +6155,7 @@ msgstr "순서를 거꾸로 재생합니다."
 msgid "Play sequence forward."
 msgstr "앞으로 시퀀스를 재생합니다."
 
-#: standalone/mrvCommandLine.cpp:413
+#: standalone/mrvCommandLine.cpp:415
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
@@ -6317,11 +6317,11 @@ msgstr "프로그램이 연결되지 않았습니다. 오류: "
 msgid "Protocols"
 msgstr "프로토콜"
 
-#: standalone/mrvCommandLine.cpp:457
+#: standalone/mrvCommandLine.cpp:459
 msgid "Provide a sequence or movie for background."
 msgstr "스테레오용으로 두 개의 시퀀스 또는 동영상을 제공합니다."
 
-#: standalone/mrvCommandLine.cpp:483
+#: standalone/mrvCommandLine.cpp:485
 msgid "Provide two sequences or movies for stereo."
 msgstr "스테레오용으로 두 개의 시퀀스 또는 동영상을 제공합니다."
 
@@ -6346,7 +6346,7 @@ msgstr "품질"
 msgid "Quicktime Movie"
 msgstr "퀵타임 영화"
 
-#: standalone/main.cpp:320
+#: standalone/main.cpp:341
 msgid "Quit mrViewer"
 msgstr "mrViewer 종료"
 
@@ -6499,7 +6499,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 빨간색 값입니다."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:517 standalone/main.cpp:530
+#: standalone/main.cpp:533 standalone/main.cpp:546
 msgid "Red/cyan glasses"
 msgstr "빨간 렌즈/시안"
 
@@ -6648,7 +6648,7 @@ msgstr "렌더 의도"
 msgid "Repeat Frame"
 msgstr "프레임 반복"
 
-#: standalone/mrvCommandLine.cpp:469
+#: standalone/mrvCommandLine.cpp:471
 msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
@@ -6731,12 +6731,12 @@ msgid "Right View"
 msgstr "오른쪽보기"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:499 standalone/main.cpp:524
+#: standalone/main.cpp:515 standalone/main.cpp:540
 msgid "Right view"
 msgstr "오른쪽보기"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:509 standalone/main.cpp:526
+#: standalone/main.cpp:525 standalone/main.cpp:542
 msgid "Right/left"
 msgstr "오른쪽/왼쪽"
 
@@ -6784,7 +6784,7 @@ msgstr "이미지를 -90도 회전"
 msgid "Rounding Mode"
 msgstr "반올림 모드"
 
-#: standalone/mrvCommandLine.cpp:419
+#: standalone/mrvCommandLine.cpp:421
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "단일 인스턴스 구성에 관계없이 mrViewer를 실행합니다."
 
@@ -7054,11 +7054,11 @@ msgstr ""
 "반대), 인터레이스 행 또는 열, 정사각형, 빨간색 안경/시안색(반대의 경우도 마찬"
 "가지)."
 
-#: standalone/mrvCommandLine.cpp:488
+#: standalone/mrvCommandLine.cpp:490
 msgid "Select stereo input"
 msgstr "스테레오 입력 선택"
 
-#: standalone/mrvCommandLine.cpp:493
+#: standalone/mrvCommandLine.cpp:495
 msgid "Select stereo output"
 msgstr "스테레오 출력 선택"
 
@@ -7111,7 +7111,7 @@ msgid "Sep"
 msgstr "9월"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:477 standalone/main.cpp:486
+#: standalone/main.cpp:493 standalone/main.cpp:502
 msgid "Separate layers"
 msgstr "별도의 레이어"
 
@@ -7128,7 +7128,7 @@ msgstr "시퀀스"
 msgid "Server"
 msgstr "섬기는 사람"
 
-#: standalone/main.cpp:319
+#: standalone/main.cpp:340
 msgid "Services"
 msgstr "서비스"
 
@@ -7149,7 +7149,7 @@ msgstr "진입점 설정"
 msgid "Set Out Point"
 msgstr "출력 포인트 설정"
 
-#: standalone/mrvCommandLine.cpp:478
+#: standalone/mrvCommandLine.cpp:480
 msgid "Set added audio offset."
 msgstr "오디오 스크롤을 추가했습니다."
 
@@ -7161,15 +7161,15 @@ msgstr ""
 "A를 설정/비교 B. 이미지 B가 배경으로 이동합니다. 하나의 이미지(전경)가 선택"
 "된 이미지입니다."
 
-#: standalone/mrvCommandLine.cpp:473
+#: standalone/mrvCommandLine.cpp:475
 msgid "Set an attribute/value to display in the hud."
 msgstr "속성 설정/hud에 표시할 값입니다."
 
-#: standalone/mrvCommandLine.cpp:461
+#: standalone/mrvCommandLine.cpp:463
 msgid "Set each input color space for each image."
 msgstr "이미지의 각 입력 색 공간을 설정합니다."
 
-#: standalone/mrvCommandLine.cpp:465
+#: standalone/mrvCommandLine.cpp:467
 msgid "Set each movie/sequence default audio."
 msgstr "각 영화의 기본 오디오 설정/순서"
 
@@ -7177,7 +7177,7 @@ msgstr "각 영화의 기본 오디오 설정/순서"
 msgid "Set reel image as background."
 msgstr "카메라 롤 이미지를 배경으로 설정"
 
-#: standalone/mrvCommandLine.cpp:448
+#: standalone/mrvCommandLine.cpp:450
 msgid "Set viewer's default server/client port."
 msgstr "서버 포트 설정/뷰어의 기본 클라이언트입니다."
 
@@ -7189,23 +7189,23 @@ msgstr "mrViewer가 시작될 때 기본 게인을 설정합니다."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "mrViewer가 시작될 때 기본 범위를 설정합니다."
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1618
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "OCIO 구성을 OCIO 환경 변수로 설정:"
 
-#: gui/mrvPreferences.cpp:1602
+#: gui/mrvPreferences.cpp:1599
 msgid "Setting OCIO config to nuke-default."
 msgstr "OCIO 구성을 nuke-default로 설정합니다."
 
-#: gui/mrvPreferences.cpp:1594
+#: gui/mrvPreferences.cpp:1591
 msgid "Setting OCIO config to saved preferences."
 msgstr "OCIO 구성을 저장된 기본 설정으로 설정합니다."
 
-#: gui/mrvPreferences.cpp:1627
+#: gui/mrvPreferences.cpp:1624
 msgid "Setting OCIO config to:"
 msgstr "OCIO 구성을 다음과 같이 설정합니다."
 
-#: gui/mrvPreferences.cpp:645
+#: gui/mrvPreferences.cpp:642
 msgid "Setting language to "
 msgstr "언어 설정 "
 
@@ -7354,11 +7354,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 스테레오 이미지"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:501
+#: standalone/main.cpp:517
 msgid "Stereo OpenGL"
 msgstr "OpenGL 스테레오"
 
-#: standalone/main.cpp:523
+#: standalone/main.cpp:539
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "스테레오 출력이 잘못되었습니다. 유효한 값은 다음과 같습니다. "
 
@@ -8073,8 +8073,8 @@ msgstr "어퍼 필드"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:479 standalone/main.cpp:486 standalone/main.cpp:503
-#: standalone/main.cpp:525
+#: standalone/main.cpp:495 standalone/main.cpp:502 standalone/main.cpp:519
+#: standalone/main.cpp:541
 msgid "Top/bottom"
 msgstr "더 높은/낮추다"
 
@@ -8098,7 +8098,7 @@ msgstr "범위가 없는 전통적"
 msgid "Transform"
 msgstr "변환"
 
-#: standalone/main.cpp:312
+#: standalone/main.cpp:333
 msgid "Translations: "
 msgstr "번역: "
 
@@ -8114,11 +8114,11 @@ msgstr "터키어"
 msgid "Turn off screensaver"
 msgstr "화면 보호기 비활성화"
 
-#: standalone/mrvCommandLine.cpp:425
+#: standalone/mrvCommandLine.cpp:427
 msgid "Turn on EDL when loading multiple images."
 msgstr "여러 이미지를 업로드할 때 EDL 활성화"
 
-#: standalone/mrvCommandLine.cpp:408
+#: standalone/mrvCommandLine.cpp:410
 msgid "Turn on debugging console."
 msgstr "디버그 콘솔을 켭니다."
 
@@ -8195,7 +8195,7 @@ msgstr "마지막으로 그린 모양 실행 취소"
 msgid "Unhandled Exception"
 msgstr "처리되지 않은 예외"
 
-#: standalone/main.cpp:618
+#: standalone/main.cpp:634
 msgid "Unhandled exception"
 msgstr "처리되지 않은 예외"
 
@@ -8269,7 +8269,7 @@ msgstr "텍스트에서 변환할 알 수 없는 데이터 유형"
 msgid "Unknown destination video frame format: "
 msgstr "알 수 없는 수신자 비디오 프레임 형식: "
 
-#: standalone/main.cpp:638
+#: standalone/main.cpp:654
 msgid "Unknown error"
 msgstr "알수없는 오류"
 
@@ -8342,7 +8342,7 @@ msgstr "위에"
 msgid "Update Frame in Cache"
 msgstr "캐시의 프레임 업데이트"
 
-#: standalone/mrvCommandLine.cpp:125
+#: standalone/mrvCommandLine.cpp:127
 #, c-format
 msgid ""
 "Usage:\n"
@@ -8406,7 +8406,7 @@ msgstr "사용자 인터페이스/보기 창"
 msgid "User Interface/View Window/Language and Colors"
 msgstr "사용자 인터페이스/보기 창/언어 및 색상"
 
-#: gui/mrvPreferences.cpp:250
+#: gui/mrvPreferences.cpp:247
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
 msgstr "기본값 사용(Rec. ITU-R BT.709에 따른 색도)."
 
@@ -8672,8 +8672,8 @@ msgid ""
 "When Override FPS is on, this setting controls the FPS of all movie files "
 "saved, instead of relying in Media Information->FPS."
 msgstr ""
-"CPS 재정의가 활성화된 경우 이 설정은 각 동영상에 대해 미디어 보고서->CPS를 사"
-"용하는 대신 저장할 모든 동영상의 CPS(초당 프레임 수)를 제어합니다."
+"FPS 재정의가 활성화된 경우 이 설정은 각 동영상에 대해 미디어 보고서->FPS를 사"
+"용하는 대신 저장할 모든 동영상의 FPS(초당 프레임 수)를 제어합니다."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2890
 msgid ""
@@ -8894,7 +8894,7 @@ msgid ""
 "When this setting is on, Media Information Window's FPS setting is not taken "
 "into account, but the setting from this GUI is."
 msgstr ""
-"이 설정이 활성화되면 미디어 보고서의 CPS(초당 프레임 수) 값은 고려되지 않지"
+"이 설정이 활성화되면 미디어 보고서의 FPS(초당 프레임 수) 값은 고려되지 않지"
 "만 이 인터페이스의 값은 고려됩니다."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2394
@@ -9156,7 +9156,7 @@ msgstr "YUVA 지원:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9287,7 +9287,7 @@ msgstr "UI뷰 삭제"
 msgid "dub"
 msgstr "더빙"
 
-#: standalone/mrvCommandLine.cpp:452
+#: standalone/mrvCommandLine.cpp:454
 msgid "files"
 msgstr "기록"
 
@@ -9514,8 +9514,8 @@ msgstr ""
 "이 모든 것이 무엇을 의미하는지 잘 모르겠다면 항상 동일한 알고리즘(CTL 또는 "
 "ICC)을 사용하여 디스플레이 및 이미지 설정을 유지하세요."
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1331
-#: gui/mrvPreferences.cpp:1337
+#: gui/mrvPreferences.cpp:318 gui/mrvPreferences.cpp:1328
+#: gui/mrvPreferences.cpp:1334
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

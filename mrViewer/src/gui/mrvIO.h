@@ -196,15 +196,15 @@ unsigned long get_thread_id();
 #if 1
 #include "gui/mrvPreferences.h"
 #define DBGM3(msg) do { \
-    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
+    if ( mrv::Preferences::debug > 3 ) LOG_DEBUG( msg ); \
 } while(0)
 
 #define DBGM2(msg) do { \
-    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( msg ); \
+    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
 } while(0)
 
 #define DBGM1(msg) do { \
-    if ( mrv::Preferences::debug > 0 ) LOG_DEBUG( msg ); \
+    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( msg ); \
 } while(0)
 
 #define DBGM0(msg) do { \
@@ -212,15 +212,15 @@ unsigned long get_thread_id();
 } while(0)
 
 #define DBG3 do { \
-    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( " " ); \
+    if ( mrv::Preferences::debug > 3 ) LOG_DEBUG( " " ); \
 } while(0)
 
 #define DBG2 do { \
-    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( " " ); \
+    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( " " ); \
 } while(0)
 
 #define DBG do { \
-    if ( mrv::Preferences::debug > 0 ) LOG_DEBUG( " " ); \
+    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( " " ); \
 } while(0)
 
 #else

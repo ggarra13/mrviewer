@@ -77,6 +77,8 @@
 #undef  _ITERATOR_DEBUG_LEVEL
 #define _ITERATOR_DEBUG_LEVEL 0
 
+int setenv (const char * name, const char * value, int overwrite );
+
 #endif // defined(WIN32) || defined(WIN64)
 
 #endif // mrvOS_h

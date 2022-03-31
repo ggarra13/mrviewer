@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-30 23:58-0300\n"
+"POT-Creation-Date: 2022-03-31 20:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "轨道 # 的轨道类型未知"
 
-#: standalone/mrvCommandLine.cpp:136
+#: standalone/mrvCommandLine.cpp:138
 msgid ""
 "\n"
 "\n"
@@ -218,7 +218,7 @@ msgstr " 频率： "
 msgid " has different display window than "
 msgstr " 有不同的视窗 "
 
-#: standalone/main.cpp:453
+#: standalone/main.cpp:469
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -303,11 +303,11 @@ msgstr " 反对 "
 msgid " will not be available.  "
 msgstr " 它不会可用。  "
 
-#: gui/mrvPreferences.cpp:186
+#: gui/mrvPreferences.cpp:183
 msgid "\" as a float value; using "
 msgstr "\" 作为浮点值；使用 "
 
-#: gui/mrvPreferences.cpp:144
+#: gui/mrvPreferences.cpp:141
 msgid "\" as an integer value; using "
 msgstr "\" 作为整数值；使用 "
 
@@ -327,15 +327,15 @@ msgstr "\" 没有前缀为 \" 的频道"
 msgid "\" has no channels."
 msgstr "\" 没有频道。"
 
-#: gui/mrvPreferences.cpp:134 gui/mrvPreferences.cpp:176
+#: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 msgid "\" is not set; using default value ("
 msgstr "\" 未设置；使用默认值 ("
 
-#: gui/mrvPreferences.cpp:218
+#: gui/mrvPreferences.cpp:215
 msgid "\" is not set; using default value (\""
 msgstr "\" 未设置；使用默认值 (\""
 
-#: gui/mrvPreferences.cpp:258
+#: gui/mrvPreferences.cpp:255
 msgid ""
 "\" is not set; using default value (chromaticities according to Rec. ITU-R "
 "BT.709)."
@@ -353,7 +353,7 @@ msgstr "\" 未找到。 "
 msgid "\" to protocol number"
 msgstr "\" 到协议号"
 
-#: gui/mrvPreferences.cpp:248
+#: gui/mrvPreferences.cpp:245
 msgid "\"; Format: "
 msgstr "\"; 格式： "
 
@@ -498,7 +498,7 @@ msgstr "（PAL 字段）"
 msgid "(RT) Render Transform"
 msgstr "渲染转换"
 
-#: standalone/main.cpp:414
+#: standalone/main.cpp:430
 msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 无法启动，请将其删除）"
 
@@ -562,11 +562,11 @@ msgstr "， 频率 "
 msgid ", type "
 msgstr "， 类型 "
 
-#: standalone/mrvCommandLine.cpp:568
+#: standalone/mrvCommandLine.cpp:570
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "--stereo 选项必须以两倍的倍数指定。"
 
-#: standalone/mrvCommandLine.cpp:362
+#: standalone/mrvCommandLine.cpp:364
 msgid ".  Attribute must be of the form attr=value."
 msgstr ".该属性必须具有 attr=value 的形式。"
 
@@ -587,7 +587,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1847
+#: gui/mrvPreferences.cpp:1844
 msgid "0.45"
 msgstr "0.45"
 
@@ -603,7 +603,7 @@ msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1846
+#: gui/mrvPreferences.cpp:1843
 msgid "1.0"
 msgstr "1.0"
 
@@ -648,7 +648,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1.77 高清电视 (16:9)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1845
+#: gui/mrvPreferences.cpp:1842
 msgid "1.8"
 msgstr "1.8"
 
@@ -764,7 +764,7 @@ msgid "2.10 VistaVision"
 msgstr "2.10 远景"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1844
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1841
 msgid "2.2"
 msgstr "2.2"
 
@@ -1036,7 +1036,7 @@ msgstr "A"
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr "正在进行 Windows Sockets 1.1 锁定操作。\n"
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:397
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "关于 mrViewer"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:315
+#: standalone/main.cpp:336
 msgid "About mrViewer"
 msgstr "关于 mrViewer"
 
@@ -1319,7 +1319,7 @@ msgstr "返回注释框步骤"
 msgid "Annotation Frame Step Forwards"
 msgstr "步得分框前进"
 
-#: standalone/main.cpp:451
+#: standalone/main.cpp:467
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1659,7 +1659,7 @@ msgstr "剪辑蓝调增益"
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下像素图像的蓝色值。"
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:634
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:650
 msgid "Boost exception: "
 msgstr "提升异常： "
 
@@ -1676,7 +1676,7 @@ msgid "Bottom Field"
 msgstr "下场"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:505 standalone/main.cpp:525
+#: standalone/main.cpp:521 standalone/main.cpp:541
 msgid "Bottom/top"
 msgstr "降低/更高"
 
@@ -1816,8 +1816,8 @@ msgstr "目前无法以这些格式保存电影。"
 msgid "Cannot map \""
 msgstr "我无法映射\""
 
-#: gui/mrvPreferences.cpp:143 gui/mrvPreferences.cpp:185
-#: gui/mrvPreferences.cpp:246
+#: gui/mrvPreferences.cpp:140 gui/mrvPreferences.cpp:182
+#: gui/mrvPreferences.cpp:243
 msgid "Cannot parse environment variable \""
 msgstr "无法解释环境变量\""
 
@@ -1883,7 +1883,7 @@ msgid "Char"
 msgstr "特点"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:515 standalone/main.cpp:529
+#: standalone/main.cpp:531 standalone/main.cpp:545
 msgid "Checkerboard pattern"
 msgstr "网格"
 
@@ -2515,7 +2515,7 @@ msgstr "我无法获得帧数"
 msgid "Could not obtain frame rate"
 msgstr "我无法获得播放速度"
 
-#: gui/mrvPreferences.cpp:569
+#: gui/mrvPreferences.cpp:566
 msgid "Could not open \""
 msgstr "我打不开\""
 
@@ -2613,7 +2613,7 @@ msgstr "我找不到那幅画 "
 msgid "Could not set "
 msgstr "无法设置 "
 
-#: gui/mrvPreferences.cpp:1353
+#: gui/mrvPreferences.cpp:1350
 msgid "Could not set transforms in GUI"
 msgstr "我无法在 GUI 中设置转换"
 
@@ -2909,7 +2909,7 @@ msgid "Custom Field 9"
 msgstr "自定义字段 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:519 standalone/main.cpp:531
+#: standalone/main.cpp:535 standalone/main.cpp:547
 msgid "Cyan/red glasses"
 msgstr "青色镜片/红色的"
 
@@ -3133,7 +3133,7 @@ msgstr ""
 "文件夹: %s\n"
 "名称: %s\n"
 "分辨率: %dx%d\n"
-"帧数: %<PRId64> -%<PRId64> CPS %g"
+"帧数: %<PRId64> -%<PRId64> FPS %g"
 
 #: core/mrvClient.cpp:257 core/mrvServer.cpp:2049
 msgid "Disconnect"
@@ -3340,8 +3340,8 @@ msgstr "结尾"
 msgid "English"
 msgstr "英语"
 
-#: gui/mrvPreferences.cpp:133 gui/mrvPreferences.cpp:175
-#: gui/mrvPreferences.cpp:217 gui/mrvPreferences.cpp:257
+#: gui/mrvPreferences.cpp:130 gui/mrvPreferences.cpp:172
+#: gui/mrvPreferences.cpp:214 gui/mrvPreferences.cpp:254
 msgid "Environment variable \""
 msgstr "环境变量\""
 
@@ -3408,12 +3408,12 @@ msgid "Escape"
 msgstr "逃脱"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:513 standalone/main.cpp:528
+#: standalone/main.cpp:529 standalone/main.cpp:544
 msgid "Even/odd columns"
 msgstr "奇怪的/对列"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:511 standalone/main.cpp:527
+#: standalone/main.cpp:527 standalone/main.cpp:543
 msgid "Even/odd rows"
 msgstr "奇怪的/对线"
 
@@ -3421,7 +3421,7 @@ msgstr "奇怪的/对线"
 msgid "Example:  gizmo"
 msgstr "示例：gizmo_v003.0001.exr"
 
-#: standalone/mrvCommandLine.cpp:165
+#: standalone/mrvCommandLine.cpp:167
 msgid ""
 "Examples:\n"
 "\n"
@@ -3438,7 +3438,7 @@ msgstr "交换图片失败"
 msgid "ExchangeImage %d %d"
 msgstr "交换图像 %d %d"
 
-#: gui/mrvPreferences.cpp:1640
+#: gui/mrvPreferences.cpp:1637
 msgid "Expanded OCIO config to:"
 msgstr "将 OCIO 配置扩展为："
 
@@ -3507,7 +3507,7 @@ msgstr "以适应"
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
-msgstr "CPS"
+msgstr "FPS"
 
 #: core/aviImage_save.cpp:1593
 msgid "Failed "
@@ -3573,7 +3573,7 @@ msgstr "我未能获得总音频样本数！"
 msgid "Failed to init swresample library with "
 msgstr "我无法初始化 swresample 库 "
 
-#: gui/mrvPreferences.cpp:548
+#: gui/mrvPreferences.cpp:545
 msgid "Failed to initialize R3D SDK: "
 msgstr "我未能初始化 R3D SDK： "
 
@@ -3667,7 +3667,7 @@ msgstr "姓名"
 msgid "Filename of the clip"
 msgstr "剪辑文件名"
 
-#: standalone/main.cpp:630
+#: standalone/main.cpp:646
 msgid "Filesystem error: "
 msgstr "文件系统错误： "
 
@@ -3824,11 +3824,11 @@ msgstr "框架后退"
 
 #: gui/mrvHotkey.cpp:338
 msgid "Frame Step FPS Backwards"
-msgstr "框架后退 CPS"
+msgstr "框架后退 FPS"
 
 #: gui/mrvHotkey.cpp:341
 msgid "Frame Step FPS Forwards"
-msgstr "帧步进 CPS"
+msgstr "帧步进 FPS"
 
 #: gui/mrvHotkey.cpp:340
 msgid "Frame Step Forwards"
@@ -3955,7 +3955,7 @@ msgstr "图像增益值。像素值的简单乘数。"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1842
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1839
 msgid "Gamma"
 msgstr "光谱"
 
@@ -4138,11 +4138,11 @@ msgstr "十六进制"
 msgid "Hex Values"
 msgstr "十六进制值"
 
-#: standalone/main.cpp:318
+#: standalone/main.cpp:339
 msgid "Hide Others"
 msgstr "隐藏其他人"
 
-#: standalone/main.cpp:317
+#: standalone/main.cpp:338
 msgid "Hide mrViewer"
 msgstr "隐藏 mrViewer"
 
@@ -4527,7 +4527,7 @@ msgstr "立体图像有不同的长度。他们不会正确重复。"
 msgid "Images in stereo have different velocities (fps)."
 msgstr "立体图像具有不同的速度（每秒帧数）。"
 
-#: standalone/mrvCommandLine.cpp:453
+#: standalone/mrvCommandLine.cpp:455
 msgid "Images, sequences or movies to display."
 msgstr "要显示的图像、序列或电影。"
 
@@ -4543,7 +4543,7 @@ msgstr "在 Y 上递增"
 msgid "Index "
 msgstr "无效索引 "
 
-#: gui/mrvPreferences.cpp:553
+#: gui/mrvPreferences.cpp:550
 msgid "Inited R3D SDK from: "
 msgstr "我从以下位置开始 R3D SDK： "
 
@@ -4588,7 +4588,7 @@ msgstr "强度"
 msgid "Invalid Profile for CMM: "
 msgstr "CMM 的配置文件无效： "
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:363
 msgid "Invalid attribute "
 msgstr "无效属性 "
 
@@ -4790,14 +4790,14 @@ msgid "Left View"
 msgstr "左视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:497 standalone/main.cpp:524
+#: standalone/main.cpp:513 standalone/main.cpp:540
 msgid "Left view"
 msgstr "左视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:481 standalone/main.cpp:487 standalone/main.cpp:507
-#: standalone/main.cpp:526
+#: standalone/main.cpp:497 standalone/main.cpp:503 standalone/main.cpp:523
+#: standalone/main.cpp:542
 msgid "Left/right"
 msgstr "剩下/正确的"
 
@@ -4907,7 +4907,7 @@ msgstr "加载字幕"
 msgid "Load XML Clip Metadata"
 msgstr "加载剪辑 XML 元数据"
 
-#: standalone/mrvCommandLine.cpp:416
+#: standalone/mrvCommandLine.cpp:418
 msgid "Load a single image even if there's a sequence present."
 msgstr "即使存在序列，也要上传单个图像。"
 
@@ -4931,11 +4931,11 @@ msgstr "我从 ACES 上传了剪辑元数据文件"
 msgid "Loaded braw lib from: "
 msgstr "我从以下位置加载了 braw 库： "
 
-#: gui/mrvPreferences.cpp:576
+#: gui/mrvPreferences.cpp:573
 msgid "Loaded color themes from "
 msgstr "加载的颜色主题来自 "
 
-#: gui/mrvPreferences.cpp:375
+#: gui/mrvPreferences.cpp:372
 msgid "Loaded preferences from "
 msgstr "从加载的首选项 "
 
@@ -4959,7 +4959,7 @@ msgstr "加载内部着色器 NV3.0 rgba"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "加载内部 rgba 着色器 arbfp1"
 
-#: gui/mrvPreferences.cpp:1338
+#: gui/mrvPreferences.cpp:1335
 msgid "Loading hotkeys from "
 msgstr "从加载热键 "
 
@@ -4967,7 +4967,7 @@ msgstr "从加载热键 "
 msgid "Local Caption"
 msgstr "地方标志"
 
-#: standalone/main.cpp:413
+#: standalone/main.cpp:429
 msgid "Lockfile "
 msgstr "文件锁 "
 
@@ -4988,7 +4988,7 @@ msgstr "帖子"
 msgid "Longitude"
 msgstr "长度"
 
-#: gui/mrvPreferences.cpp:549
+#: gui/mrvPreferences.cpp:546
 msgid "Looked for it in: "
 msgstr "我看了看： "
 
@@ -5340,7 +5340,7 @@ msgstr "NTSC 视频"
 msgid "Name (.ext)"
 msgstr "名称 (.ext)"
 
-#: standalone/mrvCommandLine.cpp:164
+#: standalone/mrvCommandLine.cpp:166
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
@@ -5352,7 +5352,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "永远是近邻"
 
-#: gui/mrvLanguages.cpp:27
+#: gui/mrvLanguages.cpp:38
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5399,7 +5399,7 @@ msgstr "下一个图像版本"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5685,7 +5685,7 @@ msgstr "OCIO 视图切换失败"
 msgid "OCIO config (*.{"
 msgstr "休闲配置（*.{"
 
-#: gui/mrvPreferences.cpp:1839
+#: gui/mrvPreferences.cpp:1836
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 环境变量不存在。将使用 CTL。 "
 
@@ -5929,19 +5929,19 @@ msgstr "覆盖 FPS"
 msgid "Override playback fps when loading sequences."
 msgstr "加载素材时覆盖播放 fps。"
 
-#: standalone/mrvCommandLine.cpp:430
+#: standalone/mrvCommandLine.cpp:432
 msgid "Override sequence default fps."
 msgstr "废除流的每秒帧数。"
 
-#: standalone/mrvCommandLine.cpp:443
+#: standalone/mrvCommandLine.cpp:445
 msgid "Override viewer's default client hostname."
 msgstr "覆盖查看器的默认客户端主机名。"
 
-#: standalone/mrvCommandLine.cpp:438
+#: standalone/mrvCommandLine.cpp:440
 msgid "Override viewer's default gain."
 msgstr "覆盖取景器的内部增益。"
 
-#: standalone/mrvCommandLine.cpp:434
+#: standalone/mrvCommandLine.cpp:436
 msgid "Override viewer's default gamma."
 msgstr "取消取景器的内部范围。"
 
@@ -6132,7 +6132,7 @@ msgstr "向后播放顺序。"
 msgid "Play sequence forward."
 msgstr "播放顺序向前。"
 
-#: standalone/mrvCommandLine.cpp:413
+#: standalone/mrvCommandLine.cpp:415
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
@@ -6289,11 +6289,11 @@ msgstr "程序没有链接。错误： "
 msgid "Protocols"
 msgstr "协议"
 
-#: standalone/mrvCommandLine.cpp:457
+#: standalone/mrvCommandLine.cpp:459
 msgid "Provide a sequence or movie for background."
 msgstr "为立体声提供两个序列或电影。"
 
-#: standalone/mrvCommandLine.cpp:483
+#: standalone/mrvCommandLine.cpp:485
 msgid "Provide two sequences or movies for stereo."
 msgstr "为立体声提供两个序列或电影。"
 
@@ -6318,7 +6318,7 @@ msgstr "质量"
 msgid "Quicktime Movie"
 msgstr "快速电影"
 
-#: standalone/main.cpp:320
+#: standalone/main.cpp:341
 msgid "Quit mrViewer"
 msgstr "退出 mrViewer"
 
@@ -6468,7 +6468,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "鼠标下图像像素的红色值。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:517 standalone/main.cpp:530
+#: standalone/main.cpp:533 standalone/main.cpp:546
 msgid "Red/cyan glasses"
 msgstr "红色镜片/青色"
 
@@ -6614,7 +6614,7 @@ msgstr "渲染意图"
 msgid "Repeat Frame"
 msgstr "重复帧"
 
-#: standalone/mrvCommandLine.cpp:469
+#: standalone/mrvCommandLine.cpp:471
 msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
@@ -6697,12 +6697,12 @@ msgid "Right View"
 msgstr "右视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:499 standalone/main.cpp:524
+#: standalone/main.cpp:515 standalone/main.cpp:540
 msgid "Right view"
 msgstr "右视图"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:509 standalone/main.cpp:526
+#: standalone/main.cpp:525 standalone/main.cpp:542
 msgid "Right/left"
 msgstr "正确的/剩下"
 
@@ -6750,7 +6750,7 @@ msgstr "旋转图像 -90 度"
 msgid "Rounding Mode"
 msgstr "舍入模式"
 
-#: standalone/mrvCommandLine.cpp:419
+#: standalone/mrvCommandLine.cpp:421
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "无论单实例配置如何，都运行 mrViewer。"
 
@@ -7013,11 +7013,11 @@ msgstr ""
 "选择如何显示立体图像。您可以选择无立体声、一对立体声视图、顶部/底部（反之亦"
 "然），左侧/右（反之亦然），交错的行或列，方形，红色眼镜/青色（反之亦然）。"
 
-#: standalone/mrvCommandLine.cpp:488
+#: standalone/mrvCommandLine.cpp:490
 msgid "Select stereo input"
 msgstr "选择立体声输入"
 
-#: standalone/mrvCommandLine.cpp:493
+#: standalone/mrvCommandLine.cpp:495
 msgid "Select stereo output"
 msgstr "选择立体声输出"
 
@@ -7070,7 +7070,7 @@ msgid "Sep"
 msgstr "九月"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:477 standalone/main.cpp:486
+#: standalone/main.cpp:493 standalone/main.cpp:502
 msgid "Separate layers"
 msgstr "单独的层"
 
@@ -7087,7 +7087,7 @@ msgstr "序列"
 msgid "Server"
 msgstr "服务器"
 
-#: standalone/main.cpp:319
+#: standalone/main.cpp:340
 msgid "Services"
 msgstr "服务"
 
@@ -7108,7 +7108,7 @@ msgstr "设置入口点"
 msgid "Set Out Point"
 msgstr "设置输出点"
 
-#: standalone/mrvCommandLine.cpp:478
+#: standalone/mrvCommandLine.cpp:480
 msgid "Set added audio offset."
 msgstr "我添加了音频滚动。"
 
@@ -7118,15 +7118,15 @@ msgid ""
 "image is the selected image."
 msgstr "设置一个 A/比较 B. 图像 B 在背景中。一个图像（前景）是选定的图像。"
 
-#: standalone/mrvCommandLine.cpp:473
+#: standalone/mrvCommandLine.cpp:475
 msgid "Set an attribute/value to display in the hud."
 msgstr "设置一个属性/在 hud 中显示的值。"
 
-#: standalone/mrvCommandLine.cpp:461
+#: standalone/mrvCommandLine.cpp:463
 msgid "Set each input color space for each image."
 msgstr "设置图像的每个输入颜色空间。"
 
-#: standalone/mrvCommandLine.cpp:465
+#: standalone/mrvCommandLine.cpp:467
 msgid "Set each movie/sequence default audio."
 msgstr "为每部电影设置默认音频/顺序"
 
@@ -7134,7 +7134,7 @@ msgstr "为每部电影设置默认音频/顺序"
 msgid "Set reel image as background."
 msgstr "将相机胶卷图像设置为背景"
 
-#: standalone/mrvCommandLine.cpp:448
+#: standalone/mrvCommandLine.cpp:450
 msgid "Set viewer's default server/client port."
 msgstr "设置服务器端口/查看器的默认客户端。"
 
@@ -7146,23 +7146,23 @@ msgstr "设置 mrViewer 启动时的默认增益。"
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "设置 mrViewer 启动时的默认范围。"
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1618
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "将 OCIO 配置设置为 OCIO 环境变量："
 
-#: gui/mrvPreferences.cpp:1602
+#: gui/mrvPreferences.cpp:1599
 msgid "Setting OCIO config to nuke-default."
 msgstr "将 OCIO 配置设置为 nuke-default。"
 
-#: gui/mrvPreferences.cpp:1594
+#: gui/mrvPreferences.cpp:1591
 msgid "Setting OCIO config to saved preferences."
 msgstr "将 OCIO 配置设置为保存的首选项。"
 
-#: gui/mrvPreferences.cpp:1627
+#: gui/mrvPreferences.cpp:1624
 msgid "Setting OCIO config to:"
 msgstr "将 OCIO 配置设置为："
 
-#: gui/mrvPreferences.cpp:645
+#: gui/mrvPreferences.cpp:642
 msgid "Setting language to "
 msgstr "将语言设置为 "
 
@@ -7311,11 +7311,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 立体影像"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:501
+#: standalone/main.cpp:517
 msgid "Stereo OpenGL"
 msgstr "OpenGL 立体"
 
-#: standalone/main.cpp:523
+#: standalone/main.cpp:539
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "立体声输出无效。有效值为： "
 
@@ -8010,8 +8010,8 @@ msgstr "上场"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:479 standalone/main.cpp:486 standalone/main.cpp:503
-#: standalone/main.cpp:525
+#: standalone/main.cpp:495 standalone/main.cpp:502 standalone/main.cpp:519
+#: standalone/main.cpp:541
 msgid "Top/bottom"
 msgstr "更高/降低"
 
@@ -8035,7 +8035,7 @@ msgstr "传统无范围"
 msgid "Transform"
 msgstr "转型"
 
-#: standalone/main.cpp:312
+#: standalone/main.cpp:333
 msgid "Translations: "
 msgstr "翻译： "
 
@@ -8051,11 +8051,11 @@ msgstr "土耳其"
 msgid "Turn off screensaver"
 msgstr "禁用屏幕保护程序"
 
-#: standalone/mrvCommandLine.cpp:425
+#: standalone/mrvCommandLine.cpp:427
 msgid "Turn on EDL when loading multiple images."
 msgstr "上传多张图片时启用 EDL"
 
-#: standalone/mrvCommandLine.cpp:408
+#: standalone/mrvCommandLine.cpp:410
 msgid "Turn on debugging console."
 msgstr "打开调试控制台。"
 
@@ -8132,7 +8132,7 @@ msgstr "撤消上次绘制的形状"
 msgid "Unhandled Exception"
 msgstr "未处理的异常"
 
-#: standalone/main.cpp:618
+#: standalone/main.cpp:634
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
@@ -8206,7 +8206,7 @@ msgstr "从文本转换的未知数据类型"
 msgid "Unknown destination video frame format: "
 msgstr "未知接收者视频帧格式： "
 
-#: standalone/main.cpp:638
+#: standalone/main.cpp:654
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -8279,7 +8279,7 @@ msgstr "更多"
 msgid "Update Frame in Cache"
 msgstr "更新缓存中的帧"
 
-#: standalone/mrvCommandLine.cpp:125
+#: standalone/mrvCommandLine.cpp:127
 #, c-format
 msgid ""
 "Usage:\n"
@@ -8343,7 +8343,7 @@ msgstr "用户界面/视窗"
 msgid "User Interface/View Window/Language and Colors"
 msgstr "用户界面/视窗/语言和颜色"
 
-#: gui/mrvPreferences.cpp:250
+#: gui/mrvPreferences.cpp:247
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
 msgstr "使用默认值（根据 ITU-R BT.709 建议书的色度）。"
 
@@ -8609,8 +8609,8 @@ msgid ""
 "When Override FPS is on, this setting controls the FPS of all movie files "
 "saved, instead of relying in Media Information->FPS."
 msgstr ""
-"启用 Override CPS 时，此设置控制要保存的所有电影的每秒帧数 (CPS)，而不是使用 "
-"Media Report->CPS 来保存每个电影。"
+"启用 Override FPS 时，此设置控制要保存的所有电影的每秒帧数 (FPS)，而不是使用 "
+"Media Report->FPS 来保存每个电影。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2890
 msgid ""
@@ -8818,7 +8818,7 @@ msgid ""
 "When this setting is on, Media Information Window's FPS setting is not taken "
 "into account, but the setting from this GUI is."
 msgstr ""
-"激活此设置时，不考虑媒体报告的 CPS（Frames Per Second）的值，但考虑此接口的"
+"激活此设置时，不考虑媒体报告的 FPS（Frames Per Second）的值，但考虑此接口的"
 "值。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2394
@@ -9075,7 +9075,7 @@ msgstr "YUVA 支持：\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9206,7 +9206,7 @@ msgstr "删除uiview"
 msgid "dub"
 msgstr "配音"
 
-#: standalone/mrvCommandLine.cpp:452
+#: standalone/mrvCommandLine.cpp:454
 msgid "files"
 msgstr "记录"
 
@@ -9430,8 +9430,8 @@ msgstr ""
 "如果您不确定这意味着什么，请每次使用相同的算法（CTL 或 ICC）保持显示和图像设"
 "置。"
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1331
-#: gui/mrvPreferences.cpp:1337
+#: gui/mrvPreferences.cpp:318 gui/mrvPreferences.cpp:1328
+#: gui/mrvPreferences.cpp:1334
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

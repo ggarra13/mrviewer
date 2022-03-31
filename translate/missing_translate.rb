@@ -32,7 +32,7 @@ def fix( text, result )
     text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
     text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
     text == "mrViewer    FG: %s" or text == '%4.8g %%' or
-    text == 'A' or text == 'A/B'
+    text == 'A' or text == 'A/B' or text == "FPS" or
     text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/

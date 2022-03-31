@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-03-30 23:58-0300\n"
+"POT-Creation-Date: 2022-03-31 20:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "Parça # için bilinen bir parça türü değil"
 
-#: standalone/mrvCommandLine.cpp:136
+#: standalone/mrvCommandLine.cpp:138
 msgid ""
 "\n"
 "\n"
@@ -218,7 +218,7 @@ msgstr " Sıklık: "
 msgid " has different display window than "
 msgstr " farklı görünüm penceresine sahip "
 
-#: standalone/main.cpp:453
+#: standalone/main.cpp:469
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -303,11 +303,11 @@ msgstr " karşısında "
 msgid " will not be available.  "
 msgstr " Mevcut olmayacak.  "
 
-#: gui/mrvPreferences.cpp:186
+#: gui/mrvPreferences.cpp:183
 msgid "\" as a float value; using "
 msgstr "\" kayan nokta değeri olarak; "
 
-#: gui/mrvPreferences.cpp:144
+#: gui/mrvPreferences.cpp:141
 msgid "\" as an integer value; using "
 msgstr "\" bir tamsayı değeri olarak; kullanarak "
 
@@ -329,15 +329,15 @@ msgstr "\" ön ekine sahip kanal yok \""
 msgid "\" has no channels."
 msgstr "\" kanalı yok."
 
-#: gui/mrvPreferences.cpp:134 gui/mrvPreferences.cpp:176
+#: gui/mrvPreferences.cpp:131 gui/mrvPreferences.cpp:173
 msgid "\" is not set; using default value ("
 msgstr "\" ayarlanmadı; varsayılan değer kullanılıyor ("
 
-#: gui/mrvPreferences.cpp:218
+#: gui/mrvPreferences.cpp:215
 msgid "\" is not set; using default value (\""
 msgstr "\" ayarlanmadı; varsayılan değer kullanılıyor (\""
 
-#: gui/mrvPreferences.cpp:258
+#: gui/mrvPreferences.cpp:255
 msgid ""
 "\" is not set; using default value (chromaticities according to Rec. ITU-R "
 "BT.709)."
@@ -357,7 +357,7 @@ msgstr "\" Bulunamadı. "
 msgid "\" to protocol number"
 msgstr "\" protokol numarasına"
 
-#: gui/mrvPreferences.cpp:248
+#: gui/mrvPreferences.cpp:245
 msgid "\"; Format: "
 msgstr "\"; Biçim: "
 
@@ -502,7 +502,7 @@ msgstr "(PAL alanları)"
 msgid "(RT) Render Transform"
 msgstr "Render Dönüşümü"
 
-#: standalone/main.cpp:414
+#: standalone/main.cpp:430
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
@@ -566,11 +566,11 @@ msgstr ", Sıklık "
 msgid ", type "
 msgstr ", tip "
 
-#: standalone/mrvCommandLine.cpp:568
+#: standalone/mrvCommandLine.cpp:570
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "--stereo seçeneği iki katın katı olarak belirtilmelidir."
 
-#: standalone/mrvCommandLine.cpp:362
+#: standalone/mrvCommandLine.cpp:364
 msgid ".  Attribute must be of the form attr=value."
 msgstr ". Nitelik, attr=değer biçiminde olmalıdır."
 
@@ -588,10 +588,10 @@ msgstr "0,00 Yok"
 
 #: gui/mrvImageInformation.cpp:198
 msgid "0.2 5.1  10.5 20.2"
-msgstr "0,2 5,1 10.5 20.2"
+msgstr "0,2 5,1 10,5 20,2"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
-#: gui/mrvPreferences.cpp:1847
+#: gui/mrvPreferences.cpp:1844
 msgid "0.45"
 msgstr "0,45"
 
@@ -607,7 +607,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1846
+#: gui/mrvPreferences.cpp:1843
 msgid "1.0"
 msgstr "1,0"
 
@@ -652,7 +652,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
-#: gui/mrvPreferences.cpp:1845
+#: gui/mrvPreferences.cpp:1842
 msgid "1.8"
 msgstr "1,8"
 
@@ -768,7 +768,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 VistaVision"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1844
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1841
 msgid "2.2"
 msgstr "2,2"
 
@@ -794,7 +794,7 @@ msgstr "2,39 Panavision (yeni 2,35)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1945
 msgid "23.97"
-msgstr "23,976"
+msgstr "23,97"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:196
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1944
@@ -1040,7 +1040,7 @@ msgstr "A"
 msgid "A blocking Windows Sockets 1.1 operation is in progress.\n"
 msgstr "Bir Windows Sockets 1.1 kilitleme işlemi devam ediyor.\n"
 
-#: standalone/mrvCommandLine.cpp:395
+#: standalone/mrvCommandLine.cpp:397
 msgid ""
 "A professional image and movie viewer\n"
 "Examples:\n"
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "mrViewer hakkında"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:315
+#: standalone/main.cpp:336
 msgid "About mrViewer"
 msgstr "mrViewer hakkında"
 
@@ -1323,7 +1323,7 @@ msgstr "Geri Açıklama Kutusu Adımı"
 msgid "Annotation Frame Step Forwards"
 msgstr "Adım Puanlama Kutusu İleri"
 
-#: standalone/main.cpp:451
+#: standalone/main.cpp:467
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1670,7 +1670,7 @@ msgstr "Klip Blues Kazancı"
 msgid "Blue value of image pixel under mouse."
 msgstr "Farenin altındaki piksel görüntüsünün mavi değeri."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:634
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:650
 msgid "Boost exception: "
 msgstr "Boost İstisnası: "
 
@@ -1687,7 +1687,7 @@ msgid "Bottom Field"
 msgstr "Alt Alan"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:505 standalone/main.cpp:525
+#: standalone/main.cpp:521 standalone/main.cpp:541
 msgid "Bottom/top"
 msgstr "daha düşük/Daha yüksek"
 
@@ -1827,8 +1827,8 @@ msgstr "Şu anda bir filmi bu formatlarda kaydetmek mümkün değil."
 msgid "Cannot map \""
 msgstr "eşleyemiyorum \""
 
-#: gui/mrvPreferences.cpp:143 gui/mrvPreferences.cpp:185
-#: gui/mrvPreferences.cpp:246
+#: gui/mrvPreferences.cpp:140 gui/mrvPreferences.cpp:182
+#: gui/mrvPreferences.cpp:243
 msgid "Cannot parse environment variable \""
 msgstr "Ortam değişkeni yorumlanamıyor \""
 
@@ -1894,7 +1894,7 @@ msgid "Char"
 msgstr "Karakter"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:515 standalone/main.cpp:529
+#: standalone/main.cpp:531 standalone/main.cpp:545
 msgid "Checkerboard pattern"
 msgstr "Kafes"
 
@@ -2531,7 +2531,7 @@ msgstr "kare sayısını alamadım"
 msgid "Could not obtain frame rate"
 msgstr "oynatma hızını alamadım"
 
-#: gui/mrvPreferences.cpp:569
+#: gui/mrvPreferences.cpp:566
 msgid "Could not open \""
 msgstr "açamadım \""
 
@@ -2629,7 +2629,7 @@ msgstr "resmi bulamadım "
 msgid "Could not set "
 msgstr "ayarlanamadı "
 
-#: gui/mrvPreferences.cpp:1353
+#: gui/mrvPreferences.cpp:1350
 msgid "Could not set transforms in GUI"
 msgstr "GUI'de dönüşümleri ayarlayamadım"
 
@@ -2925,7 +2925,7 @@ msgid "Custom Field 9"
 msgstr "Özel Alan 9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:519 standalone/main.cpp:531
+#: standalone/main.cpp:535 standalone/main.cpp:547
 msgid "Cyan/red glasses"
 msgstr "Camgöbeği Lensler/kırmızı"
 
@@ -3155,7 +3155,7 @@ msgstr ""
 "Klasör: %s\n"
 "Ad: %s\n"
 "Çözünürlük: %dx%d\n"
-"Çerçeveler: %<PRId64> -%<PRId64> CPS %g"
+"Çerçeveler: %<PRId64> -%<PRId64> FPS %g"
 
 #: core/mrvClient.cpp:257 core/mrvServer.cpp:2049
 msgid "Disconnect"
@@ -3362,8 +3362,8 @@ msgstr "Son"
 msgid "English"
 msgstr "ingilizce"
 
-#: gui/mrvPreferences.cpp:133 gui/mrvPreferences.cpp:175
-#: gui/mrvPreferences.cpp:217 gui/mrvPreferences.cpp:257
+#: gui/mrvPreferences.cpp:130 gui/mrvPreferences.cpp:172
+#: gui/mrvPreferences.cpp:214 gui/mrvPreferences.cpp:254
 msgid "Environment variable \""
 msgstr "Çevre değişkeni \""
 
@@ -3432,12 +3432,12 @@ msgid "Escape"
 msgstr "Kaçmak"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:513 standalone/main.cpp:528
+#: standalone/main.cpp:529 standalone/main.cpp:544
 msgid "Even/odd columns"
 msgstr "Garip/çift sütun"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:511 standalone/main.cpp:527
+#: standalone/main.cpp:527 standalone/main.cpp:543
 msgid "Even/odd rows"
 msgstr "Garip/çift çizgiler"
 
@@ -3445,7 +3445,7 @@ msgstr "Garip/çift çizgiler"
 msgid "Example:  gizmo"
 msgstr "Örnek: gizmo_v003.0001.exr"
 
-#: standalone/mrvCommandLine.cpp:165
+#: standalone/mrvCommandLine.cpp:167
 msgid ""
 "Examples:\n"
 "\n"
@@ -3462,7 +3462,7 @@ msgstr "Görüntü Değiştirilemedi"
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage %d %d"
 
-#: gui/mrvPreferences.cpp:1640
+#: gui/mrvPreferences.cpp:1637
 msgid "Expanded OCIO config to:"
 msgstr "OCIO yapılandırmasını şu şekilde genişletmek:"
 
@@ -3531,7 +3531,7 @@ msgstr "Sığacak şekilde"
 #: gui/mrvImageInformation.cpp:2818 gui/mrvImageInformation.cpp:3545
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
-msgstr "CPS"
+msgstr "FPS"
 
 #: core/aviImage_save.cpp:1593
 msgid "Failed "
@@ -3597,7 +3597,7 @@ msgstr "Toplam ses örneği sayısını alamadım!"
 msgid "Failed to init swresample library with "
 msgstr "ile swresample kitaplığını başlatamadım "
 
-#: gui/mrvPreferences.cpp:548
+#: gui/mrvPreferences.cpp:545
 msgid "Failed to initialize R3D SDK: "
 msgstr "R3D SDK'yı başlatamadım: "
 
@@ -3691,7 +3691,7 @@ msgstr "İsim"
 msgid "Filename of the clip"
 msgstr "Klip dosyası adı"
 
-#: standalone/main.cpp:630
+#: standalone/main.cpp:646
 msgid "Filesystem error: "
 msgstr "Dosya sistemi hatası: "
 
@@ -3848,11 +3848,11 @@ msgstr "Çerçeve Geri Adım"
 
 #: gui/mrvHotkey.cpp:338
 msgid "Frame Step FPS Backwards"
-msgstr "Çerçeve Geri Adım CPS"
+msgstr "Çerçeve Geri Adım FPS"
 
 #: gui/mrvHotkey.cpp:341
 msgid "Frame Step FPS Forwards"
-msgstr "Çerçeve Adım İleri CPS"
+msgstr "Çerçeve Adım İleri FPS"
 
 #: gui/mrvHotkey.cpp:340
 msgid "Frame Step Forwards"
@@ -3979,7 +3979,7 @@ msgstr "Görüntü Kazanç Değeri. Piksel değerlerinin basit bir çarpanı."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1793
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2385
-#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1842
+#: gui/mrvImageInformation.cpp:3027 gui/mrvPreferences.cpp:1839
 msgid "Gamma"
 msgstr "spektrum"
 
@@ -4162,11 +4162,11 @@ msgstr "altıgen"
 msgid "Hex Values"
 msgstr "Onaltılık Değerler"
 
-#: standalone/main.cpp:318
+#: standalone/main.cpp:339
 msgid "Hide Others"
 msgstr "Diğerlerini Gizle"
 
-#: standalone/main.cpp:317
+#: standalone/main.cpp:338
 msgid "Hide mrViewer"
 msgstr "mrViewer'ı gizle"
 
@@ -4556,7 +4556,7 @@ msgstr ""
 msgid "Images in stereo have different velocities (fps)."
 msgstr "Stereo görüntülerin farklı hızları vardır (saniyedeki kare sayısı)."
 
-#: standalone/mrvCommandLine.cpp:453
+#: standalone/mrvCommandLine.cpp:455
 msgid "Images, sequences or movies to display."
 msgstr "Gösterilecek resimler, diziler veya filmler."
 
@@ -4572,7 +4572,7 @@ msgstr "Y üzerinde artan"
 msgid "Index "
 msgstr "geçersiz dizin "
 
-#: gui/mrvPreferences.cpp:553
+#: gui/mrvPreferences.cpp:550
 msgid "Inited R3D SDK from: "
 msgstr "R3D SDK'yı şuradan başlattım: "
 
@@ -4617,7 +4617,7 @@ msgstr "yoğunluk"
 msgid "Invalid Profile for CMM: "
 msgstr "CMM için geçersiz profil: "
 
-#: standalone/mrvCommandLine.cpp:361
+#: standalone/mrvCommandLine.cpp:363
 msgid "Invalid attribute "
 msgstr "geçersiz nitelik "
 
@@ -4819,14 +4819,14 @@ msgid "Left View"
 msgstr "Sol Görünüm"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:497 standalone/main.cpp:524
+#: standalone/main.cpp:513 standalone/main.cpp:540
 msgid "Left view"
 msgstr "Sol Görünüm"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:481 standalone/main.cpp:487 standalone/main.cpp:507
-#: standalone/main.cpp:526
+#: standalone/main.cpp:497 standalone/main.cpp:503 standalone/main.cpp:523
+#: standalone/main.cpp:542
 msgid "Left/right"
 msgstr "Ayrıldı/Sağ"
 
@@ -4938,7 +4938,7 @@ msgstr "Altyazı Yükle"
 msgid "Load XML Clip Metadata"
 msgstr "Klip XML Meta Verilerini Yükle"
 
-#: standalone/mrvCommandLine.cpp:416
+#: standalone/mrvCommandLine.cpp:418
 msgid "Load a single image even if there's a sequence present."
 msgstr "Bir dizi mevcut olsa bile tek bir görüntü yükleyin."
 
@@ -4962,11 +4962,11 @@ msgstr "ACES'ten Klip Meta Veri dosyasını yükledim"
 msgid "Loaded braw lib from: "
 msgstr "Braw kütüphanesini şuradan yükledim: "
 
-#: gui/mrvPreferences.cpp:576
+#: gui/mrvPreferences.cpp:573
 msgid "Loaded color themes from "
 msgstr "renk temalarını yükledim "
 
-#: gui/mrvPreferences.cpp:375
+#: gui/mrvPreferences.cpp:372
 msgid "Loaded preferences from "
 msgstr "tercihleri şuradan yükledim "
 
@@ -4990,7 +4990,7 @@ msgstr "Dahili gölgelendirici NV3.0 rgba yükleniyor"
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Dahili rgba gölgelendirici arbfp1 yükleniyor"
 
-#: gui/mrvPreferences.cpp:1338
+#: gui/mrvPreferences.cpp:1335
 msgid "Loading hotkeys from "
 msgstr "Sürücü anahtarlarını şuradan yükledim: "
 
@@ -4998,7 +4998,7 @@ msgstr "Sürücü anahtarlarını şuradan yükledim: "
 msgid "Local Caption"
 msgstr "yerel işaret"
 
-#: standalone/main.cpp:413
+#: standalone/main.cpp:429
 msgid "Lockfile "
 msgstr "dosya kilidi "
 
@@ -5019,7 +5019,7 @@ msgstr "Gönderiler"
 msgid "Longitude"
 msgstr "Uzunluk"
 
-#: gui/mrvPreferences.cpp:549
+#: gui/mrvPreferences.cpp:546
 msgid "Looked for it in: "
 msgstr "şuradan baktım: "
 
@@ -5376,7 +5376,7 @@ msgstr "NTSC Videosu"
 msgid "Name (.ext)"
 msgstr "Ad (.ext)"
 
-#: standalone/mrvCommandLine.cpp:164
+#: standalone/mrvCommandLine.cpp:166
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
@@ -5388,7 +5388,7 @@ msgstr ""
 msgid "Nearest Neighbor Always"
 msgstr "Her Zaman Yakın Komşu"
 
-#: gui/mrvLanguages.cpp:27
+#: gui/mrvLanguages.cpp:38
 msgid ""
 "Need to reboot mrViewer to change language.  Are you sure you want to "
 "continue?"
@@ -5437,7 +5437,7 @@ msgstr "Sonraki Resim Sürümü"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -5727,7 +5727,7 @@ msgstr "Başarısız OCIO görünüm anahtarı"
 msgid "OCIO config (*.{"
 msgstr "LEISURE yapılandırması (*.{"
 
-#: gui/mrvPreferences.cpp:1839
+#: gui/mrvPreferences.cpp:1836
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO ortam değişkeni mevcut değil. CTL kullanılacaktır. "
 
@@ -5975,20 +5975,20 @@ msgstr "FPS'yi geçersiz kıl"
 msgid "Override playback fps when loading sequences."
 msgstr "Görüntüleri yüklerken oynatma fps'sini geçersiz kıl."
 
-#: standalone/mrvCommandLine.cpp:430
+#: standalone/mrvCommandLine.cpp:432
 msgid "Override sequence default fps."
 msgstr "Akışın saniye başına kare sayısını iptal edin."
 
-#: standalone/mrvCommandLine.cpp:443
+#: standalone/mrvCommandLine.cpp:445
 msgid "Override viewer's default client hostname."
 msgstr ""
 "Görüntüleyicinin varsayılan istemci ana bilgisayar adını geçersiz kılar."
 
-#: standalone/mrvCommandLine.cpp:438
+#: standalone/mrvCommandLine.cpp:440
 msgid "Override viewer's default gain."
 msgstr "Vizörün dahili kazancını geçersiz kılın."
 
-#: standalone/mrvCommandLine.cpp:434
+#: standalone/mrvCommandLine.cpp:436
 msgid "Override viewer's default gamma."
 msgstr "Vizörün dahili aralığını iptal edin."
 
@@ -6179,7 +6179,7 @@ msgstr "Sıralamayı geriye doğru oynatın."
 msgid "Play sequence forward."
 msgstr "Sıralamayı ileri oynat."
 
-#: standalone/mrvCommandLine.cpp:413
+#: standalone/mrvCommandLine.cpp:415
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)."
@@ -6341,11 +6341,11 @@ msgstr "Program bağlantı vermedi. Hata: "
 msgid "Protocols"
 msgstr "protokoller"
 
-#: standalone/mrvCommandLine.cpp:457
+#: standalone/mrvCommandLine.cpp:459
 msgid "Provide a sequence or movie for background."
 msgstr "Stereo için iki dizi veya film sağlayın."
 
-#: standalone/mrvCommandLine.cpp:483
+#: standalone/mrvCommandLine.cpp:485
 msgid "Provide two sequences or movies for stereo."
 msgstr "Stereo için iki dizi veya film sağlayın."
 
@@ -6370,7 +6370,7 @@ msgstr "Kalite"
 msgid "Quicktime Movie"
 msgstr "hızlı film"
 
-#: standalone/main.cpp:320
+#: standalone/main.cpp:341
 msgid "Quit mrViewer"
 msgstr "mrViewer'dan çıkın"
 
@@ -6524,7 +6524,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Farenin altındaki görüntü pikselinin kırmızı değeri."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:517 standalone/main.cpp:530
+#: standalone/main.cpp:533 standalone/main.cpp:546
 msgid "Red/cyan glasses"
 msgstr "Kırmızı Lensler/camgöbeği"
 
@@ -6673,7 +6673,7 @@ msgstr "Oluşturma Amacı"
 msgid "Repeat Frame"
 msgstr "Çerçeveyi Tekrarla"
 
-#: standalone/mrvCommandLine.cpp:469
+#: standalone/mrvCommandLine.cpp:471
 msgid ""
 "Replace all attribute/values to display in the hud, leaving only those "
 "specified in the command line."
@@ -6758,12 +6758,12 @@ msgid "Right View"
 msgstr "Doğru görüş"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:499 standalone/main.cpp:524
+#: standalone/main.cpp:515 standalone/main.cpp:540
 msgid "Right view"
 msgstr "Doğru görüş"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:509 standalone/main.cpp:526
+#: standalone/main.cpp:525 standalone/main.cpp:542
 msgid "Right/left"
 msgstr "Doğru/ayrıldı"
 
@@ -6811,7 +6811,7 @@ msgstr "Resmi -90 derece döndür"
 msgid "Rounding Mode"
 msgstr "Yuvarlama Modu"
 
-#: standalone/mrvCommandLine.cpp:419
+#: standalone/mrvCommandLine.cpp:421
 msgid "Run mrViewer regardless of single instance setting."
 msgstr "Tek örnek yapılandırmasından bağımsız olarak mrViewer'ı çalıştırın."
 
@@ -7083,11 +7083,11 @@ msgstr ""
 "çifti görünümü, üst/alt (ve tersi), sol/sağ (ve tersi), geçmeli satırlar "
 "veya sütunlar, kare, kırmızı camlar/camgöbeği (ve tersi)."
 
-#: standalone/mrvCommandLine.cpp:488
+#: standalone/mrvCommandLine.cpp:490
 msgid "Select stereo input"
 msgstr "Stereo Girişi Seçin"
 
-#: standalone/mrvCommandLine.cpp:493
+#: standalone/mrvCommandLine.cpp:495
 msgid "Select stereo output"
 msgstr "Stereo Çıkışı Seçin"
 
@@ -7140,7 +7140,7 @@ msgid "Sep"
 msgstr "Eylül"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:477 standalone/main.cpp:486
+#: standalone/main.cpp:493 standalone/main.cpp:502
 msgid "Separate layers"
 msgstr "ayrı katmanlar"
 
@@ -7157,7 +7157,7 @@ msgstr "diziler"
 msgid "Server"
 msgstr "sunucu"
 
-#: standalone/main.cpp:319
+#: standalone/main.cpp:340
 msgid "Services"
 msgstr "Hizmetler"
 
@@ -7178,7 +7178,7 @@ msgstr "Giriş Noktasını Ayarla"
 msgid "Set Out Point"
 msgstr "Çıkış Noktasını Ayarla"
 
-#: standalone/mrvCommandLine.cpp:478
+#: standalone/mrvCommandLine.cpp:480
 msgid "Set added audio offset."
 msgstr "Ses kaydırma ekledim."
 
@@ -7190,15 +7190,15 @@ msgstr ""
 "bir A ayarlayın/karşılaştırma B. Resim B arka planda gider. Bir görüntü (ön "
 "plan) seçilen görüntüdür."
 
-#: standalone/mrvCommandLine.cpp:473
+#: standalone/mrvCommandLine.cpp:475
 msgid "Set an attribute/value to display in the hud."
 msgstr "Bir özellik ayarla/hud'de görüntülenecek değer."
 
-#: standalone/mrvCommandLine.cpp:461
+#: standalone/mrvCommandLine.cpp:463
 msgid "Set each input color space for each image."
 msgstr "Görüntünün her giriş renk alanını ayarlayın."
 
-#: standalone/mrvCommandLine.cpp:465
+#: standalone/mrvCommandLine.cpp:467
 msgid "Set each movie/sequence default audio."
 msgstr "Her film için varsayılan sesi ayarlayın/sekans"
 
@@ -7206,7 +7206,7 @@ msgstr "Her film için varsayılan sesi ayarlayın/sekans"
 msgid "Set reel image as background."
 msgstr "Film rulosu görüntülerini arka plan olarak ayarlayın"
 
-#: standalone/mrvCommandLine.cpp:448
+#: standalone/mrvCommandLine.cpp:450
 msgid "Set viewer's default server/client port."
 msgstr "Sunucu bağlantı noktasını ayarlayın/izleyicinin varsayılan istemcisi."
 
@@ -7218,23 +7218,23 @@ msgstr "mrViewer başladığında varsayılan kazancı ayarlayın."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "mrViewer başladığında varsayılan aralığı ayarlayın."
 
-#: gui/mrvPreferences.cpp:1621
+#: gui/mrvPreferences.cpp:1618
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "OCIO yapılandırmasını OCIO ortam değişkenine ayarlama:"
 
-#: gui/mrvPreferences.cpp:1602
+#: gui/mrvPreferences.cpp:1599
 msgid "Setting OCIO config to nuke-default."
 msgstr "OCIO yapılandırmasını nükleer varsayılana ayarlama."
 
-#: gui/mrvPreferences.cpp:1594
+#: gui/mrvPreferences.cpp:1591
 msgid "Setting OCIO config to saved preferences."
 msgstr "OCIO yapılandırmasını kayıtlı tercihlere göre ayarlama."
 
-#: gui/mrvPreferences.cpp:1627
+#: gui/mrvPreferences.cpp:1624
 msgid "Setting OCIO config to:"
 msgstr "OCIO yapılandırmasını şu şekilde ayarlama:"
 
-#: gui/mrvPreferences.cpp:645
+#: gui/mrvPreferences.cpp:642
 msgid "Setting language to "
 msgstr "dil ayarı "
 
@@ -7383,11 +7383,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR Stereo Görüntü"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:501
+#: standalone/main.cpp:517
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:523
+#: standalone/main.cpp:539
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Stereo çıkış geçersiz. Geçerli değerler şunlardır: "
 
@@ -8111,8 +8111,8 @@ msgstr "Üst Alan"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:479 standalone/main.cpp:486 standalone/main.cpp:503
-#: standalone/main.cpp:525
+#: standalone/main.cpp:495 standalone/main.cpp:502 standalone/main.cpp:519
+#: standalone/main.cpp:541
 msgid "Top/bottom"
 msgstr "Daha yüksek/daha düşük"
 
@@ -8136,7 +8136,7 @@ msgstr "Menzilsiz Geleneksel"
 msgid "Transform"
 msgstr "dönüşüm"
 
-#: standalone/main.cpp:312
+#: standalone/main.cpp:333
 msgid "Translations: "
 msgstr "Çeviriler: "
 
@@ -8152,11 +8152,11 @@ msgstr "Türk"
 msgid "Turn off screensaver"
 msgstr "ekran koruyucuyu devre dışı bırak"
 
-#: standalone/mrvCommandLine.cpp:425
+#: standalone/mrvCommandLine.cpp:427
 msgid "Turn on EDL when loading multiple images."
 msgstr "Birden çok görüntü yüklendiğinde EDL'yi etkinleştirin"
 
-#: standalone/mrvCommandLine.cpp:408
+#: standalone/mrvCommandLine.cpp:410
 msgid "Turn on debugging console."
 msgstr "Hata ayıklama konsolunu açın."
 
@@ -8233,7 +8233,7 @@ msgstr "Çizilen Son Şekli Geri Al"
 msgid "Unhandled Exception"
 msgstr "işlenmeyen özel durum"
 
-#: standalone/main.cpp:618
+#: standalone/main.cpp:634
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
@@ -8307,7 +8307,7 @@ msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
-#: standalone/main.cpp:638
+#: standalone/main.cpp:654
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
 
@@ -8380,7 +8380,7 @@ msgstr "Üstünde"
 msgid "Update Frame in Cache"
 msgstr "Çerçeveyi Önbellekte Güncelle"
 
-#: standalone/mrvCommandLine.cpp:125
+#: standalone/mrvCommandLine.cpp:127
 #, c-format
 msgid ""
 "Usage:\n"
@@ -8445,7 +8445,7 @@ msgstr "Kullanıcı arayüzü/Pencereyi Görüntüle"
 msgid "User Interface/View Window/Language and Colors"
 msgstr "Kullanıcı arayüzü/Pencereyi Görüntüle/Dil ve Renkler"
 
-#: gui/mrvPreferences.cpp:250
+#: gui/mrvPreferences.cpp:247
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
 msgstr "Varsayılan değeri kullanma (Rec. ITU-R BT.709'a göre renklilikler)."
 
@@ -8711,9 +8711,9 @@ msgid ""
 "When Override FPS is on, this setting controls the FPS of all movie files "
 "saved, instead of relying in Media Information->FPS."
 msgstr ""
-"CPS'yi Geçersiz Kıl etkinleştirildiğinde, bu ayar, her biri için Medya "
-"Raporu->CPS'yi kullanmak yerine kaydedilecek tüm filmlerin saniyedeki "
-"karelerini (CPS) kontrol eder."
+"FPS'yi Geçersiz Kıl etkinleştirildiğinde, bu ayar, her biri için Medya "
+"Raporu->FPS'yi kullanmak yerine kaydedilecek tüm filmlerin saniyedeki "
+"karelerini (FPS) kontrol eder."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2890
 msgid ""
@@ -8951,7 +8951,7 @@ msgid ""
 "When this setting is on, Media Information Window's FPS setting is not taken "
 "into account, but the setting from this GUI is."
 msgstr ""
-"Bu ayar etkinleştirildiğinde, Medya Raporunun CPS (Saniyedeki Kare Sayısı) "
+"Bu ayar etkinleştirildiğinde, Medya Raporunun FPS (Saniyedeki Kare Sayısı) "
 "değeri dikkate alınmaz, ancak bu arayüzün değeri dikkate alınır."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2394
@@ -9218,7 +9218,7 @@ msgstr "YUVA desteği:\t"
 #: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5167
-#: gui/mrvLanguages.cpp:29 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
+#: gui/mrvLanguages.cpp:40 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
 #: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
 #: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:236
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:241
@@ -9351,7 +9351,7 @@ msgstr "uiview'i sil"
 msgid "dub"
 msgstr "dublaj"
 
-#: standalone/mrvCommandLine.cpp:452
+#: standalone/mrvCommandLine.cpp:454
 msgid "files"
 msgstr "kayıtlar"
 
@@ -9583,8 +9583,8 @@ msgstr ""
 "ayarlarınızı her seferinde aynı algoritmayı (CTL veya ICC) kullanarak "
 "koruyun."
 
-#: gui/mrvPreferences.cpp:321 gui/mrvPreferences.cpp:1331
-#: gui/mrvPreferences.cpp:1337
+#: gui/mrvPreferences.cpp:318 gui/mrvPreferences.cpp:1328
+#: gui/mrvPreferences.cpp:1334
 msgid "mrViewer.keys"
 msgstr "mrViewer.keys"
 

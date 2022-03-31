@@ -312,6 +312,7 @@ SET( SOURCES
   core/mrvImageOpts.cpp
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
+  core/mrvOS.cpp
 
   gui/FLU/Flu_Combo_Box.cpp       # needed
   gui/FLU/Flu_Combo_Tree.cpp      # needed
