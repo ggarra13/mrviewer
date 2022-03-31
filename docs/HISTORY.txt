@@ -1,4 +1,6 @@
 v6.1.2  - Fixed sessions saving and loading.
+	- Made closing of the Preferences window with the window close button
+	  revert the preferences to their last saved state.
 
 v6.1.1  - Allowed changing languages from the Preferences without the need to
 	  set environment variables.  Just go to

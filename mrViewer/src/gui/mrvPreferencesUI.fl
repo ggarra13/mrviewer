@@ -105,13 +105,16 @@ class PreferencesUI {open
   Function {make_window(ViewerUI* m)} {open private
   } {
     Fl_Window uiMain {
-      label Preferences open
-      xywh {45 135 847 469} type Double resizable
+      label Preferences
+      user_data this user_data_type {PreferencesUI*}
+      callback {mrv::Preferences prefs(v);
+v->uiMain->hide();} open selected
+      xywh {898 346 847 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
       Fl_Wizard uiWizard {
-        label Settings open
+        label Settings
         xywh {280 25 565 430} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
@@ -448,7 +451,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label {Language and Colors} open selected
+          label {Language and Colors} open
           xywh {285 34 555 349} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
@@ -2304,7 +2307,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           class {mrv::PreferencesTree}
         }
       }
-      Fl_Group {} {
+      Fl_Group {} {open
         xywh {358 402 407 36}
       } {
         Fl_Button {} {

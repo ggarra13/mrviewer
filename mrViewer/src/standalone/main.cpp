@@ -36,6 +36,7 @@
 #include <winsock2.h>
 #endif
 
+
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
 #include <FL/Fl_Preferences.H>
@@ -226,7 +227,9 @@ int main( int argc, const char** argv )
 #ifdef _WIN32
             char* buf = new char[64];
             sprintf( buf, "LANGUAGE=%s", code );
+            LOG_INFO( "Set language ocde to " << code );
             putenv( buf );
+            setlocale( LC_ALL, code );
 #else
             setenv( "LANGUAGE", code, 1 );
 #ifdef OSX
@@ -240,6 +243,7 @@ int main( int argc, const char** argv )
 
 
     const char* tmp = setlocale(LC_ALL, "");
+
 
 #if defined __APPLE__ && defined __MACH__
     tmp = setlocale( LC_MESSAGES, NULL );
