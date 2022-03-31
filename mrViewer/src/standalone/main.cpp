@@ -227,7 +227,6 @@ int main( int argc, const char** argv )
 #ifdef _WIN32
             char* buf = new char[64];
             sprintf( buf, "LANGUAGE=%s", code );
-            LOG_INFO( "Set language ocde to " << code );
             putenv( buf );
             setlocale( LC_ALL, code );
 #else
