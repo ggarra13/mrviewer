@@ -253,7 +253,8 @@ int main( int argc, const char** argv )
         tmp = setlocale(LC_ALL, "");
     else
     {
-        tmp = setlocale(LC_ALL, NULL);
+        setlocale( LC_ALL, "" );
+        tmp = setlocale(LC_ALL, code);
     }
 
 
