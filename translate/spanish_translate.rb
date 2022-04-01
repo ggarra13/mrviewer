@@ -421,6 +421,35 @@ def fix( text, result, lang )
       result = spaces + rest
     end
   end
+  if text == 'English'    and lang != 'en'
+    result += " (English)"
+  elsif text == "Spanish" and lang != 'es'
+    result += " (Español)"
+  elsif text == "German"  and lang != 'de'
+    result += " (Deutsch)"
+  elsif text == "Czech"   and lang != 'cs'
+    result += " (čeština)"
+  elsif text == "French"  and lang != 'fr'
+    result += " (français)"
+  elsif text == "Italian" and lang != 'it'
+    result += " (italiano)"
+  elsif text == "Japanese" and lang != 'ja'
+    result += " (日本)"
+  elsif text == "Korean"  and lang != 'ko'
+    result += " (한국어)"
+  elsif text == "Polish"  and lang != 'pl'
+    result += " (Polski)"
+  elsif text == "Portuguese" and lang != 'pt'
+    result += " (português)"
+  elsif text == "Romanian"   and lang != 'ro'
+    result += " (Română)"
+  elsif text == "Russian"    and lang != 'ru'
+    result += " (русский)"
+  elsif text == "Turkish"    and lang != 'tr'
+    result += " (Türk)"
+  elsif text == "Chinese"    and lang != 'zh'
+    result += " (中国人)"
+  end
   return result
 end
 
