@@ -13,7 +13,7 @@ const char* kModule = "lang";
 }
 
 
-const char* kLanguages[14] = {
+const char* kLanguages[15] = {
     "cs.UTF-8",
     "de.UTF-8",
     "C",
@@ -27,7 +27,8 @@ const char* kLanguages[14] = {
     "ro.UTF-8",
     "ru.UTF-8",
     "tr.UTF-8",
-    "zh.UTF-8"
+    "zh.UTF-8",
+    "sv.UTF-8",
 };
 
 
@@ -59,8 +60,8 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
             ZeroMemory( &si, sizeof(si) );
             si.cb = sizeof(si);
             ZeroMemory( &pi, sizeof(pi) );
-            
-            // Start the child process. 
+
+            // Start the child process.
             if( !CreateProcess( NULL,   // No module name (use command line)
                                 buf,    // Command line
                                 NULL,   // Process handle not inheritable
@@ -68,7 +69,7 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
                                 FALSE,  // Set handle inheritance to FALSE
                                 CREATE_NO_WINDOW,  // No console window
                                 NULL,   // Use parent's environment block
-                                NULL,   // Use parent's starting directory 
+                                NULL,   // Use parent's starting directory
                                 &si,    // Pointer to STARTUPINFO structure
                                 &pi )   // Pointer to PROCESS_INFORMATION struct
             )
@@ -80,7 +81,7 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
             // Wait until child process exits.
             WaitForSingleObject( pi.hProcess, INFINITE );
 
-            // Close process and thread handles. 
+            // Close process and thread handles.
             CloseHandle( pi.hProcess );
             CloseHandle( pi.hThread );
 

@@ -48,7 +48,8 @@ def fix( text, result, lang )
   end
   if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'it' or
        lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'pt' or
-       lang == 'ro' or lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
+       lang == 'ro' or lang == 'ru' or lang == 'sv' or lang == 'tr' or
+       lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   end
@@ -358,6 +359,25 @@ def fix( text, result, lang )
     if result =~ /"%s"/
       result.gsub!(/"/, '\"' )
     end
+  elsif lang == 'sv'
+    if result =~ /FRITID/
+      result.sub!(/FRITID/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
+    end
+    if text == 'Save'
+      result = 'Spela in'
+    elsif text == 'Saving'
+      result = 'inspelning'
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    elsif result =~ /[^\]"/
+      result.gsub!( /"/, '\"' )
+    end
   elsif lang == 'tr'
     if text == 'Save'
       result = "Kaydet"
@@ -421,33 +441,35 @@ def fix( text, result, lang )
       result = spaces + rest
     end
   end
-  if text == 'English'    and lang != 'en'
+  if text == 'English'    and lang != 'en' and result !~ / \(English\)/
     result += " (English)"
-  elsif text == "Spanish" and lang != 'es'
+  elsif text == "Spanish" and lang != 'es' and result !~ / \(Español\)/
     result += " (Español)"
-  elsif text == "German"  and lang != 'de'
+  elsif text == "German"  and lang != 'de' and result !~ / \(Deutsch\)/
     result += " (Deutsch)"
-  elsif text == "Czech"   and lang != 'cs'
+  elsif text == "Czech"   and lang != 'cs' and result !~ / \(čeština\)/
     result += " (čeština)"
-  elsif text == "French"  and lang != 'fr'
+  elsif text == "French"  and lang != 'fr' and result !~ / \(français\)/
     result += " (français)"
-  elsif text == "Italian" and lang != 'it'
+  elsif text == "Italian" and lang != 'it' and result !~ / \(italiano\) /
     result += " (italiano)"
-  elsif text == "Japanese" and lang != 'ja'
+  elsif text == "Japanese" and lang != 'ja' and result !~ / \(日本\) /
     result += " (日本)"
-  elsif text == "Korean"  and lang != 'ko'
+  elsif text == "Korean"  and lang != 'ko' and result !~ / \(한국어\) /
     result += " (한국어)"
-  elsif text == "Polish"  and lang != 'pl'
+  elsif text == "Polish"  and lang != 'pl' and result !~ / \(Polski\) /
     result += " (Polski)"
-  elsif text == "Portuguese" and lang != 'pt'
+  elsif text == "Portuguese" and lang != 'pt' and result !~ / \(português\) /
     result += " (português)"
-  elsif text == "Romanian"   and lang != 'ro'
+  elsif text == "Romanian"   and lang != 'ro' and result !~ / \(Română\) /
     result += " (Română)"
-  elsif text == "Russian"    and lang != 'ru'
+  elsif text == "Russian"    and lang != 'ru' and result !~ / \(русский\) /
     result += " (русский)"
-  elsif text == "Turkish"    and lang != 'tr'
+  elsif text == "Swedish"    and lang != 'sv' and result !~ / \(svenska\) /
+    result += " (svenska)"
+  elsif text == "Turkish"    and lang != 'tr' and result !~ / \(Türk\) /
     result += " (Türk)"
-  elsif text == "Chinese"    and lang != 'zh'
+  elsif text == "Chinese"    and lang != 'zh' and result !~ / \(中国人\) /
     result += " (中国人)"
   end
   return result
@@ -503,7 +525,7 @@ if ARGV.size > 0
   langs = ARGV
 else
   langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'tr', 'zh' ]
+            'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
 
