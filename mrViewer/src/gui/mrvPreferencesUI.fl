@@ -519,7 +519,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {120 120 100 20}
               }
               MenuItem {} {
-                label Swedish selected
+                label Swedish
                 xywh {130 130 100 20}
               }
             }
@@ -550,14 +550,9 @@ If you try to open several mrViewers with different images, all these images wil
               user_data m user_data_type {ViewerUI*}
               callback {if (!o->mvalue() || !o->mvalue()->text ) return;
               mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-              v->refresh();}
+              v->refresh();} open selected
               xywh {494 175 150 25} down_box BORDER_BOX align 1
-            } {
-              MenuItem {} {
-                label Default
-                xywh {0 0 30 20}
-              }
-            }
+            } {}
             Fl_Button {} {
               label {Reload Theme}
               user_data m user_data_type {ViewerUI*}
@@ -1714,7 +1709,7 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading open
+          label Loading
           xywh {295 33 532 362} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open

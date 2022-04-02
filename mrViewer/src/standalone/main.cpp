@@ -235,10 +235,13 @@ int main( int argc, const char** argv )
                 LOG_ERROR( "Setting LANGUAGE failed" );
             setlocale( LC_ALL, "" );
             setlocale( LC_ALL, code );
+            libintl_setlocale( LC_ALL, "" );
             libintl_setlocale( LC_ALL, code );
             libintl_setlocale( LC_MESSAGES, code );
 #else
             setenv( "LANGUAGE", code, 1 );
+            setlocale( LC_ALL, "" );
+            setlocale(LC_ALL, code);
 #ifdef OSX
             setenv( "LC_NUMERIC", code, 1 );
             setenv( "LC_MESSAGES", code, 1 );
@@ -253,8 +256,7 @@ int main( int argc, const char** argv )
         tmp = setlocale(LC_ALL, "");
     else
     {
-        setlocale( LC_ALL, "" );
-        tmp = setlocale(LC_ALL, code);
+        tmp = setlocale(LC_ALL, NULL);
     }
 
 
