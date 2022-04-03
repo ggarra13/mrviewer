@@ -13,7 +13,7 @@ const char* kModule = "lang";
 }
 
 
-const char* kLanguages[15] = {
+const char* kLanguages[16] = {
     "cs.UTF-8",
     "de.UTF-8",
     "C",
@@ -29,6 +29,7 @@ const char* kLanguages[15] = {
     "tr.UTF-8",
     "zh.UTF-8",
     "sv.UTF-8",
+    "gr.UTF-8",
 };
 
 

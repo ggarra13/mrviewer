@@ -46,10 +46,10 @@ def fix( text, result, lang )
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'it' or
-       lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'pt' or
-       lang == 'ro' or lang == 'ru' or lang == 'sv' or lang == 'tr' or
-       lang == 'zh' ) and
+  if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'gr' or
+       lang == 'it' or lang == "ja" or lang == 'ko' or lang == 'pl' or
+       lang == 'pt' or lang == 'ro' or lang == 'ru' or lang == 'sv' or
+       lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   end
@@ -166,6 +166,27 @@ def fix( text, result, lang )
       #
       result.sub!(/\s:$/, ": ")
     end
+  elsif lang == 'gr'
+    if result =~ /ΕΛΕΥΘΕΡΟΣ ΧΡΟΝΟΣ/
+      result.gsub!( /ΕΛΕΥΘΕΡΟΣ ΧΡΟΝΟΣ/, "OCIO" )
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
+    elsif result =~ /πλαίσιο/
+      result.gsub!( /πλαίσιο/, 'καρέ' )
+    elsif result =~ /Πλαίσιο/
+      result.gsub!( /Πλαίσιο/, 'κουτί' )
+    end
+    if text == 'Saving'
+      result == 'αποθήκευση'
+    elsif text == 'Save'
+      result == 'αποθηκεύσετε'
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
   elsif lang == 'it'
     if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
       result = "Salvando Sequenza(e) %<PRId64> - %<PRId64>"
@@ -195,7 +216,7 @@ def fix( text, result, lang )
       result.gsub!(/\\\s+n/, '\n')
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
-      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
+      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | Y = %d\n'
     end
   elsif lang == 'ja'
     if text == 'Save'
@@ -375,7 +396,7 @@ def fix( text, result, lang )
       # Automatic translation returns \ n instead of \n
       #
       result.gsub!(/\\\s+n/, '\n')
-    elsif result =~ /[^\]"/
+    elsif result =~ /[^\\]"/
       result.gsub!( /"/, '\"' )
     end
   elsif lang == 'tr'
@@ -441,35 +462,37 @@ def fix( text, result, lang )
       result = spaces + rest
     end
   end
-  if text == 'English'    and lang != 'en' and result !~ / \(English\)/
+  if text == 'English'    and lang != 'en' and result !~ / \(.*\)/
     result += " (English)"
-  elsif text == "Spanish" and lang != 'es' and result !~ / \(Español\)/
+  elsif text == "Spanish" and lang != 'es' and result !~ / \(.*\)/
     result += " (Español)"
-  elsif text == "German"  and lang != 'de' and result !~ / \(Deutsch\)/
+  elsif text == "German"  and lang != 'de' and result !~ / \(.*\)/
     result += " (Deutsch)"
-  elsif text == "Czech"   and lang != 'cs' and result !~ / \(čeština\)/
+  elsif text == "Czech"   and lang != 'cs' and result !~ / \(.*\)/
     result += " (čeština)"
-  elsif text == "French"  and lang != 'fr' and result !~ / \(français\)/
+  elsif text == "French"  and lang != 'fr' and result !~ / \(.*\)/
     result += " (français)"
-  elsif text == "Italian" and lang != 'it' and result !~ / \(italiano\) /
+  elsif text == "Greek" and lang != 'gr' and result !~ / \(.*\)/
+    result += " (Ελληνικά)"
+  elsif text == "Italian" and lang != 'it' and result !~ / \(.*\)/
     result += " (italiano)"
-  elsif text == "Japanese" and lang != 'ja' and result !~ / \(日本\) /
+  elsif text == "Japanese" and lang != 'ja' and result !~ / \(.*\)/
     result += " (日本)"
-  elsif text == "Korean"  and lang != 'ko' and result !~ / \(한국어\) /
+  elsif text == "Korean"  and lang != 'ko' and result !~ / \(.*\)/
     result += " (한국어)"
-  elsif text == "Polish"  and lang != 'pl' and result !~ / \(Polski\) /
+  elsif text == "Polish"  and lang != 'pl' and result !~ / \(.*\)/
     result += " (Polski)"
-  elsif text == "Portuguese" and lang != 'pt' and result !~ / \(português\) /
+  elsif text == "Portuguese" and lang != 'pt' and result !~ / \(.*\)/
     result += " (português)"
-  elsif text == "Romanian"   and lang != 'ro' and result !~ / \(Română\) /
+  elsif text == "Romanian"   and lang != 'ro' and result !~ / \(.*\)/
     result += " (Română)"
-  elsif text == "Russian"    and lang != 'ru' and result !~ / \(русский\) /
+  elsif text == "Russian"    and lang != 'ru' and result !~ / \(.*\)/
     result += " (русский)"
-  elsif text == "Swedish"    and lang != 'sv' and result !~ / \(svenska\) /
+  elsif text == "Swedish"    and lang != 'sv' and result !~ / \(.*\)/
     result += " (svenska)"
-  elsif text == "Turkish"    and lang != 'tr' and result !~ / \(Türk\) /
+  elsif text == "Turkish"    and lang != 'tr' and result !~ / \(.*\)/
     result += " (Türk)"
-  elsif text == "Chinese"    and lang != 'zh' and result !~ / \(中国人\) /
+  elsif text == "Chinese"    and lang != 'zh' and result !~ / \(.*\)/
     result += " (中国人)"
   end
   return result
@@ -481,11 +504,13 @@ def replace( text )
 end
 
 def translate( text, lang )
+  googlelang = lang
+  googlelang = 'el' if lang == 'gr'
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
       puts "#@count #{lang} spanish: #{text} menus"
-      r = @translate.translate menus, from: 'es', to: lang
+      r = @translate.translate menus, from: 'es', to: googlelang
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
@@ -497,7 +522,7 @@ def translate( text, lang )
     end
   end
   puts "#@count #{lang} spanish: #{text}"
-  r = @translate.translate text, from: 'es', to: lang
+  r = @translate.translate text, from: 'es', to: googlelang
   result = r.text
   result = fix( @msgid, result, lang )
   return replace( result )
@@ -524,7 +549,7 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
+  langs = [ 'cs', 'de', 'fr', 'gr', 'it', 'ja', 'ko', 'pl', 'pt',
             'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 

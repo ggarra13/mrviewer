@@ -109,7 +109,7 @@ class PreferencesUI {open
       user_data this user_data_type {PreferencesUI*}
       callback {mrv::Preferences prefs(v);
 v->uiMain->hide();} open
-      xywh {898 374 847 469} type Double resizable
+      xywh {497 307 847 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -522,6 +522,10 @@ If you try to open several mrViewers with different images, all these images wil
                 label Swedish
                 xywh {130 130 100 20}
               }
+              MenuItem {} {
+                label Greek selected
+                xywh {140 140 100 20}
+              }
             }
             Fl_Choice uiScheme {
               label Scheme
@@ -550,7 +554,7 @@ If you try to open several mrViewers with different images, all these images wil
               user_data m user_data_type {ViewerUI*}
               callback {if (!o->mvalue() || !o->mvalue()->text ) return;
               mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-              v->refresh();} open selected
+              v->refresh();} open
               xywh {494 175 150 25} down_box BORDER_BOX align 1
             } {}
             Fl_Button {} {
