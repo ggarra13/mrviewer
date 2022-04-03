@@ -12,38 +12,40 @@ namespace {
 const char* kModule = "lang";
 }
 
-
-const char* kLanguages[16] = {
-    "cs.UTF-8",
-    "de.UTF-8",
-    "C",
-    "es.UTF-8",
-    "fr.UTF-8",
-    "it.UTF-8",
-    "ja.UTF-8",
-    "ko.UTF-8",
-    "pl.UTF-8",
-    "pt.UTF-8",
-    "ro.UTF-8",
-    "ru.UTF-8",
-    "tr.UTF-8",
-    "zh.UTF-8",
-    "sv.UTF-8",
-    "gr.UTF-8",
+LanguageTable kLanguages[17] = {
+    { 16, "ar.UTF-8" },
+    {  0, "cs.UTF-8" },
+    {  1, "de.UTF-8" },
+    {  2, "en.UTF-8" },
+    {  3, "es.UTF-8" },
+    {  4, "fr.UTF-8" },
+    { 15, "gr.UTF-8" },
+    {  5, "it.UTF-8" },
+    {  6, "ja.UTF-8" },
+    {  7, "ko.UTF-8" },
+    {  8, "pl.UTF-8" },
+    {  9, "pt.UTF-8" },
+    { 10, "ro.UTF-8" },
+    { 11, "ru.UTF-8" },
+    { 14, "sv.UTF-8" },
+    { 12, "tr.UTF-8" },
+    { 13, "zh.UTF-8" },
 };
 
 
 void check_language( PreferencesUI* uiPrefs, int& language_index )
 {
-    if ( uiPrefs->uiLanguage->value() != language_index )
+    int uiIndex = uiPrefs->uiLanguage->value();
+    int index = kLanguages[uiIndex].index;
+    if ( index != language_index )
     {
         int ok = fl_choice( _("Need to reboot mrViewer to change language.  "
                               "Are you sure you want to continue?" ),
                             _("No"),  _("Yes"), NULL, NULL );
         if ( ok )
         {
-            language_index = uiPrefs->uiLanguage->value();
-            const char* language = kLanguages[language_index];
+            language_index = index;
+            const char* language = kLanguages[language_index].code;
 
 #ifdef _WIN32
             setenv( "LC_CTYPE", "UTF-8", 1 );

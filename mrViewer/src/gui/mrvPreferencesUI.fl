@@ -463,6 +463,10 @@ If you try to open several mrViewers with different images, all these images wil
               xywh {500 75 160 25} down_box BORDER_BOX
             } {
               MenuItem {} {
+                label Arabic
+                xywh {120 120 100 20}
+              }
+              MenuItem {} {
                 label Czech
                 xywh {0 0 100 20}
               }
@@ -481,6 +485,10 @@ If you try to open several mrViewers with different images, all these images wil
               MenuItem {} {
                 label French
                 xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label Greek
+                xywh {140 140 100 20}
               }
               MenuItem {} {
                 label Italian
@@ -511,20 +519,16 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {100 100 100 20}
               }
               MenuItem {} {
+                label Swedish selected
+                xywh {130 130 100 20}
+              }
+              MenuItem {} {
                 label Turkish
                 xywh {110 110 100 20}
               }
               MenuItem {} {
                 label Chinese
-                xywh {120 120 100 20}
-              }
-              MenuItem {} {
-                label Swedish
                 xywh {130 130 100 20}
-              }
-              MenuItem {} {
-                label Greek selected
-                xywh {140 140 100 20}
               }
             }
             Fl_Choice uiScheme {

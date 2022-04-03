@@ -621,26 +621,28 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !language ) language = setlocale( LC_MESSAGES, NULL );
 #endif
 
-
+    int uiIndex = 3;
     if ( language && strlen(language) > 1 )
     {
-        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
+        for ( int i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
+              ++i )
         {
-            if ( strncmp( language, "en", 2 ) == 0 )
+            if ( strcmp( language, "C" ) == 0 )
             {
                 language_index = 2;
                 break;
             }
-            if ( strncmp( language, kLanguages[i], 2 ) == 0 )
+            if ( strncmp( language, kLanguages[i].code, 2 ) == 0 )
             {
-                language_index = i;
+                uiIndex = i;
+                language_index = kLanguages[i].index;
                 break;
             }
         }
     }
 
-    LOG_INFO( _("Setting language to ") << kLanguages[language_index] );
-    uiPrefs->uiLanguage->value( language_index );
+    LOG_INFO( _("Setting language to ") << kLanguages[uiIndex].code );
+    uiPrefs->uiLanguage->value( uiIndex );
 
     //
     // ui/view/colors
@@ -1102,8 +1104,10 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
     {
-        const char* label = uiPrefs->uiLUT_quality->child(i)->label();
-        if ( strcmp( label, tmpS ) == 0 )
+        Fl_Menu_Item* w = uiPrefs->uiLUT_quality->child(i);
+        if ( w == NULL ) continue;
+        const char* label = w->label();
+        if ( label && strcmp( label, tmpS ) == 0 )
         {
     DBG3;
             uiPrefs->uiLUT_quality->value(i);

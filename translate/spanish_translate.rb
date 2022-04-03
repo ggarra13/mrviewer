@@ -46,10 +46,10 @@ def fix( text, result, lang )
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'gr' or
-       lang == 'it' or lang == "ja" or lang == 'ko' or lang == 'pl' or
-       lang == 'pt' or lang == 'ro' or lang == 'ru' or lang == 'sv' or
-       lang == 'tr' or lang == 'zh' ) and
+  if ( lang == 'ar' or lang == 'cs' or lang == 'de' or lang == 'fr' or
+       lang == 'gr' or lang == 'it' or lang == "ja" or lang == 'ko' or
+       lang == 'pl' or lang == 'pt' or lang == 'ro' or lang == 'ru' or
+       lang == 'sv' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   end
@@ -61,6 +61,46 @@ def fix( text, result, lang )
     # Automatic translation returns 。instead of .
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
+  elsif lang == 'ar'
+    if text =~ /^\d+[\.:]\d+$/
+      result = text
+    end
+    if result =~ /فراغ/
+      result.gsub!( /فراغ/, 'OCIO' )
+    elsif result =~ /LEISURE/
+      result.gsub!( /LEISURE/, 'OCIO' )
+    elsif result =~ /al'iitar/  # frame to video frame
+      result.gsub!( /al'iitar/, "'iitarat" )
+    end
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    elsif result =~ /^@\s+(.*)$/
+      #
+      # Automatic translation returns @ || instead of @||
+      #
+      result = "@" + $1
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /\\\s+t/
+      #
+      # Automatic translation returns \ t instead of \t
+      #
+      result.gsub!(/\\\s+t/, '\t')
+    end
+    if result =~ /%\s+/
+      #
+      # Automatic translation returns % d instead of %d or %s
+      #
+      result.gsub!(/%\s+/, '%')
+    end
+    if text == 'Saving'
+      result == "تسج_ل"
+    end
   elsif lang == 'cs'
     result.sub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' ) # for film aspects
     if text == 'Frame %<PRId64> '
@@ -180,6 +220,9 @@ def fix( text, result, lang )
       result == 'αποθήκευση'
     elsif text == 'Save'
       result == 'αποθηκεύσετε'
+    end
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
     end
     if result =~ /\\\s+n/
       #
@@ -462,7 +505,10 @@ def fix( text, result, lang )
       result = spaces + rest
     end
   end
-  if text == 'English'    and lang != 'en' and result !~ / \(.*\)/
+
+  if text == 'Arabic'    and lang != 'ar' and result !~ / \(.*\)/
+    result += " (عرب)"
+  elsif text == 'English'    and lang != 'en' and result !~ / \(.*\)/
     result += " (English)"
   elsif text == "Spanish" and lang != 'es' and result !~ / \(.*\)/
     result += " (Español)"
@@ -549,7 +595,7 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'cs', 'de', 'fr', 'gr', 'it', 'ja', 'ko', 'pl', 'pt',
+  langs = [ 'ar', 'cs', 'de', 'fr', 'gr', 'it', 'ja', 'ko', 'pl', 'pt',
             'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
