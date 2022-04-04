@@ -951,37 +951,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 void change_timeline_display( ViewerUI* uiMain )
 {
     int i = uiMain->uiTimecodeSwitch->value();
-    const char* p = uiMain->uiTimecodeSwitch->child(i)->label();
-    const char* end = p + fl_utf8len1(p[0]);
-
-    int len;
-    unsigned code;
-    if (*p & 0x80) {              // what should be a multibyte encoding
-        code = fl_utf8decode(p,end,&len);
-        if (len<2) code = 0xFFFD;   // Turn errors into REPLACEMENT CHARACTER
-    } else {                      // handle the 1-byte UTF-8 encoding:
-        code = *p;
-        len = 1;
-    }
-
-
-    char buf[8];
-    memset( buf, 0, 7 );
-    if ( len > 1 )
-    {
-        len = fl_utf8encode( code, buf );
-        buf[len] = ':';
-        buf[len+1] = 0;
-    }
-    else
-    {
-        buf[0] = *p;
-        buf[1] = ':';
-        buf[2] = 0;
-    }
-
-    uiMain->uiTimecodeSwitch->copy_label( buf );
-    uiMain->uiTimecodeSwitch->redraw();
+    select_character( uiMain->uiTimecodeSwitch, true );
 
     mrv::Timecode::Display d = (mrv::Timecode::Display) i;
     uiMain->uiFrame->display( d );

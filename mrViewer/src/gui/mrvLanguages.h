@@ -15,7 +15,8 @@ extern LanguageTable kLanguages[17];
 class PreferencesUI;
 void check_language( PreferencesUI* uiPrefs, int& language_index );
 
-void select_character( mrv::PopupMenu* w );
+char* select_character( const char* p, bool colon = false );
+void select_character( mrv::PopupMenu* w , bool colon = false);
 
 
 #endif // mrvLanguages_h

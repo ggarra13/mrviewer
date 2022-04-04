@@ -119,11 +119,8 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
 }
 
 
-void select_character( mrv::PopupMenu* o )
+char* select_character( const char* p, bool colon )
 {
-    int i = o->value();
-    if ( i < 0 ) return;
-    const char* p = o->text(i);
     int size = fl_utf8len1(p[0]);
     const char* end = p + size;
 
@@ -143,7 +140,7 @@ void select_character( mrv::PopupMenu* o )
     }
 
 
-    char buf[8];
+    static char buf[8];
     memset( buf, 0, 7 );
     if ( len > 1 )
     {
@@ -153,6 +150,21 @@ void select_character( mrv::PopupMenu* o )
     {
         buf[0] = *p;
     }
+    if ( colon )
+    {
+        buf[len] = ':';
+        ++len;
+    }
     buf[len] = 0;
-    o->copy_label( buf );
+
+    return buf;
+}
+
+
+void select_character( mrv::PopupMenu* o, bool colon )
+{
+    int i = o->value();
+    if ( i < 0 ) return;
+    const char* p = o->text(i);
+    o->copy_label( select_character( p, colon ) );
 }
