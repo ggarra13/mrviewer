@@ -11014,33 +11014,9 @@ void ImageView::field( FieldDisplay f )
     };
 
     const char* p = kFieldNames[_field];
-    const char* end = p + fl_utf8len1(p[0]);
+    uiMain->uiField->copy_label( select_character( p ) );
 
-    int len;
-    unsigned code;
-    if (*p & 0x80) {              // what should be a multibyte encoding
-        code = fl_utf8decode(p,end,&len);
-        if (len<2) code = 0xFFFD;   // Turn errors into REPLACEMENT CHARACTER
-    } else {                      // handle the 1-byte UTF-8 encoding:
-        code = *p;
-        len = 1;
-    }
-
-
-    char buf[128];
-    memset( buf, 0, 7 );
-    if ( len > 1 )
-    {
-        len = fl_utf8encode( code, buf );
-    }
-    else
-    {
-        buf[0] = *p;
-    }
-    buf[len] = 0;
-
-    uiMain->uiField->copy_label( buf );
-
+    char buf[64];
     sprintf( buf, "FieldDisplay %d", _field );
     send_network( buf );
 

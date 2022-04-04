@@ -26,6 +26,7 @@
 
 //#define ALLOC_CONSOLE
 
+
 #include <string.h>
 #include <iostream>
 
@@ -35,6 +36,7 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #endif
+
 
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
@@ -68,6 +70,9 @@ namespace fs = boost::filesystem;
 
 #include "standalone/mrvCommandLine.h"
 #include "standalone/mrvRoot.h"
+
+#include <libintl.h>
+
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
@@ -211,6 +216,8 @@ int main( int argc, const char** argv )
     setenv( "LC_CTYPE",  "UTF-8", 1 );
 #endif
 
+    int lang = -1;
+    const char* code = "C";
     {
         Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
                              "mrViewer" );
@@ -218,17 +225,31 @@ int main( int argc, const char** argv )
         // Load ui language preferences
         Fl_Preferences ui( base, "ui" );
 
-        int lang;
         ui.get( "language", lang, -1 );
         if ( lang >= 0 )
         {
-            const char* code = kLanguages[lang];
+            for ( unsigned i = 0;
+                  i < sizeof(kLanguages) / sizeof(LanguageTable); ++i)
+            {
+                if ( kLanguages[i].index == lang )
+                {
+                    code = kLanguages[i].code;
+                    break;
+                }
+            }
 #ifdef _WIN32
-            char* buf = new char[64];
-            sprintf( buf, "LANGUAGE=%s", code );
-            putenv( buf );
+            setenv( "LC_CTYPE",  "UTF-8", 1 );
+            if ( setenv( "LANGUAGE", code, 1 ) < 0 )
+                LOG_ERROR( "Setting LANGUAGE failed" );
+            setlocale( LC_ALL, "" );
+            setlocale( LC_ALL, code );
+            libintl_setlocale( LC_ALL, "" );
+            libintl_setlocale( LC_ALL, code );
+            libintl_setlocale( LC_MESSAGES, code );
 #else
             setenv( "LANGUAGE", code, 1 );
+            setlocale( LC_ALL, "" );
+            setlocale(LC_ALL, code);
 #ifdef OSX
             setenv( "LC_NUMERIC", code, 1 );
             setenv( "LC_MESSAGES", code, 1 );
@@ -238,20 +259,27 @@ int main( int argc, const char** argv )
     }
 
 
+    const char* tmp;
+    if ( lang < 0 )
+        tmp = setlocale(LC_ALL, "");
+    else
+    {
+        tmp = setlocale(LC_ALL, NULL);
+    }
 
-    const char* tmp = setlocale(LC_ALL, "");
 
 #if defined __APPLE__ && defined __MACH__
     tmp = setlocale( LC_MESSAGES, NULL );
 #endif
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_ALL" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_NUMERIC" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LANG" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_ALL" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_NUMERIC" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LANG" );
     if ( language )
     {
-        if ( strncmp( language, "C",  1 ) == 0 ||
+        if (  strcmp( language, "C" ) == 0 ||
+             strncmp( language, "ar", 2 ) == 0 ||
              strncmp( language, "en", 2 ) == 0 ||
              strncmp( language, "ja", 2 ) == 0 ||
              strncmp( language, "ko", 2 ) == 0 ||
@@ -264,7 +292,7 @@ int main( int argc, const char** argv )
 
     // Create and install global locale
     try {
-        // std::locale::global( std::locale("") );
+        // std::locale::global( std::locale(language) );
         // Make boost.filesystem use it
         fs::path::imbue(std::locale());
     }
@@ -273,8 +301,14 @@ int main( int argc, const char** argv )
         std::cerr << e.what() << std::endl;
     }
 
+
+
+
     DBG;
     char buf[1024];
+
+
+
     sprintf( buf, "mrViewer%s", mrv::version() );
 
 #ifdef _WIN32
@@ -302,9 +336,11 @@ int main( int argc, const char** argv )
 #else
     std::string path = fs::canonical( dir ).generic_string();
 #endif
+
     path += "/share/locale";
 
     bindtextdomain(buf, path.c_str() );
+    bind_textdomain_codeset(buf, "UTF-8" );
     textdomain(buf);
     LOG_INFO( _("Translations: ") << path );
 
@@ -331,13 +367,8 @@ int main( int argc, const char** argv )
 
       std::string lockfile;
 
-
-    DBG;
-      //Fl::lock();  // Start locking mechanism
-    DBG;
-
+      // For macOS, to read command-line arguments
       fl_open_callback( osx_open_cb );
-    DBG;
 
       try {
           mrv::Options opts;

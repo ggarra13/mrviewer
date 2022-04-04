@@ -43,7 +43,7 @@
 inline char* gettext2 (const char* msgid)
 {
     const char* const empty = "";
-    if ( strlen( msgid ) == 0 ) return (char*)empty;
+    if ( !msgid || strlen( msgid ) == 0 ) return (char*)empty;
     return gettext( msgid );
 };
 

@@ -52,6 +52,9 @@ decl {\#include "gui/mrvBrowser.h"} {private local
 decl {\#include "gui/mrvCTLBrowser.h"} {public local
 }
 
+decl {\#include "gui/mrvLanguages.h"} {public local
+}
+
 decl {\#include "mrvFileRequester.h"} {private local
 }
 
@@ -1508,33 +1511,7 @@ o->disable_glyph();}
 		  Fl_Menu_Button uiPixelValue {
 		    label F
 		    user_data uiView user_data_type {mrv::ImageView*}
-		    callback {int i = o->value();
-if ( i < 0 ) return;
-const char* p = o->text(i);
-const char* end = p + fl_utf8len1(p[0]);
-    int len;
-    unsigned code;
-    if (*p & 0x80) {              // what should be a multibyte encoding
-	code = fl_utf8decode(p,end,&len);
-	if (len<2) code = 0xFFFD;   // Turn errors into REPLACEMENT CHARACTER
-    } else {                      // handle the 1-byte UTF-8 encoding:
-	code = *p;
-	len = 1;
-    }
-
-
-    char buf[8];
-    memset( buf, 0, 7 );
-    if ( len > 1 )
-    {
-	len = fl_utf8encode( code, buf );
-    }
-    else
-    {
-	buf[0] = *p;
-    }
-    buf[len] = 0;
-o->copy_label( buf );
+		    callback {select_character(o);
 v->update_color_info();}
 		    tooltip {Type of pixel values to show:
 + Full:  pixel with gamma, gain and lut.

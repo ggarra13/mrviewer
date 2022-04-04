@@ -105,8 +105,11 @@ class PreferencesUI {open
   Function {make_window(ViewerUI* m)} {open private
   } {
     Fl_Window uiMain {
-      label Preferences open
-      xywh {45 135 847 469} type Double resizable
+      label Preferences
+      user_data this user_data_type {PreferencesUI*}
+      callback {mrv::Preferences prefs(v);
+v->uiMain->hide();} open
+      xywh {497 307 847 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -448,60 +451,21 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label {Language and Colors} open selected
+          label {Language and Colors} open
           xywh {285 34 555 349} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label UI open
             xywh {357 55 403 199} box ROUNDED_BOX
           } {
-            Fl_Choice uiScheme {
-              label Scheme
-              callback {Fl::scheme( o->mvalue()->text );} open
-              xywh {514 128 100 25} down_box BORDER_BOX align 1
-            } {
-              MenuItem {} {
-                label base
-                xywh {0 0 36 21}
-              }
-              MenuItem {} {
-                label plastic
-                xywh {10 10 36 21}
-              }
-              MenuItem {} {
-                label {gtk+}
-                xywh {20 20 36 21}
-              }
-              MenuItem {} {
-                label gleam
-                xywh {30 30 36 21}
-              }
-            }
-            Fl_Choice uiColorTheme {
-              label {Color Theme}
-              user_data m user_data_type {ViewerUI*}
-              callback {if (!o->mvalue() || !o->mvalue()->text ) return;
-              mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-              v->refresh();} open
-              xywh {494 175 150 25} down_box BORDER_BOX align 1
-            } {
-              MenuItem {} {
-                label Default
-                xywh {0 0 30 20}
-              }
-            }
-            Fl_Button {} {
-              label {Reload Theme}
-              user_data m user_data_type {ViewerUI*}
-              callback {const Fl_Menu_Item* item = uiColorTheme->mvalue();
-mrv::Preferences::schemes.reload_theme( item->text );
-v->refresh();}
-              tooltip {Reload color theme from mrViewer.colors file again to refresh change in colors} xywh {504 205 135 30}
-            }
             Fl_Choice uiLanguage {
               label Language open
               xywh {500 75 160 25} down_box BORDER_BOX
             } {
+              MenuItem {} {
+                label Arabic
+                xywh {120 120 100 20}
+              }
               MenuItem {} {
                 label Czech
                 xywh {0 0 100 20}
@@ -521,6 +485,10 @@ v->refresh();}
               MenuItem {} {
                 label French
                 xywh {30 30 100 20}
+              }
+              MenuItem {} {
+                label Greek
+                xywh {140 140 100 20}
               }
               MenuItem {} {
                 label Italian
@@ -551,13 +519,55 @@ v->refresh();}
                 xywh {100 100 100 20}
               }
               MenuItem {} {
+                label Swedish selected
+                xywh {130 130 100 20}
+              }
+              MenuItem {} {
                 label Turkish
                 xywh {110 110 100 20}
               }
               MenuItem {} {
                 label Chinese
-                xywh {120 120 100 20}
+                xywh {130 130 100 20}
               }
+            }
+            Fl_Choice uiScheme {
+              label Scheme
+              callback {Fl::scheme( o->mvalue()->text );}
+              xywh {514 128 100 25} down_box BORDER_BOX align 1
+            } {
+              MenuItem {} {
+                label base
+                xywh {0 0 36 21}
+              }
+              MenuItem {} {
+                label plastic
+                xywh {10 10 36 21}
+              }
+              MenuItem {} {
+                label {gtk+}
+                xywh {20 20 36 21}
+              }
+              MenuItem {} {
+                label gleam
+                xywh {30 30 36 21}
+              }
+            }
+            Fl_Choice uiColorTheme {
+              label {Color Theme}
+              user_data m user_data_type {ViewerUI*}
+              callback {if (!o->mvalue() || !o->mvalue()->text ) return;
+              mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
+              v->refresh();} open
+              xywh {494 175 150 25} down_box BORDER_BOX align 1
+            } {}
+            Fl_Button {} {
+              label {Reload Theme}
+              user_data m user_data_type {ViewerUI*}
+              callback {const Fl_Menu_Item* item = uiColorTheme->mvalue();
+mrv::Preferences::schemes.reload_theme( item->text );
+v->refresh();}
+              tooltip {Reload color theme from mrViewer.colors file again to refresh change in colors} xywh {504 205 135 30}
             }
           }
           Fl_Group {} {
@@ -1707,7 +1717,7 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading open
+          label Loading
           xywh {295 33 532 362} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open
@@ -2304,7 +2314,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           class {mrv::PreferencesTree}
         }
       }
-      Fl_Group {} {
+      Fl_Group {} {open
         xywh {358 402 407 36}
       } {
         Fl_Button {} {

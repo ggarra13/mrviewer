@@ -312,6 +312,7 @@ SET( SOURCES
   core/mrvImageOpts.cpp
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
+  core/mrvOS.cpp
 
   gui/FLU/Flu_Combo_Box.cpp       # needed
   gui/FLU/Flu_Combo_Tree.cpp      # needed
@@ -618,8 +619,8 @@ INSTALL( PROGRAMS ${ffmpegfiles} ${scriptfiles} ${exrfiles}
 INSTALL( TARGETS mrViewer DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
-#set( LANGUAGES "es" )
-set( LANGUAGES "cs" "de" "es" "fr" "it" "ja" "ko" "pl" "pt" "ro" "ru" "tr" "zh")
+set( LANGUAGES "ar" "cs" "de" "en" "es" "fr" "gr" "it" "ja" "ko" "pl" "pt" "ro"
+	       "ru" "sv" "tr" "zh" )
 
 SET( output_files "${_absPotFile}" )
 

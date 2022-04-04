@@ -1,4 +1,22 @@
+v6.1.3  - Added Swedish machine translation.
+	- Added Greek   machine translation.
+	- Added Arabic  machine translation.
+	- Fixed color theme displaying both Default and the translation of it.
+	- Added the name of the language in its native form along the language
+	  in the current language.  This helps setting back the language when
+	  you chose a language you don't read.
+
 v6.1.2  - Fixed sessions saving and loading.
+	- Made closing of the Preferences window with the window close button
+	  revert the preferences to their last saved state.
+	- Exiting and restarting the application with a new language on Windows
+	  would not work previously.  It would not get saved in the
+	  preferences.  This has now been fixed, albeit exiting and restarting
+	  mrViewer is slower.
+	- Russian, Chinese, Japanese and Korean languages would not work
+	  properly and displayed an English translation.  This has been fixed.
+	- Russian, Chinese, Japanese and Korean languages would display
+	  garbled characters.  This has also been fixed.
 
 v6.1.1  - Allowed changing languages from the Preferences without the need to
 	  set environment variables.  Just go to

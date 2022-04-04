@@ -48,8 +48,8 @@ namespace mrv
     std::string escape_url( const std::string& url )
     {
         char buf[64];
-        unsigned len = url.size();
-        sprintf( buf, "%%%d%%", len );
+        size_t len = url.size();
+        sprintf( buf, "%%%zd%%", len );
         return buf + url;
     }
 

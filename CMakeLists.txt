@@ -51,7 +51,7 @@ option( USE_PORTAUDIO "Use PortAudio interface" OFF )
 
 SET( VersionMajor 6 )
 SET( VersionMinor 1 )
-SET( VersionPatch 2 )
+SET( VersionPatch 3 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )
