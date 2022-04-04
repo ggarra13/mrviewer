@@ -624,7 +624,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     int uiIndex = 3;
     if ( language && strlen(language) > 1 )
     {
-        for ( int i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
+        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
               ++i )
         {
             if ( strcmp( language, "C" ) == 0 )

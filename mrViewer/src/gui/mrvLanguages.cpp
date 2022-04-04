@@ -45,7 +45,7 @@ void check_language( PreferencesUI* uiPrefs, int& language_index )
         if ( ok )
         {
             language_index = index;
-            const char* language = kLanguages[language_index].code;
+            const char* language = kLanguages[uiIndex].code;
 
 #ifdef _WIN32
             setenv( "LC_CTYPE", "UTF-8", 1 );

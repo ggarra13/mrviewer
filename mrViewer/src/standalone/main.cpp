@@ -228,8 +228,8 @@ int main( int argc, const char** argv )
         ui.get( "language", lang, -1 );
         if ( lang >= 0 )
         {
-            for ( int i = 0; i < sizeof(kLanguages) / sizeof(LanguageTable);
-                  ++i)
+            for ( unsigned i = 0;
+                  i < sizeof(kLanguages) / sizeof(LanguageTable); ++i)
             {
                 if ( kLanguages[i].index == lang )
                 {
