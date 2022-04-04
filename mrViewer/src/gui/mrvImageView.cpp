@@ -11014,7 +11014,13 @@ void ImageView::field( FieldDisplay f )
     };
 
     const char* p = kFieldNames[_field];
-    const char* end = p + fl_utf8len1(p[0]);
+    int size = fl_utf8len1(p[0]);
+    const char* end = p + size;
+
+    if ( mrv::Preferences::language_index == 16 && size > 1)
+    {
+        p += size - 2;  // Arabic, right letter
+    }
 
     int len;
     unsigned code;
