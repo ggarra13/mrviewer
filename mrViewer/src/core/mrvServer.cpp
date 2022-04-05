@@ -499,6 +499,46 @@ bool Parser::parse( const std::string& s )
         img->scale_y( y );
         ok = true;
     }
+    else if ( cmd == N_("HBCSActive") )
+    {
+        int t;
+        is >> t;
+        ui->uiColorControls->uiActive->value( t );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Hue") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiHue->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Brightness") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiBrightness->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Contrast") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiContrast->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Saturation") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiSaturation->value( f );
+        v->redraw();
+        ok = true;
+    }
     else if ( cmd == N_("UpdateLayers") )
     {
         v->update_layers();
@@ -1597,7 +1637,7 @@ bool Parser::parse( const std::string& s )
         ok = true;
     }
 
-    if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
+    if (!ok) LOG_ERROR( "Parsing failed for "  << s );
 
     v->network_active( true );
 

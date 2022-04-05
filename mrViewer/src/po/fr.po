@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-04 06:44-0300\n"
+"POT-Creation-Date: 2022-04-04 21:45-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1127,14 +1127,14 @@ msgstr "Actions"
 msgid "Activate viewer's 3D Lut."
 msgstr "Activez la LUT 3D du viseur."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:78
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:109
 msgid ""
 "Activates / Deactivates all color corrections as they can be a tad expensive"
 msgstr ""
 "actif/Désactivez toutes les corrections de couleur qui peuvent être un peu "
 "lentes"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:77
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:108
 msgid "Active"
 msgstr "actif"
 
@@ -1152,11 +1152,11 @@ msgid ""
 "or crushing the shadows."
 msgstr "Ajustez l'ISO sans écrêter les hautes lumières ni écraser les ombres."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:98
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:129
 msgid "Adjust Image Contrast"
 msgstr "Ajuster le contraste de l'image"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:107
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:138
 msgid "Adjust Image Saturation"
 msgstr "Ajuster la saturation de l'image"
 
@@ -1710,7 +1710,7 @@ msgstr "Boîte2 Virgule flottante"
 msgid "Box2 Integer"
 msgstr "Boîte2 Entier"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:89
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:120
 #: gui/mrvImageInformation.cpp:3318
 msgid "Brightness"
 msgstr "Luminosité"
@@ -2013,7 +2013,7 @@ msgstr "Sous-titres"
 msgid "Closed movie file"
 msgstr "J'ai fermé la création du film ou de la séquence"
 
-#: core/mrvServer.cpp:2068
+#: core/mrvServer.cpp:2108
 msgid "Closed server at port "
 msgstr "J'ai fermé le serveur sur le port "
 
@@ -2187,7 +2187,7 @@ msgstr "Connexions"
 msgid "Constrained Baseline"
 msgstr "Ligne de base contenue"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:97
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:128
 #: gui/mrvImageInformation.cpp:3290
 msgid "Contrast"
 msgstr "Contraste"
@@ -2773,7 +2773,7 @@ msgstr "Code postal"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2036
+#: core/mrvServer.cpp:2076
 msgid "Create"
 msgstr "Créer"
 
@@ -2841,7 +2841,7 @@ msgstr "date créée"
 msgid "Created Time"
 msgstr "Heure de création"
 
-#: core/mrvServer.cpp:2065
+#: core/mrvServer.cpp:2105
 msgid "Created server at port "
 msgstr "J'ai créé un serveur sur le port "
 
@@ -3188,7 +3188,7 @@ msgstr ""
 "Résolution : %dx%d\n"
 "Frames : %<PRId64> -%<PRId64> CP %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2049
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2089
 msgid "Disconnect"
 msgstr "Déconnecter"
 
@@ -4269,7 +4269,7 @@ msgstr "Comment afficher la chronologie par défaut."
 msgid "How to display timeline selection by default."
 msgstr "Comment afficher la sélection de la chronologie par défaut."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:83
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:114
 msgid "Hue"
 msgstr "Teinte"
 
@@ -5724,7 +5724,7 @@ msgstr "Nombre de canaux dans le clip"
 msgid "Number of client runs: "
 msgstr "Nombre d'exécutions client : "
 
-#: core/mrvServer.cpp:1725
+#: core/mrvServer.cpp:1765
 msgid "Number of connections now: "
 msgstr "Nombre de connexions actuellement : "
 
@@ -6687,7 +6687,7 @@ msgstr "Supprimer l'attribut"
 msgid "Remove current image from reel."
 msgstr "J'ai supprimé l'image actuelle de la bobine."
 
-#: core/mrvServer.cpp:1715
+#: core/mrvServer.cpp:1755
 msgid "Removed client "
 msgstr "j'ai supprimé le client "
 
@@ -6752,10 +6752,10 @@ msgstr "Réinitialiser"
 msgid "Reset Gain/Gamma"
 msgstr "réinitialiser le gain/Spectre"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:116
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:121
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:126
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:131
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:147
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:152
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:157
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:162
 msgid "Reset value"
 msgstr "valeur de réinitialisation"
 
@@ -6897,7 +6897,7 @@ msgstr "Zones sécurisées"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:348
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:106
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:137
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
@@ -9187,10 +9187,10 @@ msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Mauvais paquets dans handle_video_packet_seek"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2583
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:115
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:120
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:125
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:130
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:146
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:151
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:161
 msgid "X"
 msgstr "X"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-04 06:44-0300\n"
+"POT-Creation-Date: 2022-04-04 21:45-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1125,12 +1125,12 @@ msgstr "أجراءات"
 msgid "Activate viewer's 3D Lut."
 msgstr "قم بتنشيط جدول البحث ثلاثي الأبعاد لمعين المنظر."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:78
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:109
 msgid ""
 "Activates / Deactivates all color corrections as they can be a tad expensive"
 msgstr "نشيط/قم بتعطيل كافة تصحيحات الألوان التي يمكن أن تكون بطيئة بعض الشيء"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:77
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:108
 msgid "Active"
 msgstr "نشيط"
 
@@ -1150,11 +1150,11 @@ msgstr ""
 "اضبط ISO بدون قص الإبرازات \n"
 " أو سحق الظلال."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:98
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:129
 msgid "Adjust Image Contrast"
 msgstr "اضبط تباين الصورة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:107
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:138
 msgid "Adjust Image Saturation"
 msgstr "ضبط تشبع الصورة"
 
@@ -1702,7 +1702,7 @@ msgstr "Box2 النقطة العائمة"
 msgid "Box2 Integer"
 msgstr "عدد صحيح Box2"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:89
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:120
 #: gui/mrvImageInformation.cpp:3318
 msgid "Brightness"
 msgstr "سطوع"
@@ -2002,7 +2002,7 @@ msgstr "تعاليق مغلقة"
 msgid "Closed movie file"
 msgstr "أغلقت إنشاء الفيلم أو التسلسل"
 
-#: core/mrvServer.cpp:2068
+#: core/mrvServer.cpp:2108
 msgid "Closed server at port "
 msgstr "لقد أغلقت الخادم على المنفذ "
 
@@ -2176,7 +2176,7 @@ msgstr "روابط"
 msgid "Constrained Baseline"
 msgstr "خط الأساس المحتوي"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:97
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:128
 #: gui/mrvImageInformation.cpp:3290
 msgid "Contrast"
 msgstr "مقابلة"
@@ -2742,7 +2742,7 @@ msgstr "الرقم الدولي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2036
+#: core/mrvServer.cpp:2076
 msgid "Create"
 msgstr "خلق"
 
@@ -2810,7 +2810,7 @@ msgstr "تاريخ الإنشاء"
 msgid "Created Time"
 msgstr "وقت الإنشاء"
 
-#: core/mrvServer.cpp:2065
+#: core/mrvServer.cpp:2105
 msgid "Created server at port "
 msgstr "لقد أنشأت خادمًا على المنفذ "
 
@@ -3149,7 +3149,7 @@ msgstr ""
 " الحل: %dx%d \n"
 " الإطارات: %<PRId64>-%<PRId64> FPS% g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2049
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2089
 msgid "Disconnect"
 msgstr "قطع الاتصال"
 
@@ -4225,7 +4225,7 @@ msgstr "كيفية إظهار الجدول الزمني بشكل افتراضي.
 msgid "How to display timeline selection by default."
 msgstr "كيفية إظهار اختيار الجدول الزمني بشكل افتراضي."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:83
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:114
 msgid "Hue"
 msgstr "مسحة"
 
@@ -5664,7 +5664,7 @@ msgstr "عدد القنوات في المقطع"
 msgid "Number of client runs: "
 msgstr "عدد عمليات العميل: "
 
-#: core/mrvServer.cpp:1725
+#: core/mrvServer.cpp:1765
 msgid "Number of connections now: "
 msgstr "عدد التوصيلات الآن: "
 
@@ -6623,7 +6623,7 @@ msgstr "إزالة السمة"
 msgid "Remove current image from reel."
 msgstr "لقد حذفت الصورة الحالية من البكرة."
 
-#: core/mrvServer.cpp:1715
+#: core/mrvServer.cpp:1755
 msgid "Removed client "
 msgstr "لقد حذفت العميل "
 
@@ -6688,10 +6688,10 @@ msgstr "لإعادة تعيين"
 msgid "Reset Gain/Gamma"
 msgstr "إعادة الكسب/نطاق"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:116
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:121
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:126
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:131
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:147
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:152
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:157
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:162
 msgid "Reset value"
 msgstr "إعادة القيمة"
 
@@ -6833,7 +6833,7 @@ msgstr "مناطق آمنة"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:252
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:348
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:106
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:137
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:147
 #: gui/mrvImageInformation.cpp:3011 gui/mrvImageInformation.cpp:3284
 msgid "Saturation"
@@ -9047,10 +9047,10 @@ msgid "Wrong packets in handle_video_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2583
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:115
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:120
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:125
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:130
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:146
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:151
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:156
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:161
 msgid "X"
 msgstr "X"
 
