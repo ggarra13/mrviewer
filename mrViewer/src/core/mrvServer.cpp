@@ -1345,7 +1345,22 @@ bool Parser::parse( const std::string& s )
         sprintf( buf, "GhostNext %d", idx );
         deliver( buf );
 
+        ColorControlsUI* cc = ui->uiColorControls;
 
+        sprintf( buf, "HBCSActive %d", cc->uiActive->value() );
+        deliver( buf );
+
+        sprintf( buf, "Hue %g", cc->uiHue->value() );
+        deliver( buf );
+
+        sprintf( buf, "Brightness %g", cc->uiBrightness->value() );
+        deliver( buf );
+
+        sprintf( buf, "Contrast %g", cc->uiContrast->value() );
+        deliver( buf );
+
+        sprintf( buf, "Saturation %g", cc->uiSaturation->value() );
+        deliver( buf );
 
         sprintf(buf, N_("Zoom %g"), v->zoom() );
         deliver( buf );
