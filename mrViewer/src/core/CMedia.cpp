@@ -2916,7 +2916,7 @@ std::string CMedia::directory() const
 #ifdef _WIN32
         path = fs::absolute( file ).string();
 #else
-        path = fs::canonical( file ).string(); // fails on windows mountpoints
+        path = file.string(); // fails on windows mountpoints
 #endif
     else
         path = file.string();
