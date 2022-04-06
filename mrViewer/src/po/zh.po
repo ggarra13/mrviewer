@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " 文本"
 msgid " already created: "
 msgstr " 已经创建： "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " 默认"
 
@@ -170,7 +170,7 @@ msgstr " 失败。"
 msgid " failed with "
 msgstr " 失败了 "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " 失败。 "
 
@@ -198,7 +198,7 @@ msgstr " 对于 gamma_curve"
 msgid " for reel "
 msgstr " 用于卷轴 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " 对于轨道#"
 
@@ -246,11 +246,11 @@ msgstr " 它已经是磁盘上的第一个版本。"
 msgid " is already the last version on disk."
 msgstr " 它已经是磁盘上的最新版本。"
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " 他迷路了。"
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " 不见了。挑选出 "
 
@@ -433,11 +433,11 @@ msgstr "' 为了 "
 msgid "' for writing. Reason: "
 msgstr "' 写。原因： "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "' 位深度： "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "'来自文件名"
 
@@ -558,7 +558,7 @@ msgstr "， 频率 "
 msgid ", frequency "
 msgstr "， 频率 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr "， 类型 "
 
@@ -711,7 +711,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16 位"
 
@@ -820,7 +820,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32 位"
 
@@ -946,7 +946,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8位缓存"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8位"
 
@@ -1232,7 +1232,7 @@ msgstr "允许您设置时间线的起始帧。"
 msgid "Allows you to set the ending frame for timeline."
 msgstr "允许您设置时间线的结束帧。"
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1242,7 +1242,7 @@ msgstr "Α"
 msgid "Alpha Only"
 msgstr "仅限阿尔法"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1645,7 +1645,7 @@ msgstr "混合模式"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2038,7 +2038,7 @@ msgstr "未找到可折叠组"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2583,7 +2583,7 @@ msgstr "我无法从 fifo 缓冲区中读取样本。错误： "
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "我无法重新定位 fifo 缓冲区。错误： "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "我无法保存'"
 
@@ -2591,7 +2591,7 @@ msgstr "我无法保存'"
 msgid "Could not save .otio timeline: "
 msgstr "我无法保存 .otio 时间线： "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "无法从 AMF 保存剪辑元数据文件'"
 
@@ -4023,7 +4023,7 @@ msgstr "转到序列的开头。"
 msgid "Go to the end of the sequence."
 msgstr "转到序列的末尾。"
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "我得到了色彩空间'"
 
@@ -4037,7 +4037,7 @@ msgstr "希腊语 (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4930,7 +4930,7 @@ msgstr ""
 "从 RMD sidecar 加载配置或\n"
 "重置摄像头配置。"
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "我从 ACES 上传了剪辑元数据文件"
 
@@ -5024,7 +5024,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "鼠标下的图像像素亮度。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5228,7 +5228,7 @@ msgstr "mipmap 级别"
 msgid "Mipmap Levels"
 msgstr "Mipmap 级别"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "缺少 Convert_from_WorkSpace。 LUT 可能看起来很糟糕。"
 
@@ -5240,7 +5240,7 @@ msgstr "缺失帧"
 msgid "Missing audio frame "
 msgstr "音频丢失帧 "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "缺少 ace 的转换：GradeRef in '"
 
@@ -6456,7 +6456,7 @@ msgstr "实际剪辑宽度"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6777,11 +6777,11 @@ msgstr "SDI 输出：\t"
 msgid "SGI Picture"
 msgstr "SGI 图像"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "服用"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "显示"
 
@@ -6883,11 +6883,11 @@ msgstr "默认情况下将首选项保存到磁盘。"
 msgid "Save sequence or movie."
 msgstr "保存序列或电影。"
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "保存 ACES 的剪辑元数据文件"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "从 AMF 保存的剪辑文件元数据'"
 
@@ -8165,11 +8165,11 @@ msgstr "未知 Imf::PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "未知的子属性键码"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "未知的套接字"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "未知节目"
 
@@ -8245,11 +8245,11 @@ msgstr "未知的 mipmap 模式"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "mrv::Frame 中的未知像素格式"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "CDL 中的未知节点"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "GradeRef 中的未知节点"
 
@@ -9140,7 +9140,7 @@ msgstr "缩放到图像失败"
 msgid "attributes not found"
 msgstr "未找到属性"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "声音的"
 
@@ -9181,15 +9181,15 @@ msgstr "光盘/平方米"
 msgid "change_image index "
 msgstr "change_imdice 图像 "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "清洁效果"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "注释"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "数据"
 
@@ -9201,11 +9201,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet 帧失败 "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "默认"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - 未知位深度"
 
@@ -9213,7 +9213,7 @@ msgstr "default_leisure_input_color_space - 未知位深度"
 msgid "delete uiview"
 msgstr "删除uiview"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "配音"
 
@@ -9236,7 +9236,7 @@ msgstr "浮点"
 msgid "float (32-bits per channel)"
 msgstr "浮点数（每通道 32 位）"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "被迫"
 
@@ -9268,7 +9268,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "半浮点（每通道 16 位）"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "一半/全浮点"
 
@@ -9280,7 +9280,7 @@ msgstr "标头中有无效的幻数。"
 msgid "hdtv"
 msgstr "高清电视"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "听力障碍"
 
@@ -9300,7 +9300,7 @@ msgstr "它是 Softimage 文件，但不是 PIC 文件。"
 msgid "item_pathname returned "
 msgstr "item_pathname 返回 "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "卡拉OK"
 
@@ -9316,7 +9316,7 @@ msgstr "收听插件失败\n"
 msgid "loadDeepData error: "
 msgstr "深度数据加载错误： "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "歌词"
 
@@ -9450,7 +9450,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame 没有要更改的像素数据"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "原版的"
 
@@ -9546,7 +9546,7 @@ msgstr "src_nb_samples 为 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio：无效数据。呃，是的 "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "字幕"
 
@@ -9566,11 +9566,11 @@ msgstr "电视动作"
 msgid "tv title"
 msgstr "电视标题"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "工业"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "未知"
@@ -9587,11 +9587,11 @@ msgstr "无符号整数（每通道 32 位）"
 msgid "unsigned short (16-bits per channel)"
 msgstr "短无符号（每通道 16 位）"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "视频"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "视力障碍者"
 

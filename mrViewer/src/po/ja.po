@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " 文章"
 msgid " already created: "
 msgstr " 作成済み: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " ディフォルト"
 
@@ -170,7 +170,7 @@ msgstr " 失敗."
 msgid " failed with "
 msgstr " で失敗しました "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " 失敗. "
 
@@ -198,7 +198,7 @@ msgstr " gamma_curveの場合"
 msgid " for reel "
 msgstr " リール用 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " トラック＃用"
 
@@ -246,11 +246,11 @@ msgstr " これはすでにディスク上の最初のバージョンです."
 msgid " is already the last version on disk."
 msgstr " すでにディスク上の最新バージョンです."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " 彼は迷子になっています."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " 不足している.選ぶ "
 
@@ -436,11 +436,11 @@ msgstr "' ために "
 msgid "' for writing. Reason: "
 msgstr "'書き込み用.理由: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "'ビット深度: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "'ファイル名から"
 
@@ -561,7 +561,7 @@ msgstr "、 周波数 "
 msgid ", frequency "
 msgstr "、 周波数 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr "、 タイプ "
 
@@ -714,7 +714,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16ビット"
 
@@ -823,7 +823,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32ビット"
 
@@ -949,7 +949,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8ビットキャッシュ"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8ビット"
 
@@ -1234,7 +1234,7 @@ msgstr "タイムラインの開始フレームを設定できます."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "タイムラインの終了フレームを設定できます."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1244,7 +1244,7 @@ msgstr "アルファ"
 msgid "Alpha Only"
 msgstr "アルファのみ"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1655,7 +1655,7 @@ msgstr "ブレンドモード"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2049,7 +2049,7 @@ msgstr "折りたたみ可能なグループが見つかりません"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2596,7 +2596,7 @@ msgstr "fifoバッファからサンプルを読み取ることができませ�
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "fifoバッファを再配置できませんでした.エラー: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "保存できませんでした」"
 
@@ -2604,7 +2604,7 @@ msgstr "保存できませんでした」"
 msgid "Could not save .otio timeline: "
 msgstr ".otioタイムラインを保存できませんでした: "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "クリップメタデータファイルをAMFから保存できませんでした'"
 
@@ -4041,7 +4041,7 @@ msgstr "シーケンスの最初に移動します."
 msgid "Go to the end of the sequence."
 msgstr "シーケンスの最後に移動します."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "色空間を取得しました'"
 
@@ -4055,7 +4055,7 @@ msgstr "ギリシャ語 (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4950,7 +4950,7 @@ msgstr ""
 "RMDサイドカーから構成をロードするか、\n"
 "カメラ構成をリセットします."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "ACESからクリップメタデータファイルをアップロードしました"
 
@@ -5044,7 +5044,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "マウスの下の画像ピクセルの輝度."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5251,7 +5251,7 @@ msgstr "ミップマップレベル"
 msgid "Mipmap Levels"
 msgstr "ミップマップレベル"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Convert_from_WorkSpaceがありません. LUTはおそらく見栄えが悪いでしょう."
 
@@ -5263,7 +5263,7 @@ msgstr "欠落しているフレーム"
 msgid "Missing audio frame "
 msgstr "オーディオ欠落フレーム "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "エースの変換がありません:GradeRef in '"
 
@@ -6500,7 +6500,7 @@ msgstr "実際のクリップ幅"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6826,11 +6826,11 @@ msgstr "SDI出力:\t"
 msgid "SGI Picture"
 msgstr "SGI画像"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "取る"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "見せる"
 
@@ -6933,11 +6933,11 @@ msgstr "デフォルトで設定をディスクに保存します."
 msgid "Save sequence or movie."
 msgstr "シーケンスまたはムービーを保存します."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "保存されたACESのクリップメタデータファイル"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "AMFから保存されたクリップファイルメタデータ '"
 
@@ -8242,11 +8242,11 @@ msgstr "不明なImf::PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "不明なサブ属性キーコード"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "不明なソケット"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "不明なショー"
 
@@ -8322,11 +8322,11 @@ msgstr "不明なミップマップモード"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "mrv::Frameの不明なピクセル形式"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "CDLの不明なノード"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "GradeRefの不明なノード"
 
@@ -9252,7 +9252,7 @@ msgstr "画像へのズームに失敗しました"
 msgid "attributes not found"
 msgstr "属性が見つかりません"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "オーディオ"
 
@@ -9293,15 +9293,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice画像 "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "きれいな効果"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "コメント"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "データ"
 
@@ -9313,11 +9313,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "フレームのdecode_audio_packetが失敗しました "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "ディフォルト"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space-不明なビット深度"
 
@@ -9325,7 +9325,7 @@ msgstr "default_leisure_input_color_space-不明なビット深度"
 msgid "delete uiview"
 msgstr "uiviewを削除する"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "ダビング"
 
@@ -9348,7 +9348,7 @@ msgstr "浮動小数点"
 msgid "float (32-bits per channel)"
 msgstr "浮動小数点（チャネルあたり32ビット）"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "強制"
 
@@ -9380,7 +9380,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "半精度浮動小数点（チャネルあたり16ビット）"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "半分/完全な浮動小数点"
 
@@ -9392,7 +9392,7 @@ msgstr "ヘッダーに無効なマジックナンバーがあります."
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "聴覚障害"
 
@@ -9412,7 +9412,7 @@ msgstr "Softimageファイルですが、PICファイルではありません."
 msgid "item_pathname returned "
 msgstr "item_pathnameが返されました "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "カラオケ"
 
@@ -9428,7 +9428,7 @@ msgstr "プラグを聞くのに失敗しました\n"
 msgid "loadDeepData error: "
 msgstr "ディープデータロードエラー: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "歌詞"
 
@@ -9566,7 +9566,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame変更するピクセルデータはありません"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "オリジナル"
 
@@ -9662,7 +9662,7 @@ msgstr "src_nb_samplesは0です"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: 無効なデータ.うーん "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "字幕"
 
@@ -9682,11 +9682,11 @@ msgstr "テレビアクション"
 msgid "tv title"
 msgstr "テレビタイトル"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "わからない"
@@ -9703,11 +9703,11 @@ msgstr "符号なし整数（チャネルあたり32ビット）"
 msgid "unsigned short (16-bits per channel)"
 msgstr "短い符号なし（チャネルあたり16ビット）"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "ビデオ"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "視覚障害"
 

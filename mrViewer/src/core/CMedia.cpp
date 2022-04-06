@@ -1735,12 +1735,7 @@ void CMedia::filename( const char* n )
 
     if ( fs::exists( file ) )
     {
-        // canonical fails on windows' mountpoints
-#ifdef _WIN32
         std::string path = fs::absolute( file ).string();
-#else
-        std::string path = fs::canonical( file ).string(); // fails on win32 mountpoints
-#endif
         _fileroot = av_strdup( path.c_str() );
     }
     else

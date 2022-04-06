@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " Текст"
 msgid " already created: "
 msgstr " уже создано: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " По умолчанию"
 
@@ -170,7 +170,7 @@ msgstr " отказ."
 msgid " failed with "
 msgstr " не удалось с "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " отказ. "
 
@@ -198,7 +198,7 @@ msgstr " для gamma_curve"
 msgid " for reel "
 msgstr " для катушки "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " для трека №"
 
@@ -246,11 +246,11 @@ msgstr " Это уже первая версия на диске."
 msgid " is already the last version on disk."
 msgstr " Это уже последняя версия на диске."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " Он потерян."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " пропал, отсутствует. выбирая "
 
@@ -437,11 +437,11 @@ msgstr "' для "
 msgid "' for writing. Reason: "
 msgstr "' для записи. Причина: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "' битовая глубина: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "' из имени файла"
 
@@ -562,7 +562,7 @@ msgstr ", частота "
 msgid ", frequency "
 msgstr ", частота "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr ", тип "
 
@@ -715,7 +715,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16 бит"
 
@@ -824,7 +824,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32 бит"
 
@@ -950,7 +950,7 @@ msgstr "70мм"
 msgid "8 bit Caches"
 msgstr "8-битный кэш"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8 бит"
 
@@ -1235,7 +1235,7 @@ msgstr "Позволяет установить начальный кадр вр
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Позволяет установить конечный кадр для временной шкалы."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1245,7 +1245,7 @@ msgstr "Альфа"
 msgid "Alpha Only"
 msgstr "только альфа"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1657,7 +1657,7 @@ msgstr "режим смешивания"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2053,7 +2053,7 @@ msgstr "Сворачиваемая группа не найдена"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2603,7 +2603,7 @@ msgstr "Я не мог читать образцы из буфера FIFO. Ош�
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "Я не мог переместить буфер FIFO. Ошибка: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "я не смог спасти'"
 
@@ -2611,7 +2611,7 @@ msgstr "я не смог спасти'"
 msgid "Could not save .otio timeline: "
 msgstr "Мне не удалось сохранить временную шкалу .otio: "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "Не удалось сохранить файл метаданных клипа из AMF."
 
@@ -4050,7 +4050,7 @@ msgstr "Перейти к началу последовательности."
 msgid "Go to the end of the sequence."
 msgstr "Перейти к концу последовательности."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "Я получил цветовое пространство '"
 
@@ -4064,7 +4064,7 @@ msgstr "греческий (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4967,7 +4967,7 @@ msgstr ""
 "Загрузите конфигурацию из боковой панели RMD или\n"
 "сбросьте конфигурацию камеры."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "Я загрузил файл метаданных клипа с сайта ACES."
 
@@ -5061,7 +5061,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Яркость пикселя изображения под мышью."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5270,7 +5270,7 @@ msgstr "уровень мип-карты"
 msgid "Mipmap Levels"
 msgstr "Уровни MIP-карты"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr ""
 "Convert_from_WorkSpace отсутствует. LUT, вероятно, будет выглядеть плохо."
@@ -5283,7 +5283,7 @@ msgstr "Отсутствующие кадры"
 msgid "Missing audio frame "
 msgstr "Звук отсутствует кадр "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Отсутствующие преобразования для aces:GradeRef в '"
 
@@ -6522,7 +6522,7 @@ msgstr "фактическая ширина клипа"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6848,11 +6848,11 @@ msgstr "Выход SDI:\t"
 msgid "SGI Picture"
 msgstr "SGI-изображение"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "ПРИНИМАНИЕ"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "ПОКАЗЫВАТЬ"
 
@@ -6956,11 +6956,11 @@ msgstr "Сохранить настройки на диск по умолчан�
 msgid "Save sequence or movie."
 msgstr "Сохранить эпизод или фильм."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "Сохраненный файл метаданных клипа ACES"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "Сохраненные метаданные файла клипа из AMF'"
 
@@ -8283,11 +8283,11 @@ msgstr "Неизвестный Imf::PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "Неизвестный ключевой код субатрибута"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "Неизвестный сокет"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "Неизвестное шоу"
 
@@ -8363,11 +8363,11 @@ msgstr "неизвестный режим MIP-карты"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "Неизвестный формат пикселей в mrv::Frame"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "Неизвестный узел в CDL"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "Неизвестный узел в GradeRef"
 
@@ -9300,7 +9300,7 @@ msgstr "Не удалось увеличить изображение"
 msgid "attributes not found"
 msgstr "атрибуты не найдены"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "Аудио"
 
@@ -9341,15 +9341,15 @@ msgstr "компакт диск/м2"
 msgid "change_image index "
 msgstr "изображение change_imdice "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "чистые эффекты"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "Комментарии"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "данные"
 
@@ -9361,11 +9361,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "Ошибка decode_audio_packet для кадра "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "По умолчанию"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space — неизвестная разрядность"
 
@@ -9373,7 +9373,7 @@ msgstr "default_leisure_input_color_space — неизвестная разря�
 msgid "delete uiview"
 msgstr "удалить пользовательский интерфейс"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "дубляж"
 
@@ -9396,7 +9396,7 @@ msgstr "плавающая точка"
 msgid "float (32-bits per channel)"
 msgstr "с плавающей запятой (32 бита на канал)"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "принужденный"
 
@@ -9428,7 +9428,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "половина с плавающей запятой (16 бит на канал)"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "половина/полная плавающая точка"
 
@@ -9440,7 +9440,7 @@ msgstr "имеет недопустимый магический номер в �
 msgid "hdtv"
 msgstr "HDTV"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "нарушения слуха"
 
@@ -9460,7 +9460,7 @@ msgstr "это файл Softimage, а не файл PIC."
 msgid "item_pathname returned "
 msgstr "возвращено item_pathname "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "караоке"
 
@@ -9476,7 +9476,7 @@ msgstr "Прослушать пробку не удалось\n"
 msgid "loadDeepData error: "
 msgstr "Ошибка глубокой загрузки данных: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "текст песни"
 
@@ -9618,7 +9618,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Нет пиксельных данных для изменения"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "оригинальный"
 
@@ -9714,7 +9714,7 @@ msgstr "src_nb_samples равен 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: неверные данные. ах это "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "подзаголовок"
 
@@ -9734,11 +9734,11 @@ msgstr "ТВ действие"
 msgid "tv title"
 msgstr "название телесериала"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "инд"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "неизвестный"
@@ -9755,11 +9755,11 @@ msgstr "целое число без знака (32 бита на канал)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "короткий без знака (16 бит на канал)"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "видео"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "слабовидящий"
 

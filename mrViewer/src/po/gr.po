@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " Κείμενο"
 msgid " already created: "
 msgstr " έχει ήδη δημιουργηθεί: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " Προκαθορισμένο"
 
@@ -170,7 +170,7 @@ msgstr " αποτυχία."
 msgid " failed with "
 msgstr " απέτυχε με "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " αποτυχία. "
 
@@ -198,7 +198,7 @@ msgstr " για gamma_curve"
 msgid " for reel "
 msgstr " για μπομπίνα "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " για το κομμάτι #"
 
@@ -246,11 +246,11 @@ msgstr " Είναι ήδη η πρώτη έκδοση στο δίσκο."
 msgid " is already the last version on disk."
 msgstr " Είναι ήδη η πιο πρόσφατη έκδοση στο δίσκο."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " Χάθηκε."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " λείπει. διαλέγοντας "
 
@@ -437,11 +437,11 @@ msgstr "' Για "
 msgid "' for writing. Reason: "
 msgstr "'για να γράψω. Λόγος: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "Βάθος bit: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "' από το όνομα αρχείου"
 
@@ -562,7 +562,7 @@ msgstr ", συχνότητα "
 msgid ", frequency "
 msgstr ", συχνότητα "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr ", τύπος "
 
@@ -715,7 +715,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -824,7 +824,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -950,7 +950,7 @@ msgstr "70 χλστ"
 msgid "8 bit Caches"
 msgstr "8 bit cache"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8 bit"
 
@@ -1239,7 +1239,7 @@ msgstr "Σας επιτρέπει να ορίσετε το καρέ έναρξη
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Σας επιτρέπει να ορίσετε το τελικό καρέ για τη γραμμή χρόνου."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1249,7 +1249,7 @@ msgstr "Αλφα"
 msgid "Alpha Only"
 msgstr "μόνο άλφα"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1661,7 +1661,7 @@ msgstr "λειτουργία ανάμειξης"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2059,7 +2059,7 @@ msgstr "Η πτυσσόμενη ομάδα δεν βρέθηκε"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2622,7 +2622,7 @@ msgstr "Δεν μπορούσα να διαβάσω δείγματα από το
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "Δεν μπόρεσα να μετακινήσω το buffer fifo. Λάθος: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "Δεν μπορούσα να σώσω»"
 
@@ -2630,7 +2630,7 @@ msgstr "Δεν μπορούσα να σώσω»"
 msgid "Could not save .otio timeline: "
 msgstr "Δεν μπόρεσα να αποθηκεύσω τη γραμμή χρόνου .otio: "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "Δεν ήταν δυνατή η αποθήκευση του αρχείου Clip Metadata από το AMF'"
 
@@ -4072,7 +4072,7 @@ msgstr "Μεταβείτε στην αρχή της ακολουθίας."
 msgid "Go to the end of the sequence."
 msgstr "Μεταβείτε στο τέλος της ακολουθίας."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "Έχω το χρωματικό χώρο '"
 
@@ -4087,7 +4087,7 @@ msgstr "Ελληνικά"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4990,7 +4990,7 @@ msgstr ""
 "Φορτώστε τη διαμόρφωση από το RMD sidecar ή\n"
 "επαναφέρετε τη διαμόρφωση της κάμερας."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "Ανέβασα αρχείο μεταδεδομένων κλιπ από το ACES'"
 
@@ -5084,7 +5084,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Φωτεινότητα εικονοστοιχείων εικόνας κάτω από το ποντίκι."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5297,7 +5297,7 @@ msgstr "επίπεδο mipmap"
 msgid "Mipmap Levels"
 msgstr "Επίπεδα Mipmap"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Το Convert_from_WorkSpace λείπει. Το LUT μάλλον θα φαίνεται άσχημο."
 
@@ -5309,7 +5309,7 @@ msgstr "Λείπουν καρέ"
 msgid "Missing audio frame "
 msgstr "Λείπει το καρέ ήχου "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Λείπουν μετασχηματισμοί για άσους:GradeRef στο '"
 
@@ -6549,7 +6549,7 @@ msgstr "πραγματικό πλάτος κλιπ"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6875,11 +6875,11 @@ msgstr "Έξοδος SDI:\t"
 msgid "SGI Picture"
 msgstr "Εικόνα SGI"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "ΛΗΨΗ"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "ΠΡΟΒΟΛΗ"
 
@@ -6983,11 +6983,11 @@ msgstr "Αποθηκεύστε τις προτιμήσεις στο δίσκο �
 msgid "Save sequence or movie."
 msgstr "Αποθήκευση σειράς ή ταινίας."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "Αποθηκευμένο αρχείο μεταδεδομένων κλιπ ACES"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "Αποθηκευμένα Μεταδεδομένα Αρχείο Κλιπ από το AMF'"
 
@@ -8321,11 +8321,11 @@ msgstr "Άγνωστο Imf::PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "Άγνωστος κωδικός κλειδιού δευτερεύοντος χαρακτηριστικού"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "Άγνωστη πρίζα"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "Άγνωστη παράσταση"
 
@@ -8401,11 +8401,11 @@ msgstr "άγνωστη λειτουργία mipmap"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "Άγνωστη μορφή pixel σε mrv::Frame"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "Άγνωστος κόμβος στο CDL"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "Άγνωστος κόμβος στο GradeRef"
 
@@ -9361,7 +9361,7 @@ msgstr "Το ζουμ στην εικόνα απέτυχε"
 msgid "attributes not found"
 msgstr "χαρακτηριστικά δεν βρέθηκαν"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "Ήχος"
 
@@ -9402,15 +9402,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice εικόνα "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "καθαρά αποτελέσματα"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "σχόλια"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "δεδομένα"
 
@@ -9422,11 +9422,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "Το decode_audio_packet απέτυχε για το καρέ "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "Προκαθορισμένο"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - άγνωστο βάθος bit"
 
@@ -9434,7 +9434,7 @@ msgstr "default_leisure_input_color_space - άγνωστο βάθος bit"
 msgid "delete uiview"
 msgstr "διαγραφή uiview"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "μεταγλώττιση"
 
@@ -9457,7 +9457,7 @@ msgstr "κινητής υποδιαστολής"
 msgid "float (32-bits per channel)"
 msgstr "κινητή υποδιαστολή (32-bit ανά κανάλι)"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "αναγκαστικά"
 
@@ -9489,7 +9489,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "μισή κινητή υποδιαστολή (16 bit ανά κανάλι)"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "τα μισα/πλήρης κινητής υποδιαστολής"
 
@@ -9501,7 +9501,7 @@ msgstr "έχει έναν μη έγκυρο μαγικό αριθμό στην �
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "προβλήματα ακοής"
 
@@ -9521,7 +9521,7 @@ msgstr "είναι αρχείο Softimage, αλλά όχι αρχείο PIC."
 msgid "item_pathname returned "
 msgstr "Το item_pathname επέστρεψε "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "καραόκε"
 
@@ -9537,7 +9537,7 @@ msgstr "Η ακρόαση της σύνδεσης απέτυχε\n"
 msgid "loadDeepData error: "
 msgstr "Σφάλμα βαθιάς φόρτωσης δεδομένων: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "στίχοι"
 
@@ -9679,7 +9679,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::κουτί Δεν υπάρχουν δεδομένα pixel για αλλαγή"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "πρωτότυπο"
 
@@ -9775,7 +9775,7 @@ msgstr "Το src_nb_samples είναι 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: μη έγκυρα δεδομένα. αχ είναι "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "υπότιτλος"
 
@@ -9795,11 +9795,11 @@ msgstr "τηλεοπτική δράση"
 msgid "tv title"
 msgstr "τίτλος τηλεόρασης"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ενδ"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "άγνωστος"
@@ -9816,11 +9816,11 @@ msgstr "ανυπόγραφος ακέραιος αριθμός (32-bit ανά κ
 msgid "unsigned short (16-bits per channel)"
 msgstr "σύντομο ανυπόγραφο (16 bit ανά κανάλι)"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "βίντεο"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "με προβλήματα όρασης"
 

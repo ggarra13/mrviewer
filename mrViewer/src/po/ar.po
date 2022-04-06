@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " نص"
 msgid " already created: "
 msgstr " تم إنشاؤه بالفعل: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " إفتراضي"
 
@@ -170,7 +170,7 @@ msgstr " بالفشل."
 msgid " failed with "
 msgstr " فشلت مع "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " بالفشل. "
 
@@ -198,7 +198,7 @@ msgstr " لمنحنى جاما"
 msgid " for reel "
 msgstr " للبكرة "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " للمسار #"
 
@@ -246,11 +246,11 @@ msgstr " إنه بالفعل الإصدار الأول على القرص."
 msgid " is already the last version on disk."
 msgstr " إنه بالفعل أحدث إصدار على القرص."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " إنه ضائع."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " مفقود. قطف من "
 
@@ -435,11 +435,11 @@ msgstr "' بالنسبة "
 msgid "' for writing. Reason: "
 msgstr "للكتابة. سبب: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "عمق البت: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "من اسم الملف"
 
@@ -560,7 +560,7 @@ msgstr "، تكرر "
 msgid ", frequency "
 msgstr "، تكرر "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr "، اكتب "
 
@@ -713,7 +713,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16 بت"
 
@@ -822,7 +822,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32 بت"
 
@@ -948,7 +948,7 @@ msgstr "70 ملم"
 msgid "8 bit Caches"
 msgstr "8 بت مخبأ"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8 بت"
 
@@ -1234,7 +1234,7 @@ msgstr "يسمح لك بتعيين إطار البداية للخط الزمني
 msgid "Allows you to set the ending frame for timeline."
 msgstr "يسمح لك بتعيين إطار النهاية للمخطط الزمني."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1244,7 +1244,7 @@ msgstr "ألفا"
 msgid "Alpha Only"
 msgstr "ألفا فقط"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1653,7 +1653,7 @@ msgstr "وضع المزج"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2047,7 +2047,7 @@ msgstr "لم يتم العثور على المجموعة القابلة للطي
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2593,7 +2593,7 @@ msgstr "لم أتمكن من قراءة عينات من المخزن المؤق�
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "لم أستطع نقل العازلة فيفو. خطأ: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "لم أستطع الحفظ \""
 
@@ -2601,7 +2601,7 @@ msgstr "لم أستطع الحفظ \""
 msgid "Could not save .otio timeline: "
 msgstr "لم أتمكن من حفظ المخطط الزمني .otio: "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "تعذر حفظ ملف Clip Metadata من AMF '"
 
@@ -4035,7 +4035,7 @@ msgstr "اذهب إلى بداية التسلسل."
 msgid "Go to the end of the sequence."
 msgstr "اذهب إلى نهاية التسلسل."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "لدي مساحة اللون \""
 
@@ -4049,7 +4049,7 @@ msgstr "اليونانية (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4945,7 +4945,7 @@ msgstr ""
 "تحميل التكوين من RMD sidecar أو \n"
 " تكوين الكاميرا."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "لقد قمت بتحميل ملف Clip Metadata من ACES '"
 
@@ -5039,7 +5039,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "إضاءة بكسل الصورة تحت الماوس."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5246,7 +5246,7 @@ msgstr "مستوى الخريطة"
 msgid "Mipmap Levels"
 msgstr "مستويات Mipmap"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr ""
 "Convert_from_WorkSpace مفقود. من المحتمل أن تبدو طرفية المستعملين (LUT) سيئة."
@@ -5259,7 +5259,7 @@ msgstr "إطارات مفقودة"
 msgid "Missing audio frame "
 msgstr "صوت مفقود في إطار "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "تحويلات aces مفقودة: GradeRef in '"
 
@@ -6490,7 +6490,7 @@ msgstr "عرض المقطع الفعلي"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6815,11 +6815,11 @@ msgstr "إخراج SDI: \t"
 msgid "SGI Picture"
 msgstr "صورة SGI"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "مع الأخذ"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "يعرض"
 
@@ -6923,11 +6923,11 @@ msgstr "حفظ التفضيلات على القرص بشكل افتراضي."
 msgid "Save sequence or movie."
 msgstr "حفظ التسلسل أو الفيلم."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "تم حفظ ملف Clip Metadata لـ ACES"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "ملف Clip Metadata المحفوظ من AMF '"
 
@@ -8234,11 +8234,11 @@ msgstr "غير معروف Imf :: PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "رمز مفتاح سمة فرعية غير معروف"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "مقبس غير معروف"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "عرض غير معروف"
 
@@ -8314,11 +8314,11 @@ msgstr "وضع mipmap غير معروف"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "تنسيق بكسل غير معروف في mrv :: Frame"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "عقدة غير معروفة في CDL"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "عقدة غير معروفة في GradeRef"
 
@@ -9230,7 +9230,7 @@ msgstr "فشل تكبير الصورة"
 msgid "attributes not found"
 msgstr "السمات غير موجودة"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "صوتي"
 
@@ -9271,15 +9271,15 @@ msgstr "قرص مضغوط/م 2"
 msgid "change_image index "
 msgstr "تغيير الصورة "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "تأثيرات نظيفة"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "تعليقات"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "بيانات"
 
@@ -9291,11 +9291,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "فشل decode_audio_packet للإطار "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "إفتراضي"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 
@@ -9303,7 +9303,7 @@ msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 msgid "delete uiview"
 msgstr "حذف uiview"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "دبلجة"
 
@@ -9326,7 +9326,7 @@ msgstr "النقطة العائمة"
 msgid "float (32-bits per channel)"
 msgstr "النقطة العائمة (32 بت لكل قناة)"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "قسري"
 
@@ -9358,7 +9358,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "نصف نقطة عائمة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "نصف/نقطة عائمة كاملة"
 
@@ -9370,7 +9370,7 @@ msgstr "يحتوي على رقم سحري غير صالح في الرأس."
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "ضعف السمع"
 
@@ -9390,7 +9390,7 @@ msgstr "إنه ملف Softimage ، لكنه ليس ملف PIC."
 msgid "item_pathname returned "
 msgstr "تم إرجاع item_pathname "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "كاريوكي"
 
@@ -9406,7 +9406,7 @@ msgstr "فشل الاستماع إلى التوصيل \n"
 msgid "loadDeepData error: "
 msgstr "خطأ في تحميل البيانات العميقة: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "كلمات الاغنية"
 
@@ -9542,7 +9542,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv :: الإطار لا توجد بيانات بكسل لتغييرها"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "أصلي"
 
@@ -9638,7 +9638,7 @@ msgstr "قيمة src_nb_samples تساوي 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: بيانات غير صالحة. آخ هو عليه "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "العنوان الفرعي"
 
@@ -9658,11 +9658,11 @@ msgstr "عمل تلفزيوني"
 msgid "tv title"
 msgstr "عنوان التلفزيون"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "الهند"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "مجهول"
@@ -9679,11 +9679,11 @@ msgstr "عدد صحيح بدون إشارة (32 بت لكل قناة)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "قصير بدون إشارة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "فيديو"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "ضعاف البصر"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " Metin"
 msgid " already created: "
 msgstr " zaten oluşturuldu: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " varsayılan"
 
@@ -170,7 +170,7 @@ msgstr " arıza."
 msgid " failed with "
 msgstr " ile başarısız "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " arıza. "
 
@@ -198,7 +198,7 @@ msgstr " gama_curve için"
 msgid " for reel "
 msgstr " makara için "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " parça # için"
 
@@ -246,11 +246,11 @@ msgstr " Zaten diskteki ilk sürüm."
 msgid " is already the last version on disk."
 msgstr " Zaten diskteki en son sürüm."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " O kayboldu."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " kayıp. ayıklamak "
 
@@ -437,11 +437,11 @@ msgstr "' için "
 msgid "' for writing. Reason: "
 msgstr "' yazmak için. Sebep: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "' bit derinliği: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "' dosya adından"
 
@@ -562,7 +562,7 @@ msgstr ", Sıklık "
 msgid ", frequency "
 msgstr ", Sıklık "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr ", tip "
 
@@ -715,7 +715,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -824,7 +824,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -950,7 +950,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8 bit önbellek"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8 bit"
 
@@ -1236,7 +1236,7 @@ msgstr "Zaman çizelgesinin başlangıç çerçevesini ayarlamanızı sağlar."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1246,7 +1246,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "sadece alfa"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1656,7 +1656,7 @@ msgstr "karışım modu"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2050,7 +2050,7 @@ msgstr "Daraltılabilir grup bulunamadı"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2599,7 +2599,7 @@ msgstr "Fifo arabelleğinden örnekleri okuyamadım. Hata: "
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "Fifo arabelleğinin yerini değiştiremedim. Hata: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "kurtaramadım'"
 
@@ -2607,7 +2607,7 @@ msgstr "kurtaramadım'"
 msgid "Could not save .otio timeline: "
 msgstr ".otio zaman çizelgesini kaydedemedim: "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "Klip Meta Verileri dosyası AMF'den kaydedilemedi'"
 
@@ -4047,7 +4047,7 @@ msgstr "Dizinin başına git."
 msgid "Go to the end of the sequence."
 msgstr "Sıranın sonuna git."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "Renk uzayını aldım'"
 
@@ -4061,7 +4061,7 @@ msgstr "Yunan (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4961,7 +4961,7 @@ msgstr ""
 "Yapılandırmayı RMD sepetinden yükleyin veya\n"
 "kamera yapılandırmasını sıfırlayın."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "ACES'ten Klip Meta Veri dosyasını yükledim"
 
@@ -5055,7 +5055,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Farenin altındaki görüntü pikseli parlaklığı."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5262,7 +5262,7 @@ msgstr "mipmap seviyesi"
 msgid "Mipmap Levels"
 msgstr "Mipmap seviyeleri"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Convert_from_WorkSpace eksik. LUT muhtemelen kötü görünecek."
 
@@ -5274,7 +5274,7 @@ msgstr "Eksik Çerçeveler"
 msgid "Missing audio frame "
 msgstr "Ses eksik çerçeve "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Aslar için eksik dönüşümler: ' içinde GradeRef"
 
@@ -6512,7 +6512,7 @@ msgstr "gerçek klip genişliği"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6838,11 +6838,11 @@ msgstr "SDI çıkışı:\t"
 msgid "SGI Picture"
 msgstr "SGI Görüntüsü"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "ALMAK"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "GÖSTERMEK"
 
@@ -6946,11 +6946,11 @@ msgstr "Tercihleri varsayılan olarak diske kaydedin."
 msgid "Save sequence or movie."
 msgstr "Diziyi veya filmi kaydedin."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "ACES'in Klip Meta Verileri dosyası kaydedildi"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "AMF'den Kaydedilen Klip Dosyası Meta Verileri"
 
@@ -8266,11 +8266,11 @@ msgstr "Bilinmeyen Imf::PixelType"
 msgid "Unknown KeyCode subattr"
 msgstr "Bilinmeyen alt özellik anahtar kodu"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "Bilinmeyen soket"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "Bilinmeyen gösteri"
 
@@ -8346,11 +8346,11 @@ msgstr "bilinmeyen mipmap modu"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "mrv::Frame'de bilinmeyen piksel biçimi"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "CDL'de bilinmeyen düğüm"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "GradeRef'te bilinmeyen düğüm"
 
@@ -9285,7 +9285,7 @@ msgstr "Görüntüye yakınlaştırma başarısız oldu"
 msgid "attributes not found"
 msgstr "nitelikler bulunamadı"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "Ses"
 
@@ -9326,15 +9326,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice resmi "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "temiz efektler"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "yorumlar"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "veri"
 
@@ -9346,11 +9346,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet çerçeve için başarısız oldu "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "varsayılan"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 
@@ -9358,7 +9358,7 @@ msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 msgid "delete uiview"
 msgstr "uiview'i sil"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "dublaj"
 
@@ -9381,7 +9381,7 @@ msgstr "kayan nokta"
 msgid "float (32-bits per channel)"
 msgstr "kayan nokta (kanal başına 32 bit)"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "zoraki"
 
@@ -9413,7 +9413,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "yarım kayan nokta (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "yarım/tam kayan nokta"
 
@@ -9425,7 +9425,7 @@ msgstr "başlıkta geçersiz bir sihirli sayı var."
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "işitme bozuklukları"
 
@@ -9445,7 +9445,7 @@ msgstr "bu bir Softimage dosyasıdır, ancak bir PIC dosyası değildir."
 msgid "item_pathname returned "
 msgstr "item_pathname döndürüldü "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9461,7 +9461,7 @@ msgstr "Dinleme başarısız oldu\n"
 msgid "loadDeepData error: "
 msgstr "Derin veri yükleme hatası: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "şarkı sözleri"
 
@@ -9603,7 +9603,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Değiştirilecek piksel verisi yok"
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "orijinal"
 
@@ -9699,7 +9699,7 @@ msgstr "src_nb_örnekleri 0'dır"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: geçersiz veri. uh öyle "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "alt yazı"
 
@@ -9719,11 +9719,11 @@ msgstr "tv eylemi"
 msgid "tv title"
 msgstr "televizyon başlığı"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "Bilinmeyen"
@@ -9740,11 +9740,11 @@ msgstr "işaretsiz tamsayı (kanal başına 32 bit)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "kısa işaretsiz (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "görme engelli"
 

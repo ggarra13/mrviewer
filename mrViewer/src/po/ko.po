@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-06 00:31-0300\n"
+"POT-Creation-Date: 2022-04-06 00:42-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3596
+#: core/CMedia.cpp:3591
 msgid ""
 "\n"
 "\n"
@@ -125,7 +125,7 @@ msgstr " 텍스트"
 msgid " already created: "
 msgstr " 이미 생성됨: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid " as default"
 msgstr " 기본"
 
@@ -170,7 +170,7 @@ msgstr " 실패."
 msgid " failed with "
 msgstr " 실패 "
 
-#: core/mrvACES.cpp:90
+#: core/mrvACES.cpp:84
 msgid " failed. "
 msgstr " 실패. "
 
@@ -198,7 +198,7 @@ msgstr " gamma_curve의 경우"
 msgid " for reel "
 msgstr " 릴용 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid " for stream #"
 msgstr " 트랙 #"
 
@@ -246,11 +246,11 @@ msgstr " 이미 디스크의 첫 번째 버전입니다."
 msgid " is already the last version on disk."
 msgstr " 이미 디스크에 있는 최신 버전입니다."
 
-#: core/CMedia.cpp:4297
+#: core/CMedia.cpp:4292
 msgid " is missing."
 msgstr " 그는 길을 잃었다."
 
-#: core/CMedia.cpp:4320
+#: core/CMedia.cpp:4315
 msgid " is missing. Choosing "
 msgstr " 누락. 집어 고르기 "
 
@@ -433,11 +433,11 @@ msgstr "' 을위한 "
 msgid "' for writing. Reason: "
 msgstr "' 쓰기 위해. 이유: "
 
-#: core/CMedia.cpp:4440
+#: core/CMedia.cpp:4435
 msgid "' from bitdepth "
 msgstr "' 비트 깊이: "
 
-#: core/CMedia.cpp:4392
+#: core/CMedia.cpp:4387
 msgid "' from filename"
 msgstr "' 파일 이름에서"
 
@@ -558,7 +558,7 @@ msgstr ", 빈도 "
 msgid ", frequency "
 msgstr ", 빈도 "
 
-#: core/CMedia.cpp:3597
+#: core/CMedia.cpp:3592
 msgid ", type "
 msgstr ", 유형 "
 
@@ -711,7 +711,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4407
 msgid "16 bits"
 msgstr "16비트"
 
@@ -820,7 +820,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4419
+#: core/CMedia.cpp:4414
 msgid "32 bits"
 msgstr "32비트"
 
@@ -946,7 +946,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8비트 캐시"
 
-#: core/CMedia.cpp:4405
+#: core/CMedia.cpp:4400
 msgid "8 bits"
 msgstr "8비트"
 
@@ -1230,7 +1230,7 @@ msgstr "타임라인의 시작 프레임을 설정할 수 있습니다."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "타임라인의 끝 프레임을 설정할 수 있습니다."
 
-#: core/CMedia.cpp:2078 core/CMedia.cpp:2161 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9140
 #: gui/mrvImageView.cpp:9610 gui/mrvImageView.cpp:9672
 msgid "Alpha"
@@ -1240,7 +1240,7 @@ msgstr "알파"
 msgid "Alpha Only"
 msgstr "알파만"
 
-#: core/CMedia.cpp:2080 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2044
 #: gui/mrvImageView.cpp:9121 gui/mrvImageView.cpp:9673
 msgid "Alpha Overlay"
@@ -1651,7 +1651,7 @@ msgstr "혼합 모드"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2094 core/CMedia.cpp:2160 core/exrImage.cpp:3048
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9135
 #: gui/mrvImageView.cpp:9671
 msgid "Blue"
@@ -2044,7 +2044,7 @@ msgstr "접을 수 있는 그룹을 찾을 수 없습니다."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
-#: core/CMedia.cpp:2091 core/CMedia.cpp:2159 core/exrImage.cpp:2793
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
@@ -2591,7 +2591,7 @@ msgstr "fifo 버퍼에서 샘플을 읽을 수 없습니다. 오류: "
 msgid "Could not realloc fifo buffer. Error: "
 msgstr "fifo 버퍼를 재배치할 수 없습니다. 오류: "
 
-#: core/mrvACES.cpp:450
+#: core/mrvACES.cpp:444
 msgid "Could not save '"
 msgstr "구하지 못했다'"
 
@@ -2599,7 +2599,7 @@ msgstr "구하지 못했다'"
 msgid "Could not save .otio timeline: "
 msgstr ".otio 타임라인을 저장할 수 없습니다. "
 
-#: core/mrvACES.cpp:350
+#: core/mrvACES.cpp:344
 msgid "Could not save AMF clip data file '"
 msgstr "AMF에서 클립 메타데이터 파일을 저장할 수 없습니다'"
 
@@ -4033,7 +4033,7 @@ msgstr "시퀀스의 시작 부분으로 이동합니다."
 msgid "Go to the end of the sequence."
 msgstr "시퀀스의 끝으로 이동합니다."
 
-#: core/CMedia.cpp:4392 core/CMedia.cpp:4439
+#: core/CMedia.cpp:4387 core/CMedia.cpp:4434
 msgid "Got colorspace '"
 msgstr "나는 색 공간을 얻었다 '"
 
@@ -4047,7 +4047,7 @@ msgstr "그리스 어 (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2093 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9130
 #: gui/mrvImageView.cpp:9671
 msgid "Green"
@@ -4941,7 +4941,7 @@ msgstr ""
 "RMD 사이드카에서 구성을 로드하거나\n"
 "카메라 구성을 재설정합니다."
 
-#: core/mrvACES.cpp:150
+#: core/mrvACES.cpp:144
 msgid "Loaded ACES clip metadata file '"
 msgstr "ACES'에서 Clip Metadata 파일을 업로드했습니다."
 
@@ -5035,7 +5035,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "마우스 아래의 이미지 픽셀 휘도."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2161 core/exrImage.cpp:3046
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2051
 #: gui/mrvImageView.cpp:9145 gui/mrvImageView.cpp:9672
 msgid "Lumma"
@@ -5242,7 +5242,7 @@ msgstr "밉맵 수준"
 msgid "Mipmap Levels"
 msgstr "밉맵 수준"
 
-#: core/mrvACES.cpp:129
+#: core/mrvACES.cpp:123
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Convert_from_WorkSpace가 없습니다. LUT는 아마 나빠 보일 것입니다."
 
@@ -5254,7 +5254,7 @@ msgstr "프레임 누락"
 msgid "Missing audio frame "
 msgstr "오디오 누락 프레임 "
 
-#: core/mrvACES.cpp:302 core/mrvACES.cpp:402
+#: core/mrvACES.cpp:296 core/mrvACES.cpp:396
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "'의 ace:GradeRef에 대한 변환 누락"
 
@@ -6487,7 +6487,7 @@ msgstr "실제 클립 너비"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2092 core/CMedia.cpp:2159 core/exrImage.cpp:3047
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9125
 #: gui/mrvImageView.cpp:9670
 msgid "Red"
@@ -6811,11 +6811,11 @@ msgstr "SDI 출력:\t"
 msgid "SGI Picture"
 msgstr "SGI 이미지"
 
-#: core/mrvACES.cpp:252 core/mrvACES.cpp:376
+#: core/mrvACES.cpp:246 core/mrvACES.cpp:370
 msgid "SHOT"
 msgstr "취득"
 
-#: core/mrvACES.cpp:248 core/mrvACES.cpp:372
+#: core/mrvACES.cpp:242 core/mrvACES.cpp:366
 msgid "SHOW"
 msgstr "보여 주다"
 
@@ -6919,11 +6919,11 @@ msgstr "기본적으로 환경 설정을 디스크에 저장합니다."
 msgid "Save sequence or movie."
 msgstr "시퀀스 또는 동영상을 저장합니다."
 
-#: core/mrvACES.cpp:452
+#: core/mrvACES.cpp:446
 msgid "Saved ACES clip metadata file '"
 msgstr "저장된 ACES의 클립 메타데이터 파일"
 
-#: core/mrvACES.cpp:352
+#: core/mrvACES.cpp:346
 msgid "Saved AMF clip metadata file '"
 msgstr "AMF에서 저장된 클립 파일 메타데이터'"
 
@@ -8228,11 +8228,11 @@ msgstr "알 수 없는 임프::픽셀 유형"
 msgid "Unknown KeyCode subattr"
 msgstr "알 수 없는 하위 속성 키코드"
 
-#: core/mrvACES.cpp:253 core/mrvACES.cpp:377
+#: core/mrvACES.cpp:247 core/mrvACES.cpp:371
 msgid "Unknown Shot"
 msgstr "알 수 없는 소켓"
 
-#: core/mrvACES.cpp:249 core/mrvACES.cpp:373
+#: core/mrvACES.cpp:243 core/mrvACES.cpp:367
 msgid "Unknown Show"
 msgstr "알 수 없는 쇼"
 
@@ -8308,11 +8308,11 @@ msgstr "알 수 없는 밉맵 모드"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "mrv::Frame의 알 수 없는 픽셀 형식"
 
-#: core/mrvACES.cpp:330
+#: core/mrvACES.cpp:324
 msgid "Unknown node in CDL"
 msgstr "CDL의 알 수 없는 노드"
 
-#: core/mrvACES.cpp:422
+#: core/mrvACES.cpp:416
 msgid "Unknown node in GradeRef"
 msgstr "GradeRef의 알 수 없는 노드"
 
@@ -9221,7 +9221,7 @@ msgstr "이미지 확대 실패"
 msgid "attributes not found"
 msgstr "속성을 찾을 수 없음"
 
-#: core/CMedia.cpp:3366 core/CMedia.cpp:3397
+#: core/CMedia.cpp:3361 core/CMedia.cpp:3392
 msgid "audio"
 msgstr "오디오"
 
@@ -9262,15 +9262,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice 이미지 "
 
-#: core/CMedia.cpp:3658
+#: core/CMedia.cpp:3653
 msgid "clean effects"
 msgstr "깨끗한 효과"
 
-#: core/CMedia.cpp:3646
+#: core/CMedia.cpp:3641
 msgid "comment"
 msgstr "코멘트"
 
-#: core/CMedia.cpp:3369 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3364 core/CMedia.cpp:3395
 msgid "data"
 msgstr "데이터"
 
@@ -9282,11 +9282,11 @@ msgstr "디코드_오디오_패킷 "
 msgid "decode_audio_packet failed for frame "
 msgstr "디코딩_오디오_패킷이 프레임에 실패했습니다. "
 
-#: core/CMedia.cpp:3640
+#: core/CMedia.cpp:3635
 msgid "default"
 msgstr "기본"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4427
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - 알 수 없는 비트 깊이"
 
@@ -9294,7 +9294,7 @@ msgstr "default_leisure_input_color_space - 알 수 없는 비트 깊이"
 msgid "delete uiview"
 msgstr "UI뷰 삭제"
 
-#: core/CMedia.cpp:3642
+#: core/CMedia.cpp:3637
 msgid "dub"
 msgstr "더빙"
 
@@ -9317,7 +9317,7 @@ msgstr "부동 소수점"
 msgid "float (32-bits per channel)"
 msgstr "부동 소수점(채널당 32비트)"
 
-#: core/CMedia.cpp:3652
+#: core/CMedia.cpp:3647
 msgid "forced"
 msgstr "강요된"
 
@@ -9349,7 +9349,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "반 부동 소수점(채널당 16비트)"
 
-#: core/CMedia.cpp:4427
+#: core/CMedia.cpp:4422
 msgid "half/float"
 msgstr "반/전체 부동 소수점"
 
@@ -9361,7 +9361,7 @@ msgstr "헤더에 잘못된 매직 번호가 있습니다."
 msgid "hdtv"
 msgstr "HDTV"
 
-#: core/CMedia.cpp:3654
+#: core/CMedia.cpp:3649
 msgid "hearing impaired"
 msgstr "청각 장애"
 
@@ -9381,7 +9381,7 @@ msgstr "Softimage 파일이지만 PIC 파일은 아닙니다."
 msgid "item_pathname returned "
 msgstr "item_pathname 반환됨 "
 
-#: core/CMedia.cpp:3650
+#: core/CMedia.cpp:3645
 msgid "karaoke"
 msgstr "노래방"
 
@@ -9397,7 +9397,7 @@ msgstr "플러그를 수신하지 못했습니다.\n"
 msgid "loadDeepData error: "
 msgstr "깊은 데이터 로드 오류: "
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3643
 msgid "lyrics"
 msgstr "가사"
 
@@ -9534,7 +9534,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame 변경할 픽셀 데이터가 없습니다."
 
-#: core/CMedia.cpp:3644
+#: core/CMedia.cpp:3639
 msgid "original"
 msgstr "원래의"
 
@@ -9630,7 +9630,7 @@ msgstr "src_nb_samples는 0입니다"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: 잘못된 데이터입니다. 어, 그것은 "
 
-#: core/CMedia.cpp:3372 core/CMedia.cpp:3403
+#: core/CMedia.cpp:3367 core/CMedia.cpp:3398
 msgid "subtitle"
 msgstr "부제"
 
@@ -9650,11 +9650,11 @@ msgstr "TV 액션"
 msgid "tv title"
 msgstr "TV 제목"
 
-#: core/CMedia.cpp:3615 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3610 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "인도"
 
-#: core/CMedia.cpp:3375 core/CMedia.cpp:3406 core/CMedia.cpp:4399
+#: core/CMedia.cpp:3370 core/CMedia.cpp:3401 core/CMedia.cpp:4394
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "알려지지 않은"
@@ -9671,11 +9671,11 @@ msgstr "부호 없는 정수(채널당 32비트)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "짧은 부호 없는(채널당 16비트)"
 
-#: core/CMedia.cpp:3363 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3358 core/CMedia.cpp:3389
 msgid "video"
 msgstr "동영상"
 
-#: core/CMedia.cpp:3656
+#: core/CMedia.cpp:3651
 msgid "visual impaired"
 msgstr "시각 장애인"
 
