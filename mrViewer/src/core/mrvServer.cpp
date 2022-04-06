@@ -67,6 +67,7 @@
 #include <ImfStringAttribute.h>
 
 #include "core/mrvPlayback.h"
+#include "core/mrvOS.h"
 #include "mrvClient.h"
 #include "mrvServer.h"
 #include "gui/mrvPreferences.h"
@@ -204,7 +205,6 @@ bool Parser::parse( const std::string& s )
 
     bool ok = false;
 
-    if (! v ) return false;
 
     Mutex& cmtx = v->_clients_mtx;
     SCOPED_LOCK( cmtx );
@@ -326,6 +326,7 @@ bool Parser::parse( const std::string& s )
             if ( shape == NULL ) {
                 LOG_ERROR( "Not a GLTextShape as last shape" );
                 v->network_active( true );
+                v->restore_locale( oldloc );
                 return false;
             }
         }
@@ -478,6 +479,7 @@ bool Parser::parse( const std::string& s )
         mrv::media fg = v->foreground();
         if ( !fg ) {
             v->network_active( true );
+            v->restore_locale( oldloc );
             return false;
         }
         CMedia* img = fg->image();
@@ -492,6 +494,7 @@ bool Parser::parse( const std::string& s )
         mrv::media fg = v->foreground();
         if ( !fg ) {
             v->network_active( true );
+            v->restore_locale( oldloc );
             return false;
         }
         CMedia* img = fg->image();
@@ -625,9 +628,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, s, '"' );
 
-        char buf[1024];
-        sprintf( buf, "OCIO=%s", s.c_str() );
-        putenv( av_strdup(buf) );
+        setenv( "OCIO", s.c_str(), 1 );
 
         ImageView::Command c;
         c.type = ImageView::kLUT_CHANGE;
@@ -1251,6 +1252,7 @@ bool Parser::parse( const std::string& s )
 
         if ( num == 0 ) {
             v->network_active( true );
+            v->restore_locale( oldloc );
             return true;
         }
 
@@ -1299,6 +1301,7 @@ bool Parser::parse( const std::string& s )
             mrv::media fg = v->foreground();
             if ( !fg ) {
                 v->network_active( true );
+                v->restore_locale( oldloc );
                 return false;
             }
 
@@ -1655,8 +1658,7 @@ bool Parser::parse( const std::string& s )
     if (!ok) LOG_ERROR( "Parsing failed for "  << s );
 
     v->network_active( true );
-
-    setlocale( LC_NUMERIC, oldloc );
+    v->restore_locale( oldloc );
 
     return ok;
 }
