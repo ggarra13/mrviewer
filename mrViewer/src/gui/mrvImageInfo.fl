@@ -45,12 +45,12 @@ class ImageInfoUI {open
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();} open
-      xywh {672 53 605 723} type Double resizable
-      code0 {main_ = main;} non_modal visible
+      xywh {124 53 605 723} type Double resizable
+      code0 {main_ = main;} non_modal size_range {0 0 605 723} visible
     } {
       Fl_Scroll uiInfoText {
-        user_data uiInfoText user_data_type {mrv::ImageInformation*} open
-        xywh {0 30 605 707} resizable
+        user_data uiInfoText user_data_type {mrv::ImageInformation*} open selected
+        xywh {0 30 605 693} resizable
         code0 {o->main( main );}
         class {mrv::ImageInformation}
       } {}
@@ -76,7 +76,7 @@ o->hide();} open
           code0 {uiInfoText->m_type = uiType;}
         } {
           MenuItem {} {
-            label Both selected
+            label Both
             xywh {0 0 36 21}
           }
           MenuItem {} {
