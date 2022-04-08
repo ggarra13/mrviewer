@@ -5643,6 +5643,19 @@ void ImageView::leftMouseUp( int x, int y )
             timeline()->redraw();
         }
     }
+    else if ( _mode == kSelection )
+    {
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+        setlocale( LC_NUMERIC, "C" );
+
+        char buf[128];
+        sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+                 _selection.y(), _selection.w(), _selection.h() );
+
+        restore_locale( oldloc );
+
+        send_network( buf );
+    }
     // else if ( _mode == kScrub || _mode == kMovePicture ||
     //           _mode == kScalePicture )
     // {
@@ -6957,16 +6970,6 @@ void ImageView::mouseDrag(int x,int y)
 
                 _selection = mrv::Rectd( xt, yt, dx, dy );
 
-                char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-                setlocale( LC_NUMERIC, "C" );
-
-                char buf[128];
-                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-                         _selection.y(), _selection.w(), _selection.h() );
-
-                restore_locale( oldloc );
-
-                send_network( buf );
 
             }
 
