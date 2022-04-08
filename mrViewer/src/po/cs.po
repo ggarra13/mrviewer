@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-08 00:56-0300\n"
+"POT-Creation-Date: 2022-04-08 01:19-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "V souboru není žádný zvuk"
 
-#: gui/mrvImageView.cpp:5705
+#: gui/mrvImageView.cpp:5706
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Použití "
 msgid "  Choosing "
 msgstr "  vybírání "
 
-#: gui/mrvImageView.cpp:5710
+#: gui/mrvImageView.cpp:5711
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " neuspěl s "
 msgid " failed. "
 msgstr " elhání. "
 
-#: gui/mrvImageView.cpp:9063
+#: gui/mrvImageView.cpp:9064
 msgid " for channel.  Maximum: "
 msgstr " pro kanál. Maximum: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Pokud se mrViewer nespustí, odeberte jej)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2229
-#: gui/mrvImageView.cpp:9037 gui/mrvImageView.cpp:9724
-#: gui/mrvImageView.cpp:9725 gui/mrvImageView.cpp:9733
+#: gui/mrvImageView.cpp:9038 gui/mrvImageView.cpp:9725
+#: gui/mrvImageView.cpp:9726 gui/mrvImageView.cpp:9734
 msgid "(no image)"
 msgstr "(Bez obrázku)"
 
@@ -577,7 +577,7 @@ msgstr ". Atribut musí mít tvar attr=hodnota."
 msgid ".  Saving pixel type is "
 msgstr ". Typ pixelu k uložení je "
 
-#: gui/mrvImageView.cpp:9064
+#: gui/mrvImageView.cpp:9065
 msgid ". Widget label is "
 msgstr ". Značka widgetu je "
 
@@ -1236,8 +1236,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Umožňuje nastavit koncový snímek pro časovou osu."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9155
-#: gui/mrvImageView.cpp:9625 gui/mrvImageView.cpp:9687
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9156
+#: gui/mrvImageView.cpp:9626 gui/mrvImageView.cpp:9688
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1247,7 +1247,7 @@ msgstr "pouze alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2063
-#: gui/mrvImageView.cpp:9136 gui/mrvImageView.cpp:9688
+#: gui/mrvImageView.cpp:9137 gui/mrvImageView.cpp:9689
 msgid "Alpha Overlay"
 msgstr "Přetisk Alpha"
 
@@ -1657,8 +1657,8 @@ msgstr "režim prolnutí"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2617
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9150
-#: gui/mrvImageView.cpp:9686
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9151
+#: gui/mrvImageView.cpp:9687
 msgid "Blue"
 msgstr "Modrý"
 
@@ -1682,7 +1682,7 @@ msgstr "Výjimka Boost: "
 msgid "Both"
 msgstr "Oba dva"
 
-#: gui/mrvImageView.cpp:11028
+#: gui/mrvImageView.cpp:11029
 msgid "Bottom"
 msgstr "dolní"
 
@@ -2055,8 +2055,8 @@ msgstr "Sbalitelná skupina nenalezena"
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2100
-#: gui/mrvImageView.cpp:2162 gui/mrvImageView.cpp:9685
-#: gui/mrvImageView.cpp:9733
+#: gui/mrvImageView.cpp:2162 gui/mrvImageView.cpp:9686
+#: gui/mrvImageView.cpp:9734
 msgid "Color"
 msgstr "Barva"
 
@@ -2096,7 +2096,7 @@ msgstr "barevný motiv"
 msgid "Color Version"
 msgstr "barevné provedení"
 
-#: gui/mrvImageView.cpp:8972
+#: gui/mrvImageView.cpp:8973
 msgid "Color channel not found at index "
 msgstr "Barevný kanál nebyl nalezen pro index "
 
@@ -3824,7 +3824,7 @@ msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1417
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1552
-#: gui/mrvImageView.cpp:11026
+#: gui/mrvImageView.cpp:11027
 msgid "Frame"
 msgstr "Rám"
 
@@ -4066,8 +4066,8 @@ msgstr "řecký (Ελληνικά)"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9145
-#: gui/mrvImageView.cpp:9686
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9146
+#: gui/mrvImageView.cpp:9687
 msgid "Green"
 msgstr "Zelený"
 
@@ -4638,7 +4638,7 @@ msgstr "Neplatný cílový profil/formát obrázku"
 msgid "Invalid image "
 msgstr "neplatný index "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9062
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9063
 msgid "Invalid index "
 msgstr "neplatný index "
 
@@ -5059,7 +5059,7 @@ msgstr "Jas obrazových pixelů pod myší."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2070
-#: gui/mrvImageView.cpp:9160 gui/mrvImageView.cpp:9687
+#: gui/mrvImageView.cpp:9161 gui/mrvImageView.cpp:9688
 msgid "Lumma"
 msgstr "luma"
 
@@ -5585,23 +5585,23 @@ msgstr "Nekompenzováno"
 msgid "Not OK"
 msgstr "Není v pořádku"
 
-#: gui/mrvImageView.cpp:7055
+#: gui/mrvImageView.cpp:7056
 msgid "Not a GLCircleShape pointer"
 msgstr "Není to ukazatel na GLCircleShape"
 
-#: gui/mrvImageView.cpp:5620 gui/mrvImageView.cpp:5634
+#: gui/mrvImageView.cpp:5621 gui/mrvImageView.cpp:5635
 msgid "Not a GLErasePathShape pointer"
 msgstr "Nejedná se o ukazatel na GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5606 gui/mrvImageView.cpp:6999
+#: gui/mrvImageView.cpp:5607 gui/mrvImageView.cpp:7000
 msgid "Not a GLPathShape pointer"
 msgstr "Není to ukazatel na GLPathShape"
 
-#: gui/mrvImageView.cpp:5648 gui/mrvImageView.cpp:5662
+#: gui/mrvImageView.cpp:5649 gui/mrvImageView.cpp:5663
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Není to ukazatel na GLTextShape na mouseRelease"
 
-#: gui/mrvImageView.cpp:7078
+#: gui/mrvImageView.cpp:7079
 msgid "Not a GLTextShape pointer in position"
 msgstr "Na pozici není ukazatel na GLPathShape"
 
@@ -6515,8 +6515,8 @@ msgstr "skutečná šířka klipu"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2587
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9140
-#: gui/mrvImageView.cpp:9685
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9141
+#: gui/mrvImageView.cpp:9686
 msgid "Red"
 msgstr "Červené"
 
@@ -8109,7 +8109,7 @@ msgstr "Příliš mnoho streamů ve výstupním kontextu"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11027
+#: gui/mrvImageView.cpp:11028
 msgid "Top"
 msgstr "Vyšší"
 
@@ -9232,7 +9232,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Nemůžete nahrát kotouč jako stereo obrázek."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9688
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9689
 msgid "Z"
 msgstr "Z"
 

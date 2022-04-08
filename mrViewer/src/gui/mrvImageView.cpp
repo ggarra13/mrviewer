@@ -5279,9 +5279,8 @@ int ImageView::leftMouseDown(int x, int y)
         if ( _mode & kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
-            char buf[64];
-            sprintf( buf, "Selection 0 0 0 0" );
-            send_network( buf );
+            update_color_info();
+            send_selection();
             return 1;
         }
         else if ( _mode == kCopyFrameXY )
@@ -5376,6 +5375,8 @@ int ImageView::leftMouseDown(int x, int y)
         {
 
             _selection = mrv::Rectd( 0, 0, 0, 0 );
+            update_color_info();
+            send_selection();
 
             mrv::media fg = foreground();
             if ( !fg ) return 0;
