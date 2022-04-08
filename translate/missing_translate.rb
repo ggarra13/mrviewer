@@ -350,6 +350,7 @@ end
 
 
 def translate( text )
+  return fix( text, text ) if @lang == 'en'
   googlelang = @lang
   googlelang = 'el' if @lang == 'gr'
   if text =~ /\//
@@ -386,8 +387,8 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'ar', 'cs', 'de', 'es', 'fr', 'gr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'sv', 'tr', 'zh' ]
+  langs = [ 'ar', 'cs', 'de', 'en', 'es', 'fr', 'gr', 'it', 'ja',
+            'ko', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
 translated = [ ]
