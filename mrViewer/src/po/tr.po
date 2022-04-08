@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-08 01:19-0300\n"
+"POT-Creation-Date: 2022-04-08 16:11-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2171,6 +2171,11 @@ msgstr "Bağlı "
 msgid "Connect timed out."
 msgstr "Bağlı"
 
+#: core/mrvClient.cpp:249
+#, 
+msgid "Connected to "
+msgstr "Bağlı "
+
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
 msgid "Connections"
@@ -3404,6 +3409,11 @@ msgstr "Çıktı dosyası açılırken bir hata oluştu: "
 #: core/mrvClient.cpp:355
 msgid "Error on receive: "
 msgstr "Alınamadı: "
+
+#: core/mrvClient.cpp:415
+#, 
+msgid "Error on send: "
+msgstr "Göndermede hata: "
 
 #: core/aviImage_save.cpp:762
 msgid "Error while converting audio: "

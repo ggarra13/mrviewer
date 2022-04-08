@@ -246,7 +246,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Otherwise we have successfully established a connection.
    else
    {
-      LOG_CONN( "Connected to " << endpoint_iter->endpoint() );
+       LOG_CONN( _("Connected to ") << endpoint_iter->endpoint() );
 
       connected = true;
 
@@ -412,7 +412,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-      LOG_CONN( "Error on send: " << ec.message() );
+       LOG_CONN( _("Error on send: ") << ec.message() );
 
       stop();
    }
