@@ -1765,9 +1765,28 @@ bool ImageView::in_presentation() const
     return presentation;
 }
 
+void ImageView::send_selection() const
+{
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
+    char buf[128];
+    sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+             _selection.y(), _selection.w(), _selection.h() );
+
+    restore_locale( oldloc );
+
+    send_network( buf );
+}
+
 void ImageView::send_network( std::string m ) const
 {
-    if ( !_network_active) return;
+    if ( !_network_active) {
+#ifdef DEBUG
+        std::cerr << ">>>>> send_network: network is not active" << std::endl;
+#endif
+        return;
+    }
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -5557,6 +5576,11 @@ void ImageView::leftMouseUp( int x, int y )
     else
         flags &= ~kMouseRight;
 
+    if ( _mode & kSelection )
+    {
+        send_selection();
+    }
+
     if ( _mode & kTemporary )
     {
         scrub_mode();
@@ -5642,19 +5666,6 @@ void ImageView::leftMouseUp( int x, int y )
             send_network( s->send() );
             timeline()->redraw();
         }
-    }
-    else if ( _mode == kSelection )
-    {
-        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-        setlocale( LC_NUMERIC, "C" );
-
-        char buf[128];
-        sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-                 _selection.y(), _selection.w(), _selection.h() );
-
-        restore_locale( oldloc );
-
-        send_network( buf );
     }
     // else if ( _mode == kScrub || _mode == kMovePicture ||
     //           _mode == kScalePicture )
@@ -8074,10 +8085,11 @@ int ImageView::keyUp(unsigned int key)
     if ( ( _mode & kSelection ) && (((key & FL_Shift_L) == FL_Shift_L) ||
                                     ((key & FL_Shift_R) == FL_Shift_R)))
     {
-      scrub_mode();
-      flags &= ~kGain;
-      flags &= ~kGamma;
-      return 1;
+        send_selection();
+        scrub_mode();
+        flags &= ~kGain;
+        flags &= ~kGamma;
+        return 1;
     }
     else if ( flags & kLeftShift &&
               !Fl::get_key(FL_Shift_L) && !Fl::get_key( FL_Shift_R ) )

@@ -722,6 +722,7 @@ public:
     }
 
     void send_network( std::string msg ) const;
+    void send_selection() const;
 
     GLShapeList& shapes();
 
