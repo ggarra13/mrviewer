@@ -1928,6 +1928,9 @@ ImageView::~ImageView()
     if ( CMedia::preload_cache() )
         preload_cache_stop();
 
+
+    if ( _server ) _server->remove( uiMain );
+
     // ParserList::iterator i = _clients.begin();
     // ParserList::iterator e = _clients.end();
     // for ( ; i != e; ++i )
@@ -1935,7 +1938,7 @@ ImageView::~ImageView()
     //     (*i)->connected = false;
     // }
 
-    _clients.clear();
+    //_clients.clear();
 
     // make sure to stop any playback
     stop_playback();

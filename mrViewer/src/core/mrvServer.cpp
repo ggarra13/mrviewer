@@ -113,6 +113,8 @@ Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
 
 Parser::~Parser()
 {
+    connected = false;
+    ui = NULL;
 }
 
 void Parser::write( const std::string& s, const std::string& id )
