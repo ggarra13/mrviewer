@@ -1845,8 +1845,8 @@ xoffset( 0 ),
 yoffset( 0 ),
 spinx( 0.0 ),
 spiny( 0.0 ),
-posX( 4 ),
-posY( 22 ),
+posX( X ),
+posY( Y ),
 flags( 0 ),
 _ghost_previous( 5 ),
 _ghost_next( 5 ),
@@ -1894,7 +1894,6 @@ _lastFrame( 0 )
 #ifdef OSX
     Fl_Sys_Menu_Bar::about( (Fl_Callback*)about_cb, this );
 #endif
-
 
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = _zoom / scale;

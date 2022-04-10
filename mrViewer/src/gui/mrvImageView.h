@@ -794,6 +794,9 @@ public:
         return _mode;
     }
 
+    void main_window_pos( int X, int Y ) {
+        posX = X; posY = Y;
+    }
 
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
