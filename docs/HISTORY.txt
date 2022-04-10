@@ -3,6 +3,8 @@ v6.1.4  - Bug fixed a crash when selecting an area over the network and the
 	- Bug fixed a crash when exiting the application due to server thread
 	  still being active.
 	- Fixed fit image on macOS and Linux when action dockbar was on.
+	- Fixed window positioning on startup on macOS when OS dockbar was
+	  to the left.
 
 v6.1.3  - Added Swedish machine translation.
 	- Added Greek   machine translation.
