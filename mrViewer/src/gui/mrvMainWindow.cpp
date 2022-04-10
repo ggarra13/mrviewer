@@ -233,6 +233,7 @@ void MainWindow::fullscreen()
 
 void MainWindow::resize( int X, int Y, int W, int H )
 {
+    DBGM1( "resize mainwindow " << X << " " << Y << " " << W << " " << H );
     Fl_Double_Window::resize( X, Y, W, H );
 }
 
