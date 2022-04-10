@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1927,6 +1927,9 @@ ImageView::~ImageView()
     if ( CMedia::preload_cache() )
         preload_cache_stop();
 
+
+    if ( _server ) _server->remove( uiMain );
+
     // ParserList::iterator i = _clients.begin();
     // ParserList::iterator e = _clients.end();
     // for ( ; i != e; ++i )
@@ -1934,7 +1937,7 @@ ImageView::~ImageView()
     //     (*i)->connected = false;
     // }
 
-    _clients.clear();
+    //_clients.clear();
 
     // make sure to stop any playback
     stop_playback();
@@ -5278,9 +5281,8 @@ int ImageView::leftMouseDown(int x, int y)
         if ( _mode & kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
-            char buf[64];
-            sprintf( buf, "Selection 0 0 0 0" );
-            send_network( buf );
+            update_color_info();
+            send_selection();
             return 1;
         }
         else if ( _mode == kCopyFrameXY )
@@ -5375,6 +5377,8 @@ int ImageView::leftMouseDown(int x, int y)
         {
 
             _selection = mrv::Rectd( 0, 0, 0, 0 );
+            update_color_info();
+            send_selection();
 
             mrv::media fg = foreground();
             if ( !fg ) return 0;
