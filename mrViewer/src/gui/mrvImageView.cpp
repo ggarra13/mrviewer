@@ -375,6 +375,9 @@ void rotate_plus_90_cb( Fl_Widget* o, mrv::ImageView* v )
     mrv::CMedia* img = fg->image();
     img->rotate( -90.0 ); // this is reversed on purpose
     img->image_damage( mrv::CMedia::kDamageContents );
+    char buf[128];
+    sprintf( buf, "Rotate %g", img->rot_z() );
+    v->send_network( buf );
     v->fit_image();
     v->redraw();
 }
@@ -406,6 +409,9 @@ void rotate_minus_90_cb( Fl_Widget* o, mrv::ImageView* v )
     mrv::CMedia* img = fg->image();
     img->rotate( 90.0 );  // this is reversed on purpose
     img->image_damage( mrv::CMedia::kDamageContents );
+    char buf[128];
+    sprintf( buf, "Rotate %g", img->rot_z() );
+    v->send_network( buf );
     v->fit_image();
     v->redraw();
 }

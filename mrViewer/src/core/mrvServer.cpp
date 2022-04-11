@@ -452,6 +452,22 @@ bool Parser::parse( const std::string& s )
 
         ok = true;
     }
+    else if ( cmd == N_("Rotate") )
+    {
+        double x;
+        is >> x;
+        mrv::media fg = v->foreground();
+        if ( !fg ) {
+            v->network_active( true );
+            v->restore_locale( oldloc );
+            return false;
+        }
+        CMedia* img = fg->image();
+        img->rot_z( x );
+        img->image_damage( CMedia::kDamageContents | CMedia::kDamageData );
+        v->redraw();
+        ok = true;
+    }
     else if ( cmd == N_("Rotation") )
     {
         double x, y;
@@ -946,9 +962,12 @@ bool Parser::parse( const std::string& s )
         browser()->load( files );
 
         mrv::media fg = v->foreground();
-        browser()->replace( idx, fg );
-        v->redraw();
-        ok = true;
+        if ( fg )
+        {
+            browser()->replace( idx, fg );
+            v->redraw();
+            ok = true;
+        }
     }
     else if ( cmd == N_("RemoveImage") )
     {
@@ -988,6 +1007,7 @@ bool Parser::parse( const std::string& s )
             for ( j = 0; j != e; ++j )
             {
                 mrv::media fg = r->images[j];
+                if (!fg) continue;
                 CMedia* img = fg->image();
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
