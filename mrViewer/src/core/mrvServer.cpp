@@ -1372,13 +1372,10 @@ bool Parser::parse( const std::string& s )
         sprintf( buf, "Saturation %g", cc->uiSaturation->value() );
         deliver( buf );
 
-        sprintf(buf, N_("Zoom %g"), v->zoom() );
-        deliver( buf );
-
-        sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
-        deliver( buf );
-
         sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
+        deliver( buf );
+
+        sprintf(buf, N_("FitImage") );
         deliver( buf );
 
         sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
