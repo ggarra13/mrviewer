@@ -2122,6 +2122,7 @@ void server::remove( ViewerUI* ui )
 
 void server_thread( const ServerData* s )
 {
+    s->ui->uiConnection->uiServerPort->value( s->port );
     s->ui->uiConnection->uiCreate->label( _("Disconnect") );
     s->ui->uiConnection->uiClientGroup->deactivate();
 

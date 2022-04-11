@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 11:11-0300\n"
+"POT-Creation-Date: 2022-04-11 12:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1671,7 +1671,7 @@ msgstr "كليب بلوز كسب"
 msgid "Blue value of image pixel under mouse."
 msgstr "القيمة الزرقاء للصورة البكسل تحت الماوس."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
 msgid "Boost exception: "
 msgstr "استثناء دفعة: "
 
@@ -1961,7 +1961,7 @@ msgstr "مسح ذاكرة التخزين المؤقت للصور"
 msgid "Client"
 msgstr "عميل"
 
-#: core/mrvClient.cpp:506
+#: core/mrvClient.cpp:509
 msgid "Client Exception: "
 msgstr "استثناء العميل: "
 
@@ -2002,7 +2002,7 @@ msgstr "تعاليق مغلقة"
 msgid "Closed movie file"
 msgstr "أغلقت إنشاء الفيلم أو التسلسل"
 
-#: core/mrvServer.cpp:2144
+#: core/mrvServer.cpp:2145
 msgid "Closed server at port "
 msgstr "لقد أغلقت الخادم على المنفذ "
 
@@ -2815,7 +2815,7 @@ msgstr "تاريخ الإنشاء"
 msgid "Created Time"
 msgstr "وقت الإنشاء"
 
-#: core/mrvServer.cpp:2141
+#: core/mrvServer.cpp:2142
 msgid "Created server at port "
 msgstr "لقد أنشأت خادمًا على المنفذ "
 
@@ -3154,7 +3154,7 @@ msgstr ""
 " الحل: %dx%d \n"
 " الإطارات: %<PRId64>-%<PRId64> FPS% g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2125
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
 msgid "Disconnect"
 msgstr "قطع الاتصال"
 
@@ -5673,7 +5673,7 @@ msgstr "عدد التدفقات الصوتية في الملف"
 msgid "Number of channels in clip"
 msgstr "عدد القنوات في المقطع"
 
-#: core/mrvClient.cpp:496
+#: core/mrvClient.cpp:499
 msgid "Number of client runs: "
 msgstr "عدد عمليات العميل: "
 
@@ -8224,7 +8224,7 @@ msgstr "تراجع عن الرسم"
 msgid "Undo Last Shape Drawn"
 msgstr "تراجع عن رسم الشكل الأخير"
 
-#: core/mrvClient.cpp:510
+#: core/mrvClient.cpp:513
 msgid "Unhandled Exception"
 msgstr "استثناء غير معالج"
 

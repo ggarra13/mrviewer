@@ -479,6 +479,9 @@ void client_thread( const ServerData* s )
 {
    try
    {
+       s->ui->uiConnection->uiClientServer->value( s->host.c_str() );
+       s->ui->uiConnection->uiClientPort->value( s->port );
+
        boost::asio::io_service io_service;
        tcp::resolver r(io_service);
        tcp::resolver::query query( s->host, s->group,

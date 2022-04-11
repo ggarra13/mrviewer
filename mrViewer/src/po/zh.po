@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 11:11-0300\n"
+"POT-Creation-Date: 2022-04-11 12:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1663,7 +1663,7 @@ msgstr "剪辑蓝调增益"
 msgid "Blue value of image pixel under mouse."
 msgstr "鼠标下像素图像的蓝色值。"
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
 msgid "Boost exception: "
 msgstr "提升异常： "
 
@@ -1953,7 +1953,7 @@ msgstr "清除图像缓存"
 msgid "Client"
 msgstr "客户"
 
-#: core/mrvClient.cpp:506
+#: core/mrvClient.cpp:509
 msgid "Client Exception: "
 msgstr "客户端异常： "
 
@@ -1994,7 +1994,7 @@ msgstr "隐藏式字幕"
 msgid "Closed movie file"
 msgstr "我关闭了电影或序列的创建"
 
-#: core/mrvServer.cpp:2144
+#: core/mrvServer.cpp:2145
 msgid "Closed server at port "
 msgstr "我关闭了端口上的服务器 "
 
@@ -2805,7 +2805,7 @@ msgstr "创建日期"
 msgid "Created Time"
 msgstr "创建时间"
 
-#: core/mrvServer.cpp:2141
+#: core/mrvServer.cpp:2142
 msgid "Created server at port "
 msgstr "我在端口上创建了一个服务器 "
 
@@ -3142,7 +3142,7 @@ msgstr ""
 "分辨率: %dx%d\n"
 "帧数: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2125
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
 msgid "Disconnect"
 msgstr "断开"
 
@@ -5650,7 +5650,7 @@ msgstr "文件中的音频流数"
 msgid "Number of channels in clip"
 msgstr "剪辑中的通道数"
 
-#: core/mrvClient.cpp:496
+#: core/mrvClient.cpp:499
 msgid "Number of client runs: "
 msgstr "客户端运行次数： "
 
@@ -8155,7 +8155,7 @@ msgstr "撤消绘图"
 msgid "Undo Last Shape Drawn"
 msgstr "撤消上次绘制的形状"
 
-#: core/mrvClient.cpp:510
+#: core/mrvClient.cpp:513
 msgid "Unhandled Exception"
 msgstr "未处理的异常"
 

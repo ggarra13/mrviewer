@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 11:11-0300\n"
+"POT-Creation-Date: 2022-04-11 12:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1669,7 +1669,7 @@ msgstr "Klipp Blues Gain"
 msgid "Blue value of image pixel under mouse."
 msgstr "Blått värde för pixelbilden under musen."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
 msgid "Boost exception: "
 msgstr "Boost undantag: "
 
@@ -1959,7 +1959,7 @@ msgstr "Rensa bildcache"
 msgid "Client"
 msgstr "Klient"
 
-#: core/mrvClient.cpp:506
+#: core/mrvClient.cpp:509
 msgid "Client Exception: "
 msgstr "Kundundantag: "
 
@@ -2000,7 +2000,7 @@ msgstr "Dold bildtext"
 msgid "Closed movie file"
 msgstr "Jag stängde skapandet av filmen eller sekvensen"
 
-#: core/mrvServer.cpp:2144
+#: core/mrvServer.cpp:2145
 msgid "Closed server at port "
 msgstr "Jag stängde servern på porten "
 
@@ -2814,7 +2814,7 @@ msgstr "Skapat datum"
 msgid "Created Time"
 msgstr "Tid skapad"
 
-#: core/mrvServer.cpp:2141
+#: core/mrvServer.cpp:2142
 msgid "Created server at port "
 msgstr "Jag skapade en server på porten "
 
@@ -3156,7 +3156,7 @@ msgstr ""
 "Upplösning: %dx%d\n"
 "Ramar: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2125
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
 msgid "Disconnect"
 msgstr "Koppla ifrån"
 
@@ -5682,7 +5682,7 @@ msgstr "Antal ljudströmmar i filen"
 msgid "Number of channels in clip"
 msgstr "Antal kanaler i klippet"
 
-#: core/mrvClient.cpp:496
+#: core/mrvClient.cpp:499
 msgid "Number of client runs: "
 msgstr "Antal klientkörningar: "
 
@@ -8243,7 +8243,7 @@ msgstr "Ångra ritning"
 msgid "Undo Last Shape Drawn"
 msgstr "Ångra sista formen ritad"
 
-#: core/mrvClient.cpp:510
+#: core/mrvClient.cpp:513
 msgid "Unhandled Exception"
 msgstr "ohanterat undantag"
 

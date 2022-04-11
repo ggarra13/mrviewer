@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 11:11-0300\n"
+"POT-Creation-Date: 2022-04-11 12:00-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1679,7 +1679,7 @@ msgstr "Clip Blues Gain"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valeur bleue de l'image en pixels sous la souris."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:501 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
 msgid "Boost exception: "
 msgstr "Exception d'amplification : "
 
@@ -1972,7 +1972,7 @@ msgstr "Effacer le cache d'images"
 msgid "Client"
 msgstr "Client"
 
-#: core/mrvClient.cpp:506
+#: core/mrvClient.cpp:509
 msgid "Client Exception: "
 msgstr "Exception client : "
 
@@ -2013,7 +2013,7 @@ msgstr "Sous-titres"
 msgid "Closed movie file"
 msgstr "J'ai fermé la création du film ou de la séquence"
 
-#: core/mrvServer.cpp:2144
+#: core/mrvServer.cpp:2145
 msgid "Closed server at port "
 msgstr "J'ai fermé le serveur sur le port "
 
@@ -2846,7 +2846,7 @@ msgstr "date créée"
 msgid "Created Time"
 msgstr "Heure de création"
 
-#: core/mrvServer.cpp:2141
+#: core/mrvServer.cpp:2142
 msgid "Created server at port "
 msgstr "J'ai créé un serveur sur le port "
 
@@ -3193,7 +3193,7 @@ msgstr ""
 "Résolution : %dx%d\n"
 "Frames : %<PRId64> -%<PRId64> CP %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2125
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
 msgid "Disconnect"
 msgstr "Déconnecter"
 
@@ -5733,7 +5733,7 @@ msgstr "Nombre de flux audio dans le fichier"
 msgid "Number of channels in clip"
 msgstr "Nombre de canaux dans le clip"
 
-#: core/mrvClient.cpp:496
+#: core/mrvClient.cpp:499
 msgid "Number of client runs: "
 msgstr "Nombre d'exécutions client : "
 
@@ -8315,7 +8315,7 @@ msgstr "Annuler le dessin"
 msgid "Undo Last Shape Drawn"
 msgstr "Annuler la dernière forme dessinée"
 
-#: core/mrvClient.cpp:510
+#: core/mrvClient.cpp:513
 msgid "Unhandled Exception"
 msgstr "exception non-gérée"
 
