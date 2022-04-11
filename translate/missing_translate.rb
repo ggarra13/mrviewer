@@ -317,6 +317,8 @@ def fix( text, result )
     result += " (日本)"
   elsif text == "Korean"  and @lang != 'ko' and result !~ / \(.*\)/
     result += " (한국어)"
+  elsif text == "Dutch"   and @lang != 'nl' and result !~ / \(.*\)/
+    result += " (Nederlands)"
   elsif text == "Polish"  and @lang != 'pl' and result !~ / \(.*\)/
     result += " (Polski)"
   elsif text == "Portuguese" and @lang != 'pt' and result !~ / \(.*\)/
@@ -388,7 +390,7 @@ if ARGV.size > 0
   langs = ARGV
 else
   langs = [ 'ar', 'cs', 'de', 'en', 'es', 'fr', 'gr', 'it', 'ja',
-            'ko', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
+            'ko', 'nl', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
 translated = [ ]

@@ -12,7 +12,7 @@ namespace {
 const char* kModule = "lang";
 }
 
-LanguageTable kLanguages[17] = {
+LanguageTable kLanguages[18] = {
     { 16, "ar.UTF-8" },
     {  0, "cs.UTF-8" },
     {  1, "de.UTF-8" },
@@ -23,6 +23,7 @@ LanguageTable kLanguages[17] = {
     {  5, "it.UTF-8" },
     {  6, "ja.UTF-8" },
     {  7, "ko.UTF-8" },
+    { 17, "nl.UTF-8" },
     {  8, "pl.UTF-8" },
     {  9, "pt.UTF-8" },
     { 10, "ro.UTF-8" },

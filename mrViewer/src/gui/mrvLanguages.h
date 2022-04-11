@@ -10,7 +10,7 @@ struct LanguageTable
     const char* code;
 };
 
-extern LanguageTable kLanguages[17];
+extern LanguageTable kLanguages[18];
 
 class PreferencesUI;
 void check_language( PreferencesUI* uiPrefs, int& language_index );

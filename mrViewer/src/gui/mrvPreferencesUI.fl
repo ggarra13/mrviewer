@@ -109,7 +109,7 @@ class PreferencesUI {open
       user_data this user_data_type {PreferencesUI*}
       callback {mrv::Preferences prefs(v);
 v->uiMain->hide();} open
-      xywh {497 307 847 469} type Double resizable
+      xywh {497 335 847 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -503,6 +503,10 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {60 60 100 20}
               }
               MenuItem {} {
+                label Dutch selected
+                xywh {70 70 100 20}
+              }
+              MenuItem {} {
                 label Polish
                 xywh {70 70 100 20}
               }
@@ -519,7 +523,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {100 100 100 20}
               }
               MenuItem {} {
-                label Swedish selected
+                label Swedish
                 xywh {130 130 100 20}
               }
               MenuItem {} {

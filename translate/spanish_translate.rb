@@ -48,8 +48,8 @@ def fix( text, result, lang )
   end
   if ( lang == 'ar' or lang == 'cs' or lang == 'de' or lang == 'fr' or
        lang == 'gr' or lang == 'it' or lang == "ja" or lang == 'ko' or
-       lang == 'pl' or lang == 'pt' or lang == 'ro' or lang == 'ru' or
-       lang == 'sv' or lang == 'tr' or lang == 'zh' ) and
+       lang == 'nl' or lang == 'pl' or lang == 'pt' or lang == 'ro' or
+       lang == 'ru' or lang == 'sv' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
   end
@@ -339,9 +339,18 @@ def fix( text, result, lang )
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
-      result.sub!(/여가/, 'OCIO')
+      result.gsub!(/여가/, 'OCIO')
     elsif result =~ /LEISURE/
-      result.sub!(/LEISURE/, 'OCIO')
+      result.gsub!(/LEISURE/, 'OCIO')
+    end
+  elsif lang == 'nl'
+    if text =~ %r{^1/.*$}
+      result = text
+    end
+    if result =~ /VRIJE TIJD/
+      result.gsub!(/VRIJE TIJD/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.gsub!(/LEISURE/, 'OCIO')
     end
   elsif lang == 'pl'
     if text == 'Save'
@@ -595,8 +604,8 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'ar', 'cs', 'de', 'fr', 'gr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'sv', 'tr', 'zh' ]
+  langs = [ 'ar', 'cs', 'de', 'en', 'es', 'fr', 'gr', 'it', 'ja', 'ko',
+            'nl', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
 
