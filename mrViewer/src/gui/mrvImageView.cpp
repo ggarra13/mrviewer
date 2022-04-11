@@ -1788,9 +1788,6 @@ void ImageView::send_selection() const
 void ImageView::send_network( std::string m ) const
 {
     if ( !_network_active) {
-#ifdef DEBUG
-        std::cerr << ">>>>> send_network: network is not active" << std::endl;
-#endif
         return;
     }
 
@@ -2857,6 +2854,7 @@ void ImageView::fit_image()
     sprintf( buf, "FitImage" );
     send_network( buf );
 
+    bool old_network_active = _network_active;
     _network_active = false;
 
     if ( ! mrv::is_equal( _zoom, float(z) ) )
@@ -2866,7 +2864,7 @@ void ImageView::fit_image()
         mouseMove( Fl::event_x(), Fl::event_y() );
     }
 
-    _network_active = true;
+    _network_active = old_network_active;
 
     redraw();
 }
@@ -3432,7 +3430,7 @@ void ImageView::handle_commands()
         name = img->name();
     }
 #endif
-    _network_active = false;
+    //_network_active = false;
 
     bool old_interactive = _interactive;
     _interactive = false;
@@ -3937,13 +3935,12 @@ again:
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
 
-    final:
-        if( !commands.empty() )  // needed
-            commands.pop_front();
+final:
+    if( !commands.empty() )  // needed
+        commands.pop_front();
 
-        _interactive = old_interactive;
-        _network_active = true;
-        redraw();
+    _interactive = old_interactive;
+    redraw();
 
 }
 
@@ -9789,9 +9786,6 @@ void ImageView::foreground( mrv::media fg )
         fill_menu( uiMain->uiMenuBar );
         return;
     }
-
-    if ( fg )
-        std::cerr << "set new foreground" << fg->image()->name() << std::endl;
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
