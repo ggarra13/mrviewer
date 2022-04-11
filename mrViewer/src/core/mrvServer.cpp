@@ -454,7 +454,7 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("Rotate") )
     {
-        double x;
+        float x;
         is >> x;
         mrv::media fg = v->foreground();
         if ( !fg ) {
@@ -1348,6 +1348,9 @@ bool Parser::parse( const std::string& s )
             }
             deliver( buf );
 
+            sprintf(buf, N_("Rotate %g"), img->rot_z() );
+            deliver( buf );
+
             sprintf(buf, N_("VRangle %g"), v->vr_angle() );
             deliver( buf );
 
@@ -1392,10 +1395,10 @@ bool Parser::parse( const std::string& s )
         sprintf( buf, "Saturation %g", cc->uiSaturation->value() );
         deliver( buf );
 
-        sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
+        sprintf(buf, N_("FitImage") );
         deliver( buf );
 
-        sprintf(buf, N_("FitImage") );
+        sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
         deliver( buf );
 
         sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
