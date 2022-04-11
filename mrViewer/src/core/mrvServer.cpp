@@ -435,6 +435,11 @@ bool Parser::parse( const std::string& s )
         v->redo_draw();
         ok = true;
     }
+    else if ( cmd == N_("FitImage") )
+    {
+        v->fit_image();
+        ok = true;
+    }
     else if ( cmd == N_("Zoom") )
     {
         float z;

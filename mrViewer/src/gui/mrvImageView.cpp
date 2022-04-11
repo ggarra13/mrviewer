@@ -2847,18 +2847,11 @@ void ImageView::fit_image()
 
     zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
-    if ( ! mrv::is_equal( ox, xoffset ) ||
-         ! mrv::is_equal( oy, yoffset ) )
-    {
-        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-        setlocale( LC_NUMERIC, "C" );
+    char buf[128];
+    sprintf( buf, "FitImage" );
+    send_network( buf );
 
-        char buf[128];
-        sprintf( buf, "Offset %g %g", xoffset, yoffset );
-        send_network( buf );
-
-        restore_locale( oldloc );
-    }
+    _network_active = false;
 
     if ( ! mrv::is_equal( _zoom, float(z) ) )
     {
@@ -2866,6 +2859,8 @@ void ImageView::fit_image()
 
         mouseMove( Fl::event_x(), Fl::event_y() );
     }
+
+    _network_active = true;
 
     redraw();
 }
