@@ -5,6 +5,12 @@ v6.1.4  - Bug fixed a crash when selecting an area over the network and the
 	- Fixed fit image on macOS and Linux when action dockbar was on.
 	- Fixed window positioning on startup on macOS when OS dockbar was
 	  to the left.
+	- Added rotation +-90 degrees to commands sent across the network.
+	- Added fit image to the commands sent across the network.
+	- Fit image does no longer pass the zoom factor around the network.
+	  Instead the zoom factor is recalculated on each client machine.
+	  This allows fit image to work properly on networks where the users
+	  have different monitors of different resolutions.
 
 v6.1.3  - Added Swedish machine translation.
 	- Added Greek   machine translation.

@@ -3827,6 +3827,31 @@ again:
         if ( old_interactive ) Fl::check();
 #endif
         break;
+    case kFitImage:
+    {
+        fit_image();
+        break;
+    }
+    case kRotateImage:
+    {
+        Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
+        if ( !f )
+        {
+            LOG_ERROR( _("Rotate for image failed") );
+            break;
+        }
+
+        mrv::media fg = foreground();
+        if (fg)
+        {
+            CMedia* img = fg->image();
+            NET("img->rot_z " << f->value() );
+            img->rot_z( f->value() );
+            img->image_damage( CMedia::kDamageContents | CMedia::kDamageData );
+            redraw();
+        }
+        break;
+    }
     case kZoomChange:
     {
         Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
@@ -9764,6 +9789,9 @@ void ImageView::foreground( mrv::media fg )
         fill_menu( uiMain->uiMenuBar );
         return;
     }
+
+    if ( fg )
+        std::cerr << "set new foreground" << fg->image()->name() << std::endl;
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();

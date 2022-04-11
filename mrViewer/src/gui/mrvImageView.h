@@ -123,6 +123,8 @@ public:
         kSwitch_FG_BG = 45,
         kCOLOR_CONTROL_WINDOW_SHOW = 46,
         kCOLOR_CONTROL_WINDOW_HIDE = 47,
+        kRotateImage = 48,
+        kFitImage = 49,
         kLastCommand
     };
 

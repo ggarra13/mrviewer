@@ -437,7 +437,9 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("FitImage") )
     {
-        v->fit_image();
+        ImageView::Command c;
+        c.type = ImageView::kFitImage;
+        v->commands.push_back( c );
         ok = true;
     }
     else if ( cmd == N_("Zoom") )
@@ -456,16 +458,12 @@ bool Parser::parse( const std::string& s )
     {
         float x;
         is >> x;
-        mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            v->restore_locale( oldloc );
-            return false;
-        }
-        CMedia* img = fg->image();
-        img->rot_z( x );
-        img->image_damage( CMedia::kDamageContents | CMedia::kDamageData );
-        v->redraw();
+
+        ImageView::Command c;
+        c.type = ImageView::kRotateImage;
+        c.data = new Imf::FloatAttribute( x );
+        v->commands.push_back( c );
+
         ok = true;
     }
     else if ( cmd == N_("Rotation") )
@@ -1309,13 +1307,14 @@ bool Parser::parse( const std::string& s )
             deliver( buf );
         }
 
+        CMedia* img = NULL;
         {
             mrv::media bg = v->background();
             if ( bg )
             {
                 cmd = N_("CurrentBGImage \"");
 
-                CMedia* img = bg->image();
+                img = bg->image();
                 cmd += img->fileroot();
 
                 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
@@ -1332,7 +1331,7 @@ bool Parser::parse( const std::string& s )
                 return false;
             }
 
-            CMedia* img = fg->image();
+            img = fg->image();
 
             ImageView::VRType t = v->vr();
             if ( t == ImageView::kVRSphericalMap )
@@ -1344,11 +1343,7 @@ bool Parser::parse( const std::string& s )
                 sprintf(buf, N_("VRSpherical 0"));
                 deliver( buf );
                 sprintf(buf, N_("VRCubic 0"));
-                deliver( buf );
             }
-            deliver( buf );
-
-            sprintf(buf, N_("Rotate %g"), img->rot_z() );
             deliver( buf );
 
             sprintf(buf, N_("VRangle %g"), v->vr_angle() );
@@ -1393,6 +1388,9 @@ bool Parser::parse( const std::string& s )
         deliver( buf );
 
         sprintf( buf, "Saturation %g", cc->uiSaturation->value() );
+        deliver( buf );
+
+        sprintf(buf, N_("Rotate %g"), img->rot_z() );
         deliver( buf );
 
         sprintf(buf, N_("FitImage") );
