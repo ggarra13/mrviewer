@@ -352,6 +352,12 @@ def fix( text, result, lang )
     elsif result =~ /LEISURE/
       result.gsub!(/LEISURE/, 'OCIO')
     end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation sometimes returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
   elsif lang == 'pl'
     if text == 'Save'
       result = "Zapisz"
