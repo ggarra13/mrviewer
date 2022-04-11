@@ -498,30 +498,24 @@ bool Parser::parse( const std::string& s )
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            v->restore_locale( oldloc );
-            return false;
+        if ( fg ) {
+            CMedia* img = fg->image();
+            img->x( x );
+            img->y( y );
+            ok = true;
         }
-        CMedia* img = fg->image();
-        img->x( x );
-        img->y( y );
-        ok = true;
     }
     else if ( cmd == N_("ScalePicture") )
     {
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            v->restore_locale( oldloc );
-            return false;
+        if ( fg ) {
+            CMedia* img = fg->image();
+            img->scale_x( x );
+            img->scale_y( y );
+            ok = true;
         }
-        CMedia* img = fg->image();
-        img->scale_x( x );
-        img->scale_y( y );
-        ok = true;
     }
     else if ( cmd == N_("HBCSActive") )
     {
