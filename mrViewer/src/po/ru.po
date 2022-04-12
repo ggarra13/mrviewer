@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 20:21-0300\n"
+"POT-Creation-Date: 2022-04-11 20:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2008,7 +2008,7 @@ msgstr "Субтитры"
 msgid "Closed movie file"
 msgstr "Я закрыл создание фильма или эпизода"
 
-#: core/mrvServer.cpp:2145
+#: core/mrvServer.cpp:2167
 msgid "Closed server at port "
 msgstr "Я закрыл сервер на порту "
 
@@ -2758,7 +2758,7 @@ msgstr "Код страны"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2112
+#: core/mrvServer.cpp:2134
 msgid "Create"
 msgstr "Создавать"
 
@@ -2826,7 +2826,7 @@ msgstr "Дата создания"
 msgid "Created Time"
 msgstr "Время создания"
 
-#: core/mrvServer.cpp:2142
+#: core/mrvServer.cpp:2164
 msgid "Created server at port "
 msgstr "Я создал сервер на порту "
 
@@ -3168,7 +3168,7 @@ msgstr ""
 "Разрешение: %dx%d\n"
 "Кадры: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2148
 msgid "Disconnect"
 msgstr "Отключить"
 
@@ -5704,7 +5704,7 @@ msgstr "Количество каналов в клипе"
 msgid "Number of client runs: "
 msgstr "Количество запусков клиента: "
 
-#: core/mrvServer.cpp:1801
+#: core/mrvServer.cpp:1823
 msgid "Number of connections now: "
 msgstr "Количество подключений сейчас: "
 
@@ -6669,7 +6669,7 @@ msgstr "Удалить атрибут"
 msgid "Remove current image from reel."
 msgstr "Я удалил текущее изображение с барабана."
 
-#: core/mrvServer.cpp:1791
+#: core/mrvServer.cpp:1813
 msgid "Removed client "
 msgstr "я удалил клиент "
 

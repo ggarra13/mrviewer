@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 20:21-0300\n"
+"POT-Creation-Date: 2022-04-11 20:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2005,7 +2005,7 @@ msgstr "Skryté titulky"
 msgid "Closed movie file"
 msgstr "Uzavřel jsem vytváření filmu nebo sekvence"
 
-#: core/mrvServer.cpp:2145
+#: core/mrvServer.cpp:2167
 msgid "Closed server at port "
 msgstr "Zavřel jsem server na portu "
 
@@ -2758,7 +2758,7 @@ msgstr "Kód země"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2112
+#: core/mrvServer.cpp:2134
 msgid "Create"
 msgstr "Vytvořit"
 
@@ -2826,7 +2826,7 @@ msgstr "Datum vytvoření"
 msgid "Created Time"
 msgstr "Čas vytvořen"
 
-#: core/mrvServer.cpp:2142
+#: core/mrvServer.cpp:2164
 msgid "Created server at port "
 msgstr "Vytvořil jsem server na portu "
 
@@ -3168,7 +3168,7 @@ msgstr ""
 "Rozlišení: %dx%d\n"
 "Snímky: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2148
 msgid "Disconnect"
 msgstr "Odpojit"
 
@@ -5697,7 +5697,7 @@ msgstr "Počet kanálů v klipu"
 msgid "Number of client runs: "
 msgstr "Počet spuštění klienta: "
 
-#: core/mrvServer.cpp:1801
+#: core/mrvServer.cpp:1823
 msgid "Number of connections now: "
 msgstr "Počet připojení nyní: "
 
@@ -6660,7 +6660,7 @@ msgstr "Odebrat atribut"
 msgid "Remove current image from reel."
 msgstr "Vymazal jsem aktuální obrázek z cívky."
 
-#: core/mrvServer.cpp:1791
+#: core/mrvServer.cpp:1813
 msgid "Removed client "
 msgstr "Klienta jsem smazal "
 

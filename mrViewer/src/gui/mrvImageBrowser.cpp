@@ -4857,18 +4857,18 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
-    int64_t f = tframe;
+    int64_t f = tframe;  // needed as we may change it and tframe is const
+
+    CMedia::Playback play = view()->playback();
+
+    if ( play != CMedia::kStopped )
+        view()->stop();
 
     char buf[64];
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
 
-    CMedia::Playback play = view()->playback();
-
-
-    if ( play != CMedia::kStopped )
-        view()->stop();
 
     mrv::media fg = view()->foreground();
     mrv::media bg = view()->background();

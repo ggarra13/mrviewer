@@ -1498,11 +1498,33 @@ bool Parser::parse( const std::string& s )
         int64_t f;
         is >> f;
 
+        CMedia::Playback play = v->playback();
+        if ( play != CMedia::kStopped )
+        {
+            ImageView::Command c;
+            c.type = ImageView::kStopVideo;
+
+            c.frame = f;
+            v->commands.push_back( c );
+        }
+
         ImageView::Command c;
         c.type = ImageView::kSeek;
 
         c.frame = f;
         v->commands.push_back( c );
+
+
+        if ( play == CMedia::kForwards )
+        {
+            c.type = ImageView::kPlayForwards;
+        }
+        else if ( play == CMedia::kBackwards )
+        {
+            c.type = ImageView::kPlayBackwards;
+        }
+        if ( play != CMedia::kStopped )
+            v->commands.push_back( c );
 
         ok = true;
     }

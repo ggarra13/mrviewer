@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 20:21-0300\n"
+"POT-Creation-Date: 2022-04-11 20:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1994,7 +1994,7 @@ msgstr "隐藏式字幕"
 msgid "Closed movie file"
 msgstr "我关闭了电影或序列的创建"
 
-#: core/mrvServer.cpp:2145
+#: core/mrvServer.cpp:2167
 msgid "Closed server at port "
 msgstr "我关闭了端口上的服务器 "
 
@@ -2737,7 +2737,7 @@ msgstr "国家代码"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2112
+#: core/mrvServer.cpp:2134
 msgid "Create"
 msgstr "创建"
 
@@ -2805,7 +2805,7 @@ msgstr "创建日期"
 msgid "Created Time"
 msgstr "创建时间"
 
-#: core/mrvServer.cpp:2142
+#: core/mrvServer.cpp:2164
 msgid "Created server at port "
 msgstr "我在端口上创建了一个服务器 "
 
@@ -3142,7 +3142,7 @@ msgstr ""
 "分辨率: %dx%d\n"
 "帧数: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2148
 msgid "Disconnect"
 msgstr "断开"
 
@@ -5654,7 +5654,7 @@ msgstr "剪辑中的通道数"
 msgid "Number of client runs: "
 msgstr "客户端运行次数： "
 
-#: core/mrvServer.cpp:1801
+#: core/mrvServer.cpp:1823
 msgid "Number of connections now: "
 msgstr "现在连接数： "
 
@@ -6600,7 +6600,7 @@ msgstr "移除属性"
 msgid "Remove current image from reel."
 msgstr "我从卷轴中删除了当前图像。"
 
-#: core/mrvServer.cpp:1791
+#: core/mrvServer.cpp:1813
 msgid "Removed client "
 msgstr "我删除了客户端 "
 

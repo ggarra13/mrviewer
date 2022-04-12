@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 20:21-0300\n"
+"POT-Creation-Date: 2022-04-11 20:46-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -2005,7 +2005,7 @@ msgstr "Altyazılar"
 msgid "Closed movie file"
 msgstr "Filmin veya dizinin oluşturulmasını kapattım"
 
-#: core/mrvServer.cpp:2145
+#: core/mrvServer.cpp:2167
 msgid "Closed server at port "
 msgstr "sunucuyu portta kapattım "
 
@@ -2753,7 +2753,7 @@ msgstr "Ülke kodu"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2112
+#: core/mrvServer.cpp:2134
 msgid "Create"
 msgstr "Yaratmak"
 
@@ -2821,7 +2821,7 @@ msgstr "tarih oluşturuldu"
 msgid "Created Time"
 msgstr "Oluşturma Zamanı"
 
-#: core/mrvServer.cpp:2142
+#: core/mrvServer.cpp:2164
 msgid "Created server at port "
 msgstr "portta server oluşturdum "
 
@@ -3164,7 +3164,7 @@ msgstr ""
 "Çözünürlük: %dx%d\n"
 "Çerçeveler: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2126
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2148
 msgid "Disconnect"
 msgstr "bağlantıyı kes"
 
@@ -5696,7 +5696,7 @@ msgstr "Klipteki kanal sayısı"
 msgid "Number of client runs: "
 msgstr "İstemci çalıştırma sayısı: "
 
-#: core/mrvServer.cpp:1801
+#: core/mrvServer.cpp:1823
 msgid "Number of connections now: "
 msgstr "Şimdi bağlantı sayısı: "
 
@@ -6659,7 +6659,7 @@ msgstr "Özelliği Kaldır"
 msgid "Remove current image from reel."
 msgstr "Mevcut görüntüyü makaradan sildim."
 
-#: core/mrvServer.cpp:1791
+#: core/mrvServer.cpp:1813
 msgid "Removed client "
 msgstr "istemciyi sildim "
 
