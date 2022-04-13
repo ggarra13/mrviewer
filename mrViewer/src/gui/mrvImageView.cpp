@@ -2299,6 +2299,7 @@ void ImageView::toggle_copy_frame_xy()
         uiMain->uiPaint->uiDraw->value(false);
         uiMain->uiPaint->uiText->value(false);
         uiMain->uiPaint->uiScrub->value(false);
+        uiMain->uiPaint->uiRectangle->value(false);
         uiMain->uiPaint->uiCopyXY->value(true);
     }
 }
