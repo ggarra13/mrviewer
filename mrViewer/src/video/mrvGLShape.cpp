@@ -312,9 +312,19 @@ void GLRectangleShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
+    glPointSize( pen_size );
     glLineWidth( pen_size );
 
     glBegin( GL_LINE_LOOP );
+    {
+        glVertex2d( pts[0].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[1].y );
+    }
+    glEnd();
+
+    glBegin( GL_POINTS );
     {
         glVertex2d( pts[0].x, pts[0].y );
         glVertex2d( pts[1].x, pts[0].y );

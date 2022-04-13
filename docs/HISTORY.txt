@@ -17,8 +17,9 @@ v6.1.4  - Bug fixed a crash when selecting an area over the network and the
 	- Bug fixed network connections sometimes deactivating themselves.
 	- Added drawing a rectangle shape to the action window.
 	- Added copying the reel, shot, frame and x and y coords to the
-	  action window.
-	- Bug fixed changing the size of the cursor when drawing.
+	  action window (SHIFT+CTRL+C by default).
+	- Bug fixed crash when changing the size of the cursor when drawing.
+	- Bug fixed synchronism between action window and attrs subwindow.
 
 v6.1.3  - Added Swedish machine translation.
 	- Added Greek   machine translation.

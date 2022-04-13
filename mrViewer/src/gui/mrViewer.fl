@@ -525,7 +525,9 @@ v->uiView->text_mode();}
           }
         }
         Fl_Value_Slider uiPenSize {
-          label {Pen Size} user_data_type {void*} selected
+          label {Pen Size}
+          user_data m user_data_type {ViewerUI*}
+          callback {if (v->uiAttrsWindow) v->uiPenSize->value( o->value() );}
           tooltip {Selects the size of brush.} xywh {10 245 115 25} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
         }
         Fl_Group {} {
@@ -572,16 +574,16 @@ o->redraw();}
           tooltip {Selects the current pen color.} xywh {101 285 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 132
         }
         Fl_Group {} {
-          label Frames
+          label Frames open
           xywh {10 335 120 55} box UP_BOX labelcolor 7
         } {
           Fl_Round_Button uiCurrentFrame {
             label Current
             user_data m user_data_type {ViewerUI*}
-            callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
-if ( v->uiAttrsWindow )
+            callback {if ( v->uiAttrsWindow )
 {
 	v->uiCurrentFrame->value( o->value() );
+	v->uiAllFrames->value( !o->value() );
 }}
             xywh {30 340 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
@@ -589,30 +591,34 @@ if ( v->uiAttrsWindow )
           Fl_Round_Button uiAllFrames {
             label All
             user_data m user_data_type {ViewerUI*}
-            callback {if ( !v->uiAttrsWindow ) v->uiAttrsWindow = v->make_attrs_window();
-if ( v->uiAttrsWindow )
+            callback {if ( v->uiAttrsWindow )
 {
 	v->uiAllFrames->value( o->value() );
+	v->uiCurrentFrame->value( !o->value() );
 }}
             xywh {30 360 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
           }
         }
         Fl_Group {} {
-          label Ghosting
+          label Ghosting open
           xywh {10 420 120 85} box UP_BOX labelcolor 7
         } {
-          Fl_Counter {} {
+          Fl_Counter uiGhostPrevious {
             label Previous
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->ghost_previous( o->value() );
+            callback {if ( v->uiAttrsWindow )
+   v->uiGhostPrevious->value( o->value() );
+v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
             xywh {25 439 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
           }
-          Fl_Counter {} {
+          Fl_Counter uiGhostNext {
             label Next
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->ghost_next( o->value() );
+            callback {if ( v->uiAttrsWindow )
+  v->uiGhostNext->value( o->value() );
+v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
             xywh {25 479 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
           }
@@ -1168,7 +1174,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
             }
           }
         }
-        Fl_Pack uiViewGroup {
+        Fl_Pack uiViewGroup {open
           xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
@@ -1189,13 +1195,12 @@ o->image( scrub );}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->selection_mode();}
               tooltip {Area Select Tool} xywh {2 108 40 35} down_box DOWN_BOX value 1 selection_color 63
-              code0 {o->value(1);
-o->image( select_pic );}
+              code0 {o->image( select_pic );}
               class {mrv::Button}
             }
             Fl_Button uiDraw {
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->draw_mode();}
+              callback {v->uiView->draw_mode();} selected
               tooltip {Freehand Drawing Tool} xywh {2 143 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( draw );}
               class {mrv::Button}
@@ -2010,9 +2015,10 @@ if ( uiStereo ) uiStereo->uiMain->redraw();
 Fl::check(); // needed to refresh windows
 DBGM1("Fl::check 2 ok");} {}
   }
-  Function {make_attrs_window()} {} {
+  Function {make_attrs_window()} {open
+  } {
     Fl_Window {} {open
-      xywh {1188 581 150 285} type Double hide resizable non_modal
+      xywh {1188 491 150 285} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 150 285} box FLAT_BOX
@@ -2022,6 +2028,7 @@ DBGM1("Fl::check 2 ok");} {}
           user_data this user_data_type {ViewerUI*}
           callback {v->uiPaint->uiPenSize->value( o->value() );}
           tooltip {Selects the size of brush.} xywh {20 20 105 30} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
+          code0 {o->value( uiPaint->uiPenSize->value() );}
         }
       }
       Fl_Group {} {
@@ -2034,7 +2041,7 @@ DBGM1("Fl::check 2 ok");} {}
           callback {v->uiPaint->uiCurrentFrame->value( o->value() );
 v->uiPaint->uiAllFrames->value( !o->value() );}
           xywh {30 95 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
-          code0 {o->value(1);}
+          code0 {o->value( uiPaint->uiCurrentFrame->value() );}
         }
         Fl_Round_Button uiAllFrames {
           label All
@@ -2042,26 +2049,30 @@ v->uiPaint->uiAllFrames->value( !o->value() );}
           callback {v->uiPaint->uiAllFrames->value( o->value() );
 v->uiPaint->uiCurrentFrame->value( !o->value() );}
           xywh {30 115 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
-          code0 {o->value(0);}
+          code0 {o->value( uiPaint->uiAllFrames->value() );}
         }
       }
       Fl_Group {} {
         label Ghosting open
         xywh {10 175 120 85} box UP_BOX labelcolor 7
       } {
-        Fl_Counter {} {
+        Fl_Counter uiGhostPrevious {
           label Previous
           user_data this user_data_type {ViewerUI*}
-          callback {v->uiView->ghost_previous( o->value() );
+          callback {v->uiPaint->uiGhostPrevious->value( o->value() );
+v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
           xywh {25 194 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+          code0 {o->value( uiPaint->uiGhostPrevious->value() );}
         }
-        Fl_Counter {} {
+        Fl_Counter uiGhostNext {
           label Next
           user_data this user_data_type {ViewerUI*}
-          callback {v->uiView->ghost_next( o->value() );
+          callback {v->uiPaint->uiGhostNext->value( o->value() );
+v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
           xywh {25 234 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+          code0 {o->value( uiPaint->uiGhostNext->value() );}
         }
       }
     }
