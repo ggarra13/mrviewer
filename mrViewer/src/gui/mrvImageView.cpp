@@ -5571,6 +5571,7 @@ int ImageView::leftMouseDown(int x, int y)
                         path->pts.push_back( p );
                         path->pts.push_back( p );
                         path->pts.push_back( p );
+                        path->pts.push_back( p );
                     }
                     else if ( ( path = dynamic_cast< GLRectangleShape* >( s )) )
                     {
