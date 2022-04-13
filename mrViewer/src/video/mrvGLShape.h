@@ -64,6 +64,12 @@ class ImageView;
             x = b.x; y = b.y;
             return *this;
         }
+
+        inline Point& operator=( const Point& b )
+        {
+            x = b.x; y = b.y;
+            return *this;
+        }
 };
 
 
@@ -129,6 +135,16 @@ public:
 
     GLArrowShape() : GLPathShape()  {};
     virtual ~GLArrowShape() {};
+    virtual void draw( double z );
+    virtual std::string send() const;
+};
+
+class GLRectangleShape : public GLPathShape
+{
+public:
+
+    GLRectangleShape() : GLPathShape()  {};
+    virtual ~GLRectangleShape() {};
     virtual void draw( double z );
     virtual std::string send() const;
 };

@@ -430,7 +430,8 @@ class LogUI {} {
   }
 }
 
-class PaintUI {} {
+class PaintUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
   Function {make_window( ViewerUI* m )} {open
@@ -441,13 +442,13 @@ class PaintUI {} {
       user_data this user_data_type {PaintUI*}
       callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-      xywh {763 251 145 525} type Double hide resizable non_modal
+      xywh {315 53 146 637} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
-        xywh {0 0 145 525} box PLASTIC_UP_BOX
+        xywh {0 0 150 637} box PLASTIC_UP_BOX
       } {
-        Fl_Group {} {
-          xywh {25 15 100 155}
+        Fl_Group {} {open
+          xywh {25 15 100 195}
         } {
           Fl_Button uiScrub {
             user_data m user_data_type {ViewerUI*}
@@ -508,15 +509,27 @@ v->uiView->text_mode();}
             code0 {o->image( arrow_28 );}
             class {mrv::Button}
           }
+          Fl_Button uiRectangle {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->rectangle_mode();}
+            tooltip {Rectangle Tool} xywh {30 175 40 35} down_box DOWN_BOX selection_color 63
+            code0 {o->image( rectangle_28 );}
+            class {mrv::Button}
+          }
+          Fl_Button uiCopyXY {
+            label XY
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->toggle_copy_frame_xy();}
+            tooltip {Copy Reel, Shot, Frame, X and Y coordinates to clipboard} xywh {75 175 40 35} down_box DOWN_BOX selection_color 63
+            class {mrv::Button}
+          }
         }
         Fl_Value_Slider uiPenSize {
-          label {Pen Size}
-          user_data m user_data_type {ViewerUI*}
-          callback {v->uiPenSize->value( o->value() );}
-          tooltip {Selects the size of brush.} xywh {15 195 115 25} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
+          label {Pen Size} user_data_type {void*} selected
+          tooltip {Selects the size of brush.} xywh {10 245 115 25} type Horizontal labelcolor 7 align 1 minimum 1 maximum 50 step 1 value 5 textcolor 7
         }
-        Fl_Group {} {open
-          xywh {40 415 84 105}
+        Fl_Group {} {
+          xywh {35 465 84 105}
         } {
           Fl_Button uiUndoDraw {
             user_data m user_data_type {ViewerUI*}
@@ -525,7 +538,7 @@ if ( !v->uiView->has_undo() )
  o->deactivate();
 else
  o->activate();}
-            tooltip {Undo Last Shape Drawn} xywh {40 465 34 35}
+            tooltip {Undo Last Shape Drawn} xywh {35 515 34 35}
             code0 {o->image( undo );}
             class {mrv::Button}
           }
@@ -536,7 +549,7 @@ if ( !v->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-            tooltip {Redo Previous Shape Drawn} xywh {80 465 34 35}
+            tooltip {Redo Previous Shape Drawn} xywh {75 515 34 35}
             code0 {o->image( redo );
 if ( !m->uiView->has_redo() )
    o->deactivate();
@@ -556,11 +569,11 @@ if ( r == 0 && g == 0 && b == 0 )
 else
    o->color( c );
 o->redraw();}
-          tooltip {Selects the current pen color.} xywh {106 235 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 132
+          tooltip {Selects the current pen color.} xywh {101 285 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 132
         }
         Fl_Group {} {
-          label Frames open
-          xywh {15 285 120 55} box UP_BOX labelcolor 7
+          label Frames
+          xywh {10 335 120 55} box UP_BOX labelcolor 7
         } {
           Fl_Round_Button uiCurrentFrame {
             label Current
@@ -570,7 +583,7 @@ if ( v->uiAttrsWindow )
 {
 	v->uiCurrentFrame->value( o->value() );
 }}
-            xywh {35 290 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
+            xywh {30 340 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 7
             code0 {o->value(1);}
           }
           Fl_Round_Button uiAllFrames {
@@ -581,27 +594,27 @@ if ( v->uiAttrsWindow )
 {
 	v->uiAllFrames->value( o->value() );
 }}
-            xywh {35 310 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
+            xywh {30 360 80 20} type Radio down_box ROUND_DOWN_BOX labelcolor 7
             code0 {o->value(0);}
           }
         }
         Fl_Group {} {
           label Ghosting
-          xywh {15 370 120 85} box UP_BOX labelcolor 7
+          xywh {10 420 120 85} box UP_BOX labelcolor 7
         } {
           Fl_Counter {} {
             label Previous
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
-            xywh {30 389 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+            xywh {25 439 95 22} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
           }
           Fl_Counter {} {
             label Next
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
-            xywh {30 429 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
+            xywh {25 479 95 21} labelcolor 7 align 1 minimum 1 maximum 100 step 1 value 5 textcolor 32
           }
         }
       }
@@ -743,10 +756,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {122 211 690 565} type Double align 80 resizable
+      xywh {122 211 690 565} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} size_range {690 565 0 0} visible
+      class {mrv::MainWindow} size_range {690 565 0 0}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -1155,13 +1168,13 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
             }
           }
         }
-        Fl_Pack uiViewGroup {open
+        Fl_Pack uiViewGroup {
           xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
           class MyPack
         } {
-          Fl_Group uiToolsGroup {
+          Fl_Group uiToolsGroup {open
             xywh {0 54 45 432} box FLAT_BOX
           } {
             Fl_Button uiScrub {
@@ -1274,7 +1287,7 @@ uiAttrsWindow->show();}
             class {mrv::ImageView}
           } {}
         }
-        Fl_Group uiPixelBar {open
+        Fl_Group uiPixelBar {
           xywh {0 486 690 30} box FLAT_BOX color 56 labelcolor 17
         } {
           Fl_Group {} {open
@@ -1584,7 +1597,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
             }
           }
         }
-        Fl_Group uiBottomBar {open
+        Fl_Group uiBottomBar {
           xywh {0 514 690 50} box ENGRAVED_BOX
         } {
           Fl_Group uiTimeToolbar {open
@@ -1944,8 +1957,7 @@ uiEDLWindow = new EDLWindowUI(this);
 Fl_Group::current(0);
 
 // read and use preferences
-mrv::Preferences prefs( uiPrefs );} {selected
-    }
+mrv::Preferences prefs( uiPrefs );} {}
   }
   Function {ViewerUI()} {open
   } {

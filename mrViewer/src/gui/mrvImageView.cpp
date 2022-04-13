@@ -1594,6 +1594,8 @@ void ImageView::scrub_mode()
     uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     uiMain->uiPaint->uiScrub->value(true);
     redraw();
 }
@@ -1623,6 +1625,8 @@ void ImageView::selection_mode( bool temporary )
     uiMain->uiPaint->uiCircle->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     redraw();
 }
 
@@ -1651,6 +1655,8 @@ void ImageView::draw_mode( bool tmp )
     uiMain->uiPaint->uiDraw->value(true);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     redraw();
 }
 
@@ -1677,6 +1683,8 @@ void ImageView::circle_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     redraw();
 }
 
@@ -1702,6 +1710,35 @@ void ImageView::arrow_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+    redraw();
+}
+
+void ImageView::rectangle_mode()
+{
+    _mode = kRectangle;
+
+    uiMain->uiStatus->copy_label( _("Rectangle") );
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
+    uiMain->uiPaint->uiMovePic->value(false);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(true);
+    uiMain->uiPaint->uiCopyXY->value(false);
     redraw();
 }
 
@@ -1731,6 +1768,8 @@ void ImageView::erase_mode( bool tmp )
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     redraw();
 }
 
@@ -1757,6 +1796,8 @@ void ImageView::text_mode()
         uiMain->uiPaint->uiCircle->value(false);
         uiMain->uiPaint->uiDraw->value(false);
         uiMain->uiPaint->uiSelection->value(false);
+        uiMain->uiPaint->uiRectangle->value(false);
+        uiMain->uiPaint->uiCopyXY->value(false);
     }
     else
     {
@@ -2241,6 +2282,24 @@ void ImageView::toggle_copy_frame_xy()
     {
         _mode = kCopyFrameXY;
         uiMain->uiStatus->copy_label( _("Copy X Y") );
+
+        uiMain->uiSelection->value(false);
+        uiMain->uiErase->value(false);
+        uiMain->uiCircle->value(false);
+        uiMain->uiArrow->value(false);
+        uiMain->uiDraw->value(false);
+        uiMain->uiText->value(false);
+        uiMain->uiScrub->value(false);
+
+        uiMain->uiPaint->uiMovePic->value(false);
+        uiMain->uiPaint->uiSelection->value(false);
+        uiMain->uiPaint->uiErase->value(false);
+        uiMain->uiPaint->uiCircle->value(false);
+        uiMain->uiPaint->uiArrow->value(false);
+        uiMain->uiPaint->uiDraw->value(false);
+        uiMain->uiPaint->uiText->value(false);
+        uiMain->uiPaint->uiScrub->value(false);
+        uiMain->uiPaint->uiCopyXY->value(true);
     }
 }
 
@@ -4461,7 +4520,8 @@ void ImageView::draw()
           //           << !(flags & kMouseDown ) <
           //     < std::endl;
           if (  (_mode & kDraw) || (_mode & kErase) ||
-                (_mode & kCircle) || (_mode & kArrow ) )
+                (_mode & kCircle) || (_mode & kArrow ) ||
+                (_mode & kRectangle) )
             {
                 double xf = X;
                 double yf = Y;
@@ -5402,7 +5462,7 @@ int ImageView::leftMouseDown(int x, int y)
             return 1;
         }
         else if ( (_mode & kDraw) || (_mode & kErase) || (_mode == kCircle) ||
-                  (_mode & kArrow) || _mode == kText )
+                  (_mode & kArrow) || (_mode & kRectangle) || _mode == kText )
         {
 
             _selection = mrv::Rectd( 0, 0, 0, 0 );
@@ -5447,6 +5507,10 @@ int ImageView::leftMouseDown(int x, int y)
             else if ( _mode & kArrow )
             {
                  s = new GLArrowShape;
+            }
+            else if ( _mode & kRectangle )
+            {
+                 s = new GLRectangleShape;
             }
             else if ( _mode == kText )
             {
@@ -5499,19 +5563,25 @@ int ImageView::leftMouseDown(int x, int y)
             else
                 {
                     GLPathShape* path = nullptr;
-                    if ( ( path = dynamic_cast< GLPathShape* >( s ) ) )
-                        {
-                            mrv::Point p( xf, yf );
-                            path->pts.push_back( p );
-                        }
                     if ( ( path = dynamic_cast< GLArrowShape* >( s ) ) )
-                        {
-                            mrv::Point p( xf, yf );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                        }
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                    }
+                    else if ( ( path = dynamic_cast< GLRectangleShape* >( s )) )
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                    }
+                    else if ( ( path = dynamic_cast< GLPathShape* >( s ) ) )
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                    }
                 }
 
             send_network( str );
@@ -5657,13 +5727,27 @@ void ImageView::leftMouseUp( int x, int y )
             timeline()->redraw();
         }
     }
+    else if ( _mode & kRectangle )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLRectangleShape* s = dynamic_cast< GLRectangleShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLRectangleShape pointer") );
+        }
+        else
+        {
+            send_network( s->send() );
+            timeline()->redraw();
+        }
+    }
     else if ( _mode & kArrow )
     {
         mrv::shape_type_ptr o = fg->image()->shapes().back();
         GLArrowShape* s = dynamic_cast< GLArrowShape* >( o.get() );
         if ( s == NULL )
         {
-            LOG_ERROR( _("Not a GLErasePathShape pointer") );
+            LOG_ERROR( _("Not a GLArrowShape pointer") );
         }
         else
         {
@@ -7019,7 +7103,8 @@ void ImageView::mouseDrag(int x,int y)
 
             float scale = Fl::screen_scale( window()->screen_num() );
 
-            if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) )
+            if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) ||
+                 (_mode & kRectangle) )
             {
                 GLShapeList& shapes = fg->image()->shapes();
                 if ( shapes.empty() ) return;
@@ -7041,34 +7126,38 @@ void ImageView::mouseDrag(int x,int y)
 
 
                     mrv::Point p2( xn, yn );
-                    if ( _mode == kArrow )
-                        {
-                            Imath::V2d p1 = s->pts[0];
-                            Imath::V2d lineVector = p2 - p1;
-                            double lineLength = lineVector.length();
+                    if ( _mode & kArrow )
+                    {
+                        Imath::V2d p1 = s->pts[0];
+                        Imath::V2d lineVector = p2 - p1;
+                        double lineLength = lineVector.length();
 
 
-                            const float theta = 45 * M_PI / 180;
-                            const int nWidth = 35;
+                        const float theta = 45 * M_PI / 180;
+                        const int nWidth = 35;
 
-                            double tPointOnLine = nWidth /
-                                                  (2 * (tanf(theta) / 2) *
-                                                   lineLength);
-                            Imath::V2d pointOnLine = p2 +
-                                                     -tPointOnLine * lineVector;
+                        double tPointOnLine = nWidth /
+                                              (2 * (tanf(theta) / 2) *
+                                               lineLength);
+                        Imath::V2d pointOnLine = p2 +
+                                                 -tPointOnLine * lineVector;
 
-                            Imath::V2d normalVector( -lineVector.y,
-                                                      lineVector.x );
+                        Imath::V2d normalVector( -lineVector.y,
+                                                 lineVector.x );
 
-                            double tNormal = nWidth / (2 * lineLength );
-                            Imath::V2d tmp = pointOnLine +
-                                             tNormal * normalVector;
-                            s->pts[1] = p2;
-                            s->pts[2] = tmp;
-                            s->pts[3] = p2;
-                            tmp = pointOnLine + -tNormal * normalVector;
-                            s->pts[4] = tmp;
-                        }
+                        double tNormal = nWidth / (2 * lineLength );
+                        Imath::V2d tmp = pointOnLine +
+                                         tNormal * normalVector;
+                        s->pts[1] = p2;
+                        s->pts[2] = tmp;
+                        s->pts[3] = p2;
+                        tmp = pointOnLine + -tNormal * normalVector;
+                        s->pts[4] = tmp;
+                    }
+                    else if ( _mode & kRectangle )
+                    {
+                        s->pts[1] = p2;
+                    }
                     else
                         {
                             s->pts.push_back( p2 );
@@ -7155,7 +7244,8 @@ void ImageView::texture_filtering( const TextureFiltering p )
  */
 int ImageView::keyDown(unsigned int rawkey)
 {
-    if ( _mode & kDraw || _mode & kErase || _mode & kArrow )
+    if ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
+         _mode & kRectangle )
     {
         double pen = uiMain->uiPaint->uiPenSize->value();
         // Use exposure hotkey ( default [ and ] )
@@ -7220,6 +7310,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kArrowMode.match( rawkey ) )
     {
         arrow_mode();
+        return 1;
+    }
+    else if ( kRectangleMode.match( rawkey ) )
+    {
+        rectangle_mode();
         return 1;
     }
     else if ( kCircleMode.match( rawkey ) )
@@ -8589,14 +8684,16 @@ int ImageView::handle(int event)
         else
         {
             if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
-                                     _mode & kArrow || _mode & kCircle ) )
+                                     _mode & kArrow || _mode & kCircle ||
+                                     _mode & kRectangle ) )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
         if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
-                                 _mode & kArrow || _mode & kCircle ) )
+                                 _mode & kArrow || _mode & kCircle ||
+                                 _mode & kRectangle ) )
             window()->cursor( FL_CURSOR_CROSS );
       return 1;
     case FL_UNFOCUS:

@@ -1001,6 +1001,28 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 }
                 continue;
             }
+            else if ( cmd == "GLRectangleShape" )
+            {
+                Point xy;
+                std::string points;
+                GLRectangleShape* shape = new GLRectangleShape;
+                is.clear();
+                std::getline( is, points );
+                is.str( points );
+                is.clear();
+                is >> shape->r >> shape->g >> shape->b >> shape->a
+                   >> shape->pen_size >> shape->frame;
+                while ( is >> xy.x >> xy.y )
+                {
+                    shape->pts.push_back( xy );
+                }
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
+                continue;
+            }
             else if ( cmd == "GLErasePathShape" )
             {
                 Point xy;

@@ -190,6 +190,7 @@ extern Hotkey kEraseMode;
 extern Hotkey kEraseTemporaryMode;
 extern Hotkey kCircleMode;
 extern Hotkey kArrowMode;
+extern Hotkey kRectangleMode;
 extern Hotkey kRotateCanvasMode;
 extern Hotkey kScrubMode;
 extern Hotkey kTextMode;

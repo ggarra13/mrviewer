@@ -254,6 +254,24 @@ bool Parser::parse( const std::string& s )
         v->redraw();
         ok = true;
     }
+    else if ( cmd == N_("GLRectangleShape") )
+    {
+        Point xy;
+        std::string points;
+        GLRectangleShape* shape = new GLRectangleShape;
+        std::getline( is, points );
+        is.str( points );
+        is.clear();
+        is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
+           >> shape->frame;
+        while ( is >> xy.x >> xy.y )
+        {
+            shape->pts.push_back( xy );
+        }
+        v->add_shape( mrv::shape_type_ptr(shape) );
+        v->redraw();
+        ok = true;
+    }
     else if ( cmd == N_("GLCircleShape") )
     {
         Point xy;

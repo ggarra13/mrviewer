@@ -41,7 +41,11 @@ OptionParser.new do |opts|
     @options[:force] = v
   end
 
-  opts.on("-l", "--libs_only", "Run verbosely") do |v|
+  opts.on("-t", "--translations_only", "Copy translations only") do |v|
+    @options[:translations_only] = v
+  end
+
+  opts.on("-l", "--libs_only", "Copy libs only") do |v|
     @options[:libs_only] = v
   end
 
@@ -54,6 +58,7 @@ end.parse!
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 def parse( files, dest )
+  return if @options[:translations_only]
 
   for line in files
     lib, loc = line.split(" => ")
@@ -223,7 +228,7 @@ if kernel !~ /MINGW.*/
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
   libs.map! { |x| x if x !~ /.*libACESclip.*/ }.compact!
-  FileUtils.rm_f( libs )
+  FileUtils.rm_f( libs ) if not @options[:translations_only]
   exes = Dir.glob( "#{dest}/bin/*" )
 
   files = []
@@ -243,7 +248,7 @@ if kernel !~ /MINGW.*/
 
   end
 
-  copy_third_party( root, dest )
+  copy_third_party( root, dest ) if not @options[:translations_only]
 
   if @options[:libs_only]
     exit(0)
@@ -251,6 +256,10 @@ if kernel !~ /MINGW.*/
 
   Dir.chdir( root  )
   copy_files( dest )
+
+  if @options[:translations_only]
+    exit(0)
+  end
 
   Dir.chdir( dest + "/lib" )
   if kernel =~ /Linux/
@@ -278,13 +287,13 @@ else
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )
-    copy_third_party( root, dest )
+    copy_third_party( root, dest ) if not @options[:translations_only]
   else
     build = "BUILD/Windows-6.3.9600-32/"
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )
-    copy_third_party( root, dest )
+    copy_third_party( root, dest ) if not @options[:translations_only]
   end
 end
 
