@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-13 06:03-0300\n"
+"POT-Creation-Date: 2022-04-13 07:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " تكرر: "
 msgid " has different display window than "
 msgstr " نافذة عرض مختلفة عن "
 
-#: standalone/main.cpp:503
+#: standalone/main.cpp:480
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -500,7 +500,7 @@ msgstr "(حقول PAL)"
 msgid "(RT) Render Transform"
 msgstr "تقديم التحول"
 
-#: standalone/main.cpp:464
+#: standalone/main.cpp:441
 msgid "(Remove if mrViewer does not start)"
 msgstr "(قم بإزالته إذا لم يبدأ برنامج mrViewer)"
 
@@ -1086,7 +1086,7 @@ msgid "About"
 msgstr "حول mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:348
+#: standalone/main.cpp:327
 msgid "About mrViewer"
 msgstr "حول mrViewer"
 
@@ -1321,7 +1321,7 @@ msgstr "رجوع خطوة مربع التعليقات التوضيحية"
 msgid "Annotation Frame Step Forwards"
 msgstr "مربع التسجيل خطوة إلى الأمام"
 
-#: standalone/main.cpp:501
+#: standalone/main.cpp:478
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1671,7 +1671,7 @@ msgstr "كليب بلوز كسب"
 msgid "Blue value of image pixel under mouse."
 msgstr "القيمة الزرقاء للصورة البكسل تحت الماوس."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:640
 msgid "Boost exception: "
 msgstr "استثناء دفعة: "
 
@@ -1688,7 +1688,7 @@ msgid "Bottom Field"
 msgstr "الحقل السفلي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:555 standalone/main.cpp:575
+#: standalone/main.cpp:532 standalone/main.cpp:552
 msgid "Bottom/top"
 msgstr "أدنى/أعلى"
 
@@ -1895,7 +1895,7 @@ msgid "Char"
 msgstr "حرف"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:565 standalone/main.cpp:579
+#: standalone/main.cpp:542 standalone/main.cpp:556
 msgid "Checkerboard pattern"
 msgstr "جريد"
 
@@ -2930,7 +2930,7 @@ msgid "Custom Field 9"
 msgstr "حقل مخصص 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:569 standalone/main.cpp:581
+#: standalone/main.cpp:546 standalone/main.cpp:558
 msgid "Cyan/red glasses"
 msgstr "عدسات سماوي/أحمر"
 
@@ -3438,12 +3438,12 @@ msgid "Escape"
 msgstr "هرب"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:563 standalone/main.cpp:578
+#: standalone/main.cpp:540 standalone/main.cpp:555
 msgid "Even/odd columns"
 msgstr "غريب/أعمدة الزوج"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:561 standalone/main.cpp:577
+#: standalone/main.cpp:538 standalone/main.cpp:554
 msgid "Even/odd rows"
 msgstr "غريب/خطوط الزوج"
 
@@ -3697,7 +3697,7 @@ msgstr "اسم"
 msgid "Filename of the clip"
 msgstr "اسم ملف المقطع"
 
-#: standalone/main.cpp:659
+#: standalone/main.cpp:636
 msgid "Filesystem error: "
 msgstr "خطأ في نظام الملفات: "
 
@@ -4172,11 +4172,11 @@ msgstr "عرافة"
 msgid "Hex Values"
 msgstr "القيم السداسية العشرية"
 
-#: standalone/main.cpp:351
+#: standalone/main.cpp:330
 msgid "Hide Others"
 msgstr "إخفاء الآخرين"
 
-#: standalone/main.cpp:350
+#: standalone/main.cpp:329
 msgid "Hide mrViewer"
 msgstr "إخفاء mrViewer"
 
@@ -4826,14 +4826,14 @@ msgid "Left View"
 msgstr "منظر اليسار"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:547 standalone/main.cpp:574
+#: standalone/main.cpp:524 standalone/main.cpp:551
 msgid "Left view"
 msgstr "منظر اليسار"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:531 standalone/main.cpp:537 standalone/main.cpp:557
-#: standalone/main.cpp:576
+#: standalone/main.cpp:508 standalone/main.cpp:514 standalone/main.cpp:534
+#: standalone/main.cpp:553
 msgid "Left/right"
 msgstr "غادر/الصحيح"
 
@@ -5004,7 +5004,7 @@ msgstr "لقد قمت بتحميل مفاتيح محرك الأقراص من "
 msgid "Local Caption"
 msgstr "علامة محلية"
 
-#: standalone/main.cpp:463
+#: standalone/main.cpp:440
 msgid "Lockfile "
 msgstr "قفل الملف "
 
@@ -6379,7 +6379,7 @@ msgstr "جودة"
 msgid "Quicktime Movie"
 msgstr "فيلم كويك تايم"
 
-#: standalone/main.cpp:353
+#: standalone/main.cpp:332
 msgid "Quit mrViewer"
 msgstr "خروج mrViewer"
 
@@ -6544,7 +6544,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "القيمة الحمراء لبكسل الصورة تحت الماوس."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:567 standalone/main.cpp:580
+#: standalone/main.cpp:544 standalone/main.cpp:557
 msgid "Red/cyan glasses"
 msgstr "العدسات الحمراء/ازرق سماوي"
 
@@ -6777,12 +6777,12 @@ msgid "Right View"
 msgstr "رأي صحيح"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:549 standalone/main.cpp:574
+#: standalone/main.cpp:526 standalone/main.cpp:551
 msgid "Right view"
 msgstr "رأي صحيح"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:559 standalone/main.cpp:576
+#: standalone/main.cpp:536 standalone/main.cpp:553
 msgid "Right/left"
 msgstr "حق/غادر"
 
@@ -7160,7 +7160,7 @@ msgid "Sep"
 msgstr "سبتمبر"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:527 standalone/main.cpp:536
+#: standalone/main.cpp:504 standalone/main.cpp:513
 msgid "Separate layers"
 msgstr "طبقات منفصلة"
 
@@ -7177,7 +7177,7 @@ msgstr "تسلسل"
 msgid "Server"
 msgstr "الخادم"
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:331
 msgid "Services"
 msgstr "خدمات"
 
@@ -7403,11 +7403,11 @@ msgid "Stereo EXR Picture"
 msgstr "صورة ستيريو EXR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:551
+#: standalone/main.cpp:528
 msgid "Stereo OpenGL"
 msgstr "برنامج OpenGL Stereo"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:550
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "خرج الاستريو غير صالح. القيم الصالحة هي: "
 
@@ -8129,8 +8129,8 @@ msgstr "الحقل العلوي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:529 standalone/main.cpp:536 standalone/main.cpp:553
-#: standalone/main.cpp:575
+#: standalone/main.cpp:506 standalone/main.cpp:513 standalone/main.cpp:530
+#: standalone/main.cpp:552
 msgid "Top/bottom"
 msgstr "أعلى/أدنى"
 
@@ -8154,7 +8154,7 @@ msgstr "تقليدي بلا نطاق"
 msgid "Transform"
 msgstr "تحويل"
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:324
 msgid "Translations: "
 msgstr "الترجمات: "
 
@@ -8251,7 +8251,7 @@ msgstr "تراجع عن رسم الشكل الأخير"
 msgid "Unhandled Exception"
 msgstr "استثناء غير معالج"
 
-#: standalone/main.cpp:647
+#: standalone/main.cpp:624
 msgid "Unhandled exception"
 msgstr "استثناء غير معالج"
 
@@ -8325,7 +8325,7 @@ msgstr "نوع بيانات غير معروف للتحويل من نص"
 msgid "Unknown destination video frame format: "
 msgstr "تنسيق إطار فيديو المستلم غير معروف: "
 
-#: standalone/main.cpp:667
+#: standalone/main.cpp:644
 msgid "Unknown error"
 msgstr "خطأ غير معروف"
 

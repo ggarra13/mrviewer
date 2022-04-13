@@ -211,10 +211,7 @@ namespace mrv {
         rootdir = rootdir.remove_leaf();
         rootdir = rootdir.branch_path();
 
-        std::string root = "MRV_ROOT=";
-        root += rootdir.string().c_str();
-
-        putenv( strdup( (char*)root.c_str() ) );
+        setenv( "MRV_ROOT", rootdir.string().c_str(), 1 );
       }
   }
 }

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-13 06:03-0300\n"
+"POT-Creation-Date: 2022-04-13 07:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " συχνότητα: "
 msgid " has different display window than "
 msgstr " έχει διαφορετικό παράθυρο προβολής από "
 
-#: standalone/main.cpp:503
+#: standalone/main.cpp:480
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -502,7 +502,7 @@ msgstr "(πεδία PAL)"
 msgid "(RT) Render Transform"
 msgstr "Render Transformation"
 
-#: standalone/main.cpp:464
+#: standalone/main.cpp:441
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Καταργήστε το εάν το mrViewer δεν ξεκινά)"
 
@@ -1089,7 +1089,7 @@ msgid "About"
 msgstr "Σχετικά με το mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:348
+#: standalone/main.cpp:327
 msgid "About mrViewer"
 msgstr "Σχετικά με το mrViewer"
 
@@ -1326,7 +1326,7 @@ msgstr "Βήμα πλαισίου σχολιασμού πίσω"
 msgid "Annotation Frame Step Forwards"
 msgstr "Βήμα Βαθμολογίας κουτί Εμπρός"
 
-#: standalone/main.cpp:501
+#: standalone/main.cpp:478
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1679,7 +1679,7 @@ msgstr "Κλιπ Blues Gain"
 msgid "Blue value of image pixel under mouse."
 msgstr "Μπλε τιμή της εικόνας pixel κάτω από το ποντίκι."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:640
 msgid "Boost exception: "
 msgstr "Εξαίρεση ενίσχυσης: "
 
@@ -1696,7 +1696,7 @@ msgid "Bottom Field"
 msgstr "Κάτω Πεδίο"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:555 standalone/main.cpp:575
+#: standalone/main.cpp:532 standalone/main.cpp:552
 msgid "Bottom/top"
 msgstr "πιο χαμηλα/Πιο ψηλά"
 
@@ -1906,7 +1906,7 @@ msgid "Char"
 msgstr "Χαρακτήρας"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:565 standalone/main.cpp:579
+#: standalone/main.cpp:542 standalone/main.cpp:556
 msgid "Checkerboard pattern"
 msgstr "πλέγμα"
 
@@ -2960,7 +2960,7 @@ msgid "Custom Field 9"
 msgstr "Προσαρμοσμένο πεδίο 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:569 standalone/main.cpp:581
+#: standalone/main.cpp:546 standalone/main.cpp:558
 msgid "Cyan/red glasses"
 msgstr "Κυανοί φακοί/το κόκκινο"
 
@@ -3474,12 +3474,12 @@ msgid "Escape"
 msgstr "Διαφυγή"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:563 standalone/main.cpp:578
+#: standalone/main.cpp:540 standalone/main.cpp:555
 msgid "Even/odd columns"
 msgstr "Περιττός/ζεύγη στηλών"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:561 standalone/main.cpp:577
+#: standalone/main.cpp:538 standalone/main.cpp:554
 msgid "Even/odd rows"
 msgstr "Περιττός/ζεύγη γραμμών"
 
@@ -3733,7 +3733,7 @@ msgstr "Ονομα"
 msgid "Filename of the clip"
 msgstr "Όνομα αρχείου κλιπ"
 
-#: standalone/main.cpp:659
+#: standalone/main.cpp:636
 msgid "Filesystem error: "
 msgstr "Σφάλμα συστήματος αρχείων: "
 
@@ -4210,11 +4210,11 @@ msgstr "μαγεύω"
 msgid "Hex Values"
 msgstr "Δεκαεξαδικές τιμές"
 
-#: standalone/main.cpp:351
+#: standalone/main.cpp:330
 msgid "Hide Others"
 msgstr "Κρύψτε τους Άλλους"
 
-#: standalone/main.cpp:350
+#: standalone/main.cpp:329
 msgid "Hide mrViewer"
 msgstr "Απόκρυψη mrViewer"
 
@@ -4870,14 +4870,14 @@ msgid "Left View"
 msgstr "Αριστερή όψη"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:547 standalone/main.cpp:574
+#: standalone/main.cpp:524 standalone/main.cpp:551
 msgid "Left view"
 msgstr "Αριστερή όψη"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:531 standalone/main.cpp:537 standalone/main.cpp:557
-#: standalone/main.cpp:576
+#: standalone/main.cpp:508 standalone/main.cpp:514 standalone/main.cpp:534
+#: standalone/main.cpp:553
 msgid "Left/right"
 msgstr "Αριστερά/σωστά"
 
@@ -5049,7 +5049,7 @@ msgstr "Φόρτωσα κλειδιά μονάδας από "
 msgid "Local Caption"
 msgstr "τοπική πινακίδα"
 
-#: standalone/main.cpp:463
+#: standalone/main.cpp:440
 msgid "Lockfile "
 msgstr "κλείδωμα αρχείου "
 
@@ -6437,7 +6437,7 @@ msgstr "Ποιότητα"
 msgid "Quicktime Movie"
 msgstr "ταινία quicktime"
 
-#: standalone/main.cpp:353
+#: standalone/main.cpp:332
 msgid "Quit mrViewer"
 msgstr "Έξοδος από το mrViewer"
 
@@ -6603,7 +6603,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Κόκκινη τιμή του εικονοστοιχείου εικόνας κάτω από το ποντίκι."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:567 standalone/main.cpp:580
+#: standalone/main.cpp:544 standalone/main.cpp:557
 msgid "Red/cyan glasses"
 msgstr "Κόκκινοι φακοί/κυανός"
 
@@ -6837,12 +6837,12 @@ msgid "Right View"
 msgstr "Δεξιά Προβολή"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:549 standalone/main.cpp:574
+#: standalone/main.cpp:526 standalone/main.cpp:551
 msgid "Right view"
 msgstr "Δεξιά Προβολή"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:559 standalone/main.cpp:576
+#: standalone/main.cpp:536 standalone/main.cpp:553
 msgid "Right/left"
 msgstr "σωστά/αριστερά"
 
@@ -7228,7 +7228,7 @@ msgid "Sep"
 msgstr "Σεπτ"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:527 standalone/main.cpp:536
+#: standalone/main.cpp:504 standalone/main.cpp:513
 msgid "Separate layers"
 msgstr "ξεχωριστά στρώματα"
 
@@ -7245,7 +7245,7 @@ msgstr "ακολουθίες"
 msgid "Server"
 msgstr "Υπηρέτης"
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:331
 msgid "Services"
 msgstr "Υπηρεσίες"
 
@@ -7471,11 +7471,11 @@ msgid "Stereo EXR Picture"
 msgstr "Στερεοφωνική εικόνα EXR"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:551
+#: standalone/main.cpp:528
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:550
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Η στερεοφωνική έξοδος δεν είναι έγκυρη. Οι έγκυρες τιμές είναι: "
 
@@ -8216,8 +8216,8 @@ msgstr "Άνω Πεδίο"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:529 standalone/main.cpp:536 standalone/main.cpp:553
-#: standalone/main.cpp:575
+#: standalone/main.cpp:506 standalone/main.cpp:513 standalone/main.cpp:530
+#: standalone/main.cpp:552
 msgid "Top/bottom"
 msgstr "Πιο ψηλά/πιο χαμηλα"
 
@@ -8241,7 +8241,7 @@ msgstr "Παραδοσιακό χωρίς γκάμα"
 msgid "Transform"
 msgstr "Μεταμόρφωση"
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:324
 msgid "Translations: "
 msgstr "Μεταφράσεις: "
 
@@ -8338,7 +8338,7 @@ msgstr "Αναίρεση τελευταίου σχήματος που σχεδι
 msgid "Unhandled Exception"
 msgstr "ανεξέλεγκτη εξαίρεση"
 
-#: standalone/main.cpp:647
+#: standalone/main.cpp:624
 msgid "Unhandled exception"
 msgstr "ανεξέλεγκτη εξαίρεση"
 
@@ -8412,7 +8412,7 @@ msgstr "Άγνωστος τύπος δεδομένων για μετατροπή
 msgid "Unknown destination video frame format: "
 msgstr "Μορφή πλαισίου βίντεο άγνωστου παραλήπτη: "
 
-#: standalone/main.cpp:667
+#: standalone/main.cpp:644
 msgid "Unknown error"
 msgstr "Αγνωστο σφάλμα"
 

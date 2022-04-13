@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-13 06:03-0300\n"
+"POT-Creation-Date: 2022-04-13 07:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " 빈도: "
 msgid " has different display window than "
 msgstr " 다른 보기 창을 가지고 "
 
-#: standalone/main.cpp:503
+#: standalone/main.cpp:480
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -498,7 +498,7 @@ msgstr "(PAL 필드)"
 msgid "(RT) Render Transform"
 msgstr "렌더 변환"
 
-#: standalone/main.cpp:464
+#: standalone/main.cpp:441
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
@@ -1084,7 +1084,7 @@ msgid "About"
 msgstr "mrViewer 정보"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:348
+#: standalone/main.cpp:327
 msgid "About mrViewer"
 msgstr "mrViewer 정보"
 
@@ -1317,7 +1317,7 @@ msgstr "뒤로 주석 상자 단계"
 msgid "Annotation Frame Step Forwards"
 msgstr "단계 득점 상자 앞으로"
 
-#: standalone/main.cpp:501
+#: standalone/main.cpp:478
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1669,7 +1669,7 @@ msgstr "클립 블루스 게인"
 msgid "Blue value of image pixel under mouse."
 msgstr "마우스 아래 픽셀 이미지의 파란색 값입니다."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:640
 msgid "Boost exception: "
 msgstr "부스트 예외: "
 
@@ -1686,7 +1686,7 @@ msgid "Bottom Field"
 msgstr "로워 필드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:555 standalone/main.cpp:575
+#: standalone/main.cpp:532 standalone/main.cpp:552
 msgid "Bottom/top"
 msgstr "낮추다/더 높은"
 
@@ -1893,7 +1893,7 @@ msgid "Char"
 msgstr "성격"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:565 standalone/main.cpp:579
+#: standalone/main.cpp:542 standalone/main.cpp:556
 msgid "Checkerboard pattern"
 msgstr "그리드"
 
@@ -2928,7 +2928,7 @@ msgid "Custom Field 9"
 msgstr "사용자 정의 필드 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:569 standalone/main.cpp:581
+#: standalone/main.cpp:546 standalone/main.cpp:558
 msgid "Cyan/red glasses"
 msgstr "시안 렌즈/빨간색"
 
@@ -3436,12 +3436,12 @@ msgid "Escape"
 msgstr "탈출하다"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:563 standalone/main.cpp:578
+#: standalone/main.cpp:540 standalone/main.cpp:555
 msgid "Even/odd columns"
 msgstr "이상한/쌍 열"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:561 standalone/main.cpp:577
+#: standalone/main.cpp:538 standalone/main.cpp:554
 msgid "Even/odd rows"
 msgstr "이상한/페어 라인"
 
@@ -3695,7 +3695,7 @@ msgstr "이름"
 msgid "Filename of the clip"
 msgstr "클립 파일 이름"
 
-#: standalone/main.cpp:659
+#: standalone/main.cpp:636
 msgid "Filesystem error: "
 msgstr "파일 시스템 오류: "
 
@@ -4170,11 +4170,11 @@ msgstr "마녀"
 msgid "Hex Values"
 msgstr "16진수 값"
 
-#: standalone/main.cpp:351
+#: standalone/main.cpp:330
 msgid "Hide Others"
 msgstr "다른 사람 숨기기"
 
-#: standalone/main.cpp:350
+#: standalone/main.cpp:329
 msgid "Hide mrViewer"
 msgstr "mrViewer 숨기기"
 
@@ -4823,14 +4823,14 @@ msgid "Left View"
 msgstr "왼쪽 보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:547 standalone/main.cpp:574
+#: standalone/main.cpp:524 standalone/main.cpp:551
 msgid "Left view"
 msgstr "왼쪽 보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:531 standalone/main.cpp:537 standalone/main.cpp:557
-#: standalone/main.cpp:576
+#: standalone/main.cpp:508 standalone/main.cpp:514 standalone/main.cpp:534
+#: standalone/main.cpp:553
 msgid "Left/right"
 msgstr "왼쪽/오른쪽"
 
@@ -5000,7 +5000,7 @@ msgstr "에서 드라이브 키를 로드했습니다. "
 msgid "Local Caption"
 msgstr "지역 표지판"
 
-#: standalone/main.cpp:463
+#: standalone/main.cpp:440
 msgid "Lockfile "
 msgstr "파일 잠금 "
 
@@ -6376,7 +6376,7 @@ msgstr "품질"
 msgid "Quicktime Movie"
 msgstr "퀵타임 영화"
 
-#: standalone/main.cpp:353
+#: standalone/main.cpp:332
 msgid "Quit mrViewer"
 msgstr "mrViewer 종료"
 
@@ -6541,7 +6541,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "마우스 아래 이미지 픽셀의 빨간색 값입니다."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:567 standalone/main.cpp:580
+#: standalone/main.cpp:544 standalone/main.cpp:557
 msgid "Red/cyan glasses"
 msgstr "빨간 렌즈/시안"
 
@@ -6773,12 +6773,12 @@ msgid "Right View"
 msgstr "오른쪽보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:549 standalone/main.cpp:574
+#: standalone/main.cpp:526 standalone/main.cpp:551
 msgid "Right view"
 msgstr "오른쪽보기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:559 standalone/main.cpp:576
+#: standalone/main.cpp:536 standalone/main.cpp:553
 msgid "Right/left"
 msgstr "오른쪽/왼쪽"
 
@@ -7157,7 +7157,7 @@ msgid "Sep"
 msgstr "9월"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:527 standalone/main.cpp:536
+#: standalone/main.cpp:504 standalone/main.cpp:513
 msgid "Separate layers"
 msgstr "별도의 레이어"
 
@@ -7174,7 +7174,7 @@ msgstr "시퀀스"
 msgid "Server"
 msgstr "섬기는 사람"
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:331
 msgid "Services"
 msgstr "서비스"
 
@@ -7400,11 +7400,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR 스테레오 이미지"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:551
+#: standalone/main.cpp:528
 msgid "Stereo OpenGL"
 msgstr "OpenGL 스테레오"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:550
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "스테레오 출력이 잘못되었습니다. 유효한 값은 다음과 같습니다. "
 
@@ -8123,8 +8123,8 @@ msgstr "어퍼 필드"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:529 standalone/main.cpp:536 standalone/main.cpp:553
-#: standalone/main.cpp:575
+#: standalone/main.cpp:506 standalone/main.cpp:513 standalone/main.cpp:530
+#: standalone/main.cpp:552
 msgid "Top/bottom"
 msgstr "더 높은/낮추다"
 
@@ -8148,7 +8148,7 @@ msgstr "범위가 없는 전통적"
 msgid "Transform"
 msgstr "변환"
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:324
 msgid "Translations: "
 msgstr "번역: "
 
@@ -8245,7 +8245,7 @@ msgstr "마지막으로 그린 모양 실행 취소"
 msgid "Unhandled Exception"
 msgstr "처리되지 않은 예외"
 
-#: standalone/main.cpp:647
+#: standalone/main.cpp:624
 msgid "Unhandled exception"
 msgstr "처리되지 않은 예외"
 
@@ -8319,7 +8319,7 @@ msgstr "텍스트에서 변환할 알 수 없는 데이터 유형"
 msgid "Unknown destination video frame format: "
 msgstr "알 수 없는 수신자 비디오 프레임 형식: "
 
-#: standalone/main.cpp:667
+#: standalone/main.cpp:644
 msgid "Unknown error"
 msgstr "알수없는 오류"
 

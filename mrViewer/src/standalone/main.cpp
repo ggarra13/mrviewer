@@ -309,36 +309,15 @@ int main( int argc, const char** argv )
 
 
 
-    sprintf( buf, "mrViewer%s", mrv::version() );
 
-#ifdef _WIN32
-    int numArgs = 0;
-    LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
-    if ( args == NULL )
-    {
-        LOG_ERROR( "CommandLineToArgvW failed" );
-        return -1;
-    }
-    fs::path file = fs::path( args[0] );
-    LocalFree( args );
-#else
-    std::string program = argv[0];
-    fs::path file = fs::path( program );
-#endif
-
-    int ok = -1;
     DBG;
-    file = fs::absolute( file );
+    // Try to set MRV_ROOT if not set already
+    mrv::set_root_path( argc, argv );
 
-    fs::path dir = file.parent_path().branch_path();
-#ifdef _WIN32
-    std::string path = fs::absolute( dir ).generic_string();
-#else
-    std::string path = fs::canonical( dir ).generic_string();
-#endif
-
+    std::string path = fl_getenv("MRV_ROOT");
     path += "/share/locale";
 
+    sprintf( buf, "mrViewer%s", mrv::version() );
     bindtextdomain(buf, path.c_str() );
     bind_textdomain_codeset(buf, "UTF-8" );
     textdomain(buf);
@@ -353,9 +332,7 @@ int main( int argc, const char** argv )
     Fl_Mac_App_Menu::quit = _("Quit mrViewer");
 #endif
 
-    DBG;
-    // Try to set MRV_ROOT if not set already
-    mrv::set_root_path( argc, argv );
+    int ok;
 
     DBG;
     Fl::scheme("gtk+");

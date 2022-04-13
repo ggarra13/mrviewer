@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-13 06:03-0300\n"
+"POT-Creation-Date: 2022-04-13 07:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " frequentie: "
 msgid " has different display window than "
 msgstr " heeft een ander kijkvenster dan "
 
-#: standalone/main.cpp:503
+#: standalone/main.cpp:480
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -501,7 +501,7 @@ msgstr "(PAL-velden)"
 msgid "(RT) Render Transform"
 msgstr "Transformatie renderen"
 
-#: standalone/main.cpp:464
+#: standalone/main.cpp:441
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Verwijder het als mrViewer niet start)"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "Over mrViewer"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:348
+#: standalone/main.cpp:327
 msgid "About mrViewer"
 msgstr "Over mrViewer"
 
@@ -1325,7 +1325,7 @@ msgstr "Terug Annotatievak Stap"
 msgid "Annotation Frame Step Forwards"
 msgstr "Stap scoren vak vooruit"
 
-#: standalone/main.cpp:501
+#: standalone/main.cpp:478
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1675,7 +1675,7 @@ msgstr "Clip Blues-winst"
 msgid "Blue value of image pixel under mouse."
 msgstr "Blauwwaarde van het pixelbeeld onder de muis."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:640
 msgid "Boost exception: "
 msgstr "Boost-uitzondering: "
 
@@ -1692,7 +1692,7 @@ msgid "Bottom Field"
 msgstr "Onderste veld"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:555 standalone/main.cpp:575
+#: standalone/main.cpp:532 standalone/main.cpp:552
 msgid "Bottom/top"
 msgstr "lager/Superieur"
 
@@ -1902,7 +1902,7 @@ msgid "Char"
 msgstr "Karakter"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:565 standalone/main.cpp:579
+#: standalone/main.cpp:542 standalone/main.cpp:556
 msgid "Checkerboard pattern"
 msgstr "rooster"
 
@@ -2950,7 +2950,7 @@ msgid "Custom Field 9"
 msgstr "Aangepast veld 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:569 standalone/main.cpp:581
+#: standalone/main.cpp:546 standalone/main.cpp:558
 msgid "Cyan/red glasses"
 msgstr "Cyaan lenzen/rood"
 
@@ -3463,12 +3463,12 @@ msgid "Escape"
 msgstr "Ontsnappen"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:563 standalone/main.cpp:578
+#: standalone/main.cpp:540 standalone/main.cpp:555
 msgid "Even/odd columns"
 msgstr "Vreemd/kolommen koppelen"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:561 standalone/main.cpp:577
+#: standalone/main.cpp:538 standalone/main.cpp:554
 msgid "Even/odd rows"
 msgstr "Vreemd/paar lijnen"
 
@@ -3722,7 +3722,7 @@ msgstr "Naam"
 msgid "Filename of the clip"
 msgstr "Naam clipbestand"
 
-#: standalone/main.cpp:659
+#: standalone/main.cpp:636
 msgid "Filesystem error: "
 msgstr "Bestandssysteemfout: "
 
@@ -4199,11 +4199,11 @@ msgstr "hex"
 msgid "Hex Values"
 msgstr "Hexadecimale waarden"
 
-#: standalone/main.cpp:351
+#: standalone/main.cpp:330
 msgid "Hide Others"
 msgstr "Verberg de anderen"
 
-#: standalone/main.cpp:350
+#: standalone/main.cpp:329
 msgid "Hide mrViewer"
 msgstr "Verberg mrViewer"
 
@@ -4858,14 +4858,14 @@ msgid "Left View"
 msgstr "Linker uitzicht"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:547 standalone/main.cpp:574
+#: standalone/main.cpp:524 standalone/main.cpp:551
 msgid "Left view"
 msgstr "Linker uitzicht"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:531 standalone/main.cpp:537 standalone/main.cpp:557
-#: standalone/main.cpp:576
+#: standalone/main.cpp:508 standalone/main.cpp:514 standalone/main.cpp:534
+#: standalone/main.cpp:553
 msgid "Left/right"
 msgstr "Links/Rechtsaf"
 
@@ -5037,7 +5037,7 @@ msgstr "Ik heb schijfsleutels geladen van "
 msgid "Local Caption"
 msgstr "lokaal teken"
 
-#: standalone/main.cpp:463
+#: standalone/main.cpp:440
 msgid "Lockfile "
 msgstr "bestandsvergrendeling "
 
@@ -6419,7 +6419,7 @@ msgstr "Kwaliteit"
 msgid "Quicktime Movie"
 msgstr "snelle film"
 
-#: standalone/main.cpp:353
+#: standalone/main.cpp:332
 msgid "Quit mrViewer"
 msgstr "Verlaat mrViewer"
 
@@ -6585,7 +6585,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Roodwaarde van de beeldpixel onder de muis."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:567 standalone/main.cpp:580
+#: standalone/main.cpp:544 standalone/main.cpp:557
 msgid "Red/cyan glasses"
 msgstr "Rode lenzen/cyaan"
 
@@ -6819,12 +6819,12 @@ msgid "Right View"
 msgstr "Juiste blik"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:549 standalone/main.cpp:574
+#: standalone/main.cpp:526 standalone/main.cpp:551
 msgid "Right view"
 msgstr "Juiste blik"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:559 standalone/main.cpp:576
+#: standalone/main.cpp:536 standalone/main.cpp:553
 msgid "Right/left"
 msgstr "Rechts/links"
 
@@ -7211,7 +7211,7 @@ msgid "Sep"
 msgstr "september"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:527 standalone/main.cpp:536
+#: standalone/main.cpp:504 standalone/main.cpp:513
 msgid "Separate layers"
 msgstr "aparte lagen"
 
@@ -7228,7 +7228,7 @@ msgstr "opeenvolgingen"
 msgid "Server"
 msgstr "Server"
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:331
 msgid "Services"
 msgstr "Diensten"
 
@@ -7454,11 +7454,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR-stereobeeld"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:551
+#: standalone/main.cpp:528
 msgid "Stereo OpenGL"
 msgstr "OpenGL-stereo"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:550
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Stereo-uitgang is ongeldig. Geldige waarden zijn: "
 
@@ -8199,8 +8199,8 @@ msgstr "Bovenste veld"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:529 standalone/main.cpp:536 standalone/main.cpp:553
-#: standalone/main.cpp:575
+#: standalone/main.cpp:506 standalone/main.cpp:513 standalone/main.cpp:530
+#: standalone/main.cpp:552
 msgid "Top/bottom"
 msgstr "Superieur/lager"
 
@@ -8224,7 +8224,7 @@ msgstr "Traditioneel zonder bereik"
 msgid "Transform"
 msgstr "transformatie"
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:324
 msgid "Translations: "
 msgstr "Vertalingen: "
 
@@ -8321,7 +8321,7 @@ msgstr "Laatste getekende vorm ongedaan maken"
 msgid "Unhandled Exception"
 msgstr "onverwerkte uitzondering"
 
-#: standalone/main.cpp:647
+#: standalone/main.cpp:624
 msgid "Unhandled exception"
 msgstr "onverwerkte uitzondering"
 
@@ -8395,7 +8395,7 @@ msgstr "Onbekend gegevenstype om van tekst te converteren"
 msgid "Unknown destination video frame format: "
 msgstr "Onbekend videoframe-formaat van de ontvanger: "
 
-#: standalone/main.cpp:667
+#: standalone/main.cpp:644
 msgid "Unknown error"
 msgstr "Onbekende fout"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-13 06:03-0300\n"
+"POT-Creation-Date: 2022-04-13 07:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -218,7 +218,7 @@ msgstr " Sıklık: "
 msgid " has different display window than "
 msgstr " farklı görünüm penceresine sahip "
 
-#: standalone/main.cpp:503
+#: standalone/main.cpp:480
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -502,7 +502,7 @@ msgstr "(PAL alanları)"
 msgid "(RT) Render Transform"
 msgstr "Render Dönüşümü"
 
-#: standalone/main.cpp:464
+#: standalone/main.cpp:441
 msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
@@ -1088,7 +1088,7 @@ msgid "About"
 msgstr "mrViewer hakkında"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: standalone/main.cpp:348
+#: standalone/main.cpp:327
 msgid "About mrViewer"
 msgstr "mrViewer hakkında"
 
@@ -1323,7 +1323,7 @@ msgstr "Geri Açıklama Kutusu Adımı"
 msgid "Annotation Frame Step Forwards"
 msgstr "Adım Puanlama Kutusu İleri"
 
-#: standalone/main.cpp:501
+#: standalone/main.cpp:478
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -1674,7 +1674,7 @@ msgstr "Klip Blues Kazancı"
 msgid "Blue value of image pixel under mouse."
 msgstr "Farenin altındaki piksel görüntüsünün mavi değeri."
 
-#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:663
+#: core/mrvClient.cpp:343 core/mrvClient.cpp:504 standalone/main.cpp:640
 msgid "Boost exception: "
 msgstr "Boost İstisnası: "
 
@@ -1691,7 +1691,7 @@ msgid "Bottom Field"
 msgstr "Alt Alan"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:48
-#: standalone/main.cpp:555 standalone/main.cpp:575
+#: standalone/main.cpp:532 standalone/main.cpp:552
 msgid "Bottom/top"
 msgstr "daha düşük/Daha yüksek"
 
@@ -1898,7 +1898,7 @@ msgid "Char"
 msgstr "Karakter"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:53
-#: standalone/main.cpp:565 standalone/main.cpp:579
+#: standalone/main.cpp:542 standalone/main.cpp:556
 msgid "Checkerboard pattern"
 msgstr "Kafes"
 
@@ -2936,7 +2936,7 @@ msgid "Custom Field 9"
 msgstr "Özel Alan 9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:55
-#: standalone/main.cpp:569 standalone/main.cpp:581
+#: standalone/main.cpp:546 standalone/main.cpp:558
 msgid "Cyan/red glasses"
 msgstr "Camgöbeği Lensler/kırmızı"
 
@@ -3450,12 +3450,12 @@ msgid "Escape"
 msgstr "Kaçmak"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:52
-#: standalone/main.cpp:563 standalone/main.cpp:578
+#: standalone/main.cpp:540 standalone/main.cpp:555
 msgid "Even/odd columns"
 msgstr "Garip/çift sütun"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:51
-#: standalone/main.cpp:561 standalone/main.cpp:577
+#: standalone/main.cpp:538 standalone/main.cpp:554
 msgid "Even/odd rows"
 msgstr "Garip/çift çizgiler"
 
@@ -3709,7 +3709,7 @@ msgstr "İsim"
 msgid "Filename of the clip"
 msgstr "Klip dosyası adı"
 
-#: standalone/main.cpp:659
+#: standalone/main.cpp:636
 msgid "Filesystem error: "
 msgstr "Dosya sistemi hatası: "
 
@@ -4184,11 +4184,11 @@ msgstr "altıgen"
 msgid "Hex Values"
 msgstr "Onaltılık Değerler"
 
-#: standalone/main.cpp:351
+#: standalone/main.cpp:330
 msgid "Hide Others"
 msgstr "Diğerlerini Gizle"
 
-#: standalone/main.cpp:350
+#: standalone/main.cpp:329
 msgid "Hide mrViewer"
 msgstr "mrViewer'ı gizle"
 
@@ -4841,14 +4841,14 @@ msgid "Left View"
 msgstr "Sol Görünüm"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:44
-#: standalone/main.cpp:547 standalone/main.cpp:574
+#: standalone/main.cpp:524 standalone/main.cpp:551
 msgid "Left view"
 msgstr "Sol Görünüm"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:29
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:49
-#: standalone/main.cpp:531 standalone/main.cpp:537 standalone/main.cpp:557
-#: standalone/main.cpp:576
+#: standalone/main.cpp:508 standalone/main.cpp:514 standalone/main.cpp:534
+#: standalone/main.cpp:553
 msgid "Left/right"
 msgstr "Ayrıldı/Sağ"
 
@@ -5020,7 +5020,7 @@ msgstr "Sürücü anahtarlarını şuradan yükledim: "
 msgid "Local Caption"
 msgstr "yerel işaret"
 
-#: standalone/main.cpp:463
+#: standalone/main.cpp:440
 msgid "Lockfile "
 msgstr "dosya kilidi "
 
@@ -6400,7 +6400,7 @@ msgstr "Kalite"
 msgid "Quicktime Movie"
 msgstr "hızlı film"
 
-#: standalone/main.cpp:353
+#: standalone/main.cpp:332
 msgid "Quit mrViewer"
 msgstr "mrViewer'dan çıkın"
 
@@ -6566,7 +6566,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Farenin altındaki görüntü pikselinin kırmızı değeri."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:54
-#: standalone/main.cpp:567 standalone/main.cpp:580
+#: standalone/main.cpp:544 standalone/main.cpp:557
 msgid "Red/cyan glasses"
 msgstr "Kırmızı Lensler/camgöbeği"
 
@@ -6800,12 +6800,12 @@ msgid "Right View"
 msgstr "Doğru görüş"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:45
-#: standalone/main.cpp:549 standalone/main.cpp:574
+#: standalone/main.cpp:526 standalone/main.cpp:551
 msgid "Right view"
 msgstr "Doğru görüş"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:50
-#: standalone/main.cpp:559 standalone/main.cpp:576
+#: standalone/main.cpp:536 standalone/main.cpp:553
 msgid "Right/left"
 msgstr "Doğru/ayrıldı"
 
@@ -7186,7 +7186,7 @@ msgid "Sep"
 msgstr "Eylül"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:27
-#: standalone/main.cpp:527 standalone/main.cpp:536
+#: standalone/main.cpp:504 standalone/main.cpp:513
 msgid "Separate layers"
 msgstr "ayrı katmanlar"
 
@@ -7203,7 +7203,7 @@ msgstr "diziler"
 msgid "Server"
 msgstr "sunucu"
 
-#: standalone/main.cpp:352
+#: standalone/main.cpp:331
 msgid "Services"
 msgstr "Hizmetler"
 
@@ -7429,11 +7429,11 @@ msgid "Stereo EXR Picture"
 msgstr "EXR Stereo Görüntü"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:46
-#: standalone/main.cpp:551
+#: standalone/main.cpp:528
 msgid "Stereo OpenGL"
 msgstr "OpenGL Stereo"
 
-#: standalone/main.cpp:573
+#: standalone/main.cpp:550
 msgid "Stereo Output is invalid.  Valid values are: "
 msgstr "Stereo çıkış geçersiz. Geçerli değerler şunlardır: "
 
@@ -8161,8 +8161,8 @@ msgstr "Üst Alan"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:28
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:47
-#: standalone/main.cpp:529 standalone/main.cpp:536 standalone/main.cpp:553
-#: standalone/main.cpp:575
+#: standalone/main.cpp:506 standalone/main.cpp:513 standalone/main.cpp:530
+#: standalone/main.cpp:552
 msgid "Top/bottom"
 msgstr "Daha yüksek/daha düşük"
 
@@ -8186,7 +8186,7 @@ msgstr "Menzilsiz Geleneksel"
 msgid "Transform"
 msgstr "dönüşüm"
 
-#: standalone/main.cpp:345
+#: standalone/main.cpp:324
 msgid "Translations: "
 msgstr "Çeviriler: "
 
@@ -8283,7 +8283,7 @@ msgstr "Çizilen Son Şekli Geri Al"
 msgid "Unhandled Exception"
 msgstr "işlenmeyen özel durum"
 
-#: standalone/main.cpp:647
+#: standalone/main.cpp:624
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
@@ -8357,7 +8357,7 @@ msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
-#: standalone/main.cpp:667
+#: standalone/main.cpp:644
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
 
