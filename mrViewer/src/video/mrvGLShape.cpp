@@ -293,6 +293,64 @@ std::string GLArrowShape::send() const
     return buf;
 }
 
+void GLRectangleShape::draw( double z )
+{
+
+    //Turn on Color Buffer
+    glColorMask(true, true, true, true);
+
+    //Only write to the Stencil Buffer where 1 is not set
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+    //Keep the content of the Stencil Buffer
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+
+
+    glEnable( GL_BLEND );
+    // So compositing works properly
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f( r, g, b, a );
+
+    glLineWidth( pen_size );
+
+    glBegin( GL_LINE_LOOP );
+    {
+        glVertex2d( pts[0].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[1].y );
+    }
+    glEnd();
+
+    glDisable( GL_BLEND );
+
+}
+
+std::string GLRectangleShape::send() const
+{
+
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
+    std::string buf = "GLRectangleShape ";
+    char tmp[256];
+    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
+             pen_size, frame );
+    buf += tmp;
+    GLPathShape::PointList::const_iterator i = pts.begin();
+    GLPathShape::PointList::const_iterator e = pts.end();
+    for ( ; i != e; ++i )
+    {
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
+    }
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
+    return buf;
+}
+
 
 void GLCircleShape::draw( double z )
 {

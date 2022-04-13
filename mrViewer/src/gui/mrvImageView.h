@@ -165,6 +165,7 @@ public:
         kCircle       = 1 << 8,
         kArrow        = 1 << 9,
         kCopyFrameXY  = 1 << 10,
+        kRectangle    = 1 << 11,
     };
 
 
@@ -707,6 +708,7 @@ public:
     void erase_mode( bool temporary = false );
     void circle_mode();
     void arrow_mode();
+    void rectangle_mode();
     void move_pic_mode();
     void scale_pic_mode();
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-11 20:46-0300\n"
+"POT-Creation-Date: 2022-04-13 00:12-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Δεν υπάρχει ήχος στο αρχείο"
 
-#: gui/mrvImageView.cpp:5737
+#: gui/mrvImageView.cpp:5822
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Χρήση "
 msgid "  Choosing "
 msgstr "  διαλέγοντας "
 
-#: gui/mrvImageView.cpp:5742
+#: gui/mrvImageView.cpp:5827
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " απέτυχε με "
 msgid " failed. "
 msgstr " αποτυχία. "
 
-#: gui/mrvImageView.cpp:9095
+#: gui/mrvImageView.cpp:9193
 msgid " for channel.  Maximum: "
 msgstr " για το κανάλι. Το πολύ: "
 
@@ -506,9 +506,9 @@ msgstr "Render Transformation"
 msgid "(Remove if mrViewer does not start)"
 msgstr "(Καταργήστε το εάν το mrViewer δεν ξεκινά)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2229
-#: gui/mrvImageView.cpp:9069 gui/mrvImageView.cpp:9756
-#: gui/mrvImageView.cpp:9757 gui/mrvImageView.cpp:9765
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2264
+#: gui/mrvImageView.cpp:9167 gui/mrvImageView.cpp:9854
+#: gui/mrvImageView.cpp:9855 gui/mrvImageView.cpp:9863
 msgid "(no image)"
 msgstr "(Χωρίς εικόνα)"
 
@@ -536,7 +536,7 @@ msgstr "******* Προστέθηκαν κενά μέσα"
 msgid "+"
 msgstr "+"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2308
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2343
 msgid "+0.0  f/8.0"
 msgstr "+0,0f/8.0"
 
@@ -578,7 +578,7 @@ msgstr ". Το χαρακτηριστικό πρέπει να έχει τη μο
 msgid ".  Saving pixel type is "
 msgstr ". Ο τύπος εικονοστοιχείου προς αποθήκευση είναι "
 
-#: gui/mrvImageView.cpp:9096
+#: gui/mrvImageView.cpp:9194
 msgid ". Widget label is "
 msgstr ". Η ετικέτα widget είναι "
 
@@ -590,12 +590,12 @@ msgstr "0,00 Κανένα"
 msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1524
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1559
 #: gui/mrvPreferences.cpp:1848
 msgid "0.45"
 msgstr "0,45"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1523
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1558
 msgid "0.55"
 msgstr "0,55"
 
@@ -619,7 +619,7 @@ msgstr "1,0 0,0 0,0 0,0 1,0 0,0 0,0 0,0 1,0"
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr "1,0 0,0 0,0 0,0 0,0 1,0 0,0 0,0 0,0 0,0 1,0 0,0 0,0 0,0 0,0 1,0"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1522
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1557
 msgid "1.00"
 msgstr "1,00"
 
@@ -651,7 +651,7 @@ msgstr "1,66 Ευρωπαϊκή ευρεία οθόνη"
 msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1556
 #: gui/mrvPreferences.cpp:1846
 msgid "1.8"
 msgstr "1,8"
@@ -660,45 +660,45 @@ msgstr "1,8"
 msgid "1.85 Widescreen (3-perf)"
 msgstr "1,85 ευρεία οθόνη (3-perf)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1702
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1737
 msgid "1/2"
 msgstr "1/δύο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1701
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1736
 msgid "1/3"
 msgstr "1/3"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1735
 msgid "1/4"
 msgstr "1/4"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1734
 msgid "1/5"
 msgstr "1/5"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1733
 msgid "1/6"
 msgstr "1/6"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1697
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1732
 msgid "1/7"
 msgstr "1/7"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1696
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
 msgid "1/8"
 msgstr "1/8"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1695
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1730
 msgid "1/9"
 msgstr "1/9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:198
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1923
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1958
 msgid "12"
 msgstr "12"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:197
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1922
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1957
 msgid "12.5"
 msgstr "12,5"
 
@@ -707,11 +707,11 @@ msgid "128x128x128"
 msgstr "128x128x128"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:196
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1956
 msgid "14.985"
 msgstr "14,985"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1920
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1955
 msgid "15"
 msgstr "15"
 
@@ -732,7 +732,7 @@ msgstr "192x192x192"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:261
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:877
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:886
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2435
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2470
 #: gui/mrvImageInformation.cpp:4022
 msgid "1:1"
 msgstr "1:1"
@@ -767,7 +767,7 @@ msgstr "1:8"
 msgid "2.10 VistaVision"
 msgstr "2,10 VistaVision"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
 #: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1845
 msgid "2.2"
 msgstr "2,2"
@@ -792,12 +792,12 @@ msgstr "2,35 CinemaScope (παλιό 2,35)"
 msgid "2.39 Panavision (new 2.35)"
 msgstr "2,39 Panavision (νέο 2,35)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1919
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1954
 msgid "23.97"
 msgstr "23,97"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:195
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1918
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1953
 msgid "24"
 msgstr "24"
 
@@ -806,7 +806,7 @@ msgid "24000/1001"
 msgstr "24000/1001"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:194
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1917
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1952
 msgid "25"
 msgstr "25"
 
@@ -815,12 +815,12 @@ msgid "256x256x256"
 msgstr "256x256x256"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:193
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1916
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1951
 msgid "29.97"
 msgstr "29,97"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:192
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1915
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1950
 msgid "30"
 msgstr "30"
 
@@ -899,23 +899,23 @@ msgstr "Ταινία 3gp"
 msgid "3d View"
 msgstr "τρισδιάστατη προβολή"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1352
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1387
 msgid "3dView"
 msgstr "3dview"
 
-#: gui/mrvHotkey.cpp:305
+#: gui/mrvHotkey.cpp:306
 msgid "3dView Density Down"
 msgstr "Χαμηλότερη πυκνότητα προβολής 3D"
 
-#: gui/mrvHotkey.cpp:304
+#: gui/mrvHotkey.cpp:305
 msgid "3dView Density Up"
 msgstr "Αυξήστε την πυκνότητα προβολής 3D"
 
-#: gui/mrvHotkey.cpp:303
+#: gui/mrvHotkey.cpp:304
 msgid "3dView Z Depth Down"
 msgstr "Χαμηλότερο βάθος Z της τρισδιάστατης προβολής"
 
-#: gui/mrvHotkey.cpp:302
+#: gui/mrvHotkey.cpp:303
 msgid "3dView Z Depth Up"
 msgstr "Αυξήστε το βάθος Z της τρισδιάστατης προβολής"
 
@@ -924,17 +924,17 @@ msgid "4.00 Polyvision"
 msgstr "4,00 Polyvision"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:191
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1914
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1949
 msgid "50"
 msgstr "50"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:190
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1913
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1948
 msgid "59.94"
 msgstr "59,94"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1912
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1947
 msgid "60"
 msgstr "60"
 
@@ -958,7 +958,7 @@ msgstr "8 bit"
 msgid "8-bit Values"
 msgstr "Τιμές 8-bit"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2846
 msgid "8-bit sample of image pixel under mouse."
 msgstr "Δειγματοληψία 8-bit του εικονοστοιχείου εικόνας κάτω από το ποντίκι."
 
@@ -968,7 +968,7 @@ msgstr "Δειγματοληψία 8-bit του εικονοστοιχείου �
 msgid "8-bits"
 msgstr "8-bit"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1728
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1763
 msgid "8bit"
 msgstr "8 bit"
 
@@ -992,46 +992,46 @@ msgstr ": Λάθος "
 msgid ": Unknown pixel type"
 msgstr ": άγνωστος τύπος pixel"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2295
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3080
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2330
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3115
 msgid "@<"
 msgstr "@<"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1809
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1844
 msgid "@<->"
 msgstr "@<->"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3093
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3128
 msgid "@<|"
 msgstr "@<|"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2323
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2358
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3167
 msgid "@>"
 msgstr "@>"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3145
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3180
 msgid "@>|"
 msgstr "@>|"
 
-#: gui/mrvHotkey.cpp:589
+#: gui/mrvHotkey.cpp:591
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Λειτουργία\t@B12@C7@b@.Κλειδιά"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3067
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3102
 msgid "@|<"
 msgstr "@|<"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3119
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3154
 msgid "@|>"
 msgstr "@|>"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1807
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3106
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1842
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3141
 msgid "@||"
 msgstr "@||"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3233
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3268
 msgid "A"
 msgstr "A"
 
@@ -1049,11 +1049,11 @@ msgstr ""
 "Επαγγελματίας προβολής ταινιών και εικόνων\n"
 "Παραδείγματα:\n"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1351
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1386
 msgid "A-B, Stereo 3D Options"
 msgstr "Stereo 3D, AB Options"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2210
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2245
 msgid "A/B"
 msgstr "A/B"
 
@@ -1084,7 +1084,7 @@ msgstr "Βίντεο AVCHD"
 msgid "AVI Movie"
 msgstr "Ταινία AVI"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1361
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1396
 msgid "About"
 msgstr "Σχετικά με το mrViewer"
 
@@ -1110,12 +1110,12 @@ msgstr "Να αποδεχθεί"
 msgid "Accept settings but don't save."
 msgstr "Αποδεχτείτε τις ρυθμίσεις αλλά μην τις αποθηκεύσετε."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:529
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:536
 msgid "Action"
 msgstr "Ενέργειες"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1167
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1350
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1385
 msgid "Action Tools"
 msgstr "Εργαλεία δράσης"
 
@@ -1124,7 +1124,7 @@ msgstr "Εργαλεία δράσης"
 msgid "Actions"
 msgstr "Ενέργειες"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2450
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2485
 msgid "Activate viewer's 3D Lut."
 msgstr "Ενεργοποιήστε το 3D LUT του εικονοσκοπίου."
 
@@ -1139,7 +1139,7 @@ msgstr ""
 msgid "Active"
 msgstr "Ενεργός"
 
-#: gui/mrvHotkey.cpp:485
+#: gui/mrvHotkey.cpp:487
 msgid "Add"
 msgstr "Προσθήκη"
 
@@ -1167,7 +1167,7 @@ msgstr "Ρύθμιση κορεσμού εικόνας"
 msgid "Adopted Neutral"
 msgstr "Ουδέτερη Υιοθετήθηκε"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3120
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3155
 msgid "Advance one frame."
 msgstr "Προωθήστε ένα καρέ."
 
@@ -1184,8 +1184,8 @@ msgid "Algorithm when not OCIO"
 msgstr "Αλγόριθμος όταν δεν χρησιμοποιείται OCIO"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:163
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:727
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3452
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:762
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3487
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "Τα παντα"
@@ -1206,12 +1206,12 @@ msgstr "όλα τα στρώματα"
 msgid "All Possible"
 msgstr "Όλα τα δυνατά"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3216
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3251
 msgid "Allows you to adjust frame rate playback."
 msgstr "Σας επιτρέπει να προσαρμόσετε την ταχύτητα αναπαραγωγής."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2389
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2399
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2424
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2434
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -1219,7 +1219,7 @@ msgstr ""
 "Σας επιτρέπει να προσαρμόσετε την καμπύλη γάμμα για εμφάνιση.\n"
 "Η τιμή είναι: pow( 2, 1/Χ );"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2261
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2296
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "Σας επιτρέπει να προσαρμόσετε το κέρδος ή την έκθεση της εικόνας."
 
@@ -1227,21 +1227,21 @@ msgstr "Σας επιτρέπει να προσαρμόσετε το κέρδο�
 msgid "Allows you to select a standard cropping area around image."
 msgstr "Σας επιτρέπει να επιλέξετε την τυπική μάσκα γύρω από την εικόνα."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2230
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2265
 msgid "Allows you to select different image channels or layers."
 msgstr "Σας επιτρέπει να επιλέξετε διαφορετικό κανάλι ή στρώματα της εικόνας."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3269
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3304
 msgid "Allows you to set starting frame for timeline."
 msgstr "Σας επιτρέπει να ορίσετε το καρέ έναρξης της γραμμής χρόνου."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3284
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3319
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Σας επιτρέπει να ορίσετε το τελικό καρέ για τη γραμμή χρόνου."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9187
-#: gui/mrvImageView.cpp:9657 gui/mrvImageView.cpp:9719
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9285
+#: gui/mrvImageView.cpp:9755 gui/mrvImageView.cpp:9817
 msgid "Alpha"
 msgstr "Αλφα"
 
@@ -1250,12 +1250,12 @@ msgid "Alpha Only"
 msgstr "μόνο άλφα"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3046
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2068
-#: gui/mrvImageView.cpp:9168 gui/mrvImageView.cpp:9720
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2109
+#: gui/mrvImageView.cpp:9266 gui/mrvImageView.cpp:9818
 msgid "Alpha Overlay"
 msgstr "Άλφα Επιγραφή"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2800
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2835
 msgid "Alpha value of image pixel under mouse."
 msgstr "Τιμή άλφα της εικόνας pixel κάτω από το ποντίκι."
 
@@ -1318,11 +1318,11 @@ msgstr ""
 "Ποσότητα εξαγωγής λεπτομερειών.\n"
 "Διατίθεται μόνο κατά την αποκωδικοποίηση 1:1."
 
-#: gui/mrvHotkey.cpp:335
+#: gui/mrvHotkey.cpp:336
 msgid "Annotation Frame Step Backwards"
 msgstr "Βήμα πλαισίου σχολιασμού πίσω"
 
-#: gui/mrvHotkey.cpp:339
+#: gui/mrvHotkey.cpp:340
 msgid "Annotation Frame Step Forwards"
 msgstr "Βήμα Βαθμολογίας κουτί Εμπρός"
 
@@ -1385,25 +1385,25 @@ msgstr ""
 msgid "Area"
 msgstr "Περιοχή"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:552
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2499
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:559
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2534
 msgid "Area Select Tool"
 msgstr "Εργαλείο επιλογής περιοχής"
 
-#: gui/mrvHotkey.cpp:380
+#: gui/mrvHotkey.cpp:381
 msgid "Area Selection Mode"
 msgstr "Λειτουργία επιλογής περιοχής"
 
-#: gui/mrvImageView.cpp:1687
+#: gui/mrvImageView.cpp:1695
 msgid "Arrow"
 msgstr "Βέλος"
 
-#: gui/mrvHotkey.cpp:385
+#: gui/mrvHotkey.cpp:386
 msgid "Arrow Mode"
 msgstr "Λειτουργία βέλους"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:644
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2575
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:651
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2610
 msgid "Arrow Tool"
 msgstr "εργαλείο βέλους"
 
@@ -1415,7 +1415,7 @@ msgstr "Αναλογία απεικόνισης"
 msgid "Aspect ratio of clip"
 msgstr "Αναλογία διαστάσεων κλιπ"
 
-#: gui/mrvHotkey.cpp:398
+#: gui/mrvHotkey.cpp:400
 msgid "Attach Audio File"
 msgstr "Συνδεδεμένο αρχείο ήχου"
 
@@ -1436,7 +1436,7 @@ msgstr "γνωρίσματα"
 msgid "Attributes Menu"
 msgstr "Μενού χαρακτηριστικών"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2629
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2664
 msgid "Attrs"
 msgstr "Attr"
 
@@ -1466,7 +1466,7 @@ msgstr "Κομμάτι ήχου #%d"
 msgid "Audio Streams"
 msgstr "ηχητικά κομμάτια"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3248
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3283
 msgid "Audio Volume"
 msgstr "ένταση ήχου"
 
@@ -1494,15 +1494,15 @@ msgstr "Το πακέτο ήχου είναι άγνωστο, αναμένετε
 msgid "Audio packets empty at end of seek"
 msgstr "Κενά πακέτα ήχου στο τέλος της αναζήτησης"
 
-#: gui/mrvImageView.cpp:5191
+#: gui/mrvImageView.cpp:5252
 msgid "Audio/Attach Audio File"
 msgstr "Ήχος/Προσθήκη αρχείου ήχου"
 
-#: gui/mrvImageView.cpp:5196
+#: gui/mrvImageView.cpp:5257
 msgid "Audio/Detach Audio File"
 msgstr "Ήχος/Αποσύνδεση αρχείου ήχου"
 
-#: gui/mrvImageView.cpp:5193
+#: gui/mrvImageView.cpp:5254
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Ήχος/Επεξεργασία πλαισίου έναρξης ήχου"
 
@@ -1571,7 +1571,7 @@ msgstr "ΜΠΛΕ"
 msgid "BRAW Loading"
 msgstr "Φόρτωση BRAW"
 
-#: gui/mrvHotkey.cpp:437
+#: gui/mrvHotkey.cpp:439
 msgid "BackSpace"
 msgstr "Διαγραφή στην Πίσω"
 
@@ -1651,7 +1651,7 @@ msgid "Black Frame"
 msgstr "Μαύρο κουτί"
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
-#: core/Sequence.cpp:1163 core/Sequence.cpp:1337
+#: core/Sequence.cpp:1185 core/Sequence.cpp:1359
 msgid "Black Gap"
 msgstr "μαύρο κενό"
 
@@ -1662,8 +1662,8 @@ msgstr "λειτουργία ανάμειξης"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2621
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3048
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9182
-#: gui/mrvImageView.cpp:9718
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9280
+#: gui/mrvImageView.cpp:9816
 msgid "Blue"
 msgstr "Μπλε"
 
@@ -1675,7 +1675,7 @@ msgstr "Μπλε κέρδος"
 msgid "Blue Gain of clip."
 msgstr "Κλιπ Blues Gain"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2793
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2828
 msgid "Blue value of image pixel under mouse."
 msgstr "Μπλε τιμή της εικόνας pixel κάτω από το ποντίκι."
 
@@ -1687,11 +1687,11 @@ msgstr "Εξαίρεση ενίσχυσης: "
 msgid "Both"
 msgstr "Και οι δύο"
 
-#: gui/mrvImageView.cpp:11060
+#: gui/mrvImageView.cpp:11158
 msgid "Bottom"
 msgstr "πιο χαμηλα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1554
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1589
 msgid "Bottom Field"
 msgstr "Κάτω Πεδίο"
 
@@ -1856,7 +1856,7 @@ msgstr ""
 msgid "Canon Raw Picture"
 msgstr "Canon Raw Image"
 
-#: gui/mrvHotkey.cpp:461
+#: gui/mrvHotkey.cpp:463
 msgid "CapsLock"
 msgstr "κλειδαριά Βάρδια."
 
@@ -1880,15 +1880,15 @@ msgstr "Κατηγορία"
 msgid "Center"
 msgstr "Κέντρο"
 
-#: gui/mrvHotkey.cpp:324
+#: gui/mrvHotkey.cpp:325
 msgid "Center Image"
 msgstr "Κεντράρετε την εικόνα"
 
-#: gui/mrvImageView.cpp:3529
+#: gui/mrvImageView.cpp:3589
 msgid "Change Image failed"
 msgstr "Η αλλαγή εικόνας απέτυχε"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2412
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2447
 msgid "Changes frame/field display"
 msgstr "Αλλαγή δειγματοληψίας πλαισίου/εξοχή"
 
@@ -1910,7 +1910,7 @@ msgstr "Χαρακτήρας"
 msgid "Checkerboard pattern"
 msgstr "πλέγμα"
 
-#: core/guessImage.cpp:288 core/Sequence.cpp:1164 gui/mrvImageBrowser.cpp:344
+#: core/guessImage.cpp:288 core/Sequence.cpp:1186 gui/mrvImageBrowser.cpp:344
 msgid "Checkered"
 msgstr "πλέγμα"
 
@@ -1943,16 +1943,16 @@ msgstr "Κινηματογράφος"
 msgid "Cineon Picture"
 msgstr "Εικόνα Cineon"
 
-#: gui/mrvImageView.cpp:1661
+#: gui/mrvImageView.cpp:1667
 msgid "Circle"
 msgstr "Κύκλος"
 
-#: gui/mrvHotkey.cpp:386
+#: gui/mrvHotkey.cpp:388
 msgid "Circle Mode"
 msgstr "Λειτουργία κύκλου"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:629
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2560
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:636
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2595
 msgid "Circle Tool"
 msgstr "Εργαλείο κύκλου"
 
@@ -1964,11 +1964,11 @@ msgstr "Πόλη"
 msgid "Clear"
 msgstr "Εξάλειψη"
 
-#: gui/mrvHotkey.cpp:348
+#: gui/mrvHotkey.cpp:349
 msgid "Clear Image Cache"
 msgstr "Εκκαθάριση προσωρινής μνήμης εικόνας"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:829
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:864
 msgid "Client"
 msgstr "Πελάτης"
 
@@ -1984,7 +1984,7 @@ msgstr "συμπίεση κλιπ"
 msgid "Clip is a sequence of frames"
 msgstr "Το Κλιπ είναι μια ακολουθία καρέ."
 
-#: gui/mrvHotkey.cpp:402
+#: gui/mrvHotkey.cpp:404
 msgid "Clone Image"
 msgstr "Κλωνοποιήστε την εικόνα"
 
@@ -2013,7 +2013,7 @@ msgstr "Κλειστές λεζάντες"
 msgid "Closed movie file"
 msgstr "Έκλεισα τη δημιουργία της ταινίας ή της σεκάνς"
 
-#: core/mrvServer.cpp:2167
+#: core/mrvServer.cpp:2185
 msgid "Closed server at port "
 msgstr "Έκλεισα τον διακομιστή στη θύρα "
 
@@ -2058,14 +2058,14 @@ msgid "CollapsibleGroup not found"
 msgstr "Η πτυσσόμενη ομάδα δεν βρέθηκε"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2589
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2624
 #: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2793
 #: core/exrImage.cpp:3050 core/exrImage.cpp:3058 core/exrImage.cpp:3070
 #: core/exrImage.cpp:3075 core/exrImage.cpp:3077 core/exrImage.cpp:3114
 #: core/exrImage.cpp:3147 core/wandImage.cpp:1121 core/wandImage.cpp:1183
-#: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2105
-#: gui/mrvImageView.cpp:2167 gui/mrvImageView.cpp:9717
-#: gui/mrvImageView.cpp:9765
+#: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2146
+#: gui/mrvImageView.cpp:2208 gui/mrvImageView.cpp:9815
+#: gui/mrvImageView.cpp:9863
 msgid "Color"
 msgstr "Χρώμα"
 
@@ -2073,11 +2073,11 @@ msgstr "Χρώμα"
 msgid "Color Area"
 msgstr "Περιοχή χρώματος"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1348
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1383
 msgid "Color Controls"
 msgstr "Έλεγχοι χρώματος"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1347
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1382
 msgid "Color Info"
 msgstr "Πληροφορίες περιοχής χρώματος"
 
@@ -2105,11 +2105,11 @@ msgstr "έγχρωμο θέμα"
 msgid "Color Version"
 msgstr "έγχρωμη έκδοση"
 
-#: gui/mrvImageView.cpp:9004
+#: gui/mrvImageView.cpp:9102
 msgid "Color channel not found at index "
 msgstr "Το κανάλι χρώματος δεν βρέθηκε για ευρετήριο "
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2120
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2155
 msgid "Color controls"
 msgstr "χρωματικοί έλεγχοι"
 
@@ -2166,8 +2166,8 @@ msgstr "Η μέθοδος συμπίεσης δεν είναι διαθέσιμ�
 msgid "Compression to use when saving an exr."
 msgstr "Συμπίεση για χρήση κατά την αποθήκευση ενός exr."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:841
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:828
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:876
 #: core/mrvClient.cpp:471
 msgid "Connect"
 msgstr "Συνδέω-συωδεομαι"
@@ -2184,8 +2184,8 @@ msgstr "Συνδεδεμένος με"
 msgid "Connected to "
 msgstr "Συνδεδεμένος με "
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:803
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1357
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:838
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1392
 msgid "Connections"
 msgstr "συνδέσεις"
 
@@ -2228,15 +2228,19 @@ msgstr ""
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Απαιτείται μετατροπή. Εύρος: 1,0"
 
-#: gui/mrvHotkey.cpp:400
+#: gui/mrvHotkey.cpp:402
 msgid "Copy Frame, X, Y Values"
 msgstr "Αντιγραφή τιμών πλαισίου, X και Y"
 
-#: gui/mrvHotkey.cpp:401
+#: gui/mrvHotkey.cpp:403
 msgid "Copy RGBA Values"
 msgstr "Αντιγράψτε τις τιμές RGBA"
 
-#: gui/mrvImageView.cpp:2243
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:681
+msgid "Copy Reel, Shot, Frame, X and Y coordinates to clipboard"
+msgstr "Αντιγράψτε τις συντεταγμένες Reel, Shot, Frame, X και Y στο πρόχειρο"
+
+#: gui/mrvImageView.cpp:2284
 msgid "Copy X Y"
 msgstr "Αντιγραφή XY"
 
@@ -2301,15 +2305,15 @@ msgstr "Δεν μπόρεσα να εκχωρήσω δείγματα πηγής.
 msgid "Could not allocate stream"
 msgstr "Δεν μπορούσα να φιλοξενήσω το κομμάτι"
 
-#: core/Sequence.cpp:1298
+#: core/Sequence.cpp:1320
 msgid "Could not append child to stack. Error: "
 msgstr "Δεν μπορούσα να προσθέσω παιδί στη στοίβα. Λάθος: "
 
-#: core/Sequence.cpp:1424
+#: core/Sequence.cpp:1446
 msgid "Could not append one clip to track: "
 msgstr "Δεν μπορούσα να προσθέσω ένα κλιπ στο κομμάτι: "
 
-#: core/Sequence.cpp:1432
+#: core/Sequence.cpp:1454
 msgid "Could not append one track to stack: "
 msgstr "Δεν μπόρεσα να προσθέσω ένα κομμάτι στη στοίβα: "
 
@@ -2502,7 +2506,7 @@ msgstr "Δεν μπόρεσα να βρω δύο ακέραιους αριθμο
 msgid "Could not find two integers for vector "
 msgstr "Δεν μπόρεσα να βρω δύο ακέραιους αριθμούς για το διάνυσμα "
 
-#: core/Sequence.cpp:1286
+#: core/Sequence.cpp:1308
 msgid "Could not flatten tracks. Error: "
 msgstr "Οι ράγες δεν μπορούσαν να ισοπεδωθούν. Λάθος: "
 
@@ -2534,7 +2538,7 @@ msgstr "Δεν μπόρεσα να αρχικοποιήσω το cmm: "
 msgid "Could not initialize audio engine"
 msgstr "Δεν μπόρεσα να αρχικοποιήσω τη μηχανή ήχου"
 
-#: gui/mrvImageView.cpp:2208
+#: gui/mrvImageView.cpp:2249
 msgid "Could not initialize draw engine"
 msgstr "Δεν ήταν δυνατή η προετοιμασία της μηχανής σχεδίασης"
 
@@ -2570,7 +2574,7 @@ msgstr "Δεν μπορούσα να ανοίξω \""
 msgid "Could not open '"
 msgstr "Δεν μπορούσα να ανοίξω"
 
-#: core/Sequence.cpp:1357
+#: core/Sequence.cpp:1379
 msgid "Could not open .otio file. "
 msgstr "Δεν μπόρεσα να ανοίξω το αρχείο .otio. Λάθος: "
 
@@ -2630,7 +2634,7 @@ msgstr "Δεν μπόρεσα να μετακινήσω το buffer fifo. Λάθ
 msgid "Could not save '"
 msgstr "Δεν μπορούσα να σώσω»"
 
-#: core/Sequence.cpp:1438
+#: core/Sequence.cpp:1460
 msgid "Could not save .otio timeline: "
 msgstr "Δεν μπόρεσα να αποθηκεύσω τη γραμμή χρόνου .otio: "
 
@@ -2775,9 +2779,9 @@ msgstr "Χώρα"
 msgid "Country Code"
 msgstr "Κωδικός χώρας"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:815
-#: core/mrvServer.cpp:2134
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:818
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:850
+#: core/mrvServer.cpp:2152
 msgid "Create"
 msgstr "Δημιουργώ"
 
@@ -2845,7 +2849,7 @@ msgstr "Ημερομηνία Δημιουργίας"
 msgid "Created Time"
 msgstr "Χρόνος που δημιουργήθηκε"
 
-#: core/mrvServer.cpp:2164
+#: core/mrvServer.cpp:2182
 msgid "Created server at port "
 msgstr "Δημιούργησα έναν διακομιστή στη θύρα "
 
@@ -2867,12 +2871,12 @@ msgstr "ctrl"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:165
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:257
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:719
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3444
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:754
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3479
 msgid "Current"
 msgstr "Ρεύμα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3049
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3084
 msgid "Current frame."
 msgstr "Τρέχον κουτί."
 
@@ -3000,7 +3004,7 @@ msgid "DWAB"
 msgstr "DWAB"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1357
-#: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2902
+#: gui/mrvHotkey.cpp:332 gui/mrvImageInformation.cpp:2902
 msgid "Data Window"
 msgstr "Παράθυρο δεδομένων"
 
@@ -3012,7 +3016,7 @@ msgstr "Παράθυρο δεδομένων 2"
 msgid "Data Window of Clip"
 msgstr "Παράθυρο δεδομένων αποκοπής"
 
-#: gui/mrvHotkey.cpp:487
+#: gui/mrvHotkey.cpp:489
 msgid "Decimal"
 msgstr "Δεκαδικός"
 
@@ -3064,7 +3068,7 @@ msgstr "Σφάλμα αποκωδικοποίησης βίντεο αναζήτ�
 msgid "Decode_audio failed with error: "
 msgstr "Σφάλμα αποκωδικοποίησης ήχου: "
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2296
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
 msgid "Decrease exposure by 0.5."
 msgstr "Μειώστε την έκθεση κατά 0,5"
 
@@ -3076,7 +3080,7 @@ msgstr "Μείωση στο Υ"
 msgid "Deep Data"
 msgstr "βαθιά δεδομένα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1911
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1946
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "Προκαθορισμένο"
@@ -3110,7 +3114,7 @@ msgstr "Ελάττωμα ήχου κατά το άνοιγμα του mrViewer."
 msgid "Defaults"
 msgstr "Προκαθορισμένο"
 
-#: gui/mrvHotkey.cpp:448
+#: gui/mrvHotkey.cpp:450
 msgid "Delete"
 msgstr "Εξάλειψη"
 
@@ -3188,7 +3192,7 @@ msgstr ""
 "Ανάλυση: %dx%d\n"
 "Πλαίσια: %<PRId64> -%<PRId64> FPS %g"
 
-#: core/mrvClient.cpp:257 core/mrvServer.cpp:2148
+#: core/mrvClient.cpp:257 core/mrvServer.cpp:2166
 msgid "Disconnect"
 msgstr "Αποσυνδέω"
 
@@ -3206,7 +3210,7 @@ msgid "Display Gamma of Image"
 msgstr "Εύρος εμφάνισης εικόνας"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1343
-#: gui/mrvHotkey.cpp:330 gui/mrvImageInformation.cpp:2916
+#: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2916
 msgid "Display Window"
 msgstr "παράθυρο προβολής"
 
@@ -3218,7 +3222,7 @@ msgstr "Εμφάνιση παραθύρου 2"
 msgid "Display Window of Clip"
 msgstr "Παράθυρο εμφάνισης κλιπ"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2309
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -3236,7 +3240,7 @@ msgstr "Πρόβλεψη"
 msgid "Disposition of Track"
 msgstr "Διάταξη κομματιού"
 
-#: gui/mrvHotkey.cpp:488
+#: gui/mrvHotkey.cpp:490
 msgid "Divide"
 msgstr "διαιρέστε"
 
@@ -3254,19 +3258,19 @@ msgstr "Θέλετε να αντικαταστήσετε το '%s';"
 msgid "Double"
 msgstr "Διπλό"
 
-#: core/exrImage.cpp:1415 gui/mrvHotkey.cpp:455
+#: core/exrImage.cpp:1415 gui/mrvHotkey.cpp:457
 msgid "Down"
 msgstr "Κάτω"
 
-#: gui/mrvImageView.cpp:1636
+#: gui/mrvImageView.cpp:1640
 msgid "Draw"
 msgstr "Ζωγράφισε"
 
-#: gui/mrvHotkey.cpp:381
+#: gui/mrvHotkey.cpp:382
 msgid "Draw Mode"
 msgstr "Λειτουργία σχεδίασης"
 
-#: gui/mrvHotkey.cpp:382
+#: gui/mrvHotkey.cpp:383
 msgid "Draw Temporary Mode"
 msgstr "Προσωρινή λειτουργία σχεδίασης"
 
@@ -3275,7 +3279,7 @@ msgid "Driver"
 msgstr "οδηγούς"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:214
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1825
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1860
 msgid "Drop Frame Timecode"
 msgstr "Πλαίσια απορριμμάτων κωδικού χρόνου"
 
@@ -3300,7 +3304,7 @@ msgstr "Μήκος βίντεο"
 msgid "Dutch"
 msgstr "Ολλανδός (Nederlands)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3311
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3346
 msgid "E"
 msgstr "E"
 
@@ -3317,7 +3321,7 @@ msgid "EDL"
 msgstr "EDL"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1139
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1349
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1384
 msgid "EDL Edit"
 msgstr "Επεξεργασία EDL"
 
@@ -3333,7 +3337,7 @@ msgstr "Αλγόριθμος συμπίεσης EXR"
 msgid "Early 35mm"
 msgstr "35 χιλιοστά νωρίς"
 
-#: gui/mrvHotkey.cpp:399
+#: gui/mrvHotkey.cpp:401
 msgid "Edit Audio Frame Offset"
 msgstr "Επεξεργασία πλαισίου έναρξης ήχου"
 
@@ -3389,7 +3393,7 @@ msgstr "Κενή αναζήτηση ή προέκδοση"
 msgid "Encoding"
 msgstr "κρυπτογραφημένο"
 
-#: gui/mrvHotkey.cpp:449
+#: gui/mrvHotkey.cpp:451
 msgid "End"
 msgstr "Τέλος"
 
@@ -3408,20 +3412,20 @@ msgstr ""
 "Η μεταβλητή περιβάλλοντος MRV_SHADER_PATH δεν βρέθηκε, με χρήση εσωτερικού "
 "σκιερ."
 
-#: gui/mrvImageView.cpp:1716
+#: gui/mrvImageView.cpp:1753
 msgid "Erase"
 msgstr "Εξάλειψη"
 
-#: gui/mrvHotkey.cpp:383
+#: gui/mrvHotkey.cpp:384
 msgid "Erase Mode"
 msgstr "Λειτουργία διαγραφής"
 
-#: gui/mrvHotkey.cpp:384
+#: gui/mrvHotkey.cpp:385
 msgid "Erase Temporary Mode"
 msgstr "Λειτουργία προσωρινής διαγραφής"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2531
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:591
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2566
 msgid "Eraser Tool"
 msgstr "Εργαλείο διαγραφής"
 
@@ -3466,7 +3470,7 @@ msgstr "σφάλμα πληκτρολόγησης "
 msgid "Errors"
 msgstr "Λάθη"
 
-#: gui/mrvHotkey.cpp:436
+#: gui/mrvHotkey.cpp:438
 msgid "Escape"
 msgstr "Διαφυγή"
 
@@ -3492,7 +3496,7 @@ msgstr ""
 "Παραδείγματα:\n"
 "\n"
 
-#: gui/mrvImageView.cpp:3697
+#: gui/mrvImageView.cpp:3757
 msgid "Exchange Image failed"
 msgstr "Η εναλλαγή εικόνας απέτυχε"
 
@@ -3517,11 +3521,11 @@ msgstr "Προσαρμογή έκθεσης"
 msgid "Exposure Compensation"
 msgstr "Αντιστάθμιση έκθεσης"
 
-#: gui/mrvHotkey.cpp:375
+#: gui/mrvHotkey.cpp:376
 msgid "Exposure Less"
 msgstr "Λιγότερη έκθεση"
 
-#: gui/mrvHotkey.cpp:374
+#: gui/mrvHotkey.cpp:375
 msgid "Exposure More"
 msgstr "Περισσότερη έκθεση"
 
@@ -3545,12 +3549,12 @@ msgstr "Επεκτάθηκε"
 msgid "Eye Separation"
 msgstr "Προβολή Διαχωρισμού"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2411
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2891
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2446
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2926
 msgid "F"
 msgstr "ντο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3018
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3053
 msgid "F:"
 msgstr "ΝΤΟ:"
 
@@ -3558,7 +3562,7 @@ msgstr "ΝΤΟ:"
 msgid "FFMPEG"
 msgstr "FFMPEG"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1712
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
 msgid "FIT"
 msgstr "Για να χωρέσει"
 
@@ -3566,7 +3570,7 @@ msgstr "Για να χωρέσει"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1470
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1847
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2244
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3161
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3196
 #: gui/mrvImageInformation.cpp:2823 gui/mrvImageInformation.cpp:3550
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3672,52 +3676,52 @@ msgstr "Η φόρτωση απέτυχε για το ripmap Y "
 msgid "File Requester"
 msgstr "Εύρεση αρχείων"
 
-#: gui/mrvImageView.cpp:4854
+#: gui/mrvImageView.cpp:4915
 msgid "File/Open/AMF file"
 msgstr "Αρχείο/Για να ανοίξω/Αρχείο MFA"
 
-#: gui/mrvImageView.cpp:4841 gui/mrvImageView.cpp:4852
+#: gui/mrvImageView.cpp:4902 gui/mrvImageView.cpp:4913
 msgid "File/Open/Directory"
 msgstr "Αρχείο/Για να ανοίξω/Ευρετήριο"
 
-#: gui/mrvImageView.cpp:4831 gui/mrvImageBrowser.cpp:4163
+#: gui/mrvImageView.cpp:4892 gui/mrvImageBrowser.cpp:4163
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Αρχείο/Για να ανοίξω/Ταινία ή Σεκάνς"
 
-#: gui/mrvImageView.cpp:4843 gui/mrvImageView.cpp:4856
+#: gui/mrvImageView.cpp:4904 gui/mrvImageView.cpp:4917
 msgid "File/Open/Session"
 msgstr "Αρχείο/Για να ανοίξω/Συνεδρίαση"
 
-#: gui/mrvImageView.cpp:4835 gui/mrvImageBrowser.cpp:4165
+#: gui/mrvImageView.cpp:4896 gui/mrvImageBrowser.cpp:4165
 msgid "File/Open/Single Image"
 msgstr "Αρχείο/Για να ανοίξω/Μόνο μια εικόνα"
 
-#: gui/mrvImageView.cpp:4849
+#: gui/mrvImageView.cpp:4910
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "Αρχείο/Για να ανοίξω/Ταινία ή Σεκάνς για Στερεοφωνικό"
 
-#: gui/mrvImageView.cpp:4879
+#: gui/mrvImageView.cpp:4940
 msgid "File/Quit"
 msgstr "Αρχείο/Αδεια"
 
-#: gui/mrvImageView.cpp:4864 gui/mrvImageBrowser.cpp:4410
+#: gui/mrvImageView.cpp:4925 gui/mrvImageBrowser.cpp:4410
 msgid "File/Save/Frame As"
 msgstr "Αρχείο/Διατήρηση/κουτί όπως"
 
-#: gui/mrvImageView.cpp:4866 gui/mrvImageBrowser.cpp:4412
+#: gui/mrvImageView.cpp:4927 gui/mrvImageBrowser.cpp:4412
 msgid "File/Save/GL Snapshots As"
 msgstr "Αρχείο/Διατήρηση/Στιγμιότυπα Opengl"
 
-#: gui/mrvImageView.cpp:4859 gui/mrvImageBrowser.cpp:4405
+#: gui/mrvImageView.cpp:4920 gui/mrvImageBrowser.cpp:4405
 msgid "File/Save/Movie or Sequence As"
 msgstr "Αρχείο/Διατήρηση/Ταινία ή Σεκάνς όπως"
 
-#: gui/mrvImageView.cpp:4862 gui/mrvImageBrowser.cpp:4408
+#: gui/mrvImageView.cpp:4923 gui/mrvImageBrowser.cpp:4408
 msgid "File/Save/Reel As"
 msgstr "Αρχείο/Διατήρηση/μπομπίνα σαν"
 
-#: gui/mrvImageView.cpp:4868 gui/mrvImageBrowser.cpp:4414
+#: gui/mrvImageView.cpp:4929 gui/mrvImageBrowser.cpp:4414
 msgid "File/Save/Session As"
 msgstr "Αρχείο/Διατήρηση/συνεδρία ως"
 
@@ -3750,11 +3754,11 @@ msgstr "Τερματίστε το R3D SDK"
 msgid "Finalized R3DSDK"
 msgstr "Τελείωσα το R3D SDK"
 
-#: gui/mrvHotkey.cpp:362 gui/mrvImageInformation.cpp:2809
+#: gui/mrvHotkey.cpp:363 gui/mrvImageInformation.cpp:2809
 msgid "First Frame"
 msgstr "Πρώτο καρέ"
 
-#: gui/mrvHotkey.cpp:351
+#: gui/mrvHotkey.cpp:352
 msgid "First Image Version"
 msgstr "Πρώτη έκδοση εικόνας"
 
@@ -3762,15 +3766,15 @@ msgstr "Πρώτη έκδοση εικόνας"
 msgid "First frame of clip - User selected"
 msgstr "Πρώτο καρέ κλιπ - Επιλογή χρήστη"
 
-#: gui/mrvHotkey.cpp:327
+#: gui/mrvHotkey.cpp:328
 msgid "Fit All"
 msgstr "κατάλληλος για όλους"
 
-#: gui/mrvHotkey.cpp:325
+#: gui/mrvHotkey.cpp:326
 msgid "Fit Screen"
 msgstr "Οθόνη πλαισίου"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2092
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2127
 msgid "Fit Window to Image"
 msgstr "Προσαρμογή παραθύρου σε εικόνα"
 
@@ -3790,11 +3794,11 @@ msgstr "Αναγνωριστικό ενσωματωμένου τμήματος"
 msgid "Flash Movie"
 msgstr "ταινία flash"
 
-#: gui/mrvHotkey.cpp:333
+#: gui/mrvHotkey.cpp:334
 msgid "Flip X"
 msgstr "Αναστροφή X"
 
-#: gui/mrvHotkey.cpp:334
+#: gui/mrvHotkey.cpp:335
 msgid "Flip Y"
 msgstr "Y-Flip"
 
@@ -3855,8 +3859,8 @@ msgid "FourCC"
 msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1418
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1552
-#: gui/mrvImageView.cpp:11058
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1587
+#: gui/mrvImageView.cpp:11156
 msgid "Frame"
 msgstr "κουτί"
 
@@ -3881,19 +3885,19 @@ msgstr "Εύρος πλαισίων"
 msgid "Frame Start"
 msgstr "κουτί εκκίνησης"
 
-#: gui/mrvHotkey.cpp:337
+#: gui/mrvHotkey.cpp:338
 msgid "Frame Step Backwards"
 msgstr "κουτί Βήμα πίσω"
 
-#: gui/mrvHotkey.cpp:338
+#: gui/mrvHotkey.cpp:339
 msgid "Frame Step FPS Backwards"
 msgstr "κουτί Βήμα πίσω FPS"
 
-#: gui/mrvHotkey.cpp:341
+#: gui/mrvHotkey.cpp:342
 msgid "Frame Step FPS Forwards"
 msgstr "κουτί Βήμα προς τα εμπρός FPS"
 
-#: gui/mrvHotkey.cpp:340
+#: gui/mrvHotkey.cpp:341
 msgid "Frame Step Forwards"
 msgstr "κουτί Βήμα προς τα εμπρός"
 
@@ -3931,9 +3935,9 @@ msgstr "Ελλιπής πολυδειγματοληψία framebuffer: Προσ�
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:210
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:254
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:716
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1821
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3441
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:751
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1856
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3476
 msgid "Frames"
 msgstr "Εικόνα"
 
@@ -3945,8 +3949,8 @@ msgstr "Καρέ ανά δευτερόλεπτο"
 msgid "Frames per Second"
 msgstr "Καρέ ανά δευτερόλεπτο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:569
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2516
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:576
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2551
 msgid "Freehand Drawing Tool"
 msgstr "Ελεύθερο εργαλείο σχεδίασης"
 
@@ -3962,7 +3966,7 @@ msgstr "Συχνότητα"
 msgid "Frequency of audio"
 msgstr "ηχητική συχνότητα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1766
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1801
 msgid "Full"
 msgstr "Γεμάτος"
 
@@ -4001,40 +4005,40 @@ msgid "GREEN"
 msgstr "ΠΡΑΣΙΝΟΣ"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1232
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2246
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 msgid "Gain"
 msgstr "Κέρδος"
 
-#: gui/mrvImageView.cpp:3888
+#: gui/mrvImageView.cpp:3948
 msgid "Gain for image failed"
 msgstr "Αποτυχία λήψης εικόνας"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2251
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2286
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "Τιμή κέρδους εικόνας. Ένας απλός πολλαπλασιαστής των τιμών των pixel."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1238
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3352
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1473
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1767
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2359
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1508
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1802
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2394
 #: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1843
 msgid "Gamma"
 msgstr "Φάσμα"
 
-#: core/guessImage.cpp:303 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:522
+#: core/guessImage.cpp:303 core/Sequence.cpp:1194 gui/mrvImageBrowser.cpp:522
 msgid "Gamma 1.4 Chart"
 msgstr "Διάγραμμα εύρους 1.4"
 
-#: core/guessImage.cpp:309 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:528
+#: core/guessImage.cpp:309 core/Sequence.cpp:1195 gui/mrvImageBrowser.cpp:528
 msgid "Gamma 1.8 Chart"
 msgstr "Διάγραμμα εύρους 1.8"
 
-#: core/guessImage.cpp:315 core/Sequence.cpp:1174 gui/mrvImageBrowser.cpp:534
+#: core/guessImage.cpp:315 core/Sequence.cpp:1196 gui/mrvImageBrowser.cpp:534
 msgid "Gamma 2.2 Chart"
 msgstr "Διάγραμμα εύρους 2,2"
 
-#: core/guessImage.cpp:321 core/Sequence.cpp:1175 gui/mrvImageBrowser.cpp:540
+#: core/guessImage.cpp:321 core/Sequence.cpp:1197 gui/mrvImageBrowser.cpp:540
 msgid "Gamma 2.4 Chart"
 msgstr "Διάγραμμα εύρους 2.4"
 
@@ -4042,15 +4046,15 @@ msgstr "Διάγραμμα εύρους 2.4"
 msgid "Gamma Curve"
 msgstr "Καμπύλη γάμμα"
 
-#: gui/mrvHotkey.cpp:395
+#: gui/mrvHotkey.cpp:397
 msgid "Gamma Less"
 msgstr "μικρότερο εύρος"
 
-#: gui/mrvHotkey.cpp:394
+#: gui/mrvHotkey.cpp:396
 msgid "Gamma More"
 msgstr "Περισσότερο εύρος"
 
-#: gui/mrvImageView.cpp:3900
+#: gui/mrvImageView.cpp:3960
 msgid "Gamma for image failed"
 msgstr "Η γκάμα εικόνων απέτυχε"
 
@@ -4067,20 +4071,20 @@ msgstr "γιγαμπάιτ"
 msgid "German"
 msgstr "Γερμανικά (Deutsch)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:736
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3461
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:771
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3496
 msgid "Ghosting"
 msgstr "Φάντασμα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3094
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3129
 msgid "Go back one frame."
 msgstr "Πηγαίνετε ένα καρέ πίσω."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3068
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3103
 msgid "Go to the beginning of the sequence."
 msgstr "Μεταβείτε στην αρχή της ακολουθίας."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3146
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3181
 msgid "Go to the end of the sequence."
 msgstr "Μεταβείτε στο τέλος της ακολουθίας."
 
@@ -4100,8 +4104,8 @@ msgstr "Ελληνικά"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2606
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9177
-#: gui/mrvImageView.cpp:9718
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9275
+#: gui/mrvImageView.cpp:9816
 msgid "Green"
 msgstr "Πράσινος"
 
@@ -4113,7 +4117,7 @@ msgstr "Green Gain"
 msgid "Green Gain of clip."
 msgstr "Κερδίστε τους πράσινους από το κλιπ."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2786
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2821
 msgid "Green value of image pixel under mouse."
 msgstr "Πράσινη τιμή του pixel κάτω από το ποντίκι."
 
@@ -4150,13 +4154,13 @@ msgid "HDTV / Widescreen 16:9"
 msgstr "HDTV/Ευρεία οθόνη 16:9"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:240
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1744
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1779
 msgid "HSL"
 msgstr "HSL"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:239
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1743
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2816
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1778
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2851
 msgid "HSV"
 msgstr "HSV"
 
@@ -4199,7 +4203,7 @@ msgstr "Υψος"
 msgid "Height of clip"
 msgstr "ύψος κλιπ"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1727
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1762
 msgid "Hex"
 msgstr "μαγεύω"
 
@@ -4229,15 +4233,15 @@ msgstr "Σημειώθηκε στο πλήρες χρονοδιάγραμμα"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1083
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1353
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1388
 msgid "Histogram"
 msgstr "Ιστόγραμμα"
 
-#: gui/mrvHotkey.cpp:445
+#: gui/mrvHotkey.cpp:447
 msgid "Home"
 msgstr "Αρχή"
 
-#: gui/mrvHotkey.cpp:646
+#: gui/mrvHotkey.cpp:648
 #, c-format
 msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
@@ -4256,7 +4260,7 @@ msgstr "Κλειδιά διαχείρισης:"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1359
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1394
 msgid "Hotkeys"
 msgstr "Κλειδιά διαχείρισης"
 
@@ -4280,7 +4284,7 @@ msgstr "Τρόπος εμφάνισης της επιλογής γραμμής �
 msgid "Hue"
 msgstr "Απόχρωση"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2866
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
 msgid "Hue value of image pixel under mouse."
 msgstr "Τιμή απόχρωσης του pixel κάτω από το ποντίκι."
 
@@ -4299,7 +4303,7 @@ msgstr "Προφίλ ICC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2771
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1356
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1391
 msgid "ICC Profiles"
 msgstr "προφίλ ICC"
 
@@ -4352,12 +4356,12 @@ msgid "ISO-8859-2"
 msgstr "ISO-8859-2"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:248
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1752
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1787
 msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
 msgstr "ITU-601 (PAL/NTSC YCbCr Digital)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:249
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1788
 msgid "ITU-709 (Digital HDTV YCbCr)"
 msgstr "ITU-709 (HDTV YCbCr Digital)"
 
@@ -4377,7 +4381,7 @@ msgstr "Εικόνα"
 msgid "Image \""
 msgstr "Εικόνα \""
 
-#: gui/mrvHotkey.cpp:318
+#: gui/mrvHotkey.cpp:319
 msgid "Image CTL script"
 msgstr "CTL Εγγραφή εικόνας"
 
@@ -4389,7 +4393,7 @@ msgstr "Μέγεθος προσωρινής μνήμης εικόνας"
 msgid "Image Channels"
 msgstr "Κανάλια εικόνας"
 
-#: gui/mrvHotkey.cpp:317
+#: gui/mrvHotkey.cpp:318
 msgid "Image Icc Profile"
 msgstr "Εικόνα Προφίλ ICC"
 
@@ -4426,7 +4430,7 @@ msgstr "Y-θέση της εικόνας στον πίνακα"
 msgid "Image Y Scale in Canvas"
 msgstr "Y κλιμάκωση της εικόνας στον πίνακα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2739
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2774
 msgid "Image coordinate of pixel under mouse."
 msgstr "Συντεταγμένη της εικόνας pixel κάτω από το ποντίκι."
 
@@ -4471,36 +4475,36 @@ msgstr ""
 "απενεργοποιημένη, οι εικόνες θα φορτωθούν με βάση τη ζήτηση, αλλά ενδέχεται "
 "να μην είναι δυνατή η ομαλή αναπαραγωγή."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2668
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2703
 msgid "Image zoom setting."
 msgstr "Ρύθμιση ζουμ εικόνας."
 
-#: gui/mrvImageView.cpp:5069
+#: gui/mrvImageView.cpp:5130
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "Εικόνα/Προσθήκη τροποποίησης εμφάνισης CTL (LMT)"
 
-#: gui/mrvImageView.cpp:5061
+#: gui/mrvImageView.cpp:5122
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "Εικόνα/Εκχώρηση CTL Input Device Transform (IDT)"
 
-#: gui/mrvImageView.cpp:5073
+#: gui/mrvImageView.cpp:5134
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Εικόνα/Εκχώρηση μετασχηματισμού απόδοσης CTL (RTT)"
 
-#: gui/mrvImageView.cpp:5077
+#: gui/mrvImageView.cpp:5138
 msgid "Image/Attach ICC Color Profile"
 msgstr "Εικόνα/Προσθήκη έγχρωμου προφίλ ICC"
 
-#: gui/mrvImageView.cpp:5039
+#: gui/mrvImageView.cpp:5100
 msgid "Image/Clear Caches"
 msgstr "Εικόνα/Εκκαθάριση κρυφής μνήμης"
 
-#: gui/mrvImageView.cpp:5015 gui/mrvImageView.cpp:5023
+#: gui/mrvImageView.cpp:5076 gui/mrvImageView.cpp:5084
 #: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "Εικόνα/Κλώνος"
 
-#: gui/mrvImageView.cpp:5017 gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageView.cpp:5078 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "Εικόνα/Κλωνοποίηση όλων των καναλιών"
 
@@ -4508,55 +4512,55 @@ msgstr "Εικόνα/Κλωνοποίηση όλων των καναλιών"
 msgid "Image/Media Info"
 msgstr "Εικόνα/Πληροφορίες πολυμέσων"
 
-#: gui/mrvImageView.cpp:5084
+#: gui/mrvImageView.cpp:5145
 msgid "Image/Mirror/Horizontal"
 msgstr "Εικόνα/Καθρέφτης/Οριζόντιος"
 
-#: gui/mrvImageView.cpp:5088
+#: gui/mrvImageView.cpp:5149
 msgid "Image/Mirror/Vertical"
 msgstr "Εικόνα/Καθρέφτης/Κατακόρυφος"
 
-#: gui/mrvImageView.cpp:5065
+#: gui/mrvImageView.cpp:5126
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "Εικόνα/Τροποποίηση CTL ASC_CDL SOP και Κορεσμού"
 
-#: gui/mrvImageView.cpp:5004
+#: gui/mrvImageView.cpp:5065
 msgid "Image/Next"
 msgstr "Εικόνα/ΕΠΟΜΕΝΟ"
 
-#: gui/mrvImageView.cpp:5030
+#: gui/mrvImageView.cpp:5091
 msgid "Image/Preload Caches"
 msgstr "Εικόνα/Προφόρτωση κρυφής μνήμης"
 
-#: gui/mrvImageView.cpp:5006
+#: gui/mrvImageView.cpp:5067
 msgid "Image/Previous"
 msgstr "Εικόνα/Προηγούμενος"
 
-#: gui/mrvImageView.cpp:5049
+#: gui/mrvImageView.cpp:5110
 msgid "Image/Rotate +90"
 msgstr "Εικόνα/Περιστρέψτε το +90"
 
-#: gui/mrvImageView.cpp:5052
+#: gui/mrvImageView.cpp:5113
 msgid "Image/Rotate -90"
 msgstr "Εικόνα/Περιστρέψτε το -90"
 
-#: gui/mrvImageView.cpp:5092 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5153 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "Εικόνα/Ορίστε το ως φόντο"
 
-#: gui/mrvImageView.cpp:5097
+#: gui/mrvImageView.cpp:5158
 msgid "Image/Switch FG and BG"
 msgstr "Εικόνα/Αλλαγή προσκηνίου και φόντου"
 
-#: gui/mrvImageView.cpp:5100
+#: gui/mrvImageView.cpp:5161
 msgid "Image/Toggle Background"
 msgstr "Εικόνα/εναλλαγή φόντου"
 
-#: gui/mrvImageView.cpp:5107
+#: gui/mrvImageView.cpp:5168
 msgid "Image/Toggle EDL"
 msgstr "Εικόνα/Ανταλλαγή EDL"
 
-#: gui/mrvImageView.cpp:5042
+#: gui/mrvImageView.cpp:5103
 msgid "Image/Update Single Frame in Cache"
 msgstr "Εικόνα/Ενημερώστε ένα καρέ προσωρινής μνήμης"
 
@@ -4608,7 +4612,7 @@ msgstr ""
 msgid "Images, sequences or movies to display."
 msgstr "Εικόνες, σεκάνς ή ταινίες για προβολή."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2324
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2359
 msgid "Increase exposure by 0.5."
 msgstr "Αυξήστε την έκθεση κατά 0,5."
 
@@ -4629,7 +4633,7 @@ msgid "Input"
 msgstr "Είσοδος"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2483
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2280
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2315
 #: core/exrImage.cpp:2472 gui/mrvImageInformation.cpp:3052
 msgid "Input Color Space"
 msgstr "Εισαγωγή χρωματικού χώρου"
@@ -4642,7 +4646,7 @@ msgstr "Μετασχηματισμός συσκευής εισόδου"
 msgid "Input color space for "
 msgstr "Εισαγωγή χρωματικού χώρου για "
 
-#: gui/mrvHotkey.cpp:444
+#: gui/mrvHotkey.cpp:446
 msgid "Insert"
 msgstr "Εισάγετε"
 
@@ -4677,7 +4681,7 @@ msgstr "Μη έγκυρο προφίλ προορισμού/μορφή εικό�
 msgid "Invalid image "
 msgstr "μη έγκυρο ευρετήριο "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9094
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9192
 msgid "Invalid index "
 msgstr "μη έγκυρο ευρετήριο "
 
@@ -4797,13 +4801,13 @@ msgstr "Kodak Digital Negative"
 msgid "Korean"
 msgstr "Κορεάτικα (한국어)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1808
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2992
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1843
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
 msgid "L"
 msgstr "L"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:256
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1785
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1820
 msgid "L (Lightness)"
 msgstr "L (Φωτεινότητα)"
 
@@ -4812,12 +4816,12 @@ msgstr "L (Φωτεινότητα)"
 msgid "LMTransform %u"
 msgstr "TransformLM %u"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2449
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2484
 msgid "LUT"
 msgstr "LUTs"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:243
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1747
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1782
 msgid "Lab CIELAB (L*a*b*)"
 msgstr "Εργαστήριο CIELAB (L*a*b*)"
 
@@ -4836,11 +4840,11 @@ msgstr "Γλώσσα και Χρώματα"
 msgid "Language if known"
 msgstr "γλώσσα αν είναι γνωστή"
 
-#: gui/mrvHotkey.cpp:363 gui/mrvImageInformation.cpp:2812
+#: gui/mrvHotkey.cpp:364 gui/mrvImageInformation.cpp:2812
 msgid "Last Frame"
 msgstr "Τελευταίο καρέ"
 
-#: gui/mrvHotkey.cpp:354
+#: gui/mrvHotkey.cpp:355
 msgid "Last Image Version"
 msgstr "Τελευταία έκδοση εικόνας"
 
@@ -4858,7 +4862,7 @@ msgstr "Γεωγραφικό πλάτος"
 msgid "Layer %d"
 msgstr "Μανδύα %d"
 
-#: gui/mrvHotkey.cpp:451
+#: gui/mrvHotkey.cpp:453
 msgid "Left"
 msgstr "Αριστερά"
 
@@ -4878,19 +4882,19 @@ msgstr "Αριστερή όψη"
 msgid "Left/right"
 msgstr "Αριστερά/σωστά"
 
-#: gui/mrvHotkey.cpp:462
+#: gui/mrvHotkey.cpp:464
 msgid "LeftAlt"
 msgstr "Αριστερό Alt"
 
-#: gui/mrvHotkey.cpp:458
+#: gui/mrvHotkey.cpp:460
 msgid "LeftCtrl"
 msgstr "Αριστερό Ctrl"
 
-#: gui/mrvHotkey.cpp:464
+#: gui/mrvHotkey.cpp:466
 msgid "LeftMeta"
 msgstr "Αριστερός στόχος"
 
-#: gui/mrvHotkey.cpp:456
+#: gui/mrvHotkey.cpp:458
 msgid "LeftShift"
 msgstr "Αριστερά μετατόπιση"
 
@@ -4916,7 +4920,7 @@ msgstr "Σειρά των γραμμών στο αρχείο"
 msgid "Linear"
 msgstr "Γραμμικός"
 
-#: core/guessImage.cpp:293 core/Sequence.cpp:1170 gui/mrvImageBrowser.cpp:576
+#: core/guessImage.cpp:293 core/Sequence.cpp:1192 gui/mrvImageBrowser.cpp:576
 msgid "Linear Gradient"
 msgstr "Γραμμική Αποφοίτηση"
 
@@ -5058,7 +5062,7 @@ msgstr "Αναρτήσεις"
 msgid "Logarithmic"
 msgstr "λογαριθμική"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1360
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1395
 msgid "Logs"
 msgstr "Αναρτήσεις"
 
@@ -5075,7 +5079,7 @@ msgstr "Το έψαξα στο: "
 msgid "Loop"
 msgstr "βρόχος"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2993
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3028
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "Loop Behavior (Stop, Loop, Ping-Pong)"
 
@@ -5087,18 +5091,18 @@ msgstr "Λειτουργία βρόχου"
 msgid "Luminance"
 msgstr "Λάμψη"
 
-#: core/guessImage.cpp:298 core/Sequence.cpp:1171 gui/mrvImageBrowser.cpp:612
+#: core/guessImage.cpp:298 core/Sequence.cpp:1193 gui/mrvImageBrowser.cpp:612
 msgid "Luminance Gradient"
 msgstr "Αποφοίτηση Luminosity"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2950
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2985
 msgid "Luminance of image pixel under mouse."
 msgstr "Φωτεινότητα εικονοστοιχείων εικόνας κάτω από το ποντίκι."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3046
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2075
-#: gui/mrvImageView.cpp:9192 gui/mrvImageView.cpp:9719
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2116
+#: gui/mrvImageView.cpp:9290 gui/mrvImageView.cpp:9817
 msgid "Lumma"
 msgstr "λούμα"
 
@@ -5111,7 +5115,7 @@ msgid "Lut with Gain but without Gamma"
 msgstr "Λουτ με Κέρδος αλλά όχι Γάμα"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:244
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1748
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1783
 msgid "Luv CIELUV (L*u*v*)"
 msgstr "Luv CIELUV (L*u*v*)"
 
@@ -5245,7 +5249,7 @@ msgid "Mean"
 msgstr "Μέση τιμή"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1110
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1346
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1381
 msgid "Media Info"
 msgstr "Πληροφορίες πολυμέσων"
 
@@ -5271,7 +5275,7 @@ msgstr "Μνήμη"
 msgid "Memory without Compression"
 msgstr "Ασυμπίεστη μνήμη"
 
-#: gui/mrvHotkey.cpp:467
+#: gui/mrvHotkey.cpp:469
 msgid "Menu"
 msgstr "Μενού"
 
@@ -5353,19 +5357,19 @@ msgstr "Λειτουργία για επεξεργασία IPP2"
 msgid "Module"
 msgstr "Μονάδα μέτρησης"
 
-#: gui/mrvHotkey.cpp:320
+#: gui/mrvHotkey.cpp:321
 msgid "Monitor CTL script"
 msgstr "Οθόνη εγγραφής CTL"
 
-#: gui/mrvHotkey.cpp:319
+#: gui/mrvHotkey.cpp:320
 msgid "Monitor Icc Profile"
 msgstr "Παρακολούθηση προφίλ Icc"
 
-#: gui/mrvImageView.cpp:5214
+#: gui/mrvImageView.cpp:5275
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Απεικόνιση/Προσθήκη μετασχηματισμού οθόνης εξόδου CTL (ODT)"
 
-#: gui/mrvImageView.cpp:5218
+#: gui/mrvImageView.cpp:5279
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Απεικόνιση/Προσθήκη χρωματικού προφίλ ICC"
 
@@ -5377,11 +5381,11 @@ msgstr "Μέθοδοι εκτίμησης κίνησης"
 msgid "Move Pic."
 msgstr "Κίνηση"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:620
 msgid "Move Picture Tool"
 msgstr "Εργαλείο μετακίνησης εικόνας"
 
-#: gui/mrvHotkey.cpp:389
+#: gui/mrvHotkey.cpp:391
 msgid "Move/Size Mode"
 msgstr "Λειτουργία μετακίνησης/Αναρρίχηση"
 
@@ -5405,7 +5409,7 @@ msgstr ""
 msgid "Movies (*.{"
 msgstr "Ταινίες (*.{"
 
-#: gui/mrvHotkey.cpp:484
+#: gui/mrvHotkey.cpp:486
 msgid "Multiply"
 msgstr "Πολλαπλασιάζω"
 
@@ -5417,7 +5421,7 @@ msgstr "Βουβός"
 msgid "MyPack not found"
 msgstr "δεν βρέθηκε"
 
-#: core/guessImage.cpp:280 core/Sequence.cpp:1168 gui/mrvImageBrowser.cpp:447
+#: core/guessImage.cpp:280 core/Sequence.cpp:1190 gui/mrvImageBrowser.cpp:447
 msgid "NTSC HDTV Color Bars"
 msgstr "Έγχρωμες ράβδοι NTSC HDTV"
 
@@ -5467,28 +5471,28 @@ msgstr "Νέο στοιχείο δεν δημιουργήθηκε στο "
 msgid "New item was not found in tree."
 msgstr "δεν βρέθηκε στον κύλινδρο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:749
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3474
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:784
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3509
 msgid "Next"
 msgstr "Επόμενο"
 
-#: gui/mrvHotkey.cpp:361
+#: gui/mrvHotkey.cpp:362
 msgid "Next Channel"
 msgstr "Επόμενο Κανάλι"
 
-#: gui/mrvHotkey.cpp:356
+#: gui/mrvHotkey.cpp:357
 msgid "Next Image"
 msgstr "Επόμενη εικόνα"
 
-#: gui/mrvHotkey.cpp:358
+#: gui/mrvHotkey.cpp:359
 msgid "Next Image Limited"
 msgstr "Next Image Limited"
 
-#: gui/mrvHotkey.cpp:353
+#: gui/mrvHotkey.cpp:354
 msgid "Next Image Version"
 msgstr "Επόμενη Έκδοση Εικόνας"
 
-#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
@@ -5590,7 +5594,7 @@ msgstr ""
 "όνομα με μια έκδοση."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:213
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1824
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1859
 msgid "Non-Drop Frame Timecode"
 msgstr "Κωδικός χρόνου χωρίς σπατάλη καρέ"
 
@@ -5607,7 +5611,7 @@ msgstr "Υφές που δεν είναι POT:\t"
 msgid "None"
 msgstr "κανενα απο τα δυο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2338
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2373
 msgid "Norm"
 msgstr "πρότυπο"
 
@@ -5615,7 +5619,7 @@ msgstr "πρότυπο"
 msgid "Normal"
 msgstr "Κανονικός"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2339
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2374
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "Κανονικοποιήστε τις τιμές των pixel για να διατηρήσετε το εύρος [0,1]."
 
@@ -5631,23 +5635,31 @@ msgstr "Μη Συμπληρωμένο"
 msgid "Not OK"
 msgstr "Οχι εντάξει"
 
-#: gui/mrvImageView.cpp:7087
+#: gui/mrvImageView.cpp:5751
+msgid "Not a GLArrowShape pointer"
+msgstr "Δεν είναι δείκτης GLArrowShape"
+
+#: gui/mrvImageView.cpp:7177
 msgid "Not a GLCircleShape pointer"
 msgstr "Δεν είναι δείκτης για το GLCircleShape"
 
-#: gui/mrvImageView.cpp:5652 gui/mrvImageView.cpp:5666
+#: gui/mrvImageView.cpp:5723
 msgid "Not a GLErasePathShape pointer"
 msgstr "Δεν είναι δείκτης για το GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5638 gui/mrvImageView.cpp:7031
+#: gui/mrvImageView.cpp:5709 gui/mrvImageView.cpp:7117
 msgid "Not a GLPathShape pointer"
 msgstr "Δεν είναι δείκτης στο GLPathShape"
 
-#: gui/mrvImageView.cpp:5680 gui/mrvImageView.cpp:5694
+#: gui/mrvImageView.cpp:5737
+msgid "Not a GLRectangleShape pointer"
+msgstr "Δεν είναι δείκτης GLRectangleShape"
+
+#: gui/mrvImageView.cpp:5765 gui/mrvImageView.cpp:5779
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Δεν είναι δείκτης στο GLTextShape στο mouseRelease"
 
-#: gui/mrvImageView.cpp:7110
+#: gui/mrvImageView.cpp:7200
 msgid "Not a GLTextShape pointer in position"
 msgstr "Δεν είναι δείκτης στο GLPathShape στη θέση"
 
@@ -5695,7 +5707,7 @@ msgstr "Μην ομαδοποιείτε το παιδί στη σειρά πίν
 msgid "Nov"
 msgstr "Οχι"
 
-#: gui/mrvHotkey.cpp:468
+#: gui/mrvHotkey.cpp:470
 msgid "NumLock"
 msgstr "κλειδαριά αριθμών"
 
@@ -5732,7 +5744,7 @@ msgstr "Αριθμός καναλιών στο κλιπ"
 msgid "Number of client runs: "
 msgstr "Αριθμός εκτελέσεων πελάτη: "
 
-#: core/mrvServer.cpp:1823
+#: core/mrvServer.cpp:1841
 msgid "Number of connections now: "
 msgstr "Αριθμός συνδέσεων τώρα: "
 
@@ -5758,23 +5770,23 @@ msgstr "ΕΛΕΥΘΕΡΗ ΧΩΡΟΣ Χρωματικός Χώρος"
 msgid "OCIO Config File"
 msgstr "Αρχείο διαμόρφωσης OCIO"
 
-#: gui/mrvHotkey.cpp:377
+#: gui/mrvHotkey.cpp:378
 msgid "OCIO Display"
 msgstr "Οθόνη OCIO"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2360
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2395
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "απεικόνιση/Προβολή OCIO ή ορισμένες προεπιλεγμένες ρυθμίσεις γάμμα"
 
-#: gui/mrvHotkey.cpp:376 gui/mrvImageInformation.cpp:3053
+#: gui/mrvHotkey.cpp:377 gui/mrvImageInformation.cpp:3053
 msgid "OCIO Input Color Space"
 msgstr "Χρωματικός χώρος εισόδου OCIO"
 
-#: gui/mrvHotkey.cpp:378
+#: gui/mrvHotkey.cpp:379
 msgid "OCIO View"
 msgstr "Θέα αναψυχής"
 
-#: gui/mrvImageView.cpp:3913
+#: gui/mrvImageView.cpp:3973
 msgid "OCIO View change failed"
 msgstr "Αποτυχία διακόπτη προβολής OCIO"
 
@@ -5786,19 +5798,19 @@ msgstr "Διαμόρφωση OCIO (*.{"
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "Η μεταβλητή περιβάλλοντος OCIO δεν υπάρχει. Θα χρησιμοποιηθεί CTL. "
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2316
 msgid "OCIO input color space for the image"
 msgstr "Εισαγάγετε τον χρωματικό χώρο της εικόνας απροσδιόριστος."
 
-#: gui/mrvImageView.cpp:5123
+#: gui/mrvImageView.cpp:5184
 msgid "OCIO/Display"
 msgstr "OCIO/απεικόνιση"
 
-#: gui/mrvImageView.cpp:5119 gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageView.cpp:5180 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Εισαγωγή χρωματικού χώρου"
 
-#: gui/mrvImageView.cpp:5126
+#: gui/mrvImageView.cpp:5187
 msgid "OCIO/View"
 msgstr "OCIO/Θέα"
 
@@ -5873,27 +5885,27 @@ msgstr "δεν βρέθηκε στον κύλινδρο"
 msgid "Once"
 msgstr "Μια φορά"
 
-#: gui/mrvHotkey.cpp:309
+#: gui/mrvHotkey.cpp:310
 msgid "Open Aces Metadata File (AMF)"
 msgstr "Άνοιγμα αρχείου μεταδεδομένων Aces (AMF)"
 
-#: gui/mrvHotkey.cpp:310
+#: gui/mrvHotkey.cpp:311
 msgid "Open Clip XML Metadata"
 msgstr "Ανοίξτε το Clip XML Metadata"
 
-#: gui/mrvHotkey.cpp:306
+#: gui/mrvHotkey.cpp:307
 msgid "Open Directory"
 msgstr "ανοιχτός φάκελος"
 
-#: gui/mrvHotkey.cpp:307
+#: gui/mrvHotkey.cpp:308
 msgid "Open Movie or Sequence"
 msgstr "Ανοίξτε την ταινία ή την ακολουθία"
 
-#: gui/mrvHotkey.cpp:311 gui/mrvFileRequester.cpp:979
+#: gui/mrvHotkey.cpp:312 gui/mrvFileRequester.cpp:979
 msgid "Open Session"
 msgstr "Άνοιγμα συνεδρίας"
 
-#: gui/mrvHotkey.cpp:308
+#: gui/mrvHotkey.cpp:309
 msgid "Open Single Image"
 msgstr "Ανοίξτε Μόνο μία εικόνα"
 
@@ -5947,7 +5959,7 @@ msgstr ""
 "AF είναι η πηγή άλφα και \n"
 "CD είναι το χρώμα προορισμού."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2144
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2179
 msgid "Opens different windows"
 msgstr "ανοίξτε διαφορετικά παράθυρα"
 
@@ -5964,7 +5976,7 @@ msgstr "Επιλογές που ελέγχουν τον αναγνώστη R3D/�
 msgid "Options for EXR were empty"
 msgstr "Οι επιλογές για EXR ήταν κενές"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1768
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1803
 msgid "Original"
 msgstr "Πρωτότυπο"
 
@@ -5984,7 +5996,7 @@ msgstr "Πρωτότυπο χωρίς Gamma, Gain ή Lut"
 msgid "Originating Program"
 msgstr "Πρωτότυπο πρόγραμμα"
 
-#: core/Sequence.cpp:1443
+#: core/Sequence.cpp:1465
 #, c-format
 msgid "Otio timeline saved to '%s'."
 msgstr "Το χρονοδιάγραμμα του Otio αποθηκεύτηκε στο '%s'."
@@ -6060,11 +6072,11 @@ msgstr "Πάνω από τη γραμμή εγγραφής (Επανάληψη) 
 msgid "Owner"
 msgstr "Ιδιοκτήτης"
 
-#: core/guessImage.cpp:276 core/Sequence.cpp:1166 gui/mrvImageBrowser.cpp:412
+#: core/guessImage.cpp:276 core/Sequence.cpp:1188 gui/mrvImageBrowser.cpp:412
 msgid "PAL Color Bars"
 msgstr "Μπάρες χρώματος PAL"
 
-#: core/guessImage.cpp:284 core/Sequence.cpp:1167 core/Sequence.cpp:1169
+#: core/guessImage.cpp:284 core/Sequence.cpp:1189 core/Sequence.cpp:1191
 #: gui/mrvImageBrowser.cpp:481
 msgid "PAL HDTV Color Bars"
 msgstr "Ράβδοι χρώματος PAL HDTV"
@@ -6083,7 +6095,7 @@ msgstr "Υφές PBO:\t"
 msgid "PIZ"
 msgstr "ΠΙΖ"
 
-#: gui/mrvImageView.cpp:4709
+#: gui/mrvImageView.cpp:4770
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6097,32 +6109,32 @@ msgstr "εικόνα PNG"
 msgid "PXR24"
 msgstr "PXR24"
 
-#: gui/mrvHotkey.cpp:450
+#: gui/mrvHotkey.cpp:452
 msgid "PageDown"
 msgstr "Σελίδα κάτω"
 
-#: gui/mrvHotkey.cpp:446
+#: gui/mrvHotkey.cpp:448
 msgid "PageUp"
 msgstr "Σελίδα προς τα πάνω"
 
-#: gui/mrvHotkey.cpp:443
+#: gui/mrvHotkey.cpp:445
 msgid "Pause"
 msgstr "Παύση"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:707
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:742
 msgid "Pen Color"
 msgstr "Χρώμα μολυβιού"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:660
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3427
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:696
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3462
 msgid "Pen Size"
 msgstr "Μέγεθος μολυβιού"
 
-#: gui/mrvHotkey.cpp:391
+#: gui/mrvHotkey.cpp:393
 msgid "Pen Size Less"
 msgstr "Μικρό μέγεθος μολυβιού"
 
-#: gui/mrvHotkey.cpp:390
+#: gui/mrvHotkey.cpp:392
 msgid "Pen Size More"
 msgstr "Μεγαλύτερο μέγεθος μολυβιού"
 
@@ -6194,7 +6206,7 @@ msgstr "Αναλογία εικονοστοιχείων κλιπ"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Ο τύπος pixel δεν υποστηρίζεται σωστά στην κυματομορφή"
 
-#: gui/mrvImageView.cpp:5204
+#: gui/mrvImageView.cpp:5265
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "Εικονοκύτταρο/Αντιγράψτε τις τιμές RGBA στο Πρόχειρο"
 
@@ -6206,31 +6218,31 @@ msgstr "Όλα τα πλαίσια"
 msgid "Play All frames without skipping even if frame rate suffers."
 msgstr "Παίξτε κάθε καρέ χωρίς παράβλεψη, ακόμα κι αν υποφέρει ο ρυθμός καρέ."
 
-#: gui/mrvHotkey.cpp:342
+#: gui/mrvHotkey.cpp:343
 msgid "Play Backwards"
 msgstr "Αναπαραγωγή"
 
-#: gui/mrvHotkey.cpp:343
+#: gui/mrvHotkey.cpp:344
 msgid "Play Backwards / Change Speed"
 msgstr "Αναπαραγωγή/αλλαγή ταχύτητας"
 
-#: gui/mrvHotkey.cpp:345
+#: gui/mrvHotkey.cpp:346
 msgid "Play Forwards"
 msgstr "Παίξτε προς τα εμπρός"
 
-#: gui/mrvHotkey.cpp:346
+#: gui/mrvHotkey.cpp:347
 msgid "Play Forwards / Change Speed"
 msgstr "Παίξτε προς τα εμπρός/αλλαγή ταχύτητας"
 
-#: gui/mrvHotkey.cpp:344
+#: gui/mrvHotkey.cpp:345
 msgid "Play in Current Direction"
 msgstr "Παίξτε στην τρέχουσα διεύθυνση"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3081
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3116
 msgid "Play sequence backwards."
 msgstr "Αναπαραγωγή της ακολουθίας προς τα πίσω."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3133
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3168
 msgid "Play sequence forward."
 msgstr "Αναπαραγωγή της ακολουθίας προς τα εμπρός."
 
@@ -6255,8 +6267,8 @@ msgstr "Αναπαραγωγή πλαισίου ήχου "
 msgid "Polish"
 msgstr "Πολωνικά (Polski)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:810
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:836
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:845
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:871
 msgid "Port"
 msgstr "Λιμάνι"
 
@@ -6283,8 +6295,8 @@ msgid "Prefer ICC"
 msgstr "Προτιμήστε το ICC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:937
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1358
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2106
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1393
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2141
 msgid "Preferences"
 msgstr "προτιμήσεις"
 
@@ -6310,7 +6322,7 @@ msgstr ""
 msgid "Preload Cache"
 msgstr "Προφόρτωση προσωρινής μνήμης"
 
-#: gui/mrvHotkey.cpp:347
+#: gui/mrvHotkey.cpp:348
 msgid "Preload Image Cache"
 msgstr "Προφόρτωση προσωρινής μνήμης εικόνων"
 
@@ -6330,28 +6342,28 @@ msgstr "Παρουσίαση"
 msgid "Preview Thumbnails"
 msgstr "γραμματόσημα previz"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:739
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3464
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:774
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3499
 msgid "Previous"
 msgstr "Προηγούμενος"
 
-#: gui/mrvHotkey.cpp:360
+#: gui/mrvHotkey.cpp:361
 msgid "Previous Channel"
 msgstr "Προηγούμενο κανάλι"
 
-#: gui/mrvHotkey.cpp:355
+#: gui/mrvHotkey.cpp:356
 msgid "Previous Image"
 msgstr "Προεπισκόπηση εικόνας"
 
-#: gui/mrvHotkey.cpp:357
+#: gui/mrvHotkey.cpp:358
 msgid "Previous Image Limited"
 msgstr "Περιορισμένη εικόνα προεπισκόπησης"
 
-#: gui/mrvHotkey.cpp:352
+#: gui/mrvHotkey.cpp:353
 msgid "Previous Image Version"
 msgstr "Έκδοση προηγούμενης εικόνας"
 
-#: gui/mrvHotkey.cpp:440
+#: gui/mrvHotkey.cpp:442
 msgid "Print"
 msgstr "Τυπώνω"
 
@@ -6482,8 +6494,8 @@ msgid "RGB Picture"
 msgstr "Εικόνα RGB"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:156
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1726
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2751
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1761
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2786
 #: gui/mrvImageView.cpp:209
 msgid "RGBA"
 msgstr "RGBA"
@@ -6559,11 +6571,23 @@ msgstr "πραγματικό ύψος κλιπ"
 msgid "Real width of clip"
 msgstr "πραγματικό πλάτος κλιπ"
 
+#: gui/mrvImageView.cpp:1722
+msgid "Rectangle"
+msgstr "Ορθογώνιο παραλληλόγραμμο"
+
+#: gui/mrvHotkey.cpp:387
+msgid "Rectangle Mode"
+msgstr "Λειτουργία ορθογωνίου"
+
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:666
+msgid "Rectangle Tool"
+msgstr "Ορθογώνιο εργαλείο"
+
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2591
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3047
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9172
-#: gui/mrvImageView.cpp:9717
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9270
+#: gui/mrvImageView.cpp:9815
 msgid "Red"
 msgstr "το κόκκινο"
 
@@ -6575,7 +6599,7 @@ msgstr "Κόκκινο κέρδος"
 msgid "Red Gain of clip."
 msgstr "Κόκκινο κέρδος του κλιπ."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2779
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2814
 msgid "Red value of image pixel under mouse."
 msgstr "Κόκκινη τιμή του εικονοστοιχείου εικόνας κάτω από το ποντίκι."
 
@@ -6584,16 +6608,16 @@ msgstr "Κόκκινη τιμή του εικονοστοιχείου εικόν
 msgid "Red/cyan glasses"
 msgstr "Κόκκινοι φακοί/κυανός"
 
-#: gui/mrvHotkey.cpp:393
+#: gui/mrvHotkey.cpp:395
 msgid "Redo Draw"
 msgstr "Επαναλάβετε το σχέδιο"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:688
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2614
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:723
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2649
 msgid "Redo Previous Shape Drawn"
 msgstr "Επανάληψη της εικόνας που σχεδιάστηκε προηγουμένως"
 
-#: gui/mrvImageView.cpp:2330
+#: gui/mrvImageView.cpp:2390
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr "Καρούλι %d (%s) | Πάρτε %d (%s) | καρέ %<PRId64> | X = %d | Y = %d\n"
@@ -6609,7 +6633,7 @@ msgid "Reel List"
 msgstr "μπομπίνες"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2971
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1345
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1380
 msgid "Reels"
 msgstr "μπομπίνες"
 
@@ -6696,7 +6720,7 @@ msgstr "Κατάργηση χαρακτηριστικού"
 msgid "Remove current image from reel."
 msgstr "Έσβησα την τρέχουσα εικόνα από τον κύλινδρο."
 
-#: core/mrvServer.cpp:1813
+#: core/mrvServer.cpp:1831
 msgid "Removed client "
 msgstr "Διέγραψα τον πελάτη "
 
@@ -6757,7 +6781,7 @@ msgstr "κατοχυρωμένα"
 msgid "Reset"
 msgstr "Επαναφέρω"
 
-#: gui/mrvHotkey.cpp:373
+#: gui/mrvHotkey.cpp:374
 msgid "Reset Gain/Gamma"
 msgstr "κέρδος επαναφοράς/Φάσμα"
 
@@ -6772,7 +6796,7 @@ msgstr "επαναφορά τιμής"
 msgid "Resize Background to Match Foreground"
 msgstr "Κλιμακώστε το φόντο στο μέγεθος του μπροστινού μέρους"
 
-#: gui/mrvHotkey.cpp:326
+#: gui/mrvHotkey.cpp:327
 msgid "Resize Main Window to Fit"
 msgstr "Αλλάξτε το μέγεθος του κύριου παραθύρου ώστε να ταιριάζει"
 
@@ -6789,7 +6813,7 @@ msgstr "επαναφορά της προφύλαξης οθόνης"
 msgid "Restored screensaver"
 msgstr "η προφύλαξη οθόνης αποκαταστάθηκε"
 
-#: gui/mrvHotkey.cpp:439
+#: gui/mrvHotkey.cpp:441
 msgid "Return"
 msgstr "εισαγω"
 
@@ -6805,7 +6829,7 @@ msgstr "Επαναφέρετε τις ρυθμίσεις στις τελευτα
 msgid "Rich Picture Format"
 msgstr "Εικόνα εμπλουτισμένης μορφής εικόνας"
 
-#: gui/mrvHotkey.cpp:454
+#: gui/mrvHotkey.cpp:456
 msgid "Right"
 msgstr "σωστά"
 
@@ -6823,19 +6847,19 @@ msgstr "Δεξιά Προβολή"
 msgid "Right/left"
 msgstr "σωστά/αριστερά"
 
-#: gui/mrvHotkey.cpp:463
+#: gui/mrvHotkey.cpp:465
 msgid "RightAlt"
 msgstr "Εναλλακτικά δεξιά"
 
-#: gui/mrvHotkey.cpp:460
+#: gui/mrvHotkey.cpp:462
 msgid "RightCtrl"
 msgstr "Δεξί Ctrl"
 
-#: gui/mrvHotkey.cpp:466
+#: gui/mrvHotkey.cpp:468
 msgid "RightMeta"
 msgstr "Σωστός στόχος"
 
-#: gui/mrvHotkey.cpp:457
+#: gui/mrvHotkey.cpp:459
 msgid "RightShift"
 msgstr "Δεξιά Shift"
 
@@ -6843,27 +6867,27 @@ msgstr "Δεξιά Shift"
 msgid "Romanian"
 msgstr "Ρουμανικά (Română)"
 
-#: gui/mrvHotkey.cpp:387
+#: gui/mrvHotkey.cpp:389
 msgid "Rotate Canvas Mode"
 msgstr "Καμβάς λειτουργίας περιστροφής"
 
-#: gui/mrvHotkey.cpp:427
+#: gui/mrvHotkey.cpp:429
 msgid "Rotate Image +10 Degrees"
 msgstr "Περιστροφή εικόνας +10 μοίρες"
 
-#: gui/mrvHotkey.cpp:429
+#: gui/mrvHotkey.cpp:431
 msgid "Rotate Image +90 Degrees"
 msgstr "Περιστροφή εικόνας +90 μοίρες"
 
-#: gui/mrvHotkey.cpp:428
+#: gui/mrvHotkey.cpp:430
 msgid "Rotate Image -10 Degrees"
 msgstr "Περιστροφή εικόνας -10 μοίρες"
 
-#: gui/mrvHotkey.cpp:430
+#: gui/mrvHotkey.cpp:432
 msgid "Rotate Image -90 Degrees"
 msgstr "Περιστροφή εικόνας -90 μοίρες"
 
-#: gui/mrvImageView.cpp:3843
+#: gui/mrvImageView.cpp:3903
 msgid "Rotate for image failed"
 msgstr "Η περιστροφή για εικόνα απέτυχε"
 
@@ -6879,7 +6903,7 @@ msgstr "Εκτελέστε το mrViewer ανεξάρτητα από τη δια
 msgid "Russian"
 msgstr "Ρωσικά (русский)"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3298
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3333
 msgid "S"
 msgstr "S"
 
@@ -6899,12 +6923,12 @@ msgstr "ΛΗΨΗ"
 msgid "SHOW"
 msgstr "ΠΡΟΒΟΛΗ"
 
-#: core/guessImage.cpp:272 core/Sequence.cpp:1165 gui/mrvImageBrowser.cpp:378
+#: core/guessImage.cpp:272 core/Sequence.cpp:1187 gui/mrvImageBrowser.cpp:378
 msgid "SMPTE NTSC Color Bars"
 msgstr "Μπάρες χρώματος SMPTE NTSC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1329
-#: gui/mrvHotkey.cpp:329
+#: gui/mrvHotkey.cpp:330
 msgid "Safe Areas"
 msgstr "Ασφαλείς Περιοχές"
 
@@ -6920,7 +6944,7 @@ msgstr "Κορεσμός"
 msgid "Saturation of clip."
 msgstr "κορεσμός κλιπ"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2874
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2909
 msgid "Saturation value of image pixel under mouse."
 msgstr "Τιμή κορεσμού του εικονοστοιχείου εικόνας κάτω από το ποντίκι."
 
@@ -6931,11 +6955,11 @@ msgstr "Τιμή κορεσμού του εικονοστοιχείου εικό
 msgid "Save"
 msgstr "Διατήρηση"
 
-#: gui/mrvHotkey.cpp:316
+#: gui/mrvHotkey.cpp:317
 msgid "Save Clip XML Metadata"
 msgstr "Αποθήκευση μεταδεδομένων XML του Κλιπ"
 
-#: gui/mrvHotkey.cpp:314 gui/mrvFileRequester.cpp:948
+#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:948
 msgid "Save GL Snapshot"
 msgstr "Αποθήκευση στιγμιότυπου Opengl"
 
@@ -6943,7 +6967,7 @@ msgstr "Αποθήκευση στιγμιότυπου Opengl"
 msgid "Save Hotkeys Preferences"
 msgstr "Αποθήκευση προτιμήσεων κλειδιών οδήγησης"
 
-#: gui/mrvHotkey.cpp:313
+#: gui/mrvHotkey.cpp:314
 msgid "Save Image"
 msgstr "Αποθήκευσε την εικόνα"
 
@@ -6967,15 +6991,15 @@ msgstr "Αποθήκευση διαμόρφωσης OCIO"
 msgid "Save Options"
 msgstr "Αποθήκευση επιλογών"
 
-#: gui/mrvHotkey.cpp:312 gui/mrvFileRequester.cpp:1021
+#: gui/mrvHotkey.cpp:313 gui/mrvFileRequester.cpp:1021
 msgid "Save Reel"
 msgstr "Save Reel"
 
-#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:947
+#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:947
 msgid "Save Sequence"
 msgstr "Αποθήκευση ακολουθίας"
 
-#: gui/mrvHotkey.cpp:321 gui/mrvFileRequester.cpp:1000
+#: gui/mrvHotkey.cpp:322 gui/mrvFileRequester.cpp:1000
 msgid "Save Session"
 msgstr "Αποθήκευση συνεδρίας"
 
@@ -7058,16 +7082,16 @@ msgstr "Σχέδιο"
 msgid "Scratched Repeat Frame"
 msgstr "Επαναλάβετε το καρέ ελέγχου"
 
-#: gui/mrvHotkey.cpp:442
+#: gui/mrvHotkey.cpp:444
 msgid "ScrollLock"
 msgstr "Κλείδωμα κύλισης"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2135
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2170
 #: gui/mrvImageView.cpp:1580
 msgid "Scrub"
 msgstr "Σφουγγάρισμα"
 
-#: gui/mrvHotkey.cpp:379
+#: gui/mrvHotkey.cpp:380
 msgid "Scrub Mode"
 msgstr "λειτουργία καθαρισμού"
 
@@ -7075,8 +7099,8 @@ msgstr "λειτουργία καθαρισμού"
 msgid "Scrub Sensitivity"
 msgstr "Scrub Sensitivity"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:535
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2482
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:542
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2517
 msgid "Scrubbing Tool"
 msgstr "εργαλείο καθαρισμού"
 
@@ -7101,19 +7125,19 @@ msgid "Secondary Display"
 msgstr "Δευτερεύουσα οθόνη"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:211
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1822
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1857
 msgid "Seconds"
 msgstr "Δευτερόλεπτα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3234
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3269
 msgid "Select Audio Track"
 msgstr "Επιλέξτε Κομμάτι ήχου"
 
-#: gui/mrvHotkey.cpp:421
+#: gui/mrvHotkey.cpp:423
 msgid "Select Multi Image"
 msgstr "Επιλέξτε Πολλαπλές εικόνες"
 
-#: gui/mrvHotkey.cpp:420
+#: gui/mrvHotkey.cpp:422
 msgid "Select Single Image"
 msgstr "Επιλέξτε Μόνο μία εικόνα"
 
@@ -7170,7 +7194,7 @@ msgstr "Αυτόματη επιλογή τύπου shader: "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1674
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1972
-#: gui/mrvImageView.cpp:1608
+#: gui/mrvImageView.cpp:1610
 msgid "Selection"
 msgstr "Επιλογή"
 
@@ -7190,13 +7214,13 @@ msgstr "Επιλέξτε το χρώμα του κειμένου που επικ
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr "Επιλέξτε το χρώμα του ορθογωνίου επιλογής στην τρέχουσα εικόνα."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:708
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2590
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:743
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2625
 msgid "Selects the current pen color."
 msgstr "Επιλέξτε το χρώμα του μολυβιού."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:661
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3428
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:697
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3463
 msgid "Selects the size of brush."
 msgstr "Επιλέξτε το μέγεθος της βούρτσας."
 
@@ -7217,8 +7241,8 @@ msgstr "Αλληλουχία"
 msgid "Sequences"
 msgstr "ακολουθίες"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:807
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:832
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:842
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:867
 msgid "Server"
 msgstr "Υπηρέτης"
 
@@ -7231,15 +7255,15 @@ msgstr "Υπηρεσίες"
 msgid "Sessions (*.{"
 msgstr "Συνεδρίες (*.{"
 
-#: gui/mrvHotkey.cpp:397
+#: gui/mrvHotkey.cpp:399
 msgid "Set As BG Image"
 msgstr "Ορισμός ως εικόνα φόντου"
 
-#: gui/mrvHotkey.cpp:403
+#: gui/mrvHotkey.cpp:405
 msgid "Set In Point"
 msgstr "Ορισμός σημείου εισόδου"
 
-#: gui/mrvHotkey.cpp:404
+#: gui/mrvHotkey.cpp:406
 msgid "Set Out Point"
 msgstr "Ρύθμιση σημείου εξόδου"
 
@@ -7247,7 +7271,7 @@ msgstr "Ρύθμιση σημείου εξόδου"
 msgid "Set added audio offset."
 msgstr "Πρόσθεσα ηχητική κύλιση."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2211
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2246
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -7385,11 +7409,11 @@ msgstr "Εικόνα Μαλακή εικόνα"
 msgid "Software"
 msgstr "λογισμικό"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3162
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3197
 msgid "Some default frame rate settings."
 msgstr "Ορισμένες προεπιλεγμένες ρυθμίσεις ταχύτητας αναπαραγωγής"
 
-#: gui/mrvHotkey.cpp:482
+#: gui/mrvHotkey.cpp:484
 msgid "Space (' ')"
 msgstr "Χώρος (' ')"
 
@@ -7461,11 +7485,11 @@ msgid "Stereo eye separation"
 msgstr "Προβολή Διαχωρισμού"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:203
-#: gui/mrvHotkey.cpp:350
+#: gui/mrvHotkey.cpp:351
 msgid "Stop"
 msgstr "Να σταματήσει"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3107
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3142
 msgid "Stop playback."
 msgstr "Διακοπή αναπαραγωγής."
 
@@ -7477,7 +7501,7 @@ msgstr "διακοπή uiview"
 msgid "Stopped encoding cached "
 msgstr "Σταμάτησα να κωδικοποιώ την κρυφή μνήμη "
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2436
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2471
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr ""
 "Τεντώστε την εικόνα για να αντισταθμίσετε την αναλογία διαστάσεων pixel της "
@@ -7517,15 +7541,15 @@ msgstr "Επιστολή υπότιτλου "
 msgid "Subtitle type "
 msgstr "Τύπος υποτίτλων "
 
-#: gui/mrvImageView.cpp:5158
+#: gui/mrvImageView.cpp:5219
 msgid "Subtitle/Load"
 msgstr "Υπότιτλος/Χρέωση"
 
-#: gui/mrvImageView.cpp:5166
+#: gui/mrvImageView.cpp:5227
 msgid "Subtitle/No Subtitle"
 msgstr "Υπότιτλος/χωρίς υπότιτλο"
 
-#: gui/mrvImageView.cpp:5175
+#: gui/mrvImageView.cpp:5236
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Υπότιτλος/Κομμάτι #%d - %s"
@@ -7544,7 +7568,7 @@ msgstr "Υπότιτλος (*.{"
 msgid "Subtitles are only valid on video files"
 msgstr "Οι υπότιτλοι ισχύουν μόνο για αρχεία βίντεο"
 
-#: gui/mrvHotkey.cpp:486
+#: gui/mrvHotkey.cpp:488
 msgid "Subtract"
 msgstr "Αφαιρώ"
 
@@ -7560,15 +7584,15 @@ msgstr "Περιβάλλουσα φωτεινότητα"
 msgid "Swedish"
 msgstr "Σουηδικά (svenska)"
 
-#: gui/mrvHotkey.cpp:359
+#: gui/mrvHotkey.cpp:360
 msgid "Switch Channels"
 msgstr "Ανταλλαγή καναλιών"
 
-#: gui/mrvHotkey.cpp:396
+#: gui/mrvHotkey.cpp:398
 msgid "Switch FG/BG Images"
 msgstr "Εναλλάξτε εικόνες προσκηνίου και φόντου"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2752
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2787
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
@@ -7576,11 +7600,11 @@ msgstr ""
 "Αλλάξτε τη δειγματοληψία RGBA μεταξύ κινητής υποδιαστολής, δεκαεξαδικού "
 "(0..0xff) και δεκαδικού (0..255)."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3019
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3054
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "Εναλλαγή μεταξύ εμφάνισης καρέ, δευτερολέπτων και κωδικού χρόνου."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2920
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2955
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -7613,14 +7637,14 @@ msgstr ""
 "Ένα εικονοστοιχείο Y = 0,18 ( L = 0,5 ) θα εμφανίζεται περίπου στο μισό "
 "φωτεινό από το Y = L = 1,0 (Λευκό)."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2817
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2852
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr ""
 "Αλλάξτε τη δειγματοληψία του χρωματικού χώρου του pixel κάτω από τον κέρσορα."
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:598
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2545
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:605
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2580
 msgid "T"
 msgstr "Τ"
 
@@ -7633,7 +7657,7 @@ msgstr "TIFF (.tif)"
 msgid "TIFF Picture"
 msgstr "εικόνα TIFF"
 
-#: gui/mrvHotkey.cpp:438
+#: gui/mrvHotkey.cpp:440
 msgid "Tab"
 msgstr "Αυτί"
 
@@ -7653,11 +7677,11 @@ msgstr "Τάργκα (.tga)"
 msgid "Targa Picture"
 msgstr "εικόνα targa"
 
-#: gui/mrvImageView.cpp:1743 gui/mrvImageInformation.cpp:178
+#: gui/mrvImageView.cpp:1782 gui/mrvImageInformation.cpp:178
 msgid "Text"
 msgstr "Κείμενο"
 
-#: gui/mrvHotkey.cpp:388
+#: gui/mrvHotkey.cpp:390
 msgid "Text Mode"
 msgstr "Λειτουργία κειμένου"
 
@@ -7665,8 +7689,8 @@ msgstr "Λειτουργία κειμένου"
 msgid "Text Overlay"
 msgstr "Επικάλυψη κειμένου"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2546
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:606
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2581
 msgid "Text Tool"
 msgstr "Εργαλείο κειμένου"
 
@@ -7674,7 +7698,7 @@ msgstr "Εργαλείο κειμένου"
 msgid "Texture Units:\t"
 msgstr "Μονάδες υφής:\t"
 
-#: gui/mrvHotkey.cpp:328
+#: gui/mrvHotkey.cpp:329
 msgid "TextureFiltering"
 msgstr "Φιλτράρισμα υφής"
 
@@ -7998,7 +8022,7 @@ msgid "Thumbnails Active"
 msgstr "Ενεργές εκτυπώσεις"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:212
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1823
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1858
 msgid "Time"
 msgstr "χρόνος"
 
@@ -8013,7 +8037,7 @@ msgstr "Κωδικός χρόνου"
 msgid "Timeline"
 msgstr "Χρονοδιάγραμμα"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2974
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3009
 msgid "Timeline."
 msgstr "Χρονοδιάγραμμα"
 
@@ -8025,83 +8049,83 @@ msgstr "Βαφή"
 msgid "Tinting of clip."
 msgstr "Βαφή με κλιπ."
 
-#: gui/mrvHotkey.cpp:409
+#: gui/mrvHotkey.cpp:411
 msgid "Toggle 3D Stereo Options Window"
 msgstr "Εναλλαγή παραθύρου 3D Stereo Options"
 
-#: gui/mrvHotkey.cpp:410
+#: gui/mrvHotkey.cpp:412
 msgid "Toggle 3D View Window"
 msgstr "Εναλλαγή παραθύρου τρισδιάστατης προβολής"
 
-#: gui/mrvHotkey.cpp:411
+#: gui/mrvHotkey.cpp:413
 msgid "Toggle About Window"
 msgstr "Εναλλαγή παραθύρου Σχετικά"
 
-#: gui/mrvHotkey.cpp:408
+#: gui/mrvHotkey.cpp:410
 msgid "Toggle Action Window"
 msgstr "Παράθυρο δράσης ανταλλαγής"
 
-#: gui/mrvHotkey.cpp:364
+#: gui/mrvHotkey.cpp:365
 msgid "Toggle Background Composite"
 msgstr "Σύνθεση κεφαλαίων ανταλλαγής"
 
-#: gui/mrvHotkey.cpp:369
+#: gui/mrvHotkey.cpp:370
 msgid "Toggle Bottom Bar"
 msgstr "Εναλλαγή κάτω γραμμής"
 
-#: gui/mrvHotkey.cpp:407
+#: gui/mrvHotkey.cpp:409
 msgid "Toggle Color Area Info Window"
 msgstr "Εναλλαγή παραθύρου χρωματικής περιοχής"
 
-#: gui/mrvHotkey.cpp:415
+#: gui/mrvHotkey.cpp:417
 msgid "Toggle Connections Window"
 msgstr "Παράθυρο εναλλαγής συνδέσεων"
 
-#: gui/mrvHotkey.cpp:365
+#: gui/mrvHotkey.cpp:366
 msgid "Toggle EDL"
 msgstr "Ανταλλαγή EDL"
 
-#: gui/mrvHotkey.cpp:412
+#: gui/mrvHotkey.cpp:414
 msgid "Toggle EDL Edit Window"
 msgstr "Εναλλαγή παραθύρου EDL"
 
-#: gui/mrvHotkey.cpp:371
+#: gui/mrvHotkey.cpp:372
 msgid "Toggle Full Screen"
 msgstr "Λειτουργεία πλήρους οθόνης"
 
-#: gui/mrvHotkey.cpp:413
+#: gui/mrvHotkey.cpp:415
 msgid "Toggle Histogram Window"
 msgstr "Εναλλαγή του παραθύρου ιστογράμματος"
 
-#: gui/mrvHotkey.cpp:416
+#: gui/mrvHotkey.cpp:418
 msgid "Toggle Hotkeys Window"
 msgstr "Ανταλλαγή κλειδιών διαχείρισης"
 
-#: gui/mrvHotkey.cpp:414
+#: gui/mrvHotkey.cpp:416
 msgid "Toggle Hud"
 msgstr "Ανταλλάξτε τον Χαντ"
 
-#: gui/mrvHotkey.cpp:417
+#: gui/mrvHotkey.cpp:419
 msgid "Toggle ICC Profiles Window"
 msgstr "Εναλλαγή παραθύρου προφίλ ICC"
 
-#: gui/mrvHotkey.cpp:418
+#: gui/mrvHotkey.cpp:420
 msgid "Toggle Input Color Space"
 msgstr "Εναλλαγή χρωματικού χώρου εισαγωγής"
 
-#: gui/mrvHotkey.cpp:422
+#: gui/mrvHotkey.cpp:424
 msgid "Toggle LUT"
 msgstr "Ανταλλαγή LUT"
 
-#: gui/mrvHotkey.cpp:419
+#: gui/mrvHotkey.cpp:421
 msgid "Toggle Log Window"
 msgstr "Παράθυρο ανταλλαγής μηνυμάτων"
 
-#: gui/mrvHotkey.cpp:406
+#: gui/mrvHotkey.cpp:408
 msgid "Toggle Media Info Window"
 msgstr "Εναλλαγή μεσαίου παραθύρου πληροφοριών"
 
-#: gui/mrvHotkey.cpp:366
+#: gui/mrvHotkey.cpp:367
 msgid "Toggle Menu Bar"
 msgstr "Γραμμή μενού εναλλαγής"
 
@@ -8114,19 +8138,19 @@ msgstr "Permute Modify/%s"
 msgid "Toggle Modify/All"
 msgstr "Permute Modify/Τα παντα"
 
-#: gui/mrvHotkey.cpp:368
+#: gui/mrvHotkey.cpp:369
 msgid "Toggle Pixel Bar"
 msgstr "Εναλλαγή Pixel Bar"
 
-#: gui/mrvHotkey.cpp:423
+#: gui/mrvHotkey.cpp:425
 msgid "Toggle Pixel Ratio"
 msgstr "Swap Pixel Ratio"
 
-#: gui/mrvHotkey.cpp:424
+#: gui/mrvHotkey.cpp:426
 msgid "Toggle Preferences Window"
 msgstr "Εναλλαγή παραθύρου προτιμήσεων"
 
-#: gui/mrvHotkey.cpp:372
+#: gui/mrvHotkey.cpp:373
 msgid "Toggle Presentation"
 msgstr "Ανταλλαγή παρουσίασης"
 
@@ -8134,15 +8158,15 @@ msgstr "Ανταλλαγή παρουσίασης"
 msgid "Toggle Reel EDL in Timeline"
 msgstr "Εναλλάξτε το ρολό κάμερας στο Timeline"
 
-#: gui/mrvHotkey.cpp:405
+#: gui/mrvHotkey.cpp:407
 msgid "Toggle Reel Window"
 msgstr "Ανταλλαγή τροχών παραθύρου"
 
-#: gui/mrvHotkey.cpp:370
+#: gui/mrvHotkey.cpp:371
 msgid "Toggle Tool Dock"
 msgstr "Swap Action Dock"
 
-#: gui/mrvHotkey.cpp:367
+#: gui/mrvHotkey.cpp:368
 msgid "Toggle Top Bar"
 msgstr "Swap Top Bar"
 
@@ -8163,11 +8187,11 @@ msgstr ""
 "πρέπει να αποτελείται από 6 εικόνες για κάθε πλευρά του κύβου, τυλίγεται "
 "γύρω από έναν κύβο όταν αυτή η επιλογή είναι ενεργοποιημένη."
 
-#: gui/mrvHotkey.cpp:425
+#: gui/mrvHotkey.cpp:427
 msgid "Toggle Vectorscope Window"
 msgstr "Εναλλαγή διανυσματικού παραθύρου"
 
-#: gui/mrvHotkey.cpp:426
+#: gui/mrvHotkey.cpp:428
 msgid "Toggle Waveform Window"
 msgstr "Εναλλαγή παραθύρου κυματομορφής"
 
@@ -8183,11 +8207,11 @@ msgstr "Πάρα πολλές ροές σε περιβάλλον εξόδου"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11059
+#: gui/mrvImageView.cpp:11157
 msgid "Top"
 msgstr "Πιο ψηλά"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1553
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1588
 msgid "Top Field"
 msgstr "Άνω Πεδίο"
 
@@ -8247,7 +8271,7 @@ msgstr "Ενεργοποιήστε την κονσόλα εντοπισμού σ
 msgid "Type"
 msgstr "Ο τύπος"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2892
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2927
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -8302,12 +8326,12 @@ msgstr "Απροσδιόριστος"
 msgid "Undefined framebuffer"
 msgstr "απροσδιόριστο framebuffer"
 
-#: gui/mrvHotkey.cpp:392
+#: gui/mrvHotkey.cpp:394
 msgid "Undo Draw"
 msgstr "Αναίρεση σχεδίου"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2600
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:709
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2635
 msgid "Undo Last Shape Drawn"
 msgstr "Αναίρεση τελευταίου σχήματος που σχεδιάστηκε"
 
@@ -8454,11 +8478,11 @@ msgstr "Απροσδιόριστος"
 msgid "Unsupported internal format"
 msgstr "άγνωστη εσωτερική μορφή"
 
-#: core/exrImage.cpp:1419 gui/mrvHotkey.cpp:452
+#: core/exrImage.cpp:1419 gui/mrvHotkey.cpp:454
 msgid "Up"
 msgstr "Πάνω από"
 
-#: gui/mrvHotkey.cpp:349
+#: gui/mrvHotkey.cpp:350
 msgid "Update Frame in Cache"
 msgstr "Ενημερώστε το καρέ στην προσωρινή μνήμη"
 
@@ -8558,7 +8582,7 @@ msgstr "VR 360 Sphere"
 msgid "Value"
 msgstr "αξία"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2882
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2917
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "Τιμή (Ένταση) του pixel της εικόνας κάτω από το ποντίκι."
 
@@ -8598,7 +8622,7 @@ msgstr "Διάνυσμα 3 Ακέραιος"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1096
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1354
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1389
 msgid "Vectorscope"
 msgstr "διανυσματικό σκόπιο"
 
@@ -8610,19 +8634,19 @@ msgstr "Πωλητής:\t"
 msgid "Version Regex"
 msgstr "Έκδοση ExpReg."
 
-#: gui/mrvImageView.cpp:4988 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "Εκδοχή/Πρώτα"
 
-#: gui/mrvImageView.cpp:4997 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5058 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "Εκδοχή/τελευταίος"
 
-#: gui/mrvImageView.cpp:4991 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5052 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "Εκδοχή/ΕΠΟΜΕΝΟ"
 
-#: gui/mrvImageView.cpp:4993 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5054 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "Εκδοχή/Προηγούμενος"
 
@@ -8699,7 +8723,7 @@ msgstr "περιστροφή βίντεο"
 msgid "Video timecode attribute already exists"
 msgstr "Το χαρακτηριστικό Video Timecode υπάρχει ήδη"
 
-#: gui/mrvImageView.cpp:5142
+#: gui/mrvImageView.cpp:5203
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "βίντεο/Κομμάτι #%d - %s"
@@ -8712,49 +8736,49 @@ msgstr "Θέα"
 msgid "View Window"
 msgstr "Θέα"
 
-#: gui/mrvImageView.cpp:4912
+#: gui/mrvImageView.cpp:4973
 msgid "View/Data Window"
 msgstr "Θέα/Παράθυρο δεδομένων"
 
-#: gui/mrvImageView.cpp:4909
+#: gui/mrvImageView.cpp:4970
 msgid "View/Display Window"
 msgstr "Θέα/παράθυρο προβολής"
 
-#: gui/mrvImageView.cpp:4951
+#: gui/mrvImageView.cpp:5012
 msgid "View/Grid/Size"
 msgstr "Θέα/Πλέγμα/Μέγεθος"
 
-#: gui/mrvImageView.cpp:4947
+#: gui/mrvImageView.cpp:5008
 msgid "View/Grid/Toggle Selected"
 msgstr "Θέα/Πλέγμα/Ανταλλαγή"
 
-#: gui/mrvImageView.cpp:4963
+#: gui/mrvImageView.cpp:5024
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Θέα/hud/%s"
 
-#: gui/mrvImageView.cpp:4955
+#: gui/mrvImageView.cpp:5016
 msgid "View/Hud/Toggle Selected"
 msgstr "Θέα/hud/Επιλέχτηκε ανταλλαγή"
 
-#: gui/mrvImageView.cpp:4938
+#: gui/mrvImageView.cpp:4999
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Θέα/Μάσκα/%s"
 
-#: gui/mrvImageView.cpp:4906
+#: gui/mrvImageView.cpp:4967
 msgid "View/Safe Areas"
 msgstr "Θέα/Ασφαλείς Περιοχές"
 
-#: gui/mrvImageView.cpp:4915
+#: gui/mrvImageView.cpp:4976
 msgid "View/Texture Filtering  "
 msgstr "Θέα/Φιλτράρισμα υφής  "
 
-#: gui/mrvImageView.cpp:4924
+#: gui/mrvImageView.cpp:4985
 msgid "View/Toggle Action Dock"
 msgstr "Θέα/Swap Action Dock"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2178
 msgid "W"
 msgstr "W"
 
@@ -8782,7 +8806,7 @@ msgstr "Μουσική WAVE"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1182
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1355
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
 msgid "Waveform"
 msgstr "Κυματομορφή"
 
@@ -9109,11 +9133,11 @@ msgstr "πλάτος κλιπ"
 msgid "Window Behavior"
 msgstr "Συμπεριφορά παραθύρου"
 
-#: gui/mrvImageView.cpp:4897
+#: gui/mrvImageView.cpp:4958
 msgid "Windows/"
 msgstr "Windows/"
 
-#: gui/mrvHotkey.cpp:332
+#: gui/mrvHotkey.cpp:333
 msgid "Wipe"
 msgstr "σκουπίζω"
 
@@ -9224,21 +9248,22 @@ msgstr "X:"
 msgid "XML Clip Metadata (*.{"
 msgstr "Κλιπ μεταδεδομένων XML (*.{"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2738
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:680
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2773
 msgid "XY"
 msgstr "XY"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1745
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1780
 msgid "XYZ CIE XYZ"
 msgstr "XYZ CIE XYZ"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2589
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2919
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2954
 msgid "Y"
 msgstr "Y"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:254
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1783
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1818
 msgid "Y (Luminance)"
 msgstr "Y (Φωτεινότητα λευκού)"
 
@@ -9259,7 +9284,7 @@ msgid "Y Scale"
 msgstr "Κλίμακα Υ"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:255
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1784
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1819
 msgid "Y' (Lumma)"
 msgstr "Y' (Λούμα)"
 
@@ -9272,12 +9297,12 @@ msgid "YBYRY"
 msgstr "YBYRY"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:246
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1750
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1785
 msgid "YDbDr (Analog SECAM/PAL-N)"
 msgstr "YDbDr (SECAM/PAL-N αναλογικό)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:247
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1751
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1786
 msgid "YIQ (Analog NTSC)"
 msgstr "YIQ (Αναλογικό NTSC)"
 
@@ -9286,7 +9311,7 @@ msgid "YUV  Support:\t"
 msgstr "Υποστήριξη YUV:\t"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:245
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1784
 msgid "YUV (Analog PAL)"
 msgstr "YUV (Αναλογικό PAL)"
 
@@ -9318,7 +9343,7 @@ msgstr "Sug. YUV"
 msgid "YUVA Support:\t"
 msgstr "Υποστήριξη YUVA:\t"
 
-#: gui/mrvHotkey.cpp:648 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:231
@@ -9343,7 +9368,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Δεν μπορείτε να φορτώσετε ένα καρούλι ως στερεοφωνική εικόνα."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9720
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9818
 msgid "Z"
 msgstr "Ζ"
 
@@ -9369,7 +9394,7 @@ msgstr "ZIP SCANLINE"
 msgid "Zoom Speed"
 msgstr "συντελεστής ζουμ"
 
-#: gui/mrvImageView.cpp:3863
+#: gui/mrvImageView.cpp:3923
 msgid "Zoom for image failed"
 msgstr "Το ζουμ στην εικόνα απέτυχε"
 
@@ -9513,7 +9538,7 @@ msgstr "τα μισα/πλήρης κινητής υποδιαστολής"
 msgid "has invalid magic number in the header."
 msgstr "έχει έναν μη έγκυρο μαγικό αριθμό στην κεφαλίδα."
 
-#: gui/mrvImageView.cpp:4400 gui/mrvImageView.cpp:4415
+#: gui/mrvImageView.cpp:4460 gui/mrvImageView.cpp:4475
 msgid "hdtv"
 msgstr "hdtv"
 
@@ -9590,7 +9615,7 @@ msgid "mpeg4"
 msgstr "mpeg4"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:38
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2064
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2099
 msgid "mrViewer"
 msgstr "mrViewer"
 
@@ -9699,47 +9724,47 @@ msgstr "mrv::κουτί Δεν υπάρχουν δεδομένα pixel για α
 msgid "original"
 msgstr "πρωτότυπο"
 
-#: gui/mrvHotkey.cpp:470
+#: gui/mrvHotkey.cpp:472
 msgid "pad0"
 msgstr "Αριθμητικό πληκτρολόγιο 0"
 
-#: gui/mrvHotkey.cpp:472
+#: gui/mrvHotkey.cpp:474
 msgid "pad1"
 msgstr "Αριθμητικό πληκτρολόγιο 1"
 
-#: gui/mrvHotkey.cpp:473
+#: gui/mrvHotkey.cpp:475
 msgid "pad2"
 msgstr "Αριθμητικό πληκτρολόγιο 2"
 
-#: gui/mrvHotkey.cpp:474
+#: gui/mrvHotkey.cpp:476
 msgid "pad3"
 msgstr "Αριθμητικό πληκτρολόγιο 3"
 
-#: gui/mrvHotkey.cpp:475
+#: gui/mrvHotkey.cpp:477
 msgid "pad4"
 msgstr "Αριθμητικό πληκτρολόγιο 4"
 
-#: gui/mrvHotkey.cpp:476
+#: gui/mrvHotkey.cpp:478
 msgid "pad5"
 msgstr "Αριθμητικό πληκτρολόγιο 5"
 
-#: gui/mrvHotkey.cpp:478
+#: gui/mrvHotkey.cpp:480
 msgid "pad6"
 msgstr "Αριθμητικό πληκτρολόγιο 6"
 
-#: gui/mrvHotkey.cpp:479
+#: gui/mrvHotkey.cpp:481
 msgid "pad7"
 msgstr "Αριθμητικό πληκτρολόγιο 7"
 
-#: gui/mrvHotkey.cpp:480
+#: gui/mrvHotkey.cpp:482
 msgid "pad8"
 msgstr "Αριθμητικό πληκτρολόγιο 8"
 
-#: gui/mrvHotkey.cpp:481
+#: gui/mrvHotkey.cpp:483
 msgid "pad9"
 msgstr "Αριθμητικό πληκτρολόγιο 9"
 
-#: gui/mrvHotkey.cpp:469
+#: gui/mrvHotkey.cpp:471
 msgid "padEnter"
 msgstr "Εισαγάγετε το αριθμητικό πληκτρολόγιο"
 
@@ -9803,11 +9828,11 @@ msgstr "Το sysctl απέτυχε."
 msgid "task info failed"
 msgstr "οι πληροφορίες εργασίας απέτυχαν"
 
-#: gui/mrvImageView.cpp:4393 gui/mrvImageView.cpp:4423
+#: gui/mrvImageView.cpp:4453 gui/mrvImageView.cpp:4483
 msgid "tv action"
 msgstr "τηλεοπτική δράση"
 
-#: gui/mrvImageView.cpp:4394 gui/mrvImageView.cpp:4424
+#: gui/mrvImageView.cpp:4454 gui/mrvImageView.cpp:4484
 msgid "tv title"
 msgstr "τίτλος τηλεόρασης"
 
@@ -9840,43 +9865,43 @@ msgstr "βίντεο"
 msgid "visual impaired"
 msgstr "με προβλήματα όρασης"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1703
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2667
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1738
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2702
 msgid "x1"
 msgstr "x1"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1704
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1739
 msgid "x2"
 msgstr "x2"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1705
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1740
 msgid "x3"
 msgstr "x3"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1706
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1741
 msgid "x4"
 msgstr "x4"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1707
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1742
 msgid "x5"
 msgstr "x5"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1708
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1743
 msgid "x6"
 msgstr "x6"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1709
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1744
 msgid "x7"
 msgstr "x7"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1710
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1745
 msgid "x8"
 msgstr "x8"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1711
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
 msgid "x9"
 msgstr "x9"
 
-#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
+#: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1781
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
