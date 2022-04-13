@@ -771,7 +771,7 @@ o->main( this );}
         xywh {0 0 690 564} resizable
         class MyPack
       } {
-        Fl_Group uiMenuGroup {
+        Fl_Group uiMenuGroup {open
           xywh {0 0 690 25} box FLAT_BOX
         } {
           Fl_Menu_Bar uiMenuBar {
@@ -803,7 +803,7 @@ v->uiView->fit_image();}
             xywh {540 0 65 25} align 80
           } {}
         }
-        Fl_Group uiTopBar {
+        Fl_Group uiTopBar {open
           xywh {0 25 690 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
@@ -847,9 +847,8 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label {A-B, Stereo 3D Options} user_data_type {void*}
-              callback {uiStereo->uiMain->show();}
+              callback {uiStereo->uiMain->show();} selected
               xywh {10 10 100 20}
-              code0 {o->label( "A/B, Stereo 3D Options" );}
             }
             MenuItem {} {
               label 3dView user_data_type {void*}
@@ -1174,7 +1173,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
             }
           }
         }
-        Fl_Pack uiViewGroup {open
+        Fl_Pack uiViewGroup {
           xywh {0 54 690 432} type HORIZONTAL resizable
           code2 {o->layout();}
           code3 {o->init_sizes();}
@@ -1200,7 +1199,7 @@ o->image( scrub );}
             }
             Fl_Button uiDraw {
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->draw_mode();} selected
+              callback {v->uiView->draw_mode();}
               tooltip {Freehand Drawing Tool} xywh {2 143 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( draw );}
               class {mrv::Button}
