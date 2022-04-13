@@ -4388,7 +4388,7 @@ void ImageView::draw()
     }
 
 
-    if ( _masking != 0.0f )
+    if ( ! mrv::is_equal( _masking, 0.0f ) )
     {
         _engine->draw_mask( _masking );
     }
