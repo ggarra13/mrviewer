@@ -19,7 +19,7 @@ set( OpenGL_GL_PREFERENCE LEGACY )
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
-FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
+#FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
 ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
@@ -201,7 +201,6 @@ INCLUDE_DIRECTORIES(
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
-  ${GLUT_INCLUDE_DIR}
   ${FLTK_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
@@ -458,7 +457,7 @@ ELSE(NOT WIN32)
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
-  LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} ${GLUT_ROOT_PATH}/lib )
+  LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32)
 
 
@@ -468,7 +467,6 @@ SET( LIBRARIES
   ${R3DSDK_LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
-  ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
   ${OPENEXR_LIBRARIES}
   ${FLTK_LIBRARIES}
@@ -811,7 +809,7 @@ MESSAGE( STATUS "Summary for mrViewer:" )
 MESSAGE( STATUS
   "-------------------------------------------------------------" )
 
-MESSAGE( STATUS "FLTK:         ${FLTK_FOUND} ${FLTK_VERSION}" )
+MESSAGE( STATUS "FLTK:          ${FLTK_FOUND} ${FLTK_VERSION}" )
 MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
@@ -831,11 +829,6 @@ IF(R3DSDK_FOUND)
   MESSAGE( STATUS "R3DSDK INCLUDE DIR=${R3DSDK_INCLUDE_DIR}" )
   MESSAGE( STATUS "R3DSDK LIBRARIES=${R3DSDK_LIBRARIES}" )
 ENDIF()
-
-IF(GLUT_FOUND)
-  MESSAGE( STATUS "GLUT INCLUDE DIR=${GLUT_INCLUDE_DIR}" )
-  MESSAGE( STATUS "GLUT LIBRARIES=${GLUT_LIBRARIES}" )
-ENDIF(GLUT_FOUND)
 
 IF(FLTK_FOUND)
   MESSAGE( STATUS "FLTK INCLUDE DIRS=${FLTK_INCLUDE_DIRS}" )

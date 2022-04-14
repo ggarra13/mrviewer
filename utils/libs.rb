@@ -233,7 +233,7 @@ if kernel !~ /MINGW.*/
 
   files = []
 
-  if kernel =~ /Linux/
+  if kernel =~ /Linux/ and not @options[:translations_only]
     for exe in exes
       puts "PARSING #{exe}"
       output=`ldd "#{exe}"`

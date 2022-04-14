@@ -20,6 +20,7 @@ v6.1.4  - Bug fixed a crash when selecting an area over the network and the
 	  action window (SHIFT+CTRL+C by default).
 	- Bug fixed crash when changing the size of the cursor when drawing.
 	- Bug fixed synchronism between action window and attrs subwindow.
+	- Bug fixed mask 0.0 None not removing the mask.
 
 v6.1.3  - Added Swedish machine translation.
 	- Added Greek   machine translation.
