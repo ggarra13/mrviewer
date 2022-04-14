@@ -36,8 +36,6 @@
 #  include <GL/glxew.h>
 #endif
 
-#include <GL/glut.h>
-
 #include <FL/Fl.H>
 #include <FL/gl.h>
 #include <FL/fl_draw.H>
@@ -82,9 +80,9 @@ void glCircle( const Point& p, const double radius, double pen_size )
     glBegin( GL_LINE_LOOP );
     for ( int i = 0; i < triangleAmount; ++i )
     {
-	glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
-		    p.y + (radius * sin( i* twoPi / triangleAmount ))
-		  );
+        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                    p.y + (radius * sin( i* twoPi / triangleAmount ))
+                  );
     }
     glEnd();
 }
@@ -99,9 +97,9 @@ void glDisk( const Point& p, const double radius )
     glVertex2d( p.x, p.y );
     for ( int i = 0; i <= triangleAmount; ++i )
     {
-	glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
-		    p.y + (radius * sin( i* twoPi / triangleAmount ))
-		  );
+        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                    p.y + (radius * sin( i* twoPi / triangleAmount ))
+                  );
     }
     glEnd();
 }
@@ -114,75 +112,75 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
     glBegin(GL_TRIANGLES);
     for( size_t i = 0; i < polyline.size()-1; ++i )
     {
-	const Point& cur = polyline[ i ];
-	const Point& nxt = polyline[i+1];
+        const Point& cur = polyline[ i ];
+        const Point& nxt = polyline[i+1];
 
-	Point b = (nxt - cur).normalized();
-	Point b_perp( -b.y, b.x );
+        Point b = (nxt - cur).normalized();
+        Point b_perp( -b.y, b.x );
 
-	Point p0( cur + b_perp*w );
-	Point p1( cur - b_perp*w );
-	Point p2( nxt + b_perp*w );
-	Point p3( nxt - b_perp*w );
+        Point p0( cur + b_perp*w );
+        Point p1( cur - b_perp*w );
+        Point p2( nxt + b_perp*w );
+        Point p3( nxt - b_perp*w );
 
-	// first triangle
-	glVertex2dv( &p0.x );
-	glVertex2dv( &p1.x );
-	glVertex2dv( &p2.x );
-	// second triangle
-	glVertex2dv( &p2.x );
-	glVertex2dv( &p1.x );
-	glVertex2dv( &p3.x );
+        // first triangle
+        glVertex2dv( &p0.x );
+        glVertex2dv( &p1.x );
+        glVertex2dv( &p2.x );
+        // second triangle
+        glVertex2dv( &p2.x );
+        glVertex2dv( &p1.x );
+        glVertex2dv( &p3.x );
 
-	// only do joins when we have a prv
-	if( i == 0 ) continue;
+        // only do joins when we have a prv
+        if( i == 0 ) continue;
 
-	const Point& prv = polyline[i-1];
-	Point a = (prv - cur).normalized();
-	Point a_perp( a.y, -a.x );
+        const Point& prv = polyline[i-1];
+        Point a = (prv - cur).normalized();
+        Point a_perp( a.y, -a.x );
 
-	double det = a.x*b.y - b.x*a.y;
-	if( det > 0 )
-	{
-	    a_perp.x = -a_perp.x;
-	    a_perp.y = -a_perp.y;
-	    b_perp.x = -b_perp.x;
-	    b_perp.y = -b_perp.y;
-	}
+        double det = a.x*b.y - b.x*a.y;
+        if( det > 0 )
+        {
+            a_perp.x = -a_perp.x;
+            a_perp.y = -a_perp.y;
+            b_perp.x = -b_perp.x;
+            b_perp.y = -b_perp.y;
+        }
 
-	// TODO: do inner miter calculation
+        // TODO: do inner miter calculation
 
-	// flip around normals and calculate round join points
-	a_perp.x = -a_perp.x;
-	a_perp.y = -a_perp.y;
-	b_perp.x = -b_perp.x;
-	b_perp.y = -b_perp.y;
+        // flip around normals and calculate round join points
+        a_perp.x = -a_perp.x;
+        a_perp.y = -a_perp.y;
+        b_perp.x = -b_perp.x;
+        b_perp.y = -b_perp.y;
 
-	size_t num_pts = 4;
-	vector< Point > round( 1 + num_pts + 1 );
-	for( size_t j = 0; j <= num_pts+1; ++j )
-	{
-	    float t = (float)j/(float)(num_pts+1);
-	    if( det > 0 )
-		round[j] = cur + (slerp2d( b_perp, a_perp, 1.0f-t ) * w);
-	    else
-		round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
-	}
+        size_t num_pts = 4;
+        vector< Point > round( 1 + num_pts + 1 );
+        for( size_t j = 0; j <= num_pts+1; ++j )
+        {
+            float t = (float)j/(float)(num_pts+1);
+            if( det > 0 )
+                round[j] = cur + (slerp2d( b_perp, a_perp, 1.0f-t ) * w);
+            else
+                round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
+        }
 
-	for( size_t j = 0; j < round.size()-1; ++j )
-	{
-	    glVertex2dv( &cur.x );
-	    if( det > 0 )
-	    {
-		glVertex2dv( &(round[j+1].x) );
-		glVertex2dv( &(round[j+0].x) );
-	    }
-	    else
-	    {
-		glVertex2dv( &(round[j+0].x) );
-		glVertex2dv( &(round[j+1].x) );
-	    }
-	}
+        for( size_t j = 0; j < round.size()-1; ++j )
+        {
+            glVertex2dv( &cur.x );
+            if( det > 0 )
+            {
+                glVertex2dv( &(round[j+1].x) );
+                glVertex2dv( &(round[j+0].x) );
+            }
+            else
+            {
+                glVertex2dv( &(round[j+0].x) );
+                glVertex2dv( &(round[j+1].x) );
+            }
+        }
     }
     glEnd();
 }
@@ -196,14 +194,14 @@ std::string GLPathShape::send() const
     std::string buf = "GLPathShape ";
     char tmp[256];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
-	     pen_size, frame );
+             pen_size, frame );
     buf += tmp;
     GLPathShape::PointList::const_iterator i = pts.begin();
     GLPathShape::PointList::const_iterator e = pts.end();
     for ( ; i != e; ++i )
     {
-	sprintf( tmp, " %g %g", (*i).x, (*i).y );
-	buf += tmp;
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
     }
 
     setlocale( LC_NUMERIC, oldloc );
@@ -232,7 +230,7 @@ void GLPathShape::draw( double z )
 
     if ( pts.size() < 1 )
     {
-	return;
+        return;
     }
 
     glDisk( pts[0], pen_size / 2.0 );
@@ -273,14 +271,14 @@ std::string GLArrowShape::send() const
     std::string buf = "GLArrowShape ";
     char tmp[256];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
-	     pen_size, frame );
+             pen_size, frame );
     buf += tmp;
     GLPathShape::PointList::const_iterator i = pts.begin();
     GLPathShape::PointList::const_iterator e = pts.end();
     for ( ; i != e; ++i )
     {
-	sprintf( tmp, " %g %g", (*i).x, (*i).y );
-	buf += tmp;
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
     }
     setlocale( LC_NUMERIC, oldloc );
     av_free( oldloc );
@@ -312,19 +310,19 @@ void GLRectangleShape::draw( double z )
 
     glBegin( GL_LINE_LOOP );
     {
-	glVertex2d( pts[0].x, pts[0].y );
-	glVertex2d( pts[1].x, pts[0].y );
-	glVertex2d( pts[1].x, pts[1].y );
-	glVertex2d( pts[0].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[1].y );
     }
     glEnd();
 
     glBegin( GL_POINTS );
     {
-	glVertex2d( pts[0].x, pts[0].y );
-	glVertex2d( pts[1].x, pts[0].y );
-	glVertex2d( pts[1].x, pts[1].y );
-	glVertex2d( pts[0].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[0].y );
+        glVertex2d( pts[1].x, pts[1].y );
+        glVertex2d( pts[0].x, pts[1].y );
     }
     glEnd();
 
@@ -341,14 +339,14 @@ std::string GLRectangleShape::send() const
     std::string buf = "GLRectangleShape ";
     char tmp[256];
     sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
-	     pen_size, frame );
+             pen_size, frame );
     buf += tmp;
     GLPathShape::PointList::const_iterator i = pts.begin();
     GLPathShape::PointList::const_iterator e = pts.end();
     for ( ; i != e; ++i )
     {
-	sprintf( tmp, " %g %g", (*i).x, (*i).y );
-	buf += tmp;
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
     }
     setlocale( LC_NUMERIC, oldloc );
     av_free( oldloc );
@@ -414,8 +412,8 @@ std::string GLErasePathShape::send() const
     GLPathShape::PointList::const_iterator e = pts.end();
     for ( ; i != e; ++i )
     {
-	sprintf( tmp, " %g %g", (*i).x, (*i).y );
-	buf += tmp;
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
     }
 
     setlocale( LC_NUMERIC, oldloc );
@@ -437,7 +435,7 @@ void GLErasePathShape::draw( double z )
 
     if ( pts.size() < 1 )
     {
-	return;
+        return;
     }
 
     glDisk( pts[0], pen_size / 2.0 );
@@ -459,8 +457,8 @@ std::string GLTextShape::send() const
 
     char tmp[512];
     sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64,
-	     Fl::get_font_name( font() ),
-	     text().c_str(), size(), r, g, b, a, frame );
+             Fl::get_font_name( font() ),
+             text().c_str(), size(), r, g, b, a, frame );
     buf += tmp;
     sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
     buf += tmp;
@@ -506,16 +504,16 @@ void GLTextShape::draw( double z )
     float y = float( pts[0].y );
     for ( ; pos != std::string::npos; y -= size(), pos = txt.find('\n') )
     {
-	std::string t;
-	if (pos > 0 )
-	    t = txt.substr( 0, pos );
-	gl_draw(t.c_str(), float( pts[0].x ), y);
-	if ( txt.size() > pos )
-	    txt = txt.substr( pos+1, txt.size() );
+        std::string t;
+        if (pos > 0 )
+            t = txt.substr( 0, pos );
+        gl_draw(t.c_str(), float( pts[0].x ), y);
+        if ( txt.size() > pos )
+            txt = txt.substr( pos+1, txt.size() );
     }
     if ( txt.size() )
     {
-	gl_draw( txt.c_str(), float( pts[0].x ), y );
+        gl_draw( txt.c_str(), float( pts[0].x ), y );
     }
 
 }
