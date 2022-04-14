@@ -734,9 +734,19 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 {
     mrv::ImageView* view = uiMain->uiView;
 
-    int idx = menu->value() - kMASK_MENU_OFFSET;
+    const char* tmp;
+    int i;
+    int num = uiMain->uiPrefs->uiPrefsCropArea->children();
+    for ( i = 0; i < num; ++i )
+    {
+        tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
+        if ( !tmp ) continue;
+        if ( strcmp( tmp, menu->mvalue()->label() ) == 0 )
+            break;
+    }
+    if ( i == num ) return;  // should never happen
 
-    float mask = kCrops[idx];
+    float mask = kCrops[i];
 
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
@@ -4434,45 +4444,49 @@ void ImageView::draw()
             }
         }
 
-        double aspect = (double) W / (double) H;
 
         // Safe areas may change when pixel ratio is active
         double pr = 1.0;
         if ( uiMain->uiPixelRatio->value() )
         {
             pr = img->pixel_ratio();
-            aspect *= pr;
+            H *= pr;
         }
 
-        if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
+        double aspectY = (double) W / (double) H;
+        double aspectX = (double) H / (double) W;
+
+        if ( aspectY < 1.66 || (aspectY >= 1.77 && aspectY <= 1.78) )
         {
             // Assume NTSC/PAL
             float f = float(H) * 1.33f;
             f = f / float(W);
             _engine->color( 1.0f, 0.0f, 0.0f );
-            _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-            _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+            _engine->draw_safe_area( f * 0.9f, 0.9f, N_("tv action") );
+            _engine->draw_safe_area( f * 0.8f, 0.8f, N_("tv title") );
 
-            if ( aspect >= 1.77 )
+            if ( aspectY >= 1.77 )
             {
                 // Draw hdtv too
                 _engine->color( 1.0f, 0.0f, 1.0f );
-                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                _engine->draw_safe_area( 1.0f, aspectY/1.77f, N_("hdtv") );
             }
         }
         else
         {
-            if ( pr == 1.0f )
+            if ( mrv::is_equal( pr, 1.0 ) )
             {
-                // Assume film, draw 2.35, 1.85 and 1.66 areas
+                // Assume film, draw 2.35, 1.85, 1.66 and hdtv areas
                 _engine->color( 0.0f, 1.0f, 0.0f );
-                _engine->draw_safe_area( 1.0f, aspect/2.35f, "2.35" );
-                _engine->draw_safe_area( 1.0f, aspect/1.85f, "1.85" );
-                _engine->draw_safe_area( 1.0f, aspect/1.66f, "1.66" );
-
+                _engine->draw_safe_area( 2.35*aspectX,
+                                         1.0, _("2.35") );
+                _engine->draw_safe_area( 1.89*aspectX,
+                                         1.0, _("1.85") );
+                _engine->draw_safe_area( 1.66*aspectX,
+                                         1.0, _("1.66") );
                 // Draw hdtv too
                 _engine->color( 1.0f, 0.0f, 1.0f );
-                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                _engine->draw_safe_area( 1.77*aspectX, 1.0, N_("hdtv") );
             }
             else
             {
@@ -4480,8 +4494,8 @@ void ImageView::draw()
                 float f = float(H) * 1.33f;
                 f = f / float(W);
                 _engine->color( 1.0f, 0.0f, 0.0f );
-                _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-                _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+                _engine->draw_safe_area( f * 0.9f, 0.9f, N_("tv action") );
+                _engine->draw_safe_area( f * 0.8f, 0.8f, N_("tv title") );
             }
         }
 
@@ -5001,7 +5015,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                               FL_MENU_RADIO );
              item = (Fl_Menu_Item*) &(menu->menu()[idx]);
              float mask = kCrops[i];
-             if ( mask == _masking ) item->set();
+             if ( mrv::is_equal( mask, _masking ) ) item->set();
          }
 
 

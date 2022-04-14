@@ -1178,6 +1178,15 @@ void exrImage::read_header_attr( const Imf::Header& h,
     }
 
     {
+        const Imf::StringAttribute* attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("ColorSpace") );
+        if ( attr && !is_thumbnail() )
+        {
+            ocio_input_color_space( attr->value() );
+        }
+    }
+
+    {
         const Imf::ChromaticitiesAttribute *attr =
             h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
         if ( attr )
@@ -2469,6 +2478,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         Imf::StringAttribute attr( img->ocio_input_color_space() );
         hdr.insert( N_("Input Color Space"), attr );
+        hdr.insert( N_("ColorSpace"), attr );
         attrs.insert( _("Input Color Space") );
     }
 

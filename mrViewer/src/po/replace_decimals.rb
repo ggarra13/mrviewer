@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 #: encoding: utf-8
 
-langs = [ 'cs', 'de', 'fr', 'gr', 'it', 'nl', 'pl', 'pt', 'ro', 'ru', 'tr' ]
+langs = [ 'cs', 'de', 'es', 'fr', 'gr', 'it', 'nl', 'pl', 'pt',
+          'ro', 'ru', 'tr' ]
 
 
 for lang in langs
