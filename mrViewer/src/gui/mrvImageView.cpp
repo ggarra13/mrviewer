@@ -4294,8 +4294,6 @@ void ImageView::vr( VRType t )
 void ImageView::draw()
 {
 
-
-    DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
         if ( ! _engine )
@@ -4421,11 +4419,24 @@ void ImageView::draw()
     }
 
 
+    if ( !fg ) return;
 
 
-    if ( fg && _safeAreas )
+    _engine->draw_annotation( img->shapes(), img );
+    _engine->line_width(1.0);
+
+    if ( _zoom_grid )
+      {
+        _engine->draw_grid( img, 1.0 );
+      }
+
+    if ( _grid )
     {
-        const CMedia* img = fg->image();
+        _engine->draw_grid( img, _grid_size );
+    }
+
+    if ( _safeAreas )
+    {
         const mrv::Recti& dpw = img->display_window();
         unsigned W = dpw.w();
         unsigned H = dpw.h();
@@ -4454,7 +4465,6 @@ void ImageView::draw()
         }
 
         double aspectY = (double) W / (double) H;
-        double aspectX = (double) H / (double) W;
 
         if ( aspectY < 1.66 || (aspectY >= 1.77 && aspectY <= 1.78) )
         {
@@ -4476,6 +4486,7 @@ void ImageView::draw()
         {
             if ( mrv::is_equal( pr, 1.0 ) )
             {
+                double aspectX = (double) H / (double) W;
                 // Assume film, draw 2.35, 1.85, 1.66 and hdtv areas
                 _engine->color( 0.0f, 1.0f, 0.0f );
                 _engine->draw_safe_area( 2.35*aspectX,
@@ -4499,24 +4510,6 @@ void ImageView::draw()
             }
         }
 
-    }
-
-
-    if ( !fg ) {
-        return;
-    }
-
-    _engine->draw_annotation( img->shapes(), img );
-    _engine->line_width(1.0);
-
-    if ( _zoom_grid )
-      {
-        _engine->draw_grid( img, 1.0 );
-      }
-
-    if ( _grid )
-    {
-        _engine->draw_grid( img, _grid_size );
     }
 
     if ( _selection.w() > 0 || _selection.h() > 0 )
@@ -4717,18 +4710,15 @@ void ImageView::draw()
             if ((p == CMedia::kForwards  && _lastFrame < frame ) ||
                 (p == CMedia::kBackwards && _lastFrame > frame ))
             {
-                float ifps = img->fps();
-                if ( ifps > 30.975f ) ifps /= 2.0f;
-                float fps = img->play_fps() / ifps;
-                int64_t frame_diff = ( frame - _lastFrame ) / fps;
-                if ( p == CMedia::kForwards ) frame_diff--;
-                else frame_diff++;
-
+                // float ifps = img->fps();
+                // float fps = img->play_fps() / ifps;
+                // int64_t frame_diff = ( frame - _lastFrame ) / fps;
+                int64_t frame_diff = frame - _lastFrame;
 
                 int64_t absdiff = std::abs(frame_diff);
-                if ( absdiff > 0 && absdiff < 10 )
+                if ( absdiff > 1 && absdiff < 11 )
                 {
-                    unshown_frames += absdiff;
+                    unshown_frames += absdiff - 1;
                 }
 
                 _lastFrame = frame;
