@@ -2864,14 +2864,9 @@ void ImageView::fit_image()
     DBGM1( "fit H=" << H << " pic->h()= " << pic->height() );
     DBGM1( "fit h/H=" << h/H );
 
-#ifndef _WIN32
-    DBGM1("fit W1=" << W );
-    if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
-    DBGM1("fit W2=" << W );
-#endif
 
 #ifdef OSX
-    h /= 2;  // On OSX Y pixel coords are doubled
+    h /= 2;  // On OSX X and Y pixel coords are doubled
     w /= 2;
 #endif
 
