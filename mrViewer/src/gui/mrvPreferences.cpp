@@ -2300,7 +2300,7 @@ void Preferences::save()
     // ui options
     //
 
-    ui.set( "language", (int) uiPrefs->uiLanguage->value() );
+    ui.set( "language", language_index );
 
     ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
