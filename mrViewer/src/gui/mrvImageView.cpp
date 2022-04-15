@@ -4710,11 +4710,9 @@ void ImageView::draw()
             if ((p == CMedia::kForwards  && _lastFrame < frame ) ||
                 (p == CMedia::kBackwards && _lastFrame > frame ))
             {
-                // float ifps = img->fps();
-                // float fps = img->play_fps() / ifps;
-                // int64_t frame_diff = ( frame - _lastFrame ) / fps;
-                int64_t frame_diff = frame - _lastFrame;
-
+                float ifps = img->fps();
+                float fps = img->play_fps() / ifps;
+                int64_t frame_diff = ( frame - _lastFrame ) / fps;
                 int64_t absdiff = std::abs(frame_diff);
                 if ( absdiff > 1 && absdiff < 11 )
                 {
