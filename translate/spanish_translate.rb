@@ -31,7 +31,7 @@ def fix( text, result, lang )
        text == '  INF.  ' or text == "   NAN  " or
        text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
        text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-       text == "mrViewer    FG: %s" or
+       text == "mrViewer    FG: %s" or text == 'BG' or text == "EDL" or
        text == '%4.8g %%' or
        text == 'A/B' or text == 'A' or text == 'B' or
        text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
