@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-15 01:04-0300\n"
+"POT-Creation-Date: 2022-04-15 11:22-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "파일에 오디오가 없습니다"
 
-#: gui/mrvImageView.cpp:5825
+#: gui/mrvImageView.cpp:5820
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> 사용 "
 msgid "  Choosing "
 msgstr "  집어 고르기 "
 
-#: gui/mrvImageView.cpp:5830
+#: gui/mrvImageView.cpp:5825
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " 실패 "
 msgid " failed. "
 msgstr " 실패. "
 
-#: gui/mrvImageView.cpp:9196
+#: gui/mrvImageView.cpp:9191
 msgid " for channel.  Maximum: "
 msgstr " 채널을 위해. 최고: "
 
@@ -503,8 +503,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer가 시작되지 않으면 제거)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2277
-#: gui/mrvImageView.cpp:9170 gui/mrvImageView.cpp:9857
-#: gui/mrvImageView.cpp:9858 gui/mrvImageView.cpp:9866
+#: gui/mrvImageView.cpp:9165 gui/mrvImageView.cpp:9852
+#: gui/mrvImageView.cpp:9853 gui/mrvImageView.cpp:9861
 msgid "(no image)"
 msgstr "(이미지 없음)"
 
@@ -574,7 +574,7 @@ msgstr ". 속성은 attr=value 형식이어야 합니다."
 msgid ".  Saving pixel type is "
 msgstr ". 저장할 픽셀 유형은 "
 
-#: gui/mrvImageView.cpp:9197
+#: gui/mrvImageView.cpp:9192
 msgid ". Widget label is "
 msgstr ". 위젯 태그는 "
 
@@ -639,7 +639,7 @@ msgstr "1.50 정지 사진"
 msgid "1.56 STV - HDTV (14:9)"
 msgstr "1.56 STV-HDTV(14:9)"
 
-#: gui/mrvImageView.cpp:4497
+#: gui/mrvImageView.cpp:4492
 msgid "1.66"
 msgstr "1.66"
 
@@ -656,7 +656,7 @@ msgstr "1.77 HDTV(16:9)"
 msgid "1.8"
 msgstr "1.8"
 
-#: gui/mrvImageView.cpp:4495
+#: gui/mrvImageView.cpp:4490
 msgid "1.85"
 msgstr "1.85"
 
@@ -788,7 +788,7 @@ msgstr "2.2 5.1 1.4"
 msgid "2.20 70mm"
 msgstr "2.20 70mm"
 
-#: gui/mrvImageView.cpp:4493
+#: gui/mrvImageView.cpp:4488
 msgid "2.35"
 msgstr "2.35"
 
@@ -1243,8 +1243,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "타임라인의 끝 프레임을 설정할 수 있습니다."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9288
-#: gui/mrvImageView.cpp:9758 gui/mrvImageView.cpp:9820
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9283
+#: gui/mrvImageView.cpp:9753 gui/mrvImageView.cpp:9815
 msgid "Alpha"
 msgstr "알파"
 
@@ -1254,7 +1254,7 @@ msgstr "알파만"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2119
-#: gui/mrvImageView.cpp:9269 gui/mrvImageView.cpp:9821
+#: gui/mrvImageView.cpp:9264 gui/mrvImageView.cpp:9816
 msgid "Alpha Overlay"
 msgstr "알파 중복 인쇄"
 
@@ -1497,15 +1497,15 @@ msgstr "오디오 패키지를 알 수 없습니다. 검색 또는 프리롤이 
 msgid "Audio packets empty at end of seek"
 msgstr "검색이 끝나면 빈 오디오 패킷"
 
-#: gui/mrvImageView.cpp:5254
+#: gui/mrvImageView.cpp:5249
 msgid "Audio/Attach Audio File"
 msgstr "오디오/오디오 파일 추가"
 
-#: gui/mrvImageView.cpp:5259
+#: gui/mrvImageView.cpp:5254
 msgid "Audio/Detach Audio File"
 msgstr "오디오/오디오 파일 연결 해제"
 
-#: gui/mrvImageView.cpp:5256
+#: gui/mrvImageView.cpp:5251
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "오디오/오디오 시작 프레임 편집"
 
@@ -1664,8 +1664,8 @@ msgstr "혼합 모드"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2621
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9283
-#: gui/mrvImageView.cpp:9819
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9278
+#: gui/mrvImageView.cpp:9814
 msgid "Blue"
 msgstr "푸른"
 
@@ -1689,7 +1689,7 @@ msgstr "부스트 예외: "
 msgid "Both"
 msgstr "둘 다"
 
-#: gui/mrvImageView.cpp:11161
+#: gui/mrvImageView.cpp:11156
 msgid "Bottom"
 msgstr "낮추다"
 
@@ -1883,7 +1883,7 @@ msgstr "센터"
 msgid "Center Image"
 msgstr "이미지 중앙에"
 
-#: gui/mrvImageView.cpp:3599
+#: gui/mrvImageView.cpp:3594
 msgid "Change Image failed"
 msgstr "이미지 변경 실패"
 
@@ -2061,7 +2061,7 @@ msgstr "접을 수 있는 그룹을 찾을 수 없습니다."
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2156 gui/mrvImageView.cpp:2218
-#: gui/mrvImageView.cpp:9818 gui/mrvImageView.cpp:9866
+#: gui/mrvImageView.cpp:9813 gui/mrvImageView.cpp:9861
 msgid "Color"
 msgstr "색깔"
 
@@ -2101,7 +2101,7 @@ msgstr "색상 테마"
 msgid "Color Version"
 msgstr "컬러 버전"
 
-#: gui/mrvImageView.cpp:9105
+#: gui/mrvImageView.cpp:9100
 msgid "Color channel not found at index "
 msgstr "색인에 대한 색상 채널을 찾을 수 없습니다. "
 
@@ -3469,7 +3469,7 @@ msgstr ""
 "예:\n"
 "\n"
 
-#: gui/mrvImageView.cpp:3767
+#: gui/mrvImageView.cpp:3762
 msgid "Exchange Image failed"
 msgstr "이미지 교체 실패"
 
@@ -3649,52 +3649,52 @@ msgstr "립맵 Y에 대한 로드 실패 "
 msgid "File Requester"
 msgstr "파일 찾기"
 
-#: gui/mrvImageView.cpp:4917
+#: gui/mrvImageView.cpp:4912
 msgid "File/Open/AMF file"
 msgstr "보관소/열기 위해/MFA 파일"
 
-#: gui/mrvImageView.cpp:4904 gui/mrvImageView.cpp:4915
+#: gui/mrvImageView.cpp:4899 gui/mrvImageView.cpp:4910
 msgid "File/Open/Directory"
 msgstr "보관소/열기 위해/예배 규칙서"
 
-#: gui/mrvImageView.cpp:4894 gui/mrvImageBrowser.cpp:4163
+#: gui/mrvImageView.cpp:4889 gui/mrvImageBrowser.cpp:4163
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "보관소/열기 위해/영화 또는 시퀀스"
 
-#: gui/mrvImageView.cpp:4906 gui/mrvImageView.cpp:4919
+#: gui/mrvImageView.cpp:4901 gui/mrvImageView.cpp:4914
 msgid "File/Open/Session"
 msgstr "보관소/열기 위해/세션"
 
-#: gui/mrvImageView.cpp:4898 gui/mrvImageBrowser.cpp:4165
+#: gui/mrvImageView.cpp:4893 gui/mrvImageBrowser.cpp:4165
 msgid "File/Open/Single Image"
 msgstr "보관소/열기 위해/그냥 이미지"
 
-#: gui/mrvImageView.cpp:4912
+#: gui/mrvImageView.cpp:4907
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "보관소/열기 위해/스테레오용 영화 또는 시퀀스"
 
-#: gui/mrvImageView.cpp:4942
+#: gui/mrvImageView.cpp:4937
 msgid "File/Quit"
 msgstr "보관소/떠나다"
 
-#: gui/mrvImageView.cpp:4927 gui/mrvImageBrowser.cpp:4410
+#: gui/mrvImageView.cpp:4922 gui/mrvImageBrowser.cpp:4410
 msgid "File/Save/Frame As"
 msgstr "보관소/유지하다/상자 같은"
 
-#: gui/mrvImageView.cpp:4929 gui/mrvImageBrowser.cpp:4412
+#: gui/mrvImageView.cpp:4924 gui/mrvImageBrowser.cpp:4412
 msgid "File/Save/GL Snapshots As"
 msgstr "보관소/유지하다/OpenGL 스냅샷"
 
-#: gui/mrvImageView.cpp:4922 gui/mrvImageBrowser.cpp:4405
+#: gui/mrvImageView.cpp:4917 gui/mrvImageBrowser.cpp:4405
 msgid "File/Save/Movie or Sequence As"
 msgstr "보관소/유지하다/영화 또는 시퀀스 유사"
 
-#: gui/mrvImageView.cpp:4925 gui/mrvImageBrowser.cpp:4408
+#: gui/mrvImageView.cpp:4920 gui/mrvImageBrowser.cpp:4408
 msgid "File/Save/Reel As"
 msgstr "보관소/유지하다/릴처럼"
 
-#: gui/mrvImageView.cpp:4931 gui/mrvImageBrowser.cpp:4414
+#: gui/mrvImageView.cpp:4926 gui/mrvImageBrowser.cpp:4414
 msgid "File/Save/Session As"
 msgstr "보관소/유지하다/세션"
 
@@ -3833,7 +3833,7 @@ msgstr "포씨씨씨"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1418
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1599
-#: gui/mrvImageView.cpp:11159
+#: gui/mrvImageView.cpp:11154
 msgid "Frame"
 msgstr "액자"
 
@@ -3982,7 +3982,7 @@ msgstr "초록"
 msgid "Gain"
 msgstr "얻다"
 
-#: gui/mrvImageView.cpp:3958
+#: gui/mrvImageView.cpp:3953
 msgid "Gain for image failed"
 msgstr "이미지 획득 실패"
 
@@ -4027,7 +4027,7 @@ msgstr "적은 범위"
 msgid "Gamma More"
 msgstr "더 많은 범위"
 
-#: gui/mrvImageView.cpp:3970
+#: gui/mrvImageView.cpp:3965
 msgid "Gamma for image failed"
 msgstr "이미지 영역 실패"
 
@@ -4075,8 +4075,8 @@ msgstr "그리스 어 (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2606
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9278
-#: gui/mrvImageView.cpp:9819
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9273
+#: gui/mrvImageView.cpp:9814
 msgid "Green"
 msgstr "녹색"
 
@@ -4448,32 +4448,32 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "이미지 줌 설정."
 
-#: gui/mrvImageView.cpp:5132
+#: gui/mrvImageView.cpp:5127
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "영상/CTL 모양 수정(LMT) 추가"
 
-#: gui/mrvImageView.cpp:5124
+#: gui/mrvImageView.cpp:5119
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "영상/CTL 입력 장치 변환(IDT) 할당"
 
-#: gui/mrvImageView.cpp:5136
+#: gui/mrvImageView.cpp:5131
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "영상/CTL 렌더 변환(RRT) 할당"
 
-#: gui/mrvImageView.cpp:5140
+#: gui/mrvImageView.cpp:5135
 msgid "Image/Attach ICC Color Profile"
 msgstr "영상/컬러 ICC 프로파일 추가"
 
-#: gui/mrvImageView.cpp:5102
+#: gui/mrvImageView.cpp:5097
 msgid "Image/Clear Caches"
 msgstr "영상/캐시 지우기"
 
-#: gui/mrvImageView.cpp:5078 gui/mrvImageView.cpp:5086
+#: gui/mrvImageView.cpp:5073 gui/mrvImageView.cpp:5081
 #: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "영상/클론"
 
-#: gui/mrvImageView.cpp:5080 gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageView.cpp:5075 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "영상/모든 채널 복제"
 
@@ -4481,55 +4481,55 @@ msgstr "영상/모든 채널 복제"
 msgid "Image/Media Info"
 msgstr "영상/미디어 정보"
 
-#: gui/mrvImageView.cpp:5147
+#: gui/mrvImageView.cpp:5142
 msgid "Image/Mirror/Horizontal"
 msgstr "영상/거울/수평의"
 
-#: gui/mrvImageView.cpp:5151
+#: gui/mrvImageView.cpp:5146
 msgid "Image/Mirror/Vertical"
 msgstr "영상/거울/수직의"
 
-#: gui/mrvImageView.cpp:5128
+#: gui/mrvImageView.cpp:5123
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "영상/CTL ASC_CDL SOP 및 채도 수정"
 
-#: gui/mrvImageView.cpp:5067
+#: gui/mrvImageView.cpp:5062
 msgid "Image/Next"
 msgstr "영상/수행원"
 
-#: gui/mrvImageView.cpp:5093
+#: gui/mrvImageView.cpp:5088
 msgid "Image/Preload Caches"
 msgstr "영상/캐시 미리 로드"
 
-#: gui/mrvImageView.cpp:5069
+#: gui/mrvImageView.cpp:5064
 msgid "Image/Previous"
 msgstr "영상/이전의"
 
-#: gui/mrvImageView.cpp:5112
+#: gui/mrvImageView.cpp:5107
 msgid "Image/Rotate +90"
 msgstr "영상/회전 +90"
 
-#: gui/mrvImageView.cpp:5115
+#: gui/mrvImageView.cpp:5110
 msgid "Image/Rotate -90"
 msgstr "영상/회전 -90"
 
-#: gui/mrvImageView.cpp:5155 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5150 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "영상/배경으로 설정"
 
-#: gui/mrvImageView.cpp:5160
+#: gui/mrvImageView.cpp:5155
 msgid "Image/Switch FG and BG"
 msgstr "영상/전경 및 배경 변경"
 
-#: gui/mrvImageView.cpp:5163
+#: gui/mrvImageView.cpp:5158
 msgid "Image/Toggle Background"
 msgstr "영상/토글 배경"
 
-#: gui/mrvImageView.cpp:5170
+#: gui/mrvImageView.cpp:5165
 msgid "Image/Toggle EDL"
 msgstr "영상/EDL 스왑"
 
-#: gui/mrvImageView.cpp:5105
+#: gui/mrvImageView.cpp:5100
 msgid "Image/Update Single Frame in Cache"
 msgstr "영상/캐시 프레임 업데이트"
 
@@ -4645,7 +4645,7 @@ msgstr "잘못된 대상 프로필/이미지 형식"
 msgid "Invalid image "
 msgstr "잘못된 인덱스 "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9195
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9190
 msgid "Invalid index "
 msgstr "잘못된 인덱스 "
 
@@ -5064,7 +5064,7 @@ msgstr "마우스 아래의 이미지 픽셀 휘도."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2126
-#: gui/mrvImageView.cpp:9293 gui/mrvImageView.cpp:9820
+#: gui/mrvImageView.cpp:9288 gui/mrvImageView.cpp:9815
 msgid "Lumma"
 msgstr "루마"
 
@@ -5321,11 +5321,11 @@ msgstr "CTL 쓰기 모니터"
 msgid "Monitor Icc Profile"
 msgstr "Icc 프로필 모니터링"
 
-#: gui/mrvImageView.cpp:5277
+#: gui/mrvImageView.cpp:5272
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "표시하다/CTL 출력 디스플레이 변환(ODT) 추가"
 
-#: gui/mrvImageView.cpp:5281
+#: gui/mrvImageView.cpp:5276
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "표시하다/ICC 색상 프로필 추가"
 
@@ -5588,31 +5588,31 @@ msgstr "비교되지 않음"
 msgid "Not OK"
 msgstr "괜찮지 않다"
 
-#: gui/mrvImageView.cpp:5754
+#: gui/mrvImageView.cpp:5749
 msgid "Not a GLArrowShape pointer"
 msgstr "GLArrowShape 포인터가 아님"
 
-#: gui/mrvImageView.cpp:7180
+#: gui/mrvImageView.cpp:7175
 msgid "Not a GLCircleShape pointer"
 msgstr "GLCircleShape에 대한 포인터가 아닙니다."
 
-#: gui/mrvImageView.cpp:5726
+#: gui/mrvImageView.cpp:5721
 msgid "Not a GLErasePathShape pointer"
 msgstr "GLerasePathShape에 대한 포인터가 아닙니다."
 
-#: gui/mrvImageView.cpp:5712 gui/mrvImageView.cpp:7120
+#: gui/mrvImageView.cpp:5707 gui/mrvImageView.cpp:7115
 msgid "Not a GLPathShape pointer"
 msgstr "GLPathShape에 대한 포인터가 아닙니다."
 
-#: gui/mrvImageView.cpp:5740
+#: gui/mrvImageView.cpp:5735
 msgid "Not a GLRectangleShape pointer"
 msgstr "GLRectangleShape 포인터가 아님"
 
-#: gui/mrvImageView.cpp:5768 gui/mrvImageView.cpp:5782
+#: gui/mrvImageView.cpp:5763 gui/mrvImageView.cpp:5777
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "mouseRelease에서 GLTextShape에 대한 포인터가 아닙니다."
 
-#: gui/mrvImageView.cpp:7203
+#: gui/mrvImageView.cpp:7198
 msgid "Not a GLTextShape pointer in position"
 msgstr "위치에서 GLPathShape에 대한 포인터가 아닙니다."
 
@@ -5738,7 +5738,7 @@ msgstr "OCIO 입력 색 공간"
 msgid "OCIO View"
 msgstr "레저뷰"
 
-#: gui/mrvImageView.cpp:3983
+#: gui/mrvImageView.cpp:3978
 msgid "OCIO View change failed"
 msgstr "OCIO 보기 전환 실패"
 
@@ -5754,15 +5754,15 @@ msgstr "OCIO 환경 변수가 존재하지 않습니다. CTL이 사용됩니다.
 msgid "OCIO input color space for the image"
 msgstr "정의되지 않은 이미지의 입력 색 공간입니다."
 
-#: gui/mrvImageView.cpp:5186
+#: gui/mrvImageView.cpp:5181
 msgid "OCIO/Display"
 msgstr "OCIO/표시하다"
 
-#: gui/mrvImageView.cpp:5182 gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageView.cpp:5177 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/입력 색 공간"
 
-#: gui/mrvImageView.cpp:5189
+#: gui/mrvImageView.cpp:5184
 msgid "OCIO/View"
 msgstr "OCIO/보다"
 
@@ -6046,7 +6046,7 @@ msgstr "PBO 텍스처:\t"
 msgid "PIZ"
 msgstr "피즈"
 
-#: gui/mrvImageView.cpp:4772
+#: gui/mrvImageView.cpp:4767
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6157,7 +6157,7 @@ msgstr "클립 픽셀 비율"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "파형에서 픽셀 유형이 올바르게 지원되지 않음"
 
-#: gui/mrvImageView.cpp:5267
+#: gui/mrvImageView.cpp:5262
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "픽셀/RGBA 값을 클립보드에 복사"
 
@@ -6535,8 +6535,8 @@ msgstr "사각형 도구"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2591
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9273
-#: gui/mrvImageView.cpp:9818
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9268
+#: gui/mrvImageView.cpp:9813
 msgid "Red"
 msgstr "빨간색"
 
@@ -6834,7 +6834,7 @@ msgstr "이미지를 -10도 회전"
 msgid "Rotate Image -90 Degrees"
 msgstr "이미지를 -90도 회전"
 
-#: gui/mrvImageView.cpp:3913
+#: gui/mrvImageView.cpp:3908
 msgid "Rotate for image failed"
 msgstr "이미지 회전 실패"
 
@@ -7479,15 +7479,15 @@ msgstr "자막 편지 "
 msgid "Subtitle type "
 msgstr "자막 유형 "
 
-#: gui/mrvImageView.cpp:5221
+#: gui/mrvImageView.cpp:5216
 msgid "Subtitle/Load"
 msgstr "부제/요금"
 
-#: gui/mrvImageView.cpp:5229
+#: gui/mrvImageView.cpp:5224
 msgid "Subtitle/No Subtitle"
 msgstr "부제/자막 없음"
 
-#: gui/mrvImageView.cpp:5238
+#: gui/mrvImageView.cpp:5233
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "부제/트랙 #%d - %s"
@@ -8125,7 +8125,7 @@ msgstr "출력 컨텍스트에 너무 많은 스트림이 있습니다."
 msgid "Tooldock"
 msgstr "액션 독"
 
-#: gui/mrvImageView.cpp:11160
+#: gui/mrvImageView.cpp:11155
 msgid "Top"
 msgstr "더 높은"
 
@@ -8549,19 +8549,19 @@ msgstr "판매자:\t"
 msgid "Version Regex"
 msgstr "ExpReg 버전."
 
-#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5046 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "버전/첫 번째"
 
-#: gui/mrvImageView.cpp:5060 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5055 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "버전/마지막"
 
-#: gui/mrvImageView.cpp:5054 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "버전/수행원"
 
-#: gui/mrvImageView.cpp:5056 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "버전/이전의"
 
@@ -8638,7 +8638,7 @@ msgstr "비디오 회전"
 msgid "Video timecode attribute already exists"
 msgstr "비디오 시간 코드 속성이 이미 있습니다."
 
-#: gui/mrvImageView.cpp:5205
+#: gui/mrvImageView.cpp:5200
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "동영상/트랙 #%d - %s"
@@ -8651,45 +8651,45 @@ msgstr "보다"
 msgid "View Window"
 msgstr "보기 창"
 
-#: gui/mrvImageView.cpp:4975
+#: gui/mrvImageView.cpp:4970
 msgid "View/Data Window"
 msgstr "보다/데이터 창"
 
-#: gui/mrvImageView.cpp:4972
+#: gui/mrvImageView.cpp:4967
 msgid "View/Display Window"
 msgstr "보다/디스플레이 창"
 
-#: gui/mrvImageView.cpp:5014
+#: gui/mrvImageView.cpp:5009
 msgid "View/Grid/Size"
 msgstr "보다/그리드/크기"
 
-#: gui/mrvImageView.cpp:5010
+#: gui/mrvImageView.cpp:5005
 msgid "View/Grid/Toggle Selected"
 msgstr "보다/그리드/교환"
 
-#: gui/mrvImageView.cpp:5026
+#: gui/mrvImageView.cpp:5021
 #, c-format
 msgid "View/Hud/%s"
 msgstr "보다/허드/%s"
 
-#: gui/mrvImageView.cpp:5018
+#: gui/mrvImageView.cpp:5013
 msgid "View/Hud/Toggle Selected"
 msgstr "보다/허드/선택 스왑"
 
-#: gui/mrvImageView.cpp:5001
+#: gui/mrvImageView.cpp:4996
 #, c-format
 msgid "View/Mask/%s"
 msgstr "보다/마스크/%s"
 
-#: gui/mrvImageView.cpp:4969
+#: gui/mrvImageView.cpp:4964
 msgid "View/Safe Areas"
 msgstr "보다/보안 영역"
 
-#: gui/mrvImageView.cpp:4978
+#: gui/mrvImageView.cpp:4973
 msgid "View/Texture Filtering  "
 msgstr "보다/텍스처 필터링  "
 
-#: gui/mrvImageView.cpp:4987
+#: gui/mrvImageView.cpp:4982
 msgid "View/Toggle Action Dock"
 msgstr "보다/스왑 액션 도크"
 
@@ -9010,7 +9010,7 @@ msgstr "클립 너비"
 msgid "Window Behavior"
 msgstr "창 동작"
 
-#: gui/mrvImageView.cpp:4960
+#: gui/mrvImageView.cpp:4955
 msgid "Windows/"
 msgstr "윈도우/"
 
@@ -9239,7 +9239,7 @@ msgstr "하나의 스테레오 이미지만 업로드하여 현재 이미지와 
 msgid "You cannot load a reel as a stereo image."
 msgstr "릴을 스테레오 이미지로 업로드할 수 없습니다."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9821
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9816
 msgid "Z"
 msgstr "지"
 
@@ -9265,7 +9265,7 @@ msgstr "ZIP 스캔라인"
 msgid "Zoom Speed"
 msgstr "확대/축소 비율"
 
-#: gui/mrvImageView.cpp:3933
+#: gui/mrvImageView.cpp:3928
 msgid "Zoom for image failed"
 msgstr "이미지 확대 실패"
 
