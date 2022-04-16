@@ -1330,8 +1330,8 @@ void GLEngine::draw_mask( const float pct )
             //
             glVertex2d( -0.5 + amountX,  -0.5 );
             glVertex2d( -0.5 + amountX,   0.5 );
-            glVertex2d( -0.5,   0.5 );
-            glVertex2d( -0.5,  -0.5 );
+            glVertex2d( -0.5006,   0.5 );  // we use -0.5006 to compensate
+            glVertex2d( -0.5006,  -0.5 );  // for scaling leaving 1 pixel behind
         }
         {
             //
