@@ -1792,13 +1792,13 @@ void ImageView::text_mode()
         uiMain->uiStatus->copy_label( _("Text") );
         uiMain->uiText->value(true);
         uiMain->uiScrub->value(false);
-        uiMain->uiPaint->uiScrub->value(false);
         uiMain->uiArrow->value(false);
         uiMain->uiErase->value(false);
         uiMain->uiCircle->value(false);
         uiMain->uiDraw->value(false);
         uiMain->uiSelection->value(false);
 
+        uiMain->uiPaint->uiScrub->value(false);
         uiMain->uiPaint->uiText->value(true);
         uiMain->uiPaint->uiArrow->value(false);
         uiMain->uiPaint->uiMovePic->value(false);
@@ -2592,22 +2592,6 @@ void ImageView::image_coordinates( const CMedia* const img,
     y -= yoffset;
 
 
-
-
-    // double tn = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
-
-    // if ( std::abs( tn ) < 0.0001 )
-    // {
-    //     std::cerr << "ORIG " <<  x << ", " << y << std::endl;
-    //     double px = x;
-    //     x = y;
-    //     y = px;
-
-    //     px = W;
-    //     W = H;
-    //     H = px;
-    //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
-    // };
     y = H - y;
 
 
@@ -4517,14 +4501,14 @@ void ImageView::draw()
         if ( _zoom >= 32 ) _engine->line_width(1.0);
     }
 
-    if ( !(flags & kMouseDown) )
+    if ( !(flags & kMouseDown) && Fl::belowmouse() == this )
       {
           // std::cerr << "flags " << flags << " "
           //           << !(flags & kMouseDown ) <
           //     < std::endl;
-          if (  (_mode & kDraw) || (_mode & kErase) ||
-                (_mode & kCircle) || (_mode & kArrow ) ||
-                (_mode & kRectangle) )
+          if ( (_mode & kDraw) || (_mode & kErase) ||
+               (_mode & kCircle) || (_mode & kArrow ) ||
+               (_mode & kRectangle) || (_mode & kText) )
             {
                 double xf = X;
                 double yf = Y;
@@ -4544,13 +4528,9 @@ void ImageView::draw()
                 yf -= daw.y();
 
 
-                //float scale = Fl::screen_scale( window()->screen_num() );
-                // xf *= scale;
-                // yf *= scale;
 
-
+                window()->cursor( FL_CURSOR_NONE );
                 _engine->draw_cursor( xf, yf, _mode );
-                window()->cursor(FL_CURSOR_NONE);
             }
           else
             {
@@ -4817,13 +4797,15 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
 {
     mrv::media fg = foreground();
     if (!fg) {
-        LOG_ERROR( "No image to add shape to" );
+        LOG_ERROR( _("No image to add shape to") );
         return;
     }
 
     fg->image()->add_shape( s );
     uiMain->uiPaint->uiUndoDraw->activate();
     uiMain->uiPaint->uiRedoDraw->deactivate();
+    uiMain->uiUndoDraw->activate();
+    uiMain->uiRedoDraw->deactivate();
 }
 
 int sign (const Imath::V2i& p1,
@@ -4833,37 +4815,6 @@ int sign (const Imath::V2i& p1,
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 }
 
-// bool PointInTriangle (const Imath::V2d& p,
-//                       const Imath::V2d& p0,
-//                       const Imath::V2d& p1,
-//                       const Imath::V2d& p2)
-// {
-//     double dX = p.x-p2.x;
-//     double dY = p.y-p2.y;
-//     double dX21 = p2.x-p1.x;
-//     double dY12 = p1.y-p2.y;
-//     double D = dY12*(p0.x-p2.x) + dX21*(p0.y-p2.y);
-//     double s = dY12*dX + dX21*dY;
-//     double t = (p2.y-p0.y)*dX + (p0.x-p2.x)*dY;
-//     if (D<0) return s<=0 && t<=0 && s+t>=D;
-//     return s>=0 && t>=0 && s+t<=D;
-// }
-// bool PointInTriangle (const Imath::V2d& s,
-//                       const Imath::V2d& a,
-//                       const Imath::V2d& b,
-//                       const Imath::V2d& c)
-// {
-//     int as_x = s.x-a.x;
-//     int as_y = s.y-a.y;
-
-//     bool s_ab = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
-
-//     if((c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) return false;
-
-//     if((c.x-b.x)*(s.y-b.y)-(c.y-b.y)*(s.x-b.x) > 0 != s_ab) return false;
-
-//     return true;
-// }
 bool PointInTriangle (const Imath::V2i& pt,
                       const Imath::V2i& v1,
                       const Imath::V2i& v2,
@@ -5284,6 +5235,10 @@ bool PointInTriangle (const Imath::V2i& pt,
      menu->menu_end();
      menu->redraw();
  }
+
+unsigned ImageView::font_height() {
+    return mrv::font_size;
+}
 
 /**
  * Handle a mouse press
@@ -8694,7 +8649,11 @@ int ImageView::handle(int event)
                                  _mode & kArrow || _mode & kCircle ||
                                  _mode & kRectangle ) )
             window()->cursor( FL_CURSOR_CROSS );
-      return 1;
+        if ( ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
+               _mode & kCircle ||  _mode & kRectangle || _mode & kText ) )
+            window()->cursor( FL_CURSOR_NONE );
+        redraw();
+        return 1;
     case FL_UNFOCUS:
         if ( !presentation )
             window()->cursor( FL_CURSOR_DEFAULT );
@@ -8702,6 +8661,7 @@ int ImageView::handle(int event)
     case FL_LEAVE:
         if ( !presentation )
             window()->cursor( FL_CURSOR_DEFAULT );
+        redraw();
         return 1;
     case FL_PUSH:
         focus(this);

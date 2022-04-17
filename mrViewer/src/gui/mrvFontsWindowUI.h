@@ -19,17 +19,13 @@
 
 #ifndef mrvFontsWindowUI_h
 #define mrvFontsWindowUI_h
-#include <FL/Fl_Double_Window.H>
+class Fl_Double_Window;
 extern Fl_Double_Window* uiMain;
-#include <FL/Fl_Group.H>
-#include <FL/Fl_Input.H>
-#include <FL/Fl_Choice.H>
-#include <FL/Fl_Value_Slider.H>
 
 namespace mrv  {
 
-extern Fl_Font  font_current;
-extern unsigned    font_size;
+extern Fl_Font     font_current;
+extern Fl_Fontsize font_size;
 extern std::string font_text;
 
 bool make_window();

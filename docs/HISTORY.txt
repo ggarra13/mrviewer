@@ -1,6 +1,11 @@
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.
 	- Added 2.00 Univisium aspect ratio.
+	- Added cursor display in Text widget tool.
+	- Added bounding box cursor display when in text mode.
+	- Fixed Undo and Redo buttons activation in the action dockbar.
+	- Draw cursor now disappears when not in the view window.
+	- Fixed a minor bug with buttons turning off when spacebar was pressed.
 
 v6.1.4  - Bug fixed a crash when selecting an area over the network and the
 	  area color information window was open.

@@ -20,11 +20,13 @@
 #include <string.h>
 #include <iostream>
 
-#include "FL/Fl_Window.H"
+#include "FL/Fl_Double_Window.H"
 #include "FL/Fl_Button.H"
 #include "FL/Fl_Box.H"
 #include "FL/Fl_Browser.H"
 #include "FL/Fl_Text_Editor.H"
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Value_Slider.H>
 #include "FL/Enumerations.H"
 #include "FL/fl_draw.H"
 #include "FL/Fl.H"
@@ -37,6 +39,8 @@ public:
     Fl_Text_Editor(X,Y,W,H,L) {
         box(B);
     buffer( new Fl_Text_Buffer() );
+    show_cursor();
+    cursor_color( FL_BLACK );
     }
 };
 
@@ -44,7 +48,7 @@ public:
 namespace mrv {
 
   Fl_Font  font_current = (Fl_Font) 0;
-  unsigned    font_size = 32;
+  Fl_Fontsize   font_size = 32;
   std::string font_text = "Type here";
 
 }
