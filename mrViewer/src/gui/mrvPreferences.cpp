@@ -1337,7 +1337,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
         if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
         LOG_INFO( _("Loading hotkeys from ") << prefspath()
-                  << _( hotkeys_file.c_str() ) );
+                  << _( hotkeys_file.c_str() ) << ".prefs" );
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    tmpS );
     }

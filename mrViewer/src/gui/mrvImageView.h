@@ -768,6 +768,8 @@ public:
     unsigned grid_size() const { return _grid_size; }
     void grid_size(unsigned t) { _grid_size = t; redraw(); }
 
+    unsigned font_height();
+
     /// Stop preload image caches
     void preload_cache_stop();
 
