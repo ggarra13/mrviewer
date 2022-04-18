@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-17 08:38-0300\n"
+"POT-Creation-Date: 2022-04-18 10:01-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1814,7 +1814,8 @@ msgstr "카드를 열지 못했습니다 "
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:86
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:109
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:274
-#: gui/mrvImageInformation.cpp:254 gui/mrvImageInformation.cpp:287
+#: gui/mrvFontsWindowUI.cpp:159 gui/mrvImageInformation.cpp:254
+#: gui/mrvImageInformation.cpp:287
 msgid "Cancel"
 msgstr "취소"
 
@@ -3813,8 +3814,13 @@ msgid "Focus"
 msgstr "집중하다"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3228
+#: gui/mrvFontsWindowUI.cpp:125
 msgid "Font"
 msgstr "타이포그래피"
+
+#: gui/mrvFontsWindowUI.cpp:142
+msgid "Font Size"
+msgstr "글꼴 크기"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:176
 #: gui/mrvImageInformation.cpp:3104 gui/mrvImageInformation.cpp:3605
@@ -5807,8 +5813,8 @@ msgstr "저장 OIIO"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:90
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3507
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:83
-#: core/mrvClient.cpp:322 gui/mrvImageInformation.cpp:251
-#: gui/mrvImageInformation.cpp:284
+#: core/mrvClient.cpp:322 gui/mrvFontsWindowUI.cpp:156
+#: gui/mrvImageInformation.cpp:251 gui/mrvImageInformation.cpp:284
 msgid "OK"
 msgstr "알았어"
 
@@ -8196,6 +8202,10 @@ msgstr "디버그 콘솔을 켭니다."
 #: gui/mrvImageInformation.cpp:218
 msgid "Type"
 msgstr "남자"
+
+#: gui/mrvFontsWindowUI.cpp:54
+msgid "Type here"
+msgstr "여기에 입력"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2935
 msgid ""
