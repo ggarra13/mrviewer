@@ -122,7 +122,7 @@ bool make_window() {
             o->begin();
 
             uiText = new FontDisplay(FL_ENGRAVED_BOX, 0, 0, 400, 100);
-            {   Fl_Choice* o = new Fl_Choice(40, 120, 360, 25, _("Font"));
+            {   Fl_Choice* o = new Fl_Choice(120, 120, 280, 25, _("Font"));
                 int numfonts = Fl::set_fonts("-*");
                 for (int i = 0; i < numfonts; ++i)
         {
@@ -139,7 +139,7 @@ bool make_window() {
         uiText->textcolor( FL_BLACK );
                 o->callback( new_font );
             }
-            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(70, 160, 325, 25, _("Font Size"));
+            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(120, 160, 280, 25, _("Font Size"));
         o->type( FL_HORIZONTAL );
                 o->minimum(8);
                 o->maximum(100);
@@ -153,10 +153,10 @@ bool make_window() {
 
             {   Fl_Group* g = new Fl_Group( 0, 200, 205, 55 );
                 g->begin();
-                {   Fl_Button* o = new Fl_Button( 75, 200, 50, 25, _("OK") );
+                {   Fl_Button* o = new Fl_Button( 75, 200, 70, 25, _("OK") );
                     o->callback((Fl_Callback*)cb_Accept, (void*)(w));
                 }
-                {   Fl_Button* o = new Fl_Button( 150, 200, 50, 25, _("Cancel") );
+                {   Fl_Button* o = new Fl_Button( 160, 200, 70, 25, _("Cancel") );
                     o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
                 }
                 g->end();
