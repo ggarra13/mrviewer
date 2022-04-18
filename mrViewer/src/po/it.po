@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-18 02:24-0300\n"
+"POT-Creation-Date: 2022-04-18 09:45-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -174,7 +174,7 @@ msgstr " fallito con "
 msgid " failed. "
 msgstr " fallimento. "
 
-#: gui/mrvImageView.cpp:9184
+#: gui/mrvImageView.cpp:9192
 msgid " for channel.  Maximum: "
 msgstr " per il canale. Massimo: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Rimuovilo se mrViewer non si avvia)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2275
-#: gui/mrvImageView.cpp:9158 gui/mrvImageView.cpp:9845
-#: gui/mrvImageView.cpp:9846 gui/mrvImageView.cpp:9854
+#: gui/mrvImageView.cpp:9166 gui/mrvImageView.cpp:9853
+#: gui/mrvImageView.cpp:9854 gui/mrvImageView.cpp:9862
 msgid "(no image)"
 msgstr "(Senza immagine)"
 
@@ -578,7 +578,7 @@ msgstr ". L'attributo deve avere la forma attr=valore."
 msgid ".  Saving pixel type is "
 msgstr ". Il tipo di pixel da salvare è "
 
-#: gui/mrvImageView.cpp:9185
+#: gui/mrvImageView.cpp:9193
 msgid ". Widget label is "
 msgstr ". Il tag del widget è "
 
@@ -1256,8 +1256,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Consente di impostare il fotogramma finale per la sequenza temporale."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9276
-#: gui/mrvImageView.cpp:9746 gui/mrvImageView.cpp:9808
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9284
+#: gui/mrvImageView.cpp:9754 gui/mrvImageView.cpp:9816
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1267,7 +1267,7 @@ msgstr "solo alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2119
-#: gui/mrvImageView.cpp:9257 gui/mrvImageView.cpp:9809
+#: gui/mrvImageView.cpp:9265 gui/mrvImageView.cpp:9817
 msgid "Alpha Overlay"
 msgstr "Sovrastampa alfa"
 
@@ -1678,8 +1678,8 @@ msgstr "modalità di fusione"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9271
-#: gui/mrvImageView.cpp:9807
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9279
+#: gui/mrvImageView.cpp:9815
 msgid "Blue"
 msgstr "Blu"
 
@@ -1703,7 +1703,7 @@ msgstr "Eccezione potenziamento: "
 msgid "Both"
 msgstr "Entrambi"
 
-#: gui/mrvImageView.cpp:11149
+#: gui/mrvImageView.cpp:11157
 msgid "Bottom"
 msgstr "inferiore"
 
@@ -2078,7 +2078,7 @@ msgstr "Gruppo comprimibile non trovato"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2156 gui/mrvImageView.cpp:2218
-#: gui/mrvImageView.cpp:9806 gui/mrvImageView.cpp:9854
+#: gui/mrvImageView.cpp:9814 gui/mrvImageView.cpp:9862
 msgid "Color"
 msgstr "Colore"
 
@@ -2118,7 +2118,7 @@ msgstr "tema del colore"
 msgid "Color Version"
 msgstr "versione a colori"
 
-#: gui/mrvImageView.cpp:9093
+#: gui/mrvImageView.cpp:9101
 msgid "Color channel not found at index "
 msgstr "Canale colore non trovato per l'indice "
 
@@ -3878,7 +3878,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1597
-#: gui/mrvImageView.cpp:11147
+#: gui/mrvImageView.cpp:11155
 msgid "Frame"
 msgstr "Telaio"
 
@@ -4123,8 +4123,8 @@ msgstr "greco (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9266
-#: gui/mrvImageView.cpp:9807
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9274
+#: gui/mrvImageView.cpp:9815
 msgid "Green"
 msgstr "Verde"
 
@@ -4701,7 +4701,7 @@ msgstr "Profilo di destinazione non valido/formato immagine"
 msgid "Invalid image "
 msgstr "indice non valido "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9183
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9191
 msgid "Invalid index "
 msgstr "indice non valido "
 
@@ -5054,11 +5054,11 @@ msgstr "Caricamento in corso"
 msgid "Loading \"%s\""
 msgstr "Caricamento \"%s\""
 
-#: video/mrvGLEngine.cpp:4234
+#: video/mrvGLEngine.cpp:4250
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Caricamento dello shader interno NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4240
+#: video/mrvGLEngine.cpp:4256
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Caricamento dello shader rgba interno arbfp1"
 
@@ -5122,7 +5122,7 @@ msgstr "Luminanza dei pixel dell'immagine sotto il mouse."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2126
-#: gui/mrvImageView.cpp:9281 gui/mrvImageView.cpp:9808
+#: gui/mrvImageView.cpp:9289 gui/mrvImageView.cpp:9816
 msgid "Lumma"
 msgstr "luma"
 
@@ -6606,8 +6606,8 @@ msgstr "Strumento rettangolo"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9261
-#: gui/mrvImageView.cpp:9806
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9269
+#: gui/mrvImageView.cpp:9814
 msgid "Red"
 msgstr "rosso"
 
@@ -8224,7 +8224,7 @@ msgstr "Troppi flussi nel contesto di output"
 msgid "Tooldock"
 msgstr "Bacino d'azione"
 
-#: gui/mrvImageView.cpp:11148
+#: gui/mrvImageView.cpp:11156
 msgid "Top"
 msgstr "Più alto"
 
@@ -8482,7 +8482,7 @@ msgstr "Modalità di arrotondamento sconosciuta"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Tipo di dati sconosciuto per mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2691
+#: video/mrvGLEngine.cpp:2707
 msgid "Unknown wipe direction"
 msgstr "Indirizzo di cancellazione sconosciuto"
 
@@ -9378,7 +9378,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Non è possibile caricare una bobina come immagine stereo."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9809
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9817
 msgid "Z"
 msgstr "Z"
 

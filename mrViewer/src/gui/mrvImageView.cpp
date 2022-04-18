@@ -7195,53 +7195,61 @@ int ImageView::keyDown(unsigned int rawkey)
             GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
             if ( s )
             {
-                char buffer[100];
-                buffer[0] = '\0';
+                char buffer[2] = "\0";
                 std::string c = s->text();
                 int del = 0;
                 if (Fl::compose(del)) {
                     if ( del )
                     {
-                        c.substr( 0, c.size() - del );
+                        c = c.substr( 0, c.size() - del );
                     }
                     if ( Fl::event_length() )
                     {
                         const char* text = Fl::event_text();
                         c += text;
+                        s->text( c );
+                        redraw();
+                        return 1;
                     }
+                }
+
+#if 0
+                if (rawkey == 0)
+                { // fallthru
+                }
+                else if (rawkey < 128)
+                { // ASCII
+                    sprintf(buffer, "%c", rawkey);
+                }
+                else if (rawkey >= 0xa0 && rawkey <= 0xff)
+                { // ISO-8859-1 (international keyboards)
+                    char key[8];
+                    int kl = fl_utf8encode(rawkey, key);
+                    key[kl] = '\0';
+                    sprintf(buffer, "%s", key);
+                }
+#endif
+                if ( rawkey == FL_BackSpace )
+                {
+                    if ( c.empty() ) return 0;
+
+                    int len = 1;
+                    if ( c.size() > 1 )
+                    {
+                        std::string tmp = c.substr( c.size() - 2,
+                                                    c.size() - 1 );
+                        const char* p = tmp.c_str();
+                        len = fl_utf8len1(p[0]);
+                    }
+                    c = c.substr( 0, c.size() - len );
+                }
+                else if ( rawkey == FL_Enter || rawkey == FL_KP_Enter )
+                {
+                    c += '\n';
                 }
                 else
                 {
-                    if (rawkey == 0)
-                    { // fallthru
-                    }
-                    else if (rawkey < 128)
-                    { // ASCII
-                        sprintf(buffer, "%c", rawkey);
-                    }
-                    else if (rawkey >= 0xa0 && rawkey <= 0xff)
-                    { // ISO-8859-1 (international keyboards)
-                        char key[8];
-                        int kl = fl_utf8encode((unsigned)rawkey, key);
-                        key[kl] = '\0';
-                        sprintf(buffer, "%s", key);
-                    }
-                    else if ( rawkey == FL_BackSpace )
-                    {
-                        int del = 1;
-                        if ( c.size() > 2 )
-                        {
-                            std::string tmp = c.substr( c.size() - 2,
-                                                        c.size() - 1 );
-                            unsigned p = tmp.c_str()[0];
-                            if (p >= 0xa0 && p <= 0xff) del = 2;
-                        }
-                        c = c.substr( 0, c.size() - del );
-                    }
-                    else if ( rawkey == FL_Enter || rawkey == FL_KP_Enter )
-                    {
-                        c += '\n';
-                    }
+                    buffer[0] = (char) rawkey;
                 }
                 s->text( c + buffer);
                 redraw();

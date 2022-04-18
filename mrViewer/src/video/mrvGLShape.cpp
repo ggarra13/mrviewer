@@ -511,7 +511,7 @@ void GLTextShape::draw( double z )
         if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
-    if ( txt.size() )
+    if ( !txt.empty() )
     {
         gl_draw( txt.c_str(), float( pts[0].x ), y );
     }

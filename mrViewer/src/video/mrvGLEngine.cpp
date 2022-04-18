@@ -1130,12 +1130,17 @@ void GLEngine::draw_cursor( const double x, const double y,
         char tmp[1024];
 
         // Copy string so we can modify it (split it in lines)
+        std::string text;
+        GLTextShape* shape = NULL;
         const GLShapeList shapes = view->shapes();
-        if ( shapes.empty() ) return;
-        const shape_type_ptr& o = shapes.back();
-        GLTextShape* shape = dynamic_cast< GLTextShape* >( o.get() );
-        if ( !shape ) return;
-        std::string text = shape->text();
+        if ( ! shapes.empty() )
+        {
+            const shape_type_ptr& o = shapes.back();
+            shape = dynamic_cast< GLTextShape* >( o.get() );
+            if ( !shape ) return;
+            text = shape->text();
+        }
+
         const char* t = text.c_str();
         char* s = tmp;
         while ( ( *s++ = *t++ ) ) ;
@@ -1167,10 +1172,21 @@ void GLEngine::draw_cursor( const double x, const double y,
         int w  = fl_width( start );
         if ( w == 0 ) w = 1;
         int h  = fl_height();
-        int X1 = shape->pts[0].x;
-        int Y1 = shape->pts[0].y - dy - h * (lines-1);
-        int X2 = shape->pts[0].x + w;
-        int Y2 = shape->pts[0].y - dy + h;
+        int X1, Y1, X2, Y2;
+        if ( shape )
+        {
+            X1 = shape->pts[0].x;
+            Y1 = shape->pts[0].y - dy - h * (lines-1);
+            X2 = shape->pts[0].x + w;
+            Y2 = shape->pts[0].y - dy + h;
+        }
+        else
+        {
+            X1 = x;
+            Y1 = y - dy;
+            X2 = x + w;
+            Y2 = y - dy + h;
+        }
         glBegin( GL_LINE_LOOP );
         {
             glVertex2d( X1, Y1 );
