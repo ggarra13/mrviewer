@@ -7188,20 +7188,64 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     if ( _mode & kText )
     {
-        const char* text = Fl::event_text();
-        if ( text && strlen(text) > 0 )
+        GLShapeList& shapes = this->shapes();
+        if ( !shapes.empty() )
         {
-            GLShapeList& shapes = this->shapes();
-            if ( !shapes.empty() )
+            shape_type_ptr o = shapes.back();
+            GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+            if ( s )
             {
-                shape_type_ptr o = shapes.back();
-                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-                if ( s )
-                {
-                    s->text( s->text() + text );
-                    redraw();
-                    return 1;
+                char buffer[100];
+                buffer[0] = '\0';
+                std::string c = s->text();
+                int del = 0;
+                if (Fl::compose(del)) {
+                    if ( del )
+                    {
+                        c.substr( 0, c.size() - del );
+                    }
+                    if ( Fl::event_length() )
+                    {
+                        const char* text = Fl::event_text();
+                        c += text;
+                    }
                 }
+                else
+                {
+                    if (rawkey == 0)
+                    { // fallthru
+                    }
+                    else if (rawkey < 128)
+                    { // ASCII
+                        sprintf(buffer, "%c", rawkey);
+                    }
+                    else if (rawkey >= 0xa0 && rawkey <= 0xff)
+                    { // ISO-8859-1 (international keyboards)
+                        char key[8];
+                        int kl = fl_utf8encode((unsigned)rawkey, key);
+                        key[kl] = '\0';
+                        sprintf(buffer, "%s", key);
+                    }
+                    else if ( rawkey == FL_BackSpace )
+                    {
+                        int del = 1;
+                        if ( c.size() > 2 )
+                        {
+                            std::string tmp = c.substr( c.size() - 2,
+                                                        c.size() - 1 );
+                            unsigned p = tmp.c_str()[0];
+                            if (p >= 0xa0 && p <= 0xff) del = 2;
+                        }
+                        c = c.substr( 0, c.size() - del );
+                    }
+                    else if ( rawkey == FL_Enter || rawkey == FL_KP_Enter )
+                    {
+                        c += '\n';
+                    }
+                }
+                s->text( c + buffer);
+                redraw();
+                return 1;
             }
         }
     }

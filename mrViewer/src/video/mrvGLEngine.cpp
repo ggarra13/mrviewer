@@ -1158,9 +1158,14 @@ void GLEngine::draw_cursor( const double x, const double y,
                 ++lines;
             }
         }
+        if ( strlen(check) > len ) {
+            len = strlen(check);
+            start = check;
+        }
         fl_font( mrv::font_current, mrv::font_size );
         int dy = fl_descent();
         int w  = fl_width( start );
+        if ( w == 0 ) w = 1;
         int h  = fl_height();
         int X1 = shape->pts[0].x;
         int Y1 = shape->pts[0].y - dy - h * (lines-1);
