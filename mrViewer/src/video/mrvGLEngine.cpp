@@ -1130,10 +1130,15 @@ void GLEngine::draw_cursor( const double x, const double y,
         char tmp[1024];
 
         // Copy string so we can modify it (split it in lines)
-        const char* t = mrv::font_text.c_str();
+        const GLShapeList shapes = view->shapes();
+        if ( shapes.empty() ) return;
+        const shape_type_ptr& o = shapes.back();
+        GLTextShape* shape = dynamic_cast< GLTextShape* >( o.get() );
+        if ( !shape ) return;
+        std::string text = shape->text();
+        const char* t = text.c_str();
         char* s = tmp;
-        for ( ; *t;  )
-            *s++ = *t++;
+        while ( ( *s++ = *t++ ) ) ;
         *s = '\0';
 
         unsigned lines = 1;
@@ -1157,10 +1162,10 @@ void GLEngine::draw_cursor( const double x, const double y,
         int dy = fl_descent();
         int w  = fl_width( start );
         int h  = fl_height();
-        int X1 = x;
-        int Y1 = y - dy - h * (lines-1);
-        int X2 = x + w;
-        int Y2 = y - dy + h;
+        int X1 = shape->pts[0].x;
+        int Y1 = shape->pts[0].y - dy - h * (lines-1);
+        int X2 = shape->pts[0].x + w;
+        int Y2 = shape->pts[0].y - dy + h;
         glBegin( GL_LINE_LOOP );
         {
             glVertex2d( X1, Y1 );
@@ -1357,19 +1362,19 @@ void GLEngine::draw_mask( const float pct )
             //
             // Bottom mask
             //
-            glVertex2d( -0.5,  -0.5 + amountY );
+            glVertex2d( -0.5006,  -0.5 + amountY );
             glVertex2d(  0.5,  -0.5 + amountY );
             glVertex2d(  0.5,  -0.5 );
-            glVertex2d( -0.5,  -0.5 );
+            glVertex2d( -0.5006,  -0.5 );
         }
         {
             //
             // Top mask
             //
-            glVertex2d( -0.5,  0.5 );
+            glVertex2d( -0.5006,  0.5 );
             glVertex2d(  0.5,  0.5 );
             glVertex2d(  0.5,  0.5 - amountY );
-            glVertex2d( -0.5,  0.5 - amountY );
+            glVertex2d( -0.5006,  0.5 - amountY );
         }
     }
     else

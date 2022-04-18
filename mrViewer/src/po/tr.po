@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-17 08:38-0300\n"
+"POT-Creation-Date: 2022-04-18 00:35-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Dosyada ses yok"
 
-#: gui/mrvImageView.cpp:5775
+#: gui/mrvImageView.cpp:5767
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Kullanma "
 msgid "  Choosing "
 msgstr "  ayıklamak "
 
-#: gui/mrvImageView.cpp:5780
+#: gui/mrvImageView.cpp:5772
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " ile başarısız "
 msgid " failed. "
 msgstr " arıza. "
 
-#: gui/mrvImageView.cpp:9151
+#: gui/mrvImageView.cpp:9140
 msgid " for channel.  Maximum: "
 msgstr " kanal için. Maksimum: "
 
@@ -507,8 +507,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2275
-#: gui/mrvImageView.cpp:9125 gui/mrvImageView.cpp:9812
-#: gui/mrvImageView.cpp:9813 gui/mrvImageView.cpp:9821
+#: gui/mrvImageView.cpp:9114 gui/mrvImageView.cpp:9801
+#: gui/mrvImageView.cpp:9802 gui/mrvImageView.cpp:9810
 msgid "(no image)"
 msgstr "(resimsiz)"
 
@@ -578,7 +578,7 @@ msgstr ". Nitelik, attr=değer biçiminde olmalıdır."
 msgid ".  Saving pixel type is "
 msgstr ". Kaydedilecek piksel türü: "
 
-#: gui/mrvImageView.cpp:9152
+#: gui/mrvImageView.cpp:9141
 msgid ". Widget label is "
 msgstr ". Widget etiketi "
 
@@ -1253,8 +1253,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9243
-#: gui/mrvImageView.cpp:9713 gui/mrvImageView.cpp:9775
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9232
+#: gui/mrvImageView.cpp:9702 gui/mrvImageView.cpp:9764
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1264,7 +1264,7 @@ msgstr "sadece alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:2119
-#: gui/mrvImageView.cpp:9224 gui/mrvImageView.cpp:9776
+#: gui/mrvImageView.cpp:9213 gui/mrvImageView.cpp:9765
 msgid "Alpha Overlay"
 msgstr "Alfa Üst Baskı"
 
@@ -1673,8 +1673,8 @@ msgstr "karışım modu"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9238
-#: gui/mrvImageView.cpp:9774
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9227
+#: gui/mrvImageView.cpp:9763
 msgid "Blue"
 msgstr "Mavi"
 
@@ -1698,7 +1698,7 @@ msgstr "Boost İstisnası: "
 msgid "Both"
 msgstr "Bunların her ikisi de"
 
-#: gui/mrvImageView.cpp:11116
+#: gui/mrvImageView.cpp:11105
 msgid "Bottom"
 msgstr "daha düşük"
 
@@ -2071,7 +2071,7 @@ msgstr "Daraltılabilir grup bulunamadı"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:2156 gui/mrvImageView.cpp:2218
-#: gui/mrvImageView.cpp:9773 gui/mrvImageView.cpp:9821
+#: gui/mrvImageView.cpp:9762 gui/mrvImageView.cpp:9810
 msgid "Color"
 msgstr "Renk"
 
@@ -2111,7 +2111,7 @@ msgstr "renk teması"
 msgid "Color Version"
 msgstr "renkli versiyon"
 
-#: gui/mrvImageView.cpp:9060
+#: gui/mrvImageView.cpp:9049
 msgid "Color channel not found at index "
 msgstr "Dizin için renk kanalı bulunamadı "
 
@@ -3851,7 +3851,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1597
-#: gui/mrvImageView.cpp:11114
+#: gui/mrvImageView.cpp:11103
 msgid "Frame"
 msgstr "Çerçeve"
 
@@ -4093,8 +4093,8 @@ msgstr "Yunan (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9233
-#: gui/mrvImageView.cpp:9774
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9222
+#: gui/mrvImageView.cpp:9763
 msgid "Green"
 msgstr "Yeşil"
 
@@ -4667,7 +4667,7 @@ msgstr "Geçersiz hedef profil/görüntü formatı"
 msgid "Invalid image "
 msgstr "geçersiz dizin "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9150
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9139
 msgid "Invalid index "
 msgstr "geçersiz dizin "
 
@@ -5020,11 +5020,11 @@ msgstr "Yükleniyor"
 msgid "Loading \"%s\""
 msgstr "\"%s\" yükleniyor"
 
-#: video/mrvGLEngine.cpp:4224
+#: video/mrvGLEngine.cpp:4229
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Dahili gölgelendirici NV3.0 rgba yükleniyor"
 
-#: video/mrvGLEngine.cpp:4230
+#: video/mrvGLEngine.cpp:4235
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Dahili rgba gölgelendirici arbfp1 yükleniyor"
 
@@ -5088,7 +5088,7 @@ msgstr "Farenin altındaki görüntü pikseli parlaklığı."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2126
-#: gui/mrvImageView.cpp:9248 gui/mrvImageView.cpp:9775
+#: gui/mrvImageView.cpp:9237 gui/mrvImageView.cpp:9764
 msgid "Lumma"
 msgstr "lüme"
 
@@ -5618,33 +5618,29 @@ msgstr "Comped değil"
 msgid "Not OK"
 msgstr "Tamam değil"
 
-#: gui/mrvImageView.cpp:5704
+#: gui/mrvImageView.cpp:5696
 msgid "Not a GLArrowShape pointer"
 msgstr "GLArrowShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:7130
+#: gui/mrvImageView.cpp:7122
 msgid "Not a GLCircleShape pointer"
 msgstr "GLCircleShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5676
+#: gui/mrvImageView.cpp:5668
 msgid "Not a GLErasePathShape pointer"
 msgstr "GLErasePathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5662 gui/mrvImageView.cpp:7070
+#: gui/mrvImageView.cpp:5654 gui/mrvImageView.cpp:7062
 msgid "Not a GLPathShape pointer"
 msgstr "GLPathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5690
+#: gui/mrvImageView.cpp:5682
 msgid "Not a GLRectangleShape pointer"
 msgstr "GLRectangleShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:5718 gui/mrvImageView.cpp:5732
+#: gui/mrvImageView.cpp:5710 gui/mrvImageView.cpp:5724
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "MouseRelease üzerinde GLTextShape için bir işaretçi değil"
-
-#: gui/mrvImageView.cpp:7153
-msgid "Not a GLTextShape pointer in position"
-msgstr "Konumda GLPathShape için bir işaretçi değil"
 
 #: core/stubImage.cpp:732
 msgid "Not a mental ray stub file anymore."
@@ -6568,8 +6564,8 @@ msgstr "Dikdörtgen Aracı"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9228
-#: gui/mrvImageView.cpp:9773
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:9217
+#: gui/mrvImageView.cpp:9762
 msgid "Red"
 msgstr "kırmızı"
 
@@ -8171,7 +8167,7 @@ msgstr "Çıkış bağlamında çok fazla akış"
 msgid "Tooldock"
 msgstr "Eylem Yuvası"
 
-#: gui/mrvImageView.cpp:11115
+#: gui/mrvImageView.cpp:11104
 msgid "Top"
 msgstr "Daha yüksek"
 
@@ -8429,7 +8425,7 @@ msgstr "Bilinmeyen yuvarlama modu"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser için bilinmeyen veri türü"
 
-#: video/mrvGLEngine.cpp:2681
+#: video/mrvGLEngine.cpp:2686
 msgid "Unknown wipe direction"
 msgstr "Bilinmeyen silme adresi"
 
@@ -9311,7 +9307,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Bir makarayı stereo görüntü olarak yükleyemezsiniz."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9776
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9765
 msgid "Z"
 msgstr "Z"
 
@@ -9836,6 +9832,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Not a GLTextShape pointer in position"
+#~ msgstr "Konumda GLPathShape için bir işaretçi değil"
 
 #~ msgid "ColorSpace"
 #~ msgstr "renk uzayı"

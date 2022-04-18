@@ -5467,20 +5467,12 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else if ( _mode == kText )
             {
-                if ( mrv::font_text != "" )
-                {
-                    GLTextShape* t = new GLTextShape;
+                GLTextShape* t = new GLTextShape;
 
-                    t->font( mrv::font_current );
-                    t->size( mrv::font_size );
-                    t->text( mrv::font_text );
-                    s = t;
-                }
-                else
-                {
-                    return 1;
-                }
-
+                t->font( mrv::font_current );
+                t->size( mrv::font_size );
+                t->text( mrv::font_text );
+                s = t;
             }
             else
             {
@@ -7113,9 +7105,9 @@ void ImageView::mouseDrag(int x,int y)
                         s->pts[1] = p2;
                     }
                     else
-                        {
-                            s->pts.push_back( p2 );
-                        }
+                    {
+                        s->pts.push_back( p2 );
+                    }
                 }
             }
             else if ( _mode == kCircle )
@@ -7140,28 +7132,6 @@ void ImageView::mouseDrag(int x,int y)
                 double A = p.x - s->center.x;
                 double B = p.y - s->center.y;
                 s->radius = sqrt( A*A+B*B ) / scale;
-            }
-            else if ( _mode == kText )
-            {
-                GLShapeList& shapes = fg->image()->shapes();
-                if ( shapes.empty() ) return;
-
-                mrv::shape_type_ptr o = shapes.back();
-                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-                if ( s == NULL )
-                {
-                    LOG_ERROR( _("Not a GLTextShape pointer in position") );
-                }
-                else
-                {
-                    yn = -yn;
-
-                    xn += daw[idx].x();
-                    yn -= daw[idx].y();
-
-
-                    s->position( int(xn), int(yn) );
-                }
             }
 
             assert( _selection.w() >= 0.0 );
@@ -7214,6 +7184,25 @@ int ImageView::keyDown(unsigned int rawkey)
             uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
             redraw();
             return 1;
+        }
+    }
+    if ( _mode & kText )
+    {
+        const char* text = Fl::event_text();
+        if ( text && strlen(text) > 0 )
+        {
+            GLShapeList& shapes = this->shapes();
+            if ( !shapes.empty() )
+            {
+                shape_type_ptr o = shapes.back();
+                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+                if ( s )
+                {
+                    s->text( s->text() + text );
+                    redraw();
+                    return 1;
+                }
+            }
         }
     }
 
