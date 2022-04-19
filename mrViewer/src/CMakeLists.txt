@@ -361,6 +361,7 @@ SET( SOURCES
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
+  gui/mrvMultilineInput.cpp
   gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
   gui/mrvProgressReport.cpp

@@ -138,6 +138,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvEvents.h"
+#include "gui/mrvMultilineInput.h"
 #include "mrvHotkeyUI.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvWaveformUI.h"
@@ -4508,7 +4509,7 @@ void ImageView::draw()
           //     < std::endl;
           if ( (_mode & kDraw) || (_mode & kErase) ||
                (_mode & kCircle) || (_mode & kArrow ) ||
-               (_mode & kRectangle) || (_mode & kText) )
+               (_mode & kRectangle) )
             {
                 double xf = X;
                 double yf = Y;
@@ -4554,8 +4555,10 @@ void ImageView::draw()
 
 
     if ( _hud == kHudNone )
+    {
+        Fl_Gl_Window::draw();
         return;
-
+    }
 
     //
     // Draw HUD
@@ -4783,6 +4786,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
 
+    Fl_Gl_Window::draw();
 
 }
 
@@ -5467,12 +5471,31 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else if ( _mode == kText )
             {
+#if 1
+                MultilineInput* w = new MultilineInput( x, y, 20,
+                                                        mrv::font_size + 24 );
+                w->take_focus();
+                w->color(FL_FREE_COLOR);
+                w->wrap( false );
+                uchar r, g, b;
+                Fl::get_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
+                w->textfont( mrv::font_current );
+                w->textsize( mrv::font_size );
+                w->textcolor( fl_rgb_color( r, g, b ) );
+                w->box( FL_ROUNDED_BOX );
+                w->tab_nav( false );
+
+                this->add( w );
+                redraw();
+                return 1;
+#else
                 GLTextShape* t = new GLTextShape;
 
                 t->font( mrv::font_current );
                 t->size( mrv::font_size );
                 t->text( mrv::font_text );
                 s = t;
+#endif
             }
             else
             {
@@ -7195,40 +7218,29 @@ int ImageView::keyDown(unsigned int rawkey)
             GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
             if ( s )
             {
-                char buffer[2] = "\0";
+                char ascii = Fl::event_text()[0];
                 std::string c = s->text();
                 int del = 0;
                 if (Fl::compose(del)) {
-                    if ( del )
-                    {
-                        c = c.substr( 0, c.size() - del );
-                    }
-                    if ( Fl::event_length() )
+                    if ( del || Fl::event_length() )
                     {
                         const char* text = Fl::event_text();
-                        c += text;
+                        if ( del )
+                        {
+                            c = c.substr( 0, c.size() - del );
+                        }
+                        if ( text )
+                        {
+                            std::string t = text;
+                            t = t.substr( 0, Fl::event_length() );
+                            c += t;
+                        }
                         s->text( c );
                         redraw();
                         return 1;
                     }
                 }
 
-#if 0
-                if (rawkey == 0)
-                { // fallthru
-                }
-                else if (rawkey < 128)
-                { // ASCII
-                    sprintf(buffer, "%c", rawkey);
-                }
-                else if (rawkey >= 0xa0 && rawkey <= 0xff)
-                { // ISO-8859-1 (international keyboards)
-                    char key[8];
-                    int kl = fl_utf8encode(rawkey, key);
-                    key[kl] = '\0';
-                    sprintf(buffer, "%s", key);
-                }
-#endif
                 if ( rawkey == FL_BackSpace )
                 {
                     if ( c.empty() ) return 0;
@@ -7247,11 +7259,7 @@ int ImageView::keyDown(unsigned int rawkey)
                 {
                     c += '\n';
                 }
-                else
-                {
-                    buffer[0] = (char) rawkey;
-                }
-                s->text( c + buffer);
+                s->text( c );
                 redraw();
                 return 1;
             }
@@ -8668,6 +8676,11 @@ void ImageView::handle_timeout()
 int ImageView::handle(int event)
 {
     int ret = Fl_Gl_Window::handle( event );
+    if ( ret && event == FL_PUSH ) {
+        redraw();
+        return ret;
+    }
+
     switch( event )
     {
     case FL_FOCUS:
@@ -8705,7 +8718,6 @@ int ImageView::handle(int event)
         redraw();
         return 1;
     case FL_PUSH:
-        focus(this);
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:

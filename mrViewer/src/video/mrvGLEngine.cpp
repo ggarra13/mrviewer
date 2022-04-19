@@ -1121,81 +1121,8 @@ void GLEngine::draw_cursor( const double x, const double y,
     double pct = 1.0;
     if ( mode & ImageView::kDraw || mode & ImageView::kRectangle ) pct = 0.5;
 
-    if ( ! (mode & ImageView::kText) )
-    {
-        glDisk( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
-    }
-    else
-    {
-        char tmp[1024];
+    glDisk( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
 
-        // Copy string so we can modify it (split it in lines)
-        std::string text;
-        GLTextShape* shape = NULL;
-        const GLShapeList shapes = view->shapes();
-        if ( ! shapes.empty() )
-        {
-            const shape_type_ptr& o = shapes.back();
-            shape = dynamic_cast< GLTextShape* >( o.get() );
-            if ( !shape ) return;
-            text = shape->text();
-        }
-
-        const char* t = text.c_str();
-        char* s = tmp;
-        while ( ( *s++ = *t++ ) ) ;
-        *s = '\0';
-
-        unsigned lines = 1;
-        s = tmp;
-        const char* start = tmp;
-        const char* check = tmp;
-        unsigned len = 0;
-        for ( ; *s; ++s )
-        {
-            if ( *s == '\n' ) {
-                *s = '\0';
-                if ( strlen(check) > len ) {
-                    len = strlen(check);
-                    start = check;
-                    check = s+1;
-                }
-                ++lines;
-            }
-        }
-        if ( strlen(check) > len ) {
-            len = strlen(check);
-            start = check;
-        }
-        fl_font( mrv::font_current, mrv::font_size );
-        int dy = fl_descent();
-        int w  = fl_width( start );
-        if ( w == 0 ) w = 1;
-        int h  = fl_height();
-        int X1, Y1, X2, Y2;
-        if ( shape )
-        {
-            X1 = shape->pts[0].x;
-            Y1 = shape->pts[0].y - dy - h * (lines-1);
-            X2 = shape->pts[0].x + w;
-            Y2 = shape->pts[0].y - dy + h;
-        }
-        else
-        {
-            X1 = x;
-            Y1 = y - dy;
-            X2 = x + w;
-            Y2 = y - dy + h;
-        }
-        glBegin( GL_LINE_LOOP );
-        {
-            glVertex2d( X1, Y1 );
-            glVertex2d( X1, Y2 );
-            glVertex2d( X2, Y2 );
-            glVertex2d( X2, Y1 );
-        }
-        glEnd();
-    }
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y,
