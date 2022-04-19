@@ -5471,31 +5471,28 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else if ( _mode == kText )
             {
-#if 1
                 MultilineInput* w = new MultilineInput( x, y, 20,
-                                                        mrv::font_size + 24 );
+                                                        ( mrv::font_size +
+                                                          24 ) * zoom() );
                 w->take_focus();
                 w->color(FL_FREE_COLOR);
                 w->wrap( false );
                 uchar r, g, b;
                 Fl::get_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
                 w->textfont( mrv::font_current );
-                w->textsize( mrv::font_size );
+                w->textsize( mrv::font_size * zoom() );
                 w->textcolor( fl_rgb_color( r, g, b ) );
                 w->box( FL_ROUNDED_BOX );
                 w->tab_nav( false );
 
                 this->add( w );
                 redraw();
-                return 1;
-#else
+
                 GLTextShape* t = new GLTextShape;
 
                 t->font( mrv::font_current );
                 t->size( mrv::font_size );
-                t->text( mrv::font_text );
                 s = t;
-#endif
             }
             else
             {
@@ -7207,62 +7204,6 @@ int ImageView::keyDown(unsigned int rawkey)
             uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
             redraw();
             return 1;
-        }
-    }
-    if ( _mode & kText )
-    {
-        GLShapeList& shapes = this->shapes();
-        if ( !shapes.empty() )
-        {
-            shape_type_ptr o = shapes.back();
-            GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-            if ( s )
-            {
-                char ascii = Fl::event_text()[0];
-                std::string c = s->text();
-                int del = 0;
-                if (Fl::compose(del)) {
-                    if ( del || Fl::event_length() )
-                    {
-                        const char* text = Fl::event_text();
-                        if ( del )
-                        {
-                            c = c.substr( 0, c.size() - del );
-                        }
-                        if ( text )
-                        {
-                            std::string t = text;
-                            t = t.substr( 0, Fl::event_length() );
-                            c += t;
-                        }
-                        s->text( c );
-                        redraw();
-                        return 1;
-                    }
-                }
-
-                if ( rawkey == FL_BackSpace )
-                {
-                    if ( c.empty() ) return 0;
-
-                    int len = 1;
-                    if ( c.size() > 1 )
-                    {
-                        std::string tmp = c.substr( c.size() - 2,
-                                                    c.size() - 1 );
-                        const char* p = tmp.c_str();
-                        len = fl_utf8len1(p[0]);
-                    }
-                    c = c.substr( 0, c.size() - len );
-                }
-                else if ( rawkey == FL_Enter || rawkey == FL_KP_Enter )
-                {
-                    c += '\n';
-                }
-                s->text( c );
-                redraw();
-                return 1;
-            }
         }
     }
 

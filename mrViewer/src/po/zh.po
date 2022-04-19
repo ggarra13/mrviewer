@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-19 09:18-0300\n"
+"POT-Creation-Date: 2022-04-19 19:08-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "文件中没有音频"
 
-#: gui/mrvImageView.cpp:5790
+#: gui/mrvImageView.cpp:5787
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> 使用 "
 msgid "  Choosing "
 msgstr "  挑选出 "
 
-#: gui/mrvImageView.cpp:5795
+#: gui/mrvImageView.cpp:5792
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " 失败了 "
 msgid " failed. "
 msgstr " 失败。 "
 
-#: gui/mrvImageView.cpp:9204
+#: gui/mrvImageView.cpp:9145
 msgid " for channel.  Maximum: "
 msgstr " 为频道。最大： "
 
@@ -503,8 +503,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 无法启动，请将其删除）"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2275
-#: gui/mrvImageView.cpp:9178 gui/mrvImageView.cpp:9865
-#: gui/mrvImageView.cpp:9866 gui/mrvImageView.cpp:9874
+#: gui/mrvImageView.cpp:9119 gui/mrvImageView.cpp:9806
+#: gui/mrvImageView.cpp:9807 gui/mrvImageView.cpp:9815
 msgid "(no image)"
 msgstr "（无图）"
 
@@ -574,7 +574,7 @@ msgstr ".该属性必须具有 attr=value 的形式。"
 msgid ".  Saving pixel type is "
 msgstr ".要保存的像素类型是 "
 
-#: gui/mrvImageView.cpp:9205
+#: gui/mrvImageView.cpp:9146
 msgid ". Widget label is "
 msgstr ".小部件标签是 "
 
@@ -1249,8 +1249,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "允许您设置时间线的结束帧。"
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9296
-#: gui/mrvImageView.cpp:9766 gui/mrvImageView.cpp:9828
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9237
+#: gui/mrvImageView.cpp:9707 gui/mrvImageView.cpp:9769
 msgid "Alpha"
 msgstr "Α"
 
@@ -1260,7 +1260,7 @@ msgstr "仅限阿尔法"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2120
-#: gui/mrvImageView.cpp:9277 gui/mrvImageView.cpp:9829
+#: gui/mrvImageView.cpp:9218 gui/mrvImageView.cpp:9770
 msgid "Alpha Overlay"
 msgstr "阿尔法叠印"
 
@@ -1662,8 +1662,8 @@ msgstr "混合模式"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9291
-#: gui/mrvImageView.cpp:9827
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9232
+#: gui/mrvImageView.cpp:9768
 msgid "Blue"
 msgstr "蓝色"
 
@@ -1687,7 +1687,7 @@ msgstr "提升异常： "
 msgid "Both"
 msgstr "他们都"
 
-#: gui/mrvImageView.cpp:11169
+#: gui/mrvImageView.cpp:11110
 msgid "Bottom"
 msgstr "降低"
 
@@ -2059,7 +2059,7 @@ msgstr "未找到可折叠组"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2157 gui/mrvImageView.cpp:2219
-#: gui/mrvImageView.cpp:9826 gui/mrvImageView.cpp:9874
+#: gui/mrvImageView.cpp:9767 gui/mrvImageView.cpp:9815
 msgid "Color"
 msgstr "颜色"
 
@@ -2099,7 +2099,7 @@ msgstr "颜色主题"
 msgid "Color Version"
 msgstr "彩色版"
 
-#: gui/mrvImageView.cpp:9113
+#: gui/mrvImageView.cpp:9054
 msgid "Color channel not found at index "
 msgstr "未找到索引的颜色通道 "
 
@@ -3827,7 +3827,7 @@ msgstr "四CC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1597
-#: gui/mrvImageView.cpp:11167
+#: gui/mrvImageView.cpp:11108
 msgid "Frame"
 msgstr "框架"
 
@@ -4069,8 +4069,8 @@ msgstr "希腊语 (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9286
-#: gui/mrvImageView.cpp:9827
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9227
+#: gui/mrvImageView.cpp:9768
 msgid "Green"
 msgstr "绿色的"
 
@@ -4638,7 +4638,7 @@ msgstr "目标配置文件无效/图片格式"
 msgid "Invalid image "
 msgstr "无效索引 "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9203
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9144
 msgid "Invalid index "
 msgstr "无效索引 "
 
@@ -5057,7 +5057,7 @@ msgstr "鼠标下的图像像素亮度。"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2127
-#: gui/mrvImageView.cpp:9301 gui/mrvImageView.cpp:9828
+#: gui/mrvImageView.cpp:9242 gui/mrvImageView.cpp:9769
 msgid "Lumma"
 msgstr "亮度"
 
@@ -5578,27 +5578,27 @@ msgstr "未补偿"
 msgid "Not OK"
 msgstr "不好"
 
-#: gui/mrvImageView.cpp:5719
+#: gui/mrvImageView.cpp:5716
 msgid "Not a GLArrowShape pointer"
 msgstr "不是 GLArrowShape 指针"
 
-#: gui/mrvImageView.cpp:7145
+#: gui/mrvImageView.cpp:7142
 msgid "Not a GLCircleShape pointer"
 msgstr "不是指向 GLCircleShape 的指针"
 
-#: gui/mrvImageView.cpp:5691
+#: gui/mrvImageView.cpp:5688
 msgid "Not a GLErasePathShape pointer"
 msgstr "不是指向 GLerasePathShape 的指针"
 
-#: gui/mrvImageView.cpp:5677 gui/mrvImageView.cpp:7085
+#: gui/mrvImageView.cpp:5674 gui/mrvImageView.cpp:7082
 msgid "Not a GLPathShape pointer"
 msgstr "不是指向 GLPathShape 的指针"
 
-#: gui/mrvImageView.cpp:5705
+#: gui/mrvImageView.cpp:5702
 msgid "Not a GLRectangleShape pointer"
 msgstr "不是 GLRectangleShape 指针"
 
-#: gui/mrvImageView.cpp:5733 gui/mrvImageView.cpp:5747
+#: gui/mrvImageView.cpp:5730 gui/mrvImageView.cpp:5744
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "不是 mouseRelease 上指向 GLTextShape 的指针"
 
@@ -6508,8 +6508,8 @@ msgstr "矩形工具"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9281
-#: gui/mrvImageView.cpp:9826
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9222
+#: gui/mrvImageView.cpp:9767
 msgid "Red"
 msgstr "红色的"
 
@@ -8066,7 +8066,7 @@ msgstr "输出上下文中的流过多"
 msgid "Tooldock"
 msgstr "行动码头"
 
-#: gui/mrvImageView.cpp:11168
+#: gui/mrvImageView.cpp:11109
 msgid "Top"
 msgstr "更高"
 
@@ -9162,7 +9162,7 @@ msgstr "您只能上传一张立体图像以与当前图像组合。"
 msgid "You cannot load a reel as a stereo image."
 msgstr "您不能将卷轴作为立体图像上传。"
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9829
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9770
 msgid "Z"
 msgstr "Z"
 

@@ -813,6 +813,11 @@ public:
 
     void clear_old();
 
+    /// Given two window coordinates, return pixel coordinates
+    /// in the data window (which may be offset)
+    void data_window_coordinates( const CMedia* const img,
+                                  double& x, double& y ) const;
+
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
     // This function is used in fit_image and center_image.
@@ -905,11 +910,6 @@ protected:
     /// Given two window coordinates, return pixel coordinates
     void image_coordinates( const CMedia* const img,
                             double& x, double& y ) const;
-
-    /// Given two window coordinates, return pixel coordinates
-    /// in the data window (which may be offset)
-    void data_window_coordinates( const CMedia* const img,
-                                  double& x, double& y ) const;
 
 
     /// Given two window coordinates, return pixel coordinates

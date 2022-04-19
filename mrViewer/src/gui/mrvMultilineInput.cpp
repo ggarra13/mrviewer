@@ -2,15 +2,16 @@
 #include <iostream>
 
 #include <FL/fl_draw.H>
-#include <FL/Fl_Gl_Window.H>
-#include "mrvMultilineInput.h"
+
+#include "gui/mrvImageView.h"
+#include "gui/mrvMultilineInput.h"
 
 //#define IN_DRAW
 
 namespace mrv {
 
+    extern std::string font_text;
     const int kCrossSize = 10;
-    const int minW = 200;
 
 static char* underline_at;
 
@@ -127,6 +128,46 @@ static char* underline_at;
             {
                 if ( Fl::event_inside( x(), y(), kCrossSize, kCrossSize ) )
                 {
+                    ImageView* view = (ImageView*) window();
+                    GLShapeList& shapes = view->shapes();
+                    GLTextShape* s =
+                        dynamic_cast< GLTextShape* >( shapes.back().get() );
+                    if ( s )
+                    {
+                        const char* text = value();
+                        if ( text )
+                        {
+                            s->font( textfont() );
+                            s->size( textsize() / view->zoom() );
+                            s->text( text );
+
+                            mrv::media fg = view->foreground();
+                            if ( !fg ) return 0;
+
+                            CMedia* img = fg->image();
+                            if (!img) return 0;
+
+                            const Fl_Boxtype b = box();
+                            double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
+                            double yf = y() + Fl::box_dy(b) + textsize() +
+                                        kCrossSize - 5;
+
+                            view->data_window_coordinates( img, xf, yf );
+
+                            yf = -yf;
+
+                            const mrv::Recti& daw = img->data_window();
+                            xf += daw.x();
+                            yf -= daw.y();
+
+                            s->pts[0].x = xf;
+                            s->pts[0].y = yf;
+                        }
+                        else
+                        {
+                            view->shapes().pop_back();
+                        }
+                    }
                     window()->remove( this );
                     delete this;
                     return 1;

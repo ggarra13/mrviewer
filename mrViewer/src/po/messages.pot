@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-19 10:08-0300\n"
+"POT-Creation-Date: 2022-04-19 19:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,7 +45,7 @@ msgid ""
 "No audio stream in file"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5790
+#: gui/mrvImageView.cpp:5787
 msgid "   NAN  "
 msgstr ""
 
@@ -57,7 +57,7 @@ msgstr ""
 msgid "  Choosing "
 msgstr ""
 
-#: gui/mrvImageView.cpp:5795
+#: gui/mrvImageView.cpp:5792
 msgid "  INF.  "
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid " failed. "
 msgstr ""
 
-#: gui/mrvImageView.cpp:9204
+#: gui/mrvImageView.cpp:9145
 msgid " for channel.  Maximum: "
 msgstr ""
 
@@ -473,8 +473,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2275
-#: gui/mrvImageView.cpp:9178 gui/mrvImageView.cpp:9865
-#: gui/mrvImageView.cpp:9866 gui/mrvImageView.cpp:9874
+#: gui/mrvImageView.cpp:9119 gui/mrvImageView.cpp:9806
+#: gui/mrvImageView.cpp:9807 gui/mrvImageView.cpp:9815
 msgid "(no image)"
 msgstr ""
 
@@ -544,7 +544,7 @@ msgstr ""
 msgid ".  Saving pixel type is "
 msgstr ""
 
-#: gui/mrvImageView.cpp:9205
+#: gui/mrvImageView.cpp:9146
 msgid ". Widget label is "
 msgstr ""
 
@@ -1213,8 +1213,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr ""
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9296
-#: gui/mrvImageView.cpp:9766 gui/mrvImageView.cpp:9828
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9237
+#: gui/mrvImageView.cpp:9707 gui/mrvImageView.cpp:9769
 msgid "Alpha"
 msgstr ""
 
@@ -1224,7 +1224,7 @@ msgstr ""
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2120
-#: gui/mrvImageView.cpp:9277 gui/mrvImageView.cpp:9829
+#: gui/mrvImageView.cpp:9218 gui/mrvImageView.cpp:9770
 msgid "Alpha Overlay"
 msgstr ""
 
@@ -1613,8 +1613,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9291
-#: gui/mrvImageView.cpp:9827
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9232
+#: gui/mrvImageView.cpp:9768
 msgid "Blue"
 msgstr ""
 
@@ -1638,7 +1638,7 @@ msgstr ""
 msgid "Both"
 msgstr ""
 
-#: gui/mrvImageView.cpp:11169
+#: gui/mrvImageView.cpp:11110
 msgid "Bottom"
 msgstr ""
 
@@ -2003,7 +2003,7 @@ msgstr ""
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2157 gui/mrvImageView.cpp:2219
-#: gui/mrvImageView.cpp:9826 gui/mrvImageView.cpp:9874
+#: gui/mrvImageView.cpp:9767 gui/mrvImageView.cpp:9815
 msgid "Color"
 msgstr ""
 
@@ -2043,7 +2043,7 @@ msgstr ""
 msgid "Color Version"
 msgstr ""
 
-#: gui/mrvImageView.cpp:9113
+#: gui/mrvImageView.cpp:9054
 msgid "Color channel not found at index "
 msgstr ""
 
@@ -3754,7 +3754,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1597
-#: gui/mrvImageView.cpp:11167
+#: gui/mrvImageView.cpp:11108
 msgid "Frame"
 msgstr ""
 
@@ -3996,8 +3996,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9286
-#: gui/mrvImageView.cpp:9827
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9227
+#: gui/mrvImageView.cpp:9768
 msgid "Green"
 msgstr ""
 
@@ -4557,7 +4557,7 @@ msgstr ""
 msgid "Invalid image "
 msgstr ""
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9203
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9144
 msgid "Invalid index "
 msgstr ""
 
@@ -4974,7 +4974,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2127
-#: gui/mrvImageView.cpp:9301 gui/mrvImageView.cpp:9828
+#: gui/mrvImageView.cpp:9242 gui/mrvImageView.cpp:9769
 msgid "Lumma"
 msgstr ""
 
@@ -5489,27 +5489,27 @@ msgstr ""
 msgid "Not OK"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5719
+#: gui/mrvImageView.cpp:5716
 msgid "Not a GLArrowShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:7145
+#: gui/mrvImageView.cpp:7142
 msgid "Not a GLCircleShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5691
+#: gui/mrvImageView.cpp:5688
 msgid "Not a GLErasePathShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5677 gui/mrvImageView.cpp:7085
+#: gui/mrvImageView.cpp:5674 gui/mrvImageView.cpp:7082
 msgid "Not a GLPathShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5705
+#: gui/mrvImageView.cpp:5702
 msgid "Not a GLRectangleShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5733 gui/mrvImageView.cpp:5747
+#: gui/mrvImageView.cpp:5730 gui/mrvImageView.cpp:5744
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr ""
 
@@ -6405,8 +6405,8 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9281
-#: gui/mrvImageView.cpp:9826
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9222
+#: gui/mrvImageView.cpp:9767
 msgid "Red"
 msgstr ""
 
@@ -7891,7 +7891,7 @@ msgstr ""
 msgid "Tooldock"
 msgstr ""
 
-#: gui/mrvImageView.cpp:11168
+#: gui/mrvImageView.cpp:11109
 msgid "Top"
 msgstr ""
 
@@ -8939,7 +8939,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr ""
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9829
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9770
 msgid "Z"
 msgstr ""
 
