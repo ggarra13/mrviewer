@@ -1,8 +1,10 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {<libintl.h>}
+i18n_conditional {}
 i18n_function gettext
+i18n_static_function {}
 header_name {.h}
 code_name {.cxx}
 decl {\#include "gui/mrvHotkey.h"} {private local
@@ -31,7 +33,7 @@ class HotkeyUI {open
   } {
     Fl_Window uiMain {
       label Hotkeys open
-      xywh {731 623 635 430} type Double box PLASTIC_DOWN_BOX resizable non_modal visible
+      xywh {2 53 635 430} type Double box PLASTIC_DOWN_BOX resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 635 430} box PLASTIC_DOWN_BOX
@@ -39,9 +41,10 @@ class HotkeyUI {open
         Fl_Browser uiFunction {
           label Hotkeys
           user_data this user_data_type {HotkeyUI*}
-          callback {mrv::select_hotkey( v );}
-          xywh {15 25 600 320} box PLASTIC_DOWN_BOX
+          callback {mrv::select_hotkey( v );} selected
+          xywh {15 25 600 320} box DOWN_BOX
           code0 {mrv::fill_ui_hotkeys( o );}
+          code1 {o->textcolor( fl_contrast( FL_WHITE, o->color() ));}
           class {mrv::Browser}
         }
         Fl_Button {} {
@@ -57,8 +60,10 @@ class HotkeyUI {open
           xywh {445 375 85 30} box PLASTIC_UP_BOX
         }
         Fl_Output uiHotkeyFile {
-          label {Hotkey file:} selected
+          label {Hotkey file:}
           xywh {185 375 250 30} textcolor 56
+          code0 {o->textcolor( fl_contrast( FL_WHITE, o->color() ) );}
+          code1 {o->labelcolor( fl_contrast( FL_WHITE, o->color() ) );}
         }
       }
     }
