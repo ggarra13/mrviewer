@@ -7,11 +7,8 @@
 #include "gui/mrvImageView.h"
 #include "gui/mrvMultilineInput.h"
 
-//#define IN_DRAW
-
 namespace mrv {
 
-    extern std::string font_text;
     const int kCrossSize = 10;
 
 static char* underline_at;
@@ -130,7 +127,7 @@ static char* underline_at;
         if ( !s ) return 0;
 
         const char* text = value();
-        if ( text )
+        if ( text && strlen(text) > 0 )
         {
             s->font( textfont() );
             s->size( textsize() / view->zoom() );
@@ -157,14 +154,12 @@ static char* underline_at;
 
             s->pts[0].x = xf;
             s->pts[0].y = yf;
-        }
-        else
-        {
-            view->shapes().pop_back();
+
         }
 
         window()->remove( this );
         delete this;
+
         return 1;
     }
 
@@ -179,7 +174,14 @@ static char* underline_at;
             {
                 if ( Fl::event_inside( x(), y(), kCrossSize, kCrossSize ) )
                 {
-                    return accept();
+                    if ( value() && strlen( value() ) )
+                        return accept();
+                    else
+                    {
+                        ImageView* view = (ImageView*) window();
+                        view->undo_draw();
+                    }
+                    return 1;
                 }
                 // Adjust Fl::event_x() to compensate for cross
                 if ( Fl::event_inside(this) ) Fl::e_x -= kCrossSize;

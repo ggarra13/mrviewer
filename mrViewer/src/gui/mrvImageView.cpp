@@ -4226,7 +4226,7 @@ void ImageView::undo_draw()
     if ( ! shapes.empty() )
     {
         if ( remove_children() ) {
-            shapes.pop_back();
+            if ( ! shapes.empty() ) shapes.pop_back();
             if ( shapes.empty() )
             {
                 uiMain->uiPaint->uiUndoDraw->deactivate();
@@ -8725,8 +8725,8 @@ int ImageView::handle(int event)
                                  _mode & kArrow || _mode & kCircle ||
                                  _mode & kRectangle ) )
             window()->cursor( FL_CURSOR_CROSS );
-        if ( ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
-               _mode & kCircle ||  _mode & kRectangle || _mode & kText ) )
+        if ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
+             _mode & kCircle ||  _mode & kRectangle )
             window()->cursor( FL_CURSOR_NONE );
         redraw();
         return 1;
@@ -8740,6 +8740,7 @@ int ImageView::handle(int event)
         redraw();
         return 1;
     case FL_PUSH:
+        if (!children()) take_focus();
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:

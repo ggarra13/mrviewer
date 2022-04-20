@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-20 07:02-0300\n"
+"POT-Creation-Date: 2022-04-20 08:04-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -174,7 +174,7 @@ msgstr " neuspěl s "
 msgid " failed. "
 msgstr " elhání. "
 
-#: gui/mrvImageView.cpp:9226
+#: gui/mrvImageView.cpp:9227
 msgid " for channel.  Maximum: "
 msgstr " pro kanál. Maximum: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Pokud se mrViewer nespustí, odeberte jej)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2275
-#: gui/mrvImageView.cpp:9200 gui/mrvImageView.cpp:9887
-#: gui/mrvImageView.cpp:9888 gui/mrvImageView.cpp:9896
+#: gui/mrvImageView.cpp:9201 gui/mrvImageView.cpp:9888
+#: gui/mrvImageView.cpp:9889 gui/mrvImageView.cpp:9897
 msgid "(no image)"
 msgstr "(Bez obrázku)"
 
@@ -577,7 +577,7 @@ msgstr ". Atribut musí mít tvar attr=hodnota."
 msgid ".  Saving pixel type is "
 msgstr ". Typ pixelu k uložení je "
 
-#: gui/mrvImageView.cpp:9227
+#: gui/mrvImageView.cpp:9228
 msgid ". Widget label is "
 msgstr ". Značka widgetu je "
 
@@ -1252,8 +1252,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Umožňuje nastavit koncový snímek pro časovou osu."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9318
-#: gui/mrvImageView.cpp:9788 gui/mrvImageView.cpp:9850
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9319
+#: gui/mrvImageView.cpp:9789 gui/mrvImageView.cpp:9851
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1263,7 +1263,7 @@ msgstr "pouze alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2141
-#: gui/mrvImageView.cpp:9299 gui/mrvImageView.cpp:9851
+#: gui/mrvImageView.cpp:9300 gui/mrvImageView.cpp:9852
 msgid "Alpha Overlay"
 msgstr "Přetisk Alpha"
 
@@ -1673,8 +1673,8 @@ msgstr "režim prolnutí"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9313
-#: gui/mrvImageView.cpp:9849
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9314
+#: gui/mrvImageView.cpp:9850
 msgid "Blue"
 msgstr "Modrý"
 
@@ -1698,7 +1698,7 @@ msgstr "Výjimka Boost: "
 msgid "Both"
 msgstr "Oba dva"
 
-#: gui/mrvImageView.cpp:11191
+#: gui/mrvImageView.cpp:11192
 msgid "Bottom"
 msgstr "dolní"
 
@@ -2072,7 +2072,7 @@ msgstr "Sbalitelná skupina nenalezena"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2178 gui/mrvImageView.cpp:2240
-#: gui/mrvImageView.cpp:9848 gui/mrvImageView.cpp:9896
+#: gui/mrvImageView.cpp:9849 gui/mrvImageView.cpp:9897
 msgid "Color"
 msgstr "Barva"
 
@@ -2112,7 +2112,7 @@ msgstr "barevný motiv"
 msgid "Color Version"
 msgstr "barevné provedení"
 
-#: gui/mrvImageView.cpp:9135
+#: gui/mrvImageView.cpp:9136
 msgid "Color channel not found at index "
 msgstr "Barevný kanál nebyl nalezen pro index "
 
@@ -3861,7 +3861,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1597
-#: gui/mrvImageView.cpp:11189
+#: gui/mrvImageView.cpp:11190
 msgid "Frame"
 msgstr "Rám"
 
@@ -4103,8 +4103,8 @@ msgstr "řecký (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9308
-#: gui/mrvImageView.cpp:9849
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9309
+#: gui/mrvImageView.cpp:9850
 msgid "Green"
 msgstr "Zelený"
 
@@ -4675,7 +4675,7 @@ msgstr "Neplatný cílový profil/formát obrázku"
 msgid "Invalid image "
 msgstr "neplatný index "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9225
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9226
 msgid "Invalid index "
 msgstr "neplatný index "
 
@@ -5096,7 +5096,7 @@ msgstr "Jas obrazových pixelů pod myší."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2148
-#: gui/mrvImageView.cpp:9323 gui/mrvImageView.cpp:9850
+#: gui/mrvImageView.cpp:9324 gui/mrvImageView.cpp:9851
 msgid "Lumma"
 msgstr "luma"
 
@@ -6576,8 +6576,8 @@ msgstr "Nástroj Obdélník"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9303
-#: gui/mrvImageView.cpp:9848
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9304
+#: gui/mrvImageView.cpp:9849
 msgid "Red"
 msgstr "Červené"
 
@@ -8174,7 +8174,7 @@ msgstr "Příliš mnoho streamů ve výstupním kontextu"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11190
+#: gui/mrvImageView.cpp:11191
 msgid "Top"
 msgstr "Vyšší"
 
@@ -9298,7 +9298,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Nemůžete nahrát kotouč jako stereo obrázek."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9851
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9852
 msgid "Z"
 msgstr "Z"
 
