@@ -138,6 +138,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvEvents.h"
+#include "gui/mrvMultilineInput.h"
 #include "mrvHotkeyUI.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvWaveformUI.h"
@@ -1584,6 +1585,17 @@ void ImageView::move_pic_mode()
 }
 
 
+void ImageView::remove_children()
+{
+    for ( int i = 0; i < children(); ++i )
+    {
+        MultilineInput* w = dynamic_cast< MultilineInput* >( child(i) );
+        if (!w) continue;
+        w->accept();
+    }
+    redraw();
+}
+
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
@@ -1607,7 +1619,8 @@ void ImageView::scrub_mode()
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
     uiMain->uiPaint->uiScrub->value(true);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::selection_mode( bool temporary )
@@ -1637,7 +1650,8 @@ void ImageView::selection_mode( bool temporary )
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::draw_mode( bool tmp )
@@ -1667,7 +1681,8 @@ void ImageView::draw_mode( bool tmp )
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::circle_mode()
@@ -1695,7 +1710,8 @@ void ImageView::circle_mode()
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::arrow_mode()
@@ -1722,7 +1738,8 @@ void ImageView::arrow_mode()
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::rectangle_mode()
@@ -1749,7 +1766,8 @@ void ImageView::rectangle_mode()
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(true);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 
@@ -1780,11 +1798,13 @@ void ImageView::erase_mode( bool tmp )
     uiMain->uiPaint->uiScrub->value(false);
     uiMain->uiPaint->uiRectangle->value(false);
     uiMain->uiPaint->uiCopyXY->value(false);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::text_mode()
 {
+    remove_children();
     bool ok = mrv::make_window();
     if ( ok )
     {
@@ -2311,6 +2331,8 @@ void ImageView::toggle_copy_frame_xy()
         uiMain->uiPaint->uiScrub->value(false);
         uiMain->uiPaint->uiRectangle->value(false);
         uiMain->uiPaint->uiCopyXY->value(true);
+
+        remove_children();
     }
 }
 
@@ -4508,7 +4530,7 @@ void ImageView::draw()
           //     < std::endl;
           if ( (_mode & kDraw) || (_mode & kErase) ||
                (_mode & kCircle) || (_mode & kArrow ) ||
-               (_mode & kRectangle) || (_mode & kText) )
+               (_mode & kRectangle) )
             {
                 double xf = X;
                 double yf = Y;
@@ -4554,8 +4576,10 @@ void ImageView::draw()
 
 
     if ( _hud == kHudNone )
+    {
+        Fl_Gl_Window::draw();
         return;
-
+    }
 
     //
     // Draw HUD
@@ -4783,6 +4807,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
 
+    Fl_Gl_Window::draw();
 
 }
 
@@ -5467,20 +5492,47 @@ int ImageView::leftMouseDown(int x, int y)
             }
             else if ( _mode == kText )
             {
-                if ( mrv::font_text != "" )
+                bool found = false;
+                MultilineInput* w;
+                GLTextShape* t;
+                for ( int i = 0; i < children(); ++i )
                 {
-                    GLTextShape* t = new GLTextShape;
+                    w = dynamic_cast< MultilineInput* >( child(i) );
+                    if ( w )
+                    {
+                        found = true; break;
+                    }
+                }
+                if ( ! found )
+                {
+                    w = new MultilineInput( x, y, 20, ( mrv::font_size + 24 ) *
+                                            zoom() );
+                    w->take_focus();
+                    uchar r, g, b;
+                    Fl::get_color( uiMain->uiPaint->uiPenColor->color(),
+                                   r, g, b );
+                    w->textfont( mrv::font_current );
+                    w->textsize( mrv::font_size * zoom() );
+                    w->textcolor( fl_rgb_color( r, g, b ) );
 
+                    this->add( w );
+                    redraw();
+
+                    t = new GLTextShape;
                     t->font( mrv::font_current );
                     t->size( mrv::font_size );
-                    t->text( mrv::font_text );
                     s = t;
                 }
                 else
                 {
+                    const GLShapeList& shapes = this->shapes();
+                    t = dynamic_cast< GLTextShape* >( shapes.back().get() );
+                    if ( !t ) return 0;
+                    t->pts[0] = mrv::Point( xf, yf );
+                    w->position( x, y );
+                    redraw();
                     return 1;
                 }
-
             }
             else
             {
@@ -7113,9 +7165,9 @@ void ImageView::mouseDrag(int x,int y)
                         s->pts[1] = p2;
                     }
                     else
-                        {
-                            s->pts.push_back( p2 );
-                        }
+                    {
+                        s->pts.push_back( p2 );
+                    }
                 }
             }
             else if ( _mode == kCircle )
@@ -7140,28 +7192,6 @@ void ImageView::mouseDrag(int x,int y)
                 double A = p.x - s->center.x;
                 double B = p.y - s->center.y;
                 s->radius = sqrt( A*A+B*B ) / scale;
-            }
-            else if ( _mode == kText )
-            {
-                GLShapeList& shapes = fg->image()->shapes();
-                if ( shapes.empty() ) return;
-
-                mrv::shape_type_ptr o = shapes.back();
-                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-                if ( s == NULL )
-                {
-                    LOG_ERROR( _("Not a GLTextShape pointer in position") );
-                }
-                else
-                {
-                    yn = -yn;
-
-                    xn += daw[idx].x();
-                    yn -= daw[idx].y();
-
-
-                    s->position( int(xn), int(yn) );
-                }
             }
 
             assert( _selection.w() >= 0.0 );
@@ -8627,6 +8657,11 @@ void ImageView::handle_timeout()
 int ImageView::handle(int event)
 {
     int ret = Fl_Gl_Window::handle( event );
+    if ( ret && event == FL_PUSH ) {
+        redraw();
+        return ret;
+    }
+
     switch( event )
     {
     case FL_FOCUS:
@@ -8664,7 +8699,6 @@ int ImageView::handle(int event)
         redraw();
         return 1;
     case FL_PUSH:
-        focus(this);
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:

@@ -35,68 +35,32 @@
 
 #include "gui/mrvFontsWindowUI.h"
 
-class FontDisplay : public Fl_Text_Editor {
-public:
-    FontDisplay(Fl_Boxtype B, int X, int Y, int W, int H, const char* L = 0) :
-    Fl_Text_Editor(X,Y,W,H,L) {
-        box(B);
-    buffer( new Fl_Text_Buffer() );
-    show_cursor();
-    cursor_color( FL_BLACK );
-    }
-};
 
 
 namespace mrv {
 
     Fl_Font  font_current = (Fl_Font) 0;
     Fl_Fontsize   font_size = 32;
-    std::string font_text = _("Type here");
 
 }
 
 
 Fl_Double_Window *uiMain=(Fl_Double_Window *)0;
 Fl_Value_Slider* uiFontSize = NULL;
-FontDisplay *uiText=(FontDisplay *)0;
-Fl_Browser * encobj;
-Fl_Box* id_box;
 
-void encoding_cb(Fl_Widget *, long) {
-    int i = encobj->value();
-    if (i < 0)
-        return;
-    // uiText->encoding = encobj->child(i)->label();
-    uiText->redraw();
-}
-
-
-
-void new_text( Fl_Widget* w, void* data )
-{
-    Fl_Text_Buffer* buf = uiText->buffer();
-    mrv::font_text = buf->text();
-}
 
 void new_font( Fl_Widget* w, void* data )
 {
     Fl_Choice* c = (Fl_Choice*) w;
     int i = c->value();
     if ( i < 0 ) i = 0;
-
-    Fl_Text_Buffer* buf = uiText->buffer();
-    mrv::font_text = buf->text();
     mrv::font_current = (Fl_Font) i;
-    uiText->textfont( (Fl_Font) i );
-    uiText->redraw();
 }
 
 void new_size( Fl_Widget* w, void* data )
 {
     Fl_Value_Slider* s = (Fl_Value_Slider*) w;
     mrv::font_size = s->value();
-    uiText->textsize( s->value() );
-    uiText->redraw();
 }
 
 static void cb_Accept(Fl_Button*, Fl_Window* v) {
@@ -114,49 +78,43 @@ namespace mrv {
 
 bool make_window() {
     Fl_Double_Window* w;
-    {   Fl_Double_Window* o = uiMain = new Fl_Double_Window(405, 260);
+    {   Fl_Double_Window* o = uiMain = new Fl_Double_Window(405, 125);
         w = o;
         o->type(241);
         o->begin();
-        {   Fl_Group* o = new Fl_Group(5, 5, 405, 235);
+        {   Fl_Group* o = new Fl_Group(5, 5, 405, 120);
             o->begin();
 
-            uiText = new FontDisplay(FL_ENGRAVED_BOX, 0, 0, 400, 100);
-            {   Fl_Choice* o = new Fl_Choice(120, 120, 280, 25, _("Font"));
+            {   Fl_Choice* o = new Fl_Choice(120, 10, 280, 25, _("Font"));
                 int numfonts = Fl::set_fonts("-*");
                 for (int i = 0; i < numfonts; ++i)
-        {
-            int t; // bold/italic flags
+                {
+                    int t; // bold/italic flags
                     o->add(Fl::get_font_name( (Fl_Font)i, &t ) );
-        }
-        o->labelcolor( FL_BLACK );
-        o->value(mrv::font_current);
-                uiText->textfont( mrv::font_current );
-                mrv::font_text = _(mrv::font_text.c_str());
-                uiText->buffer()->text( mrv::font_text.c_str() );
-                uiText->textsize( mrv::font_size );
-                uiText->callback( new_text );
-        uiText->textcolor( FL_BLACK );
+                }
+                o->labelcolor( FL_WHITE );
+                o->value(mrv::font_current);
                 o->callback( new_font );
             }
-            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(120, 160, 280, 25, _("Font Size"));
-        o->type( FL_HORIZONTAL );
+            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(120, 50, 280, 25, _("Font Size"));
+                o->type( FL_HORIZONTAL );
+                o->labelcolor( FL_WHITE );
                 o->minimum(8);
                 o->maximum(100);
                 o->step(1);
                 o->value(mrv::font_size);
-        o->labelcolor( FL_BLACK );
                 o->align(FL_ALIGN_LEFT);
                 o->callback( new_size );
             }
             o->end();
 
-            {   Fl_Group* g = new Fl_Group( 0, 200, 205, 55 );
+            {   Fl_Group* g = new Fl_Group( 0, 80, 205, 55 );
                 g->begin();
-                {   Fl_Button* o = new Fl_Button( 75, 200, 70, 25, _("OK") );
+                {   Fl_Button* o = new Fl_Button( 75, 80, 70, 25, _("OK") );
                     o->callback((Fl_Callback*)cb_Accept, (void*)(w));
                 }
-                {   Fl_Button* o = new Fl_Button( 160, 200, 70, 25, _("Cancel") );
+                {   Fl_Button* o = new Fl_Button( 160, 80, 70, 25,
+                                                  _("Cancel") );
                     o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
                 }
                 g->end();

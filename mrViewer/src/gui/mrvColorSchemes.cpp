@@ -126,6 +126,7 @@ namespace mrv
             }
         }
         DBG3;
+        Fl::set_color(FL_FREE_COLOR, 0, 0, 0, 80);
     }
 
     void
