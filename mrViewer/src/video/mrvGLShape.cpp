@@ -499,7 +499,7 @@ void GLTextShape::draw( double z )
 
     gl_font(font(), int(size()*z) );
 
-    float height = (size() + fl_descent() * z);
+    float height = (size() - 3 + fl_descent() * z);
 
     std::string txt = text();
 
