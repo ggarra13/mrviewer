@@ -2900,7 +2900,7 @@ void ImageView::fit_image()
 
     DBGM1("fit w=" << w );
     DBGM1("fit W=" << W );
-    double z = w / (double)W;
+    float z = w / (double)W;
     DBGM1( "fit w/W=" << z );
     h /= H;
 
@@ -2950,12 +2950,13 @@ void ImageView::fit_image()
     bool old_network_active = _network_active;
     _network_active = false;
 
-    if ( ! mrv::is_equal( _zoom, float(z) ) )
-    {
-        zoom( float(z) );
+    zoom( z );
 
-        mouseMove( Fl::event_x(), Fl::event_y() );
-    }
+    int x = Fl::event_x();
+    int y = Fl::event_y();
+    if ( uiMain->uiToolsGroup->visible() )
+        x -= uiMain->uiToolsGroup->w();
+    mouseMove( x, y );
 
     _network_active = old_network_active;
 
@@ -3230,20 +3231,17 @@ bool ImageView::should_update( mrv::media fg )
     }
 
     if ( update && _playback != CMedia::kStopped ) {
-
-#ifdef FLTK_TIMEOUT_EVENT_BUG
         int x = Fl::event_x();
         int y = Fl::event_y();
+#ifdef FLTK_TIMEOUT_EVENT_BUG
         if ( uiMain->uiMenuGroup->visible() )
             y -= uiMain->uiMenuGroup->h();
         if ( uiMain->uiTopBar->visible() )
             y -= uiMain->uiTopBar->h();
+#endif
         if ( uiMain->uiToolsGroup->visible() )
             x -= uiMain->uiToolsGroup->w();
         mouseMove( x, y );
-#else
-        mouseMove( Fl::event_x(), Fl::event_y() );
-#endif
     }
 
 
@@ -6451,14 +6449,10 @@ void ImageView::mouseMove(int x, int y)
 {
     if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-
     mrv::media fg = foreground();
     if ( !fg ) return;
 
     CMedia* img = fg->image();
-    if ( !img ) return;
-
-
 
     mrv::image_type_ptr pic;
     bool outside = false;
@@ -9472,11 +9466,9 @@ void ImageView::zoom( float z )
     }
     else
     {
-        sprintf( tmp, N_("1/%.3g"), 1/z );
+        sprintf( tmp, N_("1/%.3g"), 1.0f/z );
     }
     uiMain->uiZoom->copy_label( tmp );
-    uiMain->uiZoom->redraw();
-
 
     _zoom = z;
     if ( z >= 32.0f ) { _zoom_grid = true; }

@@ -19,7 +19,7 @@ set( OpenGL_GL_PREFERENCE LEGACY )
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
-#FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
+# FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
 ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
@@ -88,8 +88,6 @@ if( PORTAUDIO_FOUND )
 endif()
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  #  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
-  #  ADD_COMPILE_OPTIONS( -W1 )
 
  # ADD_DEFINITIONS( -DMR_SSE -DWIN32  )
   ADD_DEFINITIONS( -DMR_SSE -DWIN32 -D_WIN32_WINNT=0x0601 )
@@ -491,11 +489,7 @@ endif()
 #
 # RELEASE VERSION
 #
-if(WIN32)
-  # if(COMMAND cmake_policy)
-  #          cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
-  # endif(COMMAND cmake_policy)
-else(WIN32)
+if(NOT WIN32)
   if(COMMAND cmake_policy)
        cmake_policy(SET CMP0003 NEW)
   endif(COMMAND cmake_policy)

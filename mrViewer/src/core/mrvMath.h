@@ -43,7 +43,7 @@ template< typename T >
 inline bool is_equal( const T x1, const T x2,
                       const T e = 1e-5 )
 {
-    return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
+    return (((x1 > x2)? x1 - x2: x2 - x1) <= e);
 }
 
 // Euclidian mod.  What you expect from % but you don't get as it is signed
