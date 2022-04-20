@@ -5,6 +5,7 @@ v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	- Draw cursor now disappears when not in the view window.
 	- Fixed a minor bug with buttons turning off when spacebar was pressed.
 	- Made Hotkey window be more readable.
+	- Made action tools remain inactive is no movie or image is loaded.
 	- Improved the text tool.  When selected, the usual font and font size
 	  is presented.  After that is chosen, clicking anywhere in the image
 	  will open a balloon box where the text can be typed in (or pasted).
