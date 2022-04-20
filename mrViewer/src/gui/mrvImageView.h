@@ -729,6 +729,7 @@ public:
     void send_selection() const;
 
     GLShapeList& shapes();
+    GLShapeList& undo_shapes();
 
     void add_shape( shape_type_ptr shape );
 
@@ -862,7 +863,7 @@ public:
 
 protected:
 
-    void remove_children();
+    int remove_children();
 
     void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 

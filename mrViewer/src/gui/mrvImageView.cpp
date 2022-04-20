@@ -1585,15 +1585,17 @@ void ImageView::move_pic_mode()
 }
 
 
-void ImageView::remove_children()
+int ImageView::remove_children()
 {
+    int ret = 0;
     for ( int i = 0; i < children(); ++i )
     {
         MultilineInput* w = dynamic_cast< MultilineInput* >( child(i) );
         if (!w) continue;
-        w->accept();
+        ret += w->accept();
     }
     redraw();
+    return ret;
 }
 
 void ImageView::scrub_mode()
@@ -4223,6 +4225,15 @@ void ImageView::undo_draw()
 
     if ( ! shapes.empty() )
     {
+        if ( remove_children() ) {
+            shapes.pop_back();
+            if ( shapes.empty() )
+            {
+                uiMain->uiPaint->uiUndoDraw->deactivate();
+                uiMain->uiUndoDraw->deactivate();
+            }
+            return;
+        }
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
         uiMain->uiRedoDraw->activate();
@@ -4814,8 +4825,18 @@ void ImageView::draw()
 
 GLShapeList& ImageView::shapes()
 {
+    static GLShapeList empty;
     mrv::media fg = foreground();
+    if (!fg) return empty;
     return fg->image()->shapes();
+}
+
+GLShapeList& ImageView::undo_shapes()
+{
+    static GLShapeList empty;
+    mrv::media fg = foreground();
+    if (!fg) return empty;
+    return fg->image()->undo_shapes();
 }
 
 void ImageView::add_shape( mrv::shape_type_ptr s )
@@ -5498,10 +5519,8 @@ int ImageView::leftMouseDown(int x, int y)
                 for ( int i = 0; i < children(); ++i )
                 {
                     w = dynamic_cast< MultilineInput* >( child(i) );
-                    if ( w )
-                    {
-                        found = true; break;
-                    }
+                    if ( !w ) continue;
+                    found = true; break;
                 }
                 if ( ! found )
                 {
@@ -5516,7 +5535,6 @@ int ImageView::leftMouseDown(int x, int y)
                     w->textcolor( fl_rgb_color( r, g, b ) );
 
                     this->add( w );
-                    redraw();
 
                     t = new GLTextShape;
                     t->font( mrv::font_current );
@@ -5526,10 +5544,11 @@ int ImageView::leftMouseDown(int x, int y)
                 else
                 {
                     const GLShapeList& shapes = this->shapes();
+                    if ( shapes.empty() ) return 0;
                     t = dynamic_cast< GLTextShape* >( shapes.back().get() );
                     if ( !t ) return 0;
                     t->pts[0] = mrv::Point( xf, yf );
-                    w->position( x, y );
+                    w->Fl_Widget::position( x, y );
                     redraw();
                     return 1;
                 }
@@ -5781,7 +5800,7 @@ void ImageView::leftMouseUp( int x, int y )
         GLCircleShape* s = dynamic_cast< GLCircleShape* >( o.get() );
         if ( s == NULL )
         {
-            LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
+            LOG_ERROR( _("Not a GLCircleShape pointer in mouseRelease") );
         }
         else
         {
@@ -7192,6 +7211,28 @@ void ImageView::mouseDrag(int x,int y)
                 double A = p.x - s->center.x;
                 double B = p.y - s->center.y;
                 s->radius = sqrt( A*A+B*B ) / scale;
+            }
+            else if ( _mode & kText )
+            {
+                bool found = false;
+                MultilineInput* w;
+                GLTextShape* t;
+                for ( int i = 0; i < children(); ++i )
+                {
+                    w = dynamic_cast< MultilineInput* >( child(i) );
+                    if ( !w ) continue;
+                    found = true; break;
+                }
+                if ( found )
+                {
+                    const GLShapeList& shapes = this->shapes();
+                    if ( shapes.empty() ) return;
+                    t = dynamic_cast< GLTextShape* >( shapes.back().get() );
+                    if ( !t ) return;
+                    t->pts[0] = mrv::Point( xf, yf );
+                    w->Fl_Widget::position( x, y );
+                    redraw();
+                }
             }
 
             assert( _selection.w() >= 0.0 );

@@ -110,7 +110,11 @@ static char* underline_at;
         // if widget has focus, draw an X on corner
         if ( Fl::focus() == this )
         {
-            fl_color( 0, 255, 0 );
+            const char* text = value();
+            if ( text && strlen(text) > 0 )
+                fl_color( 0, 255, 0 );
+            else
+                fl_color( 255, 0, 0 );
             fl_line_style( FL_SOLID, 3 );
             fl_line( x(), y(), x() + kCrossSize, y() + kCrossSize );
             fl_line( x() + kCrossSize, y(), x(), y() + kCrossSize );
@@ -123,47 +127,45 @@ static char* underline_at;
         ImageView* view = (ImageView*) window();
         GLShapeList& shapes = view->shapes();
         GLTextShape* s = dynamic_cast< GLTextShape* >( shapes.back().get() );
-        if ( s )
+        if ( !s ) return 0;
+
+        const char* text = value();
+        if ( text )
         {
-            const char* text = value();
-            if ( text )
-            {
-                s->font( textfont() );
-                s->size( textsize() / view->zoom() );
-                s->text( text );
+            s->font( textfont() );
+            s->size( textsize() / view->zoom() );
+            s->text( text );
 
-                mrv::media fg = view->foreground();
-                if ( !fg ) return 0;
+            mrv::media fg = view->foreground();
+            if ( !fg ) return 0;
 
-                CMedia* img = fg->image();
-                if (!img) return 0;
+            CMedia* img = fg->image();
+            if (!img) return 0;
 
-                const Fl_Boxtype b = box();
-                double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
-                double yf = y() + Fl::box_dy(b) + textsize() +
-                            kCrossSize - 5;
+            const Fl_Boxtype b = box();
+            double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
+            double yf = y() + Fl::box_dy(b) + textsize() +
+                        kCrossSize - 5;
 
-                view->data_window_coordinates( img, xf, yf );
+            view->data_window_coordinates( img, xf, yf );
 
-                yf = -yf;
+            yf = -yf;
 
-                const mrv::Recti& daw = img->data_window();
-                xf += daw.x();
-                yf -= daw.y();
+            const mrv::Recti& daw = img->data_window();
+            xf += daw.x();
+            yf -= daw.y();
 
-                s->pts[0].x = xf;
-                s->pts[0].y = yf;
-            }
-            else
-            {
-                view->shapes().pop_back();
-            }
-
-            window()->remove( this );
-            delete this;
-            return 1;
+            s->pts[0].x = xf;
+            s->pts[0].y = yf;
         }
-        return 0;
+        else
+        {
+            view->shapes().pop_back();
+        }
+
+        window()->remove( this );
+        delete this;
+        return 1;
     }
 
     int MultilineInput::handle( int e )
@@ -180,7 +182,7 @@ static char* underline_at;
                     return accept();
                 }
                 // Adjust Fl::event_x() to compensate for cross
-                Fl::e_x -= kCrossSize;
+                if ( Fl::event_inside(this) ) Fl::e_x -= kCrossSize;
             }
             break;
         }

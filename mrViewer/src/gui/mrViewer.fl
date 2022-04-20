@@ -442,7 +442,7 @@ class PaintUI {open
       user_data this user_data_type {PaintUI*}
       callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-      xywh {315 53 146 637} type Double resizable non_modal visible
+      xywh {315 109 146 637} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 150 637} box PLASTIC_UP_BOX
@@ -762,7 +762,7 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {122 211 690 565} type Double align 80 resizable
+      xywh {122 267 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} size_range {690 565 0 0} visible
@@ -857,7 +857,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label Histogram user_data_type {void*}
-              callback {uiHistogram->uiMain->show();}
+              callback {uiHistogram->uiMain->show();} selected
               xywh {0 0 100 20}
             }
             MenuItem {} {
@@ -1184,7 +1184,7 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
           } {
             Fl_Button uiScrub {
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->scrub_mode();} selected
+              callback {v->uiView->scrub_mode();}
               tooltip {Scrubbing Tool} xywh {2 73 40 35} down_box DOWN_BOX value 1 selection_color 63
               code0 {o->image( scrub );}
               class {mrv::Button}
@@ -1245,7 +1245,7 @@ else
 o->redraw();}
               tooltip {Selects the current pen color.} xywh {10 338 25 25} box EMBOSSED_BOX color 62 labelsize 11 labelcolor 7 align 1
             }
-            Fl_Group {} {
+            Fl_Group {} {open
               xywh {0 394 45 73}
             } {
               Fl_Button uiUndoDraw {
@@ -1255,7 +1255,7 @@ if ( !v->uiView->has_undo() )
  o->deactivate();
 else
  o->activate();}
-                tooltip {Undo Last Shape Drawn} xywh {2 397 40 35}
+                tooltip {Undo Last Shape Drawn} xywh {2 397 40 35} deactivate
                 code0 {o->image( undo );}
                 class {mrv::Button}
               }
@@ -1266,7 +1266,7 @@ if ( !v->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-                tooltip {Redo Previous Shape Drawn} xywh {2 432 40 35}
+                tooltip {Redo Previous Shape Drawn} xywh {2 432 40 35} deactivate
                 code0 {o->image( redo );}
                 class {mrv::Button}
               }
@@ -2016,7 +2016,7 @@ DBGM1("Fl::check 2 ok");} {}
   Function {make_attrs_window()} {open
   } {
     Fl_Window {} {open
-      xywh {1188 491 150 285} type Double resizable non_modal visible
+      xywh {1188 519 150 285} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {0 0 150 285} box FLAT_BOX
