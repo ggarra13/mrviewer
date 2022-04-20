@@ -6,6 +6,7 @@
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvMultilineInput.h"
+#include "mrViewer.h"
 
 namespace mrv {
 
@@ -122,7 +123,10 @@ static char* underline_at;
     int MultilineInput::accept()
     {
         ImageView* view = (ImageView*) window();
+
         GLShapeList& shapes = view->shapes();
+        if ( shapes.empty() ) return 0;
+
         GLTextShape* s = dynamic_cast< GLTextShape* >( shapes.back().get() );
         if ( !s ) return 0;
 
@@ -155,6 +159,15 @@ static char* underline_at;
             s->pts[0].x = xf;
             s->pts[0].y = yf;
 
+        }
+        else
+        {
+            shapes.pop_back();
+            if ( shapes.empty() )
+            {
+                view->main()->uiPaint->uiUndoDraw->deactivate();
+                view->main()->uiUndoDraw->deactivate();
+            }
         }
 
         window()->remove( this );

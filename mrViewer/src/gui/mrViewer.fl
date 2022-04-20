@@ -458,6 +458,13 @@ o->hide();} open
 o->image( scrub );}
             class {mrv::Button}
           }
+          Fl_Button uiMovePic {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->move_pic_mode();}
+            tooltip {Move Picture Tool} xywh {74 15 40 35} down_box DOWN_BOX selection_color 63
+            code0 {o->image( move_pic );}
+            class {mrv::Button}
+          }
           Fl_Button uiSelection {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->selection_mode();}
@@ -473,28 +480,6 @@ o->image( select_pic );}
             code0 {o->image( draw );}
             class {mrv::Button}
           }
-          Fl_Button uiErase {
-            user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->erase_mode();}
-            tooltip {Eraser Tool} xywh {74 95 40 35} down_box DOWN_BOX selection_color 63
-            code0 {o->image( erase );}
-            class {mrv::Button}
-          }
-          Fl_Button uiText {
-            label T
-            user_data m user_data_type {ViewerUI*}
-            callback {o->value(1);
-v->uiView->text_mode();}
-            tooltip {Text Tool} xywh {75 135 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
-            class {mrv::Button}
-          }
-          Fl_Button uiMovePic {
-            user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->move_pic_mode();}
-            tooltip {Move Picture Tool} xywh {74 15 40 35} down_box DOWN_BOX selection_color 63
-            code0 {o->image( move_pic );}
-            class {mrv::Button}
-          }
           Fl_Button uiCircle {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->circle_mode();}
@@ -502,11 +487,25 @@ v->uiView->text_mode();}
             code0 {o->image( circle );}
             class {mrv::Button}
           }
+          Fl_Button uiErase {
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->erase_mode();}
+            tooltip {Eraser Tool} xywh {74 95 40 35} down_box DOWN_BOX selection_color 63
+            code0 {o->image( erase );}
+            class {mrv::Button}
+          }
           Fl_Button uiArrow {
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->arrow_mode();}
             tooltip {Arrow Tool} xywh {30 135 40 35} down_box DOWN_BOX selection_color 63
             code0 {o->image( arrow_28 );}
+            class {mrv::Button}
+          }
+          Fl_Button uiText {
+            label T
+            user_data m user_data_type {ViewerUI*}
+            callback {v->uiView->text_mode();}
+            tooltip {Text Tool} xywh {75 135 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
             class {mrv::Button}
           }
           Fl_Button uiRectangle {
@@ -519,7 +518,7 @@ v->uiView->text_mode();}
           Fl_Button uiCopyXY {
             label XY
             user_data m user_data_type {ViewerUI*}
-            callback {v->uiView->toggle_copy_frame_xy();}
+            callback {v->uiView->toggle_copy_frame_xy();} selected
             tooltip {Copy Reel, Shot, Frame, X and Y coordinates to clipboard} xywh {75 175 40 35} down_box DOWN_BOX selection_color 63
             class {mrv::Button}
           }
@@ -762,10 +761,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {122 267 690 565} type Double align 80 resizable
+      xywh {22 210 690 565} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} size_range {690 565 0 0} visible
+      class {mrv::MainWindow} size_range {690 565 0 0}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -857,7 +856,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label Histogram user_data_type {void*}
-              callback {uiHistogram->uiMain->show();} selected
+              callback {uiHistogram->uiMain->show();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
@@ -1210,14 +1209,6 @@ Value is:  pow( 2, 1/x );} xywh {544 27 60 22} type {Horz Knob} maximum 4
               code0 {o->image( erase );}
               class {mrv::Button}
             }
-            Fl_Button uiText {
-              label T
-              user_data this user_data_type {ViewerUI*}
-              callback {o->value(1);
-v->uiView->text_mode();}
-              tooltip {Text Tool} xywh {2 283 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
-              class {mrv::Button}
-            }
             Fl_Button uiCircle {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->circle_mode();}
@@ -1230,6 +1221,13 @@ v->uiView->text_mode();}
               callback {v->uiView->arrow_mode();}
               tooltip {Arrow Tool} xywh {2 248 40 35} down_box DOWN_BOX selection_color 63
               code0 {o->image( arrow_28 );}
+              class {mrv::Button}
+            }
+            Fl_Button uiText {
+              label T
+              user_data this user_data_type {ViewerUI*}
+              callback {v->uiView->text_mode();}
+              tooltip {Text Tool} xywh {2 283 40 35} down_box DOWN_BOX selection_color 63 labelfont 8 labelsize 24 align 32
               class {mrv::Button}
             }
             Fl_Button uiPenColor {

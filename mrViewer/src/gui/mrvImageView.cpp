@@ -1561,6 +1561,8 @@ void ImageView::scale_pic_mode()
 
 void ImageView::move_pic_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kMovePicture;
 
     uiMain->uiStatus->copy_label( _("Move Pic.") );
@@ -1594,6 +1596,7 @@ int ImageView::remove_children()
         if (!w) continue;
         ret += w->accept();
     }
+
     redraw();
     return ret;
 }
@@ -1627,6 +1630,8 @@ void ImageView::scrub_mode()
 
 void ImageView::selection_mode( bool temporary )
 {
+    if ( !foreground() ) return;
+
     if ( temporary )
         _mode = kSelectionTemporary;
     else
@@ -1658,6 +1663,8 @@ void ImageView::selection_mode( bool temporary )
 
 void ImageView::draw_mode( bool tmp )
 {
+    if ( !foreground() ) return;
+
     if ( tmp )
         _mode = kDrawTemporary;
     else
@@ -1689,6 +1696,8 @@ void ImageView::draw_mode( bool tmp )
 
 void ImageView::circle_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kCircle;
 
     uiMain->uiStatus->copy_label( _("Circle") );
@@ -1718,6 +1727,8 @@ void ImageView::circle_mode()
 
 void ImageView::arrow_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kArrow;
 
     uiMain->uiStatus->copy_label( _("Arrow") );
@@ -1746,6 +1757,8 @@ void ImageView::arrow_mode()
 
 void ImageView::rectangle_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kRectangle;
 
     uiMain->uiStatus->copy_label( _("Rectangle") );
@@ -1775,6 +1788,8 @@ void ImageView::rectangle_mode()
 
 void ImageView::erase_mode( bool tmp )
 {
+    if ( !foreground() ) return;
+
     if ( tmp )
         _mode = kEraseTemporary;
     else
@@ -1806,6 +1821,8 @@ void ImageView::erase_mode( bool tmp )
 
 void ImageView::text_mode()
 {
+    if ( !foreground() ) return;
+
     remove_children();
     bool ok = mrv::make_window();
     if ( ok )
@@ -2308,6 +2325,8 @@ void ImageView::bg_reel(int idx)
 
 void ImageView::toggle_copy_frame_xy()
 {
+    if ( !foreground() ) return;
+
     if ( _mode == kCopyFrameXY )
         scrub_mode();
     else
@@ -2349,6 +2368,7 @@ void ImageView::toggle_copy_frame_xy()
 void ImageView::copy_frame_xy() const
 {
     mrv::media fg = foreground();
+    if ( !fg ) return;
 
     CMedia* img = fg->image();
 
@@ -4217,11 +4237,8 @@ void ImageView::redo_draw()
 
 void ImageView::undo_draw()
 {
-    mrv::media fg = foreground();
-    if (!fg) return;
-
-    GLShapeList& shapes = fg->image()->shapes();
-    GLShapeList& undo_shapes = fg->image()->undo_shapes();
+    GLShapeList& shapes = this->shapes();
+    GLShapeList& undo_shapes = this->undo_shapes();
 
     if ( ! shapes.empty() )
     {
