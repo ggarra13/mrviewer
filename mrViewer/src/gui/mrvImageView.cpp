@@ -1589,12 +1589,12 @@ void ImageView::move_pic_mode()
 
 int ImageView::remove_children()
 {
-    int ret = 0;
+    int ret = 1;
     for ( int i = 0; i < children(); ++i )
     {
         MultilineInput* w = dynamic_cast< MultilineInput* >( child(i) );
         if (!w) continue;
-        ret += w->accept();
+        ret = w->accept();
     }
 
     redraw();
