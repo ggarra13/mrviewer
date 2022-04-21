@@ -2,6 +2,7 @@
 # This cmake file must be run under cmake 3.1 or later
 #
 cmake_minimum_required( VERSION 3.1 )
+project( mrViewer )
 
 IF(WIN32)
     SET( TEST_BUNDLE 0 )

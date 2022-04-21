@@ -1,5 +1,4 @@
-PROJECT( mrViewer )
-
+project( mrViewer )
 cmake_policy( SET CMP0074 NEW )
 
 IF( NOT CMAKE_MODULE_PATH )
