@@ -492,8 +492,8 @@ endif()
 if(NOT WIN32)
   if(COMMAND cmake_policy)
        cmake_policy(SET CMP0003 NEW)
-  endif(COMMAND cmake_policy)
-endif(WIN32)
+  endif()
+endif()
 
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
