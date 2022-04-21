@@ -4240,15 +4240,7 @@ void ImageView::undo_draw()
 
     if ( ! shapes.empty() )
     {
-        if ( remove_children() ) {
-            if ( ! shapes.empty() ) shapes.pop_back();
-            if ( shapes.empty() )
-            {
-                uiMain->uiPaint->uiUndoDraw->deactivate();
-                uiMain->uiUndoDraw->deactivate();
-            }
-            return;
-        }
+        if ( ! remove_children() ) return;
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
         uiMain->uiRedoDraw->activate();

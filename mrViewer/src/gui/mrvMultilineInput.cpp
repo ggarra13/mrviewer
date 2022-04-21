@@ -122,6 +122,7 @@ static char* underline_at;
 
     int MultilineInput::accept()
     {
+        int ret = 0;
         ImageView* view = (ImageView*) window();
 
         GLShapeList& shapes = view->shapes();
@@ -143,6 +144,7 @@ static char* underline_at;
             CMedia* img = fg->image();
             if (!img) return 0;
 
+            ret = 1;
             const Fl_Boxtype b = box();
             double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
             double yf = y() + Fl::box_dy(b) + textsize() +
@@ -158,10 +160,10 @@ static char* underline_at;
 
             s->pts[0].x = xf;
             s->pts[0].y = yf;
-
         }
         else
         {
+            ret = 0;
             shapes.pop_back();
             if ( shapes.empty() )
             {
@@ -173,7 +175,8 @@ static char* underline_at;
         window()->remove( this );
         delete this;
 
-        return 1;
+        return ret;
+
     }
 
     int MultilineInput::handle( int e )

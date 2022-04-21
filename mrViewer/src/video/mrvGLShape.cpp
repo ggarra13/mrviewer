@@ -499,7 +499,7 @@ void GLTextShape::draw( double z )
 
     gl_font(font(), int(size()*z) );
 
-    float height = (size() - 3 + fl_descent() * z);
+    float height = (gl_height());
 
     std::string txt = text();
 
@@ -507,10 +507,7 @@ void GLTextShape::draw( double z )
     float y = float( pts[0].y );
     for ( ; pos != std::string::npos; y -= height, pos = txt.find('\n') )
     {
-        std::string t;
-        if (pos > 0 )
-            t = txt.substr( 0, pos );
-        gl_draw(t.c_str(), float( pts[0].x ), y);
+        gl_draw(txt.c_str(), pos, float( pts[0].x ), y);
         if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
