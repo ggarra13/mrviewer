@@ -1,5 +1,7 @@
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.
+	- Made window resizing take into account the window decorations.
+	  The code is also much more cleaner.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.
