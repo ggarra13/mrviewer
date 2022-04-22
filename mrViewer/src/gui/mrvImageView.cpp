@@ -2624,9 +2624,9 @@ void ImageView::image_coordinates( const CMedia* const img,
     x -= tw;
     y -= th;
 
-    ImageView* self = const_cast< ImageView* >( this );
-    float scale = Fl::screen_scale( window()->screen_num() );
-    self->_real_zoom = _zoom / scale;
+    // ImageView* self = const_cast< ImageView* >( this );
+    // float scale = Fl::screen_scale( window()->screen_num() );
+    // self->_real_zoom = _zoom / scale;
 
     x /= _real_zoom;
     y /= _real_zoom;
@@ -4558,15 +4558,11 @@ void ImageView::draw()
 
                 const mrv::Recti& dpw = img->display_window();
 
-                unsigned int H = dpw.h();
-                if ( H == 0 ) H = img->height();
-
                 yf = -yf;
 
                 const mrv::Recti& daw = img->data_window();
                 xf += daw.x();
                 yf -= daw.y();
-
 
 
                 window()->cursor( FL_CURSOR_NONE );
@@ -5492,9 +5488,6 @@ int ImageView::leftMouseDown(int x, int y)
             xf += daw.x();
             yf -= daw.y();
 
-            // float scale = Fl::screen_scale( window()->screen_num() );
-            // xf *= scale;
-            // yf *= scale;
 
             std::string str;
             GLShape* s;
@@ -10238,7 +10231,7 @@ void ImageView::resize_main_window()
     {
         return;
     }
-    
+
     int w, h;
 
     int oX = 0, oY = 0, oW = 0, oH = 0;
@@ -10285,7 +10278,7 @@ void ImageView::resize_main_window()
     maxh -= dh;
     posX += dw / 2;
     posY += dh;
-    
+
     int maxx = posX + maxw;
     int maxy = posY + maxh;
 

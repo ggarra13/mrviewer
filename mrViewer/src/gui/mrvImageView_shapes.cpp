@@ -43,7 +43,7 @@ void next_shape_frame( mrv::ImageView* view )
             max_frame = img->position() + 1 +
                         img->last_frame() - img->first_frame();
             if ( max_frame > view->timeline()->maximum() )
-                max_frame = view->timeline()->minimum();
+                return;
             view->seek( max_frame );
             fg = view->foreground();
         }
@@ -92,7 +92,7 @@ void previous_shape_frame( mrv::ImageView* view )
         else {
             min_frame = img->position() - 1; // - img->first_frame();
             if ( min_frame < view->timeline()->minimum() )
-                min_frame = view->timeline()->maximum();
+                return;
             view->seek( min_frame );
             fg = view->foreground();
         }

@@ -347,6 +347,8 @@ int main( int argc, const char** argv )
       // For macOS, to read command-line arguments
       fl_open_callback( osx_open_cb );
 
+      Fl::option( Fl::OPTION_VISIBLE_FOCUS, false );
+
       try {
           mrv::Options opts;
           if ( argc > 0 )
