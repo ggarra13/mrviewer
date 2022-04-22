@@ -78,14 +78,14 @@ namespace mrv {
 
 bool make_window() {
     Fl_Double_Window* w;
-    {   Fl_Double_Window* o = uiMain = new Fl_Double_Window(405, 125);
+    {   Fl_Double_Window* o = uiMain = new Fl_Double_Window(505, 125);
         w = o;
         o->type(241);
         o->begin();
-        {   Fl_Group* o = new Fl_Group(5, 5, 405, 120);
+        {   Fl_Group* o = new Fl_Group(5, 5, 505, 120);
             o->begin();
 
-            {   Fl_Choice* o = new Fl_Choice(120, 10, 280, 25, _("Font"));
+            {   Fl_Choice* o = new Fl_Choice(150, 10, 280, 25, _("Font"));
                 int numfonts = Fl::set_fonts("-*");
                 for (int i = 0; i < numfonts; ++i)
                 {
@@ -96,7 +96,7 @@ bool make_window() {
                 o->value(mrv::font_current);
                 o->callback( new_font );
             }
-            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(120, 50, 280, 25, _("Font Size"));
+            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(150, 50, 280, 25, _("Font Size"));
                 o->type( FL_HORIZONTAL );
                 o->labelcolor( FL_WHITE );
                 o->minimum(8);
@@ -108,12 +108,12 @@ bool make_window() {
             }
             o->end();
 
-            {   Fl_Group* g = new Fl_Group( 0, 80, 205, 55 );
+            {   Fl_Group* g = new Fl_Group( 0, 90, 505, 55 );
                 g->begin();
-                {   Fl_Button* o = new Fl_Button( 75, 80, 70, 25, _("OK") );
+                {   Fl_Button* o = new Fl_Button( 175, 90, 80, 25, _("OK") );
                     o->callback((Fl_Callback*)cb_Accept, (void*)(w));
                 }
-                {   Fl_Button* o = new Fl_Button( 160, 80, 70, 25,
+                {   Fl_Button* o = new Fl_Button( 300, 90, 80, 25,
                                                   _("Cancel") );
                     o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
                 }

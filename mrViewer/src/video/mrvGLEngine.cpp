@@ -2498,6 +2498,9 @@ void GLEngine::draw_shape( GLShape* const shape )
     double zoom = _view->zoom();
     int nscreen = _view->screen_num();
     double m = Fl::screen_scale( nscreen );
+#ifdef OSX
+    m *= 2;
+#endif
 
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     short num = _view->ghost_previous();
