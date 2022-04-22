@@ -5789,7 +5789,9 @@ void ImageView::leftMouseUp( int x, int y )
     }
     else if ( _mode == kText )
     {
-        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        const GLShapeList& shapes = this->shapes();
+        if ( shapes.empty() ) return;
+        mrv::shape_type_ptr o = shapes.back();
         GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
         if ( s == NULL )
         {
@@ -5803,7 +5805,9 @@ void ImageView::leftMouseUp( int x, int y )
     }
     else if ( _mode == kCircle )
     {
-        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        const GLShapeList& shapes = this->shapes();
+        if ( shapes.empty() ) return;
+        mrv::shape_type_ptr o = shapes.back();
         GLCircleShape* s = dynamic_cast< GLCircleShape* >( o.get() );
         if ( s == NULL )
         {
@@ -5815,11 +5819,6 @@ void ImageView::leftMouseUp( int x, int y )
             timeline()->redraw();
         }
     }
-    // else if ( _mode == kScrub || _mode == kMovePicture ||
-    //           _mode == kScalePicture )
-    // {
-    //     _mode = kNoAction;
-    // }
 
 }
 

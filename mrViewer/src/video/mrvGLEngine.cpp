@@ -2499,7 +2499,10 @@ void GLEngine::draw_grid( const CMedia* const img, unsigned size = 100 )
 void GLEngine::draw_shape( GLShape* const shape )
 {
 
-    double zoomX = _view->zoom();
+    double zoom = _view->zoom();
+    int nscreen = _view->screen_num();
+    double m = Fl::screen_scale( nscreen );
+
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     short num = _view->ghost_previous();
     int64_t vframe = _view->frame();
@@ -2512,7 +2515,7 @@ void GLEngine::draw_shape( GLShape* const shape )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
-                shape->draw(zoomX);
+                shape->draw(zoom, m);
                 shape->a = a;
                 return;
             }
@@ -2528,7 +2531,7 @@ void GLEngine::draw_shape( GLShape* const shape )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
-                shape->draw(zoomX);
+                shape->draw(zoom, m);
                 shape->a = a;
                 return;
             }
@@ -2538,7 +2541,7 @@ void GLEngine::draw_shape( GLShape* const shape )
     if ( sframe == MRV_NOPTS_VALUE ||
          sframe == vframe )
     {
-        shape->draw(zoomX);
+        shape->draw(zoom, m);
     }
 
 }

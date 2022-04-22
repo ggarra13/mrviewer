@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 10:07-0300\n"
+"POT-Creation-Date: 2022-04-22 11:02-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Det finns inget ljud i filen"
 
-#: gui/mrvImageView.cpp:5853
+#: gui/mrvImageView.cpp:5852
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Använder "
 msgid "  Choosing "
 msgstr "  välja ut "
 
-#: gui/mrvImageView.cpp:5858
+#: gui/mrvImageView.cpp:5857
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " misslyckades med "
 msgid " failed. "
 msgstr " fel. "
 
-#: gui/mrvImageView.cpp:9230
+#: gui/mrvImageView.cpp:9229
 msgid " for channel.  Maximum: "
 msgstr " för kanalen. Maximal: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Ta bort den om mrViewer inte startar)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9204 gui/mrvImageView.cpp:9889
-#: gui/mrvImageView.cpp:9890 gui/mrvImageView.cpp:9898
+#: gui/mrvImageView.cpp:9203 gui/mrvImageView.cpp:9888
+#: gui/mrvImageView.cpp:9889 gui/mrvImageView.cpp:9897
 msgid "(no image)"
 msgstr "(Utan bild)"
 
@@ -577,7 +577,7 @@ msgstr ". Attributet måste ha formen attr=värde."
 msgid ".  Saving pixel type is "
 msgstr ". Typ av pixel att spara är "
 
-#: gui/mrvImageView.cpp:9231
+#: gui/mrvImageView.cpp:9230
 msgid ". Widget label is "
 msgstr ". Widgettaggen är "
 
@@ -1252,8 +1252,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Låter dig ställa in slutramen för tidslinjen."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9322
-#: gui/mrvImageView.cpp:9790 gui/mrvImageView.cpp:9852
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9321
+#: gui/mrvImageView.cpp:9789 gui/mrvImageView.cpp:9851
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1263,7 +1263,7 @@ msgstr "endast alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2158
-#: gui/mrvImageView.cpp:9303 gui/mrvImageView.cpp:9853
+#: gui/mrvImageView.cpp:9302 gui/mrvImageView.cpp:9852
 msgid "Alpha Overlay"
 msgstr "Alfa övertryck"
 
@@ -1668,8 +1668,8 @@ msgstr "blandningsläge"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9317
-#: gui/mrvImageView.cpp:9851
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9316
+#: gui/mrvImageView.cpp:9850
 msgid "Blue"
 msgstr "Blå"
 
@@ -1693,7 +1693,7 @@ msgstr "Boost undantag: "
 msgid "Both"
 msgstr "Båda två"
 
-#: gui/mrvImageView.cpp:11193
+#: gui/mrvImageView.cpp:11192
 msgid "Bottom"
 msgstr "lägre"
 
@@ -2067,8 +2067,8 @@ msgstr "Den hopfällbara gruppen hittades inte"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2195
-#: gui/mrvImageView.cpp:2257 gui/mrvImageView.cpp:9850
-#: gui/mrvImageView.cpp:9898
+#: gui/mrvImageView.cpp:2257 gui/mrvImageView.cpp:9849
+#: gui/mrvImageView.cpp:9897
 msgid "Color"
 msgstr "Färg"
 
@@ -2108,7 +2108,7 @@ msgstr "färgtema"
 msgid "Color Version"
 msgstr "färgversion"
 
-#: gui/mrvImageView.cpp:9139
+#: gui/mrvImageView.cpp:9138
 msgid "Color channel not found at index "
 msgstr "Färgkanal hittades inte för index "
 
@@ -3850,7 +3850,7 @@ msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11191
+#: gui/mrvImageView.cpp:11190
 msgid "Frame"
 msgstr "Ram"
 
@@ -4092,8 +4092,8 @@ msgstr "grekisk (Ελληνικά)"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9312
-#: gui/mrvImageView.cpp:9851
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9311
+#: gui/mrvImageView.cpp:9850
 msgid "Green"
 msgstr "Grön"
 
@@ -4665,7 +4665,7 @@ msgstr "Ogiltig destinationsprofil/bildformat"
 msgid "Invalid image "
 msgstr "ogiltigt index "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9229
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9228
 msgid "Invalid index "
 msgstr "ogiltigt index "
 
@@ -5018,11 +5018,11 @@ msgstr "Läser in"
 msgid "Loading \"%s\""
 msgstr "Laddar \"%s\""
 
-#: video/mrvGLEngine.cpp:4177
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Laddar intern shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4183
+#: video/mrvGLEngine.cpp:4186
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Laddar intern rgba shader arbfp1"
 
@@ -5086,7 +5086,7 @@ msgstr "Bildpixelluminans under musen."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2165
-#: gui/mrvImageView.cpp:9327 gui/mrvImageView.cpp:9852
+#: gui/mrvImageView.cpp:9326 gui/mrvImageView.cpp:9851
 msgid "Lumma"
 msgstr "luma"
 
@@ -5620,11 +5620,11 @@ msgstr "Inte ok"
 msgid "Not a GLArrowShape pointer"
 msgstr "Inte en GLarrowShape-pekare"
 
-#: gui/mrvImageView.cpp:7204
+#: gui/mrvImageView.cpp:7203
 msgid "Not a GLCircleShape pointer"
 msgstr "Inte en pekare till GLCircleShape"
 
-#: gui/mrvImageView.cpp:5810
+#: gui/mrvImageView.cpp:5814
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "Inte en GLCircleShape-pekare i mouseRelease"
 
@@ -5632,7 +5632,7 @@ msgstr "Inte en GLCircleShape-pekare i mouseRelease"
 msgid "Not a GLErasePathShape pointer"
 msgstr "Inte en pekare till GLERasePathShape"
 
-#: gui/mrvImageView.cpp:5740 gui/mrvImageView.cpp:7144
+#: gui/mrvImageView.cpp:5740 gui/mrvImageView.cpp:7143
 msgid "Not a GLPathShape pointer"
 msgstr "Inte en pekare till GLPathShape"
 
@@ -5640,7 +5640,7 @@ msgstr "Inte en pekare till GLPathShape"
 msgid "Not a GLRectangleShape pointer"
 msgstr "Inte en GLRectangleShape-pekare"
 
-#: gui/mrvImageView.cpp:5796
+#: gui/mrvImageView.cpp:5798
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Inte en pekare till GLTextShape på mouseRelease"
 
@@ -6565,8 +6565,8 @@ msgstr "Rektangelverktyg"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9307
-#: gui/mrvImageView.cpp:9850
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9306
+#: gui/mrvImageView.cpp:9849
 msgid "Red"
 msgstr "Röd"
 
@@ -8165,7 +8165,7 @@ msgstr "För många strömmar i utdatasammanhang"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11192
+#: gui/mrvImageView.cpp:11191
 msgid "Top"
 msgstr "Högre"
 
@@ -8423,7 +8423,7 @@ msgstr "Okänt avrundningsläge"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Okänd datatyp för mrvOCIBrowser"
 
-#: video/mrvGLEngine.cpp:2634
+#: video/mrvGLEngine.cpp:2637
 msgid "Unknown wipe direction"
 msgstr "Okänd raderingsadress"
 
@@ -9297,7 +9297,7 @@ msgstr "Du kan bara ladda upp en stereobild att kombinera med den nuvarande."
 msgid "You cannot load a reel as a stereo image."
 msgstr "Du kan inte ladda upp en rulle som en stereobild."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9853
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9852
 msgid "Z"
 msgstr "Z"
 

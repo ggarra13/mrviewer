@@ -88,7 +88,7 @@ public:
     virtual ~GLShape() {};
 
     virtual std::string send() const = 0;
-    virtual void draw( double z ) = 0;
+    virtual void draw( double z, double m ) = 0;
 
     void color( float ri, float gi, float bi, float ai = 1.0 ) {
     r = ri;
@@ -109,7 +109,7 @@ class GLCircleShape : public GLShape
 public:
     GLCircleShape() : GLShape(), radius(1.0)  {};
     virtual ~GLCircleShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
     Point center;
@@ -122,7 +122,7 @@ public:
 
     GLPathShape() : GLShape()  {};
     virtual ~GLPathShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
     typedef std::vector< Point > PointList;
@@ -135,7 +135,7 @@ public:
 
     GLArrowShape() : GLPathShape()  {};
     virtual ~GLArrowShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 };
 
@@ -145,7 +145,7 @@ public:
 
     GLRectangleShape() : GLPathShape()  {};
     virtual ~GLRectangleShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 };
 
@@ -155,7 +155,7 @@ public:
 
     GLErasePathShape() : GLPathShape()  {};
     virtual ~GLErasePathShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 };
 
@@ -194,7 +194,7 @@ public:
         return _fontsize;
     }
 
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
 protected:

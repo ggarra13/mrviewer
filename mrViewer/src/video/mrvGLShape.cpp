@@ -210,7 +210,7 @@ std::string GLPathShape::send() const
     return buf;
 }
 
-void GLPathShape::draw( double z )
+void GLPathShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -240,7 +240,7 @@ void GLPathShape::draw( double z )
     glDisable( GL_BLEND );
 }
 
-void GLArrowShape::draw( double z )
+void GLArrowShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -286,7 +286,7 @@ std::string GLArrowShape::send() const
     return buf;
 }
 
-void GLRectangleShape::draw( double z )
+void GLRectangleShape::draw( double z, double m )
 {
 
     //Turn on Color Buffer
@@ -355,7 +355,7 @@ std::string GLRectangleShape::send() const
 }
 
 
-void GLCircleShape::draw( double z )
+void GLCircleShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -425,7 +425,7 @@ std::string GLErasePathShape::send() const
 
 
 
-void GLErasePathShape::draw( double z )
+void GLErasePathShape::draw( double z, double m )
 {
     glColorMask(false, false, false, false);
 
@@ -468,7 +468,7 @@ std::string GLTextShape::send() const
     return buf;
 }
 
-void GLTextShape::draw( double z )
+void GLTextShape::draw( double z, double m )
 {
     //Turn on Color Buffer and Depth Buffer
     glColorMask(true, true, true, true);
@@ -505,27 +505,20 @@ void GLTextShape::draw( double z )
 
     std::string txt = text();
 
-    GLfloat pt[4];
     GLboolean result;
     std::size_t pos = txt.find('\n');
     double x = double( pts[0].x );
     double y = double( pts[0].y );
     for ( ; pos != std::string::npos; y -= height, pos = txt.find('\n') )
     {
-        glRasterPos2d( double( pts[0].x ), y );
+        glRasterPos2d( x, y );
         glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
         if ( result == GL_FALSE )
         {
-            glGetFloatv( GL_CURRENT_RASTER_POSITION, pt );
-            double m = pt[2];
-#ifdef OSX
-            double xMove = gl_width( txt.c_str(), pos-1 ) * 2;  // * 2 for macOS
-#else
-            double xMove = gl_width( txt.c_str(), pos-1 );
-#endif
+            double xMove = gl_width( txt.c_str(), pos-1 ) * m;  // * 2 for macOS
             double yMove = gl_height();
-            double bxMove = -xMove * z / m;
-            double byMove = -yMove * z / m;
+            double bxMove = -xMove * z * m;
+            double byMove = -yMove * z * m;
             glRasterPos2d( x + xMove, y + yMove );
             glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
             glBitmap( 0, 0, 0, 0, bxMove, byMove, NULL );
@@ -541,16 +534,10 @@ void GLTextShape::draw( double z )
         glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
         if ( result == GL_FALSE )
         {
-            glGetFloatv( GL_CURRENT_RASTER_POSITION, pt );
-            double m = pt[2];
-#ifdef OSX
-            double xMove = gl_width( txt.c_str() ) * 2;  // * 2 for macOS
-#else
-            double xMove = gl_width( txt.c_str() );
-#endif
+            double xMove = gl_width( txt.c_str() ) * m;
             double yMove = gl_height();
-            double bxMove = -xMove * z / m;
-            double byMove = -yMove * z / m;
+            double bxMove = -xMove * z * m;
+            double byMove = -yMove * z * m;
             glRasterPos2d( x + xMove, y + yMove );
             glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
             glBitmap( 0, 0, 0, 0, bxMove, byMove, NULL );
