@@ -8351,10 +8351,6 @@ void ImageView::toggle_fullscreen()
         else FullScreen = true;
         presentation = false;
         show_bars( uiMain );
-        // resize_main_window();
-        // resize_main_window();
-        DBGM1( "posXY=" << posX << "," << posY << " sizeXY " << sizeX << "x"
-               << sizeY << " fullscreen " << FullScreen );
         fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
         Fl::check();
         if ( FullScreen ) fltk_main()->fullscreen();
@@ -10238,6 +10234,11 @@ void ImageView::resize( int X, int Y, int W, int H )
  */
 void ImageView::resize_main_window()
 {
+    if ( fltk_main()->fullscreen_active() )
+    {
+        return;
+    }
+    
     int w, h;
 
     int oX = 0, oY = 0, oW = 0, oH = 0;
@@ -10257,6 +10258,11 @@ void ImageView::resize_main_window()
         h = (int) (h / img->pixel_ratio());
     }
 
+    int minx, miny, maxw, maxh;
+
+    int screen = window()->screen_num();
+    float scale = Fl::screen_scale( screen );
+    Fl::screen_work_area( minx, miny, maxw, maxh, screen );
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
@@ -10264,63 +10270,36 @@ void ImageView::resize_main_window()
         posX = (int) uiPrefs->uiWindowXPosition->value();
         posY = (int) uiPrefs->uiWindowYPosition->value();
     }
+    else
+    {
+        posX = minx;
+        posY = miny;
+    }
 
 
-#if defined( _WIN32 )
-    const int kTitleBar = 28;
-#elif defined(LINUX)
-    const int kTitleBar = 0;
-#else
-    const int kTitleBar = 0;
-#endif
 
-    int minx, miny, maxw, maxh;
+    int dw = fltk_main()->decorated_w() - fltk_main()->w();
+    int dh = fltk_main()->decorated_h() - fltk_main()->h();
 
-    int screen = window()->screen_num();
-    float scale = Fl::screen_scale( screen );
-    Fl::screen_work_area( minx, miny, maxw, maxh, screen );
-
-    int maxx = minx + maxw;
-    int maxy = miny + maxh;
+    maxw -= dw;
+    maxh -= dh;
+    posX += dw / 2;
+    posY += dh;
+    
+    int maxx = posX + maxw;
+    int maxy = posY + maxh;
 
     bool fit = false;
 
     if ( w > maxw ) {
         fit = true;
         w = maxw;
-        //        posX = 0;
     }
     if ( h > maxh ) {
         fit = true;
         h = maxh;
-        // posY = 0;
     }
 
-    DBGM1( "posX, posY=" << posX << ", " << posY );
-
-#if 0
-    if ( posX + w > maxx ) {
-        w = maxw;
-        posX = ( w + posX - maxw ) / 2;
-    }
-    if ( posX + w > maxx ) {
-        posX = minx;
-        w = maxw;
-    }
-    if ( posX < minx )     posX = minx;
-
-    if ( posY + h > maxy ) {
-        posY = ( h + posY - maxh ) / 2;
-        if ( posY + h > maxy ) posY = ( h + posY - maxh ) / 2;
-    }
-    if ( posY + h > maxy ) {
-        posY = miny + kTitleBar;
-        h = maxh - kTitleBar;
-    }
-    if ( posY < miny + kTitleBar ) {
-        posY = miny + kTitleBar;
-    }
-#endif
 
     if ( uiMain->uiMenuGroup->visible() )
     {
@@ -10376,17 +10355,7 @@ void ImageView::resize_main_window()
         h = maxh;
     }
 
-    DBGM1( "posX, posY = " << posX << ", " << posY );
-    if ( fltk_main()->fullscreen_active() )
-    {
-        fltk_main()->fullscreen_off( posX, posY, w, h );
-    }
-    else
-    {
-        fltk_main()->resize( posX, posY, w, h );
-    }
-
-
+    fltk_main()->resize( posX, posY, w, h );
 
     uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
                                int(25) );

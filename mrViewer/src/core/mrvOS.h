@@ -74,6 +74,9 @@
 #undef getcwd
 #define getcwd _getcwd
 
+#undef chdir
+#define chdir _chdir
+
 #undef  _ITERATOR_DEBUG_LEVEL
 #define _ITERATOR_DEBUG_LEVEL 0
 
