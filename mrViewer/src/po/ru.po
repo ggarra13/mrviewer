@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3910,27 +3910,27 @@ msgstr "Обрезать конечный кадр в файле"
 msgid "Frame start of clip in file"
 msgstr "Начальный кадр клипа в файле"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "Неполные цели слоя кадрового буфера."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Буфер кадра неполный: привязка НЕ завершена."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Буфер кадра неполный: Буфер рисования."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Неполный фреймбуфер: к FBO не прикреплено ни одного изображения."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Неполный фреймбуфер: чтение буфера."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Неполный кадровый буфер мультисэмплинга: Буфер рисования."
 
@@ -5033,11 +5033,11 @@ msgstr "Загрузка"
 msgid "Loading \"%s\""
 msgstr "Загрузка \"%s\""
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Загрузка внутреннего шейдера NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Загрузка внутреннего rgba-шейдера arbfp1"
 
@@ -8310,7 +8310,7 @@ msgstr "Не удалось найти диапазон томов '%s', иде�
 msgid "Undefined"
 msgstr "Неопределенный"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "неопределенный фреймбуфер"
 
@@ -8337,7 +8337,7 @@ msgstr "необработанное исключение"
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "Неизвестная ошибка фреймбуфера. Код выхода: "
 
@@ -8453,7 +8453,7 @@ msgstr "Неизвестный режим округления"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Неизвестный тип данных для mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "Неизвестный адрес очистки"
 
@@ -8462,7 +8462,7 @@ msgstr "Неизвестный адрес очистки"
 msgid "Unspecified"
 msgstr "Неопределенные"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "неизвестный внутренний формат"
 

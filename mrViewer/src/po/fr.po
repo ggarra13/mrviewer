@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3940,27 +3940,27 @@ msgstr "Couper l'image de fin dans le fichier"
 msgid "Frame start of clip in file"
 msgstr "Image de début du clip dans le fichier"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "Cibles de couche de framebuffer incomplètes."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer incomplet : la liaison n'est PAS terminée."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer incomplet : tampon de dessin."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Framebuffer incomplet : Aucune image n'est attachée au FBO."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Tampon de trame incomplet : lire le tampon."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Tampon de trame multi-échantillonnage incomplet : tampon de dessin."
 
@@ -5062,11 +5062,11 @@ msgstr "Chargement"
 msgid "Loading \"%s\""
 msgstr "Chargement de \"%s\""
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Chargement du shader interne NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Chargement du shader rgba interne arbfp1"
 
@@ -8353,7 +8353,7 @@ msgstr "Impossible de trouver la plage de volume '%s', id : %i \n"
 msgid "Undefined"
 msgstr "Indéfini"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "tampon de trame indéfini"
 
@@ -8380,7 +8380,7 @@ msgstr "exception non-gérée"
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "Erreur de framebuffer inconnue. Code de sortie : "
 
@@ -8496,7 +8496,7 @@ msgstr "Mode d'arrondi inconnu"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Type de données inconnu pour mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "Adresse de nettoyage inconnue"
 
@@ -8505,7 +8505,7 @@ msgstr "Adresse de nettoyage inconnue"
 msgid "Unspecified"
 msgstr "Indéterminé"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "format interne inconnu"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3901,27 +3901,27 @@ msgstr "終了フレームをファイルにクリップします"
 msgid "Frame start of clip in file"
 msgstr "開始フレームをファイルにクリップします"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "不完全なフレームバッファレイヤーターゲット."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "フレームバッファが不完全です: バインドが完了していません."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "フレームバッファが不完全です: 描画バッファ."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "不完全なフレームバッファ: FBOに画像が添付されていません."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "不完全なフレームバッファ: 読み取りバッファ."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "不完全なマルチサンプリングフレームバッファ: 描画バッファ."
 
@@ -5016,11 +5016,11 @@ msgstr "読み込み中"
 msgid "Loading \"%s\""
 msgstr "\"%s\"を読み込んでいます"
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "内部シェーダーNV3.0rgbaを読み込んでいます"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "内部rgbaシェーダーarbfp1を読み込んでいます"
 
@@ -8269,7 +8269,7 @@ msgstr "ボリューム範囲'%s'が見つかりませんでした、id: %i \n"
 msgid "Undefined"
 msgstr "未定義"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "未定義のフレームバッファ"
 
@@ -8296,7 +8296,7 @@ msgstr "未処理の例外"
 msgid "Unknown"
 msgstr "未知の"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "不明なフレームバッファエラー.終了コード: "
 
@@ -8412,7 +8412,7 @@ msgstr "不明な丸めモード"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowserの不明なデータ型"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "不明なワイプアドレス"
 
@@ -8421,7 +8421,7 @@ msgstr "不明なワイプアドレス"
 msgid "Unspecified"
 msgstr "不特定"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "不明な内部形式"
 

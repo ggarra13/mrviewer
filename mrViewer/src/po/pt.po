@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3923,27 +3923,27 @@ msgstr "Recortar quadro final no arquivo"
 msgid "Frame start of clip in file"
 msgstr "Recortar o quadro inicial no arquivo"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "Alvos de camada de framebuffer incompletos."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer incompleto: A ligação NÃO está completa."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer incompleto: buffer de desenho."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Framebuffer incompleto: Não há imagem anexada ao FBO."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Framebuffer incompleto: buffer de leitura."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Framebuffer multisampling incompleto: buffer de desenho."
 
@@ -5046,11 +5046,11 @@ msgstr "Carregando"
 msgid "Loading \"%s\""
 msgstr "Carregando \"%s\""
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Carregando sombreador interno NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Carregando sombreador rgba interno arbfp1"
 
@@ -8322,7 +8322,7 @@ msgstr "Não foi possível encontrar o intervalo de volume '%s', id: %i \n"
 msgid "Undefined"
 msgstr "Indefinido"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "framebuffer indefinido"
 
@@ -8349,7 +8349,7 @@ msgstr "exceção não tratada"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "Erro de framebuffer desconhecido. Código de saída: "
 
@@ -8465,7 +8465,7 @@ msgstr "Modo de arredondamento desconhecido"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Tipo de dados desconhecido para mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "Endereço de limpeza desconhecido"
 
@@ -8474,7 +8474,7 @@ msgstr "Endereço de limpeza desconhecido"
 msgid "Unspecified"
 msgstr "Indeterminado"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "formato interno desconhecido"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3893,27 +3893,27 @@ msgstr "파일의 끝 프레임 자르기"
 msgid "Frame start of clip in file"
 msgstr "파일의 시작 프레임 자르기"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "불완전한 프레임 버퍼 레이어 대상."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "프레임 버퍼 불완전: 바인딩이 완료되지 않았습니다."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "프레임 버퍼 불완전: 그리기 버퍼입니다."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "불완전한 프레임 버퍼: FBO에 첨부된 이미지가 없습니다."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "불완전한 프레임 버퍼: 버퍼를 읽습니다."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "불완전한 다중 샘플링 프레임 버퍼: 그리기 버퍼입니다."
 
@@ -5007,11 +5007,11 @@ msgstr "로딩 중"
 msgid "Loading \"%s\""
 msgstr "\"%s\" 로드 중"
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "내부 셰이더 NV3.0 rgba 로드 중"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "내부 rgba 셰이더 arbfp1 로드 중"
 
@@ -8255,7 +8255,7 @@ msgstr "볼륨 범위 '%s'을(를) 찾을 수 없습니다. ID: %i \n"
 msgid "Undefined"
 msgstr "한정되지 않은"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "정의되지 않은 프레임 버퍼"
 
@@ -8282,7 +8282,7 @@ msgstr "처리되지 않은 예외"
 msgid "Unknown"
 msgstr "알려지지 않은"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "알 수 없는 프레임 버퍼 오류입니다. 종료 코드: "
 
@@ -8398,7 +8398,7 @@ msgstr "알 수 없는 반올림 모드"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser에 대한 알 수 없는 데이터 유형"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "알 수 없는 초기화 주소"
 
@@ -8407,7 +8407,7 @@ msgstr "알 수 없는 초기화 주소"
 msgid "Unspecified"
 msgstr "지정되지 않음"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "알 수 없는 내부 형식"
 

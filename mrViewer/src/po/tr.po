@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3907,27 +3907,27 @@ msgstr "Dosyadaki klip bitiş çerçevesi"
 msgid "Frame start of clip in file"
 msgstr "Dosyadaki klip başlangıç çerçevesi"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "Eksik çerçeve arabelleği katmanı hedefleri."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Çerçeve arabelleği eksik: Bağlama TAM DEĞİL."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Çerçeve arabelleği eksik: Çizim arabelleği."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Eksik çerçeve arabelleği: FBO'ya eklenmiş resim yok."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Eksik çerçeve arabelleği: Tamponu oku."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Eksik çoklu örnekleme çerçeve arabelleği: Çizim arabelleği."
 
@@ -5027,11 +5027,11 @@ msgstr "Yükleniyor"
 msgid "Loading \"%s\""
 msgstr "\"%s\" yükleniyor"
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Dahili gölgelendirici NV3.0 rgba yükleniyor"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Dahili rgba gölgelendirici arbfp1 yükleniyor"
 
@@ -8293,7 +8293,7 @@ msgstr "'%s' cilt aralığı bulunamadı, id: %i \n"
 msgid "Undefined"
 msgstr "Tanımsız"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "tanımsız çerçeve arabelleği"
 
@@ -8320,7 +8320,7 @@ msgstr "işlenmeyen özel durum"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "Bilinmeyen çerçeve arabelleği hatası. Çıkış kodu: "
 
@@ -8436,7 +8436,7 @@ msgstr "Bilinmeyen yuvarlama modu"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser için bilinmeyen veri türü"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "Bilinmeyen silme adresi"
 
@@ -8445,7 +8445,7 @@ msgstr "Bilinmeyen silme adresi"
 msgid "Unspecified"
 msgstr "Belirtilmemiş"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "bilinmeyen dahili biçim"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-22 11:02-0300\n"
+"POT-Creation-Date: 2022-04-22 11:15-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -3895,27 +3895,27 @@ msgstr "مقطع نهاية الإطار في الملف"
 msgid "Frame start of clip in file"
 msgstr "مقطع إطار البداية في الملف"
 
-#: video/mrvGLEngine.cpp:826
+#: video/mrvGLEngine.cpp:825
 msgid "Framebuffer incomplete layer targets."
 msgstr "أهداف طبقة المخزن المؤقت غير المكتملة."
 
-#: video/mrvGLEngine.cpp:813
+#: video/mrvGLEngine.cpp:812
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer غير مكتمل: الربط لم يكتمل."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:819
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer غير مكتمل: المخزن المؤقت للرسم."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:816
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "المخزن المؤقت للإطار غير مكتمل: لا توجد صورة مرفقة بـ FBO."
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:829
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "المخزن المؤقت لإطار غير كامل: قراءة المخزن المؤقت."
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:822
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "مخزن مؤقت متعدد العينات غير مكتمل: رسم المخزن المؤقت."
 
@@ -5011,11 +5011,11 @@ msgstr "جار التحميل"
 msgid "Loading \"%s\""
 msgstr "تحميل \"%s\""
 
-#: video/mrvGLEngine.cpp:4180
+#: video/mrvGLEngine.cpp:4174
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "تحميل تظليل داخلي NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4186
+#: video/mrvGLEngine.cpp:4180
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "تحميل شادر rgba الداخلية arbfp1"
 
@@ -8261,7 +8261,7 @@ msgstr "تعذر العثور على نطاق وحدة التخزين '%s' ، ا
 msgid "Undefined"
 msgstr "غير معرف"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:806
 msgid "Undefined framebuffer"
 msgstr "غير محدد Framebuffer"
 
@@ -8288,7 +8288,7 @@ msgstr "استثناء غير معالج"
 msgid "Unknown"
 msgstr "مجهول"
 
-#: video/mrvGLEngine.cpp:833
+#: video/mrvGLEngine.cpp:832
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "خطأ غير معروف في المخزن المؤقت للإطار. كود الخروج: "
 
@@ -8404,7 +8404,7 @@ msgstr "وضع التقريب غير معروف"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "نوع بيانات غير معروف لـ mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2637
+#: video/mrvGLEngine.cpp:2631
 msgid "Unknown wipe direction"
 msgstr "عنوان مسح غير معروف"
 
@@ -8413,7 +8413,7 @@ msgstr "عنوان مسح غير معروف"
 msgid "Unspecified"
 msgstr "غير محدد"
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:809
 msgid "Unsupported internal format"
 msgstr "تنسيق داخلي غير معروف"
 

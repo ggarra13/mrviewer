@@ -662,15 +662,14 @@ void GLEngine::reset_view_matrix()
         clear_quads();
     }
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    unsigned W = view->pixel_w();
-    unsigned H = view->pixel_h();
+    unsigned W = _view->pixel_w();
+    unsigned H = _view->pixel_h();
     DBGM1( "view pixels: " << W << "x" << H );
     glViewport(0, 0, W, H);
-    if ( view->vr() == ImageView::kNoVR )
+    if ( _view->vr() == ImageView::kNoVR )
     {
         CHECK_GL;
-        glOrtho( 0, view->w(), 0, view->h(), -1, 1 );
+        glOrtho( 0, _view->w(), 0, _view->h(), -1, 1 );
         _rotX = _rotY = 0.0;
         CHECK_GL;
     }
@@ -1021,8 +1020,7 @@ void GLEngine::draw_title( const float size,
         sum += glutStrokeWidth( font, *p );
     CHECK_GL;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    float x = ( float( view->w() ) - float(sum) * size ) / 2.0f;
+    float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
     float rgb[4];
     glGetFloatv( GL_CURRENT_COLOR, rgb );
@@ -1106,9 +1104,8 @@ void GLEngine::draw_cursor( const double x, const double y,
     double tw = double(texWidth)  / 2.0;
     double th = double(texHeight) / 2.0;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
-    double sh = ((double)view->h() - texHeight * zoomY) / 2;
+    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
     glTranslated(_view->offset_x() * zoomX + sw,
                  _view->offset_y() * zoomY + sh, 0);
@@ -1854,9 +1851,8 @@ void GLEngine::draw_images( ImageList& images )
     double y = _view->spin_y();
     if ( x >= 1000.0 )  // dummy value used to reset view
     {
-        ImageView* v = const_cast< ImageView* >( _view );
-        v->spin_x( 0.0 );
-        v->spin_y( 0.0 );
+        _view->spin_x( 0.0 );
+        _view->spin_y( 0.0 );
         _rotX = _rotY = 0.0;
     }
     else
@@ -2564,9 +2560,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
     double tw = double( texWidth  ) / 2.0;
     double th = double( texHeight ) / 2.0;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
-    double sh = ((double)view->h() - texHeight * zoomY) / 2;
+    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
     glTranslated( (tw + _view->offset_x()) * zoomX + sw,
                   (th + _view->offset_y()) * zoomY + sh, 0);
@@ -2617,9 +2612,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
 
 void GLEngine::wipe_area()
 {
-    ImageView* view = const_cast< ImageView* >( _view );
-    GLint w = view->pixel_w();
-    GLint h = view->pixel_h();
+    GLint w = _view->pixel_w();
+    GLint h = _view->pixel_h();
 
     DBGM3( __FUNCTION__ << " " << __LINE__ << " w,h " << w << " " << h );
     if ( _view->wipe_direction() == ImageView::kNoWipe )
