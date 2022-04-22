@@ -495,9 +495,11 @@ void GLTextShape::draw( double z )
     glColor4f( r, g, b, a );
 
 
+    int textsize = int( size() * z );
+    if ( textsize < 1 ) return;
 
 
-    gl_font(font(), int(size()*z) );
+    gl_font(font(), textsize );
 
     double height = (gl_height() / z);
 
