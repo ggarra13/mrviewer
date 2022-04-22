@@ -499,21 +499,29 @@ void GLTextShape::draw( double z )
 
     gl_font(font(), int(size()*z) );
 
-    float height = (gl_height() / z);
+    double height = (gl_height() / z);
 
     std::string txt = text();
 
+    GLboolean result;
     std::size_t pos = txt.find('\n');
-    float y = float( pts[0].y );
+    double x = double( pts[0].x );
+    double y = double( pts[0].y );
     for ( ; pos != std::string::npos; y -= height, pos = txt.find('\n') )
     {
-        gl_draw(txt.c_str(), pos, float( pts[0].x ), y  );
+        glRasterPos2d( double( pts[0].x ), y );
+        glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+        if ( result == GL_TRUE )
+            gl_draw(txt.c_str(), pos );
         if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
     if ( !txt.empty() )
     {
-        gl_draw( txt.c_str(), float( pts[0].x ), y );
+        glRasterPos2d( x, y );
+        glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+        if ( result == GL_TRUE )
+            gl_draw( txt.c_str() );
     }
 
 }
