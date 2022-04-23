@@ -18,10 +18,16 @@ namespace mrv
 
         virtual ~MultilineInput() { };
 
+        void font_size( double f ) { _font_size = f; }
+        double font_size() const { return _font_size; }
+
         int accept();
 
         virtual int handle( int e );
         virtual void draw();
+
+    protected:
+        double _font_size;
     };
 
 } // namespace mrv

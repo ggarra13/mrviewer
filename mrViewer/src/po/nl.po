@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-23 08:39-0300\n"
+"POT-Creation-Date: 2022-04-23 11:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Er zit geen audio in het bestand"
 
-#: gui/mrvImageView.cpp:5845
+#: gui/mrvImageView.cpp:5878
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Met behulp van "
 msgid "  Choosing "
 msgstr "  uitkiezen "
 
-#: gui/mrvImageView.cpp:5850
+#: gui/mrvImageView.cpp:5883
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " mislukt met "
 msgid " failed. "
 msgstr " mislukking. "
 
-#: gui/mrvImageView.cpp:9218
+#: gui/mrvImageView.cpp:9251
 msgid " for channel.  Maximum: "
 msgstr " voor het kanaal. Maximaal: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Verwijder het als mrViewer niet start)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9192 gui/mrvImageView.cpp:9877
-#: gui/mrvImageView.cpp:9878 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9225 gui/mrvImageView.cpp:9910
+#: gui/mrvImageView.cpp:9911 gui/mrvImageView.cpp:9919
 msgid "(no image)"
 msgstr "(Zonder afbeelding)"
 
@@ -577,7 +577,7 @@ msgstr ". Het attribuut moet de vorm attr=waarde hebben."
 msgid ".  Saving pixel type is "
 msgstr ". Type pixel om op te slaan is "
 
-#: gui/mrvImageView.cpp:9219
+#: gui/mrvImageView.cpp:9252
 msgid ". Widget label is "
 msgstr ". De widget-tag is "
 
@@ -915,22 +915,23 @@ msgid "3d View"
 msgstr "3D-weergave"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1396
+#: gui/mrvImageView.cpp:4969
 msgid "3dView"
 msgstr "3dview"
 
-#: gui/mrvHotkey.cpp:306
+#: gui/mrvHotkey.cpp:309
 msgid "3dView Density Down"
 msgstr "Lagere 3D-weergavedichtheid"
 
-#: gui/mrvHotkey.cpp:305
+#: gui/mrvHotkey.cpp:308
 msgid "3dView Density Up"
 msgstr "3D-weergavedichtheid verhogen"
 
-#: gui/mrvHotkey.cpp:304
+#: gui/mrvHotkey.cpp:307
 msgid "3dView Z Depth Down"
 msgstr "Lagere Z-diepte van 3D-weergave"
 
-#: gui/mrvHotkey.cpp:303
+#: gui/mrvHotkey.cpp:306
 msgid "3dView Z Depth Up"
 msgstr "Verhoog de Z-diepte van 3D-weergave"
 
@@ -1029,7 +1030,7 @@ msgstr "@>"
 msgid "@>|"
 msgstr "@>|"
 
-#: gui/mrvHotkey.cpp:591
+#: gui/mrvHotkey.cpp:596
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Functie\t@B12@C7@b@.Toetsen"
 
@@ -1065,6 +1066,7 @@ msgstr ""
 "Voorbeelden:\n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1395
+#: gui/mrvImageView.cpp:4963
 msgid "A-B, Stereo 3D Options"
 msgstr "Stereo 3D, AB-opties"
 
@@ -1100,6 +1102,7 @@ msgid "AVI Movie"
 msgstr "AVI-film"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1405
+#: gui/mrvImageView.cpp:4985
 msgid "About"
 msgstr "Over mrViewer"
 
@@ -1131,6 +1134,7 @@ msgstr "Acties"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1168
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1394
+#: gui/mrvImageView.cpp:4962
 msgid "Action Tools"
 msgstr "Actietools"
 
@@ -1153,7 +1157,7 @@ msgstr ""
 msgid "Active"
 msgstr "Actief"
 
-#: gui/mrvHotkey.cpp:487
+#: gui/mrvHotkey.cpp:492
 msgid "Add"
 msgstr "Toevoegen"
 
@@ -1255,8 +1259,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Hiermee kunt u het eindframe voor de tijdlijn instellen."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9310
-#: gui/mrvImageView.cpp:9778 gui/mrvImageView.cpp:9840
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9343
+#: gui/mrvImageView.cpp:9811 gui/mrvImageView.cpp:9873
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1266,7 +1270,7 @@ msgstr "alleen alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2158
-#: gui/mrvImageView.cpp:9291 gui/mrvImageView.cpp:9841
+#: gui/mrvImageView.cpp:9324 gui/mrvImageView.cpp:9874
 msgid "Alpha Overlay"
 msgstr "Alfa-overdruk"
 
@@ -1333,11 +1337,11 @@ msgstr ""
 "Gedetailleerde extractiehoeveelheid.\n"
 "Alleen beschikbaar bij het decoderen van 1:1."
 
-#: gui/mrvHotkey.cpp:336
+#: gui/mrvHotkey.cpp:340
 msgid "Annotation Frame Step Backwards"
 msgstr "Terug Annotatievak Stap"
 
-#: gui/mrvHotkey.cpp:340
+#: gui/mrvHotkey.cpp:344
 msgid "Annotation Frame Step Forwards"
 msgstr "Stap scoren vak vooruit"
 
@@ -1403,7 +1407,7 @@ msgstr "Gebied"
 msgid "Area Select Tool"
 msgstr "Gebied selectie gereedschap"
 
-#: gui/mrvHotkey.cpp:381
+#: gui/mrvHotkey.cpp:385
 msgid "Area Selection Mode"
 msgstr "Gebiedselectiemodus"
 
@@ -1411,7 +1415,7 @@ msgstr "Gebiedselectiemodus"
 msgid "Arrow"
 msgstr "Pijl"
 
-#: gui/mrvHotkey.cpp:386
+#: gui/mrvHotkey.cpp:390
 msgid "Arrow Mode"
 msgstr "Pijlmodus:"
 
@@ -1428,7 +1432,7 @@ msgstr "Beeldverhouding"
 msgid "Aspect ratio of clip"
 msgstr "Beeldverhouding clip"
 
-#: gui/mrvHotkey.cpp:400
+#: gui/mrvHotkey.cpp:404
 msgid "Attach Audio File"
 msgstr "Audiobestand koppelen"
 
@@ -1507,15 +1511,15 @@ msgstr "Audiopakket is onbekend, verwacht seek of preroll"
 msgid "Audio packets empty at end of seek"
 msgstr "Lege audiopakketten aan het einde van de zoekopdracht"
 
-#: gui/mrvImageView.cpp:5249
+#: gui/mrvImageView.cpp:5281
 msgid "Audio/Attach Audio File"
 msgstr "Audio/Audiobestand toevoegen"
 
-#: gui/mrvImageView.cpp:5254
+#: gui/mrvImageView.cpp:5286
 msgid "Audio/Detach Audio File"
 msgstr "Audio/Audiobestand loskoppelen"
 
-#: gui/mrvImageView.cpp:5251
+#: gui/mrvImageView.cpp:5283
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Audio-startframe bewerken"
 
@@ -1584,7 +1588,7 @@ msgstr "BLAUW"
 msgid "BRAW Loading"
 msgstr "BRAW wordt geladen"
 
-#: gui/mrvHotkey.cpp:439
+#: gui/mrvHotkey.cpp:444
 msgid "BackSpace"
 msgstr "Verwijderen naar Terug"
 
@@ -1674,8 +1678,8 @@ msgstr "overvloeimodus"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9305
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9338
+#: gui/mrvImageView.cpp:9872
 msgid "Blue"
 msgstr "Blauw"
 
@@ -1699,7 +1703,7 @@ msgstr "Boost-uitzondering: "
 msgid "Both"
 msgstr "Beide"
 
-#: gui/mrvImageView.cpp:11154
+#: gui/mrvImageView.cpp:11187
 msgid "Bottom"
 msgstr "lager"
 
@@ -1869,7 +1873,7 @@ msgstr ""
 msgid "Canon Raw Picture"
 msgstr "Canon onbewerkte afbeelding"
 
-#: gui/mrvHotkey.cpp:463
+#: gui/mrvHotkey.cpp:468
 msgid "CapsLock"
 msgstr "slot Verschuiving."
 
@@ -1893,7 +1897,7 @@ msgstr "Categorie"
 msgid "Center"
 msgstr "Middelpunt"
 
-#: gui/mrvHotkey.cpp:325
+#: gui/mrvHotkey.cpp:329
 msgid "Center Image"
 msgstr "De afbeelding centreren"
 
@@ -1960,7 +1964,7 @@ msgstr "Cineon-afbeelding"
 msgid "Circle"
 msgstr "Cirkel"
 
-#: gui/mrvHotkey.cpp:388
+#: gui/mrvHotkey.cpp:392
 msgid "Circle Mode"
 msgstr "Cirkelmodus"
 
@@ -1977,7 +1981,7 @@ msgstr "Dorp"
 msgid "Clear"
 msgstr "Wissen"
 
-#: gui/mrvHotkey.cpp:349
+#: gui/mrvHotkey.cpp:353
 msgid "Clear Image Cache"
 msgstr "Afbeeldingencache wissen"
 
@@ -1997,7 +2001,7 @@ msgstr "clip compressie"
 msgid "Clip is a sequence of frames"
 msgstr "De Clip is een opeenvolging van frames."
 
-#: gui/mrvHotkey.cpp:404
+#: gui/mrvHotkey.cpp:408
 msgid "Clone Image"
 msgstr "Kloon de afbeelding"
 
@@ -2076,7 +2080,7 @@ msgstr "Opvouwbare groep niet gevonden"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2195 gui/mrvImageView.cpp:2257
-#: gui/mrvImageView.cpp:9838 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9871 gui/mrvImageView.cpp:9919
 msgid "Color"
 msgstr "Kleur"
 
@@ -2085,10 +2089,12 @@ msgid "Color Area"
 msgstr "Kleurgebied"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1392
+#: gui/mrvImageView.cpp:4960
 msgid "Color Controls"
 msgstr "Kleurbediening"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1391
+#: gui/mrvImageView.cpp:4959
 msgid "Color Info"
 msgstr "Informatie over kleurgebied"
 
@@ -2116,7 +2122,7 @@ msgstr "kleurenthema"
 msgid "Color Version"
 msgstr "kleurenversie"
 
-#: gui/mrvImageView.cpp:9127
+#: gui/mrvImageView.cpp:9160
 msgid "Color channel not found at index "
 msgstr "Kleurkanaal niet gevonden voor index "
 
@@ -2197,6 +2203,7 @@ msgstr "Verbonden met "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1401
+#: gui/mrvImageView.cpp:4979
 msgid "Connections"
 msgstr "verbindingen"
 
@@ -2238,11 +2245,11 @@ msgstr ""
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Er is conversie nodig. Bereik: 1.0"
 
-#: gui/mrvHotkey.cpp:402
+#: gui/mrvHotkey.cpp:406
 msgid "Copy Frame, X, Y Values"
 msgstr "Kopieer boxwaarden, X en Y"
 
-#: gui/mrvHotkey.cpp:403
+#: gui/mrvHotkey.cpp:407
 msgid "Copy RGBA Values"
 msgstr "RGBA-waarden kopiëren"
 
@@ -3010,7 +3017,7 @@ msgid "DWAB"
 msgstr "DWAB"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1360
-#: gui/mrvHotkey.cpp:332 gui/mrvImageInformation.cpp:2902
+#: gui/mrvHotkey.cpp:336 gui/mrvImageInformation.cpp:2902
 msgid "Data Window"
 msgstr "Gegevensvenster"
 
@@ -3022,7 +3029,7 @@ msgstr "Gegevensvenster 2"
 msgid "Data Window of Clip"
 msgstr "Venster Clipgegevens"
 
-#: gui/mrvHotkey.cpp:489
+#: gui/mrvHotkey.cpp:494
 msgid "Decimal"
 msgstr "Decimale"
 
@@ -3120,7 +3127,7 @@ msgstr "Audio defect bij het openen van mrViewer."
 msgid "Defaults"
 msgstr "Gebrek"
 
-#: gui/mrvHotkey.cpp:450
+#: gui/mrvHotkey.cpp:455
 msgid "Delete"
 msgstr "Wissen"
 
@@ -3216,7 +3223,7 @@ msgid "Display Gamma of Image"
 msgstr "Beeldweergavebereik"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1346
-#: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2916
+#: gui/mrvHotkey.cpp:335 gui/mrvImageInformation.cpp:2916
 msgid "Display Window"
 msgstr "etalage"
 
@@ -3246,7 +3253,7 @@ msgstr "Voorraad"
 msgid "Disposition of Track"
 msgstr "Spoorlay-out"
 
-#: gui/mrvHotkey.cpp:490
+#: gui/mrvHotkey.cpp:495
 msgid "Divide"
 msgstr "Splitsen"
 
@@ -3264,7 +3271,7 @@ msgstr "Wilt u '%s' vervangen?"
 msgid "Double"
 msgstr "Dubbele"
 
-#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:457
+#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:462
 msgid "Down"
 msgstr "Onderstaand"
 
@@ -3272,11 +3279,11 @@ msgstr "Onderstaand"
 msgid "Draw"
 msgstr "Hij tekende"
 
-#: gui/mrvHotkey.cpp:382
+#: gui/mrvHotkey.cpp:386
 msgid "Draw Mode"
 msgstr "Tekenmodus"
 
-#: gui/mrvHotkey.cpp:383
+#: gui/mrvHotkey.cpp:387
 msgid "Draw Temporary Mode"
 msgstr "Tijdelijke tekenmodus"
 
@@ -3328,6 +3335,7 @@ msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1393
+#: gui/mrvImageView.cpp:4967
 msgid "EDL Edit"
 msgstr "EDL bewerken"
 
@@ -3343,7 +3351,7 @@ msgstr "EXR-compressie-algoritme"
 msgid "Early 35mm"
 msgstr "35 mm vroeg"
 
-#: gui/mrvHotkey.cpp:401
+#: gui/mrvHotkey.cpp:405
 msgid "Edit Audio Frame Offset"
 msgstr "Audio-startframe bewerken"
 
@@ -3399,7 +3407,7 @@ msgstr "Leeg zoeken of preroll"
 msgid "Encoding"
 msgstr "versleuteld"
 
-#: gui/mrvHotkey.cpp:451
+#: gui/mrvHotkey.cpp:456
 msgid "End"
 msgstr "Einde"
 
@@ -3421,11 +3429,11 @@ msgstr ""
 msgid "Erase"
 msgstr "Wissen"
 
-#: gui/mrvHotkey.cpp:384
+#: gui/mrvHotkey.cpp:388
 msgid "Erase Mode"
 msgstr "Wismodus"
 
-#: gui/mrvHotkey.cpp:385
+#: gui/mrvHotkey.cpp:389
 msgid "Erase Temporary Mode"
 msgstr "Tijdelijke verwijdermodus"
 
@@ -3475,7 +3483,7 @@ msgstr "typefout "
 msgid "Errors"
 msgstr "fouten"
 
-#: gui/mrvHotkey.cpp:438
+#: gui/mrvHotkey.cpp:443
 msgid "Escape"
 msgstr "Ontsnappen"
 
@@ -3526,11 +3534,11 @@ msgstr "Belichtingsaanpassing"
 msgid "Exposure Compensation"
 msgstr "Belichtingscompensatie"
 
-#: gui/mrvHotkey.cpp:376
+#: gui/mrvHotkey.cpp:380
 msgid "Exposure Less"
 msgstr "Minder blootstelling"
 
-#: gui/mrvHotkey.cpp:375
+#: gui/mrvHotkey.cpp:379
 msgid "Exposure More"
 msgstr "Meer blootstelling"
 
@@ -3759,11 +3767,11 @@ msgstr "Beëindig de R3D SDK"
 msgid "Finalized R3DSDK"
 msgstr "Ik heb de R3D SDK voltooid"
 
-#: gui/mrvHotkey.cpp:363 gui/mrvImageInformation.cpp:2809
+#: gui/mrvHotkey.cpp:367 gui/mrvImageInformation.cpp:2809
 msgid "First Frame"
 msgstr "Eerste frame"
 
-#: gui/mrvHotkey.cpp:352
+#: gui/mrvHotkey.cpp:356
 msgid "First Image Version"
 msgstr "Eerste afbeeldingsversie"
 
@@ -3771,11 +3779,11 @@ msgstr "Eerste afbeeldingsversie"
 msgid "First frame of clip - User selected"
 msgstr "Eerste frame van clip - gebruikersselectie"
 
-#: gui/mrvHotkey.cpp:328
+#: gui/mrvHotkey.cpp:332
 msgid "Fit All"
 msgstr "geschikt voor iedereen"
 
-#: gui/mrvHotkey.cpp:326
+#: gui/mrvHotkey.cpp:330
 msgid "Fit Screen"
 msgstr "Framescherm"
 
@@ -3799,11 +3807,11 @@ msgstr "Integraal onderdeel-ID"
 msgid "Flash Movie"
 msgstr "flash film"
 
-#: gui/mrvHotkey.cpp:334
+#: gui/mrvHotkey.cpp:338
 msgid "Flip X"
 msgstr "Draai X"
 
-#: gui/mrvHotkey.cpp:335
+#: gui/mrvHotkey.cpp:339
 msgid "Flip Y"
 msgstr "Y-Flip"
 
@@ -3870,7 +3878,7 @@ msgstr "vierCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11152
+#: gui/mrvImageView.cpp:11185
 msgid "Frame"
 msgstr "Afbeelding"
 
@@ -3895,19 +3903,19 @@ msgstr "Framebereik"
 msgid "Frame Start"
 msgstr "Startbox"
 
-#: gui/mrvHotkey.cpp:338
+#: gui/mrvHotkey.cpp:342
 msgid "Frame Step Backwards"
 msgstr "Frame stap terug"
 
-#: gui/mrvHotkey.cpp:339
+#: gui/mrvHotkey.cpp:343
 msgid "Frame Step FPS Backwards"
 msgstr "Frame stap terug FPS"
 
-#: gui/mrvHotkey.cpp:342
+#: gui/mrvHotkey.cpp:346
 msgid "Frame Step FPS Forwards"
 msgstr "Frame Stap Vooruit FPS"
 
-#: gui/mrvHotkey.cpp:341
+#: gui/mrvHotkey.cpp:345
 msgid "Frame Step Forwards"
 msgstr "Frame Stap Vooruit"
 
@@ -4056,11 +4064,11 @@ msgstr "Bereikkaart 2.4"
 msgid "Gamma Curve"
 msgstr "Gammacurve"
 
-#: gui/mrvHotkey.cpp:397
+#: gui/mrvHotkey.cpp:401
 msgid "Gamma Less"
 msgstr "minder bereik"
 
-#: gui/mrvHotkey.cpp:396
+#: gui/mrvHotkey.cpp:400
 msgid "Gamma More"
 msgstr "Meer bereik"
 
@@ -4114,8 +4122,8 @@ msgstr "Grieks (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9300
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9333
+#: gui/mrvImageView.cpp:9872
 msgid "Green"
 msgstr "Groente"
 
@@ -4244,14 +4252,15 @@ msgstr "Gemarkeerd op de volledige tijdlijn"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1084
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1397
+#: gui/mrvImageView.cpp:4971
 msgid "Histogram"
 msgstr "Histogram"
 
-#: gui/mrvHotkey.cpp:447
+#: gui/mrvHotkey.cpp:452
 msgid "Home"
 msgstr "Begin"
 
-#: gui/mrvHotkey.cpp:648
+#: gui/mrvHotkey.cpp:653
 #, c-format
 msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
@@ -4271,6 +4280,7 @@ msgstr "Beheersleutels:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1403
+#: gui/mrvImageView.cpp:4981
 msgid "Hotkeys"
 msgstr "Beheersleutels"
 
@@ -4314,6 +4324,7 @@ msgstr "ICC-profiel"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2775
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1400
+#: gui/mrvImageView.cpp:4977
 msgid "ICC Profiles"
 msgstr "ICC-profielen"
 
@@ -4392,7 +4403,7 @@ msgstr "Afbeelding"
 msgid "Image \""
 msgstr "Afbeelding \""
 
-#: gui/mrvHotkey.cpp:319
+#: gui/mrvHotkey.cpp:324
 msgid "Image CTL script"
 msgstr "CTL Schrijf afbeelding"
 
@@ -4404,7 +4415,7 @@ msgstr "Grootte afbeelding cache"
 msgid "Image Channels"
 msgstr "Afbeeldingskanalen"
 
-#: gui/mrvHotkey.cpp:318
+#: gui/mrvHotkey.cpp:323
 msgid "Image Icc Profile"
 msgstr "Afbeelding ICC-profiel"
 
@@ -4490,32 +4501,32 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Instelling voor beeldzoom."
 
-#: gui/mrvImageView.cpp:5127
+#: gui/mrvImageView.cpp:5159
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "Afbeelding/CTL Look Modification (LMT) toevoegen"
 
-#: gui/mrvImageView.cpp:5119
+#: gui/mrvImageView.cpp:5151
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "Afbeelding/CTL Input Device Transform (IDT) toewijzen"
 
-#: gui/mrvImageView.cpp:5131
+#: gui/mrvImageView.cpp:5163
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Afbeelding/CTL Render Transformation (RRT) toewijzen"
 
-#: gui/mrvImageView.cpp:5135
+#: gui/mrvImageView.cpp:5167
 msgid "Image/Attach ICC Color Profile"
 msgstr "Afbeelding/Kleur ICC-profiel toevoegen"
 
-#: gui/mrvImageView.cpp:5097
+#: gui/mrvImageView.cpp:5129
 msgid "Image/Clear Caches"
 msgstr "Afbeelding/Cache wissen"
 
-#: gui/mrvImageView.cpp:5073 gui/mrvImageView.cpp:5081
+#: gui/mrvImageView.cpp:5105 gui/mrvImageView.cpp:5113
 #: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "Afbeelding/Kloon"
 
-#: gui/mrvImageView.cpp:5075 gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageView.cpp:5107 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "Afbeelding/Alle kanalen klonen"
 
@@ -4523,55 +4534,55 @@ msgstr "Afbeelding/Alle kanalen klonen"
 msgid "Image/Media Info"
 msgstr "Afbeelding/Media informatie"
 
-#: gui/mrvImageView.cpp:5142
+#: gui/mrvImageView.cpp:5174
 msgid "Image/Mirror/Horizontal"
 msgstr "Afbeelding/Spiegel/Horizontaal"
 
-#: gui/mrvImageView.cpp:5146
+#: gui/mrvImageView.cpp:5178
 msgid "Image/Mirror/Vertical"
 msgstr "Afbeelding/Spiegel/Verticaal"
 
-#: gui/mrvImageView.cpp:5123
+#: gui/mrvImageView.cpp:5155
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "Afbeelding/Wijzig CTL ASC_CDL SOP en verzadiging"
 
-#: gui/mrvImageView.cpp:5062
+#: gui/mrvImageView.cpp:5094
 msgid "Image/Next"
 msgstr "Afbeelding/In aansluiting op"
 
-#: gui/mrvImageView.cpp:5088
+#: gui/mrvImageView.cpp:5120
 msgid "Image/Preload Caches"
 msgstr "Afbeelding/Laad caches vooraf"
 
-#: gui/mrvImageView.cpp:5064
+#: gui/mrvImageView.cpp:5096
 msgid "Image/Previous"
 msgstr "Afbeelding/Vorig"
 
-#: gui/mrvImageView.cpp:5107
+#: gui/mrvImageView.cpp:5139
 msgid "Image/Rotate +90"
 msgstr "Afbeelding/Draai het +90"
 
-#: gui/mrvImageView.cpp:5110
+#: gui/mrvImageView.cpp:5142
 msgid "Image/Rotate -90"
 msgstr "Afbeelding/Draai het -90"
 
-#: gui/mrvImageView.cpp:5150 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5182 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "Afbeelding/Stel het in als achtergrond"
 
-#: gui/mrvImageView.cpp:5155
+#: gui/mrvImageView.cpp:5187
 msgid "Image/Switch FG and BG"
 msgstr "Afbeelding/Voorgrond en achtergrond wijzigen"
 
-#: gui/mrvImageView.cpp:5158
+#: gui/mrvImageView.cpp:5190
 msgid "Image/Toggle Background"
 msgstr "Afbeelding/achtergrond wisselen"
 
-#: gui/mrvImageView.cpp:5165
+#: gui/mrvImageView.cpp:5197
 msgid "Image/Toggle EDL"
 msgstr "Afbeelding/EDL omwisselen"
 
-#: gui/mrvImageView.cpp:5100
+#: gui/mrvImageView.cpp:5132
 msgid "Image/Update Single Frame in Cache"
 msgstr "Afbeelding/Een cacheframe bijwerken"
 
@@ -4655,7 +4666,7 @@ msgstr "Transformatie van invoerapparaat"
 msgid "Input color space for "
 msgstr "Invoerkleurruimte voor "
 
-#: gui/mrvHotkey.cpp:446
+#: gui/mrvHotkey.cpp:451
 msgid "Insert"
 msgstr "Invoegen"
 
@@ -4690,7 +4701,7 @@ msgstr "Ongeldig bestemmingsprofiel/Beeldformaat"
 msgid "Invalid image "
 msgstr "ongeldige index "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9217
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9250
 msgid "Invalid index "
 msgstr "ongeldige index "
 
@@ -4849,11 +4860,11 @@ msgstr "Taal en kleuren"
 msgid "Language if known"
 msgstr "taal indien bekend"
 
-#: gui/mrvHotkey.cpp:364 gui/mrvImageInformation.cpp:2812
+#: gui/mrvHotkey.cpp:368 gui/mrvImageInformation.cpp:2812
 msgid "Last Frame"
 msgstr "Laatste frame"
 
-#: gui/mrvHotkey.cpp:355
+#: gui/mrvHotkey.cpp:359
 msgid "Last Image Version"
 msgstr "Laatste afbeeldingsversie"
 
@@ -4871,7 +4882,7 @@ msgstr "Breedtegraad"
 msgid "Layer %d"
 msgstr "Mantel %d"
 
-#: gui/mrvHotkey.cpp:453
+#: gui/mrvHotkey.cpp:458
 msgid "Left"
 msgstr "Links"
 
@@ -4891,19 +4902,19 @@ msgstr "Linker uitzicht"
 msgid "Left/right"
 msgstr "Links/Rechtsaf"
 
-#: gui/mrvHotkey.cpp:464
+#: gui/mrvHotkey.cpp:469
 msgid "LeftAlt"
 msgstr "Links Alt"
 
-#: gui/mrvHotkey.cpp:460
+#: gui/mrvHotkey.cpp:465
 msgid "LeftCtrl"
 msgstr "Links Ctrl"
 
-#: gui/mrvHotkey.cpp:466
+#: gui/mrvHotkey.cpp:471
 msgid "LeftMeta"
 msgstr "Linker doel"
 
-#: gui/mrvHotkey.cpp:458
+#: gui/mrvHotkey.cpp:463
 msgid "LeftShift"
 msgstr "Linker shift"
 
@@ -5072,6 +5083,7 @@ msgid "Logarithmic"
 msgstr "logaritmisch"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1404
+#: gui/mrvImageView.cpp:4983
 msgid "Logs"
 msgstr "Berichten"
 
@@ -5111,7 +5123,7 @@ msgstr "Beeldpixelluminantie onder de muis."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2165
-#: gui/mrvImageView.cpp:9315 gui/mrvImageView.cpp:9840
+#: gui/mrvImageView.cpp:9348 gui/mrvImageView.cpp:9873
 msgid "Lumma"
 msgstr "luma"
 
@@ -5253,6 +5265,7 @@ msgstr "Gemiddeld"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1111
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
+#: gui/mrvImageView.cpp:4958
 msgid "Media Info"
 msgstr "Media informatie"
 
@@ -5278,7 +5291,7 @@ msgstr "Geheugen"
 msgid "Memory without Compression"
 msgstr "Niet-gecomprimeerd geheugen"
 
-#: gui/mrvHotkey.cpp:469
+#: gui/mrvHotkey.cpp:474
 msgid "Menu"
 msgstr "Menu"
 
@@ -5361,19 +5374,19 @@ msgstr "Modus voor IPP2-verwerking"
 msgid "Module"
 msgstr "module"
 
-#: gui/mrvHotkey.cpp:321
+#: gui/mrvHotkey.cpp:326
 msgid "Monitor CTL script"
 msgstr "CTL-schrijfmonitor"
 
-#: gui/mrvHotkey.cpp:320
+#: gui/mrvHotkey.cpp:325
 msgid "Monitor Icc Profile"
 msgstr "Icc-profiel controleren"
 
-#: gui/mrvImageView.cpp:5272
+#: gui/mrvImageView.cpp:5304
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Toezicht houden op/CTL-uitvoerweergavetransformatie (ODT) toevoegen"
 
-#: gui/mrvImageView.cpp:5276
+#: gui/mrvImageView.cpp:5308
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Toezicht houden op/ICC-kleurprofiel toevoegen"
 
@@ -5389,7 +5402,7 @@ msgstr "Beweging"
 msgid "Move Picture Tool"
 msgstr "Hulpmiddel voor het verplaatsen van afbeeldingen"
 
-#: gui/mrvHotkey.cpp:391
+#: gui/mrvHotkey.cpp:395
 msgid "Move/Size Mode"
 msgstr "Verplaatsingsmodus/Beklimmen"
 
@@ -5413,7 +5426,7 @@ msgstr ""
 msgid "Movies (*.{"
 msgstr "Filmpjes (*.{"
 
-#: gui/mrvHotkey.cpp:486
+#: gui/mrvHotkey.cpp:491
 msgid "Multiply"
 msgstr "Vermenigvuldigen"
 
@@ -5480,23 +5493,23 @@ msgstr "niet gevonden op haspel"
 msgid "Next"
 msgstr "Volgende"
 
-#: gui/mrvHotkey.cpp:362
+#: gui/mrvHotkey.cpp:366
 msgid "Next Channel"
 msgstr "Volgend kanaal"
 
-#: gui/mrvHotkey.cpp:357
+#: gui/mrvHotkey.cpp:361
 msgid "Next Image"
 msgstr "Volgende afbeelding"
 
-#: gui/mrvHotkey.cpp:359
+#: gui/mrvHotkey.cpp:363
 msgid "Next Image Limited"
 msgstr "Volgende afbeelding beperkt"
 
-#: gui/mrvHotkey.cpp:354
+#: gui/mrvHotkey.cpp:358
 msgid "Next Image Version"
 msgstr "Volgende afbeeldingsversie"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -5642,31 +5655,31 @@ msgstr "Niet betaald"
 msgid "Not OK"
 msgstr "Niet ok"
 
-#: gui/mrvImageView.cpp:5775
+#: gui/mrvImageView.cpp:5808
 msgid "Not a GLArrowShape pointer"
 msgstr "Geen GLarrowShape-aanwijzer"
 
-#: gui/mrvImageView.cpp:7196
+#: gui/mrvImageView.cpp:7229
 msgid "Not a GLCircleShape pointer"
 msgstr "Geen verwijzing naar GLCircleShape"
 
-#: gui/mrvImageView.cpp:5807
+#: gui/mrvImageView.cpp:5840
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "Geen GLCircleShape-aanwijzer in mouseRelease"
 
-#: gui/mrvImageView.cpp:5747
+#: gui/mrvImageView.cpp:5780
 msgid "Not a GLErasePathShape pointer"
 msgstr "Geen verwijzing naar GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5733 gui/mrvImageView.cpp:7136
+#: gui/mrvImageView.cpp:5766 gui/mrvImageView.cpp:7169
 msgid "Not a GLPathShape pointer"
 msgstr "Geen verwijzing naar GLPathShape"
 
-#: gui/mrvImageView.cpp:5761
+#: gui/mrvImageView.cpp:5794
 msgid "Not a GLRectangleShape pointer"
 msgstr "Geen GLRectangleShape-aanwijzer"
 
-#: gui/mrvImageView.cpp:5791
+#: gui/mrvImageView.cpp:5824
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Geen verwijzing naar GLTextShape op mouseRelease"
 
@@ -5714,7 +5727,7 @@ msgstr "Groepeer kind niet in tabelrij "
 msgid "Nov"
 msgstr "Niet doen"
 
-#: gui/mrvHotkey.cpp:470
+#: gui/mrvHotkey.cpp:475
 msgid "NumLock"
 msgstr "Nummerslot"
 
@@ -5777,7 +5790,7 @@ msgstr "OCIO Kleurruimte"
 msgid "OCIO Config File"
 msgstr "OCIO-configuratiebestand"
 
-#: gui/mrvHotkey.cpp:378
+#: gui/mrvHotkey.cpp:382
 msgid "OCIO Display"
 msgstr "OCIO-weergave"
 
@@ -5785,11 +5798,11 @@ msgstr "OCIO-weergave"
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "Scherm/OCIO View of sommige standaard gamma-instellingen"
 
-#: gui/mrvHotkey.cpp:377 gui/mrvImageInformation.cpp:3053
+#: gui/mrvHotkey.cpp:381 gui/mrvImageInformation.cpp:3053
 msgid "OCIO Input Color Space"
 msgstr "OCIO-invoerkleurruimte"
 
-#: gui/mrvHotkey.cpp:379
+#: gui/mrvHotkey.cpp:383
 msgid "OCIO View"
 msgstr "OCIO uitzicht"
 
@@ -5809,15 +5822,15 @@ msgstr "De omgevingsvariabele OCIO bestaat niet. CTL zal worden gebruikt. "
 msgid "OCIO input color space for the image"
 msgstr "Invoerkleurruimte van het beeld ongedefinieerd."
 
-#: gui/mrvImageView.cpp:5181
+#: gui/mrvImageView.cpp:5213
 msgid "OCIO/Display"
 msgstr "OCIO/Scherm"
 
-#: gui/mrvImageView.cpp:5177 gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Invoerkleurruimte"
 
-#: gui/mrvImageView.cpp:5184
+#: gui/mrvImageView.cpp:5216
 msgid "OCIO/View"
 msgstr "OCIO/Weergave"
 
@@ -5892,27 +5905,27 @@ msgstr "niet gevonden op haspel"
 msgid "Once"
 msgstr "Eenmaal"
 
-#: gui/mrvHotkey.cpp:310
+#: gui/mrvHotkey.cpp:313
 msgid "Open Aces Metadata File (AMF)"
 msgstr "Aces-metadatabestand (AMF) openen"
 
-#: gui/mrvHotkey.cpp:311
+#: gui/mrvHotkey.cpp:314
 msgid "Open Clip XML Metadata"
 msgstr "XML-metagegevens van clip openen"
 
-#: gui/mrvHotkey.cpp:307
+#: gui/mrvHotkey.cpp:310
 msgid "Open Directory"
 msgstr "open folder"
 
-#: gui/mrvHotkey.cpp:308
+#: gui/mrvHotkey.cpp:311
 msgid "Open Movie or Sequence"
 msgstr "Film of reeks openen"
 
-#: gui/mrvHotkey.cpp:312 gui/mrvFileRequester.cpp:979
+#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:979
 msgid "Open Session"
 msgstr "Sessie openen"
 
-#: gui/mrvHotkey.cpp:309
+#: gui/mrvHotkey.cpp:312
 msgid "Open Single Image"
 msgstr "Slechts één afbeelding openen"
 
@@ -6115,15 +6128,15 @@ msgstr "PNG-afbeelding"
 msgid "PXR24"
 msgstr "PXR24"
 
-#: gui/mrvHotkey.cpp:452
+#: gui/mrvHotkey.cpp:457
 msgid "PageDown"
 msgstr "Pagina omlaag"
 
-#: gui/mrvHotkey.cpp:448
+#: gui/mrvHotkey.cpp:453
 msgid "PageUp"
 msgstr "Pagina omhoog"
 
-#: gui/mrvHotkey.cpp:445
+#: gui/mrvHotkey.cpp:450
 msgid "Pause"
 msgstr "Pauze"
 
@@ -6136,11 +6149,11 @@ msgstr "Potloodkleur"
 msgid "Pen Size"
 msgstr "Potloodmaat"
 
-#: gui/mrvHotkey.cpp:393
+#: gui/mrvHotkey.cpp:397
 msgid "Pen Size Less"
 msgstr "Kleine potloodgrootte"
 
-#: gui/mrvHotkey.cpp:392
+#: gui/mrvHotkey.cpp:396
 msgid "Pen Size More"
 msgstr "Grootste potloodformaat"
 
@@ -6212,7 +6225,7 @@ msgstr "Clippixelverhouding"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Pixeltype wordt niet correct ondersteund in de golfvorm"
 
-#: gui/mrvImageView.cpp:5262
+#: gui/mrvImageView.cpp:5294
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "Pixel/Kopieer RGBA-waarden naar klembord"
 
@@ -6226,23 +6239,23 @@ msgstr ""
 "Speel elk frame af zonder over te slaan, zelfs als de framesnelheid eronder "
 "lijdt."
 
-#: gui/mrvHotkey.cpp:343
+#: gui/mrvHotkey.cpp:347
 msgid "Play Backwards"
 msgstr "Afspelen"
 
-#: gui/mrvHotkey.cpp:344
+#: gui/mrvHotkey.cpp:348
 msgid "Play Backwards / Change Speed"
 msgstr "Afspelen/snelheid veranderen"
 
-#: gui/mrvHotkey.cpp:346
+#: gui/mrvHotkey.cpp:350
 msgid "Play Forwards"
 msgstr "Vooruit spelen"
 
-#: gui/mrvHotkey.cpp:347
+#: gui/mrvHotkey.cpp:351
 msgid "Play Forwards / Change Speed"
 msgstr "Vooruit spelen/snelheid veranderen"
 
-#: gui/mrvHotkey.cpp:345
+#: gui/mrvHotkey.cpp:349
 msgid "Play in Current Direction"
 msgstr "Spelen op huidig adres"
 
@@ -6305,6 +6318,7 @@ msgstr "Liever ICC"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
+#: gui/mrvImageView.cpp:4965
 msgid "Preferences"
 msgstr "voorkeuren"
 
@@ -6329,7 +6343,7 @@ msgstr ""
 msgid "Preload Cache"
 msgstr "Cache vooraf laden"
 
-#: gui/mrvHotkey.cpp:348
+#: gui/mrvHotkey.cpp:352
 msgid "Preload Image Cache"
 msgstr "Afbeeldingscache vooraf laden"
 
@@ -6354,23 +6368,23 @@ msgstr "vorige postzegels"
 msgid "Previous"
 msgstr "Vorig"
 
-#: gui/mrvHotkey.cpp:361
+#: gui/mrvHotkey.cpp:365
 msgid "Previous Channel"
 msgstr "Vorig kanaal"
 
-#: gui/mrvHotkey.cpp:356
+#: gui/mrvHotkey.cpp:360
 msgid "Previous Image"
 msgstr "Voorbeeldafbeelding"
 
-#: gui/mrvHotkey.cpp:358
+#: gui/mrvHotkey.cpp:362
 msgid "Previous Image Limited"
 msgstr "Beperkte voorbeeldafbeelding"
 
-#: gui/mrvHotkey.cpp:353
+#: gui/mrvHotkey.cpp:357
 msgid "Previous Image Version"
 msgstr "Vorige afbeeldingsversie"
 
-#: gui/mrvHotkey.cpp:442
+#: gui/mrvHotkey.cpp:447
 msgid "Print"
 msgstr "Afdrukken"
 
@@ -6444,6 +6458,10 @@ msgstr "Kwaliteit"
 #: gui/FLU/Flu_File_Chooser.cpp:575 gui/FLU/Flu_File_Chooser.cpp:582
 msgid "Quicktime Movie"
 msgstr "snelle film"
+
+#: gui/mrvHotkey.cpp:321
+msgid "Quit Program"
+msgstr "Programma afsluiten"
 
 #: standalone/main.cpp:332
 msgid "Quit mrViewer"
@@ -6582,7 +6600,7 @@ msgstr "werkelijke clipbreedte"
 msgid "Rectangle"
 msgstr "Rechthoek"
 
-#: gui/mrvHotkey.cpp:387
+#: gui/mrvHotkey.cpp:391
 msgid "Rectangle Mode"
 msgstr "Rechthoekmodus"
 
@@ -6593,8 +6611,8 @@ msgstr "Rechthoekgereedschap"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9295
-#: gui/mrvImageView.cpp:9838
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9328
+#: gui/mrvImageView.cpp:9871
 msgid "Red"
 msgstr "Rood"
 
@@ -6615,7 +6633,7 @@ msgstr "Roodwaarde van de beeldpixel onder de muis."
 msgid "Red/cyan glasses"
 msgstr "Rode lenzen/cyaan"
 
-#: gui/mrvHotkey.cpp:395
+#: gui/mrvHotkey.cpp:399
 msgid "Redo Draw"
 msgstr "Tekening opnieuw doen"
 
@@ -6641,6 +6659,7 @@ msgstr "haspels"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2975
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1389
+#: gui/mrvImageView.cpp:4957
 msgid "Reels"
 msgstr "haspels"
 
@@ -6788,7 +6807,7 @@ msgstr "gereserveerd"
 msgid "Reset"
 msgstr "Resetten"
 
-#: gui/mrvHotkey.cpp:374
+#: gui/mrvHotkey.cpp:378
 msgid "Reset Gain/Gamma"
 msgstr "reset winst/Spectrum"
 
@@ -6803,7 +6822,7 @@ msgstr "waarde resetten"
 msgid "Resize Background to Match Foreground"
 msgstr "Schaal de achtergrond tot de grootte van de voorkant"
 
-#: gui/mrvHotkey.cpp:327
+#: gui/mrvHotkey.cpp:331
 msgid "Resize Main Window to Fit"
 msgstr "Formaat van het hoofdvenster aanpassen zodat het past"
 
@@ -6820,7 +6839,7 @@ msgstr "schermbeveiliging herstellen"
 msgid "Restored screensaver"
 msgstr "schermbeveiliging hersteld"
 
-#: gui/mrvHotkey.cpp:441
+#: gui/mrvHotkey.cpp:446
 msgid "Return"
 msgstr "binnenkomen"
 
@@ -6836,7 +6855,7 @@ msgstr "Zet instellingen terug naar de laatst opgeslagen voorkeuren."
 msgid "Rich Picture Format"
 msgstr "Afbeelding met rijke afbeeldingsindeling"
 
-#: gui/mrvHotkey.cpp:456
+#: gui/mrvHotkey.cpp:461
 msgid "Right"
 msgstr "Rechts"
 
@@ -6854,19 +6873,19 @@ msgstr "Juiste blik"
 msgid "Right/left"
 msgstr "Rechts/links"
 
-#: gui/mrvHotkey.cpp:465
+#: gui/mrvHotkey.cpp:470
 msgid "RightAlt"
 msgstr "Alt rechts"
 
-#: gui/mrvHotkey.cpp:462
+#: gui/mrvHotkey.cpp:467
 msgid "RightCtrl"
 msgstr "Rechts Ctrl"
 
-#: gui/mrvHotkey.cpp:468
+#: gui/mrvHotkey.cpp:473
 msgid "RightMeta"
 msgstr "Doel goed"
 
-#: gui/mrvHotkey.cpp:459
+#: gui/mrvHotkey.cpp:464
 msgid "RightShift"
 msgstr "Rechter Shift"
 
@@ -6874,23 +6893,23 @@ msgstr "Rechter Shift"
 msgid "Romanian"
 msgstr "Roemeens (Română)"
 
-#: gui/mrvHotkey.cpp:389
+#: gui/mrvHotkey.cpp:393
 msgid "Rotate Canvas Mode"
 msgstr "Canvas modus roteren"
 
-#: gui/mrvHotkey.cpp:429
+#: gui/mrvHotkey.cpp:434
 msgid "Rotate Image +10 Degrees"
 msgstr "Afbeelding +10 graden draaien"
 
-#: gui/mrvHotkey.cpp:431
+#: gui/mrvHotkey.cpp:436
 msgid "Rotate Image +90 Degrees"
 msgstr "Afbeelding +90 graden draaien"
 
-#: gui/mrvHotkey.cpp:430
+#: gui/mrvHotkey.cpp:435
 msgid "Rotate Image -10 Degrees"
 msgstr "Afbeelding draaien -10 graden"
 
-#: gui/mrvHotkey.cpp:432
+#: gui/mrvHotkey.cpp:437
 msgid "Rotate Image -90 Degrees"
 msgstr "Afbeelding -90 graden draaien"
 
@@ -6935,7 +6954,7 @@ msgid "SMPTE NTSC Color Bars"
 msgstr "SMPTE NTSC-kleurenbalken"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1332
-#: gui/mrvHotkey.cpp:330
+#: gui/mrvHotkey.cpp:334
 msgid "Safe Areas"
 msgstr "Beveiligde gebieden"
 
@@ -6962,11 +6981,11 @@ msgstr "Verzadigingswaarde van de pixel van de afbeelding onder de muis."
 msgid "Save"
 msgstr "Opslaan"
 
-#: gui/mrvHotkey.cpp:317
+#: gui/mrvHotkey.cpp:322
 msgid "Save Clip XML Metadata"
 msgstr "XML-metagegevens van clips opslaan"
 
-#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:948
+#: gui/mrvHotkey.cpp:318 gui/mrvFileRequester.cpp:948
 msgid "Save GL Snapshot"
 msgstr "Opengl-snapshot opslaan"
 
@@ -6974,7 +6993,7 @@ msgstr "Opengl-snapshot opslaan"
 msgid "Save Hotkeys Preferences"
 msgstr "Voorkeuren voor rijtoetsen opslaan"
 
-#: gui/mrvHotkey.cpp:314
+#: gui/mrvHotkey.cpp:317
 msgid "Save Image"
 msgstr "Sla afbeelding op"
 
@@ -6998,15 +7017,15 @@ msgstr "OCIO-configuratie opslaan"
 msgid "Save Options"
 msgstr "Opties opslaan"
 
-#: gui/mrvHotkey.cpp:313 gui/mrvFileRequester.cpp:1021
+#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:1021
 msgid "Save Reel"
 msgstr "Reel opslaan"
 
-#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:947
+#: gui/mrvHotkey.cpp:319 gui/mrvFileRequester.cpp:947
 msgid "Save Sequence"
 msgstr "Opeenvolging opslaan"
 
-#: gui/mrvHotkey.cpp:322 gui/mrvFileRequester.cpp:1000
+#: gui/mrvHotkey.cpp:320 gui/mrvFileRequester.cpp:1000
 msgid "Save Session"
 msgstr "Sessie opslaan"
 
@@ -7088,7 +7107,7 @@ msgstr "Schema"
 msgid "Scratched Repeat Frame"
 msgstr "Herhaal aangevinkt vakje"
 
-#: gui/mrvHotkey.cpp:444
+#: gui/mrvHotkey.cpp:449
 msgid "ScrollLock"
 msgstr "Scroll Lock"
 
@@ -7097,7 +7116,7 @@ msgstr "Scroll Lock"
 msgid "Scrub"
 msgstr "Schrobben"
 
-#: gui/mrvHotkey.cpp:380
+#: gui/mrvHotkey.cpp:384
 msgid "Scrub Mode"
 msgstr "schrobmodus"
 
@@ -7139,11 +7158,11 @@ msgstr "seconden"
 msgid "Select Audio Track"
 msgstr "Selecteer audiotrack"
 
-#: gui/mrvHotkey.cpp:423
+#: gui/mrvHotkey.cpp:431
 msgid "Select Multi Image"
 msgstr "Selecteer meerdere afbeeldingen"
 
-#: gui/mrvHotkey.cpp:422
+#: gui/mrvHotkey.cpp:430
 msgid "Select Single Image"
 msgstr "Selecteer slechts één afbeelding"
 
@@ -7263,15 +7282,15 @@ msgstr "Diensten"
 msgid "Sessions (*.{"
 msgstr "Sessies (*.{"
 
-#: gui/mrvHotkey.cpp:399
+#: gui/mrvHotkey.cpp:403
 msgid "Set As BG Image"
 msgstr "Instellen als achtergrondafbeelding"
 
-#: gui/mrvHotkey.cpp:405
+#: gui/mrvHotkey.cpp:409
 msgid "Set In Point"
 msgstr "Ingangspunt instellen"
 
-#: gui/mrvHotkey.cpp:406
+#: gui/mrvHotkey.cpp:410
 msgid "Set Out Point"
 msgstr "Uitgangspunt instellen"
 
@@ -7421,7 +7440,7 @@ msgstr "Software"
 msgid "Some default frame rate settings."
 msgstr "Enkele standaard afspeelsnelheidsinstellingen"
 
-#: gui/mrvHotkey.cpp:484
+#: gui/mrvHotkey.cpp:489
 msgid "Space (' ')"
 msgstr "Ruimte (' ')"
 
@@ -7493,7 +7512,7 @@ msgid "Stereo eye separation"
 msgstr "Scheiding bekijken"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:204
-#: gui/mrvHotkey.cpp:351
+#: gui/mrvHotkey.cpp:355
 msgid "Stop"
 msgstr "Stop"
 
@@ -7548,15 +7567,15 @@ msgstr "Ondertitelbrief "
 msgid "Subtitle type "
 msgstr "Ondertiteltype "
 
-#: gui/mrvImageView.cpp:5216
+#: gui/mrvImageView.cpp:5248
 msgid "Subtitle/Load"
 msgstr "Onderschrift/Laden"
 
-#: gui/mrvImageView.cpp:5224
+#: gui/mrvImageView.cpp:5256
 msgid "Subtitle/No Subtitle"
 msgstr "Onderschrift/geen ondertitel"
 
-#: gui/mrvImageView.cpp:5233
+#: gui/mrvImageView.cpp:5265
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Onderschrift/Volg #%d - %s"
@@ -7575,7 +7594,7 @@ msgstr "Ondertitel (*.{"
 msgid "Subtitles are only valid on video files"
 msgstr "Ondertitels zijn alleen geldig op videobestanden"
 
-#: gui/mrvHotkey.cpp:488
+#: gui/mrvHotkey.cpp:493
 msgid "Subtract"
 msgstr "Aftrekken"
 
@@ -7591,11 +7610,11 @@ msgstr "Omringende luminantie"
 msgid "Swedish"
 msgstr "Zweeds (svenska)"
 
-#: gui/mrvHotkey.cpp:360
+#: gui/mrvHotkey.cpp:364
 msgid "Switch Channels"
 msgstr "Kanalen wisselen"
 
-#: gui/mrvHotkey.cpp:398
+#: gui/mrvHotkey.cpp:402
 msgid "Switch FG/BG Images"
 msgstr "Voorgrond- en achtergrondafbeeldingen verwisselen"
 
@@ -7664,7 +7683,7 @@ msgstr "TIFF (.tif)"
 msgid "TIFF Picture"
 msgstr "TIFF-afbeelding"
 
-#: gui/mrvHotkey.cpp:440
+#: gui/mrvHotkey.cpp:445
 msgid "Tab"
 msgstr "Tab"
 
@@ -7688,7 +7707,7 @@ msgstr "targa-afbeelding"
 msgid "Text"
 msgstr "Tekst"
 
-#: gui/mrvHotkey.cpp:390
+#: gui/mrvHotkey.cpp:394
 msgid "Text Mode"
 msgstr "Tekstmodus"
 
@@ -7705,7 +7724,7 @@ msgstr "Teksttool"
 msgid "Texture Units:\t"
 msgstr "Textuur Eenheden:\t"
 
-#: gui/mrvHotkey.cpp:329
+#: gui/mrvHotkey.cpp:333
 msgid "TextureFiltering"
 msgstr "Textuurfiltering"
 
@@ -8057,83 +8076,87 @@ msgstr "kleurstof"
 msgid "Tinting of clip."
 msgstr "Clip verven."
 
-#: gui/mrvHotkey.cpp:411
+#: gui/mrvHotkey.cpp:416
 msgid "Toggle 3D Stereo Options Window"
 msgstr "Venster 3D-stereo-opties omwisselen"
 
-#: gui/mrvHotkey.cpp:412
+#: gui/mrvHotkey.cpp:417
 msgid "Toggle 3D View Window"
 msgstr "3D-weergavevenster omwisselen"
 
-#: gui/mrvHotkey.cpp:413
+#: gui/mrvHotkey.cpp:427
 msgid "Toggle About Window"
 msgstr "Wissel venster over"
 
-#: gui/mrvHotkey.cpp:410
+#: gui/mrvHotkey.cpp:415
 msgid "Toggle Action Window"
 msgstr "Actievenster omwisselen"
 
-#: gui/mrvHotkey.cpp:365
+#: gui/mrvHotkey.cpp:369
 msgid "Toggle Background Composite"
 msgstr "Samenstelling swapfonds"
 
-#: gui/mrvHotkey.cpp:370
+#: gui/mrvHotkey.cpp:374
 msgid "Toggle Bottom Bar"
 msgstr "Onderste balk verwisselen"
 
-#: gui/mrvHotkey.cpp:409
+#: gui/mrvHotkey.cpp:413
 msgid "Toggle Color Area Info Window"
 msgstr "Venster Kleurgebied wisselen"
 
-#: gui/mrvHotkey.cpp:417
+#: gui/mrvHotkey.cpp:414
+msgid "Toggle Color Controls Window"
+msgstr "Venster Kleurregeling schakelen"
+
+#: gui/mrvHotkey.cpp:423
 msgid "Toggle Connections Window"
 msgstr "Venster Verbindingen verwisselen"
 
-#: gui/mrvHotkey.cpp:366
+#: gui/mrvHotkey.cpp:370
 msgid "Toggle EDL"
 msgstr "EDL omwisselen"
 
-#: gui/mrvHotkey.cpp:414
+#: gui/mrvHotkey.cpp:418
 msgid "Toggle EDL Edit Window"
 msgstr "EDL-venster verwisselen"
 
-#: gui/mrvHotkey.cpp:372
+#: gui/mrvHotkey.cpp:376
 msgid "Toggle Full Screen"
 msgstr "Volledig scherm activeren"
 
-#: gui/mrvHotkey.cpp:415
+#: gui/mrvHotkey.cpp:419
 msgid "Toggle Histogram Window"
 msgstr "Schakel histogramvenster in"
 
-#: gui/mrvHotkey.cpp:418
+#: gui/mrvHotkey.cpp:425
 msgid "Toggle Hotkeys Window"
 msgstr "Beheersleutels omwisselen"
 
-#: gui/mrvHotkey.cpp:416
+#: gui/mrvHotkey.cpp:428
 msgid "Toggle Hud"
 msgstr "Ruil Hud"
 
-#: gui/mrvHotkey.cpp:419
+#: gui/mrvHotkey.cpp:422
 msgid "Toggle ICC Profiles Window"
 msgstr "Venster ICC-profielen wisselen"
 
-#: gui/mrvHotkey.cpp:420
+#: gui/mrvHotkey.cpp:429
 msgid "Toggle Input Color Space"
 msgstr "Invoerkleurruimte omwisselen"
 
-#: gui/mrvHotkey.cpp:424
+#: gui/mrvHotkey.cpp:432
 msgid "Toggle LUT"
 msgstr "Ruil LUT"
 
-#: gui/mrvHotkey.cpp:421
+#: gui/mrvHotkey.cpp:426
 msgid "Toggle Log Window"
 msgstr "Berichtenvenster wisselen"
 
-#: gui/mrvHotkey.cpp:408
+#: gui/mrvHotkey.cpp:412
 msgid "Toggle Media Info Window"
 msgstr "Midden infovenster omwisselen"
 
-#: gui/mrvHotkey.cpp:367
+#: gui/mrvHotkey.cpp:371
 msgid "Toggle Menu Bar"
 msgstr "Menubalk wisselen"
 
@@ -8146,19 +8169,19 @@ msgstr "Permuteren Wijzigen/%s"
 msgid "Toggle Modify/All"
 msgstr "Permuteren Wijzigen/Alles"
 
-#: gui/mrvHotkey.cpp:369
+#: gui/mrvHotkey.cpp:373
 msgid "Toggle Pixel Bar"
 msgstr "Pixelbalk verwisselen"
 
-#: gui/mrvHotkey.cpp:425
+#: gui/mrvHotkey.cpp:433
 msgid "Toggle Pixel Ratio"
 msgstr "Pixelverhouding omwisselen"
 
-#: gui/mrvHotkey.cpp:426
+#: gui/mrvHotkey.cpp:424
 msgid "Toggle Preferences Window"
 msgstr "Venster Voorkeuren wisselen"
 
-#: gui/mrvHotkey.cpp:373
+#: gui/mrvHotkey.cpp:377
 msgid "Toggle Presentation"
 msgstr "Presentatie wisselen"
 
@@ -8166,15 +8189,15 @@ msgstr "Presentatie wisselen"
 msgid "Toggle Reel EDL in Timeline"
 msgstr "Camerarol op tijdlijn verwisselen"
 
-#: gui/mrvHotkey.cpp:407
+#: gui/mrvHotkey.cpp:411
 msgid "Toggle Reel Window"
 msgstr "Raamrollen verwisselen"
 
-#: gui/mrvHotkey.cpp:371
+#: gui/mrvHotkey.cpp:375
 msgid "Toggle Tool Dock"
 msgstr "Actiedok verwisselen"
 
-#: gui/mrvHotkey.cpp:368
+#: gui/mrvHotkey.cpp:372
 msgid "Toggle Top Bar"
 msgstr "Wissel bovenbalk"
 
@@ -8195,11 +8218,11 @@ msgstr ""
 "6 afbeeldingen voor elke zijde van de kubus moet bestaan, wordt rond een "
 "kubus gewikkeld wanneer deze optie is ingeschakeld."
 
-#: gui/mrvHotkey.cpp:427
+#: gui/mrvHotkey.cpp:420
 msgid "Toggle Vectorscope Window"
 msgstr "Venster vectorscoop verwisselen"
 
-#: gui/mrvHotkey.cpp:428
+#: gui/mrvHotkey.cpp:421
 msgid "Toggle Waveform Window"
 msgstr "Golfvormvenster wisselen"
 
@@ -8215,7 +8238,7 @@ msgstr "Te veel streams in uitvoercontext"
 msgid "Tooldock"
 msgstr "Actie Dock"
 
-#: gui/mrvImageView.cpp:11153
+#: gui/mrvImageView.cpp:11186
 msgid "Top"
 msgstr "Superieur"
 
@@ -8334,7 +8357,7 @@ msgstr "Niet gedefinieerd"
 msgid "Undefined framebuffer"
 msgstr "undefined framebuffer"
 
-#: gui/mrvHotkey.cpp:394
+#: gui/mrvHotkey.cpp:398
 msgid "Undo Draw"
 msgstr "Tekening ongedaan maken"
 
@@ -8486,11 +8509,11 @@ msgstr "Niet gespecificeerd"
 msgid "Unsupported internal format"
 msgstr "onbekende interne indeling"
 
-#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:454
+#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:459
 msgid "Up"
 msgstr "Omhoog"
 
-#: gui/mrvHotkey.cpp:350
+#: gui/mrvHotkey.cpp:354
 msgid "Update Frame in Cache"
 msgstr "Frame bijwerken in cache"
 
@@ -8631,6 +8654,7 @@ msgstr "Vector3 geheel getal"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1097
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1398
+#: gui/mrvImageView.cpp:4973
 msgid "Vectorscope"
 msgstr "vectorscoop"
 
@@ -8642,19 +8666,19 @@ msgstr "Verkoper:\t"
 msgid "Version Regex"
 msgstr "ExpReg-versie."
 
-#: gui/mrvImageView.cpp:5046 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5078 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "Versie/Eerste"
 
-#: gui/mrvImageView.cpp:5055 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5087 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "Versie/Laatst"
 
-#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5081 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "Versie/In aansluiting op"
 
-#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5083 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "Versie/Vorig"
 
@@ -8731,7 +8755,7 @@ msgstr "draai video"
 msgid "Video timecode attribute already exists"
 msgstr "Video Timecode-kenmerk bestaat al"
 
-#: gui/mrvImageView.cpp:5200
+#: gui/mrvImageView.cpp:5232
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Video/Volg #%d - %s"
@@ -8744,45 +8768,45 @@ msgstr "Weergave"
 msgid "View Window"
 msgstr "Weergave"
 
-#: gui/mrvImageView.cpp:4970
+#: gui/mrvImageView.cpp:5002
 msgid "View/Data Window"
 msgstr "Weergave/Gegevensvenster"
 
-#: gui/mrvImageView.cpp:4967
+#: gui/mrvImageView.cpp:4999
 msgid "View/Display Window"
 msgstr "Weergave/etalage"
 
-#: gui/mrvImageView.cpp:5009
+#: gui/mrvImageView.cpp:5041
 msgid "View/Grid/Size"
 msgstr "Weergave/Rooster/Maat"
 
-#: gui/mrvImageView.cpp:5005
+#: gui/mrvImageView.cpp:5037
 msgid "View/Grid/Toggle Selected"
 msgstr "Weergave/Rooster/Aandelenbeurs"
 
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5053
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Weergave/hoezo/%s"
 
-#: gui/mrvImageView.cpp:5013
+#: gui/mrvImageView.cpp:5045
 msgid "View/Hud/Toggle Selected"
 msgstr "Weergave/hoezo/Geselecteerde ruilen"
 
-#: gui/mrvImageView.cpp:4996
+#: gui/mrvImageView.cpp:5028
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Weergave/Masker/%s"
 
-#: gui/mrvImageView.cpp:4964
+#: gui/mrvImageView.cpp:4996
 msgid "View/Safe Areas"
 msgstr "Weergave/Beveiligde gebieden"
 
-#: gui/mrvImageView.cpp:4973
+#: gui/mrvImageView.cpp:5005
 msgid "View/Texture Filtering  "
 msgstr "Weergave/Textuurfiltering  "
 
-#: gui/mrvImageView.cpp:4982
+#: gui/mrvImageView.cpp:5014
 msgid "View/Toggle Action Dock"
 msgstr "Weergave/Actiedok verwisselen"
 
@@ -8815,6 +8839,7 @@ msgstr "WAVE muziek"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1183
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1399
+#: gui/mrvImageView.cpp:4975
 msgid "Waveform"
 msgstr "Golfvorm"
 
@@ -9140,11 +9165,11 @@ msgstr "breedte van de clip"
 msgid "Window Behavior"
 msgstr "Venstergedrag"
 
-#: gui/mrvImageView.cpp:4955
+#: gui/mrvImageView.cpp:4987
 msgid "Windows/"
 msgstr "Ramen/"
 
-#: gui/mrvHotkey.cpp:333
+#: gui/mrvHotkey.cpp:337
 msgid "Wipe"
 msgstr "afvegen"
 
@@ -9350,7 +9375,7 @@ msgstr "zo. YUV"
 msgid "YUVA Support:\t"
 msgstr "YUVA-ondersteuning:\t"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -9374,7 +9399,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "U kunt een haspel niet uploaden als stereoafbeelding."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9841
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9874
 msgid "Z"
 msgstr "Z"
 
@@ -9726,47 +9751,47 @@ msgstr "mrv::Frame Geen pixelgegevens om te wijzigen"
 msgid "original"
 msgstr "origineel"
 
-#: gui/mrvHotkey.cpp:472
+#: gui/mrvHotkey.cpp:477
 msgid "pad0"
 msgstr "Numeriek toetsenbord 0"
 
-#: gui/mrvHotkey.cpp:474
+#: gui/mrvHotkey.cpp:479
 msgid "pad1"
 msgstr "Numeriek toetsenbord 1"
 
-#: gui/mrvHotkey.cpp:475
+#: gui/mrvHotkey.cpp:480
 msgid "pad2"
 msgstr "Numeriek toetsenbord 2"
 
-#: gui/mrvHotkey.cpp:476
+#: gui/mrvHotkey.cpp:481
 msgid "pad3"
 msgstr "Numeriek toetsenbord 3"
 
-#: gui/mrvHotkey.cpp:477
+#: gui/mrvHotkey.cpp:482
 msgid "pad4"
 msgstr "Numeriek toetsenbord 4"
 
-#: gui/mrvHotkey.cpp:478
+#: gui/mrvHotkey.cpp:483
 msgid "pad5"
 msgstr "Numeriek toetsenbord 5"
 
-#: gui/mrvHotkey.cpp:480
+#: gui/mrvHotkey.cpp:485
 msgid "pad6"
 msgstr "Numeriek toetsenbord 6"
 
-#: gui/mrvHotkey.cpp:481
+#: gui/mrvHotkey.cpp:486
 msgid "pad7"
 msgstr "Numeriek toetsenbord 7"
 
-#: gui/mrvHotkey.cpp:482
+#: gui/mrvHotkey.cpp:487
 msgid "pad8"
 msgstr "Numeriek toetsenbord 8"
 
-#: gui/mrvHotkey.cpp:483
+#: gui/mrvHotkey.cpp:488
 msgid "pad9"
 msgstr "Numeriek toetsenbord 9"
 
-#: gui/mrvHotkey.cpp:471
+#: gui/mrvHotkey.cpp:476
 msgid "padEnter"
 msgstr "Voer numeriek toetsenbord in"
 
@@ -9899,6 +9924,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1789
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Quit"
+#~ msgstr "Archief/Uitgaan"
 
 #~ msgid "Not a GLTextShape pointer in position"
 #~ msgstr "Geen verwijzing naar GLPathShape op positie"

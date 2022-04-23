@@ -112,6 +112,9 @@ extern Hotkey kSaveSnapshot;
 extern Hotkey kSaveSequence;
 extern Hotkey kSaveClipXMLMetadata;
 extern Hotkey kSaveSession;
+
+extern Hotkey kQuitProgram;
+
 extern Hotkey kIccProfile;
 extern Hotkey kIDTScript;
 extern Hotkey kLookModScript;
@@ -246,6 +249,7 @@ extern Hotkey kOCIOView;
 extern Hotkey kToggleReel;
 extern Hotkey kToggleMediaInfo;
 extern Hotkey kToggleColorInfo;
+extern Hotkey kToggleColorControls;
 extern Hotkey kToggleAction;
 extern Hotkey kToggleStereoOptions;
 extern Hotkey kToggleEDLEdit;

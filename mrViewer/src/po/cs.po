@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-23 08:39-0300\n"
+"POT-Creation-Date: 2022-04-23 11:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "V souboru není žádný zvuk"
 
-#: gui/mrvImageView.cpp:5845
+#: gui/mrvImageView.cpp:5878
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Použití "
 msgid "  Choosing "
 msgstr "  vybírání "
 
-#: gui/mrvImageView.cpp:5850
+#: gui/mrvImageView.cpp:5883
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " neuspěl s "
 msgid " failed. "
 msgstr " elhání. "
 
-#: gui/mrvImageView.cpp:9218
+#: gui/mrvImageView.cpp:9251
 msgid " for channel.  Maximum: "
 msgstr " pro kanál. Maximum: "
 
@@ -506,8 +506,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Pokud se mrViewer nespustí, odeberte jej)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9192 gui/mrvImageView.cpp:9877
-#: gui/mrvImageView.cpp:9878 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9225 gui/mrvImageView.cpp:9910
+#: gui/mrvImageView.cpp:9911 gui/mrvImageView.cpp:9919
 msgid "(no image)"
 msgstr "(Bez obrázku)"
 
@@ -577,7 +577,7 @@ msgstr ". Atribut musí mít tvar attr=hodnota."
 msgid ".  Saving pixel type is "
 msgstr ". Typ pixelu k uložení je "
 
-#: gui/mrvImageView.cpp:9219
+#: gui/mrvImageView.cpp:9252
 msgid ". Widget label is "
 msgstr ". Značka widgetu je "
 
@@ -915,22 +915,23 @@ msgid "3d View"
 msgstr "3D pohled"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1396
+#: gui/mrvImageView.cpp:4969
 msgid "3dView"
 msgstr "3D zobrazení"
 
-#: gui/mrvHotkey.cpp:306
+#: gui/mrvHotkey.cpp:309
 msgid "3dView Density Down"
 msgstr "Nižší hustota 3D zobrazení"
 
-#: gui/mrvHotkey.cpp:305
+#: gui/mrvHotkey.cpp:308
 msgid "3dView Density Up"
 msgstr "Zvyšte hustotu 3D zobrazení"
 
-#: gui/mrvHotkey.cpp:304
+#: gui/mrvHotkey.cpp:307
 msgid "3dView Z Depth Down"
 msgstr "Dolní Z Hloubka 3D pohledu"
 
-#: gui/mrvHotkey.cpp:303
+#: gui/mrvHotkey.cpp:306
 msgid "3dView Z Depth Up"
 msgstr "Zvýšit hloubku Z 3D pohledu"
 
@@ -1029,7 +1030,7 @@ msgstr "@>"
 msgid "@>|"
 msgstr "@>|"
 
-#: gui/mrvHotkey.cpp:591
+#: gui/mrvHotkey.cpp:596
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Function\t@B12@C7@b@.Keys"
 
@@ -1064,6 +1065,7 @@ msgstr ""
 "Příklady:\n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1395
+#: gui/mrvImageView.cpp:4963
 msgid "A-B, Stereo 3D Options"
 msgstr "Možnosti stereo 3D, AB"
 
@@ -1099,6 +1101,7 @@ msgid "AVI Movie"
 msgstr "Film ve formátu AVI"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1405
+#: gui/mrvImageView.cpp:4985
 msgid "About"
 msgstr "O mrViewer"
 
@@ -1130,6 +1133,7 @@ msgstr "Akce"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1168
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1394
+#: gui/mrvImageView.cpp:4962
 msgid "Action Tools"
 msgstr "Akční nástroje"
 
@@ -1151,7 +1155,7 @@ msgstr "Aktivní/Vypněte všechny barevné korekce, které mohou být trochu po
 msgid "Active"
 msgstr "Aktivní"
 
-#: gui/mrvHotkey.cpp:487
+#: gui/mrvHotkey.cpp:492
 msgid "Add"
 msgstr "Přidat"
 
@@ -1252,8 +1256,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Umožňuje nastavit koncový snímek pro časovou osu."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9310
-#: gui/mrvImageView.cpp:9778 gui/mrvImageView.cpp:9840
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9343
+#: gui/mrvImageView.cpp:9811 gui/mrvImageView.cpp:9873
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1263,7 +1267,7 @@ msgstr "pouze alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2158
-#: gui/mrvImageView.cpp:9291 gui/mrvImageView.cpp:9841
+#: gui/mrvImageView.cpp:9324 gui/mrvImageView.cpp:9874
 msgid "Alpha Overlay"
 msgstr "Přetisk Alpha"
 
@@ -1330,11 +1334,11 @@ msgstr ""
 "Detailní množství extrahování.\n"
 "Dostupné pouze při dekódování 1:1."
 
-#: gui/mrvHotkey.cpp:336
+#: gui/mrvHotkey.cpp:340
 msgid "Annotation Frame Step Backwards"
 msgstr "Zpět anotační pole Krok"
 
-#: gui/mrvHotkey.cpp:340
+#: gui/mrvHotkey.cpp:344
 msgid "Annotation Frame Step Forwards"
 msgstr "Krok bodovací pole vpřed"
 
@@ -1402,7 +1406,7 @@ msgstr "Plocha"
 msgid "Area Select Tool"
 msgstr "Nástroj pro výběr oblasti"
 
-#: gui/mrvHotkey.cpp:381
+#: gui/mrvHotkey.cpp:385
 msgid "Area Selection Mode"
 msgstr "Režim výběru oblasti"
 
@@ -1410,7 +1414,7 @@ msgstr "Režim výběru oblasti"
 msgid "Arrow"
 msgstr "Šíp"
 
-#: gui/mrvHotkey.cpp:386
+#: gui/mrvHotkey.cpp:390
 msgid "Arrow Mode"
 msgstr "Režim šipky"
 
@@ -1427,7 +1431,7 @@ msgstr "Poměr stran"
 msgid "Aspect ratio of clip"
 msgstr "Poměr stran klipu"
 
-#: gui/mrvHotkey.cpp:400
+#: gui/mrvHotkey.cpp:404
 msgid "Attach Audio File"
 msgstr "Přidružený zvukový soubor"
 
@@ -1506,15 +1510,15 @@ msgstr "Audio balíček je neznámý, očekávejte seek nebo preroll"
 msgid "Audio packets empty at end of seek"
 msgstr "Na konci vyhledávání vyprázdněte audio pakety"
 
-#: gui/mrvImageView.cpp:5249
+#: gui/mrvImageView.cpp:5281
 msgid "Audio/Attach Audio File"
 msgstr "Zvuk/Přidat zvukový soubor"
 
-#: gui/mrvImageView.cpp:5254
+#: gui/mrvImageView.cpp:5286
 msgid "Audio/Detach Audio File"
 msgstr "Zvuk/Zrušit přiřazení zvukového souboru"
 
-#: gui/mrvImageView.cpp:5251
+#: gui/mrvImageView.cpp:5283
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Zvuk/Upravit počáteční snímek zvuku"
 
@@ -1583,7 +1587,7 @@ msgstr "MODRÝ"
 msgid "BRAW Loading"
 msgstr "Načítání BRAW"
 
-#: gui/mrvHotkey.cpp:439
+#: gui/mrvHotkey.cpp:444
 msgid "BackSpace"
 msgstr "Smazat dozadu"
 
@@ -1673,8 +1677,8 @@ msgstr "režim prolnutí"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9305
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9338
+#: gui/mrvImageView.cpp:9872
 msgid "Blue"
 msgstr "Modrý"
 
@@ -1698,7 +1702,7 @@ msgstr "Výjimka Boost: "
 msgid "Both"
 msgstr "Oba dva"
 
-#: gui/mrvImageView.cpp:11154
+#: gui/mrvImageView.cpp:11187
 msgid "Bottom"
 msgstr "dolní"
 
@@ -1865,7 +1869,7 @@ msgstr "Nemohu vyměnit obrázky. Obrázek v popředí a na pozadí jsou stejné
 msgid "Canon Raw Picture"
 msgstr "Nezpracovaný obraz Canon"
 
-#: gui/mrvHotkey.cpp:463
+#: gui/mrvHotkey.cpp:468
 msgid "CapsLock"
 msgstr "zámek Posun."
 
@@ -1889,7 +1893,7 @@ msgstr "Kategorie"
 msgid "Center"
 msgstr "Centrum"
 
-#: gui/mrvHotkey.cpp:325
+#: gui/mrvHotkey.cpp:329
 msgid "Center Image"
 msgstr "Vycentrujte obrázek"
 
@@ -1956,7 +1960,7 @@ msgstr "Obrázek Cineon"
 msgid "Circle"
 msgstr "Kruh"
 
-#: gui/mrvHotkey.cpp:388
+#: gui/mrvHotkey.cpp:392
 msgid "Circle Mode"
 msgstr "Kruhový režim"
 
@@ -1973,7 +1977,7 @@ msgstr "Město"
 msgid "Clear"
 msgstr "Vymazat"
 
-#: gui/mrvHotkey.cpp:349
+#: gui/mrvHotkey.cpp:353
 msgid "Clear Image Cache"
 msgstr "Vymazat mezipaměť obrázků"
 
@@ -1993,7 +1997,7 @@ msgstr "komprese klipu"
 msgid "Clip is a sequence of frames"
 msgstr "Klip je sekvence snímků."
 
-#: gui/mrvHotkey.cpp:404
+#: gui/mrvHotkey.cpp:408
 msgid "Clone Image"
 msgstr "Klonujte obrázek"
 
@@ -2072,7 +2076,7 @@ msgstr "Sbalitelná skupina nenalezena"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2195 gui/mrvImageView.cpp:2257
-#: gui/mrvImageView.cpp:9838 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9871 gui/mrvImageView.cpp:9919
 msgid "Color"
 msgstr "Barva"
 
@@ -2081,10 +2085,12 @@ msgid "Color Area"
 msgstr "Barevná oblast"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1392
+#: gui/mrvImageView.cpp:4960
 msgid "Color Controls"
 msgstr "Ovládání barev"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1391
+#: gui/mrvImageView.cpp:4959
 msgid "Color Info"
 msgstr "Informace o barevné oblasti"
 
@@ -2112,7 +2118,7 @@ msgstr "barevný motiv"
 msgid "Color Version"
 msgstr "barevné provedení"
 
-#: gui/mrvImageView.cpp:9127
+#: gui/mrvImageView.cpp:9160
 msgid "Color channel not found at index "
 msgstr "Barevný kanál nebyl nalezen pro index "
 
@@ -2193,6 +2199,7 @@ msgstr "Připojeno k "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1401
+#: gui/mrvImageView.cpp:4979
 msgid "Connections"
 msgstr "spojení"
 
@@ -2232,11 +2239,11 @@ msgstr "Ovládá kodek používaný ve výchozím nastavení při ukládání fi
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Je potřeba konverze. Rozsah: 1,0"
 
-#: gui/mrvHotkey.cpp:402
+#: gui/mrvHotkey.cpp:406
 msgid "Copy Frame, X, Y Values"
 msgstr "Kopírovat hodnoty pole, X a Y"
 
-#: gui/mrvHotkey.cpp:403
+#: gui/mrvHotkey.cpp:407
 msgid "Copy RGBA Values"
 msgstr "Zkopírujte hodnoty RGBA"
 
@@ -2999,7 +3006,7 @@ msgid "DWAB"
 msgstr "DWAB"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1360
-#: gui/mrvHotkey.cpp:332 gui/mrvImageInformation.cpp:2902
+#: gui/mrvHotkey.cpp:336 gui/mrvImageInformation.cpp:2902
 msgid "Data Window"
 msgstr "Datové okno"
 
@@ -3011,7 +3018,7 @@ msgstr "Datové okno 2"
 msgid "Data Window of Clip"
 msgstr "Okno dat klipu"
 
-#: gui/mrvHotkey.cpp:489
+#: gui/mrvHotkey.cpp:494
 msgid "Decimal"
 msgstr "Desetinný"
 
@@ -3109,7 +3116,7 @@ msgstr "Chyba zvuku při otevírání mrViewer."
 msgid "Defaults"
 msgstr "Výchozí"
 
-#: gui/mrvHotkey.cpp:450
+#: gui/mrvHotkey.cpp:455
 msgid "Delete"
 msgstr "Vymazat"
 
@@ -3206,7 +3213,7 @@ msgid "Display Gamma of Image"
 msgstr "Rozsah zobrazení obrázku"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1346
-#: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2916
+#: gui/mrvHotkey.cpp:335 gui/mrvImageInformation.cpp:2916
 msgid "Display Window"
 msgstr "zobrazovací okno"
 
@@ -3236,7 +3243,7 @@ msgstr "Ustanovení"
 msgid "Disposition of Track"
 msgstr "Rozložení stopy"
 
-#: gui/mrvHotkey.cpp:490
+#: gui/mrvHotkey.cpp:495
 msgid "Divide"
 msgstr "Rozdělit"
 
@@ -3254,7 +3261,7 @@ msgstr "Chcete nahradit '%s'?"
 msgid "Double"
 msgstr "Dvojnásobek"
 
-#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:457
+#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:462
 msgid "Down"
 msgstr "Dolů"
 
@@ -3262,11 +3269,11 @@ msgstr "Dolů"
 msgid "Draw"
 msgstr "Nakreslil"
 
-#: gui/mrvHotkey.cpp:382
+#: gui/mrvHotkey.cpp:386
 msgid "Draw Mode"
 msgstr "Režim kreslení"
 
-#: gui/mrvHotkey.cpp:383
+#: gui/mrvHotkey.cpp:387
 msgid "Draw Temporary Mode"
 msgstr "Režim dočasného kreslení"
 
@@ -3318,6 +3325,7 @@ msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1393
+#: gui/mrvImageView.cpp:4967
 msgid "EDL Edit"
 msgstr "Upravit EDL"
 
@@ -3333,7 +3341,7 @@ msgstr "EXR kompresní algoritmus"
 msgid "Early 35mm"
 msgstr "35 mm brzy"
 
-#: gui/mrvHotkey.cpp:401
+#: gui/mrvHotkey.cpp:405
 msgid "Edit Audio Frame Offset"
 msgstr "Upravit počáteční snímek zvuku"
 
@@ -3389,7 +3397,7 @@ msgstr "Prázdné vyhledávání nebo preroll"
 msgid "Encoding"
 msgstr "zašifrované"
 
-#: gui/mrvHotkey.cpp:451
+#: gui/mrvHotkey.cpp:456
 msgid "End"
 msgstr "Konec"
 
@@ -3412,11 +3420,11 @@ msgstr ""
 msgid "Erase"
 msgstr "Vymazat"
 
-#: gui/mrvHotkey.cpp:384
+#: gui/mrvHotkey.cpp:388
 msgid "Erase Mode"
 msgstr "Režim mazání"
 
-#: gui/mrvHotkey.cpp:385
+#: gui/mrvHotkey.cpp:389
 msgid "Erase Temporary Mode"
 msgstr "Režim dočasného smazání"
 
@@ -3466,7 +3474,7 @@ msgstr "překlep "
 msgid "Errors"
 msgstr "Chyby"
 
-#: gui/mrvHotkey.cpp:438
+#: gui/mrvHotkey.cpp:443
 msgid "Escape"
 msgstr "Uniknout"
 
@@ -3517,11 +3525,11 @@ msgstr "Úprava expozice"
 msgid "Exposure Compensation"
 msgstr "Kompenzace expozice"
 
-#: gui/mrvHotkey.cpp:376
+#: gui/mrvHotkey.cpp:380
 msgid "Exposure Less"
 msgstr "Menší expozice"
 
-#: gui/mrvHotkey.cpp:375
+#: gui/mrvHotkey.cpp:379
 msgid "Exposure More"
 msgstr "Více expozice"
 
@@ -3750,11 +3758,11 @@ msgstr "Ukončete R3D SDK"
 msgid "Finalized R3DSDK"
 msgstr "Dokončil jsem R3D SDK"
 
-#: gui/mrvHotkey.cpp:363 gui/mrvImageInformation.cpp:2809
+#: gui/mrvHotkey.cpp:367 gui/mrvImageInformation.cpp:2809
 msgid "First Frame"
 msgstr "První snímek"
 
-#: gui/mrvHotkey.cpp:352
+#: gui/mrvHotkey.cpp:356
 msgid "First Image Version"
 msgstr "První verze obrázku"
 
@@ -3762,11 +3770,11 @@ msgstr "První verze obrázku"
 msgid "First frame of clip - User selected"
 msgstr "První snímek klipu - Uživatelský výběr"
 
-#: gui/mrvHotkey.cpp:328
+#: gui/mrvHotkey.cpp:332
 msgid "Fit All"
 msgstr "fit-all"
 
-#: gui/mrvHotkey.cpp:326
+#: gui/mrvHotkey.cpp:330
 msgid "Fit Screen"
 msgstr "Rám obrazovky"
 
@@ -3790,11 +3798,11 @@ msgstr "Integrální identifikátor součásti"
 msgid "Flash Movie"
 msgstr "flash film"
 
-#: gui/mrvHotkey.cpp:334
+#: gui/mrvHotkey.cpp:338
 msgid "Flip X"
 msgstr "Překlopit X"
 
-#: gui/mrvHotkey.cpp:335
+#: gui/mrvHotkey.cpp:339
 msgid "Flip Y"
 msgstr "Y-Flip"
 
@@ -3861,7 +3869,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11152
+#: gui/mrvImageView.cpp:11185
 msgid "Frame"
 msgstr "Rám"
 
@@ -3886,19 +3894,19 @@ msgstr "Rozsah snímků"
 msgid "Frame Start"
 msgstr "Start Box"
 
-#: gui/mrvHotkey.cpp:338
+#: gui/mrvHotkey.cpp:342
 msgid "Frame Step Backwards"
 msgstr "Rám Krok zpět"
 
-#: gui/mrvHotkey.cpp:339
+#: gui/mrvHotkey.cpp:343
 msgid "Frame Step FPS Backwards"
 msgstr "Frame Step Back FPS"
 
-#: gui/mrvHotkey.cpp:342
+#: gui/mrvHotkey.cpp:346
 msgid "Frame Step FPS Forwards"
 msgstr "Snímek Krok vpřed FPS"
 
-#: gui/mrvHotkey.cpp:341
+#: gui/mrvHotkey.cpp:345
 msgid "Frame Step Forwards"
 msgstr "Frame Krok vpřed"
 
@@ -4047,11 +4055,11 @@ msgstr "Tabulka rozsahu 2.4"
 msgid "Gamma Curve"
 msgstr "Gama křivka"
 
-#: gui/mrvHotkey.cpp:397
+#: gui/mrvHotkey.cpp:401
 msgid "Gamma Less"
 msgstr "menší rozsah"
 
-#: gui/mrvHotkey.cpp:396
+#: gui/mrvHotkey.cpp:400
 msgid "Gamma More"
 msgstr "Větší rozsah"
 
@@ -4103,8 +4111,8 @@ msgstr "řecký (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9300
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9333
+#: gui/mrvImageView.cpp:9872
 msgid "Green"
 msgstr "Zelený"
 
@@ -4233,14 +4241,15 @@ msgstr "Označeno na celé časové ose"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1084
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1397
+#: gui/mrvImageView.cpp:4971
 msgid "Histogram"
 msgstr "histogram"
 
-#: gui/mrvHotkey.cpp:447
+#: gui/mrvHotkey.cpp:452
 msgid "Home"
 msgstr "Start"
 
-#: gui/mrvHotkey.cpp:648
+#: gui/mrvHotkey.cpp:653
 #, c-format
 msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
@@ -4260,6 +4269,7 @@ msgstr "Manažerské klíče:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1403
+#: gui/mrvImageView.cpp:4981
 msgid "Hotkeys"
 msgstr "Klíče pro správu"
 
@@ -4303,6 +4313,7 @@ msgstr "ICC profil"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2775
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1400
+#: gui/mrvImageView.cpp:4977
 msgid "ICC Profiles"
 msgstr "ICC profily"
 
@@ -4380,7 +4391,7 @@ msgstr "obraz"
 msgid "Image \""
 msgstr "Obraz \""
 
-#: gui/mrvHotkey.cpp:319
+#: gui/mrvHotkey.cpp:324
 msgid "Image CTL script"
 msgstr "CTL zápis obrázku"
 
@@ -4392,7 +4403,7 @@ msgstr "Velikost mezipaměti obrázku"
 msgid "Image Channels"
 msgstr "Obrazové kanály"
 
-#: gui/mrvHotkey.cpp:318
+#: gui/mrvHotkey.cpp:323
 msgid "Image Icc Profile"
 msgstr "Obrázek ICC profil"
 
@@ -4478,32 +4489,32 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Nastavení zoomu obrazu."
 
-#: gui/mrvImageView.cpp:5127
+#: gui/mrvImageView.cpp:5159
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "obraz/Přidat úpravu vzhledu CTL (LMT)"
 
-#: gui/mrvImageView.cpp:5119
+#: gui/mrvImageView.cpp:5151
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "obraz/Přiřadit CTL Input Device Transform (IDT)"
 
-#: gui/mrvImageView.cpp:5131
+#: gui/mrvImageView.cpp:5163
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "obraz/Přiřadit transformaci vykreslování CTL (RRT)"
 
-#: gui/mrvImageView.cpp:5135
+#: gui/mrvImageView.cpp:5167
 msgid "Image/Attach ICC Color Profile"
 msgstr "obraz/Přidat barevný ICC profil"
 
-#: gui/mrvImageView.cpp:5097
+#: gui/mrvImageView.cpp:5129
 msgid "Image/Clear Caches"
 msgstr "obraz/Vymazat mezipaměti"
 
-#: gui/mrvImageView.cpp:5073 gui/mrvImageView.cpp:5081
+#: gui/mrvImageView.cpp:5105 gui/mrvImageView.cpp:5113
 #: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "obraz/Klonovat"
 
-#: gui/mrvImageView.cpp:5075 gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageView.cpp:5107 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "obraz/Klonovat všechny kanály"
 
@@ -4511,55 +4522,55 @@ msgstr "obraz/Klonovat všechny kanály"
 msgid "Image/Media Info"
 msgstr "obraz/Informace o médiích"
 
-#: gui/mrvImageView.cpp:5142
+#: gui/mrvImageView.cpp:5174
 msgid "Image/Mirror/Horizontal"
 msgstr "obraz/Zrcadlo/Horizontální"
 
-#: gui/mrvImageView.cpp:5146
+#: gui/mrvImageView.cpp:5178
 msgid "Image/Mirror/Vertical"
 msgstr "obraz/Zrcadlo/Vertikální"
 
-#: gui/mrvImageView.cpp:5123
+#: gui/mrvImageView.cpp:5155
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "obraz/Upravit CTL ASC_CDL SOP a sytost"
 
-#: gui/mrvImageView.cpp:5062
+#: gui/mrvImageView.cpp:5094
 msgid "Image/Next"
 msgstr "obraz/Následující"
 
-#: gui/mrvImageView.cpp:5088
+#: gui/mrvImageView.cpp:5120
 msgid "Image/Preload Caches"
 msgstr "obraz/Předem načíst mezipaměti"
 
-#: gui/mrvImageView.cpp:5064
+#: gui/mrvImageView.cpp:5096
 msgid "Image/Previous"
 msgstr "obraz/Předchozí"
 
-#: gui/mrvImageView.cpp:5107
+#: gui/mrvImageView.cpp:5139
 msgid "Image/Rotate +90"
 msgstr "obraz/Otočte o +90"
 
-#: gui/mrvImageView.cpp:5110
+#: gui/mrvImageView.cpp:5142
 msgid "Image/Rotate -90"
 msgstr "obraz/Otočte o -90"
 
-#: gui/mrvImageView.cpp:5150 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5182 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "obraz/Nastavte jej jako pozadí"
 
-#: gui/mrvImageView.cpp:5155
+#: gui/mrvImageView.cpp:5187
 msgid "Image/Switch FG and BG"
 msgstr "obraz/Změna popředí a pozadí"
 
-#: gui/mrvImageView.cpp:5158
+#: gui/mrvImageView.cpp:5190
 msgid "Image/Toggle Background"
 msgstr "obraz/přepnout pozadí"
 
-#: gui/mrvImageView.cpp:5165
+#: gui/mrvImageView.cpp:5197
 msgid "Image/Toggle EDL"
 msgstr "obraz/Vyměňte EDL"
 
-#: gui/mrvImageView.cpp:5100
+#: gui/mrvImageView.cpp:5132
 msgid "Image/Update Single Frame in Cache"
 msgstr "obraz/Aktualizujte mezipaměťový rámec"
 
@@ -4640,7 +4651,7 @@ msgstr "Transformace vstupního zařízení"
 msgid "Input color space for "
 msgstr "Vstupní barevný prostor pro "
 
-#: gui/mrvHotkey.cpp:446
+#: gui/mrvHotkey.cpp:451
 msgid "Insert"
 msgstr "Vložit"
 
@@ -4675,7 +4686,7 @@ msgstr "Neplatný cílový profil/formát obrázku"
 msgid "Invalid image "
 msgstr "neplatný index "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9217
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9250
 msgid "Invalid index "
 msgstr "neplatný index "
 
@@ -4834,11 +4845,11 @@ msgstr "Jazyk a barvy"
 msgid "Language if known"
 msgstr "jazyk, pokud je znám"
 
-#: gui/mrvHotkey.cpp:364 gui/mrvImageInformation.cpp:2812
+#: gui/mrvHotkey.cpp:368 gui/mrvImageInformation.cpp:2812
 msgid "Last Frame"
 msgstr "Poslední snímek"
 
-#: gui/mrvHotkey.cpp:355
+#: gui/mrvHotkey.cpp:359
 msgid "Last Image Version"
 msgstr "Nejnovější verze obrázku"
 
@@ -4856,7 +4867,7 @@ msgstr "Zeměpisná šířka"
 msgid "Layer %d"
 msgstr "Plášť %d"
 
-#: gui/mrvHotkey.cpp:453
+#: gui/mrvHotkey.cpp:458
 msgid "Left"
 msgstr "Vlevo, odjet"
 
@@ -4876,19 +4887,19 @@ msgstr "Pohled vlevo"
 msgid "Left/right"
 msgstr "Vlevo, odjet/že jo"
 
-#: gui/mrvHotkey.cpp:464
+#: gui/mrvHotkey.cpp:469
 msgid "LeftAlt"
 msgstr "Levý Alt"
 
-#: gui/mrvHotkey.cpp:460
+#: gui/mrvHotkey.cpp:465
 msgid "LeftCtrl"
 msgstr "Levý Ctrl"
 
-#: gui/mrvHotkey.cpp:466
+#: gui/mrvHotkey.cpp:471
 msgid "LeftMeta"
 msgstr "Levý cíl"
 
-#: gui/mrvHotkey.cpp:458
+#: gui/mrvHotkey.cpp:463
 msgid "LeftShift"
 msgstr "Levý Shift"
 
@@ -5057,6 +5068,7 @@ msgid "Logarithmic"
 msgstr "logaritmický"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1404
+#: gui/mrvImageView.cpp:4983
 msgid "Logs"
 msgstr "Příspěvky"
 
@@ -5096,7 +5108,7 @@ msgstr "Jas obrazových pixelů pod myší."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2165
-#: gui/mrvImageView.cpp:9315 gui/mrvImageView.cpp:9840
+#: gui/mrvImageView.cpp:9348 gui/mrvImageView.cpp:9873
 msgid "Lumma"
 msgstr "luma"
 
@@ -5238,6 +5250,7 @@ msgstr "Průměrný"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1111
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
+#: gui/mrvImageView.cpp:4958
 msgid "Media Info"
 msgstr "Informace o médiích"
 
@@ -5263,7 +5276,7 @@ msgstr "Paměť"
 msgid "Memory without Compression"
 msgstr "Nekomprimovaná paměť"
 
-#: gui/mrvHotkey.cpp:469
+#: gui/mrvHotkey.cpp:474
 msgid "Menu"
 msgstr "Jídelní lístek"
 
@@ -5345,19 +5358,19 @@ msgstr "Režim pro zpracování IPP2"
 msgid "Module"
 msgstr "Modul"
 
-#: gui/mrvHotkey.cpp:321
+#: gui/mrvHotkey.cpp:326
 msgid "Monitor CTL script"
 msgstr "Monitor zápisu CTL"
 
-#: gui/mrvHotkey.cpp:320
+#: gui/mrvHotkey.cpp:325
 msgid "Monitor Icc Profile"
 msgstr "Sledovat profil Icc"
 
-#: gui/mrvImageView.cpp:5272
+#: gui/mrvImageView.cpp:5304
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Zobrazit/Přidat CTL Output Display Transformation (ODT)"
 
-#: gui/mrvImageView.cpp:5276
+#: gui/mrvImageView.cpp:5308
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Zobrazit/Přidejte barevný profil ICC"
 
@@ -5373,7 +5386,7 @@ msgstr "Hýbat se"
 msgid "Move Picture Tool"
 msgstr "Nástroj pro přesun obrazu"
 
-#: gui/mrvHotkey.cpp:391
+#: gui/mrvHotkey.cpp:395
 msgid "Move/Size Mode"
 msgstr "Režim pohybu/Vylézt"
 
@@ -5397,7 +5410,7 @@ msgstr ""
 msgid "Movies (*.{"
 msgstr "Filmy (*.{"
 
-#: gui/mrvHotkey.cpp:486
+#: gui/mrvHotkey.cpp:491
 msgid "Multiply"
 msgstr "Násobit"
 
@@ -5464,23 +5477,23 @@ msgstr "nenalezen na cívce"
 msgid "Next"
 msgstr "další"
 
-#: gui/mrvHotkey.cpp:362
+#: gui/mrvHotkey.cpp:366
 msgid "Next Channel"
 msgstr "Další kanál"
 
-#: gui/mrvHotkey.cpp:357
+#: gui/mrvHotkey.cpp:361
 msgid "Next Image"
 msgstr "Další obrázek"
 
-#: gui/mrvHotkey.cpp:359
+#: gui/mrvHotkey.cpp:363
 msgid "Next Image Limited"
 msgstr "Další Obrázek Limited"
 
-#: gui/mrvHotkey.cpp:354
+#: gui/mrvHotkey.cpp:358
 msgid "Next Image Version"
 msgstr "Další verze obrázku"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -5626,31 +5639,31 @@ msgstr "Nekompenzováno"
 msgid "Not OK"
 msgstr "Není v pořádku"
 
-#: gui/mrvImageView.cpp:5775
+#: gui/mrvImageView.cpp:5808
 msgid "Not a GLArrowShape pointer"
 msgstr "Není to ukazatel GLArrowShape"
 
-#: gui/mrvImageView.cpp:7196
+#: gui/mrvImageView.cpp:7229
 msgid "Not a GLCircleShape pointer"
 msgstr "Není to ukazatel na GLCircleShape"
 
-#: gui/mrvImageView.cpp:5807
+#: gui/mrvImageView.cpp:5840
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "Nejedná se o ukazatel GLCircleShape v mouseRelease"
 
-#: gui/mrvImageView.cpp:5747
+#: gui/mrvImageView.cpp:5780
 msgid "Not a GLErasePathShape pointer"
 msgstr "Nejedná se o ukazatel na GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5733 gui/mrvImageView.cpp:7136
+#: gui/mrvImageView.cpp:5766 gui/mrvImageView.cpp:7169
 msgid "Not a GLPathShape pointer"
 msgstr "Není to ukazatel na GLPathShape"
 
-#: gui/mrvImageView.cpp:5761
+#: gui/mrvImageView.cpp:5794
 msgid "Not a GLRectangleShape pointer"
 msgstr "Ne ukazatel GLRectangleShape"
 
-#: gui/mrvImageView.cpp:5791
+#: gui/mrvImageView.cpp:5824
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Není to ukazatel na GLTextShape na mouseRelease"
 
@@ -5698,7 +5711,7 @@ msgstr "Nesdružujte potomka v řádku tabulky "
 msgid "Nov"
 msgstr "Ne"
 
-#: gui/mrvHotkey.cpp:470
+#: gui/mrvHotkey.cpp:475
 msgid "NumLock"
 msgstr "číselný zámek"
 
@@ -5760,7 +5773,7 @@ msgstr "OCIO Barevný prostor"
 msgid "OCIO Config File"
 msgstr "Konfigurační soubor OCIO"
 
-#: gui/mrvHotkey.cpp:378
+#: gui/mrvHotkey.cpp:382
 msgid "OCIO Display"
 msgstr "Displej OCIO"
 
@@ -5768,11 +5781,11 @@ msgstr "Displej OCIO"
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "Zobrazit/OCIO View nebo některá výchozí nastavení gama"
 
-#: gui/mrvHotkey.cpp:377 gui/mrvImageInformation.cpp:3053
+#: gui/mrvHotkey.cpp:381 gui/mrvImageInformation.cpp:3053
 msgid "OCIO Input Color Space"
 msgstr "Vstupní barevný prostor OCIO"
 
-#: gui/mrvHotkey.cpp:379
+#: gui/mrvHotkey.cpp:383
 msgid "OCIO View"
 msgstr "Pohled na OCIO"
 
@@ -5792,15 +5805,15 @@ msgstr "Proměnná prostředí OCIO neexistuje. Bude použito CTL. "
 msgid "OCIO input color space for the image"
 msgstr "Vstupní barevný prostor obrázku není definován."
 
-#: gui/mrvImageView.cpp:5181
+#: gui/mrvImageView.cpp:5213
 msgid "OCIO/Display"
 msgstr "OCIO/Zobrazit"
 
-#: gui/mrvImageView.cpp:5177 gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Vstupní barevný prostor"
 
-#: gui/mrvImageView.cpp:5184
+#: gui/mrvImageView.cpp:5216
 msgid "OCIO/View"
 msgstr "OCIO/Pohled"
 
@@ -5875,27 +5888,27 @@ msgstr "nenalezen na cívce"
 msgid "Once"
 msgstr "Jednou"
 
-#: gui/mrvHotkey.cpp:310
+#: gui/mrvHotkey.cpp:313
 msgid "Open Aces Metadata File (AMF)"
 msgstr "Otevřít soubor metadat Aces (AMF)"
 
-#: gui/mrvHotkey.cpp:311
+#: gui/mrvHotkey.cpp:314
 msgid "Open Clip XML Metadata"
 msgstr "Otevřete metadata klipu XML"
 
-#: gui/mrvHotkey.cpp:307
+#: gui/mrvHotkey.cpp:310
 msgid "Open Directory"
 msgstr "otevřená složka"
 
-#: gui/mrvHotkey.cpp:308
+#: gui/mrvHotkey.cpp:311
 msgid "Open Movie or Sequence"
 msgstr "Otevřete film nebo sekvenci"
 
-#: gui/mrvHotkey.cpp:312 gui/mrvFileRequester.cpp:979
+#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:979
 msgid "Open Session"
 msgstr "Otevřená relace"
 
-#: gui/mrvHotkey.cpp:309
+#: gui/mrvHotkey.cpp:312
 msgid "Open Single Image"
 msgstr "Otevřete pouze jeden obrázek"
 
@@ -6099,15 +6112,15 @@ msgstr "obrázek PNG"
 msgid "PXR24"
 msgstr "PXR24"
 
-#: gui/mrvHotkey.cpp:452
+#: gui/mrvHotkey.cpp:457
 msgid "PageDown"
 msgstr "Page Down"
 
-#: gui/mrvHotkey.cpp:448
+#: gui/mrvHotkey.cpp:453
 msgid "PageUp"
 msgstr "Page Up"
 
-#: gui/mrvHotkey.cpp:445
+#: gui/mrvHotkey.cpp:450
 msgid "Pause"
 msgstr "Pauza"
 
@@ -6120,11 +6133,11 @@ msgstr "Barva tužky"
 msgid "Pen Size"
 msgstr "Velikost tužky"
 
-#: gui/mrvHotkey.cpp:393
+#: gui/mrvHotkey.cpp:397
 msgid "Pen Size Less"
 msgstr "Malá velikost tužky"
 
-#: gui/mrvHotkey.cpp:392
+#: gui/mrvHotkey.cpp:396
 msgid "Pen Size More"
 msgstr "Největší velikost tužky"
 
@@ -6196,7 +6209,7 @@ msgstr "Poměr pixelů klipu"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Typ pixelu není ve tvaru vlny správně podporován"
 
-#: gui/mrvImageView.cpp:5262
+#: gui/mrvImageView.cpp:5294
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "Pixel/Zkopírujte hodnoty RGBA do schránky"
 
@@ -6209,23 +6222,23 @@ msgid "Play All frames without skipping even if frame rate suffers."
 msgstr ""
 "Přehrajte každý snímek bez přeskakování, i když tím trpí snímková frekvence."
 
-#: gui/mrvHotkey.cpp:343
+#: gui/mrvHotkey.cpp:347
 msgid "Play Backwards"
 msgstr "Přehrát zpět"
 
-#: gui/mrvHotkey.cpp:344
+#: gui/mrvHotkey.cpp:348
 msgid "Play Backwards / Change Speed"
 msgstr "Přehrát zpět/změnit rychlost"
 
-#: gui/mrvHotkey.cpp:346
+#: gui/mrvHotkey.cpp:350
 msgid "Play Forwards"
 msgstr "Přehrát vpřed"
 
-#: gui/mrvHotkey.cpp:347
+#: gui/mrvHotkey.cpp:351
 msgid "Play Forwards / Change Speed"
 msgstr "Přehrát vpřed/změnit rychlost"
 
-#: gui/mrvHotkey.cpp:345
+#: gui/mrvHotkey.cpp:349
 msgid "Play in Current Direction"
 msgstr "Hrajte na aktuální adrese"
 
@@ -6288,6 +6301,7 @@ msgstr "Preferujte ICC"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
+#: gui/mrvImageView.cpp:4965
 msgid "Preferences"
 msgstr "preference"
 
@@ -6312,7 +6326,7 @@ msgstr ""
 msgid "Preload Cache"
 msgstr "Předem načíst mezipaměť"
 
-#: gui/mrvHotkey.cpp:348
+#: gui/mrvHotkey.cpp:352
 msgid "Preload Image Cache"
 msgstr "Předem načíst mezipaměť obrázků"
 
@@ -6337,23 +6351,23 @@ msgstr "previz razítka"
 msgid "Previous"
 msgstr "Předchozí"
 
-#: gui/mrvHotkey.cpp:361
+#: gui/mrvHotkey.cpp:365
 msgid "Previous Channel"
 msgstr "Předchozí kanál"
 
-#: gui/mrvHotkey.cpp:356
+#: gui/mrvHotkey.cpp:360
 msgid "Previous Image"
 msgstr "Náhledový obrázek"
 
-#: gui/mrvHotkey.cpp:358
+#: gui/mrvHotkey.cpp:362
 msgid "Previous Image Limited"
 msgstr "Omezený náhledový obrázek"
 
-#: gui/mrvHotkey.cpp:353
+#: gui/mrvHotkey.cpp:357
 msgid "Previous Image Version"
 msgstr "Předchozí verze obrázku"
 
-#: gui/mrvHotkey.cpp:442
+#: gui/mrvHotkey.cpp:447
 msgid "Print"
 msgstr "Vytisknout"
 
@@ -6427,6 +6441,10 @@ msgstr "Kvalitní"
 #: gui/FLU/Flu_File_Chooser.cpp:575 gui/FLU/Flu_File_Chooser.cpp:582
 msgid "Quicktime Movie"
 msgstr "film quicktime"
+
+#: gui/mrvHotkey.cpp:321
+msgid "Quit Program"
+msgstr "Ukončete program"
 
 #: standalone/main.cpp:332
 msgid "Quit mrViewer"
@@ -6565,7 +6583,7 @@ msgstr "skutečná šířka klipu"
 msgid "Rectangle"
 msgstr "Obdélník"
 
-#: gui/mrvHotkey.cpp:387
+#: gui/mrvHotkey.cpp:391
 msgid "Rectangle Mode"
 msgstr "Režim obdélníku"
 
@@ -6576,8 +6594,8 @@ msgstr "Nástroj Obdélník"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9295
-#: gui/mrvImageView.cpp:9838
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9328
+#: gui/mrvImageView.cpp:9871
 msgid "Red"
 msgstr "Červené"
 
@@ -6598,7 +6616,7 @@ msgstr "Červená hodnota obrazového bodu pod myší."
 msgid "Red/cyan glasses"
 msgstr "Červené čočky/tyrkysová"
 
-#: gui/mrvHotkey.cpp:395
+#: gui/mrvHotkey.cpp:399
 msgid "Redo Draw"
 msgstr "Znovu kreslení"
 
@@ -6624,6 +6642,7 @@ msgstr "kotouče"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2975
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1389
+#: gui/mrvImageView.cpp:4957
 msgid "Reels"
 msgstr "kotouče"
 
@@ -6770,7 +6789,7 @@ msgstr "Rezervováno"
 msgid "Reset"
 msgstr "Resetovat"
 
-#: gui/mrvHotkey.cpp:374
+#: gui/mrvHotkey.cpp:378
 msgid "Reset Gain/Gamma"
 msgstr "reset zisk/Spektrum"
 
@@ -6785,7 +6804,7 @@ msgstr "resetovat hodnotu"
 msgid "Resize Background to Match Foreground"
 msgstr "Změňte velikost pozadí na velikost přední strany"
 
-#: gui/mrvHotkey.cpp:327
+#: gui/mrvHotkey.cpp:331
 msgid "Resize Main Window to Fit"
 msgstr "Změňte velikost hlavního okna tak, aby se vešlo"
 
@@ -6802,7 +6821,7 @@ msgstr "obnovit spořič obrazovky"
 msgid "Restored screensaver"
 msgstr "spořič obrazovky obnoven"
 
-#: gui/mrvHotkey.cpp:441
+#: gui/mrvHotkey.cpp:446
 msgid "Return"
 msgstr "vstoupit"
 
@@ -6818,7 +6837,7 @@ msgstr "Vrátit nastavení na poslední uložené předvolby."
 msgid "Rich Picture Format"
 msgstr "Bohatý formát obrázku"
 
-#: gui/mrvHotkey.cpp:456
+#: gui/mrvHotkey.cpp:461
 msgid "Right"
 msgstr "Že jo"
 
@@ -6836,19 +6855,19 @@ msgstr "Pohled zprava"
 msgid "Right/left"
 msgstr "Že jo/vlevo, odjet"
 
-#: gui/mrvHotkey.cpp:465
+#: gui/mrvHotkey.cpp:470
 msgid "RightAlt"
 msgstr "Alt Right"
 
-#: gui/mrvHotkey.cpp:462
+#: gui/mrvHotkey.cpp:467
 msgid "RightCtrl"
 msgstr "Pravý Ctrl"
 
-#: gui/mrvHotkey.cpp:468
+#: gui/mrvHotkey.cpp:473
 msgid "RightMeta"
 msgstr "Cíl vpravo"
 
-#: gui/mrvHotkey.cpp:459
+#: gui/mrvHotkey.cpp:464
 msgid "RightShift"
 msgstr "Pravý Shift"
 
@@ -6856,23 +6875,23 @@ msgstr "Pravý Shift"
 msgid "Romanian"
 msgstr "rumunština (Română)"
 
-#: gui/mrvHotkey.cpp:389
+#: gui/mrvHotkey.cpp:393
 msgid "Rotate Canvas Mode"
 msgstr "Režim otáčení plátna"
 
-#: gui/mrvHotkey.cpp:429
+#: gui/mrvHotkey.cpp:434
 msgid "Rotate Image +10 Degrees"
 msgstr "Otočit obrázek o +10 stupňů"
 
-#: gui/mrvHotkey.cpp:431
+#: gui/mrvHotkey.cpp:436
 msgid "Rotate Image +90 Degrees"
 msgstr "Otočit obrázek o +90 stupňů"
 
-#: gui/mrvHotkey.cpp:430
+#: gui/mrvHotkey.cpp:435
 msgid "Rotate Image -10 Degrees"
 msgstr "Otočit obrázek o -10 stupňů"
 
-#: gui/mrvHotkey.cpp:432
+#: gui/mrvHotkey.cpp:437
 msgid "Rotate Image -90 Degrees"
 msgstr "Otočit obrázek o 90 stupňů"
 
@@ -6917,7 +6936,7 @@ msgid "SMPTE NTSC Color Bars"
 msgstr "Barevné pruhy SMPTE NTSC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1332
-#: gui/mrvHotkey.cpp:330
+#: gui/mrvHotkey.cpp:334
 msgid "Safe Areas"
 msgstr "Zabezpečené oblasti"
 
@@ -6944,11 +6963,11 @@ msgstr "Hodnota sytosti pixelu obrázku pod myší."
 msgid "Save"
 msgstr "Držet"
 
-#: gui/mrvHotkey.cpp:317
+#: gui/mrvHotkey.cpp:322
 msgid "Save Clip XML Metadata"
 msgstr "Uložit metadata XML klipu"
 
-#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:948
+#: gui/mrvHotkey.cpp:318 gui/mrvFileRequester.cpp:948
 msgid "Save GL Snapshot"
 msgstr "Uložit snímek Opengl"
 
@@ -6956,7 +6975,7 @@ msgstr "Uložit snímek Opengl"
 msgid "Save Hotkeys Preferences"
 msgstr "Uložit předvolby řidičských klíčů"
 
-#: gui/mrvHotkey.cpp:314
+#: gui/mrvHotkey.cpp:317
 msgid "Save Image"
 msgstr "Uložit obrázek"
 
@@ -6980,15 +6999,15 @@ msgstr "Uložte konfiguraci OCIO"
 msgid "Save Options"
 msgstr "Možnosti uložení"
 
-#: gui/mrvHotkey.cpp:313 gui/mrvFileRequester.cpp:1021
+#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:1021
 msgid "Save Reel"
 msgstr "Uložit cívku"
 
-#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:947
+#: gui/mrvHotkey.cpp:319 gui/mrvFileRequester.cpp:947
 msgid "Save Sequence"
 msgstr "Uložit sekvenci"
 
-#: gui/mrvHotkey.cpp:322 gui/mrvFileRequester.cpp:1000
+#: gui/mrvHotkey.cpp:320 gui/mrvFileRequester.cpp:1000
 msgid "Save Session"
 msgstr "Uložit relaci"
 
@@ -7065,7 +7084,7 @@ msgstr "Systém"
 msgid "Scratched Repeat Frame"
 msgstr "Opakujte zaškrtnuté políčko"
 
-#: gui/mrvHotkey.cpp:444
+#: gui/mrvHotkey.cpp:449
 msgid "ScrollLock"
 msgstr "ScrollLock"
 
@@ -7074,7 +7093,7 @@ msgstr "ScrollLock"
 msgid "Scrub"
 msgstr "Drhnout"
 
-#: gui/mrvHotkey.cpp:380
+#: gui/mrvHotkey.cpp:384
 msgid "Scrub Mode"
 msgstr "režim čištění"
 
@@ -7116,11 +7135,11 @@ msgstr "Sekundy"
 msgid "Select Audio Track"
 msgstr "Vyberte Zvukovou stopu"
 
-#: gui/mrvHotkey.cpp:423
+#: gui/mrvHotkey.cpp:431
 msgid "Select Multi Image"
 msgstr "Vyberte možnost Více obrázků"
 
-#: gui/mrvHotkey.cpp:422
+#: gui/mrvHotkey.cpp:430
 msgid "Select Single Image"
 msgstr "Vyberte Pouze jeden obrázek"
 
@@ -7236,15 +7255,15 @@ msgstr "Služby"
 msgid "Sessions (*.{"
 msgstr "Relace (*.{"
 
-#: gui/mrvHotkey.cpp:399
+#: gui/mrvHotkey.cpp:403
 msgid "Set As BG Image"
 msgstr "Nastavit jako obrázek na pozadí"
 
-#: gui/mrvHotkey.cpp:405
+#: gui/mrvHotkey.cpp:409
 msgid "Set In Point"
 msgstr "Nastavte vstupní bod"
 
-#: gui/mrvHotkey.cpp:406
+#: gui/mrvHotkey.cpp:410
 msgid "Set Out Point"
 msgstr "Nastavte výstupní bod"
 
@@ -7394,7 +7413,7 @@ msgstr "software"
 msgid "Some default frame rate settings."
 msgstr "Některá výchozí nastavení rychlosti přehrávání"
 
-#: gui/mrvHotkey.cpp:484
+#: gui/mrvHotkey.cpp:489
 msgid "Space (' ')"
 msgstr "Prostor (' ')"
 
@@ -7466,7 +7485,7 @@ msgid "Stereo eye separation"
 msgstr "Zobrazit separaci"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:204
-#: gui/mrvHotkey.cpp:351
+#: gui/mrvHotkey.cpp:355
 msgid "Stop"
 msgstr "Stop"
 
@@ -7520,15 +7539,15 @@ msgstr "Podtitulkový dopis "
 msgid "Subtitle type "
 msgstr "Typ titulků "
 
-#: gui/mrvImageView.cpp:5216
+#: gui/mrvImageView.cpp:5248
 msgid "Subtitle/Load"
 msgstr "Titulky/Nabít"
 
-#: gui/mrvImageView.cpp:5224
+#: gui/mrvImageView.cpp:5256
 msgid "Subtitle/No Subtitle"
 msgstr "Titulky/žádné titulky"
 
-#: gui/mrvImageView.cpp:5233
+#: gui/mrvImageView.cpp:5265
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Titulky/Stopa #%d – %s"
@@ -7547,7 +7566,7 @@ msgstr "Titulky (*.{"
 msgid "Subtitles are only valid on video files"
 msgstr "Titulky jsou platné pouze pro video soubory"
 
-#: gui/mrvHotkey.cpp:488
+#: gui/mrvHotkey.cpp:493
 msgid "Subtract"
 msgstr "Odčítat"
 
@@ -7563,11 +7582,11 @@ msgstr "Okolní Luminance"
 msgid "Swedish"
 msgstr "švédský (svenska)"
 
-#: gui/mrvHotkey.cpp:360
+#: gui/mrvHotkey.cpp:364
 msgid "Switch Channels"
 msgstr "Vyměňte kanály"
 
-#: gui/mrvHotkey.cpp:398
+#: gui/mrvHotkey.cpp:402
 msgid "Switch FG/BG Images"
 msgstr "Zaměňte obrázky v popředí a na pozadí"
 
@@ -7634,7 +7653,7 @@ msgstr "TIFF (.tif)"
 msgid "TIFF Picture"
 msgstr "obrázek TIFF"
 
-#: gui/mrvHotkey.cpp:440
+#: gui/mrvHotkey.cpp:445
 msgid "Tab"
 msgstr "Tab"
 
@@ -7658,7 +7677,7 @@ msgstr "obrázek targa"
 msgid "Text"
 msgstr "Text"
 
-#: gui/mrvHotkey.cpp:390
+#: gui/mrvHotkey.cpp:394
 msgid "Text Mode"
 msgstr "Textový režim"
 
@@ -7675,7 +7694,7 @@ msgstr "Textový nástroj"
 msgid "Texture Units:\t"
 msgstr "Texturní jednotky:\t"
 
-#: gui/mrvHotkey.cpp:329
+#: gui/mrvHotkey.cpp:333
 msgid "TextureFiltering"
 msgstr "Filtrování textur"
 
@@ -8016,83 +8035,87 @@ msgstr "Barvivo"
 msgid "Tinting of clip."
 msgstr "Barvení klipů."
 
-#: gui/mrvHotkey.cpp:411
+#: gui/mrvHotkey.cpp:416
 msgid "Toggle 3D Stereo Options Window"
 msgstr "Okno Swap 3D Stereo Options"
 
-#: gui/mrvHotkey.cpp:412
+#: gui/mrvHotkey.cpp:417
 msgid "Toggle 3D View Window"
 msgstr "Vyměnit 3D okno"
 
-#: gui/mrvHotkey.cpp:413
+#: gui/mrvHotkey.cpp:427
 msgid "Toggle About Window"
 msgstr "Vyměnit okno O aplikaci"
 
-#: gui/mrvHotkey.cpp:410
+#: gui/mrvHotkey.cpp:415
 msgid "Toggle Action Window"
 msgstr "Swap Action Window"
 
-#: gui/mrvHotkey.cpp:365
+#: gui/mrvHotkey.cpp:369
 msgid "Toggle Background Composite"
 msgstr "Složení swapového fondu"
 
-#: gui/mrvHotkey.cpp:370
+#: gui/mrvHotkey.cpp:374
 msgid "Toggle Bottom Bar"
 msgstr "Vyměnit spodní lištu"
 
-#: gui/mrvHotkey.cpp:409
+#: gui/mrvHotkey.cpp:413
 msgid "Toggle Color Area Info Window"
 msgstr "Okno Vyměnit barevnou oblast"
 
-#: gui/mrvHotkey.cpp:417
+#: gui/mrvHotkey.cpp:414
+msgid "Toggle Color Controls Window"
+msgstr "Přepnout okno ovládání barev"
+
+#: gui/mrvHotkey.cpp:423
 msgid "Toggle Connections Window"
 msgstr "Okno Swap Connections"
 
-#: gui/mrvHotkey.cpp:366
+#: gui/mrvHotkey.cpp:370
 msgid "Toggle EDL"
 msgstr "Vyměňte EDL"
 
-#: gui/mrvHotkey.cpp:414
+#: gui/mrvHotkey.cpp:418
 msgid "Toggle EDL Edit Window"
 msgstr "Vyměňte okno EDL"
 
-#: gui/mrvHotkey.cpp:372
+#: gui/mrvHotkey.cpp:376
 msgid "Toggle Full Screen"
 msgstr "Přepnout na celou obrazovku"
 
-#: gui/mrvHotkey.cpp:415
+#: gui/mrvHotkey.cpp:419
 msgid "Toggle Histogram Window"
 msgstr "Přepnout okno histogramu"
 
-#: gui/mrvHotkey.cpp:418
+#: gui/mrvHotkey.cpp:425
 msgid "Toggle Hotkeys Window"
 msgstr "Vyměňte řídicí klíče"
 
-#: gui/mrvHotkey.cpp:416
+#: gui/mrvHotkey.cpp:428
 msgid "Toggle Hud"
 msgstr "Vyměňte Hud"
 
-#: gui/mrvHotkey.cpp:419
+#: gui/mrvHotkey.cpp:422
 msgid "Toggle ICC Profiles Window"
 msgstr "Okno Vyměnit ICC profily"
 
-#: gui/mrvHotkey.cpp:420
+#: gui/mrvHotkey.cpp:429
 msgid "Toggle Input Color Space"
 msgstr "Zaměnit vstupní barevný prostor"
 
-#: gui/mrvHotkey.cpp:424
+#: gui/mrvHotkey.cpp:432
 msgid "Toggle LUT"
 msgstr "Vyměňte LUT"
 
-#: gui/mrvHotkey.cpp:421
+#: gui/mrvHotkey.cpp:426
 msgid "Toggle Log Window"
 msgstr "Okno pro výměnu zpráv"
 
-#: gui/mrvHotkey.cpp:408
+#: gui/mrvHotkey.cpp:412
 msgid "Toggle Media Info Window"
 msgstr "Vyměňte střední informační okno"
 
-#: gui/mrvHotkey.cpp:367
+#: gui/mrvHotkey.cpp:371
 msgid "Toggle Menu Bar"
 msgstr "Swap Menu Bar"
 
@@ -8105,19 +8128,19 @@ msgstr "Permute Modifikace/%s"
 msgid "Toggle Modify/All"
 msgstr "Permute Modifikace/Všechno"
 
-#: gui/mrvHotkey.cpp:369
+#: gui/mrvHotkey.cpp:373
 msgid "Toggle Pixel Bar"
 msgstr "Vyměňte lištu pixelů"
 
-#: gui/mrvHotkey.cpp:425
+#: gui/mrvHotkey.cpp:433
 msgid "Toggle Pixel Ratio"
 msgstr "Vyměňte poměr pixelů"
 
-#: gui/mrvHotkey.cpp:426
+#: gui/mrvHotkey.cpp:424
 msgid "Toggle Preferences Window"
 msgstr "Přepnout okno předvoleb"
 
-#: gui/mrvHotkey.cpp:373
+#: gui/mrvHotkey.cpp:377
 msgid "Toggle Presentation"
 msgstr "Výměna prezentace"
 
@@ -8125,15 +8148,15 @@ msgstr "Výměna prezentace"
 msgid "Toggle Reel EDL in Timeline"
 msgstr "Vyměňte roli fotoaparátu na časové ose"
 
-#: gui/mrvHotkey.cpp:407
+#: gui/mrvHotkey.cpp:411
 msgid "Toggle Reel Window"
 msgstr "Vyměňte rolety oken"
 
-#: gui/mrvHotkey.cpp:371
+#: gui/mrvHotkey.cpp:375
 msgid "Toggle Tool Dock"
 msgstr "Swap Action Dock"
 
-#: gui/mrvHotkey.cpp:368
+#: gui/mrvHotkey.cpp:372
 msgid "Toggle Top Bar"
 msgstr "Vyměnit horní lištu"
 
@@ -8154,11 +8177,11 @@ msgstr ""
 "skládat ze 6 obrázků na každé straně krychle, je při zapnuté této možnosti "
 "obtékán kolem krychle."
 
-#: gui/mrvHotkey.cpp:427
+#: gui/mrvHotkey.cpp:420
 msgid "Toggle Vectorscope Window"
 msgstr "Vyměňte okno vektoroskopu"
 
-#: gui/mrvHotkey.cpp:428
+#: gui/mrvHotkey.cpp:421
 msgid "Toggle Waveform Window"
 msgstr "Přepnout okno průběhu"
 
@@ -8174,7 +8197,7 @@ msgstr "Příliš mnoho streamů ve výstupním kontextu"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11153
+#: gui/mrvImageView.cpp:11186
 msgid "Top"
 msgstr "Vyšší"
 
@@ -8293,7 +8316,7 @@ msgstr "Nedefinováno"
 msgid "Undefined framebuffer"
 msgstr "nedefinovaný framebuffer"
 
-#: gui/mrvHotkey.cpp:394
+#: gui/mrvHotkey.cpp:398
 msgid "Undo Draw"
 msgstr "Vrátit zpět kresbu"
 
@@ -8445,11 +8468,11 @@ msgstr "Nespecifikováno"
 msgid "Unsupported internal format"
 msgstr "neznámý interní formát"
 
-#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:454
+#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:459
 msgid "Up"
 msgstr "Výše"
 
-#: gui/mrvHotkey.cpp:350
+#: gui/mrvHotkey.cpp:354
 msgid "Update Frame in Cache"
 msgstr "Aktualizujte rámec v mezipaměti"
 
@@ -8587,6 +8610,7 @@ msgstr "Vector3 Celé číslo"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1097
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1398
+#: gui/mrvImageView.cpp:4973
 msgid "Vectorscope"
 msgstr "Vektoroskop"
 
@@ -8598,19 +8622,19 @@ msgstr "Prodejce:\t"
 msgid "Version Regex"
 msgstr "Verze ExpReg."
 
-#: gui/mrvImageView.cpp:5046 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5078 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "Verze/za prvé"
 
-#: gui/mrvImageView.cpp:5055 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5087 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "Verze/Poslední"
 
-#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5081 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "Verze/Následující"
 
-#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5083 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "Verze/Předchozí"
 
@@ -8687,7 +8711,7 @@ msgstr "otočit video"
 msgid "Video timecode attribute already exists"
 msgstr "Atribut časového kódu videa již existuje"
 
-#: gui/mrvImageView.cpp:5200
+#: gui/mrvImageView.cpp:5232
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Video/Stopa #%d – %s"
@@ -8700,45 +8724,45 @@ msgstr "Pohled"
 msgid "View Window"
 msgstr "Zobrazit okno"
 
-#: gui/mrvImageView.cpp:4970
+#: gui/mrvImageView.cpp:5002
 msgid "View/Data Window"
 msgstr "Pohled/Datové okno"
 
-#: gui/mrvImageView.cpp:4967
+#: gui/mrvImageView.cpp:4999
 msgid "View/Display Window"
 msgstr "Pohled/zobrazovací okno"
 
-#: gui/mrvImageView.cpp:5009
+#: gui/mrvImageView.cpp:5041
 msgid "View/Grid/Size"
 msgstr "Pohled/Mřížka/Velikost"
 
-#: gui/mrvImageView.cpp:5005
+#: gui/mrvImageView.cpp:5037
 msgid "View/Grid/Toggle Selected"
 msgstr "Pohled/Mřížka/Výměna"
 
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5053
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Pohled/hud/%s"
 
-#: gui/mrvImageView.cpp:5013
+#: gui/mrvImageView.cpp:5045
 msgid "View/Hud/Toggle Selected"
 msgstr "Pohled/hud/Swap Selected"
 
-#: gui/mrvImageView.cpp:4996
+#: gui/mrvImageView.cpp:5028
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Pohled/Maska/%s"
 
-#: gui/mrvImageView.cpp:4964
+#: gui/mrvImageView.cpp:4996
 msgid "View/Safe Areas"
 msgstr "Pohled/Zabezpečené oblasti"
 
-#: gui/mrvImageView.cpp:4973
+#: gui/mrvImageView.cpp:5005
 msgid "View/Texture Filtering  "
 msgstr "Pohled/Filtrování textur  "
 
-#: gui/mrvImageView.cpp:4982
+#: gui/mrvImageView.cpp:5014
 msgid "View/Toggle Action Dock"
 msgstr "Pohled/Swap Action Dock"
 
@@ -8771,6 +8795,7 @@ msgstr "Hudba WAVE"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1183
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1399
+#: gui/mrvImageView.cpp:4975
 msgid "Waveform"
 msgstr "Průběh"
 
@@ -9066,11 +9091,11 @@ msgstr "šířka klipu"
 msgid "Window Behavior"
 msgstr "Chování okna"
 
-#: gui/mrvImageView.cpp:4955
+#: gui/mrvImageView.cpp:4987
 msgid "Windows/"
 msgstr "Okna/"
 
-#: gui/mrvHotkey.cpp:333
+#: gui/mrvHotkey.cpp:337
 msgid "Wipe"
 msgstr "otřít"
 
@@ -9274,7 +9299,7 @@ msgstr "Sug. YUV"
 msgid "YUVA Support:\t"
 msgstr "Podpora YUVA:\t"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -9298,7 +9323,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Nemůžete nahrát kotouč jako stereo obrázek."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9841
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9874
 msgid "Z"
 msgstr "Z"
 
@@ -9648,47 +9673,47 @@ msgstr "mrv::Frame Žádná data pixelů ke změně"
 msgid "original"
 msgstr "originál"
 
-#: gui/mrvHotkey.cpp:472
+#: gui/mrvHotkey.cpp:477
 msgid "pad0"
 msgstr "Numerická klávesnice 0"
 
-#: gui/mrvHotkey.cpp:474
+#: gui/mrvHotkey.cpp:479
 msgid "pad1"
 msgstr "Numerická klávesnice 1"
 
-#: gui/mrvHotkey.cpp:475
+#: gui/mrvHotkey.cpp:480
 msgid "pad2"
 msgstr "Numerická klávesnice 2"
 
-#: gui/mrvHotkey.cpp:476
+#: gui/mrvHotkey.cpp:481
 msgid "pad3"
 msgstr "Numerická klávesnice 3"
 
-#: gui/mrvHotkey.cpp:477
+#: gui/mrvHotkey.cpp:482
 msgid "pad4"
 msgstr "Numerická klávesnice 4"
 
-#: gui/mrvHotkey.cpp:478
+#: gui/mrvHotkey.cpp:483
 msgid "pad5"
 msgstr "Numerická klávesnice 5"
 
-#: gui/mrvHotkey.cpp:480
+#: gui/mrvHotkey.cpp:485
 msgid "pad6"
 msgstr "Numerická klávesnice 6"
 
-#: gui/mrvHotkey.cpp:481
+#: gui/mrvHotkey.cpp:486
 msgid "pad7"
 msgstr "Numerická klávesnice 7"
 
-#: gui/mrvHotkey.cpp:482
+#: gui/mrvHotkey.cpp:487
 msgid "pad8"
 msgstr "Numerická klávesnice 8"
 
-#: gui/mrvHotkey.cpp:483
+#: gui/mrvHotkey.cpp:488
 msgid "pad9"
 msgstr "Numerická klávesnice 9"
 
-#: gui/mrvHotkey.cpp:471
+#: gui/mrvHotkey.cpp:476
 msgid "padEnter"
 msgstr "Zadejte numerickou klávesnici"
 
@@ -9821,6 +9846,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1789
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Quit"
+#~ msgstr "Archiv/Odejít"
 
 #~ msgid "Not a GLTextShape pointer in position"
 #~ msgstr "Na pozici není ukazatel na GLPathShape"

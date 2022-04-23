@@ -4934,7 +4934,8 @@ bool PointInTriangle (const Imath::V2i& pt,
      if ( dynamic_cast< Fl_Menu_Bar* >( menu ) )
      {
          item->flags |= FL_MENU_DIVIDER;
-         menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
+         menu->add( _("File/Quit"), kQuitProgram.hotkey(),
+                    (Fl_Callback*)exit_cb, uiMain );
      }
 
 
@@ -4952,8 +4953,39 @@ bool PointInTriangle (const Imath::V2i& pt,
              tmp = tmp.substr( 0, pos ) + '\\' +
                    tmp.substr( pos, tmp.size() );
          }
+         unsigned hotkey = 0;
+         if ( tmp == _("Reels") ) hotkey = kToggleReel.hotkey();
+         else if ( tmp == _("Media Info") ) hotkey = kToggleMediaInfo.hotkey();
+         else if ( tmp == _("Color Info") ) hotkey = kToggleColorInfo.hotkey();
+         else if ( tmp == _("Color Controls") )
+             hotkey = kToggleColorControls.hotkey();
+         else if ( tmp == _("Action Tools") ) hotkey = kToggleAction.hotkey();
+         else if ( tmp == _("A-B, Stereo 3D Options") )
+             hotkey = kToggleStereoOptions.hotkey();
+         else if ( tmp == _("Preferences") )
+             hotkey = kTogglePreferences.hotkey();
+         else if ( tmp == _("EDL Edit") )
+             hotkey = kToggleEDLEdit.hotkey();
+         else if ( tmp == _("3dView") )
+             hotkey = kToggle3dView.hotkey();
+         else if ( tmp == _("Histogram") )
+             hotkey = kToggleHistogram.hotkey();
+         else if ( tmp == _("Vectorscope") )
+             hotkey = kToggleVectorscope.hotkey();
+         else if ( tmp == _("Waveform") )
+             hotkey = kToggleWaveform.hotkey();
+         else if ( tmp == _("ICC Profiles") )
+             hotkey = kToggleICCProfiles.hotkey();
+         else if ( tmp == _("Connections") )
+             hotkey = kToggleConnections.hotkey();
+         else if ( tmp == _("Hotkeys") )
+             hotkey = kToggleHotkeys.hotkey();
+         else if ( tmp == _("Logs") )
+             hotkey = kToggleLogs.hotkey();
+         else if ( tmp == _("About") )
+             hotkey = kToggleAbout.hotkey();
          tmp = _("Windows/") + tmp;
-         menu->add( tmp.c_str(), 0, (Fl_Callback*)window_cb, uiMain );
+         menu->add( tmp.c_str(), hotkey, (Fl_Callback*)window_cb, uiMain );
      }
 
 
@@ -5532,6 +5564,7 @@ int ImageView::leftMouseDown(int x, int y)
                                    r, g, b );
                     w->textfont( mrv::font_current );
                     w->textsize( mrv::font_size * zoom() );
+                    w->font_size( mrv::font_size * zoom() );
                     w->textcolor( fl_rgb_color( r, g, b ) );
 
                     this->add( w );

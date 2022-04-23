@@ -132,7 +132,7 @@ namespace mrv {
         if ( text && strlen(text) > 0 )
         {
             s->font( textfont() );
-            s->size( textsize() / view->zoom() );
+            s->size( font_size() / view->zoom() );
             s->text( text );
 
             mrv::media fg = view->foreground();
@@ -143,9 +143,9 @@ namespace mrv {
 
             fl_font( textfont(), textsize() );
             const Fl_Boxtype& b = box();
-            double xf = x() + Fl::box_dx(b) + kCrossSize;
+            double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
             double yf = y() + Fl::box_dy(b) + kCrossSize + fl_height() -
-                        fl_descent();
+                        fl_descent() - 1;
 
             view->data_window_coordinates( img, xf, yf );
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-04-23 08:39-0300\n"
+"POT-Creation-Date: 2022-04-23 11:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Dosyada ses yok"
 
-#: gui/mrvImageView.cpp:5845
+#: gui/mrvImageView.cpp:5878
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Kullanma "
 msgid "  Choosing "
 msgstr "  ayıklamak "
 
-#: gui/mrvImageView.cpp:5850
+#: gui/mrvImageView.cpp:5883
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -174,7 +174,7 @@ msgstr " ile başarısız "
 msgid " failed. "
 msgstr " arıza. "
 
-#: gui/mrvImageView.cpp:9218
+#: gui/mrvImageView.cpp:9251
 msgid " for channel.  Maximum: "
 msgstr " kanal için. Maksimum: "
 
@@ -507,8 +507,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9192 gui/mrvImageView.cpp:9877
-#: gui/mrvImageView.cpp:9878 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9225 gui/mrvImageView.cpp:9910
+#: gui/mrvImageView.cpp:9911 gui/mrvImageView.cpp:9919
 msgid "(no image)"
 msgstr "(resimsiz)"
 
@@ -578,7 +578,7 @@ msgstr ". Nitelik, attr=değer biçiminde olmalıdır."
 msgid ".  Saving pixel type is "
 msgstr ". Kaydedilecek piksel türü: "
 
-#: gui/mrvImageView.cpp:9219
+#: gui/mrvImageView.cpp:9252
 msgid ". Widget label is "
 msgstr ". Widget etiketi "
 
@@ -916,22 +916,23 @@ msgid "3d View"
 msgstr "3d görünüm"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1396
+#: gui/mrvImageView.cpp:4969
 msgid "3dView"
 msgstr "3 boyutlu görünüm"
 
-#: gui/mrvHotkey.cpp:306
+#: gui/mrvHotkey.cpp:309
 msgid "3dView Density Down"
 msgstr "Düşük 3D Görünüm Yoğunluğu"
 
-#: gui/mrvHotkey.cpp:305
+#: gui/mrvHotkey.cpp:308
 msgid "3dView Density Up"
 msgstr "3D Görünüm Yoğunluğunu Yükselt"
 
-#: gui/mrvHotkey.cpp:304
+#: gui/mrvHotkey.cpp:307
 msgid "3dView Z Depth Down"
 msgstr "3B Görünümün Alt Z Derinliği"
 
-#: gui/mrvHotkey.cpp:303
+#: gui/mrvHotkey.cpp:306
 msgid "3dView Z Depth Up"
 msgstr "3B Görünümün Z Derinliğini Yükselt"
 
@@ -1030,7 +1031,7 @@ msgstr "@>"
 msgid "@>|"
 msgstr "@>|"
 
-#: gui/mrvHotkey.cpp:591
+#: gui/mrvHotkey.cpp:596
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.İşlev\t@B12@C7@b@.Anahtarlar"
 
@@ -1065,6 +1066,7 @@ msgstr ""
 "Örnekler:\n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1395
+#: gui/mrvImageView.cpp:4963
 msgid "A-B, Stereo 3D Options"
 msgstr "Stereo 3D, AB Seçenekleri"
 
@@ -1100,6 +1102,7 @@ msgid "AVI Movie"
 msgstr "avi filmi"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1405
+#: gui/mrvImageView.cpp:4985
 msgid "About"
 msgstr "mrViewer hakkında"
 
@@ -1131,6 +1134,7 @@ msgstr "Hareketler"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1168
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1394
+#: gui/mrvImageView.cpp:4962
 msgid "Action Tools"
 msgstr "Eylem Araçları"
 
@@ -1152,7 +1156,7 @@ msgstr "Aktif/Biraz yavaş olabilen tüm renk düzeltmelerini devre dışı bır
 msgid "Active"
 msgstr "Aktif"
 
-#: gui/mrvHotkey.cpp:487
+#: gui/mrvHotkey.cpp:492
 msgid "Add"
 msgstr "Ekle"
 
@@ -1253,8 +1257,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 
 #: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9310
-#: gui/mrvImageView.cpp:9778 gui/mrvImageView.cpp:9840
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:215 gui/mrvImageView.cpp:9343
+#: gui/mrvImageView.cpp:9811 gui/mrvImageView.cpp:9873
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1264,7 +1268,7 @@ msgstr "sadece alfa"
 
 #: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:216 gui/mrvImageView.cpp:2158
-#: gui/mrvImageView.cpp:9291 gui/mrvImageView.cpp:9841
+#: gui/mrvImageView.cpp:9324 gui/mrvImageView.cpp:9874
 msgid "Alpha Overlay"
 msgstr "Alfa Üst Baskı"
 
@@ -1331,11 +1335,11 @@ msgstr ""
 "Ayrıntı çıkarma miktarı.\n"
 "Yalnızca 1:1 kod çözme sırasında kullanılabilir."
 
-#: gui/mrvHotkey.cpp:336
+#: gui/mrvHotkey.cpp:340
 msgid "Annotation Frame Step Backwards"
 msgstr "Geri Açıklama Kutusu Adımı"
 
-#: gui/mrvHotkey.cpp:340
+#: gui/mrvHotkey.cpp:344
 msgid "Annotation Frame Step Forwards"
 msgstr "Adım Puanlama Kutusu İleri"
 
@@ -1403,7 +1407,7 @@ msgstr "Alan"
 msgid "Area Select Tool"
 msgstr "Alan Seçim Aracı"
 
-#: gui/mrvHotkey.cpp:381
+#: gui/mrvHotkey.cpp:385
 msgid "Area Selection Mode"
 msgstr "Alan Seçim Modu"
 
@@ -1411,7 +1415,7 @@ msgstr "Alan Seçim Modu"
 msgid "Arrow"
 msgstr "Ok"
 
-#: gui/mrvHotkey.cpp:386
+#: gui/mrvHotkey.cpp:390
 msgid "Arrow Mode"
 msgstr "Ok modu"
 
@@ -1428,7 +1432,7 @@ msgstr "En Boy Oranı"
 msgid "Aspect ratio of clip"
 msgstr "Klip En Boy Oranı"
 
-#: gui/mrvHotkey.cpp:400
+#: gui/mrvHotkey.cpp:404
 msgid "Attach Audio File"
 msgstr "Ses Dosyasını İlişkilendir"
 
@@ -1507,15 +1511,15 @@ msgstr "Ses paketi bilinmiyor, arama veya ön kayıt bekleniyor"
 msgid "Audio packets empty at end of seek"
 msgstr "Aramanın sonunda boş ses paketleri"
 
-#: gui/mrvImageView.cpp:5249
+#: gui/mrvImageView.cpp:5281
 msgid "Audio/Attach Audio File"
 msgstr "Ses/Ses Dosyası Ekle"
 
-#: gui/mrvImageView.cpp:5254
+#: gui/mrvImageView.cpp:5286
 msgid "Audio/Detach Audio File"
 msgstr "Ses/Ses Dosyasının İlişkisini Kes"
 
-#: gui/mrvImageView.cpp:5251
+#: gui/mrvImageView.cpp:5283
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Ses/Ses Başlangıç Çerçevesini Düzenle"
 
@@ -1584,7 +1588,7 @@ msgstr "MAVİ"
 msgid "BRAW Loading"
 msgstr "BRAW yükleniyor"
 
-#: gui/mrvHotkey.cpp:439
+#: gui/mrvHotkey.cpp:444
 msgid "BackSpace"
 msgstr "Geri Sil"
 
@@ -1673,8 +1677,8 @@ msgstr "karışım modu"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9305
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:214 gui/mrvImageView.cpp:9338
+#: gui/mrvImageView.cpp:9872
 msgid "Blue"
 msgstr "Mavi"
 
@@ -1698,7 +1702,7 @@ msgstr "Boost İstisnası: "
 msgid "Both"
 msgstr "Bunların her ikisi de"
 
-#: gui/mrvImageView.cpp:11154
+#: gui/mrvImageView.cpp:11187
 msgid "Bottom"
 msgstr "daha düşük"
 
@@ -1865,7 +1869,7 @@ msgstr "Görüntüleri değiştiremiyorum. Ön plan ve arka plan görüntüsü a
 msgid "Canon Raw Picture"
 msgstr "Canon Ham Görüntü"
 
-#: gui/mrvHotkey.cpp:463
+#: gui/mrvHotkey.cpp:468
 msgid "CapsLock"
 msgstr "kilit Vardiya."
 
@@ -1889,7 +1893,7 @@ msgstr "Kategori"
 msgid "Center"
 msgstr "merkez"
 
-#: gui/mrvHotkey.cpp:325
+#: gui/mrvHotkey.cpp:329
 msgid "Center Image"
 msgstr "Resmi Ortala"
 
@@ -1956,7 +1960,7 @@ msgstr "Cinyon Görüntüsü"
 msgid "Circle"
 msgstr "Daire"
 
-#: gui/mrvHotkey.cpp:388
+#: gui/mrvHotkey.cpp:392
 msgid "Circle Mode"
 msgstr "Daire modu"
 
@@ -1973,7 +1977,7 @@ msgstr "Şehir"
 msgid "Clear"
 msgstr "Sil"
 
-#: gui/mrvHotkey.cpp:349
+#: gui/mrvHotkey.cpp:353
 msgid "Clear Image Cache"
 msgstr "Görüntü Önbelleğini Temizle"
 
@@ -1993,7 +1997,7 @@ msgstr "klip sıkıştırma"
 msgid "Clip is a sequence of frames"
 msgstr "Klip bir kareler dizisidir."
 
-#: gui/mrvHotkey.cpp:404
+#: gui/mrvHotkey.cpp:408
 msgid "Clone Image"
 msgstr "Resmi Klonla"
 
@@ -2072,7 +2076,7 @@ msgstr "Daraltılabilir grup bulunamadı"
 #: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
 #: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:2195 gui/mrvImageView.cpp:2257
-#: gui/mrvImageView.cpp:9838 gui/mrvImageView.cpp:9886
+#: gui/mrvImageView.cpp:9871 gui/mrvImageView.cpp:9919
 msgid "Color"
 msgstr "Renk"
 
@@ -2081,10 +2085,12 @@ msgid "Color Area"
 msgstr "Renk Alanı"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1392
+#: gui/mrvImageView.cpp:4960
 msgid "Color Controls"
 msgstr "Renk kontrolleri"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1391
+#: gui/mrvImageView.cpp:4959
 msgid "Color Info"
 msgstr "Renk Alanı Bilgileri"
 
@@ -2112,7 +2118,7 @@ msgstr "renk teması"
 msgid "Color Version"
 msgstr "renkli versiyon"
 
-#: gui/mrvImageView.cpp:9127
+#: gui/mrvImageView.cpp:9160
 msgid "Color channel not found at index "
 msgstr "Dizin için renk kanalı bulunamadı "
 
@@ -2193,6 +2199,7 @@ msgstr "Bağlı "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1401
+#: gui/mrvImageView.cpp:4979
 msgid "Connections"
 msgstr "bağlantılar"
 
@@ -2234,11 +2241,11 @@ msgstr ""
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Dönüşüm gerekli. Aralık: 1.0"
 
-#: gui/mrvHotkey.cpp:402
+#: gui/mrvHotkey.cpp:406
 msgid "Copy Frame, X, Y Values"
 msgstr "Kutu Değerlerini Kopyala, X ve Y"
 
-#: gui/mrvHotkey.cpp:403
+#: gui/mrvHotkey.cpp:407
 msgid "Copy RGBA Values"
 msgstr "RGBA Değerlerini Kopyala"
 
@@ -2996,7 +3003,7 @@ msgid "DWAB"
 msgstr "DWAB"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1360
-#: gui/mrvHotkey.cpp:332 gui/mrvImageInformation.cpp:2902
+#: gui/mrvHotkey.cpp:336 gui/mrvImageInformation.cpp:2902
 msgid "Data Window"
 msgstr "Veri Penceresi"
 
@@ -3008,7 +3015,7 @@ msgstr "Veri Penceresi 2"
 msgid "Data Window of Clip"
 msgstr "Klip Veri Penceresi"
 
-#: gui/mrvHotkey.cpp:489
+#: gui/mrvHotkey.cpp:494
 msgid "Decimal"
 msgstr "Ondalık"
 
@@ -3106,7 +3113,7 @@ msgstr "mrViewer'ı açarken ses hatası."
 msgid "Defaults"
 msgstr "Varsayılan"
 
-#: gui/mrvHotkey.cpp:450
+#: gui/mrvHotkey.cpp:455
 msgid "Delete"
 msgstr "Sil"
 
@@ -3202,7 +3209,7 @@ msgid "Display Gamma of Image"
 msgstr "Görüntü Görüntüleme Aralığı"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1346
-#: gui/mrvHotkey.cpp:331 gui/mrvImageInformation.cpp:2916
+#: gui/mrvHotkey.cpp:335 gui/mrvImageInformation.cpp:2916
 msgid "Display Window"
 msgstr "ekran penceresi"
 
@@ -3232,7 +3239,7 @@ msgstr "Karşılık"
 msgid "Disposition of Track"
 msgstr "Parça Düzeni"
 
-#: gui/mrvHotkey.cpp:490
+#: gui/mrvHotkey.cpp:495
 msgid "Divide"
 msgstr "Bölmek"
 
@@ -3250,7 +3257,7 @@ msgstr "'%s' yerine geçmek istiyor musunuz?"
 msgid "Double"
 msgstr "Çift"
 
-#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:457
+#: core/exrImage.cpp:1424 gui/mrvHotkey.cpp:462
 msgid "Down"
 msgstr "Aşağı"
 
@@ -3258,11 +3265,11 @@ msgstr "Aşağı"
 msgid "Draw"
 msgstr "O çizdi"
 
-#: gui/mrvHotkey.cpp:382
+#: gui/mrvHotkey.cpp:386
 msgid "Draw Mode"
 msgstr "Çizim Modu"
 
-#: gui/mrvHotkey.cpp:383
+#: gui/mrvHotkey.cpp:387
 msgid "Draw Temporary Mode"
 msgstr "Geçici Çizim Modu"
 
@@ -3314,6 +3321,7 @@ msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1140
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1393
+#: gui/mrvImageView.cpp:4967
 msgid "EDL Edit"
 msgstr "EDL'yi düzenle"
 
@@ -3329,7 +3337,7 @@ msgstr "EXR Sıkıştırma Algoritması"
 msgid "Early 35mm"
 msgstr "35mm Erken"
 
-#: gui/mrvHotkey.cpp:401
+#: gui/mrvHotkey.cpp:405
 msgid "Edit Audio Frame Offset"
 msgstr "Ses Başlangıç Çerçevesini Düzenle"
 
@@ -3385,7 +3393,7 @@ msgstr "Boş arama veya ön kayıt"
 msgid "Encoding"
 msgstr "şifreli"
 
-#: gui/mrvHotkey.cpp:451
+#: gui/mrvHotkey.cpp:456
 msgid "End"
 msgstr "Son"
 
@@ -3408,11 +3416,11 @@ msgstr ""
 msgid "Erase"
 msgstr "Sil"
 
-#: gui/mrvHotkey.cpp:384
+#: gui/mrvHotkey.cpp:388
 msgid "Erase Mode"
 msgstr "Silme Modu"
 
-#: gui/mrvHotkey.cpp:385
+#: gui/mrvHotkey.cpp:389
 msgid "Erase Temporary Mode"
 msgstr "Geçici Silme Modu"
 
@@ -3462,7 +3470,7 @@ msgstr "yazım hatası "
 msgid "Errors"
 msgstr "hatalar"
 
-#: gui/mrvHotkey.cpp:438
+#: gui/mrvHotkey.cpp:443
 msgid "Escape"
 msgstr "Kaçmak"
 
@@ -3513,11 +3521,11 @@ msgstr "Pozlama Ayarı"
 msgid "Exposure Compensation"
 msgstr "Pozlama Telafisi"
 
-#: gui/mrvHotkey.cpp:376
+#: gui/mrvHotkey.cpp:380
 msgid "Exposure Less"
 msgstr "Daha Az Pozlama"
 
-#: gui/mrvHotkey.cpp:375
+#: gui/mrvHotkey.cpp:379
 msgid "Exposure More"
 msgstr "Daha Fazla Pozlama"
 
@@ -3746,11 +3754,11 @@ msgstr "R3D SDK'yı sonlandırın"
 msgid "Finalized R3DSDK"
 msgstr "R3D SDK'yı bitirdim"
 
-#: gui/mrvHotkey.cpp:363 gui/mrvImageInformation.cpp:2809
+#: gui/mrvHotkey.cpp:367 gui/mrvImageInformation.cpp:2809
 msgid "First Frame"
 msgstr "İlk Çerçeve"
 
-#: gui/mrvHotkey.cpp:352
+#: gui/mrvHotkey.cpp:356
 msgid "First Image Version"
 msgstr "İlk Resim Versiyonu"
 
@@ -3758,11 +3766,11 @@ msgstr "İlk Resim Versiyonu"
 msgid "First frame of clip - User selected"
 msgstr "Klibin ilk karesi - Kullanıcı Seçimi"
 
-#: gui/mrvHotkey.cpp:328
+#: gui/mrvHotkey.cpp:332
 msgid "Fit All"
 msgstr "herkese uyar"
 
-#: gui/mrvHotkey.cpp:326
+#: gui/mrvHotkey.cpp:330
 msgid "Fit Screen"
 msgstr "Çerçeve Ekranı"
 
@@ -3786,11 +3794,11 @@ msgstr "İntegral Parça Tanımlayıcı"
 msgid "Flash Movie"
 msgstr "flaş film"
 
-#: gui/mrvHotkey.cpp:334
+#: gui/mrvHotkey.cpp:338
 msgid "Flip X"
 msgstr "X'i çevir"
 
-#: gui/mrvHotkey.cpp:335
+#: gui/mrvHotkey.cpp:339
 msgid "Flip Y"
 msgstr "Y-Flip"
 
@@ -3857,7 +3865,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1421
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11152
+#: gui/mrvImageView.cpp:11185
 msgid "Frame"
 msgstr "Çerçeve"
 
@@ -3882,19 +3890,19 @@ msgstr "Çerçeve Aralığı"
 msgid "Frame Start"
 msgstr "Başlangıç Kutusu"
 
-#: gui/mrvHotkey.cpp:338
+#: gui/mrvHotkey.cpp:342
 msgid "Frame Step Backwards"
 msgstr "Çerçeve Geri Adım"
 
-#: gui/mrvHotkey.cpp:339
+#: gui/mrvHotkey.cpp:343
 msgid "Frame Step FPS Backwards"
 msgstr "Çerçeve Geri Adım FPS"
 
-#: gui/mrvHotkey.cpp:342
+#: gui/mrvHotkey.cpp:346
 msgid "Frame Step FPS Forwards"
 msgstr "Çerçeve Adım İleri FPS"
 
-#: gui/mrvHotkey.cpp:341
+#: gui/mrvHotkey.cpp:345
 msgid "Frame Step Forwards"
 msgstr "Çerçeve Bir Adım İleri"
 
@@ -4043,11 +4051,11 @@ msgstr "Aralık Tablosu 2.4"
 msgid "Gamma Curve"
 msgstr "Gama Eğrisi"
 
-#: gui/mrvHotkey.cpp:397
+#: gui/mrvHotkey.cpp:401
 msgid "Gamma Less"
 msgstr "daha az menzil"
 
-#: gui/mrvHotkey.cpp:396
+#: gui/mrvHotkey.cpp:400
 msgid "Gamma More"
 msgstr "Daha Fazla Aralık"
 
@@ -4099,8 +4107,8 @@ msgstr "Yunan (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9300
-#: gui/mrvImageView.cpp:9839
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:213 gui/mrvImageView.cpp:9333
+#: gui/mrvImageView.cpp:9872
 msgid "Green"
 msgstr "Yeşil"
 
@@ -4229,14 +4237,15 @@ msgstr "Tam zaman çizelgesinde işaretlendi"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1084
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1397
+#: gui/mrvImageView.cpp:4971
 msgid "Histogram"
 msgstr "histogram"
 
-#: gui/mrvHotkey.cpp:447
+#: gui/mrvHotkey.cpp:452
 msgid "Home"
 msgstr "Başlama"
 
-#: gui/mrvHotkey.cpp:648
+#: gui/mrvHotkey.cpp:653
 #, c-format
 msgid ""
 "Hotkey \"%s\" already used in \"%s\".\n"
@@ -4256,6 +4265,7 @@ msgstr "Yönetim Anahtarları:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1403
+#: gui/mrvImageView.cpp:4981
 msgid "Hotkeys"
 msgstr "Yönetim anahtarları"
 
@@ -4299,6 +4309,7 @@ msgstr "ICC Profili"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2775
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1400
+#: gui/mrvImageView.cpp:4977
 msgid "ICC Profiles"
 msgstr "ICC profilleri"
 
@@ -4376,7 +4387,7 @@ msgstr "resim"
 msgid "Image \""
 msgstr "Resim \""
 
-#: gui/mrvHotkey.cpp:319
+#: gui/mrvHotkey.cpp:324
 msgid "Image CTL script"
 msgstr "CTL Yazma Resmi"
 
@@ -4388,7 +4399,7 @@ msgstr "Görüntü Önbellek Boyutu"
 msgid "Image Channels"
 msgstr "Görüntü Kanalları"
 
-#: gui/mrvHotkey.cpp:318
+#: gui/mrvHotkey.cpp:323
 msgid "Image Icc Profile"
 msgstr "Resim ICC Profili"
 
@@ -4473,32 +4484,32 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Görüntü yakınlaştırma ayarı."
 
-#: gui/mrvImageView.cpp:5127
+#: gui/mrvImageView.cpp:5159
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "resim/CTL Görünüm Modifikasyonu (LMT) Ekle"
 
-#: gui/mrvImageView.cpp:5119
+#: gui/mrvImageView.cpp:5151
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "resim/CTL Giriş Aygıtı Dönüşümü (IDT) Ata"
 
-#: gui/mrvImageView.cpp:5131
+#: gui/mrvImageView.cpp:5163
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "resim/CTL İşleme Dönüşümü (RRT) Ata"
 
-#: gui/mrvImageView.cpp:5135
+#: gui/mrvImageView.cpp:5167
 msgid "Image/Attach ICC Color Profile"
 msgstr "resim/Renk ICC Profili Ekle"
 
-#: gui/mrvImageView.cpp:5097
+#: gui/mrvImageView.cpp:5129
 msgid "Image/Clear Caches"
 msgstr "resim/Önbellekleri temizle"
 
-#: gui/mrvImageView.cpp:5073 gui/mrvImageView.cpp:5081
+#: gui/mrvImageView.cpp:5105 gui/mrvImageView.cpp:5113
 #: gui/mrvImageBrowser.cpp:4426 gui/mrvImageBrowser.cpp:4436
 msgid "Image/Clone"
 msgstr "resim/Klon"
 
-#: gui/mrvImageView.cpp:5075 gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageView.cpp:5107 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone All Channels"
 msgstr "resim/Tüm Kanalları Klonla"
 
@@ -4506,55 +4517,55 @@ msgstr "resim/Tüm Kanalları Klonla"
 msgid "Image/Media Info"
 msgstr "resim/Medya bilgisi"
 
-#: gui/mrvImageView.cpp:5142
+#: gui/mrvImageView.cpp:5174
 msgid "Image/Mirror/Horizontal"
 msgstr "resim/Ayna/Yatay"
 
-#: gui/mrvImageView.cpp:5146
+#: gui/mrvImageView.cpp:5178
 msgid "Image/Mirror/Vertical"
 msgstr "resim/Ayna/Dikey"
 
-#: gui/mrvImageView.cpp:5123
+#: gui/mrvImageView.cpp:5155
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "resim/CTL ASC_CDL SOP ve Doygunluğu Değiştirin"
 
-#: gui/mrvImageView.cpp:5062
+#: gui/mrvImageView.cpp:5094
 msgid "Image/Next"
 msgstr "resim/Takip etme"
 
-#: gui/mrvImageView.cpp:5088
+#: gui/mrvImageView.cpp:5120
 msgid "Image/Preload Caches"
 msgstr "resim/Önbellekleri önceden yükle"
 
-#: gui/mrvImageView.cpp:5064
+#: gui/mrvImageView.cpp:5096
 msgid "Image/Previous"
 msgstr "resim/Öncesi"
 
-#: gui/mrvImageView.cpp:5107
+#: gui/mrvImageView.cpp:5139
 msgid "Image/Rotate +90"
 msgstr "resim/+90 döndür"
 
-#: gui/mrvImageView.cpp:5110
+#: gui/mrvImageView.cpp:5142
 msgid "Image/Rotate -90"
 msgstr "resim/-90 döndür"
 
-#: gui/mrvImageView.cpp:5150 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5182 gui/mrvImageBrowser.cpp:4445
 msgid "Image/Set as Background"
 msgstr "resim/Arka Plan olarak ayarla"
 
-#: gui/mrvImageView.cpp:5155
+#: gui/mrvImageView.cpp:5187
 msgid "Image/Switch FG and BG"
 msgstr "resim/Ön Planı ve Arka Planı Değiştir"
 
-#: gui/mrvImageView.cpp:5158
+#: gui/mrvImageView.cpp:5190
 msgid "Image/Toggle Background"
 msgstr "resim/arka planı değiştir"
 
-#: gui/mrvImageView.cpp:5165
+#: gui/mrvImageView.cpp:5197
 msgid "Image/Toggle EDL"
 msgstr "resim/EDL'yi değiştir"
 
-#: gui/mrvImageView.cpp:5100
+#: gui/mrvImageView.cpp:5132
 msgid "Image/Update Single Frame in Cache"
 msgstr "resim/Önbellek Çerçevesini Güncelleme"
 
@@ -4638,7 +4649,7 @@ msgstr "Giriş Aygıtı Dönüşümü"
 msgid "Input color space for "
 msgstr "için Giriş Renk Alanı "
 
-#: gui/mrvHotkey.cpp:446
+#: gui/mrvHotkey.cpp:451
 msgid "Insert"
 msgstr "Sokmak"
 
@@ -4673,7 +4684,7 @@ msgstr "Geçersiz hedef profil/görüntü formatı"
 msgid "Invalid image "
 msgstr "geçersiz dizin "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9217
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9250
 msgid "Invalid index "
 msgstr "geçersiz dizin "
 
@@ -4832,11 +4843,11 @@ msgstr "Dil ve Renkler"
 msgid "Language if known"
 msgstr "eğer biliniyorsa dil"
 
-#: gui/mrvHotkey.cpp:364 gui/mrvImageInformation.cpp:2812
+#: gui/mrvHotkey.cpp:368 gui/mrvImageInformation.cpp:2812
 msgid "Last Frame"
 msgstr "son kare"
 
-#: gui/mrvHotkey.cpp:355
+#: gui/mrvHotkey.cpp:359
 msgid "Last Image Version"
 msgstr "Son Resim Sürümü"
 
@@ -4854,7 +4865,7 @@ msgstr "Enlem"
 msgid "Layer %d"
 msgstr "%d pelerin"
 
-#: gui/mrvHotkey.cpp:453
+#: gui/mrvHotkey.cpp:458
 msgid "Left"
 msgstr "Ayrıldı"
 
@@ -4874,19 +4885,19 @@ msgstr "Sol Görünüm"
 msgid "Left/right"
 msgstr "Ayrıldı/Sağ"
 
-#: gui/mrvHotkey.cpp:464
+#: gui/mrvHotkey.cpp:469
 msgid "LeftAlt"
 msgstr "Sol Alt"
 
-#: gui/mrvHotkey.cpp:460
+#: gui/mrvHotkey.cpp:465
 msgid "LeftCtrl"
 msgstr "Sol Ctrl"
 
-#: gui/mrvHotkey.cpp:466
+#: gui/mrvHotkey.cpp:471
 msgid "LeftMeta"
 msgstr "Sol Hedef"
 
-#: gui/mrvHotkey.cpp:458
+#: gui/mrvHotkey.cpp:463
 msgid "LeftShift"
 msgstr "Sol shift"
 
@@ -5055,6 +5066,7 @@ msgid "Logarithmic"
 msgstr "logaritmik"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1404
+#: gui/mrvImageView.cpp:4983
 msgid "Logs"
 msgstr "Gönderiler"
 
@@ -5094,7 +5106,7 @@ msgstr "Farenin altındaki görüntü pikseli parlaklığı."
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:217 gui/mrvImageView.cpp:2165
-#: gui/mrvImageView.cpp:9315 gui/mrvImageView.cpp:9840
+#: gui/mrvImageView.cpp:9348 gui/mrvImageView.cpp:9873
 msgid "Lumma"
 msgstr "lüme"
 
@@ -5236,6 +5248,7 @@ msgstr "Ortalama"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1111
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
+#: gui/mrvImageView.cpp:4958
 msgid "Media Info"
 msgstr "Medya bilgisi"
 
@@ -5261,7 +5274,7 @@ msgstr "Hafıza"
 msgid "Memory without Compression"
 msgstr "sıkıştırılmamış Bellek"
 
-#: gui/mrvHotkey.cpp:469
+#: gui/mrvHotkey.cpp:474
 msgid "Menu"
 msgstr "Menü"
 
@@ -5343,19 +5356,19 @@ msgstr "IPP2 işleme modu"
 msgid "Module"
 msgstr "Modül"
 
-#: gui/mrvHotkey.cpp:321
+#: gui/mrvHotkey.cpp:326
 msgid "Monitor CTL script"
 msgstr "CTL Yazma Monitörü"
 
-#: gui/mrvHotkey.cpp:320
+#: gui/mrvHotkey.cpp:325
 msgid "Monitor Icc Profile"
 msgstr "Icc Profilini İzleyin"
 
-#: gui/mrvImageView.cpp:5272
+#: gui/mrvImageView.cpp:5304
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Görüntülemek/CTL Çıktı Görüntü Dönüşümü (ODT) ekleyin"
 
-#: gui/mrvImageView.cpp:5276
+#: gui/mrvImageView.cpp:5308
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Görüntülemek/ICC Renk Profili Ekle"
 
@@ -5371,7 +5384,7 @@ msgstr "Hareket"
 msgid "Move Picture Tool"
 msgstr "Görüntü Taşıma Aracı"
 
-#: gui/mrvHotkey.cpp:391
+#: gui/mrvHotkey.cpp:395
 msgid "Move/Size Mode"
 msgstr "Hareket Modu/Tırmanmak"
 
@@ -5395,7 +5408,7 @@ msgstr ""
 msgid "Movies (*.{"
 msgstr "Filmler (*.{"
 
-#: gui/mrvHotkey.cpp:486
+#: gui/mrvHotkey.cpp:491
 msgid "Multiply"
 msgstr "Çarpmak"
 
@@ -5462,23 +5475,23 @@ msgstr "makarada bulunamadı"
 msgid "Next"
 msgstr "Sonraki"
 
-#: gui/mrvHotkey.cpp:362
+#: gui/mrvHotkey.cpp:366
 msgid "Next Channel"
 msgstr "Sonraki Kanal"
 
-#: gui/mrvHotkey.cpp:357
+#: gui/mrvHotkey.cpp:361
 msgid "Next Image"
 msgstr "Sonraki Resim"
 
-#: gui/mrvHotkey.cpp:359
+#: gui/mrvHotkey.cpp:363
 msgid "Next Image Limited"
 msgstr "Sonraki Resim Sınırlı"
 
-#: gui/mrvHotkey.cpp:354
+#: gui/mrvHotkey.cpp:358
 msgid "Next Image Version"
 msgstr "Sonraki Resim Sürümü"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -5624,31 +5637,31 @@ msgstr "Comped değil"
 msgid "Not OK"
 msgstr "Tamam değil"
 
-#: gui/mrvImageView.cpp:5775
+#: gui/mrvImageView.cpp:5808
 msgid "Not a GLArrowShape pointer"
 msgstr "GLArrowShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:7196
+#: gui/mrvImageView.cpp:7229
 msgid "Not a GLCircleShape pointer"
 msgstr "GLCircleShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5807
+#: gui/mrvImageView.cpp:5840
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "MouseRelease'de bir GLCircleShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:5747
+#: gui/mrvImageView.cpp:5780
 msgid "Not a GLErasePathShape pointer"
 msgstr "GLErasePathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5733 gui/mrvImageView.cpp:7136
+#: gui/mrvImageView.cpp:5766 gui/mrvImageView.cpp:7169
 msgid "Not a GLPathShape pointer"
 msgstr "GLPathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:5761
+#: gui/mrvImageView.cpp:5794
 msgid "Not a GLRectangleShape pointer"
 msgstr "GLRectangleShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:5791
+#: gui/mrvImageView.cpp:5824
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "MouseRelease üzerinde GLTextShape için bir işaretçi değil"
 
@@ -5696,7 +5709,7 @@ msgstr "Çocuğu tablo satırında gruplamayın "
 msgid "Nov"
 msgstr "Numara"
 
-#: gui/mrvHotkey.cpp:470
+#: gui/mrvHotkey.cpp:475
 msgid "NumLock"
 msgstr "Numara kilidi"
 
@@ -5759,7 +5772,7 @@ msgstr "EĞLENCE Renk Alanı"
 msgid "OCIO Config File"
 msgstr "OCIO Yapılandırma Dosyası"
 
-#: gui/mrvHotkey.cpp:378
+#: gui/mrvHotkey.cpp:382
 msgid "OCIO Display"
 msgstr "EĞLENCE ekranı"
 
@@ -5767,11 +5780,11 @@ msgstr "EĞLENCE ekranı"
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "Görüntüle/OCIO Görünümü veya bazı varsayılan gama ayarları"
 
-#: gui/mrvHotkey.cpp:377 gui/mrvImageInformation.cpp:3053
+#: gui/mrvHotkey.cpp:381 gui/mrvImageInformation.cpp:3053
 msgid "OCIO Input Color Space"
 msgstr "OCIO Giriş Renk Alanı"
 
-#: gui/mrvHotkey.cpp:379
+#: gui/mrvHotkey.cpp:383
 msgid "OCIO View"
 msgstr "EĞLENCE görünümü"
 
@@ -5791,15 +5804,15 @@ msgstr "OCIO ortam değişkeni mevcut değil. CTL kullanılacaktır. "
 msgid "OCIO input color space for the image"
 msgstr "Görüntünün Renk Alanı Girdisi tanımsız."
 
-#: gui/mrvImageView.cpp:5181
+#: gui/mrvImageView.cpp:5213
 msgid "OCIO/Display"
 msgstr "OCIO/Görüntüle"
 
-#: gui/mrvImageView.cpp:5177 gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4196
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Giriş Renk Alanı"
 
-#: gui/mrvImageView.cpp:5184
+#: gui/mrvImageView.cpp:5216
 msgid "OCIO/View"
 msgstr "OCIO/Görünüm"
 
@@ -5874,27 +5887,27 @@ msgstr "makarada bulunamadı"
 msgid "Once"
 msgstr "Bir kere"
 
-#: gui/mrvHotkey.cpp:310
+#: gui/mrvHotkey.cpp:313
 msgid "Open Aces Metadata File (AMF)"
 msgstr "Aces Meta Veri Dosyasını (AMF) Açın"
 
-#: gui/mrvHotkey.cpp:311
+#: gui/mrvHotkey.cpp:314
 msgid "Open Clip XML Metadata"
 msgstr "Klip XML Meta Verilerini Aç"
 
-#: gui/mrvHotkey.cpp:307
+#: gui/mrvHotkey.cpp:310
 msgid "Open Directory"
 msgstr "açık dosya"
 
-#: gui/mrvHotkey.cpp:308
+#: gui/mrvHotkey.cpp:311
 msgid "Open Movie or Sequence"
 msgstr "Filmi veya Diziyi Aç"
 
-#: gui/mrvHotkey.cpp:312 gui/mrvFileRequester.cpp:979
+#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:979
 msgid "Open Session"
 msgstr "Açık oturum"
 
-#: gui/mrvHotkey.cpp:309
+#: gui/mrvHotkey.cpp:312
 msgid "Open Single Image"
 msgstr "Sadece Bir Resmi Aç"
 
@@ -6098,15 +6111,15 @@ msgstr "PNG resim"
 msgid "PXR24"
 msgstr "PXR24"
 
-#: gui/mrvHotkey.cpp:452
+#: gui/mrvHotkey.cpp:457
 msgid "PageDown"
 msgstr "Sayfa Aşağı"
 
-#: gui/mrvHotkey.cpp:448
+#: gui/mrvHotkey.cpp:453
 msgid "PageUp"
 msgstr "Sayfa yukarı"
 
-#: gui/mrvHotkey.cpp:445
+#: gui/mrvHotkey.cpp:450
 msgid "Pause"
 msgstr "Duraklat"
 
@@ -6119,11 +6132,11 @@ msgstr "kalem rengi"
 msgid "Pen Size"
 msgstr "Kalem Boyutu"
 
-#: gui/mrvHotkey.cpp:393
+#: gui/mrvHotkey.cpp:397
 msgid "Pen Size Less"
 msgstr "Küçük Kalem Boyutu"
 
-#: gui/mrvHotkey.cpp:392
+#: gui/mrvHotkey.cpp:396
 msgid "Pen Size More"
 msgstr "En Büyük Kalem Boyutu"
 
@@ -6195,7 +6208,7 @@ msgstr "Klip Piksel Oranı"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Dalga biçiminde piksel türü doğru şekilde desteklenmiyor"
 
-#: gui/mrvImageView.cpp:5262
+#: gui/mrvImageView.cpp:5294
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "piksel/RGBA Değerlerini Panoya Kopyalayın"
 
@@ -6207,23 +6220,23 @@ msgstr "Tüm Çerçeveler"
 msgid "Play All frames without skipping even if frame rate suffers."
 msgstr "Kare hızı düşse bile her kareyi atlamadan oynatın."
 
-#: gui/mrvHotkey.cpp:343
+#: gui/mrvHotkey.cpp:347
 msgid "Play Backwards"
 msgstr "Geri çalma"
 
-#: gui/mrvHotkey.cpp:344
+#: gui/mrvHotkey.cpp:348
 msgid "Play Backwards / Change Speed"
 msgstr "Geri çalma/hızı değiştir"
 
-#: gui/mrvHotkey.cpp:346
+#: gui/mrvHotkey.cpp:350
 msgid "Play Forwards"
 msgstr "İleri Oyna"
 
-#: gui/mrvHotkey.cpp:347
+#: gui/mrvHotkey.cpp:351
 msgid "Play Forwards / Change Speed"
 msgstr "İleri Oyna/hızı değiştir"
 
-#: gui/mrvHotkey.cpp:345
+#: gui/mrvHotkey.cpp:349
 msgid "Play in Current Direction"
 msgstr "Geçerli adreste oyna"
 
@@ -6286,6 +6299,7 @@ msgstr "ICC'yi tercih et"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
+#: gui/mrvImageView.cpp:4965
 msgid "Preferences"
 msgstr "tercihler"
 
@@ -6310,7 +6324,7 @@ msgstr ""
 msgid "Preload Cache"
 msgstr "Önbelleği Önceden Yükle"
 
-#: gui/mrvHotkey.cpp:348
+#: gui/mrvHotkey.cpp:352
 msgid "Preload Image Cache"
 msgstr "Görüntü Önbelleğini Önceden Yükle"
 
@@ -6335,23 +6349,23 @@ msgstr "previz damgaları"
 msgid "Previous"
 msgstr "Öncesi"
 
-#: gui/mrvHotkey.cpp:361
+#: gui/mrvHotkey.cpp:365
 msgid "Previous Channel"
 msgstr "Önceki Kanal"
 
-#: gui/mrvHotkey.cpp:356
+#: gui/mrvHotkey.cpp:360
 msgid "Previous Image"
 msgstr "Önizleme resmi"
 
-#: gui/mrvHotkey.cpp:358
+#: gui/mrvHotkey.cpp:362
 msgid "Previous Image Limited"
 msgstr "Sınırlı Önizleme Resmi"
 
-#: gui/mrvHotkey.cpp:353
+#: gui/mrvHotkey.cpp:357
 msgid "Previous Image Version"
 msgstr "Önceki Resim Versiyonu"
 
-#: gui/mrvHotkey.cpp:442
+#: gui/mrvHotkey.cpp:447
 msgid "Print"
 msgstr "Yazdır"
 
@@ -6425,6 +6439,10 @@ msgstr "Kalite"
 #: gui/FLU/Flu_File_Chooser.cpp:575 gui/FLU/Flu_File_Chooser.cpp:582
 msgid "Quicktime Movie"
 msgstr "hızlı film"
+
+#: gui/mrvHotkey.cpp:321
+msgid "Quit Program"
+msgstr "Programdan Çık"
 
 #: standalone/main.cpp:332
 msgid "Quit mrViewer"
@@ -6563,7 +6581,7 @@ msgstr "gerçek klip genişliği"
 msgid "Rectangle"
 msgstr "Dikdörtgen"
 
-#: gui/mrvHotkey.cpp:387
+#: gui/mrvHotkey.cpp:391
 msgid "Rectangle Mode"
 msgstr "Dikdörtgen Modu"
 
@@ -6574,8 +6592,8 @@ msgstr "Dikdörtgen Aracı"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9295
-#: gui/mrvImageView.cpp:9838
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:9328
+#: gui/mrvImageView.cpp:9871
 msgid "Red"
 msgstr "kırmızı"
 
@@ -6596,7 +6614,7 @@ msgstr "Farenin altındaki görüntü pikselinin kırmızı değeri."
 msgid "Red/cyan glasses"
 msgstr "Kırmızı Lensler/camgöbeği"
 
-#: gui/mrvHotkey.cpp:395
+#: gui/mrvHotkey.cpp:399
 msgid "Redo Draw"
 msgstr "Çizimi Yeniden Yap"
 
@@ -6622,6 +6640,7 @@ msgstr "makaralar"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2975
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1389
+#: gui/mrvImageView.cpp:4957
 msgid "Reels"
 msgstr "makaralar"
 
@@ -6769,7 +6788,7 @@ msgstr "ayrılmış"
 msgid "Reset"
 msgstr "Sıfırlamak"
 
-#: gui/mrvHotkey.cpp:374
+#: gui/mrvHotkey.cpp:378
 msgid "Reset Gain/Gamma"
 msgstr "kazancı sıfırla/spektrum"
 
@@ -6784,7 +6803,7 @@ msgstr "değeri sıfırla"
 msgid "Resize Background to Match Foreground"
 msgstr "Arka Planı Önün boyutuna ölçeklendirin"
 
-#: gui/mrvHotkey.cpp:327
+#: gui/mrvHotkey.cpp:331
 msgid "Resize Main Window to Fit"
 msgstr "Ana pencereyi sığacak şekilde yeniden boyutlandırın"
 
@@ -6801,7 +6820,7 @@ msgstr "ekran koruyucuyu geri yükle"
 msgid "Restored screensaver"
 msgstr "ekran koruyucu geri yüklendi"
 
-#: gui/mrvHotkey.cpp:441
+#: gui/mrvHotkey.cpp:446
 msgid "Return"
 msgstr "giriş"
 
@@ -6817,7 +6836,7 @@ msgstr "Ayarları en son kaydedilen tercihlere geri döndürün."
 msgid "Rich Picture Format"
 msgstr "Zengin Resim Formatı Resmi"
 
-#: gui/mrvHotkey.cpp:456
+#: gui/mrvHotkey.cpp:461
 msgid "Right"
 msgstr "Doğru"
 
@@ -6835,19 +6854,19 @@ msgstr "Doğru görüş"
 msgid "Right/left"
 msgstr "Doğru/ayrıldı"
 
-#: gui/mrvHotkey.cpp:465
+#: gui/mrvHotkey.cpp:470
 msgid "RightAlt"
 msgstr "Alt Sağ"
 
-#: gui/mrvHotkey.cpp:462
+#: gui/mrvHotkey.cpp:467
 msgid "RightCtrl"
 msgstr "Sağ Ctrl"
 
-#: gui/mrvHotkey.cpp:468
+#: gui/mrvHotkey.cpp:473
 msgid "RightMeta"
 msgstr "Gol Sağ"
 
-#: gui/mrvHotkey.cpp:459
+#: gui/mrvHotkey.cpp:464
 msgid "RightShift"
 msgstr "Sağa kaydırma"
 
@@ -6855,23 +6874,23 @@ msgstr "Sağa kaydırma"
 msgid "Romanian"
 msgstr "Rumence (Română)"
 
-#: gui/mrvHotkey.cpp:389
+#: gui/mrvHotkey.cpp:393
 msgid "Rotate Canvas Mode"
 msgstr "Döndürme Modu Tuvali"
 
-#: gui/mrvHotkey.cpp:429
+#: gui/mrvHotkey.cpp:434
 msgid "Rotate Image +10 Degrees"
 msgstr "Resmi +10 derece döndür"
 
-#: gui/mrvHotkey.cpp:431
+#: gui/mrvHotkey.cpp:436
 msgid "Rotate Image +90 Degrees"
 msgstr "Resmi +90 derece döndür"
 
-#: gui/mrvHotkey.cpp:430
+#: gui/mrvHotkey.cpp:435
 msgid "Rotate Image -10 Degrees"
 msgstr "Resmi -10 derece döndür"
 
-#: gui/mrvHotkey.cpp:432
+#: gui/mrvHotkey.cpp:437
 msgid "Rotate Image -90 Degrees"
 msgstr "Resmi -90 derece döndür"
 
@@ -6916,7 +6935,7 @@ msgid "SMPTE NTSC Color Bars"
 msgstr "SMPTE NTSC Renk Çubukları"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1332
-#: gui/mrvHotkey.cpp:330
+#: gui/mrvHotkey.cpp:334
 msgid "Safe Areas"
 msgstr "Güvenli Alanlar"
 
@@ -6943,11 +6962,11 @@ msgstr "Farenin altındaki görüntünün pikselinin doygunluk değeri."
 msgid "Save"
 msgstr "Kaydet"
 
-#: gui/mrvHotkey.cpp:317
+#: gui/mrvHotkey.cpp:322
 msgid "Save Clip XML Metadata"
 msgstr "Klip XML Meta Verilerini Kaydet"
 
-#: gui/mrvHotkey.cpp:315 gui/mrvFileRequester.cpp:948
+#: gui/mrvHotkey.cpp:318 gui/mrvFileRequester.cpp:948
 msgid "Save GL Snapshot"
 msgstr "Opengl Anlık Görüntüsünü Kaydet"
 
@@ -6955,7 +6974,7 @@ msgstr "Opengl Anlık Görüntüsünü Kaydet"
 msgid "Save Hotkeys Preferences"
 msgstr "Sürüş Anahtarları Tercihlerini Kaydet"
 
-#: gui/mrvHotkey.cpp:314
+#: gui/mrvHotkey.cpp:317
 msgid "Save Image"
 msgstr "Resmi Kaydet"
 
@@ -6979,15 +6998,15 @@ msgstr "OCIO Yapılandırmasını Kaydet"
 msgid "Save Options"
 msgstr "Seçenekleri Kaydet"
 
-#: gui/mrvHotkey.cpp:313 gui/mrvFileRequester.cpp:1021
+#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:1021
 msgid "Save Reel"
 msgstr "Makarayı Kaydet"
 
-#: gui/mrvHotkey.cpp:316 gui/mrvFileRequester.cpp:947
+#: gui/mrvHotkey.cpp:319 gui/mrvFileRequester.cpp:947
 msgid "Save Sequence"
 msgstr "Sırayı Kaydet"
 
-#: gui/mrvHotkey.cpp:322 gui/mrvFileRequester.cpp:1000
+#: gui/mrvHotkey.cpp:320 gui/mrvFileRequester.cpp:1000
 msgid "Save Session"
 msgstr "Oturumu kaydet"
 
@@ -7067,7 +7086,7 @@ msgstr "şema"
 msgid "Scratched Repeat Frame"
 msgstr "İşaretli Kutuyu Tekrarla"
 
-#: gui/mrvHotkey.cpp:444
+#: gui/mrvHotkey.cpp:449
 msgid "ScrollLock"
 msgstr "Kaydırma kilidi"
 
@@ -7076,7 +7095,7 @@ msgstr "Kaydırma kilidi"
 msgid "Scrub"
 msgstr "fırçala"
 
-#: gui/mrvHotkey.cpp:380
+#: gui/mrvHotkey.cpp:384
 msgid "Scrub Mode"
 msgstr "fırçalama modu"
 
@@ -7118,11 +7137,11 @@ msgstr "saniye"
 msgid "Select Audio Track"
 msgstr "Ses Parçasını Seçin"
 
-#: gui/mrvHotkey.cpp:423
+#: gui/mrvHotkey.cpp:431
 msgid "Select Multi Image"
 msgstr "Birden Fazla Resim Seç"
 
-#: gui/mrvHotkey.cpp:422
+#: gui/mrvHotkey.cpp:430
 msgid "Select Single Image"
 msgstr "Yalnızca Bir Resim Seçin"
 
@@ -7238,15 +7257,15 @@ msgstr "Hizmetler"
 msgid "Sessions (*.{"
 msgstr "Oturumlar (*.{"
 
-#: gui/mrvHotkey.cpp:399
+#: gui/mrvHotkey.cpp:403
 msgid "Set As BG Image"
 msgstr "Arka Plan Resmi Olarak Ayarla"
 
-#: gui/mrvHotkey.cpp:405
+#: gui/mrvHotkey.cpp:409
 msgid "Set In Point"
 msgstr "Giriş Noktasını Ayarla"
 
-#: gui/mrvHotkey.cpp:406
+#: gui/mrvHotkey.cpp:410
 msgid "Set Out Point"
 msgstr "Çıkış Noktasını Ayarla"
 
@@ -7396,7 +7415,7 @@ msgstr "yazılım"
 msgid "Some default frame rate settings."
 msgstr "Bazı varsayılan oynatma hızı ayarları"
 
-#: gui/mrvHotkey.cpp:484
+#: gui/mrvHotkey.cpp:489
 msgid "Space (' ')"
 msgstr "Uzay (' ')"
 
@@ -7468,7 +7487,7 @@ msgid "Stereo eye separation"
 msgstr "Ayrımı Görüntüle"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:204
-#: gui/mrvHotkey.cpp:351
+#: gui/mrvHotkey.cpp:355
 msgid "Stop"
 msgstr "Durmak"
 
@@ -7522,15 +7541,15 @@ msgstr "Altyazı Mektubu "
 msgid "Subtitle type "
 msgstr "Altyazı Türü "
 
-#: gui/mrvImageView.cpp:5216
+#: gui/mrvImageView.cpp:5248
 msgid "Subtitle/Load"
 msgstr "Alt yazı/Şarj etmek"
 
-#: gui/mrvImageView.cpp:5224
+#: gui/mrvImageView.cpp:5256
 msgid "Subtitle/No Subtitle"
 msgstr "Alt yazı/altyazı yok"
 
-#: gui/mrvImageView.cpp:5233
+#: gui/mrvImageView.cpp:5265
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Alt yazı/Parça #%d - %s"
@@ -7549,7 +7568,7 @@ msgstr "Alt yazı (*.{"
 msgid "Subtitles are only valid on video files"
 msgstr "Altyazılar yalnızca video dosyalarında geçerlidir"
 
-#: gui/mrvHotkey.cpp:488
+#: gui/mrvHotkey.cpp:493
 msgid "Subtract"
 msgstr "çıkar"
 
@@ -7565,11 +7584,11 @@ msgstr "Çevredeki Parlaklık"
 msgid "Swedish"
 msgstr "İsveççe (svenska)"
 
-#: gui/mrvHotkey.cpp:360
+#: gui/mrvHotkey.cpp:364
 msgid "Switch Channels"
 msgstr "Kanalları Değiştir"
 
-#: gui/mrvHotkey.cpp:398
+#: gui/mrvHotkey.cpp:402
 msgid "Switch FG/BG Images"
 msgstr "Ön Plan ve Arka Plan Resimlerini Değiştirin"
 
@@ -7636,7 +7655,7 @@ msgstr "TIFF (.tif)"
 msgid "TIFF Picture"
 msgstr "TIFF resmi"
 
-#: gui/mrvHotkey.cpp:440
+#: gui/mrvHotkey.cpp:445
 msgid "Tab"
 msgstr "Sekme"
 
@@ -7660,7 +7679,7 @@ msgstr "Targa resmi"
 msgid "Text"
 msgstr "Metin"
 
-#: gui/mrvHotkey.cpp:390
+#: gui/mrvHotkey.cpp:394
 msgid "Text Mode"
 msgstr "Metin modu"
 
@@ -7677,7 +7696,7 @@ msgstr "Metin Aracı"
 msgid "Texture Units:\t"
 msgstr "Doku Birimleri:\t"
 
-#: gui/mrvHotkey.cpp:329
+#: gui/mrvHotkey.cpp:333
 msgid "TextureFiltering"
 msgstr "Doku filtreleme"
 
@@ -8019,83 +8038,87 @@ msgstr "Boya"
 msgid "Tinting of clip."
 msgstr "Klip boyama."
 
-#: gui/mrvHotkey.cpp:411
+#: gui/mrvHotkey.cpp:416
 msgid "Toggle 3D Stereo Options Window"
 msgstr "3D Stereo Seçeneklerini Değiştir Penceresi"
 
-#: gui/mrvHotkey.cpp:412
+#: gui/mrvHotkey.cpp:417
 msgid "Toggle 3D View Window"
 msgstr "3B Görünüm Penceresini Değiştir"
 
-#: gui/mrvHotkey.cpp:413
+#: gui/mrvHotkey.cpp:427
 msgid "Toggle About Window"
 msgstr "Pencereyi Değiştir Hakkında"
 
-#: gui/mrvHotkey.cpp:410
+#: gui/mrvHotkey.cpp:415
 msgid "Toggle Action Window"
 msgstr "Eylem Penceresini Değiştir"
 
-#: gui/mrvHotkey.cpp:365
+#: gui/mrvHotkey.cpp:369
 msgid "Toggle Background Composite"
 msgstr "Swap Fonu Kompozisyonu"
 
-#: gui/mrvHotkey.cpp:370
+#: gui/mrvHotkey.cpp:374
 msgid "Toggle Bottom Bar"
 msgstr "Alt Çubuğu Değiştir"
 
-#: gui/mrvHotkey.cpp:409
+#: gui/mrvHotkey.cpp:413
 msgid "Toggle Color Area Info Window"
 msgstr "Renk Alanını Değiştir Penceresi"
 
-#: gui/mrvHotkey.cpp:417
+#: gui/mrvHotkey.cpp:414
+msgid "Toggle Color Controls Window"
+msgstr "Renk Kontrolleri Penceresini Aç/Kapat"
+
+#: gui/mrvHotkey.cpp:423
 msgid "Toggle Connections Window"
 msgstr "Bağlantıları Değiştir Penceresi"
 
-#: gui/mrvHotkey.cpp:366
+#: gui/mrvHotkey.cpp:370
 msgid "Toggle EDL"
 msgstr "EDL'yi değiştir"
 
-#: gui/mrvHotkey.cpp:414
+#: gui/mrvHotkey.cpp:418
 msgid "Toggle EDL Edit Window"
 msgstr "EDL Penceresini Değiştir"
 
-#: gui/mrvHotkey.cpp:372
+#: gui/mrvHotkey.cpp:376
 msgid "Toggle Full Screen"
 msgstr "Tam ekrana geç"
 
-#: gui/mrvHotkey.cpp:415
+#: gui/mrvHotkey.cpp:419
 msgid "Toggle Histogram Window"
 msgstr "Histogram Penceresini Aç/Kapat"
 
-#: gui/mrvHotkey.cpp:418
+#: gui/mrvHotkey.cpp:425
 msgid "Toggle Hotkeys Window"
 msgstr "Yönetim Anahtarlarını Değiştirin"
 
-#: gui/mrvHotkey.cpp:416
+#: gui/mrvHotkey.cpp:428
 msgid "Toggle Hud"
 msgstr "Hud'u Değiştir"
 
-#: gui/mrvHotkey.cpp:419
+#: gui/mrvHotkey.cpp:422
 msgid "Toggle ICC Profiles Window"
 msgstr "ICC Profillerini Değiştir Penceresi"
 
-#: gui/mrvHotkey.cpp:420
+#: gui/mrvHotkey.cpp:429
 msgid "Toggle Input Color Space"
 msgstr "Girdi Renk Alanını Değiştir"
 
-#: gui/mrvHotkey.cpp:424
+#: gui/mrvHotkey.cpp:432
 msgid "Toggle LUT"
 msgstr "LUT'u değiştir"
 
-#: gui/mrvHotkey.cpp:421
+#: gui/mrvHotkey.cpp:426
 msgid "Toggle Log Window"
 msgstr "Mesajı Değiştir Penceresi"
 
-#: gui/mrvHotkey.cpp:408
+#: gui/mrvHotkey.cpp:412
 msgid "Toggle Media Info Window"
 msgstr "Orta Bilgi Penceresini Değiştir"
 
-#: gui/mrvHotkey.cpp:367
+#: gui/mrvHotkey.cpp:371
 msgid "Toggle Menu Bar"
 msgstr "Menü Çubuğunu Değiştir"
 
@@ -8108,19 +8131,19 @@ msgstr "İzin Ver Değiştir/%s"
 msgid "Toggle Modify/All"
 msgstr "İzin Ver Değiştir/Her şey"
 
-#: gui/mrvHotkey.cpp:369
+#: gui/mrvHotkey.cpp:373
 msgid "Toggle Pixel Bar"
 msgstr "Piksel Çubuğunu Değiştir"
 
-#: gui/mrvHotkey.cpp:425
+#: gui/mrvHotkey.cpp:433
 msgid "Toggle Pixel Ratio"
 msgstr "Piksel Oranını Değiştir"
 
-#: gui/mrvHotkey.cpp:426
+#: gui/mrvHotkey.cpp:424
 msgid "Toggle Preferences Window"
 msgstr "Tercihler Penceresini Aç/Kapat"
 
-#: gui/mrvHotkey.cpp:373
+#: gui/mrvHotkey.cpp:377
 msgid "Toggle Presentation"
 msgstr "Sunumu Değiştir"
 
@@ -8128,15 +8151,15 @@ msgstr "Sunumu Değiştir"
 msgid "Toggle Reel EDL in Timeline"
 msgstr "Film Rulosunu Zaman Çizelgesi'nde Değiştir"
 
-#: gui/mrvHotkey.cpp:407
+#: gui/mrvHotkey.cpp:411
 msgid "Toggle Reel Window"
 msgstr "Pencere Makaralarını Değiştir"
 
-#: gui/mrvHotkey.cpp:371
+#: gui/mrvHotkey.cpp:375
 msgid "Toggle Tool Dock"
 msgstr "Action Dock'u Değiştir"
 
-#: gui/mrvHotkey.cpp:368
+#: gui/mrvHotkey.cpp:372
 msgid "Toggle Top Bar"
 msgstr "Üst Çubuğu Değiştir"
 
@@ -8157,11 +8180,11 @@ msgstr ""
 "için 6 resimden oluşması gereken resim, bu seçenek açıkken bir küpün "
 "etrafına sarılır."
 
-#: gui/mrvHotkey.cpp:427
+#: gui/mrvHotkey.cpp:420
 msgid "Toggle Vectorscope Window"
 msgstr "Vektörskop Penceresini Değiştir"
 
-#: gui/mrvHotkey.cpp:428
+#: gui/mrvHotkey.cpp:421
 msgid "Toggle Waveform Window"
 msgstr "Dalga Formu Penceresini Aç/Kapat"
 
@@ -8177,7 +8200,7 @@ msgstr "Çıkış bağlamında çok fazla akış"
 msgid "Tooldock"
 msgstr "Eylem Yuvası"
 
-#: gui/mrvImageView.cpp:11153
+#: gui/mrvImageView.cpp:11186
 msgid "Top"
 msgstr "Daha yüksek"
 
@@ -8296,7 +8319,7 @@ msgstr "Tanımsız"
 msgid "Undefined framebuffer"
 msgstr "tanımsız çerçeve arabelleği"
 
-#: gui/mrvHotkey.cpp:394
+#: gui/mrvHotkey.cpp:398
 msgid "Undo Draw"
 msgstr "Çizimi Geri Al"
 
@@ -8448,11 +8471,11 @@ msgstr "Belirtilmemiş"
 msgid "Unsupported internal format"
 msgstr "bilinmeyen dahili biçim"
 
-#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:454
+#: core/exrImage.cpp:1428 gui/mrvHotkey.cpp:459
 msgid "Up"
 msgstr "Üstünde"
 
-#: gui/mrvHotkey.cpp:350
+#: gui/mrvHotkey.cpp:354
 msgid "Update Frame in Cache"
 msgstr "Çerçeveyi Önbellekte Güncelle"
 
@@ -8591,6 +8614,7 @@ msgstr "Vektör3 Tamsayı"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1097
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1398
+#: gui/mrvImageView.cpp:4973
 msgid "Vectorscope"
 msgstr "vektörskop"
 
@@ -8602,19 +8626,19 @@ msgstr "Satıcı:\t"
 msgid "Version Regex"
 msgstr "ExpReg sürümü."
 
-#: gui/mrvImageView.cpp:5046 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5078 gui/mrvImageBrowser.cpp:4248
 msgid "Version/First"
 msgstr "sürüm/Öncelikle"
 
-#: gui/mrvImageView.cpp:5055 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5087 gui/mrvImageBrowser.cpp:4257
 msgid "Version/Last"
 msgstr "sürüm/Son"
 
-#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5081 gui/mrvImageBrowser.cpp:4254
 msgid "Version/Next"
 msgstr "sürüm/Takip etme"
 
-#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5083 gui/mrvImageBrowser.cpp:4251
 msgid "Version/Previous"
 msgstr "sürüm/Öncesi"
 
@@ -8691,7 +8715,7 @@ msgstr "videoyu döndür"
 msgid "Video timecode attribute already exists"
 msgstr "Video Zaman Kodu özelliği zaten var"
 
-#: gui/mrvImageView.cpp:5200
+#: gui/mrvImageView.cpp:5232
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Video/Parça #%d - %s"
@@ -8704,45 +8728,45 @@ msgstr "Görünüm"
 msgid "View Window"
 msgstr "Pencereyi Görüntüle"
 
-#: gui/mrvImageView.cpp:4970
+#: gui/mrvImageView.cpp:5002
 msgid "View/Data Window"
 msgstr "Görünüm/Veri Penceresi"
 
-#: gui/mrvImageView.cpp:4967
+#: gui/mrvImageView.cpp:4999
 msgid "View/Display Window"
 msgstr "Görünüm/ekran penceresi"
 
-#: gui/mrvImageView.cpp:5009
+#: gui/mrvImageView.cpp:5041
 msgid "View/Grid/Size"
 msgstr "Görünüm/Kafes/Boyut"
 
-#: gui/mrvImageView.cpp:5005
+#: gui/mrvImageView.cpp:5037
 msgid "View/Grid/Toggle Selected"
 msgstr "Görünüm/Kafes/Değiş tokuş"
 
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5053
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Görünüm/hud/%s"
 
-#: gui/mrvImageView.cpp:5013
+#: gui/mrvImageView.cpp:5045
 msgid "View/Hud/Toggle Selected"
 msgstr "Görünüm/hud/Seçilenleri Değiştir"
 
-#: gui/mrvImageView.cpp:4996
+#: gui/mrvImageView.cpp:5028
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Görünüm/maske/%s"
 
-#: gui/mrvImageView.cpp:4964
+#: gui/mrvImageView.cpp:4996
 msgid "View/Safe Areas"
 msgstr "Görünüm/Güvenli Alanlar"
 
-#: gui/mrvImageView.cpp:4973
+#: gui/mrvImageView.cpp:5005
 msgid "View/Texture Filtering  "
 msgstr "Görünüm/Doku filtreleme  "
 
-#: gui/mrvImageView.cpp:4982
+#: gui/mrvImageView.cpp:5014
 msgid "View/Toggle Action Dock"
 msgstr "Görünüm/Action Dock'u Değiştir"
 
@@ -8775,6 +8799,7 @@ msgstr "DALGA Müzik"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1183
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1399
+#: gui/mrvImageView.cpp:4975
 msgid "Waveform"
 msgstr "dalga formu"
 
@@ -9084,11 +9109,11 @@ msgstr "klip genişliği"
 msgid "Window Behavior"
 msgstr "Pencere Davranışı"
 
-#: gui/mrvImageView.cpp:4955
+#: gui/mrvImageView.cpp:4987
 msgid "Windows/"
 msgstr "Pencereler/"
 
-#: gui/mrvHotkey.cpp:333
+#: gui/mrvHotkey.cpp:337
 msgid "Wipe"
 msgstr "silip süpürmek"
 
@@ -9292,7 +9317,7 @@ msgstr "Sug. YUV"
 msgid "YUVA Support:\t"
 msgstr "YUVA desteği:\t"
 
-#: gui/mrvHotkey.cpp:650 gui/mrvImageBrowser.cpp:1141
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1141
 #: gui/mrvImageBrowser.cpp:1364 gui/mrvImageBrowser.cpp:3324
 #: gui/mrvImageBrowser.cpp:3328 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
@@ -9317,7 +9342,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Bir makarayı stereo görüntü olarak yükleyemezsiniz."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9841
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9874
 msgid "Z"
 msgstr "Z"
 
@@ -9669,47 +9694,47 @@ msgstr "mrv::Frame Değiştirilecek piksel verisi yok"
 msgid "original"
 msgstr "orijinal"
 
-#: gui/mrvHotkey.cpp:472
+#: gui/mrvHotkey.cpp:477
 msgid "pad0"
 msgstr "Sayısal Tuş Takımı 0"
 
-#: gui/mrvHotkey.cpp:474
+#: gui/mrvHotkey.cpp:479
 msgid "pad1"
 msgstr "Sayısal Tuş Takımı 1"
 
-#: gui/mrvHotkey.cpp:475
+#: gui/mrvHotkey.cpp:480
 msgid "pad2"
 msgstr "Sayısal Tuş Takımı 2"
 
-#: gui/mrvHotkey.cpp:476
+#: gui/mrvHotkey.cpp:481
 msgid "pad3"
 msgstr "Sayısal Tuş Takımı 3"
 
-#: gui/mrvHotkey.cpp:477
+#: gui/mrvHotkey.cpp:482
 msgid "pad4"
 msgstr "Sayısal Tuş Takımı 4"
 
-#: gui/mrvHotkey.cpp:478
+#: gui/mrvHotkey.cpp:483
 msgid "pad5"
 msgstr "Sayısal Tuş Takımı 5"
 
-#: gui/mrvHotkey.cpp:480
+#: gui/mrvHotkey.cpp:485
 msgid "pad6"
 msgstr "Sayısal Tuş Takımı 6"
 
-#: gui/mrvHotkey.cpp:481
+#: gui/mrvHotkey.cpp:486
 msgid "pad7"
 msgstr "Sayısal Tuş Takımı 7"
 
-#: gui/mrvHotkey.cpp:482
+#: gui/mrvHotkey.cpp:487
 msgid "pad8"
 msgstr "Sayısal Tuş Takımı 8"
 
-#: gui/mrvHotkey.cpp:483
+#: gui/mrvHotkey.cpp:488
 msgid "pad9"
 msgstr "Sayısal Tuş Takımı 9"
 
-#: gui/mrvHotkey.cpp:471
+#: gui/mrvHotkey.cpp:476
 msgid "padEnter"
 msgstr "Sayısal Tuş Takımını Girin"
 
@@ -9842,6 +9867,9 @@ msgstr "x9"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.3.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1789
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
+
+#~ msgid "Quit"
+#~ msgstr "Arşiv/Çıkmak"
 
 #~ msgid "Not a GLTextShape pointer in position"
 #~ msgstr "Konumda GLPathShape için bir işaretçi değil"
