@@ -21,6 +21,7 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	- Added shortcut hotkey display to Windows menu.
 	- Added hotkey selection for colors control window.
 	- Added hotkey selection for quit program.
+	- Fixed menus in menubar not updating the hotkey shortcuts when changed.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.

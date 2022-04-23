@@ -318,7 +318,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
     HotkeyEntry( _("Save Sequence"), kSaveSequence),
     HotkeyEntry( _("Save Session"), kSaveSession, true),
-    HotkeyEntry( _("Quit Program"), kQuitProgram),
+    HotkeyEntry( _("Quit Program"), kQuitProgram, true),
     HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
     HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
     HotkeyEntry( _("Image CTL script"), kCTLScript ),

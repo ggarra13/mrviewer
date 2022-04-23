@@ -1090,6 +1090,11 @@ std::string save_reel( const char* startdir,
 
         HotkeyUI* h = uiMain->uiHotkey;
         h->uiHotkeyFile->value( mrv::Preferences::hotkeys_file.c_str() );
+
+        // Update menubar in case some hotkey shortcut changed
+        ImageView* view = uiMain->uiView;
+
+        view->fill_menu( uiMain->uiMenuBar );
     }
 
 
