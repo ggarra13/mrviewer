@@ -12,7 +12,6 @@ namespace mrv {
 
     const int kCrossSize = 10;
 
-static char* underline_at;
 
 /* If called with maxbuf==0, use an internally allocated buffer and enlarge it as needed.
  Otherwise, use buf as buffer but don't go beyond its length of maxbuf.
@@ -20,7 +19,6 @@ static char* underline_at;
     static const char* expand_text_(const char* from, char*& buf, int maxbuf, double maxw, int& n,
                                     double &width, int wrap, int draw_symbols) {
         char* e = buf+(maxbuf-4);
-        underline_at = 0;
         double w = 0;
         static int l_local_buff = 500;
         static char *local_buf = (char*)malloc(l_local_buff); // initial buffer allocation
@@ -82,8 +80,7 @@ static char* underline_at;
         int W = 0;
 
         for (p = str, lines=1; p;) {
-            e = expand_text_(p, linebuf, 0, w, buflen, width,
-                             w != 0, draw_symbols);
+            e = mrv::expand_text_(p, linebuf, 0, w, buflen, width, 0, 0);
             if ((int)ceil(width) > W) W = (int)ceil(width);
             if ( *(e-1) == '\n' ) lines++;
             if (!*e ) break;
@@ -144,32 +141,29 @@ static char* underline_at;
             CMedia* img = fg->image();
             if (!img) return 0;
 
-            ret = 1;
-            const Fl_Boxtype b = box();
-            double xf = x() + Fl::box_dx(b) + kCrossSize + 1;
-            double yf = y() + Fl::box_dy(b) + textsize() +
-                        kCrossSize - 5;
+            fl_font( textfont(), textsize() );
+            const Fl_Boxtype& b = box();
+            double xf = x() + Fl::box_dx(b) + kCrossSize;
+            double yf = y() + Fl::box_dy(b) + kCrossSize + fl_height() -
+                        fl_descent();
 
             view->data_window_coordinates( img, xf, yf );
 
             yf = -yf;
 
-            const mrv::Recti& daw = img->data_window();
-            xf += daw.x();
-            yf -= daw.y();
-
             s->pts[0].x = xf;
             s->pts[0].y = yf;
+            ret = 1;
         }
         else
         {
-            ret = 0;
             shapes.pop_back();
             if ( shapes.empty() )
             {
                 view->main()->uiPaint->uiUndoDraw->deactivate();
                 view->main()->uiUndoDraw->deactivate();
             }
+            ret = 0;
         }
 
         window()->remove( this );
@@ -199,8 +193,13 @@ static char* underline_at;
                     }
                     return 1;
                 }
-                // Adjust Fl::event_x() to compensate for cross
-                if ( Fl::event_inside(this) ) Fl::e_x -= kCrossSize;
+                // Adjust Fl::event_x() to compensate for cross.
+                // This is needed so cursor is placed properly in text window.
+                if ( Fl::event_inside(this) )
+                {
+                    Fl::e_x -= kCrossSize;
+                    Fl::e_y -= kCrossSize;
+                }
             }
             break;
         }
@@ -218,10 +217,18 @@ static char* underline_at;
         const int ret = Fl_Multiline_Input::handle( e );
         if ( e == FL_KEYBOARD )
         {
+            int rawkey = Fl::event_key();
+            // If user pressed ESC, cancel the text input.
+            if ( rawkey == FL_Escape )
+            {
+                value("");
+                accept();
+                return 1;
+            }
             int W = 0, H = 0;
             fl_font( textfont(), textsize() );
-            measure( value(), W, H );
-            W += kCrossSize * 2 + 10;
+            mrv::measure( value(), W, H );
+            W += kCrossSize * 2 + 10;  // use 10 for padding and cursor.
             H += kCrossSize * 2;
             size( W, H );
             redraw();

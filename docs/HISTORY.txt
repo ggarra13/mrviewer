@@ -10,6 +10,12 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	- Made Next Annotation and Previous Annotation (Shift + Right arrow key
 	  and Shift + Left key respectively by default), not loop through the
 	  timeline.
+	- Made ESC (Escape) key cancel text composing when text tool is active,
+	  instead of exiting the program.
+	- Made text composing and opengl text drawing match more closely, even
+	  with different fonts from default.  Note that there still some
+	  offset issues and scaling issues when zoom factor is fractional, as
+	  text size cannot be floating point.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.
