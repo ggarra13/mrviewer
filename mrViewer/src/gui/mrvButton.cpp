@@ -20,7 +20,7 @@ namespace mrv
         {
         case FL_ENTER:
             default_color = color();
-            if ( active_r() )
+            if ( active_r() && !value() )
                 color( fl_lighter( default_color ) );
             redraw();
             return 1;
@@ -39,7 +39,8 @@ namespace mrv
     {
         if (type() == FL_HIDDEN_BUTTON) return;
         Fl_Color col = value() ? selection_color() : color();
-        draw_box(FL_FLAT_BOX, col);
+        draw_box( FL_FLAT_BOX, color() ); // needed to clear background on round
+        if ( value() ) draw_box(down_box(), col);
         draw_backdrop();
         if ( value() ) labelcolor( FL_CYAN );
         else labelcolor( 28 );

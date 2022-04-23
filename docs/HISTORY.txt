@@ -16,6 +16,8 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  with different fonts from default.  Note that there still some
 	  offset issues and scaling issues when zoom factor is fractional, as
 	  text size cannot be floating point.
+	- Fixed display of LUT and 1:1 buttons which had gotten square and
+	  unreadable.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.
