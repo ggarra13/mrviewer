@@ -74,6 +74,7 @@
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+#include "core/mrvColorOps.h"
 
 #ifdef OSX
 #include <OpenGL/gl.h>
@@ -5976,17 +5977,23 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.g *= _gain;
     rgba.b *= _gain;
 
+    ColorControlsUI* cc = uiMain->uiColorControls;
+    if ( cc->uiActive->value() )
+    {
+        const Imath::M44f& m = colorMatrix(cc);
+        Imath::V3f* iop = (Imath::V3f*)&rgba;
+        *iop *= m;
+    }
+
     //
     // To represent pixel properly, we need to do the lut
     //
     if ( use_lut() && ( p == kRGBA_Lut || p == kRGBA_Full ) )
     {
-        Imath::V3f in( rgba.r, rgba.g, rgba.b );
+        Imath::V3f* in = (Imath::V3f*) &rgba;
         Imath::V3f out;
-        _engine->evaluate( img, in, out );
-        rgba.r = out[0];
-        rgba.g = out[1];
-        rgba.b = out[2];
+        _engine->evaluate( img, *in, out );
+        *in = out;
     }
 
 
