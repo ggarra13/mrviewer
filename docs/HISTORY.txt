@@ -12,6 +12,7 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  timeline.
 	- Made ESC (Escape) key cancel text composing when text tool is active,
 	  instead of exiting the program.
+	- Added hotkey selection for quit program.
 	- Made text composing and opengl text drawing match more closely, even
 	  with different fonts from default.  Note that there still some
 	  offset issues and scaling issues when zoom factor is fractional, as
@@ -20,8 +21,9 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  unreadable.
 	- Added shortcut hotkey display to Windows menu.
 	- Added hotkey selection for colors control window.
-	- Added hotkey selection for quit program.
 	- Fixed menus in menubar not updating the hotkey shortcuts when changed.
+	- Fixed menus on macOS (gtk+, plastic and gleam) showing white dots on
+	  the corners when set to the Black (or other dark) color theme.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.

@@ -14,10 +14,9 @@ void next_shape_frame( mrv::ImageView* view )
     do
     {
         fg = view->foreground();
-        if ( !fg) return;
+        if ( !fg ) return;
 
         CMedia* img = fg->image();
-        if (!img) return;
 
         int64_t current_frame = view->frame();
         int64_t max_frame = std::numeric_limits<int64_t>::max();
@@ -64,10 +63,9 @@ void previous_shape_frame( mrv::ImageView* view )
     do
     {
         fg = view->foreground();
-        if ( !fg) return;
+        if ( !fg ) return;
 
         CMedia* img = fg->image();
-        if (!img) return;
 
         int64_t current_frame = view->frame();
         int64_t min_frame = std::numeric_limits<int64_t>::min();
