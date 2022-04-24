@@ -238,6 +238,20 @@ namespace
     {
         delete main;
         exit(0);
+        // // Close all windows
+        // typedef std::vector< Fl_Window* > WindowList;
+        // WindowList list;
+        // Fl_Window* w = Fl::first_window();
+        // for ( ; w ; w = Fl::next_window(w) )
+        // {
+        //     list.push_back(w);
+        // }
+        // WindowList::iterator i = list.begin();
+        // WindowList::iterator e = list.end();
+        // for ( ; i != e; ++i )
+        // {
+        //     (*i)->hide();
+        // }
     }
 
 inline std::string remove_hash_number( std::string& r )
@@ -1998,13 +2012,14 @@ _lastFrame( 0 )
 
 void ImageView::stop_playback()
 {
+
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
     if ( fg ) {
         img = fg->image();
         img->stop();
-        if ( !timeline()->edl() ) frame( img->frame() );
+        if ( uiMain && !timeline()->edl() ) frame( img->frame() );
     }
 
     mrv::media bg = background();
@@ -10844,6 +10859,7 @@ void ImageView::update_image_info() const
 
 void ImageView::playback( const CMedia::Playback b )
 {
+    if ( !uiMain ) return;
 
     _playback = _orig_playback = b;
 

@@ -117,6 +117,7 @@ MainWindow::~MainWindow()
     DBGM1( _("Restored screensaver") );
     // Fl::check();
     DBGM1( _("Stop uiview") );
+    uiMain->uiView->main(NULL);
     uiMain->uiView->stop();
     DBGM1( _("delete uiview") );
     delete uiMain->uiView;

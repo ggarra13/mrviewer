@@ -21,6 +21,7 @@
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
 #include "core/mrvMath.h"
+#include "core/mrvColorOps.h"
 
 #include "gui/mrvIO.h"
 #include "gui/mrvVectorscope.h"
@@ -291,17 +292,19 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
     assert( xmax < pic->width() );
     assert( ymax < pic->height() );
 
-    mrv::DrawEngine* engine = uiMain->uiView->engine();
+    ImageView* view = uiMain->uiView;
+    mrv::DrawEngine* engine = view->engine();
 
     ImageView::PixelValue v = (ImageView::PixelValue)
                               uiMain->uiPixelValue->value();
 
-    float gain = uiMain->uiView->gain();
-    float gamma = uiMain->uiView->gamma();
+    float gain = view->gain();
+    float gamma = view->gamma();
     float one_gamma = 1.0f / gamma;
 
     bool do_gamma = true;
     if ( mrv::is_equal( one_gamma, 1.0f ) ) do_gamma = false;
+
 
     CMedia::Pixel rp;
     for ( unsigned y = ymin; y <= (unsigned)ymax; y += stepY )
@@ -310,16 +313,26 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
         {
             CMedia::Pixel op = pic->pixel( x, y );
 
-            if ( uiMain->uiView->normalize() )
+            if ( view->normalize() )
             {
-                uiMain->uiView->normalize( op );
+                view->normalize( op );
             }
 
             op.r *= gain;
             op.g *= gain;
             op.b *= gain;
 
-            if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
+            ColorControlsUI* cc = uiMain->uiColorControls;
+            if ( cc->uiActive->value() )
+            {
+                const Imath::M44f& m = colorMatrix(cc);
+                Imath::V3f* iop = (Imath::V3f*)&op;
+                *iop *= m;
+            }
+
+
+
+            if ( view->use_lut() && v == ImageView::kRGBA_Full )
             {
                 Imath::V3f* ov = (Imath::V3f*) &op;
                 Imath::V3f* rv = (Imath::V3f*) &rp;
