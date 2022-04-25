@@ -130,8 +130,8 @@ Hotkey kEraseTemporaryMode( false, false, false, false, 0 );
 Hotkey kEraseMode( false, false, false, true, 'e' );
 Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
-Hotkey kArrowMode;
-Hotkey kRectangleMode;
+Hotkey kArrowMode( false, false, false, true, 'a' );
+Hotkey kRectangleMode( false, false, false, true, 'r' );;
 Hotkey kCircleMode;
 Hotkey kRotateCanvasMode( false, false, false, false, 'r' );
 Hotkey kTextMode( false, false, false, true, 't' );
@@ -387,8 +387,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Draw Temporary Mode"), kDrawTemporaryMode ),
     HotkeyEntry( _("Erase Mode"), kEraseMode ),
     HotkeyEntry( _("Erase Temporary Mode"), kEraseTemporaryMode ),
-    HotkeyEntry( _("Arrow Mode"), kArrowMode ),
-    HotkeyEntry( _("Rectangle Mode"), kArrowMode ),
+    HotkeyEntry( _("Arrow Mode"), kArrowMode, true ),
+    HotkeyEntry( _("Rectangle Mode"), kRectangleMode, true ),
     HotkeyEntry( _("Circle Mode"), kCircleMode ),
     HotkeyEntry( _("Rotate Canvas Mode"), kRotateCanvasMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
