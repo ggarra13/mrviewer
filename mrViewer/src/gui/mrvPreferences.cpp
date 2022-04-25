@@ -2654,6 +2654,8 @@ void Preferences::save()
 
     base.flush();
 
+    LOG_INFO( _("Preferences have been saved to: ") << prefspath() << "/.filmaira/mrViewer.prefs." );
+
     check_language( uiPrefs, language_index );
 }
 

@@ -24,6 +24,13 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	- Fixed menus in menubar not updating the hotkey shortcuts when changed.
 	- Fixed menus on macOS (gtk+, plastic and gleam) showing white dots on
 	  the corners when set to the Black (or other dark) color theme.
+	- Fixed matrix math of color controls window.  Contrast now works fine.
+	- Made color area information window take into account the values in
+	  the color controls window.
+	- Made pixel display line (values and color square) take into account
+	  the values in the color controls window.
+	- Made Histogram and Vectorscope take the values in the Color Controls
+	  window.
 
 v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
 	  Windows was fine.

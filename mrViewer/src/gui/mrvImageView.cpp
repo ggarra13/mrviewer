@@ -74,6 +74,7 @@
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+#include "core/mrvColorOps.h"
 
 #ifdef OSX
 #include <OpenGL/gl.h>
@@ -237,6 +238,20 @@ namespace
     {
         delete main;
         exit(0);
+        // // Close all windows
+        // typedef std::vector< Fl_Window* > WindowList;
+        // WindowList list;
+        // Fl_Window* w = Fl::first_window();
+        // for ( ; w ; w = Fl::next_window(w) )
+        // {
+        //     list.push_back(w);
+        // }
+        // WindowList::iterator i = list.begin();
+        // WindowList::iterator e = list.end();
+        // for ( ; i != e; ++i )
+        // {
+        //     (*i)->hide();
+        // }
     }
 
 inline std::string remove_hash_number( std::string& r )
@@ -1997,13 +2012,14 @@ _lastFrame( 0 )
 
 void ImageView::stop_playback()
 {
+
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
     if ( fg ) {
         img = fg->image();
         img->stop();
-        if ( !timeline()->edl() ) frame( img->frame() );
+        if ( uiMain && !timeline()->edl() ) frame( img->frame() );
     }
 
     mrv::media bg = background();
@@ -5976,17 +5992,23 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.g *= _gain;
     rgba.b *= _gain;
 
+    ColorControlsUI* cc = uiMain->uiColorControls;
+    if ( cc->uiActive->value() )
+    {
+        const Imath::M44f& m = colorMatrix(cc);
+        Imath::V3f* iop = (Imath::V3f*)&rgba;
+        *iop *= m;
+    }
+
     //
     // To represent pixel properly, we need to do the lut
     //
     if ( use_lut() && ( p == kRGBA_Lut || p == kRGBA_Full ) )
     {
-        Imath::V3f in( rgba.r, rgba.g, rgba.b );
+        Imath::V3f* in = (Imath::V3f*) &rgba;
         Imath::V3f out;
-        _engine->evaluate( img, in, out );
-        rgba.r = out[0];
-        rgba.g = out[1];
-        rgba.b = out[2];
+        _engine->evaluate( img, *in, out );
+        *in = out;
     }
 
 
@@ -10837,6 +10859,7 @@ void ImageView::update_image_info() const
 
 void ImageView::playback( const CMedia::Playback b )
 {
+    if ( !uiMain ) return;
 
     _playback = _orig_playback = b;
 

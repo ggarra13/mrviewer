@@ -25,7 +25,6 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/CMedia.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferences.h"
-#include "mrViewer.h"
 
 #include "core/mrvColorOps.h"
 

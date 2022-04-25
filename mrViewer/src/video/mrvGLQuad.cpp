@@ -44,6 +44,8 @@
 
 #include <FL/Enumerations.H>
 
+#include "core/mrvColorOps.h"
+
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
@@ -74,85 +76,6 @@ const char* kModule = "glquad";
 
 
 namespace mrv {
-
-#define radians(x) x * M_PI / 180.0f
-
-inline Imath::M44f hueMatrix(float degrees)
-{
-    float cosA = cos(radians(degrees));
-    float sinA = sin(radians(degrees));
-
-    return Imath::M44f( cosA + (1.0 - cosA) / 3.0,
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        0.0,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        cosA + 1./3.*(1.0 - cosA),
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        0.0,
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        cosA + 1./3. * (1.0 - cosA),
-                        0.0f,
-                        0.0, 0.0, 0.0, 1.0 );
-}
-
-inline Imath::M44f brightnessMatrix(float r, float g, float b)
-{
-    return Imath::M44f(
-    r, 0.F, 0.F, 0.F,
-    0.F, g, 0.F, 0.F,
-    0.F, 0.F, b, 0.F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f contrastMatrix(float r, float g, float b)
-{
-    return
-    Imath::M44f(
-    1.F, 0.F, 0.F, -.5F,
-    0.F, 1.F, 0.F, -.5F,
-    0.F, 0.F, 1.F, -.5F,
-    0.F, 0.F, 0.F, 1.F) *
-    Imath::M44f(
-    r, 0.F, 0.F, 0.F,
-    0.F, g, 0.F, 0.F,
-    0.F, 0.F, b, 0.F,
-    0.F, 0.F, 0.F, 1.F) *
-    Imath::M44f(
-    1.F, 0.F, 0.F, .5F,
-    0.F, 1.F, 0.F, .5F,
-    0.F, 0.F, 1.F, .5F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f saturationMatrix(float r, float g, float b)
-{
-    const float s[] =
-    {
-    (1.F - r) * .3086F,
-    (1.F - g) * .6094F,
-    (1.F - b) * .0820F
-    };
-    return Imath::M44f(
-    s[0] + r, s[1], s[2], 0.F,
-    s[0], s[1] + g, s[2], 0.F,
-    s[0], s[1], s[2] + b, 0.F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f colorMatrix(const ColorControlsUI* v)
-{
-    return  hueMatrix(v->uiHue->value()*360.0) *
-      brightnessMatrix(v->uiBrightness->value(),
-                              v->uiBrightness->value(),
-                              v->uiBrightness->value()) *
-    contrastMatrix(v->uiContrast->value(), v->uiContrast->value(),
-                   v->uiContrast->value()) *
-    saturationMatrix(v->uiSaturation->value(), v->uiSaturation->value(),
-                     v->uiSaturation->value());
-}
-
 
 const char* GLQuad::debug_internal_format( const GLenum format )
 {
@@ -1172,7 +1095,8 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         {
             _shader->setUniform("enableColorMatrix", true );
             CHECK_GL;
-            const Imath::M44f& m = colorMatrix(cc);
+            Imath::M44f m = colorMatrix(cc);
+            m = m.transpose();
             _shader->setUniform("colorMatrix", m);
         }
         else

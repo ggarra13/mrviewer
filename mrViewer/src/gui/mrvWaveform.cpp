@@ -303,10 +303,11 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
 
 void Waveform::draw_pixels( const mrv::Recti& r )
 {
-    if ( ! uiMain->uiView )
+    ImageView* view = uiMain->uiView;
+    if ( ! view )
         return;
 
-    mrv::media m = uiMain->uiView->foreground();
+    mrv::media m = view->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with SHIFT + Left Mouse Button") );
         return;
@@ -321,7 +322,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     int off[2];
     int xmin, ymin, xmax, ymax;
     bool right, bottom;
-    mrv::Rectd selection = uiMain->uiView->selection();
+    mrv::Rectd selection = view->selection();
 
     ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
                                    off, right, bottom );
