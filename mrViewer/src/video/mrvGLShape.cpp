@@ -515,11 +515,10 @@ void GLTextShape::draw( double z, double m )
         glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
         if ( result == GL_FALSE )
         {
-            double xMove = gl_width( txt.c_str(), pos-1 ) * m / z;
+            double xMove = gl_width( txt.c_str(), pos ) * m / z;
             double yMove = gl_height() * m / z;
             double bxMove = -xMove * m * z;
             double byMove = -yMove * m * z;
-            std::cerr << "byMove " << byMove << std::endl;
             glRasterPos2d( x + xMove, y + yMove );
             glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
             glBitmap( 0, 0, 0, 0, bxMove, byMove, NULL );
