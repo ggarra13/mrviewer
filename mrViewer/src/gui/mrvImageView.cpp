@@ -5993,7 +5993,7 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.b *= _gain;
 
     ColorControlsUI* cc = uiMain->uiColorControls;
-    if ( cc->uiActive->value() )
+    if ( cc && cc->uiMain && cc->uiActive->value() )
     {
         const Imath::M44f& m = colorMatrix(cc);
         Imath::V3f* iop = (Imath::V3f*)&rgba;
