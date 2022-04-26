@@ -802,6 +802,7 @@ mrv::Reel ImageBrowser::new_reel( const char* orig )
     mrv::ReelList::const_iterator e = _reels.end();
     std::string name = orig;
     int idx = 2;
+    // Verify reel name.  If already exists, create a new one as name #idx
     for ( ; i != e; ++i )
     {
         if ( (*i)->name == name )
@@ -2260,28 +2261,6 @@ void ImageBrowser::save_session()
         if ( !img ) return mrv::media();
 
         mrv::media m = this->add( img );
-
-
-        if ( !m )
-        {
-            LOG_ERROR( _("*******Added EMPTY media" ) );
-        }
-
-        send_reel( reel );
-
-        // size_t i = 0;
-        // for ( i = 0; i < number_of_reels(); ++i )
-        // {
-        //     if ( e && reel == this->reel( (unsigned int)i ) )
-        //     {
-        //         mrv::media_track* track = e->media_track((int)i);
-        //         if ( track && m )
-        //         {
-        //             track->add( m );
-        //             track->redraw();
-        //         }
-        //     }
-        // }
 
         return m;
     }

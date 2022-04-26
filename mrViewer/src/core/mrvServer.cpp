@@ -143,7 +143,7 @@ void Parser::write( const std::string& s, const std::string& id )
                 // LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            // LOG_INFO( "Sending " << s << " to " << p );
+            LOG_INFO( "Sending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
@@ -1095,7 +1095,6 @@ bool Parser::parse( const std::string& s )
         is >> first;
         is >> last;
 
-        LOG_WARNING( "Change to image #" << idx << " "  << imgname );
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
@@ -1215,6 +1214,7 @@ bool Parser::parse( const std::string& s )
     else if ( cmd == N_("sync_image") )
     {
         std::string cmd;
+        char buf[1024];
         size_t num = browser()->number_of_reels();
         for (size_t i = 0; i < num; ++i )
         {
@@ -1227,7 +1227,6 @@ bool Parser::parse( const std::string& s )
             deliver( cmd );
 
             int idx = 0;
-            char buf[1024];
             mrv::MediaList::iterator j = r->images.begin();
             mrv::MediaList::iterator e = r->images.end();
             for ( ; j != e; ++j, ++idx )
@@ -1244,7 +1243,6 @@ bool Parser::parse( const std::string& s )
                 cmd += img->fileroot();
                 cmd += "\" ";
 
-                char buf[1024];
                 int64_t start = img->first_frame();
                 int64_t end   = img->last_frame();
 
@@ -1290,17 +1288,12 @@ bool Parser::parse( const std::string& s )
             }
         }
 
-        char buf[1024];
-        int64_t frame = v->frame();
-        sprintf( buf, N_("seek %" PRId64 ), frame );
-        deliver( buf );
 
         if ( num == 0 ) {
             v->network_active( true );
             v->restore_locale( oldloc );
             return true;
         }
-
 
         r = browser()->current_reel();
         if (r)
@@ -1313,6 +1306,11 @@ bool Parser::parse( const std::string& s )
             if ( r->edl )
             {
                 cmd = N_("EDL 1");
+                deliver( cmd );
+            }
+            else
+            {
+                cmd = N_("EDL 0");
                 deliver( cmd );
             }
         }
@@ -1798,6 +1796,8 @@ bool tcp_session::stopped()
 void tcp_session::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
+
+    LOG_INFO( "Server Deliver: " << msg );
 
     output_queue_.push_back(msg + "\n");
 
