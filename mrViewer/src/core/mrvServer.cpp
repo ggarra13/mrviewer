@@ -140,9 +140,10 @@ void Parser::write( const std::string& s, const std::string& id )
 
             if ( p == id )
             {
+                LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            // LOG_INFO( "Resending " << s << " to " << p );
+            LOG_INFO( "Resending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
@@ -1222,15 +1223,21 @@ bool Parser::parse( const std::string& s )
             cmd += "\"";
             deliver( cmd );
 
+            int idx = 0;
+            char buf[1024];
             mrv::MediaList::iterator j = r->images.begin();
             mrv::MediaList::iterator e = r->images.end();
-            for ( ; j != e; ++j )
+            for ( ; j != e; ++j, ++idx )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --idx;
+                    continue;
+                }
 
                 CMedia* img = (*j)->image();
 
-                cmd = N_("CurrentImage \"");
+                sprintf( buf, N_("CurrentImage %d \""), idx );
+                cmd = buf;
                 cmd += img->directory();
                 cmd += "/";
                 cmd += img->name();
@@ -1262,8 +1269,8 @@ bool Parser::parse( const std::string& s )
                 const mrv::GLShapeList& shapes = img->shapes();
                 if ( shapes.empty() ) continue;
 
-
-                cmd = N_("CurrentImage \"");
+                sprintf( buf, N_("CurrentImage %d \""), idx );
+                cmd = buf;
                 cmd += img->fileroot();
 
                 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
@@ -1790,12 +1797,6 @@ bool tcp_session::stopped()
 void tcp_session::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
-
-#ifdef DEBUG_COMMANDS
-    if ( view()->show_pixel_ratio() )
-        if ( msg.find( "Offset" ) == std::string::npos )
-            LOG_INFO( "SEND CMD: " << msg );
-#endif
 
     output_queue_.push_back(msg + "\n");
 
