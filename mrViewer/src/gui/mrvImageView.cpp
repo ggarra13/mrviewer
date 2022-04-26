@@ -3526,29 +3526,15 @@ void ImageView::handle_commands()
 {
     mrv::ImageBrowser* b = browser();
     if (!b) return;
+    if ( commands.empty() ) return;
 
-
-    std::string name;
-#define  DEBUG_IMAGES_IN_NETWORK
-#ifdef DEBUG_IMAGES_IN_NETWORK
-    mrv::media fg = foreground();
-    if ( fg )
-    {
-        CMedia* img = fg->image();
-        name = img->name();
-    }
-#endif
-
+    bool old_network_active = _network_active;
     bool old_interactive = _interactive;
+
+
     _interactive = false;
 
     Command& c = commands.front();
-
-
-    bool old_network_active = _network_active;
-
-    if ( commands.empty() ) goto final;
-
 
     if ( !_server )
         _network_active = false;
