@@ -31,18 +31,10 @@
 #include <inttypes.h>  // for PRId64
 
 
-#ifdef DEBUG
-#define NETWORK_COMMANDS
-#endif
 
 // #define DEBUG_KEYS
 
-
-#ifdef NETWORK_COMMANDS
-#  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << std::endl;
-#else
-#  define NET(x)
-#endif
+#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO( "RECV. COMMAND: " << x )
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -3643,14 +3635,13 @@ void ImageView::handle_commands()
             found = ((size_t)idx < r->images.size() );
         }
         if ( found ) {
-            NET( "change image to #" << idx );
+            NET( "change image found.  Set to #" << idx );
             b->change_image(idx);
         }
         else
         {
             if ( c.linfo ) {
-                NET( "Load Image and try again idx #" << idx << " for "
-                     << imgname );
+                NET( "Load Imag for idx #" << idx << " is " << imgname );
                 const LoadInfo* file = c.linfo;
                 LoadList files;
                 files.push_back( *file );

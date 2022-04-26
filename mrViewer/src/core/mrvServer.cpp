@@ -45,6 +45,7 @@
 #include <set>
 
 #include <boost/locale.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
@@ -86,6 +87,10 @@
 #include "mrvPreferencesUI.h"
 #include "mrViewer.h"
 
+
+#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO(x)
+
+namespace fs = boost::filesystem;
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
@@ -143,7 +148,7 @@ void Parser::write( const std::string& s, const std::string& id )
                 // LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            LOG_INFO( "Sending " << s << " to " << p );
+            NET( "Sending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
@@ -215,9 +220,7 @@ bool Parser::parse( const std::string& s )
     v->network_active( false );
 
 
-
-    if ( Preferences::debug )
-        LOG_INFO( "received: " << s );
+    NET( "Received: " << s );
 
     if ( cmd == N_("GLPathShape") )
     {
@@ -662,11 +665,18 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, s, '"' );
 
-        setenv( "OCIO", s.c_str(), 1 );
+        if ( fs::exists( s ) )
+        {
+            setenv( "OCIO", s.c_str(), 1 );
 
-        ImageView::Command c;
-        c.type = ImageView::kLUT_CHANGE;
-        v->commands.push_back( c );
+            ImageView::Command c;
+            c.type = ImageView::kLUT_CHANGE;
+            v->commands.push_back( c );
+        }
+        else
+        {
+            LOG_ERROR( _("OCIO config '") << s << _("' does not exist.") );
+        }
 
         ok = true;
     }
@@ -1215,6 +1225,13 @@ bool Parser::parse( const std::string& s )
     {
         std::string cmd;
         char buf[1024];
+
+        const char* const config =
+            v->main()->uiPrefs->uiPrefsOCIOConfig->value();
+        sprintf(buf, N_("OCIOConfig \"%s\""), config );
+        deliver( buf );
+
+
         size_t num = browser()->number_of_reels();
         for (size_t i = 0; i < num; ++i )
         {
@@ -1421,10 +1438,6 @@ bool Parser::parse( const std::string& s )
         deliver( buf );
 
         sprintf(buf, N_("OCIO %d"), (int)mrv::Preferences::use_ocio );
-        deliver( buf );
-
-        const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->value();
-        sprintf(buf, N_("OCIOConfig \"%s\""), config );
         deliver( buf );
 
         const std::string& display = mrv::Preferences::OCIO_Display;
