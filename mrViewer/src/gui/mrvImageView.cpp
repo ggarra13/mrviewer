@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file   mrvImageView.cpp
  * @author gga
@@ -38,7 +39,7 @@
 
 
 #ifdef NETWORK_COMMANDS
-#  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << " for " << name << std::endl;
+#  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << std::endl;
 #else
 #  define NET(x)
 #endif
@@ -3642,9 +3643,10 @@ again:
         mrv::MediaList::iterator j = r->images.begin();
         mrv::MediaList::iterator e = r->images.end();
         int i = 0;
+        std::string imgname;
         if ( c.linfo )
         {
-            const std::string& imgname = c.linfo->filename;
+            imgname = c.linfo->filename;
             NET( "change image #" << idx << " " << imgname );
             for ( ; j != e; ++j, ++i )
             {
@@ -3678,7 +3680,8 @@ again:
         else
         {
             if ( c.linfo ) {
-                NET( "Load Image and try again idx #" << idx );
+                NET( "Load Image and try again idx #" << idx << " for "
+                     << imgname );
                 c.type = kLoadImage;
                 goto again;
             }

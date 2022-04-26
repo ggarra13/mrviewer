@@ -1478,7 +1478,7 @@ void ImageBrowser::save_session()
         send_reel( reel );
 
         CMedia* img = m->image();
-        std::string file = img->directory() + '/' + img->name();
+        std::string file = img->fileroot();
 
         char buf[256];
         sprintf( buf, "InsertImage %d \"%s\"", idx, file.c_str() );
@@ -1508,7 +1508,7 @@ void ImageBrowser::save_session()
         sprintf( text, N_("CurrentImage %" PRId64 " \""), idx );
         std::string buf = text;
         CMedia* img = m->image();
-        std::string file = img->directory() + '/' + img->name();
+        std::string file = img->fileroot();
         buf += file;
         char txt[256];
         sprintf( txt, N_("\" %" PRId64 " %" PRId64), img->first_frame(),
@@ -1548,20 +1548,6 @@ void ImageBrowser::save_session()
         v->send_network( txt );
 #endif
 
-    }
-
-    void ImageBrowser::send_images( const mrv::Reel& reel)
-    {
-        send_reel( reel );
-
-        mrv::MediaList::const_iterator i = reel->images.begin();
-        mrv::MediaList::const_iterator e = reel->images.end();
-
-        size_t idx = 0;
-        for ( ; i != e; ++i, ++idx )
-        {
-            send_current_image( idx, *i );
-        }
     }
 
 

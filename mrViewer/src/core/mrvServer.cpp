@@ -143,7 +143,7 @@ void Parser::write( const std::string& s, const std::string& id )
                 LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            LOG_INFO( "Resending " << s << " to " << p );
+            LOG_INFO( "Sending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
