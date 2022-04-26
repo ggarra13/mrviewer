@@ -337,6 +337,7 @@ int main( int argc, const char** argv )
     DBG;
     Fl::scheme("gtk+");
     fl_open_display();
+    Fl::option( Fl::OPTION_VISIBLE_FOCUS, false );
 
     // Adjust ui based on preferences
     for (;;) {
@@ -347,7 +348,6 @@ int main( int argc, const char** argv )
       // For macOS, to read command-line arguments
       fl_open_callback( osx_open_cb );
 
-      Fl::option( Fl::OPTION_VISIBLE_FOCUS, false );
 
       try {
           mrv::Options opts;

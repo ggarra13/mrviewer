@@ -1501,8 +1501,8 @@ void Preferences::run( ViewerUI* main )
     }
 
     // @BUG: fix to uiRegion scaling badly (too much or too little)
-    main->uiView->resize_main_window();
-    main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
+    // main->uiView->resize_main_window();
+    // main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
 
     //
     // Widget/Viewer settings

@@ -77,7 +77,7 @@ public:
     {
         kNoCommand = 0,
         kCreateReel = 1,
-        kLoadImage  = 2,
+        //kLoadImage  = 2,
         kInsertImage = 3,
         kChangeImage = 4,
         kBGImage     = 5,

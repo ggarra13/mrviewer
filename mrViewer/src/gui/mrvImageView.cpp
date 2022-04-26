@@ -31,9 +31,9 @@
 #include <inttypes.h>  // for PRId64
 
 
-// #ifdef DEBUG
+#ifdef DEBUG
 #define NETWORK_COMMANDS
-// #endif
+#endif
 
 // #define DEBUG_KEYS
 
@@ -3539,8 +3539,6 @@ void ImageView::handle_commands()
     if ( !_server )
         _network_active = false;
 
-again:
-
     switch( c.type )
     {
     case kCreateReel:
@@ -3600,17 +3598,6 @@ again:
         uiMain->uiEndFrame->redraw();
         break;
     }
-    case kLoadImage:
-    {
-        assert0( c.linfo != NULL );
-        const LoadInfo* file = c.linfo;
-        NET( "Load Image " << file->filename << " start " << file->first << " "
-             << file->last );
-        LoadList files;
-        files.push_back( *file );
-        b->load( files, false, "", false, false );
-        break;
-    }
     case kCacheClear:
         NET( "clear caches ");
         clear_caches();
@@ -3643,12 +3630,8 @@ again:
 
                 CMedia* img = (*j)->image();
                 std::string file = img->fileroot();
-                std::cerr << "COMPARE " << i << " to " << idx << std::endl;
-                std::cerr << "COMPARE " << file << " to " << imgname
-                          << std::endl;
                 if ( i == idx && file == imgname )
                 {
-                    std::cerr << "****** MATCHED ******" << std::endl;
                     found = true;
                     break;
                 }
@@ -3668,8 +3651,10 @@ again:
             if ( c.linfo ) {
                 NET( "Load Image and try again idx #" << idx << " for "
                      << imgname );
-                c.type = kLoadImage;
-                goto again;
+                const LoadInfo* file = c.linfo;
+                LoadList files;
+                files.push_back( *file );
+                b->load( files, false, "", false, false );
             }
         }
         break;
@@ -10085,12 +10070,6 @@ void ImageView::foreground( mrv::media fg )
 
     // If this is the first image loaded, resize window to fit it
     if ( !old ) {
-
-        posX = fltk_main()->x();
-        posY = fltk_main()->y();
-
-        DBGM1( "!OLD " << posX << ", " << posY );
-
         Fl_Round_Button* r = (Fl_Round_Button*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
         if ( r->value() == 1 )
         {
@@ -10319,7 +10298,6 @@ void ImageView::resize_main_window()
         posX = minx;
         posY = miny;
     }
-
 
 
     int dw = fltk_main()->decorated_w() - fltk_main()->w();

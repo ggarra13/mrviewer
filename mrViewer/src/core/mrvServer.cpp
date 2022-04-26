@@ -140,10 +140,10 @@ void Parser::write( const std::string& s, const std::string& id )
 
             if ( p == id )
             {
-                LOG_INFO( "Skipping " << s << " to " << p );
+                // LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            LOG_INFO( "Sending " << s << " to " << p );
+            // LOG_INFO( "Sending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
