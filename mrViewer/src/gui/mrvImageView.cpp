@@ -4553,8 +4553,6 @@ void ImageView::draw()
 
                 data_window_coordinates( img, xf, yf );
 
-                const mrv::Recti& dpw = img->display_window();
-
                 yf = -yf;
 
                 const mrv::Recti& daw = img->data_window();
@@ -4993,11 +4991,16 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("View/Safe Areas"), kSafeAreas.hotkey(),
                     (Fl_Callback*)safe_areas_cb, this );
 
-         menu->add( _("View/Display Window"), kDisplayWindow.hotkey(),
-                    (Fl_Callback*)display_window_cb, this );
+         idx = menu->add( _("View/Display Window"), kDisplayWindow.hotkey(),
+                          (Fl_Callback*)display_window_cb, this,
+                          FL_MENU_TOGGLE );
+         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+         if ( display_window() ) item->set();
 
-         menu->add( _("View/Data Window"), kDataWindow.hotkey(),
-                    (Fl_Callback*)data_window_cb, this );
+         idx = menu->add( _("View/Data Window"), kDataWindow.hotkey(),
+                          (Fl_Callback*)data_window_cb, this, FL_MENU_TOGGLE );
+         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+         if ( data_window() ) item->set();
 
          idx = menu->add( _("View/Texture Filtering  "),
                           kTextureFiltering.hotkey(),

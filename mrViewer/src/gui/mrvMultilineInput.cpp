@@ -151,6 +151,10 @@ namespace mrv {
 
             yf = -yf;
 
+            const mrv::Recti& daw = img->data_window();
+            xf += daw.x();
+            yf -= daw.y();
+
             s->pts[0].x = xf;
             s->pts[0].y = yf;
             ret = 1;
