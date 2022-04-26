@@ -30,9 +30,9 @@
 #include <inttypes.h>  // for PRId64
 
 
-#ifdef DEBUG
+// #ifdef DEBUG
 #define NETWORK_COMMANDS
-#endif
+// #endif
 
 // #define DEBUG_KEYS
 
@@ -3648,12 +3648,19 @@ again:
             NET( "change image #" << idx << " " << imgname );
             for ( ; j != e; ++j, ++i )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --i;
+                    continue;
+                }
 
                 CMedia* img = (*j)->image();
-                std::string file = img->directory() + '/' + img->name();
+                std::string file = img->fileroot();
+                std::cerr << "COMPARE " << i << " to " << idx << std::endl;
+                std::cerr << "COMPARE " << file << " to " << imgname
+                          << std::endl;
                 if ( i == idx && file == imgname )
                 {
+                    std::cerr << "****** MATCHED ******" << std::endl;
                     found = true;
                     break;
                 }

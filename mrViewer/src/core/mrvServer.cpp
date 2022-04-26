@@ -1178,7 +1178,10 @@ bool Parser::parse( const std::string& s )
 
             for ( ; j != e; ++j, ++idx )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --idx;
+                    continue;
+                }
                 CMedia* img = (*j)->image();
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
@@ -1238,9 +1241,7 @@ bool Parser::parse( const std::string& s )
 
                 sprintf( buf, N_("CurrentImage %d \""), idx );
                 cmd = buf;
-                cmd += img->directory();
-                cmd += "/";
-                cmd += img->name();
+                cmd += img->fileroot();
                 cmd += "\" ";
 
                 char buf[1024];
