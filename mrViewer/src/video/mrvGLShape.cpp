@@ -516,13 +516,14 @@ void GLTextShape::draw( double z, double m )
         if ( result == GL_FALSE )
         {
             double xMove = gl_width( txt.c_str(), pos ) / z;
-            double yMove = gl_height() / z;
+            double yMove = height;
             double bxMove = -xMove * m * z;
             double byMove = -yMove * m * z;
             glRasterPos2d( x + xMove, y + yMove );
             glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
             if ( result == GL_FALSE )
             {
+                // Probably bottom right corner, don't offset x.
                 bxMove = 0;
                 glRasterPos2d( x, y + yMove );
                 glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
@@ -541,13 +542,14 @@ void GLTextShape::draw( double z, double m )
         if ( result == GL_FALSE )
         {
             double xMove = gl_width( txt.c_str() ) / z;
-            double yMove = gl_height() / z;
+            double yMove = height;
             double bxMove = -xMove * m * z;
             double byMove = -yMove * m * z;
             glRasterPos2d( x + xMove, y + yMove );
             glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
             if ( result == GL_FALSE )
             {
+                // Probably bottom right corner, don't offset x.
                 bxMove = 0;
                 glRasterPos2d( x, y + yMove );
                 glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
