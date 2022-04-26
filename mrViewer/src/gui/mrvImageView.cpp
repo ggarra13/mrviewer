@@ -3627,6 +3627,14 @@ void ImageView::handle_commands()
                     found = true;
                     break;
                 }
+                else if ( i == idx && file != imgname )
+                {
+                    LOG_ERROR( _("Image at position ") << idx << " '" << file
+                               << _("' does not match '")
+                               << imgname << "'." );
+                    LOG_ERROR( _("Don't know which one should go first.") );
+                    delete c.linfo; c.linfo = NULL;
+                }
             }
         }
         else
@@ -4016,10 +4024,10 @@ void ImageView::handle_commands()
     }  // switch
 
 
+final:
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
 
-final:
     if( !commands.empty() )  // needed
         commands.pop_front();
 
