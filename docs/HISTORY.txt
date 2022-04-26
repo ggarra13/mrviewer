@@ -1,6 +1,6 @@
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.
-	- Made window resizing take into account the window decorations.
+	- Made window auto resizing take into account the window decorations.
 	  The code is also much more cleaner.
 	- Fixed font popup window widget sizes for translations
 	  (Spanish, German, etc).
@@ -9,7 +9,7 @@ v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  annotations ( and other hotkeys ).
 	- Made Next Annotation and Previous Annotation (Shift + Right arrow key
 	  and Shift + Left key respectively by default), not loop through the
-	  timeline.
+	  timeline or stop at the beginning/end of the movie.
 	- Made ESC (Escape) key cancel text composing when text tool is active,
 	  instead of exiting the program.
 	- Added hotkey selection for quit program.
