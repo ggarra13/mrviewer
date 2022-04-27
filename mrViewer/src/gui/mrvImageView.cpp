@@ -10285,8 +10285,6 @@ void ImageView::resize_main_window()
     int screen = window()->screen_num();
     float scale = Fl::screen_scale( screen );
     Fl::screen_work_area( minx, miny, maxw, maxh, screen );
-    DBGM0( "minX, minY= " << minx << ", " << miny << " maxw - maxh = "
-           << maxw << " - " << maxh );
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
@@ -10304,10 +10302,10 @@ void ImageView::resize_main_window()
 
     int decw = fltk_main()->decorated_w();
     int dech = fltk_main()->decorated_h();
-    
+
     int dw = decw - fltk_main()->w();
     int dh = dech - fltk_main()->h();
-    
+
 
     maxw -= dw;
     maxh -= dh;
@@ -10317,7 +10315,7 @@ void ImageView::resize_main_window()
 #else
     posY += dh;
 #endif
-    
+
     int maxx = posX + maxw;
     int maxy = posY + maxh;
 
