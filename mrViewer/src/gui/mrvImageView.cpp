@@ -10076,7 +10076,6 @@ void ImageView::foreground( mrv::media fg )
         if ( r->value() == 1 )
         {
             resize_main_window();
-            fit_image();
         }
     }
 
@@ -10266,8 +10265,6 @@ void ImageView::resize_main_window()
 
     int w, h;
 
-    int oX = 0, oY = 0, oW = 0, oH = 0;
-
     mrv::media fg = foreground();
     if ( !fg )
     {
@@ -10288,6 +10285,8 @@ void ImageView::resize_main_window()
     int screen = window()->screen_num();
     float scale = Fl::screen_scale( screen );
     Fl::screen_work_area( minx, miny, maxw, maxh, screen );
+    DBGM0( "minX, minY= " << minx << ", " << miny << " maxw - maxh = "
+           << maxw << " - " << maxh );
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
@@ -10302,14 +10301,23 @@ void ImageView::resize_main_window()
     }
 
 
-    int dw = fltk_main()->decorated_w() - fltk_main()->w();
-    int dh = fltk_main()->decorated_h() - fltk_main()->h();
+
+    int decw = fltk_main()->decorated_w();
+    int dech = fltk_main()->decorated_h();
+    
+    int dw = decw - fltk_main()->w();
+    int dh = dech - fltk_main()->h();
+    
 
     maxw -= dw;
     maxh -= dh;
     posX += dw / 2;
+#ifdef _WIN32
+    posY += dh - dw / 2;
+#else
     posY += dh;
-
+#endif
+    
     int maxx = posX + maxw;
     int maxy = posY + maxh;
 
@@ -10366,13 +10374,7 @@ void ImageView::resize_main_window()
         w = maxw;
     }
 
-#if defined(_WIN32)
-    int bar = uiMain->uiBottomBar->visible() ? uiMain->uiBottomBar->h() : 0;
-#else
-    int bar = 0;
-#endif
-
-    maxh = (int) ((maxh - bar) / scale);
+    maxh = (int) (maxh / scale);
     if ( h < 535 )  h = 535;
     else if ( h > maxh )
     {
@@ -10401,8 +10403,6 @@ void ImageView::resize_main_window()
 
     //valid(0);
     redraw();
-
-    Fl::check();
 
     if ( fit ) fit_image();
 

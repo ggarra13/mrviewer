@@ -369,7 +369,7 @@ int main( int argc, const char** argv )
 
           ui->uiMain->show();
           DBG;
-
+          
           if (opts.host.empty() && opts.port != 0)
           {
               mrv::ServerData* data = new mrv::ServerData;
@@ -591,13 +591,12 @@ int main( int argc, const char** argv )
           if ( single_instance )
               Fl::add_timeout( 1.0, load_new_files );
 
-
-          if ( single_instance )
-              Fl::add_timeout( 1.0, load_new_files );
-
-
-
-          ui->uiMain->show();   // so run() does something
+          // If no image is found, resize the window to a suitable level
+          mrv::media fg = ui->uiView->foreground();
+          if ( !fg )
+          {
+              ui->uiView->resize_main_window();
+          }
 
           // Start playback if command line forced us to do so
           if ( opts.play )
