@@ -2895,6 +2895,36 @@ void ImageView::fit_image()
         W *= 2;
 #endif
 
+    int     X = dpw.x();
+    int     Y = dpw.y();
+
+    double pct = _masking;
+    if ( pct > 0.0 )
+    {
+        double aspectY = (double) W / (double) H;
+        double aspectX = (double) H/ (double) W;
+
+        double target_aspect = 1.0 / pct;
+        double amountY = H * (0.5 - target_aspect * aspectY / 2);
+        double amountX = W * (0.5 - pct * aspectX / 2);
+
+        bool vertical = true;
+        if ( amountY < amountX )
+        {
+            vertical = false;
+        }
+        if ( vertical )
+        {
+            H -= amountY * 2;
+            Y += amountY;
+        }
+        else
+        {
+            W -= amountX * 2;
+            X += amountX;
+        }
+    }
+
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
     DBGM1( "fit h=" << h );
@@ -2922,11 +2952,10 @@ void ImageView::fit_image()
     }
     DBGM1( "fit z=" << z );
 
-
     double ox = xoffset;
     double oy = yoffset;
 
-    yoffset = ( dpw.y() + H / 2.0) / pr;
+    yoffset = ( Y + H / 2.0) / pr;
 
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
@@ -2938,16 +2967,14 @@ void ImageView::fit_image()
     }
     else
     {
-        xoffset = -dpw.x() - W / 2.0;
+        xoffset = -X - W / 2.0;
     }
 
 
     if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
         xoffset = 0.0;
 
-
-    if ( img->flipX() &&
-         stereo_out & CMedia::kStereoTopBottom  )
+    if ( img->flipX() && stereo_out & CMedia::kStereoTopBottom  )
         yoffset = 0.0;
 
     zrotation_to_offsets( xoffset, yoffset, img, W, H );
@@ -10319,6 +10346,7 @@ void ImageView::resize_main_window()
     int maxx = posX + maxw;
     int maxy = posY + maxh;
 
+
     bool fit = false;
 
     if ( w > maxw ) {
@@ -10378,6 +10406,7 @@ void ImageView::resize_main_window()
     {
         h = maxh;
     }
+
 
     fltk_main()->resize( posX, posY, w, h );
 
