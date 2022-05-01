@@ -18,7 +18,6 @@ set( OpenGL_GL_PREFERENCE LEGACY )
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
-# FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
 ADD_DEFINITIONS( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
@@ -260,7 +259,6 @@ SET( SOURCES
   core/mrvFrame.cpp
   core/mrvHome.cpp
   core/guessImage.cpp
-  core/YouTube.cpp
   core/aviImage.cpp
   core/aviImage_save.cpp
   core/clonedImage.cpp
@@ -806,6 +804,7 @@ MESSAGE( STATUS
 MESSAGE( STATUS "FLTK:          ${FLTK_FOUND} ${FLTK_VERSION}" )
 MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
+MESSAGE( STATUS "OIIO:          ${OIIO_FOUND} ${OIIO_VERSION}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )

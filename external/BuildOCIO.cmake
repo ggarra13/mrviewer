@@ -14,9 +14,8 @@ endif()
 
 ExternalProject_Add(
   ${OCIO_NAME}
-  # GIT_REPOSITORY "https://github.com/imageworks/OpenColorIO.git"
-  #URL "https://github.com/imageworks/OpenColorIO/zipball/master"
-  URL "https://github.com/imageworks/OpenColorIO/zipball/v1.0.9"
+  GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
+  GIT_TAG v1.1.1
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR ${OCIO_DEPENDS}
   CMAKE_ARGS
