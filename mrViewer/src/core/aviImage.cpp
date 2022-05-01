@@ -82,7 +82,6 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/mrvCPU.h"
 #include "core/mrvColorSpaces.h"
-#include "core/YouTube.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -3008,39 +3007,6 @@ bool aviImage::initialize()
         }
 
 
-        std::string title = fileroot();
-        std::string url = fileroot();
-
-        if ( url.find( "http" ) == 0 ||
-             url.find( "youtube" ) == 0 ||
-             url.find( "youtu.be" ) == 0 ||
-             url.find( "www." ) == 0 )
-        {
-            if ( url.find( "youtube" ) == 0 ||
-                 url.find( "youtu.be" ) == 0 )
-                url = "https://www." + url;
-            else if ( url.find( "www.") == 0 )
-                url = "https://" + url;
-
-            std::string videourl, audiourl;
-            bool ok = YouTube( url, videourl, audiourl, title );
-            if ( ok )
-            {
-                av_free( _fileroot );
-                av_free( _filename ); _filename = NULL;
-                _fileroot = av_strdup( videourl.c_str() );
-
-                if ( !audiourl.empty() )
-                    audio_file( audiourl.c_str() );
-            }
-            else
-            {
-                avformat_free_context( _context );
-                _initialize = false;
-                _context = NULL;
-                return false;
-            }
-        }
 
         // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
@@ -3053,8 +3019,6 @@ bool aviImage::initialize()
 
         av_dict_free(&opts);
 
-        av_free( _fileroot );
-        _fileroot = av_strdup( title.c_str() );
 
         if ( error >= 0 )
         {

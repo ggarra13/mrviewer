@@ -1,13 +1,12 @@
-# - Find Ruby
-# This module finds if Ruby is installed and determines where the include files
-# and libraries are. It also determines what the name of the library is. This
-# code sets the following variables:
+# - Find OpenColorIO
 #
-#  OIIO_INCLUDE_PATH = path to where oiio.h can be found
-#  OIIO_EXECUTABLE   = full path to the oiio binary
-
-# Copyright (c) 2002 Kitware, Inc., Insight Consortium.  All rights reserved.
-# See Copyright.txt or http://www.cmake.org/HTML/Copyright.html for details.
+# This module finds if OpenColorIO is installed and determines where the
+# include files and libraries are. It also determines what the name of the
+# library is. This code sets the following variables:
+#
+#  OIIO_INCLUDE_PATH = path to where imageio.h can be found
+#  OIIO_LIBRARIES    = full path to OpenImageIO libraries
+#
 
 SET( OIIO_FOUND "NO" )
 
@@ -20,25 +19,25 @@ FIND_PATH(OIIO_INCLUDE_PATH
   NAMES OpenImageIO/imageio.h
   PATHS $ENV{OIIO_INCLUDE_DIR}
 	$ENV{OIIO_ROOT}/include
-  	${OIIO_INCLUDE_DIR}
+	${OIIO_INCLUDE_DIR}
 	/usr/local/include )
 
 FIND_LIBRARY(OIIO_LIBRARY
   NAMES OpenImageIO
   PATHS $ENV{OIIO_LIBRARY_DIR}
 	$ENV{OIIO_ROOT}/lib
-  	${OIIO_LIBRARY_DIR}
-  	${OIIO_INCLUDE_DIR}/../lib
-  	/usr/local/lib
+	${OIIO_LIBRARY_DIR}
+	${OIIO_INCLUDE_DIR}/../lib
+	/usr/local/lib
   )
 
 FIND_LIBRARY(OIIO_UTIL_LIBRARY
   NAMES OpenImageIO_Util
   PATHS $ENV{OIIO_LIBRARY_DIR}
 	$ENV{OIIO_ROOT}/lib
-  	${OIIO_LIBRARY_DIR}
-  	${OIIO_INCLUDE_DIR}/../lib
-  	/usr/local/lib
+	${OIIO_LIBRARY_DIR}
+	${OIIO_INCLUDE_DIR}/../lib
+	/usr/local/lib
   )
 
 SET( OIIO_LIBRARIES ${OIIO_LIBRARY} ${OIIO_UTIL_LIBRARY} )
@@ -64,7 +63,7 @@ IF(NOT OIIO_FOUND)
       MESSAGE( STATUS "OIIO_INCLUDE_PATH=${OIIO_INCLUDE_PATH}" )
       MESSAGE( STATUS "OIIO_LIBRARIES=${OIIO_LIBRARIES}" )
       MESSAGE(FATAL_ERROR
-              "Oiio required, please specify its location with OIIO_ROOT.")
+	      "Oiio required, please specify its location with OIIO_ROOT.")
     ELSE(OIIO_FIND_REQUIRED)
       MESSAGE(STATUS "Oiio was not found.")
     ENDIF(OIIO_FIND_REQUIRED)

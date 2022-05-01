@@ -323,10 +323,10 @@ int Preferences::BRAWScale = 3;
 
 int Preferences::switching_images = 0;
 
-int   Preferences::bgcolor;
-int   Preferences::textcolor;
-int   Preferences::selectioncolor;
-int   Preferences::selectiontextcolor;
+int Preferences::bgcolor;
+int Preferences::textcolor;
+int Preferences::selectioncolor;
+int Preferences::selectiontextcolor;
 
 int64_t Preferences::max_memory = 1000000000;
 
