@@ -2254,11 +2254,7 @@ void Preferences::run( ViewerUI* main )
     LogDisplay::shown = false;
 
     DBG3;
-    if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
-    {
-        DBGM1( "ALWAYS ON TOP" );
-        main->uiMain->always_on_top();
-    }
+    main->uiMain->always_on_top( uiPrefs->uiPrefsAlwaysOnTop->value());
 
     DBG3;
     if ( debug > 1 )
@@ -2654,7 +2650,7 @@ void Preferences::save()
 
     base.flush();
 
-    LOG_INFO( _("Preferences have been saved to: ") << prefspath() << "/.filmaira/mrViewer.prefs." );
+    LOG_INFO( _("Preferences have been saved to: ") << prefspath() << "mrViewer.prefs." );
 
     check_language( uiPrefs, language_index );
 }

@@ -170,12 +170,15 @@ void MainWindow::set_icon()
 }
 
 
-void MainWindow::always_on_top()
+void MainWindow::always_on_top( int t )
 {
 #if defined(_WIN32) || defined(_WIN64)
+    HWND action;
+    if ( t ) action = HWND_TOPMOST;
+    else     action = HWND_NOTOPMOST;
     // Microsoft (R) Windows(TM)
-    SetWindowPos(fl_xid(this), HWND_TOPMOST,
-                 0, 0, w()+8, h()+27, 0 );
+    SetWindowPos(fl_xid(this), action,
+                 NULL, NULL, NULL, NULL, SWP_NOMOVE | SWP_NOSIZE );
 #elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
     // XOrg / XWindows(TM)
     XEvent ev;
@@ -191,7 +194,7 @@ void MainWindow::always_on_top()
     ev.xclient.window = fl_xid(this);
     ev.xclient.message_type = net_wm_state;
     ev.xclient.format = 32;
-    ev.xclient.data.l[ 0 ] = active() ? 1 : 0;
+    ev.xclient.data.l[ 0 ] = t;
     ev.xclient.data.l[ 1 ] = net_wm_state_above;
     ev.xclient.data.l[ 2 ] = 0;
     XSendEvent(fl_display,

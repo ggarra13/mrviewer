@@ -14,19 +14,19 @@ libdrm2.*
 libpthread.*
 libresolv.*
 libm\.so
-libc\.so.*
 librt\..*
 libdl.*
 libxcb.*
 libasound.*
-libglib.*
 libgpg-error.*
-libstdc\+\+\.so.*
-libgcc_s.*
 libfontconfig.*
 libfreetype.*
 libxshmfence.*
 libz.*
+libc\.so.*
+libglib.*
+libstdc\+\+\.so.*
+libgcc_s.*
 )
 
 @options = { :verbose => false, :libs_only => false, :force => false }

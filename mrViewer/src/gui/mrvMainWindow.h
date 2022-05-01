@@ -52,14 +52,14 @@ public:
     virtual int handle( int event );
 
     void fullscreen();
-    
+
     void resize( int X, int Y, int W, int H );
-    
+
     /**
      * Make window appear always on top of others
      *
      */
-    void always_on_top();
+    void always_on_top(int above);
 
     /**
      * Change window's icon to mrViewer's icon
