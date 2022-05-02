@@ -1,7 +1,9 @@
 v6.1.7  - Made fit image take into account masking.
 	- Fixed message about saving preferences in .filmaura/.filmaura instead
 	  of just .filmaura.
-	- Made always on top turn on and off when the preferences changes on
+	- Added Always on Top to macOS.  Previously this preference
+	  setting did nothing.
+	- Made Always on Top turn on and off when the preferences changes on
 	  Windows, Linux and macOS.
 
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
