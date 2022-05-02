@@ -170,6 +170,8 @@ void MainWindow::set_icon()
 }
 
 
+#if !defined(__APPLE__)
+
 void MainWindow::always_on_top( int t )
 {
 #if defined(_WIN32) || defined(_WIN64)
@@ -202,6 +204,9 @@ void MainWindow::always_on_top( int t )
                SubstructureNotifyMask|SubstructureRedirectMask, &ev);
 #endif
 } // above_all function
+
+
+#endif
 
 
 /**

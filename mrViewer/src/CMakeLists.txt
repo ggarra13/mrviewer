@@ -391,6 +391,10 @@ SET( SOURCES
   ${BlackMagicRAW_SOURCES}
   )
 
+if (APPLE)
+   set( SOURCES ${SOURCES} gui/mrvMainWindow.mm )
+endif()
+
 #
 # Audio Engines
 #
