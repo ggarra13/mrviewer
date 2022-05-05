@@ -30,11 +30,10 @@
 #undef snprintf
 #include <iostream>
 
-//#include "FL/fl_config.h"
+#include "FL/platform.H"
 
-#undef FLTK_USE_WAYLAND
 
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11)
 #include <X11/extensions/scrnsaver.h>
 #endif
 
@@ -104,7 +103,7 @@ MainWindow::~MainWindow()
 {
     // Restore screensaver/black screen
     DBGM1( _("Restore screensaver") );
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11)
     XScreenSaverSuspend( fl_display, False );
 #elif defined(_WIN32) || defined(_WIN64)
     SetThreadExecutionState(ES_CONTINUOUS);
@@ -141,7 +140,7 @@ void MainWindow::set_icon()
 
     // Turn off screensaver and black screen
     DBGM1( _("Turn off screensaver") );
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11)
     int event_base, error_base;
     Bool ok = XScreenSaverQueryExtension(fl_display, &event_base, &error_base );
     if ( ok == True )
@@ -174,14 +173,14 @@ void MainWindow::set_icon()
 
 void MainWindow::always_on_top( int t )
 {
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32)
     HWND action;
     if ( t ) action = HWND_TOPMOST;
     else     action = HWND_NOTOPMOST;
     // Microsoft (R) Windows(TM)
     SetWindowPos(fl_xid(this), action,
                  NULL, NULL, NULL, NULL, SWP_NOMOVE | SWP_NOSIZE );
-#elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#elif defined(FLTK_USE_X11)
     // XOrg / XWindows(TM)
     XEvent ev;
     static const char* const names[2] = { "_NET_WM_STATE",
