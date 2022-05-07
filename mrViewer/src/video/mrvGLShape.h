@@ -79,7 +79,6 @@ class ImageView;
 };
 
 
-void glCircle( const Point& p, const double radius, double pen_size );
 void glDisk( const Point& p, const float diameter );
 
 class GLShape
@@ -108,6 +107,7 @@ public:
     float pen_size;
     //short previous, next;
     boost::int64_t frame;
+    typedef std::vector< Point > PointList;
 };
 
 class GLCircleShape : public GLShape
@@ -118,6 +118,7 @@ public:
     virtual void draw( double z, double m );
     virtual std::string send() const;
 
+    void glCircle( const Point& p, const double radius, double pen_size );
     Point center;
     double radius;
 };
@@ -131,7 +132,6 @@ public:
     virtual void draw( double z, double m );
     virtual std::string send() const;
 
-    typedef std::vector< Point > PointList;
     PointList pts;
 };
 

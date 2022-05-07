@@ -58,39 +58,6 @@ const char* kModule = N_("shape");
 
 namespace mrv {
 
-// v0 and v1 are normalized
-// t can vary between 0 and 1
-// http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
-Point slerp2d( const Point& v0, const Point& v1, float t )
-{
-    double dot = v0.dot(v1);
-    if( dot < -1.0 ) dot = -1.0;
-    if( dot > 1.0 ) dot = 1.0;
-
-    double theta_0 = acos( dot );
-    double theta = theta_0 * t;
-
-    Point v2( -v0.y, v0.x );
-
-    return ( v0*cos(theta) + v2*sin(theta) );
-}
-
-void glCircle( const Point& p, const double radius, double pen_size )
-{
-    const GLint triangleAmount = 40;
-    const GLdouble twoPi = M_PI * 2.0;
-
-    glLineWidth( pen_size );
-    glBegin( GL_LINE_LOOP );
-    for ( int i = 0; i < triangleAmount; ++i )
-    {
-        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
-                    p.y + (radius * sin( i* twoPi / triangleAmount ))
-                  );
-    }
-    glEnd();
-}
-
 
 void glDisk( const Point& p, const float diameter )
 {
@@ -104,92 +71,53 @@ void glDisk( const Point& p, const float diameter )
     {
         glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
                     p.y + (radius * sin( i* twoPi / triangleAmount ))
-                  );
+            );
     }
     glEnd();
 }
 
-void glPolyline( const vector<mrv::Point>& polyline, float width,
-                 bool cap = true )
+ void GLCircleShape::glCircle( const Point& p, const double radius,
+                               double pen_size )
 {
-    if( polyline.size() < 2 ) return;
-    float w = width / 2.0f;
+    const GLint triangleAmount = 40;
+    const GLdouble twoPi = M_PI * 2.0;
 
-    glBegin(GL_TRIANGLES);
-    for( size_t i = 0; i < polyline.size()-1; ++i )
+    PointList verts;
+    verts.reserve( triangleAmount+1 );
+    for ( int i = 0; i < triangleAmount; ++i )
     {
-        const Point& cur = polyline[ i ];
-        const Point& nxt = polyline[i+1];
-
-        Point b = (nxt - cur).normalized();
-        Point b_perp( -b.y, b.x );
-
-        Point p0( cur + b_perp*w );
-        Point p1( cur - b_perp*w );
-        Point p2( nxt + b_perp*w );
-        Point p3( nxt - b_perp*w );
-
-        // first triangle
-        glVertex2dv( &p0.x );
-        glVertex2dv( &p1.x );
-        glVertex2dv( &p2.x );
-        // second triangle
-        glVertex2dv( &p2.x );
-        glVertex2dv( &p1.x );
-        glVertex2dv( &p3.x );
-
-        // only do joins when we have a prv
-        if( i == 0 || !cap ) continue;
-
-        const Point& prv = polyline[i-1];
-        Point a = (prv - cur).normalized();
-        Point a_perp( a.y, -a.x );
-
-        double det = a.x*b.y - b.x*a.y;
-        if( det > 0 )
-        {
-            a_perp.x = -a_perp.x;
-            a_perp.y = -a_perp.y;
-            b_perp.x = -b_perp.x;
-            b_perp.y = -b_perp.y;
-        }
-
-        // TODO: do inner miter calculation
-
-        // flip around normals and calculate round join points
-        a_perp.x = -a_perp.x;
-        a_perp.y = -a_perp.y;
-        b_perp.x = -b_perp.x;
-        b_perp.y = -b_perp.y;
-
-        size_t num_pts = 4;
-        vector< Point > round( 1 + num_pts + 1 );
-        for( size_t j = 0; j <= num_pts+1; ++j )
-        {
-            float t = (float)j/(float)(num_pts+1);
-            if( det > 0 )
-                round[j] = cur + (slerp2d( b_perp, a_perp, 1.0f-t ) * w);
-            else
-                round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
-        }
-
-        for( size_t j = 0; j < round.size()-1; ++j )
-        {
-            glVertex2dv( &cur.x );
-            if( det > 0 )
-            {
-                glVertex2dv( &(round[j+1].x) );
-                glVertex2dv( &(round[j+0].x) );
-            }
-            else
-            {
-                glVertex2dv( &(round[j+0].x) );
-                glVertex2dv( &(round[j+1].x) );
-            }
-        }
+        Point pt( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                  p.y + (radius * sin( i* twoPi / triangleAmount )) );
+        verts.push_back( pt );
     }
-    glEnd();
+
+    Point pt( p.x + radius, p.y );
+    verts.push_back( pt );
+
+    const PointList& draw =
+        Polyline2D::create( verts, pen_size,
+                            Polyline2D::JointStyle::MITER,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+
 
 
 std::string GLPathShape::send() const
@@ -240,11 +168,6 @@ void GLPathShape::draw( double z, double m )
         return;
     }
 
-#if 0
-    glDisk( pts[0], pen_size );
-    glPolyline( pts, pen_size );
-    glDisk( pts[num-1], pen_size );
-#else
 
     const PointList& draw =
         Polyline2D::create( pts, pen_size,
@@ -255,9 +178,6 @@ void GLPathShape::draw( double z, double m )
 
     glEnableClientState( GL_VERTEX_ARRAY );
 
-    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
-    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
-
     glDisableClientState( GL_COLOR_ARRAY );
     glDisableClientState( GL_EDGE_FLAG_ARRAY );
     glDisableClientState( GL_FOG_COORD_ARRAY );
@@ -266,8 +186,10 @@ void GLPathShape::draw( double z, double m )
     glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
     glDisableClientState(GL_VERTEX_ARRAY);
-#endif
 
     glDisable( GL_BLEND );
 }
@@ -290,7 +212,28 @@ void GLArrowShape::draw( double z, double m )
 
     glColor4f( r, g, b, a );
 
-    glPolyline( pts, pen_size );
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
     glDisable( GL_BLEND );
 
 }
@@ -337,26 +280,36 @@ void GLRectangleShape::draw( double z, double m )
 
     glColor4f( r, g, b, a );
 
-    glPointSize( pen_size );
-    glLineWidth( pen_size );
+    PointList verts;
+    verts.resize(5);
+    verts[0] = Point( pts[0].x, pts[0].y );
+    verts[1] = Point( pts[1].x, pts[0].y );
+    verts[2] = Point( pts[1].x, pts[1].y );
+    verts[3] = Point( pts[0].x, pts[1].y );
+    verts[4] = Point( pts[0].x, pts[0].y );
 
-    glBegin( GL_LINE_LOOP );
-    {
-        glVertex2d( pts[0].x, pts[0].y );
-        glVertex2d( pts[1].x, pts[0].y );
-        glVertex2d( pts[1].x, pts[1].y );
-        glVertex2d( pts[0].x, pts[1].y );
-    }
-    glEnd();
+    const PointList& draw =
+        Polyline2D::create( verts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
 
-    glBegin( GL_POINTS );
-    {
-        glVertex2d( pts[0].x, pts[0].y );
-        glVertex2d( pts[1].x, pts[0].y );
-        glVertex2d( pts[1].x, pts[1].y );
-        glVertex2d( pts[0].x, pts[1].y );
-    }
-    glEnd();
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
 
     glDisable( GL_BLEND );
 
@@ -406,6 +359,8 @@ void GLCircleShape::draw( double z, double m )
     glColor4f( r, g, b, a );
 
     glCircle( center, radius, pen_size );
+
+    glDisable( GL_BLEND );
 }
 
 
@@ -470,9 +425,27 @@ void GLErasePathShape::draw( double z, double m )
         return;
     }
 
-    glDisk( pts[0], pen_size );
-    glPolyline( pts, pen_size );
-    glDisk( pts[pts.size()-1], pen_size );
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 

@@ -5,8 +5,10 @@ v6.1.7  - Made fit image take into account masking.
 	  setting did nothing.
 	- Made Always on Top turn on and off when the preferences changes on
 	  Windows, Linux and macOS.
-	- Improved draw tool to draw lines joined with less gaps or weird
-	  triangles.
+	- Improved draw and erase tool to draw lines joined with less gaps or
+	  weird triangles.
+	- Fixed edge of arrow tool.
+	- Improved look of rectangle tool.
 
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.
