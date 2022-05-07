@@ -21,6 +21,7 @@
 
 #include <float.h>
 #include <limits.h>
+#include <cmath>
 #include <vector>
 #include <iostream>
 
@@ -70,11 +71,16 @@ class ImageView;
             x = b.x; y = b.y;
             return *this;
         }
+
+        inline double angle( const Point& b )
+        {
+            return std::acos( dot( b ) ) / (length() * b.length());
+        }
 };
 
 
 void glCircle( const Point& p, const double radius, double pen_size );
-void glDisk( const Point& p, const double radius );
+void glDisk( const Point& p, const float diameter );
 
 class GLShape
 {

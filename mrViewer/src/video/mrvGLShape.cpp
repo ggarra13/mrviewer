@@ -22,7 +22,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32)
 #  include <winsock2.h>  // to avoid winsock issues
 #  include <windows.h>
 #endif
@@ -30,7 +30,7 @@
 #include <GL/glew.h>
 
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32)
 #  include <FL/platform.H>
 #elif defined(LINUX)
 #  include <GL/glxew.h>
@@ -40,10 +40,14 @@
 #include <FL/gl.h>
 #include <FL/fl_draw.H>
 
+#include "core/mrvColor.h"
+
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLShape.h"
+
+#include "video/Polyline2D.h"
 
 namespace {
 const char* kModule = N_("shape");
@@ -88,8 +92,9 @@ void glCircle( const Point& p, const double radius, double pen_size )
 }
 
 
-void glDisk( const Point& p, const double radius )
+void glDisk( const Point& p, const float diameter )
 {
+    const float radius = diameter / 2.0f;
     const GLint triangleAmount = 20;
     const GLdouble twoPi = M_PI * 2.0;
 
@@ -104,7 +109,8 @@ void glDisk( const Point& p, const double radius )
     glEnd();
 }
 
-void glPolyline( const vector<mrv::Point>& polyline, float width )
+void glPolyline( const vector<mrv::Point>& polyline, float width,
+                 bool cap = true )
 {
     if( polyline.size() < 2 ) return;
     float w = width / 2.0f;
@@ -133,7 +139,7 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
         glVertex2dv( &p3.x );
 
         // only do joins when we have a prv
-        if( i == 0 ) continue;
+        if( i == 0 || !cap ) continue;
 
         const Point& prv = polyline[i-1];
         Point a = (prv - cur).normalized();
@@ -228,14 +234,40 @@ void GLPathShape::draw( double z, double m )
 
     glColor4f( r, g, b, a );
 
-    if ( pts.size() < 1 )
+    size_t num = pts.size();
+    if ( num < 1 )
     {
         return;
     }
 
-    glDisk( pts[0], pen_size / 2.0 );
+#if 0
+    glDisk( pts[0], pen_size );
     glPolyline( pts, pen_size );
-    glDisk( pts[pts.size()-1], pen_size / 2.0 );
+    glDisk( pts[num-1], pen_size );
+#else
+
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+#endif
 
     glDisable( GL_BLEND );
 }
@@ -438,9 +470,9 @@ void GLErasePathShape::draw( double z, double m )
         return;
     }
 
-    glDisk( pts[0], pen_size / 2.0 );
+    glDisk( pts[0], pen_size );
     glPolyline( pts, pen_size );
-    glDisk( pts[pts.size()-1], pen_size / 2.0 );
+    glDisk( pts[pts.size()-1], pen_size );
 }
 
 
