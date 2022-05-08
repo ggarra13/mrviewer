@@ -25,17 +25,12 @@
  *
  */
 
+
 #include "R3DSDK.h"
 #include "core/mrvI8N.h"
 #undef snprintf
 #include <iostream>
 
-#include "FL/platform.H"
-
-
-#if defined(FLTK_USE_X11)
-#include <X11/extensions/scrnsaver.h>
-#endif
 
 #include "core/mrvException.h"
 #include "core/R3dImage.h"
@@ -52,6 +47,9 @@
 #include <FL/platform.H>
 #include <FL/fl_utf8.h>
 
+#if defined(FLTK_USE_X11)
+#include <X11/extensions/scrnsaver.h>
+#endif
 
 #include "icons/viewer16.xpm"
 #include "resource.h"
@@ -105,7 +103,7 @@ MainWindow::~MainWindow()
     DBGM1( _("Restore screensaver") );
 #if defined(FLTK_USE_X11)
     XScreenSaverSuspend( fl_display, False );
-#elif defined(_WIN32) || defined(_WIN64)
+#elif defined(_WIN32)
     SetThreadExecutionState(ES_CONTINUOUS);
 #elif defined(__APPLE__)
     if ( success )
@@ -145,7 +143,7 @@ void MainWindow::set_icon()
     Bool ok = XScreenSaverQueryExtension(fl_display, &event_base, &error_base );
     if ( ok == True )
         XScreenSaverSuspend( fl_display, True );
-#elif defined(_WIN32) || defined(_WIN64)
+#elif defined(_WIN32)
     SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
                              ES_DISPLAY_REQUIRED );
 #elif defined(__APPLE__)
@@ -155,7 +153,7 @@ void MainWindow::set_icon()
                                            reason, &assertionID );
 #endif
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32)
      HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
      this->icon(data);
 #else

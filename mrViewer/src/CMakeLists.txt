@@ -681,7 +681,7 @@ IF(WIN32)
 
   SET( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON )
 
-  INCLUDE( CMakeRegistry.cmake )
+  INCLUDE( cmake/NSISRegistry.cmake )
 
 ELSEIF ( APPLE )
   set(CPACK_GENERATOR Bundle )

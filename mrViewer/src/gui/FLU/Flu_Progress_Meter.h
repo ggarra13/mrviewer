@@ -28,7 +28,7 @@
 #include "FLU/Flu_Enumerations.h"
 
 #ifdef WIN32
-#include <winsock.h>
+#include <winsock2.h>
 #include <time.h>
 #else
 #include <sys/time.h>
