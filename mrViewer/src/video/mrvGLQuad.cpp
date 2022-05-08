@@ -370,6 +370,9 @@ void GLQuad::update_texsub( unsigned int idx,
 
     if ( _view->field() == ImageView::kFrameDisplay )
     {
+        glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
+        glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+
 //#define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
@@ -381,8 +384,6 @@ void GLQuad::update_texsub( unsigned int idx,
 #endif
         {
 
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
-            glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
             // bind pixel buffer
             glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
@@ -470,8 +471,6 @@ void GLQuad::update_texsub( unsigned int idx,
         else
 #endif // TEST_NO_PBO_TEXTURES
         {
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
-
             //
             // Handle copying FRAME AREA to 2D texture
             //
@@ -564,8 +563,6 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
         glBindTexture(GL_TEXTURE_2D, _texId[i] );
         CHECK_GL;
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        CHECK_GL;
 
 
         unsigned int tw = dw;
@@ -668,13 +665,11 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             unsigned hth = th;
 
 
-            if ( _view->stereo_input() &
-                 CMedia::kTopBottomStereoInput )
+            if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
             {
                 hth /= 2;
             }
-            else if ( _view->stereo_input() &
-                      CMedia::kLeftRightStereoInput )
+            else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
             {
                 htw /= 2;
             }
@@ -789,8 +784,6 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
     glBindTexture( GL_TEXTURE_2D, _texId[0] );
     CHECK_GL;
 
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-    CHECK_GL;
 
 
     unsigned tw = dw;
@@ -848,14 +841,12 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         unsigned hth = th;
 
 
-        if ( _view->stereo_input() &
-                CMedia::kTopBottomStereoInput )
+        if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
         {
             hth /= 2;
             th = hth;
         }
-        else if ( _view->stereo_input() &
-                  CMedia::kLeftRightStereoInput )
+        else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
         {
             htw /= 2;
         }
@@ -892,6 +883,7 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         }
     }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
+
 
     update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type,
                    short(_channels), short(pixel_size), p );
@@ -1014,7 +1006,15 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, _texId[i] );
             CHECK_GL;
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+            if ( i > 0 )
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_NEAREST);
+            }
+            else
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+            }
         }
     }
     else
