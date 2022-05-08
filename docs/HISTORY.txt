@@ -9,6 +9,10 @@ v6.1.7  - Made fit image take into account masking.
 	  weird triangles.
 	- Fixed edge of arrow tool.
 	- Improved look of rectangle tool.
+	- Fixed green bottom edge 1 pixel line when in presentation mode,
+	  bilinear filtering and texture was yuv.
+	- Fixed check buttons colors when in base scheme and color theme was
+	  black.
 
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.
