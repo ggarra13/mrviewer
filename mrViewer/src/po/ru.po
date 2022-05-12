@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-09 22:39-0300\n"
+"POT-Creation-Date: 2022-05-12 14:43-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1183,7 +1183,7 @@ msgstr "Отрегулируйте контрастность изображен
 msgid "Adjust Image Saturation"
 msgstr "Отрегулируйте насыщенность изображения"
 
-#: core/exrImage.cpp:1214 core/exrImage.cpp:2499 core/exrImage.cpp:2503
+#: core/exrImage.cpp:1214 core/exrImage.cpp:2500 core/exrImage.cpp:2504
 msgid "Adopted Neutral"
 msgstr "Нейтральный Принято"
 
@@ -1259,7 +1259,7 @@ msgstr "Позволяет установить начальный кадр вр
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Позволяет установить конечный кадр для временной шкалы."
 
-#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9375
 #: gui/mrvImageView.cpp:9843 gui/mrvImageView.cpp:9905
 msgid "Alpha"
@@ -1269,7 +1269,7 @@ msgstr "Альфа"
 msgid "Alpha Only"
 msgstr "только альфа"
 
-#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2167
 #: gui/mrvImageView.cpp:9356 gui/mrvImageView.cpp:9906
 msgid "Alpha Overlay"
@@ -1288,7 +1288,7 @@ msgid "Alt"
 msgstr "Альт"
 
 #: core/exrImage.cpp:1289 core/exrImage.cpp:2470 core/exrImage.cpp:2474
-#: core/exrImage.cpp:2556 core/exrImage.cpp:2560
+#: core/exrImage.cpp:2557 core/exrImage.cpp:2561
 msgid "Altitude"
 msgstr "Высота"
 
@@ -1354,7 +1354,7 @@ msgstr ""
 "Открыт другой экземпляр mrViewer.\n"
 "Удалить "
 
-#: core/exrImage.cpp:1319 core/exrImage.cpp:2579 core/exrImage.cpp:2583
+#: core/exrImage.cpp:1319 core/exrImage.cpp:2580 core/exrImage.cpp:2584
 msgid "Aperture"
 msgstr "Открытие"
 
@@ -1681,7 +1681,7 @@ msgstr "режим смешивания"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9370
 #: gui/mrvImageView.cpp:9904
 msgid "Blue"
@@ -1888,7 +1888,7 @@ msgstr "Сообщение"
 msgid "Caption Writer"
 msgstr "Автор сообщений"
 
-#: core/exrImage.cpp:2531 core/hdrImage.cpp:173
+#: core/exrImage.cpp:2532 core/hdrImage.cpp:173
 msgid "Capture Date"
 msgstr "Дата захвата"
 
@@ -1951,7 +1951,7 @@ msgstr "цветности"
 msgid "Chromaticities (CIE)"
 msgstr "Цветности (CIE)"
 
-#: core/exrImage.cpp:1203 core/exrImage.cpp:2485 core/exrImage.cpp:2489
+#: core/exrImage.cpp:1203 core/exrImage.cpp:2486 core/exrImage.cpp:2490
 msgid "Chromaticities Name"
 msgstr "Название цветности"
 
@@ -2078,10 +2078,10 @@ msgstr "Сворачиваемая группа не найдена"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2630
-#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2803
-#: core/exrImage.cpp:3060 core/exrImage.cpp:3068 core/exrImage.cpp:3080
-#: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
-#: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2804
+#: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
+#: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
+#: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2204
 #: gui/mrvImageView.cpp:2266 gui/mrvImageView.cpp:9903
 #: gui/mrvImageView.cpp:9951
@@ -2142,8 +2142,8 @@ msgstr "Детали цветового пространства не получ
 msgid "Colorspace details not set "
 msgstr "Детали цветового пространства не заданы "
 
-#: core/exrImage.cpp:1248 core/exrImage.cpp:2492 core/exrImage.cpp:2496
-#: core/exrImage.cpp:2520 core/exrImage.cpp:2524
+#: core/exrImage.cpp:1248 core/exrImage.cpp:2493 core/exrImage.cpp:2497
+#: core/exrImage.cpp:2521 core/exrImage.cpp:2525
 msgid "Comments"
 msgstr "Комментарии"
 
@@ -2179,7 +2179,7 @@ msgstr "Сжатие"
 msgid "Compression Ratio"
 msgstr "Степень сжатия"
 
-#: core/exrImage.cpp:2833
+#: core/exrImage.cpp:2834
 msgid "Compression method not available. Using PIZ."
 msgstr "Метод сжатия недоступен. Использование ПИЗ."
 
@@ -3541,7 +3541,7 @@ msgstr "Меньше экспозиции"
 msgid "Exposure More"
 msgstr "Больше воздействия"
 
-#: core/exrImage.cpp:1309 core/exrImage.cpp:2572 core/exrImage.cpp:2576
+#: core/exrImage.cpp:1309 core/exrImage.cpp:2573 core/exrImage.cpp:2577
 msgid "Exposure Time"
 msgstr "Время выставки"
 
@@ -3592,7 +3592,7 @@ msgstr "FPS"
 msgid "Failed "
 msgstr "Отказ "
 
-#: core/exrImage.cpp:3159
+#: core/exrImage.cpp:3160
 msgid "Failed setting layer to "
 msgstr "Не удалось установить слой "
 
@@ -3750,7 +3750,7 @@ msgstr "Имя файла клипа"
 msgid "Filesystem error: "
 msgstr "Ошибка файловой системы: "
 
-#: core/exrImage.cpp:2600 core/exrImage.cpp:2603
+#: core/exrImage.cpp:2601 core/exrImage.cpp:2604
 msgid "Film Manufacturer Code"
 msgstr "Код производителя пленки"
 
@@ -3843,7 +3843,7 @@ msgstr "Не удалось очистить буферы"
 msgid "Flut"
 msgstr "флейта"
 
-#: core/exrImage.cpp:1299 core/exrImage.cpp:2564 core/exrImage.cpp:2568
+#: core/exrImage.cpp:1299 core/exrImage.cpp:2565 core/exrImage.cpp:2569
 msgid "Focus"
 msgstr "Фокус"
 
@@ -4118,7 +4118,7 @@ msgstr "греческий (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9365
 #: gui/mrvImageView.cpp:9904
 msgid "Green"
@@ -4313,7 +4313,7 @@ msgstr "Гибридный"
 msgid "ICC"
 msgstr "МУС"
 
-#: core/exrImage.cpp:1372 core/exrImage.cpp:2656 core/exrImage.cpp:2660
+#: core/exrImage.cpp:1372 core/exrImage.cpp:2657 core/exrImage.cpp:2661
 #: gui/mrvImageInformation.cpp:3096
 msgid "ICC Profile"
 msgstr "Профиль ICC"
@@ -4357,7 +4357,7 @@ msgstr "ИСО"
 msgid "ISO Index out of bounds"
 msgstr "Индекс ISO вне допустимого диапазона"
 
-#: core/exrImage.cpp:1330 core/exrImage.cpp:2586 core/exrImage.cpp:2590
+#: core/exrImage.cpp:1330 core/exrImage.cpp:2587 core/exrImage.cpp:2591
 msgid "ISO Speed"
 msgstr "чувствительность ISO"
 
@@ -4429,7 +4429,7 @@ msgstr "Параметры изображения"
 msgid "Image Scale"
 msgstr "Масштаб изображения"
 
-#: core/exrImage.cpp:1227 core/exrImage.cpp:2506 core/exrImage.cpp:2510
+#: core/exrImage.cpp:1227 core/exrImage.cpp:2507 core/exrImage.cpp:2511
 msgid "Image State"
 msgstr "Статус изображения"
 
@@ -4875,7 +4875,7 @@ msgid "Last frame of clip - User selected"
 msgstr "Последний кадр клипа — выбор пользователя"
 
 #: core/exrImage.cpp:1279 core/exrImage.cpp:2463 core/exrImage.cpp:2467
-#: core/exrImage.cpp:2548 core/exrImage.cpp:2552
+#: core/exrImage.cpp:2549 core/exrImage.cpp:2553
 msgid "Latitude"
 msgstr "Широта"
 
@@ -5090,7 +5090,7 @@ msgid "Logs"
 msgstr "Сообщения"
 
 #: core/exrImage.cpp:1269 core/exrImage.cpp:2456 core/exrImage.cpp:2460
-#: core/exrImage.cpp:2541 core/exrImage.cpp:2545
+#: core/exrImage.cpp:2542 core/exrImage.cpp:2546
 msgid "Longitude"
 msgstr "Длина"
 
@@ -5123,7 +5123,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Яркость пикселя изображения под мышью."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2174
 #: gui/mrvImageView.cpp:9380 gui/mrvImageView.cpp:9905
 msgid "Lumma"
@@ -5998,7 +5998,7 @@ msgstr "Опции управления считывателем/писател�
 msgid "Options controlling the R3D / BRAW readers"
 msgstr "Опции, управляющие считывателем R3D/БРОВЬ"
 
-#: core/exrImage.cpp:2952
+#: core/exrImage.cpp:2953
 msgid "Options for EXR were empty"
 msgstr "Опции для EXR были пусты"
 
@@ -6094,7 +6094,7 @@ msgstr "О записи линии (необработанной) ["
 msgid "Overrun scanline (Repeat) ["
 msgstr "Переписать строку (Повторить) ["
 
-#: core/exrImage.cpp:1238 core/exrImage.cpp:2513 core/exrImage.cpp:2517
+#: core/exrImage.cpp:1238 core/exrImage.cpp:2514 core/exrImage.cpp:2518
 #: core/hdrImage.cpp:166
 msgid "Owner"
 msgstr "Владелец"
@@ -6622,7 +6622,7 @@ msgstr "Инструмент «Прямоугольник»"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9360
 #: gui/mrvImageView.cpp:9903
 msgid "Red"
@@ -8327,7 +8327,7 @@ msgid "UInt"
 msgstr "UInt"
 
 #: core/exrImage.cpp:1259 core/exrImage.cpp:2449 core/exrImage.cpp:2453
-#: core/exrImage.cpp:2534 core/exrImage.cpp:2538
+#: core/exrImage.cpp:2535 core/exrImage.cpp:2539
 msgid "UTC Offset"
 msgstr "Смещение UTC"
 
@@ -9206,11 +9206,11 @@ msgstr ""
 "Обратите внимание, что это копирует исходное изображение в новое "
 "изображение. Если вы сохраните поверх того же образа, он уничтожит его."
 
-#: core/exrImage.cpp:1382 core/exrImage.cpp:2663 core/exrImage.cpp:2667
+#: core/exrImage.cpp:1382 core/exrImage.cpp:2664 core/exrImage.cpp:2668
 msgid "Wrap Modes"
 msgstr "режим переноса"
 
-#: core/exrImage.cpp:1362 core/exrImage.cpp:2649 core/exrImage.cpp:2653
+#: core/exrImage.cpp:1362 core/exrImage.cpp:2650 core/exrImage.cpp:2654
 msgid "Writer"
 msgstr "Писатель"
 
@@ -9302,7 +9302,7 @@ msgstr "Y '(Лума)"
 msgid "Y:"
 msgstr "Y:"
 
-#: core/exrImage.cpp:2794
+#: core/exrImage.cpp:2795
 msgid "YBYRY"
 msgstr "ЫБЫРЫ"
 
@@ -9440,7 +9440,7 @@ msgstr "основание"
 msgid "bind socket failed\n"
 msgstr "Не удалось присоединиться к сокету\n"
 
-#: core/exrImage.cpp:2527
+#: core/exrImage.cpp:2528
 msgid "capDate"
 msgstr "Дата"
 
@@ -9572,7 +9572,7 @@ msgstr "возвращено item_pathname "
 msgid "karaoke"
 msgstr "караоке"
 
-#: core/exrImage.cpp:2605
+#: core/exrImage.cpp:2606
 msgid "keyCode"
 msgstr "Ключевой код"
 
@@ -9904,6 +9904,10 @@ msgstr "х9"
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
 
+#, fuzzy
+#~ msgid "ocioColorSpace"
+#~ msgstr "цветовое пространство"
+
 #~ msgid "*******Added EMPTY media"
 #~ msgstr "******* Добавлен ПУСТОЙ носитель"
 
@@ -9915,9 +9919,6 @@ msgstr "xyY CIE xyY"
 
 #~ msgid "Type here"
 #~ msgstr "Введите сюда"
-
-#~ msgid "ColorSpace"
-#~ msgstr "цветовое пространство"
 
 #~ msgid "hdtv"
 #~ msgstr "HDTV"

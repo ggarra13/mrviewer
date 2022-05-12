@@ -591,11 +591,11 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << endl
       << "OpenColorIO v" << OCIO::GetVersion() <<  " or later" << endl
       << "http://www.opencolorio.org/" << endl
-      << "(C) 2005-2021 Sony Pictures Imageworks" << endl
+      << "(C) 2005-2022 Sony Pictures Imageworks" << endl
       << endl
       << "OpenImageIO v" << OIIO_VERSION_STRING <<  " or later" << endl
       << "http://www.openimageio.org/" << endl
-      << "(C) 2003-2021 Larry Gritz, et al. " << endl
+      << "(C) 2003-2022 Larry Gritz, et al. " << endl
       << "All rights reserved." << endl;
     int columns = 80;
     std::string libs = OIIO::get_string_attribute("library_list");

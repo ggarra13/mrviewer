@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-09 22:39-0300\n"
+"POT-Creation-Date: 2022-05-12 14:43-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1180,7 +1180,7 @@ msgstr "调整图像的对比度"
 msgid "Adjust Image Saturation"
 msgstr "调整图像饱和度"
 
-#: core/exrImage.cpp:1214 core/exrImage.cpp:2499 core/exrImage.cpp:2503
+#: core/exrImage.cpp:1214 core/exrImage.cpp:2500 core/exrImage.cpp:2504
 msgid "Adopted Neutral"
 msgstr "中性 采用"
 
@@ -1256,7 +1256,7 @@ msgstr "允许您设置时间线的起始帧。"
 msgid "Allows you to set the ending frame for timeline."
 msgstr "允许您设置时间线的结束帧。"
 
-#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9375
 #: gui/mrvImageView.cpp:9843 gui/mrvImageView.cpp:9905
 msgid "Alpha"
@@ -1266,7 +1266,7 @@ msgstr "Α"
 msgid "Alpha Only"
 msgstr "仅限阿尔法"
 
-#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2167
 #: gui/mrvImageView.cpp:9356 gui/mrvImageView.cpp:9906
 msgid "Alpha Overlay"
@@ -1285,7 +1285,7 @@ msgid "Alt"
 msgstr "Alt"
 
 #: core/exrImage.cpp:1289 core/exrImage.cpp:2470 core/exrImage.cpp:2474
-#: core/exrImage.cpp:2556 core/exrImage.cpp:2560
+#: core/exrImage.cpp:2557 core/exrImage.cpp:2561
 msgid "Altitude"
 msgstr "高度"
 
@@ -1351,7 +1351,7 @@ msgstr ""
 "mrViewer 的另一个实例已打开。\n"
 "删除 "
 
-#: core/exrImage.cpp:1319 core/exrImage.cpp:2579 core/exrImage.cpp:2583
+#: core/exrImage.cpp:1319 core/exrImage.cpp:2580 core/exrImage.cpp:2584
 msgid "Aperture"
 msgstr "开幕式"
 
@@ -1669,7 +1669,7 @@ msgstr "混合模式"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9370
 #: gui/mrvImageView.cpp:9904
 msgid "Blue"
@@ -1874,7 +1874,7 @@ msgstr "信息"
 msgid "Caption Writer"
 msgstr "留言者"
 
-#: core/exrImage.cpp:2531 core/hdrImage.cpp:173
+#: core/exrImage.cpp:2532 core/hdrImage.cpp:173
 msgid "Capture Date"
 msgstr "拍摄日期"
 
@@ -1937,7 +1937,7 @@ msgstr "色度"
 msgid "Chromaticities (CIE)"
 msgstr "色度 (CIE)"
 
-#: core/exrImage.cpp:1203 core/exrImage.cpp:2485 core/exrImage.cpp:2489
+#: core/exrImage.cpp:1203 core/exrImage.cpp:2486 core/exrImage.cpp:2490
 msgid "Chromaticities Name"
 msgstr "色度名称"
 
@@ -2063,10 +2063,10 @@ msgstr "未找到可折叠组"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2630
-#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2803
-#: core/exrImage.cpp:3060 core/exrImage.cpp:3068 core/exrImage.cpp:3080
-#: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
-#: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2804
+#: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
+#: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
+#: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2204
 #: gui/mrvImageView.cpp:2266 gui/mrvImageView.cpp:9903
 #: gui/mrvImageView.cpp:9951
@@ -2127,8 +2127,8 @@ msgstr "未获得色彩空间细节 "
 msgid "Colorspace details not set "
 msgstr "未设置色彩空间细节 "
 
-#: core/exrImage.cpp:1248 core/exrImage.cpp:2492 core/exrImage.cpp:2496
-#: core/exrImage.cpp:2520 core/exrImage.cpp:2524
+#: core/exrImage.cpp:1248 core/exrImage.cpp:2493 core/exrImage.cpp:2497
+#: core/exrImage.cpp:2521 core/exrImage.cpp:2525
 msgid "Comments"
 msgstr "注释"
 
@@ -2164,7 +2164,7 @@ msgstr "压缩"
 msgid "Compression Ratio"
 msgstr "压缩率"
 
-#: core/exrImage.cpp:2833
+#: core/exrImage.cpp:2834
 msgid "Compression method not available. Using PIZ."
 msgstr "压缩方法不可用。使用 PIZ。"
 
@@ -3514,7 +3514,7 @@ msgstr "减少曝光"
 msgid "Exposure More"
 msgstr "更多曝光"
 
-#: core/exrImage.cpp:1309 core/exrImage.cpp:2572 core/exrImage.cpp:2576
+#: core/exrImage.cpp:1309 core/exrImage.cpp:2573 core/exrImage.cpp:2577
 msgid "Exposure Time"
 msgstr "展览时间"
 
@@ -3565,7 +3565,7 @@ msgstr "FPS"
 msgid "Failed "
 msgstr "失败 "
 
-#: core/exrImage.cpp:3159
+#: core/exrImage.cpp:3160
 msgid "Failed setting layer to "
 msgstr "未能将图层设置为 "
 
@@ -3723,7 +3723,7 @@ msgstr "剪辑文件名"
 msgid "Filesystem error: "
 msgstr "文件系统错误： "
 
-#: core/exrImage.cpp:2600 core/exrImage.cpp:2603
+#: core/exrImage.cpp:2601 core/exrImage.cpp:2604
 msgid "Film Manufacturer Code"
 msgstr "薄膜制造商代码"
 
@@ -3816,7 +3816,7 @@ msgstr "刷新缓冲区失败"
 msgid "Flut"
 msgstr "长笛"
 
-#: core/exrImage.cpp:1299 core/exrImage.cpp:2564 core/exrImage.cpp:2568
+#: core/exrImage.cpp:1299 core/exrImage.cpp:2565 core/exrImage.cpp:2569
 msgid "Focus"
 msgstr "重点"
 
@@ -4091,7 +4091,7 @@ msgstr "希腊语 (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9365
 #: gui/mrvImageView.cpp:9904
 msgid "Green"
@@ -4286,7 +4286,7 @@ msgstr "杂交种"
 msgid "ICC"
 msgstr "国际商会"
 
-#: core/exrImage.cpp:1372 core/exrImage.cpp:2656 core/exrImage.cpp:2660
+#: core/exrImage.cpp:1372 core/exrImage.cpp:2657 core/exrImage.cpp:2661
 #: gui/mrvImageInformation.cpp:3096
 msgid "ICC Profile"
 msgstr "国际商会简介"
@@ -4330,7 +4330,7 @@ msgstr "国际标准化组织"
 msgid "ISO Index out of bounds"
 msgstr "ISO 指数超出范围"
 
-#: core/exrImage.cpp:1330 core/exrImage.cpp:2586 core/exrImage.cpp:2590
+#: core/exrImage.cpp:1330 core/exrImage.cpp:2587 core/exrImage.cpp:2591
 msgid "ISO Speed"
 msgstr "ISO感光度"
 
@@ -4401,7 +4401,7 @@ msgstr "图像选项"
 msgid "Image Scale"
 msgstr "图像比例"
 
-#: core/exrImage.cpp:1227 core/exrImage.cpp:2506 core/exrImage.cpp:2510
+#: core/exrImage.cpp:1227 core/exrImage.cpp:2507 core/exrImage.cpp:2511
 msgid "Image State"
 msgstr "图像状态"
 
@@ -4840,7 +4840,7 @@ msgid "Last frame of clip - User selected"
 msgstr "剪辑的最后一帧 - 用户选择"
 
 #: core/exrImage.cpp:1279 core/exrImage.cpp:2463 core/exrImage.cpp:2467
-#: core/exrImage.cpp:2548 core/exrImage.cpp:2552
+#: core/exrImage.cpp:2549 core/exrImage.cpp:2553
 msgid "Latitude"
 msgstr "纬度"
 
@@ -5053,7 +5053,7 @@ msgid "Logs"
 msgstr "帖子"
 
 #: core/exrImage.cpp:1269 core/exrImage.cpp:2456 core/exrImage.cpp:2460
-#: core/exrImage.cpp:2541 core/exrImage.cpp:2545
+#: core/exrImage.cpp:2542 core/exrImage.cpp:2546
 msgid "Longitude"
 msgstr "长度"
 
@@ -5086,7 +5086,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "鼠标下的图像像素亮度。"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2174
 #: gui/mrvImageView.cpp:9380 gui/mrvImageView.cpp:9905
 msgid "Lumma"
@@ -5945,7 +5945,7 @@ msgstr "控制阅读器的选项/openexr 编写器"
 msgid "Options controlling the R3D / BRAW readers"
 msgstr "控制 R3D 阅读器的选项/眉头"
 
-#: core/exrImage.cpp:2952
+#: core/exrImage.cpp:2953
 msgid "Options for EXR were empty"
 msgstr "EXR 的选项为空"
 
@@ -6039,7 +6039,7 @@ msgstr "关于写作线（原始）["
 msgid "Overrun scanline (Repeat) ["
 msgstr "覆盖线（重复）["
 
-#: core/exrImage.cpp:1238 core/exrImage.cpp:2513 core/exrImage.cpp:2517
+#: core/exrImage.cpp:1238 core/exrImage.cpp:2514 core/exrImage.cpp:2518
 #: core/hdrImage.cpp:166
 msgid "Owner"
 msgstr "所有者"
@@ -6556,7 +6556,7 @@ msgstr "矩形工具"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9360
 #: gui/mrvImageView.cpp:9903
 msgid "Red"
@@ -8209,7 +8209,7 @@ msgid "UInt"
 msgstr "UInt"
 
 #: core/exrImage.cpp:1259 core/exrImage.cpp:2449 core/exrImage.cpp:2453
-#: core/exrImage.cpp:2534 core/exrImage.cpp:2538
+#: core/exrImage.cpp:2535 core/exrImage.cpp:2539
 msgid "UTC Offset"
 msgstr "UTC 偏移量"
 
@@ -9049,11 +9049,11 @@ msgstr ""
 "使用此选项，您可以保存图像的所有深层数据。请注意，这会将原始图像复制到新图"
 "像。如果您保存相同的图像，它将破坏它。"
 
-#: core/exrImage.cpp:1382 core/exrImage.cpp:2663 core/exrImage.cpp:2667
+#: core/exrImage.cpp:1382 core/exrImage.cpp:2664 core/exrImage.cpp:2668
 msgid "Wrap Modes"
 msgstr "换行模式"
 
-#: core/exrImage.cpp:1362 core/exrImage.cpp:2649 core/exrImage.cpp:2653
+#: core/exrImage.cpp:1362 core/exrImage.cpp:2650 core/exrImage.cpp:2654
 msgid "Writer"
 msgstr "作家"
 
@@ -9145,7 +9145,7 @@ msgstr "Y' (亮度)"
 msgid "Y:"
 msgstr "Y:"
 
-#: core/exrImage.cpp:2794
+#: core/exrImage.cpp:2795
 msgid "YBYRY"
 msgstr "YBYRY"
 
@@ -9280,7 +9280,7 @@ msgstr "根据"
 msgid "bind socket failed\n"
 msgstr "加入套接字失败\n"
 
-#: core/exrImage.cpp:2527
+#: core/exrImage.cpp:2528
 msgid "capDate"
 msgstr "日期"
 
@@ -9412,7 +9412,7 @@ msgstr "item_pathname 返回 "
 msgid "karaoke"
 msgstr "卡拉OK"
 
-#: core/exrImage.cpp:2605
+#: core/exrImage.cpp:2606
 msgid "keyCode"
 msgstr "关键代码"
 
@@ -9736,6 +9736,10 @@ msgstr "x9"
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
 
+#, fuzzy
+#~ msgid "ocioColorSpace"
+#~ msgstr "色彩空间"
+
 #~ msgid "*******Added EMPTY media"
 #~ msgstr "******* 已添加 EMPTY 媒体"
 
@@ -9747,9 +9751,6 @@ msgstr "xyY CIE xyY"
 
 #~ msgid "Type here"
 #~ msgstr "在此输入"
-
-#~ msgid "ColorSpace"
-#~ msgstr "色彩空间"
 
 #~ msgid "hdtv"
 #~ msgstr "高清电视"

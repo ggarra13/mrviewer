@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-09 22:39-0300\n"
+"POT-Creation-Date: 2022-05-12 14:43-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -1183,7 +1183,7 @@ msgstr "Upravte kontrast obrazu"
 msgid "Adjust Image Saturation"
 msgstr "Upravit sytost obrazu"
 
-#: core/exrImage.cpp:1214 core/exrImage.cpp:2499 core/exrImage.cpp:2503
+#: core/exrImage.cpp:1214 core/exrImage.cpp:2500 core/exrImage.cpp:2504
 msgid "Adopted Neutral"
 msgstr "Neutrální Přijato"
 
@@ -1259,7 +1259,7 @@ msgstr "Umožňuje nastavit počáteční rámec časové osy."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Umožňuje nastavit koncový snímek pro časovou osu."
 
-#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2073 core/CMedia.cpp:2156 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9375
 #: gui/mrvImageView.cpp:9843 gui/mrvImageView.cpp:9905
 msgid "Alpha"
@@ -1269,7 +1269,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "pouze alfa"
 
-#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2075 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2167
 #: gui/mrvImageView.cpp:9356 gui/mrvImageView.cpp:9906
 msgid "Alpha Overlay"
@@ -1288,7 +1288,7 @@ msgid "Alt"
 msgstr "Alt"
 
 #: core/exrImage.cpp:1289 core/exrImage.cpp:2470 core/exrImage.cpp:2474
-#: core/exrImage.cpp:2556 core/exrImage.cpp:2560
+#: core/exrImage.cpp:2557 core/exrImage.cpp:2561
 msgid "Altitude"
 msgstr "Nadmořská výška"
 
@@ -1354,7 +1354,7 @@ msgstr ""
 "Je otevřena další instance mrViewer.\n"
 "Odebrat "
 
-#: core/exrImage.cpp:1319 core/exrImage.cpp:2579 core/exrImage.cpp:2583
+#: core/exrImage.cpp:1319 core/exrImage.cpp:2580 core/exrImage.cpp:2584
 msgid "Aperture"
 msgstr "Otevírací"
 
@@ -1680,7 +1680,7 @@ msgstr "režim prolnutí"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2625
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3058
+#: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9370
 #: gui/mrvImageView.cpp:9904
 msgid "Blue"
@@ -1885,7 +1885,7 @@ msgstr "Zpráva"
 msgid "Caption Writer"
 msgstr "Pisatel zpráv"
 
-#: core/exrImage.cpp:2531 core/hdrImage.cpp:173
+#: core/exrImage.cpp:2532 core/hdrImage.cpp:173
 msgid "Capture Date"
 msgstr "Datum zachycení"
 
@@ -1948,7 +1948,7 @@ msgstr "Chromatičnost"
 msgid "Chromaticities (CIE)"
 msgstr "Chromatičnost (CIE)"
 
-#: core/exrImage.cpp:1203 core/exrImage.cpp:2485 core/exrImage.cpp:2489
+#: core/exrImage.cpp:1203 core/exrImage.cpp:2486 core/exrImage.cpp:2490
 msgid "Chromaticities Name"
 msgstr "Název barevnosti"
 
@@ -2075,10 +2075,10 @@ msgstr "Sbalitelná skupina nenalezena"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2630
-#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2803
-#: core/exrImage.cpp:3060 core/exrImage.cpp:3068 core/exrImage.cpp:3080
-#: core/exrImage.cpp:3085 core/exrImage.cpp:3087 core/exrImage.cpp:3124
-#: core/exrImage.cpp:3157 core/wandImage.cpp:1121 core/wandImage.cpp:1183
+#: core/CMedia.cpp:2086 core/CMedia.cpp:2154 core/exrImage.cpp:2804
+#: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
+#: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
+#: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2204
 #: gui/mrvImageView.cpp:2266 gui/mrvImageView.cpp:9903
 #: gui/mrvImageView.cpp:9951
@@ -2139,8 +2139,8 @@ msgstr "Podrobnosti barevného prostoru nebyly získány "
 msgid "Colorspace details not set "
 msgstr "Podrobnosti barevného prostoru nejsou nastaveny "
 
-#: core/exrImage.cpp:1248 core/exrImage.cpp:2492 core/exrImage.cpp:2496
-#: core/exrImage.cpp:2520 core/exrImage.cpp:2524
+#: core/exrImage.cpp:1248 core/exrImage.cpp:2493 core/exrImage.cpp:2497
+#: core/exrImage.cpp:2521 core/exrImage.cpp:2525
 msgid "Comments"
 msgstr "Komentáře"
 
@@ -2176,7 +2176,7 @@ msgstr "Komprese"
 msgid "Compression Ratio"
 msgstr "Kompresní poměr"
 
-#: core/exrImage.cpp:2833
+#: core/exrImage.cpp:2834
 msgid "Compression method not available. Using PIZ."
 msgstr "Metoda komprese není k dispozici. Pomocí PIZ."
 
@@ -3542,7 +3542,7 @@ msgstr "Menší expozice"
 msgid "Exposure More"
 msgstr "Více expozice"
 
-#: core/exrImage.cpp:1309 core/exrImage.cpp:2572 core/exrImage.cpp:2576
+#: core/exrImage.cpp:1309 core/exrImage.cpp:2573 core/exrImage.cpp:2577
 msgid "Exposure Time"
 msgstr "Čas výstavy"
 
@@ -3593,7 +3593,7 @@ msgstr "FPS"
 msgid "Failed "
 msgstr "Selhání "
 
-#: core/exrImage.cpp:3159
+#: core/exrImage.cpp:3160
 msgid "Failed setting layer to "
 msgstr "Nastavení vrstvy na se nezdařilo "
 
@@ -3751,7 +3751,7 @@ msgstr "Název souboru klipu"
 msgid "Filesystem error: "
 msgstr "Chyba souborového systému: "
 
-#: core/exrImage.cpp:2600 core/exrImage.cpp:2603
+#: core/exrImage.cpp:2601 core/exrImage.cpp:2604
 msgid "Film Manufacturer Code"
 msgstr "Kód výrobce filmu"
 
@@ -3844,7 +3844,7 @@ msgstr "Vyrovnávací paměti se nezdařily"
 msgid "Flut"
 msgstr "flétna"
 
-#: core/exrImage.cpp:1299 core/exrImage.cpp:2564 core/exrImage.cpp:2568
+#: core/exrImage.cpp:1299 core/exrImage.cpp:2565 core/exrImage.cpp:2569
 msgid "Focus"
 msgstr "Soustředit se"
 
@@ -4119,7 +4119,7 @@ msgstr "řecký (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9365
 #: gui/mrvImageView.cpp:9904
 msgid "Green"
@@ -4314,7 +4314,7 @@ msgstr "Hybridní"
 msgid "ICC"
 msgstr "ICC"
 
-#: core/exrImage.cpp:1372 core/exrImage.cpp:2656 core/exrImage.cpp:2660
+#: core/exrImage.cpp:1372 core/exrImage.cpp:2657 core/exrImage.cpp:2661
 #: gui/mrvImageInformation.cpp:3096
 msgid "ICC Profile"
 msgstr "ICC profil"
@@ -4358,7 +4358,7 @@ msgstr "ISO"
 msgid "ISO Index out of bounds"
 msgstr "Index ISO je mimo rozsah"
 
-#: core/exrImage.cpp:1330 core/exrImage.cpp:2586 core/exrImage.cpp:2590
+#: core/exrImage.cpp:1330 core/exrImage.cpp:2587 core/exrImage.cpp:2591
 msgid "ISO Speed"
 msgstr "citlivost ISO"
 
@@ -4429,7 +4429,7 @@ msgstr "Možnosti obrázku"
 msgid "Image Scale"
 msgstr "Měřítko obrázku"
 
-#: core/exrImage.cpp:1227 core/exrImage.cpp:2506 core/exrImage.cpp:2510
+#: core/exrImage.cpp:1227 core/exrImage.cpp:2507 core/exrImage.cpp:2511
 msgid "Image State"
 msgstr "Stav obrázku"
 
@@ -4871,7 +4871,7 @@ msgid "Last frame of clip - User selected"
 msgstr "Poslední snímek klipu - Výběr uživatele"
 
 #: core/exrImage.cpp:1279 core/exrImage.cpp:2463 core/exrImage.cpp:2467
-#: core/exrImage.cpp:2548 core/exrImage.cpp:2552
+#: core/exrImage.cpp:2549 core/exrImage.cpp:2553
 msgid "Latitude"
 msgstr "Zeměpisná šířka"
 
@@ -5086,7 +5086,7 @@ msgid "Logs"
 msgstr "Příspěvky"
 
 #: core/exrImage.cpp:1269 core/exrImage.cpp:2456 core/exrImage.cpp:2460
-#: core/exrImage.cpp:2541 core/exrImage.cpp:2545
+#: core/exrImage.cpp:2542 core/exrImage.cpp:2546
 msgid "Longitude"
 msgstr "Délka"
 
@@ -5119,7 +5119,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Jas obrazových pixelů pod myší."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3056
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2156 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2174
 #: gui/mrvImageView.cpp:9380 gui/mrvImageView.cpp:9905
 msgid "Lumma"
@@ -5992,7 +5992,7 @@ msgstr "Možnosti ovládání čtečky/spisovatel openexr"
 msgid "Options controlling the R3D / BRAW readers"
 msgstr "Možnosti ovládání čtečky R3D/OBOČÍ"
 
-#: core/exrImage.cpp:2952
+#: core/exrImage.cpp:2953
 msgid "Options for EXR were empty"
 msgstr "Možnosti pro EXR byly prázdné"
 
@@ -6087,7 +6087,7 @@ msgstr "O psaní řádku (Raw) ["
 msgid "Overrun scanline (Repeat) ["
 msgstr "Přepsat řádek (opakovat) ["
 
-#: core/exrImage.cpp:1238 core/exrImage.cpp:2513 core/exrImage.cpp:2517
+#: core/exrImage.cpp:1238 core/exrImage.cpp:2514 core/exrImage.cpp:2518
 #: core/hdrImage.cpp:166
 msgid "Owner"
 msgstr "Majitel"
@@ -6614,7 +6614,7 @@ msgstr "Nástroj Obdélník"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2595
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9360
 #: gui/mrvImageView.cpp:9903
 msgid "Red"
@@ -8307,7 +8307,7 @@ msgid "UInt"
 msgstr "UInt"
 
 #: core/exrImage.cpp:1259 core/exrImage.cpp:2449 core/exrImage.cpp:2453
-#: core/exrImage.cpp:2534 core/exrImage.cpp:2538
+#: core/exrImage.cpp:2535 core/exrImage.cpp:2539
 msgid "UTC Offset"
 msgstr "Posun UTC"
 
@@ -9173,11 +9173,11 @@ msgstr ""
 "si, že to zkopíruje původní obrázek do nového obrázku. Pokud uložíte přes "
 "stejný obrázek, zničí se."
 
-#: core/exrImage.cpp:1382 core/exrImage.cpp:2663 core/exrImage.cpp:2667
+#: core/exrImage.cpp:1382 core/exrImage.cpp:2664 core/exrImage.cpp:2668
 msgid "Wrap Modes"
 msgstr "režim zabalení"
 
-#: core/exrImage.cpp:1362 core/exrImage.cpp:2649 core/exrImage.cpp:2653
+#: core/exrImage.cpp:1362 core/exrImage.cpp:2650 core/exrImage.cpp:2654
 msgid "Writer"
 msgstr "Spisovatel"
 
@@ -9269,7 +9269,7 @@ msgstr "Y' (Luma)"
 msgid "Y:"
 msgstr "Y:"
 
-#: core/exrImage.cpp:2794
+#: core/exrImage.cpp:2795
 msgid "YBYRY"
 msgstr "YBYRY"
 
@@ -9406,7 +9406,7 @@ msgstr "základna"
 msgid "bind socket failed\n"
 msgstr "Připojení k soketu se nezdařilo\n"
 
-#: core/exrImage.cpp:2527
+#: core/exrImage.cpp:2528
 msgid "capDate"
 msgstr "datum"
 
@@ -9538,7 +9538,7 @@ msgstr "item_pathname vráceno "
 msgid "karaoke"
 msgstr "karaoke"
 
-#: core/exrImage.cpp:2605
+#: core/exrImage.cpp:2606
 msgid "keyCode"
 msgstr "Klíčový kód"
 
@@ -9868,6 +9868,10 @@ msgstr "x9"
 msgid "xyY CIE xyY"
 msgstr "xyY CIE xyY"
 
+#, fuzzy
+#~ msgid "ocioColorSpace"
+#~ msgstr "barevný prostor"
+
 #~ msgid "*******Added EMPTY media"
 #~ msgstr "******** Přidáno PRÁZDNÉ médium"
 
@@ -9879,9 +9883,6 @@ msgstr "xyY CIE xyY"
 
 #~ msgid "Type here"
 #~ msgstr "Napište zde"
-
-#~ msgid "ColorSpace"
-#~ msgstr "barevný prostor"
 
 #~ msgid "hdtv"
 #~ msgstr "hdtv"

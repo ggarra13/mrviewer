@@ -47,7 +47,7 @@
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLShape.h"
 
-#include "video/Polyline2D.h"
+#include "video/mrvPolyline2D.h"
 
 namespace {
 const char* kModule = N_("shape");

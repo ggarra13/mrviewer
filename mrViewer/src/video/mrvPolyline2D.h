@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LineSegment.h"
+#include "mrvLineSegment.h"
 #include <vector>
 #include <iterator>
 #include <cassert>
