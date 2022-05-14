@@ -29,7 +29,7 @@ FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
   /usr/local/include
 )
 
-SET( SEARCH_DIRS 
+SET( SEARCH_DIRS
   "$ENV{FFMPEG_ROOT}/bin"
   "$ENV{FFMPEG_ROOT}/static"
   "$ENV{FFMPEG_ROOT}/lib"
@@ -68,51 +68,59 @@ ENDIF(MSVC)
 
 MESSAGE( "SEARCH DIRS=" ${SEARCH_DIRS} )
 
+find_path(FFMPEG_AVCODEC_INCLUDE_DIR
+  NAMES libavcodec/version.h
+  HINTS ${FFMPEG_INCLUDE_DIR}
+  PATH_SUFFIXES ffmpeg libav
+)
+
+set (FFMPEG_INCLUDES ${FFMPEG_AVCODEC_INCLUDE_DIR})
+
 #
 # Find FFMPEG libraries
 #
-FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
+FIND_LIBRARY(FFMPEG_avformat_LIBRARY
     NAMES avformat avformat-52 avformat-53 avformat-54
     PATHS ${SEARCH_DIRS}
 )
 
 
-FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
+FIND_LIBRARY(FFMPEG_avcodec_LIBRARY
     NAMES avcodec avcodec-52 avcodec-53 avcodec-54
     PATHS ${SEARCH_DIRS}
 )
 
-FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
+FIND_LIBRARY(FFMPEG_avutil_LIBRARY
     NAMES avutil avutil-50  avutil-51 avutil-52
     PATHS ${SEARCH_DIRS}
 )
 
-FIND_LIBRARY(FFMPEG_avfilter_LIBRARY 
+FIND_LIBRARY(FFMPEG_avfilter_LIBRARY
     NAMES avfilter avfilter-6
     PATHS ${SEARCH_DIRS}
 )
 
-FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
+FIND_LIBRARY(FFMPEG_avdevice_LIBRARY
     NAMES avdevice avdevice-52 avdevice-53 avdevice-54
     PATHS ${SEARCH_DIRS}
 )
 
-FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
+FIND_LIBRARY(FFMPEG_swscale_LIBRARY
     NAMES swscale swscale-0 swscale-2
     PATHS ${SEARCH_DIRS}
 )
 
-FIND_LIBRARY(FFMPEG_swresample_LIBRARY 
+FIND_LIBRARY(FFMPEG_swresample_LIBRARY
     NAMES swresample swresample-0 swresample-2
     PATHS ${SEARCH_DIRS}
 )
 
 IF( NOT WIN32 )
-  FIND_LIBRARY(FFMPEG_freetype_LIBRARY 
+  FIND_LIBRARY(FFMPEG_freetype_LIBRARY
     NAMES freetype
     PATHS ${SEARCH_DIRS}
     )
-  FIND_LIBRARY(FFMPEG_bz2_LIBRARY 
+  FIND_LIBRARY(FFMPEG_bz2_LIBRARY
     NAMES bz2
     PATHS ${SEARCH_DIRS}
     )
@@ -127,51 +135,95 @@ MESSAGE( STATUS "FFMPEG_avdevice_LIBRARY=" ${FFMPEG_avdevice_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_swscale_LIBRARY=" ${FFMPEG_swscale_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_swresample_LIBRARY=" ${FFMPEG_swresample_LIBRARY} )
 
+
+if (FFMPEG_INCLUDES)
+  file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
+       REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
+  string (REGEX MATCHALL "[0-9]+[.0-9]+" LIBAVCODEC_VERSION_MAJOR ${TMP})
+  file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
+       REGEX "^#define LIBAVCODEC_VERSION_MINOR .*$")
+  string (REGEX MATCHALL "[0-9]+[.0-9]+" LIBAVCODEC_VERSION_MINOR ${TMP})
+  file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
+       REGEX "^#define LIBAVCODEC_VERSION_MICRO .*$")
+  string (REGEX MATCHALL "[0-9]+[.0-9]+" LIBAVCODEC_VERSION_MICRO ${TMP})
+  set (LIBAVCODEC_VERSION "${LIBAVCODEC_VERSION_MAJOR}.${LIBAVCODEC_VERSION_MINOR}.${LIBAVCODEC_VERSION_MICRO}")
+  if (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 58.134.100)
+      set (FFMPEG_VERSION 4.4)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 58.91.100)
+      set (FFMPEG_VERSION 4.3)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 58.54.100)
+      set (FFMPEG_VERSION 4.2)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 58.35.100)
+      set (FFMPEG_VERSION 4.1)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 58.18.100)
+      set (FFMPEG_VERSION 4.0)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 57.107.100)
+      set (FFMPEG_VERSION 3.4)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 57.89.100)
+      set (FFMPEG_VERSION 3.3)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 57.64.100)
+      set (FFMPEG_VERSION 3.2)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 57.48.100)
+      set (FFMPEG_VERSION 3.1)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 57.24.100)
+      set (FFMPEG_VERSION 3.0)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 56.60.100)
+      set (FFMPEG_VERSION 2.8)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 56.41.100)
+      set (FFMPEG_VERSION 2.7)
+  elseif (LIBAVCODEC_VERSION VERSION_GREATER_EQUAL 56.26.100)
+      set (FFMPEG_VERSION 2.6)
+  else ()
+      set (FFMPEG_VERSION 1.0)
+  endif ()
+  set (FFmpeg_VERSION ${FFMPEG_VERSION})
+endif ()
+
 IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
     IF(FFMPEG_avcodec_LIBRARY)
       IF(FFMPEG_avutil_LIBRARY)
 	IF(FFMPEG_avfilter_LIBRARY)
-          SET( FFMPEG_FOUND "YES" )
-	  
-          SET( FFMPEG_BASIC_LIBRARIES 
-            ${FFMPEG_avcodec_LIBRARY}  # LGPL, but Sorenson patent may apply
-            ${FFMPEG_avformat_LIBRARY} # LGPL
+	  SET( FFMPEG_FOUND "YES" )
+
+	  SET( FFMPEG_BASIC_LIBRARIES
+	    ${FFMPEG_avcodec_LIBRARY}  # LGPL, but Sorenson patent may apply
+	    ${FFMPEG_avformat_LIBRARY} # LGPL
 	    ${FFMPEG_swscale_LIBRARY}  # LGPL
 	    ${FFMPEG_avfilter_LIBRARY}  # LGPL
 	    ${FFMPEG_swresample_LIBRARY}  # LGPL
-            ${FFMPEG_avutil_LIBRARY}   # LGPL
+	    ${FFMPEG_avutil_LIBRARY}   # LGPL
 	    ${FFMPEG_freetype_LIBRARY}
 	    ${FFMPEG_bz2_LIBRARY}
-            )
+	    )
 
 	  SET( FFMPEG_BSD_LIBRARIES
 	    )
-	  
+
 	  SET( FFMPEG_LGPL_LIBRARIES
 	    ${FFMPEG_BASIC_LIBRARIES}
 	    )
-	  
-          SET( FFMPEG_LIBRARIES  
-	    ${FFMPEG_LGPL_LIBRARIES} 
-	    ${FFMPEG_BSD_LIBRARIES} 
+
+	  SET( FFMPEG_LIBRARIES
+	    ${FFMPEG_LGPL_LIBRARIES}
+	    ${FFMPEG_BSD_LIBRARIES}
 	    )
-	  
-	  
+
+
 	  SET( FFMPEG_GPL_LIBRARIES
 	    ${FFMPEG_postproc_LIBRARY} # GPL
 	    )
-	  
+
 	  SET( FFMPEG_NONGPL_LIBRARIES
 	    ${FFMPEG_amr_nb_LIBRARY} # LPGL but patents from Ericson, Nokia &
 	    # Universite de Sherbrooke
 	    ${FFMPEG_amr_nw_LIBRARY} # LPGL but patents from Ericson, Nokia &
 	    # Universite de Sherbrooke
-            ${FFMPEG_faac_LIBRARY}   # Commercial
-            ${FFMPEG_faad_LIBRARY}   # Commercial
+	    ${FFMPEG_faac_LIBRARY}   # Commercial
+	    ${FFMPEG_faad_LIBRARY}   # Commercial
 	    ${FFMPEG_xvidcore_LIBRARY} # GPL but possible patent issues
-	    ${FFMPEG_x264_LIBRARY}     # GPL but Patent licensing to MPEGLA 
-            # (after 100,000 copies sold)
+	    ${FFMPEG_x264_LIBRARY}     # GPL but Patent licensing to MPEGLA
+	    # (after 100,000 copies sold)
 	    ${FFMPEG_lagarith_LIBRARY} # as XviD (shares code)
 	    )
 	ENDIF(FFMPEG_avfilter_LIBRARY)

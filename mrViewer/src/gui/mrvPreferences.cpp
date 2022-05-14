@@ -43,6 +43,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Sys_Menu_Bar.H>
 #include <FL/fl_utf8.h>   // for fl_getenv
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
@@ -1365,6 +1366,29 @@ void Preferences::run( ViewerUI* main )
 
     check_language( uiPrefs, language_index );
 
+#ifdef OSX
+    if ( uiPrefs->uiMacOSMenus->value() )
+    {
+        uiMain->uiMenuBar->clear();
+        uiMain->uiMenuGroup->redraw();
+        delete uiMain->uiMenuBar;
+        uiMain->uiMenuBar = new Fl_Sys_Menu_Bar( 0, 0, 0, 25 );
+    }
+    else
+    {
+        Fl_Sys_Menu_Bar* smenubar =
+            dynamic_cast< Fl_Sys_Menu_Bar* >( uiMain->uiMenuBar );
+        if ( smenubar )
+        {
+            smenubar->clear();
+            delete uiMain->uiMenuBar;
+            uiMain->uiMenuBar = new Fl_Menu_Bar( 0, 0,
+                                                 uiMain->uiStatus->x(), 25 );
+            uiMain->uiMenuGroup->add( uiMain->uiMenuBar );
+            uiMain->uiMenuGroup->redraw();
+        }
+    }
+#endif
 
     DBG3;
 

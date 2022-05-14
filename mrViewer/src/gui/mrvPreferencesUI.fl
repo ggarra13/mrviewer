@@ -109,7 +109,7 @@ class PreferencesUI {open
       user_data this user_data_type {PreferencesUI*}
       callback {mrv::Preferences prefs(v);
 v->uiMain->hide();} open
-      xywh {497 363 847 469} type Double resizable
+      xywh {497 307 847 469} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -118,8 +118,8 @@ v->uiMain->hide();} open
         xywh {280 25 565 430} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface}
-          xywh {285 48 555 349} box EMBOSSED_BOX align 5 hide
+          label {User Interface} open
+          xywh {285 48 555 349} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label {Window Behavior}
@@ -159,9 +159,14 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           Fl_Group {} {
-            label {UI Elements}
+            label {UI Elements} open
             xywh {290 194 545 193} box ROUNDED_BOX
           } {
+            Fl_Check_Button uiPrefsMenuBar {
+              label {Menu Bar}
+              tooltip {When selected, mrViewer will start with the menu bar already shown.} xywh {295 221 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              class {mrv::CheckButton}
+            }
             Fl_Check_Button uiPrefsTopbar {
               label Topbar
               tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible.} xywh {296 249 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
@@ -176,10 +181,47 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the timeline shown.} xywh {296 307 25 25} box UP_BOX down_box DOWN_BOX value 1 align 136
               class {mrv::CheckButton}
             }
+            Fl_Group {} {
+              xywh {295 332 175 46}
+            } {
+              Fl_Check_Button uiPrefsStereoOptions {
+                label {Stereo 3D Options}
+                tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {297 336 25 25} box UP_BOX down_box DOWN_BOX align 136
+                class {mrv::CheckButton}
+              }
+            }
+            Fl_Check_Button uiMacOSMenus {
+              label {macOS Menus} selected
+              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {470 220 25 25} box UP_BOX down_box DOWN_BOX align 8
+              class {mrv::CheckButton}
+            }
             Fl_Check_Button uiPrefsReelList {
               label {Reel List}
-              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {470 222 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {470 247 25 25} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
+            }
+            Fl_Group {} {
+              xywh {445 271 215 35}
+            } {
+              Fl_Check_Button uiPrefsImageInfo {
+                label {Media Info}
+                tooltip {When selected, mrViewer will start with the media information window already open.} xywh {470 275 25 25} box UP_BOX down_box DOWN_BOX align 136
+                class {mrv::CheckButton}
+              }
+            }
+            Fl_Check_Button uiPrefsColorArea {
+              label {Color Area}
+              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {470 306 25 25} box UP_BOX down_box DOWN_BOX align 8
+              class {mrv::CheckButton}
+            }
+            Fl_Group {} {
+              xywh {460 315 200 70}
+            } {
+              Fl_Check_Button uiPrefsPaintTools {
+                label {Action Tools}
+                tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {471 336 25 25} box UP_BOX down_box DOWN_BOX align 136
+                class {mrv::CheckButton}
+              }
             }
             Fl_Check_Button uiPrefsHistogram {
               label Histogram
@@ -191,38 +233,10 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {665 281 25 25} box UP_BOX down_box DOWN_BOX align 136
               class {mrv::CheckButton}
             }
-            Fl_Group {} {
-              xywh {445 246 215 35}
-            } {
-              Fl_Check_Button uiPrefsImageInfo {
-                label {Media Info}
-                tooltip {When selected, mrViewer will start with the media information window already open.} xywh {470 250 25 25} box UP_BOX down_box DOWN_BOX align 136
-                class {mrv::CheckButton}
-              }
-            }
-            Fl_Check_Button uiPrefsColorArea {
-              label {Color Area}
-              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {470 281 25 25} box UP_BOX down_box DOWN_BOX align 8
-              class {mrv::CheckButton}
-            }
             Fl_Check_Button uiPrefsEDLEdit {
               label {EDL Edit}
               tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {665 222 25 25} box UP_BOX down_box DOWN_BOX align 136
               class {mrv::CheckButton}
-            }
-            Fl_Check_Button uiPrefsStereoOptions {
-              label {Stereo 3D Options}
-              tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {297 336 25 25} box UP_BOX down_box DOWN_BOX align 8
-              class {mrv::CheckButton}
-            }
-            Fl_Group {} {open
-              xywh {460 290 200 60}
-            } {
-              Fl_Check_Button uiPrefsPaintTools {
-                label {Action Tools}
-                tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {471 311 25 25} box UP_BOX down_box DOWN_BOX align 136
-                class {mrv::CheckButton}
-              }
             }
             Fl_Check_Button uiPrefsWaveform {
               label Waveform
@@ -234,19 +248,14 @@ If you try to open several mrViewers with different images, all these images wil
               tooltip {When selected, mrViewer will start with the waveform already open.} xywh {666 339 25 25} box UP_BOX down_box DOWN_BOX align 136
               class {mrv::CheckButton}
             }
-            Fl_Check_Button uiPrefsMenuBar {
-              label {Menu Bar}
-              tooltip {When selected, mrViewer will start with the menu bar already shown.} xywh {295 221 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
-              class {mrv::CheckButton}
-            }
           }
         }
         Fl_Group {} {
-          label {View Window} open
-          xywh {285 34 555 349} box EMBOSSED_BOX align 5
+          label {View Window}
+          xywh {285 34 555 349} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label Defaults open
+            label Defaults
             xywh {295 64 529 162} box ROUNDED_BOX
           } {
             Fl_Value_Input uiPrefsViewGain {
@@ -259,7 +268,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Choice uiPrefsCropArea {
               label Crop
-              user_data this user_data_type {PreferencesUI*} open
+              user_data this user_data_type {PreferencesUI*}
               tooltip {Allows you to select a standard cropping area around image.} xywh {325 123 155 25} box THIN_DOWN_BOX down_box BORDER_BOX align 1
               class {mrv::Choice}
             } {
@@ -300,7 +309,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {0 0 100 20}
               }
               MenuItem {} {
-                label {2.00 Univisium} selected
+                label {2.00 Univisium}
                 xywh {0 0 100 20}
               }
               MenuItem {} {
@@ -455,11 +464,11 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label {Language and Colors} open
+          label {Language and Colors}
           xywh {285 34 555 349} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label UI open
+            label UI
             xywh {357 55 403 199} box ROUNDED_BOX
           } {
             Fl_Choice uiLanguage {
@@ -579,7 +588,7 @@ v->refresh();}
             }
           }
           Fl_Group {} {
-            label View
+            label View open
             xywh {355 282 410 88} box ROUNDED_BOX
           } {
             Fl_Button uiPrefsViewBG {

@@ -4905,6 +4905,7 @@ bool PointInTriangle (const Imath::V2i& pt,
      SCOPED_LOCK( _shortcut_mutex );
 
      menu->clear();
+
      int idx = 1;
 
      menu->add( _("File/Open/Movie or Sequence"),
@@ -5340,6 +5341,11 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
      menu->menu_end();
+     Fl_Sys_Menu_Bar* smenubar = dynamic_cast< Fl_Sys_Menu_Bar* >( menu );
+     if ( smenubar )
+     {
+         smenubar->update();
+     }
      menu->redraw();
  }
 

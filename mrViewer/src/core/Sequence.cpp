@@ -1362,7 +1362,18 @@ bool parse_timeline(LoadList& sequences,
                         sequences.push_back( info );
                     }
                 }
-
+                else if (auto item = dynamic_cast<otio::Composable*>(child.value))
+                {
+                    if (auto transition = dynamic_cast<otio::Transition*>(item) )
+                    {
+                        std::cerr << "Transition found." << std::endl;
+                        otime::ErrorStatus status;
+                        std::cerr << transition->in_offset().to_frames()
+                                  << std::endl
+                                  << transition->duration(&errorStatus).to_frames()
+                                  << std::endl;
+                    }
+                }
             }
         }
     }
