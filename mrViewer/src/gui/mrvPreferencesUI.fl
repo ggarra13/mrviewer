@@ -190,9 +190,9 @@ If you try to open several mrViewers with different images, all these images wil
                 class {mrv::CheckButton}
               }
             }
-            Fl_Check_Button uiMacOSMenus {
+            Fl_Check_Button uiPrefsMacOSMenus {
               label {macOS Menus} selected
-              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {470 220 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {This is a macOS setting only.  When selected the menus will appear on the system toolbar instead of the mrViewer toolbar.} xywh {470 220 25 25} box UP_BOX down_box DOWN_BOX align 8
               class {mrv::CheckButton}
             }
             Fl_Check_Button uiPrefsReelList {

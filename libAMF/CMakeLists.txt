@@ -5,6 +5,8 @@ set( PROJECT AMF )
 
 set( SOVERSION "0.1.0" )
 
+cmake_policy( SET CMP0068 NEW )
+
 # VP18 switches to c++14, so let's do that by default
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability

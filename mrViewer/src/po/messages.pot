@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-14 08:02-0300\n"
+"POT-Creation-Date: 2022-05-15 07:27-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2521
+#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2514
 msgid ""
 "\n"
 "\n"
@@ -74,15 +74,15 @@ msgstr ""
 msgid " - decode Error audio frame "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2153
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2154
 msgid " Color Area Selection"
 msgstr ""
 
-#: core/aviImage.cpp:3057
+#: core/aviImage.cpp:3050
 msgid " Could not open file. "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2168
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2169
 msgid " Eraser"
 msgstr ""
 
@@ -94,23 +94,23 @@ msgstr ""
 msgid " Hz is not supported by your hardware."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2148
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2149
 msgid " Move Picture"
 msgstr ""
 
-#: core/aviImage.cpp:2539
+#: core/aviImage.cpp:2532
 msgid " No audio or video stream in file"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2158
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2159
 msgid " Pencil"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2143
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2144
 msgid " Scrub"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2164
 msgid " Text"
 msgstr ""
 
@@ -139,7 +139,7 @@ msgstr ""
 msgid " channels "
 msgstr ""
 
-#: core/Sequence.cpp:716
+#: core/Sequence.cpp:717
 msgid " does not exist or no directory"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgstr ""
 msgid " for color_space"
 msgstr ""
 
-#: core/aviImage.cpp:4123 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4115 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr ""
 
@@ -217,7 +217,7 @@ msgid ""
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
 
-#: core/aviImage.cpp:1924
+#: core/aviImage.cpp:1917
 msgid " instead"
 msgstr ""
 
@@ -229,11 +229,11 @@ msgstr ""
 msgid " is "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3704
+#: gui/mrvImageBrowser.cpp:3707
 msgid " is already the first version on disk."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3701
+#: gui/mrvImageBrowser.cpp:3704
 msgid " is already the last version on disk."
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid " is missing. Choosing "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:1934 core/R3dImage.cpp:935
+#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:1927 core/R3dImage.cpp:935
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr ""
@@ -254,11 +254,11 @@ msgstr ""
 msgid " not found in reel"
 msgstr ""
 
-#: core/aviImage.cpp:1922
+#: core/aviImage.cpp:1915
 msgid " not found, choosing "
 msgstr ""
 
-#: core/aviImage.cpp:4275
+#: core/aviImage.cpp:4267
 msgid " not yet supported"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 msgid " size is "
 msgstr ""
 
-#: core/aviImage.cpp:4138
+#: core/aviImage.cpp:4130
 msgid " status: "
 msgstr ""
 
@@ -282,7 +282,7 @@ msgstr ""
 msgid " to "
 msgstr ""
 
-#: core/aviImage.cpp:1893 core/R3dImage.cpp:895 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1886 core/R3dImage.cpp:895 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr ""
 
@@ -438,7 +438,7 @@ msgstr ""
 msgid "'. Reason: "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2689
 msgid ""
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
@@ -486,7 +486,7 @@ msgstr ""
 msgid "(no image)"
 msgstr ""
 
-#: core/aviImage.cpp:1894 core/R3dImage.cpp:896 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1887 core/R3dImage.cpp:896 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ""
 
@@ -561,7 +561,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1568
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1875
 msgid "0.45"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "00:00:00:00"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1871
+#: gui/mrvPreferences.cpp:1874
 msgid "1.0"
 msgstr ""
 
@@ -626,7 +626,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1565
-#: gui/mrvPreferences.cpp:1870
+#: gui/mrvPreferences.cpp:1873
 msgid "1.8"
 msgstr ""
 
@@ -697,9 +697,9 @@ msgstr ""
 msgid "16 bits"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2521
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2745
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2809
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2522
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2810
 msgid "16-bits"
 msgstr ""
 
@@ -750,7 +750,7 @@ msgid "2.10 VistaVision"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1564
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1872
 msgid "2.2"
 msgstr ""
 
@@ -814,9 +814,9 @@ msgstr ""
 msgid "32 bits"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2536
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2760
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2824
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2537
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2761
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2825
 msgid "32-bits"
 msgstr ""
 
@@ -848,24 +848,24 @@ msgstr ""
 msgid "3D Lut for "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2284
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3563
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2285
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3564
 msgid "3D Luts"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3565
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3566
 msgid "3D Luts/CTL Paths"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3566
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3567
 msgid "3D Luts/Default Output Device Transform (ODT)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3567
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3568
 msgid "3D Luts/Default Rendering Transform (RT)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3564
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3565
 msgid "3D Luts/OCIO"
 msgstr ""
 
@@ -933,7 +933,7 @@ msgstr ""
 msgid "70mm"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2195
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2196
 msgid "8 bit Caches"
 msgstr ""
 
@@ -949,9 +949,9 @@ msgstr ""
 msgid "8-bit sample of image pixel under mouse."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2506
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2730
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2794
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2507
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2731
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2795
 msgid "8-bits"
 msgstr ""
 
@@ -1042,7 +1042,7 @@ msgstr ""
 msgid "A/B"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3338
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3339
 msgid "ACES Clip Metadata"
 msgstr ""
 
@@ -1092,7 +1092,7 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3524
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3525
 msgid "Accept settings but don't save."
 msgstr ""
 
@@ -1100,14 +1100,14 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1158
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1394
 #: gui/mrvImageView.cpp:4984
 msgid "Action Tools"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2136
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3561
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2137
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3562
 msgid "Actions"
 msgstr ""
 
@@ -1162,7 +1162,7 @@ msgstr ""
 msgid "Advanced Systems Format Media"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2288
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2289
 msgid "Algorithm when not OCIO"
 msgstr ""
 
@@ -1179,7 +1179,7 @@ msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:161
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:76
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3342
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3343
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:71
 msgid "All Layers"
 msgstr ""
@@ -1204,7 +1204,7 @@ msgstr ""
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1261
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1262
 msgid "Allows you to select a standard cropping area around image."
 msgstr ""
 
@@ -1325,13 +1325,13 @@ msgstr ""
 msgid "Arabic"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3291
+#: gui/mrvImageBrowser.cpp:3294
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3287
+#: gui/mrvImageBrowser.cpp:3290
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1395,7 +1395,7 @@ msgstr ""
 msgid "Attribute"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1502
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1503
 msgid "Attributes"
 msgstr ""
 
@@ -1408,8 +1408,8 @@ msgid "Attrs"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:144
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3190
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3572
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3191
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3573
 #: gui/mrvImageInformation.cpp:988 gui/mrvImageInformation.cpp:3437
 #: gui/mrvImageInformation.cpp:3496
 msgid "Audio"
@@ -1490,7 +1490,7 @@ msgstr ""
 msgid "Aug"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1828
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1829
 msgid "Auto Playback"
 msgstr ""
 
@@ -1498,7 +1498,7 @@ msgstr ""
 msgid "Auto Refit Image"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2946
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2947
 msgid "Auto load images as they change on disk"
 msgstr ""
 
@@ -1534,7 +1534,7 @@ msgstr ""
 msgid "BLUE"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3471
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3472
 msgid "BRAW Loading"
 msgstr ""
 
@@ -1542,7 +1542,7 @@ msgstr ""
 msgid "BackSpace"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1680
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1681
 msgid "Background"
 msgstr ""
 
@@ -1610,15 +1610,15 @@ msgid "Black Frame"
 msgstr ""
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
-#: core/Sequence.cpp:1185 core/Sequence.cpp:1359
+#: core/Sequence.cpp:1186 core/mrvOTIO.cpp:118
 msgid "Black Gap"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3151
 msgid "Blend Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2641
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2089 core/CMedia.cpp:2155 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9376
@@ -1723,36 +1723,36 @@ msgstr ""
 msgid "CTL Browser"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2570
 msgid "CTL Paths"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2576
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2577
 msgid "CTL scripts"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4168
+#: gui/mrvImageBrowser.cpp:4171
 msgid "CTL/Attach Input Device Transform"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4172
+#: gui/mrvImageBrowser.cpp:4175
 msgid "CTL/Attach Rendering Transform"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2573
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2574
 msgid "CTL_MODULE_PATH"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2181
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2182
 msgid "Cache Active"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2252
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2253
 msgid "Cache Size"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2177
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3562
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2178
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3563
 msgid "Caches"
 msgstr ""
 
@@ -1833,7 +1833,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1567
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1568
 msgid "Center"
 msgstr ""
 
@@ -1867,7 +1867,7 @@ msgstr ""
 msgid "Checkerboard pattern"
 msgstr ""
 
-#: core/guessImage.cpp:288 core/Sequence.cpp:1186 gui/mrvImageBrowser.cpp:344
+#: core/guessImage.cpp:288 core/Sequence.cpp:1187 gui/mrvImageBrowser.cpp:344
 msgid "Checkered"
 msgstr ""
 
@@ -1884,7 +1884,7 @@ msgstr ""
 msgid "Chromaticities"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2602
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2603
 msgid "Chromaticities (CIE)"
 msgstr ""
 
@@ -2016,7 +2016,7 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1144
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1145
 msgid "Color Area"
 msgstr ""
 
@@ -2046,7 +2046,7 @@ msgstr ""
 msgid "Color Space"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1666
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1667
 msgid "Color Theme"
 msgstr ""
 
@@ -2079,7 +2079,7 @@ msgstr ""
 msgid "Comped"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1320
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1321
 msgid "Compensate Pixel Ratio"
 msgstr ""
 
@@ -2089,13 +2089,13 @@ msgid ""
 "Only applicable when decoding 1:1"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3144
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3571
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3145
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3572
 msgid "Compositing"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:78
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3383
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3384
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:201
 #: gui/mrvImageInformation.cpp:3121
 msgid "Compression"
@@ -2109,7 +2109,7 @@ msgstr ""
 msgid "Compression method not available. Using PIZ."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3384
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3385
 msgid "Compression to use when saving an exr."
 msgstr ""
 
@@ -2146,7 +2146,7 @@ msgstr ""
 msgid "Contrast"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3079
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3080
 msgid ""
 "Controls the YUV Conversion of the movie in the shader to emulate different "
 "tv standards.\n"
@@ -2158,7 +2158,7 @@ msgid ""
 "BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM)."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3114
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3115
 msgid "Controls the codec used by default in saving a movie file."
 msgstr ""
 
@@ -2243,15 +2243,15 @@ msgstr ""
 msgid "Could not allocate stream"
 msgstr ""
 
-#: core/Sequence.cpp:1320
+#: core/mrvOTIO.cpp:79
 msgid "Could not append child to stack. Error: "
 msgstr ""
 
-#: core/Sequence.cpp:1457
+#: core/mrvOTIO.cpp:217
 msgid "Could not append one clip to track: "
 msgstr ""
 
-#: core/Sequence.cpp:1465
+#: core/mrvOTIO.cpp:225
 msgid "Could not append one track to stack: "
 msgstr ""
 
@@ -2263,7 +2263,7 @@ msgstr ""
 msgid "Could not copy context to parameters"
 msgstr ""
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2406
+#: core/aviImage.cpp:729 core/aviImage.cpp:2399
 msgid "Could not copy parameters to context"
 msgstr ""
 
@@ -2371,7 +2371,7 @@ msgstr ""
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 
-#: core/aviImage.cpp:3039
+#: core/aviImage.cpp:3032
 msgid "Could not find stream info"
 msgstr ""
 
@@ -2431,7 +2431,7 @@ msgstr ""
 msgid "Could not find two integers for vector "
 msgstr ""
 
-#: core/Sequence.cpp:1308
+#: core/mrvOTIO.cpp:67
 msgid "Could not flatten tracks. Error: "
 msgstr ""
 
@@ -2491,7 +2491,7 @@ msgstr ""
 msgid "Could not obtain frame rate"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:567
+#: gui/mrvPreferences.cpp:570
 msgid "Could not open \""
 msgstr ""
 
@@ -2499,7 +2499,7 @@ msgstr ""
 msgid "Could not open '"
 msgstr ""
 
-#: core/Sequence.cpp:1390
+#: core/mrvOTIO.cpp:150
 msgid "Could not open .otio file. "
 msgstr ""
 
@@ -2559,7 +2559,7 @@ msgstr ""
 msgid "Could not save '"
 msgstr ""
 
-#: core/Sequence.cpp:1471
+#: core/mrvOTIO.cpp:231
 msgid "Could not save .otio timeline: "
 msgstr ""
 
@@ -2587,7 +2587,7 @@ msgstr ""
 msgid "Could not set "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1355
+#: gui/mrvPreferences.cpp:1358
 msgid "Could not set transforms in GUI"
 msgstr ""
 
@@ -2715,51 +2715,51 @@ msgstr ""
 msgid "Create audio conversion from "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4420
+#: gui/mrvImageBrowser.cpp:4423
 msgid "Create/Black Gap"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4442
+#: gui/mrvImageBrowser.cpp:4445
 msgid "Create/Checkered"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4426
+#: gui/mrvImageBrowser.cpp:4429
 msgid "Create/Color Bars/PAL"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4428
+#: gui/mrvImageBrowser.cpp:4431
 msgid "Create/Color Bars/PAL HDTV"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4422
+#: gui/mrvImageBrowser.cpp:4425
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4424
+#: gui/mrvImageBrowser.cpp:4427
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4430
+#: gui/mrvImageBrowser.cpp:4433
 msgid "Create/Gamma Chart/1.4"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4432
+#: gui/mrvImageBrowser.cpp:4435
 msgid "Create/Gamma Chart/1.8"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4434
+#: gui/mrvImageBrowser.cpp:4437
 msgid "Create/Gamma Chart/2.2"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4436
+#: gui/mrvImageBrowser.cpp:4439
 msgid "Create/Gamma Chart/2.4"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4438
+#: gui/mrvImageBrowser.cpp:4441
 msgid "Create/Gradient/Linear"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4440
+#: gui/mrvImageBrowser.cpp:4443
 msgid "Create/Gradient/Luminance"
 msgstr ""
 
@@ -2783,7 +2783,7 @@ msgstr ""
 msgid "Credit"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1260
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1261
 msgid "Crop"
 msgstr ""
 
@@ -2900,7 +2900,7 @@ msgid "DPX Picture"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:150
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3428
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3429
 msgid "DWA Compression"
 msgstr ""
 
@@ -2908,7 +2908,7 @@ msgstr ""
 msgid "DWA/DWB compression"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3429
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3430
 msgid ""
 "DWA/DWB compression to use when saving an exr with that compression scheme."
 msgstr ""
@@ -2923,7 +2923,7 @@ msgstr ""
 msgid "DWAB"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1376
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1377
 #: gui/mrvHotkey.cpp:336 gui/mrvImageInformation.cpp:2902
 msgid "Data Window"
 msgstr ""
@@ -2976,11 +2976,11 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:4121 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4113 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr ""
 
-#: core/aviImage.cpp:4136
+#: core/aviImage.cpp:4128
 msgid "Decode video error seek frame "
 msgstr ""
 
@@ -3005,7 +3005,7 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2140
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2141
 msgid "Default Action"
 msgstr ""
 
@@ -3013,24 +3013,24 @@ msgstr ""
 msgid "Default Audio Device"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2581
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2582
 msgid "Default Output Device Transform (ODT)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2723
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2724
 msgid "Default Rendering Transform (RT)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3224
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3225
 msgid "Default Volume"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3226
 msgid "Default audio at opening mrViewer."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1246
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1247
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1826
 msgid "Defaults"
 msgstr ""
 
@@ -3066,7 +3066,7 @@ msgstr ""
 msgid "Detail"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3194
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3195
 msgid "Device"
 msgstr ""
 
@@ -3082,12 +3082,12 @@ msgstr ""
 msgid "Digital Video"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1424
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1425
 #: gui/mrvImageInformation.cpp:2777
 msgid "Directory"
 msgstr ""
 
-#: core/Sequence.cpp:715
+#: core/Sequence.cpp:716
 msgid "Directory "
 msgstr ""
 
@@ -3112,8 +3112,8 @@ msgstr ""
 msgid "Disk space"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1970
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2585
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1971
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2586
 msgid "Display"
 msgstr ""
 
@@ -3121,7 +3121,7 @@ msgstr ""
 msgid "Display Gamma of Image"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1362
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1363
 #: gui/mrvHotkey.cpp:335 gui/mrvImageInformation.cpp:2916
 msgid "Display Window"
 msgstr ""
@@ -3188,7 +3188,7 @@ msgstr ""
 msgid "Draw Temporary Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3031
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3032
 msgid "Driver"
 msgstr ""
 
@@ -3234,7 +3234,7 @@ msgstr ""
 msgid "EDL"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1199
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1393
 #: gui/mrvImageView.cpp:4989
 msgid "EDL Edit"
@@ -3260,7 +3260,7 @@ msgstr ""
 msgid "Edit Status"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3349
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3350
 msgid "Editable by Default"
 msgstr ""
 
@@ -3292,7 +3292,7 @@ msgstr ""
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
-#: core/aviImage.cpp:3580
+#: core/aviImage.cpp:3572
 msgid "Empty packets for video seek."
 msgstr ""
 
@@ -3300,11 +3300,11 @@ msgstr ""
 msgid "Empty pic file for media "
 msgstr ""
 
-#: core/aviImage.cpp:4484
+#: core/aviImage.cpp:4476
 msgid "Empty seek or preroll"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3291
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3292
 msgid "Encoding"
 msgstr ""
 
@@ -3378,8 +3378,8 @@ msgstr ""
 msgid "Error writing "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3298
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3574
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3299
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3575
 msgid "Errors"
 msgstr ""
 
@@ -3397,7 +3397,7 @@ msgstr ""
 msgid "Even/odd rows"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3642
+#: gui/mrvImageBrowser.cpp:3645
 msgid "Example:  gizmo"
 msgstr ""
 
@@ -3411,12 +3411,12 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4603 gui/mrvImageBrowser.cpp:4743
+#: gui/mrvImageBrowser.cpp:4606 gui/mrvImageBrowser.cpp:4746
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1665
+#: gui/mrvPreferences.cpp:1668
 msgid "Expanded OCIO config to:"
 msgstr ""
 
@@ -3478,9 +3478,9 @@ msgid "FIT"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/aviSave.cxx:334
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1489
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1867
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2264
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1490
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1868
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2265
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:3204
 #: gui/mrvImageInformation.cpp:2823 gui/mrvImageInformation.cpp:3550
 #: gui/mrvProgressReport.cpp:71
@@ -3551,7 +3551,7 @@ msgstr ""
 msgid "Failed to init swresample library with "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:546
+#: gui/mrvPreferences.cpp:549
 msgid "Failed to initialize R3D SDK: "
 msgstr ""
 
@@ -3583,7 +3583,7 @@ msgstr ""
 msgid "Fetch failed for ripmap Y "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1776
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1777
 msgid "File Requester"
 msgstr ""
 
@@ -3595,7 +3595,7 @@ msgstr ""
 msgid "File/Open/Directory"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4911 gui/mrvImageBrowser.cpp:4128
+#: gui/mrvImageView.cpp:4911 gui/mrvImageBrowser.cpp:4131
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr ""
@@ -3604,7 +3604,7 @@ msgstr ""
 msgid "File/Open/Session"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4915 gui/mrvImageBrowser.cpp:4130
+#: gui/mrvImageView.cpp:4915 gui/mrvImageBrowser.cpp:4133
 msgid "File/Open/Single Image"
 msgstr ""
 
@@ -3616,27 +3616,27 @@ msgstr ""
 msgid "File/Quit"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4944 gui/mrvImageBrowser.cpp:4375
+#: gui/mrvImageView.cpp:4944 gui/mrvImageBrowser.cpp:4378
 msgid "File/Save/Frame As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4946 gui/mrvImageBrowser.cpp:4377
+#: gui/mrvImageView.cpp:4946 gui/mrvImageBrowser.cpp:4380
 msgid "File/Save/GL Snapshots As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4939 gui/mrvImageBrowser.cpp:4370
+#: gui/mrvImageView.cpp:4939 gui/mrvImageBrowser.cpp:4373
 msgid "File/Save/Movie or Sequence As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4942 gui/mrvImageBrowser.cpp:4373
+#: gui/mrvImageView.cpp:4942 gui/mrvImageBrowser.cpp:4376
 msgid "File/Save/Reel As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4948 gui/mrvImageBrowser.cpp:4379
+#: gui/mrvImageView.cpp:4948 gui/mrvImageBrowser.cpp:4382
 msgid "File/Save/Session As"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1411
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1412
 #: gui/mrvImageInformation.cpp:2780
 msgid "Filename"
 msgstr ""
@@ -3653,7 +3653,7 @@ msgstr ""
 msgid "Film Manufacturer Code"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3047
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3048
 msgid "Filtering"
 msgstr ""
 
@@ -3689,11 +3689,11 @@ msgstr ""
 msgid "Fit Window to Image"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1716
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1717
 msgid "Fixed Position"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1740
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1741
 msgid "Fixed Size"
 msgstr ""
 
@@ -3746,7 +3746,7 @@ msgstr ""
 msgid "Focus"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3244
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3245
 #: gui/mrvFontsWindowUI.cpp:88
 msgid "Font"
 msgstr ""
@@ -3774,7 +3774,7 @@ msgstr ""
 msgid "FourCC"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1437
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
 #: gui/mrvImageView.cpp:11217
 msgid "Frame"
@@ -3785,7 +3785,7 @@ msgstr ""
 msgid "Frame %<PRId64> "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1463
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1464
 msgid "Frame Count"
 msgstr ""
 
@@ -3793,7 +3793,7 @@ msgstr ""
 msgid "Frame End"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1450
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1451
 msgid "Frame Range"
 msgstr ""
 
@@ -3920,7 +3920,7 @@ msgstr ""
 msgid "GREEN"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1248
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1249
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2290
 msgid "Gain"
 msgstr ""
@@ -3933,28 +3933,28 @@ msgstr ""
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1254
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3372
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1255
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3373
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1810
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2403
-#: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1867
+#: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1870
 msgid "Gamma"
 msgstr ""
 
-#: core/guessImage.cpp:303 core/Sequence.cpp:1194 gui/mrvImageBrowser.cpp:522
+#: core/guessImage.cpp:303 core/Sequence.cpp:1195 gui/mrvImageBrowser.cpp:522
 msgid "Gamma 1.4 Chart"
 msgstr ""
 
-#: core/guessImage.cpp:309 core/Sequence.cpp:1195 gui/mrvImageBrowser.cpp:528
+#: core/guessImage.cpp:309 core/Sequence.cpp:1196 gui/mrvImageBrowser.cpp:528
 msgid "Gamma 1.8 Chart"
 msgstr ""
 
-#: core/guessImage.cpp:315 core/Sequence.cpp:1196 gui/mrvImageBrowser.cpp:534
+#: core/guessImage.cpp:315 core/Sequence.cpp:1197 gui/mrvImageBrowser.cpp:534
 msgid "Gamma 2.2 Chart"
 msgstr ""
 
-#: core/guessImage.cpp:321 core/Sequence.cpp:1197 gui/mrvImageBrowser.cpp:540
+#: core/guessImage.cpp:321 core/Sequence.cpp:1198 gui/mrvImageBrowser.cpp:540
 msgid "Gamma 2.4 Chart"
 msgstr ""
 
@@ -3974,11 +3974,11 @@ msgstr ""
 msgid "Gamma for image failed"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3373
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3374
 msgid "Gamma to use when loading an exr and OCIO is off."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2278
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2279
 msgid "Gb"
 msgstr ""
 
@@ -4015,7 +4015,7 @@ msgstr ""
 msgid "Greek"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2626
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9371
@@ -4039,7 +4039,7 @@ msgstr ""
 msgid "Grid Size"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1761
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1762
 msgid "H:"
 msgstr ""
 
@@ -4078,8 +4078,8 @@ msgstr ""
 msgid "HSV"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1406
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1701
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1407
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
 msgid "HUD"
 msgstr ""
 
@@ -4145,7 +4145,7 @@ msgstr ""
 msgid "Hilited in Full Timeline"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1173
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1397
 #: gui/mrvImageView.cpp:4993
@@ -4186,11 +4186,11 @@ msgstr ""
 msgid "Hotkeys file "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1971
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1972
 msgid "How to display timeline by default."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1993
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1994
 msgid "How to display timeline selection by default."
 msgstr ""
 
@@ -4206,7 +4206,7 @@ msgstr ""
 msgid "Hybrid"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2420
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2421
 msgid "ICC"
 msgstr ""
 
@@ -4216,7 +4216,7 @@ msgid "ICC Profile"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2791
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2792
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1400
 #: gui/mrvImageView.cpp:4999
 msgid "ICC Profiles"
@@ -4230,7 +4230,7 @@ msgstr ""
 msgid "ICC Rendering Intent"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2705
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2706
 msgid "ICC profile"
 msgstr ""
 
@@ -4280,7 +4280,7 @@ msgstr ""
 msgid "ITU-709 (Digital HDTV YCbCr)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1805
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1806
 msgid ""
 "If selected, the natlve file chooser will be used.  If unselected, "
 "mrViewer's standard file chooser will be used."
@@ -4298,7 +4298,7 @@ msgstr ""
 msgid "Image CTL script"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2270
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2271
 msgid "Image Cache Size"
 msgstr ""
 
@@ -4359,11 +4359,11 @@ msgstr ""
 msgid "Image input color space is undefined for "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3423
+#: gui/mrvImageBrowser.cpp:3426
 msgid "Image item not found for "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3526
+#: gui/mrvImageBrowser.cpp:3529
 msgid "Image not found in reel "
 msgstr ""
 
@@ -4371,7 +4371,7 @@ msgstr ""
 msgid "Image sequence \""
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2196
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2197
 msgid ""
 "Image sequences will be cached as 8-bit pictures, instead of being cached as "
 "the original depth of the sequence.\n"
@@ -4379,7 +4379,7 @@ msgid ""
 "pictures."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2182
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2183
 msgid ""
 "Image sequences will be cached in memory.  If this setting is off, images "
 "will be loaded on demand but fluid playback may not be possible."
@@ -4410,15 +4410,15 @@ msgid "Image/Clear Caches"
 msgstr ""
 
 #: gui/mrvImageView.cpp:5132 gui/mrvImageView.cpp:5140
-#: gui/mrvImageBrowser.cpp:4391 gui/mrvImageBrowser.cpp:4401
+#: gui/mrvImageBrowser.cpp:4394 gui/mrvImageBrowser.cpp:4404
 msgid "Image/Clone"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5134 gui/mrvImageBrowser.cpp:4393
+#: gui/mrvImageView.cpp:5134 gui/mrvImageBrowser.cpp:4396
 msgid "Image/Clone All Channels"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4405
+#: gui/mrvImageBrowser.cpp:4408
 msgid "Image/Media Info"
 msgstr ""
 
@@ -4454,7 +4454,7 @@ msgstr ""
 msgid "Image/Rotate -90"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4410
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4413
 msgid "Image/Set as Background"
 msgstr ""
 
@@ -4490,8 +4490,8 @@ msgstr ""
 msgid "ImageMagick Saving"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3330
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3575
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3331
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3576
 msgid "Images"
 msgstr ""
 
@@ -4529,7 +4529,7 @@ msgstr ""
 msgid "Index "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:551
+#: gui/mrvPreferences.cpp:554
 msgid "Inited R3D SDK from: "
 msgstr ""
 
@@ -4537,7 +4537,7 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2503
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2324
 #: core/exrImage.cpp:2482 gui/mrvImageInformation.cpp:3052
 msgid "Input Color Space"
@@ -4614,7 +4614,7 @@ msgstr ""
 msgid "Invalid timecode "
 msgstr ""
 
-#: core/aviImage.cpp:1974
+#: core/aviImage.cpp:1967
 msgid "Invalid video stream "
 msgstr ""
 
@@ -4634,8 +4634,8 @@ msgstr ""
 msgid "Italian"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3995 gui/mrvImageBrowser.cpp:4003
-#: gui/mrvImageBrowser.cpp:4082 gui/mrvImageBrowser.cpp:4090
+#: gui/mrvImageBrowser.cpp:3998 gui/mrvImageBrowser.cpp:4006
+#: gui/mrvImageBrowser.cpp:4085 gui/mrvImageBrowser.cpp:4093
 msgid "Item was not found in tree."
 msgstr ""
 
@@ -4647,7 +4647,7 @@ msgstr ""
 msgid "JPEG Picture"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2863
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2864
 msgid "JPG, PNG, DPX Load Library"
 msgstr ""
 
@@ -4730,13 +4730,13 @@ msgstr ""
 msgid "Lab CIELAB (L*a*b*)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1590
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1591
 #: gui/mrvImageInformation.cpp:3553 gui/mrvImageInformation.cpp:3616
 #: gui/mrvImageInformation.cpp:3662
 msgid "Language"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1584
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1585
 msgid "Language and Colors"
 msgstr ""
 
@@ -4823,7 +4823,7 @@ msgstr ""
 msgid "Linear"
 msgstr ""
 
-#: core/guessImage.cpp:293 core/Sequence.cpp:1192 gui/mrvImageBrowser.cpp:576
+#: core/guessImage.cpp:293 core/Sequence.cpp:1193 gui/mrvImageBrowser.cpp:576
 msgid "Linear Gradient"
 msgstr ""
 
@@ -4836,11 +4836,11 @@ msgid "Listing of directory \"/Volumes/\" failed!"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:55
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2714
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2803
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2818
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2833
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2848
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2715
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2804
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2819
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2834
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2849
 #: gui/mrvImageInformation.cpp:3937 gui/mrvImageInformation.cpp:3977
 msgid "Load"
 msgstr ""
@@ -4877,11 +4877,11 @@ msgstr ""
 msgid "Load Reel(s)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2916
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2917
 msgid "Load Sequence on Drag&&Drop"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2931
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2932
 msgid "Load Sequence on File Association && CommandLine"
 msgstr ""
 
@@ -4915,7 +4915,7 @@ msgstr ""
 msgid "Loaded braw lib from: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:574
+#: gui/mrvPreferences.cpp:577
 msgid "Loaded color themes from "
 msgstr ""
 
@@ -4923,10 +4923,10 @@ msgstr ""
 msgid "Loaded preferences from "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2857
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3069
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3361
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3568
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2858
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3070
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3362
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3569
 msgid "Loading"
 msgstr ""
 
@@ -4943,7 +4943,7 @@ msgstr ""
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1340
+#: gui/mrvPreferences.cpp:1343
 msgid "Loading hotkeys from "
 msgstr ""
 
@@ -4973,7 +4973,7 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:547
+#: gui/mrvPreferences.cpp:550
 msgid "Looked for it in: "
 msgstr ""
 
@@ -4985,15 +4985,15 @@ msgstr ""
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1914
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1915
 msgid "Looping Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2110
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2111
 msgid "Luminance"
 msgstr ""
 
-#: core/guessImage.cpp:298 core/Sequence.cpp:1193 gui/mrvImageBrowser.cpp:612
+#: core/guessImage.cpp:298 core/Sequence.cpp:1194 gui/mrvImageBrowser.cpp:612
 msgid "Luminance Gradient"
 msgstr ""
 
@@ -5008,7 +5008,7 @@ msgstr ""
 msgid "Lumma"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1334
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1335
 msgid "Lut Active"
 msgstr ""
 
@@ -5102,11 +5102,11 @@ msgstr ""
 msgid "Max. Bitrate"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2017
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2018
 msgid "Max. Cache Frames shown"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2973
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2974
 msgid "Max. Images Apart"
 msgstr ""
 
@@ -5118,13 +5118,13 @@ msgstr ""
 msgid "Maximum"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2018
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2019
 msgid ""
 "Maximum number of cached frames shown in the timeline.  Too many frames can "
 "make playback sluggish."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2974
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2975
 msgid ""
 "Maximum number of images apart that the versions might be on disk.  If you "
 "have v1, and this is set to 5, only up to a gap with v6 would be found.  v7 "
@@ -5139,7 +5139,7 @@ msgstr ""
 msgid "Mean"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1128
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
 #: gui/mrvImageView.cpp:4980
 msgid "Media Info"
@@ -5157,8 +5157,8 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1554
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2272
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1555
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2273
 #: gui/mrvImageInformation.cpp:3135
 msgid "Memory"
 msgstr ""
@@ -5179,7 +5179,7 @@ msgstr ""
 msgid "Meta"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3347
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3348
 #: gui/mrvImageInformation.cpp:997
 msgid "Metadata"
 msgstr ""
@@ -5209,7 +5209,7 @@ msgstr ""
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2892
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2893
 msgid "Missing Frames"
 msgstr ""
 
@@ -5245,7 +5245,7 @@ msgstr ""
 msgid "Mode for IPP2 Processing"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3498
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3499
 msgid "Module"
 msgstr ""
 
@@ -5285,7 +5285,7 @@ msgstr ""
 msgid "Movie Saving Preferences"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2955
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2956
 msgid ""
 "Movie files will be read as 16bit pictures, instead of being loaded and "
 "cached as 8 bits.\n"
@@ -5301,7 +5301,7 @@ msgstr ""
 msgid "Multiply"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3230
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3231
 msgid "Mute"
 msgstr ""
 
@@ -5309,7 +5309,7 @@ msgstr ""
 msgid "MyPack not found"
 msgstr ""
 
-#: core/guessImage.cpp:280 core/Sequence.cpp:1190 gui/mrvImageBrowser.cpp:447
+#: core/guessImage.cpp:280 core/Sequence.cpp:1191 gui/mrvImageBrowser.cpp:447
 msgid "NTSC HDTV Color Bars"
 msgstr ""
 
@@ -5338,7 +5338,7 @@ msgid ""
 "continue?"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4597
+#: gui/mrvImageBrowser.cpp:4600
 msgid "Negative indices to exchange"
 msgstr ""
 
@@ -5346,12 +5346,12 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3442
+#: gui/mrvImageBrowser.cpp:3445
 msgid "New item not created at "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:1984 gui/mrvImageBrowser.cpp:3827
-#: gui/mrvImageBrowser.cpp:3918
+#: gui/mrvImageBrowser.cpp:1984 gui/mrvImageBrowser.cpp:3830
+#: gui/mrvImageBrowser.cpp:3921
 msgid "New item was not found in tree."
 msgstr ""
 
@@ -5377,8 +5377,8 @@ msgid "Next Image Version"
 msgstr ""
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1142
-#: gui/mrvImageBrowser.cpp:1365 gui/mrvImageBrowser.cpp:3289
-#: gui/mrvImageBrowser.cpp:3293 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1365 gui/mrvImageBrowser.cpp:3292
+#: gui/mrvImageBrowser.cpp:3296 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -5456,7 +5456,7 @@ msgstr ""
 msgid "No memory to allocate filter graph"
 msgstr ""
 
-#: core/aviImage.cpp:2139
+#: core/aviImage.cpp:2132
 msgid "No pixel format could be chosen"
 msgstr ""
 
@@ -5472,7 +5472,7 @@ msgstr ""
 msgid "No valid RT transform for \""
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3638
+#: gui/mrvImageBrowser.cpp:3641
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5576,7 +5576,7 @@ msgstr ""
 msgid "Not enough memory for color transform"
 msgstr ""
 
-#: core/aviImage.cpp:2400
+#: core/aviImage.cpp:2393
 msgid "Not enough memory for context"
 msgstr ""
 
@@ -5596,13 +5596,13 @@ msgstr ""
 msgid "NumLock"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2408
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2409
 msgid ""
 "Number of FStops the LUT will cover.  Higher numbers show more detail in the "
 "black levels, while it makes the midrange be less defined."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2407
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2408
 msgid "Number of Fstops"
 msgstr ""
 
@@ -5638,7 +5638,7 @@ msgstr ""
 msgid "Number of video streams in file"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2499
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2500
 msgid "OCIO"
 msgstr ""
 
@@ -5648,7 +5648,7 @@ msgstr ""
 msgid "OCIO Color Space"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2483
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2484
 msgid "OCIO Config File"
 msgstr ""
 
@@ -5680,7 +5680,7 @@ msgstr ""
 msgid "OCIO config (*.{"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1864
+#: gui/mrvPreferences.cpp:1867
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr ""
 
@@ -5692,7 +5692,7 @@ msgstr ""
 msgid "OCIO/Display"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5236 gui/mrvImageBrowser.cpp:4161
+#: gui/mrvImageView.cpp:5236 gui/mrvImageBrowser.cpp:4164
 msgid "OCIO/Input Color Space"
 msgstr ""
 
@@ -5700,7 +5700,7 @@ msgstr ""
 msgid "OCIO/View"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2293
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2294
 msgid "ODT"
 msgstr ""
 
@@ -5727,7 +5727,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/aviSave.cxx:391
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:182
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:90
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3523
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3524
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:83
 #: core/mrvClient.cpp:324 gui/mrvFontsWindowUI.cpp:113
 #: gui/mrvImageInformation.cpp:251 gui/mrvImageInformation.cpp:284
@@ -5758,8 +5758,8 @@ msgstr ""
 msgid "Okay"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:1966 gui/mrvImageBrowser.cpp:3811
-#: gui/mrvImageBrowser.cpp:3903
+#: gui/mrvImageBrowser.cpp:1966 gui/mrvImageBrowser.cpp:3814
+#: gui/mrvImageBrowser.cpp:3906
 msgid "Old item was not found in tree."
 msgstr ""
 
@@ -5803,8 +5803,8 @@ msgstr ""
 msgid "Open new image, sequence, movie or reel"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3356
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3576
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3357
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3577
 msgid "OpenEXR"
 msgstr ""
 
@@ -5820,7 +5820,7 @@ msgstr ""
 msgid "OpenGL"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3151
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3152
 msgid ""
 "OpenGL blend compositing mode.\n"
 "Traditional:\n"
@@ -5834,12 +5834,12 @@ msgstr ""
 msgid "Opens different windows"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3331
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3357
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3332
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3358
 msgid "Options controlling the OpenEXR reader/writer"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3443
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3444
 msgid "Options controlling the R3D / BRAW readers"
 msgstr ""
 
@@ -5867,7 +5867,7 @@ msgstr ""
 msgid "Originating Program"
 msgstr ""
 
-#: core/Sequence.cpp:1476
+#: core/mrvOTIO.cpp:236
 #, c-format
 msgid "Otio timeline saved to '%s'."
 msgstr ""
@@ -5900,16 +5900,16 @@ msgstr ""
 msgid "Overall contrast of clip."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3235
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3236
 msgid "Override Audio"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/aviSave.cxx:329
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1846
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1847
 msgid "Override FPS"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1847
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1848
 msgid "Override playback fps when loading sequences."
 msgstr ""
 
@@ -5942,11 +5942,11 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: core/guessImage.cpp:276 core/Sequence.cpp:1188 gui/mrvImageBrowser.cpp:412
+#: core/guessImage.cpp:276 core/Sequence.cpp:1189 gui/mrvImageBrowser.cpp:412
 msgid "PAL Color Bars"
 msgstr ""
 
-#: core/guessImage.cpp:284 core/Sequence.cpp:1189 core/Sequence.cpp:1191
+#: core/guessImage.cpp:284 core/Sequence.cpp:1190 core/Sequence.cpp:1192
 #: gui/mrvImageBrowser.cpp:481
 msgid "PAL HDTV Color Bars"
 msgstr ""
@@ -6018,16 +6018,16 @@ msgstr ""
 msgid "Photoshop Picture"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2489
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2515
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2530
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2545
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2560
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2597
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2739
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2754
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2769
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2784
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2490
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2516
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2531
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2546
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2561
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2598
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2740
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2755
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2770
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2785
 #: gui/mrvImageInformation.cpp:4109 gui/mrvImageInformation.cpp:4163
 #: gui/mrvImageInformation.cpp:4222 gui/mrvImageInformation.cpp:4278
 #: gui/mrvImageInformation.cpp:4334 gui/mrvImageInformation.cpp:4390
@@ -6035,7 +6035,7 @@ msgstr ""
 msgid "Pick"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2490
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2491
 msgid "Pick a config.ocio file from disk."
 msgstr ""
 
@@ -6059,12 +6059,12 @@ msgid "Pixel Ratio"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1063
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2031
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3560
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2032
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3561
 msgid "Pixel Toolbar"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2050
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2051
 msgid "Pixel Values"
 msgstr ""
 
@@ -6080,11 +6080,11 @@ msgstr ""
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1949
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1950
 msgid "Play All Frames"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1950
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1951
 msgid "Play All frames without skipping even if frame rate suffers."
 msgstr ""
 
@@ -6122,8 +6122,8 @@ msgid ""
 "(Autoplayback)."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1821
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3558
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1822
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3559
 msgid "Playback"
 msgstr ""
 
@@ -6144,7 +6144,7 @@ msgstr ""
 msgid "Portuguese"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1711
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1712
 msgid "Positioning"
 msgstr ""
 
@@ -6169,23 +6169,23 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2677
+#: gui/mrvPreferences.cpp:2681
 msgid "Preferences have been saved to: "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3555
+#: gui/mrvImageBrowser.cpp:3558
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4185
+#: gui/mrvImageBrowser.cpp:4188
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2210
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2211
 msgid "Preload Cache"
 msgstr ""
 
@@ -6205,7 +6205,7 @@ msgstr ""
 msgid "Presentation"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2005
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2006
 msgid "Preview Thumbnails"
 msgstr ""
 
@@ -6254,12 +6254,12 @@ msgstr ""
 msgid "Profile name "
 msgstr ""
 
-#: core/aviImage.cpp:2787
+#: core/aviImage.cpp:2780
 #, c-format
 msgid "Program %d "
 msgstr ""
 
-#: core/aviImage.cpp:2783
+#: core/aviImage.cpp:2776
 #, c-format
 msgid "Program %d: %s"
 msgstr ""
@@ -6288,8 +6288,8 @@ msgstr ""
 msgid "Province State"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3450
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3451
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3475
 msgid "Proxy Scale"
 msgstr ""
 
@@ -6297,7 +6297,7 @@ msgstr ""
 msgid "Proxy image scale"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2361
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2362
 msgid "Quality"
 msgstr ""
 
@@ -6319,7 +6319,7 @@ msgstr ""
 msgid "R"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3447
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3448
 msgid "R3D Loading"
 msgstr ""
 
@@ -6344,8 +6344,8 @@ msgstr ""
 msgid "RED gamma curve"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3442
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3577
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3443
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3578
 msgid "RED3D - BRAW"
 msgstr ""
 
@@ -6371,7 +6371,7 @@ msgstr ""
 msgid "RGBA"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2036
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2037
 msgid "RGBA Display"
 msgstr ""
 
@@ -6385,7 +6385,7 @@ msgstr ""
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2326
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2327
 msgid "RT"
 msgstr ""
 
@@ -6397,7 +6397,7 @@ msgstr ""
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3304
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3305
 msgid "Raise Log Window on Error"
 msgstr ""
 
@@ -6414,7 +6414,7 @@ msgstr ""
 msgid "Rational"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2954
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2955
 msgid "Read 16 bit movies when possible"
 msgstr ""
 
@@ -6450,7 +6450,7 @@ msgstr ""
 msgid "Rectangle Tool"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2611
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2087 core/CMedia.cpp:2154 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9366
@@ -6495,11 +6495,11 @@ msgid "Reel '%s' saved"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:1403
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1114
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1115
 msgid "Reel List"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2991
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2992
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1389
 #: gui/mrvImageView.cpp:4979
 msgid "Reels"
@@ -6522,11 +6522,11 @@ msgstr ""
 msgid "Reference Service"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3564 gui/mrvImageBrowser.cpp:3571
+#: gui/mrvImageBrowser.cpp:3567 gui/mrvImageBrowser.cpp:3574
 msgid "Regex "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2967
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2968
 msgid ""
 "Regex used to detect version numbers.  The default _v creates one that finds "
 "images like:\n"
@@ -6534,7 +6534,7 @@ msgid ""
 "(version 3, frame 1)."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3584 gui/mrvImageBrowser.cpp:3632
+#: gui/mrvImageBrowser.cpp:3587 gui/mrvImageBrowser.cpp:3635
 msgid "Regular expression error: "
 msgstr ""
 
@@ -6556,11 +6556,11 @@ msgstr ""
 msgid "Release Time"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1671
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1672
 msgid "Reload Theme"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1673
 msgid ""
 "Reload color theme from mrViewer.colors file again to refresh change in "
 "colors"
@@ -6598,7 +6598,7 @@ msgstr ""
 msgid "Render Transform"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2727
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2728
 msgid "Render Transforms"
 msgstr ""
 
@@ -6606,7 +6606,7 @@ msgstr ""
 msgid "Renderer:\t"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2418
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2419
 #: gui/mrvImageInformation.cpp:3025
 msgid "Rendering Intent"
 msgstr ""
@@ -6621,7 +6621,7 @@ msgid ""
 "specified in the command line."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3408
+#: gui/mrvImageBrowser.cpp:3411
 msgid "Replace image index is out of range"
 msgstr ""
 
@@ -6652,7 +6652,7 @@ msgstr ""
 msgid "Reset value"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3183
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3184
 msgid "Resize Background to Match Foreground"
 msgstr ""
 
@@ -6660,8 +6660,8 @@ msgstr ""
 msgid "Resize Main Window to Fit"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1476
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1477
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2366
 msgid "Resolution"
 msgstr ""
 
@@ -6677,11 +6677,11 @@ msgstr ""
 msgid "Return"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3515
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3516
 msgid "Revert"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3516
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3517
 msgid "Revert settings to last saved preferences."
 msgstr ""
 
@@ -6783,11 +6783,11 @@ msgstr ""
 msgid "SHOW"
 msgstr ""
 
-#: core/guessImage.cpp:272 core/Sequence.cpp:1187 gui/mrvImageBrowser.cpp:378
+#: core/guessImage.cpp:272 core/Sequence.cpp:1188 gui/mrvImageBrowser.cpp:378
 msgid "SMPTE NTSC Color Bars"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1348
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1349
 #: gui/mrvHotkey.cpp:334
 msgid "Safe Areas"
 msgstr ""
@@ -6809,7 +6809,7 @@ msgid "Saturation value of image pixel under mouse."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:51
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3519
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3520
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:272
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:336
 msgid "Save"
@@ -6835,13 +6835,13 @@ msgstr ""
 msgid "Save Metadata"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2469
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2470
 msgid ""
 "Save OCIO config in preferences file or leave it empty so that environment "
 "variables can be used."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2468
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2469
 msgid "Save Ocio Config File in Preferences"
 msgstr ""
 
@@ -6873,7 +6873,7 @@ msgstr ""
 msgid "Save frames '"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3520
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3521
 msgid "Save preferences to disk as a default."
 msgstr ""
 
@@ -6901,11 +6901,11 @@ msgstr ""
 msgid "Saves out OCIO's input color space in the metadata of the image."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2987
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3111
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3335
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3380
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3569
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2988
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3112
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3336
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3381
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3570
 msgid "Saving"
 msgstr ""
 
@@ -6914,17 +6914,17 @@ msgstr ""
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2226
 msgid "Scale"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2226
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2227
 msgid ""
 "Scale of images stored.  Smaller scale allows more images to be stored at "
 "the expense of pixelization."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1648
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1649
 msgid "Scheme"
 msgstr ""
 
@@ -6945,7 +6945,7 @@ msgstr ""
 msgid "Scrub Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1939
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1940
 msgid "Scrub Sensitivity"
 msgstr ""
 
@@ -6970,7 +6970,7 @@ msgstr ""
 msgid "Second Display Window of Clip"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2064
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2065
 msgid "Secondary Display"
 msgstr ""
 
@@ -6995,7 +6995,7 @@ msgstr ""
 msgid "Select a CTL script"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1915
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1916
 msgid "Select default looping mode in timeline."
 msgstr ""
 
@@ -7022,11 +7022,11 @@ msgstr ""
 msgid "Select stereo output"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4145
+#: gui/mrvImageBrowser.cpp:4148
 msgid "Select/Multiple Images for Modifying"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:4132
+#: gui/mrvImageBrowser.cpp:4135
 msgid "Select/Single Image for Dragging"
 msgstr ""
 
@@ -7034,25 +7034,25 @@ msgstr ""
 msgid "Selecting shader type automatically: "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1694
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1992
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1695
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1993
 #: gui/mrvImageView.cpp:1648
 msgid "Selection"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1681
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1682
 msgid "Selects the background color of areas outside the current image."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1702
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1703
 msgid "Selects the color of HUD overlays."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1688
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1689
 msgid "Selects the color of text overlays printed over the current image."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1695
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1696
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr ""
 
@@ -7079,7 +7079,7 @@ msgstr ""
 msgid "Sequence"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1843
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1844
 msgid "Sequences"
 msgstr ""
 
@@ -7139,31 +7139,31 @@ msgstr ""
 msgid "Set viewer's default server/client port."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1249
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1250
 msgid "Sets the default gain when mrViewer starts."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1255
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1256
 msgid "Sets the default gamma when mrViewer starts."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1646
+#: gui/mrvPreferences.cpp:1649
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1627
+#: gui/mrvPreferences.cpp:1630
 msgid "Setting OCIO config to nuke-default."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1619
+#: gui/mrvPreferences.cpp:1622
 msgid "Setting OCIO config to saved preferences."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1652
+#: gui/mrvPreferences.cpp:1655
 msgid "Setting OCIO config to:"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:645
+#: gui/mrvPreferences.cpp:648
 msgid "Setting language to "
 msgstr ""
 
@@ -7209,7 +7209,7 @@ msgstr ""
 msgid "Simple"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1780
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1781
 msgid "Single Click to Travel Drawers"
 msgstr ""
 
@@ -7221,7 +7221,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2255
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2256
 msgid "Size in frames of the VIDEO and AUDIO cache."
 msgstr ""
 
@@ -7270,7 +7270,7 @@ msgstr ""
 msgid "Special Instructions"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1860
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1861
 msgid "Speed"
 msgstr ""
 
@@ -7287,7 +7287,7 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1830
 msgid "Start Playback when opening files."
 msgstr ""
 
@@ -7375,7 +7375,7 @@ msgstr ""
 msgid "Subtitle font "
 msgstr ""
 
-#: core/aviImage.cpp:4274
+#: core/aviImage.cpp:4266
 msgid "Subtitle type "
 msgstr ""
 
@@ -7393,8 +7393,8 @@ msgid "Subtitle/Track #%d - %s"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:158
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3240
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3573
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3241
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3574
 msgid "Subtitles"
 msgstr ""
 
@@ -7414,7 +7414,7 @@ msgstr ""
 msgid "Supplemental Category"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2687
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2688
 msgid "Surround Luminance"
 msgstr ""
 
@@ -7485,7 +7485,7 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1770
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1771
 msgid "Take Current Window Values"
 msgstr ""
 
@@ -7505,7 +7505,7 @@ msgstr ""
 msgid "Text Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1687
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1688
 msgid "Text Overlay"
 msgstr ""
 
@@ -7522,15 +7522,15 @@ msgstr ""
 msgid "TextureFiltering"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2645
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2646
 msgid "The Blue CIE X coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2650
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2651
 msgid "The Blue CIE Y coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2603
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2604
 msgid ""
 "The CIE x,y coordinates of the primaries and white point of the display\n"
 "(like Rec. ITU-R BT.709-3)\n"
@@ -7538,31 +7538,31 @@ msgid ""
 "(Environment variable: MRV_ODT_CTL_CHROMATICITIES)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2630
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2631
 msgid "The Green CIE X coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2635
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2636
 msgid "The Green CIE Y coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2615
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2616
 msgid "The Red CIE X coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2620
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2621
 msgid "The Red CIE Y coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2660
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2661
 msgid "The White CIE X coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2665
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2666
 msgid "The White CIE Y coordinate of the display"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2692
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2693
 msgid ""
 "The luminance, in cd/m2, of the background that surrounds the display.\n"
 "\n"
@@ -7570,7 +7570,7 @@ msgid ""
 "MRV_ODT_CTL_SURROUND_LUMINANCE)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2677
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2678
 msgid ""
 "The luminance, in cd/m2, of the display.\n"
 "\n"
@@ -7578,95 +7578,95 @@ msgid ""
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2746
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2747
 msgid ""
 "The name of the CTL default image transform for 16-bit images (cin, tiff, "
 "etc)\n"
 "(Environment variable: MRV_CTL_RT_16bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2761
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2762
 msgid ""
 "The name of the CTL default image transform for 32-bit int images (openexr "
 "integers, etc)\n"
 "(Environment variable: MRV_CTL_RT_32bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2731
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2732
 msgid ""
 "The name of the CTL default image transform for 8 bit images (jpg, bmp, "
 "etc)\n"
 "(Environment variable: MRV_CTL_RT_8bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2776
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2777
 msgid ""
 "The name of the CTL default image transform for half and float images "
 "(OpenEXR, dpx, etc)\n"
 "(Environment variable: MRV_CTL_RT_float)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2590
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2591
 msgid ""
 "The name of the CTL display transform\n"
 "(Environment variable: MRV_ODT_CTL_TRANSFORM)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2522
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2523
 msgid ""
 "The name of the OCIO default image color space for 16-bit images (cin, tiff, "
 "etc)\n"
 "(Environment variable: MRV_OCIO_16bits_ICS)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2537
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2538
 msgid ""
 "The name of the OCIO default image color space for 32-bit int images "
 "(openexr integers, etc)\n"
 "(Environment variable: MRV_OCIO_32bits_ICS)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2507
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2508
 msgid ""
 "The name of the OCIO default image color space for 8 bit images (jpg, bmp, "
 "etc)\n"
 "(Environment variable: MRV_OCIO_8bits_ICS)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2553
 msgid ""
 "The name of the OCIO default image color space for half and float images "
 "(OpenEXR, dpx, etc)\n"
 "(Environment variable: MRV_OCIO_float_ICS)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2810
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2811
 msgid ""
 "The name of the default ICC profile for 16-bit images (cin, tiff, etc)\n"
 "(Environment variable: MRV_ICC_RT_16bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2825
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2826
 msgid ""
 "The name of the default ICC profile for 32-bit int images (openexr integers, "
 "etc)\n"
 "(Environment variable: MRV_ICC_RT_32bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2795
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2796
 msgid ""
 "The name of the default ICC profile for 8 bit images (jpg, bmp, etc)\n"
 "(Environment variable: MRV_ICC_RT_8bits)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2840
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2841
 msgid ""
 "The name of the default ICC profile for half and float images (OpenEXR, dpx, "
 "etc)\n"
 "(Environment variable: MRV_ICC_RT_float)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2706
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2707
 msgid ""
 "The name of the default ICC profile for your ODT (monitor)\n"
 "(Environment variable: MRV_ODT_ICC_PROFILE)"
@@ -7689,13 +7689,19 @@ msgid ""
 "particular Windows Sockets implementation.\n"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1407
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1408
 msgid ""
 "This area specifies which elements should be shown as a HUD overlay on the "
 "view screen."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2484
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1102
+msgid ""
+"This is a macOS setting only.  When selected the menus will appear on the "
+"system toolbar instead of the mrViewer toolbar."
+msgstr ""
+
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2485
 msgid ""
 "This is the path to your config.ocio file.  It can be set with the "
 "environment variable OCIO, which takes precedence over any saved setting."
@@ -7734,28 +7740,28 @@ msgid ""
 "more compression and artifacts."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1940
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1941
 msgid ""
 "This setting controls the sensitivity of scrubbing (SHIFT and then the mouse "
 "right and left).  Smaller values make the mouse move jump more frames while "
 "higher values does the opposite."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3072
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3073
 msgid ""
 "This setting effects the number of threads used in decoding your video.  A "
 "value of 0 means to use 4 threads by default."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3364
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3365
 msgid "Thread Count"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1811
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1812
 msgid "Thumbnail frame percent"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1792
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1793
 msgid "Thumbnails Active"
 msgstr ""
 
@@ -7764,13 +7770,13 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1528
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1529
 msgid "Timecode"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1070
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1966
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3559
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1967
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3560
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:164
 msgid "Timeline"
 msgstr ""
@@ -7940,7 +7946,7 @@ msgstr ""
 msgid "Too many streams in output context"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1225
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1226
 msgid "Tooldock"
 msgstr ""
 
@@ -7975,7 +7981,7 @@ msgstr ""
 msgid "Traditional No Gamma"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2589
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2590
 msgid "Transform"
 msgstr ""
 
@@ -8016,7 +8022,7 @@ msgid ""
 "+ Original: pixel without gamma, gain or lut."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1588
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1589
 msgid "UI"
 msgstr ""
 
@@ -8076,7 +8082,7 @@ msgstr ""
 msgid "Unhandled exception"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2948
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2941
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:209
 #: video/mrvGLEngine.cpp:212 video/mrvGLEngine.cpp:215
 msgid "Unknown"
@@ -8142,7 +8148,7 @@ msgstr ""
 msgid "Unknown data type to convert to string"
 msgstr ""
 
-#: core/aviImage.cpp:2266
+#: core/aviImage.cpp:2259
 msgid "Unknown destination video frame format: "
 msgstr ""
 
@@ -8231,23 +8237,23 @@ msgstr ""
 msgid "Use File YUV Hint"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2993
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2994
 msgid "Use Image Path to Set Default Reel Saving Path"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1804
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1805
 msgid "Use Native File Chooser"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2454
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2455
 msgid "Use OCIO"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2455
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2456
 msgid "Use OCIO or revert to CTL/ICC."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3008
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3009
 msgid "Use Relative Paths in Reel Content"
 msgstr ""
 
@@ -8255,28 +8261,28 @@ msgstr ""
 msgid "Use TrackNo"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3365
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3366
 msgid "Use multiple threads when loading a frame."
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:952
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3553
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3554
 msgid "User Interface"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3557
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3558
 msgid "User Interface/File Requester"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3556
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3557
 msgid "User Interface/Positioning"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3554
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3555
 msgid "User Interface/View Window"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3555
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3556
 msgid "User Interface/View Window/Language and Colors"
 msgstr ""
 
@@ -8288,7 +8294,7 @@ msgstr ""
 msgid "Using hardware shader profile: "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1515
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1516
 msgid "VA Difference"
 msgstr ""
 
@@ -8347,7 +8353,7 @@ msgstr ""
 msgid "Vector3 Integer"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1186
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1398
 #: gui/mrvImageView.cpp:4995
@@ -8358,23 +8364,23 @@ msgstr ""
 msgid "Vendor:\t"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2966
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2967
 msgid "Version Regex"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5105 gui/mrvImageBrowser.cpp:4213
+#: gui/mrvImageView.cpp:5105 gui/mrvImageBrowser.cpp:4216
 msgid "Version/First"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5114 gui/mrvImageBrowser.cpp:4222
+#: gui/mrvImageView.cpp:5114 gui/mrvImageBrowser.cpp:4225
 msgid "Version/Last"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5108 gui/mrvImageBrowser.cpp:4219
+#: gui/mrvImageView.cpp:5108 gui/mrvImageBrowser.cpp:4222
 msgid "Version/Next"
 msgstr ""
 
-#: gui/mrvImageView.cpp:5110 gui/mrvImageBrowser.cpp:4216
+#: gui/mrvImageView.cpp:5110 gui/mrvImageBrowser.cpp:4219
 msgid "Version/Previous"
 msgstr ""
 
@@ -8383,8 +8389,8 @@ msgid "Version:\t"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/AboutUI.cxx:130
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3027
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3570
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3028
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3571
 #: gui/mrvImageInformation.cpp:984 gui/mrvImageInformation.cpp:1088
 #: gui/mrvImageInformation.cpp:3435 gui/mrvImageInformation.cpp:3494
 msgid "Video"
@@ -8394,11 +8400,11 @@ msgstr ""
 msgid "Video "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2255
 msgid "Video / Audio Frames"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3113
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3114
 msgid "Video Codec"
 msgstr ""
 
@@ -8415,11 +8421,11 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:1891 core/R3dImage.cpp:893 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1884 core/R3dImage.cpp:893 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3071
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3072
 msgid "Video Thread Count"
 msgstr ""
 
@@ -8456,11 +8462,11 @@ msgstr ""
 msgid "Video/Track #%d - %s"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1678
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1679
 msgid "View"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1242
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1243
 msgid "View Window"
 msgstr ""
 
@@ -8510,7 +8516,7 @@ msgstr ""
 msgid "W"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1754
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1755
 msgid "W:"
 msgstr ""
 
@@ -8532,7 +8538,7 @@ msgstr ""
 msgid "Wave music"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1212
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1399
 #: gui/mrvImageView.cpp:4997
@@ -8549,26 +8555,26 @@ msgid ""
 "saved, instead of relying in Media Information->FPS."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2917
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2918
 msgid ""
 "When dragging and dropping a frame from a sequence, make mrViewer load the "
 "full sequence.   Otherwise it loads the frame only."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2932
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2933
 msgid ""
 "When loading a frame from a sequence from a file association or command-"
 "line, make mrViewer load the full sequence.   Otherwise it loads the frame "
 "only."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2893
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2894
 msgid ""
 "When loading a sequence, and a frame is not found, mrViewer can either show "
 "a black frame or repeat the previous frame."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2864
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2865
 msgid ""
 "When loading a sequence, mrViewer will usually use OIIO loaders which give a "
 "good compromise between speed and quality.  OIIO loaders allow precaching "
@@ -8580,31 +8586,31 @@ msgid ""
 "similar features of OIIO."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1335
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1336
 msgid "When mrViewer starts, the 3D Lut will be active."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1377
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1378
 msgid ""
 "When mrViewer starts, the data window will be shown when appropiate as a "
 "dotted line."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1363
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1364
 msgid "When mrViewer starts, the display window will be shown when appropiate."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1321
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1322
 msgid ""
 "When mrViewer starts, the pixel aspect ratio compensation will be active by "
 "default."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1349
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1350
 msgid "When mrViewer starts, the safe area display will be active by default."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2265
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2266
 msgid ""
 "When selected, cache is set to twice the frames per second of the movie."
 msgstr ""
@@ -8634,26 +8640,26 @@ msgid ""
 "visible."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1201
 msgid ""
 "When selected, mrViewer will start with the EDL Edit window already open."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1160
 msgid ""
 "When selected, mrViewer will start with the action tools already showing."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1145
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1146
 msgid ""
 "When selected, mrViewer will start with the color area window already open."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1175
 msgid "When selected, mrViewer will start with the histogram already open."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1130
 msgid ""
 "When selected, mrViewer will start with the media information window already "
 "open."
@@ -8667,8 +8673,7 @@ msgstr ""
 msgid "When selected, mrViewer will start with the pixel toolbar shown."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1102
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1115
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1116
 msgid "When selected, mrViewer will start with the reel list already open."
 msgstr ""
 
@@ -8682,12 +8687,12 @@ msgstr ""
 msgid "When selected, mrViewer will start with the timeline shown."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1188
 msgid "When selected, mrViewer will start with the vectorscope already open."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1226
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1214
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1227
 msgid "When selected, mrViewer will start with the waveform already open."
 msgstr ""
 
@@ -8704,32 +8709,32 @@ msgid ""
 "will be sent to the already open mrViewer."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2947
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2948
 msgid ""
 "When this option is active and an image changes on disk, mrViewer reloads it "
 "automatically."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2211
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2212
 msgid ""
 "When this option is on and a sequence is loaded, the frames of the cache "
 "will begin loading in the background.  Note however, that this may make the "
 "GUI less responsive."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1741
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1742
 msgid ""
 "When this option is on, mrViewer will always open to the size you set in W "
 "and H."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2994
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2995
 msgid ""
 "When this option is on, the file requester to save the reel will default to "
 "the path of the first image loaded in the current reel."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1717
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1718
 msgid ""
 "When this option is set, mrViewer will open in the position you set here "
 "(except if the window goes out of the Desktop)."
@@ -8741,7 +8746,7 @@ msgid ""
 "into account, but the setting from this GUI is."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2421
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2422
 msgid ""
 "When using luts with ICC profiles, this setting allows you to select the ICC "
 "rendering intent.   Rendering intents are mostly used for printing to film "
@@ -8750,19 +8755,19 @@ msgid ""
 "linear RGB/XYZ space."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3339
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3340
 msgid "Whether to save ACES clip metadata in a sidecar."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3343
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3344
 msgid "Whether to save all layers in image file if there are several."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2656
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2657
 msgid "White"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2673
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2674
 msgid "White Luminance"
 msgstr ""
 
@@ -8794,11 +8799,11 @@ msgstr ""
 msgid "Wipe"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1541
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1542
 msgid "Wipe Mode"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2366
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2367
 msgid ""
 "With modern graphics cards, mrViewer emulates color transforms by baking "
 "them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The "
@@ -8816,7 +8821,7 @@ msgid ""
 "It is recommended this setting is left at 64x64x64 or 128x128x128."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3009
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3010
 msgid ""
 "With this option, the content of the reel (the reel images/movies) are saved "
 "with relative paths to the location of the reel."
@@ -8845,11 +8850,11 @@ msgstr ""
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr ""
 
-#: core/aviImage.cpp:3526
+#: core/aviImage.cpp:3519
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2607
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2608
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:168
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:173
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvColorControlsUI.cxx:178
@@ -8873,7 +8878,7 @@ msgstr ""
 msgid "X Scale"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1730
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1731
 msgid "X:"
 msgstr ""
 
@@ -8890,7 +8895,7 @@ msgstr ""
 msgid "XYZ CIE XYZ"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2609
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2962
 msgid "Y"
 msgstr ""
@@ -8921,7 +8926,7 @@ msgstr ""
 msgid "Y' (Lumma)"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1733
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1734
 msgid "Y:"
 msgstr ""
 
@@ -8960,7 +8965,7 @@ msgid ""
 "the movie file."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3078
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:3079
 msgid "YUV Conversion"
 msgstr ""
 
@@ -8973,8 +8978,8 @@ msgid "YUVA Support:\t"
 msgstr ""
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1142
-#: gui/mrvImageBrowser.cpp:1365 gui/mrvImageBrowser.cpp:3289
-#: gui/mrvImageBrowser.cpp:3293 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1365 gui/mrvImageBrowser.cpp:3292
+#: gui/mrvImageBrowser.cpp:3296 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -8987,11 +8992,11 @@ msgstr ""
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3103
+#: gui/mrvImageBrowser.cpp:3106
 msgid "You can load only a single stereo image to combine with current one."
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3119
+#: gui/mrvImageBrowser.cpp:3122
 msgid "You cannot load a reel as a stereo image."
 msgstr ""
 
@@ -9017,7 +9022,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1391
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1392
 msgid "Zoom Speed"
 msgstr ""
 
@@ -9045,7 +9050,7 @@ msgstr ""
 msgid "avcodec_copy_context failed for audio"
 msgstr ""
 
-#: core/aviImage.cpp:1769
+#: core/aviImage.cpp:1762
 msgid "avcodec_copy_context failed for subtitle"
 msgstr ""
 
@@ -9061,8 +9066,8 @@ msgstr ""
 msgid "capDate"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2676
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2691
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2677
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2692
 msgid "cd/m2"
 msgstr ""
 
@@ -9110,14 +9115,14 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: core/aviImage.cpp:1921 core/aviImage.cpp:1934 core/R3dImage.cpp:935
+#: core/aviImage.cpp:1914 core/aviImage.cpp:1927 core/R3dImage.cpp:935
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2551
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2775
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2839
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2552
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2776
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2840
 msgid "float"
 msgstr ""
 
@@ -9268,7 +9273,7 @@ msgstr ""
 msgid "mrViewer knows the codec used"
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2362
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2363
 msgid ""
 "mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These "
 "settings control the quality of the 3D Lut."
@@ -9282,7 +9287,7 @@ msgstr ""
 msgid "mrViewer supports YUVA images through shaders."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2327
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2328
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for the render "
 "transform (RT) of your images.  This setting prioritizes choosing one over "
@@ -9294,14 +9299,14 @@ msgid ""
 "the same algorithm (CTL or ICC)."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2289
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2290
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for your output device "
 "transform (ODT) and for your rendering transform of your images (RT).  These "
 "settings prioritizes choosing one over the other."
 msgstr ""
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2294
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2295
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for your output device "
 "transform (ODT).  This setting prioritizes choosing one over the other.\n"
@@ -9313,8 +9318,8 @@ msgid ""
 "the same algorithm (CTL or ICC)."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:319 gui/mrvPreferences.cpp:1333
-#: gui/mrvPreferences.cpp:1339
+#: gui/mrvPreferences.cpp:319 gui/mrvPreferences.cpp:1336
+#: gui/mrvPreferences.cpp:1342
 msgid "mrViewer.keys"
 msgstr ""
 

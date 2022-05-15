@@ -4,6 +4,8 @@
 cmake_minimum_required( VERSION 3.1 )
 project( mrViewer )
 
+cmake_policy( SET CMP0068 NEW )
+
 IF(WIN32)
     SET( TEST_BUNDLE 0 )
 ENDIF()

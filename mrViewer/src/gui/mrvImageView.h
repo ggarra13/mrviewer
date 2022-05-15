@@ -41,7 +41,7 @@
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
-#include "core/Sequence.h"
+#include "core/mrvLoadInfo.h"
 
 #include "core/mrvChannelType.h"
 #include "gui/mrvMedia.h"

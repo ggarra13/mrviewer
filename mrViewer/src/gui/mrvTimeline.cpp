@@ -396,6 +396,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int64_t max = frame + size;
     if ( mx < max ) max = mx;
 
+
     // If too many frames, playback suffers, so we exit here
     if ( max - j > uiMain->uiPrefs->uiPrefsMaxCachelineFrames->value() ) return;
 
@@ -425,7 +426,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int dx = NO_FRAME_VALUE;
 
 
-    int64_t t2;
     while ( j <= max )
     {
         dx = NO_FRAME_VALUE;
@@ -434,7 +434,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         {
             if ( img->is_cache_filled( t ) >= c )
             {
-                t2 = t;
                 dx = rx + slider_position( double(j), ww );
                 break;
             }

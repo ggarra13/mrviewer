@@ -406,6 +406,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     ui.get( "action_toolbar", tmp, 1 );
     uiPrefs->uiPrefsToolBar->value( (bool) tmp );
 
+    ui.get( "macOS_menus", tmp, 0 );
+    uiPrefs->uiPrefsMacOSMenus->value( (bool) tmp );
+
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value( (bool) tmp );
 
@@ -1367,7 +1370,7 @@ void Preferences::run( ViewerUI* main )
     check_language( uiPrefs, language_index );
 
 #ifdef OSX
-    if ( uiPrefs->uiMacOSMenus->value() )
+    if ( uiPrefs->uiPrefsMacOSMenus->value() )
     {
         uiMain->uiMenuBar->clear();
         uiMain->uiMenuGroup->redraw();
@@ -2328,6 +2331,7 @@ void Preferences::save()
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "action_toolbar", (int) uiPrefs->uiPrefsToolBar->value() );
+    ui.set( "macOS_menus", (int) uiPrefs->uiPrefsMacOSMenus->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );

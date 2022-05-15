@@ -107,6 +107,7 @@ set( SOURCES
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
   core/mrvOS.cpp
+  core/mrvOTIO.cpp
 
   gui/FLU/Flu_Combo_Box.cpp       # needed
   gui/FLU/Flu_Combo_Tree.cpp      # needed

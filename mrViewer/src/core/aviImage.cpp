@@ -1005,7 +1005,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
 
-    if ( (stopped() || saving() || playback() == kBackwards ) &&
+    if ( (stopped() || saving() ) &&
          (got_video || in_video_store( frame - _start_number )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -1695,21 +1695,14 @@ void aviImage::limit_video_store(const int64_t frame)
         if ( _dts > last )   last  = _dts;
         if ( _dts < first )  first = _dts;
         break;
-    case kForwards:
-        first = frame - max_frames;
-        last  = frame + max_frames;
-        if ( _dts > last )   last  = _dts;
-        if ( _dts < first )  first = _dts;
-        break;
     default:
         first = frame - max_frames;
         last  = frame + max_frames;
-        if ( _dts > last )   last = _dts;
-        if ( _dts < first ) first = _dts;
         break;
     }
 
     if ( _images.empty() ) return;
+
 
     _images.erase( std::remove_if( _images.begin(), _images.end(),
                                    NotInRangeFunctor( first, last ) ),
@@ -3557,7 +3550,6 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
 
         if ( !is_seek && playback() == kBackwards )
         {
-            // std::cerr << "pkt " << pktframe << " frame " << frame << std::endl;
 
             status = decode_image( pktframe, (AVPacket&)pkt );
 

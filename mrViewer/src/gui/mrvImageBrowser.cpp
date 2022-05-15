@@ -2933,8 +2933,16 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 {
     _loading = true;
     bool edl = true;
+
+    fs::path path( info.filename );
+    std::string reelname = path.leaf().string();
+    reelname = reelname.substr(0, reelname.size()-5);
+
+    new_reel( reelname.c_str() );
+    mrv::Reel r = current_reel();
+
     mrv::LoadList sequences;
-    if ( ! parse_otio( sequences, info.filename.c_str() ) )
+    if ( ! parse_otio( sequences, r->transitions, info.filename.c_str() ) )
     {
         LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
         _loading = false;
@@ -2943,11 +2951,6 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
     append_attributes( info, sequences );
 
-    fs::path path( info.filename );
-    std::string reelname = path.leaf().string();
-    reelname = reelname.substr(0, reelname.size()-5);
-
-    new_reel( reelname.c_str() );
     load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();
