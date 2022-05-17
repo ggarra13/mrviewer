@@ -403,6 +403,7 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -414,6 +415,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -521,6 +524,7 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -532,6 +536,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -640,6 +646,7 @@ _pixel_ratio( NULL ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
+_dissolve( other->_dissolve ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts.load() ),
@@ -652,6 +659,8 @@ _expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
+_frameIn( other->_frameIn ),
+_frameOut( other->_frameOut ),
 _frame_start( other->_frame_start ),
 _frame_end( other->_frame_end ),
 _start_number( other->_start_number ),
@@ -1594,7 +1603,7 @@ void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
     assert0( x != AV_NOPTS_VALUE );
-    _frameStart = x;
+    _frameStart = _frameIn = x;
     // if ( _frame < _frame_start ) _frame = _frameStart;
 }
 
@@ -1602,7 +1611,7 @@ void  CMedia::last_frame(int64_t x)
 {
     assert0( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
-    _frameEnd = x;
+    _frameEnd = _frameOut = x;
     // if ( _frame > _frame_end ) _frame = _frameEnd;
 }
 
@@ -1647,8 +1656,8 @@ void CMedia::sequence( const char* fileroot,
 
     _is_sequence = true;
     _dts = _adts = start;
-    _frameStart = _frame_start = start;
-    _frameEnd = _frame_end = end;
+    _frameStart = _frameIn = _frame_start = start;
+    _frameEnd = _frameOut = _frame_end = end;
 
 
     delete [] _sequence;
@@ -2745,6 +2754,7 @@ void CMedia::play(const CMedia::Playback dir,
 
         }
 
+#if 0
         if ( !fg && !_fg_bg_barrier )
         {
             _fg_bg_barrier = new Barrier( valid_v + valid_a );
@@ -2758,6 +2768,7 @@ void CMedia::play(const CMedia::Playback dir,
         {
             _fg_bg_barrier = NULL;
         }
+#endif
 
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
@@ -2836,10 +2847,14 @@ void CMedia::stop(const bool bg)
     // Notify loop barrier, to exit any wait on a loop
     //w
 
+
+
     if ( _loop_barrier )  _loop_barrier->notify_all();
 
+#if 0
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+#endif
 
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
@@ -2961,8 +2976,8 @@ bool CMedia::frame( const int64_t f )
                           (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
 
-    if ( f < _frameStart )     _dts = _frameStart;
-    else if ( f > _frameEnd )  _dts = _frameEnd;
+    if ( f < _frameIn ) _dts = _frameIn;
+    else if ( f > _frameOut )  _dts = _frameOut;
     else                       _dts = f;
 
     AVPacket* pkt;
@@ -3013,14 +3028,13 @@ bool CMedia::frame( const int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
-//#define DEBUG_SEEK
+// #define DEBUG_SEEK
 
 
     _seek_frame = f;
     _seek_req   = true;
 #ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
-              << stopped() << " _seek_frame " << _seek_frame << std::endl;
+    std::cerr << "------- SEEK " << f << " first " << _frameIn << " last " << _frameOut  << std::endl;
 #endif
 
 
@@ -3036,9 +3050,6 @@ void CMedia::seek( const int64_t f )
 
     if ( stopped() || saving() )
     {
-#ifdef DEBUG_SEEK
-        std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
-#endif
         do_seek();
 
         image_damage( image_damage() | kDamageData );

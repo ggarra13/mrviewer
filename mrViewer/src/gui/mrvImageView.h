@@ -380,6 +380,10 @@ public:
     /// Change stereo main image and attach B image
     void change_foreground();
 
+    /// Change viewer's current foreground image by looking at the timeline at
+    /// that frame
+    void foreground( const int64_t frame  );
+
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
 

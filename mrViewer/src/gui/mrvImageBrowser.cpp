@@ -1249,17 +1249,6 @@ void ImageBrowser::save_session()
                      img->first_frame(), img->last_frame(),
                      img->start_frame(), img->end_frame(), img->fps() );
 
-            if ( img->fade_frames( CMedia::kFadeIn ) > 0 )
-            {
-                fprintf( f, "FadeIN %" PRId64 "\n",
-                         img->fade_frames( CMedia::kFadeIn ) );
-            }
-
-            if ( img->fade_frames( CMedia::kFadeOut ) > 0 )
-            {
-                fprintf( f, "FadeOUT %" PRId64 "\n",
-                         img->fade_frames( CMedia::kFadeOut ) );
-            }
 
             if ( img->has_audio() && img->audio_file() != "" )
             {
@@ -2463,8 +2452,6 @@ void ImageBrowser::save_session()
                 if ( fg )
                 {
                     CMedia* img = fg->image();
-                    img->fade_in( load.fade_in );
-                    img->fade_out( load.fade_out );
 
                     if ( load.audio != "" )
                     {
@@ -2959,6 +2946,35 @@ void ImageBrowser::load_otio( const LoadInfo& info )
     if ( reel->images.empty() ) return;
 
     set_edl();
+
+    TransitionList::const_iterator i = reel->transitions.begin();
+    TransitionList::const_iterator e = reel->transitions.end();
+    for ( ; i != e; ++i )
+    {
+        int64_t start = (*i).start();
+        int64_t   end = (*i).end();
+        CMedia* Aimg = reel->image_at( start + 1 );
+        CMedia* Bimg = reel->image_at( end + 1 );
+        if ( !Bimg || !Aimg ) continue;
+
+
+        int64_t len = end - start + 1;
+        int64_t first = reel->global_to_local( start );
+        int64_t last = reel->global_to_local( end );
+
+        Aimg->in_frame( Aimg->first_frame() );
+        Aimg->out_frame( Aimg->last_frame() + len/2 );
+        Bimg->in_frame( last - len/2 );
+        Bimg->out_frame( Bimg->last_frame() );
+        Bimg->seek( Bimg->in_frame() ); // prepare image
+
+        std::cerr << "first " << first << " - " << last << std::endl;
+
+        std::cerr << "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() << std::endl;
+        std::cerr << "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() << std::endl;
+        std::cerr << "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() << std::endl;
+        std::cerr << "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() << std::endl;
+    }
 
 }
 

@@ -16,6 +16,10 @@ v6.1.7  - Made fit image take into account masking.
 	- Added a Preference option in User Interface section to select
 	  whether the menus on MacOS appear on the system toolbar or on the
 	  mrViewer toolbar.  The default is to use the mrViewer toolbar.
+	- Added support for OTIO transitions (dissolves) in the timeline.
+	  Note, however, that we do not yet support transitioning to different
+	  resolutions.
+	  Also, the thumbnails in the timeline will not show the transitions.
 
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.

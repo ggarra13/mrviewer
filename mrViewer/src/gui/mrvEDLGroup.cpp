@@ -49,7 +49,6 @@ static int kXOffset = 64;
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
     Fl_Group(x,y,w,h),
-    _fade( mrv::CMedia::kNoFade ),
     _drag( NULL ),
     _dragX( 0 ),
     _dragY( 0 )
@@ -252,8 +251,6 @@ int EDLGroup::handle( int event )
             mrv::media m;
             int64_t pt;
 
-            int r = process_fade( track, m, pt );
-            if ( r >= 0 ) return r;
 
             if ( m )
             {
@@ -484,13 +481,10 @@ int EDLGroup::handle( int event )
             window()->cursor( FL_CURSOR_DEFAULT );
 
 
-            uiMain->uiEDLWindow->FadeIn->value(0);
-            uiMain->uiEDLWindow->FadeOut->value(0);
 
             _dragX = Fl::event_x();
             _dragY = Fl::event_y();
 
-            _fade = mrv::CMedia::kNoFade;
 
             int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= children() ) {
@@ -591,10 +585,6 @@ int EDLGroup::handle( int event )
             mrv::media_track* track;
             mrv::media m;
             int64_t pt;
-
-            int r = process_fade( track, m, pt );
-            if ( r >= 0 ) return r;
-
 
             int quarter = w() / 4;
 
@@ -791,49 +781,6 @@ void EDLGroup::refresh()
     }
 }
 
-int EDLGroup::process_fade( mrv::media_track*& track, mrv::media& m,
-                            int64_t& pt)
-{
-    int X = Fl::event_x();
-    int Y = Fl::event_y();
-
-    mrv::Timeline* t = timeline();
-    if (!t) return 0;
-    int ww = t->w();
-    double tmin = t->minimum();
-    double len = (t->maximum() - tmin + 0.5);
-    double p = double( X - x() ) / double(ww);
-    p = tmin + p * len;
-    pt = int64_t( p );
-
-
-    track = (mrv::media_track*) child(_dragChild);
-    if ( !track )
-    {
-        return 0;
-    }
-    m = track->media_at( pt );
-
-    if ( m && _fade != mrv::CMedia::kNoFade )
-    {
-        if ( _fade == mrv::CMedia::kFadeIn )
-        {
-            uiMain->uiEDLWindow->FadeIn->value(1);
-            CMedia* img = m->image();
-            img->fade_in( pt - t->offset(img) - img->first_frame() );
-        }
-        else if ( _fade == mrv::CMedia::kFadeOut )
-        {
-            uiMain->uiEDLWindow->FadeOut->value(1);
-            CMedia* img = m->image();
-            img->fade_out( img->last_frame() - (pt - t->offset(img)) );
-        }
-        redraw();
-        return 1;
-    }
-
-    return -1;
-}
 
 void EDLGroup::draw()
 {
@@ -870,49 +817,6 @@ void EDLGroup::draw()
     fl_color( FL_YELLOW );
     fl_push_clip( x(), y(), w(), y()+h() );
     fl_line( p, y(), p, y()+h() );
-
-    if (r)
-    {
-        mrv::MediaList::iterator i = r->images.begin();
-        mrv::MediaList::iterator e = r->images.end();
-        double offset = 0, offset2 = 0;
-        for ( ; i != e; ++i )
-        {
-            mrv::media fg = *i;
-            if ( !fg ) continue;
-
-            CMedia* img = fg->image();
-            int64_t fade_in = img->fade_frames( mrv::CMedia::kFadeIn );
-
-            if ( fade_in > 0 )
-            {
-                offset = t->offset( img );
-                offset += img->first_frame() + fade_in;
-                offset2 = t->offset( img );
-                offset2 += img->first_frame() - 0.5;
-
-                p = t->x() + t->draw_coordinate( offset, t->w() );
-                int p2 = t->x() + t->draw_coordinate( offset2, t->w() );
-
-                fl_color( FL_WHITE );
-                fl_line( p, y(), p2, y()+kTrackHeight );
-            }
-
-            int64_t fade_out = img->fade_frames( mrv::CMedia::kFadeOut );
-            if ( fade_out > 0 )
-            {
-                offset = t->offset( img );
-                offset += img->last_frame() - fade_out;
-                offset2 = t->offset( img );
-                offset2 += img->last_frame() + 0.5;
-
-                p = t->x() + t->draw_coordinate( offset, t->w() );
-                int p2 = t->x() + t->draw_coordinate( offset2, t->w() );
-                fl_color( FL_WHITE );
-                fl_line( p, y(), p2, y()+kTrackHeight );
-            }
-        }
-    }
     fl_pop_clip();
 
     if ( _drag )

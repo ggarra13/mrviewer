@@ -987,7 +987,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
     // double frac = ( (double) (frame - _frameStart) /
-    //             (double) (_frameEnd - _frameStart) );
+    //             (double) (_frameOut - _frameStart) );
     // int64_t offset = int64_t( _context->duration * frac );
     // if ( _context->start_time != AV_NOPTS_VALUE )
     //    offset += _context->start_time;
@@ -1851,8 +1851,8 @@ bool aviImage::find_image( const int64_t frame )
         int64_t f = frame - _start_number;
 
 
-        if ( f > _frameEnd ) f = _frameEnd;
-        else if ( f < _frameStart ) f = _frameStart;
+        if ( f > _frameOut ) f = _frameOut;
+        else if ( f < _frameIn ) f = _frameIn;
 
         video_cache_t::iterator end = _images.end();
         video_cache_t::iterator i;
@@ -1908,7 +1908,7 @@ bool aviImage::find_image( const int64_t frame )
                 if ( !filter_graph &&
                      _hires->frame() != f &&
                      diff > 1 && diff < kDiffFrames &&
-                     counter < kDiffFrames && f <= _frameEnd )
+                     counter < kDiffFrames && f <= _frameOut )
                 {
                     _frame = f = _hires->frame();
                     IMG_ERROR( _("find_image: frame ") << frame
@@ -2583,7 +2583,7 @@ void aviImage::populate()
     // Calculate frame start and frame end if possible
     //
 
-    _frameStart = 1;
+    _frameStart = _frameIn = 1;
 
     if ( _context->start_time != AV_NOPTS_VALUE )
     {
@@ -2614,9 +2614,8 @@ void aviImage::populate()
 
 
 
-
-    _frame_start = _frame = _frameEnd = _frameStart + _start_number;
-
+    _frameIn = _frameStart;
+    _frame_start = _frame = _frameEnd = _frameOut = _frameStart + _start_number;
 
     assert0( _frameStart != AV_NOPTS_VALUE );
 
@@ -2691,7 +2690,7 @@ void aviImage::populate()
                 }
                 else
                 {
-                    duration = _frameEnd - _frameStart + 1;
+                    duration = _frameOut - _frameIn + 1;
                 }
             }
         }
@@ -2699,8 +2698,9 @@ void aviImage::populate()
 
     if ( duration <= 0 ) duration = 1;
 
-    _frameEnd = _frameStart + duration - 1;
+    _frameEnd = _frameOut = _frameIn + duration - 1;
     _frame_end = _frame_start + duration - 1;
+
 
     _frame_offset = 0;
 
@@ -2794,7 +2794,7 @@ void aviImage::populate()
     }
 
 
-    int64_t dts = _frameStart;
+    int64_t dts = _frameIn;
 
     unsigned audio_bytes = 0;
     unsigned bytes_per_frame = audio_bytes_per_frame();
@@ -2837,7 +2837,8 @@ void aviImage::populate()
             {
                 if ( !got_video )
                 {
-                    DecodeStatus status = decode_image( _frameStart, *pkt );
+                    DecodeStatus status = decode_image( _frameIn,
+                                                        *pkt );
                     if ( status == kDecodeOK )
                     {
                         got_video = true;
@@ -2874,8 +2875,8 @@ void aviImage::populate()
 
                 if ( !got_audio )
                 {
-                    if ( pktframe > _frameStart + 1 ) got_audio = true;
-                    else if ( pktframe == _frameStart )
+                    if ( pktframe > _frameIn + 1 ) got_audio = true;
+                    else if ( pktframe == _frameIn )
                     {
                         audio_bytes += pkt->size;
                         if ( audio_bytes >= bytes_per_frame )
@@ -2906,12 +2907,12 @@ void aviImage::populate()
 
         if ( got_video && (!has_audio() || audio_context() == _context) )
         {
-            find_image( _frameStart );
+            find_image( _frameIn );
         }
     }
 
     _dts = dts;
-    _frame = _audio_frame = _frameStart;
+    _frame = _audio_frame = _frameIn;
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
@@ -2922,12 +2923,12 @@ void aviImage::populate()
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( _hires, _frameStart, 3, image_type::kRGB,
+            allocate_pixels( _hires, _frameIn, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
             lumma_layers();
         }
-        _hires->frame( _frameStart );
+        _hires->frame( _frameIn );
         uint8_t* ptr = (uint8_t*) _hires->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
@@ -2989,8 +2990,8 @@ bool aviImage::initialize()
              ext.rfind( ".png" )  != std::string::npos )
         {
             char buf[64];
-            sprintf( buf, "%" PRId64, _frameStart );
-            _start_number = _frameStart - 1;
+            sprintf( buf, "%" PRId64, _frameIn );
+            _start_number = _frameIn - 1;
             _has_image_seq = _is_sequence = true;
 
             av_dict_set(&opts, "start_number", buf, 0);
@@ -3463,11 +3464,11 @@ bool aviImage::frame( const int64_t f )
 
     int64_t sf = f;
 
-    if ( f < _frameStart )    {
-        sf = _dts = _adts = _frameStart - _frame_offset;
+    if ( f < _frameIn )    {
+        sf = _dts = _adts = _frameIn - _frame_offset;
     }
-    else if ( f > _frameEnd )  {
-        sf = _dts = _adts = _frameEnd - _frame_offset;
+    else if ( f > _frameOut )  {
+        sf = _dts = _adts = _frameOut - _frame_offset;
     }
 
 
@@ -3643,8 +3644,8 @@ aviImage::audio_video_display( const int64_t& frame )
         _video_packets.pop_front();
     }
 
-    if ( frame > _frameEnd ) return kDecodeLoopEnd;
-    else if ( frame < _frameStart ) return kDecodeLoopStart;
+    if ( frame > _frameOut ) return kDecodeLoopEnd;
+    else if ( frame < _frameIn ) return kDecodeLoopStart;
 
     SCOPED_LOCK( _audio_mutex );
     audio_type_ptr result;
@@ -3832,7 +3833,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             // store here.
             bool ok = in_video_store( frame );
 
-            if ( frame > _frameStart )
+            if ( frame > _frameIn )
             {
                 if ( ok ) return kDecodeOK;
                 return got_video;
@@ -3845,7 +3846,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         {
             bool ok = in_video_store( frame );
 
-            if ( frame < _frameEnd )
+            if ( frame < _frameOut )
             {
                 if ( ok ) return kDecodeOK;
                 return got_video;

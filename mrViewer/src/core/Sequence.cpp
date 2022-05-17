@@ -1045,30 +1045,6 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 }
                 continue;
             }
-            else if ( cmd == "FadeIN" )
-            {
-                unsigned frames;
-                std::string f;
-                std::getline( is, f );
-                is.str( f );
-                is.clear();
-                is >> frames;
-                if ( !sequences.empty() )
-                    sequences.back().fade_in = frames;
-                continue;
-            }
-            else if ( cmd == "FadeOUT" )
-            {
-                unsigned frames;
-                std::string f;
-                std::getline( is, f );
-                is.str( f );
-                is.clear();
-                is >> frames;
-                if ( !sequences.empty() )
-                    sequences.back().fade_out = frames;
-                continue;
-            }
             else if ( cmd == "GLTextShape" )
             {
                 Point xy;

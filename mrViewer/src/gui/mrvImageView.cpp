@@ -3775,7 +3775,9 @@ void ImageView::handle_commands()
     case kSeek:
     {
         NET( "seek " << c.frame );
+        std::cerr << "SEEK " << c.frame << " was " << foreground()->name() << std::endl;
         seek( c.frame );
+        std::cerr << "SEEK " << c.frame << " is now " << foreground()->name() << std::endl;
         break;
     }
     case kPlayForwards:
@@ -4404,7 +4406,7 @@ void ImageView::draw()
     const mrv::media& bg = background();
 
     ImageList images;
-    images.reserve(2);
+    images.reserve(3);
 
     if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
@@ -4413,12 +4415,78 @@ void ImageView::draw()
             images.push_back( img );
     }
 
-    if ( fg )
+    bool in_transition = false;
+    if ( browser() )
+    {
+        mrv::Reel reel = browser()->current_reel();
+        TransitionList::const_iterator i = reel->transitions.begin();
+        TransitionList::const_iterator e = reel->transitions.end();
+        for ( ; i != e; ++i )
+        {
+            int64_t start = (*i).start();
+            int64_t   end = (*i).end();
+            if ( _frame <= start || _frame > end ) continue;
+
+            CMedia* Aimg = reel->image_at( start + 1);
+            CMedia* Bimg = reel->image_at( end + 1 );
+            if ( !Aimg || !Bimg ) continue;
+
+            int64_t len = end - start;
+
+            float dissolve = float(frame() - start) / float(len);
+            float rdissolve = 1.0f - dissolve;
+            Aimg->dissolve( rdissolve );
+            int64_t A = Aimg->out_frame() - len * rdissolve - 1;
+            int64_t B = Bimg->in_frame() + len * dissolve - 1;
+            switch( playback() )
+            {
+            case CMedia::kForwards:
+                if ( Bimg->playback() != CMedia::kForwards )
+                {
+                    Bimg->seek( B );
+                    Bimg->play( CMedia::kForwards, uiMain, true );
+                }
+                else
+                {
+                    if ( _frame == end ) foreground( frame() );
+                }
+                if ( Aimg->playback() != CMedia::kForwards )
+                {
+                    Aimg->seek( A );
+                    Aimg->play( CMedia::kForwards, uiMain, true );
+                }
+                break;
+            case CMedia::kBackwards:
+                if ( Bimg->playback() != CMedia::kBackwards )
+                {
+                    Bimg->seek( B );
+                    Bimg->play( CMedia::kBackwards, uiMain, true );
+                }
+                if ( Aimg->playback() != CMedia::kBackwards )
+                {
+                    Aimg->seek( A );
+                    Aimg->play( CMedia::kBackwards, uiMain, true );
+                }
+                break;
+            case CMedia::kStopped:
+            default:
+                Bimg->seek( B );
+                Aimg->seek( A );
+                break;
+            }
+            images.push_back( Bimg );
+            images.push_back( Aimg );
+            in_transition = true;
+            break;
+        }
+    }
+    if ( fg && !in_transition )
     {
         CMedia* img = fg->image();
         if ( img->has_picture() )
         {
-            _engine->image( fg->image() );
+            img->dissolve( 1.0f );
+            _engine->image( img );
             images.push_back( img );
         }
     }
@@ -4434,6 +4502,24 @@ void ImageView::draw()
         SCOPED_LOCK( mtx );
 
         DBGM3( __FUNCTION__ << " " << __LINE__ );
+
+#if 0
+
+        ImageList::const_iterator i = images.begin();
+        ImageList::const_iterator e = images.end();
+        int j = 0;
+        unsigned num = e - i;
+        for ( ; i != e; ++i, ++j )
+        {
+            CMedia* t = *i;
+            std::cerr << "Image #" << j << " of " << num << " is " << t->name() << " "
+                      << t->out_frame()
+                      << " - " << t->last_frame() << " transition=" << in_transition
+                      << " playing= " << t->playback() << " " << frame() << std::endl;
+        }
+        std::cerr << "--------------------------------------------------------------" << std::endl;
+#endif
+
         _engine->draw_images( images );
     }
 
@@ -4467,7 +4553,7 @@ void ImageView::draw()
     _engine->draw_annotation( img->shapes(), img );
     _engine->line_width(1.0);
 
-    if ( _zoom_grid )
+    if ( _zoom_grid && fg->name() != "Black Gap" )
       {
         _engine->draw_grid( img, 1.0 );
       }
@@ -9971,6 +10057,34 @@ void ImageView::update_layers()
     uiColorChannel->redraw();
 }
 
+/**
+ * Change foreground image
+ *
+ * @param img new foreground image or NULL for no image.
+ */
+void ImageView::foreground( const int64_t f )
+{
+    mrv::Reel r = browser()->current_reel();
+    if ( !r || !r->edl ) return;
+
+    mrv::media fg = r->media_at( f );
+    if (!fg) return;
+
+    _fg = fg;
+
+    CMedia* img = fg->image();
+    int64_t lf = r->global_to_local( f );
+    img->seek( lf );
+
+
+    if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+    {
+        Fl::lock();
+        fit_image();
+        Fl::unlock();
+        Fl::awake();
+    }
+}
 
 /**
  * Change foreground image
@@ -9984,6 +10098,7 @@ void ImageView::foreground( mrv::media fg )
         fill_menu( uiMain->uiMenuBar );
         return;
     }
+
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -10625,6 +10740,7 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
+
     if  ( playback() == CMedia::kStopped )
     {
         mrv::ImageBrowser* b = browser();
@@ -10978,17 +11094,6 @@ void ImageView::play( const CMedia::Playback dir )
     {
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
-        typedef boost::recursive_mutex Mutex;
-        Mutex& bgm = img->video_mutex();
-        SCOPED_LOCK( bgm );
-        CMedia::Barrier* barrier = img->fg_bg_barrier();
-        if ( !barrier ) return;
-        img = fg->image();
-        Mutex& fgm = img->video_mutex();
-        SCOPED_LOCK( fgm );
-        barrier->threshold( barrier->threshold() + img->has_audio() +
-                            img->has_picture() );
-        img->fg_bg_barrier( barrier );
     }
 
 }
@@ -11059,13 +11164,12 @@ void ImageView::stop()
         mrv::media fg = foreground();
         if (fg)
         {
-            _preframe = fg->image()->first_cache_empty_frame();
-            if ( _idle_callback )
+            CMedia* img = fg->image();
+            _preframe = img->first_cache_empty_frame();
+            if ( _idle_callback && preload_cache_full( img ) )
             {
                 preload_cache_stop();
             }
-            if ( ! preload_cache_full( fg->image() ) )
-                preload_cache_start();
         }
     }
 

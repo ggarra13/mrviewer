@@ -196,7 +196,6 @@ void Timeline::edl( bool x )
 {
     _edl = x;
 
-    return;
 
     if ( _edl && uiMain && browser() )
     {

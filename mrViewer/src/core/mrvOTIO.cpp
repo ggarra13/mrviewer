@@ -55,6 +55,42 @@ const char* kModule = "otio";
 namespace mrv
 {
 
+    struct Item
+    {
+        const otio::Track* track = nullptr;
+        const otio::Item* item = nullptr;
+        otime::TimeRange range;
+    };
+    typedef std::vector<Item> ItemList;
+    ItemList items;
+
+    void init_items( ItemList& items,
+                    const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
+    {
+        for (const auto& j : timeline->tracks()->children())
+        {
+            if (auto otioTrack = dynamic_cast<const otio::Track*>(j.value))
+            {
+                for (const auto& k : otioTrack->children())
+                {
+                    if (auto otioItem = dynamic_cast<const otio::Item*>(k.value))
+                    {
+                        otio::ErrorStatus errorStatus;
+                        const auto rangeOpt = otioItem->trimmed_range_in_parent(&errorStatus);
+                        if (rangeOpt.has_value())
+                        {
+                            Item item;
+                            item.track = otioTrack;
+                            item.item = otioItem;
+                            item.range = rangeOpt.value();
+                            items.emplace_back(item);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                     const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
 {
@@ -80,6 +116,10 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
       return false;
     }
 
+    ItemList items;
+    init_items( items, newtimeline );
+
+    int f = 1;
     for (const auto i : newtimeline.value->tracks()->children())
     {
         if (auto track = dynamic_cast<otio::Track*>(i.value))
@@ -90,16 +130,20 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                 {
                     if (auto clip = dynamic_cast<otio::Clip*>(item))
                     {
-                        auto s = clip->visible_range(&errorStatus).start_time();
-                        auto d = clip->visible_range(&errorStatus).duration();
-                        int64_t start = s.value();
-                        int64_t duration = d.value() - 1;
                         auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
                         if ( e )
                         {
-                            LoadInfo info( e->target_url(),
-                                           start, start + duration,
-                                           start, start + duration, d.rate() );
+                            // auto s = clip->visible_range(&errorStatus).start_time();
+                            // auto d = clip->visible_range(&errorStatus).duration();
+                            auto s = clip->trimmed_range(&errorStatus).start_time();
+                            auto d = clip->trimmed_range(&errorStatus).duration();
+                            // auto s = clip->trimmed_range_in_parent(&errorStatus)->start_time();
+                            // auto d = clip->trimmed_range_in_parent(&errorStatus)->duration();
+                            int64_t start = s.value();
+                            int64_t duration = d.value() - 1;
+                            int64_t end = start + duration;
+                            f += end;
+                            LoadInfo info( e->target_url(), start, end, start, end, d.rate() );
                             sequences.push_back( info );
                         }
                     }
@@ -111,30 +155,47 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                     // summarize_range("Available Range", clip->available_range(&errorStatus), errorStatus);
                     else if (auto gap = dynamic_cast<otio::Gap*>(item))
                     {
-                        auto s = gap->visible_range(&errorStatus).start_time();
-                        auto d = gap->visible_range(&errorStatus).duration();
+                        // auto s = gap->visible_range(&errorStatus).start_time();
+                        // auto d = gap->visible_range(&errorStatus).duration();
+                        auto s = gap->trimmed_range(&errorStatus).start_time();
+                        auto d = gap->trimmed_range(&errorStatus).duration();
                         int64_t start = s.value();
                         int64_t duration = d.value() - 1;
-                        LoadInfo info( _("Black Gap"),
-                                       start, start + duration,
-                                       start, start + duration, d.rate() );
+                        int64_t end = start + duration;
+                        LoadInfo info( _("Black Gap"), start, end, start, end, d.rate() );
                         sequences.push_back( info );
-                    }
-                }
-                else if (auto item = dynamic_cast<otio::Composable*>(child.value))
-                {
-                    if (auto transition = dynamic_cast<otio::Transition*>(item) )
-                    {
-                        int64_t start =  transition->in_offset().to_frames();
-                        int64_t duration = transition->duration(&errorStatus).to_frames();
-                        int64_t end = start + duration - 1;
-
-                        Transition t( Transition::kDissolve, start, end );
-                        transitions.push_back( t );
                     }
                 }
             }
         }
+    }
+
+    for ( const auto& i : items )
+    {
+        const auto neighbors = i.track->neighbors_of(i.item, &errorStatus);
+        if (auto transition = dynamic_cast<otio::Transition*>(neighbors.second.value))
+        {
+            int64_t s = i.range.start_time().value();
+            int64_t e = i.range.end_time_inclusive().value();
+            int64_t start = s + transition->in_offset().value();
+            int64_t end = e + transition->out_offset().value() + 1;
+
+            // @todo: handle other transition types
+            Transition t( Transition::kDissolve, start, end );
+            transitions.push_back( t );
+        }
+#if 0
+        if (auto transition = dynamic_cast<otio::Transition*>(neighbors.first.value))
+        {
+            int64_t s = i.range.start_time().value();
+            int64_t start = s - transition->in_offset().value();
+            int64_t end = s + transition->out_offset().value() + 1;
+
+            // @todo: handle other transition types
+            Transition t( Transition::kDissolve, start, end );
+            transitions.push_back( t );
+        }
+#endif
     }
     return true;
 }
@@ -205,7 +266,7 @@ void ImageBrowser::save_otio( mrv::Reel reel,
 
             std::replace( path.begin(), path.end(), '\\', '/' );
         }
-        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( std::string("file://") + path, availableRange ));
+        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( path, availableRange ));
 
         otio::RationalTime start( img->first_frame(), img->fps() );
         otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,

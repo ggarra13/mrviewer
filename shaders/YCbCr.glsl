@@ -15,7 +15,6 @@ uniform sampler2D VImage;
 uniform sampler3D lut;
 
 // Standard controls
-uniform float fade;
 uniform float dissolve;
 uniform float gain;
 uniform float gamma;
@@ -69,11 +68,11 @@ void main()
 
   if ( coeffs )
   {
-        pre += Koff;
+	pre += Koff;
 
-        c.r = dot(Kr, pre);
-        c.g = dot(Kg, pre);
-        c.b = dot(Kb, pre);
+	c.r = dot(Kr, pre);
+	c.g = dot(Kg, pre);
+	c.b = dot(Kb, pre);
   }
   else
   {
@@ -184,7 +183,7 @@ void main()
       c.rgb *= c.a;
   }
 
-  c.rgb *= fade;
+  c.rgba *= dissolve;
 
   gl_FragColor = c;
 }

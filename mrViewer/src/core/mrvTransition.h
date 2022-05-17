@@ -26,16 +26,16 @@ namespace mrv
             {
             };
 
-        Type    type() { return _type; }
+        Type    type() const { return _type; }
         void type( Type t ) { _type = t; }
 
-        int64_t start() { return _start; }
+        int64_t start() const { return _start; }
         void start( int64_t s ) { _start = s; }
 
-        int64_t end() { return _end; }
+        int64_t end() const { return _end; }
         void end( int64_t e ) { _end = e; }
 
-        int64_t duration() { return _end - _start + 1; }
+        int64_t duration() const { return _end - _start + 1; }
         void duration( int64_t e ) { _end = _start + e; }
 
     protected:

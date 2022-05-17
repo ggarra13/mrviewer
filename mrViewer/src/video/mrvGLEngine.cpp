@@ -2095,7 +2095,6 @@ void GLEngine::draw_images( ImageList& images )
             }
                 CHECK_GL;
             quad->gamma( g );
-            quad->fade( img->fade() );
             quad->dissolve( img->dissolve() );
                 CHECK_GL;
             quad->draw( texWidth, texHeight );
@@ -2326,7 +2325,6 @@ void GLEngine::draw_images( ImageList& images )
 
 
         quad->gamma( g );
-        quad->fade( img->fade() );
         quad->dissolve( img->dissolve() );
         CHECK_GL;
         quad->draw( texWidth, texHeight );
@@ -3869,7 +3867,6 @@ void GLEngine::loadOpenGLShader()
         "uniform sampler3D lut; \n"
         " \n"
         "// Standard controls \n"
-        "uniform float fade;\n"
         "uniform float dissolve;\n"
         "uniform float gain; \n"
         "uniform float gamma; \n"
@@ -4034,7 +4031,6 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb *= c.a;\n"
          "  }\n"
          "\n"
-         "    c.rgb *= fade; \n"
          "    c.rgba *= dissolve; \n"
          "\n"
          "\n"

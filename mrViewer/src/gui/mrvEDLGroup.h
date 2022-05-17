@@ -92,9 +92,6 @@ public:
 
     void merge( boost::int64_t frame );
 
-    void fade_in() { _fade = mrv::CMedia::kFadeIn; }
-    void fade_out() { _fade = mrv::CMedia::kFadeOut; }
-
     void zoom( double x );
 
     void refresh();
@@ -115,11 +112,6 @@ public:
     void pan(int value);
 
 protected:
-    int process_fade(mrv::media_track*& track, mrv::media& m,
-                     int64_t& pt);
-
-protected:
-    CMedia::FadeType _fade;
     double     _zoom;
     mrv::Element* _drag;
     int        _dragX;
