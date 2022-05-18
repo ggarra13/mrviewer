@@ -4069,6 +4069,10 @@ void aviImage::debug_subtitle_packets(const int64_t frame,
 
 void aviImage::do_seek()
 {
+#define DEBUG_SEEK
+#ifdef DEBUG_SEEK
+    TRACE( name() << " frame " << _seek_frame );
+#endif
     // No need to set seek frame for right eye here
     if ( _right_eye && _owns_right_eye )  _right_eye->do_seek();
 
@@ -4080,8 +4084,14 @@ void aviImage::do_seek()
 
     if ( !got_audio || !got_video )
     {
+#ifdef DEBUG_SEEK
+        TRACE( name() << " frame " << _seek_frame );
+#endif
         if ( !saving() && _seek_frame != _expected )
             clear_packets();
+#ifdef DEBUG_SEEK
+        TRACE( name() << " frame " << _seek_frame );
+#endif
 
         if ( !saving() || _seek_frame == _expected )
         {
@@ -4089,6 +4099,9 @@ void aviImage::do_seek()
             gettimeofday (&now, 0);
             _lastFrameTime = now;
 
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
             image_type_ptr canvas;
             fetch( canvas, _seek_frame );
 
@@ -4103,7 +4116,9 @@ void aviImage::do_seek()
 
     if ( stopped() || saving() )
     {
-
+#ifdef DEBUG_SEEK
+        TRACE( name() << " frame " << _seek_frame );
+#endif
         DecodeStatus status;
         if ( has_audio() )
         {
@@ -4115,20 +4130,35 @@ void aviImage::do_seek()
                            << get_error_text( status )
                            << _(" for frame ") << _seek_frame );
 
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
             if ( !_audio_start )
                 find_audio( _seek_frame + _audio_offset );
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
             _audio_start = false;
         }
 
         if ( has_video() || has_audio() )
         {
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
             status = decode_video( _seek_frame );
 
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
 
             if ( !find_image( _seek_frame ) && status != kDecodeOK )
                 IMG_ERROR( _("Decode video error seek frame " )
                            << _seek_frame
                            << _(" status: ") << get_error_text( status ) );
+#ifdef DEBUG_SEEK
+            TRACE( name() << " frame " << _seek_frame );
+#endif
         }
 
         if ( has_subtitle() && !saving() )

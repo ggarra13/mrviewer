@@ -3775,9 +3775,9 @@ void ImageView::handle_commands()
     case kSeek:
     {
         NET( "seek " << c.frame );
-        std::cerr << "SEEK " << c.frame << " was " << foreground()->name() << std::endl;
+        TRACE( "SEEK " << c.frame << " was " << foreground()->name() );
         seek( c.frame );
-        std::cerr << "SEEK " << c.frame << " is now " << foreground()->name() << std::endl;
+        TRACE( "SEEK " << c.frame << " is now " << foreground()->name() );
         break;
     }
     case kPlayForwards:
@@ -4431,6 +4431,9 @@ void ImageView::draw()
             CMedia* Bimg = reel->image_at( end + 1 );
             if ( !Aimg || !Bimg ) continue;
 
+            TRACE( "Aimg= " << Aimg->name() << " frame " << Aimg->frame() );
+            TRACE( "Bimg= " << Bimg->name() << " frame " << Bimg->frame() );
+
             int64_t len = end - start;
 
             float dissolve = float(frame() - start) / float(len);
@@ -4438,6 +4441,8 @@ void ImageView::draw()
             Aimg->dissolve( rdissolve );
             int64_t A = Aimg->out_frame() - len * rdissolve - 1;
             int64_t B = Bimg->in_frame() + len * dissolve - 1;
+            TRACE( "Aimg= " << Aimg->name() << " disframe " << A );
+            TRACE( "Bimg= " << Bimg->name() << " disframe " << B );
             switch( playback() )
             {
             case CMedia::kForwards:
@@ -4445,10 +4450,6 @@ void ImageView::draw()
                 {
                     Bimg->seek( B );
                     Bimg->play( CMedia::kForwards, uiMain, true );
-                }
-                else
-                {
-                    if ( _frame == end ) foreground( frame() );
                 }
                 if ( Aimg->playback() != CMedia::kForwards )
                 {
@@ -4480,6 +4481,7 @@ void ImageView::draw()
             break;
         }
     }
+
     if ( fg && !in_transition )
     {
         CMedia* img = fg->image();
@@ -4498,13 +4500,12 @@ void ImageView::draw()
     if ( fg )
     {
         img = fg->image();
-        Mutex& mtx = img->video_mutex();
-        SCOPED_LOCK( mtx );
 
-        DBGM3( __FUNCTION__ << " " << __LINE__ );
 
 #if 0
 
+        Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
         ImageList::const_iterator i = images.begin();
         ImageList::const_iterator e = images.end();
         int j = 0;
@@ -10057,34 +10058,6 @@ void ImageView::update_layers()
     uiColorChannel->redraw();
 }
 
-/**
- * Change foreground image
- *
- * @param img new foreground image or NULL for no image.
- */
-void ImageView::foreground( const int64_t f )
-{
-    mrv::Reel r = browser()->current_reel();
-    if ( !r || !r->edl ) return;
-
-    mrv::media fg = r->media_at( f );
-    if (!fg) return;
-
-    _fg = fg;
-
-    CMedia* img = fg->image();
-    int64_t lf = r->global_to_local( f );
-    img->seek( lf );
-
-
-    if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-    {
-        Fl::lock();
-        fit_image();
-        Fl::unlock();
-        Fl::awake();
-    }
-}
 
 /**
  * Change foreground image
@@ -10098,7 +10071,6 @@ void ImageView::foreground( mrv::media fg )
         fill_menu( uiMain->uiMenuBar );
         return;
     }
-
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -10740,6 +10712,8 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
+    TRACE( "VIEW FRAME IS NOW " << f );
+
 
     if  ( playback() == CMedia::kStopped )
     {
@@ -10766,6 +10740,7 @@ void ImageView::seek( const int64_t f )
         _preframe = f;
     }
 
+    std::cerr << __PRETTY_FUNCTION__ << " " << b << std::endl;
     if ( b ) b->seek( f );
 
     thumbnails();
@@ -11031,9 +11006,16 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
+#define DEBUG_PLAY
 
+#ifdef DEBUG_PLAY
+    TRACE( "PLAY from frame " << frame() );
+#endif
     if ( dir == playback() )
         return;
+#ifdef DEBUG_PLAY
+    TRACE( "PLAY from frame " << frame() );
+#endif
 
     if ( dir == CMedia::kForwards )
     {
@@ -11058,21 +11040,36 @@ void ImageView::play( const CMedia::Playback dir )
     CMedia* img = fg->image();
     if ( img->saving() ) return;
 
+#ifdef DEBUG_PLAY
+    TRACE( img->name() << " frame: " << frame() );
+#endif
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
     {
+#ifdef DEBUG_PLAY
+        TRACE( img->name() << " frame: " << frame() );
+#endif
         preload_cache_stop();
     }
     else
     {
+#ifdef DEBUG_PLAY
+        TRACE( img->name() << " frame: " << frame() );
+#endif
         _preframe = frame();
 
     }
 
 
+#ifdef DEBUG_PLAY
+    TRACE( img->name() << " frame: " << frame() );
+#endif
     playback( dir );
 
 
+#ifdef DEBUG_PLAY
+    TRACE( img->name() << " frame: " << frame() );
+#endif
     double fps = uiMain->uiFPS->value();
 
     create_timeout( 0.25 / fps );
@@ -11083,12 +11080,18 @@ void ImageView::play( const CMedia::Playback dir )
     //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
     //   img->has_audio() )
     {
+#ifdef DEBUG_PLAY
+    TRACE( img->name() << " frame: " << frame() );
+#endif
         // preload_cache_stop();
         if ( img->start_frame() != img->end_frame() )
             img->play( dir, uiMain, true );
     }
 
 
+#ifdef DEBUG_PLAY
+    TRACE( img->name() << " frame: " << frame() );
+#endif
 
     if ( bg && bg != fg )
     {

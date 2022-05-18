@@ -1975,7 +1975,7 @@ void ImageBrowser::save_session()
             }
         }
 
-        DBGM1( "CHANGE IMAGE TO INDEX " << i );
+        TRACE( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         view()->foreground( m );
 
         int64_t first, last;
@@ -2016,6 +2016,7 @@ void ImageBrowser::save_session()
 
     void ImageBrowser::change_image( int i )
     {
+        TRACE( "CHANGE IMAGE TO " << i );
 
         mrv::Reel reel = current_reel();
         if ( i < 0 ) {
@@ -2036,6 +2037,7 @@ void ImageBrowser::save_session()
 
         int v = value();
         if ( i == v ) {
+            TRACE( "CHANGE IMAGE TO " << i << " == " << v );
             if ( play ) view()->play(play);
             return;
         }
@@ -2947,6 +2949,7 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
     set_edl();
 
+
     TransitionList::const_iterator i = reel->transitions.begin();
     TransitionList::const_iterator e = reel->transitions.end();
     for ( ; i != e; ++i )
@@ -2962,8 +2965,11 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         int64_t first = reel->global_to_local( start );
         int64_t last = reel->global_to_local( end );
 
+        Aimg->dissolve_end( end );
         Aimg->in_frame( Aimg->first_frame() );
         Aimg->out_frame( Aimg->last_frame() + len/2 );
+
+        Bimg->dissolve_start( start+1 );
         Bimg->in_frame( last - len/2 );
         Bimg->out_frame( Bimg->last_frame() );
         Bimg->seek( Bimg->in_frame() ); // prepare image
@@ -4848,11 +4854,12 @@ void ImageBrowser::seek( const int64_t tframe )
     if ( play != CMedia::kStopped )
         view()->stop();
 
+
     char buf[64];
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
-
+    TRACE( "BROWSER seek to frame " << f );
 
     mrv::media fg = view()->foreground();
     mrv::media bg = view()->background();
@@ -4862,11 +4869,12 @@ void ImageBrowser::seek( const int64_t tframe )
 
     mrv::Timeline* t = timeline();
 
-    mrv::Reel reel = reel_at( view()->fg_reel() );
+    mrv::Reel reel = current_reel();
     mrv::Reel bgreel = reel_at( view()->bg_reel() );
-    // We do not check bgreel validity here
-    if ( reel && reel != bgreel && reel->edl )
+    if ( reel && reel->edl )
     {
+        TRACE( "BROWSER seek to frame " << f );
+
         // Check if we need to change to a new sequence based on frame
         mrv::media m = reel->media_at( tframe );
         if (! m ) return;
@@ -4886,6 +4894,7 @@ void ImageBrowser::seek( const int64_t tframe )
         CMedia* img = m->image();
         if ( ! img ) return;
 
+        TRACE( "BROWSER seek to frame " << f << " image " << img->name() );
 
         if ( f < t->display_minimum() )
         {
@@ -4896,23 +4905,23 @@ void ImageBrowser::seek( const int64_t tframe )
             f = int64_t(t->display_minimum() - t->display_maximum()) + f - 1;
         }
 
-
         mrv::media fg = view()->foreground();
+        int64_t lf = reel->global_to_local( f );
 
         if ( m != fg && fg )
         {
-
             size_t i = reel->index( f );
             img = reel->image_at( f );
-            int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
+
+            TRACE( "BROWSER seek to frame " << f << " image #" << i << " " << img->name() );
+
 
             img->volume( uiMain->uiVolume->value() );
             img->seek( lf );
 
-            if ( (int) i < children() )
+            if ( i < reel->images.size() )
                 change_image((int)i);
-
 
 
             CMedia* old = fg->image();
@@ -4920,7 +4929,6 @@ void ImageBrowser::seek( const int64_t tframe )
         }
         else
         {
-            int64_t lf = reel->global_to_local( f );
             img->volume( uiMain->uiVolume->value() );
             img->seek( lf );
         }
@@ -4963,12 +4971,6 @@ void ImageBrowser::seek( const int64_t tframe )
         }
     }
 
-    if ( play )
-    {
-        view()->play( play );
-    }
-
-
     // Update current frame and timeline
     mrv::Timeline* timeline = uiMain->uiTimeline;
     if ( timeline->visible() )
@@ -4986,7 +4988,12 @@ void ImageBrowser::seek( const int64_t tframe )
         }
     }
 
-    view()->redraw();
+
+    if ( play )
+    {
+        view()->play( play );
+    }
+
     redraw();
 }
 

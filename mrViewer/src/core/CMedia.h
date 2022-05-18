@@ -354,8 +354,6 @@ public:
         kDecodeLoopStart = 6,
         kDecodeLoopEnd = 7,
         kDecodeBufferFull = 8,
-        kDecodeDissolveAtStart = 9,
-        kDecodeDissolveAtEnd = 10,
     };
 
     enum StereoInput {
@@ -410,6 +408,28 @@ public:
     inline float dissolve() const
         {
             return _dissolve;
+        }
+
+
+
+    inline void dissolve_start( int64_t f )
+        {
+            _dissolve_start = f;
+        }
+
+    inline int64_t dissolve_start() const
+        {
+            return _dissolve_start;
+        }
+
+    inline void dissolve_end( int64_t f )
+        {
+            _dissolve_end = f;
+        }
+
+    inline int64_t dissolve_end() const
+        {
+            return _dissolve_end;
         }
 
 
@@ -1570,8 +1590,6 @@ public:
 
     void fetch_audio( const int64_t frame );
 
-    // Wait for load threads to exit (unused)
-    void wait_for_load_threads();
 
     // Wait for all threads to exit
     void wait_for_threads();
@@ -2004,6 +2022,8 @@ protected:
     RenderingIntent _rendering_intent;
     float     _gamma;
     float     _dissolve;
+    int64_t   _dissolve_start;
+    int64_t   _dissolve_end;
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 

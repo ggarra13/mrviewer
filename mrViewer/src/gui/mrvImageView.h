@@ -380,9 +380,6 @@ public:
     /// Change stereo main image and attach B image
     void change_foreground();
 
-    /// Change viewer's current foreground image by looking at the timeline at
-    /// that frame
-    void foreground( const int64_t frame  );
 
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
@@ -1047,7 +1044,7 @@ protected:
     ///////////////////
     // Playback state
     ///////////////////
-    std::atomic<CMedia::Playback>   _playback;         //!< status of view
+    CMedia::Playback   _playback;         //!< status of view
     CMedia::Playback   _orig_playback;    //!< play direction once started
 
     bool _network_active;  //<- whether to send commands across the network

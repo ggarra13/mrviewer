@@ -47,10 +47,11 @@ uint64_t Reel_t::duration() const
 
 size_t Reel_t::index( const CMedia* const img ) const
 {
+    if ( images.empty() ) return std::numeric_limits<size_t>::max();
+
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
-    if ( i == e ) return std::numeric_limits<size_t>::max();
 
     size_t r = 0;
 
@@ -179,7 +180,7 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
         int64_t end   = start + m->duration() - 1;
         if ( f >= start && f <= end )
         {
-            r = f - start + img->first_frame();
+            r = f - start + img->in_frame();
             break;
         }
     }
