@@ -141,7 +141,6 @@ mrv::media Reel_t::media_at( const int64_t f ) const
         return mrv::media();
     }
 
-    int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
@@ -159,6 +158,16 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     }
 
     return images[r];
+}
+
+int64_t Reel_t::local_to_global( const int64_t f,
+                                 const CMedia* const img ) const
+{
+    if ( !edl ) return f;
+    int64_t r = f;
+    r += location(img);
+    r -= img->first_frame();
+    return r;
 }
 
 int64_t Reel_t::global_to_local( const int64_t f ) const

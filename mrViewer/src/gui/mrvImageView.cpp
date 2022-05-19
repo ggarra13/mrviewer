@@ -1970,6 +1970,8 @@ _vr( kNoVR ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _timeout( NULL ),
 _old_fg( NULL ),
+Aimg( NULL ),
+Bimg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
@@ -2018,6 +2020,14 @@ void ImageView::stop_playback()
     mrv::media bg = background();
     if ( bg ) bg->image()->stop(true);
 
+    if ( Aimg ) {
+        //Aimg->stop();
+        Aimg = NULL;
+    }
+    if ( Bimg ) {
+        Bimg->stop();
+        Bimg = NULL;
+    }
 }
 
 
@@ -2040,8 +2050,13 @@ ImageView::~ImageView()
     // }
 
     //_clients.clear();
-
     // make sure to stop any playback
+
+    if ( Aimg )
+    {
+        Aimg->stop();
+        Aimg = NULL;
+    }
     stop_playback();
 
     delete _engine;
@@ -3775,9 +3790,7 @@ void ImageView::handle_commands()
     case kSeek:
     {
         NET( "seek " << c.frame );
-        TRACE( "SEEK " << c.frame << " was " << foreground()->name() );
         seek( c.frame );
-        TRACE( "SEEK " << c.frame << " is now " << foreground()->name() );
         break;
     }
     case kPlayForwards:
@@ -4427,22 +4440,25 @@ void ImageView::draw()
             int64_t   end = (*i).end();
             if ( _frame <= start || _frame > end ) continue;
 
-            CMedia* Aimg = reel->image_at( start + 1);
-            CMedia* Bimg = reel->image_at( end + 1 );
+            Aimg = reel->image_at( start + 1);
+            Bimg = reel->image_at( end + 1 );
             if ( !Aimg || !Bimg ) continue;
 
             TRACE( "Aimg= " << Aimg->name() << " frame " << Aimg->frame() );
             TRACE( "Bimg= " << Bimg->name() << " frame " << Bimg->frame() );
 
             int64_t len = end - start;
+            int64_t len2 = len / 2;
 
             float dissolve = float(frame() - start) / float(len);
             float rdissolve = 1.0f - dissolve;
             Aimg->dissolve( rdissolve );
+            Aimg->volume( rdissolve );
+            Bimg->volume( dissolve );
             int64_t A = Aimg->out_frame() - len * rdissolve - 1;
-            int64_t B = Bimg->in_frame() + len * dissolve - 1;
+            int64_t B = Bimg->in_frame() + len2 * dissolve - 1;
             TRACE( "Aimg= " << Aimg->name() << " disframe " << A );
-            TRACE( "Bimg= " << Bimg->name() << " disframe " << B );
+            TRACE2( "Bimg= " << Bimg->name() << " disframe " << B );
             switch( playback() )
             {
             case CMedia::kForwards:
@@ -4471,8 +4487,8 @@ void ImageView::draw()
                 break;
             case CMedia::kStopped:
             default:
-                Bimg->seek( B );
-                Aimg->seek( A );
+                if ( Bimg->frame() != B ) Bimg->seek( B );
+                if ( Aimg->frame() != A ) Aimg->seek( A );
                 break;
             }
             images.push_back( Bimg );
@@ -10712,9 +10728,6 @@ void ImageView::frame( const int64_t f )
     // Redraw browser to update thumbnail
     _frame = f;
 
-    TRACE( "VIEW FRAME IS NOW " << f );
-
-
     if  ( playback() == CMedia::kStopped )
     {
         mrv::ImageBrowser* b = browser();
@@ -10740,7 +10753,6 @@ void ImageView::seek( const int64_t f )
         _preframe = f;
     }
 
-    std::cerr << __PRETTY_FUNCTION__ << " " << b << std::endl;
     if ( b ) b->seek( f );
 
     thumbnails();
@@ -11006,16 +11018,8 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
-#define DEBUG_PLAY
-
-#ifdef DEBUG_PLAY
-    TRACE( "PLAY from frame " << frame() );
-#endif
     if ( dir == playback() )
         return;
-#ifdef DEBUG_PLAY
-    TRACE( "PLAY from frame " << frame() );
-#endif
 
     if ( dir == CMedia::kForwards )
     {
@@ -11040,36 +11044,19 @@ void ImageView::play( const CMedia::Playback dir )
     CMedia* img = fg->image();
     if ( img->saving() ) return;
 
-#ifdef DEBUG_PLAY
-    TRACE( img->name() << " frame: " << frame() );
-#endif
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
     {
-#ifdef DEBUG_PLAY
-        TRACE( img->name() << " frame: " << frame() );
-#endif
         preload_cache_stop();
     }
     else
     {
-#ifdef DEBUG_PLAY
-        TRACE( img->name() << " frame: " << frame() );
-#endif
         _preframe = frame();
 
     }
 
-
-#ifdef DEBUG_PLAY
-    TRACE( img->name() << " frame: " << frame() );
-#endif
     playback( dir );
 
-
-#ifdef DEBUG_PLAY
-    TRACE( img->name() << " frame: " << frame() );
-#endif
     double fps = uiMain->uiFPS->value();
 
     create_timeout( 0.25 / fps );
@@ -11080,18 +11067,10 @@ void ImageView::play( const CMedia::Playback dir )
     //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
     //   img->has_audio() )
     {
-#ifdef DEBUG_PLAY
-    TRACE( img->name() << " frame: " << frame() );
-#endif
         // preload_cache_stop();
         if ( img->start_frame() != img->end_frame() )
             img->play( dir, uiMain, true );
     }
-
-
-#ifdef DEBUG_PLAY
-    TRACE( img->name() << " frame: " << frame() );
-#endif
 
     if ( bg && bg != fg )
     {
@@ -11158,7 +11137,7 @@ void ImageView::stop()
 
 
 
-    frame( frame() );
+    // frame( frame() );
     // seek( int64_t(timeline()->value()) );
 
 

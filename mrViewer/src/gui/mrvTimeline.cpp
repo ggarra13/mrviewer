@@ -675,7 +675,7 @@ void Timeline::draw()
         mx = display_maximum();
     }
 
-    double v  = uiMain->uiView->frame(); //value();
+    int64_t v  = uiMain->uiView->frame(); //value(); // @todo: should be value()
 
     if ( !browser() ) return;
 
@@ -746,7 +746,7 @@ void Timeline::draw()
             CMedia* img = (*i)->image();
 
             size = img->duration();
-            int64_t pos = (*i)->position() - img->first_frame();
+            int64_t pos = (*i)->position() - img->in_frame();
 
 
             // skip this block if outside visible timeline span

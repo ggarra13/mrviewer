@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-18 00:36-0300\n"
+"POT-Creation-Date: 2022-05-19 00:18-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "ファイルに音声がありません"
 
-#: gui/mrvImageView.cpp:5997
+#: gui/mrvImageView.cpp:6013
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==>使用 "
 msgid "  Choosing "
 msgstr "  選ぶ "
 
-#: gui/mrvImageView.cpp:6002
+#: gui/mrvImageView.cpp:6018
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1168
+#: core/mrvPlayback.cpp:1147
 msgid " - Decode of image frame "
 msgstr " -額縁のデコード "
 
-#: core/mrvPlayback.cpp:776
+#: core/mrvPlayback.cpp:760
 msgid " - decode Error audio frame "
 msgstr " -オーディオフレームのデコードエラー "
 
@@ -174,7 +174,7 @@ msgstr " で失敗しました "
 msgid " failed. "
 msgstr " 失敗. "
 
-#: gui/mrvImageView.cpp:9376
+#: gui/mrvImageView.cpp:9392
 msgid " for channel.  Maximum: "
 msgstr " チャネル用.最大: "
 
@@ -194,7 +194,7 @@ msgstr " フレーム用 "
 msgid " for gamma_curve"
 msgstr " gamma_curveの場合"
 
-#: gui/mrvReel.cpp:211 gui/mrvReel.cpp:224
+#: gui/mrvReel.cpp:220 gui/mrvReel.cpp:233
 msgid " for reel "
 msgstr " リール用 "
 
@@ -238,11 +238,11 @@ msgstr " 80の代わりに"
 msgid " is "
 msgstr " は "
 
-#: gui/mrvImageBrowser.cpp:3729
+#: gui/mrvImageBrowser.cpp:3791
 msgid " is already the first version on disk."
 msgstr " これはすでにディスク上の最初のバージョンです."
 
-#: gui/mrvImageBrowser.cpp:3726
+#: gui/mrvImageBrowser.cpp:3788
 msgid " is already the last version on disk."
 msgstr " すでにディスク上の最新バージョンです."
 
@@ -259,7 +259,7 @@ msgstr " 不足している.選ぶ "
 msgid " not found"
 msgstr " 見つかりません"
 
-#: gui/mrvImageBrowser.cpp:1686
+#: gui/mrvImageBrowser.cpp:1687
 msgid " not found in reel"
 msgstr " リールに見つかりません"
 
@@ -271,7 +271,7 @@ msgstr " 見つかりません、選択 "
 msgid " not yet supported"
 msgstr " まだサポートされていません"
 
-#: core/mrvPlayback.cpp:1169
+#: core/mrvPlayback.cpp:1148
 msgid " returned "
 msgstr " 戻る "
 
@@ -360,7 +360,7 @@ msgstr "\"プロトコル番号へ"
 msgid "\"; Format: "
 msgstr "\"; フォーマット: "
 
-#: gui/mrvImageBrowser.cpp:1198
+#: gui/mrvImageBrowser.cpp:1199
 #, c-format
 msgid ""
 "#\n"
@@ -385,7 +385,7 @@ msgstr ""
 "Version 5.0\n"
 "Ghosting %d %d\n"
 
-#: gui/mrvImageBrowser.cpp:966
+#: gui/mrvImageBrowser.cpp:967
 #, c-format
 msgid ""
 "#\n"
@@ -432,7 +432,7 @@ msgstr "%d kb/s"
 msgid "' does not exist."
 msgstr "' 存在しない."
 
-#: gui/mrvImageView.cpp:3660
+#: gui/mrvImageView.cpp:3675
 msgid "' does not match '"
 msgstr "' 一致していません '"
 
@@ -514,8 +514,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "（mrViewerが起動しない場合は削除してください）"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9350 gui/mrvImageView.cpp:10035
-#: gui/mrvImageView.cpp:10036 gui/mrvImageView.cpp:10044
+#: gui/mrvImageView.cpp:9366 gui/mrvImageView.cpp:10051
+#: gui/mrvImageView.cpp:10052 gui/mrvImageView.cpp:10060
 msgid "(no image)"
 msgstr "（画像なし）"
 
@@ -527,7 +527,7 @@ msgstr "）キャッシュサイズ: "
 msgid ") for movie file"
 msgstr "）映画の場合"
 
-#: gui/mrvImageBrowser.cpp:1663
+#: gui/mrvImageBrowser.cpp:1664
 msgid ") out of bounds"
 msgstr "）範囲外"
 
@@ -581,7 +581,7 @@ msgstr ".属性の形式はattr=valueである必要があります."
 msgid ".  Saving pixel type is "
 msgstr ".保存するピクセルのタイプは "
 
-#: gui/mrvImageView.cpp:9377
+#: gui/mrvImageView.cpp:9393
 msgid ". Widget label is "
 msgstr ".ウィジェットタグは "
 
@@ -646,7 +646,7 @@ msgstr "1.50静止画"
 msgid "1.56 STV - HDTV (14:9)"
 msgstr "1.56 STV-HDTV（14:9）"
 
-#: gui/mrvImageView.cpp:4626
+#: gui/mrvImageView.cpp:4642
 msgid "1.66"
 msgstr "1.66"
 
@@ -663,7 +663,7 @@ msgstr "1.77 HDTV（16:9）"
 msgid "1.8"
 msgstr "1.8"
 
-#: gui/mrvImageView.cpp:4624
+#: gui/mrvImageView.cpp:4640
 msgid "1.85"
 msgstr "1.85"
 
@@ -799,7 +799,7 @@ msgstr "2.2 5.1 1.4"
 msgid "2.20 70mm"
 msgstr "2.20 70mm"
 
-#: gui/mrvImageView.cpp:4622
+#: gui/mrvImageView.cpp:4638
 msgid "2.35"
 msgstr "2.35"
 
@@ -919,7 +919,7 @@ msgid "3d View"
 msgstr "3Dビュー"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1396
-#: gui/mrvImageView.cpp:5078
+#: gui/mrvImageView.cpp:5094
 msgid "3dView"
 msgstr "3dview"
 
@@ -1069,7 +1069,7 @@ msgstr ""
 "例:\n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1395
-#: gui/mrvImageView.cpp:5072
+#: gui/mrvImageView.cpp:5088
 msgid "A-B, Stereo 3D Options"
 msgstr "ステレオ3D、ABオプション"
 
@@ -1105,7 +1105,7 @@ msgid "AVI Movie"
 msgstr "AVIムービー"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1405
-#: gui/mrvImageView.cpp:5094
+#: gui/mrvImageView.cpp:5110
 msgid "About"
 msgstr "mrViewerについて"
 
@@ -1137,7 +1137,7 @@ msgstr "行動"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1394
-#: gui/mrvImageView.cpp:5071
+#: gui/mrvImageView.cpp:5087
 msgid "Action Tools"
 msgstr "アクションツール"
 
@@ -1259,8 +1259,8 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "タイムラインの終了フレームを設定できます."
 
 #: core/CMedia.cpp:2086 core/CMedia.cpp:2169 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9468
-#: gui/mrvImageView.cpp:9936 gui/mrvImageView.cpp:9998
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9484
+#: gui/mrvImageView.cpp:9952 gui/mrvImageView.cpp:10014
 msgid "Alpha"
 msgstr "アルファ"
 
@@ -1269,8 +1269,8 @@ msgid "Alpha Only"
 msgstr "アルファのみ"
 
 #: core/CMedia.cpp:2088 core/CMedia.cpp:2169 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2167
-#: gui/mrvImageView.cpp:9449 gui/mrvImageView.cpp:9999
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2182
+#: gui/mrvImageView.cpp:9465 gui/mrvImageView.cpp:10015
 msgid "Alpha Overlay"
 msgstr "アルファオーバープリント"
 
@@ -1369,7 +1369,7 @@ msgstr "4月"
 msgid "Arabic"
 msgstr "アラビア語 (عرب)"
 
-#: gui/mrvImageBrowser.cpp:3316
+#: gui/mrvImageBrowser.cpp:3378
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
@@ -1377,7 +1377,7 @@ msgstr ""
 "選択したすべての画像を\n"
 "カメラロールから削除してもよろしいですか？"
 
-#: gui/mrvImageBrowser.cpp:3312
+#: gui/mrvImageBrowser.cpp:3374
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1385,7 +1385,7 @@ msgstr ""
 "カメラロールから画像を\n"
 "削除してもよろしいですか？"
 
-#: gui/mrvImageBrowser.cpp:1352
+#: gui/mrvImageBrowser.cpp:1353
 msgid ""
 "Are you sure you want to\n"
 "remove the reel?"
@@ -1393,7 +1393,7 @@ msgstr ""
 "リールを\n"
 "削除してもよろしいですか？"
 
-#: gui/mrvImageBrowser.cpp:1140
+#: gui/mrvImageBrowser.cpp:1141
 #, c-format
 msgid "Are you sure you want to overwrite '%s'?"
 msgstr "'%s'を上書きしてもよろしいですか？"
@@ -1512,15 +1512,15 @@ msgstr ""
 msgid "Audio packets empty at end of seek"
 msgstr "検索の最後にオーディオパケットを空にします"
 
-#: gui/mrvImageView.cpp:5395
+#: gui/mrvImageView.cpp:5411
 msgid "Audio/Attach Audio File"
 msgstr "オーディオ/オーディオファイルを追加"
 
-#: gui/mrvImageView.cpp:5400
+#: gui/mrvImageView.cpp:5416
 msgid "Audio/Detach Audio File"
 msgstr "オーディオ/オーディオファイルの関連付けを解除する"
 
-#: gui/mrvImageView.cpp:5397
+#: gui/mrvImageView.cpp:5413
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "オーディオ/オーディオ開始フレームの編集"
 
@@ -1597,14 +1597,14 @@ msgstr "後ろに削除"
 msgid "Background"
 msgstr "バックグラウンド"
 
-#: core/mrvPlayback.cpp:1104
+#: core/mrvPlayback.cpp:1083
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "背景画像の長さは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1111
+#: core/mrvPlayback.cpp:1090
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1613,13 +1613,13 @@ msgstr ""
 "背景画像（%lg）のfpsは、前面画像（%lg）と同じではありません.サイクルで繰り返"
 "すと正しく機能しません."
 
-#: core/mrvPlayback.cpp:1088
+#: core/mrvPlayback.cpp:1067
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "下部のスプールは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1078
+#: core/mrvPlayback.cpp:1057
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1669,7 +1669,7 @@ msgid "Black Frame"
 msgstr "ブラックボックス"
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
-#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:165
+#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:169
 msgid "Black Gap"
 msgstr "ブラックギャップ"
 
@@ -1680,8 +1680,8 @@ msgstr "ブレンドモード"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2102 core/CMedia.cpp:2168 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9463
-#: gui/mrvImageView.cpp:9997
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9479
+#: gui/mrvImageView.cpp:10013
 msgid "Blue"
 msgstr "青い"
 
@@ -1705,7 +1705,7 @@ msgstr "ブースト例外: "
 msgid "Both"
 msgstr "それらの両方"
 
-#: gui/mrvImageView.cpp:11326
+#: gui/mrvImageView.cpp:11305
 msgid "Bottom"
 msgstr "低い"
 
@@ -1790,11 +1790,11 @@ msgstr "CTL経路"
 msgid "CTL scripts"
 msgstr "CTLブリーフ"
 
-#: gui/mrvImageBrowser.cpp:4193
+#: gui/mrvImageBrowser.cpp:4255
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/入力デバイス変換（IDT）の割り当て"
 
-#: gui/mrvImageBrowser.cpp:4197
+#: gui/mrvImageBrowser.cpp:4259
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/レンダリング変換（RRT）の割り当て"
 
@@ -1900,7 +1900,7 @@ msgstr "中心"
 msgid "Center Image"
 msgstr "画像を中央に配置"
 
-#: gui/mrvImageView.cpp:3629
+#: gui/mrvImageView.cpp:3644
 msgid "Change Image failed"
 msgstr "画像の変更に失敗しました"
 
@@ -1926,7 +1926,7 @@ msgstr "キャラクター"
 msgid "Checkerboard pattern"
 msgstr "グリッド"
 
-#: core/guessImage.cpp:288 core/Sequence.cpp:1163 gui/mrvImageBrowser.cpp:344
+#: core/guessImage.cpp:288 core/Sequence.cpp:1163 gui/mrvImageBrowser.cpp:345
 msgid "Checkered"
 msgstr "グリッド"
 
@@ -2078,8 +2078,8 @@ msgstr "折りたたみ可能なグループが見つかりません"
 #: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
-#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2204 gui/mrvImageView.cpp:2266
-#: gui/mrvImageView.cpp:9996 gui/mrvImageView.cpp:10044
+#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2219 gui/mrvImageView.cpp:2281
+#: gui/mrvImageView.cpp:10012 gui/mrvImageView.cpp:10060
 msgid "Color"
 msgstr "色"
 
@@ -2088,12 +2088,12 @@ msgid "Color Area"
 msgstr "カラーエリア"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1392
-#: gui/mrvImageView.cpp:5069
+#: gui/mrvImageView.cpp:5085
 msgid "Color Controls"
 msgstr "カラーコントロール"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1391
-#: gui/mrvImageView.cpp:5068
+#: gui/mrvImageView.cpp:5084
 msgid "Color Info"
 msgstr "カラーエリア情報"
 
@@ -2121,7 +2121,7 @@ msgstr "カラーテーマ"
 msgid "Color Version"
 msgstr "カラーバージョン"
 
-#: gui/mrvImageView.cpp:9285
+#: gui/mrvImageView.cpp:9301
 msgid "Color channel not found at index "
 msgstr "インデックスのカラーチャンネルが見つかりません "
 
@@ -2202,7 +2202,7 @@ msgstr "に接続されています "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1401
-#: gui/mrvImageView.cpp:5088
+#: gui/mrvImageView.cpp:5104
 msgid "Connections"
 msgstr "接続"
 
@@ -2254,7 +2254,7 @@ msgstr "RGBA値をコピーする"
 msgid "Copy Reel, Shot, Frame, X and Y coordinates to clipboard"
 msgstr "リール、ショット、フレーム、X、Y座標をクリップボードにコピーします"
 
-#: gui/mrvImageView.cpp:2344
+#: gui/mrvImageView.cpp:2359
 msgid "Copy X Y"
 msgstr "XYをコピー"
 
@@ -2295,7 +2295,7 @@ msgstr "宛先サンプルを割り当てることができませんでした"
 msgid "Could not allocate fifo buffer"
 msgstr "fifoバッファを割り当てることができませんでした"
 
-#: gui/mrvImageBrowser.cpp:1427
+#: gui/mrvImageBrowser.cpp:1428
 msgid "Could not allocate new element"
 msgstr "トラックをホストできませんでした"
 
@@ -2323,11 +2323,11 @@ msgstr "トラックをホストできませんでした"
 msgid "Could not append child to stack. Error: "
 msgstr "子をスタックに追加できませんでした.エラー: "
 
-#: core/mrvOTIO.cpp:278
+#: core/mrvOTIO.cpp:272
 msgid "Could not append one clip to track: "
 msgstr "トラックにクリップを追加できませんでした: "
 
-#: core/mrvOTIO.cpp:286
+#: core/mrvOTIO.cpp:280
 msgid "Could not append one track to stack: "
 msgstr "スタックにトラックを追加できませんでした: "
 
@@ -2411,7 +2411,7 @@ msgstr "ボックスの4つの整数が見つかりませんでした"
 msgid "Could not find four integers for box "
 msgstr "ボックスの4つの整数が見つかりませんでした "
 
-#: core/mrvPlayback.cpp:1353
+#: core/mrvPlayback.cpp:1333
 msgid "Could not find image "
 msgstr "画像が見つかりませんでした "
 
@@ -2539,11 +2539,11 @@ msgstr "cmmを初期化できませんでした: "
 msgid "Could not initialize audio engine"
 msgstr "オーディオエンジンを初期化できませんでした"
 
-#: gui/mrvImageView.cpp:2307
+#: gui/mrvImageView.cpp:2322
 msgid "Could not initialize draw engine"
 msgstr "描画エンジンを初期化できませんでした"
 
-#: gui/mrvImageBrowser.cpp:2437
+#: gui/mrvImageBrowser.cpp:2474
 msgid "Could not load '"
 msgstr "読み込めませんでした」"
 
@@ -2575,7 +2575,7 @@ msgstr "開けませんでした\""
 msgid "Could not open '"
 msgstr "開けなかった」"
 
-#: core/mrvOTIO.cpp:211
+#: core/mrvOTIO.cpp:205
 msgid "Could not open .otio file. "
 msgstr ".otioファイルを開くことができませんでした.エラー: "
 
@@ -2635,7 +2635,7 @@ msgstr "fifoバッファを再配置できませんでした.エラー: "
 msgid "Could not save '"
 msgstr "保存できませんでした」"
 
-#: core/mrvOTIO.cpp:292
+#: core/mrvOTIO.cpp:286
 msgid "Could not save .otio timeline: "
 msgstr ".otioタイムラインを保存できませんでした: "
 
@@ -2793,51 +2793,51 @@ msgstr "新しいリールを作成する"
 msgid "Create audio conversion from "
 msgstr "からオーディオ変換を作成します "
 
-#: gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageBrowser.cpp:4507
 msgid "Create/Black Gap"
 msgstr "作成/ブラックギャップ"
 
-#: gui/mrvImageBrowser.cpp:4467
+#: gui/mrvImageBrowser.cpp:4529
 msgid "Create/Checkered"
 msgstr "作成/グリッド"
 
-#: gui/mrvImageBrowser.cpp:4451
+#: gui/mrvImageBrowser.cpp:4513
 msgid "Create/Color Bars/PAL"
 msgstr "作成/カラーバー/PAL"
 
-#: gui/mrvImageBrowser.cpp:4453
+#: gui/mrvImageBrowser.cpp:4515
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "作成/カラーバー/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4447
+#: gui/mrvImageBrowser.cpp:4509
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "作成/カラーバー/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4449
+#: gui/mrvImageBrowser.cpp:4511
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "作成/カラーバー/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4455
+#: gui/mrvImageBrowser.cpp:4517
 msgid "Create/Gamma Chart/1.4"
 msgstr "作成/範囲チャート/1.4"
 
-#: gui/mrvImageBrowser.cpp:4457
+#: gui/mrvImageBrowser.cpp:4519
 msgid "Create/Gamma Chart/1.8"
 msgstr "作成/範囲チャート/1.8"
 
-#: gui/mrvImageBrowser.cpp:4459
+#: gui/mrvImageBrowser.cpp:4521
 msgid "Create/Gamma Chart/2.2"
 msgstr "作成/範囲チャート/2.2"
 
-#: gui/mrvImageBrowser.cpp:4461
+#: gui/mrvImageBrowser.cpp:4523
 msgid "Create/Gamma Chart/2.4"
 msgstr "作成/範囲チャート/2.4"
 
-#: gui/mrvImageBrowser.cpp:4463
+#: gui/mrvImageBrowser.cpp:4525
 msgid "Create/Gradient/Linear"
 msgstr "作成/卒業/線形"
 
-#: gui/mrvImageBrowser.cpp:4465
+#: gui/mrvImageBrowser.cpp:4527
 msgid "Create/Gradient/Luminance"
 msgstr "作成/卒業/輝度"
 
@@ -3252,7 +3252,7 @@ msgstr "ミックス"
 msgid "Do you want to replace '%s'?"
 msgstr "'%s'を置き換えますか？"
 
-#: gui/mrvImageView.cpp:3662
+#: gui/mrvImageView.cpp:3677
 msgid "Don't know which one should go first."
 msgstr "どちらを先に行けばいいのかわからない."
 
@@ -3325,7 +3325,7 @@ msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1393
-#: gui/mrvImageView.cpp:5076
+#: gui/mrvImageView.cpp:5092
 msgid "EDL Edit"
 msgstr "EDLを編集する"
 
@@ -3357,7 +3357,7 @@ msgstr "デフォルトで編集可能"
 msgid "Elapsed"
 msgstr "経過"
 
-#: gui/mrvImageBrowser.cpp:1555
+#: gui/mrvImageBrowser.cpp:1556
 msgid "Empty image in media passed to media_to_pathname"
 msgstr "media_to_pathnameに渡されたメディアの空の画像"
 
@@ -3369,11 +3369,11 @@ msgstr "はがきの空の画像"
 msgid "Empty image provided to Element constructor"
 msgstr "Elementコンストラクターで提供される空の画像"
 
-#: gui/mrvImageBrowser.cpp:1557
+#: gui/mrvImageBrowser.cpp:1558
 msgid "Empty img->fileroot() passed to media_to_pathname"
 msgstr "空のimg->fileroot（）がmedia_to_pathnameに渡されました"
 
-#: gui/mrvImageBrowser.cpp:1548
+#: gui/mrvImageBrowser.cpp:1549
 msgid "Empty media passed to media_to_pathname"
 msgstr "media_to_pathnameに渡された空のメディア"
 
@@ -3486,7 +3486,7 @@ msgstr "奇数/ペア列"
 msgid "Even/odd rows"
 msgstr "奇数/ペアライン"
 
-#: gui/mrvImageBrowser.cpp:3667
+#: gui/mrvImageBrowser.cpp:3729
 msgid "Example:  gizmo"
 msgstr "例:  gizmo_v003.0001.exr"
 
@@ -3498,11 +3498,11 @@ msgstr ""
 "例:\n"
 " \n"
 
-#: gui/mrvImageView.cpp:3813
+#: gui/mrvImageView.cpp:3826
 msgid "Exchange Image failed"
 msgstr "画像の交換に失敗しました"
 
-#: gui/mrvImageBrowser.cpp:4628 gui/mrvImageBrowser.cpp:4768
+#: gui/mrvImageBrowser.cpp:4690 gui/mrvImageBrowser.cpp:4830
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage%d%d"
@@ -3678,52 +3678,52 @@ msgstr "リップマップYのロードに失敗しました "
 msgid "File Requester"
 msgstr "ファイルファインダー"
 
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5037
 msgid "File/Open/AMF file"
 msgstr "記録/開く/MFAファイル"
 
-#: gui/mrvImageView.cpp:5008 gui/mrvImageView.cpp:5019
+#: gui/mrvImageView.cpp:5024 gui/mrvImageView.cpp:5035
 msgid "File/Open/Directory"
 msgstr "記録/開く/ディレクトリ"
 
-#: gui/mrvImageView.cpp:4998 gui/mrvImageBrowser.cpp:4153
+#: gui/mrvImageView.cpp:5014 gui/mrvImageBrowser.cpp:4215
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "記録/開く/映画またはシーケンス"
 
-#: gui/mrvImageView.cpp:5010 gui/mrvImageView.cpp:5023
+#: gui/mrvImageView.cpp:5026 gui/mrvImageView.cpp:5039
 msgid "File/Open/Session"
 msgstr "記録/開く/セッション"
 
-#: gui/mrvImageView.cpp:5002 gui/mrvImageBrowser.cpp:4155
+#: gui/mrvImageView.cpp:5018 gui/mrvImageBrowser.cpp:4217
 msgid "File/Open/Single Image"
 msgstr "記録/開く/ただの画像"
 
-#: gui/mrvImageView.cpp:5016
+#: gui/mrvImageView.cpp:5032
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "記録/開く/ステレオ用のフィルムまたはシーケンス"
 
-#: gui/mrvImageView.cpp:5046
+#: gui/mrvImageView.cpp:5062
 msgid "File/Quit"
 msgstr "記録/離れる"
 
-#: gui/mrvImageView.cpp:5031 gui/mrvImageBrowser.cpp:4400
+#: gui/mrvImageView.cpp:5047 gui/mrvImageBrowser.cpp:4462
 msgid "File/Save/Frame As"
 msgstr "記録/保つ/のようなボックス"
 
-#: gui/mrvImageView.cpp:5033 gui/mrvImageBrowser.cpp:4402
+#: gui/mrvImageView.cpp:5049 gui/mrvImageBrowser.cpp:4464
 msgid "File/Save/GL Snapshots As"
 msgstr "記録/保つ/Openglスナップショット"
 
-#: gui/mrvImageView.cpp:5026 gui/mrvImageBrowser.cpp:4395
+#: gui/mrvImageView.cpp:5042 gui/mrvImageBrowser.cpp:4457
 msgid "File/Save/Movie or Sequence As"
 msgstr "記録/保つ/映画やシーケンスのような"
 
-#: gui/mrvImageView.cpp:5029 gui/mrvImageBrowser.cpp:4398
+#: gui/mrvImageView.cpp:5045 gui/mrvImageBrowser.cpp:4460
 msgid "File/Save/Reel As"
 msgstr "記録/保つ/リールのように"
 
-#: gui/mrvImageView.cpp:5035 gui/mrvImageBrowser.cpp:4404
+#: gui/mrvImageView.cpp:5051 gui/mrvImageBrowser.cpp:4466
 msgid "File/Save/Session As"
 msgstr "記録/保つ/としてのセッション"
 
@@ -3748,11 +3748,11 @@ msgstr "フィルムメーカーコード"
 msgid "Filtering"
 msgstr "除外された"
 
-#: gui/mrvMainWindow.cpp:126
+#: gui/mrvMainWindow.cpp:125
 msgid "Finalize R3DSDK"
 msgstr "R3DSDKを終了します"
 
-#: gui/mrvMainWindow.cpp:129
+#: gui/mrvMainWindow.cpp:128
 msgid "Finalized R3DSDK"
 msgstr "R3DSDKを終了しました"
 
@@ -3867,7 +3867,7 @@ msgstr "FourCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11324
+#: gui/mrvImageView.cpp:11303
 msgid "Frame"
 msgstr "フレーム"
 
@@ -4016,7 +4016,7 @@ msgstr "緑"
 msgid "Gain"
 msgstr "利得"
 
-#: gui/mrvImageView.cpp:4004
+#: gui/mrvImageView.cpp:4017
 msgid "Gain for image failed"
 msgstr "画像の取得に失敗しました"
 
@@ -4033,19 +4033,19 @@ msgstr "画像ゲイン値.ピクセル値の単純な乗数."
 msgid "Gamma"
 msgstr "スペクトラム"
 
-#: core/guessImage.cpp:303 core/Sequence.cpp:1171 gui/mrvImageBrowser.cpp:522
+#: core/guessImage.cpp:303 core/Sequence.cpp:1171 gui/mrvImageBrowser.cpp:523
 msgid "Gamma 1.4 Chart"
 msgstr "レンジチャート1.4"
 
-#: core/guessImage.cpp:309 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:528
+#: core/guessImage.cpp:309 core/Sequence.cpp:1172 gui/mrvImageBrowser.cpp:529
 msgid "Gamma 1.8 Chart"
 msgstr "範囲チャート1.8"
 
-#: core/guessImage.cpp:315 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:534
+#: core/guessImage.cpp:315 core/Sequence.cpp:1173 gui/mrvImageBrowser.cpp:535
 msgid "Gamma 2.2 Chart"
 msgstr "レンジチャート2,2"
 
-#: core/guessImage.cpp:321 core/Sequence.cpp:1174 gui/mrvImageBrowser.cpp:540
+#: core/guessImage.cpp:321 core/Sequence.cpp:1174 gui/mrvImageBrowser.cpp:541
 msgid "Gamma 2.4 Chart"
 msgstr "範囲チャート2.4"
 
@@ -4061,7 +4061,7 @@ msgstr "範囲が狭い"
 msgid "Gamma More"
 msgstr "より多くの範囲"
 
-#: gui/mrvImageView.cpp:4016
+#: gui/mrvImageView.cpp:4029
 msgid "Gamma for image failed"
 msgstr "画像の色域が失敗しました"
 
@@ -4109,8 +4109,8 @@ msgstr "ギリシャ語 (Ελληνικά)"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2101 core/CMedia.cpp:2167 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9458
-#: gui/mrvImageView.cpp:9997
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9474
+#: gui/mrvImageView.cpp:10013
 msgid "Green"
 msgstr "緑"
 
@@ -4239,7 +4239,7 @@ msgstr "フルタイムラインにマーク"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1397
-#: gui/mrvImageView.cpp:5080
+#: gui/mrvImageView.cpp:5096
 msgid "Histogram"
 msgstr "ヒストグラム"
 
@@ -4267,7 +4267,7 @@ msgstr "管理キー:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1403
-#: gui/mrvImageView.cpp:5090
+#: gui/mrvImageView.cpp:5106
 msgid "Hotkeys"
 msgstr "管理キー"
 
@@ -4311,7 +4311,7 @@ msgstr "ICCプロファイル"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2792
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1400
-#: gui/mrvImageView.cpp:5086
+#: gui/mrvImageView.cpp:5102
 msgid "ICC Profiles"
 msgstr "ICCプロファイル"
 
@@ -4381,7 +4381,7 @@ msgstr ""
 "Windowsでは、チェックすると、ネイティブファイルチューザーが使用されます.選択"
 "されていない場合、mrViewerファイルチューザーが使用されます."
 
-#: gui/mrvImageBrowser.cpp:1685
+#: gui/mrvImageBrowser.cpp:1686
 msgid "Image"
 msgstr "画像"
 
@@ -4438,7 +4438,7 @@ msgstr "ボード上の画像のY位置"
 msgid "Image Y Scale in Canvas"
 msgstr "ボード上の画像のYスケーリング"
 
-#: gui/mrvImageView.cpp:3659
+#: gui/mrvImageView.cpp:3674
 msgid "Image at position "
 msgstr "位置の画像 "
 
@@ -4454,11 +4454,11 @@ msgstr "画像ファイル \""
 msgid "Image input color space is undefined for "
 msgstr "の未定義画像の入力色空間 "
 
-#: gui/mrvImageBrowser.cpp:3448
+#: gui/mrvImageBrowser.cpp:3510
 msgid "Image item not found for "
 msgstr "リールにアイテムが見つかりません "
 
-#: gui/mrvImageBrowser.cpp:3551
+#: gui/mrvImageBrowser.cpp:3613
 msgid "Image not found in reel "
 msgstr "カメラロールに画像が見つかりません "
 
@@ -4490,92 +4490,92 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "画像ズーム設定."
 
-#: gui/mrvImageView.cpp:5273
+#: gui/mrvImageView.cpp:5289
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "画像/CTLルックモディフィケーション（LMT）を追加"
 
-#: gui/mrvImageView.cpp:5265
+#: gui/mrvImageView.cpp:5281
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "画像/CTL入力デバイス変換（IDT）の割り当て"
 
-#: gui/mrvImageView.cpp:5277
+#: gui/mrvImageView.cpp:5293
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "画像/CTLレンダートランスフォーメーション（RRT）の割り当て"
 
-#: gui/mrvImageView.cpp:5281
+#: gui/mrvImageView.cpp:5297
 msgid "Image/Attach ICC Color Profile"
 msgstr "画像/カラーICCプロファイルを追加"
 
-#: gui/mrvImageView.cpp:5243
+#: gui/mrvImageView.cpp:5259
 msgid "Image/Clear Caches"
 msgstr "画像/キャッシュをクリアする"
 
-#: gui/mrvImageView.cpp:5219 gui/mrvImageView.cpp:5227
-#: gui/mrvImageBrowser.cpp:4416 gui/mrvImageBrowser.cpp:4426
+#: gui/mrvImageView.cpp:5235 gui/mrvImageView.cpp:5243
+#: gui/mrvImageBrowser.cpp:4478 gui/mrvImageBrowser.cpp:4488
 msgid "Image/Clone"
 msgstr "画像/クローン"
 
-#: gui/mrvImageView.cpp:5221 gui/mrvImageBrowser.cpp:4418
+#: gui/mrvImageView.cpp:5237 gui/mrvImageBrowser.cpp:4480
 msgid "Image/Clone All Channels"
 msgstr "画像/すべてのチャネルのクローンを作成する"
 
-#: gui/mrvImageBrowser.cpp:4430
+#: gui/mrvImageBrowser.cpp:4492
 msgid "Image/Media Info"
 msgstr "画像/メディア情報"
 
-#: gui/mrvImageView.cpp:5288
+#: gui/mrvImageView.cpp:5304
 msgid "Image/Mirror/Horizontal"
 msgstr "画像/鏡/水平"
 
-#: gui/mrvImageView.cpp:5292
+#: gui/mrvImageView.cpp:5308
 msgid "Image/Mirror/Vertical"
 msgstr "画像/鏡/垂直"
 
-#: gui/mrvImageView.cpp:5269
+#: gui/mrvImageView.cpp:5285
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "画像/CTLASC_CDLSOPとSaturationを変更します"
 
-#: gui/mrvImageView.cpp:5208
+#: gui/mrvImageView.cpp:5224
 msgid "Image/Next"
 msgstr "画像/続く"
 
-#: gui/mrvImageView.cpp:5234
+#: gui/mrvImageView.cpp:5250
 msgid "Image/Preload Caches"
 msgstr "画像/キャッシュのプリロード"
 
-#: gui/mrvImageView.cpp:5210
+#: gui/mrvImageView.cpp:5226
 msgid "Image/Previous"
 msgstr "画像/前"
 
-#: gui/mrvImageView.cpp:5253
+#: gui/mrvImageView.cpp:5269
 msgid "Image/Rotate +90"
 msgstr "画像/+90回転"
 
-#: gui/mrvImageView.cpp:5256
+#: gui/mrvImageView.cpp:5272
 msgid "Image/Rotate -90"
 msgstr "画像/-90回転"
 
-#: gui/mrvImageView.cpp:5296 gui/mrvImageBrowser.cpp:4435
+#: gui/mrvImageView.cpp:5312 gui/mrvImageBrowser.cpp:4497
 msgid "Image/Set as Background"
 msgstr "画像/背景として設定する"
 
-#: gui/mrvImageView.cpp:5301
+#: gui/mrvImageView.cpp:5317
 msgid "Image/Switch FG and BG"
 msgstr "画像/前景と背景を変更する"
 
-#: gui/mrvImageView.cpp:5304
+#: gui/mrvImageView.cpp:5320
 msgid "Image/Toggle Background"
 msgstr "画像/背景を切り替える"
 
-#: gui/mrvImageView.cpp:5311
+#: gui/mrvImageView.cpp:5327
 msgid "Image/Toggle EDL"
 msgstr "画像/EDLを交換する"
 
-#: gui/mrvImageView.cpp:5246
+#: gui/mrvImageView.cpp:5262
 msgid "Image/Update Single Frame in Cache"
 msgstr "画像/キャッシュフレームを更新する"
 
-#: gui/mrvImageBrowser.cpp:1662
+#: gui/mrvImageBrowser.cpp:1663
 msgid "ImageBrowser::remove idx value ("
 msgstr "ImageBrowser ::インデックス値を削除（"
 
@@ -4626,7 +4626,7 @@ msgstr "露出を0.5増やします."
 msgid "Increasing Y"
 msgstr "Yでインクリメント"
 
-#: gui/mrvImageBrowser.cpp:1450
+#: gui/mrvImageBrowser.cpp:1451
 msgid "Index "
 msgstr "無効なインデックス "
 
@@ -4683,11 +4683,11 @@ msgstr "無効な属性 "
 msgid "Invalid destination profile/image format"
 msgstr "宛先プロファイルが無効です/画像形式"
 
-#: gui/mrvReel.cpp:223
+#: gui/mrvReel.cpp:232
 msgid "Invalid image "
 msgstr "無効なインデックス "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9375
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9391
 msgid "Invalid index "
 msgstr "無効なインデックス "
 
@@ -4707,7 +4707,7 @@ msgstr "無効なピクセルバッファ座標 "
 msgid "Invalid source profile/image pixel format"
 msgstr "無効なソースプロファイル/画像ピクセルフォーマット"
 
-#: gui/mrvReel.cpp:210
+#: gui/mrvReel.cpp:219
 msgid "Invalid stereo image "
 msgstr "ステレオ画像が無効です "
 
@@ -4735,8 +4735,8 @@ msgstr "リバースレンダーリファレンストランスフォーメーシ
 msgid "Italian"
 msgstr "イタリアの (italiano)"
 
-#: gui/mrvImageBrowser.cpp:4020 gui/mrvImageBrowser.cpp:4028
-#: gui/mrvImageBrowser.cpp:4107 gui/mrvImageBrowser.cpp:4115
+#: gui/mrvImageBrowser.cpp:4082 gui/mrvImageBrowser.cpp:4090
+#: gui/mrvImageBrowser.cpp:4169 gui/mrvImageBrowser.cpp:4177
 msgid "Item was not found in tree."
 msgstr "リールに見つかりません"
 
@@ -4924,7 +4924,7 @@ msgstr "ファイル内の行の順序"
 msgid "Linear"
 msgstr "線形"
 
-#: core/guessImage.cpp:293 core/Sequence.cpp:1169 gui/mrvImageBrowser.cpp:576
+#: core/guessImage.cpp:293 core/Sequence.cpp:1169 gui/mrvImageBrowser.cpp:577
 msgid "Linear Gradient"
 msgstr "線形卒業"
 
@@ -5033,7 +5033,7 @@ msgstr "から設定をロードしました "
 msgid "Loading"
 msgstr "読み込み中"
 
-#: gui/mrvImageBrowser.cpp:2335
+#: gui/mrvImageBrowser.cpp:2372
 #, c-format
 msgid "Loading \"%s\""
 msgstr "\"%s\"を読み込んでいます"
@@ -5067,7 +5067,7 @@ msgid "Logarithmic"
 msgstr "対数"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1404
-#: gui/mrvImageView.cpp:5092
+#: gui/mrvImageView.cpp:5108
 msgid "Logs"
 msgstr "投稿"
 
@@ -5096,7 +5096,7 @@ msgstr "ループモード"
 msgid "Luminance"
 msgstr "輝度"
 
-#: core/guessImage.cpp:298 core/Sequence.cpp:1170 gui/mrvImageBrowser.cpp:612
+#: core/guessImage.cpp:298 core/Sequence.cpp:1170 gui/mrvImageBrowser.cpp:613
 msgid "Luminance Gradient"
 msgstr "光度卒業"
 
@@ -5106,8 +5106,8 @@ msgstr "マウスの下の画像ピクセルの輝度."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2114 core/CMedia.cpp:2169 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2174
-#: gui/mrvImageView.cpp:9473 gui/mrvImageView.cpp:9998
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2189
+#: gui/mrvImageView.cpp:9489 gui/mrvImageView.cpp:10014
 msgid "Lumma"
 msgstr "ルマ"
 
@@ -5249,7 +5249,7 @@ msgstr "平均"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1390
-#: gui/mrvImageView.cpp:5067
+#: gui/mrvImageView.cpp:5083
 msgid "Media Info"
 msgstr "メディア情報"
 
@@ -5365,11 +5365,11 @@ msgstr "CTL書き込みモニター"
 msgid "Monitor Icc Profile"
 msgstr "Iccプロファイルの監視"
 
-#: gui/mrvImageView.cpp:5418
+#: gui/mrvImageView.cpp:5434
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "画面/CTL出力表示変換（ODT）の追加"
 
-#: gui/mrvImageView.cpp:5422
+#: gui/mrvImageView.cpp:5438
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "画面/ICCカラープロファイルを追加する"
 
@@ -5421,7 +5421,7 @@ msgstr "ミュート"
 msgid "MyPack not found"
 msgstr "見つかりません"
 
-#: core/guessImage.cpp:280 core/Sequence.cpp:1167 gui/mrvImageBrowser.cpp:447
+#: core/guessImage.cpp:280 core/Sequence.cpp:1167 gui/mrvImageBrowser.cpp:448
 msgid "NTSC HDTV Color Bars"
 msgstr "NTSCHDTVカラーバー"
 
@@ -5454,7 +5454,7 @@ msgstr ""
 "言語を変更するには、mrViewerを再起動する必要があります.続行してもよろしいです"
 "か？"
 
-#: gui/mrvImageBrowser.cpp:4622
+#: gui/mrvImageBrowser.cpp:4684
 msgid "Negative indices to exchange"
 msgstr "取引する負の指数"
 
@@ -5462,12 +5462,12 @@ msgstr "取引する負の指数"
 msgid "Never"
 msgstr "一度もない"
 
-#: gui/mrvImageBrowser.cpp:3467
+#: gui/mrvImageBrowser.cpp:3529
 msgid "New item not created at "
 msgstr "で作成されていない新しいアイテム "
 
-#: gui/mrvImageBrowser.cpp:1973 gui/mrvImageBrowser.cpp:3852
-#: gui/mrvImageBrowser.cpp:3943
+#: gui/mrvImageBrowser.cpp:1974 gui/mrvImageBrowser.cpp:3914
+#: gui/mrvImageBrowser.cpp:4005
 msgid "New item was not found in tree."
 msgstr "リールに見つかりません"
 
@@ -5492,9 +5492,9 @@ msgstr "ネクストイメージリミテッド"
 msgid "Next Image Version"
 msgstr "次の画像バージョン"
 
-#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1142
-#: gui/mrvImageBrowser.cpp:1354 gui/mrvImageBrowser.cpp:3314
-#: gui/mrvImageBrowser.cpp:3318 gui/mrvImageInformation.cpp:5154
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3376
+#: gui/mrvImageBrowser.cpp:3380 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -5552,7 +5552,7 @@ msgstr "オーディオトラックのデコーダーが見つかりません. I
 msgid "No foreground image to switch to"
 msgstr "変更する正面画像はありません"
 
-#: gui/mrvImageView.cpp:4957
+#: gui/mrvImageView.cpp:4973
 msgid "No image to add shape to"
 msgstr "形を追加する画像がありません"
 
@@ -5588,7 +5588,7 @@ msgstr "有効なODT変換はありません. "
 msgid "No valid RT transform for \""
 msgstr "\"の有効なRT変換はありません"
 
-#: gui/mrvImageBrowser.cpp:3663
+#: gui/mrvImageBrowser.cpp:3725
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5638,31 +5638,31 @@ msgstr "コンパイルされていません"
 msgid "Not OK"
 msgstr "良くないですよ"
 
-#: gui/mrvImageView.cpp:5927
+#: gui/mrvImageView.cpp:5943
 msgid "Not a GLArrowShape pointer"
 msgstr "GLArrowShapeポインターではありません"
 
-#: gui/mrvImageView.cpp:7354
+#: gui/mrvImageView.cpp:7370
 msgid "Not a GLCircleShape pointer"
 msgstr "GLCircleShapeへのポインタではありません"
 
-#: gui/mrvImageView.cpp:5959
+#: gui/mrvImageView.cpp:5975
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "mouseReleaseのGLCircleShapeポインターではありません"
 
-#: gui/mrvImageView.cpp:5899
+#: gui/mrvImageView.cpp:5915
 msgid "Not a GLErasePathShape pointer"
 msgstr "GLErasePathShapeへのポインタではありません"
 
-#: gui/mrvImageView.cpp:5885 gui/mrvImageView.cpp:7294
+#: gui/mrvImageView.cpp:5901 gui/mrvImageView.cpp:7310
 msgid "Not a GLPathShape pointer"
 msgstr "GLPathShapeへのポインタではありません"
 
-#: gui/mrvImageView.cpp:5913
+#: gui/mrvImageView.cpp:5929
 msgid "Not a GLRectangleShape pointer"
 msgstr "GLRectangleShapeポインターではありません"
 
-#: gui/mrvImageView.cpp:5943
+#: gui/mrvImageView.cpp:5959
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "mouseReleaseのGLTextShapeへのポインタではありません"
 
@@ -5788,7 +5788,7 @@ msgstr "OCIO入力色空間"
 msgid "OCIO View"
 msgstr "レジャービュー"
 
-#: gui/mrvImageView.cpp:4029
+#: gui/mrvImageView.cpp:4042
 msgid "OCIO View change failed"
 msgstr "OCIOビュースイッチの失敗"
 
@@ -5808,15 +5808,15 @@ msgstr "OCIO環境変数が存在しません. CTLが使用されます. "
 msgid "OCIO input color space for the image"
 msgstr "画像の入力色空間は未定義です."
 
-#: gui/mrvImageView.cpp:5327
+#: gui/mrvImageView.cpp:5343
 msgid "OCIO/Display"
 msgstr "OCIO/画面"
 
-#: gui/mrvImageView.cpp:5323 gui/mrvImageBrowser.cpp:4186
+#: gui/mrvImageView.cpp:5339 gui/mrvImageBrowser.cpp:4248
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/入力色空間"
 
-#: gui/mrvImageView.cpp:5330
+#: gui/mrvImageView.cpp:5346
 msgid "OCIO/View"
 msgstr "OCIO/意見"
 
@@ -5882,8 +5882,8 @@ msgstr "ogg-ビデオ"
 msgid "Okay"
 msgstr "わかった"
 
-#: gui/mrvImageBrowser.cpp:1955 gui/mrvImageBrowser.cpp:3836
-#: gui/mrvImageBrowser.cpp:3928
+#: gui/mrvImageBrowser.cpp:1956 gui/mrvImageBrowser.cpp:3898
+#: gui/mrvImageBrowser.cpp:3990
 msgid "Old item was not found in tree."
 msgstr "リールに見つかりません"
 
@@ -6002,7 +6002,7 @@ msgstr "ガンマ、ゲイン、またはルートのないオリジナル"
 msgid "Originating Program"
 msgstr "オリジナルプログラム"
 
-#: core/mrvOTIO.cpp:297
+#: core/mrvOTIO.cpp:291
 #, c-format
 msgid "Otio timeline saved to '%s'."
 msgstr "Otioのタイムラインが「%s」に保存されました."
@@ -6077,12 +6077,12 @@ msgstr "上書き行（繰り返し）["
 msgid "Owner"
 msgstr "オーナー"
 
-#: core/guessImage.cpp:276 core/Sequence.cpp:1165 gui/mrvImageBrowser.cpp:412
+#: core/guessImage.cpp:276 core/Sequence.cpp:1165 gui/mrvImageBrowser.cpp:413
 msgid "PAL Color Bars"
 msgstr "PALカラーバー"
 
 #: core/guessImage.cpp:284 core/Sequence.cpp:1166 core/Sequence.cpp:1168
-#: gui/mrvImageBrowser.cpp:481
+#: gui/mrvImageBrowser.cpp:482
 msgid "PAL HDTV Color Bars"
 msgstr "PALHDTVカラーバー"
 
@@ -6100,7 +6100,7 @@ msgstr "PBOテクスチャ:\t"
 msgid "PIZ"
 msgstr "PIZ"
 
-#: gui/mrvImageView.cpp:4893
+#: gui/mrvImageView.cpp:4909
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6211,7 +6211,7 @@ msgstr "クリップピクセル比"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "波形でピクセルタイプが正しくサポートされていません"
 
-#: gui/mrvImageView.cpp:5408
+#: gui/mrvImageView.cpp:5424
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "ピクセル/RGBA値をクリップボードにコピー"
 
@@ -6303,7 +6303,7 @@ msgstr "ICCを好む"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2155
-#: gui/mrvImageView.cpp:5074
+#: gui/mrvImageView.cpp:5090
 msgid "Preferences"
 msgstr "環境設定"
 
@@ -6311,7 +6311,7 @@ msgstr "環境設定"
 msgid "Preferences have been saved to: "
 msgstr "設定は次の場所に保存されています: "
 
-#: gui/mrvImageBrowser.cpp:3580
+#: gui/mrvImageBrowser.cpp:3642
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
@@ -6320,7 +6320,7 @@ msgstr ""
 "別するために、いくつかの文字を入力してください.何を使用するかわからない場合"
 "は、_vを使用して、包含正規表現を作成します."
 
-#: gui/mrvImageBrowser.cpp:4210
+#: gui/mrvImageBrowser.cpp:4272
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6600,8 +6600,8 @@ msgstr "長方形ツール"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2100 core/CMedia.cpp:2167 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9453
-#: gui/mrvImageView.cpp:9996
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9469
+#: gui/mrvImageView.cpp:10012
 msgid "Red"
 msgstr "赤"
 
@@ -6631,12 +6631,12 @@ msgstr "描画をやり直す"
 msgid "Redo Previous Shape Drawn"
 msgstr "以前に描いた図をやり直す"
 
-#: gui/mrvImageView.cpp:2453
+#: gui/mrvImageView.cpp:2468
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr "リール%d（%s）|ショット%d（%s）|フレーム %<PRId64> | X =%d | Y =%d \n"
 
-#: gui/mrvImageBrowser.cpp:1322
+#: gui/mrvImageBrowser.cpp:1323
 #, c-format
 msgid "Reel '%s' saved"
 msgstr "リール'%s'保存"
@@ -6648,7 +6648,7 @@ msgstr "リール"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2992
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1389
-#: gui/mrvImageView.cpp:5066
+#: gui/mrvImageView.cpp:5082
 msgid "Reels"
 msgstr "リール"
 
@@ -6669,7 +6669,7 @@ msgstr "参照番号"
 msgid "Reference Service"
 msgstr "レファレンスサービス"
 
-#: gui/mrvImageBrowser.cpp:3589 gui/mrvImageBrowser.cpp:3596
+#: gui/mrvImageBrowser.cpp:3651 gui/mrvImageBrowser.cpp:3658
 msgid "Regex "
 msgstr "正規表現 "
 
@@ -6685,7 +6685,7 @@ msgstr ""
 " gizmo_v003.001.exr \n"
 "（バージョン3、フレーム1）."
 
-#: gui/mrvImageBrowser.cpp:3609 gui/mrvImageBrowser.cpp:3657
+#: gui/mrvImageBrowser.cpp:3671 gui/mrvImageBrowser.cpp:3719
 msgid "Regular expression error: "
 msgstr "正規表現エラー: "
 
@@ -6723,7 +6723,7 @@ msgstr ""
 msgid "Remaining"
 msgstr "ない"
 
-#: gui/mrvImageBrowser.cpp:1699
+#: gui/mrvImageBrowser.cpp:1700
 msgid "Removal item not found in tree."
 msgstr "リールに見つかりません"
 
@@ -6776,7 +6776,7 @@ msgstr ""
 "すべての属性を置き換えます/コマンドラインで指定された値のみを残して、hudに表"
 "示する値."
 
-#: gui/mrvImageBrowser.cpp:3433
+#: gui/mrvImageBrowser.cpp:3495
 msgid "Replace image index is out of range"
 msgstr "画像の置換率が範囲外です"
 
@@ -6902,7 +6902,7 @@ msgstr "画像を-10度回転"
 msgid "Rotate Image -90 Degrees"
 msgstr "画像を-90度回転"
 
-#: gui/mrvImageView.cpp:3959
+#: gui/mrvImageView.cpp:3972
 msgid "Rotate for image failed"
 msgstr "画像の回転に失敗しました"
 
@@ -6938,7 +6938,7 @@ msgstr "取る"
 msgid "SHOW"
 msgstr "見せる"
 
-#: core/guessImage.cpp:272 core/Sequence.cpp:1164 gui/mrvImageBrowser.cpp:378
+#: core/guessImage.cpp:272 core/Sequence.cpp:1164 gui/mrvImageBrowser.cpp:379
 msgid "SMPTE NTSC Color Bars"
 msgstr "SMPTENTSCカラーバー"
 
@@ -7186,11 +7186,11 @@ msgstr "ステレオ入力を選択"
 msgid "Select stereo output"
 msgstr "ステレオ出力を選択"
 
-#: gui/mrvImageBrowser.cpp:4170
+#: gui/mrvImageBrowser.cpp:4232
 msgid "Select/Multiple Images for Modifying"
 msgstr "選ぶ/変更する複数の画像"
 
-#: gui/mrvImageBrowser.cpp:4157
+#: gui/mrvImageBrowser.cpp:4219
 msgid "Select/Single Image for Dragging"
 msgstr "選ぶ/ドラッグする画像"
 
@@ -7545,15 +7545,15 @@ msgstr "字幕レター "
 msgid "Subtitle type "
 msgstr "字幕タイプ "
 
-#: gui/mrvImageView.cpp:5362
+#: gui/mrvImageView.cpp:5378
 msgid "Subtitle/Load"
 msgstr "字幕/充電"
 
-#: gui/mrvImageView.cpp:5370
+#: gui/mrvImageView.cpp:5386
 msgid "Subtitle/No Subtitle"
 msgstr "字幕/字幕なし"
 
-#: gui/mrvImageView.cpp:5379
+#: gui/mrvImageView.cpp:5395
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "字幕/トラック＃%d-%s"
@@ -8204,7 +8204,7 @@ msgstr "出力コンテキストのストリームが多すぎます"
 msgid "Tooldock"
 msgstr "アクションドック"
 
-#: gui/mrvImageView.cpp:11325
+#: gui/mrvImageView.cpp:11304
 msgid "Top"
 msgstr "より高い"
 
@@ -8251,7 +8251,7 @@ msgstr "やってみる "
 msgid "Turkish"
 msgstr "トルコ語 (Türk)"
 
-#: gui/mrvMainWindow.cpp:140
+#: gui/mrvMainWindow.cpp:139
 msgid "Turn off screensaver"
 msgstr "スクリーンセーバーを無効にする"
 
@@ -8617,7 +8617,7 @@ msgstr "Vector3整数"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1398
-#: gui/mrvImageView.cpp:5082
+#: gui/mrvImageView.cpp:5098
 msgid "Vectorscope"
 msgstr "Vectorscope"
 
@@ -8629,19 +8629,19 @@ msgstr "売り手:\t"
 msgid "Version Regex"
 msgstr "ExpRegバージョン."
 
-#: gui/mrvImageView.cpp:5192 gui/mrvImageBrowser.cpp:4238
+#: gui/mrvImageView.cpp:5208 gui/mrvImageBrowser.cpp:4300
 msgid "Version/First"
 msgstr "バージョン/初め"
 
-#: gui/mrvImageView.cpp:5201 gui/mrvImageBrowser.cpp:4247
+#: gui/mrvImageView.cpp:5217 gui/mrvImageBrowser.cpp:4309
 msgid "Version/Last"
 msgstr "バージョン/最後"
 
-#: gui/mrvImageView.cpp:5195 gui/mrvImageBrowser.cpp:4244
+#: gui/mrvImageView.cpp:5211 gui/mrvImageBrowser.cpp:4306
 msgid "Version/Next"
 msgstr "バージョン/続く"
 
-#: gui/mrvImageView.cpp:5197 gui/mrvImageBrowser.cpp:4241
+#: gui/mrvImageView.cpp:5213 gui/mrvImageBrowser.cpp:4303
 msgid "Version/Previous"
 msgstr "バージョン/前"
 
@@ -8718,7 +8718,7 @@ msgstr "ビデオを回転させる"
 msgid "Video timecode attribute already exists"
 msgstr "ビデオタイムコード属性はすでに存在します"
 
-#: gui/mrvImageView.cpp:5346
+#: gui/mrvImageView.cpp:5362
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "ビデオ/トラック＃%d-%s"
@@ -8731,45 +8731,45 @@ msgstr "意見"
 msgid "View Window"
 msgstr "ビューウィンドウ"
 
-#: gui/mrvImageView.cpp:5114
+#: gui/mrvImageView.cpp:5130
 msgid "View/Data Window"
 msgstr "意見/データウィンドウ"
 
-#: gui/mrvImageView.cpp:5108
+#: gui/mrvImageView.cpp:5124
 msgid "View/Display Window"
 msgstr "意見/表示ウインドウ"
 
-#: gui/mrvImageView.cpp:5155
+#: gui/mrvImageView.cpp:5171
 msgid "View/Grid/Size"
 msgstr "意見/グリッド/サイズ"
 
-#: gui/mrvImageView.cpp:5151
+#: gui/mrvImageView.cpp:5167
 msgid "View/Grid/Toggle Selected"
 msgstr "意見/グリッド/交換"
 
-#: gui/mrvImageView.cpp:5167
+#: gui/mrvImageView.cpp:5183
 #, c-format
 msgid "View/Hud/%s"
 msgstr "意見/hud/%s"
 
-#: gui/mrvImageView.cpp:5159
+#: gui/mrvImageView.cpp:5175
 msgid "View/Hud/Toggle Selected"
 msgstr "意見/hud/選択したスワップ"
 
-#: gui/mrvImageView.cpp:5142
+#: gui/mrvImageView.cpp:5158
 #, c-format
 msgid "View/Mask/%s"
 msgstr "意見/マスク/%s"
 
-#: gui/mrvImageView.cpp:5105
+#: gui/mrvImageView.cpp:5121
 msgid "View/Safe Areas"
 msgstr "意見/安全なエリア"
 
-#: gui/mrvImageView.cpp:5119
+#: gui/mrvImageView.cpp:5135
 msgid "View/Texture Filtering  "
 msgstr "意見/テクスチャフィルタリング  "
 
-#: gui/mrvImageView.cpp:5128
+#: gui/mrvImageView.cpp:5144
 msgid "View/Toggle Action Dock"
 msgstr "意見/スワップアクションドック"
 
@@ -8802,7 +8802,7 @@ msgstr "WAVE音楽"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1399
-#: gui/mrvImageView.cpp:5084
+#: gui/mrvImageView.cpp:5100
 msgid "Waveform"
 msgstr "波形"
 
@@ -9105,7 +9105,7 @@ msgstr "クリップ幅"
 msgid "Window Behavior"
 msgstr "ウィンドウの動作"
 
-#: gui/mrvImageView.cpp:5096
+#: gui/mrvImageView.cpp:5112
 msgid "Windows/"
 msgstr "ウィンドウズ/"
 
@@ -9312,9 +9312,9 @@ msgstr "提案YUV"
 msgid "YUVA Support:\t"
 msgstr "YUVAサポート:\t"
 
-#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1142
-#: gui/mrvImageBrowser.cpp:1354 gui/mrvImageBrowser.cpp:3314
-#: gui/mrvImageBrowser.cpp:3318 gui/mrvImageInformation.cpp:5154
+#: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3376
+#: gui/mrvImageBrowser.cpp:3380 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -9327,17 +9327,17 @@ msgstr "はい"
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr "あなたはあなたが再生している映画の上に保存しています.中止しています..."
 
-#: gui/mrvImageBrowser.cpp:3128
+#: gui/mrvImageBrowser.cpp:3190
 msgid "You can load only a single stereo image to combine with current one."
 msgstr ""
 "現在のステレオ画像と組み合わせるには、ステレオ画像を1つだけアップロードできま"
 "す."
 
-#: gui/mrvImageBrowser.cpp:3144
+#: gui/mrvImageBrowser.cpp:3206
 msgid "You cannot load a reel as a stereo image."
 msgstr "リールをステレオ画像としてアップロードすることはできません."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9999
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:10015
 msgid "Z"
 msgstr "Z"
 
@@ -9363,7 +9363,7 @@ msgstr "ZIP SCANLINE"
 msgid "Zoom Speed"
 msgstr "ズーム率"
 
-#: gui/mrvImageView.cpp:3979
+#: gui/mrvImageView.cpp:3992
 msgid "Zoom for image failed"
 msgstr "画像へのズームに失敗しました"
 
@@ -9440,7 +9440,7 @@ msgstr "ディフォルト"
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space-不明なビット深度"
 
-#: gui/mrvMainWindow.cpp:119
+#: gui/mrvMainWindow.cpp:118
 msgid "delete uiview"
 msgstr "uiviewを削除する"
 

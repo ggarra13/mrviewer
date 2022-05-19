@@ -1027,6 +1027,8 @@ protected:
     mrv::media _fg;
     CMedia* _old_fg;
     mrv::media _bg;
+    CMedia*    Aimg; // A dissolve image
+    CMedia*    Bimg; // B dissolve image
 
     int   _fg_reel;
     int   _bg_reel;

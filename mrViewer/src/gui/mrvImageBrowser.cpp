@@ -64,6 +64,7 @@ namespace fs = boost::filesystem;
 #include "core/Sequence.h"
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
+#include "core/mrvMath.h"
 #include "core/mrvThread.h"
 #include "core/mrStackTrace.h"
 #include "AMFReader.h"
@@ -2000,8 +2001,7 @@ void ImageBrowser::save_session()
         if ( m ) img = m->image();
         if ( reel->edl && img )
         {
-            int64_t pos = m->position() - img->first_frame() + img->frame();
-            DBGM3( "seek to " << pos );
+            int64_t pos = m->position() - img->in_frame() + img->frame();
             if ( !_loading ) seek( pos );
         }
         else
@@ -2213,10 +2213,44 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 && !img->has_video() )
+        if ( fps > 0.0 )
         {
-            img->fps( fps );
-            img->play_fps( fps );
+            if ( !img->has_video() )
+            {
+                img->fps( fps );
+            }
+            else
+            {
+                if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
+                {
+                    double firstfps = img->first_frame() / fps;
+                    double lastfps  = img->last_frame() / fps;
+                    double firstimg = img->first_frame() / img->fps();
+                    double lastimg  = img->last_frame() / img->fps();
+                    int64_t first = img->first_frame() / fps * img->fps();
+                    int64_t last  = img->last_frame() / fps * img->fps();
+
+                    std::cerr << "load fps: " << fps << " first= " << firstfps
+                              << " last= " << lastfps << std::endl;
+
+                    std::cerr << "img  fps: " << img->fps()
+                              << " first= " << firstimg
+                              << " last= " << lastimg << std::endl;
+
+                    std::cerr << "calc  fps: " << img->fps()
+                              << " first= " << first
+                              << " last= " << last << std::endl;
+
+                    img->first_frame( first );
+                    img->last_frame( last );
+                    img->play_fps( fps );
+                }
+            }
+        }
+        else
+        {
+            img->fps( 24.0f );
+            img->play_fps( 24.0f );
         }
 
         if ( img->has_video() || img->has_audio() )
@@ -2251,6 +2285,7 @@ void ImageBrowser::save_session()
                                   avoid_seq );
         if ( !img ) return mrv::media();
 
+
         mrv::media m = this->add( img );
 
         return m;
@@ -2275,12 +2310,14 @@ void ImageBrowser::save_session()
         {
             int64_t start = AV_NOPTS_VALUE;
             int64_t end   = AV_NOPTS_VALUE;
+            float fps = -1.0;
             if ( mrv::is_valid_sequence( bgimage.c_str() ) )
             {
+                fps = 24.0f;
                 mrv::get_sequence_limits( start, end, bgimage );
             }
             mrv::media bg = load_image_in_reel( bgimage.c_str(),
-                                                start, end, start, end, 24.0f,
+                                                start, end, start, end, fps,
                                                 false );
             set_bg( bg );
         }
@@ -2962,24 +2999,49 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
 
         int64_t len = end - start + 1;
-        int64_t first = reel->global_to_local( start );
-        int64_t last = reel->global_to_local( end );
+        double len2 = len / 2.0;
+
+        int64_t outlen = len2;
+        int64_t  inlen = len2;
+
+        int64_t out = Aimg->last_frame() + outlen;
+        int64_t in  = Bimg->first_frame() - inlen;
+
 
         Aimg->dissolve_end( end );
         Aimg->in_frame( Aimg->first_frame() );
-        Aimg->out_frame( Aimg->last_frame() + len/2 );
+        Aimg->out_frame( out );
+        Aimg->play_fps( Aimg->fps() );
 
         Bimg->dissolve_start( start+1 );
-        Bimg->in_frame( last - len/2 );
+        Bimg->in_frame( in );
         Bimg->out_frame( Bimg->last_frame() );
+        Bimg->play_fps( Bimg->fps() );
         Bimg->seek( Bimg->in_frame() ); // prepare image
 
-        std::cerr << "first " << first << " - " << last << std::endl;
+
+        std::cerr << "start " << start << " end " << end << std::endl;
 
         std::cerr << "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() << std::endl;
         std::cerr << "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() << std::endl;
+        std::cerr << "G Aimg "
+                  << reel->local_to_global( Aimg->first_frame(), Aimg ) << " - "
+                  << reel->local_to_global( Aimg->last_frame(), Aimg )
+                  << std::endl;
+        std::cerr << "G Bimg "
+                  << reel->local_to_global( Bimg->first_frame(), Bimg ) << " - "
+                  << reel->local_to_global( Bimg->last_frame(), Bimg )
+                  << std::endl;
         std::cerr << "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() << std::endl;
         std::cerr << "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() << std::endl;
+        std::cerr << "GI/O Aimg "
+                  << reel->local_to_global( Aimg->in_frame(), Aimg ) << " - "
+                  << reel->local_to_global( Aimg->out_frame(), Aimg )
+                  << std::endl;
+        std::cerr << "GI/O Bimg "
+                  << reel->local_to_global( Bimg->in_frame(), Bimg ) << " - "
+                  << reel->local_to_global( Bimg->out_frame(), Bimg )
+                  << std::endl;
     }
 
 }
@@ -3731,7 +3793,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     }
 
     CMedia* newImg = load_image( loadfile.c_str(),
-                                 start, end, start, end, 24.0f, false );
+                                 start, end, start, end, img->fps(), false );
     if ( !newImg ) return;
 
 
@@ -4847,6 +4909,8 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
+    if ( view()->frame() == tframe ) return;
+
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     CMedia::Playback play = view()->playback();
@@ -4859,7 +4923,8 @@ void ImageBrowser::seek( const int64_t tframe )
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
 
-    TRACE( "BROWSER seek to frame " << f );
+    TRACE2( "BROWSER seek to frame " << f
+            << " view frame " << view()->frame() );
 
     mrv::media fg = view()->foreground();
     mrv::media bg = view()->background();
@@ -4894,7 +4959,9 @@ void ImageBrowser::seek( const int64_t tframe )
         CMedia* img = m->image();
         if ( ! img ) return;
 
-        TRACE( "BROWSER seek to frame " << f << " image " << img->name() );
+        TRACE( "BROWSER seek to frame " << f << " image " << img->name()
+                << " lframe= " << img->frame() << " in= " << img->in_frame()
+                << " out= " << img->out_frame() );
 
         if ( f < t->display_minimum() )
         {
@@ -4914,22 +4981,32 @@ void ImageBrowser::seek( const int64_t tframe )
             img = reel->image_at( f );
             if ( !img ) return;
 
-            TRACE( "BROWSER seek to frame " << f << " image #" << i << " " << img->name() );
+            TRACE2( "BROWSER pre seek to frame " << f << " image #" << i << " "
+                    << img->name()<< " lframe= " << img->frame()
+                    << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() );
 
 
-            img->volume( uiMain->uiVolume->value() );
             img->seek( lf );
 
             if ( i < reel->images.size() )
                 change_image((int)i);
 
+            TRACE2( "BROWSER seeked to frame " << f << " image #" << i
+                    << " " << img->name() << " lframe= " << img->frame()
+                    << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() );
 
             CMedia* old = fg->image();
             if (old->has_video()) old->clear_cache();
         }
         else
         {
-            img->volume( uiMain->uiVolume->value() );
+            TRACE2( "BROWSER seek to frame " << f << " "
+                    << img->name()<< " lf= " << lf
+                    << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() );
+
             img->seek( lf );
         }
 
@@ -5081,7 +5158,7 @@ void ImageBrowser::set_edl()
     CMedia* img = m->image();
     if ( !img ) return;
 
-    int64_t f = img->frame() - img->first_frame() + t->location( img );
+    int64_t f = reel->local_to_global( img->frame(), img );
     frame( f );
 
     char buf[64];

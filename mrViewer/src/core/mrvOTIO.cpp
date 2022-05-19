@@ -119,7 +119,6 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
     ItemList items;
     init_items( items, newtimeline );
 
-    int f = 1;
     for (const auto i : newtimeline.value->tracks()->children())
     {
         if (auto track = dynamic_cast<otio::Track*>(i.value))
@@ -133,6 +132,8 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                         auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
                         if ( e )
                         {
+                            // auto s = clip->available_range(&errorStatus).start_time();
+                            // auto d = clip->available_range(&errorStatus).duration();
                             // auto s = clip->visible_range(&errorStatus).start_time();
                             // auto d = clip->visible_range(&errorStatus).duration();
                             auto s = clip->trimmed_range(&errorStatus).start_time();
@@ -142,7 +143,9 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             int64_t start = s.value();
                             int64_t duration = d.value() - 1;
                             int64_t end = start + duration;
-                            f += end;
+                            TRACE2( "start = " << start << " duration= "
+                                    << duration << " end= " << end );
+                            assert( end > start );
                             LoadInfo info( e->target_url(), start, end, start, end, d.rate() );
                             sequences.push_back( info );
                         }
@@ -162,6 +165,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                         int64_t start = s.value();
                         int64_t duration = d.value() - 1;
                         int64_t end = start + duration;
+                        assert( end > start );
                         LoadInfo info( _("Black Gap"), start, end, start, end, d.rate() );
                         sequences.push_back( info );
                     }
@@ -173,7 +177,8 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
     for ( const auto& i : items )
     {
         const auto neighbors = i.track->neighbors_of(i.item, &errorStatus);
-        if (auto transition = dynamic_cast<otio::Transition*>(neighbors.second.value))
+        if (auto transition =
+            dynamic_cast<otio::Transition*>(neighbors.second.value))
         {
             int64_t s = i.range.start_time().value();
             int64_t e = i.range.end_time_inclusive().value();
@@ -184,19 +189,8 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
         }
-#if 0
-        if (auto transition = dynamic_cast<otio::Transition*>(neighbors.first.value))
-        {
-            int64_t s = i.range.start_time().value();
-            int64_t start = s - transition->in_offset().value();
-            int64_t end = s + transition->out_offset().value() + 1;
-
-            // @todo: handle other transition types
-            Transition t( Transition::kDissolve, start, end );
-            transitions.push_back( t );
-        }
-#endif
     }
+
     return true;
 }
 

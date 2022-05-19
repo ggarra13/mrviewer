@@ -238,7 +238,7 @@ unsigned long get_thread_id();
 
 #if 0
 #  define TRACE(msg) do { \
-        std::cerr << _("mrViewer TRACE : ") << msg << std::flush << " at " \
+        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
                   << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
     } while(0)
 #else
@@ -247,7 +247,7 @@ unsigned long get_thread_id();
 
 #if 1
 #  define TRACE2(msg) do { \
-        std::cerr << _("mrViewer TRACE : ") << msg << std::flush << " at " \
+        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
                   << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
     } while(0)
 #else
