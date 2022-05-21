@@ -269,6 +269,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         }
 
 
+
     }
     else
     {
@@ -283,6 +284,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             glast  = last;
         }
     }
+
+    if ( mx < glast ) glast = mx;
+    if ( mn > gfirst ) gfirst = mn;
 
     if ( decode == kVideo )
     {
@@ -399,14 +403,14 @@ EndStatus handle_loop( int64_t& frame,
             int64_t dts = f;
 
             next = reel->image_at( f );
-            TRACE2( img->name() << " DTS IS " << dts << " frame " << frame );
+            TRACE( img->name() << " DTS IS " << dts << " frame " << frame );
 
             if ( next == NULL && loop == CMedia::kLoop )
             {
                 first = dts = f = int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
                 TRACE( decode << ") " << img->name() << " NEXT WAS NULL, now NEXT is " << next->name() );
-                TRACE( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first );
+                TRACE( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
             }
             else if ( next == img )
             {
@@ -421,12 +425,9 @@ EndStatus handle_loop( int64_t& frame,
                 }
             }
 
-            assert( next != img );
             if ( next != img && next != NULL )
             {
                 if ( decode == kDecode ) return kEndIgnore;
-                assert( ! ( img->name() == "PSR63_2012-06-02.mov" &&
-                            next && next->name() == "PSR63_2012-06-02.mov" ) );
 
                 if ( next->stopped() )
                 {
@@ -471,7 +472,9 @@ EndStatus handle_loop( int64_t& frame,
                     return kEndNextImage;
                 }
 
+                TRACE( img->name() << " stop" );
                 img->playback( CMedia::kStopped );
+                TRACE( img->name() << " now stopped" );
                 img->clear_packets();
 
                 int idx = reel->index( next );
@@ -480,7 +483,7 @@ EndStatus handle_loop( int64_t& frame,
                 {
                     ImageView::Command c;
                     c.type = ImageView::kChangeImage;
-                    c.data = new Imf::IntAttribute(idx);
+                    c.frame = idx;
                     view->commands.push_back( c );
                 }
                 return kEndNextImage;
@@ -530,7 +533,6 @@ EndStatus handle_loop( int64_t& frame,
         }
         else
         {
-            if (fg) view->playback( CMedia::kStopped );
             img->playback( CMedia::kStopped );
         }
         break;
@@ -660,7 +662,6 @@ EndStatus handle_loop( int64_t& frame,
         else
         {
             img->playback( CMedia::kStopped );
-            if (fg) view->playback( CMedia::kStopped );
         }
         break;
     }
@@ -873,9 +874,6 @@ void audio_thread( PlaybackData* data )
 
         if ( !img->stopped() )
         {
-#ifndef _WIN32
-            img->volume( uiMain->uiVolume->value() );
-#endif
             img->find_audio(frame);
 #ifdef _WIN32 // WIN32 stores application audio volume
             mrv::AudioEngine* engine = img->audio_engine();
@@ -1346,25 +1344,24 @@ void video_thread( PlaybackData* data )
                     f = reel->local_to_global( frame, img );
                     TRACE2( img->name() << " " << img << " SENT FRAME " << f
                             << " IMG FRAME " << frame );
-                    if ( f == img->dissolve_end() ) {
-                        frame++;
-                        TRACE2( img->name() << " SEND HANDLE LOOP " << frame );
-                        EndStatus end = handle_loop( frame, step, img, fg, true,
-                                                     uiMain, reel, timeline,
-                                                     status, kVideo );
-                        if ( end == kEndChangeDirection )
-                        {
-                            CMedia::Playback p = (CMedia::Playback) step;
-                            if ( fg && step != 0 ) view->playback( p );
-                            continue;
-                        }
-                        TRACE2( img->name() << " SENT HANDLE LOOP " << frame
-                                << " stopped? " << img->stopped() );
-                        break;
-                    }
                 }
                 view->frame( f );
-
+                if ( reel->edl && f == img->dissolve_end() ) {
+                    frame++;
+                    TRACE2( img->name() << " SEND HANDLE LOOP " << frame );
+                    EndStatus end = handle_loop( frame, step, img, fg, true,
+                                                 uiMain, reel, timeline,
+                                                 status, kVideo );
+                    if ( end == kEndChangeDirection )
+                    {
+                        CMedia::Playback p = (CMedia::Playback) step;
+                        if ( fg && step != 0 ) view->playback( p );
+                        continue;
+                    }
+                    TRACE2( img->name() << " SENT HANDLE LOOP " << frame
+                            << " stopped? " << img->stopped() );
+                    break;
+                }
             }
         }
 

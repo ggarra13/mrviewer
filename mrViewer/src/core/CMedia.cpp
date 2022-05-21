@@ -842,7 +842,7 @@ void CMedia::wait_for_threads()
         while( !ok )
         {
             ok = i->timed_join(timeout);
-            TRACE( name() << " Thread " << i << " returned " << ok );
+            TRACE2( name() << " Thread " << i << " returned " << ok );
         }
         delete i;
     }
@@ -2672,11 +2672,13 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
+    TRACE2( name() << " frame " << frame() << " dir= " << dir
+            << " playback= " << _playback << " threads=" << _threads.size() );
+
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
     if ( dir == _playback && !_threads.empty() ) return;
 
-    TRACE( name() << " frame " << frame() );
     stop(fg);
 
     TRACE( name() << " frame " << frame() );
@@ -2784,7 +2786,7 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::video_thread,
                              video_data ) );
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame() << " added video thread "
+            TRACE2( name() << " frame " << frame() << " added video thread "
                    << t );
         }
 
@@ -2796,8 +2798,8 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::audio_thread,
                              audio_data ) );
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame() << " added audio thread "
-                   << t );
+            TRACE2( name() << " frame " << frame() << " added audio thread "
+                    << t );
         }
 
         if ( valid_s )
@@ -2808,8 +2810,8 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::subtitle_thread,
                              subtitle_data ) );
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame() << " added audio thread "
-                   << t );
+            TRACE2( name() << " frame " << frame() << " added audio thread "
+                    << t );
         }
 
 
@@ -2820,8 +2822,8 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::decode_thread,
                              data ) );
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame() << " added decode thread "
-                   << t );
+            TRACE2( name() << " frame " << frame() << " added decode thread "
+                    << t );
         }
 
 
@@ -2845,6 +2847,7 @@ void CMedia::stop(const bool bg)
     if ( _playback == kStopped && _threads.empty() ) return;
     TRACE( name() << " frame " << frame() << " playback = " << _playback
            << " has threads? " << _threads.empty() );
+
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 

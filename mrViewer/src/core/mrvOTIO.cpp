@@ -174,20 +174,59 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
         }
     }
 
+    int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
     for ( const auto& i : items )
     {
         const auto neighbors = i.track->neighbors_of(i.item, &errorStatus);
+        TRACE2( "CLIP " << i.item->name() );
+        if (auto transition =
+            dynamic_cast<otio::Transition*>(neighbors.first.value))
+        {
+            int64_t s = i.range.start_time().value();
+            int64_t e = i.range.end_time_inclusive().value();
+            int64_t in_off = transition->in_offset().value();
+            int64_t out_off = transition->out_offset().value();
+            std::string name = transition->name();
+
+
+            TRACE2( "TRANSITION " << name << " first s= " << s );
+            // TRACE2( "TRANSITION first e= " << e );
+            // TRACE2( "TRANSITION first in_off= " << in_off );
+            TRACE2( "TRANSITION " << name << " first out_off= " << out_off );
+            end = s + out_off;
+            TRACE2( "TRANSITION " << name << " first end= " << start );
+        }
+        if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
+        {
+            TRACE2( "DISSOLVE start= " << start << " end= " << end );
+            Transition t( Transition::kDissolve, start, end );
+            transitions.push_back( t );
+            start = end = AV_NOPTS_VALUE;
+        }
         if (auto transition =
             dynamic_cast<otio::Transition*>(neighbors.second.value))
         {
             int64_t s = i.range.start_time().value();
             int64_t e = i.range.end_time_inclusive().value();
-            int64_t start = s + transition->in_offset().value();
-            int64_t end = e + transition->out_offset().value() + 1;
+            int64_t in_off = transition->in_offset().value();
+            int64_t out_off = transition->out_offset().value();
+            std::string name = transition->name();
 
-            // @todo: handle other transition types
+            // TRACE2( "TRANSITION second s= " << s );
+            TRACE2( "TRANSITION " << name << " second e= " << e );
+            TRACE2( "TRANSITION " << name << " second in_off= " << in_off );
+            // TRACE2( "TRANSITION second out_off= " << out_off );
+            start = e - in_off + 1;
+            TRACE2( "TRANSITION " << name << " second start= " << start );
+
+        }
+        // @todo: handle other transition types
+        if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
+        {
+            TRACE2( "DISSOLVE start= " << start << " end= " << end );
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
+            start = end = AV_NOPTS_VALUE;
         }
     }
 

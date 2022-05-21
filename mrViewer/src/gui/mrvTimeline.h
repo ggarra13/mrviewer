@@ -97,14 +97,14 @@ public:
     double display_minimum() const {
         return _display_min;
     }
-    void display_minimum( const double& x );
+    void display_minimum( double x );
     void undo_display_minimum();
     int64_t undo_minimum() const { return _undo_display_min; }
 
     double display_maximum() const {
         return _display_max;
     }
-    void display_maximum( const double& x );
+    void display_maximum( double x );
     void undo_display_maximum();
     int64_t undo_maximum() const { return _undo_display_max; }
 

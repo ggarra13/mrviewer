@@ -100,8 +100,9 @@ mrv::ImageBrowser* Timeline::browser() const
     return uiMain->uiReelWindow->uiBrowser;
 }
 
-void Timeline::display_minimum( const double& x )
+void Timeline::display_minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
     if ( x >= minimum() ) {
         //if ( _edl )
             _undo_display_min = _display_min;
@@ -145,12 +146,14 @@ void Timeline::undo_display_maximum()
     redraw();
 }
 
-void Timeline::display_maximum( const double& x )
+void Timeline::display_maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
     if ( x <= maximum() ) {
         //if ( _edl )
             _undo_display_max = _display_max;
         _display_max = x;
+        TRACE2( " _display_max is now " << x );
         if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
         {
             Fl_Slider::maximum( x );
@@ -168,6 +171,8 @@ void Timeline::display_maximum( const double& x )
 
 void Timeline::minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
+
     Fl_Slider::minimum( x );
     _display_min = x;
 
@@ -181,8 +186,11 @@ void Timeline::minimum( double x )
 
 void Timeline::maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
+
     Fl_Slider::maximum( x );
     _display_max = x;
+    TRACE2( " _display_max is now " << x );
 
     if ( uiMain && uiMain->uiView )
     {

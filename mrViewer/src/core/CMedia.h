@@ -1170,8 +1170,8 @@ public:
 
 
     /// Change audio volume
-    virtual void volume( float v );
-
+    void volume( float v );
+    float volume() const;
 
     inline bool has_subtitle() const
     {

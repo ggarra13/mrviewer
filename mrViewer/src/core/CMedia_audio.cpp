@@ -1949,7 +1949,19 @@ void CMedia::volume( float v )
     if ( _right_eye ) _right_eye->volume( v );
 
     if ( !_audio_engine ) return;
+
+    TRACE( name() << " has audio level " << v );
+
+
     _audio_engine->volume( v );
+}
+
+
+/// Change audio volume
+float CMedia::volume() const
+{
+    if ( !_audio_engine ) return 0.0f;
+    return _audio_engine->volume();
 }
 
 

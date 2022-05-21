@@ -151,11 +151,14 @@ void LogDisplay::info( const char* x )
             buf[t] = 'A';
         }
     }
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     free( buf );
 
     update_v_scrollbar();
+    Fl::unlock();
+    Fl::awake();
 }
 
 void LogDisplay::warning( const char* x )
@@ -176,11 +179,14 @@ void LogDisplay::warning( const char* x )
             buf[t] = 'B';
         }
     }
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     free( buf );
 
     update_v_scrollbar();
+    Fl::unlock();
+    Fl::awake();
 }
 
 void LogDisplay::error( const char* x )
@@ -201,11 +207,14 @@ void LogDisplay::error( const char* x )
             buf[t] = 'C';
         }
     }
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     free( buf );
 
     update_v_scrollbar();
+    Fl::unlock();
+    Fl::awake();
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;

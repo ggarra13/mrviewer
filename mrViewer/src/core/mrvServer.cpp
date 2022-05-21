@@ -784,14 +784,6 @@ bool Parser::parse( const std::string& s )
         v->redraw();
         ok = true;
     }
-    else if ( cmd == N_("AudioVolume") )
-    {
-        float t;
-        is >> t;
-
-        v->volume( t );
-        ok = true;
-    }
     else if ( cmd == N_("ShowBG") )
     {
         int b;
@@ -1059,7 +1051,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kInsertImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = new LoadInfo( imgname );
         v->commands.push_back( c );
         ok = true;
@@ -1072,7 +1064,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = NULL;
 
         v->commands.push_back( c );
@@ -1107,7 +1099,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = new LoadInfo(imgname, first, last);
 
         v->commands.push_back( c );

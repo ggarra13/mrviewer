@@ -1520,9 +1520,9 @@ inline void GLEngine::rot_y( double t )
 
 void GLEngine::alloc_cubes( size_t num )
 {
-    size_t num_quads = _quads.size();
+    clear_quads();
     _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    for ( size_t q = 0; q < num; ++q )
     {
         mrv::GLCube* s = new mrv::GLCube( _view );
         _quads.push_back( s );
@@ -1531,9 +1531,9 @@ void GLEngine::alloc_cubes( size_t num )
 
 void GLEngine::alloc_spheres( size_t num )
 {
-    size_t num_quads = _quads.size();
+    clear_quads();
     _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    for ( size_t q = 0; q < num; ++q )
     {
         mrv::GLSphere* s = new mrv::GLSphere( _view );
         _quads.push_back( s );
@@ -1542,9 +1542,9 @@ void GLEngine::alloc_spheres( size_t num )
 
 void GLEngine::alloc_quads( size_t num )
 {
-    size_t num_quads = _quads.size();
+    clear_quads();
     _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    for ( size_t q = 0; q < num; ++q )
     {
         mrv::GLQuad* quad = new mrv::GLQuad( _view );
         _quads.push_back( quad );
@@ -1817,7 +1817,7 @@ void GLEngine::draw_images( ImageList& images )
 
     CHECK_GL;
 
-    if ( num_quads > _quads.size() )
+    if ( num_quads != _quads.size() )
     {
         ImageView::VRType t = _view->vr();
         if ( t == ImageView::kVRSphericalMap )

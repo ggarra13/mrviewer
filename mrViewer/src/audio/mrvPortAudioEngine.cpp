@@ -96,12 +96,13 @@ static const int channel_mask[] = {
 };
 
 
-static void MMerror(const char *function, int err)
+static void MMerror(const char *function, unsigned line, int err)
 {
-    LOG_ERROR( function << " - " << err << " " << Pa_GetErrorText(err) );
+    LOG_ERROR( function << " (" << line << ") - "
+               << err << " " << Pa_GetErrorText(err) );
 }
 
-#define PA_ERROR(x) MMerror( __FUNCTION__, x );
+#define PA_ERROR(x) MMerror( __FUNCTION__, __LINE__, x );
 
 
 PortAudioEngine::PortAudioEngine() :
@@ -265,6 +266,7 @@ bool PortAudioEngine::open( const unsigned channels,
         {
             LOG_ERROR( _("Could not get device info for ") << _device_idx );
         }
+
 
         outputParameters.channelCount = channels;
         outputParameters.suggestedLatency = info->defaultLowOutputLatency;
