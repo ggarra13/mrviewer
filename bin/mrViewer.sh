@@ -38,7 +38,7 @@ root=${dir%/*/*}
 #
 # Add mrViewer's lib directory first to LD_LIBRARY_PATH
 #
-export LD_LIBRARY_PATH="${dir}/lib:/usr/local/lib:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
 export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 
 # Uncomment this to always use English in mrViewer, regardless of locale
