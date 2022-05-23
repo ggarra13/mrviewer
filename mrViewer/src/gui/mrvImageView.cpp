@@ -1970,6 +1970,8 @@ _vr( kNoVR ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _timeout( NULL ),
 _old_fg( NULL ),
+Aimg( NULL ),
+Bimg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
@@ -2006,6 +2008,8 @@ _lastFrame( 0 )
 void ImageView::stop_playback()
 {
 
+    playback( CMedia::kStopped );
+
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
@@ -2014,6 +2018,12 @@ void ImageView::stop_playback()
         img->stop();
         if ( uiMain && !timeline()->edl() ) frame( img->frame() );
     }
+
+    if ( Bimg )
+    {
+        Bimg->stop();
+    }
+
 
     mrv::media bg = background();
     if ( bg ) bg->image()->stop(true);
@@ -2040,8 +2050,8 @@ ImageView::~ImageView()
     // }
 
     //_clients.clear();
-
     // make sure to stop any playback
+
     stop_playback();
 
     delete _engine;
@@ -3623,13 +3633,8 @@ void ImageView::handle_commands()
         break;
     case kChangeImage:
     {
-        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
-        if ( !attr )
-        {
-            LOG_ERROR( _("Change Image failed") );
-            break;
-        }
-        int idx = attr->value();
+        int idx = c.frame;
+        Aimg = Bimg = NULL;
         mrv::Reel r = b->current_reel();
         bool found = false;
         mrv::MediaList::iterator j = r->images.begin();
@@ -3670,7 +3675,9 @@ void ImageView::handle_commands()
             found = ((size_t)idx < r->images.size() );
         }
         if ( found ) {
-            NET( "change image found.  Set to #" << idx );
+            CMedia* img = r->images[idx]->image();
+            TRACE2( "******** Change image found.  Set to #" << idx
+                    << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
         else
@@ -3687,13 +3694,7 @@ void ImageView::handle_commands()
     }
     case kInsertImage:
     {
-        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
-        if ( !attr )
-        {
-            LOG_ERROR( "Insert Image failed" );
-            break;
-        }
-        int idx = attr->value();
+        int idx = c.frame;
 
         NET( "insert image #" << idx );
 
@@ -4404,7 +4405,7 @@ void ImageView::draw()
     const mrv::media& bg = background();
 
     ImageList images;
-    images.reserve(2);
+    images.reserve(3);
 
     if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
@@ -4413,12 +4414,22 @@ void ImageView::draw()
             images.push_back( img );
     }
 
-    if ( fg )
+    bool in_transition = false;
+    if ( Aimg && Bimg )
+    {
+        images.push_back( Bimg );
+        images.push_back( Aimg );
+        in_transition = true;
+    }
+
+    if ( fg && !in_transition )
     {
         CMedia* img = fg->image();
         if ( img->has_picture() )
         {
-            _engine->image( fg->image() );
+            img->dissolve( 1.0f );
+            img->volume( _volume );
+            _engine->image( img );
             images.push_back( img );
         }
     }
@@ -4430,10 +4441,26 @@ void ImageView::draw()
     if ( fg )
     {
         img = fg->image();
-        Mutex& mtx = img->video_mutex();
-        SCOPED_LOCK( mtx );
 
-        DBGM3( __FUNCTION__ << " " << __LINE__ );
+
+#if 0
+        ImageList::const_iterator i = images.begin();
+        ImageList::const_iterator e = images.end();
+        int j = 0;
+        unsigned num = e - i;
+        for ( ; i != e; ++i, ++j )
+        {
+            CMedia* t = *i;
+            TRACE2( "Image #" << j << " of " << num << " is "
+                    << t->name() << " "
+                    << t->out_frame()
+                    << " - " << t->last_frame() << " transition="
+                    << in_transition
+                    << " playing= " << t->playback() << " " << frame() );
+        }
+        std::cerr << "--------------------------------------------------------------" << std::endl;
+#endif
+
         _engine->draw_images( images );
     }
 
@@ -4467,7 +4494,7 @@ void ImageView::draw()
     _engine->draw_annotation( img->shapes(), img );
     _engine->line_width(1.0);
 
-    if ( _zoom_grid )
+    if ( _zoom_grid && fg->name() != "Black Gap" )
       {
         _engine->draw_grid( img, 1.0 );
       }
@@ -9980,10 +10007,7 @@ void ImageView::update_layers()
 void ImageView::foreground( mrv::media fg )
 {
     mrv::media old = foreground();
-    if ( old == fg ) {
-        fill_menu( uiMain->uiMenuBar );
-        return;
-    }
+    if ( old == fg ) return;
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -9994,6 +10018,8 @@ void ImageView::foreground( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
+        TRACE2( "************* CHANGE FOREGROUND TO " << img->name()
+                << " FRAME " << img->frame() );
 
         double fps = img->fps();
         if ( img->is_sequence() &&
@@ -10016,18 +10042,23 @@ void ImageView::foreground( mrv::media fg )
 
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
         {
-            img->volume( _volume );
-
-            CMedia* right = img->right_eye();
-            if ( right ) right->volume( _volume );
-        }
-        else
-        {
-            mrv::AudioEngine* engine = img->audio_engine();
-            if ( engine )
+            float Av = 1.0f, Bv = 1.0f;
+            if ( Aimg )
             {
-                _volume = engine->volume();
-                uiMain->uiVolume->value( _volume );
+                Av = Aimg->volume();
+            }
+            if ( Bimg )
+            {
+                Bv = Bimg->volume();
+            }
+            uiMain->uiVolume->value( _volume );
+            if ( Aimg )
+            {
+                Aimg->volume( Av * _volume );
+            }
+            if ( Bimg )
+            {
+                Bimg->volume( Bv * _volume );
             }
         }
     }
@@ -10622,13 +10653,116 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    // Redraw browser to update thumbnail
+
     _frame = f;
 
+    mrv::ImageBrowser* b = browser();
     if  ( playback() == CMedia::kStopped )
     {
-        mrv::ImageBrowser* b = browser();
         if ( b ) b->redraw();
+    }
+    if ( !b ) return;
+
+    mrv::Reel reel = b->current_reel();
+    if ( !reel->edl || !reel )
+    {
+        redraw();
+        return;
+    }
+
+    bool in_transition = false;
+    TransitionList::const_iterator i = reel->transitions.begin();
+    TransitionList::const_iterator e = reel->transitions.end();
+    for ( ; i != e; ++i )
+    {
+        int64_t start = (*i).start();
+        int64_t   end = (*i).end();
+        if ( _frame <= start || _frame > end ) continue;
+        TRACE( "FRAME " << _frame << " START " << start << " END "
+                << end );
+
+        CMedia* Atmp = reel->image_at( start );
+        CMedia* Btmp = reel->image_at( end );
+        if ( !Atmp || !Btmp ) continue;
+        assert( Atmp != Btmp );
+
+        TRACE( "Atmp= " << Atmp->name() << " frame " << Atmp->frame() );
+        TRACE( "Btmp= " << Btmp->name() << " frame " << Btmp->frame() );
+
+        int64_t len = end - start;
+
+        float dissolve = float(frame() - start) / float(len);
+        float rdissolve = 1.0f - dissolve;
+        Atmp->volume( rdissolve * _volume );
+        Btmp->volume( dissolve  * _volume );
+        int64_t Aout = Atmp->out_frame();
+        int64_t Bin  = Btmp->in_frame();
+        int64_t A = Aout - len * rdissolve;
+        int64_t B = Bin  + len * dissolve;
+        TRACE( "Atmp= " << Atmp->name() << " disframe " << A << " dissolve="
+                << rdissolve << " volume=" << Atmp->volume() );
+        TRACE( "Btmp= " << Btmp->name() << " disframe " << B << " dissolve="
+                << dissolve << " volume=" << Btmp->volume() );
+        switch( playback() )
+        {
+        case CMedia::kForwards:
+            if ( Btmp->playback() != CMedia::kForwards )
+            {
+                TRACE2( "******** STARTED Btmp with local frame " << B );
+                Btmp->seek( B );
+                Btmp->play( CMedia::kForwards, uiMain, true );
+            }
+            if ( Atmp->playback() != CMedia::kForwards &&
+                 Atmp->frame() < Aout )
+            {
+                TRACE2( "******** STARTED Atmp with local frame " << A
+                        << " Aframe= " << Atmp->frame() << " GLOBAL " << f
+                        << " out= " << Aout);
+                Atmp->seek( A );
+                Atmp->play( CMedia::kForwards, uiMain, true );
+            }
+            break;
+        case CMedia::kBackwards:
+            if ( Btmp->playback() != CMedia::kBackwards &&
+                 Btmp->frame() > Bin )
+            {
+                TRACE2( "******** STARTED Btmp with local frame " << B
+                        << " Bframe= " << Btmp->frame() << " GLOBAL " << f
+                        << " in= " << Bin);
+                Btmp->seek( B );
+                Btmp->play( CMedia::kBackwards, uiMain, true );
+            }
+            if ( Atmp->playback() != CMedia::kBackwards )
+            {
+                TRACE2( "******** STARTED Atmp with local frame " << A );
+                Atmp->seek( A );
+                Atmp->play( CMedia::kBackwards, uiMain, true );
+            }
+            break;
+        case CMedia::kStopped:
+        default:
+            Btmp->seek( B );
+            Atmp->seek( A );
+            break;
+        }
+        Atmp->dissolve( rdissolve );
+        Aimg = Atmp;
+        Bimg = Btmp;
+        in_transition = true;
+        break;
+    }
+
+    if ( !in_transition ) {
+        CMedia::Playback play = playback();
+        if ( Aimg && play == CMedia::kForwards )
+        {
+            Aimg->playback( CMedia::kStopped );
+        }
+        if ( Bimg && play == CMedia::kBackwards )
+        {
+            Bimg->playback( CMedia::kStopped );
+        }
+        Aimg = Bimg = NULL;
     }
 
     redraw();
@@ -10915,10 +11049,7 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
-
-    if ( dir == playback() )
-        return;
-
+    assert( dir != CMedia::kStopped );
     if ( dir == CMedia::kForwards )
     {
         send_network(N_("playfwd"));
@@ -10953,9 +11084,7 @@ void ImageView::play( const CMedia::Playback dir )
 
     }
 
-
     playback( dir );
-
 
     double fps = uiMain->uiFPS->value();
 
@@ -10972,23 +11101,10 @@ void ImageView::play( const CMedia::Playback dir )
             img->play( dir, uiMain, true );
     }
 
-
-
     if ( bg && bg != fg )
     {
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
-        typedef boost::recursive_mutex Mutex;
-        Mutex& bgm = img->video_mutex();
-        SCOPED_LOCK( bgm );
-        CMedia::Barrier* barrier = img->fg_bg_barrier();
-        if ( !barrier ) return;
-        img = fg->image();
-        Mutex& fgm = img->video_mutex();
-        SCOPED_LOCK( fgm );
-        barrier->threshold( barrier->threshold() + img->has_audio() +
-                            img->has_picture() );
-        img->fg_bg_barrier( barrier );
     }
 
 }
@@ -11040,9 +11156,6 @@ void ImageView::stop()
     }
 
 
-
-    playback( CMedia::kStopped );
-
     _last_fps = 0.0;
     _real_fps = 0.0;
 
@@ -11050,7 +11163,7 @@ void ImageView::stop()
 
 
 
-    frame( frame() );
+    // frame( frame() );
     // seek( int64_t(timeline()->value()) );
 
 
@@ -11059,13 +11172,12 @@ void ImageView::stop()
         mrv::media fg = foreground();
         if (fg)
         {
-            _preframe = fg->image()->first_cache_empty_frame();
-            if ( _idle_callback )
+            CMedia* img = fg->image();
+            _preframe = img->first_cache_empty_frame();
+            if ( _idle_callback && preload_cache_full( img ) )
             {
                 preload_cache_stop();
             }
-            if ( ! preload_cache_full( fg->image() ) )
-                preload_cache_start();
         }
     }
 

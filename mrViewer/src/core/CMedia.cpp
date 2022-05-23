@@ -124,7 +124,6 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 bool       CMedia::_initialize = false;
 
-size_t      CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
 bool        CMedia::_uses_16bits = false;
@@ -403,6 +402,9 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
+_dissolve_start( std::numeric_limits<int64_t>::min() ),
+_dissolve_end( std::numeric_limits<int64_t>::max() ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -414,6 +416,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -436,6 +440,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
@@ -463,7 +468,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
 
     gettimeofday (&_lastFrameTime, 0);
@@ -477,7 +485,6 @@ _audio_engine( NULL )
         _initialize = true;
     }
 
-    //crossdissolve( 5 );
 }
 
 
@@ -521,6 +528,9 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
+_dissolve_start( std::numeric_limits<int64_t>::min() ),
+_dissolve_end( std::numeric_limits<int64_t>::max() ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -532,6 +542,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -550,6 +562,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -576,7 +589,10 @@ _aframe( NULL ),
 _audio_format( other->_audio_format.load() ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -640,6 +656,9 @@ _pixel_ratio( NULL ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
+_dissolve( other->_dissolve ),
+_dissolve_start( other->_dissolve_start ),
+_dissolve_end( other->_dissolve_end ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts.load() ),
@@ -652,6 +671,8 @@ _expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
+_frameIn( other->_frameIn ),
+_frameOut( other->_frameOut ),
 _frame_start( other->_frame_start ),
 _frame_end( other->_frame_end ),
 _start_number( other->_start_number ),
@@ -670,6 +691,7 @@ _displayWindow2( NULL ),
 _is_left_eye( other->_is_left_eye ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -696,7 +718,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -815,12 +840,6 @@ void CMedia::update_frame( const int64_t& f )
 }
 
 /**
- */
-void CMedia::wait_for_load_threads()
-{
-}
-
-/**
  * Wait for all threads to finish and exit.  Delete them afterwards.
  *
  */
@@ -829,8 +848,17 @@ void CMedia::wait_for_threads()
     for ( const auto& i : _threads )
     {
         boost::posix_time::time_duration timeout =
-        boost::posix_time::milliseconds(10000);
-        i->timed_join(timeout);
+        boost::posix_time::milliseconds(100000);
+        bool ok = false;
+        while( !ok )
+        {
+            ok = i->timed_join(timeout);
+            std::string type = "subtitle";
+            if ( i == _video_thread ) type = "video";
+            if ( i == _audio_thread ) type = "audio";
+            if ( i == _decode_thread ) type = "decode";
+            TRACE2( name() << " Thread " << i << ", type " << type << " returned " << ok );
+        }
         delete i;
     }
 
@@ -1594,7 +1622,7 @@ void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
     assert0( x != AV_NOPTS_VALUE );
-    _frameStart = x;
+    _frameStart = _frameIn = x;
     // if ( _frame < _frame_start ) _frame = _frameStart;
 }
 
@@ -1602,7 +1630,7 @@ void  CMedia::last_frame(int64_t x)
 {
     assert0( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
-    _frameEnd = x;
+    _frameEnd = _frameOut = x;
     // if ( _frame > _frame_end ) _frame = _frameEnd;
 }
 
@@ -1647,8 +1675,8 @@ void CMedia::sequence( const char* fileroot,
 
     _is_sequence = true;
     _dts = _adts = start;
-    _frameStart = _frame_start = start;
-    _frameEnd = _frame_end = end;
+    _frameStart = _frameIn = _frame_start = start;
+    _frameEnd = _frameOut = _frame_end = end;
 
 
     delete [] _sequence;
@@ -2659,21 +2687,23 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
+    TRACE2( name() << " frame " << frame() << " dir= " << dir
+            << " playback= " << _playback << " threads=" << _threads.size() );
+
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
     if ( dir == _playback && !_threads.empty() ) return;
 
-    TRACE("");
     stop(fg);
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     _playback = dir;
 
     assert( uiMain != NULL );
     assert( _threads.size() == 0 );
 
-    if ( _frame < first_frame() ) _frame = first_frame();
-    if ( _frame > last_frame() )  _frame = last_frame();
+    if ( _frame < in_frame() )  _frame = in_frame();
+    else if ( _frame > out_frame() ) _frame = out_frame();
 
     _audio_frame = _frame.load();
     // _expected = std::numeric_limits< int64_t >::min();
@@ -2692,19 +2722,18 @@ void CMedia::play(const CMedia::Playback dir,
 
     _audio_buf_used = 0;
 
-
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // clear all packets
     clear_packets();
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // This seek is needed to sync audio playback and flush buffers
     if ( dir == kForwards ) _seek_req = true;
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     seek_to_position( _frame );
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
 
 
     // Start threads
@@ -2762,6 +2791,7 @@ void CMedia::play(const CMedia::Playback dir,
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
         _loop_barrier = new Barrier( num );
+        assert( _loop_barrier );
 
         if ( valid_v || valid_a )
         {
@@ -2769,7 +2799,10 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::video_thread,
                              video_data ) );
+            _video_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame() << " added video thread "
+                   << t );
         }
 
         if ( valid_a )
@@ -2779,16 +2812,22 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::audio_thread,
                              audio_data ) );
+            _audio_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame() << " added audio thread "
+                    << t );
         }
 
         if ( valid_s )
         {
             // Subtitle playback thread
             subtitle_data = new PlaybackData( *data );
-            _threads.push_back( new boost::thread(
-                                    boost::bind( mrv::subtitle_thread,
-                                                 subtitle_data ) ) );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::subtitle_thread,
+                             subtitle_data ) );
+            _threads.push_back( t );
+            TRACE2( name() << " frame " << frame() << " added subtitle thread "
+                    << t );
         }
 
 
@@ -2798,7 +2837,10 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::decode_thread,
                              data ) );
+            _decode_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame() << " added decode thread "
+                    << t );
         }
 
 
@@ -2821,10 +2863,14 @@ void CMedia::stop(const bool bg)
 
     if ( _playback == kStopped && _threads.empty() ) return;
 
+
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 
+    TRACE2( name() << " stop at frame " << frame()
+            << " playback = " << _playback
+            << " has threads? " << _threads.empty() );
 
-    TRACE("");
+
 
     _playback = kStopped;
 
@@ -2834,7 +2880,9 @@ void CMedia::stop(const bool bg)
 
     //
     // Notify loop barrier, to exit any wait on a loop
-    //w
+    //
+
+
 
     if ( _loop_barrier )  _loop_barrier->notify_all();
 
@@ -2849,35 +2897,30 @@ void CMedia::stop(const bool bg)
     _video_packets.cond().notify_all();
     _subtitle_packets.cond().notify_all();
 
+    TRACE( name() << " frame " << frame() );
 
     // Wait for all threads to exit
     wait_for_threads();
 
+    TRACE( name() << " frame " << frame() );
 
     // Clear barrier
 
-    delete _loop_barrier;
-    _loop_barrier = NULL;
-    delete _stereo_barrier;
-    _stereo_barrier = NULL;
-
-#if 0
     if ( bg ) {
-    TRACE("");
+        TRACE( name() << " frame " << frame() );
         delete _fg_bg_barrier;
         _fg_bg_barrier = NULL;
     }
-#endif
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // close_audio();
 
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // Clear any audio/video/subtitle packets
     clear_packets();
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // Queue thumbnail for update
     image_damage( image_damage() | kDamageThumbnail | kDamageData );
 
@@ -2961,8 +3004,8 @@ bool CMedia::frame( const int64_t f )
                           (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
 
-    if ( f < _frameStart )     _dts = _frameStart;
-    else if ( f > _frameEnd )  _dts = _frameEnd;
+    if ( f < _frameIn ) _dts = _frameIn;
+    else if ( f > _frameOut )  _dts = _frameOut;
     else                       _dts = f;
 
     AVPacket* pkt;
@@ -3013,22 +3056,22 @@ bool CMedia::frame( const int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
-//#define DEBUG_SEEK
+#define DEBUG_SEEK
 
 
     _seek_frame = f;
     _seek_req   = true;
 #ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
-              << stopped() << " _seek_frame " << _seek_frame << std::endl;
+    TRACE( name() << " frame " << f << " first "
+           << _frameIn << " last " << _frameOut );
 #endif
 
 
     if ( _right_eye && _owns_right_eye )
     {
 #ifdef DEBUG_SEEK
-        std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
-                  << stopped() << std::endl;
+        TRACE( name() << " RIGHT EYE frame " << f << " first "
+               << _frameIn << " last " << _frameOut );
 #endif
         _right_eye->_seek_frame = f;
         _right_eye->_seek_req = true;
@@ -3037,7 +3080,7 @@ void CMedia::seek( const int64_t f )
     if ( stopped() || saving() )
     {
 #ifdef DEBUG_SEEK
-        std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+        TRACE( name() << " call do_seek to " << f );
 #endif
         do_seek();
 
@@ -3045,8 +3088,8 @@ void CMedia::seek( const int64_t f )
     }
 
 #ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
-              << _frame << " _expected: " << _expected << std::endl;
+    TRACE( "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
+           << _frame << " _expected: " << _expected );
 #endif
 }
 

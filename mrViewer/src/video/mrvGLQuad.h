@@ -72,13 +72,6 @@ public:
         _mask_value = m;
     }
 
-    inline float fade() const {
-        return _fade;
-    }
-    inline void fade( const float f ) {
-        _fade = f;
-    }
-
     inline float dissolve() const {
         return _dissolve;
     }
@@ -174,7 +167,6 @@ protected:
     GLuint       _vbo;
     bool         _right;
     bool         _blend;
-    float        _fade;
     float        _dissolve;
     float        _gamma;
     GLenum       _blend_mode;

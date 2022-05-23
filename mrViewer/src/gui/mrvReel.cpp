@@ -47,10 +47,11 @@ uint64_t Reel_t::duration() const
 
 size_t Reel_t::index( const CMedia* const img ) const
 {
+    if ( images.empty() ) return std::numeric_limits<size_t>::max();
+
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
-    if ( i == e ) return std::numeric_limits<size_t>::max();
 
     size_t r = 0;
 
@@ -140,7 +141,6 @@ mrv::media Reel_t::media_at( const int64_t f ) const
         return mrv::media();
     }
 
-    int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
@@ -158,6 +158,16 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     }
 
     return images[r];
+}
+
+int64_t Reel_t::local_to_global( const int64_t f,
+                                 const CMedia* const img ) const
+{
+    if ( !edl ) return f;
+    int64_t r = f;
+    r += location(img);
+    r -= img->first_frame();
+    return r;
 }
 
 int64_t Reel_t::global_to_local( const int64_t f ) const
@@ -180,6 +190,10 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
         if ( f >= start && f <= end )
         {
             r = f - start + img->first_frame();
+            TRACE2( img->name()
+                    << " global f= " << f << " position= " << start
+                    << " first frame = " << img->first_frame()
+                    << " LOCAL FRAME= " << r );
             break;
         }
     }

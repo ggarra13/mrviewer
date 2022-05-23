@@ -232,14 +232,26 @@ unsigned long get_thread_id();
 #define DBG
 #endif
 
+#  ifndef __PRETTY_FUNCTION__
+#    define __PRETTY_FUNCTION__ __FUNCTION__
+#  endif
 
 #if 0
 #  define TRACE(msg) do { \
-    std::cerr << _("mrViewer TRACE : ") << msg << std::flush << " at "          \
-              << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
-} while(0)
+        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
+                  << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
+    } while(0)
 #else
 #  define TRACE(msg)
+#endif
+
+#ifdef DEBUG
+#  define TRACE2(msg) do { \
+        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
+                  << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
+    } while(0)
+#else
+#  define TRACE2(msg)
 #endif
 
 #endif

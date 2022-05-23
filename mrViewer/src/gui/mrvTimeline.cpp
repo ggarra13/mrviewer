@@ -100,8 +100,9 @@ mrv::ImageBrowser* Timeline::browser() const
     return uiMain->uiReelWindow->uiBrowser;
 }
 
-void Timeline::display_minimum( const double& x )
+void Timeline::display_minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
     if ( x >= minimum() ) {
         //if ( _edl )
             _undo_display_min = _display_min;
@@ -145,8 +146,9 @@ void Timeline::undo_display_maximum()
     redraw();
 }
 
-void Timeline::display_maximum( const double& x )
+void Timeline::display_maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
     if ( x <= maximum() ) {
         //if ( _edl )
             _undo_display_max = _display_max;
@@ -168,6 +170,8 @@ void Timeline::display_maximum( const double& x )
 
 void Timeline::minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
+
     Fl_Slider::minimum( x );
     _display_min = x;
 
@@ -181,6 +185,8 @@ void Timeline::minimum( double x )
 
 void Timeline::maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
+
     Fl_Slider::maximum( x );
     _display_max = x;
 
@@ -196,7 +202,6 @@ void Timeline::edl( bool x )
 {
     _edl = x;
 
-    return;
 
     if ( _edl && uiMain && browser() )
     {
@@ -676,7 +681,7 @@ void Timeline::draw()
         mx = display_maximum();
     }
 
-    double v  = uiMain->uiView->frame(); //value();
+    int64_t v  = uiMain->uiView->frame(); //value(); // @todo: should be value()
 
     if ( !browser() ) return;
 
@@ -747,7 +752,7 @@ void Timeline::draw()
             CMedia* img = (*i)->image();
 
             size = img->duration();
-            int64_t pos = (*i)->position() - img->first_frame();
+            int64_t pos = (*i)->position() - img->in_frame();
 
 
             // skip this block if outside visible timeline span

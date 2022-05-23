@@ -354,8 +354,6 @@ public:
         kDecodeLoopStart = 6,
         kDecodeLoopEnd = 7,
         kDecodeBufferFull = 8,
-        kDecodeDissolveAtStart = 9,
-        kDecodeDissolveAtEnd = 10,
     };
 
     enum StereoInput {
@@ -397,76 +395,43 @@ public:
         kSubtitleStream
     };
 
-    enum FadeType
-    {
-        kNoFade = 0,
-        kFadeIn = 1,
-        kFadeOut = 2,
-        kCrossDissolveAtStart = 1+4,
-        kCrossDissolveAtEnd = 2+4,
-    };
-
-
-    struct Fade
-    {
-        FadeType type;
-        int64_t frames;
-
-        Fade() : type( kFadeIn ), frames(0) {};
-    };
-
-    Fade _fade[3];
-
 public:
 
     virtual DecodeStatus decode_eof( int64_t frame ) { return kDecodeOK; }
 
-    inline void fade_in( int64_t f ) {
-        _fade[0].type = kFadeIn; _fade[0].frames = f;
-    }
 
-    inline void fade_out( int64_t f ) {
-        _fade[1].type = kFadeOut; _fade[1].frames = f;
-    }
-
-    inline void crossdissolve( int64_t f ) {
-        _fade[2].type = kCrossDissolveAtEnd;
-        _fade[2].frames = f;
-    }
+    inline void dissolve( float f )
+        {
+            _dissolve = f;
+        }
 
     inline float dissolve() const
         {
-            float f = 1.0f;
-            if ( _fade[2].type == kCrossDissolveAtEnd &&
-                 _frame > last_frame() - _fade[2].frames )
-            {
-                f = float( last_frame() - _frame ) / _fade[2].frames;
-            }
-            return f;
+            return _dissolve;
         }
 
-    inline int64_t fade_frames( FadeType type ) const
+
+
+    inline void dissolve_start( int64_t f )
         {
-            if ( type == kFadeIn ) return _fade[0].frames;
-            else if ( type == kFadeOut ) return _fade[1].frames;
-            else if ( type == kCrossDissolveAtEnd ) return _fade[2].frames;
-            else return 0;
+            _dissolve_start = f;
         }
 
-    inline float fade() const
+    inline int64_t dissolve_start() const
         {
-            float f = 1.0f;
-            if ( _frame < first_frame() + _fade[0].frames )
-            {
-                f = float( _frame - first_frame() ) / (float) _fade[0].frames;
-            }
-            else if ( _fade[1].type == kFadeOut &&
-                      _frame > last_frame() - _fade[1].frames )
-            {
-                f = float( last_frame() - _frame ) / (float) _fade[1].frames;
-            }
-            return f;
+            return _dissolve_start;
         }
+
+    inline void dissolve_end( int64_t f )
+        {
+            _dissolve_end = f;
+        }
+
+    inline int64_t dissolve_end() const
+        {
+            return _dissolve_end;
+        }
+
 
 
     /// Fetch (load) the image for a frame
@@ -723,7 +688,8 @@ public:
     inline int64_t   dts()                      {
         return _dts;
     }
-    //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
+
+    inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
 
     inline int64_t expected() const {
         return _expected;
@@ -1022,6 +988,19 @@ public:
         return 0;
     }
 
+    /// Sets the first frame in the transition of image (< first_frame() )
+    void in_frame( int64_t x ) { _frameIn = x; }
+
+    inline int64_t in_frame() const {
+        return _frameIn;
+    }
+
+    /// Sets the last frame in the transition of image (> last_frame() )
+    void out_frame( int64_t x ) { _frameOut = x; }
+
+    inline int64_t out_frame() const {
+        return _frameOut;
+    }
 
     /// Sets the first frame in the range of playback
     void  first_frame(int64_t x);
@@ -1129,9 +1108,8 @@ public:
 
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,
-                       ViewerUI* const uiMain,
-                       const bool fg );
+    void play( const Playback dir, ViewerUI* const uiMain,
+               const bool fg );
 
 
 
@@ -1191,8 +1169,8 @@ public:
 
 
     /// Change audio volume
-    virtual void volume( float v );
-
+    void volume( float v );
+    float volume() const;
 
     inline bool has_subtitle() const
     {
@@ -1611,8 +1589,6 @@ public:
 
     void fetch_audio( const int64_t frame );
 
-    // Wait for load threads to exit (unused)
-    void wait_for_load_threads();
 
     // Wait for all threads to exit
     void wait_for_threads();
@@ -1986,7 +1962,6 @@ protected:
                                  AVStream* stream );
 
 protected:
-    static size_t  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
     static bool _supports_yuva;         //!< display supports yuva
     static bool _uses_16bits;         //!< display supports 16 bits movies
@@ -2044,6 +2019,9 @@ protected:
     // mostly unused --- keep?
     RenderingIntent _rendering_intent;
     float     _gamma;
+    float     _dissolve;
+    int64_t   _dissolve_start;
+    int64_t   _dissolve_end;
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
@@ -2060,6 +2038,9 @@ protected:
 
     int64_t   _frameStart;  //!< user start frame for sequence or movie
     int64_t   _frameEnd;    //!< user end frame for sequence or movie
+
+    int64_t   _frameIn;     //!< start frame of transition (dissolve)
+    int64_t   _frameOut;    //!< end frame of transition (dissolve)
 
     int64_t   _frame_start; //!< real start frame for sequence or movie
     int64_t   _frame_end;   //!< real end frame for sequence or movie
@@ -2099,6 +2080,7 @@ protected:
 
     // Audio file when different from video
     std::string _audio_file;
+    size_t      _audio_max;        //!< max size of audio buf
 
     // Image color profile for ICC
     char*     _profile;
@@ -2186,6 +2168,13 @@ protected:
     timeval    _lastFpsFrameTime;
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
+
+#if 1
+    boost::thread* _video_thread;
+    boost::thread* _audio_thread;
+    boost::thread* _decode_thread;
+#endif
+
 
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;

@@ -50,8 +50,6 @@ namespace mrv {
         int64_t last;
         int64_t start;
         int64_t end;
-        int64_t fade_in;
-        int64_t fade_out;
 
         double fps;
 
@@ -81,8 +79,6 @@ namespace mrv {
             last( ef ),
             start( s ),
             end( e ),
-            fade_in( 0 ),
-            fade_out( 0 ),
             fps( f ),
             reel( false ),
             otio( false ),
@@ -114,8 +110,6 @@ namespace mrv {
             last( ef ),
             start( s ),
             end( e ),
-            fade_in( 0 ),
-            fade_out( 0 ),
             fps( f ),
             reel( false ),
             otio( false ),
@@ -141,8 +135,6 @@ namespace mrv {
             last( AV_NOPTS_VALUE ),
             start( AV_NOPTS_VALUE ),
             end( AV_NOPTS_VALUE ),
-            fade_in( 0 ),
-            fade_out( 0 ),
             fps( -1.0 ),
             reel( false ),
             otio( false ),
@@ -169,8 +161,6 @@ namespace mrv {
             last( b.last ),
             start( b.start ),
             end( b.end ),
-            fade_in( 0 ),
-            fade_out( 0 ),
             fps( b.fps ),
             reel( b.reel ),
             otio( b.otio ),
@@ -192,8 +182,6 @@ namespace mrv {
                 last = b.last;
                 start = b.start;
                 end = b.end;
-                fade_in = 0;
-                fade_out = 0;
                 fps = b.fps;
                 reel = b.reel;
                 otio = b.otio;

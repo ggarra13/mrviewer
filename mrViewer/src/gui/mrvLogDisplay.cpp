@@ -156,6 +156,7 @@ void LogDisplay::info( const char* x )
     free( buf );
 
     update_v_scrollbar();
+    scroll( _lines-1, 0 );
 }
 
 void LogDisplay::warning( const char* x )
@@ -181,6 +182,7 @@ void LogDisplay::warning( const char* x )
     free( buf );
 
     update_v_scrollbar();
+    scroll( _lines-1, 0 );
 }
 
 void LogDisplay::error( const char* x )
@@ -204,8 +206,8 @@ void LogDisplay::error( const char* x )
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     free( buf );
-
     update_v_scrollbar();
+    scroll( _lines-1, 0 );
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;

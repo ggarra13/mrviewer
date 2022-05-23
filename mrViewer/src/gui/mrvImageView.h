@@ -380,6 +380,7 @@ public:
     /// Change stereo main image and attach B image
     void change_foreground();
 
+
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
 
@@ -552,6 +553,9 @@ public:
     inline const ViewerUI* main() const {
         return uiMain;
     }
+
+    inline CMedia* A_image() const { return Aimg; }
+    inline CMedia* B_image() const { return Bimg; }
 
     /// Auxiliary function to return viewer's main fltk window
     MainWindow* fltk_main();
@@ -1026,6 +1030,8 @@ protected:
     mrv::media _fg;
     CMedia* _old_fg;
     mrv::media _bg;
+    CMedia*    Aimg; // A dissolve image
+    CMedia*    Bimg; // B dissolve image
 
     int   _fg_reel;
     int   _bg_reel;
@@ -1043,7 +1049,7 @@ protected:
     ///////////////////
     // Playback state
     ///////////////////
-    std::atomic<CMedia::Playback>   _playback;         //!< status of view
+    CMedia::Playback   _playback;         //!< status of view
     CMedia::Playback   _orig_playback;    //!< play direction once started
 
     bool _network_active;  //<- whether to send commands across the network

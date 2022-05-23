@@ -338,6 +338,7 @@ int main( int argc, const char** argv )
     Fl::scheme("gtk+");
     fl_open_display();
     Fl::option( Fl::OPTION_VISIBLE_FOCUS, false );
+    Fl::lock();  // initialize lock system
 
     // Adjust ui based on preferences
     for (;;) {
@@ -369,7 +370,7 @@ int main( int argc, const char** argv )
 
           ui->uiMain->show();
           DBG;
-          
+
           if (opts.host.empty() && opts.port != 0)
           {
               mrv::ServerData* data = new mrv::ServerData;

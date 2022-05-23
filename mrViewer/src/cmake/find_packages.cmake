@@ -92,9 +92,7 @@ else()
     set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
 
 
-    if( CMAKE_BUILD_TYPE STREQUAL "Debug" OR
-	CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" )
-
+    if( CMAKE_BUILD_TYPE STREQUAL "Debug"  )
       add_compile_options( -fsanitize=address )
       set(LIBRARIES -fsanitize=address ${LIBRARIES} )
     endif()
@@ -217,6 +215,7 @@ if( NOT WIN32 )
   NAMES boost_thread boost_thread-mt
   PATHS ${Boost_LIBRARY_DIRS}
   )
+
 
   set( BOOST_LIBRARIES
   ${Boost_locale_LIBRARY}

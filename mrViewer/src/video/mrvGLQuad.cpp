@@ -1078,9 +1078,6 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         CHECK_GL;
         _shader->setUniform( "height", _height );
         CHECK_GL;
-
-        _shader->setUniform( "fade", _fade );
-        CHECK_GL;
         _shader->setUniform( "dissolve", _dissolve );
         CHECK_GL;
         _shader->setUniform( "gain",  _view->gain() );

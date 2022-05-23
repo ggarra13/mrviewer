@@ -64,6 +64,7 @@ namespace fs = boost::filesystem;
 #include "core/Sequence.h"
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
+#include "core/mrvMath.h"
 #include "core/mrvThread.h"
 #include "core/mrStackTrace.h"
 #include "AMFReader.h"
@@ -1249,17 +1250,6 @@ void ImageBrowser::save_session()
                      img->first_frame(), img->last_frame(),
                      img->start_frame(), img->end_frame(), img->fps() );
 
-            if ( img->fade_frames( CMedia::kFadeIn ) > 0 )
-            {
-                fprintf( f, "FadeIN %" PRId64 "\n",
-                         img->fade_frames( CMedia::kFadeIn ) );
-            }
-
-            if ( img->fade_frames( CMedia::kFadeOut ) > 0 )
-            {
-                fprintf( f, "FadeOUT %" PRId64 "\n",
-                         img->fade_frames( CMedia::kFadeOut ) );
-            }
 
             if ( img->has_audio() && img->audio_file() != "" )
             {
@@ -1950,7 +1940,8 @@ void ImageBrowser::save_session()
 
     }
 
-    void ImageBrowser::real_change_image( int v, int i, CMedia::Playback play )
+    void ImageBrowser::real_change_image( int v, int i,
+                                          CMedia::Playback FGplay )
     {
         mrv::Reel reel = current_reel();
 
@@ -1959,6 +1950,8 @@ void ImageBrowser::save_session()
         if ( v >= 0 && v < (int)reel->images.size() )
         {
             mrv::media orig = reel->images[v];
+            CMedia* img = orig->image();
+            if ( FGplay && img ) img->stop();
             item = root()->child(v);
             ok = deselect( item, 0 );
             if ( ok < 0 )
@@ -1986,7 +1979,7 @@ void ImageBrowser::save_session()
             }
         }
 
-        DBGM1( "CHANGE IMAGE TO INDEX " << i );
+        TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         view()->foreground( m );
 
         int64_t first, last;
@@ -2007,26 +2000,32 @@ void ImageBrowser::save_session()
 
         send_image( i );
 
+        TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         CMedia* img = NULL;
         if ( m ) img = m->image();
         if ( reel->edl && img )
         {
-            int64_t pos = m->position() - img->first_frame() + img->frame();
-            DBGM3( "seek to " << pos );
-            if ( !_loading ) seek( pos );
+#if 0
+            if ( !_loading )
+            {
+                int64_t pos = reel->local_to_global( img->frame(), img );
+                if ( !FGplay ) seek( pos );
+            }
+#endif
         }
         else
         {
-            if (img) seek( img->first_frame() );
+            if ( img ) img->seek( img->first_frame() );
         }
 
         add_menu( main()->uiReelWindow->uiMenuBar );
 
-        if ( play ) view()->play(play);
+        if ( FGplay && img ) img->play( FGplay, uiMain, true );
     }
 
     void ImageBrowser::change_image( int i )
     {
+        TRACE( "CHANGE IMAGE TO " << i );
 
         mrv::Reel reel = current_reel();
         if ( i < 0 ) {
@@ -2041,17 +2040,24 @@ void ImageBrowser::save_session()
             return;
         }
 
+        mrv::media fg = view()->foreground();
+        mrv::media bg = view()->background();
+        CMedia* FGimg = NULL, *BGimg = NULL;
+        if ( fg ) FGimg = fg->image();
+        if ( bg ) BGimg = bg->image();
 
-        CMedia::Playback play = (CMedia::Playback) view()->playback();
-        if ( play != CMedia::kStopped )  view()->stop();
+        CMedia::Playback FGplay = CMedia::kStopped;
+        if ( FGimg ) FGplay = FGimg->playback();
+        CMedia::Playback BGplay = CMedia::kStopped;
+        if ( BGimg ) BGplay = BGimg->playback();
 
         int v = value();
         if ( i == v ) {
-            if ( play ) view()->play(play);
+            TRACE( "CHANGE IMAGE TO " << i << " == " << v );
             return;
         }
 
-        real_change_image( v, i, play );
+        real_change_image( v, i, FGplay );
 
     }
 
@@ -2105,11 +2111,6 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 )
-        {
-            img->fps( fps );
-            img->play_fps( fps );
-        }
 
         if ( img->has_video() || img->has_audio() )
         {
@@ -2188,11 +2189,6 @@ void ImageBrowser::save_session()
                                            const bool avoid_seq )
     {
 
-
-
-        if ( first != AV_NOPTS_VALUE ) frame( first );
-
-
         CMedia* img;
         if ( start != AV_NOPTS_VALUE )
         {
@@ -2222,11 +2218,32 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 && !img->has_video() )
+        if ( fps > 0.0 )
         {
-            img->fps( fps );
-            img->play_fps( fps );
+            if ( !img->has_video() )
+            {
+                img->fps( fps );
+            }
         }
+
+#if 0
+            else
+            {
+                if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
+                {
+                    double firstfps = img->first_frame() / fps;
+                    double lastfps  = img->last_frame() / fps;
+                    double firstimg = img->first_frame() / img->fps();
+                    double lastimg  = img->last_frame() / img->fps();
+                    int64_t first = img->first_frame() / fps * img->fps();
+                    int64_t last  = img->last_frame() / fps * img->fps();
+
+                    img->first_frame( first );
+                    img->last_frame( last );
+                    img->play_fps( fps );
+                }
+            }
+#endif
 
         if ( img->has_video() || img->has_audio() )
         {
@@ -2255,10 +2272,10 @@ void ImageBrowser::save_session()
                                                  const bool avoid_seq )
     {
 
-        mrv::Reel reel = current_reel();
         CMedia* img = load_image( name, first, last, start, end, fps,
                                   avoid_seq );
         if ( !img ) return mrv::media();
+
 
         mrv::media m = this->add( img );
 
@@ -2284,12 +2301,14 @@ void ImageBrowser::save_session()
         {
             int64_t start = AV_NOPTS_VALUE;
             int64_t end   = AV_NOPTS_VALUE;
+            float fps = -1.0;
             if ( mrv::is_valid_sequence( bgimage.c_str() ) )
             {
+                fps = 24.0f;
                 mrv::get_sequence_limits( start, end, bgimage );
             }
             mrv::media bg = load_image_in_reel( bgimage.c_str(),
-                                                start, end, start, end, 24.0f,
+                                                start, end, start, end, fps,
                                                 false );
             set_bg( bg );
         }
@@ -2463,8 +2482,6 @@ void ImageBrowser::save_session()
                 if ( fg )
                 {
                     CMedia* img = fg->image();
-                    img->fade_in( load.fade_in );
-                    img->fade_out( load.fade_out );
 
                     if ( load.audio != "" )
                     {
@@ -2561,23 +2578,15 @@ void ImageBrowser::save_session()
         if ( reel == oldreel && numImages > 0 )
         {
             this->change_image( (int)reel->images.size()-1 );
-            frame( img->first_frame() );
         }
         else
         {
             // display first image for good EDL playback
             this->change_image( 0 );
-
-            if ( reel->edl )
-            {
-                int64_t offset = timeline()->offset( img );
-                frame( offset + img->first_frame() );
-            }
-            else
-            {
-                frame( img->first_frame() );
-            }
         }
+
+        int64_t f = reel->local_to_global( img->first_frame(), img );
+        frame( f );
 
         int64_t first, last;
         adjust_timeline( first, last );
@@ -2960,6 +2969,65 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
     set_edl();
 
+
+    TransitionList::const_iterator i = reel->transitions.begin();
+    TransitionList::const_iterator e = reel->transitions.end();
+    for ( ; i != e; ++i )
+    {
+        int64_t start = (*i).start();
+        int64_t   end = (*i).end();
+        CMedia* Aimg = reel->image_at( start + 1 );
+        CMedia* Bimg = reel->image_at( end + 1 );
+        if ( !Bimg || !Aimg ) continue;
+
+
+        int64_t len = end - start;
+        double len2 = len / 2.0;
+
+        int64_t outlen = len2;
+        int64_t  inlen = len2;
+
+        int64_t out = Aimg->last_frame() + outlen;
+        int64_t in  = Bimg->first_frame() - inlen;
+
+
+
+        Aimg->dissolve_end( end );
+        Aimg->in_frame( Aimg->first_frame() );
+        Aimg->out_frame( out );
+        Aimg->play_fps( Aimg->fps() );
+
+        Bimg->dissolve_start( len );
+        Bimg->in_frame( in );
+        Bimg->out_frame( Bimg->last_frame() );
+        Bimg->play_fps( Bimg->fps() );
+        Bimg->seek( Bimg->in_frame() ); // prepare image
+
+
+        TRACE2( "start " << start << " end " );
+
+        TRACE( "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() );
+        TRACE2( "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() );
+        TRACE( "G Aimg "
+                  << reel->local_to_global( Aimg->first_frame(), Aimg ) << " - "
+                  << reel->local_to_global( Aimg->last_frame(), Aimg )
+                  );
+        TRACE2( "G Bimg "
+                  << reel->local_to_global( Bimg->first_frame(), Bimg ) << " - "
+                  << reel->local_to_global( Bimg->last_frame(), Bimg )
+                  );
+        TRACE( "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() );
+        TRACE2( "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() );
+        TRACE( "GI/O Aimg "
+                  << reel->local_to_global( Aimg->in_frame(), Aimg ) << " - "
+                  << reel->local_to_global( Aimg->out_frame(), Aimg )
+                  );
+        TRACE2( "GI/O Bimg "
+                  << reel->local_to_global( Bimg->in_frame(), Bimg ) << " - "
+                  << reel->local_to_global( Bimg->out_frame(), Bimg )
+                  );
+    }
+
 }
 
 /**
@@ -3227,14 +3295,14 @@ void ImageBrowser::clone_current()
 void ImageBrowser::set_timeline( const int64_t& first, const int64_t& last )
 {
     mrv::Timeline* t = timeline();
-    if ( t )
+    if ( t && !t->edl() )
     {
         t->minimum( double(first) );
         t->maximum( double(last) );
+        uiMain->uiStartFrame->value( first );
+        uiMain->uiEndFrame->value( last );
         t->redraw();
     }
-    uiMain->uiStartFrame->value( first );
-    uiMain->uiEndFrame->value( last );
 }
 
 /**
@@ -3559,16 +3627,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    if ( prefix.size() == 2 &&
-         (prefix[0] == '_' || prefix[0] == '.') &&
-         (prefix[1] == 'v' || prefix[1] == 'V') )
-    {
-        short_prefix = prefix;
-        LOG_INFO( _("Regex ") << prefix <<
-                  (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
-    }
-    else if ( prefix.size() < 5 )
+    if ( prefix.size() < 5 )
     {
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
@@ -3709,7 +3768,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     }
 
     CMedia* newImg = load_image( loadfile.c_str(),
-                                 start, end, start, end, 24.0f, false );
+                                 start, end, start, end, img->fps(), false );
     if ( !newImg ) return;
 
 
@@ -4825,17 +4884,21 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
+    if ( tframe == view()->frame() ) return;
+
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     CMedia::Playback play = view()->playback();
+    if ( play ) view()->stop();
 
-    if ( play != CMedia::kStopped )
-        view()->stop();
+    TRACE2( "BROWSER seek to frame " << f
+            << " view frame " << view()->frame()
+            << " view->playback=" << play );
+
 
     char buf[64];
     sprintf( buf, "seek %" PRId64, f );
     view()->send_network(buf);
-
 
 
     mrv::media fg = view()->foreground();
@@ -4846,11 +4909,12 @@ void ImageBrowser::seek( const int64_t tframe )
 
     mrv::Timeline* t = timeline();
 
-    mrv::Reel reel = reel_at( view()->fg_reel() );
+    mrv::Reel reel = current_reel();
     mrv::Reel bgreel = reel_at( view()->bg_reel() );
-    // We do not check bgreel validity here
-    if ( reel && reel != bgreel && reel->edl )
+    if ( reel && reel->edl )
     {
+        TRACE( "BROWSER seek to frame " << f );
+
         // Check if we need to change to a new sequence based on frame
         mrv::media m = reel->media_at( tframe );
         if (! m ) return;
@@ -4858,6 +4922,12 @@ void ImageBrowser::seek( const int64_t tframe )
         if ( fg && fg != m )
         {
             CMedia* img = fg->image();
+
+            TRACE2( "BROWSER old image " << img->name() << " gframe= " << f
+                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() << " stopped? "
+                    << img->stopped() );
+            img->stop();
             img->close_audio();
         }
         if ( bg && bg != m )
@@ -4870,6 +4940,10 @@ void ImageBrowser::seek( const int64_t tframe )
         CMedia* img = m->image();
         if ( ! img ) return;
 
+        TRACE2( "BROWSER new image " << img->name() << " gframe= " << f
+                << " lframe= " << img->frame() << " in= " << img->in_frame()
+                << " out= " << img->out_frame() << " stopped? "
+                << img->stopped() );
 
         if ( f < t->display_minimum() )
         {
@@ -4880,32 +4954,41 @@ void ImageBrowser::seek( const int64_t tframe )
             f = int64_t(t->display_minimum() - t->display_maximum()) + f - 1;
         }
 
-
         mrv::media fg = view()->foreground();
+        int64_t lf = reel->global_to_local( f );
 
         if ( m != fg && fg )
         {
-
             size_t i = reel->index( f );
             img = reel->image_at( f );
-            int64_t lf = reel->global_to_local( f );
             if ( !img ) return;
 
-            img->volume( uiMain->uiVolume->value() );
+
+            TRACE2( "BROWSER pre seek " << img->name() << " gframe= " << f
+                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() << " stopped? "
+                    << img->stopped() );
+
             img->seek( lf );
 
-            if ( (int) i < children() )
+            if ( i < reel->images.size() )
                 change_image((int)i);
 
-
+            TRACE2( "BROWSER post seek " << img->name() << " gframe= " << f
+                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() << " stopped? "
+                    << img->stopped() );
 
             CMedia* old = fg->image();
             if (old->has_video()) old->clear_cache();
         }
         else
         {
-            int64_t lf = reel->global_to_local( f );
-            img->volume( uiMain->uiVolume->value() );
+            TRACE2( "BROWSER same image " << img->name() << " gframe= " << f
+                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+                    << " out= " << img->out_frame() << " stopped? "
+                    << img->stopped() );
+
             img->seek( lf );
         }
 
@@ -4931,8 +5014,6 @@ void ImageBrowser::seek( const int64_t tframe )
     }
     else
     {
-        mrv::Reel reel = current_reel();
-
         mrv::media fg = view()->foreground();
         if (!fg) return;
 
@@ -4946,12 +5027,6 @@ void ImageBrowser::seek( const int64_t tframe )
             img->seek( f );
         }
     }
-
-    if ( play )
-    {
-        view()->play( play );
-    }
-
 
     // Update current frame and timeline
     mrv::Timeline* timeline = uiMain->uiTimeline;
@@ -4970,7 +5045,9 @@ void ImageBrowser::seek( const int64_t tframe )
         }
     }
 
-    view()->redraw();
+    if ( play ) view()->play( play );
+
+
     redraw();
 }
 
@@ -5058,7 +5135,7 @@ void ImageBrowser::set_edl()
     CMedia* img = m->image();
     if ( !img ) return;
 
-    int64_t f = img->frame() - img->first_frame() + t->location( img );
+    int64_t f = reel->local_to_global( img->frame(), img );
     frame( f );
 
     char buf[64];
@@ -5155,11 +5232,12 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
 
         if (f > last ) f = last;
         if (f < first ) f = first;
+
+        frame( f );
     }
 
 
 
-    frame( f );
 
 }
 
