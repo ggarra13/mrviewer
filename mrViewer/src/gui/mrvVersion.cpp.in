@@ -575,6 +575,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << MagickGetVersion(&magic) << endl
       << MagickGetCopyright() << endl
       << endl
+      << "FFmpeg v" << FFMPEG_VERSION << endl
       << "libavutil          v" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
       << "libavcodec      v" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
       << "libavformat     v" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl

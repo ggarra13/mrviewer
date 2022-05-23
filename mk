@@ -327,18 +327,18 @@ run_cmake()
     builddir=$PWD/BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
     if [[ $installdir == "" ]]; then
 	installdir=/usr/local
-    fi
+	if [[ $OS == Darwin* ]]; then
+	    installdir=/usr/local
+	fi
 
-    if [[ $OS == Darwin* ]]; then
-	installdir=/usr/local
-    fi
-
-    if [[ $OS == Windows* ]]; then
-	installdir="D:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
-	if [[ $CMAKE_BUILD_TYPE == Debug ]]; then
-	   installdir="${installdir}_debug"
+	if [[ $OS == Windows* ]]; then
+	    installdir="D:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
+	    if [[ $CMAKE_BUILD_TYPE == Debug ]]; then
+		installdir="${installdir}_debug"
+	    fi
 	fi
     fi
+
 
     if [ ! -d $installdir ]; then
 	cmd="mkdir -p $installdir"

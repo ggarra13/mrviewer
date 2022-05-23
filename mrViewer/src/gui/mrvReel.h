@@ -32,6 +32,7 @@
 #include <iostream>
 using namespace std;
 
+#include "core/mrvTransition.h"
 #include "mrvMediaList.h"
 
 namespace mrv
@@ -71,6 +72,7 @@ struct Reel_t
     std::atomic<bool> edl;
     std::string       name;
     MediaList         images;
+    TransitionList    transitions;
 };
 
 typedef boost::shared_ptr< Reel_t > Reel;

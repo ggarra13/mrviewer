@@ -163,13 +163,13 @@ decl {\#include "mrvSOPNode.h"} {public global
 decl {\#include "icons/icons.c"} {private local
 }
 
-decl {\#include "FL/Fl_Color_Chooser.H"} {private local
+decl {\#include <FL/Fl_Color_Chooser.H>} {private local
 }
 
-decl {\#include "FL/fl_ask.H"} {private local
+decl {\#include <FL/fl_ask.H>} {private local
 }
 
-decl {\#include "FL/Fl.H"} {public global
+decl {\#include <FL/Fl.H>} {public global
 }
 
 decl {\#include "namespace.h"} {public global
@@ -442,7 +442,7 @@ class PaintUI {open
       user_data this user_data_type {PaintUI*}
       callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-      xywh {315 109 146 637} type Double resizable non_modal visible
+      xywh {315 109 146 637} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {0 0 150 637} box PLASTIC_UP_BOX
@@ -761,10 +761,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {22 210 690 565} type Double align 80 hide resizable
+      xywh {408 162 690 565} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} size_range {690 565 0 0}
+      class {mrv::MainWindow} size_range {690 565 0 0} visible
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -773,10 +773,14 @@ o->main( this );}
         Fl_Group uiMenuGroup {open
           xywh {0 0 690 25} box FLAT_BOX
         } {
-          Fl_Menu_Bar uiMenuBar {
+          Fl_Menu_Bar uiMenuBar {open
             xywh {0 0 540 25}
           } {}
-          Fl_Group uiMenuButtons {
+          Fl_Group uiStatus {
+            label Scrub open selected
+            xywh {540 0 65 25} align 80
+          } {}
+          Fl_Group uiMenuButtons {open
             xywh {605 0 85 25} color 63
           } {
             Fl_Button {} {
@@ -797,10 +801,6 @@ v->uiView->fit_image();}
               class {mrv::Button}
             }
           }
-          Fl_Group uiStatus {
-            label Scrub open
-            xywh {540 0 65 25} align 80
-          } {}
         }
         Fl_Group uiTopBar {open
           xywh {0 25 690 28} box ENGRAVED_BOX
@@ -1282,7 +1282,7 @@ uiAttrsWindow->show();}
               class {mrv::Button}
             }
           }
-          Fl_Group uiView {
+          Fl_Group uiView {open
             xywh {45 54 645 432} resizable
             code0 {o->main(this);}
             class {mrv::ImageView}
@@ -1936,8 +1936,7 @@ v->uiTimeline->redraw();}
       }
     }
     code {uiRegion->init_sizes();
-uiMain->show();
-uiView->main_window_pos( uiMain->x(), uiMain->y() );
+
 Fl_Group::current( uiMain );
 uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
@@ -1958,7 +1957,11 @@ uiEDLWindow = new EDLWindowUI(this);
 Fl_Group::current(0);
 
 // read and use preferences
-mrv::Preferences prefs( uiPrefs );} {}
+mrv::Preferences prefs( uiPrefs );
+
+uiView->fill_menu( uiMenuBar );
+uiMain->show();
+uiView->main_window_pos( uiMain->x(), uiMain->y() );} {}
   }
   Function {ViewerUI()} {open
   } {
@@ -1983,8 +1986,7 @@ delete uiMain; uiMain = NULL;
 delete uiColorControls; uiColorControls = NULL;
 delete uiReelWindow; uiReelWindow = NULL;
 delete uiHotkey; uiHotkey = NULL;
-delete uiPrefs; uiPrefs = NULL;} {selected
-    }
+delete uiPrefs; uiPrefs = NULL;} {}
   }
   Function {refresh()} {open
   } {

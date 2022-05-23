@@ -43,6 +43,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Sys_Menu_Bar.H>
 #include <FL/fl_utf8.h>   // for fl_getenv
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
@@ -404,6 +405,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     ui.get( "action_toolbar", tmp, 1 );
     uiPrefs->uiPrefsToolBar->value( (bool) tmp );
+
+    ui.get( "macOS_menus", tmp, 0 );
+    uiPrefs->uiPrefsMacOSMenus->value( (bool) tmp );
 
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value( (bool) tmp );
@@ -1365,6 +1369,29 @@ void Preferences::run( ViewerUI* main )
 
     check_language( uiPrefs, language_index );
 
+#ifdef OSX
+    if ( uiPrefs->uiPrefsMacOSMenus->value() )
+    {
+        uiMain->uiMenuBar->clear();
+        uiMain->uiMenuGroup->redraw();
+        delete uiMain->uiMenuBar;
+        uiMain->uiMenuBar = new Fl_Sys_Menu_Bar( 0, 0, 0, 25 );
+    }
+    else
+    {
+        Fl_Sys_Menu_Bar* smenubar =
+            dynamic_cast< Fl_Sys_Menu_Bar* >( uiMain->uiMenuBar );
+        if ( smenubar )
+        {
+            smenubar->clear();
+            delete uiMain->uiMenuBar;
+            uiMain->uiMenuBar = new Fl_Menu_Bar( 0, 0,
+                                                 uiMain->uiStatus->x(), 25 );
+            uiMain->uiMenuGroup->add( uiMain->uiMenuBar );
+            uiMain->uiMenuGroup->redraw();
+        }
+    }
+#endif
 
     DBG3;
 
@@ -2304,6 +2331,7 @@ void Preferences::save()
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "action_toolbar", (int) uiPrefs->uiPrefsToolBar->value() );
+    ui.set( "macOS_menus", (int) uiPrefs->uiPrefsMacOSMenus->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );

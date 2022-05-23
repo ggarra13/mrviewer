@@ -1718,10 +1718,8 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
 {
     glRotated( img->rot_z(), 0, 0, 1 );
     CHECK_GL;
-    glTranslated( img->x(), img->y(), 0 );
-    CHECK_GL;
-    glTranslated( double(daw.x() - img->eye_separation()),
-                  double(-daw.y()), 0 );
+    glTranslated( img->x() + double(daw.x() - img->eye_separation()),
+                  img->y() - double(daw.y()), 0 );
     CHECK_GL;
 
     glScaled( double(texWidth), double(texHeight), 1.0 );
