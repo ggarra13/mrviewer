@@ -28,8 +28,12 @@ if (APPLE)
 
   # set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
-  set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH
-    "fltk build dir" FORCE )
+  if (UNIX)
+    if ( NOT DEFINED FLTK_DIR )
+      set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH
+	"fltk build dir" FORCE )
+    endif()
+  endif()
 endif()
 
 find_package( FLTK        REQUIRED NO_MODULE)

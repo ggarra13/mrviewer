@@ -3563,14 +3563,14 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
                   (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
+        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([#%\\w\\d./]*)";
     }
     else if ( prefix.size() < 5 )
     {
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
                   (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*" + prefix + ")(\\d+)([%\\w\\d./]*)";
+        prefix = "([\\w:/]*?[/._]*" + prefix + ")(\\d+)([#%\\w\\d./]*)";
     }
     prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
 

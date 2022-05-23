@@ -24,9 +24,9 @@ libfreetype.*
 libxshmfence.*
 libz.*
 libc\.so.*
-libglib.*
 libstdc\+\+\.so.*
 libgcc_s.*
+#libglib.*
 )
 
 @options = { :verbose => false, :libs_only => false, :force => false }
