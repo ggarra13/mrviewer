@@ -247,20 +247,14 @@ endif()
 
 set( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
-IF(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
 
   set( LINK_FLAGS ${LINK_FLAGS})
 
-  IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
-    FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
-    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-  ELSE()
-    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
-    FILE( COPY ${SOURCE_DIR}/bin/mrViewer.sh
-    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-  ENDIF()
-ENDIF(UNIX AND NOT APPLE)
+  execute_process( COMMAND "dos2unix" "mrViewer.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+  file( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+	DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+endif()
 
 
 
