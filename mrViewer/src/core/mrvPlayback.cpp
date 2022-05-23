@@ -853,7 +853,6 @@ void audio_thread( PlaybackData* data )
                 //           << " threshold: " << barrier->threshold()
                 //           << " used: " << barrier->used() );
             }
-#endif
 
             img->clear_audio_packets();
 
@@ -1232,7 +1231,7 @@ void video_thread( PlaybackData* data )
 
 
             DBGM3( img->name() << " VIDEO LOOP frame: " << frame );
-#endif
+
             int64_t f = frame;
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
