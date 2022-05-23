@@ -284,6 +284,7 @@ GLQuad::GLQuad( const ImageView* view ) :
     _lut_attempt( 0 ),
     _right( false ),
     _blend( true ),
+    _dissolve( 1.f ),
     _gamma( 1.f ),
     _blend_mode( GL_ALPHA ),
     _num_textures( 1 ),

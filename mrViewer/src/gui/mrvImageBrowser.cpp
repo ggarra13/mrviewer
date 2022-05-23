@@ -1988,14 +1988,7 @@ void ImageBrowser::save_session()
         if ( t )
         {
             t->clear_thumb();
-            if ( !t->edl() )
-            {
-                set_timeline( first, last );
-            }
-            else
-            {
-                t->redraw();
-            }
+            set_timeline( first, last );
         }
 
         send_image( i );
@@ -3897,11 +3890,7 @@ void ImageBrowser::next_image()
 
     int64_t first, last;
     adjust_timeline( first, last );
-    mrv::Timeline* t = timeline();
-    if ( t && !t->edl() )
-    {
-        set_timeline( first, last );
-    }
+    set_timeline( first, last );
 
     send_image( v );
 
@@ -3986,11 +3975,7 @@ void ImageBrowser::next_image_limited()
 
     int64_t first, last;
     adjust_timeline( first, last );
-    mrv::Timeline* t = timeline();
-    if ( t && !t->edl() )
-    {
-        set_timeline( first, last );
-    }
+    set_timeline( first, last );
 
     send_image( v );
 
@@ -4076,11 +4061,7 @@ void ImageBrowser::previous_image()
 
     int64_t first, last;
     adjust_timeline( first, last );
-    mrv::Timeline* t = timeline();
-    if ( t && !t->edl() )
-    {
-        set_timeline( first, last );
-    }
+    set_timeline( first, last );
 
     CMedia* img = NULL;
     if ( m ) img = m->image();
@@ -4161,12 +4142,7 @@ void ImageBrowser::previous_image_limited()
 
     int64_t first, last;
     adjust_timeline( first, last );
-
-    mrv::Timeline* t = timeline();
-    if ( t && !t->edl() )
-    {
-        set_timeline( first, last );
-    }
+    set_timeline( first, last );
 
     if ( reel->edl )
     {

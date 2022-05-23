@@ -273,16 +273,13 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
     else
     {
-        if ( img->has_picture() || img->valid_audio() )
-        {
-            first = img->first_frame();
-            last = img->last_frame();
+        first = img->first_frame();
+        last = img->last_frame();
 
 
-            gframe = frame;
-            gfirst = first;
-            glast  = last;
-        }
+        gframe = frame;
+        gfirst = first;
+        glast  = last;
     }
 
     if ( mx < glast ) glast = mx;
