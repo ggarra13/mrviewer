@@ -63,8 +63,11 @@ def parse( files, dest )
   for line in files
     lib, loc = line.split(" => ")
 
-    puts lib.to_s + " -> " + loc.to_s
-    next if not loc or not lib or loc =~ /not found/
+    $stdout.puts "#{lib} -> #{loc}" if @options[:verbose]
+    if not loc or not lib or loc =~ /not found/
+      $stderr.puts "LIBRARY #{lib} NOT FOUND!"
+      next
+    end
 
     loc.strip!
     lib.strip!
@@ -94,14 +97,14 @@ def parse( files, dest )
       puts "#{loc} ==> #{libpath} ==> #{orig}" if @options[:verbose]
       lib = libpath.gsub(/.*\//, '' )
       puts "#{loc} ==> #{lib} ==> #{orig}" if @options[:verbose]
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
       `chrpath -d "#{dest}/lib/#{lib}"`
       print `readelf -d #{dest}/lib/#{lib} | grep PATH`
       if not File.exists?( "#{dest}/lib/#{orig}" )
-        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => true )
+        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => @options[:verbose] )
       end
     else
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
       `chrpath -d "#{dest}/lib/#{lib}"`
       $stdout.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
