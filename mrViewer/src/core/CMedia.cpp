@@ -2774,7 +2774,6 @@ void CMedia::play(const CMedia::Playback dir,
 
         }
 
-#if 0
         if ( !fg && !_fg_bg_barrier )
         {
             _fg_bg_barrier = new Barrier( valid_v + valid_a );
@@ -2788,7 +2787,6 @@ void CMedia::play(const CMedia::Playback dir,
         {
             _fg_bg_barrier = NULL;
         }
-#endif
 
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;

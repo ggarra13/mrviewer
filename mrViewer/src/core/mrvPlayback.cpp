@@ -435,7 +435,6 @@ EndStatus handle_loop( int64_t& frame,
 
                 if ( next->stopped() )
                 {
-#if 0
                     if ( img->fg_bg_barrier() )
                     {
                         // LOGT_WARNING( img->name() << " img barrier "
@@ -447,7 +446,6 @@ EndStatus handle_loop( int64_t& frame,
                         next->fg_bg_barrier( b );
                         img->fg_bg_barrier( NULL );
                     }
-#endif
 
                     img->playback( CMedia::kStopped );
                     img->clear_packets();
@@ -583,7 +581,6 @@ EndStatus handle_loop( int64_t& frame,
 
                 if ( next->stopped()  )
                 {
-#if 0
                     if ( img->fg_bg_barrier() )
                     {
                         // LOGT_WARNING( img->name() << " img barrier "
@@ -598,7 +595,6 @@ EndStatus handle_loop( int64_t& frame,
                         //           << " next barrier "
                         //           << next->fg_bg_barrier() );
                     }
-#endif
 
                     img->clear_packets();
                     img->playback( CMedia::kStopped );
@@ -840,7 +836,6 @@ void audio_thread( PlaybackData* data )
                        << " used: " << barrier->used() );
             }
 
-#if 0
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
@@ -936,7 +931,6 @@ void audio_thread( PlaybackData* data )
         barrier->notify_all();
     }
 
-#if 0
     barrier = img->fg_bg_barrier();
     if ( barrier ) {
         // barrier->notify_all();
@@ -945,7 +939,6 @@ void audio_thread( PlaybackData* data )
         // }
         // img->fg_bg_barrier( NULL );
     }
-#endif
 
     img->close_audio();
 
@@ -1208,7 +1201,6 @@ void video_thread( PlaybackData* data )
             // img->debug_video_packets( frame, "debug", true );
             img->clear_video_packets();
 
-#if 0
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
@@ -1463,12 +1455,11 @@ void video_thread( PlaybackData* data )
         barrier->notify_all();
     }
 
-#if 0
+
     barrier = img->fg_bg_barrier();
     if ( barrier ) barrier->notify_all();
     barrier = img->stereo_barrier();
     if ( barrier ) barrier->notify_all();
-#endif
 
 
 #ifdef DEBUG_THREADS
