@@ -24,7 +24,7 @@ libfreetype.*
 libxshmfence.*
 libz.*
 libc\.so.*
-libglib.*
+#libglib.*
 libstdc\+\+\.so.*
 libgcc_s.*
 )

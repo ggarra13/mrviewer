@@ -411,7 +411,7 @@ ELSEIF (UNIX)
 
   # set the installation directory.
 
-  set(CPACK_set_DESTDIR true) # Needed
+  set(CPACK_SET_DESTDIR true) # Needed
   set(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
   # Configure install/uninstall scripts
