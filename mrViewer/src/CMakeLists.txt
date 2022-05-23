@@ -390,14 +390,13 @@ ELSEIF (UNIX)
   # set the type of package to build.
   INSTALL( DIRECTORY ${SOURCE_DIR}/bin/ DESTINATION bin )
 
-  set(MRV_DESKTOP_DIR     /usr/share/applications/)
-  set(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
-
 
 
   CONFIGURE_FILE( ${SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
       "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop" )
 
+  set(MRV_DESKTOP_DIR     /usr/share/applications/)
+  set(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
   INSTALL(FILES "${SOURCE_DIR}/etc/mrViewer-v${SHORTVERSION}.desktop"
     DESTINATION ${MRV_DESKTOP_DIR})
@@ -407,11 +406,10 @@ ELSEIF (UNIX)
   # try to set up the menu sys
 
   set(CPACK_GENERATOR DEB RPM TGZ )
-  # set(CPACK_GENERATOR TGZ )
 
   # set the installation directory.
 
-  set(CPACK_set_DESTDIR true) # Needed
+  set(CPACK_SET_DESTDIR true) # Needed
   set(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
   # Configure install/uninstall scripts
