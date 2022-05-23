@@ -245,7 +245,7 @@ unsigned long get_thread_id();
 #  define TRACE(msg)
 #endif
 
-#if 1
+#ifdef DEBUG
 #  define TRACE2(msg) do { \
         std::cerr << _("mrViewer TRACE : ") << msg << " at " \
                   << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \

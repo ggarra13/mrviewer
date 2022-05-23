@@ -189,12 +189,11 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
         int64_t end   = start + m->duration() - 1;
         if ( f >= start && f <= end )
         {
-            //r = f - start + img->in_frame();
             r = f - start + img->first_frame();
-            std::cerr << img->name()
-                      << " global f= " << f << " position= " << start
-                      << " first frame = " << img->first_frame()
-                      << " LOCAL FRAME= " << r << std::endl;
+            TRACE2( img->name()
+                    << " global f= " << f << " position= " << start
+                    << " first frame = " << img->first_frame()
+                    << " LOCAL FRAME= " << r );
             break;
         }
     }

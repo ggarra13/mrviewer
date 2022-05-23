@@ -1416,6 +1416,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     {
         aligned16_uint8_t* old = _audio_buf;
         _audio_buf = new aligned16_uint8_t[ _audio_max + audio_size ];
+        assert( (((unsigned long)_audio_buf) % 16) == 0 );
         memcpy( _audio_buf, old, _audio_max );
         delete [] old;
         _audio_max += audio_size;
@@ -1495,7 +1496,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
 
-    if ( last == first_frame() || (stopped() /* || saving() */ ) )
+    if ( last == in_frame() || (stopped() /* || saving() */ ) )
     {
         if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
         {
@@ -1517,15 +1518,12 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
         index += skip;
 
-
-
         if ( last >= frame ) got_audio = kDecodeOK;
 
         assert( bytes_per_frame <= _audio_buf_used );
         _audio_buf_used -= bytes_per_frame;
 
         ++last;
-
     }
 
 
@@ -1727,8 +1725,6 @@ void CMedia::audio_initialize()
 {
     if ( _audio_engine ) return;
 
-    av_log_set_level(-99);
-
     _audio_engine = mrv::AudioEngine::factory();
     _audio_channels = (unsigned short) _audio_engine->channels();
     _audio_format = _audio_engine->default_format();
@@ -1760,6 +1756,8 @@ void CMedia::wait_audio()
 bool CMedia::open_audio( const short channels,
                          const unsigned nSamplesPerSec )
 {
+    assert( _audio_engine != NULL );
+
     AudioEngine::AudioFormat format = _audio_format;
 
     // Avoid conversion to float if unneeded
@@ -1787,6 +1785,7 @@ bool CMedia::open_audio( const short channels,
     int ch = channels;
     for ( int fmt = format; fmt > 0; fmt -= 2 ) // -2 to skip be/le versions
     {
+        SCOPED_LOCK( _audio_mutex );
         ok = _audio_engine->open( ch, nSamplesPerSec,
                                   (AudioEngine::AudioFormat)fmt );
         if ( ok ) break;
@@ -1805,12 +1804,11 @@ bool CMedia::play_audio( const mrv::audio_type_ptr result )
 {
     double speedup = _play_fps / _fps;
     unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
-    if ( !_audio_engine || nSamplesPerSec != _samples_per_sec ||
-            result->channels() != _audio_channels ||
-            _audio_format == AudioEngine::kNoAudioFormat ||
-            AudioEngine::device_index() != AudioEngine::old_device_index())
+    if ( nSamplesPerSec != _samples_per_sec ||
+         result->channels() != _audio_channels ||
+         _audio_format == AudioEngine::kNoAudioFormat ||
+         AudioEngine::device_index() != AudioEngine::old_device_index() )
     {
-        SCOPED_LOCK( _audio_mutex );
         if ( ! open_audio( result->channels(), nSamplesPerSec ) )
         {
             IMG_ERROR( _("Could not open audio driver") );
@@ -1824,7 +1822,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr result )
         IMG_ERROR( _("Could not initialize audio engine" ) );
         return false;
     }
-
 
     if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
     {
@@ -1871,7 +1868,7 @@ bool CMedia::find_audio( const int64_t frame )
 
         _audio_frame = frame;
 
-        if ( frame < first_frame() )
+        if ( frame < in_frame() )
             return true;
 
         audio_cache_t::iterator end = _audio.end();
@@ -2048,7 +2045,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     {
         av_assert0( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
-        frame = get_frame( get_audio_stream(), pkt ) /*+ _audio_offset*/ ;
+        frame = _audio_frame = get_frame( get_audio_stream(), pkt ) /*+ _audio_offset*/ ;
     }
 
     if ( _audio_packets.is_seek_end() )
@@ -2359,6 +2356,7 @@ void CMedia::debug_audio_packets(const int64_t frame,
                                  const bool detail)
 {
     if ( !has_audio() ) return;
+    if ( name() != "alpha-trailer-2_h480p.mov" ) return;
 
     mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
     SCOPED_LOCK( apm );

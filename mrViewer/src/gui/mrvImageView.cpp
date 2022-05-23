@@ -2008,6 +2008,8 @@ _lastFrame( 0 )
 void ImageView::stop_playback()
 {
 
+    playback( CMedia::kStopped );
+
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
@@ -3632,6 +3634,7 @@ void ImageView::handle_commands()
     case kChangeImage:
     {
         int idx = c.frame;
+        Aimg = Bimg = NULL;
         mrv::Reel r = b->current_reel();
         bool found = false;
         mrv::MediaList::iterator j = r->images.begin();
@@ -3672,7 +3675,9 @@ void ImageView::handle_commands()
             found = ((size_t)idx < r->images.size() );
         }
         if ( found ) {
-            NET( "change image found.  Set to #" << idx );
+            CMedia* img = r->images[idx]->image();
+            TRACE2( "******** Change image found.  Set to #" << idx
+                    << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
         else
@@ -10002,10 +10007,7 @@ void ImageView::update_layers()
 void ImageView::foreground( mrv::media fg )
 {
     mrv::media old = foreground();
-    if ( old == fg ) {
-        fill_menu( uiMain->uiMenuBar );
-        return;
-    }
+    if ( old == fg ) return;
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -10016,6 +10018,8 @@ void ImageView::foreground( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
+        TRACE2( "************* CHANGE FOREGROUND TO " << img->name()
+                << " FRAME " << img->frame() );
 
         double fps = img->fps();
         if ( img->is_sequence() &&
@@ -10677,22 +10681,22 @@ void ImageView::frame( const int64_t f )
         TRACE( "FRAME " << _frame << " START " << start << " END "
                 << end );
 
-        CMedia* Atmp = reel->image_at( start + 1);
-        CMedia* Btmp = reel->image_at( end + 1 );
+        CMedia* Atmp = reel->image_at( start );
+        CMedia* Btmp = reel->image_at( end );
         if ( !Atmp || !Btmp ) continue;
         assert( Atmp != Btmp );
 
         TRACE( "Atmp= " << Atmp->name() << " frame " << Atmp->frame() );
         TRACE( "Btmp= " << Btmp->name() << " frame " << Btmp->frame() );
 
-        int64_t len = end - start; // + 1
+        int64_t len = end - start;
 
         float dissolve = float(frame() - start) / float(len);
         float rdissolve = 1.0f - dissolve;
-        //Atmp->volume( rdissolve * _volume );
-        //Btmp->volume( dissolve  * _volume );
-        int64_t Aout =  Atmp->out_frame();
-        int64_t Bin  =  Btmp->in_frame();
+        Atmp->volume( rdissolve * _volume );
+        Btmp->volume( dissolve  * _volume );
+        int64_t Aout = Atmp->out_frame();
+        int64_t Bin  = Btmp->in_frame();
         int64_t A = Aout - len * rdissolve;
         int64_t B = Bin  + len * dissolve;
         TRACE( "Atmp= " << Atmp->name() << " disframe " << A << " dissolve="
@@ -10712,7 +10716,7 @@ void ImageView::frame( const int64_t f )
                  Atmp->frame() < Aout )
             {
                 TRACE2( "******** STARTED Atmp with local frame " << A
-                        << " Aframe= " << Atmp->frame()
+                        << " Aframe= " << Atmp->frame() << " GLOBAL " << f
                         << " out= " << Aout);
                 Atmp->seek( A );
                 Atmp->play( CMedia::kForwards, uiMain, true );
@@ -10723,13 +10727,14 @@ void ImageView::frame( const int64_t f )
                  Btmp->frame() > Bin )
             {
                 TRACE2( "******** STARTED Btmp with local frame " << B
-                        << " Bframe= " << Btmp->frame()
+                        << " Bframe= " << Btmp->frame() << " GLOBAL " << f
                         << " in= " << Bin);
                 Btmp->seek( B );
                 Btmp->play( CMedia::kBackwards, uiMain, true );
             }
             if ( Atmp->playback() != CMedia::kBackwards )
             {
+                TRACE2( "******** STARTED Atmp with local frame " << A );
                 Atmp->seek( A );
                 Atmp->play( CMedia::kBackwards, uiMain, true );
             }
@@ -10747,7 +10752,18 @@ void ImageView::frame( const int64_t f )
         break;
     }
 
-    if ( !in_transition ) Aimg = Bimg = NULL;
+    if ( !in_transition ) {
+        CMedia::Playback play = playback();
+        if ( Aimg && play == CMedia::kForwards )
+        {
+            Aimg->playback( CMedia::kStopped );
+        }
+        if ( Bimg && play == CMedia::kBackwards )
+        {
+            Bimg->playback( CMedia::kStopped );
+        }
+        Aimg = Bimg = NULL;
+    }
 
     redraw();
 }
@@ -11139,9 +11155,6 @@ void ImageView::stop()
         return;
     }
 
-
-
-    playback( CMedia::kStopped );
 
     _last_fps = 0.0;
     _real_fps = 0.0;

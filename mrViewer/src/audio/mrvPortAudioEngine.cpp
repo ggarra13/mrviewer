@@ -418,6 +418,9 @@ bool PortAudioEngine::play( const char* d, const size_t size )
         return true;
     }
 
+    assert( d != NULL );
+    assert( size > 0 );
+
     uint8_t* data = (uint8_t*)d;
     if ( _volume < 0.99f )
     {

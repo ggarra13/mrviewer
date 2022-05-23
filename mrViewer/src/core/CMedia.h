@@ -1108,9 +1108,8 @@ public:
 
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,
-                       ViewerUI* const uiMain,
-                       const bool fg );
+    void play( const Playback dir, ViewerUI* const uiMain,
+               const bool fg );
 
 
 
@@ -1963,7 +1962,6 @@ protected:
                                  AVStream* stream );
 
 protected:
-    static size_t  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
     static bool _supports_yuva;         //!< display supports yuva
     static bool _uses_16bits;         //!< display supports 16 bits movies
@@ -2082,6 +2080,7 @@ protected:
 
     // Audio file when different from video
     std::string _audio_file;
+    size_t      _audio_max;        //!< max size of audio buf
 
     // Image color profile for ICC
     char*     _profile;
@@ -2169,6 +2168,13 @@ protected:
     timeval    _lastFpsFrameTime;
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
+
+#if 1
+    boost::thread* _video_thread;
+    boost::thread* _audio_thread;
+    boost::thread* _decode_thread;
+#endif
+
 
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;

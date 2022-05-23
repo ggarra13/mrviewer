@@ -90,9 +90,6 @@ public:
     ////////////////// Pre-roll sequence for playback
     virtual void preroll( const int64_t frame );
     virtual bool fetch( mrv::image_type_ptr& canvas, const int64_t frame );
-    /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir, ViewerUI* const uiMain,
-                       const bool fg );
 
     virtual void clear_cache();
 

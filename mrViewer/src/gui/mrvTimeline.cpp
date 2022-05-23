@@ -153,7 +153,6 @@ void Timeline::display_maximum( double x )
         //if ( _edl )
             _undo_display_max = _display_max;
         _display_max = x;
-        TRACE2( " _display_max is now " << x );
         if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
         {
             Fl_Slider::maximum( x );
@@ -190,7 +189,6 @@ void Timeline::maximum( double x )
 
     Fl_Slider::maximum( x );
     _display_max = x;
-    TRACE2( " _display_max is now " << x );
 
     if ( uiMain && uiMain->uiView )
     {

@@ -929,9 +929,9 @@ CMedia::DecodeStatus aviImage::decode_eof( int64_t frame )
 // Flush video buffers
 void aviImage::flush_video()
 {
-    SCOPED_LOCK( _mutex );
     if ( _video_ctx && _video_index >= 0 )
     {
+        SCOPED_LOCK( _mutex );
         avcodec_flush_buffers( _video_ctx );
     }
 }
@@ -947,12 +947,6 @@ void aviImage::clear_cache()
     clear_stores();
 }
 
-/// VCR play (and cache frames if needed) sequence
-void aviImage::play( const Playback dir, ViewerUI* const uiMain,
-                     const bool fg )
-{
-    CMedia::play( dir, uiMain, fg );
-}
 
 CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
@@ -1083,7 +1077,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( skip )
     {
       int64_t f = frame; //start;
-      if ( f > last_frame() ) f = last_frame();
+      if ( f > out_frame() ) f = out_frame();
       int64_t dts = queue_packets( f, false, got_video,
                                    got_audio, got_subtitle );
       _dts = _adts = dts;
@@ -1480,6 +1474,7 @@ CMedia::DecodeStatus
 static_decode(AVCodecContext *avctx, AVFrame *frame, AVPacket *pkt,
               process_frame_cb cb, aviData& priv )
 {
+
     int ret = 0;
 
     CMedia::DecodeStatus status = CMedia::kDecodeMissingFrame;
@@ -1582,6 +1577,9 @@ aviImage::decode_video_packet( int64_t& ptsframe,
                                const AVPacket* p
                              )
 {
+    Mutex& mtx = _video_packets.mutex();
+    SCOPED_LOCK( mtx );
+
     AVPacket* pkt = (AVPacket*)p;
 
 
@@ -3462,6 +3460,9 @@ bool aviImage::frame( const int64_t f )
         return false;
     }
 
+
+    TRACE( ">>>>>>>>>>>> " << name() << " FRAME IS " << f );
+
     int64_t sf = f;
 
     if ( f < _frameIn )    {
@@ -4076,49 +4077,35 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye && _owns_right_eye )  _right_eye->do_seek();
 
+
     if ( saving() ) _seek_req = false;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
 
 
-    if ( !got_audio || !got_video )
-    {
 #ifdef DEBUG_SEEK
-        TRACE( name() << " frame " << _seek_frame );
+    TRACE( name() << " frame " << _seek_frame );
 #endif
-        if ( !saving() && _seek_frame != _expected )
-            clear_packets();
-#ifdef DEBUG_SEEK
-        TRACE( name() << " frame " << _seek_frame );
-#endif
+    if ( !saving() && _seek_frame != _expected )
+        clear_packets();
 
-        if ( !saving() || _seek_frame == _expected )
-        {
-            timeval now;
-            gettimeofday (&now, 0);
-            _lastFrameTime = now;
+    frame( _seek_frame );
 
 #ifdef DEBUG_SEEK
-            TRACE( name() << " frame " << _seek_frame );
+    TRACE( name() << " frame " << _seek_frame );
 #endif
-            image_type_ptr canvas;
-            fetch( canvas, _seek_frame );
 
-            //cache( canvas );
-        }
-
-    }
 
 
     // Seeking done, turn flag off
     _seek_req = false;
 
+#ifdef DEBUG_SEEK
+    TRACE( name() << " frame " << _seek_frame );
+#endif
     if ( stopped() || saving() )
     {
-#ifdef DEBUG_SEEK
-        TRACE( name() << " frame " << _seek_frame );
-#endif
         DecodeStatus status;
         if ( has_audio() )
         {

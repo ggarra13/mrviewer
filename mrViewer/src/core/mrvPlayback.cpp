@@ -273,7 +273,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
     else
     {
-        if ( img->has_picture() || img->has_audio() )
+        if ( img->has_picture() || img->valid_audio() )
         {
             first = img->first_frame();
             last = img->last_frame();
@@ -365,7 +365,10 @@ EndStatus handle_loop( int64_t& frame,
         if ( img->has_picture() ) ignore = false;
         break;
     case kAudio:
-        if ( img->has_audio() && !img->has_picture() ) ignore = false;
+        if ( img->valid_audio() && !img->has_picture() ) {
+            ignore = false;
+            decode = kVideo;
+        }
         break;
     default:
         ;
@@ -409,8 +412,7 @@ EndStatus handle_loop( int64_t& frame,
             {
                 first = dts = f = int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                TRACE( decode << ") " << img->name() << " NEXT WAS NULL, now NEXT is " << next->name() );
-                TRACE( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
+                TRACE2( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
             }
             else if ( next == img )
             {
@@ -427,7 +429,9 @@ EndStatus handle_loop( int64_t& frame,
 
             if ( next != img && next != NULL )
             {
-                if ( decode == kDecode ) return kEndIgnore;
+                if ( decode != kVideo ) return kEndIgnore;
+
+                TRACE2( decode << ") " << next->name() << " NEXT GLOBAL FRAME IS " << dts << " stopped? " << next->stopped() );
 
                 if ( next->stopped() )
                 {
@@ -447,12 +451,10 @@ EndStatus handle_loop( int64_t& frame,
 
                     img->playback( CMedia::kStopped );
                     img->clear_packets();
-                    TRACE( next->name() << " NEXT SEEK FRAME IS " << dts );
+                    //img->flush_all();
+                    TRACE2( next->name() << " NEXT SEEK FRAME IS " << dts );
 
                     if ( ! fg )   return kEndNextImage;
-
-                    reel->global_to_local( dts );
-                    next->seek( f );
 
 
                     CMedia::Mutex& cmtx = view->commands_mutex;
@@ -472,12 +474,15 @@ EndStatus handle_loop( int64_t& frame,
                     return kEndNextImage;
                 }
 
-                TRACE( img->name() << " stop" );
                 img->playback( CMedia::kStopped );
-                TRACE( img->name() << " now stopped" );
                 img->clear_packets();
+                //img->flush_all();
 
                 int idx = reel->index( next );
+                TRACE2( "******** " << next->name()
+                        << " CHANGE IMAGE TO " << idx
+                        << " stopped? " << next->stopped()
+                        << " frame " << next->frame() );
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 {
@@ -493,13 +498,18 @@ EndStatus handle_loop( int64_t& frame,
 
         if ( loop == CMedia::kLoop )
         {
-            img->playback( CMedia::kStopped );
             img->clear_packets();
 
             frame = reel->global_to_local( first );
-            TRACE2( "DECODE LOOP to " << first << " frame " << frame );
-            if ( fg && reel->edl )
+            TRACE2( decode << ") DECODE LOOP to " << first
+                    << " frame " << frame );
+            if ( next == img )
             {
+                img->seek( frame );
+            }
+            else if ( fg && reel->edl )
+            {
+                img->playback( CMedia::kStopped );
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 ImageView::Command c;
@@ -552,9 +562,8 @@ EndStatus handle_loop( int64_t& frame,
 
             if ( next == NULL && loop == CMedia::kLoop )
             {
-                dts = f = int64_t(timeline->display_maximum());
+                last = dts = f = int64_t(timeline->display_maximum());
                 next = reel->image_at( f );
-                last = reel->global_to_local( f );
             }
             else if ( next == img )
             {
@@ -570,7 +579,7 @@ EndStatus handle_loop( int64_t& frame,
 
             if ( next != img && next != NULL )
             {
-                if ( decode == kDecode ) return kEndIgnore;
+                if ( decode != kVideo ) return kEndIgnore;
 
                 if ( next->stopped()  )
                 {
@@ -593,28 +602,45 @@ EndStatus handle_loop( int64_t& frame,
 
                     img->clear_packets();
                     img->playback( CMedia::kStopped );
-                    img->flush_all();
+                    //img->flush_all();
 
-                    if ( fg )
+                    if ( ! fg )   return kEndNextImage;
+
+                    CMedia::Mutex& cmtx = view->commands_mutex;
+                    SCOPED_LOCK( cmtx );
                     {
-                        CMedia::Mutex& cmtx = view->commands_mutex;
-                        SCOPED_LOCK( cmtx );
-                        {
-                            ImageView::Command c;
-                            c.type = ImageView::kSeek;
-                            c.frame = dts;
-                            view->commands.push_back( c );
-                        }
-                        {
-                            ImageView::Command c;
-                            c.type = ImageView::kPlayBackwards;
-                            c.frame = dts;
-                            view->commands.push_back( c );
-                        }
+                        ImageView::Command c;
+                        c.type = ImageView::kSeek;
+                        c.frame = dts;
+                        view->commands.push_back( c );
+                    }
+                    {
+                        ImageView::Command c;
+                        c.type = ImageView::kPlayBackwards;
+                        c.frame = dts;
+                        view->commands.push_back( c );
                     }
 
+                    return kEndNextImage;
                 }
 
+                img->playback( CMedia::kStopped );
+                img->clear_packets();
+                //img->flush_all();
+
+                int idx = reel->index( next );
+                CMedia::Mutex& cmtx = view->commands_mutex;
+                TRACE2( "******** " << next->name()
+                        << " CHANGE IMAGE TO " << idx
+                        << " stopped? " << next->stopped()
+                        << " frame " << next->frame() );
+                SCOPED_LOCK( cmtx );
+                {
+                    ImageView::Command c;
+                    c.type = ImageView::kChangeImage;
+                    c.frame = idx;
+                    view->commands.push_back( c );
+                }
                 return kEndNextImage;
             }
         }
@@ -622,10 +648,17 @@ EndStatus handle_loop( int64_t& frame,
 
         if ( loop == CMedia::kLoop )
         {
+            img->clear_packets();
+
             frame = reel->global_to_local( last );
 
-            if ( fg && reel->edl )
+            if ( next == img )
             {
+                img->seek( frame );
+            }
+            else if ( fg && reel->edl )
+            {
+                img->playback( CMedia::kStopped );
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 {
@@ -708,7 +741,7 @@ void audio_thread( PlaybackData* data )
     mrv::Timeline*      timeline = uiMain->uiTimeline;
     mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
-    int64_t frame = img->frame() + img->audio_offset();
+    int64_t frame = img->audio_frame();
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
@@ -716,7 +749,7 @@ void audio_thread( PlaybackData* data )
     if (!reel) return;
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame );
+    TRACE2( "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame );
 #endif
     mrv::Timer timer;
 
@@ -749,6 +782,10 @@ void audio_thread( PlaybackData* data )
         CMedia::DecodeStatus status = img->decode_audio( f );
         // std::cerr << img->name() << " decoded audio " << f
         //           << " status " << status << std::endl;
+
+        int64_t first, last;
+        status = check_loop( frame, img, kAudio, reel, timeline, first, last );
+
 
         assert( img != NULL );
         assert( reel != NULL );
@@ -783,7 +820,7 @@ void audio_thread( PlaybackData* data )
         {
 
 
-            DBGM1( img->name() << " BARRIER IN AUDIO " << frame );
+            TRACE( img->name() << " BARRIER IN AUDIO " << frame );
 
 
             CMedia::Barrier* barrier = img->loop_barrier();
@@ -884,7 +921,9 @@ void audio_thread( PlaybackData* data )
 #endif
         }
 
+        if ( reel->edl ) frame = img->audio_frame();
         frame += step;
+        TRACE( img->name() << " LOCAL AUDIO FRAME " << frame );
     }
 
     img->playback( CMedia::kStopped );
@@ -908,13 +947,10 @@ void audio_thread( PlaybackData* data )
     }
 #endif
 
-
-#if defined(LINUX)
     img->close_audio();
-#endif
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
+    TRACE2( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
 #endif
 
 } // audio_thread
@@ -953,7 +989,7 @@ void subtitle_thread( PlaybackData* data )
     mrv::Timer timer;
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "ENTER SUBTITLE THREAD " << img->name() );
+    TRACE2( "ENTER SUBTITLE THREAD " << img->name() );
 #endif
 
 
@@ -1003,7 +1039,7 @@ void subtitle_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "EXIT  SUBTITLE THREAD " << img->name()
+    TRACE2( "EXIT  SUBTITLE THREAD " << img->name()
               << " stopped? " << img->stopped() );
     assert( img->stopped() );
 #endif
@@ -1105,8 +1141,8 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
-              << view->playback() << " frame " << frame );
+    TRACE2( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
+            << view->playback() << " frame " << frame );
 #endif
 
 
@@ -1209,7 +1245,6 @@ void video_thread( PlaybackData* data )
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
                                          status, kVideo );
-            assert( frame >= f );
 
             DBGM3( img->name() << " end: " << end
                       << " Stopped? " << img->stopped() );
@@ -1342,25 +1377,70 @@ void video_thread( PlaybackData* data )
                 if ( reel->edl )
                 {
                     f = reel->local_to_global( frame, img );
-                    TRACE2( img->name() << " " << img << " SENT FRAME " << f
-                            << " IMG FRAME " << frame );
                 }
+                TRACE2( "SEND GLOBAL FRAME " << f << " FROM IMAGE "
+                        << img->name() );
                 view->frame( f );
-                if ( reel->edl && f == img->dissolve_end() ) {
-                    frame++;
-                    TRACE2( img->name() << " SEND HANDLE LOOP " << frame );
-                    EndStatus end = handle_loop( frame, step, img, fg, true,
-                                                 uiMain, reel, timeline,
-                                                 status, kVideo );
-                    if ( end == kEndChangeDirection )
+
+                if ( reel->edl )
+                {
+                    CMedia* Aimg = view->A_image();
+                    CMedia* Bimg = view->B_image();
+                    CMedia::Playback play = view->playback();
+                    if ( Aimg && play == CMedia::kForwards )
                     {
-                        CMedia::Playback p = (CMedia::Playback) step;
-                        if ( fg && step != 0 ) view->playback( p );
-                        continue;
+                        int64_t Aframe = Aimg->frame();
+                        int64_t Aout   = Aimg->out_frame();
+                        TRACE2( Aimg->name() << " CHECK DISSOLVE END LOOP "
+                                << Aframe << " out= " << Aout );
+                        if ( Aframe >= Aout )
+                        {
+                            Aframe++;
+                            TRACE2( Aimg->name() << " SEND DISSOLVE END LOOP "
+                                    << Aframe-1 << " GLOBAL " << f );
+                            EndStatus end = handle_loop( Aframe, step, Aimg,
+                                                         fg, true,
+                                                         uiMain, reel, timeline,
+                                                         status, kVideo );
+                            if ( end == kEndChangeDirection )
+                            {
+                                CMedia::Playback p = (CMedia::Playback) step;
+                                if ( fg && step != 0 ) view->playback( p );
+                                continue;
+                            }
+                            TRACE2( Aimg->name()
+                                    << " SENT DISSOLVE END LOOP stopped? "
+                                    << Aimg->stopped() );
+                            if ( img == Aimg ) break;
+                        }
                     }
-                    TRACE2( img->name() << " SENT HANDLE LOOP " << frame
-                            << " stopped? " << img->stopped() );
-                    break;
+                    else if ( Bimg && play == CMedia::kBackwards )
+                    {
+                        int64_t Bframe = Bimg->frame();
+                        int64_t Bin    = Bimg->in_frame();
+                        TRACE2( Bimg->name() << " CHECK DISSOLVE START LOOP "
+                                << Bframe << " in= " << Bin );
+                        if ( Bframe <= Bin )
+                        {
+                            Bframe--;
+                            TRACE2( Bimg->name() << " SEND DISSOLVE START LOOP "
+                                    << Bframe+1 << " GLOBAL " << f );
+                            EndStatus end = handle_loop( Bframe, step, Bimg,
+                                                         fg, true,
+                                                         uiMain, reel, timeline,
+                                                         status, kVideo );
+                            if ( end == kEndChangeDirection )
+                            {
+                                CMedia::Playback p = (CMedia::Playback) step;
+                                if ( fg && step != 0 ) view->playback( p );
+                                continue;
+                            }
+                            TRACE2( Bimg->name()
+                                    << " SENT DISSOLVE START LOOP stopped? "
+                                    << Bimg->stopped() );
+                            if ( Bimg == img ) break;
+                        }
+                    }
                 }
             }
         }
@@ -1368,6 +1448,7 @@ void video_thread( PlaybackData* data )
         timer.setDesiredSecondsPerFrame( delay );
         timer.waitUntilNextFrameIsDue();
 
+        if ( reel->edl ) frame = img->frame();
         frame += step;
     }
 
@@ -1391,9 +1472,9 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
-              << img->name() << " stopped? " << img->stopped()
-              << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
+    TRACE2( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
+            << img->name() << " stopped? " << img->stopped()
+            << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
 #endif
 
 
@@ -1437,9 +1518,9 @@ void decode_thread( PlaybackData* data )
     int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
-              << " at frame " << frame
-              << " step " << step );
+    TRACE2( "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
+            << " at frame " << frame
+            << " step " << step );
 #endif
 
 
@@ -1448,8 +1529,10 @@ void decode_thread( PlaybackData* data )
 
         if ( img->seek_request() )
         {
+            TRACE2( ">>>>>>   pre seek " << frame );
             img->do_seek();
             frame = img->dts();
+            TRACE2( ">>>>>> after seek " << frame );
         }
 
 
@@ -1531,7 +1614,7 @@ void decode_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    LOGT_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
+    TRACE2( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
 #endif
 
 

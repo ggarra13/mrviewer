@@ -554,6 +554,9 @@ public:
         return uiMain;
     }
 
+    inline CMedia* A_image() const { return Aimg; }
+    inline CMedia* B_image() const { return Bimg; }
+
     /// Auxiliary function to return viewer's main fltk window
     MainWindow* fltk_main();
 

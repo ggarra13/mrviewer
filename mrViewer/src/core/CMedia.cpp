@@ -124,7 +124,6 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 bool       CMedia::_initialize = false;
 
-size_t      CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
 bool        CMedia::_uses_16bits = false;
@@ -441,6 +440,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
@@ -468,7 +468,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
 
     gettimeofday (&_lastFrameTime, 0);
@@ -559,6 +562,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -585,7 +589,10 @@ _aframe( NULL ),
 _audio_format( other->_audio_format.load() ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -684,6 +691,7 @@ _displayWindow2( NULL ),
 _is_left_eye( other->_is_left_eye ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -710,7 +718,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -842,7 +853,11 @@ void CMedia::wait_for_threads()
         while( !ok )
         {
             ok = i->timed_join(timeout);
-            TRACE2( name() << " Thread " << i << " returned " << ok );
+            std::string type = "subtitle";
+            if ( i == _video_thread ) type = "video";
+            if ( i == _audio_thread ) type = "audio";
+            if ( i == _decode_thread ) type = "decode";
+            TRACE2( name() << " Thread " << i << ", type " << type << " returned " << ok );
         }
         delete i;
     }
@@ -2778,6 +2793,7 @@ void CMedia::play(const CMedia::Playback dir,
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
         _loop_barrier = new Barrier( num );
+        assert( _loop_barrier );
 
         if ( valid_v || valid_a )
         {
@@ -2785,6 +2801,7 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::video_thread,
                              video_data ) );
+            _video_thread = t;
             _threads.push_back( t );
             TRACE2( name() << " frame " << frame() << " added video thread "
                    << t );
@@ -2797,6 +2814,7 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::audio_thread,
                              audio_data ) );
+            _audio_thread = t;
             _threads.push_back( t );
             TRACE2( name() << " frame " << frame() << " added audio thread "
                     << t );
@@ -2810,7 +2828,7 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::subtitle_thread,
                              subtitle_data ) );
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame() << " added audio thread "
+            TRACE2( name() << " frame " << frame() << " added subtitle thread "
                     << t );
         }
 
@@ -2821,6 +2839,7 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::decode_thread,
                              data ) );
+            _decode_thread = t;
             _threads.push_back( t );
             TRACE2( name() << " frame " << frame() << " added decode thread "
                     << t );
@@ -2845,14 +2864,15 @@ void CMedia::stop(const bool bg)
 
 
     if ( _playback == kStopped && _threads.empty() ) return;
-    TRACE( name() << " frame " << frame() << " playback = " << _playback
-           << " has threads? " << _threads.empty() );
 
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop();
 
+    TRACE2( name() << " stop at frame " << frame()
+            << " playback = " << _playback
+            << " has threads? " << _threads.empty() );
 
-    TRACE( name() << " frame " << frame() );
+
 
     _playback = kStopped;
 

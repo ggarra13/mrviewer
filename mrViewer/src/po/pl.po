@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-20 22:38-0300\n"
+"POT-Creation-Date: 2022-05-23 07:12-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3616
+#: core/CMedia.cpp:3636
 msgid ""
 "\n"
 "\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Nieznany kodek "
 
-#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2514
+#: core/CMedia_audio.cpp:645 core/aviImage.cpp:2512
 msgid ""
 "\n"
 "\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "W pliku nie ma dźwięku"
 
-#: gui/mrvImageView.cpp:5932
+#: gui/mrvImageView.cpp:5937
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Używanie "
 msgid "  Choosing "
 msgstr "  wybieranie "
 
-#: gui/mrvImageView.cpp:5937
+#: gui/mrvImageView.cpp:5942
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1145
+#: core/mrvPlayback.cpp:1181
 msgid " - Decode of image frame "
 msgstr " - Dekodowanie ramki na zdjęcia "
 
-#: core/mrvPlayback.cpp:761
+#: core/mrvPlayback.cpp:798
 msgid " - decode Error audio frame "
 msgstr " - błąd dekodowania ramki audio "
 
@@ -85,7 +85,7 @@ msgstr " - błąd dekodowania ramki audio "
 msgid " Color Area Selection"
 msgstr " Wybór obszaru koloru"
 
-#: core/aviImage.cpp:3051
+#: core/aviImage.cpp:3049
 msgid " Could not open file. "
 msgstr " Nie mogłem otworzyć pliku. "
 
@@ -105,7 +105,7 @@ msgstr " Hz nie jest obsługiwane przez twój sprzęt."
 msgid " Move Picture"
 msgstr " przenieś obraz"
 
-#: core/aviImage.cpp:2532
+#: core/aviImage.cpp:2530
 msgid " No audio or video stream in file"
 msgstr " W pliku nie ma dźwięku ani wideo"
 
@@ -125,7 +125,7 @@ msgstr " Tekst"
 msgid " already created: "
 msgstr " już utworzone: "
 
-#: core/CMedia.cpp:4460
+#: core/CMedia.cpp:4480
 msgid " as default"
 msgstr " domyślna"
 
@@ -162,11 +162,11 @@ msgstr " kodowanie"
 msgid " expected: "
 msgstr " podziewany: "
 
-#: core/CMedia_audio.cpp:1832
+#: core/CMedia_audio.cpp:1829
 msgid " failed"
 msgstr " niepowodzenie."
 
-#: core/CMedia_audio.cpp:1483
+#: core/CMedia_audio.cpp:1484
 msgid " failed with "
 msgstr " nie udało się z "
 
@@ -174,11 +174,11 @@ msgstr " nie udało się z "
 msgid " failed. "
 msgstr " niepowodzenie. "
 
-#: gui/mrvImageView.cpp:9311
+#: gui/mrvImageView.cpp:9316
 msgid " for channel.  Maximum: "
 msgstr " dla kanału. Maksymalny: "
 
-#: core/aviImage.cpp:1497 core/aviImage.cpp:1547
+#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
 msgid " for codec "
 msgstr " dla kodeka "
 
@@ -186,7 +186,7 @@ msgstr " dla kodeka "
 msgid " for color_space"
 msgstr " dla przestrzeni_kolorów"
 
-#: core/aviImage.cpp:4131 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4118 core/R3dImage.cpp:1074 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " do ramki "
 
@@ -194,11 +194,11 @@ msgstr " do ramki "
 msgid " for gamma_curve"
 msgstr " dla krzywej gamma"
 
-#: gui/mrvReel.cpp:225 gui/mrvReel.cpp:238
+#: gui/mrvReel.cpp:224 gui/mrvReel.cpp:237
 msgid " for reel "
 msgstr " na rolce "
 
-#: core/CMedia.cpp:3617
+#: core/CMedia.cpp:3637
 msgid " for stream #"
 msgstr " dla utworu #"
 
@@ -226,7 +226,7 @@ msgstr ""
 " jeśli mrViewer ulega awarii\n"
 "nie modyfikuje Preferencje->Interfejs użytkownika->Pojedyncza instancja."
 
-#: core/aviImage.cpp:1917
+#: core/aviImage.cpp:1915
 msgid " instead"
 msgstr " w zamian"
 
@@ -238,23 +238,23 @@ msgstr " zamiast 80"
 msgid " is "
 msgstr " jest "
 
-#: gui/mrvImageBrowser.cpp:3787
+#: gui/mrvImageBrowser.cpp:3766
 msgid " is already the first version on disk."
 msgstr " To już pierwsza wersja na dysku."
 
-#: gui/mrvImageBrowser.cpp:3784
+#: gui/mrvImageBrowser.cpp:3763
 msgid " is already the last version on disk."
 msgstr " Jest to już najnowsza wersja na dysku."
 
-#: core/CMedia.cpp:4317
+#: core/CMedia.cpp:4337
 msgid " is missing."
 msgstr " Jest zgubiony."
 
-#: core/CMedia.cpp:4340
+#: core/CMedia.cpp:4360
 msgid " is missing. Choosing "
 msgstr " brakuje. wybieranie "
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:1927 core/R3dImage.cpp:935
+#: core/CMedia_audio.cpp:1883 core/aviImage.cpp:1925 core/R3dImage.cpp:935
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " nie znaleziono"
@@ -263,23 +263,23 @@ msgstr " nie znaleziono"
 msgid " not found in reel"
 msgstr " nie znaleziono na rolce"
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1913
 msgid " not found, choosing "
 msgstr " nie znaleziono, wybieram "
 
-#: core/aviImage.cpp:4298
+#: core/aviImage.cpp:4285
 msgid " not yet supported"
 msgstr " jeszcze nieobsługiwane"
 
-#: core/mrvPlayback.cpp:1146
+#: core/mrvPlayback.cpp:1182
 msgid " returned "
 msgstr " powrót "
 
-#: core/CMedia_audio.cpp:1620
+#: core/CMedia_audio.cpp:1618
 msgid " size is "
 msgstr " rozmiar to "
 
-#: core/aviImage.cpp:4158
+#: core/aviImage.cpp:4145
 msgid " status: "
 msgstr " tatus: "
 
@@ -291,7 +291,7 @@ msgstr " do"
 msgid " to "
 msgstr " do "
 
-#: core/aviImage.cpp:1886 core/R3dImage.cpp:895 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1884 core/R3dImage.cpp:895 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " ramka wideo, pamięć podręczna "
 
@@ -432,7 +432,7 @@ msgstr "%d kb/s"
 msgid "' does not exist."
 msgstr "' nie istnieje."
 
-#: gui/mrvImageView.cpp:3662
+#: gui/mrvImageView.cpp:3665
 msgid "' does not match '"
 msgstr "' nie pasuje '"
 
@@ -444,11 +444,11 @@ msgstr "' dla "
 msgid "' for writing. Reason: "
 msgstr "' do pisania. Powód: "
 
-#: core/CMedia.cpp:4460
+#: core/CMedia.cpp:4480
 msgid "' from bitdepth "
 msgstr "głębia bitowa: "
 
-#: core/CMedia.cpp:4412
+#: core/CMedia.cpp:4432
 msgid "' from filename"
 msgstr "' z nazwy pliku"
 
@@ -514,12 +514,12 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Usuń go, jeśli mrViewer się nie uruchamia)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9285 gui/mrvImageView.cpp:9970
-#: gui/mrvImageView.cpp:9971 gui/mrvImageView.cpp:9979
+#: gui/mrvImageView.cpp:9290 gui/mrvImageView.cpp:9975
+#: gui/mrvImageView.cpp:9976 gui/mrvImageView.cpp:9984
 msgid "(no image)"
 msgstr "(Bez obrazu)"
 
-#: core/aviImage.cpp:1887 core/R3dImage.cpp:896 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:896 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") rozmiar pamięci podręcznej: "
 
@@ -565,7 +565,7 @@ msgstr ", częstotliwość "
 msgid ", frequency "
 msgstr ", częstotliwość "
 
-#: core/CMedia.cpp:3617
+#: core/CMedia.cpp:3637
 msgid ", type "
 msgstr ", rodzaj "
 
@@ -581,7 +581,7 @@ msgstr ". Atrybut musi mieć postać attr=wartość."
 msgid ".  Saving pixel type is "
 msgstr ". Typ piksela do zapisania to "
 
-#: gui/mrvImageView.cpp:9312
+#: gui/mrvImageView.cpp:9317
 msgid ". Widget label is "
 msgstr ". Znacznik widżetu to "
 
@@ -646,7 +646,7 @@ msgstr "1,50 nieruchome zdjęcie"
 msgid "1.56 STV - HDTV (14:9)"
 msgstr "1,56 STV-HDTV (14:9)"
 
-#: gui/mrvImageView.cpp:4561
+#: gui/mrvImageView.cpp:4566
 msgid "1.66"
 msgstr "1,66"
 
@@ -663,7 +663,7 @@ msgstr "1,77 HDTV (16:9)"
 msgid "1.8"
 msgstr "1,8"
 
-#: gui/mrvImageView.cpp:4559
+#: gui/mrvImageView.cpp:4564
 msgid "1.85"
 msgstr "1,85"
 
@@ -726,7 +726,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4452
 msgid "16 bits"
 msgstr "16 bitów"
 
@@ -799,7 +799,7 @@ msgstr "2,2 5,1 1,4"
 msgid "2.20 70mm"
 msgstr "2,20 70mm"
 
-#: gui/mrvImageView.cpp:4557
+#: gui/mrvImageView.cpp:4562
 msgid "2.35"
 msgstr "2,35"
 
@@ -843,7 +843,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4439
+#: core/CMedia.cpp:4459
 msgid "32 bits"
 msgstr "32-bitowy"
 
@@ -919,7 +919,7 @@ msgid "3d View"
 msgstr "widok 3D"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1396
-#: gui/mrvImageView.cpp:5013
+#: gui/mrvImageView.cpp:5018
 msgid "3dView"
 msgstr "widok 3d"
 
@@ -970,7 +970,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8-bitowa pamięć podręczna"
 
-#: core/CMedia.cpp:4425
+#: core/CMedia.cpp:4445
 msgid "8 bits"
 msgstr "8 bitowy"
 
@@ -1069,7 +1069,7 @@ msgstr ""
 "Przykłady:\n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1395
-#: gui/mrvImageView.cpp:5007
+#: gui/mrvImageView.cpp:5012
 msgid "A-B, Stereo 3D Options"
 msgstr "Stereo 3D, opcje AB"
 
@@ -1105,7 +1105,7 @@ msgid "AVI Movie"
 msgstr "Film AVI"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1405
-#: gui/mrvImageView.cpp:5029
+#: gui/mrvImageView.cpp:5034
 msgid "About"
 msgstr "O mrViewer"
 
@@ -1137,7 +1137,7 @@ msgstr "działania"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1394
-#: gui/mrvImageView.cpp:5006
+#: gui/mrvImageView.cpp:5011
 msgid "Action Tools"
 msgstr "Narzędzia akcji"
 
@@ -1258,9 +1258,9 @@ msgstr "Umożliwia ustawienie klatki początkowej osi czasu."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Umożliwia ustawienie klatki końcowej dla osi czasu."
 
-#: core/CMedia.cpp:2086 core/CMedia.cpp:2169 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9403
-#: gui/mrvImageView.cpp:9871 gui/mrvImageView.cpp:9933
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2184 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9408
+#: gui/mrvImageView.cpp:9876 gui/mrvImageView.cpp:9938
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1268,9 +1268,9 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "tylko alfa"
 
-#: core/CMedia.cpp:2088 core/CMedia.cpp:2169 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2175
-#: gui/mrvImageView.cpp:9384 gui/mrvImageView.cpp:9934
+#: core/CMedia.cpp:2103 core/CMedia.cpp:2184 core/exrImage.cpp:3057
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2177
+#: gui/mrvImageView.cpp:9389 gui/mrvImageView.cpp:9939
 msgid "Alpha Overlay"
 msgstr "Nadruk alfa"
 
@@ -1369,7 +1369,7 @@ msgstr "kwiecień"
 msgid "Arabic"
 msgstr "arabski (عرب)"
 
-#: gui/mrvImageBrowser.cpp:3374
+#: gui/mrvImageBrowser.cpp:3362
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
@@ -1377,7 +1377,7 @@ msgstr ""
 "Czy na pewno chcesz\n"
 "usunąć wszystkie wybrane obrazy z rolki aparatu?"
 
-#: gui/mrvImageBrowser.cpp:3370
+#: gui/mrvImageBrowser.cpp:3358
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1497,7 +1497,7 @@ msgstr "konwersja dźwięku "
 msgid "Audio format not known.  Choosing float32. "
 msgstr "Nieznany format audio. Wybierz float32. "
 
-#: core/CMedia_audio.cpp:1886
+#: core/CMedia_audio.cpp:1883
 msgid "Audio frame "
 msgstr "pole audio "
 
@@ -1505,23 +1505,23 @@ msgstr "pole audio "
 msgid "Audio frame has NOPTS value."
 msgstr "Ramka audio ma wartość NOPTS."
 
-#: core/CMedia_audio.cpp:1992
+#: core/CMedia_audio.cpp:1989
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Pakiet audio jest nieznany, spodziewaj się wyszukiwania lub preroll"
 
-#: core/CMedia_audio.cpp:2042
+#: core/CMedia_audio.cpp:2039
 msgid "Audio packets empty at end of seek"
 msgstr "Puste pakiety audio na końcu wyszukiwania"
 
-#: gui/mrvImageView.cpp:5330
+#: gui/mrvImageView.cpp:5335
 msgid "Audio/Attach Audio File"
 msgstr "Audio/Dodaj plik audio"
 
-#: gui/mrvImageView.cpp:5335
+#: gui/mrvImageView.cpp:5340
 msgid "Audio/Detach Audio File"
 msgstr "Audio/Odłącz plik audio"
 
-#: gui/mrvImageView.cpp:5332
+#: gui/mrvImageView.cpp:5337
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Edytuj ramkę początkową dźwięku"
 
@@ -1530,7 +1530,7 @@ msgstr "Audio/Edytuj ramkę początkową dźwięku"
 msgid "Audio: %<PRId64>"
 msgstr "Dźwięk: %<PRId64>"
 
-#: core/CMedia_audio.cpp:1647
+#: core/CMedia_audio.cpp:1645
 msgid "Audios #"
 msgstr "Dźwięk #"
 
@@ -1598,14 +1598,14 @@ msgstr "Usuń do tyłu"
 msgid "Background"
 msgstr "Tło"
 
-#: core/mrvPlayback.cpp:1081
+#: core/mrvPlayback.cpp:1117
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Czas trwania obrazu tła jest bardzo krótki. Powtarzanie w cyklach może nie "
 "działać prawidłowo."
 
-#: core/mrvPlayback.cpp:1088
+#: core/mrvPlayback.cpp:1124
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1614,13 +1614,13 @@ msgstr ""
 "Liczba klatek na sekundę obrazu tła (%lg) nie jest taka sama jak obrazu "
 "przedniego (%lg). Powtarzanie w cyklach nie będzie działać poprawnie."
 
-#: core/mrvPlayback.cpp:1065
+#: core/mrvPlayback.cpp:1101
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Dolna szpula jest bardzo krótka. Powtarzanie w cyklach może nie działać "
 "prawidłowo."
 
-#: core/mrvPlayback.cpp:1055
+#: core/mrvPlayback.cpp:1091
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1680,9 +1680,9 @@ msgstr "tryb mieszania"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2102 core/CMedia.cpp:2168 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9398
-#: gui/mrvImageView.cpp:9932
+#: core/CMedia.cpp:2117 core/CMedia.cpp:2183 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9403
+#: gui/mrvImageView.cpp:9937
 msgid "Blue"
 msgstr "Niebieski"
 
@@ -1706,7 +1706,7 @@ msgstr "Wyjątek dotyczący wzmocnienia: "
 msgid "Both"
 msgstr "Obaj"
 
-#: gui/mrvImageView.cpp:11318
+#: gui/mrvImageView.cpp:11331
 msgid "Bottom"
 msgstr "niżej"
 
@@ -1791,11 +1791,11 @@ msgstr "Ścieżki CTL"
 msgid "CTL scripts"
 msgstr "Majtki CTL"
 
-#: gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageBrowser.cpp:4230
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/Przypisz transformację urządzenia wejściowego (IDT)"
 
-#: gui/mrvImageBrowser.cpp:4255
+#: gui/mrvImageBrowser.cpp:4234
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/Przypisz transformację renderowania (RRT)"
 
@@ -2071,12 +2071,12 @@ msgstr "Nie znaleziono grupy zwijanej"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/aviSave.cxx:206
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2630
-#: core/CMedia.cpp:2099 core/CMedia.cpp:2167 core/exrImage.cpp:2804
+#: core/CMedia.cpp:2114 core/CMedia.cpp:2182 core/exrImage.cpp:2804
 #: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
-#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2212 gui/mrvImageView.cpp:2274
-#: gui/mrvImageView.cpp:9931 gui/mrvImageView.cpp:9979
+#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2214 gui/mrvImageView.cpp:2276
+#: gui/mrvImageView.cpp:9936 gui/mrvImageView.cpp:9984
 msgid "Color"
 msgstr "Kolor"
 
@@ -2085,12 +2085,12 @@ msgid "Color Area"
 msgstr "Obszar koloru"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1392
-#: gui/mrvImageView.cpp:5004
+#: gui/mrvImageView.cpp:5009
 msgid "Color Controls"
 msgstr "Kontrola kolorów"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1391
-#: gui/mrvImageView.cpp:5003
+#: gui/mrvImageView.cpp:5008
 msgid "Color Info"
 msgstr "Informacje o obszarze kolorów"
 
@@ -2118,7 +2118,7 @@ msgstr "motyw kolorystyczny"
 msgid "Color Version"
 msgstr "wersja kolorowa"
 
-#: gui/mrvImageView.cpp:9220
+#: gui/mrvImageView.cpp:9225
 msgid "Color channel not found at index "
 msgstr "Nie znaleziono kanału koloru dla indeksu "
 
@@ -2126,11 +2126,11 @@ msgstr "Nie znaleziono kanału koloru dla indeksu "
 msgid "Color controls"
 msgstr "kontrola kolorów"
 
-#: core/aviImage.cpp:1310
+#: core/aviImage.cpp:1304
 msgid "Colorspace details not gotten "
 msgstr "Nie uzyskano szczegółów przestrzeni kolorów "
 
-#: core/aviImage.cpp:1339
+#: core/aviImage.cpp:1333
 msgid "Colorspace details not set "
 msgstr "Nie ustawiono szczegółów przestrzeni kolorów "
 
@@ -2199,7 +2199,7 @@ msgstr "Połączony z "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1401
-#: gui/mrvImageView.cpp:5023
+#: gui/mrvImageView.cpp:5028
 msgid "Connections"
 msgstr "znajomości"
 
@@ -2250,7 +2250,7 @@ msgstr "Skopiuj wartości RGBA"
 msgid "Copy Reel, Shot, Frame, X and Y coordinates to clipboard"
 msgstr "Skopiuj współrzędne Reel, Shot, Frame, X i Y do schowka"
 
-#: gui/mrvImageView.cpp:2352
+#: gui/mrvImageView.cpp:2354
 msgid "Copy X Y"
 msgstr "Kopiuj XY"
 
@@ -2335,7 +2335,7 @@ msgstr "Nie mogłem obliczyć Luta z OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Nie można skopiować kontekstu do parametrów"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2399
+#: core/aviImage.cpp:729 core/aviImage.cpp:2397
 msgid "Could not copy parameters to context"
 msgstr "Nie można skopiować parametrów do kontekstu kodeka"
 
@@ -2413,7 +2413,7 @@ msgstr "Nie mogłem znaleźć czterech liczb całkowitych dla pudełka"
 msgid "Could not find four integers for box "
 msgstr "Nie mogłem znaleźć czterech liczb całkowitych dla pudełka "
 
-#: core/mrvPlayback.cpp:1331
+#: core/mrvPlayback.cpp:1366
 msgid "Could not find image "
 msgstr "Nie mogłem znaleźć obrazu "
 
@@ -2453,7 +2453,7 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Nie mogłem znaleźć szesnastu liczb zmiennoprzecinkowych dla macierzy 4x4 "
 
-#: core/aviImage.cpp:3033
+#: core/aviImage.cpp:3031
 msgid "Could not find stream info"
 msgstr "Nie udało się znaleźć informacji o utworze"
 
@@ -2526,7 +2526,7 @@ msgstr "Nie mogłem pobrać próbek audio"
 msgid "Could not get device info for "
 msgstr "Nie udało się pobrać informacji o urządzeniu dla "
 
-#: core/aviImage.cpp:1290
+#: core/aviImage.cpp:1284
 msgid "Could not get image conversion context."
 msgstr "Nie udało mi się uzyskać kontekstu konwersji obrazu."
 
@@ -2542,15 +2542,15 @@ msgstr "Nie udało mi się uzyskać kodu czasowego dla ramki "
 msgid "Could not init cmm: "
 msgstr "Nie mogłem zainicjować cmm: "
 
-#: core/CMedia_audio.cpp:1824
+#: core/CMedia_audio.cpp:1822
 msgid "Could not initialize audio engine"
 msgstr "Nie udało mi się zainicjować silnika audio"
 
-#: gui/mrvImageView.cpp:2315
+#: gui/mrvImageView.cpp:2317
 msgid "Could not initialize draw engine"
 msgstr "Nie można zainicjować silnika rysowania"
 
-#: gui/mrvImageBrowser.cpp:2478
+#: gui/mrvImageBrowser.cpp:2465
 msgid "Could not load '"
 msgstr "nie mogłem wczytać"
 
@@ -2602,7 +2602,7 @@ msgstr "Nie udało mi się otworzyć kodeka audio"
 msgid "Could not open audio codec."
 msgstr "Nie udało mi się otworzyć kodeka audio"
 
-#: core/CMedia_audio.cpp:1816
+#: core/CMedia_audio.cpp:1814
 msgid "Could not open audio driver"
 msgstr "Nie mogłem otworzyć sterownika audio"
 
@@ -2618,7 +2618,7 @@ msgstr "Nie mogłem otworzyć filmu mpeg"
 msgid "Could not open video codec"
 msgstr "Nie można otworzyć kodeka wideo"
 
-#: core/CMedia_audio.cpp:1902
+#: core/CMedia_audio.cpp:1899
 msgid "Could not play audio frame "
 msgstr "Nie mogłem odtworzyć klatki audio "
 
@@ -2659,7 +2659,7 @@ msgstr ""
 "Nie mogłem zapisać sekwencji ani filmu, tylko określony obraz. Użyj składni "
 "%d dla strumieni lub niestandardowego rozszerzenia dla filmów."
 
-#: core/aviImage.cpp:1057 core/aviImage.cpp:1074
+#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
 msgid "Could not seek to frame "
 msgstr "Nie mogłem znaleźć obrazu "
 
@@ -2800,51 +2800,51 @@ msgstr "Utwórz nową rolkę"
 msgid "Create audio conversion from "
 msgstr "Utwórz konwersję audio z "
 
-#: gui/mrvImageBrowser.cpp:4503
+#: gui/mrvImageBrowser.cpp:4482
 msgid "Create/Black Gap"
 msgstr "Tworzyć/czarna przerwa"
 
-#: gui/mrvImageBrowser.cpp:4525
+#: gui/mrvImageBrowser.cpp:4504
 msgid "Create/Checkered"
 msgstr "Tworzyć/krata"
 
-#: gui/mrvImageBrowser.cpp:4509
+#: gui/mrvImageBrowser.cpp:4488
 msgid "Create/Color Bars/PAL"
 msgstr "Tworzyć/Kolorowe paski/KUMPEL"
 
-#: gui/mrvImageBrowser.cpp:4511
+#: gui/mrvImageBrowser.cpp:4490
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Tworzyć/Kolorowe paski/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4505
+#: gui/mrvImageBrowser.cpp:4484
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Tworzyć/Kolorowe paski/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4507
+#: gui/mrvImageBrowser.cpp:4486
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Tworzyć/Kolorowe paski/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4513
+#: gui/mrvImageBrowser.cpp:4492
 msgid "Create/Gamma Chart/1.4"
 msgstr "Tworzyć/Tabela zasięgu/1,4"
 
-#: gui/mrvImageBrowser.cpp:4515
+#: gui/mrvImageBrowser.cpp:4494
 msgid "Create/Gamma Chart/1.8"
 msgstr "Tworzyć/Tabela zasięgu/1,8"
 
-#: gui/mrvImageBrowser.cpp:4517
+#: gui/mrvImageBrowser.cpp:4496
 msgid "Create/Gamma Chart/2.2"
 msgstr "Tworzyć/Tabela zasięgu/2,2"
 
-#: gui/mrvImageBrowser.cpp:4519
+#: gui/mrvImageBrowser.cpp:4498
 msgid "Create/Gamma Chart/2.4"
 msgstr "Tworzyć/Tabela zasięgu/2,4"
 
-#: gui/mrvImageBrowser.cpp:4521
+#: gui/mrvImageBrowser.cpp:4500
 msgid "Create/Gradient/Linear"
 msgstr "Tworzyć/Ukończenie szkoły/liniowy"
 
-#: gui/mrvImageBrowser.cpp:4523
+#: gui/mrvImageBrowser.cpp:4502
 msgid "Create/Gradient/Luminance"
 msgstr "Tworzyć/Ukończenie szkoły/luminancja"
 
@@ -3027,51 +3027,51 @@ msgstr "Okno danych klipu"
 msgid "Decimal"
 msgstr "Dziesiętny"
 
-#: core/CMedia.cpp:178
+#: core/CMedia.cpp:177
 msgid "Decode Buffer Full"
 msgstr "Bufor dekodowania pełny"
 
-#: core/CMedia.cpp:172
+#: core/CMedia.cpp:171
 msgid "Decode Done"
 msgstr "Zakończono dekodowanie"
 
-#: core/CMedia.cpp:173
+#: core/CMedia.cpp:172
 msgid "Decode Error"
 msgstr "błąd dekodowania"
 
-#: core/CMedia.cpp:177
+#: core/CMedia.cpp:176
 msgid "Decode Loop End"
 msgstr "Ostatnia pętla w dekodowaniu"
 
-#: core/CMedia.cpp:176
+#: core/CMedia.cpp:175
 msgid "Decode Loop Start"
 msgstr "Rozpocznij pętlę w dekodowaniu"
 
-#: core/CMedia.cpp:170
+#: core/CMedia.cpp:169
 msgid "Decode Missing Frame"
 msgstr "Brakujące dekodowanie ramki"
 
-#: core/CMedia.cpp:174
+#: core/CMedia.cpp:173
 msgid "Decode Missing Samples"
 msgstr "Brakujące dekodowanie próbek"
 
-#: core/CMedia.cpp:175
+#: core/CMedia.cpp:174
 msgid "Decode No Stream"
 msgstr "Dekodowanie bezśladowe"
 
-#: core/CMedia.cpp:171
+#: core/CMedia.cpp:170
 msgid "Decode OK"
 msgstr "dekodowanie w porządku"
 
-#: core/aviImage.cpp:4129 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4116 core/R3dImage.cpp:1072 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Błąd dekodowania dźwięku: "
 
-#: core/aviImage.cpp:4156
+#: core/aviImage.cpp:4143
 msgid "Decode video error seek frame "
 msgstr "Błąd dekodowania wideo podczas szukania obrazu "
 
-#: core/CMedia_audio.cpp:1433
+#: core/CMedia_audio.cpp:1434
 msgid "Decode_audio failed with error: "
 msgstr "Błąd dekodowania dźwięku: "
 
@@ -3260,7 +3260,7 @@ msgstr "Mieszać"
 msgid "Do you want to replace '%s'?"
 msgstr "Czy chcesz zastąpić '%s'?"
 
-#: gui/mrvImageView.cpp:3664
+#: gui/mrvImageView.cpp:3667
 msgid "Don't know which one should go first."
 msgstr "Nie wiem, który z nich powinien iść pierwszy."
 
@@ -3333,7 +3333,7 @@ msgstr "EDL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1393
-#: gui/mrvImageView.cpp:5011
+#: gui/mrvImageView.cpp:5016
 msgid "EDL Edit"
 msgstr "Edytuj EDL"
 
@@ -3389,7 +3389,7 @@ msgstr "Pusty nośnik przekazany do media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Puste media dostarczone do konstruktora elementu"
 
-#: core/aviImage.cpp:3573
+#: core/aviImage.cpp:3574
 msgid "Empty packets for video seek."
 msgstr "Puste pakiety do wyszukiwania wideo."
 
@@ -3397,7 +3397,7 @@ msgstr "Puste pakiety do wyszukiwania wideo."
 msgid "Empty pic file for media "
 msgstr "Pusty plik obrazu dla mediów "
 
-#: core/aviImage.cpp:4507
+#: core/aviImage.cpp:4494
 msgid "Empty seek or preroll"
 msgstr "Puste wyszukiwanie lub preroll"
 
@@ -3465,7 +3465,7 @@ msgstr "Błąd podczas konwertowania dźwięku: "
 msgid "Error while encoding video frame: "
 msgstr "Błąd podczas kodowania klatki wideo: "
 
-#: core/aviImage.cpp:1449
+#: core/aviImage.cpp:1443
 msgid "Error while feeding the filtergraph"
 msgstr "Błąd podawania wykresu filtra"
 
@@ -3496,7 +3496,7 @@ msgstr "Dziwne/para kolumn"
 msgid "Even/odd rows"
 msgstr "Dziwne/pary linii"
 
-#: gui/mrvImageBrowser.cpp:3725
+#: gui/mrvImageBrowser.cpp:3704
 msgid "Example:  gizmo"
 msgstr "Przykład: gizmo_v003.0001.exr"
 
@@ -3508,11 +3508,11 @@ msgstr ""
 "Przykłady:\n"
 "\n"
 
-#: gui/mrvImageView.cpp:3807
+#: gui/mrvImageView.cpp:3812
 msgid "Exchange Image failed"
 msgstr "Zamiana obrazu nie powiodła się"
 
-#: gui/mrvImageBrowser.cpp:4686 gui/mrvImageBrowser.cpp:4826
+#: gui/mrvImageBrowser.cpp:4665 gui/mrvImageBrowser.cpp:4805
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage %d %d"
@@ -3688,52 +3688,52 @@ msgstr "Nie udało się wczytać ripmapy Y "
 msgid "File Requester"
 msgstr "Wyszukiwacz plików"
 
-#: gui/mrvImageView.cpp:4956
+#: gui/mrvImageView.cpp:4961
 msgid "File/Open/AMF file"
 msgstr "Archiwum/Otworzyć/Plik MFA"
 
-#: gui/mrvImageView.cpp:4943 gui/mrvImageView.cpp:4954
+#: gui/mrvImageView.cpp:4948 gui/mrvImageView.cpp:4959
 msgid "File/Open/Directory"
 msgstr "Archiwum/Otworzyć/informator"
 
-#: gui/mrvImageView.cpp:4933 gui/mrvImageBrowser.cpp:4211
+#: gui/mrvImageView.cpp:4938 gui/mrvImageBrowser.cpp:4190
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Archiwum/Otworzyć/Film lub sekwencja"
 
-#: gui/mrvImageView.cpp:4945 gui/mrvImageView.cpp:4958
+#: gui/mrvImageView.cpp:4950 gui/mrvImageView.cpp:4963
 msgid "File/Open/Session"
 msgstr "Archiwum/Otworzyć/Sesja"
 
-#: gui/mrvImageView.cpp:4937 gui/mrvImageBrowser.cpp:4213
+#: gui/mrvImageView.cpp:4942 gui/mrvImageBrowser.cpp:4192
 msgid "File/Open/Single Image"
 msgstr "Archiwum/Otworzyć/Tylko obraz"
 
-#: gui/mrvImageView.cpp:4951
+#: gui/mrvImageView.cpp:4956
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "Archiwum/Otworzyć/Film lub sekwencja dla stereo"
 
-#: gui/mrvImageView.cpp:4981
+#: gui/mrvImageView.cpp:4986
 msgid "File/Quit"
 msgstr "Archiwum/Wyjechać"
 
-#: gui/mrvImageView.cpp:4966 gui/mrvImageBrowser.cpp:4458
+#: gui/mrvImageView.cpp:4971 gui/mrvImageBrowser.cpp:4437
 msgid "File/Save/Frame As"
 msgstr "Archiwum/Trzymać/pudełko jak"
 
-#: gui/mrvImageView.cpp:4968 gui/mrvImageBrowser.cpp:4460
+#: gui/mrvImageView.cpp:4973 gui/mrvImageBrowser.cpp:4439
 msgid "File/Save/GL Snapshots As"
 msgstr "Archiwum/Trzymać/Migawki Opengl"
 
-#: gui/mrvImageView.cpp:4961 gui/mrvImageBrowser.cpp:4453
+#: gui/mrvImageView.cpp:4966 gui/mrvImageBrowser.cpp:4432
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archiwum/Trzymać/Film lub sekwencja Like"
 
-#: gui/mrvImageView.cpp:4964 gui/mrvImageBrowser.cpp:4456
+#: gui/mrvImageView.cpp:4969 gui/mrvImageBrowser.cpp:4435
 msgid "File/Save/Reel As"
 msgstr "Archiwum/Trzymać/kołowrotek jak"
 
-#: gui/mrvImageView.cpp:4970 gui/mrvImageBrowser.cpp:4462
+#: gui/mrvImageView.cpp:4975 gui/mrvImageBrowser.cpp:4441
 msgid "File/Save/Session As"
 msgstr "Archiwum/Trzymać/sesja jak"
 
@@ -3877,7 +3877,7 @@ msgstr "CzteryCC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11316
+#: gui/mrvImageView.cpp:11329
 msgid "Frame"
 msgstr "Rama"
 
@@ -4026,7 +4026,7 @@ msgstr "ZIELONY"
 msgid "Gain"
 msgstr "Zdobyć"
 
-#: gui/mrvImageView.cpp:3998
+#: gui/mrvImageView.cpp:4003
 msgid "Gain for image failed"
 msgstr "Wzmocnienie obrazu nie powiodło się"
 
@@ -4071,7 +4071,7 @@ msgstr "mniejszy zasięg"
 msgid "Gamma More"
 msgstr "Większy zakres"
 
-#: gui/mrvImageView.cpp:4010
+#: gui/mrvImageView.cpp:4015
 msgid "Gamma for image failed"
 msgstr "Gama obrazów nie powiodła się"
 
@@ -4104,7 +4104,7 @@ msgstr "Przejdź na początek sekwencji."
 msgid "Go to the end of the sequence."
 msgstr "Przejdź do końca sekwencji."
 
-#: core/CMedia.cpp:4412 core/CMedia.cpp:4459
+#: core/CMedia.cpp:4432 core/CMedia.cpp:4479
 msgid "Got colorspace '"
 msgstr "mam przestrzeń kolorów"
 
@@ -4118,9 +4118,9 @@ msgstr "grecki (Ελληνικά)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2101 core/CMedia.cpp:2167 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9393
-#: gui/mrvImageView.cpp:9932
+#: core/CMedia.cpp:2116 core/CMedia.cpp:2182 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9398
+#: gui/mrvImageView.cpp:9937
 msgid "Green"
 msgstr "Zielony"
 
@@ -4249,7 +4249,7 @@ msgstr "Oznaczone na pełnej osi czasu"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1397
-#: gui/mrvImageView.cpp:5015
+#: gui/mrvImageView.cpp:5020
 msgid "Histogram"
 msgstr "histogram"
 
@@ -4277,7 +4277,7 @@ msgstr "Klucze zarządzania:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1403
-#: gui/mrvImageView.cpp:5025
+#: gui/mrvImageView.cpp:5030
 msgid "Hotkeys"
 msgstr "Klucze zarządzania"
 
@@ -4321,7 +4321,7 @@ msgstr "Profil ICC"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2792
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1400
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5026
 msgid "ICC Profiles"
 msgstr "Profile ICC"
 
@@ -4449,7 +4449,7 @@ msgstr "Pozycja Y obrazu na tablicy"
 msgid "Image Y Scale in Canvas"
 msgstr "Skalowanie Y obrazu na tablicy"
 
-#: gui/mrvImageView.cpp:3661
+#: gui/mrvImageView.cpp:3664
 msgid "Image at position "
 msgstr "Obraz na pozycji "
 
@@ -4465,11 +4465,11 @@ msgstr "Plik graficzny \""
 msgid "Image input color space is undefined for "
 msgstr "Wprowadź przestrzeń kolorów niezdefiniowanego obrazu dla "
 
-#: gui/mrvImageBrowser.cpp:3506
+#: gui/mrvImageBrowser.cpp:3494
 msgid "Image item not found for "
 msgstr "Nie znaleziono przedmiotu na rolce "
 
-#: gui/mrvImageBrowser.cpp:3609
+#: gui/mrvImageBrowser.cpp:3597
 msgid "Image not found in reel "
 msgstr "Nie znaleziono obrazu na rolce z aparatu "
 
@@ -4502,88 +4502,88 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Ustawienie powiększenia obrazu."
 
-#: gui/mrvImageView.cpp:5208
+#: gui/mrvImageView.cpp:5213
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "Obraz/Dodaj modyfikację wyglądu CTL (LMT)"
 
-#: gui/mrvImageView.cpp:5200
+#: gui/mrvImageView.cpp:5205
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "Obraz/Przypisz transformację urządzenia wejściowego CTL (IDT)"
 
-#: gui/mrvImageView.cpp:5212
+#: gui/mrvImageView.cpp:5217
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Obraz/Przypisz transformację renderowania CTL (RRT)"
 
-#: gui/mrvImageView.cpp:5216
+#: gui/mrvImageView.cpp:5221
 msgid "Image/Attach ICC Color Profile"
 msgstr "Obraz/Dodaj profil koloru ICC"
 
-#: gui/mrvImageView.cpp:5178
+#: gui/mrvImageView.cpp:5183
 msgid "Image/Clear Caches"
 msgstr "Obraz/Wyczyść pamięć podręczną"
 
-#: gui/mrvImageView.cpp:5154 gui/mrvImageView.cpp:5162
-#: gui/mrvImageBrowser.cpp:4474 gui/mrvImageBrowser.cpp:4484
+#: gui/mrvImageView.cpp:5159 gui/mrvImageView.cpp:5167
+#: gui/mrvImageBrowser.cpp:4453 gui/mrvImageBrowser.cpp:4463
 msgid "Image/Clone"
 msgstr "Obraz/Klon"
 
-#: gui/mrvImageView.cpp:5156 gui/mrvImageBrowser.cpp:4476
+#: gui/mrvImageView.cpp:5161 gui/mrvImageBrowser.cpp:4455
 msgid "Image/Clone All Channels"
 msgstr "Obraz/Klonuj wszystkie kanały"
 
-#: gui/mrvImageBrowser.cpp:4488
+#: gui/mrvImageBrowser.cpp:4467
 msgid "Image/Media Info"
 msgstr "Obraz/Informacje o multimediach"
 
-#: gui/mrvImageView.cpp:5223
+#: gui/mrvImageView.cpp:5228
 msgid "Image/Mirror/Horizontal"
 msgstr "Obraz/Lustro/Poziomy"
 
-#: gui/mrvImageView.cpp:5227
+#: gui/mrvImageView.cpp:5232
 msgid "Image/Mirror/Vertical"
 msgstr "Obraz/Lustro/Pionowy"
 
-#: gui/mrvImageView.cpp:5204
+#: gui/mrvImageView.cpp:5209
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "Obraz/Zmodyfikuj CTL ASC_CDL SOP i nasycenie"
 
-#: gui/mrvImageView.cpp:5143
+#: gui/mrvImageView.cpp:5148
 msgid "Image/Next"
 msgstr "Obraz/Następny"
 
-#: gui/mrvImageView.cpp:5169
+#: gui/mrvImageView.cpp:5174
 msgid "Image/Preload Caches"
 msgstr "Obraz/Wstępnie ładuj pamięci podręczne"
 
-#: gui/mrvImageView.cpp:5145
+#: gui/mrvImageView.cpp:5150
 msgid "Image/Previous"
 msgstr "Obraz/Poprzedni"
 
-#: gui/mrvImageView.cpp:5188
+#: gui/mrvImageView.cpp:5193
 msgid "Image/Rotate +90"
 msgstr "Obraz/Obróć to +90"
 
-#: gui/mrvImageView.cpp:5191
+#: gui/mrvImageView.cpp:5196
 msgid "Image/Rotate -90"
 msgstr "Obraz/Obróć -90"
 
-#: gui/mrvImageView.cpp:5231 gui/mrvImageBrowser.cpp:4493
+#: gui/mrvImageView.cpp:5236 gui/mrvImageBrowser.cpp:4472
 msgid "Image/Set as Background"
 msgstr "Obraz/Ustaw jako tło"
 
-#: gui/mrvImageView.cpp:5236
+#: gui/mrvImageView.cpp:5241
 msgid "Image/Switch FG and BG"
 msgstr "Obraz/Zmień pierwszy plan i tło"
 
-#: gui/mrvImageView.cpp:5239
+#: gui/mrvImageView.cpp:5244
 msgid "Image/Toggle Background"
 msgstr "Obraz/przełącz tło"
 
-#: gui/mrvImageView.cpp:5246
+#: gui/mrvImageView.cpp:5251
 msgid "Image/Toggle EDL"
 msgstr "Obraz/Zamień EDL"
 
-#: gui/mrvImageView.cpp:5181
+#: gui/mrvImageView.cpp:5186
 msgid "Image/Update Single Frame in Cache"
 msgstr "Obraz/Zaktualizuj ramkę pamięci podręcznej"
 
@@ -4695,11 +4695,11 @@ msgstr "nieprawidłowy atrybut "
 msgid "Invalid destination profile/image format"
 msgstr "Nieprawidłowy profil docelowy/format obrazu"
 
-#: gui/mrvReel.cpp:237
+#: gui/mrvReel.cpp:236
 msgid "Invalid image "
 msgstr "nieprawidłowy indeks "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9310
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9315
 msgid "Invalid index "
 msgstr "nieprawidłowy indeks "
 
@@ -4719,7 +4719,7 @@ msgstr "Nieprawidłowe współrzędne bufora pikseli "
 msgid "Invalid source profile/image pixel format"
 msgstr "Nieprawidłowy profil źródłowy/format piksela obrazu"
 
-#: gui/mrvReel.cpp:224
+#: gui/mrvReel.cpp:223
 msgid "Invalid stereo image "
 msgstr "Nieprawidłowy obraz stereofoniczny "
 
@@ -4727,7 +4727,7 @@ msgstr "Nieprawidłowy obraz stereofoniczny "
 msgid "Invalid timecode "
 msgstr "Nieprawidłowy kod czasu "
 
-#: core/aviImage.cpp:1967
+#: core/aviImage.cpp:1965
 msgid "Invalid video stream "
 msgstr "nieprawidłowa ścieżka wideo "
 
@@ -4747,8 +4747,8 @@ msgstr "Odwrócona transformacja odniesienia renderowania (RT)"
 msgid "Italian"
 msgstr "Włoski (italiano)"
 
-#: gui/mrvImageBrowser.cpp:4078 gui/mrvImageBrowser.cpp:4086
-#: gui/mrvImageBrowser.cpp:4165 gui/mrvImageBrowser.cpp:4173
+#: gui/mrvImageBrowser.cpp:4057 gui/mrvImageBrowser.cpp:4065
+#: gui/mrvImageBrowser.cpp:4144 gui/mrvImageBrowser.cpp:4152
 msgid "Item was not found in tree."
 msgstr "nie znaleziono na rolce"
 
@@ -5047,7 +5047,7 @@ msgstr "Załadowałem preferencje z "
 msgid "Loading"
 msgstr "Ładowanie"
 
-#: gui/mrvImageBrowser.cpp:2376
+#: gui/mrvImageBrowser.cpp:2363
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Ładowanie \"%s\""
@@ -5081,7 +5081,7 @@ msgid "Logarithmic"
 msgstr "Logarytmiczne"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1404
-#: gui/mrvImageView.cpp:5027
+#: gui/mrvImageView.cpp:5032
 msgid "Logs"
 msgstr "Posty"
 
@@ -5119,9 +5119,9 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Jasność pikseli obrazu pod myszką."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2114 core/CMedia.cpp:2169 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2182
-#: gui/mrvImageView.cpp:9408 gui/mrvImageView.cpp:9933
+#: core/CMedia.cpp:2129 core/CMedia.cpp:2184 core/exrImage.cpp:3057
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2184
+#: gui/mrvImageView.cpp:9413 gui/mrvImageView.cpp:9938
 msgid "Lumma"
 msgstr "luma"
 
@@ -5264,7 +5264,7 @@ msgstr "Przeciętny"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1390
-#: gui/mrvImageView.cpp:5002
+#: gui/mrvImageView.cpp:5007
 msgid "Media Info"
 msgstr "Informacje o multimediach"
 
@@ -5380,11 +5380,11 @@ msgstr "Monitor zapisu CTL"
 msgid "Monitor Icc Profile"
 msgstr "Monitoruj profil Icc"
 
-#: gui/mrvImageView.cpp:5353
+#: gui/mrvImageView.cpp:5358
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Wyświetlacz/Dodaj transformację wyświetlania wyjścia CTL (ODT)"
 
-#: gui/mrvImageView.cpp:5357
+#: gui/mrvImageView.cpp:5362
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Wyświetlacz/Dodaj profil kolorów ICC"
 
@@ -5469,7 +5469,7 @@ msgstr ""
 "Musisz ponownie uruchomić mrViewer, aby zmienić język. Jesteś pewien, że "
 "chcesz kontynuować?"
 
-#: gui/mrvImageBrowser.cpp:4680
+#: gui/mrvImageBrowser.cpp:4659
 msgid "Negative indices to exchange"
 msgstr "Ujemne indeksy do handlu"
 
@@ -5477,12 +5477,12 @@ msgstr "Ujemne indeksy do handlu"
 msgid "Never"
 msgstr "Nigdy"
 
-#: gui/mrvImageBrowser.cpp:3525
+#: gui/mrvImageBrowser.cpp:3513
 msgid "New item not created at "
 msgstr "Nowa pozycja nie została utworzona w "
 
-#: gui/mrvImageBrowser.cpp:1977 gui/mrvImageBrowser.cpp:3910
-#: gui/mrvImageBrowser.cpp:4001
+#: gui/mrvImageBrowser.cpp:1977 gui/mrvImageBrowser.cpp:3889
+#: gui/mrvImageBrowser.cpp:3980
 msgid "New item was not found in tree."
 msgstr "nie znaleziono na rolce"
 
@@ -5508,8 +5508,8 @@ msgid "Next Image Version"
 msgstr "Następna wersja obrazu"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
-#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3372
-#: gui/mrvImageBrowser.cpp:3376 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3360
+#: gui/mrvImageBrowser.cpp:3364 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -5567,7 +5567,7 @@ msgstr "Nie znaleziono dekodera dla ścieżki audio. ID: "
 msgid "No foreground image to switch to"
 msgstr "Brak obrazu z przodu do zmiany"
 
-#: gui/mrvImageView.cpp:4892
+#: gui/mrvImageView.cpp:4897
 msgid "No image to add shape to"
 msgstr "Brak obrazu do dodania kształtu"
 
@@ -5575,11 +5575,11 @@ msgstr "Brak obrazu do dodania kształtu"
 msgid "No image was decoded"
 msgstr "Żaden obraz nie został zdekodowany"
 
-#: gui/mrvImageBrowser.cpp:2161
+#: gui/mrvImageBrowser.cpp:2156
 msgid "No left image to attach a stereo image pair"
 msgstr "Nie ma już obrazu do dołączenia pary obrazów stereo"
 
-#: core/CMedia_audio.cpp:247 core/CMedia_audio.cpp:1646
+#: core/CMedia_audio.cpp:247 core/CMedia_audio.cpp:1644
 msgid "No memory for audio frame"
 msgstr "Brak pamięci na ramkę audio"
 
@@ -5587,7 +5587,7 @@ msgstr "Brak pamięci na ramkę audio"
 msgid "No memory to allocate filter graph"
 msgstr "Brak pamięci dla wykresu filtra"
 
-#: core/aviImage.cpp:2132
+#: core/aviImage.cpp:2130
 msgid "No pixel format could be chosen"
 msgstr "Nie można wybrać formatu pikseli"
 
@@ -5603,7 +5603,7 @@ msgstr "Nie ma prawidłowej transformacji ODT: "
 msgid "No valid RT transform for \""
 msgstr "Nie ma prawidłowej transformacji RT dla \""
 
-#: gui/mrvImageBrowser.cpp:3721
+#: gui/mrvImageBrowser.cpp:3700
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5651,31 +5651,31 @@ msgstr "Niekompatybilny"
 msgid "Not OK"
 msgstr "Nie w porządku"
 
-#: gui/mrvImageView.cpp:5862
+#: gui/mrvImageView.cpp:5867
 msgid "Not a GLArrowShape pointer"
 msgstr "To nie jest wskaźnik GlarrowShape"
 
-#: gui/mrvImageView.cpp:7289
+#: gui/mrvImageView.cpp:7294
 msgid "Not a GLCircleShape pointer"
 msgstr "Nie jest wskaźnikiem do GLCircleShape"
 
-#: gui/mrvImageView.cpp:5894
+#: gui/mrvImageView.cpp:5899
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "Nie wskaźnik GLCircleShape w mouseRelease"
 
-#: gui/mrvImageView.cpp:5834
+#: gui/mrvImageView.cpp:5839
 msgid "Not a GLErasePathShape pointer"
 msgstr "Nie jest wskaźnikiem do GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5820 gui/mrvImageView.cpp:7229
+#: gui/mrvImageView.cpp:5825 gui/mrvImageView.cpp:7234
 msgid "Not a GLPathShape pointer"
 msgstr "Nie jest to wskaźnik do GLPathShape"
 
-#: gui/mrvImageView.cpp:5848
+#: gui/mrvImageView.cpp:5853
 msgid "Not a GLRectangleShape pointer"
 msgstr "To nie jest wskaźnik GLRectangleShape"
 
-#: gui/mrvImageView.cpp:5878
+#: gui/mrvImageView.cpp:5883
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "Brak wskaźnika do GLTextShape na mouseRelease"
 
@@ -5707,11 +5707,11 @@ msgstr "Brak pamięci na czarny obraz"
 msgid "Not enough memory for color transform"
 msgstr "Brak pamięci do transformacji kolorów"
 
-#: core/aviImage.cpp:2393
+#: core/aviImage.cpp:2391
 msgid "Not enough memory for context"
 msgstr "Brak pamięci na kontekst"
 
-#: core/aviImage.cpp:1221 core/oiioImage.cpp:352
+#: core/aviImage.cpp:1215 core/oiioImage.cpp:352
 msgid "Not enough memory for image"
 msgstr "Brak pamięci obrazu"
 
@@ -5802,7 +5802,7 @@ msgstr "Przestrzeń kolorów wejścia OCIO"
 msgid "OCIO View"
 msgstr "Widok REKREACYJNY"
 
-#: gui/mrvImageView.cpp:4023
+#: gui/mrvImageView.cpp:4028
 msgid "OCIO View change failed"
 msgstr "Uszkodzony przełącznik widoku OCIO"
 
@@ -5822,15 +5822,15 @@ msgstr "Zmienna środowiskowa OCIO nie istnieje. CTL będzie używany. "
 msgid "OCIO input color space for the image"
 msgstr "Wejściowa przestrzeń kolorów obrazu niezdefiniowana."
 
-#: gui/mrvImageView.cpp:5262
+#: gui/mrvImageView.cpp:5267
 msgid "OCIO/Display"
 msgstr "OCIO/wyświetlacz"
 
-#: gui/mrvImageView.cpp:5258 gui/mrvImageBrowser.cpp:4244
+#: gui/mrvImageView.cpp:5263 gui/mrvImageBrowser.cpp:4223
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Wprowadź przestrzeń kolorów"
 
-#: gui/mrvImageView.cpp:5265
+#: gui/mrvImageView.cpp:5270
 msgid "OCIO/View"
 msgstr "OCIO/Pogląd"
 
@@ -5896,8 +5896,8 @@ msgstr "ogg-wideo"
 msgid "Okay"
 msgstr "ok"
 
-#: gui/mrvImageBrowser.cpp:1959 gui/mrvImageBrowser.cpp:3894
-#: gui/mrvImageBrowser.cpp:3986
+#: gui/mrvImageBrowser.cpp:1959 gui/mrvImageBrowser.cpp:3873
+#: gui/mrvImageBrowser.cpp:3965
 msgid "Old item was not found in tree."
 msgstr "nie znaleziono na rolce"
 
@@ -6021,7 +6021,7 @@ msgstr "Oryginalny program"
 msgid "Otio timeline saved to '%s'."
 msgstr "Oś czasu Otio zapisana w '%s'."
 
-#: core/CMedia.cpp:1170
+#: core/CMedia.cpp:1185
 msgid "Out of memory"
 msgstr "Bez pamięci"
 
@@ -6114,7 +6114,7 @@ msgstr "Tekstury PBO:\t"
 msgid "PIZ"
 msgstr "PIZ"
 
-#: gui/mrvImageView.cpp:4828
+#: gui/mrvImageView.cpp:4833
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6225,7 +6225,7 @@ msgstr "Współczynnik pikseli przycinania"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Typ pikseli nie jest prawidłowo obsługiwany w przebiegu"
 
-#: gui/mrvImageView.cpp:5343
+#: gui/mrvImageView.cpp:5348
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "Piksel/Skopiuj wartości RGBA do schowka"
 
@@ -6280,7 +6280,7 @@ msgstr ""
 msgid "Playback"
 msgstr "bawić się"
 
-#: core/CMedia_audio.cpp:1831
+#: core/CMedia_audio.cpp:1828
 msgid "Playback of audio frame "
 msgstr "Odtwarzanie ramek audio "
 
@@ -6318,7 +6318,7 @@ msgstr "Wolę ICC"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2155
-#: gui/mrvImageView.cpp:5009
+#: gui/mrvImageView.cpp:5014
 msgid "Preferences"
 msgstr "preferencje"
 
@@ -6326,7 +6326,7 @@ msgstr "preferencje"
 msgid "Preferences have been saved to: "
 msgstr "Preferencje zostały zapisane w: "
 
-#: gui/mrvImageBrowser.cpp:3638
+#: gui/mrvImageBrowser.cpp:3626
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
@@ -6335,7 +6335,7 @@ msgstr ""
 "wersję w nazwie pliku. Jeśli masz wątpliwości, czego użyć, użyj _v, co "
 "spowoduje utworzenie obejmującego wyrażenia regularnego."
 
-#: gui/mrvImageBrowser.cpp:4268
+#: gui/mrvImageBrowser.cpp:4247
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6396,7 +6396,7 @@ msgstr "Wydrukować"
 msgid "Priority"
 msgstr "Priorytet"
 
-#: core/aviImage.cpp:1226
+#: core/aviImage.cpp:1220
 msgid "Problem allocating image "
 msgstr "Problem z przypisaniem obrazu "
 
@@ -6412,12 +6412,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Nazwa profilu "
 
-#: core/aviImage.cpp:2780
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2776
+#: core/aviImage.cpp:2774
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -6614,9 +6614,9 @@ msgstr "Narzędzie Prostokąt"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2100 core/CMedia.cpp:2167 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9388
-#: gui/mrvImageView.cpp:9931
+#: core/CMedia.cpp:2115 core/CMedia.cpp:2182 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9393
+#: gui/mrvImageView.cpp:9936
 msgid "Red"
 msgstr "czerwony"
 
@@ -6646,7 +6646,7 @@ msgstr "Ponów rysunek"
 msgid "Redo Previous Shape Drawn"
 msgstr "Ponów wcześniej narysowaną figurę"
 
-#: gui/mrvImageView.cpp:2461
+#: gui/mrvImageView.cpp:2463
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr "Rolka %d (%s) | Strzał %d (%s) | Rama %<PRId64> | X = %d | Y = %d\n"
@@ -6663,7 +6663,7 @@ msgstr "bębny"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2992
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1389
-#: gui/mrvImageView.cpp:5001
+#: gui/mrvImageView.cpp:5006
 msgid "Reels"
 msgstr "bębny"
 
@@ -6684,7 +6684,7 @@ msgstr "Numer referencyjny"
 msgid "Reference Service"
 msgstr "Usługa referencyjna"
 
-#: gui/mrvImageBrowser.cpp:3647 gui/mrvImageBrowser.cpp:3654
+#: gui/mrvImageBrowser.cpp:3633
 msgid "Regex "
 msgstr "Regex "
 
@@ -6700,7 +6700,7 @@ msgstr ""
 " gizmo_v003.001.exr\n"
 "(wersja 3, ramka 1)."
 
-#: gui/mrvImageBrowser.cpp:3667 gui/mrvImageBrowser.cpp:3715
+#: gui/mrvImageBrowser.cpp:3646 gui/mrvImageBrowser.cpp:3694
 msgid "Regular expression error: "
 msgstr "Błąd wyrażenia regularnego: "
 
@@ -6791,7 +6791,7 @@ msgstr ""
 "Zastąp wszystkie atrybuty/wartości do wyświetlenia w hud, pozostawiając "
 "tylko te określone w wierszu poleceń."
 
-#: gui/mrvImageBrowser.cpp:3491
+#: gui/mrvImageBrowser.cpp:3479
 msgid "Replace image index is out of range"
 msgstr "Współczynnik zastępowania obrazu jest poza zakresem"
 
@@ -6917,7 +6917,7 @@ msgstr "Obróć obraz o -10 stopni"
 msgid "Rotate Image -90 Degrees"
 msgstr "Obróć obraz o -90 stopni"
 
-#: gui/mrvImageView.cpp:3953
+#: gui/mrvImageView.cpp:3958
 msgid "Rotate for image failed"
 msgstr "Obrót obrazu nie powiódł się"
 
@@ -7202,11 +7202,11 @@ msgstr "Wybierz wejście stereo"
 msgid "Select stereo output"
 msgstr "Wybierz wyjście stereo"
 
-#: gui/mrvImageBrowser.cpp:4228
+#: gui/mrvImageBrowser.cpp:4207
 msgid "Select/Multiple Images for Modifying"
 msgstr "Wybrać/Wiele obrazów do modyfikacji"
 
-#: gui/mrvImageBrowser.cpp:4215
+#: gui/mrvImageBrowser.cpp:4194
 msgid "Select/Single Image for Dragging"
 msgstr "Wybrać/Obraz do przeciągnięcia"
 
@@ -7557,19 +7557,19 @@ msgstr "Plik z napisami "
 msgid "Subtitle font "
 msgstr "Litera z napisami "
 
-#: core/aviImage.cpp:4297
+#: core/aviImage.cpp:4284
 msgid "Subtitle type "
 msgstr "Typ napisów "
 
-#: gui/mrvImageView.cpp:5297
+#: gui/mrvImageView.cpp:5302
 msgid "Subtitle/Load"
 msgstr "Podtytuł/Opłata"
 
-#: gui/mrvImageView.cpp:5305
+#: gui/mrvImageView.cpp:5310
 msgid "Subtitle/No Subtitle"
 msgstr "Podtytuł/brak napisów"
 
-#: gui/mrvImageView.cpp:5314
+#: gui/mrvImageView.cpp:5319
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Podtytuł/Ścieżka #%d - %s"
@@ -8230,7 +8230,7 @@ msgstr "Za dużo strumieni w kontekście wyjściowym"
 msgid "Tooldock"
 msgstr "Akcja Dock"
 
-#: gui/mrvImageView.cpp:11317
+#: gui/mrvImageView.cpp:11330
 msgid "Top"
 msgstr "Wyższy"
 
@@ -8366,7 +8366,7 @@ msgstr "nieobsługiwany wyjątek"
 msgid "Unhandled exception"
 msgstr "nieobsługiwany wyjątek"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2940
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:209
 #: video/mrvGLEngine.cpp:212 video/mrvGLEngine.cpp:215
 msgid "Unknown"
@@ -8432,7 +8432,7 @@ msgstr "Nieznany typ danych dla klucza '"
 msgid "Unknown data type to convert to string"
 msgstr "Nieznany typ danych do konwersji z tekstu"
 
-#: core/aviImage.cpp:2259
+#: core/aviImage.cpp:2257
 msgid "Unknown destination video frame format: "
 msgstr "Nieznany format ramki wideo odbiorcy: "
 
@@ -8645,7 +8645,7 @@ msgstr "Wektor3 liczba całkowita"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1398
-#: gui/mrvImageView.cpp:5017
+#: gui/mrvImageView.cpp:5022
 msgid "Vectorscope"
 msgstr "Wektoroskop"
 
@@ -8657,19 +8657,19 @@ msgstr "Sprzedawca:\t"
 msgid "Version Regex"
 msgstr "Wersja ExpReg."
 
-#: gui/mrvImageView.cpp:5127 gui/mrvImageBrowser.cpp:4296
+#: gui/mrvImageView.cpp:5132 gui/mrvImageBrowser.cpp:4275
 msgid "Version/First"
 msgstr "Wersja/Pierwszy"
 
-#: gui/mrvImageView.cpp:5136 gui/mrvImageBrowser.cpp:4305
+#: gui/mrvImageView.cpp:5141 gui/mrvImageBrowser.cpp:4284
 msgid "Version/Last"
 msgstr "Wersja/Trwać"
 
-#: gui/mrvImageView.cpp:5130 gui/mrvImageBrowser.cpp:4302
+#: gui/mrvImageView.cpp:5135 gui/mrvImageBrowser.cpp:4281
 msgid "Version/Next"
 msgstr "Wersja/Następny"
 
-#: gui/mrvImageView.cpp:5132 gui/mrvImageBrowser.cpp:4299
+#: gui/mrvImageView.cpp:5137 gui/mrvImageBrowser.cpp:4278
 msgid "Version/Previous"
 msgstr "Wersja/Poprzedni"
 
@@ -8710,7 +8710,7 @@ msgstr "Ścieżka wideo #%d"
 msgid "Video Streams"
 msgstr "ścieżki wideo"
 
-#: core/aviImage.cpp:1884 core/R3dImage.cpp:893 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1882 core/R3dImage.cpp:893 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Główna ramka synchronizacji wideo "
 
@@ -8746,7 +8746,7 @@ msgstr "obróć wideo"
 msgid "Video timecode attribute already exists"
 msgstr "Atrybut kodu czasowego wideo już istnieje"
 
-#: gui/mrvImageView.cpp:5281
+#: gui/mrvImageView.cpp:5286
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Wideo/Ścieżka #%d - %s"
@@ -8759,45 +8759,45 @@ msgstr "Pogląd"
 msgid "View Window"
 msgstr "Wyświetl okno"
 
-#: gui/mrvImageView.cpp:5049
+#: gui/mrvImageView.cpp:5054
 msgid "View/Data Window"
 msgstr "Pogląd/Okno danych"
 
-#: gui/mrvImageView.cpp:5043
+#: gui/mrvImageView.cpp:5048
 msgid "View/Display Window"
 msgstr "Pogląd/okno wyświetlacza"
 
-#: gui/mrvImageView.cpp:5090
+#: gui/mrvImageView.cpp:5095
 msgid "View/Grid/Size"
 msgstr "Pogląd/Krata/Rozmiar"
 
-#: gui/mrvImageView.cpp:5086
+#: gui/mrvImageView.cpp:5091
 msgid "View/Grid/Toggle Selected"
 msgstr "Pogląd/Krata/Giełda"
 
-#: gui/mrvImageView.cpp:5102
+#: gui/mrvImageView.cpp:5107
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Pogląd/hud/%s"
 
-#: gui/mrvImageView.cpp:5094
+#: gui/mrvImageView.cpp:5099
 msgid "View/Hud/Toggle Selected"
 msgstr "Pogląd/hud/Zamień wybrane"
 
-#: gui/mrvImageView.cpp:5077
+#: gui/mrvImageView.cpp:5082
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Pogląd/Maska/%s"
 
-#: gui/mrvImageView.cpp:5040
+#: gui/mrvImageView.cpp:5045
 msgid "View/Safe Areas"
 msgstr "Pogląd/Bezpieczne obszary"
 
-#: gui/mrvImageView.cpp:5054
+#: gui/mrvImageView.cpp:5059
 msgid "View/Texture Filtering  "
 msgstr "Pogląd/Filtrowanie tekstur  "
 
-#: gui/mrvImageView.cpp:5063
+#: gui/mrvImageView.cpp:5068
 msgid "View/Toggle Action Dock"
 msgstr "Pogląd/Zamień dok akcji"
 
@@ -8830,7 +8830,7 @@ msgstr "Muzyka WAVE"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1399
-#: gui/mrvImageView.cpp:5019
+#: gui/mrvImageView.cpp:5024
 msgid "Waveform"
 msgstr "Przebieg"
 
@@ -9136,7 +9136,7 @@ msgstr "szerokość klipsa"
 msgid "Window Behavior"
 msgstr "Zachowanie okna"
 
-#: gui/mrvImageView.cpp:5031
+#: gui/mrvImageView.cpp:5036
 msgid "Windows/"
 msgstr "Okna/"
 
@@ -9209,11 +9209,11 @@ msgstr "Pisarz"
 msgid "Wrong data size received."
 msgstr "Otrzymałem nieprawidłowy rozmiar danych."
 
-#: core/CMedia_audio.cpp:1981
+#: core/CMedia_audio.cpp:1978
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Nieprawidłowe pakiety w handle_video_packet_seek"
 
-#: core/aviImage.cpp:3520
+#: core/aviImage.cpp:3521
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Nieprawidłowe pakiety w handle_video_packet_seek"
 
@@ -9345,8 +9345,8 @@ msgid "YUVA Support:\t"
 msgstr "Wsparcie YUVA:\t"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
-#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3372
-#: gui/mrvImageBrowser.cpp:3376 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3360
+#: gui/mrvImageBrowser.cpp:3364 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -9359,15 +9359,15 @@ msgstr "TAk"
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr "Oszczędzasz na odtwarzanym filmie. przerywanie..."
 
-#: gui/mrvImageBrowser.cpp:3186
+#: gui/mrvImageBrowser.cpp:3174
 msgid "You can load only a single stereo image to combine with current one."
 msgstr "Możesz przesłać tylko jeden obraz stereo do połączenia z bieżącym."
 
-#: gui/mrvImageBrowser.cpp:3202
+#: gui/mrvImageBrowser.cpp:3190
 msgid "You cannot load a reel as a stereo image."
 msgstr "Nie możesz przesłać szpuli jako obrazu stereo."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9934
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9939
 msgid "Z"
 msgstr "Z"
 
@@ -9393,7 +9393,7 @@ msgstr "SKANOWANIE ZIP"
 msgid "Zoom Speed"
 msgstr "współczynnik powiększenia"
 
-#: gui/mrvImageView.cpp:3973
+#: gui/mrvImageView.cpp:3978
 msgid "Zoom for image failed"
 msgstr "Powiększenie obrazu nie powiodło się"
 
@@ -9401,7 +9401,7 @@ msgstr "Powiększenie obrazu nie powiodło się"
 msgid "attributes not found"
 msgstr "nie znaleziono atrybutów"
 
-#: core/CMedia.cpp:3386 core/CMedia.cpp:3417
+#: core/CMedia.cpp:3406 core/CMedia.cpp:3437
 msgid "audio"
 msgstr "Audio"
 
@@ -9417,7 +9417,7 @@ msgstr "avcodec_context_from_parameters nie powiodło się dla wideo"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context nie powiodło się dla dźwięku"
 
-#: core/aviImage.cpp:1762
+#: core/aviImage.cpp:1760
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context nie powiodło się dla napisów"
 
@@ -9442,31 +9442,31 @@ msgstr "Płyta CD/m2"
 msgid "change_image index "
 msgstr "change_imdice obraz "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3698
 msgid "clean effects"
 msgstr "czyste efekty"
 
-#: core/CMedia.cpp:3666
+#: core/CMedia.cpp:3686
 msgid "comment"
 msgstr "uwagi"
 
-#: core/CMedia.cpp:3389 core/CMedia.cpp:3420
+#: core/CMedia.cpp:3409 core/CMedia.cpp:3440
 msgid "data"
 msgstr "dane"
 
-#: core/CMedia_audio.cpp:1483
+#: core/CMedia_audio.cpp:1484
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2034
+#: core/CMedia_audio.cpp:2031
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet nie powiodło się dla ramki "
 
-#: core/CMedia.cpp:3660
+#: core/CMedia.cpp:3680
 msgid "default"
 msgstr "domyślna"
 
-#: core/CMedia.cpp:4452
+#: core/CMedia.cpp:4472
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_ocio_input_color_space - nieznana głębia bitowa"
 
@@ -9474,7 +9474,7 @@ msgstr "default_ocio_input_color_space - nieznana głębia bitowa"
 msgid "delete uiview"
 msgstr "usuń uiview"
 
-#: core/CMedia.cpp:3662
+#: core/CMedia.cpp:3682
 msgid "dub"
 msgstr "dubbing"
 
@@ -9482,7 +9482,7 @@ msgstr "dubbing"
 msgid "files"
 msgstr "dokumentacja"
 
-#: core/aviImage.cpp:1914 core/aviImage.cpp:1927 core/R3dImage.cpp:935
+#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:935
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: pudełko "
@@ -9497,7 +9497,7 @@ msgstr "zmiennoprzecinkowy"
 msgid "float (32-bits per channel)"
 msgstr "zmiennoprzecinkowa (32 bity na kanał)"
 
-#: core/CMedia.cpp:3672
+#: core/CMedia.cpp:3692
 msgid "forced"
 msgstr "wymuszony"
 
@@ -9529,7 +9529,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "pół zmiennoprzecinkowa (16 bitów na kanał)"
 
-#: core/CMedia.cpp:4447
+#: core/CMedia.cpp:4467
 msgid "half/float"
 msgstr "połowa/pełny zmiennoprzecinkowy"
 
@@ -9537,7 +9537,7 @@ msgstr "połowa/pełny zmiennoprzecinkowy"
 msgid "has invalid magic number in the header."
 msgstr "ma w nagłówku nieprawidłową liczbę magiczną."
 
-#: core/CMedia.cpp:3674
+#: core/CMedia.cpp:3694
 msgid "hearing impaired"
 msgstr "wady słuchu"
 
@@ -9557,7 +9557,7 @@ msgstr "jest to plik Softimage, ale nie plik PIC."
 msgid "item_pathname returned "
 msgstr "Zwrócono nazwę_ścieżki elementu "
 
-#: core/CMedia.cpp:3670
+#: core/CMedia.cpp:3690
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9573,7 +9573,7 @@ msgstr "Nie udało się odsłuchać wtyczki\n"
 msgid "loadDeepData error: "
 msgstr "Błąd głębokiego ładowania danych: "
 
-#: core/CMedia.cpp:3668
+#: core/CMedia.cpp:3688
 msgid "lyrics"
 msgstr "tekst piosenki"
 
@@ -9717,7 +9717,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Ramka Brak danych pikseli do zmiany"
 
-#: core/CMedia.cpp:3664
+#: core/CMedia.cpp:3684
 msgid "original"
 msgstr "oryginalny"
 
@@ -9789,7 +9789,7 @@ msgstr "recv() nie powiodło się"
 msgid "send() failed"
 msgstr "wysyłanie nie powiodło się"
 
-#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid "send_packet error: "
 msgstr "Nie mogłem wysłać paczki. Błąd "
 
@@ -9809,11 +9809,11 @@ msgstr "snd_pcm_prepare nie powiodło się z"
 msgid "src_nb_samples is 0"
 msgstr "src_nb_samples to 0"
 
-#: core/CMedia_audio.cpp:1619
+#: core/CMedia_audio.cpp:1617
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: nieprawidłowe dane. Och, to jest "
 
-#: core/CMedia.cpp:3392 core/CMedia.cpp:3423
+#: core/CMedia.cpp:3412 core/CMedia.cpp:3443
 msgid "subtitle"
 msgstr "podtytuł"
 
@@ -9825,11 +9825,11 @@ msgstr "sysctl nie powiodło się."
 msgid "task info failed"
 msgstr "informacje o zadaniu nie powiodło się"
 
-#: core/CMedia.cpp:3635 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3655 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "indie"
 
-#: core/CMedia.cpp:3395 core/CMedia.cpp:3426 core/CMedia.cpp:4419
+#: core/CMedia.cpp:3415 core/CMedia.cpp:3446 core/CMedia.cpp:4439
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "nieznany"
@@ -9846,11 +9846,11 @@ msgstr "liczba całkowita bez znaku (32 bity na kanał)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "krótki bez znaku (16 bitów na kanał)"
 
-#: core/CMedia.cpp:3383 core/CMedia.cpp:3414
+#: core/CMedia.cpp:3403 core/CMedia.cpp:3434
 msgid "video"
 msgstr "wideo"
 
-#: core/CMedia.cpp:3676
+#: core/CMedia.cpp:3696
 msgid "visual impaired"
 msgstr "z zaburzeniami wzroku"
 

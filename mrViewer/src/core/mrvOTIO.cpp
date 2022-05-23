@@ -143,7 +143,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             int64_t start = s.value();
                             int64_t duration = d.value() - 1;
                             int64_t end = start + duration;
-                            TRACE2( "start = " << start << " duration= "
+                            TRACE( "start = " << start << " duration= "
                                     << duration << " end= " << end );
                             assert( end > start );
                             LoadInfo info( e->target_url(), start, end, start, end, d.rate() );
@@ -178,7 +178,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
     for ( const auto& i : items )
     {
         const auto neighbors = i.track->neighbors_of(i.item, &errorStatus);
-        TRACE2( "CLIP " << i.item->name() );
+        TRACE( "CLIP " << i.item->name() );
         if (auto transition =
             dynamic_cast<otio::Transition*>(neighbors.first.value))
         {
@@ -189,16 +189,16 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             std::string name = transition->name();
 
 
-            TRACE2( "TRANSITION " << name << " first s= " << s );
-            // TRACE2( "TRANSITION first e= " << e );
-            // TRACE2( "TRANSITION first in_off= " << in_off );
-            TRACE2( "TRANSITION " << name << " first out_off= " << out_off );
+            TRACE( "TRANSITION " << name << " first s= " << s );
+            // TRACE( "TRANSITION first e= " << e );
+            // TRACE( "TRANSITION first in_off= " << in_off );
+            TRACE( "TRANSITION " << name << " first out_off= " << out_off );
             end = s + out_off;
-            TRACE2( "TRANSITION " << name << " first end= " << start );
+            TRACE( "TRANSITION " << name << " first end= " << start );
         }
         if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
         {
-            TRACE2( "DISSOLVE start= " << start << " end= " << end );
+            TRACE( "DISSOLVE start= " << start << " end= " << end );
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
             start = end = AV_NOPTS_VALUE;
@@ -212,18 +212,18 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             int64_t out_off = transition->out_offset().value();
             std::string name = transition->name();
 
-            // TRACE2( "TRANSITION second s= " << s );
-            TRACE2( "TRANSITION " << name << " second e= " << e );
-            TRACE2( "TRANSITION " << name << " second in_off= " << in_off );
-            // TRACE2( "TRANSITION second out_off= " << out_off );
+            // TRACE( "TRANSITION second s= " << s );
+            TRACE( "TRANSITION " << name << " second e= " << e );
+            TRACE( "TRANSITION " << name << " second in_off= " << in_off );
+            // TRACE( "TRANSITION second out_off= " << out_off );
             start = e - in_off + 1;
-            TRACE2( "TRANSITION " << name << " second start= " << start );
+            TRACE( "TRANSITION " << name << " second start= " << start );
 
         }
         // @todo: handle other transition types
         if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
         {
-            TRACE2( "DISSOLVE start= " << start << " end= " << end );
+            TRACE( "DISSOLVE start= " << start << " end= " << end );
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
             start = end = AV_NOPTS_VALUE;

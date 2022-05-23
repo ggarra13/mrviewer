@@ -2111,11 +2111,6 @@ void ImageBrowser::save_session()
             img->last_frame( last );
         }
 
-        if ( fps > 0.0 )
-        {
-            img->fps( fps );
-            img->play_fps( fps );
-        }
 
         if ( img->has_video() || img->has_audio() )
         {
@@ -2194,11 +2189,6 @@ void ImageBrowser::save_session()
                                            const bool avoid_seq )
     {
 
-        mrv::Reel reel = current_reel();
-
-        //if ( first != AV_NOPTS_VALUE && !reel->edl ) frame( first );
-
-
         CMedia* img;
         if ( start != AV_NOPTS_VALUE )
         {
@@ -2234,6 +2224,9 @@ void ImageBrowser::save_session()
             {
                 img->fps( fps );
             }
+        }
+
+#if 0
             else
             {
                 if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
@@ -2250,12 +2243,7 @@ void ImageBrowser::save_session()
                     img->play_fps( fps );
                 }
             }
-        }
-        else
-        {
-            img->fps( 24.0f );
-            img->play_fps( 24.0f );
-        }
+#endif
 
         if ( img->has_video() || img->has_audio() )
         {
@@ -2284,7 +2272,6 @@ void ImageBrowser::save_session()
                                                  const bool avoid_seq )
     {
 
-        mrv::Reel reel = current_reel();
         CMedia* img = load_image( name, first, last, start, end, fps,
                                   avoid_seq );
         if ( !img ) return mrv::media();
@@ -2994,7 +2981,7 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         if ( !Bimg || !Aimg ) continue;
 
 
-        int64_t len = end - start + 1;
+        int64_t len = end - start;
         double len2 = len / 2.0;
 
         int64_t outlen = len2;
@@ -3004,12 +2991,13 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         int64_t in  = Bimg->first_frame() - inlen;
 
 
+
         Aimg->dissolve_end( end );
         Aimg->in_frame( Aimg->first_frame() );
         Aimg->out_frame( out );
         Aimg->play_fps( Aimg->fps() );
 
-        Bimg->dissolve_start( start+1 );
+        Bimg->dissolve_start( len );
         Bimg->in_frame( in );
         Bimg->out_frame( Bimg->last_frame() );
         Bimg->play_fps( Bimg->fps() );
@@ -3019,22 +3007,22 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         TRACE2( "start " << start << " end " );
 
         TRACE( "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() );
-        TRACE( "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() );
+        TRACE2( "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() );
         TRACE( "G Aimg "
                   << reel->local_to_global( Aimg->first_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->last_frame(), Aimg )
                   );
-        TRACE( "G Bimg "
+        TRACE2( "G Bimg "
                   << reel->local_to_global( Bimg->first_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->last_frame(), Bimg )
                   );
         TRACE( "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() );
-        TRACE( "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() );
+        TRACE2( "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() );
         TRACE( "GI/O Aimg "
                   << reel->local_to_global( Aimg->in_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->out_frame(), Aimg )
                   );
-        TRACE( "GI/O Bimg "
+        TRACE2( "GI/O Bimg "
                   << reel->local_to_global( Bimg->in_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->out_frame(), Bimg )
                   );
@@ -3639,16 +3627,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    if ( prefix.size() == 2 &&
-         (prefix[0] == '_' || prefix[0] == '.') &&
-         (prefix[1] == 'v' || prefix[1] == 'V') )
-    {
-        short_prefix = prefix;
-        LOG_INFO( _("Regex ") << prefix <<
-                  (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([%\\w\\d./]*)";
-    }
-    else if ( prefix.size() < 5 )
+    if ( prefix.size() < 5 )
     {
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
@@ -4905,10 +4884,13 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
+    if ( tframe == view()->frame() ) return;
 
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     CMedia::Playback play = view()->playback();
+    if ( play ) view()->stop();
+
     TRACE2( "BROWSER seek to frame " << f
             << " view frame " << view()->frame()
             << " view->playback=" << play );
@@ -5032,8 +5014,6 @@ void ImageBrowser::seek( const int64_t tframe )
     }
     else
     {
-        mrv::Reel reel = current_reel();
-
         mrv::media fg = view()->foreground();
         if (!fg) return;
 

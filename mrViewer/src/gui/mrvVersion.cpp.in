@@ -529,11 +529,11 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 // #ifdef DEBUG
 //     av_log_set_level(99);
 // #else
-    av_log_set_level(99);
+    av_log_set_level(-99);
 // #endif
 
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
-    av_log_set_callback( mrv::av_log_redirect );
+    //av_log_set_callback( mrv::av_log_redirect );
 
 
     avformat_network_init();
