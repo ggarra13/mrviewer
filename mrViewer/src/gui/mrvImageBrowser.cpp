@@ -3559,16 +3559,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         return;
     }
 
-    if ( prefix.size() == 2 &&
-         (prefix[0] == '_' || prefix[0] == '.') &&
-         (prefix[1] == 'v' || prefix[1] == 'V') )
-    {
-        short_prefix = prefix;
-        LOG_INFO( _("Regex ") << prefix <<
-                  (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*[vV])(\\d+)([#%\\w\\d./]*)";
-    }
-    else if ( prefix.size() < 5 )
+    if ( prefix.size() < 5 )
     {
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
