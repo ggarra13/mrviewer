@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-23 07:12-0300\n"
+"POT-Creation-Date: 2022-05-23 14:31-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3636
+#: core/CMedia.cpp:3634
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1181
+#: core/mrvPlayback.cpp:1173
 msgid " - Decode of image frame "
 msgstr " - Decodare rame de imagine "
 
-#: core/mrvPlayback.cpp:798
+#: core/mrvPlayback.cpp:794
 msgid " - decode Error audio frame "
 msgstr " - eroare de decodare a cadrului audio "
 
@@ -125,7 +125,7 @@ msgstr " Text"
 msgid " already created: "
 msgstr " deja creat: "
 
-#: core/CMedia.cpp:4480
+#: core/CMedia.cpp:4478
 msgid " as default"
 msgstr " Mod implicit"
 
@@ -198,7 +198,7 @@ msgstr " pentru gama_curve"
 msgid " for reel "
 msgstr " pentru mulinetă "
 
-#: core/CMedia.cpp:3637
+#: core/CMedia.cpp:3635
 msgid " for stream #"
 msgstr " pentru pista #"
 
@@ -246,11 +246,11 @@ msgstr " Este deja prima versiune pe disc."
 msgid " is already the last version on disk."
 msgstr " Este deja cea mai recentă versiune de pe disc."
 
-#: core/CMedia.cpp:4337
+#: core/CMedia.cpp:4335
 msgid " is missing."
 msgstr " El e pierdut."
 
-#: core/CMedia.cpp:4360
+#: core/CMedia.cpp:4358
 msgid " is missing. Choosing "
 msgstr " lipseste. alegând "
 
@@ -271,7 +271,7 @@ msgstr " negăsit, alegând "
 msgid " not yet supported"
 msgstr " nu este susținut încă"
 
-#: core/mrvPlayback.cpp:1182
+#: core/mrvPlayback.cpp:1174
 msgid " returned "
 msgstr " întoarcere "
 
@@ -444,11 +444,11 @@ msgstr "' pentru "
 msgid "' for writing. Reason: "
 msgstr "'pentru a scrie. Motiv: "
 
-#: core/CMedia.cpp:4480
+#: core/CMedia.cpp:4478
 msgid "' from bitdepth "
 msgstr "' adâncimea de biți: "
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4430
 msgid "' from filename"
 msgstr "' din numele fișierului"
 
@@ -565,7 +565,7 @@ msgstr ", frecvență "
 msgid ", frequency "
 msgstr ", frecvență "
 
-#: core/CMedia.cpp:3637
+#: core/CMedia.cpp:3635
 msgid ", type "
 msgstr ", tip "
 
@@ -726,7 +726,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4452
+#: core/CMedia.cpp:4450
 msgid "16 bits"
 msgstr "16 biți"
 
@@ -843,7 +843,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4459
+#: core/CMedia.cpp:4457
 msgid "32 bits"
 msgstr "32 de biți"
 
@@ -970,7 +970,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "cache de 8 biți"
 
-#: core/CMedia.cpp:4445
+#: core/CMedia.cpp:4443
 msgid "8 bits"
 msgstr "8 biți"
 
@@ -1597,14 +1597,14 @@ msgstr "Ștergeți în spate"
 msgid "Background"
 msgstr "fundal"
 
-#: core/mrvPlayback.cpp:1117
+#: core/mrvPlayback.cpp:1109
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Durata imaginii de fundal este foarte scurtă. Este posibil ca repetarea în "
 "cicluri să nu funcționeze corect."
 
-#: core/mrvPlayback.cpp:1124
+#: core/mrvPlayback.cpp:1116
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1613,13 +1613,13 @@ msgstr ""
 "Fps-ul imaginii de fundal ( %lg ) nu este același cu cel al imaginii din "
 "față ( %lg ). Repetarea în cicluri nu va funcționa corect."
 
-#: core/mrvPlayback.cpp:1101
+#: core/mrvPlayback.cpp:1093
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Bobina de jos este foarte scurtă. Este posibil ca repetarea în cicluri să nu "
 "funcționeze corect."
 
-#: core/mrvPlayback.cpp:1091
+#: core/mrvPlayback.cpp:1083
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1669,7 +1669,7 @@ msgid "Black Frame"
 msgstr "Cutie neagră"
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
-#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:169
+#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:170
 msgid "Black Gap"
 msgstr "gol negru"
 
@@ -2322,11 +2322,11 @@ msgstr "Nu am putut găzdui piesa"
 msgid "Could not append child to stack. Error: "
 msgstr "Nu s-a putut adăuga copilul la stivă. Eroare: "
 
-#: core/mrvOTIO.cpp:311
+#: core/mrvOTIO.cpp:312
 msgid "Could not append one clip to track: "
 msgstr "Nu am putut adăuga un clip la melodie: "
 
-#: core/mrvOTIO.cpp:319
+#: core/mrvOTIO.cpp:320
 msgid "Could not append one track to stack: "
 msgstr "Nu am putut adăuga o piesă la stivă: "
 
@@ -2412,7 +2412,7 @@ msgstr "Nu am putut găsi patru numere întregi pentru casetă"
 msgid "Could not find four integers for box "
 msgstr "Nu am putut găsi patru numere întregi pentru casetă "
 
-#: core/mrvPlayback.cpp:1366
+#: core/mrvPlayback.cpp:1357
 msgid "Could not find image "
 msgstr "Nu am putut găsi imaginea "
 
@@ -2578,7 +2578,7 @@ msgstr "nu am putut deschide \""
 msgid "Could not open '"
 msgstr "nu am putut deschide'"
 
-#: core/mrvOTIO.cpp:244
+#: core/mrvOTIO.cpp:245
 msgid "Could not open .otio file. "
 msgstr "Nu am putut deschide fișierul .otio. Eroare: "
 
@@ -2638,7 +2638,7 @@ msgstr "Nu am putut muta tamponul fifo. Eroare: "
 msgid "Could not save '"
 msgstr "nu am putut salva'"
 
-#: core/mrvOTIO.cpp:325
+#: core/mrvOTIO.cpp:326
 msgid "Could not save .otio timeline: "
 msgstr "Nu am putut salva cronologia .otio: "
 
@@ -4102,7 +4102,7 @@ msgstr "Mergeți la începutul secvenței."
 msgid "Go to the end of the sequence."
 msgstr "Mergeți la sfârșitul secvenței."
 
-#: core/CMedia.cpp:4432 core/CMedia.cpp:4479
+#: core/CMedia.cpp:4430 core/CMedia.cpp:4477
 msgid "Got colorspace '"
 msgstr "Am spațiul de culoare '"
 
@@ -6015,7 +6015,7 @@ msgstr "Original fără Gamma, Gain sau Lut"
 msgid "Originating Program"
 msgstr "Programul original"
 
-#: core/mrvOTIO.cpp:330
+#: core/mrvOTIO.cpp:331
 #, c-format
 msgid "Otio timeline saved to '%s'."
 msgstr "Cronologia lui Otio a fost salvată în „%s”."
@@ -9422,7 +9422,7 @@ msgstr "Mărirea imaginii nu a reușit"
 msgid "attributes not found"
 msgstr "atribute nu au fost găsite"
 
-#: core/CMedia.cpp:3406 core/CMedia.cpp:3437
+#: core/CMedia.cpp:3404 core/CMedia.cpp:3435
 msgid "audio"
 msgstr "Audio"
 
@@ -9463,15 +9463,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "imaginea change_imdice "
 
-#: core/CMedia.cpp:3698
+#: core/CMedia.cpp:3696
 msgid "clean effects"
 msgstr "efecte curate"
 
-#: core/CMedia.cpp:3686
+#: core/CMedia.cpp:3684
 msgid "comment"
 msgstr "comentarii"
 
-#: core/CMedia.cpp:3409 core/CMedia.cpp:3440
+#: core/CMedia.cpp:3407 core/CMedia.cpp:3438
 msgid "data"
 msgstr "date"
 
@@ -9483,11 +9483,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet a eșuat pentru cadru "
 
-#: core/CMedia.cpp:3680
+#: core/CMedia.cpp:3678
 msgid "default"
 msgstr "Mod implicit"
 
-#: core/CMedia.cpp:4472
+#: core/CMedia.cpp:4470
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - adâncime de biți necunoscută"
 
@@ -9495,7 +9495,7 @@ msgstr "default_leisure_input_color_space - adâncime de biți necunoscută"
 msgid "delete uiview"
 msgstr "ștergeți uiview"
 
-#: core/CMedia.cpp:3682
+#: core/CMedia.cpp:3680
 msgid "dub"
 msgstr "dublare"
 
@@ -9518,7 +9518,7 @@ msgstr "punctul de plutire"
 msgid "float (32-bits per channel)"
 msgstr "virgulă mobilă (32 de biți pe canal)"
 
-#: core/CMedia.cpp:3692
+#: core/CMedia.cpp:3690
 msgid "forced"
 msgstr "forţat"
 
@@ -9550,7 +9550,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "jumătate virgulă mobilă (16 biți pe canal)"
 
-#: core/CMedia.cpp:4467
+#: core/CMedia.cpp:4465
 msgid "half/float"
 msgstr "jumătate/virgulă mobilă completă"
 
@@ -9558,7 +9558,7 @@ msgstr "jumătate/virgulă mobilă completă"
 msgid "has invalid magic number in the header."
 msgstr "are un număr magic nevalid în antet."
 
-#: core/CMedia.cpp:3694
+#: core/CMedia.cpp:3692
 msgid "hearing impaired"
 msgstr "deficiențe de auz"
 
@@ -9578,7 +9578,7 @@ msgstr "este un fișier Softimage, dar nu un fișier PIC."
 msgid "item_pathname returned "
 msgstr "item_pathname returnat "
 
-#: core/CMedia.cpp:3690
+#: core/CMedia.cpp:3688
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9594,7 +9594,7 @@ msgstr "Ascultarea mufei a eșuat\n"
 msgid "loadDeepData error: "
 msgstr "Eroare de încărcare profundă a datelor: "
 
-#: core/CMedia.cpp:3688
+#: core/CMedia.cpp:3686
 msgid "lyrics"
 msgstr "Versuri"
 
@@ -9739,7 +9739,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Nu trebuie schimbate date de pixeli"
 
-#: core/CMedia.cpp:3684
+#: core/CMedia.cpp:3682
 msgid "original"
 msgstr "original"
 
@@ -9835,7 +9835,7 @@ msgstr "src_nb_samples este 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: date nevalide. ugh este "
 
-#: core/CMedia.cpp:3412 core/CMedia.cpp:3443
+#: core/CMedia.cpp:3410 core/CMedia.cpp:3441
 msgid "subtitle"
 msgstr "subtitlu"
 
@@ -9847,11 +9847,11 @@ msgstr "sysctl a eșuat."
 msgid "task info failed"
 msgstr "informațiile despre sarcină nu au reușit"
 
-#: core/CMedia.cpp:3655 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3653 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3415 core/CMedia.cpp:3446 core/CMedia.cpp:4439
+#: core/CMedia.cpp:3413 core/CMedia.cpp:3444 core/CMedia.cpp:4437
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "necunoscut"
@@ -9868,11 +9868,11 @@ msgstr "întreg fără semn (32 de biți pe canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "scurt nesemnat (16 biți pe canal)"
 
-#: core/CMedia.cpp:3403 core/CMedia.cpp:3434
+#: core/CMedia.cpp:3401 core/CMedia.cpp:3432
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3696
+#: core/CMedia.cpp:3694
 msgid "visual impaired"
 msgstr "cu deficiențe de vedere"
 

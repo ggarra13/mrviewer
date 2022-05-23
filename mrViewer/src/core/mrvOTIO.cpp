@@ -145,8 +145,9 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             int64_t end = start + duration;
                             TRACE( "start = " << start << " duration= "
                                     << duration << " end= " << end );
-                            assert( end > start );
-                            LoadInfo info( e->target_url(), start, end, start, end, d.rate() );
+                            assert( end >= start );
+                            LoadInfo info( e->target_url(), start, end,
+                                           start, end, d.rate() );
                             sequences.push_back( info );
                         }
                     }

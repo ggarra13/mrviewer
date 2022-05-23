@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-23 07:12-0300\n"
+"POT-Creation-Date: 2022-05-23 14:31-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3636
+#: core/CMedia.cpp:3634
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1181
+#: core/mrvPlayback.cpp:1173
 msgid " - Decode of image frame "
 msgstr " - فك إطار الصورة "
 
-#: core/mrvPlayback.cpp:798
+#: core/mrvPlayback.cpp:794
 msgid " - decode Error audio frame "
 msgstr " - خطأ في فك رتل الصوت "
 
@@ -125,7 +125,7 @@ msgstr " نص"
 msgid " already created: "
 msgstr " تم إنشاؤه بالفعل: "
 
-#: core/CMedia.cpp:4480
+#: core/CMedia.cpp:4478
 msgid " as default"
 msgstr " إفتراضي"
 
@@ -198,7 +198,7 @@ msgstr " لمنحنى جاما"
 msgid " for reel "
 msgstr " للبكرة "
 
-#: core/CMedia.cpp:3637
+#: core/CMedia.cpp:3635
 msgid " for stream #"
 msgstr " للمسار #"
 
@@ -246,11 +246,11 @@ msgstr " إنه بالفعل الإصدار الأول على القرص."
 msgid " is already the last version on disk."
 msgstr " إنه بالفعل أحدث إصدار على القرص."
 
-#: core/CMedia.cpp:4337
+#: core/CMedia.cpp:4335
 msgid " is missing."
 msgstr " إنه ضائع."
 
-#: core/CMedia.cpp:4360
+#: core/CMedia.cpp:4358
 msgid " is missing. Choosing "
 msgstr " مفقود. قطف من "
 
@@ -271,7 +271,7 @@ msgstr " غير موجود ، واختيار "
 msgid " not yet supported"
 msgstr " غير معتمدة حتى الآن"
 
-#: core/mrvPlayback.cpp:1182
+#: core/mrvPlayback.cpp:1174
 msgid " returned "
 msgstr " إرجاع "
 
@@ -443,11 +443,11 @@ msgstr "' بالنسبة "
 msgid "' for writing. Reason: "
 msgstr "للكتابة. سبب: "
 
-#: core/CMedia.cpp:4480
+#: core/CMedia.cpp:4478
 msgid "' from bitdepth "
 msgstr "عمق البت: "
 
-#: core/CMedia.cpp:4432
+#: core/CMedia.cpp:4430
 msgid "' from filename"
 msgstr "من اسم الملف"
 
@@ -564,7 +564,7 @@ msgstr "، تكرر "
 msgid ", frequency "
 msgstr "، تكرر "
 
-#: core/CMedia.cpp:3637
+#: core/CMedia.cpp:3635
 msgid ", type "
 msgstr "، اكتب "
 
@@ -725,7 +725,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4452
+#: core/CMedia.cpp:4450
 msgid "16 bits"
 msgstr "16 بت"
 
@@ -842,7 +842,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4459
+#: core/CMedia.cpp:4457
 msgid "32 bits"
 msgstr "32 بت"
 
@@ -969,7 +969,7 @@ msgstr "70 ملم"
 msgid "8 bit Caches"
 msgstr "8 بت مخبأ"
 
-#: core/CMedia.cpp:4445
+#: core/CMedia.cpp:4443
 msgid "8 bits"
 msgstr "8 بت"
 
@@ -1599,12 +1599,12 @@ msgstr "حذف في الخلف"
 msgid "Background"
 msgstr "خلفية"
 
-#: core/mrvPlayback.cpp:1117
+#: core/mrvPlayback.cpp:1109
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr "مدة صورة الخلفية قصيرة جدًا. قد لا يعمل التكرار في دورات بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1124
+#: core/mrvPlayback.cpp:1116
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1613,11 +1613,11 @@ msgstr ""
 "عدد الإطارات في الثانية لصورة الخلفية (%lg) ليس هو نفسه الصورة الأمامية "
 "(%lg).التكرار في دورات لن يعمل بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1101
+#: core/mrvPlayback.cpp:1093
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr "البكرة السفلية قصيرة جدًا. قد لا يعمل التكرار في دورات بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1091
+#: core/mrvPlayback.cpp:1083
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1667,7 +1667,7 @@ msgid "Black Frame"
 msgstr "صندوق اسود"
 
 #: core/guessImage.cpp:268 core/mrvBlackImage.cpp:42 core/mrvBlackImage.cpp:43
-#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:169
+#: core/Sequence.cpp:1162 core/mrvOTIO.cpp:170
 msgid "Black Gap"
 msgstr "فجوة سوداء"
 
@@ -2316,11 +2316,11 @@ msgstr "لم أستطع استضافة المسار"
 msgid "Could not append child to stack. Error: "
 msgstr "لم أستطع إضافة طفل إلى المكدس. خطأ: "
 
-#: core/mrvOTIO.cpp:311
+#: core/mrvOTIO.cpp:312
 msgid "Could not append one clip to track: "
 msgstr "لم أتمكن من إضافة مقطع إلى المسار: "
 
-#: core/mrvOTIO.cpp:319
+#: core/mrvOTIO.cpp:320
 msgid "Could not append one track to stack: "
 msgstr "لم أتمكن من إضافة مسار إلى المكدس: "
 
@@ -2404,7 +2404,7 @@ msgstr "لم أتمكن من العثور على أربعة أعداد صحيح�
 msgid "Could not find four integers for box "
 msgstr "لم أتمكن من العثور على أربعة أعداد صحيحة للمربع "
 
-#: core/mrvPlayback.cpp:1366
+#: core/mrvPlayback.cpp:1357
 msgid "Could not find image "
 msgstr "لم أتمكن من العثور على الصورة "
 
@@ -2568,7 +2568,7 @@ msgstr "لم أتمكن من فتح \""
 msgid "Could not open '"
 msgstr "لم أتمكن من فتح \""
 
-#: core/mrvOTIO.cpp:244
+#: core/mrvOTIO.cpp:245
 msgid "Could not open .otio file. "
 msgstr "لم أتمكن من فتح ملف .otio. خطأ: "
 
@@ -2628,7 +2628,7 @@ msgstr "لم أستطع نقل العازلة فيفو. خطأ: "
 msgid "Could not save '"
 msgstr "لم أستطع الحفظ \""
 
-#: core/mrvOTIO.cpp:325
+#: core/mrvOTIO.cpp:326
 msgid "Could not save .otio timeline: "
 msgstr "لم أتمكن من حفظ المخطط الزمني .otio: "
 
@@ -4084,7 +4084,7 @@ msgstr "اذهب إلى بداية التسلسل."
 msgid "Go to the end of the sequence."
 msgstr "اذهب إلى نهاية التسلسل."
 
-#: core/CMedia.cpp:4432 core/CMedia.cpp:4479
+#: core/CMedia.cpp:4430 core/CMedia.cpp:4477
 msgid "Got colorspace '"
 msgstr "لدي مساحة اللون \""
 
@@ -5991,7 +5991,7 @@ msgstr "أصلي بدون Gamma أو Gain أو Lut"
 msgid "Originating Program"
 msgstr "البرنامج الأصلي"
 
-#: core/mrvOTIO.cpp:330
+#: core/mrvOTIO.cpp:331
 #, c-format
 msgid "Otio timeline saved to '%s'."
 msgstr "تم حفظ المخطط الزمني لـ Otio في \"%s\"."
@@ -9345,7 +9345,7 @@ msgstr "فشل تكبير الصورة"
 msgid "attributes not found"
 msgstr "السمات غير موجودة"
 
-#: core/CMedia.cpp:3406 core/CMedia.cpp:3437
+#: core/CMedia.cpp:3404 core/CMedia.cpp:3435
 msgid "audio"
 msgstr "صوتي"
 
@@ -9386,15 +9386,15 @@ msgstr "قرص مضغوط/م 2"
 msgid "change_image index "
 msgstr "تغيير الصورة "
 
-#: core/CMedia.cpp:3698
+#: core/CMedia.cpp:3696
 msgid "clean effects"
 msgstr "تأثيرات نظيفة"
 
-#: core/CMedia.cpp:3686
+#: core/CMedia.cpp:3684
 msgid "comment"
 msgstr "تعليقات"
 
-#: core/CMedia.cpp:3409 core/CMedia.cpp:3440
+#: core/CMedia.cpp:3407 core/CMedia.cpp:3438
 msgid "data"
 msgstr "بيانات"
 
@@ -9406,11 +9406,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "فشل decode_audio_packet للإطار "
 
-#: core/CMedia.cpp:3680
+#: core/CMedia.cpp:3678
 msgid "default"
 msgstr "إفتراضي"
 
-#: core/CMedia.cpp:4472
+#: core/CMedia.cpp:4470
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 
@@ -9418,7 +9418,7 @@ msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 msgid "delete uiview"
 msgstr "حذف uiview"
 
-#: core/CMedia.cpp:3682
+#: core/CMedia.cpp:3680
 msgid "dub"
 msgstr "دبلجة"
 
@@ -9441,7 +9441,7 @@ msgstr "النقطة العائمة"
 msgid "float (32-bits per channel)"
 msgstr "النقطة العائمة (32 بت لكل قناة)"
 
-#: core/CMedia.cpp:3692
+#: core/CMedia.cpp:3690
 msgid "forced"
 msgstr "قسري"
 
@@ -9473,7 +9473,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "نصف نقطة عائمة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:4467
+#: core/CMedia.cpp:4465
 msgid "half/float"
 msgstr "نصف/نقطة عائمة كاملة"
 
@@ -9481,7 +9481,7 @@ msgstr "نصف/نقطة عائمة كاملة"
 msgid "has invalid magic number in the header."
 msgstr "يحتوي على رقم سحري غير صالح في الرأس."
 
-#: core/CMedia.cpp:3694
+#: core/CMedia.cpp:3692
 msgid "hearing impaired"
 msgstr "ضعف السمع"
 
@@ -9501,7 +9501,7 @@ msgstr "إنه ملف Softimage ، لكنه ليس ملف PIC."
 msgid "item_pathname returned "
 msgstr "تم إرجاع item_pathname "
 
-#: core/CMedia.cpp:3690
+#: core/CMedia.cpp:3688
 msgid "karaoke"
 msgstr "كاريوكي"
 
@@ -9517,7 +9517,7 @@ msgstr "فشل الاستماع إلى التوصيل \n"
 msgid "loadDeepData error: "
 msgstr "خطأ في تحميل البيانات العميقة: "
 
-#: core/CMedia.cpp:3688
+#: core/CMedia.cpp:3686
 msgid "lyrics"
 msgstr "كلمات الاغنية"
 
@@ -9657,7 +9657,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv :: الإطار لا توجد بيانات بكسل لتغييرها"
 
-#: core/CMedia.cpp:3684
+#: core/CMedia.cpp:3682
 msgid "original"
 msgstr "أصلي"
 
@@ -9753,7 +9753,7 @@ msgstr "قيمة src_nb_samples تساوي 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: بيانات غير صالحة. آخ هو عليه "
 
-#: core/CMedia.cpp:3412 core/CMedia.cpp:3443
+#: core/CMedia.cpp:3410 core/CMedia.cpp:3441
 msgid "subtitle"
 msgstr "العنوان الفرعي"
 
@@ -9765,11 +9765,11 @@ msgstr "فشل sysctl."
 msgid "task info failed"
 msgstr "فشل معلومات المهمة"
 
-#: core/CMedia.cpp:3655 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3653 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "الهند"
 
-#: core/CMedia.cpp:3415 core/CMedia.cpp:3446 core/CMedia.cpp:4439
+#: core/CMedia.cpp:3413 core/CMedia.cpp:3444 core/CMedia.cpp:4437
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "مجهول"
@@ -9786,11 +9786,11 @@ msgstr "عدد صحيح بدون إشارة (32 بت لكل قناة)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "قصير بدون إشارة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:3403 core/CMedia.cpp:3434
+#: core/CMedia.cpp:3401 core/CMedia.cpp:3432
 msgid "video"
 msgstr "فيديو"
 
-#: core/CMedia.cpp:3696
+#: core/CMedia.cpp:3694
 msgid "visual impaired"
 msgstr "ضعاف البصر"
 
