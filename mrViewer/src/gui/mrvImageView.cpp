@@ -3438,7 +3438,7 @@ bool ImageView::preload()
 
 
     // Exit early if we are dealing with a video instead of a sequence
-    if ( !img || !img->is_sequence() || img->has_video() ) {
+    if ( !img->is_sequence() || img->has_video() ) {
         img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel

@@ -25,7 +25,7 @@ libxshmfence.*
 libz.*
 libc\.so.*
 libglib.*
-# libstdc\+\+\.so.*
+libstdc\+\+\.so.*
 libgcc_s.*
 )
 
