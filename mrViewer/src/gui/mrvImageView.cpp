@@ -830,7 +830,10 @@ void change_subtitle_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
     img->stop();
     img->subtitle_stream(i);
     if ( play != mrv::CMedia::kStopped )
+    {
+        img->stop();
         img->play( play, view->main(), true );
+    }
 }
 
 static Fl_Window* gridWindow = NULL;
@@ -3676,8 +3679,8 @@ void ImageView::handle_commands()
         }
         if ( found ) {
             CMedia* img = r->images[idx]->image();
-            TRACE2( "******** Change image found.  Set to #" << idx
-                    << " " << img->name() << " stopped? " << img->stopped() );
+            TRACE( "******** Change image found.  Set to #" << idx
+                   << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
         else
@@ -3782,13 +3785,13 @@ void ImageView::handle_commands()
     case kPlayForwards:
     {
         NET( "playfwd" );
-        play( CMedia::kForwards );
+        play_forwards();
         break;
     }
     case kPlayBackwards:
     {
         NET( "playbwd" );
-        play( CMedia::kBackwards );
+        play_backwards();
         break;
     }
     case kRemoveImage:
@@ -10018,8 +10021,8 @@ void ImageView::foreground( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
-        TRACE2( "************* CHANGE FOREGROUND TO " << img->name()
-                << " FRAME " << img->frame() );
+        TRACE( "************* CHANGE FOREGROUND TO " << img->name()
+               << " FRAME " << img->frame() );
 
         double fps = img->fps();
         if ( img->is_sequence() &&
@@ -10671,12 +10674,10 @@ void ImageView::frame( const int64_t f )
     }
 
     bool in_transition = false;
-    TransitionList::const_iterator i = reel->transitions.begin();
-    TransitionList::const_iterator e = reel->transitions.end();
-    for ( ; i != e; ++i )
+    for ( const auto& t : reel->transitions )
     {
-        int64_t start = (*i).start();
-        int64_t   end = (*i).end();
+        int64_t start = t.start();
+        int64_t   end = t.end();
         if ( _frame <= start || _frame > end ) continue;
         TRACE( "FRAME " << _frame << " START " << start << " END "
                 << end );
@@ -10691,7 +10692,7 @@ void ImageView::frame( const int64_t f )
 
         int64_t len = end - start;
 
-        float dissolve = float(frame() - start) / float(len);
+        float dissolve = float( f - start ) / float(len);
         float rdissolve = 1.0f - dissolve;
         Atmp->volume( rdissolve * _volume );
         Btmp->volume( dissolve  * _volume );
@@ -10708,14 +10709,16 @@ void ImageView::frame( const int64_t f )
         case CMedia::kForwards:
             if ( Btmp->playback() != CMedia::kForwards )
             {
-                TRACE2( "******** STARTED Btmp with local frame " << B );
+                TRACE2( "******** STARTED Btmp " << Btmp->name()
+                        << " with local frame " << B );
                 Btmp->seek( B );
                 Btmp->play( CMedia::kForwards, uiMain, true );
             }
             if ( Atmp->playback() != CMedia::kForwards &&
                  Atmp->frame() < Aout )
             {
-                TRACE2( "******** STARTED Atmp with local frame " << A
+                TRACE2( "******** STARTED Atmp " << Atmp->name()
+                        << " with local frame " << A
                         << " Aframe= " << Atmp->frame() << " GLOBAL " << f
                         << " out= " << Aout);
                 Atmp->seek( A );
@@ -10726,7 +10729,8 @@ void ImageView::frame( const int64_t f )
             if ( Btmp->playback() != CMedia::kBackwards &&
                  Btmp->frame() > Bin )
             {
-                TRACE2( "******** STARTED Btmp with local frame " << B
+                TRACE2( "******** STARTED Btmp " << Btmp->name()
+                        << " with local frame " << B
                         << " Bframe= " << Btmp->frame() << " GLOBAL " << f
                         << " in= " << Bin);
                 Btmp->seek( B );
@@ -10734,7 +10738,8 @@ void ImageView::frame( const int64_t f )
             }
             if ( Atmp->playback() != CMedia::kBackwards )
             {
-                TRACE2( "******** STARTED Atmp with local frame " << A );
+                TRACE2( "******** STARTED Atmp " << Atmp->name()
+                        << " with local frame " << A );
                 Atmp->seek( A );
                 Atmp->play( CMedia::kBackwards, uiMain, true );
             }
@@ -10746,6 +10751,7 @@ void ImageView::frame( const int64_t f )
             break;
         }
         Atmp->dissolve( rdissolve );
+        Btmp->dissolve( 1.0f );
         Aimg = Atmp;
         Bimg = Btmp;
         in_transition = true;
@@ -10756,10 +10762,12 @@ void ImageView::frame( const int64_t f )
         CMedia::Playback play = playback();
         if ( Aimg && play == CMedia::kForwards )
         {
+            TRACE2( "########### STOP Aimg " << Aimg->name() );
             Aimg->playback( CMedia::kStopped );
         }
         if ( Bimg && play == CMedia::kBackwards )
         {
+            TRACE2( "########### STOP Bimg " << Bimg->name() );
             Bimg->playback( CMedia::kStopped );
         }
         Aimg = Bimg = NULL;
@@ -11039,7 +11047,6 @@ void ImageView::playback( const CMedia::Playback b )
  */
 void ImageView::play_forwards()
 {
-    stop();
     play( CMedia::kForwards );
 }
 
@@ -11095,15 +11102,18 @@ void ImageView::play( const CMedia::Playback dir )
     //      !( CMedia::preload_cache() ||
     //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
     //   img->has_audio() )
+    // preload_cache_stop();
+
+    if ( img->start_frame() != img->end_frame() )
     {
-        // preload_cache_stop();
-        if ( img->start_frame() != img->end_frame() )
-            img->play( dir, uiMain, true );
+        img->stop();
+        img->play( dir, uiMain, true );
     }
 
     if ( bg && bg != fg )
     {
         CMedia* img = bg->image();
+        img->stop( false );
         img->play( dir, uiMain, false);
     }
 

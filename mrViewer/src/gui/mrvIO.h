@@ -169,19 +169,22 @@ unsigned long get_thread_id();
 
 
 #ifdef DEBUG
+
 #define mrvLOG_ERROR(mod, msg)   do {                                   \
-std::cerr << _("ERROR: ") << N_("[") << mod << N_("] ") << msg << std::endl; \
-  } while(0)
+        std::cerr << _("ERROR: ") << N_("[") << mod << N_("] ") << msg; \
+    } while(0)
 #define mrvLOG_WARNING(mod, msg) do {                                   \
-std::cout << _("WARN : ") << N_("[") << mod << N_("] ") << msg << std::endl; \
-  } while(0)
+        std::cout << _("WARN : ") << N_("[") << mod << N_("] ") << msg; \
+    } while(0)
 #define mrvLOG_INFO(mod, msg)    do {                                   \
-std::cout << _("       ") << N_("[") << mod << N_("] ") << msg << std::endl; \
-  } while(0)
+        std::cout << _("       ") << N_("[") << mod << N_("] ") << msg; \
+    } while(0)
 #define mrvCONN_INFO(mod, msg)    do {                                  \
-std::cout << _("{conn} ") << N_("[") << mod << N_("] ") << msg << std::endl; \
-  } while(0)
+        std::cout << _("{conn} ") << N_("[") << mod << N_("] ") << msg; \
+    } while(0)
+
 #else
+
 #define mrvLOG_ERROR(mod, msg)   do {                                   \
    mrv::io::error << _("ERROR: ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)

@@ -845,6 +845,19 @@ void CMedia::update_frame( const int64_t& f )
  */
 void CMedia::wait_for_threads()
 {
+#if 1
+    for ( const auto& i : _threads )
+    {
+        if ( i->joinable() && i->get_id() != boost::this_thread::get_id() )
+            i->join();
+        std::string type = "unknown";
+        if ( i == _video_thread ) type = "video";
+        if ( i == _audio_thread ) type = "audio";
+        if ( i == _decode_thread ) type = "decode";
+        TRACE2( name() << " Thread " << i << ", type " << type << " returned" );
+        delete i;
+    }
+#else
     for ( const auto& i : _threads )
     {
         boost::posix_time::time_duration timeout =
@@ -861,6 +874,7 @@ void CMedia::wait_for_threads()
         }
         delete i;
     }
+#endif
 
     _threads.clear();
 }
@@ -1621,14 +1635,14 @@ void CMedia::refresh()
 void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
-    assert0( x != AV_NOPTS_VALUE );
+    assert( x != AV_NOPTS_VALUE );
     _frameStart = _frameIn = x;
     // if ( _frame < _frame_start ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
-    assert0( x != AV_NOPTS_VALUE );
+    assert( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
     _frameEnd = _frameOut = x;
     // if ( _frame > _frame_end ) _frame = _frameEnd;
@@ -1732,7 +1746,7 @@ void CMedia::default_color_corrections()
  */
 void CMedia::filename( const char* n )
 {
-    assert0( n != NULL );
+    assert( n != NULL );
 
     if ( strncmp( n, "file:", 5 ) == 0 )
         n += 5;
@@ -2683,7 +2697,7 @@ void CMedia::play(const CMedia::Playback dir,
 
     if ( saving() ) return;
 
-    assert0( dir != kStopped );
+    assert( dir != kStopped );
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
@@ -2844,8 +2858,8 @@ void CMedia::play(const CMedia::Playback dir,
         }
 
 
-        assert0( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
-                                           1 * valid_s ) );
+        assert( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
+                                          1 * valid_s ) );
     }
     catch( boost::exception& e )
     {
@@ -2864,7 +2878,7 @@ void CMedia::stop(const bool bg)
     if ( _playback == kStopped && _threads.empty() ) return;
 
 
-    if ( _right_eye && _owns_right_eye ) _right_eye->stop();
+    if ( _right_eye && _owns_right_eye ) _right_eye->stop(bg);
 
     TRACE2( name() << " stop at frame " << frame()
             << " playback = " << _playback
@@ -3097,8 +3111,8 @@ void CMedia::seek( const int64_t f )
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
                                const mrv::image_type_ptr& pic )
 {
-    assert0( pic != NULL );
-    assert0( pic.use_count() >= 1 );
+    assert( pic != NULL );
+    assert( pic.use_count() >= 1 );
 
 
 
@@ -3176,7 +3190,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
             seq[idx] = pic;
             // Use count should be 2, but it fails on stereo images when loaded
             // twice.
-            assert0( pic.use_count() >= 1 );
+            assert( pic.use_count() >= 1 );
         }
     }
 

@@ -761,10 +761,10 @@ class ViewerUI {open
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {408 162 690 565} type Double align 80 resizable
+      xywh {408 162 690 565} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} size_range {690 565 0 0} visible
+      class {mrv::MainWindow} size_range {690 565 0 0}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 690 564} resizable
@@ -777,7 +777,7 @@ o->main( this );}
             xywh {0 0 540 25}
           } {}
           Fl_Group uiStatus {
-            label Scrub open selected
+            label Scrub open
             xywh {540 0 65 25} align 80
           } {}
           Fl_Group uiMenuButtons {open
@@ -1598,7 +1598,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
             }
           }
         }
-        Fl_Group uiBottomBar {
+        Fl_Group uiBottomBar {open
           xywh {0 514 690 50} box ENGRAVED_BOX
         } {
           Fl_Group uiTimeToolbar {open
@@ -1610,7 +1610,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
               Fl_Slider uiTimeline {
                 user_data this user_data_type {ViewerUI*}
                 callback {int64_t frame = (int64_t) o->value();
-v->uiView->seek( frame );}
+v->uiView->seek( frame );} selected
                 tooltip {Timeline.} xywh {5 517 650 22} type Horizontal minimum 1 maximum 50 step 1 value 1
                 code0 {o->main( this );}
                 class {mrv::Timeline}

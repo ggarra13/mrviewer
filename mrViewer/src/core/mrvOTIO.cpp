@@ -166,8 +166,11 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                         int64_t start = s.value();
                         int64_t duration = d.value() - 1;
                         int64_t end = start + duration;
-                        assert( end > start );
-                        LoadInfo info( _("Black Gap"), start, end, start, end, d.rate() );
+                        assert( end >= start );
+                        TRACE2( "GAP start = " << start << " duration= "
+                                << duration << " end= " << end );
+                        LoadInfo info( _("Black Gap"), start, end, start, end,
+                                       d.rate() );
                         sequences.push_back( info );
                     }
                 }

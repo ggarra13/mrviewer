@@ -1993,11 +1993,11 @@ void ImageBrowser::save_session()
 
         send_image( i );
 
-        TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         CMedia* img = NULL;
         if ( m ) img = m->image();
         if ( reel->edl && img )
         {
+            TRACE2( img->name() << " img frame is " << img->frame() );
 #if 0
             if ( !_loading )
             {
@@ -2217,9 +2217,7 @@ void ImageBrowser::save_session()
             {
                 img->fps( fps );
             }
-        }
-
-#if 0
+#if 1
             else
             {
                 if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
@@ -2233,10 +2231,12 @@ void ImageBrowser::save_session()
 
                     img->first_frame( first );
                     img->last_frame( last );
+                    img->fps( fps );
                     img->play_fps( fps );
                 }
             }
 #endif
+        }
 
         if ( img->has_video() || img->has_audio() )
         {
@@ -2962,15 +2962,23 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
     set_edl();
 
+    if ( reel->transitions.empty() ) return;
 
-    TransitionList::const_iterator i = reel->transitions.begin();
-    TransitionList::const_iterator e = reel->transitions.end();
-    for ( ; i != e; ++i )
+    // Initialize images as if they had no transitions
+    for ( const auto& i : reel->images )
     {
-        int64_t start = (*i).start();
-        int64_t   end = (*i).end();
-        CMedia* Aimg = reel->image_at( start + 1 );
-        CMedia* Bimg = reel->image_at( end + 1 );
+        CMedia* img = i->image();
+        img->in_frame( img->first_frame() );
+        img->out_frame( img->last_frame() );
+    }
+
+    // Initialize transitions entry points
+    for ( const auto& t : reel->transitions )
+    {
+        int64_t start = t.start();
+        int64_t   end = t.end();
+        CMedia* Aimg = reel->image_at( start );
+        CMedia* Bimg = reel->image_at( end );
         if ( !Bimg || !Aimg ) continue;
 
 
@@ -2986,36 +2994,34 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
 
         Aimg->dissolve_end( end );
-        Aimg->in_frame( Aimg->first_frame() );
         Aimg->out_frame( out );
         Aimg->play_fps( Aimg->fps() );
 
         Bimg->dissolve_start( len );
         Bimg->in_frame( in );
-        Bimg->out_frame( Bimg->last_frame() );
         Bimg->play_fps( Bimg->fps() );
         Bimg->seek( Bimg->in_frame() ); // prepare image
 
 
-        TRACE2( "start " << start << " end " );
+        TRACE2( "start " << start << " end " << end );
 
         TRACE( "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() );
-        TRACE2( "Bimg " << Bimg->first_frame() << " - " << Bimg->last_frame() );
+        TRACE2( "Bimg " << Bimg->name() << " " << Bimg->first_frame() << " - " << Bimg->last_frame() );
         TRACE( "G Aimg "
                   << reel->local_to_global( Aimg->first_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->last_frame(), Aimg )
                   );
-        TRACE2( "G Bimg "
+        TRACE2( "G Bimg " << Bimg->name() << " "
                   << reel->local_to_global( Bimg->first_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->last_frame(), Bimg )
                   );
         TRACE( "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() );
-        TRACE2( "I/O Bimg " << Bimg->in_frame() << " - " << Bimg->out_frame() );
+        TRACE2( "I/O Bimg " << Bimg->name() << " "<< Bimg->in_frame() << " - " << Bimg->out_frame() );
         TRACE( "GI/O Aimg "
                   << reel->local_to_global( Aimg->in_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->out_frame(), Aimg )
                   );
-        TRACE2( "GI/O Bimg "
+        TRACE2( "GI/O Bimg " << Bimg->name() << " "
                   << reel->local_to_global( Bimg->in_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->out_frame(), Bimg )
                   );

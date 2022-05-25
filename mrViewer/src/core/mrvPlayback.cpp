@@ -428,7 +428,8 @@ EndStatus handle_loop( int64_t& frame,
             {
                 if ( decode != kVideo ) return kEndIgnore;
 
-                TRACE2( decode << ") " << next->name() << " NEXT GLOBAL FRAME IS " << dts << " stopped? " << next->stopped() );
+                int64_t local = reel->global_to_local( dts );
+                TRACE2( decode << ") " << next->name() << " NEXT GLOBAL FRAME IS " << dts << ", LOCAL " << local << " stopped? " << next->stopped() );
 
                 if ( next->stopped() )
                 {
@@ -478,6 +479,7 @@ EndStatus handle_loop( int64_t& frame,
                         << " CHANGE IMAGE TO " << idx
                         << " stopped? " << next->stopped()
                         << " frame " << next->frame() );
+
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 {
@@ -1366,8 +1368,8 @@ void video_thread( PlaybackData* data )
                 {
                     f = reel->local_to_global( frame, img );
                 }
-                TRACE2( "SEND GLOBAL FRAME " << f << " FROM IMAGE "
-                        << img->name() );
+                TRACE2( "SEND GLOBAL FRAME " << f << ", LOCAL " << frame
+                        << " FROM IMAGE " << img->name() );
                 view->frame( f );
 
                 if ( reel->edl )
@@ -1430,6 +1432,11 @@ void video_thread( PlaybackData* data )
                         }
                     }
                 }
+            }
+            else
+            {
+                TRACE( "NO GLOBAL FRAME " << f << ", LOCAL " << frame
+                       << " FROM IMAGE " << img->name() );
             }
         }
 
