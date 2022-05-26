@@ -2994,15 +2994,26 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         int64_t out = Aimg->last_frame() + outlen;
         int64_t in  = Bimg->first_frame() - inlen;
 
+        if ( dynamic_cast< BlackImage* >( Aimg ) )
+        {
+            if ( out > Aimg->end_frame() )
+            {
+                Aimg->end_frame( out );
+            }
+        }
+        if ( dynamic_cast< BlackImage* >( Bimg ) )
+        {
+            if ( in < Bimg->start_frame() )
+            {
+                Bimg->start_frame( in );
+            }
+        }
 
 
-        Aimg->dissolve_end( end );
         Aimg->out_frame( out );
         Aimg->play_fps( Aimg->fps() );
 
-        Bimg->dissolve_start( len );
         Bimg->in_frame( in );
-        Bimg->play_fps( Bimg->fps() );
         Bimg->seek( Bimg->in_frame() ); // prepare image
 
 

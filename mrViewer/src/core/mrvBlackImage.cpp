@@ -56,7 +56,7 @@ BlackImage::BlackImage( const BlackImage::Type c,
 
 void BlackImage::create( image_type_ptr& canvas )
 {
-    image_size( 32, 14 );
+    image_size( 16, 9 );
     if ( ! allocate_pixels( canvas, _frame, 1, mrv::image_type::kLumma,
                             mrv::image_type::kByte ) )
     {

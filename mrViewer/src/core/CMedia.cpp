@@ -86,6 +86,7 @@ namespace fs = boost::filesystem;
 #include "core/brawImage.h"
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
+#include "core/mrvBlackImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -403,8 +404,6 @@ _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _dissolve( 1 ),
-_dissolve_start( std::numeric_limits<int64_t>::min() ),
-_dissolve_end( std::numeric_limits<int64_t>::max() ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -529,8 +528,6 @@ _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _dissolve( 1 ),
-_dissolve_start( std::numeric_limits<int64_t>::min() ),
-_dissolve_end( std::numeric_limits<int64_t>::max() ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -657,8 +654,6 @@ _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
 _dissolve( other->_dissolve ),
-_dissolve_start( other->_dissolve_start ),
-_dissolve_end( other->_dissolve_end ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts.load() ),
@@ -1195,8 +1190,9 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
       if ( dynamic_cast< aviImage* >( this ) != NULL ||
            dynamic_cast< brawImage* >( this ) != NULL ||
            dynamic_cast< R3dImage* >( this ) != NULL ||
-           dynamic_cast< clonedImage* >( this ) != NULL||
-           dynamic_cast< ColorBarsImage* >( this ) != NULL )
+           dynamic_cast< clonedImage* >( this ) != NULL ||
+           dynamic_cast< ColorBarsImage* >( this ) != NULL ||
+           dynamic_cast< BlackImage* >( this ) != NULL )
         num = 1;
       else
         num = _frame_end - _frame_start + 1;
@@ -1211,7 +1207,8 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
        dynamic_cast< brawImage* >( this ) != NULL ||
        dynamic_cast< R3dImage* >( this ) != NULL ||
        dynamic_cast< clonedImage* >( this ) != NULL ||
-       dynamic_cast< ColorBarsImage* >( this ) != NULL )
+       dynamic_cast< ColorBarsImage* >( this ) != NULL ||
+       dynamic_cast< BlackImage* >( this ) != NULL )
     idx = 0;
   _pixel_ratio[idx] = p;
   refresh();
@@ -1225,7 +1222,8 @@ double CMedia::pixel_ratio() const    {
        dynamic_cast< const brawImage* >( this ) != NULL ||
        dynamic_cast< const R3dImage* >( this ) != NULL ||
        dynamic_cast< const clonedImage* >( this ) != NULL ||
-       dynamic_cast< const ColorBarsImage* >( this ) != NULL )
+       dynamic_cast< const ColorBarsImage* >( this ) != NULL ||
+       dynamic_cast< const BlackImage* >( this ) != NULL )
     idx = 0;
   if ( !_pixel_ratio ) return 1.0f;
   return _pixel_ratio[idx];
@@ -1298,8 +1296,9 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
     int dh = height();
 
     int64_t num = _frame_end - _frame_start + 1;
+    assert( num != 0 );
 
-    if ( !_displayWindow || num == 0 )
+    if ( !_displayWindow )
     {
         if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -1384,8 +1383,9 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
     int dh = height();
 
     int64_t num = _frame_end - _frame_start + 1;
+    assert( num != 0 );
 
-    if ( !_dataWindow || num == 0 )
+    if ( !_dataWindow )
     {
         if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -2856,6 +2856,14 @@ void CMedia::play(const CMedia::Playback dir,
 
 
 /// VCR stop sequence
+void CMedia::notify_barriers()
+{
+    if ( _loop_barrier )   _loop_barrier->notify_all();
+    if ( _stereo_barrier ) _stereo_barrier->notify_all();
+    if ( _fg_bg_barrier )  _fg_bg_barrier->notify_all();
+}
+
+/// VCR stop sequence
 void CMedia::stop( const bool fg )
 {
 
@@ -2881,11 +2889,7 @@ void CMedia::stop( const bool fg )
     //
 
 
-
-    if ( _loop_barrier )  _loop_barrier->notify_all();
-
-    if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    notify_barriers();
 
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might

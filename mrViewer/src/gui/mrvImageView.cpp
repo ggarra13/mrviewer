@@ -4526,7 +4526,7 @@ void ImageView::draw()
     _engine->draw_annotation( img->shapes(), img );
     _engine->line_width(1.0);
 
-    if ( _zoom_grid && fg->name() != "Black Gap" )
+    if ( _zoom_grid && fg->name() != _("Black Gap") )
       {
         _engine->draw_grid( img, 1.0 );
       }

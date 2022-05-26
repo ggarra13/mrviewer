@@ -91,6 +91,7 @@ extern "C" {
 #include "core/mrvMath.h"
 #include "core/mrvThread.h"
 #include "core/mrvRectangle.h"
+#include "core/mrvBlackImage.h"
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
@@ -1864,8 +1865,15 @@ void GLEngine::draw_images( ImageList& images )
 
     e = images.end();
 
-    const Image_ptr& fg = images.back();
-    const Image_ptr& bg = images.front();
+
+    mrv::media fgm = _view->foreground();
+
+    CMedia* fg = NULL;
+    if ( fgm ) fg = fgm->image();
+
+    mrv::media bgm = _view->background();
+    CMedia* bg = NULL;
+    if ( bgm ) bg = bgm->image();
 
     glDisable( GL_BLEND );
     CHECK_GL;
@@ -1881,9 +1889,12 @@ void GLEngine::draw_images( ImageList& images )
 
 
         CMedia::StereoOutput stereo = img->stereo_output();
-        const boost::int64_t& frame = pic->frame();
-        DBGM2( "draw image " << img->name() << " frame " << frame );
+        int64_t frame = pic->frame();
 
+        if ( frame > img->end_frame() ) frame = img->end_frame();
+        else if ( frame < img->start_frame() ) frame = img->start_frame();
+
+        DBGM2( "draw image " << img->name() << " frame " << frame );
         mrv::Recti dpw = img->display_window(frame);
         mrv::Recti daw = img->data_window(frame);
 
@@ -1894,9 +1905,8 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         // Handle background image size
-        if ( fg != img && stereo == CMedia::kNoStereo )
+        if ( img == bg )
         {
-            PreferencesUI* uiPrefs = _view->main()->uiPrefs;
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
@@ -1909,19 +1919,19 @@ void GLEngine::draw_images( ImageList& images )
             else
             {
                 // NOT display_window(frame)
-                const mrv::Recti& dp = fg->display_window();
-                texWidth = dp.w();
-                texHeight = dp.h();
+                const mrv::Recti& dw = fg->display_window();
+                texWidth = dw.w();
+                texHeight = dw.h();
             }
         }
         else
         {
-            texWidth = daw.w();
-            texHeight = daw.h();
+            const mrv::Recti& dw = fg->display_window();
+            texWidth = dw.w();
+            texHeight = dw.h();
         }
 
-        if ( texWidth == 0 ) texWidth = fg->width();
-        if ( texHeight == 0 ) texHeight = fg->height();
+        TRACE2( img->name() << " WxH=" << texWidth << "x" << texHeight );
 
 
         texWidth  = int( texWidth * img->scale_x() );

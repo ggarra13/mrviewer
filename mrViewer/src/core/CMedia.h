@@ -412,26 +412,6 @@ public:
 
 
 
-    inline void dissolve_start( int64_t f )
-        {
-            _dissolve_start = f;
-        }
-
-    inline int64_t dissolve_start() const
-        {
-            return _dissolve_start;
-        }
-
-    inline void dissolve_end( int64_t f )
-        {
-            _dissolve_end = f;
-        }
-
-    inline int64_t dissolve_end() const
-        {
-            return _dissolve_end;
-        }
-
 
 
     /// Fetch (load) the image for a frame
@@ -580,6 +560,9 @@ public:
 
     // Clear the sequence 8-bit cache
     virtual void clear_cache();
+
+    // Notify barrier to end playback
+    void notify_barriers();
 
     // Clear one frame of the sequence 8-bit cache
     void update_frame( const int64_t& frame );
@@ -2020,8 +2003,6 @@ protected:
     RenderingIntent _rendering_intent;
     float     _gamma;
     float     _dissolve;
-    int64_t   _dissolve_start;
-    int64_t   _dissolve_end;
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
