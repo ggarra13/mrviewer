@@ -1865,15 +1865,10 @@ void GLEngine::draw_images( ImageList& images )
 
     e = images.end();
 
-
-    mrv::media fgm = _view->foreground();
-
-    CMedia* fg = NULL;
-    if ( fgm ) fg = fgm->image();
-
-    mrv::media bgm = _view->background();
-    CMedia* bg = NULL;
-    if ( bgm ) bg = bgm->image();
+    CMedia* fg = images.back();
+    CMedia* bg = images.front();
+    // Don't consider it a background image if transition is on
+    if ( _view->B_image() == bg ) bg = NULL;
 
     glDisable( GL_BLEND );
     CHECK_GL;
@@ -1905,7 +1900,7 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         // Handle background image size
-        if ( img == bg )
+        if ( img == bg && bg != fg )
         {
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
             {   // DO NOT SCALE BG IMAGE
@@ -1926,12 +1921,11 @@ void GLEngine::draw_images( ImageList& images )
         }
         else
         {
-            const mrv::Recti& dw = fg->display_window();
+            const mrv::Recti& dw = img->display_window();
             texWidth = dw.w();
             texHeight = dw.h();
         }
 
-        TRACE( img->name() << " WxH=" << texWidth << "x" << texHeight );
 
 
         texWidth  = int( texWidth * img->scale_x() );

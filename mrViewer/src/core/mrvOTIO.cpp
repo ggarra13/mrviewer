@@ -45,6 +45,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvIO.h"
 
+#include "core/mrvBlackImage.h"
 #include "core/mrvOTIO.h"
 #include "mrvPreferencesUI.h"
 #include "mrViewer.h"
@@ -128,10 +129,8 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             {
                 if (auto item = dynamic_cast<otio::Item*>(child.value))
                 {
-                    TRACE2( "NAME=" << item->name() );
                     if (auto clip = dynamic_cast<otio::Clip*>(item))
                     {
-                        TRACE2( "CLIP=" << clip->name() );
                         auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
                         if ( e )
                         {
@@ -145,9 +144,10 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             // auto s = clip->trimmed_range_in_parent(&errorStatus)->start_time();
                             // auto d = clip->trimmed_range_in_parent(&errorStatus)->duration();
                             int64_t start = s.value();
-                            int64_t duration = d.value() - 1;
-                            int64_t end = start + duration;
-                            TRACE2( "start = " << start << " duration= "
+                            int64_t duration = d.value();
+                            int64_t end = start + duration - 1;
+                            TRACE2( clip->name()
+                                    << " start = " << start << " duration= "
                                     << duration << " end= " << end );
                             assert( end >= start );
                             LoadInfo info( e->target_url(), start, end,
@@ -178,9 +178,10 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             auto s = clip->trimmed_range(&errorStatus).start_time();
                             auto d = clip->trimmed_range(&errorStatus).duration();
                             int64_t first = s.value();
-                            int64_t duration = d.value() - 1;
-                            int64_t last  = start + duration;
+                            int64_t duration = d.value();
+                            int64_t last  = start + duration - 1;
                             TRACE2( file << " start = " << start << " end= " << end );
+                            assert( last >= first );
                             assert( end >= start );
                             LoadInfo info( file, start, end, first, last, fps );
                             sequences.push_back( info );
@@ -199,8 +200,8 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                         auto s = gap->trimmed_range(&errorStatus).start_time();
                         auto d = gap->trimmed_range(&errorStatus).duration();
                         int64_t start = s.value();
-                        int64_t duration = d.value() - 1;
-                        int64_t end = start + duration;
+                        int64_t duration = d.value();
+                        int64_t end = start + duration - 1;
                         assert( end >= start );
                         TRACE2( "GAP start = " << start << " duration= "
                                 << duration << " end= " << end );
@@ -237,7 +238,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
         }
         if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
         {
-            TRACE( "DISSOLVE start= " << start << " end= " << end );
+            TRACE2( "DISSOLVE start= " << start << " end= " << end );
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
             start = end = AV_NOPTS_VALUE;
@@ -262,12 +263,14 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
         // @todo: handle other transition types
         if ( start != AV_NOPTS_VALUE && end != AV_NOPTS_VALUE )
         {
-            TRACE( "DISSOLVE start= " << start << " end= " << end );
+            TRACE2( "DISSOLVE start= " << start << " end= " << end );
             Transition t( Transition::kDissolve, start, end );
             transitions.push_back( t );
             start = end = AV_NOPTS_VALUE;
         }
     }
+
+    assert( start == AV_NOPTS_VALUE && end == AV_NOPTS_VALUE );
 
     return true;
 }
@@ -305,21 +308,32 @@ void ImageBrowser::save_otio( mrv::Reel reel,
         sprintf( shotID, "shot #%d", i );
         mrv::media& m = reel->images[i];
         CMedia* img = m->image();
-        otio::RationalTime s( img->start_frame(), img->fps() );
-        otio::RationalTime d( img->end_frame() - img->start_frame() + 1,
-                              img->fps() );
+        double fps = img->fps();
+        otio::RationalTime s( img->start_frame(), fps );
+        otio::RationalTime d( img->end_frame() - img->start_frame() + 1, fps );
         otio::TimeRange availableRange( s, d );
+        otio::RationalTime start( img->first_frame(), fps );
+        otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
+                                     fps );
+        otio::TimeRange trimmedRange( start, duration );
 
+        otio::Item* item = NULL;
         otio::SerializableObject::Retainer<otio::MediaReference> mediaReference;
 
         if ( img->has_video() )
         {
             std::string path = relative_path( img->fileroot(), file );
             mediaReference = new otio::ExternalReference( path, availableRange );
+            item = new otio::Clip(shotID, mediaReference, trimmedRange );
+        }
+        else if ( dynamic_cast< BlackImage* >( img ) )
+        {
+            item = new otio::Gap( trimmedRange, shotID );
         }
         else
         {
             std::string path = relative_path( img->directory(), file );
+            path += "/";
             std::string name_prefix = img->name_prefix();
             int         padding     = img->frame_padding();
             std::string name_suffix = img->name_suffix();
@@ -333,15 +347,13 @@ void ImageBrowser::save_otio( mrv::Reel reel,
                                                   padding,
                                                   otio::ImageSequenceReference::MissingFramePolicy::error,
                                                   availableRange );
+            item = new otio::Clip(shotID, mediaReference, trimmedRange );
         }
-        otio::RationalTime start( img->first_frame(), img->fps() );
-        otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
-                                     img->fps() );
-        otio::TimeRange visibleRange( start, duration );
-        auto clip = otio::SerializableObject::Retainer<otio::Clip>(new otio::Clip(shotID, mediaReference, visibleRange ));
+        auto clip = otio::SerializableObject::Retainer<otio::Item>( item );
         if ( ! track.value->append_child( clip, &error_status ) )
         {
-            LOG_ERROR( _("Could not append one clip to track: ") );
+            LOG_ERROR( _("Could not append one clip to track: ")
+                       << error_status.full_description );
         }
     }
 
@@ -349,13 +361,15 @@ void ImageBrowser::save_otio( mrv::Reel reel,
     timeline.value->set_tracks(stack);
     if (!stack.value->append_child(track, &error_status))
     {
-        LOG_ERROR( _("Could not append one track to stack: ") );
+        LOG_ERROR( _("Could not append one track to stack: ")
+                   << error_status.full_description  );
         return;
     }
 
     if (!timeline.value->to_json_file(file.c_str(), &error_status))
     {
-        LOG_ERROR( _("Could not save .otio timeline: "));
+        LOG_ERROR( _("Could not save .otio timeline: ")
+                   << error_status.full_description );
         return;
     }
 

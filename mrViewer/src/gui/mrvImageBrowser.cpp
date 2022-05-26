@@ -1921,7 +1921,7 @@ void ImageBrowser::save_session()
             }
         }
 
-        TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
+        TRACE( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         view()->foreground( m );
 
         int64_t first, last;
@@ -1939,7 +1939,7 @@ void ImageBrowser::save_session()
         if ( m ) img = m->image();
         if ( reel->edl && img )
         {
-            TRACE2( img->name() << " img frame is " << img->frame() );
+            TRACE( img->name() << " img frame is " << img->frame() );
 #if 0
             if ( !_loading )
             {
@@ -2163,6 +2163,7 @@ void ImageBrowser::save_session()
             if ( !img->has_video() )
             {
                 img->fps( fps );
+                img->play_fps( fps );
             }
 #if 1
             else
@@ -2888,10 +2889,10 @@ void ImageBrowser::load_otio( const LoadInfo& info )
     reelname = reelname.substr(0, reelname.size()-5);
 
     new_reel( reelname.c_str() );
-    mrv::Reel r = current_reel();
+    mrv::Reel reel = current_reel();
 
     mrv::LoadList sequences;
-    if ( ! parse_otio( sequences, r->transitions, info.filename.c_str() ) )
+    if ( ! parse_otio( sequences, reel->transitions, info.filename.c_str() ) )
     {
         LOG_ERROR( "Could not parse \"" << info.filename << "\"." );
         _loading = false;
@@ -2902,14 +2903,12 @@ void ImageBrowser::load_otio( const LoadInfo& info )
 
     load( sequences, false, "", edl, true );
 
-    mrv::Reel reel = current_reel();
     _loading = false;
 
     if ( reel->images.empty() ) return;
 
     set_edl();
 
-    if ( reel->transitions.empty() ) return;
 
     // Initialize images as if they had no transitions
     for ( const auto& i : reel->images )
@@ -2918,6 +2917,8 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         img->in_frame( img->first_frame() );
         img->out_frame( img->last_frame() );
     }
+
+    if ( reel->transitions.empty() ) return;
 
     // Initialize transitions entry points
     for ( const auto& t : reel->transitions )
@@ -2929,11 +2930,12 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         if ( !Bimg || !Aimg ) continue;
 
 
-        int64_t len = end - start;
-        double len2 = len / 2.0;
 
-        int64_t outlen = len2;
-        int64_t  inlen = len2;
+        int64_t Bend  = reel->global_to_local( end );
+        int64_t Astart = reel->global_to_local( start );
+
+        int64_t outlen = Bend - Bimg->first_frame();
+        int64_t  inlen = Aimg->last_frame() - Astart;
 
         int64_t out = Aimg->last_frame() + outlen;
         int64_t in  = Bimg->first_frame() - inlen;
@@ -2961,25 +2963,25 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         Bimg->seek( Bimg->in_frame() ); // prepare image
 
 
-        TRACE2( "start " << start << " end " << end );
+        TRACE( "start " << start << " end " << end );
 
         TRACE( "Aimg " << Aimg->first_frame() << " - " << Aimg->last_frame() );
-        TRACE2( "Bimg " << Bimg->name() << " " << Bimg->first_frame() << " - " << Bimg->last_frame() );
+        TRACE( "Bimg " << Bimg->name() << " " << Bimg->first_frame() << " - " << Bimg->last_frame() );
         TRACE( "G Aimg "
                   << reel->local_to_global( Aimg->first_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->last_frame(), Aimg )
                   );
-        TRACE2( "G Bimg " << Bimg->name() << " "
+        TRACE( "G Bimg " << Bimg->name() << " "
                   << reel->local_to_global( Bimg->first_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->last_frame(), Bimg )
                   );
         TRACE( "I/O Aimg " << Aimg->in_frame() << " - " << Aimg->out_frame() );
-        TRACE2( "I/O Bimg " << Bimg->name() << " "<< Bimg->in_frame() << " - " << Bimg->out_frame() );
+        TRACE( "I/O Bimg " << Bimg->name() << " "<< Bimg->in_frame() << " - " << Bimg->out_frame() );
         TRACE( "GI/O Aimg "
                   << reel->local_to_global( Aimg->in_frame(), Aimg ) << " - "
                   << reel->local_to_global( Aimg->out_frame(), Aimg )
                   );
-        TRACE2( "GI/O Bimg " << Bimg->name() << " "
+        TRACE( "GI/O Bimg " << Bimg->name() << " "
                   << reel->local_to_global( Bimg->in_frame(), Bimg ) << " - "
                   << reel->local_to_global( Bimg->out_frame(), Bimg )
                   );
@@ -4835,7 +4837,7 @@ void ImageBrowser::seek( const int64_t tframe )
     CMedia::Playback play = view()->playback();
     if ( play ) view()->stop();
 
-    TRACE2( "BROWSER seek to frame " << f
+    TRACE( "BROWSER seek to frame " << f
             << " view frame " << view()->frame()
             << " view->playback=" << play );
 
@@ -4867,7 +4869,7 @@ void ImageBrowser::seek( const int64_t tframe )
         {
             CMedia* img = fg->image();
 
-            TRACE2( "BROWSER old image " << img->name() << " gframe= " << f
+            TRACE( "BROWSER old image " << img->name() << " gframe= " << f
                     << " lframe= " << img->frame() << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );
@@ -4884,7 +4886,7 @@ void ImageBrowser::seek( const int64_t tframe )
         CMedia* img = m->image();
         if ( ! img ) return;
 
-        TRACE2( "BROWSER new image " << img->name() << " gframe= " << f
+        TRACE( "BROWSER new image " << img->name() << " gframe= " << f
                 << " lframe= " << img->frame() << " in= " << img->in_frame()
                 << " out= " << img->out_frame() << " stopped? "
                 << img->stopped() );
@@ -4908,7 +4910,7 @@ void ImageBrowser::seek( const int64_t tframe )
             if ( !img ) return;
 
 
-            TRACE2( "BROWSER pre seek " << img->name() << " gframe= " << f
+            TRACE( "BROWSER pre seek " << img->name() << " gframe= " << f
                     << " lframe= " << img->frame() << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );
@@ -4918,7 +4920,7 @@ void ImageBrowser::seek( const int64_t tframe )
             if ( i < reel->images.size() )
                 change_image((int)i);
 
-            TRACE2( "BROWSER post seek " << img->name() << " gframe= " << f
+            TRACE( "BROWSER post seek " << img->name() << " gframe= " << f
                     << " lframe= " << img->frame() << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );
@@ -4928,7 +4930,7 @@ void ImageBrowser::seek( const int64_t tframe )
         }
         else
         {
-            TRACE2( "BROWSER same image " << img->name() << " gframe= " << f
+            TRACE( "BROWSER same image " << img->name() << " gframe= " << f
                     << " lframe= " << img->frame() << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );

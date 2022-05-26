@@ -19,9 +19,9 @@ v6.1.7  - Made fit image take into account masking.
 	- Fixed OTIO clip time lengths.
 	- Added support for OTIO transitions (dissolves) in the timeline.
 	  Note, however, that we do not yet support transitioning to different
-	  resolutions properly (the images are stretched during the transition).
+	  resolutions properly.
 	  Also, the thumbnails in the timeline will not show the transitions.
-	  And we do not support different rates on movie files.
+	  Finally, we still do not support saving otio files with transitions.
 	- Fixed a problem with libgnutls.so.30 on Red Hat 8 and derivatives
 	  system.
 

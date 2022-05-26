@@ -2811,7 +2811,7 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
     const CMedia* img = fg->image();
-    TRACE2(img->name() << " WxH=" << img->width() << "x" << img->height() );
+    TRACE(img->name() << " WxH=" << img->width() << "x" << img->height() );
 
     mrv::image_type_ptr pic = img->left();
     if ( !pic ) return;
@@ -3637,7 +3637,6 @@ void ImageView::handle_commands()
     case kChangeImage:
     {
         int idx = c.frame;
-        //Aimg = Bimg = NULL;
         mrv::Reel r = b->current_reel();
         bool found = false;
         mrv::MediaList::iterator j = r->images.begin();
@@ -4483,7 +4482,7 @@ void ImageView::draw()
         for ( ; i != e; ++i, ++j )
         {
             CMedia* t = *i;
-            TRACE2( "Image #" << j << " of " << num << " is "
+            TRACE( "Image #" << j << " of " << num << " is "
                     << t->name() << " "
                     << t->out_frame()
                     << " - " << t->last_frame() << " transition="
@@ -10775,12 +10774,12 @@ void ImageView::frame( const int64_t f )
         CMedia::Playback play = playback();
         if ( Aimg && play == CMedia::kForwards )
         {
-            TRACE2( "########### STOP Aimg " << Aimg->name() );
+            TRACE( "########### STOP Aimg " << Aimg->name() );
             Aimg->playback( CMedia::kStopped );
         }
         if ( Bimg && play == CMedia::kBackwards )
         {
-            TRACE2( "########### STOP Bimg " << Bimg->name() );
+            TRACE( "########### STOP Bimg " << Bimg->name() );
             Bimg->playback( CMedia::kStopped );
         }
         Aimg = Bimg = NULL;

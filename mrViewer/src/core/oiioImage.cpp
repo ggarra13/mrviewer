@@ -124,7 +124,8 @@ bool oiioImage::test(const char* file)
     {
         return false;
     }
-    in->close ();
+    in->close();
+
     return true;
 }
 

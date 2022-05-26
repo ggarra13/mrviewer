@@ -319,6 +319,7 @@ protected:
     AVFrame*              _av_frame;
     AVCodecContext*       _subtitle_ctx;           //!< current video context
     SwsContext*           _convert_ctx;
+    Mutex                 _decode_mutex;
 
     video_info_list_t     _video_info;
 

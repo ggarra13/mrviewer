@@ -851,7 +851,7 @@ void CMedia::wait_for_threads()
         if ( i == _video_thread ) type = "video";
         if ( i == _audio_thread ) type = "audio";
         if ( i == _decode_thread ) type = "decode";
-        TRACE2( name() << " Thread " << i << ", type " << type
+        TRACE( name() << " Thread " << i << ", type " << type
                 << " returned." );
         delete i;
     }
@@ -1187,12 +1187,14 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
   if ( !_pixel_ratio )
     {
       int64_t num;
-      if ( dynamic_cast< aviImage* >( this ) != NULL ||
+      if ( !_is_sequence ||
+           dynamic_cast< aviImage* >( this ) != NULL ||
            dynamic_cast< brawImage* >( this ) != NULL ||
            dynamic_cast< R3dImage* >( this ) != NULL ||
            dynamic_cast< clonedImage* >( this ) != NULL ||
            dynamic_cast< ColorBarsImage* >( this ) != NULL ||
-           dynamic_cast< BlackImage* >( this ) != NULL )
+           dynamic_cast< BlackImage* >( this ) != NULL
+          )
         num = 1;
       else
         num = _frame_end - _frame_start + 1;
@@ -1203,12 +1205,13 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
   if ( f > _frame_end ) f = _frame_end;
   else if ( f < _frame_start ) f = _frame_start;
   int64_t idx = f - _frame_start;
-  if ( dynamic_cast< aviImage* >(this) != NULL ||
-       dynamic_cast< brawImage* >( this ) != NULL ||
-       dynamic_cast< R3dImage* >( this ) != NULL ||
-       dynamic_cast< clonedImage* >( this ) != NULL ||
-       dynamic_cast< ColorBarsImage* >( this ) != NULL ||
-       dynamic_cast< BlackImage* >( this ) != NULL )
+  if (  !_is_sequence ||
+        dynamic_cast< aviImage* >(this) != NULL ||
+        dynamic_cast< brawImage* >( this ) != NULL ||
+        dynamic_cast< R3dImage* >( this ) != NULL ||
+        dynamic_cast< clonedImage* >( this ) != NULL ||
+        dynamic_cast< ColorBarsImage* >( this ) != NULL ||
+        dynamic_cast< BlackImage* >( this ) != NULL )
     idx = 0;
   _pixel_ratio[idx] = p;
   refresh();
@@ -1218,12 +1221,14 @@ double CMedia::pixel_ratio() const    {
   int64_t idx = _frame - _frame_start;
   if ( idx < 0 ) idx = 0;
   else if ( idx > _frame_end - _frame_start ) idx = _frame_end - _frame_start;
-  if ( dynamic_cast< const aviImage* >(this) != NULL ||
+  if ( !_is_sequence ||
+       dynamic_cast< const aviImage* >(this) != NULL ||
        dynamic_cast< const brawImage* >( this ) != NULL ||
        dynamic_cast< const R3dImage* >( this ) != NULL ||
        dynamic_cast< const clonedImage* >( this ) != NULL ||
        dynamic_cast< const ColorBarsImage* >( this ) != NULL ||
-       dynamic_cast< const BlackImage* >( this ) != NULL )
+       dynamic_cast< const BlackImage* >( this ) != NULL
+      )
     idx = 0;
   if ( !_pixel_ratio ) return 1.0f;
   return _pixel_ratio[idx];
@@ -2684,7 +2689,7 @@ void CMedia::play(const CMedia::Playback dir,
 
     assert( dir != kStopped );
 
-    TRACE2( name() << " frame " << frame() << " dir= " << dir
+    TRACE( name() << " frame " << frame() << " dir= " << dir
             << " playback= " << _playback << " threads=" << _threads.size() );
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
@@ -2716,7 +2721,6 @@ void CMedia::play(const CMedia::Playback dir,
     set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
     sync_clock_to_slave( &audclk, &extclk );
 
-    _audio_buf_used = 0;
 
     TRACE( name() << " frame " << frame() );
     // clear all packets
@@ -2799,7 +2803,7 @@ void CMedia::play(const CMedia::Playback dir,
                              video_data ) );
             _video_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame()
+            TRACE( name() << " frame " << frame()
                     << " added video thread " << t );
         }
 
@@ -2812,7 +2816,7 @@ void CMedia::play(const CMedia::Playback dir,
                              audio_data ) );
             _audio_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame()
+            TRACE( name() << " frame " << frame()
                     << " added audio thread " << t );
         }
 
@@ -2824,7 +2828,7 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::subtitle_thread,
                              subtitle_data ) );
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame()
+            TRACE( name() << " frame " << frame()
                     << " added subtitle thread " << t );
         }
 
@@ -2837,7 +2841,7 @@ void CMedia::play(const CMedia::Playback dir,
                              data ) );
             _decode_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame()
+            TRACE( name() << " frame " << frame()
                     << " added decode thread " << t );
         }
 
@@ -2872,7 +2876,7 @@ void CMedia::stop( const bool fg )
 
     if ( _right_eye && _owns_right_eye ) _right_eye->stop( fg );
 
-    TRACE2( name() << " stop at frame " << frame()
+    TRACE( name() << " stop at frame " << frame()
             << " playback = " << _playback
             << " threads empty? " << _threads.empty() );
 
@@ -2946,7 +2950,7 @@ std::string CMedia::name_prefix() const
     std::size_t pos = fullname.find( '%' );
     if ( pos == std::string::npos ) return fullname;
 
-    return fullname.substr( 0, pos - 1 );
+    return fullname.substr( 0, pos );
 }
 
 std::string CMedia::name_suffix() const

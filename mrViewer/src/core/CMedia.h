@@ -539,6 +539,7 @@ public:
 
     ////////////////// Return the image filename expression
     inline const char* fileroot() const {
+        if ( !_fileroot ) return filename();
         return _fileroot;
     };
 
@@ -692,13 +693,6 @@ public:
 
     inline aligned16_uint8_t* audio_buffer() const {
         return _audio_buf;
-    }
-
-    inline unsigned audio_buffer_used() const {
-        return _audio_buf_used;
-    }
-    inline void audio_buffer_used( unsigned x ) {
-        _audio_buf_used = 0;
     }
 
 
@@ -1974,10 +1968,10 @@ protected:
     time_t _ctime, _mtime;    //!< creation and modification time of image
     size_t _disk_space;       //!< disk space used by image
 
-    mutable Mutex  _mutex;          //!< to mark image routines
-    mutable Mutex  _subtitle_mutex; //!< to mark subtitle routines
-    mutable Mutex  _audio_mutex;    //!< to mark audio routines
-    mutable Mutex  _data_mutex;  //!< to mark data routines (data/displaywindow)
+    Mutex  _mutex;          //!< to mark image routines
+    Mutex  _subtitle_mutex; //!< to mark subtitle routines
+    Mutex  _audio_mutex;    //!< to mark audio routines
+    Mutex  _data_mutex;  //!< to mark data routines (data/displaywindow)
 
     int _colorspace_index;    //!< YUV Hint for conversion
 

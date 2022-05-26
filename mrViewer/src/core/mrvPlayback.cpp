@@ -921,8 +921,6 @@ void audio_thread( PlaybackData* data )
 
     img->playback( CMedia::kStopped );
 
-    Mutex& mtx = img->audio_mutex();
-    SCOPED_LOCK( mtx );
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) {
         TRACE( img->name() << " BARRIER NOTIFY ALL IN AUDIO" );
@@ -1030,8 +1028,6 @@ void subtitle_thread( PlaybackData* data )
 
     img->playback( CMedia::kStopped );
 
-    Mutex& mtx = img->audio_mutex();
-    SCOPED_LOCK( mtx );
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) {
         TRACE( img->name() << " BARRIER NOTIFY ALL IN AUDIO" );
