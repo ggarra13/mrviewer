@@ -25,6 +25,7 @@
  *
  */
 #include <opentimelineio/clip.h>
+#include <opentimelineio/imageSequenceReference.h>
 #include <opentimelineio/deserialization.h>
 #include <opentimelineio/effect.h>
 #include <opentimelineio/freezeFrame.h>
@@ -127,11 +128,14 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             {
                 if (auto item = dynamic_cast<otio::Item*>(child.value))
                 {
+                    TRACE2( "NAME=" << item->name() );
                     if (auto clip = dynamic_cast<otio::Clip*>(item))
                     {
+                        TRACE2( "CLIP=" << clip->name() );
                         auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
                         if ( e )
                         {
+
                             // auto s = clip->available_range(&errorStatus).start_time();
                             // auto d = clip->available_range(&errorStatus).duration();
                             // auto s = clip->visible_range(&errorStatus).start_time();
@@ -143,11 +147,42 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
                             int64_t start = s.value();
                             int64_t duration = d.value() - 1;
                             int64_t end = start + duration;
-                            TRACE( "start = " << start << " duration= "
+                            TRACE2( "start = " << start << " duration= "
                                     << duration << " end= " << end );
                             assert( end >= start );
                             LoadInfo info( e->target_url(), start, end,
                                            start, end, d.rate() );
+                            sequences.push_back( info );
+                        }
+                        else if (auto seq = dynamic_cast<otio::ImageSequenceReference*>(clip->media_reference()))
+                        {
+                            int64_t start = seq->start_frame();
+                            int64_t end = seq->end_frame();
+                            double fps = seq->rate();
+
+                            // Create name of file with url_base + prefix + padding + suffix
+                            std::string file = seq->target_url_base();
+                            file += seq->name_prefix();
+
+                            char buf[12];
+                            int digits = seq->frame_zero_padding();
+                            const char* pr = PRId64;
+                            if ( digits < 10 ) pr = "d";
+                            sprintf( buf, "%%0%d%s", digits, pr );
+
+                            file += buf;
+                            file += seq->name_suffix();
+
+
+
+                            auto s = clip->trimmed_range(&errorStatus).start_time();
+                            auto d = clip->trimmed_range(&errorStatus).duration();
+                            int64_t first = s.value();
+                            int64_t duration = d.value() - 1;
+                            int64_t last  = start + duration;
+                            TRACE2( file << " start = " << start << " end= " << end );
+                            assert( end >= start );
+                            LoadInfo info( file, start, end, first, last, fps );
                             sequences.push_back( info );
                         }
                     }
@@ -274,37 +309,31 @@ void ImageBrowser::save_otio( mrv::Reel reel,
         otio::RationalTime d( img->end_frame() - img->start_frame() + 1,
                               img->fps() );
         otio::TimeRange availableRange( s, d );
-        std::string path = img->fileroot();
 
-        if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference;
+
+        if ( img->has_video() )
         {
-            fs::path parentPath = file; //fs::current_path();
-            parentPath = parentPath.parent_path();
-            fs::path childPath = img->fileroot();
-
-            // @WARNING: do not generic_string() here as it fails on windows
-            //           and leaves path empty.
-            if ( img->internal() )
-            {
-                path = childPath.string();
-            }
-            else
-            {
-                fs::path relativePath = fs::relative( childPath, parentPath );
-                path = relativePath.string();
-            }
-
-            if ( path.empty() )
-            {
-                LOG_ERROR( "Error in processing relative path for "
-                           << img->fileroot() );
-                path = img->fileroot();
-            }
-
-            std::replace( path.begin(), path.end(), '\\', '/' );
+            std::string path = relative_path( img->fileroot(), file );
+            mediaReference = new otio::ExternalReference( path, availableRange );
         }
-        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( path, availableRange ));
-
+        else
+        {
+            std::string path = relative_path( img->directory(), file );
+            std::string name_prefix = img->name_prefix();
+            int         padding     = img->frame_padding();
+            std::string name_suffix = img->name_suffix();
+            int frame_step = 1;
+            mediaReference =
+                new otio::ImageSequenceReference( path, name_prefix,
+                                                  name_suffix,
+                                                  img->start_frame(),
+                                                  frame_step,
+                                                  img->fps(),
+                                                  padding,
+                                                  otio::ImageSequenceReference::MissingFramePolicy::error,
+                                                  availableRange );
+        }
         otio::RationalTime start( img->first_frame(), img->fps() );
         otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
                                      img->fps() );

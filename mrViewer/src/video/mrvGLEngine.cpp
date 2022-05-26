@@ -1931,7 +1931,7 @@ void GLEngine::draw_images( ImageList& images )
             texHeight = dw.h();
         }
 
-        TRACE2( img->name() << " WxH=" << texWidth << "x" << texHeight );
+        TRACE( img->name() << " WxH=" << texWidth << "x" << texHeight );
 
 
         texWidth  = int( texWidth * img->scale_x() );

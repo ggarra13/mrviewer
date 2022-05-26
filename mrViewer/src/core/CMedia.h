@@ -542,6 +542,10 @@ public:
         return _fileroot;
     };
 
+    std::string name_prefix() const;
+    std::string name_suffix() const;
+    int         frame_padding() const;
+
     ////////////////// Return the image filename for current frame
     const char* const filename() const;
 

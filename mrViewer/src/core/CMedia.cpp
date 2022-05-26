@@ -2939,6 +2939,42 @@ std::string CMedia::name() const
     return file.leaf().string();
 }
 
+std::string CMedia::name_prefix() const
+{
+    std::string fullname = name();
+
+    std::size_t pos = fullname.find( '%' );
+    if ( pos == std::string::npos ) return fullname;
+
+    return fullname.substr( 0, pos - 1 );
+}
+
+std::string CMedia::name_suffix() const
+{
+    std::string fullname = name();
+
+    std::size_t pos = fullname.rfind( '.' );
+    if ( pos == std::string::npos ) return "";
+
+    return fullname.substr( pos, fullname.size() );
+}
+
+int         CMedia::frame_padding() const
+{
+    int padding = 1;
+
+    std::string fullname = name();
+
+    std::size_t pos = fullname.find( '%' );
+    if ( pos == std::string::npos ) return padding;
+
+    std::size_t pos2 = fullname.find( '.', pos+1 );
+    std::string number = fullname.substr( pos+1, pos2-pos-1 );
+    if ( number == "d" ) return 1;
+
+    sscanf( number.c_str(), "%dd", &padding );
+    return padding;
+}
 
 /**
  *

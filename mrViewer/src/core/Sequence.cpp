@@ -1274,5 +1274,24 @@ bool fileroot( std::string& fileroot, const std::string& file,
 }
 
 
+std::string relative_path( const std::string& root, const std::string& parent )
+{
+
+    std::string path = root;
+
+    if ( Preferences::uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+    {
+        fs::path parentPath = parent;
+        parentPath = parentPath.parent_path();
+        fs::path childPath = root;
+        fs::path relativePath = fs::relative( childPath, parentPath );
+        path = relativePath.string();
+        if ( path.empty() ) path = root;
+    }
+
+    std::replace( path.begin(), path.end(), '\\', '/' );
+
+    return path;
+}
 
 } // namespace mrv

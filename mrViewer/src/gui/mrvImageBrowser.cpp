@@ -1014,21 +1014,7 @@ void ImageBrowser::save_session()
             path += ".reel";
             reelfile = path.string();
 
-            if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
-            {
-                fs::path childPath = reelfile; //fs::current_path();
-                DBGM1( "childPath=" << childPath );
-                fs::path parentPath = session;
-                DBGM1( "parentPath=" << parentPath );
-                fs::path relativePath = fs::relative( childPath,
-                                                      parentPath );
-                DBGM1( "relativePath=" << relativePath );
-                reelfile = relativePath.string();
-                path = relativePath;
-                reelfile = path.string();
-            }
-
-            std::replace( reelfile.begin(), reelfile.end(), '\\', '/' );
+            reelfile = relative_path( reelfile, session.string() );
             fprintf( f, "%s\n", reelfile.c_str() );
         }
 
@@ -1215,35 +1201,7 @@ void ImageBrowser::save_session()
         {
             const CMedia* img = (*i)->image();
 
-            std::string path = img->fileroot();
-
-            if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
-            {
-                fs::path parentPath = reelname; //fs::current_path();
-                parentPath = parentPath.parent_path();
-                fs::path childPath = img->fileroot();
-
-                // @WARNING: do not generic_string() here as it fails on windows
-                //           and leaves path empty.
-                if ( img->internal() )
-                {
-                    path = childPath.string();
-                }
-                else
-                {
-                    fs::path relativePath = fs::relative( childPath, parentPath );
-                    path = relativePath.string();
-                }
-
-                if ( path.empty() )
-                {
-                    LOG_ERROR( "Error in processing relative path for "
-                               << img->fileroot() );
-                    path = img->fileroot();
-                }
-
-                std::replace( path.begin(), path.end(), '\\', '/' );
-            }
+            std::string path = relative_path( img->fileroot(), reelname );
 
             fprintf( f, "\"%s\" %" PRId64 " %" PRId64
                      " %" PRId64 " %" PRId64 " %3.6g\n", path.c_str(),
@@ -1253,21 +1211,7 @@ void ImageBrowser::save_session()
 
             if ( img->has_audio() && img->audio_file() != "" )
             {
-                std::string path = img->audio_file();
-
-
-                // @WARNING:  Do not use generic_string() as it has problems
-                //            on Windows and returns an empty string.
-                if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
-                {
-                    fs::path parentPath = reelname; //fs::current_path();
-                    parentPath = parentPath.parent_path();
-                    fs::path childPath = img->audio_file();
-                    fs::path relativePath = fs::relative( childPath, parentPath );
-                    path = relativePath.string();
-                }
-
-                std::replace( path.begin(), path.end(), '\\', '/' );
+                std::string path = relative_path( img->audio_file(), reelname );
 
                 fprintf( f, "audio: %s\n", path.c_str() );
                 fprintf( f, "audio offset: %" PRId64 "\n",
