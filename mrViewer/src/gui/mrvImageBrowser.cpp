@@ -3675,6 +3675,9 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
                 std::string number = what[2];
                 suffix = what[3];
 
+                LOG_INFO( "Matched prefix=" << prefix );
+                LOG_INFO( "Matched number=" << number );
+                LOG_INFO( "Matched suffix=" << suffix );
 
                 newfile += prefix;
 
