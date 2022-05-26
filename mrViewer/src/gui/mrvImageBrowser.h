@@ -157,7 +157,7 @@ public:
     void last_image();
 
     //! Changes image to image index # i (internally does a lot of stuff)
-    void real_change_image( int v, int i, CMedia::Playback play );
+    void real_change_image( int v, int i );
 
     //! Changes image to image index # i (wrapper around real_change_image() )
     void change_image( int i );

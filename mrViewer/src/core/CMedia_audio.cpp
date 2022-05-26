@@ -1325,8 +1325,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         if ( _audio_channels > 0 )
         {
-            av_assert0( _aframe->extended_data != NULL );
-            av_assert0( _aframe->extended_data[0] != NULL );
+            assert( _aframe->extended_data != NULL );
+            assert( _aframe->extended_data[0] != NULL );
+            assert( data_size > 0 );
             memcpy(samples, _aframe->extended_data[0], data_size);
         }
     }
@@ -1417,6 +1418,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
         aligned16_uint8_t* old = _audio_buf;
         _audio_buf = new aligned16_uint8_t[ _audio_max + audio_size ];
         assert( (((unsigned long)_audio_buf) % 16) == 0 );
+        assert( _audio_max > 0 );
         memcpy( _audio_buf, old, _audio_max );
         delete [] old;
         _audio_max += audio_size;

@@ -2011,8 +2011,6 @@ _lastFrame( 0 )
 void ImageView::stop_playback()
 {
 
-    playback( CMedia::kStopped );
-
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
@@ -2029,8 +2027,9 @@ void ImageView::stop_playback()
 
 
     mrv::media bg = background();
-    if ( bg ) bg->image()->stop(true);
+    if ( bg ) bg->image()->stop( false );
 
+    playback( CMedia::kStopped );
 }
 
 
@@ -2812,6 +2811,7 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
     const CMedia* img = fg->image();
+    TRACE2(img->name() << " WxH=" << img->width() << "x" << img->height() );
 
     mrv::image_type_ptr pic = img->left();
     if ( !pic ) return;
@@ -3637,7 +3637,7 @@ void ImageView::handle_commands()
     case kChangeImage:
     {
         int idx = c.frame;
-        Aimg = Bimg = NULL;
+        //Aimg = Bimg = NULL;
         mrv::Reel r = b->current_reel();
         bool found = false;
         mrv::MediaList::iterator j = r->images.begin();
@@ -4420,6 +4420,35 @@ void ImageView::draw()
     bool in_transition = false;
     if ( Aimg && Bimg )
     {
+        int64_t Aout = Aimg->out_frame();
+        int64_t Bin  = Bimg->in_frame();
+        switch( playback() )
+        {
+        case CMedia::kForwards:
+            if ( Bimg->playback() != CMedia::kForwards )
+            {
+                Bimg->play( CMedia::kForwards, uiMain, true );
+            }
+            if ( Aimg->playback() != CMedia::kForwards &&
+                 Aimg->frame() < Aout )
+            {
+                Aimg->play( CMedia::kForwards, uiMain, true );
+            }
+            break;
+        case CMedia::kBackwards:
+            if ( Bimg->playback() != CMedia::kBackwards &&
+                 Bimg->frame() > Bin )
+            {
+                Bimg->play( CMedia::kBackwards, uiMain, true );
+            }
+            if ( Aimg->playback() != CMedia::kBackwards )
+            {
+                Aimg->play( CMedia::kBackwards, uiMain, true );
+            }
+            break;
+        default:
+            break;
+        }
         images.push_back( Bimg );
         images.push_back( Aimg );
         in_transition = true;
@@ -10709,39 +10738,23 @@ void ImageView::frame( const int64_t f )
         case CMedia::kForwards:
             if ( Btmp->playback() != CMedia::kForwards )
             {
-                TRACE2( "******** STARTED Btmp " << Btmp->name()
-                        << " with local frame " << B );
                 Btmp->seek( B );
-                Btmp->play( CMedia::kForwards, uiMain, true );
             }
             if ( Atmp->playback() != CMedia::kForwards &&
                  Atmp->frame() < Aout )
             {
-                TRACE2( "******** STARTED Atmp " << Atmp->name()
-                        << " with local frame " << A
-                        << " Aframe= " << Atmp->frame() << " GLOBAL " << f
-                        << " out= " << Aout);
                 Atmp->seek( A );
-                Atmp->play( CMedia::kForwards, uiMain, true );
             }
             break;
         case CMedia::kBackwards:
             if ( Btmp->playback() != CMedia::kBackwards &&
                  Btmp->frame() > Bin )
             {
-                TRACE2( "******** STARTED Btmp " << Btmp->name()
-                        << " with local frame " << B
-                        << " Bframe= " << Btmp->frame() << " GLOBAL " << f
-                        << " in= " << Bin);
                 Btmp->seek( B );
-                Btmp->play( CMedia::kBackwards, uiMain, true );
             }
             if ( Atmp->playback() != CMedia::kBackwards )
             {
-                TRACE2( "******** STARTED Atmp " << Atmp->name()
-                        << " with local frame " << A );
                 Atmp->seek( A );
-                Atmp->play( CMedia::kBackwards, uiMain, true );
             }
             break;
         case CMedia::kStopped:
@@ -11106,14 +11119,17 @@ void ImageView::play( const CMedia::Playback dir )
 
     if ( img->start_frame() != img->end_frame() )
     {
-        img->stop();
         img->play( dir, uiMain, true );
+    }
+
+    if ( Bimg && Bimg->start_frame() != Bimg->end_frame() )
+    {
+        Bimg->play( dir, uiMain, true );
     }
 
     if ( bg && bg != fg )
     {
         CMedia* img = bg->image();
-        img->stop( false );
         img->play( dir, uiMain, false);
     }
 

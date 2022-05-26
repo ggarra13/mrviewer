@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-25 01:40-0300\n"
+"POT-Creation-Date: 2022-05-25 21:54-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3648
+#: core/CMedia.cpp:3636
 msgid ""
 "\n"
 "\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 " لا يوجد صوت في الملف"
 
-#: gui/mrvImageView.cpp:5940
+#: gui/mrvImageView.cpp:5969
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> استخدام ملفات "
 msgid "  Choosing "
 msgstr "  قطف من "
 
-#: gui/mrvImageView.cpp:5945
+#: gui/mrvImageView.cpp:5974
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1172
+#: core/mrvPlayback.cpp:1179
 msgid " - Decode of image frame "
 msgstr " - فك إطار الصورة "
 
-#: core/mrvPlayback.cpp:793
+#: core/mrvPlayback.cpp:791
 msgid " - decode Error audio frame "
 msgstr " - خطأ في فك رتل الصوت "
 
@@ -125,7 +125,7 @@ msgstr " نص"
 msgid " already created: "
 msgstr " تم إنشاؤه بالفعل: "
 
-#: core/CMedia.cpp:4492
+#: core/CMedia.cpp:4480
 msgid " as default"
 msgstr " إفتراضي"
 
@@ -162,11 +162,11 @@ msgstr " التشفير"
 msgid " expected: "
 msgstr " متوقع: "
 
-#: core/CMedia_audio.cpp:1829
+#: core/CMedia_audio.cpp:1831
 msgid " failed"
 msgstr " بالفشل."
 
-#: core/CMedia_audio.cpp:1484
+#: core/CMedia_audio.cpp:1486
 msgid " failed with "
 msgstr " فشلت مع "
 
@@ -174,7 +174,7 @@ msgstr " فشلت مع "
 msgid " failed. "
 msgstr " بالفشل. "
 
-#: gui/mrvImageView.cpp:9319
+#: gui/mrvImageView.cpp:9348
 msgid " for channel.  Maximum: "
 msgstr " للقناة. أقصى: "
 
@@ -198,7 +198,7 @@ msgstr " لمنحنى جاما"
 msgid " for reel "
 msgstr " للبكرة "
 
-#: core/CMedia.cpp:3649
+#: core/CMedia.cpp:3637
 msgid " for stream #"
 msgstr " للمسار #"
 
@@ -238,23 +238,23 @@ msgstr " بدلا من 80"
 msgid " is "
 msgstr " يكون "
 
-#: gui/mrvImageBrowser.cpp:3765
+#: gui/mrvImageBrowser.cpp:3769
 msgid " is already the first version on disk."
 msgstr " إنه بالفعل الإصدار الأول على القرص."
 
-#: gui/mrvImageBrowser.cpp:3762
+#: gui/mrvImageBrowser.cpp:3766
 msgid " is already the last version on disk."
 msgstr " إنه بالفعل أحدث إصدار على القرص."
 
-#: core/CMedia.cpp:4349
+#: core/CMedia.cpp:4337
 msgid " is missing."
 msgstr " إنه ضائع."
 
-#: core/CMedia.cpp:4372
+#: core/CMedia.cpp:4360
 msgid " is missing. Choosing "
 msgstr " مفقود. قطف من "
 
-#: core/CMedia_audio.cpp:1883 core/aviImage.cpp:1925 core/R3dImage.cpp:935
+#: core/CMedia_audio.cpp:1885 core/aviImage.cpp:1925 core/R3dImage.cpp:935
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " لم يتم العثور على"
@@ -271,11 +271,11 @@ msgstr " غير موجود ، واختيار "
 msgid " not yet supported"
 msgstr " غير معتمدة حتى الآن"
 
-#: core/mrvPlayback.cpp:1173
+#: core/mrvPlayback.cpp:1180
 msgid " returned "
 msgstr " إرجاع "
 
-#: core/CMedia_audio.cpp:1618
+#: core/CMedia_audio.cpp:1620
 msgid " size is "
 msgstr " الحجم "
 
@@ -443,11 +443,11 @@ msgstr "' بالنسبة "
 msgid "' for writing. Reason: "
 msgstr "للكتابة. سبب: "
 
-#: core/CMedia.cpp:4492
+#: core/CMedia.cpp:4480
 msgid "' from bitdepth "
 msgstr "عمق البت: "
 
-#: core/CMedia.cpp:4444
+#: core/CMedia.cpp:4432
 msgid "' from filename"
 msgstr "من اسم الملف"
 
@@ -512,9 +512,9 @@ msgstr "تقديم التحول"
 msgid "(Remove if mrViewer does not start)"
 msgstr "(قم بإزالته إذا لم يبدأ برنامج mrViewer)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2273
-#: gui/mrvImageView.cpp:9293 gui/mrvImageView.cpp:9978
-#: gui/mrvImageView.cpp:9979 gui/mrvImageView.cpp:9987
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2274
+#: gui/mrvImageView.cpp:9322 gui/mrvImageView.cpp:10007
+#: gui/mrvImageView.cpp:10008 gui/mrvImageView.cpp:10016
 msgid "(no image)"
 msgstr "(بدون صورة)"
 
@@ -538,7 +538,7 @@ msgstr "** متعدد القيم **"
 msgid "+"
 msgstr "+"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2352
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2353
 msgid "+0.0  f/8.0"
 msgstr "+ 0.0f/8.0"
 
@@ -564,7 +564,7 @@ msgstr "، تكرر "
 msgid ", frequency "
 msgstr "، تكرر "
 
-#: core/CMedia.cpp:3649
+#: core/CMedia.cpp:3637
 msgid ", type "
 msgstr "، اكتب "
 
@@ -580,7 +580,7 @@ msgstr ". يجب أن تحتوي السمة على سمة النموذج = ال�
 msgid ".  Saving pixel type is "
 msgstr ". نوع البكسل المراد حفظه هو "
 
-#: gui/mrvImageView.cpp:9320
+#: gui/mrvImageView.cpp:9349
 msgid ". Widget label is "
 msgstr ". علامة القطعة هي "
 
@@ -645,7 +645,7 @@ msgstr "1.50 صورة ثابتة"
 msgid "1.56 STV - HDTV (14:9)"
 msgstr "1.56 STV-HDTV (14: 9)"
 
-#: gui/mrvImageView.cpp:4569
+#: gui/mrvImageView.cpp:4598
 msgid "1.66"
 msgstr "1.66"
 
@@ -662,7 +662,7 @@ msgstr "1.77 HDTV (16: 9)"
 msgid "1.8"
 msgstr "1.8"
 
-#: gui/mrvImageView.cpp:4567
+#: gui/mrvImageView.cpp:4596
 msgid "1.85"
 msgstr "1.85"
 
@@ -703,12 +703,12 @@ msgid "1/9"
 msgstr "1/9"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:199
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1966
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1967
 msgid "12"
 msgstr "12"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:198
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1965
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1966
 msgid "12.5"
 msgstr "12.5"
 
@@ -717,15 +717,15 @@ msgid "128x128x128"
 msgstr "128x128x128"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:197
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1964
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1965
 msgid "14.985"
 msgstr "14.985"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1963
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1964
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4464
+#: core/CMedia.cpp:4452
 msgid "16 bits"
 msgstr "16 بت"
 
@@ -742,7 +742,7 @@ msgstr "192x192x192"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:262
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:878
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:887
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2479
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2480
 #: gui/mrvImageInformation.cpp:4022
 msgid "1:1"
 msgstr "1:1"
@@ -798,7 +798,7 @@ msgstr "2.2 5.1 1.4"
 msgid "2.20 70mm"
 msgstr "2.20 70 ملم"
 
-#: gui/mrvImageView.cpp:4565
+#: gui/mrvImageView.cpp:4594
 msgid "2.35"
 msgstr "2.35"
 
@@ -810,12 +810,12 @@ msgstr "2.35 CinemaScope (قديم 2.35)"
 msgid "2.39 Panavision (new 2.35)"
 msgstr "2.39 Panavision (جديد 2.35)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1962
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1963
 msgid "23.97"
 msgstr "23.97"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:196
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1961
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1962
 msgid "24"
 msgstr "24"
 
@@ -824,7 +824,7 @@ msgid "24000/1001"
 msgstr "24000/1001"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:195
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1960
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1961
 msgid "25"
 msgstr "25"
 
@@ -833,16 +833,16 @@ msgid "256x256x256"
 msgstr "256x256x256"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:194
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1959
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1960
 msgid "29.97"
 msgstr "29.97"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:193
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1958
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1959
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4471
+#: core/CMedia.cpp:4459
 msgid "32 bits"
 msgstr "32 بت"
 
@@ -918,7 +918,7 @@ msgid "3d View"
 msgstr "عرض ثلاثي الأبعاد"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1396
-#: gui/mrvImageView.cpp:5021
+#: gui/mrvImageView.cpp:5050
 msgid "3dView"
 msgstr "3dview"
 
@@ -943,17 +943,17 @@ msgid "4.00 Polyvision"
 msgstr "4.00 Polyvision"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:192
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1957
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1958
 msgid "50"
 msgstr "50"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:191
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1956
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1957
 msgid "59.94"
 msgstr "59.94"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:190
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1955
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1956
 msgid "60"
 msgstr "60"
 
@@ -969,7 +969,7 @@ msgstr "70 ملم"
 msgid "8 bit Caches"
 msgstr "8 بت مخبأ"
 
-#: core/CMedia.cpp:4457
+#: core/CMedia.cpp:4445
 msgid "8 bits"
 msgstr "8 بت"
 
@@ -977,7 +977,7 @@ msgstr "8 بت"
 msgid "8-bit Values"
 msgstr "قيم 8 بت"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2854
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2855
 msgid "8-bit sample of image pixel under mouse."
 msgstr "8 بت لأخذ عينات من بكسل الصورة تحت الماوس."
 
@@ -1011,25 +1011,25 @@ msgstr ": خطأ "
 msgid ": Unknown pixel type"
 msgstr ": نوع بكسل غير معروف"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2339
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3123
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2340
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3124
 msgid "@<"
 msgstr "@<"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1852
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1853
 msgid "@<->"
 msgstr "@<->"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3136
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3137
 msgid "@<|"
 msgstr "@<|"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2367
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3175
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2368
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3176
 msgid "@>"
 msgstr "@>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3188
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3189
 msgid "@>|"
 msgstr "@> |"
 
@@ -1037,20 +1037,20 @@ msgstr "@> |"
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12 @ C7 @ b @. الوظيفة t @ B12 @ C7 @ b @ .Keys"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3110
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3111
 msgid "@|<"
 msgstr "@| <"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3162
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3163
 msgid "@|>"
 msgstr "@|>"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1850
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3149
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1851
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3150
 msgid "@||"
 msgstr "@||"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3276
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3277
 msgid "A"
 msgstr "A"
 
@@ -1068,11 +1068,11 @@ msgstr ""
 " أمثلة: \n"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1395
-#: gui/mrvImageView.cpp:5015
+#: gui/mrvImageView.cpp:5044
 msgid "A-B, Stereo 3D Options"
 msgstr "ستيريو ثلاثي الأبعاد ، خيارات AB"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2254
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2255
 msgid "A/B"
 msgstr "A/B"
 
@@ -1104,7 +1104,7 @@ msgid "AVI Movie"
 msgstr "فيلم AVI"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1405
-#: gui/mrvImageView.cpp:5037
+#: gui/mrvImageView.cpp:5066
 msgid "About"
 msgstr "حول mrViewer"
 
@@ -1136,7 +1136,7 @@ msgstr "أجراءات"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1394
-#: gui/mrvImageView.cpp:5014
+#: gui/mrvImageView.cpp:5043
 msgid "Action Tools"
 msgstr "أدوات العمل"
 
@@ -1145,7 +1145,7 @@ msgstr "أدوات العمل"
 msgid "Actions"
 msgstr "أجراءات"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2494
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2495
 msgid "Activate viewer's 3D Lut."
 msgstr "قم بتنشيط جدول البحث ثلاثي الأبعاد لمعين المنظر."
 
@@ -1186,7 +1186,7 @@ msgstr "ضبط تشبع الصورة"
 msgid "Adopted Neutral"
 msgstr "اعتمد محايد"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3163
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3164
 msgid "Advance one frame."
 msgstr "تقدم إطار واحد."
 
@@ -1204,7 +1204,7 @@ msgstr "الخوارزمية عند عدم استخدام OCIO"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:163
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:771
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3499
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3500
 #: gui/mrvImageInformation.cpp:641
 msgid "All"
 msgstr "كل شئ"
@@ -1225,12 +1225,12 @@ msgstr "كل الطبقات"
 msgid "All Possible"
 msgstr "كل شيء ممكن"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3259
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3260
 msgid "Allows you to adjust frame rate playback."
 msgstr "يسمح لك بضبط سرعة التشغيل."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2433
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2443
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2434
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2444
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -1238,7 +1238,7 @@ msgstr ""
 "يسمح لك بضبط منحنى جاما للعرض. \n"
 " القيمة هي: pow (2، 1/X) ؛"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2305
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2306
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr "يسمح لك بضبط كسب أو عرض الصورة."
 
@@ -1246,21 +1246,21 @@ msgstr "يسمح لك بضبط كسب أو عرض الصورة."
 msgid "Allows you to select a standard cropping area around image."
 msgstr "يسمح لك بتحديد القناع القياسي حول الصورة."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2274
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2275
 msgid "Allows you to select different image channels or layers."
 msgstr "يسمح لك بتحديد قناة أو طبقات مختلفة من الصورة."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3312
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3313
 msgid "Allows you to set starting frame for timeline."
 msgstr "يسمح لك بتعيين إطار البداية للخط الزمني."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3327
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3328
 msgid "Allows you to set the ending frame for timeline."
 msgstr "يسمح لك بتعيين إطار النهاية للمخطط الزمني."
 
-#: core/CMedia.cpp:2115 core/CMedia.cpp:2198 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9411
-#: gui/mrvImageView.cpp:9879 gui/mrvImageView.cpp:9941
+#: core/CMedia.cpp:2099 core/CMedia.cpp:2182 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9440
+#: gui/mrvImageView.cpp:9908 gui/mrvImageView.cpp:9970
 msgid "Alpha"
 msgstr "ألفا"
 
@@ -1268,13 +1268,13 @@ msgstr "ألفا"
 msgid "Alpha Only"
 msgstr "ألفا فقط"
 
-#: core/CMedia.cpp:2117 core/CMedia.cpp:2198 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2180
-#: gui/mrvImageView.cpp:9392 gui/mrvImageView.cpp:9942
+#: core/CMedia.cpp:2101 core/CMedia.cpp:2182 core/exrImage.cpp:3057
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:2179
+#: gui/mrvImageView.cpp:9421 gui/mrvImageView.cpp:9971
 msgid "Alpha Overlay"
 msgstr "ألفا أوفر برينت"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2843
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2844
 msgid "Alpha value of image pixel under mouse."
 msgstr "قيمة ألفا للصورة بكسل تحت الماوس."
 
@@ -1369,7 +1369,7 @@ msgstr "أبريل"
 msgid "Arabic"
 msgstr "عربي"
 
-#: gui/mrvImageBrowser.cpp:3361
+#: gui/mrvImageBrowser.cpp:3364
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
@@ -1377,7 +1377,7 @@ msgstr ""
 "هل أنت متأكد من أنك تريد \n"
 " حذف كافة الصور المحددة من ألبوم الكاميرا؟"
 
-#: gui/mrvImageBrowser.cpp:3357
+#: gui/mrvImageBrowser.cpp:3360
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1405,7 +1405,7 @@ msgid "Area"
 msgstr "مساحة"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:584
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2542
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2543
 msgid "Area Select Tool"
 msgstr "أداة تحديد المنطقة"
 
@@ -1422,7 +1422,7 @@ msgid "Arrow Mode"
 msgstr "وضع السهم"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:645
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2602
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2603
 msgid "Arrow Tool"
 msgstr "أداة السهم"
 
@@ -1455,7 +1455,7 @@ msgstr "صفات"
 msgid "Attributes Menu"
 msgstr "قائمة السمات"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2672
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2673
 msgid "Attrs"
 msgstr "أتر"
 
@@ -1486,7 +1486,7 @@ msgstr "مسار الصوت #%d"
 msgid "Audio Streams"
 msgstr "المسارات الصوتية"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3291
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3292
 msgid "Audio Volume"
 msgstr "حجم الصوت"
 
@@ -1498,7 +1498,7 @@ msgstr "تحويل الصوت "
 msgid "Audio format not known.  Choosing float32. "
 msgstr "تنسيق الصوت غير معروف. اختر float32. "
 
-#: core/CMedia_audio.cpp:1883
+#: core/CMedia_audio.cpp:1885
 msgid "Audio frame "
 msgstr "إطار صوتي "
 
@@ -1506,23 +1506,23 @@ msgstr "إطار صوتي "
 msgid "Audio frame has NOPTS value."
 msgstr "يحتوي صندوق الصوت على قيمة NOPTS."
 
-#: core/CMedia_audio.cpp:1989
+#: core/CMedia_audio.cpp:1991
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "حزمة الصوت غير معروفة ، توقع البحث أو الاختبار المسبق"
 
-#: core/CMedia_audio.cpp:2039
+#: core/CMedia_audio.cpp:2041
 msgid "Audio packets empty at end of seek"
 msgstr "حزم الصوت الفارغة في نهاية البحث"
 
-#: gui/mrvImageView.cpp:5338
+#: gui/mrvImageView.cpp:5367
 msgid "Audio/Attach Audio File"
 msgstr "صوتي/إضافة ملف صوتي"
 
-#: gui/mrvImageView.cpp:5343
+#: gui/mrvImageView.cpp:5372
 msgid "Audio/Detach Audio File"
 msgstr "صوتي/إلغاء إقران ملف الصوت"
 
-#: gui/mrvImageView.cpp:5340
+#: gui/mrvImageView.cpp:5369
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "صوتي/تحرير إطار بدء الصوت"
 
@@ -1531,7 +1531,7 @@ msgstr "صوتي/تحرير إطار بدء الصوت"
 msgid "Audio: %<PRId64>"
 msgstr "صوتي: %<PRId64>"
 
-#: core/CMedia_audio.cpp:1645
+#: core/CMedia_audio.cpp:1647
 msgid "Audios #"
 msgstr "صوتي #"
 
@@ -1599,12 +1599,12 @@ msgstr "حذف في الخلف"
 msgid "Background"
 msgstr "خلفية"
 
-#: core/mrvPlayback.cpp:1108
+#: core/mrvPlayback.cpp:1115
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr "مدة صورة الخلفية قصيرة جدًا. قد لا يعمل التكرار في دورات بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1115
+#: core/mrvPlayback.cpp:1122
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1613,11 +1613,11 @@ msgstr ""
 "عدد الإطارات في الثانية لصورة الخلفية (%lg) ليس هو نفسه الصورة الأمامية "
 "(%lg).التكرار في دورات لن يعمل بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1092
+#: core/mrvPlayback.cpp:1099
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr "البكرة السفلية قصيرة جدًا. قد لا يعمل التكرار في دورات بشكل صحيح."
 
-#: core/mrvPlayback.cpp:1082
+#: core/mrvPlayback.cpp:1089
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1677,9 +1677,9 @@ msgstr "وضع المزج"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2131 core/CMedia.cpp:2197 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9406
-#: gui/mrvImageView.cpp:9940
+#: core/CMedia.cpp:2115 core/CMedia.cpp:2181 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9435
+#: gui/mrvImageView.cpp:9969
 msgid "Blue"
 msgstr "أزرق"
 
@@ -1691,7 +1691,7 @@ msgstr "اكتساب الأزرق"
 msgid "Blue Gain of clip."
 msgstr "كليب بلوز كسب"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2836
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2837
 msgid "Blue value of image pixel under mouse."
 msgstr "القيمة الزرقاء للصورة البكسل تحت الماوس."
 
@@ -1703,7 +1703,7 @@ msgstr "استثناء دفعة: "
 msgid "Both"
 msgstr "كلاهما"
 
-#: gui/mrvImageView.cpp:11341
+#: gui/mrvImageView.cpp:11357
 msgid "Bottom"
 msgstr "أدنى"
 
@@ -1788,11 +1788,11 @@ msgstr "مسارات CTL"
 msgid "CTL scripts"
 msgstr "موجزات CTL"
 
-#: gui/mrvImageBrowser.cpp:4212
+#: gui/mrvImageBrowser.cpp:4216
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/تعيين تحويل جهاز الإدخال (IDT)"
 
-#: gui/mrvImageBrowser.cpp:4216
+#: gui/mrvImageBrowser.cpp:4220
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/تعيين تحويل العرض (RRT)"
 
@@ -1898,7 +1898,7 @@ msgstr "مركز"
 msgid "Center Image"
 msgstr "توسيط الصورة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2456
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2457
 msgid "Changes frame/field display"
 msgstr "تغيير إطار أخذ العينات/الجانب القطري"
 
@@ -1962,7 +1962,7 @@ msgid "Circle Mode"
 msgstr "وضع الدائرة"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:615
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2587
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2588
 msgid "Circle Tool"
 msgstr "أداة الدائرة"
 
@@ -2067,13 +2067,13 @@ msgid "CollapsibleGroup not found"
 msgstr "لم يتم العثور على المجموعة القابلة للطي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/aviSave.cxx:206
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2630
-#: core/CMedia.cpp:2128 core/CMedia.cpp:2196 core/exrImage.cpp:2804
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2631
+#: core/CMedia.cpp:2112 core/CMedia.cpp:2180 core/exrImage.cpp:2804
 #: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
-#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2217 gui/mrvImageView.cpp:2279
-#: gui/mrvImageView.cpp:9939 gui/mrvImageView.cpp:9987
+#: gui/mrvImageView.cpp:201 gui/mrvImageView.cpp:2216 gui/mrvImageView.cpp:2278
+#: gui/mrvImageView.cpp:9968 gui/mrvImageView.cpp:10016
 msgid "Color"
 msgstr "لون"
 
@@ -2082,12 +2082,12 @@ msgid "Color Area"
 msgstr "منطقة اللون"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1392
-#: gui/mrvImageView.cpp:5012
+#: gui/mrvImageView.cpp:5041
 msgid "Color Controls"
 msgstr "ضوابط اللون"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1391
-#: gui/mrvImageView.cpp:5011
+#: gui/mrvImageView.cpp:5040
 msgid "Color Info"
 msgstr "معلومات منطقة اللون"
 
@@ -2115,11 +2115,11 @@ msgstr "موضوع اللون"
 msgid "Color Version"
 msgstr "نسخة ملونة"
 
-#: gui/mrvImageView.cpp:9228
+#: gui/mrvImageView.cpp:9257
 msgid "Color channel not found at index "
 msgstr "قناة اللون غير موجودة للفهرس "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2169
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2170
 msgid "Color controls"
 msgstr "ضوابط اللون"
 
@@ -2196,7 +2196,7 @@ msgstr "متصلا "
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:847
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1401
-#: gui/mrvImageView.cpp:5031
+#: gui/mrvImageView.cpp:5060
 msgid "Connections"
 msgstr "روابط"
 
@@ -2247,7 +2247,7 @@ msgstr "نسخ قيم RGBA"
 msgid "Copy Reel, Shot, Frame, X and Y coordinates to clipboard"
 msgstr "نسخ إحداثيات Reel و Shot و Frame و X و Y إلى الحافظة"
 
-#: gui/mrvImageView.cpp:2357
+#: gui/mrvImageView.cpp:2356
 msgid "Copy X Y"
 msgstr "انسخ XY"
 
@@ -2404,7 +2404,7 @@ msgstr "لم أتمكن من العثور على أربعة أعداد صحيح�
 msgid "Could not find four integers for box "
 msgstr "لم أتمكن من العثور على أربعة أعداد صحيحة للمربع "
 
-#: core/mrvPlayback.cpp:1356
+#: core/mrvPlayback.cpp:1363
 msgid "Could not find image "
 msgstr "لم أتمكن من العثور على الصورة "
 
@@ -2528,15 +2528,15 @@ msgstr "فشلت في الحصول على رمز زمني للإطار "
 msgid "Could not init cmm: "
 msgstr "لم أتمكن من تهيئة cmm: "
 
-#: core/CMedia_audio.cpp:1822
+#: core/CMedia_audio.cpp:1824
 msgid "Could not initialize audio engine"
 msgstr "لم أتمكن من تهيئة محرك الصوت"
 
-#: gui/mrvImageView.cpp:2320
+#: gui/mrvImageView.cpp:2319
 msgid "Could not initialize draw engine"
 msgstr "تعذر تهيئة محرك الرسم"
 
-#: gui/mrvImageBrowser.cpp:2458
+#: gui/mrvImageBrowser.cpp:2461
 msgid "Could not load '"
 msgstr "لم أستطع تحميل \""
 
@@ -2588,7 +2588,7 @@ msgstr "لم أتمكن من فتح برنامج ترميز الصوت"
 msgid "Could not open audio codec."
 msgstr "لم أتمكن من فتح برنامج ترميز الصوت"
 
-#: core/CMedia_audio.cpp:1814
+#: core/CMedia_audio.cpp:1816
 msgid "Could not open audio driver"
 msgstr "لم أتمكن من فتح برنامج تشغيل الصوت"
 
@@ -2604,7 +2604,7 @@ msgstr "لم أتمكن من فتح فيلم mpeg"
 msgid "Could not open video codec"
 msgstr "لا يمكن فتح برنامج ترميز الفيديو"
 
-#: core/CMedia_audio.cpp:1899
+#: core/CMedia_audio.cpp:1901
 msgid "Could not play audio frame "
 msgstr "لم أستطع تشغيل إطار الصوت "
 
@@ -2786,51 +2786,51 @@ msgstr "إنشاء بكرة جديدة"
 msgid "Create audio conversion from "
 msgstr "إنشاء تحويل الصوت من "
 
-#: gui/mrvImageBrowser.cpp:4464
+#: gui/mrvImageBrowser.cpp:4468
 msgid "Create/Black Gap"
 msgstr "خلق/فجوة سوداء"
 
-#: gui/mrvImageBrowser.cpp:4486
+#: gui/mrvImageBrowser.cpp:4490
 msgid "Create/Checkered"
 msgstr "خلق/جريد"
 
-#: gui/mrvImageBrowser.cpp:4470
+#: gui/mrvImageBrowser.cpp:4474
 msgid "Create/Color Bars/PAL"
 msgstr "خلق/أشرطة اللون/صديق"
 
-#: gui/mrvImageBrowser.cpp:4472
+#: gui/mrvImageBrowser.cpp:4476
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "خلق/أشرطة اللون/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4466
+#: gui/mrvImageBrowser.cpp:4470
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "خلق/أشرطة اللون/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4468
+#: gui/mrvImageBrowser.cpp:4472
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "خلق/أشرطة اللون/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4474
+#: gui/mrvImageBrowser.cpp:4478
 msgid "Create/Gamma Chart/1.4"
 msgstr "خلق/مخطط النطاق/1.4"
 
-#: gui/mrvImageBrowser.cpp:4476
+#: gui/mrvImageBrowser.cpp:4480
 msgid "Create/Gamma Chart/1.8"
 msgstr "خلق/مخطط النطاق/1.8"
 
-#: gui/mrvImageBrowser.cpp:4478
+#: gui/mrvImageBrowser.cpp:4482
 msgid "Create/Gamma Chart/2.2"
 msgstr "خلق/مخطط النطاق/2.2"
 
-#: gui/mrvImageBrowser.cpp:4480
+#: gui/mrvImageBrowser.cpp:4484
 msgid "Create/Gamma Chart/2.4"
 msgstr "خلق/مخطط النطاق/2.4"
 
-#: gui/mrvImageBrowser.cpp:4482
+#: gui/mrvImageBrowser.cpp:4486
 msgid "Create/Gradient/Linear"
 msgstr "خلق/تخرج/خطي"
 
-#: gui/mrvImageBrowser.cpp:4484
+#: gui/mrvImageBrowser.cpp:4488
 msgid "Create/Gradient/Luminance"
 msgstr "خلق/تخرج/الانارة"
 
@@ -2865,11 +2865,11 @@ msgstr "كنترول"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:165
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:257
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:763
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3491
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3492
 msgid "Current"
 msgstr "حاضر"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3092
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3093
 msgid "Current frame."
 msgstr "المربع الحالي."
 
@@ -3055,11 +3055,11 @@ msgstr "خطأ في فك تشفير الصوت: "
 msgid "Decode video error seek frame "
 msgstr "خطأ في فك تشفير الفيديو أثناء البحث عن الصورة "
 
-#: core/CMedia_audio.cpp:1434
+#: core/CMedia_audio.cpp:1436
 msgid "Decode_audio failed with error: "
 msgstr "خطأ في فك تشفير الصوت: "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2340
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2341
 msgid "Decrease exposure by 0.5."
 msgstr "تقليل التعرض بمقدار 0.5"
 
@@ -3071,7 +3071,7 @@ msgstr "التناقص في Y"
 msgid "Deep Data"
 msgstr "البيانات العميقة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1954
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1955
 #: gui/mrvColorSchemes.cpp:102
 msgid "Default"
 msgstr "تقصير"
@@ -3211,7 +3211,7 @@ msgstr "نافذة العرض 2"
 msgid "Display Window of Clip"
 msgstr "نافذة عرض مقطع"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2353
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2354
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -3272,7 +3272,7 @@ msgid "Driver"
 msgstr "السائقين"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:215
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1868
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1869
 msgid "Drop Frame Timecode"
 msgstr "إطارات نفايات رمز الوقت"
 
@@ -3297,7 +3297,7 @@ msgstr "طول الفيديو"
 msgid "Dutch"
 msgstr "هولندي (Nederlands)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3354
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3355
 msgid "E"
 msgstr "E"
 
@@ -3315,7 +3315,7 @@ msgstr "مؤسسة كهرباء لبنان"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1393
-#: gui/mrvImageView.cpp:5019
+#: gui/mrvImageView.cpp:5048
 msgid "EDL Edit"
 msgstr "تحرير EDL"
 
@@ -3417,7 +3417,7 @@ msgid "Erase Temporary Mode"
 msgstr "وضع الحذف المؤقت"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:630
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2572
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2573
 msgid "Eraser Tool"
 msgstr "أداة المسح"
 
@@ -3476,7 +3476,7 @@ msgstr "غريب/أعمدة الزوج"
 msgid "Even/odd rows"
 msgstr "غريب/خطوط الزوج"
 
-#: gui/mrvImageBrowser.cpp:3703
+#: gui/mrvImageBrowser.cpp:3707
 msgid "Example:  gizmo"
 msgstr "مثال: gizmo_v003.0001.exr"
 
@@ -3492,7 +3492,7 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr "فشل تبديل الصورة"
 
-#: gui/mrvImageBrowser.cpp:4647 gui/mrvImageBrowser.cpp:4787
+#: gui/mrvImageBrowser.cpp:4651 gui/mrvImageBrowser.cpp:4791
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage %d %d"
@@ -3541,12 +3541,12 @@ msgstr "ممتد"
 msgid "Eye Separation"
 msgstr "مشاهدة ملف Separation"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2455
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2934
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2456
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2935
 msgid "F"
 msgstr "ج"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3061
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3062
 msgid "F:"
 msgstr "ج:"
 
@@ -3562,7 +3562,7 @@ msgstr "ليناسب"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1490
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1868
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2265
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3204
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3205
 #: gui/mrvImageInformation.cpp:2823 gui/mrvImageInformation.cpp:3550
 #: gui/mrvProgressReport.cpp:71
 msgid "FPS"
@@ -3668,52 +3668,52 @@ msgstr "فشل التحميل لـ ripmap Y. "
 msgid "File Requester"
 msgstr "باحث الملفات"
 
-#: gui/mrvImageView.cpp:4964
+#: gui/mrvImageView.cpp:4993
 msgid "File/Open/AMF file"
 msgstr "أرشيف/لفتح/ملف MFA"
 
-#: gui/mrvImageView.cpp:4951 gui/mrvImageView.cpp:4962
+#: gui/mrvImageView.cpp:4980 gui/mrvImageView.cpp:4991
 msgid "File/Open/Directory"
 msgstr "أرشيف/لفتح/الدليل"
 
-#: gui/mrvImageView.cpp:4941 gui/mrvImageBrowser.cpp:4172
+#: gui/mrvImageView.cpp:4970 gui/mrvImageBrowser.cpp:4176
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "أرشيف/لفتح/فيلم أو تسلسل"
 
-#: gui/mrvImageView.cpp:4953 gui/mrvImageView.cpp:4966
+#: gui/mrvImageView.cpp:4982 gui/mrvImageView.cpp:4995
 msgid "File/Open/Session"
 msgstr "أرشيف/لفتح/جلسة"
 
-#: gui/mrvImageView.cpp:4945 gui/mrvImageBrowser.cpp:4174
+#: gui/mrvImageView.cpp:4974 gui/mrvImageBrowser.cpp:4178
 msgid "File/Open/Single Image"
 msgstr "أرشيف/لفتح/مجرد صورة"
 
-#: gui/mrvImageView.cpp:4959
+#: gui/mrvImageView.cpp:4988
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "أرشيف/لفتح/فيلم أو تسلسل للستيريو"
 
-#: gui/mrvImageView.cpp:4989
+#: gui/mrvImageView.cpp:5018
 msgid "File/Quit"
 msgstr "أرشيف/غادر"
 
-#: gui/mrvImageView.cpp:4974 gui/mrvImageBrowser.cpp:4419
+#: gui/mrvImageView.cpp:5003 gui/mrvImageBrowser.cpp:4423
 msgid "File/Save/Frame As"
 msgstr "أرشيف/يحفظ/مربع مثل"
 
-#: gui/mrvImageView.cpp:4976 gui/mrvImageBrowser.cpp:4421
+#: gui/mrvImageView.cpp:5005 gui/mrvImageBrowser.cpp:4425
 msgid "File/Save/GL Snapshots As"
 msgstr "أرشيف/يحفظ/لقطات Opengl"
 
-#: gui/mrvImageView.cpp:4969 gui/mrvImageBrowser.cpp:4414
+#: gui/mrvImageView.cpp:4998 gui/mrvImageBrowser.cpp:4418
 msgid "File/Save/Movie or Sequence As"
 msgstr "أرشيف/يحفظ/فيلم أو تسلسل مثل"
 
-#: gui/mrvImageView.cpp:4972 gui/mrvImageBrowser.cpp:4417
+#: gui/mrvImageView.cpp:5001 gui/mrvImageBrowser.cpp:4421
 msgid "File/Save/Reel As"
 msgstr "أرشيف/يحفظ/بكرة مثل"
 
-#: gui/mrvImageView.cpp:4978 gui/mrvImageBrowser.cpp:4423
+#: gui/mrvImageView.cpp:5007 gui/mrvImageBrowser.cpp:4427
 msgid "File/Save/Session As"
 msgstr "أرشيف/يحفظ/جلسة مثل"
 
@@ -3766,7 +3766,7 @@ msgstr "تناسسب الكل"
 msgid "Fit Screen"
 msgstr "شاشة الإطار"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2141
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2142
 msgid "Fit Window to Image"
 msgstr "تناسب النافذة مع الصورة"
 
@@ -3857,7 +3857,7 @@ msgstr "فور سي سي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11339
+#: gui/mrvImageView.cpp:11355
 msgid "Frame"
 msgstr "إطار"
 
@@ -3933,8 +3933,8 @@ msgstr "مخزن مؤقت متعدد العينات غير مكتمل: رسم ا
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:211
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:254
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:760
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1864
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3488
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1865
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3489
 msgid "Frames"
 msgstr "صورة"
 
@@ -3947,7 +3947,7 @@ msgid "Frames per Second"
 msgstr "لقطة في الثانية"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:600
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2557
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2558
 msgid "Freehand Drawing Tool"
 msgstr "أداة الرسم اليدوي"
 
@@ -4002,7 +4002,7 @@ msgid "GREEN"
 msgstr "لون أخضر"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1249
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2290
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2291
 msgid "Gain"
 msgstr "مكسب"
 
@@ -4010,7 +4010,7 @@ msgstr "مكسب"
 msgid "Gain for image failed"
 msgstr "فشل الحصول على الصورة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2295
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2296
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr "قيمة اكتساب الصورة. مضاعف بسيط لقيم البكسل."
 
@@ -4018,7 +4018,7 @@ msgstr "قيمة اكتساب الصورة. مضاعف بسيط لقيم الب�
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:3373
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1810
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2403
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2404
 #: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1870
 msgid "Gamma"
 msgstr "نطاق"
@@ -4068,23 +4068,23 @@ msgid "German"
 msgstr "الألمانية (Deutsch)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:780
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3508
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3509
 msgid "Ghosting"
 msgstr "شبح"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3137
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3138
 msgid "Go back one frame."
 msgstr "العودة إطار واحد."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3111
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3112
 msgid "Go to the beginning of the sequence."
 msgstr "اذهب إلى بداية التسلسل."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3189
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3190
 msgid "Go to the end of the sequence."
 msgstr "اذهب إلى نهاية التسلسل."
 
-#: core/CMedia.cpp:4444 core/CMedia.cpp:4491
+#: core/CMedia.cpp:4432 core/CMedia.cpp:4479
 msgid "Got colorspace '"
 msgstr "لدي مساحة اللون \""
 
@@ -4098,9 +4098,9 @@ msgstr "اليونانية (Ελληνικά)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2130 core/CMedia.cpp:2196 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9401
-#: gui/mrvImageView.cpp:9940
+#: core/CMedia.cpp:2114 core/CMedia.cpp:2180 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9430
+#: gui/mrvImageView.cpp:9969
 msgid "Green"
 msgstr "أخضر"
 
@@ -4112,7 +4112,7 @@ msgstr "اكتساب الأخضر"
 msgid "Green Gain of clip."
 msgstr "كسب الخضر من المقطع."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2829
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2830
 msgid "Green value of image pixel under mouse."
 msgstr "قيمة البكسل الخضراء تحت الماوس."
 
@@ -4155,7 +4155,7 @@ msgstr "HSL"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:240
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1786
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2859
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2860
 msgid "HSV"
 msgstr "HSV"
 
@@ -4229,7 +4229,7 @@ msgstr "ملحوظ على الجدول الزمني الكامل"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1397
-#: gui/mrvImageView.cpp:5023
+#: gui/mrvImageView.cpp:5052
 msgid "Histogram"
 msgstr "الرسم البياني"
 
@@ -4257,7 +4257,7 @@ msgstr "مفاتيح الإدارة:"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1403
-#: gui/mrvImageView.cpp:5033
+#: gui/mrvImageView.cpp:5062
 msgid "Hotkeys"
 msgstr "مفاتيح الإدارة"
 
@@ -4281,7 +4281,7 @@ msgstr "كيفية إظهار اختيار الجدول الزمني بشكل ا
 msgid "Hue"
 msgstr "مسحة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2909
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2910
 msgid "Hue value of image pixel under mouse."
 msgstr "هوى قيمة البكسل تحت الماوس."
 
@@ -4301,7 +4301,7 @@ msgstr "الملف الشخصي للمحكمة الجنائية الدولية"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2792
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1400
-#: gui/mrvImageView.cpp:5029
+#: gui/mrvImageView.cpp:5058
 msgid "ICC Profiles"
 msgstr "ملامح ICC"
 
@@ -4432,7 +4432,7 @@ msgstr "Y تحجيم الصورة على السبورة"
 msgid "Image at position "
 msgstr "الصورة في الموضع "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2782
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2783
 msgid "Image coordinate of pixel under mouse."
 msgstr "تنسيق صورة البكسل تحت الماوس."
 
@@ -4444,11 +4444,11 @@ msgstr "ملف الصورة \""
 msgid "Image input color space is undefined for "
 msgstr "مساحة لون الإدخال للصورة غير المحددة لـ "
 
-#: gui/mrvImageBrowser.cpp:3493
+#: gui/mrvImageBrowser.cpp:3496
 msgid "Image item not found for "
 msgstr "العنصر غير موجود في البكرة "
 
-#: gui/mrvImageBrowser.cpp:3596
+#: gui/mrvImageBrowser.cpp:3599
 msgid "Image not found in reel "
 msgstr "لم يتم العثور على الصورة في لفة الكاميرا "
 
@@ -4476,92 +4476,92 @@ msgstr ""
 "سيتم تخزين صور التسلسل في الذاكرة. إذا تم إيقاف هذا الإعداد ، فسيتم تحميل "
 "الصور بناءً على الطلب ولكن قد لا يكون التشغيل السلس ممكنًا."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2711
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2712
 msgid "Image zoom setting."
 msgstr "إعداد تكبير الصورة."
 
-#: gui/mrvImageView.cpp:5216
+#: gui/mrvImageView.cpp:5245
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "صورة/إضافة تعديل مظهر CTL (LMT)"
 
-#: gui/mrvImageView.cpp:5208
+#: gui/mrvImageView.cpp:5237
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "صورة/تعيين تحويل جهاز إدخال CTL (IDT)"
 
-#: gui/mrvImageView.cpp:5220
+#: gui/mrvImageView.cpp:5249
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "صورة/تعيين تحويل عرض CTL (RRT)"
 
-#: gui/mrvImageView.cpp:5224
+#: gui/mrvImageView.cpp:5253
 msgid "Image/Attach ICC Color Profile"
 msgstr "صورة/أضف ملف تعريف Color ICC"
 
-#: gui/mrvImageView.cpp:5186
+#: gui/mrvImageView.cpp:5215
 msgid "Image/Clear Caches"
 msgstr "صورة/مسح مخابئ"
 
-#: gui/mrvImageView.cpp:5162 gui/mrvImageView.cpp:5170
-#: gui/mrvImageBrowser.cpp:4435 gui/mrvImageBrowser.cpp:4445
+#: gui/mrvImageView.cpp:5191 gui/mrvImageView.cpp:5199
+#: gui/mrvImageBrowser.cpp:4439 gui/mrvImageBrowser.cpp:4449
 msgid "Image/Clone"
 msgstr "صورة/استنساخ"
 
-#: gui/mrvImageView.cpp:5164 gui/mrvImageBrowser.cpp:4437
+#: gui/mrvImageView.cpp:5193 gui/mrvImageBrowser.cpp:4441
 msgid "Image/Clone All Channels"
 msgstr "صورة/استنساخ جميع القنوات"
 
-#: gui/mrvImageBrowser.cpp:4449
+#: gui/mrvImageBrowser.cpp:4453
 msgid "Image/Media Info"
 msgstr "صورة/معلومات الوسائط"
 
-#: gui/mrvImageView.cpp:5231
+#: gui/mrvImageView.cpp:5260
 msgid "Image/Mirror/Horizontal"
 msgstr "صورة/مرآة/أفقي"
 
-#: gui/mrvImageView.cpp:5235
+#: gui/mrvImageView.cpp:5264
 msgid "Image/Mirror/Vertical"
 msgstr "صورة/مرآة/رأسي"
 
-#: gui/mrvImageView.cpp:5212
+#: gui/mrvImageView.cpp:5241
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "صورة/قم بتعديل CTL ASC_CDL SOP والتشبع"
 
-#: gui/mrvImageView.cpp:5151
+#: gui/mrvImageView.cpp:5180
 msgid "Image/Next"
 msgstr "صورة/التالي"
 
-#: gui/mrvImageView.cpp:5177
+#: gui/mrvImageView.cpp:5206
 msgid "Image/Preload Caches"
 msgstr "صورة/مخابئ التحميل المسبق"
 
-#: gui/mrvImageView.cpp:5153
+#: gui/mrvImageView.cpp:5182
 msgid "Image/Previous"
 msgstr "صورة/سابق"
 
-#: gui/mrvImageView.cpp:5196
+#: gui/mrvImageView.cpp:5225
 msgid "Image/Rotate +90"
 msgstr "صورة/تناوب عليها +90"
 
-#: gui/mrvImageView.cpp:5199
+#: gui/mrvImageView.cpp:5228
 msgid "Image/Rotate -90"
 msgstr "صورة/تناوب عليه -90"
 
-#: gui/mrvImageView.cpp:5239 gui/mrvImageBrowser.cpp:4454
+#: gui/mrvImageView.cpp:5268 gui/mrvImageBrowser.cpp:4458
 msgid "Image/Set as Background"
 msgstr "صورة/تعيينها كخلفية"
 
-#: gui/mrvImageView.cpp:5244
+#: gui/mrvImageView.cpp:5273
 msgid "Image/Switch FG and BG"
 msgstr "صورة/تغيير المقدمة والخلفية"
 
-#: gui/mrvImageView.cpp:5247
+#: gui/mrvImageView.cpp:5276
 msgid "Image/Toggle Background"
 msgstr "صورة/تبديل الخلفية"
 
-#: gui/mrvImageView.cpp:5254
+#: gui/mrvImageView.cpp:5283
 msgid "Image/Toggle EDL"
 msgstr "صورة/مبادلة EDL"
 
-#: gui/mrvImageView.cpp:5189
+#: gui/mrvImageView.cpp:5218
 msgid "Image/Update Single Frame in Cache"
 msgstr "صورة/تحديث إطار ذاكرة التخزين المؤقت"
 
@@ -4608,7 +4608,7 @@ msgstr "صور الاستريو لها سرعات مختلفة (إطارات ف�
 msgid "Images, sequences or movies to display."
 msgstr "الصور أو التسلسلات أو الأفلام المراد عرضها."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2368
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2369
 msgid "Increase exposure by 0.5."
 msgstr "زيادة التعرض بمقدار 0.5."
 
@@ -4629,7 +4629,7 @@ msgid "Input"
 msgstr "دخول"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2504
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2324
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2325
 #: core/exrImage.cpp:2482 gui/mrvImageInformation.cpp:3052
 msgid "Input Color Space"
 msgstr "مساحة لون الإدخال"
@@ -4677,7 +4677,7 @@ msgstr "ملف تعريف الوجهة غير صالح/شكل صورة"
 msgid "Invalid image "
 msgstr "فهرس غير صالح "
 
-#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9318
+#: core/R3dImage.cpp:1324 core/R3dImage.cpp:1399 gui/mrvImageView.cpp:9347
 msgid "Invalid index "
 msgstr "فهرس غير صالح "
 
@@ -4725,8 +4725,8 @@ msgstr "التحويل المرجعي للعرض العكسي (RT)"
 msgid "Italian"
 msgstr "إيطاليي (italiano)"
 
-#: gui/mrvImageBrowser.cpp:4048 gui/mrvImageBrowser.cpp:4056
-#: gui/mrvImageBrowser.cpp:4131 gui/mrvImageBrowser.cpp:4139
+#: gui/mrvImageBrowser.cpp:4052 gui/mrvImageBrowser.cpp:4060
+#: gui/mrvImageBrowser.cpp:4135 gui/mrvImageBrowser.cpp:4143
 msgid "Item was not found in tree."
 msgstr "لم يتم العثور على بكرة"
 
@@ -4797,8 +4797,8 @@ msgstr "سلبي كوداك الرقمي"
 msgid "Korean"
 msgstr "الكورية (한국어)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1851
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3035
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1852
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3036
 msgid "L"
 msgstr "L"
 
@@ -4812,7 +4812,7 @@ msgstr "L (سطوع)"
 msgid "LMTransform %u"
 msgstr "TransformLM %u"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2493
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2494
 msgid "LUT"
 msgstr "طرفية"
 
@@ -5024,7 +5024,7 @@ msgstr "لقد قمت بتحميل التفضيلات من "
 msgid "Loading"
 msgstr "جار التحميل"
 
-#: gui/mrvImageBrowser.cpp:2356
+#: gui/mrvImageBrowser.cpp:2359
 #, c-format
 msgid "Loading \"%s\""
 msgstr "تحميل \"%s\""
@@ -5058,7 +5058,7 @@ msgid "Logarithmic"
 msgstr "لوغاريتمي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1404
-#: gui/mrvImageView.cpp:5035
+#: gui/mrvImageView.cpp:5064
 msgid "Logs"
 msgstr "المشاركات"
 
@@ -5075,7 +5075,7 @@ msgstr "لقد بحثت عنه في: "
 msgid "Loop"
 msgstr "حلقه"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3036
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3037
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr "سلوك التكرار (Stop ، Loop ، Ping-Pong)"
 
@@ -5091,14 +5091,14 @@ msgstr "سطوع"
 msgid "Luminance Gradient"
 msgstr "التخرج اللمعان"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2993
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2994
 msgid "Luminance of image pixel under mouse."
 msgstr "إضاءة بكسل الصورة تحت الماوس."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2143 core/CMedia.cpp:2198 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2187
-#: gui/mrvImageView.cpp:9416 gui/mrvImageView.cpp:9941
+#: core/CMedia.cpp:2127 core/CMedia.cpp:2182 core/exrImage.cpp:3057
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2186
+#: gui/mrvImageView.cpp:9445 gui/mrvImageView.cpp:9970
 msgid "Lumma"
 msgstr "لمى"
 
@@ -5240,7 +5240,7 @@ msgstr "متوسط"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1390
-#: gui/mrvImageView.cpp:5010
+#: gui/mrvImageView.cpp:5039
 msgid "Media Info"
 msgstr "معلومات الوسائط"
 
@@ -5357,11 +5357,11 @@ msgstr "مراقبة الكتابة CTL"
 msgid "Monitor Icc Profile"
 msgstr "مراقبة ملف تعريف Icc"
 
-#: gui/mrvImageView.cpp:5361
+#: gui/mrvImageView.cpp:5390
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "عرض/إضافة تحويل عرض إخراج CTL (ODT)"
 
-#: gui/mrvImageView.cpp:5365
+#: gui/mrvImageView.cpp:5394
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "عرض/أضف ملف تعريف ألوان ICC"
 
@@ -5445,7 +5445,7 @@ msgid ""
 msgstr ""
 "أحتاج إلى إعادة تشغيل mrViewer لتغيير اللغة. هل أنت متأكد أنك تريد الاستمرار؟"
 
-#: gui/mrvImageBrowser.cpp:4641
+#: gui/mrvImageBrowser.cpp:4645
 msgid "Negative indices to exchange"
 msgstr "المؤشرات السلبية للتداول"
 
@@ -5453,17 +5453,17 @@ msgstr "المؤشرات السلبية للتداول"
 msgid "Never"
 msgstr "أبدا"
 
-#: gui/mrvImageBrowser.cpp:3512
+#: gui/mrvImageBrowser.cpp:3515
 msgid "New item not created at "
 msgstr "لم يتم إنشاء عنصر جديد في "
 
-#: gui/mrvImageBrowser.cpp:1977 gui/mrvImageBrowser.cpp:3888
-#: gui/mrvImageBrowser.cpp:3975
+#: gui/mrvImageBrowser.cpp:1975 gui/mrvImageBrowser.cpp:3892
+#: gui/mrvImageBrowser.cpp:3979
 msgid "New item was not found in tree."
 msgstr "لم يتم العثور على بكرة"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:793
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3522
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3523
 msgid "Next"
 msgstr "التالي"
 
@@ -5484,8 +5484,8 @@ msgid "Next Image Version"
 msgstr "إصدار الصورة التالية"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
-#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3359
-#: gui/mrvImageBrowser.cpp:3363 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3362
+#: gui/mrvImageBrowser.cpp:3366 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -5543,7 +5543,7 @@ msgstr "لم يتم العثور على وحدة فك ترميز للمسار ا
 msgid "No foreground image to switch to"
 msgstr "لا توجد صورة أمامية للتغيير"
 
-#: gui/mrvImageView.cpp:4900
+#: gui/mrvImageView.cpp:4929
 msgid "No image to add shape to"
 msgstr "لا توجد صورة لإضافة شكل إليها"
 
@@ -5551,11 +5551,11 @@ msgstr "لا توجد صورة لإضافة شكل إليها"
 msgid "No image was decoded"
 msgstr "لم يتم فك أي صورة"
 
-#: gui/mrvImageBrowser.cpp:2149
+#: gui/mrvImageBrowser.cpp:2152
 msgid "No left image to attach a stereo image pair"
 msgstr "لا توجد صورة متبقية لإرفاق زوج من صور الاستريو"
 
-#: core/CMedia_audio.cpp:247 core/CMedia_audio.cpp:1644
+#: core/CMedia_audio.cpp:247 core/CMedia_audio.cpp:1646
 msgid "No memory for audio frame"
 msgstr "لا توجد ذاكرة لإطار الصوت"
 
@@ -5579,14 +5579,14 @@ msgstr "لا يوجد تحويل ODT صالح: "
 msgid "No valid RT transform for \""
 msgstr "لا يوجد تحويل RT صالح لـ \""
 
-#: gui/mrvImageBrowser.cpp:3699
+#: gui/mrvImageBrowser.cpp:3703
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
 msgstr "هذا المقطع ليس له إصدارات. الرجاء إنشاء صورة أو مجلد باسم نسخة."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:214
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1867
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1868
 msgid "Non-Drop Frame Timecode"
 msgstr "كود الوقت دون إضاعة الإطارات"
 
@@ -5603,7 +5603,7 @@ msgstr "مواد غير POT: \t"
 msgid "None"
 msgstr "لا هذا ولا ذاك"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2382
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2383
 msgid "Norm"
 msgstr "اساسي"
 
@@ -5611,7 +5611,7 @@ msgstr "اساسي"
 msgid "Normal"
 msgstr "طبيعي"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2383
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2384
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr "تطبيع قيم البكسل للحفاظ على النطاق [0،1]."
 
@@ -5627,31 +5627,31 @@ msgstr "غير ممنوع"
 msgid "Not OK"
 msgstr "ليس جيدا"
 
-#: gui/mrvImageView.cpp:5870
+#: gui/mrvImageView.cpp:5899
 msgid "Not a GLArrowShape pointer"
 msgstr "ليس مؤشر GLArrowShape"
 
-#: gui/mrvImageView.cpp:7297
+#: gui/mrvImageView.cpp:7326
 msgid "Not a GLCircleShape pointer"
 msgstr "ليس بمؤشر GLCircleShape"
 
-#: gui/mrvImageView.cpp:5902
+#: gui/mrvImageView.cpp:5931
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "ليس مؤشر GLCircleShape في MouseRelease"
 
-#: gui/mrvImageView.cpp:5842
+#: gui/mrvImageView.cpp:5871
 msgid "Not a GLErasePathShape pointer"
 msgstr "ليس مؤشرًا لـ GLErasePathShape"
 
-#: gui/mrvImageView.cpp:5828 gui/mrvImageView.cpp:7237
+#: gui/mrvImageView.cpp:5857 gui/mrvImageView.cpp:7266
 msgid "Not a GLPathShape pointer"
 msgstr "ليس مؤشرًا إلى GLPathShape"
 
-#: gui/mrvImageView.cpp:5856
+#: gui/mrvImageView.cpp:5885
 msgid "Not a GLRectangleShape pointer"
 msgstr "ليس مؤشر GLRectangleShape"
 
-#: gui/mrvImageView.cpp:5886
+#: gui/mrvImageView.cpp:5915
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "ليس مؤشرًا إلى GLTextShape عند إصدار الماوس"
 
@@ -5765,7 +5765,7 @@ msgstr "ملف تكوين OCIO"
 msgid "OCIO Display"
 msgstr "عرض الترفيه"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2404
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2405
 msgid "OCIO Display/View or some default gamma settings."
 msgstr "عرض/عرض OCIO أو بعض إعدادات جاما الافتراضية"
 
@@ -5793,19 +5793,19 @@ msgstr "تكوين الترفيه (*. {"
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "متغير بيئة OCIO غير موجود. سيتم استخدام CTL. "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2325
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2326
 msgid "OCIO input color space for the image"
 msgstr "مساحة لون الإدخال للصورة غير محددة."
 
-#: gui/mrvImageView.cpp:5270
+#: gui/mrvImageView.cpp:5299
 msgid "OCIO/Display"
 msgstr "OCIO/عرض"
 
-#: gui/mrvImageView.cpp:5266 gui/mrvImageBrowser.cpp:4205
+#: gui/mrvImageView.cpp:5295 gui/mrvImageBrowser.cpp:4209
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/مساحة لون الإدخال"
 
-#: gui/mrvImageView.cpp:5273
+#: gui/mrvImageView.cpp:5302
 msgid "OCIO/View"
 msgstr "OCIO/رأي"
 
@@ -5871,8 +5871,8 @@ msgstr "ogg- فيديو"
 msgid "Okay"
 msgstr "نعم"
 
-#: gui/mrvImageBrowser.cpp:1959 gui/mrvImageBrowser.cpp:3872
-#: gui/mrvImageBrowser.cpp:3960
+#: gui/mrvImageBrowser.cpp:1957 gui/mrvImageBrowser.cpp:3876
+#: gui/mrvImageBrowser.cpp:3964
 msgid "Old item was not found in tree."
 msgstr "لم يتم العثور على بكرة"
 
@@ -5954,7 +5954,7 @@ msgstr ""
 "AF هو مصدر ألفا ، \n"
 " القرص المضغوط هو لون الوجهة."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2189
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2190
 msgid "Opens different windows"
 msgstr "افتح نوافذ مختلفة"
 
@@ -5996,7 +5996,7 @@ msgstr "البرنامج الأصلي"
 msgid "Otio timeline saved to '%s'."
 msgstr "تم حفظ المخطط الزمني لـ Otio في \"%s\"."
 
-#: core/CMedia.cpp:1199
+#: core/CMedia.cpp:1183
 msgid "Out of memory"
 msgstr "بدون ذاكرة"
 
@@ -6089,7 +6089,7 @@ msgstr "قوام PBO: \t"
 msgid "PIZ"
 msgstr "بيز"
 
-#: gui/mrvImageView.cpp:4836
+#: gui/mrvImageView.cpp:4865
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6120,7 +6120,7 @@ msgid "Pen Color"
 msgstr "لون قلم رصاص"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:704
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3473
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3474
 msgid "Pen Size"
 msgstr "حجم القلم الرصاص"
 
@@ -6200,7 +6200,7 @@ msgstr "نسبة البكسل"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "نوع البكسل غير مدعوم بشكل صحيح في شكل الموجة"
 
-#: gui/mrvImageView.cpp:5351
+#: gui/mrvImageView.cpp:5380
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "بكسل/انسخ قيم RGBA إلى الحافظة"
 
@@ -6232,11 +6232,11 @@ msgstr "العب إلى الأمام/تغيير السرعة"
 msgid "Play in Current Direction"
 msgstr "تلعب في العنوان الحالي"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3124
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3125
 msgid "Play sequence backwards."
 msgstr "تشغيل التسلسل إلى الوراء."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3176
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3177
 msgid "Play sequence forward."
 msgstr "تسلسل اللعب إلى الأمام."
 
@@ -6252,7 +6252,7 @@ msgstr ""
 msgid "Playback"
 msgstr "لعب"
 
-#: core/CMedia_audio.cpp:1828
+#: core/CMedia_audio.cpp:1830
 msgid "Playback of audio frame "
 msgstr "تشغيل إطار الصوت "
 
@@ -6289,8 +6289,8 @@ msgstr "أفضِّل ICC"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1402
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2155
-#: gui/mrvImageView.cpp:5017
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2156
+#: gui/mrvImageView.cpp:5046
 msgid "Preferences"
 msgstr "التفضيلات"
 
@@ -6298,7 +6298,7 @@ msgstr "التفضيلات"
 msgid "Preferences have been saved to: "
 msgstr "تم حفظ التفضيلات في: "
 
-#: gui/mrvImageBrowser.cpp:3625
+#: gui/mrvImageBrowser.cpp:3628
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
@@ -6307,7 +6307,7 @@ msgstr ""
 "اسم الملف. إذا كنت تشك في ما يجب استخدامه ، فاستخدم _v الذي سينشئ تعبيرًا "
 "عاديًا شاملاً."
 
-#: gui/mrvImageBrowser.cpp:4229
+#: gui/mrvImageBrowser.cpp:4233
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6340,7 +6340,7 @@ msgid "Preview Thumbnails"
 msgstr "الطوابع previz"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:783
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3511
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3512
 msgid "Previous"
 msgstr "سابق"
 
@@ -6496,7 +6496,7 @@ msgstr "صورة RGB"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:156
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1769
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2794
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2795
 #: gui/mrvImageView.cpp:204
 msgid "RGBA"
 msgstr "RGBA"
@@ -6585,9 +6585,9 @@ msgstr "اداة المستطيل"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2129 core/CMedia.cpp:2196 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9396
-#: gui/mrvImageView.cpp:9939
+#: core/CMedia.cpp:2113 core/CMedia.cpp:2180 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:206 gui/mrvImageView.cpp:9425
+#: gui/mrvImageView.cpp:9968
 msgid "Red"
 msgstr "أحمر"
 
@@ -6599,7 +6599,7 @@ msgstr "اكتساب الأحمر"
 msgid "Red Gain of clip."
 msgstr "الكسب الأحمر للمقطع."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2822
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2823
 msgid "Red value of image pixel under mouse."
 msgstr "القيمة الحمراء لبكسل الصورة تحت الماوس."
 
@@ -6613,11 +6613,11 @@ msgid "Redo Draw"
 msgstr "إعادة الرسم"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:732
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2656
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2657
 msgid "Redo Previous Shape Drawn"
 msgstr "إعادة الشكل الذي تم رسمه مسبقًا"
 
-#: gui/mrvImageView.cpp:2466
+#: gui/mrvImageView.cpp:2465
 #, c-format
 msgid "Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n"
 msgstr "بكرة%d (%s) | خذ%d (%s) | إطار %<PRId64> | س =%d | ص =%d \n"
@@ -6634,7 +6634,7 @@ msgstr "بكرات"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2992
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1389
-#: gui/mrvImageView.cpp:5009
+#: gui/mrvImageView.cpp:5038
 msgid "Reels"
 msgstr "بكرات"
 
@@ -6655,7 +6655,7 @@ msgstr "رقم المرجع"
 msgid "Reference Service"
 msgstr "الخدمة المرجعية"
 
-#: gui/mrvImageBrowser.cpp:3632
+#: gui/mrvImageBrowser.cpp:3635
 msgid "Regex "
 msgstr "ريجكس "
 
@@ -6671,7 +6671,7 @@ msgstr ""
 " gizmo_v003.001.exr \n"
 " (الإصدار 3 ، الإطار 1)."
 
-#: gui/mrvImageBrowser.cpp:3645 gui/mrvImageBrowser.cpp:3693
+#: gui/mrvImageBrowser.cpp:3649 gui/mrvImageBrowser.cpp:3697
 msgid "Regular expression error: "
 msgstr "خطأ في التعبير العادي: "
 
@@ -6761,7 +6761,7 @@ msgstr ""
 "استبدل كل السمات/القيم المراد عرضها في hud ، مع ترك القيم المحددة في سطر "
 "الأوامر فقط."
 
-#: gui/mrvImageBrowser.cpp:3478
+#: gui/mrvImageBrowser.cpp:3481
 msgid "Replace image index is out of range"
 msgstr "معدل استبدال الصورة خارج النطاق"
 
@@ -6903,7 +6903,7 @@ msgstr "قم بتشغيل mrViewer بغض النظر عن تكوين مثيل و
 msgid "Russian"
 msgstr "الروسية (русский)"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3341
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3342
 msgid "S"
 msgstr "S"
 
@@ -6944,7 +6944,7 @@ msgstr "التشبع"
 msgid "Saturation of clip."
 msgstr "مقطع التشبع"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2917
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2918
 msgid "Saturation value of image pixel under mouse."
 msgstr "قيمة تشبع بكسل الصورة الموجودة تحت الماوس."
 
@@ -7080,7 +7080,7 @@ msgstr "كرر الإطار المحدد"
 msgid "ScrollLock"
 msgstr "ScrollLock"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2134
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2135
 #: gui/mrvImageView.cpp:1618
 msgid "Scrub"
 msgstr "تنظيف"
@@ -7094,7 +7094,7 @@ msgid "Scrub Sensitivity"
 msgstr "فرك الحساسية"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:552
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2526
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2527
 msgid "Scrubbing Tool"
 msgstr "أداة تنقية"
 
@@ -7119,11 +7119,11 @@ msgid "Secondary Display"
 msgstr "العرض الثانوي"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:212
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1865
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1866
 msgid "Seconds"
 msgstr "ثواني"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3277
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3278
 msgid "Select Audio Track"
 msgstr "حدد مسار الصوت"
 
@@ -7172,11 +7172,11 @@ msgstr "حدد إدخال ستيريو"
 msgid "Select stereo output"
 msgstr "حدد إخراج ستيريو"
 
-#: gui/mrvImageBrowser.cpp:4189
+#: gui/mrvImageBrowser.cpp:4193
 msgid "Select/Multiple Images for Modifying"
 msgstr "لتحديد/صور متعددة للتعديل"
 
-#: gui/mrvImageBrowser.cpp:4176
+#: gui/mrvImageBrowser.cpp:4180
 msgid "Select/Single Image for Dragging"
 msgstr "لتحديد/صورة لسحبها"
 
@@ -7207,12 +7207,12 @@ msgid "Selects the color of the selection rectangle over the current image."
 msgstr "حدد لون مستطيل التحديد على الصورة الحالية."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:752
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2631
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2632
 msgid "Selects the current pen color."
 msgstr "حدد لون القلم الرصاص."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:705
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3474
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3475
 msgid "Selects the size of brush."
 msgstr "حدد حجم الفرشاة."
 
@@ -7263,7 +7263,7 @@ msgstr "تعيين نقطة الإخراج"
 msgid "Set added audio offset."
 msgstr "أضفت التمرير الصوتي."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2255
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2256
 msgid ""
 "Set an A/B comparison.  B image goes in the background.  A (foreground) "
 "image is the selected image."
@@ -7401,7 +7401,7 @@ msgstr "صورة لينة الصورة"
 msgid "Software"
 msgstr "البرمجيات"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3205
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3206
 msgid "Some default frame rate settings."
 msgstr "بعض الإعدادات الافتراضية لسرعة التشغيل"
 
@@ -7481,7 +7481,7 @@ msgstr "مشاهدة ملف Separation"
 msgid "Stop"
 msgstr "قف"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3150
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3151
 msgid "Stop playback."
 msgstr "أوقف التشغيل."
 
@@ -7493,7 +7493,7 @@ msgstr "وقف uiview"
 msgid "Stopped encoding cached "
 msgstr "توقفت عن تشفير ذاكرة التخزين المؤقت "
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2480
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2481
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr "قم بتمديد الصورة لتعويض نسبة أبعاد الصورة بالبكسل."
 
@@ -7531,15 +7531,15 @@ msgstr "خطاب الترجمة "
 msgid "Subtitle type "
 msgstr "نوع الترجمة "
 
-#: gui/mrvImageView.cpp:5305
+#: gui/mrvImageView.cpp:5334
 msgid "Subtitle/Load"
 msgstr "العنوان الفرعي/تكلفة"
 
-#: gui/mrvImageView.cpp:5313
+#: gui/mrvImageView.cpp:5342
 msgid "Subtitle/No Subtitle"
 msgstr "العنوان الفرعي/لا توجد ترجمة"
 
-#: gui/mrvImageView.cpp:5322
+#: gui/mrvImageView.cpp:5351
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "العنوان الفرعي/المسار #%d -%s"
@@ -7582,7 +7582,7 @@ msgstr "قنوات التبادل"
 msgid "Switch FG/BG Images"
 msgstr "قم بتبديل الصور الأمامية والخلفية"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2795
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2796
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
@@ -7590,11 +7590,11 @@ msgstr ""
 "قم بتغيير أخذ عينات RGBA بين النقطة العائمة ، الست عشري (0..0xff) والعدد "
 "العشري (0..255)."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3062
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3063
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "التبديل بين إظهار الإطار والثواني ورمز الوقت."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2963
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2964
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -7625,13 +7625,13 @@ msgstr ""
 " \n"
 " سيظهر بكسل Y = 0.18 (L = 0.5) نصف ساطع مثل Y = L = 1.0 (أبيض)."
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2860
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2861
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr "قم بتغيير أخذ عينات من OCIO اللون للبكسل تحت المؤشر."
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:659
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2616
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2617
 msgid "T"
 msgstr "تي"
 
@@ -7677,7 +7677,7 @@ msgid "Text Overlay"
 msgstr "تراكب النص"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:660
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2617
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2618
 msgid "Text Tool"
 msgstr "أداة النص"
 
@@ -8004,7 +8004,7 @@ msgid "Thumbnails Active"
 msgstr "المطبوعات النشطة"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:213
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1866
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1867
 msgid "Time"
 msgstr "زمن"
 
@@ -8019,7 +8019,7 @@ msgstr "كود الوقت"
 msgid "Timeline"
 msgstr "الجدول الزمني"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3017
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:3018
 msgid "Timeline."
 msgstr "الجدول الزمني"
 
@@ -8192,7 +8192,7 @@ msgstr "عدد كبير جدًا من التدفقات في سياق الإخر�
 msgid "Tooldock"
 msgstr "حوض العمل"
 
-#: gui/mrvImageView.cpp:11340
+#: gui/mrvImageView.cpp:11356
 msgid "Top"
 msgstr "أعلى"
 
@@ -8256,7 +8256,7 @@ msgstr "قم بتشغيل وحدة التصحيح."
 msgid "Type"
 msgstr "شاب"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2935
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2936
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -8316,7 +8316,7 @@ msgid "Undo Draw"
 msgstr "تراجع عن الرسم"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:718
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2641
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2642
 msgid "Undo Last Shape Drawn"
 msgstr "تراجع عن رسم الشكل الأخير"
 
@@ -8564,7 +8564,7 @@ msgstr "VR 360 المجال"
 msgid "Value"
 msgstr "قيمة"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2925
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2926
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "قيمة (كثافة) بكسل الصورة تحت الماوس."
 
@@ -8605,7 +8605,7 @@ msgstr "Vector3 عدد صحيح"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1398
-#: gui/mrvImageView.cpp:5025
+#: gui/mrvImageView.cpp:5054
 msgid "Vectorscope"
 msgstr "فيكتورسكوب"
 
@@ -8617,19 +8617,19 @@ msgstr "البائع: \t"
 msgid "Version Regex"
 msgstr "إصدار ExpReg."
 
-#: gui/mrvImageView.cpp:5135 gui/mrvImageBrowser.cpp:4257
+#: gui/mrvImageView.cpp:5164 gui/mrvImageBrowser.cpp:4261
 msgid "Version/First"
 msgstr "الإصدار/أولا"
 
-#: gui/mrvImageView.cpp:5144 gui/mrvImageBrowser.cpp:4266
+#: gui/mrvImageView.cpp:5173 gui/mrvImageBrowser.cpp:4270
 msgid "Version/Last"
 msgstr "الإصدار/الاخير"
 
-#: gui/mrvImageView.cpp:5138 gui/mrvImageBrowser.cpp:4263
+#: gui/mrvImageView.cpp:5167 gui/mrvImageBrowser.cpp:4267
 msgid "Version/Next"
 msgstr "الإصدار/التالي"
 
-#: gui/mrvImageView.cpp:5140 gui/mrvImageBrowser.cpp:4260
+#: gui/mrvImageView.cpp:5169 gui/mrvImageBrowser.cpp:4264
 msgid "Version/Previous"
 msgstr "الإصدار/سابق"
 
@@ -8706,7 +8706,7 @@ msgstr "تدوير الفيديو"
 msgid "Video timecode attribute already exists"
 msgstr "السمة Timecode للفيديو موجودة بالفعل"
 
-#: gui/mrvImageView.cpp:5289
+#: gui/mrvImageView.cpp:5318
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "فيديو/المسار #%d -%s"
@@ -8719,49 +8719,49 @@ msgstr "رأي"
 msgid "View Window"
 msgstr "رأي"
 
-#: gui/mrvImageView.cpp:5057
+#: gui/mrvImageView.cpp:5086
 msgid "View/Data Window"
 msgstr "رأي/نافذة البيانات"
 
-#: gui/mrvImageView.cpp:5051
+#: gui/mrvImageView.cpp:5080
 msgid "View/Display Window"
 msgstr "رأي/نافذة العرض"
 
-#: gui/mrvImageView.cpp:5098
+#: gui/mrvImageView.cpp:5127
 msgid "View/Grid/Size"
 msgstr "رأي/جريد/بحجم"
 
-#: gui/mrvImageView.cpp:5094
+#: gui/mrvImageView.cpp:5123
 msgid "View/Grid/Toggle Selected"
 msgstr "رأي/جريد/تبادل"
 
-#: gui/mrvImageView.cpp:5110
+#: gui/mrvImageView.cpp:5139
 #, c-format
 msgid "View/Hud/%s"
 msgstr "رأي/هود/%s"
 
-#: gui/mrvImageView.cpp:5102
+#: gui/mrvImageView.cpp:5131
 msgid "View/Hud/Toggle Selected"
 msgstr "رأي/هود/تم تحديد مبادلة"
 
-#: gui/mrvImageView.cpp:5085
+#: gui/mrvImageView.cpp:5114
 #, c-format
 msgid "View/Mask/%s"
 msgstr "رأي/قناع/%s"
 
-#: gui/mrvImageView.cpp:5048
+#: gui/mrvImageView.cpp:5077
 msgid "View/Safe Areas"
 msgstr "رأي/مناطق آمنة"
 
-#: gui/mrvImageView.cpp:5062
+#: gui/mrvImageView.cpp:5091
 msgid "View/Texture Filtering  "
 msgstr "رأي/ترشيح الملمس  "
 
-#: gui/mrvImageView.cpp:5071
+#: gui/mrvImageView.cpp:5100
 msgid "View/Toggle Action Dock"
 msgstr "رأي/Swap Action Dock"
 
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2188
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2189
 msgid "W"
 msgstr "W"
 
@@ -8790,7 +8790,7 @@ msgstr "موسيقى WAVE"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1399
-#: gui/mrvImageView.cpp:5027
+#: gui/mrvImageView.cpp:5056
 msgid "Waveform"
 msgstr "الموجي"
 
@@ -9081,7 +9081,7 @@ msgstr "عرض المقطع"
 msgid "Window Behavior"
 msgstr "سلوك النافذة"
 
-#: gui/mrvImageView.cpp:5039
+#: gui/mrvImageView.cpp:5068
 msgid "Windows/"
 msgstr "شبابيك/"
 
@@ -9153,7 +9153,7 @@ msgstr "كاتب"
 msgid "Wrong data size received."
 msgstr "لقد تلقيت حجم بيانات غير صحيح."
 
-#: core/CMedia_audio.cpp:1978
+#: core/CMedia_audio.cpp:1980
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 
@@ -9194,7 +9194,7 @@ msgid "XML Clip Metadata (*.{"
 msgstr "مقطع بيانات تعريف XML (*. {"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:688
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2781
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2782
 msgid "XY"
 msgstr "س ص"
 
@@ -9203,7 +9203,7 @@ msgid "XYZ CIE XYZ"
 msgstr "XYZ CIE XYZ"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2610
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2962
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2963
 msgid "Y"
 msgstr "Y"
 
@@ -9289,8 +9289,8 @@ msgid "YUVA Support:\t"
 msgstr "دعم YUVA: \t"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1143
-#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3359
-#: gui/mrvImageBrowser.cpp:3363 gui/mrvImageInformation.cpp:5154
+#: gui/mrvImageBrowser.cpp:1355 gui/mrvImageBrowser.cpp:3362
+#: gui/mrvImageBrowser.cpp:3366 gui/mrvImageInformation.cpp:5154
 #: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:223
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
 #: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
@@ -9303,15 +9303,15 @@ msgstr "نعم"
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr "أنت تقوم بحفظ الفيلم الذي تقوم بتشغيله. إجهاض ..."
 
-#: gui/mrvImageBrowser.cpp:3173
+#: gui/mrvImageBrowser.cpp:3176
 msgid "You can load only a single stereo image to combine with current one."
 msgstr "يمكنك تحميل صورة ستريو واحدة فقط لدمجها مع الصورة الحالية."
 
-#: gui/mrvImageBrowser.cpp:3189
+#: gui/mrvImageBrowser.cpp:3192
 msgid "You cannot load a reel as a stereo image."
 msgstr "لا يمكنك تحميل بكرة كصورة استريو."
 
-#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9942
+#: core/oiioImage.cpp:279 gui/mrvImageView.cpp:9971
 msgid "Z"
 msgstr "ض"
 
@@ -9345,7 +9345,7 @@ msgstr "فشل تكبير الصورة"
 msgid "attributes not found"
 msgstr "السمات غير موجودة"
 
-#: core/CMedia.cpp:3418 core/CMedia.cpp:3449
+#: core/CMedia.cpp:3406 core/CMedia.cpp:3437
 msgid "audio"
 msgstr "صوتي"
 
@@ -9382,35 +9382,35 @@ msgstr "تاريخ"
 msgid "cd/m2"
 msgstr "قرص مضغوط/م 2"
 
-#: gui/mrvImageBrowser.cpp:2031
+#: gui/mrvImageBrowser.cpp:2028
 msgid "change_image index "
 msgstr "تغيير الصورة "
 
-#: core/CMedia.cpp:3710
+#: core/CMedia.cpp:3698
 msgid "clean effects"
 msgstr "تأثيرات نظيفة"
 
-#: core/CMedia.cpp:3698
+#: core/CMedia.cpp:3686
 msgid "comment"
 msgstr "تعليقات"
 
-#: core/CMedia.cpp:3421 core/CMedia.cpp:3452
+#: core/CMedia.cpp:3409 core/CMedia.cpp:3440
 msgid "data"
 msgstr "بيانات"
 
-#: core/CMedia_audio.cpp:1484
+#: core/CMedia_audio.cpp:1486
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2031
+#: core/CMedia_audio.cpp:2033
 msgid "decode_audio_packet failed for frame "
 msgstr "فشل decode_audio_packet للإطار "
 
-#: core/CMedia.cpp:3692
+#: core/CMedia.cpp:3680
 msgid "default"
 msgstr "إفتراضي"
 
-#: core/CMedia.cpp:4484
+#: core/CMedia.cpp:4472
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 
@@ -9418,7 +9418,7 @@ msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 msgid "delete uiview"
 msgstr "حذف uiview"
 
-#: core/CMedia.cpp:3694
+#: core/CMedia.cpp:3682
 msgid "dub"
 msgstr "دبلجة"
 
@@ -9441,7 +9441,7 @@ msgstr "النقطة العائمة"
 msgid "float (32-bits per channel)"
 msgstr "النقطة العائمة (32 بت لكل قناة)"
 
-#: core/CMedia.cpp:3704
+#: core/CMedia.cpp:3692
 msgid "forced"
 msgstr "قسري"
 
@@ -9473,7 +9473,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "نصف نقطة عائمة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:4479
+#: core/CMedia.cpp:4467
 msgid "half/float"
 msgstr "نصف/نقطة عائمة كاملة"
 
@@ -9481,7 +9481,7 @@ msgstr "نصف/نقطة عائمة كاملة"
 msgid "has invalid magic number in the header."
 msgstr "يحتوي على رقم سحري غير صالح في الرأس."
 
-#: core/CMedia.cpp:3706
+#: core/CMedia.cpp:3694
 msgid "hearing impaired"
 msgstr "ضعف السمع"
 
@@ -9501,7 +9501,7 @@ msgstr "إنه ملف Softimage ، لكنه ليس ملف PIC."
 msgid "item_pathname returned "
 msgstr "تم إرجاع item_pathname "
 
-#: core/CMedia.cpp:3702
+#: core/CMedia.cpp:3690
 msgid "karaoke"
 msgstr "كاريوكي"
 
@@ -9517,7 +9517,7 @@ msgstr "فشل الاستماع إلى التوصيل \n"
 msgid "loadDeepData error: "
 msgstr "خطأ في تحميل البيانات العميقة: "
 
-#: core/CMedia.cpp:3700
+#: core/CMedia.cpp:3688
 msgid "lyrics"
 msgstr "كلمات الاغنية"
 
@@ -9558,7 +9558,7 @@ msgid "mpeg4"
 msgstr "MPEG4"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/AboutUI.cxx:38
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2109
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2110
 msgid "mrViewer"
 msgstr "mrViewer"
 
@@ -9657,7 +9657,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv :: الإطار لا توجد بيانات بكسل لتغييرها"
 
-#: core/CMedia.cpp:3696
+#: core/CMedia.cpp:3684
 msgid "original"
 msgstr "أصلي"
 
@@ -9749,11 +9749,11 @@ msgstr "فشل snd_pcm_prepare مع"
 msgid "src_nb_samples is 0"
 msgstr "قيمة src_nb_samples تساوي 0"
 
-#: core/CMedia_audio.cpp:1617
+#: core/CMedia_audio.cpp:1619
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: بيانات غير صالحة. آخ هو عليه "
 
-#: core/CMedia.cpp:3424 core/CMedia.cpp:3455
+#: core/CMedia.cpp:3412 core/CMedia.cpp:3443
 msgid "subtitle"
 msgstr "العنوان الفرعي"
 
@@ -9765,11 +9765,11 @@ msgstr "فشل sysctl."
 msgid "task info failed"
 msgstr "فشل معلومات المهمة"
 
-#: core/CMedia.cpp:3667 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3655 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "الهند"
 
-#: core/CMedia.cpp:3427 core/CMedia.cpp:3458 core/CMedia.cpp:4451
+#: core/CMedia.cpp:3415 core/CMedia.cpp:3446 core/CMedia.cpp:4439
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "مجهول"
@@ -9786,16 +9786,16 @@ msgstr "عدد صحيح بدون إشارة (32 بت لكل قناة)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "قصير بدون إشارة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:3415 core/CMedia.cpp:3446
+#: core/CMedia.cpp:3403 core/CMedia.cpp:3434
 msgid "video"
 msgstr "فيديو"
 
-#: core/CMedia.cpp:3708
+#: core/CMedia.cpp:3696
 msgid "visual impaired"
 msgstr "ضعاف البصر"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1746
-#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2710
+#: /Users/gga/code/applications/mrv/BUILD/Darwin-21.4.0-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2711
 msgid "x1"
 msgstr "x1"
 

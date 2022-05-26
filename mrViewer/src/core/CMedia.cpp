@@ -845,37 +845,21 @@ void CMedia::update_frame( const int64_t& f )
  */
 void CMedia::wait_for_threads()
 {
-#if 1
+    // boost::posix_time::time_duration timeout =
+    // boost::posix_time::milliseconds(100000);
     for ( const auto& i : _threads )
     {
-        if ( i->joinable() && i->get_id() != boost::this_thread::get_id() )
-            i->join();
-        std::string type = "unknown";
+        assert( i->joinable() );
+        assert( i->get_id() != boost::this_thread::get_id() );
+        i->join();
+        std::string type = "subtitle";
         if ( i == _video_thread ) type = "video";
         if ( i == _audio_thread ) type = "audio";
         if ( i == _decode_thread ) type = "decode";
-        TRACE2( name() << " Thread " << i << ", type " << type << " returned" );
+        TRACE2( name() << " Thread " << i << ", type " << type
+                << " returned." );
         delete i;
     }
-#else
-    for ( const auto& i : _threads )
-    {
-        boost::posix_time::time_duration timeout =
-        boost::posix_time::milliseconds(100000);
-        bool ok = false;
-        while( !ok )
-        {
-            ok = i->timed_join(timeout);
-            std::string type = "subtitle";
-            if ( i == _video_thread ) type = "video";
-            if ( i == _audio_thread ) type = "audio";
-            if ( i == _decode_thread ) type = "decode";
-            TRACE2( name() << " Thread " << i << ", type " << type << " returned " << ok );
-        }
-        delete i;
-    }
-#endif
-
     _threads.clear();
 }
 
@@ -2696,17 +2680,15 @@ void CMedia::play(const CMedia::Playback dir,
 {
 
     if ( saving() ) return;
+    if ( dir == _playback && !_threads.empty() ) return;
 
     assert( dir != kStopped );
-    // if ( _playback == kStopped && !_threads.empty() )
-    //     return;
 
     TRACE2( name() << " frame " << frame() << " dir= " << dir
             << " playback= " << _playback << " threads=" << _threads.size() );
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
-    if ( dir == _playback && !_threads.empty() ) return;
 
     stop(fg);
 
@@ -2714,7 +2696,7 @@ void CMedia::play(const CMedia::Playback dir,
     _playback = dir;
 
     assert( uiMain != NULL );
-    assert( _threads.size() == 0 );
+    assert( _threads.empty() );
 
     if ( _frame < in_frame() )  _frame = in_frame();
     else if ( _frame > out_frame() ) _frame = out_frame();
@@ -2742,13 +2724,16 @@ void CMedia::play(const CMedia::Playback dir,
 
     TRACE( name() << " frame " << frame() );
     // This seek is needed to sync audio playback and flush buffers
-    if ( dir == kForwards ) _seek_req = true;
 
-    TRACE( name() << " frame " << frame() );
-    seek_to_position( _frame );
+    if ( _seek_req == false )
+    {
+        if ( dir == kForwards ) _seek_req = true;
 
-    TRACE( name() << " frame " << frame() );
+        TRACE( name() << " frame " << frame() );
+        seek_to_position( _frame );
 
+        TRACE( name() << " frame " << frame() );
+    }
 
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2805,7 +2790,6 @@ void CMedia::play(const CMedia::Playback dir,
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
         _loop_barrier = new Barrier( num );
-        assert( _loop_barrier );
 
         if ( valid_v || valid_a )
         {
@@ -2815,8 +2799,8 @@ void CMedia::play(const CMedia::Playback dir,
                              video_data ) );
             _video_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame() << " added video thread "
-                   << t );
+            TRACE2( name() << " frame " << frame()
+                    << " added video thread " << t );
         }
 
         if ( valid_a )
@@ -2828,8 +2812,8 @@ void CMedia::play(const CMedia::Playback dir,
                              audio_data ) );
             _audio_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame() << " added audio thread "
-                    << t );
+            TRACE2( name() << " frame " << frame()
+                    << " added audio thread " << t );
         }
 
         if ( valid_s )
@@ -2840,8 +2824,8 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::subtitle_thread,
                              subtitle_data ) );
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame() << " added subtitle thread "
-                    << t );
+            TRACE2( name() << " frame " << frame()
+                    << " added subtitle thread " << t );
         }
 
 
@@ -2853,12 +2837,13 @@ void CMedia::play(const CMedia::Playback dir,
                              data ) );
             _decode_thread = t;
             _threads.push_back( t );
-            TRACE2( name() << " frame " << frame() << " added decode thread "
-                    << t );
+            TRACE2( name() << " frame " << frame()
+                    << " added decode thread " << t );
         }
 
 
-        assert( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
+        assert( (int)_threads.size() <= ( 1 + 2 * ( valid_a ||
+                                                    valid_v ) +
                                           1 * valid_s ) );
     }
     catch( boost::exception& e )
@@ -2871,20 +2856,19 @@ void CMedia::play(const CMedia::Playback dir,
 
 
 /// VCR stop sequence
-void CMedia::stop(const bool bg)
+void CMedia::stop( const bool fg )
 {
 
 
     if ( _playback == kStopped && _threads.empty() ) return;
 
-
-    if ( _right_eye && _owns_right_eye ) _right_eye->stop(bg);
+    if ( _right_eye && _owns_right_eye ) _right_eye->stop( fg );
 
     TRACE2( name() << " stop at frame " << frame()
             << " playback = " << _playback
-            << " has threads? " << _threads.empty() );
+            << " threads empty? " << _threads.empty() );
 
-
+    assert( ! _threads.empty() );
 
     _playback = kStopped;
 
@@ -2920,7 +2904,7 @@ void CMedia::stop(const bool bg)
 
     // Clear barrier
 
-    if ( bg ) {
+    if ( !fg ) {
         TRACE( name() << " frame " << frame() );
         delete _fg_bg_barrier;
         _fg_bg_barrier = NULL;
@@ -3072,6 +3056,10 @@ void CMedia::seek( const int64_t f )
 {
 #define DEBUG_SEEK
 
+    if ( _loop_barrier )  _loop_barrier->notify_all();
+
+    if ( _stereo_barrier ) _stereo_barrier->notify_all();
+    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
     _seek_frame = f;
     _seek_req   = true;

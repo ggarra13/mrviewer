@@ -1940,8 +1940,7 @@ void ImageBrowser::save_session()
 
     }
 
-    void ImageBrowser::real_change_image( int v, int i,
-                                          CMedia::Playback FGplay )
+    void ImageBrowser::real_change_image( int v, int i )
     {
         mrv::Reel reel = current_reel();
 
@@ -1951,7 +1950,6 @@ void ImageBrowser::save_session()
         {
             mrv::media orig = reel->images[v];
             CMedia* img = orig->image();
-            if ( FGplay && img ) img->stop();
             item = root()->child(v);
             ok = deselect( item, 0 );
             if ( ok < 0 )
@@ -2002,7 +2000,7 @@ void ImageBrowser::save_session()
             if ( !_loading )
             {
                 int64_t pos = reel->local_to_global( img->frame(), img );
-                if ( !FGplay ) seek( pos );
+                if ( !play ) seek( pos );
             }
 #endif
         }
@@ -2013,7 +2011,6 @@ void ImageBrowser::save_session()
 
         add_menu( main()->uiReelWindow->uiMenuBar );
 
-        if ( FGplay && img ) img->play( FGplay, uiMain, true );
     }
 
     void ImageBrowser::change_image( int i )
@@ -2050,7 +2047,13 @@ void ImageBrowser::save_session()
             return;
         }
 
-        real_change_image( v, i, FGplay );
+        if ( FGplay && FGimg ) FGimg->stop();
+        if ( BGplay && BGimg ) BGimg->stop( false );
+
+        real_change_image( v, i );
+
+        if ( FGplay && FGimg ) FGimg->play( FGplay, uiMain, true );
+        if ( BGplay && BGimg ) BGimg->play( BGplay, uiMain, false );
 
     }
 
@@ -3631,7 +3634,8 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
                   (" replaced by complex regex.") );
-        prefix = "([\\w:/]*?[/._]*" + prefix + ")(\\d+)([%\\w\\d./]*)";
+        prefix = "([\\w:/\\\\]*?[/\\\\._]*" + prefix +
+                 ")(\\d+)([%\\w\\d./\\\\]*)";
     }
     prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
 

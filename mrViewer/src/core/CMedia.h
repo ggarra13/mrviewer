@@ -1114,7 +1114,7 @@ public:
 
 
     /// VCR stop sequence
-    virtual void stop(const bool bg = false);
+    virtual void stop( const bool fg = true );
 
     inline Playback playback() const         {
         return _playback;

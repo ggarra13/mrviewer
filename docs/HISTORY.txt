@@ -16,11 +16,14 @@ v6.1.7  - Made fit image take into account masking.
 	- Added a Preference option in User Interface section to select
 	  whether the menus on MacOS appear on the system toolbar or on the
 	  mrViewer toolbar.  The default is to use the mrViewer toolbar.
+	- Fixed OTIO clip time lengths.
 	- Added support for OTIO transitions (dissolves) in the timeline.
 	  Note, however, that we do not yet support transitioning to different
-	  resolutions.
+	  resolutions properly.
 	  Also, the thumbnails in the timeline will not show the transitions.
 	  And we do not support different rates on movie files.
+	- Fixed a problem with libgnutls.so.30 on Red Hat 8 and derivatives
+	  system.
 
 v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
 	  frame to the left or to the bottom of the screen.

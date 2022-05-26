@@ -96,8 +96,6 @@ typedef boost::recursive_mutex Mutex;
 
 
 
-
-
 namespace mrv {
 
 void sleep_ms(int milliseconds) // cross-platform sleep function
@@ -1028,6 +1026,15 @@ void subtitle_thread( PlaybackData* data )
         timer.waitUntilNextFrameIsDue();
     }
 
+    img->playback( CMedia::kStopped );
+
+    Mutex& mtx = img->audio_mutex();
+    SCOPED_LOCK( mtx );
+    CMedia::Barrier* barrier = img->loop_barrier();
+    if ( barrier ) {
+        TRACE( img->name() << " BARRIER NOTIFY ALL IN AUDIO" );
+        barrier->notify_all();
+    }
 
 #ifdef DEBUG_THREADS
     TRACE2( "EXIT  SUBTITLE THREAD " << img->name()
@@ -1363,7 +1370,6 @@ void video_thread( PlaybackData* data )
             mrv::media m = view->foreground();
             if ( !reel->edl || (m && m->image() == img) )
             {
-
                 if ( reel->edl )
                 {
                     f = reel->local_to_global( frame, img );
@@ -1448,6 +1454,7 @@ void video_thread( PlaybackData* data )
     }
 
     img->playback( CMedia::kStopped );
+
     Mutex& mtx = img->video_mutex();
     SCOPED_LOCK( mtx );
 
@@ -1596,6 +1603,7 @@ void decode_thread( PlaybackData* data )
 
 
     }
+
 
     img->playback( CMedia::kStopped );
 

@@ -651,7 +651,7 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
     _valid    = b.valid();
     allocate();
 #ifdef DEBUG_ALLOCS
-    std::cerr << "VideoFrame::operator= memcpy" << std::endl;
+    std::cerr << "VideoFrame::operator= memcpy " << b.data_size() << std::endl;
 #endif
     memcpy( _data.get(), b.data().get(), b.data_size() );
     return *this;

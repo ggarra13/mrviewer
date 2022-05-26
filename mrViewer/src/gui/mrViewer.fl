@@ -19,7 +19,7 @@ decl {\#include "core/mrvI8N.h"} {private local
 decl {\#include "core/mrvAudioEngine.h"} {private local
 }
 
-decl {\#include "core/exrImage.h"} {private local
+decl {\#include "core/CMedia.h"} {private local
 }
 
 decl {\#include "core/mrvMath.h"} {private local
@@ -1610,7 +1610,8 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
               Fl_Slider uiTimeline {
                 user_data this user_data_type {ViewerUI*}
                 callback {int64_t frame = (int64_t) o->value();
-v->uiView->seek( frame );} selected
+//std::cerr << "callback " << frame << std::endl;
+uiView->seek( frame );} selected
                 tooltip {Timeline.} xywh {5 517 650 22} type Horizontal minimum 1 maximum 50 step 1 value 1
                 code0 {o->main( this );}
                 class {mrv::Timeline}
