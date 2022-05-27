@@ -90,7 +90,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( std::hex << std::dec << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( std::hex << std::dec << " " << x );
 
-//#define DEBUG_THREADS
+#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -1372,7 +1372,7 @@ void video_thread( PlaybackData* data )
                 {
                     f = reel->local_to_global( frame, img );
                 }
-                TRACE( "SEND GLOBAL FRAME " << f << ", LOCAL " << frame
+                TRACE2( "SEND GLOBAL FRAME " << f << ", LOCAL " << frame
                         << " FROM IMAGE " << img->name() );
                 view->frame( f );
 

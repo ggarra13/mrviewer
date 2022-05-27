@@ -754,28 +754,6 @@ namespace mrv {
         return true;
     }
 
-    unsigned int R3dImage::audio_bytes_per_frame()
-    {
-        unsigned int ret = 0;
-        if ( !has_audio() ) return ret;
-
-        int channels = _audio_channels;
-        if (_audio_engine->channels() > 0 && _audio_channels > 0 ) {
-            channels = FFMIN(_audio_engine->channels(),
-                             (unsigned)_audio_channels);
-        }
-        if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
-            return ret;
-
-        SCOPED_LOCK( _audio_mutex );
-
-        AVSampleFormat ft = AudioEngine::ffmpeg_format( _audio_format );
-        unsigned bps = av_get_bytes_per_sample( ft );
-
-        if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
-        ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
-        return ret;
-    }
 
     bool R3dImage::frame( const int64_t f )
     {
@@ -1110,7 +1088,7 @@ namespace mrv {
         bool ok = in_audio_store( frame );
         if ( ok ) return kDecodeOK;
 
-        unsigned int bytes_per_frame = audio_bytes_per_frame();
+        int bytes_per_frame = audio_bytes_per_frame();
 
         size_t samplesInBuffer = bufferSize / ( _audio_channels * 4U );
 

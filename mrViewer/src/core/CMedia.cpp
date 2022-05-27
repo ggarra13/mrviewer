@@ -986,10 +986,6 @@ CMedia::~CMedia()
         }
     }
 
-#ifdef LINUX
-    malloc_trim(0);
-#endif
-
     _context = _acontext = NULL;
 }
 
@@ -1819,8 +1815,10 @@ const char* const CMedia::filename() const
     CMedia* self = const_cast< CMedia* >(this);
     std::string file = self->sequence_filename( _dts );
     av_free( self->_filename );
-    self->_filename = (char*) av_malloc( 1024 * sizeof(char) );
-    strncpy( self->_filename, file.c_str(), 1023 );
+    size_t len = file.size();
+    self->_filename = (char*) av_malloc( len+1 * sizeof(char) );
+    self->_filename[len] = 0;
+    strncpy( self->_filename, file.c_str(), len );
     return _filename;
 }
 
@@ -2921,7 +2919,6 @@ void CMedia::stop( const bool fg )
     TRACE( name() << " frame " << frame() );
     // close_audio();
 
-
     TRACE( name() << " frame " << frame() );
     // Clear any audio/video/subtitle packets
     clear_packets();
@@ -3098,7 +3095,7 @@ bool CMedia::frame( const int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
-#define DEBUG_SEEK
+//#define DEBUG_SEEK
 
     if ( _loop_barrier )  _loop_barrier->notify_all();
 
@@ -3997,9 +3994,6 @@ void CMedia::limit_video_store( const int64_t f )
         }
     }
 
-#ifdef LINUX
-    malloc_trim(0);
-#endif
 
 }
 

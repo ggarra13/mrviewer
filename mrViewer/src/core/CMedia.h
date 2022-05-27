@@ -1861,7 +1861,7 @@ protected:
                           size_t w = 0, size_t h = 0);
 
 
-    unsigned int audio_bytes_per_frame();
+    int audio_bytes_per_frame();
 
     void audio_shutdown();
 
@@ -1971,7 +1971,8 @@ protected:
     Mutex  _mutex;          //!< to mark image routines
     Mutex  _subtitle_mutex; //!< to mark subtitle routines
     Mutex  _audio_mutex;    //!< to mark audio routines
-    Mutex  _data_mutex;  //!< to mark data routines (data/displaywindow)
+    Mutex  _data_mutex;     //!< to mark data routines (data/displaywindow)
+
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
@@ -2134,7 +2135,7 @@ protected:
     unsigned         _samples_per_sec;   //!< last samples per sec
     audio_cache_t    _audio;
     unsigned         frequency;
-    unsigned         _audio_buf_used;    //!< amount used of reading cache
+    int              _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
     std::atomic<unsigned short>   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame

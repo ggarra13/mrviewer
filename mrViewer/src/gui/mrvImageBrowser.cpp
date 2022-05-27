@@ -1512,8 +1512,8 @@ void ImageBrowser::save_session()
         mrv::Reel reel = current_reel();
 
         add_to_tree( m );
-
         match_tree_order();
+
 
         if ( reel->images.size() == 1 )
         {
@@ -1522,21 +1522,24 @@ void ImageBrowser::save_session()
 
         send_reel( reel );
 
-        send_current_image( reel->images.size() - 1, m );
 
-        int64_t first, last;
-        adjust_timeline( first, last );
-        set_timeline( first, last );
-
-        mrv::EDLGroup* e = edl_group();
-        if ( e )
+        if ( !_loading )
         {
-            e->refresh();
-            e->redraw();
+            int64_t first, last;
+            adjust_timeline( first, last );
+            set_timeline( first, last );
+
+            mrv::EDLGroup* e = edl_group();
+            if ( e )
+            {
+                e->refresh();
+                e->redraw();
+            }
+
+            view()->fit_image();
         }
 
-        view()->fit_image();
-
+        send_current_image( reel->images.size() - 1, m );
         redraw();
 
         return m;
@@ -1811,7 +1814,6 @@ void ImageBrowser::save_session()
                 }
 
                 mrv::Element* elem = (mrv::Element*) i->widget();
-                mrv::media m = elem->media();
                 delete elem;
             }
         }
@@ -1839,16 +1841,13 @@ void ImageBrowser::save_session()
                 add_to_tree( *i );
             }
 
-
-            match_tree_order();
-
             int64_t first, last;
             adjust_timeline( first, last );
             set_timeline( first, last );
 
             change_image(0);
 
-            // seek( view()->frame() );
+            view()->fit_image();
         }
 
         if ( reel->edl )
@@ -1869,7 +1868,6 @@ void ImageBrowser::save_session()
 
         if ( play != CMedia::kStopped ) view()->play( play );
 
-        view()->fit_image();
 
         redraw();
     }
@@ -1924,13 +1922,16 @@ void ImageBrowser::save_session()
         TRACE( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         view()->foreground( m );
 
-        int64_t first, last;
-        adjust_timeline( first, last );
-        mrv::Timeline* t = timeline();
-        if ( t )
+        if ( !_loading )
         {
-            t->clear_thumb();
-            set_timeline( first, last );
+            int64_t first, last;
+            adjust_timeline( first, last );
+            mrv::Timeline* t = timeline();
+            if ( t )
+            {
+                t->clear_thumb();
+                set_timeline( first, last );
+            }
         }
 
         send_image( i );
@@ -2150,12 +2151,14 @@ void ImageBrowser::save_session()
                first > img->first_frame() ) && first != AV_NOPTS_VALUE )
         {
             img->first_frame( first );
+            img->in_frame( first );
         }
 
         if ( ( img->last_frame() == AV_NOPTS_VALUE ||
                last < img->last_frame() ) && last != AV_NOPTS_VALUE )
         {
             img->last_frame( last );
+            img->out_frame( last );
         }
 
         if ( fps > 0.0 )
@@ -2178,7 +2181,9 @@ void ImageBrowser::save_session()
                     int64_t last  = img->last_frame() / fps * img->fps();
 
                     img->first_frame( first );
+                    img->in_frame( first );
                     img->last_frame( last );
+                    img->out_frame( last );
                     img->fps( fps );
                     img->play_fps( fps );
                 }
@@ -2188,7 +2193,9 @@ void ImageBrowser::save_session()
 
         if ( img->has_video() || img->has_audio() )
         {
-            img->seek( img->first_frame() );
+            DBGM1( "img->seek( img->first_frame() )" );
+            //img->seek( img->first_frame() );
+            DBGM1( "img->seeked( img->first_frame() )" );
         }
         else
         {
@@ -2199,6 +2206,9 @@ void ImageBrowser::save_session()
         img->default_color_corrections();
 
         PreferencesUI* prefs = ViewerUI::uiPrefs;
+        assert( img->audio_engine() );
+        assert( prefs );
+        assert( prefs->uiPrefsAudioDevice );
         img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
         return img;
@@ -2265,27 +2275,10 @@ void ImageBrowser::save_session()
             view()->stop();
 
         Fl_Window* main = uiMain->uiMain;
-
         Fl_Window* w = NULL;
         Fl_Progress* progress = NULL;
 
-        if ( files.size() > 10 && progressBar )
-        {
-            Fl_Group::current(0);
-            w = new Fl_Window( main->x(), main->y() + main->h()/2,
-                               main->w(), 80 );
-            w->clear_border();
-            w->begin();
-            progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
-            progress->minimum( 0 );
-            progress->maximum( float(files.size()) );
-            progress->align( FL_ALIGN_TOP );
-            // progress->showtext(true);
-            w->end();
 
-            w->show();
-            if ( net ) Fl::check();
-        }
 
         mrv::LoadList::const_iterator s = files.begin();
         mrv::LoadList::const_iterator i = s;
@@ -2298,6 +2291,22 @@ void ImageBrowser::save_session()
         {
             mrv::LoadInfo& load = (mrv::LoadInfo&) *i;
 
+            if ( files.size() > 10 && progressBar && idx == 2)
+            {
+                Fl_Group::current( 0 );
+                w = new Fl_Window( main->x(), main->y() + main->h()/2,
+                                   main->w(), 80 );
+                w->clear_border();
+                w->begin();
+                progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
+                progress->minimum( 0 );
+                progress->maximum( float(files.size()-1) );
+                progress->align( FL_ALIGN_TOP );
+                w->end();
+
+                w->show();
+                if ( net ) Fl::check();
+            }
 
             if ( w )
             {
@@ -2482,12 +2491,6 @@ void ImageBrowser::save_session()
                 progress->value( progress->value() + 1 );
                 if ( net ) Fl::check();
             }
-
-            if ( edl )
-            {
-                current_reel()->edl = true;
-                uiMain->uiTimeline->edl( true );
-            }
         }
 
         if ( w )
@@ -2497,6 +2500,24 @@ void ImageBrowser::save_session()
             if ( net ) Fl::check();
         }
 
+        if ( edl )
+        {
+            current_reel()->edl = true;
+            uiMain->uiTimeline->edl( true );
+        }
+
+        match_tree_order();
+        int64_t first, last;
+        adjust_timeline( first, last );
+        set_timeline( first, last );
+
+        mrv::EDLGroup* eg = edl_group();
+        if ( eg )
+        {
+            eg->refresh();
+            eg->redraw();
+        }
+
         if ( view() )
         {
             view()->update(true);
@@ -2504,6 +2525,7 @@ void ImageBrowser::save_session()
             if ( net ) Fl::check();
 
             view()->reset_caches(); // Redo preloaded sequence caches
+            view()->fit_image();
         }
 
         mrv::Reel reel = current_reel();
@@ -2528,13 +2550,6 @@ void ImageBrowser::save_session()
 
         int64_t f = reel->local_to_global( img->first_frame(), img );
         frame( f );
-
-        int64_t first, last;
-        adjust_timeline( first, last );
-        set_timeline( first, last );
-
-
-        view()->fit_image();
 
         if ( ( reel->edl || img->first_frame() != img->last_frame() )
              && uiMain->uiPrefs->uiPrefsAutoPlayback->value() )
@@ -3254,14 +3269,14 @@ void ImageBrowser::clone_current()
 void ImageBrowser::set_timeline( const int64_t& first, const int64_t& last )
 {
     mrv::Timeline* t = timeline();
-    if ( t && !t->edl() )
+    if ( t )
     {
         t->minimum( double(first) );
         t->maximum( double(last) );
-        uiMain->uiStartFrame->value( first );
-        uiMain->uiEndFrame->value( last );
         t->redraw();
     }
+    uiMain->uiStartFrame->value( first );
+    uiMain->uiEndFrame->value( last );
 }
 
 /**
@@ -4338,11 +4353,7 @@ int ImageBrowser::mousePush( int x, int y )
 
         int64_t first, last;
         adjust_timeline( first, last );
-        mrv::Timeline* t = timeline();
-        if ( t && !t->edl() )
-        {
-            set_timeline( first, last );
-        }
+        set_timeline( first, last );
 
         if ( play != CMedia::kStopped )
             view()->play( play );

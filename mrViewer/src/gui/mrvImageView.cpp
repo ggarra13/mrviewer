@@ -11116,12 +11116,12 @@ void ImageView::play( const CMedia::Playback dir )
     //   img->has_audio() )
     // preload_cache_stop();
 
-    if ( img->start_frame() != img->end_frame() )
+//    if ( img->start_frame() != img->end_frame() )
     {
         img->play( dir, uiMain, true );
     }
 
-    if ( Bimg && Bimg->start_frame() != Bimg->end_frame() )
+    if ( Bimg )
     {
         Bimg->play( dir, uiMain, true );
     }

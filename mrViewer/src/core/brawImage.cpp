@@ -1231,7 +1231,7 @@ namespace mrv {
         _audio_format = AudioEngine::kS32LSB;
 #endif
 
-        unsigned int bytes_per_frame = audio_bytes_per_frame();
+        int bytes_per_frame = audio_bytes_per_frame();
 
 
         static constexpr uint32_t maxSampleCount = 48000;

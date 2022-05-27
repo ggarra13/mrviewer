@@ -192,7 +192,6 @@ public:
     void limit_video_store( const int64_t frame );
 
 protected:
-    unsigned int audio_bytes_per_frame();
     void copy_values();
 
 protected:
