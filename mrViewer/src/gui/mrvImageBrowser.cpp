@@ -2293,7 +2293,7 @@ void ImageBrowser::save_session()
 
             if ( files.size() > 10 && progressBar && idx == 2)
             {
-                Fl_Group::current( 0 );
+                Fl_Group::current( main );
                 w = new Fl_Window( main->x(), main->y() + main->h()/2,
                                    main->w(), 80 );
                 w->clear_border();
