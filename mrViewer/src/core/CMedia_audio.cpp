@@ -289,7 +289,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
     pkt->data = NULL;
 
     int bytes_per_frame = audio_bytes_per_frame();
-    assert( bytes_per_frame != 0 );
+    if ( bytes_per_frame == 0 ) return frame;
 
     bool eof = false;
     unsigned counter = 0;
@@ -1521,7 +1521,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
             if ( last >= frame ) got_audio = kDecodeOK;
 
-            assert( bytes_per_frame <= _audio_buf_used );
+            //assert( bytes_per_frame <= _audio_buf_used );
             _audio_buf_used -= bytes_per_frame;
 
             ++last;
@@ -1727,6 +1727,10 @@ void CMedia::audio_initialize()
     if ( _audio_engine ) return;
 
     _audio_engine = mrv::AudioEngine::factory();
+    if ( ! _audio_engine ) {
+        IMG_ERROR( _("Could not initialize audio engine" ) );
+        return;
+    }
     _audio_channels = (unsigned short) _audio_engine->channels();
     _audio_format = _audio_engine->default_format();
 }
@@ -1803,6 +1807,8 @@ bool CMedia::open_audio( const short channels,
 
 bool CMedia::play_audio( const mrv::audio_type_ptr result )
 {
+    if ( !_audio_engine ) return true;
+
     double speedup = _play_fps / _fps;
     unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
     if ( nSamplesPerSec != _samples_per_sec ||
@@ -1819,10 +1825,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr result )
 
     }
 
-    if ( ! _audio_engine ) {
-        IMG_ERROR( _("Could not initialize audio engine" ) );
-        return false;
-    }
 
     if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
     {
@@ -2193,7 +2195,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             assert( !_audio_packets.empty() );
             AVPacket& pkt = _audio_packets.front();
 
-#if 1
+#if 0
             int64_t pktframe = get_frame( stream, pkt );
             // This does not work as decode_audio_packet may decode more
             // than one frame of audio (see Essa.wmv)
