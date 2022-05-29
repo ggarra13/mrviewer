@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-27 19:47-0300\n"
+"POT-Creation-Date: 2022-05-29 15:13-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3674
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1177
+#: core/mrvPlayback.cpp:1163
 msgid " - Decode of image frame "
 msgstr " - 액자 디코딩 "
 
-#: core/mrvPlayback.cpp:793
+#: core/mrvPlayback.cpp:786
 msgid " - decode Error audio frame "
 msgstr " - 오디오 프레임 디코딩 오류 "
 
@@ -85,7 +85,7 @@ msgstr " - 오디오 프레임 디코딩 오류 "
 msgid " Color Area Selection"
 msgstr " 색상 영역 선택"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " 파일을 열 수 없습니다. "
 
@@ -125,7 +125,7 @@ msgstr " 텍스트"
 msgid " already created: "
 msgstr " 이미 생성됨: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid " as default"
 msgstr " 기본"
 
@@ -186,7 +186,7 @@ msgstr " 코덱용 "
 msgid " for color_space"
 msgstr " color_space용"
 
-#: core/aviImage.cpp:4151 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " 프레임용 "
 
@@ -198,7 +198,7 @@ msgstr " gamma_curve의 경우"
 msgid " for reel "
 msgstr " 릴용 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid " for stream #"
 msgstr " 트랙 #"
 
@@ -246,11 +246,11 @@ msgstr " 이미 디스크의 첫 번째 버전입니다."
 msgid " is already the last version on disk."
 msgstr " 이미 디스크에 있는 최신 버전입니다."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4372
 msgid " is missing."
 msgstr " 그는 길을 잃었다."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4395
 msgid " is missing. Choosing "
 msgstr " 누락. 집어 고르기 "
 
@@ -267,11 +267,11 @@ msgstr " 릴에서 찾을 수 없음"
 msgid " not found, choosing "
 msgstr " 찾을 수 없음, 선택 "
 
-#: core/aviImage.cpp:4318
+#: core/aviImage.cpp:4298
 msgid " not yet supported"
 msgstr " 아직 지원되지 않음"
 
-#: core/mrvPlayback.cpp:1178
+#: core/mrvPlayback.cpp:1164
 msgid " returned "
 msgstr " 반품 "
 
@@ -279,7 +279,7 @@ msgstr " 반품 "
 msgid " size is "
 msgstr " 크기는 "
 
-#: core/aviImage.cpp:4178
+#: core/aviImage.cpp:4158
 msgid " status: "
 msgstr " 상태: "
 
@@ -441,11 +441,11 @@ msgstr "' 을위한 "
 msgid "' for writing. Reason: "
 msgstr "' 쓰기 위해. 이유: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid "' from bitdepth "
 msgstr "' 비트 깊이: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4467
 msgid "' from filename"
 msgstr "' 파일 이름에서"
 
@@ -562,7 +562,7 @@ msgstr ", 빈도 "
 msgid ", frequency "
 msgstr ", 빈도 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid ", type "
 msgstr ", 유형 "
 
@@ -723,7 +723,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4487
 msgid "16 bits"
 msgstr "16비트"
 
@@ -840,7 +840,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4494
 msgid "32 bits"
 msgstr "32비트"
 
@@ -967,7 +967,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8비트 캐시"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4480
 msgid "8 bits"
 msgstr "8비트"
 
@@ -1489,7 +1489,7 @@ msgstr "오디오 볼륨"
 msgid "Audio conversion of "
 msgstr "오디오 변환 "
 
-#: audio/mrvPortAudioEngine.cpp:300
+#: audio/mrvPortAudioEngine.cpp:261
 msgid "Audio format not known.  Choosing float32. "
 msgstr "알 수 없는 오디오 형식입니다. float32를 선택합니다. "
 
@@ -1594,14 +1594,14 @@ msgstr "맨 뒤로 삭제"
 msgid "Background"
 msgstr "배경"
 
-#: core/mrvPlayback.cpp:1113
+#: core/mrvPlayback.cpp:1099
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "배경 이미지의 지속 시간이 매우 짧습니다. 주기를 반복하면 제대로 작동하지 않"
 "을 수 있습니다."
 
-#: core/mrvPlayback.cpp:1120
+#: core/mrvPlayback.cpp:1106
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1610,12 +1610,12 @@ msgstr ""
 "배경 이미지( %lg )의 fps가 전면 이미지( %lg )와 동일하지 않습니다. 주기를 반"
 "복하면 제대로 작동하지 않습니다."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1083
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "하단 스풀은 매우 짧습니다. 주기를 반복하면 제대로 작동하지 않을 수 있습니다."
 
-#: core/mrvPlayback.cpp:1087
+#: core/mrvPlayback.cpp:1073
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2403,7 +2403,7 @@ msgstr "상자에 대해 4개의 정수를 찾을 수 없습니다."
 msgid "Could not find four integers for box "
 msgstr "상자에 대해 4개의 정수를 찾을 수 없습니다. "
 
-#: core/mrvPlayback.cpp:1361
+#: core/mrvPlayback.cpp:1347
 msgid "Could not find image "
 msgstr "이미지를 찾을 수 없습니다 "
 
@@ -2439,7 +2439,7 @@ msgstr "4x4 배열에 대해 16개의 부동 소수점 숫자를 찾을 수 없�
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4 배열에 대해 16개의 부동 소수점 숫자를 찾을 수 없습니다. "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "트랙 정보를 찾을 수 없습니다"
 
@@ -2507,7 +2507,7 @@ msgstr "트랙을 평평하게 만들 수 없습니다. 오류: "
 msgid "Could not get audio samples"
 msgstr "오디오 샘플을 얻을 수 없습니다"
 
-#: audio/mrvPortAudioEngine.cpp:267
+#: audio/mrvPortAudioEngine.cpp:228
 msgid "Could not get device info for "
 msgstr "에 대한 장치 정보를 가져오지 못했습니다. "
 
@@ -3046,11 +3046,11 @@ msgstr "트랙리스 디코딩"
 msgid "Decode OK"
 msgstr "디코딩 확인"
 
-#: core/aviImage.cpp:4149 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4129 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "오디오 디코딩 오류: "
 
-#: core/aviImage.cpp:4176
+#: core/aviImage.cpp:4156
 msgid "Decode video error seek frame "
 msgstr "이미지를 찾는 비디오 디코딩 오류 "
 
@@ -3079,7 +3079,7 @@ msgstr "기본"
 msgid "Default Action"
 msgstr "기본 작업"
 
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvWaveEngine.cpp:124 audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "기본 오디오 장치"
 
@@ -3370,7 +3370,7 @@ msgstr "media_to_pathname에 빈 미디어가 전달되었습니다."
 msgid "Empty media provided to Element constructor"
 msgstr "요소 생성자에 빈 미디어 제공"
 
-#: core/aviImage.cpp:3606
+#: core/aviImage.cpp:3586
 msgid "Empty packets for video seek."
 msgstr "비디오 검색을 위한 빈 패킷입니다."
 
@@ -3378,7 +3378,7 @@ msgstr "비디오 검색을 위한 빈 패킷입니다."
 msgid "Empty pic file for media "
 msgstr "미디어용 빈 이미지 파일 "
 
-#: core/aviImage.cpp:4527
+#: core/aviImage.cpp:4507
 msgid "Empty seek or preroll"
 msgstr "빈 검색 또는 프리롤"
 
@@ -4083,7 +4083,7 @@ msgstr "시퀀스의 시작 부분으로 이동합니다."
 msgid "Go to the end of the sequence."
 msgstr "시퀀스의 끝으로 이동합니다."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4467 core/CMedia.cpp:4514
 msgid "Got colorspace '"
 msgstr "나는 색 공간을 얻었다 '"
 
@@ -5026,11 +5026,11 @@ msgstr "로딩 중"
 msgid "Loading \"%s\""
 msgstr "\"%s\" 로드 중"
 
-#: video/mrvGLEngine.cpp:4175
+#: video/mrvGLEngine.cpp:4177
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "내부 셰이더 NV3.0 rgba 로드 중"
 
-#: video/mrvGLEngine.cpp:4181
+#: video/mrvGLEngine.cpp:4183
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "내부 rgba 셰이더 arbfp1 로드 중"
 
@@ -7525,7 +7525,7 @@ msgstr "자막 파일 "
 msgid "Subtitle font "
 msgstr "자막 편지 "
 
-#: core/aviImage.cpp:4317
+#: core/aviImage.cpp:4297
 msgid "Subtitle type "
 msgstr "자막 유형 "
 
@@ -8323,7 +8323,7 @@ msgstr "처리되지 않은 예외"
 msgid "Unhandled exception"
 msgstr "처리되지 않은 예외"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8445,7 +8445,7 @@ msgstr "알 수 없는 반올림 모드"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser에 대한 알 수 없는 데이터 유형"
 
-#: video/mrvGLEngine.cpp:2634
+#: video/mrvGLEngine.cpp:2636
 msgid "Unknown wipe direction"
 msgstr "알 수 없는 초기화 주소"
 
@@ -9150,7 +9150,7 @@ msgstr "잘못된 데이터 크기를 받았습니다."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek의 잘못된 패킷"
 
-#: core/aviImage.cpp:3553
+#: core/aviImage.cpp:3533
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek의 잘못된 패킷"
 
@@ -9337,7 +9337,7 @@ msgstr "이미지 확대 실패"
 msgid "attributes not found"
 msgstr "속성을 찾을 수 없음"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
 msgid "audio"
 msgstr "오디오"
 
@@ -9378,15 +9378,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice 이미지 "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3736
 msgid "clean effects"
 msgstr "깨끗한 효과"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3724
 msgid "comment"
 msgstr "코멘트"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
 msgid "data"
 msgstr "데이터"
 
@@ -9398,11 +9398,11 @@ msgstr "디코드_오디오_패킷 "
 msgid "decode_audio_packet failed for frame "
 msgstr "디코딩_오디오_패킷이 프레임에 실패했습니다. "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3718
 msgid "default"
 msgstr "기본"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4507
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - 알 수 없는 비트 깊이"
 
@@ -9410,7 +9410,7 @@ msgstr "default_leisure_input_color_space - 알 수 없는 비트 깊이"
 msgid "delete uiview"
 msgstr "UI뷰 삭제"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3720
 msgid "dub"
 msgstr "더빙"
 
@@ -9433,7 +9433,7 @@ msgstr "부동 소수점"
 msgid "float (32-bits per channel)"
 msgstr "부동 소수점(채널당 32비트)"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3730
 msgid "forced"
 msgstr "강요된"
 
@@ -9465,7 +9465,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "반 부동 소수점(채널당 16비트)"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4502
 msgid "half/float"
 msgstr "반/전체 부동 소수점"
 
@@ -9473,7 +9473,7 @@ msgstr "반/전체 부동 소수점"
 msgid "has invalid magic number in the header."
 msgstr "헤더에 잘못된 매직 번호가 있습니다."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3732
 msgid "hearing impaired"
 msgstr "청각 장애"
 
@@ -9493,7 +9493,7 @@ msgstr "Softimage 파일이지만 PIC 파일은 아닙니다."
 msgid "item_pathname returned "
 msgstr "item_pathname 반환됨 "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3728
 msgid "karaoke"
 msgstr "노래방"
 
@@ -9509,7 +9509,7 @@ msgstr "플러그를 수신하지 못했습니다.\n"
 msgid "loadDeepData error: "
 msgstr "깊은 데이터 로드 오류: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3726
 msgid "lyrics"
 msgstr "가사"
 
@@ -9650,7 +9650,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame 변경할 픽셀 데이터가 없습니다."
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3722
 msgid "original"
 msgstr "원래의"
 
@@ -9746,7 +9746,7 @@ msgstr "src_nb_samples는 0입니다"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: 잘못된 데이터입니다. 어, 그것은 "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
 msgid "subtitle"
 msgstr "부제"
 
@@ -9758,11 +9758,11 @@ msgstr "sysctl이 실패했습니다."
 msgid "task info failed"
 msgstr "작업 정보 실패"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3693 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "인도"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3453 core/CMedia.cpp:3484 core/CMedia.cpp:4474
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "알려지지 않은"
@@ -9779,11 +9779,11 @@ msgstr "부호 없는 정수(채널당 32비트)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "짧은 부호 없는(채널당 16비트)"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3441 core/CMedia.cpp:3472
 msgid "video"
 msgstr "동영상"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3734
 msgid "visual impaired"
 msgstr "시각 장애인"
 

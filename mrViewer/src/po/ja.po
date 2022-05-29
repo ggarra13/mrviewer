@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-27 19:47-0300\n"
+"POT-Creation-Date: 2022-05-29 15:13-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3674
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1177
+#: core/mrvPlayback.cpp:1163
 msgid " - Decode of image frame "
 msgstr " -額縁のデコード "
 
-#: core/mrvPlayback.cpp:793
+#: core/mrvPlayback.cpp:786
 msgid " - decode Error audio frame "
 msgstr " -オーディオフレームのデコードエラー "
 
@@ -85,7 +85,7 @@ msgstr " -オーディオフレームのデコードエラー "
 msgid " Color Area Selection"
 msgstr " カラーエリアの選択"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " ファイルを開くことができませんでした. "
 
@@ -125,7 +125,7 @@ msgstr " 文章"
 msgid " already created: "
 msgstr " 作成済み: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid " as default"
 msgstr " ディフォルト"
 
@@ -186,7 +186,7 @@ msgstr " コーデックの場合 "
 msgid " for color_space"
 msgstr " color_spaceの場合"
 
-#: core/aviImage.cpp:4151 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " フレーム用 "
 
@@ -198,7 +198,7 @@ msgstr " gamma_curveの場合"
 msgid " for reel "
 msgstr " リール用 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid " for stream #"
 msgstr " トラック＃用"
 
@@ -246,11 +246,11 @@ msgstr " これはすでにディスク上の最初のバージョンです."
 msgid " is already the last version on disk."
 msgstr " すでにディスク上の最新バージョンです."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4372
 msgid " is missing."
 msgstr " 彼は迷子になっています."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4395
 msgid " is missing. Choosing "
 msgstr " 不足している.選ぶ "
 
@@ -267,11 +267,11 @@ msgstr " リールに見つかりません"
 msgid " not found, choosing "
 msgstr " 見つかりません、選択 "
 
-#: core/aviImage.cpp:4318
+#: core/aviImage.cpp:4298
 msgid " not yet supported"
 msgstr " まだサポートされていません"
 
-#: core/mrvPlayback.cpp:1178
+#: core/mrvPlayback.cpp:1164
 msgid " returned "
 msgstr " 戻る "
 
@@ -279,7 +279,7 @@ msgstr " 戻る "
 msgid " size is "
 msgstr " サイズは "
 
-#: core/aviImage.cpp:4178
+#: core/aviImage.cpp:4158
 msgid " status: "
 msgstr " スターテス: "
 
@@ -444,11 +444,11 @@ msgstr "' ために "
 msgid "' for writing. Reason: "
 msgstr "'書き込み用.理由: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid "' from bitdepth "
 msgstr "'ビット深度: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4467
 msgid "' from filename"
 msgstr "'ファイル名から"
 
@@ -565,7 +565,7 @@ msgstr "、 周波数 "
 msgid ", frequency "
 msgstr "、 周波数 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid ", type "
 msgstr "、 タイプ "
 
@@ -726,7 +726,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4487
 msgid "16 bits"
 msgstr "16ビット"
 
@@ -843,7 +843,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4494
 msgid "32 bits"
 msgstr "32ビット"
 
@@ -970,7 +970,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8ビットキャッシュ"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4480
 msgid "8 bits"
 msgstr "8ビット"
 
@@ -1491,7 +1491,7 @@ msgstr "音量"
 msgid "Audio conversion of "
 msgstr "のオーディオ変換 "
 
-#: audio/mrvPortAudioEngine.cpp:300
+#: audio/mrvPortAudioEngine.cpp:261
 msgid "Audio format not known.  Choosing float32. "
 msgstr "不明なオーディオ形式. float32を選択します. "
 
@@ -1597,14 +1597,14 @@ msgstr "後ろに削除"
 msgid "Background"
 msgstr "バックグラウンド"
 
-#: core/mrvPlayback.cpp:1113
+#: core/mrvPlayback.cpp:1099
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "背景画像の長さは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1120
+#: core/mrvPlayback.cpp:1106
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1613,13 +1613,13 @@ msgstr ""
 "背景画像（%lg）のfpsは、前面画像（%lg）と同じではありません.サイクルで繰り返"
 "すと正しく機能しません."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1083
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "下部のスプールは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1087
+#: core/mrvPlayback.cpp:1073
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2408,7 +2408,7 @@ msgstr "ボックスの4つの整数が見つかりませんでした"
 msgid "Could not find four integers for box "
 msgstr "ボックスの4つの整数が見つかりませんでした "
 
-#: core/mrvPlayback.cpp:1361
+#: core/mrvPlayback.cpp:1347
 msgid "Could not find image "
 msgstr "画像が見つかりませんでした "
 
@@ -2444,7 +2444,7 @@ msgstr "4x4配列の16個の浮動小数点数が見つかりませんでした"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4行列の16個の浮動小数点数が見つかりませんでした "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "トラック情報が見つかりませんでした"
 
@@ -2512,7 +2512,7 @@ msgstr "トラックを平坦化できませんでした.エラー: "
 msgid "Could not get audio samples"
 msgstr "オーディオサンプルを取得できませんでした"
 
-#: audio/mrvPortAudioEngine.cpp:267
+#: audio/mrvPortAudioEngine.cpp:228
 msgid "Could not get device info for "
 msgstr "のデバイス情報を取得できませんでした "
 
@@ -3051,11 +3051,11 @@ msgstr "トラックレスデコード"
 msgid "Decode OK"
 msgstr "デコードOK"
 
-#: core/aviImage.cpp:4149 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4129 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "オーディオデコードエラー: "
 
-#: core/aviImage.cpp:4176
+#: core/aviImage.cpp:4156
 msgid "Decode video error seek frame "
 msgstr "画像を探しているビデオデコードエラー "
 
@@ -3084,7 +3084,7 @@ msgstr "ディフォルト"
 msgid "Default Action"
 msgstr "デフォルトのアクション"
 
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvWaveEngine.cpp:124 audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "デフォルトのオーディオデバイス"
 
@@ -3378,7 +3378,7 @@ msgstr "media_to_pathnameに渡された空のメディア"
 msgid "Empty media provided to Element constructor"
 msgstr "要素コンストラクターに空のメディアが提供されました"
 
-#: core/aviImage.cpp:3606
+#: core/aviImage.cpp:3586
 msgid "Empty packets for video seek."
 msgstr "ビデオ検索用の空のパケット."
 
@@ -3386,7 +3386,7 @@ msgstr "ビデオ検索用の空のパケット."
 msgid "Empty pic file for media "
 msgstr "メディア用の空の画像ファイル "
 
-#: core/aviImage.cpp:4527
+#: core/aviImage.cpp:4507
 msgid "Empty seek or preroll"
 msgstr "空の検索またはプレロール"
 
@@ -4091,7 +4091,7 @@ msgstr "シーケンスの最初に移動します."
 msgid "Go to the end of the sequence."
 msgstr "シーケンスの最後に移動します."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4467 core/CMedia.cpp:4514
 msgid "Got colorspace '"
 msgstr "色空間を取得しました'"
 
@@ -5035,11 +5035,11 @@ msgstr "読み込み中"
 msgid "Loading \"%s\""
 msgstr "\"%s\"を読み込んでいます"
 
-#: video/mrvGLEngine.cpp:4175
+#: video/mrvGLEngine.cpp:4177
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "内部シェーダーNV3.0rgbaを読み込んでいます"
 
-#: video/mrvGLEngine.cpp:4181
+#: video/mrvGLEngine.cpp:4183
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "内部rgbaシェーダーarbfp1を読み込んでいます"
 
@@ -7538,7 +7538,7 @@ msgstr "字幕ファイル "
 msgid "Subtitle font "
 msgstr "字幕レター "
 
-#: core/aviImage.cpp:4317
+#: core/aviImage.cpp:4297
 msgid "Subtitle type "
 msgstr "字幕タイプ "
 
@@ -8337,7 +8337,7 @@ msgstr "未処理の例外"
 msgid "Unhandled exception"
 msgstr "未処理の例外"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8459,7 +8459,7 @@ msgstr "不明な丸めモード"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowserの不明なデータ型"
 
-#: video/mrvGLEngine.cpp:2634
+#: video/mrvGLEngine.cpp:2636
 msgid "Unknown wipe direction"
 msgstr "不明なワイプアドレス"
 
@@ -9179,7 +9179,7 @@ msgstr "間違ったデータサイズを受け取りました."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 
-#: core/aviImage.cpp:3553
+#: core/aviImage.cpp:3533
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 
@@ -9368,7 +9368,7 @@ msgstr "画像へのズームに失敗しました"
 msgid "attributes not found"
 msgstr "属性が見つかりません"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
 msgid "audio"
 msgstr "オーディオ"
 
@@ -9409,15 +9409,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice画像 "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3736
 msgid "clean effects"
 msgstr "きれいな効果"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3724
 msgid "comment"
 msgstr "コメント"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
 msgid "data"
 msgstr "データ"
 
@@ -9429,11 +9429,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "フレームのdecode_audio_packetが失敗しました "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3718
 msgid "default"
 msgstr "ディフォルト"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4507
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space-不明なビット深度"
 
@@ -9441,7 +9441,7 @@ msgstr "default_leisure_input_color_space-不明なビット深度"
 msgid "delete uiview"
 msgstr "uiviewを削除する"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3720
 msgid "dub"
 msgstr "ダビング"
 
@@ -9464,7 +9464,7 @@ msgstr "浮動小数点"
 msgid "float (32-bits per channel)"
 msgstr "浮動小数点（チャネルあたり32ビット）"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3730
 msgid "forced"
 msgstr "強制"
 
@@ -9496,7 +9496,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "半精度浮動小数点（チャネルあたり16ビット）"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4502
 msgid "half/float"
 msgstr "半分/完全な浮動小数点"
 
@@ -9504,7 +9504,7 @@ msgstr "半分/完全な浮動小数点"
 msgid "has invalid magic number in the header."
 msgstr "ヘッダーに無効なマジックナンバーがあります."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3732
 msgid "hearing impaired"
 msgstr "聴覚障害"
 
@@ -9524,7 +9524,7 @@ msgstr "Softimageファイルですが、PICファイルではありません."
 msgid "item_pathname returned "
 msgstr "item_pathnameが返されました "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3728
 msgid "karaoke"
 msgstr "カラオケ"
 
@@ -9540,7 +9540,7 @@ msgstr "プラグを聞くのに失敗しました\n"
 msgid "loadDeepData error: "
 msgstr "ディープデータロードエラー: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3726
 msgid "lyrics"
 msgstr "歌詞"
 
@@ -9682,7 +9682,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame変更するピクセルデータはありません"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3722
 msgid "original"
 msgstr "オリジナル"
 
@@ -9778,7 +9778,7 @@ msgstr "src_nb_samplesは0です"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: 無効なデータ.うーん "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
 msgid "subtitle"
 msgstr "字幕"
 
@@ -9790,11 +9790,11 @@ msgstr "sysctlが失敗しました."
 msgid "task info failed"
 msgstr "タスク情報が失敗しました"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3693 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3453 core/CMedia.cpp:3484 core/CMedia.cpp:4474
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "わからない"
@@ -9811,11 +9811,11 @@ msgstr "符号なし整数（チャネルあたり32ビット）"
 msgid "unsigned short (16-bits per channel)"
 msgstr "短い符号なし（チャネルあたり16ビット）"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3441 core/CMedia.cpp:3472
 msgid "video"
 msgstr "ビデオ"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3734
 msgid "visual impaired"
 msgstr "視覚障害"
 

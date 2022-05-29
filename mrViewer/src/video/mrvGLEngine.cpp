@@ -1820,6 +1820,9 @@ void GLEngine::draw_images( ImageList& images )
 
     if ( num_quads != _quads.size() )
     {
+        TRACE2( "num_quads (" << num_quads << ") != _quads.size() ("
+                << _quads.size() << ") images.size() (" << images.size()
+                << ")" );
         ImageView::VRType t = _view->vr();
         if ( t == ImageView::kVRSphericalMap )
         {
@@ -1868,7 +1871,7 @@ void GLEngine::draw_images( ImageList& images )
     CMedia* fg = images.back();
     CMedia* bg = images.front();
     // Don't consider it a background image if transition is on
-    if ( _view->B_image() == bg ) bg = NULL;
+    //if ( _view->B_image() == bg ) bg = NULL;
 
     glDisable( GL_BLEND );
     CHECK_GL;
@@ -1921,9 +1924,8 @@ void GLEngine::draw_images( ImageList& images )
         }
         else
         {
-            const mrv::Recti& dw = img->display_window();
-            texWidth = dw.w();
-            texHeight = dw.h();
+            texWidth = daw.w();
+            texHeight = daw.h();
         }
 
 
@@ -1975,7 +1977,7 @@ void GLEngine::draw_images( ImageList& images )
             double x = 0.0, y = 0.0;
             if ( img->flipX() )   x = (double)-dp.w();
             if ( img->flipY() ) y = (double)dp.h();
-            glTranslated( x, y, 0.0f );
+            glTranslated( x, y, 0.0 );
         }
 
         glMatrixMode(GL_MODELVIEW);

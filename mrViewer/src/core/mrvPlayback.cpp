@@ -407,11 +407,11 @@ EndStatus handle_loop( int64_t& frame,
             {
                 first = dts = f = int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                TRACE( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
+                TRACE2( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
             }
             else if ( next == img )
             {
-                TRACE( decode << ") " << img->name() << " == NEXT " << next->name() );
+                TRACE2( decode << ") " << img->name() << " == NEXT " << next->name() );
                 if ( loop == CMedia::kLoop )
                 {
                     first = int64_t(timeline->display_minimum());
@@ -497,13 +497,10 @@ EndStatus handle_loop( int64_t& frame,
             img->clear_packets();
 
             frame = reel->global_to_local( first );
-            TRACE( decode << ") DECODE LOOP to " << first
+            TRACE2( decode << ") DECODE LOOP to " << first
                     << " frame " << frame );
-            if ( next == img )
-            {
-                img->seek( frame );
-            }
-            else if ( fg && reel->edl )
+
+            if ( fg && reel->edl )
             {
                 img->playback( CMedia::kStopped );
                 CMedia::Mutex& cmtx = view->commands_mutex;
@@ -647,11 +644,7 @@ EndStatus handle_loop( int64_t& frame,
 
             frame = reel->global_to_local( last );
 
-            if ( next == img )
-            {
-                img->seek( frame );
-            }
-            else if ( fg && reel->edl )
+            if ( fg && reel->edl )
             {
                 img->playback( CMedia::kStopped );
                 CMedia::Mutex& cmtx = view->commands_mutex;
@@ -905,13 +898,6 @@ void audio_thread( PlaybackData* data )
         if ( !img->stopped() )
         {
             img->find_audio(frame);
-#ifdef _WIN32 // WIN32 stores application audio volume
-            mrv::AudioEngine* engine = img->audio_engine();
-            if ( engine )
-            {
-                uiMain->uiVolume->value( engine->volume() );
-            }
-#endif
         }
 
         if ( reel->edl ) frame = img->audio_frame();

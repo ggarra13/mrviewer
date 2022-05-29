@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-27 19:47-0300\n"
+"POT-Creation-Date: 2022-05-29 15:13-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3674
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1177
+#: core/mrvPlayback.cpp:1163
 msgid " - Decode of image frame "
 msgstr " - Avkodning av bildram "
 
-#: core/mrvPlayback.cpp:793
+#: core/mrvPlayback.cpp:786
 msgid " - decode Error audio frame "
 msgstr " - ljudramsavkodningsfel "
 
@@ -85,7 +85,7 @@ msgstr " - ljudramsavkodningsfel "
 msgid " Color Area Selection"
 msgstr " Val av färgområde"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " Jag kunde inte öppna filen. "
 
@@ -125,7 +125,7 @@ msgstr " Text"
 msgid " already created: "
 msgstr " redan skapat: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid " as default"
 msgstr " tandard"
 
@@ -186,7 +186,7 @@ msgstr " för codec "
 msgid " for color_space"
 msgstr " för färgrymd"
 
-#: core/aviImage.cpp:4151 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " för ram "
 
@@ -198,7 +198,7 @@ msgstr " för gamma_curve"
 msgid " for reel "
 msgstr " för rulle "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid " for stream #"
 msgstr " för spår #"
 
@@ -246,11 +246,11 @@ msgstr " Det är redan den första versionen på disk."
 msgid " is already the last version on disk."
 msgstr " Det är redan den senaste versionen på disken."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4372
 msgid " is missing."
 msgstr " Han är vilse."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4395
 msgid " is missing. Choosing "
 msgstr " aknas. välja ut "
 
@@ -267,11 +267,11 @@ msgstr " hittas inte på rullen"
 msgid " not found, choosing "
 msgstr " hittas inte, väljer "
 
-#: core/aviImage.cpp:4318
+#: core/aviImage.cpp:4298
 msgid " not yet supported"
 msgstr " töds inte ännu"
 
-#: core/mrvPlayback.cpp:1178
+#: core/mrvPlayback.cpp:1164
 msgid " returned "
 msgstr " lämna tillbaka "
 
@@ -279,7 +279,7 @@ msgstr " lämna tillbaka "
 msgid " size is "
 msgstr " torlek är "
 
-#: core/aviImage.cpp:4178
+#: core/aviImage.cpp:4158
 msgid " status: "
 msgstr " tatus: "
 
@@ -444,11 +444,11 @@ msgstr "' för "
 msgid "' for writing. Reason: "
 msgstr "' för att skriva. Anledning: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid "' from bitdepth "
 msgstr "' bitdjup: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4467
 msgid "' from filename"
 msgstr "' från filnamnet"
 
@@ -565,7 +565,7 @@ msgstr ", frekvens "
 msgid ", frequency "
 msgstr ", frekvens "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid ", type "
 msgstr ", typ "
 
@@ -726,7 +726,7 @@ msgstr "14 985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4487
 msgid "16 bits"
 msgstr "16 bitar"
 
@@ -843,7 +843,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4494
 msgid "32 bits"
 msgstr "32 bitar"
 
@@ -970,7 +970,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8 bitars cache"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4480
 msgid "8 bits"
 msgstr "8 bitar"
 
@@ -1488,7 +1488,7 @@ msgstr "ljudvolym"
 msgid "Audio conversion of "
 msgstr "ljudkonvertering av "
 
-#: audio/mrvPortAudioEngine.cpp:300
+#: audio/mrvPortAudioEngine.cpp:261
 msgid "Audio format not known.  Choosing float32. "
 msgstr "Okänt ljudformat. Välj float32. "
 
@@ -1593,14 +1593,14 @@ msgstr "Ta bort till baksidan"
 msgid "Background"
 msgstr "Bakgrund"
 
-#: core/mrvPlayback.cpp:1113
+#: core/mrvPlayback.cpp:1099
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Bakgrundsbildens varaktighet är mycket kort. Upprepa i cykler kanske inte "
 "fungerar korrekt."
 
-#: core/mrvPlayback.cpp:1120
+#: core/mrvPlayback.cpp:1106
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1609,13 +1609,13 @@ msgstr ""
 "Bakgrundsbildens fps ( %lg ) är inte detsamma som frontbilden ( %lg ). Att "
 "upprepa i cykler kommer inte att fungera korrekt."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1083
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Den nedre spolen är mycket kort. Upprepa i cykler kanske inte fungerar "
 "korrekt."
 
-#: core/mrvPlayback.cpp:1087
+#: core/mrvPlayback.cpp:1073
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2404,7 +2404,7 @@ msgstr "Jag kunde inte hitta fyra heltal för rutan"
 msgid "Could not find four integers for box "
 msgstr "Jag kunde inte hitta fyra heltal för rutan "
 
-#: core/mrvPlayback.cpp:1361
+#: core/mrvPlayback.cpp:1347
 msgid "Could not find image "
 msgstr "Jag kunde inte hitta bilden "
 
@@ -2440,7 +2440,7 @@ msgstr "Jag kunde inte hitta sexton flyttalsnummer för 4x4-matrisen"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "Jag kunde inte hitta sexton flyttalsnummer för 4x4-matrisen "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "Det gick inte att hitta spårinformation"
 
@@ -2508,7 +2508,7 @@ msgstr "Spåren gick inte att platta till. Fel: "
 msgid "Could not get audio samples"
 msgstr "Jag kunde inte få ljudprover"
 
-#: audio/mrvPortAudioEngine.cpp:267
+#: audio/mrvPortAudioEngine.cpp:228
 msgid "Could not get device info for "
 msgstr "Det gick inte att hämta enhetsinformation för "
 
@@ -3049,11 +3049,11 @@ msgstr "Spårlös avkodning"
 msgid "Decode OK"
 msgstr "avkodning ok"
 
-#: core/aviImage.cpp:4149 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4129 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ljudavkodningsfel: "
 
-#: core/aviImage.cpp:4176
+#: core/aviImage.cpp:4156
 msgid "Decode video error seek frame "
 msgstr "Videoavkodningsfel söker efter bild "
 
@@ -3082,7 +3082,7 @@ msgstr "Standard"
 msgid "Default Action"
 msgstr "Standardåtgärd"
 
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvWaveEngine.cpp:124 audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "Standardljudenhet"
 
@@ -3374,7 +3374,7 @@ msgstr "Tom media skickas till media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Tomt media tillhandahålls till elementkonstruktören"
 
-#: core/aviImage.cpp:3606
+#: core/aviImage.cpp:3586
 msgid "Empty packets for video seek."
 msgstr "Tomma paket för videosökning."
 
@@ -3382,7 +3382,7 @@ msgstr "Tomma paket för videosökning."
 msgid "Empty pic file for media "
 msgstr "Tom bildfil för media "
 
-#: core/aviImage.cpp:4527
+#: core/aviImage.cpp:4507
 msgid "Empty seek or preroll"
 msgstr "Töm sökning eller preroll"
 
@@ -4089,7 +4089,7 @@ msgstr "Gå till början av sekvensen."
 msgid "Go to the end of the sequence."
 msgstr "Gå till slutet av sekvensen."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4467 core/CMedia.cpp:4514
 msgid "Got colorspace '"
 msgstr "Jag fick färgrymden '"
 
@@ -5037,11 +5037,11 @@ msgstr "Läser in"
 msgid "Loading \"%s\""
 msgstr "Laddar \"%s\""
 
-#: video/mrvGLEngine.cpp:4175
+#: video/mrvGLEngine.cpp:4177
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Laddar intern shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:4181
+#: video/mrvGLEngine.cpp:4183
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Laddar intern rgba shader arbfp1"
 
@@ -7542,7 +7542,7 @@ msgstr "Undertextfil "
 msgid "Subtitle font "
 msgstr "Undertextbrev "
 
-#: core/aviImage.cpp:4317
+#: core/aviImage.cpp:4297
 msgid "Subtitle type "
 msgstr "Undertexttyp "
 
@@ -8348,7 +8348,7 @@ msgstr "ohanterat undantag"
 msgid "Unhandled exception"
 msgstr "ohanterat undantag"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8470,7 +8470,7 @@ msgstr "Okänt avrundningsläge"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Okänd datatyp för mrvOCIBrowser"
 
-#: video/mrvGLEngine.cpp:2634
+#: video/mrvGLEngine.cpp:2636
 msgid "Unknown wipe direction"
 msgstr "Okänd raderingsadress"
 
@@ -9192,7 +9192,7 @@ msgstr "Jag fick en felaktig datastorlek."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 
-#: core/aviImage.cpp:3553
+#: core/aviImage.cpp:3533
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 
@@ -9380,7 +9380,7 @@ msgstr "Zoom till bild misslyckades"
 msgid "attributes not found"
 msgstr "attribut hittades inte"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
 msgid "audio"
 msgstr "Audio"
 
@@ -9421,15 +9421,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice bild "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3736
 msgid "clean effects"
 msgstr "rena effekter"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3724
 msgid "comment"
 msgstr "kommentarer"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
 msgid "data"
 msgstr "data"
 
@@ -9441,11 +9441,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet misslyckades för ram "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3718
 msgid "default"
 msgstr "standard"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4507
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - okänt bitdjup"
 
@@ -9453,7 +9453,7 @@ msgstr "default_leisure_input_color_space - okänt bitdjup"
 msgid "delete uiview"
 msgstr "ta bort uiview"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3720
 msgid "dub"
 msgstr "dubbning"
 
@@ -9476,7 +9476,7 @@ msgstr "flytpunkt"
 msgid "float (32-bits per channel)"
 msgstr "flyttal (32-bitar per kanal)"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3730
 msgid "forced"
 msgstr "tvingade"
 
@@ -9508,7 +9508,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "halv flyttal (16 bitar per kanal)"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4502
 msgid "half/float"
 msgstr "halv/full flytande punkt"
 
@@ -9516,7 +9516,7 @@ msgstr "halv/full flytande punkt"
 msgid "has invalid magic number in the header."
 msgstr "har ett ogiltigt magiskt nummer i rubriken."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3732
 msgid "hearing impaired"
 msgstr "hörselnedsättningar"
 
@@ -9536,7 +9536,7 @@ msgstr "det är en Softimage-fil, men inte en PIC-fil."
 msgid "item_pathname returned "
 msgstr "item_pathname returneras "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3728
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9552,7 +9552,7 @@ msgstr "Det gick inte att lyssna på pluggen\n"
 msgid "loadDeepData error: "
 msgstr "Djupt dataladdningsfel: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3726
 msgid "lyrics"
 msgstr "text"
 
@@ -9696,7 +9696,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Inga pixeldata att ändra"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3722
 msgid "original"
 msgstr "original-"
 
@@ -9792,7 +9792,7 @@ msgstr "src_nb_samples är 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: ogiltig data. usch det är det "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
 msgid "subtitle"
 msgstr "texta"
 
@@ -9804,11 +9804,11 @@ msgstr "sysctl misslyckades."
 msgid "task info failed"
 msgstr "uppgiftsinformationen misslyckades"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3693 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3453 core/CMedia.cpp:3484 core/CMedia.cpp:4474
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "okänd"
@@ -9825,11 +9825,11 @@ msgstr "osignerat heltal (32-bitar per kanal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "kort osignerad (16-bitar per kanal)"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3441 core/CMedia.cpp:3472
 msgid "video"
 msgstr "video-"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3734
 msgid "visual impaired"
 msgstr "synskadad"
 

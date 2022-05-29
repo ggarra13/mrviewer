@@ -102,7 +102,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
     auto onetrack = otio::flatten_stack(video_tracks, &errorStatus);
     if (!onetrack)
     {
-        LOG_ERROR( _("Could not flatten tracks. Error: ") << errorStatus);
+        LOG_ERROR( _("Could not flatten tracks. Error: ") << errorStatus.full_description);
         return false;
     }
 

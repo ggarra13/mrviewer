@@ -49,6 +49,7 @@ export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 
 # This is to avoid underruns in audio
 export PULSE_LATENCY_MSEC=60
+export PA_MIN_LATENCY_MSEC=60
 
 params=""
 

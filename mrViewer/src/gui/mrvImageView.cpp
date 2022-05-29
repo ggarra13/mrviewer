@@ -10695,7 +10695,7 @@ void ImageView::frame( const int64_t f )
     if ( !b ) return;
 
     mrv::Reel reel = b->current_reel();
-    if ( !reel->edl || !reel )
+    if ( !reel->edl || !reel || reel->transitions.empty() )
     {
         redraw();
         return;

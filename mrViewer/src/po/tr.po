@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-27 19:47-0300\n"
+"POT-Creation-Date: 2022-05-29 15:13-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3674
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1177
+#: core/mrvPlayback.cpp:1163
 msgid " - Decode of image frame "
 msgstr " - Resim çerçevesi kod çözme "
 
-#: core/mrvPlayback.cpp:793
+#: core/mrvPlayback.cpp:786
 msgid " - decode Error audio frame "
 msgstr " - ses çerçevesi kod çözme hatası "
 
@@ -85,7 +85,7 @@ msgstr " - ses çerçevesi kod çözme hatası "
 msgid " Color Area Selection"
 msgstr " Renk alanı seçimi"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " Dosyayı açamadım. "
 
@@ -125,7 +125,7 @@ msgstr " Metin"
 msgid " already created: "
 msgstr " zaten oluşturuldu: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid " as default"
 msgstr " varsayılan"
 
@@ -186,7 +186,7 @@ msgstr " kodek için "
 msgid " for color_space"
 msgstr " color_space için"
 
-#: core/aviImage.cpp:4151 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " çerçeve için "
 
@@ -198,7 +198,7 @@ msgstr " gama_curve için"
 msgid " for reel "
 msgstr " makara için "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid " for stream #"
 msgstr " parça # için"
 
@@ -246,11 +246,11 @@ msgstr " Zaten diskteki ilk sürüm."
 msgid " is already the last version on disk."
 msgstr " Zaten diskteki en son sürüm."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4372
 msgid " is missing."
 msgstr " O kayboldu."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4395
 msgid " is missing. Choosing "
 msgstr " kayıp. ayıklamak "
 
@@ -267,11 +267,11 @@ msgstr " makarada bulunamadı"
 msgid " not found, choosing "
 msgstr " bulunamadı, seçiliyor "
 
-#: core/aviImage.cpp:4318
+#: core/aviImage.cpp:4298
 msgid " not yet supported"
 msgstr " henüz desteklenmiyor"
 
-#: core/mrvPlayback.cpp:1178
+#: core/mrvPlayback.cpp:1164
 msgid " returned "
 msgstr " dönüş "
 
@@ -279,7 +279,7 @@ msgstr " dönüş "
 msgid " size is "
 msgstr " boyut "
 
-#: core/aviImage.cpp:4178
+#: core/aviImage.cpp:4158
 msgid " status: "
 msgstr " durum: "
 
@@ -445,11 +445,11 @@ msgstr "' için "
 msgid "' for writing. Reason: "
 msgstr "' yazmak için. Sebep: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4515
 msgid "' from bitdepth "
 msgstr "' bit derinliği: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4467
 msgid "' from filename"
 msgstr "' dosya adından"
 
@@ -566,7 +566,7 @@ msgstr ", Sıklık "
 msgid ", frequency "
 msgstr ", Sıklık "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3675
 msgid ", type "
 msgstr ", tip "
 
@@ -727,7 +727,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4487
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -844,7 +844,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4494
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -971,7 +971,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8 bit önbellek"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4480
 msgid "8 bits"
 msgstr "8 bit"
 
@@ -1495,7 +1495,7 @@ msgstr "ses seviyesi"
 msgid "Audio conversion of "
 msgstr "ses dönüştürme "
 
-#: audio/mrvPortAudioEngine.cpp:300
+#: audio/mrvPortAudioEngine.cpp:261
 msgid "Audio format not known.  Choosing float32. "
 msgstr "Bilinmeyen ses biçimi. Float32'yi seçin. "
 
@@ -1600,14 +1600,14 @@ msgstr "Geri Sil"
 msgid "Background"
 msgstr "Arka fon"
 
-#: core/mrvPlayback.cpp:1113
+#: core/mrvPlayback.cpp:1099
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Arka plan görüntüsünün süresi çok kısadır. Döngülerde tekrarlama düzgün "
 "çalışmayabilir."
 
-#: core/mrvPlayback.cpp:1120
+#: core/mrvPlayback.cpp:1106
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1616,11 +1616,11 @@ msgstr ""
 "Arka plan görüntüsünün ( %lg ) fps'si ön görüntüyle ( %lg ) aynı değil. "
 "Döngüler halinde tekrarlamak düzgün çalışmayacaktır."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1083
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr "Alt makara çok kısa. Döngülerde tekrarlama düzgün çalışmayabilir."
 
-#: core/mrvPlayback.cpp:1087
+#: core/mrvPlayback.cpp:1073
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2411,7 +2411,7 @@ msgstr "kutu için dört tamsayı bulamadım"
 msgid "Could not find four integers for box "
 msgstr "kutu için dört tamsayı bulamadım "
 
-#: core/mrvPlayback.cpp:1361
+#: core/mrvPlayback.cpp:1347
 msgid "Could not find image "
 msgstr "resmi bulamadım "
 
@@ -2447,7 +2447,7 @@ msgstr "4x4 matrisi için on altı kayan noktalı sayı bulamadım"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4 dizisi için on altı kayan noktalı sayı bulamadım "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "Parça bilgisi bulunamadı"
 
@@ -2515,7 +2515,7 @@ msgstr "İzler düzleştirilemedi. Hata: "
 msgid "Could not get audio samples"
 msgstr "Ses örnekleri alamadım"
 
-#: audio/mrvPortAudioEngine.cpp:267
+#: audio/mrvPortAudioEngine.cpp:228
 msgid "Could not get device info for "
 msgstr "için cihaz bilgileri alınamadı "
 
@@ -3056,11 +3056,11 @@ msgstr "İzsiz Kod Çözme"
 msgid "Decode OK"
 msgstr "kod çözme tamam"
 
-#: core/aviImage.cpp:4149 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4129 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ses kod çözme hatası: "
 
-#: core/aviImage.cpp:4176
+#: core/aviImage.cpp:4156
 msgid "Decode video error seek frame "
 msgstr "Görüntü arayan video kod çözme hatası "
 
@@ -3089,7 +3089,7 @@ msgstr "Varsayılan"
 msgid "Default Action"
 msgstr "Varsayılan aksiyon"
 
-#: audio/mrvWaveEngine.cpp:122 audio/mrvALSAEngine.cpp:80
+#: audio/mrvWaveEngine.cpp:124 audio/mrvALSAEngine.cpp:80
 msgid "Default Audio Device"
 msgstr "Varsayılan Ses Aygıtı"
 
@@ -3382,7 +3382,7 @@ msgstr "media_to_pathname'ye boş medya aktarıldı"
 msgid "Empty media provided to Element constructor"
 msgstr "Öğe oluşturucuya sağlanan boş ortam"
 
-#: core/aviImage.cpp:3606
+#: core/aviImage.cpp:3586
 msgid "Empty packets for video seek."
 msgstr "Video araması için boş paketler."
 
@@ -3390,7 +3390,7 @@ msgstr "Video araması için boş paketler."
 msgid "Empty pic file for media "
 msgstr "Medya için boş resim dosyası "
 
-#: core/aviImage.cpp:4527
+#: core/aviImage.cpp:4507
 msgid "Empty seek or preroll"
 msgstr "Boş arama veya ön kayıt"
 
@@ -4097,7 +4097,7 @@ msgstr "Dizinin başına git."
 msgid "Go to the end of the sequence."
 msgstr "Sıranın sonuna git."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4467 core/CMedia.cpp:4514
 msgid "Got colorspace '"
 msgstr "Renk uzayını aldım'"
 
@@ -5046,11 +5046,11 @@ msgstr "Yükleniyor"
 msgid "Loading \"%s\""
 msgstr "\"%s\" yükleniyor"
 
-#: video/mrvGLEngine.cpp:4175
+#: video/mrvGLEngine.cpp:4177
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Dahili gölgelendirici NV3.0 rgba yükleniyor"
 
-#: video/mrvGLEngine.cpp:4181
+#: video/mrvGLEngine.cpp:4183
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Dahili rgba gölgelendirici arbfp1 yükleniyor"
 
@@ -7554,7 +7554,7 @@ msgstr "Altyazı Dosyası "
 msgid "Subtitle font "
 msgstr "Altyazı Mektubu "
 
-#: core/aviImage.cpp:4317
+#: core/aviImage.cpp:4297
 msgid "Subtitle type "
 msgstr "Altyazı Türü "
 
@@ -8361,7 +8361,7 @@ msgstr "işlenmeyen özel durum"
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8483,7 +8483,7 @@ msgstr "Bilinmeyen yuvarlama modu"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser için bilinmeyen veri türü"
 
-#: video/mrvGLEngine.cpp:2634
+#: video/mrvGLEngine.cpp:2636
 msgid "Unknown wipe direction"
 msgstr "Bilinmeyen silme adresi"
 
@@ -9211,7 +9211,7 @@ msgstr "Yanlış bir veri boyutu aldım."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
-#: core/aviImage.cpp:3553
+#: core/aviImage.cpp:3533
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
@@ -9401,7 +9401,7 @@ msgstr "Görüntüye yakınlaştırma başarısız oldu"
 msgid "attributes not found"
 msgstr "nitelikler bulunamadı"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
 msgid "audio"
 msgstr "Ses"
 
@@ -9442,15 +9442,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice resmi "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3736
 msgid "clean effects"
 msgstr "temiz efektler"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3724
 msgid "comment"
 msgstr "yorumlar"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
 msgid "data"
 msgstr "veri"
 
@@ -9462,11 +9462,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet çerçeve için başarısız oldu "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3718
 msgid "default"
 msgstr "varsayılan"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4507
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 
@@ -9474,7 +9474,7 @@ msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 msgid "delete uiview"
 msgstr "uiview'i sil"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3720
 msgid "dub"
 msgstr "dublaj"
 
@@ -9497,7 +9497,7 @@ msgstr "kayan nokta"
 msgid "float (32-bits per channel)"
 msgstr "kayan nokta (kanal başına 32 bit)"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3730
 msgid "forced"
 msgstr "zoraki"
 
@@ -9529,7 +9529,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "yarım kayan nokta (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4502
 msgid "half/float"
 msgstr "yarım/tam kayan nokta"
 
@@ -9537,7 +9537,7 @@ msgstr "yarım/tam kayan nokta"
 msgid "has invalid magic number in the header."
 msgstr "başlıkta geçersiz bir sihirli sayı var."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3732
 msgid "hearing impaired"
 msgstr "işitme bozuklukları"
 
@@ -9557,7 +9557,7 @@ msgstr "bu bir Softimage dosyasıdır, ancak bir PIC dosyası değildir."
 msgid "item_pathname returned "
 msgstr "item_pathname döndürüldü "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3728
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9573,7 +9573,7 @@ msgstr "Dinleme başarısız oldu\n"
 msgid "loadDeepData error: "
 msgstr "Derin veri yükleme hatası: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3726
 msgid "lyrics"
 msgstr "şarkı sözleri"
 
@@ -9719,7 +9719,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Değiştirilecek piksel verisi yok"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3722
 msgid "original"
 msgstr "orijinal"
 
@@ -9815,7 +9815,7 @@ msgstr "src_nb_örnekleri 0'dır"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: geçersiz veri. uh öyle "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
 msgid "subtitle"
 msgstr "alt yazı"
 
@@ -9827,11 +9827,11 @@ msgstr "sysctl başarısız oldu."
 msgid "task info failed"
 msgstr "görev bilgisi başarısız oldu"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3693 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3453 core/CMedia.cpp:3484 core/CMedia.cpp:4474
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "Bilinmeyen"
@@ -9848,11 +9848,11 @@ msgstr "işaretsiz tamsayı (kanal başına 32 bit)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "kısa işaretsiz (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3441 core/CMedia.cpp:3472
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3734
 msgid "visual impaired"
 msgstr "görme engelli"
 

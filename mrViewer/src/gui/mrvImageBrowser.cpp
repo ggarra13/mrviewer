@@ -1992,13 +1992,13 @@ void ImageBrowser::save_session()
             return;
         }
 
-        if ( FGplay && FGimg ) FGimg->stop();
-        if ( BGplay && BGimg ) BGimg->stop( false );
+        if ( FGplay ) FGimg->stop();
+        if ( BGplay ) BGimg->stop( false );
 
         real_change_image( v, i );
 
-        if ( FGplay && FGimg ) FGimg->play( FGplay, uiMain, true );
-        if ( BGplay && BGimg ) BGimg->play( BGplay, uiMain, false );
+        if ( FGplay ) FGimg->play( FGplay, uiMain, true );
+        if ( BGplay ) BGimg->play( BGplay, uiMain, false );
 
     }
 
@@ -4962,7 +4962,6 @@ void ImageBrowser::seek( const int64_t tframe )
                     int64_t lf = reel->global_to_local( f );
 
                     img = bg->image();
-                    img->volume( uiMain->uiVolume->value() );
                     img->seek( lf );
                 }
             }
