@@ -1919,7 +1919,7 @@ void ImageBrowser::save_session()
 	    }
 	}
 
-	TRACE( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
+	TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
 	view()->foreground( m );
 
 	if ( !_loading )

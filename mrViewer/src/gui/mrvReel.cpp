@@ -57,23 +57,23 @@ size_t Reel_t::index( const CMedia* const img ) const
 
     if ( img->is_stereo() && ! img->is_left_eye() )
     {
-        for ( ; i != e; ++i, ++r )
-        {
-            if ( (*i)->image()->right_eye() == img )
-            {
-                return r;
-            }
-        }
+	for ( ; i != e; ++i, ++r )
+	{
+	    if ( (*i)->image()->right_eye() == img )
+	    {
+		return r;
+	    }
+	}
     }
     else
     {
-        for ( ; i != e; ++i, ++r )
-        {
-            if ( (*i)->image() == img )
-            {
-                return r;
-            }
-        }
+	for ( ; i != e; ++i, ++r )
+	{
+	    if ( (*i)->image() == img )
+	    {
+		return r;
+	    }
+	}
     }
     return 0;
 }
@@ -105,12 +105,12 @@ size_t Reel_t::index( const int64_t f ) const
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
-        const mrv::media m = *i;
-        CMedia* img = m->image();
-        int64_t start = m->position();
-        int64_t end = start + img->duration();
-        if ( f >= start && f < end )
-            break;
+	const mrv::media m = *i;
+	CMedia* img = m->image();
+	int64_t start = m->position();
+	int64_t end = start + img->duration();
+	if ( f >= start && f < end )
+	    break;
     }
 
     if ( r >= images.size() ) r = std::numeric_limits<size_t>::max();
@@ -129,7 +129,7 @@ mrv::media Reel_t::media_at( const int64_t f ) const
 
     mrv::media fg = images.front();
     if ( !fg ) {
-        return mrv::media();
+	return mrv::media();
     }
 
     int64_t mn = fg->position();
@@ -138,30 +138,30 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     int64_t mx = fg->position() + fg->duration();
 
     if ( f < mn || f >= mx ) {
-        return mrv::media();
+	return mrv::media();
     }
 
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
-        const mrv::media m = *i;
-        if ( !m ) continue;
+	const mrv::media m = *i;
+	if ( !m ) continue;
 
-        CMedia* img = m->image();
-        int64_t start = m->position();
-        int64_t end = start + img->duration();
-        if ( f >= start && f < end ) break;
+	CMedia* img = m->image();
+	int64_t start = m->position();
+	int64_t end = start + img->duration();
+	if ( f >= start && f < end ) break;
     }
 
     if ( r >= images.size() ) {
-        return mrv::media();
+	return mrv::media();
     }
 
     return images[r];
 }
 
 int64_t Reel_t::local_to_global( const int64_t f,
-                                 const CMedia* const img ) const
+				 const CMedia* const img ) const
 {
     if ( !edl ) return f;
     int64_t r = f;
@@ -180,22 +180,22 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
     int64_t r = 0;
     for ( ; i != e; ++i )
     {
-        const mrv::media m = *i;
-        if ( !m ) continue;
+	const mrv::media m = *i;
+	if ( !m ) continue;
 
-        CMedia* img = m->image();
-        assert( img != NULL );
-        int64_t start = m->position();
-        int64_t end   = start + m->duration() - 1;
-        if ( f >= start && f <= end )
-        {
-            r = f - start + img->first_frame();
-            TRACE2( img->name()
-                    << " global f= " << f << " position= " << start
-                    << " first frame = " << img->first_frame()
-                    << " LOCAL FRAME= " << r );
-            break;
-        }
+	CMedia* img = m->image();
+	assert( img != NULL );
+	int64_t start = m->position();
+	int64_t end   = start + m->duration() - 1;
+	if ( f >= start && f <= end )
+	{
+	    r = f - start + img->first_frame();
+	    TRACE( img->name()
+		   << " global f= " << f << " position= " << start
+		   << " first frame = " << img->first_frame()
+		   << " LOCAL FRAME= " << r );
+	    break;
+	}
     }
 
     return r;
@@ -210,31 +210,31 @@ int64_t Reel_t::offset( const CMedia* const img ) const
 
     if ( img->is_stereo() && ! img->is_left_eye() )
     {
-        for ( ; i != e && (*i)->image()->right_eye() != img; ++i )
-        {
-            CMedia* timg = (*i)->image()->right_eye();
-            assert( timg != NULL );
-            if ( timg )
-                t += timg->duration();
-            else
-                t += (*i)->image()->duration();
-        }
+	for ( ; i != e && (*i)->image()->right_eye() != img; ++i )
+	{
+	    CMedia* timg = (*i)->image()->right_eye();
+	    assert( timg != NULL );
+	    if ( timg )
+		t += timg->duration();
+	    else
+		t += (*i)->image()->duration();
+	}
 
-        if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
-                                 << _(" for reel ") << name );
+	if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
+				 << _(" for reel ") << name );
 
-        return t;
+	return t;
     }
 
     for ( ; i != e && (*i)->image() != img; ++i )
     {
-        CMedia* timg = (*i)->image();
-        assert( timg != NULL );
+	CMedia* timg = (*i)->image();
+	assert( timg != NULL );
 
-        t += timg->duration();
+	t += timg->duration();
     }
     if ( i == e ) LOG_ERROR( _("Invalid image ") << img->name()
-                             << _(" for reel " ) << name );
+			     << _(" for reel " ) << name );
     return t;
 }
 
