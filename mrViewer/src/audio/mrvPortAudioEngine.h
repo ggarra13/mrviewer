@@ -26,7 +26,7 @@
  */
 
 
-#ifdef PORTAUDIO
+#ifdef MRV_PORTAUDIO
 #ifndef mrvPortAudioEngine_h
 #define mrvPortAudioEngine_h
 
@@ -53,7 +53,7 @@ public:
 
     // Name of audio engine
     virtual const char* name() {
-        return "PortAudio Library";
+	return "PortAudio Library";
     }
 
     virtual void refresh_devices();
@@ -61,9 +61,9 @@ public:
 
     // Open an audio stream for playback
     virtual bool open(
-        const unsigned int channels,
-        const unsigned int frequency,
-        const AudioFormat  format
+	const unsigned int channels,
+	const unsigned int frequency,
+	const AudioFormat  format
     );
 
     // Play some samples (this function does not return until

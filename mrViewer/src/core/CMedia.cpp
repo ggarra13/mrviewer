@@ -2725,17 +2725,14 @@ void CMedia::play(const CMedia::Playback dir,
     clear_packets();
 
     TRACE( name() << " frame " << frame() );
+
     // This seek is needed to sync audio playback and flush buffers
+    if ( dir == kForwards ) _seek_req = true;
 
-    if ( _seek_req == false )
-    {
-        if ( dir == kForwards ) _seek_req = true;
+    TRACE( name() << " frame " << frame() );
+    seek_to_position( _frame );
 
-        TRACE( name() << " frame " << frame() );
-        seek_to_position( _frame );
-
-        TRACE( name() << " frame " << frame() );
-    }
+    TRACE( name() << " frame " << frame() );
 
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode

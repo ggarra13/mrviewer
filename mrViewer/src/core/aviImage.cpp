@@ -2848,8 +2848,6 @@ void aviImage::populate()
                 }
                 else
                 {
-                    if ( pkt->dts == AV_NOPTS_VALUE &&
-                         pkt->pts == AV_NOPTS_VALUE ) continue;
                     _video_packets.push_back( *pkt );
                     continue;
                 }
@@ -2865,16 +2863,12 @@ void aviImage::populate()
                     // Only add packet if it comes before first frame
                     if ( pktframe >= first_frame() )
                     {
-                        if ( pkt->dts == AV_NOPTS_VALUE &&
-                             pkt->pts == AV_NOPTS_VALUE ) continue;
                         _audio_packets.push_back( *pkt );
                     }
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
                 else
                 {
-                    if ( pkt->dts == AV_NOPTS_VALUE &&
-                         pkt->pts == AV_NOPTS_VALUE ) continue;
                     _audio_packets.push_back( *pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
@@ -2896,8 +2890,6 @@ void aviImage::populate()
                     pkt->size = 0;
                     pkt->data = NULL;
                     pkt->dts = pkt->pts = _dts;
-                    if ( pkt->dts == AV_NOPTS_VALUE &&
-                         pkt->pts == AV_NOPTS_VALUE ) continue;
                     _video_packets.push_back( *pkt );
                 }
 
@@ -3145,8 +3137,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 pkt->size = 0;
                 pkt->data = NULL;
                 pkt->stream_index = video_stream_index();
-                if ( pkt->dts == AV_NOPTS_VALUE &&
-                     pkt->pts == AV_NOPTS_VALUE ) continue;
                 _video_packets.push_back( *pkt );
                 got_video = true;
                 got_subtitle = true;
@@ -3166,8 +3156,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     pkt->size = 0;
                     pkt->data = NULL;
                     pkt->stream_index = audio_stream_index();
-                    if ( pkt->dts == AV_NOPTS_VALUE &&
-                         pkt->pts == AV_NOPTS_VALUE ) continue;
                     _audio_packets.push_back( *pkt );
                 }
 
@@ -3242,8 +3230,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                             << ( pkt->flags & AV_PKT_FLAG_KEY ? 'K' : ' ' )
                             << std::endl;
 #endif
-                if ( pkt->dts == AV_NOPTS_VALUE &&
-                     pkt->pts == AV_NOPTS_VALUE ) continue;
                   _video_packets.push_back( *pkt );
                 }
                 else
@@ -3263,8 +3249,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 // std::cerr << "push back pkt "
                 //           << get_frame( get_video_stream(), pkt )
                 //           << std::endl;
-                if ( pkt->dts == AV_NOPTS_VALUE &&
-                     pkt->pts == AV_NOPTS_VALUE ) continue;
                 _video_packets.push_back( *pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
@@ -3318,16 +3302,12 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     // Only add packet if it comes before seek frame
                     if ( pktframe <= frame )
                     {
-                        if ( pkt->dts == AV_NOPTS_VALUE &&
-                             pkt->pts == AV_NOPTS_VALUE ) continue;
                         _audio_packets.push_back( *pkt );
                     }
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
                 else
                 {
-                    if ( pkt->dts == AV_NOPTS_VALUE &&
-                         pkt->pts == AV_NOPTS_VALUE ) continue;
                     _audio_packets.push_back( *pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }

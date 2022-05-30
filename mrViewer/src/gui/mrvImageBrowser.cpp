@@ -1919,7 +1919,7 @@ void ImageBrowser::save_session()
             }
         }
 
-        TRACE( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
+        TRACE2( "CHANGE IMAGE TO INDEX " << i << " " << m->name() );
         view()->foreground( m );
 
         if ( !_loading )
@@ -1992,13 +1992,13 @@ void ImageBrowser::save_session()
             return;
         }
 
-        if ( FGplay && FGimg ) FGimg->stop();
-        if ( BGplay && BGimg ) BGimg->stop( false );
+        if ( FGplay ) FGimg->stop();
+        if ( BGplay ) BGimg->stop( false );
 
         real_change_image( v, i );
 
-        if ( FGplay && FGimg ) FGimg->play( FGplay, uiMain, true );
-        if ( BGplay && BGimg ) BGimg->play( BGplay, uiMain, false );
+        if ( FGplay ) FGimg->play( FGplay, uiMain, true );
+        if ( BGplay ) BGimg->play( BGplay, uiMain, false );
 
     }
 
@@ -2168,7 +2168,7 @@ void ImageBrowser::save_session()
                 img->fps( fps );
                 img->play_fps( fps );
             }
-#if 1
+#if 0
             else
             {
                 if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
@@ -2177,8 +2177,8 @@ void ImageBrowser::save_session()
                     double lastfps  = img->last_frame() / fps;
                     double firstimg = img->first_frame() / img->fps();
                     double lastimg  = img->last_frame() / img->fps();
-                    int64_t first = img->first_frame() / fps * img->fps();
-                    int64_t last  = img->last_frame() / fps * img->fps();
+                    int64_t first = img->first_frame() * img->fps() / fps;
+                    int64_t last  = img->last_frame()  * img->fps() / fps;
 
                     img->first_frame( first );
                     img->in_frame( first );
@@ -4962,7 +4962,6 @@ void ImageBrowser::seek( const int64_t tframe )
                     int64_t lf = reel->global_to_local( f );
 
                     img = bg->image();
-                    img->volume( uiMain->uiVolume->value() );
                     img->seek( lf );
                 }
             }

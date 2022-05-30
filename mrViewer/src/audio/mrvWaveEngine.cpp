@@ -41,6 +41,8 @@
 #include <mmreg.h>   // for manufacturer and product IDs
 
 
+#pragma warning( disable: 4244 )
+
 namespace
 {
 const char* kModule = "wmm";
@@ -424,43 +426,13 @@ bool WaveEngine::shutdown()
 
 float WaveEngine::volume() const
 {
-    if (!_audio_device) return 1.0;
-
-    DWORD vol;
-    MMRESULT result = waveOutGetVolume( _audio_device, &vol );
-    if ( result != MMSYSERR_NOERROR )
-    {
-        MMerror( "waveOutGetVolume", result );
-        return 1.0;
-    }
-
-    unsigned short left = unsigned(0xFFFF & vol);
-    unsigned short right = unsigned(0xFFFF & (vol >> 16));
-
-    float v = (float)left / 0xFFFF;;
-    v += (float)right / 0xFFFF;
-    if ( right > 0x0000 ) v /= 2.0f;
-
-    return v;
+    return _volume;
 }
 
 
 void WaveEngine::volume( float v )
 {
-    if (!_audio_device) return;
-
     _volume = v;
-    unsigned short left = unsigned(0xFFFF * v);
-    unsigned short right = unsigned(0xFFFF * v);
-
-    unsigned long x = left + (right << 16);
-
-    MMRESULT result = waveOutSetVolume( _audio_device, x );
-    if ( result != MMSYSERR_NOERROR )
-    {
-        MMerror( "waveOutSetVolume", result );
-        return;
-    }
 }
 
 
@@ -493,7 +465,7 @@ int get_bits_per_sample( const WaveEngine::AudioFormat format )
     }
     return sizeof(float) * 8;
 }
-        
+
 MMRESULT WaveEngine::reopen( const unsigned channels,
                          const unsigned freq,
                          const AudioFormat format )
@@ -513,7 +485,7 @@ MMRESULT WaveEngine::reopen( const unsigned channels,
         device = WAVE_MAPPER; // default device
     else
         device -= 1;
-    
+
     MMRESULT result =
     waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &f,
                 0, 0, CALLBACK_NULL | WAVE_ALLOWSYNC );
@@ -533,10 +505,11 @@ bool WaveEngine::open( const unsigned channels,
 
         w.dwChannelMask = channel_mask[ channels-1 ];
         w.Format.wBitsPerSample = get_bits_per_sample( format );
-        
+
 
         unsigned ch = channels;
         _channels = ch;
+        _sample_size = 4 * ch;
         w.Format.nChannels = ch;
         w.Format.nSamplesPerSec = freq;
         w.Format.nBlockAlign = w.Format.wBitsPerSample * ch / 8;
@@ -572,12 +545,12 @@ bool WaveEngine::open( const unsigned channels,
         else
             device -= 1;
 
-        
+
         DBGM1( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
         MMRESULT result;
 
-        
+
         result =
         waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &w,
                     0, 0, CALLBACK_NULL | WAVE_FORMAT_DIRECT |
@@ -615,7 +588,7 @@ bool WaveEngine::open( const unsigned channels,
             _enabled = false;
             return false;
         }
-            
+
         _audio_format = format;
 
         // Allocate internal sound buffer
@@ -671,7 +644,7 @@ void WaveEngine::wait_audio()
     }
 }
 
-bool WaveEngine::play( const char* data, const size_t size )
+bool WaveEngine::play( const char* orig, const size_t size )
 {
     wait_audio();
 
@@ -691,9 +664,72 @@ bool WaveEngine::play( const char* data, const size_t size )
     assert( data != NULL );
     assert( hdr->lpData != NULL );
 
+    uint8_t* data = (uint8_t*)orig;
+
+    unsigned sample_len = (unsigned)size / _sample_size;
+
+    
+    if ( _volume < 0.99f )
+    {
+        data = new uint8_t[size];
+        memcpy( data, orig, size );
+
+        int i = sample_len * _channels;
+        switch( _audio_format )
+        {
+            case kU8:
+                {
+                    uint8_t* d = (uint8_t*)data;
+                    while ( i-- )
+                    {
+                        d[i] *= _volume;
+                    }
+                    break;
+                }
+            case kS16LSB:
+            case kS16MSB:
+                {
+                    int16_t* d = (int16_t*)data;
+                    while ( i-- )
+                    {
+                        d[i] *= _volume;
+                    }
+                    break;
+                }
+            case kS24LSB:
+            case kS24MSB:
+            case kS32LSB:
+            case kS32MSB:
+                {
+                    int32_t* d = (int32_t*)data;
+                    while ( i-- )
+                    {
+                        d[i] *= _volume;
+                    }
+                    break;
+                }
+            case kFloatLSB:
+            case kFloatMSB:
+                {
+                    float* d = (float*)data;
+                    while ( i-- )
+                    {
+                        d[i] *= _volume;
+                    }
+                    break;
+                }
+            default:
+                break;
+        }
+    }
 
     // Copy data
     memcpy( hdr->lpData, data, size );
+    
+    if ( (uint8_t*)orig != data )
+    {
+        delete [] data;
+    }
 
     hdr->dwBufferLength = (DWORD)size;
     hdr->dwLoops        = 1;
