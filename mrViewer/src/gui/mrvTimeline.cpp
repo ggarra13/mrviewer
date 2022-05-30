@@ -69,10 +69,10 @@ _draw_annotation( true ),
 _draw_cache( true ),
 _tc( 0 ),
 _fps( 24 ),
-_display_min( AV_NOPTS_VALUE ),
-_display_max( AV_NOPTS_VALUE ),
-_undo_display_min( AV_NOPTS_VALUE ),
-_undo_display_max( AV_NOPTS_VALUE ),
+_display_min( 1 ),
+_display_max( 50 ),
+_undo_display_min( 1 ),
+_undo_display_max( 50 ),
 image( NULL ),
 win( NULL ),
 uiMain( NULL )
@@ -104,21 +104,21 @@ void Timeline::display_minimum( double x )
 {
     if ( x > _display_max ) x = _display_max;
     if ( x >= minimum() ) {
-	//if ( _edl )
-	    _undo_display_min = _display_min;
-	_display_min = x;
-	if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
-	{
-	    Fl_Slider::minimum( x );
-	}
+        //if ( _edl )
+            _undo_display_min = _display_min;
+        _display_min = x;
+        if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+        {
+            Fl_Slider::minimum( x );
+        }
     }
 
 
     if ( uiMain && uiMain->uiView )
     {
-	char buf[1024];
-	sprintf( buf, N_("TimelineMinDisplay %lf"), x );
-	uiMain->uiView->send_network( buf );
+        char buf[1024];
+        sprintf( buf, N_("TimelineMinDisplay %lf"), x );
+        uiMain->uiView->send_network( buf );
     }
 }
 
@@ -128,7 +128,7 @@ void Timeline::undo_display_minimum()
     _display_min = _undo_display_min;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	Fl_Slider::minimum( _display_min );
+        Fl_Slider::minimum( _display_min );
     }
     _undo_display_min = AV_NOPTS_VALUE;
     redraw();
@@ -140,7 +140,7 @@ void Timeline::undo_display_maximum()
     _display_max = _undo_display_max;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	Fl_Slider::maximum( _display_max );
+        Fl_Slider::maximum( _display_max );
     }
     _undo_display_max = AV_NOPTS_VALUE;
     redraw();
@@ -150,21 +150,21 @@ void Timeline::display_maximum( double x )
 {
     if ( x < _display_min ) x = _display_min;
     if ( x <= maximum() ) {
-	//if ( _edl )
-	    _undo_display_max = _display_max;
-	_display_max = x;
-	if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
-	{
-	    Fl_Slider::maximum( x );
-	}
+        //if ( _edl )
+            _undo_display_max = _display_max;
+        _display_max = x;
+        if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+        {
+            Fl_Slider::maximum( x );
+        }
     }
 
 
     if ( uiMain && uiMain->uiView )
     {
-	char buf[1024];
-	sprintf( buf, N_("TimelineMaxDisplay %lf"), x );
-	uiMain->uiView->send_network( buf );
+        char buf[1024];
+        sprintf( buf, N_("TimelineMaxDisplay %lf"), x );
+        uiMain->uiView->send_network( buf );
     }
 }
 
@@ -177,9 +177,9 @@ void Timeline::minimum( double x )
 
     if ( uiMain && uiMain->uiView )
     {
-	char buf[1024];
-	sprintf( buf, N_("TimelineMin %lf"), x );
-	uiMain->uiView->send_network( buf );
+        char buf[1024];
+        sprintf( buf, N_("TimelineMin %lf"), x );
+        uiMain->uiView->send_network( buf );
     }
 }
 
@@ -192,9 +192,9 @@ void Timeline::maximum( double x )
 
     if ( uiMain && uiMain->uiView )
     {
-	char buf[1024];
-	sprintf( buf, N_("TimelineMax %lf"), x );
-	uiMain->uiView->send_network( buf );
+        char buf[1024];
+        sprintf( buf, N_("TimelineMax %lf"), x );
+        uiMain->uiView->send_network( buf );
     }
 }
 
@@ -205,35 +205,35 @@ void Timeline::edl( bool x )
 
     if ( _edl && uiMain && browser() )
     {
-	mrv::Timecode* uiFrame = uiMain->uiFrame;
+        mrv::Timecode* uiFrame = uiMain->uiFrame;
 
-	// Calculate frame range for timeline
-	minimum( 1 );
-	if ( uiMain->uiStartFrame )
-	    uiMain->uiStartFrame->frame( 1 );
-	if ( uiMain->uiFrame && uiMain->uiFrame->value() < 1 )
-	    uiFrame->frame(1);
+        // Calculate frame range for timeline
+        minimum( 1 );
+        if ( uiMain->uiStartFrame )
+            uiMain->uiStartFrame->frame( 1 );
+        if ( uiMain->uiFrame && uiMain->uiFrame->value() < 1 )
+            uiFrame->frame(1);
 
-	uint64_t total = 0;
+        uint64_t total = 0;
 
-	const mrv::Reel& reel = browser()->current_reel();
-	if ( !reel ) return;
+        const mrv::Reel& reel = browser()->current_reel();
+        if ( !reel ) return;
 
-	mrv::MediaList::const_iterator i = reel->images.begin();
-	mrv::MediaList::const_iterator e = reel->images.end();
+        mrv::MediaList::const_iterator i = reel->images.begin();
+        mrv::MediaList::const_iterator e = reel->images.end();
 
-	for ( ; i != e; ++i )
-	{
-	    CMedia* img = (*i)->image();
-	    if ( (*i)->position() == MRV_NOPTS_VALUE )
-		(*i)->position( total );
-	    total += img->duration();
-	}
+        for ( ; i != e; ++i )
+        {
+            CMedia* img = (*i)->image();
+            if ( (*i)->position() == MRV_NOPTS_VALUE )
+                (*i)->position( total );
+            total += img->duration();
+        }
 
-	maximum( double(total) );
-	if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
-	if ( uiFrame && uiFrame->value() > int64_t(total) )
-	    uiFrame->frame(total);
+        maximum( double(total) );
+        if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
+        if ( uiFrame && uiFrame->value() > int64_t(total) )
+            uiFrame->frame(total);
     }
 
     redraw();
@@ -256,23 +256,23 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 
     double A,B;
     if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
-	 ( display_minimum() > minimum() || display_maximum() < maximum() ) )
+         ( display_minimum() > minimum() || display_maximum() < maximum() ) )
     {
-	A = display_minimum();
-	B = display_maximum();
-	if (A > B) {
-	    A = B;
-	    B = display_minimum();
-	}
+        A = display_minimum();
+        B = display_maximum();
+        if (A > B) {
+            A = B;
+            B = display_minimum();
+        }
     }
     else
     {
-	A = minimum();
-	B = maximum();
-	if (A > B) {
-	    A = B;
-	    B = minimum();
-	}
+        A = minimum();
+        B = maximum();
+        if (A > B) {
+            A = B;
+            B = minimum();
+        }
     }
     //if (!finite(A) || !finite(B)) return;
 
@@ -286,7 +286,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 
     if ( _display != Timecode::kFrames )
     {
-	nummod = int(_fps);
+        nummod = int(_fps);
     }
 
     int powincr = 10000;
@@ -296,12 +296,12 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     while (mul*5 <= derivative) mul *= 10;
     while (mul > derivative*2*div) div *= 10;
     if (derivative*div > mul*2) {
-	mul *= 5;
-	smallmod = 2;
+        mul *= 5;
+        smallmod = 2;
     }
     else if (derivative*div > mul) {
-	mul *= 2;
-	nummod /= 2;
+        mul *= 2;
+        nummod /= 2;
     }
     if ( nummod <= 1 ) nummod = 1;
 
@@ -310,52 +310,53 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color linecolor = FL_BLACK;
     if ( Preferences::schemes.name == "Black" )
     {
-	linecolor = fl_inactive( fl_contrast( fl_rgb_color( 70, 70, 70 ),
-					      selection_color() ) );
+        linecolor = fl_inactive( fl_contrast( fl_rgb_color( 70, 70, 70 ),
+                                              selection_color() ) );
     }
 
     fl_color(linecolor);
-    char buffer[16];
+    char buffer[32];
     fl_font(labelfont(), labelsize());
     for (int n = 0; ; n++) {
-	// every ten they get further apart for log slider:
-	if (n > powincr) {
-	    mul *= 10;
-	    n = (n-1)/10+1;
-	}
-	double v = mul*n/div;
-	if (v > fabs(A) && v > fabs(B)) break;
-	int sm = n%smallmod ? 3 : 0;
-	if (v >= A && v <= B) {
-	    int t = slider_position(v, w);
-	    int x1dxt = x1 + dx*t;
-	    int y1dyt = y1 + dy*t;
-	    fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
-	    if (n-1 != 0 && (n-1)%nummod == 0) {
-		mrv::Timecode::format( buffer, _display, int64_t(v),
-				       _tc, _fps );
-		fl_color(textcolor);
-		int wt = 0, ht = 0;
-		fl_measure( buffer, wt, ht );
-		fl_draw(buffer, x1dxt-wt/2, y1dyt+fl_height()-fl_descent());
-		fl_color(linecolor);
-	    }
-	}
-	if (v && -v >= A && -v <= B) {
-	    int t = slider_position(-v, w);
-	    int x1dxt = x1 + dx*t;
-	    int y1dyt = y1 + dy*t;
-	    fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
-	    if (n%nummod == 0) {
-		mrv::Timecode::format( buffer, _display, int64_t(-v), _tc,
-				       _fps );
-		fl_color(textcolor);
-		// int wt = 0, ht = 0;
-		// measure( p, wt, ht );
-		fl_draw(buffer, x1dxt, y1dyt+fl_height()-fl_descent());
-		fl_color(linecolor);
-	    }
-	}
+        // every ten they get further apart for log slider:
+        if (n > powincr) {
+            mul *= 10;
+            n = (n-1)/10+1;
+        }
+        double v = mul*n/div;
+        if (v > fabs(A) && v > fabs(B)) break;
+        int sm = n%smallmod ? 3 : 0;
+        if (v >= A && v <= B) {
+            int t = slider_position(v, w);
+            int x1dxt = x1 + dx*t;
+            int y1dyt = y1 + dy*t;
+            fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
+            if (n-1 != 0 && (n-1)%nummod == 0) {
+                mrv::Timecode::format( buffer, _display, int64_t(v),
+                                       _tc, _fps );
+                fl_color(textcolor);
+                int wt = 0, ht = 0;
+                fl_measure( buffer, wt, ht );
+                fl_draw(buffer, x1dxt-wt/2, y1dyt+fl_height()-fl_descent());
+                fl_color(linecolor);
+            }
+        }
+        if (v && -v >= A && -v <= B) {
+            int t = slider_position(-v, w);
+            int x1dxt = x1 + dx*t;
+            int y1dyt = y1 + dy*t;
+            fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
+            if (n%nummod == 0) {
+                TRACE2( "v = " << v );
+                mrv::Timecode::format( buffer, _display, int64_t(-v), _tc,
+                                       _fps );
+                fl_color(textcolor);
+                // int wt = 0, ht = 0;
+                // measure( p, wt, ht );
+                fl_draw(buffer, x1dxt, y1dyt+fl_height()-fl_descent());
+                fl_color(linecolor);
+            }
+        }
     }
 
     fl_pop_clip();
@@ -375,22 +376,22 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
 
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
-	fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
-	draw_ticks(sr, int(slider_size()+1)/2);
+        fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
+        draw_ticks(sr, int(slider_size()+1)/2);
     }
 
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
-	Fl::set_box_color( selection_color() );
-	fl_color(fl_contrast(labelcolor(), selection_color()));
+        Fl::set_box_color( selection_color() );
+        fl_color(fl_contrast(labelcolor(), selection_color()));
     }
 
     return true;
 }
 
 void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
-			       int64_t mn, int64_t mx, int64_t frame,
-			       const mrv::Recti& r )
+                               int64_t mn, int64_t mx, int64_t frame,
+                               const mrv::Recti& r )
 {
 
     int64_t j = frame;
@@ -417,11 +418,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     fl_line_style( FL_SOLID, 1 );
 
     if ( ( img->stereo_output() != CMedia::kNoStereo &&
-	    img->stereo_output() != CMedia::kStereoLeft ) ||
-	    img->stereo_input() > CMedia::kSeparateLayersInput )
+            img->stereo_output() != CMedia::kStereoLeft ) ||
+            img->stereo_input() > CMedia::kSeparateLayersInput )
     {
-	c = CMedia::kStereoCache;
-	fl_color( FL_GREEN );
+        c = CMedia::kStereoCache;
+        fl_color( FL_GREEN );
     }
 
 
@@ -433,40 +434,40 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     while ( j <= max )
     {
-	dx = NO_FRAME_VALUE;
-	int64_t t = j - pos + 1;
-	for ( ; j < max; ++j, ++t )
-	{
-	    if ( img->is_cache_filled( t ) >= c )
-	    {
-		dx = rx + slider_position( double(j), ww );
-		break;
-	    }
-	}
+        dx = NO_FRAME_VALUE;
+        int64_t t = j - pos + 1;
+        for ( ; j < max; ++j, ++t )
+        {
+            if ( img->is_cache_filled( t ) >= c )
+            {
+                dx = rx + slider_position( double(j), ww );
+                break;
+            }
+        }
 
-	if ( dx == NO_FRAME_VALUE )
-	    break;
+        if ( dx == NO_FRAME_VALUE )
+            break;
 
-	t = j - pos + 1;
-	for ( ; j <= max; ++j, ++t )
-	{
-	    if ( img->is_cache_filled( t ) < c )
-	    {
-		int dx2 = rx + slider_position( double(j), ww );
-		int wh = dx2-dx;
-		fl_rectf( dx, ry, wh, hh );
-		dx = NO_FRAME_VALUE;
-		break;
-	    }
-	}
+        t = j - pos + 1;
+        for ( ; j <= max; ++j, ++t )
+        {
+            if ( img->is_cache_filled( t ) < c )
+            {
+                int dx2 = rx + slider_position( double(j), ww );
+                int wh = dx2-dx;
+                fl_rectf( dx, ry, wh, hh );
+                dx = NO_FRAME_VALUE;
+                break;
+            }
+        }
     }
 
     int64_t t = j - pos;  // not +1
     if ( dx != NO_FRAME_VALUE && img->is_cache_filled( t ) >= c )
     {
-	int dx2 = rx + slider_position( double(j), ww );
-	int wh = dx2-dx;
-	fl_rectf( dx, ry, wh, hh );
+        int dx2 = rx + slider_position( double(j), ww );
+        int wh = dx2-dx;
+        fl_rectf( dx, ry, wh, hh );
     }
 
     fl_pop_clip();
@@ -488,152 +489,152 @@ void Timeline::draw_selection( const mrv::Recti& r )
 
     void showwin(mrv::Timeline* self)
     {
-	self->show_thumb();
+        self->show_thumb();
     }
 
     void Timeline::show_thumb()
     {
-	int WX = window()->x();
-	int WY = window()->y();
-	int X = event_x - 64;
-	int Y = y() - 80;
+        int WX = window()->x();
+        int WY = window()->y();
+        int X = event_x - 64;
+        int Y = y() - 80;
 
-	if ( Y < 0 ) return;
+        if ( Y < 0 ) return;
 
-	Fl_Box* b = NULL;
-	if (! win ) {
-	    win = new Fl_Double_Window( X, Y, 128, 76 );
-	    win->parent( window() );
-	    win->border(0);
-	    win->begin();
-	    b = new Fl_Box( 0, 0, win->w(), win->h() );
-	    b->box( FL_FLAT_BOX );
-	    b->labelcolor( fl_contrast( b->labelcolor(), b->color() ) );
-	}
-	else {
-	    win->resize( X, Y, 128, 76 );
-	    b = (Fl_Box*)win->child(0);
-	}
+        Fl_Box* b = NULL;
+        if (! win ) {
+            win = new Fl_Double_Window( X, Y, 128, 76 );
+            win->parent( window() );
+            win->border(0);
+            win->begin();
+            b = new Fl_Box( 0, 0, win->w(), win->h() );
+            b->box( FL_FLAT_BOX );
+            b->labelcolor( fl_contrast( b->labelcolor(), b->color() ) );
+        }
+        else {
+            win->resize( X, Y, 128, 76 );
+            b = (Fl_Box*)win->child(0);
+        }
 
-	mrv::media m;
-	if ( _edl )
-	    m = media_at( frame );
-	else
-	    m = browser()->current_image();
-	if ( ! m ) {
-	    win->hide();
-	    return;
-	}
-	if ( !fg || strcmp( fg->image()->fileroot(), m->image()->fileroot() )
-	     != 0 )
-	{
-	    image = CMedia::guess_image( m->image()->fileroot(), NULL, 0, true );
-	    if ( !image ) return;
-	    fg.reset( new mrv::gui::media( image ) );
-	}
-	else
-	{
-	    image = fg->image();
-	}
-	int64_t global = frame;
-	frame = global_to_local( frame );
-	image->seek( frame );
-	fg->create_thumbnail();
-	char buf[64];
-	Timecode::Display display;
-	Timecode::format( buf, _display,
-			  global, _tc,
-			  image->fps(), true );
-	b->copy_label( buf );
-	b->image( fg->thumbnail() );
-	b->redraw();
-	win->end();
-	win->cursor( FL_CURSOR_DEFAULT );
-	win->show();
+        mrv::media m;
+        if ( _edl )
+            m = media_at( frame );
+        else
+            m = browser()->current_image();
+        if ( ! m ) {
+            win->hide();
+            return;
+        }
+        if ( !fg || strcmp( fg->image()->fileroot(), m->image()->fileroot() )
+             != 0 )
+        {
+            image = CMedia::guess_image( m->image()->fileroot(), NULL, 0, true );
+            if ( !image ) return;
+            fg.reset( new mrv::gui::media( image ) );
+        }
+        else
+        {
+            image = fg->image();
+        }
+        int64_t global = frame;
+        frame = global_to_local( frame );
+        image->seek( frame );
+        fg->create_thumbnail();
+        char buf[64];
+        Timecode::Display display;
+        Timecode::format( buf, _display,
+                          global, _tc,
+                          image->fps(), true );
+        b->copy_label( buf );
+        b->image( fg->thumbnail() );
+        b->redraw();
+        win->end();
+        win->cursor( FL_CURSOR_DEFAULT );
+        win->show();
     }
 
 int Timeline::handle( int e )
 {
     if ( e == FL_ENTER ) {
-	window()->cursor( FL_CURSOR_DEFAULT );
-	return 1;
+        window()->cursor( FL_CURSOR_DEFAULT );
+        return 1;
     }
     else if ( e == FL_MOVE || e == FL_DRAG || e == FL_PUSH )
     {
-	window()->cursor( FL_CURSOR_DEFAULT );
-	event_x = Fl::event_x();
-	int X = x()+Fl::box_dx(box());
-	int Y = y()+Fl::box_dy(box());
-	int W = w()-Fl::box_dw(box());
-	int H = h()-Fl::box_dh(box());
+        window()->cursor( FL_CURSOR_DEFAULT );
+        event_x = Fl::event_x();
+        int X = x()+Fl::box_dx(box());
+        int Y = y()+Fl::box_dy(box());
+        int W = w()-Fl::box_dw(box());
+        int H = h()-Fl::box_dh(box());
 
-	// HERE, SET A VALUE TO CURRENT HOVERING PLACE,
-	// *NOT* TO value().
-	double val;
-	if (minimum() == maximum())
-	    val = 0.5;
-	else {
-	    val = (value()-minimum())/(maximum()-minimum());
-	    if (val > 1.0) val = 1.0;
-	    else if (val < 0.0) val = 0.0;
-	}
+        // HERE, SET A VALUE TO CURRENT HOVERING PLACE,
+        // *NOT* TO value().
+        double val;
+        if (minimum() == maximum())
+            val = 0.5;
+        else {
+            val = (value()-minimum())/(maximum()-minimum());
+            if (val > 1.0) val = 1.0;
+            else if (val < 0.0) val = 0.0;
+        }
 
-	int ww = W;
-	int mx = Fl::event_x()-X;
-	int S;
-	static int offcenter;
+        int ww = W;
+        int mx = Fl::event_x()-X;
+        int S;
+        static int offcenter;
 
-	S = int(slider_size()*ww+.5); if (S >= ww) return 0;
-	int T = H / 2+1;
-	if (type()==FL_HOR_NICE_SLIDER) T += 4;
-	if (S < T) S = T;
+        S = int(slider_size()*ww+.5); if (S >= ww) return 0;
+        int T = H / 2+1;
+        if (type()==FL_HOR_NICE_SLIDER) T += 4;
+        if (S < T) S = T;
 
-	if ( e == FL_MOVE ) {
-	    int xx = int(val*(ww-S)+.5);
-	    offcenter = mx-xx;
-	    if (offcenter < 0) offcenter = 0;
-	    else if (offcenter > S) offcenter = S;
-	    else return 1;
-	}
+        if ( e == FL_MOVE ) {
+            int xx = int(val*(ww-S)+.5);
+            offcenter = mx-xx;
+            if (offcenter < 0) offcenter = 0;
+            else if (offcenter > S) offcenter = S;
+            else return 1;
+        }
 
-	int xx = mx-offcenter;
-	double v = 0;
-	if (xx < 0) {
-	    xx = 0;
-	    offcenter = mx; if (offcenter < 0) offcenter = 0;
-	} else if (xx > (ww-S)) {
-	    xx = ww-S;
-	    offcenter = mx-xx; if (offcenter > S) offcenter = S;
-	}
-	v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
-	frame = clamp(v);
+        int xx = mx-offcenter;
+        double v = 0;
+        if (xx < 0) {
+            xx = 0;
+            offcenter = mx; if (offcenter < 0) offcenter = 0;
+        } else if (xx > (ww-S)) {
+            xx = ww-S;
+            offcenter = mx-xx; if (offcenter > S) offcenter = S;
+        }
+        v = round(xx*(maximum()-minimum())/(ww-S) + minimum());
+        frame = clamp(v);
 
-	if ( uiMain->uiPrefs->uiPrefsTimelineThumbnails->value() )
-	{
-	    if ( Fl::has_timeout( (Fl_Timeout_Handler)showwin, this ) )
-		Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
-	    Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
-	}
+        if ( uiMain->uiPrefs->uiPrefsTimelineThumbnails->value() )
+        {
+            if ( Fl::has_timeout( (Fl_Timeout_Handler)showwin, this ) )
+                Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+            Fl::add_timeout( 0.01, (Fl_Timeout_Handler)showwin, this );
+        }
     }
     else if ( e == FL_LEAVE )
     {
-	Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
-	if (win) win->hide();
+        Fl::remove_timeout( (Fl_Timeout_Handler)showwin, this );
+        if (win) win->hide();
     }
     else if ( e == FL_KEYDOWN )
     {
-	unsigned int rawkey = Fl::event_key();
-	if ( kPlayBack.match( rawkey ) ||
-	     kPlayFwd.match( rawkey ) ||
-	     kPlayDirection.match( rawkey ) ||
-	     kPlayFwdTwiceSpeed.match( rawkey ) ||
-	     kPlayBackHalfSpeed.match( rawkey ) ||
-	     kShapeFrameStepFwd.match( rawkey ) ||
-	     kShapeFrameStepBack.match( rawkey ) ||
-	     kStop.match( rawkey ) )
-	{
-	    return uiMain->uiView->handle( e );
-	}
+        unsigned int rawkey = Fl::event_key();
+        if ( kPlayBack.match( rawkey ) ||
+             kPlayFwd.match( rawkey ) ||
+             kPlayDirection.match( rawkey ) ||
+             kPlayFwdTwiceSpeed.match( rawkey ) ||
+             kPlayBackHalfSpeed.match( rawkey ) ||
+             kShapeFrameStepFwd.match( rawkey ) ||
+             kShapeFrameStepBack.match( rawkey ) ||
+             kStop.match( rawkey ) )
+        {
+            return uiMain->uiView->handle( e );
+        }
     }
     Fl_Boxtype bx = box();
     box( FL_FLAT_BOX );
@@ -677,11 +678,11 @@ void Timeline::draw()
 
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	mn = display_minimum();
-	mx = display_maximum();
+        mn = display_minimum();
+        mx = display_maximum();
     }
 
-    int64_t v  = uiMain->uiView->frame(); //value(); // @todo: should be value()
+    double v  = uiMain->uiView->frame(); //value(); // @todo: should be value()
 
     if ( !browser() ) return;
 
@@ -690,156 +691,156 @@ void Timeline::draw()
     if ( _edl )
     {
 
-	const mrv::Reel& reel = browser()->current_reel();
-	if ( !reel ) return;
+        const mrv::Reel& reel = browser()->current_reel();
+        if ( !reel ) return;
 
-	mrv::MediaList::const_iterator i = reel->images.begin();
-	mrv::MediaList::const_iterator e = reel->images.end();
+        mrv::MediaList::const_iterator i = reel->images.begin();
+        mrv::MediaList::const_iterator e = reel->images.end();
 
-	_fps = 24.0;
+        _fps = 24.0;
 
-	int ww = r.w();
+        int ww = r.w();
 
-	// If minimum less than 0, start boxes later
-	int64_t size = 0;
-	int64_t frame = 1;
-	int rx = r.x() + int(slider_size()-1)/2;
+        // If minimum less than 0, start boxes later
+        uint64_t size = 0;
+        uint64_t frame = 1;
+        int rx = r.x() + int(slider_size()-1)/2;
 
-	CMedia* img = NULL;
-	for ( ; i != e; frame += size, ++i )
-	{
-	    int64_t pos = (*i)->position();
-	    img = (*i)->image();
+        CMedia* img = NULL;
+        for ( ; i != e; frame += size, ++i )
+        {
+            int64_t pos = (*i)->position();
+            img = (*i)->image();
 
-	    size = img->duration();
-
-
-	    // skip this block if outside visible timeline span
-	    if ( frame + size < mn || frame > mx ) continue;
-
-	    int  dx = slider_position( double(frame),      ww );
-	    int end = slider_position( double(frame+size), ww );
-
-	    mrv::Recti lr( rx+dx, r.y(), end-dx, r.h() );
-
-	    // Draw a block
-	    if ( v >= frame && v < frame + size )
-	    {
-		fl_color( fl_darker( FL_YELLOW ) );
-	    }
-	    else
-	    {
-		fl_color( fl_lighter( labelcolor() ) );
-	    }
-
-	    fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
-	}
-
-	if ( img ) _fps = img->fps();
-
-	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min > minimum() || _display_max < maximum() ) )
-	{
-	    draw_selection(r);
-	}
-
-	frame = 1;
-	unsigned idx = 0;
-	mrv::media fg = browser()->current_image();
-
-	for ( i = reel->images.begin(); i != e; frame += size, ++i )
-	{
-	    CMedia* img = (*i)->image();
-
-	    size = img->duration();
-	    int64_t pos = (*i)->position() - img->in_frame();
+            size = img->duration();
 
 
-	    // skip this block if outside visible timeline span
-	    if ( frame + size < mn || frame > mx ) continue;
+            // skip this block if outside visible timeline span
+            if ( frame + size < mn || frame > mx ) continue;
 
-	    if ( _draw_cache && (*i) == fg )
-	    {
-		draw_cacheline( img, pos, size, int64_t(mn),
-				int64_t(mx),
-				frame, r );
-	    }
+            int  dx = slider_position( double(frame),      ww );
+            int end = slider_position( double(frame+size), ww );
+
+            mrv::Recti lr( rx+dx, r.y(), end-dx, r.h() );
+
+            // Draw a block
+            if ( v >= frame && v < frame + size )
+            {
+                fl_color( fl_darker( FL_YELLOW ) );
+            }
+            else
+            {
+                fl_color( fl_lighter( labelcolor() ) );
+            }
+
+            fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
+        }
+
+        if ( img ) _fps = img->fps();
+
+        if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
+             ( _display_min > minimum() || _display_max < maximum() ) )
+        {
+            draw_selection(r);
+        }
+
+        frame = 1;
+        unsigned idx = 0;
+        mrv::media fg = browser()->current_image();
+
+        for ( i = reel->images.begin(); i != e; frame += size, ++i )
+        {
+            CMedia* img = (*i)->image();
+
+            size = img->duration();
+            int64_t pos = (*i)->position() - img->in_frame();
 
 
-	    if ( draw_annotation() && (*i) == fg )
-	    {
-		int rx = r.x() + int(slider_size()-1)/2;
-		int ry = r.y() + r.h()/2;
-		int ww = r.w();
-		int hh = r.h() - 8;
-		GLShapeList::const_iterator si = img->shapes().begin();
-		GLShapeList::const_iterator se = img->shapes().end();
-		hh = r.h() / 2;
-		for ( ; si != se; ++si )
-		{
-		    int64_t f = (*si)->frame;
-		    fl_color( FL_RED );
-		    fl_line_style( FL_SOLID, 2 );
-		    int dx = rx + slider_position( double(f), ww );
-		    fl_xyline( dx, ry-hh, dx, ry+hh );
-		}
-	    }
+            // skip this block if outside visible timeline span
+            if ( frame + size < mn || frame > mx ) continue;
 
-	    int dx = rx + slider_position( double(frame), ww );
+            if ( _draw_cache && (*i) == fg )
+            {
+                draw_cacheline( img, pos, size, int64_t(mn),
+                                int64_t(mx),
+                                frame, r );
+            }
 
-	    fl_color( FL_BLUE );
-	    fl_line_style( FL_SOLID, 3 );
-	    fl_line( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
-	    fl_line_style( FL_SOLID );
-	}
+
+            if ( draw_annotation() && (*i) == fg )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int ry = r.y() + r.h()/2;
+                int ww = r.w();
+                int hh = r.h() - 8;
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                hh = r.h() / 2;
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+
+            int dx = rx + slider_position( double(frame), ww );
+
+            fl_color( FL_BLUE );
+            fl_line_style( FL_SOLID, 3 );
+            fl_line( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
+            fl_line_style( FL_SOLID );
+        }
     }
     else
     {
-	if ( _draw_cache )
-	{
-	    mrv::media m = browser()->current_image();
-	    if ( m )
-	    {
-		CMedia* img = m->image();
-		// CMedia::Mutex& mtx = img->video_mutex();
-		// SCOPED_LOCK( mtx );
-		boost::int64_t first = img->first_frame();
-		draw_cacheline( img, 1,
-				img->duration() + img->start_number(),
-				int64_t(mn), int64_t(mx),
-				first, r );
+        if ( _draw_cache )
+        {
+            mrv::media m = browser()->current_image();
+            if ( m )
+            {
+                CMedia* img = m->image();
+                // CMedia::Mutex& mtx = img->video_mutex();
+                // SCOPED_LOCK( mtx );
+                boost::int64_t first = img->first_frame();
+                draw_cacheline( img, 1,
+                                img->duration() + img->start_number(),
+                                int64_t(mn), int64_t(mx),
+                                first, r );
 
-	    }
-	}
+            }
+        }
 
-	mrv::media m = browser()->current_image();
-	if ( m )
-	{
-	    CMedia* img = m->image();
-	    if ( draw_annotation() )
-	    {
-		int rx = r.x() + int(slider_size()-1)/2;
-		int hh = r.h() / 2;
-		int ry = r.y() + hh;
-		int ww = r.w();
-		GLShapeList::const_iterator si = img->shapes().begin();
-		GLShapeList::const_iterator se = img->shapes().end();
-		for ( ; si != se; ++si )
-		{
-		    int64_t f = (*si)->frame;
-		    fl_color( FL_RED );
-		    fl_line_style( FL_SOLID, 2 );
-		    int dx = rx + slider_position( double(f), ww );
-		    fl_xyline( dx, ry-hh, dx, ry+hh );
-		}
-	    }
-	}
+        mrv::media m = browser()->current_image();
+        if ( m )
+        {
+            CMedia* img = m->image();
+            if ( draw_annotation() )
+            {
+                int rx = r.x() + int(slider_size()-1)/2;
+                int hh = r.h() / 2;
+                int ry = r.y() + hh;
+                int ww = r.w();
+                GLShapeList::const_iterator si = img->shapes().begin();
+                GLShapeList::const_iterator se = img->shapes().end();
+                for ( ; si != se; ++si )
+                {
+                    int64_t f = (*si)->frame;
+                    fl_color( FL_RED );
+                    fl_line_style( FL_SOLID, 2 );
+                    int dx = rx + slider_position( double(f), ww );
+                    fl_xyline( dx, ry-hh, dx, ry+hh );
+                }
+            }
+        }
 
-	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min > minimum() || _display_max < maximum() ) )
-	{
-	    draw_selection(r);
-	}
+        if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
+             ( _display_min > minimum() || _display_max < maximum() ) )
+        {
+            draw_selection(r);
+        }
 
     }
 
@@ -893,9 +894,9 @@ size_t Timeline::index( const int64_t f ) const
     double mx = display_maximum();
     if ( mn > mx )
     {
-	double t = mx;
-	mx = mn;
-	mn = t;
+        double t = mx;
+        mx = mn;
+        mn = t;
     }
 
     if ( f < boost::int64_t(mn) ) return 0;
@@ -905,10 +906,10 @@ size_t Timeline::index( const int64_t f ) const
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
-	CMedia* img = (*i)->image();
-	uint64_t size = img->duration();
-	t += size;
-	if ( t > f ) break;
+        CMedia* img = (*i)->image();
+        uint64_t size = img->duration();
+        t += size;
+        if ( t > f ) break;
     }
     if ( r >= reel->images.size() ) r = reel->images.size() - 1;
     return r;
@@ -971,8 +972,8 @@ int Timeline::draw_coordinate( double value, int w )
 
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	A = display_minimum();
-	B = display_maximum();
+        A = display_minimum();
+        B = display_maximum();
     }
 
     if (B == A) return 0;
@@ -983,7 +984,7 @@ int Timeline::draw_coordinate( double value, int w )
     if (B <= 0) {flip = !flip; double t = A; A = -B; B = -t; value = -value;}
     double fraction;
     if (!(slider_type() & kLOG)) {
-	// linear slider
+        // linear slider
     fraction = (value-A)/(B-A+1);
   } else if (A > 0) {
     // logatithmic slider
@@ -1010,8 +1011,8 @@ int Timeline::slider_position( double value, int w )
 
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	A = display_minimum();
-	B = display_maximum();
+        A = display_minimum();
+        B = display_maximum();
     }
 
     if (B == A) return 0;
@@ -1022,7 +1023,7 @@ int Timeline::slider_position( double value, int w )
     if (B <= 0) {flip = !flip; double t = A; A = -B; B = -t; value = -value;}
     double fraction;
     if (!(slider_type() & kLOG)) {
-	// linear slider
+        // linear slider
     fraction = (value-A)/(B-A+1);
   } else if (A > 0) {
     // logatithmic slider

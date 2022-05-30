@@ -138,7 +138,7 @@ protected:
     Display      _display;
     double       _fps;
     int64_t      _frame, _tc_frame, _minimum, _maximum, _step;
-    char         _buf[16];
+    char         _buf[32];
 };
 
 } // namespace mrv

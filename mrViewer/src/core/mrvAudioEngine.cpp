@@ -28,6 +28,7 @@
 
 #include <iostream>
 
+#include "gui/mrvIO.h"
 #include "mrvException.h"
 #include "mrvAudioEngine.h"
 
@@ -72,24 +73,24 @@ unsigned short AudioEngine::bits_for_format( const AudioFormat f )
     switch( f )
     {
     case kU8:
-	return 1;
+        return 1;
     case kS16LSB:
     case kS16MSB:
-	return 2;
+        return 2;
     case kS24LSB:
     case kS24MSB:
-	return 3;
+        return 3;
     case kS32LSB:
     case kS32MSB:
-	return 4;
+        return 4;
     case kFloatLSB:
     case kFloatMSB:
-	return 4;
+        return 4;
     case kDoubleLSB:
     case kDoubleMSB:
-	return 8;
+        return 8;
     default:
-	return 0;
+        return 0;
     }
 }
 
@@ -99,29 +100,29 @@ AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
     switch( f )
     {
     case kU8:
-	ffmpegformat = AV_SAMPLE_FMT_U8;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_U8;
+        break;
     case kS16LSB:
     case kS16MSB:
-	ffmpegformat = AV_SAMPLE_FMT_S16;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_S16;
+        break;
     case kS24LSB:
     case kS24MSB:
     case kS32LSB:
     case kS32MSB:
-	ffmpegformat = AV_SAMPLE_FMT_S32;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_S32;
+        break;
     case kFloatLSB:
     case kFloatMSB:
-	ffmpegformat = AV_SAMPLE_FMT_FLT;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_FLT;
+        break;
     case kDoubleLSB:
     case kDoubleMSB:
-	ffmpegformat = AV_SAMPLE_FMT_DBL;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_DBL;
+        break;
     default:
-	ffmpegformat = AV_SAMPLE_FMT_NONE;
-	break;
+        ffmpegformat = AV_SAMPLE_FMT_NONE;
+        break;
     }
     return ffmpegformat;
 }
@@ -129,7 +130,7 @@ AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
 std::string AudioEngine::default_device()
 {
     if ( _devices.empty() )
-	EXCEPTION( "No audio device found" );
+        EXCEPTION( "No audio device found" );
 
     return _devices.front().name;
 }
@@ -143,30 +144,31 @@ const AudioEngine::DeviceList& AudioEngine::devices()
 std::string AudioEngine::device()
 {
     if ( _devices.empty() )
-	EXCEPTION( "No audio device found" );
+        EXCEPTION( "No audio device found" );
 
     return _devices[ _device_idx ].name;
 }
 
 bool AudioEngine::device( const unsigned int idx )
 {
-    _device_idx = idx;
-
+    assert( idx < _devices.size() );
+    _device_idx = _devices[ idx ].index;
     return true;
 }
 
-bool AudioEngine::device( const std::string& d )
+bool AudioEngine::device( const std::string& name )
 {
-    DeviceList::iterator i = _devices.begin();
-    DeviceList::iterator e = _devices.end();
-
-    for ( ; i != e; ++i )
+    int idx = 0;
+    for ( const auto& d : _devices )
     {
-	if ( (*i).name == d ) break;
+        if ( d.name == name )
+        {
+            idx = d.index;
+            break;
+        }
     }
 
-
-    return device( (*i).index );
+    return device( idx );
 }
 
 

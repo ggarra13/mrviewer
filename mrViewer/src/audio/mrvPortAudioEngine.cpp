@@ -152,7 +152,6 @@ bool PortAudioEngine::initialize()
       refresh_devices();
     }
 
-    outputParameters.device = device("default");
     _channels = _freq = 0;
 
     ++_instances;
@@ -221,14 +220,22 @@ bool PortAudioEngine::open( const unsigned channels,
         if ( stream && Pa_IsStreamActive( stream ) )
             return true;
 
+#if 0
         // If default device, get it from Pa_GetDefaultOutputDevice
+        TRACE2( "DEVICE 'default' is " << device("default") );
+        TRACE2( "Pa_GetDefaultOutputDevice is "
+                << Pa_GetDefaultOutputDevice() );
+        TRACE2( "DEVICE '_device_idx' " << _device_idx );
+        TRACE2( "CHANNELS " << channels );
+#endif
+        TRACE2( "DEVICE '_device_idx' " << _device_idx );
         const PaDeviceInfo* info = Pa_GetDeviceInfo( _device_idx );
         if ( info == nullptr )
         {
             LOG_ERROR( _("Could not get device info for ") << _device_idx );
         }
 
-        outputParameters.device = _device_idx; /* default output device */
+        outputParameters.device = _device_idx; //device("default");
         outputParameters.channelCount = channels;
         outputParameters.suggestedLatency = info->defaultLowOutputLatency;
         outputParameters.hostApiSpecificStreamInfo = NULL;

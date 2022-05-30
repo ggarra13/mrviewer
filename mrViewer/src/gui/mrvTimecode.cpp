@@ -290,6 +290,8 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                       const int64_t& f, const int64_t& tc, const double fps,
                       const bool withFrames )
 {
+    assert( f != AV_NOPTS_VALUE );
+    assert( buf != NULL );
     switch( display )
     {
     case kFrames:
