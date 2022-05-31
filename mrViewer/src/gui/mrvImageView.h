@@ -308,8 +308,11 @@ public:
     /// Center image in viewer's window, without changing zoom.
     void center_image();
 
-    /// Fit image in viewer's window, changing zoom.
+    /// Fit current image in viewer's window, changing zoom and offsets.
     void fit_image();
+
+    /// Fit img in viewer's window, changing zoom and offsets.
+    void fit_image( const CMedia* img );
 
     /// True if image needs updating, false if not.  fg image may change.
     bool should_update( mrv::media fg );

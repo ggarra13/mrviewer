@@ -1981,16 +1981,17 @@ void ImageBrowser::save_session()
         if ( fg ) FGimg = fg->image();
         if ( bg ) BGimg = bg->image();
 
+        int v = value();
+        if ( i == v ) {
+            TRACE2( "CHANGE IMAGE TO " << i << " == " << v );
+            return;
+        }
+
+
         CMedia::Playback FGplay = CMedia::kStopped;
         if ( FGimg ) FGplay = FGimg->playback();
         CMedia::Playback BGplay = CMedia::kStopped;
         if ( BGimg ) BGplay = BGimg->playback();
-
-        int v = value();
-        if ( i == v ) {
-            TRACE( "CHANGE IMAGE TO " << i << " == " << v );
-            return;
-        }
 
         if ( FGplay ) FGimg->stop();
         if ( BGplay ) BGimg->stop( false );
@@ -4841,8 +4842,6 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
-    if ( tframe == view()->frame() ) return;
-
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     CMedia::Playback play = view()->playback();
@@ -4862,6 +4861,7 @@ void ImageBrowser::seek( const int64_t tframe )
     mrv::media bg = view()->background();
 
     view()->frame( tframe );
+    if ( view()->A_image() && view()->B_image() ) return;
 
 
     mrv::Timeline* t = timeline();
@@ -4932,7 +4932,7 @@ void ImageBrowser::seek( const int64_t tframe )
                 change_image((int)i);
 
             TRACE( "BROWSER post seek " << img->name() << " gframe= " << f
-                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+                    << " lframe= " << lf << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );
 
@@ -4941,8 +4941,8 @@ void ImageBrowser::seek( const int64_t tframe )
         }
         else
         {
-            TRACE( "BROWSER same image " << img->name() << " gframe= " << f
-                    << " lframe= " << img->frame() << " in= " << img->in_frame()
+            TRACE2( "BROWSER same image " << img->name() << " gframe= " << f
+                    << " lframe= " << lf << " in= " << img->in_frame()
                     << " out= " << img->out_frame() << " stopped? "
                     << img->stopped() );
 

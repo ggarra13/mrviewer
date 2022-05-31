@@ -840,19 +840,19 @@ void CMedia::update_frame( const int64_t& f )
  */
 void CMedia::wait_for_threads()
 {
-    // boost::posix_time::time_duration timeout =
-    // boost::posix_time::milliseconds(100000);
+    boost::posix_time::time_duration timeout =
+        boost::posix_time::milliseconds(100000);
     for ( const auto& i : _threads )
     {
         assert( i->joinable() );
         assert( i->get_id() != boost::this_thread::get_id() );
-        i->join();
+        bool ok = i->timed_join( timeout );
         std::string type = "subtitle";
         if ( i == _video_thread ) type = "video";
         if ( i == _audio_thread ) type = "audio";
         if ( i == _decode_thread ) type = "decode";
-        TRACE( name() << " Thread " << i << ", type " << type
-                << " returned." );
+        TRACE2( name() << " Thread " << i << ", type " << type
+                << " returned " << ok );
         delete i;
     }
     _threads.clear();
@@ -2798,7 +2798,7 @@ void CMedia::play(const CMedia::Playback dir,
                              video_data ) );
             _video_thread = t;
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame()
+            TRACE2( name() << " frame " << frame()
                     << " added video thread " << t );
         }
 
@@ -2811,7 +2811,7 @@ void CMedia::play(const CMedia::Playback dir,
                              audio_data ) );
             _audio_thread = t;
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame()
+            TRACE2( name() << " frame " << frame()
                     << " added audio thread " << t );
         }
 
@@ -2823,7 +2823,7 @@ void CMedia::play(const CMedia::Playback dir,
                 boost::bind( mrv::subtitle_thread,
                              subtitle_data ) );
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame()
+            TRACE2( name() << " frame " << frame()
                     << " added subtitle thread " << t );
         }
 
@@ -2836,7 +2836,7 @@ void CMedia::play(const CMedia::Playback dir,
                              data ) );
             _decode_thread = t;
             _threads.push_back( t );
-            TRACE( name() << " frame " << frame()
+            TRACE2( name() << " frame " << frame()
                     << " added decode thread " << t );
         }
 
@@ -3093,11 +3093,9 @@ bool CMedia::frame( const int64_t f )
 void CMedia::seek( const int64_t f )
 {
 //#define DEBUG_SEEK
+    if ( f == _frame ) return;
 
-    if ( _loop_barrier )  _loop_barrier->notify_all();
-
-    if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    notify_barriers();
 
     _seek_frame = f;
     _seek_req   = true;

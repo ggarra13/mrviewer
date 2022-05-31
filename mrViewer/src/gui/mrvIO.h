@@ -255,18 +255,20 @@ unsigned long get_thread_id();
 #  endif
 
 #if 0
-#  define TRACE(msg) do { \
-        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
-                  << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
+#  define TRACE(msg) do {                                          \
+        std::cerr << "mrViewer TRACE : " << __PRETTY_FUNCTION__    \
+                  << " (" << __LINE__ << ") " << msg               \
+                  << std::flush << std::endl;                      \
     } while(0)
 #else
 #  define TRACE(msg)
 #endif
 
 #ifdef DEBUG
-#  define TRACE2(msg) do { \
-        std::cerr << _("mrViewer TRACE : ") << msg << " at " \
-                  << __PRETTY_FUNCTION__ << ", " << __LINE__ << std::flush << std::endl; \
+#  define TRACE2(msg) do {                                         \
+        std::cerr << "mrViewer TRACE : " << __PRETTY_FUNCTION__    \
+                  << " (" << __LINE__ << ") " << msg               \
+                  << std::flush << std::endl;                      \
     } while(0)
 #else
 #  define TRACE2(msg)

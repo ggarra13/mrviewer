@@ -33,8 +33,8 @@
 
 
 // #define DEBUG_KEYS
-
-#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO( "RECV. COMMAND: " << x )
+#define NET(x)
+//#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO( "RECV. COMMAND: " << x )
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -67,6 +67,7 @@
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+#include "core/mrvBlackImage.h"
 #include "core/mrvColorOps.h"
 
 #ifdef OSX
@@ -2811,10 +2812,14 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
     const CMedia* img = fg->image();
-    TRACE(img->name() << " WxH=" << img->width() << "x" << img->height() );
-
     mrv::image_type_ptr pic = img->left();
-    if ( !pic ) return;
+    if ( !pic ) {
+        TRACE2( "*********** fit_image no picture ***********" );
+        return;
+    }
+
+    TRACE2( "fit_image: " << img->name() << " " << pic->width() << " x "
+            << pic->height() << " GLOBAL FRAME " << _frame );
 
     CMedia::StereoOutput stereo_out = img->stereo_output();
     mrv::Recti dpw;
@@ -2941,7 +2946,7 @@ void ImageView::fit_image()
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
     DBGM1( "fit h=" << h );
-    DBGM1( "fit H=" << H << " pic->h()= " << pic->height() );
+    DBGM1( "fit H=" << H );
     DBGM1( "fit h/H=" << h/H );
 
 
@@ -3010,6 +3015,204 @@ void ImageView::fit_image()
     _network_active = old_network_active;
 
     redraw();
+}
+
+/**
+ * Fit the current foreground image to the view window.
+ *
+ */
+void ImageView::fit_image( const CMedia* img )
+{
+    mrv::image_type_ptr pic = img->left();
+    if ( !pic ) {
+        TRACE2( "*********** fit_image no picture ***********" );
+        return;
+    }
+
+    TRACE2( "fit_image: " << img->name() << " " << pic->width() << " x "
+            << pic->height() << " GLOBAL FRAME " << _frame );
+
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    mrv::Recti dpw;
+    if ( display_window() )
+    {
+        dpw = img->display_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->display_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->display_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
+        }
+        else
+        {
+            if ( data_window() )
+                dpw.merge( img->data_window() );
+        }
+    }
+    else
+    {
+        dpw = img->data_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->data_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->data_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.x( dp.w() + daw.x() );
+            dpw.merge( daw );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.y( dp.h() + daw.y() );
+            dpw.merge( daw );
+        }
+    }
+
+    mrv::media bg = background();
+    dpw.x( int(dpw.x() + img->x()) );
+    dpw.y( int(dpw.y() - img->y()) );
+    if ( bg )
+    {
+        CMedia* img2 = bg->image();
+        mrv::Recti dpw2 = img2->display_window();
+        dpw2.x( int(dpw2.x() + img2->x()) );
+        dpw2.y( int(dpw2.y() - img2->y()) );
+        if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
+        {
+            dpw.merge( dpw2 );
+        }
+    }
+
+    int W = dpw.w();
+    if ( W == 0 ) W = pic->width();
+    int H = dpw.h();
+    if ( H == 0 ) H = pic->height();
+
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+    }
+
+#ifdef OSX
+    if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
+        W *= 2;
+#endif
+
+    int     X = dpw.x();
+    int     Y = dpw.y();
+
+    double pct = _masking;
+    if ( pct > 0.0 )
+    {
+        double aspectY = (double) W / (double) H;
+        double aspectX = (double) H/ (double) W;
+
+        double target_aspect = 1.0 / pct;
+        double amountY = H * (0.5 - target_aspect * aspectY / 2);
+        double amountX = W * (0.5 - pct * aspectX / 2);
+
+        bool vertical = true;
+        if ( amountY < amountX )
+        {
+            vertical = false;
+        }
+        if ( vertical )
+        {
+            H -= amountY * 2;
+            Y += amountY;
+        }
+        else
+        {
+            W -= amountX * 2;
+            X += amountX;
+        }
+    }
+
+    double w = (double) this->pixel_w();
+    double h = (double) this->pixel_h();
+    DBGM1( "fit h=" << h );
+    DBGM1( "fit H=" << H );
+    DBGM1( "fit h/H=" << h/H );
+
+
+#ifdef OSX
+    h /= 2;  // On OSX X and Y pixel coords are doubled
+    w /= 2;
+#endif
+
+    DBGM1("fit w=" << w );
+    DBGM1("fit W=" << W );
+    float z = w / (double)W;
+    DBGM1( "fit w/W=" << z );
+    h /= H;
+
+    double pr = 1.0;
+    if ( _showPixelRatio ) pr = pixel_ratio();
+    h *= pr;
+
+    if ( h < z ) {
+        z = h;
+    }
+    DBGM1( "fit z=" << z );
+
+    double ox = xoffset;
+    double oy = yoffset;
+
+    yoffset = ( Y + H / 2.0) / pr;
+
+    if ( stereo_out & CMedia::kStereoSideBySide )
+    {
+#ifdef OSX
+        xoffset = -W/4.0 + 0.5;
+#else
+        xoffset = -W/2.0 + 0.5;
+#endif
+    }
+    else
+    {
+        xoffset = -X - W / 2.0;
+    }
+
+
+    if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
+        xoffset = 0.0;
+
+    if ( img->flipX() && stereo_out & CMedia::kStereoTopBottom  )
+        yoffset = 0.0;
+
+    zrotation_to_offsets( xoffset, yoffset, img, W, H );
+
+
+    _zoom = z;
+
+    float scale = Fl::screen_scale( window()->screen_num() );
+    _real_zoom = z / scale;
 }
 
 
@@ -3678,8 +3881,8 @@ void ImageView::handle_commands()
         }
         if ( found ) {
             CMedia* img = r->images[idx]->image();
-            TRACE( "******** Change image found.  Set to #" << idx
-                   << " " << img->name() << " stopped? " << img->stopped() );
+            TRACE2( "******** Change image found.  Set to #" << idx
+                    << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
         else
@@ -4467,14 +4670,13 @@ void ImageView::draw()
         }
     }
 
-    DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
 
+    TRACE2( "GLOBAL FRAME " << _frame << " images.size()=" << images.size() );
 
-#if 1
+#if 0
     int j = 0;
     size_t num = images.size();
-    TRACE2( "FRAME " << _frame );
     for ( const auto& t : images )
     {
         TRACE2( "Image #" << j << " of " << num << " is "
@@ -4520,10 +4722,11 @@ void ImageView::draw()
     _engine->draw_annotation( img->shapes(), img );
     _engine->line_width(1.0);
 
-    if ( _zoom_grid && fg->name() != _("Black Gap") )
-      {
+    if ( _zoom_grid && dynamic_cast< BlackImage* >( img ) == NULL &&
+         dynamic_cast< BlackImage* >( Aimg ) == NULL )
+    {
         _engine->draw_grid( img, 1.0 );
-      }
+    }
 
     if ( _grid )
     {

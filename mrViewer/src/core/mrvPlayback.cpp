@@ -294,7 +294,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     if ( gframe > glast )
     {
         if ( decode == kVideo )
-            TRACE( img->name() <<  " LOOP END " << gframe << " > " << glast );
+            TRACE2( img->name() <<  " LOOP END " << gframe << " > " << glast );
         return CMedia::kDecodeLoopEnd;
     }
     else if ( gframe < gfirst )
@@ -303,7 +303,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             TRACE( img->name() << "LOOP START " << gframe << " < " << gfirst );
         return CMedia::kDecodeLoopStart;
     }
-
     if ( decode == kVideo )
         TRACE( img->name() << " NO LOOP " << gframe << " > " << glast );
 
@@ -445,9 +444,8 @@ EndStatus handle_loop( int64_t& frame,
 
                     img->playback( CMedia::kStopped );
                     img->clear_packets();
-                    img->notify_barriers();
                     //img->flush_all();
-                    TRACE( next->name() << " NEXT SEEK FRAME IS " << dts );
+                    TRACE2( next->name() << " NEXT STOPPED SEEK FRAME IS " << dts );
 
                     if ( ! fg )   return kEndNextImage;
 
@@ -474,10 +472,10 @@ EndStatus handle_loop( int64_t& frame,
                 //img->flush_all();
 
                 int idx = reel->index( next );
-                TRACE( "******** " << next->name()
+                TRACE2( "******** " << next->name()
                         << " CHANGE IMAGE TO " << idx
                         << " stopped? " << next->stopped()
-                        << " frame " << next->frame() );
+                        << " local frame " << next->frame() );
 
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
@@ -503,6 +501,8 @@ EndStatus handle_loop( int64_t& frame,
             if ( fg && reel->edl )
             {
                 img->playback( CMedia::kStopped );
+                img->clear_packets();
+                img->notify_barriers();
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 ImageView::Command c;
@@ -593,7 +593,6 @@ EndStatus handle_loop( int64_t& frame,
 
                     img->playback( CMedia::kStopped );
                     img->clear_packets();
-                    img->notify_barriers();
                     //img->flush_all();
 
                     if ( ! fg )   return kEndNextImage;
@@ -618,6 +617,7 @@ EndStatus handle_loop( int64_t& frame,
 
                 img->playback( CMedia::kStopped );
                 img->clear_packets();
+                img->notify_barriers();
                 //img->flush_all();
 
                 int idx = reel->index( next );
@@ -647,6 +647,8 @@ EndStatus handle_loop( int64_t& frame,
             if ( fg && reel->edl )
             {
                 img->playback( CMedia::kStopped );
+                img->clear_packets();
+                img->notify_barriers();
                 CMedia::Mutex& cmtx = view->commands_mutex;
                 SCOPED_LOCK( cmtx );
                 {
