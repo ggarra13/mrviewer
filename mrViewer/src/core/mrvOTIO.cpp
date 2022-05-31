@@ -226,7 +226,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             int64_t e = i.range.end_time_inclusive().value();
             int64_t in_off = transition->in_offset().value();
             int64_t out_off = transition->out_offset().value();
-            std::string name = transition->name();
+            const std::string& name = transition->name();
 
 
             TRACE( "TRANSITION " << name << " first s= " << s );
@@ -250,7 +250,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
             int64_t e = i.range.end_time_inclusive().value();
             int64_t in_off = transition->in_offset().value();
             int64_t out_off = transition->out_offset().value();
-            std::string name = transition->name();
+            const std::string& name = transition->name();
 
             // TRACE( "TRANSITION second s= " << s );
             TRACE( "TRANSITION " << name << " second e= " << e );

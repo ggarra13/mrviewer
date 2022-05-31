@@ -110,9 +110,6 @@ extern "C" {
 #include "video/mrvCSPUtils.h"
 #include "core/mrvOS.h"
 
-#undef TRACE
-#define TRACE(x)
-
 
 namespace
 {
@@ -1186,7 +1183,7 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
             CMedia* img = fg->image();
             CMedia* oimg = old->image();
             if ( img->display_window() != oimg->display_window() )
-                _view->fit_image();
+                _view->fit_image( img );
         }
     }
 
@@ -1836,12 +1833,6 @@ void GLEngine::draw_images( ImageList& images )
         {
             alloc_quads( num_quads );
         }
-#if 0
-        for ( auto& img : images )
-        {
-            img->image_damage( img->image_damage() | CMedia::kDamageContents );
-        }
-#endif
     }
 
 
@@ -1889,7 +1880,10 @@ void GLEngine::draw_images( ImageList& images )
                 maxH = img->height();
             }
         }
-
+        if ( fit != old_fit ) {
+            _view->fit_image( fit );
+            old_fit = fit;
+        }
     }
 
     glDisable( GL_BLEND );
@@ -1899,7 +1893,7 @@ void GLEngine::draw_images( ImageList& images )
     mrv::image_type_ptr pic;
     ImageList::const_iterator i = images.begin();
     ImageList::const_iterator e = images.end();
-    for ( ; i != e; ++i )
+    for ( ; i != e; ++i, ++q )
     {
         img = *i;
         pic = img->left();
@@ -2355,7 +2349,8 @@ void GLEngine::draw_images( ImageList& images )
             quad->bind( pic );
             CHECK_GL;
 
-
+            TRACE( img->name() << " frame " << img->frame()
+                   << " ~DamageContents" );
             img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
         }
 
@@ -2461,8 +2456,6 @@ void GLEngine::draw_images( ImageList& images )
         CHECK_GL;
         glPopMatrix();
         CHECK_GL;
-
-        ++q;
     }
 
     CHECK_GL;
@@ -4239,11 +4232,9 @@ GLEngine::loadBuiltinFragShader()
 void GLEngine::clear_quads()
 {
     DBGM3( __FUNCTION__ << " " << __LINE__ );
-    QuadList::iterator i = _quads.begin();
-    QuadList::iterator e = _quads.end();
-    for ( ; i != e; ++i )
+    for ( const auto& q : _quads )
     {
-        delete *i;
+        delete q;
     }
     _quads.clear();
 

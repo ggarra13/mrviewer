@@ -1360,8 +1360,8 @@ void video_thread( PlaybackData* data )
                 {
                     f = reel->local_to_global( frame, img );
                 }
-                TRACE2( "SEND GLOBAL FRAME " << f << ", LOCAL " << frame
-                        << " FROM IMAGE " << img->name() );
+                TRACE( "SEND GLOBAL FRAME " << f << ", LOCAL " << frame
+                       << " FROM IMAGE " << img->name() );
                 view->frame( f );
 
                 if ( reel->edl )
@@ -1373,12 +1373,12 @@ void video_thread( PlaybackData* data )
                     {
                         int64_t Aframe = Aimg->frame();
                         int64_t Aout   = Aimg->out_frame();
-                        TRACE( Aimg->name() << " CHECK DISSOLVE END LOOP "
+                        TRACE2( Aimg->name() << " CHECK DISSOLVE END LOOP "
                                 << Aframe << " out= " << Aout );
                         if ( Aframe >= Aout )
                         {
                             Aframe++;
-                            TRACE( Aimg->name() << " SEND DISSOLVE END LOOP "
+                            TRACE2( Aimg->name() << " SEND DISSOLVE END LOOP "
                                     << Aframe-1 << " GLOBAL " << f );
                             EndStatus end = handle_loop( Aframe, step, Aimg,
                                                          fg, true,
@@ -1390,7 +1390,7 @@ void video_thread( PlaybackData* data )
                                 if ( fg && step != 0 ) view->playback( p );
                                 continue;
                             }
-                            TRACE( Aimg->name()
+                            TRACE2( Aimg->name()
                                     << " SENT DISSOLVE END LOOP stopped? "
                                     << Aimg->stopped() );
                             if ( img == Aimg ) break;

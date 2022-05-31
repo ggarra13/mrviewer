@@ -119,29 +119,29 @@ const char* kModule = "prefs";
  *         to the default value.
  */
 int environmentSetting( const char* variable,
-			const int   defaultValue,
-			const bool  inPrefs )
+                        const int   defaultValue,
+                        const bool  inPrefs )
 {
     int r = defaultValue;
     const char* env = fl_getenv( variable );
     if ( !env )
     {
-	if ( !inPrefs )
-	{
-	    LOG_WARNING( _("Environment variable \"") << variable <<
-			 _("\" is not set; using default value (")
-			 << defaultValue << ").");
-	}
+        if ( !inPrefs )
+        {
+            LOG_WARNING( _("Environment variable \"") << variable <<
+                         _("\" is not set; using default value (")
+                         << defaultValue << ").");
+        }
     }
     else
     {
-	int n = sscanf( env, " %d", &r );
-	if (n != 1)
-	{
-	    LOG_ERROR( _("Cannot parse environment variable \"") << variable
-		       << _("\" as an integer value; using ")
-		       << defaultValue  );
-	}
+        int n = sscanf( env, " %d", &r );
+        if (n != 1)
+        {
+            LOG_ERROR( _("Cannot parse environment variable \"") << variable
+                       << _("\" as an integer value; using ")
+                       << defaultValue  );
+        }
     }
     return r;
 }
@@ -161,29 +161,29 @@ int environmentSetting( const char* variable,
  *         to the default value.
  */
 float environmentSetting( const char* variable,
-			  const float defaultValue,
-			  const bool inPrefs )
+                          const float defaultValue,
+                          const bool inPrefs )
 {
     float r = defaultValue;
     const char* env = fl_getenv( variable );
     if ( !env )
     {
-	if ( !inPrefs )
-	{
-	    LOG_WARNING( _("Environment variable \"") << variable
-			 << _("\" is not set; using default value (")
-			 << defaultValue << ").");
-	}
+        if ( !inPrefs )
+        {
+            LOG_WARNING( _("Environment variable \"") << variable
+                         << _("\" is not set; using default value (")
+                         << defaultValue << ").");
+        }
     }
     else
     {
-	int n = sscanf( env, " %f", &r );
-	if (n != 1)
-	{
-	    LOG_ERROR( _("Cannot parse environment variable \"") << variable
-		       << _("\" as a float value; using ")
-		       << defaultValue );
-	}
+        int n = sscanf( env, " %f", &r );
+        if (n != 1)
+        {
+            LOG_ERROR( _("Cannot parse environment variable \"") << variable
+                       << _("\" as a float value; using ")
+                       << defaultValue );
+        }
     }
     return r;
 }
@@ -202,20 +202,20 @@ float environmentSetting( const char* variable,
  *         to the default value.
  */
 const char* environmentSetting( const char* variable,
-				const char* defaultValue,
-				const bool inPrefs )
+                                const char* defaultValue,
+                                const bool inPrefs )
 {
 
     const char* env = fl_getenv( variable );
     if ( !env || strlen(env) == 0 )
     {
-	env = defaultValue;
-	if ( !inPrefs )
-	{
-	    LOG_WARNING( _("Environment variable \"") << variable
-			 << _("\" is not set; using default value (\"")
-			 << defaultValue << "\").");
-	}
+        env = defaultValue;
+        if ( !inPrefs )
+        {
+            LOG_WARNING( _("Environment variable \"") << variable
+                         << _("\" is not set; using default value (\"")
+                         << defaultValue << "\").");
+        }
     }
     return env;
 }
@@ -223,39 +223,39 @@ const char* environmentSetting( const char* variable,
 
 Imf::Chromaticities
 environmentSetting( const char* variable,
-		    const Imf::Chromaticities& defaultValue,
-		    const bool inPrefs )
+                    const Imf::Chromaticities& defaultValue,
+                    const bool inPrefs )
 {
     Imf::Chromaticities tmp = defaultValue;
 
     if (const char *val = fl_getenv(variable))
     {
-	int n = sscanf( val,
-			" red %f %f green %f %f blue %f %f white %f %f",
-			&tmp.red.x, &tmp.red.y,
-			&tmp.green.x, &tmp.green.y,
-			&tmp.blue.x, &tmp.blue.y,
-			&tmp.white.x, &tmp.white.y);
+        int n = sscanf( val,
+                        " red %f %f green %f %f blue %f %f white %f %f",
+                        &tmp.red.x, &tmp.red.y,
+                        &tmp.green.x, &tmp.green.y,
+                        &tmp.blue.x, &tmp.blue.y,
+                        &tmp.white.x, &tmp.white.y);
 
-	if (n != 8)
-	{
-	    tmp = defaultValue;
+        if (n != 8)
+        {
+            tmp = defaultValue;
 
-	    LOG_ERROR(_("Cannot parse environment variable \"") <<
-		      variable
-		      << _("\"; Format: ")
-		      << "\"red X X green X X blue X X white X X\"" );
-	    LOG_ERROR(_("Using default value "
-			"(chromaticities according to Rec. ITU-R BT.709).") );
-	}
+            LOG_ERROR(_("Cannot parse environment variable \"") <<
+                      variable
+                      << _("\"; Format: ")
+                      << "\"red X X green X X blue X X white X X\"" );
+            LOG_ERROR(_("Using default value "
+                        "(chromaticities according to Rec. ITU-R BT.709).") );
+        }
     }
     else
     {
-	if ( !inPrefs )
-	    LOG_WARNING(_("Environment variable \"") << variable
-			<< _("\" is not set; using default value "
-			     "(chromaticities according "
-			     "to Rec. ITU-R BT.709).") );
+        if ( !inPrefs )
+            LOG_WARNING(_("Environment variable \"") << variable
+                        << _("\" is not set; using default value "
+                             "(chromaticities according "
+                             "to Rec. ITU-R BT.709).") );
     }
     return tmp;
 }
@@ -332,8 +332,8 @@ int Preferences::selectiontextcolor;
 int64_t Preferences::max_memory = 1000000000;
 
 static std::string expandVariables( const std::string &s,
-				    const char* START_VARIABLE,
-				    const char END_VARIABLE)
+                                    const char* START_VARIABLE,
+                                    const char END_VARIABLE)
 {
 
 
@@ -357,7 +357,7 @@ static std::string expandVariables( const std::string &s,
     if( v != NULL ) value = std::string( v );
 
     return expandVariables( pre + value + post, START_VARIABLE,
-			    END_VARIABLE );
+                            END_VARIABLE );
 }
 
 Preferences::Preferences( PreferencesUI* uiPrefs )
@@ -371,12 +371,12 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     Imf::Chromaticities tmpC, c;
 
     LOG_INFO( _("Loaded preferences from ") << prefspath()
-	      << "mrViewer.prefs" );
+              << "mrViewer.prefs" );
 
 
     DBG3;
     Fl_Preferences base( prefspath().c_str(), "filmaura",
-			 "mrViewer" );
+                         "mrViewer" );
 
     DBG3;
     base.get( "version", version, 6 );
@@ -455,30 +455,30 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // ui/window preferences
     //
     {
-	Fl_Preferences win( ui, "window" );
+        Fl_Preferences win( ui, "window" );
 
-	win.get( "auto_fit_image", tmp, 1 );
-	uiPrefs->uiPrefsAutoFitImage->value( tmp );
-
-    DBG3;
-	win.get( "always_on_top", tmp, 0 );
-	uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
+        win.get( "auto_fit_image", tmp, 1 );
+        uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
     DBG3;
-	win.get( "open_mode", tmp, 0 );
+        win.get( "always_on_top", tmp, 0 );
+        uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
 
-	{
-	    Fl_Round_Button* r;
-	    for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
-	    {
     DBG3;
-		r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child( i );
-		r->value(0);
-	    }
+        win.get( "open_mode", tmp, 0 );
+
+        {
+            Fl_Round_Button* r;
+            for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
+            {
     DBG3;
-	    r = (Fl_Round_Button*)uiPrefs->uiPrefsOpenMode->child( tmp );
-	    r->value(1);
-	}
+                r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child( i );
+                r->value(0);
+            }
+    DBG3;
+            r = (Fl_Round_Button*)uiPrefs->uiPrefsOpenMode->child( tmp );
+            r->value(1);
+        }
 
     }
 
@@ -537,23 +537,23 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     if ( !R3dImage::init )
     {
-	using namespace R3DSDK;
+        using namespace R3DSDK;
 
-	//Initialize the R3DSDK prior to using any R3DSDK objects.
-	std::string root = Preferences::root + "/lib";
+        //Initialize the R3DSDK prior to using any R3DSDK objects.
+        std::string root = Preferences::root + "/lib";
 
-	InitializeStatus status = InitializeSdk(root.c_str(),
-						OPTION_RED_NONE);
-	if ( status != ISInitializeOK)
-	{
-	    LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
-	    LOG_ERROR( _("Looked for it in: ") << root );
-	}
-	else
-	{
-	    LOG_INFO( _("Inited R3D SDK from: ") << root );
-	    R3dImage::init = true;
-	}
+        InitializeStatus status = InitializeSdk(root.c_str(),
+                                                OPTION_RED_NONE);
+        if ( status != ISInitializeOK)
+        {
+            LOG_ERROR( _("Failed to initialize R3D SDK: ") << status);
+            LOG_ERROR( _("Looked for it in: ") << root );
+        }
+        else
+        {
+            LOG_INFO( _("Inited R3D SDK from: ") << root );
+            R3dImage::init = true;
+        }
 
     }
 
@@ -563,25 +563,25 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( ! (loaded = schemes.read_themes( colorname.c_str() )) )
     {
     DBG3;
-	colorname = root + "/colors/mrViewer.colors";
-	if ( ! (loaded = schemes.read_themes( colorname.c_str() )) )
-	{
+        colorname = root + "/colors/mrViewer.colors";
+        if ( ! (loaded = schemes.read_themes( colorname.c_str() )) )
+        {
     DBG3;
-	    LOG_ERROR( _("Could not open \"") << colorname << "\"" );
-	}
+            LOG_ERROR( _("Could not open \"") << colorname << "\"" );
+        }
     }
 
     if ( loaded )
     {
     DBG3;
-	LOG_INFO( _("Loaded color themes from ") << colorname << "." );
+        LOG_INFO( _("Loaded color themes from ") << colorname << "." );
     }
 
     DBG3;
     for ( auto& t: schemes.themes )
     {
-	DBG3;
-	uiPrefs->uiColorTheme->add( t.name.c_str() );
+        DBG3;
+        uiPrefs->uiColorTheme->add( t.name.c_str() );
     }
 
     colors.get( "scheme", tmpS, "plastic", 2048 );
@@ -590,8 +590,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( item )
     {
     DBG3;
-	uiPrefs->uiScheme->picked( item );
-	Fl::scheme( tmpS );
+        uiPrefs->uiScheme->picked( item );
+        Fl::scheme( tmpS );
     }
 
     colors.get( "theme", tmpS, "Default", 2048 );
@@ -600,7 +600,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( item )
     {
     DBG3;
-	uiPrefs->uiColorTheme->picked( item );
+        uiPrefs->uiColorTheme->picked( item );
     DBG3;
     }
 
@@ -612,14 +612,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 #ifdef _WIN32
     if ( ! language )
     {
-	WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
-	int iResult = GetUserDefaultLocaleName( wcBuffer,
-						LOCALE_NAME_MAX_LENGTH );
-	if ( iResult )
-	{
-	    _bstr_t b( wcBuffer );
-	    language = b;
-	}
+        WCHAR wcBuffer[LOCALE_NAME_MAX_LENGTH];
+        int iResult = GetUserDefaultLocaleName( wcBuffer,
+                                                LOCALE_NAME_MAX_LENGTH );
+        if ( iResult )
+        {
+            _bstr_t b( wcBuffer );
+            language = b;
+        }
     }
 #else
     if ( !language ) language = setlocale( LC_MESSAGES, NULL );
@@ -628,21 +628,21 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     int uiIndex = 3;
     if ( language && strlen(language) > 1 )
     {
-	for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
-	      ++i )
-	{
-	    if ( strcmp( language, "C" ) == 0 )
-	    {
-		language_index = 2;
-		break;
-	    }
-	    if ( strncmp( language, kLanguages[i].code, 2 ) == 0 )
-	    {
-		uiIndex = i;
-		language_index = kLanguages[i].index;
-		break;
-	    }
-	}
+        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
+              ++i )
+        {
+            if ( strcmp( language, "C" ) == 0 )
+            {
+                language_index = 2;
+                break;
+            }
+            if ( strncmp( language, kLanguages[i].code, 2 ) == 0 )
+            {
+                uiIndex = i;
+                language_index = kLanguages[i].index;
+                break;
+            }
+        }
     }
 
     LOG_INFO( _("Setting language to ") << kLanguages[uiIndex].code );
@@ -653,37 +653,37 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     {
     DBG3;
-	Fl_Preferences colors( view, "colors" );
+        Fl_Preferences colors( view, "colors" );
 
-	colors.get("background_color", tmp, 0x20202000 );
-	uiPrefs->uiPrefsViewBG->color( tmp );
+        colors.get("background_color", tmp, 0x20202000 );
+        uiPrefs->uiPrefsViewBG->color( tmp );
 
-	colors.get("text_overlay_color", tmp, 0xFFFF0000 );
-	uiPrefs->uiPrefsViewTextOverlay->color( tmp );
+        colors.get("text_overlay_color", tmp, 0xFFFF0000 );
+        uiPrefs->uiPrefsViewTextOverlay->color( tmp );
 
-	colors.get("selection_color", tmp, 0x0000FF00 );
-	uiPrefs->uiPrefsViewSelection->color( tmp );
+        colors.get("selection_color", tmp, 0x0000FF00 );
+        uiPrefs->uiPrefsViewSelection->color( tmp );
 
     DBG3;
-	colors.get("hud_color", tmp, 0xF0F08000 );
-	uiPrefs->uiPrefsViewHud->color( tmp );
+        colors.get("hud_color", tmp, 0xF0F08000 );
+        uiPrefs->uiPrefsViewHud->color( tmp );
     }
 
     DBG3;
     Fl_Preferences ocio( view, "ocio" );
     if ( version < 3 )
     {
-	ocio.get( "use_ocio", tmp, 0 );
-	const char* var = fl_getenv( "OCIO" );
+        ocio.get( "use_ocio", tmp, 0 );
+        const char* var = fl_getenv( "OCIO" );
 
     DBG3;
-	if ( var && strlen(var) > 0 )
-	    tmp = true;
+        if ( var && strlen(var) > 0 )
+            tmp = true;
     }
     else
     {
     DBG3;
-	ocio.get( "use_ocio", tmp, 1 );
+        ocio.get( "use_ocio", tmp, 1 );
     }
     DBG3;
     uiPrefs->uiPrefsUseOcio->value( tmp );
@@ -702,18 +702,18 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     Fl_Preferences ics( ocio, "ICS" );
     {
 #define OCIO_ICS(x, d)							\
-	ok = ics.get( #x, tmpS, d, 2048 );                              \
-	CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
-						     tmpS, ok );	\
-	uiPrefs->uiOCIO_##x##_ics->value( tmpS );
+        ok = ics.get( #x, tmpS, d, 2048 );                              \
+        CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
+                                                     tmpS, ok );	\
+        uiPrefs->uiOCIO_##x##_ics->value( tmpS );
 
-	OCIO_ICS( 8bits,  "" );
+        OCIO_ICS( 8bits,  "" );
     DBG3;
-	OCIO_ICS( 16bits, "" );
+        OCIO_ICS( 16bits, "" );
     DBG3;
-	OCIO_ICS( 32bits, "" );
+        OCIO_ICS( 32bits, "" );
     DBG3;
-	OCIO_ICS( float,  "" );
+        OCIO_ICS( float,  "" );
     DBG3;
 
     }
@@ -882,19 +882,19 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !tmp )
     {
     DBG3;
-	caches.get( "size", tmp, 20 );
-	uiPrefs->uiPrefsCacheSize->activate();
+        caches.get( "size", tmp, 20 );
+        uiPrefs->uiPrefsCacheSize->activate();
     DBG3;
-	uiPrefs->uiPrefsCacheSize->value( tmp );
-	CMedia::video_cache_size( tmp );
-	CMedia::audio_cache_size( tmp );
+        uiPrefs->uiPrefsCacheSize->value( tmp );
+        CMedia::video_cache_size( tmp );
+        CMedia::audio_cache_size( tmp );
     }
     else
     {
     DBG3;
-	uiPrefs->uiPrefsCacheSize->deactivate();
-	CMedia::video_cache_size( 0 );
-	CMedia::audio_cache_size( 0 );
+        uiPrefs->uiPrefsCacheSize->deactivate();
+        CMedia::video_cache_size( 0 );
+        CMedia::audio_cache_size( 0 );
     }
 
     DBG3;
@@ -903,7 +903,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( tmpF == 1.5f )
     {
     DBG3;
-	tmpF = 4.0;
+        tmpF = 4.0;
     }
 #endif
     DBG3;
@@ -926,30 +926,30 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     if ( devices.empty() )
     {
-	LOG_ERROR("No audio device.");
+        LOG_ERROR("No audio device.");
     }
     else
     {
-	AudioEngine::DeviceList::const_iterator i = devices.begin();
-	AudioEngine::DeviceList::const_iterator e = devices.end();
-	unsigned idx = 0;
-	for ( ; i != e; ++i, ++idx )
-	{
+        AudioEngine::DeviceList::const_iterator i = devices.begin();
+        AudioEngine::DeviceList::const_iterator e = devices.end();
+        unsigned idx = 0;
+        for ( ; i != e; ++i, ++idx )
+        {
     DBG3;
-	    if ( (*i).name == device )
-	    {
+            if ( (*i).name == device )
+            {
     DBG3;
-		uiPrefs->uiPrefsAudioDevice->value(idx);
-		break;
-	    }
-	}
+                uiPrefs->uiPrefsAudioDevice->value(idx);
+                break;
+            }
+        }
 
     DBG3;
-	if ( idx >= devices.size() )
-	{
+        if ( idx >= devices.size() )
+        {
     DBG3;
-	    LOG_ERROR("Could not match audio device \"" << device << "\".");
-	}
+            LOG_ERROR("Could not match audio device \"" << device << "\".");
+        }
     }
 
     audio.get( "override_audio", tmp, 0 );
@@ -986,14 +986,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     openexr.get( "gamma", tmpF, 2.2f );
     if ( !use_ocio ) {
     DBG3;
-	exrImage::_default_gamma = tmpF;
-	uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
+        exrImage::_default_gamma = tmpF;
+        uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
     }
     else
     {
     DBG3;
-	exrImage::_default_gamma = 1.0f;
-	uiPrefs->uiPrefsOpenEXRGamma->value( 1.0f );
+        exrImage::_default_gamma = 1.0f;
+        uiPrefs->uiPrefsOpenEXRGamma->value( 1.0f );
     }
 
     DBG3;
@@ -1034,13 +1034,13 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !env )
     {
     DBG3;
-	ctlEnv += root;
-	ctlEnv += N_("/ctl");
+        ctlEnv += root;
+        ctlEnv += N_("/ctl");
     }
     else
     {
     DBG3;
-	ctlEnv += env;
+        ctlEnv += env;
     }
 
     DBG3;
@@ -1052,49 +1052,49 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG3;
     while( (found = ctlEnv.find(sep)) != std::string::npos )
     {
-	std::string part2;
-	if ( found+1 < ctlEnv.size() )
-	    part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
+        std::string part2;
+        if ( found+1 < ctlEnv.size() )
+            part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
     DBG3;
-	ctlEnv = ctlEnv.substr(0, found);
+        ctlEnv = ctlEnv.substr(0, found);
     DBG3;
-	uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
-	ctlEnv = part2;
+        uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
+        ctlEnv = part2;
     }
 
     for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
     {
     DBG3;
-	char* name;
-	dirent** e;
-	const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
-	int num = fl_filename_list( dir, &e );
-	for( int i = 0; i < num; i++ )
-	{
-	    name = e[i]->d_name;
+        char* name;
+        dirent** e;
+        const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
+        int num = fl_filename_list( dir, &e );
+        for( int i = 0; i < num; i++ )
+        {
+            name = e[i]->d_name;
 
-	    // if 'name' ends in '/' or '\', remove it
-	    if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
-		name[strlen(name)-1] = '\0';
+            // if 'name' ends in '/' or '\', remove it
+            if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
+                name[strlen(name)-1] = '\0';
 
-	    // ignore the "." and ".." names
-	    if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
-		continue;
+            // ignore the "." and ".." names
+            if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
+                continue;
 
-	    std::string fullpath = dir;
-	    fullpath += "/";
-	    fullpath += name;
+            std::string fullpath = dir;
+            fullpath += "/";
+            fullpath += name;
 
-	    if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
-		 ".ctl" ) continue;
+            if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
+                 ".ctl" ) continue;
 
-	    if( fl_filename_isdir( fullpath.c_str() ) )
-		continue;
+            if( fl_filename_isdir( fullpath.c_str() ) )
+                continue;
 
-	    uiPrefs->uiPrefsCTLScripts->add( name );
-	}
+            uiPrefs->uiPrefsCTLScripts->add( name );
+        }
 
-	fl_filename_free_list( &e, num );
+        fl_filename_free_list( &e, num );
     }
 
 
@@ -1108,15 +1108,15 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
     {
-	Fl_Menu_Item* w = uiPrefs->uiLUT_quality->child(i);
-	if ( w == NULL ) continue;
-	const char* label = w->label();
-	if ( label && strcmp( label, tmpS ) == 0 )
-	{
+        Fl_Menu_Item* w = uiPrefs->uiLUT_quality->child(i);
+        if ( w == NULL ) continue;
+        const char* label = w->label();
+        if ( label && strcmp( label, tmpS ) == 0 )
+        {
     DBG3;
-	    uiPrefs->uiLUT_quality->value(i);
-	    break;
-	}
+            uiPrefs->uiLUT_quality->value(i);
+            break;
+        }
     }
 
     DBG3;
@@ -1124,104 +1124,104 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsNumStops->value( tmp );
 
     {
-	Fl_Preferences odt( lut, "ODT" );
-	{
-	    odt.get( "algorithm", tmp, 0 );
-	    uiPrefs->ODT_algorithm->value(tmp);
+        Fl_Preferences odt( lut, "ODT" );
+        {
+            odt.get( "algorithm", tmp, 0 );
+            uiPrefs->ODT_algorithm->value(tmp);
 
     DBG3;
-	    Fl_Preferences ctl( odt, "CTL" );
-	    {
-		ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
-		ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
-							tmpS, ok );
+            Fl_Preferences ctl( odt, "CTL" );
+            {
+                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
+                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
+                                                        tmpS, ok );
 
     DBG3;
-		Fl_Preferences chroma( ctl, "Chromaticities" );
-		ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
-					 tmpC, chroma );
+                Fl_Preferences chroma( ctl, "Chromaticities" );
+                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
+                                         tmpC, chroma );
 
 
     DBG3;
-		ok = ctl.get( "white_luminance", tmpF, 120.0 );
-		ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
-					  tmpF, ok );
-		ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
-		ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
-					  tmpF, ok );
+                ok = ctl.get( "white_luminance", tmpF, 120.0 );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
+                                          tmpF, ok );
+                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
+                                          tmpF, ok );
     DBG3;
-	    }
-	    Fl_Preferences icc( odt, "ICC" );
-	    {
-		ok = icc.get( "profile", tmpS, "", 2048 );
-		ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
-						      tmpS, ok );
+            }
+            Fl_Preferences icc( odt, "ICC" );
+            {
+                ok = icc.get( "profile", tmpS, "", 2048 );
+                ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
+                                                      tmpS, ok );
     DBG3;
-		if ( !ODT_ICC_profile.empty() )
-		    mrv::colorProfile::add( ODT_ICC_profile.c_str() );
-	    }
-	}
+                if ( !ODT_ICC_profile.empty() )
+                    mrv::colorProfile::add( ODT_ICC_profile.c_str() );
+            }
+        }
 
-	//
-	// CTL
-	//
+        //
+        // CTL
+        //
 
 
 #if 0
-	Fl_Preferences idt( lut, "IDT" );
-	{
-	    idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
-	    uiPrefs->IDT_transform->value(tmpS);
-	}
+        Fl_Preferences idt( lut, "IDT" );
+        {
+            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
+            uiPrefs->IDT_transform->value(tmpS);
+        }
 #endif
 
 
-	Fl_Preferences rt( lut, "RT" );
-	{
+        Fl_Preferences rt( lut, "RT" );
+        {
     DBG3;
-	    rt.get( "algorithm", tmp, 0 );
-	    uiPrefs->RT_algorithm->value(tmp);
+            rt.get( "algorithm", tmp, 0 );
+            uiPrefs->RT_algorithm->value(tmp);
 
     DBG3;
-	    Fl_Preferences ctl( rt, "CTL" );
-	    {
+            Fl_Preferences ctl( rt, "CTL" );
+            {
 #define RENDER_TRANSFORM(x, d)						\
-	  ok = ctl.get( #x, tmpS, d, 2048 );				\
-	  CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
+          ok = ctl.get( #x, tmpS, d, 2048 );				\
+          CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
 
-		RENDER_TRANSFORM( 8bits,  "" );
+                RENDER_TRANSFORM( 8bits,  "" );
     DBG3;
-		RENDER_TRANSFORM( 16bits, "" );
+                RENDER_TRANSFORM( 16bits, "" );
     DBG3;
-		RENDER_TRANSFORM( 32bits, "" );
+                RENDER_TRANSFORM( 32bits, "" );
     DBG3;
-		RENDER_TRANSFORM( float,  "RRT" );
+                RENDER_TRANSFORM( float,  "RRT" );
     DBG3;
 #undef RENDER_TRANSFORM
-	    }
+            }
 
-	    //
-	    // ICC
-	    //
+            //
+            // ICC
+            //
 
-	    Fl_Preferences icc( rt, "ICC" );
-	    {
+            Fl_Preferences icc( rt, "ICC" );
+            {
 #define ICC_PROFILE(x, d)						\
-	  ok = icc.get( #x, tmpS, d, 2048 );				\
-	  CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
-	  uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
-	  if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
+          ok = icc.get( #x, tmpS, d, 2048 );				\
+          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
+          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
+          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
     DBG3;
-		ICC_PROFILE( 8bits,  "" );
+                ICC_PROFILE( 8bits,  "" );
     DBG3;
-		ICC_PROFILE( 16bits, "" );
+                ICC_PROFILE( 16bits, "" );
     DBG3;
-		ICC_PROFILE( 32bits, "" );
+                ICC_PROFILE( 32bits, "" );
     DBG3;
-		ICC_PROFILE( float,  "" );
+                ICC_PROFILE( float,  "" );
 #undef ICC_PROFILE
-	    }
-	}
+            }
+        }
     }
 
 
@@ -1307,14 +1307,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsSubtitleFont->value(0);  // in case no font is found
     for (unsigned i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
     {
-	DBG3;
-	const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
-	if ( label && strcmp( label, tmpS ) == 0 )
-	{
-	    DBG3;
-	    uiPrefs->uiPrefsSubtitleFont->value(i);
-	    break;
-	}
+        DBG3;
+        const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
+        if ( label && strcmp( label, tmpS ) == 0 )
+        {
+            DBG3;
+            uiPrefs->uiPrefsSubtitleFont->value(i);
+            break;
+        }
     }
     DBG3;
     subtitles.get( "encoding", tmpS, "ISO-8859-1", 2048 );
@@ -1339,15 +1339,15 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     if ( version >= 6 )
     {
-	if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
-	LOG_INFO( _("Loading hotkeys from ") << prefspath()
-		  << _( hotkeys_file.c_str() ) << ".prefs" );
-	keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
-				   tmpS );
+        if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
+        LOG_INFO( _("Loading hotkeys from ") << prefspath()
+                  << _( hotkeys_file.c_str() ) << ".prefs" );
+        keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
+                                   tmpS );
     }
     else
     {
-	keys = new Fl_Preferences( base, "hotkeys" );
+        keys = new Fl_Preferences( base, "hotkeys" );
     }
     load_hotkeys(uiMain, keys);
 
@@ -1355,7 +1355,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( ! set_transforms() )
     {
     DBG3;
-	LOG_ERROR( _("Could not set transforms in GUI") );
+        LOG_ERROR( _("Could not set transforms in GUI") );
     }
 }
 
@@ -1372,24 +1372,24 @@ void Preferences::run( ViewerUI* main )
 #ifdef OSX
     if ( uiPrefs->uiPrefsMacOSMenus->value() )
     {
-	uiMain->uiMenuBar->clear();
-	uiMain->uiMenuGroup->redraw();
-	delete uiMain->uiMenuBar;
-	uiMain->uiMenuBar = new Fl_Sys_Menu_Bar( 0, 0, 0, 25 );
+        uiMain->uiMenuBar->clear();
+        uiMain->uiMenuGroup->redraw();
+        delete uiMain->uiMenuBar;
+        uiMain->uiMenuBar = new Fl_Sys_Menu_Bar( 0, 0, 0, 25 );
     }
     else
     {
-	Fl_Sys_Menu_Bar* smenubar =
-	    dynamic_cast< Fl_Sys_Menu_Bar* >( uiMain->uiMenuBar );
-	if ( smenubar )
-	{
-	    smenubar->clear();
-	    delete uiMain->uiMenuBar;
-	    uiMain->uiMenuBar = new Fl_Menu_Bar( 0, 0,
-						 uiMain->uiStatus->x(), 25 );
-	    uiMain->uiMenuGroup->add( uiMain->uiMenuBar );
-	    uiMain->uiMenuGroup->redraw();
-	}
+        Fl_Sys_Menu_Bar* smenubar =
+            dynamic_cast< Fl_Sys_Menu_Bar* >( uiMain->uiMenuBar );
+        if ( smenubar )
+        {
+            smenubar->clear();
+            delete uiMain->uiMenuBar;
+            uiMain->uiMenuBar = new Fl_Menu_Bar( 0, 0,
+                                                 uiMain->uiStatus->x(), 25 );
+            uiMain->uiMenuGroup->add( uiMain->uiMenuBar );
+            uiMain->uiMenuGroup->redraw();
+        }
     }
 #endif
 
@@ -1414,62 +1414,62 @@ void Preferences::run( ViewerUI* main )
     DBG3;
     if ( uiPrefs->uiPrefsEDLEdit->value() )
     {
-	main->uiEDLWindow->uiMain->show();
+        main->uiEDLWindow->uiMain->show();
     }
     else
-	main->uiEDLWindow->uiMain->hide();
+        main->uiEDLWindow->uiMain->hide();
 
     PaintUI* uiPaint = main->uiPaint;
     DBG3;
     if ( uiPrefs->uiPrefsPaintTools->value() )
     {
-	uiPaint->uiMain->show();
+        uiPaint->uiMain->show();
     }
     else
-	uiPaint->uiMain->hide();
+        uiPaint->uiMain->hide();
 
 
     DBG3;
     if ( uiPrefs->uiPrefsStereoOptions->value() )
     {
-	main->uiStereo->uiMain->show();
+        main->uiStereo->uiMain->show();
     }
     else
-	main->uiStereo->uiMain->hide();
+        main->uiStereo->uiMain->hide();
 
     DBG3;
     if ( uiPrefs->uiPrefsReelList->value() )
     {
-	main->uiReelWindow->uiMain->show();
+        main->uiReelWindow->uiMain->show();
     }
     else
-	main->uiReelWindow->uiMain->hide();
+        main->uiReelWindow->uiMain->hide();
 
     DBG3;
     mrv::ImageView* v = uiMain->uiView;
     if ( uiPrefs->uiPrefsImageInfo->value() )
-	v->toggle_window( ImageView::kMediaInfo,
-			  uiPrefs->uiPrefsImageInfo->value() );
+        v->toggle_window( ImageView::kMediaInfo,
+                          uiPrefs->uiPrefsImageInfo->value() );
 
     DBG3;
     if ( uiPrefs->uiPrefsColorArea->value() )
-	v->toggle_window( ImageView::kColorInfo,
-			  uiPrefs->uiPrefsColorArea->value() );
+        v->toggle_window( ImageView::kColorInfo,
+                          uiPrefs->uiPrefsColorArea->value() );
 
     DBG3;
     if ( uiPrefs->uiPrefsHistogram->value() )
-	v->toggle_window( ImageView::kHistogram,
-			  uiPrefs->uiPrefsHistogram->value() );
+        v->toggle_window( ImageView::kHistogram,
+                          uiPrefs->uiPrefsHistogram->value() );
 
     DBG3;
     if ( uiPrefs->uiPrefsVectorscope->value() )
-	v->toggle_window( ImageView::kVectorscope,
-			  uiPrefs->uiPrefsVectorscope->value() );
+        v->toggle_window( ImageView::kVectorscope,
+                          uiPrefs->uiPrefsVectorscope->value() );
 
     DBG3;
     if ( uiPrefs->uiPrefsWaveform->value() )
-	v->toggle_window( ImageView::kWaveform,
-			  uiPrefs->uiPrefsWaveform->value() );
+        v->toggle_window( ImageView::kWaveform,
+                          uiPrefs->uiPrefsWaveform->value() );
 
     //
     // Toolbars
@@ -1477,54 +1477,54 @@ void Preferences::run( ViewerUI* main )
     uiMain->uiView->fill_menu( uiMain->uiMenuBar );
     if ( uiPrefs->uiPrefsMenuBar->value() )
     {
-	uiMain->uiMenuGroup->show();
+        uiMain->uiMenuGroup->show();
     }
     else {
-	uiMain->uiMenuGroup->hide();
+        uiMain->uiMenuGroup->hide();
     }
 
     DBG3;
     if ( uiPrefs->uiPrefsTopbar->value() )
     {
-	main->uiTopBar->show();
+        main->uiTopBar->show();
     }
     else
     {
-	main->uiTopBar->hide();
+        main->uiTopBar->hide();
     }
 
     DBG3;
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
     {
-	main->uiPixelBar->show();
+        main->uiPixelBar->show();
     }
     else
     {
-	main->uiPixelBar->hide();
+        main->uiPixelBar->hide();
     }
 
     DBG3;
     if ( uiPrefs->uiPrefsTimeline->value() )
     {
-	main->uiBottomBar->show();
+        main->uiBottomBar->show();
     }
     else
     {
-	main->uiBottomBar->hide();
+        main->uiBottomBar->hide();
     }
     DBG3;
     if ( uiPrefs->uiPrefsToolBar->value() )
     {
-	main->uiToolsGroup->show();
-	main->uiToolsGroup->size( 45, 433 );
-	main->uiViewGroup->layout();
-	main->uiViewGroup->init_sizes();
+        main->uiToolsGroup->show();
+        main->uiToolsGroup->size( 45, 433 );
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
     }
     else
     {
-	main->uiToolsGroup->hide();
-	main->uiViewGroup->layout();
-	main->uiViewGroup->init_sizes();
+        main->uiToolsGroup->hide();
+        main->uiViewGroup->layout();
+        main->uiViewGroup->init_sizes();
     }
 
     // @BUG: fix to uiRegion scaling badly (too much or too little)
@@ -1548,49 +1548,47 @@ void Preferences::run( ViewerUI* main )
     DBG3;
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
-	view->show_pixel_ratio( main->uiPixelRatio->value() );
+        view->show_pixel_ratio( main->uiPixelRatio->value() );
 
     view->texture_filtering( ImageView::kNearestNeighbor );
     if ( main->uiPrefs->uiPrefsFiltering->value() ==
-	 ImageView::kBilinearFiltering )
-	view->texture_filtering( ImageView::kBilinearFiltering );
+         ImageView::kBilinearFiltering )
+        view->texture_filtering( ImageView::kBilinearFiltering );
 
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
     DBG3;
     if ( uiPrefs->uiScrub->value() )
-	view->scrub_mode();
+        view->scrub_mode();
     else if ( uiPrefs->uiMovePicture->value() )
-	view->move_pic_mode();
+        view->move_pic_mode();
     else if ( uiPrefs->uiSelection->value() )
-	view->selection_mode();
+        view->selection_mode();
     else if ( uiPrefs->uiDraw->value() )
-	view->draw_mode();
+        view->draw_mode();
     else if ( uiPrefs->uiText->value() )
-	view->text_mode();
+        view->text_mode();
     else if ( uiPrefs->uiErase->value() )
-	view->erase_mode();
+        view->erase_mode();
 
     DBG3;
     if ( !view->use_lut() )
     {
-	bool use = uiPrefs->uiPrefsViewLut->value();
-	TRACE2( ">>>>>>>>>>>>> uiLUT value=" << use );
-	if ( ! GLEngine::floatTextures() ) use = false;
-	DBG3;
-	TRACE2( ">>>>>>>>>>>>> uiLUT float-text=" << use );
-	main->uiLUT->value( use );
-	view->use_lut( use );
-	DBG3;
+        bool use = uiPrefs->uiPrefsViewLut->value();
+        if ( ! GLEngine::floatTextures() ) use = false;
+        DBG3;
+        main->uiLUT->value( use );
+        view->use_lut( use );
+        DBG3;
     }
 
 
-	DBG3;
+        DBG3;
     if ( uiPrefs->uiPrefsSafeAreas->value() )
-	view->safe_areas(true);
+        view->safe_areas(true);
 
-	DBG3;
+        DBG3;
     missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
 
 
@@ -1598,40 +1596,40 @@ void Preferences::run( ViewerUI* main )
     // OCIO
     /////////////////////////////////////////////////////
 
-	DBG3;
+        DBG3;
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
     const char* var = environmentSetting( "OCIO",
-					  uiPrefs->uiPrefsOCIOConfig->value(),
-					  true );
+                                          uiPrefs->uiPrefsOCIOConfig->value(),
+                                          true );
     const char* envvar = var;
-	DBG3;
+        DBG3;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
     if ( uiPrefs->uiPrefsSaveOcio->value() && use_ocio )
     {
-	Fl_Preferences base( prefspath().c_str(), "filmaura",
-			     "mrViewer" );
-	Fl_Preferences ui( base, "ui" );
-	Fl_Preferences view( ui, "view" );
-	Fl_Preferences ocio( view, "ocio" );
-	char tmpS[2048];
-	ocio.get( "config", tmpS, "", 2048 );
-	uiPrefs->uiPrefsOCIOConfig->value( tmpS );
+        Fl_Preferences base( prefspath().c_str(), "filmaura",
+                             "mrViewer" );
+        Fl_Preferences ui( base, "ui" );
+        Fl_Preferences view( ui, "view" );
+        Fl_Preferences ocio( view, "ocio" );
+        char tmpS[2048];
+        ocio.get( "config", tmpS, "", 2048 );
+        uiPrefs->uiPrefsOCIOConfig->value( tmpS );
 
-	var = uiPrefs->uiPrefsOCIOConfig->value();
-	mrvLOG_INFO( "ocio",
-		     _( "Setting OCIO config to saved preferences." )
-		     << std::endl );
+        var = uiPrefs->uiPrefsOCIOConfig->value();
+        mrvLOG_INFO( "ocio",
+                     _( "Setting OCIO config to saved preferences." )
+                     << std::endl );
     }
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
-	DBG3;
-	mrvLOG_INFO( "ocio",
-		     _("Setting OCIO config to nuke-default." )
-		     << std::endl );
-	var = av_strdup( tmp.c_str() );
+        DBG3;
+        mrvLOG_INFO( "ocio",
+                     _("Setting OCIO config to nuke-default." )
+                     << std::endl );
+        var = av_strdup( tmp.c_str() );
     }
     DBG3;
 
@@ -1640,352 +1638,352 @@ void Preferences::run( ViewerUI* main )
 
     if ( var && use_ocio && strlen(var) > 0 )
     {
-	static std::string old_ocio;
+        static std::string old_ocio;
 
-	DBG3;
-	if ( old_ocio != var )
-	{
-	    DBG3;
-	    if ( var == envvar )
-	    {
-		mrvLOG_INFO( "ocio", _("Setting OCIO config from OCIO "
-				       "environment variable:")
-			     << std::endl );
-	    }
-	    else
-	    {
-		mrvLOG_INFO( "ocio", _("Setting OCIO config to:")
-			     << std::endl );
-	    }
-	    old_ocio = var;
-	    mrvLOG_INFO( "ocio", old_ocio << std::endl );
-	}
+        DBG3;
+        if ( old_ocio != var )
+        {
+            DBG3;
+            if ( var == envvar )
+            {
+                mrvLOG_INFO( "ocio", _("Setting OCIO config from OCIO "
+                                       "environment variable:")
+                             << std::endl );
+            }
+            else
+            {
+                mrvLOG_INFO( "ocio", _("Setting OCIO config to:")
+                             << std::endl );
+            }
+            old_ocio = var;
+            mrvLOG_INFO( "ocio", old_ocio << std::endl );
+        }
 
-	DBG3;
-	std::string parsed = expandVariables( var, "%", '%' );
-	parsed = expandVariables( parsed, "${", '}' );
-	if ( old_ocio != parsed )
-	{
-	DBG3;
-	    mrvLOG_INFO( "ocio", _("Expanded OCIO config to:")
-			 << std::endl );
-	    mrvLOG_INFO( "ocio", parsed << std::endl );
+        DBG3;
+        std::string parsed = expandVariables( var, "%", '%' );
+        parsed = expandVariables( parsed, "${", '}' );
+        if ( old_ocio != parsed )
+        {
+        DBG3;
+            mrvLOG_INFO( "ocio", _("Expanded OCIO config to:")
+                         << std::endl );
+            mrvLOG_INFO( "ocio", parsed << std::endl );
 
-	}
+        }
 
-	if ( parsed.rfind( "nuke-default" ) != std::string::npos )
-	    nuke_default = true;
+        if ( parsed.rfind( "nuke-default" ) != std::string::npos )
+            nuke_default = true;
 
-	DBG3;
-	// sprintf( buf, "OCIO=%s", parsed.c_str() );
-	// putenv( av_strdup(buf) );
-	DBG3;
-	uiPrefs->uiPrefsOCIOConfig->value( var );
-
-
-	DBG3;
-	char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-	setlocale( LC_NUMERIC, "C" );
-
-	DBG3;
-
-	try
-	{
-	    DBG3;
-	    config = OCIO::Config::CreateFromFile( parsed.c_str() );
-
-	    uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
-
-	    DBG3;
-	    OCIO_Display = config->getDefaultDisplay();
-
-	    OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
-
-	    DBG3;
-	    // First, remove all additional defaults if any from pulldown menu
-	    if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
-	    {
-		main->gammaDefaults->clear();
-	    }
-	    DBG3;
+        DBG3;
+        // sprintf( buf, "OCIO=%s", parsed.c_str() );
+        // putenv( av_strdup(buf) );
+        DBG3;
+        uiPrefs->uiPrefsOCIOConfig->value( var );
 
 
-	    int numDisplays = config->getNumDisplays();
-	    DBG3;
+        DBG3;
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+        setlocale( LC_NUMERIC, "C" );
 
-	    stringArray active_displays;
-	    const char* displaylist = config->getActiveDisplays();
-	    if ( displaylist )
-	    {
-		mrv::split( active_displays, displaylist, ',' );
+        DBG3;
 
-		// Eliminate forward spaces in names
-		for ( unsigned i = 0; i < active_displays.size(); ++i )
-		{
-		    while ( active_displays[i][0] == ' ' )
-			active_displays[i] =
-			active_displays[i].substr( 1, active_displays[i].size() );
-		}
-	    }
-	    else
-	    {
-		int num = config->getNumDisplays();
-		for ( int i = 0; i < num; ++i )
-		{
-		    active_displays.push_back( config->getDisplay( i ) );
-		}
-	    }
+        try
+        {
+            DBG3;
+            config = OCIO::Config::CreateFromFile( parsed.c_str() );
 
-	    stringArray active_views;
-	    const char* viewlist = config->getActiveViews();
-	    if ( viewlist )
-	    {
-		mrv::split( active_views, viewlist, ',' );
+            uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
-		// Eliminate forward spaces in names
-		for ( unsigned i = 0; i < active_views.size(); ++i )
-		{
-		    while ( active_views[i][0] == ' ' )
-			active_views[i] =
-			active_views[i].substr( 1, active_views[i].size() );
-		}
-	    }
+            DBG3;
+            OCIO_Display = config->getDefaultDisplay();
 
-	    size_t num_active_displays = active_displays.size();
-	    size_t num_active_views = active_views.size();
+            OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-	    for ( size_t j = 0; j < num_active_displays; ++j )
-	    {
-		std::string display = active_displays[j];
-		DBG3;
-
-		int numViews = config->getNumViews(display.c_str());
-		DBG3;
-		// Collect all views
-
-		if ( num_active_views )
-		{
-		    for ( size_t h = 0; h < num_active_views; ++h )
-		    {
-			std::string view;
-			bool add = false;
-
-			for (int i = 0; i < numViews; ++i)
-			{
-			    view = config->getView(display.c_str(), i);
-			    if ( active_views[h] == view )
-			    {
-				add = true; break;
-			    }
-			}
-
-			if ( add )
-			{
-			    std::string name;
-			    if ( num_active_displays > 1 )
-			    {
-				name = display;
-				name += "/";
-				name += view;
-			    }
-			    else
-			    {
-				name = view;
-				name += " (" + display + ")";
-			    }
-
-			    main->gammaDefaults->add( name.c_str() );
-
-			    if ( view == OCIO_View && !OCIO_View.empty() )
-			    {
-				main->gammaDefaults->copy_label( view.c_str() );
-				main->uiGamma->value( 1.0f );
-				main->uiGammaInput->value( 1.0f );
-				main->uiView->gamma( 1.0f );
-			    }
-			}
-		    }
-		}
-		else
-		{
-		    for(int i = 0; i < numViews; i++)
-		    {
-			std::string view = config->getView(display.c_str(), i);
-
-			std::string name;
-			if ( num_active_displays > 1 )
-			{
-			    name = display;
-			    name += "/";
-			    name += view;
-			}
-			else
-			{
-			    name = view;
-			    name += " (" + display + ")";
-			}
-
-			main->gammaDefaults->add( name.c_str() );
-
-			if ( view == OCIO_View && !OCIO_View.empty() )
-			{
-			    main->gammaDefaults->copy_label( view.c_str() );
-			    main->uiGamma->value( 1.0f );
-			    main->uiGammaInput->value( 1.0f );
-			    main->uiView->gamma( 1.0f );
-			}
-		    }
-		}
-	    }
+            DBG3;
+            // First, remove all additional defaults if any from pulldown menu
+            if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
+            {
+                main->gammaDefaults->clear();
+            }
+            DBG3;
 
 
-	    DBG3;
+            int numDisplays = config->getNumDisplays();
+            DBG3;
 
-	    main->gammaDefaults->redraw();
-	}
-	catch( const OCIO::Exception& e )
-	{
-	DBG3;
-	    LOG_ERROR( e.what() );
-	    use_ocio = false;
-	}
-	catch( const std::exception& e )
-	{
-	DBG3;
-	    LOG_ERROR( e.what() );
-	    use_ocio = false;
-	}
+            stringArray active_displays;
+            const char* displaylist = config->getActiveDisplays();
+            if ( displaylist )
+            {
+                mrv::split( active_displays, displaylist, ',' );
 
-	DBG3;
-	setlocale(LC_NUMERIC, oldloc );
-	av_free( oldloc );
+                // Eliminate forward spaces in names
+                for ( unsigned i = 0; i < active_displays.size(); ++i )
+                {
+                    while ( active_displays[i][0] == ' ' )
+                        active_displays[i] =
+                        active_displays[i].substr( 1, active_displays[i].size() );
+                }
+            }
+            else
+            {
+                int num = config->getNumDisplays();
+                for ( int i = 0; i < num; ++i )
+                {
+                    active_displays.push_back( config->getDisplay( i ) );
+                }
+            }
 
-	DBG3;
+            stringArray active_views;
+            const char* viewlist = config->getActiveViews();
+            if ( viewlist )
+            {
+                mrv::split( active_views, viewlist, ',' );
+
+                // Eliminate forward spaces in names
+                for ( unsigned i = 0; i < active_views.size(); ++i )
+                {
+                    while ( active_views[i][0] == ' ' )
+                        active_views[i] =
+                        active_views[i].substr( 1, active_views[i].size() );
+                }
+            }
+
+            size_t num_active_displays = active_displays.size();
+            size_t num_active_views = active_views.size();
+
+            for ( size_t j = 0; j < num_active_displays; ++j )
+            {
+                std::string display = active_displays[j];
+                DBG3;
+
+                int numViews = config->getNumViews(display.c_str());
+                DBG3;
+                // Collect all views
+
+                if ( num_active_views )
+                {
+                    for ( size_t h = 0; h < num_active_views; ++h )
+                    {
+                        std::string view;
+                        bool add = false;
+
+                        for (int i = 0; i < numViews; ++i)
+                        {
+                            view = config->getView(display.c_str(), i);
+                            if ( active_views[h] == view )
+                            {
+                                add = true; break;
+                            }
+                        }
+
+                        if ( add )
+                        {
+                            std::string name;
+                            if ( num_active_displays > 1 )
+                            {
+                                name = display;
+                                name += "/";
+                                name += view;
+                            }
+                            else
+                            {
+                                name = view;
+                                name += " (" + display + ")";
+                            }
+
+                            main->gammaDefaults->add( name.c_str() );
+
+                            if ( view == OCIO_View && !OCIO_View.empty() )
+                            {
+                                main->gammaDefaults->copy_label( view.c_str() );
+                                main->uiGamma->value( 1.0f );
+                                main->uiGammaInput->value( 1.0f );
+                                main->uiView->gamma( 1.0f );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i < numViews; i++)
+                    {
+                        std::string view = config->getView(display.c_str(), i);
+
+                        std::string name;
+                        if ( num_active_displays > 1 )
+                        {
+                            name = display;
+                            name += "/";
+                            name += view;
+                        }
+                        else
+                        {
+                            name = view;
+                            name += " (" + display + ")";
+                        }
+
+                        main->gammaDefaults->add( name.c_str() );
+
+                        if ( view == OCIO_View && !OCIO_View.empty() )
+                        {
+                            main->gammaDefaults->copy_label( view.c_str() );
+                            main->uiGamma->value( 1.0f );
+                            main->uiGammaInput->value( 1.0f );
+                            main->uiView->gamma( 1.0f );
+                        }
+                    }
+                }
+            }
+
+
+            DBG3;
+
+            main->gammaDefaults->redraw();
+        }
+        catch( const OCIO::Exception& e )
+        {
+        DBG3;
+            LOG_ERROR( e.what() );
+            use_ocio = false;
+        }
+        catch( const std::exception& e )
+        {
+        DBG3;
+            LOG_ERROR( e.what() );
+            use_ocio = false;
+        }
+
+        DBG3;
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
+
+        DBG3;
     }
     else
     {
-	DBG3;
-	if ( !var || strlen(var) == 0 )
-	    LOG_INFO( _("OCIO config is not set.  "
-			"Defaulting to CTL. ") );
-	DBG3;
-	main->gammaDefaults->copy_label( _("Gamma") );
-	main->gammaDefaults->clear();
-	main->gammaDefaults->add( _("2.2") );
-	main->gammaDefaults->add( _("1.8") );
-	main->gammaDefaults->add( _("1.0") );
-	main->gammaDefaults->add( _("0.45") );
-	DBG3;
-	use_ocio = false;
+        DBG3;
+        if ( !var || strlen(var) == 0 )
+            LOG_INFO( _("OCIO config is not set.  "
+                        "Defaulting to CTL. ") );
+        DBG3;
+        main->gammaDefaults->copy_label( _("Gamma") );
+        main->gammaDefaults->clear();
+        main->gammaDefaults->add( _("2.2") );
+        main->gammaDefaults->add( _("1.8") );
+        main->gammaDefaults->add( _("1.0") );
+        main->gammaDefaults->add( _("0.45") );
+        DBG3;
+        use_ocio = false;
     }
 
     if ( use_ocio )
     {
-	DBGM1( "use_OCIO" );
-	DBG3;
-	main->uiFstopGroup->hide();
-	main->uiNormalize->hide();
-	DBG3;
-	char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-	setlocale( LC_NUMERIC, "C" );
-	try
-	{
-	DBG3;
-	    std::vector< std::string > spaces;
-	    for(int i = 0; i < config->getNumColorSpaces(); ++i)
-	    {
-	DBG3;
-		std::string csname = config->getColorSpaceNameByIndex(i);
-		spaces.push_back( csname );
-	    }
+        DBGM1( "use_OCIO" );
+        DBG3;
+        main->uiFstopGroup->hide();
+        main->uiNormalize->hide();
+        DBG3;
+        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+        setlocale( LC_NUMERIC, "C" );
+        try
+        {
+        DBG3;
+            std::vector< std::string > spaces;
+            for(int i = 0; i < config->getNumColorSpaces(); ++i)
+            {
+        DBG3;
+                std::string csname = config->getColorSpaceNameByIndex(i);
+                spaces.push_back( csname );
+            }
 
-	DBG3;
-	    if ( std::find( spaces.begin(), spaces.end(),
-			    OCIO::ROLE_SCENE_LINEAR ) == spaces.end() )
-	    {
-		spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
-	DBG3;
-	    }
+        DBG3;
+            if ( std::find( spaces.begin(), spaces.end(),
+                            OCIO::ROLE_SCENE_LINEAR ) == spaces.end() )
+            {
+                spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
+        DBG3;
+            }
 
-	    CMedia* img = NULL;
-	    mrv::media fg = main->uiView->foreground();
-	    if ( fg )
-	    {
-	DBG3;
-		img = fg->image();
-	    }
+            CMedia* img = NULL;
+            mrv::media fg = main->uiView->foreground();
+            if ( fg )
+            {
+        DBG3;
+                img = fg->image();
+            }
 
-	DBG3;
-	    mrv::PopupMenu* w = main->uiICS;
-	    w->clear();
-	    std::sort( spaces.begin(), spaces.end() );
-	    size_t idx = 0;
-	    for ( size_t i = 0; i < spaces.size(); ++i )
-	    {
-		const char* space = spaces[i].c_str();
-		OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
-		const char* family = cs->getFamily();
-		std::string menu;
-		if ( family && strlen(family) > 0 ) {
-		    menu = family; menu += "/";
-		}
-		menu += space;
-		w->add( menu.c_str() );
-		DBG3;
-		//w->child(i)->tooltip( av_strdup( cs->getDescription() ) );
-		if ( img && img->ocio_input_color_space() == space )
-		{
-		    DBG3;
-		    w->copy_label( space );
-		}
-	    }
+        DBG3;
+            mrv::PopupMenu* w = main->uiICS;
+            w->clear();
+            std::sort( spaces.begin(), spaces.end() );
+            size_t idx = 0;
+            for ( size_t i = 0; i < spaces.size(); ++i )
+            {
+                const char* space = spaces[i].c_str();
+                OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
+                const char* family = cs->getFamily();
+                std::string menu;
+                if ( family && strlen(family) > 0 ) {
+                    menu = family; menu += "/";
+                }
+                menu += space;
+                w->add( menu.c_str() );
+                DBG3;
+                //w->child(i)->tooltip( av_strdup( cs->getDescription() ) );
+                if ( img && img->ocio_input_color_space() == space )
+                {
+                    DBG3;
+                    w->copy_label( space );
+                }
+            }
 
-	    for ( size_t i = 0; i < w->children(); ++i )
-	    {
-		if ( !img ) continue;
+            for ( size_t i = 0; i < w->children(); ++i )
+            {
+                if ( !img ) continue;
 
-		const Fl_Menu_Item* o = w->child(i);
-		if ( !o || !o->label() ) continue;
+                const Fl_Menu_Item* o = w->child(i);
+                if ( !o || !o->label() ) continue;
 
-		if ( img->ocio_input_color_space() == o->label() )
-		{
-		    w->value(i);
-		    w->do_callback();
-		    break;
-		}
-	    }
-	    DBG3;
-	    w->redraw();
-	}
-	catch( const OCIO::Exception& e )
-	{
-	DBG3;
-	    LOG_ERROR( e.what() );
-	}
-	catch( const std::exception& e )
-	{
-	    LOG_ERROR( e.what() );
-	}
-	DBG3;
-	main->uiICS->show();
-	setlocale(LC_NUMERIC, oldloc );
-	av_free( oldloc );
+                if ( img->ocio_input_color_space() == o->label() )
+                {
+                    w->value(i);
+                    w->do_callback();
+                    break;
+                }
+            }
+            DBG3;
+            w->redraw();
+        }
+        catch( const OCIO::Exception& e )
+        {
+        DBG3;
+            LOG_ERROR( e.what() );
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( e.what() );
+        }
+        DBG3;
+        main->uiICS->show();
+        setlocale(LC_NUMERIC, oldloc );
+        av_free( oldloc );
 
     }
     else
     {
-	DBG3;
-	main->uiICS->hide();
-	DBG3;
-	main->uiFstopGroup->show();
-	main->uiNormalize->show();
+        DBG3;
+        main->uiICS->hide();
+        DBG3;
+        main->uiFstopGroup->show();
+        main->uiNormalize->show();
     }
 
     // Handle file loading
     CMedia::load_library = (CMedia::LoadLib)
-			   uiPrefs->uiPrefsLoadLibrary->value();
+                           uiPrefs->uiPrefsLoadLibrary->value();
 
-	DBG3;
+        DBG3;
     char buf[64];
     sprintf( buf, "%d", (int) uiPrefs->uiPrefsVideoThreadCount->value() );
     video_threads = buf;
@@ -1993,49 +1991,49 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle file requester
     //
-	DBG3;
+        DBG3;
     Flu_File_Chooser::thumbnailsFileReq = (bool)
-					  uiPrefs->uiPrefsFileReqThumbnails->value();
+                                          uiPrefs->uiPrefsFileReqThumbnails->value();
 
-	DBG3;
+        DBG3;
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
-	    uiPrefs->uiPrefsFileReqFolder->value();
+            uiPrefs->uiPrefsFileReqFolder->value();
 
-	DBG3;
+        DBG3;
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
     // Handle caches
-	DBG3;
+        DBG3;
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
     CMedia::preload_cache( (bool)uiPrefs->uiPrefsPreloadCache->value() );
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
 
-	DBG3;
+        DBG3;
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
-	uiPrefs->uiPrefsCacheSize->activate();
-	CMedia::audio_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
-	CMedia::video_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
+        uiPrefs->uiPrefsCacheSize->activate();
+        CMedia::audio_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
+        CMedia::video_cache_size((int)uiPrefs->uiPrefsCacheSize->value());
     }
     else
     {
-	uiPrefs->uiPrefsCacheSize->deactivate();
-	CMedia::audio_cache_size( 0 );
-	CMedia::video_cache_size( 0 );
+        uiPrefs->uiPrefsCacheSize->deactivate();
+        CMedia::audio_cache_size( 0 );
+        CMedia::video_cache_size( 0 );
     }
 
     Preferences::max_memory = (int64_t)( uiPrefs->uiPrefsCacheMemory->value() *
-					 1000000000.0 );
+                                         1000000000.0 );
     if ( max_memory <= 0 ) max_memory = 1000000000;
-	DBG3;
+        DBG3;
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
-	    CMedia::cache_scale() != scale )
+            CMedia::cache_scale() != scale )
     {
-	view->clear_caches();
+        view->clear_caches();
     }
 
 
@@ -2043,81 +2041,81 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle pixel values
     //
-	DBG3;
+        DBG3;
     main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
     main->uiAColorType->redraw();
-	DBG3;
+        DBG3;
     main->uiAColorType->do_callback();
-	DBG3;
+        DBG3;
     main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
     main->uiPixelValue->redraw();
-	DBG3;
+        DBG3;
     main->uiPixelValue->do_callback();
-	DBG3;
+        DBG3;
     main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
     main->uiBColorType->redraw();
-	DBG3;
+        DBG3;
     main->uiBColorType->do_callback();
-	DBG3;
+        DBG3;
     main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
     main->uiLType->redraw();
-	DBG3;
+        DBG3;
     main->uiLType->do_callback();
-	DBG3;
+        DBG3;
 
     //
     // Handle crop area (masking)
     //
-	DBG3;
+        DBG3;
     int crop = uiPrefs->uiPrefsCropArea->value();
     float mask = kCrops[crop];
     view->masking( mask );
 
-	DBG3;
+        DBG3;
     //
     // Handle HUD
     //
     unsigned int hud = mrv::ImageView::kHudNone;
     if ( uiPrefs->uiPrefsHudFilename->value() )
-	hud |= mrv::ImageView::kHudFilename;
+        hud |= mrv::ImageView::kHudFilename;
 
     if ( uiPrefs->uiPrefsHudFPS->value() )
-	hud |= mrv::ImageView::kHudFPS;
+        hud |= mrv::ImageView::kHudFPS;
 
     if ( uiPrefs->uiPrefsHudAVDifference->value() )
-	hud |= mrv::ImageView::kHudAVDifference;
+        hud |= mrv::ImageView::kHudAVDifference;
 
     if ( uiPrefs->uiPrefsHudTimecode->value() )
-	hud |= mrv::ImageView::kHudTimecode;
+        hud |= mrv::ImageView::kHudTimecode;
 
     if ( uiPrefs->uiPrefsHudFrame->value() )
-	hud |= mrv::ImageView::kHudFrame;
+        hud |= mrv::ImageView::kHudFrame;
 
     if ( uiPrefs->uiPrefsHudResolution->value() )
-	hud |= mrv::ImageView::kHudResolution;
+        hud |= mrv::ImageView::kHudResolution;
 
     if ( uiPrefs->uiPrefsHudFrameRange->value() )
-	hud |= mrv::ImageView::kHudFrameRange;
+        hud |= mrv::ImageView::kHudFrameRange;
 
     if ( uiPrefs->uiPrefsHudFrameCount->value() )
-	hud |= mrv::ImageView::kHudFrameCount;
+        hud |= mrv::ImageView::kHudFrameCount;
 
     if ( uiPrefs->uiPrefsHudMemory->value() )
-	hud |= mrv::ImageView::kHudMemoryUse;
+        hud |= mrv::ImageView::kHudMemoryUse;
 
     if ( uiPrefs->uiPrefsHudAttributes->value() )
-	hud |= mrv::ImageView::kHudAttributes;
+        hud |= mrv::ImageView::kHudAttributes;
 
     if ( uiPrefs->uiPrefsHudCenter->value() )
-	hud |= mrv::ImageView::kHudCenter;
+        hud |= mrv::ImageView::kHudCenter;
 
-	DBG3;
+        DBG3;
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
 
-	DBG3;
+        DBG3;
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
-	DBG3;
+        DBG3;
     change_timeline_display(main);
 
     double mn = 1, mx = 50,
@@ -2126,56 +2124,56 @@ void Preferences::run( ViewerUI* main )
 
     if ( !main->uiTimeline->edl() )
     {
-	DBG3;
-	mrv::media fg = main->uiView->foreground();
-	if ( fg )
-	{
-	    Image_ptr img = fg->image();
-	    mn = (double)img->first_frame();
-	    mx = (double)img->last_frame();
-	}
+        DBG3;
+        mrv::media fg = main->uiView->foreground();
+        if ( fg )
+        {
+            Image_ptr img = fg->image();
+            mn = (double)img->first_frame();
+            mx = (double)img->last_frame();
+        }
     }
     else
     {
-	DBG3;
+        DBG3;
        // edl
-	mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
-	if ( !reel || reel->images.size() == 0 ) return;
-	DBG3;
+        mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
+        if ( !reel || reel->images.size() == 0 ) return;
+        DBG3;
 
-	mrv::media fg = reel->images[0];
-	mrv::media last = reel->images[ reel->images.size()-1 ];
-	if ( fg ) {
-	    mn = (double)fg->position();
-	    mx = (double)( last->position() + last->duration() - 1 );
-	}
+        mrv::media fg = reel->images[0];
+        mrv::media last = reel->images[ reel->images.size()-1 ];
+        if ( fg ) {
+            mn = (double)fg->position();
+            mx = (double)( last->position() + last->duration() - 1 );
+        }
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	DBG3;
-	main->uiTimeline->minimum( mn );
-	main->uiTimeline->maximum( mx );
+        DBG3;
+        main->uiTimeline->minimum( mn );
+        main->uiTimeline->maximum( mx );
     }
     else
     {
-	DBG3;
-	main->uiTimeline->minimum( mn );
-	//main->uiTimeline->display_minimum( dmn );
-	main->uiTimeline->maximum( mx );
-	// main->uiTimeline->display_maximum( dmx );
+        DBG3;
+        main->uiTimeline->minimum( mn );
+        //main->uiTimeline->display_minimum( dmn );
+        main->uiTimeline->maximum( mx );
+        // main->uiTimeline->display_maximum( dmx );
     }
 
-	DBG3;
+        DBG3;
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
-	DBG3;
+        DBG3;
 
     if ( uiPrefs->uiPrefsOverrideAudio->value() )
     {
-	double x = uiPrefs->uiPrefsAudioVolume->value();
-	if ( uiPrefs->uiPrefsAudioMute->value() )
-	    x = 0.0;
-	view->volume( float(x) );
+        double x = uiPrefs->uiPrefsAudioVolume->value();
+        if ( uiPrefs->uiPrefsAudioMute->value() )
+            x = 0.0;
+        view->volume( float(x) );
     }
     DBG3;
 
@@ -2184,18 +2182,18 @@ void Preferences::run( ViewerUI* main )
     //
     if ( uiPrefs->uiWindowFixedPosition->value() )
     {
-	int x = int(uiPrefs->uiWindowXPosition->value());
-	int y = int(uiPrefs->uiWindowYPosition->value());
-	main->uiMain->position( x, y );
+        int x = int(uiPrefs->uiWindowXPosition->value());
+        int y = int(uiPrefs->uiWindowYPosition->value());
+        main->uiMain->position( x, y );
     }
     DBG3;
     if ( uiPrefs->uiWindowFixedSize->value() )
     {
-	int w = int(uiPrefs->uiWindowXSize->value());
-	int h = int(uiPrefs->uiWindowYSize->value());
-	main->uiMain->resize( main->uiMain->x(),
-			      main->uiMain->y(),
-			      w, h );
+        int w = int(uiPrefs->uiWindowXSize->value());
+        int h = int(uiPrefs->uiWindowYSize->value());
+        main->uiMain->resize( main->uiMain->x(),
+                              main->uiMain->y(),
+                              w, h );
     }
 
     //
@@ -2207,7 +2205,7 @@ void Preferences::run( ViewerUI* main )
 
 #if defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
-			   main->uiMain->w(), main->uiMain->h()-20 );
+                           main->uiMain->w(), main->uiMain->h()-20 );
 #endif
 
     DBG3;
@@ -2216,9 +2214,9 @@ void Preferences::run( ViewerUI* main )
 
     if ( r->value() == 1 )
     {
-	DBG3;
-	// Fullscreen mode
-	view->toggle_fullscreen();
+        DBG3;
+        // Fullscreen mode
+        view->toggle_fullscreen();
     }
 
     DBG3;
@@ -2226,9 +2224,9 @@ void Preferences::run( ViewerUI* main )
 
     if ( r->value() == 1 )
     {
-	// Go to presentation mode - window must be shown first, thou.
-	DBG3;
-	 view->toggle_presentation();
+        // Go to presentation mode - window must be shown first, thou.
+        DBG3;
+         view->toggle_presentation();
     }
 
     DBG3;
@@ -2269,17 +2267,17 @@ void Preferences::run( ViewerUI* main )
     if ( (int)idx < num )
     {    DBG3;
 
-	const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
-	if ( font )
-	    CMedia::default_subtitle_font( font );
+        const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
+        if ( font )
+            CMedia::default_subtitle_font( font );
     }
     const char* enc = main->uiPrefs->uiPrefsSubtitleEncoding->value();
     DBG3;
     if ( enc )
-	CMedia::default_subtitle_encoding( enc );
+        CMedia::default_subtitle_encoding( enc );
 
     LogDisplay::prefs = (LogDisplay::ShowPreferences)
-			main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
+                        main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
     LogDisplay::shown = false;
 
     DBG3;
@@ -2287,7 +2285,7 @@ void Preferences::run( ViewerUI* main )
 
     DBG3;
     if ( debug > 1 )
-	schemes.debug();
+        schemes.debug();
 }
 
 
@@ -2297,7 +2295,7 @@ void Preferences::save()
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
 
     Fl_Preferences base( prefspath().c_str(), "filmaura",
-			 "mrViewer" );
+                         "mrViewer" );
     base.set( "version", 6 );
 
     // Save ui preferences
@@ -2307,18 +2305,18 @@ void Preferences::save()
     // window options
     //
     {
-	Fl_Preferences win( ui, "window" );
-	win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
-	win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
-	int tmp = 0;
-	for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
-	    Fl_Round_Button* r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child(i);
-	    if ( r->value() ) {
-		tmp = i;
-		break;
-	    }
-	}
-	win.set( "open_mode", tmp );
+        Fl_Preferences win( ui, "window" );
+        win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
+        win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
+        int tmp = 0;
+        for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
+            Fl_Round_Button* r = (Fl_Round_Button*) uiPrefs->uiPrefsOpenMode->child(i);
+            if ( r->value() ) {
+                tmp = i;
+                break;
+            }
+        }
+        win.set( "open_mode", tmp );
     }
 
     //
@@ -2346,13 +2344,13 @@ void Preferences::save()
 
 
     ui.set( "timeline_display",
-	    uiPrefs->uiPrefsTimelineDisplay->value() );
+            uiPrefs->uiPrefsTimelineDisplay->value() );
 
     ui.set( "timeline_thumbnails",
-	    uiPrefs->uiPrefsTimelineThumbnails->value() );
+            uiPrefs->uiPrefsTimelineThumbnails->value() );
 
     ui.set( "max_cacheline_frames",
-	    uiPrefs->uiPrefsMaxCachelineFrames->value() );
+            uiPrefs->uiPrefsMaxCachelineFrames->value() );
     //
     // ui/view prefs
     //
@@ -2372,41 +2370,41 @@ void Preferences::save()
     // view/colors prefs
     //
     {
-	Fl_Preferences colors( view, "colors" );
-	int tmp = uiPrefs->uiPrefsViewBG->color();
-	colors.set("background_color", tmp );
-	tmp = uiPrefs->uiPrefsViewTextOverlay->color();
-	colors.set("text_overlay_color", tmp );
-	tmp = uiPrefs->uiPrefsViewSelection->color();
-	colors.set("selection_color", tmp );
-	tmp = uiPrefs->uiPrefsViewHud->color();
-	colors.set("hud_color", tmp );
+        Fl_Preferences colors( view, "colors" );
+        int tmp = uiPrefs->uiPrefsViewBG->color();
+        colors.set("background_color", tmp );
+        tmp = uiPrefs->uiPrefsViewTextOverlay->color();
+        colors.set("text_overlay_color", tmp );
+        tmp = uiPrefs->uiPrefsViewSelection->color();
+        colors.set("selection_color", tmp );
+        tmp = uiPrefs->uiPrefsViewHud->color();
+        colors.set("hud_color", tmp );
     }
 
     {
-	Fl_Preferences ocio( view, "ocio" );
-	int tmp = uiPrefs->uiPrefsUseOcio->value();
-	ocio.set( "use_ocio", tmp );
+        Fl_Preferences ocio( view, "ocio" );
+        int tmp = uiPrefs->uiPrefsUseOcio->value();
+        ocio.set( "use_ocio", tmp );
 
 
-	if ( uiPrefs->uiPrefsSaveOcio->value() )
-	{
-	    ocio.set( "save_config", 1 );
-	    ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
-	}
-	else
-	{
-	    ocio.set( "save_config", 0 );
-	    ocio.set( "config", "" );
-	}
+        if ( uiPrefs->uiPrefsSaveOcio->value() )
+        {
+            ocio.set( "save_config", 1 );
+            ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
+        }
+        else
+        {
+            ocio.set( "save_config", 0 );
+            ocio.set( "config", "" );
+        }
 
-	Fl_Preferences ics( ocio, "ICS" );
-	{
-	    ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->value() );
-	    ics.set( "16bits", uiPrefs->uiOCIO_16bits_ics->value() );
-	    ics.set( "32bits", uiPrefs->uiOCIO_32bits_ics->value() );
-	    ics.set( "float",  uiPrefs->uiOCIO_float_ics->value() );
-	}
+        Fl_Preferences ics( ocio, "ICS" );
+        {
+            ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->value() );
+            ics.set( "16bits", uiPrefs->uiOCIO_16bits_ics->value() );
+            ics.set( "32bits", uiPrefs->uiOCIO_32bits_ics->value() );
+            ics.set( "float",  uiPrefs->uiOCIO_float_ics->value() );
+        }
 
     }
 
@@ -2428,13 +2426,13 @@ void Preferences::save()
     hud.set("center", uiPrefs->uiPrefsHudCenter->value() );
 
     {
-	Fl_Preferences win( view, "window" );
-	win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
-	win.set("x_position", uiPrefs->uiWindowXPosition->value() );
-	win.set("y_position", uiPrefs->uiWindowYPosition->value() );
-	win.set("fixed_size", uiPrefs->uiWindowFixedSize->value() );
-	win.set("x_size", uiPrefs->uiWindowXSize->value() );
-	win.set("y_size", uiPrefs->uiWindowYSize->value() );
+        Fl_Preferences win( view, "window" );
+        win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
+        win.set("x_position", uiPrefs->uiWindowXPosition->value() );
+        win.set("y_position", uiPrefs->uiWindowYPosition->value() );
+        win.set("fixed_size", uiPrefs->uiWindowFixedSize->value() );
+        win.set("x_size", uiPrefs->uiWindowXSize->value() );
+        win.set("y_size", uiPrefs->uiWindowYSize->value() );
     }
 
     //
@@ -2455,9 +2453,9 @@ void Preferences::save()
 
     // @TODO: fltk1.4
     Flu_File_Chooser::singleButtonTravelDrawer =
-	uiPrefs->uiPrefsFileReqFolder->value();
+        uiPrefs->uiPrefsFileReqFolder->value();
     Flu_File_Chooser::thumbnailsFileReq =
-	uiPrefs->uiPrefsFileReqThumbnails->value();
+        uiPrefs->uiPrefsFileReqThumbnails->value();
 
     //
     // playback prefs
@@ -2465,14 +2463,14 @@ void Preferences::save()
     Fl_Preferences playback( base, "playback" );
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "play_all_frames",
-		  (int) uiPrefs->uiPrefsPlayAllFrames->value() );
+                  (int) uiPrefs->uiPrefsPlayAllFrames->value() );
     playback.set( "override_fps", uiPrefs->uiPrefsOverrideFPS->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
     playback.set( "scrubbing_sensitivity",
-		  uiPrefs->uiPrefsScrubbingSensitivity->value() );
+                  uiPrefs->uiPrefsScrubbingSensitivity->value() );
     playback.set( "selection_display_mode",
-		  uiPrefs->uiPrefsTimelineSelectionDisplay->value() );
+                  uiPrefs->uiPrefsTimelineSelectionDisplay->value() );
 
     Fl_Preferences pixel_toolbar( base, "pixel_toolbar" );
     pixel_toolbar.set( "RGBA_pixel", uiPrefs->uiPrefsPixelRGBA->value() );
@@ -2505,24 +2503,24 @@ void Preferences::save()
     loading.set( "missing_frames", uiPrefs->uiPrefsMissingFrames->value());
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "file_assoc_load_seq",
-		 (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
+                 (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
     loading.set( "autoload_images",
-		 (int) uiPrefs->uiPrefsAutoLoadImages->value() );
+                 (int) uiPrefs->uiPrefsAutoLoadImages->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
     loading.set( "thumbnail_percent",
-		 uiPrefs->uiPrefsThumbnailPercent->value() );
+                 uiPrefs->uiPrefsThumbnailPercent->value() );
 
     loading.set( "uses_16bits", (int) uiPrefs->uiPrefsUses16Bits->value() );
     loading.set( "image_version_prefix",
-		 uiPrefs->uiPrefsImageVersionPrefix->value() );
+                 uiPrefs->uiPrefsImageVersionPrefix->value() );
     loading.set( "max_images_apart", uiPrefs->uiPrefsMaxImagesApart->value() );
 
     Fl_Preferences saving( base, "saving" );
     saving.set( "use_relative_paths", (int)
-		uiPrefs->uiPrefsRelativePaths->value() );
+                uiPrefs->uiPrefsRelativePaths->value() );
 
     saving.set( "use_image_path", (int)
-		uiPrefs->uiPrefsImagePathReelPath->value() );
+                uiPrefs->uiPrefsImagePathReelPath->value() );
 
     Fl_Preferences video( base, "video" );
     video.set( "filtering", (int) uiPrefs->uiPrefsFiltering->value() );
@@ -2544,12 +2542,12 @@ void Preferences::save()
 
     if ( idx >= devices.size() )
     {
-	LOG_ERROR( "Invalid device selected" );
-	audio.set( "device", "default" );
+        LOG_ERROR( "Invalid device selected" );
+        audio.set( "device", "default" );
     }
     else
     {
-	audio.set( "device", devices[idx].name.c_str() );
+        audio.set( "device", devices[idx].name.c_str() );
     }
 
 
@@ -2564,102 +2562,102 @@ void Preferences::save()
     i = uiPrefs->uiLUT_quality->value();
     if ( i >= 0 && i < (int)uiPrefs->uiLUT_quality->children() )
     {
-	lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
+        lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
     }
 
     lut.set( "number_stops", uiPrefs->uiPrefsNumStops->value() );
 
     {
-	Fl_Preferences odt( lut, "ODT" );
-	{
-	    odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
-	    Fl_Preferences ctl( odt, "CTL" );
-	    {
-		ctl.set( "transform", uiPrefs->uiODT_CTL_transform->value() );
+        Fl_Preferences odt( lut, "ODT" );
+        {
+            odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
+            Fl_Preferences ctl( odt, "CTL" );
+            {
+                ctl.set( "transform", uiPrefs->uiODT_CTL_transform->value() );
 
-		Fl_Preferences chroma( ctl, "Chromaticities" );
-		chroma.set( "red_x",
-			    uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
-		chroma.set( "red_y",
-			    uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
-		chroma.set( "green_x",
-			    uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
-		chroma.set( "green_y",
-			    uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
-		chroma.set( "blue_x",
-			    uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
-		chroma.set( "blue_y",
-			    uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
-		chroma.set( "white_x",
-			    uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
-		chroma.set( "white_y",
-			    uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
+                Fl_Preferences chroma( ctl, "Chromaticities" );
+                chroma.set( "red_x",
+                            uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
+                chroma.set( "red_y",
+                            uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
+                chroma.set( "green_x",
+                            uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
+                chroma.set( "green_y",
+                            uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
+                chroma.set( "blue_x",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
+                chroma.set( "blue_y",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
+                chroma.set( "white_x",
+                            uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
+                chroma.set( "white_y",
+                            uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
 
-		ctl.set( "white_luminance",
-			 uiPrefs->uiODT_CTL_white_luminance->value() );
-		ctl.set( "surround_luminance",
-			 uiPrefs->uiODT_CTL_surround_luminance->value() );
-	    }
-	    Fl_Preferences icc( odt, "ICC" );
-	    {
-		icc.set( "profile",   uiPrefs->uiODT_ICC_profile->value() );
-	    }
-	}
+                ctl.set( "white_luminance",
+                         uiPrefs->uiODT_CTL_white_luminance->value() );
+                ctl.set( "surround_luminance",
+                         uiPrefs->uiODT_CTL_surround_luminance->value() );
+            }
+            Fl_Preferences icc( odt, "ICC" );
+            {
+                icc.set( "profile",   uiPrefs->uiODT_ICC_profile->value() );
+            }
+        }
 
-	Fl_Preferences  rt( lut, "RT" );
-	{
-	    rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
+        Fl_Preferences  rt( lut, "RT" );
+        {
+            rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
 
-	    Fl_Preferences ctl( rt, "CTL" );
-	    {
-		ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->value() );
-		ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->value() );
-		ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->value() );
-		ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->value() );
-	    }
+            Fl_Preferences ctl( rt, "CTL" );
+            {
+                ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->value() );
+                ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->value() );
+                ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->value() );
+                ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->value() );
+            }
 
-	    Fl_Preferences icc( rt, "ICC" );
-	    {
-		icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->value() );
-		icc.set( "16bits", uiPrefs->uiICC_16bits_profile->value() );
-		icc.set( "32bits", uiPrefs->uiICC_32bits_profile->value() );
-		icc.set( "float",  uiPrefs->uiICC_float_profile->value() );
-	    }
-	}
+            Fl_Preferences icc( rt, "ICC" );
+            {
+                icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->value() );
+                icc.set( "16bits", uiPrefs->uiICC_16bits_profile->value() );
+                icc.set( "32bits", uiPrefs->uiICC_32bits_profile->value() );
+                icc.set( "float",  uiPrefs->uiICC_float_profile->value() );
+            }
+        }
 
     }
 
     {
-	Fl_Preferences subtitles( base, "subtitles" );
-	int idx = uiPrefs->uiPrefsSubtitleFont->value();
-	if ( idx >= 0 )
-	{
-	    subtitles.set( "font",
-			   uiPrefs->uiPrefsSubtitleFont->child(idx)->label() );
-	}
-	subtitles.set( "encoding",
-		       uiPrefs->uiPrefsSubtitleEncoding->value() );
+        Fl_Preferences subtitles( base, "subtitles" );
+        int idx = uiPrefs->uiPrefsSubtitleFont->value();
+        if ( idx >= 0 )
+        {
+            subtitles.set( "font",
+                           uiPrefs->uiPrefsSubtitleFont->child(idx)->label() );
+        }
+        subtitles.set( "encoding",
+                       uiPrefs->uiPrefsSubtitleEncoding->value() );
     }
 
     Fl_Preferences errors( base, "errors" );
     errors.set( "raise_log_window_on_error",
-		uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
+                uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
 
     // Images
     Fl_Preferences images( base, "images" );
     images.set( "editable_metadata", uiPrefs->uiMetadataEditable->value());
     images.set( "all_layers", (int) uiPrefs->uiPrefsAllLayers->value() );
     images.set( "aces_metadata",
-		(int) uiPrefs->uiPrefsACESClipMetadata->value());
+                (int) uiPrefs->uiPrefsACESClipMetadata->value());
 
     // OpenEXR
     Fl_Preferences openexr( base, "openexr" );
     openexr.set( "thread_count", (int) uiPrefs->uiPrefsOpenEXRThreadCount->value() );
     openexr.set( "gamma", uiPrefs->uiPrefsOpenEXRGamma->value() );
     openexr.set( "compression",
-		 (int) uiPrefs->uiPrefsOpenEXRCompression->value() );
+                 (int) uiPrefs->uiPrefsOpenEXRCompression->value() );
     openexr.set( "dwa_compression",
-		 uiPrefs->uiPrefsOpenEXRDWACompression->value() );
+                 uiPrefs->uiPrefsOpenEXRDWACompression->value() );
 
     Fl_Preferences red3d( base, "red3d" );
     red3d.set( "proxy_scale", (int) uiPrefs->uiPrefsR3DScale->value() );
@@ -2673,9 +2671,9 @@ void Preferences::save()
 
     if ( ! fs::exists( prefspath() + hotkeys_file ) )
     {
-	Fl_Preferences keys( prefspath().c_str(), "filmaura",
-			     hotkeys_file.c_str() );
-	save_hotkeys( keys );
+        Fl_Preferences keys( prefspath().c_str(), "filmaura",
+                             hotkeys_file.c_str() );
+        save_hotkeys( keys );
     }
 
     base.flush();

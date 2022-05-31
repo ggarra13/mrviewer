@@ -1602,6 +1602,7 @@ void CMedia::refresh( const mrv::Recti& r )
 
     // Merge the bounding box of area to update
     _damageRectangle.merge( r );
+    TRACE( name() << " " << _frame << " DamageContents" );
     image_damage( image_damage() | kDamageContents );
 }
 
@@ -1621,7 +1622,8 @@ void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
     assert( x != AV_NOPTS_VALUE );
-    _frameStart = _frameIn = x;
+    _frameStart = x;
+    if ( _frameIn > x ) _frameIn = x;
     // if ( _frame < _frame_start ) _frame = _frameStart;
 }
 
@@ -1629,7 +1631,8 @@ void  CMedia::last_frame(int64_t x)
 {
     assert( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
-    _frameEnd = _frameOut = x;
+    _frameEnd = x;
+    if ( _frameOut < x ) _frameOut = x;
     // if ( _frame > _frame_end ) _frame = _frameEnd;
 }
 
@@ -3093,7 +3096,7 @@ bool CMedia::frame( const int64_t f )
 void CMedia::seek( const int64_t f )
 {
 //#define DEBUG_SEEK
-    if ( f == _frame ) return;
+    TRACE2( name() << " f= " << f << " frame= " << _frame );
 
     notify_barriers();
 
@@ -4397,7 +4400,7 @@ bool CMedia::find_image( const int64_t frame )
                 }
                 refresh();
                 // if ( limit ) limit_video_store( f );
-                // image_damage( image_damage() | kDamageData | kDamage3DData );
+                image_damage( image_damage() | kDamageData | kDamage3DData );
                 return true;
             }
         }

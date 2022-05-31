@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-05-30 22:52-0300\n"
+"POT-Creation-Date: 2022-05-31 18:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3672
+#: core/CMedia.cpp:3675
 msgid ""
 "\n"
 "\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Bilinen bir kodlayıcı değil "
 
-#: core/CMedia_audio.cpp:642 core/aviImage.cpp:2512
+#: core/CMedia_audio.cpp:642 core/aviImage.cpp:2513
 msgid ""
 "\n"
 "\n"
@@ -52,7 +52,7 @@ msgstr ""
 "\n"
 "Dosyada ses yok"
 
-#: gui/mrvImageView.cpp:6166
+#: gui/mrvImageView.cpp:6176
 msgid "   NAN  "
 msgstr "   NAN  "
 
@@ -64,7 +64,7 @@ msgstr "  ==> Kullanma "
 msgid "  Choosing "
 msgstr "  ayıklamak "
 
-#: gui/mrvImageView.cpp:6171
+#: gui/mrvImageView.cpp:6181
 msgid "  INF.  "
 msgstr "  INF.  "
 
@@ -85,7 +85,7 @@ msgstr " - ses çerçevesi kod çözme hatası "
 msgid " Color Area Selection"
 msgstr " Renk alanı seçimi"
 
-#: core/aviImage.cpp:3057
+#: core/aviImage.cpp:3058
 msgid " Could not open file. "
 msgstr " Dosyayı açamadım. "
 
@@ -105,7 +105,7 @@ msgstr " Hz donanımınız tarafından desteklenmiyor."
 msgid " Move Picture"
 msgstr " resmi taşı"
 
-#: core/aviImage.cpp:2530
+#: core/aviImage.cpp:2531
 msgid " No audio or video stream in file"
 msgstr " Dosyada ses veya video yok"
 
@@ -125,7 +125,7 @@ msgstr " Metin"
 msgid " already created: "
 msgstr " zaten oluşturuldu: "
 
-#: core/CMedia.cpp:4513
+#: core/CMedia.cpp:4516
 msgid " as default"
 msgstr " varsayılan"
 
@@ -174,11 +174,11 @@ msgstr " ile başarısız "
 msgid " failed. "
 msgstr " arıza. "
 
-#: gui/mrvImageView.cpp:9545
+#: gui/mrvImageView.cpp:9555
 msgid " for channel.  Maximum: "
 msgstr " kanal için. Maksimum: "
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1493 core/aviImage.cpp:1543
 msgid " for codec "
 msgstr " kodek için "
 
@@ -186,7 +186,7 @@ msgstr " kodek için "
 msgid " for color_space"
 msgstr " color_space için"
 
-#: core/aviImage.cpp:4131 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " çerçeve için "
 
@@ -198,7 +198,7 @@ msgstr " gama_curve için"
 msgid " for reel "
 msgstr " makara için "
 
-#: core/CMedia.cpp:3673
+#: core/CMedia.cpp:3676
 msgid " for stream #"
 msgstr " parça # için"
 
@@ -226,7 +226,7 @@ msgstr ""
 " mrViewer çökerse\n"
 "Tercihler->Kullanıcı Arayüzü->Tek Örnek'i değiştirmez."
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1916
 msgid " instead"
 msgstr " yerine"
 
@@ -238,23 +238,23 @@ msgstr " 80 yerine"
 msgid " is "
 msgstr " dır-dir "
 
-#: gui/mrvImageBrowser.cpp:3745
+#: gui/mrvImageBrowser.cpp:3752
 msgid " is already the first version on disk."
 msgstr " Zaten diskteki ilk sürüm."
 
-#: gui/mrvImageBrowser.cpp:3742
+#: gui/mrvImageBrowser.cpp:3749
 msgid " is already the last version on disk."
 msgstr " Zaten diskteki en son sürüm."
 
-#: core/CMedia.cpp:4370
+#: core/CMedia.cpp:4373
 msgid " is missing."
 msgstr " O kayboldu."
 
-#: core/CMedia.cpp:4393
+#: core/CMedia.cpp:4396
 msgid " is missing. Choosing "
 msgstr " kayıp. ayıklamak "
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:1926 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " bulunamadı"
@@ -263,11 +263,11 @@ msgstr " bulunamadı"
 msgid " not found in reel"
 msgstr " makarada bulunamadı"
 
-#: core/aviImage.cpp:1913
+#: core/aviImage.cpp:1914
 msgid " not found, choosing "
 msgstr " bulunamadı, seçiliyor "
 
-#: core/aviImage.cpp:4298
+#: core/aviImage.cpp:4303
 msgid " not yet supported"
 msgstr " henüz desteklenmiyor"
 
@@ -279,7 +279,7 @@ msgstr " dönüş "
 msgid " size is "
 msgstr " boyut "
 
-#: core/aviImage.cpp:4158
+#: core/aviImage.cpp:4161
 msgid " status: "
 msgstr " durum: "
 
@@ -291,7 +291,7 @@ msgstr " ile"
 msgid " to "
 msgstr " ile "
 
-#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " video çerçevesi, önbellek "
 
@@ -445,11 +445,11 @@ msgstr "' için "
 msgid "' for writing. Reason: "
 msgstr "' yazmak için. Sebep: "
 
-#: core/CMedia.cpp:4513
+#: core/CMedia.cpp:4516
 msgid "' from bitdepth "
 msgstr "' bit derinliği: "
 
-#: core/CMedia.cpp:4465
+#: core/CMedia.cpp:4468
 msgid "' from filename"
 msgstr "' dosya adından"
 
@@ -515,12 +515,12 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(mrViewer başlamazsa kaldırın)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2274
-#: gui/mrvImageView.cpp:9519 gui/mrvImageView.cpp:10204
-#: gui/mrvImageView.cpp:10205 gui/mrvImageView.cpp:10213
+#: gui/mrvImageView.cpp:9529 gui/mrvImageView.cpp:10214
+#: gui/mrvImageView.cpp:10215 gui/mrvImageView.cpp:10223
 msgid "(no image)"
 msgstr "(resimsiz)"
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1886 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") önbellek boyutu: "
 
@@ -566,7 +566,7 @@ msgstr ", Sıklık "
 msgid ", frequency "
 msgstr ", Sıklık "
 
-#: core/CMedia.cpp:3673
+#: core/CMedia.cpp:3676
 msgid ", type "
 msgstr ", tip "
 
@@ -582,7 +582,7 @@ msgstr ". Nitelik, attr=değer biçiminde olmalıdır."
 msgid ".  Saving pixel type is "
 msgstr ". Kaydedilecek piksel türü: "
 
-#: gui/mrvImageView.cpp:9546
+#: gui/mrvImageView.cpp:9556
 msgid ". Widget label is "
 msgstr ". Widget etiketi "
 
@@ -595,7 +595,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1568
-#: gui/mrvPreferences.cpp:1877
+#: gui/mrvPreferences.cpp:1875
 msgid "0.45"
 msgstr "0,45"
 
@@ -611,7 +611,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1876
+#: gui/mrvPreferences.cpp:1874
 msgid "1.0"
 msgstr "1,0"
 
@@ -647,7 +647,7 @@ msgstr "1,50 Fotoğraf"
 msgid "1.56 STV - HDTV (14:9)"
 msgstr "1,56 STV-HDTV (14:9)"
 
-#: gui/mrvImageView.cpp:4795
+#: gui/mrvImageView.cpp:4805
 msgid "1.66"
 msgstr "1,66"
 
@@ -660,11 +660,11 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1565
-#: gui/mrvPreferences.cpp:1875
+#: gui/mrvPreferences.cpp:1873
 msgid "1.8"
 msgstr "1,8"
 
-#: gui/mrvImageView.cpp:4793
+#: gui/mrvImageView.cpp:4803
 msgid "1.85"
 msgstr "1,85"
 
@@ -727,7 +727,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4485
+#: core/CMedia.cpp:4488
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -784,7 +784,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 VistaVision"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1564
-#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1874
+#: gui/mrvImageInformation.cpp:182 gui/mrvPreferences.cpp:1872
 msgid "2.2"
 msgstr "2,2"
 
@@ -800,7 +800,7 @@ msgstr "2,2 5,1 1,4"
 msgid "2.20 70mm"
 msgstr "2,20 70mm"
 
-#: gui/mrvImageView.cpp:4791
+#: gui/mrvImageView.cpp:4801
 msgid "2.35"
 msgstr "2,35"
 
@@ -844,7 +844,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4492
+#: core/CMedia.cpp:4495
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -920,7 +920,7 @@ msgid "3d View"
 msgstr "3d görünüm"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1396
-#: gui/mrvImageView.cpp:5247
+#: gui/mrvImageView.cpp:5257
 msgid "3dView"
 msgstr "3 boyutlu görünüm"
 
@@ -971,7 +971,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8 bit önbellek"
 
-#: core/CMedia.cpp:4478
+#: core/CMedia.cpp:4481
 msgid "8 bits"
 msgstr "8 bit"
 
@@ -1005,7 +1005,7 @@ msgstr ": Parça bilgisi bulunamadı."
 msgid ": Could not open filename."
 msgstr ": Dosyayı açamadım."
 
-#: video/mrvGLEngine.cpp:182
+#: video/mrvGLEngine.cpp:179
 msgid ": Error "
 msgstr ": Hata "
 
@@ -1070,7 +1070,7 @@ msgstr ""
 "Örnekler:\n"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1395
-#: gui/mrvImageView.cpp:5241
+#: gui/mrvImageView.cpp:5251
 msgid "A-B, Stereo 3D Options"
 msgstr "Stereo 3D, AB Seçenekleri"
 
@@ -1106,7 +1106,7 @@ msgid "AVI Movie"
 msgstr "avi filmi"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1405
-#: gui/mrvImageView.cpp:5263
+#: gui/mrvImageView.cpp:5273
 msgid "About"
 msgstr "mrViewer hakkında"
 
@@ -1138,7 +1138,7 @@ msgstr "Hareketler"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1394
-#: gui/mrvImageView.cpp:5240
+#: gui/mrvImageView.cpp:5250
 msgid "Action Tools"
 msgstr "Eylem Araçları"
 
@@ -1260,9 +1260,9 @@ msgstr "Zaman çizelgesinin başlangıç çerçevesini ayarlamanızı sağlar."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Zaman çizelgesi için bitiş çerçevesini ayarlamanızı sağlar."
 
-#: core/CMedia.cpp:2102 core/CMedia.cpp:2185 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9637
-#: gui/mrvImageView.cpp:10105 gui/mrvImageView.cpp:10167
+#: core/CMedia.cpp:2105 core/CMedia.cpp:2188 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9647
+#: gui/mrvImageView.cpp:10115 gui/mrvImageView.cpp:10177
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1270,9 +1270,9 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "sadece alfa"
 
-#: core/CMedia.cpp:2104 core/CMedia.cpp:2185 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2107 core/CMedia.cpp:2188 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
-#: gui/mrvImageView.cpp:9618 gui/mrvImageView.cpp:10168
+#: gui/mrvImageView.cpp:9628 gui/mrvImageView.cpp:10178
 msgid "Alpha Overlay"
 msgstr "Alfa Üst Baskı"
 
@@ -1371,7 +1371,7 @@ msgstr "Nisan"
 msgid "Arabic"
 msgstr "Arapça (عرب)"
 
-#: gui/mrvImageBrowser.cpp:3337
+#: gui/mrvImageBrowser.cpp:3344
 msgid ""
 "Are you sure you want to\n"
 "remove all selected images from reel?"
@@ -1379,7 +1379,7 @@ msgstr ""
 "Seçilen tüm görüntüleri film rulosundan\n"
 "silmek istediğinizden emin misiniz?"
 
-#: gui/mrvImageBrowser.cpp:3333
+#: gui/mrvImageBrowser.cpp:3340
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1515,15 +1515,15 @@ msgstr "Ses paketi bilinmiyor, arama veya ön kayıt bekleniyor"
 msgid "Audio packets empty at end of seek"
 msgstr "Aramanın sonunda boş ses paketleri"
 
-#: gui/mrvImageView.cpp:5564
+#: gui/mrvImageView.cpp:5574
 msgid "Audio/Attach Audio File"
 msgstr "Ses/Ses Dosyası Ekle"
 
-#: gui/mrvImageView.cpp:5569
+#: gui/mrvImageView.cpp:5579
 msgid "Audio/Detach Audio File"
 msgstr "Ses/Ses Dosyasının İlişkisini Kes"
 
-#: gui/mrvImageView.cpp:5566
+#: gui/mrvImageView.cpp:5576
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Ses/Ses Başlangıç Çerçevesini Düzenle"
 
@@ -1680,9 +1680,9 @@ msgstr "karışım modu"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:39
-#: core/CMedia.cpp:2118 core/CMedia.cpp:2184 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9632
-#: gui/mrvImageView.cpp:10166
+#: core/CMedia.cpp:2121 core/CMedia.cpp:2187 core/exrImage.cpp:3059
+#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9642
+#: gui/mrvImageView.cpp:10176
 msgid "Blue"
 msgstr "Mavi"
 
@@ -1706,7 +1706,7 @@ msgstr "Boost İstisnası: "
 msgid "Both"
 msgstr "Bunların her ikisi de"
 
-#: gui/mrvImageView.cpp:11554
+#: gui/mrvImageView.cpp:11569
 msgid "Bottom"
 msgstr "daha düşük"
 
@@ -1791,11 +1791,11 @@ msgstr "CTL yolları"
 msgid "CTL scripts"
 msgstr "CTL Özetleri"
 
-#: gui/mrvImageBrowser.cpp:4192
+#: gui/mrvImageBrowser.cpp:4199
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/Giriş Aygıtı Dönüşümü (IDT) Ata"
 
-#: gui/mrvImageBrowser.cpp:4196
+#: gui/mrvImageBrowser.cpp:4203
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/Render Dönüşümü Ata (RRT)"
 
@@ -2071,13 +2071,13 @@ msgstr "Daraltılabilir grup bulunamadı"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/aviSave.cxx:206
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2631
-#: core/CMedia.cpp:2115 core/CMedia.cpp:2183 core/exrImage.cpp:2804
+#: core/CMedia.cpp:2118 core/CMedia.cpp:2186 core/exrImage.cpp:2804
 #: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
 #: gui/mrvImageView.cpp:202 gui/mrvImageView.cpp:2217
-#: gui/mrvImageView.cpp:2279 gui/mrvImageView.cpp:10165
-#: gui/mrvImageView.cpp:10213
+#: gui/mrvImageView.cpp:2279 gui/mrvImageView.cpp:10175
+#: gui/mrvImageView.cpp:10223
 msgid "Color"
 msgstr "Renk"
 
@@ -2086,12 +2086,12 @@ msgid "Color Area"
 msgstr "Renk Alanı"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1392
-#: gui/mrvImageView.cpp:5238
+#: gui/mrvImageView.cpp:5248
 msgid "Color Controls"
 msgstr "Renk kontrolleri"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1391
-#: gui/mrvImageView.cpp:5237
+#: gui/mrvImageView.cpp:5247
 msgid "Color Info"
 msgstr "Renk Alanı Bilgileri"
 
@@ -2119,7 +2119,7 @@ msgstr "renk teması"
 msgid "Color Version"
 msgstr "renkli versiyon"
 
-#: gui/mrvImageView.cpp:9454
+#: gui/mrvImageView.cpp:9464
 msgid "Color channel not found at index "
 msgstr "Dizin için renk kanalı bulunamadı "
 
@@ -2127,11 +2127,11 @@ msgstr "Dizin için renk kanalı bulunamadı "
 msgid "Color controls"
 msgstr "renk kontrolleri"
 
-#: core/aviImage.cpp:1304
+#: core/aviImage.cpp:1305
 msgid "Colorspace details not gotten "
 msgstr "Renk alanı ayrıntıları elde edilmedi "
 
-#: core/aviImage.cpp:1333
+#: core/aviImage.cpp:1334
 msgid "Colorspace details not set "
 msgstr "Renk alanı ayrıntıları ayarlanmadı "
 
@@ -2200,7 +2200,7 @@ msgstr "Bağlı "
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:847
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1401
-#: gui/mrvImageView.cpp:5257
+#: gui/mrvImageView.cpp:5267
 msgid "Connections"
 msgstr "bağlantılar"
 
@@ -2339,7 +2339,7 @@ msgstr "LEISURE'dan Lut'u hesaplayamadım"
 msgid "Could not copy context to parameters"
 msgstr "Bağlam parametrelere kopyalanamadı"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2397
+#: core/aviImage.cpp:729 core/aviImage.cpp:2398
 msgid "Could not copy parameters to context"
 msgstr "Parametreler codec bağlamına kopyalanamadı"
 
@@ -2447,7 +2447,7 @@ msgstr "4x4 matrisi için on altı kayan noktalı sayı bulamadım"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4 dizisi için on altı kayan noktalı sayı bulamadım "
 
-#: core/aviImage.cpp:3033
+#: core/aviImage.cpp:3034
 msgid "Could not find stream info"
 msgstr "Parça bilgisi bulunamadı"
 
@@ -2519,7 +2519,7 @@ msgstr "Ses örnekleri alamadım"
 msgid "Could not get device info for "
 msgstr "için cihaz bilgileri alınamadı "
 
-#: core/aviImage.cpp:1284
+#: core/aviImage.cpp:1285
 msgid "Could not get image conversion context."
 msgstr "Görüntü dönüştürme bağlamını alamadım."
 
@@ -2793,51 +2793,51 @@ msgstr "Yeni makara oluştur"
 msgid "Create audio conversion from "
 msgstr "Şuradan ses dönüştürme oluştur "
 
-#: gui/mrvImageBrowser.cpp:4440
+#: gui/mrvImageBrowser.cpp:4447
 msgid "Create/Black Gap"
 msgstr "Yaratmak/siyah boşluk"
 
-#: gui/mrvImageBrowser.cpp:4462
+#: gui/mrvImageBrowser.cpp:4469
 msgid "Create/Checkered"
 msgstr "Yaratmak/Kafes"
 
-#: gui/mrvImageBrowser.cpp:4446
+#: gui/mrvImageBrowser.cpp:4453
 msgid "Create/Color Bars/PAL"
 msgstr "Yaratmak/Renk çubukları/PAL"
 
-#: gui/mrvImageBrowser.cpp:4448
+#: gui/mrvImageBrowser.cpp:4455
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Yaratmak/Renk çubukları/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4442
+#: gui/mrvImageBrowser.cpp:4449
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Yaratmak/Renk çubukları/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4444
+#: gui/mrvImageBrowser.cpp:4451
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Yaratmak/Renk çubukları/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4450
+#: gui/mrvImageBrowser.cpp:4457
 msgid "Create/Gamma Chart/1.4"
 msgstr "Yaratmak/Aralık Tablosu/1.4"
 
-#: gui/mrvImageBrowser.cpp:4452
+#: gui/mrvImageBrowser.cpp:4459
 msgid "Create/Gamma Chart/1.8"
 msgstr "Yaratmak/Aralık Tablosu/1.8"
 
-#: gui/mrvImageBrowser.cpp:4454
+#: gui/mrvImageBrowser.cpp:4461
 msgid "Create/Gamma Chart/2.2"
 msgstr "Yaratmak/Aralık Tablosu/2.2"
 
-#: gui/mrvImageBrowser.cpp:4456
+#: gui/mrvImageBrowser.cpp:4463
 msgid "Create/Gamma Chart/2.4"
 msgstr "Yaratmak/Aralık Tablosu/2.4"
 
-#: gui/mrvImageBrowser.cpp:4458
+#: gui/mrvImageBrowser.cpp:4465
 msgid "Create/Gradient/Linear"
 msgstr "Yaratmak/Mezuniyet/doğrusal"
 
-#: gui/mrvImageBrowser.cpp:4460
+#: gui/mrvImageBrowser.cpp:4467
 msgid "Create/Gradient/Luminance"
 msgstr "Yaratmak/Mezuniyet/parlaklık"
 
@@ -3056,11 +3056,11 @@ msgstr "İzsiz Kod Çözme"
 msgid "Decode OK"
 msgstr "kod çözme tamam"
 
-#: core/aviImage.cpp:4129 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ses kod çözme hatası: "
 
-#: core/aviImage.cpp:4156
+#: core/aviImage.cpp:4159
 msgid "Decode video error seek frame "
 msgstr "Görüntü arayan video kod çözme hatası "
 
@@ -3326,7 +3326,7 @@ msgstr "EDL"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1200
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1393
-#: gui/mrvImageView.cpp:5245
+#: gui/mrvImageView.cpp:5255
 msgid "EDL Edit"
 msgstr "EDL'yi düzenle"
 
@@ -3382,7 +3382,7 @@ msgstr "media_to_pathname'ye boş medya aktarıldı"
 msgid "Empty media provided to Element constructor"
 msgstr "Öğe oluşturucuya sağlanan boş ortam"
 
-#: core/aviImage.cpp:3586
+#: core/aviImage.cpp:3588
 msgid "Empty packets for video seek."
 msgstr "Video araması için boş paketler."
 
@@ -3390,7 +3390,7 @@ msgstr "Video araması için boş paketler."
 msgid "Empty pic file for media "
 msgstr "Medya için boş resim dosyası "
 
-#: core/aviImage.cpp:4507
+#: core/aviImage.cpp:4512
 msgid "Empty seek or preroll"
 msgstr "Boş arama veya ön kayıt"
 
@@ -3411,7 +3411,7 @@ msgstr "ingilizce (English)"
 msgid "Environment variable \""
 msgstr "Çevre değişkeni \""
 
-#: video/mrvGLEngine.cpp:453
+#: video/mrvGLEngine.cpp:450
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "MRV_SHADER_PATH ortam değişkeni bulunamadı, dahili gölgelendirici "
@@ -3458,7 +3458,7 @@ msgstr "Ses dönüştürülürken hata oluştu: "
 msgid "Error while encoding video frame: "
 msgstr "Video karesini kodlama hatası: "
 
-#: core/aviImage.cpp:1443
+#: core/aviImage.cpp:1444
 msgid "Error while feeding the filtergraph"
 msgstr "Filtre grafiği beslenirken hata oluştu"
 
@@ -3489,7 +3489,7 @@ msgstr "Garip/çift sütun"
 msgid "Even/odd rows"
 msgstr "Garip/çift çizgiler"
 
-#: gui/mrvImageBrowser.cpp:3683
+#: gui/mrvImageBrowser.cpp:3690
 msgid "Example:  gizmo"
 msgstr "Örnek: gizmo_v003.0001.exr"
 
@@ -3505,12 +3505,12 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr "Görüntü Değiştirilemedi"
 
-#: gui/mrvImageBrowser.cpp:4623 gui/mrvImageBrowser.cpp:4763
+#: gui/mrvImageBrowser.cpp:4630 gui/mrvImageBrowser.cpp:4771
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "ExchangeImage %d %d"
 
-#: gui/mrvPreferences.cpp:1670
+#: gui/mrvPreferences.cpp:1668
 msgid "Expanded OCIO config to:"
 msgstr "OCIO yapılandırmasını şu şekilde genişletmek:"
 
@@ -3681,52 +3681,52 @@ msgstr "ripmap Y için yükleme başarısız oldu "
 msgid "File Requester"
 msgstr "Dosya bulucu"
 
-#: gui/mrvImageView.cpp:5190
+#: gui/mrvImageView.cpp:5200
 msgid "File/Open/AMF file"
 msgstr "Arşiv/Açmak/MFA dosyası"
 
-#: gui/mrvImageView.cpp:5177 gui/mrvImageView.cpp:5188
+#: gui/mrvImageView.cpp:5187 gui/mrvImageView.cpp:5198
 msgid "File/Open/Directory"
 msgstr "Arşiv/Açmak/dizin"
 
-#: gui/mrvImageView.cpp:5167 gui/mrvImageBrowser.cpp:4152
+#: gui/mrvImageView.cpp:5177 gui/mrvImageBrowser.cpp:4159
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Arşiv/Açmak/Film veya Dizi"
 
-#: gui/mrvImageView.cpp:5179 gui/mrvImageView.cpp:5192
+#: gui/mrvImageView.cpp:5189 gui/mrvImageView.cpp:5202
 msgid "File/Open/Session"
 msgstr "Arşiv/Açmak/Oturum, toplantı, celse"
 
-#: gui/mrvImageView.cpp:5171 gui/mrvImageBrowser.cpp:4154
+#: gui/mrvImageView.cpp:5181 gui/mrvImageBrowser.cpp:4161
 msgid "File/Open/Single Image"
 msgstr "Arşiv/Açmak/sadece bir resim"
 
-#: gui/mrvImageView.cpp:5185
+#: gui/mrvImageView.cpp:5195
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "Arşiv/Açmak/Stereo için Film veya Dizi"
 
-#: gui/mrvImageView.cpp:5215
+#: gui/mrvImageView.cpp:5225
 msgid "File/Quit"
 msgstr "Arşiv/Çıkmak"
 
-#: gui/mrvImageView.cpp:5200 gui/mrvImageBrowser.cpp:4395
+#: gui/mrvImageView.cpp:5210 gui/mrvImageBrowser.cpp:4402
 msgid "File/Save/Frame As"
 msgstr "Arşiv/Kale/kutu gibi"
 
-#: gui/mrvImageView.cpp:5202 gui/mrvImageBrowser.cpp:4397
+#: gui/mrvImageView.cpp:5212 gui/mrvImageBrowser.cpp:4404
 msgid "File/Save/GL Snapshots As"
 msgstr "Arşiv/Kale/Opengl anlık görüntüleri"
 
-#: gui/mrvImageView.cpp:5195 gui/mrvImageBrowser.cpp:4390
+#: gui/mrvImageView.cpp:5205 gui/mrvImageBrowser.cpp:4397
 msgid "File/Save/Movie or Sequence As"
 msgstr "Arşiv/Kale/Film veya Dizi Gibi"
 
-#: gui/mrvImageView.cpp:5198 gui/mrvImageBrowser.cpp:4393
+#: gui/mrvImageView.cpp:5208 gui/mrvImageBrowser.cpp:4400
 msgid "File/Save/Reel As"
 msgstr "Arşiv/Kale/makara gibi"
 
-#: gui/mrvImageView.cpp:5204 gui/mrvImageBrowser.cpp:4399
+#: gui/mrvImageView.cpp:5214 gui/mrvImageBrowser.cpp:4406
 msgid "File/Save/Session As"
 msgstr "Arşiv/Kale/olarak oturum"
 
@@ -3816,11 +3816,11 @@ msgstr "Y-Flip"
 msgid "Float"
 msgstr "yüzen koma"
 
-#: video/mrvGLEngine.cpp:226
+#: video/mrvGLEngine.cpp:223
 msgid "Float Pixels:\t"
 msgstr "Kayan Nokta Pikselleri:\t"
 
-#: video/mrvGLEngine.cpp:228
+#: video/mrvGLEngine.cpp:225
 msgid "Float Textures:\t"
 msgstr "Yüzer dokular:\t"
 
@@ -3870,7 +3870,7 @@ msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11552
+#: gui/mrvImageView.cpp:11567
 msgid "Frame"
 msgstr "Çerçeve"
 
@@ -3919,27 +3919,27 @@ msgstr "Dosyadaki klip bitiş çerçevesi"
 msgid "Frame start of clip in file"
 msgstr "Dosyadaki klip başlangıç çerçevesi"
 
-#: video/mrvGLEngine.cpp:823
+#: video/mrvGLEngine.cpp:820
 msgid "Framebuffer incomplete layer targets."
 msgstr "Eksik çerçeve arabelleği katmanı hedefleri."
 
-#: video/mrvGLEngine.cpp:810
+#: video/mrvGLEngine.cpp:807
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Çerçeve arabelleği eksik: Bağlama TAM DEĞİL."
 
-#: video/mrvGLEngine.cpp:817
+#: video/mrvGLEngine.cpp:814
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Çerçeve arabelleği eksik: Çizim arabelleği."
 
-#: video/mrvGLEngine.cpp:814
+#: video/mrvGLEngine.cpp:811
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Eksik çerçeve arabelleği: FBO'ya eklenmiş resim yok."
 
-#: video/mrvGLEngine.cpp:827
+#: video/mrvGLEngine.cpp:824
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Eksik çerçeve arabelleği: Tamponu oku."
 
-#: video/mrvGLEngine.cpp:820
+#: video/mrvGLEngine.cpp:817
 msgid "Framebuffer multisample incomplete: Draw buffer."
 msgstr "Eksik çoklu örnekleme çerçeve arabelleği: Çizim arabelleği."
 
@@ -3998,7 +3998,7 @@ msgstr "G"
 msgid "GIF Picture"
 msgstr "GIF resmi"
 
-#: video/mrvGLEngine.cpp:292
+#: video/mrvGLEngine.cpp:289
 msgid "GLEW Initialize Error: "
 msgstr "GLEW Başlatma Hatası: "
 
@@ -4032,7 +4032,7 @@ msgstr "Görüntü Kazanç Değeri. Piksel değerlerinin basit bir çarpanı."
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1810
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2404
-#: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1872
+#: gui/mrvImageInformation.cpp:3032 gui/mrvPreferences.cpp:1870
 msgid "Gamma"
 msgstr "spektrum"
 
@@ -4097,7 +4097,7 @@ msgstr "Dizinin başına git."
 msgid "Go to the end of the sequence."
 msgstr "Sıranın sonuna git."
 
-#: core/CMedia.cpp:4465 core/CMedia.cpp:4512
+#: core/CMedia.cpp:4468 core/CMedia.cpp:4515
 msgid "Got colorspace '"
 msgstr "Renk uzayını aldım'"
 
@@ -4111,9 +4111,9 @@ msgstr "Yunan (Ελληνικά)"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:2117 core/CMedia.cpp:2183 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9627
-#: gui/mrvImageView.cpp:10166
+#: core/CMedia.cpp:2120 core/CMedia.cpp:2186 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9637
+#: gui/mrvImageView.cpp:10176
 msgid "Green"
 msgstr "Yeşil"
 
@@ -4187,15 +4187,15 @@ msgstr "H.W."
 msgid "Half"
 msgstr "Yarım"
 
-#: video/mrvGLEngine.cpp:227
+#: video/mrvGLEngine.cpp:224
 msgid "Half Pixels:\t"
 msgstr "Piksel Yarısı:\t"
 
-#: video/mrvGLEngine.cpp:224
+#: video/mrvGLEngine.cpp:221
 msgid "Hardware Shaders:\t"
 msgstr "Donanım Gölgelendiricileri:\t"
 
-#: video/mrvGLEngine.cpp:463
+#: video/mrvGLEngine.cpp:460
 msgid "Hardware shaders not available."
 msgstr "Donanım Gölgelendiricileri mevcut değil."
 
@@ -4242,7 +4242,7 @@ msgstr "Tam zaman çizelgesinde işaretlendi"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1174
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:61
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1397
-#: gui/mrvImageView.cpp:5249
+#: gui/mrvImageView.cpp:5259
 msgid "Histogram"
 msgstr "histogram"
 
@@ -4270,7 +4270,7 @@ msgstr "Yönetim Anahtarları:"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:32
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHotkeyUI.cxx:37
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1403
-#: gui/mrvImageView.cpp:5259
+#: gui/mrvImageView.cpp:5269
 msgid "Hotkeys"
 msgstr "Yönetim anahtarları"
 
@@ -4314,7 +4314,7 @@ msgstr "ICC Profili"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvIccProfileUI.cxx:145
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2792
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1400
-#: gui/mrvImageView.cpp:5255
+#: gui/mrvImageView.cpp:5265
 msgid "ICC Profiles"
 msgstr "ICC profilleri"
 
@@ -4457,11 +4457,11 @@ msgstr "Görüntü dosyası \""
 msgid "Image input color space is undefined for "
 msgstr "için tanımsız görüntünün Renk Alanı Girdisi "
 
-#: gui/mrvImageBrowser.cpp:3469
+#: gui/mrvImageBrowser.cpp:3476
 msgid "Image item not found for "
 msgstr "Makarada ürün bulunamadı "
 
-#: gui/mrvImageBrowser.cpp:3572
+#: gui/mrvImageBrowser.cpp:3579
 msgid "Image not found in reel "
 msgstr "Film rulosunda resim bulunamadı "
 
@@ -4493,88 +4493,88 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Görüntü yakınlaştırma ayarı."
 
-#: gui/mrvImageView.cpp:5442
+#: gui/mrvImageView.cpp:5452
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "resim/CTL Görünüm Modifikasyonu (LMT) Ekle"
 
-#: gui/mrvImageView.cpp:5434
+#: gui/mrvImageView.cpp:5444
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "resim/CTL Giriş Aygıtı Dönüşümü (IDT) Ata"
 
-#: gui/mrvImageView.cpp:5446
+#: gui/mrvImageView.cpp:5456
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "resim/CTL İşleme Dönüşümü (RRT) Ata"
 
-#: gui/mrvImageView.cpp:5450
+#: gui/mrvImageView.cpp:5460
 msgid "Image/Attach ICC Color Profile"
 msgstr "resim/Renk ICC Profili Ekle"
 
-#: gui/mrvImageView.cpp:5412
+#: gui/mrvImageView.cpp:5422
 msgid "Image/Clear Caches"
 msgstr "resim/Önbellekleri temizle"
 
-#: gui/mrvImageView.cpp:5388 gui/mrvImageView.cpp:5396
-#: gui/mrvImageBrowser.cpp:4411 gui/mrvImageBrowser.cpp:4421
+#: gui/mrvImageView.cpp:5398 gui/mrvImageView.cpp:5406
+#: gui/mrvImageBrowser.cpp:4418 gui/mrvImageBrowser.cpp:4428
 msgid "Image/Clone"
 msgstr "resim/Klon"
 
-#: gui/mrvImageView.cpp:5390 gui/mrvImageBrowser.cpp:4413
+#: gui/mrvImageView.cpp:5400 gui/mrvImageBrowser.cpp:4420
 msgid "Image/Clone All Channels"
 msgstr "resim/Tüm Kanalları Klonla"
 
-#: gui/mrvImageBrowser.cpp:4425
+#: gui/mrvImageBrowser.cpp:4432
 msgid "Image/Media Info"
 msgstr "resim/Medya bilgisi"
 
-#: gui/mrvImageView.cpp:5457
+#: gui/mrvImageView.cpp:5467
 msgid "Image/Mirror/Horizontal"
 msgstr "resim/Ayna/Yatay"
 
-#: gui/mrvImageView.cpp:5461
+#: gui/mrvImageView.cpp:5471
 msgid "Image/Mirror/Vertical"
 msgstr "resim/Ayna/Dikey"
 
-#: gui/mrvImageView.cpp:5438
+#: gui/mrvImageView.cpp:5448
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "resim/CTL ASC_CDL SOP ve Doygunluğu Değiştirin"
 
-#: gui/mrvImageView.cpp:5377
+#: gui/mrvImageView.cpp:5387
 msgid "Image/Next"
 msgstr "resim/Takip etme"
 
-#: gui/mrvImageView.cpp:5403
+#: gui/mrvImageView.cpp:5413
 msgid "Image/Preload Caches"
 msgstr "resim/Önbellekleri önceden yükle"
 
-#: gui/mrvImageView.cpp:5379
+#: gui/mrvImageView.cpp:5389
 msgid "Image/Previous"
 msgstr "resim/Öncesi"
 
-#: gui/mrvImageView.cpp:5422
+#: gui/mrvImageView.cpp:5432
 msgid "Image/Rotate +90"
 msgstr "resim/+90 döndür"
 
-#: gui/mrvImageView.cpp:5425
+#: gui/mrvImageView.cpp:5435
 msgid "Image/Rotate -90"
 msgstr "resim/-90 döndür"
 
-#: gui/mrvImageView.cpp:5465 gui/mrvImageBrowser.cpp:4430
+#: gui/mrvImageView.cpp:5475 gui/mrvImageBrowser.cpp:4437
 msgid "Image/Set as Background"
 msgstr "resim/Arka Plan olarak ayarla"
 
-#: gui/mrvImageView.cpp:5470
+#: gui/mrvImageView.cpp:5480
 msgid "Image/Switch FG and BG"
 msgstr "resim/Ön Planı ve Arka Planı Değiştir"
 
-#: gui/mrvImageView.cpp:5473
+#: gui/mrvImageView.cpp:5483
 msgid "Image/Toggle Background"
 msgstr "resim/arka planı değiştir"
 
-#: gui/mrvImageView.cpp:5480
+#: gui/mrvImageView.cpp:5490
 msgid "Image/Toggle EDL"
 msgstr "resim/EDL'yi değiştir"
 
-#: gui/mrvImageView.cpp:5415
+#: gui/mrvImageView.cpp:5425
 msgid "Image/Update Single Frame in Cache"
 msgstr "resim/Önbellek Çerçevesini Güncelleme"
 
@@ -4693,7 +4693,7 @@ msgstr "Geçersiz hedef profil/görüntü formatı"
 msgid "Invalid image "
 msgstr "geçersiz dizin "
 
-#: core/R3dImage.cpp:1302 core/R3dImage.cpp:1377 gui/mrvImageView.cpp:9544
+#: core/R3dImage.cpp:1302 core/R3dImage.cpp:1377 gui/mrvImageView.cpp:9554
 msgid "Invalid index "
 msgstr "geçersiz dizin "
 
@@ -4721,7 +4721,7 @@ msgstr "Geçersiz stereo görüntü "
 msgid "Invalid timecode "
 msgstr "Geçersiz Zaman Kodu "
 
-#: core/aviImage.cpp:1965
+#: core/aviImage.cpp:1966
 msgid "Invalid video stream "
 msgstr "geçersiz video parçası "
 
@@ -4741,8 +4741,8 @@ msgstr "Ters İşleme Referans Dönüşümü (RT)"
 msgid "Italian"
 msgstr "İtalyan (italiano)"
 
-#: gui/mrvImageBrowser.cpp:4028 gui/mrvImageBrowser.cpp:4036
-#: gui/mrvImageBrowser.cpp:4111 gui/mrvImageBrowser.cpp:4119
+#: gui/mrvImageBrowser.cpp:4035 gui/mrvImageBrowser.cpp:4043
+#: gui/mrvImageBrowser.cpp:4118 gui/mrvImageBrowser.cpp:4126
 msgid "Item was not found in tree."
 msgstr "makarada bulunamadı"
 
@@ -5046,11 +5046,11 @@ msgstr "Yükleniyor"
 msgid "Loading \"%s\""
 msgstr "\"%s\" yükleniyor"
 
-#: video/mrvGLEngine.cpp:4209
+#: video/mrvGLEngine.cpp:4202
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Dahili gölgelendirici NV3.0 rgba yükleniyor"
 
-#: video/mrvGLEngine.cpp:4215
+#: video/mrvGLEngine.cpp:4208
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Dahili rgba gölgelendirici arbfp1 yükleniyor"
 
@@ -5075,7 +5075,7 @@ msgid "Logarithmic"
 msgstr "logaritmik"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1404
-#: gui/mrvImageView.cpp:5261
+#: gui/mrvImageView.cpp:5271
 msgid "Logs"
 msgstr "Gönderiler"
 
@@ -5113,9 +5113,9 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Farenin altındaki görüntü pikseli parlaklığı."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:40
-#: core/CMedia.cpp:2130 core/CMedia.cpp:2185 core/exrImage.cpp:3057
+#: core/CMedia.cpp:2133 core/CMedia.cpp:2188 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
-#: gui/mrvImageView.cpp:9642 gui/mrvImageView.cpp:10167
+#: gui/mrvImageView.cpp:9652 gui/mrvImageView.cpp:10177
 msgid "Lumma"
 msgstr "lüme"
 
@@ -5221,7 +5221,7 @@ msgstr "maks. Görüntülenen önbellek kutuları"
 msgid "Max. Images Apart"
 msgstr "Maks. Görüntü Ayrımı"
 
-#: video/mrvGLEngine.cpp:231
+#: video/mrvGLEngine.cpp:228
 msgid "Max. Texture Size:\t"
 msgstr "Maks. Doku Boyutu:\t"
 
@@ -5257,7 +5257,7 @@ msgstr "Ortalama"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1129
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1390
-#: gui/mrvImageView.cpp:5236
+#: gui/mrvImageView.cpp:5246
 msgid "Media Info"
 msgstr "Medya bilgisi"
 
@@ -5373,11 +5373,11 @@ msgstr "CTL Yazma Monitörü"
 msgid "Monitor Icc Profile"
 msgstr "Icc Profilini İzleyin"
 
-#: gui/mrvImageView.cpp:5587
+#: gui/mrvImageView.cpp:5597
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Görüntülemek/CTL Çıktı Görüntü Dönüşümü (ODT) ekleyin"
 
-#: gui/mrvImageView.cpp:5591
+#: gui/mrvImageView.cpp:5601
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Görüntülemek/ICC Renk Profili Ekle"
 
@@ -5462,7 +5462,7 @@ msgstr ""
 "Dili değiştirmek için mrViewer'ı yeniden başlatmanız gerekiyor. Devam etmek "
 "istediğine emin misin?"
 
-#: gui/mrvImageBrowser.cpp:4617
+#: gui/mrvImageBrowser.cpp:4624
 msgid "Negative indices to exchange"
 msgstr "İşlem yapmak için negatif endeksler"
 
@@ -5470,12 +5470,12 @@ msgstr "İşlem yapmak için negatif endeksler"
 msgid "Never"
 msgstr "Hiçbir zaman"
 
-#: gui/mrvImageBrowser.cpp:3488
+#: gui/mrvImageBrowser.cpp:3495
 msgid "New item not created at "
 msgstr "Yeni öğe oluşturulmadı "
 
-#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3868
-#: gui/mrvImageBrowser.cpp:3955
+#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3875
+#: gui/mrvImageBrowser.cpp:3962
 msgid "New item was not found in tree."
 msgstr "makarada bulunamadı"
 
@@ -5501,13 +5501,13 @@ msgid "Next Image Version"
 msgstr "Sonraki Resim Sürümü"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1129
-#: gui/mrvImageBrowser.cpp:1299 gui/mrvImageBrowser.cpp:3335
-#: gui/mrvImageBrowser.cpp:3339 gui/mrvImageInformation.cpp:5154
-#: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:225
-#: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:227
-#: video/mrvGLEngine.cpp:228 video/mrvGLEngine.cpp:230
-#: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:235
-#: video/mrvGLEngine.cpp:236
+#: gui/mrvImageBrowser.cpp:1299 gui/mrvImageBrowser.cpp:3342
+#: gui/mrvImageBrowser.cpp:3346 gui/mrvImageInformation.cpp:5154
+#: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:222
+#: video/mrvGLEngine.cpp:223 video/mrvGLEngine.cpp:224
+#: video/mrvGLEngine.cpp:225 video/mrvGLEngine.cpp:227
+#: video/mrvGLEngine.cpp:231 video/mrvGLEngine.cpp:232
+#: video/mrvGLEngine.cpp:233
 msgid "No"
 msgstr "Numara"
 
@@ -5560,7 +5560,7 @@ msgstr "Ses parçası için kod çözücü bulunamadı. İD: "
 msgid "No foreground image to switch to"
 msgstr "Değiştirilecek ön görüntü yok"
 
-#: gui/mrvImageView.cpp:5126
+#: gui/mrvImageView.cpp:5136
 msgid "No image to add shape to"
 msgstr "Şekil eklenecek resim yok"
 
@@ -5580,7 +5580,7 @@ msgstr "Ses çerçevesi için hafıza yok"
 msgid "No memory to allocate filter graph"
 msgstr "Filtre grafiği için hafıza yok"
 
-#: core/aviImage.cpp:2130
+#: core/aviImage.cpp:2131
 msgid "No pixel format could be chosen"
 msgstr "Piksel biçimi seçilemedi"
 
@@ -5596,7 +5596,7 @@ msgstr "Geçerli bir ODT dönüşümü yok: "
 msgid "No valid RT transform for \""
 msgstr "\" için geçerli bir RT dönüşümü yok"
 
-#: gui/mrvImageBrowser.cpp:3679
+#: gui/mrvImageBrowser.cpp:3686
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5609,7 +5609,7 @@ msgstr ""
 msgid "Non-Drop Frame Timecode"
 msgstr "Çerçeveleri Kaybetmeden Zaman Kodu"
 
-#: video/mrvGLEngine.cpp:229
+#: video/mrvGLEngine.cpp:226
 msgid "Non-POT Textures:\t"
 msgstr "POT Olmayan Dokular:\t"
 
@@ -5646,31 +5646,31 @@ msgstr "Comped değil"
 msgid "Not OK"
 msgstr "Tamam değil"
 
-#: gui/mrvImageView.cpp:6096
+#: gui/mrvImageView.cpp:6106
 msgid "Not a GLArrowShape pointer"
 msgstr "GLArrowShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:7523
+#: gui/mrvImageView.cpp:7533
 msgid "Not a GLCircleShape pointer"
 msgstr "GLCircleShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:6128
+#: gui/mrvImageView.cpp:6138
 msgid "Not a GLCircleShape pointer in mouseRelease"
 msgstr "MouseRelease'de bir GLCircleShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:6068
+#: gui/mrvImageView.cpp:6078
 msgid "Not a GLErasePathShape pointer"
 msgstr "GLErasePathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:6054 gui/mrvImageView.cpp:7463
+#: gui/mrvImageView.cpp:6064 gui/mrvImageView.cpp:7473
 msgid "Not a GLPathShape pointer"
 msgstr "GLPathShape için bir işaretçi değil"
 
-#: gui/mrvImageView.cpp:6082
+#: gui/mrvImageView.cpp:6092
 msgid "Not a GLRectangleShape pointer"
 msgstr "GLRectangleShape işaretçisi değil"
 
-#: gui/mrvImageView.cpp:6112
+#: gui/mrvImageView.cpp:6122
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "MouseRelease üzerinde GLTextShape için bir işaretçi değil"
 
@@ -5702,11 +5702,11 @@ msgstr "Siyah görüntü için hafıza yok"
 msgid "Not enough memory for color transform"
 msgstr "Renk dönüşümü için hafıza yok"
 
-#: core/aviImage.cpp:2391
+#: core/aviImage.cpp:2392
 msgid "Not enough memory for context"
 msgstr "Bağlam için hafıza yok"
 
-#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1216 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Görüntü belleği yok"
 
@@ -5809,7 +5809,7 @@ msgstr "OCIO yapılandırması '"
 msgid "OCIO config (*.{"
 msgstr "LEISURE yapılandırması (*.{"
 
-#: gui/mrvPreferences.cpp:1869
+#: gui/mrvPreferences.cpp:1867
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO ortam değişkeni mevcut değil. CTL kullanılacaktır. "
 
@@ -5817,15 +5817,15 @@ msgstr "OCIO ortam değişkeni mevcut değil. CTL kullanılacaktır. "
 msgid "OCIO input color space for the image"
 msgstr "Görüntünün Renk Alanı Girdisi tanımsız."
 
-#: gui/mrvImageView.cpp:5496
+#: gui/mrvImageView.cpp:5506
 msgid "OCIO/Display"
 msgstr "OCIO/Görüntüle"
 
-#: gui/mrvImageView.cpp:5492 gui/mrvImageBrowser.cpp:4185
+#: gui/mrvImageView.cpp:5502 gui/mrvImageBrowser.cpp:4192
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Giriş Renk Alanı"
 
-#: gui/mrvImageView.cpp:5499
+#: gui/mrvImageView.cpp:5509
 msgid "OCIO/View"
 msgstr "OCIO/Görünüm"
 
@@ -5891,8 +5891,8 @@ msgstr "ogg-video"
 msgid "Okay"
 msgstr "Tamam"
 
-#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3852
-#: gui/mrvImageBrowser.cpp:3940
+#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3859
+#: gui/mrvImageBrowser.cpp:3947
 msgid "Old item was not found in tree."
 msgstr "makarada bulunamadı"
 
@@ -6101,7 +6101,7 @@ msgstr "PAL HDTV Renk Çubukları"
 msgid "PAL Video"
 msgstr "Video PAL'ı"
 
-#: video/mrvGLEngine.cpp:225
+#: video/mrvGLEngine.cpp:222
 msgid "PBO Textures:\t"
 msgstr "PBO dokuları:\t"
 
@@ -6110,7 +6110,7 @@ msgstr "PBO dokuları:\t"
 msgid "PIZ"
 msgstr "PIZ"
 
-#: gui/mrvImageView.cpp:5062
+#: gui/mrvImageView.cpp:5072
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
@@ -6221,7 +6221,7 @@ msgstr "Klip Piksel Oranı"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Dalga biçiminde piksel türü doğru şekilde desteklenmiyor"
 
-#: gui/mrvImageView.cpp:5577
+#: gui/mrvImageView.cpp:5587
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "piksel/RGBA Değerlerini Panoya Kopyalayın"
 
@@ -6312,15 +6312,15 @@ msgstr "ICC'yi tercih et"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:938
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1402
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:2156
-#: gui/mrvImageView.cpp:5243
+#: gui/mrvImageView.cpp:5253
 msgid "Preferences"
 msgstr "tercihler"
 
-#: gui/mrvPreferences.cpp:2683
+#: gui/mrvPreferences.cpp:2681
 msgid "Preferences have been saved to: "
 msgstr "Tercihler şuraya kaydedildi: "
 
-#: gui/mrvImageBrowser.cpp:3601
+#: gui/mrvImageBrowser.cpp:3608
 msgid ""
 "Prefix cannot be an empty string.  Please type some regex to distinguish the "
 "version in the filename.  If unsure, use _v."
@@ -6329,7 +6329,7 @@ msgstr ""
 "bazı harfler yazın. Neyi kullanacağınızdan şüpheniz varsa, kapsayıcı bir "
 "düzenli ifade oluşturacak olan _v kullanın."
 
-#: gui/mrvImageBrowser.cpp:4209
+#: gui/mrvImageBrowser.cpp:4216
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6390,7 +6390,7 @@ msgstr "Yazdır"
 msgid "Priority"
 msgstr "Öncelik"
 
-#: core/aviImage.cpp:1220
+#: core/aviImage.cpp:1221
 msgid "Problem allocating image "
 msgstr "Resim atamada sorun "
 
@@ -6406,12 +6406,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Profilin adı "
 
-#: core/aviImage.cpp:2778
+#: core/aviImage.cpp:2779
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2774
+#: core/aviImage.cpp:2775
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -6608,9 +6608,9 @@ msgstr "Dikdörtgen Aracı"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:2116 core/CMedia.cpp:2183 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9622
-#: gui/mrvImageView.cpp:10165
+#: core/CMedia.cpp:2119 core/CMedia.cpp:2186 core/exrImage.cpp:3058
+#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9632
+#: gui/mrvImageView.cpp:10175
 msgid "Red"
 msgstr "kırmızı"
 
@@ -6657,7 +6657,7 @@ msgstr "makaralar"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:2992
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1389
-#: gui/mrvImageView.cpp:5235
+#: gui/mrvImageView.cpp:5245
 msgid "Reels"
 msgstr "makaralar"
 
@@ -6678,7 +6678,7 @@ msgstr "Referans numarası"
 msgid "Reference Service"
 msgstr "Referans Hizmeti"
 
-#: gui/mrvImageBrowser.cpp:3608
+#: gui/mrvImageBrowser.cpp:3615
 msgid "Regex "
 msgstr "normal ifade "
 
@@ -6694,7 +6694,7 @@ msgstr ""
 " gizmo_v003.001.exr\n"
 "(sürüm 3, kare 1)."
 
-#: gui/mrvImageBrowser.cpp:3622 gui/mrvImageBrowser.cpp:3673
+#: gui/mrvImageBrowser.cpp:3629 gui/mrvImageBrowser.cpp:3680
 msgid "Regular expression error: "
 msgstr "Normal ifade hatası: "
 
@@ -6764,7 +6764,7 @@ msgstr "Render Dönüşümü"
 msgid "Render Transforms"
 msgstr "Render Dönüşümü"
 
-#: video/mrvGLEngine.cpp:222
+#: video/mrvGLEngine.cpp:219
 msgid "Renderer:\t"
 msgstr "oluşturucu:\t"
 
@@ -6785,7 +6785,7 @@ msgstr ""
 "Tüm özellikleri değiştir/hud'de görüntülenecek değerler, yalnızca komut "
 "satırında belirtilenler bırakılır."
 
-#: gui/mrvImageBrowser.cpp:3454
+#: gui/mrvImageBrowser.cpp:3461
 msgid "Replace image index is out of range"
 msgstr "Resim değiştirme oranı aralık dışında"
 
@@ -6931,7 +6931,7 @@ msgstr "Rusça (русский)"
 msgid "S"
 msgstr "S"
 
-#: video/mrvGLEngine.cpp:236
+#: video/mrvGLEngine.cpp:233
 msgid "SDI Output:\t"
 msgstr "SDI çıkışı:\t"
 
@@ -7199,15 +7199,15 @@ msgstr "Stereo Girişi Seçin"
 msgid "Select stereo output"
 msgstr "Stereo Çıkışı Seçin"
 
-#: gui/mrvImageBrowser.cpp:4169
+#: gui/mrvImageBrowser.cpp:4176
 msgid "Select/Multiple Images for Modifying"
 msgstr "Seçmek/Değiştirilecek Birden Çok Görüntü"
 
-#: gui/mrvImageBrowser.cpp:4156
+#: gui/mrvImageBrowser.cpp:4163
 msgid "Select/Single Image for Dragging"
 msgstr "Seçmek/Sürüklenecek Bir Resim"
 
-#: video/mrvGLEngine.cpp:569
+#: video/mrvGLEngine.cpp:566
 msgid "Selecting shader type automatically: "
 msgstr "Gölgelendirici türünü otomatik olarak seçme: "
 
@@ -7326,19 +7326,19 @@ msgstr "mrViewer başladığında varsayılan kazancı ayarlayın."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "mrViewer başladığında varsayılan aralığı ayarlayın."
 
-#: gui/mrvPreferences.cpp:1651
+#: gui/mrvPreferences.cpp:1649
 msgid "Setting OCIO config from OCIO environment variable:"
 msgstr "OCIO yapılandırmasını OCIO ortam değişkenine ayarlama:"
 
-#: gui/mrvPreferences.cpp:1632
+#: gui/mrvPreferences.cpp:1630
 msgid "Setting OCIO config to nuke-default."
 msgstr "OCIO yapılandırmasını nükleer varsayılana ayarlama."
 
-#: gui/mrvPreferences.cpp:1624
+#: gui/mrvPreferences.cpp:1622
 msgid "Setting OCIO config to saved preferences."
 msgstr "OCIO yapılandırmasını kayıtlı tercihlere göre ayarlama."
 
-#: gui/mrvPreferences.cpp:1657
+#: gui/mrvPreferences.cpp:1655
 msgid "Setting OCIO config to:"
 msgstr "OCIO yapılandırmasını şu şekilde ayarlama:"
 
@@ -7554,19 +7554,19 @@ msgstr "Altyazı Dosyası "
 msgid "Subtitle font "
 msgstr "Altyazı Mektubu "
 
-#: core/aviImage.cpp:4297
+#: core/aviImage.cpp:4302
 msgid "Subtitle type "
 msgstr "Altyazı Türü "
 
-#: gui/mrvImageView.cpp:5531
+#: gui/mrvImageView.cpp:5541
 msgid "Subtitle/Load"
 msgstr "Alt yazı/Şarj etmek"
 
-#: gui/mrvImageView.cpp:5539
+#: gui/mrvImageView.cpp:5549
 msgid "Subtitle/No Subtitle"
 msgstr "Alt yazı/altyazı yok"
 
-#: gui/mrvImageView.cpp:5548
+#: gui/mrvImageView.cpp:5558
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Alt yazı/Parça #%d - %s"
@@ -7709,7 +7709,7 @@ msgstr "Metin Yerleşimi"
 msgid "Text Tool"
 msgstr "Metin Aracı"
 
-#: video/mrvGLEngine.cpp:233
+#: video/mrvGLEngine.cpp:230
 msgid "Texture Units:\t"
 msgstr "Doku Birimleri:\t"
 
@@ -8225,7 +8225,7 @@ msgstr "Çıkış bağlamında çok fazla akış"
 msgid "Tooldock"
 msgstr "Eylem Yuvası"
 
-#: gui/mrvImageView.cpp:11553
+#: gui/mrvImageView.cpp:11568
 msgid "Top"
 msgstr "Daha yüksek"
 
@@ -8340,7 +8340,7 @@ msgstr "'%s' cilt aralığı bulunamadı, id: %i \n"
 msgid "Undefined"
 msgstr "Tanımsız"
 
-#: video/mrvGLEngine.cpp:804
+#: video/mrvGLEngine.cpp:801
 msgid "Undefined framebuffer"
 msgstr "tanımsız çerçeve arabelleği"
 
@@ -8361,13 +8361,13 @@ msgstr "işlenmeyen özel durum"
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
-#: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:211
-#: video/mrvGLEngine.cpp:214 video/mrvGLEngine.cpp:217
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
+#: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
+#: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: video/mrvGLEngine.cpp:830
+#: video/mrvGLEngine.cpp:827
 msgid "Unknown Framebuffer error.  Exit code: "
 msgstr "Bilinmeyen çerçeve arabelleği hatası. Çıkış kodu: "
 
@@ -8427,7 +8427,7 @@ msgstr "' anahtarı için bilinmeyen veri türü"
 msgid "Unknown data type to convert to string"
 msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 
-#: core/aviImage.cpp:2257
+#: core/aviImage.cpp:2258
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
@@ -8483,7 +8483,7 @@ msgstr "Bilinmeyen yuvarlama modu"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "mrvOCIOBrowser için bilinmeyen veri türü"
 
-#: video/mrvGLEngine.cpp:2668
+#: video/mrvGLEngine.cpp:2661
 msgid "Unknown wipe direction"
 msgstr "Bilinmeyen silme adresi"
 
@@ -8492,7 +8492,7 @@ msgstr "Bilinmeyen silme adresi"
 msgid "Unspecified"
 msgstr "Belirtilmemiş"
 
-#: video/mrvGLEngine.cpp:807
+#: video/mrvGLEngine.cpp:804
 msgid "Unsupported internal format"
 msgstr "bilinmeyen dahili biçim"
 
@@ -8573,7 +8573,7 @@ msgstr "Kullanıcı arayüzü/Pencereyi Görüntüle/Dil ve Renkler"
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
 msgstr "Varsayılan değeri kullanma (Rec. ITU-R BT.709'a göre renklilikler)."
 
-#: video/mrvGLEngine.cpp:578
+#: video/mrvGLEngine.cpp:575
 msgid "Using hardware shader profile: "
 msgstr "Donanım gölgelendirici profilini kullanma: "
 
@@ -8639,11 +8639,11 @@ msgstr "Vektör3 Tamsayı"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1187
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvVectorscopeUI.cxx:31
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1398
-#: gui/mrvImageView.cpp:5251
+#: gui/mrvImageView.cpp:5261
 msgid "Vectorscope"
 msgstr "vektörskop"
 
-#: video/mrvGLEngine.cpp:221
+#: video/mrvGLEngine.cpp:218
 msgid "Vendor:\t"
 msgstr "Satıcı:\t"
 
@@ -8651,23 +8651,23 @@ msgstr "Satıcı:\t"
 msgid "Version Regex"
 msgstr "ExpReg sürümü."
 
-#: gui/mrvImageView.cpp:5361 gui/mrvImageBrowser.cpp:4237
+#: gui/mrvImageView.cpp:5371 gui/mrvImageBrowser.cpp:4244
 msgid "Version/First"
 msgstr "sürüm/Öncelikle"
 
-#: gui/mrvImageView.cpp:5370 gui/mrvImageBrowser.cpp:4246
+#: gui/mrvImageView.cpp:5380 gui/mrvImageBrowser.cpp:4253
 msgid "Version/Last"
 msgstr "sürüm/Son"
 
-#: gui/mrvImageView.cpp:5364 gui/mrvImageBrowser.cpp:4243
+#: gui/mrvImageView.cpp:5374 gui/mrvImageBrowser.cpp:4250
 msgid "Version/Next"
 msgstr "sürüm/Takip etme"
 
-#: gui/mrvImageView.cpp:5366 gui/mrvImageBrowser.cpp:4240
+#: gui/mrvImageView.cpp:5376 gui/mrvImageBrowser.cpp:4247
 msgid "Version/Previous"
 msgstr "sürüm/Öncesi"
 
-#: video/mrvGLEngine.cpp:223
+#: video/mrvGLEngine.cpp:220
 msgid "Version:\t"
 msgstr "Sürüm:\t"
 
@@ -8704,7 +8704,7 @@ msgstr "Video Parçası #%d"
 msgid "Video Streams"
 msgstr "video parçaları"
 
-#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1883 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Video Senkronizasyonu ana çerçevesi "
 
@@ -8740,7 +8740,7 @@ msgstr "videoyu döndür"
 msgid "Video timecode attribute already exists"
 msgstr "Video Zaman Kodu özelliği zaten var"
 
-#: gui/mrvImageView.cpp:5515
+#: gui/mrvImageView.cpp:5525
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Video/Parça #%d - %s"
@@ -8753,45 +8753,45 @@ msgstr "Görünüm"
 msgid "View Window"
 msgstr "Pencereyi Görüntüle"
 
-#: gui/mrvImageView.cpp:5283
+#: gui/mrvImageView.cpp:5293
 msgid "View/Data Window"
 msgstr "Görünüm/Veri Penceresi"
 
-#: gui/mrvImageView.cpp:5277
+#: gui/mrvImageView.cpp:5287
 msgid "View/Display Window"
 msgstr "Görünüm/ekran penceresi"
 
-#: gui/mrvImageView.cpp:5324
+#: gui/mrvImageView.cpp:5334
 msgid "View/Grid/Size"
 msgstr "Görünüm/Kafes/Boyut"
 
-#: gui/mrvImageView.cpp:5320
+#: gui/mrvImageView.cpp:5330
 msgid "View/Grid/Toggle Selected"
 msgstr "Görünüm/Kafes/Değiş tokuş"
 
-#: gui/mrvImageView.cpp:5336
+#: gui/mrvImageView.cpp:5346
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Görünüm/hud/%s"
 
-#: gui/mrvImageView.cpp:5328
+#: gui/mrvImageView.cpp:5338
 msgid "View/Hud/Toggle Selected"
 msgstr "Görünüm/hud/Seçilenleri Değiştir"
 
-#: gui/mrvImageView.cpp:5311
+#: gui/mrvImageView.cpp:5321
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Görünüm/maske/%s"
 
-#: gui/mrvImageView.cpp:5274
+#: gui/mrvImageView.cpp:5284
 msgid "View/Safe Areas"
 msgstr "Görünüm/Güvenli Alanlar"
 
-#: gui/mrvImageView.cpp:5288
+#: gui/mrvImageView.cpp:5298
 msgid "View/Texture Filtering  "
 msgstr "Görünüm/Doku filtreleme  "
 
-#: gui/mrvImageView.cpp:5297
+#: gui/mrvImageView.cpp:5307
 msgid "View/Toggle Action Dock"
 msgstr "Görünüm/Action Dock'u Değiştir"
 
@@ -8824,7 +8824,7 @@ msgstr "DALGA Müzik"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvPreferencesUI.cxx:1213
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrvWaveformUI.cxx:27
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Debug/tmp/mrViewer/src/mrViewer.cxx:1399
-#: gui/mrvImageView.cpp:5253
+#: gui/mrvImageView.cpp:5263
 msgid "Waveform"
 msgstr "dalga formu"
 
@@ -9134,7 +9134,7 @@ msgstr "klip genişliği"
 msgid "Window Behavior"
 msgstr "Pencere Davranışı"
 
-#: gui/mrvImageView.cpp:5265
+#: gui/mrvImageView.cpp:5275
 msgid "Windows/"
 msgstr "Pencereler/"
 
@@ -9211,7 +9211,7 @@ msgstr "Yanlış bir veri boyutu aldım."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
-#: core/aviImage.cpp:3533
+#: core/aviImage.cpp:3535
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
@@ -9305,7 +9305,7 @@ msgstr "YDbDr (SECAM/PAL-N Analog)"
 msgid "YIQ (Analog NTSC)"
 msgstr "YIQ (Analog NTSC)"
 
-#: video/mrvGLEngine.cpp:234
+#: video/mrvGLEngine.cpp:231
 msgid "YUV  Support:\t"
 msgstr "YUV desteği:\t"
 
@@ -9338,18 +9338,18 @@ msgstr "YUV dönüştürme"
 msgid "YUV Hint"
 msgstr "Sug. YUV"
 
-#: video/mrvGLEngine.cpp:235
+#: video/mrvGLEngine.cpp:232
 msgid "YUVA Support:\t"
 msgstr "YUVA desteği:\t"
 
 #: gui/mrvHotkey.cpp:655 gui/mrvImageBrowser.cpp:1129
-#: gui/mrvImageBrowser.cpp:1299 gui/mrvImageBrowser.cpp:3335
-#: gui/mrvImageBrowser.cpp:3339 gui/mrvImageInformation.cpp:5154
-#: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:225
-#: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:227
-#: video/mrvGLEngine.cpp:228 video/mrvGLEngine.cpp:230
-#: video/mrvGLEngine.cpp:234 video/mrvGLEngine.cpp:235
-#: video/mrvGLEngine.cpp:236
+#: gui/mrvImageBrowser.cpp:1299 gui/mrvImageBrowser.cpp:3342
+#: gui/mrvImageBrowser.cpp:3346 gui/mrvImageInformation.cpp:5154
+#: gui/mrvLanguages.cpp:45 gui/mrvSave.cpp:214 video/mrvGLEngine.cpp:222
+#: video/mrvGLEngine.cpp:223 video/mrvGLEngine.cpp:224
+#: video/mrvGLEngine.cpp:225 video/mrvGLEngine.cpp:227
+#: video/mrvGLEngine.cpp:231 video/mrvGLEngine.cpp:232
+#: video/mrvGLEngine.cpp:233
 msgid "Yes"
 msgstr "Evet"
 
@@ -9357,17 +9357,17 @@ msgstr "Evet"
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr "Oynadığınız film üzerinden tasarruf ediyorsunuz. iptal ediliyor..."
 
-#: gui/mrvImageBrowser.cpp:3149
+#: gui/mrvImageBrowser.cpp:3156
 msgid "You can load only a single stereo image to combine with current one."
 msgstr ""
 "Geçerli olanla birleştirmek için yalnızca bir stereo görüntü "
 "yükleyebilirsiniz."
 
-#: gui/mrvImageBrowser.cpp:3165
+#: gui/mrvImageBrowser.cpp:3172
 msgid "You cannot load a reel as a stereo image."
 msgstr "Bir makarayı stereo görüntü olarak yükleyemezsiniz."
 
-#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10168
+#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10178
 msgid "Z"
 msgstr "Z"
 
@@ -9401,7 +9401,7 @@ msgstr "Görüntüye yakınlaştırma başarısız oldu"
 msgid "attributes not found"
 msgstr "nitelikler bulunamadı"
 
-#: core/CMedia.cpp:3442 core/CMedia.cpp:3473
+#: core/CMedia.cpp:3445 core/CMedia.cpp:3476
 msgid "audio"
 msgstr "Ses"
 
@@ -9417,7 +9417,7 @@ msgstr "avcodec_context_from_parameters video için başarısız oldu"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context ses için başarısız oldu"
 
-#: core/aviImage.cpp:1760
+#: core/aviImage.cpp:1761
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context altyazı için başarısız oldu"
 
@@ -9442,15 +9442,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice resmi "
 
-#: core/CMedia.cpp:3734
+#: core/CMedia.cpp:3737
 msgid "clean effects"
 msgstr "temiz efektler"
 
-#: core/CMedia.cpp:3722
+#: core/CMedia.cpp:3725
 msgid "comment"
 msgstr "yorumlar"
 
-#: core/CMedia.cpp:3445 core/CMedia.cpp:3476
+#: core/CMedia.cpp:3448 core/CMedia.cpp:3479
 msgid "data"
 msgstr "veri"
 
@@ -9462,11 +9462,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet çerçeve için başarısız oldu "
 
-#: core/CMedia.cpp:3716
+#: core/CMedia.cpp:3719
 msgid "default"
 msgstr "varsayılan"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4508
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 
@@ -9474,7 +9474,7 @@ msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 msgid "delete uiview"
 msgstr "uiview'i sil"
 
-#: core/CMedia.cpp:3718
+#: core/CMedia.cpp:3721
 msgid "dub"
 msgstr "dublaj"
 
@@ -9482,7 +9482,7 @@ msgstr "dublaj"
 msgid "files"
 msgstr "kayıtlar"
 
-#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1913 core/aviImage.cpp:1926 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: kutu "
@@ -9497,7 +9497,7 @@ msgstr "kayan nokta"
 msgid "float (32-bits per channel)"
 msgstr "kayan nokta (kanal başına 32 bit)"
 
-#: core/CMedia.cpp:3728
+#: core/CMedia.cpp:3731
 msgid "forced"
 msgstr "zoraki"
 
@@ -9529,7 +9529,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "yarım kayan nokta (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:4500
+#: core/CMedia.cpp:4503
 msgid "half/float"
 msgstr "yarım/tam kayan nokta"
 
@@ -9537,7 +9537,7 @@ msgstr "yarım/tam kayan nokta"
 msgid "has invalid magic number in the header."
 msgstr "başlıkta geçersiz bir sihirli sayı var."
 
-#: core/CMedia.cpp:3730
+#: core/CMedia.cpp:3733
 msgid "hearing impaired"
 msgstr "işitme bozuklukları"
 
@@ -9557,7 +9557,7 @@ msgstr "bu bir Softimage dosyasıdır, ancak bir PIC dosyası değildir."
 msgid "item_pathname returned "
 msgstr "item_pathname döndürüldü "
 
-#: core/CMedia.cpp:3726
+#: core/CMedia.cpp:3729
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9573,7 +9573,7 @@ msgstr "Dinleme başarısız oldu\n"
 msgid "loadDeepData error: "
 msgstr "Derin veri yükleme hatası: "
 
-#: core/CMedia.cpp:3724
+#: core/CMedia.cpp:3727
 msgid "lyrics"
 msgstr "şarkı sözleri"
 
@@ -9628,7 +9628,7 @@ msgstr "mrViewer    FG: %s"
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 
-#: video/mrvGLEngine.cpp:595
+#: video/mrvGLEngine.cpp:592
 msgid "mrViewer does not support YUV images."
 msgstr "mrViewer, YUV görüntülerini desteklemez."
 
@@ -9648,11 +9648,11 @@ msgstr ""
 "mrViewer, 3D lut'larda hazırlanmış CTL komut dosyalarını ve ICC Profillerini "
 "destekler. Bu ayarlar, 3D Lut'un kalitesini kontrol eder."
 
-#: video/mrvGLEngine.cpp:590
+#: video/mrvGLEngine.cpp:587
 msgid "mrViewer supports YUV images through shaders."
 msgstr "mrViewer, gölgelendiricili YUV görüntülerini destekler."
 
-#: video/mrvGLEngine.cpp:586
+#: video/mrvGLEngine.cpp:583
 msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer, gölgelendiricili YUVA görüntülerini destekler."
 
@@ -9719,7 +9719,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Değiştirilecek piksel verisi yok"
 
-#: core/CMedia.cpp:3720
+#: core/CMedia.cpp:3723
 msgid "original"
 msgstr "orijinal"
 
@@ -9791,7 +9791,7 @@ msgstr "recv() başarısız oldu"
 msgid "send() failed"
 msgstr "gönder() başarısız oldu"
 
-#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
+#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
 msgid "send_packet error: "
 msgstr "Paket gönderemedim. Hata "
 
@@ -9815,7 +9815,7 @@ msgstr "src_nb_örnekleri 0'dır"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: geçersiz veri. uh öyle "
 
-#: core/CMedia.cpp:3448 core/CMedia.cpp:3479
+#: core/CMedia.cpp:3451 core/CMedia.cpp:3482
 msgid "subtitle"
 msgstr "alt yazı"
 
@@ -9827,11 +9827,11 @@ msgstr "sysctl başarısız oldu."
 msgid "task info failed"
 msgstr "görev bilgisi başarısız oldu"
 
-#: core/CMedia.cpp:3691 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3694 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3451 core/CMedia.cpp:3482 core/CMedia.cpp:4472
+#: core/CMedia.cpp:3454 core/CMedia.cpp:3485 core/CMedia.cpp:4475
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "Bilinmeyen"
@@ -9848,11 +9848,11 @@ msgstr "işaretsiz tamsayı (kanal başına 32 bit)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "kısa işaretsiz (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:3439 core/CMedia.cpp:3470
+#: core/CMedia.cpp:3442 core/CMedia.cpp:3473
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3732
+#: core/CMedia.cpp:3735
 msgid "visual impaired"
 msgstr "görme engelli"
 

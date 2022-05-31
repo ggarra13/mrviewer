@@ -1076,15 +1076,16 @@ bool aviImage::seek_to_position( const int64_t frame )
     // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-      int64_t f = frame; //start;
-      if ( f > out_frame() ) f = out_frame();
-      int64_t dts = queue_packets( f, false, got_video,
-                                   got_audio, got_subtitle );
-      _dts = _adts = dts;
-      // Set the expected to an impossible frame
-      _expected = _expected_audio = _frame_start-1;
-      _seek_req = false;
-      return true;
+        flush_video();
+        int64_t f = frame; //start;
+        if ( f > out_frame() ) f = out_frame();
+        int64_t dts = queue_packets( f, false, got_video,
+                                     got_audio, got_subtitle );
+        _dts = _adts = dts;
+        // Set the expected to an impossible frame
+        _expected = _expected_audio = _frameIn - 1;
+        _seek_req = false;
+        return true;
     }
 
 
@@ -3469,6 +3470,7 @@ bool aviImage::frame( const int64_t f )
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
             ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
+        TRACE( "******* FRAME EARLY EXIT -- BUFFERS FULL" );
         return false;
     }
 
@@ -4102,7 +4104,7 @@ void aviImage::do_seek()
     if ( !saving() && _seek_frame != _expected )
         clear_packets();
 
-    frame( _seek_frame);
+    frame( _seek_frame );
 
 
 #ifdef DEBUG_SEEK
@@ -4146,6 +4148,7 @@ void aviImage::do_seek()
 #ifdef DEBUG_SEEK
             TRACE( name() << " frame " << _seek_frame );
 #endif
+            // flush_video();  // with this, we don't get broken frames
             status = decode_video( _seek_frame );
 
 #ifdef DEBUG_SEEK
@@ -4170,6 +4173,8 @@ void aviImage::do_seek()
 #ifdef DEBUG_VIDEO_STORES
         debug_video_stores(_seek_frame, "doseek" );
 #endif
+
+        assert( image_damage() & kDamageContents );
 
         // Queue thumbnail for update
         image_damage( image_damage() | kDamageThumbnail );

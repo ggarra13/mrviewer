@@ -328,16 +328,16 @@ public:
 
     enum Damage {
         kNoDamage        = 0,
-        kDamageLayers    = 1 << 1,
-        kDamageContents  = 1 << 2,
-        kDamageThumbnail = 1 << 3,
-        kDamageSubtitle  = 1 << 4,
-        kDamageData      = 1 << 5,
-        kDamageLut       = 1 << 6,
-        kDamage3DData    = 1 << 7,
-        kDamageCache     = 1 << 8,
-        kDamageTimecode  = 1 << 9,
-        kDamageICS       = 1 << 10,
+        kDamageLayers    = 1 << 0, // 1
+        kDamageContents  = 1 << 1, // 2
+        kDamageThumbnail = 1 << 2, // 4
+        kDamageSubtitle  = 1 << 3, // 8
+        kDamageData      = 1 << 4, // 16
+        kDamageLut       = 1 << 5, // 32
+        kDamage3DData    = 1 << 6, // 64
+        kDamageCache     = 1 << 7, // 128
+        kDamageTimecode  = 1 << 8, // 256
+        kDamageICS       = 1 << 9, // 512
         kDamageAll       = ( kDamageLayers | kDamageContents | kDamageLut |
                              kDamageThumbnail | kDamageData | kDamageSubtitle |
                              kDamage3DData | kDamageCache | kDamageTimecode |

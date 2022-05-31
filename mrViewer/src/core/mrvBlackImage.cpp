@@ -48,8 +48,8 @@ BlackImage::BlackImage( const BlackImage::Type c,
     lumma_layers();
 
     _fps = 25.0f;
-    _frameStart = _frame_start = first;
-    _frameEnd = _frame_end = last;
+    _frameStart = _frameIn = _frame_start = first;
+    _frameEnd = _frameOut = _frame_end = last;
 
     default_color_corrections();
 }
@@ -78,6 +78,10 @@ bool BlackImage::fetch(
         create( canvas );
         _hires = canvas;
         if ( !_hires ) return false;
+    }
+    else
+    {
+        _hires->frame( frame );
     }
 
     Mutex& vpm = _video_packets.mutex();

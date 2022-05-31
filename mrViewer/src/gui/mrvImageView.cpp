@@ -3029,8 +3029,8 @@ void ImageView::fit_image( const CMedia* img )
         return;
     }
 
-    TRACE2( "fit_image: " << img->name() << " " << pic->width() << " x "
-            << pic->height() << " GLOBAL FRAME " << _frame );
+    TRACE( "fit_image: " << img->name() << " " << pic->width() << " x "
+           << pic->height() << " GLOBAL FRAME " << _frame );
 
     CMedia::StereoOutput stereo_out = img->stereo_output();
     mrv::Recti dpw;
@@ -4672,22 +4672,32 @@ void ImageView::draw()
 
     if ( images.empty() ) return;
 
-    TRACE2( "GLOBAL FRAME " << _frame << " images.size()=" << images.size() );
-
 #if 0
-    int j = 0;
-    size_t num = images.size();
-    for ( const auto& t : images )
+    static int64_t old_frame = -1000;
+    if ( _frame != old_frame )
     {
-        TRACE2( "Image #" << j << " of " << num << " is "
-                << t->name() << " == img? " << ( t == img )
-                << " " << t->first_frame()
-                << " - " << t->last_frame() << " transition="
-                << in_transition
-                << " dissolve= " << t->dissolve() );
-        ++j;
+        TRACE2( "GLOBAL FRAME " << _frame << " images.size()=" << images.size()
+                << " Aimg= " << Aimg << " Bimg= " << Bimg );
+        if ( in_transition )
+        {
+            TRACE2( "GLOBAL FRAME " << _frame << " in transition Aimg= " << Aimg->name() << " Bimg= " << Bimg->name() );
+        }
+
+        old_frame = _frame;
+        int j = 1;
+        size_t num = images.size();
+        for ( const auto& t : images )
+        {
+            TRACE2( "Image #" << j << " of " << num << " is "
+                    << t->name() << " == img? " << ( t == img )
+                    << " " << t->first_frame()
+                    << " - " << t->last_frame() << " lframe= " << t->frame()
+                    << " damage= " << t->image_damage()
+                    << " dissolve= " << t->dissolve() );
+            ++j;
+        }
+        TRACE2( "-----------------------------------------------------------" );
     }
-    TRACE2( "-----------------------------------------------------------" );
 #endif
 
     _engine->draw_images( images );
@@ -10882,6 +10892,7 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
+    TRACE2( "WAS GLOBAL FRAME " << _frame << " NOW GOT " << f );
 
     _frame = f;
 
@@ -10904,7 +10915,7 @@ void ImageView::frame( const int64_t f )
     {
         int64_t start = t.start();
         int64_t   end = t.end();
-        if ( _frame <= start || _frame > end ) continue;
+        if ( _frame < start || _frame > end ) continue;
         TRACE( "FRAME " << _frame << " START " << start << " END "
                 << end );
 
@@ -10913,23 +10924,25 @@ void ImageView::frame( const int64_t f )
         if ( !Atmp || !Btmp ) continue;
         assert( Atmp != Btmp );
 
-        TRACE( "Atmp= " << Atmp->name() << " frame " << Atmp->frame() );
-        TRACE( "Btmp= " << Btmp->name() << " frame " << Btmp->frame() );
+        TRACE( "Atmp= " << Atmp->name() << " GLOBAL "
+                << _frame << " frame " << Atmp->frame() );
+        TRACE( "Btmp= " << Btmp->name()  << " GLOBAL "
+                << _frame << " frame " << Btmp->frame() );
 
         int64_t len = end - start;
-
-        float dissolve = float( f - start ) / float(len);
+        int64_t lframe = f - start;
+        float dissolve = float( lframe ) / float(len);
         float rdissolve = 1.0f - dissolve;
         Atmp->volume( rdissolve * _volume );
         Btmp->volume( dissolve  * _volume );
         int64_t Aout = Atmp->out_frame();
         int64_t Bin  = Btmp->in_frame();
-        int64_t A = Aout - len * rdissolve;
-        int64_t B = Bin  + len * dissolve;
-        TRACE( "Atmp= " << Atmp->name() << " disframe " << A << " dissolve="
-                << rdissolve << " volume=" << Atmp->volume() );
-        TRACE( "Btmp= " << Btmp->name() << " disframe " << B << " dissolve="
-                << dissolve << " volume=" << Btmp->volume() );
+        // int64_t A = Aout - len * rdissolve;
+        // int64_t B = Bin  + len * dissolve;
+        int64_t A = Aout - len + lframe + 1;
+        int64_t B = Bin  + lframe;
+        TRACE2( "Atmp= " << Atmp->name() << " lframe " << A );
+        TRACE2( "Btmp= " << Btmp->name() << " lframe " << B  );
         switch( playback() )
         {
         case CMedia::kForwards:
@@ -10962,6 +10975,8 @@ void ImageView::frame( const int64_t f )
         }
         Atmp->dissolve( rdissolve );
         Btmp->dissolve( 1.0f );
+        Atmp->image_damage( Atmp->image_damage() | CMedia::kDamageContents );
+        Btmp->image_damage( Btmp->image_damage() | CMedia::kDamageContents );
         Aimg = Atmp;
         Bimg = Btmp;
         in_transition = true;
