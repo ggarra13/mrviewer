@@ -450,25 +450,19 @@ EndStatus handle_loop( int64_t& frame,
                     if ( ! fg )   return kEndNextImage;
 
 
+
                     CMedia::Mutex& cmtx = view->commands_mutex;
                     SCOPED_LOCK( cmtx );
-                    {
-                        ImageView::Command c;
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-                    }
-                    {
-                        ImageView::Command c;
-                        c.type = ImageView::kPlayForwards;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-                    }
+                    ImageView::Command c;
+                    c.type = ImageView::kPlayForwards;
+                    c.frame = dts;
+                    view->commands.push_back( c );
                     return kEndNextImage;
                 }
 
                 img->playback( CMedia::kStopped );
                 img->clear_packets();
+                img->notify_barriers();
                 //img->flush_all();
 
                 int idx = reel->index( next );
@@ -599,12 +593,6 @@ EndStatus handle_loop( int64_t& frame,
 
                     CMedia::Mutex& cmtx = view->commands_mutex;
                     SCOPED_LOCK( cmtx );
-                    {
-                        ImageView::Command c;
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-                    }
                     {
                         ImageView::Command c;
                         c.type = ImageView::kPlayBackwards;
@@ -1369,17 +1357,15 @@ void video_thread( PlaybackData* data )
                     CMedia* Aimg = view->A_image();
                     CMedia* Bimg = view->B_image();
                     CMedia::Playback play = view->playback();
-                    if ( Aimg && play == CMedia::kForwards )
+                    if ( Aimg == img && play == CMedia::kForwards )
                     {
                         int64_t Aframe = Aimg->frame();
                         int64_t Aout   = Aimg->out_frame();
-                        TRACE2( Aimg->name() << " CHECK DISSOLVE END LOOP "
-                                << Aframe << " out= " << Aout );
                         if ( Aframe >= Aout )
                         {
+                            TRACE2( Aimg->name() << " CHECK DISSOLVE END LOOP "
+                                    << Aframe << " out= " << Aout );
                             Aframe++;
-                            TRACE2( Aimg->name() << " SEND DISSOLVE END LOOP "
-                                    << Aframe-1 << " GLOBAL " << f );
                             EndStatus end = handle_loop( Aframe, step, Aimg,
                                                          fg, true,
                                                          uiMain, reel, timeline,
@@ -1393,20 +1379,17 @@ void video_thread( PlaybackData* data )
                             TRACE2( Aimg->name()
                                     << " SENT DISSOLVE END LOOP stopped? "
                                     << Aimg->stopped() );
-                            if ( img == Aimg ) break;
                         }
                     }
-                    else if ( Bimg && play == CMedia::kBackwards )
+                    else if ( Bimg == img && play == CMedia::kBackwards )
                     {
                         int64_t Bframe = Bimg->frame();
                         int64_t Bin    = Bimg->in_frame();
-                        TRACE( Bimg->name() << " CHECK DISSOLVE START LOOP "
-                                << Bframe << " in= " << Bin );
                         if ( Bframe <= Bin )
                         {
+                            TRACE( Bimg->name() << " CHECK DISSOLVE START LOOP "
+                                   << Bframe << " in= " << Bin );
                             Bframe--;
-                            TRACE( Bimg->name() << " SEND DISSOLVE START LOOP "
-                                    << Bframe+1 << " GLOBAL " << f );
                             EndStatus end = handle_loop( Bframe, step, Bimg,
                                                          fg, true,
                                                          uiMain, reel, timeline,
@@ -1417,10 +1400,9 @@ void video_thread( PlaybackData* data )
                                 if ( fg && step != 0 ) view->playback( p );
                                 continue;
                             }
-                            TRACE( Bimg->name()
+                            TRACE2( Bimg->name()
                                     << " SENT DISSOLVE START LOOP stopped? "
                                     << Bimg->stopped() );
-                            if ( Bimg == img ) break;
                         }
                     }
                 }
@@ -1436,6 +1418,9 @@ void video_thread( PlaybackData* data )
         timer.waitUntilNextFrameIsDue();
 
         if ( reel->edl ) frame = img->frame();
+
+        if ( img->name() == "Dinky_2015-06-11.m4v" )
+            TRACE2( img->name() << " HAS LOCAL FRAME " << frame );
         frame += step;
     }
 

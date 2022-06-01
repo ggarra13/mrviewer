@@ -2148,15 +2148,13 @@ void ImageBrowser::save_session()
             return NULL;
         }
 
-        if ( ( img->first_frame() == AV_NOPTS_VALUE ||
-               first > img->first_frame() ) && first != AV_NOPTS_VALUE )
+        if ( first != AV_NOPTS_VALUE && first > img->first_frame() )
         {
             img->first_frame( first );
             img->in_frame( first );
         }
 
-        if ( ( img->last_frame() == AV_NOPTS_VALUE ||
-               last < img->last_frame() ) && last != AV_NOPTS_VALUE )
+        if (  last != AV_NOPTS_VALUE && last < img->last_frame() )
         {
             img->last_frame( last );
             img->out_frame( last );
@@ -2169,15 +2167,12 @@ void ImageBrowser::save_session()
                 img->fps( fps );
                 img->play_fps( fps );
             }
-#if 0
+#if 1
             else
             {
                 if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
                 {
-                    double firstfps = img->first_frame() / fps;
-                    double lastfps  = img->last_frame() / fps;
-                    double firstimg = img->first_frame() / img->fps();
-                    double lastimg  = img->last_frame() / img->fps();
+#if 0
                     int64_t first = img->first_frame() * img->fps() / fps;
                     int64_t last  = img->last_frame()  * img->fps() / fps;
 
@@ -2185,7 +2180,9 @@ void ImageBrowser::save_session()
                     img->in_frame( first );
                     img->last_frame( last );
                     img->out_frame( last );
-                    img->fps( fps );
+#endif
+                    TRACE2( img->name() << " HAS FPS " << fps );
+                    //img->fps( fps );
                     img->play_fps( fps );
                 }
             }
@@ -2561,7 +2558,10 @@ void ImageBrowser::save_session()
             view()->network_active(b);
         }
 
-
+        for ( const auto& m : reel->images )
+        {
+            TRACE2( m->position() << " " << m->duration() );
+        }
 
     }
 
@@ -4850,8 +4850,6 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
-    if ( tframe == view()->frame() ) return;
-
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     TRACE( "BROWSER seek to frame " << f

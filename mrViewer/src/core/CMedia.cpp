@@ -841,16 +841,16 @@ void CMedia::update_frame( const int64_t& f )
 void CMedia::wait_for_threads()
 {
     boost::posix_time::time_duration timeout =
-        boost::posix_time::milliseconds(100000);
+        boost::posix_time::milliseconds(1000);  // wait 1 sec
     for ( const auto& i : _threads )
     {
         assert( i->joinable() );
         assert( i->get_id() != boost::this_thread::get_id() );
-        bool ok = i->timed_join( timeout );
         std::string type = "subtitle";
         if ( i == _video_thread ) type = "video";
         if ( i == _audio_thread ) type = "audio";
         if ( i == _decode_thread ) type = "decode";
+        bool ok = i->timed_join( timeout );
         TRACE2( name() << " Thread " << i << ", type " << type
                 << " returned " << ok );
         delete i;

@@ -228,7 +228,6 @@ bool PortAudioEngine::open( const unsigned channels,
         TRACE2( "DEVICE '_device_idx' " << _device_idx );
         TRACE2( "CHANNELS " << channels );
 #endif
-        TRACE2( "DEVICE '_device_idx' " << _device_idx );
         const PaDeviceInfo* info = Pa_GetDeviceInfo( _device_idx );
         if ( info == nullptr )
         {

@@ -3987,12 +3987,16 @@ void ImageView::handle_commands()
     case kPlayForwards:
     {
         NET( "playfwd" );
+        TRACE2( "********* CMD PLAYFWD PRE SEEK" );
+        if ( c.frame != AV_NOPTS_VALUE ) seek( c.frame );
+        TRACE2( "********* CMD PLAYFWD PAST SEEK" );
         play_forwards();
         break;
     }
     case kPlayBackwards:
     {
         NET( "playbwd" );
+        if ( c.frame != AV_NOPTS_VALUE ) seek( c.frame );
         play_backwards();
         break;
     }
@@ -10937,17 +10941,18 @@ void ImageView::frame( const int64_t f )
         Btmp->volume( dissolve  * _volume );
         int64_t Aout = Atmp->out_frame();
         int64_t Bin  = Btmp->in_frame();
-        // int64_t A = Aout - len * rdissolve;
-        // int64_t B = Bin  + len * dissolve;
+        //int64_t A = Aout - len * rdissolve;
+        //int64_t B = Bin  + len * dissolve;
         int64_t A = Aout - len + lframe + 1;
         int64_t B = Bin  + lframe;
-        TRACE2( "Atmp= " << Atmp->name() << " lframe " << A );
-        TRACE2( "Btmp= " << Btmp->name() << " lframe " << B  );
+        TRACE( "Atmp= " << Atmp->name() << " lframe " << A );
+        TRACE( "Btmp= " << Btmp->name() << " lframe " << B  );
         switch( playback() )
         {
         case CMedia::kForwards:
             if ( Btmp->playback() != CMedia::kForwards )
             {
+                TRACE2( "Btmp= " << Btmp->name() << " SEEK " << B  );
                 Btmp->seek( B );
             }
             if ( Atmp->playback() != CMedia::kForwards &&
