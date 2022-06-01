@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-01 14:14-0300\n"
+"POT-Creation-Date: 2022-06-01 20:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -101,15 +101,15 @@ msgstr " Hz în înlocuire."
 msgid " Hz is not supported by your hardware."
 msgstr " Hz nu este acceptat de hardware-ul dvs."
 
-#: gui/mrvImageBrowser.cpp:3658
+#: gui/mrvImageBrowser.cpp:3659
 msgid " Matched number="
 msgstr " Număr potrivit="
 
-#: gui/mrvImageBrowser.cpp:3656
+#: gui/mrvImageBrowser.cpp:3657
 msgid " Matched prefix="
 msgstr " Prefix potrivit="
 
-#: gui/mrvImageBrowser.cpp:3660
+#: gui/mrvImageBrowser.cpp:3661
 msgid " Matched suffix="
 msgstr " Sufixul potrivit="
 
@@ -250,11 +250,11 @@ msgstr " in loc de 80"
 msgid " is "
 msgstr " este "
 
-#: gui/mrvImageBrowser.cpp:3753
+#: gui/mrvImageBrowser.cpp:3755
 msgid " is already the first version on disk."
 msgstr " Este deja prima versiune pe disc."
 
-#: gui/mrvImageBrowser.cpp:3750
+#: gui/mrvImageBrowser.cpp:3752
 msgid " is already the last version on disk."
 msgstr " Este deja cea mai recentă versiune de pe disc."
 
@@ -1802,11 +1802,11 @@ msgstr "Căile CTL"
 msgid "CTL scripts"
 msgstr "Slip CTL"
 
-#: gui/mrvImageBrowser.cpp:4200
+#: gui/mrvImageBrowser.cpp:4202
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/Atribuire transformare dispozitiv de intrare (IDT)"
 
-#: gui/mrvImageBrowser.cpp:4204
+#: gui/mrvImageBrowser.cpp:4206
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/Atribuiți transformarea randării (RRT)"
 
@@ -2809,51 +2809,51 @@ msgstr "Creați o nouă bobină"
 msgid "Create audio conversion from "
 msgstr "Creați conversie audio din "
 
-#: gui/mrvImageBrowser.cpp:4448
+#: gui/mrvImageBrowser.cpp:4450
 msgid "Create/Black Gap"
 msgstr "Crea/gol negru"
 
-#: gui/mrvImageBrowser.cpp:4470
+#: gui/mrvImageBrowser.cpp:4472
 msgid "Create/Checkered"
 msgstr "Crea/grilă"
 
-#: gui/mrvImageBrowser.cpp:4454
+#: gui/mrvImageBrowser.cpp:4456
 msgid "Create/Color Bars/PAL"
 msgstr "Crea/Bare de culoare/PAL"
 
-#: gui/mrvImageBrowser.cpp:4456
+#: gui/mrvImageBrowser.cpp:4458
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Crea/Bare de culoare/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4450
+#: gui/mrvImageBrowser.cpp:4452
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Crea/Bare de culoare/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4452
+#: gui/mrvImageBrowser.cpp:4454
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Crea/Bare de culoare/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4458
+#: gui/mrvImageBrowser.cpp:4460
 msgid "Create/Gamma Chart/1.4"
 msgstr "Crea/Graficul intervalului/1.4"
 
-#: gui/mrvImageBrowser.cpp:4460
+#: gui/mrvImageBrowser.cpp:4462
 msgid "Create/Gamma Chart/1.8"
 msgstr "Crea/Graficul intervalului/1.8"
 
-#: gui/mrvImageBrowser.cpp:4462
+#: gui/mrvImageBrowser.cpp:4464
 msgid "Create/Gamma Chart/2.2"
 msgstr "Crea/Graficul intervalului/2.2"
 
-#: gui/mrvImageBrowser.cpp:4464
+#: gui/mrvImageBrowser.cpp:4466
 msgid "Create/Gamma Chart/2.4"
 msgstr "Crea/Graficul intervalului/2.4"
 
-#: gui/mrvImageBrowser.cpp:4466
+#: gui/mrvImageBrowser.cpp:4468
 msgid "Create/Gradient/Linear"
 msgstr "Crea/Absolvire/liniar"
 
-#: gui/mrvImageBrowser.cpp:4468
+#: gui/mrvImageBrowser.cpp:4470
 msgid "Create/Gradient/Luminance"
 msgstr "Crea/Absolvire/luminanţă"
 
@@ -3505,7 +3505,7 @@ msgstr "Ciudat/pereche de coloane"
 msgid "Even/odd rows"
 msgstr "Ciudat/linii de pereche"
 
-#: gui/mrvImageBrowser.cpp:3691
+#: gui/mrvImageBrowser.cpp:3693
 msgid "Example:  gizmo"
 msgstr "Exemplu: gizmo_v003.0001.exr"
 
@@ -3521,7 +3521,7 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr "Schimbarea imaginii a eșuat"
 
-#: gui/mrvImageBrowser.cpp:4631 gui/mrvImageBrowser.cpp:4772
+#: gui/mrvImageBrowser.cpp:4633 gui/mrvImageBrowser.cpp:4774
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "Schimbați imaginea %d %d"
@@ -3705,7 +3705,7 @@ msgstr "Arhiva/A deschide/fișier MFA"
 msgid "File/Open/Directory"
 msgstr "Arhiva/A deschide/director"
 
-#: gui/mrvImageView.cpp:5181 gui/mrvImageBrowser.cpp:4160
+#: gui/mrvImageView.cpp:5181 gui/mrvImageBrowser.cpp:4162
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Arhiva/A deschide/Film sau secvență"
@@ -3714,7 +3714,7 @@ msgstr "Arhiva/A deschide/Film sau secvență"
 msgid "File/Open/Session"
 msgstr "Arhiva/A deschide/Sesiune"
 
-#: gui/mrvImageView.cpp:5185 gui/mrvImageBrowser.cpp:4162
+#: gui/mrvImageView.cpp:5185 gui/mrvImageBrowser.cpp:4164
 msgid "File/Open/Single Image"
 msgstr "Arhiva/A deschide/Doar o Imagine"
 
@@ -3726,23 +3726,23 @@ msgstr "Arhiva/A deschide/Film sau secvență pentru stereo"
 msgid "File/Quit"
 msgstr "Arhiva/Părăsi"
 
-#: gui/mrvImageView.cpp:5214 gui/mrvImageBrowser.cpp:4403
+#: gui/mrvImageView.cpp:5214 gui/mrvImageBrowser.cpp:4405
 msgid "File/Save/Frame As"
 msgstr "Arhiva/A pastra/cutie ca"
 
-#: gui/mrvImageView.cpp:5216 gui/mrvImageBrowser.cpp:4405
+#: gui/mrvImageView.cpp:5216 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/GL Snapshots As"
 msgstr "Arhiva/A pastra/Instantanee Opengl"
 
-#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4398
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4400
 msgid "File/Save/Movie or Sequence As"
 msgstr "Arhiva/A pastra/Film sau secvență Like"
 
-#: gui/mrvImageView.cpp:5212 gui/mrvImageBrowser.cpp:4401
+#: gui/mrvImageView.cpp:5212 gui/mrvImageBrowser.cpp:4403
 msgid "File/Save/Reel As"
 msgstr "Arhiva/A pastra/tambur ca"
 
-#: gui/mrvImageView.cpp:5218 gui/mrvImageBrowser.cpp:4407
+#: gui/mrvImageView.cpp:5218 gui/mrvImageBrowser.cpp:4409
 msgid "File/Save/Session As"
 msgstr "Arhiva/A pastra/sesiune ca"
 
@@ -4533,15 +4533,15 @@ msgid "Image/Clear Caches"
 msgstr "Imagine/Ștergeți memoria cache"
 
 #: gui/mrvImageView.cpp:5402 gui/mrvImageView.cpp:5410
-#: gui/mrvImageBrowser.cpp:4419 gui/mrvImageBrowser.cpp:4429
+#: gui/mrvImageBrowser.cpp:4421 gui/mrvImageBrowser.cpp:4431
 msgid "Image/Clone"
 msgstr "Imagine/Clonează"
 
-#: gui/mrvImageView.cpp:5404 gui/mrvImageBrowser.cpp:4421
+#: gui/mrvImageView.cpp:5404 gui/mrvImageBrowser.cpp:4423
 msgid "Image/Clone All Channels"
 msgstr "Imagine/Clonează toate canalele"
 
-#: gui/mrvImageBrowser.cpp:4433
+#: gui/mrvImageBrowser.cpp:4435
 msgid "Image/Media Info"
 msgstr "Imagine/Informații media"
 
@@ -4577,7 +4577,7 @@ msgstr "Imagine/Rotiți-l cu +90"
 msgid "Image/Rotate -90"
 msgstr "Imagine/Rotiți-l -90"
 
-#: gui/mrvImageView.cpp:5479 gui/mrvImageBrowser.cpp:4438
+#: gui/mrvImageView.cpp:5479 gui/mrvImageBrowser.cpp:4440
 msgid "Image/Set as Background"
 msgstr "Imagine/Setați-l ca fundal"
 
@@ -4758,13 +4758,13 @@ msgstr "Transformare de referință de randare inversă (RT)"
 msgid "Italian"
 msgstr "Italiană (italiano)"
 
-#: gui/mrvImageBrowser.cpp:4036 gui/mrvImageBrowser.cpp:4044
-#: gui/mrvImageBrowser.cpp:4119 gui/mrvImageBrowser.cpp:4127
+#: gui/mrvImageBrowser.cpp:4038 gui/mrvImageBrowser.cpp:4046
+#: gui/mrvImageBrowser.cpp:4121 gui/mrvImageBrowser.cpp:4129
 msgid "Item was not found in tree."
 msgstr "nu se găsește pe rolă"
 
-#: gui/mrvImageBrowser.cpp:3655 gui/mrvImageBrowser.cpp:3657
-#: gui/mrvImageBrowser.cpp:3659
+#: gui/mrvImageBrowser.cpp:3656 gui/mrvImageBrowser.cpp:3658
+#: gui/mrvImageBrowser.cpp:3660
 msgid "Iteration "
 msgstr "Repetare "
 
@@ -5484,7 +5484,7 @@ msgstr ""
 "Trebuie să reporniți mrViewer pentru a schimba limba. Esti sigur ca vrei sa "
 "continui?"
 
-#: gui/mrvImageBrowser.cpp:4625
+#: gui/mrvImageBrowser.cpp:4627
 msgid "Negative indices to exchange"
 msgstr "Indici negativi pentru tranzacționare"
 
@@ -5496,8 +5496,8 @@ msgstr "Nu"
 msgid "New item not created at "
 msgstr "Element nou nu a fost creat în "
 
-#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3876
-#: gui/mrvImageBrowser.cpp:3963
+#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3878
+#: gui/mrvImageBrowser.cpp:3965
 msgid "New item was not found in tree."
 msgstr "nu se găsește pe rolă"
 
@@ -5618,7 +5618,7 @@ msgstr "Nu există o transformare ODT validă: "
 msgid "No valid RT transform for \""
 msgstr "Nu există o transformare RT validă pentru \""
 
-#: gui/mrvImageBrowser.cpp:3687
+#: gui/mrvImageBrowser.cpp:3689
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5843,7 +5843,7 @@ msgstr "Spațiul de culoare de intrare al imaginii este nedefinit."
 msgid "OCIO/Display"
 msgstr "OCIO/afişa"
 
-#: gui/mrvImageView.cpp:5506 gui/mrvImageBrowser.cpp:4193
+#: gui/mrvImageView.cpp:5506 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Spațiu de culoare de intrare"
 
@@ -5913,8 +5913,8 @@ msgstr "ogg-video"
 msgid "Okay"
 msgstr "Bine"
 
-#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3860
-#: gui/mrvImageBrowser.cpp:3948
+#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3862
+#: gui/mrvImageBrowser.cpp:3950
 msgid "Old item was not found in tree."
 msgstr "nu se găsește pe rolă"
 
@@ -6351,7 +6351,7 @@ msgstr ""
 "pentru a distinge versiunea în numele fișierului. Dacă vă îndoiți de ce să "
 "utilizați, utilizați _v care va crea o expresie regulată cuprinzătoare."
 
-#: gui/mrvImageBrowser.cpp:4217
+#: gui/mrvImageBrowser.cpp:4219
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6715,7 +6715,7 @@ msgstr ""
 " gizmo_v003.001.exr\n"
 "(versiunea 3, cadru 1)."
 
-#: gui/mrvImageBrowser.cpp:3625 gui/mrvImageBrowser.cpp:3681
+#: gui/mrvImageBrowser.cpp:3625 gui/mrvImageBrowser.cpp:3683
 msgid "Regular expression error: "
 msgstr "Eroare de expresie regulată: "
 
@@ -7221,11 +7221,11 @@ msgstr "Selectați Intrare stereo"
 msgid "Select stereo output"
 msgstr "Selectați Ieșire stereo"
 
-#: gui/mrvImageBrowser.cpp:4177
+#: gui/mrvImageBrowser.cpp:4179
 msgid "Select/Multiple Images for Modifying"
 msgstr "A selecta/Mai multe imagini de modificat"
 
-#: gui/mrvImageBrowser.cpp:4164
+#: gui/mrvImageBrowser.cpp:4166
 msgid "Select/Single Image for Dragging"
 msgstr "A selecta/O imagine de trage"
 
@@ -8683,19 +8683,19 @@ msgstr "Vânzător:\t"
 msgid "Version Regex"
 msgstr "Versiunea ExpReg."
 
-#: gui/mrvImageView.cpp:5375 gui/mrvImageBrowser.cpp:4245
+#: gui/mrvImageView.cpp:5375 gui/mrvImageBrowser.cpp:4247
 msgid "Version/First"
 msgstr "Versiune/Primul"
 
-#: gui/mrvImageView.cpp:5384 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5384 gui/mrvImageBrowser.cpp:4256
 msgid "Version/Last"
 msgstr "Versiune/Ultimul"
 
-#: gui/mrvImageView.cpp:5378 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5378 gui/mrvImageBrowser.cpp:4253
 msgid "Version/Next"
 msgstr "Versiune/Ca urmare a"
 
-#: gui/mrvImageView.cpp:5380 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5380 gui/mrvImageBrowser.cpp:4250
 msgid "Version/Previous"
 msgstr "Versiune/Anterior"
 

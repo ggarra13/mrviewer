@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-01 14:14-0300\n"
+"POT-Creation-Date: 2022-06-01 20:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -101,15 +101,15 @@ msgstr " Hz in sostituzione."
 msgid " Hz is not supported by your hardware."
 msgstr " Hz non è supportato dal tuo hardware."
 
-#: gui/mrvImageBrowser.cpp:3658
+#: gui/mrvImageBrowser.cpp:3659
 msgid " Matched number="
 msgstr " Numero abbinato="
 
-#: gui/mrvImageBrowser.cpp:3656
+#: gui/mrvImageBrowser.cpp:3657
 msgid " Matched prefix="
 msgstr " Prefisso abbinato="
 
-#: gui/mrvImageBrowser.cpp:3660
+#: gui/mrvImageBrowser.cpp:3661
 msgid " Matched suffix="
 msgstr " Suffisso abbinato="
 
@@ -250,11 +250,11 @@ msgstr " invece di 80"
 msgid " is "
 msgstr " è "
 
-#: gui/mrvImageBrowser.cpp:3753
+#: gui/mrvImageBrowser.cpp:3755
 msgid " is already the first version on disk."
 msgstr " È già la prima versione su disco."
 
-#: gui/mrvImageBrowser.cpp:3750
+#: gui/mrvImageBrowser.cpp:3752
 msgid " is already the last version on disk."
 msgstr " È già l'ultima versione su disco."
 
@@ -1808,11 +1808,11 @@ msgstr "Percorsi CTL"
 msgid "CTL scripts"
 msgstr "Riassunti CTL"
 
-#: gui/mrvImageBrowser.cpp:4200
+#: gui/mrvImageBrowser.cpp:4202
 msgid "CTL/Attach Input Device Transform"
 msgstr "CTL/Assegna trasformazione dispositivo di input (IDT)"
 
-#: gui/mrvImageBrowser.cpp:4204
+#: gui/mrvImageBrowser.cpp:4206
 msgid "CTL/Attach Rendering Transform"
 msgstr "CTL/Assegna trasformazione rendering (RRT)"
 
@@ -2829,51 +2829,51 @@ msgstr "Crea una nuova bobina"
 msgid "Create audio conversion from "
 msgstr "Crea conversione audio da "
 
-#: gui/mrvImageBrowser.cpp:4448
+#: gui/mrvImageBrowser.cpp:4450
 msgid "Create/Black Gap"
 msgstr "Creare/divario nero"
 
-#: gui/mrvImageBrowser.cpp:4470
+#: gui/mrvImageBrowser.cpp:4472
 msgid "Create/Checkered"
 msgstr "Creare/griglia"
 
-#: gui/mrvImageBrowser.cpp:4454
+#: gui/mrvImageBrowser.cpp:4456
 msgid "Create/Color Bars/PAL"
 msgstr "Creare/Barre di colore/AMICO"
 
-#: gui/mrvImageBrowser.cpp:4456
+#: gui/mrvImageBrowser.cpp:4458
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Creare/Barre di colore/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:4450
+#: gui/mrvImageBrowser.cpp:4452
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Creare/Barre di colore/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:4452
+#: gui/mrvImageBrowser.cpp:4454
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Creare/Barre di colore/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:4458
+#: gui/mrvImageBrowser.cpp:4460
 msgid "Create/Gamma Chart/1.4"
 msgstr "Creare/Grafico della gamma/1.4"
 
-#: gui/mrvImageBrowser.cpp:4460
+#: gui/mrvImageBrowser.cpp:4462
 msgid "Create/Gamma Chart/1.8"
 msgstr "Creare/Grafico della gamma/1.8"
 
-#: gui/mrvImageBrowser.cpp:4462
+#: gui/mrvImageBrowser.cpp:4464
 msgid "Create/Gamma Chart/2.2"
 msgstr "Creare/Grafico della gamma/2.2"
 
-#: gui/mrvImageBrowser.cpp:4464
+#: gui/mrvImageBrowser.cpp:4466
 msgid "Create/Gamma Chart/2.4"
 msgstr "Creare/Grafico della gamma/2.4"
 
-#: gui/mrvImageBrowser.cpp:4466
+#: gui/mrvImageBrowser.cpp:4468
 msgid "Create/Gradient/Linear"
 msgstr "Creare/La laurea/lineare"
 
-#: gui/mrvImageBrowser.cpp:4468
+#: gui/mrvImageBrowser.cpp:4470
 msgid "Create/Gradient/Luminance"
 msgstr "Creare/La laurea/luminanza"
 
@@ -3527,7 +3527,7 @@ msgstr "Strano/colonne di coppia"
 msgid "Even/odd rows"
 msgstr "Strano/linee di coppia"
 
-#: gui/mrvImageBrowser.cpp:3691
+#: gui/mrvImageBrowser.cpp:3693
 msgid "Example:  gizmo"
 msgstr "Esempio: gizmo_v003.0001.exr"
 
@@ -3543,7 +3543,7 @@ msgstr ""
 msgid "Exchange Image failed"
 msgstr "Scambio immagine non riuscito"
 
-#: gui/mrvImageBrowser.cpp:4631 gui/mrvImageBrowser.cpp:4772
+#: gui/mrvImageBrowser.cpp:4633 gui/mrvImageBrowser.cpp:4774
 #, c-format
 msgid "ExchangeImage %d %d"
 msgstr "Immagine di scambio %d %d"
@@ -3728,7 +3728,7 @@ msgstr "Archivio/Aprire/dossier AMF"
 msgid "File/Open/Directory"
 msgstr "Archivio/Aprire/directory"
 
-#: gui/mrvImageView.cpp:5181 gui/mrvImageBrowser.cpp:4160
+#: gui/mrvImageView.cpp:5181 gui/mrvImageBrowser.cpp:4162
 #: gui/mrvMediaTrack.cpp:600
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivio/Aprire/Film o sequenza"
@@ -3737,7 +3737,7 @@ msgstr "Archivio/Aprire/Film o sequenza"
 msgid "File/Open/Session"
 msgstr "Archivio/Aprire/Sessione"
 
-#: gui/mrvImageView.cpp:5185 gui/mrvImageBrowser.cpp:4162
+#: gui/mrvImageView.cpp:5185 gui/mrvImageBrowser.cpp:4164
 msgid "File/Open/Single Image"
 msgstr "Archivio/Aprire/Solo un'immagine"
 
@@ -3749,23 +3749,23 @@ msgstr "Archivio/Aprire/Film o sequenza per stereo"
 msgid "File/Quit"
 msgstr "Archivio/Lasciare"
 
-#: gui/mrvImageView.cpp:5214 gui/mrvImageBrowser.cpp:4403
+#: gui/mrvImageView.cpp:5214 gui/mrvImageBrowser.cpp:4405
 msgid "File/Save/Frame As"
 msgstr "Archivio/Mantenere/scatola come"
 
-#: gui/mrvImageView.cpp:5216 gui/mrvImageBrowser.cpp:4405
+#: gui/mrvImageView.cpp:5216 gui/mrvImageBrowser.cpp:4407
 msgid "File/Save/GL Snapshots As"
 msgstr "Archivio/Mantenere/Istantanee OpenGL"
 
-#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4398
+#: gui/mrvImageView.cpp:5209 gui/mrvImageBrowser.cpp:4400
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archivio/Mantenere/Film o sequenza Mi piace"
 
-#: gui/mrvImageView.cpp:5212 gui/mrvImageBrowser.cpp:4401
+#: gui/mrvImageView.cpp:5212 gui/mrvImageBrowser.cpp:4403
 msgid "File/Save/Reel As"
 msgstr "Archivio/Mantenere/come bobina"
 
-#: gui/mrvImageView.cpp:5218 gui/mrvImageBrowser.cpp:4407
+#: gui/mrvImageView.cpp:5218 gui/mrvImageBrowser.cpp:4409
 msgid "File/Save/Session As"
 msgstr "Archivio/Mantenere/sessione come"
 
@@ -4559,15 +4559,15 @@ msgid "Image/Clear Caches"
 msgstr "Immagine/Cancella cache"
 
 #: gui/mrvImageView.cpp:5402 gui/mrvImageView.cpp:5410
-#: gui/mrvImageBrowser.cpp:4419 gui/mrvImageBrowser.cpp:4429
+#: gui/mrvImageBrowser.cpp:4421 gui/mrvImageBrowser.cpp:4431
 msgid "Image/Clone"
 msgstr "Immagine/Clone"
 
-#: gui/mrvImageView.cpp:5404 gui/mrvImageBrowser.cpp:4421
+#: gui/mrvImageView.cpp:5404 gui/mrvImageBrowser.cpp:4423
 msgid "Image/Clone All Channels"
 msgstr "Immagine/Clona tutti i canali"
 
-#: gui/mrvImageBrowser.cpp:4433
+#: gui/mrvImageBrowser.cpp:4435
 msgid "Image/Media Info"
 msgstr "Immagine/Informazioni sui media"
 
@@ -4603,7 +4603,7 @@ msgstr "Immagine/Ruotalo di +90"
 msgid "Image/Rotate -90"
 msgstr "Immagine/Ruotalo di -90"
 
-#: gui/mrvImageView.cpp:5479 gui/mrvImageBrowser.cpp:4438
+#: gui/mrvImageView.cpp:5479 gui/mrvImageBrowser.cpp:4440
 msgid "Image/Set as Background"
 msgstr "Immagine/Impostalo come sfondo"
 
@@ -4787,13 +4787,13 @@ msgstr "Trasformazione di riferimento di rendering inverso (RT)"
 msgid "Italian"
 msgstr "italiano"
 
-#: gui/mrvImageBrowser.cpp:4036 gui/mrvImageBrowser.cpp:4044
-#: gui/mrvImageBrowser.cpp:4119 gui/mrvImageBrowser.cpp:4127
+#: gui/mrvImageBrowser.cpp:4038 gui/mrvImageBrowser.cpp:4046
+#: gui/mrvImageBrowser.cpp:4121 gui/mrvImageBrowser.cpp:4129
 msgid "Item was not found in tree."
 msgstr "non si trova sulla bobina"
 
-#: gui/mrvImageBrowser.cpp:3655 gui/mrvImageBrowser.cpp:3657
-#: gui/mrvImageBrowser.cpp:3659
+#: gui/mrvImageBrowser.cpp:3656 gui/mrvImageBrowser.cpp:3658
+#: gui/mrvImageBrowser.cpp:3660
 msgid "Iteration "
 msgstr "Iterazione "
 
@@ -5518,7 +5518,7 @@ msgstr ""
 "È necessario riavviare mrViewer per cambiare lingua. Sei sicuro di voler "
 "continuare?"
 
-#: gui/mrvImageBrowser.cpp:4625
+#: gui/mrvImageBrowser.cpp:4627
 msgid "Negative indices to exchange"
 msgstr "Indici negativi da negoziare"
 
@@ -5530,8 +5530,8 @@ msgstr "Mai"
 msgid "New item not created at "
 msgstr "Nuovo elemento non creato in "
 
-#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3876
-#: gui/mrvImageBrowser.cpp:3963
+#: gui/mrvImageBrowser.cpp:1917 gui/mrvImageBrowser.cpp:3878
+#: gui/mrvImageBrowser.cpp:3965
 msgid "New item was not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -5653,7 +5653,7 @@ msgstr "Non esiste una trasformazione ODT valida: "
 msgid "No valid RT transform for \""
 msgstr "Non esiste una trasformazione RT valida per \""
 
-#: gui/mrvImageBrowser.cpp:3687
+#: gui/mrvImageBrowser.cpp:3689
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 "a versioning string."
@@ -5878,7 +5878,7 @@ msgstr "Immettere lo spazio colore dell'immagine non definito."
 msgid "OCIO/Display"
 msgstr "OCIO/Schermo"
 
-#: gui/mrvImageView.cpp:5506 gui/mrvImageBrowser.cpp:4193
+#: gui/mrvImageView.cpp:5506 gui/mrvImageBrowser.cpp:4195
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Inserisci spazio colore"
 
@@ -5948,8 +5948,8 @@ msgstr "ogg-video"
 msgid "Okay"
 msgstr "ok"
 
-#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3860
-#: gui/mrvImageBrowser.cpp:3948
+#: gui/mrvImageBrowser.cpp:1899 gui/mrvImageBrowser.cpp:3862
+#: gui/mrvImageBrowser.cpp:3950
 msgid "Old item was not found in tree."
 msgstr "non si trova sulla bobina"
 
@@ -6389,7 +6389,7 @@ msgstr ""
 "lettere per distinguere la versione nel nome del file. Se dubiti di cosa "
 "usare, usa _v che creerà un'espressione regolare comprensiva."
 
-#: gui/mrvImageBrowser.cpp:4217
+#: gui/mrvImageBrowser.cpp:4219
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -6753,7 +6753,7 @@ msgstr ""
 " gizmo_v003.001.exr\n"
 "(versione 3, frame 1)."
 
-#: gui/mrvImageBrowser.cpp:3625 gui/mrvImageBrowser.cpp:3681
+#: gui/mrvImageBrowser.cpp:3625 gui/mrvImageBrowser.cpp:3683
 msgid "Regular expression error: "
 msgstr "Errore di espressione regolare: "
 
@@ -7260,11 +7260,11 @@ msgstr "Seleziona Ingresso stereo"
 msgid "Select stereo output"
 msgstr "Seleziona Uscita stereo"
 
-#: gui/mrvImageBrowser.cpp:4177
+#: gui/mrvImageBrowser.cpp:4179
 msgid "Select/Multiple Images for Modifying"
 msgstr "Selezionare/Più immagini da modificare"
 
-#: gui/mrvImageBrowser.cpp:4164
+#: gui/mrvImageBrowser.cpp:4166
 msgid "Select/Single Image for Dragging"
 msgstr "Selezionare/Un'immagine da trascinare"
 
@@ -8728,19 +8728,19 @@ msgstr "Venditore:\t"
 msgid "Version Regex"
 msgstr "Versione ExpReg."
 
-#: gui/mrvImageView.cpp:5375 gui/mrvImageBrowser.cpp:4245
+#: gui/mrvImageView.cpp:5375 gui/mrvImageBrowser.cpp:4247
 msgid "Version/First"
 msgstr "Versione/Primo"
 
-#: gui/mrvImageView.cpp:5384 gui/mrvImageBrowser.cpp:4254
+#: gui/mrvImageView.cpp:5384 gui/mrvImageBrowser.cpp:4256
 msgid "Version/Last"
 msgstr "Versione/Scorso"
 
-#: gui/mrvImageView.cpp:5378 gui/mrvImageBrowser.cpp:4251
+#: gui/mrvImageView.cpp:5378 gui/mrvImageBrowser.cpp:4253
 msgid "Version/Next"
 msgstr "Versione/A seguire"
 
-#: gui/mrvImageView.cpp:5380 gui/mrvImageBrowser.cpp:4248
+#: gui/mrvImageView.cpp:5380 gui/mrvImageBrowser.cpp:4250
 msgid "Version/Previous"
 msgstr "Versione/Precedente"
 

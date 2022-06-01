@@ -3646,6 +3646,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         try
         {
             unsigned iter = 1;
+            LOG_INFO( "============================================================================" );
             while ( boost::regex_search( tstart, tend, what, expr, flags ) )
             {
                 std::string prefix = what[1];
@@ -3658,6 +3659,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
                           << _(" Matched number=") << number );
                 LOG_INFO( _("Iteration ") << iter
                           << _(" Matched suffix=") << suffix );
+                LOG_INFO( "----------------------------------------------------------------------------" );
 
                 newfile += prefix;
 
