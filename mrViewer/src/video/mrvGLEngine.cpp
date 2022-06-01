@@ -1862,12 +1862,13 @@ void GLEngine::draw_images( ImageList& images )
     CMedia* bg = images.front();
 
     CMedia* Bimg = _view->B_image();
-    // Don't consider it a background image if transition is on
+    // Don't consider the last image as a background image if it matches Bimg
+    // (transition is on).
     if ( fg == bg || Bimg == bg ) bg = NULL;
 
     unsigned maxW = 0, maxH = 0;
-    static CMedia* old_fit = NULL;
     CMedia* fit = NULL;
+
 
     if ( Bimg )
     {
@@ -1880,9 +1881,8 @@ void GLEngine::draw_images( ImageList& images )
                 maxH = img->height();
             }
         }
-        if ( fit != old_fit ) {
+        if ( fit != fg ) {
             _view->fit_image( fit );
-            old_fit = fit;
         }
     }
 

@@ -2167,26 +2167,22 @@ void ImageBrowser::save_session()
                 img->fps( fps );
                 img->play_fps( fps );
             }
-#if 1
             else
             {
                 if ( !mrv::is_equal( fps, img->fps(), 0.001 ) )
                 {
-#if 0
+#if 1
                     int64_t first = img->first_frame() * img->fps() / fps;
                     int64_t last  = img->last_frame()  * img->fps() / fps;
 
                     img->first_frame( first );
-                    img->in_frame( first );
                     img->last_frame( last );
-                    img->out_frame( last );
 #endif
                     TRACE2( img->name() << " HAS FPS " << fps );
                     //img->fps( fps );
                     img->play_fps( fps );
                 }
             }
-#endif
         }
 
         if ( img->has_video() || img->has_audio() )
