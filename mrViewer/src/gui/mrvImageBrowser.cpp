@@ -3597,7 +3597,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
     int64_t     num = 1;
 
     std::string suffix;
-    static std::string short_prefix;
+    static std::string short_prefix = "_v";
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
     if ( prefix.empty() )
     {
@@ -3610,8 +3610,8 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
         short_prefix = prefix;
         LOG_INFO( _("Regex ") << prefix <<
                   (" replaced by complex regex.") );
-        prefix = "([\\w:/\\\\]*?[/\\\\._]*" + prefix +
-                 ")(\\d+)([%\\w\\d./\\\\]*)";
+        prefix = "([\\w:/]*?[/\\._]*" + prefix +
+                 ")(\\d+)([%\\w\\d\\./]*)";
     }
     prefs->uiPrefsImageVersionPrefix->value( prefix.c_str() );
 
@@ -3645,15 +3645,19 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
 
         try
         {
+            unsigned iter = 1;
             while ( boost::regex_search( tstart, tend, what, expr, flags ) )
             {
                 std::string prefix = what[1];
                 std::string number = what[2];
                 suffix = what[3];
 
-                LOG_INFO( "Matched prefix=" << prefix );
-                LOG_INFO( "Matched number=" << number );
-                LOG_INFO( "Matched suffix=" << suffix );
+                LOG_INFO( _("Iteration ") << iter
+                          << _(" Matched prefix=") << prefix );
+                LOG_INFO( _("Iteration ") << iter
+                          << _(" Matched number=") << number );
+                LOG_INFO( _("Iteration ") << iter
+                          << _(" Matched suffix=") << suffix );
 
                 newfile += prefix;
 
@@ -3669,6 +3673,7 @@ void ImageBrowser::image_version( size_t i, int sum, mrv::media fg,
                 tstart = what[3].first;
                 flags |= boost::match_prev_avail;
                 flags |= boost::match_not_bob;
+                ++iter;
             }
         }
         catch ( const boost::regex_error& e )
