@@ -2044,6 +2044,8 @@ void CMedia::image_size( size_t w, size_t h )
             _orig_fps = _fps = _play_fps = 24.0f;
     }
 
+    _otio_fps = _fps;  // for image sequences, otio fps is the same as fps
+
 }
 
 

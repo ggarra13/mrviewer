@@ -1149,6 +1149,16 @@ public:
     }
 
 
+    /// Return otio play rate of movie
+    inline double otio_fps() const {
+        return _otio_fps;
+    }
+
+    inline void otio_fps( const double x ) {
+        _otio_fps = x;
+    }
+
+
     /// Change audio volume
     void volume( float v );
     float volume() const;
@@ -1990,9 +2000,14 @@ protected:
 
     char*  _label;            //!< optional label drawn superimposed
 
+    double               _otio_fps;  //!< fps in source range of clip in otio
     std::atomic<double>  _real_fps;  //!< actual play rate of movie
+                                     //!  (if frames are dropped)
     std::atomic<double>  _play_fps;  //!< current desired play speed
-    std::atomic<double>  _fps;       //!< movie's original play speed (set by user)
+    std::atomic<double>  _fps;       //!< movie's original play speed
+                                     //!  (set by user on sequences,
+                                     //!   automatically set on movies)
+
     std::atomic<double> _orig_fps;   //!< movie's original play speed
 
     double*         _pixel_ratio;  //!< pixel ratio of image

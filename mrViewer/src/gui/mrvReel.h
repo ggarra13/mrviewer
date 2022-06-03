@@ -59,6 +59,8 @@ struct Reel_t
     // Given a frame in the timeline, return the local frame for the image
     // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
     int64_t global_to_local( const int64_t frame ) const;
+
+    // Given a local frame to an image, return the global frame in the timeline
     int64_t local_to_global( const int64_t lframe,
                              const CMedia* const img ) const;
 

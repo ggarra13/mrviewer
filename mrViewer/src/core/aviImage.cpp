@@ -2567,7 +2567,8 @@ void aviImage::populate()
         return;  // no stream detected
     }
 
-    _orig_fps = _fps = _play_fps = calculate_fps( _context, stream );
+    _orig_fps = _otio_fps =
+         _fps = _play_fps = calculate_fps( _context, stream );
 
 
 

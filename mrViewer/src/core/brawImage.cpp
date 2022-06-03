@@ -567,7 +567,7 @@ namespace mrv {
             IMG_ERROR( _("Could not obtain frame rate" ) );
             return false;
         }
-        _fps = _orig_fps = _play_fps = f;
+        _fps = _otio_fps = _orig_fps = _play_fps = f;
 
         video_info_t info;
         info.has_codec = true;

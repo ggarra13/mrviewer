@@ -174,9 +174,10 @@ int64_t Reel_t::local_to_global( const int64_t f,
     if ( !edl ) return f;
     int64_t r = f;
     r += location(img);
-    r -= img->first_frame();
+    int64_t first = img->first_frame();
+    r -= first;
     TRACE2( "f= " << f << " location= " << location(img) << " first= "
-            << img->first_frame() << " r= " << r );
+            << first << " r= " << r );
     return r;
 }
 
