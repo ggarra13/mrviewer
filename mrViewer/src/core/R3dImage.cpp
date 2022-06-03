@@ -205,7 +205,7 @@ namespace mrv {
         _attrs.clear();
         _attrs.insert( std::make_pair( 0, Attributes() ) );
 
-        _fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
+        _fps = _otio_fps = _play_fps = _orig_fps = clip->VideoAudioFramerate();
         _frameStart = _frame = _frame_start = 0;
         _frameEnd = _frame_end = clip->VideoFrameCount() - 1;
 

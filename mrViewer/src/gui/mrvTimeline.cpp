@@ -745,7 +745,6 @@ void Timeline::draw()
         }
 
         frame = 1;
-        unsigned idx = 0;
         mrv::media fg = browser()->current_image();
 
         for ( i = reel->images.begin(); i != e; frame += size, ++i )
