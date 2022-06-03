@@ -10711,7 +10711,7 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
-    Fl::check();  // Not sure if this is needed, but we'll leave it just in
+    //Fl::check();  // Not sure if this is needed, but we'll leave it just in
                   // case to avoid Thane5's bug of too long window.
 
     if ( fit ) fit_image();

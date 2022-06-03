@@ -559,6 +559,7 @@ public:
 
     inline CMedia* A_image() const { return Aimg; }
     inline CMedia* B_image() const { return Bimg; }
+    inline void clear_AB_images()  { Aimg = Bimg = NULL; }
 
     /// Auxiliary function to return viewer's main fltk window
     MainWindow* fltk_main();

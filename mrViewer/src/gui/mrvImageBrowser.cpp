@@ -1818,6 +1818,7 @@ void ImageBrowser::save_session()
             }
         }
 
+        view()->clear_AB_images();
 
         clear_children( root() );
         dragging = NULL;
