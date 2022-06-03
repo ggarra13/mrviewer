@@ -10711,6 +10711,8 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
+    Fl::check();
+
     if ( fit ) fit_image();
 
 }
