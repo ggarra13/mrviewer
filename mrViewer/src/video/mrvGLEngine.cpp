@@ -1874,6 +1874,7 @@ void GLEngine::draw_images( ImageList& images )
     {
         for ( const auto& img : images )
         {
+            img->image_damage( img->image_damage() | CMedia::kDamageContents );
             if ( img->height() > maxH )
             {
                 fit = img;
