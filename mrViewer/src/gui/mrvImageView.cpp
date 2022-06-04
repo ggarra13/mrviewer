@@ -2814,11 +2814,11 @@ void ImageView::fit_image()
     const CMedia* img = fg->image();
     mrv::image_type_ptr pic = img->left();
     if ( !pic ) {
-        TRACE2( "*********** fit_image no picture ***********" );
+        TRACE( "*********** fit_image no picture ***********" );
         return;
     }
 
-    TRACE2( "fit_image: " << img->name() << " " << pic->width() << " x "
+    TRACE( "fit_image: " << img->name() << " " << pic->width() << " x "
             << pic->height() << " GLOBAL FRAME " << _frame );
 
     CMedia::StereoOutput stereo_out = img->stereo_output();
@@ -3025,7 +3025,7 @@ void ImageView::fit_image( const CMedia* img )
 {
     mrv::image_type_ptr pic = img->left();
     if ( !pic ) {
-        TRACE2( "*********** fit_image no picture ***********" );
+        TRACE( "*********** fit_image no picture ***********" );
         return;
     }
 
@@ -3881,7 +3881,7 @@ void ImageView::handle_commands()
         }
         if ( found ) {
             CMedia* img = r->images[idx]->image();
-            TRACE2( "******** Change image found.  Set to #" << idx
+            TRACE( "******** Change image found.  Set to #" << idx
                     << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
@@ -3987,9 +3987,9 @@ void ImageView::handle_commands()
     case kPlayForwards:
     {
         NET( "playfwd" );
-        TRACE2( "********* CMD PLAYFWD PRE SEEK" );
+        TRACE( "********* CMD PLAYFWD PRE SEEK" );
         if ( c.frame != AV_NOPTS_VALUE ) seek( c.frame );
-        TRACE2( "********* CMD PLAYFWD PAST SEEK" );
+        TRACE( "********* CMD PLAYFWD PAST SEEK" );
         play_forwards();
         break;
     }
@@ -4550,7 +4550,7 @@ void ImageView::draw()
     {
         if ( ! _engine )
         {
-            TRACE2( ">>>>>> Video engine not created.  Create it now" );
+            TRACE( ">>>>>> Video engine not created.  Create it now" );
             init_draw_engine();
         }
 
@@ -4680,11 +4680,11 @@ void ImageView::draw()
     static int64_t old_frame = -1000;
     if ( _frame != old_frame )
     {
-        TRACE2( "GLOBAL FRAME " << _frame << " images.size()=" << images.size()
+        TRACE( "GLOBAL FRAME " << _frame << " images.size()=" << images.size()
                 << " Aimg= " << Aimg << " Bimg= " << Bimg );
         if ( in_transition )
         {
-            TRACE2( "GLOBAL FRAME " << _frame << " in transition Aimg= " << Aimg->name() << " Bimg= " << Bimg->name() );
+            TRACE( "GLOBAL FRAME " << _frame << " in transition Aimg= " << Aimg->name() << " Bimg= " << Bimg->name() );
         }
 
         old_frame = _frame;
@@ -4692,7 +4692,7 @@ void ImageView::draw()
         size_t num = images.size();
         for ( const auto& t : images )
         {
-            TRACE2( "Image #" << j << " of " << num << " is "
+            TRACE( "Image #" << j << " of " << num << " is "
                     << t->name() << " == img? " << ( t == img )
                     << " " << t->first_frame()
                     << " - " << t->last_frame() << " lframe= " << t->frame()
@@ -4700,7 +4700,7 @@ void ImageView::draw()
                     << " dissolve= " << t->dissolve() );
             ++j;
         }
-        TRACE2( "-----------------------------------------------------------" );
+        TRACE( "-----------------------------------------------------------" );
     }
 #endif
 
@@ -10903,7 +10903,7 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    TRACE2( "WAS GLOBAL FRAME " << _frame << " NOW GOT " << f );
+    TRACE( "WAS GLOBAL FRAME " << _frame << " NOW GOT " << f );
 
     _frame = f;
 
@@ -10957,7 +10957,7 @@ void ImageView::frame( const int64_t f )
         case CMedia::kForwards:
             if ( Btmp->playback() != CMedia::kForwards )
             {
-                TRACE2( "Btmp= " << Btmp->name() << " SEEK " << B  );
+                TRACE( "Btmp= " << Btmp->name() << " SEEK " << B  );
                 Btmp->seek( B );
             }
             if ( Atmp->playback() != CMedia::kForwards &&

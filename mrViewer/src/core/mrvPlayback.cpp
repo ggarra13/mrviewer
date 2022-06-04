@@ -294,7 +294,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     if ( gframe > glast )
     {
         if ( decode == kVideo )
-            TRACE2( img->name() <<  " LOOP END " << gframe << " > " << glast );
+            TRACE( img->name() <<  " LOOP END " << gframe << " > " << glast );
         return CMedia::kDecodeLoopEnd;
     }
     else if ( gframe < gfirst )
@@ -406,11 +406,11 @@ EndStatus handle_loop( int64_t& frame,
             {
                 first = dts = f = int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                TRACE2( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
+                TRACE( decode << ") " << next->name() << " NEXT FIRST FRAME IS " << first << " stopped? " << next->stopped() );
             }
             else if ( next == img )
             {
-                TRACE2( decode << ") " << img->name() << " == NEXT " << next->name() );
+                TRACE( decode << ") " << img->name() << " == NEXT " << next->name() );
                 if ( loop == CMedia::kLoop )
                 {
                     first = int64_t(timeline->display_minimum());
@@ -445,7 +445,7 @@ EndStatus handle_loop( int64_t& frame,
                     img->playback( CMedia::kStopped );
                     img->clear_packets();
                     //img->flush_all();
-                    TRACE2( next->name() << " NEXT STOPPED SEEK FRAME IS " << dts );
+                    TRACE( next->name() << " NEXT STOPPED SEEK FRAME IS " << dts );
 
                     if ( ! fg )   return kEndNextImage;
 
@@ -466,7 +466,7 @@ EndStatus handle_loop( int64_t& frame,
                 //img->flush_all();
 
                 int idx = reel->index( next );
-                TRACE2( "******** " << next->name()
+                TRACE( "******** " << next->name()
                         << " CHANGE IMAGE TO " << idx
                         << " stopped? " << next->stopped()
                         << " local frame " << next->frame() );
@@ -489,7 +489,7 @@ EndStatus handle_loop( int64_t& frame,
             img->clear_packets();
 
             frame = reel->global_to_local( first );
-            TRACE2( decode << ") DECODE LOOP to " << first
+            TRACE( decode << ") DECODE LOOP to " << first
                     << " frame " << frame );
 
             if ( fg && reel->edl )
@@ -892,7 +892,8 @@ void audio_thread( PlaybackData* data )
 
         if ( reel->edl ) frame = img->audio_frame();
         frame += step;
-        TRACE( img->name() << " LOCAL AUDIO FRAME " << frame );
+        TRACE2( img->name() << " LOCAL AUDIO FRAME " << frame
+                << " audio offset=" << img->audio_offset() );
     }
 
     img->playback( CMedia::kStopped );
@@ -1376,9 +1377,9 @@ void video_thread( PlaybackData* data )
                                 if ( fg && step != 0 ) view->playback( p );
                                 continue;
                             }
-                            TRACE2( Aimg->name()
-                                    << " SENT DISSOLVE END LOOP stopped? "
-                                    << Aimg->stopped() );
+                            TRACE( Aimg->name()
+                                   << " SENT DISSOLVE END LOOP stopped? "
+                                   << Aimg->stopped() );
                         }
                     }
                     else if ( Bimg == img && play == CMedia::kBackwards )
@@ -1400,9 +1401,9 @@ void video_thread( PlaybackData* data )
                                 if ( fg && step != 0 ) view->playback( p );
                                 continue;
                             }
-                            TRACE2( Bimg->name()
-                                    << " SENT DISSOLVE START LOOP stopped? "
-                                    << Bimg->stopped() );
+                            TRACE( Bimg->name()
+                                   << " SENT DISSOLVE START LOOP stopped? "
+                                   << Bimg->stopped() );
                         }
                     }
                 }
@@ -1419,8 +1420,6 @@ void video_thread( PlaybackData* data )
 
         if ( reel->edl ) frame = img->frame();
 
-        if ( img->name() == "Dinky_2015-06-11.m4v" )
-            TRACE2( img->name() << " HAS LOCAL FRAME " << frame );
         frame += step;
     }
 

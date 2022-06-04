@@ -1083,7 +1083,7 @@ bool aviImage::seek_to_position( const int64_t frame )
                                      got_audio, got_subtitle );
         _dts = _adts = dts;
         // Set the expected to an impossible frame
-        _expected = _expected_audio = _frameIn - 1;
+        _expected = _expected_audio = std::numeric_limits<int64_t>::min();
         _seek_req = false;
         return true;
     }

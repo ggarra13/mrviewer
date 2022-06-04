@@ -293,6 +293,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
 
     bool eof = false;
     unsigned counter = 0;
+    int audio_bytes = 0;
 
     while (!got_audio)
     {
@@ -379,7 +380,8 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     got_audio = true;
                 else if ( pktframe == frame )
                 {
-                    if ( pkt->size >= bytes_per_frame ) got_audio = true;
+                    audio_bytes += pkt->size;
+                    if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                 }
                 if ( (is_seek || playback() == kBackwards) &&
                      got_audio && apts >= 0 )
