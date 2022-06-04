@@ -2956,29 +2956,12 @@ void ImageBrowser::load_otio( const LoadInfo& info )
         int64_t  inlen = Aimg->last_frame() - Astart;
 
         int64_t Aout = Aimg->last_frame() + outlen;   // added +1
-        int64_t Bin  = Bimg->first_frame() - inlen;
-
-#if 0
-        if ( dynamic_cast< BlackImage* >( Aimg ) )
-        {
-            if ( out > Aimg->end_frame() )
-            {
-                Aimg->end_frame( out );
-            }
-        }
-        if ( dynamic_cast< BlackImage* >( Bimg ) )
-        {
-            if ( in < Bimg->start_frame() )
-            {
-                Bimg->start_frame( in );
-            }
-        }
-#endif
+        int64_t Bin  = Bimg->first_frame() - inlen;   // added -1
 
         Aimg->out_frame( Aout );
 
         Bimg->in_frame( Bin );
-        Bimg->seek( Bimg->in_frame() ); // prepare image
+        Bimg->seek( Bin ); // prepare image
 
 
         TRACE2( "start " << start << " end " << end );
@@ -5164,7 +5147,7 @@ void ImageBrowser::adjust_timeline(int64_t& first, int64_t& last)
             for ( j = i, ++i; i != e; j = i, ++i )
             {
                 int64_t frame = (*j)->position() + (*j)->duration();
-                DBGM1( (*i)->image()->name() << " moved to frame " << frame );
+                DBGM2( (*i)->image()->name() << " moved to frame " << frame );
                 if ( (*i)->position() > frame ) continue;
                 (*i)->position( frame );
             }

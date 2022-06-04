@@ -1395,15 +1395,13 @@ void Preferences::run( ViewerUI* main )
 
     DBG3;
 
-    main->uiMain->show();
-
-    // Fl_Widget* w = new Fl_Widget( 0, 48, 639, 40, "Eye1" );
-    // main->uiBottomBar->add( w );
-    // w = new Fl_Widget( 0, 88, 639, 40, "Eye2" );
-    // main->uiBottomBar->add( w );
+    //
+    // Already shown on mrViewer.fl
+    //
+    //main->uiMain->show();
 
     DBG3;
-    Fl::flush();
+    Fl::check();
 
     //
     // Windows
@@ -2204,7 +2202,7 @@ void Preferences::run( ViewerUI* main )
 
     DBG3;
 
-#if defined(_WIN32) || defined(_WIN64)
+#if 0 // defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
                            main->uiMain->w(), main->uiMain->h()-20 );
 #endif
@@ -2282,7 +2280,7 @@ void Preferences::run( ViewerUI* main )
     LogDisplay::shown = false;
 
     DBG3;
-    main->uiMain->always_on_top( uiPrefs->uiPrefsAlwaysOnTop->value());
+    main->uiMain->always_on_top( uiPrefs->uiPrefsAlwaysOnTop->value() );
 
     DBG3;
     if ( debug > 1 )

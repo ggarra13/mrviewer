@@ -10589,7 +10589,9 @@ void ImageView::resize_main_window()
 
     int minx, miny, maxw, maxh;
 
-    int screen = window()->screen_num();
+    Fl_Window* mw = fltk_main();
+
+    int screen = mw->screen_num();
     float scale = Fl::screen_scale( screen );
     Fl::screen_work_area( minx, miny, maxw, maxh, screen );
 
@@ -10607,11 +10609,11 @@ void ImageView::resize_main_window()
 
 
 
-    int decw = fltk_main()->decorated_w();
-    int dech = fltk_main()->decorated_h();
+    int decw = mw->decorated_w();
+    int dech = mw->decorated_h();
 
-    int dw = decw - fltk_main()->w();
-    int dh = dech - fltk_main()->h();
+    int dw = decw - mw->w();
+    int dh = dech - mw->h();
 
 
     maxw -= dw;
@@ -10623,9 +10625,9 @@ void ImageView::resize_main_window()
     posY += dh;
 #endif
 
+
     int maxx = posX + maxw;
     int maxy = posY + maxh;
-
 
     bool fit = false;
 
@@ -10674,21 +10676,23 @@ void ImageView::resize_main_window()
     }
 
     maxw = (int) (maxw / scale);
-    if ( w < 660 )  w = 660;
+    if ( w < 690 )  w = 690;
     else if ( w > maxw )
     {
         w = maxw;
     }
 
     maxh = (int) (maxh / scale);
-    if ( h < 535 )  h = 535;
+    if ( h < 565 )  h = 565;
     else if ( h > maxh )
     {
         h = maxh;
     }
 
+    mw->resize( posX, posY, w, h );
+    mw->show();
+    mw->wait_for_expose();
 
-    fltk_main()->resize( posX, posY, w, h );
 
     uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
                                int(25) );
@@ -10711,7 +10715,7 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
-    //Fl::check();  // Not sure if this is needed, but we'll leave it just in
+    Fl::check();  // Not sure if this is needed, but we'll leave it just in
                   // case to avoid Thane5's bug of too long window.
 
     if ( fit ) fit_image();
@@ -10922,7 +10926,7 @@ void ImageView::frame( const int64_t f )
     {
         int64_t start = t.start();
         int64_t   end = t.end();
-        if ( _frame < start || _frame > end ) continue;
+        if ( _frame <= start || _frame >= end ) continue;
         TRACE( "FRAME " << _frame << " START " << start << " END "
                 << end );
 
@@ -10937,17 +10941,15 @@ void ImageView::frame( const int64_t f )
                 << _frame << " frame " << Btmp->frame() );
 
         int64_t len = end - start;
-        int64_t lframe = f - start;
-        float dissolve = float( lframe ) / float(len);
+        int64_t diff = f - start;
+        float dissolve = float( diff ) / float(len);
         float rdissolve = 1.0f - dissolve;
         Atmp->volume( rdissolve * _volume );
         Btmp->volume( dissolve  * _volume );
         int64_t Aout = Atmp->out_frame();
         int64_t Bin  = Btmp->in_frame();
-        //int64_t A = Aout - len * rdissolve;
-        //int64_t B = Bin  + len * dissolve;
-        int64_t A = Aout - len + lframe + 1;
-        int64_t B = Bin  + lframe;
+        int64_t A = Aout - len + diff + 1;
+        int64_t B = Bin  + diff - 1;
         TRACE( "Atmp= " << Atmp->name() << " lframe " << A );
         TRACE( "Btmp= " << Btmp->name() << " lframe " << B  );
         switch( playback() )

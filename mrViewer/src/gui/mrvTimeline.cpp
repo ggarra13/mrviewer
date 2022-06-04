@@ -706,6 +706,7 @@ void Timeline::draw()
         uint64_t frame = 1;
         int rx = r.x() + int(slider_size()-1)/2;
 
+        CMedia* fgimg = NULL;
         CMedia* img = NULL;
         for ( ; i != e; frame += size, ++i )
         {
@@ -726,6 +727,7 @@ void Timeline::draw()
             // Draw a block
             if ( v >= frame && v < frame + size )
             {
+                fgimg = img;
                 fl_color( fl_darker( FL_YELLOW ) );
             }
             else
@@ -745,7 +747,6 @@ void Timeline::draw()
         }
 
         frame = 1;
-        mrv::media fg = browser()->current_image();
 
         for ( i = reel->images.begin(); i != e; frame += size, ++i )
         {
@@ -758,7 +759,7 @@ void Timeline::draw()
             // skip this block if outside visible timeline span
             if ( frame + size < mn || frame > mx ) continue;
 
-            if ( _draw_cache && (*i) == fg )
+            if ( _draw_cache && img == fgimg )
             {
                 draw_cacheline( img, pos, size, int64_t(mn),
                                 int64_t(mx),
@@ -766,7 +767,7 @@ void Timeline::draw()
             }
 
 
-            if ( draw_annotation() && (*i) == fg )
+            if ( draw_annotation() && img == fgimg )
             {
                 int rx = r.x() + int(slider_size()-1)/2;
                 int ry = r.y() + r.h()/2;
