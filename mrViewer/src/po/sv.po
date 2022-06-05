@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 14:13-0300\n"
+"POT-Creation-Date: 2022-06-05 18:28-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1154
+#: core/mrvPlayback.cpp:1160
 msgid " - Decode of image frame "
 msgstr " - Avkodning av bildram "
 
-#: core/mrvPlayback.cpp:776
+#: core/mrvPlayback.cpp:781
 msgid " - decode Error audio frame "
 msgstr " - ljudramsavkodningsfel "
 
@@ -283,7 +283,7 @@ msgstr " hittas inte, väljer "
 msgid " not yet supported"
 msgstr " töds inte ännu"
 
-#: core/mrvPlayback.cpp:1155
+#: core/mrvPlayback.cpp:1161
 msgid " returned "
 msgstr " lämna tillbaka "
 
@@ -1605,14 +1605,14 @@ msgstr "Ta bort till baksidan"
 msgid "Background"
 msgstr "Bakgrund"
 
-#: core/mrvPlayback.cpp:1090
+#: core/mrvPlayback.cpp:1096
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Bakgrundsbildens varaktighet är mycket kort. Upprepa i cykler kanske inte "
 "fungerar korrekt."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1103
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1621,13 +1621,13 @@ msgstr ""
 "Bakgrundsbildens fps ( %lg ) är inte detsamma som frontbilden ( %lg ). Att "
 "upprepa i cykler kommer inte att fungera korrekt."
 
-#: core/mrvPlayback.cpp:1074
+#: core/mrvPlayback.cpp:1080
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Den nedre spolen är mycket kort. Upprepa i cykler kanske inte fungerar "
 "korrekt."
 
-#: core/mrvPlayback.cpp:1064
+#: core/mrvPlayback.cpp:1070
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2416,7 +2416,7 @@ msgstr "Jag kunde inte hitta fyra heltal för rutan"
 msgid "Could not find four integers for box "
 msgstr "Jag kunde inte hitta fyra heltal för rutan "
 
-#: core/mrvPlayback.cpp:1338
+#: core/mrvPlayback.cpp:1344
 msgid "Could not find image "
 msgstr "Jag kunde inte hitta bilden "
 

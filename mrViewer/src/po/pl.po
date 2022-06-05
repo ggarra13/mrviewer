@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 14:13-0300\n"
+"POT-Creation-Date: 2022-06-05 18:28-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1154
+#: core/mrvPlayback.cpp:1160
 msgid " - Decode of image frame "
 msgstr " - Dekodowanie ramki na zdjęcia "
 
-#: core/mrvPlayback.cpp:776
+#: core/mrvPlayback.cpp:781
 msgid " - decode Error audio frame "
 msgstr " - błąd dekodowania ramki audio "
 
@@ -283,7 +283,7 @@ msgstr " nie znaleziono, wybieram "
 msgid " not yet supported"
 msgstr " jeszcze nieobsługiwane"
 
-#: core/mrvPlayback.cpp:1155
+#: core/mrvPlayback.cpp:1161
 msgid " returned "
 msgstr " powrót "
 
@@ -1610,14 +1610,14 @@ msgstr "Usuń do tyłu"
 msgid "Background"
 msgstr "Tło"
 
-#: core/mrvPlayback.cpp:1090
+#: core/mrvPlayback.cpp:1096
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Czas trwania obrazu tła jest bardzo krótki. Powtarzanie w cyklach może nie "
 "działać prawidłowo."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1103
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1626,13 +1626,13 @@ msgstr ""
 "Liczba klatek na sekundę obrazu tła (%lg) nie jest taka sama jak obrazu "
 "przedniego (%lg). Powtarzanie w cyklach nie będzie działać poprawnie."
 
-#: core/mrvPlayback.cpp:1074
+#: core/mrvPlayback.cpp:1080
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Dolna szpula jest bardzo krótka. Powtarzanie w cyklach może nie działać "
 "prawidłowo."
 
-#: core/mrvPlayback.cpp:1064
+#: core/mrvPlayback.cpp:1070
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2426,7 +2426,7 @@ msgstr "Nie mogłem znaleźć czterech liczb całkowitych dla pudełka"
 msgid "Could not find four integers for box "
 msgstr "Nie mogłem znaleźć czterech liczb całkowitych dla pudełka "
 
-#: core/mrvPlayback.cpp:1338
+#: core/mrvPlayback.cpp:1344
 msgid "Could not find image "
 msgstr "Nie mogłem znaleźć obrazu "
 

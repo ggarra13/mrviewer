@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 14:13-0300\n"
+"POT-Creation-Date: 2022-06-05 18:28-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1154
+#: core/mrvPlayback.cpp:1160
 msgid " - Decode of image frame "
 msgstr " -額縁のデコード "
 
-#: core/mrvPlayback.cpp:776
+#: core/mrvPlayback.cpp:781
 msgid " - decode Error audio frame "
 msgstr " -オーディオフレームのデコードエラー "
 
@@ -283,7 +283,7 @@ msgstr " 見つかりません、選択 "
 msgid " not yet supported"
 msgstr " まだサポートされていません"
 
-#: core/mrvPlayback.cpp:1155
+#: core/mrvPlayback.cpp:1161
 msgid " returned "
 msgstr " 戻る "
 
@@ -1609,14 +1609,14 @@ msgstr "後ろに削除"
 msgid "Background"
 msgstr "バックグラウンド"
 
-#: core/mrvPlayback.cpp:1090
+#: core/mrvPlayback.cpp:1096
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "背景画像の長さは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1103
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1625,13 +1625,13 @@ msgstr ""
 "背景画像（%lg）のfpsは、前面画像（%lg）と同じではありません.サイクルで繰り返"
 "すと正しく機能しません."
 
-#: core/mrvPlayback.cpp:1074
+#: core/mrvPlayback.cpp:1080
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "下部のスプールは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1064
+#: core/mrvPlayback.cpp:1070
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2420,7 +2420,7 @@ msgstr "ボックスの4つの整数が見つかりませんでした"
 msgid "Could not find four integers for box "
 msgstr "ボックスの4つの整数が見つかりませんでした "
 
-#: core/mrvPlayback.cpp:1338
+#: core/mrvPlayback.cpp:1344
 msgid "Could not find image "
 msgstr "画像が見つかりませんでした "
 
