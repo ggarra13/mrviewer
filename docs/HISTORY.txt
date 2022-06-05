@@ -2,6 +2,8 @@ v6.1.8  - Fixed a regression from v6.0.1 that resulted in some audios in movies
 	  not being played.
 	- Fixed audio stuttering on dissolves that would happen sometimes.
 	- Improved performance of the dissolve start up.
+	- Fixed a regression from v6.1.7 that resulted in movie files with
+	  audio looping without audio when not in edl mode.
 
 v6.1.7  - Made fit image take into account masking.
 	- Fixed message about saving preferences in .filmaura/.filmaura instead

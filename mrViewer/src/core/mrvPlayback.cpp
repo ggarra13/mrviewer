@@ -492,7 +492,7 @@ EndStatus handle_loop( int64_t& frame,
             TRACE( decode << ") DECODE LOOP to " << first
                     << " frame " << frame );
 
-            if ( fg && reel->edl )
+            if ( fg )
             {
                 img->playback( CMedia::kStopped );
                 img->clear_packets();
@@ -632,7 +632,7 @@ EndStatus handle_loop( int64_t& frame,
 
             frame = reel->global_to_local( last );
 
-            if ( fg && reel->edl )
+            if ( fg )
             {
                 img->playback( CMedia::kStopped );
                 img->clear_packets();
