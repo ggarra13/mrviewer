@@ -1591,6 +1591,8 @@ public:
         return _audio_offset;
     }
 
+    inline void audio_muted( const bool b ) { _audio_muted = b; }
+
     void notify_all()
         {
             _video_packets.cond().notify_all();
@@ -1870,7 +1872,6 @@ protected:
                           const image_type::PixelType pixel_type = image_type::kFloat,
                           size_t w = 0, size_t h = 0);
 
-
     int audio_bytes_per_frame();
 
     void audio_shutdown();
@@ -1991,7 +1992,7 @@ protected:
     Barrier*  _stereo_barrier; //!< Barrier used to sync stereo threads
     Barrier*  _fg_bg_barrier;   //!< Barrier used to sync fg/bg threads
 
-    bool    _audio_start;     //!< to avoid opening audio file descriptor
+    bool    _audio_muted;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
     std::atomic<int64_t> _pos;  //!< position offset in timeline

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-04 21:32-0300\n"
+"POT-Creation-Date: 2022-06-04 22:56-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Bilinen bir kodlayıcı değil "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2513
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2512
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - ses çerçevesi kod çözme hatası "
 msgid " Color Area Selection"
 msgstr " Renk alanı seçimi"
 
-#: core/aviImage.cpp:3059
+#: core/aviImage.cpp:3058
 msgid " Could not open file. "
 msgstr " Dosyayı açamadım. "
 
@@ -117,7 +117,7 @@ msgstr " Eşleşen son ek="
 msgid " Move Picture"
 msgstr " resmi taşı"
 
-#: core/aviImage.cpp:2531
+#: core/aviImage.cpp:2530
 msgid " No audio or video stream in file"
 msgstr " Dosyada ses veya video yok"
 
@@ -198,7 +198,7 @@ msgstr " kodek için "
 msgid " for color_space"
 msgstr " color_space için"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " çerçeve için "
 
@@ -238,7 +238,7 @@ msgstr ""
 " mrViewer çökerse\n"
 "Tercihler->Kullanıcı Arayüzü->Tek Örnek'i değiştirmez."
 
-#: core/aviImage.cpp:1916
+#: core/aviImage.cpp:1915
 msgid " instead"
 msgstr " yerine"
 
@@ -266,7 +266,7 @@ msgstr " O kayboldu."
 msgid " is missing. Choosing "
 msgstr " kayıp. ayıklamak "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1926 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1925 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " bulunamadı"
@@ -275,11 +275,11 @@ msgstr " bulunamadı"
 msgid " not found in reel"
 msgstr " makarada bulunamadı"
 
-#: core/aviImage.cpp:1914
+#: core/aviImage.cpp:1913
 msgid " not found, choosing "
 msgstr " bulunamadı, seçiliyor "
 
-#: core/aviImage.cpp:4304
+#: core/aviImage.cpp:4303
 msgid " not yet supported"
 msgstr " henüz desteklenmiyor"
 
@@ -291,7 +291,7 @@ msgstr " dönüş "
 msgid " size is "
 msgstr " boyut "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4161
 msgid " status: "
 msgstr " durum: "
 
@@ -1511,7 +1511,7 @@ msgstr "ses dönüştürme "
 msgid "Audio format not known.  Choosing float32. "
 msgstr "Bilinmeyen ses biçimi. Float32'yi seçin. "
 
-#: core/CMedia_audio.cpp:1888
+#: core/CMedia_audio.cpp:1889
 msgid "Audio frame "
 msgstr "ses kutusu "
 
@@ -1519,11 +1519,11 @@ msgstr "ses kutusu "
 msgid "Audio frame has NOPTS value."
 msgstr "Ses çerçevesinin bir NOPTS değeri vardır."
 
-#: core/CMedia_audio.cpp:1994
+#: core/CMedia_audio.cpp:1998
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Ses paketi bilinmiyor, arama veya ön kayıt bekleniyor"
 
-#: core/CMedia_audio.cpp:2044
+#: core/CMedia_audio.cpp:2048
 msgid "Audio packets empty at end of seek"
 msgstr "Aramanın sonunda boş ses paketleri"
 
@@ -1718,7 +1718,7 @@ msgstr "Boost İstisnası: "
 msgid "Both"
 msgstr "Bunların her ikisi de"
 
-#: gui/mrvImageView.cpp:11579
+#: gui/mrvImageView.cpp:11583
 msgid "Bottom"
 msgstr "daha düşük"
 
@@ -2351,7 +2351,7 @@ msgstr "LEISURE'dan Lut'u hesaplayamadım"
 msgid "Could not copy context to parameters"
 msgstr "Bağlam parametrelere kopyalanamadı"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2398
+#: core/aviImage.cpp:729 core/aviImage.cpp:2397
 msgid "Could not copy parameters to context"
 msgstr "Parametreler codec bağlamına kopyalanamadı"
 
@@ -2459,7 +2459,7 @@ msgstr "4x4 matrisi için on altı kayan noktalı sayı bulamadım"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4 dizisi için on altı kayan noktalı sayı bulamadım "
 
-#: core/aviImage.cpp:3035
+#: core/aviImage.cpp:3034
 msgid "Could not find stream info"
 msgstr "Parça bilgisi bulunamadı"
 
@@ -2623,7 +2623,7 @@ msgstr "mpeg filmini açamadım"
 msgid "Could not open video codec"
 msgstr "video codec bileşeni açılamıyor"
 
-#: core/CMedia_audio.cpp:1904
+#: core/CMedia_audio.cpp:1908
 msgid "Could not play audio frame "
 msgstr "ses çerçevesini oynatamadım "
 
@@ -3068,11 +3068,11 @@ msgstr "İzsiz Kod Çözme"
 msgid "Decode OK"
 msgstr "kod çözme tamam"
 
-#: core/aviImage.cpp:4132 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ses kod çözme hatası: "
 
-#: core/aviImage.cpp:4160
+#: core/aviImage.cpp:4159
 msgid "Decode video error seek frame "
 msgstr "Görüntü arayan video kod çözme hatası "
 
@@ -3394,7 +3394,7 @@ msgstr "media_to_pathname'ye boş medya aktarıldı"
 msgid "Empty media provided to Element constructor"
 msgstr "Öğe oluşturucuya sağlanan boş ortam"
 
-#: core/aviImage.cpp:3589
+#: core/aviImage.cpp:3588
 msgid "Empty packets for video seek."
 msgstr "Video araması için boş paketler."
 
@@ -3402,7 +3402,7 @@ msgstr "Video araması için boş paketler."
 msgid "Empty pic file for media "
 msgstr "Medya için boş resim dosyası "
 
-#: core/aviImage.cpp:4513
+#: core/aviImage.cpp:4512
 msgid "Empty seek or preroll"
 msgstr "Boş arama veya ön kayıt"
 
@@ -3882,7 +3882,7 @@ msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11577
+#: gui/mrvImageView.cpp:11581
 msgid "Frame"
 msgstr "Çerçeve"
 
@@ -4733,7 +4733,7 @@ msgstr "Geçersiz stereo görüntü "
 msgid "Invalid timecode "
 msgstr "Geçersiz Zaman Kodu "
 
-#: core/aviImage.cpp:1966
+#: core/aviImage.cpp:1965
 msgid "Invalid video stream "
 msgstr "geçersiz video parçası "
 
@@ -5597,7 +5597,7 @@ msgstr "Ses çerçevesi için hafıza yok"
 msgid "No memory to allocate filter graph"
 msgstr "Filtre grafiği için hafıza yok"
 
-#: core/aviImage.cpp:2131
+#: core/aviImage.cpp:2130
 msgid "No pixel format could be chosen"
 msgstr "Piksel biçimi seçilemedi"
 
@@ -5719,7 +5719,7 @@ msgstr "Siyah görüntü için hafıza yok"
 msgid "Not enough memory for color transform"
 msgstr "Renk dönüşümü için hafıza yok"
 
-#: core/aviImage.cpp:2392
+#: core/aviImage.cpp:2391
 msgid "Not enough memory for context"
 msgstr "Bağlam için hafıza yok"
 
@@ -6423,12 +6423,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Profilin adı "
 
-#: core/aviImage.cpp:2780
+#: core/aviImage.cpp:2779
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2776
+#: core/aviImage.cpp:2775
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -7571,7 +7571,7 @@ msgstr "Altyazı Dosyası "
 msgid "Subtitle font "
 msgstr "Altyazı Mektubu "
 
-#: core/aviImage.cpp:4303
+#: core/aviImage.cpp:4302
 msgid "Subtitle type "
 msgstr "Altyazı Türü "
 
@@ -8242,7 +8242,7 @@ msgstr "Çıkış bağlamında çok fazla akış"
 msgid "Tooldock"
 msgstr "Eylem Yuvası"
 
-#: gui/mrvImageView.cpp:11578
+#: gui/mrvImageView.cpp:11582
 msgid "Top"
 msgstr "Daha yüksek"
 
@@ -8378,7 +8378,7 @@ msgstr "işlenmeyen özel durum"
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2944
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8444,7 +8444,7 @@ msgstr "' anahtarı için bilinmeyen veri türü"
 msgid "Unknown data type to convert to string"
 msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 
-#: core/aviImage.cpp:2258
+#: core/aviImage.cpp:2257
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
@@ -9224,11 +9224,11 @@ msgstr "yazar"
 msgid "Wrong data size received."
 msgstr "Yanlış bir veri boyutu aldım."
 
-#: core/CMedia_audio.cpp:1983
+#: core/CMedia_audio.cpp:1987
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
-#: core/aviImage.cpp:3536
+#: core/aviImage.cpp:3535
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
@@ -9475,7 +9475,7 @@ msgstr "veri"
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2036
+#: core/CMedia_audio.cpp:2040
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet çerçeve için başarısız oldu "
 
@@ -9499,7 +9499,7 @@ msgstr "dublaj"
 msgid "files"
 msgstr "kayıtlar"
 
-#: core/aviImage.cpp:1913 core/aviImage.cpp:1926 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: kutu "

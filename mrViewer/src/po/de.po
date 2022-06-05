@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-04 21:32-0300\n"
+"POT-Creation-Date: 2022-06-04 22:56-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Kein bekannter Codec "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2513
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2512
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - Audio-Frame-Decodierungsfehler "
 msgid " Color Area Selection"
 msgstr " Auswahl des Farbbereichs"
 
-#: core/aviImage.cpp:3059
+#: core/aviImage.cpp:3058
 msgid " Could not open file. "
 msgstr " Ich konnte die Datei nicht öffnen. "
 
@@ -117,7 +117,7 @@ msgstr " Passendes Suffix="
 msgid " Move Picture"
 msgstr " Bild bewegen"
 
-#: core/aviImage.cpp:2531
+#: core/aviImage.cpp:2530
 msgid " No audio or video stream in file"
 msgstr " Die Datei enthält kein Audio oder Video"
 
@@ -198,7 +198,7 @@ msgstr " für Codec "
 msgid " for color_space"
 msgstr " für Farbraum"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " für Rahmen "
 
@@ -238,7 +238,7 @@ msgstr ""
 " wenn mrViewer abstürzt\n"
 "nicht ändert Einstellungen->Benutzeroberfläche->Einzelinstanz."
 
-#: core/aviImage.cpp:1916
+#: core/aviImage.cpp:1915
 msgid " instead"
 msgstr " als Ersatz"
 
@@ -266,7 +266,7 @@ msgstr " Er ist verloren."
 msgid " is missing. Choosing "
 msgstr " wird vermisst. aussuchen "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1926 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1925 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " nicht gefunden"
@@ -275,11 +275,11 @@ msgstr " nicht gefunden"
 msgid " not found in reel"
 msgstr " nicht auf Rolle gefunden"
 
-#: core/aviImage.cpp:1914
+#: core/aviImage.cpp:1913
 msgid " not found, choosing "
 msgstr " nicht gefunden, wählen "
 
-#: core/aviImage.cpp:4304
+#: core/aviImage.cpp:4303
 msgid " not yet supported"
 msgstr " noch nicht unterstützt"
 
@@ -291,7 +291,7 @@ msgstr " Rückkehr "
 msgid " size is "
 msgstr " Größe ist "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4161
 msgid " status: "
 msgstr " Status: "
 
@@ -1512,7 +1512,7 @@ msgstr "Audiokonvertierung von "
 msgid "Audio format not known.  Choosing float32. "
 msgstr "Unbekanntes Audioformat. Wählen Sie float32. "
 
-#: core/CMedia_audio.cpp:1888
+#: core/CMedia_audio.cpp:1889
 msgid "Audio frame "
 msgstr "Audio-Box "
 
@@ -1520,11 +1520,11 @@ msgstr "Audio-Box "
 msgid "Audio frame has NOPTS value."
 msgstr "Der Audiorahmen hat einen NOPTS-Wert."
 
-#: core/CMedia_audio.cpp:1994
+#: core/CMedia_audio.cpp:1998
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Audiopaket ist unbekannt, erwarten Sie Suchen oder Preroll"
 
-#: core/CMedia_audio.cpp:2044
+#: core/CMedia_audio.cpp:2048
 msgid "Audio packets empty at end of seek"
 msgstr "Leere Audiopakete am Ende der Suche"
 
@@ -1722,7 +1722,7 @@ msgstr "Boost-Ausnahme: "
 msgid "Both"
 msgstr "Beide"
 
-#: gui/mrvImageView.cpp:11579
+#: gui/mrvImageView.cpp:11583
 msgid "Bottom"
 msgstr "niedriger"
 
@@ -2359,7 +2359,7 @@ msgstr "Ich konnte Lut nicht aus OCIO berechnen"
 msgid "Could not copy context to parameters"
 msgstr "Kontext konnte nicht in Parameter kopiert werden"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2398
+#: core/aviImage.cpp:729 core/aviImage.cpp:2397
 msgid "Could not copy parameters to context"
 msgstr "Parameter konnten nicht in den Codec-Kontext kopiert werden"
 
@@ -2470,7 +2470,7 @@ msgstr "Ich konnte keine sechzehn Fließkommazahlen für das 4x4-Array finden"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "Ich konnte keine sechzehn Fließkommazahlen für die 4x4-Matrix finden "
 
-#: core/aviImage.cpp:3035
+#: core/aviImage.cpp:3034
 msgid "Could not find stream info"
 msgstr "Titelinformationen konnten nicht gefunden werden"
 
@@ -2634,7 +2634,7 @@ msgstr "Ich konnte MPEG-Filme nicht öffnen"
 msgid "Could not open video codec"
 msgstr "Video-Codec kann nicht geöffnet werden"
 
-#: core/CMedia_audio.cpp:1904
+#: core/CMedia_audio.cpp:1908
 msgid "Could not play audio frame "
 msgstr "Ich konnte kein Audioframe abspielen "
 
@@ -3080,11 +3080,11 @@ msgstr "Spurlose Dekodierung"
 msgid "Decode OK"
 msgstr "Dekodierung ok"
 
-#: core/aviImage.cpp:4132 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Audiodecodierungsfehler: "
 
-#: core/aviImage.cpp:4160
+#: core/aviImage.cpp:4159
 msgid "Decode video error seek frame "
 msgstr "Videodecodierungsfehler beim Suchen nach Bild "
 
@@ -3407,7 +3407,7 @@ msgstr "Leeres Medium an media_to_pathname übergeben"
 msgid "Empty media provided to Element constructor"
 msgstr "Leere Medien, die dem Elementkonstruktor bereitgestellt werden"
 
-#: core/aviImage.cpp:3589
+#: core/aviImage.cpp:3588
 msgid "Empty packets for video seek."
 msgstr "Leere Pakete für die Videosuche."
 
@@ -3415,7 +3415,7 @@ msgstr "Leere Pakete für die Videosuche."
 msgid "Empty pic file for media "
 msgstr "Leere Bilddatei für Medien "
 
-#: core/aviImage.cpp:4513
+#: core/aviImage.cpp:4512
 msgid "Empty seek or preroll"
 msgstr "Leere Suche oder Preroll"
 
@@ -3895,7 +3895,7 @@ msgstr "FourCC"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11577
+#: gui/mrvImageView.cpp:11581
 msgid "Frame"
 msgstr "Rahmen"
 
@@ -4750,7 +4750,7 @@ msgstr "Ungültiges Stereobild "
 msgid "Invalid timecode "
 msgstr "Ungültiger Zeitcode "
 
-#: core/aviImage.cpp:1966
+#: core/aviImage.cpp:1965
 msgid "Invalid video stream "
 msgstr "ungültige Videospur "
 
@@ -5619,7 +5619,7 @@ msgstr "Kein Speicher für Audioframe"
 msgid "No memory to allocate filter graph"
 msgstr "Kein Speicher für Filtergrafik"
 
-#: core/aviImage.cpp:2131
+#: core/aviImage.cpp:2130
 msgid "No pixel format could be chosen"
 msgstr "Pixelformat konnte nicht ausgewählt werden"
 
@@ -5742,7 +5742,7 @@ msgstr "Kein Speicher für schwarzes Bild"
 msgid "Not enough memory for color transform"
 msgstr "Kein Speicher für Farbtransformation"
 
-#: core/aviImage.cpp:2392
+#: core/aviImage.cpp:2391
 msgid "Not enough memory for context"
 msgstr "Kein Gedächtnis für Kontext"
 
@@ -6449,12 +6449,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Name des Profils "
 
-#: core/aviImage.cpp:2780
+#: core/aviImage.cpp:2779
 #, c-format
 msgid "Program %d "
 msgstr "Programm %d "
 
-#: core/aviImage.cpp:2776
+#: core/aviImage.cpp:2775
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programm %d: %s"
@@ -7601,7 +7601,7 @@ msgstr "Untertiteldatei "
 msgid "Subtitle font "
 msgstr "Untertitel Brief "
 
-#: core/aviImage.cpp:4303
+#: core/aviImage.cpp:4302
 msgid "Subtitle type "
 msgstr "Untertiteltyp "
 
@@ -8276,7 +8276,7 @@ msgstr "Zu viele Streams im Ausgabekontext"
 msgid "Tooldock"
 msgstr "Action-Dock"
 
-#: gui/mrvImageView.cpp:11578
+#: gui/mrvImageView.cpp:11582
 msgid "Top"
 msgstr "Höher"
 
@@ -8412,7 +8412,7 @@ msgstr "unbehandelte Ausnahme"
 msgid "Unhandled exception"
 msgstr "unbehandelte Ausnahme"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2944
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8478,7 +8478,7 @@ msgstr "Unbekannter Datentyp für Schlüssel '"
 msgid "Unknown data type to convert to string"
 msgstr "Unbekannter Datentyp zum Konvertieren von Text"
 
-#: core/aviImage.cpp:2258
+#: core/aviImage.cpp:2257
 msgid "Unknown destination video frame format: "
 msgstr "Unbekanntes Videobildformat des Empfängers: "
 
@@ -9285,11 +9285,11 @@ msgstr "Schriftsteller"
 msgid "Wrong data size received."
 msgstr "Ich habe eine falsche Datengröße erhalten."
 
-#: core/CMedia_audio.cpp:1983
+#: core/CMedia_audio.cpp:1987
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Falsche Pakete in handle_video_packet_seek"
 
-#: core/aviImage.cpp:3536
+#: core/aviImage.cpp:3535
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Falsche Pakete in handle_video_packet_seek"
 
@@ -9536,7 +9536,7 @@ msgstr "Daten"
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2036
+#: core/CMedia_audio.cpp:2040
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet für Frame fehlgeschlagen "
 
@@ -9560,7 +9560,7 @@ msgstr "Überspielen"
 msgid "files"
 msgstr "Aufzeichnungen"
 
-#: core/aviImage.cpp:1913 core/aviImage.cpp:1926 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "Suchbild: Feld "

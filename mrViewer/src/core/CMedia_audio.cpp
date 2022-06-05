@@ -1593,9 +1593,9 @@ void CMedia::audio_stream( int idx )
     if ( _audio_index >= 0 )
     {
         open_audio_codec();
-        _audio_start = false; //true;
+        _audio_muted = false; //true;
         seek( _frame );
-        _audio_start = false;
+        _audio_muted = false;
     }
 
 }
@@ -1857,6 +1857,9 @@ void CMedia::fill_rectangle( uint8_t* buf, int xl, int yl, int w, int h )
 
 bool CMedia::find_audio( const int64_t frame )
 {
+
+    if ( frame == _audio_frame ) return false;
+
     audio_type_ptr result;
 
 
@@ -1871,8 +1874,6 @@ bool CMedia::find_audio( const int64_t frame )
 
         SCOPED_LOCK( _audio_mutex );
 
-        _audio_frame = frame;
-
         if ( frame < in_frame() )
             return true;
 
@@ -1883,7 +1884,7 @@ bool CMedia::find_audio( const int64_t frame )
 
         if ( i == end )
         {
-            if ( _audio_offset == 0 && frame <= _frameEnd)
+            if ( _audio_offset == 0 && frame <= _frameOut)
             {
                 IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
             }
@@ -1893,6 +1894,9 @@ bool CMedia::find_audio( const int64_t frame )
         result = *i;
 
     }
+
+
+    _audio_frame = result->frame();
 
     //assert( result->frame() == frame );
     assert( result->size() > 0 );
@@ -2256,10 +2260,10 @@ void CMedia::do_seek()
         {
             int64_t f = x;
             DecodeStatus status = decode_audio( f );
-            if ( status != kDecodeNoStream && !_audio_start  )
+            if ( status != kDecodeNoStream && !_audio_muted  )
                 find_audio( x );
             else
-                _audio_start = false;
+                _audio_muted = false;
         }
     }
 

@@ -10958,11 +10958,13 @@ void ImageView::frame( const int64_t f )
             if ( Btmp->playback() != CMedia::kForwards )
             {
                 TRACE( "Btmp= " << Btmp->name() << " SEEK " << B  );
+                Btmp->audio_muted( true );
                 Btmp->seek( B );
             }
             if ( Atmp->playback() != CMedia::kForwards &&
                  Atmp->frame() < Aout )
             {
+                Atmp->audio_muted( true );
                 Atmp->seek( A );
             }
             break;
@@ -10970,10 +10972,12 @@ void ImageView::frame( const int64_t f )
             if ( Btmp->playback() != CMedia::kBackwards &&
                  Btmp->frame() > Bin )
             {
+                Btmp->audio_muted( true );
                 Btmp->seek( B );
             }
             if ( Atmp->playback() != CMedia::kBackwards )
             {
+                Atmp->audio_muted( true );
                 Atmp->seek( A );
             }
             break;

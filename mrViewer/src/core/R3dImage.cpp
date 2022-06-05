@@ -1051,9 +1051,9 @@ namespace mrv {
                                << get_error_text( status )
                                << _(" for frame ") << _seek_frame );
 
-                if ( !_audio_start )
+                if ( !_audio_muted )
                     find_audio( _seek_frame + _audio_offset );
-                _audio_start = false;
+                _audio_muted = false;
             }
 
 

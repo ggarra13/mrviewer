@@ -1909,7 +1909,6 @@ bool aviImage::find_image( const int64_t frame )
                      diff > 1 && diff < kDiffFrames &&
                      counter < kDiffFrames && f <= _frameOut )
                 {
-                    _frame = f = _hires->frame();
                     IMG_ERROR( _("find_image: frame ") << frame
                                  << _(" not found, choosing ")
                                  << _hires->frame()
@@ -4136,12 +4135,12 @@ void aviImage::do_seek()
 #ifdef DEBUG_SEEK
             TRACE( name() << " frame " << _seek_frame );
 #endif
-            if ( !_audio_start )
+            if ( !_audio_muted )
                 find_audio( _seek_frame + _audio_offset );
 #ifdef DEBUG_SEEK
             TRACE( name() << " frame " << _seek_frame );
 #endif
-            _audio_start = false;
+            _audio_muted = false;
         }
 
         if ( has_video() || has_audio() )
