@@ -1515,38 +1515,38 @@ inline void GLEngine::rot_y( double t )
     _rotY = t;
 }
 
-void GLEngine::alloc_cubes( size_t num )
-{
-    clear_quads();
-    _quads.reserve( num );
-    for ( size_t q = 0; q < num; ++q )
+    void GLEngine::alloc_cubes( size_t num )
     {
-        mrv::GLCube* s = new mrv::GLCube( _view );
-        _quads.push_back( s );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLCube* s = new mrv::GLCube( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
-void GLEngine::alloc_spheres( size_t num )
-{
-    clear_quads();
-    _quads.reserve( num );
-    for ( size_t q = 0; q < num; ++q )
+    void GLEngine::alloc_spheres( size_t num )
     {
-        mrv::GLSphere* s = new mrv::GLSphere( _view );
-        _quads.push_back( s );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLSphere* s = new mrv::GLSphere( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
-void GLEngine::alloc_quads( size_t num )
-{
-    clear_quads();
-    _quads.reserve( num );
-    for ( size_t q = 0; q < num; ++q )
+    void GLEngine::alloc_quads( size_t num )
     {
-        mrv::GLQuad* quad = new mrv::GLQuad( _view );
-        _quads.push_back( quad );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLQuad* s = new mrv::GLQuad( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
 
 void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
@@ -1833,6 +1833,10 @@ void GLEngine::draw_images( ImageList& images )
         {
             alloc_quads( num_quads );
         }
+        for ( const auto& img : images )
+        {
+            img->image_damage( img->image_damage() | CMedia::kDamageContents );
+        }
     }
 
 
@@ -1905,7 +1909,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
         CMedia::StereoOutput stereo = img->stereo_output();
-        int64_t frame = pic->frame();
+        const int64_t& frame = pic->frame();
 
         DBGM2( "draw image " << img->name() << " frame " << frame );
         mrv::Recti dpw = img->display_window(frame);
@@ -1951,7 +1955,8 @@ void GLEngine::draw_images( ImageList& images )
             }
         }
 
-
+        if ( texWidth == 0 )  texWidth = fg->width();
+        if ( texHeight == 0 ) texHeight = fg->height();
 
         texWidth  = int( texWidth * img->scale_x() );
         texHeight = int( texHeight * img->scale_y() );
@@ -2394,6 +2399,10 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
             glEnable( GL_TEXTURE_3D );
         }
+
+        TRACE2( "pic->valid? " << pic->valid() << " channels= "
+                << pic->channels() << " missing_frame==Scratched? "
+                << ( Preferences::missing_frame == Preferences::kScratchedRepeatFrame ) );
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )

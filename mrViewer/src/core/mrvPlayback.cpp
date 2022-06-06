@@ -746,7 +746,12 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
+        TRACE2( "AUDIO FRAME " << frame << " WAIT AUDIO" );
+
         img->wait_audio();
+
+        TRACE2( "AUDIO FRAME " << frame << " WAITED AUDIO" );
+
 
 
 
@@ -871,7 +876,7 @@ void audio_thread( PlaybackData* data )
             // audio can be turned off due to user changing channels
             // or due to a problem with audio engine.
             frame = img->frame();
-            ++frame;
+            frame += step;
             continue;
         }
 
