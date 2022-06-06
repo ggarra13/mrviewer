@@ -871,6 +871,7 @@ void audio_thread( PlaybackData* data )
             // audio can be turned off due to user changing channels
             // or due to a problem with audio engine.
             frame = img->frame();
+            ++frame;
             continue;
         }
 
