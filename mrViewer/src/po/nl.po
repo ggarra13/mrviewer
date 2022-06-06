@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 18:28-0300\n"
+"POT-Creation-Date: 2022-06-05 23:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Geen bekende codec "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2512
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - audioframe-decoderingsfout "
 msgid " Color Area Selection"
 msgstr " Kleurgebied selectie"
 
-#: core/aviImage.cpp:3058
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " Ik kon het bestand niet openen. "
 
@@ -117,7 +117,7 @@ msgstr " Overeenkomend achtervoegsel="
 msgid " Move Picture"
 msgstr " afbeelding verplaatsen"
 
-#: core/aviImage.cpp:2530
+#: core/aviImage.cpp:2529
 msgid " No audio or video stream in file"
 msgstr " Er is geen audio of video in het bestand"
 
@@ -190,7 +190,7 @@ msgstr " mislukking. "
 msgid " for channel.  Maximum: "
 msgstr " voor het kanaal. Maximaal: "
 
-#: core/aviImage.cpp:1493 core/aviImage.cpp:1543
+#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
 msgid " for codec "
 msgstr " voor codec "
 
@@ -198,7 +198,7 @@ msgstr " voor codec "
 msgid " for color_space"
 msgstr " voor color_space"
 
-#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " voor frame "
 
@@ -238,7 +238,7 @@ msgstr ""
 " als mrViewer crasht\n"
 "niet wijzigen Voorkeuren->Gebruikersinterface->Enkel exemplaar."
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1914
 msgid " instead"
 msgstr " ter vervanging"
 
@@ -266,7 +266,7 @@ msgstr " Hij is verdwaald."
 msgid " is missing. Choosing "
 msgstr " ontbreekt. uitkiezen "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " niet gevonden"
@@ -275,11 +275,11 @@ msgstr " niet gevonden"
 msgid " not found in reel"
 msgstr " niet gevonden op haspel"
 
-#: core/aviImage.cpp:1913
+#: core/aviImage.cpp:1912
 msgid " not found, choosing "
 msgstr " niet gevonden, kiezen "
 
-#: core/aviImage.cpp:4303
+#: core/aviImage.cpp:4302
 msgid " not yet supported"
 msgstr " nog niet ondersteund"
 
@@ -291,7 +291,7 @@ msgstr " opbrengst "
 msgid " size is "
 msgstr " maat is "
 
-#: core/aviImage.cpp:4161
+#: core/aviImage.cpp:4160
 msgid " status: "
 msgstr " toestand: "
 
@@ -303,7 +303,7 @@ msgstr " a"
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " videoframe, cache "
 
@@ -531,7 +531,7 @@ msgstr "(Verwijder het als mrViewer niet start)"
 msgid "(no image)"
 msgstr "(Zonder afbeelding)"
 
-#: core/aviImage.cpp:1886 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") cache grootte: "
 
@@ -2143,11 +2143,11 @@ msgstr "Kleurkanaal niet gevonden voor index "
 msgid "Color controls"
 msgstr "kleurcontroles"
 
-#: core/aviImage.cpp:1305
+#: core/aviImage.cpp:1304
 msgid "Colorspace details not gotten "
 msgstr "Details kleurruimte niet verkregen "
 
-#: core/aviImage.cpp:1334
+#: core/aviImage.cpp:1333
 msgid "Colorspace details not set "
 msgstr "Details kleurruimte niet ingesteld "
 
@@ -2356,7 +2356,7 @@ msgstr "Ik kon Lut niet berekenen vanuit OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Kon context niet naar parameters kopiëren"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2397
+#: core/aviImage.cpp:729 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr "Kon parameters niet kopiëren naar codeccontext"
 
@@ -2472,7 +2472,7 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Ik kon geen zestien getallen met drijvende komma vinden voor de 4x4 array "
 
-#: core/aviImage.cpp:3034
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "Kan trackinformatie niet vinden"
 
@@ -2544,7 +2544,7 @@ msgstr "Ik kon geen audiovoorbeelden krijgen"
 msgid "Could not get device info for "
 msgstr "Kan apparaatinformatie niet ophalen voor "
 
-#: core/aviImage.cpp:1285
+#: core/aviImage.cpp:1284
 msgid "Could not get image conversion context."
 msgstr "Ik kon geen context voor beeldconversie krijgen."
 
@@ -2678,7 +2678,7 @@ msgstr ""
 "afbeelding. Gebruik de %d-syntaxis voor streams of een aangepaste extensie "
 "voor films."
 
-#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
+#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
 msgid "Could not seek to frame "
 msgstr "Ik kon het schilderij niet vinden "
 
@@ -3082,11 +3082,11 @@ msgstr "Ongebaande decodering"
 msgid "Decode OK"
 msgstr "decoderen ok"
 
-#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Audiodecoderingsfout: "
 
-#: core/aviImage.cpp:4159
+#: core/aviImage.cpp:4158
 msgid "Decode video error seek frame "
 msgstr "Videodecoderingsfout bij zoeken naar afbeelding "
 
@@ -3408,7 +3408,7 @@ msgstr "Lege media doorgegeven aan media_naar_padnaam"
 msgid "Empty media provided to Element constructor"
 msgstr "Lege media geleverd aan elementconstructor"
 
-#: core/aviImage.cpp:3588
+#: core/aviImage.cpp:3587
 msgid "Empty packets for video seek."
 msgstr "Lege pakketten voor video zoeken."
 
@@ -3416,7 +3416,7 @@ msgstr "Lege pakketten voor video zoeken."
 msgid "Empty pic file for media "
 msgstr "Leeg afbeeldingsbestand voor media "
 
-#: core/aviImage.cpp:4512
+#: core/aviImage.cpp:4511
 msgid "Empty seek or preroll"
 msgstr "Leeg zoeken of preroll"
 
@@ -3483,7 +3483,7 @@ msgstr "Fout tijdens het converteren van audio: "
 msgid "Error while encoding video frame: "
 msgstr "Fout bij het coderen van videoframe: "
 
-#: core/aviImage.cpp:1444
+#: core/aviImage.cpp:1443
 msgid "Error while feeding the filtergraph"
 msgstr "Fout bij het invoeren van de filterkaart"
 
@@ -4750,7 +4750,7 @@ msgstr "Ongeldig stereobeeld "
 msgid "Invalid timecode "
 msgstr "Ongeldige tijdcode "
 
-#: core/aviImage.cpp:1965
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr "ongeldige videotrack "
 
@@ -5615,7 +5615,7 @@ msgstr "Geen geheugen voor audioframe"
 msgid "No memory to allocate filter graph"
 msgstr "Geen geheugen voor filtergrafiek"
 
-#: core/aviImage.cpp:2130
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr "Kon pixelformaat niet kiezen"
 
@@ -5737,11 +5737,11 @@ msgstr "Geen geheugen voor zwart beeld"
 msgid "Not enough memory for color transform"
 msgstr "Geen geheugen voor kleurtransformatie"
 
-#: core/aviImage.cpp:2391
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr "Geen geheugen voor context"
 
-#: core/aviImage.cpp:1216 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Geen beeldgeheugen"
 
@@ -6426,7 +6426,7 @@ msgstr "Afdrukken"
 msgid "Priority"
 msgstr "Prioriteit"
 
-#: core/aviImage.cpp:1221
+#: core/aviImage.cpp:1220
 msgid "Problem allocating image "
 msgstr "Probleem bij het toewijzen van afbeelding "
 
@@ -6442,12 +6442,12 @@ msgstr "Profiel"
 msgid "Profile name "
 msgstr "Naam van profiel "
 
-#: core/aviImage.cpp:2779
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d "
 msgstr "Programma %d "
 
-#: core/aviImage.cpp:2775
+#: core/aviImage.cpp:2774
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programma %d: %s"
@@ -7597,7 +7597,7 @@ msgstr "Ondertitelbestand "
 msgid "Subtitle font "
 msgstr "Ondertitelbrief "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4301
 msgid "Subtitle type "
 msgstr "Ondertiteltype "
 
@@ -8416,7 +8416,7 @@ msgstr "onverwerkte uitzondering"
 msgid "Unhandled exception"
 msgstr "onverwerkte uitzondering"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8482,7 +8482,7 @@ msgstr "Onbekend gegevenstype voor sleutel '"
 msgid "Unknown data type to convert to string"
 msgstr "Onbekend gegevenstype om van tekst te converteren"
 
-#: core/aviImage.cpp:2257
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr "Onbekend videoframe-formaat van de ontvanger: "
 
@@ -8761,7 +8761,7 @@ msgstr "Videotrack #%d"
 msgid "Video Streams"
 msgstr "videotracks"
 
-#: core/aviImage.cpp:1883 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Videosynchronisatie hoofdframe "
 
@@ -9286,7 +9286,7 @@ msgstr "Ik heb een onjuiste gegevensgrootte ontvangen."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Verkeerde pakketten in handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3534
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Verkeerde pakketten in handle_video_packet_seek"
 
@@ -9491,7 +9491,7 @@ msgstr "avcodec_context_from_parameters mislukt voor video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context mislukt voor audio"
 
-#: core/aviImage.cpp:1761
+#: core/aviImage.cpp:1760
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context mislukt voor ondertiteling"
 
@@ -9556,7 +9556,7 @@ msgstr "nasynchronisatie"
 msgid "files"
 msgstr "records"
 
-#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: box "
@@ -9865,7 +9865,7 @@ msgstr "recv() mislukt"
 msgid "send() failed"
 msgstr "versturen mislukt"
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid "send_packet error: "
 msgstr "Ik kon het pakket niet verzenden. Fout "
 

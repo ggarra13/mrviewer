@@ -897,16 +897,15 @@ void aviImage::open_video_codec()
 
     AVDictionary* info = NULL;
     const std::string& threads = Preferences::video_threads;
-    if (!av_dict_get(info, "threads", NULL, 0))
-        av_dict_set(&info, "threads", threads.c_str(), 0 );
-    //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
+    _video_ctx->thread_type = FF_THREAD_FRAME;
+    _video_ctx->thread_count = atoi( threads.c_str() );
 
     // recounted frames needed for subtitles
     av_dict_set(&info, "refcounted_frames", "1", 0);
     av_dict_set(&info, "noautorotate", NULL, 0);
 
     if ( video_codec == NULL ||
-            avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
+         avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
         _video_index = -1;
 
 }

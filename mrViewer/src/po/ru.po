@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 18:28-0300\n"
+"POT-Creation-Date: 2022-06-05 23:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Неизвестный кодек "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2512
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - ошибка декодирования звукового кадра
 msgid " Color Area Selection"
 msgstr " Выбор области цвета"
 
-#: core/aviImage.cpp:3058
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " Я не мог открыть файл. "
 
@@ -117,7 +117,7 @@ msgstr " Соответствующий суффикс="
 msgid " Move Picture"
 msgstr " переместить изображение"
 
-#: core/aviImage.cpp:2530
+#: core/aviImage.cpp:2529
 msgid " No audio or video stream in file"
 msgstr " В файле нет аудио или видео"
 
@@ -190,7 +190,7 @@ msgstr " отказ. "
 msgid " for channel.  Maximum: "
 msgstr " для канала. Максимум: "
 
-#: core/aviImage.cpp:1493 core/aviImage.cpp:1543
+#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
 msgid " for codec "
 msgstr " для кодека "
 
@@ -198,7 +198,7 @@ msgstr " для кодека "
 msgid " for color_space"
 msgstr " для цветового_пространства"
 
-#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " для рамы "
 
@@ -238,7 +238,7 @@ msgstr ""
 " если mrViewer дает сбой\n"
 "не изменяет Preferences->User Interface->Single Instance."
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1914
 msgid " instead"
 msgstr " взамен"
 
@@ -266,7 +266,7 @@ msgstr " Он потерян."
 msgid " is missing. Choosing "
 msgstr " пропал, отсутствует. выбирая "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " не найден"
@@ -275,11 +275,11 @@ msgstr " не найден"
 msgid " not found in reel"
 msgstr " не нашел на катушке"
 
-#: core/aviImage.cpp:1913
+#: core/aviImage.cpp:1912
 msgid " not found, choosing "
 msgstr " не нашел, выбираю "
 
-#: core/aviImage.cpp:4303
+#: core/aviImage.cpp:4302
 msgid " not yet supported"
 msgstr " еще не поддерживается"
 
@@ -291,7 +291,7 @@ msgstr " вернуть "
 msgid " size is "
 msgstr " размер "
 
-#: core/aviImage.cpp:4161
+#: core/aviImage.cpp:4160
 msgid " status: "
 msgstr " положение дел: "
 
@@ -303,7 +303,7 @@ msgstr " к"
 msgid " to "
 msgstr " к "
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " видеокадр, кэш "
 
@@ -532,7 +532,7 @@ msgstr "(Удалите его, если mrViewer не запускается)"
 msgid "(no image)"
 msgstr "(без изображения)"
 
-#: core/aviImage.cpp:1886 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") размер кэша: "
 
@@ -2142,11 +2142,11 @@ msgstr "Цветовой канал не найден для индекса "
 msgid "Color controls"
 msgstr "управление цветом"
 
-#: core/aviImage.cpp:1305
+#: core/aviImage.cpp:1304
 msgid "Colorspace details not gotten "
 msgstr "Детали цветового пространства не получены "
 
-#: core/aviImage.cpp:1334
+#: core/aviImage.cpp:1333
 msgid "Colorspace details not set "
 msgstr "Детали цветового пространства не заданы "
 
@@ -2353,7 +2353,7 @@ msgstr "Я не мог вычислить Лут из OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Не удалось скопировать контекст в параметры"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2397
+#: core/aviImage.cpp:729 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr "Не удалось скопировать параметры в контекст кодека"
 
@@ -2463,7 +2463,7 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Я не смог найти шестнадцать чисел с плавающей запятой для массива 4x4. "
 
-#: core/aviImage.cpp:3034
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "Не удалось найти информацию о треке"
 
@@ -2535,7 +2535,7 @@ msgstr "Я не мог получить образцы аудио"
 msgid "Could not get device info for "
 msgstr "Не удалось получить информацию об устройстве для "
 
-#: core/aviImage.cpp:1285
+#: core/aviImage.cpp:1284
 msgid "Could not get image conversion context."
 msgstr "Мне не удалось получить контекст преобразования изображения."
 
@@ -2669,7 +2669,7 @@ msgstr ""
 "изображение. Используйте синтаксис %d для потоков или пользовательское "
 "расширение для фильмов."
 
-#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
+#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
 msgid "Could not seek to frame "
 msgstr "Я не мог найти картину "
 
@@ -3072,11 +3072,11 @@ msgstr "Бездорожье Декодирование"
 msgid "Decode OK"
 msgstr "декодирование нормально"
 
-#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ошибка декодирования аудио: "
 
-#: core/aviImage.cpp:4159
+#: core/aviImage.cpp:4158
 msgid "Decode video error seek frame "
 msgstr "Ошибка декодирования видео при поиске изображения "
 
@@ -3398,7 +3398,7 @@ msgstr "Пустой носитель передан в media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Пустой носитель, предоставленный конструктору элемента"
 
-#: core/aviImage.cpp:3588
+#: core/aviImage.cpp:3587
 msgid "Empty packets for video seek."
 msgstr "Пустые пакеты для поиска видео."
 
@@ -3406,7 +3406,7 @@ msgstr "Пустые пакеты для поиска видео."
 msgid "Empty pic file for media "
 msgstr "Пустой файл изображения для мультимедиа "
 
-#: core/aviImage.cpp:4512
+#: core/aviImage.cpp:4511
 msgid "Empty seek or preroll"
 msgstr "Пустой поиск или преролл"
 
@@ -3473,7 +3473,7 @@ msgstr "Ошибка при конвертации аудио: "
 msgid "Error while encoding video frame: "
 msgstr "Ошибка кодирования видеокадра: "
 
-#: core/aviImage.cpp:1444
+#: core/aviImage.cpp:1443
 msgid "Error while feeding the filtergraph"
 msgstr "Ошибка подачи графика фильтра"
 
@@ -4739,7 +4739,7 @@ msgstr "Недействительное стереоизображение "
 msgid "Invalid timecode "
 msgstr "Неверный временной код "
 
-#: core/aviImage.cpp:1965
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr "недействительная видеодорожка "
 
@@ -5606,7 +5606,7 @@ msgstr "Нет памяти для звукового кадра"
 msgid "No memory to allocate filter graph"
 msgstr "Нет памяти для графика фильтра"
 
-#: core/aviImage.cpp:2130
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr "Не удалось выбрать формат пикселей"
 
@@ -5727,11 +5727,11 @@ msgstr "Нет памяти для черного изображения"
 msgid "Not enough memory for color transform"
 msgstr "Нет памяти для преобразования цвета"
 
-#: core/aviImage.cpp:2391
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr "Нет памяти для контекста"
 
-#: core/aviImage.cpp:1216 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Нет памяти изображений"
 
@@ -6418,7 +6418,7 @@ msgstr "Распечатать"
 msgid "Priority"
 msgstr "приоритет"
 
-#: core/aviImage.cpp:1221
+#: core/aviImage.cpp:1220
 msgid "Problem allocating image "
 msgstr "Проблема с назначением изображения "
 
@@ -6434,12 +6434,12 @@ msgstr "Профиль"
 msgid "Profile name "
 msgstr "Имя профиля "
 
-#: core/aviImage.cpp:2779
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d "
 msgstr "Программа %d "
 
-#: core/aviImage.cpp:2775
+#: core/aviImage.cpp:2774
 #, c-format
 msgid "Program %d: %s"
 msgstr "Программа %d: %s"
@@ -7583,7 +7583,7 @@ msgstr "Файл субтитров "
 msgid "Subtitle font "
 msgstr "Письмо с подзаголовком "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4301
 msgid "Subtitle type "
 msgstr "Тип субтитров "
 
@@ -8395,7 +8395,7 @@ msgstr "необработанное исключение"
 msgid "Unhandled exception"
 msgstr "необработанное исключение"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8461,7 +8461,7 @@ msgstr "Неизвестный тип данных для ключа '"
 msgid "Unknown data type to convert to string"
 msgstr "Неизвестный тип данных для преобразования из текста"
 
-#: core/aviImage.cpp:2257
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr "Неизвестный формат видеокадра получателя: "
 
@@ -8741,7 +8741,7 @@ msgstr "Видеодорожка #%d"
 msgid "Video Streams"
 msgstr "видео треки"
 
-#: core/aviImage.cpp:1883 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Основной кадр синхронизации видео "
 
@@ -9243,7 +9243,7 @@ msgstr "Я получил неверный размер данных."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Неправильные пакеты в handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3534
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Неправильные пакеты в handle_video_packet_seek"
 
@@ -9449,7 +9449,7 @@ msgstr "Ошибка avcodec_context_from_parameters для видео"
 msgid "avcodec_copy_context failed for audio"
 msgstr "Ошибка avcodec_copy_context для аудио"
 
-#: core/aviImage.cpp:1761
+#: core/aviImage.cpp:1760
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "Ошибка avcodec_copy_context для субтитров"
 
@@ -9514,7 +9514,7 @@ msgstr "дубляж"
 msgid "files"
 msgstr "записи"
 
-#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: коробка "
@@ -9823,7 +9823,7 @@ msgstr "recv() не удалось"
 msgid "send() failed"
 msgstr "отправить () не удалось"
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid "send_packet error: "
 msgstr "Я не мог отправить пакет. Ошибка "
 

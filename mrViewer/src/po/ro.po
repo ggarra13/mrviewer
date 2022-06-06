@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-05 18:28-0300\n"
+"POT-Creation-Date: 2022-06-05 23:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Nu este un codec cunoscut "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2512
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - eroare de decodare a cadrului audio "
 msgid " Color Area Selection"
 msgstr " Selectarea zonei de culoare"
 
-#: core/aviImage.cpp:3058
+#: core/aviImage.cpp:3057
 msgid " Could not open file. "
 msgstr " Nu am putut deschide fișierul. "
 
@@ -117,7 +117,7 @@ msgstr " Sufixul potrivit="
 msgid " Move Picture"
 msgstr " muta imaginea"
 
-#: core/aviImage.cpp:2530
+#: core/aviImage.cpp:2529
 msgid " No audio or video stream in file"
 msgstr " Nu există audio sau video în fișier"
 
@@ -190,7 +190,7 @@ msgstr " eșec. "
 msgid " for channel.  Maximum: "
 msgstr " pentru canal. Maxim: "
 
-#: core/aviImage.cpp:1493 core/aviImage.cpp:1543
+#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
 msgid " for codec "
 msgstr " pentru codec "
 
@@ -198,7 +198,7 @@ msgstr " pentru codec "
 msgid " for color_space"
 msgstr " pentru color_space"
 
-#: core/aviImage.cpp:4133 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " pentru cadru "
 
@@ -238,7 +238,7 @@ msgstr ""
 " dacă mrViewer se blochează\n"
 "nu modifică Preferințe->Interfață utilizator->Instanță unică."
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1914
 msgid " instead"
 msgstr " în înlocuire"
 
@@ -266,7 +266,7 @@ msgstr " El e pierdut."
 msgid " is missing. Choosing "
 msgstr " lipseste. alegând "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " nu a fost gasit"
@@ -275,11 +275,11 @@ msgstr " nu a fost gasit"
 msgid " not found in reel"
 msgstr " nu se găsește pe rolă"
 
-#: core/aviImage.cpp:1913
+#: core/aviImage.cpp:1912
 msgid " not found, choosing "
 msgstr " negăsit, alegând "
 
-#: core/aviImage.cpp:4303
+#: core/aviImage.cpp:4302
 msgid " not yet supported"
 msgstr " nu este susținut încă"
 
@@ -291,7 +291,7 @@ msgstr " întoarcere "
 msgid " size is "
 msgstr " dimensiunea este "
 
-#: core/aviImage.cpp:4161
+#: core/aviImage.cpp:4160
 msgid " status: "
 msgstr " tare: "
 
@@ -303,7 +303,7 @@ msgstr " la"
 msgid " to "
 msgstr " la "
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " cadru video, cache "
 
@@ -531,7 +531,7 @@ msgstr "(Elimină-l dacă mrViewer nu pornește)"
 msgid "(no image)"
 msgstr "(Fără imagine)"
 
-#: core/aviImage.cpp:1886 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") mărimea cache-ului: "
 
@@ -2141,11 +2141,11 @@ msgstr "Canalul de culoare nu a fost găsit pentru index "
 msgid "Color controls"
 msgstr "controale de culoare"
 
-#: core/aviImage.cpp:1305
+#: core/aviImage.cpp:1304
 msgid "Colorspace details not gotten "
 msgstr "Detaliile spațiului de culoare nu au fost obținute "
 
-#: core/aviImage.cpp:1334
+#: core/aviImage.cpp:1333
 msgid "Colorspace details not set "
 msgstr "Detaliile spațiului de culoare nu sunt setate "
 
@@ -2351,7 +2351,7 @@ msgstr "Nu am putut să-l calculez pe Lut din LEISURE"
 msgid "Could not copy context to parameters"
 msgstr "Nu s-a putut copia contextul în parametri"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2397
+#: core/aviImage.cpp:729 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr "Nu s-au putut copia parametrii în contextul codecului"
 
@@ -2463,7 +2463,7 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Nu am putut găsi șaisprezece numere în virgulă mobilă pentru matricea 4x4 "
 
-#: core/aviImage.cpp:3034
+#: core/aviImage.cpp:3033
 msgid "Could not find stream info"
 msgstr "Nu s-au putut găsi informații despre piesă"
 
@@ -2535,7 +2535,7 @@ msgstr "Nu am putut obține mostre audio"
 msgid "Could not get device info for "
 msgstr "Nu s-au putut obține informații despre dispozitiv pentru "
 
-#: core/aviImage.cpp:1285
+#: core/aviImage.cpp:1284
 msgid "Could not get image conversion context."
 msgstr "Nu am putut obține contextul conversiei imaginii."
 
@@ -2668,7 +2668,7 @@ msgstr ""
 "Nu am putut salva secvența sau filmul, doar o imagine specificată. Utilizați "
 "sintaxa %d pentru fluxuri sau o extensie personalizată pentru filme."
 
-#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
+#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
 msgid "Could not seek to frame "
 msgstr "Nu am găsit tabloul "
 
@@ -3072,11 +3072,11 @@ msgstr "Decodare fără piese"
 msgid "Decode OK"
 msgstr "decodare ok"
 
-#: core/aviImage.cpp:4131 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Eroare de decodare audio: "
 
-#: core/aviImage.cpp:4159
+#: core/aviImage.cpp:4158
 msgid "Decode video error seek frame "
 msgstr "Eroare de decodare video în căutarea imaginii "
 
@@ -3398,7 +3398,7 @@ msgstr "Media goală a fost transmisă către media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Media goală furnizată constructorului de elemente"
 
-#: core/aviImage.cpp:3588
+#: core/aviImage.cpp:3587
 msgid "Empty packets for video seek."
 msgstr "Pachete goale pentru căutarea video."
 
@@ -3406,7 +3406,7 @@ msgstr "Pachete goale pentru căutarea video."
 msgid "Empty pic file for media "
 msgstr "Fișier imagine gol pentru media "
 
-#: core/aviImage.cpp:4512
+#: core/aviImage.cpp:4511
 msgid "Empty seek or preroll"
 msgstr "Căutare goală sau preroll"
 
@@ -3474,7 +3474,7 @@ msgstr "Eroare la conversia audio: "
 msgid "Error while encoding video frame: "
 msgstr "Eroare la codificarea cadrului video: "
 
-#: core/aviImage.cpp:1444
+#: core/aviImage.cpp:1443
 msgid "Error while feeding the filtergraph"
 msgstr "Eroare la alimentarea graficului filtrului"
 
@@ -4738,7 +4738,7 @@ msgstr "Imagine stereo nevalidă "
 msgid "Invalid timecode "
 msgstr "Cod de timp nevalid "
 
-#: core/aviImage.cpp:1965
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr "pistă video nevalidă "
 
@@ -5602,7 +5602,7 @@ msgstr "Nu există memorie pentru cadrul audio"
 msgid "No memory to allocate filter graph"
 msgstr "Nu există memorie pentru graficul de filtrare"
 
-#: core/aviImage.cpp:2130
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr "Nu s-a putut alege formatul pixelilor"
 
@@ -5724,11 +5724,11 @@ msgstr "Nu există memorie pentru imaginea neagră"
 msgid "Not enough memory for color transform"
 msgstr "Fără memorie pentru transformarea culorii"
 
-#: core/aviImage.cpp:2391
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr "Fără memorie pentru context"
 
-#: core/aviImage.cpp:1216 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Fără memorie de imagine"
 
@@ -6412,7 +6412,7 @@ msgstr "Imprimare"
 msgid "Priority"
 msgstr "Prioritate"
 
-#: core/aviImage.cpp:1221
+#: core/aviImage.cpp:1220
 msgid "Problem allocating image "
 msgstr "Problemă la atribuirea imaginii "
 
@@ -6428,12 +6428,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Numele profilului "
 
-#: core/aviImage.cpp:2779
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d "
 msgstr "Programul %d "
 
-#: core/aviImage.cpp:2775
+#: core/aviImage.cpp:2774
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programul %d: %s"
@@ -7578,7 +7578,7 @@ msgstr "Fișier de subtitrare "
 msgid "Subtitle font "
 msgstr "Scrisoarea de subtitrare "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4301
 msgid "Subtitle type "
 msgstr "Tip de subtitrare "
 
@@ -8392,7 +8392,7 @@ msgstr "excepție netratată"
 msgid "Unhandled exception"
 msgstr "excepție netratată"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2943
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8458,7 +8458,7 @@ msgstr "Tip de date necunoscut pentru cheie '"
 msgid "Unknown data type to convert to string"
 msgstr "Tip de date necunoscut de convertit din text"
 
-#: core/aviImage.cpp:2257
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr "Format de cadru video destinatar necunoscut: "
 
@@ -8736,7 +8736,7 @@ msgstr "Piesa video #%d"
 msgid "Video Streams"
 msgstr "piese video"
 
-#: core/aviImage.cpp:1883 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Cadrul principal de sincronizare video "
 
@@ -9251,7 +9251,7 @@ msgstr "Am primit o dimensiune incorectă a datelor."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Pachete greșite în handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3534
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Pachete greșite în handle_video_packet_seek"
 
@@ -9456,7 +9456,7 @@ msgstr "avcodec_context_from_parameters a eșuat pentru video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context a eșuat pentru audio"
 
-#: core/aviImage.cpp:1761
+#: core/aviImage.cpp:1760
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context a eșuat pentru subtitrare"
 
@@ -9521,7 +9521,7 @@ msgstr "dublare"
 msgid "files"
 msgstr "înregistrări"
 
-#: core/aviImage.cpp:1912 core/aviImage.cpp:1925 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "imagine_căutare: casetă "
@@ -9829,7 +9829,7 @@ msgstr "recv() a eșuat"
 msgid "send() failed"
 msgstr "send() a eșuat"
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid "send_packet error: "
 msgstr "Nu am putut trimite pachetul. Eroare "
 
