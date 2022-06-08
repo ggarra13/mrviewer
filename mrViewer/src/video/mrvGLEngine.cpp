@@ -1817,7 +1817,7 @@ void GLEngine::draw_images( ImageList& images )
 
     if ( num_quads > _quads.size() )
     {
-        TRACE2( "num_quads (" << num_quads << ") != _quads.size() ("
+        TRACE( "num_quads (" << num_quads << ") != _quads.size() ("
                 << _quads.size() << ") images.size() (" << images.size()
                 << ")" );
         ImageView::VRType t = _view->vr();
@@ -2400,9 +2400,10 @@ void GLEngine::draw_images( ImageList& images )
             glEnable( GL_TEXTURE_3D );
         }
 
-        TRACE2( "pic->valid? " << pic->valid() << " channels= "
+        TRACE( "pic->valid? " << pic->valid() << " channels= "
                 << pic->channels() << " missing_frame==Scratched? "
-                << ( Preferences::missing_frame == Preferences::kScratchedRepeatFrame ) );
+                << ( Preferences::missing_frame ==
+                     Preferences::kScratchedRepeatFrame ) );
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )

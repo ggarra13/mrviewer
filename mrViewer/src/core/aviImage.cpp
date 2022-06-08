@@ -235,7 +235,6 @@ aviImage::aviImage() :
     _counter( 0 ),
     _last_cached( false ),
     _max_images( kMaxCacheImages ),
-    _cache_paused( false ),
     _inv_table( NULL ),
     buffersink_ctx( NULL ),
     buffersrc_ctx( NULL ),
@@ -1681,7 +1680,7 @@ void aviImage::limit_video_store(const int64_t frame)
 
     SCOPED_LOCK( _mutex );
 
-    int max_frames = max_video_frames();
+    unsigned max_frames = max_video_frames();
     if ( _has_image_seq )
     {
         max_frames = max_image_frames();
@@ -1926,6 +1925,7 @@ bool aviImage::find_image( const int64_t frame )
             else
             {
                 IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
+
                 return false;
             }
         }
@@ -3394,7 +3394,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
     bool got_audio = !has_audio();
     bool got_subtitle = !has_subtitle();
 
-    int64_t f = frame; //handle_loops( frame );
+    int64_t f = frame;
 
     if ( !saving() )
     {
@@ -3469,11 +3469,10 @@ bool aviImage::frame( const int64_t f )
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
-          _cache_paused ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
             ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
-        TRACE( "EARLY EXIT FRAME " << f << " -- BUFFERS FULL" );
+        TRACE2( "EARLY EXIT FRAME " << f << " -- BUFFERS FULL" );
         return false;
     }
 
@@ -3544,6 +3543,9 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
     }
     else if ( !is_seek && _video_packets.is_preroll() )
     {
+        unsigned num = max_video_frames();
+        if ( playback() == kBackwards && _images.size() > num )
+            return kDecodeOK;
         _video_packets.pop_front();  // pop preroll begin packet
     }
     else

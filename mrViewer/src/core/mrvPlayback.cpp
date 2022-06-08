@@ -746,11 +746,11 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        TRACE2( "AUDIO FRAME " << frame << " WAIT AUDIO" );
+        TRACE( "AUDIO FRAME " << frame << " WAIT AUDIO" );
 
         img->wait_audio();
 
-        TRACE2( "AUDIO FRAME " << frame << " WAITED AUDIO" );
+        TRACE( "AUDIO FRAME " << frame << " WAITED AUDIO" );
 
 
 
@@ -898,7 +898,7 @@ void audio_thread( PlaybackData* data )
 
         if ( reel->edl ) frame = img->audio_frame();
         frame += step;
-        TRACE2( img->name() << " LOCAL AUDIO FRAME " << frame
+        TRACE( img->name() << " LOCAL AUDIO FRAME " << frame
                 << " audio offset=" << img->audio_offset() );
     }
 
@@ -1370,7 +1370,7 @@ void video_thread( PlaybackData* data )
                         int64_t Aout   = Aimg->out_frame();
                         if ( Aframe >= Aout )
                         {
-                            TRACE2( Aimg->name() << " CHECK DISSOLVE END LOOP "
+                            TRACE( Aimg->name() << " CHECK DISSOLVE END LOOP "
                                     << Aframe << " out= " << Aout );
                             Aframe++;
                             EndStatus end = handle_loop( Aframe, step, Aimg,
