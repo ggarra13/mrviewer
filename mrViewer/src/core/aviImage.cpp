@@ -134,6 +134,11 @@ namespace mrv {
     extern void sleep_ms( int ms );
 
 
+    AVRational swap(AVRational value)
+    {
+        return AVRational({ value.den, value.num });
+    }
+
 int CMedia::colorspace_override = 0;
 
 const char* const kColorRange[] = {
@@ -230,6 +235,7 @@ aviImage::aviImage() :
     _counter( 0 ),
     _last_cached( false ),
     _max_images( kMaxCacheImages ),
+    _cache_paused( false ),
     _inv_table( NULL ),
     buffersink_ctx( NULL ),
     buffersrc_ctx( NULL ),
@@ -896,11 +902,11 @@ void aviImage::open_video_codec()
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );
 
     AVDictionary* info = NULL;
-    const std::string& threads = Preferences::video_threads;
-    _video_ctx->thread_type = FF_THREAD_FRAME;
-    _video_ctx->thread_count = atoi( threads.c_str() );
+    std::string threads = Preferences::video_threads;
+    if ( threads == "0" ) threads = "auto";
 
-    // recounted frames needed for subtitles
+    // refcounted frames needed for subtitles
+    av_dict_set(&info, "threads", threads.c_str(), 0 );
     av_dict_set(&info, "refcounted_frames", "1", 0);
     av_dict_set(&info, "noautorotate", NULL, 0);
 
@@ -949,23 +955,9 @@ void aviImage::clear_cache()
 
 CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
-    SCOPED_LOCK( _mutex );
-
     int64_t f = frame - _start_number;
-#if 1
     // Check if video is already in video store
     bool ok = in_video_store( f );
-#else
-    bool ok = false;
-
-    // Check if video is already in video store
-    video_cache_t::iterator end = _images.end();
-    video_cache_t::iterator i = std::find_if( _images.begin(), end,
-                                              EqualFunctor(f) );
-    if ( i != end ) ok = true;
-
-#endif
-
     if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
     return (CMedia::Cache) ok;
 }
@@ -1007,8 +999,6 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
 
 
-    // With frame and reverse playback, we often do not get the current
-    // frame.  So we search for frame - 1.
     int64_t start = frame;
     int64_t offset = 0;
 
@@ -1019,9 +1009,7 @@ bool aviImage::seek_to_position( const int64_t frame )
             start -= _start_number;
         }
     }
-    if ( !skip ) --start;
 
-    if ( start < 0 ) start = 0;
 
     // std::cerr << name() << std::endl << "-------------" << std::endl;
     // std::cerr << "_start_number " << _start_number << std::endl;
@@ -1031,16 +1019,30 @@ bool aviImage::seek_to_position( const int64_t frame )
     // std::cerr << "int64 "
     //           << int64_t( double( start * AV_TIME_BASE / fps() ) )
     //           << std::endl;
-    offset = int64_t( double( start * AV_TIME_BASE / fps() ) );
+
+
+    int idx = video_stream_index();
+    AVStream* stream = get_video_stream();
+    if ( stream == NULL ) {
+        idx = audio_stream_index();
+        stream = get_audio_stream();
+    }
+
+    AVRational tb = stream->time_base;
+    AVRational fr = stream->r_frame_rate;
+    offset = av_rescale_q( start, swap( fr ), tb );
+
 
     if ( offset < 0 ) offset = 0;
 
 
     int ret = 0;
-    int flag = AVSEEK_FLAG_BACKWARD;
+    int flag = 0;
+    if ( frame < _frame ) flag |= AVSEEK_FLAG_BACKWARD;
+
     if ( !skip )
     {
-        ret = avformat_seek_file( _context, -1,
+        ret = avformat_seek_file( _context, idx,
                                   std::numeric_limits<int64_t>::min(), offset,
                                   std::numeric_limits<int64_t>::max(), flag );
     }
@@ -1145,6 +1147,8 @@ bool aviImage::seek_to_position( const int64_t frame )
                                  got_audio, got_subtitle );
 
     _dts = _adts = dts;
+    if ( playback() == kBackwards && _dts != first_frame() )
+        _dts += _frame_offset;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
     _expected = _expected_audio = dts + 1;
@@ -3462,17 +3466,16 @@ bool aviImage::frame( const int64_t f )
 
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
-
     if ( (!stopped()) && (!saving()) &&
          (( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
+          _cache_paused ||
           ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
             ( vpkts > kMIN_FRAMES || !has_video() ) )) )
     {
-        TRACE( "******* FRAME EARLY EXIT -- BUFFERS FULL" );
+        TRACE( "EARLY EXIT FRAME " << f << " -- BUFFERS FULL" );
         return false;
     }
-
 
     TRACE( ">>>>>>>>>>>> " << name() << " FRAME IS " << f );
 
@@ -3551,24 +3554,24 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
     DecodeStatus status;
     unsigned count = 0;
 
+    AVStream* stream = get_video_stream();
 
     while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
     {
         const AVPacket& pkt = _video_packets.front();
         ++count;
 
-        int64_t pktframe;
-        if ( pkt.dts != AV_NOPTS_VALUE )
-            pktframe = pts2frame( get_video_stream(), pkt.dts );
-        else
-            pktframe = frame;
+        int64_t pktframe = get_frame( stream, pkt );
 
         if ( !is_seek && playback() == kBackwards )
         {
 
             status = decode_image( pktframe, (AVPacket&)pkt );
 
-            if ( status == kDecodeOK && pktframe <= frame )  got_video = status;
+            if ( status == kDecodeOK && pktframe <= frame )
+            {
+                got_video = status;
+            }
         }
         else
         {

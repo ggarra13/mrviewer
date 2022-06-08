@@ -2925,6 +2925,7 @@ void CMedia::stop( const bool fg )
     // Clear any audio/video/subtitle packets
     clear_packets();
 
+
     TRACE( name() << " frame " << frame() );
     // Queue thumbnail for update
     image_damage( image_damage() | kDamageThumbnail | kDamageData );

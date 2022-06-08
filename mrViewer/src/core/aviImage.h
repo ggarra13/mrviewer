@@ -328,6 +328,7 @@ protected:
     bool                  _last_cached;
     video_cache_t         _images;
     unsigned int          _max_images;
+    bool                  _cache_paused;
     const int*            _inv_table;
 
     std::string           _right_filename;

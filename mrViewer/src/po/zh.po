@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-06 18:23-0300\n"
+"POT-Creation-Date: 2022-06-08 19:33-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3678
 msgid ""
 "\n"
 "\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "不是已知的编解码器 "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - 音频帧解码错误 "
 msgid " Color Area Selection"
 msgstr " 颜色区域选择"
 
-#: core/aviImage.cpp:3057
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr " 我无法打开文件。 "
 
@@ -117,7 +117,7 @@ msgstr " 匹配的后缀="
 msgid " Move Picture"
 msgstr " 移动图像"
 
-#: core/aviImage.cpp:2529
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr " 文件中没有音频或视频"
 
@@ -137,7 +137,7 @@ msgstr " 文本"
 msgid " already created: "
 msgstr " 已经创建： "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid " as default"
 msgstr " 默认"
 
@@ -190,7 +190,7 @@ msgstr " 失败。 "
 msgid " for channel.  Maximum: "
 msgstr " 为频道。最大： "
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
 msgid " for codec "
 msgstr " 用于编解码器 "
 
@@ -198,7 +198,7 @@ msgstr " 用于编解码器 "
 msgid " for color_space"
 msgstr " 对于颜色空间"
 
-#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4135 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " 用于框架 "
 
@@ -210,7 +210,7 @@ msgstr " 对于 gamma_curve"
 msgid " for reel "
 msgstr " 用于卷轴 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid " for stream #"
 msgstr " 对于轨道#"
 
@@ -238,7 +238,7 @@ msgstr ""
 " 如果 mrViewer 崩溃\n"
 "不修改 Preferences->User Interface->Single Instance。"
 
-#: core/aviImage.cpp:1914
+#: core/aviImage.cpp:1918
 msgid " instead"
 msgstr " 代替"
 
@@ -258,15 +258,15 @@ msgstr " 它已经是磁盘上的第一个版本。"
 msgid " is already the last version on disk."
 msgstr " 它已经是磁盘上的最新版本。"
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4376
 msgid " is missing."
 msgstr " 他迷路了。"
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4399
 msgid " is missing. Choosing "
 msgstr " 不见了。挑选出 "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " 未找到"
@@ -275,11 +275,11 @@ msgstr " 未找到"
 msgid " not found in reel"
 msgstr " 在卷轴上找不到"
 
-#: core/aviImage.cpp:1912
+#: core/aviImage.cpp:1916
 msgid " not found, choosing "
 msgstr " 没找到，选择 "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4305
 msgid " not yet supported"
 msgstr " 尚不支持"
 
@@ -291,7 +291,7 @@ msgstr " 返回 "
 msgid " size is "
 msgstr " 大小是 "
 
-#: core/aviImage.cpp:4160
+#: core/aviImage.cpp:4163
 msgid " status: "
 msgstr " 状态： "
 
@@ -303,7 +303,7 @@ msgstr " 到"
 msgid " to "
 msgstr " 到 "
 
-#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1888 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " 视频帧，缓存 "
 
@@ -453,11 +453,11 @@ msgstr "' 为了 "
 msgid "' for writing. Reason: "
 msgstr "' 写。原因： "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid "' from bitdepth "
 msgstr "' 位深度： "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4471
 msgid "' from filename"
 msgstr "'来自文件名"
 
@@ -528,7 +528,7 @@ msgstr "（如果 mrViewer 无法启动，请将其删除）"
 msgid "(no image)"
 msgstr "（无图）"
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1889 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") 缓存大小： "
 
@@ -574,7 +574,7 @@ msgstr "， 频率 "
 msgid ", frequency "
 msgstr "， 频率 "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid ", type "
 msgstr "， 类型 "
 
@@ -735,7 +735,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4491
 msgid "16 bits"
 msgstr "16 位"
 
@@ -852,7 +852,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4498
 msgid "32 bits"
 msgstr "32 位"
 
@@ -979,7 +979,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "8位缓存"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4484
 msgid "8 bits"
 msgstr "8位"
 
@@ -1837,11 +1837,11 @@ msgstr "取消"
 msgid "Cannot allocate dst samples"
 msgstr "我无法分配 dst 样本"
 
-#: core/aviImage.cpp:601
+#: core/aviImage.cpp:607
 msgid "Cannot create buffer sink"
 msgstr "无法创建缓冲区接收器"
 
-#: core/aviImage.cpp:591
+#: core/aviImage.cpp:597
 msgid "Cannot create buffer source"
 msgstr "无法创建缓冲区源"
 
@@ -1862,7 +1862,7 @@ msgstr "我无法映射\""
 msgid "Cannot parse environment variable \""
 msgstr "无法解释环境变量\""
 
-#: core/aviImage.cpp:608
+#: core/aviImage.cpp:614
 msgid "Cannot set output pixel format"
 msgstr "无法设置输出像素渲染格式"
 
@@ -2126,11 +2126,11 @@ msgstr "未找到索引的颜色通道 "
 msgid "Color controls"
 msgstr "颜色控制"
 
-#: core/aviImage.cpp:1304
+#: core/aviImage.cpp:1308
 msgid "Colorspace details not gotten "
 msgstr "未获得色彩空间细节 "
 
-#: core/aviImage.cpp:1333
+#: core/aviImage.cpp:1337
 msgid "Colorspace details not set "
 msgstr "未设置色彩空间细节 "
 
@@ -2334,7 +2334,7 @@ msgstr "我无法从 OCIO 计算 Lut"
 msgid "Could not copy context to parameters"
 msgstr "无法将上下文复制到参数"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2396
+#: core/aviImage.cpp:735 core/aviImage.cpp:2400
 msgid "Could not copy parameters to context"
 msgstr "无法将参数复制到编解码器上下文"
 
@@ -2442,11 +2442,11 @@ msgstr "我找不到 4x4 数组的十六个浮点数"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "我找不到 4x4 矩阵的十六个浮点数 "
 
-#: core/aviImage.cpp:3033
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr "找不到曲目信息"
 
-#: core/aviImage.cpp:757
+#: core/aviImage.cpp:763
 msgid "Could not find subtitle in '"
 msgstr "在 ' 上找不到字幕"
 
@@ -2514,7 +2514,7 @@ msgstr "我无法获取音频样本"
 msgid "Could not get device info for "
 msgstr "获取设备信息失败 "
 
-#: core/aviImage.cpp:1284
+#: core/aviImage.cpp:1288
 msgid "Could not get image conversion context."
 msgstr "我无法获得图像转换上下文。"
 
@@ -2647,7 +2647,7 @@ msgstr ""
 "我无法保存序列或电影，只能保存指定的图像。对流使用 %d 语法或对电影使用自定义"
 "扩展名。"
 
-#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
+#: core/aviImage.cpp:1052 core/aviImage.cpp:1069
 msgid "Could not seek to frame "
 msgstr "我找不到那幅画 "
 
@@ -3049,11 +3049,11 @@ msgstr "无轨解码"
 msgid "Decode OK"
 msgstr "解码正常"
 
-#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "音频解码错误： "
 
-#: core/aviImage.cpp:4158
+#: core/aviImage.cpp:4161
 msgid "Decode video error seek frame "
 msgstr "寻找图像的视频解码错误 "
 
@@ -3371,7 +3371,7 @@ msgstr "传递给 media_to_pathname 的空媒体"
 msgid "Empty media provided to Element constructor"
 msgstr "提供给元素构造函数的空媒体"
 
-#: core/aviImage.cpp:3587
+#: core/aviImage.cpp:3590
 msgid "Empty packets for video seek."
 msgstr "用于视频搜索的空包。"
 
@@ -3379,7 +3379,7 @@ msgstr "用于视频搜索的空包。"
 msgid "Empty pic file for media "
 msgstr "媒体的空图像文件 "
 
-#: core/aviImage.cpp:4511
+#: core/aviImage.cpp:4514
 msgid "Empty seek or preroll"
 msgstr "空搜索或预卷"
 
@@ -3445,7 +3445,7 @@ msgstr "转换音频时出错： "
 msgid "Error while encoding video frame: "
 msgstr "视频帧编码错误： "
 
-#: core/aviImage.cpp:1443
+#: core/aviImage.cpp:1447
 msgid "Error while feeding the filtergraph"
 msgstr "输入过滤器图表时出错"
 
@@ -4084,7 +4084,7 @@ msgstr "转到序列的开头。"
 msgid "Go to the end of the sequence."
 msgstr "转到序列的末尾。"
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4471 core/CMedia.cpp:4518
 msgid "Got colorspace '"
 msgstr "我得到了色彩空间'"
 
@@ -4703,7 +4703,7 @@ msgstr "无效的立体图像 "
 msgid "Invalid timecode "
 msgstr "时间码无效 "
 
-#: core/aviImage.cpp:1964
+#: core/aviImage.cpp:1968
 msgid "Invalid video stream "
 msgstr "无效的视频轨道 "
 
@@ -5554,11 +5554,11 @@ msgstr "无图可附一对立体图"
 msgid "No memory for audio frame"
 msgstr "音频帧没有内存"
 
-#: core/aviImage.cpp:569
+#: core/aviImage.cpp:575
 msgid "No memory to allocate filter graph"
 msgstr "过滤器图没有内存"
 
-#: core/aviImage.cpp:2129
+#: core/aviImage.cpp:2133
 msgid "No pixel format could be chosen"
 msgstr "无法选择像素格式"
 
@@ -5678,11 +5678,11 @@ msgstr "黑色图像没有内存"
 msgid "Not enough memory for color transform"
 msgstr "没有颜色转换的记忆"
 
-#: core/aviImage.cpp:2390
+#: core/aviImage.cpp:2394
 msgid "Not enough memory for context"
 msgstr "没有上下文记忆"
 
-#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1219 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "没有图像记忆"
 
@@ -6354,7 +6354,7 @@ msgstr "打印"
 msgid "Priority"
 msgstr "优先"
 
-#: core/aviImage.cpp:1220
+#: core/aviImage.cpp:1224
 msgid "Problem allocating image "
 msgstr "分配图像的问题 "
 
@@ -6370,12 +6370,12 @@ msgstr "轮廓"
 msgid "Profile name "
 msgstr "个人资料名称 "
 
-#: core/aviImage.cpp:2778
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr "程序 %d "
 
-#: core/aviImage.cpp:2774
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr "程序 %d: %s"
@@ -6752,7 +6752,7 @@ msgstr "音频重采样失败"
 msgid "Resampling audio failed.  Len: "
 msgstr "音频重采样失败。莱昂： "
 
-#: core/aviImage.cpp:149
+#: core/aviImage.cpp:154
 msgid "Reserved"
 msgstr "预订的"
 
@@ -7486,19 +7486,19 @@ msgstr "字幕轨道 #%d"
 msgid "Subtitle Streams"
 msgstr "字幕轨道"
 
-#: core/aviImage.cpp:787
+#: core/aviImage.cpp:793
 msgid "Subtitle encoding "
 msgstr "字幕编码 "
 
-#: core/aviImage.cpp:785
+#: core/aviImage.cpp:791
 msgid "Subtitle file "
 msgstr "字幕文件 "
 
-#: core/aviImage.cpp:786
+#: core/aviImage.cpp:792
 msgid "Subtitle font "
 msgstr "字幕信 "
 
-#: core/aviImage.cpp:4301
+#: core/aviImage.cpp:4304
 msgid "Subtitle type "
 msgstr "字幕类型 "
 
@@ -8276,7 +8276,7 @@ msgstr "未处理的异常"
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8342,7 +8342,7 @@ msgstr "键 ' 的未知数据类型"
 msgid "Unknown data type to convert to string"
 msgstr "从文本转换的未知数据类型"
 
-#: core/aviImage.cpp:2256
+#: core/aviImage.cpp:2260
 msgid "Unknown destination video frame format: "
 msgstr "未知接收者视频帧格式： "
 
@@ -8402,7 +8402,7 @@ msgstr "mrvOCIOBrowser 的未知数据类型"
 msgid "Unknown wipe direction"
 msgstr "未知擦除地址"
 
-#: core/aviImage.cpp:140 core/aviImage.cpp:148 video/mrvGLQuad.cpp:1183
+#: core/aviImage.cpp:145 core/aviImage.cpp:153 video/mrvGLQuad.cpp:1183
 #: video/mrvGLCube.cpp:252 video/mrvGLSphere.cpp:254
 msgid "Unspecified"
 msgstr "未指定"
@@ -8618,7 +8618,7 @@ msgstr "视频轨道 #%d"
 msgid "Video Streams"
 msgstr "视频轨道"
 
-#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1886 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "视频同步主机 "
 
@@ -9085,7 +9085,7 @@ msgstr "我收到了不正确的数据大小。"
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
-#: core/aviImage.cpp:3534
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
@@ -9272,7 +9272,7 @@ msgstr "缩放到图像失败"
 msgid "attributes not found"
 msgstr "未找到属性"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3448 core/CMedia.cpp:3479
 msgid "audio"
 msgstr "声音的"
 
@@ -9280,7 +9280,7 @@ msgstr "声音的"
 msgid "audio frame is missing"
 msgstr "音频盒不见了。"
 
-#: core/aviImage.cpp:856
+#: core/aviImage.cpp:862
 msgid "avcodec_context_from_parameters failed for video"
 msgstr "avcodec_context_from_parameters 视频失败"
 
@@ -9288,7 +9288,7 @@ msgstr "avcodec_context_from_parameters 视频失败"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context 音频失败"
 
-#: core/aviImage.cpp:1760
+#: core/aviImage.cpp:1764
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context 字幕失败"
 
@@ -9313,15 +9313,15 @@ msgstr "光盘/平方米"
 msgid "change_image index "
 msgstr "change_imdice 图像 "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3740
 msgid "clean effects"
 msgstr "清洁效果"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3728
 msgid "comment"
 msgstr "注释"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3451 core/CMedia.cpp:3482
 msgid "data"
 msgstr "数据"
 
@@ -9333,11 +9333,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet 帧失败 "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3722
 msgid "default"
 msgstr "默认"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4511
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - 未知位深度"
 
@@ -9345,7 +9345,7 @@ msgstr "default_leisure_input_color_space - 未知位深度"
 msgid "delete uiview"
 msgstr "删除uiview"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3724
 msgid "dub"
 msgstr "配音"
 
@@ -9353,7 +9353,7 @@ msgstr "配音"
 msgid "files"
 msgstr "记录"
 
-#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1915 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "搜索图像：框 "
@@ -9368,7 +9368,7 @@ msgstr "浮点"
 msgid "float (32-bits per channel)"
 msgstr "浮点数（每通道 32 位）"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3734
 msgid "forced"
 msgstr "被迫"
 
@@ -9400,7 +9400,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "半浮点（每通道 16 位）"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4506
 msgid "half/float"
 msgstr "一半/全浮点"
 
@@ -9408,7 +9408,7 @@ msgstr "一半/全浮点"
 msgid "has invalid magic number in the header."
 msgstr "标头中有无效的幻数。"
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3736
 msgid "hearing impaired"
 msgstr "听力障碍"
 
@@ -9428,7 +9428,7 @@ msgstr "它是 Softimage 文件，但不是 PIC 文件。"
 msgid "item_pathname returned "
 msgstr "item_pathname 返回 "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3732
 msgid "karaoke"
 msgstr "卡拉OK"
 
@@ -9444,7 +9444,7 @@ msgstr "收听插件失败\n"
 msgid "loadDeepData error: "
 msgstr "深度数据加载错误： "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3730
 msgid "lyrics"
 msgstr "歌词"
 
@@ -9582,7 +9582,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame 没有要更改的像素数据"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3726
 msgid "original"
 msgstr "原版的"
 
@@ -9654,7 +9654,7 @@ msgstr "recv() 失败"
 msgid "send() failed"
 msgstr "发送（）失败"
 
-#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
+#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
 msgid "send_packet error: "
 msgstr "我无法发送包裹。错误 "
 
@@ -9678,7 +9678,7 @@ msgstr "src_nb_samples 为 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio：无效数据。呃，是的 "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3454 core/CMedia.cpp:3485
 msgid "subtitle"
 msgstr "字幕"
 
@@ -9690,11 +9690,11 @@ msgstr "sysctl 失败。"
 msgid "task info failed"
 msgstr "任务信息失败"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3697 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "工业"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4478
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "未知"
@@ -9711,11 +9711,11 @@ msgstr "无符号整数（每通道 32 位）"
 msgid "unsigned short (16-bits per channel)"
 msgstr "短无符号（每通道 16 位）"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3445 core/CMedia.cpp:3476
 msgid "video"
 msgstr "视频"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3738
 msgid "visual impaired"
 msgstr "视力障碍者"
 

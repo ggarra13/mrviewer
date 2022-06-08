@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-06 18:23-0300\n"
+"POT-Creation-Date: 2022-06-08 19:33-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3678
 msgid ""
 "\n"
 "\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Není to známý kodek "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - chyba dekódování zvukového rámce "
 msgid " Color Area Selection"
 msgstr " Výběr barevné oblasti"
 
-#: core/aviImage.cpp:3057
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr " Soubor se mi nepodařilo otevřít. "
 
@@ -117,7 +117,7 @@ msgstr " Shodná přípona="
 msgid " Move Picture"
 msgstr " přesunout obrázek"
 
-#: core/aviImage.cpp:2529
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr " V souboru není žádný zvuk ani video"
 
@@ -137,7 +137,7 @@ msgstr " Text"
 msgid " already created: "
 msgstr " již vytvořeno: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid " as default"
 msgstr " výchozí"
 
@@ -190,7 +190,7 @@ msgstr " elhání. "
 msgid " for channel.  Maximum: "
 msgstr " pro kanál. Maximum: "
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
 msgid " for codec "
 msgstr " pro kodek "
 
@@ -198,7 +198,7 @@ msgstr " pro kodek "
 msgid " for color_space"
 msgstr " pro barevný_prostor"
 
-#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4135 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " pro rám "
 
@@ -210,7 +210,7 @@ msgstr " pro gama_curve"
 msgid " for reel "
 msgstr " pro cívku "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid " for stream #"
 msgstr " pro stopu #"
 
@@ -238,7 +238,7 @@ msgstr ""
 " pokud mrViewer spadne\n"
 "neupraví Předvolby->Uživatelské rozhraní->Jedna instance."
 
-#: core/aviImage.cpp:1914
+#: core/aviImage.cpp:1918
 msgid " instead"
 msgstr " v náhradě"
 
@@ -258,15 +258,15 @@ msgstr " Je to již první verze na disku."
 msgid " is already the last version on disk."
 msgstr " Je to již nejnovější verze na disku."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4376
 msgid " is missing."
 msgstr " je ztracen."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4399
 msgid " is missing. Choosing "
 msgstr " chybí. vybírání "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " nenalezeno"
@@ -275,11 +275,11 @@ msgstr " nenalezeno"
 msgid " not found in reel"
 msgstr " nenalezen na cívce"
 
-#: core/aviImage.cpp:1912
+#: core/aviImage.cpp:1916
 msgid " not found, choosing "
 msgstr " nenalezen, vybírám "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4305
 msgid " not yet supported"
 msgstr " zatím není podporováno"
 
@@ -291,7 +291,7 @@ msgstr " vrátit se "
 msgid " size is "
 msgstr " velikost je "
 
-#: core/aviImage.cpp:4160
+#: core/aviImage.cpp:4163
 msgid " status: "
 msgstr " postavení: "
 
@@ -303,7 +303,7 @@ msgstr " na"
 msgid " to "
 msgstr " na "
 
-#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1888 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " nímek videa, mezipaměť "
 
@@ -456,11 +456,11 @@ msgstr "' pro "
 msgid "' for writing. Reason: "
 msgstr "' pro psaní. Důvod: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid "' from bitdepth "
 msgstr "bitová hloubka: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4471
 msgid "' from filename"
 msgstr "' z názvu souboru"
 
@@ -531,7 +531,7 @@ msgstr "(Pokud se mrViewer nespustí, odeberte jej)"
 msgid "(no image)"
 msgstr "(Bez obrázku)"
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1889 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") velikost mezipaměti: "
 
@@ -577,7 +577,7 @@ msgstr ", frekvence "
 msgid ", frequency "
 msgstr ", frekvence "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid ", type "
 msgstr ", typ "
 
@@ -738,7 +738,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4491
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -855,7 +855,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4498
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -982,7 +982,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8bitová mezipaměť"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4484
 msgid "8 bits"
 msgstr "8 bitů"
 
@@ -1848,11 +1848,11 @@ msgstr "zrušení"
 msgid "Cannot allocate dst samples"
 msgstr "Nemohu přiřadit vzorky dst"
 
-#: core/aviImage.cpp:601
+#: core/aviImage.cpp:607
 msgid "Cannot create buffer sink"
 msgstr "Nelze vytvořit jímku vyrovnávací paměti"
 
-#: core/aviImage.cpp:591
+#: core/aviImage.cpp:597
 msgid "Cannot create buffer source"
 msgstr "Nelze vytvořit zdroj vyrovnávací paměti"
 
@@ -1873,7 +1873,7 @@ msgstr "Nemohu mapovat \""
 msgid "Cannot parse environment variable \""
 msgstr "Nelze interpretovat proměnnou prostředí \""
 
-#: core/aviImage.cpp:608
+#: core/aviImage.cpp:614
 msgid "Cannot set output pixel format"
 msgstr "Nelze nastavit výstupní formát vykreslování pixelů"
 
@@ -2138,11 +2138,11 @@ msgstr "Barevný kanál nebyl nalezen pro index "
 msgid "Color controls"
 msgstr "ovládání barev"
 
-#: core/aviImage.cpp:1304
+#: core/aviImage.cpp:1308
 msgid "Colorspace details not gotten "
 msgstr "Podrobnosti barevného prostoru nebyly získány "
 
-#: core/aviImage.cpp:1333
+#: core/aviImage.cpp:1337
 msgid "Colorspace details not set "
 msgstr "Podrobnosti barevného prostoru nejsou nastaveny "
 
@@ -2348,7 +2348,7 @@ msgstr "Nedokázal jsem spočítat Lut z OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Nelze zkopírovat kontext do parametrů"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2396
+#: core/aviImage.cpp:735 core/aviImage.cpp:2400
 msgid "Could not copy parameters to context"
 msgstr "Parametry nelze zkopírovat do kontextu kodeku"
 
@@ -2463,11 +2463,11 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Nemohl jsem najít šestnáct čísel s pohyblivou řádovou čárkou pro pole 4x4 "
 
-#: core/aviImage.cpp:3033
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr "Nepodařilo se najít informace o skladbě"
 
-#: core/aviImage.cpp:757
+#: core/aviImage.cpp:763
 msgid "Could not find subtitle in '"
 msgstr "Nebylo možné najít titulky na '"
 
@@ -2535,7 +2535,7 @@ msgstr "Nemohl jsem získat zvukové ukázky"
 msgid "Could not get device info for "
 msgstr "Nepodařilo se získat informace o zařízení pro "
 
-#: core/aviImage.cpp:1284
+#: core/aviImage.cpp:1288
 msgid "Could not get image conversion context."
 msgstr "Nepodařilo se mi získat kontext konverze obrázku."
 
@@ -2668,7 +2668,7 @@ msgstr ""
 "Nemohl jsem uložit sekvenci nebo film, jen určený obrázek. Použijte syntaxi "
 "%d pro sekvence nebo vlastní rozšíření pro filmy."
 
-#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
+#: core/aviImage.cpp:1052 core/aviImage.cpp:1069
 msgid "Could not seek to frame "
 msgstr "Obraz jsem nenašel "
 
@@ -3070,11 +3070,11 @@ msgstr "Bezkolejové dekódování"
 msgid "Decode OK"
 msgstr "dekódování ok"
 
-#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Chyba dekódování zvuku: "
 
-#: core/aviImage.cpp:4158
+#: core/aviImage.cpp:4161
 msgid "Decode video error seek frame "
 msgstr "Chyba při dekódování videa při hledání obrázku "
 
@@ -3397,7 +3397,7 @@ msgstr "Prázdné médium předáno media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Prázdné médium poskytnuté konstruktoru prvků"
 
-#: core/aviImage.cpp:3587
+#: core/aviImage.cpp:3590
 msgid "Empty packets for video seek."
 msgstr "Prázdné pakety pro vyhledávání videa."
 
@@ -3405,7 +3405,7 @@ msgstr "Prázdné pakety pro vyhledávání videa."
 msgid "Empty pic file for media "
 msgstr "Prázdný soubor obrázku pro média "
 
-#: core/aviImage.cpp:4511
+#: core/aviImage.cpp:4514
 msgid "Empty seek or preroll"
 msgstr "Prázdné vyhledávání nebo preroll"
 
@@ -3473,7 +3473,7 @@ msgstr "Chyba při převodu zvuku: "
 msgid "Error while encoding video frame: "
 msgstr "Chyba při kódování snímku videa: "
 
-#: core/aviImage.cpp:1443
+#: core/aviImage.cpp:1447
 msgid "Error while feeding the filtergraph"
 msgstr "Chyba při načítání grafu filtru"
 
@@ -4112,7 +4112,7 @@ msgstr "Přejděte na začátek sekvence."
 msgid "Go to the end of the sequence."
 msgstr "Přejděte na konec sekvence."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4471 core/CMedia.cpp:4518
 msgid "Got colorspace '"
 msgstr "Mám barevný prostor'"
 
@@ -4734,7 +4734,7 @@ msgstr "Neplatný stereo obraz "
 msgid "Invalid timecode "
 msgstr "Neplatný časový kód "
 
-#: core/aviImage.cpp:1964
+#: core/aviImage.cpp:1968
 msgid "Invalid video stream "
 msgstr "neplatná video stopa "
 
@@ -5594,11 +5594,11 @@ msgstr "Nezbývá žádný obrázek pro připojení dvojice stereo obrázků"
 msgid "No memory for audio frame"
 msgstr "Žádná paměť pro zvukový rámeček"
 
-#: core/aviImage.cpp:569
+#: core/aviImage.cpp:575
 msgid "No memory to allocate filter graph"
 msgstr "Žádná paměť pro graf filtru"
 
-#: core/aviImage.cpp:2129
+#: core/aviImage.cpp:2133
 msgid "No pixel format could be chosen"
 msgstr "Nelze vybrat formát pixelů"
 
@@ -5720,11 +5720,11 @@ msgstr "Žádná paměť pro černý obrázek"
 msgid "Not enough memory for color transform"
 msgstr "Žádná paměť pro transformaci barev"
 
-#: core/aviImage.cpp:2390
+#: core/aviImage.cpp:2394
 msgid "Not enough memory for context"
 msgstr "Žádná paměť na kontext"
 
-#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1219 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Žádná obrazová paměť"
 
@@ -6408,7 +6408,7 @@ msgstr "Vytisknout"
 msgid "Priority"
 msgstr "Přednost"
 
-#: core/aviImage.cpp:1220
+#: core/aviImage.cpp:1224
 msgid "Problem allocating image "
 msgstr "Problém s přiřazením obrázku "
 
@@ -6424,12 +6424,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Název profilu "
 
-#: core/aviImage.cpp:2778
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2774
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -6814,7 +6814,7 @@ msgstr "Převzorkování zvuku se nezdařilo"
 msgid "Resampling audio failed.  Len: "
 msgstr "Převzorkování zvuku se nezdařilo. Leon: "
 
-#: core/aviImage.cpp:149
+#: core/aviImage.cpp:154
 msgid "Reserved"
 msgstr "Rezervováno"
 
@@ -7556,19 +7556,19 @@ msgstr "Titulková stopa #%d"
 msgid "Subtitle Streams"
 msgstr "Stopy s titulky"
 
-#: core/aviImage.cpp:787
+#: core/aviImage.cpp:793
 msgid "Subtitle encoding "
 msgstr "Kódování titulků "
 
-#: core/aviImage.cpp:785
+#: core/aviImage.cpp:791
 msgid "Subtitle file "
 msgstr "Soubor s titulky "
 
-#: core/aviImage.cpp:786
+#: core/aviImage.cpp:792
 msgid "Subtitle font "
 msgstr "Podtitulkový dopis "
 
-#: core/aviImage.cpp:4301
+#: core/aviImage.cpp:4304
 msgid "Subtitle type "
 msgstr "Typ titulků "
 
@@ -8374,7 +8374,7 @@ msgstr "neošetřená výjimka"
 msgid "Unhandled exception"
 msgstr "neošetřená výjimka"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8440,7 +8440,7 @@ msgstr "Neznámý datový typ pro klíč '"
 msgid "Unknown data type to convert to string"
 msgstr "Neznámý datový typ pro převod z textu"
 
-#: core/aviImage.cpp:2256
+#: core/aviImage.cpp:2260
 msgid "Unknown destination video frame format: "
 msgstr "Neznámý formát rámce videa příjemce: "
 
@@ -8500,7 +8500,7 @@ msgstr "Neznámý datový typ pro mrvOCIOBrowser"
 msgid "Unknown wipe direction"
 msgstr "Neznámá adresa pro vymazání"
 
-#: core/aviImage.cpp:140 core/aviImage.cpp:148 video/mrvGLQuad.cpp:1183
+#: core/aviImage.cpp:145 core/aviImage.cpp:153 video/mrvGLQuad.cpp:1183
 #: video/mrvGLCube.cpp:252 video/mrvGLSphere.cpp:254
 msgid "Unspecified"
 msgstr "Nespecifikováno"
@@ -8716,7 +8716,7 @@ msgstr "Video stopa #%d"
 msgid "Video Streams"
 msgstr "video stopy"
 
-#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1886 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Hlavní snímek synchronizace videa "
 
@@ -9209,7 +9209,7 @@ msgstr "Obdržel jsem nesprávnou velikost dat."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Chybné pakety v handle_video_packet_seek"
 
-#: core/aviImage.cpp:3534
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Chybné pakety v handle_video_packet_seek"
 
@@ -9398,7 +9398,7 @@ msgstr "Přiblížení obrázku se nezdařilo"
 msgid "attributes not found"
 msgstr "atributy nenalezeny"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3448 core/CMedia.cpp:3479
 msgid "audio"
 msgstr "Zvuk"
 
@@ -9406,7 +9406,7 @@ msgstr "Zvuk"
 msgid "audio frame is missing"
 msgstr "Chybí audio box."
 
-#: core/aviImage.cpp:856
+#: core/aviImage.cpp:862
 msgid "avcodec_context_from_parameters failed for video"
 msgstr "avcodec_context_from_parameters se nezdařilo pro video"
 
@@ -9414,7 +9414,7 @@ msgstr "avcodec_context_from_parameters se nezdařilo pro video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context se nezdařilo pro zvuk"
 
-#: core/aviImage.cpp:1760
+#: core/aviImage.cpp:1764
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context se nezdařilo pro titulky"
 
@@ -9439,15 +9439,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "obrázek change_imdice "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3740
 msgid "clean effects"
 msgstr "čisté efekty"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3728
 msgid "comment"
 msgstr "komentáře"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3451 core/CMedia.cpp:3482
 msgid "data"
 msgstr "data"
 
@@ -9459,11 +9459,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet se nezdařilo pro rámec "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3722
 msgid "default"
 msgstr "výchozí"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4511
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - neznámá bitová hloubka"
 
@@ -9471,7 +9471,7 @@ msgstr "default_leisure_input_color_space - neznámá bitová hloubka"
 msgid "delete uiview"
 msgstr "odstranit uiview"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3724
 msgid "dub"
 msgstr "dabing"
 
@@ -9479,7 +9479,7 @@ msgstr "dabing"
 msgid "files"
 msgstr "evidence"
 
-#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1915 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: box "
@@ -9494,7 +9494,7 @@ msgstr "plovoucí bod"
 msgid "float (32-bits per channel)"
 msgstr "s plovoucí desetinnou čárkou (32 bitů na kanál)"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3734
 msgid "forced"
 msgstr "nucený"
 
@@ -9526,7 +9526,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "polovina s pohyblivou řádovou čárkou (16 bitů na kanál)"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4506
 msgid "half/float"
 msgstr "polovina/plná pohyblivá řádová čárka"
 
@@ -9534,7 +9534,7 @@ msgstr "polovina/plná pohyblivá řádová čárka"
 msgid "has invalid magic number in the header."
 msgstr "má v záhlaví neplatné magické číslo."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3736
 msgid "hearing impaired"
 msgstr "sluchové vady"
 
@@ -9554,7 +9554,7 @@ msgstr "je to soubor Softimage, ale ne soubor PIC."
 msgid "item_pathname returned "
 msgstr "item_pathname vráceno "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3732
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9570,7 +9570,7 @@ msgstr "Poslech připojení se nezdařil\n"
 msgid "loadDeepData error: "
 msgstr "Chyba načítání hlubokých dat: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3730
 msgid "lyrics"
 msgstr "text"
 
@@ -9714,7 +9714,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Žádná data pixelů ke změně"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3726
 msgid "original"
 msgstr "originál"
 
@@ -9786,7 +9786,7 @@ msgstr "recv() se nezdařilo"
 msgid "send() failed"
 msgstr "send() se nezdařilo"
 
-#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
+#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
 msgid "send_packet error: "
 msgstr "Balíček se mi nepodařilo odeslat. Chyba "
 
@@ -9810,7 +9810,7 @@ msgstr "src_nb_samples je 0"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: neplatná data. fuj to je "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3454 core/CMedia.cpp:3485
 msgid "subtitle"
 msgstr "podtitulek"
 
@@ -9822,11 +9822,11 @@ msgstr "sysctl se nezdařilo."
 msgid "task info failed"
 msgstr "informace o úkolu se nezdařily"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3697 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4478
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "neznámý"
@@ -9843,11 +9843,11 @@ msgstr "celé číslo bez znaménka (32 bitů na kanál)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "krátký bez znaménka (16 bitů na kanál)"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3445 core/CMedia.cpp:3476
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3738
 msgid "visual impaired"
 msgstr "zrakově postižené"
 

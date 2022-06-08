@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-06 18:23-0300\n"
+"POT-Creation-Date: 2022-06-08 19:33-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: core/CMedia.cpp:3677
+#: core/CMedia.cpp:3678
 msgid ""
 "\n"
 "\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Bilinen bir kodlayıcı değil "
 
-#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2511
+#: core/CMedia_audio.cpp:644 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - ses çerçevesi kod çözme hatası "
 msgid " Color Area Selection"
 msgstr " Renk alanı seçimi"
 
-#: core/aviImage.cpp:3057
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr " Dosyayı açamadım. "
 
@@ -117,7 +117,7 @@ msgstr " Eşleşen son ek="
 msgid " Move Picture"
 msgstr " resmi taşı"
 
-#: core/aviImage.cpp:2529
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr " Dosyada ses veya video yok"
 
@@ -137,7 +137,7 @@ msgstr " Metin"
 msgid " already created: "
 msgstr " zaten oluşturuldu: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid " as default"
 msgstr " varsayılan"
 
@@ -190,7 +190,7 @@ msgstr " arıza. "
 msgid " for channel.  Maximum: "
 msgstr " kanal için. Maksimum: "
 
-#: core/aviImage.cpp:1492 core/aviImage.cpp:1542
+#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
 msgid " for codec "
 msgstr " kodek için "
 
@@ -198,7 +198,7 @@ msgstr " kodek için "
 msgid " for color_space"
 msgstr " color_space için"
 
-#: core/aviImage.cpp:4132 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4135 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " çerçeve için "
 
@@ -210,7 +210,7 @@ msgstr " gama_curve için"
 msgid " for reel "
 msgstr " makara için "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid " for stream #"
 msgstr " parça # için"
 
@@ -238,7 +238,7 @@ msgstr ""
 " mrViewer çökerse\n"
 "Tercihler->Kullanıcı Arayüzü->Tek Örnek'i değiştirmez."
 
-#: core/aviImage.cpp:1914
+#: core/aviImage.cpp:1918
 msgid " instead"
 msgstr " yerine"
 
@@ -258,15 +258,15 @@ msgstr " Zaten diskteki ilk sürüm."
 msgid " is already the last version on disk."
 msgstr " Zaten diskteki en son sürüm."
 
-#: core/CMedia.cpp:4375
+#: core/CMedia.cpp:4376
 msgid " is missing."
 msgstr " O kayboldu."
 
-#: core/CMedia.cpp:4398
+#: core/CMedia.cpp:4399
 msgid " is missing. Choosing "
 msgstr " kayıp. ayıklamak "
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " bulunamadı"
@@ -275,11 +275,11 @@ msgstr " bulunamadı"
 msgid " not found in reel"
 msgstr " makarada bulunamadı"
 
-#: core/aviImage.cpp:1912
+#: core/aviImage.cpp:1916
 msgid " not found, choosing "
 msgstr " bulunamadı, seçiliyor "
 
-#: core/aviImage.cpp:4302
+#: core/aviImage.cpp:4305
 msgid " not yet supported"
 msgstr " henüz desteklenmiyor"
 
@@ -291,7 +291,7 @@ msgstr " dönüş "
 msgid " size is "
 msgstr " boyut "
 
-#: core/aviImage.cpp:4160
+#: core/aviImage.cpp:4163
 msgid " status: "
 msgstr " durum: "
 
@@ -303,7 +303,7 @@ msgstr " ile"
 msgid " to "
 msgstr " ile "
 
-#: core/aviImage.cpp:1884 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1888 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " video çerçevesi, önbellek "
 
@@ -457,11 +457,11 @@ msgstr "' için "
 msgid "' for writing. Reason: "
 msgstr "' yazmak için. Sebep: "
 
-#: core/CMedia.cpp:4518
+#: core/CMedia.cpp:4519
 msgid "' from bitdepth "
 msgstr "' bit derinliği: "
 
-#: core/CMedia.cpp:4470
+#: core/CMedia.cpp:4471
 msgid "' from filename"
 msgstr "' dosya adından"
 
@@ -532,7 +532,7 @@ msgstr "(mrViewer başlamazsa kaldırın)"
 msgid "(no image)"
 msgstr "(resimsiz)"
 
-#: core/aviImage.cpp:1885 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1889 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") önbellek boyutu: "
 
@@ -578,7 +578,7 @@ msgstr ", Sıklık "
 msgid ", frequency "
 msgstr ", Sıklık "
 
-#: core/CMedia.cpp:3678
+#: core/CMedia.cpp:3679
 msgid ", type "
 msgstr ", tip "
 
@@ -739,7 +739,7 @@ msgstr "14,985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4490
+#: core/CMedia.cpp:4491
 msgid "16 bits"
 msgstr "16 bit"
 
@@ -856,7 +856,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4497
+#: core/CMedia.cpp:4498
 msgid "32 bits"
 msgstr "32 bit"
 
@@ -983,7 +983,7 @@ msgstr "70 mm"
 msgid "8 bit Caches"
 msgstr "8 bit önbellek"
 
-#: core/CMedia.cpp:4483
+#: core/CMedia.cpp:4484
 msgid "8 bits"
 msgstr "8 bit"
 
@@ -1848,11 +1848,11 @@ msgstr "İptal"
 msgid "Cannot allocate dst samples"
 msgstr "dst örnekleri atayamıyorum"
 
-#: core/aviImage.cpp:601
+#: core/aviImage.cpp:607
 msgid "Cannot create buffer sink"
 msgstr "Arabellek havuzu oluşturulamadı"
 
-#: core/aviImage.cpp:591
+#: core/aviImage.cpp:597
 msgid "Cannot create buffer source"
 msgstr "Tampon kaynağı oluşturulamadı"
 
@@ -1873,7 +1873,7 @@ msgstr "eşleyemiyorum \""
 msgid "Cannot parse environment variable \""
 msgstr "Ortam değişkeni yorumlanamıyor \""
 
-#: core/aviImage.cpp:608
+#: core/aviImage.cpp:614
 msgid "Cannot set output pixel format"
 msgstr "Çıktı pikseli oluşturma biçimi ayarlanamadı"
 
@@ -2138,11 +2138,11 @@ msgstr "Dizin için renk kanalı bulunamadı "
 msgid "Color controls"
 msgstr "renk kontrolleri"
 
-#: core/aviImage.cpp:1304
+#: core/aviImage.cpp:1308
 msgid "Colorspace details not gotten "
 msgstr "Renk alanı ayrıntıları elde edilmedi "
 
-#: core/aviImage.cpp:1333
+#: core/aviImage.cpp:1337
 msgid "Colorspace details not set "
 msgstr "Renk alanı ayrıntıları ayarlanmadı "
 
@@ -2350,7 +2350,7 @@ msgstr "LEISURE'dan Lut'u hesaplayamadım"
 msgid "Could not copy context to parameters"
 msgstr "Bağlam parametrelere kopyalanamadı"
 
-#: core/aviImage.cpp:729 core/aviImage.cpp:2396
+#: core/aviImage.cpp:735 core/aviImage.cpp:2400
 msgid "Could not copy parameters to context"
 msgstr "Parametreler codec bağlamına kopyalanamadı"
 
@@ -2458,11 +2458,11 @@ msgstr "4x4 matrisi için on altı kayan noktalı sayı bulamadım"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4 dizisi için on altı kayan noktalı sayı bulamadım "
 
-#: core/aviImage.cpp:3033
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr "Parça bilgisi bulunamadı"
 
-#: core/aviImage.cpp:757
+#: core/aviImage.cpp:763
 msgid "Could not find subtitle in '"
 msgstr "' ile ilgili altyazı bulunamadı"
 
@@ -2530,7 +2530,7 @@ msgstr "Ses örnekleri alamadım"
 msgid "Could not get device info for "
 msgstr "için cihaz bilgileri alınamadı "
 
-#: core/aviImage.cpp:1284
+#: core/aviImage.cpp:1288
 msgid "Could not get image conversion context."
 msgstr "Görüntü dönüştürme bağlamını alamadım."
 
@@ -2663,7 +2663,7 @@ msgstr ""
 "Diziyi veya filmi kaydedemedim, yalnızca belirtilen bir görüntü. Akışlar "
 "için %d sözdizimini veya filmler için özel bir uzantı kullanın."
 
-#: core/aviImage.cpp:1050 core/aviImage.cpp:1067
+#: core/aviImage.cpp:1052 core/aviImage.cpp:1069
 msgid "Could not seek to frame "
 msgstr "resmi bulamadım "
 
@@ -3067,11 +3067,11 @@ msgstr "İzsiz Kod Çözme"
 msgid "Decode OK"
 msgstr "kod çözme tamam"
 
-#: core/aviImage.cpp:4130 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4133 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ses kod çözme hatası: "
 
-#: core/aviImage.cpp:4158
+#: core/aviImage.cpp:4161
 msgid "Decode video error seek frame "
 msgstr "Görüntü arayan video kod çözme hatası "
 
@@ -3393,7 +3393,7 @@ msgstr "media_to_pathname'ye boş medya aktarıldı"
 msgid "Empty media provided to Element constructor"
 msgstr "Öğe oluşturucuya sağlanan boş ortam"
 
-#: core/aviImage.cpp:3587
+#: core/aviImage.cpp:3590
 msgid "Empty packets for video seek."
 msgstr "Video araması için boş paketler."
 
@@ -3401,7 +3401,7 @@ msgstr "Video araması için boş paketler."
 msgid "Empty pic file for media "
 msgstr "Medya için boş resim dosyası "
 
-#: core/aviImage.cpp:4511
+#: core/aviImage.cpp:4514
 msgid "Empty seek or preroll"
 msgstr "Boş arama veya ön kayıt"
 
@@ -3469,7 +3469,7 @@ msgstr "Ses dönüştürülürken hata oluştu: "
 msgid "Error while encoding video frame: "
 msgstr "Video karesini kodlama hatası: "
 
-#: core/aviImage.cpp:1443
+#: core/aviImage.cpp:1447
 msgid "Error while feeding the filtergraph"
 msgstr "Filtre grafiği beslenirken hata oluştu"
 
@@ -4108,7 +4108,7 @@ msgstr "Dizinin başına git."
 msgid "Go to the end of the sequence."
 msgstr "Sıranın sonuna git."
 
-#: core/CMedia.cpp:4470 core/CMedia.cpp:4517
+#: core/CMedia.cpp:4471 core/CMedia.cpp:4518
 msgid "Got colorspace '"
 msgstr "Renk uzayını aldım'"
 
@@ -4732,7 +4732,7 @@ msgstr "Geçersiz stereo görüntü "
 msgid "Invalid timecode "
 msgstr "Geçersiz Zaman Kodu "
 
-#: core/aviImage.cpp:1964
+#: core/aviImage.cpp:1968
 msgid "Invalid video stream "
 msgstr "geçersiz video parçası "
 
@@ -5592,11 +5592,11 @@ msgstr "Bir çift stereo görüntü eklemek için görüntü kalmadı"
 msgid "No memory for audio frame"
 msgstr "Ses çerçevesi için hafıza yok"
 
-#: core/aviImage.cpp:569
+#: core/aviImage.cpp:575
 msgid "No memory to allocate filter graph"
 msgstr "Filtre grafiği için hafıza yok"
 
-#: core/aviImage.cpp:2129
+#: core/aviImage.cpp:2133
 msgid "No pixel format could be chosen"
 msgstr "Piksel biçimi seçilemedi"
 
@@ -5718,11 +5718,11 @@ msgstr "Siyah görüntü için hafıza yok"
 msgid "Not enough memory for color transform"
 msgstr "Renk dönüşümü için hafıza yok"
 
-#: core/aviImage.cpp:2390
+#: core/aviImage.cpp:2394
 msgid "Not enough memory for context"
 msgstr "Bağlam için hafıza yok"
 
-#: core/aviImage.cpp:1215 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1219 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Görüntü belleği yok"
 
@@ -6406,7 +6406,7 @@ msgstr "Yazdır"
 msgid "Priority"
 msgstr "Öncelik"
 
-#: core/aviImage.cpp:1220
+#: core/aviImage.cpp:1224
 msgid "Problem allocating image "
 msgstr "Resim atamada sorun "
 
@@ -6422,12 +6422,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Profilin adı "
 
-#: core/aviImage.cpp:2778
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2774
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -6813,7 +6813,7 @@ msgstr "Ses yeniden örnekleme başarısız oldu"
 msgid "Resampling audio failed.  Len: "
 msgstr "Ses yeniden örnekleme başarısız oldu. Leon: "
 
-#: core/aviImage.cpp:149
+#: core/aviImage.cpp:154
 msgid "Reserved"
 msgstr "ayrılmış"
 
@@ -7558,19 +7558,19 @@ msgstr "Altyazı Parçası #%d"
 msgid "Subtitle Streams"
 msgstr "Altyazı Parçaları"
 
-#: core/aviImage.cpp:787
+#: core/aviImage.cpp:793
 msgid "Subtitle encoding "
 msgstr "Altyazı kodlaması "
 
-#: core/aviImage.cpp:785
+#: core/aviImage.cpp:791
 msgid "Subtitle file "
 msgstr "Altyazı Dosyası "
 
-#: core/aviImage.cpp:786
+#: core/aviImage.cpp:792
 msgid "Subtitle font "
 msgstr "Altyazı Mektubu "
 
-#: core/aviImage.cpp:4301
+#: core/aviImage.cpp:4304
 msgid "Subtitle type "
 msgstr "Altyazı Türü "
 
@@ -8377,7 +8377,7 @@ msgstr "işlenmeyen özel durum"
 msgid "Unhandled exception"
 msgstr "işlenmeyen özel durum"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2942
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8443,7 +8443,7 @@ msgstr "' anahtarı için bilinmeyen veri türü"
 msgid "Unknown data type to convert to string"
 msgstr "Metinden dönüştürülecek bilinmeyen veri türü"
 
-#: core/aviImage.cpp:2256
+#: core/aviImage.cpp:2260
 msgid "Unknown destination video frame format: "
 msgstr "Bilinmeyen alıcı video kare biçimi: "
 
@@ -8503,7 +8503,7 @@ msgstr "mrvOCIOBrowser için bilinmeyen veri türü"
 msgid "Unknown wipe direction"
 msgstr "Bilinmeyen silme adresi"
 
-#: core/aviImage.cpp:140 core/aviImage.cpp:148 video/mrvGLQuad.cpp:1183
+#: core/aviImage.cpp:145 core/aviImage.cpp:153 video/mrvGLQuad.cpp:1183
 #: video/mrvGLCube.cpp:252 video/mrvGLSphere.cpp:254
 msgid "Unspecified"
 msgstr "Belirtilmemiş"
@@ -8720,7 +8720,7 @@ msgstr "Video Parçası #%d"
 msgid "Video Streams"
 msgstr "video parçaları"
 
-#: core/aviImage.cpp:1882 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1886 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Video Senkronizasyonu ana çerçevesi "
 
@@ -9227,7 +9227,7 @@ msgstr "Yanlış bir veri boyutu aldım."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
-#: core/aviImage.cpp:3534
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek'te yanlış paketler"
 
@@ -9417,7 +9417,7 @@ msgstr "Görüntüye yakınlaştırma başarısız oldu"
 msgid "attributes not found"
 msgstr "nitelikler bulunamadı"
 
-#: core/CMedia.cpp:3447 core/CMedia.cpp:3478
+#: core/CMedia.cpp:3448 core/CMedia.cpp:3479
 msgid "audio"
 msgstr "Ses"
 
@@ -9425,7 +9425,7 @@ msgstr "Ses"
 msgid "audio frame is missing"
 msgstr "Ses kutusu eksik."
 
-#: core/aviImage.cpp:856
+#: core/aviImage.cpp:862
 msgid "avcodec_context_from_parameters failed for video"
 msgstr "avcodec_context_from_parameters video için başarısız oldu"
 
@@ -9433,7 +9433,7 @@ msgstr "avcodec_context_from_parameters video için başarısız oldu"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context ses için başarısız oldu"
 
-#: core/aviImage.cpp:1760
+#: core/aviImage.cpp:1764
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context altyazı için başarısız oldu"
 
@@ -9458,15 +9458,15 @@ msgstr "CD/m2"
 msgid "change_image index "
 msgstr "change_imdice resmi "
 
-#: core/CMedia.cpp:3739
+#: core/CMedia.cpp:3740
 msgid "clean effects"
 msgstr "temiz efektler"
 
-#: core/CMedia.cpp:3727
+#: core/CMedia.cpp:3728
 msgid "comment"
 msgstr "yorumlar"
 
-#: core/CMedia.cpp:3450 core/CMedia.cpp:3481
+#: core/CMedia.cpp:3451 core/CMedia.cpp:3482
 msgid "data"
 msgstr "veri"
 
@@ -9478,11 +9478,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet çerçeve için başarısız oldu "
 
-#: core/CMedia.cpp:3721
+#: core/CMedia.cpp:3722
 msgid "default"
 msgstr "varsayılan"
 
-#: core/CMedia.cpp:4510
+#: core/CMedia.cpp:4511
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 
@@ -9490,7 +9490,7 @@ msgstr "default_leisure_input_color_space - bilinmeyen bit derinliği"
 msgid "delete uiview"
 msgstr "uiview'i sil"
 
-#: core/CMedia.cpp:3723
+#: core/CMedia.cpp:3724
 msgid "dub"
 msgstr "dublaj"
 
@@ -9498,7 +9498,7 @@ msgstr "dublaj"
 msgid "files"
 msgstr "kayıtlar"
 
-#: core/aviImage.cpp:1911 core/aviImage.cpp:1924 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1915 core/aviImage.cpp:1928 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: kutu "
@@ -9513,7 +9513,7 @@ msgstr "kayan nokta"
 msgid "float (32-bits per channel)"
 msgstr "kayan nokta (kanal başına 32 bit)"
 
-#: core/CMedia.cpp:3733
+#: core/CMedia.cpp:3734
 msgid "forced"
 msgstr "zoraki"
 
@@ -9545,7 +9545,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "yarım kayan nokta (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:4505
+#: core/CMedia.cpp:4506
 msgid "half/float"
 msgstr "yarım/tam kayan nokta"
 
@@ -9553,7 +9553,7 @@ msgstr "yarım/tam kayan nokta"
 msgid "has invalid magic number in the header."
 msgstr "başlıkta geçersiz bir sihirli sayı var."
 
-#: core/CMedia.cpp:3735
+#: core/CMedia.cpp:3736
 msgid "hearing impaired"
 msgstr "işitme bozuklukları"
 
@@ -9573,7 +9573,7 @@ msgstr "bu bir Softimage dosyasıdır, ancak bir PIC dosyası değildir."
 msgid "item_pathname returned "
 msgstr "item_pathname döndürüldü "
 
-#: core/CMedia.cpp:3731
+#: core/CMedia.cpp:3732
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -9589,7 +9589,7 @@ msgstr "Dinleme başarısız oldu\n"
 msgid "loadDeepData error: "
 msgstr "Derin veri yükleme hatası: "
 
-#: core/CMedia.cpp:3729
+#: core/CMedia.cpp:3730
 msgid "lyrics"
 msgstr "şarkı sözleri"
 
@@ -9735,7 +9735,7 @@ msgstr "mrViewer.keys"
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame Değiştirilecek piksel verisi yok"
 
-#: core/CMedia.cpp:3725
+#: core/CMedia.cpp:3726
 msgid "original"
 msgstr "orijinal"
 
@@ -9807,7 +9807,7 @@ msgstr "recv() başarısız oldu"
 msgid "send() failed"
 msgstr "gönder() başarısız oldu"
 
-#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
+#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
 msgid "send_packet error: "
 msgstr "Paket gönderemedim. Hata "
 
@@ -9831,7 +9831,7 @@ msgstr "src_nb_örnekleri 0'dır"
 msgid "store_audio: Invalid data.  buf is "
 msgstr "store_audio: geçersiz veri. uh öyle "
 
-#: core/CMedia.cpp:3453 core/CMedia.cpp:3484
+#: core/CMedia.cpp:3454 core/CMedia.cpp:3485
 msgid "subtitle"
 msgstr "alt yazı"
 
@@ -9843,11 +9843,11 @@ msgstr "sysctl başarısız oldu."
 msgid "task info failed"
 msgstr "görev bilgisi başarısız oldu"
 
-#: core/CMedia.cpp:3696 core/R3dImage.cpp:367 core/brawImage.cpp:703
+#: core/CMedia.cpp:3697 core/R3dImage.cpp:367 core/brawImage.cpp:703
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:3456 core/CMedia.cpp:3487 core/CMedia.cpp:4477
+#: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4478
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "Bilinmeyen"
@@ -9864,11 +9864,11 @@ msgstr "işaretsiz tamsayı (kanal başına 32 bit)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "kısa işaretsiz (kanal başına 16 bit)"
 
-#: core/CMedia.cpp:3444 core/CMedia.cpp:3475
+#: core/CMedia.cpp:3445 core/CMedia.cpp:3476
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3737
+#: core/CMedia.cpp:3738
 msgid "visual impaired"
 msgstr "görme engelli"
 
