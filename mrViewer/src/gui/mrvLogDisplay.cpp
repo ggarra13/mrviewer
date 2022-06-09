@@ -53,7 +53,6 @@ Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     {  FL_RED,    FL_HELVETICA, 14,   0 }, // C - Error
 };
 
-LogDisplay::Mutex LogDisplay::mtx;
 LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
@@ -63,9 +62,9 @@ LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
 _lines( 0 )
 {
-    color( FL_GRAY0 );
+    Fl::lock();
 
-    SCOPED_LOCK( mtx );
+    color( FL_GRAY0 );
 
     scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
 
@@ -76,7 +75,9 @@ _lines( 0 )
     mBuffer = new Fl_Text_Buffer();
     mStyleBuffer = new Fl_Text_Buffer();
     highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
-;
+
+    Fl::unlock();
+    Fl::awake();
 }
 
 LogDisplay::~LogDisplay()
@@ -87,10 +88,12 @@ LogDisplay::~LogDisplay()
 
 void LogDisplay::clear()
 {
-    SCOPED_LOCK( mtx );
+    Fl::lock();
     mStyleBuffer->text("");
     mBuffer->text("");
     redraw();
+    Fl::unlock();
+    Fl::awake();
     _lines = 0;
 }
 
@@ -106,9 +109,11 @@ void LogDisplay::save( const char* file )
 
     try {
 
-        SCOPED_LOCK( mtx );
-
+        Fl::lock();
         int err = mBuffer->savefile( file );
+        Fl::unlock();
+        Fl::awake();
+
         if ( err != 0 ) throw std::runtime_error( strerror(err) );
 
 
@@ -135,8 +140,6 @@ void LogDisplay::save( const char* file )
 
 void LogDisplay::info( const char* x )
 {
-    SCOPED_LOCK( mtx );
-
     size_t t = strlen(x);
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
@@ -151,18 +154,19 @@ void LogDisplay::info( const char* x )
             buf[t] = 'A';
         }
     }
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    free( buf );
-
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    Fl::unlock();
+    Fl::awake();
+
+    free( buf );
 }
 
 void LogDisplay::warning( const char* x )
 {
-    SCOPED_LOCK( mtx );
-
     size_t t = strlen(x);
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
@@ -177,18 +181,20 @@ void LogDisplay::warning( const char* x )
             buf[t] = 'B';
         }
     }
+
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    free( buf );
-
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    Fl::unlock();
+    Fl::awake();
+
+    free( buf );
 }
 
 void LogDisplay::error( const char* x )
 {
-    SCOPED_LOCK( mtx );
-
     size_t t = strlen(x);
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
@@ -203,11 +209,17 @@ void LogDisplay::error( const char* x )
             buf[t] = 'C';
         }
     }
+
+    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
-    free( buf );
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    Fl::unlock();
+    Fl::awake();
+
+    free( buf );
+
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;

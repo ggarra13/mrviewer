@@ -350,7 +350,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                  }
             }
 
-            // av_packet_unref( &pkt );
+            av_packet_unref( pkt );
 
             break;
         }

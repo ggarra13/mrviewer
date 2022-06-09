@@ -1145,9 +1145,12 @@ bool aviImage::seek_to_position( const int64_t frame )
     int64_t dts = queue_packets( frame, true, got_video,
                                  got_audio, got_subtitle );
 
+
+    if ( playback() == kBackwards && dts != start_frame() &&
+         dts != end_frame() )
+        dts += _frame_offset; // this makes it smooth playback
+
     _dts = _adts = dts;
-    if ( playback() == kBackwards && _dts != first_frame() )
-        _dts += _frame_offset;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
     _expected = _expected_audio = dts + 1;
@@ -3298,7 +3301,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             if ( has_audio() && audio_context() == _context &&
                  pkt->stream_index == audio_stream_index() )
             {
-                int64_t pktframe = pts2frame( get_audio_stream(), pkt->dts )                                      - _frame_offset; // needed
+                int64_t pktframe = get_frame( get_audio_stream(), *pkt )                                      - _frame_offset; // needed
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )

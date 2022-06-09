@@ -45,7 +45,6 @@ public:
         kAlways,
     };
 
-    typedef boost::recursive_mutex Mutex;
 
 public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
@@ -68,7 +67,6 @@ protected:
 public:
     Fl_Text_Buffer* buffer_;
     Fl_Text_Buffer* stylebuffer_;
-    static Mutex mtx;
     static ShowPreferences prefs;
     static std::atomic<bool> shown;
     static std::atomic<bool> show;  // whether to show this in fltk thread

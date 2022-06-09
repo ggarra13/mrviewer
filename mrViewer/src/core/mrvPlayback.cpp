@@ -809,18 +809,18 @@ void audio_thread( PlaybackData* data )
             CMedia::Barrier* barrier = img->loop_barrier();
             if ( barrier )
             {
-                DBGM1( img->name() << " BARRIER AUDIO WAIT      gen: "
-                       << barrier->generation()
-                       << " count: " << barrier->count()
-                       << " threshold: " << barrier->threshold()
-                       << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER AUDIO WAIT      gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBGM1( img->name() << " BARRIER PASSED IN AUDIO  gen: "
-                       << barrier->generation()
-                       << " count: " << barrier->count()
-                       << " threshold: " << barrier->threshold()
-                       << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER PASSED IN AUDIO  gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
             }
 
             barrier = img->fg_bg_barrier();
@@ -1170,18 +1170,18 @@ void video_thread( PlaybackData* data )
 
             if ( barrier )
             {
-                DBGM1( img->name() << " BARRIER VIDEO WAIT      gen: "
-                     << barrier->generation()
-                     << " count: " << barrier->count()
-                     << " threshold: " << barrier->threshold()
-                     << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER VIDEO WAIT      gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBGM1( img->name() << " BARRIER PASSED IN VIDEO  gen: "
-                       << barrier->generation()
-                       << " count: " << barrier->count()
-                       << " threshold: " << barrier->threshold()
-                       << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER PASSED IN VIDEO  gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
             }
 
             // img->debug_video_packets( frame, "debug", true );
@@ -1529,18 +1529,18 @@ void decode_thread( PlaybackData* data )
 
             if ( barrier )
             {
-                DBGM1( img->name() << " BARRIER DECODE WAIT      gen: "
-                     << barrier->generation()
-                     << " count: " << barrier->count()
-                     << " threshold: " << barrier->threshold()
-                     << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER DECODE WAIT      gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBGM1( img->name() << " BARRIER PASSED IN DECODE  gen: "
-                       << barrier->generation()
-                       << " count: " << barrier->count()
-                       << " threshold: " << barrier->threshold()
-                       << " used: " << barrier->used() );
+                TRACE2( img->name() << " BARRIER PASSED IN DECODE  gen: "
+                        << barrier->generation()
+                        << " count: " << barrier->count()
+                        << " threshold: " << barrier->threshold()
+                        << " used: " << barrier->used() );
             }
 
             // img->clear_packets();
