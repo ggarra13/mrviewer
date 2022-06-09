@@ -1023,7 +1023,7 @@ void CMedia::limit_audio_store(const int64_t frame)
     {
         case kBackwards:
             first = frame - max_frames;
-            last  = frame + max_frames;
+            last  = frame + max_frames / 2;
             if ( _adts < first ) first = _adts;
             if ( _adts > last )   last = _adts;
             break;
@@ -1991,8 +1991,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     }
     else if ( !is_seek && _audio_packets.is_preroll() )
     {
-        // if ( playback() == kBackwards && _audio.size() > max_audio_frames() )
-        //     return kDecodeOK;
+        if ( playback() == kBackwards && _audio.size() > max_audio_frames() )
+            return kDecodeOK;
         _audio_packets.pop_front();
     }
     else

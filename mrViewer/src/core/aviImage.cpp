@@ -1692,7 +1692,7 @@ void aviImage::limit_video_store(const int64_t frame)
     {
     case kBackwards:
         first = frame - max_frames;
-        last  = frame + max_frames;
+        last  = frame + max_frames / 2;
         if ( _dts > last )   last  = _dts;
         if ( _dts < first )  first = _dts;
         break;
