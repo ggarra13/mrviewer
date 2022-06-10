@@ -4837,6 +4837,8 @@ int ImageBrowser::handle( int event )
  */
 void ImageBrowser::seek( const int64_t tframe )
 {
+    if ( tframe == view()->frame() ) return;
+
     int64_t f = tframe;  // needed as we may change it and tframe is const
 
     TRACE( "BROWSER seek to frame " << f

@@ -34,8 +34,6 @@
 
 namespace mrv {
 
-extern std::string log_string;
-extern std::string style_string;
 
 class LogDisplay : public Fl_Text_Display
 {

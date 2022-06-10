@@ -956,7 +956,6 @@ protected:
                      mrv::image_type_ptr& pic, int& xp, int& yp,
                      short& idx, bool& outside, int w, int h ) const;
 
-    void log() const;
 
 protected:
     ViewerUI* uiMain;

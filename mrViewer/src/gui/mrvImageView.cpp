@@ -3528,45 +3528,6 @@ void static_preload( mrv::ImageView* v )
 
 
 
-void ImageView::log() const
-{
-    //
-    // First, handle log window showing up and scrolling
-    //
-    LogUI* logUI = main()->uiLog;
-    Fl_Window* logwindow = logUI->uiMain;
-    if ( !logwindow ) return;
-
-    mrv::LogDisplay* log = logUI->uiLogText;
-
-    boost::mutex::scoped_lock lock( io::logbuffer::mutex );
-
-    if ( !log_string.empty() )
-    {
-        log->style_buffer()->append( style_string.c_str() );
-        log->buffer()->append( log_string.c_str() );
-
-        log_string.clear();
-        style_string.clear();
-
-        static unsigned  lines = 0;
-        if ( log->visible() && log->lines() != lines )
-        {
-            log->scroll( log->lines()-1, 0 );
-            lines = log->lines();
-        }
-    }
-
-    if ( mrv::LogDisplay::show == true )
-    {
-        mrv::LogDisplay::show = false;
-        if (main() && logUI && logwindow )
-        {
-            logwindow->show();
-        }
-    }
-
-}
 
 
 int timeval_substract(struct timeval *result, struct timeval *x,
@@ -4304,11 +4265,6 @@ void ImageView::timeout()
             handle_commands();
         }
     }
-
-    //
-    if (main() && main()->uiLog && main()->uiLog->uiMain )
-        log();
-
 
 
     mrv::Reel reel = b->reel_at( _fg_reel );

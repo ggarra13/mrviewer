@@ -43,7 +43,9 @@
 
 #include "core/mrvThread.h"
 #include "core/mrvHome.h"
+#include "gui/mrvIO.h"
 #include "gui/mrvLogDisplay.h"
+#include "mrViewer.h"
 
 namespace mrv {
 
@@ -61,9 +63,49 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
+    std::string conn_string;
     std::string log_string;
     std::string style_string;
 
+void static_log(void*)
+{
+    //
+    // First, handle log window showing up and scrolling
+    //
+    LogUI* logUI = ViewerUI::uiLog;
+    Fl_Window* logwindow = logUI->uiMain;
+    if ( !logwindow ) return;
+
+    mrv::LogDisplay* log = logUI->uiLogText;
+
+    boost::mutex::scoped_lock lock( io::logbuffer::mutex );
+
+    if ( !log_string.empty() )
+    {
+        log->style_buffer()->append( style_string.c_str() );
+        log->buffer()->append( log_string.c_str() );
+
+        log_string.clear();
+        style_string.clear();
+
+        static unsigned  lines = 0;
+        if ( log->visible() && log->lines() != lines )
+        {
+            log->scroll( log->lines()-1, 0 );
+            lines = log->lines();
+        }
+    }
+
+    if ( mrv::LogDisplay::show == true )
+    {
+        mrv::LogDisplay::show = false;
+        if ( logUI && logwindow )
+        {
+            logwindow->show();
+        }
+    }
+
+}
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
@@ -94,7 +136,6 @@ void LogDisplay::clear()
 {
     mStyleBuffer->text("");
     mBuffer->text("");
-    redraw();
     _lines = 0;
 }
 
@@ -139,8 +180,6 @@ void LogDisplay::save( const char* file )
 void LogDisplay::info( const char* x )
 {
     size_t t = strlen(x);
-    assert( t > 0 );
-    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -154,7 +193,6 @@ void LogDisplay::info( const char* x )
             buf[t] = 'A';
         }
     }
-    assert( buf[ strlen(x) ] == 0 );
 
 
     style_string += buf;
@@ -162,14 +200,13 @@ void LogDisplay::info( const char* x )
 
     free( buf );
 
+    Fl::awake( static_log, NULL );
 
 }
 
 void LogDisplay::warning( const char* x )
 {
     size_t t = strlen(x);
-    assert( t > 0 );
-    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -189,13 +226,12 @@ void LogDisplay::warning( const char* x )
 
     free( buf );
 
+    Fl::awake( static_log, NULL );
 }
 
 void LogDisplay::error( const char* x )
 {
     size_t t = strlen(x);
-    assert( t > 0 );
-    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -209,7 +245,6 @@ void LogDisplay::error( const char* x )
             buf[t] = 'C';
         }
     }
-    assert( buf[ strlen(x) ] == 0 );
 
     style_string += buf;
     log_string   += x;
@@ -221,6 +256,8 @@ void LogDisplay::error( const char* x )
         shown = true;
         show = true;
     }
+
+    Fl::awake( static_log, NULL );
 }
 
 }
