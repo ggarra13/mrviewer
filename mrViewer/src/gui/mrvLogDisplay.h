@@ -29,7 +29,6 @@
 #define mrvLogDisplay_h
 
 #include <atomic>
-#include <boost/thread/recursive_mutex.hpp>
 
 #include <FL/Fl_Text_Display.H>
 
@@ -65,8 +64,6 @@ protected:
     std::atomic<unsigned int> _lines;
 
 public:
-    Fl_Text_Buffer* buffer_;
-    Fl_Text_Buffer* stylebuffer_;
     static ShowPreferences prefs;
     static std::atomic<bool> shown;
     static std::atomic<bool> show;  // whether to show this in fltk thread

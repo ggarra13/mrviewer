@@ -28,8 +28,12 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <cassert>
 
+#include <stdexcept>
 #include <iostream>
+
+#include <boost/thread/thread.hpp>
 
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Text_Buffer.H>
@@ -57,12 +61,13 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
+    boost::thread::id main_thread;
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
 _lines( 0 )
 {
-    Fl::lock();
+    main_thread = boost::this_thread::get_id();
 
     color( FL_GRAY0 );
 
@@ -76,8 +81,6 @@ _lines( 0 )
     mStyleBuffer = new Fl_Text_Buffer();
     highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
 
-    Fl::unlock();
-    Fl::awake();
 }
 
 LogDisplay::~LogDisplay()
@@ -92,9 +95,9 @@ void LogDisplay::clear()
     mStyleBuffer->text("");
     mBuffer->text("");
     redraw();
+    _lines = 0;
     Fl::unlock();
     Fl::awake();
-    _lines = 0;
 }
 
 void LogDisplay::save( const char* file )
@@ -140,7 +143,12 @@ void LogDisplay::save( const char* file )
 
 void LogDisplay::info( const char* x )
 {
+    if ( boost::this_thread::get_id() != main_thread ) return;
+
+    Fl::lock();
     size_t t = strlen(x);
+    assert( t > 0 );
+    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -154,20 +162,27 @@ void LogDisplay::info( const char* x )
             buf[t] = 'A';
         }
     }
-    Fl::lock();
+    assert( buf[ strlen(x) ] == 0 );
+
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    free( buf );
+
     Fl::unlock();
     Fl::awake();
 
-    free( buf );
 }
 
 void LogDisplay::warning( const char* x )
 {
+    if ( boost::this_thread::get_id() != main_thread ) return;
+
+    Fl::lock();
     size_t t = strlen(x);
+    assert( t > 0 );
+    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -181,21 +196,26 @@ void LogDisplay::warning( const char* x )
             buf[t] = 'B';
         }
     }
+    assert( buf[ strlen(x) ] == 0 );
 
-    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    free( buf );
+
     Fl::unlock();
     Fl::awake();
-
-    free( buf );
 }
 
 void LogDisplay::error( const char* x )
 {
+    if ( boost::this_thread::get_id() != main_thread ) return;
+
+    Fl::lock();
     size_t t = strlen(x);
+    assert( t > 0 );
+    assert( x[t] == 0 );
     char* buf = (char*)malloc( t+1 );
     buf[t] = 0;
     while( t-- )
@@ -209,16 +229,16 @@ void LogDisplay::error( const char* x )
             buf[t] = 'C';
         }
     }
+    assert( buf[ strlen(x) ] == 0 );
 
-    Fl::lock();
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     update_v_scrollbar();
     scroll( _lines-1, 0 );
+    free( buf );
+
     Fl::unlock();
     Fl::awake();
-
-    free( buf );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
