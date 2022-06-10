@@ -64,12 +64,13 @@ const char* alert()
 namespace io
 {
 
-boost::recursive_mutex logbuffer::_mutex;
+
+
+boost::mutex logbuffer::mutex;
 std::fstream logbuffer::out;
 bool logbuffer::_debug = true;
 
 logbuffer::~logbuffer() {
-    SCOPED_LOCK( _mutex );
     if (out.is_open()) out.close();
 };
 
@@ -78,7 +79,7 @@ int logbuffer::sync()
     if ( ! pbase() ) return 0;
 
     // lock mutex
-    boost::recursive_mutex::scoped_lock lk( _mutex );
+    boost::mutex::scoped_lock lk( mutex );
 
 
     // make sure to null terminate the string

@@ -3535,18 +3535,20 @@ void ImageView::log() const
     //
     LogUI* logUI = main()->uiLog;
     Fl_Window* logwindow = logUI->uiMain;
-    if ( logwindow )
-    {
-        mrv::LogDisplay* log = logUI->uiLogText;
+    if ( !logwindow ) return;
 
-        if ( mrv::LogDisplay::show == true )
-        {
-            mrv::LogDisplay::show = false;
-            if (main() && logUI && logwindow )
-            {
-                logwindow->show();
-            }
-        }
+    mrv::LogDisplay* log = logUI->uiLogText;
+
+    boost::mutex::scoped_lock lock( io::logbuffer::mutex );
+
+    if ( !log_string.empty() )
+    {
+        log->style_buffer()->append( style_string.c_str() );
+        log->buffer()->append( log_string.c_str() );
+
+        log_string.clear();
+        style_string.clear();
+
         static unsigned  lines = 0;
         if ( log->visible() && log->lines() != lines )
         {
@@ -3554,6 +3556,16 @@ void ImageView::log() const
             lines = log->lines();
         }
     }
+
+    if ( mrv::LogDisplay::show == true )
+    {
+        mrv::LogDisplay::show = false;
+        if (main() && logUI && logwindow )
+        {
+            logwindow->show();
+        }
+    }
+
 }
 
 

@@ -34,7 +34,7 @@
 #include <sstream>
 #include <fstream>
 
-#include <boost/thread/recursive_mutex.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
@@ -48,7 +48,9 @@ void alert( const char* str );
 const char* alert();
 
 
+
 namespace io {
+
 
 typedef
 std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >
@@ -59,7 +61,7 @@ struct logbuffer : public string_stream
     static bool _debug;
     static std::fstream out;
 
-    typedef boost::recursive_mutex Mutex;
+    typedef boost::mutex Mutex;
 
     logbuffer() : string_stream() {
         str().reserve(1024);
@@ -78,7 +80,7 @@ struct logbuffer : public string_stream
     virtual void print( const char* c ) = 0;
 
 public:
-    static Mutex _mutex;
+    static Mutex mutex;
 };
 
 struct errorbuffer : public logbuffer

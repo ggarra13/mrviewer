@@ -61,13 +61,14 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
-    boost::thread::id main_thread;
+    std::string log_string;
+    std::string style_string;
+
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
 _lines( 0 )
 {
-    main_thread = boost::this_thread::get_id();
 
     color( FL_GRAY0 );
 
@@ -91,13 +92,10 @@ LogDisplay::~LogDisplay()
 
 void LogDisplay::clear()
 {
-    Fl::lock();
     mStyleBuffer->text("");
     mBuffer->text("");
     redraw();
     _lines = 0;
-    Fl::unlock();
-    Fl::awake();
 }
 
 void LogDisplay::save( const char* file )
@@ -112,10 +110,7 @@ void LogDisplay::save( const char* file )
 
     try {
 
-        Fl::lock();
         int err = mBuffer->savefile( file );
-        Fl::unlock();
-        Fl::awake();
 
         if ( err != 0 ) throw std::runtime_error( strerror(err) );
 
@@ -143,9 +138,6 @@ void LogDisplay::save( const char* file )
 
 void LogDisplay::info( const char* x )
 {
-    if ( boost::this_thread::get_id() != main_thread ) return;
-
-    Fl::lock();
     size_t t = strlen(x);
     assert( t > 0 );
     assert( x[t] == 0 );
@@ -164,22 +156,17 @@ void LogDisplay::info( const char* x )
     }
     assert( buf[ strlen(x) ] == 0 );
 
-    mStyleBuffer->append( buf );
-    mBuffer->append( x );
-    update_v_scrollbar();
-    scroll( _lines-1, 0 );
+
+    style_string += buf;
+    log_string   += x;
+
     free( buf );
 
-    Fl::unlock();
-    Fl::awake();
 
 }
 
 void LogDisplay::warning( const char* x )
 {
-    if ( boost::this_thread::get_id() != main_thread ) return;
-
-    Fl::lock();
     size_t t = strlen(x);
     assert( t > 0 );
     assert( x[t] == 0 );
@@ -196,23 +183,16 @@ void LogDisplay::warning( const char* x )
             buf[t] = 'B';
         }
     }
-    assert( buf[ strlen(x) ] == 0 );
 
-    mStyleBuffer->append( buf );
-    mBuffer->append( x );
-    update_v_scrollbar();
-    scroll( _lines-1, 0 );
+    style_string += buf;
+    log_string   += x;
+
     free( buf );
 
-    Fl::unlock();
-    Fl::awake();
 }
 
 void LogDisplay::error( const char* x )
 {
-    if ( boost::this_thread::get_id() != main_thread ) return;
-
-    Fl::lock();
     size_t t = strlen(x);
     assert( t > 0 );
     assert( x[t] == 0 );
@@ -231,14 +211,10 @@ void LogDisplay::error( const char* x )
     }
     assert( buf[ strlen(x) ] == 0 );
 
-    mStyleBuffer->append( buf );
-    mBuffer->append( x );
-    update_v_scrollbar();
-    scroll( _lines-1, 0 );
-    free( buf );
+    style_string += buf;
+    log_string   += x;
 
-    Fl::unlock();
-    Fl::awake();
+    free( buf );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
