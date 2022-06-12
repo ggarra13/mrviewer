@@ -750,7 +750,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
             max_dst_nb_samples = dst_nb_samples;
         }
 
-        assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
+        assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat)
+                == (unsigned)src_nb_samples );
 
         /* convert to destination format */
 

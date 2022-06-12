@@ -57,17 +57,10 @@ public:
     void warning( const char* x );
     void error( const char* x );
 
-    inline unsigned lines() const {
-        return _lines;
-    }
-
-protected:
-    std::atomic<unsigned int> _lines;
-
 public:
     static ShowPreferences prefs;
-    static std::atomic<bool> shown;
-    static std::atomic<bool> show;  // whether to show this in fltk thread
+    static bool shown;
+    static bool show;  // whether to show this in fltk thread
 };
 
 }

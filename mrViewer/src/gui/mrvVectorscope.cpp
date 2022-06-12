@@ -289,8 +289,8 @@ void Vectorscope::draw_pixels( const mrv::Recti& r )
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
 
-    assert( xmax < pic->width() );
-    assert( ymax < pic->height() );
+    assert( xmax < (int) pic->width() );
+    assert( ymax < (int) pic->height() );
 
     ImageView* view = uiMain->uiView;
     mrv::DrawEngine* engine = view->engine();

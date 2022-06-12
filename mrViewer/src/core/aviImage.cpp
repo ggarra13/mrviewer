@@ -1151,7 +1151,7 @@ bool aviImage::seek_to_position( const int64_t frame )
         dts += _frame_offset; // this makes it smooth playback
 
     _dts = _adts = dts;
-    assert( _dts >= first_frame() && _dts <= last_frame() );
+    assert( _dts >= in_frame() && _dts <= out_frame() );
 
     _expected = _expected_audio = dts + 1;
     _seek_req = false;
@@ -3431,7 +3431,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
 
     _dts = dts;
-    assert( _dts >= first_frame() && _dts <= last_frame() );
+    assert( _dts >= in_frame() && _dts <= out_frame() );
 
     _expected = _dts + 1;
     _expected_audio = _adts + 1;

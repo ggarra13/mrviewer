@@ -351,8 +351,8 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     if ( xmax >= (int)pic->width() ) xmax = (int)pic->width()-1;
     if ( ymax >= (int)pic->height() ) ymax = (int)pic->height()-1;
 
-    assert( xmax < pic->width() );
-    assert( ymax < pic->height() );
+    assert( xmax < (int)pic->width() );
+    assert( ymax < (int)pic->height() );
 
 
 

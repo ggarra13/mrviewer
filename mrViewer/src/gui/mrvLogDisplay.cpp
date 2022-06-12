@@ -59,205 +59,174 @@ Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     {  FL_RED,    FL_HELVETICA, 14,   0 }, // C - Error
 };
 
-LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
-std::atomic<bool> LogDisplay::shown( false );
-std::atomic<bool> LogDisplay::show( false );
+    LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
+    bool LogDisplay::shown( false );
+    bool LogDisplay::show( false );
 
     std::string conn_string;
     std::string log_string;
     std::string style_string;
 
-void static_log(void*)
-{
-    //
-    // First, handle log window showing up and scrolling
-    //
-    LogUI* logUI = ViewerUI::uiLog;
-    Fl_Window* logwindow = logUI->uiMain;
-    if ( !logwindow ) return;
-
-    mrv::LogDisplay* log = logUI->uiLogText;
-
-    boost::mutex::scoped_lock lock( io::logbuffer::mutex );
-
-    if ( !log_string.empty() )
+    void static_log(void*)
     {
-        log->style_buffer()->append( style_string.c_str() );
-        log->buffer()->append( log_string.c_str() );
+        //
+        // First, handle log window showing up and scrolling
+        //
+        LogUI* logUI = ViewerUI::uiLog;
+        Fl_Window* logwindow = logUI->uiMain;
+        if ( !logwindow ) return;
 
-        log_string.clear();
-        style_string.clear();
+        mrv::LogDisplay* log = logUI->uiLogText;
 
-        static unsigned  lines = 0;
-        if ( log->visible() && log->lines() != lines )
+        boost::mutex::scoped_lock lock( io::logbuffer::mutex ); // needed
+
+        if ( !log_string.empty() )
         {
-            log->scroll( log->lines()-1, 0 );
-            lines = log->lines();
-        }
-    }
+            log->style_buffer()->append( style_string.c_str() );
 
-    if ( mrv::LogDisplay::show == true )
-    {
-        mrv::LogDisplay::show = false;
-        if ( logUI && logwindow )
+            Fl_Text_Buffer* buffer = log->buffer();
+            buffer->append( log_string.c_str() );
+            log->scroll( buffer->length(), 0 );
+
+            log_string.clear();
+            style_string.clear();
+        }
+
+        if ( mrv::LogDisplay::show == true )
         {
-            logwindow->show();
+            mrv::LogDisplay::show = false;
+            if ( logUI && logwindow )
+            {
+                logwindow->show();
+            }
         }
+
     }
 
-}
-
-LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-Fl_Text_Display( x, y, w, h, l ),
-_lines( 0 )
-{
-
-    color( FL_GRAY0 );
-
-    scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
-
-    wrap_mode( WRAP_AT_BOUNDS, 80 );
-
-    delete mBuffer;
-    delete mStyleBuffer;
-    mBuffer = new Fl_Text_Buffer();
-    mStyleBuffer = new Fl_Text_Buffer();
-    highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
-
-}
-
-LogDisplay::~LogDisplay()
-{
-    delete mBuffer; mBuffer = NULL;
-    delete mStyleBuffer; mStyleBuffer = NULL;
-}
-
-void LogDisplay::clear()
-{
-    mStyleBuffer->text("");
-    mBuffer->text("");
-    _lines = 0;
-}
-
-void LogDisplay::save( const char* file )
-{
-    char buf[4096];
-    if ( !file )
+    LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
+        Fl_Text_Display( x, y, w, h, l )
     {
-        std::string home = mrv::homepath();
-        sprintf( buf, "%s/mrViewer.log", home.c_str() );
-        file = buf;
+
+        color( FL_GRAY0 );
+
+        scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
+
+        wrap_mode( WRAP_AT_BOUNDS, 80 );
+
+        delete mBuffer;
+        delete mStyleBuffer;
+        mBuffer = new Fl_Text_Buffer();
+        mStyleBuffer = new Fl_Text_Buffer();
+        highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
+
     }
 
-    try {
-
-        int err = mBuffer->savefile( file );
-
-        if ( err != 0 ) throw std::runtime_error( strerror(err) );
-
-
-        info( "Saved log as \"" );
-        info( file );
-        info( "\"." );
-    }
-    catch( const std::runtime_error& e )
+    LogDisplay::~LogDisplay()
     {
-        char err[4200];
-        sprintf( err, "Could not save log file \"%s\".", file );
-        error( err );
-        error( e.what() );
-    }
-    catch( ... )
-    {
-        char err[4200];
-        sprintf( err, "Could not save log file \"%s\".", file );
-        error( err );
+        delete mBuffer; mBuffer = NULL;
+        delete mStyleBuffer; mStyleBuffer = NULL;
     }
 
-}
-
-
-void LogDisplay::info( const char* x )
-{
-    size_t t = strlen(x);
-    char* buf = (char*)malloc( t+1 );
-    buf[t] = 0;
-    while( t-- )
+    void LogDisplay::clear()
     {
-        if ( x[t] == '\n' ) {
-            ++_lines;
-            buf[t] = '\n';
-        }
-        else
+        mStyleBuffer->text("");
+        mBuffer->text("");
+    }
+
+    void LogDisplay::save( const char* file )
+    {
+        char buf[4096];
+        if ( !file )
         {
-            buf[t] = 'A';
+            std::string home = mrv::homepath();
+            sprintf( buf, "%s/mrViewer.log", home.c_str() );
+            file = buf;
         }
-    }
+
+        try {
+
+            int err = mBuffer->savefile( file );
+
+            if ( err != 0 ) throw std::runtime_error( strerror(err) );
 
 
-    style_string += buf;
-    log_string   += x;
-
-    free( buf );
-
-    Fl::awake( static_log, NULL );
-
-}
-
-void LogDisplay::warning( const char* x )
-{
-    size_t t = strlen(x);
-    char* buf = (char*)malloc( t+1 );
-    buf[t] = 0;
-    while( t-- )
-    {
-        if ( x[t] == '\n' ) {
-            ++_lines;
-            buf[t] = '\n';
+            info( "Saved log as \"" );
+            info( file );
+            info( "\"." );
         }
-        else
+        catch( const std::runtime_error& e )
         {
-            buf[t] = 'B';
+            char err[4200];
+            sprintf( err, "Could not save log file \"%s\".", file );
+            error( err );
+            error( e.what() );
         }
-    }
-
-    style_string += buf;
-    log_string   += x;
-
-    free( buf );
-
-    Fl::awake( static_log, NULL );
-}
-
-void LogDisplay::error( const char* x )
-{
-    size_t t = strlen(x);
-    char* buf = (char*)malloc( t+1 );
-    buf[t] = 0;
-    while( t-- )
-    {
-        if ( x[t] == '\n' ) {
-            ++_lines;
-            buf[t] = '\n';
-        }
-        else
+        catch( ... )
         {
-            buf[t] = 'C';
+            char err[4200];
+            sprintf( err, "Could not save log file \"%s\".", file );
+            error( err );
         }
+
     }
 
-    style_string += buf;
-    log_string   += x;
 
-    free( buf );
-
-    if ( prefs == kAlways || (prefs == kOnce && !shown) )
+    void LogDisplay::info( const char* x )
     {
-        shown = true;
-        show = true;
+        size_t t = strlen(x);
+        char* buf = (char*)malloc( t+1 );
+        memset( buf, 'A', t );
+        buf[t] = 0;
+
+        style_string.reserve( style_string.size() + t );
+        style_string += buf;
+        log_string.reserve( log_string.size() + t );
+        log_string   += x;
+
+        free( buf );
+
+        Fl::awake( static_log, NULL );
+
     }
 
-    Fl::awake( static_log, NULL );
-}
+    void LogDisplay::warning( const char* x )
+    {
+        size_t t = strlen(x);
+        char* buf = (char*)malloc( t+1 );
+        memset( buf, 'B', t );
+        buf[t] = 0;
+
+        style_string.reserve( style_string.size() + t );
+        style_string += buf;
+        log_string.reserve( log_string.size() + t );
+        log_string   += x;
+
+        free( buf );
+
+        Fl::awake( static_log, NULL );
+    }
+
+    void LogDisplay::error( const char* x )
+    {
+        size_t t = strlen(x);
+        char* buf = (char*)malloc( t+1 );
+        memset( buf, 'C', t );
+        buf[t] = 0;
+
+        style_string.reserve( style_string.size() + t );
+        style_string += buf;
+        log_string.reserve( log_string.size() + t );
+        log_string   += x;
+
+        free( buf );
+
+        if ( prefs == kAlways || (prefs == kOnce && !shown) )
+        {
+            shown = true;
+            show = true;
+        }
+
+        Fl::awake( static_log, NULL );
+    }
 
 }

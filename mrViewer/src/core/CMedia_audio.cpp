@@ -177,7 +177,7 @@ int CMedia::audio_stream_index() const
 AVStream* CMedia::get_audio_stream() const
 {
     if ( _audio_index < 0 ) return NULL;
-    assert( _audio_index < _audio_info.size() );
+    assert( (unsigned) _audio_index < _audio_info.size() );
     if ( _audio_info[ _audio_index ].context == NULL ) return NULL;
 
     return _audio_info[ _audio_index ].context->streams[ audio_stream_index() ];
