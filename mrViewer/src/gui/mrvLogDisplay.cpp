@@ -63,41 +63,55 @@ Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     bool LogDisplay::shown( false );
     bool LogDisplay::show( false );
 
-    std::string conn_string;
-    std::string log_string;
-    std::string style_string;
 
-    void static_log(void*)
+    class LogData
     {
-        //
-        // First, handle log window showing up and scrolling
-        //
-        LogUI* logUI = ViewerUI::uiLog;
-        Fl_Window* logwindow = logUI->uiMain;
-        if ( !logwindow ) return;
+    public:
+        LogData( LogDisplay* l, const char* msg, const char s ) :
+            log( l ),
+            message( strdup( msg ) )
+            {
+                size_t t = strlen(msg);
+                style = (char*)malloc( t+1 );
+                memset( style, s, t );
+                style[t] = 0;
+            }
 
-        mrv::LogDisplay* log = logUI->uiLogText;
+        ~LogData()
+            {
+                free( message );
+                free( style );
+            }
 
-        boost::mutex::scoped_lock lock( io::logbuffer::mutex ); // needed
+    public:
+        LogDisplay* log;
+        char* message;
+        char* style;
+    };
 
-        if ( !log_string.empty() )
-        {
-            log->style_buffer()->append( style_string.c_str() );
 
-            Fl_Text_Buffer* buffer = log->buffer();
-            buffer->append( log_string.c_str() );
-            log->scroll( buffer->length(), 0 );
 
-            log_string.clear();
-            style_string.clear();
-        }
+    void log_callback( void* v )
+    {
+        LogData* d = (LogData*) v;
+
+        LogDisplay* log = d->log;
+        log->style_buffer()->append( d->style );
+
+        Fl_Text_Buffer* buffer = log->buffer();
+        buffer->append( d->message );
+        log->scroll( buffer->length(), 0 );
+
+        delete d;
 
         if ( mrv::LogDisplay::show == true )
         {
             mrv::LogDisplay::show = false;
-            if ( logUI && logwindow )
+            LogUI* logUI = ViewerUI::uiLog;
+            Fl_Window* logWindow = logUI->uiMain;
+            if ( logUI && logWindow )
             {
-                logwindow->show();
+                logWindow->show();
             }
         }
 
@@ -173,60 +187,26 @@ Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
 
     void LogDisplay::info( const char* x )
     {
-        size_t t = strlen(x);
-        char* buf = (char*)malloc( t+1 );
-        memset( buf, 'A', t );
-        buf[t] = 0;
-
-        style_string.reserve( style_string.size() + t );
-        style_string += buf;
-        log_string.reserve( log_string.size() + t );
-        log_string   += x;
-
-        free( buf );
-
-        Fl::awake( static_log, NULL );
-
+        LogData* data = new LogData( this, x, 'A' );
+        Fl::awake( log_callback, data );
     }
 
     void LogDisplay::warning( const char* x )
     {
-        size_t t = strlen(x);
-        char* buf = (char*)malloc( t+1 );
-        memset( buf, 'B', t );
-        buf[t] = 0;
-
-        style_string.reserve( style_string.size() + t );
-        style_string += buf;
-        log_string.reserve( log_string.size() + t );
-        log_string   += x;
-
-        free( buf );
-
-        Fl::awake( static_log, NULL );
+        LogData* data = new LogData( this, x, 'B' );
+        Fl::awake( log_callback, data );
     }
 
     void LogDisplay::error( const char* x )
     {
-        size_t t = strlen(x);
-        char* buf = (char*)malloc( t+1 );
-        memset( buf, 'C', t );
-        buf[t] = 0;
-
-        style_string.reserve( style_string.size() + t );
-        style_string += buf;
-        log_string.reserve( log_string.size() + t );
-        log_string   += x;
-
-        free( buf );
-
         if ( prefs == kAlways || (prefs == kOnce && !shown) )
         {
             shown = true;
             show = true;
         }
 
-        Fl::awake( static_log, NULL );
+        LogData* data = new LogData( this, x, 'C' );
+        Fl::awake( log_callback, data );
     }
 
 }

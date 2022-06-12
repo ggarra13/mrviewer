@@ -79,7 +79,7 @@ int logbuffer::sync()
     if ( ! pbase() ) return 0;
 
     // lock mutex
-    boost::mutex::scoped_lock lk( mutex );
+    //boost::mutex::scoped_lock lk( mutex );
 
 
     // make sure to null terminate the string

@@ -1823,7 +1823,7 @@ void tcp_session::stop()
     if ( !ui ) return;
 
     mrv::ImageView* v = ui->uiView;
-    if ( ui && v )
+    if ( ui && v && v->main() )
     {
         Mutex& m = v->_clients_mtx;
         SCOPED_LOCK( m );
