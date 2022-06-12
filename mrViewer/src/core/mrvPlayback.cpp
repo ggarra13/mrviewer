@@ -1339,10 +1339,7 @@ void video_thread( PlaybackData* data )
         //img->debug_video_packets( frame, "find_image", true );
         //img->debug_video_stores( frame, "find_image", false );
 
-        if ( ! img->find_image( frame ) )
-        {
-            LOG_ERROR( _("Could not find image ") << frame );
-        }
+        img->find_image( frame );
 
 
         if ( fg && img->is_left_eye() )

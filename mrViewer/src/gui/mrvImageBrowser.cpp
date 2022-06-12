@@ -2181,7 +2181,7 @@ void ImageBrowser::save_session()
 #endif
                     TRACE2( img->name() << " HAS FPS " << fps );
                     //img->fps( fps );
-                    img->play_fps( fps );
+                    //img->play_fps( fps );
                 }
             }
         }

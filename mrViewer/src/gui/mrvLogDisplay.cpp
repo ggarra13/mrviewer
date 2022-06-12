@@ -28,22 +28,15 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include <cassert>
 
 #include <stdexcept>
-#include <iostream>
-
-#include <boost/thread/thread.hpp>
 
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl.H>
-#include <FL/fl_utf8.h>
 
-#include "core/mrvThread.h"
 #include "core/mrvHome.h"
-#include "gui/mrvIO.h"
 #include "gui/mrvLogDisplay.h"
 #include "mrViewer.h"
 
@@ -52,11 +45,11 @@ namespace mrv {
 // Style table
 static
 Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
-    // FONT COLOR      FONT FACE   SIZE   ATTR
-    // --------------- ----------- ----- ------
-    {  FL_BLACK,  FL_HELVETICA, 14,   0 }, // A - Info
+    // FONT COLOR       FONT FACE   SIZE  ATTR
+    // --------------- ------------ ---- ------
+    {  FL_BLACK,       FL_HELVETICA, 14,   0 }, // A - Info
     {  FL_DARK_YELLOW, FL_HELVETICA, 14,   0 }, // B - Warning
-    {  FL_RED,    FL_HELVETICA, 14,   0 }, // C - Error
+    {  FL_RED,         FL_HELVETICA, 14,   0 }, // C - Error
 };
 
     LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
