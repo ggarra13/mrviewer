@@ -62,7 +62,7 @@ IF(MSVC)
 
   FILE(TO_NATIVE_PATH FFMPEG_stdint_INCLUDE ${FFMPEG_stdint_INCLUDE} )
 
-  SET( FFMPEG_INCLUDE_DIR ${FFMPEG_INCLUDE_DIR} ${FFMPEG_stdint_INCLUDE} )
+  SET( FFMPEG_INCLUDE_DIR "${FFMPEG_INCLUDE_DIR}" "${FFMPEG_stdint_INCLUDE}" )
 
 ENDIF(MSVC)
 
@@ -137,8 +137,13 @@ MESSAGE( STATUS "FFMPEG_swresample_LIBRARY=" ${FFMPEG_swresample_LIBRARY} )
 
 
 if (FFMPEG_INCLUDES)
-  file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
-       REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
+  if ( EXISTS "${FFMPEG_INCLUDES}/libavcodec/version_major.h" )
+    file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version_major.h" TMP
+      REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
+  else()
+    file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
+      REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
+  endif()
   string (REGEX MATCHALL "[0-9]+[.0-9]+" LIBAVCODEC_VERSION_MAJOR ${TMP})
   file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
        REGEX "^#define LIBAVCODEC_VERSION_MINOR .*$")

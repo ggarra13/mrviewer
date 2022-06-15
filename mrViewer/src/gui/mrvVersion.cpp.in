@@ -400,8 +400,13 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
           decode= encode= cap=0;
         }
         if(p2 && strcmp(p->name, p2->name)==0){
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            encode = av_codec_is_encoder( p );
+            decode = av_codec_is_decoder( p );
+#else
           if(p->decode) decode=1;
           if(p->encode2) encode=1;
+#endif
           cap |= p->capabilities;
         }
       }
@@ -412,8 +417,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 
       if ( p2->type != type )
         continue;
-
-
+      
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
         << ( encode ? "E\t" : " \t" )

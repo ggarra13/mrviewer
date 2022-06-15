@@ -2480,8 +2480,12 @@ void aviImage::populate()
             audio_info_t s;
             populate_stream_info( s, msg, _context, par, i );
 
-            s.channels   = ctx->channels;
-            s.frequency  = ctx->sample_rate;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            s.channels   = par->ch_layout.nb_channels;
+#else
+            s.channels   = par->channels;
+#endif
+            s.frequency  = par->sample_rate;
             s.bitrate    = calculate_bitrate( stream, par );
 
 
