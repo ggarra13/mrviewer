@@ -347,7 +347,8 @@ EndStatus handle_loop( int64_t& frame,
                        ThreadType decode = kVideo )
 {
 
-    if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
+    if ( !img || img->stopped() | !timeline || !reel || !uiMain )
+        return kEndIgnore;
 
     bool ignore = true;
 
