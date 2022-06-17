@@ -1009,41 +1009,36 @@ bool aviImage::seek_to_position( const int64_t frame )
         }
     }
 
+    int idx = -1;
+    AVStream* stream = NULL;
 
-    // std::cerr << name() << std::endl << "-------------" << std::endl;
-    // std::cerr << "_start_number " << _start_number << std::endl;
-    // std::cerr << "start " << start << " AV_TIME_BASE " << AV_TIME_BASE
-    //        << " fps " << fps() << std::endl;
-    // std::cerr << "mult " << double( start * AV_TIME_BASE / fps() ) << std::endl;
-    // std::cerr << "int64 "
-    //           << int64_t( double( start * AV_TIME_BASE / fps() ) )
-    //           << std::endl;
-
-
-    int idx = video_stream_index();
-    AVStream* stream = get_video_stream();
-    if ( stream == NULL ) {
+    idx = video_stream_index();
+    stream = get_video_stream();
+    if ( !stream ) {
         idx = audio_stream_index();
         stream = get_audio_stream();
     }
 
-    AVRational tb = stream->time_base;
-    AVRational fr = stream->r_frame_rate;
-    offset = av_rescale_q( start, swap( fr ), tb );
-
+    if ( stream )
+    {
+        const AVRational& tb = stream->time_base;
+        const AVRational& fr = stream->r_frame_rate;
+        offset = av_rescale_q( start, swap( fr ), tb );
+    }
+    else
+    {
+        offset = int64_t( double( start * AV_TIME_BASE / fps() ) );
+    }
 
     if ( offset < 0 ) offset = 0;
 
 
     int ret = 0;
-    int flag = 0;
-    if ( frame < _frame ) flag |= AVSEEK_FLAG_BACKWARD;
+    int flag = AVSEEK_FLAG_BACKWARD;
 
     if ( !skip )
     {
-        ret = avformat_seek_file( _context, idx,
-                                  std::numeric_limits<int64_t>::min(), offset,
-                                  std::numeric_limits<int64_t>::max(), flag );
+        ret = av_seek_frame( _context, idx, offset, flag );
     }
 
     if (ret < 0)
@@ -1107,11 +1102,11 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( !got_audio ) {
         if ( _acontext )
         {
-            apts = frame2pts( get_audio_stream(), start + 1 + _audio_offset );
+            apts = frame2pts( get_audio_stream(), start + _audio_offset );
         }
         else
         {
-            apts = frame2pts( get_audio_stream(), start + 1);
+            apts = frame2pts( get_audio_stream(), start );
         }
     }
 
@@ -1146,9 +1141,13 @@ bool aviImage::seek_to_position( const int64_t frame )
                                  got_audio, got_subtitle );
 
 
-    if ( playback() == kBackwards && dts > start_frame() &&
-         dts < end_frame() )
-        dts += _frame_offset; // this makes it smooth playback
+    if ( playback() == kBackwards )
+    {
+        // this makes it smooth playback
+        if ( dts > start_frame() && dts < end_frame() )
+            dts += _frame_offset;
+        if ( dts >= frame ) dts = frame - 1;
+    }
 
     _dts = _adts = dts;
     assert( _dts >= in_frame() && _dts <= out_frame() );
@@ -2886,7 +2885,7 @@ void aviImage::populate()
 
                 if ( !got_audio )
                 {
-                    if ( pktframe > _frameIn + 1 ) got_audio = true;
+                    if ( pktframe > _frameIn ) got_audio = true;
                     else if ( pktframe == _frameIn )
                     {
                         audio_bytes += pkt->size;
@@ -3186,10 +3185,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             break;
         }
 
-        int ret = 0;
-        int flag = AVSEEK_FLAG_BACKWARD;
         int error;
-        int64_t offset = -1;
 
         {
             SCOPED_LOCK( _decode_mutex );
@@ -3252,7 +3248,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                             << std::endl;
 #endif
                 }
-                // should be pktframe without +1 but it works better with it.
                 if ( pktframe < dts ) dts = pktframe;
             }
             else
@@ -3358,8 +3353,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             }
         }
 
-        // av_packet_unref( &pkt );
-
+        av_packet_unref( pkt ); // data packet or some other unknown packet
 
     } // (!got_video || !got_audio)
 

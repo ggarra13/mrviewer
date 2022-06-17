@@ -1,5 +1,7 @@
 v6.2.0  - Updated ffmpeg libraries to handle HAP, HAP with alpha and
 	  HAP Q movies.
+	- Improved performance of reverse playback.  Fixed reverse playback to
+	  work on all movies.
 
 v6.1.9  - Improved reverse playback to not use so much memory and be smoother
 	  on most movie files.  Audio sync is not perfect, thou.

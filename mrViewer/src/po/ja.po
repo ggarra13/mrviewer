@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-15 13:16-0300\n"
+"POT-Creation-Date: 2022-06-17 20:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "既知のコーデックではありません "
 
-#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2522
+#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2521
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1160
+#: core/mrvPlayback.cpp:1161
 msgid " - Decode of image frame "
 msgstr " -額縁のデコード "
 
-#: core/mrvPlayback.cpp:781
+#: core/mrvPlayback.cpp:782
 msgid " - decode Error audio frame "
 msgstr " -オーディオフレームのデコードエラー "
 
@@ -85,7 +85,7 @@ msgstr " -オーディオフレームのデコードエラー "
 msgid " Color Area Selection"
 msgstr " カラーエリアの選択"
 
-#: core/aviImage.cpp:3068
+#: core/aviImage.cpp:3067
 msgid " Could not open file. "
 msgstr " ファイルを開くことができませんでした. "
 
@@ -117,7 +117,7 @@ msgstr " 一致したサフィックス="
 msgid " Move Picture"
 msgstr " 画像を動かす"
 
-#: core/aviImage.cpp:2540
+#: core/aviImage.cpp:2539
 msgid " No audio or video stream in file"
 msgstr " ファイルにオーディオまたはビデオがありません"
 
@@ -190,7 +190,7 @@ msgstr " 失敗. "
 msgid " for channel.  Maximum: "
 msgstr " チャネル用.最大: "
 
-#: core/aviImage.cpp:1498 core/aviImage.cpp:1548
+#: core/aviImage.cpp:1497 core/aviImage.cpp:1547
 msgid " for codec "
 msgstr " コーデックの場合 "
 
@@ -198,7 +198,7 @@ msgstr " コーデックの場合 "
 msgid " for color_space"
 msgstr " color_spaceの場合"
 
-#: core/aviImage.cpp:4144 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " フレーム用 "
 
@@ -238,7 +238,7 @@ msgstr ""
 " mrViewerがクラッシュした場合\n"
 "[設定]->[ユーザーインターフェイス]->[単一インスタンス]を変更しません."
 
-#: core/aviImage.cpp:1920
+#: core/aviImage.cpp:1919
 msgid " instead"
 msgstr " 代わりに"
 
@@ -266,7 +266,7 @@ msgstr " 彼は迷子になっています."
 msgid " is missing. Choosing "
 msgstr " 不足している.選ぶ "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1930 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1929 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " 見つかりません"
@@ -275,15 +275,15 @@ msgstr " 見つかりません"
 msgid " not found in reel"
 msgstr " リールに見つかりません"
 
-#: core/aviImage.cpp:1918
+#: core/aviImage.cpp:1917
 msgid " not found, choosing "
 msgstr " 見つかりません、選択 "
 
-#: core/aviImage.cpp:4314
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " まだサポートされていません"
 
-#: core/mrvPlayback.cpp:1161
+#: core/mrvPlayback.cpp:1162
 msgid " returned "
 msgstr " 戻る "
 
@@ -291,7 +291,7 @@ msgstr " 戻る "
 msgid " size is "
 msgstr " サイズは "
 
-#: core/aviImage.cpp:4172
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " スターテス: "
 
@@ -303,7 +303,7 @@ msgstr " に"
 msgid " to "
 msgstr " に "
 
-#: core/aviImage.cpp:1890 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1889 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " ビデオフレーム、キャッシュ "
 
@@ -531,7 +531,7 @@ msgstr "（mrViewerが起動しない場合は削除してください）"
 msgid "(no image)"
 msgstr "（画像なし）"
 
-#: core/aviImage.cpp:1891 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1890 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr "）キャッシュサイズ: "
 
@@ -1609,14 +1609,14 @@ msgstr "後ろに削除"
 msgid "Background"
 msgstr "バックグラウンド"
 
-#: core/mrvPlayback.cpp:1096
+#: core/mrvPlayback.cpp:1097
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "背景画像の長さは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1103
+#: core/mrvPlayback.cpp:1104
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1625,13 +1625,13 @@ msgstr ""
 "背景画像（%lg）のfpsは、前面画像（%lg）と同じではありません.サイクルで繰り返"
 "すと正しく機能しません."
 
-#: core/mrvPlayback.cpp:1080
+#: core/mrvPlayback.cpp:1081
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "下部のスプールは非常に短いです.サイクルで繰り返すと正しく機能しない場合があり"
 "ます."
 
-#: core/mrvPlayback.cpp:1070
+#: core/mrvPlayback.cpp:1071
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2138,11 +2138,11 @@ msgstr "インデックスのカラーチャンネルが見つかりません "
 msgid "Color controls"
 msgstr "カラーコントロール"
 
-#: core/aviImage.cpp:1310
+#: core/aviImage.cpp:1309
 msgid "Colorspace details not gotten "
 msgstr "色空間の詳細が取得されていません "
 
-#: core/aviImage.cpp:1339
+#: core/aviImage.cpp:1338
 msgid "Colorspace details not set "
 msgstr "色空間の詳細が設定されていません "
 
@@ -2348,7 +2348,7 @@ msgstr "OCIOからLutを計算できませんでした"
 msgid "Could not copy context to parameters"
 msgstr "コンテキストをパラメータにコピーできませんでした"
 
-#: core/aviImage.cpp:734 core/aviImage.cpp:2403
+#: core/aviImage.cpp:734 core/aviImage.cpp:2402
 msgid "Could not copy parameters to context"
 msgstr "パラメータをコーデックコンテキストにコピーできませんでした"
 
@@ -2452,7 +2452,7 @@ msgstr "4x4配列の16個の浮動小数点数が見つかりませんでした"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "4x4行列の16個の浮動小数点数が見つかりませんでした "
 
-#: core/aviImage.cpp:3044
+#: core/aviImage.cpp:3043
 msgid "Could not find stream info"
 msgstr "トラック情報が見つかりませんでした"
 
@@ -2524,7 +2524,7 @@ msgstr "オーディオサンプルを取得できませんでした"
 msgid "Could not get device info for "
 msgstr "のデバイス情報を取得できませんでした "
 
-#: core/aviImage.cpp:1290
+#: core/aviImage.cpp:1289
 msgid "Could not get image conversion context."
 msgstr "画像変換コンテキストを取得できませんでした."
 
@@ -2657,7 +2657,7 @@ msgstr ""
 "シーケンスや動画を保存できず、指定した画像だけを保存できました.ストリームに"
 "は%d構文を使用し、映画にはカスタム拡張機能を使用します."
 
-#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
+#: core/aviImage.cpp:1046 core/aviImage.cpp:1063
 msgid "Could not seek to frame "
 msgstr "絵が見つかりませんでした "
 
@@ -3059,11 +3059,11 @@ msgstr "トラックレスデコード"
 msgid "Decode OK"
 msgstr "デコードOK"
 
-#: core/aviImage.cpp:4142 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "オーディオデコードエラー: "
 
-#: core/aviImage.cpp:4170
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "画像を探しているビデオデコードエラー "
 
@@ -3386,7 +3386,7 @@ msgstr "media_to_pathnameに渡された空のメディア"
 msgid "Empty media provided to Element constructor"
 msgstr "要素コンストラクターに空のメディアが提供されました"
 
-#: core/aviImage.cpp:3599
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "ビデオ検索用の空のパケット."
 
@@ -3394,7 +3394,7 @@ msgstr "ビデオ検索用の空のパケット."
 msgid "Empty pic file for media "
 msgstr "メディア用の空の画像ファイル "
 
-#: core/aviImage.cpp:4523
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "空の検索またはプレロール"
 
@@ -3460,7 +3460,7 @@ msgstr "オーディオの変換中にエラーが発生しました: "
 msgid "Error while encoding video frame: "
 msgstr "ビデオフレームのエンコードエラー: "
 
-#: core/aviImage.cpp:1449
+#: core/aviImage.cpp:1448
 msgid "Error while feeding the filtergraph"
 msgstr "フィルタチャートのフィードエラー"
 
@@ -4720,7 +4720,7 @@ msgstr "ステレオ画像が無効です "
 msgid "Invalid timecode "
 msgstr "無効なタイムコード "
 
-#: core/aviImage.cpp:1971
+#: core/aviImage.cpp:1970
 msgid "Invalid video stream "
 msgstr "無効なビデオトラック "
 
@@ -5582,7 +5582,7 @@ msgstr "オーディオフレーム用のメモリがありません"
 msgid "No memory to allocate filter graph"
 msgstr "フィルタグラフ用のメモリがありません"
 
-#: core/aviImage.cpp:2136
+#: core/aviImage.cpp:2135
 msgid "No pixel format could be chosen"
 msgstr "ピクセルフォーマットを選択できませんでした"
 
@@ -5704,11 +5704,11 @@ msgstr "黒の画像用のメモリがありません"
 msgid "Not enough memory for color transform"
 msgstr "色変換のメモリがありません"
 
-#: core/aviImage.cpp:2397
+#: core/aviImage.cpp:2396
 msgid "Not enough memory for context"
 msgstr "コンテキスト用のメモリがありません"
 
-#: core/aviImage.cpp:1221 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1220 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "画像メモリなし"
 
@@ -6391,7 +6391,7 @@ msgstr "印刷"
 msgid "Priority"
 msgstr "優先順位"
 
-#: core/aviImage.cpp:1226
+#: core/aviImage.cpp:1225
 msgid "Problem allocating image "
 msgstr "画像の割り当てに問題があります "
 
@@ -6407,12 +6407,12 @@ msgstr "プロフィール"
 msgid "Profile name "
 msgstr "プロファイルの名前 "
 
-#: core/aviImage.cpp:2789
+#: core/aviImage.cpp:2788
 #, c-format
 msgid "Program %d "
 msgstr "プログラム%d "
 
-#: core/aviImage.cpp:2785
+#: core/aviImage.cpp:2784
 #, c-format
 msgid "Program %d: %s"
 msgstr "プログラム%d: %s"
@@ -7551,7 +7551,7 @@ msgstr "字幕ファイル "
 msgid "Subtitle font "
 msgstr "字幕レター "
 
-#: core/aviImage.cpp:4313
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "字幕タイプ "
 
@@ -8350,7 +8350,7 @@ msgstr "未処理の例外"
 msgid "Unhandled exception"
 msgstr "未処理の例外"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2953
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2952
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8416,7 +8416,7 @@ msgstr "キーの不明なデータ型'"
 msgid "Unknown data type to convert to string"
 msgstr "テキストから変換する不明なデータ型"
 
-#: core/aviImage.cpp:2263
+#: core/aviImage.cpp:2262
 msgid "Unknown destination video frame format: "
 msgstr "不明な受信者のビデオフレーム形式: "
 
@@ -8692,7 +8692,7 @@ msgstr "ビデオトラック＃%d"
 msgid "Video Streams"
 msgstr "ビデオトラック"
 
-#: core/aviImage.cpp:1888 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1887 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "ビデオ同期メインフレーム "
 
@@ -9192,7 +9192,7 @@ msgstr "間違ったデータサイズを受け取りました."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 
-#: core/aviImage.cpp:3543
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 
@@ -9397,7 +9397,7 @@ msgstr "ビデオのavcodec_context_from_parametersが失敗しました"
 msgid "avcodec_copy_context failed for audio"
 msgstr "オーディオのavcodec_copy_contextが失敗しました"
 
-#: core/aviImage.cpp:1766
+#: core/aviImage.cpp:1765
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "字幕のavcodec_copy_contextが失敗しました"
 
@@ -9462,7 +9462,7 @@ msgstr "ダビング"
 msgid "files"
 msgstr "記録"
 
-#: core/aviImage.cpp:1917 core/aviImage.cpp:1930 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1916 core/aviImage.cpp:1929 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: ボックス "
@@ -9767,7 +9767,7 @@ msgstr "recv（）が失敗しました"
 msgid "send() failed"
 msgstr "send（）が失敗しました"
 
-#: core/aviImage.cpp:1497 core/aviImage.cpp:1547
+#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
 msgid "send_packet error: "
 msgstr "パッケージを送信できませんでした.エラー "
 

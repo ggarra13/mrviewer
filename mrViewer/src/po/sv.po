@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-15 13:16-0300\n"
+"POT-Creation-Date: 2022-06-17 20:44-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Inte en känd codec "
 
-#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2522
+#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2521
 msgid ""
 "\n"
 "\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1160
+#: core/mrvPlayback.cpp:1161
 msgid " - Decode of image frame "
 msgstr " - Avkodning av bildram "
 
-#: core/mrvPlayback.cpp:781
+#: core/mrvPlayback.cpp:782
 msgid " - decode Error audio frame "
 msgstr " - ljudramsavkodningsfel "
 
@@ -85,7 +85,7 @@ msgstr " - ljudramsavkodningsfel "
 msgid " Color Area Selection"
 msgstr " Val av färgområde"
 
-#: core/aviImage.cpp:3068
+#: core/aviImage.cpp:3067
 msgid " Could not open file. "
 msgstr " Jag kunde inte öppna filen. "
 
@@ -117,7 +117,7 @@ msgstr " Matchat suffix="
 msgid " Move Picture"
 msgstr " flytta bilden"
 
-#: core/aviImage.cpp:2540
+#: core/aviImage.cpp:2539
 msgid " No audio or video stream in file"
 msgstr " Det finns inget ljud eller video i filen"
 
@@ -190,7 +190,7 @@ msgstr " fel. "
 msgid " for channel.  Maximum: "
 msgstr " för kanalen. Maximal: "
 
-#: core/aviImage.cpp:1498 core/aviImage.cpp:1548
+#: core/aviImage.cpp:1497 core/aviImage.cpp:1547
 msgid " for codec "
 msgstr " för codec "
 
@@ -198,7 +198,7 @@ msgstr " för codec "
 msgid " for color_space"
 msgstr " för färgrymd"
 
-#: core/aviImage.cpp:4144 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " för ram "
 
@@ -238,7 +238,7 @@ msgstr ""
 " om mrViewer kraschar\n"
 "inte ändrar Inställningar->Användargränssnitt->Enskild instans."
 
-#: core/aviImage.cpp:1920
+#: core/aviImage.cpp:1919
 msgid " instead"
 msgstr " i ersättning"
 
@@ -266,7 +266,7 @@ msgstr " Han är vilse."
 msgid " is missing. Choosing "
 msgstr " aknas. välja ut "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1930 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1929 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " hittades inte"
@@ -275,15 +275,15 @@ msgstr " hittades inte"
 msgid " not found in reel"
 msgstr " hittas inte på rullen"
 
-#: core/aviImage.cpp:1918
+#: core/aviImage.cpp:1917
 msgid " not found, choosing "
 msgstr " hittas inte, väljer "
 
-#: core/aviImage.cpp:4314
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " töds inte ännu"
 
-#: core/mrvPlayback.cpp:1161
+#: core/mrvPlayback.cpp:1162
 msgid " returned "
 msgstr " lämna tillbaka "
 
@@ -291,7 +291,7 @@ msgstr " lämna tillbaka "
 msgid " size is "
 msgstr " torlek är "
 
-#: core/aviImage.cpp:4172
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " tatus: "
 
@@ -303,7 +303,7 @@ msgstr " till"
 msgid " to "
 msgstr " till "
 
-#: core/aviImage.cpp:1890 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1889 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " videoram, cache "
 
@@ -531,7 +531,7 @@ msgstr "(Ta bort den om mrViewer inte startar)"
 msgid "(no image)"
 msgstr "(Utan bild)"
 
-#: core/aviImage.cpp:1891 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1890 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") cachestorlek: "
 
@@ -1605,14 +1605,14 @@ msgstr "Ta bort till baksidan"
 msgid "Background"
 msgstr "Bakgrund"
 
-#: core/mrvPlayback.cpp:1096
+#: core/mrvPlayback.cpp:1097
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Bakgrundsbildens varaktighet är mycket kort. Upprepa i cykler kanske inte "
 "fungerar korrekt."
 
-#: core/mrvPlayback.cpp:1103
+#: core/mrvPlayback.cpp:1104
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1621,13 +1621,13 @@ msgstr ""
 "Bakgrundsbildens fps ( %lg ) är inte detsamma som frontbilden ( %lg ). Att "
 "upprepa i cykler kommer inte att fungera korrekt."
 
-#: core/mrvPlayback.cpp:1080
+#: core/mrvPlayback.cpp:1081
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Den nedre spolen är mycket kort. Upprepa i cykler kanske inte fungerar "
 "korrekt."
 
-#: core/mrvPlayback.cpp:1070
+#: core/mrvPlayback.cpp:1071
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -2134,11 +2134,11 @@ msgstr "Färgkanal hittades inte för index "
 msgid "Color controls"
 msgstr "färgkontroller"
 
-#: core/aviImage.cpp:1310
+#: core/aviImage.cpp:1309
 msgid "Colorspace details not gotten "
 msgstr "Färgrymdsdetaljer har inte erhållits "
 
-#: core/aviImage.cpp:1339
+#: core/aviImage.cpp:1338
 msgid "Colorspace details not set "
 msgstr "Färgrymdsdetaljer inte inställda "
 
@@ -2344,7 +2344,7 @@ msgstr "Jag kunde inte räkna ut Lut från OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Det gick inte att kopiera kontext till parametrar"
 
-#: core/aviImage.cpp:734 core/aviImage.cpp:2403
+#: core/aviImage.cpp:734 core/aviImage.cpp:2402
 msgid "Could not copy parameters to context"
 msgstr "Kunde inte kopiera parametrar till codec-kontext"
 
@@ -2448,7 +2448,7 @@ msgstr "Jag kunde inte hitta sexton flyttalsnummer för 4x4-matrisen"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "Jag kunde inte hitta sexton flyttalsnummer för 4x4-matrisen "
 
-#: core/aviImage.cpp:3044
+#: core/aviImage.cpp:3043
 msgid "Could not find stream info"
 msgstr "Det gick inte att hitta spårinformation"
 
@@ -2520,7 +2520,7 @@ msgstr "Jag kunde inte få ljudprover"
 msgid "Could not get device info for "
 msgstr "Det gick inte att hämta enhetsinformation för "
 
-#: core/aviImage.cpp:1290
+#: core/aviImage.cpp:1289
 msgid "Could not get image conversion context."
 msgstr "Jag kunde inte få bildkonverteringskontext."
 
@@ -2653,7 +2653,7 @@ msgstr ""
 "Jag kunde inte spara sekvens eller film, bara en angiven bild. Använd %d-"
 "syntaxen för strömmar eller ett anpassat tillägg för filmer."
 
-#: core/aviImage.cpp:1051 core/aviImage.cpp:1068
+#: core/aviImage.cpp:1046 core/aviImage.cpp:1063
 msgid "Could not seek to frame "
 msgstr "Jag hittade inte tavlan "
 
@@ -3057,11 +3057,11 @@ msgstr "Spårlös avkodning"
 msgid "Decode OK"
 msgstr "avkodning ok"
 
-#: core/aviImage.cpp:4142 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "Ljudavkodningsfel: "
 
-#: core/aviImage.cpp:4170
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "Videoavkodningsfel söker efter bild "
 
@@ -3382,7 +3382,7 @@ msgstr "Tom media skickas till media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Tomt media tillhandahålls till elementkonstruktören"
 
-#: core/aviImage.cpp:3599
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "Tomma paket för videosökning."
 
@@ -3390,7 +3390,7 @@ msgstr "Tomma paket för videosökning."
 msgid "Empty pic file for media "
 msgstr "Tom bildfil för media "
 
-#: core/aviImage.cpp:4523
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "Töm sökning eller preroll"
 
@@ -3456,7 +3456,7 @@ msgstr "Fel vid konvertering av ljud: "
 msgid "Error while encoding video frame: "
 msgstr "Fel vid kodning av videoram: "
 
-#: core/aviImage.cpp:1449
+#: core/aviImage.cpp:1448
 msgid "Error while feeding the filtergraph"
 msgstr "Det gick inte att mata filterdiagrammet"
 
@@ -4720,7 +4720,7 @@ msgstr "Ogiltig stereobild "
 msgid "Invalid timecode "
 msgstr "Ogiltig tidskod "
 
-#: core/aviImage.cpp:1971
+#: core/aviImage.cpp:1970
 msgid "Invalid video stream "
 msgstr "ogiltigt videospår "
 
@@ -5584,7 +5584,7 @@ msgstr "Inget minne för ljudram"
 msgid "No memory to allocate filter graph"
 msgstr "Inget minne för filterdiagram"
 
-#: core/aviImage.cpp:2136
+#: core/aviImage.cpp:2135
 msgid "No pixel format could be chosen"
 msgstr "Kunde inte välja pixelformat"
 
@@ -5706,11 +5706,11 @@ msgstr "Inget minne för svart bild"
 msgid "Not enough memory for color transform"
 msgstr "Inget minne för färgomvandling"
 
-#: core/aviImage.cpp:2397
+#: core/aviImage.cpp:2396
 msgid "Not enough memory for context"
 msgstr "Inget minne för sammanhang"
 
-#: core/aviImage.cpp:1221 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1220 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Inget bildminne"
 
@@ -6394,7 +6394,7 @@ msgstr "Skriva ut"
 msgid "Priority"
 msgstr "Prioritet"
 
-#: core/aviImage.cpp:1226
+#: core/aviImage.cpp:1225
 msgid "Problem allocating image "
 msgstr "Problem med att tilldela bild "
 
@@ -6410,12 +6410,12 @@ msgstr "Profil"
 msgid "Profile name "
 msgstr "Namn på profil "
 
-#: core/aviImage.cpp:2789
+#: core/aviImage.cpp:2788
 #, c-format
 msgid "Program %d "
 msgstr "Program %d "
 
-#: core/aviImage.cpp:2785
+#: core/aviImage.cpp:2784
 #, c-format
 msgid "Program %d: %s"
 msgstr "Program %d: %s"
@@ -7555,7 +7555,7 @@ msgstr "Undertextfil "
 msgid "Subtitle font "
 msgstr "Undertextbrev "
 
-#: core/aviImage.cpp:4313
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "Undertexttyp "
 
@@ -8361,7 +8361,7 @@ msgstr "ohanterat undantag"
 msgid "Unhandled exception"
 msgstr "ohanterat undantag"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2953
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2952
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8427,7 +8427,7 @@ msgstr "Okänd datatyp för nyckel '"
 msgid "Unknown data type to convert to string"
 msgstr "Okänd datatyp att konvertera från text"
 
-#: core/aviImage.cpp:2263
+#: core/aviImage.cpp:2262
 msgid "Unknown destination video frame format: "
 msgstr "Okänd mottagares videoramsformat: "
 
@@ -8703,7 +8703,7 @@ msgstr "Videospår #%d"
 msgid "Video Streams"
 msgstr "videospår"
 
-#: core/aviImage.cpp:1888 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1887 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "Video Sync huvudram "
 
@@ -9205,7 +9205,7 @@ msgstr "Jag fick en felaktig datastorlek."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 
-#: core/aviImage.cpp:3543
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 
@@ -9409,7 +9409,7 @@ msgstr "avcodec_context_from_parameters misslyckades för video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context misslyckades för ljud"
 
-#: core/aviImage.cpp:1766
+#: core/aviImage.cpp:1765
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context misslyckades för undertext"
 
@@ -9474,7 +9474,7 @@ msgstr "dubbning"
 msgid "files"
 msgstr "uppgifter"
 
-#: core/aviImage.cpp:1917 core/aviImage.cpp:1930 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1916 core/aviImage.cpp:1929 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "sök_bild: ruta "
@@ -9781,7 +9781,7 @@ msgstr "recv() misslyckades"
 msgid "send() failed"
 msgstr "send() misslyckades"
 
-#: core/aviImage.cpp:1497 core/aviImage.cpp:1547
+#: core/aviImage.cpp:1496 core/aviImage.cpp:1546
 msgid "send_packet error: "
 msgstr "Jag kunde inte skicka paketet. Fel "
 
