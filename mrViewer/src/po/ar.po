@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-18 00:50-0300\n"
+"POT-Creation-Date: 2022-06-18 13:52-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 " \n"
 " برنامج ترميز غير معروف "
 
-#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2524
+#: core/CMedia_audio.cpp:643 core/aviImage.cpp:2519
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - خطأ في فك رتل الصوت "
 msgid " Color Area Selection"
 msgstr " اختيار منطقة اللون"
 
-#: core/aviImage.cpp:3070
+#: core/aviImage.cpp:3065
 msgid " Could not open file. "
 msgstr " لم أتمكن من فتح الملف. "
 
@@ -117,7 +117,7 @@ msgstr " لاحقة متطابقة="
 msgid " Move Picture"
 msgstr " نقل الصورة"
 
-#: core/aviImage.cpp:2542
+#: core/aviImage.cpp:2537
 msgid " No audio or video stream in file"
 msgstr " لا يوجد صوت أو فيديو في الملف"
 
@@ -137,7 +137,7 @@ msgstr " نص"
 msgid " already created: "
 msgstr " تم إنشاؤه بالفعل: "
 
-#: core/CMedia.cpp:4519
+#: core/CMedia.cpp:4517
 msgid " as default"
 msgstr " إفتراضي"
 
@@ -190,7 +190,7 @@ msgstr " بالفشل. "
 msgid " for channel.  Maximum: "
 msgstr " للقناة. أقصى: "
 
-#: core/aviImage.cpp:1500 core/aviImage.cpp:1550
+#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
 msgid " for codec "
 msgstr " لبرنامج الترميز "
 
@@ -198,7 +198,7 @@ msgstr " لبرنامج الترميز "
 msgid " for color_space"
 msgstr " لمساحة_اللون"
 
-#: core/aviImage.cpp:4141 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1052 core/brawImage.cpp:1498
 msgid " for frame "
 msgstr " للإطار "
 
@@ -238,7 +238,7 @@ msgstr ""
 " إذا تعطل mrViewer \n"
 " لا يقوم بتعديل التفضيلات-> واجهة المستخدم-> مثيل واحد."
 
-#: core/aviImage.cpp:1922
+#: core/aviImage.cpp:1917
 msgid " instead"
 msgstr " في الاستبدال"
 
@@ -258,15 +258,15 @@ msgstr " إنه بالفعل الإصدار الأول على القرص."
 msgid " is already the last version on disk."
 msgstr " إنه بالفعل أحدث إصدار على القرص."
 
-#: core/CMedia.cpp:4376
+#: core/CMedia.cpp:4374
 msgid " is missing."
 msgstr " إنه ضائع."
 
-#: core/CMedia.cpp:4399
+#: core/CMedia.cpp:4397
 msgid " is missing. Choosing "
 msgstr " مفقود. قطف من "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1932 core/R3dImage.cpp:913
+#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:1927 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid " not found"
 msgstr " لم يتم العثور على"
@@ -275,11 +275,11 @@ msgstr " لم يتم العثور على"
 msgid " not found in reel"
 msgstr " لم يتم العثور على بكرة"
 
-#: core/aviImage.cpp:1920
+#: core/aviImage.cpp:1915
 msgid " not found, choosing "
 msgstr " غير موجود ، واختيار "
 
-#: core/aviImage.cpp:4311
+#: core/aviImage.cpp:4306
 msgid " not yet supported"
 msgstr " غير معتمدة حتى الآن"
 
@@ -291,7 +291,7 @@ msgstr " إرجاع "
 msgid " size is "
 msgstr " الحجم "
 
-#: core/aviImage.cpp:4169
+#: core/aviImage.cpp:4164
 msgid " status: "
 msgstr " الحالة: "
 
@@ -303,7 +303,7 @@ msgstr " ل"
 msgid " to "
 msgstr " ل "
 
-#: core/aviImage.cpp:1892 core/R3dImage.cpp:873 core/brawImage.cpp:1044
+#: core/aviImage.cpp:1887 core/R3dImage.cpp:873 core/brawImage.cpp:1044
 msgid " video frame, cache "
 msgstr " إطار الفيديو ، ذاكرة التخزين المؤقت "
 
@@ -455,11 +455,11 @@ msgstr "' بالنسبة "
 msgid "' for writing. Reason: "
 msgstr "للكتابة. سبب: "
 
-#: core/CMedia.cpp:4519
+#: core/CMedia.cpp:4517
 msgid "' from bitdepth "
 msgstr "عمق البت: "
 
-#: core/CMedia.cpp:4471
+#: core/CMedia.cpp:4469
 msgid "' from filename"
 msgstr "من اسم الملف"
 
@@ -530,7 +530,7 @@ msgstr "(قم بإزالته إذا لم يبدأ برنامج mrViewer)"
 msgid "(no image)"
 msgstr "(بدون صورة)"
 
-#: core/aviImage.cpp:1893 core/R3dImage.cpp:874 core/brawImage.cpp:1045
+#: core/aviImage.cpp:1888 core/R3dImage.cpp:874 core/brawImage.cpp:1045
 msgid ") cache size: "
 msgstr ") حجم ذاكرة التخزين المؤقت: "
 
@@ -737,7 +737,7 @@ msgstr "14.985"
 msgid "15"
 msgstr "15"
 
-#: core/CMedia.cpp:4491
+#: core/CMedia.cpp:4489
 msgid "16 bits"
 msgstr "16 بت"
 
@@ -854,7 +854,7 @@ msgstr "29.97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:4498
+#: core/CMedia.cpp:4496
 msgid "32 bits"
 msgstr "32 بت"
 
@@ -981,7 +981,7 @@ msgstr "70 ملم"
 msgid "8 bit Caches"
 msgstr "8 بت مخبأ"
 
-#: core/CMedia.cpp:4484
+#: core/CMedia.cpp:4482
 msgid "8 bits"
 msgstr "8 بت"
 
@@ -1522,7 +1522,7 @@ msgstr "يحتوي صندوق الصوت على قيمة NOPTS."
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "حزمة الصوت غير معروفة ، توقع البحث أو الاختبار المسبق"
 
-#: core/CMedia_audio.cpp:2049
+#: core/CMedia_audio.cpp:2046
 msgid "Audio packets empty at end of seek"
 msgstr "حزم الصوت الفارغة في نهاية البحث"
 
@@ -1845,11 +1845,11 @@ msgstr "يلغي"
 msgid "Cannot allocate dst samples"
 msgstr "لا يمكنني تعيين عينات التوقيت الصيفي"
 
-#: core/aviImage.cpp:606
+#: core/aviImage.cpp:602
 msgid "Cannot create buffer sink"
 msgstr "تعذر إنشاء مخزن المخزن المؤقت"
 
-#: core/aviImage.cpp:596
+#: core/aviImage.cpp:592
 msgid "Cannot create buffer source"
 msgstr "تعذر إنشاء مصدر المخزن المؤقت"
 
@@ -1870,7 +1870,7 @@ msgstr "لا يمكنني تحديد \""
 msgid "Cannot parse environment variable \""
 msgstr "لا أستطيع تفسير متغير البيئة \""
 
-#: core/aviImage.cpp:613
+#: core/aviImage.cpp:609
 msgid "Cannot set output pixel format"
 msgstr "تعذر تعيين تنسيق عرض بكسل الإخراج"
 
@@ -2135,11 +2135,11 @@ msgstr "قناة اللون غير موجودة للفهرس "
 msgid "Color controls"
 msgstr "ضوابط اللون"
 
-#: core/aviImage.cpp:1312
+#: core/aviImage.cpp:1307
 msgid "Colorspace details not gotten "
 msgstr "لم يتم الحصول على تفاصيل مساحة اللون "
 
-#: core/aviImage.cpp:1341
+#: core/aviImage.cpp:1336
 msgid "Colorspace details not set "
 msgstr "لم يتم تعيين تفاصيل مساحة اللون "
 
@@ -2344,7 +2344,7 @@ msgstr "لم أستطع حساب لوت من الترفيه"
 msgid "Could not copy context to parameters"
 msgstr "تعذر نسخ السياق إلى المعلمات"
 
-#: core/aviImage.cpp:734 core/aviImage.cpp:2405
+#: core/aviImage.cpp:730 core/aviImage.cpp:2400
 msgid "Could not copy parameters to context"
 msgstr "تعذر نسخ المعلمات إلى سياق برنامج الترميز"
 
@@ -2448,11 +2448,11 @@ msgstr "لم أتمكن من العثور على ستة عشر رقمًا فاص
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "لم أتمكن من العثور على ستة عشر رقمًا فاصلة عائمة لصفيف 4x4 "
 
-#: core/aviImage.cpp:3046
+#: core/aviImage.cpp:3041
 msgid "Could not find stream info"
 msgstr "تعذر العثور على معلومات المسار"
 
-#: core/aviImage.cpp:762
+#: core/aviImage.cpp:758
 msgid "Could not find subtitle in '"
 msgstr "تعذر العثور على الترجمة في \""
 
@@ -2520,7 +2520,7 @@ msgstr "لم أتمكن من الحصول على عينات صوتية"
 msgid "Could not get device info for "
 msgstr "فشل الحصول على معلومات الجهاز لـ "
 
-#: core/aviImage.cpp:1292
+#: core/aviImage.cpp:1287
 msgid "Could not get image conversion context."
 msgstr "لم أستطع الحصول على سياق تحويل الصورة."
 
@@ -2653,7 +2653,7 @@ msgstr ""
 "لم أستطع حفظ التسلسل أو الفيلم ، فقط صورة محددة. استخدم بناء الجملة%d "
 "للتسلسلات أو ملحق مخصص للأفلام."
 
-#: core/aviImage.cpp:1046 core/aviImage.cpp:1063
+#: core/aviImage.cpp:1042 core/aviImage.cpp:1059
 msgid "Could not seek to frame "
 msgstr "لم أتمكن من العثور على اللوحة "
 
@@ -3055,11 +3055,11 @@ msgstr "فك غير مطروق"
 msgid "Decode OK"
 msgstr "فك طيب"
 
-#: core/aviImage.cpp:4139 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
+#: core/aviImage.cpp:4134 core/R3dImage.cpp:1050 core/brawImage.cpp:1496
 msgid "Decode audio error: "
 msgstr "خطأ في فك تشفير الصوت: "
 
-#: core/aviImage.cpp:4167
+#: core/aviImage.cpp:4162
 msgid "Decode video error seek frame "
 msgstr "خطأ في فك تشفير الفيديو أثناء البحث عن الصورة "
 
@@ -3379,7 +3379,7 @@ msgstr "تم تمرير الوسائط الفارغة إلى media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "تم توفير وسائط فارغة لمنشئ العنصر"
 
-#: core/aviImage.cpp:3596
+#: core/aviImage.cpp:3591
 msgid "Empty packets for video seek."
 msgstr "الحزم الفارغة للبحث عن الفيديو."
 
@@ -3387,7 +3387,7 @@ msgstr "الحزم الفارغة للبحث عن الفيديو."
 msgid "Empty pic file for media "
 msgstr "ملف صورة فارغ للوسائط "
 
-#: core/aviImage.cpp:4520
+#: core/aviImage.cpp:4515
 msgid "Empty seek or preroll"
 msgstr "بحث فارغ أو تمهيدي"
 
@@ -3453,7 +3453,7 @@ msgstr "خطأ أثناء تحويل الصوت: "
 msgid "Error while encoding video frame: "
 msgstr "خطأ في ترميز إطار الفيديو: "
 
-#: core/aviImage.cpp:1451
+#: core/aviImage.cpp:1446
 msgid "Error while feeding the filtergraph"
 msgstr "خطأ في تغذية مخطط المرشح"
 
@@ -4092,7 +4092,7 @@ msgstr "اذهب إلى بداية التسلسل."
 msgid "Go to the end of the sequence."
 msgstr "اذهب إلى نهاية التسلسل."
 
-#: core/CMedia.cpp:4471 core/CMedia.cpp:4518
+#: core/CMedia.cpp:4469 core/CMedia.cpp:4516
 msgid "Got colorspace '"
 msgstr "لدي مساحة اللون \""
 
@@ -4713,7 +4713,7 @@ msgstr "صورة ستريو غير صالحة "
 msgid "Invalid timecode "
 msgstr "رمز الوقت غير صالح "
 
-#: core/aviImage.cpp:1973
+#: core/aviImage.cpp:1968
 msgid "Invalid video stream "
 msgstr "مسار فيديو غير صالح "
 
@@ -5572,11 +5572,11 @@ msgstr "لا توجد صورة متبقية لإرفاق زوج من صور ال
 msgid "No memory for audio frame"
 msgstr "لا توجد ذاكرة لإطار الصوت"
 
-#: core/aviImage.cpp:574
+#: core/aviImage.cpp:570
 msgid "No memory to allocate filter graph"
 msgstr "لا توجد ذاكرة لفلتر الرسم البياني"
 
-#: core/aviImage.cpp:2138
+#: core/aviImage.cpp:2133
 msgid "No pixel format could be chosen"
 msgstr "تعذر اختيار تنسيق البكسل"
 
@@ -5696,11 +5696,11 @@ msgstr "لا ذاكرة للصورة السوداء"
 msgid "Not enough memory for color transform"
 msgstr "لا ذاكرة لتحويل اللون"
 
-#: core/aviImage.cpp:2399
+#: core/aviImage.cpp:2394
 msgid "Not enough memory for context"
 msgstr "لا ذاكرة للسياق"
 
-#: core/aviImage.cpp:1223 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1218 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "لا توجد ذاكرة للصورة"
 
@@ -6381,7 +6381,7 @@ msgstr "مطبعة"
 msgid "Priority"
 msgstr "أفضلية"
 
-#: core/aviImage.cpp:1228
+#: core/aviImage.cpp:1223
 msgid "Problem allocating image "
 msgstr "مشكلة في تخصيص الصورة "
 
@@ -6397,12 +6397,12 @@ msgstr "حساب تعريفي"
 msgid "Profile name "
 msgstr "اسم الملف الشخصي "
 
-#: core/aviImage.cpp:2791
+#: core/aviImage.cpp:2786
 #, c-format
 msgid "Program %d "
 msgstr "البرنامج%d "
 
-#: core/aviImage.cpp:2787
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d: %s"
 msgstr "البرنامج %d: %s"
@@ -6786,7 +6786,7 @@ msgstr "فشل إعادة تشكيل الصوت"
 msgid "Resampling audio failed.  Len: "
 msgstr "فشل إعادة تشكيل الصوت. ليون: "
 
-#: core/aviImage.cpp:154
+#: core/aviImage.cpp:150
 msgid "Reserved"
 msgstr "محجوز"
 
@@ -7528,19 +7528,19 @@ msgstr "مسار الترجمة #%d"
 msgid "Subtitle Streams"
 msgstr "مسارات الترجمة"
 
-#: core/aviImage.cpp:792
+#: core/aviImage.cpp:788
 msgid "Subtitle encoding "
 msgstr "ترميز الترجمة "
 
-#: core/aviImage.cpp:790
+#: core/aviImage.cpp:786
 msgid "Subtitle file "
 msgstr "ملف الترجمة "
 
-#: core/aviImage.cpp:791
+#: core/aviImage.cpp:787
 msgid "Subtitle font "
 msgstr "خطاب الترجمة "
 
-#: core/aviImage.cpp:4310
+#: core/aviImage.cpp:4305
 msgid "Subtitle type "
 msgstr "نوع الترجمة "
 
@@ -8341,7 +8341,7 @@ msgstr "استثناء غير معالج"
 msgid "Unhandled exception"
 msgstr "استثناء غير معالج"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2955
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
 #: gui/mrvImageInformation.cpp:2857 video/mrvGLEngine.cpp:208
 #: video/mrvGLEngine.cpp:211 video/mrvGLEngine.cpp:214
 msgid "Unknown"
@@ -8407,7 +8407,7 @@ msgstr "نوع بيانات غير معروف للمفتاح \""
 msgid "Unknown data type to convert to string"
 msgstr "نوع بيانات غير معروف للتحويل من نص"
 
-#: core/aviImage.cpp:2265
+#: core/aviImage.cpp:2260
 msgid "Unknown destination video frame format: "
 msgstr "تنسيق إطار فيديو المستلم غير معروف: "
 
@@ -8467,7 +8467,7 @@ msgstr "نوع بيانات غير معروف لـ mrvOCIOBrowser"
 msgid "Unknown wipe direction"
 msgstr "عنوان مسح غير معروف"
 
-#: core/aviImage.cpp:145 core/aviImage.cpp:153 video/mrvGLQuad.cpp:1183
+#: core/aviImage.cpp:141 core/aviImage.cpp:149 video/mrvGLQuad.cpp:1183
 #: video/mrvGLCube.cpp:252 video/mrvGLSphere.cpp:254
 msgid "Unspecified"
 msgstr "غير محدد"
@@ -8683,7 +8683,7 @@ msgstr "مسار الفيديو #%d"
 msgid "Video Streams"
 msgstr "مسارات الفيديو"
 
-#: core/aviImage.cpp:1890 core/R3dImage.cpp:871 core/brawImage.cpp:1042
+#: core/aviImage.cpp:1885 core/R3dImage.cpp:871 core/brawImage.cpp:1042
 msgid "Video Sync master frame "
 msgstr "الإطار الرئيسي لمزامنة الفيديو "
 
@@ -9170,7 +9170,7 @@ msgstr "لقد تلقيت حجم بيانات غير صحيح."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 
-#: core/aviImage.cpp:3540
+#: core/aviImage.cpp:3535
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 
@@ -9366,7 +9366,7 @@ msgstr "صوتي"
 msgid "audio frame is missing"
 msgstr "صندوق الصوت مفقود."
 
-#: core/aviImage.cpp:861
+#: core/aviImage.cpp:857
 msgid "avcodec_context_from_parameters failed for video"
 msgstr "فشل avcodec_context_from_parameters للفيديو"
 
@@ -9374,7 +9374,7 @@ msgstr "فشل avcodec_context_from_parameters للفيديو"
 msgid "avcodec_copy_context failed for audio"
 msgstr "فشل avcodec_copy_context للصوت"
 
-#: core/aviImage.cpp:1768
+#: core/aviImage.cpp:1763
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "فشل avcodec_copy_context للترجمة"
 
@@ -9415,7 +9415,7 @@ msgstr "بيانات"
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:2041
+#: core/CMedia_audio.cpp:2038
 msgid "decode_audio_packet failed for frame "
 msgstr "فشل decode_audio_packet للإطار "
 
@@ -9423,7 +9423,7 @@ msgstr "فشل decode_audio_packet للإطار "
 msgid "default"
 msgstr "إفتراضي"
 
-#: core/CMedia.cpp:4511
+#: core/CMedia.cpp:4509
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_le Leisure_input_color_space - عمق بت غير معروف"
 
@@ -9439,7 +9439,7 @@ msgstr "دبلجة"
 msgid "files"
 msgstr "السجلات"
 
-#: core/aviImage.cpp:1919 core/aviImage.cpp:1932 core/R3dImage.cpp:913
+#: core/aviImage.cpp:1914 core/aviImage.cpp:1927 core/R3dImage.cpp:913
 #: core/brawImage.cpp:1084
 msgid "find_image: frame "
 msgstr "search_image: مربع "
@@ -9486,7 +9486,7 @@ msgstr "h264"
 msgid "half float (16-bits per channel)"
 msgstr "نصف نقطة عائمة (16 بت لكل قناة)"
 
-#: core/CMedia.cpp:4506
+#: core/CMedia.cpp:4504
 msgid "half/float"
 msgstr "نصف/نقطة عائمة كاملة"
 
@@ -9742,7 +9742,7 @@ msgstr "فشل recv ()"
 msgid "send() failed"
 msgstr "فشل إرسال"
 
-#: core/aviImage.cpp:1499 core/aviImage.cpp:1549
+#: core/aviImage.cpp:1494 core/aviImage.cpp:1544
 msgid "send_packet error: "
 msgstr "لم أستطع إرسال الطرد. خطأ "
 
@@ -9782,7 +9782,7 @@ msgstr "فشل معلومات المهمة"
 msgid "und"
 msgstr "الهند"
 
-#: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4478
+#: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4476
 #: core/wandImage.cpp:676
 msgid "unknown"
 msgstr "مجهول"
