@@ -1,5 +1,8 @@
 v6.2.0  - Updated ffmpeg libraries to handle HAP, HAP with alpha and
 	  HAP Q movies.
+	- Fixed stopping some movies, with large read ahead caches,
+	  when near a loop sometimes resetting to the beginning of the movie.
+	  Now they will always stop at the current frame.
 	- Improved performance of reverse playback.  Fixed reverse playback to
 	  work on all movies.
 
