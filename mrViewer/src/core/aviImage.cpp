@@ -101,7 +101,7 @@ namespace
 //#define DEBUG_DECODE
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
-#define DEBUG_SEEK
+//#define DEBUG_SEEK
 // #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
@@ -1149,7 +1149,6 @@ bool aviImage::seek_to_position( const int64_t frame )
         if ( dts >= frame ) dts = frame - 1;
         if ( dts < in_frame() ) dts = in_frame();
         else if ( dts > out_frame() ) dts = out_frame();
-        std::cerr << "dts is " << dts << std::endl;
     }
 
     _dts = _adts = dts;
