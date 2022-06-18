@@ -2020,11 +2020,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
         const AVPacket& pkt = _audio_packets.front();
         ++count;
 
-        int64_t pktframe;
-        if ( pkt.dts != AV_NOPTS_VALUE )
-            pktframe = pts2frame( get_audio_stream(), pkt.dts );
-        else
-            pktframe = frame;
+        int64_t pktframe = get_frame( get_audio_stream(), pkt );
+        if ( pktframe == AV_NOPTS_VALUE )  pktframe = frame;
 
         if ( !in_audio_store( pktframe ) )
         {

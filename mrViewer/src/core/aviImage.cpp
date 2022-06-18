@@ -101,7 +101,7 @@ namespace
 //#define DEBUG_DECODE
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
-//#define DEBUG_SEEK
+#define DEBUG_SEEK
 // #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
@@ -1072,7 +1072,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( skip )
     {
         flush_video();
-        int64_t f = frame; //start;
+        int64_t f = start;
         if ( f > out_frame() ) f = out_frame();
         int64_t dts = queue_packets( f, false, got_video,
                                      got_audio, got_subtitle );
@@ -1137,7 +1137,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
 
 
-    int64_t dts = queue_packets( frame, true, got_video,
+    int64_t dts = queue_packets( start, true, got_video,
                                  got_audio, got_subtitle );
 
 
@@ -1147,6 +1147,9 @@ bool aviImage::seek_to_position( const int64_t frame )
         if ( dts > start_frame() && dts < end_frame() )
             dts += _frame_offset;
         if ( dts >= frame ) dts = frame - 1;
+        if ( dts < in_frame() ) dts = in_frame();
+        else if ( dts > out_frame() ) dts = out_frame();
+        std::cerr << "dts is " << dts << std::endl;
     }
 
     _dts = _adts = dts;
@@ -3224,7 +3227,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
         if ( has_video() && pkt->stream_index == video_stream_index() )
         {
-            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts )                                      - _frame_offset + _start_number; // needed
+            int64_t pktframe = get_frame( get_video_stream(), *pkt )                                      - _frame_offset + _start_number; // needed
 
 
             if ( playback() == kBackwards )
