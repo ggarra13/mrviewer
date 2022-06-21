@@ -1246,15 +1246,20 @@ public:
 
 
 
-    static void image_cache_size( int x ) {
+    inline static AVRational swap( const AVRational& value )
+    {
+        return AVRational({ value.den, value.num });
+    }
+
+    inline static void image_cache_size( int x ) {
         _image_cache_size = x;
     }
 
-    static void video_cache_size( int x ) {
+    inline static void video_cache_size( int x ) {
         _video_cache_size = x;
     }
 
-    static void audio_cache_size( int x ) {
+    inline static void audio_cache_size( int x ) {
         _audio_cache_size = x;
     }
 

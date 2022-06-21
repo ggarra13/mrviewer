@@ -3741,7 +3741,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
 }
 
 
-// Convert an FFMPEG pts into a frame number
+// Convert a frame into a FFMPEG pts number
 int64_t CMedia::frame2pts( const AVStream* stream,
                            const int64_t frame ) const
 {
@@ -3763,8 +3763,6 @@ int64_t CMedia::pts2frame( const AVStream* stream,
                            const int64_t dts ) const
 {
 
-
-    //assert( dts != AV_NOPTS_VALUE );
     if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
     long double p = (long double) dts;
@@ -4666,10 +4664,8 @@ void CMedia::debug_video_packets(const int64_t frame,
                 continue;
             }
 
-            assert( (*iter).dts != MRV_NOPTS_VALUE );
-
             int64_t f;
-            if ( (*iter).pts != MRV_NOPTS_VALUE )
+            if ( (*iter).pts != AV_NOPTS_VALUE )
                 f = (*iter).pts;
             else
             {
@@ -4710,7 +4706,7 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f - _frame_offset << " ";
+                std::cerr << f << " ";
             }
         }
         std::cerr << std::endl << std::endl;

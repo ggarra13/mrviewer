@@ -102,7 +102,7 @@ namespace
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-// #define DEBUG_SEEK_VIDEO_PACKETS
+//#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 // #define DEBUG_HSEEK_VIDEO_PACKETS
@@ -134,10 +134,6 @@ namespace mrv {
     extern void sleep_ms( int ms );
 
 
-    AVRational swap(AVRational value)
-    {
-        return AVRational({ value.den, value.num });
-    }
 
 int CMedia::colorspace_override = 0;
 
