@@ -517,32 +517,37 @@ unsigned int CMedia::calculate_bitrate( const AVStream* stream,
                                         const AVCodecParameters* enc )
 {
     unsigned int bitrate;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+    unsigned channels = enc->ch_layout.nb_channels;
+#else
+    unsigned channels = enc->channels;
+#endif
     /* for PCM codecs, compute bitrate directly */
     switch(enc->codec_id) {
     case AV_CODEC_ID_PCM_S32LE:
     case AV_CODEC_ID_PCM_S32BE:
     case AV_CODEC_ID_PCM_U32LE:
     case AV_CODEC_ID_PCM_U32BE:
-        bitrate = enc->sample_rate * enc->channels * 32;
+        bitrate = enc->sample_rate * channels * 32;
         break;
     case AV_CODEC_ID_PCM_S24LE:
     case AV_CODEC_ID_PCM_S24BE:
     case AV_CODEC_ID_PCM_U24LE:
     case AV_CODEC_ID_PCM_U24BE:
     case AV_CODEC_ID_PCM_S24DAUD:
-        bitrate = enc->sample_rate * enc->channels * 24;
+        bitrate = enc->sample_rate * channels * 24;
         break;
     case AV_CODEC_ID_PCM_S16LE:
     case AV_CODEC_ID_PCM_S16BE:
     case AV_CODEC_ID_PCM_U16LE:
     case AV_CODEC_ID_PCM_U16BE:
-        bitrate = enc->sample_rate * enc->channels * 16;
+        bitrate = enc->sample_rate * channels * 16;
         break;
     case AV_CODEC_ID_PCM_S8:
     case AV_CODEC_ID_PCM_U8:
     case AV_CODEC_ID_PCM_ALAW:
     case AV_CODEC_ID_PCM_MULAW:
-        bitrate = enc->sample_rate * enc->channels * 8;
+        bitrate = enc->sample_rate * channels * 8;
         break;
     default:
         bitrate = (unsigned int) enc->bit_rate;
@@ -559,7 +564,7 @@ int CMedia::audio_bytes_per_frame()
 
     int channels = _audio_channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
-        channels = FFMIN(_audio_engine->channels(), (unsigned)channels);
+        channels = FFMIN(_audio_engine->channels(), channels);
     }
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
@@ -610,7 +615,11 @@ void CMedia::populate_audio()
         {
             audio_info_t s;
             populate_stream_info( s, msg, c, par, i );
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            s.channels   = par->ch_layout.nb_channels;
+#else
             s.channels   = par->channels;
+#endif
             s.frequency  = frequency = par->sample_rate;
             s.bitrate    = calculate_bitrate( stream, par );
 
@@ -1074,6 +1083,8 @@ void CMedia::clear_stores()
     _audio_buf_used = 0;
 }
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59, 33, 100)
+
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels)
 {
     if (channel_layout && av_get_channel_layout_nb_channels(channel_layout) == channels)
@@ -1082,6 +1093,7 @@ uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels)
         return 0;
 }
 
+#endif
 
 
 int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
@@ -1096,9 +1108,15 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     if ( !got_audio ) return ret;
 
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+    unsigned channels   = ctx->ch_layout.nb_channels;
+#else
+    unsigned channels   = ctx->channels;
+#endif
+            
     assert( _aframe->nb_samples > 0 );
-    assert( ctx->channels > 0 );
-    int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
+    assert( channels > 0 );
+    int data_size = av_samples_get_buffer_size(NULL, channels,
                                                _aframe->nb_samples,
                                                ctx->sample_fmt, 0);
     if (*audio_size < data_size) {
@@ -1123,46 +1141,52 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 #if defined(_WIN32)
-    if ( ( ctx->channels == 1 || ctx->channels >= 6 ) &&
+    if ( ( channels == 1 || channels >= 6 ) &&
          ctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
         _audio_format = AudioEngine::kS32LSB;
-    if ( ctx->channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
-                                 ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
+    if ( channels >= 7 && ( ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+                            ctx->sample_fmt == AV_SAMPLE_FMT_S32P ||
+                            ctx->sample_fmt == AV_SAMPLE_FMT_S32 ) )
         _audio_format = AudioEngine::kS16LSB;
 #endif
 
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 
 
-    if ( ctx->sample_fmt != fmt || unsigned(ctx->channels) != _audio_channels )
+    if ( ctx->sample_fmt != fmt || channels != _audio_channels )
     {
 #if defined( OSX )
-        if ( ctx->channels > 2 ) _audio_channels = 2;
-        else _audio_channels = ctx->channels;
+        if ( channels > 2 ) _audio_channels = 2;
+        else _audio_channels = channels;
 #else
-        _audio_channels = (unsigned short) ctx->channels;
+        _audio_channels = channels;
 #endif
         if (!forw_ctx)
         {
             char buf[256];
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            AVChannelLayout in_ch_layout = ctx->ch_layout;
+
+            av_channel_layout_describe( &in_ch_layout, buf, 256 );
+#else
             uint64_t  in_ch_layout =
-                get_valid_channel_layout(ctx->channel_layout, ctx->channels);
+            get_valid_channel_layout(ctx->channel_layout, ctx->channels);
 
             if ( in_ch_layout == 0 )
                 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
-                               ctx->channels);
-
+                                                         ctx->channels);
+            
             if ( in_ch_layout == 0 )
                 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
-                               ctx->channels);
+                                                         ctx->channels);
 
             av_get_channel_layout_string( buf, 256, ctx->channels,
                                           in_ch_layout );
 
+#endif
             IMG_INFO( _("Create audio conversion from ") << buf
-                      << _(", channels ") << ctx->channels
+                      << _(", channels ") << channels
                       << N_(", ") );
             IMG_INFO( _("format ")
                       << av_get_sample_fmt_name( ctx->sample_fmt )
@@ -1170,21 +1194,42 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                       << _(" to") );
 
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            AVChannelLayout out_ch_layout;
+            av_channel_layout_copy( &out_ch_layout, &in_ch_layout );
+#else
             uint64_t out_ch_layout = in_ch_layout;
-            unsigned out_channels = ctx->channels;
+#endif
+            
+            unsigned out_channels = channels;
 
 #ifdef OSX
+#  if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            if ( _audio_channels == 2 )
+            {
+               out_ch_layout.order = AV_CHANNEL_ORDER_NATIVE;
+               out_ch_layout.nb_channels = 2;
+               out_ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+            }
+#  else
             if ( _audio_channels == 2 )
                 out_ch_layout = AV_CH_LAYOUT_STEREO;
+#  endif
 #endif
 
             if ( out_channels > _audio_channels && _audio_channels > 0 )
                 out_channels = _audio_channels;
             else
-                _audio_channels = (unsigned short) ctx->channels;
+                _audio_channels = channels;
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+
+            av_channel_layout_describe( &out_ch_layout, buf, 256 );
+
+#else
             av_get_channel_layout_string( buf, 256, out_channels,
                                           out_ch_layout );
+#endif
 
             AVSampleFormat  out_sample_fmt = fmt;
             AVSampleFormat  in_sample_fmt = ctx->sample_fmt;
@@ -1198,11 +1243,19 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                       << out_sample_rate);
 
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            ret  = swr_alloc_set_opts2(&forw_ctx, &out_ch_layout,
+                                       out_sample_fmt,  out_sample_rate,
+                                       &in_ch_layout,  in_sample_fmt,
+                                       in_sample_rate,
+                                       0, NULL);
+#else
             forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
                                            out_sample_fmt,  out_sample_rate,
                                            in_ch_layout,  in_sample_fmt,
                                            in_sample_rate,
                                            0, NULL);
+#endif
             if(!forw_ctx) {
                 LOG_ERROR( _("Failed to alloc swresample library") );
                 return 0;
@@ -1213,7 +1266,11 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 swr_free( &forw_ctx );
                 forw_ctx = NULL;
                 char buf[256];
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+                av_channel_layout_describe( &in_ch_layout, buf, 256 );
+#else
                 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
+#endif
                 LOG_ERROR( _("Failed to init swresample library with ")
                            << buf << " "
                            << av_get_sample_fmt_name(in_sample_fmt)

@@ -391,6 +391,22 @@ namespace mrv {
         if ( ! _is_thumbnail )
         {
             char buf[256];
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            
+            AVChannelLayout in_ch_layout = {0};
+            in_ch_layout.order = AV_CHANNEL_ORDER_NATIVE;
+            in_ch_layout.nb_channels = 2;
+            in_ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+
+            if ( _audio_channels == 1 )
+            {
+                in_ch_layout.nb_channels = 1;
+                in_ch_layout.u.mask = AV_CH_LAYOUT_MONO;
+            }
+
+            av_channel_layout_describe( &in_ch_layout, buf, 256 );
+            
+#else
             uint64_t in_ch_layout = get_valid_channel_layout( 0,
                                                               _audio_channels );
             if ( in_ch_layout == 0 )
@@ -403,6 +419,8 @@ namespace mrv {
 
             av_get_channel_layout_string( buf, 256, _audio_channels,
                                           in_ch_layout );
+#endif
+            
             IMG_INFO( _("Audio ") << buf << _(", channels ")
                       << _audio_channels );
             IMG_INFO( _("format s32be, frequency ") << frequency );
