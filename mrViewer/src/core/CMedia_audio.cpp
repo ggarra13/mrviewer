@@ -288,7 +288,6 @@ int64_t CMedia::queue_packets( const int64_t frame,
     pkt->data = NULL;
 
     int bytes_per_frame = audio_bytes_per_frame();
-    if ( bytes_per_frame == 0 ) return frame;
 
     bool eof = false;
     unsigned counter = 0;
@@ -1113,7 +1112,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 #else
     unsigned channels   = ctx->channels;
 #endif
-            
+
     assert( _aframe->nb_samples > 0 );
     assert( channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, channels,
@@ -1176,7 +1175,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             if ( in_ch_layout == 0 )
                 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
                                                          ctx->channels);
-            
+
             if ( in_ch_layout == 0 )
                 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
                                                          ctx->channels);
@@ -1200,7 +1199,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 #else
             uint64_t out_ch_layout = in_ch_layout;
 #endif
-            
+
             unsigned out_channels = channels;
 
 #ifdef OSX
