@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 13:51-0300\n"
+"POT-Creation-Date: 2022-06-29 21:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -198,7 +198,7 @@ msgstr " für Codec "
 msgid " for color_space"
 msgstr " für Farbraum"
 
-#: core/aviImage.cpp:4136 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
 msgid " for frame "
 msgstr " für Rahmen "
 
@@ -279,7 +279,7 @@ msgstr " nicht auf Rolle gefunden"
 msgid " not found, choosing "
 msgstr " nicht gefunden, wählen "
 
-#: core/aviImage.cpp:4306
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " noch nicht unterstützt"
 
@@ -291,7 +291,7 @@ msgstr " Rückkehr "
 msgid " size is "
 msgstr " Größe ist "
 
-#: core/aviImage.cpp:4164
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " Status: "
 
@@ -3076,11 +3076,11 @@ msgstr "Spurlose Dekodierung"
 msgid "Decode OK"
 msgstr "Dekodierung ok"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
 msgid "Decode audio error: "
 msgstr "Audiodecodierungsfehler: "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "Videodecodierungsfehler beim Suchen nach Bild "
 
@@ -3403,7 +3403,7 @@ msgstr "Leeres Medium an media_to_pathname übergeben"
 msgid "Empty media provided to Element constructor"
 msgstr "Leere Medien, die dem Elementkonstruktor bereitgestellt werden"
 
-#: core/aviImage.cpp:3591
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "Leere Pakete für die Videosuche."
 
@@ -3411,7 +3411,7 @@ msgstr "Leere Pakete für die Videosuche."
 msgid "Empty pic file for media "
 msgstr "Leere Bilddatei für Medien "
 
-#: core/aviImage.cpp:4515
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "Leere Suche oder Preroll"
 
@@ -7597,7 +7597,7 @@ msgstr "Untertiteldatei "
 msgid "Subtitle font "
 msgstr "Untertitel Brief "
 
-#: core/aviImage.cpp:4305
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "Untertiteltyp "
 
@@ -9285,7 +9285,7 @@ msgstr "Ich habe eine falsche Datengröße erhalten."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Falsche Pakete in handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Falsche Pakete in handle_video_packet_seek"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 13:51-0300\n"
+"POT-Creation-Date: 2022-06-29 21:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -198,7 +198,7 @@ msgstr " لبرنامج الترميز "
 msgid " for color_space"
 msgstr " لمساحة_اللون"
 
-#: core/aviImage.cpp:4136 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
 msgid " for frame "
 msgstr " للإطار "
 
@@ -279,7 +279,7 @@ msgstr " لم يتم العثور على بكرة"
 msgid " not found, choosing "
 msgstr " غير موجود ، واختيار "
 
-#: core/aviImage.cpp:4306
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " غير معتمدة حتى الآن"
 
@@ -291,7 +291,7 @@ msgstr " إرجاع "
 msgid " size is "
 msgstr " الحجم "
 
-#: core/aviImage.cpp:4164
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " الحالة: "
 
@@ -3056,11 +3056,11 @@ msgstr "فك غير مطروق"
 msgid "Decode OK"
 msgstr "فك طيب"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
 msgid "Decode audio error: "
 msgstr "خطأ في فك تشفير الصوت: "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "خطأ في فك تشفير الفيديو أثناء البحث عن الصورة "
 
@@ -3380,7 +3380,7 @@ msgstr "تم تمرير الوسائط الفارغة إلى media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "تم توفير وسائط فارغة لمنشئ العنصر"
 
-#: core/aviImage.cpp:3591
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "الحزم الفارغة للبحث عن الفيديو."
 
@@ -3388,7 +3388,7 @@ msgstr "الحزم الفارغة للبحث عن الفيديو."
 msgid "Empty pic file for media "
 msgstr "ملف صورة فارغ للوسائط "
 
-#: core/aviImage.cpp:4515
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "بحث فارغ أو تمهيدي"
 
@@ -7541,7 +7541,7 @@ msgstr "ملف الترجمة "
 msgid "Subtitle font "
 msgstr "خطاب الترجمة "
 
-#: core/aviImage.cpp:4305
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "نوع الترجمة "
 
@@ -9171,7 +9171,7 @@ msgstr "لقد تلقيت حجم بيانات غير صحيح."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "الحزم الخاطئة في handle_video_packet_seek"
 

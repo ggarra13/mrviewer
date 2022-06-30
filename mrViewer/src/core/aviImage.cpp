@@ -102,7 +102,7 @@ namespace
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-//#define DEBUG_SEEK_VIDEO_PACKETS
+// #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 // #define DEBUG_HSEEK_VIDEO_PACKETS
@@ -1133,7 +1133,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
 
 
-    int64_t dts = queue_packets( start, true, got_video,
+    int64_t dts = queue_packets( frame, true, got_video,
                                  got_audio, got_subtitle );
 
 
@@ -3222,7 +3222,9 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
         if ( has_video() && pkt->stream_index == video_stream_index() )
         {
-            int64_t pktframe = get_frame( get_video_stream(), *pkt )                                      - _frame_offset + _start_number; // needed
+            // int64_t pktframe = get_frame( get_video_stream(), *pkt )
+            //                    - _frame_offset + _start_number; // does not work
+            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts )                                      - _frame_offset + _start_number; // needed
 
 
             if ( playback() == kBackwards )

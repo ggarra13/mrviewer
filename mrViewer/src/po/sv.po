@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 13:51-0300\n"
+"POT-Creation-Date: 2022-06-29 21:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -198,7 +198,7 @@ msgstr " för codec "
 msgid " for color_space"
 msgstr " för färgrymd"
 
-#: core/aviImage.cpp:4136 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
 msgid " for frame "
 msgstr " för ram "
 
@@ -279,7 +279,7 @@ msgstr " hittas inte på rullen"
 msgid " not found, choosing "
 msgstr " hittas inte, väljer "
 
-#: core/aviImage.cpp:4306
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " töds inte ännu"
 
@@ -291,7 +291,7 @@ msgstr " lämna tillbaka "
 msgid " size is "
 msgstr " torlek är "
 
-#: core/aviImage.cpp:4164
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " tatus: "
 
@@ -3057,11 +3057,11 @@ msgstr "Spårlös avkodning"
 msgid "Decode OK"
 msgstr "avkodning ok"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
 msgid "Decode audio error: "
 msgstr "Ljudavkodningsfel: "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "Videoavkodningsfel söker efter bild "
 
@@ -3382,7 +3382,7 @@ msgstr "Tom media skickas till media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Tomt media tillhandahålls till elementkonstruktören"
 
-#: core/aviImage.cpp:3591
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "Tomma paket för videosökning."
 
@@ -3390,7 +3390,7 @@ msgstr "Tomma paket för videosökning."
 msgid "Empty pic file for media "
 msgstr "Tom bildfil för media "
 
-#: core/aviImage.cpp:4515
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "Töm sökning eller preroll"
 
@@ -7555,7 +7555,7 @@ msgstr "Undertextfil "
 msgid "Subtitle font "
 msgstr "Undertextbrev "
 
-#: core/aviImage.cpp:4305
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "Undertexttyp "
 
@@ -9205,7 +9205,7 @@ msgstr "Jag fick en felaktig datastorlek."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Fel paket i handle_video_packet_seek"
 

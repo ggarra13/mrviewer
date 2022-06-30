@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 13:51-0300\n"
+"POT-Creation-Date: 2022-06-29 21:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -198,7 +198,7 @@ msgstr " コーデックの場合 "
 msgid " for color_space"
 msgstr " color_spaceの場合"
 
-#: core/aviImage.cpp:4136 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
 msgid " for frame "
 msgstr " フレーム用 "
 
@@ -279,7 +279,7 @@ msgstr " リールに見つかりません"
 msgid " not found, choosing "
 msgstr " 見つかりません、選択 "
 
-#: core/aviImage.cpp:4306
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " まだサポートされていません"
 
@@ -291,7 +291,7 @@ msgstr " 戻る "
 msgid " size is "
 msgstr " サイズは "
 
-#: core/aviImage.cpp:4164
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " スターテス: "
 
@@ -3059,11 +3059,11 @@ msgstr "トラックレスデコード"
 msgid "Decode OK"
 msgstr "デコードOK"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
 msgid "Decode audio error: "
 msgstr "オーディオデコードエラー: "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "画像を探しているビデオデコードエラー "
 
@@ -3386,7 +3386,7 @@ msgstr "media_to_pathnameに渡された空のメディア"
 msgid "Empty media provided to Element constructor"
 msgstr "要素コンストラクターに空のメディアが提供されました"
 
-#: core/aviImage.cpp:3591
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "ビデオ検索用の空のパケット."
 
@@ -3394,7 +3394,7 @@ msgstr "ビデオ検索用の空のパケット."
 msgid "Empty pic file for media "
 msgstr "メディア用の空の画像ファイル "
 
-#: core/aviImage.cpp:4515
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "空の検索またはプレロール"
 
@@ -7551,7 +7551,7 @@ msgstr "字幕ファイル "
 msgid "Subtitle font "
 msgstr "字幕レター "
 
-#: core/aviImage.cpp:4305
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "字幕タイプ "
 
@@ -9192,7 +9192,7 @@ msgstr "間違ったデータサイズを受け取りました."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seekの間違ったパケット"
 

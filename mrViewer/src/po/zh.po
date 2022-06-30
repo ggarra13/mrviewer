@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 13:51-0300\n"
+"POT-Creation-Date: 2022-06-29 21:39-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -198,7 +198,7 @@ msgstr " 用于编解码器 "
 msgid " for color_space"
 msgstr " 对于颜色空间"
 
-#: core/aviImage.cpp:4136 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
+#: core/aviImage.cpp:4138 core/R3dImage.cpp:1070 core/brawImage.cpp:1545
 msgid " for frame "
 msgstr " 用于框架 "
 
@@ -279,7 +279,7 @@ msgstr " 在卷轴上找不到"
 msgid " not found, choosing "
 msgstr " 没找到，选择 "
 
-#: core/aviImage.cpp:4306
+#: core/aviImage.cpp:4308
 msgid " not yet supported"
 msgstr " 尚不支持"
 
@@ -291,7 +291,7 @@ msgstr " 返回 "
 msgid " size is "
 msgstr " 大小是 "
 
-#: core/aviImage.cpp:4164
+#: core/aviImage.cpp:4166
 msgid " status: "
 msgstr " 状态： "
 
@@ -3046,11 +3046,11 @@ msgstr "无轨解码"
 msgid "Decode OK"
 msgstr "解码正常"
 
-#: core/aviImage.cpp:4134 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
+#: core/aviImage.cpp:4136 core/R3dImage.cpp:1068 core/brawImage.cpp:1543
 msgid "Decode audio error: "
 msgstr "音频解码错误： "
 
-#: core/aviImage.cpp:4162
+#: core/aviImage.cpp:4164
 msgid "Decode video error seek frame "
 msgstr "寻找图像的视频解码错误 "
 
@@ -3368,7 +3368,7 @@ msgstr "传递给 media_to_pathname 的空媒体"
 msgid "Empty media provided to Element constructor"
 msgstr "提供给元素构造函数的空媒体"
 
-#: core/aviImage.cpp:3591
+#: core/aviImage.cpp:3593
 msgid "Empty packets for video seek."
 msgstr "用于视频搜索的空包。"
 
@@ -3376,7 +3376,7 @@ msgstr "用于视频搜索的空包。"
 msgid "Empty pic file for media "
 msgstr "媒体的空图像文件 "
 
-#: core/aviImage.cpp:4515
+#: core/aviImage.cpp:4517
 msgid "Empty seek or preroll"
 msgstr "空搜索或预卷"
 
@@ -7495,7 +7495,7 @@ msgstr "字幕文件 "
 msgid "Subtitle font "
 msgstr "字幕信 "
 
-#: core/aviImage.cpp:4305
+#: core/aviImage.cpp:4307
 msgid "Subtitle type "
 msgstr "字幕类型 "
 
@@ -9082,7 +9082,7 @@ msgstr "我收到了不正确的数据大小。"
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
-#: core/aviImage.cpp:3535
+#: core/aviImage.cpp:3537
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
