@@ -2419,7 +2419,6 @@ void CMedia::debug_audio_packets(const int64_t frame,
                                  const bool detail)
 {
     if ( !has_audio() ) return;
-    if ( name() != "alpha-trailer-2_h480p.mov" ) return;
 
     mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
     SCOPED_LOCK( apm );
