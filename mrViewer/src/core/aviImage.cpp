@@ -3226,7 +3226,8 @@ int64_t aviImage::queue_packets( const int64_t frame,
             // int64_t pktframe = get_frame( get_video_stream(), *pkt )
             //                    - _frame_offset + _start_number; // does not work
 
-            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts );                                      - _frame_offset + _start_number; // needed
+            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts )
+                         - _frame_offset + _start_number; // needed
 
 
             if ( playback() == kBackwards )
@@ -3302,7 +3303,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             if ( has_audio() && audio_context() == _context &&
                  pkt->stream_index == audio_stream_index() )
             {
-                int64_t pktframe = get_frame( get_audio_stream(), *pkt )                                      - _frame_offset; // needed
+                int64_t pktframe = pts2frame( get_audio_stream(), pkt->dts )                                      - _frame_offset; // needed
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )
