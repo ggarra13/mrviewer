@@ -3222,9 +3222,11 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
         if ( has_video() && pkt->stream_index == video_stream_index() )
         {
+            // **DO NOT USE**
             // int64_t pktframe = get_frame( get_video_stream(), *pkt )
             //                    - _frame_offset + _start_number; // does not work
-            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts )                                      - _frame_offset + _start_number; // needed
+
+            int64_t pktframe = pts2frame( get_video_stream(), pkt->dts );                                      - _frame_offset + _start_number; // needed
 
 
             if ( playback() == kBackwards )
