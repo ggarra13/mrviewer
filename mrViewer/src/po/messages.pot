@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 21:42-0300\n"
+"POT-Creation-Date: 2022-07-01 21:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,11 +66,11 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1161
+#: core/mrvPlayback.cpp:1164
 msgid " - Decode of image frame "
 msgstr ""
 
-#: core/mrvPlayback.cpp:782
+#: core/mrvPlayback.cpp:785
 msgid " - decode Error audio frame "
 msgstr ""
 
@@ -274,7 +274,7 @@ msgstr ""
 msgid " not yet supported"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1162
+#: core/mrvPlayback.cpp:1165
 msgid " returned "
 msgstr ""
 
@@ -1558,23 +1558,23 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1100
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:1104
+#: core/mrvPlayback.cpp:1107
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
 "Looping will not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:1081
+#: core/mrvPlayback.cpp:1084
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:1071
+#: core/mrvPlayback.cpp:1074
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."

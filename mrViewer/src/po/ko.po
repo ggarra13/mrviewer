@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 21:39-0300\n"
+"POT-Creation-Date: 2022-07-01 21:21-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1161
+#: core/mrvPlayback.cpp:1164
 msgid " - Decode of image frame "
 msgstr " - 액자 디코딩 "
 
-#: core/mrvPlayback.cpp:782
+#: core/mrvPlayback.cpp:785
 msgid " - decode Error audio frame "
 msgstr " - 오디오 프레임 디코딩 오류 "
 
@@ -283,7 +283,7 @@ msgstr " 찾을 수 없음, 선택 "
 msgid " not yet supported"
 msgstr " 아직 지원되지 않음"
 
-#: core/mrvPlayback.cpp:1162
+#: core/mrvPlayback.cpp:1165
 msgid " returned "
 msgstr " 반품 "
 
@@ -1606,14 +1606,14 @@ msgstr "맨 뒤로 삭제"
 msgid "Background"
 msgstr "배경"
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1100
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "배경 이미지의 지속 시간이 매우 짧습니다. 주기를 반복하면 제대로 작동하지 않"
 "을 수 있습니다."
 
-#: core/mrvPlayback.cpp:1104
+#: core/mrvPlayback.cpp:1107
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1622,12 +1622,12 @@ msgstr ""
 "배경 이미지( %lg )의 fps가 전면 이미지( %lg )와 동일하지 않습니다. 주기를 반"
 "복하면 제대로 작동하지 않습니다."
 
-#: core/mrvPlayback.cpp:1081
+#: core/mrvPlayback.cpp:1084
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "하단 스풀은 매우 짧습니다. 주기를 반복하면 제대로 작동하지 않을 수 있습니다."
 
-#: core/mrvPlayback.cpp:1071
+#: core/mrvPlayback.cpp:1074
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."

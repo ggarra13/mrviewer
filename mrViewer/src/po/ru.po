@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-06-29 21:39-0300\n"
+"POT-Creation-Date: 2022-07-01 21:21-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -73,11 +73,11 @@ msgstr "  INF.  "
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1161
+#: core/mrvPlayback.cpp:1164
 msgid " - Decode of image frame "
 msgstr " - Декодирование кадра изображения "
 
-#: core/mrvPlayback.cpp:782
+#: core/mrvPlayback.cpp:785
 msgid " - decode Error audio frame "
 msgstr " - ошибка декодирования звукового кадра "
 
@@ -283,7 +283,7 @@ msgstr " не нашел, выбираю "
 msgid " not yet supported"
 msgstr " еще не поддерживается"
 
-#: core/mrvPlayback.cpp:1162
+#: core/mrvPlayback.cpp:1165
 msgid " returned "
 msgstr " вернуть "
 
@@ -1611,14 +1611,14 @@ msgstr "Удалить на задний план"
 msgid "Background"
 msgstr "Задний план"
 
-#: core/mrvPlayback.cpp:1097
+#: core/mrvPlayback.cpp:1100
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "Продолжительность фонового изображения очень короткая. Циклическое "
 "повторение может не работать должным образом."
 
-#: core/mrvPlayback.cpp:1104
+#: core/mrvPlayback.cpp:1107
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1627,13 +1627,13 @@ msgstr ""
 "Частота кадров фонового изображения (%lg) не совпадает с частотой кадров "
 "переднего изображения (%lg). Повторение в циклах не будет работать правильно."
 
-#: core/mrvPlayback.cpp:1081
+#: core/mrvPlayback.cpp:1084
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "Нижняя шпуля очень короткая. Циклическое повторение может не работать "
 "должным образом."
 
-#: core/mrvPlayback.cpp:1071
+#: core/mrvPlayback.cpp:1074
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."

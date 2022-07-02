@@ -767,9 +767,12 @@ void audio_thread( PlaybackData* data )
         // std::cerr << img->name() << " decoded audio " << f
         //           << " status " << status << std::endl;
 
-        int64_t first, last;
-        status = check_loop( frame, img, kAudio, reel, timeline, first, last );
-
+        if ( status == CMedia::kDecodeOK )
+        {
+            int64_t first, last;
+            status = check_loop( frame, img, kAudio, reel, timeline,
+                                 first, last );
+        }
 
         assert( img != NULL );
         assert( reel != NULL );
