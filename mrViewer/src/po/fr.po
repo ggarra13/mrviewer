@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-07-01 23:20-0300\n"
+"POT-Creation-Date: 2022-07-04 21:31-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -145,12 +145,12 @@ msgstr " par défaut"
 msgid " at port "
 msgstr " dans le port "
 
-#: core/wandImage.cpp:776 core/wandImage.cpp:788 core/wandImage.cpp:800
-#: core/wandImage.cpp:812 core/wandImage.cpp:825 core/wandImage.cpp:838
-#: core/wandImage.cpp:851 core/wandImage.cpp:864 core/wandImage.cpp:877
-#: core/wandImage.cpp:890 core/wandImage.cpp:903 core/wandImage.cpp:916
-#: core/wandImage.cpp:933 core/wandImage.cpp:963 core/wandImage.cpp:982
-#: core/wandImage.cpp:1001 core/wandImage.cpp:1041 core/wandImage.cpp:1060
+#: core/wandImage.cpp:774 core/wandImage.cpp:786 core/wandImage.cpp:798
+#: core/wandImage.cpp:810 core/wandImage.cpp:823 core/wandImage.cpp:836
+#: core/wandImage.cpp:849 core/wandImage.cpp:862 core/wandImage.cpp:875
+#: core/wandImage.cpp:888 core/wandImage.cpp:901 core/wandImage.cpp:914
+#: core/wandImage.cpp:931 core/wandImage.cpp:961 core/wandImage.cpp:980
+#: core/wandImage.cpp:999 core/wandImage.cpp:1039 core/wandImage.cpp:1058
 msgid " attribute"
 msgstr " attribut"
 
@@ -590,7 +590,7 @@ msgstr "L'option --stereo doit être spécifiée dans un multiple de deux fois."
 msgid ".  Attribute must be of the form attr=value."
 msgstr ". L'attribut doit avoir la forme attr=valeur."
 
-#: core/wandImage.cpp:1254
+#: core/wandImage.cpp:1252
 msgid ".  Saving pixel type is "
 msgstr ". Le type de pixel à enregistrer est "
 
@@ -1274,7 +1274,7 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Vous permet de définir l'image de fin de la chronologie."
 
 #: core/CMedia.cpp:2107 core/CMedia.cpp:2190 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9619
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9619
 #: gui/mrvImageView.cpp:10087 gui/mrvImageView.cpp:10149
 msgid "Alpha"
 msgstr "Alpha"
@@ -1284,7 +1284,7 @@ msgid "Alpha Only"
 msgstr "alpha seulement"
 
 #: core/CMedia.cpp:2109 core/CMedia.cpp:2190 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
+#: core/wandImage.cpp:1158 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
 #: gui/mrvImageView.cpp:9600 gui/mrvImageView.cpp:10150
 msgid "Alpha Overlay"
 msgstr "Surimpression alpha"
@@ -1698,7 +1698,7 @@ msgstr "mode de fusion"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2642
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2123 core/CMedia.cpp:2189 core/exrImage.cpp:3059
-#: core/wandImage.cpp:1162 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9614
+#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9614
 #: gui/mrvImageView.cpp:10148
 msgid "Blue"
 msgstr "Bleu"
@@ -1759,16 +1759,16 @@ msgstr "Sous-utilisation du tampon : "
 msgid "Buffer was NULL - internal error"
 msgstr "Le tampon est NULL - erreur interne"
 
-#: core/wandImage.cpp:574
+#: core/wandImage.cpp:572
 msgid "Byline"
 msgstr "Byline"
 
-#: core/wandImage.cpp:577
+#: core/wandImage.cpp:575
 msgid "Byline Title"
 msgstr "Titre de signature"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:107
-#: core/wandImage.cpp:710 core/wandImage.cpp:738
+#: core/wandImage.cpp:708 core/wandImage.cpp:736
 msgid "Byte"
 msgstr "Octet"
 
@@ -1897,11 +1897,11 @@ msgstr "Image brute Canon"
 msgid "CapsLock"
 msgstr "fermer à clé Changement."
 
-#: core/wandImage.cpp:607
+#: core/wandImage.cpp:605
 msgid "Caption"
 msgstr "message"
 
-#: core/wandImage.cpp:613
+#: core/wandImage.cpp:611
 msgid "Caption Writer"
 msgstr "Rédacteur de messages"
 
@@ -1909,7 +1909,7 @@ msgstr "Rédacteur de messages"
 msgid "Capture Date"
 msgstr "Date de capture"
 
-#: core/wandImage.cpp:529
+#: core/wandImage.cpp:527
 msgid "Category"
 msgstr "Catégorie"
 
@@ -1989,7 +1989,7 @@ msgstr "Mode cercle"
 msgid "Circle Tool"
 msgstr "Outil Cercle"
 
-#: core/wandImage.cpp:580
+#: core/wandImage.cpp:578
 msgid "City"
 msgstr "Ville"
 
@@ -2094,7 +2094,7 @@ msgstr "Groupe réductible introuvable"
 #: core/CMedia.cpp:2120 core/CMedia.cpp:2188 core/exrImage.cpp:2804
 #: core/exrImage.cpp:3061 core/exrImage.cpp:3069 core/exrImage.cpp:3081
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
-#: core/exrImage.cpp:3158 core/wandImage.cpp:1121 core/wandImage.cpp:1183
+#: core/exrImage.cpp:3158 core/wandImage.cpp:1119 core/wandImage.cpp:1181
 #: gui/mrvImageView.cpp:202 gui/mrvImageView.cpp:2217
 #: gui/mrvImageView.cpp:2279 gui/mrvImageView.cpp:10147
 #: gui/mrvImageView.cpp:10195
@@ -2258,7 +2258,7 @@ msgid "Controls the codec used by default in saving a movie file."
 msgstr ""
 "Contrôle le codec utilisé par défaut lors de l'enregistrement d'un film."
 
-#: core/wandImage.cpp:1345
+#: core/wandImage.cpp:1343
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "La reconversion est nécessaire. Plage : 1,0"
 
@@ -2283,7 +2283,7 @@ msgstr "Copier XY"
 msgid "Copy/Color"
 msgstr "Copier/Couleur"
 
-#: core/wandImage.cpp:604
+#: core/wandImage.cpp:602
 msgid "Copyright String"
 msgstr "texte de droit d'auteur"
 
@@ -2690,12 +2690,12 @@ msgstr ""
 msgid "Could not seek to frame "
 msgstr "je n'ai pas trouvé le tableau "
 
-#: core/wandImage.cpp:776 core/wandImage.cpp:788 core/wandImage.cpp:800
-#: core/wandImage.cpp:812 core/wandImage.cpp:825 core/wandImage.cpp:838
-#: core/wandImage.cpp:851 core/wandImage.cpp:864 core/wandImage.cpp:877
-#: core/wandImage.cpp:890 core/wandImage.cpp:903 core/wandImage.cpp:916
-#: core/wandImage.cpp:933 core/wandImage.cpp:963 core/wandImage.cpp:982
-#: core/wandImage.cpp:1001 core/wandImage.cpp:1041 core/wandImage.cpp:1060
+#: core/wandImage.cpp:774 core/wandImage.cpp:786 core/wandImage.cpp:798
+#: core/wandImage.cpp:810 core/wandImage.cpp:823 core/wandImage.cpp:836
+#: core/wandImage.cpp:849 core/wandImage.cpp:862 core/wandImage.cpp:875
+#: core/wandImage.cpp:888 core/wandImage.cpp:901 core/wandImage.cpp:914
+#: core/wandImage.cpp:931 core/wandImage.cpp:961 core/wandImage.cpp:980
+#: core/wandImage.cpp:999 core/wandImage.cpp:1039 core/wandImage.cpp:1058
 msgid "Could not set "
 msgstr "n'a pas pu être défini "
 
@@ -2805,11 +2805,11 @@ msgstr "je ne pouvais pas écrire dans '"
 msgid "Count bad, "
 msgstr "compter mal, "
 
-#: core/wandImage.cpp:589
+#: core/wandImage.cpp:587
 msgid "Country"
 msgstr "Pays"
 
-#: core/wandImage.cpp:586
+#: core/wandImage.cpp:584
 msgid "Country Code"
 msgstr "Code postal"
 
@@ -2875,11 +2875,11 @@ msgstr "Créer/L'obtention du diplôme/linéaire"
 msgid "Create/Gradient/Luminance"
 msgstr "Créer/L'obtention du diplôme/luminosité"
 
-#: core/wandImage.cpp:559
+#: core/wandImage.cpp:557
 msgid "Created Date"
 msgstr "date créée"
 
-#: core/wandImage.cpp:562
+#: core/wandImage.cpp:560
 msgid "Created Time"
 msgstr "Heure de création"
 
@@ -2891,7 +2891,7 @@ msgstr "J'ai créé un serveur sur le port "
 msgid "Creation Date"
 msgstr "Date de creation"
 
-#: core/wandImage.cpp:598
+#: core/wandImage.cpp:596
 msgid "Credit"
 msgstr "Crédit"
 
@@ -2914,83 +2914,83 @@ msgstr "Courant"
 msgid "Current frame."
 msgstr "Boîte actuelle."
 
-#: core/wandImage.cpp:616
+#: core/wandImage.cpp:614
 msgid "Custom Field 1"
 msgstr "Champ personnalisé 1"
 
-#: core/wandImage.cpp:643
+#: core/wandImage.cpp:641
 msgid "Custom Field 10"
 msgstr "Champ personnalisé 10"
 
-#: core/wandImage.cpp:646
+#: core/wandImage.cpp:644
 msgid "Custom Field 11"
 msgstr "Champ personnalisé 11"
 
-#: core/wandImage.cpp:649
+#: core/wandImage.cpp:647
 msgid "Custom Field 12"
 msgstr "Champ personnalisé 12"
 
-#: core/wandImage.cpp:652
+#: core/wandImage.cpp:650
 msgid "Custom Field 13"
 msgstr "Champ personnalisé 13"
 
-#: core/wandImage.cpp:655
+#: core/wandImage.cpp:653
 msgid "Custom Field 14"
 msgstr "Champ personnalisé 14"
 
-#: core/wandImage.cpp:658
+#: core/wandImage.cpp:656
 msgid "Custom Field 15"
 msgstr "Champ personnalisé 15"
 
-#: core/wandImage.cpp:661
+#: core/wandImage.cpp:659
 msgid "Custom Field 16"
 msgstr "Champ personnalisé 16"
 
-#: core/wandImage.cpp:664
+#: core/wandImage.cpp:662
 msgid "Custom Field 17"
 msgstr "Champ personnalisé 17"
 
-#: core/wandImage.cpp:667
+#: core/wandImage.cpp:665
 msgid "Custom Field 18"
 msgstr "Champ personnalisé 18"
 
-#: core/wandImage.cpp:670
+#: core/wandImage.cpp:668
 msgid "Custom Field 19"
 msgstr "Champ personnalisé 19"
 
-#: core/wandImage.cpp:619
+#: core/wandImage.cpp:617
 msgid "Custom Field 2"
 msgstr "Champ personnalisé 2"
 
-#: core/wandImage.cpp:673
+#: core/wandImage.cpp:671
 msgid "Custom Field 20"
 msgstr "Champ personnalisé 20"
 
-#: core/wandImage.cpp:622
+#: core/wandImage.cpp:620
 msgid "Custom Field 3"
 msgstr "Champ personnalisé 3"
 
-#: core/wandImage.cpp:625
+#: core/wandImage.cpp:623
 msgid "Custom Field 4"
 msgstr "Champ personnalisé 4"
 
-#: core/wandImage.cpp:628
+#: core/wandImage.cpp:626
 msgid "Custom Field 5"
 msgstr "Champ personnalisé 5"
 
-#: core/wandImage.cpp:631
+#: core/wandImage.cpp:629
 msgid "Custom Field 6"
 msgstr "Champ personnalisé 6"
 
-#: core/wandImage.cpp:634
+#: core/wandImage.cpp:632
 msgid "Custom Field 7"
 msgstr "Champ personnalisé 7"
 
-#: core/wandImage.cpp:637
+#: core/wandImage.cpp:635
 msgid "Custom Field 8"
 msgstr "Champ personnalisé 8"
 
-#: core/wandImage.cpp:640
+#: core/wandImage.cpp:638
 msgid "Custom Field 9"
 msgstr "Champ personnalisé 9"
 
@@ -3295,7 +3295,7 @@ msgstr "Voulez-vous remplacer '%s' ?"
 msgid "Don't know which one should go first."
 msgstr "Je ne sais pas lequel devrait passer en premier."
 
-#: core/wandImage.cpp:735 gui/mrvImageInformation.cpp:181
+#: core/wandImage.cpp:733 gui/mrvImageInformation.cpp:181
 #: gui/mrvImageInformation.cpp:223 gui/mrvImageInformation.cpp:349
 msgid "Double"
 msgstr "Double"
@@ -3384,7 +3384,7 @@ msgstr "35 mm en avance"
 msgid "Edit Audio Frame Offset"
 msgstr "Modifier l'image de début audio"
 
-#: core/wandImage.cpp:523
+#: core/wandImage.cpp:521
 msgid "Edit Status"
 msgstr "Modifier le statut"
 
@@ -3832,7 +3832,7 @@ msgstr "Emploi stable"
 msgid "Fixed Size"
 msgstr "Taille fixe"
 
-#: core/wandImage.cpp:535
+#: core/wandImage.cpp:533
 msgid "Fixture Identifier"
 msgstr "Identificateur de partie intégrale"
 
@@ -3851,7 +3851,7 @@ msgstr "Retournement en Y"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:50
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:108
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:101
-#: core/wandImage.cpp:716 core/wandImage.cpp:733
+#: core/wandImage.cpp:714 core/wandImage.cpp:731
 #: gui/mrvImageInformation.cpp:181 gui/mrvImageInformation.cpp:222
 #: gui/mrvImageInformation.cpp:342
 msgid "Float"
@@ -4153,7 +4153,7 @@ msgstr "grec (Ελληνικά)"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2627
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2122 core/CMedia.cpp:2188 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9609
+#: core/wandImage.cpp:1159 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9609
 #: gui/mrvImageView.cpp:10148
 msgid "Green"
 msgstr "Vert"
@@ -4224,7 +4224,7 @@ msgstr "H. W."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:49
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:110
-#: core/wandImage.cpp:719
+#: core/wandImage.cpp:717
 msgid "Half"
 msgstr "Demi"
 
@@ -4240,7 +4240,7 @@ msgstr "Shaders matériels :\t"
 msgid "Hardware shaders not available."
 msgstr "Shaders matériels non disponibles."
 
-#: core/wandImage.cpp:595
+#: core/wandImage.cpp:593
 msgid "Headline"
 msgstr "Entête"
 
@@ -4449,7 +4449,7 @@ msgstr "Canaux d'images"
 msgid "Image Icc Profile"
 msgstr "Profil ICC des images"
 
-#: core/wandImage.cpp:520
+#: core/wandImage.cpp:518
 msgid "Image Name"
 msgstr "Nom de l'image"
 
@@ -4705,7 +4705,7 @@ msgstr "Espace colorimétrique d'entrée pour "
 msgid "Insert"
 msgstr "Insérer"
 
-#: core/wandImage.cpp:714 core/wandImage.cpp:731
+#: core/wandImage.cpp:712 core/wandImage.cpp:729
 msgid "Int"
 msgstr "Entier"
 
@@ -4843,7 +4843,7 @@ msgstr "Clé2"
 msgid "KeyCode"
 msgstr "mot de passe"
 
-#: core/wandImage.cpp:538 gui/mrvImageInformation.cpp:243
+#: core/wandImage.cpp:536 gui/mrvImageInformation.cpp:243
 #: gui/mrvImageInformation.cpp:275
 msgid "Keyword"
 msgstr "Mot-clé"
@@ -4917,7 +4917,7 @@ msgstr "Dernière image du clip - Sélection de l'utilisateur"
 msgid "Latitude"
 msgstr "Latitude"
 
-#: core/wandImage.cpp:240
+#: core/wandImage.cpp:238
 #, c-format
 msgid "Layer %d"
 msgstr "Cape %d"
@@ -5106,7 +5106,7 @@ msgstr "Chargement du shader rgba interne arbfp1"
 msgid "Loading hotkeys from "
 msgstr "J'ai chargé les clés de lecteur à partir de "
 
-#: core/wandImage.cpp:610
+#: core/wandImage.cpp:608
 msgid "Local Caption"
 msgstr "enseigne locale"
 
@@ -5162,7 +5162,7 @@ msgstr "Luminance des pixels de l'image sous la souris."
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2135 core/CMedia.cpp:2190 core/exrImage.cpp:3057
-#: core/wandImage.cpp:1160 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
+#: core/wandImage.cpp:1158 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
 #: gui/mrvImageView.cpp:9624 gui/mrvImageView.cpp:10149
 msgid "Lumma"
 msgstr "luma"
@@ -5601,7 +5601,7 @@ msgstr "Aucune image de fond à modifier"
 msgid "No codec context for audio stream."
 msgstr "Aucun contexte de codec pour l'audio."
 
-#: core/wandImage.cpp:1337
+#: core/wandImage.cpp:1335
 msgid "No conversion needed.  Gamma: "
 msgstr "Aucune conversion nécessaire. Spectre: "
 
@@ -5922,7 +5922,7 @@ msgstr "Enregistrement de l'OIIO"
 msgid "OK"
 msgstr "d'accord"
 
-#: core/wandImage.cpp:571
+#: core/wandImage.cpp:569
 msgid "Object Cycle"
 msgstr "Cycle d'objet"
 
@@ -6050,11 +6050,11 @@ msgstr "Les options pour EXR étaient vides"
 msgid "Original"
 msgstr "Original"
 
-#: core/wandImage.cpp:592
+#: core/wandImage.cpp:590
 msgid "Original Transmission Reference"
 msgstr "Référence de transmission d'origine"
 
-#: core/wandImage.cpp:1252
+#: core/wandImage.cpp:1250
 msgid "Original pixel type is "
 msgstr "Le type de pixel d'origine est "
 
@@ -6062,7 +6062,7 @@ msgstr "Le type de pixel d'origine est "
 msgid "Original without Gamma, Gain or Lut"
 msgstr "Original sans Gamma, Gain ou Lut"
 
-#: core/wandImage.cpp:565
+#: core/wandImage.cpp:563
 msgid "Originating Program"
 msgstr "Programme original"
 
@@ -6442,7 +6442,7 @@ msgstr "Version précédente de l'image"
 msgid "Print"
 msgstr "Impression"
 
-#: core/wandImage.cpp:526
+#: core/wandImage.cpp:524
 msgid "Priority"
 msgstr "Priorité"
 
@@ -6472,7 +6472,7 @@ msgstr "Programme %d "
 msgid "Program %d: %s"
 msgstr "Programme %d : %s"
 
-#: core/wandImage.cpp:568
+#: core/wandImage.cpp:566
 msgid "Program Version"
 msgstr "Version du programme"
 
@@ -6492,7 +6492,7 @@ msgstr "Fournir deux séquences ou films pour la stéréo."
 msgid "Provide two sequences or movies for stereo."
 msgstr "Fournir deux séquences ou films pour la stéréo."
 
-#: core/wandImage.cpp:583
+#: core/wandImage.cpp:581
 msgid "Province State"
 msgstr "Province État"
 
@@ -6664,7 +6664,7 @@ msgstr "Outil Rectangle"
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2612
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2121 core/CMedia.cpp:2188 core/exrImage.cpp:3058
-#: core/wandImage.cpp:1161 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9604
+#: core/wandImage.cpp:1159 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9604
 #: gui/mrvImageView.cpp:10147
 msgid "Red"
 msgstr "rouge"
@@ -6721,15 +6721,15 @@ msgstr "bobines"
 msgid "Reels (*.{"
 msgstr "Bobines (*.{"
 
-#: core/wandImage.cpp:553
+#: core/wandImage.cpp:551
 msgid "Reference Date"
 msgstr "Date de référence"
 
-#: core/wandImage.cpp:556
+#: core/wandImage.cpp:554
 msgid "Reference Number"
 msgstr "Référence"
 
-#: core/wandImage.cpp:550
+#: core/wandImage.cpp:548
 msgid "Reference Service"
 msgstr "Service de référence"
 
@@ -6763,11 +6763,11 @@ msgstr "Relatif"
 msgid "Relative Colorimetric"
 msgstr "Colorimétrie relative"
 
-#: core/wandImage.cpp:541
+#: core/wandImage.cpp:539
 msgid "Release Date"
 msgstr "Date de sortie"
 
-#: core/wandImage.cpp:544
+#: core/wandImage.cpp:542
 msgid "Release Time"
 msgstr "Heure de sortie"
 
@@ -7439,7 +7439,7 @@ msgstr "Majuscules"
 
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:109
 #: /home/gga/code/applications/mrv/BUILD/Linux-4.4.0-148-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:102
-#: core/wandImage.cpp:712 core/wandImage.cpp:729
+#: core/wandImage.cpp:710 core/wandImage.cpp:727
 msgid "Short"
 msgstr "Court"
 
@@ -7508,7 +7508,7 @@ msgstr "Espagnol (Español)"
 msgid "Special"
 msgstr "Spécial"
 
-#: core/wandImage.cpp:547
+#: core/wandImage.cpp:545
 msgid "Special Instructions"
 msgstr "Instructions spéciales"
 
@@ -7520,7 +7520,7 @@ msgstr "Vitesse"
 msgid "Square Root"
 msgstr "Racine carrée"
 
-#: core/wandImage.cpp:601
+#: core/wandImage.cpp:599
 msgid "Src"
 msgstr "La source"
 
@@ -7653,7 +7653,7 @@ msgstr "Les sous-titres ne sont valables que sur les fichiers vidéo"
 msgid "Subtract"
 msgstr "Soustraire"
 
-#: core/wandImage.cpp:532
+#: core/wandImage.cpp:530
 msgid "Supplemental Category"
 msgstr "Catégorie supplémentaire"
 
@@ -8497,7 +8497,7 @@ msgstr "type de canal inconnu"
 msgid "Unknown data type for keyword '"
 msgstr "Type de données inconnu pour la clé '"
 
-#: core/wandImage.cpp:1064
+#: core/wandImage.cpp:1062
 msgid "Unknown data type to convert to string"
 msgstr "Type de données inconnu à convertir à partir du texte"
 
@@ -8517,7 +8517,7 @@ msgstr "Erreur inconnue renvoyée par le processeur OCIO"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Erreur inconnue renvoyée par ctlToLut"
 
-#: core/wandImage.cpp:1094
+#: core/wandImage.cpp:1092
 msgid "Unknown image format to save"
 msgstr "Format d'image inconnu à enregistrer"
 
@@ -9935,7 +9935,7 @@ msgid "und"
 msgstr "Indiana"
 
 #: core/CMedia.cpp:3457 core/CMedia.cpp:3488 core/CMedia.cpp:4476
-#: core/wandImage.cpp:676
+#: core/wandImage.cpp:674
 msgid "unknown"
 msgstr "inconnu"
 

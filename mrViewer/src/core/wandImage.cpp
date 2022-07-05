@@ -131,8 +131,6 @@ bool wandImage::test(const char* file)
             return false;
     }
 
-    LOG_INFO( "wandImage" );
-
     MagickWandGenesis();
     MagickBooleanType status = MagickFalse;
 
