@@ -1068,7 +1068,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( skip )
     {
         flush_video();
-        int64_t f = start;
+        int64_t f = frame; //start;
         if ( f > out_frame() ) f = out_frame();
         int64_t dts = queue_packets( f, false, got_video,
                                      got_audio, got_subtitle );
