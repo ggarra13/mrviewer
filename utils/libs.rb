@@ -21,6 +21,7 @@ libasound.*
 libgpg-error.*
 libfontconfig.*
 libfreetype.*
+libharfbuzz.*
 libxshmfence.*
 libz.*
 libc\.so.*

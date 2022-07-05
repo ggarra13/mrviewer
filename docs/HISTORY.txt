@@ -1,3 +1,10 @@
+v6.2.1  - Fixed stepping with cursor keys leading to missing frames.
+	  (Regression from v6.2.0).
+	- Fixed adding new audio to a movie or sequence (Regression from
+	  v6.1.7).
+	- Removed libharfbuzz from the distribution as it was conflicting
+	  with newer OSes (like Fedora 35).
+
 v6.2.0  - Updated ffmpeg libraries to handle HAP, HAP with alpha and
 	  HAP Q movies.
 	- Fixed stopping some movies, with large read ahead caches,
