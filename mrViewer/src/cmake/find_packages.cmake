@@ -30,8 +30,13 @@ if (APPLE)
 else()
   if (UNIX)
     if ( NOT DEFINED FLTK_DIR )
-      set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH
-        "fltk build dir" FORCE )
+      if ( CMAKE_SYSTEM_VERSION GREATER_EQUAL 5 )
+	set( FLTK_DIR "~/code/lib/fltk-x11/build-linux-20" CACHE FILEPATH
+          "fltk build dir" FORCE )
+      else()
+	set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH
+          "fltk build dir" FORCE )
+      endif()
     endif()
   endif()
 endif()
