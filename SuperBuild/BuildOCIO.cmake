@@ -12,15 +12,18 @@ if (APPLE)
   set( boost_on "TRUE" )
 endif()
 
+cmake_host_system_information(RESULT HAS_SSE2 QUERY HAS_SSE2)
+
 ExternalProject_Add(
   ${OCIO_NAME}
   #URL "https://github.com/imageworks/OpenColorIO/zipball/v1.0.9"
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
-  GIT_TAG "v1.1.1"
-  PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/OCIO_v1_1_1.patch
+  #GIT_TAG "v1.1.1"
+  GIT_TAG main
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR ${OCIO_DEPENDS}
   CMAKE_ARGS
+  -DOCIO_USE_SSE=${HAS_SSE2}
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
@@ -36,4 +39,5 @@ ExternalProject_Add(
   -DOCIO_BUILD_PYGLUE=OFF
   -DOCIO_BUILD_JNIGLUE=OFF
   -DOCIO_STATIC_JNIGLUE=OFF
+  -DOCIO_INSTALL_EXT_PACKAGES=ALL
   )

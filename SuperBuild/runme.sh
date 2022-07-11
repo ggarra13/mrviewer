@@ -17,7 +17,9 @@ else
 fi
 
 
+export LD_FLAGS="-Wl,--copy-dt-needed-entries"
 export PATH=$installdir/bin:$PATH
+export PKG_CONFIG_PATH=$installdir/lib/pkgconfig
 export LD_LIBRARY_PATH=$installdir/lib:$LD_LIBRARY_PATH
 
 ../mk  --installdir=$installdir -j 4

@@ -42,7 +42,7 @@ if (APPLE)
   set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
 
-set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" FORCE )
+set( FLTK_DIR "~/code/applications/Ubuntu20/fltk-x11/build-linux" CACHE FILEPATH "fltk build dir" FORCE )
 
 FIND_PACKAGE( FLTK        REQUIRED NO_MODULE )    # for window management
 

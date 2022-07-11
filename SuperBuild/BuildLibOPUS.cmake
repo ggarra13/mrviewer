@@ -1,6 +1,8 @@
+
 ExternalProject_Add(
   LibOpus
   GIT_REPOSITORY "https://github.com/xiph/opus.git"
+  GIT_TAG master
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
