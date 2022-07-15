@@ -268,15 +268,24 @@ bool PortAudioEngine::open( const unsigned channels,
             outputParameters.sampleFormat = paFloat32;
         }
 
-        int err = Pa_OpenStream(
-                                &stream,
-                                NULL, /* no input */
-                                &outputParameters,
-                                freq,
-                                0,
-                                paClipOff,  /* we don't output out of range samples so no need to clip them */
-                                callback, /* callback, use non-blocking API */
-                                this ); /* userData */
+        int err = paNoError;
+
+        err = Pa_IsFormatSupported( NULL, &outputParameters, freq );
+        if( err != paFormatIsSupported )
+        {
+            stream = NULL;
+            PA_ERROR( err );
+            return false;
+        }
+
+        err = Pa_OpenStream( &stream,
+                             NULL, /* no input */
+                             &outputParameters,
+                             freq,
+                             0,
+                             paClipOff,  /* we don't output out of range samples so no need to clip them */
+                             callback, /* callback, use non-blocking API */
+                             this ); /* userData */
         if( err != paNoError )
         {
             stream = NULL;
