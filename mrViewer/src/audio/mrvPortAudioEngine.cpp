@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  */
 
 
-#ifdef PORTAUDIO
+#ifdef MRV_PORTAUDIO
 
 #include <cstdio>
 #include <cstdlib>
@@ -37,10 +37,6 @@
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferences.h"
 #include "audio/mrvPortAudioEngine.h"
-
-#ifdef _WIN32
-#include <mmreg.h>   // for manufacturer and product IDs
-#endif
 
 namespace
 {
@@ -56,52 +52,17 @@ static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 namespace mrv {
 
-#define THROW(x) throw( exception(x) )
-
-
 
 unsigned int     PortAudioEngine::_instances = 0;
 
-/* Microsoft speaker definitions */
-#define WAVE_SPEAKER_FRONT_LEFT             0x1
-#define WAVE_SPEAKER_FRONT_RIGHT            0x2
-#define WAVE_SPEAKER_FRONT_CENTER           0x4
-#define WAVE_SPEAKER_LOW_FREQUENCY          0x8
-#define WAVE_SPEAKER_BACK_LEFT              0x10
-#define WAVE_SPEAKER_BACK_RIGHT             0x20
-#define WAVE_SPEAKER_FRONT_LEFT_OF_CENTER   0x40
-#define WAVE_SPEAKER_FRONT_RIGHT_OF_CENTER  0x80
-#define WAVE_SPEAKER_BACK_CENTER            0x100
-#define WAVE_SPEAKER_SIDE_LEFT              0x200
-#define WAVE_SPEAKER_SIDE_RIGHT             0x400
-#define WAVE_SPEAKER_TOP_CENTER             0x800
-#define WAVE_SPEAKER_TOP_FRONT_LEFT         0x1000
-#define WAVE_SPEAKER_TOP_FRONT_CENTER       0x2000
-#define WAVE_SPEAKER_TOP_FRONT_RIGHT        0x4000
-#define WAVE_SPEAKER_TOP_BACK_LEFT          0x8000
-#define WAVE_SPEAKER_TOP_BACK_CENTER        0x10000
-#define WAVE_SPEAKER_TOP_BACK_RIGHT         0x20000
-#define WAVE_SPEAKER_RESERVED               0x80000000
 
-static const int channel_mask[] = {
-    WAVE_SPEAKER_FRONT_CENTER,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_LOW_FREQUENCY,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_BACK_LEFT    | WAVE_SPEAKER_BACK_RIGHT     | WAVE_SPEAKER_LOW_FREQUENCY,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_LOW_FREQUENCY,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY,
-    WAVE_SPEAKER_FRONT_LEFT   | WAVE_SPEAKER_FRONT_CENTER | WAVE_SPEAKER_FRONT_RIGHT  | WAVE_SPEAKER_SIDE_LEFT    | WAVE_SPEAKER_SIDE_RIGHT     | WAVE_SPEAKER_BACK_LEFT  | WAVE_SPEAKER_BACK_CENTER  | WAVE_SPEAKER_BACK_RIGHT | WAVE_SPEAKER_LOW_FREQUENCY
-};
-
-
-static void MMerror(const char *function, int err)
+static void MMerror(const char *function, unsigned line, int err)
 {
-    LOG_ERROR( function << " - " << err << " " << Pa_GetErrorText(err) );
+    LOG_ERROR( function << " (" << line << ") - "
+               << err << " " << Pa_GetErrorText(err) );
 }
 
-#define PA_ERROR(x) MMerror( __FUNCTION__, x );
+#define PA_ERROR(x) MMerror( __FUNCTION__, __LINE__, x );
 
 
 PortAudioEngine::PortAudioEngine() :
@@ -136,7 +97,7 @@ void PortAudioEngine::refresh_devices()
         woc = Pa_GetDeviceInfo( i );
 
 
-        if ( woc->maxOutputChannels <= 0 ) continue;
+        if ( woc->maxOutputChannels <= 0 ) continue; // microphone
 
 
         std::string channels;
@@ -161,7 +122,7 @@ void PortAudioEngine::refresh_devices()
         }
 
         if ( _device_idx < 0 ) {
-            _device_idx = i;
+            _device_idx = Pa_GetDefaultOutputDevice();
             sprintf( name, "default" );
         }
         else
@@ -191,7 +152,6 @@ bool PortAudioEngine::initialize()
       refresh_devices();
     }
 
-    outputParameters.device = device("default");
     _channels = _freq = 0;
 
     ++_instances;
@@ -260,12 +220,21 @@ bool PortAudioEngine::open( const unsigned channels,
         if ( stream && Pa_IsStreamActive( stream ) )
             return true;
 
+#if 0
+        // If default device, get it from Pa_GetDefaultOutputDevice
+        TRACE2( "DEVICE 'default' is " << device("default") );
+        TRACE2( "Pa_GetDefaultOutputDevice is "
+                << Pa_GetDefaultOutputDevice() );
+        TRACE2( "DEVICE '_device_idx' " << _device_idx );
+        TRACE2( "CHANNELS " << channels );
+#endif
         const PaDeviceInfo* info = Pa_GetDeviceInfo( _device_idx );
         if ( info == nullptr )
         {
             LOG_ERROR( _("Could not get device info for ") << _device_idx );
         }
 
+        outputParameters.device = _device_idx; //device("default");
         outputParameters.channelCount = channels;
         outputParameters.suggestedLatency = info->defaultLowOutputLatency;
         outputParameters.hostApiSpecificStreamInfo = NULL;
@@ -299,21 +268,33 @@ bool PortAudioEngine::open( const unsigned channels,
             outputParameters.sampleFormat = paFloat32;
         }
 
-        int err = Pa_OpenStream(
-                                &stream,
-                                NULL, /* no input */
-                                &outputParameters,
-                                freq,
-                                250,
-                                paClipOff,  /* we don't output out of range samples so no need to clip them */
-                                callback, /* callback, use non-blocking API */
-                                this ); /* userData */
-        if( err != paNoError )
+        int err = paNoError;
+
+        err = Pa_IsFormatSupported( NULL, &outputParameters, freq );
+        if( err != paFormatIsSupported )
+        {
+            stream = NULL;
             PA_ERROR( err );
+            return false;
+        }
+
+        err = Pa_OpenStream( &stream,
+                             NULL, /* no input */
+                             &outputParameters,
+                             freq,
+                             0,
+                             paClipOff,  /* we don't output out of range samples so no need to clip them */
+                             callback, /* callback, use non-blocking API */
+                             this ); /* userData */
+        if( err != paNoError )
+        {
+            stream = NULL;
+            PA_ERROR( err );
+            return false;
+        }
 
 
-
-        buffer_time = 250;
+        buffer_time = 256;
 
         bufferByteCount =  (buffer_time * freq / 1000) *
                            (channels * _bits / 8);
@@ -340,8 +321,10 @@ bool PortAudioEngine::open( const unsigned channels,
 
         err = Pa_StartStream( stream );
         if( err != paNoError )
+        {
             PA_ERROR( err );
-
+            return false;
+        }
         DBGM1( "enabled ok" );
         // All okay, enable device
         _aborted = _stopped = false;
@@ -415,6 +398,9 @@ bool PortAudioEngine::play( const char* d, const size_t size )
     if ( !_enabled ) {
         return true;
     }
+
+    assert( d != NULL );
+    assert( size > 0 );
 
     uint8_t* data = (uint8_t*)d;
     if ( _volume < 0.99f )

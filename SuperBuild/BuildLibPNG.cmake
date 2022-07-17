@@ -6,6 +6,8 @@ else()
   set( generator "Unix Makefiles" )
 endif()
 
+set( PNG_FLAGS "-I${CMAKE_BINARY_DIR}/ZLIB-prefix/src/ZLIB ${CMAKE_C_FLAGS}" )
+
 ExternalProject_Add(
   LIBPNG
   DEPENDS ZLIB
@@ -16,6 +18,6 @@ ExternalProject_Add(
   -DCMAKE_BUILD_TYPE=Release
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
   -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
-  -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+  -DCMAKE_C_FLAGS=${PNG_FLAGS}
   -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
   )

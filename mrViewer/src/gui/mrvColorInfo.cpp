@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ using namespace std;
 #include "core/mrvColorSpaces.h"
 #include "core/mrvString.h"
 #include "core/mrvColor.h"
+#include "core/mrvColorOps.h"
 
 #include "gui/mrvColorOps.h"
 #include "gui/mrvMedia.h"
@@ -558,7 +559,8 @@ void ColorInfo::update( const CMedia* img,
         float gamma = uiMain->uiView->gamma();
         float one_gamma = 1.0f / gamma;
 
-        mrv::DrawEngine* engine = uiMain->uiView->engine();
+        mrv::ImageView* view = uiMain->uiView;
+        mrv::DrawEngine* engine = view->engine();
 
         ImageView::PixelValue v = (ImageView::PixelValue)
                                   uiMain->uiPixelValue->value();
@@ -594,21 +596,30 @@ void ColorInfo::update( const CMedia* img,
 
                 CMedia::Pixel op = pic->pixel( x, y );
 
-                if ( uiMain->uiView->normalize() )
+                if ( view->normalize() )
                 {
-                    uiMain->uiView->normalize( op );
+                    view->normalize( op );
                 }
 
                 op.r *= gain;
                 op.g *= gain;
                 op.b *= gain;
 
-                if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
+                ColorControlsUI* cc = uiMain->uiColorControls;
+                if ( cc->uiActive->value() )
+                {
+                    const Imath::M44f& m = colorMatrix(cc);
+                    Imath::V3f* iop = (Imath::V3f*)&op;
+                    *iop *= m;
+                }
+
+                if ( view->use_lut() && v == ImageView::kRGBA_Full )
                 {
                     Imath::V3f* iop = (Imath::V3f*)&op;
                     Imath::V3f* irp = (Imath::V3f*)&rp;
                     engine->evaluate( img, *iop, *irp );
                     rp.a = op.a;
+
                 }
                 else
                 {

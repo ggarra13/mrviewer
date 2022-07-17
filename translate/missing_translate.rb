@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# coding: utf-8
+# encoding: utf-8
 
 
 require "google/cloud/translate/v2"
@@ -32,7 +32,7 @@ def fix( text, result )
     text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
     text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
     text == "mrViewer    FG: %s" or text == '%4.8g %%' or
-    text == 'A' or text == 'A/B'
+    text == 'A' or text == 'A/B' or text == "FPS" or
     text =~ /# Created with mrViewer/
     result = text
   elsif text =~ /FPS:/
@@ -296,6 +296,44 @@ def fix( text, result )
       result.sub!( /ID: %in/, 'ID: %i\n' )
     end
   end
+
+  if text == 'Arabic'    and @lang != 'ar' and result !~ / \(.*\)/
+    result += " (عرب)"
+  elsif text == 'English'    and @lang != 'en' and result !~ / \(.*\)/
+    result += " (English)"
+  elsif text == "Spanish" and @lang != 'es' and result !~ / \(.*\)/
+    result += " (Español)"
+  elsif text == "German"  and @lang != 'de' and result !~ / \(.*\)/
+    result += " (Deutsch)"
+  elsif text == "Czech"   and @lang != 'cs' and result !~ / \(.*\)/
+    result += " (čeština)"
+  elsif text == "French"  and @lang != 'fr' and result !~ / \(.*\)/
+    result += " (français)"
+  elsif text == "Greek" and @lang != 'gr' and result !~ / \(.*\)/
+    result += " (Ελληνικά)"
+  elsif text == "Italian" and @lang != 'it' and result !~ / \(.*\)/
+    result += " (italiano)"
+  elsif text == "Japanese" and @lang != 'ja' and result !~ / \(.*\)/
+    result += " (日本)"
+  elsif text == "Korean"  and @lang != 'ko' and result !~ / \(.*\)/
+    result += " (한국어)"
+  elsif text == "Dutch"   and @lang != 'nl' and result !~ / \(.*\)/
+    result += " (Nederlands)"
+  elsif text == "Polish"  and @lang != 'pl' and result !~ / \(.*\)/
+    result += " (Polski)"
+  elsif text == "Portuguese" and @lang != 'pt' and result !~ / \(.*\)/
+    result += " (português)"
+  elsif text == "Romanian"   and @lang != 'ro' and result !~ / \(.*\)/
+    result += " (Română)"
+  elsif text == "Russian"    and @lang != 'ru' and result !~ / \(.*\)/
+    result += " (русский)"
+  elsif text == "Swedish"    and @lang != 'sv' and result !~ / \(.*\)/
+    result += " (svenska)"
+  elsif text == "Turkish"    and @lang != 'tr' and result !~ / \(.*\)/
+    result += " (Türk)"
+  elsif text == "Chinese"    and @lang != 'zh' and result !~ / \(.*\)/
+    result += " (中国人)"
+  end
   if text =~ /(\s+)$/
     spaces = $1
     if result !~ /#{spaces}$/
@@ -314,11 +352,14 @@ end
 
 
 def translate( text )
+  return fix( text, text ) if @lang == 'en'
+  googlelang = @lang
+  googlelang = 'el' if @lang == 'gr'
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
       puts "#@count origin: #{text} menus" if @debug
-      r = @translate.translate menus, from: 'en', to: @lang
+      r = @translate.translate menus, from: 'en', to: googlelang
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
@@ -329,7 +370,8 @@ def translate( text )
       return result
     end
   end
-  r = @translate.translate text, from: 'en', to: @lang
+  puts "original: #{text}"
+  r = @translate.translate text, from: 'en', to: googlelang
   result = r.text
   result = fix( text, result )
   return result
@@ -347,11 +389,11 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'cs', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'tr', 'zh' ]
+  langs = [ 'ar', 'cs', 'de', 'en', 'es', 'fr', 'gr', 'it', 'ja',
+            'ko', 'nl', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
-translated = [ 'es' ]
+translated = [ ]
 for @lang in langs
   next if translated.any? @lang
   $stderr.puts "=================== Translate to #@lang ======================"
@@ -375,6 +417,7 @@ for @lang in langs
     @count += 1
   end
 
+  fuzzy = false
   @msgid = ''
   num_lines = lines.size-1
   while @count < num_lines
@@ -389,25 +432,31 @@ for @lang in langs
       match2 = $1
 
       if match
-        @msgid << match
+        @msgid << match if not fuzzy
       end
 
 
       if msgstr
-        if match == '' and not text2
+        if (match == '' or fuzzy) and not text2
           r = translate( @msgid )
           new_line( r )
         else
           @op.puts line
         end
         @msgid = ''
-        in_msg_id = false
+        in_msg_id = fuzzy = false
         @count += 1
         next
       end
       @op.puts line
       @count += 1
       next
+    else
+      if line =~ /fuzzy/
+        fuzzy = true
+        line.sub!( /fuzzy/, '' )
+        @msgid = ''
+      end
     end
     msgid = line =~ /^msgid "(.*)"/
     if msgid

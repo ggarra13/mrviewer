@@ -7,10 +7,19 @@ i18n_function gettext
 i18n_static_function gettext_noop
 header_name {.h}
 code_name {.cxx}
-decl {\#include "gui/mrvIO.h"} {selected public local
+decl {\#include "gui/mrvIO.h"} {public local
 }
 
 decl {\#include "core/mrvI8N.h"} {public local
+}
+
+decl {\#include "mrvColorAreaUI.h"} {private global
+}
+
+decl {\#include "mrvHistogramUI.h"} {private global
+}
+
+decl {\#include "mrvVectorscopeUI.h"} {private global
 }
 
 decl {\#include "gui/mrvImageView.h"} {public local
@@ -41,32 +50,82 @@ class ColorControlsUI {open
         Fl_Light_Button uiActive {
           label Active
           user_data view user_data_type {mrv::ImageView*}
-          callback {v->redraw();}
+          callback {char buf[128];
+sprintf( buf, N_("HBCSActive %d"), o->value() );
+v->send_network( buf );
+v->redraw();}
           tooltip {Activates / Deactivates all color corrections as they can be a tad expensive} xywh {85 10 80 25}
         }
       }
       Fl_Value_Slider uiHue {
         label Hue
         user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
+        callback {char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+setlocale( LC_NUMERIC, "C" );
+char buf[128];
+sprintf( buf, N_("Hue %g"), o->value() );
+v->send_network( buf );
+v->restore_locale( oldloc );
+
+ViewerUI* m = v->main();
+m->uiColorArea->uiColorText->update();
+m->uiHistogram->uiHistogram->redraw();
+m->uiVectorscope->uiVectorscope->redraw();
+v->redraw();}
         xywh {85 47 210 20} type Horizontal align 4 textsize 14
       }
       Fl_Value_Slider uiBrightness {
         label Brightness
         user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
+        callback {char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+setlocale( LC_NUMERIC, "C" );
+char buf[128];
+sprintf( buf, N_("Brightness %g"), o->value() );
+v->send_network( buf );
+v->restore_locale( oldloc );
+
+ViewerUI* m = v->main();
+m->uiColorArea->uiColorText->update();
+m->uiHistogram->uiHistogram->redraw();
+m->uiVectorscope->uiVectorscope->redraw();
+
+v->redraw();}
         xywh {85 75 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiContrast {
         label Contrast
         user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
+        callback {char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+setlocale( LC_NUMERIC, "C" );
+char buf[128];
+sprintf( buf, N_("Contrast %g"), o->value() );
+v->send_network( buf );
+v->restore_locale( oldloc );
+
+ViewerUI* m = v->main();
+m->uiColorArea->uiColorText->update();
+m->uiHistogram->uiHistogram->redraw();
+m->uiVectorscope->uiVectorscope->redraw();
+
+v->redraw();}
         tooltip {Adjust Image Contrast} xywh {85 105 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Value_Slider uiSaturation {
         label Saturation
         user_data view user_data_type {mrv::ImageView*}
-        callback {v->redraw();}
+        callback {char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+setlocale( LC_NUMERIC, "C" );
+char buf[128];
+sprintf( buf, N_("Saturation %g"), o->value() );
+v->send_network( buf );
+v->restore_locale( oldloc );
+
+ViewerUI* m = v->main();
+m->uiColorArea->uiColorText->update();
+m->uiHistogram->uiHistogram->redraw();
+m->uiVectorscope->uiVectorscope->redraw();
+
+v->redraw();} selected
         tooltip {Adjust Image Saturation} xywh {85 138 210 20} type Horizontal align 4 maximum 8 value 1 textsize 14
       }
       Fl_Button {} {

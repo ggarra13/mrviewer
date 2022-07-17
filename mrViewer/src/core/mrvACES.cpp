@@ -37,11 +37,8 @@ std::string aces_amf_filename( const char* file )
 
     std::string xml;
     fs::path p = fs::absolute( f ).parent_path();
-#ifdef _WIN32
     xml = p.string();
-#else
-    xml = fs::canonical( p ).string();
-#endif
+
     if ( ! xml.empty() ) xml += "/";
 
     xml += filename;
@@ -62,11 +59,8 @@ std::string aces_xml_filename( const char* file )
 
     std::string xml;
     fs::path p = fs::absolute( f ).parent_path();
-#ifdef _WIN32
     xml = p.string();
-#else
-    xml = fs::canonical( p ).string();
-#endif
+
     if ( ! xml.empty() ) xml += "/";
     xml += "ACESclip.";
     xml += filename;

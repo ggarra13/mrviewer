@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #include <float.h>
 #include <limits.h>
+#include <cmath>
 #include <vector>
 #include <iostream>
 
@@ -64,11 +65,21 @@ class ImageView;
             x = b.x; y = b.y;
             return *this;
         }
+
+        inline Point& operator=( const Point& b )
+        {
+            x = b.x; y = b.y;
+            return *this;
+        }
+
+        inline double angle( const Point& b )
+        {
+            return std::acos( dot( b ) ) / (length() * b.length());
+        }
 };
 
 
-void glCircle( const Point& p, const double radius, double pen_size );
-void glDisk( const Point& p, const double radius );
+void glDisk( const Point& p, const float diameter );
 
 class GLShape
 {
@@ -82,7 +93,7 @@ public:
     virtual ~GLShape() {};
 
     virtual std::string send() const = 0;
-    virtual void draw( double z ) = 0;
+    virtual void draw( double z, double m ) = 0;
 
     void color( float ri, float gi, float bi, float ai = 1.0 ) {
     r = ri;
@@ -96,6 +107,7 @@ public:
     float pen_size;
     //short previous, next;
     boost::int64_t frame;
+    typedef std::vector< Point > PointList;
 };
 
 class GLCircleShape : public GLShape
@@ -103,9 +115,10 @@ class GLCircleShape : public GLShape
 public:
     GLCircleShape() : GLShape(), radius(1.0)  {};
     virtual ~GLCircleShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
+    void glCircle( const Point& p, const double radius, double pen_size );
     Point center;
     double radius;
 };
@@ -116,10 +129,9 @@ public:
 
     GLPathShape() : GLShape()  {};
     virtual ~GLPathShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
-    typedef std::vector< Point > PointList;
     PointList pts;
 };
 
@@ -129,7 +141,17 @@ public:
 
     GLArrowShape() : GLPathShape()  {};
     virtual ~GLArrowShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
+    virtual std::string send() const;
+};
+
+class GLRectangleShape : public GLPathShape
+{
+public:
+
+    GLRectangleShape() : GLPathShape()  {};
+    virtual ~GLRectangleShape() {};
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 };
 
@@ -139,7 +161,7 @@ public:
 
     GLErasePathShape() : GLPathShape()  {};
     virtual ~GLErasePathShape() {};
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 };
 
@@ -178,7 +200,7 @@ public:
         return _fontsize;
     }
 
-    virtual void draw( double z );
+    virtual void draw( double z, double m );
     virtual std::string send() const;
 
 protected:

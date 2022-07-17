@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# coding: utf-8
+# encoding: utf-8
 
 
 require "google/cloud/translate/v2"
@@ -31,7 +31,7 @@ def fix( text, result, lang )
        text == '  INF.  ' or text == "   NAN  " or
        text == 'PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB' or
        text == "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)" or
-       text == "mrViewer    FG: %s" or
+       text == "mrViewer    FG: %s" or text == 'BG' or text == "EDL" or
        text == '%4.8g %%' or
        text == 'A/B' or text == 'A' or text == 'B' or
        text =~ /# Created with mrViewer/ or text == "xyY CIE xyY" or
@@ -41,22 +41,66 @@ def fix( text, result, lang )
        text == '15' or text == '50' or text == 'W' or text == "24000/1001" or
        text == 'B' or text == 'H' or text == 'L' or text == 'V' or
        text == "CIE xyY" or text == "CIE XYZ" or text =~ /^DYW:/ or
-       text =~ /^DAW:/ )
+       text =~ /^DAW:/ or text == "FPS" )
     result = text
   elsif text =~ /FPS:/
     result.sub!(/s*(FPS)./, 'FPS:')
   end
-  if ( lang == 'cs' or lang == 'de' or lang == 'fr' or lang == 'it' or
-       lang == "ja" or lang == 'ko' or lang == 'pl' or lang == 'pt' or
-       lang == 'ro' or lang == 'ru' or lang == 'tr' or lang == 'zh' ) and
+  if ( lang == 'ar' or lang == 'cs' or lang == 'de' or lang == 'fr' or
+       lang == 'gr' or lang == 'it' or lang == "ja" or lang == 'ko' or
+       lang == 'nl' or lang == 'pl' or lang == 'pt' or lang == 'ro' or
+       lang == 'ru' or lang == 'sv' or lang == 'tr' or lang == 'zh' ) and
       ( text =~ /mrViewer crashed\\n/ or text =~ /\\nor crushing the shadows./ )
     result.gsub!(/\\/, '\n' )
+  end
+  if result =~ /CPS/
+    result.gsub!( /CPS/, "FPS" )
   end
   if ( lang == 'zh' or lang == 'ja' ) and result =~ /（\*。{/
     #
     # Automatic translation returns 。instead of .
     #
     result.sub!(/\s*（\*。{/, ' (*.{')
+  elsif lang == 'ar'
+    if text =~ /^\d+[\.:]\d+$/
+      result = text
+    end
+    if result =~ /فراغ/
+      result.gsub!( /فراغ/, 'OCIO' )
+    elsif result =~ /LEISURE/
+      result.gsub!( /LEISURE/, 'OCIO' )
+    elsif result =~ /al'iitar/  # frame to video frame
+      result.gsub!( /al'iitar/, "'iitarat" )
+    end
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    elsif result =~ /^@\s+(.*)$/
+      #
+      # Automatic translation returns @ || instead of @||
+      #
+      result = "@" + $1
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
+    if result =~ /\\\s+t/
+      #
+      # Automatic translation returns \ t instead of \t
+      #
+      result.gsub!(/\\\s+t/, '\t')
+    end
+    if result =~ /%\s+/
+      #
+      # Automatic translation returns % d instead of %d or %s
+      #
+      result.gsub!(/%\s+/, '%')
+    end
+    if text == 'Saving'
+      result == "تسج_ل"
+    end
   elsif lang == 'cs'
     result.sub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' ) # for film aspects
     if text == 'Frame %<PRId64> '
@@ -162,6 +206,30 @@ def fix( text, result, lang )
       #
       result.sub!(/\s:$/, ": ")
     end
+  elsif lang == 'gr'
+    if result =~ /ΕΛΕΥΘΕΡΟΣ ΧΡΟΝΟΣ/
+      result.gsub!( /ΕΛΕΥΘΕΡΟΣ ΧΡΟΝΟΣ/, "OCIO" )
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
+    elsif result =~ /πλαίσιο/
+      result.gsub!( /πλαίσιο/, 'καρέ' )
+    elsif result =~ /Πλαίσιο/
+      result.gsub!( /Πλαίσιο/, 'κουτί' )
+    end
+    if text == 'Saving'
+      result == 'αποθήκευση'
+    elsif text == 'Save'
+      result == 'αποθηκεύσετε'
+    end
+    if result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    end
   elsif lang == 'it'
     if text == "Saving Sequence(s) %<PRId64> - %<PRId64>"
       result = "Salvando Sequenza(e) %<PRId64> - %<PRId64>"
@@ -191,7 +259,7 @@ def fix( text, result, lang )
       result.gsub!(/\\\s+n/, '\n')
     end
     if text == 'Reel %d (%s) | Shot %d (%s) | Frame %<PRId64> | X = %d | Y = %d\n'
-      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | S = %d\n'
+      result = 'Bobina %d (%s) | Colpo %d (%s) | Foto %<PRId64> | X = %d | Y = %d\n'
     end
   elsif lang == 'ja'
     if text == 'Save'
@@ -271,9 +339,24 @@ def fix( text, result, lang )
     if result == 'LM변환% 유'
       result = 'LM변환 %u'
     elsif result =~ /여가/
-      result.sub!(/여가/, 'OCIO')
+      result.gsub!(/여가/, 'OCIO')
     elsif result =~ /LEISURE/
-      result.sub!(/LEISURE/, 'OCIO')
+      result.gsub!(/LEISURE/, 'OCIO')
+    end
+  elsif lang == 'nl'
+    if text =~ %r{^1/.*$}
+      result = text
+    end
+    if result =~ /VRIJE TIJD/
+      result.gsub!(/VRIJE TIJD/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.gsub!(/LEISURE/, 'OCIO')
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation sometimes returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
     end
   elsif lang == 'pl'
     if text == 'Save'
@@ -355,6 +438,25 @@ def fix( text, result, lang )
     if result =~ /"%s"/
       result.gsub!(/"/, '\"' )
     end
+  elsif lang == 'sv'
+    if result =~ /FRITID/
+      result.sub!(/FRITID/, 'OCIO')
+    elsif result =~ /LEISURE/
+      result.sub!(/LEISURE/, 'OCIO')
+    end
+    if text == 'Save'
+      result = 'Spela in'
+    elsif text == 'Saving'
+      result = 'inspelning'
+    end
+    if result =~ /\\\s+n/
+      #
+      # Automatic translation returns \ n instead of \n
+      #
+      result.gsub!(/\\\s+n/, '\n')
+    elsif result =~ /[^\\]"/
+      result.gsub!( /"/, '\"' )
+    end
   elsif lang == 'tr'
     if text == 'Save'
       result = "Kaydet"
@@ -418,6 +520,42 @@ def fix( text, result, lang )
       result = spaces + rest
     end
   end
+
+  if text == 'Arabic'    and lang != 'ar' and result !~ / \(.*\)/
+    result += " (عرب)"
+  elsif text == 'English'    and lang != 'en' and result !~ / \(.*\)/
+    result += " (English)"
+  elsif text == "Spanish" and lang != 'es' and result !~ / \(.*\)/
+    result += " (Español)"
+  elsif text == "German"  and lang != 'de' and result !~ / \(.*\)/
+    result += " (Deutsch)"
+  elsif text == "Czech"   and lang != 'cs' and result !~ / \(.*\)/
+    result += " (čeština)"
+  elsif text == "French"  and lang != 'fr' and result !~ / \(.*\)/
+    result += " (français)"
+  elsif text == "Greek" and lang != 'gr' and result !~ / \(.*\)/
+    result += " (Ελληνικά)"
+  elsif text == "Italian" and lang != 'it' and result !~ / \(.*\)/
+    result += " (italiano)"
+  elsif text == "Japanese" and lang != 'ja' and result !~ / \(.*\)/
+    result += " (日本)"
+  elsif text == "Korean"  and lang != 'ko' and result !~ / \(.*\)/
+    result += " (한국어)"
+  elsif text == "Polish"  and lang != 'pl' and result !~ / \(.*\)/
+    result += " (Polski)"
+  elsif text == "Portuguese" and lang != 'pt' and result !~ / \(.*\)/
+    result += " (português)"
+  elsif text == "Romanian"   and lang != 'ro' and result !~ / \(.*\)/
+    result += " (Română)"
+  elsif text == "Russian"    and lang != 'ru' and result !~ / \(.*\)/
+    result += " (русский)"
+  elsif text == "Swedish"    and lang != 'sv' and result !~ / \(.*\)/
+    result += " (svenska)"
+  elsif text == "Turkish"    and lang != 'tr' and result !~ / \(.*\)/
+    result += " (Türk)"
+  elsif text == "Chinese"    and lang != 'zh' and result !~ / \(.*\)/
+    result += " (中国人)"
+  end
   return result
 end
 
@@ -427,11 +565,13 @@ def replace( text )
 end
 
 def translate( text, lang )
+  googlelang = lang
+  googlelang = 'el' if lang == 'gr'
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1
       puts "#@count #{lang} spanish: #{text} menus"
-      r = @translate.translate menus, from: 'es', to: lang
+      r = @translate.translate menus, from: 'es', to: googlelang
       result = []
       r.each { |m| result << m.text }
       if menus[-1] == '%s'
@@ -443,7 +583,7 @@ def translate( text, lang )
     end
   end
   puts "#@count #{lang} spanish: #{text}"
-  r = @translate.translate text, from: 'es', to: lang
+  r = @translate.translate text, from: 'es', to: googlelang
   result = r.text
   result = fix( @msgid, result, lang )
   return replace( result )
@@ -470,8 +610,8 @@ end
 if ARGV.size > 0
   langs = ARGV
 else
-  langs = [ 'cs', 'de', 'fr', 'it', 'ja', 'ko', 'pl', 'pt',
-            'ro', 'ru', 'tr', 'zh' ]
+  langs = [ 'ar', 'cs', 'de', 'en', 'es', 'fr', 'gr', 'it', 'ja', 'ko',
+            'nl', 'pl', 'pt', 'ro', 'ru', 'sv', 'tr', 'zh' ]
 end
 
 

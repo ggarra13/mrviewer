@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Sys_Menu_Bar.H>
 #include <FL/fl_utf8.h>   // for fl_getenv
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
@@ -94,9 +95,6 @@ namespace fs = boost::filesystem;
 #  include <Windows.h>
 #endif
 
-#ifdef _WIN32
-#  define execv _execv
-#endif
 
 
 extern float kCrops[];
@@ -326,10 +324,10 @@ int Preferences::BRAWScale = 3;
 
 int Preferences::switching_images = 0;
 
-int   Preferences::bgcolor;
-int   Preferences::textcolor;
-int   Preferences::selectioncolor;
-int   Preferences::selectiontextcolor;
+int Preferences::bgcolor;
+int Preferences::textcolor;
+int Preferences::selectioncolor;
+int Preferences::selectiontextcolor;
 
 int64_t Preferences::max_memory = 1000000000;
 
@@ -407,6 +405,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     ui.get( "action_toolbar", tmp, 1 );
     uiPrefs->uiPrefsToolBar->value( (bool) tmp );
+
+    ui.get( "macOS_menus", tmp, 0 );
+    uiPrefs->uiPrefsMacOSMenus->value( (bool) tmp );
 
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value( (bool) tmp );
@@ -604,9 +605,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
     const char* language = getenv( "LANGUAGE" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_ALL" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LC_MESSAGES" );
-    if ( !language || strlen(language) < 1 ) language = getenv( "LANG" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_ALL" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LC_MESSAGES" );
+    if ( !language || language[0] == '\0' ) language = getenv( "LANG" );
 
 #ifdef _WIN32
     if ( ! language )
@@ -624,26 +625,28 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( !language ) language = setlocale( LC_MESSAGES, NULL );
 #endif
 
-
+    int uiIndex = 3;
     if ( language && strlen(language) > 1 )
     {
-        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(char*); ++i )
+        for ( unsigned i = 0; i < sizeof( kLanguages ) / sizeof(LanguageTable);
+              ++i )
         {
-            if ( strncmp( language, "en", 2 ) == 0 )
+            if ( strcmp( language, "C" ) == 0 )
             {
                 language_index = 2;
                 break;
             }
-            if ( strncmp( language, kLanguages[i], 2 ) == 0 )
+            if ( strncmp( language, kLanguages[i].code, 2 ) == 0 )
             {
-                language_index = i;
+                uiIndex = i;
+                language_index = kLanguages[i].index;
                 break;
             }
         }
     }
 
-    LOG_INFO( _("Setting language to ") << kLanguages[language_index] );
-    uiPrefs->uiLanguage->value( language_index );
+    LOG_INFO( _("Setting language to ") << kLanguages[uiIndex].code );
+    uiPrefs->uiLanguage->value( uiIndex );
 
     //
     // ui/view/colors
@@ -1105,8 +1108,10 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
     {
-        const char* label = uiPrefs->uiLUT_quality->child(i)->label();
-        if ( strcmp( label, tmpS ) == 0 )
+        Fl_Menu_Item* w = uiPrefs->uiLUT_quality->child(i);
+        if ( w == NULL ) continue;
+        const char* label = w->label();
+        if ( label && strcmp( label, tmpS ) == 0 )
         {
     DBG3;
             uiPrefs->uiLUT_quality->value(i);
@@ -1336,7 +1341,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     {
         if ( hotkeys_file.empty() ) hotkeys_file = _("mrViewer.keys");
         LOG_INFO( _("Loading hotkeys from ") << prefspath()
-                  << _( hotkeys_file.c_str() ) );
+                  << _( hotkeys_file.c_str() ) << ".prefs" );
         keys = new Fl_Preferences( prefspath().c_str(), "filmaura",
                                    tmpS );
     }
@@ -1364,18 +1369,39 @@ void Preferences::run( ViewerUI* main )
 
     check_language( uiPrefs, language_index );
 
+#ifdef OSX
+    if ( uiPrefs->uiPrefsMacOSMenus->value() )
+    {
+        uiMain->uiMenuBar->clear();
+        uiMain->uiMenuGroup->redraw();
+        delete uiMain->uiMenuBar;
+        uiMain->uiMenuBar = new Fl_Sys_Menu_Bar( 0, 0, 0, 25 );
+    }
+    else
+    {
+        Fl_Sys_Menu_Bar* smenubar =
+            dynamic_cast< Fl_Sys_Menu_Bar* >( uiMain->uiMenuBar );
+        if ( smenubar )
+        {
+            smenubar->clear();
+            delete uiMain->uiMenuBar;
+            uiMain->uiMenuBar = new Fl_Menu_Bar( 0, 0,
+                                                 uiMain->uiStatus->x(), 25 );
+            uiMain->uiMenuGroup->add( uiMain->uiMenuBar );
+            uiMain->uiMenuGroup->redraw();
+        }
+    }
+#endif
 
     DBG3;
 
-    main->uiMain->show();
-
-    // Fl_Widget* w = new Fl_Widget( 0, 48, 639, 40, "Eye1" );
-    // main->uiBottomBar->add( w );
-    // w = new Fl_Widget( 0, 88, 639, 40, "Eye2" );
-    // main->uiBottomBar->add( w );
+    //
+    // Already shown on mrViewer.fl
+    //
+    //main->uiMain->show();
 
     DBG3;
-    Fl::flush();
+    Fl::check();
 
     //
     // Windows
@@ -1499,7 +1525,8 @@ void Preferences::run( ViewerUI* main )
         main->uiViewGroup->init_sizes();
     }
 
-    // @BUG: fix to uiRegion scaling badly (too much or too little)
+    // @BUG: WINDOWS NEEDS THIS
+    ///      To fix to uiRegion scaling badly (too much or too little)
     main->uiView->resize_main_window();
     main->uiRegion->size( main->uiRegion->w(), main->uiMain->h() );
 
@@ -2175,7 +2202,7 @@ void Preferences::run( ViewerUI* main )
 
     DBG3;
 
-#if defined(_WIN32) || defined(_WIN64)
+#if 0 // defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
                            main->uiMain->w(), main->uiMain->h()-20 );
 #endif
@@ -2253,11 +2280,7 @@ void Preferences::run( ViewerUI* main )
     LogDisplay::shown = false;
 
     DBG3;
-    if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
-    {
-        DBGM1( "ALWAYS ON TOP" );
-        main->uiMain->always_on_top();
-    }
+    main->uiMain->always_on_top( uiPrefs->uiPrefsAlwaysOnTop->value() );
 
     DBG3;
     if ( debug > 1 )
@@ -2299,7 +2322,7 @@ void Preferences::save()
     // ui options
     //
 
-    ui.set( "language", (int) uiPrefs->uiLanguage->value() );
+    ui.set( "language", language_index );
 
     ui.set( "menubar", (int) uiPrefs->uiPrefsMenuBar->value() );
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
@@ -2307,6 +2330,7 @@ void Preferences::save()
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "action_toolbar", (int) uiPrefs->uiPrefsToolBar->value() );
+    ui.set( "macOS_menus", (int) uiPrefs->uiPrefsMacOSMenus->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );
@@ -2652,6 +2676,8 @@ void Preferences::save()
     }
 
     base.flush();
+
+    LOG_INFO( _("Preferences have been saved to: ") << prefspath() << "mrViewer.prefs." );
 
     check_language( uiPrefs, language_index );
 }

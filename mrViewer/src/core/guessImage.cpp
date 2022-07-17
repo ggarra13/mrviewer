@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -366,7 +366,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         image->is_thumbnail( is_thumbnail );
         image->is_left_eye( left );
 
-
         if ( is_seq )
         {
             image->sequence( root.c_str(), frame, lastFrame, false );
@@ -374,7 +373,18 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         else
         {
             image->filename( name );
+            if ( frame != AV_NOPTS_VALUE )
+            {
+                image->start_frame( frame );
+                image->first_frame( frame );
+                image->end_frame( lastFrame );
+                image->last_frame( lastFrame );
+            }
         }
+    }
+    else
+    {
+        TRACE2( "**** DID NOT LOAD " << image << " " << name );
     }
 
     delete [] test_data;

@@ -5,10 +5,8 @@ set( PROJECT AMF )
 
 set( SOVERSION "0.1.0" )
 
-# VP18 switches to c++14, so let's do that by default
-set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
-# but switch gnu++14 or other extensions off for portability
-set(CMAKE_CXX_EXTENSIONS OFF)
+cmake_policy( SET CMP0068 NEW )
+
 
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
 find_package( TinyXML2 REQUIRED )

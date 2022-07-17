@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -86,6 +86,7 @@ namespace fs = boost::filesystem;
 #include "core/brawImage.h"
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
+#include "core/mrvBlackImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -124,7 +125,6 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 bool       CMedia::_initialize = false;
 
-size_t      CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
 bool        CMedia::_uses_16bits = false;
@@ -389,7 +389,7 @@ _avdiff( 0.0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
 _fg_bg_barrier( NULL ),
-_audio_start( true ),
+_audio_muted( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _pos( 1 ),
@@ -403,6 +403,7 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -414,6 +415,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -436,6 +439,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
@@ -463,7 +467,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
 
     gettimeofday (&_lastFrameTime, 0);
@@ -477,7 +484,6 @@ _audio_engine( NULL )
         _initialize = true;
     }
 
-    //crossdissolve( 5 );
 }
 
 
@@ -507,7 +513,7 @@ _disk_space( 0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
 _fg_bg_barrier( NULL ),
-_audio_start( true ),
+_audio_muted( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _pos( 1 ),
@@ -521,6 +527,7 @@ _pixel_ratio( NULL ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
+_dissolve( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
 _adts( 1 ),
@@ -532,6 +539,8 @@ _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
 _frameEnd( 1 ),
+_frameIn( 1 ),
+_frameOut( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
@@ -550,6 +559,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -576,7 +586,10 @@ _aframe( NULL ),
 _audio_format( other->_audio_format.load() ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -626,7 +639,7 @@ _disk_space( 0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
 _fg_bg_barrier( NULL ),
-_audio_start( true ),
+_audio_muted( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _pos( 1 ),
@@ -640,6 +653,7 @@ _pixel_ratio( NULL ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
+_dissolve( other->_dissolve ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts.load() ),
@@ -652,6 +666,8 @@ _expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
+_frameIn( other->_frameIn ),
+_frameOut( other->_frameOut ),
 _frame_start( other->_frame_start ),
 _frame_end( other->_frame_end ),
 _start_number( other->_start_number ),
@@ -670,6 +686,7 @@ _displayWindow2( NULL ),
 _is_left_eye( other->_is_left_eye ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_audio_max( 0 ),
 _profile( NULL ),
 _playback( kStopped ),
 _sequence( NULL ),
@@ -696,7 +713,10 @@ _aframe( NULL ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
-_audio_engine( NULL )
+_audio_engine( NULL ),
+_video_thread( NULL ),
+_audio_thread( NULL ),
+_decode_thread( NULL )
 {
     gettimeofday (&_lastFrameTime, 0);
     _lastFpsFrameTime = _lastFrameTime;
@@ -738,8 +758,8 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
     }
     else
     {
-//         if ( pkt.dts != AV_NOPTS_VALUE )
-        frame = pts2frame( stream, pkt.dts );
+        if ( pkt.dts != AV_NOPTS_VALUE )
+            frame = pts2frame( stream, pkt.dts );
     }
     return frame;
 }
@@ -815,25 +835,26 @@ void CMedia::update_frame( const int64_t& f )
 }
 
 /**
- */
-void CMedia::wait_for_load_threads()
-{
-}
-
-/**
  * Wait for all threads to finish and exit.  Delete them afterwards.
  *
  */
 void CMedia::wait_for_threads()
 {
+    boost::posix_time::time_duration timeout =
+        boost::posix_time::milliseconds(1000);  // wait 1 sec
     for ( const auto& i : _threads )
     {
-        boost::posix_time::time_duration timeout =
-        boost::posix_time::milliseconds(10000);
-        i->timed_join(timeout);
+        assert( i->joinable() );
+        assert( i->get_id() != boost::this_thread::get_id() );
+        std::string type = "subtitle";
+        if ( i == _video_thread ) type = "video";
+        if ( i == _audio_thread ) type = "audio";
+        if ( i == _decode_thread ) type = "decode";
+        bool ok = i->timed_join( timeout );
+        TRACE2( name() << " Thread " << i << ", type " << type
+                << " returned " << ok );
         delete i;
     }
-
     _threads.clear();
 }
 
@@ -964,10 +985,6 @@ CMedia::~CMedia()
             }
         }
     }
-
-#ifdef LINUX
-    malloc_trim(0);
-#endif
 
     _context = _acontext = NULL;
 }
@@ -1166,11 +1183,14 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
   if ( !_pixel_ratio )
     {
       int64_t num;
-      if ( dynamic_cast< aviImage* >( this ) != NULL ||
+      if ( !_is_sequence ||
+           dynamic_cast< aviImage* >( this ) != NULL ||
            dynamic_cast< brawImage* >( this ) != NULL ||
            dynamic_cast< R3dImage* >( this ) != NULL ||
-           dynamic_cast< clonedImage* >( this ) != NULL||
-           dynamic_cast< ColorBarsImage* >( this ) != NULL )
+           dynamic_cast< clonedImage* >( this ) != NULL ||
+           dynamic_cast< ColorBarsImage* >( this ) != NULL ||
+           dynamic_cast< BlackImage* >( this ) != NULL
+          )
         num = 1;
       else
         num = _frame_end - _frame_start + 1;
@@ -1181,11 +1201,13 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
   if ( f > _frame_end ) f = _frame_end;
   else if ( f < _frame_start ) f = _frame_start;
   int64_t idx = f - _frame_start;
-  if ( dynamic_cast< aviImage* >(this) != NULL ||
-       dynamic_cast< brawImage* >( this ) != NULL ||
-       dynamic_cast< R3dImage* >( this ) != NULL ||
-       dynamic_cast< clonedImage* >( this ) != NULL ||
-       dynamic_cast< ColorBarsImage* >( this ) != NULL )
+  if (  !_is_sequence ||
+        dynamic_cast< aviImage* >(this) != NULL ||
+        dynamic_cast< brawImage* >( this ) != NULL ||
+        dynamic_cast< R3dImage* >( this ) != NULL ||
+        dynamic_cast< clonedImage* >( this ) != NULL ||
+        dynamic_cast< ColorBarsImage* >( this ) != NULL ||
+        dynamic_cast< BlackImage* >( this ) != NULL )
     idx = 0;
   _pixel_ratio[idx] = p;
   refresh();
@@ -1195,11 +1217,14 @@ double CMedia::pixel_ratio() const    {
   int64_t idx = _frame - _frame_start;
   if ( idx < 0 ) idx = 0;
   else if ( idx > _frame_end - _frame_start ) idx = _frame_end - _frame_start;
-  if ( dynamic_cast< const aviImage* >(this) != NULL ||
+  if ( !_is_sequence ||
+       dynamic_cast< const aviImage* >(this) != NULL ||
        dynamic_cast< const brawImage* >( this ) != NULL ||
        dynamic_cast< const R3dImage* >( this ) != NULL ||
        dynamic_cast< const clonedImage* >( this ) != NULL ||
-       dynamic_cast< const ColorBarsImage* >( this ) != NULL )
+       dynamic_cast< const ColorBarsImage* >( this ) != NULL ||
+       dynamic_cast< const BlackImage* >( this ) != NULL
+      )
     idx = 0;
   if ( !_pixel_ratio ) return 1.0f;
   return _pixel_ratio[idx];
@@ -1272,8 +1297,9 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
     int dh = height();
 
     int64_t num = _frame_end - _frame_start + 1;
+    assert( num != 0 );
 
-    if ( !_displayWindow || num == 0 )
+    if ( !_displayWindow )
     {
         if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -1358,8 +1384,9 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
     int dh = height();
 
     int64_t num = _frame_end - _frame_start + 1;
+    assert( num != 0 );
 
-    if ( !_dataWindow || num == 0 )
+    if ( !_dataWindow )
     {
         if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
@@ -1575,6 +1602,7 @@ void CMedia::refresh( const mrv::Recti& r )
 
     // Merge the bounding box of area to update
     _damageRectangle.merge( r );
+    TRACE( name() << " " << _frame << " DamageContents" );
     image_damage( image_damage() | kDamageContents );
 }
 
@@ -1593,16 +1621,18 @@ void CMedia::refresh()
 void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
-    assert0( x != AV_NOPTS_VALUE );
+    assert( x != AV_NOPTS_VALUE );
     _frameStart = x;
+    if ( _frameIn > x ) _frameIn = x;
     // if ( _frame < _frame_start ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
-    assert0( x != AV_NOPTS_VALUE );
+    assert( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
     _frameEnd = x;
+    if ( _frameOut < x ) _frameOut = x;
     // if ( _frame > _frame_end ) _frame = _frameEnd;
 }
 
@@ -1647,8 +1677,8 @@ void CMedia::sequence( const char* fileroot,
 
     _is_sequence = true;
     _dts = _adts = start;
-    _frameStart = _frame_start = start;
-    _frameEnd = _frame_end = end;
+    _frameStart = _frameIn = _frame_start = start;
+    _frameEnd = _frameOut = _frame_end = end;
 
 
     delete [] _sequence;
@@ -1704,7 +1734,7 @@ void CMedia::default_color_corrections()
  */
 void CMedia::filename( const char* n )
 {
-    assert0( n != NULL );
+    assert( n != NULL );
 
     if ( strncmp( n, "file:", 5 ) == 0 )
         n += 5;
@@ -1735,12 +1765,7 @@ void CMedia::filename( const char* n )
 
     if ( fs::exists( file ) )
     {
-        // canonical fails on windows' mountpoints
-#ifdef _WIN32
         std::string path = fs::absolute( file ).string();
-#else
-        std::string path = fs::canonical( file ).string(); // fails on win32 mountpoints
-#endif
         _fileroot = av_strdup( path.c_str() );
     }
     else
@@ -1793,8 +1818,10 @@ const char* const CMedia::filename() const
     CMedia* self = const_cast< CMedia* >(this);
     std::string file = self->sequence_filename( _dts );
     av_free( self->_filename );
-    self->_filename = (char*) av_malloc( 1024 * sizeof(char) );
-    strncpy( self->_filename, file.c_str(), 1023 );
+    size_t len = file.size();
+    self->_filename = (char*) av_malloc( len+1 * sizeof(char) );
+    self->_filename[len] = 0;
+    strncpy( self->_filename, file.c_str(), len );
     return _filename;
 }
 
@@ -2016,6 +2043,8 @@ void CMedia::image_size( size_t w, size_t h )
         else
             _orig_fps = _fps = _play_fps = 24.0f;
     }
+
+    _otio_fps = _fps;  // for image sequences, otio fps is the same as fps
 
 }
 
@@ -2659,26 +2688,26 @@ void CMedia::play(const CMedia::Playback dir,
 {
 
     if ( saving() ) return;
+    if ( dir == _playback && !_threads.empty() ) return;
 
-    assert0( dir != kStopped );
-    // if ( _playback == kStopped && !_threads.empty() )
-    //     return;
+    assert( dir != kStopped );
+
+    TRACE( name() << " frame " << frame() << " dir= " << dir
+            << " playback= " << _playback << " threads=" << _threads.size() );
 
     if ( _right_eye && _owns_right_eye ) _right_eye->play( dir, uiMain, fg );
 
-    if ( dir == _playback && !_threads.empty() ) return;
 
-    TRACE("");
     stop(fg);
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     _playback = dir;
 
     assert( uiMain != NULL );
-    assert( _threads.size() == 0 );
+    assert( _threads.empty() );
 
-    if ( _frame < first_frame() ) _frame = first_frame();
-    if ( _frame > last_frame() )  _frame = last_frame();
+    if ( _frame < in_frame() )  _frame = in_frame();
+    else if ( _frame > out_frame() ) _frame = out_frame();
 
     _audio_frame = _frame.load();
     // _expected = std::numeric_limits< int64_t >::min();
@@ -2695,22 +2724,20 @@ void CMedia::play(const CMedia::Playback dir,
     set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
     sync_clock_to_slave( &audclk, &extclk );
 
-    _audio_buf_used = 0;
 
-
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // clear all packets
     clear_packets();
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
+
     // This seek is needed to sync audio playback and flush buffers
     if ( dir == kForwards ) _seek_req = true;
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     seek_to_position( _frame );
 
-    TRACE("");
-
+    TRACE( name() << " frame " << frame() );
 
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2774,7 +2801,10 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::video_thread,
                              video_data ) );
+            _video_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame()
+                    << " added video thread " << t );
         }
 
         if ( valid_a )
@@ -2784,16 +2814,22 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::audio_thread,
                              audio_data ) );
+            _audio_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame()
+                    << " added audio thread " << t );
         }
 
         if ( valid_s )
         {
             // Subtitle playback thread
             subtitle_data = new PlaybackData( *data );
-            _threads.push_back( new boost::thread(
-                                    boost::bind( mrv::subtitle_thread,
-                                                 subtitle_data ) ) );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::subtitle_thread,
+                             subtitle_data ) );
+            _threads.push_back( t );
+            TRACE2( name() << " frame " << frame()
+                    << " added subtitle thread " << t );
         }
 
 
@@ -2803,12 +2839,16 @@ void CMedia::play(const CMedia::Playback dir,
             boost::thread* t = new boost::thread(
                 boost::bind( mrv::decode_thread,
                              data ) );
+            _decode_thread = t;
             _threads.push_back( t );
+            TRACE2( name() << " frame " << frame()
+                    << " added decode thread " << t );
         }
 
 
-        assert0( (int)_threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) +
-                                           1 * valid_s ) );
+        assert( (int)_threads.size() <= ( 1 + 2 * ( valid_a ||
+                                                    valid_v ) +
+                                          1 * valid_s ) );
     }
     catch( boost::exception& e )
     {
@@ -2820,16 +2860,27 @@ void CMedia::play(const CMedia::Playback dir,
 
 
 /// VCR stop sequence
-void CMedia::stop(const bool bg)
+void CMedia::notify_barriers()
+{
+    if ( _loop_barrier )   _loop_barrier->notify_all();
+    if ( _stereo_barrier ) _stereo_barrier->notify_all();
+    if ( _fg_bg_barrier )  _fg_bg_barrier->notify_all();
+}
+
+/// VCR stop sequence
+void CMedia::stop( const bool fg )
 {
 
 
     if ( _playback == kStopped && _threads.empty() ) return;
 
-    if ( _right_eye && _owns_right_eye ) _right_eye->stop();
+    if ( _right_eye && _owns_right_eye ) _right_eye->stop( fg );
 
+    TRACE( name() << " stop at frame " << frame()
+            << " playback = " << _playback
+            << " threads empty? " << _threads.empty() );
 
-    TRACE("");
+    assert( ! _threads.empty() );
 
     _playback = kStopped;
 
@@ -2839,12 +2890,10 @@ void CMedia::stop(const bool bg)
 
     //
     // Notify loop barrier, to exit any wait on a loop
-    //w
+    //
 
-    if ( _loop_barrier )  _loop_barrier->notify_all();
 
-    if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    notify_barriers();
 
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
@@ -2854,35 +2903,30 @@ void CMedia::stop(const bool bg)
     _video_packets.cond().notify_all();
     _subtitle_packets.cond().notify_all();
 
+    TRACE( name() << " frame " << frame() );
 
     // Wait for all threads to exit
     wait_for_threads();
 
+    TRACE( name() << " frame " << frame() );
 
     // Clear barrier
 
-    delete _loop_barrier;
-    _loop_barrier = NULL;
-    delete _stereo_barrier;
-    _stereo_barrier = NULL;
-
-#if 0
-    if ( bg ) {
-    TRACE("");
+    if ( !fg ) {
+        TRACE( name() << " frame " << frame() );
         delete _fg_bg_barrier;
         _fg_bg_barrier = NULL;
     }
-#endif
 
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // close_audio();
 
-
-    TRACE("");
+    TRACE( name() << " frame " << frame() );
     // Clear any audio/video/subtitle packets
     clear_packets();
 
-    TRACE("");
+
+    TRACE( name() << " frame " << frame() );
     // Queue thumbnail for update
     image_damage( image_damage() | kDamageThumbnail | kDamageData );
 
@@ -2899,6 +2943,42 @@ std::string CMedia::name() const
     return file.leaf().string();
 }
 
+std::string CMedia::name_prefix() const
+{
+    std::string fullname = name();
+
+    std::size_t pos = fullname.find( '%' );
+    if ( pos == std::string::npos ) return fullname;
+
+    return fullname.substr( 0, pos );
+}
+
+std::string CMedia::name_suffix() const
+{
+    std::string fullname = name();
+
+    std::size_t pos = fullname.rfind( '.' );
+    if ( pos == std::string::npos ) return "";
+
+    return fullname.substr( pos, fullname.size() );
+}
+
+int         CMedia::frame_padding() const
+{
+    int padding = 1;
+
+    std::string fullname = name();
+
+    std::size_t pos = fullname.find( '%' );
+    if ( pos == std::string::npos ) return padding;
+
+    std::size_t pos2 = fullname.find( '.', pos+1 );
+    std::string number = fullname.substr( pos+1, pos2-pos-1 );
+    if ( number == "d" ) return 1;
+
+    sscanf( number.c_str(), "%dd", &padding );
+    return padding;
+}
 
 /**
  *
@@ -2916,7 +2996,7 @@ std::string CMedia::directory() const
 #ifdef _WIN32
         path = fs::absolute( file ).string();
 #else
-        path = fs::canonical( file ).string(); // fails on windows mountpoints
+        path = file.string(); // fails on windows mountpoints
 #endif
     else
         path = file.string();
@@ -2966,8 +3046,8 @@ bool CMedia::frame( const int64_t f )
                           (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
 
-    if ( f < _frameStart )     _dts = _frameStart;
-    else if ( f > _frameEnd )  _dts = _frameEnd;
+    if ( f < _frameIn ) _dts = _frameIn;
+    else if ( f > _frameOut )  _dts = _frameOut;
     else                       _dts = f;
 
     AVPacket* pkt;
@@ -3019,21 +3099,23 @@ bool CMedia::frame( const int64_t f )
 void CMedia::seek( const int64_t f )
 {
 //#define DEBUG_SEEK
+    TRACE2( name() << " f= " << f << " frame= " << _frame );
 
+    notify_barriers();
 
     _seek_frame = f;
     _seek_req   = true;
 #ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
-              << stopped() << " _seek_frame " << _seek_frame << std::endl;
+    TRACE( name() << " frame " << f << " first "
+           << _frameIn << " last " << _frameOut );
 #endif
 
 
     if ( _right_eye && _owns_right_eye )
     {
 #ifdef DEBUG_SEEK
-        std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
-                  << stopped() << std::endl;
+        TRACE( name() << " RIGHT EYE frame " << f << " first "
+               << _frameIn << " last " << _frameOut );
 #endif
         _right_eye->_seek_frame = f;
         _right_eye->_seek_req = true;
@@ -3042,7 +3124,7 @@ void CMedia::seek( const int64_t f )
     if ( stopped() || saving() )
     {
 #ifdef DEBUG_SEEK
-        std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+        TRACE( name() << " call do_seek to " << f );
 #endif
         do_seek();
 
@@ -3050,8 +3132,8 @@ void CMedia::seek( const int64_t f )
     }
 
 #ifdef DEBUG_SEEK
-    std::cerr << "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
-              << _frame << " _expected: " << _expected << std::endl;
+    TRACE( "------- SEEK DONE " << f << " _dts: " << _dts << " _frame: "
+           << _frame << " _expected: " << _expected );
 #endif
 }
 
@@ -3059,8 +3141,8 @@ void CMedia::seek( const int64_t f )
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
                                const mrv::image_type_ptr& pic )
 {
-    assert0( pic != NULL );
-    assert0( pic.use_count() >= 1 );
+    assert( pic != NULL );
+    assert( pic.use_count() >= 1 );
 
 
 
@@ -3138,7 +3220,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
             seq[idx] = pic;
             // Use count should be 2, but it fails on stereo images when loaded
             // twice.
-            assert0( pic.use_count() >= 1 );
+            assert( pic.use_count() >= 1 );
         }
     }
 
@@ -3659,7 +3741,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
 }
 
 
-// Convert an FFMPEG pts into a frame number
+// Convert a frame into a FFMPEG pts number
 int64_t CMedia::frame2pts( const AVStream* stream,
                            const int64_t frame ) const
 {
@@ -3681,8 +3763,6 @@ int64_t CMedia::pts2frame( const AVStream* stream,
                            const int64_t dts ) const
 {
 
-
-    //assert( dts != AV_NOPTS_VALUE );
     if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
     long double p = (long double) dts;
@@ -3913,9 +3993,6 @@ void CMedia::limit_video_store( const int64_t f )
         }
     }
 
-#ifdef LINUX
-    malloc_trim(0);
-#endif
 
 }
 
@@ -4324,7 +4401,7 @@ bool CMedia::find_image( const int64_t frame )
                 }
                 refresh();
                 // if ( limit ) limit_video_store( f );
-                // image_damage( image_damage() | kDamageData | kDamage3DData );
+                image_damage( image_damage() | kDamageData | kDamage3DData );
                 return true;
             }
         }
@@ -4587,10 +4664,8 @@ void CMedia::debug_video_packets(const int64_t frame,
                 continue;
             }
 
-            assert( (*iter).dts != MRV_NOPTS_VALUE );
-
             int64_t f;
-            if ( (*iter).pts != MRV_NOPTS_VALUE )
+            if ( (*iter).pts != AV_NOPTS_VALUE )
                 f = (*iter).pts;
             else
             {
@@ -4631,7 +4706,7 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f - _frame_offset << " ";
+                std::cerr << f << " ";
             }
         }
         std::cerr << std::endl << std::endl;

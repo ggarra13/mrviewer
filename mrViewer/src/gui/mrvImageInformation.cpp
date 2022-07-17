@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo GarramuÃ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -978,19 +978,24 @@ menu( new Fl_Menu_Button( 0, 0, 0, 0, _("Attributes Menu") ) )
     // CollapsibleGrop recalcs, we don't care its xyh sizes
     m_image = new mrv::CollapsibleGroup( 0, r.y()+70, r.w()-sw,
                                          800, _("Main")  );
+    m_image->end();
 
     m_video = new mrv::CollapsibleGroup( r.x(), r.y()+870,
                                          r.w()-sw, 400, _("Video") );
+    m_video->end();
 
     m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1270,
                                          r.w()-sw, 400, _("Audio") );
+    m_audio->end();
 
 
     m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1670,
                                             r.w()-sw, 400, _("Subtitle") );
+    m_subtitle->end();
 
     m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2070,
                                                r.w()-sw, 400, _("Metadata")  );
+    m_attributes->end();
 
     m_all->end();
 
@@ -3723,32 +3728,14 @@ void ImageInformation::refresh()
 
     DBG2;
 
-#define USE_ENDS
-#ifndef USE_ENDS
-    m_image->layout();
-    m_video->layout();
-    m_audio->layout();
-    m_subtitle->layout();
-    m_attributes->layout();
-
-#else
     m_image->end();
+    m_attributes->end();
     m_video->end();
     m_audio->end();
     m_subtitle->end();
-    m_attributes->end();
 
     m_all->end();
     m_all->show();
-#endif
-
-    DBG2;
-
-#ifdef USE_ENDS
-    DBG2;
-    end();
-#endif
-
 
 
 
@@ -3956,7 +3943,7 @@ void ImageInformation::add_icc( const char* name,
         m_curr->add( sg );
     }
 
-    m_curr->layout();
+    m_curr->end();
 }
 
 void ImageInformation::add_button( const char* name,
@@ -3999,7 +3986,7 @@ void ImageInformation::add_button( const char* name,
     }
     m_curr->add( g );
 
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4072,7 +4059,7 @@ void ImageInformation::add_scale( const char* name,
     }
     m_curr->add( g );
 
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4126,7 +4113,7 @@ void ImageInformation::add_ctl( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4179,7 +4166,7 @@ void ImageInformation::add_ocio_ics( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4240,7 +4227,7 @@ void ImageInformation::add_ctl_idt( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4296,7 +4283,7 @@ void ImageInformation::add_ctl_inverse_ot( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4352,7 +4339,7 @@ void ImageInformation::add_ctl_inverse_odt( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4408,7 +4395,7 @@ void ImageInformation::add_ctl_inverse_rrt( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 void ImageInformation::add_ctl_lmt( const char* name,
@@ -4491,7 +4478,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
 
         m_curr->add( sg );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4554,7 +4541,7 @@ void ImageInformation::add_text( const char* name,
         }
         m_curr->add( widget );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4659,7 +4646,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
             p->deactivate();
         }
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 void ImageInformation::add_enum( const char* name,
@@ -4719,7 +4706,7 @@ void ImageInformation::add_enum( const char* name,
         }
         m_curr->add( widget );
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -4849,7 +4836,7 @@ void ImageInformation::add_int( const char* name,
         m_curr->add( p );
     }
 
-    m_curr->layout();
+    m_curr->end();
 }
 
 
@@ -5036,7 +5023,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     m_curr->add( g2 );
-    m_curr->layout();
+    m_curr->end();
 }
 
 void ImageInformation::add_float( const char* name,
@@ -5133,7 +5120,7 @@ void ImageInformation::add_float( const char* name,
             p->deactivate();
         }
     }
-    m_curr->layout();
+    m_curr->end();
 }
 
 void ImageInformation::add_bool( const char* name,
@@ -5183,7 +5170,7 @@ void ImageInformation::add_bool( const char* name,
         }
         m_curr->add( widget );
     }
-    m_curr->layout();
+    m_curr->end();
 
 }
 

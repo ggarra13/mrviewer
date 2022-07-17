@@ -91,13 +91,13 @@ telnet localhost 4333</div>
   </tr>
   <tr>
     <td>
-      Image "imagename" first_frame last_frame
+      CurrentImage index "imgname" first_frame last_frame
     </td>
     <td>
-      Image "/media/Datos/movies/avengers.mp4" 1 60
+      CurrentImage 2 "/media/images/test.%02d.pic" 1 30
     </td>
     <td>
-      Load an Image/movie into the viewer with the frame range set and at the end of the current reel.
+      Changes the image on the current reel based on image name and start and end frames.  If the image does not exist, it will load it.
     </td>
   </tr>
   <tr>
@@ -640,17 +640,6 @@ telnet localhost 4333</div>
   </tr>
   <tr>
     <td>
-      CurrentImage "imgname" first_frame last_frame
-    </td>
-    <td>
-      CurrentImage "/media/images/test.%02d.pic" 1 30
-    </td>
-    <td>
-      Changes the image on the current reel based on image name and start and end frames.
-    </td>
-  </tr>
-  <tr>
-    <td>
       ExchangeImage old_index new_index
     </td>
     <td>
@@ -756,7 +745,7 @@ telnet localhost 4333</div>
       StereoInput 0
     </td>
     <td>
-      Sets stereo input. ( 0: no input, 1 = separate layers/images, 2 = top/bottom image, 4 = left/right image ) 
+      Sets stereo input. ( 0: no input, 1 = separate layers/images, 2 = top/bottom image, 4 = left/right image )
     </td>
   </tr>
   <tr>

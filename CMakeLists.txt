@@ -2,6 +2,9 @@
 # This cmake file must be run under cmake 3.1 or later
 #
 cmake_minimum_required( VERSION 3.1 )
+project( mrViewer )
+
+cmake_policy( SET CMP0068 NEW )
 
 IF(WIN32)
     SET( TEST_BUNDLE 0 )
@@ -50,8 +53,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option( USE_PORTAUDIO "Use PortAudio interface" OFF )
 
 SET( VersionMajor 6 )
-SET( VersionMinor 1 )
-SET( VersionPatch 2 )
+SET( VersionMinor 2 )
+SET( VersionPatch 1 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 SET( VersionDate "" )

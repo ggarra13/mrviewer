@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -246,7 +246,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Otherwise we have successfully established a connection.
    else
    {
-      LOG_CONN( "Connected to " << endpoint_iter->endpoint() );
+       LOG_CONN( _("Connected to ") << endpoint_iter->endpoint() );
 
       connected = true;
 
@@ -272,6 +272,8 @@ void client::deliver( const std::string& msg )
 {
 
     SCOPED_LOCK( mtx );
+
+    LOG_INFO( "Client Deliver: " << msg );
 
    output_queue_.push_back(msg + "\n");
 
@@ -412,7 +414,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-      LOG_CONN( "Error on send: " << ec.message() );
+       LOG_CONN( _("Error on send: ") << ec.message() );
 
       stop();
    }
@@ -479,6 +481,9 @@ void client_thread( const ServerData* s )
 {
    try
    {
+       s->ui->uiConnection->uiClientServer->value( s->host.c_str() );
+       s->ui->uiConnection->uiClientPort->value( s->port );
+
        boost::asio::io_service io_service;
        tcp::resolver r(io_service);
        tcp::resolver::query query( s->host, s->group,

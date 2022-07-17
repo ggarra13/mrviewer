@@ -1,4 +1,164 @@
+v6.2.1  - Fixed stepping with cursor keys leading to missing frames.
+	  (Regression from v6.2.0).
+	- Fixed adding new audio to a movie or sequence (Regression from
+	  v6.1.7).
+	- Removed libharfbuzz from the distribution as it was conflicting
+	  with newer OSes (like Fedora 35).
+
+v6.2.0  - Updated ffmpeg libraries to handle HAP, HAP with alpha and
+	  HAP Q movies.
+	- Fixed stopping some movies, with large read ahead caches,
+	  when near a loop sometimes resetting to the beginning of the movie.
+	  Now they will always stop at the current frame.
+	- Improved performance of reverse playback.  Fixed reverse playback to
+	  work on all movies.
+
+v6.1.9  - Improved reverse playback to not use so much memory and be smoother
+	  on most movie files.  Audio sync is not perfect, thou.
+	- Fixed a hang up when logging errors or warning during playback in
+	  other threads.
+	- Fixed a crashing bug in exiting the program when a server
+	  connection was open.
+
+v6.1.8  - Fixed a regression from v6.0.1 that resulted in some audios in movies
+	  not being played.
+	- Fixed audio stuttering on dissolves that would happen sometimes.
+	- Improved performance of the dissolve start up.
+	- Fixed a regression from v6.1.7 that resulted in movie files with
+	  audio looping without audio when not in edl mode.
+
+v6.1.7  - Made fit image take into account masking.
+	- Fixed message about saving preferences in .filmaura/.filmaura instead
+	  of just .filmaura.
+	- Added Always on Top to macOS.  Previously this preference
+	  setting did nothing.
+	- Made Always on Top turn on and off when the preferences changes on
+	  Windows, Linux and macOS.
+	- Improved draw and erase tool to draw lines joined with less gaps or
+	  weird triangles.
+	- Fixed edge of arrow tool.
+	- Improved look of rectangle tool.
+	- Fixed green bottom edge 1 pixel line when in presentation mode,
+	  bilinear filtering and texture was yuv.
+	- Fixed check buttons colors when in base scheme and color theme was
+	  black.
+	- Added a Preference option in User Interface section to select
+	  whether the menus on MacOS appear on the system toolbar or on the
+	  mrViewer toolbar.  The default is to use the mrViewer toolbar.
+	- Fixed a problem with libglib-2.so linking a newer libgnutls.so.30 on
+	  Red Hat 8 and derivatives systems.
+	- Fixed OTIO clip time lengths.
+	- Added support for OTIO transitions (dissolves) in the timeline.
+	  Note, however, that we do not yet support transitioning to different
+	  resolutions properly.
+	  We also do not support clips with different frame rates in
+	  transitions.
+	  Also, the thumbnails in the timeline will not show the transitions.
+	  Finally, we still do not support saving otio files with transitions.
+
+v6.1.6  - Bug fixed text tool to not clip/jump text when the text goes out of
+	  frame to the left or to the bottom of the screen.
+	- Made window auto resizing take into account the window decorations.
+	  The code is also much more cleaner.
+	- Fixed font popup window widget sizes for translations
+	  (Spanish, German, etc).
+	- Turned off visible focus on buttons and their navigation with
+	  Shift + Arrow keys, as they were conflicting with navigating
+	  annotations ( and other hotkeys ).
+	- Made Next Annotation and Previous Annotation (Shift + Right arrow key
+	  and Shift + Left key respectively by default), not loop through the
+	  timeline or stop at the beginning/end of the movie.
+	- Made ESC (Escape) key cancel text composing when text tool is active,
+	  instead of exiting the program.
+	- Added hotkey selection for quit program.
+	- Made text composing and opengl text drawing match more closely, even
+	  with different fonts from default.  Note that there still some
+	  offset issues and scaling issues when zoom factor is fractional, as
+	  text size cannot be floating point.
+	- Fixed display of LUT and 1:1 buttons which had gotten square and
+	  unreadable.
+	- Added shortcut hotkey display to Windows menu.
+	- Added hotkey selection for colors control window.
+	- Fixed menus in menubar not updating the hotkey shortcuts when changed.
+	- Fixed menus on macOS (gtk+, plastic and gleam) showing white dots on
+	  the corners when set to the Black (or other dark) color theme.
+	- Fixed matrix math of color controls window.  Contrast now works fine.
+	- Made color area information window take into account the values in
+	  the color controls window.
+	- Made pixel display line (values and color square) take into account
+	  the values in the color controls window.
+	- Made Histogram and Vectorscope take the values in the Color Controls
+	  window.
+
+v6.1.5  - Bug fixed fit image when action dockbar is active on Linux and macOS.
+	  Windows was fine.
+	- Added 2.00 Univisium aspect ratio.
+	- Fixed Undo and Redo buttons activation in the action dockbar.
+	- Draw cursor now disappears when not in the view window.
+	- Fixed a minor bug with buttons turning off when spacebar was pressed.
+	- Made Hotkey window be more readable.
+	- Made action tools remain inactive is no movie or image is loaded.
+	- Improved the text tool.  When selected, the usual font and font size
+	  is presented.  After that is chosen, clicking anywhere in the image
+	  will open a balloon box where the text can be typed in (or pasted).
+	  Clicking or dragging anywhere outside the balloon box will move the
+	  text there.
+	  Then, clicking on the green X or changing the action tool will
+	  paste and stop editing the text.
+	  If no text is typed in when clicking the (red) X, the text input is
+	  canceled.
+
+v6.1.4  - Bug fixed a crash when selecting an area over the network and the
+	  area color information window was open.
+	- Bug fixed a crash when exiting the application due to server thread
+	  still being active.
+	- Fixed fit image on macOS and Linux when action dockbar was on.
+	- Fixed window positioning on startup on macOS when OS dockbar was
+	  to the left.
+	- Added rotation +-90 degrees to commands sent across the network.
+	- Added fit image to the commands sent across the network.
+	- Fit image does no longer pass the zoom factor around the network.
+	  Instead the zoom factor is recalculated on each client machine.
+	  This allows fit image to work properly on networks where the users
+	  have different monitors of different resolutions.
+	- Added Dutch machine translation.
+	- Made selection of machine and port on a network connection on the
+	  command-line be reflected on the Connections window.
+	- Bug fixed network connections sometimes deactivating themselves.
+	- Added drawing a rectangle shape to the action window.
+	- Added copying the reel, shot, frame and x and y coords to the
+	  action window (SHIFT+CTRL+C by default).
+	- Bug fixed crash when changing the size of the cursor when drawing.
+	- Bug fixed synchronism between action window and attrs subwindow.
+	- Bug fixed mask item being offset by one when selected from the
+	  menu bar.
+	- Fixed mask to crop in width instead of just in height.
+	- Fixed film safe areas to show inside the image instead of outside.
+
+v6.1.3  - Added Swedish machine translation.
+	- Added Greek   machine translation.
+	- Added Arabic  machine translation.
+	- Fixed color theme displaying both Default and the translation of it.
+	- Added the name of the language in its native form along the language
+	  in the current language.  This helps setting back the language when
+	  you chose a language you don't read.
+	- Added Hue, Brightness, Contrast and Saturation (Color Controls) to
+	  the list of commands sent on network connections.
+	- Fixed decimal point setting on network connections, which would
+	  sometimes reset itself.
+	- Fixed image information window redraws on macOS.
+
 v6.1.2  - Fixed sessions saving and loading.
+	- Made closing of the Preferences window with the window close button
+	  revert the preferences to their last saved state.
+	- Exiting and restarting the application with a new language on Windows
+	  would not work previously.  It would not get saved in the
+	  preferences.  This has now been fixed, albeit exiting and restarting
+	  mrViewer is slower.
+	- Russian, Chinese, Japanese and Korean languages would not work
+	  properly and displayed an English translation.  This has been fixed.
+	- Russian, Chinese, Japanese and Korean languages would display
+	  garbled characters.  This has also been fixed.
 
 v6.1.1  - Allowed changing languages from the Preferences without the need to
 	  set environment variables.  Just go to
@@ -16,7 +176,8 @@ V6.1.0  - Fixed masking (crop) on all locales and platforms including macOS.
 	  all languages.
 	- Fixed crash on Debian due to freelocale for the second time.
 	  Previously, it was not correctly fixed.
-	- Fixed a red flashing of the 3d view window on macOS.
+	- Fixed a red flashing of the 3d view window on macOS.  Thanks to the
+	  fltk guys (particularly Albrecht and Manolo).
 
 v6.0.9  - Added Portuguese translation.
 	- Removed args of avi with subtitles in thumbnail display.

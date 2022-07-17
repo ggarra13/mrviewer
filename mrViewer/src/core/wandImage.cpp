@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -130,8 +130,6 @@ bool wandImage::test(const char* file)
              ext == "otio" )
             return false;
     }
-
-    LOG_INFO( "wandImage" );
 
     MagickWandGenesis();
     MagickBooleanType status = MagickFalse;
@@ -450,7 +448,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                     double g = atof( value );
                     if ( g > 0.0f && g < 250.0f )
                     {
-                        _orig_fps = _fps = _play_fps = g;
+                        _otio_fps = _orig_fps = _fps = _play_fps = g;
                     }
                 }
                 else if ( key == "dpx:television.frame_rate" )
@@ -458,7 +456,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                     double g = atof( value );
                     if ( g > 0.0f && g < 250.0f )
                     {
-                        _orig_fps = _fps = _play_fps = g;
+                        _otio_fps = _orig_fps = _fps = _play_fps = g;
                     }
                 }
                 else if ( key == "dpx:television.gamma" )

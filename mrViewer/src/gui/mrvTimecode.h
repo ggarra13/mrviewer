@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ protected:
     Display      _display;
     double       _fps;
     int64_t      _frame, _tc_frame, _minimum, _maximum, _step;
-    char         _buf[16];
+    char         _buf[32];
 };
 
 } // namespace mrv

@@ -1,6 +1,17 @@
 #include "core/CMedia.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
+
+size_t find_index( const mrv::Reel& r, const mrv::media& m )
+{
+    for ( size_t i = 0; i < r->images.size(); ++i )
+    {
+        if ( r->images[i] == m ) return i;
+    }
+    return 0;
+}
+
 
 void next_shape_frame( mrv::ImageView* view )
 {
@@ -9,15 +20,17 @@ void next_shape_frame( mrv::ImageView* view )
     const mrv::media& m = view->foreground();
     if ( !m) return;
 
-    mrv::media fg;
+    mrv::ImageBrowser* b = view->browser();
+    const mrv::Reel& reel = b->current_reel();
 
-    do
+
+    mrv::media fg = m;
+
+    while ( 1 )
     {
-        fg = view->foreground();
-        if ( !fg) return;
+        size_t idx = find_index( reel, fg );
 
         CMedia* img = fg->image();
-        if (!img) return;
 
         int64_t current_frame = view->frame();
         int64_t max_frame = std::numeric_limits<int64_t>::max();
@@ -40,15 +53,10 @@ void next_shape_frame( mrv::ImageView* view )
             break;
         }
         else {
-            max_frame = img->position() + 1 +
-                        img->last_frame() - img->first_frame();
-            if ( max_frame > view->timeline()->maximum() )
-                max_frame = view->timeline()->minimum();
-            view->seek( max_frame );
-            fg = view->foreground();
+            if ( idx >= reel->images.size()-1 ) return;
+            fg = reel->images[++idx];
         }
     }
-    while ( fg != m );
 }
 
 void previous_shape_frame( mrv::ImageView* view )
@@ -59,15 +67,16 @@ void previous_shape_frame( mrv::ImageView* view )
     const mrv::media& m = view->foreground();
     if ( !m) return;
 
-    mrv::media fg;
+    mrv::ImageBrowser* b = view->browser();
+    const mrv::Reel& reel = b->current_reel();
 
-    do
+    mrv::media fg = m;
+
+    while ( 1 )
     {
-        fg = view->foreground();
-        if ( !fg) return;
+        size_t idx = find_index( reel, fg );
 
         CMedia* img = fg->image();
-        if (!img) return;
 
         int64_t current_frame = view->frame();
         int64_t min_frame = std::numeric_limits<int64_t>::min();
@@ -90,11 +99,8 @@ void previous_shape_frame( mrv::ImageView* view )
             break;
         }
         else {
-            min_frame = img->position() - 1; // - img->first_frame();
-            if ( min_frame < view->timeline()->minimum() )
-                min_frame = view->timeline()->maximum();
-            view->seek( min_frame );
-            fg = view->foreground();
+            if ( idx == 0 ) return;
+            fg = reel->images[--idx];
         }
     } while ( fg != m );
 }

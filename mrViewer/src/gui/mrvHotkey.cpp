@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -55,6 +55,8 @@ Hotkey kCTLScript( true, false, false, false, 't' );
 Hotkey kMonitorCTLScript( true, false, false, false, 'm' );
 Hotkey kMonitorIccProfile( true, false, false, false, 'n' );
 Hotkey kSaveSession( false, true, false, false, 's' );
+
+Hotkey kQuitProgram( false, false, false, false, FL_Escape );
 
 Hotkey kZoomMin( false, false, false, false, '0' );
 Hotkey kZoomMax( false, false, false, false, '9' );
@@ -128,7 +130,8 @@ Hotkey kEraseTemporaryMode( false, false, false, false, 0 );
 Hotkey kEraseMode( false, false, false, true, 'e' );
 Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
-Hotkey kArrowMode;
+Hotkey kArrowMode( false, false, false, true, 'a' );
+Hotkey kRectangleMode( false, false, false, true, 'r' );;
 Hotkey kCircleMode;
 Hotkey kRotateCanvasMode( false, false, false, false, 'r' );
 Hotkey kTextMode( false, false, false, true, 't' );
@@ -186,6 +189,7 @@ Hotkey kOCIOView( false, false, false, false, 0 );
 Hotkey kToggleReel( false, false, false, false, FL_F + 4 );
 Hotkey kToggleMediaInfo( false, false, false, false, FL_F + 5 );
 Hotkey kToggleColorInfo( false, false, false, false, FL_F + 6 );
+Hotkey kToggleColorControls( false, false, false, false, 0 );
 Hotkey kToggleAction( false, false, false, false, FL_F + 7 );
 Hotkey kToggleStereoOptions( false, false, false, false, FL_F + 8 );
 Hotkey kTogglePreferences( false, false, false, false, FL_F + 9 );
@@ -313,12 +317,13 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Save Image"), kSaveImage),
     HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
     HotkeyEntry( _("Save Sequence"), kSaveSequence),
+    HotkeyEntry( _("Save Session"), kSaveSession, true),
+    HotkeyEntry( _("Quit Program"), kQuitProgram, true),
     HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
     HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
     HotkeyEntry( _("Image CTL script"), kCTLScript ),
     HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
     HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
-    HotkeyEntry( _("Save Session"), kSaveSession, true),
 //HotkeyEntry( _("Zoom Minimum"), kZoomMin),
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
     HotkeyEntry( _("Center Image"), kCenterImage ),
@@ -382,7 +387,8 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Draw Temporary Mode"), kDrawTemporaryMode ),
     HotkeyEntry( _("Erase Mode"), kEraseMode ),
     HotkeyEntry( _("Erase Temporary Mode"), kEraseTemporaryMode ),
-    HotkeyEntry( _("Arrow Mode"), kArrowMode ),
+    HotkeyEntry( _("Arrow Mode"), kArrowMode, true ),
+    HotkeyEntry( _("Rectangle Mode"), kRectangleMode, true ),
     HotkeyEntry( _("Circle Mode"), kCircleMode ),
     HotkeyEntry( _("Rotate Canvas Mode"), kRotateCanvasMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
@@ -405,25 +411,26 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
     HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
     HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
+    HotkeyEntry( _("Toggle Color Controls Window"), kToggleColorControls),
     HotkeyEntry( _("Toggle Action Window"), kToggleAction),
     HotkeyEntry( _("Toggle 3D Stereo Options Window"), kToggleStereoOptions),
     HotkeyEntry( _("Toggle 3D View Window"), kToggle3dView),
-    HotkeyEntry( _("Toggle About Window"), kToggleAbout),
     HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
     HotkeyEntry( _("Toggle Histogram Window"), kToggleHistogram),
-    HotkeyEntry( _("Toggle Hud"), kHudToggle),
-    HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
-    HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
+    HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
+    HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
     HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
-    HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
+    HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
+    HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
+    HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
     HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
+    HotkeyEntry( _("Toggle About Window"), kToggleAbout),
+    HotkeyEntry( _("Toggle Hud"), kHudToggle),
+    HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
     HotkeyEntry( _("Select Single Image"), kSelectSingleImage ),
     HotkeyEntry( _("Select Multi Image"), kSelectMultiImage ),
     HotkeyEntry( _("Toggle LUT"), kToggleLut),
     HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
-    HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
-    HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
-    HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
     HotkeyEntry( _("Rotate Image +10 Degrees"), kRotatePlus10),
     HotkeyEntry( _("Rotate Image -10 Degrees"), kRotateMinus10),
     HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),

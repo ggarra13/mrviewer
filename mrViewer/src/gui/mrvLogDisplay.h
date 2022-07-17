@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@
 #define mrvLogDisplay_h
 
 #include <atomic>
-#include <boost/thread/recursive_mutex.hpp>
 
 #include <FL/Fl_Text_Display.H>
 
 namespace mrv {
+
 
 class LogDisplay : public Fl_Text_Display
 {
@@ -45,7 +45,6 @@ public:
         kAlways,
     };
 
-    typedef boost::recursive_mutex Mutex;
 
 public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
@@ -58,20 +57,10 @@ public:
     void warning( const char* x );
     void error( const char* x );
 
-    inline unsigned lines() const {
-        return _lines;
-    }
-
-protected:
-    std::atomic<unsigned int> _lines;
-
 public:
-    Fl_Text_Buffer* buffer_;
-    Fl_Text_Buffer* stylebuffer_;
-    static Mutex mtx;
     static ShowPreferences prefs;
-    static std::atomic<bool> shown;
-    static std::atomic<bool> show;  // whether to show this in fltk thread
+    static bool shown;
+    static bool show;  // whether to show this in fltk thread
 };
 
 }

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include <iostream>
 using namespace std;
 
+#include "core/mrvTransition.h"
 #include "mrvMediaList.h"
 
 namespace mrv
@@ -59,6 +60,10 @@ struct Reel_t
     // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
     int64_t global_to_local( const int64_t frame ) const;
 
+    // Given a local frame to an image, return the global frame in the timeline
+    int64_t local_to_global( const int64_t lframe,
+                             const CMedia* const img ) const;
+
     int64_t offset( const CMedia* const img ) const;
     inline int64_t location( const CMedia* const img ) const
     {
@@ -71,6 +76,7 @@ struct Reel_t
     std::atomic<bool> edl;
     std::string       name;
     MediaList         images;
+    TransitionList    transitions;
 };
 
 typedef boost::shared_ptr< Reel_t > Reel;

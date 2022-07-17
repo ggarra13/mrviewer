@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,18 +25,12 @@
  *
  */
 
+
 #include "R3DSDK.h"
 #include "core/mrvI8N.h"
 #undef snprintf
 #include <iostream>
 
-//#include "FL/fl_config.h"
-
-#undef FLTK_USE_WAYLAND
-
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
-#include <X11/extensions/scrnsaver.h>
-#endif
 
 #include "core/mrvException.h"
 #include "core/R3dImage.h"
@@ -53,6 +47,9 @@
 #include <FL/platform.H>
 #include <FL/fl_utf8.h>
 
+#if defined(FLTK_USE_X11)
+#include <X11/extensions/scrnsaver.h>
+#endif
 
 #include "icons/viewer16.xpm"
 #include "resource.h"
@@ -104,9 +101,9 @@ MainWindow::~MainWindow()
 {
     // Restore screensaver/black screen
     DBGM1( _("Restore screensaver") );
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11)
     XScreenSaverSuspend( fl_display, False );
-#elif defined(_WIN32) || defined(_WIN64)
+#elif defined(_WIN32)
     SetThreadExecutionState(ES_CONTINUOUS);
 #elif defined(__APPLE__)
     if ( success )
@@ -117,7 +114,7 @@ MainWindow::~MainWindow()
     DBGM1( _("Restored screensaver") );
     // Fl::check();
     DBGM1( _("Stop uiview") );
-    uiMain->uiView->stop();
+    uiMain->uiView->main(NULL);
     DBGM1( _("delete uiview") );
     delete uiMain->uiView;
     uiMain->uiView = NULL;
@@ -140,12 +137,12 @@ void MainWindow::set_icon()
 
     // Turn off screensaver and black screen
     DBGM1( _("Turn off screensaver") );
-#if defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+#if defined(FLTK_USE_X11)
     int event_base, error_base;
     Bool ok = XScreenSaverQueryExtension(fl_display, &event_base, &error_base );
     if ( ok == True )
         XScreenSaverSuspend( fl_display, True );
-#elif defined(_WIN32) || defined(_WIN64)
+#elif defined(_WIN32)
     SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
                              ES_DISPLAY_REQUIRED );
 #elif defined(__APPLE__)
@@ -155,7 +152,7 @@ void MainWindow::set_icon()
                                            reason, &assertionID );
 #endif
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32)
      HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
      this->icon(data);
 #else
@@ -169,13 +166,18 @@ void MainWindow::set_icon()
 }
 
 
-void MainWindow::always_on_top()
+#if !defined(__APPLE__)
+
+void MainWindow::always_on_top( int t )
 {
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32)
+    HWND action;
+    if ( t ) action = HWND_TOPMOST;
+    else     action = HWND_NOTOPMOST;
     // Microsoft (R) Windows(TM)
-    SetWindowPos(fl_xid(this), HWND_TOPMOST,
-                 0, 0, w()+8, h()+27, 0 );
-#elif defined(LINUX) && !defined(FLTK_USE_WAYLAND)
+    SetWindowPos(fl_xid(this), action,
+                 NULL, NULL, NULL, NULL, SWP_NOMOVE | SWP_NOSIZE );
+#elif defined(FLTK_USE_X11)
     // XOrg / XWindows(TM)
     XEvent ev;
     static const char* const names[2] = { "_NET_WM_STATE",
@@ -190,7 +192,7 @@ void MainWindow::always_on_top()
     ev.xclient.window = fl_xid(this);
     ev.xclient.message_type = net_wm_state;
     ev.xclient.format = 32;
-    ev.xclient.data.l[ 0 ] = active() ? 1 : 0;
+    ev.xclient.data.l[ 0 ] = t;
     ev.xclient.data.l[ 1 ] = net_wm_state_above;
     ev.xclient.data.l[ 2 ] = 0;
     XSendEvent(fl_display,
@@ -198,6 +200,9 @@ void MainWindow::always_on_top()
                SubstructureNotifyMask|SubstructureRedirectMask, &ev);
 #endif
 } // above_all function
+
+
+#endif
 
 
 /**

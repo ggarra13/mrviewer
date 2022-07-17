@@ -11,18 +11,16 @@ namespace mrv
     Button::Button( int X, int Y, int W, int H, const char* L ) :
         Fl_Button( X, Y, W, H, L )
     {
-        box( FL_FLAT_BOX ); // here it does not work
         default_color = color();
     }
 
     int Button::handle( int e )
     {
-        int ret = Fl_Button::handle( e );
         switch( e )
         {
         case FL_ENTER:
             default_color = color();
-            if ( active_r() )
+            if ( active_r() && !value() )
                 color( fl_lighter( default_color ) );
             redraw();
             return 1;
@@ -30,7 +28,10 @@ namespace mrv
             color( default_color );
             redraw();
             return 1;
+        case FL_KEYBOARD:
+            return 0;
         }
+        int ret = Fl_Button::handle( e );
         return ret;
     }
 
@@ -38,8 +39,8 @@ namespace mrv
     {
         if (type() == FL_HIDDEN_BUTTON) return;
         Fl_Color col = value() ? selection_color() : color();
-        box( FL_FLAT_BOX );  // here it works
-        draw_box(value() ? (down_box()?down_box():fl_down(box())) : box(), col);
+        draw_box( FL_FLAT_BOX, color() ); // needed to clear background on round
+        if ( value() ) draw_box(down_box(), col);
         draw_backdrop();
         if ( value() ) labelcolor( FL_CYAN );
         else labelcolor( 28 );

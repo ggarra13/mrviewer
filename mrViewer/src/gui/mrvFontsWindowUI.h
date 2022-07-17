@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,17 +19,13 @@
 
 #ifndef mrvFontsWindowUI_h
 #define mrvFontsWindowUI_h
-#include <FL/Fl_Double_Window.H>
+class Fl_Double_Window;
 extern Fl_Double_Window* uiMain;
-#include <FL/Fl_Group.H>
-#include <FL/Fl_Input.H>
-#include <FL/Fl_Choice.H>
-#include <FL/Fl_Value_Slider.H>
 
 namespace mrv  {
 
-extern Fl_Font  font_current;
-extern unsigned    font_size;
+extern Fl_Font     font_current;
+extern Fl_Fontsize font_size;
 extern std::string font_text;
 
 bool make_window();

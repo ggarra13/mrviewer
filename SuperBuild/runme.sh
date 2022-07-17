@@ -22,11 +22,13 @@ export PATH=$installdir/bin:$PATH
 export PKG_CONFIG_PATH=$installdir/lib/pkgconfig
 export LD_LIBRARY_PATH=$installdir/lib:$LD_LIBRARY_PATH
 
-../mk  --installdir=$installdir -j 4
+../mk  --installdir=$installdir -j 1
 
-# $copy -r $installdir/bin/* $finaldir/bin
-# $copy -r $installdir/lib/* $finaldir/lib
-# $copy -r $installdir/include/* $finaldir/include
-# $copy -r $installdir/share/* $finaldir/share
-# $copy -r $installdir/etc/* $finaldir/etc
-# $copy -r $installdir/doc/* $finaldir/doc
+if [[ $? == 0 ]]; then
+    $copy -r $installdir/bin/* $finaldir/bin
+    $copy -r $installdir/lib/* $finaldir/lib
+    $copy -r $installdir/include/* $finaldir/include
+    $copy -r $installdir/share/* $finaldir/share
+    $copy -r $installdir/etc/* $finaldir/etc
+    $copy -r $installdir/doc/* $finaldir/doc
+fi

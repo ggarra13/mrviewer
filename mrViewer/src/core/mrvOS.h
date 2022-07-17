@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 #if (defined(_WIN32) || defined(_WIN64))
 
+#include <direct.h>
 #include <winsock2.h>
 #include <windows.h>
 #include <stdio.h>
@@ -74,8 +75,13 @@
 #undef getcwd
 #define getcwd _getcwd
 
+#undef chdir
+#define chdir _chdir
+
 #undef  _ITERATOR_DEBUG_LEVEL
 #define _ITERATOR_DEBUG_LEVEL 0
+
+int setenv (const char * name, const char * value, int overwrite );
 
 #endif // defined(WIN32) || defined(WIN64)
 

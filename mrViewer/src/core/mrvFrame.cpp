@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -651,7 +651,7 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
     _valid    = b.valid();
     allocate();
 #ifdef DEBUG_ALLOCS
-    std::cerr << "VideoFrame::operator= memcpy" << std::endl;
+    std::cerr << "VideoFrame::operator= memcpy " << b.data_size() << std::endl;
 #endif
     memcpy( _data.get(), b.data().get(), b.data_size() );
     return *this;

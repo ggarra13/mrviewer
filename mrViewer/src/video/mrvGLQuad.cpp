@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,6 +44,8 @@
 
 #include <FL/Enumerations.H>
 
+#include "core/mrvColorOps.h"
+
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
@@ -74,85 +76,6 @@ const char* kModule = "glquad";
 
 
 namespace mrv {
-
-#define radians(x) x * M_PI / 180.0f
-
-inline Imath::M44f hueMatrix(float degrees)
-{
-    float cosA = cos(radians(degrees));
-    float sinA = sin(radians(degrees));
-
-    return Imath::M44f( cosA + (1.0 - cosA) / 3.0,
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        0.0,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        cosA + 1./3.*(1.0 - cosA),
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        0.0,
-                        1./3. * (1.0 - cosA) - sqrt(1./3.) * sinA,
-                        1./3. * (1.0 - cosA) + sqrt(1./3.) * sinA,
-                        cosA + 1./3. * (1.0 - cosA),
-                        0.0f,
-                        0.0, 0.0, 0.0, 1.0 );
-}
-
-inline Imath::M44f brightnessMatrix(float r, float g, float b)
-{
-    return Imath::M44f(
-    r, 0.F, 0.F, 0.F,
-    0.F, g, 0.F, 0.F,
-    0.F, 0.F, b, 0.F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f contrastMatrix(float r, float g, float b)
-{
-    return
-    Imath::M44f(
-    1.F, 0.F, 0.F, -.5F,
-    0.F, 1.F, 0.F, -.5F,
-    0.F, 0.F, 1.F, -.5F,
-    0.F, 0.F, 0.F, 1.F) *
-    Imath::M44f(
-    r, 0.F, 0.F, 0.F,
-    0.F, g, 0.F, 0.F,
-    0.F, 0.F, b, 0.F,
-    0.F, 0.F, 0.F, 1.F) *
-    Imath::M44f(
-    1.F, 0.F, 0.F, .5F,
-    0.F, 1.F, 0.F, .5F,
-    0.F, 0.F, 1.F, .5F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f saturationMatrix(float r, float g, float b)
-{
-    const float s[] =
-    {
-    (1.F - r) * .3086F,
-    (1.F - g) * .6094F,
-    (1.F - b) * .0820F
-    };
-    return Imath::M44f(
-    s[0] + r, s[1], s[2], 0.F,
-    s[0], s[1] + g, s[2], 0.F,
-    s[0], s[1], s[2] + b, 0.F,
-    0.F, 0.F, 0.F, 1.F);
-}
-
-inline Imath::M44f colorMatrix(const ColorControlsUI* v)
-{
-    return  hueMatrix(v->uiHue->value()*360.0) *
-      brightnessMatrix(v->uiBrightness->value(),
-                              v->uiBrightness->value(),
-                              v->uiBrightness->value()) *
-    contrastMatrix(v->uiContrast->value(), v->uiContrast->value(),
-                   v->uiContrast->value()) *
-    saturationMatrix(v->uiSaturation->value(), v->uiSaturation->value(),
-                     v->uiSaturation->value());
-}
-
 
 const char* GLQuad::debug_internal_format( const GLenum format )
 {
@@ -361,6 +284,7 @@ GLQuad::GLQuad( const ImageView* view ) :
     _lut_attempt( 0 ),
     _right( false ),
     _blend( true ),
+    _dissolve( 1.f ),
     _gamma( 1.f ),
     _blend_mode( GL_ALPHA ),
     _num_textures( 1 ),
@@ -447,6 +371,9 @@ void GLQuad::update_texsub( unsigned int idx,
 
     if ( _view->field() == ImageView::kFrameDisplay )
     {
+        glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
+        glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+
 //#define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
@@ -458,8 +385,6 @@ void GLQuad::update_texsub( unsigned int idx,
 #endif
         {
 
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
-            glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
             // bind pixel buffer
             glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
@@ -547,8 +472,6 @@ void GLQuad::update_texsub( unsigned int idx,
         else
 #endif // TEST_NO_PBO_TEXTURES
         {
-            glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
-
             //
             // Handle copying FRAME AREA to 2D texture
             //
@@ -641,8 +564,6 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
         glBindTexture(GL_TEXTURE_2D, _texId[i] );
         CHECK_GL;
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        CHECK_GL;
 
 
         unsigned int tw = dw;
@@ -745,13 +666,11 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
             unsigned hth = th;
 
 
-            if ( _view->stereo_input() &
-                 CMedia::kTopBottomStereoInput )
+            if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
             {
                 hth /= 2;
             }
-            else if ( _view->stereo_input() &
-                      CMedia::kLeftRightStereoInput )
+            else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
             {
                 htw /= 2;
             }
@@ -866,8 +785,6 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
     glBindTexture( GL_TEXTURE_2D, _texId[0] );
     CHECK_GL;
 
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-    CHECK_GL;
 
 
     unsigned tw = dw;
@@ -925,14 +842,12 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         unsigned hth = th;
 
 
-        if ( _view->stereo_input() &
-                CMedia::kTopBottomStereoInput )
+        if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
         {
             hth /= 2;
             th = hth;
         }
-        else if ( _view->stereo_input() &
-                  CMedia::kLeftRightStereoInput )
+        else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
         {
             htw /= 2;
         }
@@ -969,6 +884,7 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         }
     }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
+
 
     update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type,
                    short(_channels), short(pixel_size), p );
@@ -1091,7 +1007,15 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, _texId[i] );
             CHECK_GL;
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+            if ( i > 0 )
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_NEAREST);
+            }
+            else
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+            }
         }
     }
     else
@@ -1155,9 +1079,6 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         CHECK_GL;
         _shader->setUniform( "height", _height );
         CHECK_GL;
-
-        _shader->setUniform( "fade", _fade );
-        CHECK_GL;
         _shader->setUniform( "dissolve", _dissolve );
         CHECK_GL;
         _shader->setUniform( "gain",  _view->gain() );
@@ -1172,7 +1093,8 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
         {
             _shader->setUniform("enableColorMatrix", true );
             CHECK_GL;
-            const Imath::M44f& m = colorMatrix(cc);
+            Imath::M44f m = colorMatrix(cc);
+            m = m.transpose();
             _shader->setUniform("colorMatrix", m);
         }
         else

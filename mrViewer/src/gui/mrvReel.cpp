@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,8 +16,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "gui/mrvIO.h"
+//#define DEBUG_CONVERSIONS
+
+
 #include "mrvReel.h"
+#ifdef DEBUG_CONVERSIONS
+#  include "gui/mrvIO.h"
+#else
+#  undef  TRACE2
+#  define TRACE2(x)
+#endif
 
 namespace {
 const char* kModule = "reel_t";
@@ -47,10 +55,11 @@ uint64_t Reel_t::duration() const
 
 size_t Reel_t::index( const CMedia* const img ) const
 {
+    if ( images.empty() ) return std::numeric_limits<size_t>::max();
+
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
-    if ( i == e ) return std::numeric_limits<size_t>::max();
 
     size_t r = 0;
 
@@ -140,7 +149,6 @@ mrv::media Reel_t::media_at( const int64_t f ) const
         return mrv::media();
     }
 
-    int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
     {
@@ -158,6 +166,19 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     }
 
     return images[r];
+}
+
+int64_t Reel_t::local_to_global( const int64_t f,
+                                 const CMedia* const img ) const
+{
+    if ( !edl ) return f;
+    int64_t r = f;
+    r += location(img);
+    int64_t first = img->first_frame();
+    r -= first;
+    TRACE2( "f= " << f << " location= " << location(img) << " first= "
+            << first << " r= " << r );
+    return r;
 }
 
 int64_t Reel_t::global_to_local( const int64_t f ) const
@@ -180,6 +201,10 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
         if ( f >= start && f <= end )
         {
             r = f - start + img->first_frame();
+            TRACE2( img->name()
+                    << " global f= " << f << " position= " << start
+                    << " first frame = " << img->first_frame()
+                    << " LOCAL FRAME= " << r );
             break;
         }
     }

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -48,15 +48,15 @@ BlackImage::BlackImage( const BlackImage::Type c,
     lumma_layers();
 
     _fps = 25.0f;
-    _frameStart = _frame_start = first;
-    _frameEnd = _frame_end = last;
+    _frameStart = _frameIn = _frame_start = first;
+    _frameEnd = _frameOut = _frame_end = last;
 
     default_color_corrections();
 }
 
 void BlackImage::create( image_type_ptr& canvas )
 {
-    image_size( 32, 14 );
+    image_size( 16, 9 );
     if ( ! allocate_pixels( canvas, _frame, 1, mrv::image_type::kLumma,
                             mrv::image_type::kByte ) )
     {
@@ -78,6 +78,10 @@ bool BlackImage::fetch(
         create( canvas );
         _hires = canvas;
         if ( !_hires ) return false;
+    }
+    else
+    {
+        _hires->frame( frame );
     }
 
     Mutex& vpm = _video_packets.mutex();

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file   mrvImageView.cpp
  * @author gga
@@ -30,18 +31,10 @@
 #include <inttypes.h>  // for PRId64
 
 
-#ifdef DEBUG
-#define NETWORK_COMMANDS
-#endif
 
 // #define DEBUG_KEYS
-
-
-#ifdef NETWORK_COMMANDS
-#  define NET(x) if ( show_pixel_ratio() ) std::cerr << "RECV. COMMAND: " << N_(x) << " for " << name << std::endl;
-#else
-#  define NET(x)
-#endif
+#define NET(x)
+//#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO( "RECV. COMMAND: " << x )
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -74,6 +67,8 @@
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+#include "core/mrvBlackImage.h"
+#include "core/mrvColorOps.h"
 
 #ifdef OSX
 #include <OpenGL/gl.h>
@@ -138,6 +133,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvEvents.h"
+#include "gui/mrvMultilineInput.h"
 #include "mrvHotkeyUI.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvWaveformUI.h"
@@ -191,8 +187,8 @@ const char* kModule = "gui";
 
 const int kMASK_MENU_OFFSET = 43;
 float kCrops[] = {
-    0.00f, 1.00f, 1.19f, 1.37f, 1.50f, 1.56f, 1.66f, 1.77f, 1.85f, 2.10f, 2.20f,
-    2.35f, 2.39f, 4.00f
+    0.00f, 1.00f, 1.19f, 1.37f, 1.50f, 1.56f, 1.66f, 1.77f, 1.85f, 2.00f,
+    2.10f, 2.20f, 2.35f, 2.39f, 4.00f
 };
 
 struct ChannelShortcuts
@@ -236,6 +232,20 @@ namespace
     {
         delete main;
         exit(0);
+        // // Close all windows
+        // typedef std::vector< Fl_Window* > WindowList;
+        // WindowList list;
+        // Fl_Window* w = Fl::first_window();
+        // for ( ; w ; w = Fl::next_window(w) )
+        // {
+        //     list.push_back(w);
+        // }
+        // WindowList::iterator i = list.begin();
+        // WindowList::iterator e = list.end();
+        // for ( ; i != e; ++i )
+        // {
+        //     (*i)->hide();
+        // }
     }
 
 inline std::string remove_hash_number( std::string& r )
@@ -375,6 +385,9 @@ void rotate_plus_90_cb( Fl_Widget* o, mrv::ImageView* v )
     mrv::CMedia* img = fg->image();
     img->rotate( -90.0 ); // this is reversed on purpose
     img->image_damage( mrv::CMedia::kDamageContents );
+    char buf[128];
+    sprintf( buf, "Rotate %g", img->rot_z() );
+    v->send_network( buf );
     v->fit_image();
     v->redraw();
 }
@@ -406,6 +419,9 @@ void rotate_minus_90_cb( Fl_Widget* o, mrv::ImageView* v )
     mrv::CMedia* img = fg->image();
     img->rotate( 90.0 );  // this is reversed on purpose
     img->image_damage( mrv::CMedia::kDamageContents );
+    char buf[128];
+    sprintf( buf, "Rotate %g", img->rot_z() );
+    v->send_network( buf );
     v->fit_image();
     v->redraw();
 }
@@ -728,9 +744,19 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 {
     mrv::ImageView* view = uiMain->uiView;
 
-    int idx = menu->value() - kMASK_MENU_OFFSET;
+    const char* tmp;
+    int i;
+    int num = uiMain->uiPrefs->uiPrefsCropArea->children();
+    for ( i = 0; i < num; ++i )
+    {
+        tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
+        if ( !tmp ) continue;
+        if ( strcmp( tmp, menu->mvalue()->label() ) == 0 )
+            break;
+    }
+    if ( i == num ) return;  // should never happen
 
-    float mask = kCrops[idx];
+    float mask = kCrops[i];
 
     char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
     setlocale( LC_NUMERIC, "C" );
@@ -805,7 +831,10 @@ void change_subtitle_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
     img->stop();
     img->subtitle_stream(i);
     if ( play != mrv::CMedia::kStopped )
+    {
+        img->stop();
         img->play( play, view->main(), true );
+    }
 }
 
 static Fl_Window* gridWindow = NULL;
@@ -1544,6 +1573,8 @@ void ImageView::scale_pic_mode()
 
 void ImageView::move_pic_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kMovePicture;
 
     uiMain->uiStatus->copy_label( _("Move Pic.") );
@@ -1568,6 +1599,20 @@ void ImageView::move_pic_mode()
 }
 
 
+int ImageView::remove_children()
+{
+    int ret = 1;
+    for ( int i = 0; i < children(); ++i )
+    {
+        MultilineInput* w = dynamic_cast< MultilineInput* >( child(i) );
+        if (!w) continue;
+        ret = w->accept();
+    }
+
+    redraw();
+    return ret;
+}
+
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
@@ -1588,12 +1633,17 @@ void ImageView::scrub_mode()
     uiMain->uiPaint->uiArrow->value(false);
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
     uiMain->uiPaint->uiScrub->value(true);
-    redraw();
+
+    remove_children();
 }
 
 void ImageView::selection_mode( bool temporary )
 {
+    if ( !foreground() ) return;
+
     if ( temporary )
         _mode = kSelectionTemporary;
     else
@@ -1617,11 +1667,16 @@ void ImageView::selection_mode( bool temporary )
     uiMain->uiPaint->uiCircle->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
-    redraw();
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
 }
 
 void ImageView::draw_mode( bool tmp )
 {
+    if ( !foreground() ) return;
+
     if ( tmp )
         _mode = kDrawTemporary;
     else
@@ -1645,11 +1700,16 @@ void ImageView::draw_mode( bool tmp )
     uiMain->uiPaint->uiDraw->value(true);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
-    redraw();
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
 }
 
 void ImageView::circle_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kCircle;
 
     uiMain->uiStatus->copy_label( _("Circle") );
@@ -1671,11 +1731,16 @@ void ImageView::circle_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
-    redraw();
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
 }
 
 void ImageView::arrow_mode()
 {
+    if ( !foreground() ) return;
+
     _mode = kArrow;
 
     uiMain->uiStatus->copy_label( _("Arrow") );
@@ -1696,12 +1761,47 @@ void ImageView::arrow_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
-    redraw();
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
+}
+
+void ImageView::rectangle_mode()
+{
+    if ( !foreground() ) return;
+
+    _mode = kRectangle;
+
+    uiMain->uiStatus->copy_label( _("Rectangle") );
+
+    uiMain->uiSelection->value(false);
+    uiMain->uiErase->value(false);
+    uiMain->uiCircle->value(false);
+    uiMain->uiArrow->value(false);
+    uiMain->uiDraw->value(false);
+    uiMain->uiText->value(false);
+    uiMain->uiScrub->value(false);
+
+    uiMain->uiPaint->uiMovePic->value(false);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiCircle->value(false);
+    uiMain->uiPaint->uiArrow->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+    uiMain->uiPaint->uiRectangle->value(true);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
 }
 
 
 void ImageView::erase_mode( bool tmp )
 {
+    if ( !foreground() ) return;
+
     if ( tmp )
         _mode = kEraseTemporary;
     else
@@ -1725,11 +1825,17 @@ void ImageView::erase_mode( bool tmp )
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
-    redraw();
+    uiMain->uiPaint->uiRectangle->value(false);
+    uiMain->uiPaint->uiCopyXY->value(false);
+
+    remove_children();
 }
 
 void ImageView::text_mode()
 {
+    if ( !foreground() ) return;
+
+    remove_children();
     bool ok = mrv::make_window();
     if ( ok )
     {
@@ -1737,13 +1843,13 @@ void ImageView::text_mode()
         uiMain->uiStatus->copy_label( _("Text") );
         uiMain->uiText->value(true);
         uiMain->uiScrub->value(false);
-        uiMain->uiPaint->uiScrub->value(false);
         uiMain->uiArrow->value(false);
         uiMain->uiErase->value(false);
         uiMain->uiCircle->value(false);
         uiMain->uiDraw->value(false);
         uiMain->uiSelection->value(false);
 
+        uiMain->uiPaint->uiScrub->value(false);
         uiMain->uiPaint->uiText->value(true);
         uiMain->uiPaint->uiArrow->value(false);
         uiMain->uiPaint->uiMovePic->value(false);
@@ -1751,6 +1857,8 @@ void ImageView::text_mode()
         uiMain->uiPaint->uiCircle->value(false);
         uiMain->uiPaint->uiDraw->value(false);
         uiMain->uiPaint->uiSelection->value(false);
+        uiMain->uiPaint->uiRectangle->value(false);
+        uiMain->uiPaint->uiCopyXY->value(false);
     }
     else
     {
@@ -1765,9 +1873,25 @@ bool ImageView::in_presentation() const
     return presentation;
 }
 
+void ImageView::send_selection() const
+{
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
+    char buf[128];
+    sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+             _selection.y(), _selection.w(), _selection.h() );
+
+    restore_locale( oldloc );
+
+    send_network( buf );
+}
+
 void ImageView::send_network( std::string m ) const
 {
-    if ( !_network_active) return;
+    if ( !_network_active) {
+        return;
+    }
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -1826,8 +1950,8 @@ xoffset( 0 ),
 yoffset( 0 ),
 spinx( 0.0 ),
 spiny( 0.0 ),
-posX( 4 ),
-posY( 22 ),
+posX( X ),
+posY( Y ),
 flags( 0 ),
 _ghost_previous( 5 ),
 _ghost_next( 5 ),
@@ -1850,6 +1974,8 @@ _vr( kNoVR ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _timeout( NULL ),
 _old_fg( NULL ),
+Aimg( NULL ),
+Bimg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
@@ -1876,7 +2002,6 @@ _lastFrame( 0 )
     Fl_Sys_Menu_Bar::about( (Fl_Callback*)about_cb, this );
 #endif
 
-
     float scale = Fl::screen_scale( window()->screen_num() );
     _real_zoom = _zoom / scale;
 
@@ -1886,18 +2011,26 @@ _lastFrame( 0 )
 
 void ImageView::stop_playback()
 {
+
     CMedia* img = NULL;
 
     mrv::media fg = foreground();
     if ( fg ) {
         img = fg->image();
         img->stop();
-        if ( !timeline()->edl() ) frame( img->frame() );
+        if ( uiMain && !timeline()->edl() ) frame( img->frame() );
     }
 
-    mrv::media bg = background();
-    if ( bg ) bg->image()->stop(true);
+    if ( Bimg )
+    {
+        Bimg->stop();
+    }
 
+
+    mrv::media bg = background();
+    if ( bg ) bg->image()->stop( false );
+
+    playback( CMedia::kStopped );
 }
 
 
@@ -1909,6 +2042,9 @@ ImageView::~ImageView()
     if ( CMedia::preload_cache() )
         preload_cache_stop();
 
+
+    if ( _server ) _server->remove( uiMain );
+
     // ParserList::iterator i = _clients.begin();
     // ParserList::iterator e = _clients.end();
     // for ( ; i != e; ++i )
@@ -1916,9 +2052,9 @@ ImageView::~ImageView()
     //     (*i)->connected = false;
     // }
 
-    _clients.clear();
-
+    //_clients.clear();
     // make sure to stop any playback
+
     stop_playback();
 
     delete _engine;
@@ -2211,12 +2347,35 @@ void ImageView::bg_reel(int idx)
 
 void ImageView::toggle_copy_frame_xy()
 {
+    if ( !foreground() ) return;
+
     if ( _mode == kCopyFrameXY )
         scrub_mode();
     else
     {
         _mode = kCopyFrameXY;
         uiMain->uiStatus->copy_label( _("Copy X Y") );
+
+        uiMain->uiSelection->value(false);
+        uiMain->uiErase->value(false);
+        uiMain->uiCircle->value(false);
+        uiMain->uiArrow->value(false);
+        uiMain->uiDraw->value(false);
+        uiMain->uiText->value(false);
+        uiMain->uiScrub->value(false);
+
+        uiMain->uiPaint->uiMovePic->value(false);
+        uiMain->uiPaint->uiSelection->value(false);
+        uiMain->uiPaint->uiErase->value(false);
+        uiMain->uiPaint->uiCircle->value(false);
+        uiMain->uiPaint->uiArrow->value(false);
+        uiMain->uiPaint->uiDraw->value(false);
+        uiMain->uiPaint->uiText->value(false);
+        uiMain->uiPaint->uiScrub->value(false);
+        uiMain->uiPaint->uiRectangle->value(false);
+        uiMain->uiPaint->uiCopyXY->value(true);
+
+        remove_children();
     }
 }
 
@@ -2231,6 +2390,7 @@ void ImageView::toggle_copy_frame_xy()
 void ImageView::copy_frame_xy() const
 {
     mrv::media fg = foreground();
+    if ( !fg ) return;
 
     CMedia* img = fg->image();
 
@@ -2486,9 +2646,9 @@ void ImageView::image_coordinates( const CMedia* const img,
     x -= tw;
     y -= th;
 
-    ImageView* self = const_cast< ImageView* >( this );
-    float scale = Fl::screen_scale( window()->screen_num() );
-    self->_real_zoom = _zoom / scale;
+    // ImageView* self = const_cast< ImageView* >( this );
+    // float scale = Fl::screen_scale( window()->screen_num() );
+    // self->_real_zoom = _zoom / scale;
 
     x /= _real_zoom;
     y /= _real_zoom;
@@ -2498,22 +2658,6 @@ void ImageView::image_coordinates( const CMedia* const img,
     y -= yoffset;
 
 
-
-
-    // double tn = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
-
-    // if ( std::abs( tn ) < 0.0001 )
-    // {
-    //     std::cerr << "ORIG " <<  x << ", " << y << std::endl;
-    //     double px = x;
-    //     x = y;
-    //     y = px;
-
-    //     px = W;
-    //     W = H;
-    //     H = px;
-    //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
-    // };
     y = H - y;
 
 
@@ -2668,9 +2812,14 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
     const CMedia* img = fg->image();
-
     mrv::image_type_ptr pic = img->left();
-    if ( !pic ) return;
+    if ( !pic ) {
+        TRACE( "*********** fit_image no picture ***********" );
+        return;
+    }
+
+    TRACE( "fit_image: " << img->name() << " " << pic->width() << " x "
+            << pic->height() << " GLOBAL FRAME " << _frame );
 
     CMedia::StereoOutput stereo_out = img->stereo_output();
     mrv::Recti dpw;
@@ -2764,26 +2913,51 @@ void ImageView::fit_image()
         W *= 2;
 #endif
 
+    int     X = dpw.x();
+    int     Y = dpw.y();
+
+    double pct = _masking;
+    if ( pct > 0.0 )
+    {
+        double aspectY = (double) W / (double) H;
+        double aspectX = (double) H/ (double) W;
+
+        double target_aspect = 1.0 / pct;
+        double amountY = H * (0.5 - target_aspect * aspectY / 2);
+        double amountX = W * (0.5 - pct * aspectX / 2);
+
+        bool vertical = true;
+        if ( amountY < amountX )
+        {
+            vertical = false;
+        }
+        if ( vertical )
+        {
+            H -= amountY * 2;
+            Y += amountY;
+        }
+        else
+        {
+            W -= amountX * 2;
+            X += amountX;
+        }
+    }
+
     double w = (double) this->pixel_w();
     double h = (double) this->pixel_h();
     DBGM1( "fit h=" << h );
-    DBGM1( "fit H=" << H << " pic->h()= " << pic->height() );
+    DBGM1( "fit H=" << H );
     DBGM1( "fit h/H=" << h/H );
 
-#ifndef _WIN32
-    DBGM1("fit W1=" << W );
-    if ( uiMain->uiToolsGroup->visible() ) W -= uiMain->uiToolsGroup->w();
-    DBGM1("fit W2=" << W );
-#endif
 
 #ifdef OSX
-    h /= 2;  // On OSX Y pixel coords are doubled
+    h /= 2;  // On OSX X and Y pixel coords are doubled
     w /= 2;
 #endif
 
     DBGM1("fit w=" << w );
     DBGM1("fit W=" << W );
-    double z = w / (double)W;
+    float z = w / (double)W;
     DBGM1( "fit w/W=" << z );
     h /= H;
 
@@ -2796,11 +2970,10 @@ void ImageView::fit_image()
     }
     DBGM1( "fit z=" << z );
 
-
     double ox = xoffset;
     double oy = yoffset;
 
-    yoffset = ( dpw.y() + H / 2.0) / pr;
+    yoffset = ( Y + H / 2.0) / pr;
 
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
@@ -2812,41 +2985,234 @@ void ImageView::fit_image()
     }
     else
     {
-        xoffset = -dpw.x() - W / 2.0;
+        xoffset = -X - W / 2.0;
     }
 
 
     if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
         xoffset = 0.0;
 
-
-    if ( img->flipX() &&
-         stereo_out & CMedia::kStereoTopBottom  )
+    if ( img->flipX() && stereo_out & CMedia::kStereoTopBottom  )
         yoffset = 0.0;
 
     zrotation_to_offsets( xoffset, yoffset, img, W, H );
 
-    if ( ! mrv::is_equal( ox, xoffset ) ||
-         ! mrv::is_equal( oy, yoffset ) )
-    {
-        char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-        setlocale( LC_NUMERIC, "C" );
+    char buf[128];
+    sprintf( buf, "FitImage" );
+    send_network( buf );
 
-        char buf[128];
-        sprintf( buf, "Offset %g %g", xoffset, yoffset );
-        send_network( buf );
+    bool old_network_active = _network_active;
+    _network_active = false;
 
-        restore_locale( oldloc );
-    }
+    zoom( z );
 
-    if ( ! mrv::is_equal( _zoom, float(z) ) )
-    {
-        zoom( float(z) );
+    int x = Fl::event_x();
+    int y = Fl::event_y();
+    if ( uiMain->uiToolsGroup->visible() )
+        x -= uiMain->uiToolsGroup->w();
+    mouseMove( x, y );
 
-        mouseMove( Fl::event_x(), Fl::event_y() );
-    }
+    _network_active = old_network_active;
 
     redraw();
+}
+
+/**
+ * Fit the current foreground image to the view window.
+ *
+ */
+void ImageView::fit_image( const CMedia* img )
+{
+    mrv::image_type_ptr pic = img->left();
+    if ( !pic ) {
+        TRACE( "*********** fit_image no picture ***********" );
+        return;
+    }
+
+    TRACE( "fit_image: " << img->name() << " " << pic->width() << " x "
+           << pic->height() << " GLOBAL FRAME " << _frame );
+
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    mrv::Recti dpw;
+    if ( display_window() )
+    {
+        dpw = img->display_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->display_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->display_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
+        }
+        else
+        {
+            if ( data_window() )
+                dpw.merge( img->data_window() );
+        }
+    }
+    else
+    {
+        dpw = img->data_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->data_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->data_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.x( dp.w() + daw.x() );
+            dpw.merge( daw );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.y( dp.h() + daw.y() );
+            dpw.merge( daw );
+        }
+    }
+
+    mrv::media bg = background();
+    dpw.x( int(dpw.x() + img->x()) );
+    dpw.y( int(dpw.y() - img->y()) );
+    if ( bg )
+    {
+        CMedia* img2 = bg->image();
+        mrv::Recti dpw2 = img2->display_window();
+        dpw2.x( int(dpw2.x() + img2->x()) );
+        dpw2.y( int(dpw2.y() - img2->y()) );
+        if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
+        {
+            dpw.merge( dpw2 );
+        }
+    }
+
+    int W = dpw.w();
+    if ( W == 0 ) W = pic->width();
+    int H = dpw.h();
+    if ( H == 0 ) H = pic->height();
+
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+    }
+
+#ifdef OSX
+    if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
+        W *= 2;
+#endif
+
+    int     X = dpw.x();
+    int     Y = dpw.y();
+
+    double pct = _masking;
+    if ( pct > 0.0 )
+    {
+        double aspectY = (double) W / (double) H;
+        double aspectX = (double) H/ (double) W;
+
+        double target_aspect = 1.0 / pct;
+        double amountY = H * (0.5 - target_aspect * aspectY / 2);
+        double amountX = W * (0.5 - pct * aspectX / 2);
+
+        bool vertical = true;
+        if ( amountY < amountX )
+        {
+            vertical = false;
+        }
+        if ( vertical )
+        {
+            H -= amountY * 2;
+            Y += amountY;
+        }
+        else
+        {
+            W -= amountX * 2;
+            X += amountX;
+        }
+    }
+
+    double w = (double) this->pixel_w();
+    double h = (double) this->pixel_h();
+    DBGM1( "fit h=" << h );
+    DBGM1( "fit H=" << H );
+    DBGM1( "fit h/H=" << h/H );
+
+
+#ifdef OSX
+    h /= 2;  // On OSX X and Y pixel coords are doubled
+    w /= 2;
+#endif
+
+    DBGM1("fit w=" << w );
+    DBGM1("fit W=" << W );
+    float z = w / (double)W;
+    DBGM1( "fit w/W=" << z );
+    h /= H;
+
+    double pr = 1.0;
+    if ( _showPixelRatio ) pr = pixel_ratio();
+    h *= pr;
+
+    if ( h < z ) {
+        z = h;
+    }
+    DBGM1( "fit z=" << z );
+
+    double ox = xoffset;
+    double oy = yoffset;
+
+    yoffset = ( Y + H / 2.0) / pr;
+
+    if ( stereo_out & CMedia::kStereoSideBySide )
+    {
+#ifdef OSX
+        xoffset = -W/4.0 + 0.5;
+#else
+        xoffset = -W/2.0 + 0.5;
+#endif
+    }
+    else
+    {
+        xoffset = -X - W / 2.0;
+    }
+
+
+    if ( img->flipY() && stereo_out & CMedia::kStereoSideBySide  )
+        xoffset = 0.0;
+
+    if ( img->flipX() && stereo_out & CMedia::kStereoTopBottom  )
+        yoffset = 0.0;
+
+    zrotation_to_offsets( xoffset, yoffset, img, W, H );
+
+
+    _zoom = z;
+
+    float scale = Fl::screen_scale( window()->screen_num() );
+    _real_zoom = z / scale;
 }
 
 
@@ -3117,20 +3483,17 @@ bool ImageView::should_update( mrv::media fg )
     }
 
     if ( update && _playback != CMedia::kStopped ) {
-
-#ifdef FLTK_TIMEOUT_EVENT_BUG
         int x = Fl::event_x();
         int y = Fl::event_y();
+#ifdef FLTK_TIMEOUT_EVENT_BUG
         if ( uiMain->uiMenuGroup->visible() )
             y -= uiMain->uiMenuGroup->h();
         if ( uiMain->uiTopBar->visible() )
             y -= uiMain->uiTopBar->h();
+#endif
         if ( uiMain->uiToolsGroup->visible() )
             x -= uiMain->uiToolsGroup->w();
         mouseMove( x, y );
-#else
-        mouseMove( Fl::event_x(), Fl::event_y() );
-#endif
     }
 
 
@@ -3165,33 +3528,6 @@ void static_preload( mrv::ImageView* v )
 
 
 
-void ImageView::log() const
-{
-    //
-    // First, handle log window showing up and scrolling
-    //
-    LogUI* logUI = main()->uiLog;
-    Fl_Window* logwindow = logUI->uiMain;
-    if ( logwindow )
-    {
-        mrv::LogDisplay* log = logUI->uiLogText;
-
-        if ( mrv::LogDisplay::show == true )
-        {
-            mrv::LogDisplay::show = false;
-            if (main() && logUI && logwindow )
-            {
-                logwindow->show();
-            }
-        }
-        static unsigned  lines = 0;
-        if ( log->visible() && log->lines() != lines )
-        {
-            log->scroll( log->lines()-1, 0 );
-            lines = log->lines();
-        }
-    }
-}
 
 
 int timeval_substract(struct timeval *result, struct timeval *x,
@@ -3291,7 +3627,7 @@ bool ImageView::preload()
 
 
     // Exit early if we are dealing with a video instead of a sequence
-    if ( !img || !img->is_sequence() || img->has_video() ) {
+    if ( !img->is_sequence() || img->has_video() ) {
         img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
@@ -3398,29 +3734,18 @@ void ImageView::handle_commands()
 {
     mrv::ImageBrowser* b = browser();
     if (!b) return;
+    if ( commands.empty() ) return;
 
-
-    std::string name;
-#define  DEBUG_IMAGES_IN_NETWORK
-#ifdef DEBUG_IMAGES_IN_NETWORK
-    mrv::media fg = foreground();
-    if ( fg )
-    {
-        CMedia* img = fg->image();
-        name = img->name();
-    }
-#endif
-    _network_active = false;
-
+    bool old_network_active = _network_active;
     bool old_interactive = _interactive;
+
+
     _interactive = false;
 
     Command& c = commands.front();
 
-    if ( commands.empty() ) goto final;
-
-
-again:
+    if ( !_server )
+        _network_active = false;
 
     switch( c.type )
     {
@@ -3481,49 +3806,44 @@ again:
         uiMain->uiEndFrame->redraw();
         break;
     }
-    case kLoadImage:
-    {
-        assert0( c.linfo != NULL );
-        const LoadInfo* file = c.linfo;
-        NET( "Load Image " << file->filename << " start " << file->first << " "
-             << file->last );
-        LoadList files;
-        files.push_back( *file );
-        b->load( files, false, "", false, false );
-        break;
-    }
     case kCacheClear:
         NET( "clear caches ");
         clear_caches();
         break;
     case kChangeImage:
     {
-        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
-        if ( !attr )
-        {
-            LOG_ERROR( _("Change Image failed") );
-            break;
-        }
-        int idx = attr->value();
+        int idx = c.frame;
         mrv::Reel r = b->current_reel();
         bool found = false;
         mrv::MediaList::iterator j = r->images.begin();
         mrv::MediaList::iterator e = r->images.end();
         int i = 0;
+        std::string imgname;
         if ( c.linfo )
         {
-            const std::string& imgname = c.linfo->filename;
+            imgname = c.linfo->filename;
             NET( "change image #" << idx << " " << imgname );
             for ( ; j != e; ++j, ++i )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --i;
+                    continue;
+                }
 
                 CMedia* img = (*j)->image();
-                std::string file = img->directory() + '/' + img->name();
+                std::string file = img->fileroot();
                 if ( i == idx && file == imgname )
                 {
                     found = true;
                     break;
+                }
+                else if ( i == idx && file != imgname )
+                {
+                    LOG_ERROR( _("Image at position ") << idx << " '" << file
+                               << _("' does not match '")
+                               << imgname << "'." );
+                    LOG_ERROR( _("Don't know which one should go first.") );
+                    delete c.linfo; c.linfo = NULL;
                 }
             }
         }
@@ -3533,28 +3853,26 @@ again:
             found = ((size_t)idx < r->images.size() );
         }
         if ( found ) {
-            NET( "change image to #" << idx );
+            CMedia* img = r->images[idx]->image();
+            TRACE( "******** Change image found.  Set to #" << idx
+                    << " " << img->name() << " stopped? " << img->stopped() );
             b->change_image(idx);
         }
         else
         {
             if ( c.linfo ) {
-                NET( "Load Image and try again idx #" << idx );
-                c.type = kLoadImage;
-                goto again;
+                NET( "Load Imag for idx #" << idx << " is " << imgname );
+                const LoadInfo* file = c.linfo;
+                LoadList files;
+                files.push_back( *file );
+                b->load( files, false, "", false, false );
             }
         }
         break;
     }
     case kInsertImage:
     {
-        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
-        if ( !attr )
-        {
-            LOG_ERROR( "Insert Image failed" );
-            break;
-        }
-        int idx = attr->value();
+        int idx = c.frame;
 
         NET( "insert image #" << idx );
 
@@ -3642,13 +3960,17 @@ again:
     case kPlayForwards:
     {
         NET( "playfwd" );
-        play( CMedia::kForwards );
+        TRACE( "********* CMD PLAYFWD PRE SEEK" );
+        if ( c.frame != AV_NOPTS_VALUE ) seek( c.frame );
+        TRACE( "********* CMD PLAYFWD PAST SEEK" );
+        play_forwards();
         break;
     }
     case kPlayBackwards:
     {
         NET( "playbwd" );
-        play( CMedia::kBackwards );
+        if ( c.frame != AV_NOPTS_VALUE ) seek( c.frame );
+        play_backwards();
         break;
     }
     case kRemoveImage:
@@ -3805,6 +4127,31 @@ again:
         if ( old_interactive ) Fl::check();
 #endif
         break;
+    case kFitImage:
+    {
+        fit_image();
+        break;
+    }
+    case kRotateImage:
+    {
+        Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
+        if ( !f )
+        {
+            LOG_ERROR( _("Rotate for image failed") );
+            break;
+        }
+
+        mrv::media fg = foreground();
+        if (fg)
+        {
+            CMedia* img = fg->image();
+            NET("img->rot_z " << f->value() );
+            img->rot_z( f->value() );
+            img->image_damage( CMedia::kDamageContents | CMedia::kDamageData );
+            redraw();
+        }
+        break;
+    }
     case kZoomChange:
     {
         Imf::FloatAttribute* f = dynamic_cast< Imf::FloatAttribute* >( c.data );
@@ -3887,16 +4234,16 @@ again:
     }  // switch
 
 
+final:
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
 
-    final:
-        if( !commands.empty() )  // needed
-            commands.pop_front();
+    if( !commands.empty() )  // needed
+        commands.pop_front();
 
-        _interactive = old_interactive;
-        _network_active = true;
-        redraw();
+    _network_active = old_network_active;
+    _interactive = old_interactive;
+    redraw();
 
 }
 
@@ -3918,11 +4265,6 @@ void ImageView::timeout()
             handle_commands();
         }
     }
-
-    //
-    if (main() && main()->uiLog && main()->uiLog->uiMain )
-        log();
-
 
 
     mrv::Reel reel = b->reel_at( _fg_reel );
@@ -4094,14 +4436,12 @@ void ImageView::redo_draw()
 
 void ImageView::undo_draw()
 {
-    mrv::media fg = foreground();
-    if (!fg) return;
-
-    GLShapeList& shapes = fg->image()->shapes();
-    GLShapeList& undo_shapes = fg->image()->undo_shapes();
+    GLShapeList& shapes = this->shapes();
+    GLShapeList& undo_shapes = this->undo_shapes();
 
     if ( ! shapes.empty() )
     {
+        if ( ! remove_children() ) return;
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
         uiMain->uiRedoDraw->activate();
@@ -4174,13 +4514,11 @@ void ImageView::vr( VRType t )
 void ImageView::draw()
 {
 
-
-    DBGM3( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
         if ( ! _engine )
         {
-            DBGM3( __FUNCTION__ << " " << __LINE__ );
+            TRACE( ">>>>>> Video engine not created.  Create it now" );
             init_draw_engine();
         }
 
@@ -4244,7 +4582,7 @@ void ImageView::draw()
     const mrv::media& bg = background();
 
     ImageList images;
-    images.reserve(2);
+    images.reserve(3);
 
     if ( bg && bg != fg /* && ( _wipe > 0.0f || _showBG ) */ )
     {
@@ -4253,32 +4591,91 @@ void ImageView::draw()
             images.push_back( img );
     }
 
-    if ( fg )
+    bool in_transition = false;
+    if ( Aimg && Bimg )
     {
-        CMedia* img = fg->image();
+        int64_t Aout = Aimg->out_frame();
+        int64_t Bin  = Bimg->in_frame();
+        switch( playback() )
+        {
+        case CMedia::kForwards:
+            if ( Bimg->playback() != CMedia::kForwards )
+            {
+                Bimg->play( CMedia::kForwards, uiMain, true );
+            }
+            if ( Aimg->playback() != CMedia::kForwards &&
+                 Aimg->frame() < Aout )
+            {
+                Aimg->play( CMedia::kForwards, uiMain, true );
+            }
+            break;
+        case CMedia::kBackwards:
+            if ( Bimg->playback() != CMedia::kBackwards &&
+                 Bimg->frame() > Bin )
+            {
+                Bimg->play( CMedia::kBackwards, uiMain, true );
+            }
+            if ( Aimg->playback() != CMedia::kBackwards )
+            {
+                Aimg->play( CMedia::kBackwards, uiMain, true );
+            }
+            break;
+        default:
+            break;
+        }
+        images.push_back( Bimg );
+        images.push_back( Aimg );
+        in_transition = true;
+    }
+
+    CMedia* img = NULL;
+    if ( fg ) img = fg->image();
+
+    if ( img && !in_transition )
+    {
         if ( img->has_picture() )
         {
-            _engine->image( fg->image() );
+            img->dissolve( 1.0f );
+            img->volume( _volume );
+            _engine->image( img );
             images.push_back( img );
         }
     }
 
-    DBGM3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
 
-    CMedia* img = NULL;
-    if ( fg )
+#if 0
+    static int64_t old_frame = -1000;
+    if ( _frame != old_frame )
     {
-        img = fg->image();
-        Mutex& mtx = img->video_mutex();
-        SCOPED_LOCK( mtx );
+        TRACE( "GLOBAL FRAME " << _frame << " images.size()=" << images.size()
+                << " Aimg= " << Aimg << " Bimg= " << Bimg );
+        if ( in_transition )
+        {
+            TRACE( "GLOBAL FRAME " << _frame << " in transition Aimg= " << Aimg->name() << " Bimg= " << Bimg->name() );
+        }
 
-        DBGM3( __FUNCTION__ << " " << __LINE__ );
-        _engine->draw_images( images );
+        old_frame = _frame;
+        int j = 1;
+        size_t num = images.size();
+        for ( const auto& t : images )
+        {
+            TRACE( "Image #" << j << " of " << num << " is "
+                    << t->name() << " == img? " << ( t == img )
+                    << " " << t->first_frame()
+                    << " - " << t->last_frame() << " lframe= " << t->frame()
+                    << " damage= " << t->image_damage()
+                    << " dissolve= " << t->dissolve() );
+            ++j;
+        }
+        TRACE( "-----------------------------------------------------------" );
     }
+#endif
+
+    _engine->draw_images( images );
 
 
-    if ( _masking != 0.0f )
+    if ( ! mrv::is_equal( _masking, 0.0f ) )
     {
         _engine->draw_mask( _masking );
     }
@@ -4301,11 +4698,25 @@ void ImageView::draw()
     }
 
 
+    if ( !fg ) return;
 
 
-    if ( fg && _safeAreas )
+    _engine->draw_annotation( img->shapes(), img );
+    _engine->line_width(1.0);
+
+    if ( _zoom_grid && dynamic_cast< BlackImage* >( img ) == NULL &&
+         dynamic_cast< BlackImage* >( Aimg ) == NULL )
     {
-        const CMedia* img = fg->image();
+        _engine->draw_grid( img, 1.0 );
+    }
+
+    if ( _grid )
+    {
+        _engine->draw_grid( img, _grid_size );
+    }
+
+    if ( _safeAreas )
+    {
         const mrv::Recti& dpw = img->display_window();
         unsigned W = dpw.w();
         unsigned H = dpw.h();
@@ -4324,45 +4735,49 @@ void ImageView::draw()
             }
         }
 
-        double aspect = (double) W / (double) H;
 
         // Safe areas may change when pixel ratio is active
         double pr = 1.0;
         if ( uiMain->uiPixelRatio->value() )
         {
             pr = img->pixel_ratio();
-            aspect *= pr;
+            H *= pr;
         }
 
-        if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
+        double aspectY = (double) W / (double) H;
+
+        if ( aspectY < 1.66 || (aspectY >= 1.77 && aspectY <= 1.78) )
         {
             // Assume NTSC/PAL
             float f = float(H) * 1.33f;
             f = f / float(W);
             _engine->color( 1.0f, 0.0f, 0.0f );
-            _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-            _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+            _engine->draw_safe_area( f * 0.9f, 0.9f, N_("tv action") );
+            _engine->draw_safe_area( f * 0.8f, 0.8f, N_("tv title") );
 
-            if ( aspect >= 1.77 )
+            if ( aspectY >= 1.77 )
             {
                 // Draw hdtv too
                 _engine->color( 1.0f, 0.0f, 1.0f );
-                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                _engine->draw_safe_area( 1.0f, aspectY/1.77f, N_("hdtv") );
             }
         }
         else
         {
-            if ( pr == 1.0f )
+            if ( mrv::is_equal( pr, 1.0 ) )
             {
-                // Assume film, draw 2.35, 1.85 and 1.66 areas
+                double aspectX = (double) H / (double) W;
+                // Assume film, draw 2.35, 1.85, 1.66 and hdtv areas
                 _engine->color( 0.0f, 1.0f, 0.0f );
-                _engine->draw_safe_area( 1.0f, aspect/2.35f, "2.35" );
-                _engine->draw_safe_area( 1.0f, aspect/1.85f, "1.85" );
-                _engine->draw_safe_area( 1.0f, aspect/1.66f, "1.66" );
-
+                _engine->draw_safe_area( 2.35*aspectX,
+                                         1.0, _("2.35") );
+                _engine->draw_safe_area( 1.89*aspectX,
+                                         1.0, _("1.85") );
+                _engine->draw_safe_area( 1.66*aspectX,
+                                         1.0, _("1.66") );
                 // Draw hdtv too
                 _engine->color( 1.0f, 0.0f, 1.0f );
-                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                _engine->draw_safe_area( 1.77*aspectX, 1.0, N_("hdtv") );
             }
             else
             {
@@ -4370,29 +4785,11 @@ void ImageView::draw()
                 float f = float(H) * 1.33f;
                 f = f / float(W);
                 _engine->color( 1.0f, 0.0f, 0.0f );
-                _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-                _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+                _engine->draw_safe_area( f * 0.9f, 0.9f, N_("tv action") );
+                _engine->draw_safe_area( f * 0.8f, 0.8f, N_("tv title") );
             }
         }
 
-    }
-
-
-    if ( !fg ) {
-        return;
-    }
-
-    _engine->draw_annotation( img->shapes(), img );
-    _engine->line_width(1.0);
-
-    if ( _zoom_grid )
-      {
-        _engine->draw_grid( img, 1.0 );
-      }
-
-    if ( _grid )
-    {
-        _engine->draw_grid( img, _grid_size );
     }
 
     if ( _selection.w() > 0 || _selection.h() > 0 )
@@ -4405,24 +4802,20 @@ void ImageView::draw()
         if ( _zoom >= 32 ) _engine->line_width(1.0);
     }
 
-    if ( !(flags & kMouseDown) )
+    if ( !(flags & kMouseDown) && Fl::belowmouse() == this )
       {
           // std::cerr << "flags " << flags << " "
           //           << !(flags & kMouseDown ) <
           //     < std::endl;
-          if (  (_mode & kDraw) || (_mode & kErase) ||
-                (_mode & kCircle) || (_mode & kArrow ) )
+          if ( (_mode & kDraw) || (_mode & kErase) ||
+               (_mode & kCircle) || (_mode & kArrow ) ||
+               (_mode & kRectangle) )
             {
                 double xf = X;
                 double yf = Y;
 
 
                 data_window_coordinates( img, xf, yf );
-
-                const mrv::Recti& dpw = img->display_window();
-
-                unsigned int H = dpw.h();
-                if ( H == 0 ) H = img->height();
 
                 yf = -yf;
 
@@ -4431,13 +4824,8 @@ void ImageView::draw()
                 yf -= daw.y();
 
 
-                //float scale = Fl::screen_scale( window()->screen_num() );
-                // xf *= scale;
-                // yf *= scale;
-
-
+                window()->cursor( FL_CURSOR_NONE );
                 _engine->draw_cursor( xf, yf, _mode );
-                window()->cursor(FL_CURSOR_NONE);
             }
           else
             {
@@ -4461,8 +4849,10 @@ void ImageView::draw()
 
 
     if ( _hud == kHudNone )
+    {
+        Fl_Gl_Window::draw();
         return;
-
+    }
 
     //
     // Draw HUD
@@ -4593,17 +4983,12 @@ void ImageView::draw()
                 (p == CMedia::kBackwards && _lastFrame > frame ))
             {
                 float ifps = img->fps();
-                if ( ifps > 30.975f ) ifps /= 2.0f;
                 float fps = img->play_fps() / ifps;
                 int64_t frame_diff = ( frame - _lastFrame ) / fps;
-                if ( p == CMedia::kForwards ) frame_diff--;
-                else frame_diff++;
-
-
                 int64_t absdiff = std::abs(frame_diff);
-                if ( absdiff > 0 && absdiff < 10 )
+                if ( absdiff > 1 && absdiff < 11 )
                 {
-                    unshown_frames += absdiff;
+                    unshown_frames += absdiff - 1;
                 }
 
                 _lastFrame = frame;
@@ -4695,27 +5080,40 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
 
+    Fl_Gl_Window::draw();
 
 }
 
 
 GLShapeList& ImageView::shapes()
 {
+    static GLShapeList empty;
     mrv::media fg = foreground();
+    if (!fg) return empty;
     return fg->image()->shapes();
+}
+
+GLShapeList& ImageView::undo_shapes()
+{
+    static GLShapeList empty;
+    mrv::media fg = foreground();
+    if (!fg) return empty;
+    return fg->image()->undo_shapes();
 }
 
 void ImageView::add_shape( mrv::shape_type_ptr s )
 {
     mrv::media fg = foreground();
     if (!fg) {
-        LOG_ERROR( "No image to add shape to" );
+        LOG_ERROR( _("No image to add shape to") );
         return;
     }
 
     fg->image()->add_shape( s );
     uiMain->uiPaint->uiUndoDraw->activate();
     uiMain->uiPaint->uiRedoDraw->deactivate();
+    uiMain->uiUndoDraw->activate();
+    uiMain->uiRedoDraw->deactivate();
 }
 
 int sign (const Imath::V2i& p1,
@@ -4725,37 +5123,6 @@ int sign (const Imath::V2i& p1,
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 }
 
-// bool PointInTriangle (const Imath::V2d& p,
-//                       const Imath::V2d& p0,
-//                       const Imath::V2d& p1,
-//                       const Imath::V2d& p2)
-// {
-//     double dX = p.x-p2.x;
-//     double dY = p.y-p2.y;
-//     double dX21 = p2.x-p1.x;
-//     double dY12 = p1.y-p2.y;
-//     double D = dY12*(p0.x-p2.x) + dX21*(p0.y-p2.y);
-//     double s = dY12*dX + dX21*dY;
-//     double t = (p2.y-p0.y)*dX + (p0.x-p2.x)*dY;
-//     if (D<0) return s<=0 && t<=0 && s+t>=D;
-//     return s>=0 && t>=0 && s+t<=D;
-// }
-// bool PointInTriangle (const Imath::V2d& s,
-//                       const Imath::V2d& a,
-//                       const Imath::V2d& b,
-//                       const Imath::V2d& c)
-// {
-//     int as_x = s.x-a.x;
-//     int as_y = s.y-a.y;
-
-//     bool s_ab = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
-
-//     if((c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) return false;
-
-//     if((c.x-b.x)*(s.y-b.y)-(c.y-b.y)*(s.x-b.x) > 0 != s_ab) return false;
-
-//     return true;
-// }
 bool PointInTriangle (const Imath::V2i& pt,
                       const Imath::V2i& v1,
                       const Imath::V2i& v2,
@@ -4776,6 +5143,7 @@ bool PointInTriangle (const Imath::V2i& pt,
      SCOPED_LOCK( _shortcut_mutex );
 
      menu->clear();
+
      int idx = 1;
 
      menu->add( _("File/Open/Movie or Sequence"),
@@ -4826,7 +5194,8 @@ bool PointInTriangle (const Imath::V2i& pt,
      if ( dynamic_cast< Fl_Menu_Bar* >( menu ) )
      {
          item->flags |= FL_MENU_DIVIDER;
-         menu->add( _("File/Quit"), 0, (Fl_Callback*)exit_cb, uiMain );
+         menu->add( _("File/Quit"), kQuitProgram.hotkey(),
+                    (Fl_Callback*)exit_cb, uiMain );
      }
 
 
@@ -4844,8 +5213,39 @@ bool PointInTriangle (const Imath::V2i& pt,
              tmp = tmp.substr( 0, pos ) + '\\' +
                    tmp.substr( pos, tmp.size() );
          }
+         unsigned hotkey = 0;
+         if ( tmp == _("Reels") ) hotkey = kToggleReel.hotkey();
+         else if ( tmp == _("Media Info") ) hotkey = kToggleMediaInfo.hotkey();
+         else if ( tmp == _("Color Info") ) hotkey = kToggleColorInfo.hotkey();
+         else if ( tmp == _("Color Controls") )
+             hotkey = kToggleColorControls.hotkey();
+         else if ( tmp == _("Action Tools") ) hotkey = kToggleAction.hotkey();
+         else if ( tmp == _("A-B, Stereo 3D Options") )
+             hotkey = kToggleStereoOptions.hotkey();
+         else if ( tmp == _("Preferences") )
+             hotkey = kTogglePreferences.hotkey();
+         else if ( tmp == _("EDL Edit") )
+             hotkey = kToggleEDLEdit.hotkey();
+         else if ( tmp == _("3dView") )
+             hotkey = kToggle3dView.hotkey();
+         else if ( tmp == _("Histogram") )
+             hotkey = kToggleHistogram.hotkey();
+         else if ( tmp == _("Vectorscope") )
+             hotkey = kToggleVectorscope.hotkey();
+         else if ( tmp == _("Waveform") )
+             hotkey = kToggleWaveform.hotkey();
+         else if ( tmp == _("ICC Profiles") )
+             hotkey = kToggleICCProfiles.hotkey();
+         else if ( tmp == _("Connections") )
+             hotkey = kToggleConnections.hotkey();
+         else if ( tmp == _("Hotkeys") )
+             hotkey = kToggleHotkeys.hotkey();
+         else if ( tmp == _("Logs") )
+             hotkey = kToggleLogs.hotkey();
+         else if ( tmp == _("About") )
+             hotkey = kToggleAbout.hotkey();
          tmp = _("Windows/") + tmp;
-         menu->add( tmp.c_str(), 0, (Fl_Callback*)window_cb, uiMain );
+         menu->add( tmp.c_str(), hotkey, (Fl_Callback*)window_cb, uiMain );
      }
 
 
@@ -4856,11 +5256,16 @@ bool PointInTriangle (const Imath::V2i& pt,
          menu->add( _("View/Safe Areas"), kSafeAreas.hotkey(),
                     (Fl_Callback*)safe_areas_cb, this );
 
-         menu->add( _("View/Display Window"), kDisplayWindow.hotkey(),
-                    (Fl_Callback*)display_window_cb, this );
+         idx = menu->add( _("View/Display Window"), kDisplayWindow.hotkey(),
+                          (Fl_Callback*)display_window_cb, this,
+                          FL_MENU_TOGGLE );
+         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+         if ( display_window() ) item->set();
 
-         menu->add( _("View/Data Window"), kDataWindow.hotkey(),
-                    (Fl_Callback*)data_window_cb, this );
+         idx = menu->add( _("View/Data Window"), kDataWindow.hotkey(),
+                          (Fl_Callback*)data_window_cb, this, FL_MENU_TOGGLE );
+         item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+         if ( data_window() ) item->set();
 
          idx = menu->add( _("View/Texture Filtering  "),
                           kTextureFiltering.hotkey(),
@@ -4890,7 +5295,7 @@ bool PointInTriangle (const Imath::V2i& pt,
                               FL_MENU_RADIO );
              item = (Fl_Menu_Item*) &(menu->menu()[idx]);
              float mask = kCrops[i];
-             if ( mask == _masking ) item->set();
+             if ( mrv::is_equal( mask, _masking ) ) item->set();
          }
 
 
@@ -5174,8 +5579,17 @@ bool PointInTriangle (const Imath::V2i& pt,
 
 
      menu->menu_end();
+     Fl_Sys_Menu_Bar* smenubar = dynamic_cast< Fl_Sys_Menu_Bar* >( menu );
+     if ( smenubar )
+     {
+         smenubar->update();
+     }
      menu->redraw();
  }
+
+unsigned ImageView::font_height() {
+    return mrv::font_size;
+}
 
 /**
  * Handle a mouse press
@@ -5260,9 +5674,8 @@ int ImageView::leftMouseDown(int x, int y)
         if ( _mode & kSelection )
         {
             _selection = mrv::Rectd( 0, 0, 0, 0 );
-            char buf[64];
-            sprintf( buf, "Selection 0 0 0 0" );
-            send_network( buf );
+            update_color_info();
+            send_selection();
             return 1;
         }
         else if ( _mode == kCopyFrameXY )
@@ -5353,10 +5766,12 @@ int ImageView::leftMouseDown(int x, int y)
             return 1;
         }
         else if ( (_mode & kDraw) || (_mode & kErase) || (_mode == kCircle) ||
-                  (_mode & kArrow) || _mode == kText )
+                  (_mode & kArrow) || (_mode & kRectangle) || _mode == kText )
         {
 
             _selection = mrv::Rectd( 0, 0, 0, 0 );
+            update_color_info();
+            send_selection();
 
             mrv::media fg = foreground();
             if ( !fg ) return 0;
@@ -5375,9 +5790,6 @@ int ImageView::leftMouseDown(int x, int y)
             xf += daw.x();
             yf -= daw.y();
 
-            // float scale = Fl::screen_scale( window()->screen_num() );
-            // xf *= scale;
-            // yf *= scale;
 
             std::string str;
             GLShape* s;
@@ -5397,22 +5809,52 @@ int ImageView::leftMouseDown(int x, int y)
             {
                  s = new GLArrowShape;
             }
+            else if ( _mode & kRectangle )
+            {
+                 s = new GLRectangleShape;
+            }
             else if ( _mode == kText )
             {
-                if ( mrv::font_text != "" )
+                bool found = false;
+                MultilineInput* w;
+                GLTextShape* t;
+                for ( int i = 0; i < children(); ++i )
                 {
-                    GLTextShape* t = new GLTextShape;
+                    w = dynamic_cast< MultilineInput* >( child(i) );
+                    if ( !w ) continue;
+                    found = true; break;
+                }
+                if ( ! found )
+                {
+                    w = new MultilineInput( x, y, 20, ( mrv::font_size + 24 ) *
+                                            zoom() );
+                    w->take_focus();
+                    uchar r, g, b;
+                    Fl::get_color( uiMain->uiPaint->uiPenColor->color(),
+                                   r, g, b );
+                    w->textfont( mrv::font_current );
+                    w->textsize( mrv::font_size * zoom() );
+                    w->font_size( mrv::font_size * zoom() );
+                    w->textcolor( fl_rgb_color( r, g, b ) );
 
+                    this->add( w );
+
+                    t = new GLTextShape;
                     t->font( mrv::font_current );
                     t->size( mrv::font_size );
-                    t->text( mrv::font_text );
                     s = t;
                 }
                 else
                 {
+                    const GLShapeList& shapes = this->shapes();
+                    if ( shapes.empty() ) return 0;
+                    t = dynamic_cast< GLTextShape* >( shapes.back().get() );
+                    if ( !t ) return 0;
+                    t->pts[0] = mrv::Point( xf, yf );
+                    w->Fl_Widget::position( x, y );
+                    redraw();
                     return 1;
                 }
-
             }
             else
             {
@@ -5448,19 +5890,26 @@ int ImageView::leftMouseDown(int x, int y)
             else
                 {
                     GLPathShape* path = nullptr;
-                    if ( ( path = dynamic_cast< GLPathShape* >( s ) ) )
-                        {
-                            mrv::Point p( xf, yf );
-                            path->pts.push_back( p );
-                        }
                     if ( ( path = dynamic_cast< GLArrowShape* >( s ) ) )
-                        {
-                            mrv::Point p( xf, yf );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                            path->pts.push_back( p );
-                        }
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                    }
+                    else if ( ( path = dynamic_cast< GLRectangleShape* >( s )) )
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                        path->pts.push_back( p );
+                    }
+                    else if ( ( path = dynamic_cast< GLPathShape* >( s ) ) )
+                    {
+                        mrv::Point p( xf, yf );
+                        path->pts.push_back( p );
+                    }
                 }
 
             send_network( str );
@@ -5557,6 +6006,11 @@ void ImageView::leftMouseUp( int x, int y )
     else
         flags &= ~kMouseRight;
 
+    if ( _mode & kSelection )
+    {
+        send_selection();
+    }
+
     if ( _mode & kTemporary )
     {
         scrub_mode();
@@ -5601,13 +6055,27 @@ void ImageView::leftMouseUp( int x, int y )
             timeline()->redraw();
         }
     }
+    else if ( _mode & kRectangle )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLRectangleShape* s = dynamic_cast< GLRectangleShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLRectangleShape pointer") );
+        }
+        else
+        {
+            send_network( s->send() );
+            timeline()->redraw();
+        }
+    }
     else if ( _mode & kArrow )
     {
         mrv::shape_type_ptr o = fg->image()->shapes().back();
         GLArrowShape* s = dynamic_cast< GLArrowShape* >( o.get() );
         if ( s == NULL )
         {
-            LOG_ERROR( _("Not a GLErasePathShape pointer") );
+            LOG_ERROR( _("Not a GLArrowShape pointer") );
         }
         else
         {
@@ -5617,7 +6085,9 @@ void ImageView::leftMouseUp( int x, int y )
     }
     else if ( _mode == kText )
     {
-        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        const GLShapeList& shapes = this->shapes();
+        if ( shapes.empty() ) return;
+        mrv::shape_type_ptr o = shapes.back();
         GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
         if ( s == NULL )
         {
@@ -5631,11 +6101,13 @@ void ImageView::leftMouseUp( int x, int y )
     }
     else if ( _mode == kCircle )
     {
-        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        const GLShapeList& shapes = this->shapes();
+        if ( shapes.empty() ) return;
+        mrv::shape_type_ptr o = shapes.back();
         GLCircleShape* s = dynamic_cast< GLCircleShape* >( o.get() );
         if ( s == NULL )
         {
-            LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
+            LOG_ERROR( _("Not a GLCircleShape pointer in mouseRelease") );
         }
         else
         {
@@ -5643,11 +6115,6 @@ void ImageView::leftMouseUp( int x, int y )
             timeline()->redraw();
         }
     }
-    // else if ( _mode == kScrub || _mode == kMovePicture ||
-    //           _mode == kScalePicture )
-    // {
-    //     _mode = kNoAction;
-    // }
 
 }
 
@@ -5779,17 +6246,23 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.g *= _gain;
     rgba.b *= _gain;
 
+    ColorControlsUI* cc = uiMain->uiColorControls;
+    if ( cc->uiActive->value() )
+    {
+        const Imath::M44f& m = colorMatrix(cc);
+        Imath::V3f* iop = (Imath::V3f*)&rgba;
+        *iop *= m;
+    }
+
     //
     // To represent pixel properly, we need to do the lut
     //
     if ( use_lut() && ( p == kRGBA_Lut || p == kRGBA_Full ) )
     {
-        Imath::V3f in( rgba.r, rgba.g, rgba.b );
+        Imath::V3f* in = (Imath::V3f*) &rgba;
         Imath::V3f out;
-        _engine->evaluate( img, in, out );
-        rgba.r = out[0];
-        rgba.g = out[1];
-        rgba.b = out[2];
+        _engine->evaluate( img, *in, out );
+        *in = out;
     }
 
 
@@ -6269,14 +6742,10 @@ void ImageView::mouseMove(int x, int y)
 {
     if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-
     mrv::media fg = foreground();
     if ( !fg ) return;
 
     CMedia* img = fg->image();
-    if ( !img ) return;
-
-
 
     mrv::image_type_ptr pic;
     bool outside = false;
@@ -6957,23 +7426,14 @@ void ImageView::mouseDrag(int x,int y)
 
                 _selection = mrv::Rectd( xt, yt, dx, dy );
 
-                char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
-                setlocale( LC_NUMERIC, "C" );
-
-                char buf[128];
-                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-                         _selection.y(), _selection.w(), _selection.h() );
-
-                restore_locale( oldloc );
-
-                send_network( buf );
 
             }
 
 
             float scale = Fl::screen_scale( window()->screen_num() );
 
-            if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) )
+            if ( (_mode & kDraw) || (_mode & kErase) || (_mode & kArrow) ||
+                 (_mode & kRectangle) )
             {
                 GLShapeList& shapes = fg->image()->shapes();
                 if ( shapes.empty() ) return;
@@ -6995,38 +7455,42 @@ void ImageView::mouseDrag(int x,int y)
 
 
                     mrv::Point p2( xn, yn );
-                    if ( _mode == kArrow )
-                        {
-                            Imath::V2d p1 = s->pts[0];
-                            Imath::V2d lineVector = p2 - p1;
-                            double lineLength = lineVector.length();
+                    if ( _mode & kArrow )
+                    {
+                        Imath::V2d p1 = s->pts[0];
+                        Imath::V2d lineVector = p2 - p1;
+                        double lineLength = lineVector.length();
 
 
-                            const float theta = 45 * M_PI / 180;
-                            const int nWidth = 35;
+                        const float theta = 45 * M_PI / 180;
+                        const int nWidth = 35;
 
-                            double tPointOnLine = nWidth /
-                                                  (2 * (tanf(theta) / 2) *
-                                                   lineLength);
-                            Imath::V2d pointOnLine = p2 +
-                                                     -tPointOnLine * lineVector;
+                        double tPointOnLine = nWidth /
+                                              (2 * (tanf(theta) / 2) *
+                                               lineLength);
+                        Imath::V2d pointOnLine = p2 +
+                                                 -tPointOnLine * lineVector;
 
-                            Imath::V2d normalVector( -lineVector.y,
-                                                      lineVector.x );
+                        Imath::V2d normalVector( -lineVector.y,
+                                                 lineVector.x );
 
-                            double tNormal = nWidth / (2 * lineLength );
-                            Imath::V2d tmp = pointOnLine +
-                                             tNormal * normalVector;
-                            s->pts[1] = p2;
-                            s->pts[2] = tmp;
-                            s->pts[3] = p2;
-                            tmp = pointOnLine + -tNormal * normalVector;
-                            s->pts[4] = tmp;
-                        }
+                        double tNormal = nWidth / (2 * lineLength );
+                        Imath::V2d tmp = pointOnLine +
+                                         tNormal * normalVector;
+                        s->pts[1] = p2;
+                        s->pts[2] = tmp;
+                        s->pts[3] = p2;
+                        tmp = pointOnLine + -tNormal * normalVector;
+                        s->pts[4] = tmp;
+                    }
+                    else if ( _mode & kRectangle )
+                    {
+                        s->pts[1] = p2;
+                    }
                     else
-                        {
-                            s->pts.push_back( p2 );
-                        }
+                    {
+                        s->pts.push_back( p2 );
+                    }
                 }
             }
             else if ( _mode == kCircle )
@@ -7052,26 +7516,26 @@ void ImageView::mouseDrag(int x,int y)
                 double B = p.y - s->center.y;
                 s->radius = sqrt( A*A+B*B ) / scale;
             }
-            else if ( _mode == kText )
+            else if ( _mode & kText )
             {
-                GLShapeList& shapes = fg->image()->shapes();
-                if ( shapes.empty() ) return;
-
-                mrv::shape_type_ptr o = shapes.back();
-                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-                if ( s == NULL )
+                bool found = false;
+                MultilineInput* w;
+                GLTextShape* t;
+                for ( int i = 0; i < children(); ++i )
                 {
-                    LOG_ERROR( _("Not a GLTextShape pointer in position") );
+                    w = dynamic_cast< MultilineInput* >( child(i) );
+                    if ( !w ) continue;
+                    found = true; break;
                 }
-                else
+                if ( found )
                 {
-                    yn = -yn;
-
-                    xn += daw[idx].x();
-                    yn -= daw[idx].y();
-
-
-                    s->position( int(xn), int(yn) );
+                    const GLShapeList& shapes = this->shapes();
+                    if ( shapes.empty() ) return;
+                    t = dynamic_cast< GLTextShape* >( shapes.back().get() );
+                    if ( !t ) return;
+                    t->pts[0] = mrv::Point( xf, yf );
+                    w->Fl_Widget::position( x, y );
+                    redraw();
                 }
             }
 
@@ -7109,7 +7573,8 @@ void ImageView::texture_filtering( const TextureFiltering p )
  */
 int ImageView::keyDown(unsigned int rawkey)
 {
-    if ( _mode & kDraw || _mode & kErase || _mode & kArrow )
+    if ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
+         _mode & kRectangle )
     {
         double pen = uiMain->uiPaint->uiPenSize->value();
         // Use exposure hotkey ( default [ and ] )
@@ -7174,6 +7639,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kArrowMode.match( rawkey ) )
     {
         arrow_mode();
+        return 1;
+    }
+    else if ( kRectangleMode.match( rawkey ) )
+    {
+        rectangle_mode();
         return 1;
     }
     else if ( kCircleMode.match( rawkey ) )
@@ -8071,10 +8541,11 @@ int ImageView::keyUp(unsigned int key)
     if ( ( _mode & kSelection ) && (((key & FL_Shift_L) == FL_Shift_L) ||
                                     ((key & FL_Shift_R) == FL_Shift_R)))
     {
-      scrub_mode();
-      flags &= ~kGain;
-      flags &= ~kGamma;
-      return 1;
+        send_selection();
+        scrub_mode();
+        flags &= ~kGain;
+        flags &= ~kGamma;
+        return 1;
     }
     else if ( flags & kLeftShift &&
               !Fl::get_key(FL_Shift_L) && !Fl::get_key( FL_Shift_R ) )
@@ -8182,10 +8653,6 @@ void ImageView::toggle_fullscreen()
         else FullScreen = true;
         presentation = false;
         show_bars( uiMain );
-        // resize_main_window();
-        // resize_main_window();
-        DBGM1( "posXY=" << posX << "," << posY << " sizeXY " << sizeX << "x"
-               << sizeY << " fullscreen " << FullScreen );
         fltk_main()->fullscreen_off( posX, posY, sizeX, sizeY );
         Fl::check();
         if ( FullScreen ) fltk_main()->fullscreen();
@@ -8531,6 +8998,11 @@ void ImageView::handle_timeout()
 int ImageView::handle(int event)
 {
     int ret = Fl_Gl_Window::handle( event );
+    if ( ret && event == FL_PUSH ) {
+        redraw();
+        return ret;
+    }
+
     switch( event )
     {
     case FL_FOCUS:
@@ -8542,16 +9014,22 @@ int ImageView::handle(int event)
         else
         {
             if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
-                                     _mode & kArrow || _mode & kCircle ) )
+                                     _mode & kArrow || _mode & kCircle ||
+                                     _mode & kRectangle ) )
                 window()->cursor( FL_CURSOR_CROSS );
         }
         return 1;
     }
     case FL_ENTER:
         if ( !presentation && !( _mode & kScrub || _mode & kSelection ||
-                                 _mode & kArrow || _mode & kCircle ) )
+                                 _mode & kArrow || _mode & kCircle ||
+                                 _mode & kRectangle ) )
             window()->cursor( FL_CURSOR_CROSS );
-      return 1;
+        if ( _mode & kDraw || _mode & kErase || _mode & kArrow ||
+             _mode & kCircle ||  _mode & kRectangle )
+            window()->cursor( FL_CURSOR_NONE );
+        redraw();
+        return 1;
     case FL_UNFOCUS:
         if ( !presentation )
             window()->cursor( FL_CURSOR_DEFAULT );
@@ -8559,9 +9037,10 @@ int ImageView::handle(int event)
     case FL_LEAVE:
         if ( !presentation )
             window()->cursor( FL_CURSOR_DEFAULT );
+        redraw();
         return 1;
     case FL_PUSH:
-        focus(this);
+        if (!children()) take_focus();
         return leftMouseDown(Fl::event_x(), Fl::event_y());
         break;
     case FL_RELEASE:
@@ -9276,11 +9755,9 @@ void ImageView::zoom( float z )
     }
     else
     {
-        sprintf( tmp, N_("1/%.3g"), 1/z );
+        sprintf( tmp, N_("1/%.3g"), 1.0f/z );
     }
     uiMain->uiZoom->copy_label( tmp );
-    uiMain->uiZoom->redraw();
-
 
     _zoom = z;
     if ( z >= 32.0f ) { _zoom_grid = true; }
@@ -9741,10 +10218,7 @@ void ImageView::update_layers()
 void ImageView::foreground( mrv::media fg )
 {
     mrv::media old = foreground();
-    if ( old == fg ) {
-        fill_menu( uiMain->uiMenuBar );
-        return;
-    }
+    if ( old == fg ) return;
 
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
@@ -9755,6 +10229,8 @@ void ImageView::foreground( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
+        TRACE( "************* CHANGE FOREGROUND TO " << img->name()
+               << " FRAME " << img->frame() );
 
         double fps = img->fps();
         if ( img->is_sequence() &&
@@ -9777,18 +10253,23 @@ void ImageView::foreground( mrv::media fg )
 
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
         {
-            img->volume( _volume );
-
-            CMedia* right = img->right_eye();
-            if ( right ) right->volume( _volume );
-        }
-        else
-        {
-            mrv::AudioEngine* engine = img->audio_engine();
-            if ( engine )
+            float Av = 1.0f, Bv = 1.0f;
+            if ( Aimg )
             {
-                _volume = engine->volume();
-                uiMain->uiVolume->value( _volume );
+                Av = Aimg->volume();
+            }
+            if ( Bimg )
+            {
+                Bv = Bimg->volume();
+            }
+            uiMain->uiVolume->value( _volume );
+            if ( Aimg )
+            {
+                Aimg->volume( Av * _volume );
+            }
+            if ( Bimg )
+            {
+                Bimg->volume( Bv * _volume );
             }
         }
     }
@@ -9866,17 +10347,10 @@ void ImageView::foreground( mrv::media fg )
 
     // If this is the first image loaded, resize window to fit it
     if ( !old ) {
-
-        posX = fltk_main()->x();
-        posY = fltk_main()->y();
-
-        DBGM1( "!OLD " << posX << ", " << posY );
-
         Fl_Round_Button* r = (Fl_Round_Button*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
         if ( r->value() == 1 )
         {
             resize_main_window();
-            fit_image();
         }
     }
 
@@ -10059,9 +10533,12 @@ void ImageView::resize( int X, int Y, int W, int H )
  */
 void ImageView::resize_main_window()
 {
-    int w, h;
+    if ( fltk_main()->fullscreen_active() )
+    {
+        return;
+    }
 
-    int oX = 0, oY = 0, oW = 0, oH = 0;
+    int w, h;
 
     mrv::media fg = foreground();
     if ( !fg )
@@ -10078,6 +10555,13 @@ void ImageView::resize_main_window()
         h = (int) (h / img->pixel_ratio());
     }
 
+    int minx, miny, maxw, maxh;
+
+    Fl_Window* mw = fltk_main();
+
+    int screen = mw->screen_num();
+    float scale = Fl::screen_scale( screen );
+    Fl::screen_work_area( minx, miny, maxw, maxh, screen );
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
@@ -10085,63 +10569,45 @@ void ImageView::resize_main_window()
         posX = (int) uiPrefs->uiWindowXPosition->value();
         posY = (int) uiPrefs->uiWindowYPosition->value();
     }
+    else
+    {
+        posX = minx;
+        posY = miny;
+    }
 
 
-#if defined( _WIN32 )
-    const int kTitleBar = 28;
-#elif defined(LINUX)
-    const int kTitleBar = 0;
+
+    int decw = mw->decorated_w();
+    int dech = mw->decorated_h();
+
+    int dw = decw - mw->w();
+    int dh = dech - mw->h();
+
+
+    maxw -= dw;
+    maxh -= dh;
+    posX += dw / 2;
+#ifdef _WIN32
+    posY += dh - dw / 2;
 #else
-    const int kTitleBar = 0;
+    posY += dh;
 #endif
 
-    int minx, miny, maxw, maxh;
 
-    int screen = window()->screen_num();
-    float scale = Fl::screen_scale( screen );
-    Fl::screen_work_area( minx, miny, maxw, maxh, screen );
-
-    int maxx = minx + maxw;
-    int maxy = miny + maxh;
+    int maxx = posX + maxw;
+    int maxy = posY + maxh;
 
     bool fit = false;
 
     if ( w > maxw ) {
         fit = true;
         w = maxw;
-        //        posX = 0;
     }
     if ( h > maxh ) {
         fit = true;
         h = maxh;
-        // posY = 0;
     }
 
-    DBGM1( "posX, posY=" << posX << ", " << posY );
-
-#if 0
-    if ( posX + w > maxx ) {
-        w = maxw;
-        posX = ( w + posX - maxw ) / 2;
-    }
-    if ( posX + w > maxx ) {
-        posX = minx;
-        w = maxw;
-    }
-    if ( posX < minx )     posX = minx;
-
-    if ( posY + h > maxy ) {
-        posY = ( h + posY - maxh ) / 2;
-        if ( posY + h > maxy ) posY = ( h + posY - maxh ) / 2;
-    }
-    if ( posY + h > maxy ) {
-        posY = miny + kTitleBar;
-        h = maxh - kTitleBar;
-    }
-    if ( posY < miny + kTitleBar ) {
-        posY = miny + kTitleBar;
-    }
-#endif
 
     if ( uiMain->uiMenuGroup->visible() )
     {
@@ -10178,35 +10644,22 @@ void ImageView::resize_main_window()
     }
 
     maxw = (int) (maxw / scale);
-    if ( w < 660 )  w = 660;
+    if ( w < 690 )  w = 690;
     else if ( w > maxw )
     {
         w = maxw;
     }
 
-#if defined(_WIN32)
-    int bar = uiMain->uiBottomBar->visible() ? uiMain->uiBottomBar->h() : 0;
-#else
-    int bar = 0;
-#endif
-
-    maxh = (int) ((maxh - bar) / scale);
-    if ( h < 535 )  h = 535;
+    maxh = (int) (maxh / scale);
+    if ( h < 565 )  h = 565;
     else if ( h > maxh )
     {
         h = maxh;
     }
 
-    DBGM1( "posX, posY = " << posX << ", " << posY );
-    if ( fltk_main()->fullscreen_active() )
-    {
-        fltk_main()->fullscreen_off( posX, posY, w, h );
-    }
-    else
-    {
-        fltk_main()->resize( posX, posY, w, h );
-    }
-
+    mw->resize( posX, posY, w, h );
+    mw->show();
+    mw->wait_for_expose();
 
 
     uiMain->uiMenuGroup->size( uiMain->uiMenuGroup->w(),
@@ -10230,7 +10683,8 @@ void ImageView::resize_main_window()
     //valid(0);
     redraw();
 
-    Fl::check();
+    Fl::check();  // Not sure if this is needed, but we'll leave it just in
+                  // case to avoid Thane5's bug of too long window.
 
     if ( fit ) fit_image();
 
@@ -10417,13 +10871,113 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    // Redraw browser to update thumbnail
+    TRACE( "WAS GLOBAL FRAME " << _frame << " NOW GOT " << f );
+
     _frame = f;
 
+    mrv::ImageBrowser* b = browser();
     if  ( playback() == CMedia::kStopped )
     {
-        mrv::ImageBrowser* b = browser();
         if ( b ) b->redraw();
+    }
+    if ( !b ) return;
+
+    mrv::Reel reel = b->current_reel();
+    if ( !reel->edl || !reel || reel->transitions.empty() )
+    {
+        redraw();
+        return;
+    }
+
+    bool in_transition = false;
+    for ( const auto& t : reel->transitions )
+    {
+        int64_t start = t.start();
+        int64_t   end = t.end();
+        if ( _frame <= start || _frame >= end ) continue;
+        TRACE( "FRAME " << _frame << " START " << start << " END "
+                << end );
+
+        CMedia* Atmp = reel->image_at( start );
+        CMedia* Btmp = reel->image_at( end );
+        if ( !Atmp || !Btmp ) continue;
+        assert( Atmp != Btmp );
+
+        TRACE( "Atmp= " << Atmp->name() << " GLOBAL "
+                << _frame << " frame " << Atmp->frame() );
+        TRACE( "Btmp= " << Btmp->name()  << " GLOBAL "
+                << _frame << " frame " << Btmp->frame() );
+
+        int64_t len = end - start;
+        int64_t diff = f - start;
+        float dissolve = float( diff ) / float(len);
+        float rdissolve = 1.0f - dissolve;
+        Atmp->volume( rdissolve * _volume );
+        Btmp->volume( dissolve  * _volume );
+        int64_t Aout = Atmp->out_frame();
+        int64_t Bin  = Btmp->in_frame();
+        int64_t A = Aout - len + diff + 1;
+        int64_t B = Bin  + diff - 1;
+        TRACE( "Atmp= " << Atmp->name() << " lframe " << A );
+        TRACE( "Btmp= " << Btmp->name() << " lframe " << B  );
+        switch( playback() )
+        {
+        case CMedia::kForwards:
+            if ( Btmp->playback() != CMedia::kForwards )
+            {
+                TRACE( "Btmp= " << Btmp->name() << " SEEK " << B  );
+                Btmp->audio_muted( true );
+                Btmp->seek( B );
+            }
+            if ( Atmp->playback() != CMedia::kForwards &&
+                 Atmp->frame() < Aout )
+            {
+                Atmp->audio_muted( true );
+                Atmp->seek( A );
+            }
+            break;
+        case CMedia::kBackwards:
+            if ( Btmp->playback() != CMedia::kBackwards &&
+                 Btmp->frame() > Bin )
+            {
+                Btmp->audio_muted( true );
+                Btmp->seek( B );
+            }
+            if ( Atmp->playback() != CMedia::kBackwards )
+            {
+                Atmp->audio_muted( true );
+                Atmp->seek( A );
+            }
+            break;
+        case CMedia::kStopped:
+        default:
+            Btmp->seek( B );
+            Atmp->seek( A );
+            break;
+        }
+        Atmp->dissolve( rdissolve );
+        Btmp->dissolve( 1.0f );
+        Atmp->image_damage( Atmp->image_damage() | CMedia::kDamageContents );
+        Btmp->image_damage( Btmp->image_damage() | CMedia::kDamageContents );
+        Aimg = Atmp;
+        Bimg = Btmp;
+        in_transition = true;
+        break;
+    }
+
+    if ( !in_transition ) {
+        CMedia::Playback play = playback();
+        if ( Aimg && play == CMedia::kForwards )
+        {
+            TRACE( "########### STOP Aimg " << Aimg->name() );
+            Aimg->playback( CMedia::kStopped );
+        }
+        if ( Bimg && play == CMedia::kBackwards )
+        {
+            TRACE( "########### STOP Bimg " << Bimg->name() );
+            Bimg->playback( CMedia::kStopped );
+        }
+        Aimg = Bimg = NULL;
     }
 
     redraw();
@@ -10663,6 +11217,7 @@ void ImageView::update_image_info() const
 
 void ImageView::playback( const CMedia::Playback b )
 {
+    if ( !uiMain ) return;
 
     _playback = _orig_playback = b;
 
@@ -10699,7 +11254,6 @@ void ImageView::playback( const CMedia::Playback b )
  */
 void ImageView::play_forwards()
 {
-    stop();
     play( CMedia::kForwards );
 }
 
@@ -10709,10 +11263,7 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
-
-    if ( dir == playback() )
-        return;
-
+    assert( dir != CMedia::kStopped );
     if ( dir == CMedia::kForwards )
     {
         send_network(N_("playfwd"));
@@ -10747,9 +11298,7 @@ void ImageView::play( const CMedia::Playback dir )
 
     }
 
-
     playback( dir );
-
 
     double fps = uiMain->uiFPS->value();
 
@@ -10760,29 +11309,22 @@ void ImageView::play( const CMedia::Playback dir )
     //      !( CMedia::preload_cache() ||
     //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
     //   img->has_audio() )
+    // preload_cache_stop();
+
+//    if ( img->start_frame() != img->end_frame() )
     {
-        // preload_cache_stop();
-        if ( img->start_frame() != img->end_frame() )
-            img->play( dir, uiMain, true );
+        img->play( dir, uiMain, true );
     }
 
-
+    if ( Bimg )
+    {
+        Bimg->play( dir, uiMain, true );
+    }
 
     if ( bg && bg != fg )
     {
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
-        typedef boost::recursive_mutex Mutex;
-        Mutex& bgm = img->video_mutex();
-        SCOPED_LOCK( bgm );
-        CMedia::Barrier* barrier = img->fg_bg_barrier();
-        if ( !barrier ) return;
-        img = fg->image();
-        Mutex& fgm = img->video_mutex();
-        SCOPED_LOCK( fgm );
-        barrier->threshold( barrier->threshold() + img->has_audio() +
-                            img->has_picture() );
-        img->fg_bg_barrier( barrier );
     }
 
 }
@@ -10834,9 +11376,6 @@ void ImageView::stop()
     }
 
 
-
-    playback( CMedia::kStopped );
-
     _last_fps = 0.0;
     _real_fps = 0.0;
 
@@ -10844,7 +11383,7 @@ void ImageView::stop()
 
 
 
-    frame( frame() );
+    // frame( frame() );
     // seek( int64_t(timeline()->value()) );
 
 
@@ -10853,13 +11392,12 @@ void ImageView::stop()
         mrv::media fg = foreground();
         if (fg)
         {
-            _preframe = fg->image()->first_cache_empty_frame();
-            if ( _idle_callback )
+            CMedia* img = fg->image();
+            _preframe = img->first_cache_empty_frame();
+            if ( _idle_callback && preload_cache_full( img ) )
             {
                 preload_cache_stop();
             }
-            if ( ! preload_cache_full( fg->image() ) )
-                preload_cache_start();
         }
     }
 
@@ -11014,33 +11552,9 @@ void ImageView::field( FieldDisplay f )
     };
 
     const char* p = kFieldNames[_field];
-    const char* end = p + fl_utf8len1(p[0]);
+    uiMain->uiField->copy_label( select_character( p ) );
 
-    int len;
-    unsigned code;
-    if (*p & 0x80) {              // what should be a multibyte encoding
-        code = fl_utf8decode(p,end,&len);
-        if (len<2) code = 0xFFFD;   // Turn errors into REPLACEMENT CHARACTER
-    } else {                      // handle the 1-byte UTF-8 encoding:
-        code = *p;
-        len = 1;
-    }
-
-
-    char buf[128];
-    memset( buf, 0, 7 );
-    if ( len > 1 )
-    {
-        len = fl_utf8encode( code, buf );
-    }
-    else
-    {
-        buf[0] = *p;
-    }
-    buf[len] = 0;
-
-    uiMain->uiField->copy_label( buf );
-
+    char buf[64];
     sprintf( buf, "FieldDisplay %d", _field );
     send_network( buf );
 

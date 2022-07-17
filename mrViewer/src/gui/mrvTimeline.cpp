@@ -1,6 +1,6 @@
 /*
    mrViewer - the professional movie and flipbook playback
-   Copyright (C) 2007-2020  Gonzalo Garramuño
+   Copyright (C) 2007-2022  Gonzalo Garramuño
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -69,10 +69,10 @@ _draw_annotation( true ),
 _draw_cache( true ),
 _tc( 0 ),
 _fps( 24 ),
-_display_min( AV_NOPTS_VALUE ),
-_display_max( AV_NOPTS_VALUE ),
-_undo_display_min( AV_NOPTS_VALUE ),
-_undo_display_max( AV_NOPTS_VALUE ),
+_display_min( 1 ),
+_display_max( 50 ),
+_undo_display_min( 1 ),
+_undo_display_max( 50 ),
 image( NULL ),
 win( NULL ),
 uiMain( NULL )
@@ -100,8 +100,9 @@ mrv::ImageBrowser* Timeline::browser() const
     return uiMain->uiReelWindow->uiBrowser;
 }
 
-void Timeline::display_minimum( const double& x )
+void Timeline::display_minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
     if ( x >= minimum() ) {
         //if ( _edl )
             _undo_display_min = _display_min;
@@ -145,8 +146,9 @@ void Timeline::undo_display_maximum()
     redraw();
 }
 
-void Timeline::display_maximum( const double& x )
+void Timeline::display_maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
     if ( x <= maximum() ) {
         //if ( _edl )
             _undo_display_max = _display_max;
@@ -168,6 +170,8 @@ void Timeline::display_maximum( const double& x )
 
 void Timeline::minimum( double x )
 {
+    if ( x > _display_max ) x = _display_max;
+
     Fl_Slider::minimum( x );
     _display_min = x;
 
@@ -181,6 +185,8 @@ void Timeline::minimum( double x )
 
 void Timeline::maximum( double x )
 {
+    if ( x < _display_min ) x = _display_min;
+
     Fl_Slider::maximum( x );
     _display_max = x;
 
@@ -196,7 +202,6 @@ void Timeline::edl( bool x )
 {
     _edl = x;
 
-    return;
 
     if ( _edl && uiMain && browser() )
     {
@@ -310,7 +315,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     }
 
     fl_color(linecolor);
-    char buffer[16];
+    char buffer[32];
     fl_font(labelfont(), labelsize());
     for (int n = 0; ; n++) {
         // every ten they get further apart for log slider:
@@ -342,6 +347,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
             int y1dyt = y1 + dy*t;
             fl_line(x1dxt+dy*sm, y1dyt+dx*sm, x2+dx*t, y2+dy*t);
             if (n%nummod == 0) {
+                TRACE2( "v = " << v );
                 mrv::Timecode::format( buffer, _display, int64_t(-v), _tc,
                                        _fps );
                 fl_color(textcolor);
@@ -396,6 +402,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int64_t max = frame + size;
     if ( mx < max ) max = mx;
 
+
     // If too many frames, playback suffers, so we exit here
     if ( max - j > uiMain->uiPrefs->uiPrefsMaxCachelineFrames->value() ) return;
 
@@ -425,7 +432,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int dx = NO_FRAME_VALUE;
 
 
-    int64_t t2;
     while ( j <= max )
     {
         dx = NO_FRAME_VALUE;
@@ -434,7 +440,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         {
             if ( img->is_cache_filled( t ) >= c )
             {
-                t2 = t;
                 dx = rx + slider_position( double(j), ww );
                 break;
             }
@@ -677,7 +682,7 @@ void Timeline::draw()
         mx = display_maximum();
     }
 
-    double v  = uiMain->uiView->frame(); //value();
+    double v  = uiMain->uiView->frame(); //value(); // @todo: should be value()
 
     if ( !browser() ) return;
 
@@ -701,6 +706,7 @@ void Timeline::draw()
         uint64_t frame = 1;
         int rx = r.x() + int(slider_size()-1)/2;
 
+        CMedia* fgimg = NULL;
         CMedia* img = NULL;
         for ( ; i != e; frame += size, ++i )
         {
@@ -721,6 +727,7 @@ void Timeline::draw()
             // Draw a block
             if ( v >= frame && v < frame + size )
             {
+                fgimg = img;
                 fl_color( fl_darker( FL_YELLOW ) );
             }
             else
@@ -740,21 +747,19 @@ void Timeline::draw()
         }
 
         frame = 1;
-        unsigned idx = 0;
-        mrv::media fg = browser()->current_image();
 
         for ( i = reel->images.begin(); i != e; frame += size, ++i )
         {
             CMedia* img = (*i)->image();
 
             size = img->duration();
-            int64_t pos = (*i)->position() - img->first_frame();
+            int64_t pos = (*i)->position() - img->in_frame();
 
 
             // skip this block if outside visible timeline span
             if ( frame + size < mn || frame > mx ) continue;
 
-            if ( _draw_cache && (*i) == fg )
+            if ( _draw_cache && img == fgimg )
             {
                 draw_cacheline( img, pos, size, int64_t(mn),
                                 int64_t(mx),
@@ -762,7 +767,7 @@ void Timeline::draw()
             }
 
 
-            if ( draw_annotation() && (*i) == fg )
+            if ( draw_annotation() && img == fgimg )
             {
                 int rx = r.x() + int(slider_size()-1)/2;
                 int ry = r.y() + r.h()/2;
@@ -951,37 +956,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 void change_timeline_display( ViewerUI* uiMain )
 {
     int i = uiMain->uiTimecodeSwitch->value();
-    const char* p = uiMain->uiTimecodeSwitch->child(i)->label();
-    const char* end = p + fl_utf8len1(p[0]);
-
-    int len;
-    unsigned code;
-    if (*p & 0x80) {              // what should be a multibyte encoding
-        code = fl_utf8decode(p,end,&len);
-        if (len<2) code = 0xFFFD;   // Turn errors into REPLACEMENT CHARACTER
-    } else {                      // handle the 1-byte UTF-8 encoding:
-        code = *p;
-        len = 1;
-    }
-
-
-    char buf[8];
-    memset( buf, 0, 7 );
-    if ( len > 1 )
-    {
-        len = fl_utf8encode( code, buf );
-        buf[len] = ':';
-        buf[len+1] = 0;
-    }
-    else
-    {
-        buf[0] = *p;
-        buf[1] = ':';
-        buf[2] = 0;
-    }
-
-    uiMain->uiTimecodeSwitch->copy_label( buf );
-    uiMain->uiTimecodeSwitch->redraw();
+    select_character( uiMain->uiTimecodeSwitch, true );
 
     mrv::Timecode::Display d = (mrv::Timecode::Display) i;
     uiMain->uiFrame->display( d );

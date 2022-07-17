@@ -15,6 +15,9 @@ SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 # the RPATH to be used when installing
 SET(CMAKE_INSTALL_RPATH "")
 
+
+set( CMAKE_MAKEFILE_VERBOSE 1 )
+
 set (ARCH "" )
 set (OSXARCHS "" )
 

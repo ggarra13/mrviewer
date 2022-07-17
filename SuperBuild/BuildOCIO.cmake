@@ -16,9 +16,7 @@ cmake_host_system_information(RESULT HAS_SSE2 QUERY HAS_SSE2)
 
 ExternalProject_Add(
   ${OCIO_NAME}
-  #URL "https://github.com/imageworks/OpenColorIO/zipball/v1.0.9"
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
-  #GIT_TAG "v1.1.1"
   GIT_TAG main
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR ${OCIO_DEPENDS}

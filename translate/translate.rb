@@ -87,6 +87,8 @@ def fix( text, result )
       #
       result.sub!(/\\oder/, '\nder' )
     end
+  elsif @lang == 'en'
+    result = text
   elsif @lang == 'es'
     result.gsub!( /^(\d+)\.(\d+)(\s+\w)/, '\\1,\\2\\3' )
     if result =~ /\\\s+t/
@@ -306,6 +308,43 @@ def fix( text, result )
       result.sub!( /ID: %in/, 'ID: %i\n' )
     end
   end
+
+  if text == 'Arabic'    and @lang != 'ar' and result !~ / \(.*\)/
+    result += " (عرب)"
+  elsif text == 'English' and @lang != 'en' and result !~ / \(.*\)/
+    result += " (English)"
+  elsif text == "Spanish" and @lang != 'es' and result !~ / \(.*\)/
+    result += " (Español)"
+  elsif text == "German"  and @lang != 'de' and result !~ / \(.*\)/
+    result += " (Deutsch)"
+  elsif text == "Czech"   and @lang != 'cs' and result !~ / \(.*\)/
+    result += " (čeština)"
+  elsif text == "French"  and @lang != 'fr' and result !~ / \(.*\)/
+    result += " (français)"
+  elsif text == "Greek" and @lang != 'gr' and result !~ / \(.*\)/
+    result += " (Ελληνικά)"
+  elsif text == "Italian" and @lang != 'it' and result !~ / \(.*\)/
+    result += " (italiano)"
+  elsif text == "Japanese" and @lang != 'ja' and result !~ / \(.*\)/
+    result += " (日本)"
+  elsif text == "Korean"  and @lang != 'ko' and result !~ / \(.*\)/
+    result += " (한국어)"
+  elsif text == "Polish"  and @lang != 'pl' and result !~ / \(.*\)/
+    result += " (Polski)"
+  elsif text == "Portuguese" and @lang != 'pt' and result !~ / \(.*\)/
+    result += " (português)"
+  elsif text == "Romanian"   and @lang != 'ro' and result !~ / \(.*\)/
+    result += " (Română)"
+  elsif text == "Russian"    and @lang != 'ru' and result !~ / \(.*\)/
+    result += " (русский)"
+  elsif text == "Swedish"    and @lang != 'sv' and result !~ / \(.*\)/
+    result += " (svenska)"
+  elsif text == "Turkish"    and @lang != 'tr' and result !~ / \(.*\)/
+    result += " (Türk)"
+  elsif text == "Chinese"    and @lang != 'zh' and result !~ / \(.*\)/
+    result += " (中国人)"
+  end
+
   if text =~ /(\s+)$/
     spaces = $1
     if result !~ /#{spaces}$/
@@ -328,6 +367,7 @@ def replace( text )
 end
 
 def translate( text )
+  return fix( text, text ) if @lang == 'en'
   if text =~ /\//
     menus = text.split('/')
     if menus.size > 1

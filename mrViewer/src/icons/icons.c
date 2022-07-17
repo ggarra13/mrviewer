@@ -3305,3 +3305,38 @@ static const char* merge_tool_xpm[]={
 "ap.#.#.#aqararararararasatararararararararararau"};
 
 static Fl_Pixmap merge_tool(merge_tool_xpm);
+
+static const char* const rectangle_xpm[]={
+"28 28 2 1",
+"  c None",
+"# c #ffffff",
+"                            ",
+"                            ",
+"  ########################  ",
+"  ########################  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ##                    ##  ",
+"  ########################  ",
+"  ########################  ",
+"                            ",
+"                            "};
+
+static Fl_Pixmap rectangle_28( rectangle_xpm );

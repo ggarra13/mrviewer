@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -90,9 +90,6 @@ public:
     ////////////////// Pre-roll sequence for playback
     virtual void preroll( const int64_t frame );
     virtual bool fetch( mrv::image_type_ptr& canvas, const int64_t frame );
-    /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir, ViewerUI* const uiMain,
-                       const bool fg );
 
     virtual void clear_cache();
 
@@ -322,6 +319,7 @@ protected:
     AVFrame*              _av_frame;
     AVCodecContext*       _subtitle_ctx;           //!< current video context
     SwsContext*           _convert_ctx;
+    Mutex                 _decode_mutex;
 
     video_info_list_t     _video_info;
 

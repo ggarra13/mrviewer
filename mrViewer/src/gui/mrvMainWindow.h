@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,14 +52,14 @@ public:
     virtual int handle( int event );
 
     void fullscreen();
-    
+
     void resize( int X, int Y, int W, int H );
-    
+
     /**
      * Make window appear always on top of others
      *
      */
-    void always_on_top();
+    void always_on_top(int above);
 
     /**
      * Change window's icon to mrViewer's icon

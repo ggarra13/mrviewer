@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This code is largely based on vf_waveform of the ffmpeg project, which is:
     Copyright (c) 2012-2016 Paul B Mahol
@@ -303,10 +303,11 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
 
 void Waveform::draw_pixels( const mrv::Recti& r )
 {
-    if ( ! uiMain->uiView )
+    ImageView* view = uiMain->uiView;
+    if ( ! view )
         return;
 
-    mrv::media m = uiMain->uiView->foreground();
+    mrv::media m = view->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with SHIFT + Left Mouse Button") );
         return;
@@ -321,7 +322,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     int off[2];
     int xmin, ymin, xmax, ymax;
     bool right, bottom;
-    mrv::Rectd selection = uiMain->uiView->selection();
+    mrv::Rectd selection = view->selection();
 
     ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
                                    off, right, bottom );
@@ -350,8 +351,8 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     if ( xmax >= (int)pic->width() ) xmax = (int)pic->width()-1;
     if ( ymax >= (int)pic->height() ) ymax = (int)pic->height()-1;
 
-    assert( xmax < pic->width() );
-    assert( ymax < pic->height() );
+    assert( xmax < (int)pic->width() );
+    assert( ymax < (int)pic->height() );
 
 
 

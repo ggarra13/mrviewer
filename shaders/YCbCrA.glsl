@@ -23,7 +23,6 @@ uniform int height;
 uniform int width;
 
 // Standard controls
-uniform float fade;
 uniform float dissolve;
 uniform float gain;
 uniform float gamma;
@@ -74,11 +73,11 @@ void main()
 
   if ( coeffs )
   {
-        pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
+	pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
 
-        c.r = dot(Kr, pre.xyz);
-        c.g = dot(Kg, pre.xyz);
-        c.b = dot(Kb, pre.xyz);
+	c.r = dot(Kr, pre.xyz);
+	c.g = dot(Kg, pre.xyz);
+	c.b = dot(Kb, pre.xyz);
   }
   else
   {
@@ -189,7 +188,7 @@ void main()
       c.rgb *= c.a;
   }
 
-  c.rgb *= fade;
+  c.rgba *= dissolve;
 
   gl_FragColor = c;
 }

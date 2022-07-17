@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -85,6 +85,7 @@ namespace otime = opentime::OPENTIME_VERSION;
 #include "video/mrvGLShape.h"
 #include "core/Sequence.h"
 #include "core/mrvString.h"
+#include "core/mrvTransition.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
 
@@ -1001,6 +1002,28 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 }
                 continue;
             }
+            else if ( cmd == "GLRectangleShape" )
+            {
+                Point xy;
+                std::string points;
+                GLRectangleShape* shape = new GLRectangleShape;
+                is.clear();
+                std::getline( is, points );
+                is.str( points );
+                is.clear();
+                is >> shape->r >> shape->g >> shape->b >> shape->a
+                   >> shape->pen_size >> shape->frame;
+                while ( is >> xy.x >> xy.y )
+                {
+                    shape->pts.push_back( xy );
+                }
+                if ( !sequences.empty() )
+                {
+                    sequences.back().shapes.push_back(
+                        mrv::shape_type_ptr(shape) );
+                }
+                continue;
+            }
             else if ( cmd == "GLErasePathShape" )
             {
                 Point xy;
@@ -1020,30 +1043,6 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                     sequences.back().shapes.push_back(
                         mrv::shape_type_ptr(shape) );
                 }
-                continue;
-            }
-            else if ( cmd == "FadeIN" )
-            {
-                unsigned frames;
-                std::string f;
-                std::getline( is, f );
-                is.str( f );
-                is.clear();
-                is >> frames;
-                if ( !sequences.empty() )
-                    sequences.back().fade_in = frames;
-                continue;
-            }
-            else if ( cmd == "FadeOUT" )
-            {
-                unsigned frames;
-                std::string f;
-                std::getline( is, f );
-                is.str( f );
-                is.clear();
-                is >> frames;
-                if ( !sequences.empty() )
-                    sequences.back().fade_out = frames;
                 continue;
             }
             else if ( cmd == "GLTextShape" )
@@ -1274,174 +1273,25 @@ bool fileroot( std::string& fileroot, const std::string& file,
     return true;
 }
 
-bool parse_timeline(LoadList& sequences,
-                    const otio::SerializableObject::Retainer<otio::Timeline>& timeline )
+
+std::string relative_path( const std::string& root, const std::string& parent )
 {
 
-    otio::ErrorStatus errorStatus;
-    auto video_tracks = timeline.value->video_tracks();
-    auto onetrack = otio::flatten_stack(video_tracks, &errorStatus);
-    if (!onetrack)
+    std::string path = root;
+
+    if ( Preferences::uiMain->uiPrefs->uiPrefsRelativePaths->value() )
     {
-        LOG_ERROR( _("Could not flatten tracks. Error: "));
-        return false;
+        fs::path parentPath = parent;
+        parentPath = parentPath.parent_path();
+        fs::path childPath = root;
+        fs::path relativePath = fs::relative( childPath, parentPath );
+        path = relativePath.string();
+        if ( path.empty() ) path = root;
     }
 
-    std::string name;
-    std::stringstream ss(name);
-    ss << timeline.value->name() << " Flattened";
-    auto newtimeline = otio::SerializableObject::Retainer<otio::Timeline>(new otio::Timeline(ss.str()));
-    auto stack = otio::SerializableObject::Retainer<otio::Stack>(new otio::Stack());
-    newtimeline.value->set_tracks(stack);
-    if (!stack.value->append_child(onetrack, &errorStatus))
-    {
-      LOG_ERROR(_("Could not append child to stack. Error: "));
-      return false;
-    }
+    std::replace( path.begin(), path.end(), '\\', '/' );
 
-    for (const auto i : newtimeline.value->tracks()->children())
-    {
-        if (auto track = dynamic_cast<otio::Track*>(i.value))
-        {
-            for (auto child : track->children())
-            {
-                if (auto item = dynamic_cast<otio::Item*>(child.value))
-                {
-                    if (auto clip = dynamic_cast<otio::Clip*>(item))
-                    {
-                        auto s = clip->visible_range(&errorStatus).start_time();
-                        auto d = clip->visible_range(&errorStatus).duration();
-                        int64_t start = s.value();
-                        int64_t duration = d.value() - 1;
-                        auto e = dynamic_cast<otio::ExternalReference*>( clip->media_reference() );
-                        if ( e )
-                        {
-                            LoadInfo info( e->target_url(),
-                                           start, start + duration,
-                                           start, start + duration, d.rate() );
-                            sequences.push_back( info );
-                        }
-                    }
-                    // See the documentation to understand the difference
-                    // between each of these ranges:
-                    // https://opentimelineio.readthedocs.io/en/latest/tutorials/time-ranges.html
-                    // summarize_range("  Trimmed Range", clip->trimmed_range(&errorStatus), errorStatus);
-                    // summarize_range("  Visible Range", clip->visible_range(&errorStatus), errorStatus);
-                    // summarize_range("Available Range", clip->available_range(&errorStatus), errorStatus);
-                    else if (auto gap = dynamic_cast<otio::Gap*>(item))
-                    {
-                        auto s = gap->visible_range(&errorStatus).start_time();
-                        auto d = gap->visible_range(&errorStatus).duration();
-                        int64_t start = s.value();
-                        int64_t duration = d.value() - 1;
-                        LoadInfo info( _("Black Gap"),
-                                       start, start + duration,
-                                       start, start + duration, d.rate() );
-                        sequences.push_back( info );
-                    }
-                }
-
-            }
-        }
-    }
-    return true;
-}
-
-bool parse_otio( mrv::LoadList& sequences, const char* file )
-{
-    otio::ErrorStatus error_status;
-    otio::SerializableObject::Retainer<otio::Timeline> timeline(dynamic_cast<otio::Timeline*>(otio::Timeline::from_json_file(file, &error_status)));
-
-    if (!timeline)
-    {
-        LOG_ERROR( _("Could not open .otio file. ") );
-        return false;
-    }
-
-    // Change directory to that of otio file, so that relative paths work fine.
-    fs::path p = file;
-    p = p.parent_path();
-    int ok = chdir( p.string().c_str() );
-
-    return parse_timeline( sequences, timeline );
-}
-
-void ImageBrowser::save_otio( mrv::Reel reel,
-                              const std::string& file )
-{
-    otio::ErrorStatus error_status;
-    auto timeline = otio::SerializableObject::Retainer<otio::Timeline>(new otio::Timeline(reel->name));
-    auto track = otio::SerializableObject::Retainer<otio::Track>(new otio::Track());
-
-    for ( unsigned i = 0 ; i < reel->images.size(); ++i )
-    {
-        char shotID[64];
-        sprintf( shotID, "shot #%d", i );
-        mrv::media& m = reel->images[i];
-        CMedia* img = m->image();
-        otio::RationalTime s( img->start_frame(), img->fps() );
-        otio::RationalTime d( img->end_frame() - img->start_frame() + 1,
-                              img->fps() );
-        otio::TimeRange availableRange( s, d );
-        std::string path = img->fileroot();
-
-        if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
-        {
-            fs::path parentPath = file; //fs::current_path();
-            parentPath = parentPath.parent_path();
-            fs::path childPath = img->fileroot();
-
-            // @WARNING: do not generic_string() here as it fails on windows
-            //           and leaves path empty.
-            if ( img->internal() )
-            {
-                path = childPath.string();
-            }
-            else
-            {
-                fs::path relativePath = fs::relative( childPath, parentPath );
-                path = relativePath.string();
-            }
-
-            if ( path.empty() )
-            {
-                LOG_ERROR( "Error in processing relative path for "
-                           << img->fileroot() );
-                path = img->fileroot();
-            }
-
-            std::replace( path.begin(), path.end(), '\\', '/' );
-        }
-        otio::SerializableObject::Retainer<otio::MediaReference> mediaReference( new otio::ExternalReference( std::string("file://") + path, availableRange ));
-
-        otio::RationalTime start( img->first_frame(), img->fps() );
-        otio::RationalTime duration( img->last_frame() - img->first_frame() + 1,
-                                     img->fps() );
-        otio::TimeRange visibleRange( start, duration );
-        auto clip = otio::SerializableObject::Retainer<otio::Clip>(new otio::Clip(shotID, mediaReference, visibleRange ));
-        if ( ! track.value->append_child( clip, &error_status ) )
-        {
-            LOG_ERROR( _("Could not append one clip to track: ") );
-        }
-    }
-
-    auto stack = otio::SerializableObject::Retainer<otio::Stack>(new otio::Stack());
-    timeline.value->set_tracks(stack);
-    if (!stack.value->append_child(track, &error_status))
-    {
-        LOG_ERROR( _("Could not append one track to stack: ") );
-        return;
-    }
-
-    if (!timeline.value->to_json_file(file.c_str(), &error_status))
-    {
-        LOG_ERROR( _("Could not save .otio timeline: "));
-        return;
-    }
-
-    char buf[1024];
-    sprintf( buf, _("Otio timeline saved to '%s'."), file.c_str() );
-    mrv::alert( buf );
+    return path;
 }
 
 } // namespace mrv

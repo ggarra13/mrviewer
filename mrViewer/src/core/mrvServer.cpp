@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@
 #include <set>
 
 #include <boost/locale.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
@@ -67,6 +68,7 @@
 #include <ImfStringAttribute.h>
 
 #include "core/mrvPlayback.h"
+#include "core/mrvOS.h"
 #include "mrvClient.h"
 #include "mrvServer.h"
 #include "gui/mrvPreferences.h"
@@ -85,6 +87,10 @@
 #include "mrvPreferencesUI.h"
 #include "mrViewer.h"
 
+
+#define NET(x) if ( Preferences::debug > 0 ) LOG_INFO(x)
+
+namespace fs = boost::filesystem;
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
@@ -112,6 +118,8 @@ Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
 
 Parser::~Parser()
 {
+    connected = false;
+    ui = NULL;
 }
 
 void Parser::write( const std::string& s, const std::string& id )
@@ -137,9 +145,10 @@ void Parser::write( const std::string& s, const std::string& id )
 
             if ( p == id )
             {
+                // LOG_INFO( "Skipping " << s << " to " << p );
                 continue;
             }
-            // LOG_INFO( "Resending " << s << " to " << p );
+            NET( "Sending " << s << " to " << p );
             (*i)->deliver( s );
         }
         catch( const std::exception& e )
@@ -204,7 +213,6 @@ bool Parser::parse( const std::string& s )
 
     bool ok = false;
 
-    if (! v ) return false;
 
     Mutex& cmtx = v->_clients_mtx;
     SCOPED_LOCK( cmtx );
@@ -212,9 +220,7 @@ bool Parser::parse( const std::string& s )
     v->network_active( false );
 
 
-
-    if ( Preferences::debug )
-        LOG_INFO( "received: " << s );
+    NET( "Received: " << s );
 
     if ( cmd == N_("GLPathShape") )
     {
@@ -239,6 +245,24 @@ bool Parser::parse( const std::string& s )
         Point xy;
         std::string points;
         GLArrowShape* shape = new GLArrowShape;
+        std::getline( is, points );
+        is.str( points );
+        is.clear();
+        is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
+           >> shape->frame;
+        while ( is >> xy.x >> xy.y )
+        {
+            shape->pts.push_back( xy );
+        }
+        v->add_shape( mrv::shape_type_ptr(shape) );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("GLRectangleShape") )
+    {
+        Point xy;
+        std::string points;
+        GLRectangleShape* shape = new GLRectangleShape;
         std::getline( is, points );
         is.str( points );
         is.clear();
@@ -326,6 +350,7 @@ bool Parser::parse( const std::string& s )
             if ( shape == NULL ) {
                 LOG_ERROR( "Not a GLTextShape as last shape" );
                 v->network_active( true );
+                v->restore_locale( oldloc );
                 return false;
             }
         }
@@ -432,6 +457,13 @@ bool Parser::parse( const std::string& s )
         v->redo_draw();
         ok = true;
     }
+    else if ( cmd == N_("FitImage") )
+    {
+        ImageView::Command c;
+        c.type = ImageView::kFitImage;
+        v->commands.push_back( c );
+        ok = true;
+    }
     else if ( cmd == N_("Zoom") )
     {
         float z;
@@ -440,6 +472,18 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kZoomChange;
         c.data = new Imf::FloatAttribute( z );
+        v->commands.push_back( c );
+
+        ok = true;
+    }
+    else if ( cmd == N_("Rotate") )
+    {
+        float x;
+        is >> x;
+
+        ImageView::Command c;
+        c.type = ImageView::kRotateImage;
+        c.data = new Imf::FloatAttribute( x );
         v->commands.push_back( c );
 
         ok = true;
@@ -476,27 +520,63 @@ bool Parser::parse( const std::string& s )
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            return false;
+        if ( fg ) {
+            CMedia* img = fg->image();
+            img->x( x );
+            img->y( y );
+            ok = true;
         }
-        CMedia* img = fg->image();
-        img->x( x );
-        img->y( y );
-        ok = true;
     }
     else if ( cmd == N_("ScalePicture") )
     {
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) {
-            v->network_active( true );
-            return false;
+        if ( fg ) {
+            CMedia* img = fg->image();
+            img->scale_x( x );
+            img->scale_y( y );
+            ok = true;
         }
-        CMedia* img = fg->image();
-        img->scale_x( x );
-        img->scale_y( y );
+    }
+    else if ( cmd == N_("HBCSActive") )
+    {
+        int t;
+        is >> t;
+        ui->uiColorControls->uiActive->value( t );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Hue") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiHue->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Brightness") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiBrightness->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Contrast") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiContrast->value( f );
+        v->redraw();
+        ok = true;
+    }
+    else if ( cmd == N_("Saturation") )
+    {
+        float f;
+        is >> f;
+        ui->uiColorControls->uiSaturation->value( f );
+        v->redraw();
         ok = true;
     }
     else if ( cmd == N_("UpdateLayers") )
@@ -585,13 +665,18 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, s, '"' );
 
-        char buf[1024];
-        sprintf( buf, "OCIO=%s", s.c_str() );
-        putenv( av_strdup(buf) );
+        if ( fs::exists( s ) )
+        {
+            setenv( "OCIO", s.c_str(), 1 );
 
-        ImageView::Command c;
-        c.type = ImageView::kLUT_CHANGE;
-        v->commands.push_back( c );
+            ImageView::Command c;
+            c.type = ImageView::kLUT_CHANGE;
+            v->commands.push_back( c );
+        }
+        else
+        {
+            LOG_ERROR( _("OCIO config '") << s << _("' does not exist.") );
+        }
 
         ok = true;
     }
@@ -697,14 +782,6 @@ bool Parser::parse( const std::string& s )
         ui->uiLUT->value( (b != 0) );
         v->use_lut( (b != 0) );
         v->redraw();
-        ok = true;
-    }
-    else if ( cmd == N_("AudioVolume") )
-    {
-        float t;
-        is >> t;
-
-        v->volume( t );
         ok = true;
     }
     else if ( cmd == N_("ShowBG") )
@@ -898,9 +975,12 @@ bool Parser::parse( const std::string& s )
         browser()->load( files );
 
         mrv::media fg = v->foreground();
-        browser()->replace( idx, fg );
-        v->redraw();
-        ok = true;
+        if ( fg )
+        {
+            browser()->replace( idx, fg );
+            v->redraw();
+            ok = true;
+        }
     }
     else if ( cmd == N_("RemoveImage") )
     {
@@ -940,6 +1020,7 @@ bool Parser::parse( const std::string& s )
             for ( j = 0; j != e; ++j )
             {
                 mrv::media fg = r->images[j];
+                if (!fg) continue;
                 CMedia* img = fg->image();
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
@@ -970,7 +1051,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kInsertImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = new LoadInfo( imgname );
         v->commands.push_back( c );
         ok = true;
@@ -983,7 +1064,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = NULL;
 
         v->commands.push_back( c );
@@ -1016,10 +1097,9 @@ bool Parser::parse( const std::string& s )
         is >> first;
         is >> last;
 
-        LOG_WARNING( "Change to image #" << idx << " "  << imgname );
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
-        c.data = new Imf::IntAttribute( idx );
+        c.frame = idx;
         c.linfo = new LoadInfo(imgname, first, last);
 
         v->commands.push_back( c );
@@ -1099,7 +1179,10 @@ bool Parser::parse( const std::string& s )
 
             for ( ; j != e; ++j, ++idx )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --idx;
+                    continue;
+                }
                 CMedia* img = (*j)->image();
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
@@ -1133,6 +1216,14 @@ bool Parser::parse( const std::string& s )
     else if ( cmd == N_("sync_image") )
     {
         std::string cmd;
+        char buf[1024];
+
+        const char* const config =
+            v->main()->uiPrefs->uiPrefsOCIOConfig->value();
+        sprintf(buf, N_("OCIOConfig \"%s\""), config );
+        deliver( buf );
+
+
         size_t num = browser()->number_of_reels();
         for (size_t i = 0; i < num; ++i )
         {
@@ -1144,21 +1235,23 @@ bool Parser::parse( const std::string& s )
             cmd += "\"";
             deliver( cmd );
 
+            int idx = 0;
             mrv::MediaList::iterator j = r->images.begin();
             mrv::MediaList::iterator e = r->images.end();
-            for ( ; j != e; ++j )
+            for ( ; j != e; ++j, ++idx )
             {
-                if ( !(*j) ) continue;
+                if ( !(*j) ) {
+                    --idx;
+                    continue;
+                }
 
                 CMedia* img = (*j)->image();
 
-                cmd = N_("CurrentImage \"");
-                cmd += img->directory();
-                cmd += "/";
-                cmd += img->name();
+                sprintf( buf, N_("CurrentImage %d \""), idx );
+                cmd = buf;
+                cmd += img->fileroot();
                 cmd += "\" ";
 
-                char buf[1024];
                 int64_t start = img->first_frame();
                 int64_t end   = img->last_frame();
 
@@ -1184,8 +1277,8 @@ bool Parser::parse( const std::string& s )
                 const mrv::GLShapeList& shapes = img->shapes();
                 if ( shapes.empty() ) continue;
 
-
-                cmd = N_("CurrentImage \"");
+                sprintf( buf, N_("CurrentImage %d \""), idx );
+                cmd = buf;
                 cmd += img->fileroot();
 
                 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
@@ -1204,16 +1297,12 @@ bool Parser::parse( const std::string& s )
             }
         }
 
-        char buf[1024];
-        int64_t frame = v->frame();
-        sprintf( buf, N_("seek %" PRId64 ), frame );
-        deliver( buf );
 
         if ( num == 0 ) {
             v->network_active( true );
+            v->restore_locale( oldloc );
             return true;
         }
-
 
         r = browser()->current_reel();
         if (r)
@@ -1228,6 +1317,11 @@ bool Parser::parse( const std::string& s )
                 cmd = N_("EDL 1");
                 deliver( cmd );
             }
+            else
+            {
+                cmd = N_("EDL 0");
+                deliver( cmd );
+            }
         }
 
         if ( browser()->value() >= 0 )
@@ -1240,13 +1334,14 @@ bool Parser::parse( const std::string& s )
             deliver( buf );
         }
 
+        CMedia* img = NULL;
         {
             mrv::media bg = v->background();
             if ( bg )
             {
                 cmd = N_("CurrentBGImage \"");
 
-                CMedia* img = bg->image();
+                img = bg->image();
                 cmd += img->fileroot();
 
                 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
@@ -1259,10 +1354,11 @@ bool Parser::parse( const std::string& s )
             mrv::media fg = v->foreground();
             if ( !fg ) {
                 v->network_active( true );
+                v->restore_locale( oldloc );
                 return false;
             }
 
-            CMedia* img = fg->image();
+            img = fg->image();
 
             ImageView::VRType t = v->vr();
             if ( t == ImageView::kVRSphericalMap )
@@ -1274,7 +1370,6 @@ bool Parser::parse( const std::string& s )
                 sprintf(buf, N_("VRSpherical 0"));
                 deliver( buf );
                 sprintf(buf, N_("VRCubic 0"));
-                deliver( buf );
             }
             deliver( buf );
 
@@ -1305,12 +1400,27 @@ bool Parser::parse( const std::string& s )
         sprintf( buf, "GhostNext %d", idx );
         deliver( buf );
 
+        ColorControlsUI* cc = ui->uiColorControls;
 
-
-        sprintf(buf, N_("Zoom %g"), v->zoom() );
+        sprintf( buf, "HBCSActive %d", cc->uiActive->value() );
         deliver( buf );
 
-        sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
+        sprintf( buf, "Hue %g", cc->uiHue->value() );
+        deliver( buf );
+
+        sprintf( buf, "Brightness %g", cc->uiBrightness->value() );
+        deliver( buf );
+
+        sprintf( buf, "Contrast %g", cc->uiContrast->value() );
+        deliver( buf );
+
+        sprintf( buf, "Saturation %g", cc->uiSaturation->value() );
+        deliver( buf );
+
+        sprintf(buf, N_("Rotate %g"), img->rot_z() );
+        deliver( buf );
+
+        sprintf(buf, N_("FitImage") );
         deliver( buf );
 
         sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
@@ -1320,10 +1430,6 @@ bool Parser::parse( const std::string& s )
         deliver( buf );
 
         sprintf(buf, N_("OCIO %d"), (int)mrv::Preferences::use_ocio );
-        deliver( buf );
-
-        const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->value();
-        sprintf(buf, N_("OCIOConfig \"%s\""), config );
         deliver( buf );
 
         const std::string& display = mrv::Preferences::OCIO_Display;
@@ -1421,11 +1527,33 @@ bool Parser::parse( const std::string& s )
         int64_t f;
         is >> f;
 
+        CMedia::Playback play = v->playback();
+        if ( play != CMedia::kStopped )
+        {
+            ImageView::Command c;
+            c.type = ImageView::kStopVideo;
+
+            c.frame = f;
+            v->commands.push_back( c );
+        }
+
         ImageView::Command c;
         c.type = ImageView::kSeek;
 
         c.frame = f;
         v->commands.push_back( c );
+
+
+        if ( play == CMedia::kForwards )
+        {
+            c.type = ImageView::kPlayForwards;
+        }
+        else if ( play == CMedia::kBackwards )
+        {
+            c.type = ImageView::kPlayBackwards;
+        }
+        if ( play != CMedia::kStopped )
+            v->commands.push_back( c );
 
         ok = true;
     }
@@ -1597,11 +1725,10 @@ bool Parser::parse( const std::string& s )
         ok = true;
     }
 
-    if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
+    if (!ok) LOG_ERROR( "Parsing failed for "  << s );
 
     v->network_active( true );
-
-    setlocale( LC_NUMERIC, oldloc );
+    v->restore_locale( oldloc );
 
     return ok;
 }
@@ -1675,11 +1802,7 @@ void tcp_session::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
 
-#ifdef DEBUG_COMMANDS
-    if ( view()->show_pixel_ratio() )
-        if ( msg.find( "Offset" ) == std::string::npos )
-            LOG_INFO( "SEND CMD: " << msg );
-#endif
+    LOG_INFO( "Server Deliver: " << msg );
 
     output_queue_.push_back(msg + "\n");
 
@@ -1700,7 +1823,7 @@ void tcp_session::stop()
     if ( !ui ) return;
 
     mrv::ImageView* v = ui->uiView;
-    if ( ui && v )
+    if ( ui && v && v->main() )
     {
         Mutex& m = v->_clients_mtx;
         SCOPED_LOCK( m );
@@ -2046,6 +2169,7 @@ void server::remove( ViewerUI* ui )
 
 void server_thread( const ServerData* s )
 {
+    s->ui->uiConnection->uiServerPort->value( s->port );
     s->ui->uiConnection->uiCreate->label( _("Disconnect") );
     s->ui->uiConnection->uiClientGroup->deactivate();
 

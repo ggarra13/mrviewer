@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,12 +30,14 @@
 //
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
+// #define TEST_NO_STEREO
 
 #define USE_HDR 0
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
 #define USE_STEREO_GL
+
 
 #include <vector>
 #include <iostream>
@@ -77,17 +79,7 @@ extern "C" {
 
 }
 
-#ifdef OSX
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
-#ifdef OSX
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
+#include <FL/glut.H>
 
 #include <half.h>
 #include <ImfArray.h>
@@ -100,10 +92,12 @@ extern "C" {
 #include "core/mrvMath.h"
 #include "core/mrvThread.h"
 #include "core/mrvRectangle.h"
+#include "core/mrvBlackImage.h"
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvPreferences.h"
+#include "gui/mrvFontsWindowUI.h"
 #include "mrViewer.h"
 
 #include "video/mrvGLShape.h"
@@ -115,9 +109,6 @@ extern "C" {
 #include "video/mrvGLLut3d.h"
 #include "video/mrvCSPUtils.h"
 #include "core/mrvOS.h"
-
-#undef TRACE
-#define TRACE(x)
 
 
 namespace
@@ -670,15 +661,14 @@ void GLEngine::reset_view_matrix()
         clear_quads();
     }
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    unsigned W = view->pixel_w();
-    unsigned H = view->pixel_h();
+    unsigned W = _view->pixel_w();
+    unsigned H = _view->pixel_h();
     DBGM1( "view pixels: " << W << "x" << H );
     glViewport(0, 0, W, H);
-    if ( view->vr() == ImageView::kNoVR )
+    if ( _view->vr() == ImageView::kNoVR )
     {
         CHECK_GL;
-        glOrtho( 0, view->w(), 0, view->h(), -1, 1 );
+        glOrtho( 0, _view->w(), 0, _view->h(), -1, 1 );
         _rotX = _rotY = 0.0;
         CHECK_GL;
     }
@@ -700,14 +690,12 @@ void GLEngine::reset_view_matrix()
 void GLEngine::evaluate( const CMedia* img,
                          const Imath::V3f& rgb, Imath::V3f& out )
 {
-    QuadList::iterator q = _quads.begin();
-    QuadList::iterator e = _quads.end();
     out = rgb;
-    for ( ; q != e; ++q )
+    for ( const auto& q : _quads )
     {
-        if ( (*q)->image() == img )
+        if ( q->image() == img )
         {
-            const GLLut3d::GLLut3d_ptr lut = (*q)->lut();
+            const GLLut3d::GLLut3d_ptr lut = q->lut();
             if ( !lut ) return;
 
             lut->evaluate( rgb, out );
@@ -726,11 +714,9 @@ void GLEngine::rotate( const double z )
 
 void GLEngine::refresh_luts()
 {
-    QuadList::iterator q = _quads.begin();
-    QuadList::iterator e = _quads.end();
-    for ( ; q != e; ++q )
+    for ( const auto& q : _quads )
     {
-        (*q)->clear_lut();
+        q->clear_lut();
     }
 }
 
@@ -1029,8 +1015,7 @@ void GLEngine::draw_title( const float size,
         sum += glutStrokeWidth( font, *p );
     CHECK_GL;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    float x = ( float( view->w() ) - float(sum) * size ) / 2.0f;
+    float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
     float rgb[4];
     glGetFloatv( GL_CURRENT_COLOR, rgb );
@@ -1114,9 +1099,8 @@ void GLEngine::draw_cursor( const double x, const double y,
     double tw = double(texWidth)  / 2.0;
     double th = double(texHeight) / 2.0;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
-    double sh = ((double)view->h() - texHeight * zoomY) / 2;
+    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
     glTranslated(_view->offset_x() * zoomX + sw,
                  _view->offset_y() * zoomY + sh, 0);
@@ -1126,9 +1110,11 @@ void GLEngine::draw_cursor( const double x, const double y,
 
     glColor4f( 1, 0, 0, 1 );
 
-    double pct = 1.0;
-    if ( mode & ImageView::kDraw ) pct = 0.5;
-    glDisk( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
+    // double pct = 1.0;
+    // if ( mode & ImageView::kDraw || mode & ImageView::kRectangle ) pct = 0.5;
+
+    glDisk( Point(x,y), _view->main()->uiPaint->uiPenSize->value() );
+
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y,
@@ -1188,6 +1174,7 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
 {
     if ( _view->vr() ) return;
 
+#if 0
     mrv::media fg = _view->foreground();
     if ( old != fg && old && fg )
     {
@@ -1196,11 +1183,12 @@ void GLEngine::set_matrix( const CMedia* img, const bool flip )
             CMedia* img = fg->image();
             CMedia* oimg = old->image();
             if ( img->display_window() != oimg->display_window() )
-                _view->fit_image();
+                _view->fit_image( img );
         }
     }
 
     old = fg;
+#endif
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -1294,25 +1282,63 @@ void GLEngine::draw_mask( const float pct )
     translate( 0.5, -0.5, 0.0 );
 
 
-    double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
-    double target_aspect = 1.0 / pct;
-    double amount = (0.5 - target_aspect * aspect / 2);
+    double aspectY = (double) dpw.w() / (double) dpw.h();
+    double aspectX = (double) dpw.h() / (double) dpw.w();
+    //std::cerr << "aspectX=" << aspectX << " aspectY=" << aspectY << std::endl;
 
-    //
-    // Bottom mask
-    //
-    glBegin( GL_QUADS );
+    double target_aspect = 1.0 / pct;
+    double amountY = (0.5 - target_aspect * aspectY / 2);
+    double amountX = (0.5 - pct * aspectX / 2);
+
+    bool vertical = true;
+    if ( amountY < amountX )
     {
-        glVertex2d( -0.5,  -0.5 + amount );
-        glVertex2d(  0.5,  -0.5 + amount );
-        glVertex2d(  0.5,  -0.5 );
-        glVertex2d( -0.5,  -0.5 );
+        vertical = false;
     }
+
+
+    glBegin( GL_QUADS );
+    if ( vertical )
     {
-        glVertex2d( -0.5,  0.5 );
-        glVertex2d(  0.5,  0.5 );
-        glVertex2d(  0.5,  0.5 - amount );
-        glVertex2d( -0.5,  0.5 - amount );
+        {
+            //
+            // Bottom mask
+            //
+            glVertex2d( -0.5006,  -0.5 + amountY );
+            glVertex2d(  0.5,  -0.5 + amountY );
+            glVertex2d(  0.5,  -0.5 );
+            glVertex2d( -0.5006,  -0.5 );
+        }
+        {
+            //
+            // Top mask
+            //
+            glVertex2d( -0.5006,  0.5 );
+            glVertex2d(  0.5,  0.5 );
+            glVertex2d(  0.5,  0.5 - amountY );
+            glVertex2d( -0.5006,  0.5 - amountY );
+        }
+    }
+    else
+    {
+        {
+            //
+            // Left mask
+            //
+            glVertex2d( -0.5 + amountX,  -0.5 );
+            glVertex2d( -0.5 + amountX,   0.5 );
+            glVertex2d( -0.5006,   0.5 );  // we use -0.5006 to compensate
+            glVertex2d( -0.5006,  -0.5 );  // for scaling leaving 1 pixel behind
+        }
+        {
+            //
+            // Right mask
+            //
+            glVertex2d( 0.5 - amountX,  -0.5 );
+            glVertex2d( 0.5 - amountX,   0.5 );
+            glVertex2d( 0.5,   0.5 );
+            glVertex2d( 0.5,  -0.5 );
+        }
     }
     glEnd();
 
@@ -1489,38 +1515,38 @@ inline void GLEngine::rot_y( double t )
     _rotY = t;
 }
 
-void GLEngine::alloc_cubes( size_t num )
-{
-    size_t num_quads = _quads.size();
-    _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    void GLEngine::alloc_cubes( size_t num )
     {
-        mrv::GLCube* s = new mrv::GLCube( _view );
-        _quads.push_back( s );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLCube* s = new mrv::GLCube( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
-void GLEngine::alloc_spheres( size_t num )
-{
-    size_t num_quads = _quads.size();
-    _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    void GLEngine::alloc_spheres( size_t num )
     {
-        mrv::GLSphere* s = new mrv::GLSphere( _view );
-        _quads.push_back( s );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLSphere* s = new mrv::GLSphere( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
-void GLEngine::alloc_quads( size_t num )
-{
-    size_t num_quads = _quads.size();
-    _quads.reserve( num );
-    for ( size_t q = num_quads; q < num; ++q )
+    void GLEngine::alloc_quads( size_t num )
     {
-        mrv::GLQuad* quad = new mrv::GLQuad( _view );
-        _quads.push_back( quad );
+        size_t num_quads = _quads.size();
+        _quads.reserve( num );
+        for ( size_t q = num_quads; q < num; ++q )
+        {
+            mrv::GLQuad* s = new mrv::GLQuad( _view );
+            _quads.push_back( s );
+        }
     }
-}
 
 
 void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
@@ -1689,10 +1715,8 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
 {
     glRotated( img->rot_z(), 0, 0, 1 );
     CHECK_GL;
-    glTranslated( img->x(), img->y(), 0 );
-    CHECK_GL;
-    glTranslated( double(daw.x() - img->eye_separation()),
-                  double(-daw.y()), 0 );
+    glTranslated( img->x() + double(daw.x() - img->eye_separation()),
+                  img->y() - double(daw.y()), 0 );
     CHECK_GL;
 
     glScaled( double(texWidth), double(texHeight), 1.0 );
@@ -1753,14 +1777,11 @@ void GLEngine::draw_images( ImageList& images )
 
 
     size_t num_quads = 0;
-    ImageList::iterator i = images.begin();
-    ImageList::iterator e = images.end();
 
     static CMedia* previous_img = NULL;
     static int old_hdr = 2;
-    for ( ; i != e; ++i )
+    for ( const auto& img : images )
     {
-        const Image_ptr& img = *i;
         bool stereo = img->stereo_output() != CMedia::kNoStereo;
         if ( img->has_subtitle() ) num_quads += 1 + stereo;
         if ( img->has_picture()  ) ++num_quads;
@@ -1768,6 +1789,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( img->number_of_video_streams() <= 0 ) continue;
 
+#if 0
         const CMedia::video_info_t& vinfo = img->video_info(0);
         const std::string& pix_fmt = vinfo.pixel_format;
         const int hdr = is_hdr_image( img );
@@ -1783,8 +1805,11 @@ void GLEngine::draw_images( ImageList& images )
                 return;
             }
         }
+#endif
 
     }
+
+
 
 
 
@@ -1792,6 +1817,9 @@ void GLEngine::draw_images( ImageList& images )
 
     if ( num_quads > _quads.size() )
     {
+        TRACE( "num_quads (" << num_quads << ") != _quads.size() ("
+                << _quads.size() << ") images.size() (" << images.size()
+                << ")" );
         ImageView::VRType t = _view->vr();
         if ( t == ImageView::kVRSphericalMap )
         {
@@ -1805,9 +1833,8 @@ void GLEngine::draw_images( ImageList& images )
         {
             alloc_quads( num_quads );
         }
-        for ( i = images.begin(); i != e; ++i )
+        for ( const auto& img : images )
         {
-            const Image_ptr& img = *i;
             img->image_damage( img->image_damage() | CMedia::kDamageContents );
         }
     }
@@ -1822,9 +1849,8 @@ void GLEngine::draw_images( ImageList& images )
     double y = _view->spin_y();
     if ( x >= 1000.0 )  // dummy value used to reset view
     {
-        ImageView* v = const_cast< ImageView* >( _view );
-        v->spin_x( 0.0 );
-        v->spin_y( 0.0 );
+        _view->spin_x( 0.0 );
+        _view->spin_y( 0.0 );
         _rotX = _rotY = 0.0;
     }
     else
@@ -1836,28 +1862,56 @@ void GLEngine::draw_images( ImageList& images )
     QuadList::iterator q = _quads.begin();
     assert( q != _quads.end() );
 
-    e = images.end();
+    CMedia* fg = images.back();
+    CMedia* bg = images.front();
 
-    const Image_ptr& fg = images.back();
-    const Image_ptr& bg = images.front();
+    CMedia* Bimg = _view->B_image();
+    // Don't consider the last image as a background image if it matches Bimg
+    // (transition is on).
+    if ( fg == bg || Bimg == bg ) bg = NULL;
+
+    unsigned maxW = 0, maxH = 0;
+    CMedia* fit = NULL;
+
+
+    if ( Bimg )
+    {
+        for ( const auto& img : images )
+        {
+            img->image_damage( img->image_damage() | CMedia::kDamageContents );
+            if ( img->height() > maxH )
+            {
+                fit = img;
+                maxW = img->width();
+                maxH = img->height();
+            }
+        }
+        if ( fit != fg ) {
+            _view->fit_image( fit );
+        }
+    }
 
     glDisable( GL_BLEND );
     CHECK_GL;
 
     CMedia* img = NULL;
     mrv::image_type_ptr pic;
-    for ( i = images.begin(); i != e; ++i, ++q )
+    ImageList::const_iterator i = images.begin();
+    ImageList::const_iterator e = images.end();
+    for ( ; i != e; ++i, ++q )
     {
         img = *i;
         pic = img->left();
-        if (!pic )  continue;
-
+        if ( !pic ) {
+            assert( pic != NULL );
+            continue;
+        }
 
 
         CMedia::StereoOutput stereo = img->stereo_output();
-        const boost::int64_t& frame = pic->frame();
-        DBGM2( "draw image " << img->name() << " frame " << frame );
+        const int64_t& frame = pic->frame();
 
+        DBGM2( "draw image " << img->name() << " frame " << frame );
         mrv::Recti dpw = img->display_window(frame);
         mrv::Recti daw = img->data_window(frame);
 
@@ -1868,9 +1922,8 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         // Handle background image size
-        if ( fg != img && stereo == CMedia::kNoStereo )
+        if ( img == bg )
         {
-            PreferencesUI* uiPrefs = _view->main()->uiPrefs;
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
@@ -1883,20 +1936,27 @@ void GLEngine::draw_images( ImageList& images )
             else
             {
                 // NOT display_window(frame)
-                const mrv::Recti& dp = fg->display_window();
-                texWidth = dp.w();
-                texHeight = dp.h();
+                const mrv::Recti& dw = fg->display_window();
+                texWidth = dw.w();
+                texHeight = dw.h();
             }
         }
         else
         {
-            texWidth = daw.w();
-            texHeight = daw.h();
+            if ( fit )
+            {
+                texWidth  = maxW; // daw.w();
+                texHeight = maxH; // daw.h();
+            }
+            else
+            {
+                texWidth  = daw.w();
+                texHeight = daw.h();
+            }
         }
 
-        if ( texWidth == 0 ) texWidth = fg->width();
+        if ( texWidth == 0 )  texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
-
 
         texWidth  = int( texWidth * img->scale_x() );
         texHeight = int( texHeight * img->scale_y() );
@@ -1945,7 +2005,7 @@ void GLEngine::draw_images( ImageList& images )
             double x = 0.0, y = 0.0;
             if ( img->flipX() )   x = (double)-dp.w();
             if ( img->flipY() ) y = (double)dp.h();
-            glTranslated( x, y, 0.0f );
+            glTranslated( x, y, 0.0 );
         }
 
         glMatrixMode(GL_MODELVIEW);
@@ -1994,6 +2054,7 @@ void GLEngine::draw_images( ImageList& images )
 
         int mask = 0;
 
+#ifndef TEST_NO_STEREO
         if ( stereo != CMedia::kNoStereo &&
              img->left() && img->right() )
         {
@@ -2069,7 +2130,6 @@ void GLEngine::draw_images( ImageList& images )
             }
                 CHECK_GL;
             quad->gamma( g );
-            quad->fade( img->fade() );
             quad->dissolve( img->dissolve() );
                 CHECK_GL;
             quad->draw( texWidth, texHeight );
@@ -2247,6 +2307,7 @@ void GLEngine::draw_images( ImageList& images )
             glEnable( GL_BLEND );
             CHECK_GL;
         }
+#endif  // TEST_NO_STEREO
 
         if ( fg == img && bg != fg && _view->show_background() )
             glEnable( GL_BLEND );
@@ -2294,13 +2355,13 @@ void GLEngine::draw_images( ImageList& images )
             quad->bind( pic );
             CHECK_GL;
 
-
+            TRACE( img->name() << " frame " << img->frame()
+                   << " ~DamageContents" );
             img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
         }
 
 
         quad->gamma( g );
-        quad->fade( img->fade() );
         quad->dissolve( img->dissolve() );
         CHECK_GL;
         quad->draw( texWidth, texHeight );
@@ -2338,6 +2399,11 @@ void GLEngine::draw_images( ImageList& images )
             CHECK_GL;
             glEnable( GL_TEXTURE_3D );
         }
+
+        TRACE( "pic->valid? " << pic->valid() << " channels= "
+                << pic->channels() << " missing_frame==Scratched? "
+                << ( Preferences::missing_frame ==
+                     Preferences::kScratchedRepeatFrame ) );
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
@@ -2467,7 +2533,13 @@ void GLEngine::draw_grid( const CMedia* const img, unsigned size = 100 )
 void GLEngine::draw_shape( GLShape* const shape )
 {
 
-    double zoomX = _view->zoom();
+    double zoom = _view->zoom();
+    int nscreen = _view->screen_num();
+    double m = Fl::screen_scale( nscreen );
+#ifdef OSX
+     m *= 2;
+#endif
+
     DBGM3( __FUNCTION__ << " " << __LINE__ );
     short num = _view->ghost_previous();
     int64_t vframe = _view->frame();
@@ -2480,7 +2552,7 @@ void GLEngine::draw_shape( GLShape* const shape )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
-                shape->draw(zoomX);
+                shape->draw(zoom, m);
                 shape->a = a;
                 return;
             }
@@ -2496,7 +2568,7 @@ void GLEngine::draw_shape( GLShape* const shape )
             {
                 float a = shape->a;
                 shape->a *= 1.0f - (float)i/num;
-                shape->draw(zoomX);
+                shape->draw(zoom, m);
                 shape->a = a;
                 return;
             }
@@ -2506,7 +2578,7 @@ void GLEngine::draw_shape( GLShape* const shape )
     if ( sframe == MRV_NOPTS_VALUE ||
          sframe == vframe )
     {
-        shape->draw(zoomX);
+        shape->draw(zoom, m);
     }
 
 }
@@ -2529,9 +2601,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
     double tw = double( texWidth  ) / 2.0;
     double th = double( texHeight ) / 2.0;
 
-    ImageView* view = const_cast< ImageView* >( _view );
-    double sw = ((double)view->w() - texWidth  * zoomX) / 2;
-    double sh = ((double)view->h() - texHeight * zoomY) / 2;
+    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
     glTranslated( (tw + _view->offset_x()) * zoomX + sw,
                   (th + _view->offset_y()) * zoomY + sh, 0);
@@ -2582,9 +2653,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes,
 
 void GLEngine::wipe_area()
 {
-    ImageView* view = const_cast< ImageView* >( _view );
-    GLint w = view->pixel_w();
-    GLint h = view->pixel_h();
+    GLint w = _view->pixel_w();
+    GLint h = _view->pixel_h();
 
     DBGM3( __FUNCTION__ << " " << __LINE__ << " w,h " << w << " " << h );
     if ( _view->wipe_direction() == ImageView::kNoWipe )
@@ -3839,7 +3909,6 @@ void GLEngine::loadOpenGLShader()
         "uniform sampler3D lut; \n"
         " \n"
         "// Standard controls \n"
-        "uniform float fade;\n"
         "uniform float dissolve;\n"
         "uniform float gain; \n"
         "uniform float gamma; \n"
@@ -4004,7 +4073,6 @@ void GLEngine::loadOpenGLShader()
          "      c.rgb *= c.a;\n"
          "  }\n"
          "\n"
-         "    c.rgb *= fade; \n"
          "    c.rgba *= dissolve; \n"
          "\n"
          "\n"
@@ -4175,11 +4243,9 @@ GLEngine::loadBuiltinFragShader()
 void GLEngine::clear_quads()
 {
     DBGM3( __FUNCTION__ << " " << __LINE__ );
-    QuadList::iterator i = _quads.begin();
-    QuadList::iterator e = _quads.end();
-    for ( ; i != e; ++i )
+    for ( const auto& q : _quads )
     {
-        delete *i;
+        delete q;
     }
     _quads.clear();
 

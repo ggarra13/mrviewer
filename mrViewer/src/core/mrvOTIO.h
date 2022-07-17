@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,23 +16,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   YouTube.h
- * @author gga
- * @date   Sat Jan 10 10:00:02 2020
+ * @file   mrvOTIO.h
+ * @author
+ * @date   Thu Oct 12 20:09:31 2006
  *
- * @brief  A function to use youtube-dl and turn an url into a playable url.
+ * @brief  Routines used to parse an otio file
  *
  *
  */
+#ifndef mrvOTIO_h
+#define mrvOTIO_h
 
 
-#ifndef YouTube_h
-#define YouTube_h
+#include "core/mrvLoadInfo.h"
+#include "core/mrvTransition.h"
 
-namespace mrv
-{
-    bool YouTube( const std::string& url, std::string& videourl,
-                  std::string& audiourl, std::string& title );
-}
+namespace mrv {
 
-#endif // YouTube_h
+bool parse_otio( LoadList& sequences, TransitionList& transitions,
+                 const char* file );
+
+
+}  // namespace mrv
+
+
+
+#endif // mrvOTIO_h

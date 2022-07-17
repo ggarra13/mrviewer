@@ -21,7 +21,6 @@ uniform int height;
 uniform int width;
 
 // Standard controls
-uniform float fade;
 uniform float dissolve;
 uniform float gain;
 uniform float gamma;
@@ -166,7 +165,7 @@ void main()
       c.rgb *= c.a;
   }
 
-  c.rgb *= fade;
+  c.rgba *= dissolve;
 
   gl_FragColor = c;
 }

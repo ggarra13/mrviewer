@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -157,7 +157,7 @@ public:
     void last_image();
 
     //! Changes image to image index # i (internally does a lot of stuff)
-    void real_change_image( int v, int i, CMedia::Playback play );
+    void real_change_image( int v, int i );
 
     //! Changes image to image index # i (wrapper around real_change_image() )
     void change_image( int i );
@@ -314,7 +314,6 @@ protected:
 
     //! These functions send reel, images o current image to network
     void send_reel( const mrv::Reel& r );
-    void send_images( const mrv::Reel& r);
     void send_current_image( int64_t idx, const mrv::media& m );
 
     //! Change reel to new one selected

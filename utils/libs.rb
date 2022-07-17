@@ -14,19 +14,20 @@ libdrm2.*
 libpthread.*
 libresolv.*
 libm\.so
-libc\.so.*
 librt\..*
 libdl.*
 libxcb.*
 libasound.*
-libglib.*
 libgpg-error.*
-libstdc\+\+\.so.*
-libgcc_s.*
 libfontconfig.*
 libfreetype.*
+libharfbuzz.*
 libxshmfence.*
 libz.*
+libc\.so.*
+#libglib.*
+libstdc\+\+\.so.*
+libgcc_s.*
 )
 
 @options = { :verbose => false, :libs_only => false, :force => false }
@@ -41,7 +42,11 @@ OptionParser.new do |opts|
     @options[:force] = v
   end
 
-  opts.on("-l", "--libs_only", "Run verbosely") do |v|
+  opts.on("-t", "--translations_only", "Copy translations only") do |v|
+    @options[:translations_only] = v
+  end
+
+  opts.on("-l", "--libs_only", "Copy libs only") do |v|
     @options[:libs_only] = v
   end
 
@@ -54,12 +59,16 @@ end.parse!
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 def parse( files, dest )
+  return if @options[:translations_only]
 
   for line in files
     lib, loc = line.split(" => ")
 
-    puts lib.to_s + " -> " + loc.to_s
-    next if not loc or not lib or loc =~ /not found/
+    $stdout.puts "#{lib} -> #{loc}" if @options[:verbose]
+    if not loc or not lib or loc =~ /not found/
+      $stderr.puts "LIBRARY #{lib} NOT FOUND!"
+      next
+    end
 
     loc.strip!
     lib.strip!
@@ -89,14 +98,14 @@ def parse( files, dest )
       puts "#{loc} ==> #{libpath} ==> #{orig}" if @options[:verbose]
       lib = libpath.gsub(/.*\//, '' )
       puts "#{loc} ==> #{lib} ==> #{orig}" if @options[:verbose]
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
       `chrpath -d "#{dest}/lib/#{lib}"`
       print `readelf -d #{dest}/lib/#{lib} | grep PATH`
       if not File.exists?( "#{dest}/lib/#{orig}" )
-        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => true )
+        FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => @options[:verbose] )
       end
     else
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => true )
+      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
       `chrpath -d "#{dest}/lib/#{lib}"`
       $stdout.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
@@ -223,12 +232,12 @@ if kernel !~ /MINGW.*/
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
   libs.map! { |x| x if x !~ /.*libACESclip.*/ }.compact!
-  FileUtils.rm_f( libs )
+  FileUtils.rm_f( libs ) if not @options[:translations_only]
   exes = Dir.glob( "#{dest}/bin/*" )
 
   files = []
 
-  if kernel =~ /Linux/
+  if kernel =~ /Linux/ and not @options[:translations_only]
     for exe in exes
       puts "PARSING #{exe}"
       output=`ldd "#{exe}"`
@@ -243,7 +252,7 @@ if kernel !~ /MINGW.*/
 
   end
 
-  copy_third_party( root, dest )
+  copy_third_party( root, dest ) if not @options[:translations_only]
 
   if @options[:libs_only]
     exit(0)
@@ -252,15 +261,17 @@ if kernel !~ /MINGW.*/
   Dir.chdir( root  )
   copy_files( dest )
 
+  if @options[:translations_only]
+    exit(0)
+  end
+
   Dir.chdir( dest + "/lib" )
   if kernel =~ /Linux/
     FileUtils.ln_s "libACESclip.so.0.2.6",
                   "libACESclip.so", :verbose => true, :force => true
     FileUtils.ln_s "libAMF.so.0.1.0", "libAMF.so", :verbose => true,
                    :force => true
-    $stdout.puts "remove .fuse files"
     Dir.chdir( root )
-    `find #{dest}/* -name '*fuse*' -exec rm {} \\;`
   elsif kernel =~ /Darwin/
     FileUtils.ln_s "libACESclip.dylib.0.2.6",
                    "libACESclip.dylib", :verbose => true, :force => true
@@ -278,13 +289,13 @@ else
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )
-    copy_third_party( root, dest )
+    copy_third_party( root, dest ) if not @options[:translations_only]
   else
     build = "BUILD/Windows-6.3.9600-32/"
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )
-    copy_third_party( root, dest )
+    copy_third_party( root, dest ) if not @options[:translations_only]
   end
 end
 

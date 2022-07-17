@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -70,13 +70,6 @@ public:
     }
     inline void mask_value( int m ) {
         _mask_value = m;
-    }
-
-    inline float fade() const {
-        return _fade;
-    }
-    inline void fade( const float f ) {
-        _fade = f;
     }
 
     inline float dissolve() const {
@@ -174,7 +167,6 @@ protected:
     GLuint       _vbo;
     bool         _right;
     bool         _blend;
-    float        _fade;
     float        _dissolve;
     float        _gamma;
     GLenum       _blend_mode;

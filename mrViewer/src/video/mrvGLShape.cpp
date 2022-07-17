@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32)
 #  include <winsock2.h>  // to avoid winsock issues
 #  include <windows.h>
 #endif
@@ -30,27 +30,24 @@
 #include <GL/glew.h>
 
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32)
 #  include <FL/platform.H>
 #elif defined(LINUX)
 #  include <GL/glxew.h>
 #endif
 
-#ifdef OSX
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-// #include <GL/gl.h>
-
 #include <FL/Fl.H>
 #include <FL/gl.h>
 #include <FL/fl_draw.H>
+
+#include "core/mrvColor.h"
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLShape.h"
+
+#include "video/mrvPolyline2D.h"
 
 namespace {
 const char* kModule = N_("shape");
@@ -61,42 +58,10 @@ const char* kModule = N_("shape");
 
 namespace mrv {
 
-// v0 and v1 are normalized
-// t can vary between 0 and 1
-// http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
-Point slerp2d( const Point& v0, const Point& v1, float t )
+
+void glDisk( const Point& p, const float diameter )
 {
-    double dot = v0.dot(v1);
-    if( dot < -1.0 ) dot = -1.0;
-    if( dot > 1.0 ) dot = 1.0;
-
-    double theta_0 = acos( dot );
-    double theta = theta_0 * t;
-
-    Point v2( -v0.y, v0.x );
-
-    return ( v0*cos(theta) + v2*sin(theta) );
-}
-
-void glCircle( const Point& p, const double radius, double pen_size )
-{
-    const GLint triangleAmount = 40;
-    const GLdouble twoPi = M_PI * 2.0;
-
-    glLineWidth( pen_size );
-    glBegin( GL_LINE_LOOP );
-    for ( int i = 0; i < triangleAmount; ++i )
-    {
-        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
-                    p.y + (radius * sin( i* twoPi / triangleAmount ))
-                  );
-    }
-    glEnd();
-}
-
-
-void glDisk( const Point& p, const double radius )
-{
+    const float radius = diameter / 2.0f;
     const GLint triangleAmount = 20;
     const GLdouble twoPi = M_PI * 2.0;
 
@@ -106,91 +71,53 @@ void glDisk( const Point& p, const double radius )
     {
         glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
                     p.y + (radius * sin( i* twoPi / triangleAmount ))
-                  );
+            );
     }
     glEnd();
 }
 
-void glPolyline( const vector<mrv::Point>& polyline, float width )
+ void GLCircleShape::glCircle( const Point& p, const double radius,
+                               double pen_size )
 {
-    if( polyline.size() < 2 ) return;
-    float w = width / 2.0f;
+    const GLint triangleAmount = 40;
+    const GLdouble twoPi = M_PI * 2.0;
 
-    glBegin(GL_TRIANGLES);
-    for( size_t i = 0; i < polyline.size()-1; ++i )
+    PointList verts;
+    verts.reserve( triangleAmount+1 );
+    for ( int i = 0; i < triangleAmount; ++i )
     {
-        const Point& cur = polyline[ i ];
-        const Point& nxt = polyline[i+1];
-
-        Point b = (nxt - cur).normalized();
-        Point b_perp( -b.y, b.x );
-
-        Point p0( cur + b_perp*w );
-        Point p1( cur - b_perp*w );
-        Point p2( nxt + b_perp*w );
-        Point p3( nxt - b_perp*w );
-
-        // first triangle
-        glVertex2dv( &p0.x );
-        glVertex2dv( &p1.x );
-        glVertex2dv( &p2.x );
-        // second triangle
-        glVertex2dv( &p2.x );
-        glVertex2dv( &p1.x );
-        glVertex2dv( &p3.x );
-
-        // only do joins when we have a prv
-        if( i == 0 ) continue;
-
-        const Point& prv = polyline[i-1];
-        Point a = (prv - cur).normalized();
-        Point a_perp( a.y, -a.x );
-
-        double det = a.x*b.y - b.x*a.y;
-        if( det > 0 )
-        {
-            a_perp.x = -a_perp.x;
-            a_perp.y = -a_perp.y;
-            b_perp.x = -b_perp.x;
-            b_perp.y = -b_perp.y;
-        }
-
-        // TODO: do inner miter calculation
-
-        // flip around normals and calculate round join points
-        a_perp.x = -a_perp.x;
-        a_perp.y = -a_perp.y;
-        b_perp.x = -b_perp.x;
-        b_perp.y = -b_perp.y;
-
-        size_t num_pts = 4;
-        vector< Point > round( 1 + num_pts + 1 );
-        for( size_t j = 0; j <= num_pts+1; ++j )
-        {
-            float t = (float)j/(float)(num_pts+1);
-            if( det > 0 )
-                round[j] = cur + (slerp2d( b_perp, a_perp, 1.0f-t ) * w);
-            else
-                round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
-        }
-
-        for( size_t j = 0; j < round.size()-1; ++j )
-        {
-            glVertex2dv( &cur.x );
-            if( det > 0 )
-            {
-                glVertex2dv( &(round[j+1].x) );
-                glVertex2dv( &(round[j+0].x) );
-            }
-            else
-            {
-                glVertex2dv( &(round[j+0].x) );
-                glVertex2dv( &(round[j+1].x) );
-            }
-        }
+        Point pt( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                  p.y + (radius * sin( i* twoPi / triangleAmount )) );
+        verts.push_back( pt );
     }
-    glEnd();
+
+    Point pt( p.x + radius, p.y );
+    verts.push_back( pt );
+
+    const PointList& draw =
+        Polyline2D::create( verts, pen_size,
+                            Polyline2D::JointStyle::MITER,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+
 
 
 std::string GLPathShape::send() const
@@ -217,7 +144,7 @@ std::string GLPathShape::send() const
     return buf;
 }
 
-void GLPathShape::draw( double z )
+void GLPathShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -235,19 +162,39 @@ void GLPathShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
-    if ( pts.size() < 1 )
+    size_t num = pts.size();
+    if ( num < 1 )
     {
         return;
     }
 
-    glDisk( pts[0], pen_size / 2.0 );
-    glPolyline( pts, pen_size );
-    glDisk( pts[pts.size()-1], pen_size / 2.0 );
+
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 
     glDisable( GL_BLEND );
 }
 
-void GLArrowShape::draw( double z )
+void GLArrowShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -265,7 +212,28 @@ void GLArrowShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
-    glPolyline( pts, pen_size );
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
     glDisable( GL_BLEND );
 
 }
@@ -293,8 +261,86 @@ std::string GLArrowShape::send() const
     return buf;
 }
 
+void GLRectangleShape::draw( double z, double m )
+{
 
-void GLCircleShape::draw( double z )
+    //Turn on Color Buffer
+    glColorMask(true, true, true, true);
+
+    //Only write to the Stencil Buffer where 1 is not set
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+    //Keep the content of the Stencil Buffer
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+
+
+    glEnable( GL_BLEND );
+    // So compositing works properly
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f( r, g, b, a );
+
+    PointList verts;
+    verts.resize(5);
+    verts[0] = Point( pts[0].x, pts[0].y );
+    verts[1] = Point( pts[1].x, pts[0].y );
+    verts[2] = Point( pts[1].x, pts[1].y );
+    verts[3] = Point( pts[0].x, pts[1].y );
+    verts[4] = Point( pts[0].x, pts[0].y );
+
+    const PointList& draw =
+        Polyline2D::create( verts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+
+    glDisable( GL_BLEND );
+
+}
+
+std::string GLRectangleShape::send() const
+{
+
+    char* oldloc = av_strdup( setlocale( LC_NUMERIC, NULL ) );
+    setlocale( LC_NUMERIC, "C" );
+
+    std::string buf = "GLRectangleShape ";
+    char tmp[256];
+    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
+             pen_size, frame );
+    buf += tmp;
+    GLPathShape::PointList::const_iterator i = pts.begin();
+    GLPathShape::PointList::const_iterator e = pts.end();
+    for ( ; i != e; ++i )
+    {
+        sprintf( tmp, " %g %g", (*i).x, (*i).y );
+        buf += tmp;
+    }
+    setlocale( LC_NUMERIC, oldloc );
+    av_free( oldloc );
+
+    return buf;
+}
+
+
+void GLCircleShape::draw( double z, double m )
 {
     //Turn on Color Buffer
     glColorMask(true, true, true, true);
@@ -313,6 +359,8 @@ void GLCircleShape::draw( double z )
     glColor4f( r, g, b, a );
 
     glCircle( center, radius, pen_size );
+
+    glDisable( GL_BLEND );
 }
 
 
@@ -364,7 +412,7 @@ std::string GLErasePathShape::send() const
 
 
 
-void GLErasePathShape::draw( double z )
+void GLErasePathShape::draw( double z, double m )
 {
     glColorMask(false, false, false, false);
 
@@ -377,9 +425,27 @@ void GLErasePathShape::draw( double z )
         return;
     }
 
-    glDisk( pts[0], pen_size / 2.0 );
-    glPolyline( pts, pen_size );
-    glDisk( pts[pts.size()-1], pen_size / 2.0 );
+    const PointList& draw =
+        Polyline2D::create( pts, pen_size,
+                            Polyline2D::JointStyle::ROUND,
+                            Polyline2D::EndCapStyle::ROUND,
+                            false
+            );
+
+    glEnableClientState( GL_VERTEX_ARRAY );
+
+    glDisableClientState( GL_COLOR_ARRAY );
+    glDisableClientState( GL_EDGE_FLAG_ARRAY );
+    glDisableClientState( GL_FOG_COORD_ARRAY );
+    glDisableClientState( GL_INDEX_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_SECONDARY_COLOR_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    glVertexPointer(2, GL_DOUBLE, 0, &draw[0]);
+    glDrawArrays( GL_TRIANGLES, 0, draw.size() );
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 
@@ -407,7 +473,7 @@ std::string GLTextShape::send() const
     return buf;
 }
 
-void GLTextShape::draw( double z )
+void GLTextShape::draw( double z, double m )
 {
     //Turn on Color Buffer and Depth Buffer
     glColorMask(true, true, true, true);
@@ -434,25 +500,69 @@ void GLTextShape::draw( double z )
     glColor4f( r, g, b, a );
 
 
-    gl_font(font(), int(size()*z) );
+    int textsize = int( size() * z );
+    if ( textsize < 1 ) return;
 
+
+    gl_font(font(), textsize );
+
+    double height = (gl_height() / z);
 
     std::string txt = text();
 
+    GLboolean result;
     std::size_t pos = txt.find('\n');
-    float y = float( pts[0].y );
-    for ( ; pos != std::string::npos; y -= size(), pos = txt.find('\n') )
+    double x = double( pts[0].x );
+    double y = double( pts[0].y );
+    for ( ; pos != std::string::npos; y -= height, pos = txt.find('\n') )
     {
-        std::string t;
-        if (pos > 0 )
-            t = txt.substr( 0, pos );
-        gl_draw(t.c_str(), float( pts[0].x ), y);
+        glRasterPos2d( x, y );
+        glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+        if ( result == GL_FALSE )
+        {
+            double xMove = gl_width( txt.c_str(), pos ) / z;
+            double yMove = height;
+            double bxMove = -xMove * m * z;
+            double byMove = -yMove * m * z;
+            glRasterPos2d( x + xMove, y + yMove );
+            glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+            if ( result == GL_FALSE )
+            {
+                // Probably bottom right corner, don't offset x.
+                bxMove = 0;
+                glRasterPos2d( x, y + yMove );
+                glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+            }
+            glBitmap( 0, 0, 0, 0, bxMove, byMove, NULL );
+        }
+        if ( result == GL_TRUE )
+            gl_draw(txt.c_str(), pos );
         if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
-    if ( txt.size() )
+    if ( !txt.empty() )
     {
-        gl_draw( txt.c_str(), float( pts[0].x ), y );
+        glRasterPos2d( x, y );
+        glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+        if ( result == GL_FALSE )
+        {
+            double xMove = gl_width( txt.c_str() ) / z;
+            double yMove = height;
+            double bxMove = -xMove * m * z;
+            double byMove = -yMove * m * z;
+            glRasterPos2d( x + xMove, y + yMove );
+            glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+            if ( result == GL_FALSE )
+            {
+                // Probably bottom right corner, don't offset x.
+                bxMove = 0;
+                glRasterPos2d( x, y + yMove );
+                glGetBooleanv(GL_CURRENT_RASTER_POSITION_VALID, &result);
+            }
+            glBitmap( 0, 0, 0, 0, bxMove, byMove, NULL );
+        }
+        if ( result == GL_TRUE )
+            gl_draw( txt.c_str() );
     }
 
 }

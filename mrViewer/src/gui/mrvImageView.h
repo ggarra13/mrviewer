@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
-#include "core/Sequence.h"
+#include "core/mrvLoadInfo.h"
 
 #include "core/mrvChannelType.h"
 #include "gui/mrvMedia.h"
@@ -77,7 +77,7 @@ public:
     {
         kNoCommand = 0,
         kCreateReel = 1,
-        kLoadImage  = 2,
+        //kLoadImage  = 2,
         kInsertImage = 3,
         kChangeImage = 4,
         kBGImage     = 5,
@@ -123,6 +123,8 @@ public:
         kSwitch_FG_BG = 45,
         kCOLOR_CONTROL_WINDOW_SHOW = 46,
         kCOLOR_CONTROL_WINDOW_HIDE = 47,
+        kRotateImage = 48,
+        kFitImage = 49,
         kLastCommand
     };
 
@@ -163,6 +165,7 @@ public:
         kCircle       = 1 << 8,
         kArrow        = 1 << 9,
         kCopyFrameXY  = 1 << 10,
+        kRectangle    = 1 << 11,
     };
 
 
@@ -305,8 +308,11 @@ public:
     /// Center image in viewer's window, without changing zoom.
     void center_image();
 
-    /// Fit image in viewer's window, changing zoom.
+    /// Fit current image in viewer's window, changing zoom and offsets.
     void fit_image();
+
+    /// Fit img in viewer's window, changing zoom and offsets.
+    void fit_image( const CMedia* img );
 
     /// True if image needs updating, false if not.  fg image may change.
     bool should_update( mrv::media fg );
@@ -376,6 +382,7 @@ public:
 
     /// Change stereo main image and attach B image
     void change_foreground();
+
 
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
@@ -550,6 +557,10 @@ public:
         return uiMain;
     }
 
+    inline CMedia* A_image() const { return Aimg; }
+    inline CMedia* B_image() const { return Bimg; }
+    inline void clear_AB_images()  { Aimg = Bimg = NULL; }
+
     /// Auxiliary function to return viewer's main fltk window
     MainWindow* fltk_main();
 
@@ -705,6 +716,7 @@ public:
     void erase_mode( bool temporary = false );
     void circle_mode();
     void arrow_mode();
+    void rectangle_mode();
     void move_pic_mode();
     void scale_pic_mode();
 
@@ -722,8 +734,10 @@ public:
     }
 
     void send_network( std::string msg ) const;
+    void send_selection() const;
 
     GLShapeList& shapes();
+    GLShapeList& undo_shapes();
 
     void add_shape( shape_type_ptr shape );
 
@@ -763,6 +777,8 @@ public:
     unsigned grid_size() const { return _grid_size; }
     void grid_size(unsigned t) { _grid_size = t; redraw(); }
 
+    unsigned font_height();
+
     /// Stop preload image caches
     void preload_cache_stop();
 
@@ -793,6 +809,9 @@ public:
         return _mode;
     }
 
+    void main_window_pos( int X, int Y ) {
+        posX = X; posY = Y;
+    }
 
     /// Fill menu based on context information
     void fill_menu( Fl_Menu_* menu );
@@ -802,6 +821,11 @@ public:
     void create_timeout( double t );
 
     void clear_old();
+
+    /// Given two window coordinates, return pixel coordinates
+    /// in the data window (which may be offset)
+    void data_window_coordinates( const CMedia* const img,
+                                  double& x, double& y ) const;
 
 public:
     // Auxiliary function to set the offsets after a rotation of x degrees.
@@ -847,6 +871,7 @@ public:
 
 protected:
 
+    int remove_children();
 
     void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
@@ -896,11 +921,6 @@ protected:
     void image_coordinates( const CMedia* const img,
                             double& x, double& y ) const;
 
-    /// Given two window coordinates, return pixel coordinates
-    /// in the data window (which may be offset)
-    void data_window_coordinates( const CMedia* const img,
-                                  double& x, double& y ) const;
-
 
     /// Given two window coordinates, return pixel coordinates
     /// in the returned picture (or outside set to true)
@@ -936,7 +956,6 @@ protected:
                      mrv::image_type_ptr& pic, int& xp, int& yp,
                      short& idx, bool& outside, int w, int h ) const;
 
-    void log() const;
 
 protected:
     ViewerUI* uiMain;
@@ -1014,6 +1033,8 @@ protected:
     mrv::media _fg;
     CMedia* _old_fg;
     mrv::media _bg;
+    CMedia*    Aimg; // A dissolve image
+    CMedia*    Bimg; // B dissolve image
 
     int   _fg_reel;
     int   _bg_reel;

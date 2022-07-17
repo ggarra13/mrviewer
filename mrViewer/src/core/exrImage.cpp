@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1153,7 +1153,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             _fps = (double) r.n / (double) r.d;
         }
 
-        if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps.load();
+        if ( _play_fps <= 0 ) _otio_fps = _orig_fps = _play_fps = _fps.load();
     }
 
 
@@ -1171,6 +1171,15 @@ void exrImage::read_header_attr( const Imf::Header& h,
         const Imf::StringAttribute* attr =
             h.findTypedAttribute<Imf::StringAttribute>( N_("Input Color "
                                                            "Space") );
+        if ( attr && !is_thumbnail() )
+        {
+            ocio_input_color_space( attr->value() );
+        }
+    }
+
+    {
+        const Imf::StringAttribute* attr =
+            h.findTypedAttribute<Imf::StringAttribute>( N_("ocioColorSpace") );
         if ( attr && !is_thumbnail() )
         {
             ocio_input_color_space( attr->value() );
@@ -2469,7 +2478,9 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         Imf::StringAttribute attr( img->ocio_input_color_space() );
         hdr.insert( N_("Input Color Space"), attr );
+        hdr.insert( N_("ocioColorSpace"), attr );
         attrs.insert( _("Input Color Space") );
+        attrs.insert( N_("ocioColorSpace") );
     }
 
     it = attributes.find( _( "Chromaticities Name" ) );

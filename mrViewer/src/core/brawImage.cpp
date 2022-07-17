@@ -29,6 +29,7 @@ extern "C" {
 #  pragma warning (disable: 4244 )
 #endif
 #include <libavutil/intreadwrite.h>
+#include <libavcodec/avcodec.h>
 #include <libswresample/swresample.h>
 #ifdef WIN32
 #  pragma warning(pop)
@@ -567,7 +568,7 @@ namespace mrv {
             IMG_ERROR( _("Could not obtain frame rate" ) );
             return false;
         }
-        _fps = _orig_fps = _play_fps = f;
+        _fps = _otio_fps = _orig_fps = _play_fps = f;
 
         video_info_t info;
         info.has_codec = true;
@@ -726,21 +727,42 @@ namespace mrv {
                 audiobuffer = new int8_t[ bufferSize ];
 
                 char buf[256];
-                uint64_t  in_ch_layout =
-                    get_valid_channel_layout( 0, _audio_channels);
+
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+                
+                AVChannelLayout in_ch_layout = {0};
+                in_ch_layout.order = AV_CHANNEL_ORDER_NATIVE;
+                in_ch_layout.nb_channels = 2;
+                in_ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+                
+                if ( _audio_channels == 1 )
+                {
+                    in_ch_layout.nb_channels = 1;
+                    in_ch_layout.u.mask = AV_CH_LAYOUT_MONO;
+                }
+
+                av_channel_layout_describe( &in_ch_layout, buf, 256 );
+            
+#else
+                uint64_t in_ch_layout = get_valid_channel_layout( 0,
+                _audio_channels);
                 if ( in_ch_layout == 0 )
                     in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
-                                                             _audio_channels);
-
+                _audio_channels );
+            
                 if ( in_ch_layout == 0 )
                     in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
-                                                             _audio_channels);
+                _audio_channels );
+                
+                av_get_channel_layout_string( buf, 256, _audio_channels,
+                in_ch_layout );
 
+#endif
+
+                
 #if !defined(OSX)
                 if ( ! _is_thumbnail )
                 {
-                    av_get_channel_layout_string( buf, 256, _audio_channels,
-                                                  in_ch_layout );
                     IMG_INFO( _("Audio ") << buf << _(", channels ")
                               << _audio_channels );
                     IMG_INFO( _("format ") << a.format
@@ -1231,7 +1253,7 @@ namespace mrv {
         _audio_format = AudioEngine::kS32LSB;
 #endif
 
-        unsigned int bytes_per_frame = audio_bytes_per_frame();
+        int bytes_per_frame = audio_bytes_per_frame();
 
 
         static constexpr uint32_t maxSampleCount = 48000;
@@ -1275,20 +1297,37 @@ namespace mrv {
             {
                 char buf[256];
 
-                uint64_t in_ch_layout = get_valid_channel_layout(0,
-                                                                 _audio_channels);
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+                
+                AVChannelLayout in_ch_layout = {0};
+                in_ch_layout.order = AV_CHANNEL_ORDER_NATIVE;
+                in_ch_layout.nb_channels = 2;
+                in_ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+                
+                if ( _audio_channels == 1 )
+                {
+                    in_ch_layout.nb_channels = 1;
+                    in_ch_layout.u.mask = AV_CH_LAYOUT_MONO;
+                }
 
+                av_channel_layout_describe( &in_ch_layout, buf, 256 );
+            
+#else
+                uint64_t in_ch_layout = get_valid_channel_layout( 0,
+                _audio_channels);
                 if ( in_ch_layout == 0 )
                     in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
-                                                             _audio_channels);
-
+                _audio_channels );
+            
                 if ( in_ch_layout == 0 )
                     in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
-                                                             _audio_channels);
-
+                _audio_channels );
+                
                 av_get_channel_layout_string( buf, 256, _audio_channels,
-                                              in_ch_layout );
+                in_ch_layout );
 
+#endif
+                
                 IMG_INFO( _("Create audio conversion from ") << buf
                           << _(", channels ") << _audio_channels
                           << N_(", ") );
@@ -1296,11 +1335,19 @@ namespace mrv {
                           << _(", frequency ") << frequency
                           << _(" to") );
 
-                uint64_t out_ch_layout = in_ch_layout;
-                unsigned out_channels = _audio_channels;
 
-                av_get_channel_layout_string( buf, 256, out_channels,
-                                              out_ch_layout );
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
+            AVChannelLayout out_ch_layout;
+            av_channel_layout_copy( &out_ch_layout, &in_ch_layout );
+            unsigned out_channels = _audio_channels;
+            av_channel_layout_describe( &out_ch_layout, buf, 256 );
+#else
+            uint64_t out_ch_layout = in_ch_layout;
+            unsigned out_channels = _audio_channels;
+            av_get_channel_layout_string( buf, 256, out_channels,
+                                          out_ch_layout );
+#endif
+
 
                 AVSampleFormat  in_sample_fmt = AV_SAMPLE_FMT_S32;
                 AVSampleFormat  out_sample_fmt = fmt;
@@ -1497,9 +1544,9 @@ namespace mrv {
                                << get_error_text( status )
                                << _(" for frame ") << _seek_frame );
 
-                if ( !_audio_start )
+                if ( !_audio_muted )
                     find_audio( _seek_frame + _audio_offset );
-                _audio_start = false;
+                _audio_muted = false;
             }
 
 

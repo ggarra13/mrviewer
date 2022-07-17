@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -750,7 +750,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
             max_dst_nb_samples = dst_nb_samples;
         }
 
-        assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
+        assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat)
+                == (unsigned)src_nb_samples );
 
         /* convert to destination format */
 

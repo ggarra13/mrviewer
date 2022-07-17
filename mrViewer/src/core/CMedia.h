@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -328,16 +328,16 @@ public:
 
     enum Damage {
         kNoDamage        = 0,
-        kDamageLayers    = 1 << 1,
-        kDamageContents  = 1 << 2,
-        kDamageThumbnail = 1 << 3,
-        kDamageSubtitle  = 1 << 4,
-        kDamageData      = 1 << 5,
-        kDamageLut       = 1 << 6,
-        kDamage3DData    = 1 << 7,
-        kDamageCache     = 1 << 8,
-        kDamageTimecode  = 1 << 9,
-        kDamageICS       = 1 << 10,
+        kDamageLayers    = 1 << 0, // 1
+        kDamageContents  = 1 << 1, // 2
+        kDamageThumbnail = 1 << 2, // 4
+        kDamageSubtitle  = 1 << 3, // 8
+        kDamageData      = 1 << 4, // 16
+        kDamageLut       = 1 << 5, // 32
+        kDamage3DData    = 1 << 6, // 64
+        kDamageCache     = 1 << 7, // 128
+        kDamageTimecode  = 1 << 8, // 256
+        kDamageICS       = 1 << 9, // 512
         kDamageAll       = ( kDamageLayers | kDamageContents | kDamageLut |
                              kDamageThumbnail | kDamageData | kDamageSubtitle |
                              kDamage3DData | kDamageCache | kDamageTimecode |
@@ -354,8 +354,6 @@ public:
         kDecodeLoopStart = 6,
         kDecodeLoopEnd = 7,
         kDecodeBufferFull = 8,
-        kDecodeDissolveAtStart = 9,
-        kDecodeDissolveAtEnd = 10,
     };
 
     enum StereoInput {
@@ -397,76 +395,23 @@ public:
         kSubtitleStream
     };
 
-    enum FadeType
-    {
-        kNoFade = 0,
-        kFadeIn = 1,
-        kFadeOut = 2,
-        kCrossDissolveAtStart = 1+4,
-        kCrossDissolveAtEnd = 2+4,
-    };
-
-
-    struct Fade
-    {
-        FadeType type;
-        int64_t frames;
-
-        Fade() : type( kFadeIn ), frames(0) {};
-    };
-
-    Fade _fade[3];
-
 public:
 
     virtual DecodeStatus decode_eof( int64_t frame ) { return kDecodeOK; }
 
-    inline void fade_in( int64_t f ) {
-        _fade[0].type = kFadeIn; _fade[0].frames = f;
-    }
 
-    inline void fade_out( int64_t f ) {
-        _fade[1].type = kFadeOut; _fade[1].frames = f;
-    }
-
-    inline void crossdissolve( int64_t f ) {
-        _fade[2].type = kCrossDissolveAtEnd;
-        _fade[2].frames = f;
-    }
+    inline void dissolve( float f )
+        {
+            _dissolve = f;
+        }
 
     inline float dissolve() const
         {
-            float f = 1.0f;
-            if ( _fade[2].type == kCrossDissolveAtEnd &&
-                 _frame > last_frame() - _fade[2].frames )
-            {
-                f = float( last_frame() - _frame ) / _fade[2].frames;
-            }
-            return f;
+            return _dissolve;
         }
 
-    inline int64_t fade_frames( FadeType type ) const
-        {
-            if ( type == kFadeIn ) return _fade[0].frames;
-            else if ( type == kFadeOut ) return _fade[1].frames;
-            else if ( type == kCrossDissolveAtEnd ) return _fade[2].frames;
-            else return 0;
-        }
 
-    inline float fade() const
-        {
-            float f = 1.0f;
-            if ( _frame < first_frame() + _fade[0].frames )
-            {
-                f = float( _frame - first_frame() ) / (float) _fade[0].frames;
-            }
-            else if ( _fade[1].type == kFadeOut &&
-                      _frame > last_frame() - _fade[1].frames )
-            {
-                f = float( last_frame() - _frame ) / (float) _fade[1].frames;
-            }
-            return f;
-        }
+
 
 
     /// Fetch (load) the image for a frame
@@ -594,8 +539,13 @@ public:
 
     ////////////////// Return the image filename expression
     inline const char* fileroot() const {
+        if ( !_fileroot ) return filename();
         return _fileroot;
     };
+
+    std::string name_prefix() const;
+    std::string name_suffix() const;
+    int         frame_padding() const;
 
     ////////////////// Return the image filename for current frame
     const char* const filename() const;
@@ -615,6 +565,9 @@ public:
 
     // Clear the sequence 8-bit cache
     virtual void clear_cache();
+
+    // Notify barrier to end playback
+    void notify_barriers();
 
     // Clear one frame of the sequence 8-bit cache
     void update_frame( const int64_t& frame );
@@ -723,7 +676,8 @@ public:
     inline int64_t   dts()                      {
         return _dts;
     }
-    //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
+
+    inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
 
     inline int64_t expected() const {
         return _expected;
@@ -739,13 +693,6 @@ public:
 
     inline aligned16_uint8_t* audio_buffer() const {
         return _audio_buf;
-    }
-
-    inline unsigned audio_buffer_used() const {
-        return _audio_buf_used;
-    }
-    inline void audio_buffer_used( unsigned x ) {
-        _audio_buf_used = 0;
     }
 
 
@@ -1022,6 +969,19 @@ public:
         return 0;
     }
 
+    /// Sets the first frame in the transition of image (< first_frame() )
+    void in_frame( int64_t x ) { _frameIn = x; }
+
+    inline int64_t in_frame() const {
+        return _frameIn;
+    }
+
+    /// Sets the last frame in the transition of image (> last_frame() )
+    void out_frame( int64_t x ) { _frameOut = x; }
+
+    inline int64_t out_frame() const {
+        return _frameOut;
+    }
 
     /// Sets the first frame in the range of playback
     void  first_frame(int64_t x);
@@ -1129,14 +1089,13 @@ public:
 
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,
-                       ViewerUI* const uiMain,
-                       const bool fg );
+    void play( const Playback dir, ViewerUI* const uiMain,
+               const bool fg );
 
 
 
     /// VCR stop sequence
-    virtual void stop(const bool bg = false);
+    virtual void stop( const bool fg = true );
 
     inline Playback playback() const         {
         return _playback;
@@ -1190,9 +1149,19 @@ public:
     }
 
 
-    /// Change audio volume
-    virtual void volume( float v );
+    /// Return otio play rate of movie
+    inline double otio_fps() const {
+        return _otio_fps;
+    }
 
+    inline void otio_fps( const double x ) {
+        _otio_fps = x;
+    }
+
+
+    /// Change audio volume
+    void volume( float v );
+    float volume() const;
 
     inline bool has_subtitle() const
     {
@@ -1277,15 +1246,20 @@ public:
 
 
 
-    static void image_cache_size( int x ) {
+    inline static AVRational swap( const AVRational& value )
+    {
+        return AVRational({ value.den, value.num });
+    }
+
+    inline static void image_cache_size( int x ) {
         _image_cache_size = x;
     }
 
-    static void video_cache_size( int x ) {
+    inline static void video_cache_size( int x ) {
         _video_cache_size = x;
     }
 
-    static void audio_cache_size( int x ) {
+    inline static void audio_cache_size( int x ) {
         _audio_cache_size = x;
     }
 
@@ -1611,8 +1585,6 @@ public:
 
     void fetch_audio( const int64_t frame );
 
-    // Wait for load threads to exit (unused)
-    void wait_for_load_threads();
 
     // Wait for all threads to exit
     void wait_for_threads();
@@ -1623,6 +1595,8 @@ public:
     inline int64_t audio_offset() const {
         return _audio_offset;
     }
+
+    inline void audio_muted( const bool b ) { _audio_muted = b; }
 
     void notify_all()
         {
@@ -1903,8 +1877,7 @@ protected:
                           const image_type::PixelType pixel_type = image_type::kFloat,
                           size_t w = 0, size_t h = 0);
 
-
-    unsigned int audio_bytes_per_frame();
+    int audio_bytes_per_frame();
 
     void audio_shutdown();
 
@@ -1986,7 +1959,6 @@ protected:
                                  AVStream* stream );
 
 protected:
-    static size_t  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
     static bool _supports_yuva;         //!< display supports yuva
     static bool _uses_16bits;         //!< display supports 16 bits movies
@@ -2012,10 +1984,11 @@ protected:
     time_t _ctime, _mtime;    //!< creation and modification time of image
     size_t _disk_space;       //!< disk space used by image
 
-    mutable Mutex  _mutex;          //!< to mark image routines
-    mutable Mutex  _subtitle_mutex; //!< to mark subtitle routines
-    mutable Mutex  _audio_mutex;    //!< to mark audio routines
-    mutable Mutex  _data_mutex;  //!< to mark data routines (data/displaywindow)
+    Mutex  _mutex;          //!< to mark image routines
+    Mutex  _subtitle_mutex; //!< to mark subtitle routines
+    Mutex  _audio_mutex;    //!< to mark audio routines
+    Mutex  _data_mutex;     //!< to mark data routines (data/displaywindow)
+
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
@@ -2024,7 +1997,7 @@ protected:
     Barrier*  _stereo_barrier; //!< Barrier used to sync stereo threads
     Barrier*  _fg_bg_barrier;   //!< Barrier used to sync fg/bg threads
 
-    bool    _audio_start;     //!< to avoid opening audio file descriptor
+    bool    _audio_muted;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
     std::atomic<int64_t> _pos;  //!< position offset in timeline
@@ -2033,9 +2006,14 @@ protected:
 
     char*  _label;            //!< optional label drawn superimposed
 
+    double               _otio_fps;  //!< fps in source range of clip in otio
     std::atomic<double>  _real_fps;  //!< actual play rate of movie
+                                     //!  (if frames are dropped)
     std::atomic<double>  _play_fps;  //!< current desired play speed
-    std::atomic<double>  _fps;       //!< movie's original play speed (set by user)
+    std::atomic<double>  _fps;       //!< movie's original play speed
+                                     //!  (set by user on sequences,
+                                     //!   automatically set on movies)
+
     std::atomic<double> _orig_fps;   //!< movie's original play speed
 
     double*         _pixel_ratio;  //!< pixel ratio of image
@@ -2044,6 +2022,7 @@ protected:
     // mostly unused --- keep?
     RenderingIntent _rendering_intent;
     float     _gamma;
+    float     _dissolve;
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
@@ -2060,6 +2039,9 @@ protected:
 
     int64_t   _frameStart;  //!< user start frame for sequence or movie
     int64_t   _frameEnd;    //!< user end frame for sequence or movie
+
+    int64_t   _frameIn;     //!< start frame of transition (dissolve)
+    int64_t   _frameOut;    //!< end frame of transition (dissolve)
 
     int64_t   _frame_start; //!< real start frame for sequence or movie
     int64_t   _frame_end;   //!< real end frame for sequence or movie
@@ -2099,6 +2081,7 @@ protected:
 
     // Audio file when different from video
     std::string _audio_file;
+    size_t      _audio_max;        //!< max size of audio buf
 
     // Image color profile for ICC
     char*     _profile;
@@ -2173,7 +2156,7 @@ protected:
     unsigned         _samples_per_sec;   //!< last samples per sec
     audio_cache_t    _audio;
     unsigned         frequency;
-    unsigned         _audio_buf_used;    //!< amount used of reading cache
+    int              _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
     std::atomic<unsigned short>   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
@@ -2186,6 +2169,13 @@ protected:
     timeval    _lastFpsFrameTime;
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
+
+#if 1
+    boost::thread* _video_thread;
+    boost::thread* _audio_thread;
+    boost::thread* _decode_thread;
+#endif
+
 
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;

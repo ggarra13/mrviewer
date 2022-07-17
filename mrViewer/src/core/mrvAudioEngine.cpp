@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2020  Gonzalo Garramuño
+    Copyright (C) 2007-2022  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 
 #include <iostream>
 
+#include "gui/mrvIO.h"
 #include "mrvException.h"
 #include "mrvAudioEngine.h"
 
@@ -38,7 +39,7 @@
 #endif
 
 
-#ifdef PORTAUDIO
+#ifdef MRV_PORTAUDIO
 #    include "audio/mrvPortAudioEngine.h"
 #endif
 
@@ -150,23 +151,24 @@ std::string AudioEngine::device()
 
 bool AudioEngine::device( const unsigned int idx )
 {
-    _device_idx = idx;
-
+    assert( idx < _devices.size() );
+    _device_idx = _devices[ idx ].index;
     return true;
 }
 
-bool AudioEngine::device( const std::string& d )
+bool AudioEngine::device( const std::string& name )
 {
-    DeviceList::iterator i = _devices.begin();
-    DeviceList::iterator e = _devices.end();
-
-    for ( ; i != e; ++i )
+    int idx = 0;
+    for ( const auto& d : _devices )
     {
-        if ( (*i).name == d ) break;
+        if ( d.name == name )
+        {
+            idx = d.index;
+            break;
+        }
     }
 
-
-    return device( (*i).index );
+    return device( idx );
 }
 
 
@@ -174,7 +176,7 @@ AudioEngine* AudioEngine::factory()
 {
     AudioEngine* r = NULL;
 
-#ifdef PORTAUDIO
+#ifdef MRV_PORTAUDIO
     r = new mrv::PortAudioEngine();
 
 #else
