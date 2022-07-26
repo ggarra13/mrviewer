@@ -22,6 +22,8 @@ ELSE( OpenEXRCTL_LIBRARY_DIR )
     "$ENV{CTL_ROOT}/lib/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib"
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
@@ -37,6 +39,7 @@ FIND_PATH( OpenEXRCTL_INCLUDE_DIR ImfCtlApplyTransforms.h
   "$ENV{CTL_ROOT}/include/OpenEXR"
   "$ENV{CTL_ROOT}/include"
   "$ENV{CTL_ROOT}"
+  ${CMAKE_PREFIX_PATH}/include/OpenEXR
   /usr/local/include/OpenEXR
   /usr/include/OpenEXR
   DOC   "OpenEXRCTL includes"

@@ -121,7 +121,7 @@ bool parse_timeline(LoadList& sequences, TransitionList& transitions,
     ItemList items;
     init_items( items, newtimeline );
 
-    for (const auto i : newtimeline.value->tracks()->children())
+    for (const auto& i : newtimeline.value->tracks()->children())
     {
         if (auto track = dynamic_cast<otio::Track*>(i.value))
         {

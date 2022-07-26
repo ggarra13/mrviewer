@@ -35,14 +35,12 @@ ENDIF( OPENTIMELINEIO_LIBRARY_DIR )
 FIND_LIBRARY( OTIME
   NAMES opentime
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
   DOC   "OpenTimelineIO library (0.1 or later)"
   )
 
 FIND_LIBRARY( OTIO
   NAMES opentimelineio
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
   DOC   "OpenTimelineIO library (1.0 or later)"
   )
 
@@ -50,6 +48,7 @@ GET_FILENAME_COMPONENT(OPENTIMELINEIO_LIBRARY_DIR "${OTIO}" PATH)
 
 FIND_PATH( OPENTIMELINEIO_INCLUDE_DIR timeline.h
   "$ENV{OPENTIMELINEIO_ROOT}/include/opentimelineio"
+  ${CMAKE_PREFIX_PATH}/include/opentimelineio
   /usr/local/include/opentimelineio
   /usr/include/opentimelineio
   DOC   "OpenTimelineIO includes"
@@ -59,6 +58,7 @@ FIND_PATH( OPENTIMELINEIO_ANY_DIR any/any.hpp
    PATHS
   "$ENV{OPENTIMELINEIO_ROOT}/include/opentimelineio/deps"
   "$ENV{OPENTIMELINEIO_ROOT}/deps"
+  ${CMAKE_PREFIX_PATH}/include/opentimelineio/deps
   /usr/local/include/opentimelineio/deps
   /usr/include/opentimelineio/deps
   DOC   "OpenTimelineIO includes"
@@ -72,7 +72,7 @@ IF(NOT OPENTIMELINEIO_FOUND)
     IF(OPENTIMELINEIO_LIBRARIES)
       SET(OPENTIMELINEIO_FOUND "YES")
       IF( NOT OPENTIMELINEIO_LIBRARY_DIR )
-        GET_FILENAME_COMPONENT(OPENTIMELINEIO_LIBRARY_DIR "${IlmImf}" PATH)
+	GET_FILENAME_COMPONENT(OPENTIMELINEIO_LIBRARY_DIR "${IlmImf}" PATH)
       ENDIF( NOT OPENTIMELINEIO_LIBRARY_DIR )
     ENDIF(OPENTIMELINEIO_LIBRARIES)
   ENDIF(OPENTIMELINEIO_INCLUDE_DIR)
@@ -83,7 +83,7 @@ IF(NOT OPENTIMELINEIO_FOUND)
   IF(NOT OPENTIMELINEIO_FIND_QUIETLY)
     IF(OPENTIMELINEIO_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
-              "OpenTimelineIO required, please specify its location with OPENTIMELINEIO_ROOT.")
+	      "OpenTimelineIO required, please specify its location with OPENTIMELINEIO_ROOT.")
     ELSE(OPENTIMELINEIO_FIND_REQUIRED)
       MESSAGE( STATUS "OpenTimelineIO was not found!!! " ${OPENTIMELINEIO_INCLUDE_DIR})
     ENDIF(OPENTIMELINEIO_FIND_REQUIRED)

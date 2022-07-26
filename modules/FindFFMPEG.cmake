@@ -84,6 +84,10 @@ FIND_LIBRARY(FFMPEG_avformat_LIBRARY
     PATHS ${SEARCH_DIRS}
 )
 
+FIND_LIBRARY(FFMPEG_postproc_LIBRARY
+    NAMES postproc postproc-52 postproc-53 postproc-54
+    PATHS ${SEARCH_DIRS}
+)
 
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY
     NAMES avcodec avcodec-52 avcodec-53 avcodec-54
@@ -198,6 +202,7 @@ IF(FFMPEG_INCLUDE_DIR)
 	    ${FFMPEG_avfilter_LIBRARY}  # LGPL
 	    ${FFMPEG_swresample_LIBRARY}  # LGPL
 	    ${FFMPEG_avutil_LIBRARY}   # LGPL
+	    ${FFMPEG_postproc_LIBRARY} # GPL
 	    ${FFMPEG_freetype_LIBRARY}
 	    ${FFMPEG_bz2_LIBRARY}
 	    )

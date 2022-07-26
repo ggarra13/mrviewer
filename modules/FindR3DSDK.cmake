@@ -5,6 +5,7 @@
 # Once loaded this will define
 #  R3DSDK_FOUND        - system has R3DSDK
 #  R3DSDK_INCLUDE_DIR  - include directory for R3DSDK
+#  R3DSDK_LIBRARIES    - libraries for R3SDK
 #
 
 SET(R3DSDK_FOUND "NO")
@@ -30,7 +31,7 @@ IF(APPLE)
     set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac64/libR3DSDK-libcpp.a )
 ELSEIF(UNIX)
   if( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0 )
-    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC-cpp11.a )
+    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC.a )
   else()
     set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDK.a )
   endif()

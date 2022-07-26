@@ -8,7 +8,7 @@ set( SOVERSION "0.2.6" )
 cmake_policy( SET CMP0068 NEW )
 
 
-set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
+set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../modules )
 find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 

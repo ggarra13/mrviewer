@@ -35,6 +35,7 @@ ENDIF( OPENEXR_LIBRARY_DIR )
 FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   "$ENV{OPENEXR_ROOT}/include/OpenEXR"
   "$ENV{OPENEXR_ROOT}/include"
+  "${CMAKE_PREFIX_PATH}/include/OpenEXR"
   /usr/local/include/OpenEXR
   /usr/include/OpenEXR
   DOC   "OpenEXR includes"
@@ -45,6 +46,9 @@ FIND_PATH( IMATH_INCLUDE_DIR ImathForward.h
   "$ENV{OPENEXR_ROOT}/include/Imath"
   "$ENV{OPENEXR_ROOT}/include/OpenEXR"
   "$ENV{OPENEXR_ROOT}/include"
+  ${CMAKE_PREFIX_PATH}/include/Imath
+  ${CMAKE_PREFIX_PATH}/include/OpenEXR
+  ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/Imath
   /usr/local/include/OpenEXR
   /usr/include/Imath
@@ -54,52 +58,40 @@ FIND_PATH( IMATH_INCLUDE_DIR ImathForward.h
 
 SET( OPENEXR_INCLUDE_DIR ${OPENEXR_INCLUDE_DIR} ${IMATH_INCLUDE_DIR} )
 
-FIND_LIBRARY( IlmImfUtil
-  NAMES IlmImfUtil-2_5 IlmImfUtil-2_4 IlmImfUtil-2_3 IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
+FIND_LIBRARY( OpenEXRUtil
+  NAMES OpenEXRUtil-3_1
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
-  DOC   "OpenEXR IlmImf library"
+  DOC   "OpenEXR Util library"
 )
 
-FIND_LIBRARY( IlmImf
-  NAMES IlmImf-2_5 IlmImf-2_4 IlmImf-2_3 IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
+FIND_LIBRARY( OpenEXR
+  NAMES OpenEXR-3_1
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
-  DOC   "OpenEXR IlmImf library"
+  DOC   "OpenEXR library"
 )
 
 MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath
-  NAMES Imath-2_5 Imath-2_4 Imath-2_3 Imath-2_2 Imath_dll Imath_dll_d Imath Imathd
+  NAMES Imath-3_1
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
   DOC   "OpenEXR Imath library"
 )
 
 FIND_LIBRARY( Iex
-  NAMES Iex-2_5 Iex-2_4 Iex-2_3 Iex-2_2 Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
+  NAMES Iex-3_1
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
   DOC   "OpenEXR Iex library"
 )
 
-FIND_LIBRARY( IexMath
-  NAMES IexMath-2_5 IexMath-2_4 IexMath-2_3 IexMath-2_2 IexMath
+FIND_LIBRARY( OpenEXRCore
+  NAMES OpenEXRCore-3_1
   PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
-  DOC   "OpenEXR IexMath library"
-)
-
-FIND_LIBRARY( Half
-  NAMES Half-2_5 Half-2_4 Half-2_3 Half Halfd
-  PATHS ${SEARCH_DIRS}
-  NO_DEFAULT_PATH
-  DOC   "OpenEXR Half library"
+  DOC   "OpenEXR Core library"
 )
 
 
-SET(OPENEXR_LIBRARIES ${IlmImfUtil} ${IlmImf} ${Imath} ${Half} ${IexMath} ${Iex}  )
+SET(OPENEXR_LIBRARIES ${OpenEXRUtil} ${OpenEXR} ${OpenEXRCore} ${Imath} ${Iex} )
 
 IF(WIN32 OR WIN64)
   ADD_DEFINITIONS( "-DOPENEXR_DLL" )
@@ -111,7 +103,7 @@ IF(NOT OPENEXR_FOUND)
     IF(OPENEXR_LIBRARIES)
       SET(OPENEXR_FOUND "YES")
       IF( NOT OPENEXR_LIBRARY_DIR )
-	GET_FILENAME_COMPONENT(OPENEXR_LIBRARY_DIR "${IlmImf}" PATH)
+	GET_FILENAME_COMPONENT(OPENEXR_LIBRARY_DIR "${OpenEXR}" PATH)
       ENDIF( NOT OPENEXR_LIBRARY_DIR )
     ENDIF(OPENEXR_LIBRARIES)
   ENDIF(OPENEXR_INCLUDE_DIR)
@@ -137,9 +129,8 @@ ENDIF(NOT OPENEXR_FOUND)
 # This is to avoid picking IlmThread for a wrong version of IlmImf.
 #
 FIND_LIBRARY( IlmThread
-  NAMES IlmThread-2_5 IlmThread-2_4 IlmThread-2_3 IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread
+  NAMES IlmThread-3_1
   PATHS ${OPENEXR_LIBRARY_DIR}
-  NO_DEFAULT_PATH
   DOC   "OpenEXR IlmThread library (1.5 or later)"
   )
 

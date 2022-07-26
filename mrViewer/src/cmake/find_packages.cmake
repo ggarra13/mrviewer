@@ -5,8 +5,8 @@ endif( NOT CMAKE_MODULE_PATH )
 #
 # These are the libraries we will depend on
 #
-set( OpenGL_GL_PREFERENCE LEGACY )
-#set( OpenGL_GL_PREFERENCE GLVND )
+#set( OpenGL_GL_PREFERENCE LEGACY )
+set( OpenGL_GL_PREFERENCE GLVND )
 
 # For window management
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
@@ -46,7 +46,7 @@ set( FLTK_LIBRARIES       fltk fltk_gl fltk_images )
 
 find_package( ImageMagick REQUIRED )    # for image formats
 find_package( OpenEXR     REQUIRED )    # for EXR image loading
-find_package( CTL  REQUIRED )           # for CTL
+find_package( CTL  	  REQUIRED )    # for CTL
 find_package( OpenEXRCTL  REQUIRED )    # for CTL <-> EXR
 find_package( OCIO        REQUIRED )    # for OCIO color correction
 find_package( OIIO        REQUIRED )    # for OIIO image loading
@@ -57,9 +57,14 @@ find_package( GLEW        REQUIRED )    # for opengl features
 find_package( LibIntl     REQUIRED )
 find_package( SampleICC   REQUIRED )    # For ICC reading
 find_package( LibRaw      REQUIRED )    # for libraw files
+find_package( LibVPX      REQUIRED )    # for libvpx codec
+find_package( LibOPUS      REQUIRED )   # for libopus codec
 find_package( TinyXML2    REQUIRED )    # for xml reading/writing
 find_package( R3DSDK      REQUIRED )    # for R3D format
-find_package( BlackMagicRAW  REQUIRED )    # for BRAW format
+find_package( BlackMagicRAW  REQUIRED )  # for BRAW format
+find_package( X264           REQUIRED )  # for lib264 
+find_package( X265           REQUIRED )  # for lib265 
+find_package( WebP           REQUIRED )  # for webp 
 find_package( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
 
 
@@ -98,7 +103,7 @@ else()
 
 
     link_directories( /usr/local/lib )
-    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx )
+    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis )
 
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug"  )
@@ -147,7 +152,7 @@ else()
   add_compile_options( -O3 -msse )
   link_directories( /usr/local/lib )
   set(OS_LIBRARIES
-    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx   ### dvdnav dvdread
+    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis stdc++.so.6  ### dvdnav dvdread
     )
 
    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -176,6 +181,11 @@ include_directories(
   ${FFMPEG_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
+  ${LibVPX_INCLUDE_DIR}
+  ${LibOPUS_INCLUDE_DIR}
+  ${X264_INCLUDE_DIR}
+  ${X265_INCLUDE_DIR}
+  ${WEBP_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${FLTK_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
@@ -202,32 +212,51 @@ if( NOT WIN32 )
   find_library( Boost_locale_LIBRARY
   NAMES boost_locale boost_locale-mt
   PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
+  )
+
+  find_library( Boost_chrono_LIBRARY
+  NAMES boost_chrono boost_chrono-mt
+  PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
+  )
+
+  find_library( Boost_atomic_LIBRARY
+  NAMES boost_atomic boost_atomic-mt
+  PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
   )
 
   find_library( Boost_system_LIBRARY
   NAMES boost_system boost_system-mt
   PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
   )
 
 
   find_library( Boost_filesystem_LIBRARY
   NAMES boost_filesystem boost_filesystem-mt
   PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
   )
 
   find_library( Boost_regex_LIBRARY
   NAMES boost_regex boost_regex-mt
   PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
   )
 
   find_library( Boost_thread_LIBRARY
   NAMES boost_thread boost_thread-mt
   PATHS ${Boost_LIBRARY_DIRS}
+  NO_DEFAULT_PATH
   )
 
 
   set( BOOST_LIBRARIES
   ${Boost_locale_LIBRARY}
+  ${Boost_chrono_LIBRARY}
+  ${Boost_atomic_LIBRARY}
   ${Boost_regex_LIBRARY}
   ${Boost_system_LIBRARY}
   ${Boost_filesystem_LIBRARY}
@@ -261,6 +290,11 @@ set( LIBRARIES
   ${OIIO_LIBRARIES}
   ${SampleICC_LIBRARIES}
   ${LibRaw_LIBRARIES}
+  ${LibVPX_LIBRARIES}
+  ${LibOPUS_LIBRARIES}
+  ${X264_LIBRARIES}
+  ${X265_LIBRARIES}
+  ${WEBP_LIBRARIES}
   ${OPENTIMELINEIO_LIBRARIES}
   ${TINYXML2_LIBRARIES}
   ${OS_LIBRARIES}
@@ -278,7 +312,7 @@ message( STATUS
 message( STATUS "Summary for mrViewer:" )
 message( STATUS
   "-------------------------------------------------------------" )
-
+message( STATUS "OpenGL:        ${OPENGL_FOUND} ${OPENGL_LIBRARIES}" )
 message( STATUS "FLTK:          ${FLTK_FOUND} ${FLTK_VERSION}" )
 message( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 message( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
@@ -341,11 +375,30 @@ if(LibRaw_FOUND)
   message( STATUS "LibRaw libraries:   ${LibRaw_LIBRARIES}" )
 endif()
 
+if(LibOPUS_FOUND)
+  message( STATUS "LibOPUS include:     ${LibOPUS_INCLUDE_DIR}" )
+  message( STATUS "LibOPUS library dir: ${LibOPUS_LIBRARY_DIR}" )
+  message( STATUS "LibOPUS libraries:   ${LibOPUS_LIBRARIES}" )
+endif()
+
+if(LibVPX_FOUND)
+  message( STATUS "LibVPX include:     ${LibVPX_INCLUDE_DIR}" )
+  message( STATUS "LibVPX library dir: ${LibVPX_LIBRARY_DIR}" )
+  message( STATUS "LibVPX libraries:   ${LibVPX_LIBRARIES}" )
+endif()
+
+
 if(LIBINTL_FOUND)
   message( STATUS "LibIntl include:     ${LIBINTL_INCLUDE_DIR}" )
   message( STATUS "LibIntl library dir: ${LIBINTL_LIBRARY_DIR}" )
   message( STATUS "LibIntl libraries:   ${LIBINTL_LIBRARIES}" )
 endif()
+
+if(R3DSDK_FOUND)
+  message( STATUS "R3DSDK include:         ${R3DSDK_INCLUDE_DIR}" )
+  message( STATUS "R3DSDK libs:            ${R3DSDK_LIBRARIES}" )
+endif()
+
 
 if(TINYXML2_FOUND)
   message( STATUS "TinyXML2 include:    ${TINYXML2_INCLUDE_DIR}" )

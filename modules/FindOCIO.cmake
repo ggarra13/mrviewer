@@ -21,6 +21,8 @@ ELSE( OCIO_LIBRARY_DIR )
     "$ENV{OCIO_ROOT}/${CMAKE_BUILD_TYPE}/bin"
     "$ENV{OCIO_ROOT}/bin/${CMAKE_BUILD_TYPE}"
     "$ENV{OCIO_ROOT}/bin"
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
@@ -31,6 +33,7 @@ ENDIF( OCIO_LIBRARY_DIR )
 
 FIND_PATH( OCIO_INCLUDE_DIR OpenColorIO/OpenColorIO.h
   "$ENV{OCIO_ROOT}/include"
+  ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/OpenColorIO
   /usr/include/
   DOC   "OCIO includes" 

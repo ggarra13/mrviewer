@@ -18,15 +18,16 @@ else()
   set( DO_SHARED TRUE )
 endif()
 
-if (LINUX)
+if (UNIX AND NOT APPLE)
    set( cxx_flags ${cxx_flags} -std=c++11 )
 endif()
 
 ExternalProject_Add(
     CTL
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
+    # GIT_REPOSITORY "https://github.com/ampas/CTL.git"
     GIT_PROGRESS 1
-    DEPENDS OpenEXR
+    DEPENDS AcesContainer OpenEXR
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}

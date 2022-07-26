@@ -13,6 +13,9 @@ SET( SEARCH_INCLUDE_PATHS
   "${SampleICC_ROOT}/include/IccProfLib"
   "${SampleICC_ROOT}/include/SampleICC"
   "${SampleICC_ROOT}/include"
+  ${CMAKE_PREFIX_PATH}/include/IccProfLib
+  ${CMAKE_PREFIX_PATH}/include/SampleICC
+  ${CMAKE_PREFIX_PATH}/include
   ${CMAKE_SYSTEM_INCLUDE_PATH}
   /usr/local/include/SampleICC
   /usr/include/SampleICC
@@ -20,6 +23,8 @@ SET( SEARCH_INCLUDE_PATHS
 
 
 SET( SEARCH_PATHS 
+  ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+  ${CMAKE_PREFIX_PATH}/lib
   "/usr/local/lib${CMAKE_BUILD_ARCH}"
   "/opt/local/lib${CMAKE_BUILD_ARCH}"
   "/usr/local/lib"

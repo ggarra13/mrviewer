@@ -25,6 +25,8 @@ FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  ${CMAKE_PREFIX_PATH}/include/ImageMagick-7
+  ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/ImageMagick-7
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
@@ -48,6 +50,8 @@ FIND_PATH( MAGICK++_INCLUDE_DIR
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  ${CMAKE_PREFIX_PATH}/include/ImageMagick-7
+  ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/ImageMagick-7
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick

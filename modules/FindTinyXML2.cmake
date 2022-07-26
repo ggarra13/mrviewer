@@ -24,6 +24,8 @@ ELSE( TINYXML2_LIBRARY_DIR )
     $ENV{TINYXML2_ROOT}/bin/Win32/Release
     $ENV{TINYXML2_ROOT}/bin/Release
     $ENV{TINYXML2_ROOT}/bin/Debug
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib/x86_${CMAKE_BUILD_ARCH}-linux-gnu
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
@@ -36,6 +38,8 @@ ENDIF( TINYXML2_LIBRARY_DIR )
 FIND_PATH( TINYXML2_INCLUDE_DIR tinyxml2.h
   "$ENV{TINYXML2_ROOT}/include/tinyxml2"
   "$ENV{TINYXML2_ROOT}/include"
+  "${CMAKE_PREFIX_PATH}/include/tinyxml2"
+  "${CMAKE_PREFIX_PATH}/include"
   /usr/local/include/tinyxml2
   /usr/local/include
   /usr/include/tinyxml2

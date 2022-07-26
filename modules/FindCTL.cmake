@@ -22,6 +22,8 @@ ELSE( CTL_LIBRARY_DIR )
     "$ENV{CTL_ROOT}/bin/${CMAKE_BUILD_TYPE}"
     "$ENV{CTL_ROOT}/lib/"
     "$ENV{CTL_ROOT}/bin"
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
@@ -37,6 +39,7 @@ FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
   "$ENV{CTL_ROOT}/include/IlmCtlMath"
   "$ENV{CTL_ROOT}/include/CTL"
   "$ENV{CTL_ROOT}/include"
+  ${CMAKE_PREFIX_PATH}/include/CTL
   /usr/local/include/CTL
   /usr/include/CTL
   DOC   "CTL includes" 

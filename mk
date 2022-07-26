@@ -369,7 +369,7 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. $fltk_dir -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' $builddir/tmp/CMakeFiles/rules.ninja"
+    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$installdir -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
 
 
     run_cmd  $cmd

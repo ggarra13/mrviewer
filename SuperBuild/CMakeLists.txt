@@ -42,8 +42,6 @@ include( BuildOpenEXR.cmake )
 # # set( LIBLZMA "" )
 include( BuildLZMA.cmake )
 
-set( OCIO_NAME "OCIO" )
-set( OCIO_DEPENDS "" )
 include( BuildLCMS2.cmake )
 include( BuildJPEGTurbo.cmake )
 include( BuildTIFF.cmake )

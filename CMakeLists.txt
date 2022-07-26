@@ -44,10 +44,13 @@ IF( UNIX )
   INCLUDE( Platform/UnixPaths )
 ENDIF( UNIX )
 
+# This sets -fPIC on all libraries and code
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-#  VP18 switches to c++14, so let's do that by default
+
+#  VP18 switches to c++11, so let's do that by default
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
-# but switch gnu++14 or other extensions off for portability
+# but switch gnu++11 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option( USE_PORTAUDIO "Use PortAudio interface" OFF )

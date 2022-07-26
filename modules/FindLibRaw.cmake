@@ -42,7 +42,6 @@ FIND_PATH( LibRaw_INCLUDE_DIR libraw/libraw.h
 FIND_LIBRARY( LibRaw
   NAMES raw libraw libraw_r
   PATHS ${SEARCH_DIRS}
-  NO_SYSTEM_PATH
   DOC   "LibRaw library"
 )
 
