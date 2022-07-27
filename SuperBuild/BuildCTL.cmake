@@ -5,17 +5,13 @@ include( ExternalProject )
 ## as Release as it is created by the mk bash script file.
 ## However, the install command will report the proper configuration at its
 ## beginning.
-set( build_type ${CMAKE_BUILD_TYPE} )
-if (CMAKE_CXX_COMPILER_VERSION STRGREATER "7.0" )
-  set( build_type "Debug" )
-endif()
+set( build_type "Debug" )
+set( DO_SHARED FALSE )
 
 if (WIN32)
   STRING( JOIN " " cxx_flags -DOPENEXR_DLL -DWIN32 -D_WIN32 ${CMAKE_CXX_FLAGS} )
-  set( DO_SHARED FALSE )
 else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
-  set( DO_SHARED TRUE )
 endif()
 
 if (UNIX AND NOT APPLE)
@@ -27,7 +23,7 @@ ExternalProject_Add(
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
     # GIT_REPOSITORY "https://github.com/ampas/CTL.git"
     GIT_PROGRESS 1
-    DEPENDS AcesContainer OpenEXR
+    # DEPENDS AcesContainer OpenEXR
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}

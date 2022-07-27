@@ -207,16 +207,18 @@ if root.size <= 1
 end
 $stdout.puts "DIRECTORY: #{root}"
 
-if @options[:prefix]
-  p = @options[:prefix]
-  ENV['LD_LIBRARY_PATH'] = "#{p}/lib64:#{p}/lib"
-  ENV['LD_LIBRARY_PATH'] = "#{p}/../libAMF/#{build}/Release/lib:#{p}/../libACESclip/#{build}/Release/lib:#{ENV['LD_LIBRARY_PATH']}"
-  puts ENV['LD_LIBRARY_PATH']
-  boost = Dir.glob("#{p}/boost*")
-  if boost and boost.size
-    p = boost[-1]
-    ENV['LD_LIBRARY_PATH'] = "#{p}/stage/lib:#{ENV['LD_LIBRARY_PATH']}"
-  end
+if not @options[:prefix]
+  @options[:prefix]="install-#{kernel}-#{release}"
+end
+
+p = @options[:prefix]
+ENV['LD_LIBRARY_PATH'] = "#{p}/lib64:#{p}/lib:/usr/local/lib"
+ENV['LD_LIBRARY_PATH'] = "#{p}/../libAMF/#{build}/Release/lib:#{p}/../libACESclip/#{build}/Release/lib:#{ENV['LD_LIBRARY_PATH']}"
+puts ENV['LD_LIBRARY_PATH']
+boost = Dir.glob("#{p}/boost*")
+if boost and boost.size
+  p = boost[-1]
+  ENV['LD_LIBRARY_PATH'] = "#{p}/stage/lib:#{ENV['LD_LIBRARY_PATH']}"
 end
 
 
