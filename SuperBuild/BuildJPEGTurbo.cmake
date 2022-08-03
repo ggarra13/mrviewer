@@ -2,7 +2,7 @@ ExternalProject_Add(
   JPEG-TURBO
   GIT_REPOSITORY "https://github.com/libjpeg-turbo/libjpeg-turbo.git"
   GIT_TAG main
-  DEPENDS ${NASM} LCMS2
+  DEPENDS ${NASM} ${LCMS2}
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

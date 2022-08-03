@@ -1,4 +1,8 @@
 
+if( WIN32 )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIMATH_DLL -DIMATH_EXPORTS" )
+endif()
+
 ExternalProject_Add(
   Imath
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/Imath.git"
@@ -10,7 +14,7 @@ ExternalProject_Add(
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
   -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-  -DBUILD_SHARED_LIBS=TRUE
+   ${MRV_EXTERNAL_ARGS}
   -DBUILD_TESTING=FALSE
   -DPYILMBASE_ENABLE=FALSE
   -DPYTHON=FALSE

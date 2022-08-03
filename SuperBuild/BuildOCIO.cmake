@@ -19,7 +19,7 @@ ExternalProject_Add(
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenColorIO.git"
   GIT_TAG main
   CMAKE_GENERATOR ${generator}
-  DEPENDS OpenEXR Imath
+  DEPENDS OpenEXR
   CMAKE_ARGS
   -DOCIO_USE_SSE=${HAS_SSE2}
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}

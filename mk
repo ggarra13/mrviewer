@@ -107,6 +107,8 @@ Options:
 
   cmake    - Runs cmake only.
 
+  compile  - Runs compile (Ninja, make, nmake, etc) only
+
 EOF
     exit 1
 }
@@ -175,6 +177,7 @@ fi
 
 
 opts=''
+RUN_CMAKE=1
 RUN_MAKE=1
 for i in $@; do
     case $i in
@@ -207,6 +210,14 @@ for i in $@; do
 	-DCMAKE_INSTALL_PREFIX=*|--installdir=*)
 	    shift
 	    installdir="${i#*=}"
+	    ;;
+	-DCMAKE_PREFIX_PATH=*|--prefix=*)
+	    shift
+	    prefix="${i#*=}"
+	    ;;
+	compile)
+	    shift
+	    RUN_CMAKE=0
 	    ;;
 	cmake)
 	    shift
@@ -298,16 +309,7 @@ run_make()
 	return
     fi
 
-    cmd=''
-    if [[ $cmake_generator == NMake* ]]; then
-	cmd="nmake $@"
-    elif [[ $cmake_generator == Unix* ]]; then
-	cmd="make -j ${CMAKE_PROCS} $@"
-    elif [[ $cmake_generator == Visual* ]]; then
-	return
-    else
-	cmd="ninja -j ${CMAKE_PROCS} $@"
-    fi
+    cmd="cmake --build . --config Release -j ${CMAKE_PROCS} $@"
     run_cmd $cmd
     status=$?
     if [ $status != 0 ]; then
@@ -325,7 +327,7 @@ run_cmake()
 {
 
     builddir=$PWD/BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
-    
+
     if [[ $installdir == "" ]]; then
 	installdir=/usr/local
 	if [[ $OS == Darwin* ]]; then
@@ -369,15 +371,19 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$installdir -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
+    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$prefix -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' $builddir/tmp/CMakeFiles/rules.ninja"
 
 
-    run_cmd  $cmd
-    status=$?
-    if [ $status != 0 ]; then
-	cd ../../../..
-	exit $status
+    if [ $RUN_CMAKE == 1 ]; then
+	run_cmd  $cmd
+
+	status=$?
+	if [ $status != 0 ]; then
+	    cd ../../../..
+	    exit $status
+	fi
     fi
+
 
     run_make $opts $@
 }

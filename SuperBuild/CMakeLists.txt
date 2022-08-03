@@ -32,24 +32,34 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
+set(MRV_EXTERNAL_ARGS
+    -DBUILD_SHARED_LIBS=ON
+    -DENABLE_SHARED=ON)
+    
 include( ExternalProject )
 
 include( BuildLibZ.cmake )
 
 set( NASM "" )
 set( YASM "" )
-include( BuildImath.cmake )
+#include( BuildImath.cmake )  # gets built by OpenEXR
 include( BuildOpenEXR.cmake )
 # # set( LIBLZMA "" )
 include( BuildLZMA.cmake )
 
-include( BuildLCMS2.cmake )
+set( LCMS2 "" )
+if( UNIX )
+     include( BuildLCMS2.cmake )
+endif()
+
 include( BuildJPEGTurbo.cmake )
 include( BuildTIFF.cmake )
 include( BuildOCIO.cmake )
 include( BuildLibPNG.cmake )
 set( LibRaw "" )
+set( FFmpeg "" )
 if( UNIX )
+     include( BuildLCMS2.cmake )
      include( BuildLibWebP.cmake )
      include( BuildLibOPUS.cmake )
      include( BuildSampleICC.cmake )
@@ -66,4 +76,4 @@ endif()
 include( BuildAcesContainer.cmake )
 include( BuildCTL.cmake )
 include( BuildOIIO.cmake )
-include( BuildFLTK.cmake )
+#include( BuildFLTK.cmake )

@@ -5,11 +5,14 @@ include( ExternalProject )
 ## as Release as it is created by the mk bash script file.
 ## However, the install command will report the proper configuration at its
 ## beginning.
-set( build_type "Debug" )
-set( DO_SHARED FALSE )
+if( CMAKE_COMPILER_IS_GNUCXX MATCHES 1)
+  set( build_type "Debug" )
+else()
+  set( build_type "Release" )
+endif()
 
 if (WIN32)
-  STRING( JOIN " " cxx_flags -DOPENEXR_DLL -DWIN32 -D_WIN32 ${CMAKE_CXX_FLAGS} )
+  STRING( JOIN " " cxx_flags -EHsc -DWIN32 -D_WIN32 -DIMATH_DLL -DOPENEXR_DLL ${CMAKE_CXX_FLAGS} )
 else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
 endif()
@@ -21,15 +24,14 @@ endif()
 ExternalProject_Add(
     CTL
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
-    # GIT_REPOSITORY "https://github.com/ampas/CTL.git"
+    GIT_TAG master
     GIT_PROGRESS 1
-    # DEPENDS AcesContainer OpenEXR
+    DEPENDS AcesContainer OpenEXR
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_BUILD_TYPE=${build_type}
     -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
     -DCMAKE_CXX_FLAGS=${cxx_flags}
-    -DENABLE_SHARED=${DO_SHARED}
-    -DBUILD_SHARED_LIBS=${DO_SHARED}
+    ${MRV_EXTERNAL_ARGS}
     )

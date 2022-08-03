@@ -109,7 +109,13 @@ def parse( files, dest )
         FileUtils.ln_s( "#{lib}", "#{dest}/lib/#{orig}", :verbose => @options[:verbose] )
       end
     else
-      FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
+      if lib.size > 16
+        FileUtils.cp(loc, "#{dest}/lib/test.so", :verbose => @options[:verbose] )
+        FileUtils.mv( "#{dest}/lib/test.so", "#{dest}/lib/#{lib}", 
+                      :verbose => @options[:verbose] )
+      else
+        FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
+      end
       `chrpath -d "#{dest}/lib/#{lib}"`
       $stdout.print `readelf -d #{dest}/lib/#{lib} | grep PATH`
     end
@@ -208,11 +214,11 @@ end
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]
-  @options[:prefix]="install-#{kernel}-#{release}"
+  @options[:prefix]="#{root}/install-#{kernel}-#{release}"
 end
 
 p = @options[:prefix]
-ENV['LD_LIBRARY_PATH'] = "#{p}/lib64:#{p}/lib:/usr/local/lib"
+ENV['LD_LIBRARY_PATH'] = "#{p}/lib64:#{p}/lib"
 ENV['LD_LIBRARY_PATH'] = "#{p}/../libAMF/#{build}/Release/lib:#{p}/../libACESclip/#{build}/Release/lib:#{ENV['LD_LIBRARY_PATH']}"
 puts ENV['LD_LIBRARY_PATH']
 boost = Dir.glob("#{p}/boost*")
