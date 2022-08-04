@@ -57,14 +57,16 @@ find_package( GLEW        REQUIRED )    # for opengl features
 find_package( LibIntl     REQUIRED )
 find_package( SampleICC   REQUIRED )    # For ICC reading
 find_package( LibRaw      REQUIRED )    # for libraw files
-find_package( LibVPX      REQUIRED )    # for libvpx codec
-find_package( LibOPUS      REQUIRED )   # for libopus codec
 find_package( TinyXML2    REQUIRED )    # for xml reading/writing
 find_package( R3DSDK      REQUIRED )    # for R3D format
 find_package( BlackMagicRAW  REQUIRED )  # for BRAW format
-find_package( X264           REQUIRED )  # for lib264 
-find_package( X265           REQUIRED )  # for lib265 
-find_package( WebP           REQUIRED )  # for webp 
+if( UNIX )
+    find_package( LibVPX      REQUIRED )    # for libvpx codec
+    find_package( LibOPUS      REQUIRED )   # for libopus codec
+    find_package( X264           REQUIRED )  # for lib264 
+    find_package( X265           REQUIRED )  # for lib265
+    find_package( WebP           REQUIRED )  # for webp 
+endif()
 find_package( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
 
 
@@ -88,7 +90,8 @@ add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_
 if(WIN32 OR WIN64)
 
 # add_definitions( -DMR_SSE -DWIN32  )
-  add_definitions( -DMR_SSE -DWIN32 -D_WIN32_WINNT=0x0601 )
+  add_definitions( -DMR_SSE -DWIN32 -DNOMINMAX -DIMATH_DLL -DOPENEXR_DLL
+  		   -D_WIN32_WINNT=0x0601 )
 
   set( OS_LIBRARIES GDIplus Winmm ws2_32 Psapi ${GLEW_LIBRARIES} )
 
@@ -181,11 +184,6 @@ include_directories(
   ${FFMPEG_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
-  ${LibVPX_INCLUDE_DIR}
-  ${LibOPUS_INCLUDE_DIR}
-  ${X264_INCLUDE_DIR}
-  ${X265_INCLUDE_DIR}
-  ${WEBP_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${FLTK_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
@@ -201,6 +199,16 @@ include_directories(
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   )
+
+if ( UNIX )
+   include_directories(
+	${WEBP_INCLUDE_DIR}
+	${LibVPX_INCLUDE_DIR}
+  	${LibOPUS_INCLUDE_DIR}
+  	${X264_INCLUDE_DIR}
+  	${X265_INCLUDE_DIR}
+	)
+endif()
 
 if( PORTAUDIO_FOUND )
   INCLUDE_DIRECTORIES( ${PORTAUDIO_INCLUDE_DIR} )
@@ -290,15 +298,21 @@ set( LIBRARIES
   ${OIIO_LIBRARIES}
   ${SampleICC_LIBRARIES}
   ${LibRaw_LIBRARIES}
-  ${LibVPX_LIBRARIES}
-  ${LibOPUS_LIBRARIES}
-  ${X264_LIBRARIES}
-  ${X265_LIBRARIES}
-  ${WEBP_LIBRARIES}
   ${OPENTIMELINEIO_LIBRARIES}
   ${TINYXML2_LIBRARIES}
   ${OS_LIBRARIES}
   )
+
+if( UNIX )
+  set( LIBRARIES 
+       ${LibVPX_LIBRARIES}
+       ${LibOPUS_LIBRARIES}
+       ${X264_LIBRARIES}
+       ${X265_LIBRARIES}
+       ${WEBP_LIBRARIES}
+       ${LIBRARIES}
+  )
+endif()
 
 if( PORTAUDIO_FOUND )
     set( LIBRARIES ${PORTAUDIO_LIBRARIES} ${LIBRARIES} )

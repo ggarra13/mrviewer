@@ -189,12 +189,22 @@ def copy_third_party( root, dest )
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-64/
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
+    if root =~ /Ubuntu20/
+      parent = '../'
+    else
+      parent = ''
+    end
+    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
                     "#{dest}/lib", :verbose => true )
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
+    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
                     "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-32/
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
+    if root =~ /Ubuntu20/
+      parent = '../'
+    else
+      parent = ''
+    end
+    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
                     "#{dest}/lib", :verbose => true )
   end
 end

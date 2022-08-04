@@ -23,6 +23,10 @@ if [[ "$RELEASE" == "" ]]; then
     exit 1
 fi
 
+export CMAKE_NATIVE_ARCH=32
+export CMAKE_BUILD_TYPE=Release
+export CMAKE_PROCS=4
+
 export OS_32_BITS=1
 export OS_64_BITS=
 
@@ -38,6 +42,7 @@ else
     arch=`uname -a`
 fi
 
+
 if [[ $arch == *64* ]]; then
     CMAKE_NATIVE_ARCH=64
     export OS_64_BITS=1
@@ -49,11 +54,23 @@ else
     fi
 fi
 
-BUILD=$KERNEL-$RELEASE-$CMAKE_NATIVE_ARCH
+export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
+
+if [[ $KERNEL == 'Windows' ]]; then
+    win32cl=`which cl`
+    if [[ $win32cl != *64* ]]; then
+	CMAKE_BUILD_ARCH=32
+    fi
+fi
+
+BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH
 
 installdir=$PWD/../install-$BUILD
 echo "INSTALLDIR = " $installdir
 
+
+export BOOST_ROOT="/D/code/lib/boost_1_73_0"
+export FFMPEG_ROOT="/D/abs/local${CMAKE_BUILD_ARCH}/bin-video/ffmpegSHARED/"
 
 export LD_FLAGS="-Wl,--copy-dt-needed-entries"
 export PATH=$installdir/bin:$PATH

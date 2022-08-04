@@ -6,6 +6,7 @@
 #  Boost_LIBRARY_DIRS - The path to where the boost library files are.
 #  Boost_LIB_DIAGNOSTIC_DEFINITIONS - Only set if using Windows.
 
+
 # ----------------------------------------------------------------------------
 # If you have installed Boost in a non-standard location or you have
 # just staged the boost files using bjam then you have thread
@@ -75,6 +76,8 @@ IF(BOOST_DIR_SEARCH)
   SET(BOOST_DIR_SEARCH ${BOOST_DIR_SEARCH}/include ${BOOST_DIR_SEARCH})
 ELSE(BOOST_DIR_SEARCH)
   SET( BOOST_DIR_SEARCH
+    ${CMAKE_PREFIX_PATH}/include
+    ${CMAKE_PREFIX_PATH}
     /usr/local/include
     /usr/include
     )
