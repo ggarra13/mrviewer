@@ -31,11 +31,14 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 set(MRV_EXTERNAL_ARGS
+    -DCMAKE_MAKEFILE_VERBOSE=ON
+    -DCMAKE_MAKEFILE_BUILD=ON
     -DBUILD_SHARED_LIBS=ON
     -DENABLE_SHARED=ON)
-    
+
 include( ExternalProject )
 
 include( BuildLibZ.cmake )
@@ -59,7 +62,6 @@ include( BuildLibPNG.cmake )
 set( LibRaw "" )
 set( FFmpeg "" )
 if( UNIX )
-     include( BuildLCMS2.cmake )
      include( BuildLibWebP.cmake )
      include( BuildLibOPUS.cmake )
      include( BuildSampleICC.cmake )

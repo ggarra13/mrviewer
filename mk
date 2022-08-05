@@ -309,7 +309,7 @@ run_make()
 	return
     fi
 
-    cmd="ninja -j ${CMAKE_PROCS} $@"
+    cmd="ninja -v -j ${CMAKE_PROCS} $@"
     run_cmd $cmd
     status=$?
     if [ $status != 0 ]; then
