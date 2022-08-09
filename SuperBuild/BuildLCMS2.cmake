@@ -7,3 +7,5 @@ ExternalProject_Add(
   CONFIGURE_COMMAND bash ./configure ${ARCH} --enable-shared --enable-static --prefix=${CMAKE_INSTALL_PREFIX}
   BUILD_IN_SOURCE 1
   )
+
+set( LCMS2 "LCMS2" )

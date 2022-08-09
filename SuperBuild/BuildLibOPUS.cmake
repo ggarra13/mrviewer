@@ -12,3 +12,5 @@ ExternalProject_Add(
   -DCMAKE_CXX_FLAGS=${CMAKE_CXX_flags}
   -DBUILD_SHARED_LIBS=ON
   )
+
+set( LibOpus "LibOpus" )

@@ -14,3 +14,5 @@ ExternalProject_Add(
   -DWITH_12BIT=0
   -DWITH_JPEG7=1
   -DWITH_JPEG8=1)
+
+set( JPEGTURBO "JPEG-TURBO" )

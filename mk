@@ -172,7 +172,7 @@ if [[ $OS == Windows* ]]; then
 	CMAKE_BUILD_ARCH=32
     fi
 else
-    cmake_generator=Ninja
+    cmake_generator="Unix Makefiles"
 fi
 
 
@@ -309,7 +309,12 @@ run_make()
 	return
     fi
 
-    cmd="ninja -v -j ${CMAKE_PROCS} $@"
+    if [ -f "Makefile" ]; then
+	cmd="make VERBOSE=1 -j ${CMAKE_PROCS} $@"
+    else
+	cmd="ninja -j ${CMAKE_PROCS} $@"
+    fi
+
     run_cmd $cmd
     status=$?
     if [ $status != 0 ]; then
@@ -371,7 +376,7 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$prefix -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' && perl -pi -e 's@\s*/showIncludes@@g' $builddir/tmp/CMakeFiles/rules.ninja"
+    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$prefix -DCMAKE_INSTALL_PREFIX=$installdir -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
 
 
     if [ $RUN_CMAKE == 1 ]; then
