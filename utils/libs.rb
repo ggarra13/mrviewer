@@ -111,7 +111,7 @@ def parse( files, dest )
     else
       if lib.size > 16
         FileUtils.cp(loc, "#{dest}/lib/test.so", :verbose => @options[:verbose] )
-        FileUtils.mv( "#{dest}/lib/test.so", "#{dest}/lib/#{lib}", 
+        FileUtils.mv( "#{dest}/lib/test.so", "#{dest}/lib/#{lib}",
                       :verbose => @options[:verbose] )
       else
         FileUtils.cp(loc, "#{dest}/lib/#{lib}", :verbose => @options[:verbose] )
@@ -180,7 +180,11 @@ def copy_third_party( root, dest )
     if @options[:force]
       force = '-f'
     end
-    if not system( "#{root}/utils/maclibs.rb #{force} #@debug" )
+    prefix = ''
+    if @options[:prefix]
+      prefix="-p #{@options[:prefix]}"
+    end
+    if not system( "#{root}/utils/maclibs.rb #{force} #{prefix} #@debug" )
       exit 1
     end
     # Copy the RED library
@@ -224,7 +228,7 @@ end
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]
-  @options[:prefix]="#{root}/install-#{kernel}-#{release}"
+  @options[:prefix]="#{root}/install-#{kernel}-#{release}-64"
 end
 
 p = @options[:prefix]
@@ -237,6 +241,9 @@ if boost and boost.size
   ENV['LD_LIBRARY_PATH'] = "#{p}/stage/lib:#{ENV['LD_LIBRARY_PATH']}"
 end
 
+if kernel == 'Darwin'
+  ENV['DYLD_FALLBACK_LIBRARY_PATH'] = ENV['LD_LIBRARY_PATH']
+end
 
 
 

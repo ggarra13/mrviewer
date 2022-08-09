@@ -20,8 +20,8 @@ OptionParser.new do |opts|
     @options[:force] = v
   end
 
-  opts.on("-l", "--libs_only", "Run verbosely") do |v|
-    @options[:libs_only] = v
+  opts.on("-p PATH", "--prefix=PATH", "installed prefix") do |v|
+    @options[:prefix] = v
   end
 
   opts.on_tail("-h", "--help", "Show this message") do
@@ -48,8 +48,9 @@ release = `uname -r`.chop!
 
 build = "BUILD/#{kernel}-#{release}-64"
 
+puts "PREFIX = #{@options[:prefix]}"
 
-$stderr.puts "DIRECTORY: #{Dir.pwd}"
+puts "DIRECTORY: #{Dir.pwd}"
 
 if kernel !~ /Darwin/
   exit 1
@@ -60,7 +61,6 @@ FileUtils.mkdir_p dest, :mode => 0755
 @libdir = dest + "/lib"
 FileUtils.rm_rf @libdir
 FileUtils.mkdir_p @libdir, :mode => 0755
-FileUtils.mkdir_p @libdir + "/ao", :mode => 0755
 
 appdir = dest + "/bin"
 app = appdir + "/mrViewer"
@@ -80,6 +80,9 @@ def find_lib( lib )
   end
   @searched_libs.push lib
   libpath = `find /System/Volumes/Data/usr/local/Cellar/ -name "#{lib}"`
+  if libpath.strip.empty? and @options[:prefix]
+    libpath = `find #{@options[:prefix]} -name "#{lib}"`
+  end
   if libpath.strip.empty?
     libpath = "/usr/local/lib/#{lib}"
   end
@@ -91,16 +94,10 @@ def copy( file, dest )
   begin
     file =~ /\/([\w\d\-_\.]+\.dylib)/
     libname = $1
-    if file =~ /ao$/
-      libname = "ao"
-    end
     newlib = "#{dest}/#{libname}"
     FileUtils.rm_rf newlib
     FileUtils.cp_r  file, dest, :verbose => true
     FileUtils.chmod 0755, newlib
-    if file !~ /ao/
-      `install_name_tool -change "#{file}" "\@rpath/#{libname}" "#{newlib}"`
-    end
   rescue => e
     $stderr.puts "Could not copy #{file}: #{e}"
   end
@@ -112,6 +109,7 @@ def parse( app )
   if app =~ EXCLUDE_REGEX
     return
   end
+
 
   begin
     output = `otool -L #{app}`
@@ -129,20 +127,19 @@ def parse( app )
     if lib =~ /^\/usr\/lib\// or lib =~ /\/System/
       next
     end
-    if lib =~ /@loader_path/
-      lib.sub!(/@loader_path\//, "")
+    $stderr.puts lib
+    if lib =~ /@(?:rpath|loader_path)\//
+      lib.sub!(/@(?:rpath|loader_path)\//, "")
+    end
+    if lib !~ /^\//
       lib = find_lib lib
       if lib.empty?
         next
       end
     end
-    rpath = lib.sub(/@(?:rpath|loader_path)/, "/usr/local/lib")
-    if rpath !~ /^\//
-      rpath = "/usr/local/lib/" + rpath
-    end
-    if not @files.one? rpath
-      @files.push rpath
-      parse rpath
+    if not @files.one? lib
+      @files.push lib
+      parse lib
     end
   end
 end
@@ -152,7 +149,6 @@ end
 parse app
 
 @files.uniq!
-@files.push "/usr/local/lib/ao"
 for file in @files
   copy( file, @libdir )
 end

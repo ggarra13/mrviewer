@@ -24,6 +24,8 @@ ELSE( OPENEXR_LIBRARY_DIR )
     $ENV{OPENEXR_ROOT}/bin/Win32/Release
     $ENV{OPENEXR_ROOT}/bin/Release
     $ENV{OPENEXR_ROOT}/bin/Debug
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
