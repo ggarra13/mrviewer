@@ -39,3 +39,6 @@ ExternalProject_Add(
   -DOCIO_BUILD_JNIGLUE=OFF
   -DOCIO_STATIC_JNIGLUE=OFF
   )
+
+
+set( OCIO "OCIO" )

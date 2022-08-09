@@ -7,3 +7,5 @@ ExternalProject_Add(
   CONFIGURE_COMMAND sh configure ${ARCH} --enable-shared --enable-static --prefix=${CMAKE_INSTALL_PREFIX}
   BUILD_IN_SOURCE 1
   )
+
+set( SampleICC "SampleICC" )

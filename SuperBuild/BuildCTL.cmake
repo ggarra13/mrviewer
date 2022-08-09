@@ -26,7 +26,7 @@ ExternalProject_Add(
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
     GIT_TAG master
     GIT_PROGRESS 1
-    DEPENDS AcesContainer OpenEXR
+    DEPENDS ${AcesContainer} ${OpenEXR}
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
@@ -35,3 +35,5 @@ ExternalProject_Add(
     -DCMAKE_CXX_FLAGS=${cxx_flags}
     ${MRV_EXTERNAL_ARGS}
     )
+
+set( CTL "CTL" )

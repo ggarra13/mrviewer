@@ -17,3 +17,5 @@ ExternalProject_Add(
   ${OSX_ARCHS}
 
   )
+
+set( ZLIB "ZLIB" )

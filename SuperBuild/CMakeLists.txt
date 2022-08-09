@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 
+# Use extraction timestamps
+cmake_policy( SET CMP0135 NEW )
+
 #
 # Run this file by calling runme.sh - NOT cmake
 #
 project( Dependencies )
+
 
 # use, i.e. don't skip the full RPATH for the build tree
 SET(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -38,42 +42,73 @@ set(MRV_EXTERNAL_ARGS
     
 include( ExternalProject )
 
-include( BuildLibZ.cmake )
-
-set( NASM "" )
-set( YASM "" )
-#include( BuildImath.cmake )  # gets built by OpenEXR
-include( BuildOpenEXR.cmake )
-# # set( LIBLZMA "" )
-include( BuildLZMA.cmake )
-
+set( ZLIB "" )
+set( OpenEXR "" )
+set( LZMA "" )
 set( LCMS2 "" )
-if( UNIX )
-     include( BuildLCMS2.cmake )
-endif()
-
-include( BuildJPEGTurbo.cmake )
-include( BuildTIFF.cmake )
-include( BuildOCIO.cmake )
-include( BuildLibPNG.cmake )
+set( NASM "" )
+set( LibOpus "" )
+set( JPEGTURBO "" )
+set( LibWebP "" )
+set( LibTIFF "" )
+set( OCIO "" )
+set( LIBPNG "" )
+set( SampleICC "" )
 set( LibRaw "" )
+set( YASM "" )
+set( LibVPX "" )
+set( x264 "" )
+set( x265 "" )
+set( LibHarfbuzz "" )
+set( LibAss "" )
 set( FFmpeg "" )
+set( ImageMagick "" )
+set( AcesContainer "" )
+set( CTL "" )
+set( OIIO "" )
+set( FLTK "" )
+# include( BuildLibZ.cmake )
+
+#include( BuildImath.cmake )  # gets built by OpenEXR
+
+# include( BuildOpenEXR.cmake )
+
+# include( BuildLZMA.cmake )
+
+# if( UNIX )
+#      include( BuildLCMS2.cmake )
+# endif()
+
+# if( UNIX )
+#      include( BuildNASM.cmake )
+# endif()
+
+
+# include( BuildJPEGTurbo.cmake )
+# include( BuildLibWebP.cmake )
+# include( BuildTIFF.cmake )
+# include( BuildOCIO.cmake )
+# include( BuildLibPNG.cmake )
+
+
 if( UNIX )
-     include( BuildLCMS2.cmake )
-     include( BuildLibWebP.cmake )
-     include( BuildLibOPUS.cmake )
-     include( BuildSampleICC.cmake )
-     include( BuildLibRaw.cmake )
-     include( BuildNASM.cmake )
-     include( BuildYASM.cmake )
-     include( BuildLibVPX.cmake )
-     include( BuildX264.cmake )
-     include( BuildX265.cmake )
+     # include( BuildLibOPUS.cmake )
+     # include( BuildSampleICC.cmake )
+     # include( BuildLibRaw.cmake )
+     # include( BuildYASM.cmake )
+     # include( BuildLibVPX.cmake )
+     # include( BuildX264.cmake )
+     # include( BuildX265.cmake )
+     # include( BuildLibHarfbuzz.cmake )
+     # include( BuildLibAss.cmake )
      include( BuildFFmpeg.cmake )
      include( BuildImageMagick.cmake )
 endif()
 
 include( BuildAcesContainer.cmake )
+
 include( BuildCTL.cmake )
+
 include( BuildOIIO.cmake )
-#include( BuildFLTK.cmake )
+
+include( BuildFLTK.cmake )
