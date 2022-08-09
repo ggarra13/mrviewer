@@ -86,7 +86,6 @@ extern "C" {
 #include <ImfHeader.h>
 #include <ImfStringAttribute.h>
 #include <Iex.h>
-#include <halfLimits.h>
 
 
 #include "core/mrvMath.h"
