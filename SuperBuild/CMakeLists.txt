@@ -43,16 +43,42 @@ set(MRV_EXTERNAL_ARGS
 include( ExternalProject )
 
 set( ZLIB "" )
+include( BuildLibZ.cmake )
+
+#include( BuildImath.cmake )  # gets built by OpenEXR
+
 set( OpenEXR "" )
+include( BuildOpenEXR.cmake )
+
 set( LZMA "" )
+include( BuildLZMA.cmake )
+
 set( LCMS2 "" )
+if( UNIX )
+     include( BuildLCMS2.cmake )
+endif()
+
 set( NASM "" )
-set( LibOpus "" )
+if( UNIX )
+     include( BuildNASM.cmake )
+endif()
+
 set( JPEGTURBO "" )
-set( LibWebP "" )
+include( BuildJPEGTurbo.cmake )
+
 set( LibTIFF "" )
+include( BuildTIFF.cmake )
+
 set( OCIO "" )
+include( BuildOCIO.cmake )
+
 set( LIBPNG "" )
+include( BuildLibPNG.cmake )
+
+set( LibWebP "" )
+include( BuildLibWebP.cmake )
+
+set( LibOpus "" )
 set( SampleICC "" )
 set( LibRaw "" )
 set( YASM "" )
@@ -63,52 +89,28 @@ set( LibHarfbuzz "" )
 set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
-set( AcesContainer "" )
-set( CTL "" )
-set( OIIO "" )
-set( FLTK "" )
-# include( BuildLibZ.cmake )
-
-#include( BuildImath.cmake )  # gets built by OpenEXR
-
-# include( BuildOpenEXR.cmake )
-
-# include( BuildLZMA.cmake )
-
-# if( UNIX )
-#      include( BuildLCMS2.cmake )
-# endif()
-
-# if( UNIX )
-#      include( BuildNASM.cmake )
-# endif()
-
-
-# include( BuildJPEGTurbo.cmake )
-# include( BuildLibWebP.cmake )
-# include( BuildTIFF.cmake )
-# include( BuildOCIO.cmake )
-# include( BuildLibPNG.cmake )
-
-
 if( UNIX )
-     # include( BuildLibOPUS.cmake )
-     # include( BuildSampleICC.cmake )
-     # include( BuildLibRaw.cmake )
-     # include( BuildYASM.cmake )
-     # include( BuildLibVPX.cmake )
-     # include( BuildX264.cmake )
-     # include( BuildX265.cmake )
-     # include( BuildLibHarfbuzz.cmake )
-     # include( BuildLibAss.cmake )
+     include( BuildLibOPUS.cmake )
+     include( BuildSampleICC.cmake )
+     include( BuildLibRaw.cmake )
+     include( BuildYASM.cmake )
+     include( BuildLibVPX.cmake )
+     include( BuildX264.cmake )
+     include( BuildX265.cmake )
+     include( BuildLibHarfbuzz.cmake )
+     include( BuildLibAss.cmake )
      include( BuildFFmpeg.cmake )
      include( BuildImageMagick.cmake )
 endif()
 
+set( AcesContainer "" )
 include( BuildAcesContainer.cmake )
 
+set( CTL "" )
 include( BuildCTL.cmake )
 
+set( OIIO "" )
 include( BuildOIIO.cmake )
 
+set( FLTK "" )
 include( BuildFLTK.cmake )

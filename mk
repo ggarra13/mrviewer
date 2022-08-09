@@ -314,8 +314,7 @@ run_make()
     else
 	cmd="ninja -j ${CMAKE_PROCS} $@"
     fi
-    # cmd="ninja -j ${CMAKE_PROCS} $@"
-    # cmd = "cmake --build . -j ${CMAKE_PROCS} --config Release"
+
     run_cmd $cmd
     status=$?
     if [ $status != 0 ]; then

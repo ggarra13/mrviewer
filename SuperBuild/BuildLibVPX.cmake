@@ -1,6 +1,5 @@
 include( ExternalProject )
 
-
 ExternalProject_Add(
   LibVPX
   GIT_REPOSITORY "https://github.com/webmproject/libvpx.git"

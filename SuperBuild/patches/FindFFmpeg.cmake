@@ -59,9 +59,10 @@ else ()
 endif ()
 
 if (FFMPEG_INCLUDES)
-  file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version_major.h" TMP
-       REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
-  if ( NOT DEFINED TMP OR TMP STREQUAL "" )
+  if ( EXISTS "${FFMPEG_INCLUDES}/libavcodec/version_major.h" )
+    file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version_major.h" TMP
+      REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
+  else()
      file(STRINGS "${FFMPEG_INCLUDES}/libavcodec/version.h" TMP
      REGEX "^#define LIBAVCODEC_VERSION_MAJOR .*$")
   endif()
@@ -110,8 +111,8 @@ endif ()
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (FFmpeg
     REQUIRED_VARS   FFMPEG_LIBAVCODEC
-                    FFMPEG_LIBAVFORMAT
-                    FFMPEG_AVCODEC_INCLUDE_DIR
+		    FFMPEG_LIBAVFORMAT
+		    FFMPEG_AVCODEC_INCLUDE_DIR
   )
 
 if (FFmpeg_FOUND)
