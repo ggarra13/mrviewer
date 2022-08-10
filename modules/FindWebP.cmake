@@ -22,6 +22,8 @@ ELSE( WEBP_LIBRARY_DIR )
     "$ENV{WEBP_ROOT}/bin/${CMAKE_BUILD_TYPE}"
     "$ENV{WEBP_ROOT}/lib/"
     "$ENV{WEBP_ROOT}/bin"
+    ${CMAKE_PREFIX_PATH}/lib64
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /lib/x86_64-linux-gnu/
@@ -46,8 +48,20 @@ FIND_LIBRARY( WEBP
   DOC   "WEBP library"
 )
 
+FIND_LIBRARY( WEBPDEMUX
+  NAMES webpdemux
+  PATHS ${SEARCH_DIRS}
+  DOC   "WEBP library"
+)
 
-SET(WEBP_LIBRARIES ${WEBP} )
+FIND_LIBRARY( WEBPMUX
+  NAMES webpmux
+  PATHS ${SEARCH_DIRS}
+  DOC   "WEBP library"
+)
+
+
+SET(WEBP_LIBRARIES ${WEBP} ${WEBPDEMUX} ${WEBPMUX} )
 
 
 IF(NOT WEBP_FOUND)
