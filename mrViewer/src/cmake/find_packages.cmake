@@ -5,8 +5,8 @@ endif( NOT CMAKE_MODULE_PATH )
 #
 # These are the libraries we will depend on
 #
-#set( OpenGL_GL_PREFERENCE LEGACY )
-set( OpenGL_GL_PREFERENCE GLVND )
+set( OpenGL_GL_PREFERENCE LEGACY )
+#set( OpenGL_GL_PREFERENCE GLVND )
 
 # For window management
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
@@ -30,13 +30,9 @@ if (APPLE)
 else()
   if (UNIX)
     if ( NOT DEFINED FLTK_DIR )
-      if ( CMAKE_SYSTEM_VERSION GREATER_EQUAL 5 )
-	set( FLTK_DIR "~/code/lib/fltk-x11/build-linux-20" CACHE FILEPATH
+	set( FLTK_DIR "${CMAKE_INSTALL_PREFIX}" CACHE FILEPATH
           "fltk build dir" FORCE )
-      else()
-	set( FLTK_DIR "~/code/lib/fltk-x11/build-linux" CACHE FILEPATH
-          "fltk build dir" FORCE )
-      endif()
+	set( FLTK_FLUID_EXECUTABLE "${FLTK_DIR}/bin/fluid" )	
     endif()
   endif()
 endif()
@@ -54,6 +50,7 @@ find_package( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
 find_package( Gettext     REQUIRED )    # for translations
 find_package( TCLAP       REQUIRED )    # for command-line parsing
 find_package( GLEW        REQUIRED )    # for opengl features
+find_package( TIFF        REQUIRED )
 find_package( LibIntl     REQUIRED )
 find_package( SampleICC   REQUIRED )    # For ICC reading
 find_package( LibRaw      REQUIRED )    # for libraw files
@@ -105,7 +102,7 @@ else()
     add_compile_options( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
 
-    link_directories( /usr/local/lib )
+    link_directories( ${CMAKE_PREFIX_PATH}/lib )
     set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis )
 
 
@@ -153,7 +150,7 @@ else()
 
   add_definitions( -DLINUX )
   add_compile_options( -O3 -msse )
-  link_directories( /usr/local/lib )
+  link_directories( "${CMAKE_PREFIX_PATH}/lib" "${CMAKE_PREFIX_PATH}/lib64" ) 
   set(OS_LIBRARIES
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis stdc++.so.6  ### dvdnav dvdread
     )
@@ -195,6 +192,7 @@ include_directories(
   ${OIIO_INCLUDE_DIR}
   ${OCIO_INCLUDE_DIR}
   ${OPENTIMELINEIO_INCLUDE_DIR}
+  ${TIFF_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
@@ -296,6 +294,7 @@ set( LIBRARIES
   ${OpenEXRCTL_LIBRARIES}
   ${OCIO_LIBRARIES}
   ${OIIO_LIBRARIES}
+  ${TIFF_LIBRARIES}
   ${SampleICC_LIBRARIES}
   ${LibRaw_LIBRARIES}
   ${OPENTIMELINEIO_LIBRARIES}

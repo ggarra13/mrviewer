@@ -43,41 +43,15 @@ set(MRV_EXTERNAL_ARGS
 include( ExternalProject )
 
 set( ZLIB "" )
-include( BuildLibZ.cmake )
-
-#include( BuildImath.cmake )  # gets built by OpenEXR
-
 set( OpenEXR "" )
-include( BuildOpenEXR.cmake )
-
 set( LZMA "" )
-include( BuildLZMA.cmake )
-
 set( LCMS2 "" )
-if( UNIX )
-     include( BuildLCMS2.cmake )
-endif()
-
 set( NASM "" )
-if( UNIX )
-     include( BuildNASM.cmake )
-endif()
-
 set( JPEGTURBO "" )
-include( BuildJPEGTurbo.cmake )
-
-set( LibTIFF "" )
-include( BuildTIFF.cmake )
-
-set( OCIO "" )
-include( BuildOCIO.cmake )
-
 set( LIBPNG "" )
-include( BuildLibPNG.cmake )
-
+set( OCIO "" )
+set( LibTIFF "" )
 set( LibWebP "" )
-include( BuildLibWebP.cmake )
-
 set( LibOpus "" )
 set( SampleICC "" )
 set( LibRaw "" )
@@ -89,13 +63,40 @@ set( LibHarfbuzz "" )
 set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
+
+include( BuildLibZ.cmake )
+
+#include( BuildImath.cmake )  # gets built by OpenEXR
+
+include( BuildOpenEXR.cmake )
+
+include( BuildLZMA.cmake )
+
 if( UNIX )
-     include( BuildLibOPUS.cmake )
-     include( BuildSampleICC.cmake )
-     include( BuildLibRaw.cmake )
-     include( BuildYASM.cmake )
-     include( BuildLibVPX.cmake )
-     include( BuildX264.cmake )
+     include( BuildLCMS2.cmake )
+endif()
+
+if( UNIX )
+     include( BuildNASM.cmake )
+endif()
+
+include( BuildJPEGTurbo.cmake )
+
+include( BuildTIFF.cmake )
+
+include( BuildOCIO.cmake )
+
+include( BuildLibPNG.cmake )
+
+include( BuildLibWebP.cmake )
+
+if( UNIX )
+     # include( BuildLibOPUS.cmake )
+     # include( BuildSampleICC.cmake )
+     # include( BuildLibRaw.cmake )
+     # include( BuildYASM.cmake )
+     # include( BuildLibVPX.cmake )
+     # include( BuildX264.cmake )
      include( BuildX265.cmake )
      include( BuildLibHarfbuzz.cmake )
      include( BuildLibAss.cmake )

@@ -393,15 +393,11 @@ namespace mrv {
             char buf[256];
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59, 33, 100)
             
-            AVChannelLayout in_ch_layout = {0};
-            in_ch_layout.order = AV_CHANNEL_ORDER_NATIVE;
-            in_ch_layout.nb_channels = 2;
-            in_ch_layout.u.mask = AV_CH_LAYOUT_STEREO;
+            AVChannelLayout in_ch_layout = AV_CHANNEL_LAYOUT_STEREO;
 
             if ( _audio_channels == 1 )
             {
-                in_ch_layout.nb_channels = 1;
-                in_ch_layout.u.mask = AV_CH_LAYOUT_MONO;
+	      in_ch_layout = AV_CHANNEL_LAYOUT_MONO;
             }
 
             av_channel_layout_describe( &in_ch_layout, buf, 256 );

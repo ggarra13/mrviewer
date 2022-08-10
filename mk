@@ -65,7 +65,6 @@ export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
 
 OS=$KERNEL-$RELEASE
 
-
 usage()
 {
     cat <<EOF

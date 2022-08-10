@@ -72,4 +72,4 @@ export PATH=$installdir/bin:$PATH
 export PKG_CONFIG_PATH=$installdir/lib/pkgconfig:$installdir/lib64/pkgconfig:$installdir/share/pkgconfig:
 export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib:$LD_LIBRARY_PATH
 
-../mk --installdir=$installdir --prefix=$installdir -j 1
+../mk $@ --installdir=$installdir --prefix=$installdir -j 1

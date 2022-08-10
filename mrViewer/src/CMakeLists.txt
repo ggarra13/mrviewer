@@ -242,7 +242,7 @@ endif()
 if(WIN64) # defined in FindBuilDir
   set(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
 elseif(UNIX)
-  set(EXE_DIR /usr/local/bin )
+  set(EXE_DIR "${CMAKE_INSTALL_PREFIX}/bin" )
 endif()
 
 set( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
