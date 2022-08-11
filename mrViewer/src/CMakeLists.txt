@@ -217,7 +217,7 @@ endif()
 
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip AMF )
+TARGET_LINK_LIBRARIES( mrViewer LINK_PUBLIC ${LIBRARIES} ACESclip AMF )
 
 #
 # CMake 3.15 new variable for windows runtime library

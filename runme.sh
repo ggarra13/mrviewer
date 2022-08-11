@@ -1,15 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # Determine CPU architecture
 #
 KERNEL=`uname -s`
 
-if [[ $KERNEL == CYGWIN* ]]; then
-    KERNEL=Windows
-    RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[3]%.[0-9]*}
-elif [[ $KERNEL == MINGW* ]]; then
+if [[ $KERNEL == MINGW* ]]; then
     RELEASE=(`cmd /c 'ver'`)
     #RELEASE=${RELEASE[3]%.[0-9]*}
     RELEASE=${RELEASE[3]/]/}
@@ -58,5 +54,3 @@ export prefix=$PWD/install-$BUILD/
 export LD_FLAGS="-Wl,--copy-dt-needed-entries"
 
 mk --prefix=$prefix -DFLTK_DIR=$PWD/SuperBuild/BUILD/$BUILD/Release/tmp/FLTK-prefix/src/FLTK-build/ $@
-
-

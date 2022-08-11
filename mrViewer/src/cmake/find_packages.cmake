@@ -11,7 +11,7 @@ set( OpenGL_GL_PREFERENCE LEGACY )
 # For window management
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 find_package( OpenGL      REQUIRED )    # for drawing images/shapes
-find_package( Boost       REQUIRED )    # for file system support
+find_package( Boost       COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
 add_definitions( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
@@ -31,8 +31,8 @@ else()
   if (UNIX)
     if ( NOT DEFINED FLTK_DIR )
 	set( FLTK_DIR "${CMAKE_INSTALL_PREFIX}" CACHE FILEPATH
-          "fltk build dir" FORCE )
-	set( FLTK_FLUID_EXECUTABLE "${FLTK_DIR}/bin/fluid" )	
+	  "fltk build dir" FORCE )
+	set( FLTK_FLUID_EXECUTABLE "${FLTK_DIR}/bin/fluid" )
     endif()
   endif()
 endif()
@@ -42,7 +42,7 @@ set( FLTK_LIBRARIES       fltk fltk_gl fltk_images )
 
 find_package( ImageMagick REQUIRED )    # for image formats
 find_package( OpenEXR     REQUIRED )    # for EXR image loading
-find_package( CTL  	  REQUIRED )    # for CTL
+find_package( CTL	  REQUIRED )    # for CTL
 find_package( OpenEXRCTL  REQUIRED )    # for CTL <-> EXR
 find_package( OCIO        REQUIRED )    # for OCIO color correction
 find_package( OIIO        REQUIRED )    # for OIIO image loading
@@ -60,9 +60,9 @@ find_package( BlackMagicRAW  REQUIRED )  # for BRAW format
 if( UNIX )
     find_package( LibVPX      REQUIRED )    # for libvpx codec
     find_package( LibOPUS      REQUIRED )   # for libopus codec
-    find_package( X264           REQUIRED )  # for lib264 
+    find_package( X264           REQUIRED )  # for lib264
     find_package( X265           REQUIRED )  # for lib265
-    find_package( WebP           REQUIRED )  # for webp 
+    find_package( WebP           REQUIRED )  # for webp
 endif()
 find_package( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
 
@@ -88,7 +88,7 @@ if(WIN32 OR WIN64)
 
 # add_definitions( -DMR_SSE -DWIN32  )
   add_definitions( -DMR_SSE -DWIN32 -DNOMINMAX -DIMATH_DLL -DOPENEXR_DLL
-  		   -D_WIN32_WINNT=0x0601 )
+		   -D_WIN32_WINNT=0x0601 )
 
   set( OS_LIBRARIES GDIplus Winmm ws2_32 Psapi ${GLEW_LIBRARIES} )
 
@@ -150,7 +150,7 @@ else()
 
   add_definitions( -DLINUX )
   add_compile_options( -O3 -msse )
-  link_directories( "${CMAKE_PREFIX_PATH}/lib" "${CMAKE_PREFIX_PATH}/lib64" ) 
+  link_directories( "${CMAKE_PREFIX_PATH}/lib" "${CMAKE_PREFIX_PATH}/lib64" )
   set(OS_LIBRARIES
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis stdc++.so.6  ### dvdnav dvdread
     )
@@ -202,9 +202,9 @@ if ( UNIX )
    include_directories(
 	${WEBP_INCLUDE_DIR}
 	${LibVPX_INCLUDE_DIR}
-  	${LibOPUS_INCLUDE_DIR}
-  	${X264_INCLUDE_DIR}
-  	${X265_INCLUDE_DIR}
+	${LibOPUS_INCLUDE_DIR}
+	${X264_INCLUDE_DIR}
+	${X265_INCLUDE_DIR}
 	)
 endif()
 
@@ -213,63 +213,7 @@ if( PORTAUDIO_FOUND )
 endif()
 
 
-if( NOT WIN32 )
-
-  find_library( Boost_locale_LIBRARY
-  NAMES boost_locale boost_locale-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-  find_library( Boost_chrono_LIBRARY
-  NAMES boost_chrono boost_chrono-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-  find_library( Boost_atomic_LIBRARY
-  NAMES boost_atomic boost_atomic-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-  find_library( Boost_system_LIBRARY
-  NAMES boost_system boost_system-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-
-  find_library( Boost_filesystem_LIBRARY
-  NAMES boost_filesystem boost_filesystem-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-  find_library( Boost_regex_LIBRARY
-  NAMES boost_regex boost_regex-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-  find_library( Boost_thread_LIBRARY
-  NAMES boost_thread boost_thread-mt
-  PATHS ${Boost_LIBRARY_DIRS}
-  NO_DEFAULT_PATH
-  )
-
-
-  set( BOOST_LIBRARIES
-  ${Boost_locale_LIBRARY}
-  ${Boost_chrono_LIBRARY}
-  ${Boost_atomic_LIBRARY}
-  ${Boost_regex_LIBRARY}
-  ${Boost_system_LIBRARY}
-  ${Boost_filesystem_LIBRARY}
-  ${Boost_thread_LIBRARY}
-  )
-
-else()
+if( WIN32 )
   #
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
@@ -288,7 +232,7 @@ set( LIBRARIES
   ${OPENEXR_LIBRARIES}
   ${FLTK_LIBRARIES}
   ${OPENGL_LIBRARIES}
-  ${BOOST_LIBRARIES}
+  ${Boost_LIBRARIES}
   ${GLEW_LIBRARIES}
   ${CTL_LIBRARIES}
   ${OpenEXRCTL_LIBRARIES}
@@ -303,7 +247,7 @@ set( LIBRARIES
   )
 
 if( UNIX )
-  set( LIBRARIES 
+  set( LIBRARIES
        ${LibVPX_LIBRARIES}
        ${LibOPUS_LIBRARIES}
        ${X264_LIBRARIES}
@@ -356,7 +300,7 @@ endif()
 
 if(OPENEXR_FOUND)
   message( STATUS "OpenEXR include:       ${OPENEXR_INCLUDE_DIR}" )
-  message( STATUS "OpenEXR library:       ${OPENEXR_LIBRARY_DIR}" )
+  message( STATUS "OpenEXR library dir:   ${OPENEXR_LIBRARY_DIR}" )
   message( STATUS "OpenEXR libs:          ${OPENEXR_LIBRARIES}" )
 endif()
 
@@ -368,7 +312,8 @@ endif()
 
 if(Boost_FOUND)
   message( STATUS "Boost include:         ${Boost_INCLUDE_DIR}" )
-  message( STATUS "Boost library:         ${BOOST_LIBRARIES}" )
+  message( STATUS "Boost library dirs:    ${Boost_LIBRARY_DIR}" )
+  message( STATUS "Boost library:         ${Boost_LIBRARIES}" )
 endif()
 
 if(FFMPEG_FOUND)
