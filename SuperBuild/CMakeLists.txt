@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Use extraction timestamps
-cmake_policy( SET CMP0135 NEW )
+if( NOT CMAKE_VERSION LESS 3.24.0 )
+  cmake_policy( SET CMP0135 NEW )
+endif()
 
 #
 # Run this file by calling runme.sh - NOT cmake
