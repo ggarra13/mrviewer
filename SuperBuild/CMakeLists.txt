@@ -39,7 +39,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(MRV_EXTERNAL_ARGS
     -DBUILD_SHARED_LIBS=ON
     -DENABLE_SHARED=ON)
-    
+
 include( ExternalProject )
 
 set( ZLIB "" )
@@ -64,39 +64,39 @@ set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
 
-# include( BuildLibZ.cmake )
+include( BuildLibZ.cmake )
 
-# #include( BuildImath.cmake )  # gets built by OpenEXR
+#include( BuildImath.cmake )  # gets built by OpenEXR
 
-# include( BuildOpenEXR.cmake )
+include( BuildOpenEXR.cmake )
 
-# include( BuildLZMA.cmake )
-
-# if( UNIX )
-#      include( BuildLCMS2.cmake )
-# endif()
-
-# if( UNIX )
-#      include( BuildNASM.cmake )
-# endif()
-
-# include( BuildJPEGTurbo.cmake )
-
-# include( BuildTIFF.cmake )
-
-# include( BuildOCIO.cmake )
-
-# include( BuildLibPNG.cmake )
-
-# include( BuildLibWebP.cmake )
+include( BuildLZMA.cmake )
 
 if( UNIX )
-     # include( BuildLibOPUS.cmake )
-     # include( BuildSampleICC.cmake )
-     # include( BuildLibRaw.cmake )
-     # include( BuildYASM.cmake )
-     # include( BuildLibVPX.cmake )
-     # include( BuildX264.cmake )
+     include( BuildLCMS2.cmake )
+endif()
+
+if( UNIX )
+     include( BuildNASM.cmake )
+endif()
+
+include( BuildJPEGTurbo.cmake )
+
+include( BuildTIFF.cmake )
+
+include( BuildOCIO.cmake )
+
+include( BuildLibPNG.cmake )
+
+include( BuildLibWebP.cmake )
+
+if( UNIX )
+     include( BuildLibOPUS.cmake )
+     include( BuildSampleICC.cmake )
+     include( BuildLibRaw.cmake )
+     include( BuildYASM.cmake )
+     include( BuildLibVPX.cmake )
+     include( BuildX264.cmake )
      include( BuildX265.cmake )
      include( BuildLibHarfbuzz.cmake )
      include( BuildLibAss.cmake )
