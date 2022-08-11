@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 cd SuperBuild
-runme.sh
+echo "Entering SuperBuild directory"
+./runme.sh
+
+echo "Leading SuperBuild directory"
 cd ..
-runme.sh bundle
+./runme.sh bundle
