@@ -69,6 +69,7 @@ set( AcesContainer "" )
 set( OIIO "" )
 set( CTL "" )
 set( OpenTimelineIO "" )
+set( TCLAP "" )
 set( FLTK "" )
 
 include( BuildLibZ.cmake )
@@ -118,5 +119,7 @@ include( BuildCTL.cmake )
 include( BuildOIIO.cmake )
 
 include( BuildOpenTimelineIO.cmake )
+
+include( BuildTCLAP.cmake )
 
 include( BuildFLTK.cmake )

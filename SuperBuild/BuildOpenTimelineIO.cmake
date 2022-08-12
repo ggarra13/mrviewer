@@ -14,3 +14,6 @@ ExternalProject_Add(
   -DPYTHON=FALSE
   -DDOCS=FALSE
   )
+
+
+set( OpenTimelineIO "OpenTimelineIO" )
