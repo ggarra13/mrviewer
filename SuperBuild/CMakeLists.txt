@@ -65,6 +65,11 @@ set( LibHarfbuzz "" )
 set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
+set( AcesContainer "" )
+set( OIIO "" )
+set( CTL "" )
+set( OpenTimelineIO "" )
+set( FLTK "" )
 
 include( BuildLibZ.cmake )
 
@@ -106,14 +111,12 @@ if( UNIX )
      include( BuildImageMagick.cmake )
 endif()
 
-set( AcesContainer "" )
 include( BuildAcesContainer.cmake )
 
-set( CTL "" )
 include( BuildCTL.cmake )
 
-set( OIIO "" )
 include( BuildOIIO.cmake )
 
-set( FLTK "" )
+include( BuildOpenTimelineIO.cmake )
+
 include( BuildFLTK.cmake )
