@@ -13,10 +13,13 @@ SET(TCLAP_FOUND "NO")
 FIND_PATH( TCLAP_INCLUDE_DIR tclap/CmdLine.h
   "$ENV{TCLAP_ROOT}/include"
   "$ENV{TCLAP_ROOT}"
+  "${CMAKE_PREFIX_PATH}/include"
   /usr/local/include
   /usr/include
   DOC   "TCLAP includes"
   )
+
+message( FATAL_ERROR "tclap dir=${TCLAP_INCLUDE_DIR}" )
 
 IF(NOT TCLAP_FOUND)
   IF (TCLAP_INCLUDE_DIR)
@@ -30,7 +33,7 @@ IF(NOT TCLAP_FOUND)
     IF(TCLAP_FIND_REQUIRED)
       MESSAGE( STATUS "TCLAP_INCLUDE_DIR ${TCLAP_INCLUDE_DIR}" )
       MESSAGE(FATAL_ERROR
-              "TCLAP required, please specify its location with TCLAP_ROOT.")
+	      "TCLAP required, please specify its location with TCLAP_ROOT.")
     ELSE(TCLAP_FIND_REQUIRED)
       MESSAGE(STATUS "TCLAP was not found.")
     ENDIF(TCLAP_FIND_REQUIRED)
@@ -38,4 +41,3 @@ IF(NOT TCLAP_FOUND)
 ENDIF(NOT TCLAP_FOUND)
 
 #####
-

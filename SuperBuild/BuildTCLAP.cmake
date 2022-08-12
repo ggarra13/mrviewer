@@ -1,4 +1,6 @@
-set( install_cmd ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/tclap && ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/TCLAP-prefix/src/TCLAP/include/tclap/ "${CMAKE_INSTALL_PREFIX}/include/tclap/" )
+FILE( GLOB files "${CMAKE_BINARY_DIR}/TCLAP-prefix/src/TCLAP/include/tclap/*" )
+
+set( install_cmd ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/tclap && ${CMAKE_COMMAND} -E copy_if_different ${files} "${CMAKE_INSTALL_PREFIX}/include/tclap/" )
 
   ExternalProject_Add(
     TCLAP
