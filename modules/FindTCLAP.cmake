@@ -19,7 +19,6 @@ FIND_PATH( TCLAP_INCLUDE_DIR tclap/CmdLine.h
   DOC   "TCLAP includes"
   )
 
-message( FATAL_ERROR "tclap dir=${TCLAP_INCLUDE_DIR}" )
 
 IF(NOT TCLAP_FOUND)
   IF (TCLAP_INCLUDE_DIR)
