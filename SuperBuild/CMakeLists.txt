@@ -65,55 +65,55 @@ set( LibHarfbuzz "" )
 set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
-
-# # include( BuildLibZ.cmake )
-
-# # #include( BuildImath.cmake )  # gets built by OpenEXR
-
-# # include( BuildOpenEXR.cmake )
-
-# # include( BuildLZMA.cmake )
-
-# # if( UNIX )
-# #      include( BuildLCMS2.cmake )
-# # endif()
-
-# # if( UNIX )
-# #      include( BuildNASM.cmake )
-# # endif()
-
-# # include( BuildJPEGTurbo.cmake )
-
-# # include( BuildTIFF.cmake )
-
-# # include( BuildOCIO.cmake )
-
-# # include( BuildLibPNG.cmake )
-
-# # include( BuildLibWebP.cmake )
-
-# if( UNIX )
-#      # include( BuildLibOPUS.cmake )
-#      # include( BuildSampleICC.cmake )
-#      # include( BuildLibRaw.cmake )
-#      # include( BuildYASM.cmake )
-#      # include( BuildLibVPX.cmake )
-#      # include( BuildX264.cmake )
-#      # include( BuildX265.cmake )
-#      include( BuildLibHarfbuzz.cmake )
-#      include( BuildLibAss.cmake )
-#      include( BuildFFmpeg.cmake )
-#      include( BuildImageMagick.cmake )
-# endif()
-
-# set( AcesContainer "" )
-# include( BuildAcesContainer.cmake )
-
+set( AcesContainer "" )
 set( CTL "" )
+set( OIIO "" )
+set( FLTK "" )
+
+include( BuildLibZ.cmake )
+
+#include( BuildImath.cmake )  # gets built by OpenEXR
+
+include( BuildOpenEXR.cmake )
+
+include( BuildLZMA.cmake )
+
+if( UNIX )
+     include( BuildLCMS2.cmake )
+endif()
+
+if( UNIX )
+     include( BuildNASM.cmake )
+endif()
+
+include( BuildJPEGTurbo.cmake )
+
+include( BuildTIFF.cmake )
+
+include( BuildOCIO.cmake )
+
+include( BuildLibPNG.cmake )
+
+include( BuildLibWebP.cmake )
+
+if( UNIX )
+     include( BuildLibOPUS.cmake )
+     include( BuildSampleICC.cmake )
+     include( BuildLibRaw.cmake )
+     include( BuildYASM.cmake )
+     include( BuildLibVPX.cmake )
+     include( BuildX264.cmake )
+     include( BuildX265.cmake )
+     include( BuildLibHarfbuzz.cmake )
+     include( BuildLibAss.cmake )
+     include( BuildFFmpeg.cmake )
+     include( BuildImageMagick.cmake )
+endif()
+
+include( BuildAcesContainer.cmake )
+
 include( BuildCTL.cmake )
 
-set( OIIO "" )
 include( BuildOIIO.cmake )
 
-set( FLTK "" )
 include( BuildFLTK.cmake )
