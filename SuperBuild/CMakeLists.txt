@@ -66,48 +66,48 @@ set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
 
-include( BuildLibZ.cmake )
+# # include( BuildLibZ.cmake )
 
-#include( BuildImath.cmake )  # gets built by OpenEXR
+# # #include( BuildImath.cmake )  # gets built by OpenEXR
 
-include( BuildOpenEXR.cmake )
+# # include( BuildOpenEXR.cmake )
 
-include( BuildLZMA.cmake )
+# # include( BuildLZMA.cmake )
 
-if( UNIX )
-     include( BuildLCMS2.cmake )
-endif()
+# # if( UNIX )
+# #      include( BuildLCMS2.cmake )
+# # endif()
 
-if( UNIX )
-     include( BuildNASM.cmake )
-endif()
+# # if( UNIX )
+# #      include( BuildNASM.cmake )
+# # endif()
 
-include( BuildJPEGTurbo.cmake )
+# # include( BuildJPEGTurbo.cmake )
 
-include( BuildTIFF.cmake )
+# # include( BuildTIFF.cmake )
 
-include( BuildOCIO.cmake )
+# # include( BuildOCIO.cmake )
 
-include( BuildLibPNG.cmake )
+# # include( BuildLibPNG.cmake )
 
-include( BuildLibWebP.cmake )
+# # include( BuildLibWebP.cmake )
 
-if( UNIX )
-     include( BuildLibOPUS.cmake )
-     include( BuildSampleICC.cmake )
-     include( BuildLibRaw.cmake )
-     include( BuildYASM.cmake )
-     include( BuildLibVPX.cmake )
-     include( BuildX264.cmake )
-     include( BuildX265.cmake )
-     include( BuildLibHarfbuzz.cmake )
-     include( BuildLibAss.cmake )
-     include( BuildFFmpeg.cmake )
-     include( BuildImageMagick.cmake )
-endif()
+# if( UNIX )
+#      # include( BuildLibOPUS.cmake )
+#      # include( BuildSampleICC.cmake )
+#      # include( BuildLibRaw.cmake )
+#      # include( BuildYASM.cmake )
+#      # include( BuildLibVPX.cmake )
+#      # include( BuildX264.cmake )
+#      # include( BuildX265.cmake )
+#      include( BuildLibHarfbuzz.cmake )
+#      include( BuildLibAss.cmake )
+#      include( BuildFFmpeg.cmake )
+#      include( BuildImageMagick.cmake )
+# endif()
 
-set( AcesContainer "" )
-include( BuildAcesContainer.cmake )
+# set( AcesContainer "" )
+# include( BuildAcesContainer.cmake )
 
 set( CTL "" )
 include( BuildCTL.cmake )

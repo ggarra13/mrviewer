@@ -53,6 +53,13 @@ if [[ $KERNEL == 'Windows' ]]; then
     fi
 fi
 
+if [[ $KERNEL == 'Darwin' ]]; then
+    brew install glib
+    brew install glib-utils
+    brew install meson
+fi
+
+
 BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH
 
 installdir=$PWD/../install-$BUILD

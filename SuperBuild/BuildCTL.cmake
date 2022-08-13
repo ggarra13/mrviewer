@@ -17,7 +17,7 @@ else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
 endif()
 
-if (UNIX AND NOT APPLE)
+if (UNIX)
    set( cxx_flags ${cxx_flags} -std=c++11 )
 endif()
 
