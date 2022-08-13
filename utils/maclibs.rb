@@ -67,10 +67,10 @@ app = appdir + "/mrViewer"
 
 objc_opt_self = `nm "#{app}"`.chop!
 
-if objc_opt_self =~ /objc_opt_self/ and not @options[:force]
-  $stderr.puts "MAC APPLICATION NOT COMPATIBLE WITH MOJAVE"
-  exit 1
-end
+# if objc_opt_self =~ /objc_opt_self/ and not @options[:force]
+#   $stderr.puts "MAC APPLICATION NOT COMPATIBLE WITH MOJAVE"
+#   exit 1
+# end
 
 @searched_libs = []
 
