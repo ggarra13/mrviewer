@@ -6,9 +6,9 @@ endif()
 ExternalProject_Add(
   FLTK
   GIT_REPOSITORY "https://github.com/fltk/fltk.git"
+  GIT_TAG 47ba6632b1be5ab7f28726735fc7789916191ca7
   GIT_PROGRESS 1
   PATCH_COMMAND ${patch_cmd}
-  INSTALL_COMMAND sudo make install
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
