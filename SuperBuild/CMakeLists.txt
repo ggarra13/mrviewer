@@ -68,6 +68,7 @@ set( ImageMagick "" )
 set( AcesContainer "" )
 set( CTL "" )
 set( OIIO "" )
+set( OTIO "" )
 set( FLTK "" )
 
 include( BuildLibZ.cmake )
@@ -115,5 +116,7 @@ include( BuildAcesContainer.cmake )
 include( BuildCTL.cmake )
 
 include( BuildOIIO.cmake )
+
+include( BuildOTIO.cmake )
 
 include( BuildFLTK.cmake )
