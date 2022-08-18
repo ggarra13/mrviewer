@@ -17,9 +17,6 @@ else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
 endif()
 
-if (UNIX AND NOT APPLE)
-   set( cxx_flags ${cxx_flags} -std=c++11 )
-endif()
 
 ExternalProject_Add(
     CTL
@@ -29,10 +26,11 @@ ExternalProject_Add(
     DEPENDS ${AcesContainer} ${OpenEXR}
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
     -DCMAKE_BUILD_TYPE=${build_type}
-    -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
     -DCMAKE_CXX_FLAGS=${cxx_flags}
+    -DCMAKE_CXX_STANDARD=14
+    -DCMAKE_CXX_EXTENSIONS=OFF
     ${MRV_EXTERNAL_ARGS}
     )
 

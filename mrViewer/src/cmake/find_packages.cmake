@@ -102,7 +102,7 @@ else()
     add_compile_options( -msse -msse2 -Wno-format-security -Wno-deprecated-declarations -I/usr/local/include/ImageMagick-7/MagickCore )
 
 
-    link_directories( ${CMAKE_PREFIX_PATH}/lib )
+    link_directories( ${CMAKE_PREFIX_PATH}/lib /usr/local/lib )
     set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis )
 
 

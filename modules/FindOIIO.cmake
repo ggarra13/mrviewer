@@ -1,4 +1,4 @@
-# - Find OpenColorIO
+# - Find OpenImageIO
 #
 # This module finds if OpenColorIO is installed and determines where the
 # include files and libraries are. It also determines what the name of the
@@ -20,6 +20,7 @@ FIND_PATH(OIIO_INCLUDE_PATH
   PATHS $ENV{OIIO_INCLUDE_DIR}
 	$ENV{OIIO_ROOT}/include
 	${OIIO_INCLUDE_DIR}
+	${CMAKE_PREFIX_PATH}/include
 	/usr/local/include )
 
 FIND_LIBRARY(OIIO_LIBRARY
@@ -27,7 +28,8 @@ FIND_LIBRARY(OIIO_LIBRARY
   PATHS $ENV{OIIO_LIBRARY_DIR}
 	$ENV{OIIO_ROOT}/lib
 	${OIIO_LIBRARY_DIR}
-	${OIIO_INCLUDE_DIR}/../lib
+	${CMAKE_PREFIX_PATH}/lib64
+	${CMAKE_PREFIX_PATH}/lib
 	/usr/local/lib
   )
 
