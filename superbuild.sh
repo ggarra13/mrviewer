@@ -1,17 +1,19 @@
 #!/bin/bash
 
-if [ -e SuperBuild/BUILD ]; then
-    rm -rf SuperBuild/BUILD
+source build_dir.sh
+
+if [ -e SuperBuild/BUILD/$BUILD ]; then
+    rm -rf SuperBuild/BUILD/$BUILD
 fi
 
-if [ -e BUILD ]; then
-    rm -rf BUILD
+if [ -e BUILD/$BUILD ]; then
+    rm -rf BUILD/$BUILD
 fi
 
 cd SuperBuild
 echo "Entering SuperBuild directory"
 ./runme.sh
 
-echo "Leading SuperBuild directory"
+echo "Leaving SuperBuild directory"
 cd ..
 ./runme.sh bundle

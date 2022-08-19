@@ -1,4 +1,4 @@
-set( patch_cmd "" )
+set( patch_cmd )
 if(APPLE)
   set( patch_cmd ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_plastic.cxx ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_gtk.cxx ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_gleam.cxx ${CMAKE_BINARY_DIR}/FLTK-prefix/src/FLTK/src )
 endif()
