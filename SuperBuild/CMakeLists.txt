@@ -66,16 +66,10 @@ set( LibAss "" )
 set( FFmpeg "" )
 set( ImageMagick "" )
 set( AcesContainer "" )
-<<<<<<< HEAD
-set( OIIO "" )
-set( CTL "" )
-set( OpenTimelineIO "" )
 set( TCLAP "" )
-=======
 set( CTL "" )
 set( OIIO "" )
 set( OTIO "" )
->>>>>>> 1724a0cad44ba56064d2b69603f7a97a835f6269
 set( FLTK "" )
 
 include( BuildLibZ.cmake )
@@ -124,12 +118,8 @@ include( BuildCTL.cmake )
 
 include( BuildOIIO.cmake )
 
-<<<<<<< HEAD
-include( BuildOpenTimelineIO.cmake )
-
 include( BuildTCLAP.cmake )
-=======
+
 include( BuildOTIO.cmake )
->>>>>>> 1724a0cad44ba56064d2b69603f7a97a835f6269
 
 include( BuildFLTK.cmake )
