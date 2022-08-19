@@ -11,6 +11,7 @@ ExternalProject_Add(
   -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
   ${MRV_EXTERNAL_ARGS}
+  -Dlibdeflate=OFF
   ${OSX_ARCHS}
 
   )
