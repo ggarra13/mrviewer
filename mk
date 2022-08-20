@@ -280,10 +280,6 @@ for i in $@; do
 	    shift
 	    break
 	    ;;
-	*)
-	    echo "NOT INTERPRETED: $1"
-	    break
-	    ;;
     esac
 done
 
@@ -309,7 +305,7 @@ run_make()
     fi
 
     if [ -f "Makefile" ]; then
-	cmd="make VERBOSE=1 -j ${CMAKE_PROCS} $@"
+	cmd="make -j ${CMAKE_PROCS} $@"
     else
 	cmd="ninja -j ${CMAKE_PROCS} $@"
     fi
@@ -353,7 +349,7 @@ run_cmake()
     fi
 
     echo "Buildir ${builddir}"
-    if [ ! -d $builddir ]; then
+    if [ ! -d $builddir/tmp ]; then
 	cmd="mkdir -p $builddir $builddir/bin $builddir/lib $builddir/tmp"
 	run_cmd $cmd
     fi

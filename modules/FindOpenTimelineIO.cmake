@@ -24,6 +24,8 @@ ELSE( OPENTIMELINEIO_LIBRARY_DIR )
     $ENV{OPENTIMELINEIO_ROOT}/bin/Win32/Release
     $ENV{OPENTIMELINEIO_ROOT}/bin/Release
     $ENV{OPENTIMELINEIO_ROOT}/bin/Debug
+    ${CMAKE_PREFIX_PATH}/lib
+    ${CMAKE_PREFIX_PATH}/bin
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}

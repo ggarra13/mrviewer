@@ -75,7 +75,7 @@ FIND_LIBRARY( OpenEXR
 MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath
-  NAMES Imath-3_1
+  NAMES Imath-3_2
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR Imath library"
 )

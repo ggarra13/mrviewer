@@ -1,3 +1,5 @@
+set( Imath_TAG "3ad5d4da02795dbf37b44c5bbd2f919a7c01a19a" )
+
 
 if( WIN32 )
     set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DIMATH_DLL -DIMATH_EXPORTS" )
@@ -6,7 +8,7 @@ endif()
 ExternalProject_Add(
   Imath
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/Imath.git"
-  GIT_TAG v3.1.5
+  GIT_TAG ${Imath_TAG}
   GIT_PROGRESS 1
   CMAKE_ARGS
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

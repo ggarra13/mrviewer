@@ -14,7 +14,7 @@ SET(LibRaw_FOUND "NO")
 IF( LibRaw_LIBRARY_DIR )
   SET( SEARCH_DIRS "${LibRaw_LIBRARY_DIR}" )
 ELSE( LibRaw_LIBRARY_DIR )
-  SET( SEARCH_DIRS 
+  SET( SEARCH_DIRS
     "$ENV{LibRaw_ROOT}/${CMAKE_BUILD_TYPE}/lib/"
     "$ENV{LibRaw_ROOT}/lib/${CMAKE_BUILD_TYPE}"
     "$ENV{LibRaw_ROOT}/lib"
@@ -36,7 +36,7 @@ FIND_PATH( LibRaw_INCLUDE_DIR libraw/libraw.h
   "$ENV{LibRaw_ROOT}/include"
   /usr/local/include/
   /usr/include/
-  DOC   "LibRaw includes" 
+  DOC   "LibRaw includes"
  )
 
 FIND_LIBRARY( LibRaw
@@ -45,8 +45,14 @@ FIND_LIBRARY( LibRaw
   DOC   "LibRaw library"
 )
 
+FIND_LIBRARY( LibRaw_r
+  NAMES raw_r libraw_r
+  PATHS ${SEARCH_DIRS}
+  DOC   "LibRaw library"
+)
 
-SET(LibRaw_LIBRARIES ${LibRaw} )
+
+SET(LibRaw_LIBRARIES ${LibRaw} ${LibRaw_r} )
 
 
 IF(NOT LibRaw_FOUND)
@@ -64,7 +70,7 @@ IF(NOT LibRaw_FOUND)
       MESSAGE( STATUS "LibRaw_INCLUDE_DIR ${LibRaw_INCLUDE_DIR}" )
       MESSAGE( STATUS "LibRaw_LIBRARIES   ${LibRaw_LIBRARIES}" )
       MESSAGE(FATAL_ERROR
-              "LibRaw required, please specify its location with LibRaw_ROOT.")
+	      "LibRaw required, please specify its location with LibRaw_ROOT.")
     ELSE(LibRaw_FIND_REQUIRED)
       MESSAGE(STATUS "LibRaw was not found.")
     ENDIF(LibRaw_FIND_REQUIRED)
@@ -72,4 +78,3 @@ IF(NOT LibRaw_FOUND)
 ENDIF(NOT LibRaw_FOUND)
 
 #####
-

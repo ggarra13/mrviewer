@@ -8,9 +8,6 @@ if [[ $KERNEL == 'Darwin' ]]; then
     brew install meson
 fi
 
-
-BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH
-
 installdir=$PWD/../install-$BUILD
 echo "INSTALLDIR = " $installdir
 
@@ -24,4 +21,4 @@ export PATH=$installdir/bin:$PATH
 export PKG_CONFIG_PATH=$installdir/lib/pkgconfig:$installdir/lib64/pkgconfig:$installdir/share/pkgconfig:
 export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib:$LD_LIBRARY_PATH
 
-../mk $@ --installdir=$installdir --prefix=$installdir -j 4
+../mk --installdir=$installdir --prefix=$installdir $@

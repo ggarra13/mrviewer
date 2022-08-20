@@ -9,7 +9,7 @@ if (APPLE)
 endif()
 
 
-set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/IlmThreadMutex.h ${CMAKE_BINARY_DIR}/OpenEXR-prefix/src/OpenEXR/src/lib/IlmThread/ )
+set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/OpenEXR/IlmThreadMutex.h ${CMAKE_BINARY_DIR}/OpenEXR-prefix/src/OpenEXR/src/lib/IlmThread/ && ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/OpenEXR/OpenEXRSetup.cmake ${CMAKE_BINARY_DIR}/OpenEXR-prefix/src/OpenEXR/cmake )
 
 ExternalProject_Add(
   OpenEXR
