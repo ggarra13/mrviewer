@@ -12,8 +12,9 @@ fi
 
 cd SuperBuild
 echo "Entering SuperBuild directory"
-./runme.sh
 
+./runme.sh
 echo "Leaving SuperBuild directory"
+
 cd ..
 ./runme.sh bundle
