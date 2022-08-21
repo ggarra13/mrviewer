@@ -37,10 +37,11 @@ fi
 
 export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
 
-arch=`which cl.exe`
-echo $arch
-if [[ $arch == *x86/cl* ]]; then
-    export CMAKE_BUILD_ARCH=32
+if [ $KERNEL == 'Windows' ]; then
+    arch=`which cl.exe`
+    if [[ $arch == *x86/cl* ]]; then
+	export CMAKE_BUILD_ARCH=32
+    fi
 fi
 
 

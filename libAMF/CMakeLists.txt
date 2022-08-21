@@ -7,6 +7,13 @@ set( SOVERSION "0.1.0" )
 
 cmake_policy( SET CMP0068 NEW )
 
+# This sets -fPIC on all libraries and code
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+#  VP18 switches to c++11, so let's do that by default
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
+# but switch gnu++11 or other extensions off for portability
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../modules )
 find_package( TinyXML2 REQUIRED )

@@ -1,7 +1,9 @@
+set( OTIO_TAG d6ad4ebc0504a65193c5baf6f2eba697f80be89e )
+
 ExternalProject_Add(
   OTIO
   GIT_REPOSITORY "https://github.com/AcademySoftwareFoundation/OpenTimelineIO.git"
-  GIT_TAG main
+  GIT_TAG ${OTIO_TAG}
   GIT_PROGRESS 1
   DEPENDS ${Imath}
   CMAKE_ARGS

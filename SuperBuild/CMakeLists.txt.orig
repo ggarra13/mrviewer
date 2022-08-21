@@ -80,58 +80,59 @@ set( OIIO  )
 set( OTIO  )
 set( FLTK  )
 
-# include( BuildLibZ.cmake )
+include( BuildLibZ.cmake )
 
-# include( BuildOTIO.cmake )
+include( BuildOTIO.cmake )
 
-# include( BuildOpenEXR.cmake )
+include( BuildOpenEXR.cmake )
 
-# include( BuildLZMA.cmake )
+include( BuildLZMA.cmake )
 
-# if( UNIX )
-#      include( BuildLCMS2.cmake )
-# endif()
+if( UNIX )
+     include( BuildLCMS2.cmake )
+endif()
 
-# if( UNIX )
-#      include( BuildNASM.cmake )
-# endif()
+if( UNIX )
+     include( BuildNASM.cmake )
+endif()
 
-# include( BuildJPEGTurbo.cmake )
+include( BuildJPEGTurbo.cmake )
 
-# include( BuildTIFF.cmake )
+include( BuildTIFF.cmake )
 
-# include( BuildOCIO.cmake )
+include( BuildOCIO.cmake )
 
-# include( BuildLibPNG.cmake )
+include( BuildLibPNG.cmake )
 
-# include( BuildLibWebP.cmake )
+include( BuildLibWebP.cmake )
 
-# include( BuildLibRaw.cmake )
+include( BuildLibRaw.cmake )
 
-# if( UNIX )
-#      include( BuildLibOPUS.cmake )
-#      include( BuildSampleICC.cmake )
-#      include( BuildYASM.cmake )
-#      include( BuildLibVPX.cmake )
-#      include( BuildX264.cmake )
-#      include( BuildX265.cmake )
+if( UNIX )
+     include( BuildLibOPUS.cmake )
+     include( BuildSampleICC.cmake )
+     include( BuildYASM.cmake )
+     include( BuildLibVPX.cmake )
+     include( BuildX264.cmake )
+     include( BuildX265.cmake )
 
-#      if( BUILD_LIBHARFBUZZ )
-#        include( BuildLibHarfbuzz.cmake )
-#      endif()
-#      include( BuildLibAss.cmake )
-#      include( BuildFFmpeg.cmake )
-#      include( BuildImageMagick.cmake )
-# endif()
+     if( BUILD_LIBHARFBUZZ )
+       message( STATUS "WILL BUILD libHarfbuzz" )
+       include( BuildLibHarfbuzz.cmake )
+     endif()
+     include( BuildLibAss.cmake )
+     include( BuildFFmpeg.cmake )
+     include( BuildImageMagick.cmake )
+endif()
 
-# include( BuildAcesContainer.cmake )
+include( BuildAcesContainer.cmake )
 
-# include( BuildImath.cmake )
+include( BuildImath.cmake )
 
-# include( BuildCTL.cmake )
+include( BuildCTL.cmake )
 
-# include( BuildOIIO.cmake )
+include( BuildOIIO.cmake )
 
-# include( BuildTCLAP.cmake )
+include( BuildTCLAP.cmake )
 
 include( BuildFLTK.cmake )
