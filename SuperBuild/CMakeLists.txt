@@ -83,6 +83,8 @@ include( BuildLibZ.cmake )
 
 include( BuildOTIO.cmake )
 
+include( BuildImath.cmake )
+
 include( BuildOpenEXR.cmake )
 
 include( BuildLZMA.cmake )
@@ -125,8 +127,6 @@ if( UNIX )
 endif()
 
 include( BuildAcesContainer.cmake )
-
-include( BuildImath.cmake )
 
 include( BuildCTL.cmake )
 
