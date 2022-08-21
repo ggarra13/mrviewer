@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Sourcing vc14_win64_vars"
 export ROOT=/D/code/applications/mrv
 export DIST=/D/code/lib/vc14_Windows_64
 export SUPERBUILD=$PWD/install-Windows-6.3.9600-64
@@ -8,27 +9,26 @@ export ZLIB_ROOT=$SUPERBUILD
 export OPENEXR_ROOT=$SUPERBUILD
 export     CTL_ROOT=$SUPERBUILD
 export TINYXML2_ROOT=$DIST
-export LibRaw_ROOT=$ROOT/dependencies/LibRaw-0.20.2-x64
+export LibRaw_ROOT=$SUPERBUILD
 export OIIO_ROOT=$SUPERBUILD
-export OPENTIMELINEIO_ROOT=$DIST
-export LibVPX_ROOT=$DIST
+export OPENTIMELINEIO_ROOT=$SUPERBUILD
+export LibVPX_ROOT=$SUPERBUILD
 export GLEW_ROOT=$DIST
 export PATH=$DIST/gettext/bin:$PATH
 
-export PORTAUDIO_ROOT=$DIST
 export BOOST_ROOT="/D/code/lib/boost_1_73_0"
 export Boost_ROOT=$BOOST_ROOT
 export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
 export FFmpeg_ROOT=$FFMPEG_ROOT
 export OCIO_ROOT=$SUPERBUILD
 export OpenColorIO_ROOT=$OCIO_ROOT
-export FLTK_DIR="$ROOT/../../lib/fltk-x11/build-win64"
+export FLTK_DIR=$SUPERBUILD
 export MAGICK_HOME="$ROOT/win64_deps/ImageMagick-Windows64"
-export TCLAP_ROOT="$ROOT/dependencies/tclap-1.2.2"
+export TCLAP_ROOT=$SUPERBUILD
 export SampleICC_ROOT="$ROOT/dependencies/SampleICC-1.6.10-win64-linux64"
 export R3DSDK_ROOT="$ROOT/../R3DSDKv8_1_0"
 export LIBINTL_ROOT="$ROOT/dependencies/libintl-win64/"
 export LIBICONV="$ROOT/dependencies/gettext-iconv-win64"
 
 
-export PATH=$DIST/bin:$PATH
+export PATH=$SUPERBUILD/bin:$PATH

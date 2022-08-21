@@ -22,24 +22,7 @@ if [ "$dir" == '.' ]; then
     dir=$PWD
 fi
 
-
-
-
-#
-# Platform specific directory for mrViewer
-#
-dir=${dir%/*}
-
-#
-# Root directory where mrViewer is installed
-#
-root=${dir%/*/*}
-
-#
-# Add mrViewer's lib directory first to LD_LIBRARY_PATH
-#
-export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
-export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
+source "$dir/environment.sh"
 
 # Uncomment this to always use English in mrViewer, regardless of locale
 # export LANG=C

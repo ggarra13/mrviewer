@@ -22,6 +22,9 @@ ELSE( LibRaw_LIBRARY_DIR )
     "$ENV{LibRaw_ROOT}/bin/${CMAKE_BUILD_TYPE}"
     "$ENV{LibRaw_ROOT}/lib/"
     "$ENV{LibRaw_ROOT}/bin"
+    ${CMAKE_PREFIX_PATH}/bin
+    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /lib/x86_64-linux-gnu/
@@ -34,22 +37,27 @@ ENDIF( LibRaw_LIBRARY_DIR )
 
 FIND_PATH( LibRaw_INCLUDE_DIR libraw/libraw.h
   "$ENV{LibRaw_ROOT}/include"
+  ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/
   /usr/include/
   DOC   "LibRaw includes"
  )
 
 FIND_LIBRARY( LibRaw
-  NAMES raw libraw libraw_r
+  NAMES raw libraw 
   PATHS ${SEARCH_DIRS}
   DOC   "LibRaw library"
 )
 
-FIND_LIBRARY( LibRaw_r
-  NAMES raw_r libraw_r
-  PATHS ${SEARCH_DIRS}
-  DOC   "LibRaw library"
-)
+set( LibRaw_r )
+
+if ( NOT WIN32 )
+  FIND_LIBRARY( LibRaw_r
+    NAMES raw_r libraw_r
+    PATHS ${SEARCH_DIRS}
+    DOC   "LibRaw_r library"
+    )
+endif()
 
 
 SET(LibRaw_LIBRARIES ${LibRaw} ${LibRaw_r} )

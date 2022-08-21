@@ -4536,6 +4536,7 @@ void ImageView::draw()
     }
 
 
+
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
     //
@@ -4644,33 +4645,6 @@ void ImageView::draw()
 
     if ( images.empty() ) return;
 
-#if 0
-    static int64_t old_frame = -1000;
-    if ( _frame != old_frame )
-    {
-        TRACE( "GLOBAL FRAME " << _frame << " images.size()=" << images.size()
-                << " Aimg= " << Aimg << " Bimg= " << Bimg );
-        if ( in_transition )
-        {
-            TRACE( "GLOBAL FRAME " << _frame << " in transition Aimg= " << Aimg->name() << " Bimg= " << Bimg->name() );
-        }
-
-        old_frame = _frame;
-        int j = 1;
-        size_t num = images.size();
-        for ( const auto& t : images )
-        {
-            TRACE( "Image #" << j << " of " << num << " is "
-                    << t->name() << " == img? " << ( t == img )
-                    << " " << t->first_frame()
-                    << " - " << t->last_frame() << " lframe= " << t->frame()
-                    << " damage= " << t->image_damage()
-                    << " dissolve= " << t->dissolve() );
-            ++j;
-        }
-        TRACE( "-----------------------------------------------------------" );
-    }
-#endif
 
     _engine->draw_images( images );
 
@@ -4850,7 +4824,7 @@ void ImageView::draw()
 
     if ( _hud == kHudNone )
     {
-        Fl_Gl_Window::draw();
+        //Fl_Gl_Window::draw();
         return;
     }
 
@@ -5080,7 +5054,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
 
-    Fl_Gl_Window::draw();
+    //Fl_Gl_Window::draw();
 
 }
 

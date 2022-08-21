@@ -84,8 +84,6 @@ include( BuildLibZ.cmake )
 
 include( BuildOTIO.cmake )
 
-# include( BuildImath.cmake )
-
 include( BuildOpenEXR.cmake )
 
 include( BuildLZMA.cmake )
@@ -108,17 +106,18 @@ include( BuildLibPNG.cmake )
 
 include( BuildLibWebP.cmake )
 
+include( BuildLibRaw.cmake )
+
 if( UNIX )
      include( BuildLibOPUS.cmake )
      include( BuildSampleICC.cmake )
-     include( BuildLibRaw.cmake )
      include( BuildYASM.cmake )
      include( BuildLibVPX.cmake )
      include( BuildX264.cmake )
      include( BuildX265.cmake )
 
      if( BUILD_LIBHARFBUZZ )
-       message( FATAL_ERROR "Building LibHarfBuzz" )
+       message( STATUS "WILL BUILD libHarfbuzz" )
        include( BuildLibHarfbuzz.cmake )
      endif()
      include( BuildLibAss.cmake )
@@ -127,6 +126,8 @@ if( UNIX )
 endif()
 
 include( BuildAcesContainer.cmake )
+
+include( BuildImath.cmake )
 
 include( BuildCTL.cmake )
 

@@ -17,13 +17,15 @@ else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
 endif()
 
+set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/CTL/FindIlmBase.cmake ${CMAKE_BINARY_DIR}/CTL-prefix/src/CTL/cmake/modules/ && ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/CTL/CMakeLists.txt ${CMAKE_BINARY_DIR}/CTL-prefix/src/CTL/lib/IlmCtlSimd )
 
 ExternalProject_Add(
     CTL
     GIT_REPOSITORY "https://github.com/ggarra13/CTL.git"
     GIT_TAG master
     GIT_PROGRESS 1
-    DEPENDS ${AcesContainer} ${OpenEXR}
+    DEPENDS ${AcesContainer} ${OpenEXR} ${Imath}
+    PATCH_COMMAND ${patch_command}
     CMAKE_ARGS
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}

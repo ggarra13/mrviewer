@@ -109,6 +109,9 @@ extern "C" {
 #include "video/mrvCSPUtils.h"
 #include "core/mrvOS.h"
 
+#undef TRACE
+#define TRACE(x)
+
 
 namespace
 {
@@ -1867,7 +1870,6 @@ void GLEngine::draw_images( ImageList& images )
     CMedia* Bimg = _view->B_image();
     // Don't consider the last image as a background image if it matches Bimg
     // (transition is on).
-    if ( fg == bg || Bimg == bg ) bg = NULL;
 
     unsigned maxW = 0, maxH = 0;
     CMedia* fit = NULL;
@@ -1901,10 +1903,7 @@ void GLEngine::draw_images( ImageList& images )
     {
         img = *i;
         pic = img->left();
-        if ( !pic ) {
-            assert( pic != NULL );
-            continue;
-        }
+        if (!pic )  continue;
 
 
         CMedia::StereoOutput stereo = img->stereo_output();
@@ -1956,6 +1955,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( texWidth == 0 )  texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
+
 
         texWidth  = int( texWidth * img->scale_x() );
         texHeight = int( texHeight * img->scale_y() );

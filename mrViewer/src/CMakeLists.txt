@@ -235,24 +235,15 @@ set_TARGET_PROPERTIES( mrViewer
 #
 ######################################################
 
-if(WIN32)
-  set(EXE_DIR D:/code/lib/vc14_Windows_32/bin/ )
-endif()
-
-if(WIN64) # defined in FindBuilDir
-  set(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
-elseif(UNIX)
-  set(EXE_DIR "${CMAKE_PREFIX_PATH}/bin" )
-endif()
-
+set(EXE_DIR $ENV{DIST}/bin )
 set( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 if(UNIX AND NOT APPLE)
 
   set( LINK_FLAGS ${LINK_FLAGS})
 
-  execute_process( COMMAND "dos2unix" "mrViewer.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
-  file( COPY ${SOURCE_DIR}/bin/mrViewer.sh
+  execute_process( COMMAND "dos2unix" "mrViewer.sh" "environment.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+  file( COPY ${SOURCE_DIR}/bin/mrViewer.sh ${SOURCE_DIR}/bin/environment.sh
 	DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 endif()
 
@@ -281,10 +272,11 @@ FILE(GLOB otiofiles "${SOURCE_DIR}/otio/adapters/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/adapters )
 FILE(GLOB otiofiles "${SOURCE_DIR}/otio/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/ )
-IF (WIN32 OR WIN64)
-  FILE(GLOB dllfiles ${EXE_DIR}/*.dll ${CMAKE_BINARY_DIR}/../lib/ )
+IF (WIN32)
+  FILE(GLOB dllfiles ${EXE_DIR}/*.dll ${CMAKE_PREFIX_PATH}/bin/*.dll ${CMAKE_PREFIX_PATH}/lib/*.dll ${CMAKE_BINARY_DIR}/../lib/*.dll ) 
   LIST( FILTER dllfiles EXCLUDE REGEX .*fltk.*.dll )
-  MESSAGE( STATUS "Copying DLLs..." )
+  message( STATUS ${dllfiles} )
+  
   FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF()
 

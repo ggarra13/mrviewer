@@ -164,8 +164,8 @@ cache=0
 
 
 if [[ $OS == Windows* ]]; then
-    cmake_generator=Ninja
-    #cmake_generator="NMake Makefiles"
+    #cmake_generator=Ninja
+    cmake_generator="NMake Makefiles"
     win32cl=`which cl`
     if [[ $win32cl != *64* ]]; then
 	CMAKE_BUILD_ARCH=32
@@ -304,8 +304,13 @@ run_make()
 	return
     fi
 
+    make_cmd="make -j ${CMAKE_PROCS}"
+    if [[ $cmake_generator == NMake* ]]; then
+	make_cmd='nmake'
+    fi
+
     if [ -f "Makefile" ]; then
-	cmd="make -j ${CMAKE_PROCS} $@"
+	cmd="${make_cmd} $@"
     else
 	cmd="ninja -j ${CMAKE_PROCS} $@"
     fi
@@ -409,6 +414,9 @@ run_clean()
     builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE/tmp
     if [ -d $builddir ]; then
 	if [ -e ninja.build ]; then
+	    run_make clean
+	fi
+	if [ -e Makefile ]; then
 	    run_make clean
 	fi
 	rm -rf $builddir/*

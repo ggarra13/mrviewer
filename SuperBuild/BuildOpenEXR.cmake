@@ -17,7 +17,7 @@ ExternalProject_Add(
   GIT_TAG v3.1.5
   # GIT_TAG main
   GIT_PROGRESS 1
-  DEPENDS ${ZLIB}
+  DEPENDS ${ZLIB} ${Imath}
   PATCH_COMMAND ${patch_command}
   CMAKE_ARGS
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

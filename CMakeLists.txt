@@ -87,12 +87,6 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
 
 #
-# Build dependencies
-#
-#ADD_SUBDIRECTORY( external )
-
-
-#
 # Project's subdirectories
 #
 set( LIB_ACES_CLIP_ONLY 1 )

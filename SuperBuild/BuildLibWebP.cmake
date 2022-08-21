@@ -3,6 +3,15 @@ set( libwebp_version "1.2.4" )
 
 set( file "libwebp-${libwebp_version}.tar.gz" )
 
+if( WIN32 )
+    set( LibWebP_OPTIONS )
+else()
+    set( LibWebP_OPTIONS 
+    -DWEBP_BUILD_CWEBP=FALSE
+    -DWEBP_BUILD_DWEBP=FALSE
+    -DWEBP_BUILD_VWEBP=FALSE
+    )
+endif()
 
 ExternalProject_Add(
   ${LibWebP}
@@ -14,8 +23,5 @@ ExternalProject_Add(
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
   -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
   -DBUILD_TESTING=FALSE
-  -DWEBP_BUILD_CWEBP=FALSE
-  -DWEBP_BUILD_DWEBP=FALSE
-  -DWEBP_BUILD_VWEBP=FALSE
-   ${MRV_EXTERNAL_ARGS}
+  ${LibWebP_OPTIONS}
   )

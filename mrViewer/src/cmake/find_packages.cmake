@@ -155,11 +155,10 @@ else()
     asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis stdc++.so.6  ### dvdnav dvdread
     )
 
-   if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-     add_compile_options( -g -fsanitize=address -rdynamic )
-     set(LIBRARIES asan ${LIBRARIES} )
-     set( $ENV{ASAN_SYMBOLIZER_PATH}=/usr/bin/llvm-symbolizer-3.4 )
-   endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+   # if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+   #   add_compile_options( -g -fsanitize=address -rdynamic )
+   #   set(LIBRARIES asan ${LIBRARIES} )
+   # endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   endif()
 endif()
@@ -220,6 +219,7 @@ if( WIN32 )
   #
   link_directories( ${Boost_LIBRARY_DIRS} )
 endif()
+
 
 
 set( LIBRARIES

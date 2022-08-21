@@ -8,23 +8,23 @@ export ZLIB_ROOT=$SUPERBUILD
 export OPENEXR_ROOT=$SUPERBUILD
 export     CTL_ROOT=$SUPERBUILD
 export TINYXML2_ROOT=$DIST
-export LibRaw_ROOT=$ROOT/dependencies/LibRaw-0.20.2-x86
+export LibRaw_ROOT=$SUPERBUILD
 export OIIO_ROOT=$SUPERBUILD
-export OPENTIMELINEIO_ROOT=$DIST
+export OPENTIMELINEIO_ROOT=$SUPERBUILD
 export GLEW_ROOT=$DIST
-export OCIO_ROOT=$DIST
+export OCIO_ROOT=$SUPERBUILD
 export OpenColorIO_ROOT=$OCIO_ROOT
 export PATH=$DIST/gettext/bin:$PATH
 
 export BOOST_ROOT="D:/code/lib/boost_1_73_0"
 
 export FFMPEG_ROOT="/D/abs/local32/bin-video/ffmpegSHARED"
-export FLTK_DIR="$ROOT/../../lib/fltk-x11/build-win32"
+export FLTK_DIR=$SUPERBUILD
 export MAGICK_HOME="$ROOT/win64_deps/ImageMagick-Windows32"
-export TCLAP_ROOT="$ROOT/dependencies/tclap-1.2.2"
+export TCLAP_ROOT=$SUPERBUILD
 export SampleICC_ROOT="$ROOT/win64_deps/SampleICC-1.6.10-vc14-win32"
 export R3DSDK_ROOT="$ROOT/../R3DSDKv8_1_0"
 export LIBINTL_ROOT="$ROOT/dependencies/libintl-win32/"
 export LIBICONV="$ROOT/dependencies/gettext-iconv-win32"
 
-export PATH=$DIST/bin:$PATH
+export PATH=$SUPERBUILD/bin:$PATH

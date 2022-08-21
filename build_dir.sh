@@ -26,10 +26,6 @@ export fltk_dir=""
 
 if [ $KERNEL == 'Windows' ]; then
     arch=`wmic OS get OSArchitecture`
-    if [[ $arch == *64* ]]; then
-	export CMAKE_NATIVE_ARCH=64
-	export OS_64_BITS=1
-    fi
 else
     arch=`uname -a`
 fi
@@ -37,13 +33,16 @@ fi
 if [[ $arch == *64* ]]; then
     export CMAKE_NATIVE_ARCH=64
     export OS_64_BITS=1
-else
-    if [[ $arch == *ia64* ]]; then
-	export CMAKE_NATIVE_ARCH=64
-	export OS_64_BITS=1
-	unset  OS_32_BITS
-    fi
 fi
 
-export BUILD=$KERNEL-$RELEASE-$CMAKE_NATIVE_ARCH
+export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
+
+arch=`which cl.exe`
+echo $arch
+if [[ $arch == *x86/cl* ]]; then
+    export CMAKE_BUILD_ARCH=32
+fi
+
+
+export BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH
 echo "BUILD DIRECTORY=$BUILD"
