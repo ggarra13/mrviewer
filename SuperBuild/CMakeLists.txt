@@ -82,7 +82,9 @@ set( BOOST  )
 
 include( BuildLibZ.cmake )
 
-include( BuildBoost.cmake )
+if( CENTOS7 OR NOT BOOST_FOUND )
+   include( BuildBoost.cmake )
+endif()
 
 include( BuildOTIO.cmake )
 

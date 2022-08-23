@@ -40,10 +40,19 @@ Compiling mrViewer requires a number of dependencies:
 
 Under Linux and macOS, the superbuild.sh script will call SuperBuild/runme.sh to compile all non system dependencies and install them in install-$OS-$RELEASE.  Then it will compile and bundle the main directory with the other runme.sh script in that main directory and place the main bundles in the main directory.  The executable will be placed in the BUILD/$OS-$RELEASE directory.
 
-The files vc14_win32_vars and vc14_win64_vars contain definitions for compiling
-on the windows platform. They point to the dependencies directory.  You will need to modify the directories to point to your own file system.
+For compiling just the dependencies (SuperBuild directory) or just the main program, there are runme.sh scripts on each corresponding directory.
+
+Testing the build on Linux or Windows (RUNNING mrViewer without installing):
+
+run the ruby script:
+
+utils/libs.rb
+
+and it will install all dependencies.
+
+The files vc14_win32_vars and vc14_win64_vars contain mingw bash definitions for compiling on the windows platform. They point to the dependencies directory.  You will need to modify the directories to point to your own file system.
 For ffmpeg, you can build it with WSL or with the m-ab-s/media-autobuild_suite.
 You also need libiconv and libintl (gettext) for translations.  You can get them from: https://mlocati.github.io/articles/gettext-iconv-windows.html
 
 To compile under windows, you need the Visual Studio 2019 Community Edition or later.
-Both the win32 and x64 version of mrViewer have been compiled with Visual Studio 2019.
+Both the x86 and x64 version of mrViewer have been compiled with Visual Studio 2019.

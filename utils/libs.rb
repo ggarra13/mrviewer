@@ -21,7 +21,7 @@ libasound.*
 libgpg-error.*
 libfontconfig.*
 libfreetype.*
-libharfbuzz.*
+#libharfbuzz.*
 libxshmfence.*
 #libz.*
 libc\.so.*
@@ -160,7 +160,7 @@ def copy_third_party( root, dest )
     # Copy the RED library
     red_library_path = ENV['RED3DSDK_ROOT']
     if not red_library_path
-      red_library_path = '../..'
+      red_library_path = '../'
     end
     red_library = "#{red_library_path}/R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so"
     if File.exists?( red_library )
@@ -175,8 +175,11 @@ def copy_third_party( root, dest )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libc++abi.so.1",
                       "#{dest}/lib" )
     else
-      blackmagic_path = "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/"
-      puts blackmagic_path
+      blackmagic_path = ENV['BLACKMAGIC_ROOT']
+      if not blackmagic_path
+        blackmagic_path = "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/"
+      end
+
       FileUtils.cp_r( "#{blackmagic_path}/Libraries/libBlackmagicRawAPI.so",
                       "#{dest}/lib" )
       FileUtils.cp_r( "#{blackmagic_path}/Samples/ExtractFrame/libc++.so.1",

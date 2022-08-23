@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-08-22 20:54-0300\n"
+"POT-Creation-Date: 2022-08-23 11:36-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -526,8 +526,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Pokud se mrViewer nespustí, odeberte jej)"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:2274
-#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10160
-#: gui/mrvImageView.cpp:10161 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10165
+#: gui/mrvImageView.cpp:10166 gui/mrvImageView.cpp:10174
 msgid "(no image)"
 msgstr "(Bez obrázku)"
 
@@ -1273,7 +1273,7 @@ msgstr "Umožňuje nastavit koncový snímek pro časovou osu."
 
 #: core/CMedia.cpp:2107 core/CMedia.cpp:2190 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9593
-#: gui/mrvImageView.cpp:10061 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:10062 gui/mrvImageView.cpp:10128
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1283,7 +1283,7 @@ msgstr "pouze alfa"
 
 #: core/CMedia.cpp:2109 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
-#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10124
+#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10129
 msgid "Alpha Overlay"
 msgstr "Přetisk Alpha"
 
@@ -1694,7 +1694,7 @@ msgstr "režim prolnutí"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2123 core/CMedia.cpp:2189 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9588
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Blue"
 msgstr "Modrý"
 
@@ -1718,7 +1718,7 @@ msgstr "Výjimka Boost: "
 msgid "Both"
 msgstr "Oba dva"
 
-#: gui/mrvImageView.cpp:11525
+#: gui/mrvImageView.cpp:11530
 msgid "Bottom"
 msgstr "dolní"
 
@@ -2088,7 +2088,7 @@ msgstr "Sbalitelná skupina nenalezena"
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1119 core/wandImage.cpp:1181
 #: gui/mrvImageView.cpp:202 gui/mrvImageView.cpp:2217 gui/mrvImageView.cpp:2279
-#: gui/mrvImageView.cpp:10121 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:10126 gui/mrvImageView.cpp:10174
 msgid "Color"
 msgstr "Barva"
 
@@ -3881,7 +3881,7 @@ msgstr "FourCC"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11523
+#: gui/mrvImageView.cpp:11528
 msgid "Frame"
 msgstr "Rám"
 
@@ -4124,7 +4124,7 @@ msgstr "řecký (Ελληνικά)"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2122 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9583
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Green"
 msgstr "Zelený"
 
@@ -5129,7 +5129,7 @@ msgstr "Jas obrazových pixelů pod myší."
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2135 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
-#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10128
 msgid "Lumma"
 msgstr "luma"
 
@@ -6624,7 +6624,7 @@ msgstr "Nástroj Obdélník"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2121 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9578
-#: gui/mrvImageView.cpp:10121
+#: gui/mrvImageView.cpp:10126
 msgid "Red"
 msgstr "Červené"
 
@@ -8234,7 +8234,7 @@ msgstr "Příliš mnoho streamů ve výstupním kontextu"
 msgid "Tooldock"
 msgstr "Action Dock"
 
-#: gui/mrvImageView.cpp:11524
+#: gui/mrvImageView.cpp:11529
 msgid "Top"
 msgstr "Vyšší"
 
@@ -9360,7 +9360,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Nemůžete nahrát kotouč jako stereo obrázek."
 
-#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10124
+#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10129
 msgid "Z"
 msgstr "Z"
 

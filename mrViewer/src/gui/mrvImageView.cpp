@@ -248,7 +248,7 @@ namespace
         // }
     }
 
-inline std::string remove_hash_number( std::string& r )
+inline std::string remove_hash_number( std::string r )
 {
     if ( r.empty() || r[0] != '#' ) return r;
 
@@ -10047,9 +10047,10 @@ int ImageView::update_shortcuts( const mrv::media fg,
 
     int idx = -1;
     bool group = false;
-    std::string x;
+    std::string group_name;
     Fl_Menu_Item* g = NULL;
     Fl_Menu_Item* o = NULL;
+
 
     for ( ; i != e; ++i, ++idx )
     {
@@ -10057,35 +10058,39 @@ int ImageView::update_shortcuts( const mrv::media fg,
         const std::string& name = *i;
 
 
-        std::string tmp = x + '.';
-        if ( o && x != _("Alpha") && tmp != "." && name.find(tmp) == 0 )
+        std::string tmp = group_name;
+        if ( o && group_name != _("Alpha") &&
+             tmp != "." && name.find(tmp) == 0 )
         {
             if ( group )
             {
                 // Copy shortcut to group and replace leaf with group
-                // unsigned s = 0;
+                //unsigned s = 0;
                 if ( uiColorChannel->children() >= 2 )
                 {
+
                     uiColorChannel->menu_end();
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
-                    // s = w->shortcut();
+                    //s = w->shortcut();
                     if ( w->flags & FL_SUBMENU )
                         uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );
                     uiColorChannel->menu_end();
                 }
 
-                // int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
-                // g  = (Fl_Menu_Item*) uiColorChannel->child(idx);
+                //int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
+                //g  = (Fl_Menu_Item*) uiColorChannel->child(idx);
                 group = false;
             }
 
-            // Now add current leaf, but without # prefix and period
+            // Now add current leaf
             std::string y = name;
 
-            if ( x.size() < name.size() )
-                y = x + '/' + name.substr( x.size()+1, name.size() );
+            if ( group_name.size() < name.size() )
+                y = group_name + '/' + name.substr( group_name.size()+1,
+                                                    name.size() );
+
 
             idx = uiColorChannel->add( y.c_str() );
             uiColorChannel->menu_end();
@@ -10095,7 +10100,7 @@ int ImageView::update_shortcuts( const mrv::media fg,
         {
             // A new group, we add it here as empty group
             group = true;
-            x = name;
+            group_name = name;
 
             idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             uiColorChannel->menu_end();
@@ -10104,7 +10109,7 @@ int ImageView::update_shortcuts( const mrv::media fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        std::string chx = remove_hash_number( x );
+        std::string chx = remove_hash_number( group_name );
         std::string chroot = remove_hash_number( root );
         if ( v == -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-08-22 20:54-0300\n"
+"POT-Creation-Date: 2022-08-23 11:36-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -526,8 +526,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "(Rimuovilo se mrViewer non si avvia)"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:2274
-#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10160
-#: gui/mrvImageView.cpp:10161 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10165
+#: gui/mrvImageView.cpp:10166 gui/mrvImageView.cpp:10174
 msgid "(no image)"
 msgstr "(Senza immagine)"
 
@@ -1277,7 +1277,7 @@ msgstr "Consente di impostare il fotogramma finale per la sequenza temporale."
 
 #: core/CMedia.cpp:2107 core/CMedia.cpp:2190 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9593
-#: gui/mrvImageView.cpp:10061 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:10062 gui/mrvImageView.cpp:10128
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -1287,7 +1287,7 @@ msgstr "solo alfa"
 
 #: core/CMedia.cpp:2109 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
-#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10124
+#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10129
 msgid "Alpha Overlay"
 msgstr "Sovrastampa alfa"
 
@@ -1699,7 +1699,7 @@ msgstr "modalità di fusione"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2123 core/CMedia.cpp:2189 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9588
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Blue"
 msgstr "Blu"
 
@@ -1723,7 +1723,7 @@ msgstr "Eccezione potenziamento: "
 msgid "Both"
 msgstr "Entrambi"
 
-#: gui/mrvImageView.cpp:11525
+#: gui/mrvImageView.cpp:11530
 msgid "Bottom"
 msgstr "inferiore"
 
@@ -2095,7 +2095,7 @@ msgstr "Gruppo comprimibile non trovato"
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1119 core/wandImage.cpp:1181
 #: gui/mrvImageView.cpp:202 gui/mrvImageView.cpp:2217 gui/mrvImageView.cpp:2279
-#: gui/mrvImageView.cpp:10121 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:10126 gui/mrvImageView.cpp:10174
 msgid "Color"
 msgstr "Colore"
 
@@ -3904,7 +3904,7 @@ msgstr "FourCC"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11523
+#: gui/mrvImageView.cpp:11528
 msgid "Frame"
 msgstr "Telaio"
 
@@ -4150,7 +4150,7 @@ msgstr "greco (Ελληνικά)"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2122 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9583
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Green"
 msgstr "Verde"
 
@@ -5161,7 +5161,7 @@ msgstr "Luminanza dei pixel dell'immagine sotto il mouse."
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2135 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
-#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10128
 msgid "Lumma"
 msgstr "luma"
 
@@ -6664,7 +6664,7 @@ msgstr "Strumento rettangolo"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2121 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9578
-#: gui/mrvImageView.cpp:10121
+#: gui/mrvImageView.cpp:10126
 msgid "Red"
 msgstr "rosso"
 
@@ -8295,7 +8295,7 @@ msgstr "Troppi flussi nel contesto di output"
 msgid "Tooldock"
 msgstr "Bacino d'azione"
 
-#: gui/mrvImageView.cpp:11524
+#: gui/mrvImageView.cpp:11529
 msgid "Top"
 msgstr "Più alto"
 
@@ -9451,7 +9451,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr "Non è possibile caricare una bobina come immagine stereo."
 
-#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10124
+#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10129
 msgid "Z"
 msgstr "Z"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-08-22 20:54-0300\n"
+"POT-Creation-Date: 2022-08-23 11:36-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -523,8 +523,8 @@ msgid "(Remove if mrViewer does not start)"
 msgstr "（如果 mrViewer 无法启动，请将其删除）"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:2274
-#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10160
-#: gui/mrvImageView.cpp:10161 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:9475 gui/mrvImageView.cpp:10165
+#: gui/mrvImageView.cpp:10166 gui/mrvImageView.cpp:10174
 msgid "(no image)"
 msgstr "（无图）"
 
@@ -1270,7 +1270,7 @@ msgstr "允许您设置时间线的结束帧。"
 
 #: core/CMedia.cpp:2107 core/CMedia.cpp:2190 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:210 gui/mrvImageView.cpp:9593
-#: gui/mrvImageView.cpp:10061 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:10062 gui/mrvImageView.cpp:10128
 msgid "Alpha"
 msgstr "Α"
 
@@ -1280,7 +1280,7 @@ msgstr "仅限阿尔法"
 
 #: core/CMedia.cpp:2109 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:211 gui/mrvImageView.cpp:2180
-#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10124
+#: gui/mrvImageView.cpp:9574 gui/mrvImageView.cpp:10129
 msgid "Alpha Overlay"
 msgstr "阿尔法叠印"
 
@@ -1683,7 +1683,7 @@ msgstr "混合模式"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:39
 #: core/CMedia.cpp:2123 core/CMedia.cpp:2189 core/exrImage.cpp:3059
 #: core/wandImage.cpp:1160 gui/mrvImageView.cpp:209 gui/mrvImageView.cpp:9588
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Blue"
 msgstr "蓝色"
 
@@ -1707,7 +1707,7 @@ msgstr "提升异常： "
 msgid "Both"
 msgstr "他们都"
 
-#: gui/mrvImageView.cpp:11525
+#: gui/mrvImageView.cpp:11530
 msgid "Bottom"
 msgstr "降低"
 
@@ -2076,7 +2076,7 @@ msgstr "未找到可折叠组"
 #: core/exrImage.cpp:3086 core/exrImage.cpp:3088 core/exrImage.cpp:3125
 #: core/exrImage.cpp:3158 core/wandImage.cpp:1119 core/wandImage.cpp:1181
 #: gui/mrvImageView.cpp:202 gui/mrvImageView.cpp:2217 gui/mrvImageView.cpp:2279
-#: gui/mrvImageView.cpp:10121 gui/mrvImageView.cpp:10169
+#: gui/mrvImageView.cpp:10126 gui/mrvImageView.cpp:10174
 msgid "Color"
 msgstr "颜色"
 
@@ -3853,7 +3853,7 @@ msgstr "四CC"
 
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1438
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrViewer.cxx:1596
-#: gui/mrvImageView.cpp:11523
+#: gui/mrvImageView.cpp:11528
 msgid "Frame"
 msgstr "框架"
 
@@ -4096,7 +4096,7 @@ msgstr "希腊语 (Ελληνικά)"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
 #: core/CMedia.cpp:2122 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:208 gui/mrvImageView.cpp:9583
-#: gui/mrvImageView.cpp:10122
+#: gui/mrvImageView.cpp:10127
 msgid "Green"
 msgstr "绿色的"
 
@@ -5096,7 +5096,7 @@ msgstr "鼠标下的图像像素亮度。"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:40
 #: core/CMedia.cpp:2135 core/CMedia.cpp:2190 core/exrImage.cpp:3057
 #: core/wandImage.cpp:1158 gui/mrvImageView.cpp:212 gui/mrvImageView.cpp:2187
-#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10123
+#: gui/mrvImageView.cpp:9598 gui/mrvImageView.cpp:10128
 msgid "Lumma"
 msgstr "亮度"
 
@@ -6566,7 +6566,7 @@ msgstr "矩形工具"
 #: /home/gga/code_smb/applications/mrv/BUILD/Linux-3.10.0-1160.71.1.el7.x86_64-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
 #: core/CMedia.cpp:2121 core/CMedia.cpp:2188 core/exrImage.cpp:3058
 #: core/wandImage.cpp:1159 gui/mrvImageView.cpp:207 gui/mrvImageView.cpp:9578
-#: gui/mrvImageView.cpp:10121
+#: gui/mrvImageView.cpp:10126
 msgid "Red"
 msgstr "红色的"
 
@@ -8136,7 +8136,7 @@ msgstr "输出上下文中的流过多"
 msgid "Tooldock"
 msgstr "行动码头"
 
-#: gui/mrvImageView.cpp:11524
+#: gui/mrvImageView.cpp:11529
 msgid "Top"
 msgstr "更高"
 
@@ -9234,7 +9234,7 @@ msgstr "您只能上传一张立体图像以与当前图像组合。"
 msgid "You cannot load a reel as a stereo image."
 msgstr "您不能将卷轴作为立体图像上传。"
 
-#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10124
+#: core/oiioImage.cpp:280 gui/mrvImageView.cpp:10129
 msgid "Z"
 msgstr "Z"
 

@@ -10,6 +10,19 @@
 
 SET(R3DSDK_FOUND "NO")
 
+message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
+message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
+message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
+message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
+
+string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
+message("-- os_version_suffix:      ${os_version_suffix}")
+
+set( CENTOS7 OFF )
+if ( "${os_version_suffix}" STREQUAL ".el7" )
+  set( CENTOS7 ON )
+endif()
+
 
 FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   "$ENV{R3DSDK_ROOT}/Include"
@@ -26,12 +39,16 @@ FIND_PATH( R3DSDK_INCLUDE_DIR R3DSDK.h
   )
 
 get_filename_component( R3DSDK_ROOT ${R3DSDK_INCLUDE_DIR} DIRECTORY )
-IF(APPLE)
+if(APPLE)
 #    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac64/libR3DSDK-libstdcpp.a )
     set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/mac64/libR3DSDK-libcpp.a )
-ELSEIF(UNIX)
-    set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC.a )
-ELSEIF( WIN64 )
+elseif(UNIX)
+    if( CENTOS7 )
+      set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC.a )
+    else()
+      set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/linux64/libR3DSDKPIC-cpp11.a )
+    endif()
+elseif( WIN64 )
       if( ${R3DSDK_ROOT} MATCHES "R3DSDKv8_1_0" )
 	  set( R3DSDK_LIBRARIES ${R3DSDK_ROOT}/Lib/win64/R3DSDK-2017MD.lib )
       else()
