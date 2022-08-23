@@ -16,7 +16,7 @@ ExternalProject_Add(
   GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
   GIT_PROGRESS 1
   PATCH_COMMAND ${patch_command}
-  DEPENDS ${FFmpeg} ${OCIO} ${OpenEXR} ${LibTIFF} ${LIBPNG} ${LibRaw} ${LibWebP}
+  DEPENDS ${FFmpeg} ${OCIO} ${OpenEXR} ${LibTIFF} ${LIBPNG} ${LibRaw} ${LibWebP}          ${BOOST}
   # PATCH_COMMAND patch -p 1 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/oiio_patch.txt
   CMAKE_ARGS
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

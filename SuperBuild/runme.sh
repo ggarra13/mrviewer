@@ -11,8 +11,8 @@ fi
 installdir=$PWD/../install-$BUILD
 echo "INSTALLDIR = " $installdir
 
+
 if [[ $KERNEL == "Windows" ]]; then
-    export BOOST_ROOT="/D/code/lib/boost_1_73_0"
     export FFMPEG_ROOT="/D/abs/local${CMAKE_BUILD_ARCH}/bin-video/ffmpegSHARED/"
 fi
 

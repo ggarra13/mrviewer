@@ -6,7 +6,7 @@ set( file "libwebp-${libwebp_version}.tar.gz" )
 if( WIN32 )
     set( LibWebP_OPTIONS )
 else()
-    set( LibWebP_OPTIONS 
+    set( LibWebP_OPTIONS
     -DWEBP_BUILD_CWEBP=FALSE
     -DWEBP_BUILD_DWEBP=FALSE
     -DWEBP_BUILD_VWEBP=FALSE

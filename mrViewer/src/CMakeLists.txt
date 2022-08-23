@@ -132,6 +132,7 @@ set( SOURCES
   gui/mrvAsk.cpp
   gui/mrvCTLBrowser.cpp
   gui/mrvOCIOBrowser.cpp
+
   gui/mrvColorSchemes.cpp
   gui/mrvDoubleWindow.cpp
   gui/mrvGlWindow3d.cpp
@@ -195,13 +196,15 @@ set( SOURCES
   include( cmake/translations.cmake )
 
   if (APPLE)
-   set( SOURCES ${SOURCES} gui/mrvMainWindow.mm )
- endif()
+    list( append SOURCES ${SOURCES} gui/mrvMainWindow.mm )
+  endif()
 
-
+  if( R3DSDK_FOUND )
+    list( APPEND SOURCES core/R3dImage.cpp )
+  endif()
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  set( SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
+  list( append SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
   set( SOURCES gui/resource.rc ${SOURCES} )
 ENDIF()
 
@@ -235,7 +238,11 @@ set_TARGET_PROPERTIES( mrViewer
 #
 ######################################################
 
-set(EXE_DIR $ENV{DIST}/bin )
+if( WIN32 )
+    set(EXE_DIR $ENV{DIST}/bin )
+else()
+    set(EXE_DIR ${CMAKE_PREFIX_PATH}/bin )
+endif()
 set( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 if(UNIX AND NOT APPLE)
@@ -273,11 +280,12 @@ FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/adapters )
 FILE(GLOB otiofiles "${SOURCE_DIR}/otio/*" )
 FILE(COPY ${otiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../otio/ )
 IF (WIN32)
-  FILE(GLOB dllfiles ${EXE_DIR}/*.dll ${CMAKE_PREFIX_PATH}/bin/*.dll ${CMAKE_PREFIX_PATH}/lib/*.dll ${CMAKE_BINARY_DIR}/../lib/*.dll ) 
+  FILE(GLOB dllfiles ${CMAKE_PREFIX_PATH}/bin/*.dll ${CMAKE_PREFIX_PATH}/lib/*.dll ${CMAKE_BINARY_DIR}/../lib/*.dll )
   LIST( FILTER dllfiles EXCLUDE REGEX .*fltk.*.dll )
-  message( STATUS ${dllfiles} )
-  
-  FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+
+  FILE( COPY ${dllfiles} DESTINATION ${EXE_DIR} )
+  FILE( GLOB dllfiles ${EXE_DIR}/*.dll )
+  FILE( COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF()
 
 

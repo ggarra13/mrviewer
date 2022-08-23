@@ -16,8 +16,7 @@ export LibVPX_ROOT=$SUPERBUILD
 export GLEW_ROOT=$DIST
 export PATH=$DIST/gettext/bin:$PATH
 
-export BOOST_ROOT="/D/code/lib/boost_1_73_0"
-export Boost_ROOT=$BOOST_ROOT
+export BOOST_ROOT=$SUPERBUILD
 export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
 export FFmpeg_ROOT=$FFMPEG_ROOT
 export OCIO_ROOT=$SUPERBUILD

@@ -158,8 +158,15 @@ def copy_third_party( root, dest )
   Dir.chdir( root )
   if dest =~ /Linux/
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so",
-                    "#{dest}/lib" )
+    red_library_path = ENV['RED3DSDK_ROOT']
+    if not red_library_path
+      red_library_path = '../..'
+    end
+    red_library = "#{red_library_path}/R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so"
+    if File.exists?( red_library )
+      FileUtils.cp_r( red_library, "#{dest}/lib" )
+    end
+
     if File.exists?( "/usr/lib64/blackmagic" )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
                       "#{dest}/lib" )
@@ -168,11 +175,13 @@ def copy_third_party( root, dest )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libc++abi.so.1",
                       "#{dest}/lib" )
     else
-      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Libraries/libBlackmagicRawAPI.so",
+      blackmagic_path = "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/"
+      puts blackmagic_path
+      FileUtils.cp_r( "#{blackmagic_path}/Libraries/libBlackmagicRawAPI.so",
                       "#{dest}/lib" )
-      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++.so.1",
+      FileUtils.cp_r( "#{blackmagic_path}/Samples/ExtractFrame/libc++.so.1",
                       "#{dest}/lib" )
-      FileUtils.cp_r( "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/Samples/ExtractFrame/libc++abi.so.1",
+      FileUtils.cp_r( "#{blackmagic_path}/Samples/ExtractFrame/libc++abi.so.1",
                       "#{dest}/lib" )
     end
   elsif dest =~ /Darwin/
@@ -188,27 +197,22 @@ def copy_third_party( root, dest )
       exit 1
     end
     # Copy the RED library
-    FileUtils.cp_r( "../R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
+    red_library_path = ENV['RED3DSDK_ROOT']
+    if not red_library_path
+      red_library_path = '../..'
+    end
+    FileUtils.cp_r( "#{red_library_path}/R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
+    # Copy the BlackMagic API library
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-64/
-    if root =~ /Ubuntu20/
-      parent = '../'
-    else
-      parent = ''
-    end
-    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
                     "#{dest}/lib", :verbose => true )
-    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
                     "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-32/
-    if root =~ /Ubuntu20/
-      parent = '../'
-    else
-      parent = ''
-    end
-    FileUtils.cp_r( "#{root}/#{parent}../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
+    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
                     "#{dest}/lib", :verbose => true )
   end
 end

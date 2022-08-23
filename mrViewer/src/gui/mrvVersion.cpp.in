@@ -417,7 +417,7 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
 
       if ( p2->type != type )
         continue;
-      
+
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
         << ( encode ? "E\t" : " \t" )

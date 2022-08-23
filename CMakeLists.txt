@@ -14,9 +14,7 @@ ENDIF()
 # Modify CMake's module path so our custom modules take precedence over
 # cmake's default ones.
 
-IF( NOT CMAKE_MODULE_PATH )
-  SET( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
-ENDIF( NOT CMAKE_MODULE_PATH )
+list( INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 
 #
 # Target Apple MacOS earlier than Catalina
@@ -48,7 +46,7 @@ ENDIF( UNIX )
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 
-#  VP18 switches to c++11, so let's do that by default
+#  OIIO needs c++14, so let's do that by default
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++11 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)

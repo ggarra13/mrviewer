@@ -8,10 +8,15 @@ endif( NOT CMAKE_MODULE_PATH )
 set( OpenGL_GL_PREFERENCE LEGACY )
 #set( OpenGL_GL_PREFERENCE GLVND )
 
+include(CMakeFindDependencyMacro)
 # For window management
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 find_package( OpenGL      REQUIRED )    # for drawing images/shapes
-find_package( Boost       COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
+
+set( ZLIB_ROOT ${CMAKE_PREFIX_PATH} )
+find_package( ZLIB        REQUIRED )    # for zlib compression
+
+find_package( Boost 1.80.0  COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
 add_definitions( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
@@ -58,6 +63,7 @@ find_package( TinyXML2    REQUIRED )    # for xml reading/writing
 find_package( R3DSDK      REQUIRED )    # for R3D format
 find_package( BlackMagicRAW  REQUIRED )  # for BRAW format
 if( UNIX )
+    # On Windows, these get compiled with the m-abs-media ffmpeg package
     find_package( LibVPX      REQUIRED )    # for libvpx codec
     find_package( LibOPUS      REQUIRED )   # for libopus codec
     find_package( X264           REQUIRED )  # for lib264
@@ -86,7 +92,6 @@ add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_
 
 if(WIN32 OR WIN64)
 
-# add_definitions( -DMR_SSE -DWIN32  )
   add_definitions( -DMR_SSE -DWIN32 -DNOMINMAX -DIMATH_DLL -DOPENEXR_DLL
 		   -D_WIN32_WINNT=0x0601 )
 
@@ -96,6 +101,20 @@ if(WIN32 OR WIN64)
 
 else()
 
+  find_library( png png
+    PATHS
+    ${CMAKE_PREFIX_PATH}/lib64
+    ${CMAKE_PREFIX_PATH}/lib
+    NO_SYSTEM_PATH
+    )
+
+  find_library( jpeg jpeg
+    PATHS
+    ${CMAKE_PREFIX_PATH}/lib64
+    ${CMAKE_PREFIX_PATH}/lib
+    NO_SYSTEM_PATH
+    )
+
   if(APPLE)
     # Media libraries for Apple
     add_definitions( -DOSX -DMR_SSE -D__MACOSX_CORE__ )
@@ -103,7 +122,7 @@ else()
 
 
     link_directories( ${CMAKE_PREFIX_PATH}/lib /usr/local/lib )
-    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} ${Zlib} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis )
+    set( OS_LIBRARIES ${OS_LIBRARIES} ass ${Xpm} ${png} ${jpeg} pthread fontconfig GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis )
 
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug"  )
@@ -126,33 +145,12 @@ else()
     /usr/lib
     )
 
-  find_library( png png
-    PATHS
-    /usr/local/lib
-    /usr/lib/x86_64-linux-gnu/
-    /usr/lib
-    )
-
-  find_library( Zlib z
-    PATHS
-    /usr/local/lib
-    /usr/lib/x86_64-linux-gnu/
-    /usr/lib
-    )
-
-  find_library( jpeg jpeg
-    PATHS
-    /usr/local/lib
-    /usr/lib/x86_64-linux-gnu/
-    /usr/lib
-    )
-
 
   add_definitions( -DLINUX )
   add_compile_options( -O3 -msse )
   link_directories( "${CMAKE_PREFIX_PATH}/lib" "${CMAKE_PREFIX_PATH}/lib64" )
   set(OS_LIBRARIES
-    asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis stdc++.so.6  ### dvdnav dvdread
+    asound ass ${Xpm} ${png} ${jpeg} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis ### dvdnav dvdread
     )
 
    # if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -175,8 +173,6 @@ include_directories(
   ./video
   ../../libACESclip/include
   ../../libAMF/src
-  "${BlackMagicRAW_INCLUDE_DIR}"
-  ${R3DSDK_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
@@ -220,11 +216,17 @@ if( WIN32 )
   link_directories( ${Boost_LIBRARY_DIRS} )
 endif()
 
+if( R3DSDK_FOUND )
+  include_directories( ${R3DSDK_INCLUDE_DIR} )
+  list( APPEND LIBRARIES ${R3DSDK_LIBRARIES} )
+endif()
 
+if ( BlackMagicRAW_FOUND )
+  include_directories( "${BlackMagicRAW_INCLUDE_DIR}" )
+  list( APPEND LIBRARIES ${BlackMagicRAW_LIBRARIES} )
+endif()
 
-set( LIBRARIES
-  ${LIBRARIES}
-  ${BlackMagicRAW_LIBRARIES}
+list( APPEND LIBRARIES
   ${R3DSDK_LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
@@ -243,6 +245,7 @@ set( LIBRARIES
   ${LibRaw_LIBRARIES}
   ${OPENTIMELINEIO_LIBRARIES}
   ${TINYXML2_LIBRARIES}
+  ${ZLIB_LIBRARIES}
   ${OS_LIBRARIES}
   )
 
@@ -260,6 +263,9 @@ endif()
 if( PORTAUDIO_FOUND )
     set( LIBRARIES ${PORTAUDIO_LIBRARIES} ${LIBRARIES} )
 endif()
+
+DEBUG_LIBRARIES( ${LIBRARIES} )
+
 
 #
 # Print out some status to verify configuration
@@ -285,11 +291,6 @@ message( STATUS "PortAudio:     ${PORTAUDIO_FOUND} ${PORTAUDIO_VERSION}" )
 if(OPENTIMELINEIO_FOUND)
   message( STATUS "OTIO INCLUDE DIR=${OPENTIMELINEIO_INCLUDE_DIR}" )
   message( STATUS "OTIO LIBRARIES=${OPENTIMELINEIO_LIBRARIES}" )
-endif()
-
-if(R3DSDK_FOUND)
-  message( STATUS "R3DSDK INCLUDE DIR=${R3DSDK_INCLUDE_DIR}" )
-  message( STATUS "R3DSDK LIBRARIES=${R3DSDK_LIBRARIES}" )
 endif()
 
 if(MAGICK_FOUND)

@@ -78,8 +78,11 @@ set( CTL  )
 set( OIIO  )
 set( OTIO  )
 set( FLTK  )
+set( BOOST  )
 
 include( BuildLibZ.cmake )
+
+include( BuildBoost.cmake )
 
 include( BuildOTIO.cmake )
 
