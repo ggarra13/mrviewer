@@ -18,9 +18,9 @@ message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
 string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
 message("-- os_version_suffix:      ${os_version_suffix}")
 
-set( BUILD_LIBHARFBUZZ OFF )
+set( CENTOS7 OFF )
 if ( "${os_version_suffix}" STREQUAL ".el7" )
-  set( BUILD_LIBHARFBUZZ ON )
+  set( CENTOS7 ON )
 endif()
 
 
@@ -120,8 +120,7 @@ if( UNIX )
      include( BuildX264.cmake )
      include( BuildX265.cmake )
 
-     if( BUILD_LIBHARFBUZZ )
-       message( STATUS "WILL BUILD libHarfbuzz" )
+     if( CENTOS7 )
        include( BuildLibHarfbuzz.cmake )
      endif()
      include( BuildLibAss.cmake )
