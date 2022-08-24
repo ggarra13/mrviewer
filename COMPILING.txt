@@ -1,6 +1,7 @@
 Compiling mrViewer requires a number of dependencies:
 
 - Ninja build system (optional)
+- Ruby (any version older than 1.8)
 - Boost 1.80 or later
 - OpenEXR 3.1.5
 - CTL 1.5.1 or later
@@ -9,22 +10,22 @@ Compiling mrViewer requires a number of dependencies:
 	 - libass
 	 - libfontconfig
 	 - libfreetype
-	 - libfribidi 
-	 - libgnutls 
-	 - libharfbuzz 
-	 - libtiff     
-	 - libturbojpg 
-	 - libogg 
+	 - libfribidi
+	 - libgnutls
+	 - libharfbuzz
+	 - libtiff
+	 - libturbojpg
+	 - libogg
 	 - libopus
 	 - libpng
-	 - libvorbis 
-	 - libvorbisenc 
-	 - libvpx 
-	 - libx264 
-	 - libx265 
-	 - libxml 
-	 - libwebp 
-	 - libz    
+	 - libvorbis
+	 - libvorbisenc
+	 - libvpx
+	 - libx264
+	 - libx265
+	 - libxml
+	 - libwebp
+	 - libz
 	 - nasm
 	 - yasm
 - GLUT

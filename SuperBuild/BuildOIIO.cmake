@@ -1,9 +1,7 @@
-
 set( OIIO_TAG v2.4.2.1-dev )
-
-
-
 set( BOOST_VERSION 1_73 )
+
+
 
 
 if(UNIX)
@@ -13,10 +11,14 @@ endif()
 
 set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/FindFFmpeg.cmake ${CMAKE_BINARY_DIR}/OIIO-prefix/src/OIIO/src/cmake/modules/ )
 
+
 set( FFMPEG_ROOT )
 if( WIN32 )
-    set( FFMPEG_ROOT $ENV{FFMPEG_ROOT} )
-    set( ffmpeg_includes "${FFMPEG_ROOT}/include" )
+  set( FFMPEG_ROOT $ENV{FFMPEG_ROOT} )
+  set( Boost_INCLUDE_DIR
+    ${CMAKE_INSTALL_PREFIX}/include/boost-${BOOST_VERSION} )
+else()
+  set( Boost_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/ )
 endif()
 
 if ( WIN32 AND NOT FFMPEG_ROOT )
@@ -25,9 +27,8 @@ endif()
 
 ExternalProject_Add(
   OIIO
-  #URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
   GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
-  GIT_TAG ${OIIO_TAG} 
+  GIT_TAG ${OIIO_TAG}
   GIT_PROGRESS 1
   PATCH_COMMAND ${patch_command}
   DEPENDS ${FFmpeg} ${OCIO} ${OpenEXR} ${LibTIFF} ${LIBPNG} ${LibRaw} ${LibWebP}          ${BOOST}
@@ -37,7 +38,7 @@ ExternalProject_Add(
   -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
   -DBUILD_SHARED_LIBS=ON
   -DBoost_ROOT=${CMAKE_INSTALL_PREFIX}
-  -DBoost_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/boost-${BOOST_VERSION}
+  -DBoost_INCLUDE_DIR=${Boost_INCLUDE_DIR}
   -DFFmpeg_ROOT=$ENV{FFMPEG_ROOT}
   -DUSE_PYTHON=OFF
   -DSTOP_ON_WARNING=OFF

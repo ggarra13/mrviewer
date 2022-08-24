@@ -16,3 +16,5 @@ ExternalProject_Add(
   ${LibOpus} ${LibWebP} ${x265}
   BUILD_IN_SOURCE 1
   )
+
+set( FFmpeg FFmpeg )
