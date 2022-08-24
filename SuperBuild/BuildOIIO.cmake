@@ -1,6 +1,9 @@
-if(WIN32)
-  set( ffmpeg_includes "D:/abs/local${CMAKE_BUILD_ARCH}/bin-video/ffmpegSHARED/include" )
-endif()
+
+set( OIIO_TAG v2.4.2.1-dev )
+
+
+
+set( BOOST_VERSION 1_73 )
 
 
 if(UNIX)
@@ -10,25 +13,38 @@ endif()
 
 set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/FindFFmpeg.cmake ${CMAKE_BINARY_DIR}/OIIO-prefix/src/OIIO/src/cmake/modules/ )
 
+set( FFMPEG_ROOT )
+if( WIN32 )
+    set( FFMPEG_ROOT $ENV{FFMPEG_ROOT} )
+    set( ffmpeg_includes "${FFMPEG_ROOT}/include" )
+endif()
+
+if ( WIN32 AND NOT FFMPEG_ROOT )
+   message( FATAL_ERROR "Please define the environment variable FFMPEG_ROOT to compile OpenImageIO with ffmpeg support" )
+endif()
+
 ExternalProject_Add(
   OIIO
   #URL "https://github.com/OpenImageIO/oiio/archive/master.zip"
   GIT_REPOSITORY "https://github.com/OpenImageIO/oiio.git"
+  GIT_TAG ${OIIO_TAG} 
   GIT_PROGRESS 1
   PATCH_COMMAND ${patch_command}
   DEPENDS ${FFmpeg} ${OCIO} ${OpenEXR} ${LibTIFF} ${LIBPNG} ${LibRaw} ${LibWebP}          ${BOOST}
-  # PATCH_COMMAND patch -p 1 < ${CMAKE_CURRENT_SOURCE_DIR}/patches/oiio_patch.txt
   CMAKE_ARGS
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-  -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+  -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
   -DBUILD_SHARED_LIBS=ON
   -DBoost_ROOT=${CMAKE_INSTALL_PREFIX}
-  -DFFMPEG_INCLUDES=${ffmpeg_includes}
+  -DBoost_INCLUDE_DIR=${CMAKE_INSTALL_PREFIX}/include/boost-${BOOST_VERSION}
   -DFFmpeg_ROOT=$ENV{FFMPEG_ROOT}
   -DUSE_PYTHON=OFF
   -DSTOP_ON_WARNING=OFF
   -DUSE_QT=OFF
+  -DBoost_DEBUG=ON
+  -DBoost_VERBOSE=ON
+  -DVERBOSE=ON
   -DOIIO_BUILD_TESTS=OFF)
 
 set( OIIO "OIIO" )

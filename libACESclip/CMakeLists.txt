@@ -16,7 +16,6 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../modules )
 find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 

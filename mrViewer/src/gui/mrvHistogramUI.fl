@@ -1,55 +1,20 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include {<libintl.h>}
+i18n_include {}
 i18n_conditional {}
 i18n_function gettext
 i18n_static_function _
 header_name {.h}
 code_name {.cxx}
-decl {\#include <string>} {public local
-}
-
-decl {\#include "core/mrvFrame.h"} {public local
-}
-
-decl {\#include "core/mrvI8N.h"} {private local
-}
-
-decl {\#include "core/mrvMath.h"} {private local
-}
-
-decl {\#include "gui/mrvImageView.h"} {private local
-}
 
 decl {\#include "gui/mrvPopupMenu.h"} {public local
-}
-
-decl {\#include "gui/mrvColorOps.h"} {private local
 }
 
 decl {\#include "gui/mrvHistogram.h"} {public local
 }
 
-decl {\#include "gui/mrvValueInput.h"} {public local
-}
-
-decl {\#include "gui/mrvActionWindow.h"} {public local
-}
-
-decl {\#include "gui/mrvPreferences.h"} {private local
-}
-
-decl {\#include "gui/mrvLogDisplay.h"} {private local
-}
-
 decl {\#include "mrViewer.h"} {private global
-}
-
-decl {\#include "FL/fl_ask.H"} {private local
-}
-
-decl {\#include "FL/Fl.H"} {private local
 }
 
 class HistogramUI {open

@@ -1,7 +1,7 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 i18n_type 1
-i18n_include <libintl.h>
+i18n_include {}
 i18n_function gettext
 header_name {.h}
 code_name {.cxx}
@@ -11,8 +11,8 @@ decl {\#include <string>} {public local
 decl {\#include <algorithm>} {private local
 }
 
-decl {\#include "core/mrvI8N.h"} {private local
-}
+# decl {\#include "core/mrvI8N.h"} {private local
+# }
 
 decl {\#include "IccProfile.h"} {private local
 }

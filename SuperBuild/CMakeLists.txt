@@ -10,6 +10,7 @@ endif()
 #
 project( Dependencies )
 
+
 message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
 message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
 message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
@@ -79,12 +80,16 @@ set( OIIO  )
 set( OTIO  )
 set( FLTK  )
 set( BOOST  )
+set( TinyXML2 )
 
 include( BuildLibZ.cmake )
+
+include( BuildTinyXML2.cmake )
 
 if( CENTOS7 OR NOT BOOST_FOUND )
    include( BuildBoost.cmake )
 endif()
+
 
 include( BuildOTIO.cmake )
 

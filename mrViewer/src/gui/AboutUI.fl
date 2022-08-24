@@ -10,37 +10,16 @@ code_name {.cxx}
 decl {\#include "string"} {public local
 }
 
-decl {\#include "core/mrvFrame.h"} {public local
-}
-
-decl {\#include "core/mrvI8N.h"} {private local
-}
-
-decl {\#include "core/mrvAudioEngine.h"} {private local
-}
-
-decl {\#include "gui/mrvValueInput.h"} {public local
-}
-
-decl {\#include "gui/mrvPreferences.h"} {private local
-}
-
 decl {\#include "gui/mrvBrowser.h"} {public global
 }
 
 decl {\#include "gui/mrvTextDisplay.h"} {public global
 }
 
-decl {\#include "gui/mrvMainWindow.h"} {private local
-}
-
 decl {\#include "gui/mrvVersion.h"} {public global
 }
 
 decl {\#include "mrViewer.h"} {public global
-}
-
-decl {\#include "icons/icons.c"} {private local
 }
 
 declblock {\#ifdef _WIN32} {after {\#endif}

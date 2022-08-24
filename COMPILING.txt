@@ -2,31 +2,31 @@ Compiling mrViewer requires a number of dependencies:
 
 - Ninja build system (optional)
 - Boost 1.80 or later
-- OpenEXR 3.1
+- OpenEXR 3.1.5
 - CTL 1.5.1 or later
 - OpenEXR_CTL 1.0.1 or later
-- FFMPEG 4.3
-	 - libass 4.1.0
-	 - libfontconfig 1.8.0
-	 - libfreetype 6.11.1
-	 - libfribidi 0.3.5
-	 - libgnutls 28.30.1
-	 - libharfbuzz 0.927.0
-	 - libtiff     5.5.0
-	 - libturbojpg 0.2.0
-	 - libogg 0.8.1
+- FFMPEG 5 or later
+	 - libass
+	 - libfontconfig
+	 - libfreetype
+	 - libfribidi 
+	 - libgnutls 
+	 - libharfbuzz 
+	 - libtiff     
+	 - libturbojpg 
+	 - libogg 
 	 - libopus
 	 - libpng
-	 - libvorbis 0.4.5
-	 - libvorbisenc 2.0.8
-	 - libvpx 6.3.0
-	 - libx264 161 (git)
-	 - libx265 196 (hg)
-	 - libxml 2.9.1
-	 - libwebp 5.0.0
-	 - libz    1.2.11
-	 - nasm (git)
-	 - yasm (git)
+	 - libvorbis 
+	 - libvorbisenc 
+	 - libvpx 
+	 - libx264 
+	 - libx265 
+	 - libxml 
+	 - libwebp 
+	 - libz    
+	 - nasm
+	 - yasm
 - GLUT
 - FLTK 1.4 (beta) or later
 - ImageMagick 6.7.4 or later
@@ -50,9 +50,12 @@ utils/libs.rb
 
 and it will install all dependencies.
 
-The files vc14_win32_vars and vc14_win64_vars contain mingw bash definitions for compiling on the windows platform. They point to the dependencies directory.  You will need to modify the directories to point to your own file system.
-For ffmpeg, you can build it with WSL or with the m-ab-s/media-autobuild_suite.
+The files vc14_win32_vars and vc14_win64_vars contain mingw bash definitions for compiling on the windows platform. They point to the dependencies directories on my machine.  You will need to modify the directories to point to your own file system.
+
+For ffmpeg, you can build it with WSL or with the m-ab-s/media-autobuild_suite
+(https://github.com/m-ab-s/media-autobuild_suite/archive/master.zip ).
+
 You also need libiconv and libintl (gettext) for translations.  You can get them from: https://mlocati.github.io/articles/gettext-iconv-windows.html
 
-To compile under windows, you need the Visual Studio 2019 Community Edition or later.
+To compile under windows, you need the Visual Studio 2019 Community Edition (tested) or later (untested).
 Both the x86 and x64 version of mrViewer have been compiled with Visual Studio 2019.

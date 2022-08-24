@@ -8,6 +8,8 @@ endif( NOT CMAKE_MODULE_PATH )
 set( OpenGL_GL_PREFERENCE LEGACY )
 #set( OpenGL_GL_PREFERENCE GLVND )
 
+set( Boost_USE_STATIC_LIBS OFF )
+
 include(CMakeFindDependencyMacro)
 # For window management
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
@@ -16,7 +18,8 @@ find_package( OpenGL      REQUIRED )    # for drawing images/shapes
 set( ZLIB_ROOT ${CMAKE_PREFIX_PATH} )
 find_package( ZLIB        REQUIRED )    # for zlib compression
 
-find_package( Boost 1.80.0  COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
+find_package( Boost COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
+message( STATUS ${BOOST_INCLUDE_DIRS} )
 add_definitions( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)

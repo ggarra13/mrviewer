@@ -1,0 +1,16 @@
+
+set( TinyXML2_TAG 9.0.0 )
+
+
+ExternalProject_Add(
+  TinyXML2
+  GIT_REPOSITORY "https://github.com/leethomason/tinyxml2.git"
+  GIT_TAG ${TinyXML2_TAG}
+  GIT_PROGRESS 1
+  CMAKE_ARGS
+  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+  -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
+  -DBUILD_SHARED_LIBS=ON)
+
+set( TinyXML2 "TinyXML2" )
