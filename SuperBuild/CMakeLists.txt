@@ -46,11 +46,14 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++14 or other extensions off for portability
 
 
-set(MRV_EXTERNAL_ARGS
-    -DBUILD_SHARED_LIBS=ON
-    -DENABLE_SHARED=ON)
+set( MRV_EXTERNAL_ARGS
+  -DBUILD_SHARED_LIBS=ON
+  -DENABLE_SHARED=ON )
 
 include( ExternalProject )
+
+
+include( cmake/options.cmake )
 
 set( ZLIB  )
 set( OpenEXR  )
@@ -105,9 +108,6 @@ include( BuildLZMA.cmake )
 
 if( UNIX )
      include( BuildLCMS2.cmake )
-endif()
-
-if( UNIX )
      include( BuildNASM.cmake )
 endif()
 
@@ -130,11 +130,16 @@ if( UNIX )
      if ( USE_VPX )
        include( BuildLibVPX.cmake )
      endif()
-     include( BuildX264.cmake )
 
-     if ( USE_X265 )
-       include( BuildX265.cmake )
+     if ( USE_FFMPEG_GPL )
+       if (USE_X264 )
+	 include( BuildX264.cmake )
+       endif()
+       if ( USE_X265 )
+	 include( BuildX265.cmake )
+       endif()
      endif()
+
      include( BuildLibAss.cmake )
      include( BuildFFmpeg.cmake )
      include( BuildImageMagick.cmake )

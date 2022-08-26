@@ -1,18 +1,17 @@
-mrViewer can be compiled as GPL (more codecs) or as BSD.
+mrViewer's code is a mess and it has a lot of cruft in it.  I am planning on rewriting it to remove all of its problems, remove code borrowed from other places and other stuff.  If you haven't contributed to mrViewer, now is the time to do so.
 
-To compile, it requires a number of dependencies installed:
+To compile mrViewer, you need a number of dependencies installed:
 
 - Ninja (for LibHarfbuzz)
 - Ruby (any version older than 1.8)
-- FFMPEG 5 or later (on Windows, wiwth m-abs-media script these get compiled
-		     for you.  On macOS and Linux you can rely on the packages
-		     of your OS like dnf or brew )
+- FFMPEG's components (on Windows, wiwth m-abs-media script these get compiled
+		      for you.  On macOS and Linux you can rely on the packages
+		      of your OS like dnf or brew )
 	 - libfontconfig
 	 - libfreetype
 	 - libfribidi
 	 - libgnutls
 	 - libogg
-	 - libopus
 	 - libvorbis
 	 - libvorbisenc
 	 - libvpx
