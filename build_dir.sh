@@ -46,7 +46,6 @@ fi
 
 export CMAKE_BUILD_TYPE="Release"
 for i in $@; do
-    echo $i
     case $i in
 	debug)
 	    export CMAKE_BUILD_TYPE="Debug"
