@@ -38,7 +38,12 @@ set( FL_SOURCES
   gui/mrViewer.fl
 )
 
-FLTK_RUN_FLUID( mrViewer_FLTK_UI_SRCS "${FL_SOURCES}" )
+if ( USE_FLTK_RUN_FLUID_MACRO )
+  FLTK_RUN_FLUID( mrViewer_FLTK_UI_SRCS "${FL_SOURCES}" )
+else()
+  FLTK_WRAP_UI( mrViewer ${FL_SOURCES} )
+endif()
+
 include_directories( "${CMAKE_CURRENT_BINARY_DIR}" )
 
 # For windows, this is a non-MFC application

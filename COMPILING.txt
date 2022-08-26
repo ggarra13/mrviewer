@@ -27,7 +27,8 @@ To compile mrViewer, you need a number of dependencies installed:
 - libiconv
 - libintl
 
-Under Linux and macOS, the superbuild.sh script will call SuperBuild/runme.sh to compile all non system dependencies and install them in install-$OS-$RELEASE.  Then it will compile and bundle the main directory with the other runme.sh script in that main directory and place the main bundles in the main directory.  The executable will be placed in the BUILD/$OS-$RELEASE directory.
+Under Linux and macOS, rather than running cmake directly we recommend using the superbuild.sh and runme.sh scripts.
+The superbuild.sh script will call SuperBuild/runme.sh to compile all non system dependencies and install them in install-$OS-$RELEASE.  Then it will compile and bundle the main directory with the other runme.sh script in that main directory and place the main bundles in the main directory.  The executable will be placed in the BUILD/$OS-$RELEASE directory.
 Under macOS, the Superbuild compilation will currently stop at the end when compiling FLTK, as it will try to install fluid in a system directory.
 
 For compiling just the dependencies (SuperBuild directory) or just the main program, there are runme.sh scripts on each corresponding directory.

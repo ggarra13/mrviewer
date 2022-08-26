@@ -23,10 +23,20 @@ if ( LibVPX )
   set( ENABLE_VPX  --enable-libvpx )
 endif()
 
+set( DISABLE_POSTPROC --disable-postproc )
 set( ENABLE_GPL )
+
 if ( USE_FFMPEG_GPL )
-  set( ENABLE_GPL --enable-gpl
-		  --enable-libx264 )
+
+  set( DISABLE_POSTPROC )
+  set( ENABLE_GPL --enable-gpl )
+
+  if ( USE_X264 )
+    list( APPEND ENABLE_GPL --enable-libx264 )
+  endif()
+  if ( USE_X265 )
+    list( APPEND ENABLE_GPL --enable-libx265 )
+  endif()
 endif()
 
 
@@ -40,9 +50,9 @@ ExternalProject_Add(
   --disable-coreimage
   --disable-audiotoolbox
   --disable-vaapi
+  ${DISABLE_POSTPROC}
   --enable-pic
   --enable-shared
-  ${ENABLE_X265}
   ${ENABLE_VPX}
   ${ENABLE_GPL}
   --enable-gray

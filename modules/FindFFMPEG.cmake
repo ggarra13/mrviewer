@@ -213,15 +213,21 @@ IF(FFMPEG_INCLUDE_DIR)
 	    ${FFMPEG_BASIC_LIBRARIES}
 	    )
 
+	  SET( FFMPEG_GPL_LIBRARIES )
+
+	  if ( USE_FFMPEG_GPL )
+	    SET( FFMPEG_GPL_LIBRARIES
+	      ${FFMPEG_postproc_LIBRARY} # GPL
+	      )
+	  endif()
+
 	  SET( FFMPEG_LIBRARIES
 	    ${FFMPEG_LGPL_LIBRARIES}
 	    ${FFMPEG_BSD_LIBRARIES}
+	    ${FFMPEG_GPL_LIBRARIES}
 	    )
 
 
-	  SET( FFMPEG_GPL_LIBRARIES
-	    ${FFMPEG_postproc_LIBRARY} # GPL
-	    )
 
 	  SET( FFMPEG_NONGPL_LIBRARIES
 	    ${FFMPEG_amr_nb_LIBRARY} # LPGL but patents from Ericson, Nokia &
