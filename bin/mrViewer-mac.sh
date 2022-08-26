@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 if [[ $BASH_SOURCE != $0 ]]; then
     dir=$BASH_SOURCE
 else
@@ -22,15 +23,8 @@ if [ "$dir" == '.' ]; then
     dir=$PWD
 fi
 
-
-#
-# Platform specific directory for mrViewer
-#
-dir=${dir%/*}
-
-#
-# Add mrViewer's lib directory first to LD_LIBRARY_PATH
-#
-export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
-
-export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
+export DYLD_FALLBACK_LIBRARY_PATH="$dir/../lib:/usr/local/lib"
+echo
+echo "DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH"
+echo
+$dir/mrViewer $@

@@ -84,6 +84,10 @@ set( TinyXML2 )
 
 include( BuildLibZ.cmake )
 
+if( CENTOS7 OR APPLE )
+  include( BuildLibHarfbuzz.cmake )
+endif()
+
 include( BuildTinyXML2.cmake )
 
 if( CENTOS7 OR NOT BOOST_FOUND )
@@ -123,12 +127,13 @@ if( UNIX )
      include( BuildLibOPUS.cmake )
      include( BuildSampleICC.cmake )
      include( BuildYASM.cmake )
-     include( BuildLibVPX.cmake )
+     if ( USE_VPX )
+       include( BuildLibVPX.cmake )
+     endif()
      include( BuildX264.cmake )
-     include( BuildX265.cmake )
 
-     if( CENTOS7 )
-       include( BuildLibHarfbuzz.cmake )
+     if ( USE_X265 )
+       include( BuildX265.cmake )
      endif()
      include( BuildLibAss.cmake )
      include( BuildFFmpeg.cmake )

@@ -26,6 +26,7 @@ FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
   ${CMAKE_PREFIX_PATH}/include/ImageMagick-7
+  ${CMAKE_PREFIX_PATH}/include/ImageMagick-6
   ${CMAKE_PREFIX_PATH}/include
   /usr/local/include/ImageMagick-7
   /usr/local/include/ImageMagick-6
@@ -38,10 +39,10 @@ FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h
 #
 # Extract ImageMagick's version number from .h file
 #
-IF( MAGICK_INCLUDE_DIR )
-  FILE( READ "${MAGICK_INCLUDE_DIR}/MagickCore/version.h" tmp )
-  STRING( REGEX REPLACE ".*define[ \t]+MagickLibVersionText[ \t]+\"([^\"]+)\".*" "\\1" MAGICK_VERSION ${tmp} )
-ENDIF( MAGICK_INCLUDE_DIR )
+if( MAGICK_INCLUDE_DIR )
+  file( READ "${MAGICK_INCLUDE_DIR}/MagickCore/version.h" tmp )
+  string( REGEX REPLACE ".*define[ \t]+MagickLibVersionText[ \t]+\"([^\"]+)\".*" "\\1" MAGICK_VERSION ${tmp} )
+endif( MAGICK_INCLUDE_DIR )
 
 
 FIND_PATH( MAGICK++_INCLUDE_DIR
@@ -69,10 +70,9 @@ FIND_LIBRARY( Magick
   "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
-  /usr/local/lib${CMAKE_BUILD_ARCH}
-  /usr/local/lib
-  /usr/lib${CMAKE_BUILD_ARCH}
-  /usr/lib
+  ${CMAKE_PREFIX_PATH}/lib64
+  ${CMAKE_PREFIX_PATH}/lib
+  NO_SYSTEM_PATH
   DOC   "ImageMagick's Magick library"
 )
 
@@ -87,8 +87,9 @@ FIND_LIBRARY( Magick++
   "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
-  /usr/local/lib${CMAKE_BUILD_ARCH}
-  /usr/lib
+  ${CMAKE_PREFIX_PATH}/lib64
+  ${CMAKE_PREFIX_PATH}/lib
+  NO_SYSTEM_PATH
   DOC   "ImageMagick's Magick++ library"
 )
 
@@ -106,8 +107,9 @@ FIND_LIBRARY( Wand
   "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
-  /usr/local/lib${CMAKE_BUILD_ARCH}
-  /usr/lib
+  ${CMAKE_PREFIX_PATH}/lib64
+  ${CMAKE_PREFIX_PATH}/lib
+  NO_SYSTEM_PATH
   DOC   "ImageMagick Wand library"
 )
 

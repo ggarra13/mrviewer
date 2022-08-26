@@ -2,9 +2,11 @@
 
 source build_dir.sh
 
+echo "INSTALL LIBRARIES in install-$BUILD"
+
 if [ -d install-$BUILD ]; then
     echo "Removing install-$BUILD"
-    rm -rf install-$BUILD
+    rm -rf install-$BUILD/$CMAKE_BUILD_TYPE
 fi
 
 if [ -d SuperBuild/BUILD/$BUILD ]; then
@@ -21,7 +23,7 @@ fi
 cd SuperBuild
 echo "Entering SuperBuild directory"
 
-./runme.sh
+./runme.sh $@
 
 if [ $? != 0 ]; then
     exit $?
@@ -31,11 +33,21 @@ fi
 echo "Leaving SuperBuild directory"
 cd ..
 
+release=''
 
-release=`lsb_release -d`
+if [[ $KERNEL == *Linux* ]]; then
+    release=`lsb_release -d`
+fi
 if [[ $release == *Ubuntu* ]]; then
-    ./runme.sh
+    ./runme.sh $@
+    if [ $? != 0 ]; then
+	exit $?
+    fi
+
     ./utils/libs.rb
 else
-    ./runme.sh bundle
+    ./runme.sh bundle $@
+    if [ $? != 0 ]; then
+	exit $?
+    fi
 fi

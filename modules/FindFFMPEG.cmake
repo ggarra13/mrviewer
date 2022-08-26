@@ -202,7 +202,6 @@ IF(FFMPEG_INCLUDE_DIR)
 	    ${FFMPEG_avfilter_LIBRARY}  # LGPL
 	    ${FFMPEG_swresample_LIBRARY}  # LGPL
 	    ${FFMPEG_avutil_LIBRARY}   # LGPL
-	    ${FFMPEG_postproc_LIBRARY} # GPL
 	    ${FFMPEG_freetype_LIBRARY}
 	    ${FFMPEG_bz2_LIBRARY}
 	    )

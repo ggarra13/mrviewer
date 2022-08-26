@@ -7,6 +7,29 @@ endif()
 
 set( ENV{LD_FLAGS} "-Wl,--copy-dt-needed-entries" )
 
+  #
+  # Optionally enable libx265 if we compiled it
+  #
+set( ENABLE_X265 )
+if ( x265 )
+  set( ENABLE_X265  --enable-libx265 )
+endif()
+
+  #
+  # Optionally enable libvpx if we compiled it
+  #
+set( ENABLE_VPX )
+if ( LibVPX )
+  set( ENABLE_VPX  --enable-libvpx )
+endif()
+
+set( ENABLE_GPL )
+if ( USE_FFMPEG_GPL )
+  set( ENABLE_GPL --enable-gpl
+		  --enable-libx264 )
+endif()
+
+
 ExternalProject_Add(
   FFmpeg
   #GIT_REPOSITORY "https://git.ffmpeg.org/ffmpeg.git"
@@ -19,7 +42,9 @@ ExternalProject_Add(
   --disable-vaapi
   --enable-pic
   --enable-shared
-  --enable-gpl
+  ${ENABLE_X265}
+  ${ENABLE_VPX}
+  ${ENABLE_GPL}
   --enable-gray
   --enable-gnutls
   --enable-libfontconfig
@@ -30,7 +55,6 @@ ExternalProject_Add(
   --enable-libopus
   --enable-libass
   --enable-libvpx
-  --enable-libx264
   --enable-libwebp
   --enable-bzlib
   --enable-zlib
@@ -45,7 +69,6 @@ ExternalProject_Add(
   --extra-ldflags=-L${CMAKE_PREFIX_PATH}/lib
   --extra-ldflags=-L${CMAKE_PREFIX_PATH}/lib64
   --prefix=${CMAKE_INSTALL_PREFIX}
-  --enable-libx265
   DEPENDS ${NASM} ${LibAss} ${x264} ${LIBPNG} ${LibTIFF} ${JPEGTURBO} ${LibVPX}
   ${LibOpus} ${LibWebP} ${x265}
   BUILD_IN_SOURCE 1

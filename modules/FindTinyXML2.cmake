@@ -50,6 +50,7 @@ FIND_PATH( TINYXML2_INCLUDE_DIR tinyxml2.h
 FIND_LIBRARY( tinyxml2
   NAMES tinyxml2
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "Tinyxml2 library"
 )
 

@@ -5,6 +5,7 @@ cmake_policy( SET CMP0074 NEW )
 configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in"
   "${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp" @ONLY )
 
+include( ../../SuperBuild/cmake/options.cmake )
 include( cmake/functions.cmake )
 include( cmake/find_packages.cmake )
 
@@ -196,7 +197,7 @@ set( SOURCES
   include( cmake/translations.cmake )
 
   if (APPLE)
-    list( append SOURCES ${SOURCES} gui/mrvMainWindow.mm )
+    list( APPEND SOURCES ${SOURCES} gui/mrvMainWindow.mm )
   endif()
 
   if( R3DSDK_FOUND )
@@ -247,11 +248,16 @@ set( SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
 
 if(UNIX AND NOT APPLE)
 
-  set( LINK_FLAGS ${LINK_FLAGS})
+  set( LINK_FLAGS ${LINK_FLAGS} )
 
-  execute_process( COMMAND "dos2unix" "mrViewer.sh" "environment.sh" "../utils/libs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
+  execute_process( COMMAND "dos2unix" "mrViewer.sh" "environment.sh" "mrViewer-mac.sh" "../utils/libs.rb" "../utils/maclibs.rb" WORKING_DIRECTORY "${SOURCE_DIR}/bin" )
   file( COPY ${SOURCE_DIR}/bin/mrViewer.sh ${SOURCE_DIR}/bin/environment.sh
-	DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+elseif( APPLE )
+  file( COPY ${SOURCE_DIR}/bin/mrViewer-mac.sh
+    DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  file( RENAME ${CMAKE_BINARY_DIR}/../bin/mrViewer-mac.sh
+    ${CMAKE_BINARY_DIR}/../bin/mrViewer.sh )
 endif()
 
 

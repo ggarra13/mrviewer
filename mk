@@ -114,16 +114,7 @@ EOF
 
 clean_cache()
 {
-    if [ $CMAKE_BUILD_ARCH == 'Both' ]; then
-	CMAKE_BUILD_ARCH=32
-	clean_cache
-	CMAKE_BUILD_ARCH=64
-	clean_cache
-	CMAKE_BUILD_ARCH=Both
-	return
-    fi
-
-    builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+    builddir=BUILD/$BUILD
     if [ ! -d $builddir ]; then
 	return
     fi

@@ -15,6 +15,8 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++11 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set( CMAKE_MAKEFILE_VERBOSE 1 )
+
 find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 
@@ -39,9 +41,8 @@ add_library( AMF SHARED
   src/AMFReader.cpp
   )
 
-message( STATUS "TinyXML2 libs=${TINYXML2_LIBRARIES}" )
 
-set( LIBRARIES ${TINYXML2_LIBRARIES}  )
+set( LIBRARIES ${BOOST_LIBRARIES} ${TINYXML2_LIBRARIES}  )
 target_link_libraries( AMF ${LIBRARIES} )
 
 set_target_properties( AMF

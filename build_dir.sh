@@ -44,6 +44,17 @@ if [ $KERNEL == 'Windows' ]; then
     fi
 fi
 
+export CMAKE_BUILD_TYPE="Release"
+for i in $@; do
+    echo $i
+    case $i in
+	debug)
+	    export CMAKE_BUILD_TYPE="Debug"
+	    break
+	    ;;
+    esac
+done
 
-export BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH
+
+export BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
 echo "BUILD DIRECTORY=$BUILD"

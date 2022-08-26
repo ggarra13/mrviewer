@@ -1,15 +1,15 @@
-#/usr/bin/bash --norc
+#!/bin/bash
 
 source ../build_dir.sh
 
 if [[ $KERNEL == 'Darwin' ]]; then
-    brew install glib
-    brew install glib-utils
-    brew install meson
+    brew upgrade
+    brew install pkg-config ragel freetype glib cairo meson ninja
 fi
 
 installdir=$PWD/../install-$BUILD
 echo "INSTALLDIR = " $installdir
+
 
 
 if [[ $KERNEL == "Windows" ]]; then
@@ -18,7 +18,9 @@ fi
 
 export LD_FLAGS="-Wl,--copy-dt-needed-entries"
 export PATH=$installdir/bin:$PATH
-export PKG_CONFIG_PATH=$installdir/lib/pkgconfig:$installdir/lib64/pkgconfig:$installdir/share/pkgconfig:
-export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$installdir/lib/pkgconfig:$installdir/lib64/pkgconfig:$installdir/share/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=$installdir/lib64:$installdir/lib:/usr/local/lib:$LD_LIBRARY_PATH
+
+echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH"
 
 ../mk --installdir=$installdir --prefix=$installdir $@

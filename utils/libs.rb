@@ -32,7 +32,7 @@ libgcc_s.*
 
 @options = { :verbose => false, :libs_only => false, :force => false }
 OptionParser.new do |opts|
-  opts.banner = "Usage: utils/libs.rb [@options]"
+  opts.banner = "Usage: utils/libs.rb [@options] [Debug|Release]"
 
   opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
@@ -123,11 +123,14 @@ def parse( files, dest )
 end
 
 @debug = ARGV.shift
+if @debug
+  @debug = @debug[0].upcase + @debug[1,10]
+end
+
 if not @debug
   @debug = "Release"
-elsif not @debug == "Debug" and not @debug == "Release" and
-    not @debug == "RelWithDebInfo"
-  $stdout.puts "Invalid option: #@debug [Debug|RelWithDebInfo|Release]"
+elsif not @debug == "Debug" and not @debug == "Release"
+  $stdout.puts "Invalid option: #@debug [Debug|Release]"
   exit 1
 end
 
@@ -156,12 +159,12 @@ end
 
 def copy_third_party( root, dest )
   Dir.chdir( root )
+  # Copy the RED library
+  red_library_path = ENV['RED3DSDK_ROOT']
+  if not red_library_path
+    red_library_path = '../'
+  end
   if dest =~ /Linux/
-    # Copy the RED library
-    red_library_path = ENV['RED3DSDK_ROOT']
-    if not red_library_path
-      red_library_path = '../'
-    end
     red_library = "#{red_library_path}/R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so"
     if File.exists?( red_library )
       FileUtils.cp_r( red_library, "#{dest}/lib" )
@@ -196,14 +199,10 @@ def copy_third_party( root, dest )
     if @options[:prefix]
       prefix="-p #{@options[:prefix]}"
     end
-    if not system( "#{root}/utils/maclibs.rb #{force} #{prefix} #@debug" )
+    if not system( "#{root}/utils/maclibs.rb #{force} #{prefix} #{@debug}" )
       exit 1
     end
     # Copy the RED library
-    red_library_path = ENV['RED3DSDK_ROOT']
-    if not red_library_path
-      red_library_path = '../..'
-    end
     FileUtils.cp_r( "#{red_library_path}/R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
     # Copy the BlackMagic API library
@@ -235,7 +234,7 @@ end
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]
-  @options[:prefix]="#{root}/install-#{kernel}-#{release}-64"
+  @options[:prefix]="#{root}/install-#{kernel}-#{release}-64/#{@debug}"
 end
 
 p = @options[:prefix]
@@ -278,7 +277,7 @@ if kernel !~ /MINGW.*/
 
   Dir.chdir( root  )
   libs = Dir.glob( "#{dest}/lib/*" )
-  libs.map! { |x| x if x !~ /.*libACESclip.*/ }.compact!
+  libs.map! { |x| x if x !~ /.*(?:AMF|ACESclip).*/ }.compact!
   FileUtils.rm_f( libs ) if not @options[:translations_only]
   exes = Dir.glob( "#{dest}/bin/*" )
 
@@ -312,19 +311,6 @@ if kernel !~ /MINGW.*/
     exit(0)
   end
 
-  Dir.chdir( dest + "/lib" )
-  if kernel =~ /Linux/
-    FileUtils.ln_s "libACESclip.so.0.2.6",
-                  "libACESclip.so", :verbose => true, :force => true
-    FileUtils.ln_s "libAMF.so.0.1.0", "libAMF.so", :verbose => true,
-                   :force => true
-    Dir.chdir( root )
-  elsif kernel =~ /Darwin/
-    FileUtils.ln_s "libACESclip.dylib.0.2.6",
-                   "libACESclip.dylib", :verbose => true, :force => true
-    FileUtils.ln_s "libAMF.dylib.0.1.0",
-                   "libAMF.dylib", :verbose => true, :force => true
-  end
   Dir.chdir( root )
 
 else

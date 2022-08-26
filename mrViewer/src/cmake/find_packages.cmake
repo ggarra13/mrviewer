@@ -18,13 +18,18 @@ find_package( OpenGL      REQUIRED )    # for drawing images/shapes
 set( ZLIB_ROOT ${CMAKE_PREFIX_PATH} )
 find_package( ZLIB        REQUIRED )    # for zlib compression
 
-find_package( Boost COMPONENTS thread chrono system filesystem date_time regex REQUIRED )    # for file system support
-message( STATUS ${BOOST_INCLUDE_DIRS} )
+find_package( Boost COMPONENTS thread chrono system
+			       filesystem date_time regex
+			       REQUIRED )    # for file system support
 add_definitions( -D BOOST_ALL_DYN_LINK ) # ${Boost_LIB_DIAGNOSTIC_DEFINITIONS} )
 
 if (APPLE)
-  set(FLTK_DIR /Users/gga/code/lib/fltk/build CACHE FILEPATH
-    "fltk build dir" FORCE )
+  if ( NOT DEFINED FLTK_DIR )
+    set(FLTK_DIR /Users/gga/code/lib/fltk/build CACHE FILEPATH
+      "fltk build dir" FORCE )
+  endif()
+
+  message( STATUS "FLTK_DIR=${FLTK_DIR}" )
 
    set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
@@ -40,13 +45,14 @@ else()
     if ( NOT DEFINED FLTK_DIR )
 	set( FLTK_DIR "${CMAKE_INSTALL_PREFIX}" CACHE FILEPATH
 	  "fltk build dir" FORCE )
-	set( FLTK_FLUID_EXECUTABLE "${FLTK_DIR}/bin/fluid" )
     endif()
   endif()
 endif()
 
 find_package( FLTK        REQUIRED NO_MODULE)
 set( FLTK_LIBRARIES       fltk fltk_gl fltk_images )
+
+set( FLTK_FLUID_EXECUTABLE "${FLTK_DIR}/bin/fluid" )
 
 find_package( ImageMagick REQUIRED )    # for image formats
 find_package( OpenEXR     REQUIRED )    # for EXR image loading
@@ -90,7 +96,8 @@ if( USE_PORTAUDIO )
 endif()
 
 
-add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -D_CRT_SECURE_NO_WARNINGS )
+add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1
+		 -DUSE_GETTEXT -D_CRT_SECURE_NO_WARNINGS )
 
 
 if(WIN32 OR WIN64)

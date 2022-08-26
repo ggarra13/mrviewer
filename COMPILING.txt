@@ -1,45 +1,35 @@
-Compiling mrViewer requires a number of dependencies:
+mrViewer can be compiled as GPL (more codecs) or as BSD.
 
-- Ninja build system (optional)
+To compile, it requires a number of dependencies installed:
+
+- Ninja (for LibHarfbuzz)
 - Ruby (any version older than 1.8)
-- Boost 1.80 or later
-- OpenEXR 3.1.5
-- CTL 1.5.1 or later
-- OpenEXR_CTL 1.0.1 or later
-- FFMPEG 5 or later
-	 - libass
+- FFMPEG 5 or later (on Windows, wiwth m-abs-media script these get compiled
+		     for you.  On macOS and Linux you can rely on the packages
+		     of your OS like dnf or brew )
 	 - libfontconfig
 	 - libfreetype
 	 - libfribidi
 	 - libgnutls
-	 - libharfbuzz
-	 - libtiff
-	 - libturbojpg
 	 - libogg
 	 - libopus
-	 - libpng
 	 - libvorbis
 	 - libvorbisenc
 	 - libvpx
-	 - libx264
-	 - libx265
+	 - libx264 (GPL only)
+	 - libx265 (GPL only)
 	 - libxml
 	 - libwebp
-	 - libz
-	 - nasm
-	 - yasm
 - GLUT
-- FLTK 1.4 (beta) or later
-- ImageMagick 6.7.4 or later
+- ImageMagick 6.7.4 or later ( Windows only, Linux and macOS will
+			       compile in superbuild )
 - GLEW 1.11 or later
-- TCLAP 1.2.1 or later
 - SampleICC 1.6.8 or later
-- OpenColorIO 1.1.1
-- OpenImageIO 2.3.5
 - libiconv
 - libintl
 
 Under Linux and macOS, the superbuild.sh script will call SuperBuild/runme.sh to compile all non system dependencies and install them in install-$OS-$RELEASE.  Then it will compile and bundle the main directory with the other runme.sh script in that main directory and place the main bundles in the main directory.  The executable will be placed in the BUILD/$OS-$RELEASE directory.
+Under macOS, the Superbuild compilation will currently stop at the end when compiling FLTK, as it will try to install fluid in a system directory.
 
 For compiling just the dependencies (SuperBuild directory) or just the main program, there are runme.sh scripts on each corresponding directory.
 

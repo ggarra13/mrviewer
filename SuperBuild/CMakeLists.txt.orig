@@ -10,6 +10,7 @@ endif()
 #
 project( Dependencies )
 
+
 message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
 message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
 message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
@@ -18,9 +19,9 @@ message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
 string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
 message("-- os_version_suffix:      ${os_version_suffix}")
 
-set( BUILD_LIBHARFBUZZ OFF )
+set( CENTOS7 OFF )
 if ( "${os_version_suffix}" STREQUAL ".el7" )
-  set( BUILD_LIBHARFBUZZ ON )
+  set( CENTOS7 ON )
 endif()
 
 
@@ -78,8 +79,17 @@ set( CTL  )
 set( OIIO  )
 set( OTIO  )
 set( FLTK  )
+set( BOOST  )
+set( TinyXML2 )
 
 include( BuildLibZ.cmake )
+
+include( BuildTinyXML2.cmake )
+
+if( CENTOS7 OR NOT BOOST_FOUND )
+   include( BuildBoost.cmake )
+endif()
+
 
 include( BuildOTIO.cmake )
 
@@ -113,12 +123,16 @@ if( UNIX )
      include( BuildLibOPUS.cmake )
      include( BuildSampleICC.cmake )
      include( BuildYASM.cmake )
-     include( BuildLibVPX.cmake )
+     if ( USE_VPX )
+       include( BuildLibVPX.cmake )
+     endif()
      include( BuildX264.cmake )
-     include( BuildX265.cmake )
 
-     if( BUILD_LIBHARFBUZZ )
-       message( STATUS "WILL BUILD libHarfbuzz" )
+     if ( USE_X265 )
+       include( BuildX265.cmake )
+     endif()
+
+     if( CENTOS7 OR APPLE )
        include( BuildLibHarfbuzz.cmake )
      endif()
      include( BuildLibAss.cmake )

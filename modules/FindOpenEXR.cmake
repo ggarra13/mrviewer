@@ -26,10 +26,6 @@ ELSE( OPENEXR_LIBRARY_DIR )
     $ENV{OPENEXR_ROOT}/bin/Debug
     ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
     ${CMAKE_PREFIX_PATH}/lib
-    /usr/local/lib${CMAKE_BUILD_ARCH}
-    /usr/local/lib
-    /usr/lib${CMAKE_BUILD_ARCH}
-    /usr/lib
     )
 ENDIF( OPENEXR_LIBRARY_DIR )
 
@@ -38,8 +34,6 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   "$ENV{OPENEXR_ROOT}/include/OpenEXR"
   "$ENV{OPENEXR_ROOT}/include"
   "${CMAKE_PREFIX_PATH}/include/OpenEXR"
-  /usr/local/include/OpenEXR
-  /usr/include/OpenEXR
   DOC   "OpenEXR includes"
   )
 
@@ -60,37 +54,55 @@ FIND_PATH( IMATH_INCLUDE_DIR ImathForward.h
 
 SET( OPENEXR_INCLUDE_DIR ${OPENEXR_INCLUDE_DIR} ${IMATH_INCLUDE_DIR} )
 
+set( DEBUG_EXT )
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
+  set( DEBUG_EXT _d )
+endif()
+
 FIND_LIBRARY( OpenEXRUtil
-  NAMES OpenEXRUtil-3_1
+  NAMES OpenEXRUtil-3_1${DEBUG_EXT}
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "OpenEXR Util library"
 )
 
 FIND_LIBRARY( OpenEXR
-  NAMES OpenEXR-3_1
+  NAMES OpenEXR-3_1${DEBUG_EXT}
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "OpenEXR library"
 )
 
-MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath
-  NAMES Imath-3_2
+  NAMES Imath-3_2${DEBUG_EXT}
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "OpenEXR Imath library"
 )
 
 FIND_LIBRARY( Iex
-  NAMES Iex-3_1
+  NAMES Iex-3_1${DEBUG_EXT}
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "OpenEXR Iex library"
 )
 
 FIND_LIBRARY( OpenEXRCore
-  NAMES OpenEXRCore-3_1
+  NAMES OpenEXRCore-3_1${DEBUG_EXT}
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "OpenEXR Core library"
 )
+
+
+FIND_LIBRARY( IlmThread
+  NAMES IlmThread-3_1${DEBUG_EXT}
+  PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
+  DOC   "OpenEXR IlmThread library (1.5 or later)"
+  )
+
 
 
 SET(OPENEXR_LIBRARIES ${OpenEXRUtil} ${OpenEXR} ${OpenEXRCore} ${Imath} ${Iex} )
@@ -125,20 +137,6 @@ IF(NOT OPENEXR_FOUND)
 ENDIF(NOT OPENEXR_FOUND)
 
 
-#
-# We search for IlmThread only in the directory of IlmImf
-#
-# This is to avoid picking IlmThread for a wrong version of IlmImf.
-#
-FIND_LIBRARY( IlmThread
-  NAMES IlmThread-3_1
-  PATHS ${OPENEXR_LIBRARY_DIR}
-  DOC   "OpenEXR IlmThread library (1.5 or later)"
-  )
-
-IF( NOT IlmThread )
-  SET( IlmThread "" )
-ENDIF( NOT IlmThread )
 
 SET(OPENEXR_LIBRARIES ${OPENEXR_LIBRARIES} ${IlmThread} )
 

@@ -64,7 +64,6 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 # but switch gnu++11 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option( USE_PORTAUDIO "Use PortAudio interface" OFF )
 
 SET( VersionMajor 6 )
 SET( VersionMinor 2 )
@@ -81,8 +80,16 @@ set(mrViewerShortName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUI
 set(mrViewerPackageName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 
 # use, i.e. don't skip the full RPATH for the build tree
-SET(CMAKE_SKIP_BUILD_RPATH FALSE)
-SET(CMAKE_SKIP_RPATH FALSE)
+#SET(CMAKE_SKIP_BUILD_RPATH FALSE)
+#SET(CMAKE_SKIP_RPATH FALSE)
+
+# set @rpaths for libraries to link against
+SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+SET(CMAKE_INSTALL_RPATH "${CMAKE_PREFIX_PATH}/lib")
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+
 
 # when building, don't use the install RPATH already
 # (but later on when installing)
