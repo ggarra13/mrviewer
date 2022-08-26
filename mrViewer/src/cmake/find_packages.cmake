@@ -29,8 +29,6 @@ if (APPLE)
       "fltk build dir" FORCE )
   endif()
 
-  message( STATUS "FLTK_DIR=${FLTK_DIR}" )
-
    set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
@@ -39,7 +37,6 @@ if (APPLE)
   # stop OpenGL deprecation warnings on MacOSX > 10.14
   add_definitions(-DGL_SILENCE_DEPRECATION=1)
 
-  # set( FLTK_FLUID_EXECUTABLE /usr/local/bin/fluid.app/Contents/MacOS/fluid )
 else()
   if (UNIX)
     if ( NOT DEFINED FLTK_DIR )
@@ -75,8 +72,10 @@ if( UNIX )
     # On Windows, these get compiled with the m-abs-media ffmpeg package
     find_package( LibVPX      REQUIRED )    # for libvpx codec
     find_package( LibOPUS      REQUIRED )   # for libopus codec
-    find_package( X264           REQUIRED )  # for lib264
-    find_package( X265           REQUIRED )  # for lib265
+    if ( USE_FFMPEG_GPL )
+      find_package( X264           REQUIRED )  # for lib264
+      find_package( X265           REQUIRED )  # for lib265
+    endif()
     find_package( WebP           REQUIRED )  # for webp
 endif()
 find_package( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
@@ -260,14 +259,16 @@ list( APPEND LIBRARIES
   )
 
 if( UNIX )
-  set( LIBRARIES
-       ${LibVPX_LIBRARIES}
-       ${LibOPUS_LIBRARIES}
-       ${X264_LIBRARIES}
-       ${X265_LIBRARIES}
-       ${WEBP_LIBRARIES}
-       ${LIBRARIES}
-  )
+  list( INSERT LIBRARIES 0 ${LibOPUS_LIBRARIES} ${WEBP_LIBRARIES} )
+  if ( USE_VPX )
+    list( INSERT LIBRARIES 0 ${LibVPX_LIBRARIES} )
+  endif()
+  if ( USE_FFMPEG_GPL )
+    list( INSERT LIBRARIES 0 ${X264_LIBRARIES} )
+    if ( USE_X265 )
+      list( INSERT LIBRARIES 0 ${X265_LIBRARIES} )
+    endif()
+  endif()
 endif()
 
 if( PORTAUDIO_FOUND )
