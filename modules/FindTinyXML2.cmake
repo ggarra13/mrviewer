@@ -15,16 +15,21 @@ SET(TINYXML2_FOUND "NO")
 IF( TINYXML2_LIBRARY_DIR )
   SET( SEARCH_DIRS "${TINYXML2_LIBRARY_DIR}" )
 ELSE( TINYXML2_LIBRARY_DIR )
-  SET( SEARCH_DIRS
-    $ENV{TINYXML2_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
-    $ENV{TINYXML2_ROOT}/lib/Win32/Release
-    $ENV{TINYXML2_ROOT}/lib
-    $ENV{TINYXML2_ROOT}/lib/Release
-    $ENV{TINYXML2_ROOT}/lib/Debug
-    $ENV{TINYXML2_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release
-    $ENV{TINYXML2_ROOT}/bin/Win32/Release
-    $ENV{TINYXML2_ROOT}/bin/Release
-    $ENV{TINYXML2_ROOT}/bin/Debug
+  set( TINYXML2_ROOT $ENV{TINYXML2_ROOT} )
+  if( TINYXML2_ROOT )
+    SET( SEARCH_DIRS
+      ${TINYXML2_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
+      ${TINYXML2_ROOT}/lib/Win32/Release
+      ${TINYXML2_ROOT}/lib
+      ${TINYXML2_ROOT}/lib/Release
+      ${TINYXML2_ROOT}/lib/Debug
+      ${TINYXML2_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release
+      ${TINYXML2_ROOT}/bin/Win32/Release
+      ${TINYXML2_ROOT}/bin/Release
+      ${TINYXML2_ROOT}/bin/Debug
+    )
+  endif()
+  list( APPEND SEARCH_DIRS
     ${CMAKE_PREFIX_PATH}/lib64
     ${CMAKE_PREFIX_PATH}/lib
     )
@@ -32,8 +37,8 @@ ENDIF( TINYXML2_LIBRARY_DIR )
 
 
 FIND_PATH( TINYXML2_INCLUDE_DIR tinyxml2.h
-  "$ENV{TINYXML2_ROOT}/include/tinyxml2"
-  "$ENV{TINYXML2_ROOT}/include"
+  "${TINYXML2_ROOT}/include/tinyxml2"
+  "${TINYXML2_ROOT}/include"
   "${CMAKE_PREFIX_PATH}/include/tinyxml2"
   "${CMAKE_PREFIX_PATH}/include"
   NO_DEFAULT_PATH
