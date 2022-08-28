@@ -4824,7 +4824,7 @@ void ImageView::draw()
 
     if ( _hud == kHudNone )
     {
-        //Fl_Gl_Window::draw();
+        Fl_Gl_Window::draw();
         return;
     }
 
@@ -5054,7 +5054,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
 
-    //Fl_Gl_Window::draw();
+    Fl_Gl_Window::draw();
 
 }
 

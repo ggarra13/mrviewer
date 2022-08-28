@@ -106,6 +106,7 @@ void logbuffer::open_stream()
     {
         std::string file = mrv::homepath();
         file += "/.filmaura/errorlog.txt";
+        std::cerr << file << std::endl;
         out.open( file.c_str(), ios_base::out );
     }
     if ( out.is_open() )
