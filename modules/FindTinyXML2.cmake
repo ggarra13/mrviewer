@@ -9,6 +9,7 @@
 #  TINYXML2_LIBRARIES    - libraries you need to link to
 #
 
+
 SET(TINYXML2_FOUND "NO")
 
 IF( TINYXML2_LIBRARY_DIR )
@@ -24,13 +25,8 @@ ELSE( TINYXML2_LIBRARY_DIR )
     $ENV{TINYXML2_ROOT}/bin/Win32/Release
     $ENV{TINYXML2_ROOT}/bin/Release
     $ENV{TINYXML2_ROOT}/bin/Debug
-    ${CMAKE_PREFIX_PATH}/lib${CMAKE_BUILD_ARCH}
+    ${CMAKE_PREFIX_PATH}/lib64
     ${CMAKE_PREFIX_PATH}/lib
-    /usr/local/lib/x86_${CMAKE_BUILD_ARCH}-linux-gnu
-    /usr/local/lib${CMAKE_BUILD_ARCH}
-    /usr/local/lib
-    /usr/lib${CMAKE_BUILD_ARCH}
-    /usr/lib
     )
 ENDIF( TINYXML2_LIBRARY_DIR )
 
@@ -40,17 +36,15 @@ FIND_PATH( TINYXML2_INCLUDE_DIR tinyxml2.h
   "$ENV{TINYXML2_ROOT}/include"
   "${CMAKE_PREFIX_PATH}/include/tinyxml2"
   "${CMAKE_PREFIX_PATH}/include"
-  /usr/local/include/tinyxml2
-  /usr/local/include
-  /usr/include/tinyxml2
-  /usr/include
+  NO_DEFAULT_PATH
   DOC   "Tinyxml2 includes"
   )
+
 
 FIND_LIBRARY( tinyxml2
   NAMES tinyxml2
   PATHS ${SEARCH_DIRS}
-  NO_SYSTEM_PATH
+  NO_DEFAULT_PATH
   DOC   "Tinyxml2 library"
 )
 

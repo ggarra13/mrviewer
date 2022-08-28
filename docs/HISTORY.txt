@@ -2,19 +2,13 @@ v6.2.3  - Fixed switching render passes which would render black.
 	  Regression from v6.1.7.
 	- Fixed listing of layers/channels of multipass exr files.
 	- Made building from source much more straight-forward.
-	  Added superbuild.sh bash script to download and build all difficult
-	  dependencies on Linux and macOS (and partial dependencies on Windows)
-	  It will then pack compile an installable bundle.
-	  This was tested to work on CentOS 7, Ubuntu 22, macOS and Windows 8.1.
-	  In addition to that, there are runme.sh scripts in the main directory
-	  and in the SuperBuild directory which allow building the dependencies
-	  or the main executable.
-	  Compilation on Linux or macOS is straightforward.  Just run the
-	  superbuild.sh script and off you go.
-
-	  Windows Compilation
-	  -------------------
+	  Added superbuild.sh bash script.
 	  Please read the accompanying COMPILING.txt document.
+
+	  RE-RELEASE
+	  ----------
+	- Fixed Text tool which was broken in the first releases of
+	  mrViewer v6.2.3.
 
 v6.2.2  - Upgraded OpenColorIO to 2.2.
 	- Upgraded OpenImageIO to 2.4.2.

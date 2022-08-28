@@ -10,9 +10,9 @@ cmake_policy( SET CMP0068 NEW )
 # This sets -fPIC on all libraries and code
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-#  VP18 switches to c++11, so let's do that by default
+list( INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/../modules)
+
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
-# but switch gnu++11 or other extensions off for portability
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set( CMAKE_MAKEFILE_VERBOSE 1 )
