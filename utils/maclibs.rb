@@ -158,7 +158,7 @@ def parse( app )
     end
     if not @files.one? lib
       @files.push lib
-      # parse lib
+      parse lib
     end
   end
 end

@@ -2,6 +2,11 @@
 
 source build_dir.sh
 
+if [[ $KERNEL == 'Darwin' ]]; then
+    brew upgrade
+    brew install pkg-config ragel freetype glib cairo meson ninja
+fi
+
 echo "INSTALL LIBRARIES in install-$BUILD"
 
 if [ -d install-$BUILD ]; then

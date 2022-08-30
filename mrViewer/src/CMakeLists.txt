@@ -504,6 +504,15 @@ ELSEIF (UNIX)
 
 ENDIF(WIN32)
 
+# install( CODE [[
+#   file( GET_RUNTIME_DEPENDENCIES
+#     EXECUTABLES mrViewer
+#     )
+#   ]]
+# )
+
+
+
 set(CPACK_PACKAGE_VENDOR "Film Aura, LLC")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VersionMajor})
 set(CPACK_PACKAGE_VERSION_MINOR ${VersionMinor})
