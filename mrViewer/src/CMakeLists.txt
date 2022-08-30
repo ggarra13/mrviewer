@@ -232,6 +232,8 @@ set( SOURCES
   standalone/main.cpp
   )
 
+  include( ../../cmake/translations.cmake )
+
   if (APPLE)
     list( APPEND SOURCES ${SOURCES} gui/mrvMainWindow.mm )
   endif()
@@ -276,7 +278,6 @@ set_TARGET_PROPERTIES( mrViewer
   LINK_FLAGS "${LINK_FLAGS}"
   MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
   )
-
 
 ######################################################
 #
@@ -542,11 +543,3 @@ ELSE()
     USES_TERMINAL
     DEPENDS translations )
 ENDIF()
-
-IF (WIN32)
-  ADD_CUSTOM_COMMAND( TARGET bundle
-    POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${SOURCE_DIR}/chocolatey/mrViewer/CMakeLists.txt"
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  )
-ENDIF( WIN32 )

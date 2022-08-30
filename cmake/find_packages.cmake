@@ -26,10 +26,9 @@ if (APPLE)
       "fltk build dir" FORCE )
   endif()
 
-   set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
-   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OSX_FRAMEWORKS}" )
-   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}
-    ${OSX_FRAMEWORKS}")
+  set( OSX_FRAMEWORKS "-framework OpenGL -framework Cocoa -framework IOKit -framework CoreAudio" )
+  list( APPEND CMAKE_EXE_LINKER_FLAGS ${OSX_FRAMEWORKS} )
+  list( APPEND CMAKE_SHARED_LINKER_FLAGS ${OSX_FRAMEWORKS} )
 
   # stop OpenGL deprecation warnings on MacOSX > 10.14
   add_definitions(-DGL_SILENCE_DEPRECATION=1)

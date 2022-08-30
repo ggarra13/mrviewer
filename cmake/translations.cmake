@@ -3,14 +3,8 @@
 #
 #
 
-set( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
+set( _absPotFile "${CMAKE_SOURCE_DIR}/mrViewer/src/po/messages.pot" )
 
-add_custom_command( OUTPUT "${_absPotFile}"
-  COMMAND xgettext
-  ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
-  DEPENDS mrViewer
-  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-)
 
 set( LANGUAGES "ar" "cs" "de" "en" "es" "fr" "gr" "it" "ja"
 	       "ko" "nl" "pl" "pt" "ro" "ru" "sv" "tr" "zh" )
@@ -27,7 +21,7 @@ foreach( lang ${LANGUAGES} )
   file( REMOVE_RECURSE "${_moDir}" ) # Remove dir to remove old .mo files
   file( MAKE_DIRECTORY "${_moDir}" ) # Recreate dir to place new .mo file
 
-  set( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
+  set( _absFile "${CMAKE_SOURCE_DIR}/mrViewer/src/po/${lang}.po" )
 
   add_custom_command( OUTPUT "${_moFile}"
     COMMAND msgmerge --quiet --update --backup=none
@@ -38,7 +32,15 @@ foreach( lang ${LANGUAGES} )
 
 endforeach( lang )
 
+
+add_custom_command( OUTPUT "${_absPotFile}"
+  COMMAND xgettext
+  ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+  DEPENDS mrViewer
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+)
+
 ADD_CUSTOM_TARGET(
   "translations" ALL
   DEPENDS ${output_files} ${PROJECT_NAME}
-  )
+)
