@@ -53,7 +53,7 @@ set( MRV_EXTERNAL_ARGS
 include( ExternalProject )
 
 
-include( cmake/options.cmake )
+include( ../cmake/options.cmake )
 
 set( ZLIB  )
 set( OpenEXR  )

@@ -1,7 +1,3 @@
-if( NOT CMAKE_MODULE_PATH )
-  set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
-endif( NOT CMAKE_MODULE_PATH )
-
 #
 # These are the libraries we will depend on
 #
@@ -15,7 +11,8 @@ include(CMakeFindDependencyMacro)
 find_package( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 find_package( OpenGL      REQUIRED )    # for drawing images/shapes
 
-set( ZLIB_ROOT ${CMAKE_PREFIX_PATH} )
+set( ZLIB_ROOT ${CMAKE_PREFIX_PATH} )   # Make sure we pick latest zlib not
+					# the system one
 find_package( ZLIB        REQUIRED )    # for zlib compression
 
 find_package( Boost COMPONENTS thread chrono system
@@ -67,7 +64,8 @@ find_package( SampleICC   REQUIRED )    # For ICC reading
 find_package( LibRaw      REQUIRED )    # for libraw files
 find_package( TinyXML2    REQUIRED )    # for xml reading/writing
 find_package( R3DSDK      REQUIRED )    # for R3D format
-find_package( BlackMagicRAW  REQUIRED )  # for BRAW format
+find_package( BlackMagicRAW REQUIRED )  # for BRAW format
+
 if( UNIX )
     # On Windows, these get compiled with the m-abs-media ffmpeg package
     find_package( LibVPX      REQUIRED )    # for libvpx codec
@@ -78,6 +76,7 @@ if( UNIX )
     endif()
     find_package( WebP           REQUIRED )  # for webp
 endif()
+
 find_package( OpenTimelineIO REQUIRED )  # for OpenTimelineIO
 
 
@@ -171,50 +170,6 @@ else()
 endif()
 
 
-#
-# List directories for -I options.
-#
-include_directories(
-  .
-  ./core
-  ./db
-  ./gui
-  ./video
-  ../../libACESclip/include
-  ../../libAMF/src
-  ${FFMPEG_INCLUDE_DIR}
-  ${LIBINTL_INCLUDE_DIR}
-  ${LibRaw_INCLUDE_DIR}
-  ${OPENGL_INCLUDE_DIR}
-  ${FLTK_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
-  ${MAGICK_INCLUDE_DIR}
-  ${TINYXML2_INCLUDE_DIR}
-  ${CTL_INCLUDE_DIR}
-  ${OPENEXR_INCLUDE_DIR}
-  ${OPENEXRCTL_INCLUDE_DIR}
-  ${OIIO_INCLUDE_DIR}
-  ${OCIO_INCLUDE_DIR}
-  ${OPENTIMELINEIO_INCLUDE_DIR}
-  ${TIFF_INCLUDE_DIR}
-  ${SampleICC_INCLUDE_DIR}
-  ${TCLAP_INCLUDE_DIR}
-  ${GLEW_INCLUDE_DIR}
-  )
-
-if ( UNIX )
-   include_directories(
-	${WEBP_INCLUDE_DIR}
-	${LibVPX_INCLUDE_DIR}
-	${LibOPUS_INCLUDE_DIR}
-	${X264_INCLUDE_DIR}
-	${X265_INCLUDE_DIR}
-	)
-endif()
-
-if( PORTAUDIO_FOUND )
-  INCLUDE_DIRECTORIES( ${PORTAUDIO_INCLUDE_DIR} )
-endif()
 
 
 if( WIN32 )
@@ -236,7 +191,6 @@ if ( BlackMagicRAW_FOUND )
 endif()
 
 list( APPEND LIBRARIES
-  ${R3DSDK_LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${MAGICK++_LIBRARIES}

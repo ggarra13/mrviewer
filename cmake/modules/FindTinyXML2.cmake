@@ -2,6 +2,37 @@
 #
 # Test for Tinyxml2
 #
+#  TINYXML2_FOUND        - system has Tinyxml2
+#  TINYXML2_INCLUDE_DIR  - include directory for Tinyxml2
+#  TINYXML2_LIBRARY_DIR  - library directory for Tinyxml2
+#  TINYXML2_LIBRARIES    - libraries you need to link to
+#
+
+
+SET(TINYXML2_FOUND "NO")
+
+IF( TINYXML2_LIBRARY_DIR )
+  SET( SEARCH_DIRS "${TINYXML2_LIBRARY_DIR}" )
+ELSE( TINYXML2_LIBRARY_DIR )
+  set( TINYXML2_ROOT $ENV{TINYXML2_ROOT} )
+  if( TINYXML2_ROOT )
+    SET( SEARCH_DIRS
+      ${TINYXML2_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
+      ${TINYXML2_ROOT}/lib/Win32/Release
+      ${TINYXML2_ROOT}/lib
+      ${TINYXML2_ROOT}/lib/Release
+      ${TINYXML2_ROOT}/lib/Debug
+      ${TINYXML2_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release
+      ${TINYXML2_ROOT}/bin/Win32/Release
+      ${TINYXML2_ROOT}/bin/Release
+      ${TINYXML2_ROOT}/bin/Debug
+    )
+  endif()
+  list( APPEND SEARCH_DIRS
+    ${CMAKE_PREFIX_PATH}/lib64
+    ${CMAKE_PREFIX_PATH}/lib
+    )
+ENDIF( TINYXML2_LIBRARY_DIR )
 # Once loaded this will define
 #  TINYXML2_FOUND        - system has Tinyxml2
 #  TINYXML2_INCLUDE_DIR  - include directory for Tinyxml2

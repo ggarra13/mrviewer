@@ -1,15 +1,8 @@
 project( mrViewer )
-cmake_policy( SET CMP0074 NEW )
 
 
 configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in"
   "${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp" @ONLY )
-
-include( ../../SuperBuild/cmake/options.cmake )
-include( cmake/functions.cmake )
-include( cmake/find_packages.cmake )
-
-
 
 
 set( FL_SOURCES
@@ -44,7 +37,51 @@ else()
   FLTK_WRAP_UI( mrViewer ${FL_SOURCES} )
 endif()
 
-include_directories( "${CMAKE_CURRENT_BINARY_DIR}" )
+#
+# List directories for -I options.
+#
+include_directories(
+  .
+  ./core
+  ./db
+  ./gui
+  ./video
+  ../../libACESclip/include
+  ../../libAMF/src
+  ${FFMPEG_INCLUDE_DIR}
+  ${LIBINTL_INCLUDE_DIR}
+  ${LibRaw_INCLUDE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  ${FLTK_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${MAGICK_INCLUDE_DIR}
+  ${TINYXML2_INCLUDE_DIR}
+  ${CTL_INCLUDE_DIR}
+  ${OPENEXR_INCLUDE_DIR}
+  ${OPENEXRCTL_INCLUDE_DIR}
+  ${OIIO_INCLUDE_DIR}
+  ${OCIO_INCLUDE_DIR}
+  ${OPENTIMELINEIO_INCLUDE_DIR}
+  ${TIFF_INCLUDE_DIR}
+  ${SampleICC_INCLUDE_DIR}
+  ${TCLAP_INCLUDE_DIR}
+  ${GLEW_INCLUDE_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
+if ( UNIX )
+   include_directories(
+	${WEBP_INCLUDE_DIR}
+	${LibVPX_INCLUDE_DIR}
+	${LibOPUS_INCLUDE_DIR}
+	${X264_INCLUDE_DIR}
+	${X265_INCLUDE_DIR}
+	)
+endif()
+
+if( PORTAUDIO_FOUND )
+  include_directories( ${PORTAUDIO_INCLUDE_DIR} )
+endif()
 
 # For windows, this is a non-MFC application
 set( CMAKE_MFC_FLAG 0 )
@@ -86,8 +123,6 @@ set( SOURCES
   core/oiioImage.cpp
   core/rawImage.cpp
   core/picImage.cpp
-  core/R3dImage.cpp
-  core/brawImage.cpp
 
   core/mrSocket.cpp
   core/mrvClient.cpp
@@ -195,19 +230,24 @@ set( SOURCES
   standalone/mrvRoot.cpp
   standalone/mrvCommandLine.cpp
   standalone/main.cpp
-
-  ${BlackMagicRAW_SOURCES}
   )
-
-  include( cmake/translations.cmake )
 
   if (APPLE)
     list( APPEND SOURCES ${SOURCES} gui/mrvMainWindow.mm )
   endif()
 
   if( R3DSDK_FOUND )
+    include_directories( ${R3DSDK_INCLUDE_DIR} )
+    add_definitions( -DUSE_R3DSDK )
     list( APPEND SOURCES core/R3dImage.cpp )
   endif()
+
+  if( BlackMagicRAW_FOUND )
+    include_directories( ${BlackMagicRAW_INCLUDE_DIR} )
+    add_definitions( -DUSE_BRAW )
+    list( APPEND SOURCES ${BlackMagicRAW_SOURCES} core/brawImage.cpp )
+  endif()
+
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   list( APPEND SOURCES ${PROJECT_IDL_FILES} ${GENERATED_FILES_IDL} ${SOURCES} )
@@ -366,7 +406,7 @@ IF(WIN32)
 
   set( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON )
 
-  INCLUDE( cmake/NSISRegistry.cmake )
+  INCLUDE( NSISRegistry.cmake )
 
 ELSEIF ( APPLE )
   set(CPACK_GENERATOR Bundle )

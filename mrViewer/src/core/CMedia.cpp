@@ -82,8 +82,15 @@ namespace fs = boost::filesystem;
 #include "core/mrvMath.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
+
+#ifdef USE_R3DSDK
 #include "core/R3dImage.h"
+#endif
+
+#ifdef USE_BRAW
 #include "core/brawImage.h"
+#endif
+
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
 #include "core/mrvBlackImage.h"
@@ -1003,7 +1010,9 @@ CMedia::Attributes& CMedia::attributes()  {
     static Attributes empty;
     AttributesFrame::iterator i;
     if ( dynamic_cast< aviImage* >( this )  != NULL ||
+#ifdef USE_R3DSDK
          dynamic_cast< R3dImage* >( this )  != NULL ||
+#endif
          start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
@@ -1017,7 +1026,9 @@ const CMedia::Attributes& CMedia::attributes() const {
     static Attributes empty;
     AttributesFrame::const_iterator i;
     if ( dynamic_cast< const aviImage* const >( this )  != NULL ||
+#ifdef USE_R3DSDK
          dynamic_cast< const R3dImage* const >( this )  != NULL ||
+#endif
          start_frame() == end_frame() )
         i = _attrs.find( start_frame() );
     else
@@ -1185,8 +1196,12 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
       int64_t num;
       if ( !_is_sequence ||
            dynamic_cast< aviImage* >( this ) != NULL ||
+#ifdef USE_BRAW
            dynamic_cast< brawImage* >( this ) != NULL ||
+#endif
+#ifdef USE_R3DSDK
            dynamic_cast< R3dImage* >( this ) != NULL ||
+#endif
            dynamic_cast< clonedImage* >( this ) != NULL ||
            dynamic_cast< ColorBarsImage* >( this ) != NULL ||
            dynamic_cast< BlackImage* >( this ) != NULL
@@ -1203,8 +1218,12 @@ void CMedia::pixel_ratio( int64_t f, double p ) {
   int64_t idx = f - _frame_start;
   if (  !_is_sequence ||
         dynamic_cast< aviImage* >(this) != NULL ||
+#ifdef USE_BRAW
         dynamic_cast< brawImage* >( this ) != NULL ||
+#endif
+#ifdef USE_R3DSDK
         dynamic_cast< R3dImage* >( this ) != NULL ||
+#endif
         dynamic_cast< clonedImage* >( this ) != NULL ||
         dynamic_cast< ColorBarsImage* >( this ) != NULL ||
         dynamic_cast< BlackImage* >( this ) != NULL )
@@ -1219,8 +1238,12 @@ double CMedia::pixel_ratio() const    {
   else if ( idx > _frame_end - _frame_start ) idx = _frame_end - _frame_start;
   if ( !_is_sequence ||
        dynamic_cast< const aviImage* >(this) != NULL ||
-       dynamic_cast< const brawImage* >( this ) != NULL ||
-       dynamic_cast< const R3dImage* >( this ) != NULL ||
+#ifdef USE_BRAW
+        dynamic_cast< const brawImage* >( this ) != NULL ||
+#endif
+#ifdef USE_R3DSDK
+        dynamic_cast< const R3dImage* >( this ) != NULL ||
+#endif
        dynamic_cast< const clonedImage* >( this ) != NULL ||
        dynamic_cast< const ColorBarsImage* >( this ) != NULL ||
        dynamic_cast< const BlackImage* >( this ) != NULL
@@ -1689,9 +1712,13 @@ void CMedia::sequence( const char* fileroot,
     uint64_t num = _frame_end - _frame_start + 1;
 
 
-    if ( dynamic_cast< aviImage* >( this )  == NULL &&
-         dynamic_cast< R3dImage* >( this )  == NULL &&
-         dynamic_cast< brawImage* >( this ) == NULL )
+    if ( dynamic_cast< aviImage* >( this )  == NULL
+#ifdef USE_R3DSDK
+         && dynamic_cast< R3dImage* >( this )  == NULL
+#endif
+#ifdef USE_BRAW
+         && dynamic_cast< brawImage* >( this ) == NULL )
+#endif
     {
         _sequence = new mrv::image_type_ptr[ (unsigned) num ];
         _right    = new mrv::image_type_ptr[ (unsigned) num ];
@@ -3242,9 +3269,14 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
     mrv::image_type_ptr r;
 
     if ( !is_sequence() || !_cache_active ||
-         dynamic_cast< const aviImage* >( this )  != NULL ||
-         dynamic_cast< const R3dImage* >( this )  != NULL ||
-         dynamic_cast< const brawImage* >( this ) != NULL )
+         dynamic_cast< const aviImage* >( this )  != NULL
+#ifdef USE_BRAW
+         || dynamic_cast< const brawImage* >( this ) != NULL
+#endif
+#ifdef USE_R3DSDK
+         || dynamic_cast< const R3dImage* >( this ) != NULL
+#endif
+        )
         return r;
 
     int64_t idx = frame - _frame_start;
@@ -3264,9 +3296,14 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
  */
 void CMedia::cache( mrv::image_type_ptr& pic )
 {
-    if ( dynamic_cast< const aviImage* >( this )  != NULL ||
-         dynamic_cast< const R3dImage* >( this )  != NULL ||
-         dynamic_cast< const brawImage* >( this ) != NULL )
+    if ( dynamic_cast< const aviImage* >( this )  != NULL
+#ifdef USE_BRAW
+         || dynamic_cast< brawImage* >( this ) != NULL
+#endif
+#ifdef USE_R3DSDK
+         || dynamic_cast< R3dImage* >( this ) != NULL
+#endif
+        )
         return;
 
     if ( !is_sequence() || !_cache_active || !pic )
@@ -3335,9 +3372,14 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 
 bool CMedia::is_cache_full()
 {
-    if ( dynamic_cast< aviImage* >( this )  != NULL ||
-         dynamic_cast< R3dImage* >( this )  != NULL ||
-         dynamic_cast< brawImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this )  != NULL
+#ifdef USE_BRAW
+         || dynamic_cast< brawImage* >( this ) != NULL
+#endif
+#ifdef USE_R3DSDK
+         || dynamic_cast< R3dImage* >( this ) != NULL
+#endif
+        )
         return true;
 
     if ( _cache_full == 2 ) return true;
@@ -3353,9 +3395,14 @@ bool CMedia::is_cache_full()
 
 int64_t CMedia::first_cache_empty_frame()
 {
-    if ( dynamic_cast< aviImage* >( this )  != NULL ||
-         dynamic_cast< R3dImage* >( this )  != NULL ||
-         dynamic_cast< brawImage* >( this ) != NULL )
+    if ( dynamic_cast< aviImage* >( this )  != NULL
+#ifdef USE_BRAW
+         || dynamic_cast< brawImage* >( this ) != NULL
+#endif
+#ifdef USE_R3DSDK
+         || dynamic_cast< R3dImage* >( this ) != NULL
+#endif
+        )
         return frame();
 
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
@@ -3401,8 +3448,14 @@ size_t CMedia::memory() const
     {
         if ( hires() )
         {
-            if ( dynamic_cast< const R3dImage* >( this )  != NULL ||
-                 dynamic_cast< const brawImage* >( this ) != NULL )
+            if ( 0
+#ifdef USE_BRAW
+                || dynamic_cast< const brawImage* >( this ) != NULL
+#endif
+#ifdef USE_R3DSDK
+                || dynamic_cast< const R3dImage* >( this ) != NULL
+#endif
+                )
             {
                 r += _hires->data_size() * duration();
             }

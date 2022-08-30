@@ -65,8 +65,15 @@ using namespace std;
 #include "core/mrvString.h"
 #include "core/aviImage.h"
 #include "core/exrImage.h"
+
+#ifdef USE_R3DSDK
 #include "core/R3dImage.h"
+#endif
+
+#ifdef USE_BRAW
 #include "core/brawImage.h"
+#endif
+
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -1740,6 +1747,8 @@ static void change_scale_cb( Fl_Button* w, ImageInformation* info )
     view->redraw();
 }
 
+#ifdef USE_BRAW
+
 static void change_scale_braw_cb( Fl_Button* w, ImageInformation* info )
 {
     w->value(1);
@@ -1767,6 +1776,10 @@ static void change_scale_braw_cb( Fl_Button* w, ImageInformation* info )
     view->redraw();
 }
 
+#endif
+
+#ifdef USE_R3DSDK
+
 static void change_iso_cb( mrv::PopupMenu* w, ImageInformation* info )
 {
     R3dImage* img = dynamic_cast<R3dImage*>( info->get_image() );
@@ -1782,6 +1795,8 @@ static void change_iso_cb( mrv::PopupMenu* w, ImageInformation* info )
     mrv::ImageView* view = info->main()->uiView;
     view->redraw();
 }
+
+#endif
 
 static void change_ipp2_mode_cb( mrv::PopupMenu* w, ImageInformation* info )
 {
@@ -3190,13 +3205,17 @@ void ImageInformation::fill_data()
     {
         m_curr = add_browser( m_attributes );
 
+#ifdef USE_BRAW
         brawImage* braw = dynamic_cast< brawImage* >( img );
         if ( braw )
         {
             add_scale( _("Image Scale"), _("Proxy image scale"), braw->scale(),
                        4, (Fl_Callback*)change_scale_braw_cb );
         }
+#endif
 
+
+#ifdef USE_R3DSDK
         R3dImage* r3d = dynamic_cast< R3dImage* >( img );
 
         if ( r3d )
@@ -3422,6 +3441,7 @@ void ImageInformation::fill_data()
                           content, options, true,
                           (Fl_Callback*)change_detail_cb );
             }
+#endif
 
             ++group;
 
