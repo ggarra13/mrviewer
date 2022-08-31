@@ -11,35 +11,10 @@ endif()
 project( Dependencies )
 
 
-message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
-message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
-message("-- CMAKE_SYSTEM_PROCESSOR: ${CMAKE_SYSTEM_PROCESSOR}")
-message("-- CMAKE_SYSTEM:           ${CMAKE_SYSTEM}")
-
-string (REGEX MATCH "\\.el[1-9]" os_version_suffix ${CMAKE_SYSTEM})
-message("-- os_version_suffix:      ${os_version_suffix}")
-
-set( CENTOS7 OFF )
-if ( "${os_version_suffix}" STREQUAL ".el7" )
-  set( CENTOS7 ON )
-endif()
+include( ../cmake/policies.cmake )
+include( ../cmake/options.cmake )
 
 
-# use, i.e. don't skip the full RPATH for the build tree
-SET(CMAKE_SKIP_BUILD_RPATH FALSE)
-
-# when building, don't use the install RPATH already
-# (but later on when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-
-# the RPATH to be used when installing
-SET(CMAKE_INSTALL_RPATH "")
-
-
-set( CMAKE_MAKEFILE_VERBOSE 1 )
-
-set (ARCH "" )
-set (OSXARCHS "" )
 
 #  VP18 switches to c++14, so let's do that by default
 set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
@@ -52,8 +27,6 @@ set( MRV_EXTERNAL_ARGS
 
 include( ExternalProject )
 
-
-include( ../cmake/options.cmake )
 
 set( ZLIB  )
 set( OpenEXR  )

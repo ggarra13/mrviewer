@@ -222,15 +222,14 @@ end
 
 kernel = `uname`.chop!
 release = `uname -r`.chop!
-
 build = "BUILD/#{kernel}-#{release}-64/"
-
-$stdout.puts "kernel: #{kernel}"
-
 root = $0.sub(/utils\/libs.rb/, "")
 if root.size <= 1
   root = Dir.pwd
 end
+
+$stdout.puts "kernel: #{kernel}"
+
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]

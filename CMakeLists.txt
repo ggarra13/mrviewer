@@ -4,16 +4,8 @@
 cmake_minimum_required( VERSION 3.1 )
 project( mrViewer )
 
-cmake_policy( SET CMP0068 NEW )
+include( cmake/policies.cmake )
 
-if(POLICY CMP0074)
-  # enable find_package(<Package>) to use <Package>_ROOT as a hint
-  cmake_policy(SET CMP0074 NEW)
-endif()
-
-if (POLICY CMP0092)
-  cmake_policy( SET CMP0092 NEW )
-endif()
 
 IF(WIN32)
     set( TEST_BUNDLE 0 )
@@ -54,8 +46,6 @@ include( cmake/options.cmake )
 include( cmake/functions.cmake )
 include( cmake/find_packages.cmake )
 
-# This sets -fPIC on all libraries and code
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 message("-- CMAKE_SYSTEM_INFO_FILE: ${CMAKE_SYSTEM_INFO_FILE}")
 message("-- CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
@@ -71,11 +61,6 @@ if ( "${os_version_suffix}" STREQUAL ".el7" )
 endif()
 
 
-#  OIIO needs c++14, so let's do that by default
-set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
-# but switch gnu++11 or other extensions off for portability
-set(CMAKE_CXX_EXTENSIONS OFF)
-
 
 set( VersionMajor 6 )
 set( VersionMinor 2 )
@@ -90,25 +75,6 @@ set( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}${VersionDate}" )
 
 set(mrViewerShortName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 set(mrViewerPackageName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
-
-# use, i.e. don't skip the full RPATH for the build tree
-
-# set @rpaths for libraries to link against
-
-set(CMAKE_SKIP_BUILD_RPATH  FALSE)
-set(CMAKE_SKIP_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "${CMAKE_PREFIX_PATH}/lib")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-
-
-# when building, don't use the install RPATH already
-# (but later on when installing)
-set(CMAKE_SKIP_INSTALL_RPATH TRUE)
-
-# the RPATH to be used when installing
-set(CMAKE_INSTALL_RPATH "")
 
 # don't add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH

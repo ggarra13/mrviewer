@@ -46,29 +46,27 @@ end
 
 
 
+
 kernel = `uname`.chop!
-release = `uname -r`.chop!
-
-build = "BUILD/#{kernel}-#{release}-64"
-
-puts "PREFIX = #{@options[:prefix]}"
-
-puts "DIRECTORY: #{Dir.pwd}"
-
 if kernel !~ /Darwin/
   exit 1
 end
-
-
+release = `uname -r`.chop!
+build = "BUILD/#{kernel}-#{release}-64/"
 root = $0.sub(/utils\/maclibs.rb/, "")
 if root.size <= 1
   root = Dir.pwd
 end
+
+$stdout.puts "kernel: #{kernel}"
+
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]
   @options[:prefix]="#{root}/install-#{kernel}-#{release}-64/#{@debug}"
 end
+
+
 
 @dest = "#{build}/#@debug/"
 @libdir = "#{@dest}/lib"
@@ -127,6 +125,7 @@ def parse( app )
 
 
   begin
+    $stderr.puts app
     output = `otool -L #{app}`
   rescue => e
     $stderr.puts e
@@ -134,6 +133,10 @@ def parse( app )
 
   lines = output.split("\n")
   lines = lines[1..lines.size]
+  if not lines
+    $stderr.puts "#{app} has no libs"
+    return
+  end
 
   for line in lines
     lib = line.sub(/^\s+/, '')
@@ -146,7 +149,6 @@ def parse( app )
     if lib =~ /^\/usr\/lib\// or lib =~ /\/System/
       next
     end
-    $stderr.puts lib
     if lib =~ /@(?:rpath|loader_path)\//
       lib.sub!(/@(?:rpath|loader_path)\//, "")
     end

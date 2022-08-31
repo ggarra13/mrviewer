@@ -1,5 +1,7 @@
 include( ExternalProject )
 
+set( LIBVPX_TAG 888bafc78d8bddb5cfc4262c93f456c812763571 )
+
 set( LIBVPX_FLAGS --enable-shared )
 if( APPLE )
   set( LIBVPX_FLAGS --enable-static )
@@ -8,9 +10,8 @@ endif()
 ExternalProject_Add(
   LibVPX
   GIT_REPOSITORY "https://github.com/webmproject/libvpx.git"
-  #https://chromium.googlesource.com/webm/libvpx
-  #GIT_TAG v1.12.0
-  CONFIGURE_COMMAND ./configure ${ARCH} ${LIBVPX_FLAGS} --prefix=${CMAKE_INSTALL_PREFIX}
+  GIT_TAG ${LibVPX_TAG}
+  CONFIGURE_COMMAND sh ./configure ${LIBVPX_FLAGS} --prefix=${CMAKE_INSTALL_PREFIX}
   DEPENDS ${YASM}
   BUILD_IN_SOURCE 1
   )

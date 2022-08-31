@@ -1,23 +1,21 @@
-set(BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/external")
+# specific commit on the 2021.09.16
+set( LibRaw_TAG 9c861fd72f3961167ef55b037d7ce16056dd32d8 )
 
-set(install_cmd ${CMAKE_COMMAND} -E copy_directory bin/ ${CMAKE_INSTALL_PREFIX}/bin && ${CMAKE_COMMAND} -E copy_directory lib/ ${CMAKE_INSTALL_PREFIX}/lib  && ${CMAKE_COMMAND} -E copy_directory libraw ${CMAKE_INSTALL_PREFIX}/include/libraw/ )
-
-# Add libraw
+set( patch_command ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/LibRaw/FindLCMS2.cmake ${CMAKE_CURRENT_BINARY_DIR}/LibRaw_cmake/cmake/modules )
 
 set( CMAKE_CORE_BUILD_FLAGS
-  -DPC_LCMS2_INCLUDEDIR=${CMAKE_INSTALL_PREFIX}/include
-  -DPC_LCMS2_LIBDIR="${CMAKE_INSTALL_PREFIX}/lib;${CMAKE_INSTALL_PREFIX}/lib64" )
+  -DZLIB_ROOT=${CMAKE_PREFIX_PATH} )
+
 
 ExternalProject_Add(
-	libraw_cmake
+	LibRaw_cmake
       GIT_REPOSITORY "https://github.com/LibRaw/LibRaw-cmake"
       GIT_TAG master
-      PREFIX ${BUILD_DIR}
+      DEPENDS ${ZLIB} ${LCMS2}
       BUILD_IN_SOURCE 0
       BUILD_ALWAYS 0
       UPDATE_COMMAND ""
-      SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libraw_cmake
-      BINARY_DIR ${BUILD_DIR}/libraw_build
+      SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/LibRaw_cmake
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       CONFIGURE_COMMAND ""
       BUILD_COMMAND ""
@@ -26,22 +24,21 @@ ExternalProject_Add(
 
 ExternalProject_Add(
 	LibRaw
-      #URL https://github.com/LibRaw/LibRaw/archive/0.20.0.tar.gz
       GIT_REPOSITORY "https://github.com/LibRaw/LibRaw"
-      GIT_TAG 9c861fd72f3961167ef55b037d7ce16056dd32d8 # specific commit on the 2021.09.16
-      PREFIX ${BUILD_DIR}
+      GIT_TAG  ${LibRaw_TAG}
       BUILD_IN_SOURCE 0
       BUILD_ALWAYS 0
+      PATCH_COMMAND ${patch_command}
       UPDATE_COMMAND ""
-      SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libraw
-      BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/libraw
+      SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/LibRaw
+      BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/LibRaw
       INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
       # Native libraw configure script doesn't work on centos 7 (autoconf 2.69)
       # CONFIGURE_COMMAND autoconf && ./configure --enable-jpeg --enable-openmp --disable-examples --prefix=${CMAKE_INSTALL_PREFIX}
       # Use cmake build system (not maintained by libraw devs)
-    CONFIGURE_COMMAND cp <SOURCE_DIR>_cmake/CMakeLists.txt . && cp -rf <SOURCE_DIR>_cmake/cmake . && ${CMAKE_COMMAND} ${CMAKE_CORE_BUILD_FLAGS} -DENABLE_OPENMP=ON -DENABLE_LCMS=ON -DENABLE_EXAMPLES=OFF ${ZLIB_CMAKE_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX} -DINSTALL_CMAKE_MODULE_PATH:PATH=${CMAKE_INSTALL_PREFIX}/cmake <SOURCE_DIR>
+      CONFIGURE_COMMAND cp <SOURCE_DIR>_cmake/CMakeLists.txt . && cp -rf <SOURCE_DIR>_cmake/cmake . && ${CMAKE_COMMAND} ${CMAKE_CORE_BUILD_FLAGS} -DENABLE_OPENMP=ON -DENABLE_LCMS=ON -DENABLE_EXAMPLES=OFF ${ZLIB_CMAKE_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
       BUILD_COMMAND $(MAKE)
-      DEPENDS libraw_cmake ${ZLIB} ${LCMS2}
+      DEPENDS LibRaw_cmake ${ZLIB} ${LCMS2}
     )
 
 set( LibRaw "LibRaw" )
