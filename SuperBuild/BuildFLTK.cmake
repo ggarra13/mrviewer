@@ -1,5 +1,5 @@
-set( FLTK_TAG 232743c3a5d903be813f6c4445f3f96bab25cae0 ) # this works
-#set( FLTK_TAG master ) #this doesn't
+#set( FLTK_TAG 232743c3a5d903be813f6c4445f3f96bab25cae0 ) # this works
+set( FLTK_TAG master ) #this doesn't
 
 set( patch_cmd )
 
