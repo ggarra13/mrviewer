@@ -875,23 +875,19 @@ void aviImage::open_video_codec()
     _video_ctx->idct_algo = idct;
 
 
-    double aspect_ratio;
-    if ( _video_ctx->sample_aspect_ratio.num == 0 )
-        aspect_ratio = 0;
+    double pixel_aspect_ratio;
+    if ( _video_ctx->sample_aspect_ratio.num == 0 ||
+         _video_ctx->sample_aspect_ratio.den == 0 )
+        pixel_aspect_ratio = 1.0;
     else
-        aspect_ratio = av_q2d( _video_ctx->sample_aspect_ratio ) *
-                       _video_ctx->width / _video_ctx->height;
+        pixel_aspect_ratio = av_q2d( _video_ctx->sample_aspect_ratio );
 
 
 
 
     if ( width() > 0 && height() > 0 )
     {
-        double image_ratio = (double) width() / (double)height();
-        if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
-
-        if ( image_ratio == aspect_ratio ) pixel_ratio( 0, 1.0 );
-        else pixel_ratio( 0, aspect_ratio / image_ratio );
+        pixel_ratio( 0, pixel_aspect_ratio );
     }
 
     avcodec_parameters_from_context( stream->codecpar, _video_ctx );
@@ -3223,11 +3219,11 @@ int64_t aviImage::queue_packets( const int64_t frame,
         if ( has_video() && pkt->stream_index == video_stream_index() )
         {
             // **DO NOT USE**
-	  // int64_t pktframe = ( get_frame( get_video_stream(), *pkt )
-	  // 		       - _frame_offset + _start_number ); // don't work
+          // int64_t pktframe = ( get_frame( get_video_stream(), *pkt )
+          //                   - _frame_offset + _start_number ); // don't work
 
-	  int64_t pktframe = ( pts2frame( get_video_stream(), pkt->dts ) -
-	  		       _frame_offset + _start_number ); // needed
+          int64_t pktframe = ( pts2frame( get_video_stream(), pkt->dts ) -
+                               _frame_offset + _start_number ); // needed
 
 
             if ( playback() == kBackwards )

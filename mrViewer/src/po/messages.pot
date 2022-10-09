@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer ERSION\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-09-10 15:25-0300\n"
+"POT-Creation-Date: 2022-10-09 16:53-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2519
+#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -78,7 +78,7 @@ msgstr ""
 msgid " Color Area Selection"
 msgstr ""
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid " Move Picture"
 msgstr ""
 
-#: core/aviImage.cpp:2537
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr ""
 
@@ -183,11 +183,11 @@ msgstr ""
 msgid " for channel.  Maximum: "
 msgstr ""
 
-#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid " for codec "
 msgstr ""
 
-#: core/aviImage.cpp:4141
+#: core/aviImage.cpp:4137
 msgid " for frame "
 msgstr ""
 
@@ -221,7 +221,7 @@ msgid ""
 "or modify Preferences->User Interface->Single Instance."
 msgstr ""
 
-#: core/aviImage.cpp:1917
+#: core/aviImage.cpp:1913
 msgid " instead"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgstr ""
 msgid " is missing. Choosing "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1927
+#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1923
 msgid " not found"
 msgstr ""
 
@@ -257,11 +257,11 @@ msgstr ""
 msgid " not found in reel"
 msgstr ""
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1911
 msgid " not found, choosing "
 msgstr ""
 
-#: core/aviImage.cpp:4311
+#: core/aviImage.cpp:4307
 msgid " not yet supported"
 msgstr ""
 
@@ -273,7 +273,7 @@ msgstr ""
 msgid " size is "
 msgstr ""
 
-#: core/aviImage.cpp:4169
+#: core/aviImage.cpp:4165
 msgid " status: "
 msgstr ""
 
@@ -285,7 +285,7 @@ msgstr ""
 msgid " to "
 msgstr ""
 
-#: core/aviImage.cpp:1887
+#: core/aviImage.cpp:1883
 msgid " video frame, cache "
 msgstr ""
 
@@ -489,7 +489,7 @@ msgstr ""
 msgid "(no image)"
 msgstr ""
 
-#: core/aviImage.cpp:1888
+#: core/aviImage.cpp:1884
 msgid ") cache size: "
 msgstr ""
 
@@ -562,7 +562,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1568
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1884
 msgid "0.45"
 msgstr ""
 
@@ -578,7 +578,7 @@ msgstr ""
 msgid "00:00:00:00"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1883
 msgid "1.0"
 msgstr ""
 
@@ -627,7 +627,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1565
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1882
 msgid "1.8"
 msgstr ""
 
@@ -751,7 +751,7 @@ msgid "2.10 VistaVision"
 msgstr ""
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1564
-#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1881
 msgid "2.2"
 msgstr ""
 
@@ -2055,11 +2055,11 @@ msgstr ""
 msgid "Color controls"
 msgstr ""
 
-#: core/aviImage.cpp:1307
+#: core/aviImage.cpp:1303
 msgid "Colorspace details not gotten "
 msgstr ""
 
-#: core/aviImage.cpp:1336
+#: core/aviImage.cpp:1332
 msgid "Colorspace details not set "
 msgstr ""
 
@@ -2256,7 +2256,7 @@ msgstr ""
 msgid "Could not copy context to parameters"
 msgstr ""
 
-#: core/aviImage.cpp:730 core/aviImage.cpp:2400
+#: core/aviImage.cpp:730 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr ""
 
@@ -2360,7 +2360,7 @@ msgstr ""
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr ""
 
@@ -2428,7 +2428,7 @@ msgstr ""
 msgid "Could not get device info for "
 msgstr ""
 
-#: core/aviImage.cpp:1287
+#: core/aviImage.cpp:1283
 msgid "Could not get image conversion context."
 msgstr ""
 
@@ -2543,7 +2543,7 @@ msgid ""
 "Use %d syntax or a proper movie extension."
 msgstr ""
 
-#: core/aviImage.cpp:1042 core/aviImage.cpp:1059
+#: core/aviImage.cpp:1038 core/aviImage.cpp:1055
 msgid "Could not seek to frame "
 msgstr ""
 
@@ -2945,11 +2945,11 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/aviImage.cpp:4139
+#: core/aviImage.cpp:4135
 msgid "Decode audio error: "
 msgstr ""
 
-#: core/aviImage.cpp:4167
+#: core/aviImage.cpp:4163
 msgid "Decode video error seek frame "
 msgstr ""
 
@@ -3261,7 +3261,7 @@ msgstr ""
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
-#: core/aviImage.cpp:3596
+#: core/aviImage.cpp:3592
 msgid "Empty packets for video seek."
 msgstr ""
 
@@ -3269,7 +3269,7 @@ msgstr ""
 msgid "Empty pic file for media "
 msgstr ""
 
-#: core/aviImage.cpp:4520
+#: core/aviImage.cpp:4516
 msgid "Empty seek or preroll"
 msgstr ""
 
@@ -3331,7 +3331,7 @@ msgstr ""
 msgid "Error while encoding video frame: "
 msgstr ""
 
-#: core/aviImage.cpp:1446
+#: core/aviImage.cpp:1442
 msgid "Error while feeding the filtergraph"
 msgstr ""
 
@@ -3855,7 +3855,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1810
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
-#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1879
 msgid "Gamma"
 msgstr ""
 
@@ -4527,7 +4527,7 @@ msgstr ""
 msgid "Invalid timecode "
 msgstr ""
 
-#: core/aviImage.cpp:1968
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr ""
 
@@ -5370,7 +5370,7 @@ msgstr ""
 msgid "No memory to allocate filter graph"
 msgstr ""
 
-#: core/aviImage.cpp:2133
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr ""
 
@@ -5490,11 +5490,11 @@ msgstr ""
 msgid "Not enough memory for color transform"
 msgstr ""
 
-#: core/aviImage.cpp:2394
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr ""
 
-#: core/aviImage.cpp:1218 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1214 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr ""
 
@@ -5594,7 +5594,7 @@ msgstr ""
 msgid "OCIO config (*.{"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1876
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr ""
 
@@ -6079,7 +6079,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2680
+#: gui/mrvPreferences.cpp:2690
 msgid "Preferences have been saved to: "
 msgstr ""
 
@@ -6148,7 +6148,7 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: core/aviImage.cpp:1223
+#: core/aviImage.cpp:1219
 msgid "Problem allocating image "
 msgstr ""
 
@@ -6164,12 +6164,12 @@ msgstr ""
 msgid "Profile name "
 msgstr ""
 
-#: core/aviImage.cpp:2786
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr ""
 
-#: core/aviImage.cpp:2782
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr ""
@@ -7277,7 +7277,7 @@ msgstr ""
 msgid "Subtitle font "
 msgstr ""
 
-#: core/aviImage.cpp:4310
+#: core/aviImage.cpp:4306
 msgid "Subtitle type "
 msgstr ""
 
@@ -7984,7 +7984,7 @@ msgstr ""
 msgid "Unhandled exception"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2872 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8046,7 +8046,7 @@ msgstr ""
 msgid "Unknown data type to convert to string"
 msgstr ""
 
-#: core/aviImage.cpp:2260
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr ""
 
@@ -8319,7 +8319,7 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:1885
+#: core/aviImage.cpp:1881
 msgid "Video Sync master frame "
 msgstr ""
 
@@ -8736,7 +8736,7 @@ msgstr ""
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr ""
 
-#: core/aviImage.cpp:3540
+#: core/aviImage.cpp:3536
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr ""
 
@@ -8936,7 +8936,7 @@ msgstr ""
 msgid "avcodec_copy_context failed for audio"
 msgstr ""
 
-#: core/aviImage.cpp:1763
+#: core/aviImage.cpp:1759
 msgid "avcodec_copy_context failed for subtitle"
 msgstr ""
 
@@ -9001,7 +9001,7 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: core/aviImage.cpp:1914 core/aviImage.cpp:1927
+#: core/aviImage.cpp:1910 core/aviImage.cpp:1923
 msgid "find_image: frame "
 msgstr ""
 
@@ -9276,7 +9276,7 @@ msgstr ""
 msgid "send() failed"
 msgstr ""
 
-#: core/aviImage.cpp:1494 core/aviImage.cpp:1544
+#: core/aviImage.cpp:1490 core/aviImage.cpp:1540
 msgid "send_packet error: "
 msgstr ""
 

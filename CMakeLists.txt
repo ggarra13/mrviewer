@@ -64,7 +64,7 @@ endif()
 
 set( VersionMajor 6 )
 set( VersionMinor 2 )
-set( VersionPatch 3 )
+set( VersionPatch 4 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d%H" )
 set( VersionDate "" )

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-08-30 07:07-0300\n"
+"POT-Creation-Date: 2022-10-09 16:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "Un codec sconosciuto "
 
-#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2519
+#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - errore di decodifica del frame audio "
 msgid " Color Area Selection"
 msgstr " Selezione dell'area di colore"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr " Non sono riuscito ad aprire il file. "
 
@@ -117,7 +117,7 @@ msgstr " Suffisso abbinato="
 msgid " Move Picture"
 msgstr " posta l'immagine"
 
-#: core/aviImage.cpp:2537
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr " Non c'è audio o video nel file"
 
@@ -190,11 +190,11 @@ msgstr " fallimento. "
 msgid " for channel.  Maximum: "
 msgstr " per il canale. Massimo: "
 
-#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid " for codec "
 msgstr " per codec "
 
-#: core/aviImage.cpp:4141
+#: core/aviImage.cpp:4137
 msgid " for frame "
 msgstr " per cornice "
 
@@ -230,7 +230,7 @@ msgstr ""
 " e mrViewer si arresta in modo anomalo\n"
 "non modifica Preferenze->Interfaccia utente->Istanza singola."
 
-#: core/aviImage.cpp:1917
+#: core/aviImage.cpp:1913
 msgid " instead"
 msgstr " in sostituzione"
 
@@ -258,7 +258,7 @@ msgstr " Lui è perso."
 msgid " is missing. Choosing "
 msgstr " manca. scegliendo "
 
-#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1927
+#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1923
 msgid " not found"
 msgstr " non trovato"
 
@@ -266,11 +266,11 @@ msgstr " non trovato"
 msgid " not found in reel"
 msgstr " non si trova sulla bobina"
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1911
 msgid " not found, choosing "
 msgstr " non trovato, scegliendo "
 
-#: core/aviImage.cpp:4311
+#: core/aviImage.cpp:4307
 msgid " not yet supported"
 msgstr " non ancora supportato"
 
@@ -282,7 +282,7 @@ msgstr " Restituzione "
 msgid " size is "
 msgstr " la dimensione è "
 
-#: core/aviImage.cpp:4169
+#: core/aviImage.cpp:4165
 msgid " status: "
 msgstr " tato: "
 
@@ -294,7 +294,7 @@ msgstr " a"
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:1887
+#: core/aviImage.cpp:1883
 msgid " video frame, cache "
 msgstr " fotogramma video, cache "
 
@@ -522,7 +522,7 @@ msgstr "(Rimuovilo se mrViewer non si avvia)"
 msgid "(no image)"
 msgstr "(Senza immagine)"
 
-#: core/aviImage.cpp:1888
+#: core/aviImage.cpp:1884
 msgid ") cache size: "
 msgstr ") dimensione della cache: "
 
@@ -596,7 +596,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0,2 5,1 10,5 20,2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1568
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1884
 msgid "0.45"
 msgstr "0,45"
 
@@ -612,7 +612,7 @@ msgstr "0,64 0,33 0,3 0,6 0,15 0,06 0,3127 0,3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1883
 msgid "1.0"
 msgstr "1,0"
 
@@ -661,7 +661,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1,77 HDTV (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1565
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1882
 msgid "1.8"
 msgstr "1,8"
 
@@ -785,7 +785,7 @@ msgid "2.10 VistaVision"
 msgstr "2,10 Vista Vision"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1564
-#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1881
 msgid "2.2"
 msgstr "2,2"
 
@@ -2130,11 +2130,11 @@ msgstr "Canale colore non trovato per l'indice "
 msgid "Color controls"
 msgstr "controlli del colore"
 
-#: core/aviImage.cpp:1307
+#: core/aviImage.cpp:1303
 msgid "Colorspace details not gotten "
 msgstr "Dettagli dello spazio colore non ottenuti "
 
-#: core/aviImage.cpp:1336
+#: core/aviImage.cpp:1332
 msgid "Colorspace details not set "
 msgstr "Dettagli spazio colore non impostati "
 
@@ -2343,7 +2343,7 @@ msgstr "Non riuscivo a calcolare Lut da OCIO"
 msgid "Could not copy context to parameters"
 msgstr "Impossibile copiare il contesto nei parametri"
 
-#: core/aviImage.cpp:730 core/aviImage.cpp:2400
+#: core/aviImage.cpp:730 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr "Impossibile copiare i parametri nel contesto del codec"
 
@@ -2458,7 +2458,7 @@ msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 "Non sono riuscito a trovare sedici numeri in virgola mobile per l'array 4x4 "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr "Impossibile trovare le informazioni sulla traccia"
 
@@ -2530,7 +2530,7 @@ msgstr "Non è stato possibile appiattire le tracce. Errore: "
 msgid "Could not get device info for "
 msgstr "Impossibile ottenere le informazioni sul dispositivo per "
 
-#: core/aviImage.cpp:1287
+#: core/aviImage.cpp:1283
 msgid "Could not get image conversion context."
 msgstr "Non sono riuscito a ottenere il contesto di conversione dell'immagine."
 
@@ -2648,7 +2648,7 @@ msgstr ""
 "specificata. Usa la sintassi %d per le sequenze o un'estensione "
 "personalizzata per i filmati."
 
-#: core/aviImage.cpp:1042 core/aviImage.cpp:1059
+#: core/aviImage.cpp:1038 core/aviImage.cpp:1055
 msgid "Could not seek to frame "
 msgstr "Non sono riuscito a trovare il dipinto "
 
@@ -3052,11 +3052,11 @@ msgstr "Decodifica senza tracce"
 msgid "Decode OK"
 msgstr "decodifica ok"
 
-#: core/aviImage.cpp:4139
+#: core/aviImage.cpp:4135
 msgid "Decode audio error: "
 msgstr "Errore di decodifica audio: "
 
-#: core/aviImage.cpp:4167
+#: core/aviImage.cpp:4163
 msgid "Decode video error seek frame "
 msgstr "Errore di decodifica video durante la ricerca dell'immagine "
 
@@ -3380,7 +3380,7 @@ msgstr "Supporto vuoto passato a media_to_pathname"
 msgid "Empty media provided to Element constructor"
 msgstr "Supporto vuoto fornito al costruttore dell'elemento"
 
-#: core/aviImage.cpp:3596
+#: core/aviImage.cpp:3592
 msgid "Empty packets for video seek."
 msgstr "Pacchetti vuoti per la ricerca di video."
 
@@ -3388,7 +3388,7 @@ msgstr "Pacchetti vuoti per la ricerca di video."
 msgid "Empty pic file for media "
 msgstr "File immagine vuoto per il supporto "
 
-#: core/aviImage.cpp:4520
+#: core/aviImage.cpp:4516
 msgid "Empty seek or preroll"
 msgstr "Ricerca vuota o preroll"
 
@@ -3452,7 +3452,7 @@ msgstr "Errore durante la conversione dell'audio: "
 msgid "Error while encoding video frame: "
 msgstr "Errore di codifica del fotogramma video: "
 
-#: core/aviImage.cpp:1446
+#: core/aviImage.cpp:1442
 msgid "Error while feeding the filtergraph"
 msgstr "Errore nell'alimentazione della tabella dei filtri"
 
@@ -3980,7 +3980,7 @@ msgstr ""
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1810
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
-#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1879
 msgid "Gamma"
 msgstr "Spettro"
 
@@ -4670,7 +4670,7 @@ msgstr "Immagine stereo non valida "
 msgid "Invalid timecode "
 msgstr "Codice temporale non valido "
 
-#: core/aviImage.cpp:1968
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr "traccia video non valida "
 
@@ -5536,7 +5536,7 @@ msgstr "Nessuna memoria per frame audio"
 msgid "No memory to allocate filter graph"
 msgstr "Nessuna memoria per il grafico del filtro"
 
-#: core/aviImage.cpp:2133
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr "Impossibile scegliere il formato pixel"
 
@@ -5658,11 +5658,11 @@ msgstr "Nessuna memoria per l'immagine nera"
 msgid "Not enough memory for color transform"
 msgstr "Nessuna memoria per la trasformazione del colore"
 
-#: core/aviImage.cpp:2394
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr "Nessuna memoria per il contesto"
 
-#: core/aviImage.cpp:1218 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1214 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "Nessuna memoria di immagine"
 
@@ -5765,7 +5765,7 @@ msgstr "Configurazione OCIO '"
 msgid "OCIO config (*.{"
 msgstr "Configurazione OCIO (*.{"
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1876
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "La variabile di ambiente OCIO non esiste. Verrà utilizzato CTL. "
 
@@ -6271,7 +6271,7 @@ msgstr "Preferisci ICC"
 msgid "Preferences"
 msgstr "preferenze"
 
-#: gui/mrvPreferences.cpp:2680
+#: gui/mrvPreferences.cpp:2690
 msgid "Preferences have been saved to: "
 msgstr "Le preferenze sono state salvate su: "
 
@@ -6345,7 +6345,7 @@ msgstr "Stampa"
 msgid "Priority"
 msgstr "Priorità"
 
-#: core/aviImage.cpp:1223
+#: core/aviImage.cpp:1219
 msgid "Problem allocating image "
 msgstr "Problema nell'assegnazione dell'immagine "
 
@@ -6361,12 +6361,12 @@ msgstr "Profilo"
 msgid "Profile name "
 msgstr "Nome del profilo "
 
-#: core/aviImage.cpp:2786
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr "Programma %d "
 
-#: core/aviImage.cpp:2782
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programma %d: %s"
@@ -7505,7 +7505,7 @@ msgstr "File dei sottotitoli "
 msgid "Subtitle font "
 msgstr "Lettera di sottotitolo "
 
-#: core/aviImage.cpp:4310
+#: core/aviImage.cpp:4306
 msgid "Subtitle type "
 msgstr "Tipo di sottotitoli "
 
@@ -8323,7 +8323,7 @@ msgstr "eccezione non gestita"
 msgid "Unhandled exception"
 msgstr "eccezione non gestita"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2872 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8385,7 +8385,7 @@ msgstr "Tipo di dati sconosciuto per la chiave '"
 msgid "Unknown data type to convert to string"
 msgstr "Tipo di dati sconosciuto da convertire da testo"
 
-#: core/aviImage.cpp:2260
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr "Formato frame video destinatario sconosciuto: "
 
@@ -8664,7 +8664,7 @@ msgstr "Traccia video #%d"
 msgid "Video Streams"
 msgstr "tracce video"
 
-#: core/aviImage.cpp:1885
+#: core/aviImage.cpp:1881
 msgid "Video Sync master frame "
 msgstr "Fotogramma principale di sincronizzazione video "
 
@@ -9171,7 +9171,7 @@ msgstr "Ho ricevuto una dimensione dei dati errata."
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "Pacchetti sbagliati in handle_video_packet_seek"
 
-#: core/aviImage.cpp:3540
+#: core/aviImage.cpp:3536
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Pacchetti sbagliati in handle_video_packet_seek"
 
@@ -9377,7 +9377,7 @@ msgstr "avcodec_context_from_parameters non è riuscito per il video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context non riuscito per l'audio"
 
-#: core/aviImage.cpp:1763
+#: core/aviImage.cpp:1759
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context non riuscito per i sottotitoli"
 
@@ -9442,7 +9442,7 @@ msgstr "doppiaggio"
 msgid "files"
 msgstr "record"
 
-#: core/aviImage.cpp:1914 core/aviImage.cpp:1927
+#: core/aviImage.cpp:1910 core/aviImage.cpp:1923
 msgid "find_image: frame "
 msgstr "immagine_ricerca: casella "
 
@@ -9743,7 +9743,7 @@ msgstr "recv() non è riuscito"
 msgid "send() failed"
 msgstr "Invio fallito"
 
-#: core/aviImage.cpp:1494 core/aviImage.cpp:1544
+#: core/aviImage.cpp:1490 core/aviImage.cpp:1540
 msgid "send_packet error: "
 msgstr "Non ho potuto inviare il pacco. Errore "
 

@@ -1754,6 +1754,16 @@ void Preferences::run( ViewerUI* main )
             for ( size_t j = 0; j < num_active_displays; ++j )
             {
                 std::string display = active_displays[j];
+                std::string quoted_display = display;
+                size_t pos = 0;
+                while ( ( pos = quoted_display.find( '/', pos ) ) !=
+                        std::string::npos )
+                {
+                    quoted_display = quoted_display.substr(0, pos) + "\\" +
+                                     quoted_display.substr(pos,
+                                                           quoted_display.size() );
+                    pos += 2;
+                }
                 DBG3;
 
                 int numViews = config->getNumViews(display.c_str());
@@ -1781,14 +1791,14 @@ void Preferences::run( ViewerUI* main )
                             std::string name;
                             if ( num_active_displays > 1 )
                             {
-                                name = display;
+                                name = quoted_display;
                                 name += "/";
                                 name += view;
                             }
                             else
                             {
                                 name = view;
-                                name += " (" + display + ")";
+                                name += " (" + quoted_display + ")";
                             }
 
                             main->gammaDefaults->add( name.c_str() );
@@ -1812,14 +1822,14 @@ void Preferences::run( ViewerUI* main )
                         std::string name;
                         if ( num_active_displays > 1 )
                         {
-                            name = display;
+                            name = quoted_display;
                             name += "/";
                             name += view;
                         }
                         else
                         {
                             name = view;
-                            name += " (" + display + ")";
+                            name += " (" + quoted_display + ")";
                         }
 
                         main->gammaDefaults->add( name.c_str() );

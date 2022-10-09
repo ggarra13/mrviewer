@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2022-08-30 07:07-0300\n"
+"POT-Creation-Date: 2022-10-09 16:53-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: <google.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "不是已知的编解码器 "
 
-#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2519
+#: core/CMedia_audio.cpp:651 core/aviImage.cpp:2515
 msgid ""
 "\n"
 "\n"
@@ -85,7 +85,7 @@ msgstr " - 音频帧解码错误 "
 msgid " Color Area Selection"
 msgstr " 颜色区域选择"
 
-#: core/aviImage.cpp:3065
+#: core/aviImage.cpp:3061
 msgid " Could not open file. "
 msgstr " 我无法打开文件。 "
 
@@ -117,7 +117,7 @@ msgstr " 匹配的后缀="
 msgid " Move Picture"
 msgstr " 移动图像"
 
-#: core/aviImage.cpp:2537
+#: core/aviImage.cpp:2533
 msgid " No audio or video stream in file"
 msgstr " 文件中没有音频或视频"
 
@@ -190,11 +190,11 @@ msgstr " 失败。 "
 msgid " for channel.  Maximum: "
 msgstr " 为频道。最大： "
 
-#: core/aviImage.cpp:1495 core/aviImage.cpp:1545
+#: core/aviImage.cpp:1491 core/aviImage.cpp:1541
 msgid " for codec "
 msgstr " 用于编解码器 "
 
-#: core/aviImage.cpp:4141
+#: core/aviImage.cpp:4137
 msgid " for frame "
 msgstr " 用于框架 "
 
@@ -230,7 +230,7 @@ msgstr ""
 " 如果 mrViewer 崩溃\n"
 "不修改 Preferences->User Interface->Single Instance。"
 
-#: core/aviImage.cpp:1917
+#: core/aviImage.cpp:1913
 msgid " instead"
 msgstr " 代替"
 
@@ -258,7 +258,7 @@ msgstr " 他迷路了。"
 msgid " is missing. Choosing "
 msgstr " 不见了。挑选出 "
 
-#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1927
+#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:1923
 msgid " not found"
 msgstr " 未找到"
 
@@ -266,11 +266,11 @@ msgstr " 未找到"
 msgid " not found in reel"
 msgstr " 在卷轴上找不到"
 
-#: core/aviImage.cpp:1915
+#: core/aviImage.cpp:1911
 msgid " not found, choosing "
 msgstr " 没找到，选择 "
 
-#: core/aviImage.cpp:4311
+#: core/aviImage.cpp:4307
 msgid " not yet supported"
 msgstr " 尚不支持"
 
@@ -282,7 +282,7 @@ msgstr " 返回 "
 msgid " size is "
 msgstr " 大小是 "
 
-#: core/aviImage.cpp:4169
+#: core/aviImage.cpp:4165
 msgid " status: "
 msgstr " 状态： "
 
@@ -294,7 +294,7 @@ msgstr " 到"
 msgid " to "
 msgstr " 到 "
 
-#: core/aviImage.cpp:1887
+#: core/aviImage.cpp:1883
 msgid " video frame, cache "
 msgstr " 视频帧，缓存 "
 
@@ -519,7 +519,7 @@ msgstr "（如果 mrViewer 无法启动，请将其删除）"
 msgid "(no image)"
 msgstr "（无图）"
 
-#: core/aviImage.cpp:1888
+#: core/aviImage.cpp:1884
 msgid ") cache size: "
 msgstr ") 缓存大小： "
 
@@ -592,7 +592,7 @@ msgid "0.2 5.1  10.5 20.2"
 msgstr "0.2 5.1 10.5 20.2"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1568
-#: gui/mrvPreferences.cpp:1874
+#: gui/mrvPreferences.cpp:1884
 msgid "0.45"
 msgstr "0.45"
 
@@ -608,7 +608,7 @@ msgstr "0.64 0.33 0.3 0.6 0.15 0.06 0.3127 0.3290"
 msgid "00:00:00:00"
 msgstr "00:00:00:00"
 
-#: gui/mrvPreferences.cpp:1873
+#: gui/mrvPreferences.cpp:1883
 msgid "1.0"
 msgstr "1.0"
 
@@ -657,7 +657,7 @@ msgid "1.77 HDTV (16:9)"
 msgstr "1.77 高清电视 (16:9)"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1565
-#: gui/mrvPreferences.cpp:1872
+#: gui/mrvPreferences.cpp:1882
 msgid "1.8"
 msgstr "1.8"
 
@@ -781,7 +781,7 @@ msgid "2.10 VistaVision"
 msgstr "2.10 远景"
 
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1564
-#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1871
+#: gui/mrvImageInformation.cpp:189 gui/mrvPreferences.cpp:1881
 msgid "2.2"
 msgstr "2.2"
 
@@ -2111,11 +2111,11 @@ msgstr "未找到索引的颜色通道 "
 msgid "Color controls"
 msgstr "颜色控制"
 
-#: core/aviImage.cpp:1307
+#: core/aviImage.cpp:1303
 msgid "Colorspace details not gotten "
 msgstr "未获得色彩空间细节 "
 
-#: core/aviImage.cpp:1336
+#: core/aviImage.cpp:1332
 msgid "Colorspace details not set "
 msgstr "未设置色彩空间细节 "
 
@@ -2319,7 +2319,7 @@ msgstr "我无法从 OCIO 计算 Lut"
 msgid "Could not copy context to parameters"
 msgstr "无法将上下文复制到参数"
 
-#: core/aviImage.cpp:730 core/aviImage.cpp:2400
+#: core/aviImage.cpp:730 core/aviImage.cpp:2396
 msgid "Could not copy parameters to context"
 msgstr "无法将参数复制到编解码器上下文"
 
@@ -2423,7 +2423,7 @@ msgstr "我找不到 4x4 数组的十六个浮点数"
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr "我找不到 4x4 矩阵的十六个浮点数 "
 
-#: core/aviImage.cpp:3041
+#: core/aviImage.cpp:3037
 msgid "Could not find stream info"
 msgstr "找不到曲目信息"
 
@@ -2491,7 +2491,7 @@ msgstr "轨道无法变平。错误： "
 msgid "Could not get device info for "
 msgstr "获取设备信息失败 "
 
-#: core/aviImage.cpp:1287
+#: core/aviImage.cpp:1283
 msgid "Could not get image conversion context."
 msgstr "我无法获得图像转换上下文。"
 
@@ -2608,7 +2608,7 @@ msgstr ""
 "我无法保存序列或电影，只能保存指定的图像。对流使用 %d 语法或对电影使用自定义"
 "扩展名。"
 
-#: core/aviImage.cpp:1042 core/aviImage.cpp:1059
+#: core/aviImage.cpp:1038 core/aviImage.cpp:1055
 msgid "Could not seek to frame "
 msgstr "我找不到那幅画 "
 
@@ -3010,11 +3010,11 @@ msgstr "无轨解码"
 msgid "Decode OK"
 msgstr "解码正常"
 
-#: core/aviImage.cpp:4139
+#: core/aviImage.cpp:4135
 msgid "Decode audio error: "
 msgstr "音频解码错误： "
 
-#: core/aviImage.cpp:4167
+#: core/aviImage.cpp:4163
 msgid "Decode video error seek frame "
 msgstr "寻找图像的视频解码错误 "
 
@@ -3332,7 +3332,7 @@ msgstr "传递给 media_to_pathname 的空媒体"
 msgid "Empty media provided to Element constructor"
 msgstr "提供给元素构造函数的空媒体"
 
-#: core/aviImage.cpp:3596
+#: core/aviImage.cpp:3592
 msgid "Empty packets for video seek."
 msgstr "用于视频搜索的空包。"
 
@@ -3340,7 +3340,7 @@ msgstr "用于视频搜索的空包。"
 msgid "Empty pic file for media "
 msgstr "媒体的空图像文件 "
 
-#: core/aviImage.cpp:4520
+#: core/aviImage.cpp:4516
 msgid "Empty seek or preroll"
 msgstr "空搜索或预卷"
 
@@ -3402,7 +3402,7 @@ msgstr "转换音频时出错： "
 msgid "Error while encoding video frame: "
 msgstr "视频帧编码错误： "
 
-#: core/aviImage.cpp:1446
+#: core/aviImage.cpp:1442
 msgid "Error while feeding the filtergraph"
 msgstr "输入过滤器图表时出错"
 
@@ -3928,7 +3928,7 @@ msgstr "图像增益值。像素值的简单乘数。"
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1517
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:1810
 #: /Users/gga/code/applications/mrv/BUILD/Darwin-21.6.0-64/Release/tmp/mrViewer/src/mrViewer.cxx:2404
-#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1869
+#: gui/mrvImageInformation.cpp:3047 gui/mrvPreferences.cpp:1879
 msgid "Gamma"
 msgstr "光谱"
 
@@ -4608,7 +4608,7 @@ msgstr "无效的立体图像 "
 msgid "Invalid timecode "
 msgstr "时间码无效 "
 
-#: core/aviImage.cpp:1968
+#: core/aviImage.cpp:1964
 msgid "Invalid video stream "
 msgstr "无效的视频轨道 "
 
@@ -5459,7 +5459,7 @@ msgstr "音频帧没有内存"
 msgid "No memory to allocate filter graph"
 msgstr "过滤器图没有内存"
 
-#: core/aviImage.cpp:2133
+#: core/aviImage.cpp:2129
 msgid "No pixel format could be chosen"
 msgstr "无法选择像素格式"
 
@@ -5579,11 +5579,11 @@ msgstr "黑色图像没有内存"
 msgid "Not enough memory for color transform"
 msgstr "没有颜色转换的记忆"
 
-#: core/aviImage.cpp:2394
+#: core/aviImage.cpp:2390
 msgid "Not enough memory for context"
 msgstr "没有上下文记忆"
 
-#: core/aviImage.cpp:1218 core/oiioImage.cpp:353
+#: core/aviImage.cpp:1214 core/oiioImage.cpp:353
 msgid "Not enough memory for image"
 msgstr "没有图像记忆"
 
@@ -5684,7 +5684,7 @@ msgstr "OCIO 配置 '"
 msgid "OCIO config (*.{"
 msgstr "休闲配置（*.{"
 
-#: gui/mrvPreferences.cpp:1866
+#: gui/mrvPreferences.cpp:1876
 msgid "OCIO config is not set.  Defaulting to CTL. "
 msgstr "OCIO 环境变量不存在。将使用 CTL。 "
 
@@ -6180,7 +6180,7 @@ msgstr "首选国际商会"
 msgid "Preferences"
 msgstr "优先"
 
-#: gui/mrvPreferences.cpp:2680
+#: gui/mrvPreferences.cpp:2690
 msgid "Preferences have been saved to: "
 msgstr "首选项已保存到： "
 
@@ -6251,7 +6251,7 @@ msgstr "打印"
 msgid "Priority"
 msgstr "优先"
 
-#: core/aviImage.cpp:1223
+#: core/aviImage.cpp:1219
 msgid "Problem allocating image "
 msgstr "分配图像的问题 "
 
@@ -6267,12 +6267,12 @@ msgstr "轮廓"
 msgid "Profile name "
 msgstr "个人资料名称 "
 
-#: core/aviImage.cpp:2786
+#: core/aviImage.cpp:2782
 #, c-format
 msgid "Program %d "
 msgstr "程序 %d "
 
-#: core/aviImage.cpp:2782
+#: core/aviImage.cpp:2778
 #, c-format
 msgid "Program %d: %s"
 msgstr "程序 %d: %s"
@@ -7387,7 +7387,7 @@ msgstr "字幕文件 "
 msgid "Subtitle font "
 msgstr "字幕信 "
 
-#: core/aviImage.cpp:4310
+#: core/aviImage.cpp:4306
 msgid "Subtitle type "
 msgstr "字幕类型 "
 
@@ -8165,7 +8165,7 @@ msgstr "未处理的异常"
 msgid "Unhandled exception"
 msgstr "未处理的异常"
 
-#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2950
+#: audio/mrvALSAEngine.cpp:107 core/aviImage.cpp:2946
 #: gui/mrvImageInformation.cpp:2872 video/mrvGLEngine.cpp:210
 #: video/mrvGLEngine.cpp:213 video/mrvGLEngine.cpp:216
 msgid "Unknown"
@@ -8227,7 +8227,7 @@ msgstr "键 ' 的未知数据类型"
 msgid "Unknown data type to convert to string"
 msgstr "从文本转换的未知数据类型"
 
-#: core/aviImage.cpp:2260
+#: core/aviImage.cpp:2256
 msgid "Unknown destination video frame format: "
 msgstr "未知接收者视频帧格式： "
 
@@ -8503,7 +8503,7 @@ msgstr "视频轨道 #%d"
 msgid "Video Streams"
 msgstr "视频轨道"
 
-#: core/aviImage.cpp:1885
+#: core/aviImage.cpp:1881
 msgid "Video Sync master frame "
 msgstr "视频同步主机 "
 
@@ -8958,7 +8958,7 @@ msgstr "我收到了不正确的数据大小。"
 msgid "Wrong packets in handle_audio_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
-#: core/aviImage.cpp:3540
+#: core/aviImage.cpp:3536
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "handle_video_packet_seek 中的错误数据包"
 
@@ -9161,7 +9161,7 @@ msgstr "avcodec_context_from_parameters 视频失败"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context 音频失败"
 
-#: core/aviImage.cpp:1763
+#: core/aviImage.cpp:1759
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context 字幕失败"
 
@@ -9226,7 +9226,7 @@ msgstr "配音"
 msgid "files"
 msgstr "记录"
 
-#: core/aviImage.cpp:1914 core/aviImage.cpp:1927
+#: core/aviImage.cpp:1910 core/aviImage.cpp:1923
 msgid "find_image: frame "
 msgstr "搜索图像：框 "
 
@@ -9518,7 +9518,7 @@ msgstr "recv() 失败"
 msgid "send() failed"
 msgstr "发送（）失败"
 
-#: core/aviImage.cpp:1494 core/aviImage.cpp:1544
+#: core/aviImage.cpp:1490 core/aviImage.cpp:1540
 msgid "send_packet error: "
 msgstr "我无法发送包裹。错误 "
 
