@@ -5,26 +5,14 @@
 #
 KERNEL=`uname -s`
 
-if [[ $KERNEL == CYGWIN* ]]; then
-    KERNEL=Windows
+if [[ $KERNEL == MINGW* || $KERNEL == MSYS* ]]; then
     RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[3]%.[0-9]*}
-elif [[ $KERNEL == MINGW* ]]; then
-    RELEASE=(`cmd /c 'ver'`)
-    #RELEASE=${RELEASE[3]%.[0-9]*}
-    RELEASE=${RELEASE[3]/]/}
+    RELEASE=${RELEASE[4]%.[0-9]*}
     KERNEL=Windows
 else
     RELEASE=`uname -r`
 fi
 
-
-if [[ "$RELEASE" == "" ]]; then
-    $RELEASE=`cmd.exe /c 'ver'`
-    echo $RELEASE
-    echo "Could not determine OS version"
-    exit 1
-fi
 
 CMAKE_OPTS=${CMAKE_OPTS=""}
 
@@ -64,6 +52,9 @@ fi
 export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
 
 OS=$KERNEL-$RELEASE
+
+echo "OS=$OS"
+
 
 usage()
 {

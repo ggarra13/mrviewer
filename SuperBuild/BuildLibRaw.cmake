@@ -36,8 +36,7 @@ ExternalProject_Add(
       # Native libraw configure script doesn't work on centos 7 (autoconf 2.69)
       # CONFIGURE_COMMAND autoconf && ./configure --enable-jpeg --enable-openmp --disable-examples --prefix=${CMAKE_INSTALL_PREFIX}
       # Use cmake build system (not maintained by libraw devs)
-      CONFIGURE_COMMAND cp <SOURCE_DIR>_cmake/CMakeLists.txt . && cp -rf <SOURCE_DIR>_cmake/cmake . && ${CMAKE_COMMAND} ${CMAKE_CORE_BUILD_FLAGS} -DENABLE_OPENMP=ON -DENABLE_LCMS=ON -DENABLE_EXAMPLES=OFF ${ZLIB_CMAKE_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
-      BUILD_COMMAND $(MAKE)
+      CONFIGURE_COMMAND cp <SOURCE_DIR>_cmake/CMakeLists.txt . && cp -rf <SOURCE_DIR>_cmake/cmake . && ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} ${CMAKE_CORE_BUILD_FLAGS} -DENABLE_OPENMP=ON -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DENABLE_LCMS=ON -DENABLE_EXAMPLES=OFF ${ZLIB_CMAKE_FLAGS} -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> <SOURCE_DIR>
       DEPENDS LibRaw_cmake ${ZLIB} ${LCMS2}
     )
 

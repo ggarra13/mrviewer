@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Sourcing vc14_win64_vars"
-export ROOT=/D/code/applications/mrv
-export DIST=/D/code/lib/vc14_Windows_64
+export ROOT=/E/code/applications/mrv
+export DIST=/E/code/lib/win64
 export SUPERBUILD=$PWD/install-Windows-6.3.9600-64
 
 export ZLIB_ROOT=$SUPERBUILD
@@ -17,17 +17,17 @@ export GLEW_ROOT=$DIST
 export PATH=$DIST/gettext/bin:$PATH
 
 export BOOST_ROOT=$SUPERBUILD
-export FFMPEG_ROOT="/D/abs/local64/bin-video/ffmpegSHARED/"
+export FFMPEG_ROOT="/E/mabs/local64/bin-video/ffmpegSHARED/"
 export FFmpeg_ROOT=$FFMPEG_ROOT
 export OCIO_ROOT=$SUPERBUILD
 export OpenColorIO_ROOT=$OCIO_ROOT
 export FLTK_DIR=$SUPERBUILD
-export MAGICK_HOME="$ROOT/win64_deps/ImageMagick-Windows64"
-export TCLAP_ROOT=$SUPERBUILDexport 
-export SampleICC_ROOT="$ROOT/dependencies/SampleICC-1.6.10-win64-linux64"
-export R3DSDK_ROOT="$ROOT/../R3DSDKv8_1_0"
-export LIBINTL_ROOT="$ROOT/dependencies/libintl-win64/"
-export LIBICONV="$ROOT/dependencies/gettext-iconv-win64"
-
+export MAGICK_HOME="$DIST/ImageMagick-Windows64"
+export TCLAP_ROOT=$SUPERBUILD 
+export SampleICC_ROOT="$DIST/SampleICC-1.6.10-win64-linux64"
+export R3DSDK_ROOT="$ROOT/../R3DSDKv8_3_1"
+export LIBINTL_ROOT="$DIST/libintl-win64/"
+export LIBICONV="$DIST/gettext-iconv-win64"
+export BlackMagicRAW_ROOT="/C/Program Files (x86)/Blackmagic Design/Blackmagic RAW/Blackmagic RAW SDK/Win"
 
 export PATH=$SUPERBUILD/bin:$PATH

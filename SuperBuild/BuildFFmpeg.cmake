@@ -23,6 +23,11 @@ if ( LibVPX )
   set( ENABLE_VPX  --enable-libvpx )
 endif()
 
+if ( LibWebP )
+  set( ENABLE_LIBWEBP --enable-libwebp )
+endif()
+
+
 set( DISABLE_POSTPROC --disable-postproc )
 set( ENABLE_GPL )
 
@@ -65,7 +70,7 @@ ExternalProject_Add(
   --enable-libopus
   --enable-libass
   --enable-libvpx
-  --enable-libwebp
+  ${ENABLE_LIBWEBP}
   --enable-bzlib
   --enable-zlib
   --extra-libs=-lgnutls

@@ -29,9 +29,10 @@
 #define brawImage_h
 
 #include "CMedia.h"
-#include "BlackmagicRawAPI.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include "BlackmagicRawAPIDispatch.h"
+#else
+#include "BlackmagicRawAPI.h"
 #endif
 
 namespace mrv {

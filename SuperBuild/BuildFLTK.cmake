@@ -1,13 +1,11 @@
-#set( FLTK_TAG 232743c3a5d903be813f6c4445f3f96bab25cae0 ) # this works
-set( FLTK_TAG master ) #this doesn't
+set( FLTK_TAG master ) 
 
 set( patch_cmd )
 
-if(APPLE)
-  set( patch_cmd ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_plastic.cxx ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_gtk.cxx ${CMAKE_SOURCE_DIR}/patches/FLTK/fl_gleam.cxx ${CMAKE_BINARY_DIR}/FLTK-prefix/src/FLTK/src )
-  set( INSTALL_CMD )
-
-  # set( INSTALL_CMD INSTALL_COMMAND sudo make install )
+if(UNIX)
+  set( UNIX_OPTIONS -DOPTION_USE_PANGO=ON )
+else()
+  set( UNIX_OPTIONS )
 endif()
 
 ExternalProject_Add(
@@ -30,6 +28,7 @@ ExternalProject_Add(
   -DOPTION_USE_SYSTEM_ZLIB=0
   -DOPTION_USE_SYSTEM_LIBJPEG=0
   -DOPTION_USE_SYSTEM_LIBPNG=0
+  ${UNIX_OPTIONS}
   INSTALL_COMMAND ""
 )
 

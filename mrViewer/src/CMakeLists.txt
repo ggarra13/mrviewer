@@ -66,6 +66,7 @@ include_directories(
   ${SampleICC_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
+  ${CMAKE_BINARY_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
   )
 
@@ -407,7 +408,7 @@ IF(WIN32)
 
   set( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON )
 
-  INCLUDE( NSISRegistry.cmake )
+  include( ../../cmake/NSISRegistry.cmake )
 
 ELSEIF ( APPLE )
   set(CPACK_GENERATOR Bundle )

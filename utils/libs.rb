@@ -160,12 +160,13 @@ end
 def copy_third_party( root, dest )
   Dir.chdir( root )
   # Copy the RED library
-  red_library_path = ENV['RED3DSDK_ROOT']
+  red_library_path = ENV['R3DSDK_ROOT']
+  blackmagic_path = ENV['BlackMagicRAW_ROOT']
   if not red_library_path
     red_library_path = '../'
   end
   if dest =~ /Linux/
-    red_library = "#{red_library_path}/R3DSDKv8_1_0/Redistributable/linux/REDR3D-x64.so"
+    red_library = "#{red_library_path}/Redistributable/linux/REDR3D-x64.so"
     if File.exists?( red_library )
       FileUtils.cp_r( red_library, "#{dest}/lib" )
     end
@@ -178,7 +179,6 @@ def copy_third_party( root, dest )
       FileUtils.cp_r( "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries/libc++abi.so.1",
                       "#{dest}/lib" )
     else
-      blackmagic_path = ENV['BLACKMAGIC_ROOT']
       if not blackmagic_path
         blackmagic_path = "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/Linux/"
       end
@@ -203,18 +203,18 @@ def copy_third_party( root, dest )
       exit 1
     end
     # Copy the RED library
-    FileUtils.cp_r( "#{red_library_path}/R3DSDKv8_1_0/Redistributable/mac/REDR3D.dylib",
+    FileUtils.cp_r( "#{red_library_path}/Redistributable/mac/REDR3D.dylib",
                     "#{dest}/lib/", :verbose => true )
     # Copy the BlackMagic API library
     FileUtils.rm_f( "#{dest}/lib/BlackMagicRAWAPI.framework" )
     FileUtils.cp_r( "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries/BlackmagicRawAPI.framework/", "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-64/
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/REDR3D-x64.dll",
+    FileUtils.cp_r( "#{red_library_path}/Redistributable/win/REDR3D-x64.dll",
                     "#{dest}/lib", :verbose => true )
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_64/lib/BlackMagicRawAPI.dll",
+    FileUtils.cp_r( "#{blackmagic_path}/Libraries/BlackMagicRawAPI.dll",
                     "#{dest}/lib", :verbose => true )
   elsif dest =~ /Windows.*-32/
-    FileUtils.cp_r( "#{root}/../../lib/vc14_Windows_32/lib/REDR3D-x86.dll",
+    FileUtils.cp_r( "#{red_library_path}/Redistributable/win/REDR3D-x86.dll",
                     "#{dest}/lib", :verbose => true )
   end
 end
@@ -222,11 +222,26 @@ end
 
 kernel = `uname`.chop!
 release = `uname -r`.chop!
-build = "BUILD/#{kernel}-#{release}-64/"
+    arch=64
+
+if kernel =~ /MINGW.*/ or kernel =~ /MSYS.*/
+  kernel = "Windows"
+  release = "6.3"
+  cl = `cl.exe 2>&1`
+  cl = cl.force_encoding( "ISO-8859-1" )
+  if cl =~ /x64/
+    arch=64
+  else
+    arch=32
+  end
+end
+
+build = "BUILD/#{kernel}-#{release}-#{arch}/"
 root = $0.sub(/utils\/libs.rb/, "")
 if root.size <= 1
   root = Dir.pwd
 end
+
 
 $stdout.puts "kernel: #{kernel}"
 
@@ -252,7 +267,7 @@ end
 
 
 
-if kernel !~ /MINGW.*/
+if kernel !~ /Windows.*/
 
   if build =~ /Linux/
     dest = "#{build}/#@debug"
@@ -317,13 +332,13 @@ else
   cl = `cl.exe 2>&1`
   cl = cl.force_encoding( "ISO-8859-1" )
   if cl =~ /x64/
-    build = "BUILD/Windows-6.3.9600-64/"
+    build = "BUILD/Windows-6.3-64/"
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )
     copy_third_party( root, dest ) if not @options[:translations_only]
   else
-    build = "BUILD/Windows-6.3.9600-32/"
+    build = "BUILD/Windows-6.3-32/"
     dest  = "#{build}/#@debug"
     Dir.chdir( root  )
     copy_files( dest )

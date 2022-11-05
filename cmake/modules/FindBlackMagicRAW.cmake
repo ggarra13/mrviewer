@@ -27,6 +27,7 @@ FIND_PATH( BlackMagicRAW_INCLUDE_DIR
 	     "$ENV{BlackMagicRAW_ROOT}"
 	     "/usr/lib64/blackmagic/BlackmagicRAWSDK/${platform}/Include"
 	     "../Blackmagic RAW/BlackmagicRAW/BlackmagicRAWSDK/${platform}/Include"
+	     "../Blackmagic RAW/BlackmagicRAW/BlackmagicRawAPI/"
 	     "/Applications/Blackmagic RAW/Blackmagic RAW SDK/${platform}/Include"
   DOC   "BlackMagicRAW includes"
   )

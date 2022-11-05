@@ -15,18 +15,18 @@ include(MacroAddFileDependencies)
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 MACRO (MACRO_ADD_INTERFACES _output_list)
   FOREACH(_in_FILE ${ARGN})
-    GET_FILENAME_COMPONENT(_out_FILE ${_in_FILE} NAME_WE)
-    GET_FILENAME_COMPONENT(_in_PATH ${_in_FILE} PATH)
+    GET_FILENAME_COMPONENT(_out_FILE "${_in_FILE}" NAME_WE)
+    GET_FILENAME_COMPONENT(_in_PATH "${_in_FILE}" PATH)
 
     SET(_out_header_name ${_out_FILE}.h)
     SET(_out_header ${CMAKE_CURRENT_BINARY_DIR}/${_out_header_name})
     SET(_out_iid_name ${_out_FILE}.c)
     SET(_out_iid ${CMAKE_CURRENT_BINARY_DIR}/${_out_iid_name})
-    #message("_out_header_name=${_out_header_name}, _out_header=${_out_header}, _out_iid=${_out_iid}")
+    message("_out_header_name=${_out_header_name}, _out_header=${_out_header}, _out_iid=${_out_iid}, _in_FILE=${_in_FILE}")
     ADD_CUSTOM_COMMAND(
       OUTPUT ${_out_header} ${_out_iid}
       DEPENDS ${_in_FILE}
-      COMMAND midl /header ${_out_header_name} /iid ${_out_iid_name} ${_in_FILE}
+      COMMAND midl -header ${_out_header_name} -iid ${_out_iid_name} "${_in_FILE}"
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
 
