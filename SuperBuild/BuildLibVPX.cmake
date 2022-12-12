@@ -1,6 +1,6 @@
 include( ExternalProject )
 
-set( LIBVPX_TAG 888bafc78d8bddb5cfc4262c93f456c812763571 )
+set( LibVPX_TAG 888bafc78d8bddb5cfc4262c93f456c812763571 )
 
 set( LIBVPX_FLAGS --enable-shared )
 if( APPLE )
