@@ -26,7 +26,7 @@ export MAGICK_HOME="$DIST/ImageMagick-Windows64"
 export TCLAP_ROOT=$SUPERBUILD 
 export SampleICC_ROOT="$DIST/SampleICC-1.6.10-win64-linux64"
 export R3DSDK_ROOT="$ROOT/../R3DSDKv8_3_1"
-export LIBINTL_ROOT="$DIST/libintl-win64/"
+export LIBINTL_ROOT=$DIST
 export LIBICONV="$DIST/gettext-iconv-win64"
 export BlackMagicRAW_ROOT="/C/Program Files (x86)/Blackmagic Design/Blackmagic RAW/Blackmagic RAW SDK/Win"
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Sourcing vc14_win32_vars"
-export ROOT=/D/code/applications/mrv
-export DIST=/D/code/lib/vc14_Windows_32
+export ROOT=/E/code/applications/mrv
+export DIST=/E/code/lib/win32
 export SUPERBUILD=$PWD/install-Windows-6.3.9600-32
 
 export ZLIB_ROOT=$SUPERBUILD

@@ -11,11 +11,7 @@ export KERNEL=`uname -s`
 export RELEASE=""
 
 if [[ $KERNEL == MINGW* || $KERNEL == MSYS* ]]; then
-    RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[4]%.[0-9]*}
     KERNEL=Windows
-else
-    RELEASE=`uname -r`
 fi
 
 export OS_32_BITS=1
@@ -24,9 +20,7 @@ export OS_64_BITS=
 export fltk_dir=""
 
 if [ $KERNEL == 'Windows' ]; then
-    echo "D"
     arch=`wmic OS get OSArchitecture`
-    echo "E"
 else
     arch=`uname -a`
 fi
@@ -56,5 +50,5 @@ for i in $@; do
 done
 
 
-export BUILD=$KERNEL-$RELEASE-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+export BUILD=$KERNEL-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
 echo "BUILD DIRECTORY=$BUILD"
