@@ -54,8 +54,8 @@
 #include <boost/thread/condition_variable.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 
-#include <ImfChromaticities.h>
 #include <ImfAttribute.h>
+#include <ImfChromaticities.h>
 #include <ImfTimeCode.h>
 #include <ACESclipReader.h>
 

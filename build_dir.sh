@@ -5,10 +5,15 @@
 #
 
 #
+# Turn on exit on error
+#
+set -o pipefail -e
+
+
+#
 # Determine CPU architecture
 #
 export KERNEL=`uname -s`
-export RELEASE=""
 
 if [[ $KERNEL == MINGW* || $KERNEL == MSYS* ]]; then
     KERNEL=Windows

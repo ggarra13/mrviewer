@@ -163,7 +163,7 @@ def copy_third_party( root, dest )
   red_library_path = ENV['R3DSDK_ROOT']
   blackmagic_path = ENV['BlackMagicRAW_ROOT']
   if not red_library_path
-    red_library_path = '../'
+    red_library_path = '../R3DSDKv8_3_1'
   end
   if dest =~ /Linux/
     red_library = "#{red_library_path}/Redistributable/linux/REDR3D-x64.so"
@@ -221,12 +221,10 @@ end
 
 
 kernel = `uname`.chop!
-release = `uname -r`.chop!
-    arch=64
+arch=64
 
 if kernel =~ /MINGW.*/ or kernel =~ /MSYS.*/
   kernel = "Windows"
-  release = "6.3"
   cl = `cl.exe 2>&1`
   cl = cl.force_encoding( "ISO-8859-1" )
   if cl =~ /x64/
@@ -236,7 +234,7 @@ if kernel =~ /MINGW.*/ or kernel =~ /MSYS.*/
   end
 end
 
-build = "BUILD/#{kernel}-#{release}-#{arch}/"
+build = "BUILD/#{kernel}-#{arch}/"
 root = $0.sub(/utils\/libs.rb/, "")
 if root.size <= 1
   root = Dir.pwd
@@ -248,7 +246,7 @@ $stdout.puts "kernel: #{kernel}"
 $stdout.puts "DIRECTORY: #{root}"
 
 if not @options[:prefix]
-  @options[:prefix]="#{root}/install-#{kernel}-#{release}-64/#{@debug}"
+  @options[:prefix]="#{root}/install-#{kernel}-64/#{@debug}"
 end
 
 p = @options[:prefix]

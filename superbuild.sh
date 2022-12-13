@@ -47,21 +47,5 @@ fi
 echo "Leaving SuperBuild directory"
 cd ..
 
-release=''
+./runme_bundle.sh
 
-if [[ $KERNEL == *Linux* ]]; then
-    release=`lsb_release -d`
-fi
-if [[ $release == *Ubuntu* ]]; then
-    ./runme.sh $@
-    if [ $? != 0 ]; then
-	exit $?
-    fi
-
-    ./utils/libs.rb
-else
-    ./runme.sh bundle $@
-    if [ $? != 0 ]; then
-	exit $?
-    fi
-fi

@@ -1,55 +1,7 @@
 #!/bin/bash
 
-#
-# Determine CPU architecture
-#
-KERNEL=`uname -s`
 
-if [[ $KERNEL == MINGW* || $KERNEL == MSYS* ]]; then
-    KERNEL=Windows
-fi
-
-
-CMAKE_OPTS=${CMAKE_OPTS=""}
-
-export CMAKE_NATIVE_ARCH=32
-export CMAKE_BUILD_TYPE=Release
-export CMAKE_PROCS=4
-if [[ $KERNEL == Darwin* ]]; then
-    CMAKE_PROCS=8
-fi
-export OS_32_BITS=1
-export OS_64_BITS=
-
-export fltk_dir=""
-
-if [ $KERNEL == 'Windows' ]; then
-    arch=`wmic OS get OSArchitecture`
-    if [[ $arch == *64* ]]; then
-	CMAKE_NATIVE_ARCH=64
-	export OS_64_BITS=1
-    fi
-else
-    arch=`uname -a`
-fi
-
-if [[ $arch == *64* ]]; then
-    CMAKE_NATIVE_ARCH=64
-    export OS_64_BITS=1
-else
-    if [[ $arch == *ia64* ]]; then
-	CMAKE_NATIVE_ARCH=64
-	export OS_64_BITS=1
-	unset  OS_32_BITS
-    fi
-fi
-
-
-export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
-
-OS=$KERNEL
-
-echo "OS=$OS"
+. build_dir.sh
 
 
 usage()
@@ -63,7 +15,7 @@ Wrapper around CMake to easily create out of source builds
 (ie. compilations where everything goes into a directory).
 
 For this platform (default settings):
-  BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+  BUILD/$BUILD_DIR
 
 It must be run from a directory with a valid CMakeLists.txt
 file outside of the build tree.
@@ -87,9 +39,7 @@ Options:
 
   cache    - Cleans all CMakeCache.txt files
 
-  swig     - Cleans all swig files
-
-  clean    - Cleans BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+  clean    - Cleans BUILD/$BUILD
 
   cmake    - Runs cmake only.
 
@@ -101,37 +51,13 @@ EOF
 
 clean_cache()
 {
-    builddir=BUILD/$BUILD
-    if [ ! -d $builddir ]; then
-	return
-    fi
     echo
-    echo "Removing old cmake caches $builddir..."
+    echo "Removing old cmake caches BUILD/$BUILD..."
     echo
     # Remove cache files
-    find $builddir -name CMakeCache.txt -exec rm {} \;
+    find BUILD/$BUILD -name CMakeCache.txt -exec rm {} \;
     # Remove makefiles
-    find $builddir -name Makefile -exec rm {} \;
-}
-
-
-clean_swig()
-{
-    if [ $CMAKE_BUILD_ARCH == 'Both' ]; then
-	CMAKE_BUILD_ARCH=32
-	clean_swig
-	CMAKE_BUILD_ARCH=64
-	clean_swig
-	CMAKE_BUILD_ARCH=Both
-	return
-    fi
-
-    # Remove swig wrappers
-    builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
-    echo
-    echo "Removing old swig wrappers $builddir..."
-    echo
-    find $builddir -name '*_wrap.*' -exec rm {} \;
+    find BUILD/$bUILD -name Makefile -exec rm {} \;
 }
 
 #
@@ -140,16 +66,13 @@ clean_swig()
 clean=0
 cache=0
 
+cmake_generator=Ninja
 
 if [[ $OS == Windows* ]]; then
-    #cmake_generator=Ninja
-    cmake_generator="NMake Makefiles"
     win32cl=`which cl`
     if [[ $win32cl != *64* ]]; then
 	CMAKE_BUILD_ARCH=32
     fi
-else
-    cmake_generator="Unix Makefiles"
 fi
 
 
@@ -220,10 +143,6 @@ for i in $@; do
 	    shift
 	    fltk_dir="-DFLTK_DIR=${i#*=}"
 	    ;;
-	swig)
-	    shift
-	    clean_swig
-	    ;;
 	-h)
 	    shift
 	    usage
@@ -282,17 +201,7 @@ run_make()
 	return
     fi
 
-    make_cmd="make -j ${CMAKE_PROCS}"
-    if [[ $cmake_generator == NMake* ]]; then
-	make_cmd='nmake'
-    fi
-
-    if [ -f "Makefile" ]; then
-	cmd="${make_cmd} $@"
-    else
-	cmd="ninja -j ${CMAKE_PROCS} $@"
-    fi
-
+    cmd="cmake --build . -j ${CMAKE_PROCS} $@ --config $CMAKE_BUILD_TYPE -v"
     run_cmd $cmd
     status=$?
     if [ $status != 0 ]; then
@@ -309,7 +218,7 @@ run_make()
 run_cmake()
 {
 
-    builddir=$PWD/BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE
+    builddir=$PWD/BUILD/$BUILD
 
     if [[ $installdir == "" ]]; then
 	installdir=/usr/local
@@ -340,33 +249,15 @@ run_cmake()
     cmd="cd $builddir/tmp"
     run_cmd $cmd
 
-    if [ -r Makefile ]; then
-	run_make $opts $@
-	return
-    fi
-
 
     pwd=$PWD
 
-    if [[ $cmake_generator == *Makefile* ]]; then
-	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
-    else
-	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
-    fi
-
-    cmd="cmake ../../../.. $fltk_dir -DCMAKE_PREFIX_PATH=$prefix -DCMAKE_INSTALL_PREFIX=$installdir -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
+    cmd="cmake ../../../.. $fltk_dir -D CMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_PREFIX_PATH=$prefix -DCMAKE_INSTALL_PREFIX=$installdir -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -G '${cmake_generator}'"
 
 
     if [ $RUN_CMAKE == 1 ]; then
 	run_cmd  $cmd
-
-	status=$?
-	if [ $status != 0 ]; then
-	    cd ../../../..
-	    exit $status
-	fi
     fi
-
 
     run_make $opts $@
 }
@@ -389,7 +280,7 @@ run_clean()
 	return
     fi
 
-    builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE/tmp
+    builddir=BUILD/$BUILD/tmp
     if [ -d $builddir ]; then
 	if [ -e ninja.build ]; then
 	    run_make clean
