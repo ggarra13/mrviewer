@@ -6,11 +6,7 @@
 KERNEL=`uname -s`
 
 if [[ $KERNEL == MINGW* || $KERNEL == MSYS* ]]; then
-    RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[4]%.[0-9]*}
     KERNEL=Windows
-else
-    RELEASE=`uname -r`
 fi
 
 
@@ -51,7 +47,7 @@ fi
 
 export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
 
-OS=$KERNEL-$RELEASE
+OS=$KERNEL
 
 echo "OS=$OS"
 
@@ -322,7 +318,7 @@ run_cmake()
 	fi
 
 	if [[ $OS == Windows* ]]; then
-	    installdir="D:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
+	    installdir="E:/code/lib/vc14_Windows_${CMAKE_BUILD_ARCH}"
 	    if [[ $CMAKE_BUILD_TYPE == Debug ]]; then
 		installdir="${installdir}_debug"
 	    fi
